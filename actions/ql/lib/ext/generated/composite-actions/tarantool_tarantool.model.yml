@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["tarantool/tarantool", "*", "input.source", "code-injection", "generated"]
+     - ["tarantool/tarantool", "*", "input.chat-id", "code-injection", "generated"]
+     - ["tarantool/tarantool", "*", "input.revision", "code-injection", "generated"]
+     - ["tarantool/tarantool", "*", "input.submodule", "code-injection", "generated"]

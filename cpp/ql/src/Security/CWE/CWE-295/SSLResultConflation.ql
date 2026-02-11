@@ -29,7 +29,15 @@ module VerifyResultConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SslGetVerifyResultCall }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(GuardCondition guard | guard.getAChild*() = sink.asExpr())
+    exists(GuardCondition guard | guard.(Expr).getAChild*() = sink.asExpr())
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(GuardCondition guard | result = guard.getLocation() |
+      guard.comparesEq(sink.asExpr(), _, 0, false, _)
+    )
   }
 }
 

@@ -95,10 +95,6 @@
 | 69 | ControlFlowNode for Attribute | Attribute | builtin-class method |
 | 69 | ControlFlowNode for X | class X | builtin-class type |
 | 70 | ControlFlowNode for X | class X | builtin-class type |
-| 72 | ControlFlowNode for ImportExpr | Module abc | builtin-class module |
-| 72 | ControlFlowNode for ImportMember | Function abstractmethod | builtin-class function |
-| 72 | ControlFlowNode for abstractmethod | Function abstractmethod | builtin-class function |
-| 73 | ControlFlowNode for abstractmethod | Function abstractmethod | builtin-class function |
 | 75 | ControlFlowNode for C | class C | builtin-class type |
 | 75 | ControlFlowNode for C() | C() | class C |
 | 75 | ControlFlowNode for type | builtin-class type | builtin-class type |

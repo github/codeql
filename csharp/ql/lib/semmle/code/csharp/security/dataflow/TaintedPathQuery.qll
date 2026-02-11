@@ -27,21 +27,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `TaintedPath` instead.
- *
- * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "TaintedPath" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
  */
 private module TaintedPathConfig implements DataFlow::ConfigSig {
@@ -50,6 +35,8 @@ private module TaintedPathConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -65,7 +52,7 @@ module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /**
  * A path argument to a `File` method call.
@@ -129,7 +116,7 @@ private class WeakGuard extends Guard {
     )
     or
     // Checking against `null` has no bearing on path traversal.
-    this.controlsNode(_, _, any(AbstractValues::NullValue nv))
+    this.controlsNode(_, _, any(GuardValue nv | nv.isNullness(_)))
     or
     this.(LogicalOperation).getAnOperand() instanceof WeakGuard
   }
@@ -143,8 +130,9 @@ private class WeakGuard extends Guard {
 class PathCheck extends Sanitizer {
   PathCheck() {
     // This expression is structurally replicated in a dominating guard which is not a "weak" check
-    exists(Guard g, AbstractValues::BooleanValue v |
+    exists(Guard g, GuardValue v |
       g = this.(GuardedDataFlowNode).getAGuard(_, v) and
+      exists(v.asBooleanValue()) and
       not g instanceof WeakGuard
     )
   }

@@ -9,7 +9,7 @@ app.post('/private_message', (req, res) => {
     from: 'webmaster@example.com',
     to: backend.getUserEmail(req.query.receiver),
     subject: 'Private message',
-    text: `Hi, you got a message from someone. ${req.query.message}.`, // OK
-    html: `Hi, you got a message from someone. ${req.query.message}.`, // NOT OK
+    text: `Hi, you got a message from someone. ${req.query.message}.`,
+    html: `Hi, you got a message from someone. ${req.query.message}.`, // $ Alert
   });
 });

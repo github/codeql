@@ -16,9 +16,9 @@ For example, to declare a module ``M`` as private, you could use:
     }
 
 Note that some annotations act on an entity itself, whilst others act on a particular *name* for the entity:
-  - Act on an **entity**: ``abstract``, ``cached``, ``external``, ``transient``, ``override``, ``pragma``, ``language``,
-    and ``bindingset``
-  - Act on a **name**: ``deprecated``, ``library``, ``private``, ``final``, and ``query``
+  - Act on an **entity**: ``abstract``, ``bindingset``, ``cached``, ``extensible``, ``external``, ``language``,
+    ``overlay``, ``override``, ``pragma``, and ``transient``
+  - Act on a **name**: ``additional``, ``deprecated``, ``final``, ``library``, ``private``, and ``query``
 
 For example, if you annotate an entity with ``private``, then only that particular name is
 private. You could still access that entity under a different name (using an :ref:`alias <aliases>`).
@@ -97,13 +97,27 @@ own body, or they must inherit from another class that overrides ``isSource``:
       // doesn't need to override `isSource`, because it inherits it from ConfigA
     }
 
+.. index:: additional
+.. _additional:
+
+``additional``
+==============
+
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |non-member predicates|, |modules|, |aliases|, |signatures|
+
+The ``additional`` annotation can be used on declarations in explicit modules.
+All declarations that are not required by a module signature in modules that implement |module signatures| must be annotated with ``additional``.
+
+Omitting ``additional`` on such declarations, or using the annotation in any other context, will result in a compiler error.
+Other than that, the annotation has no effect.
+
 .. index:: cached
 .. _cached:
 
 ``cached``
 ==========
 
-**Available for**: |classes|, |algebraic datatypes|, |characteristic predicates|, |member predicates|, |non-member predicates|, |modules|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |characteristic predicates|, |member predicates|, |non-member predicates|, |modules|
 
 The ``cached`` annotation indicates that an entity should be evaluated in its entirety and
 stored in the evaluation cache. All later references to this entity will use the 
@@ -126,7 +140,7 @@ body must also be annotated with ``cached``, otherwise a compiler error is repor
 ``deprecated``
 ==============
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
 
 The ``deprecated`` annotation is applied to names that are outdated and scheduled for removal
 in a future release of QL.
@@ -150,6 +164,16 @@ For example, the name ``DataFlowNode`` is deprecated and has the following QLDoc
     }
 
 This QLDoc comment appears when you use the name ``DataFlowNode`` in a QL editor.
+
+.. index:: extensible
+.. _extensible:
+
+``extensible``
+==============
+
+**Available for**: |non-member predicates|
+
+The ``extensible`` annotation is used to mark predicates that are populated at evaluation time through data extensions.
 
 .. index:: external
 .. _external:
@@ -235,7 +259,7 @@ warning.
 ``private``
 ===========
 
-**Available for**: |classes|, |algebraic datatypes|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|
+**Available for**: |classes|, |algebraic datatypes|, |type unions|, |member predicates|, |non-member predicates|, |imports|, |fields|, |modules|, |aliases|, |signatures|
 
 The ``private`` annotation is used to prevent names from being exported.
 
@@ -461,7 +485,7 @@ For more information, see ":ref:`monotonic-aggregates`."
 Binding sets
 ============
 
-**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|
+**Available for**: |classes|, |characteristic predicates|, |member predicates|, |non-member predicates|, |predicate signatures|, |type signatures|
 
 ``bindingset[...]``
 -------------------
@@ -478,6 +502,193 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
   For more information, see ":ref:`predicate-binding`."
 - When you annotate a class, each variable must be ``this`` or a field in the class. 
 
+.. _overlay:
+
+Overlay annotations
+===================
+
+Overlay annotations control how predicates behave during **overlay evaluation**, a feature
+that enables efficient incremental analysis of codebases.
+
+In overlay evaluation, a *base database* is created from one version of a codebase, and an
+*overlay database* is created by combining the base database with changes from a newer
+version (such as a pull request). The goal is to analyze the overlay database as if it
+were a fully extracted database at the newer commit, while reusing as much cached data
+from the base database as possible. Ideally, analysis time is proportional to the size
+of the diff rather than the full codebase.
+
+To achieve this, predicates are divided into *local* and *global* categories, with global
+being the default. Local predicates are evaluated independently on base and overlay data,
+and thus typically take time proportional to the diff size; global predicates operate on
+the combined data, and thus take time proportional to the full codebase. When a global
+predicate calls a local predicate, results from both the base and overlay evaluations of
+the local predicate are combined, with stale base results filtered out through a process
+called "discarding".
+
+Overlay evaluation is primarily used internally by GitHub Code Scanning to speed up
+pull request analysis. Most QL developers do not need to use these annotations directly,
+but understanding them can help resolve compilation errors that may occur when overlay
+support is enabled for a language.
+
+.. note::
+
+   Overlay annotations only affect evaluation when overlay compilation is enabled
+   (via ``compileForOverlayEval: true`` in ``qlpack.yml``) and the evaluator is running
+   in overlay mode. This setting is typically only needed in the language's library pack;
+   custom query packs do not need it. Outside of overlay mode, these annotations are
+   validated but have no effect on evaluation.
+
+``overlay[local]``
+------------------
+
+**Available for**: |modules|, |classes|, |algebraic datatypes|, |type unions|, |characteristic predicates|, |member predicates|, |non-member predicates|
+
+The ``overlay[local]`` annotation declares that a predicate is local. Local predicates are 
+evaluated separately on base and overlay data and may only depend on other local predicates.
+The compiler reports an error if a local predicate depends on a global predicate.
+
+.. code-block:: ql
+
+    // All dependencies are database extensionals, so this can be local
+    overlay[local]
+    predicate stmtInFile(@stmt s, string path) {
+      exists(@file f, @location loc |
+        hasLocation(s, loc) and
+        locations_default(loc, f, _, _, _, _) and
+        files(f, path)
+      )
+    }
+
+``overlay[local?]``
+-------------------
+
+**Available for**: |modules|, |classes|, |algebraic datatypes|, |type unions|, |characteristic predicates|, |member predicates|, |non-member predicates|
+
+The ``overlay[local?]`` annotation declares that a predicate should be local if all of
+its dependencies are local, and global otherwise. This is particularly useful in
+parameterized modules, where different instantiations may have different locality
+depending on the module parameters.
+
+.. code-block:: ql
+
+    // Locality depends on whether Expr.getType() and Type.getName() are local
+    overlay[local?]
+    predicate exprTypeName(Expr e, string name) {
+      name = e.getType().getName()
+    }
+
+``overlay[global]``
+-------------------
+
+**Available for**: |modules|, |classes|, |algebraic datatypes|, |type unions|, |characteristic predicates|, |member predicates|, |non-member predicates|
+
+The ``overlay[global]`` annotation explicitly declares that a predicate is global. This
+is the default behavior, so this annotation is typically used to override an inherited
+``overlay[local]`` or ``overlay[local?]`` annotation from an enclosing module or class.
+See `Annotation inheritance`_ for an example.
+
+``overlay[caller]``
+-------------------
+
+**Available for**: |modules|, |classes|, |algebraic datatypes|, |type unions|, |characteristic predicates|, |member predicates|, |non-member predicates|
+
+The ``overlay[caller]`` annotation declares that the locality of a predicate depends on
+its caller. The compiler may internally duplicate the predicate, creating separate local
+and global versions. Local callers use the local version; global callers use the global
+version.
+
+.. code-block:: ql
+
+    overlay[caller]
+    predicate utilityPredicate(int x) {
+      x in [1..100]
+    }
+
+``overlay[caller?]``
+--------------------
+
+**Available for**: |modules|, |classes|, |algebraic datatypes|, |type unions|, |characteristic predicates|, |member predicates|, |non-member predicates|
+
+The ``overlay[caller?]`` annotation is like ``overlay[caller]``, but only applies if none
+of the predicate's dependencies are global. If any dependency is global, the predicate
+becomes global regardless of its callers, and calling it from a local predicate will
+result in a compilation error. Like ``overlay[local?]``, this is useful in parameterized
+modules where locality may vary between instantiations.
+
+``overlay[discard_entity]``
+---------------------------
+
+**Available for**: |non-member predicates| (unary predicates on database types only)
+
+The ``overlay[discard_entity]`` annotation designates an *entity discard predicate*.
+These predicates identify database entities that should be filtered out from cached base
+results when combining with overlay results during overlay evaluation.
+
+Entity discard predicates must be:
+
+- Unary predicates (taking exactly one argument)
+- Defined on a database type (a type from the database schema, prefixed with ``@``)
+- Only dependent on local predicates and other non-discarding predicates
+
+.. code-block:: ql
+
+    overlay[discard_entity]
+    private predicate discardExpr(@expr e) {
+      exists(string file | discardableExpr(file, e) and overlayChangedFiles(file))
+    }
+
+    overlay[local]
+    private predicate discardableExpr(string file, @expr e) {
+      not isOverlay() and
+      file = getFile(e)
+    }
+
+    overlay[local]
+    predicate isOverlay() { databaseMetadata("isOverlay", "true") }
+
+Annotation inheritance
+----------------------
+
+Overlay annotations can be applied to modules and types, in which case they are
+inherited by enclosed declarations. Declarations without explicit overlay annotations
+inherit from their innermost enclosing declaration that has an overlay annotation.
+
+.. code-block:: ql
+
+    overlay[local?]
+    module M {
+      predicate foo(@expr x) { ... }  // Inherits overlay[local?]
+
+      class C extends @expr {
+        predicate bar() { ... }  // Inherits overlay[local?]
+
+        overlay[global]
+        predicate baz() { ... }  // Explicitly global
+      }
+    }
+
+Resolving overlay-related errors
+--------------------------------
+
+When overlay support is enabled for a language, you may encounter compilation errors in
+custom QL libraries or queries. Here are common errors and their solutions:
+
+**"Declaration is annotated overlay[local] but depends on global entity"**
+
+A predicate marked ``overlay[local]`` (or ``overlay[caller]``) depends on a global predicate.
+Solutions:
+
+- Change the annotation to ``overlay[local?]`` (or ``overlay[caller?]``) if the predicate doesn't strictly need to be local
+- Add appropriate overlay annotations to the dependency chain to make dependencies local
+- Use the ``forceLocal`` higher-order predicate if you need to call global code from local code (advanced)
+
+**"Cannot apply forceLocal to relation that is annotated overlay[...]"**
+
+The ``forceLocal`` higher-order predicate cannot be applied to predicates that have overlay
+annotations such as ``overlay[local]``, ``overlay[local?]``, ``overlay[caller]``, or 
+``overlay[caller?]``. The input to ``forceLocal`` must be a predicate without such annotations
+(i.e., a global predicate or one with ``overlay[global]``).
+
 .. Links to use in substitutions
 
 .. |classes|                   replace:: :ref:`classes <classes>`
@@ -490,4 +701,9 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |aliases|                   replace:: :ref:`aliases <aliases>`
 .. |type-aliases|              replace:: :ref:`type aliases <type-aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
+.. |type unions|               replace:: :ref:`type unions <type-unions>`
 .. |expressions|               replace:: :ref:`expressions <expressions>`
+.. |signatures|                replace:: :ref:`signatures <signatures>`
+.. |predicate signatures|      replace:: :ref:`predicate signatures <predicate-signatures>`
+.. |type signatures|           replace:: :ref:`type signatures <type-signatures>`
+.. |module signatures|         replace:: :ref:`module signatures <module-signatures>`

@@ -1,6 +1,15 @@
+# On Windows, make's path resolution algorithm is incorrect. It picks up a bazel.exe in PATH that's
+# after a bazel binary. In particular, on actions, the non-exe binary is a bazelisk instance, whereas
+# bazel.exe is a bazel installation.
+# This means we pick up the wrong bazel version, and if the differences between the bazel we want
+# and that we actually get are too big, the build fails on CI.
+BAZEL := $(shell bash -c "which bazel")
+
+rtjo ?= none
+
 all: gen extractor
 
-EXTRACTOR_PACK_OUT = build/codeql-extractor-go
+EXTRACTOR_PACK_OUT = extractor-pack
 
 .PHONY: extractor gen clean autoformat check-formatting
 
@@ -28,10 +37,10 @@ qhelp-to-markdown:
 	scripts/qhelp-to-markdown.sh ql/src "$(QHELP_OUT_DIR)"
 
 extractor:
-	bazel run :create-extractor-pack
+	$(BAZEL) run :go-installer
 
 gen:
-	bazel run :gen
+	$(BAZEL) run :gen
 
 build/stats/src.stamp:
 	mkdir -p $(@D)/src
@@ -45,16 +54,16 @@ ql/lib/go.dbscheme.stats: ql/lib/go.dbscheme build/stats/src.stamp extractor
 	codeql dataset measure -o $@ build/stats/database/db-go
 
 test: all build/testdb/check-upgrade-path
-	codeql test run -j0 ql/test --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency --compilation-cache=$(cache)
+	codeql test run -j0 ql/test --search-path .. --check-diff-informed --consistency-queries ql/consistency-queries --compilation-cache=$(cache) --dynamic-join-order-mode=$(rtjo) --check-databases --fail-on-trap-errors --check-undefined-labels --check-unused-labels --check-repeated-labels --check-redefined-labels --check-use-before-definition
 #	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
-	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency --compilation-cache=$(cache)
-	cd extractor; bazel test ...
+	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path .. --check-diff-informed --consistency-queries ql/consistency-queries --compilation-cache=$(cache) --dynamic-join-order-mode=$(rtjo)
+	cd extractor; $(BAZEL) test ...
 	bash extractor-smoke-test/test.sh || (echo "Extractor smoke test FAILED"; exit 1)
 
 .PHONY: build/testdb/check-upgrade-path
 build/testdb/check-upgrade-path : build/testdb/go.dbscheme ql/lib/go.dbscheme
 	codeql dataset upgrade build/testdb --search-path ql/lib
-	diff -q build/testdb/go.dbscheme ql/lib/go.dbscheme
+	diff -u build/testdb/go.dbscheme ql/lib/go.dbscheme
 
 .PHONY: build/testdb/go.dbscheme
 build/testdb/go.dbscheme: ql/lib/upgrades/initial/go.dbscheme

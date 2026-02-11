@@ -23,7 +23,17 @@ predicate declaresDependency(NpmPackage pkg, string name, JsonValue dep) {
 /**
  * Gets a path expression in a module belonging to `pkg`.
  */
-PathExpr getAPathExpr(NpmPackage pkg) { result.getEnclosingModule() = pkg.getAModule() }
+Expr getAPathExpr(NpmPackage pkg) {
+  exists(Import imprt |
+    result = imprt.getImportedPathExpr() and
+    pkg.getAModule() = imprt.getEnclosingModule()
+  )
+  or
+  exists(ReExportDeclaration decl |
+    result = decl.getImportedPath() and
+    pkg.getAModule() = decl.getEnclosingModule()
+  )
+}
 
 /**
  * Gets a URL-valued attribute in a module or HTML file belonging to `pkg`.
@@ -56,9 +66,8 @@ predicate usesDependency(NpmPackage pkg, string name) {
   (
     // there is a path expression (e.g., in a `require` or `import`) that
     // references `pkg`
-    exists(PathExpr path | path = getAPathExpr(pkg) |
-      // check whether the path is `name` or starts with `name/`, ignoring a prefix that ends with '!' (example: "scriptloader!moment")
-      path.getValue().regexpMatch("(.*!)?\\Q" + name + "\\E(/.*)?")
+    exists(Expr path | path = getAPathExpr(pkg) |
+      path.getStringValue().(FilePath).getPackagePrefix() = name
     )
     or
     // there is an HTML URL attribute that may reference `pkg`

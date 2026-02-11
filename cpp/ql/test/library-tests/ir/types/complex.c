@@ -12,4 +12,4 @@ void Imaginary(void) {
   // _Imaginary __float128 jf128;
 }
 
-// semmle-extractor-options: --microsoft --edg --c99
+// semmle-extractor-options: --microsoft -std=c99

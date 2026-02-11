@@ -16,6 +16,10 @@ private predicate isDeeplyConst(Type t) {
   or
   isDeeplyConst(t.(Decltype).getBaseType())
   or
+  isDeeplyConst(t.(TypeofType).getBaseType())
+  or
+  isDeeplyConst(t.(IntrinsicTransformedType).getBaseType())
+  or
   isDeeplyConst(t.(ReferenceType).getBaseType())
   or
   exists(SpecifiedType specType | specType = t |
@@ -36,6 +40,10 @@ private predicate isDeeplyConstBelow(Type t) {
   or
   isDeeplyConstBelow(t.(Decltype).getBaseType())
   or
+  isDeeplyConstBelow(t.(TypeofType).getBaseType())
+  or
+  isDeeplyConstBelow(t.(IntrinsicTransformedType).getBaseType())
+  or
   isDeeplyConst(t.(PointerType).getBaseType())
   or
   isDeeplyConst(t.(ReferenceType).getBaseType())
@@ -45,6 +53,8 @@ private predicate isDeeplyConstBelow(Type t) {
   isDeeplyConst(t.(ArrayType).getBaseType())
   or
   isDeeplyConst(t.(GNUVectorType).getBaseType())
+  or
+  isDeeplyConst(t.(ScalableVectorType).getBaseType())
   or
   isDeeplyConst(t.(FunctionPointerIshType).getBaseType())
   or

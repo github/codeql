@@ -371,7 +371,7 @@ class FunctionOutput extends TFunctionOutput {
   /**
    * Holds if this is the output value pointed to by a pointer parameter to a function, or the
    * output value referred to by a reference parameter to a function, where the parameter has
-   * index `index`.
+   * index `i`.
    *
    * Example:
    * ```
@@ -389,7 +389,7 @@ class FunctionOutput extends TFunctionOutput {
   /**
    * Holds if this is the output value pointed to by a pointer parameter (through `ind` number
    * of indirections) to a function, or the output value referred to by a reference parameter to
-   * a function, where the parameter has index `index`.
+   * a function, where the parameter has index `i`.
    *
    * Example:
    * ```

@@ -8,7 +8,7 @@
  * @id cs/web/large-max-request-length
  * @tags security
  *       frameworks/asp.net
- *       external/cwe/cwe-16
+ *       external/cwe/cwe-016
  */
 
 import csharp

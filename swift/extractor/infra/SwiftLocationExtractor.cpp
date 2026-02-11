@@ -29,7 +29,14 @@ void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sour
   entry.file = fetchFileLabel(file);
   std::tie(entry.start_line, entry.start_column) =
       sourceManager.getLineAndColumnInBuffer(range.Start);
-  std::tie(entry.end_line, entry.end_column) = sourceManager.getLineAndColumnInBuffer(range.End);
+  if (sourceManager.getLineAndColumnInBuffer(range.End) >=
+      sourceManager.getLineAndColumnInBuffer(range.Start)) {
+    std::tie(entry.end_line, entry.end_column) = sourceManager.getLineAndColumnInBuffer(range.End);
+  } else {
+    // the compiler may generate source ranges that go backwards
+    entry.end_line = entry.start_line;
+    entry.end_column = entry.start_column;
+  }
   SwiftMangledName locName{"loc", entry.file,     ':', entry.start_line, ':', entry.start_column,
                            ':',   entry.end_line, ':', entry.end_column};
   entry.id = trap.createTypedLabel<DbLocationTag>(locName);

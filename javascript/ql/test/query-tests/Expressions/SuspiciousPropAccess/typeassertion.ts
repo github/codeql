@@ -8,10 +8,10 @@ function f(x: Base[]) {
   if (x) {
     y = x[0] as Sub;
   }
-  y.field; // OK
+  y.field;
   
   var z = null as Sub;
-  z.field; // NOT OK
+  z.field; // $ Alert
 }
 
 f([new Sub()]);

@@ -103,72 +103,8 @@ class ActiveRecordModelClass extends ClassDeclaration {
     cls = activeRecordBaseClass().getADescendentModule() and this = cls.getADeclaration()
   }
 
-  // Gets the class declaration for this class and all of its super classes
-  private ModuleBase getAllClassDeclarations() { result = cls.getAnAncestor().getADeclaration() }
-
-  /**
-   * Gets methods defined in this class that may access a field from the database.
-   */
-  deprecated Method getAPotentialFieldAccessMethod() {
-    // It's a method on this class or one of its super classes
-    result = this.getAllClassDeclarations().getAMethod() and
-    // There is a value that can be returned by this method which may include field data
-    exists(DataFlow::Node returned, ActiveRecordInstanceMethodCall cNode, MethodCall c |
-      exprNodeReturnedFrom(returned, result) and
-      cNode.flowsTo(returned) and
-      c = cNode.asExpr().getExpr()
-    |
-      // The referenced method is not built-in, and...
-      not isBuiltInMethodForActiveRecordModelInstance(c.getMethodName()) and
-      (
-        // ...The receiver does not have a matching method definition, or...
-        not exists(
-          cNode.getInstance().getClass().getAllClassDeclarations().getMethod(c.getMethodName())
-        )
-        or
-        // ...the called method can access a field
-        c.getATarget() = cNode.getInstance().getClass().getAPotentialFieldAccessMethod()
-      )
-    )
-  }
-
   /** Gets the class as a `DataFlow::ClassNode`. */
   DataFlow::ClassNode getClassNode() { result = cls }
-}
-
-/**
- * Gets a potential reference to an ActiveRecord class object.
- */
-deprecated private API::Node getAnActiveRecordModelClassRef() {
-  result = any(ActiveRecordModelClass cls).getClassNode().trackModule()
-  or
-  // For methods with an unknown call target, assume this might be a database field, thus returning another ActiveRecord object.
-  // In this case we do not know which class it belongs to, which is why this predicate can't associate the reference with a specific class.
-  result = getAnUnknownActiveRecordModelClassCall().getReturn()
-}
-
-/**
- * Gets a call performed on an ActiveRecord class object, without a known call target in the codebase.
- */
-deprecated private API::MethodAccessNode getAnUnknownActiveRecordModelClassCall() {
-  result = getAnActiveRecordModelClassRef().getMethod(_) and
-  result.asCall().asExpr().getExpr() instanceof UnknownMethodCall
-}
-
-/**
- * DEPRECATED. Use `ActiveRecordModelClass.getClassNode().trackModule().getMethod()` instead.
- *
- * A class method call whose receiver is an `ActiveRecordModelClass`.
- */
-deprecated class ActiveRecordModelClassMethodCall extends MethodCall {
-  ActiveRecordModelClassMethodCall() {
-    this = getAnUnknownActiveRecordModelClassCall().asCall().asExpr().getExpr()
-  }
-
-  /** Gets the `ActiveRecordModelClass` of the receiver of this method, if it can be determined. */
-  ActiveRecordModelClass getReceiverClass() {
-    this = result.getClassNode().trackModule().getMethod(_).asCall().asExpr().getExpr()
-  }
 }
 
 private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::Node sink) {
@@ -258,39 +194,6 @@ private predicate unsafeSqlExpr(Expr sqlFragmentExpr) {
 }
 
 /**
- * DEPRECATED. Use the `SqlExecution` concept or `ActiveRecordSqlExecutionRange`.
- *
- * A method call that may result in executing unintended user-controlled SQL
- * queries if the `getSqlFragmentSinkArgument()` expression is tainted by
- * unsanitized user-controlled input. For example, supposing that `User` is an
- * `ActiveRecord` model class, then
- *
- * ```rb
- * User.where("name = '#{user_name}'")
- * ```
- *
- * may be unsafe if `user_name` is from unsanitized user input, as a value such
- * as `"') OR 1=1 --"` could result in the application looking up all users
- * rather than just one with a matching name.
- */
-deprecated class PotentiallyUnsafeSqlExecutingMethodCall extends ActiveRecordModelClassMethodCall {
-  private DataFlow::CallNode call;
-
-  PotentiallyUnsafeSqlExecutingMethodCall() {
-    call.asExpr().getExpr() = this and sqlFragmentArgument(call, _)
-  }
-
-  /**
-   * Gets the SQL fragment argument of this method call.
-   */
-  Expr getSqlFragmentSinkArgument() {
-    exists(DataFlow::Node sink |
-      sqlFragmentArgument(call, sink) and result = sink.asExpr().getExpr()
-    )
-  }
-}
-
-/**
  * A SQL execution arising from a call to the ActiveRecord library.
  */
 class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
@@ -351,9 +254,8 @@ private Expr getUltimateReceiver(MethodCall call) {
   )
 }
 
-// A call to `find`, `where`, etc. that may return active record model object(s)
-private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode
-{
+/** A call to `find`, `where`, etc. that may return active record model object(s) */
+class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode {
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelFinderCall() {

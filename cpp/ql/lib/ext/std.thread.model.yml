@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["std", "thread", True, "thread", "", "", "Argument[*@1]", "Argument[0].Parameter[@0]", "value", "manual"]
+      - ["std", "thread", True, "thread", "", "", "Argument[*@2]", "Argument[0].Parameter[@1]", "value", "manual"]
+      - ["std", "thread", True, "thread", "", "", "Argument[*@3]", "Argument[0].Parameter[@2]", "value", "manual"]
+      - ["std", "thread", True, "thread", "", "", "Argument[*@4]", "Argument[0].Parameter[@3]", "value", "manual"]
+      - ["std", "thread", True, "thread", "", "", "Argument[*@5]", "Argument[0].Parameter[@4]", "value", "manual"]
+      

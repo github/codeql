@@ -1,6 +1,6 @@
 # github.com/davecgh/go-spew v1.1.1
 ## explicit
-github.com/davecgh/go-spew
+github.com/davecgh/go-spew/spew
 # github.com/github/depstubber v0.0.0-20200916130315-f3217697abd4
 ## explicit
 github.com/github/depstubber

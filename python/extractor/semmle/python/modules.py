@@ -109,14 +109,25 @@ class PythonSourceModule(object):
     def old_py_ast(self):
         # The py_ast is the raw ast from the Python parser.
         if self._py_ast is None:
-            self._py_ast = semmle.python.parser.parse(self.tokens, self.logger)
+            with timers["old_py_ast"]:
+                self.logger.debug("Trying old parser on %s", self.path)
+                self._py_ast = semmle.python.parser.parse(self.tokens, self.logger)
+                self.logger.debug("Old parser successful on %s", self.path)
+        else:
+            self.logger.debug("Found (during old_py_ast) parse tree for %s in cache", self.path)
         return self._py_ast
 
     @property
     def py_ast(self):
         try:
-            # First, try to parse the source with the old Python parser.
-            return self.old_py_ast
+            # If the `CODEQL_PYTHON_DISABLE_OLD_PARSER` flag is present, we do not try to use the
+            # old parser, and instead jump straight to the exception handler.
+            if os.environ.get("CODEQL_PYTHON_DISABLE_OLD_PARSER"):
+                self.logger.debug("Old parser disabled, skipping old parse attempt for %s", self.path)
+                raise Exception("Skipping old parser")
+            # Otherwise, we first try to parse the source with the old Python parser.
+            self._py_ast = self.old_py_ast
+            return self._py_ast
         except Exception as ex:
             # If that fails, try to parse the source with the new Python parser (unless it has been
             # explicitly disabled).
@@ -131,7 +142,13 @@ class PythonSourceModule(object):
                     raise SyntaxError("Exception %s while parsing %s" % (ex, self.path))
             else:
                 try:
-                    self._py_ast = semmle.python.parser.tsg_parser.parse(self.path, self.logger)
+                    with timers["tsg_py_ast"]:
+                        if self._py_ast is None:
+                            self.logger.debug("Trying tsg-python on %s", self.path)
+                            self._py_ast = semmle.python.parser.tsg_parser.parse(self.path, self.logger)
+                            self.logger.debug("tsg-python successful on %s", self.path)
+                        else:
+                            self.logger.debug("Found (during py_ast) parse tree for %s in cache", self.path)
                     return self._py_ast
                 except SyntaxError as ex:
                     raise ex

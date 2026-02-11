@@ -78,7 +78,7 @@ options
 | uselesscat.js:86:1:86:75 | execFil ... utf8'}) | uselesscat.js:86:57:86:74 | {encoding: 'utf8'} |
 | uselesscat.js:100:1:100:56 | execFil ... ptions) | uselesscat.js:100:42:100:55 | unknownOptions |
 | uselesscat.js:111:1:111:51 | spawn(' ... it'] }) | uselesscat.js:111:14:111:50 | { stdio ... rit'] } |
-| uselesscat.js:136:17:138:2 | execSyn ... tf8'\\n}) | uselesscat.js:136:51:138:1 | { // NO ... utf8'\\n} |
+| uselesscat.js:136:17:138:2 | execSyn ... tf8'\\n}) | uselesscat.js:136:51:138:1 | { // $  ... utf8'\\n} |
 | uselesscat.js:147:1:147:47 | shelljs ... utf8'}) | uselesscat.js:147:29:147:46 | {encoding: 'utf8'} |
 | uselesscat.js:151:1:151:48 | cspawn( ... tf8' }) | uselesscat.js:151:28:151:47 | { encoding: 'utf8' } |
 | uselesscat.js:156:1:156:35 | cspawn( ... tf8' }) | uselesscat.js:156:15:156:34 | { encoding: 'utf8' } |

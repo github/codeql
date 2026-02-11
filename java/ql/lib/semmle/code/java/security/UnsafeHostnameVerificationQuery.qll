@@ -13,7 +13,7 @@ private import semmle.code.java.dataflow.ExternalFlow
  */
 private predicate alwaysReturnsTrue(HostnameVerifierVerify m) {
   forex(ReturnStmt rs | rs.getEnclosingCallable() = m |
-    rs.getResult().(CompileTimeConstantExpr).getBooleanValue() = true
+    rs.getExpr().(CompileTimeConstantExpr).getBooleanValue() = true
   )
 }
 
@@ -64,6 +64,17 @@ module TrustAllHostnameVerifierConfig implements DataFlow::ConfigSig {
         .regexpMatch("^(?i)(_)*((no|ignore|disable)(strictssl|ssl|verify|verification|hostname)" +
             "|(set)?(accept|trust|ignore|allow)(all|every|any)" +
             "|(use|do|enable)insecure|(set|do|use)?no.*(check|validation|verify|verification)|disable).*$")
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    isSource(source) and
+    (
+      result = source.getLocation()
+      or
+      result = source.asExpr().(ClassInstanceExpr).getConstructedType().getLocation()
+    )
   }
 }
 

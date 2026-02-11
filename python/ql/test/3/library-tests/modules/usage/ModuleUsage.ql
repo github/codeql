@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from ModuleValue mv, string usage
 where

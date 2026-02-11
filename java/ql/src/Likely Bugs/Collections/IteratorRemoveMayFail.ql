@@ -6,9 +6,9 @@
  * @problem.severity warning
  * @precision medium
  * @id java/iterator-remove-failure
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
  */
 
 import java
@@ -39,7 +39,7 @@ predicate containsSpecialCollection(Expr e, SpecialCollectionCreation origin) {
   or
   exists(Call c, ReturnStmt r | e = c |
     r.getEnclosingCallable() = c.getCallee().getSourceDeclaration() and
-    containsSpecialCollection(r.getResult(), origin)
+    containsSpecialCollection(r.getExpr(), origin)
   )
 }
 
@@ -61,7 +61,7 @@ predicate iterOfSpecialCollection(Expr e, SpecialCollectionCreation origin) {
   or
   exists(Call c, ReturnStmt r | e = c |
     r.getEnclosingCallable() = c.getCallee().getSourceDeclaration() and
-    iterOfSpecialCollection(r.getResult(), origin)
+    iterOfSpecialCollection(r.getExpr(), origin)
   )
 }
 

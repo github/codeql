@@ -6,10 +6,10 @@
  * @problem.severity warning
  * @precision medium
  * @id java/inconsistent-sync-writeobject
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
- *       language-features
  *       external/cwe/cwe-662
  */
 

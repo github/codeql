@@ -13,7 +13,7 @@ class Specifier extends Element, @specifier {
   /** Gets a dummy location for the specifier. */
   override Location getLocation() {
     exists(this) and
-    result instanceof UnknownDefaultLocation
+    result instanceof UnknownLocation
   }
 
   override string getAPrimaryQlClass() { result = "Specifier" }
@@ -95,6 +95,18 @@ class AccessSpecifier extends Specifier {
   }
 
   override string getAPrimaryQlClass() { result = "AccessSpecifier" }
+}
+
+/**
+ * A C/C++ calling convention specifier: `cdecl`, `fastcall`, `stdcall`, `thiscall`,
+ * `vectorcall`, or `clrcall`.
+ */
+class CallingConventionSpecifier extends Specifier {
+  CallingConventionSpecifier() {
+    this.hasName(["cdecl", "fastcall", "stdcall", "thiscall", "vectorcall", "clrcall"])
+  }
+
+  override string getAPrimaryQlClass() { result = "CallingConventionSpecifier" }
 }
 
 /**

@@ -59,3 +59,10 @@ shelljs.uniq(opts, file1, file2);
 
 shelljs.cat(file).sed(regex, replacement).exec(cmd);
 shelljs.cat(file).exec(cmd);
+
+shelljs.cmd(cmd, arg1, arg2, options);
+shelljs.cmd(cmd);
+shelljs.which(file);
+
+const shelljssync = require("async-shelljs");
+shelljssync.asyncExec(cmd, opts, cb);

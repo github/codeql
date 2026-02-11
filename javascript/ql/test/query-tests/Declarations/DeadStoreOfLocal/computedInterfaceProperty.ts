@@ -1,16 +1,16 @@
-import { Foo } from "./exportSymbol" // OK
+import { Foo } from "./exportSymbol"
 
 export interface FooMap {
-  [Foo]: number; // OK
+  [Foo]: number;
 }
 
-const Bar = "Bar"; // OK
+const Bar = "Bar";
 
 export interface BarMap {
   [Bar]: number;
 }
 
-const Baz = "Baz"; // OK
+const Baz = "Baz";
 
 if (false) {
   Baz;
@@ -18,7 +18,7 @@ if (false) {
 
 function getBaz(): typeof Baz { return null; }
 
-class C {} // OK
+class C {}
 
 if (false) {
   C;

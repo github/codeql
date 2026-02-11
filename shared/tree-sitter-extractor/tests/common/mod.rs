@@ -28,7 +28,7 @@ pub fn create_source_dir(files: Vec<(&'static str, &'static str)>) -> SourceArch
         let path = source_archive_dir.join(filename);
         let mut file = File::create(&path).unwrap();
         file.write_all(contents.as_bytes()).unwrap();
-        file_paths.push(PathBuf::from(path));
+        file_paths.push(path);
     }
 
     let file_list = {
@@ -69,5 +69,5 @@ pub fn expect_trap_file(root_dir: &Path, filename: &str) {
 fn create_dir(root: &Path, path: impl AsRef<Path>) -> PathBuf {
     let full_path = root.join(path);
     std::fs::create_dir_all(&full_path).expect("Failed to create directory");
-    full_path.into()
+    full_path
 }

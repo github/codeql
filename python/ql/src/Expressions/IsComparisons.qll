@@ -1,6 +1,7 @@
 /** INTERNAL - Helper predicates for queries that inspect the comparison of objects using `is`. */
 
 import python
+private import LegacyPointsTo
 
 /** Holds if the comparison `comp` uses `is` or `is not` (represented as `op`) to compare its `left` and `right` arguments. */
 predicate comparison_using_is(Compare comp, ControlFlowNode left, Cmpop op, ControlFlowNode right) {
@@ -42,7 +43,7 @@ predicate invalid_to_use_is_portably(ClassValue c) {
 }
 
 /** Holds if the control flow node `f` points to either `True`, `False`, or `None`. */
-predicate simple_constant(ControlFlowNode f) {
+predicate simple_constant(ControlFlowNodeWithPointsTo f) {
   exists(Value val | f.pointsTo(val) |
     val = Value::named("True") or val = Value::named("False") or val = Value::named("None")
   )
@@ -74,17 +75,17 @@ private predicate universally_interned_value(Expr e) {
 }
 
 /** Holds if the expression `e` points to an interned constant in CPython. */
-predicate cpython_interned_constant(Expr e) {
+predicate cpython_interned_constant(ExprWithPointsTo e) {
   exists(Expr const | e.pointsTo(_, const) | cpython_interned_value(const))
 }
 
 /** Holds if the expression `e` points to a value that can be reasonably expected to be interned across all implementations of Python. */
-predicate universally_interned_constant(Expr e) {
+predicate universally_interned_constant(ExprWithPointsTo e) {
   exists(Expr const | e.pointsTo(_, const) | universally_interned_value(const))
 }
 
 private predicate comparison_both_types(Compare comp, Cmpop op, ClassValue cls1, ClassValue cls2) {
-  exists(ControlFlowNode op1, ControlFlowNode op2 |
+  exists(ControlFlowNodeWithPointsTo op1, ControlFlowNodeWithPointsTo op2 |
     comparison_using_is(comp, op1, op, op2) or comparison_using_is(comp, op2, op, op1)
   |
     op1.inferredValue().getClass() = cls1 and
@@ -94,7 +95,7 @@ private predicate comparison_both_types(Compare comp, Cmpop op, ClassValue cls1,
 
 private predicate comparison_one_type(Compare comp, Cmpop op, ClassValue cls) {
   not comparison_both_types(comp, _, _, _) and
-  exists(ControlFlowNode operand |
+  exists(ControlFlowNodeWithPointsTo operand |
     comparison_using_is(comp, operand, op, _) or comparison_using_is(comp, _, op, operand)
   |
     operand.inferredValue().getClass() = cls
@@ -118,9 +119,9 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
     )
   ) and
   // OK to use 'is' when comparing items from a known set of objects
-  not exists(Expr left, Expr right, Value val |
+  not exists(ExprWithPointsTo left, ExprWithPointsTo right, Value val |
     comp.compares(left, op, right) and
-    exists(ImmutableLiteral il | il.getLiteralValue() = val)
+    exists(ImmutableLiteral il | il = val.(ConstantObjectInternal).getLiteral())
   |
     left.pointsTo(val) and right.pointsTo(val)
     or
@@ -132,7 +133,7 @@ predicate invalid_portable_is_comparison(Compare comp, Cmpop op, ClassValue cls)
     )
   ) and
   // OK to use 'is' when comparing with a member of an enum
-  not exists(Expr left, Expr right, AstNode origin |
+  not exists(ExprWithPointsTo left, ExprWithPointsTo right, AstNode origin |
     comp.compares(left, op, right) and
     enum_member(origin)
   |

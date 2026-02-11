@@ -3,7 +3,8 @@
  * @description A string formatting operation, such as '"%s: %s, %s" % (a,b)', where the number of conversion specifiers in the
  *              format string differs from the number of values to be formatted will raise a TypeError.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-685
  * @problem.severity error
@@ -13,24 +14,25 @@
  */
 
 import python
+import LegacyPointsTo
 import semmle.python.strings
 
 predicate string_format(BinaryExpr operation, StringLiteral str, Value args, AstNode origin) {
   operation.getOp() instanceof Mod and
   exists(Context ctx |
-    operation.getLeft().pointsTo(ctx, _, str) and
-    operation.getRight().pointsTo(ctx, args, origin)
+    operation.getLeft().(ExprWithPointsTo).pointsTo(ctx, _, str) and
+    operation.getRight().(ExprWithPointsTo).pointsTo(ctx, args, origin)
   )
 }
 
 int sequence_length(Value args) {
   /* Guess length of sequence */
-  exists(Tuple seq | seq.pointsTo(args, _) |
+  exists(Tuple seq | seq.(ExprWithPointsTo).pointsTo(args, _) |
     result = strictcount(seq.getAnElt()) and
     not seq.getAnElt() instanceof Starred
   )
   or
-  exists(ImmutableLiteral i | i.getLiteralValue() = args | result = 1)
+  exists(ImmutableLiteral i | i = args.(ConstantObjectInternal).getLiteral() | result = 1)
 }
 
 from

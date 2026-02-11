@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/useless-comparison-test
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision high
  */
 

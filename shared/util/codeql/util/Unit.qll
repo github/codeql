@@ -1,4 +1,6 @@
 /** Provides the `Unit` class. */
+overlay[local?]
+module;
 
 /** The unit type. */
 private newtype TUnit = TMkUnit()

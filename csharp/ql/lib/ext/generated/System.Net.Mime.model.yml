@@ -4,8 +4,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Net.Mime", "ContentDisposition", False, "ContentDisposition", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Net.Mime", "ContentDisposition", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Net.Mime", "ContentDisposition", False, "ContentDisposition", "(System.String)", "", "Argument[0]", "Argument[this].SyntheticField[System.Net.Mime.ContentDisposition._disposition]", "value", "dfc-generated"]
+      - ["System.Net.Mime", "ContentDisposition", False, "ToString", "()", "", "Argument[this].SyntheticField[System.Net.Mime.ContentDisposition._disposition]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Net.Mime", "ContentType", False, "ContentType", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Net.Mime", "ContentType", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.Mime", "ContentType", False, "get_Parameters", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
@@ -18,3 +18,7 @@ extensions:
       - ["System.Net.Mime", "ContentDisposition", "get_Parameters", "()", "summary", "df-generated"]
       - ["System.Net.Mime", "ContentType", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.Net.Mime", "ContentType", "GetHashCode", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "MediaTypeMap", "GetExtension", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
+      - ["System.Net.Mime", "MediaTypeMap", "GetExtension", "(System.String)", "summary", "df-generated"]
+      - ["System.Net.Mime", "MediaTypeMap", "GetMediaType", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
+      - ["System.Net.Mime", "MediaTypeMap", "GetMediaType", "(System.String)", "summary", "df-generated"]

@@ -20,12 +20,12 @@ function useTaintedValue(x) {
 function useTaintedObject(obj) {
     if (isSafe(obj)) {
         sink(obj); // OK
-        sink(obj.foo); // NOT OK
+        sink(obj.foo); // NOT OK [INCONSISTENCY] - FN caused by barriers blocking content flow
     }
 
     sink(sanitizer_id(obj)); // OK
     sink(sanitizer_id(obj.foo)); // OK
-    sink(sanitizer_id(obj).foo); // NOT OK
+    sink(sanitizer_id(obj).foo); // NOT OK [INCONSISTENCY] - FN caused by barriers blocking content flow
 }
 
 function test() {

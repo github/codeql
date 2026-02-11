@@ -12,8 +12,8 @@ public class ReactiveWebClientSSRF extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String url = request.getParameter("uri");
-            WebClient webClient = WebClient.create(url); // $ SSRF
+            String url = request.getParameter("uri"); // $ Source
+            WebClient webClient = WebClient.create(url); // $ Alert
 
             Mono<String> result = webClient.get()
                     .uri("/")
@@ -29,10 +29,10 @@ public class ReactiveWebClientSSRF extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String url = request.getParameter("uri");
+            String url = request.getParameter("uri"); // $ Source
             WebClient webClient = WebClient.builder()
                     .defaultHeader("User-Agent", "Java")
-                    .baseUrl(url) // $ SSRF
+                    .baseUrl(url) // $ Alert
                     .build();
 
 

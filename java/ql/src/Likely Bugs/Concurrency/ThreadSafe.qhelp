@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+In a thread-safe class, all field accesses that can be caused by calls to public methods must be properly synchronized.</p>
+
+</overview>
+<recommendation>
+
+<p>
+Protect the field access with a lock. Alternatively mark the field as <code>volatile</code> if the write operation is atomic. You can also choose to use a data type that guarantees atomic access. If the field is immutable, mark it as <code>final</code>.</p>
+
+</recommendation>
+
+<references>
+
+
+<li>
+  Java Language Specification, chapter 17:
+  <a href="https://docs.oracle.com/javase/specs/jls/se8/html/jls-17.html#jls-17.4">Threads and Locks</a>.
+</li>
+<li>
+  Java concurrency package:
+  <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html">java.util.concurrent</a>.
+</li>
+
+
+</references>
+</qhelp>

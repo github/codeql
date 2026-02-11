@@ -1,13 +1,13 @@
 /**
- * @name Container size compared to zero.
+ * @name Container size compared to zero
  * @description Comparing the size of a container to zero with this operator will always return the same value.
  * @kind problem
  * @problem.severity warning
  * @precision very-high
  * @id cs/test-for-negative-container-size
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
  */
 
 import csharp

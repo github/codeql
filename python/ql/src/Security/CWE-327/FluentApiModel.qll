@@ -15,7 +15,7 @@ import TlsLibraryModel
  * The state is represented as a bit vector, where each bit corresponds to a
  * protocol version. The bit is set if the protocol is allowed.
  */
-module InsecureContextConfiguration implements DataFlow::StateConfigSig {
+module InsecureContextConfig implements DataFlow::StateConfigSig {
   private newtype TFlowState =
     TMkFlowState(TlsLibrary library, int bits) {
       bits in [0 .. max(any(ProtocolVersion v).getBit()) * 2 - 1]
@@ -110,9 +110,18 @@ module InsecureContextConfiguration implements DataFlow::StateConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // Too complicated, but might be possible after some refactoring.
+  }
 }
 
-private module InsecureContextFlow = DataFlow::GlobalWithState<InsecureContextConfiguration>;
+/**
+ * DEPRECATED: Renamed to `InsecureContextConfig`.
+ */
+deprecated module InsecureContextConfiguration = InsecureContextConfig;
+
+private module InsecureContextFlow = DataFlow::GlobalWithState<InsecureContextConfig>;
 
 /**
  * Holds if `conectionCreation` marks the creation of a connection based on the contex

@@ -5,10 +5,6 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.CSharp", "CSharpCodeProvider", False, "CSharpCodeProvider", "(System.Collections.Generic.IDictionary<System.String,System.String>)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.CSharp", "CSharpCodeProvider", False, "CreateCompiler", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.CSharp", "CSharpCodeProvider", False, "CreateGenerator", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.CSharp", "CSharpCodeProvider", False, "GenerateCodeFromMember", "(System.CodeDom.CodeTypeMember,System.IO.TextWriter,System.CodeDom.Compiler.CodeGeneratorOptions)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["Microsoft.CSharp", "CSharpCodeProvider", False, "GenerateCodeFromMember", "(System.CodeDom.CodeTypeMember,System.IO.TextWriter,System.CodeDom.Compiler.CodeGeneratorOptions)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

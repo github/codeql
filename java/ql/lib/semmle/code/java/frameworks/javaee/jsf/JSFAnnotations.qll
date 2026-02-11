@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with Java Server Faces annotations. */
+overlay[local?]
+module;
 
 import default
 

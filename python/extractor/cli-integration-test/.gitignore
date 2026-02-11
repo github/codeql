@@ -3,3 +3,5 @@
 */venv/
 **/*.egg-info/
 */.cache
+**/trap/
+**/*.testproj/

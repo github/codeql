@@ -86,7 +86,7 @@ public class JabsorbServlet extends HttpServlet {
     @Override
     // BAD: allow class name to be controlled by remote source
     public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
+        String json = req.getParameter("json"); // $ Source
         String clazz = req.getParameter("class");
 
         try {
@@ -99,7 +99,7 @@ public class JabsorbServlet extends HttpServlet {
             serializer.setMarshallNullAttributes(true);
 
             SerializerState state = new SerializerState();
-            User user = (User) serializer.unmarshall(state, Class.forName(clazz), jsonObject); // $unsafeDeserialization
+            User user = (User) serializer.unmarshall(state, Class.forName(clazz), jsonObject); // $ Alert
         } catch (Exception e) {
             throw new IOException(e.getMessage());
         }
@@ -107,13 +107,13 @@ public class JabsorbServlet extends HttpServlet {
 
     // BAD: allow explicit class type controlled by remote source in the format of "json={\"javaClass\":\"com.thirdparty.Attacker\", ...}"
     public void doPut2(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
+        String json = req.getParameter("json"); // $ Source
 
         try {
             JSONSerializer serializer = new JSONSerializer();
             serializer.registerDefaultSerializers();
 
-            User user = (User) serializer.fromJSON(json); // $unsafeDeserialization
+            User user = (User) serializer.fromJSON(json); // $ Alert
         } catch (Exception e) {
             throw new IOException(e.getMessage());
         }

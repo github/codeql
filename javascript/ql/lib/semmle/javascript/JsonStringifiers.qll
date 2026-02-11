@@ -27,6 +27,8 @@ class JsonStringifyCall extends DataFlow::CallNode {
     )
     or
     this = Templating::getAPipeCall(["json", "dump"])
+    or
+    this = DataFlow::moduleImport("serialize-javascript").getACall()
   }
 
   /**

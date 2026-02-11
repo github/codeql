@@ -20,6 +20,7 @@
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
 #include "swift/logging/SwiftAssert.h"
+#include "swift/Threading/Errors.h"
 
 using namespace std::string_literals;
 using namespace codeql::main_logger;
@@ -75,6 +76,13 @@ static void processFrontendOptions(codeql::SwiftExtractorState& state,
   }
 }
 
+static void turnOffSilVerifications(swift::SILOptions& options) {
+  options.VerifyAll = false;
+  options.VerifyExclusivity = false;
+  options.VerifyNone = true;
+  options.VerifySILOwnership = false;
+}
+
 codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state);
 
 // This is part of the swiftFrontendTool interface, we hook into the
@@ -85,25 +93,30 @@ class Observer : public swift::FrontendObserver {
   explicit Observer(const codeql::SwiftExtractorConfiguration& config) : state{config} {}
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
+    LOG_DEBUG("{}()", __func__);
     auto& options = invocation.getFrontendOptions();
     options.KeepASTContext = true;
     lockOutputSwiftModuleTraps(state, options);
     processFrontendOptions(state, options);
+    turnOffSilVerifications(invocation.getSILOptions());
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    LOG_DEBUG("{}()", __func__);
     // remove default consumers to avoid double messaging
     instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
   void performedCompilation(swift::CompilerInstance& compiler) override {
+    LOG_DEBUG("{}()", __func__);
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
     codeql::extractExtractLazyDeclarations(state, compiler);
   }
 
   void markSuccessfullyExtractedFiles() {
+    LOG_DEBUG("{}()", __func__);
     codeql::SwiftLocationExtractor locExtractor{invocationTrap};
     for (const auto& src : state.sourceFiles) {
       auto fileLabel = locExtractor.emitFile(src);
@@ -199,8 +212,11 @@ static auto argDump(int argc, char** argv) {
 static auto envDump(char** envp) {
   std::string ret;
   for (auto env = envp; *env; ++env) {
-    ret += *env;
-    ret += '\n';
+    if (std::string_view envVar{*env};
+        envVar.starts_with("CODEQL_") || envVar.starts_with("SEMMLE_")) {
+      ret += *env;
+      ret += '\n';
+    }
   }
   return ret;
 }
@@ -220,7 +236,7 @@ int main(int argc, char** argv, char** envp) {
 
   const auto configuration = configure(argc, argv);
   LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
-  LOG_DEBUG("environment:\n{}\n", envDump(envp));
+  LOG_DEBUG("CodeQL environment:\n{}\n", envDump(envp));
 
   auto openInterception = codeql::setupFileInterception(configuration);
 

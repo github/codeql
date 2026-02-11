@@ -6,11 +6,11 @@ import (
 )
 
 func testProtobuf() {
-	password := "P@ssw0rd"
+	password := "P@ssw0rd" // $ Source
 
 	query := &query.Query{}
 	query.Description = password
 
-	log.Println(query.GetDescription()) // NOT OK
+	log.Println(query.GetDescription()) // $ Alert
 	log.Println(query.GetId())          // OK
 }

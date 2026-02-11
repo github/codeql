@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["dsfx3d/action-extract-unique-matches", "*", "input.text", "output.matches", "taint", "manual"]

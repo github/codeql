@@ -1,0 +1,121 @@
+nodes
+| tst.js:1:1:1:12 | [RegExpLiteral] /[\\q{abc}]/v | semmle.label | [RegExpLiteral] /[\\q{abc}]/v |
+| tst.js:1:1:1:13 | [ExprStmt] /[\\q{abc}]/v; | semmle.label | [ExprStmt] /[\\q{abc}]/v; |
+| tst.js:1:1:1:13 | [ExprStmt] /[\\q{abc}]/v; | semmle.order | 1 |
+| tst.js:1:2:1:10 | [RegExpCharacterClass] [\\q{abc}] | semmle.label | [RegExpCharacterClass] [\\q{abc}] |
+| tst.js:1:3:1:9 | [RegExpQuotedString] \\q{abc} | semmle.label | [RegExpQuotedString] \\q{abc} |
+| tst.js:1:6:1:8 | [RegExpNormalConstant] abc | semmle.label | [RegExpNormalConstant] abc |
+| tst.js:2:1:2:20 | [RegExpLiteral] /[\\q{abc\|cbd\|dcb}]/v | semmle.label | [RegExpLiteral] /[\\q{abc\|cbd\|dcb}]/v |
+| tst.js:2:1:2:21 | [ExprStmt] /[\\q{ab ... cb}]/v; | semmle.label | [ExprStmt] /[\\q{ab ... cb}]/v; |
+| tst.js:2:1:2:21 | [ExprStmt] /[\\q{ab ... cb}]/v; | semmle.order | 2 |
+| tst.js:2:2:2:18 | [RegExpCharacterClass] [\\q{abc\|cbd\|dcb}] | semmle.label | [RegExpCharacterClass] [\\q{abc\|cbd\|dcb}] |
+| tst.js:2:3:2:17 | [RegExpQuotedString] \\q{abc\|cbd\|dcb} | semmle.label | [RegExpQuotedString] \\q{abc\|cbd\|dcb} |
+| tst.js:2:6:2:8 | [RegExpNormalConstant] abc | semmle.label | [RegExpNormalConstant] abc |
+| tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | semmle.label | [RegExpAlt] abc\|cbd\|dcb |
+| tst.js:2:10:2:12 | [RegExpNormalConstant] cbd | semmle.label | [RegExpNormalConstant] cbd |
+| tst.js:2:14:2:16 | [RegExpNormalConstant] dcb | semmle.label | [RegExpNormalConstant] dcb |
+| tst.js:3:1:3:11 | [RegExpLiteral] /[\\q{\\}}]/v | semmle.label | [RegExpLiteral] /[\\q{\\}}]/v |
+| tst.js:3:1:3:12 | [ExprStmt] /[\\q{\\}}]/v; | semmle.label | [ExprStmt] /[\\q{\\}}]/v; |
+| tst.js:3:1:3:12 | [ExprStmt] /[\\q{\\}}]/v; | semmle.order | 3 |
+| tst.js:3:2:3:9 | [RegExpCharacterClass] [\\q{\\}}] | semmle.label | [RegExpCharacterClass] [\\q{\\}}] |
+| tst.js:3:3:3:8 | [RegExpQuotedString] \\q{\\}} | semmle.label | [RegExpQuotedString] \\q{\\}} |
+| tst.js:3:6:3:7 | [RegExpNormalConstant] \\} | semmle.label | [RegExpNormalConstant] \\} |
+| tst.js:4:1:4:11 | [RegExpLiteral] /[\\q{\\{}]/v | semmle.label | [RegExpLiteral] /[\\q{\\{}]/v |
+| tst.js:4:1:4:12 | [ExprStmt] /[\\q{\\{}]/v; | semmle.label | [ExprStmt] /[\\q{\\{}]/v; |
+| tst.js:4:1:4:12 | [ExprStmt] /[\\q{\\{}]/v; | semmle.order | 4 |
+| tst.js:4:2:4:9 | [RegExpCharacterClass] [\\q{\\{}] | semmle.label | [RegExpCharacterClass] [\\q{\\{}] |
+| tst.js:4:3:4:8 | [RegExpQuotedString] \\q{\\{} | semmle.label | [RegExpQuotedString] \\q{\\{} |
+| tst.js:4:6:4:7 | [RegExpNormalConstant] \\{ | semmle.label | [RegExpNormalConstant] \\{ |
+| tst.js:5:1:5:18 | [RegExpLiteral] /[\\q{cc\|\\}a\|cc}]/v | semmle.label | [RegExpLiteral] /[\\q{cc\|\\}a\|cc}]/v |
+| tst.js:5:1:5:19 | [ExprStmt] /[\\q{cc\|\\}a\|cc}]/v; | semmle.label | [ExprStmt] /[\\q{cc\|\\}a\|cc}]/v; |
+| tst.js:5:1:5:19 | [ExprStmt] /[\\q{cc\|\\}a\|cc}]/v; | semmle.order | 5 |
+| tst.js:5:2:5:16 | [RegExpCharacterClass] [\\q{cc\|\\}a\|cc}] | semmle.label | [RegExpCharacterClass] [\\q{cc\|\\}a\|cc}] |
+| tst.js:5:3:5:15 | [RegExpQuotedString] \\q{cc\|\\}a\|cc} | semmle.label | [RegExpQuotedString] \\q{cc\|\\}a\|cc} |
+| tst.js:5:6:5:7 | [RegExpNormalConstant] cc | semmle.label | [RegExpNormalConstant] cc |
+| tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | semmle.label | [RegExpAlt] cc\|\\}a\|cc |
+| tst.js:5:9:5:11 | [RegExpNormalConstant] \\}a | semmle.label | [RegExpNormalConstant] \\}a |
+| tst.js:5:13:5:14 | [RegExpNormalConstant] cc | semmle.label | [RegExpNormalConstant] cc |
+| tst.js:6:1:6:12 | [RegExpLiteral] /[\\qq{a\|b}]/ | semmle.label | [RegExpLiteral] /[\\qq{a\|b}]/ |
+| tst.js:6:1:6:13 | [ExprStmt] /[\\qq{a\|b}]/; | semmle.label | [ExprStmt] /[\\qq{a\|b}]/; |
+| tst.js:6:1:6:13 | [ExprStmt] /[\\qq{a\|b}]/; | semmle.order | 6 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | semmle.label | [RegExpCharacterClass] [\\qq{a\|b}] |
+| tst.js:6:3:6:4 | [RegExpIdentityEscape] \\q | semmle.label | [RegExpIdentityEscape] \\q |
+| tst.js:6:5:6:5 | [RegExpNormalConstant] q | semmle.label | [RegExpNormalConstant] q |
+| tst.js:6:6:6:6 | [RegExpNormalConstant] { | semmle.label | [RegExpNormalConstant] { |
+| tst.js:6:7:6:7 | [RegExpNormalConstant] a | semmle.label | [RegExpNormalConstant] a |
+| tst.js:6:8:6:8 | [RegExpNormalConstant] \| | semmle.label | [RegExpNormalConstant] \| |
+| tst.js:6:9:6:9 | [RegExpNormalConstant] b | semmle.label | [RegExpNormalConstant] b |
+| tst.js:6:10:6:10 | [RegExpNormalConstant] } | semmle.label | [RegExpNormalConstant] } |
+edges
+| tst.js:1:1:1:12 | [RegExpLiteral] /[\\q{abc}]/v | tst.js:1:2:1:10 | [RegExpCharacterClass] [\\q{abc}] | semmle.label | 0 |
+| tst.js:1:1:1:12 | [RegExpLiteral] /[\\q{abc}]/v | tst.js:1:2:1:10 | [RegExpCharacterClass] [\\q{abc}] | semmle.order | 0 |
+| tst.js:1:1:1:13 | [ExprStmt] /[\\q{abc}]/v; | tst.js:1:1:1:12 | [RegExpLiteral] /[\\q{abc}]/v | semmle.label | 1 |
+| tst.js:1:1:1:13 | [ExprStmt] /[\\q{abc}]/v; | tst.js:1:1:1:12 | [RegExpLiteral] /[\\q{abc}]/v | semmle.order | 1 |
+| tst.js:1:2:1:10 | [RegExpCharacterClass] [\\q{abc}] | tst.js:1:3:1:9 | [RegExpQuotedString] \\q{abc} | semmle.label | 0 |
+| tst.js:1:2:1:10 | [RegExpCharacterClass] [\\q{abc}] | tst.js:1:3:1:9 | [RegExpQuotedString] \\q{abc} | semmle.order | 0 |
+| tst.js:1:3:1:9 | [RegExpQuotedString] \\q{abc} | tst.js:1:6:1:8 | [RegExpNormalConstant] abc | semmle.label | 0 |
+| tst.js:1:3:1:9 | [RegExpQuotedString] \\q{abc} | tst.js:1:6:1:8 | [RegExpNormalConstant] abc | semmle.order | 0 |
+| tst.js:2:1:2:20 | [RegExpLiteral] /[\\q{abc\|cbd\|dcb}]/v | tst.js:2:2:2:18 | [RegExpCharacterClass] [\\q{abc\|cbd\|dcb}] | semmle.label | 0 |
+| tst.js:2:1:2:20 | [RegExpLiteral] /[\\q{abc\|cbd\|dcb}]/v | tst.js:2:2:2:18 | [RegExpCharacterClass] [\\q{abc\|cbd\|dcb}] | semmle.order | 0 |
+| tst.js:2:1:2:21 | [ExprStmt] /[\\q{ab ... cb}]/v; | tst.js:2:1:2:20 | [RegExpLiteral] /[\\q{abc\|cbd\|dcb}]/v | semmle.label | 1 |
+| tst.js:2:1:2:21 | [ExprStmt] /[\\q{ab ... cb}]/v; | tst.js:2:1:2:20 | [RegExpLiteral] /[\\q{abc\|cbd\|dcb}]/v | semmle.order | 1 |
+| tst.js:2:2:2:18 | [RegExpCharacterClass] [\\q{abc\|cbd\|dcb}] | tst.js:2:3:2:17 | [RegExpQuotedString] \\q{abc\|cbd\|dcb} | semmle.label | 0 |
+| tst.js:2:2:2:18 | [RegExpCharacterClass] [\\q{abc\|cbd\|dcb}] | tst.js:2:3:2:17 | [RegExpQuotedString] \\q{abc\|cbd\|dcb} | semmle.order | 0 |
+| tst.js:2:3:2:17 | [RegExpQuotedString] \\q{abc\|cbd\|dcb} | tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | semmle.label | 0 |
+| tst.js:2:3:2:17 | [RegExpQuotedString] \\q{abc\|cbd\|dcb} | tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | semmle.order | 0 |
+| tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | tst.js:2:6:2:8 | [RegExpNormalConstant] abc | semmle.label | 0 |
+| tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | tst.js:2:6:2:8 | [RegExpNormalConstant] abc | semmle.order | 0 |
+| tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | tst.js:2:10:2:12 | [RegExpNormalConstant] cbd | semmle.label | 1 |
+| tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | tst.js:2:10:2:12 | [RegExpNormalConstant] cbd | semmle.order | 1 |
+| tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | tst.js:2:14:2:16 | [RegExpNormalConstant] dcb | semmle.label | 2 |
+| tst.js:2:6:2:16 | [RegExpAlt] abc\|cbd\|dcb | tst.js:2:14:2:16 | [RegExpNormalConstant] dcb | semmle.order | 2 |
+| tst.js:3:1:3:11 | [RegExpLiteral] /[\\q{\\}}]/v | tst.js:3:2:3:9 | [RegExpCharacterClass] [\\q{\\}}] | semmle.label | 0 |
+| tst.js:3:1:3:11 | [RegExpLiteral] /[\\q{\\}}]/v | tst.js:3:2:3:9 | [RegExpCharacterClass] [\\q{\\}}] | semmle.order | 0 |
+| tst.js:3:1:3:12 | [ExprStmt] /[\\q{\\}}]/v; | tst.js:3:1:3:11 | [RegExpLiteral] /[\\q{\\}}]/v | semmle.label | 1 |
+| tst.js:3:1:3:12 | [ExprStmt] /[\\q{\\}}]/v; | tst.js:3:1:3:11 | [RegExpLiteral] /[\\q{\\}}]/v | semmle.order | 1 |
+| tst.js:3:2:3:9 | [RegExpCharacterClass] [\\q{\\}}] | tst.js:3:3:3:8 | [RegExpQuotedString] \\q{\\}} | semmle.label | 0 |
+| tst.js:3:2:3:9 | [RegExpCharacterClass] [\\q{\\}}] | tst.js:3:3:3:8 | [RegExpQuotedString] \\q{\\}} | semmle.order | 0 |
+| tst.js:3:3:3:8 | [RegExpQuotedString] \\q{\\}} | tst.js:3:6:3:7 | [RegExpNormalConstant] \\} | semmle.label | 0 |
+| tst.js:3:3:3:8 | [RegExpQuotedString] \\q{\\}} | tst.js:3:6:3:7 | [RegExpNormalConstant] \\} | semmle.order | 0 |
+| tst.js:4:1:4:11 | [RegExpLiteral] /[\\q{\\{}]/v | tst.js:4:2:4:9 | [RegExpCharacterClass] [\\q{\\{}] | semmle.label | 0 |
+| tst.js:4:1:4:11 | [RegExpLiteral] /[\\q{\\{}]/v | tst.js:4:2:4:9 | [RegExpCharacterClass] [\\q{\\{}] | semmle.order | 0 |
+| tst.js:4:1:4:12 | [ExprStmt] /[\\q{\\{}]/v; | tst.js:4:1:4:11 | [RegExpLiteral] /[\\q{\\{}]/v | semmle.label | 1 |
+| tst.js:4:1:4:12 | [ExprStmt] /[\\q{\\{}]/v; | tst.js:4:1:4:11 | [RegExpLiteral] /[\\q{\\{}]/v | semmle.order | 1 |
+| tst.js:4:2:4:9 | [RegExpCharacterClass] [\\q{\\{}] | tst.js:4:3:4:8 | [RegExpQuotedString] \\q{\\{} | semmle.label | 0 |
+| tst.js:4:2:4:9 | [RegExpCharacterClass] [\\q{\\{}] | tst.js:4:3:4:8 | [RegExpQuotedString] \\q{\\{} | semmle.order | 0 |
+| tst.js:4:3:4:8 | [RegExpQuotedString] \\q{\\{} | tst.js:4:6:4:7 | [RegExpNormalConstant] \\{ | semmle.label | 0 |
+| tst.js:4:3:4:8 | [RegExpQuotedString] \\q{\\{} | tst.js:4:6:4:7 | [RegExpNormalConstant] \\{ | semmle.order | 0 |
+| tst.js:5:1:5:18 | [RegExpLiteral] /[\\q{cc\|\\}a\|cc}]/v | tst.js:5:2:5:16 | [RegExpCharacterClass] [\\q{cc\|\\}a\|cc}] | semmle.label | 0 |
+| tst.js:5:1:5:18 | [RegExpLiteral] /[\\q{cc\|\\}a\|cc}]/v | tst.js:5:2:5:16 | [RegExpCharacterClass] [\\q{cc\|\\}a\|cc}] | semmle.order | 0 |
+| tst.js:5:1:5:19 | [ExprStmt] /[\\q{cc\|\\}a\|cc}]/v; | tst.js:5:1:5:18 | [RegExpLiteral] /[\\q{cc\|\\}a\|cc}]/v | semmle.label | 1 |
+| tst.js:5:1:5:19 | [ExprStmt] /[\\q{cc\|\\}a\|cc}]/v; | tst.js:5:1:5:18 | [RegExpLiteral] /[\\q{cc\|\\}a\|cc}]/v | semmle.order | 1 |
+| tst.js:5:2:5:16 | [RegExpCharacterClass] [\\q{cc\|\\}a\|cc}] | tst.js:5:3:5:15 | [RegExpQuotedString] \\q{cc\|\\}a\|cc} | semmle.label | 0 |
+| tst.js:5:2:5:16 | [RegExpCharacterClass] [\\q{cc\|\\}a\|cc}] | tst.js:5:3:5:15 | [RegExpQuotedString] \\q{cc\|\\}a\|cc} | semmle.order | 0 |
+| tst.js:5:3:5:15 | [RegExpQuotedString] \\q{cc\|\\}a\|cc} | tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | semmle.label | 0 |
+| tst.js:5:3:5:15 | [RegExpQuotedString] \\q{cc\|\\}a\|cc} | tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | semmle.order | 0 |
+| tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | tst.js:5:6:5:7 | [RegExpNormalConstant] cc | semmle.label | 0 |
+| tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | tst.js:5:6:5:7 | [RegExpNormalConstant] cc | semmle.order | 0 |
+| tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | tst.js:5:9:5:11 | [RegExpNormalConstant] \\}a | semmle.label | 1 |
+| tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | tst.js:5:9:5:11 | [RegExpNormalConstant] \\}a | semmle.order | 1 |
+| tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | tst.js:5:13:5:14 | [RegExpNormalConstant] cc | semmle.label | 2 |
+| tst.js:5:6:5:14 | [RegExpAlt] cc\|\\}a\|cc | tst.js:5:13:5:14 | [RegExpNormalConstant] cc | semmle.order | 2 |
+| tst.js:6:1:6:12 | [RegExpLiteral] /[\\qq{a\|b}]/ | tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | semmle.label | 0 |
+| tst.js:6:1:6:12 | [RegExpLiteral] /[\\qq{a\|b}]/ | tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | semmle.order | 0 |
+| tst.js:6:1:6:13 | [ExprStmt] /[\\qq{a\|b}]/; | tst.js:6:1:6:12 | [RegExpLiteral] /[\\qq{a\|b}]/ | semmle.label | 1 |
+| tst.js:6:1:6:13 | [ExprStmt] /[\\qq{a\|b}]/; | tst.js:6:1:6:12 | [RegExpLiteral] /[\\qq{a\|b}]/ | semmle.order | 1 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:3:6:4 | [RegExpIdentityEscape] \\q | semmle.label | 0 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:3:6:4 | [RegExpIdentityEscape] \\q | semmle.order | 0 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:5:6:5 | [RegExpNormalConstant] q | semmle.label | 1 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:5:6:5 | [RegExpNormalConstant] q | semmle.order | 1 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:6:6:6 | [RegExpNormalConstant] { | semmle.label | 2 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:6:6:6 | [RegExpNormalConstant] { | semmle.order | 2 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:7:6:7 | [RegExpNormalConstant] a | semmle.label | 3 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:7:6:7 | [RegExpNormalConstant] a | semmle.order | 3 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:8:6:8 | [RegExpNormalConstant] \| | semmle.label | 4 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:8:6:8 | [RegExpNormalConstant] \| | semmle.order | 4 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:9:6:9 | [RegExpNormalConstant] b | semmle.label | 5 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:9:6:9 | [RegExpNormalConstant] b | semmle.order | 5 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:10:6:10 | [RegExpNormalConstant] } | semmle.label | 6 |
+| tst.js:6:2:6:11 | [RegExpCharacterClass] [\\qq{a\|b}] | tst.js:6:10:6:10 | [RegExpNormalConstant] } | semmle.order | 6 |
+graphProperties
+| semmle.graphKind | tree |

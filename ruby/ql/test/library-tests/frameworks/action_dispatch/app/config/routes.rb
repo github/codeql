@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       post "flag", to: :flag
     end
     post "upvote", to: "posts#upvote"
+    post "downvote" => "posts#downvote"
   end
 
   if Rails.env.test?

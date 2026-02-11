@@ -4,7 +4,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/use-before-declaration
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
  * @precision very-high
  */

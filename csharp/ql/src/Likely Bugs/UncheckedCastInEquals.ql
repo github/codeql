@@ -5,8 +5,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/unchecked-cast-in-equals
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

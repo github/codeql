@@ -1,6 +1,6 @@
 | istype.ts:18:15:18:18 | node | The parameter 'node' is never used. |
 | parameter_field.ts:6:15:6:15 | x | The parameter 'x' is never used. |
 | tst2.js:1:12:1:12 | x | The parameter 'x' is never used. |
-| tst2.js:29:12:29:12 | x | The parameter 'x' is never used. |
-| tst.js:7:32:7:34 | idx | The parameter 'idx' is never used. |
-| tst.js:12:13:12:13 | x | The parameter 'x' is never used. |
+| tst2.js:28:12:28:12 | x | The parameter 'x' is never used. |
+| tst.js:6:32:6:34 | idx | The parameter 'idx' is never used. |
+| tst.js:10:13:10:13 | x | The parameter 'x' is never used. |

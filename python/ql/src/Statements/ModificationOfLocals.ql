@@ -2,7 +2,8 @@
  * @name Modification of dictionary returned by locals()
  * @description Modifications of the dictionary returned by locals() are not propagated to the local variables of a function.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity warning
  * @sub-severity low
@@ -11,8 +12,11 @@
  */
 
 import python
+private import LegacyPointsTo
 
-predicate originIsLocals(ControlFlowNode n) { n.pointsTo(_, _, Value::named("locals").getACall()) }
+predicate originIsLocals(ControlFlowNodeWithPointsTo n) {
+  n.pointsTo(_, _, Value::named("locals").getACall())
+}
 
 predicate modification_of_locals(ControlFlowNode f) {
   originIsLocals(f.(SubscriptNode).getObject()) and

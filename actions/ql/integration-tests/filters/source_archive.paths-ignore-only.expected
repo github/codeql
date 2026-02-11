@@ -1,0 +1,5 @@
+src/.github/action.yaml
+src/.github/actions/action-name/action.yml
+src/.github/workflows/workflow.yml
+src/action.yml
+src/included/action.yml

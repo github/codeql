@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  issue_comment:
+
+permissions:
+  actions: write
+
+jobs:
+  generate-results:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        id: cache-pip
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml') }}
+          restore-keys: ${{ runner.os }}-pip-
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: results
+          path: results/
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: results/
+          if-no-files-found: ignore

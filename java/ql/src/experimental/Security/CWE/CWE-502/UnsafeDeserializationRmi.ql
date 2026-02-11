@@ -1,5 +1,5 @@
 /**
- * @name Unsafe deserialization in a remotely callable method.
+ * @name Unsafe deserialization in a remotely callable method
  * @description If a registered remote object has a method that accepts a complex object,
  *              an attacker can take advantage of the unsafe deserialization mechanism
  *              which is used to pass parameters in RMI.
@@ -73,6 +73,11 @@ private module BindingUnsafeRemoteObjectConfig implements DataFlow::ConfigSig {
 private module BindingUnsafeRemoteObjectFlow =
   TaintTracking::Global<BindingUnsafeRemoteObjectConfig>;
 
-from BindingUnsafeRemoteObjectFlow::PathNode source, BindingUnsafeRemoteObjectFlow::PathNode sink
-where BindingUnsafeRemoteObjectFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Unsafe deserialization in a remote object."
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, BindingUnsafeRemoteObjectFlow::PathNode source,
+  BindingUnsafeRemoteObjectFlow::PathNode sink, string message
+) {
+  BindingUnsafeRemoteObjectFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message = "Unsafe deserialization in a remote object."
+}

@@ -1,1 +1,2 @@
-LanguageFeatures/ArgumentsCallerCallee.ql
+query: LanguageFeatures/ArgumentsCallerCallee.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

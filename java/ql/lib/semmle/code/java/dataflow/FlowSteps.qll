@@ -1,6 +1,8 @@
 /**
  * Provides classes representing various flow steps for taint tracking.
  */
+overlay[local?]
+module;
 
 private import java
 private import semmle.code.java.dataflow.DataFlow
@@ -22,11 +24,14 @@ private module Frameworks {
   private import semmle.code.java.frameworks.IoJsonWebToken
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.InputStream
+  private import semmle.code.java.frameworks.Networking
   private import semmle.code.java.frameworks.Properties
   private import semmle.code.java.frameworks.Protobuf
   private import semmle.code.java.frameworks.ThreadLocal
   private import semmle.code.java.frameworks.ratpack.RatpackExec
   private import semmle.code.java.frameworks.stapler.Stapler
+  private import semmle.code.java.security.ListOfConstantsSanitizer
+  private import semmle.code.java.security.PathSanitizer
 }
 
 /**
@@ -157,7 +162,7 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
   int argument;
 
   NumberTaintPreservingCallable() {
-    this.getDeclaringType().getAnAncestor().hasQualifiedName("java.lang", "Number") and
+    this.getDeclaringType().getASourceSupertype*().hasQualifiedName("java.lang", "Number") and
     (
       this instanceof Constructor and
       argument = 0
@@ -188,3 +193,8 @@ private class NumberTaintPreservingCallable extends TaintPreservingCallable {
  * map-key and map-value content, so that e.g. a tainted `Map` is assumed to have tainted keys and values.
  */
 abstract class TaintInheritingContent extends DataFlow::Content { }
+
+/**
+ * A sanitizer in all global taint flow configurations but not in local taint.
+ */
+abstract class DefaultTaintSanitizer extends DataFlow::Node { }

@@ -1,0 +1,37 @@
+name: Build Android app (stripe)
+on:
+  push:
+    branches:
+      - main
+      - fix-ci
+  workflow_dispatch:
+  pull_request_target:
+    branches:
+      - main
+    paths:
+      - 'custom-payment-flow/client/android-kotlin/**'
+      - '!**.css'
+      - '!**.md'
+
+jobs:
+  android_build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.after || github.event.pull_request.head.sha }}
+        
+      - name: Build
+        working-directory: custom-payment-flow/client/android-kotlin
+        run: |
+          ./gradlew build
+
+  dependabot-auto-merge:
+    if: ${{ github.event.pull_request && github.actor == 'dependabot[bot]' }}
+    needs: android_build
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: ./.github/workflows/wf_dependabot.yaml
+    secrets: inherit

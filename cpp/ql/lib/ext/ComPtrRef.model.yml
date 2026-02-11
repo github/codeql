@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["Microsoft::WRL::Details", "ComPtrRef", True, "ComPtrRef", "", "", "Argument[*0]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["Microsoft::WRL::Details", "ComPtrRef", True, "GetAddressOf", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      # TODO: We cannot yet model https://learn.microsoft.com/en-us/cpp/cppcx/wrl/comptrref-class?view=msvc-170#operator-interfacetype-star-star
+      - ["Microsoft::WRL::Details", "ComPtrRef", True, "operator*", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      # TODO: We cannot yet model https://learn.microsoft.com/en-us/cpp/cppcx/wrl/comptrref-class?view=msvc-170#operator-t-star
+      - ["Microsoft::WRL::Details", "ComPtrRef", True, "operator void**", "", "", "Argument[-1].Element[@]", "ReturnValue[**@]", "value", "manual"]
+      - ["Microsoft::WRL::Details", "ComPtrRef", True, "ReleaseAndGetAddressOf", "", "", "Argument[-1].Element[@]", "ReturnValue[**@]", "value", "manual"]

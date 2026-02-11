@@ -1,1 +1,1 @@
-require('./selfimport');
+require('./selfimport'); // $ Alert

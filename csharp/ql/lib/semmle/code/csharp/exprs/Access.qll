@@ -224,6 +224,40 @@ class ParameterAccess extends LocalScopeVariableAccess, @parameter_access_expr {
 }
 
 /**
+ * An access to a synthetic parameter for an extension method, for example the
+ * access to `s` on line 3 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public bool IsEmpty() { return s == string.Empty; }
+ *   }
+ * }
+ * ```
+ */
+class SyntheticExtensionParameterAccess extends ParameterAccess {
+  SyntheticExtensionParameterAccess() {
+    exists(ExtensionType et, Parameter p |
+      p = et.getReceiverParameter() and
+      expr_access(this, p)
+    )
+  }
+
+  override Parameter getTarget() {
+    exists(ExtensionCallable c |
+      this.getEnclosingCallable+() = c and
+      result = c.getParameter(0)
+    )
+  }
+
+  override string toString() {
+    result = "access to extension synthetic parameter " + this.getTarget().getName()
+  }
+
+  override string getAPrimaryQlClass() { result = "SyntheticExtensionParameterAccess" }
+}
+
+/**
  * An access to a parameter that reads the underlying value, for example
  * the access to `p` on line 2 in
  *

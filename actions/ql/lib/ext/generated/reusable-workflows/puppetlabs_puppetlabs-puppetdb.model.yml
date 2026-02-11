@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["puppetlabs/puppetlabs-puppetdb/.github/workflows/module_spec.yml", "*", "input.ignore_dependency_check", "code-injection", "generated"]
+     - ["puppetlabs/puppetlabs-puppetdb/.github/workflows/module_acceptance.yml", "*", "input.debug", "code-injection", "generated"]
+     - ["puppetlabs/puppetlabs-puppetdb/.github/workflows/matrix.yml", "*", "input.flags", "code-injection", "generated"]

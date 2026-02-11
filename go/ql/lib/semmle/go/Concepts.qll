@@ -8,6 +8,10 @@ import go
 import semmle.go.dataflow.FunctionInputsAndOutputs
 import semmle.go.concepts.HTTP
 import semmle.go.concepts.GeneratedFile
+private import codeql.concepts.ConceptsShared
+private import semmle.go.dataflow.internal.DataFlowImplSpecific
+
+private module ConceptsShared = ConceptsMake<Location, GoDataFlow>;
 
 /**
  * A data-flow node that executes an operating system command,
@@ -109,6 +113,19 @@ module FileSystemAccess {
   abstract class Range extends DataFlow::Node {
     /** Gets an argument to this file system access that is interpreted as a path. */
     abstract DataFlow::Node getAPathArgument();
+  }
+}
+
+private class ExternalFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode pathArgument;
+
+  ExternalFileSystemAccess() {
+    sinkNode(pathArgument, "path-injection") and
+    this = pathArgument.getCall()
+  }
+
+  override DataFlow::Node getAPathArgument() {
+    result = pathArgument.getACorrespondingSyntacticArgument()
   }
 }
 
@@ -344,6 +361,23 @@ module RegexpReplaceFunction {
 class LoggerCall extends DataFlow::Node instanceof LoggerCall::Range {
   /** Gets a node that is a part of the logged message. */
   DataFlow::Node getAMessageComponent() { result = super.getAMessageComponent() }
+
+  /**
+   * Gets a node whose value is a part of the logged message.
+   *
+   * Components corresponding to the format specifier "%T" are excluded as
+   * their type is logged rather than their value.
+   */
+  DataFlow::Node getAValueFormattedMessageComponent() {
+    result = this.getAMessageComponent() and
+    not exists(string formatSpecifier |
+      result = this.(StringOps::Formatting::StringFormatCall).getOperand(_, formatSpecifier) and
+      // We already know that `formatSpecifier` starts with `%`, so we check
+      // that it ends with `T` to confirm that it is `%T` or possibly some
+      // variation on it.
+      formatSpecifier.matches("%T")
+    )
+  }
 }
 
 /** Provides a class for modeling new logging APIs. */
@@ -358,6 +392,48 @@ module LoggerCall {
     /** Gets a node that is a part of the logged message. */
     abstract DataFlow::Node getAMessageComponent();
   }
+}
+
+private class ExternalLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  DataFlow::ArgumentNode messageComponent;
+
+  ExternalLoggerCall() {
+    sinkNode(messageComponent, "log-injection") and
+    this = messageComponent.getCall()
+  }
+
+  override DataFlow::Node getAMessageComponent() {
+    not messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = messageComponent
+    or
+    messageComponent instanceof DataFlow::ImplicitVarargsSlice and
+    result = this.getAnImplicitVarargsArgument()
+  }
+}
+
+/**
+ * A call to an interface that looks like a logger. It is common to use a
+ * locally-defined interface for logging to make it easy to changing logging
+ * library.
+ */
+private class HeuristicLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
+  HeuristicLoggerCall() {
+    exists(Method m, string tp, string logFunctionPrefix, string name |
+      m = this.getTarget() and
+      m.hasQualifiedName(_, tp, name) and
+      m.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
+    |
+      tp.regexpMatch(".*[lL]ogger") and
+      logFunctionPrefix =
+        [
+          "Debug", "Error", "Fatal", "Info", "Log", "Output", "Panic", "Print", "Trace", "Warn",
+          "With"
+        ] and
+      name.matches(logFunctionPrefix + "%")
+    )
+  }
+
+  override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
 }
 
 /**
@@ -431,5 +507,100 @@ module UnmarshalingFunction {
 
     /** Gets an identifier for the format this function decodes from, such as "JSON". */
     abstract string getFormat();
+  }
+}
+
+/**
+ * Provides models for cryptographic things.
+ */
+module Cryptography {
+  private import ConceptsShared::Cryptography as SC
+
+  /**
+   * A data-flow node that is an application of a cryptographic algorithm. For example,
+   * encryption, decryption, signature-validation.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `CryptographicOperation::Range` instead.
+   */
+  class CryptographicOperation extends SC::CryptographicOperation { }
+
+  class EncryptionAlgorithm = SC::EncryptionAlgorithm;
+
+  class HashingAlgorithm = SC::HashingAlgorithm;
+
+  class PasswordHashingAlgorithm = SC::PasswordHashingAlgorithm;
+
+  module CryptographicOperation = SC::CryptographicOperation;
+
+  class BlockMode = SC::BlockMode;
+
+  class CryptographicAlgorithm = SC::CryptographicAlgorithm;
+
+  /** A data flow node that initializes a hash algorithm. */
+  abstract class HashAlgorithmInit extends DataFlow::Node {
+    /** Gets the hash algorithm being initialized. */
+    abstract HashingAlgorithm getAlgorithm();
+  }
+
+  /** A data flow node that is an application of a hash algorithm. */
+  abstract class HashOperation extends CryptographicOperation::Range {
+    override BlockMode getBlockMode() { none() }
+  }
+
+  /** A data flow node that initializes an encryption algorithm. */
+  abstract class EncryptionAlgorithmInit extends DataFlow::Node {
+    /** Gets the encryption algorithm being initialized. */
+    abstract EncryptionAlgorithm getAlgorithm();
+  }
+
+  /**
+   * A data flow node that initializes a block cipher mode of operation, and
+   * may also propagate taint for encryption algorithms.
+   */
+  abstract class BlockModeInit extends DataFlow::CallNode {
+    /** Gets the block cipher mode of operation being initialized. */
+    abstract BlockMode getMode();
+
+    /** Gets a step propagating the encryption algorithm through this call. */
+    abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+  }
+
+  /**
+   * A data flow node that is an application of an encryption algorithm, where
+   * the encryption algorithm and the block cipher mode of operation (if there
+   * is one) have been initialized separately.
+   */
+  abstract class EncryptionOperation extends CryptographicOperation::Range {
+    DataFlow::Node encryptionFlowTarget;
+    DataFlow::Node inputNode;
+
+    override DataFlow::Node getInitialization() {
+      EncryptionFlow::flow(result, encryptionFlowTarget)
+    }
+
+    override EncryptionAlgorithm getAlgorithm() {
+      result = this.getInitialization().(EncryptionAlgorithmInit).getAlgorithm()
+    }
+
+    override DataFlow::Node getAnInput() { result = inputNode }
+
+    override BlockMode getBlockMode() {
+      result = this.getInitialization().(BlockModeInit).getMode()
+    }
+  }
+
+  /**
+   * An `EncryptionOperation` which is a method call where the encryption
+   * algorithm and block cipher mode of operation (if there is one) flow to the
+   * receiver and the input is an argument.
+   */
+  abstract class EncryptionMethodCall extends EncryptionOperation instanceof DataFlow::CallNode {
+    int inputArg;
+
+    EncryptionMethodCall() {
+      encryptionFlowTarget = super.getReceiver() and
+      inputNode = super.getArgument(inputArg)
+    }
   }
 }

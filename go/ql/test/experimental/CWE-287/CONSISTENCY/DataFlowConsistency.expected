@@ -1,0 +1,4 @@
+reverseRead
+| ImproperLdapAuth.go:18:18:18:20 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| ImproperLdapAuth.go:39:18:39:20 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| ImproperLdapAuth.go:64:18:64:20 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

@@ -1,3 +1,4 @@
+| comments1.cs:1:16:1:46 | // ... | comments1.cs:1:9:1:14 | ... ...; | A mapped single-line comment |
 | comments1.cs:11:1:11:25 | /* ... */ | comments1.cs:9:7:9:7 | C | A multiline comment |
 | comments1.cs:13:1:13:20 | // ... | comments1.cs:9:7:9:7 | C | 2) Comment blocks |
 | comments1.cs:15:1:15:38 | // ... | comments1.cs:9:7:9:7 | C | A line on its own is a commentblock |

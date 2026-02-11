@@ -7,9 +7,8 @@ codeql_csharp_binary(
     name = "Semmle.Extraction.CSharp.Driver",
     srcs = glob([
         "*.cs",
-        "Properties/*.cs",
     ]),
-    visibility = ["//csharp:__pkg__"],
+    visibility = ["//csharp:__subpackages__"],
     deps = [
         "//csharp/extractor/Semmle.Extraction.CSharp",
     ],

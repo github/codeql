@@ -1,0 +1,68 @@
+#select
+| MainActivity.java:17:20:17:39 | newInstance(...) | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:17:20:17:39 | newInstance(...) | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:18:23:18:55 | instantiate(...) | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:18:23:18:55 | instantiate(...) | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:19:23:19:61 | instantiate(...) | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:19:23:19:61 | instantiate(...) | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:20:23:20:28 | fClass | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:20:23:20:28 | fClass | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:21:23:21:42 | newInstance(...) | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:21:23:21:42 | newInstance(...) | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:22:23:22:42 | newInstance(...) | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:22:23:22:42 | newInstance(...) | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:23:27:23:32 | fClass | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:23:27:23:32 | fClass | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:24:27:24:46 | newInstance(...) | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:24:27:24:46 | newInstance(...) | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:25:27:25:32 | fClass | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:25:27:25:32 | fClass | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+| MainActivity.java:26:27:26:46 | newInstance(...) | MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:26:27:26:46 | newInstance(...) | Fragment depends on a $@, which may allow a malicious application to bypass access controls. | MainActivity.java:14:34:14:44 | getIntent(...) | user-provided value |
+edges
+| MainActivity.java:14:34:14:44 | getIntent(...) : Intent | MainActivity.java:14:34:14:68 | getStringExtra(...) : String | provenance | MaD:10 |
+| MainActivity.java:14:34:14:68 | getStringExtra(...) : String | MainActivity.java:16:70:16:74 | fname : String | provenance |  |
+| MainActivity.java:16:38:16:75 | (...)... : Class | MainActivity.java:17:20:17:25 | fClass : Class | provenance |  |
+| MainActivity.java:16:56:16:75 | forName(...) : Class | MainActivity.java:16:38:16:75 | (...)... : Class | provenance |  |
+| MainActivity.java:16:70:16:74 | fname : String | MainActivity.java:16:56:16:75 | forName(...) : Class | provenance | Config |
+| MainActivity.java:16:70:16:74 | fname : String | MainActivity.java:18:50:18:54 | fname : String | provenance |  |
+| MainActivity.java:17:20:17:25 | fClass : Class | MainActivity.java:17:20:17:39 | newInstance(...) | provenance | Config Sink:MaD:1 |
+| MainActivity.java:17:20:17:25 | fClass : Class | MainActivity.java:20:23:20:28 | fClass | provenance | Sink:MaD:2 |
+| MainActivity.java:17:20:17:25 | fClass : Class | MainActivity.java:21:23:21:28 | fClass : Class | provenance |  |
+| MainActivity.java:18:50:18:54 | fname : String | MainActivity.java:18:23:18:55 | instantiate(...) | provenance | Config Sink:MaD:4 |
+| MainActivity.java:18:50:18:54 | fname : String | MainActivity.java:19:50:19:54 | fname : String | provenance |  |
+| MainActivity.java:19:50:19:54 | fname : String | MainActivity.java:19:23:19:61 | instantiate(...) | provenance | Config Sink:MaD:3 |
+| MainActivity.java:21:23:21:28 | fClass : Class | MainActivity.java:21:23:21:42 | newInstance(...) | provenance | Config Sink:MaD:4 |
+| MainActivity.java:21:23:21:28 | fClass : Class | MainActivity.java:22:23:22:28 | fClass : Class | provenance |  |
+| MainActivity.java:22:23:22:28 | fClass : Class | MainActivity.java:22:23:22:42 | newInstance(...) | provenance | Config Sink:MaD:5 |
+| MainActivity.java:22:23:22:28 | fClass : Class | MainActivity.java:23:27:23:32 | fClass | provenance | Sink:MaD:6 |
+| MainActivity.java:22:23:22:28 | fClass : Class | MainActivity.java:24:27:24:32 | fClass : Class | provenance |  |
+| MainActivity.java:24:27:24:32 | fClass : Class | MainActivity.java:24:27:24:46 | newInstance(...) | provenance | Config Sink:MaD:8 |
+| MainActivity.java:24:27:24:32 | fClass : Class | MainActivity.java:25:27:25:32 | fClass | provenance | Sink:MaD:7 |
+| MainActivity.java:24:27:24:32 | fClass : Class | MainActivity.java:26:27:26:32 | fClass : Class | provenance |  |
+| MainActivity.java:26:27:26:32 | fClass : Class | MainActivity.java:26:27:26:46 | newInstance(...) | provenance | Config Sink:MaD:9 |
+models
+| 1 | Sink: androidx.fragment.app; FragmentTransaction; true; add; (Fragment,String); ; Argument[0]; fragment-injection; manual |
+| 2 | Sink: androidx.fragment.app; FragmentTransaction; true; add; (int,Class,Bundle,String); ; Argument[1]; fragment-injection; manual |
+| 3 | Sink: androidx.fragment.app; FragmentTransaction; true; add; (int,Fragment); ; Argument[1]; fragment-injection; manual |
+| 4 | Sink: androidx.fragment.app; FragmentTransaction; true; add; (int,Fragment,String); ; Argument[1]; fragment-injection; manual |
+| 5 | Sink: androidx.fragment.app; FragmentTransaction; true; attach; (Fragment); ; Argument[0]; fragment-injection; manual |
+| 6 | Sink: androidx.fragment.app; FragmentTransaction; true; replace; (int,Class,Bundle); ; Argument[1]; fragment-injection; manual |
+| 7 | Sink: androidx.fragment.app; FragmentTransaction; true; replace; (int,Class,Bundle,String); ; Argument[1]; fragment-injection; manual |
+| 8 | Sink: androidx.fragment.app; FragmentTransaction; true; replace; (int,Fragment); ; Argument[1]; fragment-injection; manual |
+| 9 | Sink: androidx.fragment.app; FragmentTransaction; true; replace; (int,Fragment,String); ; Argument[1]; fragment-injection; manual |
+| 10 | Summary: android.content; Intent; true; getStringExtra; (String); ; Argument[this].SyntheticField[android.content.Intent.extras].MapValue; ReturnValue; value; manual |
+nodes
+| MainActivity.java:14:34:14:44 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
+| MainActivity.java:14:34:14:68 | getStringExtra(...) : String | semmle.label | getStringExtra(...) : String |
+| MainActivity.java:16:38:16:75 | (...)... : Class | semmle.label | (...)... : Class |
+| MainActivity.java:16:56:16:75 | forName(...) : Class | semmle.label | forName(...) : Class |
+| MainActivity.java:16:70:16:74 | fname : String | semmle.label | fname : String |
+| MainActivity.java:17:20:17:25 | fClass : Class | semmle.label | fClass : Class |
+| MainActivity.java:17:20:17:39 | newInstance(...) | semmle.label | newInstance(...) |
+| MainActivity.java:18:23:18:55 | instantiate(...) | semmle.label | instantiate(...) |
+| MainActivity.java:18:50:18:54 | fname : String | semmle.label | fname : String |
+| MainActivity.java:19:23:19:61 | instantiate(...) | semmle.label | instantiate(...) |
+| MainActivity.java:19:50:19:54 | fname : String | semmle.label | fname : String |
+| MainActivity.java:20:23:20:28 | fClass | semmle.label | fClass |
+| MainActivity.java:21:23:21:28 | fClass : Class | semmle.label | fClass : Class |
+| MainActivity.java:21:23:21:42 | newInstance(...) | semmle.label | newInstance(...) |
+| MainActivity.java:22:23:22:28 | fClass : Class | semmle.label | fClass : Class |
+| MainActivity.java:22:23:22:42 | newInstance(...) | semmle.label | newInstance(...) |
+| MainActivity.java:23:27:23:32 | fClass | semmle.label | fClass |
+| MainActivity.java:24:27:24:32 | fClass : Class | semmle.label | fClass : Class |
+| MainActivity.java:24:27:24:46 | newInstance(...) | semmle.label | newInstance(...) |
+| MainActivity.java:25:27:25:32 | fClass | semmle.label | fClass |
+| MainActivity.java:26:27:26:32 | fClass : Class | semmle.label | fClass : Class |
+| MainActivity.java:26:27:26:46 | newInstance(...) | semmle.label | newInstance(...) |
+subpaths

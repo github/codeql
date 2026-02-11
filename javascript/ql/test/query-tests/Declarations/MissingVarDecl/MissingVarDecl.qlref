@@ -1,1 +1,2 @@
-Declarations/MissingVarDecl.ql
+query: Declarations/MissingVarDecl.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

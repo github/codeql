@@ -21,3 +21,37 @@ A& get_ref();
 void test2() {
   take_ref(get_ref()); // $ asExpr="call to get_ref" asIndirectExpr="call to get_ref"
 }
+
+struct S {
+  int a;
+  int b;
+};
+
+void test_aggregate_literal() {
+  S s1 = {1, 2}; // $ asExpr=1 asExpr=2 asExpr={...}
+  const S s2 = {3, 4}; // $ asExpr=3 asExpr=4 asExpr={...}
+  S s3 = (S){5, 6}; // $ asExpr=5 asExpr=6 asExpr={...}
+  const S s4 = (S){7, 8}; // $ asExpr=7 asExpr=8 asExpr={...}
+
+  S s5 = {.a = 1, .b = 2}; // $ asExpr=1 asExpr=2 asExpr={...}
+
+  int xs[] = {1, 2, 3}; // $ asExpr=1 asExpr=2 asExpr=3 asExpr={...}
+  const int ys[] = {[0] = 4, [1] = 5, [0] = 6}; // $ asExpr=4 asExpr=5 asExpr=6 asExpr={...}
+}
+
+void test_postfix_crement(int *p, int q) {
+  p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr=p asIndirectExpr=p
+  q++; // $ asExpr="... ++" asExpr=q
+  (p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (q++); // $ asExpr="... ++" asExpr="q(... ++)"
+  (void)(p++); // $ asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (void)(q++); // $ asExpr="q(... ++)"
+  (void)p++; // $ asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (void)q++; // $ asExpr="q(... ++)"
+  int *p1 = p++; // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  int q1 = q++; // $ asExpr="... ++" asExpr="q(... ++)"
+  (int*)(p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  (int)(q++); // $ asExpr="... ++" asExpr="q(... ++)"
+  int *p2 = (int*)(p++); // $ asExpr="... ++" asIndirectExpr="... ++" asExpr="p(... ++)" asIndirectExpr="p(*... ++)"
+  int q2 = (int)(q++); // $ asExpr="... ++" asExpr="q(... ++)"
+}

@@ -31,21 +31,6 @@ abstract class Sink extends ApiSinkExprNode {
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `ConditionalBypass` instead.
- *
- * A taint-tracking configuration for user-controlled bypass of sensitive method.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UserControlledBypassOfSensitiveMethodConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for user-controlled bypass of sensitive method.
  */
 private module ConditionalBypassConfig implements DataFlow::ConfigSig {
@@ -54,6 +39,15 @@ private module ConditionalBypassConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    result = sink.getLocation()
+    or
+    // from ConditionalBypass.ql
+    result = sink.(Sink).getSensitiveMethodCall().getLocation()
+  }
 }
 
 /**
@@ -69,7 +63,7 @@ module ConditionalBypass = TaintTracking::Global<ConditionalBypassConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** The result of a reverse dns may be user-controlled. */
 class ReverseDnsSource extends Source {
@@ -78,19 +72,10 @@ class ReverseDnsSource extends Source {
   }
 }
 
-pragma[noinline]
-private predicate conditionControlsCall0(
-  SensitiveExecutionMethodCall call, Expr e, ControlFlow::SuccessorTypes::BooleanSuccessor s
-) {
-  forex(BasicBlock bb | bb = call.getAControlFlowNode().getBasicBlock() | e.controlsBlock(bb, s, _))
-}
-
 private predicate conditionControlsCall(
   SensitiveExecutionMethodCall call, SensitiveExecutionMethod def, Expr e, boolean cond
 ) {
-  exists(ControlFlow::SuccessorTypes::BooleanSuccessor s | cond = s.getValue() |
-    conditionControlsCall0(call, e, s)
-  ) and
+  e.(Guard).directlyControls(call.getBasicBlock(), cond) and
   def = call.getTarget().getUnboundDeclaration()
 }
 

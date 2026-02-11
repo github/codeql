@@ -1,6 +1,8 @@
 import javascript
 private import semmle.javascript.dataflow.TypeTracking
 private import semmle.javascript.internal.CachedStages
+private import semmle.javascript.dataflow.internal.Contents as Contents
+private import sharedlib.SummaryTypeTracker as SummaryTypeTracker
 private import FlowSteps
 
 cached
@@ -29,6 +31,8 @@ private module Cached {
         SharedTypeTrackingStep::loadStoreStep(_, _, _, this)
         or
         this = DataFlow::PseudoProperties::arrayLikeElement()
+        or
+        this instanceof Contents::Private::PropertyName
       }
     }
 
@@ -39,12 +43,19 @@ private module Cached {
     newtype TStepSummary =
       LevelStep() or
       CallStep() or
+      CallReceiverStep() or
       ReturnStep() or
       StoreStep(PropertyName prop) or
       LoadStep(PropertyName prop) or
       CopyStep(PropertyName prop) or
       LoadStoreStep(PropertyName fromProp, PropertyName toProp) {
         SharedTypeTrackingStep::loadStoreStep(_, _, fromProp, toProp)
+        or
+        exists(DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent |
+          SummaryTypeTracker::basicLoadStoreStep(_, _, loadContent, storeContent) and
+          fromProp = loadContent.asPropertyName() and
+          toProp = storeContent.asPropertyName()
+        )
         or
         summarizedLoadStoreStep(_, _, fromProp, toProp)
       } or
@@ -91,6 +102,15 @@ private module Cached {
     )
   }
 
+  pragma[nomagic]
+  private predicate isReceiverForMethodDispatch(DataFlow::Node node) {
+    exists(DataFlow::SourceNode base, DataFlow::CallNode invoke |
+      node = invoke.getReceiver() and
+      base = node.getALocalSource() and
+      invoke.getCalleeNode() = base.getAPropertyRead()
+    )
+  }
+
   /**
    * INTERNAL: Use `TypeBackTracker.smallstep()` instead.
    */
@@ -106,7 +126,11 @@ private module Cached {
     or
     // Flow into function
     callStep(pred, succ) and
-    summary = CallStep()
+    (
+      if isReceiverForMethodDispatch(pred)
+      then summary = CallReceiverStep()
+      else summary = CallStep()
+    )
     or
     // Flow out of function
     returnStep(pred, succ) and
@@ -205,6 +229,21 @@ private module Cached {
       succ = getACallbackSource(parameter).getParameter(i) and
       summary = ReturnStep()
     )
+    or
+    SummaryTypeTracker::levelStepNoCall(pred, succ) and summary = LevelStep()
+    or
+    exists(DataFlow::ContentSet content |
+      SummaryTypeTracker::basicLoadStep(pred, succ, content) and
+      summary = LoadStep(content.asPropertyName())
+      or
+      SummaryTypeTracker::basicStoreStep(pred, succ, content) and
+      summary = StoreStep(content.asPropertyName())
+    )
+    or
+    exists(DataFlow::ContentSet loadContent, DataFlow::ContentSet storeContent |
+      SummaryTypeTracker::basicLoadStoreStep(pred, succ, loadContent, storeContent) and
+      summary = LoadStoreStep(loadContent.asPropertyName(), storeContent.asPropertyName())
+    )
   }
 }
 
@@ -225,6 +264,8 @@ class StepSummary extends TStepSummary {
     this instanceof LevelStep and result = "level"
     or
     this instanceof CallStep and result = "call"
+    or
+    this instanceof CallReceiverStep and result = "call-receiver"
     or
     this instanceof ReturnStep and result = "return"
     or

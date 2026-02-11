@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Caching.Memory, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Caching.Memory, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -35,8 +35,11 @@ namespace Microsoft
                     public void Dispose() => throw null;
                     protected virtual void Dispose(bool disposing) => throw null;
                     public Microsoft.Extensions.Caching.Memory.MemoryCacheStatistics GetCurrentStatistics() => throw null;
+                    public System.Collections.Generic.IEnumerable<object> Keys { get => throw null; }
                     public void Remove(object key) => throw null;
                     public bool TryGetValue(object key, out object result) => throw null;
+                    public bool TryGetValue(System.ReadOnlySpan<char> key, out object value) => throw null;
+                    public bool TryGetValue<TItem>(System.ReadOnlySpan<char> key, out TItem value) => throw null;
                 }
                 public class MemoryCacheOptions : Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Caching.Memory.MemoryCacheOptions>
                 {

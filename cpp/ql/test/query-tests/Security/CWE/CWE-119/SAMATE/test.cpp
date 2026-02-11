@@ -265,3 +265,14 @@ void test7(unsigned n) {
     }
     memset(p, 0, n); // GOOD [FALSE POSITIVE]
 }
+
+void test8(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  if (src_pos < size - 1) {
+    memset(xs, 0, src_pos + 1); // GOOD
+  }
+}

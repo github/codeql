@@ -1,3 +1,3 @@
 import python
 private import TestSummaries
-import TestUtilities.dataflow.NormalTaintTrackingTest
+import utils.test.dataflow.NormalTaintTrackingTest

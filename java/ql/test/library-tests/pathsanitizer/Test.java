@@ -463,4 +463,401 @@ public class Test {
             }
         }
     }
+
+    private void fileConstructorValidation(String path) throws Exception {
+        // Use `indexOf` instead of `contains` for this test since a `contains`
+        // call in this scenario will already be sanitized due to the inclusion
+        // of `ValidatedVariableAccess` nodes in `defaultTaintSanitizer`.
+        if (path.indexOf("..") != -1)
+            throw new Exception();
+    }
+
+    public void fileConstructorSanitizer() throws Exception {
+        // PathTraversalGuard
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            if (!source.contains("..")) {
+                File f2 = new File(f1, source);
+                sink(f2); // Safe
+                sink(source); // $ hasTaintFlow
+            } else {
+                File f3 = new File(f1, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1Tainted = (File) source();
+            if (!source.contains("..")) {
+                // `f2` is unsafe if `f1` is tainted
+                File f2 = new File(f1Tainted, source);
+                sink(f2); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            } else {
+                File f3 = new File(f1Tainted, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1Null = null;
+            if (!source.contains("..")) {
+                // `f2` is unsafe if `f1` is null
+                File f2 = new File(f1Null, source);
+                sink(f2); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            } else {
+                File f3 = new File(f1Null, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            if (source.indexOf("..") == -1) {
+                File f2 = new File(f1, source);
+                sink(f2); // Safe
+                sink(source); // $ hasTaintFlow
+            } else {
+                File f3 = new File(f1, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            if (source.indexOf("..") != -1) {
+                File f2 = new File(f1, source);
+                sink(f2); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            } else {
+                File f3 = new File(f1, source);
+                sink(f3); // Safe
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            if (source.lastIndexOf("..") == -1) {
+                File f2 = new File(f1, source);
+                sink(f2); // Safe
+                sink(source); // $ hasTaintFlow
+            } else {
+                File f3 = new File(f1, source);
+                sink(f3); // $ hasTaintFlow
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        // validation method
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+            fileConstructorValidation(source);
+            File f2 = new File(f1, source);
+            sink(f2); // Safe
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            File f1 = new File("safe/file.txt");
+
+            if (source.contains("..")) {
+                throw new Exception();
+            } else {
+                File f2 = new File(f1, source);
+                sink(f2); // Safe
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        // PathNormalizeSanitizer
+        {
+            File source = (File) source();
+            String normalized = source.getCanonicalPath();
+            File f1 = new File("safe/file.txt");
+            File f2 = new File(f1, normalized);
+            sink(f2); // Safe
+            sink(source); // $ hasTaintFlow
+            sink(normalized); // $ hasTaintFlow
+        }
+        {
+            File source = (File) source();
+            String normalized = source.getCanonicalFile().toString();
+            File f1 = new File("safe/file.txt");
+            File f2 = new File(f1, normalized);
+            sink(f2); // Safe
+            sink(source); // $ hasTaintFlow
+            sink(normalized); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            String normalized = Paths.get(source).normalize().toString();
+            File f1 = new File("safe/file.txt");
+            File f2 = new File(f1, normalized);
+            sink(f2); // Safe
+            sink(source); // $ hasTaintFlow
+            sink(normalized); // $ hasTaintFlow
+        }
+    }
+
+    private void directoryCharsValidation(String path) throws Exception {
+        if (!path.matches("[0-9a-fA-F]{20,}")) {
+            throw new Exception();
+        }
+    }
+
+    public void directoryCharsSanitizer() throws Exception {
+        // DirectoryCharactersGuard
+        // Ensures that directory characters (/, \ and ..) cannot possibly be in the payload
+        // branch = true
+        {
+            String source = (String) source();
+            if (source.matches("[0-9a-fA-F]{20,}")) {
+                sink(source); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.matches("[0-9a-fA-F]*")) {
+                sink(source); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.matches("[0-9a-fA-F]+")) {
+                sink(source); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.matches("[0-9a-fA-F\\.]+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.matches("[0-9a-fA-F/]+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.matches("[0-9a-fA-F\\\\]+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            // exclude '.', '/', '\'
+            if (source.matches("[^0-9./\\\\a-f]+")) {
+                sink(source); // Safe
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            // '/' is not excluded
+            if (source.matches("[^0-9.\\\\a-f]+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        // branch = false
+        {
+            String source = (String) source();
+            if (source.matches(".*[\\./\\\\].*")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // Safe
+            }
+        }
+        {
+            String source = (String) source();
+            if (source.matches(".+[\\./\\\\].+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // Safe
+            }
+        }
+        {
+            String source = (String) source();
+            // does not match whole string
+            if (source.matches("[\\./\\\\]+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        {
+            String source = (String) source();
+            // not a complete sanitizer since it doesn't protect against absolute path injection
+            if (source.matches(".+[\\.].+")) {
+                sink(source); // $ hasTaintFlow
+            } else {
+                sink(source); // $ hasTaintFlow
+            }
+        }
+        // validation method
+        {
+            String source = (String) source();
+            directoryCharsValidation(source);
+            sink(source); // Safe
+        }
+
+        // ReplaceDirectoryCharactersSanitizer
+        // Removes ".." sequences and path separators from the payload
+        // single `replaceAll` call
+        {
+            String source = (String) source();
+            source = source.replaceAll("\\.\\.|[/\\\\]", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            source = source.replaceAll("\\.|[/\\\\]", "-");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            source = source.replaceAll("[.][.]|[/\\\\]", "_");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // test a not-accepted replacement character
+            source = source.replaceAll("[.][.]|[/\\\\]", "/");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = source.replaceAll(".|[/\\\\]", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = source.replaceAll("\\.|/|\\\\", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            source = source.replaceAll("[\\./\\\\]", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            source = source.replaceAll("[\\.\\\\]", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = source.replaceAll("[^\\.\\\\/]", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // Bypassable with ".../...//"
+            source = source.replaceAll("\\.\\./", "");
+            sink(source); // $ hasTaintFlow
+        }
+        // multiple `replaceAll` or `replace` calls
+        {
+            String source = (String) source();
+            source = source.replaceAll("\\.", "").replaceAll("/", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // test a not-accepted replacement character in each call
+            source = source.replaceAll("\\.", "/").replaceAll("/", ".");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // test a not-accepted replacement character in first call
+            source = source.replaceAll("\\.", "/").replaceAll("/", "-");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // test a not-accepted replacement character in second call
+            source = source.replaceAll("\\.", "_").replaceAll("/", ".");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = source.replaceAll("\\.", "").replaceAll("/", "").replaceAll("\\\\", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // '/' or '\' are not replaced
+            source = source.replaceAll("\\.", "").replaceAll("\\.", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // '.' is not replaced
+            source = source.replaceAll("/", "").replaceAll("\\\\", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // Bypassable with ".....///"
+            source = source.replaceAll("\\.\\./", "").replaceAll("\\./", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            source = source.replace(".", "").replace("/", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            source = source.replace(".", "").replace("/", "").replace("\\", "");
+            sink(source); // Safe
+        }
+        {
+            String source = (String) source();
+            // '/' or '\' are not replaced
+            source = source.replace(".", "").replace(".", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // '.' is not replaced
+            source = source.replace("/", "").replace("\\", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // Bypassable with ".....///"
+            source = source.replace("../", "").replace("./", "");
+            sink(source); // $ hasTaintFlow
+        }
+        {
+            String source = (String) source();
+            // Bypassable with ".../...//"
+            source = source.replace("../", "");
+            sink(source); // $ hasTaintFlow
+        }
+    }
 }

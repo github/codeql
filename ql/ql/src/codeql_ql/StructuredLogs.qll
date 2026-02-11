@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import ql
 private import codeql_ql.ast.internal.TreeSitter
 private import experimental.RA
@@ -23,6 +26,7 @@ private float stringToTimestamp(string str) {
 }
 
 bindingset[s]
+overlay[global]
 private Predicate getPredicateFromPosition(string s) {
   exists(string r, string filepath, int startline | r = "(.*):(\\d+),(\\d+)-(\\d+),(\\d+)" |
     filepath = s.regexpCapture(r, 1) and
@@ -397,6 +401,7 @@ module KindPredicatesLog {
 
     string getPosition() { result = this.getString("position") }
 
+    overlay[global]
     Predicate getPredicate() { result = getPredicateFromPosition(this.getPosition()) }
 
     /**

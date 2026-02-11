@@ -1,1 +1,2 @@
-Security/CWE-829/InsecureDownload.ql
+query: Security/CWE-829/InsecureDownload.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

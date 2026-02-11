@@ -1,4 +1,6 @@
 /** Provides classes to reason about Groovy code injection attacks. */
+overlay[local?]
+module;
 
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
@@ -22,6 +24,13 @@ class GroovyInjectionAdditionalTaintStep extends Unit {
 
 private class DefaultGroovyInjectionSink extends GroovyInjectionSink {
   DefaultGroovyInjectionSink() { sinkNode(this, "groovy-injection") }
+}
+
+/** A data flow sanitizer for Groovy expression injection vulnerabilities. */
+abstract class GroovyInjectionSanitizer extends DataFlow::ExprNode { }
+
+private class ExternalGroovyInjectionSanitizer extends GroovyInjectionSanitizer {
+  ExternalGroovyInjectionSanitizer() { barrierNode(this, "groovy-injection") }
 }
 
 /** A set of additional taint steps to consider when taint tracking Groovy related data flows. */

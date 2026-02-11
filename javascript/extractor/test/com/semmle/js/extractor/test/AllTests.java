@@ -50,7 +50,7 @@ public class AllTests {
         entry = zis.getNextEntry();
       }
     }
-    Path tsWrapper = tempDir.resolve("javascript/tools/typescript-parser-wrapper/main.js");
+    Path tsWrapper = tempDir.resolve("typescript-parser-wrapper/main.js");
     if (!Files.exists(tsWrapper)) {
       throw new RuntimeException("Could not find ts-wrapper at " + tsWrapper);
     }

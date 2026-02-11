@@ -2,9 +2,16 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: neutralModel
+      extensible: summaryModel
     data:
-      - ["java.security.interfaces", "DSAParams", "getG", "()", "summary", "df-generated"]
-      - ["java.security.interfaces", "DSAParams", "getP", "()", "summary", "df-generated"]
-      - ["java.security.interfaces", "DSAParams", "getQ", "()", "summary", "df-generated"]
-      - ["java.security.interfaces", "RSAKey", "getParams", "()", "summary", "df-generated"]
+      - ["java.security.interfaces", "DSAKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "DSAKeyPairGenerator", True, "initialize", "(DSAParams,SecureRandom)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["java.security.interfaces", "DSAKeyPairGenerator", True, "initialize", "(int,boolean,SecureRandom)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["java.security.interfaces", "ECKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "ECPublicKey", True, "getW", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "EdECKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "EdECPrivateKey", True, "getBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "EdECPublicKey", True, "getPoint", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "RSAKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "XECKey", True, "getParams", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.security.interfaces", "XECPrivateKey", True, "getScalar", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

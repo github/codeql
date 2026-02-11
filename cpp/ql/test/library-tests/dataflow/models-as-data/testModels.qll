@@ -80,24 +80,26 @@ private class TestSummaries extends SummaryModelCsv {
         ";;false;madArgsComplex;;;Argument[*0..1,2];ReturnValue;taint",
         ";;false;madAndImplementedComplex;;;Argument[2];ReturnValue;taint",
         ";;false;madArgsAny;;;Argument;ReturnValue;taint", // (syntax not supported)
-        ";;false;madArg0FieldToReturn;;;Argument[0].value;ReturnValue;taint",
-        ";;false;madArg0IndirectFieldToReturn;;;Argument[*0].value;ReturnValue;taint",
-        ";;false;madArg0FieldIndirectToReturn;;;Argument[0].ptr[*];ReturnValue;taint",
-        ";;false;madArg0ToReturnField;;;Argument[0];ReturnValue.value;taint",
-        ";;false;madArg0ToReturnIndirectField;;;Argument[0];ReturnValue[*].value;taint",
-        ";;false;madArg0ToReturnFieldIndirect;;;Argument[0];ReturnValue.ptr[*];taint",
-        ";;false;madFieldToFieldVar;;;value;value2;taint",
-        ";;false;madFieldToIndirectFieldVar;;;value;ptr[*];taint",
-        ";;false;madIndirectFieldToFieldVar;;;;value;value2;taint", // not correctly expressed
+        ";;false;madArg0FieldToReturn;;;Argument[0].Field[value];ReturnValue;taint",
+        ";;false;madArg0IndirectFieldToReturn;;;Argument[*0].Field[value];ReturnValue;taint",
+        ";;false;madArg0FieldIndirectToReturn;;;Argument[0].Field[*ptr];ReturnValue;taint",
+        ";;false;madArg0ToReturnField;;;Argument[0];ReturnValue.Field[value];taint",
+        ";;false;madArg0ToReturnIndirectField;;;Argument[0];ReturnValue[*].Field[value];taint",
+        ";;false;madArg0ToReturnFieldIndirect;;;Argument[0];ReturnValue.Field[*ptr];taint",
+        ";;false;madFieldToFieldVar;;;Field[value];Field[value2];taint",
+        ";;false;madFieldToIndirectFieldVar;;;Field[value];Field[*ptr];taint",
+        ";;false;madIndirectFieldToFieldVar;;;;Field[value];Field[value2];taint", // not correctly expressed
         ";MyClass;true;madArg0ToSelf;;;Argument[0];Argument[-1];taint",
         ";MyClass;true;madSelfToReturn;;;Argument[-1];ReturnValue;taint",
-        ";MyClass;true;madArg0ToField;;;Argument[0];Argument[-1].val;taint",
-        ";MyClass;true;madFieldToReturn;;;Argument[-1].val;ReturnValue;taint",
+        ";MyClass;true;madArg0ToField;;;Argument[0];Argument[-1].Field[val];taint",
+        ";MyClass;true;madFieldToReturn;;;Argument[-1].Field[val];ReturnValue;taint",
         "MyNamespace;MyClass;true;namespaceMadSelfToReturn;;;Argument[-1];ReturnValue;taint",
         ";;false;madCallArg0ReturnToReturn;;;Argument[0].ReturnValue;ReturnValue;value",
-        ";;false;madCallArg0ReturnToReturnFirst;;;Argument[0].ReturnValue;ReturnValue.first;value",
+        ";;false;madCallArg0ReturnToReturnFirst;;;Argument[0].ReturnValue;ReturnValue.Field[first];value",
         ";;false;madCallArg0WithValue;;;Argument[1];Argument[0].Parameter[0];value",
         ";;false;madCallReturnValueIgnoreFunction;;;Argument[1];ReturnValue;value",
+        ";StructWithTypedefInParameter<T>;true;parameter_ref_to_return_ref;(const T &);;Argument[*0];ReturnValue[*];value",
+        ";;false;receive_array;(int[20]);;Argument[*0];ReturnValue;taint"
       ]
   }
 }

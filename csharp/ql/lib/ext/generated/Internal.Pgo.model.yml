@@ -4,15 +4,15 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", False, "GetEnumerator", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["Internal.Pgo", "PgoProcessor+PgoEncodedCompressedIntParser", False, "PgoEncodedCompressedIntParser", "(System.Byte[],System.Int32)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
-      - ["Internal.Pgo", "PgoProcessor", False, "Merge<TType,TMethod>", "(System.ReadOnlySpan<Internal.Pgo.PgoSchemaElem[]>)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["Internal.Pgo", "PgoProcessor", False, "Merge<TType,TMethod>", "(System.ReadOnlySpan<Internal.Pgo.PgoSchemaElem[]>)", "", "Argument[0].Element.Element", "ReturnValue.Element", "value", "dfc-generated"]
       - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "TypeSystemEntityOrUnknown", "(Internal.TypeSystem.MethodDesc)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "TypeSystemEntityOrUnknown", "(Internal.TypeSystem.TypeDesc)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsField", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsMethod", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "TypeSystemEntityOrUnknown", "(Internal.TypeSystem.MethodDesc)", "", "Argument[0]", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "TypeSystemEntityOrUnknown", "(Internal.TypeSystem.TypeDesc)", "", "Argument[0]", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsField", "()", "", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "ReturnValue", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsMethod", "()", "", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "ReturnValue", "value", "dfc-generated"]
+      - ["Internal.Pgo", "TypeSystemEntityOrUnknown", False, "get_AsType", "()", "", "Argument[this].SyntheticField[Internal.Pgo.TypeSystemEntityOrUnknown._data]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

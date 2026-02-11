@@ -1,0 +1,6 @@
+testFailures
+debug_callableNotUnique
+pointsTo_found_typeTracker_notFound
+typeTracker_found_pointsTo_notFound
+| type_annotations.py:6:5:6:14 | ControlFlowNode for Attribute() | Foo.method |
+| type_annotations.py:16:5:16:14 | ControlFlowNode for Attribute() | Foo.method |

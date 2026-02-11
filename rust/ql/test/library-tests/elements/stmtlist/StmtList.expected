@@ -1,0 +1,9 @@
+| StmtList.rs:4:19:9:1 | StmtList | 2 | hasTailExpr | 0:let ... = 1, 1:let ... = 2, 2:... + ... |
+| StmtList.rs:11:18:15:1 | StmtList | 2 |  | 0:let ... = 1, 1:let ... = 2 |
+| StmtList.rs:17:19:20:1 | StmtList | 0 | hasTailExpr | 0:... + ... |
+| StmtList.rs:22:18:25:1 | StmtList | 1 |  | 0:ExprStmt |
+| StmtList.rs:27:18:29:1 | StmtList | 0 |  |  |
+| StmtList.rs:31:18:34:1 | StmtList | 0 |  |  |
+| StmtList.rs:36:29:43:1 | StmtList | 0 | hasTailExpr | 0:if cond {...} else {...} |
+| StmtList.rs:38:10:40:2 | StmtList | 0 | hasTailExpr | 0:1 |
+| StmtList.rs:40:9:42:2 | StmtList | 0 | hasTailExpr | 0:2 |

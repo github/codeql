@@ -1689,3 +1689,18 @@ def m140
     sink z # $ hasValueFlow=140.1
     sink w # $ hasValueFlow=140.2
 end
+
+def m141(*args)
+    ::Array.[](*args)
+end
+
+def m142(x, y, z)
+    sink(x)
+    sink(y) # $ hasValueFlow=143
+    sink(z)
+end
+
+def m143
+    a = m141(0, source(143), 1)
+    m142(*a)
+end

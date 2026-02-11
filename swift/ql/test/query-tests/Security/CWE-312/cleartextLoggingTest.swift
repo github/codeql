@@ -164,24 +164,24 @@ class MyRemoteLogger {
 // --- tests ---
 
 func test1(password: String, passwordHash : String, passphrase: String, pass_phrase: String) {
-    print(password) // $ hasCleartextLogging=167
-    print(password, separator: "") // $ $ hasCleartextLogging=168
-    print("", separator: password) // $ hasCleartextLogging=169
-    print(password, separator: "", terminator: "") // $ hasCleartextLogging=170
-    print("", separator: password, terminator: "") // $ hasCleartextLogging=171
-    print("", separator: "", terminator: password) // $ hasCleartextLogging=172
+    print(password) // $ Alert
+    print(password, separator: "") // $ Alert
+    print("", separator: password) // $ Alert
+    print(password, separator: "", terminator: "") // $ Alert
+    print("", separator: password, terminator: "") // $ Alert
+    print("", separator: "", terminator: password) // $ Alert
     print(passwordHash) // safe
 
-    debugPrint(password) // $ hasCleartextLogging=175
+    debugPrint(password) // $ Alert
 
-    dump(password) // $ hasCleartextLogging=177
+    dump(password) // $ Alert
 
-    NSLog(password) // $ hasCleartextLogging=179
-    NSLog("%@", password) // $ hasCleartextLogging=180
-    NSLog("%@ %@", "", password) // $ hasCleartextLogging=181
-    NSLog("\(password)") // $ hasCleartextLogging=182
-    NSLogv("%@", getVaList([password])) // $ hasCleartextLogging=183
-    NSLogv("%@ %@", getVaList(["", password])) // $ hasCleartextLogging=184
+    NSLog(password) // $ Alert
+    NSLog("%@", password) // $ Alert
+    NSLog("%@ %@", "", password) // $ Alert
+    NSLog("\(password)") // $ Alert
+    NSLogv("%@", getVaList([password])) // $ Alert
+    NSLogv("%@ %@", getVaList(["", password])) // $ Alert
     NSLog(passwordHash) // safe
     NSLogv("%@", getVaList([passwordHash])) // safe
 
@@ -191,38 +191,38 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
     log.log("\(password)") // safe
     log.log("\(password, privacy: .auto)") // safe
     log.log("\(password, privacy: .private)") // safe
-    log.log("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=194
+    log.log("\(password, privacy: .public)") // $ MISSING: Alert
     log.log("\(passwordHash, privacy: .public)") // safe
     log.log("\(password, privacy: .sensitive)") // safe
-    log.log("\(bankAccount)") // $ MISSING: hasCleartextLogging=197
-    log.log("\(bankAccount, privacy: .auto)") // $ MISSING: hasCleartextLogging=198
+    log.log("\(bankAccount)") // $ MISSING: Alert
+    log.log("\(bankAccount, privacy: .auto)") // $ MISSING: Alert
     log.log("\(bankAccount, privacy: .private)") // safe
-    log.log("\(bankAccount, privacy: .public)") // $ MISSING: hasCleartextLogging=200
+    log.log("\(bankAccount, privacy: .public)") // $ MISSING: Alert
     log.log("\(bankAccount, privacy: .sensitive)") // safe
-    log.log(level: .default, "\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=202
-    log.trace("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=203
+    log.log(level: .default, "\(password, privacy: .public)") // $ MISSING: Alert
+    log.trace("\(password, privacy: .public)") // $ MISSING: Alert
     log.trace("\(passwordHash, privacy: .public)") // safe
-    log.debug("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=205
+    log.debug("\(password, privacy: .public)") // $ MISSING: Alert
     log.debug("\(passwordHash, privacy: .public)") // safe
-    log.info("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=207
+    log.info("\(password, privacy: .public)") // $ MISSING: Alert
     log.info("\(passwordHash, privacy: .public)") // safe
-    log.notice("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=209
+    log.notice("\(password, privacy: .public)") // $ MISSING: Alert
     log.notice("\(passwordHash, privacy: .public)") // safe
-    log.warning("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=211
+    log.warning("\(password, privacy: .public)") // $ MISSING: Alert
     log.warning("\(passwordHash, privacy: .public)") // safe
-    log.error("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=213
+    log.error("\(password, privacy: .public)") // $ MISSING: Alert
     log.error("\(passwordHash, privacy: .public)") // safe
-    log.critical("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=215
+    log.critical("\(password, privacy: .public)") // $ MISSING: Alert
     log.critical("\(passwordHash, privacy: .public)") // safe
-    log.fault("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=217
+    log.fault("\(password, privacy: .public)") // $ MISSING: Alert
     log.fault("\(passwordHash, privacy: .public)") // safe
 
-    NSLog(passphrase) // $ hasCleartextLogging=220
-    NSLog(pass_phrase) // $ hasCleartextLogging=221
+    NSLog(passphrase) // $ Alert
+    NSLog(pass_phrase) // $ Alert
 
     os_log("%@", log: .default, type: .default, "") // safe
-    os_log("%@", log: .default, type: .default, password) // $ hasCleartextLogging=224
-    os_log("%@ %@ %@", log: .default, type: .default, "", "", password) // $ hasCleartextLogging=225
+    os_log("%@", log: .default, type: .default, password) // $ Alert
+    os_log("%@ %@ %@", log: .default, type: .default, "", "", password) // $ Alert
 }
 
 class MyClass {
@@ -236,16 +236,16 @@ func doSomething(password: String) { }
 func test3(x: String) {
 	// alternative evidence of sensitivity...
 
-	NSLog(x) // $ MISSING: hasCleartextLogging=240
-	doSomething(password: x);
-	NSLog(x) // $ hasCleartextLogging=240
+	NSLog(x) // $ MISSING: Alert
+	doSomething(password: x); // $ Source
+	NSLog(x) // $ Alert
 
-	let y = getPassword();
-	NSLog(y) // $ hasCleartextLogging=243
+	let y = getPassword(); // $ Source
+	NSLog(y) // $ Alert
 
 	let z = MyClass()
 	NSLog(z.harmless) // safe
-	NSLog(z.password) // $ hasCleartextLogging=248
+	NSLog(z.password) // $ Alert
 }
 
 struct MyOuter {
@@ -260,7 +260,7 @@ struct MyOuter {
 func test3(mo : MyOuter) {
 	// struct members...
 
-	NSLog(mo.password.value) // $ hasCleartextLogging=263
+	NSLog(mo.password.value) // $ Alert
 	NSLog(mo.harmless.value) // safe
 }
 
@@ -283,40 +283,40 @@ func test4(harmless: String, password: String) {
 	print(harmless, to: &myString1)
 	print(myString1) // safe
 
-	print(password, to: &myString2)
-	print(myString2) // $ hasCleartextLogging=286
+	print(password, to: &myString2) // $ Source
+	print(myString2) // $ Alert
 
-	print("log: " + password, to: &myString3)
-	print(myString3) // $ hasCleartextLogging=289
+	print("log: " + password, to: &myString3) // $ Source
+	print(myString3) // $ Alert
 
 	debugPrint(harmless, to: &myString4)
 	debugPrint(myString4) // safe
 
-	debugPrint(password, to: &myString5)
-	debugPrint(myString5) // $ hasCleartextLogging=295
+	debugPrint(password, to: &myString5) // $ Source
+	debugPrint(myString5) // $ Alert
 
 	dump(harmless, to: &myString6)
 	dump(myString6) // safe
 
-	dump(password, to: &myString7)
-	dump(myString7) // $ hasCleartextLogging=301
+	dump(password, to: &myString7) // $ Source
+	dump(myString7) // $ Alert
 
 	myString8.write(harmless)
 	print(myString8)
 
-	myString9.write(password)
-	print(myString9) // $ hasCleartextLogging=307
+	myString9.write(password) // $ Source
+	print(myString9) // $ Alert
 
 	myString10.write(harmless)
-	myString10.write(password)
+	myString10.write(password) // $ Source
 	myString10.write(harmless)
-	print(myString10) // $ hasCleartextLogging=311
+	print(myString10) // $ Alert
 
 	harmless.write(to: &myString11)
 	print(myString11)
 
-	password.write(to: &myString12)
-	print(myString12) // $ hasCleartextLogging=318
+	password.write(to: &myString12) // $ Source
+	print(myString12) // $ Alert
 
 	print(password, to: &myString13) // $ safe - only printed to another string
 	debugPrint(password, to: &myString13) // $ safe - only printed to another string
@@ -331,59 +331,59 @@ func test5(password: String, caseNum: Int) {
 
 	switch caseNum {
 	case 0:
-		assert(false, password) // $ hasCleartextLogging=334
+		assert(false, password) // $ Alert
 	case 1:
-		assertionFailure(password) // $ hasCleartextLogging=336
+		assertionFailure(password) // $ Alert
 	case 2:
-		precondition(false, password) // $ hasCleartextLogging=338
+		precondition(false, password) // $ Alert
 	case 3:
-		preconditionFailure(password) // $ hasCleartextLogging=340
+		preconditionFailure(password) // $ Alert
 	default:
-		fatalError(password) // $ hasCleartextLogging=342
+		fatalError(password) // $ Alert
 	}
 }
 
 func test6(passwordString: String) {
-    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ hasCleartextLogging=347
+    let e = NSException(name: NSExceptionName("exception"), reason: "\(passwordString) is incorrect!", userInfo: nil) // $ Alert
     e.raise()
 
-    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ hasCleartextLogging=350
-    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ hasCleartextLogging=351
+    NSException.raise(NSExceptionName("exception"), format: "\(passwordString) is incorrect!", arguments: getVaList([])) // $ Alert
+    NSException.raise(NSExceptionName("exception"), format: "%s is incorrect!", arguments: getVaList([passwordString])) // $ Alert
 
-    _ = dprintf(0, "\(passwordString) is incorrect!") // $ hasCleartextLogging=353
-    _ = dprintf(0, "%s is incorrect!", passwordString) // $ hasCleartextLogging=354
-    _ = dprintf(0, "%s: %s is incorrect!", "foo", passwordString) // $ hasCleartextLogging=355
-    _ = vprintf("\(passwordString) is incorrect!", getVaList([])) // $ hasCleartextLogging=356
-    _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ hasCleartextLogging=357
-    _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ hasCleartextLogging=358
-    _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ hasCleartextLogging=359
+    _ = dprintf(0, "\(passwordString) is incorrect!") // $ Alert
+    _ = dprintf(0, "%s is incorrect!", passwordString) // $ Alert
+    _ = dprintf(0, "%s: %s is incorrect!", "foo", passwordString) // $ Alert
+    _ = vprintf("\(passwordString) is incorrect!", getVaList([])) // $ Alert
+    _ = vprintf("%s is incorrect!", getVaList([passwordString])) // $ Alert
+    _ = vfprintf(nil, "\(passwordString) is incorrect!", getVaList([])) // $ Alert
+    _ = vfprintf(nil, "%s is incorrect!", getVaList([passwordString])) // $ Alert
     _ = vasprintf_l(nil, nil, "\(passwordString) is incorrect!", getVaList([])) // good (`sprintf` is not logging)
     _ = vasprintf_l(nil, nil, "%s is incorrect!", getVaList([passwordString])) // good (`sprintf` is not logging)
 }
 
 func test7(authKey: String, authKey2: Int, authKey3: Float, password: String, secret: String) {
-    log(message: authKey) // $ hasCleartextLogging=365
-    log(message: String(authKey2)) // $ hasCleartextLogging=366
-    logging(message: authKey) // $ MISSING: hasCleartextLogging=367
-    logfile(file: 0, message: authKey) // $ MISSING: hasCleartextLogging=368
-    logMessage(NSString(string: authKey)) // $ hasCleartextLogging=369
-    logInfo(authKey) // $ hasCleartextLogging=370
-    logError(errorMsg: authKey) // $ hasCleartextLogging=371
+    log(message: authKey) // $ Alert
+    log(message: String(authKey2)) // $ Alert
+    logging(message: authKey) // $ MISSING: Alert
+    logfile(file: 0, message: authKey) // $ MISSING: Alert
+    logMessage(NSString(string: authKey)) // $ Alert
+    logInfo(authKey) // $ Alert
+    logError(errorMsg: authKey) // $ Alert
     harmless(authKey) // GOOD: not logging
     _ = logarithm(authKey3) // GOOD: not logging
     doLogin(login: authKey) // GOOD: not logging
 
     let logger = LogFile()
-    let msg = "authKey: " + authKey
-    logger.log(msg) // $ hasCleartextLogging=377
-    logger.trace(msg) // $ hasCleartextLogging=377
-    logger.debug(msg) // $ hasCleartextLogging=377
-    logger.info(NSString(string: msg)) // $ hasCleartextLogging=377
-    logger.notice(msg) // $ hasCleartextLogging=377
-    logger.warning(msg) // $ hasCleartextLogging=377
-    logger.error(msg) // $ hasCleartextLogging=377
-    logger.critical(msg) // $ hasCleartextLogging=377
-    logger.fatal(msg) // $ hasCleartextLogging=377
+    let msg = "authKey: " + authKey // $ Source
+    logger.log(msg) // $ Alert
+    logger.trace(msg) // $ Alert
+    logger.debug(msg) // $ Alert
+    logger.info(NSString(string: msg)) // $ Alert
+    logger.notice(msg) // $ Alert
+    logger.warning(msg) // $ Alert
+    logger.error(msg) // $ Alert
+    logger.critical(msg) // $ Alert
+    logger.fatal(msg) // $ Alert
 
     let logic = Logic()
     logic.addInt(authKey2) // GOOD: not logging

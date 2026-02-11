@@ -1,5 +1,4 @@
 using System.IO;
-using Semmle.Extraction.Entities;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
@@ -22,9 +21,14 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void Populate(TextWriter trapFile)
         {
-            location = Context.CreateLocation(Location);
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
             trapFile.commentline(this, Type == CommentLineType.MultilineContinuation ? CommentLineType.Multiline : Type, Text, RawText);
-            trapFile.commentline_location(this, location);
+            location = Context.CreateLocation(Location);
+            WriteLocationToTrap(trapFile.commentline_location, this, location);
+
         }
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => location?.Symbol;

@@ -17,6 +17,7 @@ func main() {
 	taint = t.StepArgRes(arg)
 	_, taint = t.StepArgRes1(arg)
 	t.StepArgArg(arg, arg1)
+	t.StepArgArgIgnored(arg, arg1)
 	t.StepArgQual(arg)
 	taint = t.StepQualRes()
 	t.StepQualArg(arg)
@@ -66,6 +67,10 @@ func simpleflow() {
 	var taint3 interface{}
 	t.StepArgArg(src, taint3)
 	b.Sink1(taint3) // $ hasTaintFlow="taint3"
+
+	var taint3ignored interface{}
+	t.StepArgArgIgnored(src, taint3ignored)
+	b.Sink1(taint3ignored)
 
 	var taint4 test.T
 	taint4.StepArgQual(src)
@@ -153,7 +158,7 @@ func simpleflow() {
 	ch := make(chan string)
 	ch <- a.Src1().(string)
 	taint16 := test.StepArgCollectionContentRes(ch)
-	b.Sink1(taint16) // $ MISSING: hasTaintFlow="taint16" // currently fails due to lack of post-update nodes after send statements
+	b.Sink1(taint16) // $ hasTaintFlow="taint16"
 
 	c1 := test.C{""}
 	c1.Set(a.Src1().(string))
@@ -192,6 +197,16 @@ func simpleflow() {
 	arg3 := src
 	arg4 := src
 	b.SinkManyArgs(arg1, arg2, arg3, arg4) // $ hasTaintFlow="arg1" hasTaintFlow="arg2" hasTaintFlow="arg3"
+
+	temp := test.SourceVariable
+	test.SinkVariable = temp // $ hasTaintFlow="temp"
+
+	b.Sink1(new(src))  // $ hasTaintFlow="call to new"
+	b.Sink1(*new(src)) // $ hasTaintFlow="star expression"
+}
+
+func srcParam(src string, b test.B) {
+	b.Sink1(src) // $ hasTaintFlow="src"
 }
 
 type mapstringstringtype map[string]string

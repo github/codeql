@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["reggionick/s3-deploy", "*", "input.bucket", "command-injection", "manual"]
+      - ["reggionick/s3-deploy", "*", "input.bucket-region", "command-injection", "manual"]
+      - ["reggionick/s3-deploy", "*", "input.dist-id", "command-injection", "manual"]
+      - ["reggionick/s3-deploy", "*", "input.invalidation", "command-injection", "manual"]
+      - ["reggionick/s3-deploy", "*", "input.delete-removed", "command-injection", "manual"]
+      - ["reggionick/s3-deploy", "*", "input.cacheControl", "command-injection", "manual"]
+      - ["reggionick/s3-deploy", "*", "input.cache", "command-injection", "manual"]
+      - ["reggionick/s3-deploy", "*", "input.files-to-include", "command-injection", "manual"]

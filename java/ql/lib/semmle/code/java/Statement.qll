@@ -1,9 +1,12 @@
 /**
  * Provides classes and predicates for working with Java statements.
  */
+overlay[local?]
+module;
 
 import Expr
 import metrics.MetricStmt
+private import semmle.code.java.Overlay
 
 /** A common super-class of all statements. */
 class Stmt extends StmtParent, ExprParent, @stmt {
@@ -45,10 +48,10 @@ class Stmt extends StmtParent, ExprParent, @stmt {
   Stmt getAChild() { result.getParent() = this }
 
   /** Gets the basic block in which this statement occurs. */
-  BasicBlock getBasicBlock() { result.getANode() = this }
+  BasicBlock getBasicBlock() { result.getANode().asStmt() = this }
 
   /** Gets the `ControlFlowNode` corresponding to this statement. */
-  ControlFlowNode getControlFlowNode() { result = this }
+  ControlFlowNode getControlFlowNode() { result.asStmt() = this }
 
   /** Cast this statement to a class that provides access to metrics information. */
   MetricStmt getMetrics() { result = this }
@@ -137,7 +140,7 @@ class IfStmt extends ConditionalStmt, @ifstmt {
 }
 
 /** A `for` loop. */
-class ForStmt extends ConditionalStmt, @forstmt {
+class ForStmt extends ConditionalStmt, LoopStmtImpl, @forstmt {
   /**
    * Gets an initializer expression of the loop.
    *
@@ -164,8 +167,15 @@ class ForStmt extends ConditionalStmt, @forstmt {
     index = result.getIndex() - 3
   }
 
+  /**
+   * DEPRECATED: Use `getBody()` instead.
+   *
+   * Gets the body of this `for` loop.
+   */
+  deprecated Stmt getStmt() { result.getParent() = this and result.getIndex() = 2 }
+
   /** Gets the body of this `for` loop. */
-  Stmt getStmt() { result.getParent() = this and result.getIndex() = 2 }
+  override Stmt getBody() { result.getParent() = this and result.getIndex() = 2 }
 
   /**
    * Gets a variable that is used as an iteration variable: it is defined,
@@ -181,14 +191,14 @@ class ForStmt extends ConditionalStmt, @forstmt {
   Variable getAnIterationVariable() {
     // Check that the variable is assigned to, incremented or decremented in the update expression, and...
     exists(Expr update | update = this.getAnUpdate().getAChildExpr*() |
-      update.(UnaryAssignExpr).getExpr() = result.getAnAccess() or
+      update.(UnaryAssignExpr).getOperand() = result.getAnAccess() or
       update = result.getAnAssignedValue()
     ) and
     // ...that it is checked or used in the condition.
     this.getCondition().getAChildExpr*() = result.getAnAccess()
   }
 
-  override string pp() { result = "for (...;...;...) " + this.getStmt().pp() }
+  override string pp() { result = "for (...;...;...) " + this.getBody().pp() }
 
   override string toString() { result = "for (...;...;...)" }
 
@@ -198,17 +208,24 @@ class ForStmt extends ConditionalStmt, @forstmt {
 }
 
 /** An enhanced `for` loop. (Introduced in Java 5.) */
-class EnhancedForStmt extends Stmt, @enhancedforstmt {
+class EnhancedForStmt extends LoopStmtImpl, @enhancedforstmt {
   /** Gets the local variable declaration expression of this enhanced `for` loop. */
   LocalVariableDeclExpr getVariable() { result.getParent() = this }
 
   /** Gets the expression over which this enhanced `for` loop iterates. */
   Expr getExpr() { result.isNthChildOf(this, 1) }
 
-  /** Gets the body of this enhanced `for` loop. */
-  Stmt getStmt() { result.getParent() = this }
+  /**
+   * DEPRECATED: Use `getBody()` instead.
+   *
+   * Gets the body of this enhanced `for` loop.
+   */
+  deprecated Stmt getStmt() { result.getParent() = this }
 
-  override string pp() { result = "for (... : ...) " + this.getStmt().pp() }
+  /** Gets the body of this enhanced `for` loop. */
+  override Stmt getBody() { result.getParent() = this }
+
+  override string pp() { result = "for (... : ...) " + this.getBody().pp() }
 
   override string toString() { result = "for (... : ...)" }
 
@@ -218,14 +235,21 @@ class EnhancedForStmt extends Stmt, @enhancedforstmt {
 }
 
 /** A `while` loop. */
-class WhileStmt extends ConditionalStmt, @whilestmt {
+class WhileStmt extends ConditionalStmt, LoopStmtImpl, @whilestmt {
   /** Gets the boolean condition of this `while` loop. */
   override Expr getCondition() { result.getParent() = this }
 
-  /** Gets the body of this `while` loop. */
-  Stmt getStmt() { result.getParent() = this }
+  /**
+   * DEPRECATED: Use `getBody()` instead.
+   *
+   * Gets the body of this `while` loop.
+   */
+  deprecated Stmt getStmt() { result.getParent() = this }
 
-  override string pp() { result = "while (...) " + this.getStmt().pp() }
+  /** Gets the body of this `while` loop. */
+  override Stmt getBody() { result.getParent() = this }
+
+  override string pp() { result = "while (...) " + this.getBody().pp() }
 
   override string toString() { result = "while (...)" }
 
@@ -235,14 +259,21 @@ class WhileStmt extends ConditionalStmt, @whilestmt {
 }
 
 /** A `do` loop. */
-class DoStmt extends ConditionalStmt, @dostmt {
+class DoStmt extends ConditionalStmt, LoopStmtImpl, @dostmt {
   /** Gets the condition of this `do` loop. */
   override Expr getCondition() { result.getParent() = this }
 
-  /** Gets the body of this `do` loop. */
-  Stmt getStmt() { result.getParent() = this }
+  /**
+   * DEPRECATED: Use `getBody()` instead.
+   *
+   * Gets the body of this `do` loop.
+   */
+  deprecated Stmt getStmt() { result.getParent() = this }
 
-  override string pp() { result = "do " + this.getStmt().pp() + " while (...)" }
+  /** Gets the body of this `do` loop. */
+  override Stmt getBody() { result.getParent() = this }
+
+  override string pp() { result = "do " + this.getBody().pp() + " while (...)" }
 
   override string toString() { result = "do ... while (...)" }
 
@@ -255,29 +286,15 @@ class DoStmt extends ConditionalStmt, @dostmt {
  * A loop statement, including `for`, enhanced `for`,
  * `while` and `do` statements.
  */
-class LoopStmt extends Stmt {
-  LoopStmt() {
-    this instanceof ForStmt or
-    this instanceof EnhancedForStmt or
-    this instanceof WhileStmt or
-    this instanceof DoStmt
-  }
-
+abstract private class LoopStmtImpl extends Stmt {
   /** Gets the body of this loop statement. */
-  Stmt getBody() {
-    result = this.(ForStmt).getStmt() or
-    result = this.(EnhancedForStmt).getStmt() or
-    result = this.(WhileStmt).getStmt() or
-    result = this.(DoStmt).getStmt()
-  }
+  abstract Stmt getBody();
 
   /** Gets the boolean condition of this loop statement. */
-  Expr getCondition() {
-    result = this.(ForStmt).getCondition() or
-    result = this.(WhileStmt).getCondition() or
-    result = this.(DoStmt).getCondition()
-  }
+  Expr getCondition() { none() }
 }
+
+final class LoopStmt = LoopStmtImpl;
 
 /** A `try` statement. */
 class TryStmt extends Stmt, @trystmt {
@@ -288,7 +305,7 @@ class TryStmt extends Stmt, @trystmt {
   CatchClause getACatchClause() { result.getParent() = this }
 
   /**
-   * Gets the `catch` clause at the specified (zero-based) position
+   * Gets the `catch` clause at the specified (zero-based) position `index`
    * in this `try` statement.
    */
   CatchClause getCatchClause(int index) {
@@ -302,7 +319,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource variable declaration, if any. */
   LocalVariableDeclStmt getAResourceDecl() { result.getParent() = this and result.getIndex() <= -3 }
 
-  /** Gets the resource variable declaration at the specified position in this `try` statement. */
+  /** Gets the resource variable declaration at the specified position `index` in this `try` statement. */
   LocalVariableDeclStmt getResourceDecl(int index) {
     result = this.getAResourceDecl() and
     index = -3 - result.getIndex()
@@ -311,7 +328,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource expression, if any. */
   VarAccess getAResourceExpr() { result.getParent() = this and result.getIndex() <= -3 }
 
-  /** Gets the resource expression at the specified position in this `try` statement. */
+  /** Gets the resource expression at the specified position `index` in this `try` statement. */
   VarAccess getResourceExpr(int index) {
     result = this.getAResourceExpr() and
     index = -3 - result.getIndex()
@@ -320,7 +337,7 @@ class TryStmt extends Stmt, @trystmt {
   /** Gets a resource in this `try` statement, if any. */
   ExprParent getAResource() { result = this.getAResourceDecl() or result = this.getAResourceExpr() }
 
-  /** Gets the resource at the specified position in this `try` statement. */
+  /** Gets the resource at the specified position `index` in this `try` statement. */
   ExprParent getResource(int index) {
     result = this.getResourceDecl(index) or result = this.getResourceExpr(index)
   }
@@ -624,8 +641,15 @@ class SynchronizedStmt extends Stmt, @synchronizedstmt {
 
 /** A `return` statement. */
 class ReturnStmt extends Stmt, @returnstmt {
+  /**
+   * DEPRECATED: Use `getExpr()` instead.
+   *
+   * Gets the expression returned by this `return` statement, if any.
+   */
+  deprecated Expr getResult() { result.getParent() = this }
+
   /** Gets the expression returned by this `return` statement, if any. */
-  Expr getResult() { result.getParent() = this }
+  Expr getExpr() { result.getParent() = this }
 
   override string pp() { result = "return ..." }
 
@@ -985,3 +1009,6 @@ class SuperConstructorInvocationStmt extends Stmt, ConstructorCall, @superconstr
 
   override string getAPrimaryQlClass() { result = "SuperConstructorInvocationStmt" }
 }
+
+overlay[local]
+private class DiscardableStmt extends DiscardableLocatable, @stmt { }

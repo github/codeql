@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for reasoning about temporary file/directory creations.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.environment.SystemProperty
@@ -24,7 +26,8 @@ class MethodFileCreateTempFile extends Method {
 }
 
 /**
- * Holds if `expDest` is some constructor call `new java.io.File(expSource)`, where the specific `File` constructor being used has `paramCount` parameters.
+ * Holds if `expSource` is an argument to a constructor call `exprDest` (constructor from `java.io.File`), where
+ * the specific `File` constructor being used has `paramCount` parameters.
  */
 predicate isFileConstructorArgument(Expr expSource, Expr exprDest, int paramCount) {
   exists(ConstructorCall construtorCall |

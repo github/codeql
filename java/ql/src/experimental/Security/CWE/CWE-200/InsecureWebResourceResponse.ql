@@ -15,21 +15,28 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.PathSanitizer
-import AndroidWebResourceResponse
-import InsecureWebResourceResponseFlow::PathGraph
+deprecated import AndroidWebResourceResponse
+deprecated import InsecureWebResourceResponseFlow::PathGraph
 
-module InsecureWebResourceResponseConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+deprecated module InsecureWebResourceResponseConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof WebResourceResponseSink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof PathInjectionSanitizer }
 }
 
-module InsecureWebResourceResponseFlow = TaintTracking::Global<InsecureWebResourceResponseConfig>;
+deprecated module InsecureWebResourceResponseFlow =
+  TaintTracking::Global<InsecureWebResourceResponseConfig>;
 
-from
-  InsecureWebResourceResponseFlow::PathNode source, InsecureWebResourceResponseFlow::PathNode sink
-where InsecureWebResourceResponseFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "Leaking arbitrary content in Android from $@.",
-  source.getNode(), "this user input"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, InsecureWebResourceResponseFlow::PathNode source,
+  InsecureWebResourceResponseFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  InsecureWebResourceResponseFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "Leaking arbitrary content in Android from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

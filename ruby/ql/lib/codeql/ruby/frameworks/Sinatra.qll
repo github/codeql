@@ -167,7 +167,7 @@ module Sinatra {
    * from the `locals` keyword argument to variables in the ERB template. The
    * second half is modeled by `ErbLocalsAccessSummary`.
    */
-  private class ErbLocalsSummary extends SummarizedCallable {
+  private class ErbLocalsSummary extends SummarizedCallable::Range {
     ErbLocalsSummary() { this = "Sinatra::Base#erb" }
 
     override MethodCall getACall() { result = any(ErbCall c).asExpr().getExpr() }
@@ -191,7 +191,7 @@ module Sinatra {
    * keyword argument to variables in the ERB template.
    * The first half is modeled by `ErbLocalsSummary`.
    */
-  private class ErbLocalsAccessSummary extends SummarizedCallable {
+  private class ErbLocalsAccessSummary extends SummarizedCallable::Range {
     private ErbLocalsHashSyntheticGlobal global;
     private string local;
 
@@ -279,19 +279,23 @@ module Sinatra {
         filter.getApp() = route.getApp() and
         // the filter applies to all routes
         not filter.hasPattern() and
-        blockPostUpdate(pred, filter.getBody()) and
-        blockSelfParameterNode(succ, route.getBody().asExpr().getExpr())
+        blockPostSelf(pred, filter.getBody()) and
+        blockSelf(succ, route.getBody().asExpr().getExpr())
       )
     }
   }
 
-  /** Holds if `n` is a post-update node for the block `b`. */
-  private predicate blockPostUpdate(DataFlow::PostUpdateNode n, DataFlow::BlockNode b) {
-    n.getPreUpdateNode() = b
+  /** Holds if `n` is a post-update node referencing `self` in the block `b`. */
+  private predicate blockPostSelf(DataFlow::PostUpdateNode n, DataFlow::BlockNode b) {
+    exists(SelfVariableAccessCfgNode self |
+      n.getPreUpdateNode().asExpr() = self and
+      self.getScope() = b.asExpr().getAstNode()
+    )
   }
 
-  /** Holds if `n` is a `self` parameter belonging to block `b`. */
-  private predicate blockSelfParameterNode(DataFlowPrivate::LambdaSelfReferenceNode n, Block b) {
-    n.getCallable() = b
+  /** Holds if `n` is a node referencing `self` in the block `b`. */
+  private predicate blockSelf(DataFlow::VariableAccessNode self, Block b) {
+    self.getExprNode().getBasicBlock().getScope() = b and
+    self.asVariableAccessAstNode().getVariable() instanceof SelfVariable
   }
 }

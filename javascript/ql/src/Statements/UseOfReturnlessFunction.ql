@@ -4,7 +4,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/use-of-returnless-function
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
  * @precision high
  */
@@ -114,7 +115,7 @@ predicate hasNonVoidCallbackMethod(string name) {
   name =
     [
       "every", "filter", "find", "findIndex", "flatMap", "map", "reduce", "reduceRight", "some",
-      "sort"
+      "sort", "findLastIndex", "findLast"
     ]
 }
 

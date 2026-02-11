@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["tribler/tribler", "*", "input.libsodium-version", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.command", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.duration", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.requirements", "code-injection", "generated"]
+     - ["tribler/tribler", "*", "input.path", "code-injection", "generated"]

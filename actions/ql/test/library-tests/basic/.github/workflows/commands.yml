@@ -1,0 +1,39 @@
+on: push
+
+defaults:
+  run:
+    shell: bash -wkf
+
+jobs:
+  local_commands:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -job
+    steps:
+
+      - shell: bash -step
+        run: |
+          command1 ; command2
+      - run: |
+          command3 | command4
+      - run: |
+          command5 "$(command6)"
+      - run: |
+          command7 && command8
+      - run: |
+          command9 || command10
+      - run: |
+          command11 "`command12`"
+      - run: |
+          command13 "`command14` $(date | wc -l)"
+
+  local_commands2:
+    runs-on: ubuntu-latest
+    steps:
+      - shell: bash -step
+        run: |
+          command1 ; command2
+      - shell: pwsh
+        run: |
+          command3 | command4

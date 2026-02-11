@@ -6,8 +6,9 @@
  * @problem.severity error
  * @precision medium
  * @id java/missing-super-finalize
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-568
  */
 

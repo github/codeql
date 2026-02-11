@@ -13,6 +13,8 @@
  *
  * This creates a route to the `TargetBean` class for messages sent to "direct.start".
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.Reflection
@@ -42,9 +44,6 @@ class CamelJavaDslToDecl extends ProcessorDefinitionElement {
    * Gets the URI specified by this `to` declaration.
    */
   string getUri() { result = this.getArgument(0).(CompileTimeConstantExpr).getStringValue() }
-
-  /** DEPRECATED: Alias for getUri */
-  deprecated string getURI() { result = this.getUri() }
 }
 
 /**

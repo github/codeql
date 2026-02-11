@@ -4,33 +4,17 @@
    :stub-columns: 1
 
    Operating system,Supported versions,Supported CPU architectures
-   Linux,"Ubuntu 18.04
+   Linux,"Ubuntu 22.04
 
-   Ubuntu 20.04
-
-   Ubuntu 21.04
-
-   Ubuntu 22.04","x86-64"
+   Ubuntu 24.04","x86-64"
    Windows,"Windows 10 / Windows Server 2019
 
-   Windows 11 / Windows Server 2022","x86-64"
-   macOS,"macOS 10.15 Catalina
+   Windows 11 / Windows Server 2022/2025","x86-64"
+   macOS,"macOS 14 Sonoma
 
-   macOS 11 Big Sur
+   macOS 15 Sequoia
 
-   macOS 12 Monterey
-
-   macOS 13 Ventura
-
-   macOS 14 Sonoma","x86-64
-
-   x86-64, arm64 (Apple Silicon)
-
-   x86-64, arm64 (Apple Silicon)
-
-   x86-64, arm64 (Apple Silicon)
-
-   x86-64, arm64 (Apple Silicon) [1]_"
+   macOS 26 Tahoe","x86-64, arm64 (Apple Silicon) [1]_"
 
 .. container:: footnote-group
 

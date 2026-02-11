@@ -1,4 +1,6 @@
 /** Provides classes and predicates for reasoning about `java.lang.NumberFormatException`. */
+overlay[local?]
+module;
 
 import java
 
@@ -44,12 +46,7 @@ private class SpecialClassInstanceExpr extends ClassInstanceExpr {
   }
 
   predicate throwsNfe() {
-    this.isStringConstructor("Byte") or
-    this.isStringConstructor("Short") or
-    this.isStringConstructor("Integer") or
-    this.isStringConstructor("Long") or
-    this.isStringConstructor("Float") or
-    this.isStringConstructor("Double")
+    this.isStringConstructor(["Byte", "Short", "Integer", "Long", "Float", "Double"])
   }
 }
 

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import DataFlowImplSpecific
 private import codeql.dataflow.internal.DataFlowImpl
 private import semmle.code.Location

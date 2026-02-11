@@ -20,18 +20,6 @@ module HardcodedDataInterpretedAsCode {
    */
   module FlowState {
     /**
-     * Flow state used to track value-preserving flow.
-     * DEPRECATED: Use `Data()`
-     */
-    deprecated DataFlow::FlowState data() { result = "data" }
-
-    /**
-     * Flow state used to tainted data (non-value preserving flow).
-     * DEPRECATED: Use `Taint()`
-     */
-    deprecated DataFlow::FlowState taint() { result = "taint" }
-
-    /**
      * Flow states used to distinguish value-preserving flow from taint flow.
      */
     newtype State =
@@ -47,12 +35,6 @@ module HardcodedDataInterpretedAsCode {
   abstract class Source extends DataFlow::Node {
     /**
      * Gets a flow label for which this is a source.
-     * DEPRECATED: Use `getALabel()`
-     */
-    deprecated DataFlow::FlowState getLabel() { result = FlowState::data() }
-
-    /**
-     * Gets a flow label for which this is a source.
      */
     FlowState::State getALabel() { result = FlowState::Data() }
   }
@@ -63,17 +45,6 @@ module HardcodedDataInterpretedAsCode {
   abstract class Sink extends DataFlow::Node {
     /** Gets a description of what kind of sink this is. */
     abstract string getKind();
-
-    /**
-     * Gets a flow label for which this is a sink.
-     * DEPRECATED: Use `getALabel()`
-     */
-    deprecated DataFlow::FlowState getLabel() {
-      // We want to ignore value-flow and only consider taint-flow, since the
-      // source is just a hex string, and evaluating that directly will just
-      // cause a syntax error.
-      result = FlowState::taint()
-    }
 
     /**
      * Gets a flow label for which this is a sink.

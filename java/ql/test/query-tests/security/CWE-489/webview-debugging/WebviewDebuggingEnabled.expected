@@ -1,0 +1,12 @@
+#select
+| Test.java:7:48:7:51 | true | Test.java:7:48:7:51 | true | Test.java:7:48:7:51 | true | Webview debugging is enabled. |
+| Test.java:17:48:17:54 | enabled | Test.java:21:15:21:18 | true : Boolean | Test.java:17:48:17:54 | enabled | Webview debugging is enabled. |
+edges
+| Test.java:16:16:16:30 | enabled : Boolean | Test.java:17:48:17:54 | enabled | provenance |  |
+| Test.java:21:15:21:18 | true : Boolean | Test.java:16:16:16:30 | enabled : Boolean | provenance |  |
+nodes
+| Test.java:7:48:7:51 | true | semmle.label | true |
+| Test.java:16:16:16:30 | enabled : Boolean | semmle.label | enabled : Boolean |
+| Test.java:17:48:17:54 | enabled | semmle.label | enabled |
+| Test.java:21:15:21:18 | true : Boolean | semmle.label | true : Boolean |
+subpaths

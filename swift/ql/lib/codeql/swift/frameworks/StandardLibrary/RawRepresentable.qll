@@ -12,7 +12,11 @@ private import codeql.swift.dataflow.FlowSteps
  */
 private class RawRepresentableSummaries extends SummaryModelCsv {
   override predicate row(string row) {
-    row = ";RawRepresentable;true;init(rawValue:);;;Argument[0];ReturnValue;taint"
+    row =
+      [
+        ";RawRepresentable;true;init(rawValue:);;;Argument[0];ReturnValue;taint",
+        ";OptionSet;true;init(rawValue:);;;Argument[0];ReturnValue;taint"
+      ]
   }
 }
 

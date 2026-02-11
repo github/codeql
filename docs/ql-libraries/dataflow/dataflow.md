@@ -548,12 +548,9 @@ DataFlowType getNodeType(Node n)
 ```
 and every `Node` should have a type.
 
-One also needs to define the string representation of a `DataFlowType`:
-```ql
-string ppReprType(DataFlowType t)
-```
-The `ppReprType` predicate is used for printing a type in the labels of
-`PathNode`s, this can be defined as `none()` if type pruning is not used.
+One also needs to define the string representation of a `DataFlowType`.
+The `DataFlowType.toString` predicate is used for printing a type in the labels of
+`PathNode`s, this should be defined as `result = ""` if type pruning is not used.
 
 Finally, one must define `CastNode` as a subclass of `Node` as those nodes
 where types should be checked. Usually this will be things like explicit casts.

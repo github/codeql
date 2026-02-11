@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision very-high
  * @id go/duplicate-branches
- * @tags maintainability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-561
  */

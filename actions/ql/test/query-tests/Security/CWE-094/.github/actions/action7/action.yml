@@ -1,0 +1,252 @@
+# Ultralytics Actions 🚀, AGPL-3.0 License https://ultralytics.com/license
+
+name: "Ultralytics Actions"
+author: "Ultralytics"
+description: "Optimize code and docs with official Ultralytics Actions for syntax, spelling, and link checks."
+branding:
+  icon: "code"
+  color: "blue"
+inputs:
+  token:
+    description: "GitHub token"
+    required: true
+  labels:
+    description: "Run issue and PR auto-labeling"
+    required: false
+    default: "false"
+  python:
+    description: "Run Python formatting"
+    required: false
+    default: "false"
+  markdown:
+    description: "Run Markdown formatting (deprecated in favor of prettier)"
+    required: false
+    default: "false"
+  prettier:
+    description: "Run Prettier formatting for JavaScript, JSX, Angular, Vue, Flow, TypeScript, CSS, HTML, JSON, GraphQL, Markdown, YAML"
+    required: false
+    default: "false"
+  swift:
+    description: "Run Swift formatting"
+    required: false
+    default: "false"
+  spelling:
+    description: "Run Spelling checks"
+    required: false
+    default: "false"
+  links:
+    description: "Run Broken Links checks"
+    required: false
+    default: "false"
+  summary:
+    description: "Run PR Summary"
+    required: false
+    default: "false"
+  openai_api_key:
+    description: "OpenAI API Key"
+    required: false
+  openai_model:
+    description: "OpenAI Model"
+    required: false
+    default: "gpt-4o"
+  first_issue_response:
+    description: "Example response to a new issue"
+    required: false
+  first_pr_response:
+    description: "Example response to a new PR"
+    required: false
+  github_username:
+    description: "GitHub username for commits"
+    required: false
+    default: "UltralyticsAssistant"
+  github_email:
+    description: "GitHub email for commits"
+    required: false
+    default: "web@ultralytics.com"
+runs:
+  using: "composite"
+  steps:
+    - uses: astral-sh/setup-uv@v3
+    - name: Install Dependencies
+      # Note tomli required for codespell with pyproject.toml
+      # For debug:
+      #   python -m pip install --upgrade pip wheel
+      #   pip install -q git+https://github.com/ultralytics/actions@main codespell tomli
+      run: |
+        packages="ultralytics-actions"
+        if [ "${{ inputs.spelling }}" = "true" ]; then
+          packages="$packages codespell tomli"
+        fi
+
+        # On macOS, don't use sudo as it can cause environment issues
+        if [ "$(uname)" = "Darwin" ]; then
+          pip install -q $packages
+        else
+          sudo env "PATH=$PATH" uv pip install --system $packages
+        fi
+
+        ultralytics-actions-info
+      shell: bash
+
+    # Checkout Repository ----------------------------------------------------------------------------------------------
+    - name: Checkout Repository
+      if: github.event.action != 'closed'
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
+        token: ${{ inputs.token }}
+        ref: ${{ github.head_ref || github.ref }}
+        fetch-depth: 0
+
+    # PR Summary -------------------------------------------------------------------------------------------------------
+    - name: PR Summary
+      if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && inputs.summary == 'true' && github.event.action != 'synchronize'
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+        OPENAI_MODEL: ${{ inputs.openai_model }}
+      run: |
+        ultralytics-actions-summarize-pr
+      shell: bash
+      continue-on-error: true
+
+    # Python formatting ------------------------------------------------------------------------------------------------
+    # Ignores the following Docs rules to match Google-style docstrings:
+    # D100: Missing docstring in public module
+    # D104: Missing docstring in public package
+    # D203: 1 blank line required before class docstring
+    # D205: 1 blank line required between summary line and description
+    # D212: Multi-line docstring summary should start at the first line
+    # D213: Multi-line docstring summary should start at the second line
+    # D401: First line of docstring should be in imperative mood
+    # D406: Section name should end with a newline
+    # D407: Missing dashed underline after section
+    # D413: Missing blank line after last section
+    # --target-version is Python 3.8 for --extend-select UP (pyupgrade)
+    - name: Run Python
+      if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && inputs.python == 'true' && github.event.action != 'closed'
+      run: |
+        ruff format \
+        --line-length 120 \
+        . || true
+        ruff check \
+        --fix \
+        --unsafe-fixes \
+        --extend-select I,D,UP \
+        --target-version py38 \
+        --ignore D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 \
+        . || true
+        docformatter \
+        --wrap-summaries 120 \
+        --wrap-descriptions 120 \
+        --pre-summary-newline \
+        --close-quotes-on-newline \
+        --in-place \
+        --recursive \
+        .
+      shell: bash
+      continue-on-error: true
+
+    # Prettier (JavaScript, JSX, Angular, Vue, Flow, TypeScript, CSS, HTML, JSON, GraphQL, Markdown, YAML) -------------
+    - name: Run Prettier
+      if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && (inputs.prettier == 'true' || inputs.markdown == 'true') && github.event.action != 'closed'
+      run: |
+        ultralytics-actions-update-markdown-code-blocks
+        npm install --global prettier
+        npx prettier --write "**/*.{js,jsx,ts,tsx,css,less,scss,json,yml,yaml,html,vue,svelte}" '!**/*lock.{json,yaml,yml}' '!**/*.lock' '!**/model.json'
+        # Handle Markdown separately
+        find . -name "*.md" ! -path "*/docs/*" -exec npx prettier --write {} +
+        if [ -d "./docs" ]; then
+          find ./docs -name "*.md" ! -path "*/reference/*" -exec npx prettier --tab-width 4 --write {} +
+        fi
+      shell: bash
+      continue-on-error: true
+
+    # - name: Fix MkDocs reference section changes
+    #   if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && (inputs.prettier == 'true' || inputs.markdown == 'true') && github.event.action != 'closed'
+    #   run: |
+    #     from pathlib import Path
+    #     for file in Path("./docs").rglob('*.md'):
+    #         content = file.read_text()
+    #         updated_content = content.replace(".\_","._")
+    #         file.write_text(updated_content)
+    #   shell: python
+    #   continue-on-error: true
+
+    # Swift formatting -------------------------------------------------------------------------------------------------
+    - name: Run Swift Formatter
+      if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && inputs.swift == 'true' && github.event.action != 'closed'
+      run: |
+        brew install swift-format
+        swift-format --in-place --recursive .
+      shell: bash
+      continue-on-error: true
+
+    # Spelling ---------------------------------------------------------------------------------------------------------
+    - name: Run Codespell
+      if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && inputs.spelling == 'true' && github.event.action != 'closed'
+      run: |
+        codespell \
+          --write-changes \
+          --ignore-words-list "crate,nd,ned,strack,dota,ane,segway,fo,gool,winn,commend,bloc,nam,afterall,skelton,goin" \
+          --skip "*.pt,*.pth,*.torchscript,*.onnx,*.tflite,*.pb,*.bin,*.param,*.mlmodel,*.engine,*.npy,*.data*,*.csv,*pnnx*,*venv*,*translat*,*lock*,__pycache__*,*.ico,*.jpg,*.png,*.mp4,*.mov,/runs,/.git,./docs/??/*.md,./docs/mkdocs_??.yml"
+      shell: bash
+      continue-on-error: true
+
+    # Autolabel Issues and PRs (run before commit changes in case commit fails) ----------------------------------------
+    - name: Autolabel Issues and PRs
+      if: inputs.labels == 'true' && (github.event.action == 'opened' || github.event.action == 'created')
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        FIRST_ISSUE_RESPONSE: ${{ inputs.first_issue_response }}
+        FIRST_PR_RESPONSE: ${{ inputs.first_pr_response }}
+        OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+        OPENAI_MODEL: ${{ inputs.openai_model }}
+      run: |
+        ultralytics-actions-first-interaction
+      shell: bash
+      continue-on-error: true
+
+    # Commit Changes ---------------------------------------------------------------------------------------------------
+    - name: Commit and Push Changes
+      if: (github.event_name == 'pull_request' || github.event_name == 'pull_request_target') && github.event.action != 'closed'
+      run: |
+        git config --global user.name "${{ inputs.github_username }}"
+        git config --global user.email "${{ inputs.github_email }}"
+        # this action is not called in the test
+        git pull origin ${{ github.head_ref || github.ref }}
+        git add .
+        git reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token
+        if ! git diff --staged --quiet; then
+          git commit -m "Auto-format by https://ultralytics.com/actions"
+          git push
+        else
+          echo "No changes to commit"
+        fi
+      shell: bash
+      continue-on-error: false
+
+    # Broken links -----------------------------------------------------------------------------------------------------
+    - name: Broken Link Checker
+      if: inputs.links == 'true' && github.event.action != 'closed'
+      uses: lycheeverse/lychee-action@v2.0.2
+      with:
+        # Check all markdown and html files in repo. Ignores the following status codes to reduce false positives:
+        #   - 403(OpenVINO, "forbidden")
+        #   - 429(Instagram, "too many requests")
+        #   - 500(Zenodo, "cached")
+        #   - 502(Zenodo, "bad gateway")
+        #   - 999(LinkedIn, "unknown status code")
+        args: |
+          --scheme https
+          --timeout 60
+          --insecure
+          --accept 403,429,500,502,999
+          --exclude-all-private
+          --exclude "https?://(www\.)?(github\.com|linkedin\.com|twitter\.com|instagram\.com|kaggle\.com|fonts\.gstatic\.com|url\.com)"
+          "./**/*.md"
+          "./**/*.html"
+        token: ${{ inputs.token }}
+        output: ../lychee/results.md
+        fail: true
+      continue-on-error: false

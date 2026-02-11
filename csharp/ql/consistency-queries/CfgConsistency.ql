@@ -29,7 +29,7 @@ predicate bbSuccInconsistency(ControlFlowElement pred, ControlFlowElement succ) 
     succBB.getFirstNode() = succ.getAControlFlowNode()
   ) and
   not exists(PreBasicBlock predBB, PreBasicBlock succBB |
-    predBB.getLastElement() = pred and
+    predBB.getLastNode() = pred and
     succBB = predBB.getASuccessor() and
     succBB.getFirstElement() = succ
   )
@@ -41,12 +41,12 @@ predicate bbIntraSuccInconsistency(ControlFlowElement pred, ControlFlowElement s
     succ.getAControlFlowNode() = bb.getNode(i + 1)
   ) and
   not exists(PreBasicBlock bb |
-    bb.getLastElement() = pred and
+    bb.getLastNode() = pred and
     bb.getASuccessor().getFirstElement() = succ
   ) and
   not exists(PreBasicBlock bb, int i |
-    bb.getElement(i) = pred and
-    bb.getElement(i + 1) = succ
+    bb.getNode(i) = pred and
+    bb.getNode(i + 1) = succ
   )
 }
 
@@ -60,9 +60,4 @@ query predicate preBasicBlockConsistency(ControlFlowElement cfe1, ControlFlowEle
   or
   bbIntraSuccInconsistency(cfe1, cfe2) and
   s = "intra succ inconsistency"
-}
-
-query predicate multipleToString(Node n, string s) {
-  s = strictconcat(n.toString(), ",") and
-  strictcount(n.toString()) > 1
 }

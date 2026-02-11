@@ -4,8 +4,8 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.lang.instrument", "ClassDefinition", False, "ClassDefinition", "(Class,byte[])", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["java.lang.instrument", "ClassDefinition", False, "getDefinitionClassFile", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.lang.instrument", "ClassDefinition", False, "ClassDefinition", "(Class,byte[])", "", "Argument[1]", "Argument[this].SyntheticField[java.lang.instrument.ClassDefinition.mClassFile]", "value", "dfc-generated"]
+      - ["java.lang.instrument", "ClassDefinition", False, "getDefinitionClassFile", "()", "", "Argument[this].SyntheticField[java.lang.instrument.ClassDefinition.mClassFile]", "ReturnValue", "value", "dfc-generated"]
       - ["java.lang.instrument", "IllegalClassFormatException", True, "IllegalClassFormatException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.lang.instrument", "UnmodifiableClassException", True, "UnmodifiableClassException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.lang.instrument", "UnmodifiableModuleException", True, "UnmodifiableModuleException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

@@ -4,6 +4,7 @@
  * own.
  */
 
+import semmle.javascript.filters.ClassifyFiles
 import javascript
 private import semmle.javascript.security.SensitiveActions
 
@@ -38,5 +39,9 @@ module HardcodedCredentials {
    */
   class DefaultCredentialsSink extends Sink instanceof CredentialsNode {
     override string getKind() { result = super.getCredentialsKind() }
+
+    DefaultCredentialsSink() {
+      not (super.getCredentialsKind() = "jwt key" and isTestFile(this.getFile()))
+    }
   }
 }

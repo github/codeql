@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
+      - ["github.com/gorilla/mux", "", False, "Vars", "", "", "ReturnValue", "remote", "manual"] # TODO: when sources can have access paths, use .MapValue (and .MapKey?)

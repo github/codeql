@@ -5,6 +5,7 @@
  */
 
 import javascript
+private import codeql.threatmodels.ThreatModels
 
 module RegExpInjection {
   /**
@@ -26,21 +27,38 @@ module RegExpInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source for regular
-   * expression injection.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
-  }
-
-  private import IndirectCommandInjectionCustomizations
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
 
   /**
-   * A read of `process.env`, `process.argv`, and similar, considered as a flow source for regular
-   * expression injection.
+   * An active threat-model source, considered as a flow source.
+   * Excludes environment variables by default - they require the "environment" threat model.
    */
-  class ArgvAsSource extends Source instanceof IndirectCommandInjection::Source {
-    override string describe() { result = IndirectCommandInjection::Source.super.describe() }
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() {
+      not this.isClientSideSource() and
+      not this.(ThreatModelSource).getThreatModel() = "environment"
+    }
+  }
+
+  /**
+   * Environment variables as a source when the "environment" threat model is active.
+   */
+  private class EnvironmentVariableAsSource extends Source instanceof ThreatModelSource {
+    EnvironmentVariableAsSource() {
+      this.getThreatModel() = "environment" and
+      currentThreatModel("environment")
+    }
+
+    override string describe() { result = "environment variable" }
+  }
+
+  /**
+   * Command line arguments as a source for regular expression injection.
+   */
+  private class CommandLineArgumentAsSource extends Source instanceof CommandLineArguments {
+    override string describe() { result = "command-line argument" }
   }
 
   /**
@@ -72,7 +90,7 @@ module RegExpInjection {
    */
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
-      this.isGlobal() and
+      this.maybeGlobal() and
       (
         RegExp::alwaysMatchesMetaCharacter(this.getRegExp().getRoot(), ["{", "[", "+"])
         or

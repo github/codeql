@@ -3,6 +3,8 @@
  * There is positive evidence that they are fully controlled by
  * the program source code.
  */
+overlay[local?]
+module;
 
 import semmle.code.java.Expr
 import semmle.code.java.security.Validation

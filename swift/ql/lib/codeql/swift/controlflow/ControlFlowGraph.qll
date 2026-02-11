@@ -2,19 +2,19 @@
 
 private import swift
 private import BasicBlocks
-private import SuccessorTypes
-private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowGraphImpl as CfgImpl
 private import internal.Completion
 private import internal.Scope
 private import internal.ControlFlowElements
+import codeql.controlflow.SuccessorType
 
 /** An AST node with an associated control-flow graph. */
-class CfgScope extends Scope instanceof CfgScope::Range_ {
+class CfgScope extends Scope instanceof CfgImpl::CfgScope::Range_ {
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
     exists(ControlFlowElement parent |
       parent.asAstNode() = getParentOfAst(this) and
-      result = getCfgScope(parent)
+      result = CfgImpl::getCfgScope(parent)
     )
   }
 }
@@ -27,7 +27,7 @@ class CfgScope extends Scope instanceof CfgScope::Range_ {
  *
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
-class ControlFlowNode extends Node {
+class ControlFlowNode extends CfgImpl::Node {
   /** Gets the AST node that this node corresponds to, if any. */
   ControlFlowElement getNode() { none() }
 
@@ -60,73 +60,4 @@ class ControlFlowNode extends Node {
 
   /** Holds if this node has more than one successor. */
   final predicate isBranch() { strictcount(this.getASuccessor()) > 1 }
-}
-
-/** The type of a control flow successor. */
-class SuccessorType extends TSuccessorType {
-  /** Gets a textual representation of successor type. */
-  string toString() { none() }
-}
-
-/** Provides different types of control flow successor types. */
-module SuccessorTypes {
-  /** A normal control flow successor. */
-  class NormalSuccessor extends SuccessorType, TSuccessorSuccessor {
-    final override string toString() { result = "successor" }
-  }
-
-  /** A conditional control flow successor. */
-  abstract class ConditionalSuccessor extends SuccessorType {
-    boolean value;
-
-    bindingset[value]
-    ConditionalSuccessor() { any() }
-
-    /** Gets the Boolean value of this successor. */
-    final boolean getValue() { result = value }
-
-    override string toString() { result = this.getValue().toString() }
-  }
-
-  /** A Boolean control flow successor. */
-  class BooleanSuccessor extends ConditionalSuccessor, TBooleanSuccessor {
-    BooleanSuccessor() { this = TBooleanSuccessor(value) }
-  }
-
-  class BreakSuccessor extends SuccessorType, TBreakSuccessor {
-    final override string toString() { result = "break" }
-  }
-
-  class ContinueSuccessor extends SuccessorType, TContinueSuccessor {
-    final override string toString() { result = "continue" }
-  }
-
-  class ReturnSuccessor extends SuccessorType, TReturnSuccessor {
-    final override string toString() { result = "return" }
-  }
-
-  class MatchingSuccessor extends ConditionalSuccessor, TMatchingSuccessor {
-    MatchingSuccessor() { this = TMatchingSuccessor(value) }
-
-    /** Holds if this is a match successor. */
-    predicate isMatch() { value = true }
-
-    override string toString() { if this.isMatch() then result = "match" else result = "no-match" }
-  }
-
-  class FallthroughSuccessor extends SuccessorType, TFallthroughSuccessor {
-    final override string toString() { result = "fallthrough" }
-  }
-
-  class EmptinessSuccessor extends ConditionalSuccessor, TEmptinessSuccessor {
-    EmptinessSuccessor() { this = TEmptinessSuccessor(value) }
-
-    predicate isEmpty() { value = true }
-
-    override string toString() { if this.isEmpty() then result = "empty" else result = "non-empty" }
-  }
-
-  class ExceptionSuccessor extends SuccessorType, TExceptionSuccessor {
-    override string toString() { result = "exception" }
-  }
 }

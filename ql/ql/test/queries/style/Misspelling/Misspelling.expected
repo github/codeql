@@ -2,5 +2,5 @@
 | Test.qll:4:7:4:26 | Class PublicallyAccessible | This class name contains the common misspelling 'publically', which should instead be 'publicly'. |
 | Test.qll:5:3:5:20 | FieldDecl | This field name contains the common misspelling 'occurences', which should instead be 'occurrences'. |
 | Test.qll:10:13:10:23 | ClassPredicate hasAgrument | This predicate name contains the common misspelling 'agrument', which should instead be 'argument'. |
-| Test.qll:13:1:16:3 | QLDoc | This comment contains the non-US spelling 'colour', which should instead be 'color'. |
-| Test.qll:17:7:17:17 | Class AnalysedInt | This class name contains the non-US spelling 'analysed', which should instead be 'analyzed'. |
+| Test.qll:15:1:18:3 | QLDoc | This comment contains the non-US spelling 'colour', which should instead be 'color'. |
+| Test.qll:19:7:19:17 | Class AnalysedInt | This class name contains the non-US spelling 'analysed', which should instead be 'analyzed'. |

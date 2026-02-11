@@ -3,7 +3,7 @@
  */
 
 import csharp
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import ValueFlowTest<DefaultFlowConfig>
 import PathGraph
 

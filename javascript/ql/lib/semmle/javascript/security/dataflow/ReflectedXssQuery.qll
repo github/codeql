@@ -5,12 +5,32 @@
 
 import javascript
 import ReflectedXssCustomizations::ReflectedXss
-private import Xss::Shared as Shared
+private import Xss::Shared as SharedXss
 
 /**
- * A taint-tracking configuration for reasoning about XSS.
+ * A taint-tracking configuration for reasoning about reflected XSS.
  */
-class Configuration extends TaintTracking::Configuration {
+module ReflectedXssConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node instanceof Sanitizer or node = SharedXss::BarrierGuard::getABarrierNode()
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint-tracking for reasoning about reflected XSS.
+ */
+module ReflectedXssFlow = TaintTracking::Global<ReflectedXssConfig>;
+
+/**
+ * DEPRECATED. Use the `ReflectedXssFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "ReflectedXss" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -28,11 +48,10 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::QuoteGuard {
+private class QuoteGuard extends SharedXss::QuoteGuard {
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
-{
+private class ContainsHtmlGuard extends SharedXss::ContainsHtmlGuard {
   ContainsHtmlGuard() { this = this }
 }

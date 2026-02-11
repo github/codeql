@@ -156,12 +156,12 @@ class NotAResourceClass1Jakarta {
 class NotAResourceClass2Jakarta {
 }
 
-class ExtendsJakartaRs1 extends JakartaRs1 {
+class ExtendsJakartaRs1 extends JakartaRs1 { // $ RootResourceClass
   @Override
   int Get() { // $ ResourceMethod
     return 1;
   }
-  
+
   @Override
   @QueryParam("") // $ InjectionAnnotation
   void Post() {
@@ -189,12 +189,12 @@ class ExtendsJakartaRs1 extends JakartaRs1 {
 }
 
 @Produces(MediaType.TEXT_XML) // $ ProducesAnnotation=text/xml
-class ExtendsJakartaRs1WithProducesAnnotation extends JakartaRs1 {
+class ExtendsJakartaRs1WithProducesAnnotation extends JakartaRs1 { // Not a root resource class because it has a JAX-RS annotation
   @Override
   int Get() { // $ ResourceMethod=text/xml
     return 2;
   }
-  
+
   @Override
   @QueryParam("") // $ InjectionAnnotation
   void Post() {

@@ -222,7 +222,7 @@ cfg.swift:
 #   40|                           getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #   40|                             getBase(): [DeclRefExpr] $interpolation
 #   40|                             getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#   40|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #   40|                           getArgument(0): [Argument] : Unknown error 
 #   40|                             getExpr(): [StringLiteralExpr] Unknown error 
 #   40|                         getElement(1): [CallExpr] call to appendInterpolation(_:)
@@ -236,7 +236,7 @@ cfg.swift:
 #   40|                           getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #   40|                             getBase(): [DeclRefExpr] $interpolation
 #   40|                             getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#   40|                             getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #   40|                           getArgument(0): [Argument] : 
 #   40|                             getExpr(): [StringLiteralExpr] 
 #   40|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
@@ -521,15 +521,15 @@ cfg.swift:
 #  113|         Type = Int
 #  114|     getVariable(4): [ConcreteVarDecl] n4
 #  114|         Type = Int
-#  116|     getVariable(5): [ConcreteVarDecl] n5
+#  115|     getVariable(5): [ConcreteVarDecl] n5
+#  115|         Type = Int
+#  116|     getVariable(6): [ConcreteVarDecl] n6
 #  116|         Type = Int
-#  117|     getVariable(6): [ConcreteVarDecl] n6
-#  117|         Type = Int
-#  118|     getVariable(7): [ConcreteVarDecl] n7
+#  118|     getVariable(7): [ConcreteVarDecl] n8
 #  118|         Type = Int
-#  119|     getVariable(8): [ConcreteVarDecl] n8
-#  119|         Type = Int
-#  121|     getVariable(9): [ConcreteVarDecl] n9
+#  120|     getVariable(8): [ConcreteVarDecl] n9
+#  120|         Type = Int
+#  121|     getVariable(9): [ConcreteVarDecl] n7
 #  121|         Type = Int
 #  122|     getVariable(10): [ConcreteVarDecl] n10
 #  122|         Type = Int
@@ -584,33 +584,33 @@ cfg.swift:
 #  114|           getBase().getFullyConverted(): [DotSelfExpr] .self
 #  114|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  114|       getPattern(0): [NamedPattern] n4
-#  116|     getElement(5): [PatternBindingDecl] var ... = ...
+#  115|     getElement(5): [PatternBindingDecl] var ... = ...
+#  115|       getInit(0): [MemberRefExpr] .myInt
+#  115|         getBase(): [DeclRefExpr] param
+#  115|       getPattern(0): [NamedPattern] n5
+#  116|     getElement(6): [PatternBindingDecl] var ... = ...
 #  116|       getInit(0): [MemberRefExpr] .myInt
 #  116|         getBase(): [DeclRefExpr] param
-#  116|       getPattern(0): [NamedPattern] n5
-#  117|     getElement(6): [PatternBindingDecl] var ... = ...
-#  117|       getInit(0): [MemberRefExpr] .myInt
-#  117|         getBase(): [DeclRefExpr] param
-#  117|         getBase().getFullyConverted(): [DotSelfExpr] .self
-#  117|       getPattern(0): [NamedPattern] n6
+#  116|         getBase().getFullyConverted(): [DotSelfExpr] .self
+#  116|       getPattern(0): [NamedPattern] n6
 #  118|     getElement(7): [PatternBindingDecl] var ... = ...
 #  118|       getInit(0): [CallExpr] call to getMyInt()
 #  118|         getFunction(): [MethodLookupExpr] .getMyInt()
 #  118|           getBase(): [DeclRefExpr] param
+#  118|           getBase().getFullyConverted(): [DotSelfExpr] .self
 #  118|           getMethodRef(): [DeclRefExpr] getMyInt()
-#  118|       getPattern(0): [NamedPattern] n7
-#  119|     getElement(8): [PatternBindingDecl] var ... = ...
-#  119|       getInit(0): [CallExpr] call to getMyInt()
-#  119|         getFunction(): [MethodLookupExpr] .getMyInt()
-#  119|           getBase(): [DeclRefExpr] param
-#  119|           getBase().getFullyConverted(): [DotSelfExpr] .self
-#  119|           getMethodRef(): [DeclRefExpr] getMyInt()
-#  119|       getPattern(0): [NamedPattern] n8
+#  118|       getPattern(0): [NamedPattern] n8
+#  120|     getElement(8): [PatternBindingDecl] var ... = ...
+#  120|       getInit(0): [MemberRefExpr] .myInt
+#  120|         getBase(): [DeclRefExpr] inoutParam
+#  120|         getBase().getFullyConverted(): [LoadExpr] (C) ...
+#  120|       getPattern(0): [NamedPattern] n9
 #  121|     getElement(9): [PatternBindingDecl] var ... = ...
-#  121|       getInit(0): [MemberRefExpr] .myInt
-#  121|         getBase(): [DeclRefExpr] inoutParam
-#  121|         getBase().getFullyConverted(): [LoadExpr] (C) ...
-#  121|       getPattern(0): [NamedPattern] n9
+#  121|       getInit(0): [CallExpr] call to getMyInt()
+#  121|         getFunction(): [MethodLookupExpr] .getMyInt()
+#  121|           getBase(): [DeclRefExpr] param
+#  121|           getMethodRef(): [DeclRefExpr] getMyInt()
+#  121|       getPattern(0): [NamedPattern] n7
 #  122|     getElement(10): [PatternBindingDecl] var ... = ...
 #  122|       getInit(0): [MemberRefExpr] .myInt
 #  122|         getBase(): [DeclRefExpr] inoutParam
@@ -702,6 +702,8 @@ cfg.swift:
 #  155|     getVariable(1): [ConcreteVarDecl] xOptional
 #  155|         Type = Int?
 #  138|     getElement(0): [ForEachStmt] for ... in ... { ... }
+#  138|       getVariable(0): [ConcreteVarDecl] $generator
+#  138|           Type = IndexingIterator<ClosedRange<Int>>
 #  138|       getPattern(): [AnyPattern] _
 #-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  138|         getInit(0): [CallExpr] call to makeIterator()
@@ -715,13 +717,13 @@ cfg.swift:
 #  138|                 getExpr(): [IntegerLiteralExpr] 0
 #  138|               getArgument(1): [Argument] : 10
 #  138|                 getExpr(): [IntegerLiteralExpr] 10
-#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#  138|             getMethodRef(): [DeclRefExpr] makeIterator()
 #  138|         getPattern(0): [NamedPattern] $generator
 #  138|       getNextCall(): [CallExpr] call to next()
 #  138|         getFunction(): [MethodLookupExpr] .next()
 #  138|           getBase(): [DeclRefExpr] $generator
 #  138|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next()
+#  138|           getMethodRef(): [DeclRefExpr] next()
 #  138|       getBody(): [BraceStmt] { ... }
 #  140|     getElement(1): [SwitchStmt] switch x { ... }
 #  140|       getExpr(): [DeclRefExpr] x
@@ -844,8 +846,6 @@ cfg.swift:
 #  158|       getElse(): [BraceStmt] { ... }
 #  159|         getElement(0): [ReturnStmt] return ...
 #  159|           getResult(): [BooleanLiteralExpr] false
-#  138| [ConcreteVarDecl] $generator
-#  138|     Type = IndexingIterator<ClosedRange<Int>>
 #  141| [ConcreteVarDecl] $match
 #  141|     Type = Int
 #  141| [ConcreteVarDecl] $match
@@ -853,7 +853,7 @@ cfg.swift:
 #  144| [ConcreteVarDecl] $match
 #  144|     Type = Int
 #  156| [ConcreteVarDecl] x
-#  156|     Type = (Int)
+#  156|     Type = Int
 #  163| [NamedFunction] testDefer(x:)
 #  163|     InterfaceType = (inout Int) -> ()
 #  163|   getParam(0): [ParamDecl] x
@@ -1462,7 +1462,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] : 
 #  263|                 getExpr(): [StringLiteralExpr] 
 #  263|             getElement(1): [CallExpr] call to appendInterpolation(_:)
@@ -1476,7 +1476,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  + 
 #  263|                 getExpr(): [StringLiteralExpr]  + 
 #  263|             getElement(3): [CallExpr] call to appendInterpolation(_:)
@@ -1490,7 +1490,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  is equal to 
 #  263|                 getExpr(): [StringLiteralExpr]  is equal to 
 #  263|             getElement(5): [CallExpr] call to appendInterpolation(_:)
@@ -1512,7 +1512,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] :  and here is a zero: 
 #  263|                 getExpr(): [StringLiteralExpr]  and here is a zero: 
 #  263|             getElement(7): [CallExpr] call to appendInterpolation(_:)
@@ -1527,7 +1527,7 @@ cfg.swift:
 #  263|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #  263|                 getBase(): [DeclRefExpr] $interpolation
 #  263|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#  263|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #  263|               getArgument(0): [Argument] : 
 #  263|                 getExpr(): [StringLiteralExpr] 
 #  266| [NamedFunction] testSubscriptExpr()
@@ -3109,16 +3109,13 @@ cfg.swift:
 #  467| [NamedFunction] testIfConfig()
 #  467|     InterfaceType = () -> ()
 #  467|   getBody(): [BraceStmt] { ... }
-#  468|     getElement(0): [IfConfigDecl] #if ...
-#  472|     getElement(1): [IntegerLiteralExpr] 3
-#  473|     getElement(2): [IntegerLiteralExpr] 4
-#  476|     getElement(3): [IntegerLiteralExpr] 5
-#  478|     getElement(4): [IfConfigDecl] #if ...
-#  483|     getElement(5): [IntegerLiteralExpr] 8
-#  485|     getElement(6): [IfConfigDecl] #if ...
-#  489|     getElement(7): [IntegerLiteralExpr] 11
-#  490|     getElement(8): [IntegerLiteralExpr] 12
-#  493|     getElement(9): [IntegerLiteralExpr] 13
+#  472|     getElement(0): [IntegerLiteralExpr] 3
+#  473|     getElement(1): [IntegerLiteralExpr] 4
+#  476|     getElement(2): [IntegerLiteralExpr] 5
+#  483|     getElement(3): [IntegerLiteralExpr] 8
+#  489|     getElement(4): [IntegerLiteralExpr] 11
+#  490|     getElement(5): [IntegerLiteralExpr] 12
+#  493|     getElement(6): [IntegerLiteralExpr] 13
 #  496| [NamedFunction] testAvailable()
 #  496|     InterfaceType = () -> Int
 #  496|   getBody(): [BraceStmt] { ... }
@@ -3131,8 +3128,8 @@ cfg.swift:
 #  499|       getCondition(): [StmtCondition] StmtCondition
 #  499|         getElement(0): [ConditionElement] #available
 #  499|           getAvailability(): [AvailabilityInfo] #available
-#  499|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 10
-#  499|             getSpec(1): [OtherAvailabilitySpec] *
+#  499|             getSpec(0): [AvailabilitySpec] macOS 10
+#  499|             getSpec(1): [AvailabilitySpec] *
 #  499|       getThen(): [BraceStmt] { ... }
 #  500|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  500|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3148,8 +3145,8 @@ cfg.swift:
 #  503|       getCondition(): [StmtCondition] StmtCondition
 #  503|         getElement(0): [ConditionElement] #available
 #  503|           getAvailability(): [AvailabilityInfo] #available
-#  503|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 10.13
-#  503|             getSpec(1): [OtherAvailabilitySpec] *
+#  503|             getSpec(0): [AvailabilitySpec] macOS 10.13
+#  503|             getSpec(1): [AvailabilitySpec] *
 #  503|       getThen(): [BraceStmt] { ... }
 #  504|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  504|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3165,9 +3162,9 @@ cfg.swift:
 #  507|       getCondition(): [StmtCondition] StmtCondition
 #  507|         getElement(0): [ConditionElement] #unavailable
 #  507|           getAvailability(): [AvailabilityInfo] #unavailable
-#  507|             getSpec(0): [PlatformVersionAvailabilitySpec] iOS 10
-#  507|             getSpec(1): [PlatformVersionAvailabilitySpec] watchOS 10
-#  507|             getSpec(2): [PlatformVersionAvailabilitySpec] macOS 10
+#  507|             getSpec(0): [AvailabilitySpec] iOS 10
+#  507|             getSpec(1): [AvailabilitySpec] watchOS 10
+#  507|             getSpec(2): [AvailabilitySpec] macOS 10
 #  507|       getThen(): [BraceStmt] { ... }
 #  508|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  508|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3183,8 +3180,8 @@ cfg.swift:
 #  511|       getCondition(): [StmtCondition] StmtCondition
 #  511|         getElement(0): [ConditionElement] #available
 #  511|           getAvailability(): [AvailabilityInfo] #available
-#  511|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 12
-#  511|             getSpec(1): [OtherAvailabilitySpec] *
+#  511|             getSpec(0): [AvailabilitySpec] macOS 12
+#  511|             getSpec(1): [AvailabilitySpec] *
 #  511|       getBody(): [BraceStmt] { ... }
 #  512|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  512|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3200,12 +3197,12 @@ cfg.swift:
 #  515|       getCondition(): [StmtCondition] StmtCondition
 #  515|         getElement(0): [ConditionElement] #available
 #  515|           getAvailability(): [AvailabilityInfo] #available
-#  515|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 12
-#  515|             getSpec(1): [OtherAvailabilitySpec] *
+#  515|             getSpec(0): [AvailabilitySpec] macOS 12
+#  515|             getSpec(1): [AvailabilitySpec] *
 #  515|         getElement(1): [ConditionElement] #available
 #  515|           getAvailability(): [AvailabilityInfo] #available
-#  515|             getSpec(0): [PlatformVersionAvailabilitySpec] iOS 12
-#  515|             getSpec(1): [OtherAvailabilitySpec] *
+#  515|             getSpec(0): [AvailabilitySpec] iOS 12
+#  515|             getSpec(1): [AvailabilitySpec] *
 #  515|       getThen(): [BraceStmt] { ... }
 #  516|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #  516|           getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -3248,17 +3245,23 @@ cfg.swift:
 #  524|             getParam(0): [ParamDecl] continuation
 #  524|                 Type = AsyncStream<Int>.Continuation
 #  523|             getBody(): [BraceStmt] { ... }
-#  525|               getElement(0): [CallExpr] call to detached(priority:operation:)
-#  525|                 getFunction(): [MethodLookupExpr] .detached(priority:operation:)
+#  525|               getElement(0): [CallExpr] call to detached(name:priority:operation:)
+#  525|                 getFunction(): [MethodLookupExpr] .detached(name:priority:operation:)
 #  525|                   getBase(): [TypeExpr] Task<(), Never>.Type
 #  525|                     getTypeRepr(): [TypeRepr] Task<(), Never>
-#  525|                   getMethodRef(): [DeclRefExpr] detached(priority:operation:)
-#  525|                 getArgument(0): [Argument] priority: default priority
+#  525|                   getMethodRef(): [DeclRefExpr] detached(name:priority:operation:)
+#  525|                 getArgument(0): [Argument] name: default name
+#  525|                   getExpr(): [DefaultArgumentExpr] default name
+#  525|                 getArgument(1): [Argument] priority: default priority
 #  525|                   getExpr(): [DefaultArgumentExpr] default priority
-#  525|                 getArgument(1): [Argument] operation: { ... }
+#  525|                 getArgument(2): [Argument] operation: { ... }
 #  525|                   getExpr(): [ExplicitClosureExpr] { ... }
 #  525|                     getBody(): [BraceStmt] { ... }
 #  526|                       getElement(0): [ForEachStmt] for ... in ... { ... }
+#  526|                         getVariable(0): [ConcreteVarDecl] i
+#  526|                             Type = Int
+#  526|                         getVariable(1): [ConcreteVarDecl] $i$generator
+#  526|                             Type = IndexingIterator<ClosedRange<Int>>
 #  526|                         getPattern(): [NamedPattern] i
 #-----|                         getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  526|                           getInit(0): [CallExpr] call to makeIterator()
@@ -3272,13 +3275,13 @@ cfg.swift:
 #  526|                                   getExpr(): [IntegerLiteralExpr] 1
 #  526|                                 getArgument(1): [Argument] : 100
 #  526|                                   getExpr(): [IntegerLiteralExpr] 100
-#-----|                               getMethodRef(): [DeclRefExpr] makeIterator()
+#  526|                               getMethodRef(): [DeclRefExpr] makeIterator()
 #  526|                           getPattern(0): [NamedPattern] $i$generator
 #  526|                         getNextCall(): [CallExpr] call to next()
 #  526|                           getFunction(): [MethodLookupExpr] .next()
 #  526|                             getBase(): [DeclRefExpr] $i$generator
 #  526|                             getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                             getMethodRef(): [DeclRefExpr] next()
+#  526|                             getMethodRef(): [DeclRefExpr] next()
 #  526|                         getBody(): [BraceStmt] { ... }
 #  527|                           getElement(0): [CallExpr] call to yield(_:)
 #  527|                             getFunction(): [MethodLookupExpr] .yield(_:)
@@ -3291,22 +3294,29 @@ cfg.swift:
 #  529|                           getBase(): [DeclRefExpr] continuation
 #  529|                           getMethodRef(): [DeclRefExpr] finish()
 #  527|                     getCapture(0): [CapturedDecl] continuation
+#  525|                   getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #  523|       getPattern(0): [NamedPattern] stream
 #  533|     getElement(1): [ForEachStmt] for ... in ... { ... }
+#  533|       getVariable(0): [ConcreteVarDecl] i
+#  533|           Type = Int
+#  533|       getVariable(1): [ConcreteVarDecl] $i$generator
+#  533|           Type = AsyncStream<Int>.Iterator
 #  533|       getPattern(): [NamedPattern] i
 #-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #  533|         getInit(0): [CallExpr] call to makeAsyncIterator()
 #  533|           getFunction(): [MethodLookupExpr] .makeAsyncIterator()
 #  533|             getBase(): [DeclRefExpr] stream
 #  533|             getBase().getFullyConverted(): [LoadExpr] (AsyncStream<Int>) ...
-#-----|             getMethodRef(): [DeclRefExpr] makeAsyncIterator()
+#  533|             getMethodRef(): [DeclRefExpr] makeAsyncIterator()
 #  533|         getPattern(0): [NamedPattern] $i$generator
-#  533|       getNextCall(): [CallExpr] call to next()
-#  533|         getFunction(): [MethodLookupExpr] .next()
+#  533|       getNextCall(): [CallExpr] call to next(isolation:)
+#  533|         getFunction(): [MethodLookupExpr] .next(isolation:)
 #  533|           getBase(): [DeclRefExpr] $i$generator
 #  533|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next()
-#-----|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
+#  533|           getMethodRef(): [DeclRefExpr] next(isolation:)
+#  533|         getArgument(0): [Argument] isolation: CurrentContextIsolationExpr
+#  533|           getExpr(): [CurrentContextIsolationExpr] CurrentContextIsolationExpr
+#  533|       getNextCall().getFullyConverted(): [AwaitExpr] await ...
 #  533|       getBody(): [BraceStmt] { ... }
 #  534|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #  534|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -3320,14 +3330,8 @@ cfg.swift:
 #  534|           getArgument(2): [Argument] terminator: default terminator
 #  534|             getExpr(): [DefaultArgumentExpr] default terminator
 #  525| [NilLiteralExpr] nil
-#  526| [ConcreteVarDecl] i
-#  526|     Type = Int
-#  526| [ConcreteVarDecl] $i$generator
-#  526|     Type = IndexingIterator<ClosedRange<Int>>
-#  533| [ConcreteVarDecl] i
-#  533|     Type = Int
-#  533| [ConcreteVarDecl] $i$generator
-#  533|     Type = AsyncStream<Int>.Iterator
+#  525| [NilLiteralExpr] nil
+#  533| [NilLiteralExpr] nil
 #  538| [NamedFunction] testNilCoalescing(x:)
 #  538|     InterfaceType = (Int?) -> Int
 #  538|   getParam(0): [ParamDecl] x
@@ -3545,6 +3549,83 @@ cfg.swift:
 #  582|     Type = Int
 #  587| [Comment] // ---
 #  587| 
+#  589| [Comment] //codeql-extractor-options: -enable-experimental-feature ValueGenerics -disable-availability-checking
+#  589| 
+#  590| [StructDecl] ValueGenericsStruct
+#  590|   getGenericTypeParam(0): [GenericTypeParamDecl] N
+#  591|   getMember(0): [PatternBindingDecl] var ... = ...
+#  591|     getInit(0): [TypeValueExpr] TypeValueExpr
+#  591|       getTypeRepr(): [TypeRepr] N
+#  591|     getPattern(0): [NamedPattern] x
+#  591|   getMember(1): [ConcreteVarDecl] x
+#  591|       Type = Int
+#  591|     getAccessor(0): [Accessor] get
+#  591|         InterfaceType = <let N : Int> (ValueGenericsStruct<N>) -> () -> Int
+#  591|       getSelfParam(): [ParamDecl] self
+#  591|           Type = ValueGenericsStruct<N>
+#  591|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
+#  591|     getAccessor(1): [Accessor] set
+#  591|         InterfaceType = <let N : Int> (inout ValueGenericsStruct<N>) -> (Int) -> ()
+#  591|       getSelfParam(): [ParamDecl] self
+#  591|           Type = ValueGenericsStruct<N>
+#  591|       getParam(0): [ParamDecl] value
+#  591|           Type = Int
+#  591|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  591|     getAccessor(2): [Accessor] _modify
+#  591|         InterfaceType = <let N : Int> (inout ValueGenericsStruct<N>) -> () -> ()
+#  591|       getSelfParam(): [ParamDecl] self
+#  591|           Type = ValueGenericsStruct<N>
+#  591|       getBody(): [BraceStmt] { ... }
+#  591|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [MemberRefExpr] .x
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getResult(0).getFullyConverted(): [InOutExpr] &...
+#  590|   getMember(2): [Initializer] ValueGenericsStruct<N>.init(x:)
+#  590|       InterfaceType = <let N : Int> (ValueGenericsStruct<N>.Type) -> (Int) -> ValueGenericsStruct<N>
+#  590|     getSelfParam(): [ParamDecl] self
+#  590|         Type = ValueGenericsStruct<N>
+#  590|     getParam(0): [ParamDecl] x
+#  590|         Type = Int
+#  590|   getMember(3): [Initializer] ValueGenericsStruct<N>.init()
+#  590|       InterfaceType = <let N : Int> (ValueGenericsStruct<N>.Type) -> () -> ValueGenericsStruct<N>
+#  590|     getSelfParam(): [ParamDecl] self
+#  590|         Type = ValueGenericsStruct<N>
+#  590|     getBody(): [BraceStmt] { ... }
+#  590|       getElement(0): [ReturnStmt] return
+#  594| [NamedFunction] valueGenericsFn(_:)
+#  594|     InterfaceType = <let N : Int> (ValueGenericsStruct<N>) -> ()
+#  594|   getGenericTypeParam(0): [GenericTypeParamDecl] N
+#  594|   getParam(0): [ParamDecl] value
+#  594|       Type = ValueGenericsStruct<N>
+#  594|   getBody(): [BraceStmt] { ... }
+#  595|     getVariable(0): [ConcreteVarDecl] x
+#  595|         Type = Int
+#  595|     getElement(0): [PatternBindingDecl] var ... = ...
+#  595|       getInit(0): [TypeValueExpr] TypeValueExpr
+#  595|         getTypeRepr(): [TypeRepr] N
+#  595|       getPattern(0): [NamedPattern] x
+#  596|     getElement(1): [CallExpr] call to print(_:separator:terminator:)
+#  596|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  596|       getArgument(0): [Argument] : [...]
+#  596|         getExpr(): [VarargExpansionExpr] [...]
+#  596|           getSubExpr(): [ArrayExpr] [...]
+#  596|             getElement(0): [DeclRefExpr] x
+#  596|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  596|               getSubExpr(): [LoadExpr] (Int) ...
+#  596|       getArgument(1): [Argument] separator: default separator
+#  596|         getExpr(): [DefaultArgumentExpr] default separator
+#  596|       getArgument(2): [Argument] terminator: default terminator
+#  596|         getExpr(): [DefaultArgumentExpr] default terminator
+#  597|     getElement(2): [AssignExpr]  ... = ...
+#  597|       getDest(): [DiscardAssignmentExpr] _
+#  597|       getSource(): [DeclRefExpr] value
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...
@@ -4490,7 +4571,7 @@ declarations.swift:
 #   81|         Type = Int
 #   81|     getParam(5): [ParamDecl] hasBoth
 #   81|         Type = Int
-#   89| [Comment] // A field can be marked as read-only by dirctly implementing
+#   89| [Comment] // A field can be marked as read-only by directly implementing
 #   89| 
 #   90| [Comment] // the getter between the braces.
 #   90| 
@@ -4586,14 +4667,11 @@ declarations.swift:
 #  157| [NamedFunction] ifConfig()
 #  157|     InterfaceType = () -> ()
 #  157|   getBody(): [BraceStmt] { ... }
-#  158|     getElement(0): [IfConfigDecl] #if ...
-#  163|     getElement(1): [IntegerLiteralExpr] 4
-#  164|     getElement(2): [IntegerLiteralExpr] 5
-#  165|     getElement(3): [IntegerLiteralExpr] 6
-#  168|     getElement(4): [IfConfigDecl] #if ...
-#  173|     getElement(5): [IfConfigDecl] #if ...
-#  174|     getElement(6): [IntegerLiteralExpr] 9
-#  175|     getElement(7): [IntegerLiteralExpr] 10
+#  163|     getElement(0): [IntegerLiteralExpr] 4
+#  164|     getElement(1): [IntegerLiteralExpr] 5
+#  165|     getElement(2): [IntegerLiteralExpr] 6
+#  174|     getElement(3): [IntegerLiteralExpr] 9
+#  175|     getElement(4): [IntegerLiteralExpr] 10
 #  182| [ClassDecl] B
 #  182|   getMember(0): [Deinitializer] B.deinit()
 #  182|       InterfaceType = (B) -> () -> ()
@@ -4744,7 +4822,7 @@ expressions.swift:
 #    7|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #    7|                 getBase(): [DeclRefExpr] $interpolation
 #    7|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#    7|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #    7|               getArgument(0): [Argument] : hello 
 #    7|                 getExpr(): [StringLiteralExpr] hello 
 #    7|             getElement(1): [CallExpr] call to appendInterpolation(_:)
@@ -4758,7 +4836,7 @@ expressions.swift:
 #    7|               getFunction(): [MethodLookupExpr] .appendLiteral(_:)
 #    7|                 getBase(): [DeclRefExpr] $interpolation
 #    7|                 getBase().getFullyConverted(): [InOutExpr] &...
-#-----|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
+#    7|                 getMethodRef(): [DeclRefExpr] appendLiteral(_:)
 #    7|               getArgument(0): [Argument] : 
 #    7|                 getExpr(): [StringLiteralExpr] 
 #    7|       getPattern(0): [NamedPattern] s1
@@ -5137,7 +5215,6 @@ expressions.swift:
 #   60|                 getFunction(): [DeclRefExpr] unsafeFunction(pointer:)
 #   60|                 getArgument(0): [Argument] pointer: $0
 #   60|                   getExpr(): [DeclRefExpr] $0
-#   60|         getExpr().getFullyConverted(): [FunctionConversionExpr] ((UnsafePointer<Int>) throws -> ()) ...
 #   62| [ClassDecl] FailingToInit
 #   63|   getMember(0): [Initializer] FailingToInit.init(x:)
 #   63|       InterfaceType = (FailingToInit.Type) -> (Int) -> FailingToInit?
@@ -5972,12 +6049,12 @@ expressions.swift:
 #  179|   getBody(): [BraceStmt] { ... }
 #  179|     getElement(0): [PatternBindingDecl] var ... = ...
 #  179|       getInit(0): [KeyPathExpr] #keyPath(...)
-#  179|         getRoot(): [TypeRepr] Int?
+#  179|         getRoot(): [TypeRepr] Optional<Int>
 #  179|         getComponent(0): [KeyPathComponent] KeyPathComponent
 #  179|         getComponent(1): [KeyPathComponent] KeyPathComponent
 #  179|       getPattern(0): [NamedPattern] optForce
 #  179| [ConcreteVarDecl] optForce
-#  179|     Type = WritableKeyPath<Int?, Int>
+#  179|     Type = WritableKeyPath<Optional<Int>, Int>
 #  180| [TopLevelCodeDecl] { ... }
 #  180|   getBody(): [BraceStmt] { ... }
 #  180|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -6405,7 +6482,7 @@ patterns.swift:
 #   83|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
 #   83|               getSubPattern(): [BindingPattern] let ...
 #   83|         getVariable(0): [ConcreteVarDecl] a
-#   83|             Type = (Int)
+#   83|             Type = Int
 #   84|         getBody(): [BraceStmt] { ... }
 #   84|           getElement(0): [CallExpr] call to sink(arg:)
 #   84|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6505,7 +6582,7 @@ patterns.swift:
 #  105|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
 #  105|               getSubPattern(): [BindingPattern] let ...
 #  105|         getVariable(0): [ConcreteVarDecl] a
-#  105|             Type = (Int)
+#  105|             Type = Int
 #  106|         getBody(): [BraceStmt] { ... }
 #  106|           getElement(0): [CallExpr] call to sink(arg:)
 #  106|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6607,7 +6684,7 @@ patterns.swift:
 #  127|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
 #  127|               getSubPattern(): [BindingPattern] let ...
 #  127|         getVariable(0): [ConcreteVarDecl] a
-#  127|             Type = (Int)
+#  127|             Type = Int
 #  128|         getBody(): [BraceStmt] { ... }
 #  128|           getElement(0): [CallExpr] call to sink(arg:)
 #  128|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6710,7 +6787,7 @@ patterns.swift:
 #  149|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
 #  149|               getSubPattern(): [BindingPattern] let ...
 #  149|         getVariable(0): [ConcreteVarDecl] a
-#  149|             Type = (Int)
+#  149|             Type = Int
 #  150|         getBody(): [BraceStmt] { ... }
 #  150|           getElement(0): [CallExpr] call to sink(arg:)
 #  150|             getFunction(): [DeclRefExpr] sink(arg:)
@@ -6904,25 +6981,25 @@ patterns.swift:
 #  181|         getBody(): [BraceStmt] { ... }
 #  181|           getElement(0): [TupleExpr] (...)
 #   92| [ConcreteVarDecl] x
-#   92|     Type = (Int)
+#   92|     Type = Int
 #   95| [ConcreteVarDecl] x
 #   95|     Type = Int
 #   95| [ConcreteVarDecl] y
 #   95|     Type = Int
 #  114| [ConcreteVarDecl] x
-#  114|     Type = (Int)
+#  114|     Type = Int
 #  117| [ConcreteVarDecl] x
 #  117|     Type = Int
 #  117| [ConcreteVarDecl] y
 #  117|     Type = Int
 #  136| [ConcreteVarDecl] x
-#  136|     Type = (Int)
+#  136|     Type = Int
 #  139| [ConcreteVarDecl] x
 #  139|     Type = Int
 #  139| [ConcreteVarDecl] y
 #  139|     Type = Int
 #  162| [ConcreteVarDecl] x
-#  162|     Type = (Int)
+#  162|     Type = Int
 #  165| [ConcreteVarDecl] x
 #  165|     Type = Int
 #  165| [ConcreteVarDecl] y
@@ -6936,6 +7013,10 @@ statements.swift:
 #    9|     getVariable(0): [ConcreteVarDecl] i
 #    9|         Type = Int
 #    2|     getElement(0): [ForEachStmt] for ... in ... { ... }
+#    2|       getVariable(0): [ConcreteVarDecl] i
+#    2|           Type = Int
+#    2|       getVariable(1): [ConcreteVarDecl] $i$generator
+#    2|           Type = IndexingIterator<ClosedRange<Int>>
 #    2|       getPattern(): [NamedPattern] i
 #-----|       getIteratorVar(): [PatternBindingDecl] var ... = ...
 #    2|         getInit(0): [CallExpr] call to makeIterator()
@@ -6949,13 +7030,13 @@ statements.swift:
 #    2|                 getExpr(): [IntegerLiteralExpr] 1
 #    2|               getArgument(1): [Argument] : 5
 #    2|                 getExpr(): [IntegerLiteralExpr] 5
-#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#    2|             getMethodRef(): [DeclRefExpr] makeIterator()
 #    2|         getPattern(0): [NamedPattern] $i$generator
 #    2|       getNextCall(): [CallExpr] call to next()
 #    2|         getFunction(): [MethodLookupExpr] .next()
 #    2|           getBase(): [DeclRefExpr] $i$generator
 #    2|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next()
+#    2|           getMethodRef(): [DeclRefExpr] next()
 #    2|       getBody(): [BraceStmt] { ... }
 #    3|         getElement(0): [IfStmt] if ... then { ... } else { ... }
 #    3|           getCondition(): [StmtCondition] StmtCondition
@@ -7097,10 +7178,6 @@ statements.swift:
 #   30|               getExpr(): [DefaultArgumentExpr] default separator
 #   30|             getArgument(2): [Argument] terminator: default terminator
 #   30|               getExpr(): [DefaultArgumentExpr] default terminator
-#    2| [ConcreteVarDecl] i
-#    2|     Type = Int
-#    2| [ConcreteVarDecl] $i$generator
-#    2|     Type = IndexingIterator<ClosedRange<Int>>
 #   34| [EnumDecl] AnError
 #   35|   getMember(0): [EnumCaseDecl] case ...
 #   35|   getMember(1): [EnumElementDecl] failed
@@ -7371,6 +7448,10 @@ statements.swift:
 #   71| [TopLevelCodeDecl] { ... }
 #   71|   getBody(): [BraceStmt] { ... }
 #   71|     getElement(0): [ForEachStmt] for ... in ... where ... { ... }
+#   71|       getVariable(0): [ConcreteVarDecl] number
+#   71|           Type = Int
+#   71|       getVariable(1): [ConcreteVarDecl] $number$generator
+#   71|           Type = IndexingIterator<[Int]>
 #   71|       getPattern(): [NamedPattern] number
 #   71|       getWhere(): [BinaryExpr] ... .==(_:_:) ...
 #   71|         getFunction(): [MethodLookupExpr] .==(_:_:)
@@ -7393,18 +7474,14 @@ statements.swift:
 #   71|         getInit(0): [CallExpr] call to makeIterator()
 #   71|           getFunction(): [MethodLookupExpr] .makeIterator()
 #   71|             getBase(): [DeclRefExpr] numbers
-#-----|             getMethodRef(): [DeclRefExpr] makeIterator()
+#   71|             getMethodRef(): [DeclRefExpr] makeIterator()
 #   71|         getPattern(0): [NamedPattern] $number$generator
 #   71|       getNextCall(): [CallExpr] call to next()
 #   71|         getFunction(): [MethodLookupExpr] .next()
 #   71|           getBase(): [DeclRefExpr] $number$generator
 #   71|           getBase().getFullyConverted(): [InOutExpr] &...
-#-----|           getMethodRef(): [DeclRefExpr] next()
+#   71|           getMethodRef(): [DeclRefExpr] next()
 #   71|       getBody(): [BraceStmt] { ... }
-#   71| [ConcreteVarDecl] number
-#   71|     Type = Int
-#   71| [ConcreteVarDecl] $number$generator
-#   71|     Type = IndexingIterator<[Int]>
 #   74| [StructDecl] HasModifyAccessorDecl
 #   75|   getMember(0): [PatternBindingDecl] var ... = ...
 #   75|     getPattern(0): [TypedPattern] ... as ...
@@ -7485,8 +7562,8 @@ statements.swift:
 #   87|       getCondition(): [StmtCondition] StmtCondition
 #   87|         getElement(0): [ConditionElement] #available
 #   87|           getAvailability(): [AvailabilityInfo] #available
-#   87|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 155
-#   87|             getSpec(1): [OtherAvailabilitySpec] *
+#   87|             getSpec(0): [AvailabilitySpec] macOS 155
+#   87|             getSpec(1): [AvailabilitySpec] *
 #   87|       getThen(): [BraceStmt] { ... }
 #   88|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   88|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -7505,7 +7582,7 @@ statements.swift:
 #   91|       getCondition(): [StmtCondition] StmtCondition
 #   91|         getElement(0): [ConditionElement] #unavailable
 #   91|           getAvailability(): [AvailabilityInfo] #unavailable
-#   91|             getSpec(0): [PlatformVersionAvailabilitySpec] macOS 42
+#   91|             getSpec(0): [AvailabilitySpec] macOS 42
 #   91|       getThen(): [BraceStmt] { ... }
 #   92|         getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #   92|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)

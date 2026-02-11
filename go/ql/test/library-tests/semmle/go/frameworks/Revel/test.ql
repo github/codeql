@@ -1,5 +1,5 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 class Sink extends DataFlow::Node {
   Sink() {
@@ -23,8 +23,7 @@ module MissingDataFlowTest implements TestSig {
     value = "" and
     exists(Sink sink |
       not TestFlow::flowTo(sink) and
-      sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      sink.getLocation() = location and
       element = sink.toString()
     )
   }
@@ -36,8 +35,7 @@ module HttpResponseBodyTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "responsebody" and
     exists(Http::ResponseBody rb |
-      rb.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      rb.getLocation() = location and
       element = rb.toString() and
       value = "'" + rb.toString() + "'"
     )

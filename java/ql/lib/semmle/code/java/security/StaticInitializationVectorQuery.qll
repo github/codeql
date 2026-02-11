@@ -33,6 +33,7 @@ private class StaticByteArrayCreation extends ArrayCreationExpr {
 }
 
 /** An expression that updates `array`. */
+overlay[local?]
 private class ArrayUpdate extends Expr {
   Expr array;
 
@@ -106,7 +107,7 @@ private class StaticInitializationVectorSource extends DataFlow::Node {
       // Reduce FPs from utility methods that return an empty array in an exceptional case
       not exists(ReturnStmt ret |
         array.getADimension().(CompileTimeConstantExpr).getIntValue() = 0 and
-        DataFlow::localExprFlow(array, ret.getResult())
+        DataFlow::localExprFlow(array, ret.getExpr())
       )
     )
   }
@@ -120,27 +121,14 @@ private class EncryptionInitializationSink extends DataFlow::Node {
 }
 
 /**
- * DEPRECATED: Use `StaticInitializationVectorFlow` instead.
- *
- * A config that tracks dataflow to initializing a cipher with a static initialization vector.
- */
-deprecated class StaticInitializationVectorConfig extends TaintTracking::Configuration {
-  StaticInitializationVectorConfig() { this = "StaticInitializationVectorConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof StaticInitializationVectorSource
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
-}
-
-/**
  * A config that tracks dataflow to initializing a cipher with a static initialization vector.
  */
 module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof StaticInitializationVectorSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks the flow from a static initialization vector to the initialization of a cipher */

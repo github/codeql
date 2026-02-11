@@ -1,0 +1,1 @@
+| attr_eq_test.py:21:1:21:27 | class BadColorPoint | The class 'BadColorPoint' does not override $@, but adds the new attribute $@. | attr_eq_test.py:10:5:10:28 | Function Point.__eq__ | '__eq__' | attr_eq_test.py:25:9:25:19 | Attribute | _color |

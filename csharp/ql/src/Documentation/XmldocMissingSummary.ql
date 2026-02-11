@@ -6,6 +6,7 @@
  * @precision high
  * @id cs/xmldoc/missing-summary
  * @tags maintainability
+ *       readability
  */
 
 import Documentation

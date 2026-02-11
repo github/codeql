@@ -1,5 +1,6 @@
 // CodeQL database schema for QL
 // Automatically generated from the tree-sitter grammar; do not edit
+// To regenerate, run 'scripts/create-extractor-pack.sh' in ql/
 
 /*- Files and folders -*/
 
@@ -107,6 +108,28 @@ yaml_locations(unique int locatable: @yaml_locatable ref,
              int location: @location_default ref);
 
 @yaml_locatable = @yaml_node | @yaml_error;
+
+/*- Database metadata -*/
+
+/**
+ * The CLI will automatically emit applicable tuples for this table,
+ * such as `databaseMetadata("isOverlay", "true")` when building an
+ * overlay database.
+ */
+databaseMetadata(
+  string metadataKey: string ref,
+  string value: string ref
+);
+
+/*- Overlay support -*/
+
+/**
+ * The CLI will automatically emit tuples for each new/modified/deleted file
+ * when building an overlay database.
+ */
+overlayChangedFiles(
+  string path: string ref
+);
 
 /*- QL dbscheme -*/
 @ql_add_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable

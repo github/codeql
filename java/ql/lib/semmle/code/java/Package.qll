@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with Java packages.
  */
+overlay[local?]
+module;
 
 import Element
 import Type

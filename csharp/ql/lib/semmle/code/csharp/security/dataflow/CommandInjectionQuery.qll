@@ -24,21 +24,6 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `CommandInjection` instead.
- *
- * A taint-tracking configuration for command injection vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "CommandInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for command injection vulnerabilities.
  */
 module CommandInjectionConfig implements DataFlow::ConfigSig {
@@ -57,6 +42,8 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
    * `node` from the data flow graph.
    */
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -72,11 +59,16 @@ module CommandInjection = TaintTracking::Global<CommandInjectionConfig>;
 deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
-/** Command Injection sinks defined through Models as Data. */
+/** A Command Injection sink defined through Models as Data. */
 private class ExternalCommandInjectionExprSink extends Sink {
   ExternalCommandInjectionExprSink() { sinkNode(this, "command-injection") }
+}
+
+/** A sanitizer for command injection defined through Models as Data. */
+private class ExternalCommandInjectionSanitizer extends Sanitizer {
+  ExternalCommandInjectionSanitizer() { barrierNode(this, "command-injection") }
 }
 
 /**

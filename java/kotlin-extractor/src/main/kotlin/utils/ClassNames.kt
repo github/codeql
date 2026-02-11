@@ -5,16 +5,18 @@ import com.github.codeql.utils.versions.*
 import com.intellij.openapi.vfs.StandardFileSystems
 import com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.kotlin.builtins.jvm.JavaToKotlinClassMap
-import org.jetbrains.kotlin.fir.java.JavaBinarySourceElement
+import org.jetbrains.kotlin.fir.java.VirtualFileBasedSourceElement
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.impl.classFiles.BinaryJavaClass
+import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 import org.jetbrains.kotlin.load.kotlin.KotlinJvmBinarySourceElement
 import org.jetbrains.kotlin.load.kotlin.VirtualFileKotlinClass
+import org.jetbrains.kotlin.name.FqName
 
 // Adapted from Kotlin's interpreter/Utils.kt function 'internalName'
 // Translates class names into their JLS section 13.1 binary name,
@@ -30,6 +32,40 @@ fun getFileClassName(f: IrFile) =
             .replaceFirst(Regex(""".*[/\\]"""), "")
             .replaceFirst(Regex("""\.kt$"""), "")
             .replaceFirstChar { it.uppercase() }) + "Kt")
+
+fun getFileClassFqName(d: IrDeclaration): FqName? {
+    // d is in a file class.
+    // Get the name in a similar way to the compiler's ExternalPackageParentPatcherLowering
+    // visitMemberAccess/generateOrGetFacadeClass.
+
+    // But first, fields aren't IrMemberWithContainerSource, so we need
+    // to get back to the property (if there is one)
+    if (d is IrField) {
+        val propSym = d.correspondingPropertySymbol
+        if (propSym != null) {
+            return getFileClassFqName(propSym.owner)
+        }
+    }
+
+    // Now the main code
+    if (d is IrMemberWithContainerSource) {
+        val containerSource = d.containerSource
+        if (containerSource is FacadeClassSource) {
+            val facadeClassName = containerSource.facadeClassName
+            if (facadeClassName != null) {
+                // TODO: This is really a multifile-class rather than a file-class,
+                // but for now we treat them the same.
+                return facadeClassName.fqNameForTopLevelClassMaybeWithDollars
+            } else {
+                return containerSource.className.fqNameForTopLevelClassMaybeWithDollars
+            }
+        } else {
+            return null
+        }
+    } else {
+        return null
+    }
+}
 
 fun getIrElementBinaryName(that: IrElement): String {
     if (that is IrFile) {
@@ -89,8 +125,12 @@ fun getIrClassVirtualFile(irClass: IrClass): VirtualFile? {
                 is BinaryJavaClass -> return element.virtualFile
             }
         }
-        is JavaBinarySourceElement -> {
-            return cSource.javaClass.virtualFile
+        is VirtualFileBasedSourceElement -> {
+            if (cSource.virtualFile.name.endsWith(".class")) {
+                // At least lately, despite VirtualFileBasedSourceElement being constructed on a BinaryJavaClass,
+                // this can be a .java source file.
+                return cSource.virtualFile
+            }
         }
         is KotlinJvmBinarySourceElement -> {
             val binaryClass = cSource.binaryClass

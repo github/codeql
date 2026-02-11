@@ -42,36 +42,9 @@ private class ConstComparisonExpr extends ComparisonExpr {
   }
 }
 
-/**
- * DEPRECATED: Use `Flow` instead.
- *
- * A data-flow configuration for reasoning about
- * user-controlled bypassing of sensitive actions.
- */
-deprecated class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "Condtional Expression Check Bypass" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
-    or
-    exists(DataFlow::FieldReadNode f |
-      f.getField().hasQualifiedName("net/http", "Request", "Host")
-    |
-      source = f
-    )
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(ConstComparisonExpr c |
-      c.getAnOperand() = sink.asExpr() and
-      not c.isPotentialFalsePositive()
-    )
-  }
-}
-
 private module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
+    source instanceof ActiveThreatModelSource
     or
     exists(DataFlow::FieldReadNode f |
       f.getField().hasQualifiedName("net/http", "Request", "Host")
@@ -85,6 +58,14 @@ private module Config implements DataFlow::ConfigSig {
       c.getAnOperand() = sink.asExpr() and
       not c.isPotentialFalsePositive()
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(ComparisonExpr comp | result = comp.getLocation() | sink.asExpr() = comp.getAnOperand())
   }
 }
 

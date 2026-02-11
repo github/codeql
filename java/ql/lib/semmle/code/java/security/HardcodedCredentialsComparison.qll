@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates to detect comparing a parameter to a hard-coded credential.
  */
+overlay[local?]
+module;
 
 import java
 import HardcodedCredentials
@@ -11,9 +13,6 @@ import HardcodedCredentials
 class EqualsCall extends MethodCall {
   EqualsCall() { this.getMethod() instanceof EqualsMethod }
 }
-
-/** DEPRECATED: Alias for `EqualsCall`. */
-deprecated class EqualsAccess = EqualsCall;
 
 /**
  * Holds if `sink` compares password `p` against a hardcoded expression `source`.

@@ -98,10 +98,12 @@ private class SensitiveStringSink extends Sink {
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and not isBadResult(source)
+    source instanceof ActiveThreatModelSource and not isBadResult(source)
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink and not isBadResult(sink) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module Flow = TaintTracking::Global<Config>;

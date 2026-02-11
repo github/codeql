@@ -1,0 +1,6 @@
+multipleSuccessors
+| BreakInTry.cs:31:21:31:32 | ... == ... | false | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... |
+| BreakInTry.cs:31:21:31:32 | ... == ... | false | BreakInTry.cs:35:7:35:7 | ; |
+simpleAndNormalSuccessors
+| BreakInTry.cs:32:21:32:21 | ; | break | successor | BreakInTry.cs:35:7:35:7 | ; | BreakInTry.cs:22:9:34:9 | foreach (... ... in ...) ... |
+| Finally.cs:97:21:97:23 | ...-- | break | successor | Finally.cs:74:10:74:11 | exit M4 (normal) | Finally.cs:77:16:77:16 | access to local variable i |

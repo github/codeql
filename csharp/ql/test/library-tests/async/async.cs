@@ -52,5 +52,26 @@ namespace Semmle
             await PrintContentLengthAsync(filename);
             return File.OpenText(filename);
         }
+
+        private ref struct RS
+        {
+            public int GetZero() { return 0; }
+        }
+
+        private static int one = 1;
+
+        // Test that we can use ref locals, ref structs and unsafe blocks in async methods.
+        private static async Task<int> GetObjectAsync()
+        {
+            unsafe
+            {
+                // Do pointer stuff
+            }
+            RS rs;
+            ref int i = ref one;
+            var zero = rs.GetZero();
+            await Task.Delay(i);
+            return zero;
+        }
     }
 }

@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import AST
 private import Constant
@@ -579,12 +582,27 @@ abstract class StringlikeLiteralImpl extends Expr, TStringlikeLiteral {
     )
   }
 
+  pragma[nomagic]
+  private StringComponentImpl getComponentImplRestricted(int n) {
+    result = this.getComponentImpl(n) and
+    strictsum(int length, int i | length = this.getComponentImpl(i).getValue().length() | length) <
+      10000
+  }
+
   // 0 components results in the empty string
-  // if all interpolations have a known string value, we will get a result
+  // if all interpolations have a known string value, we will get a result, unless the
+  // combined length exceeds 10,000 characters
   language[monotonicAggregates]
   final string getStringValue() {
+    not exists(this.getComponentImpl(_)) and
+    result = ""
+    or
     result =
-      concat(StringComponentImpl c, int i | c = this.getComponentImpl(i) | c.getValue() order by i)
+      strictconcat(StringComponentImpl c, int i |
+        c = this.getComponentImplRestricted(i)
+      |
+        c.getValue() order by i
+      )
   }
 }
 
@@ -608,14 +626,30 @@ class BareStringLiteral extends StringLiteralImpl, TBareStringLiteral {
 
 abstract class SymbolLiteralImpl extends StringlikeLiteralImpl, TSymbolLiteral { }
 
-class SimpleSymbolLiteral extends SymbolLiteralImpl, TSimpleSymbolLiteral {
+abstract class SimpleSymbolLiteralImpl extends SymbolLiteralImpl, TSimpleSymbolLiteral { }
+
+class SimpleSymbolLiteralReal extends SimpleSymbolLiteralImpl, TSimpleSymbolLiteral {
   private Ruby::SimpleSymbol g;
 
-  SimpleSymbolLiteral() { this = TSimpleSymbolLiteral(g) }
+  SimpleSymbolLiteralReal() { this = TSimpleSymbolLiteralReal(g) }
 
   final override StringComponent getComponentImpl(int n) { n = 0 and toGenerated(result) = g }
 
   final override string toString() { result = g.getValue() }
+}
+
+class SimpleSymbolLiteralSynth extends SimpleSymbolLiteralImpl, TSimpleSymbolLiteralSynth,
+  StringComponentImpl
+{
+  private string value;
+
+  SimpleSymbolLiteralSynth() { this = TSimpleSymbolLiteralSynth(_, _, value) }
+
+  final override string getValue() { result = value }
+
+  final override StringComponent getComponentImpl(int n) { n = 0 and result = this }
+
+  final override string toString() { result = value }
 }
 
 abstract class ComplexSymbolLiteral extends SymbolLiteralImpl, TComplexSymbolLiteral { }

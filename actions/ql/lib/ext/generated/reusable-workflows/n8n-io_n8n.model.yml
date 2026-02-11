@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["n8n-io/n8n/.github/workflows/e2e-reusable.yml", "*", "input.pr_number", "code-injection", "generated"]

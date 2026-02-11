@@ -22,7 +22,7 @@ not logical in the context of an initializer.</p>
 </example>
 <references>
 
-  <li>Python: <a href="http://docs.python.org/2.7/reference/datamodel.html#object.__init__">The __init__ method</a>.</li>
+  <li>Python: <a href="http://docs.python.org/3/reference/datamodel.html#object.__init__">The __init__ method</a>.</li>
 
 </references>
 </qhelp>

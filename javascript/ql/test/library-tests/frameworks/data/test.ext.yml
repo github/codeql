@@ -10,7 +10,11 @@ extensions:
       - ['testlib', 'Member[MethodDecorator].DecoratedMember.Parameter[0]', 'test-source']
       - ['testlib', 'Member[ParamDecoratorSource].DecoratedParameter', 'test-source']
       - ['testlib', 'Member[getSource].ReturnValue', 'test-source']
+      - ['testlib', 'Member[getSourceArray].ReturnValue.ArrayElement', 'test-source']
       - ['(testlib)', 'Member[parenthesizedPackageName].ReturnValue', 'test-source']
+      - ['danger-constant', 'Member[danger]', 'test-source']
+      - ['testlib', 'Member[middleware].ReturnValue.GuardedRouteHandler.Parameter[0].Member[injectedReqData]', 'test-source']
+      - ['testlib', 'Member[middleware].ReturnValue.GuardedRouteHandler.Parameter[1].Member[injectedResData]', 'test-source']
 
   - addsTo:
       pack: codeql/javascript-all

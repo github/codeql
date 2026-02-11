@@ -1,4 +1,6 @@
 /** Provides classes to reason about vulnerabilites related to content URIs. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.FlowSinks

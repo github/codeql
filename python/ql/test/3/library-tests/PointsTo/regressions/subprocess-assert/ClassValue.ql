@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 // as used in semmle.python.filters.Tests
 from ClassValue c, string base

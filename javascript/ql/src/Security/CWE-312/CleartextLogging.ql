@@ -15,7 +15,7 @@
 
 import javascript
 import semmle.javascript.security.dataflow.CleartextLoggingQuery
-import DataFlow::PathGraph
+import CleartextLoggingFlow::PathGraph
 
 /**
  * Holds if `tl` is used in a browser environment.
@@ -33,9 +33,9 @@ predicate inBrowserEnvironment(TopLevel tl) {
   )
 }
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+from CleartextLoggingFlow::PathNode source, CleartextLoggingFlow::PathNode sink
 where
-  cfg.hasFlowPath(source, sink) and
+  CleartextLoggingFlow::flowPath(source, sink) and
   // ignore logging to the browser console (even though it is not a good practice)
   not inBrowserEnvironment(sink.getNode().asExpr().getTopLevel())
 select sink.getNode(), source, sink, "This logs sensitive data returned by $@ as clear text.",

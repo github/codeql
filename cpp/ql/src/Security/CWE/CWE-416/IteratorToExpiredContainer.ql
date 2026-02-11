@@ -2,7 +2,7 @@
  * @name Iterator to expired container
  * @description Using an iterator owned by a container whose lifetime has expired may lead to unexpected behavior.
  * @kind problem
- * @precision medium
+ * @precision high
  * @id cpp/iterator-to-expired-container
  * @problem.severity warning
  * @security-severity 8.8
@@ -144,6 +144,18 @@ module Config implements DataFlow::StateConfigSig {
     // foo(create_temporary())
     // ```
     result instanceof DataFlow::FeatureHasSinkCallContext
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) { none() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node mid, FlowState state | result = mid.getLocation() |
+      destroyedToBeginSink(sink) and
+      isSink(sink, state) and
+      state = Config::DestroyedToBegin(mid)
+    )
   }
 }
 

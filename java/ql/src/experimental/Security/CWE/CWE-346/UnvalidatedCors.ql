@@ -50,7 +50,7 @@ private Expr getAccessControlAllowOriginHeaderName() {
  * A taint-tracking configuration for flow from a source node to CorsProbableCheckAccess methods.
  */
 module CorsSourceReachesCheckConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { CorsOriginFlow::flow(source, _) }
+  predicate isSource(DataFlow::Node source) { CorsOriginFlow::flowFrom(source) }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(CorsProbableCheckAccess check).getAnArgument()
@@ -63,7 +63,7 @@ module CorsSourceReachesCheckConfig implements DataFlow::ConfigSig {
 module CorsSourceReachesCheckFlow = TaintTracking::Global<CorsSourceReachesCheckConfig>;
 
 private module CorsOriginConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall corsHeader, MethodCall allowCredentialsHeader |
@@ -81,9 +81,14 @@ private module CorsOriginConfig implements DataFlow::ConfigSig {
 
 private module CorsOriginFlow = TaintTracking::Global<CorsOriginConfig>;
 
-from CorsOriginFlow::PathNode source, CorsOriginFlow::PathNode sink
-where
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, CorsOriginFlow::PathNode source, CorsOriginFlow::PathNode sink,
+  string message1, DataFlow::Node sourceNode, string message2
+) {
   CorsOriginFlow::flowPath(source, sink) and
-  not CorsSourceReachesCheckFlow::flow(source.getNode(), _)
-select sink.getNode(), source, sink, "CORS header is being set using user controlled value $@.",
-  source.getNode(), "user-provided value"
+  not CorsSourceReachesCheckFlow::flowFrom(sourceNode) and
+  sinkNode = sink.getNode() and
+  message1 = "CORS header is being set using user controlled value $@." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

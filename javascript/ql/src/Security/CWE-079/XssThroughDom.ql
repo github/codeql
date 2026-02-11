@@ -4,7 +4,7 @@
  *              can lead to a cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity warning
- * @security-severity 6.1
+ * @security-severity 7.8
  * @precision high
  * @id js/xss-through-dom
  * @tags security
@@ -14,9 +14,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.XssThroughDomQuery
-import DataFlow::PathGraph
+import XssThroughDomFlow::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from XssThroughDomFlow::PathNode source, XssThroughDomFlow::PathNode sink
+where
+  XssThroughDomFlow::flowPath(source, sink) and
+  not isIgnoredSourceSinkPair(source.getNode(), sink.getNode())
 select sink.getNode(), source, sink,
   "$@ is reinterpreted as HTML without escaping meta-characters.", source.getNode(), "DOM text"

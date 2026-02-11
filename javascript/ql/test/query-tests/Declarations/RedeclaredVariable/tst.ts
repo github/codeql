@@ -8,12 +8,12 @@ namespace N2 {
   let y;
 }
 
-namespace N2 { // OK
+namespace N2 {
   var w;
 }
 
 function f(x: number): number;
-function f(x: string): string; // OK
-function f(x: any): any { // OK
+function f(x: string): string;
+function f(x: any): any {
   return x;
 }

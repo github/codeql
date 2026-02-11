@@ -1,23 +1,27 @@
 /**
  * Provides Java-specific definitions for use in the `SsaReadPosition`.
  */
+overlay[local?]
+module;
 
 private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.controlflow.BasicBlocks as BB
 private import SsaReadPositionCommon
 
-class SsaVariable = Ssa::SsaVariable;
+class SsaVariable = Ssa::SsaDefinition;
 
-class SsaPhiNode = Ssa::SsaPhiNode;
+class SsaPhiNode = Ssa::SsaPhiDefinition;
 
 class BasicBlock = BB::BasicBlock;
 
 /** Gets a basic block in which SSA variable `v` is read. */
-BasicBlock getAReadBasicBlock(SsaVariable v) { result = v.getAUse().getBasicBlock() }
+BasicBlock getAReadBasicBlock(SsaVariable v) { result = v.getARead().getBasicBlock() }
 
-private predicate id(BasicBlock x, BasicBlock y) { x = y }
+private predicate id(BB::ExprParent x, BB::ExprParent y) { x = y }
 
-private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
+private predicate idOfAst(BB::ExprParent x, int y) = equivalenceRelation(id/2)(x, y)
+
+private predicate idOf(BasicBlock x, int y) { idOfAst(x.getFirstNode().getAstNode(), y) }
 
 private int getId(BasicBlock bb) { idOf(bb, result) }
 

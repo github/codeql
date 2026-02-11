@@ -56,6 +56,15 @@ class StringPart(AstBase):
         self.text = text
         self.s = s
 
+class TemplateStringPart(AstBase):
+    '''A string constituent of a template string literal'''
+
+    __slots__ = "text", "s",
+
+    def __init__(self, text, s):
+        self.text = text
+        self.s = s
+
 class alias(AstBase):
     __slots__ = "value", "asname",
 
@@ -356,6 +365,19 @@ class JoinedStr(expr):
     def __init__(self, values):
         self.values = values
 
+class TemplateString(expr):
+    __slots__ = "prefix", "values",
+
+    def __init__(self, prefix, values):
+        self.prefix = prefix
+        self.values = values
+
+class JoinedTemplateString(expr):
+    __slots__ = "strings",
+
+    def __init__(self, strings):
+        self.strings = strings
+
 
 class Lambda(expr):
     __slots__ = "args", "inner_scope",
@@ -500,10 +522,11 @@ class Num(expr):
         self.text = text
 
 class ParamSpec(type_parameter):
-    __slots__ = "name",
+    __slots__ = "name", "default",
 
-    def __init__(self, name):
+    def __init__(self, name, default):
         self.name = name
+        self.default = default
 
 
 
@@ -607,17 +630,19 @@ class TypeAlias(stmt):
         self.value = value
 
 class TypeVar(type_parameter):
-    __slots__ = "name", "bound",
+    __slots__ = "name", "bound", "default"
 
-    def __init__(self, name, bound):
+    def __init__(self, name, bound, default):
         self.name = name
         self.bound = bound
+        self.default = default
 
 class TypeVarTuple(type_parameter):
-    __slots__ = "name",
+    __slots__ = "name", "default",
 
-    def __init__(self, name):
+    def __init__(self, name, default):
         self.name = name
+        self.default = default
 
 class UnaryOp(expr):
     __slots__ = "op", "operand",

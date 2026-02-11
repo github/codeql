@@ -7,10 +7,10 @@
  * @problem.severity warning
  * @precision high
  * @id go/unhandled-writable-file-close
- * @tags maintainability
- *  correctness
- *  call
- *  defer
+ * @tags quality
+ *       reliability
+ *       error-handling
+ *       external/cwe/cwe-252
  */
 
 import go
@@ -70,8 +70,8 @@ predicate unhandledCall(DataFlow::CallNode call) {
  */
 predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
   exists(OpenFileFun f, DataFlow::Node flags, QualifiedName flag |
-    // check that the source is a result of the call
-    source = call.getAResult() and
+    // check that the source is the first result of the call
+    source = call.getResult(0) and
     // find a call to the os.OpenFile function
     f.getACall() = call and
     // get the flags expression used for opening the file
@@ -97,6 +97,7 @@ predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode closeCall) {
   // where the function is called on the sink
   closeCall.getReceiver() = sink and
   // and check that it is not dominated by a call to `os.File.Sync`.
+  // TODO: fix this logic when `closeCall` is in a defer statement.
   not exists(IR::Instruction syncInstr, DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
     // match the instruction corresponding to an `os.File.Sync` call with the predecessor
     syncCall.asInstruction() = syncInstr and
@@ -127,6 +128,14 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isWritableFileHandle(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isCloseSink(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    exists(DataFlow::CallNode openCall | result = [openCall.getLocation(), source.getLocation()] |
+      isWritableFileHandle(source, openCall)
+    )
+  }
 }
 
 /**

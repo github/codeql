@@ -118,7 +118,7 @@ query predicate test15(ConstructedDelegateType d) {
 
 query predicate test16(Class c, Method m) {
   c.hasName("Subtle") and
-  count(c.getAMethod()) = 3 and
+  count(c.getAMethod()) = 4 and
   m = c.getAMethod()
 }
 
@@ -223,6 +223,7 @@ query predicate test26(ConstructedGeneric cg, string s) {
 }
 
 query predicate test27(ConstructedType ct, UnboundGenericType ugt, UnboundGenericType sourceDecl) {
+  ct.fromSource() and
   ct instanceof NestedType and
   ugt = ct.getUnboundGeneric() and
   sourceDecl = ct.getUnboundDeclaration() and

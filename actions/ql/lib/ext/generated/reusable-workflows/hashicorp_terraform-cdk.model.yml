@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["hashicorp/terraform-cdk/.github/workflows/unit.yml", "*", "input.package", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.gitUser", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.gitEmail", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.providerFqn", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.parallelConversionsPerDocument", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.parallelFileConversions", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.languages", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.cdktfRegistryDocsVersion", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.files", "code-injection", "generated"]
+     - ["hashicorp/terraform-cdk/.github/workflows/registry-docs-pr-based.yml", "*", "input.maxRunners", "code-injection", "generated"]

@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-299/DisabledRevocationChecking.ql
+query: experimental/Security/CWE/CWE-299/DisabledRevocationChecking.ql
+postprocess: utils/test/PrettyPrintModels.ql

@@ -6,8 +6,9 @@
  * @problem.severity error
  * @precision medium
  * @id java/missing-clone-method
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

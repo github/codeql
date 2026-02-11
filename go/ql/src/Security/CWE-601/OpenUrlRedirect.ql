@@ -21,6 +21,6 @@ where
   OpenUrlRedirect::Flow::flowPath(source, sink) and
   // this excludes flow from safe parts of request URLs, for example the full URL when the
   // doing a redirect from `http://<path>` to `https://<path>`
-  not SafeUrlFlow::Flow::flow(_, sink.getNode())
+  not SafeUrlFlow::Flow::flowTo(sink.getNode())
 select sink.getNode(), source, sink, "This path to an untrusted URL redirection depends on a $@.",
   source.getNode(), "user-provided value"

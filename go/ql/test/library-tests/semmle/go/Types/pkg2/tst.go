@@ -7,3 +7,14 @@ type T struct {
 type G struct {
 	g int
 }
+
+type MixedExportedAndNot interface {
+	Exported()
+	notExported()
+}
+
+type NameClash struct {
+	NCField string
+}
+
+func (t NameClash) NCMethod() {}

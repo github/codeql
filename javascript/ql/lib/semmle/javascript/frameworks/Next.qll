@@ -13,20 +13,40 @@ module NextJS {
    */
   PackageJson getANextPackage() { result.getDependencies().getADependency("next", _) }
 
+  private Folder packageRoot() { result = getANextPackage().getFile().getParentContainer() }
+
+  private Folder srcRoot() { result = [packageRoot(), packageRoot().getFolder("src")] }
+
+  private Folder appRoot() { result = srcRoot().getFolder("app") }
+
+  private Folder pagesRoot() { result = [srcRoot(), appRoot()].getFolder("pages") }
+
+  private Folder apiRoot() { result = [pagesRoot(), appRoot()].getFolder("api") }
+
+  private Folder appFolder() {
+    result = appRoot()
+    or
+    result = appFolder().getAFolder()
+  }
+
+  private Folder pagesFolder() {
+    result = pagesRoot()
+    or
+    result = pagesFolder().getAFolder()
+  }
+
   /**
    * Gets a "pages" folder in a `Next.js` application.
    * JavaScript files inside these folders are mapped to routes.
    */
-  Folder getAPagesFolder() {
-    result = getANextPackage().getFile().getParentContainer().getFolder("pages")
-    or
-    result = getAPagesFolder().getAFolder()
-  }
+  deprecated predicate getAPagesFolder = pagesFolder/0;
 
   /**
-   * Gets a module corrosponding to a `Next.js` page.
+   * Gets a module corresponding to a `Next.js` page.
    */
-  Module getAPagesModule() { result.getFile().getParentContainer() = getAPagesFolder() }
+  Module getAPagesModule() {
+    result.getFile() = [pagesFolder().getAFile(), appFolder().getJavaScriptFile("page")]
+  }
 
   /**
    * Gets a module inside a "pages" folder where `fallback` from `getStaticPaths` is not set to false.
@@ -213,10 +233,11 @@ module NextJS {
   /**
    * Gets a folder that contains API endpoints for a Next.js application.
    * These API endpoints act as Express-like route-handlers.
+   * It matches both the Pages Router (`pages/api/`) Next.js 12 or earlier and
+   * the App Router (`app/api/`) Next.js 13+ structures.
    */
   Folder apiFolder() {
-    result = getANextPackage().getFile().getParentContainer().getFolder("pages").getFolder("api")
-    or
+    result = apiRoot() or
     result = apiFolder().getAFolder()
   }
 
@@ -254,5 +275,87 @@ module NextJS {
           .getParameter(0)
           .getMember("router")
           .asSource()
+  }
+
+  /**
+   * Provides classes and predicates modeling the `next-auth` library.
+   */
+  private module NextAuth {
+    /**
+     * A random string used to hash tokens, sign cookies and generate cryptographic keys as a `CredentialsNode`.
+     */
+    private class SecretKey extends CredentialsNode {
+      SecretKey() {
+        this = API::moduleImport("next-auth").getParameter(0).getMember("secret").asSink()
+      }
+
+      override string getCredentialsKind() { result = "jwt key" }
+    }
+  }
+
+  /**
+   * A route handler for Next.js 13+ App Router API endpoints, which are defined by exporting
+   * HTTP method functions (like `GET`, `POST`, `PUT`, `DELETE`) from route.js files inside
+   * the `app/api/` directory.
+   */
+  class NextAppRouteHandler extends DataFlow::FunctionNode, Http::Servers::StandardRouteHandler {
+    NextAppRouteHandler() {
+      exists(Module mod |
+        (
+          mod.getFile().getParentContainer() = apiFolder()
+          or
+          mod.getFile().getStem() = "middleware"
+          or
+          mod.getFile().getStem() = "route" and mod.getFile().getParentContainer() = appFolder()
+        )
+      |
+        this =
+          mod.getAnExportedValue([any(Http::RequestMethodName m), "middleware", "proxy"])
+              .getAFunctionValue()
+      )
+    }
+
+    /**
+     * Gets the request parameter, which is either a `NextRequest` object (from `next/server`) or a standard web `Request` object.
+     */
+    DataFlow::SourceNode getRequest() { result = this.getParameter(0) }
+  }
+
+  /**
+   * A source of user-controlled data from a `NextRequest` object (from `next/server`) or a standard web `Request` object
+   * in a Next.js App Router route handler.
+   */
+  class NextAppRequestSource extends Http::RequestInputAccess {
+    NextAppRouteHandler handler;
+    string kind;
+
+    NextAppRequestSource() {
+      (
+        this =
+          handler.getRequest().getAMethodCall(["json", "formData", "blob", "arrayBuffer", "text"])
+        or
+        this = handler.getRequest().getAPropertyRead("body")
+      ) and
+      kind = "body"
+      or
+      this = handler.getRequest().getAPropertyRead(["url", "nextUrl"]) and
+      kind = "url"
+      or
+      this =
+        handler
+            .getRequest()
+            .getAPropertyRead("nextUrl")
+            .getAPropertyRead("searchParams")
+            .getAMemberCall("get") and
+      kind = "parameter"
+      or
+      this = handler.getRequest().getAPropertyRead("headers") and kind = "headers"
+    }
+
+    override string getKind() { result = kind }
+
+    override Http::RouteHandler getRouteHandler() { result = handler }
+
+    override string getSourceType() { result = "Next.js App Router request" }
   }
 }

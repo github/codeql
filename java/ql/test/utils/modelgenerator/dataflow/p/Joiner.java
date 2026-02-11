@@ -12,14 +12,17 @@ public final class Joiner {
   private int len;
   private String emptyValue;
 
-  // summary=p;Joiner;false;Joiner;(CharSequence);;Argument[0];Argument[this];taint;df-generated
+  // heuristic-summary=p;Joiner;false;Joiner;(CharSequence);;Argument[0];Argument[this];taint;df-generated
+  // contentbased-summary=p;Joiner;false;Joiner;(CharSequence);;Argument[0];Argument[this].SyntheticField[p.Joiner.delimiter];taint;dfc-generated
   public Joiner(CharSequence delimiter) {
     this(delimiter, "", "");
   }
 
-  // summary=p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[0];Argument[this];taint;df-generated
-  // summary=p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[1];Argument[this];taint;df-generated
-  // summary=p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[2];Argument[this];taint;df-generated
+  // heuristic-summary=p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[0];Argument[this];taint;df-generated
+  // heuristic-summary=p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[1];Argument[this];taint;df-generated
+  // heuristic-summary=p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[2];Argument[this];taint;df-generated
+  // contentbased-summary=p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[0];Argument[this].SyntheticField[p.Joiner.delimiter];taint;dfc-generated
+  // No content based summaries for prefix and suffix as they are "dead" synthetic fields.
   public Joiner(CharSequence delimiter, CharSequence prefix, CharSequence suffix) {
     Objects.requireNonNull(prefix, "The prefix must not be null");
     Objects.requireNonNull(delimiter, "The delimiter must not be null");
@@ -30,12 +33,20 @@ public final class Joiner {
     checkAddLength(0, 0);
   }
 
-  // summary=p;Joiner;false;setEmptyValue;(CharSequence);;Argument[0];Argument[this];taint;df-generated
-  // summary=p;Joiner;false;setEmptyValue;(CharSequence);;Argument[this];ReturnValue;value;df-generated
+  // heuristic-summary=p;Joiner;false;setEmptyValue;(CharSequence);;Argument[0];Argument[this];taint;df-generated
+  // heuristic-summary=p;Joiner;false;setEmptyValue;(CharSequence);;Argument[this];ReturnValue;value;df-generated
+  // No content based summary as emptyValue is "dead" (synthetic)field.
+  // contentbased-summary=p;Joiner;false;setEmptyValue;(CharSequence);;Argument[this];ReturnValue;value;dfc-generated
   public Joiner setEmptyValue(CharSequence emptyValue) {
     this.emptyValue =
         Objects.requireNonNull(emptyValue, "The empty value must not be null").toString();
     return this;
+  }
+
+  // heuristic-summary=p;Joiner;false;getDelimiter;();;Argument[this];ReturnValue;taint;df-generated
+  // contentbased-summary=p;Joiner;false;getDelimiter;();;Argument[this].SyntheticField[p.Joiner.delimiter];ReturnValue;value;dfc-generated
+  public String getDelimiter() {
+    return delimiter;
   }
 
   private static int getChars(String s, char[] chars, int start) {
@@ -70,7 +81,9 @@ public final class Joiner {
     return new String(chars);
   }
 
-  // summary=p;Joiner;false;add;(CharSequence);;Argument[this];ReturnValue;value;df-generated
+  // heuristic-summary=p;Joiner;false;add;(CharSequence);;Argument[this];ReturnValue;value;df-generated
+  // contentbased-summary=p;Joiner;false;add;(CharSequence);;Argument[this];ReturnValue;value;dfc-generated
+  // MISSING content based summaries for "elts". This could be a synthetic field.
   public Joiner add(CharSequence newElement) {
     final String elt = String.valueOf(newElement);
     if (elts == null) {
@@ -93,7 +106,9 @@ public final class Joiner {
     return (int) newLen;
   }
 
-  // summary=p;Joiner;false;merge;(Joiner);;Argument[this];ReturnValue;value;df-generated
+  // heuristic-summary=p;Joiner;false;merge;(Joiner);;Argument[this];ReturnValue;value;df-generated
+  // contentbased-summary=p;Joiner;false;merge;(Joiner);;Argument[this];ReturnValue;value;dfc-generated
+  // MISSING content based summaries for "elts". This could be a synthetic field.
   public Joiner merge(Joiner other) {
     Objects.requireNonNull(other);
     if (other.elts == null) {

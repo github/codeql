@@ -34,7 +34,7 @@ void good1(std::size_t length) noexcept {
 
 // GOOD: the allocation failure is handled appropriately.
 void good2(std::size_t length) noexcept {
-  int* dest = new int[length];
+  int* dest = new(std::nothrow) int[length];
   if(!dest) {
     return;
   }

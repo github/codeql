@@ -6,7 +6,6 @@ import csharp
 module ControlFlow {
   private import semmle.code.csharp.controlflow.BasicBlocks as BBs
   import semmle.code.csharp.controlflow.internal.SuccessorType
-  private import SuccessorTypes
   private import internal.ControlFlowGraphImpl as Impl
   private import internal.Splitting as Splitting
 
@@ -28,13 +27,6 @@ module ControlFlow {
   class Node extends Impl::Node {
     /** Gets the control flow element that this node corresponds to, if any. */
     final ControlFlowElement getAstNode() { result = super.getAstNode() }
-
-    /**
-     * DEPRECATED: Use `getAstNode` instead.
-     *
-     * Gets the control flow element that this node corresponds to, if any.
-     */
-    deprecated ControlFlowElement getElement() { result = this.getAstNode() }
 
     /** Gets the basic block that this control flow node belongs to. */
     BasicBlock getBasicBlock() { result.getANode() = this }
@@ -259,6 +251,9 @@ module ControlFlow {
       }
     }
 
+    /** A control flow node indicating normal termination of a callable. */
+    class NormalExitNode extends AnnotatedExitNode instanceof Impl::NormalExitNode { }
+
     /** A node for a callable exit point. */
     class ExitNode extends Node instanceof Impl::ExitNode {
       /** Gets the callable that this exit applies to. */
@@ -299,14 +294,6 @@ module ControlFlow {
     }
 
     class Split = Splitting::Split;
-
-    class FinallySplit = Splitting::FinallySplitting::FinallySplit;
-
-    class ExceptionHandlerSplit = Splitting::ExceptionHandlerSplitting::ExceptionHandlerSplit;
-
-    class BooleanSplit = Splitting::BooleanSplitting::BooleanSplit;
-
-    class LoopSplit = Splitting::LoopSplitting::LoopSplit;
   }
 
   class BasicBlock = BBs::BasicBlock;

@@ -5,9 +5,11 @@
  * @kind problem
  * @problem.severity warning
  * @id js/index-out-of-bounds
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       logic
+ *       language-features
  *       external/cwe/cwe-193
  * @precision high
  */
@@ -24,6 +26,18 @@ PropAccess arrayLen(Variable array) { result.accesses(array.getAnAccess(), "leng
  */
 ConditionGuardNode getLengthLEGuard(Variable index, Variable array) {
   exists(RelationalComparison cmp | cmp instanceof GEExpr or cmp instanceof LEExpr |
+    cmp = result.getTest() and
+    result.getOutcome() = true and
+    cmp.getGreaterOperand() = arrayLen(array) and
+    cmp.getLesserOperand() = index.getAnAccess()
+  )
+}
+
+/**
+ * Gets a condition that checks that `index` is less than `array.length`.
+ */
+ConditionGuardNode getLengthLTGuard(Variable index, Variable array) {
+  exists(RelationalComparison cmp | cmp instanceof GTExpr or cmp instanceof LTExpr |
     cmp = result.getTest() and
     result.getOutcome() = true and
     cmp.getGreaterOperand() = arrayLen(array) and
@@ -60,7 +74,8 @@ where
   elementRead(ea, array, index, bb) and
   // and the read is guarded by the comparison
   cond.dominates(bb) and
-  // but the read is not guarded by another check that `index != array.length`
-  not getLengthNEGuard(index, array).dominates(bb)
+  // but the read is not guarded by another check that `index != array.length` or `index < array.length`
+  not getLengthNEGuard(index, array).dominates(bb) and
+  not getLengthLTGuard(index, array).dominates(bb)
 select cond.getTest(), "Off-by-one index comparison against length may lead to out-of-bounds $@.",
   ea, "read"

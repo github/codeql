@@ -87,11 +87,11 @@ module LiteralAlgorithmTracerConfig implements DataFlow::ConfigSig {
     // False positives in OpenSSL also observed for CRYPTO_strndup (filtering any CRYPTO_* function)
     // due to setting a null byte in the string
     (
-      isPossibleOpenSSLFunction(source.getEnclosingCallable())
+      isPossibleOpenSSLFunction(source.getFunction())
       implies
       (
-        not source.getEnclosingCallable().getName().matches("OBJ_%") and
-        not source.getEnclosingCallable().getName().matches("CRYPTO_%")
+        not source.getFunction().getName().matches("OBJ_%") and
+        not source.getFunction().getName().matches("CRYPTO_%")
       )
     )
   }
@@ -652,14 +652,14 @@ module KeyGeneration {
    * Trace from EVP_PKEY_CTX* at algorithm sink to keygen,
    * users can then extrapolatae the matching algorithm from the alg sink to the keygen
    */
-  module EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSize implements DataFlow::ConfigSig {
+  module EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSizeConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { isEVP_PKEY_CTX_Source(source, _) }
 
     predicate isSink(DataFlow::Node sink) { isKeyGen_EVP_PKEY_CTX_Sink(sink, _) }
   }
 
   module EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSize_Flow =
-    DataFlow::Global<EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSize>;
+    DataFlow::Global<EVP_PKEY_CTX_Ptr_Source_to_KeyGenOperationWithNoSizeConfig>;
 
   /**
    * UNKNOWN key sizes to general purpose key generation functions (i.e., that take in no key size and assume

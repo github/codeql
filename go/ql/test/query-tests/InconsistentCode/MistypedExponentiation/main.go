@@ -22,6 +22,13 @@ func main() {
 
 	mask := (((1 << 10) - 1) ^ 7) // OK
 
+	const (
+		c1 = 0x1234
+		c2 = 0x5678
+	)
+
+	fmt.Println(c1 ^ c2) // OK
+
 	// This is not ok, but isn't detected because the multiplication binds tighter
 	// than the xor operator and so the query doesn't see a constant on the left
 	// hand side of ^.

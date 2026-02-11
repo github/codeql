@@ -66,27 +66,6 @@ module ActiveResource {
     }
   }
 
-  /** DEPRECATED. Use `ModelClassNode` instead. */
-  deprecated class ModelClass extends ClassDeclaration {
-    private ModelClassNode cls;
-
-    ModelClass() { this = cls.getADeclaration() }
-
-    /** Gets the class for which this is a declaration. */
-    ModelClassNode getClassNode() { result = cls }
-
-    /** Gets the API node for this class object. */
-    deprecated API::Node getModelApiNode() { result = cls.trackModule() }
-
-    /** Gets a call to `site=`, which sets the base URL for this model. */
-    SiteAssignCall getASiteAssignment() { result = cls.getASiteAssignment() }
-
-    /** Holds if `c` sets a base URL which does not use HTTPS. */
-    predicate disablesCertificateValidation(SiteAssignCall c) {
-      cls.disablesCertificateValidation(c)
-    }
-  }
-
   /**
    * A call to a class method on an ActiveResource model class.
    *
@@ -170,20 +149,6 @@ module ActiveResource {
   }
 
   /**
-   * DEPRECATED. Use `ModelClassNode.getAnInstanceReference()` instead.
-   *
-   * An ActiveResource model object.
-   */
-  deprecated class ModelInstance extends DataFlow::Node {
-    private ModelClassNode cls;
-
-    ModelInstance() { this = cls.getAnInstanceReference().getAValueReachableFromSource() }
-
-    /** Gets the model class for this instance. */
-    ModelClassNode getModelClass() { result = cls }
-  }
-
-  /**
    * A call to a method on an ActiveResource model object.
    */
   class ModelInstanceMethodCall extends DataFlow::CallNode {
@@ -191,20 +156,8 @@ module ActiveResource {
 
     ModelInstanceMethodCall() { this = cls.getAnInstanceReference().getAMethodCall(_) }
 
-    /** Gets the model instance for this call. */
-    deprecated ModelInstance getInstance() { result = this.getReceiver() }
-
     /** Gets the model class for this call. */
     ModelClassNode getModelClass() { result = cls }
-  }
-
-  /**
-   * DEPRECATED. Use `CollectionSource` instead.
-   *
-   * A data flow node that may refer to a collection of ActiveResource model objects.
-   */
-  deprecated class Collection extends DataFlow::Node {
-    Collection() { this = any(CollectionSource src).track().getAValueReachableFromSource() }
   }
 
   /**
@@ -230,8 +183,7 @@ module ActiveResource {
     CollectionSource getCollection() { result = collection }
   }
 
-  private class ModelClassMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelClassMethodCall
+  private class ModelClassMethodCallAsHttpRequest extends Http::Client::Request::Range instanceof ModelClassMethodCall
   {
     ModelClassMethodCallAsHttpRequest() {
       this.getMethodName() = ["all", "build", "create", "create!", "find", "first", "last"]
@@ -242,20 +194,19 @@ module ActiveResource {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      this.getModelClass().disablesCertificateValidation(disablingNode) and
+      super.getModelClass().disablesCertificateValidation(disablingNode) and
       // TODO: highlight real argument origin
       argumentOrigin = disablingNode
     }
 
     override DataFlow::Node getAUrlPart() {
-      result = this.getModelClass().getASiteAssignment().getAUrlPart()
+      result = super.getModelClass().getASiteAssignment().getAUrlPart()
     }
 
     override DataFlow::Node getResponseBody() { result = this }
   }
 
-  private class ModelInstanceMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelInstanceMethodCall
+  private class ModelInstanceMethodCallAsHttpRequest extends Http::Client::Request::Range instanceof ModelInstanceMethodCall
   {
     ModelInstanceMethodCallAsHttpRequest() {
       this.getMethodName() =
@@ -270,13 +221,13 @@ module ActiveResource {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      this.getModelClass().disablesCertificateValidation(disablingNode) and
+      super.getModelClass().disablesCertificateValidation(disablingNode) and
       // TODO: highlight real argument origin
       argumentOrigin = disablingNode
     }
 
     override DataFlow::Node getAUrlPart() {
-      result = this.getModelClass().getASiteAssignment().getAUrlPart()
+      result = super.getModelClass().getASiteAssignment().getAUrlPart()
     }
 
     override DataFlow::Node getResponseBody() { result = this }

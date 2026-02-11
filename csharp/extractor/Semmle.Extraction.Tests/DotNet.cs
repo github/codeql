@@ -12,6 +12,7 @@ namespace Semmle.Extraction.Tests
         private string lastArgs = "";
         public string WorkingDirectory { get; private set; } = "";
         public bool Success { get; set; } = true;
+        public int ExitCode { get; set; } = 0;
 
         public DotNetCliInvokerStub(IList<string> output)
         {
@@ -24,6 +25,12 @@ namespace Semmle.Extraction.Tests
         {
             lastArgs = args;
             return Success;
+        }
+
+        public int RunCommandExitCode(string args, bool silent)
+        {
+            lastArgs = args;
+            return ExitCode;
         }
 
         public bool RunCommand(string args, out IList<string> output, bool silent)
@@ -45,7 +52,7 @@ namespace Semmle.Extraction.Tests
     public class DotNetTests
     {
         private static IDotNet MakeDotnet(IDotNetCliInvoker dotnetCliInvoker) =>
-            DotNet.Make(dotnetCliInvoker, new LoggerStub());
+            DotNet.Make(dotnetCliInvoker, new LoggerStub(), true);
 
         private static IList<string> MakeDotnetRestoreOutput() =>
             new List<string> {
@@ -72,7 +79,7 @@ namespace Semmle.Extraction.Tests
             var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
 
             // Execute
-            var _ = MakeDotnet(dotnetCliInvoker);
+            _ = MakeDotnet(dotnetCliInvoker);
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -83,18 +90,18 @@ namespace Semmle.Extraction.Tests
         public void TestDotnetInfoFailure()
         {
             // Setup
-            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>()) { Success = false };
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>()) { ExitCode = 1 };
 
             // Execute
             try
             {
-                var _ = MakeDotnet(dotnetCliInvoker);
+                _ = MakeDotnet(dotnetCliInvoker);
             }
 
             // Verify
             catch (Exception e)
             {
-                Assert.Equal("dotnet --info failed.", e.Message);
+                Assert.Equal("dotnet --info failed with exit code 1.", e.Message);
                 return;
             }
             Assert.Fail("Expected exception");
@@ -123,7 +130,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, "myconfig.config"));
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, null, "myconfig.config"));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -141,7 +148,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, "myconfig.config", true));
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, null, "myconfig.config", true));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();

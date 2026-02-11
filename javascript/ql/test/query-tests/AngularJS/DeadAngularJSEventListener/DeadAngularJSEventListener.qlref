@@ -1,1 +1,2 @@
-AngularJS/DeadAngularJSEventListener.ql
+query: AngularJS/DeadAngularJSEventListener.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

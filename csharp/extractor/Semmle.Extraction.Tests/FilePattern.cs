@@ -1,4 +1,5 @@
 ﻿using Xunit;
+using Semmle.Extraction.CSharp;
 
 namespace Semmle.Extraction.Tests
 {
@@ -10,13 +11,15 @@ namespace Semmle.Extraction.Tests
             var fp = new FilePattern("/hadoop*");
             Assert.Equal("^hadoop[^/]*.*", fp.RegexPattern);
             fp = new FilePattern("**/org/apache/hadoop");
-            Assert.Equal("^.*/org/apache/hadoop.*", fp.RegexPattern);
+            Assert.Equal("^(.*/|)org/apache/hadoop.*", fp.RegexPattern);
             fp = new FilePattern("hadoop-common/**/test//    ");
-            Assert.Equal("^hadoop-common/.*/test(?<doubleslash>/).*", fp.RegexPattern);
+            Assert.Equal("^hadoop-common/(.*/|)test(?<doubleslash>/).*", fp.RegexPattern);
             fp = new FilePattern(@"-C:\agent\root\asdf//");
             Assert.Equal("^C:/agent/root/asdf(?<doubleslash>/).*", fp.RegexPattern);
             fp = new FilePattern(@"-C:\agent+\[root]\asdf//");
             Assert.Equal(@"^C:/agent\+/\[root]/asdf(?<doubleslash>/).*", fp.RegexPattern);
+            fp = new FilePattern(@"**/**/abc/**/def/**");
+            Assert.Equal(@"^(.*/|)(.*/|)abc/(.*/|)def/.*", fp.RegexPattern);
         }
 
         [Fact]

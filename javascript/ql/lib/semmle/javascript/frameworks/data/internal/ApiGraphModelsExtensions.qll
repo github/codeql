@@ -1,10 +1,12 @@
 /**
  * Defines extensible predicates for contributing library models from data extensions.
  */
+overlay[local]
+module;
 
 /**
  * Holds if the value at `(type, path)` should be seen as a flow
- * source of the given `kind`.
+ * source of the given `kind` and `madId` is the data extension row number.
  *
  * The kind `remote` represents a general remote flow source.
  */
@@ -14,13 +16,34 @@ extensible predicate sourceModel(
 
 /**
  * Holds if the value at `(type, path)` should be seen as a sink
- * of the given `kind`.
+ * of the given `kind` and `madId` is the data extension row number.
  */
 extensible predicate sinkModel(string type, string path, string kind, QlBuiltins::ExtensionId madId);
 
 /**
+ * Holds if the value at `(type, path)` should be seen as a barrier
+ * of the given `kind` and `madId` is the data extension row number.
+ */
+extensible predicate barrierModel(
+  string type, string path, string kind, QlBuiltins::ExtensionId madId
+);
+
+/**
+ * Holds if the value at `(type, path)` should be seen as a barrier guard
+ * of the given `kind` and `madId` is the data extension row number.
+ * `path` is assumed to lead to a parameter of a call (possibly `self`), and
+ * the call is guarding the parameter.
+ * `branch` is either `true` or `false`, indicating which branch of the guard
+ * is protecting the parameter.
+ */
+extensible predicate barrierGuardModel(
+  string type, string path, string branch, string kind, QlBuiltins::ExtensionId madId
+);
+
+/**
  * Holds if in calls to `(type, path)`, the value referred to by `input`
- * can flow to the value referred to by `output`.
+ * can flow to the value referred to by `output` and `madId` is the data
+ * extension row number.
  *
  * `kind` should be either `value` or `taint`, for value-preserving or taint-preserving steps,
  * respectively.
@@ -45,3 +68,25 @@ extensible predicate typeModel(string type1, string type2, string path);
  * Holds if `path` can be substituted for a token `TypeVar[name]`.
  */
 extensible predicate typeVariableModel(string name, string path);
+
+/**
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
+ */
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  exists(string type, string path, string kind |
+    sourceModel(type, path, kind, madId) and
+    model = "Source: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string kind |
+    sinkModel(type, path, kind, madId) and
+    model = "Sink: " + type + "; " + path + "; " + kind
+  )
+  or
+  exists(string type, string path, string input, string output, string kind |
+    summaryModel(type, path, input, output, kind, madId) and
+    model = "Summary: " + type + "; " + path + "; " + input + "; " + output + "; " + kind
+  )
+}

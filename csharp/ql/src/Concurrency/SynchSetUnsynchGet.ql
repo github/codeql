@@ -6,8 +6,10 @@
  * @problem.severity error
  * @precision medium
  * @id cs/unsynchronized-getter
- * @tags correctness
+ * @tags quality
+ *       reliability
  *       concurrency
+ *       correctness
  *       external/cwe/cwe-662
  */
 

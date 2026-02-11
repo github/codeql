@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["nautobot/nautobot/.github/workflows/plugin_upstream_testing_base.yml", "*", "input.invoke_context_name", "code-injection", "generated"]

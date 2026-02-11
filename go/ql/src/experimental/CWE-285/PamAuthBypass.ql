@@ -42,6 +42,10 @@ module PamStartToAcctMgmtConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(PamAcctMgmt p | p.getACall().getReceiver() = sink)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 module PamStartToAcctMgmtFlow = TaintTracking::Global<PamStartToAcctMgmtConfig>;
@@ -55,6 +59,10 @@ module PamStartToAuthenticateConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(PamAuthenticate p | p.getACall().getReceiver() = sink)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
 }
 
 module PamStartToAuthenticateFlow = TaintTracking::Global<PamStartToAuthenticateConfig>;
@@ -62,5 +70,6 @@ module PamStartToAuthenticateFlow = TaintTracking::Global<PamStartToAuthenticate
 from DataFlow::Node source, DataFlow::Node sink
 where
   not isInTestFile(source.asExpr()) and
-  (PamStartToAuthenticateFlow::flow(source, sink) and not PamStartToAcctMgmtFlow::flow(source, _))
+  PamStartToAuthenticateFlow::flow(source, sink) and
+  not PamStartToAcctMgmtFlow::flowFrom(source)
 select source, "This Pam transaction may not be secure."

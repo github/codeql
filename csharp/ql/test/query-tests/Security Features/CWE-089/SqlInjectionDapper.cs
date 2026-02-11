@@ -17,8 +17,8 @@ namespace Test
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE";
-                var result = connection.Query<object>(query);
+                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                var result = connection.Query<object>(query); // $ Alert[cs/sql-injection]
             }
         }
 
@@ -26,8 +26,8 @@ namespace Test
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE";
-                var result = await connection.QueryAsync<object>(query);
+                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                var result = await connection.QueryAsync<object>(query); // $ Alert[cs/sql-injection]
             }
         }
 
@@ -35,8 +35,8 @@ namespace Test
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE";
-                var result = await connection.QueryFirstAsync(query);
+                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                var result = await connection.QueryFirstAsync(query); // $ Alert[cs/sql-injection]
             }
         }
 
@@ -44,9 +44,9 @@ namespace Test
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE";
+                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
 
-                await connection.ExecuteAsync(query);
+                await connection.ExecuteAsync(query); // $ Alert[cs/sql-injection]
             }
         }
 
@@ -54,8 +54,8 @@ namespace Test
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE";
-                connection.ExecuteScalar(query);
+                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                connection.ExecuteScalar(query); // $ Alert[cs/sql-injection]
             }
         }
 
@@ -63,8 +63,8 @@ namespace Test
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE";
-                connection.ExecuteReader(query);
+                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
+                connection.ExecuteReader(query); // $ Alert[cs/sql-injection]
             }
         }
 
@@ -72,9 +72,9 @@ namespace Test
         {
             using (var connection = new SqlConnection(connectionString))
             {
-                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE";
+                var query = "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" + box1.Text + "' ORDER BY PRICE"; // $ Source[cs/sql-injection]
 
-                var comDef = new CommandDefinition(query);
+                var comDef = new CommandDefinition(query); // $ Alert[cs/sql-injection]
                 var result = await connection.QueryFirstAsync(comDef);
             }
         }

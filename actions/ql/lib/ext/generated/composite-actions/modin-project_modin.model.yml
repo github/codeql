@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["modin-project/modin", "*", "input.parallel", "code-injection", "generated"]
+     - ["modin-project/modin", "*", "input.runner", "code-injection", "generated"]
+     - ["modin-project/modin", "*", "input.activate-environment", "code-injection", "generated"]

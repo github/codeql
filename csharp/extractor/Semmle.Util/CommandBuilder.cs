@@ -62,7 +62,6 @@ namespace Semmle.Util
         /// </summary>
         /// <param name="argument">The argument to append.</param>
         /// <param name="force">Whether to always quote the argument.</param>
-        /// <param name="cmd">Whether to escape for cmd.exe</param>
         ///
         /// <remarks>
         /// This implementation is copied from

@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities
         private Namespace(Context cx, INamespaceSymbol init)
             : base(cx, init) { }
 
-        public override Location? ReportingLocation => null;
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => null;
 
         public override void Populate(TextWriter trapFile)
         {

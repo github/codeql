@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["project-chip/connectedhomeip", "*", "input.with", "code-injection", "generated"]
+     - ["project-chip/connectedhomeip", "*", "input.action", "code-injection", "generated"]
+     - ["project-chip/connectedhomeip", "*", "input.platform", "code-injection", "generated"]

@@ -1,4 +1,6 @@
 /** Provides classes to reason about server-side request forgery (SSRF) attacks. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.frameworks.Networking
@@ -63,14 +65,17 @@ abstract class RequestForgerySanitizer extends DataFlow::Node { }
 
 private class PrimitiveSanitizer extends RequestForgerySanitizer instanceof SimpleTypeSanitizer { }
 
-private class HostnameSanitizingPrefix extends InterestingPrefix {
+/**
+ * A string constant that contains a prefix which looks like when it is prepended to untrusted
+ * input, it will restrict the host or entity addressed.
+ *
+ * For example, anything containing `?` or `#`, or a slash that doesn't appear to be a protocol
+ * specifier (e.g. `http://` is not sanitizing), or specifically the string "/".
+ */
+class HostnameSanitizingPrefix extends InterestingPrefix {
   int offset;
 
   HostnameSanitizingPrefix() {
-    // Matches strings that look like when prepended to untrusted input, they will restrict
-    // the host or entity addressed: for example, anything containing `?` or `#`, or a slash that
-    // doesn't appear to be a protocol specifier (e.g. `http://` is not sanitizing), or specifically
-    // the string "/".
     exists(this.getStringValue().regexpFind("([?#]|[^?#:/\\\\][/\\\\])|^/$", 0, offset))
   }
 
@@ -81,8 +86,10 @@ private class HostnameSanitizingPrefix extends InterestingPrefix {
  * A value that is the result of prepending a string that prevents any value from controlling the
  * host of a URL.
  */
-private class HostnameSantizer extends RequestForgerySanitizer {
-  HostnameSantizer() { this.asExpr() = any(HostnameSanitizingPrefix hsp).getAnAppendedExpression() }
+private class HostnameSanitizer extends RequestForgerySanitizer {
+  HostnameSanitizer() {
+    this.asExpr() = any(HostnameSanitizingPrefix hsp).getAnAppendedExpression()
+  }
 }
 
 /**
@@ -111,25 +118,8 @@ private class ContainsUrlSanitizer extends RequestForgerySanitizer {
   }
 }
 
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private predicate isRelativeUrlSanitizer(Guard guard, Expr e, boolean branch) {
-  guard =
-    any(MethodCall call |
-      call.getMethod().hasQualifiedName("java.net", "URI", "isAbsolute") and
-      e = call.getQualifier() and
-      branch = false
-    )
-}
-
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private class RelativeUrlSanitizer extends RequestForgerySanitizer {
-  RelativeUrlSanitizer() {
-    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
-  }
+private class ExternalRequestForgerySanitizer extends RequestForgerySanitizer {
+  ExternalRequestForgerySanitizer() { barrierNode(this, "request-forgery") }
 }
 
 /**
@@ -157,3 +147,9 @@ private class HostComparisonSanitizer extends RequestForgerySanitizer {
     this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
   }
 }
+
+/**
+ * A comparison with a regular expression that is a sanitizer for URL redirects.
+ */
+private class RegexpCheckRequestForgerySanitizer extends RequestForgerySanitizer instanceof RegexpCheckBarrier
+{ }

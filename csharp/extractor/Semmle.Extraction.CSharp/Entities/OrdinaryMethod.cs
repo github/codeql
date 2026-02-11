@@ -21,9 +21,13 @@ namespace Semmle.Extraction.CSharp.Entities
         public override Microsoft.CodeAnalysis.Location ReportingLocation =>
             IsCompilerGeneratedDelegate()
                 ? Symbol.ContainingType.GetSymbolLocation()
-                : Symbol.GetSymbolLocation();
+                : BodyDeclaringSymbol.GetSymbolLocation();
 
-        public override bool NeedsPopulation => base.NeedsPopulation || IsCompilerGeneratedDelegate();
+        public override bool NeedsPopulation =>
+            (base.NeedsPopulation || IsCompilerGeneratedDelegate()) &&
+            // Exclude compiler-generated extension methods. A call to such a method
+            // is replaced by a call to the defining extension method.
+            !Symbol.IsCompilerGeneratedExtensionMethod();
 
         public override void Populate(TextWriter trapFile)
         {
@@ -34,6 +38,16 @@ namespace Semmle.Extraction.CSharp.Entities
             var returnType = Type.Create(Context, Symbol.ReturnType);
             trapFile.methods(this, Name, ContainingType, returnType.TypeRef, OriginalDefinition);
 
+            PopulateGenerics(trapFile);
+            Overrides(trapFile);
+            ExtractRefReturn(trapFile, Symbol, this);
+            ExtractCompilerGenerated(trapFile);
+
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             if (IsSourceDeclaration)
             {
                 foreach (var declaration in Symbol.DeclaringSyntaxReferences.Select(s => s.GetSyntax()).OfType<MethodDeclarationSyntax>())
@@ -43,13 +57,10 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
             }
 
-            foreach (var l in Locations)
-                trapFile.method_location(this, l);
-
-            PopulateGenerics(trapFile);
-            Overrides(trapFile);
-            ExtractRefReturn(trapFile, Symbol, this);
-            ExtractCompilerGenerated(trapFile);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.method_location, this, Locations);
+            }
         }
 
         private bool IsCompilerGeneratedDelegate() =>
@@ -63,7 +74,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (method.MethodKind == MethodKind.ReducedExtension)
             {
-                cx.Extractor.Logger.Log(Semmle.Util.Logging.Severity.Warning, "Reduced extension method symbols should not be directly extracted.");
+                cx.ExtractionContext.Logger.LogWarning("Reduced extension method symbols should not be directly extracted.");
             }
 
             return OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);

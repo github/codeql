@@ -1,5 +1,4 @@
 testFailures
-failures
 debug_callableNotUnique
 pointsTo_found_typeTracker_notFound
 | code/class_attr_assign.py:10:9:10:27 | ControlFlowNode for Attribute() | my_func |

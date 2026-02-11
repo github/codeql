@@ -47,10 +47,11 @@ private Type getElementType(Type containerType) {
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
-  exists(Type containerType |
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs) {
+  exists(Type containerType, DataFlow::Content c |
     node instanceof DataFlow::ArgumentNode and
-    getElementType*(node.getType()) = containerType
+    getElementType*(node.getType()) = containerType and
+    cs.asOneContent() = c
   |
     containerType instanceof ArrayType and
     c instanceof DataFlow::ArrayContent
@@ -82,28 +83,67 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
-/**
- * Holds if the additional step from `pred` to `succ` should be included in all
- * global taint flow configurations.
- */
-predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
-  (
-    referenceStep(pred, succ) or
-    elementWriteStep(pred, succ) or
-    fieldReadStep(pred, succ) or
-    elementStep(pred, succ) or
-    tupleStep(pred, succ) or
-    stringConcatStep(pred, succ) or
-    sliceStep(pred, succ)
+private predicate localAdditionalForwardTaintStep(
+  DataFlow::Node pred, DataFlow::Node succ, string model
+) {
+  exists(DataFlow::Node pred2 |
+    pred2 = pred
+    or
+    pred2 = pred.(DataFlow::PostUpdateNode).getPreUpdateNode()
+  |
+    referenceStep(pred2, succ) or
+    elementWriteStep(pred2, succ) or
+    fieldReadStep(pred2, succ) or
+    elementStep(pred2, succ) or
+    tupleStep(pred2, succ) or
+    stringConcatStep(pred2, succ) or
+    sliceStep(pred2, succ)
   ) and
   model = ""
   or
-  any(FunctionModel fm).taintStep(pred, succ) and model = "FunctionModel"
+  any(FunctionModel fm).forwardTaintStep(pred, succ) and model = "FunctionModel"
   or
   any(AdditionalTaintStep a).step(pred, succ) and model = "AdditionalTaintStep"
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(DataFlowPrivate::FlowSummaryNode)
         .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false, model)
+}
+
+/**
+ * This is a helper predicate for `localAdditionalBackwardTaintStep`. It mixes
+ * local data flow with local forward taint steps. It should only ever be used
+ * via its transitive closure, which gives local forward taint flow, that is
+ * with backward steps excluded.
+ */
+private predicate partialLocalForwardTaintFlow(DataFlow::Node pred, DataFlow::Node succ) {
+  DataFlow::localFlow(pred, succ) or
+  localAdditionalForwardTaintStep(pred, succ, _) or
+  // Simple flow through library code is included in the exposed local
+  // step relation, even though flow is technically inter-procedural
+  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(pred, succ, _)
+}
+
+/**
+ * Holds if taint flows backwards from `pred` to `succ` via a function model.
+ */
+private predicate localAdditionalBackwardTaintStep(
+  DataFlow::Node pred, DataFlow::Node succ, string model
+) {
+  // backward step through function model
+  exists(FunctionModel m, DataFlow::Node resultNode |
+    m.backwardTaintStep(resultNode, succ) and
+    partialLocalForwardTaintFlow+(resultNode, pred.(DataFlow::PostUpdateNode).getPreUpdateNode())
+  ) and
+  model = "FunctionModel"
+}
+
+/**
+ * Holds if the additional step from `pred` to `succ` should be included in all
+ * global taint flow configurations.
+ */
+predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ, string model) {
+  localAdditionalForwardTaintStep(pred, succ, model) or
+  localAdditionalBackwardTaintStep(pred, succ, model)
 }
 
 /**
@@ -139,10 +179,10 @@ predicate referenceStep(DataFlow::Node pred, DataFlow::Node succ) {
  * `succ`.
  */
 predicate elementWriteStep(DataFlow::Node pred, DataFlow::Node succ) {
-  any(DataFlow::Write w).writesElement(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), _, pred)
+  any(DataFlow::Write w).writesElement(succ, _, pred)
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(pred.(DataFlowPrivate::FlowSummaryNode)
-        .getSummaryNode(), any(DataFlow::Content c | c instanceof DataFlow::ArrayContent),
+        .getSummaryNode(), any(DataFlow::ArrayContent ac).asContentSet(),
     succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode())
 }
 
@@ -190,35 +230,49 @@ predicate sliceStep(DataFlow::Node pred, DataFlow::Node succ) {
  */
 abstract class FunctionModel extends Function {
   /** Holds if taint propagates through this function from `input` to `output`. */
+  pragma[nomagic]
   abstract predicate hasTaintFlow(FunctionInput input, FunctionOutput output);
 
   /** Gets an input node for this model for the call `c`. */
-  DataFlow::Node getAnInputNode(DataFlow::CallNode c) { this.taintStepForCall(result, _, c) }
+  DataFlow::Node getAnInputNode(DataFlow::CallNode c) { this.taintStepForCall(result, _, c, _) }
 
   /** Gets an output node for this model for the call `c`. */
-  DataFlow::Node getAnOutputNode(DataFlow::CallNode c) { this.taintStepForCall(_, result, c) }
+  DataFlow::Node getAnOutputNode(DataFlow::CallNode c) { this.taintStepForCall(_, result, c, _) }
 
   /** Holds if this function model causes taint to flow from `pred` to `succ` for the call `c`. */
-  predicate taintStepForCall(DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c) {
+  predicate taintStepForCall(
+    DataFlow::Node pred, DataFlow::Node succ, DataFlow::CallNode c, Boolean forward
+  ) {
     c = this.getACall() and
     exists(FunctionInput inp, FunctionOutput outp | this.hasTaintFlow(inp, outp) |
-      pred = inp.getNode(c) and
-      succ = outp.getNode(c)
+      pred = pragma[only_bind_out](inp).getNode(c) and
+      succ = pragma[only_bind_out](outp).getNode(c) and
+      if inp.isResult() or inp.isResult(_) then forward = false else forward = true
     )
   }
 
   /** Holds if this function model causes taint to flow from `pred` to `succ`. */
   predicate taintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    this.taintStepForCall(pred, succ, _)
+    this.taintStepForCall(pred, succ, _, _)
+  }
+
+  /** Holds if this function model causes taint to flow forward from `pred` to `succ`. */
+  predicate forwardTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    this.taintStepForCall(pred, succ, _, true)
+  }
+
+  /** Holds if this function model causes taint to flow backwards from `pred` to `succ`. */
+  predicate backwardTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    this.taintStepForCall(pred, succ, _, false)
   }
 }
 
 /**
- * Holds if the additional step from `src` to `sink` should be included in all
+ * Holds if the additional step from `node1` to `node2` should be included in all
  * global taint flow configurations.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, string model) {
-  localAdditionalTaintStep(src, sink, model)
+predicate defaultAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2, string model) {
+  localAdditionalTaintStep(node1, node2, model)
 }
 
 /**
@@ -382,9 +436,9 @@ predicate inputIsConstantIfOutputHasProperty(
 ) {
   exists(Function f, FunctionInput inp, FunctionOutput outp, DataFlow::CallNode call |
     functionEnsuresInputIsConstant(f, inp, outp, p) and
-    call = f.getACall() and
-    inputNode = inp.getNode(call) and
-    DataFlow::localFlow(outp.getNode(call), outputNode)
+    call = pragma[only_bind_out](f).getACall() and
+    inputNode = pragma[only_bind_out](inp).getNode(call) and
+    DataFlow::localFlow(pragma[only_bind_out](outp).getNode(call), outputNode)
   )
 }
 
@@ -423,7 +477,33 @@ private class ClearSanitizer extends DefaultTaintSanitizer {
       arg = call.getAnArgument() and
       arg = var.getAUse() and
       arg != this and
-      this.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+      arg.getBasicBlock().(ReachableBasicBlock).dominates(this.getBasicBlock())
+    )
+  }
+}
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.go.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowPrivate::DataFlowCall call, DataFlowDispatch::ArgumentPosition argpos |
+      // TODO: exclude neutrals and anything that has QL modeling.
+      not exists(DataFlowDispatch::viableCallable(call)) and
+      src.(DataFlow::ArgumentNode).argumentOf(call, argpos)
+    |
+      argpos != -1 and
+      sink.(DataFlow::PostUpdateNode)
+          .getPreUpdateNode()
+          .(DataFlow::ArgumentNode)
+          .argumentOf(call, -1)
+      or
+      sink.(DataFlowPrivate::OutNode).getCall() = call
     )
   }
 }

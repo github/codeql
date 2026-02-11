@@ -7,6 +7,7 @@ import python
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
+import semmle.python.Concepts
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -39,9 +40,14 @@ module PamAuthorizationCustomizations {
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A vulnerable `pam_authenticate` call considered as a flow sink.

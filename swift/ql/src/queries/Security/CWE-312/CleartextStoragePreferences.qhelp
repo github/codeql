@@ -12,7 +12,7 @@
 </recommendation>
 <example>
 
-<p>The following example shows three cases of storing information using UserDefaults. In the 'BAD' case, the data that is stored is sensitive (a credit card number) and is not encrypted.  In the 'GOOD' cases, the data is either not sensitive, or is protected with encryption.</p>
+<p>The following example shows three cases of storing information using UserDefaults. In the 'BAD' case, the data that is stored is sensitive (a credit card number) and is not encrypted.  In the 'GOOD' cases, the data is either not sensitive, or is protected with encryption. When encryption is used, take care to select a secure modern encryption algorithm, and put suitable key management practices into place.</p>
 
 <sample src="CleartextStoragePreferences.swift" />
 
@@ -25,6 +25,10 @@
 </li>
 <li>
 Apple Developer Documentation: <a href="https://developer.apple.com/documentation/foundation/userdefaults">UserDefaults</a>, <a href="https://developer.apple.com/documentation/foundation/nsubiquitouskeyvaluestore">NSUbiquitousKeyValueStore</a>
+</li>
+<li>
+  OWASP:
+  <a href="https://cheatsheetseries.owasp.org/cheatsheets/Key_Management_Cheat_Sheet.html">Key Management Cheat Sheet</a>.
 </li>
 
 </references>

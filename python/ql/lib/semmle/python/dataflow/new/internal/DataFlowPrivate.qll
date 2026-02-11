@@ -169,6 +169,26 @@ private predicate synthDictSplatArgumentNodeStoreStep(
 }
 
 /**
+ * Holds if `nodeFrom` is the value yielded by the `yield` found at `nodeTo`.
+ *
+ * For example, in
+ * ```python
+ * for x in l:
+ *   yield x.name
+ * ```
+ * data from `x.name` is stored into the `yield` (and can subsequently be read out of the iterable).
+ */
+predicate yieldStoreStep(Node nodeFrom, Content c, Node nodeTo) {
+  exists(Yield yield |
+    nodeTo.asCfgNode() = yield.getAFlowNode() and
+    nodeFrom.asCfgNode() = yield.getValue().getAFlowNode() and
+    // TODO: Consider if this will also need to transfer dictionary content
+    // once dictionary comprehensions are supported.
+    c instanceof ListElementContent
+  )
+}
+
+/**
  * Ensures that the a `**kwargs` parameter will not contain elements with names of
  * keyword parameters.
  *
@@ -256,6 +276,12 @@ abstract class PostUpdateNodeImpl extends Node {
   abstract Node getPreUpdateNode();
 }
 
+/**
+ * A post-update node synthesised for an existing control flow node.
+ * Add to `TSyntheticPostUpdateNode` to get the synthetic post-update node synthesised.
+ *
+ * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
+ */
 class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNode {
   ControlFlowNode node;
 
@@ -270,6 +296,11 @@ class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNo
   override Location getLocation() { result = node.getLocation() }
 }
 
+/**
+ * An existsing control flow node being the post-update node of a synthetic pre-update node.
+ *
+ * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
+ */
 class NonSyntheticPostUpdateNode extends PostUpdateNodeImpl, CfgNode {
   SyntheticPreUpdateNode pre;
 
@@ -525,6 +556,75 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
     nodeFrom.asCfgNode() = param.getDefault() and
     nodeTo.asCfgNode() = param.getDefiningNode()
   )
+  or
+  // Enhanced global variable field access tracking
+  globalVariableNestedFieldJumpStep(nodeFrom, nodeTo)
+}
+
+/** Helper predicate for `globalVariableNestedFieldJumpStep`. */
+pragma[nomagic]
+private predicate globalVariableAttrPathRead(
+  ModuleVariableNode globalVar, string accessPath, AttrRead r, string attrName
+) {
+  globalVariableAttrPathAtDepth(globalVar, accessPath, r.getObject(), _) and
+  attrName = r.getAttributeName()
+}
+
+/** Helper predicate for `globalVariableNestedFieldJumpStep`. */
+pragma[nomagic]
+private predicate globalVariableAttrPathWrite(
+  ModuleVariableNode globalVar, string accessPath, AttrWrite w, string attrName
+) {
+  globalVariableAttrPathAtDepth(globalVar, accessPath, w.getObject(), _) and
+  attrName = w.getAttributeName()
+}
+
+/**
+ * Holds if there is a jump step from `nodeFrom` to `nodeTo` through global variable field access.
+ * This supports tracking nested object field access through global variables like `app.obj.foo`.
+ */
+pragma[nomagic]
+private predicate globalVariableNestedFieldJumpStep(Node nodeFrom, Node nodeTo) {
+  exists(ModuleVariableNode globalVar, AttrWrite write, AttrRead read |
+    // Match writes and reads on the same global variable attribute path
+    exists(string accessPath, string attrName |
+      globalVariableAttrPathRead(globalVar, accessPath, read, attrName) and
+      globalVariableAttrPathWrite(globalVar, accessPath, write, attrName)
+    ) and
+    nodeFrom = write.getValue() and
+    nodeTo = read
+  )
+}
+
+/**
+ * Maximum depth for global variable nested attribute access.
+ * Depth 1 = globalVar.foo, depth 2 = globalVar.foo.bar, depth 3 = globalVar.foo.bar.baz, etc.
+ */
+private int getMaxGlobalVariableDepth() { result = 2 }
+
+/**
+ * Holds if `node` is an attribute access path starting from global variable `globalVar` at specific `depth`.
+ */
+private predicate globalVariableAttrPathAtDepth(
+  ModuleVariableNode globalVar, string accessPath, Node node, int depth
+) {
+  // Base case: Direct global variable access (depth 0)
+  depth = 0 and
+  // We use `globalVar` instead of `globalVar.getAWrite()` due to some weirdness with how
+  // attribute writes are handled in the global scope (see `GlobalAttributeAssignmentAsAttrWrite`).
+  node in [globalVar.getARead(), globalVar] and
+  accessPath = ""
+  or
+  exists(Node obj, string attrName, string parentAccessPath, int parentDepth |
+    node.(AttrRead).reads(obj, attrName)
+    or
+    any(AttrWrite aw).writes(obj, attrName, node)
+  |
+    globalVariableAttrPathAtDepth(globalVar, parentAccessPath, obj, parentDepth) and
+    accessPath = parentAccessPath + "." + attrName and
+    depth = parentDepth + 1 and
+    depth <= getMaxGlobalVariableDepth()
+  )
 }
 
 //--------
@@ -534,7 +634,7 @@ newtype TDataFlowType = TAnyFlow()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
-  string toString() { result = "DataFlowType" }
+  string toString() { result = "" }
 }
 
 /** A node that performs a type cast. */
@@ -564,7 +664,6 @@ predicate neverSkipInPathGraph(Node n) {
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
@@ -576,18 +675,14 @@ predicate localMustFlowStep(Node nodeFrom, Node nodeTo) { none() }
  */
 DataFlowType getNodeType(Node node) {
   result = TAnyFlow() and
-  // Suppress unused variable warning
-  node = node
+  exists(node)
 }
-
-/** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) { none() }
 
 //--------
 // Extra flow
 //--------
 /**
- * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * Holds if `nodeFrom` can flow to `nodeTo`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
@@ -608,7 +703,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
  * the type-trackers as well, as that would make evaluation of type-tracking recursive
  * with the new jumpsteps.
  *
- * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * Holds if `nodeFrom` can flow to `nodeTo`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
@@ -631,7 +726,7 @@ predicate jumpStepSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  * the type-trackers as well, as that would make evaluation of type-tracking recursive
  * with the new jumpsteps.
  *
- * Holds if `pred` can flow to `succ`, by jumping from one callable to
+ * Holds if `nodeFrom` can flow to `nodeTo`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
  */
@@ -673,8 +768,6 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   or
   setStoreStep(nodeFrom, c, nodeTo)
   or
-  comprehensionStoreStep(nodeFrom, c, nodeTo)
-  or
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
   matchStoreStep(nodeFrom, c, nodeTo)
@@ -687,6 +780,8 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
   or
   synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
+  or
+  yieldStoreStep(nodeFrom, c, nodeTo)
   or
   VariableCapture::storeStep(nodeFrom, c, nodeTo)
 }
@@ -740,7 +835,7 @@ module Orm {
     abstract predicate storeStep(Node nodeFrom, Content c, Node nodeTo);
 
     /**
-     * Holds if `pred` can flow to `succ`, by jumping from one callable to
+     * Holds if `nodeFrom` can flow to `nodeTo`, by jumping from one callable to
      * another. Additional steps specified by the configuration are *not*
      * taken into account.
      */
@@ -846,31 +941,6 @@ predicate dictClearStep(Node node, DictionaryElementContent c) {
     node.asCfgNode() = subscript.getObject() and
     c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
-}
-
-/** Data flows from an element expression in a comprehension to the comprehension. */
-predicate comprehensionStoreStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // Comprehension
-  //   `[x+1 for x in l]`
-  //   nodeFrom is `x+1`, cfg node
-  //   nodeTo is `[x+1 for x in l]`, cfg node
-  //   c denotes list or set or dictionary without index
-  //
-  // List
-  nodeTo.getNode().getNode().(ListComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof ListElementContent
-  or
-  // Set
-  nodeTo.getNode().getNode().(SetComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof SetElementContent
-  or
-  // Dictionary
-  nodeTo.getNode().getNode().(DictComp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof DictionaryElementAnyContent
-  or
-  // Generator
-  nodeTo.getNode().getNode().(GeneratorExp).getElt() = nodeFrom.getNode().getNode() and
-  c instanceof ListElementContent
 }
 
 /**
@@ -1027,8 +1097,6 @@ class NodeRegion instanceof Unit {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { none() }
-
-  int totalOrder() { result = 1 }
 }
 
 //--------

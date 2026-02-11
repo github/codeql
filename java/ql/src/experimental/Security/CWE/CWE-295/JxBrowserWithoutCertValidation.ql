@@ -48,7 +48,7 @@ private class JxBrowserLoadHandler extends RefType {
 
 private predicate isOnCertificateErrorMethodSafe(Method m) {
   forex(ReturnStmt rs | rs.getEnclosingCallable() = m |
-    rs.getResult().(CompileTimeConstantExpr).getBooleanValue() = true
+    rs.getExpr().(CompileTimeConstantExpr).getBooleanValue() = true
   )
 }
 
@@ -83,9 +83,9 @@ private module JxBrowserFlowConfig implements DataFlow::ConfigSig {
 
 private module JxBrowserFlow = DataFlow::Global<JxBrowserFlowConfig>;
 
-from DataFlow::Node src
-where
+deprecated query predicate problems(DataFlow::Node src, string message) {
   JxBrowserFlowConfig::isSource(src) and
-  not JxBrowserFlow::flow(src, _) and
-  not isSafeJxBrowserVersion()
-select src, "This JxBrowser instance may not check HTTPS certificates."
+  not JxBrowserFlow::flowFrom(src) and
+  not isSafeJxBrowserVersion() and
+  message = "This JxBrowser instance may not check HTTPS certificates."
+}

@@ -84,12 +84,6 @@ class Function extends Function_, Scope, AstNode {
   /** Gets the name used to define this function */
   override string getName() { result = Function_.super.getName() }
 
-  /** Gets the metrics for this function */
-  FunctionMetrics getMetrics() { result = this }
-
-  /** Gets the FunctionObject corresponding to this function */
-  FunctionObject getFunctionObject() { result.getOrigin() = this.getDefinition() }
-
   /**
    * Whether this function is a procedure, that is, it has no explicit return statement and always returns None.
    * Note that generator and async functions are not procedures as they return generators and coroutines respectively.
@@ -162,6 +156,24 @@ class Function extends Function_, Scope, AstNode {
       ret.getScope() = this and
       ret.getValue() = result.getNode()
     )
+  }
+
+  /** Gets the minimum number of positional arguments that can be correctly passed to this function. */
+  int getMinPositionalArguments() {
+    result = count(this.getAnArg()) - count(this.getDefinition().getArgs().getADefault())
+  }
+
+  /**
+   * Gets the maximum number of positional arguments that can be correctly passed to this function.
+   *
+   * If the function has a `*vararg` parameter, there is no upper limit on the number of positional
+   * arguments that can be passed to the function. In this case, this method returns a very large
+   * number (currently `INT_MAX`, 2147483647, but this may change in the future).
+   */
+  int getMaxPositionalArguments() {
+    if exists(this.getVararg())
+    then result = 2147483647 // INT_MAX
+    else result = count(this.getAnArg())
   }
 }
 

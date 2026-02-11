@@ -1,0 +1,7 @@
+| test.cpp:4:21:4:35 | definition of thiscall_method | thiscall |
+| test.cpp:7:14:7:23 | definition of func_cdecl | cdecl |
+| test.cpp:9:16:9:27 | definition of func_stdcall | stdcall |
+| test.cpp:11:17:11:29 | definition of func_fastcall | fastcall |
+| test.cpp:13:20:13:34 | definition of func_vectorcall | vectorcall |
+| test.cpp:15:13:15:25 | definition of func_overload | cdecl |
+| test.cpp:16:15:16:27 | definition of func_overload | stdcall |

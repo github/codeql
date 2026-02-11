@@ -1,0 +1,181 @@
+ql/cpp/ql/src/Best Practices/BlockWithTooManyStatements.ql
+ql/cpp/ql/src/Best Practices/ComplexCondition.ql
+ql/cpp/ql/src/Best Practices/Exceptions/AccidentalRethrow.ql
+ql/cpp/ql/src/Best Practices/Exceptions/CatchingByValue.ql
+ql/cpp/ql/src/Best Practices/Exceptions/LeakyCatch.ql
+ql/cpp/ql/src/Best Practices/Exceptions/ThrowingPointers.ql
+ql/cpp/ql/src/Best Practices/GuardedFree.ql
+ql/cpp/ql/src/Best Practices/Hiding/DeclarationHidesParameter.ql
+ql/cpp/ql/src/Best Practices/Hiding/DeclarationHidesVariable.ql
+ql/cpp/ql/src/Best Practices/Hiding/LocalVariableHidesGlobalVariable.ql
+ql/cpp/ql/src/Best Practices/Likely Errors/CommaBeforeMisleadingIndentation.ql
+ql/cpp/ql/src/Best Practices/Likely Errors/EmptyBlock.ql
+ql/cpp/ql/src/Best Practices/Likely Errors/OffsetUseBeforeRangeCheck.ql
+ql/cpp/ql/src/Best Practices/Likely Errors/Slicing.ql
+ql/cpp/ql/src/Best Practices/RuleOfTwo.ql
+ql/cpp/ql/src/Best Practices/SloppyGlobal.ql
+ql/cpp/ql/src/Best Practices/SwitchLongCase.ql
+ql/cpp/ql/src/Best Practices/Unused Entities/UnusedLocals.ql
+ql/cpp/ql/src/Best Practices/Unused Entities/UnusedStaticFunctions.ql
+ql/cpp/ql/src/Best Practices/Unused Entities/UnusedStaticVariables.ql
+ql/cpp/ql/src/Best Practices/UseOfGoto.ql
+ql/cpp/ql/src/Critical/DeadCodeGoto.ql
+ql/cpp/ql/src/Critical/DoubleFree.ql
+ql/cpp/ql/src/Critical/IncorrectCheckScanf.ql
+ql/cpp/ql/src/Critical/LargeParameter.ql
+ql/cpp/ql/src/Critical/MissingCheckScanf.ql
+ql/cpp/ql/src/Critical/NewArrayDeleteMismatch.ql
+ql/cpp/ql/src/Critical/NewDeleteArrayMismatch.ql
+ql/cpp/ql/src/Critical/NewFreeMismatch.ql
+ql/cpp/ql/src/Critical/OverflowStatic.ql
+ql/cpp/ql/src/Critical/SizeCheck.ql
+ql/cpp/ql/src/Critical/SizeCheck2.ql
+ql/cpp/ql/src/Critical/UseAfterFree.ql
+ql/cpp/ql/src/Diagnostics/ExtractedFiles.ql
+ql/cpp/ql/src/Diagnostics/ExtractionWarnings.ql
+ql/cpp/ql/src/Diagnostics/FailedExtractorInvocations.ql
+ql/cpp/ql/src/Documentation/CommentedOutCode.ql
+ql/cpp/ql/src/Documentation/FixmeComments.ql
+ql/cpp/ql/src/Documentation/UncommentedFunction.ql
+ql/cpp/ql/src/Header Cleanup/Cleanup-DuplicateIncludeGuard.ql
+ql/cpp/ql/src/Likely Bugs/AmbiguouslySignedBitField.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/BadAdditionOverflowCheck.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/BadCheckOdd.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/BitwiseSignCheck.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/ComparisonPrecedence.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/FloatComparison.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/IntMultToLong.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/PointlessComparison.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/PointlessSelfComparison.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/SignedOverflowCheck.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/UnsignedGEZero.ql
+ql/cpp/ql/src/Likely Bugs/ContinueInFalseLoop.ql
+ql/cpp/ql/src/Likely Bugs/Conversion/ArrayArgSizeMismatch.ql
+ql/cpp/ql/src/Likely Bugs/Conversion/CastArrayPointerArithmetic.ql
+ql/cpp/ql/src/Likely Bugs/Conversion/ImplicitDowncastFromBitfield.ql
+ql/cpp/ql/src/Likely Bugs/Conversion/LossyFunctionResultCast.ql
+ql/cpp/ql/src/Likely Bugs/Conversion/LossyPointerCast.ql
+ql/cpp/ql/src/Likely Bugs/Format/NonConstantFormat.ql
+ql/cpp/ql/src/Likely Bugs/Format/SnprintfOverflow.ql
+ql/cpp/ql/src/Likely Bugs/Format/TooManyFormatArguments.ql
+ql/cpp/ql/src/Likely Bugs/Format/WrongNumberOfFormatArguments.ql
+ql/cpp/ql/src/Likely Bugs/Format/WrongTypeFormatArguments.ql
+ql/cpp/ql/src/Likely Bugs/InconsistentCallOnResult.ql
+ql/cpp/ql/src/Likely Bugs/InconsistentCheckReturnNull.ql
+ql/cpp/ql/src/Likely Bugs/Leap Year/Adding365DaysPerYear.ql
+ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedLeapYearAfterYearModification.ql
+ql/cpp/ql/src/Likely Bugs/Leap Year/UncheckedReturnValueForTimeFunctions.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/AssignWhereCompareMeant.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/CompareWhereAssignMeant.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/DubiousNullCheck.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/ExprHasNoEffect.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/FutileConditional.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/IncorrectNotOperatorUsage.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/MissingEnumCaseInSwitch.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/ShortCircuitBitMask.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/UsingStrcpyAsBoolean.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/inconsistentLoopDirection.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/AllocaInLoop.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/PointerOverflow.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/ReturnCstrOfLocalStdString.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/ReturnStackAllocatedMemory.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/StackAddressEscapes.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/StrncpyFlippedArgs.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/SuspiciousCallToStrncat.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/SuspiciousSizeof.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/UninitializedLocal.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/UnsafeUseOfStrcat.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/UsingExpiredStackAddress.ql
+ql/cpp/ql/src/Likely Bugs/NestedLoopSameVar.ql
+ql/cpp/ql/src/Likely Bugs/OO/IncorrectConstructorDelegation.ql
+ql/cpp/ql/src/Likely Bugs/OO/NonVirtualDestructorInBaseClass.ql
+ql/cpp/ql/src/Likely Bugs/OO/ThrowInDestructor.ql
+ql/cpp/ql/src/Likely Bugs/OO/UnsafeUseOfThis.ql
+ql/cpp/ql/src/Likely Bugs/Protocols/TlsSettingsMisconfiguration.ql
+ql/cpp/ql/src/Likely Bugs/Protocols/UseOfDeprecatedHardcodedProtocol.ql
+ql/cpp/ql/src/Likely Bugs/RedundantNullCheckSimple.ql
+ql/cpp/ql/src/Likely Bugs/ReturnConstType.ql
+ql/cpp/ql/src/Likely Bugs/ReturnConstTypeMember.ql
+ql/cpp/ql/src/Likely Bugs/Underspecified Functions/ImplicitFunctionDeclaration.ql
+ql/cpp/ql/src/Likely Bugs/Underspecified Functions/MistypedFunctionArguments.ql
+ql/cpp/ql/src/Likely Bugs/Underspecified Functions/TooFewArguments.ql
+ql/cpp/ql/src/Likely Bugs/Underspecified Functions/TooManyArguments.ql
+ql/cpp/ql/src/Likely Bugs/UseInOwnInitializer.ql
+ql/cpp/ql/src/Security/CWE/CWE-014/MemsetMayBeDeleted.ql
+ql/cpp/ql/src/Security/CWE/CWE-022/TaintedPath.ql
+ql/cpp/ql/src/Security/CWE/CWE-078/ExecTainted.ql
+ql/cpp/ql/src/Security/CWE/CWE-079/CgiXss.ql
+ql/cpp/ql/src/Security/CWE/CWE-089/SqlTainted.ql
+ql/cpp/ql/src/Security/CWE/CWE-114/UncontrolledProcessOperation.ql
+ql/cpp/ql/src/Security/CWE/CWE-119/OverflowBuffer.ql
+ql/cpp/ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/BadlyBoundedWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/OverrunWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/OverrunWriteFloat.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/UnboundedWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/VeryLikelyOverrunWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-121/UnterminatedVarargsCall.ql
+ql/cpp/ql/src/Security/CWE/CWE-131/NoSpaceForZeroTerminator.ql
+ql/cpp/ql/src/Security/CWE/CWE-134/UncontrolledFormatString.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/ArithmeticUncontrolled.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/ComparisonWithWiderType.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/TaintedAllocationSize.ql
+ql/cpp/ql/src/Security/CWE/CWE-191/UnsignedDifferenceExpressionComparedZero.ql
+ql/cpp/ql/src/Security/CWE/CWE-193/InvalidPointerDeref.ql
+ql/cpp/ql/src/Security/CWE/CWE-253/HResultBooleanConversion.ql
+ql/cpp/ql/src/Security/CWE/CWE-290/AuthenticationBypass.ql
+ql/cpp/ql/src/Security/CWE/CWE-295/SSLResultConflation.ql
+ql/cpp/ql/src/Security/CWE/CWE-295/SSLResultNotChecked.ql
+ql/cpp/ql/src/Security/CWE/CWE-311/CleartextBufferWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-311/CleartextFileWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql
+ql/cpp/ql/src/Security/CWE/CWE-313/CleartextSqliteDatabase.ql
+ql/cpp/ql/src/Security/CWE/CWE-319/UseOfHttp.ql
+ql/cpp/ql/src/Security/CWE/CWE-326/InsufficientKeySize.ql
+ql/cpp/ql/src/Security/CWE/CWE-327/BrokenCryptoAlgorithm.ql
+ql/cpp/ql/src/Security/CWE/CWE-327/OpenSslHeartbleed.ql
+ql/cpp/ql/src/Security/CWE/CWE-367/TOCTOUFilesystemRace.ql
+ql/cpp/ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql
+ql/cpp/ql/src/Security/CWE/CWE-416/UseOfStringAfterLifetimeEnds.ql
+ql/cpp/ql/src/Security/CWE/CWE-416/UseOfUniquePointerAfterLifetimeEnds.ql
+ql/cpp/ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql
+ql/cpp/ql/src/Security/CWE/CWE-468/IncorrectPointerScaling.ql
+ql/cpp/ql/src/Security/CWE/CWE-468/IncorrectPointerScalingVoid.ql
+ql/cpp/ql/src/Security/CWE/CWE-468/SuspiciousAddWithSizeof.ql
+ql/cpp/ql/src/Security/CWE/CWE-497/ExposedSystemData.ql
+ql/cpp/ql/src/Security/CWE/CWE-497/PotentiallyExposedSystemData.ql
+ql/cpp/ql/src/Security/CWE/CWE-570/IncorrectAllocationErrorHandling.ql
+ql/cpp/ql/src/Security/CWE/CWE-611/XXE.ql
+ql/cpp/ql/src/Security/CWE/CWE-676/DangerousFunctionOverflow.ql
+ql/cpp/ql/src/Security/CWE/CWE-676/DangerousUseOfCin.ql
+ql/cpp/ql/src/Security/CWE/CWE-676/PotentiallyDangerousFunction.ql
+ql/cpp/ql/src/Security/CWE/CWE-704/WcharCharConversion.ql
+ql/cpp/ql/src/Security/CWE/CWE-732/DoNotCreateWorldWritable.ql
+ql/cpp/ql/src/Security/CWE/CWE-732/OpenCallMissingModeArgument.ql
+ql/cpp/ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql
+ql/cpp/ql/src/Security/CWE/CWE-807/TaintedCondition.ql
+ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql
+ql/cpp/ql/src/Summary/LinesOfCode.ql
+ql/cpp/ql/src/Summary/LinesOfUserCode.ql
+ql/cpp/ql/src/Telemetry/CompilerErrors.ql
+ql/cpp/ql/src/Telemetry/DatabaseQuality.ql
+ql/cpp/ql/src/Telemetry/ExtractionMetrics.ql
+ql/cpp/ql/src/Telemetry/MissingIncludes.ql
+ql/cpp/ql/src/Telemetry/SucceededIncludes.ql
+ql/cpp/ql/src/jsf/4.06 Pre-Processing Directives/AV Rule 32.ql
+ql/cpp/ql/src/jsf/4.07 Header Files/AV Rule 35.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 71.1.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 79.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 82.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 88.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 89.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 95.ql
+ql/cpp/ql/src/jsf/4.10 Classes/AV Rule 97.ql
+ql/cpp/ql/src/jsf/4.13 Functions/AV Rule 107.ql
+ql/cpp/ql/src/jsf/4.13 Functions/AV Rule 114.ql
+ql/cpp/ql/src/jsf/4.16 Initialization/AV Rule 145.ql
+ql/cpp/ql/src/jsf/4.17 Types/AV Rule 148.ql
+ql/cpp/ql/src/jsf/4.21 Operators/AV Rule 166.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 196.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 197.ql
+ql/cpp/ql/src/jsf/4.24 Control Flow Structures/AV Rule 201.ql

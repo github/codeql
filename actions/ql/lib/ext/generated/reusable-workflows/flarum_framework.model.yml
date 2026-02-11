@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["flarum/framework/.github/workflows/REUSABLE_backend.yml", "*", "input.monorepo_tests", "code-injection", "generated"]

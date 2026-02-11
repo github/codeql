@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["open-watcom/open-watcom-v2", "*", "input.fullname", "code-injection", "generated"]
+     - ["open-watcom/open-watcom-v2", "*", "input.buildcmd", "code-injection", "generated"]
+     - ["open-watcom/open-watcom-v2", "*", "input.artifact", "code-injection", "generated"]

@@ -20,75 +20,75 @@ public class C {
 
 	@GetMapping(value = "jyaml")
 	public void bad1(HttpServletRequest request) throws Exception {
-		String data = request.getParameter("data");
-		Yaml.load(data);  // $unsafeDeserialization
-		Yaml.loadStream(data);  // $unsafeDeserialization
-		Yaml.loadStreamOfType(data, Object.class);  // $unsafeDeserialization
-		Yaml.loadType(data, Object.class);  // $unsafeDeserialization
+		String data = request.getParameter("data"); // $ Source
+		Yaml.load(data);  // $ Alert
+		Yaml.loadStream(data);  // $ Alert
+		Yaml.loadStreamOfType(data, Object.class);  // $ Alert
+		Yaml.loadType(data, Object.class);  // $ Alert
 
 		org.ho.yaml.YamlConfig yamlConfig = new YamlConfig();
-		yamlConfig.load(data);  // $unsafeDeserialization
-		yamlConfig.loadStream(data);  // $unsafeDeserialization
-		yamlConfig.loadStreamOfType(data, Object.class);  // $unsafeDeserialization
-		yamlConfig.loadType(data, Object.class);  // $unsafeDeserialization
+		yamlConfig.load(data);  // $ Alert
+		yamlConfig.loadStream(data);  // $ Alert
+		yamlConfig.loadStreamOfType(data, Object.class);  // $ Alert
+		yamlConfig.loadType(data, Object.class);  // $ Alert
 	}
 
 	@GetMapping(value = "jsonio")
 	public void bad2(HttpServletRequest request) {
-		String data = request.getParameter("data");
+		String data = request.getParameter("data"); // $ Source
 
 		HashMap hashMap = new HashMap();
 		hashMap.put("USE_MAPS", true);
 
-		JsonReader.jsonToJava(data); // $unsafeDeserialization
+		JsonReader.jsonToJava(data); // $ Alert
 
 		JsonReader jr = new JsonReader(data, null);
-		jr.readObject(); // $unsafeDeserialization
+		jr.readObject(); // $ Alert
 	}
 
 	@GetMapping(value = "yamlbeans")
 	public void bad3(HttpServletRequest request) throws Exception {
-		String data = request.getParameter("data");
+		String data = request.getParameter("data"); // $ Source
 		YamlReader r = new YamlReader(data);
-		r.read(); // $unsafeDeserialization
-		r.read(Object.class); // $unsafeDeserialization
-		r.read(Object.class, Object.class); // $unsafeDeserialization
+		r.read(); // $ Alert
+		r.read(Object.class); // $ Alert
+		r.read(Object.class, Object.class); // $ Alert
 	}
 
         @GetMapping(value = "hessian")
 	public void bad4(HttpServletRequest request) throws Exception {
-		byte[] bytes = request.getParameter("data").getBytes();
+		byte[] bytes = request.getParameter("data").getBytes(); // $ Source
 		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
 		HessianInput hessianInput = new HessianInput(bis);
-		hessianInput.readObject(); // $unsafeDeserialization
-		hessianInput.readObject(Object.class); // $unsafeDeserialization
+		hessianInput.readObject(); // $ Alert
+		hessianInput.readObject(Object.class); // $ Alert
 	}
 
 	@GetMapping(value = "hessian2")
 	public void bad5(HttpServletRequest request) throws Exception {
-		byte[] bytes = request.getParameter("data").getBytes();
+		byte[] bytes = request.getParameter("data").getBytes(); // $ Source
 		ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
 		Hessian2Input hessianInput = new Hessian2Input(bis);
-		hessianInput.readObject(); // $unsafeDeserialization
-		hessianInput.readObject(Object.class); // $unsafeDeserialization
+		hessianInput.readObject(); // $ Alert
+		hessianInput.readObject(Object.class); // $ Alert
 	}
 
     @GetMapping(value = "castor")
 	public void bad6(HttpServletRequest request) throws Exception {
 		Unmarshaller unmarshaller = new Unmarshaller();
-		unmarshaller.unmarshal(new StringReader(request.getParameter("data"))); // $unsafeDeserialization
+		unmarshaller.unmarshal(new StringReader(request.getParameter("data"))); // $ Alert
 	}
 
     @GetMapping(value = "burlap")
 	public void bad7(HttpServletRequest request) throws Exception {
-		byte[] serializedData = request.getParameter("data").getBytes();
+		byte[] serializedData = request.getParameter("data").getBytes(); // $ Source
 		ByteArrayInputStream is = new ByteArrayInputStream(serializedData);
 		BurlapInput burlapInput = new BurlapInput(is);
-		burlapInput.readObject(); // $unsafeDeserialization
+		burlapInput.readObject(); // $ Alert
 
         BurlapInput burlapInput1 = new BurlapInput();
 		burlapInput1.init(is);
-		burlapInput1.readObject(); // $unsafeDeserialization
+		burlapInput1.readObject(); // $ Alert
 	}
 
 	@GetMapping(value = "jsonio1")

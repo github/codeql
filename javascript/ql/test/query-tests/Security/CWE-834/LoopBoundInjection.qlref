@@ -1,1 +1,2 @@
-Security/CWE-834/LoopBoundInjection.ql
+query: Security/CWE-834/LoopBoundInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

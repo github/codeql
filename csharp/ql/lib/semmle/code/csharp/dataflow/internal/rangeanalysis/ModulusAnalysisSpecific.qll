@@ -32,8 +32,6 @@ module Private {
 
   class LeftShiftExpr = RU::ExprNode::LeftShiftExpr;
 
-  predicate guardDirectlyControlsSsaRead = RU::guardControlsSsaRead/3;
-
   predicate guardControlsSsaRead = RU::guardControlsSsaRead/3;
 
   predicate valueFlowStep = RU::valueFlowStep/3;

@@ -2,11 +2,9 @@
  * @name Overly complex `__del__` method
  * @description `__del__` methods may be called at arbitrary times, perhaps never called at all, and should be simple.
  * @kind problem
- * @tags efficiency
+ * @tags quality
  *       maintainability
  *       complexity
- *       statistical
- *       non-attributable
  * @problem.severity recommendation
  * @sub-severity low
  * @precision high
@@ -14,11 +12,12 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from FunctionValue method
 where
   exists(ClassValue c |
     c.declaredAttribute("__del__") = method and
-    method.getScope().getMetrics().getCyclomaticComplexity() > 3
+    method.getScope().(FunctionMetrics).getCyclomaticComplexity() > 3
   )
 select method, "Overly complex '__del__' method."

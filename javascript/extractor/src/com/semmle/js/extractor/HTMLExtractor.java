@@ -184,8 +184,9 @@ public class HTMLExtractor implements IExtractor {
   private static final Pattern ANGULAR_FOR_LOOP_DECL =
       Pattern.compile("^ *let +(\\w+) +of(?: +|(?!\\w))(.*)");
 
+  /** Attribute names that look valid in HTML or in one of the template languages we support, like Vue and Angular. */
   private static final Pattern VALID_ATTRIBUTE_NAME =
-      Pattern.compile("\\*?\\[?\\(?[\\w:_\\-]+\\]?\\)?");
+      Pattern.compile("[*:@]?\\[?\\(?[\\w:_\\-.]+\\)?\\]?");
 
   /** List of HTML attributes whose value is interpreted as JavaScript. */
   private static final Pattern JS_ATTRIBUTE =

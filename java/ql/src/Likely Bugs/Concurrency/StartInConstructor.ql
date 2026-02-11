@@ -7,12 +7,17 @@
  * @problem.severity warning
  * @precision medium
  * @id java/thread-start-in-constructor
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       concurrency
  */
 
 import java
+
+private predicate hasASubclass(RefType t) {
+  exists(RefType sub | sub != t | sub.getAnAncestor() = t)
+}
 
 /**
  * Holds if this type is either `final` or
@@ -23,7 +28,11 @@ private predicate cannotBeExtended(RefType t) {
   or
   // If the class is private, all possible subclasses are known.
   t.isPrivate() and
-  not exists(RefType sub | sub != t | sub.getAnAncestor() = t)
+  not hasASubclass(t)
+  or
+  // If the class only has private constructors, all possible subclasses are known.
+  forex(Constructor c | c.getDeclaringType() = t | c.isPrivate()) and
+  not hasASubclass(t)
 }
 
 from MethodCall m, Constructor c, Class clazz

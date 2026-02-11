@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory # $Source
 app = Flask(__name__)
 
 
@@ -18,4 +18,4 @@ def download_file():
 def download_file():
     dirname = request.args.get('dirname', '')
     filename = request.args.get('filename', '')
-    return send_from_directory(dirname, filename) # $result=BAD result=OK(filename)
+    return send_from_directory(dirname, filename) # $ Alert

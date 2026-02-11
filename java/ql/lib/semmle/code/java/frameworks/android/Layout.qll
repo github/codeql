@@ -1,4 +1,6 @@
 /** Provides classes and predicates for working with Android layouts and UI elements. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.xml.AndroidManifest
@@ -6,7 +8,7 @@ private import semmle.code.java.dataflow.DataFlow
 
 /** An Android Layout XML file. */
 class AndroidLayoutXmlFile extends XmlFile {
-  AndroidLayoutXmlFile() { this.getRelativePath().matches("%/res/layout/%.xml") }
+  AndroidLayoutXmlFile() { this.getRelativePath().regexpMatch("(.*/)?res/layout/.*\\.xml") }
 }
 
 /** A component declared in an Android layout file. */

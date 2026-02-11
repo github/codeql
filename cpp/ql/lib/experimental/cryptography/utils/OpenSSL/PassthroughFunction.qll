@@ -31,7 +31,7 @@ predicate knownPassthroughFunction(Function f, int inInd, int outInd) {
 
 /**
  * `c` is a call to a function that preserves the algorithm but changes its form.
- * `onExpr` is the input argument passing through to, `outExpr` is the next expression in a dataflow step associated with `c`
+ * `inExpr` is the input argument passing through to, `outExpr` is the next expression in a dataflow step associated with `c`
  */
 predicate knownPassthoughCall(Call c, Expr inExpr, Expr outExpr) {
   exists(int inInd, int outInd |

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dotnet/dotnet-monitor", "*", "input.files_to_commit", "code-injection", "generated"]

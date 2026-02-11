@@ -1,4 +1,6 @@
 /** Provides classes and predicates to reason about `AsyncTask`s in Android. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -35,7 +37,7 @@ private class AsyncTaskOnPostExecuteAdditionalValueStep extends AdditionalValueS
     |
       onPostExecute.getDeclaringType() = runInBackground.getDeclaringType()
     |
-      node1.asExpr() = any(ReturnStmt r | r.getEnclosingCallable() = runInBackground).getResult() and
+      node1.asExpr() = any(ReturnStmt r | r.getEnclosingCallable() = runInBackground).getExpr() and
       node2.asParameter() = onPostExecute.getParameter(0)
     )
   }

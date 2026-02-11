@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: summaryModel
+    data: # namespace, type, subtypes, name, signature, ext, input, output, kind, provenance
+      - ["std", "iterator", True, "operator*", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "iterator", True, "operator->", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["std", "iterator", True, "iterator", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]
+      - ["__gnu_cxx", "__normal_iterator", True, "operator*", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["__gnu_cxx", "__normal_iterator", True, "operator->", "", "", "Argument[-1].Element[@]", "ReturnValue[*@]", "value", "manual"]
+      - ["__gnu_cxx", "__normal_iterator", True, "__normal_iterator", "", "", "Argument[*0].Element[@]", "Argument[-1].Element[@]", "value", "manual"]

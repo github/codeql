@@ -2,60 +2,62 @@ var express = require('express');
 var Koa = require('koa');
 
 express().get('/some/path', function (req, res) {
-    var foo = req.query.foo;
-    foo.indexOf(); // NOT OK
+    var foo = req.query.foo; // $ Source
+    foo.indexOf(); // $ Alert
 
-    foo.concat(); // NOT OK
+    foo.concat(); // $ Alert
 
     function f() {
-        foo.concat(); // NOT OK
+        foo.concat(); // $ Alert
     }
 
     function g(bar) {
-        bar.concat(); // NOT OK
+        bar.concat(); // $ Alert
     }
     g(foo);
 
-    req.url.indexOf(); // OK
+    req.url.indexOf();
 
-    foo.indexOf(prefix) === 0; // OK
-    foo.indexOf(prefix) == 0; // OK
-    foo.indexOf(prefix) !== 0; // OK
+    foo.indexOf(prefix) === 0;
+    foo.indexOf(prefix) == 0;
+    foo.indexOf(prefix) !== 0;
 
-    foo.slice(-1) === 'x'; // OK
+    foo.slice(-1) === 'x';
 
-    foo.indexOf(prefix) == 1; // NOT OK
-    foo.slice(1) === 'x'; // NOT OK
+    foo.indexOf(prefix) == 1; // $ Alert
+    foo.slice(1) === 'x'; // $ Alert
+
+    foo.length; // $ Alert
 
     if (typeof foo === "string") {
-        foo.indexOf(); //  OK
+        foo.indexOf();
     } else {
-        foo.indexOf(); //  OK
+        foo.indexOf();
     }
     if (foo instanceof Array) {
-        foo.indexOf(); //  OK, but still flagged [INCONSISTENCY]
+        foo.indexOf();
     }
 
-    (foo + f()).indexOf(); // OK
+    (foo + f()).indexOf();
 
-    foo.length; // NOT OK
+    foo.length; // $ MISSING: Alert - missed due to guards sanitising both branches
 });
 
 new Koa().use(function handler(ctx) {
-    var foo = ctx.request.query.foo;
-    foo.indexOf(); // NOT OK
+    var foo = ctx.request.query.foo; // $ Source
+    foo.indexOf(); // $ Alert
 });
 
 express().get('/some/path/:foo', function (req, res) {
     var foo = req.params.foo;
-    foo.indexOf(); // OK
+    foo.indexOf();
 });
 
 express().get('/some/path/:foo', function (req, res) {
-    if (req.query.path.length) { } // OK
-    req.query.path.length == 0; // OK
-    !req.query.path.length; // OK
-    req.query.path.length > 0; // OK
+    if (req.query.path.length) { }
+    req.query.path.length == 0;
+    !req.query.path.length;
+    req.query.path.length > 0;
 });
 
 express().get('/some/path/:foo', function (req, res) {
@@ -65,21 +67,21 @@ express().get('/some/path/:foo', function (req, res) {
         return;
     }
 
-    while (p.length) { // OK
+    while (p.length) {
         p = p.substr(1);
     }
 
-    p.length < 1; // OK
+    p.length < 1;
 });
 
 express().get('/some/path/:foo', function (req, res) {
     let someObject = {};
-    safeGet(someObject, req.query.path).bar = 'baz'; // prototype pollution here - but flagged in `safeGet`
+    safeGet(someObject, req.query.path).bar = 'baz'; // $ Source - prototype pollution here - but flagged in `safeGet`
 });
 
 function safeGet(obj, p) {
-    if (p === '__proto__' || // NOT OK - could be singleton array
-        p === 'constructor') { // NOT OK - could be singleton array
+    if (p === '__proto__' || // $ Alert - could be singleton array
+        p === 'constructor') { // $ Alert - could be singleton array
         return null;
     }
     return obj[p];
@@ -87,24 +89,24 @@ function safeGet(obj, p) {
 
 express().get('/foo', function (req, res) {
     let data = req.query;
-    data.foo.indexOf(); // NOT OK
+    data.foo.indexOf(); // $ Alert
     if (typeof data.foo !== 'undefined') {
-        data.foo.indexOf(); // NOT OK
+        data.foo.indexOf(); // $ Alert
     }
     if (typeof data.foo !== 'string') {
-        data.foo.indexOf(); // OK
+        data.foo.indexOf();
     }
     if (typeof data.foo !== 'undefined') {
-        data.foo.indexOf(); // NOT OK
+        data.foo.indexOf(); // $ Alert
     }
 });
 
 express().get('/foo', function (req, res) {
-    let data = req.query.data;
-    data.indexOf(); // NOT OK
+    let data = req.query.data; // $ Source
+    data.indexOf(); // $ Alert
     if (Array.isArray(data)) {
-        data.indexOf(); // OK
+        data.indexOf();
     } else {
-        data.indexOf(); // OK
+        data.indexOf();
     }
 });

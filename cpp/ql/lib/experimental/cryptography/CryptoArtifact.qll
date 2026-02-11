@@ -127,7 +127,7 @@ abstract class CryptographicAlgorithm extends CryptographicArtifact {
   /**
    * Normalizes a raw name into a normalized name as found in `CryptoAlgorithmNames.qll`.
    * Subclassess should override for more api-specific normalization.
-   * By deafult, converts a raw name to upper-case with no hyphen, underscore, hash, or space.
+   * By default, converts a raw name to upper-case with no hyphen, underscore, hash, or space.
    */
   bindingset[s]
   string normalizeName(string s) {

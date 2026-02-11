@@ -1,0 +1,9 @@
+| Cargo.toml:0:0:0:0 | Cargo.toml | fromSource: no | hasSemantics: no | isSkippedByCompilation: no |
+| a_file.rs:0:0:0:0 | a_file.rs | fromSource: yes | hasSemantics: yes | isSkippedByCompilation: no |
+| another_file.rs:0:0:0:0 | another_file.rs | fromSource: yes | hasSemantics: yes | isSkippedByCompilation: no |
+| bad_cargo/Cargo.toml:0:0:0:0 | bad_cargo/Cargo.toml | fromSource: no | hasSemantics: no | isSkippedByCompilation: no |
+| bad_cargo/src/no_semantics.rs:0:0:0:0 | bad_cargo/src/no_semantics.rs | fromSource: yes | hasSemantics: no | isSkippedByCompilation: no |
+| lib.rs:0:0:0:0 | lib.rs | fromSource: yes | hasSemantics: yes | isSkippedByCompilation: no |
+| nested.rs:0:0:0:0 | nested.rs | fromSource: yes | hasSemantics: yes | isSkippedByCompilation: no |
+| nested/file.rs:0:0:0:0 | nested/file.rs | fromSource: yes | hasSemantics: yes | isSkippedByCompilation: no |
+| nested/not_compiled.rs:0:0:0:0 | nested/not_compiled.rs | fromSource: yes | hasSemantics: no | isSkippedByCompilation: yes |

@@ -1,3 +1,312 @@
+## 5.4.6
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+* C# 14: Support for null-conditional assignments (such as `c?.Prop = p`). Furthermore, the `MaybeNullExpr` class now takes null-conditional access (such as `?.`) into account when modeling potential null values.
+
+## 5.4.5
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the C# extractor's search for `.config`, `.props`, XML and project files.
+* Updated the generated .NET “models as data” runtime models to cover .NET 10.
+* C# 14: Support for *implicit* span conversions in the QL library.
+* Basic extractor support for .NET 10 is now available. Extraction is supported for .NET 10 projects in both traced mode and `build mode: none`. However, code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
+* Added autobuilder and `build-mode: none` support for `.slnx` solution files.
+* In `build mode: none`, .NET 10 is now used by default unless a specific .NET version is specified elsewhere.
+* Added implicit reads of `System.Collections.Generic.KeyValuePair.Value` at taint-tracking sinks and at inputs to additional taint steps. As a result, taint-tracking queries will now produce more results when a container is tainted.
+
+### Bug Fixes
+
+* Fixed two issues affecting build mode `none`:
+  * Corrected version sorting logic when detecting the newest .NET framework to use.
+  * Improved stability for .NET 10 compatibility.
+* Fixed an issue where compiler-generated files were not being extracted. The extractor now runs after compilation completes to ensure all generated files are properly analyzed.
+
+## 5.4.4
+
+No user-facing changes.
+
+## 5.4.3
+
+No user-facing changes.
+
+## 5.4.2
+
+No user-facing changes.
+
+## 5.4.1
+
+### Minor Analysis Improvements
+
+* Improved stability when downloading .NET versions by setting appropriate environment variables for `dotnet` commands. The correct architecture-specific version of .NET is now downloaded on ARM runners.
+* Compilation errors are now included in the debug log when using build-mode none.
+* Added a new extractor option to specify a custom directory for dependency downloads in buildless mode. Use `-O buildless_dependency_dir=<path>` to configure the target directory.
+
+## 5.4.0
+
+### Deprecated APIs
+
+* `ControlFlowElement.controlsBlock` has been deprecated in favor of the Guards library.
+
+### New Features
+
+* Initial support for incremental C# databases via `codeql database create --overlay-base`/`--overlay-changes`.
+
+### Minor Analysis Improvements
+
+* Updated *roslyn* and *binlog* dependencies in the extractor, which may improve database and analysis quality.
+
+## 5.3.0
+
+### Deprecated APIs
+
+* The class `AbstractValue` in the `Guards` library has been deprecated and replaced with the class `GuardValue`.
+
+### Major Analysis Improvements
+
+* The representation of the C# control-flow graph has been significantly changed. This has minor effects on a wide range of queries including both minor improvements and minor regressions. For example, improved precision has been observed for `cs/inefficient-containskey` and `cs/stringbuilder-creation-in-loop`. Two queries stand out as being significantly affected with great improvements: `cs/dereferenced-value-may-be-null` has been completely rewritten which removes a very significant number of false positives. Furthermore, `cs/constant-condition` has been updated to report many new results - these new results are primarily expected to be true positives, but a few new false positives are expected as well. As part of these changes, `cs/dereferenced-value-may-be-null` has been changed from a `path-problem` query to a `problem` query, so paths are no longer reported for this query.
+
+### Minor Analysis Improvements
+
+* Added tracer support for macOS and Linux when the .NET CLI (`dotnet`) directly invokes the C# compiler (`csc`). This enhancement provides basic tracing and extraction capabilities for .NET 10 RC2 on these platforms.
+* The extraction of location information for source code entities has been updated to use star IDs (`*` IDs). This change should be transparent to end-users but may improve extraction performance in some cases by reducing TRAP file size and eliminating overhead from location de-duplication.
+
+## 5.2.6
+
+### Minor Analysis Improvements
+
+* The extraction of location information for parameters, fields, constructors, destructors and user operators has been optimized. Previously, location information was extracted multiple times for each bound generic. Now, only the location of the unbound generic declaration is extracted during the extraction phase, and the QL library explicitly reuses this location for all bound instances of the same generic.
+* The extraction of location information for type parameters and tuples types has been optimized. Previously, location information was extracted multiple times for each type when it was declared across multiple files. Now, the extraction context is respected during the extraction phase, ensuring locations are only extracted within the appropriate context. This change should be transparent to end-users but may improve extraction performance in some cases.
+* The extraction of location information for named types (classes, structs, etc.) has been optimized. Previously, location information was extracted multiple times for each type when it was declared across multiple files. Now, the extraction context is respected during the extraction phase, ensuring locations are only extracted within the appropriate context. This change should be transparent to end-users but may improve extraction performance in some cases.
+* The extraction of the location for bound generic entities (methods, accessors, indexers, properties, and events) has been optimized. Previously, location information was extracted multiple times for each bound generic. Now, only the location of the unbound generic declaration is extracted during the extraction phase, and the QL library explicitly reuses this location for all bound instances of the same generic.
+
+## 5.2.5
+
+No user-facing changes.
+
+## 5.2.4
+
+No user-facing changes.
+
+## 5.2.3
+
+### Minor Analysis Improvements
+
+* A bug has been fixed in the data flow analysis, which means that flow through calls using the `base` qualifier may now be tracked more accurately.
+* Added summary models for `System.Xml.XmlReader`, `System.Xml.XmlTextReader` and `System.Xml.XmlDictionaryReader`.
+* Models-as-data summaries for byte and char arrays and pointers now treat the entire collection as tainted, reflecting their common use as string alternatives.
+* The default taint tracking configuration now allows implicit reads from collections at sinks and in additional flow steps. This increases flow coverage for many taint tracking queries and helps reduce false negatives.
+
+## 5.2.2
+
+No user-facing changes.
+
+## 5.2.1
+
+No user-facing changes.
+
+## 5.2.0
+
+### New Features
+
+* Added a new predicate, `getASuperType()`, to get a direct supertype of this type.
+
+## 5.1.9
+
+No user-facing changes.
+
+## 5.1.8
+
+No user-facing changes.
+
+## 5.1.7
+
+### Minor Analysis Improvements
+
+* The generated Models as Data (MaD) models for .NET 9 Runtime have been updated and are now more precise (due to a recent model generator improvement).
+
+## 5.1.6
+
+No user-facing changes.
+
+## 5.1.5
+
+### Minor Analysis Improvements
+
+* Improved autobuilder logic for detecting whether a project references a SDK (and should be built using `dotnet`).
+
+## 5.1.4
+
+### Minor Analysis Improvements
+
+* The *alignment* and *format* clauses in string interpolation expressions are now extracted. That is, in `$"Hello {name,align:format}"` *name*, *align* and *format* are extracted as children of the string interpolation *insert* `{name,align:format}`.
+* Blazor support can now better recognize when a property being set is specified with a string literal, rather than referenced in a `nameof` expression.
+
+## 5.1.3
+
+### Minor Analysis Improvements
+
+* The models for `System.Uri` have been modified to better model the flow of tainted URIs.
+* Modeled parameter passing between Blazor parent and child components.
+
+## 5.1.2
+
+No user-facing changes.
+
+## 5.1.1
+
+No user-facing changes.
+
+## 5.1.0
+
+### Deprecated APIs
+
+* The predicates `immediatelyControls` and `controls` on the `ConditionBlock`
+  class have been deprecated in favor of the newly added `dominatingEdge`
+  predicate.
+
+### Minor Analysis Improvements
+
+* Full support for C# 13 / .NET 9. All new language features are now supported by the extractor. QL library and data flow support for the new C# 13 language constructs and generated MaD models for the .NET 9 runtime.
+* C# 13: Add generated models for .NET 9.
+* The models for `System.Net.Http.HttpRequestMessage` and `System.UriBuilder` have been modified to better model the flow of tainted URIs.
+* Blazor `[Parameter]` fields bound to a variable from the route specified in the `@page` directive are now modeled as remote flow sources.
+
+## 5.0.0
+
+### Breaking Changes
+
+* Deleted the deprecated `getInstanceType` predicate from the `UnboundGenericType` class.
+* Deleted the deprecated `getElement` predicate from the `Node` class in `ControlFlowGraph.qll`, use `getAstNode` instead.
+
+### Minor Analysis Improvements
+
+* C# 13: Added MaD models for some overload implementations using `ReadOnlySpan` parameters (like `String.Format(System.String, System.ReadOnlySpan<System.Object>))`).
+* C# 13: Added support for the overload resolution priority attribute (`OverloadResolutionPriority`). Usages of the attribute and the corresponding priority can be found using the QL class `SystemRuntimeCompilerServicesOverloadResolutionPriorityAttribute`.
+* C# 13: Added support for partial properties and indexers.
+
+## 4.0.2
+
+### Minor Analysis Improvements
+
+* Added extractor support for extracting implicit `ToString` calls in binary `+` expressions and string interpolation expressions.
+* The Razor source generator invocation in `build-mode:none` extraction has been changed to use relative file paths instead of absolute ones.
+* C# 13: Added extractor support and call dispatch logic (data flow) for the (negative) type parameter constraint `allows ref struct`. Added extractor support for the type parameter constraint `notnull`.
+
+## 4.0.1
+
+### Minor Analysis Improvements
+
+* C# 13: Added QL library support for *collection* like type `params` parameters.
+* Added `remote` flow source models for properties of Blazor components annotated with any of the following attributes from `Microsoft.AspNetCore.Components`:
+  - `[SupplyParameterFromForm]`
+  - `[SupplyParameterFromQuery]`
+* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`. 
+* Added flow summaries for the `Microsoft.AspNetCore.Mvc.Controller::View` method.
+* The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
+* The C# extractor now supports *basic* extraction of .NET 9 projects. There might be limited support for extraction of code using the new C# 13 language features.
+
+## 4.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated data flow API that was based on extending a configuration class. See https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries for instructions on migrating your queries to use the new API.
+
+### Minor Analysis Improvements
+
+* Added support for data-flow through member accesses of objects with `dynamic` types.
+* Only extract *public* and *protected* members from reference assemblies. This yields an approximate average speed-up of around 10% for extraction and query execution. Custom MaD rows using `Field`-based summaries may need to be changed to `SyntheticField`-based flows if they reference private fields.
+* Added `Microsoft.AspNetCore.Components.NagivationManager::Uri` as a remote flow source, since this value may contain user-specified values.
+* Added the following URI-parsing methods as summaries, as they may be tainted with user-specified values:
+  - `System.Web.HttpUtility::ParseQueryString`
+  - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseQuery`
+  - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseNullableQuery`
+* Added `js-interop` sinks for the `InvokeAsync` and `InvokeVoidAsync` methods of `Microsoft.JSInterop.IJSRuntime`, which can run arbitrary JavaScript. 
+
+## 3.1.1
+
+### Minor Analysis Improvements
+
+* The Models as Data models for .NET 8 Runtime now include generated models for higher order methods.
+
+## 3.1.0
+
+### Major Analysis Improvements
+
+* The generated .NET 8 runtime models have been updated.
+
+## 3.0.1
+
+No user-facing changes.
+
+## 3.0.0
+
+### Breaking Changes
+
+* C#: Add support for MaD directly on properties and indexers using *attributes*. Using `Attribute.Getter` or `Attribute.Setter` in the model `ext` field applies the model to the getter or setter for properties and indexers. Prior to this change `Attribute` models unintentionally worked for property setters (if the property is decorated with the matching attribute). That is, a model that uses the `Attribute` feature directly on a property for a property setter needs to be changed to `Attribute.Setter`.
+* C#: Remove all CIL tables and related QL library functionality.
+
+### Deprecated APIs
+
+* The class `ThreatModelFlowSource` has been renamed to `ActiveThreatModelSource` to more clearly reflect it only contains the currently active threat model sources. `ThreatModelFlowSource` has been marked as deprecated.
+
+### Minor Analysis Improvements
+
+* `DataFlow::Node` instances are no longer created for library methods and fields that are not callable (either statically or dynamically) or otherwise referred to from source code. This may affect third-party queries that use these nodes to identify library methods or fields that are present in DLL files where those methods or fields are unreferenced. If this presents a problem, consider using `Callable` and other non-dataflow classes to identify such library entities.
+* C#: Add extractor support for attributes on indexers.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
+* Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
+
+### Minor Analysis Improvements
+
+* Parameters of public methods in abstract controller-like classes are now considered remote flow sources.
+* The reported location of `partial` methods has been changed from the definition to the implementation part.
+
+## 1.2.0
+
+### New Features
+
+* C# support for `build-mode: none` is now out of beta, and generally available.
+
+## 1.1.0
+
+### Major Analysis Improvements
+
+* Added support for data flow through side-effects on static fields. For example, when a static field containing an array is updated.
+
+### Minor Analysis Improvements
+
+* Added some new `local` source models. Most prominently `System.IO.Path.GetTempPath` and `System.Environment.GetFolderPath`. This might produce more alerts, if the `local` threat model is enabled.
+* The extractor has been changed to not skip source files that have already been seen. This has an impact on source files that are compiled multiple times in the build process. Source files with conditional compilation preprocessor directives (such as `#if`) are now extracted for each set of preprocessor symbols that are used during the build process.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
 ## 1.0.0
 
 ### Breaking Changes

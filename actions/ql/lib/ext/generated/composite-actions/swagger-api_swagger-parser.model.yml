@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["swagger-api/swagger-parser", "*", "input.logsPath", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.parserSpecPath", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.serializationType", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.options", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.inputSpec", "code-injection", "generated"]
+     - ["swagger-api/swagger-parser", "*", "input.parserVersion", "code-injection", "generated"]

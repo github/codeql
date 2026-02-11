@@ -6,8 +6,9 @@
  * @problem.severity error
  * @precision medium
  * @id java/ineffective-annotation-present-check
- * @tags correctness
- *       logic
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

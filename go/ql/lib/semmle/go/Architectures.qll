@@ -28,7 +28,7 @@ class Architecture extends string {
   }
 
   /**
-   * Gets the integer and pointer type width for this architecture.
+   * Gets the integer and pointer type width for this architecture.
    *
    * As of the time of writing, this appears to always be identical -- there aren't
    * Go architectures with 64-bit pointers but 32-bit ints, for example.

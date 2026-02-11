@@ -1,0 +1,53 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Formats.Nrbf", "ClassRecord", False, "GetArrayRecord", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", False, "GetClassRecord", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", False, "GetRawValue", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", False, "GetSerializationRecord", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", False, "GetString", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", False, "GetTimeSpan", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Formats.Nrbf", "PrimitiveTypeRecord", False, "get_Value", "()", "", "Argument[this].Property[System.Formats.Nrbf.PrimitiveTypeRecord`1.Value]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Formats.Nrbf", "PrimitiveTypeRecord", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
+      - ["System.Formats.Nrbf", "SerializationRecord", True, "get_Id", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Formats.Nrbf", "SerializationRecord", True, "get_TypeName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Formats.Nrbf", "ArrayRecord", "GetArray", "(System.Type,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ArrayRecord", "get_Lengths", "()", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ArrayRecord", "get_Rank", "()", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetBoolean", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetByte", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetChar", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetDateTime", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetDecimal", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetDouble", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetInt16", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetInt32", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetInt64", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetSByte", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetSingle", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetUInt16", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetUInt32", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "GetUInt64", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "HasMember", "(System.String)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "ClassRecord", "get_MemberNames", "()", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "NrbfDecoder", "Decode", "(System.IO.Stream,System.Collections.Generic.IReadOnlyDictionary<System.Formats.Nrbf.SerializationRecordId,System.Formats.Nrbf.SerializationRecord>,System.Formats.Nrbf.PayloadOptions,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "NrbfDecoder", "Decode", "(System.IO.Stream,System.Formats.Nrbf.PayloadOptions,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "NrbfDecoder", "DecodeClassRecord", "(System.IO.Stream,System.Formats.Nrbf.PayloadOptions,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "NrbfDecoder", "StartsWithPayloadHeader", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "NrbfDecoder", "StartsWithPayloadHeader", "(System.ReadOnlySpan<System.Byte>)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "PrimitiveTypeRecord<T>", "get_Value", "()", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "SZArrayRecord<T>", "GetArray", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "SZArrayRecord<T>", "get_Length", "()", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "SZArrayRecord<T>", "get_Lengths", "()", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "SerializationRecord", "TypeNameMatches", "(System.Type)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "SerializationRecord", "get_RecordType", "()", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "SerializationRecordId", "Equals", "(System.Formats.Nrbf.SerializationRecordId)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "SerializationRecordId", "Equals", "(System.Object)", "summary", "df-generated"]
+      - ["System.Formats.Nrbf", "SerializationRecordId", "GetHashCode", "()", "summary", "df-generated"]

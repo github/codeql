@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.WebSockets, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.WebSockets, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -75,6 +75,7 @@ namespace System
                 public System.Net.WebSockets.WebSocketDeflateOptions DangerousDeflateOptions { get => throw null; set { } }
                 public bool IsServer { get => throw null; set { } }
                 public System.TimeSpan KeepAliveInterval { get => throw null; set { } }
+                public System.TimeSpan KeepAliveTimeout { get => throw null; set { } }
                 public string SubProtocol { get => throw null; set { } }
             }
             public sealed class WebSocketDeflateOptions
@@ -150,6 +151,35 @@ namespace System
                 CloseReceived = 4,
                 Closed = 5,
                 Aborted = 6,
+            }
+            public class WebSocketStream : System.IO.Stream
+            {
+                public override System.IAsyncResult BeginRead(byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
+                public override System.IAsyncResult BeginWrite(byte[] buffer, int offset, int count, System.AsyncCallback callback, object state) => throw null;
+                public override bool CanRead { get => throw null; }
+                public override bool CanSeek { get => throw null; }
+                public override bool CanWrite { get => throw null; }
+                public static System.Net.WebSockets.WebSocketStream Create(System.Net.WebSockets.WebSocket webSocket, System.Net.WebSockets.WebSocketMessageType writeMessageType, bool ownsWebSocket = default(bool)) => throw null;
+                public static System.Net.WebSockets.WebSocketStream Create(System.Net.WebSockets.WebSocket webSocket, System.Net.WebSockets.WebSocketMessageType writeMessageType, System.TimeSpan closeTimeout) => throw null;
+                public static System.Net.WebSockets.WebSocketStream CreateReadableMessageStream(System.Net.WebSockets.WebSocket webSocket) => throw null;
+                public static System.Net.WebSockets.WebSocketStream CreateWritableMessageStream(System.Net.WebSockets.WebSocket webSocket, System.Net.WebSockets.WebSocketMessageType writeMessageType) => throw null;
+                protected override void Dispose(bool disposing) => throw null;
+                public override System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
+                public override int EndRead(System.IAsyncResult asyncResult) => throw null;
+                public override void EndWrite(System.IAsyncResult asyncResult) => throw null;
+                public override void Flush() => throw null;
+                public override System.Threading.Tasks.Task FlushAsync(System.Threading.CancellationToken cancellationToken) => throw null;
+                public override long Length { get => throw null; }
+                public override long Position { get => throw null; set { } }
+                public override int Read(byte[] buffer, int offset, int count) => throw null;
+                public override System.Threading.Tasks.Task<int> ReadAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+                public override System.Threading.Tasks.ValueTask<int> ReadAsync(System.Memory<byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
+                public override long Seek(long offset, System.IO.SeekOrigin origin) => throw null;
+                public override void SetLength(long value) => throw null;
+                public System.Net.WebSockets.WebSocket WebSocket { get => throw null; }
+                public override void Write(byte[] buffer, int offset, int count) => throw null;
+                public override System.Threading.Tasks.Task WriteAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken) => throw null;
+                public override System.Threading.Tasks.ValueTask WriteAsync(System.ReadOnlyMemory<byte> buffer, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
         }
     }

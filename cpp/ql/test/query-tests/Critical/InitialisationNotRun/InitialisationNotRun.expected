@@ -1,0 +1,2 @@
+| test.cpp:12:16:12:17 | g1 | Initialization code for 'g1' is never run. |
+| test.cpp:14:23:14:24 | g3 | Initialization code for 'g3' is never run. |

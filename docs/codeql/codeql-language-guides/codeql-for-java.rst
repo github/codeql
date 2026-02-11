@@ -5,9 +5,6 @@ CodeQL for Java and Kotlin
 
 Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Java and Kotlin codebases.
 
-.. include:: ../reusables/kotlin-beta-note.rst
-
-
 .. pull-quote:: Enabling Kotlin support
 
    CodeQL treats Java and Kotlin as parts of the same language, so to enable Kotlin support you should enable ``java-kotlin`` as a language.
@@ -31,7 +28,9 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`CodeQL library for Java and Kotlin <codeql-library-for-java>`: When analyzing Java/Kotlin code, you can use the large collection of classes in the CodeQL library for Java/Kotlin.
 
--  :doc:`Analyzing data flow in Java and Kotlin <analyzing-data-flow-in-java>`: You can use CodeQL to track the flow of data through a Java/Kotlin program to its use. 
+-  :doc:`Analyzing data flow in Java and Kotlin <analyzing-data-flow-in-java>`: You can use CodeQL to track the flow of data through a Java/Kotlin program to its use.
+
+- `CodeQL CTF: CodeQL and Chill <https://securitylab.github.com/ctf/codeql-and-chill/>`__: Follow the steps that members of GitHub Security Lab went through to track the flow of tainted data from user-controlled bean properties to custom error messages, and identify the known injection vulnerabilities.
 
 -  :doc:`Java and Kotlin types <types-in-java>`: You can use CodeQL to find out information about data types used in Java/Kotlin code. This allows you to write queries to identify specific type-related issues.
 

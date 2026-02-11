@@ -1,9 +1,9 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module TestConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall call |

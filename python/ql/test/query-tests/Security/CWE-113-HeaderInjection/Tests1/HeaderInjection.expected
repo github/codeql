@@ -1,3 +1,11 @@
+#select
+| flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
+| flask_tests.py:20:36:20:61 | ControlFlowNode for Subscript | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:20:36:20:61 | ControlFlowNode for Subscript | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
+| flask_tests.py:33:11:33:20 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:33:11:33:20 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
+| flask_tests.py:35:12:35:21 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:35:12:35:21 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
+| http_test.py:12:40:12:50 | ControlFlowNode for input_value | http_test.py:5:16:5:19 | ControlFlowNode for self | http_test.py:12:40:12:50 | ControlFlowNode for input_value | This HTTP header is constructed from a $@. | http_test.py:5:16:5:19 | ControlFlowNode for self | user-provided value |
+| wsgiref_tests.py:8:17:8:22 | ControlFlowNode for h_name | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | wsgiref_tests.py:8:17:8:22 | ControlFlowNode for h_name | This HTTP header is constructed from a $@. | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | user-provided value |
+| wsgiref_tests.py:8:42:8:46 | ControlFlowNode for h_val | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | wsgiref_tests.py:8:42:8:46 | ControlFlowNode for h_val | This HTTP header is constructed from a $@. | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | user-provided value |
 edges
 | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:1:29:1:35 | ControlFlowNode for request | provenance |  |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:9:18:9:24 | ControlFlowNode for request | provenance |  |
@@ -11,10 +19,23 @@ edges
 | flask_tests.py:31:5:31:14 | ControlFlowNode for rfs_header | flask_tests.py:33:11:33:20 | ControlFlowNode for rfs_header | provenance |  |
 | flask_tests.py:31:5:31:14 | ControlFlowNode for rfs_header | flask_tests.py:35:12:35:21 | ControlFlowNode for rfs_header | provenance |  |
 | flask_tests.py:31:18:31:24 | ControlFlowNode for request | flask_tests.py:31:5:31:14 | ControlFlowNode for rfs_header | provenance | AdditionalTaintStep |
+| http_test.py:5:16:5:19 | ControlFlowNode for self | http_test.py:6:45:6:53 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| http_test.py:6:9:6:19 | ControlFlowNode for parsed_path | http_test.py:7:40:7:56 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| http_test.py:6:23:6:54 | ControlFlowNode for Attribute() | http_test.py:6:9:6:19 | ControlFlowNode for parsed_path | provenance |  |
+| http_test.py:6:45:6:53 | ControlFlowNode for Attribute | http_test.py:6:23:6:54 | ControlFlowNode for Attribute() | provenance | MaD:2 |
+| http_test.py:7:9:7:14 | ControlFlowNode for params | http_test.py:8:23:8:28 | ControlFlowNode for params | provenance |  |
+| http_test.py:7:18:7:57 | ControlFlowNode for Attribute() | http_test.py:7:9:7:14 | ControlFlowNode for params | provenance |  |
+| http_test.py:7:40:7:56 | ControlFlowNode for Attribute | http_test.py:7:18:7:57 | ControlFlowNode for Attribute() | provenance | MaD:1 |
+| http_test.py:8:9:8:19 | ControlFlowNode for input_value | http_test.py:12:40:12:50 | ControlFlowNode for input_value | provenance |  |
+| http_test.py:8:23:8:28 | ControlFlowNode for params | http_test.py:8:23:8:47 | ControlFlowNode for Attribute() | provenance | dict.get |
+| http_test.py:8:23:8:47 | ControlFlowNode for Attribute() | http_test.py:8:9:8:19 | ControlFlowNode for input_value | provenance |  |
 | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | wsgiref_tests.py:6:5:6:10 | ControlFlowNode for h_name | provenance |  |
 | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | wsgiref_tests.py:7:5:7:9 | ControlFlowNode for h_val | provenance |  |
 | wsgiref_tests.py:6:5:6:10 | ControlFlowNode for h_name | wsgiref_tests.py:8:17:8:22 | ControlFlowNode for h_name | provenance |  |
 | wsgiref_tests.py:7:5:7:9 | ControlFlowNode for h_val | wsgiref_tests.py:8:42:8:46 | ControlFlowNode for h_val | provenance |  |
+models
+| 1 | Summary: urllib; Member[parse].Member[parse_qs]; Argument[0,qs:]; ReturnValue; taint |
+| 2 | Summary: urllib; Member[parse].Member[urlparse]; Argument[0,urlstring:]; ReturnValue; taint |
 nodes
 | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -28,16 +49,20 @@ nodes
 | flask_tests.py:31:18:31:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | flask_tests.py:33:11:33:20 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
 | flask_tests.py:35:12:35:21 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| http_test.py:5:16:5:19 | ControlFlowNode for self | semmle.label | ControlFlowNode for self |
+| http_test.py:6:9:6:19 | ControlFlowNode for parsed_path | semmle.label | ControlFlowNode for parsed_path |
+| http_test.py:6:23:6:54 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_test.py:6:45:6:53 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| http_test.py:7:9:7:14 | ControlFlowNode for params | semmle.label | ControlFlowNode for params |
+| http_test.py:7:18:7:57 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_test.py:7:40:7:56 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| http_test.py:8:9:8:19 | ControlFlowNode for input_value | semmle.label | ControlFlowNode for input_value |
+| http_test.py:8:23:8:28 | ControlFlowNode for params | semmle.label | ControlFlowNode for params |
+| http_test.py:8:23:8:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| http_test.py:12:40:12:50 | ControlFlowNode for input_value | semmle.label | ControlFlowNode for input_value |
 | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | semmle.label | ControlFlowNode for environ |
 | wsgiref_tests.py:6:5:6:10 | ControlFlowNode for h_name | semmle.label | ControlFlowNode for h_name |
 | wsgiref_tests.py:7:5:7:9 | ControlFlowNode for h_val | semmle.label | ControlFlowNode for h_val |
 | wsgiref_tests.py:8:17:8:22 | ControlFlowNode for h_name | semmle.label | ControlFlowNode for h_name |
 | wsgiref_tests.py:8:42:8:46 | ControlFlowNode for h_val | semmle.label | ControlFlowNode for h_val |
 subpaths
-#select
-| flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
-| flask_tests.py:20:36:20:61 | ControlFlowNode for Subscript | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:20:36:20:61 | ControlFlowNode for Subscript | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
-| flask_tests.py:33:11:33:20 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:33:11:33:20 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
-| flask_tests.py:35:12:35:21 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:35:12:35:21 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
-| wsgiref_tests.py:8:17:8:22 | ControlFlowNode for h_name | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | wsgiref_tests.py:8:17:8:22 | ControlFlowNode for h_name | This HTTP header is constructed from a $@. | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | user-provided value |
-| wsgiref_tests.py:8:42:8:46 | ControlFlowNode for h_val | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | wsgiref_tests.py:8:42:8:46 | ControlFlowNode for h_val | This HTTP header is constructed from a $@. | wsgiref_tests.py:4:14:4:20 | ControlFlowNode for environ | user-provided value |

@@ -4,7 +4,7 @@
  */
 
 import codeql.ruby.AST
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import DefaultFlowTest
 import PathGraph
 private import codeql.ruby.dataflow.FlowSummary
@@ -12,7 +12,7 @@ private import codeql.ruby.dataflow.FlowSummary
 /**
  * A convenience class for defining value (c.f. taint) flow summaries.
  */
-abstract private class Summary extends SimpleSummarizedCallable {
+abstract private class Summary extends SummarizedCallable::RangeSimple {
   bindingset[this]
   Summary() { any() }
 

@@ -9,7 +9,7 @@ CodeQL 2.10.1 (2022-07-19)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -40,8 +40,8 @@ C#
 
 *   Contextual queries and the query libraries they depend on have been moved to the :code:`codeql/csharp-all` package.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Contextual queries and the query libraries they depend on have been moved to the :code:`codeql/java-all` package.
 
@@ -63,8 +63,8 @@ Ruby
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A new query "Improper verification of intent by broadcast receiver" (:code:`java/improper-intent-verification`) has been added.
     This query finds instances of Android :code:`BroadcastReceiver`\ s that don't verify the action string of received intents when registered to receive system intents.
@@ -80,8 +80,8 @@ C/C++
 
 *   :code:`AnalysedExpr::isNullCheck` and :code:`AnalysedExpr::isValidCheck` have been updated to handle variable accesses on the left-hand side of the C++ logical "and", and variable declarations in conditions.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added data-flow models for :code:`java.util.Properties`. Additional results may be found where relevant data is stored in and then retrieved from a :code:`Properties` instance.
 *   Added :code:`Modifier.isInline()`.
@@ -126,7 +126,7 @@ Python
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added an :code:`ErrorType` class. An instance of this class will be used if an extractor is unable to extract a type, or if an up/downgrade script is unable to provide a type.

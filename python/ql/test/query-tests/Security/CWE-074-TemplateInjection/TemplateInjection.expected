@@ -1,0 +1,16 @@
+edges
+| JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | JinjaSsti.py:9:5:9:12 | ControlFlowNode for template | provenance | AdditionalTaintStep |
+| JinjaSsti.py:9:5:9:12 | ControlFlowNode for template | JinjaSsti.py:10:18:10:25 | ControlFlowNode for template | provenance |  |
+| JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | JinjaSsti.py:19:5:19:12 | ControlFlowNode for template | provenance | AdditionalTaintStep |
+| JinjaSsti.py:19:5:19:12 | ControlFlowNode for template | JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | provenance |  |
+nodes
+| JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| JinjaSsti.py:9:5:9:12 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| JinjaSsti.py:10:18:10:25 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| JinjaSsti.py:19:5:19:12 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+| JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | semmle.label | ControlFlowNode for template |
+subpaths
+#select
+| JinjaSsti.py:10:18:10:25 | ControlFlowNode for template | JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | JinjaSsti.py:10:18:10:25 | ControlFlowNode for template | This template construction depends on a $@. | JinjaSsti.py:7:7:7:13 | ControlFlowNode for request | user-provided value |
+| JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | JinjaSsti.py:21:25:21:32 | ControlFlowNode for template | This template construction depends on a $@. | JinjaSsti.py:16:7:16:13 | ControlFlowNode for request | user-provided value |

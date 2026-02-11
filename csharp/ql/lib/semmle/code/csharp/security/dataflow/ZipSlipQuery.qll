@@ -22,21 +22,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `ZipSlip` instead.
- *
- * A taint tracking configuration for Zip Slip.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ZipSlipTaintTracking" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint tracking configuration for Zip Slip.
  */
 private module ZipSlipConfig implements DataFlow::ConfigSig {
@@ -45,6 +30,8 @@ private module ZipSlipConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -143,7 +130,7 @@ class SubstringSanitizer extends Sanitizer {
   }
 }
 
-private predicate stringCheckGuard(Guard g, Expr e, AbstractValue v) {
+private predicate stringCheckGuard(Guard g, Expr e, GuardValue v) {
   g.(MethodCall).getTarget().hasFullyQualifiedName("System", "String", "StartsWith") and
   g.(MethodCall).getQualifier() = e and
   // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
@@ -152,7 +139,7 @@ private predicate stringCheckGuard(Guard g, Expr e, AbstractValue v) {
     combineCall.getTarget().hasFullyQualifiedName("System.IO", "Path", "Combine") and
     DataFlow::localExprFlow(combineCall, e)
   ) and
-  v.(AbstractValues::BooleanValue).getValue() = true
+  v.asBooleanValue() = true
 }
 
 /**

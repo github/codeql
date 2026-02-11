@@ -1,0 +1,2 @@
+query: Likely Bugs/Frameworks/JUnit/JUnit5MissingNestedAnnotation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

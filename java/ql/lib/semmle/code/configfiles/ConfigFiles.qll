@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with configuration files, such
  * as Java `.properties` or `.ini` files.
  */
+overlay[local?]
+module;
 
 import semmle.code.Location
 
@@ -68,7 +70,12 @@ class ConfigValue extends @configValue, ConfigLocatable {
   override string toString() { result = this.getValue() }
 }
 
+/** A `.properties` file. */
+class PropertiesFile extends File {
+  PropertiesFile() { this.getExtension() = "properties" }
+}
+
 /** A Java property is a name-value pair in a `.properties` file. */
 class JavaProperty extends ConfigPair {
-  JavaProperty() { this.getFile().getExtension() = "properties" }
+  JavaProperty() { this.getFile() instanceof PropertiesFile }
 }

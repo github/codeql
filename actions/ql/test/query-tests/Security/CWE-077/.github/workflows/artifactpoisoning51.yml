@@ -1,0 +1,20 @@
+name: Pull Request Open
+
+on: 
+  workflow_run:
+    workflows: ["Prev"]
+    types:
+      - completed
+
+jobs:
+  Download:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          gh run download "${{github.event.workflow_run.id}}" --repo "${GITHUB_REPOSITORY}" --name "artifact_name"
+      - name: Unzip
+        run: |
+          unzip artifact_name.zip -d foo
+      - name: Env Var Injection
+        run: |
+          echo "pr_number=$(cat foo/bar)" >> $GITHUB_ENV

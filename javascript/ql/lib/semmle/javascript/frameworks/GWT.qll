@@ -28,9 +28,6 @@ class GwtHeader extends InlineScript {
       result = e.getStringValue()
     )
   }
-
-  /** DEPRECATED: Alias for getGwtVersion */
-  deprecated string getGWTVersion() { result = this.getGwtVersion() }
 }
 
 /**

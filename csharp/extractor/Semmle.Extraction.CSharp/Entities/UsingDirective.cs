@@ -20,6 +20,11 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected override void Populate(TextWriter trapFile)
         {
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+
             // This is guaranteed to be non-null as we only deal with "using namespace" not "using X = Y"
             var name = node.Name!;
 
@@ -36,7 +41,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else
                 {
-                    Context.Extractor.MissingNamespace(name.ToFullString(), Context.FromSource);
+                    Context.ExtractionContext.MissingNamespace(name.ToFullString(), Context.FromSource);
                     Context.ModelError(node, "Namespace not found");
                     return;
                 }

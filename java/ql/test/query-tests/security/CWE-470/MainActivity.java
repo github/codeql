@@ -11,19 +11,19 @@ public class MainActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstance) {
         try {
             super.onCreate(savedInstance);
-            final String fname = getIntent().getStringExtra("fname");
+            final String fname = getIntent().getStringExtra("fname"); // $ Source
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             Class<Fragment> fClass = (Class<Fragment>) Class.forName(fname);
-            ft.add(fClass.newInstance(), ""); // $ hasTaintFlow
-            ft.add(0, Fragment.instantiate(this, fname), null); // $ hasTaintFlow
-            ft.add(0, Fragment.instantiate(this, fname, null)); // $ hasTaintFlow
-            ft.add(0, fClass, null, ""); // $ hasTaintFlow
-            ft.add(0, fClass.newInstance(), ""); // $ hasTaintFlow
-            ft.attach(fClass.newInstance()); // $ hasTaintFlow
-            ft.replace(0, fClass, null); // $ hasTaintFlow
-            ft.replace(0, fClass.newInstance()); // $ hasTaintFlow
-            ft.replace(0, fClass, null, ""); // $ hasTaintFlow
-            ft.replace(0, fClass.newInstance(), ""); // $ hasTaintFlow
+            ft.add(fClass.newInstance(), ""); // $ Alert
+            ft.add(0, Fragment.instantiate(this, fname), null); // $ Alert
+            ft.add(0, Fragment.instantiate(this, fname, null)); // $ Alert
+            ft.add(0, fClass, null, ""); // $ Alert
+            ft.add(0, fClass.newInstance(), ""); // $ Alert
+            ft.attach(fClass.newInstance()); // $ Alert
+            ft.replace(0, fClass, null); // $ Alert
+            ft.replace(0, fClass.newInstance()); // $ Alert
+            ft.replace(0, fClass, null, ""); // $ Alert
+            ft.replace(0, fClass.newInstance(), ""); // $ Alert
 
             ft.add(Fragment.class.newInstance(), ""); // Safe
             ft.attach(Fragment.class.newInstance()); // Safe

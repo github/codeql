@@ -36,7 +36,7 @@ Architecture
 
 A *QL program* consists of a query module defined in a QL file and a number of library modules defined in QLL files that it imports (see "`Import directives <#import-directives>`__"). The module in the QL file includes one or more queries (see "`Queries <#queries>`__"). A module may also include *import directives* (see "`Import directives <#import-directives>`__"), non-member predicates (see "`Non-member predicates <#non-member-predicates>`__"), class definitions (see "`Classes <#classes>`__"), and module definitions (see "`Modules <#modules>`__").
 
-QL programs are interpreted in the context of a *database* and a *library path* . The database provides a number of definitions: database types (see "`Types <#types>`__"), entities (see "`Values <#values>`__"), built-in predicates (see "`Built-ins <#built-ins>`__"), and the *database content* of built-in predicates and external predicates (see "`Evaluation <#evaluation>`__"). The library path is a sequence of file-system directories that hold QLL files.
+QL programs are interpreted in the context of a *database* and a *library path* . The database provides a number of definitions: database types (see "`Types <#types>`__"), entities (see "`Values <#values>`__"), built-in predicates (see "`Built-ins <#built-ins>`__"), and the *database content* of built-in predicates, external predicates, and extensible predicates (see "`Evaluation <#evaluation>`__"). The library path is a sequence of file-system directories that hold QLL files.
 
 A QL program can be *evaluated* (see "`Evaluation <#evaluation>`__") to produce a set of tuples of values (see "`Values <#values>`__").
 
@@ -359,7 +359,7 @@ Kinds of types
 
 Types in QL are either *primitive* types, *database* types, *class* types, *character* types, *class domain* types, type *parameters*, or *instantiation-nested* types.
 
-The primitive types are ``boolean``, ``date``, ``float``, ``int``, and ``string``.
+The primitive types are ``boolean``, ``date``, ``float``, ``int``, ``string``, and ``QlBuiltins::BigInt``.
 
 Database types are supplied as part of the database. Each database type has a *name*, which is an identifier starting with an at sign (``@``, U+0040) followed by lower-case letter. Database types have some number of *base types*, which are other database types. In a valid database, the base types relation is non-cyclic.
 
@@ -433,7 +433,7 @@ Values are the fundamental data that QL programs compute over. This section spec
 Kinds of values
 ~~~~~~~~~~~~~~~
 
-There are six kinds of values in QL: one kind for each of the five primitive types, and *entities*. Each value has a type.
+There are seven kinds of values in QL: one kind for each of the six primitive types, and *entities*. Each value has a type.
 
 A boolean value is of type ``boolean``, and may have one of two distinct values: ``true`` or ``false``.
 
@@ -444,6 +444,8 @@ A float value is of type ``float``. Each float value is a binary 64-bit floating
 An integer value is of type ``int``. Each value is a 32-bit two's complement integer.
 
 A string is a finite sequence of 16-bit characters. The characters are interpreted as Unicode code points.
+
+A :ref:`big integer <bigint>` value is of type ``QlBuiltins::BigInt``. Each value is a signed arbitrary-range integer.
 
 The database includes a number of opaque entity values. Each such value has a type that is one of the database types, and an identifying integer. An entity value is written as the name of its database type followed by its identifying integer in parentheses. For example, ``@tree(12)``, ``@person(16)``, and ``@location(38132)`` are entity values. The identifying integers are left opaque to programmers in this specification, so an implementation of QL is free to use some other set of countable labels to identify its entities.
 
@@ -458,7 +460,7 @@ For dates, the ordering is chronological.
 
 For floats, the ordering is as specified in IEEE 754 when one exists, except that NaN is considered equal to itself and is ordered after all other floats, and negative zero is considered to be strictly less than positive zero.
 
-For integers, the ordering is as for two's complement integers.
+For integers (and :ref:`big integers <bigint>`), the ordering is numerical.
 
 For strings, the ordering is lexicographic.
 
@@ -716,7 +718,7 @@ An integer literal is a possibly negated sequence of decimal digits (``0`` throu
 Float literals (float)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-A floating-point literals is a possibly negated two non-negative integers literals separated by a dot (``.``, U+002E). Here are some examples of float literals:
+A floating-point literal is a possibly negated pair of non-negative integer literals separated by a dot (``.``, U+002E). Here are some examples of float literals:
 
 ::
 
@@ -759,21 +761,22 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
    annotation ::= simpleAnnotation | argsAnnotation
 
    simpleAnnotation ::= "abstract"
-                    |   "cached"
-                    |   "external"
-                    |   "extensible"
-                    |   "final"
-                    |   "transient"
-                    |   "library"
-                    |   "private"
-                    |   "deprecated"
-                    |   "override"
                     |   "additional"
+                    |   "cached"
+                    |   "deprecated"
+                    |   "extensible"
+                    |   "external"
+                    |   "final"
+                    |   "library"
+                    |   "override"
+                    |   "private"
                     |   "query"
+                    |   "transient"
 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"
                   |   "bindingset" "[" (variable ( "," variable)*)? "]"
+                  |   "overlay" "[" ("local" | "local?" | "global" | "caller" | "caller?" | "discard_entity") "]"
 
 Each simple annotation adds a same-named attribute to the syntactic entity it precedes. For example, if a class is preceded by the ``abstract`` annotation, then the class is said to be abstract.
 
@@ -789,27 +792,27 @@ The following table summarizes the syntactic constructs which can be marked with
 +================+=========+============+===================+=======================+=========+========+=========+=========+============+
 | ``abstract``   | yes     |            | yes               |                       |         |        |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``additional`` | yes     |            |                   | yes                   |         |        | yes     | yes     | yes        |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``cached``     | yes     | yes        | yes               | yes                   |         |        | yes     |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``external``   |         |            |                   | yes                   |         |        |         |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``extensible`` |         |            |                   | yes                   |         |        |         |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``final``      | yes     |            | yes               |                       |         | yes    |         | (yes)   |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``transient``  |         |            |                   | yes                   |         |        |         |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``library``    | (yes)   |            |                   |                       |         |        |         |         |            |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``private``    | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``deprecated`` | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``extensible`` |         |            |                   | yes                   |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``external``   |         |            |                   | yes                   |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``final``      | yes     |            | yes               |                       |         | yes    |         | (yes)   |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``library``    | (yes)   |            |                   |                       |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``override``   |         |            | yes               |                       |         | yes    |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``additional`` | yes     |            |                   | yes                   |         |        | yes     | yes     | yes        |
+| ``private``    | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``query``      |         |            |                   | yes                   |         |        |         | yes     |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``transient``  |         |            |                   | yes                   |         |        |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 
 The ``library`` annotation is only usable within a QLL file, not a QL file.
@@ -871,6 +874,26 @@ A predicate may have several different binding sets, which can be stated by usin
 
 The ``bindingset`` pragma is usable with type signatures and predicate signatures, but not with module signatures.
 
+The parameterized annotation ``overlay`` controls predicate behavior during overlay evaluation, which is a feature for incremental analysis. Overlay annotations apply at the scope level, and are inherited by nested scopes.
+
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| Overlay             | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
++=====================+=========+============+===================+=======================+=========+========+=========+=========+
+| ``local``           | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``local?``          | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``global``          | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``caller``          | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``caller?``         | yes     | yes        | yes               | yes                   |         |        | yes     |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``discard_entity``  |         |            |                   | yes                   |         |        |         |         |
++---------------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+
+The ``overlay[discard_entity]`` annotation is only valid on unary non-member predicates whose argument is a database type.
+
 QLDoc
 -----
 
@@ -931,7 +954,9 @@ A predicate definition adds a mapping from the predicate name and arity to the p
 
 When a predicate is a top-level clause in a module, it is called a non-member predicate. See below for "`Member predicates <#member-predicates>`__."
 
-A valid non-member predicate can be annotated with ``cached``, ``deprecated``, ``external``, ``transient``, ``private``, and ``query``. Note, the ``transient`` annotation can only be applied if the non-member predicate is also annotated with ``external``.
+A valid non-member predicate can be annotated with ``additional``, ``cached``, ``deprecated``, ``extensible``, ``external``, ``transient``, ``private``, and ``query``.
+Note, the ``transient`` annotation can only be applied if the non-member predicate is also annotated with ``external``.
+Note, the annotations ``extensible`` and ``external`` cannot both be used on the same non-member predicate.
 
 The head of the predicate gives a name, an optional *result type*, and a sequence of variables declarations that are *arguments*:
 
@@ -949,7 +974,7 @@ The body of a predicate is of one of three forms:
 
 In the first form, with just a semicolon, the predicate is said to not have a body. In the second form, the body of the predicate is the given formula (see "`Formulas <#formulas>`__"). In the third form, the body is a higher-order relation.
 
-A valid non-member predicate must have a body, either a formula or a higher-order relation, unless it is external, in which case it must not have a body.
+A valid non-member predicate must have a body, either a formula or a higher-order relation, unless it is external or extensible, in which case it must not have a body.
 
 The typing environment for the body of the formula, if present, maps the variables in the head of the predicate to their associated types. If the predicate has a result type, then the typing environment also maps ``result`` to the result type.
 
@@ -977,7 +1002,7 @@ A class type is said to *final inherit* from base types that are final or refere
 
 A class adds a mapping from the class name to the class declaration to the current module's declared type environment.
 
-A valid class can be annotated with ``abstract``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
+A valid class can be annotated with ``abstract``, ``additional``, ``final``, ``library``, and ``private``. Any other annotation renders the class invalid.
 
 A valid class may not inherit from itself, or from more than one primitive type. The set of types that a valid class inherits from must be disjoint from the set of types that it final inherits from.
 
@@ -1050,7 +1075,7 @@ A member predicate ``p`` with enclosing class ``C`` *shadows* a member predicate
 
 Member predicates have one or more *root definitions*. If a member predicate overrides no other member predicate, then it is its own root definition. Otherwise, its root definitions are those of any member predicate that it overrides.
 
-A valid member predicate must have a body unless it is abstract or external, in which case it must not have a body.
+A valid member predicate must have a body unless it is abstract, in which case it must not have a body.
 
 A valid member predicate must override another member predicate if it is annotated override.
 
@@ -1241,7 +1266,7 @@ A unary operation is the application of ``+`` or ``-`` to another expression:
 
 The ``+`` or ``-`` in the operation is called the *operator*, and the expression is called the *operand*. The typing environment of the operand is the same as for the unary operation.
 
-For a valid unary operation, the operand must be of type ``int`` or ``float``. The operation has the same type as its operand.
+For a valid unary operation, the operand must be of type ``int``, ``float`` or ``QlBuiltins::BigInt``. The operation has the same type as its operand.
 
 If the operator is ``+``, then the values of the expression are the same as the values of the operand. If the operator is ``-``, then the values of the expression are the arithmetic negations of the values of the operand.
 
@@ -1258,9 +1283,9 @@ A binary operation is written as a *left operand* followed by a *binary operator
          |   expr "/" expr
          |   expr "%" expr
 
-The typing environment for the two environments is the same as for the operation. If the operator is ``+``, then either both operands must be subtypes of ``int`` or ``float``, or at least one operand must be a subtype of ``string``. If the operator is anything else, then each operand must be a subtype of ``int`` or ``float``.
+The typing environment for the two environments is the same as for the operation. If the operator is ``+``, then either both operands must be subtypes of one of ``int``, ``float`` or ``QlBuiltins::BigInt``, or at least one operand must be a subtype of ``string``. If the operator is anything else, then both operands must be subtypes of one of ``int``, ``float`` or ``QlBuiltins::BigInt``.
 
-The type of the operation is ``string`` if either operand is a subtype of ``string``. Otherwise, the type of the operation is ``int`` if both operands are subtypes of ``int``. Otherwise, the type of the operation is ``float``.
+The type of the operation is ``string`` if either operand is a subtype of ``string``. Otherwise, the type of the operation is ``int`` or ``QlBuiltins::BigInt`` if both operands are subtypes of ``int`` or ``QlBuiltins::BigInt``, respectively. Otherwise, the type of the operation is ``float``.
 
 If the result is of type ``string``, then the *left values* of the operation are the values of a "call with results" expression with the left operand as the receiver, ``toString`` as the predicate name, and no arguments (see "`Calls with results <#calls-with-results>`__"). Otherwise the left values are the values of the left operand. Likewise, the *right values* are either the values from calling ``toString`` on the right operand, or the values of the right operand as it is.
 
@@ -1269,6 +1294,8 @@ The binary operation has one value for each combination of a left value and a ri
 -  If the left and right operand types are subtypes of string, then the operation has a value that is the concatenation of the left and right values.
 
 -  Otherwise, if both operand types are subtypes of ``int``, then the value of the operation is the result of applying the two's-complement 32-bit integer operation corresponding to the QL binary operator.
+
+-  Otherwise, if both operand types are subtypes of ``QlBuiltins::BigInt``, then the value of the operation is the result of applying the arbitrary-range integer operation corresponding to the QL binary operator.
 
 -  Otherwise, both operand types must be subtypes of ``float``. If either operand is of type ``int`` then they are converted to a float. The value of the operation is then the result of applying the IEEE 754 floating-point operator that corresponds to the QL binary operator: addition for ``+``, subtraction for ``-``, multiplication for ``*``, division for ``/``, or remainder for ``%``.
 
@@ -1441,10 +1468,11 @@ The number and types of the aggregation expressions are restricted as follows:
 -  A ``max``, ``min``, ``rank`` or ``unique`` aggregation must have a single expression.
 -  The type of the expression in a ``max``, ``min`` or ``rank`` aggregation without an ordering directive expression must be an orderable type.
 -  A ``count`` or ``strictcount`` aggregation must not have an expression.
--  A ``sum``, ``strictsum`` or ``avg`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float``.
+-  A ``sum`` or ``strictsum`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float`` or ``QlBuiltins::BigInt``.
+-  An ``avg`` aggregation must have a single aggregation expression, which must have a type which is a subtype of ``float``.
 -  A ``concat`` or ``strictconcat`` aggregation must have two expressions. Both expressions must have types which are subtypes of ``string``.
 
-The type of a ``count``, ``strictcount`` aggregation is ``int``. The type of an ``avg`` aggregation is ``float``. The type of a ``concat`` or ``strictconcat`` aggregation is ``string``. The type of a ``sum`` or ``strictsum`` aggregation is ``int`` if the aggregation expression is a subtype of ``int``, otherwise it is ``float``. The type of a ``rank``, ``min`` or ``max`` aggregation is the type of the single expression.
+The type of a ``count``, ``strictcount`` aggregation is ``int``. The type of an ``avg`` aggregation is ``float``. The type of a ``concat`` or ``strictconcat`` aggregation is ``string``. The type of a ``sum`` or ``strictsum`` aggregation is ``int`` if the aggregation expression is a subtype of ``int``; otherwise it is ``QlBuiltins::BigInt`` if the aggregation expression is a subtype of ``QlBuiltins::BigInt``; otherwise it is ``float``. The type of a ``rank``, ``min`` or ``max`` aggregation is the type of the single expression.
 
 An ordering directive may only be specified for a ``max``, ``min``, ``rank``, ``concat`` or ``strictconcat`` aggregation. The type of the expression in an ordering directive must be an orderable type.
 
@@ -1460,7 +1488,7 @@ If the aggregation id is ``max``, ``min`` or ``rank`` and there was no ordering 
 
 The values of the aggregation expression are given by applying the aggregation function to each set of tuples obtained by picking exactly one aggregation tuple for each range tuple.
 
--  If the aggregation id is ``avg``, and the set is non-empty, then the resulting value is the average of the value for the aggregation variable in each tuple in the set, weighted by the number of tuples in the set, after converting the value to a floating-point number.
+-  If the aggregation id is ``avg``, and the set is non-empty, then the resulting value is the average of the aggregation variable's value in each tuple in the set, converted to ``float`` and weighted by the number of tuples in the set.
 
 -  If the aggregation id is ``count``, then the resulting value is the number of tuples in the set. If there are no tuples in the set, then the value is the integer ``0``.
 
@@ -2174,7 +2202,7 @@ If a QL program has no valid stratification, then the program itself is not vali
 Layer evaluation
 ~~~~~~~~~~~~~~~~
 
-The store is first initialized with the *database content* of all built-in predicates and external predicates. The database content of a predicate is a set of ordered tuples that are included in the database.
+The store is first initialized with the *database content* of all built-in predicates, external predicates, and extensible predicates. The database content of a predicate is a set of ordered tuples that are included in the database.
 
 Each layer of the stratification is *populated* in order. To populate a layer, each predicate in the layer is repeatedly populated until the store stops changing. The way that a predicate is populated is as follows:
 
@@ -2287,17 +2315,17 @@ The complete grammar for QL is as follows:
    annotation ::= simpleAnnotation | argsAnnotation
 
    simpleAnnotation ::= "abstract"
-                    |   "cached"
-                    |   "external"
-                    |   "extensible"
-                    |   "final"
-                    |   "transient"
-                    |   "library"
-                    |   "private"
-                    |   "deprecated"
-                    |   "override"
                     |   "additional"
+                    |   "cached"
+                    |   "deprecated"
+                    |   "extensible"
+                    |   "external"
+                    |   "final"
+                    |   "library"
+                    |   "override"
+                    |   "private"
                     |   "query"
+                    |   "transient"
 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
                   |   "language" "[" "monotonicAggregates" "]"

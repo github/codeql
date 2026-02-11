@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ubisoft/sharpmake/.github/workflows/build.yml", "*", "input.framework", "code-injection", "generated"]
+     - ["ubisoft/sharpmake/.github/workflows/build.yml", "*", "input.configuration", "code-injection", "generated"]

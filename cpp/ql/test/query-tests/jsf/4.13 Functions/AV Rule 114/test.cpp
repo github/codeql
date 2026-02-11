@@ -188,3 +188,10 @@ int g22() {
 int g23() {
 	Aborting().a(); // GOOD [FALSE POSITIVE]
 }
+
+[[__noreturn__]]
+int g24();
+
+int g25() {
+	g24(); // GOOD
+}

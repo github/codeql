@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["actions-ecosystem/action-regex-match", "*", "input.text", "output.*", "taint", "manual"]

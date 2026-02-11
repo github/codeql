@@ -8,6 +8,8 @@
  * Each annotation type has zero or more annotation elements that contain a
  * name and possibly a value.
  */
+overlay[local?]
+module;
 
 import Element
 import Expr
@@ -255,7 +257,7 @@ class Annotatable extends Element {
    */
   predicate hasAnnotation(string package, string name) {
     exists(AnnotationType at | at = this.getAnAnnotation().getType() |
-      at.nestedName() = name and at.getPackage().getName() = package
+      at.getNestedName() = name and at.getPackage().getName() = package
     )
   }
 

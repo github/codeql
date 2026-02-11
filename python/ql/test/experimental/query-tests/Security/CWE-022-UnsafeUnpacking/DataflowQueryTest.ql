@@ -1,4 +1,4 @@
 import python
-import TestUtilities.dataflow.DataflowQueryTest
+import utils.test.dataflow.DataflowQueryTest
 import experimental.Security.UnsafeUnpackQuery
 import FromTaintTrackingConfig<UnsafeUnpackConfig>

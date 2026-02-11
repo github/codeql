@@ -27,21 +27,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `LogForging` instead.
- *
- * A taint-tracking configuration for untrusted user input used in log entries.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "LogForging" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for untrusted user input used in log entries.
  */
 private module LogForgingConfig implements DataFlow::ConfigSig {
@@ -50,6 +35,8 @@ private module LogForgingConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -57,8 +44,8 @@ private module LogForgingConfig implements DataFlow::ConfigSig {
  */
 module LogForging = TaintTracking::Global<LogForgingConfig>;
 
-/** A source of remote user input. */
-private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+/** A source supported by the current threat model. */
+private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class HtmlSanitizer extends Sanitizer {
   HtmlSanitizer() { this.asExpr() instanceof HtmlSanitizedExpr }
@@ -74,9 +61,14 @@ private class LogForgingLogMessageSink extends Sink, LogMessageSink { }
  */
 private class LogForgingTraceMessageSink extends Sink, TraceMessageSink { }
 
-/** Log Forging sinks defined through Models as Data. */
+/** A Log Forging sink defined through Models as Data. */
 private class ExternalLoggingExprSink extends Sink {
   ExternalLoggingExprSink() { sinkNode(this, "log-injection") }
+}
+
+/** A sanitizer for log forging defined through Models as Data. */
+private class ExternalLogForgingSanitizer extends Sanitizer {
+  ExternalLogForgingSanitizer() { barrierNode(this, "log-injection") }
 }
 
 /**
@@ -85,7 +77,9 @@ private class ExternalLoggingExprSink extends Sink {
 private class StringReplaceSanitizer extends Sanitizer {
   StringReplaceSanitizer() {
     exists(Method m |
-      exists(SystemStringClass s | m = s.getReplaceMethod() or m = s.getRemoveMethod())
+      exists(SystemStringClass s |
+        m = s.getReplaceMethod() or m = s.getRemoveMethod() or m = s.getReplaceLineEndingsMethod()
+      )
       or
       m = any(SystemTextRegularExpressionsRegexClass r).getAReplaceMethod()
     |

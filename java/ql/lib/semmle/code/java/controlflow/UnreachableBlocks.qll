@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for identifying unreachable blocks under a "closed-world" assumption.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.controlflow.Guards
@@ -47,9 +49,7 @@ class ConstantMethod extends Method {
     // Just one return statement
     count(ReturnStmt rs | rs.getEnclosingCallable() = this) = 1 and
     // Which returns a constant expr
-    exists(ReturnStmt rs | rs.getEnclosingCallable() = this |
-      rs.getResult() instanceof ConstantExpr
-    ) and
+    exists(ReturnStmt rs | rs.getEnclosingCallable() = this | rs.getExpr() instanceof ConstantExpr) and
     // And this method is not overridden
     not exists(Method m | m.overrides(this))
   }
@@ -59,7 +59,7 @@ class ConstantMethod extends Method {
    */
   ConstantExpr getConstantValue() {
     exists(ReturnStmt returnStmt | returnStmt.getEnclosingCallable() = this |
-      result = returnStmt.getResult()
+      result = returnStmt.getExpr()
     )
   }
 }
@@ -207,23 +207,22 @@ class UnreachableBasicBlock extends BasicBlock {
       conditionBlock.controls(this, constant.booleanNot())
     )
     or
-    // This block is not reachable in the CFG, and is not a callable, a body of a callable, an
-    // expression in an annotation, an expression in an assert statement, or a catch clause.
-    forall(BasicBlock bb | bb = this.getABBPredecessor() | bb instanceof UnreachableBasicBlock) and
-    not exists(Callable c | c.getBody() = this) and
-    not this instanceof Callable and
-    not exists(Annotation a | a.getAChildExpr*() = this) and
-    not this.(Expr).getEnclosingStmt() instanceof AssertStmt and
-    not this instanceof CatchClause
+    // This block is not reachable in the CFG, and is not the entrypoint in a callable, an
+    // expression in an assert statement, or a catch clause.
+    forall(BasicBlock bb | bb = this.getAPredecessor() | bb instanceof UnreachableBasicBlock) and
+    not exists(Callable c | c.getBody().getControlFlowNode() = this.getFirstNode()) and
+    not this.getFirstNode().asExpr().getEnclosingStmt() instanceof AssertStmt and
+    not this.getFirstNode().asStmt() instanceof CatchClause
     or
     // Switch statements with a constant comparison expression may have unreachable cases.
-    exists(ConstSwitchStmt constSwitchStmt, BasicBlock failingCaseBlock |
-      failingCaseBlock = constSwitchStmt.getAFailingCase().getBasicBlock()
-    |
+    exists(ConstSwitchStmt constSwitchStmt, BasicBlock unreachableCaseBlock |
+      // Not accessible from the switch expression
+      unreachableCaseBlock = constSwitchStmt.getAFailingCase().getBasicBlock() and
       // Not accessible from the successful case
-      not constSwitchStmt.getMatchingCase().getBasicBlock().getABBSuccessor*() = failingCaseBlock and
-      // Blocks dominated by the failing case block are unreachable
-      constSwitchStmt.getAFailingCase().getBasicBlock().bbDominates(this)
+      not constSwitchStmt.getMatchingCase().getBasicBlock().getASuccessor*() = unreachableCaseBlock
+    |
+      // Blocks dominated by an unreachable case block are unreachable
+      unreachableCaseBlock.dominates(this)
     )
   }
 }

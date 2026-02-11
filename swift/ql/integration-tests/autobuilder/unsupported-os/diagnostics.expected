@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "Currently, Swift analysis is only supported on macOS.\n\n[Change the Actions runner][1] to run on macOS.\n\n[1]: https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on",
+  "severity": "error",
+  "source": {
+    "extractorName": "swift",
+    "id": "swift/extractor/incompatible-os",
+    "name": "Incompatible operating system (expected macOS)"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

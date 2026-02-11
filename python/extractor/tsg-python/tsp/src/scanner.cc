@@ -17,6 +17,7 @@ enum TokenType {
   STRING_START,
   STRING_CONTENT,
   STRING_END,
+  TEMPLATE_STRING_START,
 };
 
 struct Delimiter {
@@ -28,12 +29,21 @@ struct Delimiter {
     Format = 1 << 4,
     Triple = 1 << 5,
     Bytes = 1 << 6,
+    Template = 1 << 7,
   };
 
   Delimiter() : flags(0) {}
 
   bool is_format() const {
     return flags & Format;
+  }
+
+  bool is_template() const {
+    return flags & Template;
+  }
+
+  bool can_interpolate() const {
+    return is_format() || is_template();
   }
 
   bool is_raw() const {
@@ -57,6 +67,10 @@ struct Delimiter {
 
   void set_format() {
     flags |= Format;
+  }
+
+  void set_template() {
+    flags |= Template;
   }
 
   void set_raw() {
@@ -154,13 +168,29 @@ struct Scanner {
       int32_t end_character = delimiter.end_character();
       bool has_content = false;
       while (lexer->lookahead) {
-        if ((lexer->lookahead == '{' || lexer->lookahead == '}') && delimiter.is_format()) {
+        if ((lexer->lookahead == '{' || lexer->lookahead == '}') && delimiter.can_interpolate()) {
           lexer->mark_end(lexer);
           lexer->result_symbol = STRING_CONTENT;
           return has_content;
         } else if (lexer->lookahead == '\\') {
           if (delimiter.is_raw()) {
             lexer->advance(lexer, false);
+            // In raw strings, backslashes _can_ escape the same kind of quotes as the outer
+            // string, so we must take care to traverse any such escaped quotes now. If we don't do
+            // this, we will mistakenly consider the string to end at that escaped quote.
+            // Likewise, this also extends to escaped backslashes.
+            if (lexer->lookahead == end_character || lexer->lookahead == '\\') {
+              lexer->advance(lexer, false);
+            }
+            // Newlines after backslashes also cause issues, so we explicitly step over them here.
+            if (lexer->lookahead == '\r') {
+                lexer->advance(lexer, false);
+                if (lexer->lookahead == '\n') {
+                    lexer->advance(lexer, false);
+                }
+            } else if (lexer->lookahead == '\n') {
+                lexer->advance(lexer, false);
+            }
             continue;
           } else if (delimiter.is_bytes()) {
               lexer->mark_end(lexer);
@@ -306,13 +336,17 @@ struct Scanner {
       }
     }
 
-    if (first_comment_indent_length == -1 && valid_symbols[STRING_START]) {
+    bool expects_string_start = valid_symbols[STRING_START] || valid_symbols[TEMPLATE_STRING_START];
+
+    if (first_comment_indent_length == -1 && expects_string_start) {
       Delimiter delimiter;
 
       bool has_flags = false;
       while (lexer->lookahead) {
         if (lexer->lookahead == 'f' || lexer->lookahead == 'F') {
           delimiter.set_format();
+        } else if (lexer->lookahead == 't' || lexer->lookahead == 'T') {
+          delimiter.set_template();
         } else if (lexer->lookahead == 'r' || lexer->lookahead == 'R') {
           delimiter.set_raw();
         } else if (lexer->lookahead == 'b' || lexer->lookahead == 'B') {
@@ -356,7 +390,7 @@ struct Scanner {
 
       if (delimiter.end_character()) {
         delimiter_stack.push_back(delimiter);
-        lexer->result_symbol = STRING_START;
+        lexer->result_symbol = delimiter.is_template() ? TEMPLATE_STRING_START : STRING_START;
         return true;
       } else if (has_flags) {
         return false;

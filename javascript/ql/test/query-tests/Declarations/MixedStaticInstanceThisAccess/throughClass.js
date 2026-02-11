@@ -1,6 +1,6 @@
 class Foo {
     bar(){
-        Foo.baz; // OK
+        Foo.baz;
     }
     static baz(){
 

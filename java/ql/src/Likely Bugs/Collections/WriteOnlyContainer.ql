@@ -5,7 +5,8 @@
  * @problem.severity error
  * @precision very-high
  * @id java/unused-container
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  */

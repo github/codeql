@@ -75,9 +75,11 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isSink(sink, _, _) }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(StoreInstruction store | store = node.asInstruction() |
+    exists(StoreInstruction store, Expr e |
+      store = node.asInstruction() and e = node.asCertainDefinition()
+    |
       // Block flow to "likely small expressions"
-      bounded(store.getSourceValue().getUnconvertedResultExpression())
+      bounded(e)
       or
       // Block flow to "small types"
       store.getResultType().getUnspecifiedType().(IntegralType).getSize() <= 1
@@ -103,6 +105,12 @@ module Config implements DataFlow::ConfigSig {
       // propagate taint from either the pointer or the offset, regardless of constantness
       not iTo instanceof PointerArithmeticInstruction
     )
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(Expr e | result = e.getLocation() | isSink(sink, _, e))
   }
 }
 

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.Collections
 import semmle.code.java.Maps
@@ -457,17 +460,18 @@ predicate arrayStoreStep(Node node1, Node node2) {
 }
 
 private predicate enhancedForStmtStep(Node node1, Node node2, Type containerType) {
-  exists(EnhancedForStmt for, Expr e, SsaExplicitUpdate v |
+  exists(EnhancedForStmt for, Expr e, SsaExplicitWrite v |
     for.getExpr() = e and
     node1.asExpr() = e and
     containerType = e.getType() and
     v.getDefiningExpr() = for.getVariable() and
-    v.getAFirstUse() = node2.asExpr()
+    ssaGetAFirstUse(v) = node2.asExpr()
   )
 }
 
 /**
- * Holds if the step from `node1` to `node2` reads a value from an array.
+ * Holds if the step from `node1` to `node2` reads a value from an array, where
+ * the elements are of type `elemType`.
  * This covers ordinary array reads as well as array iteration through enhanced
  * `for` statements.
  */

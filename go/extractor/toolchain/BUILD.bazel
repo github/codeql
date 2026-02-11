@@ -8,8 +8,8 @@ go_library(
     importpath = "github.com/github/codeql-go/extractor/toolchain",
     visibility = ["//visibility:public"],
     deps = [
+        "//go/extractor/registries",
         "//go/extractor/util",
-        "//go/extractor/vendor/golang.org/x/mod/semver",
     ],
 )
 
@@ -17,4 +17,5 @@ go_test(
     name = "toolchain_test",
     srcs = ["toolchain_test.go"],
     embed = [":toolchain"],
+    deps = ["//go/extractor/util"],
 )

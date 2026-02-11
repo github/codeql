@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.undertow.server.handlers.resource", "PathResourceManager", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.undertow.server.handlers.resource", "Resource", True, "getFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.undertow.server.handlers.resource", "Resource", True, "getFilePath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.undertow.server.handlers.resource", "Resource", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

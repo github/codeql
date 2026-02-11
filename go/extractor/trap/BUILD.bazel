@@ -14,7 +14,7 @@ go_library(
     deps = [
         "//go/extractor/srcarchive",
         "//go/extractor/util",
-        "//go/extractor/vendor/golang.org/x/tools/go/packages",
+        "@org_golang_x_tools//go/packages",
     ],
 )
 

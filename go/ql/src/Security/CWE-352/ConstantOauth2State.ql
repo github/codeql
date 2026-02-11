@@ -40,6 +40,8 @@ module ConstantStateFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkCall(sink, _) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -59,7 +61,7 @@ predicate isUrlTaintingConfigStep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(Write w, Field f |
     f.hasQualifiedName(package("golang.org/x/oauth2", ""), "Config", "RedirectURL")
   |
-    w.writesField(succ.(DataFlow::PostUpdateNode).getPreUpdateNode(), f, pred)
+    w.writesField(succ, f, pred)
   )
 }
 
@@ -138,7 +140,7 @@ predicate privateUrlFlowsToAuthCodeUrlCall(DataFlow::CallNode call) {
 
 module FlowToPrintConfig implements DataFlow::ConfigSig {
   additional predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
-    exists(LoggerCall logCall | call = logCall | sink = logCall.getAMessageComponent())
+    sink = call.(LoggerCall).getAValueFormattedMessageComponent()
   }
 
   predicate isSource(DataFlow::Node source) { source = any(AuthCodeUrl m).getACall().getResult() }
@@ -150,7 +152,7 @@ module FlowToPrintFlow = DataFlow::Global<FlowToPrintConfig>;
 
 /** Holds if the provided `CallNode`'s result flows to an argument of a printer call. */
 predicate resultFlowsToPrinter(DataFlow::CallNode authCodeUrlCall) {
-  FlowToPrintFlow::flow(authCodeUrlCall.getResult(), _)
+  FlowToPrintFlow::flowFrom(authCodeUrlCall.getResult())
 }
 
 /** Get a data-flow node that reads the value of `os.Stdin`. */

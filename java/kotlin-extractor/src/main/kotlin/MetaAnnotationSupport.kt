@@ -1,8 +1,6 @@
 package com.github.codeql
 
-import com.github.codeql.utils.versions.copyParameterToFunction
 import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
-import com.github.codeql.utils.versions.getAnnotationType
 import java.lang.annotation.ElementType
 import java.util.HashSet
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
@@ -22,22 +20,19 @@ import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrConstructor
 import org.jetbrains.kotlin.ir.declarations.IrDeclarationOrigin
 import org.jetbrains.kotlin.ir.declarations.IrEnumEntry
+import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrProperty
+import org.jetbrains.kotlin.ir.declarations.IrValueParameter
 import org.jetbrains.kotlin.ir.expressions.IrClassReference
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.expressions.IrGetEnumValue
 import org.jetbrains.kotlin.ir.expressions.IrVararg
-import org.jetbrains.kotlin.ir.expressions.impl.IrClassReferenceImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrGetEnumValueImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrGetFieldImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrGetValueImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrReturnImpl
-import org.jetbrains.kotlin.ir.expressions.impl.IrVarargImpl
+import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.types.typeWith
 import org.jetbrains.kotlin.ir.util.constructedClass
 import org.jetbrains.kotlin.ir.util.constructors
+import org.jetbrains.kotlin.ir.util.copyTo
 import org.jetbrains.kotlin.ir.util.deepCopyWithSymbols
 import org.jetbrains.kotlin.ir.util.defaultType
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
@@ -337,7 +332,7 @@ class MetaAnnotationSupport(
                             )
                             return
                         }
-                val newParam = copyParameterToFunction(thisReceiever, this)
+                val newParam = thisReceiever.copyTo(this)
                 dispatchReceiverParameter = newParam
                 body =
                     factory
@@ -381,7 +376,7 @@ class MetaAnnotationSupport(
                     .apply {
                         createImplicitParameterDeclarationWithWrappedDescriptor()
                         parent = annotationClass
-                        superTypes = listOf(getAnnotationType(pluginContext))
+                        superTypes = listOf(pluginContext.irBuiltIns.annotationType)
                     }
 
             val propertyName = Name.identifier("value")

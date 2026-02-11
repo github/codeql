@@ -1,0 +1,4 @@
+instances
+| gen_path_pat.rs:6:9:6:16 | ...::Bar |
+getPath
+| gen_path_pat.rs:6:9:6:16 | ...::Bar | gen_path_pat.rs:6:9:6:16 | ...::Bar |

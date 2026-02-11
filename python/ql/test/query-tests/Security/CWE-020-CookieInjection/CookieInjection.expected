@@ -1,0 +1,28 @@
+edges
+| django_tests.py:4:25:4:31 | ControlFlowNode for request | django_tests.py:6:21:6:31 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django_tests.py:4:25:4:31 | ControlFlowNode for request | django_tests.py:7:21:7:31 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django_tests.py:6:21:6:31 | ControlFlowNode for Attribute | django_tests.py:6:21:6:43 | ControlFlowNode for Attribute() | provenance | dict.get |
+| django_tests.py:7:21:7:31 | ControlFlowNode for Attribute | django_tests.py:7:21:7:44 | ControlFlowNode for Attribute() | provenance | dict.get |
+| django_tests.py:11:26:11:32 | ControlFlowNode for request | django_tests.py:13:33:13:43 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django_tests.py:11:26:11:32 | ControlFlowNode for request | django_tests.py:13:59:13:69 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| django_tests.py:13:33:13:43 | ControlFlowNode for Attribute | django_tests.py:13:33:13:55 | ControlFlowNode for Attribute() | provenance | dict.get |
+| django_tests.py:13:33:13:55 | ControlFlowNode for Attribute() | django_tests.py:13:30:13:100 | ControlFlowNode for Fstring | provenance |  |
+| django_tests.py:13:59:13:69 | ControlFlowNode for Attribute | django_tests.py:13:59:13:82 | ControlFlowNode for Attribute() | provenance | dict.get |
+| django_tests.py:13:59:13:82 | ControlFlowNode for Attribute() | django_tests.py:13:30:13:100 | ControlFlowNode for Fstring | provenance |  |
+nodes
+| django_tests.py:4:25:4:31 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| django_tests.py:6:21:6:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django_tests.py:6:21:6:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| django_tests.py:7:21:7:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django_tests.py:7:21:7:44 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| django_tests.py:11:26:11:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| django_tests.py:13:30:13:100 | ControlFlowNode for Fstring | semmle.label | ControlFlowNode for Fstring |
+| django_tests.py:13:33:13:43 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django_tests.py:13:33:13:55 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| django_tests.py:13:59:13:69 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| django_tests.py:13:59:13:82 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+subpaths
+#select
+| django_tests.py:6:21:6:43 | ControlFlowNode for Attribute() | django_tests.py:4:25:4:31 | ControlFlowNode for request | django_tests.py:6:21:6:43 | ControlFlowNode for Attribute() | Cookie is constructed from a $@. | django_tests.py:4:25:4:31 | ControlFlowNode for request | user-supplied input |
+| django_tests.py:7:21:7:44 | ControlFlowNode for Attribute() | django_tests.py:4:25:4:31 | ControlFlowNode for request | django_tests.py:7:21:7:44 | ControlFlowNode for Attribute() | Cookie is constructed from a $@. | django_tests.py:4:25:4:31 | ControlFlowNode for request | user-supplied input |
+| django_tests.py:13:30:13:100 | ControlFlowNode for Fstring | django_tests.py:11:26:11:32 | ControlFlowNode for request | django_tests.py:13:30:13:100 | ControlFlowNode for Fstring | Cookie is constructed from a $@. | django_tests.py:11:26:11:32 | ControlFlowNode for request | user-supplied input |

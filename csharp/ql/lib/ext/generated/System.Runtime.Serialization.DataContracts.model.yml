@@ -4,12 +4,14 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "get_UnderlyingType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "IsDictionaryLike", "(System.String,System.String,System.String)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "IsDictionaryLike", "(System.String,System.String,System.String)", "", "Argument[this]", "Argument[1]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "IsDictionaryLike", "(System.String,System.String,System.String)", "", "Argument[this]", "Argument[2]", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "get_BaseContract", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", True, "get_DataMembers", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "DataContractSet", "(System.Runtime.Serialization.DataContracts.DataContractSet)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "DataContractSet", "(System.Runtime.Serialization.ISerializationSurrogateProvider,System.Collections.Generic.IEnumerable<System.Type>,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "DataContractSet", "(System.Runtime.Serialization.ISerializationSurrogateProvider,System.Collections.Generic.IEnumerable<System.Type>,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[1].Element", "Argument[this]", "taint", "df-generated"]
-      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "DataContractSet", "(System.Runtime.Serialization.ISerializationSurrogateProvider,System.Collections.Generic.IEnumerable<System.Type>,System.Collections.Generic.IEnumerable<System.Type>)", "", "Argument[2].Element", "Argument[this]", "taint", "df-generated"]
-      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "ImportSchemaSet", "(System.Xml.Schema.XmlSchemaSet,System.Collections.Generic.IEnumerable<System.Xml.Schema.XmlSchemaElement>,System.Boolean)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContractSet", False, "ImportSchemaSet", "(System.Xml.Schema.XmlSchemaSet,System.Collections.Generic.IEnumerable<System.Xml.Schema.XmlSchemaElement>,System.Boolean)", "", "Argument[1].Element.Property[System.Xml.Schema.XmlSchemaElement.QualifiedName]", "ReturnValue.Element", "value", "dfc-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataMember", False, "get_MemberTypeContract", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
@@ -20,12 +22,10 @@ extensions:
       - ["System.Runtime.Serialization.DataContracts", "DataContract", "GetBuiltInDataContract", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContract", "GetHashCode", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContract", "GetXmlName", "(System.Type)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization.DataContracts", "DataContract", "IsDictionaryLike", "(System.String,System.String,System.String)", "summary", "df-generated"]
-      - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_BaseContract", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_ContractType", "()", "summary", "df-generated"]
-      - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_DataMembers", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_IsBuiltInDataContract", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_OriginalUnderlyingType", "()", "summary", "df-generated"]
+      - ["System.Runtime.Serialization.DataContracts", "DataContract", "get_UnderlyingType", "()", "summary", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "GetDataContract", "(System.Type)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "GetDataContract", "(System.Xml.XmlQualifiedName)", "summary", "df-generated"]
       - ["System.Runtime.Serialization.DataContracts", "DataContractSet", "GetReferencedType", "(System.Xml.XmlQualifiedName,System.Runtime.Serialization.DataContracts.DataContract,System.Runtime.Serialization.DataContracts.DataContract,System.Object[],System.Nullable<System.Boolean>)", "summary", "df-generated"]

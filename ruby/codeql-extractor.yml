@@ -3,8 +3,11 @@ display_name: "Ruby"
 version: 0.1.0
 column_kind: "utf8"
 legacy_qltest_extraction: true
+overlay_support_version: 20250626
 build_modes:
   - none
+default_queries:
+  - codeql/ruby-queries
 github_api_languages:
   - Ruby
 scc_languages:
@@ -27,7 +30,7 @@ options:
         title: Controls compression for the TRAP files written by the extractor.
         description: >
           This option is only intended for use in debugging the extractor. Accepted
-          values are 'gzip' (the default, to write gzip-compressed TRAP) and 'none'
-          (to write uncompressed TRAP).
+          values are 'gzip' (the default, to write gzip-compressed TRAP) 'zstd' (to
+          write Zstandard-compressed TRAP) and 'none' (to write uncompressed TRAP).
         type: string
-        pattern: "^(none|gzip)$"
+        pattern: "^(none|gzip|zstd)$"

@@ -1,0 +1,6 @@
+nodes
+| examples/ExceptionXssAjv.js:11:18:11:33 | ajv.errorsText() | semmle.label | ajv.errorsText() |
+edges
+subpaths
+#select
+| examples/ExceptionXssAjv.js:11:18:11:33 | ajv.errorsText() | examples/ExceptionXssAjv.js:11:18:11:33 | ajv.errorsText() | examples/ExceptionXssAjv.js:11:18:11:33 | ajv.errorsText() | $@ is reinterpreted as HTML without escaping meta-characters. | examples/ExceptionXssAjv.js:11:18:11:33 | ajv.errorsText() | JSON schema validation error |

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["sonarr/sonarr/.github/workflows/deploy.yml", "*", "input.version", "code-injection", "generated"]
+     - ["sonarr/sonarr/.github/workflows/deploy.yml", "*", "input.branch", "code-injection", "generated"]

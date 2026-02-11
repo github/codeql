@@ -1,7 +1,6 @@
 import javascript
 import experimental.semmle.javascript.FormParsers
 import experimental.semmle.javascript.ReadableStream
-import DataFlow::PathGraph
 
 module DecompressionBomb {
   /**

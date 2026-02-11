@@ -52,6 +52,7 @@ class ICryptoTransform extends ValueOrRefType {
 }
 
 from UnsafeField field
+where field.fromSource()
 select field,
   "Static field '" + field.getName() +
     "' contains a 'System.Security.Cryptography.ICryptoTransform' that could be used in an unsafe way."

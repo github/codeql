@@ -9,7 +9,7 @@ CodeQL 2.14.2 (2023-08-11)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -45,8 +45,8 @@ Query Packs
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The sanitizer in :code:`java/potentially-weak-cryptographic-algorithm` has been improved, so the query may yield additional results.
 
@@ -102,8 +102,8 @@ Golang
 
 *   Logrus' :code:`WithContext` methods are no longer treated as if they output the values stored in that context to a log message.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed a typo in the :code:`StdlibRandomSource` class in :code:`RandomDataSource.qll`, which caused the class to improperly model calls to the :code:`nextBytes` method. Queries relying on :code:`StdlibRandomSource` may see an increase in results.
 *   Improved the precision of virtual dispatch of :code:`java.io.InputStream` methods. Now, calls to these methods will not dispatch to arbitrary implementations of :code:`InputStream` if there is a high-confidence alternative (like a models-as-data summary).
@@ -126,8 +126,8 @@ Swift
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A :code:`Diagnostic.getCompilationInfo()` predicate has been added.
 

@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity error
  * @id js/property-assignment-on-primitive
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       language-features
  *       external/cwe/cwe-704
  * @precision high

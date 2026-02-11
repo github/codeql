@@ -133,12 +133,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private readonly List<string> dllsToIndex = new List<string>();
 
-        private readonly Dictionary<string, AssemblyInfo> assemblyInfoByFileName = new Dictionary<string, AssemblyInfo>();
+        private readonly Dictionary<string, AssemblyInfo> assemblyInfoByFileName = [];
 
         // Map from assembly id (in various formats) to the full info.
-        private readonly Dictionary<string, AssemblyInfo> assemblyInfoById = new Dictionary<string, AssemblyInfo>();
+        private readonly Dictionary<string, AssemblyInfo> assemblyInfoById = [];
 
-        private readonly HashSet<string> failedAssemblyInfoIds = new HashSet<string>();
+        private readonly HashSet<string> failedAssemblyInfoIds = [];
 
         private readonly ILogger logger;
     }

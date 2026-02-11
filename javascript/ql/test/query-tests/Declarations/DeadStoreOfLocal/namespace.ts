@@ -9,5 +9,5 @@ namespace a.b.q {
 
   registerSomething(c);
 
-  function foo() {} // OK
+  function foo() {}
 }

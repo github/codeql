@@ -1,81 +1,81 @@
 let https = require("https"),
   tls = require("tls");
 
-new https.Agent(); // OK
+new https.Agent();
 
 new https.Agent({
-  rejectUnauthorized: true // OK
+  rejectUnauthorized: true
 });
 
 unknownCall({
-  rejectUnauthorized: false // OK (but probably unsafe after all)
+  rejectUnauthorized: false // OK - but probably unsafe after all
 });
 
 new https.Agent({
-  rejectUnauthorized: false // NOT OK
+  rejectUnauthorized: false // $ Alert
 });
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // NOT OK
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"; // $ Alert
 
 https.get({
-  rejectUnauthorized: false // NOT OK
+  rejectUnauthorized: false // $ Alert
 });
 
 new tls.TLSSocket(socket, {
-  rejectUnauthorized: false // NOT OK
+  rejectUnauthorized: false // $ Alert
 });
 
 tls.connect({
-  rejectUnauthorized: false // NOT OK
+  rejectUnauthorized: false // $ Alert
 });
 
 let socket = new tls.TLSSocket();
 socket.renegotiate({
-  rejectUnauthorized: false // NOT OK
+  rejectUnauthorized: false // $ Alert
 });
 
 let indirect = false;
 new https.Agent({
-	rejectUnauthorized: indirect // NOT OK
+	rejectUnauthorized: indirect // $ Alert
 });
 new https.Agent({
-	rejectUnauthorized: !false // OK
+	rejectUnauthorized: !false
 });
 new https.Agent({
-	rejectUnauthorized: !!false // NOT OK
+	rejectUnauthorized: !!false // $ Alert
 });
 new https.Agent({
-	rejectUnauthorized: !true // NOT OK
+	rejectUnauthorized: !true // $ Alert
 });
 new https.Agent({
-	rejectUnauthorized: !!true // OK
+	rejectUnauthorized: !!true
 });
 new https.Agent({
-	rejectUnauthorized: unknown() // OK
+	rejectUnauthorized: unknown()
 });
 new https.Agent({
-	rejectUnauthorized: !getOptions().selfSignedSSL // OK
+	rejectUnauthorized: !getOptions().selfSignedSSL
 });
 new https.Agent({
-	rejectUnauthorized: getOptions().rejectUnauthorized // OK
+	rejectUnauthorized: getOptions().rejectUnauthorized
 });
 new https.Agent({
-	rejectUnauthorized: !!getOptions().rejectUnauthorized // OK
+	rejectUnauthorized: !!getOptions().rejectUnauthorized
 });
 new https.Agent({
-	rejectUnauthorized: getOptions() == null ? true : getOptions().verifySsl // OK
+	rejectUnauthorized: getOptions() == null ? true : getOptions().verifySsl
 });
 new https.Agent({
-	rejectUnauthorized: typeof getOptions().rejectUnauthorized === 'boolean' ? getOptions().rejectUnauthorized : undefined // OK
+	rejectUnauthorized: typeof getOptions().rejectUnauthorized === 'boolean' ? getOptions().rejectUnauthorized : undefined
 });
 
 function getSomeunsafeOptions() {
     return {
-        rejectUnauthorized: false // NOT OK
+        rejectUnauthorized: false // $ Alert
     }
 }
 new https.Agent(getSomeunsafeOptions());
 
 https.createServer({
-    rejectUnauthorized: false // NOT OK
+    rejectUnauthorized: false // $ Alert
 });

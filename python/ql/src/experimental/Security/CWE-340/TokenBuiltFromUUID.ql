@@ -51,6 +51,8 @@ private module TokenBuiltFromUuidConfig implements DataFlow::ConfigSig {
       nodeTo = call
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "TokenBuiltFromUUID" vulnerabilities. */

@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["dfhack/dfhack/.github/workflows/build-windows.yml", "*", "input.artifact-name", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-windows.yml", "*", "input.append-date-and-hash", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.artifact-name", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.append-date-and-hash", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.common-files", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.xml-dump-type-sizes", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.tests", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.docs", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.extras", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.stonesense", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.platform-files", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.launchdf", "code-injection", "generated"]
+     - ["dfhack/dfhack/.github/workflows/build-linux.yml", "*", "input.gcc-ver", "code-injection", "generated"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["spring-io/initializr", "*", "input.run-name", "code-injection", "generated"]
+     - ["spring-io/initializr", "*", "input.webhook-url", "code-injection", "generated"]

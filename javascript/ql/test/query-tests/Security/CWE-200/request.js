@@ -5,7 +5,7 @@ var request = require('request');
 
 function PostJSON(jsonData)
 {
-  request({jsonData}, function (error, response, body){ // BAD: passing data from file to the request body
+  request({jsonData}, function (error, response, body){ // $ Alert[js/file-access-to-http] - passing data from file to the request body
     console.log(response);
   });
 }
@@ -19,13 +19,13 @@ function PostXML(xmlData)
     headers: {
         "content-type": "application/xml",
     },
-    body: xmlData    // BAD: passing data from file to the request body
-  }, function (error, response, body){
+    body: xmlData    // passing data from file to the request body
+  }, function (error, response, body){ // $ Alert[js/file-access-to-http]
     console.log(response);
   });
 }
 
-fs.readFile('MyFile.json', 'utf-8', function (err, data) { // source
+fs.readFile('MyFile.json', 'utf-8', function (err, data) { // $ Source[js/file-access-to-http] - source
   if (err) {
     console.log("FATAL An error occurred trying to read in the file: " + err);
     process.exit(-2);
@@ -40,7 +40,7 @@ fs.readFile('MyFile.json', 'utf-8', function (err, data) { // source
   }
 });
 
-fs.readFile('MyFile.xml', 'utf-8', function (err, data) {           // source
+fs.readFile('MyFile.xml', 'utf-8', function (err, data) {           // $ Source[js/file-access-to-http] - source
   if (err) {
     console.log("FATAL An error occurred trying to read in the file: " + err);
     process.exit(-2);

@@ -1,4 +1,4 @@
-import TestUtilities.dataflow.callGraphConfig
+import utils.test.dataflow.callGraphConfig
 
 from DataFlow::Node source, DataFlow::Node sink
 where

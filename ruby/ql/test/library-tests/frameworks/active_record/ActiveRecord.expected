@@ -146,87 +146,6 @@ activeRecordSqlExecutionRanges
 | ActiveRecord.rb:73:20:73:39 | "username = #{...}" |
 | ActiveRecord.rb:85:21:85:44 | ...[...] |
 | ActiveRecord.rb:123:27:123:76 | "this is an unsafe annotation:..." |
-activeRecordModelClassMethodCalls
-| ActiveRecord.rb:2:3:2:17 | call to has_many |
-| ActiveRecord.rb:6:3:6:24 | call to belongs_to |
-| ActiveRecord.rb:9:5:9:68 | call to find |
-| ActiveRecord.rb:13:5:13:40 | call to find_by |
-| ActiveRecord.rb:13:5:13:46 | call to users |
-| ActiveRecord.rb:36:5:36:25 | call to destroy_by |
-| ActiveRecord.rb:45:5:45:45 | call to calculate |
-| ActiveRecord.rb:46:5:46:43 | call to delete_by |
-| ActiveRecord.rb:47:5:47:46 | call to destroy_by |
-| ActiveRecord.rb:48:5:48:35 | call to where |
-| ActiveRecord.rb:51:5:51:14 | call to where |
-| ActiveRecord.rb:51:5:51:48 | call to not |
-| ActiveRecord.rb:53:5:53:30 | call to find_by_name |
-| ActiveRecord.rb:54:5:54:36 | call to not_a_find_by_method |
-| ActiveRecord.rb:63:5:63:33 | call to delete_by |
-| ActiveRecord.rb:69:5:69:29 | call to order |
-| ActiveRecord.rb:73:7:73:40 | call to find_by |
-| ActiveRecord.rb:77:5:77:33 | call to find_by |
-| ActiveRecord.rb:79:5:79:34 | call to find |
-| ActiveRecord.rb:89:5:89:24 | call to create |
-| ActiveRecord.rb:93:5:93:66 | call to create |
-| ActiveRecord.rb:97:5:97:68 | call to create |
-| ActiveRecord.rb:101:5:101:16 | call to create |
-| ActiveRecord.rb:105:5:105:27 | call to update |
-| ActiveRecord.rb:109:5:109:69 | call to update |
-| ActiveRecord.rb:113:5:113:71 | call to update |
-| ActiveRecord.rb:119:13:119:54 | call to annotate |
-| ActiveRecord.rb:123:13:123:77 | call to annotate |
-| associations.rb:2:3:2:17 | call to has_many |
-| associations.rb:6:3:6:20 | call to belongs_to |
-| associations.rb:7:3:7:20 | call to has_many |
-| associations.rb:8:3:8:31 | call to has_and_belongs_to_many |
-| associations.rb:12:3:12:32 | call to has_and_belongs_to_many |
-| associations.rb:16:3:16:18 | call to belongs_to |
-| associations.rb:19:11:19:20 | call to new |
-| associations.rb:21:9:21:21 | call to posts |
-| associations.rb:21:9:21:28 | call to create |
-| associations.rb:23:12:23:25 | call to comments |
-| associations.rb:23:12:23:32 | call to create |
-| associations.rb:25:11:25:22 | call to author |
-| associations.rb:27:9:27:21 | call to posts |
-| associations.rb:27:9:27:28 | call to create |
-| associations.rb:29:1:29:13 | call to posts |
-| associations.rb:29:1:29:22 | ... << ... |
-| associations.rb:31:1:31:12 | call to author= |
-| associations.rb:35:1:35:14 | call to comments |
-| associations.rb:35:1:35:21 | call to create |
-| associations.rb:35:1:35:28 | call to create |
-| associations.rb:37:1:37:13 | call to posts |
-| associations.rb:37:1:37:20 | call to reload |
-| associations.rb:37:1:37:27 | call to create |
-| associations.rb:39:1:39:15 | call to build_tag |
-| associations.rb:40:1:40:15 | call to build_tag |
-| associations.rb:42:1:42:13 | call to posts |
-| associations.rb:42:1:42:25 | call to push |
-| associations.rb:43:1:43:13 | call to posts |
-| associations.rb:43:1:43:27 | call to concat |
-| associations.rb:44:1:44:13 | call to posts |
-| associations.rb:44:1:44:19 | call to build |
-| associations.rb:45:1:45:13 | call to posts |
-| associations.rb:45:1:45:20 | call to create |
-| associations.rb:46:1:46:13 | call to posts |
-| associations.rb:46:1:46:21 | call to create! |
-| associations.rb:47:1:47:13 | call to posts |
-| associations.rb:47:1:47:20 | call to delete |
-| associations.rb:48:1:48:13 | call to posts |
-| associations.rb:48:1:48:24 | call to delete_all |
-| associations.rb:49:1:49:13 | call to posts |
-| associations.rb:49:1:49:21 | call to destroy |
-| associations.rb:50:1:50:13 | call to posts |
-| associations.rb:50:1:50:25 | call to destroy_all |
-| associations.rb:51:1:51:13 | call to posts |
-| associations.rb:51:1:51:22 | call to distinct |
-| associations.rb:51:1:51:36 | call to find |
-| associations.rb:52:1:52:13 | call to posts |
-| associations.rb:52:1:52:19 | call to reset |
-| associations.rb:52:1:52:33 | call to find |
-| associations.rb:53:1:53:13 | call to posts |
-| associations.rb:53:1:53:20 | call to reload |
-| associations.rb:53:1:53:34 | call to find |
 activeRecordModelClassMethodCallsReplacement
 | ActiveRecord.rb:1:1:3:3 | UserGroup | ActiveRecord.rb:2:3:2:17 | call to has_many |
 | ActiveRecord.rb:1:1:3:3 | UserGroup | ActiveRecord.rb:13:5:13:40 | call to find_by |
@@ -272,18 +191,6 @@ activeRecordModelClassMethodCallsReplacement
 | associations.rb:5:1:9:3 | Post | associations.rb:8:3:8:31 | call to has_and_belongs_to_many |
 | associations.rb:11:1:13:3 | Tag | associations.rb:12:3:12:32 | call to has_and_belongs_to_many |
 | associations.rb:15:1:17:3 | Comment | associations.rb:16:3:16:18 | call to belongs_to |
-potentiallyUnsafeSqlExecutingMethodCall
-| ActiveRecord.rb:9:5:9:68 | call to find |
-| ActiveRecord.rb:36:5:36:25 | call to destroy_by |
-| ActiveRecord.rb:45:5:45:45 | call to calculate |
-| ActiveRecord.rb:46:5:46:43 | call to delete_by |
-| ActiveRecord.rb:47:5:47:46 | call to destroy_by |
-| ActiveRecord.rb:48:5:48:35 | call to where |
-| ActiveRecord.rb:51:5:51:48 | call to not |
-| ActiveRecord.rb:63:5:63:33 | call to delete_by |
-| ActiveRecord.rb:69:5:69:29 | call to order |
-| ActiveRecord.rb:73:7:73:40 | call to find_by |
-| ActiveRecord.rb:123:13:123:77 | call to annotate |
 activeRecordModelInstantiations
 | ActiveRecord.rb:9:5:9:68 | call to find | ActiveRecord.rb:5:1:32:3 | User |
 | ActiveRecord.rb:13:5:13:40 | call to find_by | ActiveRecord.rb:1:1:3:3 | UserGroup |

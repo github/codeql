@@ -11,14 +11,13 @@
  */
 
 import javascript
-import DataFlow::PathGraph
 import semmle.javascript.security.dataflow.DeepObjectResourceExhaustionQuery
+import DataFlow::DeduplicatePathGraph<DeepObjectResourceExhaustionFlow::PathNode, DeepObjectResourceExhaustionFlow::PathGraph>
 
-from
-  Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Node link,
-  string reason
+from PathNode source, PathNode sink, DataFlow::Node link, string reason
 where
-  cfg.hasFlowPath(source, sink) and
+  DeepObjectResourceExhaustionFlow::flowPath(source.getAnOriginalPathNode(),
+    sink.getAnOriginalPathNode()) and
   sink.getNode().(Sink).hasReason(link, reason)
 select sink, source, sink, "Denial of service caused by processing $@ with $@.", source.getNode(),
   "user input", link, reason

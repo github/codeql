@@ -1,1 +1,2 @@
-experimental/Security/CWE-522-DecompressionBombs/DecompressionBombs.ql
+query: experimental/Security/CWE-522-DecompressionBombs/DecompressionBombs.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

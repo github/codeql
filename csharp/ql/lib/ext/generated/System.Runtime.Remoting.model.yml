@@ -4,5 +4,5 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Runtime.Remoting", "ObjectHandle", False, "ObjectHandle", "(System.Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["System.Runtime.Remoting", "ObjectHandle", False, "Unwrap", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Remoting", "ObjectHandle", False, "ObjectHandle", "(System.Object)", "", "Argument[0]", "Argument[this].SyntheticField[System.Runtime.Remoting.ObjectHandle._wrappedObject]", "value", "dfc-generated"]
+      - ["System.Runtime.Remoting", "ObjectHandle", False, "Unwrap", "()", "", "Argument[this].SyntheticField[System.Runtime.Remoting.ObjectHandle._wrappedObject]", "ReturnValue", "value", "dfc-generated"]

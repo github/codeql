@@ -46,14 +46,14 @@ class RightShiftOp extends Expr {
 }
 
 private predicate boundedRead(VarRead read) {
-  exists(SsaVariable v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
-    read = v.getAUse() and
+  exists(SsaDefinition v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
+    read = v.getARead() and
     cb.controls(read.getBasicBlock(), testIsTrue) and
     cb.getCondition() = comp
   |
-    comp.getLesserOperand() = v.getAUse() and testIsTrue = true
+    comp.getLesserOperand() = v.getARead() and testIsTrue = true
     or
-    comp.getGreaterOperand() = v.getAUse() and testIsTrue = false
+    comp.getGreaterOperand() = v.getARead() and testIsTrue = false
   )
 }
 
@@ -85,7 +85,7 @@ private predicate smallExpr(Expr e) {
  * numeric cast.
  */
 module NumericCastFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr() and
@@ -102,6 +102,16 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(NumericNarrowingCastExpr cast | cast.getExpr() = sink.asExpr() |
+      result = sink.getLocation()
+      or
+      result = cast.getLocation()
+    )
+  }
 }
 
 /**

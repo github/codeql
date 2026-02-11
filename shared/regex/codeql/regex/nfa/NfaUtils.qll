@@ -1,6 +1,8 @@
 /**
  * A shared library for creating and reasoning about NFA's.
  */
+overlay[local?]
+module;
 
 private import codeql.regex.RegexTreeView
 private import codeql.util.Numbers
@@ -102,11 +104,11 @@ module Make<RegexTreeViewSig TreeImpl> {
   private class RegexpCharacterConstant instanceof RegExpConstant {
     RegexpCharacterConstant() { this.isCharacter() }
 
-    string toString() { result = this.(RegExpConstant).toString() }
+    string toString() { result = super.toString() }
 
-    RegExpTerm getRootTerm() { result = this.(RegExpConstant).getRootTerm() }
+    RegExpTerm getRootTerm() { result = super.getRootTerm() }
 
-    string getValue() { result = this.(RegExpConstant).getValue() }
+    string getValue() { result = super.getValue() }
   }
 
   /**
@@ -576,11 +578,11 @@ module Make<RegexTreeViewSig TreeImpl> {
       )
     }
 
-    string toString() { result = this.(RegExpTerm).toString() }
+    string toString() { result = super.toString() }
 
-    RegExpTerm getAChild() { result = this.(RegExpTerm).getChild(_) }
+    RegExpTerm getAChild() { result = super.getChild(_) }
 
-    RegExpTerm getChild(int i) { result = this.(RegExpTerm).getChild(i) }
+    RegExpTerm getChild(int i) { result = super.getChild(i) }
   }
 
   /**
@@ -599,11 +601,11 @@ module Make<RegexTreeViewSig TreeImpl> {
       )
     }
 
-    string toString() { result = this.(RegExpTerm).toString() }
+    string toString() { result = super.toString() }
 
-    RegExpTerm getAChild() { result = this.(RegExpTerm).getAChild() }
+    RegExpTerm getAChild() { result = super.getAChild() }
 
-    RegExpTerm getChild(int i) { result = this.(RegExpTerm).getChild(i) }
+    RegExpTerm getChild(int i) { result = super.getChild(i) }
   }
 
   /**
@@ -619,11 +621,11 @@ module Make<RegexTreeViewSig TreeImpl> {
       )
     }
 
-    string toString() { result = this.(RegExpTerm).toString() }
+    string toString() { result = super.toString() }
 
-    RegExpTerm getAChild() { result = this.(RegExpTerm).getAChild() }
+    RegExpTerm getAChild() { result = super.getAChild() }
 
-    RegExpTerm getChild(int i) { result = this.(RegExpTerm).getChild(i) }
+    RegExpTerm getChild(int i) { result = super.getChild(i) }
   }
 
   /**

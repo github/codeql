@@ -54,6 +54,8 @@ module PotentiallyExposedSystemDataConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.asIndirectArgument() = any(MemsetFunction func).getACallToThisFunction().getAnArgument()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module PotentiallyExposedSystemData = TaintTracking::Global<PotentiallyExposedSystemDataConfig>;

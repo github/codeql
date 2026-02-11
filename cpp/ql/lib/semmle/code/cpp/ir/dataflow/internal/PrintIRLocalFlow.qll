@@ -2,7 +2,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
-private import SsaInternals as Ssa
+private import SsaImpl as Ssa
 private import PrintIRUtilities
 
 /**

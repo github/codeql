@@ -174,13 +174,16 @@ predicate isPotentialTimeBomb(
   )
 }
 
-from
-  Flow::PathNode source, Flow::PathNode sink, Call getLastWriteTimeMethodCall,
-  Call timeArithmeticCall, Call timeComparisonCall, SelectionStmt selStatement
-where
+deprecated query predicate problems(
+  SelectionStmt selStatement, Flow::PathNode source, Flow::PathNode sink, string message,
+  Call timeComparisonCall, string timeComparisonCallString, Call timeArithmeticCall, string offset,
+  Call getLastWriteTimeMethodCall, string lastWriteTimeMethodCallMessage
+) {
   isPotentialTimeBomb(source, sink, getLastWriteTimeMethodCall, timeArithmeticCall,
-    timeComparisonCall, selStatement)
-select selStatement, source, sink,
-  "Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger.",
-  timeComparisonCall, timeComparisonCall.toString(), timeArithmeticCall, "offset",
-  getLastWriteTimeMethodCall, "last modification time of a file"
+    timeComparisonCall, selStatement) and
+  message =
+    "Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger." and
+  timeComparisonCallString = timeComparisonCall.toString() and
+  offset = "offset" and
+  lastWriteTimeMethodCallMessage = "last modification time of a file"
+}

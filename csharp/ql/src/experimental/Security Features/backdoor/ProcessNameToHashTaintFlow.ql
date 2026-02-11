@@ -42,8 +42,15 @@ predicate isSuspiciousPropertyName(PropertyRead pr) {
   pr.getTarget().hasFullyQualifiedName("System.Diagnostics", "Process", "ProcessName")
 }
 
-from DataFlowFromMethodToHash::PathNode src, DataFlowFromMethodToHash::PathNode sink
-where DataFlowFromMethodToHash::flow(src.getNode(), sink.getNode())
-select src.getNode(), src, sink,
-  "The hash is calculated on $@, may be related to a backdoor. Please review the code for possible malicious intent.",
-  sink.getNode(), "this process name"
+deprecated query predicate problems(
+  DataFlow::Node srcNode, DataFlowFromMethodToHash::PathNode src,
+  DataFlowFromMethodToHash::PathNode sink, string message, DataFlow::Node sinkNode,
+  string sinkMessage
+) {
+  srcNode = src.getNode() and
+  sinkNode = sink.getNode() and
+  DataFlowFromMethodToHash::flow(srcNode, sinkNode) and
+  message =
+    "The hash is calculated on $@, may be related to a backdoor. Please review the code for possible malicious intent." and
+  sinkMessage = "this process name"
+}

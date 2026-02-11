@@ -1,19 +1,43 @@
 parameterModifier
-| ParameterModifiers.cs:5:27:5:28 | p1 | 0 |
-| ParameterModifiers.cs:6:30:6:31 | p2 | 5 |
-| ParameterModifiers.cs:8:31:8:32 | p3 | 2 |
-| ParameterModifiers.cs:13:31:13:32 | p4 | 1 |
-| ParameterModifiers.cs:15:36:15:37 | p5 | 3 |
-| ParameterModifiers.cs:17:40:17:41 | p6 | 6 |
+| LambdaParameterModifiers.cs:16:27:16:28 | x1 | 1 |
+| LambdaParameterModifiers.cs:17:27:17:28 | x2 | 2 |
+| LambdaParameterModifiers.cs:18:26:18:27 | x3 | 5 |
+| LambdaParameterModifiers.cs:19:36:19:37 | x4 | 6 |
+| LambdaParameterModifiers.cs:20:34:20:35 | x5 | 1 |
+| LambdaParameterModifiers.cs:21:43:21:44 | x6 | 3 |
+| LambdaParameterModifiers.cs:24:25:24:26 | i1 | 1 |
+| LambdaParameterModifiers.cs:25:25:25:26 | i2 | 2 |
+| LambdaParameterModifiers.cs:26:23:26:24 | i3 | 5 |
+| LambdaParameterModifiers.cs:27:43:27:44 | i4 | 6 |
+| LambdaParameterModifiers.cs:28:39:28:40 | i5 | 1 |
+| ParameterModifiers.cs:6:27:6:28 | p1 | 0 |
+| ParameterModifiers.cs:7:30:7:31 | p2 | 5 |
+| ParameterModifiers.cs:9:31:9:32 | p3 | 2 |
+| ParameterModifiers.cs:14:31:14:32 | p4 | 1 |
+| ParameterModifiers.cs:16:36:16:37 | p5 | 3 |
+| ParameterModifiers.cs:18:40:18:41 | p6 | 6 |
+| ParameterModifiers.cs:20:47:20:48 | p7 | 3 |
 parameterIsValue
-| ParameterModifiers.cs:5:27:5:28 | p1 |
+| ParameterModifiers.cs:6:27:6:28 | p1 |
 parameterIsIn
-| ParameterModifiers.cs:6:30:6:31 | p2 |
+| LambdaParameterModifiers.cs:18:26:18:27 | x3 |
+| LambdaParameterModifiers.cs:26:23:26:24 | i3 |
+| ParameterModifiers.cs:7:30:7:31 | p2 |
 parameterIsOut
-| ParameterModifiers.cs:8:31:8:32 | p3 |
+| LambdaParameterModifiers.cs:17:27:17:28 | x2 |
+| LambdaParameterModifiers.cs:25:25:25:26 | i2 |
+| ParameterModifiers.cs:9:31:9:32 | p3 |
 parameterIsRef
-| ParameterModifiers.cs:13:31:13:32 | p4 |
+| LambdaParameterModifiers.cs:16:27:16:28 | x1 |
+| LambdaParameterModifiers.cs:20:34:20:35 | x5 |
+| LambdaParameterModifiers.cs:24:25:24:26 | i1 |
+| LambdaParameterModifiers.cs:28:39:28:40 | i5 |
+| ParameterModifiers.cs:14:31:14:32 | p4 |
 parameterIsParams
-| ParameterModifiers.cs:15:36:15:37 | p5 |
+| LambdaParameterModifiers.cs:21:43:21:44 | x6 |
+| ParameterModifiers.cs:16:36:16:37 | p5 |
+| ParameterModifiers.cs:20:47:20:48 | p7 |
 parameterIsReadonlyRef
-| ParameterModifiers.cs:17:40:17:41 | p6 |
+| LambdaParameterModifiers.cs:19:36:19:37 | x4 |
+| LambdaParameterModifiers.cs:27:43:27:44 | i4 |
+| ParameterModifiers.cs:18:40:18:41 | p6 |

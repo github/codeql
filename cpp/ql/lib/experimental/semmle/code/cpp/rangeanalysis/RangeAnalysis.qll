@@ -298,10 +298,11 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
       else
         if strictlyNegative(x)
         then upper = true and delta = -1
-        else
-          if negative(x)
-          then upper = true and delta = 0
-          else none()
+        else (
+          negative(x) and
+          upper = true and
+          delta = 0
+        )
   )
   or
   exists(Operand x |
@@ -321,10 +322,11 @@ private predicate boundFlowStep(Instruction i, NonPhiOperand op, int delta, bool
       else
         if strictlyNegative(x)
         then upper = false and delta = 1
-        else
-          if negative(x)
-          then upper = false and delta = 0
-          else none()
+        else (
+          negative(x) and
+          upper = false and
+          delta = 0
+        )
   )
   or
   i.(RemInstruction).getRightOperand() = op and positive(op) and delta = -1 and upper = true
@@ -410,7 +412,7 @@ private predicate boundFlowStepPhi(
   or
   exists(IRGuardCondition guard, boolean testIsTrue |
     guard = boundFlowCond(valueNumberOfOperand(op2), op1, delta, upper, testIsTrue) and
-    guard.controlsEdge(op2.getPredecessorBlock(), op2.getUse().getBlock(), testIsTrue) and
+    guard.controlsBranchEdge(op2.getPredecessorBlock(), op2.getUse().getBlock(), testIsTrue) and
     reason = TCondReason(guard)
   )
 }

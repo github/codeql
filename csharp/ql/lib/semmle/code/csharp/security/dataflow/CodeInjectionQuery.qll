@@ -25,21 +25,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `CodeInjection` instead.
- *
- * A taint-tracking configuration for user input treated as code vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "CodeInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for user input treated as code vulnerabilities.
  */
 private module CodeInjectionConfig implements DataFlow::ConfigSig {
@@ -48,6 +33,8 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -70,7 +57,7 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 deprecated class LocalSource extends DataFlow::Node instanceof LocalFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
@@ -108,7 +95,12 @@ class RoslynCSharpScriptSink extends Sink {
   }
 }
 
-/** Code injection sinks defined through CSV models. */
+/** A code injection sink defined through Models as Data. */
 private class ExternalCodeInjectionExprSink extends Sink {
   ExternalCodeInjectionExprSink() { sinkNode(this, "code-injection") }
+}
+
+/** A sanitizer for code injection defined through Models as Data. */
+private class ExternalCodeInjectionSanitizer extends Sanitizer {
+  ExternalCodeInjectionSanitizer() { barrierNode(this, "code-injection") }
 }

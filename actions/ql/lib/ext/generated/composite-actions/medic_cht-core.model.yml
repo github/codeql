@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["medic/cht-core", "*", "input.hostname", "code-injection", "generated"]
+     - ["medic/cht-core", "*", "input.password", "code-injection", "generated"]
+     - ["medic/cht-core", "*", "input.username", "code-injection", "generated"]

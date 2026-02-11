@@ -7,11 +7,14 @@ import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.SideEffect
+import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
  * The standard function `strcpy` and its wide, sized, and Microsoft variants.
  */
-class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, SideEffectFunction {
+class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, SideEffectFunction,
+  NonCppThrowingFunction
+{
   StrcpyFunction() {
     this.hasGlobalOrStdOrBslName([
         "strcpy", // strcpy(dst, src)
@@ -33,7 +36,11 @@ class StrcpyFunction extends ArrayFunction, DataFlowFunction, TaintFunction, Sid
         "_mbsnbcpy", // _mbsnbcpy(dest, src, max_amount)
         "stpcpy", // stpcpy(dest, src)
         "stpncpy", // stpncpy(dest, src, max_amount)
-        "strlcpy" // strlcpy(dst, src, dst_size)
+        "strlcpy", // strlcpy(dst, src, dst_size)
+        "__builtin___strcpy_chk", // __builtin___strcpy_chk (dest, src, magic)
+        "__builtin___stpcpy_chk", // __builtin___stpcpy_chk (dest, src, magic)
+        "__builtin___stpncpy_chk", // __builtin___stpncpy_chk(dest, src, max_amount, magic)
+        "__builtin___strncpy_chk" // __builtin___strncpy_chk (dest, src, max_amount, magic)
       ])
     or
     (

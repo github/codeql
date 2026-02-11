@@ -1,6 +1,10 @@
 /**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
  * Provides classes and predicates for working with the JYaml framework.
  */
+overlay[local?]
+deprecated module;
 
 import java
 

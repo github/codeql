@@ -1,0 +1,15 @@
+models
+| 1 | Summary: org.apache.tools.zip; ZipEntry; true; ZipEntry; (String); ; Argument[0]; Argument[this]; taint; ai-manual |
+edges
+| Test.java:19:16:19:32 | (...)... : String | Test.java:20:23:20:24 | in : String | provenance |  |
+| Test.java:19:25:19:32 | source(...) : Object | Test.java:19:16:19:32 | (...)... : String | provenance |  |
+| Test.java:20:10:20:25 | new ZipEntry(...) : ZipEntry | Test.java:21:9:21:11 | out | provenance |  |
+| Test.java:20:23:20:24 | in : String | Test.java:20:10:20:25 | new ZipEntry(...) : ZipEntry | provenance | MaD:1 |
+nodes
+| Test.java:19:16:19:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:19:25:19:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:20:10:20:25 | new ZipEntry(...) : ZipEntry | semmle.label | new ZipEntry(...) : ZipEntry |
+| Test.java:20:23:20:24 | in : String | semmle.label | in : String |
+| Test.java:21:9:21:11 | out | semmle.label | out |
+subpaths
+testFailures

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["forcedotcom/salesforcedx-vscode", "*", "input.email", "code-injection", "generated"]

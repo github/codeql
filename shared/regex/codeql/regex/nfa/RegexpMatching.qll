@@ -2,6 +2,8 @@
  * Provides predicates for reasoning about which strings are matched by a regular expression,
  * and for testing which capture groups are filled when a particular regexp matches a string.
  */
+overlay[local?]
+module;
 
 private import NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView

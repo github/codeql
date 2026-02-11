@@ -1214,6 +1214,8 @@ void VectorTypes(int i) {
   vi4[i] = x;
   vector(4, int) vi4_shuffle = __builtin_shufflevector(vi4, vi4, 3+0, 2, 1, 0);
   vi4 = vi4 + vi4_shuffle;
+  vi4 = vi4 && vi4_shuffle;
+  vi4 = vi4 || vi4_shuffle;
 }
 
 void *memcpy(void *dst, void *src, int size);
@@ -2550,6 +2552,338 @@ void this_inconsistency(bool b) {
 void constexpr_inconsistency(bool b) {
   if constexpr (const ClassWithDestructor& a = getClassWithDestructor(); initialization_with_destructor_bool)
     ;
+}
+
+void builtin_bitcast(unsigned long ul) {
+    double d = __builtin_bit_cast(double, ul);
+}
+
+void p_points_to_x_or_y(int a, int b) {
+    int x;
+    int y;
+    int* p;
+    if (a < b) {
+        p = &x;
+    } else {
+        p = &y;
+    }
+    *p = 5;
+    int z = x;
+    int w = y;
+}
+
+int phi_after_while() {
+  int r;
+  int *rP = &r;
+
+  while(predicateA()) {
+    int s = 0;
+    *rP = s;
+    rP = &s;
+  }
+
+  return r;
+}
+
+// This testcase will loop infinitely if the analysis attempts to propagate
+// phi inputs with a non-unknown bit offset.
+char *recursive_conditional_call_with_increment(char *d, bool b)
+{
+  if (b) {
+    d = recursive_conditional_call_with_increment(d, b);
+  }
+  d++;
+  return d;
+}
+
+struct Recursive
+{
+  Recursive *next;
+};
+
+static Recursive *merge(Recursive *a)
+{
+  Recursive *b;
+  Recursive **p = &b;
+
+  while (predicateA())
+  {
+    *p = a;
+    p = &a->next;
+  }
+  
+  return b;
+}
+
+void use_const_int(const int*);
+
+void escaping_pointer(bool b)
+{
+  int *data;
+  int l1, l2;
+  if (b)
+  {
+    data = &l1;
+  }
+  else
+  {
+    data = &l2;
+  }
+  use_const_int(data);
+}
+
+using int64_t = long long;
+#define NULL ((void *)0)
+
+void *malloc(unsigned long);
+void use_const_void_pointer(const void *);
+
+static void needs_chi_for_initialize_groups()
+{
+  if (predicateA())
+  {
+    int64_t *data = (int64_t *)malloc(100);
+    if (data != NULL)
+    {
+      data = (int64_t *)malloc(100);
+    }
+    use_const_void_pointer(data);
+  }
+  else
+  {
+    int64_t *data = (int64_t *)malloc(100);
+    if (data != NULL)
+    {
+      data = (int64_t *)malloc(200);
+    }
+    use_const_void_pointer(data);
+  }
+}
+
+void use_int(int);
+
+static void phi_with_single_input_at_merge(bool b)
+{
+  int *data = nullptr;
+  if(b) {
+    int intBuffer = 8;
+    data = &intBuffer;
+  }
+  use_int(*data);
+}
+
+void use(const char *fmt);
+
+#define call_use(format) use(format)
+
+#define twice_call_use(format) \
+  do                       \
+  {                        \
+    call_use(format);           \
+    call_use(format);           \
+  } while (0)
+
+void test(bool b)
+{
+  twice_call_use(b ? "" : "");
+}
+
+namespace concepts {
+
+int requires_use() {
+  int y = requires { sizeof(int) > 0; };
+  return y;
+}
+
+}
+
+void branch_on_integral_in_cpp(int x1, int x2) {
+  if (x1) {}
+  if(!x1) {}
+
+  int y = !x1;
+  if(y) {}
+  if(!y) {}
+
+  if(x1 && x2) {}
+  if(!x1 && x2) {}
+  if(x1 && !x2) {}
+  if(!x1 && !x2) {}
+  if(x1 || x2) {}
+  if(!x1 || x2) {}
+  if(x1 || !x2) {}
+  if(!x1 || !x2) {}
+
+  int x_1_and_2 = x1 && x2;
+  if(x_1_and_2) {}
+  if(!x_1_and_2) {}
+}
+
+struct WithBracketOperator {
+  const char& operator[](int pos) const;
+};
+
+char UseBracketOperator(const WithBracketOperator x, int i) {
+  return x[i];
+}
+
+void test_postfix_crement(int *p, int q) {
+  p++;
+  q++;
+  (p++);
+  (q++);
+  (void)(p++);
+  (void)(q++);
+  (void)p++;
+  (void)q++;
+  int *p1 = p++;
+  int q1 = q++;
+  (int*)(p++);
+  (int)(q++);
+  int *p2 = (int*)(p++);
+  int q2 = (int)(q++);
+}
+
+namespace std {
+  enum class _Order : signed char { __less = -1, __equiv = 0, __greater = 1 };
+  class strong_ordering {
+    explicit constexpr strong_ordering(_Order v)  {}
+        
+  public:
+    static const strong_ordering less;
+    static const strong_ordering equal;
+    static const strong_ordering equivalent;
+    static const strong_ordering greater;
+  };
+
+  inline constexpr strong_ordering strong_ordering::less(_Order::__less);
+  inline constexpr strong_ordering strong_ordering::equal(_Order::__equiv);
+  inline constexpr strong_ordering strong_ordering::equivalent(_Order::__equiv);
+  inline constexpr strong_ordering strong_ordering::greater(_Order::__greater);
+}
+
+class ThreeWay {
+  int x;
+public:
+  std::strong_ordering operator<=>(ThreeWay &y) { return this->x <=> y.x; }
+};
+
+void test_three_way(int a, int b, ThreeWay c, ThreeWay d) {
+  auto x = a <=> b;
+  auto y = c <=> d;
+}
+
+void test_allocation_with_initializer() {
+    int* p1 = new int(42);
+    long* p2 = new long(42);
+}
+
+void vla_sizeof_test(int len1, size_t len2, char len3) {
+  char tmp1[len1];
+  size_t x = sizeof(tmp1);
+  int tmp2[len1][len2];
+  size_t y = sizeof(tmp2);
+  size_t z = sizeof(*tmp2);
+  int tmp3[len1][len2][len3];
+  size_t w = sizeof(tmp3);
+  size_t v = sizeof(*tmp3);
+  size_t u = sizeof(**tmp3);
+  size_t t = sizeof(***tmp3);
+}
+
+void vla_sizeof_test2(int len1, size_t len2, char len3) {
+  int tmp1[len1][len2];
+  size_t z = sizeof(tmp1[1]);
+  int tmp2[len1][len2][len3];
+  size_t v = sizeof(tmp2[1]);
+  size_t u = sizeof(tmp2[1][2]);
+  size_t t = sizeof(tmp2[1][2][3]);
+}
+
+size_t vla_sizeof_test3(int len1, size_t len2, char len3, bool b) {
+  typedef long arr[len1][len2];
+  typedef arr arr2;
+  typedef arr2 arr3[len3];
+
+  if (b) {
+    arr3 tmp;
+    return sizeof(tmp[1]);
+  } 
+
+  return 0;
+}
+
+void vla_sizeof_test4(int len1, size_t len2) {
+  int tmp1[len1][len2];
+  size_t z = sizeof(1[tmp1]);
+}
+
+void vla_sizeof_test5(int len1, size_t len2) {
+  int tmp1[len1][len2];
+  size_t z = sizeof((*&tmp1)[1]);
+}
+
+// Common definitions for assertions in release builds
+#define assert(x) ((void)0)
+#define __analysis_assume(x)
+
+void test_assert_simple(int x, int y, unsigned u, int shadowed) {
+    assert(x > 0); // $ var=2830:x
+    assert(0 < x); // $ var=2830:x
+    assert(x < y); // $ var=2830:x var=2830:y
+    
+    __analysis_assume(x != 2); // $ var=2830:x
+
+    assert(u < x); // $ var=2830:u var=2830:x
+
+    {
+        int shadowed = x;
+        assert(shadowed > 0); // no assertion generated since the variable is shadowed
+    }
+}
+
+template<typename T>
+void test_assert_in_template(T x, int y, unsigned u) {
+    assert(x > 0); // $ var=2846:x
+    assert(0 < x); // $ var=2846:x
+    assert(x < y); // $ var=2846:x var=2846:y
+    
+    __analysis_assume(x != 2); // $ var=2846:x
+
+    assert(u < x); // $ var=2846:u var=2846:x
+
+    {
+        int shadowed = x;
+        assert(shadowed > 0); // $ var=2856:shadowed
+    }
+    assert(x> 0); // $ var=2846:x
+}
+
+template void test_assert_in_template<int>(int, int, unsigned);
+template void test_assert_in_template<short>(short, int, unsigned);
+namespace {
+    int shadowed;
+
+    void complex_assertions(int x, bool b, int max) {
+        int y = (assert(x > 0), x); // no assertion generated
+        int z = b ? (assert(x != 0), 0) : 1; // no assertion generated
+
+        try {
+            throw 41;
+        } catch (int c) {
+            assert(c < 42); // $ var=2873:c
+            assert(shadowed < 42); // no assertion generated
+        }
+
+        assert(shadowed > 0); // no assertion generated
+        int shadowed;
+
+        try {
+            throw 41;
+        } catch (int shadowed) {
+            assert(shadowed < 42); // no assertion generated
+        }
+    }
 }
 
 // semmle-extractor-options: -std=c++20 --clang

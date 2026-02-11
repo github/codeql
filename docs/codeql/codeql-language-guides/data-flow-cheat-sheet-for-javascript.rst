@@ -16,18 +16,17 @@ Use the following template to create a taint tracking path query:
      * @kind path-problem
      */
     import javascript
-    import DataFlow
-    import DataFlow::PathGraph
 
-    class MyConfig extends TaintTracking::Configuration {
-      MyConfig() { this = "MyConfig" }
-      override predicate isSource(Node node) { ... }
-      override predicate isSink(Node node) { ... }
-      override predicate isAdditionalTaintStep(Node pred, Node succ) { ... }
+    module MyConfig implements DataFlow::ConfigSig {
+      predicate isSource(DataFlow::Node node) { ... }
+      predicate isSink(DataFlow::Node node) { ... }
+      predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) { ... }
     }
 
-    from MyConfig cfg, PathNode source, PathNode sink
-    where cfg.hasFlowPath(source, sink)
+    module MyFlow = TaintTracking::Global<MyConfig>;
+
+    from MyFlow::PathNode source, MyFlow::PathNode sink
+    where MyFlow::flowPath(source, sink)
     select sink.getNode(), source, sink, "taint from $@.", source.getNode(), "here"
 
 This query reports flow paths which:

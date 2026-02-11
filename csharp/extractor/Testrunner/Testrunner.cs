@@ -14,7 +14,7 @@ using System;
 /// </summary>
 public class Testrunner
 {
-    private static readonly object ConsoleLock = new();
+    private static readonly Lock ConsoleLock = new();
 
     private static readonly ManualResetEvent Finished = new(false);
 
@@ -40,7 +40,7 @@ public class Testrunner
         {
             Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.WriteLine("[FAIL] {0}: {1}", info.TestDisplayName, info.ExceptionMessage);
+            Console.WriteLine($"[FAIL] {info.TestDisplayName}: {info.ExceptionMessage}");
             if (info.ExceptionStackTrace != null)
                 Console.WriteLine(info.ExceptionStackTrace);
 
@@ -55,7 +55,7 @@ public class Testrunner
         lock (ConsoleLock)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("[SKIP] {0}: {1}", info.TestDisplayName, info.SkipReason);
+            Console.WriteLine($"[SKIP] {info.TestDisplayName}: {info.SkipReason}");
             Console.ResetColor();
         }
     }
@@ -71,7 +71,7 @@ public class Testrunner
             testrunner.OnTestSkipped = OnTestSkipped;
 
             Console.WriteLine("Discovering tests...");
-            testrunner.Start(parallelAlgorithm: null);
+            testrunner.Start();
 
             Finished.WaitOne();
             Finished.Dispose();

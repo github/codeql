@@ -46,9 +46,11 @@ class SetMessageInterpolatorCall extends MethodCall {
  * to the argument of a method that builds constraint error messages.
  */
 module BeanValidationConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow from user input to the argument of a method that builds constraint error messages. */

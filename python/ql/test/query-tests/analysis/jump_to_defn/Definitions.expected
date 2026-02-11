@@ -26,3 +26,6 @@
 | test.py:44:8:44:14 | ImportExpr | package/__init__.py:0:0:0:0 | Definition package/__init__.py:0 | Definition |
 | test.py:45:1:45:1 | p | test.py:44:8:44:14 | Definition test.py:44 | Definition |
 | test.py:45:3:45:3 | Attribute | package/__init__.py:2:18:2:18 | Definition package/__init__.py:2 | Definition |
+| test.py:48:32:48:38 | dirname | test.py:47:9:47:15 | Definition test.py:47 | Definition |
+| test.py:50:34:50:38 | lines | test.py:47:18:47:22 | Definition test.py:47 | Definition |
+| test.py:53:12:53:12 | x | test.py:49:9:49:12 | Definition test.py:49 | Definition |

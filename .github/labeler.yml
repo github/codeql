@@ -30,9 +30,17 @@ Ruby:
   - ruby/**/*
   - change-notes/**/*ruby*
 
+Rust:
+  - rust/**/*
+  - change-notes/**/*rust*
+
 Swift:
   - swift/**/*
   - change-notes/**/*swift*
+
+Actions:
+  - actions/**/*
+  - change-notes/**/*actions*
 
 documentation:
   - "**/*.qhelp"

@@ -4,5 +4,6 @@
 compilationErrors
 | standalone.cs:16:12:16:18 | CS0104: 'ILogger' is an ambiguous reference between 'A.ILogger' and 'B.ILogger' |
 methodCalls
+| standalone.cs:14:14:14:14 | call to method <object initializer> |
 | standalone.cs:20:9:20:21 | call to method  |
 | standalone.cs:25:9:25:33 | call to method  |

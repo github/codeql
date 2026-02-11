@@ -1,0 +1,2 @@
+| test.py:10:5:10:60 | ControlFlowNode for Attribute() | Sensitive cookie with SameSite set to 'None'. |
+| test.py:13:5:13:78 | ControlFlowNode for Attribute() | Sensitive cookie with SameSite set to 'None'. |

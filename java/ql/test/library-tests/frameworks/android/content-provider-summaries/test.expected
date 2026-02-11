@@ -1,0 +1,932 @@
+models
+| 1 | Summary: android.content; ContentProviderClient; true; applyBatch; ; ; Argument[this]; ReturnValue; taint; manual |
+| 2 | Summary: android.content; ContentProviderClient; true; call; ; ; Argument[this]; ReturnValue; taint; manual |
+| 3 | Summary: android.content; ContentProviderClient; true; canonicalize; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: android.content; ContentProviderClient; true; getLocalContentProvider; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: android.content; ContentProviderClient; true; getStreamTypes; ; ; Argument[this]; ReturnValue; taint; manual |
+| 6 | Summary: android.content; ContentProviderClient; true; insert; ; ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: android.content; ContentProviderClient; true; query; ; ; Argument[this]; ReturnValue; taint; manual |
+| 8 | Summary: android.content; ContentProviderClient; true; uncanonicalize; ; ; Argument[this]; ReturnValue; taint; manual |
+| 9 | Summary: android.content; ContentProviderOperation$Builder; false; build; ; ; Argument[this]; ReturnValue; taint; manual |
+| 10 | Summary: android.content; ContentProviderOperation$Builder; false; withExceptionAllowed; ; ; Argument[this]; ReturnValue; value; manual |
+| 11 | Summary: android.content; ContentProviderOperation$Builder; false; withExpectedCount; ; ; Argument[this]; ReturnValue; value; manual |
+| 12 | Summary: android.content; ContentProviderOperation$Builder; false; withExtra; ; ; Argument[this]; ReturnValue; value; manual |
+| 13 | Summary: android.content; ContentProviderOperation$Builder; false; withExtraBackReference; ; ; Argument[this]; ReturnValue; value; manual |
+| 14 | Summary: android.content; ContentProviderOperation$Builder; false; withExtras; ; ; Argument[this]; ReturnValue; value; manual |
+| 15 | Summary: android.content; ContentProviderOperation$Builder; false; withSelection; ; ; Argument[this]; ReturnValue; value; manual |
+| 16 | Summary: android.content; ContentProviderOperation$Builder; false; withSelectionBackReference; ; ; Argument[this]; ReturnValue; value; manual |
+| 17 | Summary: android.content; ContentProviderOperation$Builder; false; withValue; ; ; Argument[this]; ReturnValue; value; manual |
+| 18 | Summary: android.content; ContentProviderOperation$Builder; false; withValueBackReference; ; ; Argument[this]; ReturnValue; value; manual |
+| 19 | Summary: android.content; ContentProviderOperation$Builder; false; withValues; ; ; Argument[this]; ReturnValue; value; manual |
+| 20 | Summary: android.content; ContentProviderOperation$Builder; false; withYieldAllowed; ; ; Argument[this]; ReturnValue; value; manual |
+| 21 | Summary: android.content; ContentProviderOperation; false; apply; ; ; Argument[0]; ReturnValue; taint; manual |
+| 22 | Summary: android.content; ContentProviderOperation; false; apply; ; ; Argument[this]; ReturnValue; taint; manual |
+| 23 | Summary: android.content; ContentProviderOperation; false; getUri; ; ; Argument[this]; ReturnValue; taint; manual |
+| 24 | Summary: android.content; ContentProviderOperation; false; newAssertQuery; ; ; Argument[0]; ReturnValue; taint; manual |
+| 25 | Summary: android.content; ContentProviderOperation; false; newCall; ; ; Argument[0]; ReturnValue; taint; manual |
+| 26 | Summary: android.content; ContentProviderOperation; false; newDelete; ; ; Argument[0]; ReturnValue; taint; manual |
+| 27 | Summary: android.content; ContentProviderOperation; false; newInsert; ; ; Argument[0]; ReturnValue; taint; manual |
+| 28 | Summary: android.content; ContentProviderOperation; false; newUpdate; ; ; Argument[0]; ReturnValue; taint; manual |
+| 29 | Summary: android.content; ContentProviderOperation; false; resolveExtrasBackReferences; ; ; Argument[0]; ReturnValue; taint; manual |
+| 30 | Summary: android.content; ContentProviderOperation; false; resolveSelectionArgsBackReferences; ; ; Argument[0]; ReturnValue; taint; manual |
+| 31 | Summary: android.content; ContentProviderOperation; false; resolveValueBackReferences; ; ; Argument[0]; ReturnValue; taint; manual |
+| 32 | Summary: android.content; ContentProviderResult; false; ContentProviderResult; (Bundle); ; Argument[0]; Argument[this].Field[android.content.ContentProviderResult.extras]; value; manual |
+| 33 | Summary: android.content; ContentProviderResult; false; ContentProviderResult; (Parcel); ; Argument[0]; Argument[this]; taint; manual |
+| 34 | Summary: android.content; ContentProviderResult; false; ContentProviderResult; (Throwable); ; Argument[0]; Argument[this].Field[android.content.ContentProviderResult.exception]; value; manual |
+| 35 | Summary: android.content; ContentProviderResult; false; ContentProviderResult; (Uri); ; Argument[0]; Argument[this].Field[android.content.ContentProviderResult.uri]; value; manual |
+| 36 | Summary: android.content; ContentResolver; true; acquireContentProviderClient; ; ; Argument[0]; ReturnValue; taint; manual |
+| 37 | Summary: android.content; ContentResolver; true; acquireUnstableContentProviderClient; ; ; Argument[0]; ReturnValue; taint; manual |
+| 38 | Summary: android.content; ContentResolver; true; applyBatch; ; ; Argument[1]; ReturnValue; taint; manual |
+| 39 | Summary: android.content; ContentResolver; true; call; ; ; Argument[0]; ReturnValue; taint; manual |
+| 40 | Summary: android.content; ContentResolver; true; canonicalize; ; ; Argument[0]; ReturnValue; taint; manual |
+| 41 | Summary: android.content; ContentResolver; true; getStreamTypes; ; ; Argument[0]; ReturnValue; taint; manual |
+| 42 | Summary: android.content; ContentResolver; true; getType; ; ; Argument[0]; ReturnValue; taint; manual |
+| 43 | Summary: android.content; ContentResolver; true; insert; ; ; Argument[0]; ReturnValue; taint; manual |
+| 44 | Summary: android.content; ContentResolver; true; query; (Uri,String[],String,String[],String); ; Argument[0]; ReturnValue; taint; manual |
+| 45 | Summary: android.content; ContentResolver; true; query; (Uri,String[],String,String[],String,CancellationSignal); ; Argument[0]; ReturnValue; taint; manual |
+| 46 | Summary: android.content; ContentResolver; true; query; ; ; Argument[0]; ReturnValue; taint; manual |
+| 47 | Summary: android.content; ContentResolver; true; uncanonicalize; ; ; Argument[0]; ReturnValue; taint; manual |
+| 48 | Summary: android.content; ContentResolver; true; wrap; ; ; Argument[0]; ReturnValue; taint; manual |
+| 49 | Summary: android.content; ContentValues; false; put; ; ; Argument[0]; Argument[this].MapKey; value; manual |
+| 50 | Summary: android.content; ContentValues; false; put; ; ; Argument[1]; Argument[this].MapValue; value; manual |
+| 51 | Summary: android.content; ContentValues; false; putAll; ; ; Argument[0].MapKey; Argument[this].MapKey; value; manual |
+| 52 | Summary: android.content; ContentValues; false; putAll; ; ; Argument[0].MapValue; Argument[this].MapValue; value; manual |
+| 53 | Summary: android.database; Cursor; true; copyStringToBuffer; ; ; Argument[this]; Argument[1]; taint; manual |
+| 54 | Summary: android.database; Cursor; true; getBlob; ; ; Argument[this]; ReturnValue; taint; manual |
+| 55 | Summary: android.database; Cursor; true; getColumnName; ; ; Argument[this]; ReturnValue; taint; manual |
+| 56 | Summary: android.database; Cursor; true; getColumnNames; ; ; Argument[this]; ReturnValue; taint; manual |
+| 57 | Summary: android.database; Cursor; true; getExtras; ; ; Argument[this]; ReturnValue; taint; manual |
+| 58 | Summary: android.database; Cursor; true; getNotificationUri; ; ; Argument[this]; ReturnValue; taint; manual |
+| 59 | Summary: android.database; Cursor; true; getNotificationUris; ; ; Argument[this]; ReturnValue; taint; manual |
+| 60 | Summary: android.database; Cursor; true; getString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 61 | Summary: android.database; Cursor; true; respond; ; ; Argument[this]; ReturnValue; taint; manual |
+| 62 | Summary: generatedtest; Test; false; getMapKeyDefault; (Object); ; Argument[0].MapKey; ReturnValue; value; manual |
+| 63 | Summary: generatedtest; Test; false; getMapValueDefault; (Object); ; Argument[0].MapValue; ReturnValue; value; manual |
+| 64 | Summary: generatedtest; Test; false; newWithMapKeyDefault; (Object); ; Argument[0]; ReturnValue.MapKey; value; manual |
+| 65 | Summary: generatedtest; Test; false; newWithMapValueDefault; (Object); ; Argument[0]; ReturnValue.MapValue; value; manual |
+edges
+| Test.java:47:31:47:62 | (...)... : ContentProviderClient | Test.java:48:10:48:11 | in : ContentProviderClient | provenance |  |
+| Test.java:47:55:47:62 | source(...) : Object | Test.java:47:31:47:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:48:10:48:11 | in : ContentProviderClient | Test.java:48:10:48:28 | applyBatch(...) : ContentProviderResult[] | provenance | MaD:1 |
+| Test.java:48:10:48:28 | applyBatch(...) : ContentProviderResult[] | Test.java:49:9:49:11 | out | provenance |  |
+| Test.java:54:31:54:62 | (...)... : ContentProviderClient | Test.java:55:10:55:11 | in : ContentProviderClient | provenance |  |
+| Test.java:54:55:54:62 | source(...) : Object | Test.java:54:31:54:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:55:10:55:11 | in : ContentProviderClient | Test.java:55:10:55:34 | applyBatch(...) : ContentProviderResult[] | provenance | MaD:1 |
+| Test.java:55:10:55:34 | applyBatch(...) : ContentProviderResult[] | Test.java:56:9:56:11 | out | provenance |  |
+| Test.java:61:31:61:62 | (...)... : ContentProviderClient | Test.java:62:10:62:11 | in : ContentProviderClient | provenance |  |
+| Test.java:61:55:61:62 | source(...) : Object | Test.java:61:31:61:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:62:10:62:11 | in : ContentProviderClient | Test.java:62:10:62:34 | call(...) : Bundle | provenance | MaD:2 |
+| Test.java:62:10:62:34 | call(...) : Bundle | Test.java:63:9:63:11 | out | provenance |  |
+| Test.java:68:31:68:62 | (...)... : ContentProviderClient | Test.java:69:10:69:11 | in : ContentProviderClient | provenance |  |
+| Test.java:68:55:68:62 | source(...) : Object | Test.java:68:31:68:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:69:10:69:11 | in : ContentProviderClient | Test.java:69:10:69:40 | call(...) : Bundle | provenance | MaD:2 |
+| Test.java:69:10:69:40 | call(...) : Bundle | Test.java:70:9:70:11 | out | provenance |  |
+| Test.java:75:31:75:62 | (...)... : ContentProviderClient | Test.java:76:10:76:11 | in : ContentProviderClient | provenance |  |
+| Test.java:75:55:75:62 | source(...) : Object | Test.java:75:31:75:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:76:10:76:11 | in : ContentProviderClient | Test.java:76:10:76:30 | canonicalize(...) : Uri | provenance | MaD:3 |
+| Test.java:76:10:76:30 | canonicalize(...) : Uri | Test.java:77:9:77:11 | out | provenance |  |
+| Test.java:82:31:82:62 | (...)... : ContentProviderClient | Test.java:83:10:83:11 | in : ContentProviderClient | provenance |  |
+| Test.java:82:55:82:62 | source(...) : Object | Test.java:82:31:82:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:83:10:83:11 | in : ContentProviderClient | Test.java:83:10:83:37 | getLocalContentProvider(...) : ContentProvider | provenance | MaD:4 |
+| Test.java:83:10:83:37 | getLocalContentProvider(...) : ContentProvider | Test.java:84:9:84:11 | out | provenance |  |
+| Test.java:89:31:89:62 | (...)... : ContentProviderClient | Test.java:90:10:90:11 | in : ContentProviderClient | provenance |  |
+| Test.java:89:55:89:62 | source(...) : Object | Test.java:89:31:89:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:90:10:90:11 | in : ContentProviderClient | Test.java:90:10:90:38 | getStreamTypes(...) : String[] | provenance | MaD:5 |
+| Test.java:90:10:90:38 | getStreamTypes(...) : String[] | Test.java:91:9:91:11 | out | provenance |  |
+| Test.java:96:31:96:62 | (...)... : ContentProviderClient | Test.java:97:10:97:11 | in : ContentProviderClient | provenance |  |
+| Test.java:96:55:96:62 | source(...) : Object | Test.java:96:31:96:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:97:10:97:11 | in : ContentProviderClient | Test.java:97:10:97:30 | insert(...) : Uri | provenance | MaD:6 |
+| Test.java:97:10:97:30 | insert(...) : Uri | Test.java:98:9:98:11 | out | provenance |  |
+| Test.java:103:31:103:62 | (...)... : ContentProviderClient | Test.java:104:10:104:11 | in : ContentProviderClient | provenance |  |
+| Test.java:103:55:103:62 | source(...) : Object | Test.java:103:31:103:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:104:10:104:11 | in : ContentProviderClient | Test.java:104:10:104:36 | insert(...) : Uri | provenance | MaD:6 |
+| Test.java:104:10:104:36 | insert(...) : Uri | Test.java:105:9:105:11 | out | provenance |  |
+| Test.java:110:31:110:62 | (...)... : ContentProviderClient | Test.java:111:10:111:11 | in : ContentProviderClient | provenance |  |
+| Test.java:110:55:110:62 | source(...) : Object | Test.java:110:31:110:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:111:10:111:11 | in : ContentProviderClient | Test.java:111:10:111:41 | query(...) : Cursor | provenance | MaD:7 |
+| Test.java:111:10:111:41 | query(...) : Cursor | Test.java:112:9:112:11 | out | provenance |  |
+| Test.java:117:31:117:62 | (...)... : ContentProviderClient | Test.java:118:10:118:11 | in : ContentProviderClient | provenance |  |
+| Test.java:117:55:117:62 | source(...) : Object | Test.java:117:31:117:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:118:10:118:11 | in : ContentProviderClient | Test.java:118:10:118:47 | query(...) : Cursor | provenance | MaD:7 |
+| Test.java:118:10:118:47 | query(...) : Cursor | Test.java:119:9:119:11 | out | provenance |  |
+| Test.java:124:31:124:62 | (...)... : ContentProviderClient | Test.java:125:10:125:11 | in : ContentProviderClient | provenance |  |
+| Test.java:124:55:124:62 | source(...) : Object | Test.java:124:31:124:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:125:10:125:11 | in : ContentProviderClient | Test.java:125:10:125:53 | query(...) : Cursor | provenance | MaD:7 |
+| Test.java:125:10:125:53 | query(...) : Cursor | Test.java:126:9:126:11 | out | provenance |  |
+| Test.java:131:31:131:62 | (...)... : ContentProviderClient | Test.java:132:10:132:11 | in : ContentProviderClient | provenance |  |
+| Test.java:131:55:131:62 | source(...) : Object | Test.java:131:31:131:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:132:10:132:11 | in : ContentProviderClient | Test.java:132:10:132:32 | uncanonicalize(...) : Uri | provenance | MaD:8 |
+| Test.java:132:10:132:32 | uncanonicalize(...) : Uri | Test.java:133:9:133:11 | out | provenance |  |
+| Test.java:138:42:138:84 | (...)... : Builder | Test.java:139:10:139:11 | in : Builder | provenance |  |
+| Test.java:138:77:138:84 | source(...) : Object | Test.java:138:42:138:84 | (...)... : Builder | provenance |  |
+| Test.java:139:10:139:11 | in : Builder | Test.java:139:10:139:19 | build(...) : ContentProviderOperation | provenance | MaD:9 |
+| Test.java:139:10:139:19 | build(...) : ContentProviderOperation | Test.java:140:9:140:11 | out | provenance |  |
+| Test.java:145:42:145:84 | (...)... : Builder | Test.java:146:10:146:11 | in : Builder | provenance |  |
+| Test.java:145:77:145:84 | source(...) : Object | Test.java:145:42:145:84 | (...)... : Builder | provenance |  |
+| Test.java:146:10:146:11 | in : Builder | Test.java:146:10:146:39 | withExceptionAllowed(...) : Builder | provenance | MaD:10 |
+| Test.java:146:10:146:39 | withExceptionAllowed(...) : Builder | Test.java:147:9:147:11 | out | provenance |  |
+| Test.java:152:42:152:84 | (...)... : Builder | Test.java:153:10:153:11 | in : Builder | provenance |  |
+| Test.java:152:77:152:84 | source(...) : Object | Test.java:152:42:152:84 | (...)... : Builder | provenance |  |
+| Test.java:153:10:153:11 | in : Builder | Test.java:153:10:153:32 | withExpectedCount(...) : Builder | provenance | MaD:11 |
+| Test.java:153:10:153:32 | withExpectedCount(...) : Builder | Test.java:154:9:154:11 | out | provenance |  |
+| Test.java:159:42:159:84 | (...)... : Builder | Test.java:160:10:160:11 | in : Builder | provenance |  |
+| Test.java:159:77:159:84 | source(...) : Object | Test.java:159:42:159:84 | (...)... : Builder | provenance |  |
+| Test.java:160:10:160:11 | in : Builder | Test.java:160:10:160:33 | withExtra(...) : Builder | provenance | MaD:12 |
+| Test.java:160:10:160:33 | withExtra(...) : Builder | Test.java:161:9:161:11 | out | provenance |  |
+| Test.java:166:42:166:84 | (...)... : Builder | Test.java:167:10:167:11 | in : Builder | provenance |  |
+| Test.java:166:77:166:84 | source(...) : Object | Test.java:166:42:166:84 | (...)... : Builder | provenance |  |
+| Test.java:167:10:167:11 | in : Builder | Test.java:167:10:167:43 | withExtraBackReference(...) : Builder | provenance | MaD:13 |
+| Test.java:167:10:167:43 | withExtraBackReference(...) : Builder | Test.java:168:9:168:11 | out | provenance |  |
+| Test.java:173:42:173:84 | (...)... : Builder | Test.java:174:10:174:11 | in : Builder | provenance |  |
+| Test.java:173:77:173:84 | source(...) : Object | Test.java:173:42:173:84 | (...)... : Builder | provenance |  |
+| Test.java:174:10:174:11 | in : Builder | Test.java:174:10:174:49 | withExtraBackReference(...) : Builder | provenance | MaD:13 |
+| Test.java:174:10:174:49 | withExtraBackReference(...) : Builder | Test.java:175:9:175:11 | out | provenance |  |
+| Test.java:180:42:180:84 | (...)... : Builder | Test.java:181:10:181:11 | in : Builder | provenance |  |
+| Test.java:180:77:180:84 | source(...) : Object | Test.java:180:42:180:84 | (...)... : Builder | provenance |  |
+| Test.java:181:10:181:11 | in : Builder | Test.java:181:10:181:28 | withExtras(...) : Builder | provenance | MaD:14 |
+| Test.java:181:10:181:28 | withExtras(...) : Builder | Test.java:182:9:182:11 | out | provenance |  |
+| Test.java:187:42:187:84 | (...)... : Builder | Test.java:188:10:188:11 | in : Builder | provenance |  |
+| Test.java:187:77:187:84 | source(...) : Object | Test.java:187:42:187:84 | (...)... : Builder | provenance |  |
+| Test.java:188:10:188:11 | in : Builder | Test.java:188:10:188:37 | withSelection(...) : Builder | provenance | MaD:15 |
+| Test.java:188:10:188:37 | withSelection(...) : Builder | Test.java:189:9:189:11 | out | provenance |  |
+| Test.java:194:42:194:84 | (...)... : Builder | Test.java:195:10:195:11 | in : Builder | provenance |  |
+| Test.java:194:77:194:84 | source(...) : Object | Test.java:194:42:194:84 | (...)... : Builder | provenance |  |
+| Test.java:195:10:195:11 | in : Builder | Test.java:195:10:195:44 | withSelectionBackReference(...) : Builder | provenance | MaD:16 |
+| Test.java:195:10:195:44 | withSelectionBackReference(...) : Builder | Test.java:196:9:196:11 | out | provenance |  |
+| Test.java:201:42:201:84 | (...)... : Builder | Test.java:202:10:202:11 | in : Builder | provenance |  |
+| Test.java:201:77:201:84 | source(...) : Object | Test.java:201:42:201:84 | (...)... : Builder | provenance |  |
+| Test.java:202:10:202:11 | in : Builder | Test.java:202:10:202:50 | withSelectionBackReference(...) : Builder | provenance | MaD:16 |
+| Test.java:202:10:202:50 | withSelectionBackReference(...) : Builder | Test.java:203:9:203:11 | out | provenance |  |
+| Test.java:208:42:208:84 | (...)... : Builder | Test.java:209:10:209:11 | in : Builder | provenance |  |
+| Test.java:208:77:208:84 | source(...) : Object | Test.java:208:42:208:84 | (...)... : Builder | provenance |  |
+| Test.java:209:10:209:11 | in : Builder | Test.java:209:10:209:33 | withValue(...) : Builder | provenance | MaD:17 |
+| Test.java:209:10:209:33 | withValue(...) : Builder | Test.java:210:9:210:11 | out | provenance |  |
+| Test.java:215:42:215:84 | (...)... : Builder | Test.java:216:10:216:11 | in : Builder | provenance |  |
+| Test.java:215:77:215:84 | source(...) : Object | Test.java:215:42:215:84 | (...)... : Builder | provenance |  |
+| Test.java:216:10:216:11 | in : Builder | Test.java:216:10:216:43 | withValueBackReference(...) : Builder | provenance | MaD:18 |
+| Test.java:216:10:216:43 | withValueBackReference(...) : Builder | Test.java:217:9:217:11 | out | provenance |  |
+| Test.java:222:42:222:84 | (...)... : Builder | Test.java:223:10:223:11 | in : Builder | provenance |  |
+| Test.java:222:77:222:84 | source(...) : Object | Test.java:222:42:222:84 | (...)... : Builder | provenance |  |
+| Test.java:223:10:223:11 | in : Builder | Test.java:223:10:223:49 | withValueBackReference(...) : Builder | provenance | MaD:18 |
+| Test.java:223:10:223:49 | withValueBackReference(...) : Builder | Test.java:224:9:224:11 | out | provenance |  |
+| Test.java:229:42:229:84 | (...)... : Builder | Test.java:230:10:230:11 | in : Builder | provenance |  |
+| Test.java:229:77:229:84 | source(...) : Object | Test.java:229:42:229:84 | (...)... : Builder | provenance |  |
+| Test.java:230:10:230:11 | in : Builder | Test.java:230:10:230:28 | withValues(...) : Builder | provenance | MaD:19 |
+| Test.java:230:10:230:28 | withValues(...) : Builder | Test.java:231:9:231:11 | out | provenance |  |
+| Test.java:236:42:236:84 | (...)... : Builder | Test.java:237:10:237:11 | in : Builder | provenance |  |
+| Test.java:236:77:236:84 | source(...) : Object | Test.java:236:42:236:84 | (...)... : Builder | provenance |  |
+| Test.java:237:10:237:11 | in : Builder | Test.java:237:10:237:35 | withYieldAllowed(...) : Builder | provenance | MaD:20 |
+| Test.java:237:10:237:35 | withYieldAllowed(...) : Builder | Test.java:238:9:238:11 | out | provenance |  |
+| Test.java:243:34:243:68 | (...)... : ContentProviderOperation | Test.java:244:10:244:11 | in : ContentProviderOperation | provenance |  |
+| Test.java:243:61:243:68 | source(...) : Object | Test.java:243:34:243:68 | (...)... : ContentProviderOperation | provenance |  |
+| Test.java:244:10:244:11 | in : ContentProviderOperation | Test.java:244:10:244:32 | apply(...) : ContentProviderResult | provenance | MaD:22 |
+| Test.java:244:10:244:32 | apply(...) : ContentProviderResult | Test.java:245:9:245:11 | out | provenance |  |
+| Test.java:250:25:250:50 | (...)... : ContentProvider | Test.java:252:25:252:26 | in : ContentProvider | provenance |  |
+| Test.java:250:43:250:50 | source(...) : Object | Test.java:250:25:250:50 | (...)... : ContentProvider | provenance |  |
+| Test.java:252:10:252:36 | apply(...) : ContentProviderResult | Test.java:253:9:253:11 | out | provenance |  |
+| Test.java:252:25:252:26 | in : ContentProvider | Test.java:252:10:252:36 | apply(...) : ContentProviderResult | provenance | MaD:21 |
+| Test.java:258:34:258:68 | (...)... : ContentProviderOperation | Test.java:259:10:259:11 | in : ContentProviderOperation | provenance |  |
+| Test.java:258:61:258:68 | source(...) : Object | Test.java:258:34:258:68 | (...)... : ContentProviderOperation | provenance |  |
+| Test.java:259:10:259:11 | in : ContentProviderOperation | Test.java:259:10:259:20 | getUri(...) : Uri | provenance | MaD:23 |
+| Test.java:259:10:259:20 | getUri(...) : Uri | Test.java:260:9:260:11 | out | provenance |  |
+| Test.java:265:13:265:26 | (...)... : Uri | Test.java:266:50:266:51 | in : Uri | provenance |  |
+| Test.java:265:19:265:26 | source(...) : Object | Test.java:265:13:265:26 | (...)... : Uri | provenance |  |
+| Test.java:266:10:266:52 | newAssertQuery(...) : Builder | Test.java:267:9:267:11 | out | provenance |  |
+| Test.java:266:50:266:51 | in : Uri | Test.java:266:10:266:52 | newAssertQuery(...) : Builder | provenance | MaD:24 |
+| Test.java:272:13:272:26 | (...)... : Uri | Test.java:273:43:273:44 | in : Uri | provenance |  |
+| Test.java:272:19:272:26 | source(...) : Object | Test.java:272:13:272:26 | (...)... : Uri | provenance |  |
+| Test.java:273:10:273:57 | newCall(...) : Builder | Test.java:274:9:274:11 | out | provenance |  |
+| Test.java:273:43:273:44 | in : Uri | Test.java:273:10:273:57 | newCall(...) : Builder | provenance | MaD:25 |
+| Test.java:279:13:279:26 | (...)... : Uri | Test.java:280:45:280:46 | in : Uri | provenance |  |
+| Test.java:279:19:279:26 | source(...) : Object | Test.java:279:13:279:26 | (...)... : Uri | provenance |  |
+| Test.java:280:10:280:47 | newDelete(...) : Builder | Test.java:281:9:281:11 | out | provenance |  |
+| Test.java:280:45:280:46 | in : Uri | Test.java:280:10:280:47 | newDelete(...) : Builder | provenance | MaD:26 |
+| Test.java:286:13:286:26 | (...)... : Uri | Test.java:287:45:287:46 | in : Uri | provenance |  |
+| Test.java:286:19:286:26 | source(...) : Object | Test.java:286:13:286:26 | (...)... : Uri | provenance |  |
+| Test.java:287:10:287:47 | newInsert(...) : Builder | Test.java:288:9:288:11 | out | provenance |  |
+| Test.java:287:45:287:46 | in : Uri | Test.java:287:10:287:47 | newInsert(...) : Builder | provenance | MaD:27 |
+| Test.java:293:13:293:26 | (...)... : Uri | Test.java:294:45:294:46 | in : Uri | provenance |  |
+| Test.java:293:19:293:26 | source(...) : Object | Test.java:293:13:293:26 | (...)... : Uri | provenance |  |
+| Test.java:294:10:294:47 | newUpdate(...) : Builder | Test.java:295:9:295:11 | out | provenance |  |
+| Test.java:294:45:294:46 | in : Uri | Test.java:294:10:294:47 | newUpdate(...) : Builder | provenance | MaD:28 |
+| Test.java:300:33:300:66 | (...)... : ContentProviderResult[] | Test.java:302:47:302:48 | in : ContentProviderResult[] | provenance |  |
+| Test.java:300:59:300:66 | source(...) : Object | Test.java:300:33:300:66 | (...)... : ContentProviderResult[] | provenance |  |
+| Test.java:302:10:302:52 | resolveExtrasBackReferences(...) : Bundle | Test.java:303:9:303:11 | out | provenance |  |
+| Test.java:302:47:302:48 | in : ContentProviderResult[] | Test.java:302:10:302:52 | resolveExtrasBackReferences(...) : Bundle | provenance | MaD:29 |
+| Test.java:308:33:308:66 | (...)... : ContentProviderResult[] | Test.java:310:54:310:55 | in : ContentProviderResult[] | provenance |  |
+| Test.java:308:59:308:66 | source(...) : Object | Test.java:308:33:308:66 | (...)... : ContentProviderResult[] | provenance |  |
+| Test.java:310:10:310:59 | resolveSelectionArgsBackReferences(...) : String[] | Test.java:311:9:311:11 | out | provenance |  |
+| Test.java:310:54:310:55 | in : ContentProviderResult[] | Test.java:310:10:310:59 | resolveSelectionArgsBackReferences(...) : String[] | provenance | MaD:30 |
+| Test.java:316:33:316:66 | (...)... : ContentProviderResult[] | Test.java:318:46:318:47 | in : ContentProviderResult[] | provenance |  |
+| Test.java:316:59:316:66 | source(...) : Object | Test.java:316:33:316:66 | (...)... : ContentProviderResult[] | provenance |  |
+| Test.java:318:10:318:51 | resolveValueBackReferences(...) : ContentValues | Test.java:319:9:319:11 | out | provenance |  |
+| Test.java:318:46:318:47 | in : ContentProviderResult[] | Test.java:318:10:318:51 | resolveValueBackReferences(...) : ContentValues | provenance | MaD:31 |
+| Test.java:324:16:324:32 | (...)... : Bundle | Test.java:325:36:325:37 | in : Bundle | provenance |  |
+| Test.java:324:25:324:32 | source(...) : Object | Test.java:324:16:324:32 | (...)... : Bundle | provenance |  |
+| Test.java:325:10:325:38 | new ContentProviderResult(...) : ContentProviderResult [extras] : Bundle | Test.java:326:9:326:11 | out : ContentProviderResult [extras] : Bundle | provenance |  |
+| Test.java:325:36:325:37 | in : Bundle | Test.java:325:10:325:38 | new ContentProviderResult(...) : ContentProviderResult [extras] : Bundle | provenance | MaD:32 |
+| Test.java:326:9:326:11 | out : ContentProviderResult [extras] : Bundle | Test.java:326:9:326:18 | out.extras | provenance |  |
+| Test.java:331:16:331:32 | (...)... : Parcel | Test.java:332:36:332:37 | in : Parcel | provenance |  |
+| Test.java:331:25:331:32 | source(...) : Object | Test.java:331:16:331:32 | (...)... : Parcel | provenance |  |
+| Test.java:332:10:332:38 | new ContentProviderResult(...) : ContentProviderResult | Test.java:333:9:333:11 | out | provenance |  |
+| Test.java:332:36:332:37 | in : Parcel | Test.java:332:10:332:38 | new ContentProviderResult(...) : ContentProviderResult | provenance | MaD:33 |
+| Test.java:338:19:338:38 | (...)... : Throwable | Test.java:339:36:339:37 | in : Throwable | provenance |  |
+| Test.java:338:31:338:38 | source(...) : Object | Test.java:338:19:338:38 | (...)... : Throwable | provenance |  |
+| Test.java:339:10:339:38 | new ContentProviderResult(...) : ContentProviderResult [exception] : Throwable | Test.java:340:9:340:11 | out : ContentProviderResult [exception] : Throwable | provenance |  |
+| Test.java:339:36:339:37 | in : Throwable | Test.java:339:10:339:38 | new ContentProviderResult(...) : ContentProviderResult [exception] : Throwable | provenance | MaD:34 |
+| Test.java:340:9:340:11 | out : ContentProviderResult [exception] : Throwable | Test.java:340:9:340:21 | out.exception | provenance |  |
+| Test.java:345:13:345:26 | (...)... : Uri | Test.java:346:36:346:37 | in : Uri | provenance |  |
+| Test.java:345:19:345:26 | source(...) : Object | Test.java:345:13:345:26 | (...)... : Uri | provenance |  |
+| Test.java:346:10:346:38 | new ContentProviderResult(...) : ContentProviderResult [uri] : Uri | Test.java:347:9:347:11 | out : ContentProviderResult [uri] : Uri | provenance |  |
+| Test.java:346:36:346:37 | in : Uri | Test.java:346:10:346:38 | new ContentProviderResult(...) : ContentProviderResult [uri] : Uri | provenance | MaD:35 |
+| Test.java:347:9:347:11 | out : ContentProviderResult [uri] : Uri | Test.java:347:9:347:15 | out.uri | provenance |  |
+| Test.java:352:16:352:32 | (...)... : String | Test.java:354:48:354:49 | in : String | provenance |  |
+| Test.java:352:25:352:32 | source(...) : Object | Test.java:352:16:352:32 | (...)... : String | provenance |  |
+| Test.java:354:10:354:50 | acquireContentProviderClient(...) : ContentProviderClient | Test.java:355:9:355:11 | out | provenance |  |
+| Test.java:354:48:354:49 | in : String | Test.java:354:10:354:50 | acquireContentProviderClient(...) : ContentProviderClient | provenance | MaD:36 |
+| Test.java:360:13:360:26 | (...)... : Uri | Test.java:362:48:362:49 | in : Uri | provenance |  |
+| Test.java:360:19:360:26 | source(...) : Object | Test.java:360:13:360:26 | (...)... : Uri | provenance |  |
+| Test.java:362:10:362:50 | acquireContentProviderClient(...) : ContentProviderClient | Test.java:363:9:363:11 | out | provenance |  |
+| Test.java:362:48:362:49 | in : Uri | Test.java:362:10:362:50 | acquireContentProviderClient(...) : ContentProviderClient | provenance | MaD:36 |
+| Test.java:368:16:368:32 | (...)... : String | Test.java:370:56:370:57 | in : String | provenance |  |
+| Test.java:368:25:368:32 | source(...) : Object | Test.java:368:16:368:32 | (...)... : String | provenance |  |
+| Test.java:370:10:370:58 | acquireUnstableContentProviderClient(...) : ContentProviderClient | Test.java:371:9:371:11 | out | provenance |  |
+| Test.java:370:56:370:57 | in : String | Test.java:370:10:370:58 | acquireUnstableContentProviderClient(...) : ContentProviderClient | provenance | MaD:37 |
+| Test.java:376:13:376:26 | (...)... : Uri | Test.java:378:56:378:57 | in : Uri | provenance |  |
+| Test.java:376:19:376:26 | source(...) : Object | Test.java:376:13:376:26 | (...)... : Uri | provenance |  |
+| Test.java:378:10:378:58 | acquireUnstableContentProviderClient(...) : ContentProviderClient | Test.java:379:9:379:11 | out | provenance |  |
+| Test.java:378:56:378:57 | in : Uri | Test.java:378:10:378:58 | acquireUnstableContentProviderClient(...) : ContentProviderClient | provenance | MaD:37 |
+| Test.java:384:19:384:38 | (...)... : ArrayList | Test.java:386:36:386:37 | in : ArrayList | provenance |  |
+| Test.java:384:31:384:38 | source(...) : Object | Test.java:384:19:384:38 | (...)... : ArrayList | provenance |  |
+| Test.java:386:10:386:38 | applyBatch(...) : ContentProviderResult[] | Test.java:387:9:387:11 | out | provenance |  |
+| Test.java:386:36:386:37 | in : ArrayList | Test.java:386:10:386:38 | applyBatch(...) : ContentProviderResult[] | provenance | MaD:38 |
+| Test.java:392:16:392:32 | (...)... : String | Test.java:394:24:394:25 | in : String | provenance |  |
+| Test.java:392:25:392:32 | source(...) : Object | Test.java:392:16:392:32 | (...)... : String | provenance |  |
+| Test.java:394:10:394:71 | call(...) : Bundle | Test.java:395:9:395:11 | out | provenance |  |
+| Test.java:394:24:394:25 | in : String | Test.java:394:10:394:71 | call(...) : Bundle | provenance | MaD:39 |
+| Test.java:400:13:400:26 | (...)... : Uri | Test.java:402:24:402:25 | in : Uri | provenance |  |
+| Test.java:400:19:400:26 | source(...) : Object | Test.java:400:13:400:26 | (...)... : Uri | provenance |  |
+| Test.java:402:10:402:71 | call(...) : Bundle | Test.java:403:9:403:11 | out | provenance |  |
+| Test.java:402:24:402:25 | in : Uri | Test.java:402:10:402:71 | call(...) : Bundle | provenance | MaD:39 |
+| Test.java:408:13:408:26 | (...)... : Uri | Test.java:410:32:410:33 | in : Uri | provenance |  |
+| Test.java:408:19:408:26 | source(...) : Object | Test.java:408:13:408:26 | (...)... : Uri | provenance |  |
+| Test.java:410:10:410:34 | canonicalize(...) : Uri | Test.java:411:9:411:11 | out | provenance |  |
+| Test.java:410:32:410:33 | in : Uri | Test.java:410:10:410:34 | canonicalize(...) : Uri | provenance | MaD:40 |
+| Test.java:416:13:416:26 | (...)... : Uri | Test.java:418:34:418:35 | in : Uri | provenance |  |
+| Test.java:416:19:416:26 | source(...) : Object | Test.java:416:13:416:26 | (...)... : Uri | provenance |  |
+| Test.java:418:10:418:42 | getStreamTypes(...) : String[] | Test.java:419:9:419:11 | out | provenance |  |
+| Test.java:418:34:418:35 | in : Uri | Test.java:418:10:418:42 | getStreamTypes(...) : String[] | provenance | MaD:41 |
+| Test.java:424:13:424:26 | (...)... : Uri | Test.java:426:27:426:28 | in : Uri | provenance |  |
+| Test.java:424:19:424:26 | source(...) : Object | Test.java:424:13:424:26 | (...)... : Uri | provenance |  |
+| Test.java:426:10:426:29 | getType(...) : String | Test.java:427:9:427:11 | out | provenance |  |
+| Test.java:426:27:426:28 | in : Uri | Test.java:426:10:426:29 | getType(...) : String | provenance | MaD:42 |
+| Test.java:432:13:432:26 | (...)... : Uri | Test.java:434:26:434:27 | in : Uri | provenance |  |
+| Test.java:432:19:432:26 | source(...) : Object | Test.java:432:13:432:26 | (...)... : Uri | provenance |  |
+| Test.java:434:10:434:34 | insert(...) : Uri | Test.java:435:9:435:11 | out | provenance |  |
+| Test.java:434:26:434:27 | in : Uri | Test.java:434:10:434:34 | insert(...) : Uri | provenance | MaD:43 |
+| Test.java:440:13:440:26 | (...)... : Uri | Test.java:442:26:442:27 | in : Uri | provenance |  |
+| Test.java:440:19:440:26 | source(...) : Object | Test.java:440:13:440:26 | (...)... : Uri | provenance |  |
+| Test.java:442:10:442:40 | insert(...) : Uri | Test.java:443:9:443:11 | out | provenance |  |
+| Test.java:442:26:442:27 | in : Uri | Test.java:442:10:442:40 | insert(...) : Uri | provenance | MaD:43 |
+| Test.java:448:13:448:26 | (...)... : Uri | Test.java:450:25:450:26 | in : Uri | provenance |  |
+| Test.java:448:19:448:26 | source(...) : Object | Test.java:448:13:448:26 | (...)... : Uri | provenance |  |
+| Test.java:450:10:450:45 | query(...) : Cursor | Test.java:451:9:451:11 | out | provenance |  |
+| Test.java:450:25:450:26 | in : Uri | Test.java:450:10:450:45 | query(...) : Cursor | provenance | MaD:46 |
+| Test.java:456:13:456:26 | (...)... : Uri | Test.java:458:25:458:26 | in : Uri | provenance |  |
+| Test.java:456:19:456:26 | source(...) : Object | Test.java:456:13:456:26 | (...)... : Uri | provenance |  |
+| Test.java:458:10:458:51 | query(...) : Cursor | Test.java:459:9:459:11 | out | provenance |  |
+| Test.java:458:25:458:26 | in : Uri | Test.java:458:10:458:51 | query(...) : Cursor | provenance | MaD:44 |
+| Test.java:458:25:458:26 | in : Uri | Test.java:458:10:458:51 | query(...) : Cursor | provenance | MaD:46 |
+| Test.java:464:13:464:26 | (...)... : Uri | Test.java:466:25:466:26 | in : Uri | provenance |  |
+| Test.java:464:19:464:26 | source(...) : Object | Test.java:464:13:464:26 | (...)... : Uri | provenance |  |
+| Test.java:466:10:466:57 | query(...) : Cursor | Test.java:467:9:467:11 | out | provenance |  |
+| Test.java:466:25:466:26 | in : Uri | Test.java:466:10:466:57 | query(...) : Cursor | provenance | MaD:45 |
+| Test.java:466:25:466:26 | in : Uri | Test.java:466:10:466:57 | query(...) : Cursor | provenance | MaD:46 |
+| Test.java:472:13:472:26 | (...)... : Uri | Test.java:474:34:474:35 | in : Uri | provenance |  |
+| Test.java:472:19:472:26 | source(...) : Object | Test.java:472:13:472:26 | (...)... : Uri | provenance |  |
+| Test.java:474:10:474:36 | uncanonicalize(...) : Uri | Test.java:475:9:475:11 | out | provenance |  |
+| Test.java:474:34:474:35 | in : Uri | Test.java:474:10:474:36 | uncanonicalize(...) : Uri | provenance | MaD:47 |
+| Test.java:480:25:480:50 | (...)... : ContentProvider | Test.java:481:31:481:32 | in : ContentProvider | provenance |  |
+| Test.java:480:43:480:50 | source(...) : Object | Test.java:480:25:480:50 | (...)... : ContentProvider | provenance |  |
+| Test.java:481:10:481:33 | wrap(...) : ContentResolver | Test.java:482:9:482:11 | out | provenance |  |
+| Test.java:481:31:481:32 | in : ContentProvider | Test.java:481:10:481:33 | wrap(...) : ContentResolver | provenance | MaD:48 |
+| Test.java:487:31:487:62 | (...)... : ContentProviderClient | Test.java:488:31:488:32 | in : ContentProviderClient | provenance |  |
+| Test.java:487:55:487:62 | source(...) : Object | Test.java:487:31:487:62 | (...)... : ContentProviderClient | provenance |  |
+| Test.java:488:10:488:33 | wrap(...) : ContentResolver | Test.java:489:9:489:11 | out | provenance |  |
+| Test.java:488:31:488:32 | in : ContentProviderClient | Test.java:488:10:488:33 | wrap(...) : ContentResolver | provenance | MaD:48 |
+| Test.java:494:16:494:32 | (...)... : String | Test.java:495:12:495:13 | in : String | provenance |  |
+| Test.java:494:25:494:32 | source(...) : Object | Test.java:494:16:494:32 | (...)... : String | provenance |  |
+| Test.java:495:4:495:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:496:26:496:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:495:12:495:13 | in : String | Test.java:495:4:495:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:496:26:496:28 | out : ContentValues [<map.key>] : String | Test.java:496:9:496:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:501:16:501:32 | (...)... : String | Test.java:502:12:502:13 | in : String | provenance |  |
+| Test.java:501:25:501:32 | source(...) : Object | Test.java:501:16:501:32 | (...)... : String | provenance |  |
+| Test.java:502:4:502:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:503:26:503:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:502:12:502:13 | in : String | Test.java:502:4:502:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:503:26:503:28 | out : ContentValues [<map.key>] : String | Test.java:503:9:503:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:508:16:508:32 | (...)... : String | Test.java:509:12:509:13 | in : String | provenance |  |
+| Test.java:508:25:508:32 | source(...) : Object | Test.java:508:16:508:32 | (...)... : String | provenance |  |
+| Test.java:509:4:509:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:510:26:510:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:509:12:509:13 | in : String | Test.java:509:4:509:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:510:26:510:28 | out : ContentValues [<map.key>] : String | Test.java:510:9:510:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:515:16:515:32 | (...)... : String | Test.java:516:12:516:13 | in : String | provenance |  |
+| Test.java:515:25:515:32 | source(...) : Object | Test.java:515:16:515:32 | (...)... : String | provenance |  |
+| Test.java:516:4:516:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:517:26:517:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:516:12:516:13 | in : String | Test.java:516:4:516:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:517:26:517:28 | out : ContentValues [<map.key>] : String | Test.java:517:9:517:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:522:16:522:32 | (...)... : String | Test.java:523:12:523:13 | in : String | provenance |  |
+| Test.java:522:25:522:32 | source(...) : Object | Test.java:522:16:522:32 | (...)... : String | provenance |  |
+| Test.java:523:4:523:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:524:26:524:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:523:12:523:13 | in : String | Test.java:523:4:523:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:524:26:524:28 | out : ContentValues [<map.key>] : String | Test.java:524:9:524:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:529:16:529:32 | (...)... : String | Test.java:530:12:530:13 | in : String | provenance |  |
+| Test.java:529:25:529:32 | source(...) : Object | Test.java:529:16:529:32 | (...)... : String | provenance |  |
+| Test.java:530:4:530:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:531:26:531:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:530:12:530:13 | in : String | Test.java:530:4:530:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:531:26:531:28 | out : ContentValues [<map.key>] : String | Test.java:531:9:531:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:536:16:536:32 | (...)... : String | Test.java:537:12:537:13 | in : String | provenance |  |
+| Test.java:536:25:536:32 | source(...) : Object | Test.java:536:16:536:32 | (...)... : String | provenance |  |
+| Test.java:537:4:537:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:538:26:538:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:537:12:537:13 | in : String | Test.java:537:4:537:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:538:26:538:28 | out : ContentValues [<map.key>] : String | Test.java:538:9:538:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:543:16:543:32 | (...)... : String | Test.java:544:12:544:13 | in : String | provenance |  |
+| Test.java:543:25:543:32 | source(...) : Object | Test.java:543:16:543:32 | (...)... : String | provenance |  |
+| Test.java:544:4:544:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:545:26:545:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:544:12:544:13 | in : String | Test.java:544:4:544:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:545:26:545:28 | out : ContentValues [<map.key>] : String | Test.java:545:9:545:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:550:16:550:32 | (...)... : String | Test.java:551:12:551:13 | in : String | provenance |  |
+| Test.java:550:25:550:32 | source(...) : Object | Test.java:550:16:550:32 | (...)... : String | provenance |  |
+| Test.java:551:4:551:6 | out [post update] : ContentValues [<map.key>] : String | Test.java:552:26:552:28 | out : ContentValues [<map.key>] : String | provenance |  |
+| Test.java:551:12:551:13 | in : String | Test.java:551:4:551:6 | out [post update] : ContentValues [<map.key>] : String | provenance | MaD:49 |
+| Test.java:552:26:552:28 | out : ContentValues [<map.key>] : String | Test.java:552:9:552:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:557:17:557:34 | (...)... : Boolean | Test.java:558:27:558:28 | in : Boolean | provenance |  |
+| Test.java:557:27:557:34 | source(...) : Object | Test.java:557:17:557:34 | (...)... : Boolean | provenance |  |
+| Test.java:558:4:558:6 | out [post update] : ContentValues [<map.value>] : Boolean | Test.java:559:28:559:30 | out : ContentValues [<map.value>] : Boolean | provenance |  |
+| Test.java:558:27:558:28 | in : Boolean | Test.java:558:4:558:6 | out [post update] : ContentValues [<map.value>] : Boolean | provenance | MaD:50 |
+| Test.java:559:28:559:30 | out : ContentValues [<map.value>] : Boolean | Test.java:559:9:559:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:564:14:564:28 | (...)... : Number | Test.java:565:27:565:28 | in : Number | provenance |  |
+| Test.java:564:21:564:28 | source(...) : Object | Test.java:564:14:564:28 | (...)... : Number | provenance |  |
+| Test.java:565:4:565:6 | out [post update] : ContentValues [<map.value>] : Number | Test.java:566:28:566:30 | out : ContentValues [<map.value>] : Number | provenance |  |
+| Test.java:565:27:565:28 | in : Number | Test.java:565:4:565:6 | out [post update] : ContentValues [<map.value>] : Number | provenance | MaD:50 |
+| Test.java:566:28:566:30 | out : ContentValues [<map.value>] : Number | Test.java:566:9:566:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:571:16:571:32 | (...)... : Number | Test.java:572:27:572:28 | in : Number | provenance |  |
+| Test.java:571:25:571:32 | source(...) : Object | Test.java:571:16:571:32 | (...)... : Number | provenance |  |
+| Test.java:572:4:572:6 | out [post update] : ContentValues [<map.value>] : Number | Test.java:573:28:573:30 | out : ContentValues [<map.value>] : Number | provenance |  |
+| Test.java:572:27:572:28 | in : Number | Test.java:572:4:572:6 | out [post update] : ContentValues [<map.value>] : Number | provenance | MaD:50 |
+| Test.java:573:28:573:30 | out : ContentValues [<map.value>] : Number | Test.java:573:9:573:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:578:15:578:30 | (...)... : Number | Test.java:579:27:579:28 | in : Number | provenance |  |
+| Test.java:578:23:578:30 | source(...) : Object | Test.java:578:15:578:30 | (...)... : Number | provenance |  |
+| Test.java:579:4:579:6 | out [post update] : ContentValues [<map.value>] : Number | Test.java:580:28:580:30 | out : ContentValues [<map.value>] : Number | provenance |  |
+| Test.java:579:27:579:28 | in : Number | Test.java:579:4:579:6 | out [post update] : ContentValues [<map.value>] : Number | provenance | MaD:50 |
+| Test.java:580:28:580:30 | out : ContentValues [<map.value>] : Number | Test.java:580:9:580:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:585:17:585:34 | (...)... : Number | Test.java:586:27:586:28 | in : Number | provenance |  |
+| Test.java:585:27:585:34 | source(...) : Object | Test.java:585:17:585:34 | (...)... : Number | provenance |  |
+| Test.java:586:4:586:6 | out [post update] : ContentValues [<map.value>] : Number | Test.java:587:28:587:30 | out : ContentValues [<map.value>] : Number | provenance |  |
+| Test.java:586:27:586:28 | in : Number | Test.java:586:4:586:6 | out [post update] : ContentValues [<map.value>] : Number | provenance | MaD:50 |
+| Test.java:587:28:587:30 | out : ContentValues [<map.value>] : Number | Test.java:587:9:587:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:592:14:592:28 | (...)... : Number | Test.java:593:27:593:28 | in : Number | provenance |  |
+| Test.java:592:21:592:28 | source(...) : Object | Test.java:592:14:592:28 | (...)... : Number | provenance |  |
+| Test.java:593:4:593:6 | out [post update] : ContentValues [<map.value>] : Number | Test.java:594:28:594:30 | out : ContentValues [<map.value>] : Number | provenance |  |
+| Test.java:593:27:593:28 | in : Number | Test.java:593:4:593:6 | out [post update] : ContentValues [<map.value>] : Number | provenance | MaD:50 |
+| Test.java:594:28:594:30 | out : ContentValues [<map.value>] : Number | Test.java:594:9:594:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:599:15:599:30 | (...)... : Number | Test.java:600:27:600:28 | in : Number | provenance |  |
+| Test.java:599:23:599:30 | source(...) : Object | Test.java:599:15:599:30 | (...)... : Number | provenance |  |
+| Test.java:600:4:600:6 | out [post update] : ContentValues [<map.value>] : Number | Test.java:601:28:601:30 | out : ContentValues [<map.value>] : Number | provenance |  |
+| Test.java:600:27:600:28 | in : Number | Test.java:600:4:600:6 | out [post update] : ContentValues [<map.value>] : Number | provenance | MaD:50 |
+| Test.java:601:28:601:30 | out : ContentValues [<map.value>] : Number | Test.java:601:9:601:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:606:16:606:32 | (...)... : String | Test.java:607:27:607:28 | in : String | provenance |  |
+| Test.java:606:25:606:32 | source(...) : Object | Test.java:606:16:606:32 | (...)... : String | provenance |  |
+| Test.java:607:4:607:6 | out [post update] : ContentValues [<map.value>] : String | Test.java:608:28:608:30 | out : ContentValues [<map.value>] : String | provenance |  |
+| Test.java:607:27:607:28 | in : String | Test.java:607:4:607:6 | out [post update] : ContentValues [<map.value>] : String | provenance | MaD:50 |
+| Test.java:608:28:608:30 | out : ContentValues [<map.value>] : String | Test.java:608:9:608:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:613:16:613:32 | (...)... : byte[] | Test.java:614:27:614:28 | in : byte[] | provenance |  |
+| Test.java:613:25:613:32 | source(...) : Object | Test.java:613:16:613:32 | (...)... : byte[] | provenance |  |
+| Test.java:614:4:614:6 | out [post update] : ContentValues [<map.value>] : byte[] | Test.java:615:28:615:30 | out : ContentValues [<map.value>] : byte[] | provenance |  |
+| Test.java:614:27:614:28 | in : byte[] | Test.java:614:4:614:6 | out [post update] : ContentValues [<map.value>] : byte[] | provenance | MaD:50 |
+| Test.java:615:28:615:30 | out : ContentValues [<map.value>] : byte[] | Test.java:615:9:615:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:620:23:620:68 | (...)... : ContentValues [<map.key>] : Object | Test.java:621:15:621:16 | in : ContentValues [<map.key>] : Object | provenance |  |
+| Test.java:620:39:620:68 | newWithMapKeyDefault(...) : Object [<map.key>] : Object | Test.java:620:23:620:68 | (...)... : ContentValues [<map.key>] : Object | provenance |  |
+| Test.java:620:60:620:67 | source(...) : Object | Test.java:620:39:620:68 | newWithMapKeyDefault(...) : Object [<map.key>] : Object | provenance | MaD:64 |
+| Test.java:621:4:621:6 | out [post update] : ContentValues [<map.key>] : Object | Test.java:622:26:622:28 | out : ContentValues [<map.key>] : Object | provenance |  |
+| Test.java:621:15:621:16 | in : ContentValues [<map.key>] : Object | Test.java:621:4:621:6 | out [post update] : ContentValues [<map.key>] : Object | provenance | MaD:51 |
+| Test.java:622:26:622:28 | out : ContentValues [<map.key>] : Object | Test.java:622:9:622:29 | getMapKeyDefault(...) | provenance | MaD:62 |
+| Test.java:627:23:627:70 | (...)... : ContentValues [<map.value>] : Object | Test.java:628:15:628:16 | in : ContentValues [<map.value>] : Object | provenance |  |
+| Test.java:627:39:627:70 | newWithMapValueDefault(...) : Object [<map.value>] : Object | Test.java:627:23:627:70 | (...)... : ContentValues [<map.value>] : Object | provenance |  |
+| Test.java:627:62:627:69 | source(...) : Object | Test.java:627:39:627:70 | newWithMapValueDefault(...) : Object [<map.value>] : Object | provenance | MaD:65 |
+| Test.java:628:4:628:6 | out [post update] : ContentValues [<map.value>] : Object | Test.java:629:28:629:30 | out : ContentValues [<map.value>] : Object | provenance |  |
+| Test.java:628:15:628:16 | in : ContentValues [<map.value>] : Object | Test.java:628:4:628:6 | out [post update] : ContentValues [<map.value>] : Object | provenance | MaD:52 |
+| Test.java:629:28:629:30 | out : ContentValues [<map.value>] : Object | Test.java:629:9:629:31 | getMapValueDefault(...) | provenance | MaD:63 |
+| Test.java:634:16:634:32 | (...)... : Cursor | Test.java:635:4:635:5 | in : Cursor | provenance |  |
+| Test.java:634:25:634:32 | source(...) : Object | Test.java:634:16:634:32 | (...)... : Cursor | provenance |  |
+| Test.java:635:4:635:5 | in : Cursor | Test.java:635:29:635:31 | out [post update] : CharArrayBuffer | provenance | MaD:53 |
+| Test.java:635:29:635:31 | out [post update] : CharArrayBuffer | Test.java:636:9:636:11 | out | provenance |  |
+| Test.java:641:16:641:32 | (...)... : Cursor | Test.java:642:10:642:11 | in : Cursor | provenance |  |
+| Test.java:641:25:641:32 | source(...) : Object | Test.java:641:16:641:32 | (...)... : Cursor | provenance |  |
+| Test.java:642:10:642:11 | in : Cursor | Test.java:642:10:642:22 | getBlob(...) : byte[] | provenance | MaD:54 |
+| Test.java:642:10:642:22 | getBlob(...) : byte[] | Test.java:643:9:643:11 | out | provenance |  |
+| Test.java:648:16:648:32 | (...)... : Cursor | Test.java:649:10:649:11 | in : Cursor | provenance |  |
+| Test.java:648:25:648:32 | source(...) : Object | Test.java:648:16:648:32 | (...)... : Cursor | provenance |  |
+| Test.java:649:10:649:11 | in : Cursor | Test.java:649:10:649:28 | getColumnName(...) : String | provenance | MaD:55 |
+| Test.java:649:10:649:28 | getColumnName(...) : String | Test.java:650:9:650:11 | out | provenance |  |
+| Test.java:655:16:655:32 | (...)... : Cursor | Test.java:656:10:656:11 | in : Cursor | provenance |  |
+| Test.java:655:25:655:32 | source(...) : Object | Test.java:655:16:655:32 | (...)... : Cursor | provenance |  |
+| Test.java:656:10:656:11 | in : Cursor | Test.java:656:10:656:28 | getColumnNames(...) : String[] | provenance | MaD:56 |
+| Test.java:656:10:656:28 | getColumnNames(...) : String[] | Test.java:657:9:657:11 | out | provenance |  |
+| Test.java:662:16:662:32 | (...)... : Cursor | Test.java:663:10:663:11 | in : Cursor | provenance |  |
+| Test.java:662:25:662:32 | source(...) : Object | Test.java:662:16:662:32 | (...)... : Cursor | provenance |  |
+| Test.java:663:10:663:11 | in : Cursor | Test.java:663:10:663:23 | getExtras(...) : Bundle | provenance | MaD:57 |
+| Test.java:663:10:663:23 | getExtras(...) : Bundle | Test.java:664:9:664:11 | out | provenance |  |
+| Test.java:669:16:669:32 | (...)... : Cursor | Test.java:670:10:670:11 | in : Cursor | provenance |  |
+| Test.java:669:25:669:32 | source(...) : Object | Test.java:669:16:669:32 | (...)... : Cursor | provenance |  |
+| Test.java:670:10:670:11 | in : Cursor | Test.java:670:10:670:32 | getNotificationUri(...) : Uri | provenance | MaD:58 |
+| Test.java:670:10:670:32 | getNotificationUri(...) : Uri | Test.java:671:9:671:11 | out | provenance |  |
+| Test.java:676:16:676:32 | (...)... : Cursor | Test.java:677:10:677:11 | in : Cursor | provenance |  |
+| Test.java:676:25:676:32 | source(...) : Object | Test.java:676:16:676:32 | (...)... : Cursor | provenance |  |
+| Test.java:677:10:677:11 | in : Cursor | Test.java:677:10:677:33 | getNotificationUris(...) : List | provenance | MaD:59 |
+| Test.java:677:10:677:33 | getNotificationUris(...) : List | Test.java:678:9:678:11 | out | provenance |  |
+| Test.java:683:16:683:32 | (...)... : Cursor | Test.java:684:10:684:11 | in : Cursor | provenance |  |
+| Test.java:683:25:683:32 | source(...) : Object | Test.java:683:16:683:32 | (...)... : Cursor | provenance |  |
+| Test.java:684:10:684:11 | in : Cursor | Test.java:684:10:684:24 | getString(...) : String | provenance | MaD:60 |
+| Test.java:684:10:684:24 | getString(...) : String | Test.java:685:9:685:11 | out | provenance |  |
+| Test.java:690:16:690:32 | (...)... : Cursor | Test.java:691:10:691:11 | in : Cursor | provenance |  |
+| Test.java:690:25:690:32 | source(...) : Object | Test.java:690:16:690:32 | (...)... : Cursor | provenance |  |
+| Test.java:691:10:691:11 | in : Cursor | Test.java:691:10:691:25 | respond(...) : Bundle | provenance | MaD:61 |
+| Test.java:691:10:691:25 | respond(...) : Bundle | Test.java:692:9:692:11 | out | provenance |  |
+nodes
+| Test.java:47:31:47:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:47:55:47:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:48:10:48:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:48:10:48:28 | applyBatch(...) : ContentProviderResult[] | semmle.label | applyBatch(...) : ContentProviderResult[] |
+| Test.java:49:9:49:11 | out | semmle.label | out |
+| Test.java:54:31:54:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:54:55:54:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:55:10:55:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:55:10:55:34 | applyBatch(...) : ContentProviderResult[] | semmle.label | applyBatch(...) : ContentProviderResult[] |
+| Test.java:56:9:56:11 | out | semmle.label | out |
+| Test.java:61:31:61:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:61:55:61:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:62:10:62:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:62:10:62:34 | call(...) : Bundle | semmle.label | call(...) : Bundle |
+| Test.java:63:9:63:11 | out | semmle.label | out |
+| Test.java:68:31:68:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:68:55:68:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:69:10:69:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:69:10:69:40 | call(...) : Bundle | semmle.label | call(...) : Bundle |
+| Test.java:70:9:70:11 | out | semmle.label | out |
+| Test.java:75:31:75:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:75:55:75:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:76:10:76:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:76:10:76:30 | canonicalize(...) : Uri | semmle.label | canonicalize(...) : Uri |
+| Test.java:77:9:77:11 | out | semmle.label | out |
+| Test.java:82:31:82:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:82:55:82:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:83:10:83:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:83:10:83:37 | getLocalContentProvider(...) : ContentProvider | semmle.label | getLocalContentProvider(...) : ContentProvider |
+| Test.java:84:9:84:11 | out | semmle.label | out |
+| Test.java:89:31:89:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:89:55:89:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:90:10:90:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:90:10:90:38 | getStreamTypes(...) : String[] | semmle.label | getStreamTypes(...) : String[] |
+| Test.java:91:9:91:11 | out | semmle.label | out |
+| Test.java:96:31:96:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:96:55:96:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:97:10:97:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:97:10:97:30 | insert(...) : Uri | semmle.label | insert(...) : Uri |
+| Test.java:98:9:98:11 | out | semmle.label | out |
+| Test.java:103:31:103:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:103:55:103:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:104:10:104:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:104:10:104:36 | insert(...) : Uri | semmle.label | insert(...) : Uri |
+| Test.java:105:9:105:11 | out | semmle.label | out |
+| Test.java:110:31:110:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:110:55:110:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:111:10:111:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:111:10:111:41 | query(...) : Cursor | semmle.label | query(...) : Cursor |
+| Test.java:112:9:112:11 | out | semmle.label | out |
+| Test.java:117:31:117:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:117:55:117:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:118:10:118:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:118:10:118:47 | query(...) : Cursor | semmle.label | query(...) : Cursor |
+| Test.java:119:9:119:11 | out | semmle.label | out |
+| Test.java:124:31:124:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:124:55:124:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:125:10:125:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:125:10:125:53 | query(...) : Cursor | semmle.label | query(...) : Cursor |
+| Test.java:126:9:126:11 | out | semmle.label | out |
+| Test.java:131:31:131:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:131:55:131:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:132:10:132:11 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:132:10:132:32 | uncanonicalize(...) : Uri | semmle.label | uncanonicalize(...) : Uri |
+| Test.java:133:9:133:11 | out | semmle.label | out |
+| Test.java:138:42:138:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:138:77:138:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:139:10:139:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:139:10:139:19 | build(...) : ContentProviderOperation | semmle.label | build(...) : ContentProviderOperation |
+| Test.java:140:9:140:11 | out | semmle.label | out |
+| Test.java:145:42:145:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:145:77:145:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:146:10:146:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:146:10:146:39 | withExceptionAllowed(...) : Builder | semmle.label | withExceptionAllowed(...) : Builder |
+| Test.java:147:9:147:11 | out | semmle.label | out |
+| Test.java:152:42:152:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:152:77:152:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:153:10:153:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:153:10:153:32 | withExpectedCount(...) : Builder | semmle.label | withExpectedCount(...) : Builder |
+| Test.java:154:9:154:11 | out | semmle.label | out |
+| Test.java:159:42:159:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:159:77:159:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:160:10:160:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:160:10:160:33 | withExtra(...) : Builder | semmle.label | withExtra(...) : Builder |
+| Test.java:161:9:161:11 | out | semmle.label | out |
+| Test.java:166:42:166:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:166:77:166:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:167:10:167:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:167:10:167:43 | withExtraBackReference(...) : Builder | semmle.label | withExtraBackReference(...) : Builder |
+| Test.java:168:9:168:11 | out | semmle.label | out |
+| Test.java:173:42:173:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:173:77:173:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:174:10:174:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:174:10:174:49 | withExtraBackReference(...) : Builder | semmle.label | withExtraBackReference(...) : Builder |
+| Test.java:175:9:175:11 | out | semmle.label | out |
+| Test.java:180:42:180:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:180:77:180:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:181:10:181:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:181:10:181:28 | withExtras(...) : Builder | semmle.label | withExtras(...) : Builder |
+| Test.java:182:9:182:11 | out | semmle.label | out |
+| Test.java:187:42:187:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:187:77:187:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:188:10:188:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:188:10:188:37 | withSelection(...) : Builder | semmle.label | withSelection(...) : Builder |
+| Test.java:189:9:189:11 | out | semmle.label | out |
+| Test.java:194:42:194:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:194:77:194:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:195:10:195:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:195:10:195:44 | withSelectionBackReference(...) : Builder | semmle.label | withSelectionBackReference(...) : Builder |
+| Test.java:196:9:196:11 | out | semmle.label | out |
+| Test.java:201:42:201:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:201:77:201:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:202:10:202:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:202:10:202:50 | withSelectionBackReference(...) : Builder | semmle.label | withSelectionBackReference(...) : Builder |
+| Test.java:203:9:203:11 | out | semmle.label | out |
+| Test.java:208:42:208:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:208:77:208:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:209:10:209:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:209:10:209:33 | withValue(...) : Builder | semmle.label | withValue(...) : Builder |
+| Test.java:210:9:210:11 | out | semmle.label | out |
+| Test.java:215:42:215:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:215:77:215:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:216:10:216:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:216:10:216:43 | withValueBackReference(...) : Builder | semmle.label | withValueBackReference(...) : Builder |
+| Test.java:217:9:217:11 | out | semmle.label | out |
+| Test.java:222:42:222:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:222:77:222:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:223:10:223:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:223:10:223:49 | withValueBackReference(...) : Builder | semmle.label | withValueBackReference(...) : Builder |
+| Test.java:224:9:224:11 | out | semmle.label | out |
+| Test.java:229:42:229:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:229:77:229:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:230:10:230:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:230:10:230:28 | withValues(...) : Builder | semmle.label | withValues(...) : Builder |
+| Test.java:231:9:231:11 | out | semmle.label | out |
+| Test.java:236:42:236:84 | (...)... : Builder | semmle.label | (...)... : Builder |
+| Test.java:236:77:236:84 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:237:10:237:11 | in : Builder | semmle.label | in : Builder |
+| Test.java:237:10:237:35 | withYieldAllowed(...) : Builder | semmle.label | withYieldAllowed(...) : Builder |
+| Test.java:238:9:238:11 | out | semmle.label | out |
+| Test.java:243:34:243:68 | (...)... : ContentProviderOperation | semmle.label | (...)... : ContentProviderOperation |
+| Test.java:243:61:243:68 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:244:10:244:11 | in : ContentProviderOperation | semmle.label | in : ContentProviderOperation |
+| Test.java:244:10:244:32 | apply(...) : ContentProviderResult | semmle.label | apply(...) : ContentProviderResult |
+| Test.java:245:9:245:11 | out | semmle.label | out |
+| Test.java:250:25:250:50 | (...)... : ContentProvider | semmle.label | (...)... : ContentProvider |
+| Test.java:250:43:250:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:252:10:252:36 | apply(...) : ContentProviderResult | semmle.label | apply(...) : ContentProviderResult |
+| Test.java:252:25:252:26 | in : ContentProvider | semmle.label | in : ContentProvider |
+| Test.java:253:9:253:11 | out | semmle.label | out |
+| Test.java:258:34:258:68 | (...)... : ContentProviderOperation | semmle.label | (...)... : ContentProviderOperation |
+| Test.java:258:61:258:68 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:259:10:259:11 | in : ContentProviderOperation | semmle.label | in : ContentProviderOperation |
+| Test.java:259:10:259:20 | getUri(...) : Uri | semmle.label | getUri(...) : Uri |
+| Test.java:260:9:260:11 | out | semmle.label | out |
+| Test.java:265:13:265:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:265:19:265:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:266:10:266:52 | newAssertQuery(...) : Builder | semmle.label | newAssertQuery(...) : Builder |
+| Test.java:266:50:266:51 | in : Uri | semmle.label | in : Uri |
+| Test.java:267:9:267:11 | out | semmle.label | out |
+| Test.java:272:13:272:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:272:19:272:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:273:10:273:57 | newCall(...) : Builder | semmle.label | newCall(...) : Builder |
+| Test.java:273:43:273:44 | in : Uri | semmle.label | in : Uri |
+| Test.java:274:9:274:11 | out | semmle.label | out |
+| Test.java:279:13:279:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:279:19:279:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:280:10:280:47 | newDelete(...) : Builder | semmle.label | newDelete(...) : Builder |
+| Test.java:280:45:280:46 | in : Uri | semmle.label | in : Uri |
+| Test.java:281:9:281:11 | out | semmle.label | out |
+| Test.java:286:13:286:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:286:19:286:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:287:10:287:47 | newInsert(...) : Builder | semmle.label | newInsert(...) : Builder |
+| Test.java:287:45:287:46 | in : Uri | semmle.label | in : Uri |
+| Test.java:288:9:288:11 | out | semmle.label | out |
+| Test.java:293:13:293:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:293:19:293:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:294:10:294:47 | newUpdate(...) : Builder | semmle.label | newUpdate(...) : Builder |
+| Test.java:294:45:294:46 | in : Uri | semmle.label | in : Uri |
+| Test.java:295:9:295:11 | out | semmle.label | out |
+| Test.java:300:33:300:66 | (...)... : ContentProviderResult[] | semmle.label | (...)... : ContentProviderResult[] |
+| Test.java:300:59:300:66 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:302:10:302:52 | resolveExtrasBackReferences(...) : Bundle | semmle.label | resolveExtrasBackReferences(...) : Bundle |
+| Test.java:302:47:302:48 | in : ContentProviderResult[] | semmle.label | in : ContentProviderResult[] |
+| Test.java:303:9:303:11 | out | semmle.label | out |
+| Test.java:308:33:308:66 | (...)... : ContentProviderResult[] | semmle.label | (...)... : ContentProviderResult[] |
+| Test.java:308:59:308:66 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:310:10:310:59 | resolveSelectionArgsBackReferences(...) : String[] | semmle.label | resolveSelectionArgsBackReferences(...) : String[] |
+| Test.java:310:54:310:55 | in : ContentProviderResult[] | semmle.label | in : ContentProviderResult[] |
+| Test.java:311:9:311:11 | out | semmle.label | out |
+| Test.java:316:33:316:66 | (...)... : ContentProviderResult[] | semmle.label | (...)... : ContentProviderResult[] |
+| Test.java:316:59:316:66 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:318:10:318:51 | resolveValueBackReferences(...) : ContentValues | semmle.label | resolveValueBackReferences(...) : ContentValues |
+| Test.java:318:46:318:47 | in : ContentProviderResult[] | semmle.label | in : ContentProviderResult[] |
+| Test.java:319:9:319:11 | out | semmle.label | out |
+| Test.java:324:16:324:32 | (...)... : Bundle | semmle.label | (...)... : Bundle |
+| Test.java:324:25:324:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:325:10:325:38 | new ContentProviderResult(...) : ContentProviderResult [extras] : Bundle | semmle.label | new ContentProviderResult(...) : ContentProviderResult [extras] : Bundle |
+| Test.java:325:36:325:37 | in : Bundle | semmle.label | in : Bundle |
+| Test.java:326:9:326:11 | out : ContentProviderResult [extras] : Bundle | semmle.label | out : ContentProviderResult [extras] : Bundle |
+| Test.java:326:9:326:18 | out.extras | semmle.label | out.extras |
+| Test.java:331:16:331:32 | (...)... : Parcel | semmle.label | (...)... : Parcel |
+| Test.java:331:25:331:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:332:10:332:38 | new ContentProviderResult(...) : ContentProviderResult | semmle.label | new ContentProviderResult(...) : ContentProviderResult |
+| Test.java:332:36:332:37 | in : Parcel | semmle.label | in : Parcel |
+| Test.java:333:9:333:11 | out | semmle.label | out |
+| Test.java:338:19:338:38 | (...)... : Throwable | semmle.label | (...)... : Throwable |
+| Test.java:338:31:338:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:339:10:339:38 | new ContentProviderResult(...) : ContentProviderResult [exception] : Throwable | semmle.label | new ContentProviderResult(...) : ContentProviderResult [exception] : Throwable |
+| Test.java:339:36:339:37 | in : Throwable | semmle.label | in : Throwable |
+| Test.java:340:9:340:11 | out : ContentProviderResult [exception] : Throwable | semmle.label | out : ContentProviderResult [exception] : Throwable |
+| Test.java:340:9:340:21 | out.exception | semmle.label | out.exception |
+| Test.java:345:13:345:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:345:19:345:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:346:10:346:38 | new ContentProviderResult(...) : ContentProviderResult [uri] : Uri | semmle.label | new ContentProviderResult(...) : ContentProviderResult [uri] : Uri |
+| Test.java:346:36:346:37 | in : Uri | semmle.label | in : Uri |
+| Test.java:347:9:347:11 | out : ContentProviderResult [uri] : Uri | semmle.label | out : ContentProviderResult [uri] : Uri |
+| Test.java:347:9:347:15 | out.uri | semmle.label | out.uri |
+| Test.java:352:16:352:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:352:25:352:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:354:10:354:50 | acquireContentProviderClient(...) : ContentProviderClient | semmle.label | acquireContentProviderClient(...) : ContentProviderClient |
+| Test.java:354:48:354:49 | in : String | semmle.label | in : String |
+| Test.java:355:9:355:11 | out | semmle.label | out |
+| Test.java:360:13:360:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:360:19:360:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:362:10:362:50 | acquireContentProviderClient(...) : ContentProviderClient | semmle.label | acquireContentProviderClient(...) : ContentProviderClient |
+| Test.java:362:48:362:49 | in : Uri | semmle.label | in : Uri |
+| Test.java:363:9:363:11 | out | semmle.label | out |
+| Test.java:368:16:368:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:368:25:368:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:370:10:370:58 | acquireUnstableContentProviderClient(...) : ContentProviderClient | semmle.label | acquireUnstableContentProviderClient(...) : ContentProviderClient |
+| Test.java:370:56:370:57 | in : String | semmle.label | in : String |
+| Test.java:371:9:371:11 | out | semmle.label | out |
+| Test.java:376:13:376:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:376:19:376:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:378:10:378:58 | acquireUnstableContentProviderClient(...) : ContentProviderClient | semmle.label | acquireUnstableContentProviderClient(...) : ContentProviderClient |
+| Test.java:378:56:378:57 | in : Uri | semmle.label | in : Uri |
+| Test.java:379:9:379:11 | out | semmle.label | out |
+| Test.java:384:19:384:38 | (...)... : ArrayList | semmle.label | (...)... : ArrayList |
+| Test.java:384:31:384:38 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:386:10:386:38 | applyBatch(...) : ContentProviderResult[] | semmle.label | applyBatch(...) : ContentProviderResult[] |
+| Test.java:386:36:386:37 | in : ArrayList | semmle.label | in : ArrayList |
+| Test.java:387:9:387:11 | out | semmle.label | out |
+| Test.java:392:16:392:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:392:25:392:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:394:10:394:71 | call(...) : Bundle | semmle.label | call(...) : Bundle |
+| Test.java:394:24:394:25 | in : String | semmle.label | in : String |
+| Test.java:395:9:395:11 | out | semmle.label | out |
+| Test.java:400:13:400:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:400:19:400:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:402:10:402:71 | call(...) : Bundle | semmle.label | call(...) : Bundle |
+| Test.java:402:24:402:25 | in : Uri | semmle.label | in : Uri |
+| Test.java:403:9:403:11 | out | semmle.label | out |
+| Test.java:408:13:408:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:408:19:408:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:410:10:410:34 | canonicalize(...) : Uri | semmle.label | canonicalize(...) : Uri |
+| Test.java:410:32:410:33 | in : Uri | semmle.label | in : Uri |
+| Test.java:411:9:411:11 | out | semmle.label | out |
+| Test.java:416:13:416:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:416:19:416:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:418:10:418:42 | getStreamTypes(...) : String[] | semmle.label | getStreamTypes(...) : String[] |
+| Test.java:418:34:418:35 | in : Uri | semmle.label | in : Uri |
+| Test.java:419:9:419:11 | out | semmle.label | out |
+| Test.java:424:13:424:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:424:19:424:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:426:10:426:29 | getType(...) : String | semmle.label | getType(...) : String |
+| Test.java:426:27:426:28 | in : Uri | semmle.label | in : Uri |
+| Test.java:427:9:427:11 | out | semmle.label | out |
+| Test.java:432:13:432:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:432:19:432:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:434:10:434:34 | insert(...) : Uri | semmle.label | insert(...) : Uri |
+| Test.java:434:26:434:27 | in : Uri | semmle.label | in : Uri |
+| Test.java:435:9:435:11 | out | semmle.label | out |
+| Test.java:440:13:440:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:440:19:440:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:442:10:442:40 | insert(...) : Uri | semmle.label | insert(...) : Uri |
+| Test.java:442:26:442:27 | in : Uri | semmle.label | in : Uri |
+| Test.java:443:9:443:11 | out | semmle.label | out |
+| Test.java:448:13:448:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:448:19:448:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:450:10:450:45 | query(...) : Cursor | semmle.label | query(...) : Cursor |
+| Test.java:450:25:450:26 | in : Uri | semmle.label | in : Uri |
+| Test.java:451:9:451:11 | out | semmle.label | out |
+| Test.java:456:13:456:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:456:19:456:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:458:10:458:51 | query(...) : Cursor | semmle.label | query(...) : Cursor |
+| Test.java:458:25:458:26 | in : Uri | semmle.label | in : Uri |
+| Test.java:459:9:459:11 | out | semmle.label | out |
+| Test.java:464:13:464:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:464:19:464:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:466:10:466:57 | query(...) : Cursor | semmle.label | query(...) : Cursor |
+| Test.java:466:25:466:26 | in : Uri | semmle.label | in : Uri |
+| Test.java:467:9:467:11 | out | semmle.label | out |
+| Test.java:472:13:472:26 | (...)... : Uri | semmle.label | (...)... : Uri |
+| Test.java:472:19:472:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:474:10:474:36 | uncanonicalize(...) : Uri | semmle.label | uncanonicalize(...) : Uri |
+| Test.java:474:34:474:35 | in : Uri | semmle.label | in : Uri |
+| Test.java:475:9:475:11 | out | semmle.label | out |
+| Test.java:480:25:480:50 | (...)... : ContentProvider | semmle.label | (...)... : ContentProvider |
+| Test.java:480:43:480:50 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:481:10:481:33 | wrap(...) : ContentResolver | semmle.label | wrap(...) : ContentResolver |
+| Test.java:481:31:481:32 | in : ContentProvider | semmle.label | in : ContentProvider |
+| Test.java:482:9:482:11 | out | semmle.label | out |
+| Test.java:487:31:487:62 | (...)... : ContentProviderClient | semmle.label | (...)... : ContentProviderClient |
+| Test.java:487:55:487:62 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:488:10:488:33 | wrap(...) : ContentResolver | semmle.label | wrap(...) : ContentResolver |
+| Test.java:488:31:488:32 | in : ContentProviderClient | semmle.label | in : ContentProviderClient |
+| Test.java:489:9:489:11 | out | semmle.label | out |
+| Test.java:494:16:494:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:494:25:494:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:495:4:495:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:495:12:495:13 | in : String | semmle.label | in : String |
+| Test.java:496:9:496:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:496:26:496:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:501:16:501:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:501:25:501:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:502:4:502:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:502:12:502:13 | in : String | semmle.label | in : String |
+| Test.java:503:9:503:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:503:26:503:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:508:16:508:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:508:25:508:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:509:4:509:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:509:12:509:13 | in : String | semmle.label | in : String |
+| Test.java:510:9:510:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:510:26:510:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:515:16:515:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:515:25:515:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:516:4:516:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:516:12:516:13 | in : String | semmle.label | in : String |
+| Test.java:517:9:517:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:517:26:517:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:522:16:522:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:522:25:522:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:523:4:523:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:523:12:523:13 | in : String | semmle.label | in : String |
+| Test.java:524:9:524:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:524:26:524:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:529:16:529:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:529:25:529:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:530:4:530:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:530:12:530:13 | in : String | semmle.label | in : String |
+| Test.java:531:9:531:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:531:26:531:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:536:16:536:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:536:25:536:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:537:4:537:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:537:12:537:13 | in : String | semmle.label | in : String |
+| Test.java:538:9:538:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:538:26:538:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:543:16:543:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:543:25:543:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:544:4:544:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:544:12:544:13 | in : String | semmle.label | in : String |
+| Test.java:545:9:545:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:545:26:545:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:550:16:550:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:550:25:550:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:551:4:551:6 | out [post update] : ContentValues [<map.key>] : String | semmle.label | out [post update] : ContentValues [<map.key>] : String |
+| Test.java:551:12:551:13 | in : String | semmle.label | in : String |
+| Test.java:552:9:552:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:552:26:552:28 | out : ContentValues [<map.key>] : String | semmle.label | out : ContentValues [<map.key>] : String |
+| Test.java:557:17:557:34 | (...)... : Boolean | semmle.label | (...)... : Boolean |
+| Test.java:557:27:557:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:558:4:558:6 | out [post update] : ContentValues [<map.value>] : Boolean | semmle.label | out [post update] : ContentValues [<map.value>] : Boolean |
+| Test.java:558:27:558:28 | in : Boolean | semmle.label | in : Boolean |
+| Test.java:559:9:559:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:559:28:559:30 | out : ContentValues [<map.value>] : Boolean | semmle.label | out : ContentValues [<map.value>] : Boolean |
+| Test.java:564:14:564:28 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:564:21:564:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:565:4:565:6 | out [post update] : ContentValues [<map.value>] : Number | semmle.label | out [post update] : ContentValues [<map.value>] : Number |
+| Test.java:565:27:565:28 | in : Number | semmle.label | in : Number |
+| Test.java:566:9:566:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:566:28:566:30 | out : ContentValues [<map.value>] : Number | semmle.label | out : ContentValues [<map.value>] : Number |
+| Test.java:571:16:571:32 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:571:25:571:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:572:4:572:6 | out [post update] : ContentValues [<map.value>] : Number | semmle.label | out [post update] : ContentValues [<map.value>] : Number |
+| Test.java:572:27:572:28 | in : Number | semmle.label | in : Number |
+| Test.java:573:9:573:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:573:28:573:30 | out : ContentValues [<map.value>] : Number | semmle.label | out : ContentValues [<map.value>] : Number |
+| Test.java:578:15:578:30 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:578:23:578:30 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:579:4:579:6 | out [post update] : ContentValues [<map.value>] : Number | semmle.label | out [post update] : ContentValues [<map.value>] : Number |
+| Test.java:579:27:579:28 | in : Number | semmle.label | in : Number |
+| Test.java:580:9:580:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:580:28:580:30 | out : ContentValues [<map.value>] : Number | semmle.label | out : ContentValues [<map.value>] : Number |
+| Test.java:585:17:585:34 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:585:27:585:34 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:586:4:586:6 | out [post update] : ContentValues [<map.value>] : Number | semmle.label | out [post update] : ContentValues [<map.value>] : Number |
+| Test.java:586:27:586:28 | in : Number | semmle.label | in : Number |
+| Test.java:587:9:587:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:587:28:587:30 | out : ContentValues [<map.value>] : Number | semmle.label | out : ContentValues [<map.value>] : Number |
+| Test.java:592:14:592:28 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:592:21:592:28 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:593:4:593:6 | out [post update] : ContentValues [<map.value>] : Number | semmle.label | out [post update] : ContentValues [<map.value>] : Number |
+| Test.java:593:27:593:28 | in : Number | semmle.label | in : Number |
+| Test.java:594:9:594:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:594:28:594:30 | out : ContentValues [<map.value>] : Number | semmle.label | out : ContentValues [<map.value>] : Number |
+| Test.java:599:15:599:30 | (...)... : Number | semmle.label | (...)... : Number |
+| Test.java:599:23:599:30 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:600:4:600:6 | out [post update] : ContentValues [<map.value>] : Number | semmle.label | out [post update] : ContentValues [<map.value>] : Number |
+| Test.java:600:27:600:28 | in : Number | semmle.label | in : Number |
+| Test.java:601:9:601:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:601:28:601:30 | out : ContentValues [<map.value>] : Number | semmle.label | out : ContentValues [<map.value>] : Number |
+| Test.java:606:16:606:32 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:606:25:606:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:607:4:607:6 | out [post update] : ContentValues [<map.value>] : String | semmle.label | out [post update] : ContentValues [<map.value>] : String |
+| Test.java:607:27:607:28 | in : String | semmle.label | in : String |
+| Test.java:608:9:608:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:608:28:608:30 | out : ContentValues [<map.value>] : String | semmle.label | out : ContentValues [<map.value>] : String |
+| Test.java:613:16:613:32 | (...)... : byte[] | semmle.label | (...)... : byte[] |
+| Test.java:613:25:613:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:614:4:614:6 | out [post update] : ContentValues [<map.value>] : byte[] | semmle.label | out [post update] : ContentValues [<map.value>] : byte[] |
+| Test.java:614:27:614:28 | in : byte[] | semmle.label | in : byte[] |
+| Test.java:615:9:615:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:615:28:615:30 | out : ContentValues [<map.value>] : byte[] | semmle.label | out : ContentValues [<map.value>] : byte[] |
+| Test.java:620:23:620:68 | (...)... : ContentValues [<map.key>] : Object | semmle.label | (...)... : ContentValues [<map.key>] : Object |
+| Test.java:620:39:620:68 | newWithMapKeyDefault(...) : Object [<map.key>] : Object | semmle.label | newWithMapKeyDefault(...) : Object [<map.key>] : Object |
+| Test.java:620:60:620:67 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:621:4:621:6 | out [post update] : ContentValues [<map.key>] : Object | semmle.label | out [post update] : ContentValues [<map.key>] : Object |
+| Test.java:621:15:621:16 | in : ContentValues [<map.key>] : Object | semmle.label | in : ContentValues [<map.key>] : Object |
+| Test.java:622:9:622:29 | getMapKeyDefault(...) | semmle.label | getMapKeyDefault(...) |
+| Test.java:622:26:622:28 | out : ContentValues [<map.key>] : Object | semmle.label | out : ContentValues [<map.key>] : Object |
+| Test.java:627:23:627:70 | (...)... : ContentValues [<map.value>] : Object | semmle.label | (...)... : ContentValues [<map.value>] : Object |
+| Test.java:627:39:627:70 | newWithMapValueDefault(...) : Object [<map.value>] : Object | semmle.label | newWithMapValueDefault(...) : Object [<map.value>] : Object |
+| Test.java:627:62:627:69 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:628:4:628:6 | out [post update] : ContentValues [<map.value>] : Object | semmle.label | out [post update] : ContentValues [<map.value>] : Object |
+| Test.java:628:15:628:16 | in : ContentValues [<map.value>] : Object | semmle.label | in : ContentValues [<map.value>] : Object |
+| Test.java:629:9:629:31 | getMapValueDefault(...) | semmle.label | getMapValueDefault(...) |
+| Test.java:629:28:629:30 | out : ContentValues [<map.value>] : Object | semmle.label | out : ContentValues [<map.value>] : Object |
+| Test.java:634:16:634:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:634:25:634:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:635:4:635:5 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:635:29:635:31 | out [post update] : CharArrayBuffer | semmle.label | out [post update] : CharArrayBuffer |
+| Test.java:636:9:636:11 | out | semmle.label | out |
+| Test.java:641:16:641:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:641:25:641:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:642:10:642:11 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:642:10:642:22 | getBlob(...) : byte[] | semmle.label | getBlob(...) : byte[] |
+| Test.java:643:9:643:11 | out | semmle.label | out |
+| Test.java:648:16:648:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:648:25:648:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:649:10:649:11 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:649:10:649:28 | getColumnName(...) : String | semmle.label | getColumnName(...) : String |
+| Test.java:650:9:650:11 | out | semmle.label | out |
+| Test.java:655:16:655:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:655:25:655:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:656:10:656:11 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:656:10:656:28 | getColumnNames(...) : String[] | semmle.label | getColumnNames(...) : String[] |
+| Test.java:657:9:657:11 | out | semmle.label | out |
+| Test.java:662:16:662:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:662:25:662:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:663:10:663:11 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:663:10:663:23 | getExtras(...) : Bundle | semmle.label | getExtras(...) : Bundle |
+| Test.java:664:9:664:11 | out | semmle.label | out |
+| Test.java:669:16:669:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:669:25:669:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:670:10:670:11 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:670:10:670:32 | getNotificationUri(...) : Uri | semmle.label | getNotificationUri(...) : Uri |
+| Test.java:671:9:671:11 | out | semmle.label | out |
+| Test.java:676:16:676:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:676:25:676:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:677:10:677:11 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:677:10:677:33 | getNotificationUris(...) : List | semmle.label | getNotificationUris(...) : List |
+| Test.java:678:9:678:11 | out | semmle.label | out |
+| Test.java:683:16:683:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:683:25:683:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:684:10:684:11 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:684:10:684:24 | getString(...) : String | semmle.label | getString(...) : String |
+| Test.java:685:9:685:11 | out | semmle.label | out |
+| Test.java:690:16:690:32 | (...)... : Cursor | semmle.label | (...)... : Cursor |
+| Test.java:690:25:690:32 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:691:10:691:11 | in : Cursor | semmle.label | in : Cursor |
+| Test.java:691:10:691:25 | respond(...) : Bundle | semmle.label | respond(...) : Bundle |
+| Test.java:692:9:692:11 | out | semmle.label | out |
+subpaths
+testFailures

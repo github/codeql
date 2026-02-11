@@ -52,6 +52,7 @@ import com.semmle.js.ast.IfStatement;
 import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportDefaultSpecifier;
 import com.semmle.js.ast.ImportNamespaceSpecifier;
+import com.semmle.js.ast.ImportPhaseModifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.InvokeExpression;
 import com.semmle.js.ast.LabeledStatement;
@@ -1203,11 +1204,13 @@ public class TypeScriptASTConverter {
     Literal source = tryConvertChild(node, "moduleSpecifier", Literal.class);
     Expression attributes = convertChild(node, "attributes");
     if (hasChild(node, "exportClause")) {
+      JsonElement exportClauseNode = node.get("exportClause");
       boolean hasTypeKeyword = node.get("isTypeOnly").getAsBoolean();
+      boolean isNamespaceExportNode = hasKind(exportClauseNode, "NamespaceExport");
       List<ExportSpecifier> specifiers =
-          hasKind(node.get("exportClause"), "NamespaceExport")
+          isNamespaceExportNode
               ? Collections.singletonList(convertChild(node, "exportClause"))
-              : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
+              : convertChildren(exportClauseNode.getAsJsonObject(), "elements");
       return new ExportNamedDeclaration(loc, null, specifiers, source, attributes, hasTypeKeyword);
     } else {
       return new ExportAllDeclaration(loc, source, attributes);
@@ -1215,15 +1218,22 @@ public class TypeScriptASTConverter {
   }
 
   private Node convertExportSpecifier(JsonObject node, SourceLocation loc) throws ParseError {
+    JsonObject localToken = node.get(hasChild(node, "propertyName") ? "propertyName" : "name").getAsJsonObject();
+    Identifier local = convertNodeAsIdentifier(localToken);
+    JsonObject exportedToken = node.get("name").getAsJsonObject();
+    Identifier exported = convertNodeAsIdentifier(exportedToken);
+
     return new ExportSpecifier(
         loc,
-        convertChild(node, hasChild(node, "propertyName") ? "propertyName" : "name"),
-        convertChild(node, "name"));
+        local,
+        exported);
   }
 
   private Node convertNamespaceExport(JsonObject node, SourceLocation loc) throws ParseError {
     // Convert the "* as ns" from an export declaration.
-    return new ExportNamespaceSpecifier(loc, convertChild(node, "name"));
+    JsonObject exportedNamespaceToken = node.get("name").getAsJsonObject();
+    Identifier exportedNamespaceIdentifier = convertNodeAsIdentifier(exportedNamespaceToken);
+    return new ExportNamespaceSpecifier(loc, exportedNamespaceIdentifier);
   }
 
   private Node convertExpressionStatement(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1395,7 +1405,7 @@ public class TypeScriptASTConverter {
     Literal src = tryConvertChild(node, "moduleSpecifier", Literal.class);
     Expression attributes = convertChild(node, "attributes");
     List<ImportSpecifier> specifiers = new ArrayList<>();
-    boolean hasTypeKeyword = false;
+    ImportPhaseModifier phaseModifier = ImportPhaseModifier.NONE;
     if (hasChild(node, "importClause")) {
       JsonObject importClause = node.get("importClause").getAsJsonObject();
       if (hasChild(importClause, "name")) {
@@ -1409,10 +1419,22 @@ public class TypeScriptASTConverter {
           specifiers.addAll(convertChildren(namedBindings, "elements"));
         }
       }
-      hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
+      if (hasChild(importClause, "phaseModifier")) {
+        String name = metadata.getSyntaxKindName(importClause.get("phaseModifier").getAsInt());
+        switch (name) {
+          case "DeferKeyword": {
+            phaseModifier = ImportPhaseModifier.DEFER;
+            break;
+          }
+          case "TypeKeyword": {
+            phaseModifier = ImportPhaseModifier.TYPE;
+            break;
+          }
+        }
+      }
     }
     ImportDeclaration importDecl =
-        new ImportDeclaration(loc, specifiers, src, attributes, hasTypeKeyword);
+        new ImportDeclaration(loc, specifiers, src, attributes, phaseModifier);
     attachSymbolInformation(importDecl, node);
     return importDecl;
   }
@@ -1431,7 +1453,8 @@ public class TypeScriptASTConverter {
 
   private Node convertImportSpecifier(JsonObject node, SourceLocation loc) throws ParseError {
     boolean hasImported = hasChild(node, "propertyName");
-    Identifier imported = convertChild(node, hasImported ? "propertyName" : "name");
+    JsonObject importedToken = node.get(hasImported? "propertyName" : "name").getAsJsonObject();
+    Identifier imported = convertNodeAsIdentifier(importedToken);
     Identifier local = convertChild(node, "name");
     boolean isTypeOnly = node.get("isTypeOnly").getAsBoolean() == true;
     return new ImportSpecifier(loc, imported, local, isTypeOnly);
@@ -1897,7 +1920,7 @@ public class TypeScriptASTConverter {
   }
 
   private ITypeExpression asType(Node node) {
-    return node instanceof ITypeExpression ? (ITypeExpression) node : null;
+    return node instanceof ITypeExpression && ((ITypeExpression)node).isValidTypeExpression() ? (ITypeExpression) node : null;
   }
 
   private List<ITypeExpression> convertChildrenAsTypes(JsonObject node, String child)

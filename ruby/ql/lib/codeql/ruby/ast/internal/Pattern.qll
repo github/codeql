@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Parameter

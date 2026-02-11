@@ -16,20 +16,6 @@ func TaintStepTest_SyncMapLoadOrStore_B0I0O0(sourceCQL interface{}) interface{} 
 	return intoInterface650
 }
 
-func TaintStepTest_SyncMapLoadOrStore_B1I0O0(sourceCQL interface{}) interface{} {
-	fromInterface784 := sourceCQL.(interface{})
-	var intoMap957 sync.Map
-	intoMap957.LoadOrStore(fromInterface784, nil)
-	return intoMap957
-}
-
-func TaintStepTest_SyncMapLoadOrStore_B1I0O1(sourceCQL interface{}) interface{} {
-	fromInterface520 := sourceCQL.(interface{})
-	var mediumObjCQL sync.Map
-	intoInterface443, _ := mediumObjCQL.LoadOrStore(fromInterface520, nil)
-	return intoInterface443
-}
-
 func TaintStepTest_SyncMapLoadOrStore_B1I1O0(sourceCQL interface{}) interface{} {
 	fromInterface127 := sourceCQL.(interface{})
 	var intoMap483 sync.Map
@@ -44,24 +30,11 @@ func TaintStepTest_SyncMapLoadOrStore_B1I1O1(sourceCQL interface{}) interface{} 
 	return intoInterface982
 }
 
-func TaintStepTest_SyncMapStore_B0I0O0(sourceCQL interface{}) interface{} {
-	fromInterface417 := sourceCQL.(interface{})
-	var intoMap584 sync.Map
-	intoMap584.Store(fromInterface417, nil)
-	return intoMap584
-}
-
 func TaintStepTest_SyncMapStore_B0I1O0(sourceCQL interface{}) interface{} {
 	fromInterface991 := sourceCQL.(interface{})
 	var intoMap881 sync.Map
 	intoMap881.Store(nil, fromInterface991)
 	return intoMap881
-}
-
-func TaintStepTest_SyncMapSwapinkey(sourceCQL interface{}) interface{} {
-	var m sync.Map
-	m.Swap(sourceCQL, "value")
-	return m
 }
 
 func TaintStepTest_SyncMapSwapinvalue(sourceCQL interface{}) interface{} {
@@ -107,16 +80,6 @@ func RunAllTaints_Sync() {
 		sink(1, out)
 	}
 	{
-		source := newSource(2)
-		out := TaintStepTest_SyncMapLoadOrStore_B1I0O0(source)
-		sink(2, out)
-	}
-	{
-		source := newSource(3)
-		out := TaintStepTest_SyncMapLoadOrStore_B1I0O1(source)
-		sink(3, out)
-	}
-	{
 		source := newSource(4)
 		out := TaintStepTest_SyncMapLoadOrStore_B1I1O0(source)
 		sink(4, out)
@@ -125,11 +88,6 @@ func RunAllTaints_Sync() {
 		source := newSource(5)
 		out := TaintStepTest_SyncMapLoadOrStore_B1I1O1(source)
 		sink(5, out)
-	}
-	{
-		source := newSource(6)
-		out := TaintStepTest_SyncMapStore_B0I0O0(source)
-		sink(6, out)
 	}
 	{
 		source := newSource(7)
@@ -145,11 +103,6 @@ func RunAllTaints_Sync() {
 		source := newSource(9)
 		out := TaintStepTest_SyncPoolPut_B0I0O0(source)
 		sink(9, out)
-	}
-	{
-		source := newSource(10)
-		out := TaintStepTest_SyncMapSwapinkey(source)
-		sink(10, out)
 	}
 	{
 		source := newSource(11)

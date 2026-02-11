@@ -25,21 +25,6 @@ abstract class Sink extends ApiSinkExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `SqlInjection` instead.
- *
- * A taint-tracking configuration for SQL injection vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "SqlInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for SQL injection vulnerabilities.
  */
 module SqlInjectionConfig implements DataFlow::ConfigSig {
@@ -58,6 +43,8 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
    * `node` from the data flow graph.
    */
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**
@@ -80,16 +67,21 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 deprecated class LocalSource extends DataFlow::Node instanceof LocalFlowSource { }
 
 /** A source supported by the current threat model. */
-class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
 /** An SQL expression passed to an API call that executes SQL. */
 class SqlInjectionExprSink extends Sink {
   SqlInjectionExprSink() { exists(SqlExpr s | this.getExpr() = s.getSql()) }
 }
 
-/** SQL sinks defined through CSV models. */
+/** An SQL sink defined through CSV models. */
 private class ExternalSqlInjectionExprSink extends Sink {
   ExternalSqlInjectionExprSink() { sinkNode(this, "sql-injection") }
+}
+
+/** A sanitizer for SQL injection defined through Models as Data. */
+private class ExternalSqlInjectionSanitizer extends Sanitizer {
+  ExternalSqlInjectionSanitizer() { barrierNode(this, "sql-injection") }
 }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }

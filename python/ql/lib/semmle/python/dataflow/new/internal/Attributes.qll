@@ -1,9 +1,10 @@
 /** This module provides an API for attribute reads and writes. */
 
+private import python
 import DataFlowUtil
 import DataFlowPublic
 private import DataFlowPrivate
-private import semmle.python.types.Builtins
+private import semmle.python.dataflow.new.internal.Builtins
 
 /**
  * A data flow node that reads or writes an attribute of an object.
@@ -64,6 +65,15 @@ abstract class AttrRef extends Node {
 abstract class AttrWrite extends AttrRef {
   /** Gets the data flow node corresponding to the value that is written to the attribute. */
   abstract Node getValue();
+
+  /**
+   * Holds if this attribute write writes the attribute named `attrName` on object `object` with
+   * value `value`.
+   */
+  predicate writes(Node object, string attrName, Node value) {
+    this.accesses(object, attrName) and
+    this.getValue() = value
+  }
 }
 
 /**
@@ -125,8 +135,12 @@ private class BuiltInCallNode extends CallNode {
 
   BuiltInCallNode() {
     // TODO disallow instances where the name of the built-in may refer to an in-scope variable of that name.
-    exists(NameNode id | this.getFunction() = id and id.getId() = name and id.isGlobal()) and
-    name = any(Builtin b).getName()
+    exists(NameNode id |
+      name = Builtins::getBuiltinName() and
+      this.getFunction() = id and
+      id.getId() = name and
+      id.isGlobal()
+    )
   }
 
   /** Gets the name of the built-in function that is called at this `CallNode` */
@@ -225,7 +239,10 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
  * - Dynamic attribute reads using `getattr`: `getattr(object, attr)`
  * - Qualified imports: `from module import attr as name`
  */
-abstract class AttrRead extends AttrRef, Node, LocalSourceNode { }
+abstract class AttrRead extends AttrRef, Node, LocalSourceNode {
+  /** Holds if this attribute read reads the attribute named `attrName` on the object `object`. */
+  predicate reads(Node object, string attrName) { this.accesses(object, attrName) }
+}
 
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {

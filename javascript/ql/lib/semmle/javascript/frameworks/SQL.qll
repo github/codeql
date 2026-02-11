@@ -9,13 +9,14 @@ module SQL {
   abstract class SqlString extends DataFlow::Node { }
 
   private class SqlStringFromModel extends SqlString {
-    SqlStringFromModel() { this = ModelOutput::getASinkNode("sql-injection").asSink() }
+    SqlStringFromModel() { ModelOutput::sinkNode(this, "sql-injection") }
   }
 
   /**
    * An dataflow node that sanitizes a string to make it safe to embed into
    * a SQL command.
    */
+  overlay[global]
   abstract class SqlSanitizer extends DataFlow::Node {
     DataFlow::Node input;
     DataFlow::Node output;
@@ -221,7 +222,10 @@ private module Postgres {
 
     /** Gets a value that is plugged into a raw placeholder variable, making it a sink for SQL injection. */
     private DataFlow::Node getARawValue() {
-      result = this.getValues() and this.getARawParameterName() = "1" // Special case: if the argument is not an array or object, it's just plugged into $1
+      result = this.getValues() and
+      this.getARawParameterName() = "1" and // Special case: if the argument is not an array or object, it's just plugged into $1
+      not result instanceof DataFlow::ArrayCreationNode and
+      not result instanceof DataFlow::ObjectLiteralNode
       or
       exists(DataFlow::SourceNode values | values = this.getValues().getALocalSource() |
         result = values.getAPropertyWrite(this.getARawParameterName()).getRhs()

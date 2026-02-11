@@ -1,0 +1,29 @@
+name: Issue Workflow
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  redirectIssue:
+    runs-on: ubuntu-latest
+    name: Check for issue transfer
+    env:
+      content_analysis_response: undefined
+    steps:
+      - uses: actions/checkout@v2
+      - name: Remove conflicting chars
+        env:
+          ISSUE_TITLE: ${{github.event.issue.title}}
+        uses: frabert/replace-string-action@1.2
+        id: remove_quotations
+        with:
+          pattern: "\""
+          string: ${{env.ISSUE_TITLE}}          
+          replace-with: "-"
+      - name: Check info
+        id: check-info
+        run: |
+          echo "foo $(pwsh bar ${{steps.remove_quotations.outputs.replaced}}) " >> $GITHUB_ENV
+
+

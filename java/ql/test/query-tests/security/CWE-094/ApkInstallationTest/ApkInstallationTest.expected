@@ -1,0 +1,16 @@
+#select
+| ApkInstallation.java:14:31:14:58 | fromFile(...) | ApkInstallation.java:14:31:14:58 | fromFile(...) | ApkInstallation.java:14:31:14:58 | fromFile(...) | Arbitrary Android APK installation. |
+| ApkInstallation.java:22:24:22:51 | fromFile(...) | ApkInstallation.java:22:24:22:51 | fromFile(...) | ApkInstallation.java:22:24:22:51 | fromFile(...) | Arbitrary Android APK installation. |
+| ApkInstallation.java:30:31:30:48 | fromFile(...) | ApkInstallation.java:30:31:30:48 | fromFile(...) | ApkInstallation.java:30:31:30:48 | fromFile(...) | Arbitrary Android APK installation. |
+| ApkInstallation.java:38:24:38:41 | fromFile(...) | ApkInstallation.java:38:24:38:41 | fromFile(...) | ApkInstallation.java:38:24:38:41 | fromFile(...) | Arbitrary Android APK installation. |
+| ApkInstallation.java:45:24:45:41 | fromFile(...) | ApkInstallation.java:45:24:45:41 | fromFile(...) | ApkInstallation.java:45:24:45:41 | fromFile(...) | Arbitrary Android APK installation. |
+| ApkInstallation.java:53:24:53:41 | fromFile(...) | ApkInstallation.java:53:24:53:41 | fromFile(...) | ApkInstallation.java:53:24:53:41 | fromFile(...) | Arbitrary Android APK installation. |
+edges
+nodes
+| ApkInstallation.java:14:31:14:58 | fromFile(...) | semmle.label | fromFile(...) |
+| ApkInstallation.java:22:24:22:51 | fromFile(...) | semmle.label | fromFile(...) |
+| ApkInstallation.java:30:31:30:48 | fromFile(...) | semmle.label | fromFile(...) |
+| ApkInstallation.java:38:24:38:41 | fromFile(...) | semmle.label | fromFile(...) |
+| ApkInstallation.java:45:24:45:41 | fromFile(...) | semmle.label | fromFile(...) |
+| ApkInstallation.java:53:24:53:41 | fromFile(...) | semmle.label | fromFile(...) |
+subpaths

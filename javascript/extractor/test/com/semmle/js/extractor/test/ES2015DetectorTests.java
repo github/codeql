@@ -16,7 +16,7 @@ public class ES2015DetectorTests {
   private static final ExtractorConfig CONFIG = new ExtractorConfig(true);
 
   private void isES2015(String src, boolean expected) {
-    Result res = JSParser.parse(CONFIG, SourceType.MODULE, src, new ExtractionMetrics());
+    Result res = JSParser.parse(CONFIG, SourceType.MODULE, ".jsx", src, new ExtractionMetrics());
     Node ast = res.getAST();
     Assert.assertNotNull(ast);
     Assert.assertTrue(ES2015Detector.looksLikeES2015(ast) == expected);

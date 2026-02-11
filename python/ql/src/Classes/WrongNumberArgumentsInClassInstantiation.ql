@@ -3,7 +3,8 @@
  * @description Using too many or too few arguments in a call to the `__init__`
  *              method of a class will result in a TypeError at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-685
  * @problem.severity error
@@ -14,6 +15,7 @@
 
 import python
 import Expressions.CallArgs
+private import LegacyPointsTo
 
 from Call call, ClassValue cls, string too, string should, int limit, FunctionValue init
 where

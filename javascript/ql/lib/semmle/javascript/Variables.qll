@@ -1,4 +1,6 @@
 /** Provides classes for modeling program variables. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -25,6 +27,12 @@ class Scope extends @scope {
   /** Gets the variable with the given name declared in this scope. */
   Variable getVariable(string name) {
     result = this.getAVariable() and
+    result.getName() = name
+  }
+
+  /** Gets the local type name with the given name declared in this scope. */
+  LocalTypeName getLocalTypeName(string name) {
+    result.getScope() = this and
     result.getName() = name
   }
 }
@@ -56,6 +64,7 @@ class LocalScope extends Scope {
  */
 class ModuleScope extends Scope, @module_scope {
   /** Gets the module that induces this scope. */
+  overlay[global]
   Module getModule() { result = this.getScopeElement() }
 
   override string toString() { result = "module scope" }
@@ -128,8 +137,26 @@ class Variable extends @variable, LexicalName {
   /** Gets the scope this variable is declared in. */
   override Scope getScope() { variables(this, _, result) }
 
+  /**
+   * Holds if this variable is declared in the top-level of a module using a `declare` statement.
+   *
+   * For example:
+   * ```js
+   * declare var $: any;
+   * ```
+   *
+   * Such variables are generally treated as a global variables, except for type-checking related purposes.
+   */
+  pragma[nomagic]
+  predicate isTopLevelWithAmbientDeclaration() {
+    this.getScope() instanceof ModuleScope and
+    forex(VarDecl decl | decl = this.getADeclaration() | decl.isAmbient())
+  }
+
   /** Holds if this is a global variable. */
-  predicate isGlobal() { this.getScope() instanceof GlobalScope }
+  predicate isGlobal() {
+    this.getScope() instanceof GlobalScope or this.isTopLevelWithAmbientDeclaration()
+  }
 
   /**
    * Holds if this is a variable exported from a TypeScript namespace.
@@ -232,6 +259,7 @@ class VarRef extends @varref, Identifier, BindingPattern, LexicalRef {
 
   override VarRef getABindingVarRef() { result = this }
 
+  overlay[global]
   override predicate isImpure() { none() }
 
   override Expr getUnderlyingReference() { result = this }
@@ -329,9 +357,9 @@ class LocalVariable extends Variable {
    * If the variable has one or more declarations, the location of the first declaration is used.
    * If the variable has no declaration, the entry point of its declaring container is used.
    */
-  DbLocation getLocation() {
+  Location getLocation() {
     result =
-      min(DbLocation loc |
+      min(Location loc |
         loc = this.getADeclaration().getLocation()
       |
         loc order by loc.getStartLine(), loc.getStartColumn()
@@ -519,6 +547,7 @@ class ArrayPattern extends DestructuringPattern, @array_pattern {
   /** Holds if this array pattern has an omitted element. */
   predicate hasOmittedElement() { this.elementIsOmitted(_) }
 
+  overlay[global]
   override predicate isImpure() { this.getAnElement().isImpure() }
 
   override VarRef getABindingVarRef() {
@@ -559,6 +588,7 @@ class ObjectPattern extends DestructuringPattern, @object_pattern {
   /** Gets the rest property pattern of this object pattern, if any. */
   override Expr getRest() { result = this.getChildExpr(-1) }
 
+  overlay[global]
   override predicate isImpure() { this.getAPropertyPattern().isImpure() }
 
   override VarRef getABindingVarRef() {
@@ -616,6 +646,7 @@ class PropertyPattern extends @property, AstNode {
   ObjectPattern getObjectPattern() { properties(this, result, _, _, _) }
 
   /** Holds if this pattern is impure, that is, if its evaluation could have side effects. */
+  overlay[global]
   predicate isImpure() {
     this.isComputed() and this.getNameExpr().isImpure()
     or
@@ -820,6 +851,7 @@ class SimpleParameter extends Parameter, VarDecl {
    * Gets a use of this parameter that refers to its initial value as
    * passed in from the caller.
    */
+  overlay[global]
   VarUse getAnInitialUse() {
     exists(SsaDefinition ssa |
       ssa.getAContributingVarDef() = this and

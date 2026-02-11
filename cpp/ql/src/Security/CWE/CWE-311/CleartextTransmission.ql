@@ -245,6 +245,16 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
     // sources to not get path duplication.
     isSource(node)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(NetworkSendRecv networkSendRecv |
+      result = [networkSendRecv.getLocation(), sink.getLocation()]
+    |
+      isSinkSendRecv(sink, networkSendRecv)
+    )
+  }
 }
 
 module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
@@ -253,7 +263,7 @@ module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
  * A taint flow configuration for flow from a sensitive expression to an encryption operation.
  */
 module ToEncryptionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { FromSensitiveFlow::flow(source, _) }
+  predicate isSource(DataFlow::Node source) { FromSensitiveFlow::flowFrom(source) }
 
   predicate isSink(DataFlow::Node sink) { isSinkEncrypt(sink, _) }
 
@@ -265,6 +275,10 @@ module ToEncryptionConfig implements DataFlow::ConfigSig {
     // As any use of a sensitive variable is a potential source, we need to block flow into
     // sources to not get path duplication.
     isSource(node)
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
   }
 }
 
@@ -281,6 +295,10 @@ module FromEncryptionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
+  }
 }
 
 module FromEncryptionFlow = TaintTracking::Global<FromEncryptionConfig>;
@@ -293,7 +311,7 @@ where
   FromSensitiveFlow::flowPath(source, sink) and
   isSinkSendRecv(sink.getNode(), networkSendRecv) and
   // no flow from sensitive -> evidence of encryption
-  not ToEncryptionFlow::flow(source.getNode(), _) and
+  not ToEncryptionFlow::flowFrom(source.getNode()) and
   not FromEncryptionFlow::flowTo(sink.getNode()) and
   // construct result
   if networkSendRecv instanceof NetworkSend

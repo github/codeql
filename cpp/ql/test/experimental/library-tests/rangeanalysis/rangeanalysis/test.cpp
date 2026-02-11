@@ -51,7 +51,7 @@ int test5(int x, int y, int z) {
   }
   if (x < y) {
     if (y < z) {
-      sink(x); // x < z is not inferred here
+      sink(x); // x < z is inferred here
     }
   }
 }

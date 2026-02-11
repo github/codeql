@@ -2,7 +2,8 @@
  * @name Duplicate key in dict literal
  * @description Duplicate key in dict literal. All but the last will be lost.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  * @problem.severity warning

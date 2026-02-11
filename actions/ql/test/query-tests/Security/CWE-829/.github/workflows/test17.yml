@@ -1,0 +1,23 @@
+name: Sonar
+on:
+    workflow_run:
+        workflows: [PR Build]
+        types: [completed]
+jobs:
+    sonar:
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        if: github.event.workflow_run.conclusion == 'success'
+        steps:
+            - name: Checkout PR code
+              uses: actions/checkout@v3
+              with:
+                  repository: ${{ github.event.workflow_run.head_repository.full_name }}
+                  ref: ${{ github.event.workflow_run.head_branch }}
+                  fetch-depth: 0
+
+            - name: SonarCloud Scan
+              uses: sonarsource/sonarcloud-github-action@master
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

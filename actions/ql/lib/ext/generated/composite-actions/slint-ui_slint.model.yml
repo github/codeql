@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["slint-ui/slint", "*", "input.extra-packages", "code-injection", "generated"]
+     - ["slint-ui/slint", "*", "input.binary", "code-injection", "generated"]

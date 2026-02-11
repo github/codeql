@@ -1,0 +1,3 @@
+query: ProblemQuery.ql
+postprocess:
+  - utils/test/InlineExpectationsTestQuery.ql

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["uyuni-project/uyuni/.github/workflows/acceptance_tests_common.yml", "*", "input.server_id", "code-injection", "generated"]
+     - ["uyuni-project/uyuni/.github/workflows/acceptance_tests_common.yml", "*", "input.secondary_tests", "code-injection", "generated"]

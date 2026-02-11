@@ -86,17 +86,65 @@
  *    This information is used in a heuristic for dataflow analysis to determine, if a
  *    model or source code should be used for determining flow.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
+private import semmle.code.java.controlflow.Guards
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.ExternalFlowExtensions as Extensions
+private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.ModelsAsData as SharedMaD
+
+private module MadInput implements SharedMaD::InputSig {
+  /** Holds if a source model exists for the given parameters. */
+  predicate additionalSourceModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
+            madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+
+  /** Holds if a sink model exists for the given parameters. */
+  predicate additionalSinkModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+
+  /** Holds if a summary model exists for the given parameters. */
+  predicate additionalSummaryModel(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      any(ActiveExperimentalModelsInternal q)
+          .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
+            provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+}
+
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
+
+import MaD
 
 /**
  * A class for activating additional model rows.
@@ -104,9 +152,9 @@ private import codeql.mad.ModelValidation as SharedModelVal
  * Extend this class to include experimental model rows with `this` name
  * in data flow analysis.
  */
-abstract class ActiveExperimentalModels extends string {
+abstract private class ActiveExperimentalModelsInternal extends string {
   bindingset[this]
-  ActiveExperimentalModels() { any() }
+  ActiveExperimentalModelsInternal() { any() }
 
   /**
    * Holds if an experimental source model exists for the given parameters.
@@ -124,9 +172,9 @@ abstract class ActiveExperimentalModels extends string {
    */
   predicate sinkModel(
     string package, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+    string input, string kind, string provenance, QlBuiltins::ExtensionId madId
   ) {
-    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, output, kind,
+    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
       provenance, this, madId)
   }
 
@@ -142,104 +190,50 @@ abstract class ActiveExperimentalModels extends string {
   }
 }
 
-/** Holds if a source model exists for the given parameters. */
-predicate sourceModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance,
-      madId)
-    or
-    any(ActiveExperimentalModels q)
-        .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance, madId)
-  )
-}
-
-/** Holds if a sink model exists for the given parameters. */
-predicate sinkModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
-      madId)
-    or
-    any(ActiveExperimentalModels q)
-        .sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance, madId)
-  )
-}
-
-/** Holds if a summary model exists for the given parameters. */
-predicate summaryModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  (
-    Extensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId)
-    or
-    any(ActiveExperimentalModels q)
-        .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-          provenance, madId)
-  )
-}
-
-/** Holds if a neutral model exists for the given parameters. */
-predicate neutralModel = Extensions::neutralModel/6;
-
-private predicate relevantPackage(string package) {
-  sourceModel(package, _, _, _, _, _, _, _, _, _) or
-  sinkModel(package, _, _, _, _, _, _, _, _, _) or
-  summaryModel(package, _, _, _, _, _, _, _, _, _, _)
-}
-
-private predicate packageLink(string shortpkg, string longpkg) {
-  relevantPackage(shortpkg) and
-  relevantPackage(longpkg) and
-  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
-}
-
-private predicate canonicalPackage(string package) {
-  relevantPackage(package) and not packageLink(_, package)
-}
-
-private predicate canonicalPkgLink(string package, string subpkg) {
-  canonicalPackage(package) and
-  (subpkg = package or packageLink(package, subpkg))
-}
+deprecated class ActiveExperimentalModels = ActiveExperimentalModelsInternal;
 
 /**
- * Holds if MaD framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * Holds if the given extension tuple `madId` should pretty-print as `model`.
+ *
+ * This predicate should only be used in tests.
  */
-predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
-  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
-  (
-    part = "source" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance |
-        canonicalPkgLink(package, subpkg) and
-        sourceModel(subpkg, type, subtypes, name, signature, ext, output, kind, provenance, _)
-      )
-    or
-    part = "sink" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance |
-        canonicalPkgLink(package, subpkg) and
-        sinkModel(subpkg, type, subtypes, name, signature, ext, input, kind, provenance, _)
-      )
-    or
-    part = "summary" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance |
-        canonicalPkgLink(package, subpkg) and
-        summaryModel(subpkg, type, subtypes, name, signature, ext, input, output, kind, provenance,
-          _)
-      )
+predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
+  MaD::interpretModelForTest(madId, model)
+  or
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string output, string kind, string provenance
+  |
+    Extensions::experimentalSourceModel(package, type, subtypes, name, signature, ext, output, kind,
+      provenance, _, madId)
+  |
+    model =
+      "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + output + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string kind, string provenance
+  |
+    Extensions::experimentalSinkModel(package, type, subtypes, name, signature, ext, input, kind,
+      provenance, _, madId)
+  |
+    model =
+      "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + kind + "; " + provenance
+  )
+  or
+  exists(
+    string package, string type, boolean subtypes, string name, string signature, string ext,
+    string input, string output, string kind, string provenance
+  |
+    Extensions::experimentalSummaryModel(package, type, subtypes, name, signature, ext, input,
+      output, kind, provenance, _, madId)
+  |
+    model =
+      "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
+        ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
   )
 }
 
@@ -251,7 +245,9 @@ module ModelValidation {
     summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
     summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
     sinkModel(_, _, _, _, _, _, path, _, _, _) or
-    sourceModel(_, _, _, _, _, _, path, _, _, _)
+    sourceModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierGuardModel(_, _, _, _, _, _, path, _, _, _, _)
   }
 
   private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
@@ -263,6 +259,8 @@ module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
+      or
+      barrierGuardModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "barrier guard"
       or
       summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
@@ -286,6 +284,8 @@ module ModelValidation {
     exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
+      barrierModel(_, _, _, _, _, _, output, _, _, _) and pred = "barrier"
+      or
       summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
       (
@@ -303,7 +303,13 @@ module ModelValidation {
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
     predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
+    predicate sinkKind(string kind) {
+      sinkModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierGuardModel(_, _, _, _, _, _, _, _, kind, _, _)
+    }
 
     predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
 
@@ -320,6 +326,11 @@ module ModelValidation {
       sourceModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "source"
       or
       sinkModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "sink"
+      or
+      barrierModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "barrier"
+      or
+      barrierGuardModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
+      pred = "barrier guard"
       or
       summaryModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
@@ -346,6 +357,14 @@ module ModelValidation {
       invalidProvenance(provenance) and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
+    or
+    exists(string acceptingvalue |
+      barrierGuardModel(_, _, _, _, _, _, _, acceptingvalue, _, _, _) and
+      invalidAcceptingValue(acceptingvalue) and
+      result =
+        "Unrecognized accepting value description \"" + acceptingvalue +
+          "\" in barrier guard model."
+    )
   }
 
   /** Holds if some row in a MaD flow model appears to contain typos. */
@@ -366,18 +385,22 @@ private predicate elementSpec(
   or
   sinkModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
+  barrierModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierGuardModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
+  or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
-  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = true
 }
 
 private string getNestedName(Type t) {
   not t instanceof RefType and result = t.toString()
   or
-  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).nestedName()
+  not t.(Array).getElementType() instanceof NestedType and result = t.(RefType).getNestedName()
   or
   result =
-    t.(Array).getElementType().(NestedType).getEnclosingType().nestedName() + "$" + t.getName()
+    t.(Array).getElementType().(NestedType).getEnclosingType().getNestedName() + "$" + t.getName()
 }
 
 private string getQualifiedName(Type t) {
@@ -526,6 +549,53 @@ private module Cached {
       isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private GuardValue convertAcceptingValue(AcceptingValue av) {
+    av.isTrue() and result.asBooleanValue() = true
+    or
+    av.isFalse() and result.asBooleanValue() = false
+    or
+    av.isNoException() and result.getDualValue().isThrowsException()
+    or
+    av.isZero() and result.asIntValue() = 0
+    or
+    av.isNotZero() and result.getDualValue().asIntValue() = 0
+    or
+    av.isNull() and result.isNullValue()
+    or
+    av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(Guard g, Expr e, GuardValue gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, AcceptingValue acceptingvalue, string kind,
+      string model
+    |
+      isBarrierGuardNode(n, acceptingvalue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingvalue)
+    |
+      g.(Call).getAnArgument() = e or g.(MethodCall).getQualifier() = e
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+  }
 }
 
 import Cached
@@ -542,63 +612,35 @@ predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
  */
 predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
 
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(Node node, string kind) { barrierNode(node, kind, _) }
+
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _, _) }
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  boolean isExact_;
+  string model_;
 
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model, _) and
-      provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model, _) and
-      provenance.isGenerated()
-    ) and
-    not exists(Provenance provenance |
-      neutralElement(this, "summary", provenance, _) and
-      provenance.isManual()
-    )
-  }
+  SummarizedCallableAdapter() { summaryElement(this, input_, output_, kind, p_, model_, isExact_) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
-      or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
-    |
-      if kind = "value" then preservesValue = true else preservesValue = false
-    )
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = isExact_ and
+    model = model_
   }
-
-  override predicate hasProvenance(Provenance provenance) {
-    summaryElement(this, _, _, _, provenance, _, _)
-  }
-
-  override predicate hasExactModel() { summaryElement(this, _, _, _, _, _, true) }
 }
 
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-  boolean exact;
+final class SinkCallable = SinkModelCallable;
 
-  NeutralCallableAdapter() { neutralElement(this, kind, provenance_, exact) }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
-
-  override predicate hasExactModel() { exact = true }
-}
+final class SourceCallable = SourceModelCallable;

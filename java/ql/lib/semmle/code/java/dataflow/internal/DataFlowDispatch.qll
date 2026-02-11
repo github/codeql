@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import DataFlowPrivate
 private import DataFlowUtil
@@ -9,7 +12,11 @@ private import semmle.code.java.dispatch.internal.Unification
 
 private module DispatchImpl {
   private predicate hasHighConfidenceTarget(Call c) {
-    exists(Impl::Public::SummarizedCallable sc | sc.getACall() = c and not sc.applyGeneratedModel())
+    exists(Impl::Public::SummarizedCallable sc, Impl::Public::Provenance p |
+      sc.getACall() = c and
+      sc.propagatesFlow(_, _, _, p, _, _) and
+      not p.isGenerated()
+    )
     or
     exists(Impl::Public::NeutralSummaryCallable nc | nc.getACall() = c and nc.hasManualModel())
     or
@@ -22,8 +29,10 @@ private module DispatchImpl {
   private predicate hasExactManualModel(Call c, Callable tgt) {
     tgt = c.getCallee().getSourceDeclaration() and
     (
-      exists(Impl::Public::SummarizedCallable sc |
-        sc.getACall() = c and sc.hasExactModel() and sc.hasManualModel()
+      exists(Impl::Public::SummarizedCallable sc, Impl::Public::Provenance p |
+        sc.getACall() = c and
+        sc.propagatesFlow(_, _, _, p, true, _) and
+        p.isManual()
       )
       or
       exists(Impl::Public::NeutralSummaryCallable nc |
@@ -40,11 +49,22 @@ private module DispatchImpl {
     else any()
   }
 
-  /** Gets a viable implementation of the target of the given `Call`. */
+  /**
+   * Gets a viable implementation of the target of the given `Call`.
+   * The following heuristic is applied for finding the appropriate callable:
+   * In general, dispatch to both any existing model and any viable source dispatch.
+   * However, if the model is generated and the static call target is in the source then
+   * we trust the source more than the model and skip dispatch to the model.
+   * Vice versa, if the model is manual and the source dispatch has a comparatively low
+   * confidence then we only dispatch to the model. Additionally, manual models that
+   * match a source dispatch exactly take precedence over the source.
+   */
   DataFlowCallable viableCallable(DataFlowCall c) {
-    result.asCallable() = sourceDispatch(c.asCall())
-    or
-    result.asSummarizedCallable().getACall() = c.asCall()
+    exists(Call call | call = c.asCall() |
+      result.asCallable() = sourceDispatch(call)
+      or
+      result.asSummarizedCallable().getACall() = call
+    )
   }
 
   /**
@@ -189,6 +209,7 @@ private module DispatchImpl {
   }
 
   /** Holds if arguments at position `apos` match parameters at position `ppos`. */
+  overlay[caller?]
   pragma[inline]
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 }

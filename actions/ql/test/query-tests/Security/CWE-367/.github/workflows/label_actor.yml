@@ -1,0 +1,17 @@
+# Making Label gates the only ones bypassable with TOCTOU races since actor or association ones should not be bypassable
+name: Label Trigger Test
+on:
+  pull_request_target:
+    types: [labeled]
+    branches: [main]
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'npm' && github.actor == 'dependabot[bot]'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - run: bash label_example/tests.sh

@@ -34,30 +34,18 @@ private module Input implements InputSig<Location, CsharpDataFlow> {
     n instanceof FlowSummaryNode
     or
     n.asExpr().(ObjectCreation).hasInitializer()
+    or
+    exists(
+      n.(PostUpdateNode).getPreUpdateNode().asExprAtNode(LocalFlow::getPostUpdateReverseStep(_))
+    )
   }
 
   predicate argHasPostUpdateExclude(ArgumentNode n) {
     n instanceof FlowSummaryNode
     or
-    not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
-    or
     n instanceof ParamsArgumentNode
-  }
-
-  predicate postHasUniquePreExclude(PostUpdateNode n) {
-    exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
-      e = LocalFlow::getAPostUpdateNodeForArg(arg) and
-      e != arg and
-      n = TExprPostUpdateNode(e)
-    )
-  }
-
-  predicate uniquePostUpdateExclude(Node n) {
-    exists(ControlFlow::Nodes::ExprNode e, ControlFlow::Nodes::ExprNode arg |
-      e = LocalFlow::getAPostUpdateNodeForArg(arg) and
-      e != arg and
-      n.asExpr() = arg.getExpr()
-    )
+    or
+    n.asExpr() = any(Expr e | not exprMayHavePostUpdateNode(e))
   }
 
   predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }

@@ -24,11 +24,11 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
       const swift::ExistentialMetatypeType& type);
   codeql::TypeAliasType translateTypeAliasType(const swift::TypeAliasType& type);
   codeql::DependentMemberType translateDependentMemberType(const swift::DependentMemberType& type);
-  codeql::ParenType translateParenType(const swift::ParenType& type);
   codeql::UnarySyntaxSugarType translateUnarySyntaxSugarType(
       const swift::UnarySyntaxSugarType& type);
   codeql::OptionalType translateOptionalType(const swift::OptionalType& type);
   codeql::ArraySliceType translateArraySliceType(const swift::ArraySliceType& type);
+  codeql::InlineArrayType translateInlineArrayType(const swift::InlineArrayType& type);
   codeql::DictionaryType translateDictionaryType(const swift::DictionaryType& type);
   codeql::GenericFunctionType translateGenericFunctionType(const swift::GenericFunctionType& type);
   codeql::GenericTypeParamType translateGenericTypeParamType(
@@ -69,7 +69,8 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   codeql::BuiltinIntegerLiteralType translateBuiltinIntegerLiteralType(
       const swift::BuiltinIntegerLiteralType& type);
   codeql::BuiltinIntegerType translateBuiltinIntegerType(const swift::BuiltinIntegerType& type);
-  codeql::OpenedArchetypeType translateOpenedArchetypeType(const swift::OpenedArchetypeType& type);
+  codeql::ExistentialArchetypeType translateExistentialArchetypeType(
+      const swift::ExistentialArchetypeType& type);
   codeql::ModuleType translateModuleType(const swift::ModuleType& type);
   codeql::OpaqueTypeArchetypeType translateOpaqueTypeArchetypeType(
       const swift::OpaqueTypeArchetypeType& type);
@@ -83,6 +84,7 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   codeql::PackType translatePackType(const swift::PackType& type);
   codeql::PackElementType translatePackElementType(const swift::PackElementType& type);
   codeql::PackExpansionType translatePackExpansionType(const swift::PackExpansionType& type);
+  codeql::IntegerType translateIntegerType(const swift::IntegerType& type);
 
  private:
   void fillType(const swift::TypeBase& type, codeql::Type& entry);

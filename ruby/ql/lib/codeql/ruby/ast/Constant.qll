@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import internal.AST
 private import internal.Constant
@@ -6,6 +9,7 @@ private import internal.Variable
 private import internal.TreeSitter
 
 /** A constant value. */
+overlay[global]
 class ConstantValue extends TConstantValue {
   /** Gets a textual representation of this constant value. */
   final string toString() { this.hasValueWithType(result, _) }
@@ -134,6 +138,7 @@ class ConstantValue extends TConstantValue {
 }
 
 /** Provides different sub classes of `ConstantValue`. */
+overlay[global]
 module ConstantValue {
   /** A constant integer value. */
   class ConstantIntegerValue extends ConstantValue, TInt { }
@@ -268,15 +273,18 @@ class ConstantReadAccess extends ConstantAccess {
    *
    * the value being read at `M::CONST` is `"const"`.
    */
+  overlay[global]
   Expr getValue() { result = getConstantReadAccessValue(this) }
 
   /**
    * Gets a fully qualified name for this constant read, based on the context in
    * which it occurs.
    */
+  overlay[global]
   string getAQualifiedName() { result = resolveConstant(this) }
 
   /** Gets the module that this read access resolves to, if any. */
+  overlay[global]
   Module getModule() { result = resolveConstantReadAccess(this) }
 
   final override string getAPrimaryQlClass() { result = "ConstantReadAccess" }
@@ -342,6 +350,7 @@ class ConstantWriteAccess extends ConstantAccess {
    * constants up the namespace chain, the fully qualified name of a nested
    * constant can be ambiguous from just statically looking at the AST.
    */
+  overlay[global]
   string getAQualifiedName() { result = resolveConstantWrite(this) }
 }
 

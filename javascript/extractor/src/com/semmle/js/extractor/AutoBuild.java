@@ -39,6 +39,8 @@ import java.util.stream.Stream;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
+import com.semmle.js.extractor.tsconfig.TsConfigJson;
+import com.semmle.js.extractor.tsconfig.CompilerOptions;
 import com.semmle.js.dependencies.AsyncFetcher;
 import com.semmle.js.dependencies.DependencyResolver;
 import com.semmle.js.dependencies.packument.PackageJson;
@@ -49,10 +51,8 @@ import com.semmle.js.extractor.trapcache.DummyTrapCache;
 import com.semmle.js.extractor.trapcache.ITrapCache;
 import com.semmle.js.parser.ParseError;
 import com.semmle.js.parser.ParsedProject;
-import com.semmle.ts.extractor.TypeExtractor;
 import com.semmle.ts.extractor.TypeScriptParser;
 import com.semmle.ts.extractor.TypeScriptWrapperOOMError;
-import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.diagnostic.DiagnosticLevel;
 import com.semmle.util.diagnostic.DiagnosticLocation;
@@ -151,7 +151,7 @@ import com.semmle.util.trap.TrapWriter;
  *
  * <ul>
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
- *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
+ *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es", ".xsjs", ".xsjslib").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
  *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb", ".html.dot", ".jsp").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
@@ -159,6 +159,10 @@ import com.semmle.util.trap.TrapWriter;
  *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
  *       is of the form "codeql-javascript-*.json".
  *   <li>JavaScript, JSON or YAML files whose base name starts with ".eslintrc".
+ *   <li>JSON files whose base name is ".xsaccess".
+ *   <li>JSON files whose base name is "xs-app.json".
+ *   <li>JSON files whose base name ends with ".view.json".
+ *   <li>JSON files whose base name is "manifest.json".
  *   <li>All extension-less files.
  * </ul>
  *
@@ -214,7 +218,6 @@ public class AutoBuild {
   private final Set<String> xmlExtensions = new LinkedHashSet<>();
   private ProjectLayout filters;
   private final Path LGTM_SRC, SEMMLE_DIST;
-  private final TypeScriptMode typeScriptMode;
   private final String defaultEncoding;
   private ExecutorService threadPool;
   private volatile boolean seenCode = false;
@@ -232,8 +235,6 @@ public class AutoBuild {
     this.SEMMLE_DIST = Paths.get(EnvironmentVariables.getExtractorRoot());
     this.outputConfig = new ExtractorOutputConfig(LegacyLanguage.JAVASCRIPT);
     this.trapCache = ITrapCache.fromExtractorOptions();
-    this.typeScriptMode =
-        getEnumFromEnvVar("LGTM_INDEX_TYPESCRIPT", TypeScriptMode.class, TypeScriptMode.FULL);
     this.defaultEncoding = getEnvVar("LGTM_INDEX_DEFAULT_ENCODING");
     this.installDependencies = Boolean.valueOf(getEnvVar("LGTM_INDEX_TYPESCRIPT_INSTALL_DEPS"));
     this.virtualSourceRoot = makeVirtualSourceRoot();
@@ -389,23 +390,28 @@ public class AutoBuild {
     defaultExtract.add(FileType.HTML);
     defaultExtract.add(FileType.JS);
     defaultExtract.add(FileType.YAML);
-    if (typeScriptMode != TypeScriptMode.NONE) defaultExtract.add(FileType.TYPESCRIPT);
+    defaultExtract.add(FileType.TYPESCRIPT);
     for (FileType filetype : defaultExtract)
       for (String extension : filetype.getExtensions()) patterns.add("**/*" + extension);
 
-    // include .eslintrc files, package.json files, tsconfig.json files, and
-    // codeql-javascript-*.json files
+    // include JSON files which are relevant to our analysis
     patterns.add("**/.eslintrc*");
+    patterns.add("**/.xsaccess"); // SAP XSJS
+    patterns.add("**/xs-app.json"); // SAP XSJS
+    patterns.add("**/*.view.json"); // SAP UI5
+    patterns.add("**/manifest.json");
     patterns.add("**/package.json");
-    patterns.add("**/tsconfig*.json");
+    patterns.add("**/*tsconfig*.json");
     patterns.add("**/codeql-javascript-*.json");
 
     // include any explicitly specified extensions
     for (String extension : fileTypes.keySet()) patterns.add("**/*" + extension);
 
     // exclude files whose name strongly suggests they are minified
-    patterns.add("-**/*.min.js");
-    patterns.add("-**/*-min.js");
+    if (!EnvironmentVariables.allowMinifiedFiles()) {
+      patterns.add("-**/*.min.js");
+      patterns.add("-**/*-min.js");
+    }
 
     // exclude `node_modules` and `bower_components`
     patterns.add("-**/node_modules");
@@ -461,10 +467,11 @@ public class AutoBuild {
       try {
         CompletableFuture<?> sourceFuture = extractSource();
         sourceFuture.join(); // wait for source extraction to complete
-        if (hasSeenCode()) { // don't bother with the externs if no code was seen
+        if (hasSeenCode() && !isOverlayChangeMode()) { // don't bother with the externs if no code was seen or in overlay change mode
           extractExterns();
         }
         extractXml();
+        writeOverlayMetadata();
       } catch (OutOfMemoryError oom) {
         System.err.println("Out of memory while extracting the project.");
         return 137; // the CodeQL CLI will interpret this as an out-of-memory error
@@ -484,25 +491,42 @@ public class AutoBuild {
         diagnosticsToClose.forEach(DiagnosticWriter::close);
       }
 
-      if (!hasSeenCode()) {
+      // Fail extraction if no relevant files were found.
+      boolean seenRelevantFiles = EnvironmentVariables.isActionsExtractor()
+        ? seenFiles // assume all files are relevant for Actions extractor
+        : hasSeenCode();
+      if (!seenRelevantFiles) {
         if (seenFiles) {
           warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
         } else {
           warn("No JavaScript or TypeScript code found.");
         }
-        // ensuring that the finalize steps detects that no code was seen.
+        // Ensuring that the finalize steps detects that no code was seen.
+        // This is necessary to ensure we don't produce an overlay-base database without externs.
         Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase(), "src");
         try {
-          // Non-recursive delete because "src/" should be empty.
-          FileUtil8.delete(srcFolder);
+          FileUtil8.recursiveDelete(srcFolder);
         } catch (NoSuchFileException e) {
           Exceptions.ignore(e, "the directory did not exist");
-        } catch (DirectoryNotEmptyException e) {
-          Exceptions.ignore(e, "just leave the directory if it is not empty");
         }
         return 0;
       }
     return 0;
+  }
+
+  private void writeOverlayMetadata() {
+    String file = getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_BASE_METADATA_OUT");
+    if (file == null) {
+      // no overlay metadata file specified, so nothing to do
+      return;
+    }
+    // Write an empty string to the file as we currently have no metadata to emit.
+    // The file must be created for the database to recognized as an overlay base.
+    try {
+      Files.writeString(Paths.get(file), "", StandardCharsets.UTF_8);
+    } catch (IOException e) {
+      throw new ResourceError("Could not write overlay metadata to " + file, e);
+    }
   }
 
   /**
@@ -730,6 +754,17 @@ public class AutoBuild {
     List<Path> tsconfigFiles = new ArrayList<>();
     findFilesToExtract(defaultExtractor, filesToExtract, tsconfigFiles);
 
+    OverlayChanges overlay = getOverlayChanges();
+    if (overlay != null) {
+      Set<Path> changedFiles = overlay.changes.stream()
+          .map(file -> Paths.get(file).toAbsolutePath())
+          .collect(Collectors.toSet());
+      int before = filesToExtract.size();
+      filesToExtract.retainAll(changedFiles);
+      int after = filesToExtract.size();
+      System.out.println("Overlay filter removed " + (before - after) + " out of " + before + " files from extraction.");
+    }
+
     tsconfigFiles = tsconfigFiles.stream()
          .sorted(PATH_ORDERING)
          .collect(Collectors.toList());
@@ -738,6 +773,30 @@ public class AutoBuild {
         .filter(p -> !isFileTooLarge(p))
         .sorted(PATH_ORDERING)
         .collect(Collectors.toCollection(() -> new LinkedHashSet<>()));
+    // gather all output directories specified in tsconfig.json files
+    final List<Path> outDirs = new ArrayList<>();
+    for (Path cfg : tsconfigFiles) {
+      try {
+        String txt = new WholeIO().read(cfg);
+        TsConfigJson root = new Gson().fromJson(txt, TsConfigJson.class);
+        if (root != null && root.getCompilerOptions() != null) {
+          if (root.getCompilerOptions().getOutDir() == null) {
+            // no outDir specified, so skip this tsconfig.json
+            continue;
+          }
+          Path odir = cfg.getParent().resolve(root.getCompilerOptions().getOutDir()).toAbsolutePath().normalize();
+          // Only exclude outDirs that are proper subdirectories of the source root
+          // This prevents excluding all code when outDir points outside the source root or to the source root itself
+          if (tryRelativize(LGTM_SRC, odir) != null && !odir.equals(LGTM_SRC)) {
+            outDirs.add(odir);
+          }
+        }
+      } catch (Exception e) {
+        // ignore malformed tsconfig or missing fields
+      }
+    }
+    // exclude files in output directories as configured in tsconfig.json
+    filesToExtract.removeIf(f -> outDirs.stream().anyMatch(od -> f.startsWith(od)));
 
     DependencyInstallationResult dependencyInstallationResult = DependencyInstallationResult.empty;
     if (!tsconfigFiles.isEmpty()) {
@@ -756,7 +815,7 @@ public class AutoBuild {
     extractTypeScript(filesToExtract, extractedFiles,
               extractors, tsconfigFiles, dependencyInstallationResult);
 
-    boolean hasTypeScriptFiles = extractedFiles.size() > 0;
+    boolean hasTypeScriptFiles = hasTypeScriptFiles(filesToExtract);
 
     // extract remaining files
     return extractFiles(
@@ -789,9 +848,19 @@ public class AutoBuild {
    */
   private boolean isFileDerivedFromTypeScriptFile(Path path, Set<Path> extractedFiles) {
     String name = path.getFileName().toString();
-    if (!name.endsWith(".js"))
+    // only skip JS variants when a corresponding TS/TSX file was already extracted
+    if (!(name.endsWith(".js")
+          || name.endsWith(".cjs")
+          || name.endsWith(".mjs")
+          || name.endsWith(".jsx")
+          || name.endsWith(".cjsx")
+          || name.endsWith(".mjsx"))) {
       return false;
-    String stem = name.substring(0, name.length() - ".js".length());
+    }
+    // strip off extension
+    int dot = name.lastIndexOf('.');
+    String stem = dot != -1 ? name.substring(0, dot) : name;
+    // if a TS/TSX file with same base name was extracted, skip this file
     for (String ext : FileType.TYPESCRIPT.getExtensions()) {
       if (extractedFiles.contains(path.getParent().resolve(stem + ext))) {
         return true;
@@ -893,7 +962,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           // For named packages, find the main file.
           String name = packageJson.getName();
           if (name != null) {
-            Path entryPoint = null; 
+            Path entryPoint = null;
             try {
               entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
               if (entryPoint == null) {
@@ -1005,9 +1074,9 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
   private ExtractorConfig mkExtractorConfig() {
     ExtractorConfig config = new ExtractorConfig(true);
     config = config.withSourceType(getSourceType());
-    config = config.withTypeScriptMode(typeScriptMode);
     config = config.withVirtualSourceRoot(virtualSourceRoot);
     if (defaultEncoding != null) config = config.withDefaultEncoding(defaultEncoding);
+    config = config.withAllowMinified(EnvironmentVariables.allowMinifiedFiles());
     return config;
   }
 
@@ -1026,69 +1095,26 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       FileExtractors extractors,
       List<Path> tsconfig,
       DependencyInstallationResult deps) {
-    if (hasTypeScriptFiles(files) || !tsconfig.isEmpty()) {
+
+    List<Path> typeScriptFiles = new ArrayList<>();
+    // Get all TypeScript files.
+    for (Path f : files) {
+      if (extractors.fileType(f) == FileType.TYPESCRIPT) {
+        typeScriptFiles.add(f);
+      }
+    }
+    // Also get TypeScript files from HTML file snippets.
+    for (Map.Entry<Path, FileSnippet> entry : state.getSnippets().entrySet()) {
+      if (!extractedFiles.contains(entry.getKey())
+          && FileType.forFileExtension(entry.getKey().toFile()) == FileType.TYPESCRIPT) {
+          typeScriptFiles.add(entry.getKey());
+      }
+    }
+
+    if (!typeScriptFiles.isEmpty()) {
       TypeScriptParser tsParser = state.getTypeScriptParser();
       verifyTypeScriptInstallation(state);
-
-      // Collect all files included in a tsconfig.json inclusion pattern.
-      // If a given file is referenced by multiple tsconfig files, we prefer to extract it using
-      // one that includes it rather than just references it.
-      Set<File> explicitlyIncludedFiles = new LinkedHashSet<>();
-      if (tsconfig.size() > 1) { // No prioritization needed if there's only one tsconfig.
-        for (Path projectPath : tsconfig) {
-          explicitlyIncludedFiles.addAll(tsParser.getOwnFiles(projectPath.toFile(), deps, virtualSourceRoot));
-        }
-      }
-
-      // Extract TypeScript projects
-      for (Path projectPath : tsconfig) {
-        File projectFile = projectPath.toFile();
-        long start = logBeginProcess("Opening project " + projectFile);
-        ParsedProject project = tsParser.openProject(projectFile, deps, virtualSourceRoot);
-        logEndProcess(start, "Done opening project " + projectFile);
-        // Extract all files belonging to this project which are also matched
-        // by our include/exclude filters.
-        List<Path> typeScriptFiles = new ArrayList<Path>();
-        for (File sourceFile : project.getAllFiles()) {
-          Path sourcePath = sourceFile.toPath();
-          Path normalizedFile = normalizePath(sourcePath);
-          if (!files.contains(normalizedFile) && !state.getSnippets().containsKey(normalizedFile)) {
-            continue;
-          }
-          if (!project.getOwnFiles().contains(sourceFile) && explicitlyIncludedFiles.contains(sourceFile)) continue;
-          if (extractors.fileType(sourcePath) != FileType.TYPESCRIPT) {
-            // For the time being, skip non-TypeScript files, even if the TypeScript
-            // compiler can parse them for us.
-            continue;
-          }
-          if (extractedFiles.contains(sourcePath)) {
-            continue;
-          }
-          typeScriptFiles.add(sourcePath);
-        }
-        typeScriptFiles.sort(PATH_ORDERING);
-        extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
-        tsParser.closeProject(projectFile);
-      }
-
-      // Extract all the types discovered when extracting the ASTs.
-      if (!tsconfig.isEmpty()) {
-        TypeTable typeTable = tsParser.getTypeTable();
-        extractTypeTable(tsconfig.iterator().next(), typeTable);
-      }
-
-      // Extract remaining TypeScript files.
-      List<Path> remainingTypeScriptFiles = new ArrayList<>();
-      for (Path f : files) {
-        if (!extractedFiles.contains(f)
-            && extractors.fileType(f) == FileType.TYPESCRIPT) {
-          remainingTypeScriptFiles.add(f);
-        }
-      }
-      if (!remainingTypeScriptFiles.isEmpty()) {
-        extractTypeScriptFiles(remainingTypeScriptFiles, extractedFiles, extractors);
-      }
-
+      extractTypeScriptFiles(typeScriptFiles, extractedFiles, extractors);
       // The TypeScript compiler instance is no longer needed.
       tsParser.killProcess();
     }
@@ -1104,6 +1130,10 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (FileType.forFileExtension(file.toFile()) == FileType.TYPESCRIPT) return true;
     }
     return false;
+  }
+
+  public static boolean treatAsTSConfig(String basename) {
+    return basename.contains("tsconfig.") && basename.endsWith(".json");
   }
 
   private void findFilesToExtract(
@@ -1137,8 +1167,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             }
 
             // extract TypeScript projects from 'tsconfig.json'
-            if (typeScriptMode == TypeScriptMode.FULL
-                && file.getFileName().endsWith("tsconfig.json")
+            if (treatAsTSConfig(file.getFileName().toString())
                 && !excludes.contains(file)
                 && isFileIncluded(file)) {
               tsconfigFiles.add(file);
@@ -1195,18 +1224,6 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
 
   private Path normalizePath(Path path) {
     return path.toAbsolutePath().normalize();
-  }
-
-  private void extractTypeTable(Path fileHandle, TypeTable table) {
-    TrapWriter trapWriter =
-        outputConfig
-            .getTrapWriterFactory()
-            .mkTrapWriter(new File(fileHandle.toString() + ".codeql-typescript-typetable"));
-    try {
-      new TypeExtractor(trapWriter, table).extract();
-    } finally {
-      FileUtil.close(trapWriter);
-    }
   }
 
   /**
@@ -1351,6 +1368,18 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
     } catch (InterruptedException e) {
       throw new CatastrophicError(e);
     }
+  }
+
+  private boolean isOverlayChangeMode() {
+    return getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_CHANGES") != null;
+  }
+
+  private OverlayChanges getOverlayChanges() throws IOException {
+    String jsonFile = getEnvVar("CODEQL_EXTRACTOR_JAVASCRIPT_OVERLAY_CHANGES");
+    if (jsonFile == null) {
+      return null;
+    }
+    return new Gson().fromJson(Files.newBufferedReader(Paths.get(jsonFile)), OverlayChanges.class);
   }
 
   public static void main(String[] args) {

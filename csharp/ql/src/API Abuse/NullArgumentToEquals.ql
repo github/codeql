@@ -6,7 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @id cs/null-argument-to-equals
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  */
 

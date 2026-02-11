@@ -1,4 +1,4 @@
-class C extends React.Component {
+class C extends React.Component { // $ threatModelSource=view-component-input
     static getDerivedStateFromProps(props, state) {
         return {};
     }
@@ -8,4 +8,4 @@ class C extends React.Component {
     getSnapshotBeforeUpdate(prevProps, prevState) {
         return {};
     }
-}
+} // $ reactComponent

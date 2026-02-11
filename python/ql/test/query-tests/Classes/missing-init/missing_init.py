@@ -2,17 +2,20 @@
 class B1(object):
 
     def __init__(self):
-        do_something()
+        print("B1 init")
 
 class B2(B1):
 
     def __init__(self):
+        print("B2 init")
         B1.__init__(self)
 
-class B3(B2):
-
-    def __init__(self):
+class B3(B2): # $ Alert
+    def __init__(self): 
+        print("B3 init")
         B1.__init__(self)
+
+B3()
 
 #OK if superclass __init__ is builtin as
 #builtin classes tend to rely on __new__
@@ -23,11 +26,11 @@ class MyException(Exception):
 
 #ODASA-4107
 class IUT(object):
-    def __init__(self):
+    def __init__(self):  
         print("IUT init")
 
 class UT(object):
-    def __init__(self):
+    def __init__(self): 
         print("UT init")
 
 class PU(object):
@@ -36,50 +39,45 @@ class PU(object):
 class UVT(UT, PU):
     pass
 
-class IUVT(IUT, UVT):
+class IUVT(IUT, UVT): # $ Alert
     pass
 
-#False positive
+print("IUVT")
+IUVT()
+
 class M1(object):
     def __init__(self):
-        print("A")
+        print("M1 init")
 
 class M2(object):
     pass
 
 class Mult(M2, M1):
     def __init__(self):
-        super(Mult, self).__init__() # Calls M1.__init__
+        print("Mult init")
+        super(Mult, self).__init__() # OK - Calls M1.__init__
 
-class X:
-    def __init__(self):
-        do_something()
-
-class Y(X):
-    @decorated
-    def __init__(self):
-        X.__init__(self)
-
-class Z(Y):
-    def __init__(self):
-        Y.__init__(self)
+Mult()
 
 class AA(object):
 
     def __init__(self):
-        do_something()
+        print("AA init")
 
-class AB(AA):
+class AB(AA): # $ Alert
 
-    #Don't call super class init
-    def __init__(self):
-        do_something()
+    # Doesn't call super class init
+    def __init__(self): 
+        print("AB init")
 
 class AC(AB):
 
     def __init__(self):
-        #Missing call to AA.__init__ but not AC's fault.
+        # Doesn't call AA init, but we don't alert here as the issue is with AB.
+        print("AC init")
         super(AC, self).__init__()
+
+AC()
 
 import six
 import abc
@@ -87,99 +85,121 @@ import abc
 class BA(object):
 
     def __init__(self):
-        do_something()
+        print("BA init")
 
 @six.add_metaclass(abc.ABCMeta)
 class BB(BA):
 
     def __init__(self):
+        print("BB init")
         super(BB,self).__init__()
+
+BB()
 
 
 @six.add_metaclass(abc.ABCMeta)
 class CA(object):
 
     def __init__(self):
-        do_something()
+        print("CA init")
 
-class CB(BA):
+class CB(CA):
 
     def __init__(self):
+        print("CB init")
         super(CB,self).__init__()
+
+CB()
 
 #ODASA-5799
 class DA(object):
 
     def __init__(self):
-        do_something()
+        print("DA init")
 
 class DB(DA):
 
-    class DC(DA):
+    class DC(DA): # $ SPURIOUS: Alert # We only consider direct super calls, so have an FP here
 
-        def __init__(self):
+        def __init__(self): 
+            print("DC init")
             sup = super(DB.DC, self)
             sup.__init__()
 
-#Simpler variants
-class DD(DA):
+DB.DC()
 
-    def __init__(self):
+#Simpler variants
+class DD(DA): # $ SPURIOUS: Alert # We only consider direct super calls, so have an FP here
+
+    def __init__(self): 
+        print("DD init")
         sup = super(DD, self)
         sup.__init__()
 
+DD()
+
 class DE(DA):
 
-    class DF(DA):
+    class DF(DA): # No alert here
 
-        def __init__(self):
+        def __init__(self): 
+            print("DF init")
             sup = super(DE.DF, self).__init__()
+
+DE.DF()
 
 class FA(object):
 
     def __init__(self):
-        pass
+        pass # does nothing, thus is considered a trivial method and ok to not call
 
 class FB(object):
 
     def __init__(self):
-        do_something()
+        print("FB init")
 
 class FC(FA, FB):
 
     def __init__(self):
-        #OK to skip call to FA.__init__ as that does nothing.
+        # No alert here - ok to skip call to trivial FA init
         FB.__init__(self)
 
 #Potential false positives.
 
 class ConfusingInit(B1):
 
-    def __init__(self):
+    def __init__(self): # We track this correctly and don't alert.
         super_call = super(ConfusingInit, self).__init__
         super_call()
 
 
-# Library class
-import collections
-
-class G1(collections.Counter):
-
+class G1:
     def __init__(self):
-        collections.Counter.__init__(self)
+        print("G1 init")
 
-class G2(G1):
-
+class G2:
     def __init__(self):
-        super(G2, self).__init__()
+        print("G2 init")
 
-class G3(collections.Counter):
+class G3(G1, G2):
+    def __init__(self): 
+        print("G3 init")
+        for cls in self.__class__.__bases__:
+            cls.__init__(self) # We dont track which classes this could refer to, but assume it calls all required init methods and don't alert.
 
+G3()
+
+class H1:
     def __init__(self):
-        super(G3, self).__init__()
+        print("H1 init")
 
-class G4(G3):
-
+class H2:
     def __init__(self):
-        G3.__init__(self)
+        print("H2 init")
 
+class H3(H1, H2): # $ Alert # The alert should also mention that H1.__init__ may be missing a call to super().__init__
+    def __init__(self): 
+        print("H3 init")
+        super().__init__()
+
+H3()

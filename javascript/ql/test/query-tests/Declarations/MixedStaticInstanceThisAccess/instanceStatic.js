@@ -1,6 +1,6 @@
 class Foo {
     static bar(){
-        this.baz; // NOT OK
+        this.baz; // $ Alert
     }
     baz(){
 

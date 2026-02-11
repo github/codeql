@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       ">
+
+  <bean id="annotatedTarget" class="com.semmle.camel.AnnotatedTarget"/>
+
+  <bean id="dslBeanRefTarget" class="com.semmle.camel.javadsl.DSLBeanRefTarget"/>
+  <bean id="dslToTarget" class="com.semmle.camel.javadsl.DSLToTarget"/>
+  <bean id="dslMethodBean" class="com.semmle.camel.javadsl.DSLMethodBean"/>
+
+  <bean id="beanRefTarget" class="com.semmle.camel.BeanRefTarget"/>
+  <bean id="toTarget" class="com.semmle.camel.ToTarget"/>
+  <bean id="methodBean" class="com.semmle.camel.MethodBean"/>
+
+  <camelContext xmlns="http://camel.apache.org/schema/spring">
+    <route id="wsRoute">
+      <from uri="cxf:bean:camelTargetEndpoint"/>
+      <bean ref="beanRefTarget"/>
+      <bean beanType="com.semmle.camel.BeanTypeTarget"/>
+      <to uri="bean:toTarget?foo"/>
+      <filter>
+        <method ref="methodBean" />
+      </filter>
+    </route>
+  </camelContext>
+
+</beans>

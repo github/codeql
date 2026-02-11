@@ -5,6 +5,7 @@
  */
 
 import csharp
+private import internal.Location
 
 /**
  * INTERNAL: Do not use.
@@ -54,7 +55,8 @@ class TopLevelExprParent extends Element, @top_level_expr_parent {
 /** INTERNAL: Do not use. */
 Expr getExpressionBody(Callable c) {
   result = c.getAChildExpr() and
-  not result = c.(Constructor).getInitializer()
+  not result = c.(Constructor).getInitializer() and
+  not result = c.(Constructor).getObjectInitializerCall()
 }
 
 /** INTERNAL: Do not use. */
@@ -63,14 +65,6 @@ BlockStmt getStatementBody(Callable c) { result = c.getAChildStmt() }
 private ControlFlowElement getBody(Callable c) {
   result = getExpressionBody(c) or
   result = getStatementBody(c)
-}
-
-pragma[nomagic]
-private SourceLocation getASourceLocation(Element e) {
-  result = e.getALocation().(SourceLocation) and
-  not exists(e.getALocation().(SourceLocation).getMappedLocation())
-  or
-  result = e.getALocation().(SourceLocation).getMappedLocation()
 }
 
 pragma[nomagic]
@@ -218,6 +212,8 @@ private module Cached {
     enclosingBody(cfe, getBody(c))
     or
     parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
+    or
+    parent*(cfe, c.(Constructor).getObjectInitializerCall())
   }
 
   /** Holds if the enclosing statement of expression `e` is `s`. */

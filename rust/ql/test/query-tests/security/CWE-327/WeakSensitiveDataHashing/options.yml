@@ -1,0 +1,12 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - digest = { version = "0.10.7" }
+    - md-5 = { version = "0.10.6" }
+    - md5_alt = { package = "md5", version = "0.7.0" }
+    - sha1 = { version = "0.10.6" }
+    - sha1-checked = { version = "0.10.0" }
+    - sha3 = { version = "0.10.8" }
+    - argon2 = { version = "0.5.3" }
+    - serde = { version = "1.0.217", features = ["derive"] }
+    - serde_json = { version = "1.0.134" }
+    - serde_urlencoded = { version = "0.7.1" }

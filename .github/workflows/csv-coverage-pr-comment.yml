@@ -24,7 +24,7 @@ jobs:
         GITHUB_CONTEXT: ${{ toJSON(github.event) }}
       run: echo "$GITHUB_CONTEXT"
     - name: Clone self (github/codeql)
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
       with:

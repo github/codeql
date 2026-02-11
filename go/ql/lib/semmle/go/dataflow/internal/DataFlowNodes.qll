@@ -12,7 +12,8 @@ private newtype TNode =
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
   MkSliceElementNode(SliceExpr se) or
-  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
+  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+  MkDefaultPostUpdateNode(IR::Instruction insn) { insnHasPostUpdateNode(insn) }
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -78,9 +79,7 @@ module Private {
       result = this.getSummaryNode().getSummarizedCallable()
     }
 
-    override predicate hasLocationInfo(string fp, int sl, int sc, int el, int ec) {
-      this.getSummarizedCallable().hasLocationInfo(fp, sl, sc, el, ec)
-    }
+    override Location getLocation() { result = this.getSummarizedCallable().getLocation() }
 
     override string toString() { result = this.getSummaryNode().toString() }
 
@@ -140,45 +139,38 @@ module Public {
     /** Gets a textual representation of this element. */
     string toString() { result = "data-flow node" } // overridden in subclasses
 
+    /** Gets the location of this node. */
+    Location getLocation() { none() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      filepath = "" and
-      startline = 0 and
-      startcolumn = 0 and
-      endline = 0 and
-      endcolumn = 0
-    }
-
-    /** Gets the location of this node. */
-    Location getLocation() {
-      exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-        this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-        result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      )
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     /** Gets the file in which this node appears. */
-    File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { result = this.getLocation().getFile() }
 
     /** Gets the start line of the location of this node. */
-    int getStartLine() { this.hasLocationInfo(_, result, _, _, _) }
+    int getStartLine() { result = this.getLocation().getStartLine() }
 
     /** Gets the start column of the location of this node. */
-    int getStartColumn() { this.hasLocationInfo(_, _, result, _, _) }
+    int getStartColumn() { result = this.getLocation().getStartColumn() }
 
     /** Gets the end line of the location of this node. */
-    int getEndLine() { this.hasLocationInfo(_, _, _, result, _) }
+    int getEndLine() { result = this.getLocation().getEndLine() }
 
     /** Gets the end column of the location of this node. */
-    int getEndColumn() { this.hasLocationInfo(_, _, _, _, result) }
+    int getEndColumn() { result = this.getLocation().getEndColumn() }
 
     /**
      * Gets an upper bound on the type of this node.
@@ -262,11 +254,7 @@ module Public {
 
     override string toString() { result = insn.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      insn.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = insn.getLocation() }
   }
 
   /**
@@ -312,11 +300,7 @@ module Public {
 
     override string toString() { result = ssa.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ssa.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ssa.getLocation() }
   }
 
   private module FunctionNode {
@@ -408,11 +392,7 @@ module Public {
 
     override string toString() { result = "function " + func.getName() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      func.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = func.getLocation() }
 
     override ResultNode getAResult() {
       result.getRoot() = this.getFunction().(DeclaredFunction).getFuncDecl()
@@ -464,11 +444,7 @@ module Public {
 
     override string toString() { result = "[]type{args}" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      call.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = call.getLocation() }
   }
 
   /**
@@ -525,6 +501,7 @@ module Public {
      * As `getACalleeIncludingExternals`, except excluding external functions (those for which
      * we lack a definition, such as standard library functions).
      */
+    pragma[nomagic]
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 
     /**
@@ -726,7 +703,10 @@ module Public {
     override string getNodeKind() { result = "external parameter node" }
 
     override Type getType() {
-      result = this.getSummarizedCallable().getType().getParameterType(this.getPos())
+      result =
+        this.getSummarizedCallable()
+            .getType()
+            .getParameterType(pragma[only_bind_into](this.getPos()))
       or
       this.getPos() = -1 and
       result = this.getSummarizedCallable().asFunction().(Method).getReceiverType()
@@ -781,18 +761,27 @@ module Public {
     predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
   }
 
-  private Node getADirectlyWrittenNode() {
-    exists(Write w | w.writesComponent(result, _)) or
-    result = DataFlow::exprNode(any(SendStmt s).getChannel())
-  }
-
-  private DataFlow::Node getAccessPathPredecessor(DataFlow::Node node) {
-    result = node.(PointerDereferenceNode).getOperand()
+  private IR::Instruction getADirectlyWrittenInsn() {
+    exists(Write w | w.writesComponentInstruction(result, _))
     or
-    result = node.(ComponentReadNode).getBase()
+    result = IR::evalExprInstruction(any(SendStmt s).getChannel())
   }
 
-  private Node getAWrittenNode() { result = getAccessPathPredecessor*(getADirectlyWrittenNode()) }
+  private IR::Instruction getAccessPathPredecessorInsn(IR::Instruction insn) {
+    exists(Expr e1, Expr e2 |
+      insn = IR::evalExprInstruction(e1) and result = IR::evalExprInstruction(e2)
+    |
+      e2 = e1.(DerefExpr).getOperand() or e2 = e1.(StarExpr).getBase()
+    )
+    or
+    exists(Expr e | insn = IR::implicitDerefInstruction(e) and result = IR::evalExprInstruction(e))
+    or
+    result = insn.(IR::ComponentReadInstruction).getBase()
+  }
+
+  private IR::Instruction getAWrittenInsn() {
+    result = getAccessPathPredecessorInsn*(getADirectlyWrittenInsn())
+  }
 
   /**
    * Holds if `tp` is a type that may (directly or indirectly) reference a memory location.
@@ -828,35 +817,55 @@ module Public {
     abstract Node getPreUpdateNode();
   }
 
-  private class DefaultPostUpdateNode extends PostUpdateNode {
+  /** Holds if the node corresponding to `insn` has a post-update node. */
+  predicate insnHasPostUpdateNode(IR::Instruction insn) {
+    exists(Expr e | insn.(IR::EvalInstruction).getExpr() = e |
+      e instanceof AddressExpr or
+      e = any(AddressExpr ae).getOperand() or
+      e = any(StarExpr ae).getBase() or
+      e = any(DerefExpr ae).getOperand() or
+      e = any(IR::EvalImplicitDerefInstruction eidi).getOperand()
+    )
+    or
+    exists(CallExpr ce |
+      ce.getArgument(0).getType() instanceof TupleType and
+      insn = IR::extractTupleElement(IR::evalExprInstruction(ce.getArgument(0)), _)
+      or
+      not ce.getArgument(0).getType() instanceof TupleType and
+      insn = IR::evalExprInstruction(ce.getAnArgument())
+      or
+      // Receiver of a method call
+      exists(IR::MethodReadInstruction mri |
+        ce.getTarget() instanceof Method and
+        mri = IR::evalExprInstruction(ce.getCalleeExpr()) and
+        // If a.x is reading a promoted field, and it's equivalent to a.b.c.x,
+        // then mri.getReceiver() will give us the implicit field read a.b.c
+        // and we want to have post-update nodes for a, the implicit field
+        // read a.b and the implicit field read a.b.c.
+        insn = IR::lookThroughImplicitFieldRead*(mri.getReceiver())
+      )
+    ) and
+    mutableType(insn.getResultType())
+    or
+    insn = getAWrittenInsn()
+  }
+
+  private class DefaultPostUpdateNode extends PostUpdateNode, MkDefaultPostUpdateNode {
     Node preupd;
 
-    DefaultPostUpdateNode() {
-      (
-        preupd instanceof AddressOperationNode
-        or
-        preupd = any(AddressOperationNode addr).getOperand()
-        or
-        preupd = any(PointerDereferenceNode deref).getOperand()
-        or
-        preupd = getAWrittenNode()
-        or
-        (
-          preupd instanceof ArgumentNode and not preupd instanceof ImplicitVarargsSlice
-          or
-          preupd = any(CallNode c).getAnImplicitVarargsArgument()
-        ) and
-        mutableType(preupd.getType())
-      ) and
-      (
-        preupd = this.(SsaNode).getAUse()
-        or
-        preupd = this and
-        not basicLocalFlowStep(_, this)
-      )
-    }
+    DefaultPostUpdateNode() { this = MkDefaultPostUpdateNode(preupd.asInstruction()) }
 
     override Node getPreUpdateNode() { result = preupd }
+
+    override ControlFlow::Root getRoot() { result = preupd.getRoot() }
+
+    override Type getType() { result = preupd.getType() }
+
+    override string getNodeKind() { result = "post-update node" }
+
+    override string toString() { result = preupd.toString() + " [postupdate]" }
+
+    override Location getLocation() { result = preupd.getLocation() }
   }
 
   /**
@@ -889,6 +898,21 @@ module Public {
      * Gets this argument's position.
      */
     int getPosition() { result = i }
+
+    /**
+     * Gets a data-flow node for a syntactic argument corresponding to this
+     * argument. If this argument is not an implicit varargs slice then this
+     * will just be the argument itself. If this argument is an implicit
+     * varargs slice then this will be a data-flow node that for an argument
+     * that is stored in the implicit varargs slice.
+     */
+    Node getACorrespondingSyntacticArgument() {
+      not this instanceof DataFlow::ImplicitVarargsSlice and
+      result = this
+      or
+      this instanceof DataFlow::ImplicitVarargsSlice and
+      result = c.getAnImplicitVarargsArgument()
+    }
   }
 
   /**
@@ -1004,7 +1028,7 @@ module Public {
   class ComponentReadNode extends ReadNode {
     override IR::ComponentReadInstruction insn;
 
-    /** Gets the data-flow node representing the base from which the field or element is read. */
+    /** Gets the data-flow node representing the base from which the field or element is read. */
     Node getBase() { result = DataFlow::instructionNode(insn.getBase()) }
   }
 
@@ -1062,11 +1086,7 @@ module Public {
 
     override string toString() { result = "slice element node" }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      si.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = si.getLocation() }
 
     /** Gets the `SliceNode` which this node relates to. */
     SliceNode getSliceNode() { result = DataFlow::instructionNode(si) }
@@ -1331,7 +1351,6 @@ module Public {
   }
 }
 
-private import Private
 private import Public
 
 class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {

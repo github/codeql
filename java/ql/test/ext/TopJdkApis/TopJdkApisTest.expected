@@ -1,3 +1,4 @@
+| java.lang.Object#toString() | no manual model |
 | java.lang.Runnable#run() | no manual model |
 | java.util.Comparator#comparing(Function) | no manual model |
 | java.util.function.BiConsumer#accept(Object,Object) | no manual model |

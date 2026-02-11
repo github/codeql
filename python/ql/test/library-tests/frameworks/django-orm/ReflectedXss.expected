@@ -16,7 +16,6 @@ edges
 | testapp/orm_security_tests.py:42:13:42:18 | ControlFlowNode for person [Attribute name] | testapp/orm_security_tests.py:43:49:43:54 | ControlFlowNode for person [Attribute name] | provenance |  |
 | testapp/orm_security_tests.py:42:23:42:42 | ControlFlowNode for Attribute() [List element, Attribute age] | testapp/orm_security_tests.py:42:13:42:18 | ControlFlowNode for person [Attribute age] | provenance |  |
 | testapp/orm_security_tests.py:42:23:42:42 | ControlFlowNode for Attribute() [List element, Attribute name] | testapp/orm_security_tests.py:42:13:42:18 | ControlFlowNode for person [Attribute name] | provenance |  |
-| testapp/orm_security_tests.py:43:13:43:21 | ControlFlowNode for resp_text | testapp/orm_security_tests.py:43:13:43:21 | ControlFlowNode for resp_text | provenance |  |
 | testapp/orm_security_tests.py:43:13:43:21 | ControlFlowNode for resp_text | testapp/orm_security_tests.py:44:29:44:37 | ControlFlowNode for resp_text | provenance |  |
 | testapp/orm_security_tests.py:43:49:43:54 | ControlFlowNode for person [Attribute name] | testapp/orm_security_tests.py:43:49:43:59 | ControlFlowNode for Attribute | provenance |  |
 | testapp/orm_security_tests.py:43:49:43:59 | ControlFlowNode for Attribute | testapp/orm_security_tests.py:43:13:43:21 | ControlFlowNode for resp_text | provenance |  |

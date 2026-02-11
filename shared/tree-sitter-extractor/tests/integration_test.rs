@@ -1,10 +1,8 @@
 use codeql_extractor::extractor::simple;
 use codeql_extractor::trap;
 
-use tree_sitter_ql;
-
 mod common;
-use common::{create_source_dir, expect_trap_file, SourceArchive};
+use common::{SourceArchive, create_source_dir, expect_trap_file};
 
 /// A very simple happy-path test.
 /// We run the extractor using the tree-sitter-ql grammar and a single source file,
@@ -13,7 +11,7 @@ use common::{create_source_dir, expect_trap_file, SourceArchive};
 fn simple_extractor() {
     let language = simple::LanguageSpec {
         prefix: "ql",
-        ts_language: tree_sitter_ql::language(),
+        ts_language: tree_sitter_ql::LANGUAGE.into(),
         node_types: tree_sitter_ql::NODE_TYPES,
         file_globs: vec!["*.qll".into()],
     };
@@ -30,7 +28,7 @@ fn simple_extractor() {
         languages: vec![language],
         trap_dir,
         source_archive_dir,
-        file_list,
+        file_lists: vec![file_list],
         trap_compression: Ok(trap::Compression::Gzip),
     };
 

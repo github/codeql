@@ -3,10 +3,8 @@ using Microsoft.CodeAnalysis;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Assembly : Extraction.Entities.Location
+    internal class Assembly : Location
     {
-        public override Context Context => (Context)base.Context;
-
         private readonly string assemblyPath;
         private readonly IAssemblySymbol assembly;
         private readonly bool isOutputAssembly;
@@ -17,15 +15,15 @@ namespace Semmle.Extraction.CSharp.Entities
             isOutputAssembly = init is null;
             if (isOutputAssembly)
             {
-                assemblyPath = cx.Extractor.OutputPath;
+                assemblyPath = cx.ExtractionContext.OutputPath;
                 assembly = cx.Compilation.Assembly;
             }
             else
             {
                 assembly = init!.MetadataModule!.ContainingAssembly;
                 var identity = assembly.Identity;
-                var idString = identity.Name + " " + identity.Version;
-                assemblyPath = cx.Extractor.GetAssemblyFile(idString);
+                var idString = $"{identity.Name} {identity.Version}";
+                assemblyPath = cx.ExtractionContext.GetAssemblyFile(idString);
             }
         }
 
@@ -33,7 +31,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (assemblyPath is not null)
             {
-                var isBuildlessOutputAssembly = isOutputAssembly && Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone);
+                var isBuildlessOutputAssembly = isOutputAssembly && Context.ExtractionContext.IsStandalone;
                 var identifier = isBuildlessOutputAssembly
                     ? ""
                     : assembly.ToString() ?? "";
@@ -56,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
             return false;
         }
 
-        public static Extraction.Entities.Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
+        public static Location Create(Context cx, Microsoft.CodeAnalysis.Location loc) => AssemblyConstructorFactory.Instance.CreateEntity(cx, loc, loc);
 
         private class AssemblyConstructorFactory : CachedEntityFactory<Microsoft.CodeAnalysis.Location?, Assembly>
         {
@@ -74,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
-            if (isOutputAssembly && Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone))
+            if (isOutputAssembly && Context.ExtractionContext.IsStandalone)
             {
                 trapFile.Write("buildlessOutputAssembly");
             }

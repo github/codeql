@@ -91,6 +91,12 @@ class Class extends Class_, Scope, AstNode {
   /** Gets a method defined in this class */
   Function getAMethod() { result.getScope() = this }
 
+  /** Gets the method defined in this class with the specified name, if any. */
+  Function getMethod(string name) {
+    result = this.getAMethod() and
+    result.getName() = name
+  }
+
   override Location getLocation() { py_scope_location(result, this) }
 
   /** Gets the scope (module, class or function) in which this class is defined */
@@ -135,17 +141,11 @@ class Class extends Class_, Scope, AstNode {
   /** Gets the metaclass expression */
   Expr getMetaClass() { result = this.getParent().getMetaClass() }
 
-  /** Gets the ClassObject corresponding to this class */
-  ClassObject getClassObject() { result.getOrigin() = this.getParent() }
-
   /** Gets the nth base of this class definition. */
   Expr getBase(int index) { result = this.getParent().getBase(index) }
 
   /** Gets a base of this class definition. */
   Expr getABase() { result = this.getParent().getABase() }
-
-  /** Gets the metrics for this class */
-  ClassMetrics getMetrics() { result = this }
 
   /**
    * Gets the qualified name for this class.

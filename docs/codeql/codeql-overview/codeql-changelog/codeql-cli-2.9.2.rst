@@ -9,7 +9,7 @@ CodeQL 2.9.2 (2022-05-16)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -52,8 +52,8 @@ C/C++
 
 *   The "XML external entity expansion" (:code:`cpp/external-entity-expansion`) query has been extended to support a broader selection of XML libraries and interfaces.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Query :code:`java/insecure-cookie` now tolerates setting a cookie's secure flag to :code:`request.isSecure()`. This means servlets that intentionally accept unencrypted connections will no longer raise an alert.
 *   The query :code:`java/non-https-urls` has been simplified and no longer requires its sinks to be :code:`MethodAccess`\ es.
@@ -79,8 +79,8 @@ Python
 Query Metadata Changes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Query :code:`java/predictable-seed` now has a tag for CWE-337.
 
@@ -106,8 +106,8 @@ Python
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added models for the libraries OkHttp and Retrofit.
 *   Add taint models for the following :code:`File` methods:
@@ -150,8 +150,8 @@ JavaScript/TypeScript
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A number of new classes and methods related to the upcoming Kotlin support have been added. These are not yet stable, as Kotlin support is still under development.
 

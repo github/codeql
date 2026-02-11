@@ -44,6 +44,6 @@ module ServerSideRequestForgery {
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
 
   private class ExternalRequestForgerySink extends Sink {
-    ExternalRequestForgerySink() { this = ModelOutput::getASinkNode("request-forgery").asSink() }
+    ExternalRequestForgerySink() { ModelOutput::sinkNode(this, "request-forgery") }
   }
 }

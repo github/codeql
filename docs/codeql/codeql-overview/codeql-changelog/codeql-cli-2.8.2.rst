@@ -9,7 +9,7 @@ CodeQL 2.8.2 (2022-02-28)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -36,8 +36,8 @@ Query Packs
 Breaking Changes
 ~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Add more classes to Netty request/response splitting. Change identification to :code:`java/netty-http-request-or-response-splitting`.
     Identify request splitting differently from response splitting in query results.
@@ -58,8 +58,8 @@ JavaScript/TypeScript
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A new query titled "Local information disclosure in a temporary directory" (:code:`java/local-temp-file-or-directory-information-disclosure`) has been added.
     This query finds uses of APIs that leak potentially sensitive information to other local users via the system temporary directory.
@@ -137,8 +137,8 @@ C/C++
 
 *   Added a :code:`isStructuredBinding` predicate to the :code:`Variable` class which holds when the variable is declared as part of a structured binding declaration.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added predicates :code:`ClassOrInterface.getAPermittedSubtype` and :code:`isSealed` exposing information about sealed classes.
 

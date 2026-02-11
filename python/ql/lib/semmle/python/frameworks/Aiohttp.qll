@@ -653,8 +653,7 @@ module AiohttpWebModel {
   /**
    * A call to `set_cookie` on a HTTP Response.
    */
-  class AiohttpResponseSetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode
-  {
+  class AiohttpResponseSetCookieCall extends Http::Server::SetCookieCall {
     AiohttpResponseSetCookieCall() {
       this = aiohttpResponseInstance().getMember("set_cookie").getACall()
     }
@@ -706,6 +705,33 @@ module AiohttpWebModel {
 
     override DataFlow::Node getValueArg() { result = value }
   }
+
+  /**
+   * A dict-like write to an item of the `headers` attribute on a HTTP response, such as
+   * `response.headers[name] = value`.
+   */
+  class AiohttpResponseHeaderSubscriptWrite extends Http::Server::ResponseHeaderWrite::Range {
+    DataFlow::Node index;
+    DataFlow::Node value;
+
+    AiohttpResponseHeaderSubscriptWrite() {
+      exists(API::Node i |
+        value = aiohttpResponseInstance().getMember("headers").getSubscriptAt(i).asSink() and
+        index = i.asSink() and
+        // To give `this` a value, we need to choose between either LHS or RHS,
+        // and just go with the RHS as it is readily available
+        this = value
+      )
+    }
+
+    override DataFlow::Node getNameArg() { result = index }
+
+    override DataFlow::Node getValueArg() { result = value }
+
+    override predicate nameAllowsNewline() { none() }
+
+    override predicate valueAllowsNewline() { none() }
+  }
 }
 
 /**
@@ -732,7 +758,7 @@ module AiohttpClientModel {
     private API::Node instance() { result = classRef().getReturn() }
 
     /** A method call on a ClientSession that sends off a request */
-    private class OutgoingRequestCall extends Http::Client::Request::Range, API::CallNode {
+    private class OutgoingRequestCall extends Http::Client::Request::Range instanceof API::CallNode {
       string methodName;
 
       OutgoingRequestCall() {
@@ -741,13 +767,13 @@ module AiohttpClientModel {
       }
 
       override DataFlow::Node getAUrlPart() {
-        result = this.getArgByName("url")
+        result = super.getArgByName("url")
         or
         methodName in [Http::httpVerbLower(), "ws_connect"] and
-        result = this.getArg(0)
+        result = super.getArg(0)
         or
         methodName = "request" and
-        result = this.getArg(1)
+        result = super.getArg(1)
       }
 
       override string getFramework() { result = "aiohttp.ClientSession" }
@@ -755,7 +781,7 @@ module AiohttpClientModel {
       override predicate disablesCertificateValidation(
         DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
       ) {
-        exists(API::Node param | param = this.getKeywordParameter(["ssl", "verify_ssl"]) |
+        exists(API::Node param | param = super.getKeywordParameter(["ssl", "verify_ssl"]) |
           disablingNode = param.asSink() and
           argumentOrigin = param.getAValueReachingSink() and
           // aiohttp.client treats `None` as the default and all other "falsey" values as `False`.

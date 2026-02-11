@@ -35,6 +35,16 @@ public class DefaultToString
 
         IPublic g = null;
         Console.WriteLine(g);  // GOOD
+
+        Console.WriteLine(new ValueTuple<int, int>(1, 2)); // GOOD
+
+        Console.WriteLine((1, 2)); // GOOD
+
+        var t1 = new ValueTuple<int, DefaultToString>(1, new DefaultToString());
+        Console.WriteLine(t1); // BAD
+
+        var t2 = new ValueTuple<A, D>(new A(), new D());
+        Console.WriteLine(t2); // GOOD
     }
 
     class A

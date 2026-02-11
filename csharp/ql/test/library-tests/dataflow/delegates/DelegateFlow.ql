@@ -4,19 +4,19 @@ import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 
 query predicate delegateCall(DelegateLikeCall dc, Callable c) { c = dc.getARuntimeTarget() }
 
-private class LocatableDataFlowCallOption extends DataFlowCallOption {
+private class LocatableCallOption extends CallOption {
   Location getLocation() {
-    this = TDataFlowCallNone() and
+    this = TCallNone() and
     result instanceof EmptyLocation
     or
     exists(DataFlowCall call |
-      this = TDataFlowCallSome(call) and
+      this = TCallSome(call) and
       result = call.getLocation()
     )
   }
 }
 
-private class LocatableDataFlowCall extends TDataFlowCall {
+private class LocatableCall extends TDataFlowCall {
   string toString() { result = this.(DataFlowCall).toString() }
 
   Location getLocation() {
@@ -28,7 +28,7 @@ private class LocatableDataFlowCall extends TDataFlowCall {
 }
 
 query predicate viableLambda(
-  LocatableDataFlowCall call, LocatableDataFlowCallOption lastCall, DataFlowCallable target
+  LocatableCall call, LocatableCallOption lastCall, DataFlowCallable target
 ) {
   target = viableCallableLambda(call, lastCall)
 }

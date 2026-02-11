@@ -6,6 +6,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Collections
 private import RuntimeCallable
 
 /** A call. */
@@ -52,7 +53,21 @@ class DispatchCall extends Internal::TDispatchCall {
   }
 
   /** Holds if this call uses reflection. */
-  predicate isReflection() { this instanceof Internal::TDispatchReflectionCall }
+  predicate isReflection() {
+    this instanceof Internal::TDispatchReflectionCall
+    or
+    this instanceof Internal::TDispatchDynamicElementAccess
+    or
+    this instanceof Internal::TDispatchDynamicMemberAccess
+    or
+    this instanceof Internal::TDispatchDynamicMethodCall
+    or
+    this instanceof Internal::TDispatchDynamicOperatorCall
+    or
+    this instanceof Internal::TDispatchDynamicEventAccess
+    or
+    this instanceof Internal::TDispatchDynamicObjectCreation
+  }
 }
 
 /** Internal implementation details. */
@@ -72,7 +87,8 @@ private module Internal {
     newtype TDispatchCall =
       TDispatchMethodCall(MethodCall mc) {
         not isReflectionCall(mc, _, _, _, _) and
-        not mc.isLateBound()
+        not mc.isLateBound() and
+        not isExtensionAccessorCall(mc)
       } or
       TDispatchAccessorCall(AccessorCall ac) or
       TDispatchOperatorCall(OperatorCall oc) { not oc.isLateBound() } or
@@ -95,7 +111,8 @@ private module Internal {
         c instanceof ConstructorInitializer
         or
         c instanceof LocalFunctionCall
-      }
+      } or
+      TDispatchExtensionAccessorCall(MethodCall mc) { isExtensionAccessorCall(mc) }
 
     cached
     Expr getCall(DispatchCall dc) { result = dc.(DispatchCallImpl).getCall() }
@@ -126,6 +143,8 @@ private module Internal {
   }
 
   import Cached
+
+  private predicate isExtensionAccessorCall(MethodCall mc) { exists(mc.getTargetAccessor()) }
 
   /**
    * Holds if `mc` is a reflection call to a method named `name`, where
@@ -255,6 +274,14 @@ private module Internal {
     hasOverrider(t, c)
   }
 
+  /**
+   * For `base` expressions, the extractor provides the type of the base
+   * class instead of the derived class; this predicate provides the latter.
+   */
+  private Type getBaseAdjustedType(BaseAccess base) {
+    result = base.getEnclosingCallable().getDeclaringType()
+  }
+
   abstract private class DispatchOverridableCall extends DispatchCallImpl {
     pragma[noinline]
     OverridableCallable getAStaticTargetExt() {
@@ -314,12 +341,8 @@ private module Internal {
       1 < strictcount(this.getADynamicTarget().getUnboundDeclaration()) and
       c = this.getCall().getEnclosingCallable().getUnboundDeclaration() and
       (
-        exists(
-          BaseSsa::Definition def, AssignableDefinitions::ImplicitParameterDefinition pdef,
-          Parameter p
-        |
-          pdef = def.getDefinition() and
-          p = pdef.getTarget() and
+        exists(BaseSsa::Definition def, Parameter p |
+          def.isImplicitEntryDefinition(p) and
           this.getSyntheticQualifier() = def.getARead() and
           p.getPosition() = i and
           c.getAParameter() = p and
@@ -349,7 +372,12 @@ private module Internal {
     private predicate contextArgHasType(DispatchCall ctx, Type t, boolean isExact) {
       exists(Expr arg, int i |
         this.relevantContext(ctx, i) and
-        t = getAPossibleType(arg, isExact)
+        (
+          t = getBaseAdjustedType(arg) and isExact = false
+          or
+          not exists(getBaseAdjustedType(arg)) and
+          t = getAPossibleType(arg, isExact)
+        )
       |
         ctx.getArgument(i) = arg
         or
@@ -714,9 +742,7 @@ private module Internal {
 
       Type getType(boolean isExact) {
         result = this.getType() and
-        if
-          this instanceof ObjectCreation or
-          this instanceof BaseAccess
+        if this instanceof ObjectCreation or this instanceof BaseAccess
         then isExact = true
         else isExact = false
       }
@@ -798,6 +824,33 @@ private module Internal {
   }
 
   /**
+   * A call to an extension accessor method.
+   */
+  private class DispatchExtensionAccessorCall extends DispatchCallImpl,
+    TDispatchExtensionAccessorCall
+  {
+    override MethodCall getCall() { this = TDispatchExtensionAccessorCall(result) }
+
+    private Expr getArgumentForParameter(Parameter p) {
+      this.getCall().getTargetAccessor().getAParameter() = p and
+      result = this.getCall().getArgument(p.getPosition())
+    }
+
+    override Expr getArgument(int i) {
+      exists(MethodCall call, Parameter p | call = this.getCall() |
+        p = call.getTargetAccessor().getParameter(i) and
+        result = this.getArgumentForParameter(p)
+      )
+    }
+
+    override Expr getQualifier() { result = this.getCall().getQualifier() }
+
+    override Accessor getAStaticTarget() { result = this.getCall().getTargetAccessor() }
+
+    override RuntimeCallable getADynamicTarget() { result = this.getAStaticTarget() }
+  }
+
+  /**
    * An ordinary operator call.
    *
    * The set of viable targets is determined by taking virtual dispatch
@@ -846,7 +899,7 @@ private module Internal {
     private predicate hasDynamicArg(int i, Type argumentType) {
       exists(Expr argument |
         argument = this.getArgument(i) and
-        argument.stripImplicitCasts().getType() instanceof DynamicType and
+        argument.stripImplicit().getType() instanceof DynamicType and
         argumentType = getAPossibleType(argument, _)
       )
     }
@@ -1127,7 +1180,7 @@ private module Internal {
         if p.isParams()
         then (
           j >= i and
-          paramType = p.getType().(ArrayType).getElementType()
+          paramType = p.getType().(ParamsCollectionType).getElementType()
         ) else (
           i = j and
           paramType = p.getType()

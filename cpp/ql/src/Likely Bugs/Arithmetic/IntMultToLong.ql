@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 8.1
- * @precision high
+ * @precision medium
  * @id cpp/integer-multiplication-cast-to-long
  * @tags reliability
  *       security

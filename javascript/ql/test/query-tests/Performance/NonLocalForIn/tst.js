@@ -1,27 +1,24 @@
 var o = { x: 1, y: 2, z: 3 };
 
-// OK: toplevel for-in
+// OK - toplevel for-in
 for (var p in o);
 
 function f() {
-    // OK: local variable
+    // OK - local variable
     for (var p in o);
 }
 
 function g() {
-    // NOT OK: property
-    var q = [], i = 0;
-    for (q[i++] in o);
+    var q = [], i = 0; // property
+    for (q[i++] in o); // $ Alert
 }
 
 function h() {
-    // NOT OK: global
-    for (p in o);
+    for (p in o); // $ Alert - global
 }
 
 function k() {
-    // NOT OK: captured
-    for (var p in o);
+    for (var p in o); // $ Alert - captured
     return function() {
         return p;
     };
@@ -30,15 +27,13 @@ function k() {
 function l() {
     var p;
     function m() {
-        // NOT OK: captured
-        for (p in o);
+        for (p in o); // $ Alert - captured
     }
 }
 
 function m() {
-    // NOT OK: global
-    for (p of o);
+    for (p of o); // $ Alert - global
 }
 
-// OK: toplevel
+// OK - toplevel
 for (p of o);

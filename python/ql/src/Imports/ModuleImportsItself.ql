@@ -2,7 +2,8 @@
  * @name Module imports itself
  * @description A module imports itself
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  * @problem.severity recommendation
  * @sub-severity high
@@ -11,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate modules_imports_itself(ImportingStmt i, ModuleValue m) {
   i.getEnclosingModule() = m.getScope() and

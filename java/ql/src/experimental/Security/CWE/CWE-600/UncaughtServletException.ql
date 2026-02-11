@@ -65,16 +65,24 @@ class UncaughtServletExceptionSink extends DataFlow::ExprNode {
   }
 }
 
-/** Taint configuration of uncaught exceptions caused by user provided data from `ThreatModelFlowSource` */
+/** Taint configuration of uncaught exceptions caused by user provided data from `ActiveThreatModelSource` */
 module UncaughtServletExceptionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UncaughtServletExceptionSink }
 }
 
 module UncaughtServletExceptionFlow = TaintTracking::Global<UncaughtServletExceptionConfig>;
 
-from UncaughtServletExceptionFlow::PathNode source, UncaughtServletExceptionFlow::PathNode sink
-where UncaughtServletExceptionFlow::flowPath(source, sink) and not hasErrorPage()
-select sink.getNode(), source, sink, "This value depends on a $@ and can throw uncaught exception.",
-  source.getNode(), "user-provided value"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, UncaughtServletExceptionFlow::PathNode source,
+  UncaughtServletExceptionFlow::PathNode sink, string message1, DataFlow::Node sourceNode,
+  string message2
+) {
+  UncaughtServletExceptionFlow::flowPath(source, sink) and
+  not hasErrorPage() and
+  sinkNode = sink.getNode() and
+  message1 = "This value depends on a $@ and can throw uncaught exception." and
+  sourceNode = source.getNode() and
+  message2 = "user-provided value"
+}

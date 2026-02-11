@@ -13,6 +13,7 @@ import csharp
 private import Completion
 private import ControlFlowGraphImpl
 private import semmle.code.csharp.controlflow.ControlFlowGraph::ControlFlow as Cfg
+private import codeql.controlflow.BasicBlock as BB
 
 private predicate startsBB(ControlFlowElement cfe) {
   not succ(_, cfe, _) and
@@ -55,23 +56,33 @@ private predicate bbIDominates(PreBasicBlock dom, PreBasicBlock bb) =
 class PreBasicBlock extends ControlFlowElement {
   PreBasicBlock() { startsBB(this) }
 
-  PreBasicBlock getASuccessorByType(Cfg::SuccessorType t) {
-    succ(this.getLastElement(), result, any(Completion c | t = c.getAMatchingSuccessorType()))
+  PreBasicBlock getASuccessor(Cfg::SuccessorType t) {
+    succ(this.getLastNode(), result, any(Completion c | t = c.getAMatchingSuccessorType()))
   }
 
-  PreBasicBlock getASuccessor() { result = this.getASuccessorByType(_) }
+  deprecated PreBasicBlock getASuccessorByType(Cfg::SuccessorType t) {
+    result = this.getASuccessor(t)
+  }
+
+  PreBasicBlock getASuccessor() { result = this.getASuccessor(_) }
 
   PreBasicBlock getAPredecessor() { result.getASuccessor() = this }
 
-  ControlFlowElement getElement(int pos) { bbIndex(this, result, pos) }
+  ControlFlowElement getNode(int pos) { bbIndex(this, result, pos) }
 
-  ControlFlowElement getAnElement() { result = this.getElement(_) }
+  deprecated ControlFlowElement getElement(int pos) { result = this.getNode(pos) }
+
+  ControlFlowElement getAnElement() { result = this.getNode(_) }
 
   ControlFlowElement getFirstElement() { result = this }
 
-  ControlFlowElement getLastElement() { result = this.getElement(this.length() - 1) }
+  ControlFlowElement getLastNode() { result = this.getNode(this.length() - 1) }
+
+  deprecated ControlFlowElement getLastElement() { result = this.getLastNode() }
 
   int length() { result = strictcount(this.getAnElement()) }
+
+  PreBasicBlock getImmediateDominator() { bbIDominates(result, this) }
 
   predicate immediatelyDominates(PreBasicBlock bb) { bbIDominates(this, bb) }
 
@@ -84,45 +95,81 @@ class PreBasicBlock extends ControlFlowElement {
     or
     this.strictlyDominates(bb)
   }
+
+  predicate inDominanceFrontier(PreBasicBlock df) {
+    this = df.getAPredecessor() and not bbIDominates(this, df)
+    or
+    exists(PreBasicBlock prev | prev.inDominanceFrontier(df) |
+      bbIDominates(this, prev) and
+      not bbIDominates(this, df)
+    )
+  }
+
+  /** Unsupported. Do not use. */
+  predicate strictlyPostDominates(PreBasicBlock bb) { none() }
+
+  /** Unsupported. Do not use. */
+  predicate postDominates(PreBasicBlock bb) {
+    this.strictlyPostDominates(bb) or
+    this = bb
+  }
 }
 
 private Completion getConditionalCompletion(ConditionalCompletion cc) {
   result.getInnerCompletion() = cc
 }
 
+pragma[nomagic]
+private predicate conditionBlockImmediatelyControls(
+  ConditionBlock cond, PreBasicBlock succ, ConditionalCompletion cc
+) {
+  exists(ControlFlowElement last, Completion c |
+    last = cond.getLastNode() and
+    c = getConditionalCompletion(cc) and
+    succ(last, succ, c) and
+    // In the pre-CFG, we need to account for case where one predecessor node has
+    // two edges to the same successor node. Assertion expressions are examples of
+    // such nodes.
+    not exists(Completion other |
+      succ(last, succ, other) and
+      other != c
+    ) and
+    forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != cond |
+      succ.dominates(pred)
+    )
+  )
+}
+
 class ConditionBlock extends PreBasicBlock {
   ConditionBlock() {
     exists(Completion c | c = getConditionalCompletion(_) |
-      succ(this.getLastElement(), _, c)
+      succ(this.getLastNode(), _, c)
       or
-      scopeLast(_, this.getLastElement(), c)
+      scopeLast(_, this.getLastNode(), c)
     )
   }
 
   pragma[nomagic]
-  private predicate immediatelyControls(PreBasicBlock succ, ConditionalCompletion cc) {
-    exists(ControlFlowElement last, Completion c |
-      last = this.getLastElement() and
-      c = getConditionalCompletion(cc) and
-      succ(last, succ, c) and
-      // In the pre-CFG, we need to account for case where one predecessor node has
-      // two edges to the same successor node. Assertion expressions are examples of
-      // such nodes.
-      not exists(Completion other |
-        succ(last, succ, other) and
-        other != c
-      ) and
-      forall(PreBasicBlock pred | pred = succ.getAPredecessor() and pred != this |
-        succ.dominates(pred)
-      )
-    )
-  }
-
-  pragma[nomagic]
-  predicate controls(PreBasicBlock controlled, Cfg::SuccessorTypes::ConditionalSuccessor s) {
-    exists(PreBasicBlock succ, ConditionalCompletion c | this.immediatelyControls(succ, c) |
+  predicate controls(PreBasicBlock controlled, Cfg::ConditionalSuccessor s) {
+    exists(PreBasicBlock succ, ConditionalCompletion c |
+      conditionBlockImmediatelyControls(this, succ, c)
+    |
       succ.dominates(controlled) and
       s = c.getAMatchingSuccessorType()
     )
+  }
+}
+
+module PreCfg implements BB::CfgSig<Location> {
+  class ControlFlowNode = ControlFlowElement;
+
+  class BasicBlock = PreBasicBlock;
+
+  class EntryBasicBlock extends BasicBlock {
+    EntryBasicBlock() { entryBB(this) }
+  }
+
+  predicate dominatingEdge(BasicBlock bb1, BasicBlock bb2) {
+    conditionBlockImmediatelyControls(bb1, bb2, _)
   }
 }

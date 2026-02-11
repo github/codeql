@@ -16,7 +16,7 @@ class Tr1
     static void M1()
     {
 #line 1 "comments1.cs"
-        int i;
+        int i; // A mapped single-line comment
         int j;
 #line default
         char c;

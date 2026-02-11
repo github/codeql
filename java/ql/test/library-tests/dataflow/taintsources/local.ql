@@ -1,17 +1,13 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
-
-class LocalSource extends DataFlow::Node instanceof UserInput {
-  LocalSource() { not this instanceof RemoteFlowSource }
-}
+import utils.test.InlineExpectationsTest
 
 predicate isTestSink(DataFlow::Node n) {
   exists(MethodCall ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
 }
 
 module LocalValueConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n instanceof LocalSource }
+  predicate isSource(DataFlow::Node n) { n instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node n) { isTestSink(n) }
 }
@@ -19,7 +15,7 @@ module LocalValueConfig implements DataFlow::ConfigSig {
 module LocalValueFlow = DataFlow::Global<LocalValueConfig>;
 
 module LocalTaintConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n instanceof LocalSource }
+  predicate isSource(DataFlow::Node n) { n instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node n) { isTestSink(n) }
 }

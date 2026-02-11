@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.Comments
 
         public IEnumerable<CommentLine> CommentLines => lines;
 
-        public Location Location { get; private set; }
+        public Microsoft.CodeAnalysis.Location Location { get; private set; }
 
         public CommentBlock(CommentLine firstLine)
         {
@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Comments
         {
             Location = !lines.Any()
                 ? line.Location
-                : Location.Create(
+                : Microsoft.CodeAnalysis.Location.Create(
                     line.Location.SourceTree!,
                     new TextSpan(Location.SourceSpan.Start, line.Location.SourceSpan.End - Location.SourceSpan.Start));
 

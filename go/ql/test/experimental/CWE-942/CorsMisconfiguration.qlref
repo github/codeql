@@ -1,1 +1,2 @@
-experimental/CWE-942/CorsMisconfiguration.ql
+query: experimental/CWE-942/CorsMisconfiguration.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

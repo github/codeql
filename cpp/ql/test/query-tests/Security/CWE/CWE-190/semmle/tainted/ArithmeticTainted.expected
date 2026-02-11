@@ -1,4 +1,6 @@
 edges
+| main.cpp:7:27:7:30 | **argv | main.cpp:8:17:8:20 | **argv | provenance |  |
+| main.cpp:8:17:8:20 | **argv | test.c:10:28:10:31 | **argv | provenance |  |
 | test2.cpp:12:21:12:21 | v | test2.cpp:14:11:14:11 | v | provenance |  |
 | test2.cpp:25:22:25:23 | fscanf output argument | test2.cpp:27:13:27:13 | v | provenance |  |
 | test2.cpp:27:13:27:13 | v | test2.cpp:12:21:12:21 | v | provenance |  |
@@ -6,28 +8,25 @@ edges
 | test2.cpp:38:13:38:16 | call to atoi | test2.cpp:39:3:39:18 | ... = ... | provenance |  |
 | test2.cpp:38:13:38:16 | call to atoi | test2.cpp:39:9:39:11 | num | provenance |  |
 | test2.cpp:39:3:39:18 | ... = ... | test2.cpp:40:3:40:5 | num | provenance |  |
-| test3.c:10:27:10:30 | **argv | test.c:11:24:11:27 | call to atoi | provenance | TaintFunction |
-| test3.c:10:27:10:30 | **argv | test.c:41:5:41:24 | ... = ... | provenance | TaintFunction |
-| test3.c:10:27:10:30 | **argv | test.c:51:5:51:24 | ... = ... | provenance | TaintFunction |
 | test5.cpp:5:5:5:17 | *getTaintedInt | test5.cpp:17:6:17:18 | call to getTaintedInt | provenance |  |
 | test5.cpp:5:5:5:17 | *getTaintedInt | test5.cpp:18:6:18:18 | call to getTaintedInt | provenance |  |
 | test5.cpp:9:7:9:9 | gets output argument | test5.cpp:10:9:10:27 | call to strtoul | provenance | TaintFunction |
 | test5.cpp:10:9:10:27 | call to strtoul | test5.cpp:5:5:5:17 | *getTaintedInt | provenance |  |
 | test5.cpp:18:2:18:20 | ... = ... | test5.cpp:19:6:19:6 | y | provenance |  |
 | test5.cpp:18:6:18:18 | call to getTaintedInt | test5.cpp:18:2:18:20 | ... = ... | provenance |  |
-| test.c:10:27:10:30 | **argv | test.c:11:24:11:27 | call to atoi | provenance | TaintFunction |
-| test.c:10:27:10:30 | **argv | test.c:41:5:41:24 | ... = ... | provenance | TaintFunction |
-| test.c:10:27:10:30 | **argv | test.c:51:5:51:24 | ... = ... | provenance | TaintFunction |
+| test.c:10:28:10:31 | **argv | test.c:11:24:11:27 | call to atoi | provenance | TaintFunction |
+| test.c:10:28:10:31 | **argv | test.c:41:5:41:24 | ... = ... | provenance | TaintFunction |
+| test.c:10:28:10:31 | **argv | test.c:51:5:51:24 | ... = ... | provenance | TaintFunction |
 | test.c:11:24:11:27 | call to atoi | test.c:14:15:14:28 | maxConnections | provenance |  |
 | test.c:41:5:41:24 | ... = ... | test.c:44:7:44:10 | len2 | provenance |  |
 | test.c:41:5:41:24 | ... = ... | test.c:44:7:44:12 | ... -- | provenance |  |
 | test.c:44:7:44:12 | ... -- | test.c:44:7:44:10 | len2 | provenance |  |
-| test.c:44:7:44:12 | ... -- | test.c:44:7:44:12 | ... -- | provenance |  |
 | test.c:51:5:51:24 | ... = ... | test.c:54:7:54:10 | len3 | provenance |  |
 | test.c:51:5:51:24 | ... = ... | test.c:54:7:54:12 | ... -- | provenance |  |
 | test.c:54:7:54:12 | ... -- | test.c:54:7:54:10 | len3 | provenance |  |
-| test.c:54:7:54:12 | ... -- | test.c:54:7:54:12 | ... -- | provenance |  |
 nodes
+| main.cpp:7:27:7:30 | **argv | semmle.label | **argv |
+| main.cpp:8:17:8:20 | **argv | semmle.label | **argv |
 | test2.cpp:12:21:12:21 | v | semmle.label | v |
 | test2.cpp:14:11:14:11 | v | semmle.label | v |
 | test2.cpp:25:22:25:23 | fscanf output argument | semmle.label | fscanf output argument |
@@ -37,7 +36,6 @@ nodes
 | test2.cpp:39:3:39:18 | ... = ... | semmle.label | ... = ... |
 | test2.cpp:39:9:39:11 | num | semmle.label | num |
 | test2.cpp:40:3:40:5 | num | semmle.label | num |
-| test3.c:10:27:10:30 | **argv | semmle.label | **argv |
 | test5.cpp:5:5:5:17 | *getTaintedInt | semmle.label | *getTaintedInt |
 | test5.cpp:9:7:9:9 | gets output argument | semmle.label | gets output argument |
 | test5.cpp:10:9:10:27 | call to strtoul | semmle.label | call to strtoul |
@@ -45,7 +43,7 @@ nodes
 | test5.cpp:18:2:18:20 | ... = ... | semmle.label | ... = ... |
 | test5.cpp:18:6:18:18 | call to getTaintedInt | semmle.label | call to getTaintedInt |
 | test5.cpp:19:6:19:6 | y | semmle.label | y |
-| test.c:10:27:10:30 | **argv | semmle.label | **argv |
+| test.c:10:28:10:31 | **argv | semmle.label | **argv |
 | test.c:11:24:11:27 | call to atoi | semmle.label | call to atoi |
 | test.c:14:15:14:28 | maxConnections | semmle.label | maxConnections |
 | test.c:41:5:41:24 | ... = ... | semmle.label | ... = ... |
@@ -63,19 +61,7 @@ subpaths
 | test5.cpp:17:6:17:18 | call to getTaintedInt | test5.cpp:9:7:9:9 | gets output argument | test5.cpp:17:6:17:18 | call to getTaintedInt | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test5.cpp:9:7:9:9 | gets output argument | string read by gets |
 | test5.cpp:19:6:19:6 | y | test5.cpp:9:7:9:9 | gets output argument | test5.cpp:19:6:19:6 | y | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test5.cpp:9:7:9:9 | gets output argument | string read by gets |
 | test5.cpp:19:6:19:6 | y | test5.cpp:9:7:9:9 | gets output argument | test5.cpp:19:6:19:6 | y | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test5.cpp:9:7:9:9 | gets output argument | string read by gets |
-| test.c:14:15:14:28 | maxConnections | test3.c:10:27:10:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test3.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:14:15:14:28 | maxConnections | test3.c:10:27:10:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:14:15:14:28 | maxConnections | test3.c:10:27:10:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test3.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:14:15:14:28 | maxConnections | test3.c:10:27:10:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:14:15:14:28 | maxConnections | test.c:10:27:10:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test3.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:14:15:14:28 | maxConnections | test.c:10:27:10:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | test.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:14:15:14:28 | maxConnections | test.c:10:27:10:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test3.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:14:15:14:28 | maxConnections | test.c:10:27:10:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:44:7:44:10 | len2 | test3.c:10:27:10:30 | **argv | test.c:44:7:44:10 | len2 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test3.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:44:7:44:10 | len2 | test3.c:10:27:10:30 | **argv | test.c:44:7:44:10 | len2 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:44:7:44:10 | len2 | test.c:10:27:10:30 | **argv | test.c:44:7:44:10 | len2 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test3.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:44:7:44:10 | len2 | test.c:10:27:10:30 | **argv | test.c:44:7:44:10 | len2 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:54:7:54:10 | len3 | test3.c:10:27:10:30 | **argv | test.c:54:7:54:10 | len3 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test3.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:54:7:54:10 | len3 | test3.c:10:27:10:30 | **argv | test.c:54:7:54:10 | len3 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:54:7:54:10 | len3 | test.c:10:27:10:30 | **argv | test.c:54:7:54:10 | len3 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test3.c:10:27:10:30 | **argv | a command-line argument |
-| test.c:54:7:54:10 | len3 | test.c:10:27:10:30 | **argv | test.c:54:7:54:10 | len3 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | test.c:10:27:10:30 | **argv | a command-line argument |
+| test.c:14:15:14:28 | maxConnections | main.cpp:7:27:7:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an overflow. | main.cpp:7:27:7:30 | **argv | a command-line argument |
+| test.c:14:15:14:28 | maxConnections | main.cpp:7:27:7:30 | **argv | test.c:14:15:14:28 | maxConnections | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | main.cpp:7:27:7:30 | **argv | a command-line argument |
+| test.c:44:7:44:10 | len2 | main.cpp:7:27:7:30 | **argv | test.c:44:7:44:10 | len2 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | main.cpp:7:27:7:30 | **argv | a command-line argument |
+| test.c:54:7:54:10 | len3 | main.cpp:7:27:7:30 | **argv | test.c:54:7:54:10 | len3 | $@ flows to an operand of an arithmetic expression, potentially causing an underflow. | main.cpp:7:27:7:30 | **argv | a command-line argument |

@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["mymindstorm/setup-emsdk", "*", "input.actions-cache-folder", "env.EMSDK", "taint", "manual"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["mymindstorm/setup-emsdk", "*", "input.actions-cache-folder", "command-injection", "manual"]
+      - ["mymindstorm/setup-emsdk", "*", "input.version", "command-injection", "manual"]

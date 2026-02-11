@@ -65,7 +65,7 @@ module TlsVersionFlowConfig implements DataFlow::ConfigSig {
    */
   additional predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", ["MinVersion", "MaxVersion"]) and
-    fieldWrite.writesField(base, fld, sink)
+    fieldWrite.writesFieldPreUpdate(base, fld, sink)
   }
 
   predicate isSource(DataFlow::Node source) { intIsSource(source, _) }
@@ -190,7 +190,7 @@ module TlsInsecureCipherSuitesFlowConfig implements DataFlow::ConfigSig {
    */
   additional predicate isSink(DataFlow::Node sink, Field fld, DataFlow::Node base, Write fieldWrite) {
     fld.hasQualifiedName("crypto/tls", "Config", "CipherSuites") and
-    fieldWrite.writesField(base, fld, sink)
+    fieldWrite.writesFieldPreUpdate(base, fld, sink)
   }
 
   predicate isSink(DataFlow::Node sink) { isSink(sink, _, _, _) }
@@ -211,7 +211,7 @@ module TlsInsecureCipherSuitesFlow = TaintTracking::Global<TlsInsecureCipherSuit
 
 /**
  * Holds if an insecure TLS cipher suite flows from `source` to `sink`, where `sink`
- * is written to the CipherSuites list of a `tls.Config` instance. `message` describes
+ * is written to the CipherSuites list of a `tls.Config` instance. `message` describes
  * the exact problem found.
  */
 predicate isInsecureTlsCipherFlow(

@@ -1,2 +1,2 @@
 WebSettings settings = webview.getSettings();
-settings.setJavaScriptEnabled(true);
+settings.setJavaScriptEnabled(true); // BAD: webview has JavaScript enabled

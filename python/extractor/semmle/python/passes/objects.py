@@ -43,6 +43,23 @@ BUILTINS_NAME = 'builtins'
 
 LITERALS = (ast.Num, ast.Str)
 
+# A variant of the 'replace' error handler that replaces unencodable characters with U+FFFD
+# rather than '?'. Without this, a string like '\uD800' (which is not encodable) would get mapped
+# to '?', and potentially clash with the regular string '?' if it appeared elsewhere in the source
+# code. Used in 'get_label_for_object' below. Based on code from https://peps.python.org/pep-0293/
+def fffd_replace(exc):
+     if isinstance(exc, UnicodeEncodeError):
+         return ((exc.end-exc.start)*u"\\ufffd", exc.end)
+     elif isinstance(exc, UnicodeDecodeError):
+         return (u"\\ufffd", exc.end)
+     elif isinstance(exc, UnicodeTranslateError):
+         return ((exc.end-exc.start)*u"\\ufffd", exc.end)
+     else:
+         raise TypeError("can't handle %s" % exc.__name__)
+
+import codecs
+codecs.register_error("fffdreplace", fffd_replace)
+
 class _CObject(object):
     '''Utility class to wrap arbitrary C objects.
     Treat all objects as unique. Rely on naming in the
@@ -239,7 +256,7 @@ class ObjectPass(Pass):
         else:
             prefix = u"C_bytes$"
         if t is str:
-            obj = obj.encode("utf8", errors='replace')
+            obj = obj.encode("utf8", errors='fffdreplace')
             return prefix + hashlib.sha1(obj).hexdigest()
         if t is bytes:
             return prefix + hashlib.sha1(obj).hexdigest()

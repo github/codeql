@@ -2,9 +2,13 @@
  * Provides a shared interface and implementation for constructing control-flow graphs
  * (CFGs) from abstract syntax trees (ASTs).
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 private import codeql.util.FileSystem
+private import codeql.util.Void
+private import SuccessorType
 
 /** Provides the language-specific input specification. */
 signature module InputSig<LocationSig Location> {
@@ -47,7 +51,7 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
   }
 
-  /** Gets the CFG scope of AST node `n`. */
+  /** Gets the CFG scope of the AST node `n`. */
   CfgScope getCfgScope(AstNode n);
 
   /** Holds if `first` is executed first when entering `scope`. */
@@ -56,6 +60,27 @@ signature module InputSig<LocationSig Location> {
   /** Holds if `scope` is exited when `last` finishes with completion `c`. */
   predicate scopeLast(CfgScope scope, AstNode last, Completion c);
 
+  /** Gets a successor type that matches completion `c`. */
+  SuccessorType getAMatchingSuccessorType(Completion c);
+
+  /** Hold if `t` represents a conditional successor type. */
+  default predicate successorTypeIsCondition(SuccessorType t) { t instanceof ConditionalSuccessor }
+
+  /**
+   * Gets an `id` of `node`. This is used to order the predecessors of a join
+   * basic block.
+   */
+  int idOfAstNode(AstNode node);
+
+  /**
+   * Gets an `id` of `scope`. This is used to order the predecessors of a join
+   * basic block.
+   */
+  int idOfCfgScope(CfgScope scope);
+}
+
+/** Provides input needed for CFG splitting. */
+signature module SplittingInputSig<LocationSig Location, InputSig<Location> Input> {
   /** Gets the maximum number of splits allowed for a given node. */
   default int maxSplits() { result = 5 }
 
@@ -67,27 +92,41 @@ signature module InputSig<LocationSig Location> {
     /** Gets a textual representation of this split. */
     string toString();
   }
+}
 
-  /** A type of a control flow successor. */
-  class SuccessorType {
-    /** Gets a textual representation of this successor type. */
-    string toString();
+/** Provides input needed for `ConditionalCompletionSplitting`. */
+signature module ConditionalCompletionSplittingInputSig<
+  LocationSig Location, InputSig<Location> Input, SplittingInputSig<Location, Input> SplittingInput>
+{
+  /** A conditional control-flow completion. */
+  class ConditionalCompletion extends Input::Completion;
+
+  /** A split kind for `ConditionalCompletionSplitting`. */
+  class ConditionalCompletionSplitKind extends SplittingInput::SplitKindBase;
+
+  /** The user-facing split class. */
+  class ConditionalCompletionSplit extends SplittingInput::Split {
+    /** Gets the completion recorded in this split. */
+    ConditionalCompletion getCompletion();
   }
 
-  /** Gets a successor type that matches completion `c`. */
-  SuccessorType getAMatchingSuccessorType(Completion c);
-
   /**
-   * Hold if `t` represents simple (normal) evaluation of a statement or an
-   * expression.
+   * Holds if `child` is a sub expression of `parent`, and whenever a last node
+   * of `child` (normally `child` itself) has `parent` as a successor with label
+   * `childCompletion`, then edges out of `parent` must have label
+   * `parentCompletion`.
+   *
+   * For example, for an expression `!x`, when `child = x` has conditional
+   * completion `c` then `parent = !x` must have the dual completion of `c`.
+   *
+   * Similarly, for an expression `x && y`, when `child = {x, y}` has conditional
+   * completion `c`, then `parent = x && y` must have the same completion of `c`.
    */
-  predicate successorTypeIsSimple(SuccessorType t);
-
-  /** Hold if `t` represents a conditional successor type. */
-  predicate successorTypeIsCondition(SuccessorType t);
-
-  /** Holds if `t` is an abnormal exit type out of a CFG scope. */
-  predicate isAbnormalExitType(SuccessorType t);
+  bindingset[parent, parentCompletion]
+  predicate condPropagateExpr(
+    Input::AstNode parent, ConditionalCompletion parentCompletion, Input::AstNode child,
+    ConditionalCompletion childCompletion
+  );
 }
 
 /**
@@ -122,8 +161,14 @@ signature module InputSig<LocationSig Location> {
  * loop break will be caught up by its surrounding loop and turned into a normal
  * completion.
  */
-module Make<LocationSig Location, InputSig<Location> Input> {
+module MakeWithSplitting<
+  LocationSig Location, //
+  InputSig<Location> Input, //
+  SplittingInputSig<Location, Input> SplittingInput, //
+  ConditionalCompletionSplittingInputSig<Location, Input, SplittingInput> ConditionalCompletionSplittingInput>
+{
   private import Input
+  private import SplittingInput
 
   final private class AstNodeFinal = AstNode;
 
@@ -202,32 +247,44 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Gets the `i`th child element, in order of evaluation. */
     abstract AstNode getChildNode(int i);
 
-    private AstNode getChildNodeRanked(int i) {
-      result = rank[i + 1](AstNode child, int j | child = this.getChildNode(j) | child order by j)
+    private ControlFlowTree getChildTreeRanked(int i) {
+      result =
+        rank[i + 1](ControlFlowTree child, int j | child = this.getChildNode(j) | child order by j)
     }
 
     /** Gets the first child node of this element. */
-    final AstNode getFirstChildNode() { result = this.getChildNodeRanked(0) }
+    deprecated final AstNode getFirstChildNode() { result = this.getChildTreeRanked(0) }
+
+    /** Gets the first child node of this element. */
+    final ControlFlowTree getFirstChildTree() { result = this.getChildTreeRanked(0) }
 
     /** Gets the last child node of this node. */
-    final AstNode getLastChildElement() {
+    deprecated final AstNode getLastChildElement() {
       exists(int last |
-        result = this.getChildNodeRanked(last) and
-        not exists(this.getChildNodeRanked(last + 1))
+        result = this.getChildTreeRanked(last) and
+        not exists(this.getChildTreeRanked(last + 1))
+      )
+    }
+
+    /** Gets the last child node of this node. */
+    final ControlFlowTree getLastChildTree() {
+      exists(int last |
+        result = this.getChildTreeRanked(last) and
+        not exists(this.getChildTreeRanked(last + 1))
       )
     }
 
     /** Holds if this element has no children. */
-    predicate isLeafElement() { not exists(this.getFirstChildNode()) }
+    predicate isLeafElement() { not exists(this.getFirstChildTree()) }
 
     override predicate propagatesAbnormal(AstNode child) { child = this.getChildNode(_) }
 
     pragma[nomagic]
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       exists(int i |
-        last(this.getChildNodeRanked(i), pred, c) and
+        last(this.getChildTreeRanked(i), pred, c) and
         completionIsNormal(c) and
-        first(this.getChildNodeRanked(i + 1), succ)
+        first(this.getChildTreeRanked(i + 1), succ)
       )
     }
   }
@@ -235,7 +292,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   /** A standard element that is executed in pre-order. */
   abstract class StandardPreOrderTree extends StandardTree, PreOrderTree {
     override predicate last(AstNode last, Completion c) {
-      last(this.getLastChildElement(), last, c)
+      last(this.getLastChildTree(), last, c)
       or
       this.isLeafElement() and
       completionIsValidFor(c, this) and
@@ -246,7 +303,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       StandardTree.super.succ(pred, succ, c)
       or
       pred = this and
-      first(this.getFirstChildNode(), succ) and
+      first(this.getFirstChildTree(), succ) and
       completionIsSimple(c)
     }
   }
@@ -254,16 +311,16 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   /** A standard element that is executed in post-order. */
   abstract class StandardPostOrderTree extends StandardTree, PostOrderTree {
     override predicate first(AstNode first) {
-      first(this.getFirstChildNode(), first)
+      first(this.getFirstChildTree(), first)
       or
-      not exists(this.getFirstChildNode()) and
+      not exists(this.getFirstChildTree()) and
       first = this
     }
 
     override predicate succ(AstNode pred, AstNode succ, Completion c) {
       StandardTree.super.succ(pred, succ, c)
       or
-      last(this.getLastChildElement(), pred, c) and
+      last(this.getLastChildTree(), pred, c) and
       succ = this and
       completionIsNormal(c)
     }
@@ -451,7 +508,7 @@ module Make<LocationSig Location, InputSig<Location> Input> {
   private predicate succEntrySplits(CfgScope pred, AstNode succ, Splits succSplits, SuccessorType t) {
     exists(int rnk |
       scopeFirst(pred, succ) and
-      successorTypeIsSimple(t) and
+      t instanceof DirectSuccessor and
       succEntrySplitsFromRank(pred, succ, succSplits, rnk)
     |
       rnk = 0 and
@@ -888,6 +945,12 @@ module Make<LocationSig Location, InputSig<Location> Input> {
         )
     }
 
+    /** Holds if `t` is an abnormal exit type out of a CFG scope. */
+    private predicate isAbnormalExitType(SuccessorType t) {
+      t instanceof ExceptionSuccessor or
+      t instanceof ExitSuccessor
+    }
+
     /**
      * Internal representation of control flow nodes in the control flow graph.
      * The control flow graph is pruned for unreachable nodes.
@@ -945,8 +1008,49 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       exists(CfgScope scope |
         pred = TAnnotatedExitNode(scope, _) and
         result = TExitNode(scope) and
-        successorTypeIsSimple(t)
+        t instanceof DirectSuccessor
       )
+    }
+
+    private module JoinBlockPredecessors {
+      predicate hasIdAndKind(BasicBlocks::JoinPredecessorBasicBlock jbp, int id, int kind) {
+        id = idOfCfgScope(jbp.(BasicBlocks::EntryBasicBlock).getScope()) and
+        kind = 0
+        or
+        not jbp instanceof BasicBlocks::EntryBasicBlock and
+        id = idOfAstNode(jbp.getFirstNode().(AstCfgNode).getAstNode()) and
+        kind = 1
+        or
+        exists(AnnotatedExitNode aen |
+          jbp.getFirstNode() = aen and
+          id = idOfCfgScope(aen.getScope()) and
+          if aen.isNormal() then kind = 2 else kind = 3
+        )
+      }
+
+      string getSplitString(BasicBlocks::JoinPredecessorBasicBlock jbp) {
+        result = jbp.getFirstNode().(AstCfgNode).getSplitsString()
+        or
+        not exists(jbp.getFirstNode().(AstCfgNode).getSplitsString()) and
+        result = ""
+      }
+    }
+
+    /**
+     * Gets the `i`th predecessor of join block `jb`, with respect to some
+     * arbitrary order.
+     */
+    cached
+    BasicBlocks::JoinPredecessorBasicBlock getJoinBlockPredecessor(
+      BasicBlocks::JoinBasicBlock jb, int i
+    ) {
+      result =
+        rank[i + 1](BasicBlocks::JoinPredecessorBasicBlock jbp, int id, int kind |
+          jbp = jb.getAPredecessor() and
+          JoinBlockPredecessors::hasIdAndKind(jbp, id, kind)
+        |
+          jbp order by id, kind, JoinBlockPredecessors::getSplitString(jbp)
+        )
     }
 
     cached
@@ -1018,6 +1122,9 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     /** Gets the scope of this node. */
     CfgScope getScope() { result = getNodeCfgScope(this) }
 
+    /** Gets the enclosing callable of this node. */
+    CfgScope getEnclosingCallable() { result = this.getScope() }
+
     /** Gets a successor node of a given type, if any. */
     Node getASuccessor(SuccessorType t) { result = getASuccessor(this, t) }
 
@@ -1081,6 +1188,11 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   final class AnnotatedExitNode = AnnotatedExitNodeImpl;
 
+  /** A control flow node indicating normal termination of a callable. */
+  final class NormalExitNode extends AnnotatedExitNodeImpl {
+    NormalExitNode() { this = TAnnotatedExitNode(_, true) }
+  }
+
   /** An exit node for a given scope. */
   private class ExitNodeImpl extends NodeImpl, TExitNode {
     private CfgScope scope;
@@ -1133,137 +1245,87 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   final class AstCfgNode = AstCfgNodeImpl;
 
-  /** A node to be included in the output of `TestOutput`. */
-  signature class RelevantNodeSig extends Node {
+  /** Provides logic for common CFG split implementations that can be reused across languages. */
+  module SplitImplementations {
     /**
-     * Gets a string used to resolve ties in node and edge ordering.
+     * Provides an implementation of splitting for conditional completions.
+     *
+     * For example, in
+     *
+     * ```rust
+     * if x && !y {
+     *   // ...
+     * }
+     * ```
+     *
+     * we record whether `x`, `y`, and `!y` evaluate to `true` or `false`, and restrict
+     * the edges out of `!y` and `x && !y` accordingly.
      */
-    string getOrderDisambiguation();
-  }
+    module ConditionalCompletionSplitting {
+      private import ConditionalCompletionSplittingInput
 
-  /**
-   * Import this module into a `.ql` file of `@kind graph` to render a CFG. The
-   * graph is restricted to nodes from `RelevantNode`.
-   */
-  module TestOutput<RelevantNodeSig RelevantNode> {
-    /** Holds if `n` is a relevant node in the CFG. */
-    query predicate nodes(RelevantNode n, string attr, string val) {
-      attr = "semmle.order" and
-      val =
-        any(int i |
-          n =
-            rank[i](RelevantNode p, string filePath, int startLine, int startColumn, int endLine,
-              int endColumn |
-              p.getLocation().hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
-            |
-              p
-              order by
-                filePath, startLine, startColumn, endLine, endColumn, p.toString(),
-                p.getOrderDisambiguation()
-            )
-        ).toString()
-    }
+      final private class ConditionalCompletionSplitFinal =
+        ConditionalCompletionSplittingInput::ConditionalCompletionSplit;
 
-    /** Holds if `pred -> succ` is an edge in the CFG. */
-    query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
-      attr = "semmle.label" and
-      val =
-        strictconcat(SuccessorType t, string s |
-          succ = getASuccessor(pred, t) and
-          if successorTypeIsSimple(t) then s = "" else s = t.toString()
-        |
-          s, ", " order by s
-        )
-      or
-      attr = "semmle.order" and
-      val =
-        any(int i |
-          succ =
-            rank[i](RelevantNode s, SuccessorType t, string filePath, int startLine,
-              int startColumn, int endLine, int endColumn |
-              s = getASuccessor(pred, t) and
-              s.getLocation().hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
-            |
-              s
-              order by
-                filePath, startLine, startColumn, endLine, endColumn, t.toString(), s.toString(),
-                s.getOrderDisambiguation()
-            )
-        ).toString()
-    }
-  }
+      /** A split for conditional completions. */
+      class ConditionalCompletionSplitImpl extends SplitImpl, ConditionalCompletionSplitFinal {
+        ConditionalCompletion completion;
 
-  /** Provides the input to `ViewCfgQuery`. */
-  signature module ViewCfgQueryInputSig<FileSig File> {
-    /** The source file selected in the IDE. Should be an `external` predicate. */
-    string selectedSourceFile();
+        ConditionalCompletionSplitImpl() { completion = this.getCompletion() }
 
-    /** The source line selected in the IDE. Should be an `external` predicate. */
-    int selectedSourceLine();
+        override SplitKind getKind() { result instanceof ConditionalCompletionSplitKind }
 
-    /** The source column selected in the IDE. Should be an `external` predicate. */
-    int selectedSourceColumn();
-
-    /**
-     * Holds if CFG scope `scope` spans column `startColumn` of line `startLine` to
-     * column `endColumn` of line `endLine` in `file`.
-     */
-    predicate cfgScopeSpan(
-      CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
-    );
-  }
-
-  /**
-   * Provides an implementation for a `View CFG` query.
-   *
-   * Import this module into a `.ql` that looks like
-   *
-   * ```ql
-   * @name Print CFG
-   * @description Produces a representation of a file's Control Flow Graph.
-   *              This query is used by the VS Code extension.
-   * @id <lang>/print-cfg
-   * @kind graph
-   * @tags ide-contextual-queries/print-cfg
-   * ```
-   */
-  module ViewCfgQuery<FileSig File, ViewCfgQueryInputSig<File> ViewCfgQueryInput> {
-    private import ViewCfgQueryInput
-
-    bindingset[file, line, column]
-    private CfgScope smallestEnclosingScope(File file, int line, int column) {
-      result =
-        min(CfgScope scope, int startLine, int startColumn, int endLine, int endColumn |
-          cfgScopeSpan(scope, file, startLine, startColumn, endLine, endColumn) and
-          (
-            startLine < line
-            or
-            startLine = line and startColumn <= column
-          ) and
-          (
-            endLine > line
-            or
-            endLine = line and endColumn >= column
+        override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
+          exists(AstNode child, AstNode parent |
+            last(parent, succ, completion) and
+            condPropagateExpr(parent, completion, child, c) and
+            succ(pred, succ, c) and
+            last(child, pred, c) and
+            // no need to create split if `succ` can only complete with the
+            // recorded completion
+            not completion = unique(ConditionalCompletion c0 | last(parent, succ, c0))
           )
-        |
-          scope order by startLine desc, startColumn desc, endLine, endColumn
-        )
-    }
+        }
 
-    private import IdeContextual<File>
+        override predicate hasEntryScope(CfgScope scope, AstNode first) { none() }
 
-    private class RelevantNode extends Node {
-      RelevantNode() {
-        this.getScope() =
-          smallestEnclosingScope(getFileBySourceArchiveName(selectedSourceFile()),
-            selectedSourceLine(), selectedSourceColumn())
+        override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
+          this.appliesTo(pred) and
+          succ(pred, succ, c) and
+          if c instanceof ConditionalCompletion
+          then completion = c
+          else not this.hasSuccessor(pred, succ, c)
+        }
+
+        override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
+          this.appliesTo(last) and
+          scopeLast(scope, last, c) and
+          if c instanceof ConditionalCompletion then completion = c else any()
+        }
+
+        override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) {
+          this.appliesTo(pred) and
+          succ(pred, succ, c) and
+          not c instanceof ConditionalCompletion and
+          completionIsNormal(c)
+        }
       }
-
-      string getOrderDisambiguation() { result = "" }
     }
-
-    import TestOutput<RelevantNode>
   }
+
+  private import PrintGraph as Pp
+
+  private module PrintGraphInput implements Pp::InputSig<Location> {
+    class Callable = CfgScope;
+
+    class ControlFlowNode = Node;
+
+    ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t) {
+      result = n.getASuccessor(t)
+    }
+  }
+
+  import Pp::PrintGraph<Location, PrintGraphInput>
 
   /** Provides a set of consistency queries. */
   module Consistency {
@@ -1338,6 +1400,8 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     query predicate multipleSuccessors(Node node, SuccessorType t, Node successor) {
       strictcount(getASuccessor(node, t)) > 1 and
       successor = getASuccessor(node, t) and
+      // allow for multiple exception successors
+      not t instanceof ExceptionSuccessor and
       // allow for functions with multiple bodies
       not (t instanceof SimpleSuccessorType and node instanceof EntryNode)
     }
@@ -1368,5 +1432,162 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       ord = sk.getListOrder() and
       strictcount(sk.getListOrder()) > 1
     }
+
+    /** Holds if `n` has multiple textual representations. */
+    predicate multipleToString(Node n) { strictcount(n.toString()) > 1 }
+
+    /** Holds if `n` has multiple textual representations. */
+    query predicate multipleToString(Node n, string s) {
+      multipleToString(n) and
+      s = strictconcat(n.toString(), ",")
+    }
+
+    /** Holds if CFG scope `scope` lacks an initial AST node. */
+    query predicate scopeNoFirst(CfgScope scope) { not scopeFirst(scope, _) }
   }
+
+  /**
+   * Provides a basic block construction on top of the control flow graph.
+   */
+  module BasicBlocks {
+    private import codeql.controlflow.BasicBlock as BB
+
+    private class CfgScopeAlias = CfgScope;
+
+    private class NodeAlias = Node;
+
+    private module BasicBlockInputSig implements BB::InputSig<Location> {
+      predicate successorTypeIsCondition = Input::successorTypeIsCondition/1;
+
+      class CfgScope = CfgScopeAlias;
+
+      class Node = NodeAlias;
+
+      CfgScope nodeGetCfgScope(Node node) { result = node.getScope() }
+
+      Node nodeGetASuccessor(Node node, SuccessorType t) { result = node.getASuccessor(t) }
+
+      predicate nodeIsDominanceEntry(Node node) { node instanceof EntryNode }
+
+      predicate nodeIsPostDominanceExit(Node node) { node.(AnnotatedExitNode).isNormal() }
+    }
+
+    private module BasicBlockImpl = BB::Make<Location, BasicBlockInputSig>;
+
+    class BasicBlock = BasicBlockImpl::BasicBlock;
+
+    predicate dominatingEdge = BasicBlockImpl::dominatingEdge/2;
+
+    /**
+     * An entry basic block, that is, a basic block whose first node is
+     * an entry node.
+     */
+    final class EntryBasicBlock extends BasicBlock {
+      EntryBasicBlock() { this.getFirstNode() instanceof EntryNode }
+    }
+
+    /**
+     * An annotated exit basic block, that is, a basic block that contains an
+     * annotated exit node.
+     */
+    final class AnnotatedExitBasicBlock extends BasicBlock {
+      private boolean normal;
+
+      AnnotatedExitBasicBlock() {
+        exists(AnnotatedExitNode n |
+          n = this.getANode() and
+          if n.isNormal() then normal = true else normal = false
+        )
+      }
+
+      /** Holds if this block represent a normal exit. */
+      final predicate isNormal() { normal = true }
+    }
+
+    /**
+     * An exit basic block, that is, a basic block whose last node is
+     * an exit node.
+     */
+    final class ExitBasicBlock extends BasicBlock {
+      ExitBasicBlock() { this.getLastNode() instanceof ExitNode }
+    }
+
+    /** A basic block with more than one predecessor. */
+    final class JoinBasicBlock extends BasicBlock {
+      JoinBasicBlock() { this.getFirstNode().isJoin() }
+
+      /**
+       * Gets the `i`th predecessor of this join block, with respect to some
+       * arbitrary order.
+       */
+      JoinPredecessorBasicBlock getJoinBlockPredecessor(int i) {
+        result = getJoinBlockPredecessor(this, i)
+      }
+    }
+
+    /** A basic block that is an immediate predecessor of a join block. */
+    final class JoinPredecessorBasicBlock extends BasicBlock {
+      JoinPredecessorBasicBlock() { this.getASuccessor() instanceof JoinBasicBlock }
+    }
+
+    /** A basic block that terminates in a condition, splitting the subsequent control flow. */
+    final class ConditionBasicBlock extends BasicBlock {
+      ConditionBasicBlock() { this.getLastNode().isCondition() }
+    }
+  }
+}
+
+/** Provides a disabled `SplittingInputSig` implementation. */
+module NoSplittingInput<LocationSig Location, InputSig<Location> Input> implements
+  SplittingInputSig<Location, Input>
+{
+  int maxSplits() { result = 0 }
+
+  class SplitKindBase = Void;
+
+  class Split = Void;
+}
+
+/** Provides a disabled `ConditionalCompletionSplittingInputSig` implementation. */
+module NoConditionalCompletionSplittingInput<
+  LocationSig Location, InputSig<Location> Input, SplittingInputSig<Location, Input> SplittingInput>
+  implements ConditionalCompletionSplittingInputSig<Location, Input, SplittingInput>
+{
+  final private class Completion = Input::Completion;
+
+  class ConditionalCompletion extends Completion {
+    ConditionalCompletion() { none() }
+  }
+
+  final private class SplitKindBase = SplittingInput::SplitKindBase;
+
+  class ConditionalCompletionSplitKind extends SplitKindBase {
+    ConditionalCompletionSplitKind() { none() }
+
+    /** Gets a textual representation of this split kind. */
+    string toString() { none() }
+  }
+
+  final private class Split = SplittingInput::Split;
+
+  class ConditionalCompletionSplit extends Split {
+    ConditionalCompletion getCompletion() { none() }
+  }
+
+  predicate condPropagateExpr(
+    Input::AstNode parent, ConditionalCompletion parentCompletion, Input::AstNode child,
+    ConditionalCompletion childCompletion
+  ) {
+    none()
+  }
+}
+
+/** Same as `MakeWithSplitting`, but without CFG splitting. */
+module Make<LocationSig Location, InputSig<Location> Input> {
+  private module SplittingInput = NoSplittingInput<Location, Input>;
+
+  private module ConditionalCompletionSplittingInput =
+    NoConditionalCompletionSplittingInput<Location, Input, SplittingInput>;
+
+  import MakeWithSplitting<Location, Input, SplittingInput, ConditionalCompletionSplittingInput>
 }

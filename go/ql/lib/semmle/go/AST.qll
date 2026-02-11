@@ -55,6 +55,8 @@ class AstNode extends @node, Locatable {
     kind = "commentgroup" and result = this.(File).getCommentGroup(i)
     or
     kind = "comment" and result = this.(CommentGroup).getComment(i)
+    or
+    kind = "typeparamdecl" and result = this.(TypeParamDeclParent).getTypeParameterDecl(i)
   }
 
   /**
@@ -79,7 +81,18 @@ class AstNode extends @node, Locatable {
   }
 
   /** Gets the innermost function definition to which this AST node belongs, if any. */
+  pragma[nomagic]
   FuncDef getEnclosingFunction() { result = this.getParent().parentInSameFunction*() }
+
+  /** Gets the innermost block statement to which this AST node belongs, if any. */
+  BlockStmt getEnclosingBlock() {
+    exists(AstNode p | p = this.getParent() |
+      result = p
+      or
+      not p instanceof BlockStmt and
+      result = p.getEnclosingBlock()
+    )
+  }
 
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.

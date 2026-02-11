@@ -48,19 +48,19 @@ pub enum DbColumnType {
     String,
 }
 
-impl<'a> fmt::Display for Case<'a> {
+impl fmt::Display for Case<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         writeln!(f, "case @{}.{} of", &self.name, &self.column)?;
         let mut sep = " ";
         for (c, tp) in &self.branches {
-            writeln!(f, "{} {} = @{}", sep, c, tp)?;
+            writeln!(f, "{sep} {c} = @{tp}")?;
             sep = "|";
         }
         writeln!(f, ";")
     }
 }
 
-impl<'a> fmt::Display for Table<'a> {
+impl fmt::Display for Table<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if let Some(keyset) = &self.keysets {
             write!(f, "#keyset[")?;
@@ -68,7 +68,7 @@ impl<'a> fmt::Display for Table<'a> {
                 if key_index > 0 {
                     write!(f, ", ")?;
                 }
-                write!(f, "{}", key)?;
+                write!(f, "{key}")?;
             }
             writeln!(f, "]")?;
         }
@@ -102,7 +102,7 @@ impl<'a> fmt::Display for Table<'a> {
     }
 }
 
-impl<'a> fmt::Display for Union<'a> {
+impl fmt::Display for Union<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "@{} = ", self.name)?;
         let mut first = true;
@@ -112,7 +112,7 @@ impl<'a> fmt::Display for Union<'a> {
             } else {
                 write!(f, " | ")?;
             }
-            write!(f, "@{}", member)?;
+            write!(f, "@{member}")?;
         }
         Ok(())
     }
@@ -122,9 +122,9 @@ impl<'a> fmt::Display for Union<'a> {
 pub fn write(file: &mut dyn std::io::Write, entries: &[Entry]) -> std::io::Result<()> {
     for entry in entries {
         match entry {
-            Entry::Case(case) => write!(file, "{}\n\n", case)?,
-            Entry::Table(table) => write!(file, "{}\n\n", table)?,
-            Entry::Union(union) => write!(file, "{}\n\n", union)?,
+            Entry::Case(case) => write!(file, "{case}\n\n")?,
+            Entry::Table(table) => write!(file, "{table}\n\n")?,
+            Entry::Union(union) => write!(file, "{union}\n\n")?,
         }
     }
 

@@ -725,6 +725,20 @@ class UninitializedInstruction extends VariableInstruction {
    * Gets the variable that is uninitialized.
    */
   final Language::Variable getLocalVariable() { result = var.(IRUserVariable).getVariable() }
+
+  /**
+   * Gets the operand that provides the address of the location to which the
+   * uninitialized value will be stored.
+   */
+  final AddressOperand getDestinationAddressOperand() { result = this.getAnOperand() }
+
+  /**
+   * Gets the instruction whose result provides the address of the location to
+   * which the value will be stored, if an exact definition is available.
+   */
+  final Instruction getDestinationAddress() {
+    result = this.getDestinationAddressOperand().getDef()
+  }
 }
 
 /**
@@ -1070,6 +1084,12 @@ class BinaryInstruction extends Instruction {
     or
     op1 = this.getRightOperand() and op2 = this.getLeftOperand()
   }
+
+  /**
+   * Gets the instruction whose result provides the value of the left or right
+   * operand of this binary instruction.
+   */
+  Instruction getAnInput() { result = this.getLeft() or result = this.getRight() }
 }
 
 /**
@@ -1588,6 +1608,13 @@ class CompareGEInstruction extends RelationalInstruction {
   override Instruction getGreater() { result = this.getLeft() }
 
   override predicate isStrict() { none() }
+}
+
+/**
+ * An instruction that represents a three-way comparison operator.
+ */
+class SpaceshipInstruction extends BinaryInstruction {
+  SpaceshipInstruction() { this.getOpcode() instanceof Opcode::Spaceship }
 }
 
 /**
@@ -2143,6 +2170,47 @@ class ChiInstruction extends Instruction {
 }
 
 /**
+ * An instruction that initializes a set of allocations that are each assigned
+ * the same "virtual variable".
+ *
+ * As an example, consider the following snippet:
+ * ```
+ * int a;
+ * int b;
+ * int* p;
+ * if(b) {
+ *   p = &a;
+ * } else {
+ *   p = &b;
+ * }
+ * *p = 5;
+ * int x = a;
+ * ```
+ *
+ * Since both the address of `a` and `b` reach `p` at `*p = 5` the IR alias
+ * analysis will create a region that contains both `a` and `b`. The region
+ * containing both `a` and `b` are initialized by an `UninitializedGroup`
+ * instruction in the entry block of the enclosing function.
+ */
+class UninitializedGroupInstruction extends Instruction {
+  UninitializedGroupInstruction() { this.getOpcode() instanceof Opcode::UninitializedGroup }
+
+  /**
+   * Gets an `IRVariable` whose memory is initialized by this instruction, if any.
+   * Note: Allocations that are not represented as `IRVariable`s (such as
+   * dynamic allocations) are not returned by this predicate even if this
+   * instruction initializes such memory.
+   */
+  final IRVariable getAnIRVariable() {
+    result = Construction::getAnUninitializedGroupVariable(this)
+  }
+
+  final override string getImmediateString() {
+    result = strictconcat(this.getAnIRVariable().toString(), ",")
+  }
+}
+
+/**
  * An instruction representing unreachable code.
  *
  * This instruction is inserted in place of the original target instruction of a `ConditionalBranch`
@@ -2237,4 +2305,27 @@ class NextVarArgInstruction extends UnaryInstruction {
  */
 class NewObjInstruction extends Instruction {
   NewObjInstruction() { this.getOpcode() instanceof Opcode::NewObj }
+}
+
+/**
+ * An instruction that returns the type info for its operand.
+ */
+class TypeidInstruction extends Instruction {
+  TypeidInstruction() { this.getOpcode() instanceof Opcode::Typeid }
+}
+
+/**
+ * An instruction that returns the type info for its operand, where the
+ * operand occurs as an expression in the AST.
+ */
+class TypeidExprInstruction extends TypeidInstruction, UnaryInstruction {
+  TypeidExprInstruction() { this.getOpcode() instanceof Opcode::TypeidExpr }
+}
+
+/**
+ * An instruction that returns the type info for its operand, where the
+ * operand occurs as a type in the AST.
+ */
+class TypeidTypeInstruction extends TypeidInstruction {
+  TypeidTypeInstruction() { this.getOpcode() instanceof Opcode::TypeidType }
 }

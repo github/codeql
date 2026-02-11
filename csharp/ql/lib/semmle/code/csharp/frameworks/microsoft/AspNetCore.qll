@@ -205,7 +205,6 @@ class MicrosoftAspNetCoreMvcController extends Class {
       )
     ) and
     this.isPublic() and
-    (not this.isAbstract() or this instanceof MicrosoftAspNetCoreMvcControllerBaseClass) and
     not this instanceof Generic and
     (
       this.getABaseType*() instanceof MicrosoftAspNetCoreMvcControllerBaseClass

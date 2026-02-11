@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates related to `org.apache.http.*` and `org.apache.hc.*`.
  */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.FlowSteps

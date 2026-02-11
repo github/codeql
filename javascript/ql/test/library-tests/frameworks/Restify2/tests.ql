@@ -57,9 +57,7 @@ query predicate passingPositiveTests(string res, string expectation, InlineTest 
     exists(ReflectedXss::Sink n | t.inNode(n))
     or
     expectation = "xss" and
-    exists(XssConfig::Configuration cfg, DataFlow::Node sink |
-      cfg.hasFlow(_, sink) and t.inNode(sink)
-    )
+    exists(DataFlow::Node sink | XssConfig::ReflectedXssFlow::flowTo(sink) and t.inNode(sink))
     or
     expectation = "cleartextStorageSink" and
     exists(CleartextStorage::Sink n | t.inNode(n))
@@ -107,9 +105,7 @@ query predicate failingPositiveTests(string res, string expectation, InlineTest 
     not exists(ReflectedXss::Sink n | t.inNode(n))
     or
     expectation = "xss" and
-    not exists(XssConfig::Configuration cfg, DataFlow::Node sink |
-      cfg.hasFlow(_, sink) and t.inNode(sink)
-    )
+    not exists(DataFlow::Node sink | XssConfig::ReflectedXssFlow::flowTo(sink) and t.inNode(sink))
     or
     expectation = "cleartextStorageSink" and
     not exists(CleartextStorage::Sink n | t.inNode(n))
@@ -157,9 +153,7 @@ query predicate passingNegativeTests(string res, string expectation, InlineTest 
     not exists(ReflectedXss::Sink n | t.inNode(n))
     or
     expectation = "!xss" and
-    not exists(XssConfig::Configuration cfg, DataFlow::Node sink |
-      cfg.hasFlow(_, sink) and t.inNode(sink)
-    )
+    not exists(DataFlow::Node sink | XssConfig::ReflectedXssFlow::flowTo(sink) and t.inNode(sink))
     or
     expectation = "!cleartextStorageSink" and
     not exists(CleartextStorage::Sink n | t.inNode(n))
@@ -207,9 +201,7 @@ query predicate failingNegativeTests(string res, string expectation, InlineTest 
     exists(ReflectedXss::Sink n | t.inNode(n))
     or
     expectation = "!xss" and
-    exists(XssConfig::Configuration cfg, DataFlow::Node sink |
-      cfg.hasFlow(_, sink) and t.inNode(sink)
-    )
+    exists(DataFlow::Node sink | XssConfig::ReflectedXssFlow::flowTo(sink) and t.inNode(sink))
     or
     expectation = "!cleartextStorageSink" and
     exists(CleartextStorage::Sink n | t.inNode(n))

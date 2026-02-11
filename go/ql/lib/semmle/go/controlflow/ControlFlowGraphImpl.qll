@@ -418,11 +418,7 @@ class SkipNode extends ControlFlow::Node, MkSkipNode {
 
   override string toString() { result = "skip" }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    skip.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
+  override Location getLocation() { result = skip.getLocation() }
 }
 
 /**
@@ -437,13 +433,7 @@ class EntryNode extends ControlFlow::Node, MkEntryNode {
 
   override string toString() { result = "entry" }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    root.hasLocationInfo(filepath, startline, startcolumn, _, _) and
-    endline = startline and
-    endcolumn = startcolumn
-  }
+  override Location getLocation() { result = root.getLocation() }
 }
 
 /**
@@ -458,13 +448,7 @@ class ExitNode extends ControlFlow::Node, MkExitNode {
 
   override string toString() { result = "exit" }
 
-  override predicate hasLocationInfo(
-    string filepath, int startline, int startcolumn, int endline, int endcolumn
-  ) {
-    root.hasLocationInfo(filepath, _, _, endline, endcolumn) and
-    endline = startline and
-    endcolumn = startcolumn
-  }
+  override Location getLocation() { result = root.getLocation() }
 }
 
 /**

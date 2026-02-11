@@ -2,11 +2,10 @@
  * @name Ignored return value
  * @description Ignoring return values may result in discarding errors or loss of information.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       readability
- *       convention
- *       statistical
- *       non-attributable
  *       external/cwe/cwe-252
  * @problem.severity recommendation
  * @sub-severity high
@@ -15,7 +14,7 @@
  */
 
 import python
-import semmle.python.objects.Callables
+private import LegacyPointsTo
 
 predicate meaningful_return_value(Expr val) {
   val instanceof Name

@@ -7,8 +7,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/iterator-implements-iterable
- * @tags correctness
+ * @tags quality
  *       reliability
+ *       correctness
  */
 
 import java
@@ -29,7 +30,7 @@ class EmptyIterableIterator extends IterableIterator {
           .(SingletonBlock)
           .getStmt()
           .(ReturnStmt)
-          .getResult()
+          .getExpr()
           .(BooleanLiteral)
           .getBooleanValue() = false
     )

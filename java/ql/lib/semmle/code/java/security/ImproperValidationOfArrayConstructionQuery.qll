@@ -9,10 +9,22 @@ private import semmle.code.java.dataflow.FlowSources
  * user-provided size used for array construction.
  */
 module ImproperValidationOfArrayConstructionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess |
+      result = [arrayCreation, arrayAccess.getIndexExpr()].getLocation()
+      or
+      result = sink.getLocation()
+    |
+      arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), arrayCreation)
+    )
   }
 }
 

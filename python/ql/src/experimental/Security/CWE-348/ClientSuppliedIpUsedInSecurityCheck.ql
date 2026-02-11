@@ -45,6 +45,8 @@ private module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow::Co
       ss = node.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Global taint-tracking for detecting "client ip used in security check" vulnerabilities. */

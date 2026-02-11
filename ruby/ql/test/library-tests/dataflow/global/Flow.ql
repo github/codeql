@@ -4,7 +4,7 @@
 
 import codeql.ruby.AST
 import codeql.ruby.DataFlow
-private import TestUtilities.InlineFlowTest
+private import utils.test.InlineFlowTest
 import DefaultFlowTest
 import TaintFlow::PathGraph
 

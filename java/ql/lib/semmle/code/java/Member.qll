@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with members of Java classes and interfaces,
  * that is, methods, constructors, fields and nested types.
  */
+overlay[local?]
+module;
 
 import Element
 import Type
@@ -9,6 +11,7 @@ import Annotation
 import Exception
 import metrics.MetricField
 private import dispatch.VirtualDispatch
+private import semmle.code.java.Overlay
 
 /**
  * A common abstraction for type member declarations,
@@ -253,7 +256,15 @@ class Callable extends StmtParent, Member, @callable {
   Exception getAnException() { exceptions(result, _, this) }
 
   /** Gets an exception type that occurs in the `throws` clause of this callable. */
-  RefType getAThrownExceptionType() { result = this.getAnException().getType() }
+  RefType getAThrownExceptionType() {
+    result = this.getAnException().getType()
+    or
+    exists(Annotation a |
+      this.getAnAnnotation() = a and
+      a.getType().hasQualifiedName("kotlin.jvm", "Throws") and
+      a.getATypeArrayValue(_) = result
+    )
+  }
 
   /** Gets a call site that references this callable. */
   Call getAReference() { result.getCallee() = this }
@@ -621,7 +632,13 @@ class SrcMethod extends Method {
       then implementsInterfaceMethod(result, this)
       else result.getASourceOverriddenMethod*() = this
     ) and
-    (exists(result.getBody()) or result.hasModifier("native"))
+    (
+      // We allow empty method bodies for the local overlay variant to allow
+      // calls to methods only fully extracted in base.
+      isOverlay() or
+      exists(result.getBody()) or
+      result.hasModifier("native")
+    )
   }
 }
 
@@ -663,13 +680,13 @@ class GetterMethod extends Method {
   GetterMethod() {
     this.hasNoParameters() and
     exists(ReturnStmt s, Field f | s = this.getBody().(SingletonBlock).getStmt() |
-      s.getResult() = f.getAnAccess()
+      s.getExpr() = f.getAnAccess()
     )
   }
 
   /** Gets the field whose value is returned by this getter method. */
   Field getField() {
-    exists(ReturnStmt r | r.getEnclosingCallable() = this | r.getResult() = result.getAnAccess())
+    exists(ReturnStmt r | r.getEnclosingCallable() = this | r.getExpr() = result.getAnAccess())
   }
 }
 
@@ -756,13 +773,13 @@ class FieldDeclaration extends ExprParent, @fielddecl, Annotatable {
 /** A class or instance field. */
 class Field extends Member, ExprParent, @field, Variable {
   /** Gets the declared type of this field. */
-  override Type getType() { fields(this, _, result, _, _) }
+  override Type getType() { fields(this, _, result, _) }
 
   /** Gets the Kotlin type of this field. */
   override KotlinType getKotlinType() { fieldsKotlinType(this, result) }
 
   /** Gets the type in which this field is declared. */
-  override RefType getDeclaringType() { fields(this, _, _, result, _) }
+  override RefType getDeclaringType() { fields(this, _, _, result) }
 
   /**
    * Gets the field declaration in which this field is declared.
@@ -794,18 +811,12 @@ class Field extends Member, ExprParent, @field, Variable {
   }
 
   /**
-   * Gets the source declaration of this field.
-   *
-   * For fields that are members of a parameterized
-   * instance of a generic type, the source declaration is the
-   * corresponding field in the generic type.
-   *
-   * For all other fields, the source declaration is the field itself.
+   * DEPRECATED: The result is always `this`.
    */
-  Field getSourceDeclaration() { fields(this, _, _, _, result) }
+  deprecated Field getSourceDeclaration() { result = this }
 
-  /** Holds if this field is the same as its source declaration. */
-  predicate isSourceDeclaration() { this.getSourceDeclaration() = this }
+  /** DEPRECATED: This always holds. */
+  deprecated predicate isSourceDeclaration() { any() }
 
   override predicate isPublic() {
     Member.super.isPublic()
@@ -836,6 +847,9 @@ class Field extends Member, ExprParent, @field, Variable {
 
   override string getAPrimaryQlClass() { result = "Field" }
 }
+
+overlay[local]
+private class DiscardableField extends DiscardableReferableLocatable, @field { }
 
 /** An instance field. */
 class InstanceField extends Field {
@@ -901,3 +915,13 @@ class ExtensionMethod extends Method {
     else result = 0
   }
 }
+
+overlay[local]
+private class DiscardableAnonymousMethod extends DiscardableLocatable, @method {
+  DiscardableAnonymousMethod() {
+    exists(@classorinterface c | methods(this, _, _, _, c, _) and isAnonymClass(c, _))
+  }
+}
+
+overlay[local]
+private class DiscardableMethod extends DiscardableReferableLocatable, @method { }

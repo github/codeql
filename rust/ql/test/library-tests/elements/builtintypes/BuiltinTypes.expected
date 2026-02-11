@@ -1,0 +1,36 @@
+| struct Array |  |
+| struct PtrConst |  |
+| struct PtrMut |  |
+| struct Ref |  |
+| struct RefMut |  |
+| struct Slice |  |
+| struct Tuple0 |  |
+| struct Tuple1 |  |
+| struct Tuple2 |  |
+| struct Tuple3 |  |
+| struct Tuple4 |  |
+| struct Tuple5 |  |
+| struct Tuple6 |  |
+| struct Tuple7 |  |
+| struct Tuple8 |  |
+| struct Tuple9 |  |
+| struct Tuple10 |  |
+| struct Tuple11 |  |
+| struct Tuple12 |  |
+| struct bool |  |
+| struct char |  |
+| struct f32 | FloatingPointType, NumericType |
+| struct f64 | FloatingPointType, NumericType |
+| struct i8 | IntegralType, NumericType |
+| struct i16 | IntegralType, NumericType |
+| struct i32 | IntegralType, NumericType |
+| struct i64 | IntegralType, NumericType |
+| struct i128 | IntegralType, NumericType |
+| struct isize | IntegralType, NumericType |
+| struct str |  |
+| struct u8 | IntegralType, NumericType |
+| struct u16 | IntegralType, NumericType |
+| struct u32 | IntegralType, NumericType |
+| struct u64 | IntegralType, NumericType |
+| struct u128 | IntegralType, NumericType |
+| struct usize | IntegralType, NumericType |

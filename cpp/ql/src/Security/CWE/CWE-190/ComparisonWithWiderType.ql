@@ -6,7 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.8
- * @precision high
+ * @precision medium
  * @tags reliability
  *       security
  *       external/cwe/cwe-190

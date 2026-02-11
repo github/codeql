@@ -132,6 +132,7 @@ namespace Semmle.Extraction.Kinds
         UTF8_STRING_LITERAL = 135,
         COLLECTION = 136,
         SPREAD_ELEMENT = 137,
+        INTERPOLATED_STRING_INSERT = 138,
         DEFINE_SYMBOL = 999,
     }
 }

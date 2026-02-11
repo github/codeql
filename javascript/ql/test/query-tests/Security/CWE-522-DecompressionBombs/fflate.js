@@ -9,17 +9,17 @@ app.listen(3000, () => {
 });
 
 app.post('/upload', async (req, res) => {
-    // NOT OK
-    fflate.unzlibSync(new Uint8Array(req.files.CompressedFile.data));
-    fflate.unzip(new Uint8Array(new Uint8Array(req.files.CompressedFile.data)));
-    fflate.unzlib(new Uint8Array(req.files.CompressedFile.data));
-    fflate.unzlibSync(new Uint8Array(req.files.CompressedFile.data));
-    fflate.gunzip(new Uint8Array(req.files.CompressedFile.data));
-    fflate.gunzipSync(new Uint8Array(req.files.CompressedFile.data));
-    fflate.decompress(new Uint8Array(req.files.CompressedFile.data));
-    fflate.decompressSync(new Uint8Array(req.files.CompressedFile.data));
+    // Not sure if these are vulnerable, but currently not modeled
+    fflate.unzlibSync(new Uint8Array(req.files.CompressedFile.data)); // $ MISSING: Alert
+    fflate.unzip(new Uint8Array(new Uint8Array(req.files.CompressedFile.data))); // $ MISSING: Alert
+    fflate.unzlib(new Uint8Array(req.files.CompressedFile.data)); // $ MISSING: Alert
+    fflate.unzlibSync(new Uint8Array(req.files.CompressedFile.data)); // $ MISSING: Alert
+    fflate.gunzip(new Uint8Array(req.files.CompressedFile.data)); // $ MISSING: Alert
+    fflate.gunzipSync(new Uint8Array(req.files.CompressedFile.data)); // $ MISSING: Alert
+    fflate.decompress(new Uint8Array(req.files.CompressedFile.data)); // $ MISSING: Alert
+    fflate.decompressSync(new Uint8Array(req.files.CompressedFile.data)); // $ MISSING: Alert
 
-    // OK
+
     fflate.unzlibSync(new Uint8Array(req.files.CompressedFile.data), {
         filter(file) {
             return file.originalSize <= 1_000_000;

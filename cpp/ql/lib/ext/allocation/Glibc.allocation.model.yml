@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: allocationFunctionModel
+    data:
+      - ["", "", False, "g_malloc", "0", "", "", True]
+      - ["", "", False, "g_try_malloc", "0", "", "", True]

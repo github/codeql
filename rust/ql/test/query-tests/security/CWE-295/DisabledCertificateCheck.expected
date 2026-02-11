@@ -1,0 +1,157 @@
+#select
+| main.rs:4:4:4:30 | danger_accept_invalid_certs | main.rs:4:32:4:35 | true | main.rs:4:4:4:30 | danger_accept_invalid_certs | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:9:4:9:34 | danger_accept_invalid_hostnames | main.rs:9:36:9:39 | true | main.rs:9:4:9:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:16:4:16:30 | danger_accept_invalid_certs | main.rs:16:32:16:35 | true | main.rs:16:4:16:30 | danger_accept_invalid_certs | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:17:4:17:34 | danger_accept_invalid_hostnames | main.rs:17:36:17:39 | true | main.rs:17:4:17:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:37:4:37:30 | danger_accept_invalid_certs | main.rs:37:32:37:35 | true | main.rs:37:4:37:30 | danger_accept_invalid_certs | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:42:4:42:34 | danger_accept_invalid_hostnames | main.rs:42:36:42:39 | true | main.rs:42:4:42:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:47:4:47:30 | danger_accept_invalid_certs | main.rs:47:32:47:35 | true | main.rs:47:4:47:30 | danger_accept_invalid_certs | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:48:4:48:34 | danger_accept_invalid_hostnames | main.rs:48:36:48:39 | true | main.rs:48:4:48:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:55:4:55:30 | danger_accept_invalid_certs | main.rs:55:32:55:35 | true | main.rs:55:4:55:30 | danger_accept_invalid_certs | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:56:4:56:34 | danger_accept_invalid_hostnames | main.rs:56:36:56:39 | true | main.rs:56:4:56:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:83:4:83:30 | danger_accept_invalid_certs | main.rs:74:15:74:18 | true | main.rs:83:4:83:30 | danger_accept_invalid_certs | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:88:4:88:30 | danger_accept_invalid_certs | main.rs:75:22:75:25 | true | main.rs:88:4:88:30 | danger_accept_invalid_certs | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:93:4:93:30 | danger_accept_invalid_certs | main.rs:154:17:154:20 | true | main.rs:93:4:93:30 | danger_accept_invalid_certs | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:109:4:109:34 | danger_accept_invalid_hostnames | main.rs:107:17:107:31 | ...::exists | main.rs:109:4:109:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:115:4:115:34 | danger_accept_invalid_hostnames | main.rs:113:43:113:50 | metadata | main.rs:115:4:115:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:121:4:121:34 | danger_accept_invalid_hostnames | main.rs:119:11:119:27 | ...::metadata | main.rs:121:4:121:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:134:4:134:34 | danger_accept_invalid_hostnames | main.rs:129:14:129:27 | ...::stdin | main.rs:134:4:134:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+| main.rs:146:4:146:34 | danger_accept_invalid_hostnames | main.rs:144:39:144:42 | true | main.rs:146:4:146:34 | danger_accept_invalid_hostnames | Disabling TLS certificate validation can expose the application to man-in-the-middle attacks. |
+edges
+| main.rs:4:32:4:35 | true | main.rs:4:4:4:30 | danger_accept_invalid_certs | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:9:36:9:39 | true | main.rs:9:4:9:34 | danger_accept_invalid_hostnames | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:16:32:16:35 | true | main.rs:16:4:16:30 | danger_accept_invalid_certs | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:17:36:17:39 | true | main.rs:17:4:17:34 | danger_accept_invalid_hostnames | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:37:32:37:35 | true | main.rs:37:4:37:30 | danger_accept_invalid_certs | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:42:36:42:39 | true | main.rs:42:4:42:34 | danger_accept_invalid_hostnames | provenance | MaD:6 Sink:MaD:6 |
+| main.rs:47:32:47:35 | true | main.rs:47:4:47:30 | danger_accept_invalid_certs | provenance | MaD:3 Sink:MaD:3 |
+| main.rs:48:36:48:39 | true | main.rs:48:4:48:34 | danger_accept_invalid_hostnames | provenance | MaD:4 Sink:MaD:4 |
+| main.rs:55:32:55:35 | true | main.rs:55:4:55:30 | danger_accept_invalid_certs | provenance | MaD:5 Sink:MaD:5 |
+| main.rs:56:36:56:39 | true | main.rs:56:4:56:34 | danger_accept_invalid_hostnames | provenance | MaD:6 Sink:MaD:6 |
+| main.rs:73:19:73:40 | ...: bool | main.rs:93:32:93:47 | sometimes_global | provenance |  |
+| main.rs:74:6:74:11 | always | main.rs:83:32:83:37 | always | provenance |  |
+| main.rs:74:15:74:18 | true | main.rs:74:6:74:11 | always | provenance |  |
+| main.rs:75:6:75:18 | mut sometimes | main.rs:88:32:88:40 | sometimes | provenance |  |
+| main.rs:75:22:75:25 | true | main.rs:75:6:75:18 | mut sometimes | provenance |  |
+| main.rs:83:32:83:37 | always | main.rs:83:4:83:30 | danger_accept_invalid_certs | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:88:32:88:40 | sometimes | main.rs:88:4:88:30 | danger_accept_invalid_certs | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:93:32:93:47 | sometimes_global | main.rs:93:4:93:30 | danger_accept_invalid_certs | provenance | MaD:1 Sink:MaD:1 |
+| main.rs:107:6:107:7 | b1 | main.rs:109:36:109:37 | b1 | provenance |  |
+| main.rs:107:17:107:31 | ...::exists | main.rs:107:17:107:42 | ...::exists(...) [Ok] | provenance | Src:MaD:8  |
+| main.rs:107:17:107:42 | ...::exists(...) [Ok] | main.rs:107:17:107:51 | ... .unwrap() | provenance | MaD:12 |
+| main.rs:107:17:107:51 | ... .unwrap() | main.rs:107:6:107:7 | b1 | provenance |  |
+| main.rs:109:36:109:37 | b1 | main.rs:109:4:109:34 | danger_accept_invalid_hostnames | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:113:6:113:7 | b2 | main.rs:115:36:115:37 | b2 | provenance |  |
+| main.rs:113:11:113:52 | ... .metadata() [Ok] | main.rs:113:11:113:61 | ... .unwrap() | provenance | MaD:12 |
+| main.rs:113:11:113:61 | ... .unwrap() | main.rs:113:11:113:71 | ... .is_file() | provenance | MaD:15 |
+| main.rs:113:11:113:71 | ... .is_file() | main.rs:113:6:113:7 | b2 | provenance |  |
+| main.rs:113:43:113:50 | metadata | main.rs:113:11:113:52 | ... .metadata() [Ok] | provenance | Src:MaD:7  |
+| main.rs:115:36:115:37 | b2 | main.rs:115:4:115:34 | danger_accept_invalid_hostnames | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:119:6:119:7 | b3 | main.rs:121:36:121:37 | b3 | provenance |  |
+| main.rs:119:11:119:27 | ...::metadata | main.rs:119:11:119:38 | ...::metadata(...) [Ok] | provenance | Src:MaD:9  |
+| main.rs:119:11:119:38 | ...::metadata(...) [Ok] | main.rs:119:11:119:47 | ... .unwrap() | provenance | MaD:12 |
+| main.rs:119:11:119:47 | ... .unwrap() | main.rs:119:11:119:56 | ... .is_dir() | provenance | MaD:14 |
+| main.rs:119:11:119:56 | ... .is_dir() | main.rs:119:6:119:7 | b3 | provenance |  |
+| main.rs:121:36:121:37 | b3 | main.rs:121:4:121:34 | danger_accept_invalid_hostnames | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:129:6:129:10 | input | main.rs:130:2:130:6 | input | provenance |  |
+| main.rs:129:14:129:27 | ...::stdin | main.rs:129:14:129:29 | ...::stdin(...) | provenance | Src:MaD:10 MaD:10 |
+| main.rs:129:14:129:29 | ...::stdin(...) | main.rs:129:6:129:10 | input | provenance |  |
+| main.rs:130:2:130:6 | input | main.rs:130:18:130:32 | [post] &mut input_line [&ref] | provenance | MaD:16 |
+| main.rs:130:18:130:32 | [post] &mut input_line [&ref] | main.rs:130:23:130:32 | [post] input_line | provenance |  |
+| main.rs:130:23:130:32 | [post] input_line | main.rs:132:17:132:26 | input_line | provenance |  |
+| main.rs:132:6:132:7 | b4 | main.rs:134:36:134:37 | b4 | provenance |  |
+| main.rs:132:17:132:26 | input_line | main.rs:132:17:132:42 | input_line.parse() [Ok] | provenance | MaD:11 |
+| main.rs:132:17:132:42 | input_line.parse() [Ok] | main.rs:132:17:132:59 | ... .unwrap_or(...) | provenance | MaD:13 |
+| main.rs:132:17:132:59 | ... .unwrap_or(...) | main.rs:132:6:132:7 | b4 | provenance |  |
+| main.rs:134:36:134:37 | b4 | main.rs:134:4:134:34 | danger_accept_invalid_hostnames | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:144:6:144:7 | b6 | main.rs:146:36:146:37 | b6 | provenance |  |
+| main.rs:144:39:144:42 | true | main.rs:144:6:144:7 | b6 | provenance |  |
+| main.rs:146:36:146:37 | b6 | main.rs:146:4:146:34 | danger_accept_invalid_hostnames | provenance | MaD:2 Sink:MaD:2 |
+| main.rs:154:17:154:20 | true | main.rs:73:19:73:40 | ...: bool | provenance |  |
+models
+| 1 | Sink: <native_tls::TlsConnectorBuilder>::danger_accept_invalid_certs; Argument[0]; disable-certificate |
+| 2 | Sink: <native_tls::TlsConnectorBuilder>::danger_accept_invalid_hostnames; Argument[0]; disable-certificate |
+| 3 | Sink: <reqwest::async_impl::client::ClientBuilder>::danger_accept_invalid_certs; Argument[0]; disable-certificate |
+| 4 | Sink: <reqwest::async_impl::client::ClientBuilder>::danger_accept_invalid_hostnames; Argument[0]; disable-certificate |
+| 5 | Sink: <reqwest::blocking::client::ClientBuilder>::danger_accept_invalid_certs; Argument[0]; disable-certificate |
+| 6 | Sink: <reqwest::blocking::client::ClientBuilder>::danger_accept_invalid_hostnames; Argument[0]; disable-certificate |
+| 7 | Source: <std::path::Path>::metadata; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 8 | Source: std::fs::exists; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 9 | Source: std::fs::metadata; ReturnValue.Field[core::result::Result::Ok(0)]; file |
+| 10 | Source: std::io::stdio::stdin; ReturnValue; stdin |
+| 11 | Summary: <alloc::string::String as core::ops::deref::Deref>::deref; Argument[self]; ReturnValue; value |
+| 12 | Summary: <core::result::Result>::unwrap; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 13 | Summary: <core::result::Result>::unwrap_or; Argument[self].Field[core::result::Result::Ok(0)]; ReturnValue; value |
+| 14 | Summary: <std::fs::Metadata>::is_dir; Argument[self].Reference; ReturnValue; taint |
+| 15 | Summary: <std::fs::Metadata>::is_file; Argument[self].Reference; ReturnValue; taint |
+| 16 | Summary: <std::io::stdio::Stdin>::read_line; Argument[self].Reference; Argument[0].Reference; taint |
+nodes
+| main.rs:4:4:4:30 | danger_accept_invalid_certs | semmle.label | danger_accept_invalid_certs |
+| main.rs:4:32:4:35 | true | semmle.label | true |
+| main.rs:9:4:9:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:9:36:9:39 | true | semmle.label | true |
+| main.rs:16:4:16:30 | danger_accept_invalid_certs | semmle.label | danger_accept_invalid_certs |
+| main.rs:16:32:16:35 | true | semmle.label | true |
+| main.rs:17:4:17:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:17:36:17:39 | true | semmle.label | true |
+| main.rs:37:4:37:30 | danger_accept_invalid_certs | semmle.label | danger_accept_invalid_certs |
+| main.rs:37:32:37:35 | true | semmle.label | true |
+| main.rs:42:4:42:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:42:36:42:39 | true | semmle.label | true |
+| main.rs:47:4:47:30 | danger_accept_invalid_certs | semmle.label | danger_accept_invalid_certs |
+| main.rs:47:32:47:35 | true | semmle.label | true |
+| main.rs:48:4:48:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:48:36:48:39 | true | semmle.label | true |
+| main.rs:55:4:55:30 | danger_accept_invalid_certs | semmle.label | danger_accept_invalid_certs |
+| main.rs:55:32:55:35 | true | semmle.label | true |
+| main.rs:56:4:56:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:56:36:56:39 | true | semmle.label | true |
+| main.rs:73:19:73:40 | ...: bool | semmle.label | ...: bool |
+| main.rs:74:6:74:11 | always | semmle.label | always |
+| main.rs:74:15:74:18 | true | semmle.label | true |
+| main.rs:75:6:75:18 | mut sometimes | semmle.label | mut sometimes |
+| main.rs:75:22:75:25 | true | semmle.label | true |
+| main.rs:83:4:83:30 | danger_accept_invalid_certs | semmle.label | danger_accept_invalid_certs |
+| main.rs:83:32:83:37 | always | semmle.label | always |
+| main.rs:88:4:88:30 | danger_accept_invalid_certs | semmle.label | danger_accept_invalid_certs |
+| main.rs:88:32:88:40 | sometimes | semmle.label | sometimes |
+| main.rs:93:4:93:30 | danger_accept_invalid_certs | semmle.label | danger_accept_invalid_certs |
+| main.rs:93:32:93:47 | sometimes_global | semmle.label | sometimes_global |
+| main.rs:107:6:107:7 | b1 | semmle.label | b1 |
+| main.rs:107:17:107:31 | ...::exists | semmle.label | ...::exists |
+| main.rs:107:17:107:42 | ...::exists(...) [Ok] | semmle.label | ...::exists(...) [Ok] |
+| main.rs:107:17:107:51 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:109:4:109:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:109:36:109:37 | b1 | semmle.label | b1 |
+| main.rs:113:6:113:7 | b2 | semmle.label | b2 |
+| main.rs:113:11:113:52 | ... .metadata() [Ok] | semmle.label | ... .metadata() [Ok] |
+| main.rs:113:11:113:61 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:113:11:113:71 | ... .is_file() | semmle.label | ... .is_file() |
+| main.rs:113:43:113:50 | metadata | semmle.label | metadata |
+| main.rs:115:4:115:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:115:36:115:37 | b2 | semmle.label | b2 |
+| main.rs:119:6:119:7 | b3 | semmle.label | b3 |
+| main.rs:119:11:119:27 | ...::metadata | semmle.label | ...::metadata |
+| main.rs:119:11:119:38 | ...::metadata(...) [Ok] | semmle.label | ...::metadata(...) [Ok] |
+| main.rs:119:11:119:47 | ... .unwrap() | semmle.label | ... .unwrap() |
+| main.rs:119:11:119:56 | ... .is_dir() | semmle.label | ... .is_dir() |
+| main.rs:121:4:121:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:121:36:121:37 | b3 | semmle.label | b3 |
+| main.rs:129:6:129:10 | input | semmle.label | input |
+| main.rs:129:14:129:27 | ...::stdin | semmle.label | ...::stdin |
+| main.rs:129:14:129:29 | ...::stdin(...) | semmle.label | ...::stdin(...) |
+| main.rs:130:2:130:6 | input | semmle.label | input |
+| main.rs:130:18:130:32 | [post] &mut input_line [&ref] | semmle.label | [post] &mut input_line [&ref] |
+| main.rs:130:23:130:32 | [post] input_line | semmle.label | [post] input_line |
+| main.rs:132:6:132:7 | b4 | semmle.label | b4 |
+| main.rs:132:17:132:26 | input_line | semmle.label | input_line |
+| main.rs:132:17:132:42 | input_line.parse() [Ok] | semmle.label | input_line.parse() [Ok] |
+| main.rs:132:17:132:59 | ... .unwrap_or(...) | semmle.label | ... .unwrap_or(...) |
+| main.rs:134:4:134:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:134:36:134:37 | b4 | semmle.label | b4 |
+| main.rs:144:6:144:7 | b6 | semmle.label | b6 |
+| main.rs:144:39:144:42 | true | semmle.label | true |
+| main.rs:146:4:146:34 | danger_accept_invalid_hostnames | semmle.label | danger_accept_invalid_hostnames |
+| main.rs:146:36:146:37 | b6 | semmle.label | b6 |
+| main.rs:154:17:154:20 | true | semmle.label | true |
+subpaths

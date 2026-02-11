@@ -11,13 +11,12 @@
 import java
 import DeadLocals
 
-from VariableUpdate def, LocalScopeVariable v, SsaExplicitUpdate ssa
+from VariableUpdate def, LocalScopeVariable v
 where
-  def = ssa.getDefiningExpr() and
-  v = ssa.getSourceVariable().getVariable() and
-  deadLocal(ssa) and
-  not expectedDead(ssa) and
-  not overwritten(ssa) and
+  def.getDestVar() = v and
+  deadLocal(def) and
+  not expectedDead(def) and
+  not overwritten(def) and
   read(v) and
   not def.(AssignExpr).getSource() instanceof NullLiteral and
   (def instanceof Assignment or def.(UnaryAssignExpr).getParent() instanceof ExprStmt)

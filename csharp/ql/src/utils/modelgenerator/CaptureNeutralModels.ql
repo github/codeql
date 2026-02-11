@@ -1,15 +1,14 @@
 /**
- * @name Capture neutral models.
+ * @name Capture neutral models
  * @description Finds neutral models to be used by other queries.
  * @kind diagnostic
  * @id cs/utils/modelgenerator/neutral-models
  * @tags modelgenerator
  */
 
-import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import internal.CaptureModels
-import internal.CaptureSummaryFlowQuery
+import SummaryModels
 
-from DataFlowTargetApi api, string noflow
-where noflow = captureNoFlow(api)
+from DataFlowSummaryTargetApi api, string noflow
+where noflow = captureNeutral(api)
 select noflow order by noflow

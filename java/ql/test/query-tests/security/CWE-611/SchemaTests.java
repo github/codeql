@@ -9,7 +9,7 @@ public class SchemaTests {
 
   public void unconfiguredSchemaFactory(Socket sock) throws Exception {
     SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ hasTaintFlow
+    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ Alert
   }
 
   public void safeSchemaFactory(Socket sock) throws Exception {
@@ -22,26 +22,26 @@ public class SchemaTests {
   public void partialConfiguredSchemaFactory1(Socket sock) throws Exception {
     SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
     factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ hasTaintFlow
+    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ Alert
   }
 
   public void partialConfiguredSchemaFactory2(Socket sock) throws Exception {
     SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
     factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ hasTaintFlow
+    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ Alert
   }
 
   public void misConfiguredSchemaFactory1(Socket sock) throws Exception {
     SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
     factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "");
     factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "ab");
-    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ hasTaintFlow
+    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ Alert
   }
 
   public void misConfiguredSchemaFactory2(Socket sock) throws Exception {
     SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
     factory.setProperty(XMLConstants.ACCESS_EXTERNAL_DTD, "cd");
     factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ hasTaintFlow
+    Schema schema = factory.newSchema(new StreamSource(sock.getInputStream())); // $ Alert
   }
 }

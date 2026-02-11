@@ -11,11 +11,11 @@ module HtmlTemplate {
 
     TemplateEscape() {
       exists(string fn |
-        fn.matches("HTMLEscape%") and kind = "html"
+        fn = ["HTMLEscape", "HTMLEscapeString", "HTMLEscaper"] and kind = "html"
         or
-        fn.matches("JSEscape%") and kind = "js"
+        fn = ["JSEscape", "JSEscapeString", "JSEscaper"] and kind = "js"
         or
-        fn.matches("URLQueryEscape%") and kind = "url"
+        fn = "URLQueryEscaper" and kind = "url"
       |
         this.hasQualifiedName("html/template", fn)
       )
@@ -66,7 +66,7 @@ module HtmlTemplate {
     string getBody() { result = text.regexpCapture("(?s)\\{\\{(.*)\\}\\}", 1) } // matches the inside of the curly bracket delimiters
 
     /** Gets the file in which this statement appears. */
-    File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { result = this.getLocation().getFile() }
 
     /** Gets a textual representation of this statement. */
     string toString() { result = "HTML template statement" }
@@ -74,17 +74,22 @@ module HtmlTemplate {
     /** Get the HTML element that contains this template statement. */
     HTML::TextNode getEnclosingTextNode() { result = parent }
 
+    /** Gets the location of this template statement. */
+    Location getLocation() { result = parent.getLocation() }
+
     /**
+     * DEPRECATED: Use `getLocation()` instead.
+     *
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      parent.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
   }
 
@@ -114,7 +119,7 @@ module HtmlTemplate {
     }
 
     /** Gets the file in which this read appears. */
-    File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
+    File getFile() { result = this.getLocation().getFile() }
 
     /** Gets a textual representation of this statement. */
     string toString() { result = "HTML template read of " + text }
@@ -122,17 +127,21 @@ module HtmlTemplate {
     /** Get the HTML element that contains this template read. */
     HTML::TextNode getEnclosingTextNode() { result = parent.getEnclosingTextNode() }
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      parent.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    /** Gets the location of this template statement. */
+    Location getLocation() { result = parent.getLocation() }
+    // /**
+    //  * DEPRECATED: Use `getLocation()` instead.
+    //  *
+    //  * Holds if this element is at the specified location.
+    //  * The location spans column `startcolumn` of line `startline` to
+    //  * column `endcolumn` of line `endline` in file `filepath`.
+    //  * For more information, see
+    //  * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+    //  */
+    // predicate hasLocationInfo(
+    //   string filepath, int startline, int startcolumn, int endline, int endcolumn
+    // ) {
+    //   this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    // }
   }
 }

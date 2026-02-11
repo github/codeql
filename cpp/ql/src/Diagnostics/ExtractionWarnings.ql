@@ -14,5 +14,5 @@ where
   or
   warning instanceof ExtractionUnknownProblem
 select warning,
-  "Extraction failed in " + warning.getFile() + " with warning " + warning.getProblemMessage(),
-  warning.getSeverity()
+  "Extraction failed in " + warning.getFile() + " with warning " +
+    warning.getProblemMessage().replaceAll("$", "$$"), warning.getSeverity()

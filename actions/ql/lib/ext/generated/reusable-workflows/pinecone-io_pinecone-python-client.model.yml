@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["pinecone-io/pinecone-python-client/.github/workflows/publish-to-pypi.yaml", "*", "input.prereleaseSuffix", "code-injection", "generated"]

@@ -4,13 +4,13 @@ import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 
 query predicate fptrCall(FunctionPointerCall dc, Callable c) { c = dc.getARuntimeTarget() }
 
-private class LocatableDataFlowCallOption extends DataFlowCallOption {
+private class LocatableDataFlowCallOption extends CallOption {
   Location getLocation() {
-    this = TDataFlowCallNone() and
+    this = TCallNone() and
     result instanceof EmptyLocation
     or
     exists(DataFlowCall call |
-      this = TDataFlowCallSome(call) and
+      this = TCallSome(call) and
       result = call.getLocation()
     )
   }

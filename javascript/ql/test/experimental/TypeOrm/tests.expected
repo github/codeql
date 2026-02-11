@@ -29,4 +29,5 @@ passingPositiveTests
 | PASSED | SQLInjectionPoint | test.ts:210:28:210:53 | // test ... onPoint |
 | PASSED | SQLInjectionPoint | test.ts:213:56:213:81 | // test ... onPoint |
 | PASSED | SQLInjectionPoint | test.ts:217:56:217:81 | // test ... onPoint |
+| PASSED | SQLInjectionPoint | test.ts:223:29:223:54 | // test ... onPoint |
 failingPositiveTests

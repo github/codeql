@@ -59,13 +59,13 @@ void g()
     const SIZE_T C_ST = sizeof(st);
     ssize_t sst;
 
-    printf("%zu", ul); // ok (dubious, e.g. on 64-bit Windows `long` is 4 bytes but `size_t` is 8)
+    printf("%zu", ul); // not ok
     printf("%zu", st); // ok
     printf("%zu", ST); // ok
     printf("%zu", c_st); // ok
     printf("%zu", C_ST); // ok
     printf("%zu", sizeof(ul)); // ok
-    printf("%zu", sst); // not ok [NOT DETECTED]
+    printf("%zu", sst); // not ok
 
     printf("%zd", ul); // not ok [NOT DETECTED]
     printf("%zd", st); // not ok

@@ -3,9 +3,10 @@
  * @description Making a class a context manager allows instances to be used in a 'with' statement.
  *              This improves resource handling and code readability.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       readability
- *       convention
+ *       performance
  * @problem.severity recommendation
  * @sub-severity high
  * @precision medium
@@ -13,6 +14,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassValue c
 where not c.isBuiltin() and not c.isContextManager() and exists(c.declaredAttribute("__del__"))

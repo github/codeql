@@ -1,12 +1,9 @@
 cc_library(
-    name = "swift-llvm-support",
+    name = "swift-llvm-support-static",
     srcs = glob(
         [
             "*.a",
-            "*.so",
-            "*.dylib",
         ],
-        allow_empty = True,  # Either *.so or *.dylib will be empty
     ),
     hdrs = glob([
         "include/**/*",
@@ -16,6 +13,20 @@ cc_library(
         "include",
         "stdlib/public/SwiftShims",
     ],
+    deps = [
+        "@zstd",
+    ],
+)
+
+cc_library(
+    name = "swift-llvm-support",
+    srcs = glob(
+        [
+            "*.so",
+            "*.dylib",
+        ],
+        allow_empty = True,  # Either *.so or *.dylib will be empty
+    ),
     linkopts = [
         "-lm",
         "-lz",
@@ -32,4 +43,5 @@ cc_library(
         "//conditions:default": [],
     }),
     visibility = ["//visibility:public"],
+    deps = [":swift-llvm-support-static"],
 )

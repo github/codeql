@@ -7,9 +7,11 @@ edges
 | tests2.cpp:49:12:49:12 | call to SAXParser | tests2.cpp:51:2:51:2 | *p | provenance |  |
 | tests3.cpp:23:21:23:53 | *call to createXMLReader | tests3.cpp:23:21:23:53 | *call to createXMLReader | provenance |  |
 | tests3.cpp:23:21:23:53 | *call to createXMLReader | tests3.cpp:25:2:25:2 | *p | provenance |  |
+| tests3.cpp:35:16:35:20 | **p_3_3 | tests3.cpp:35:16:35:20 | **p_3_3 | provenance |  |
 | tests3.cpp:35:16:35:20 | **p_3_3 | tests3.cpp:38:2:38:6 | *p_3_3 | provenance |  |
 | tests3.cpp:35:24:35:56 | *call to createXMLReader | tests3.cpp:35:16:35:20 | **p_3_3 | provenance |  |
 | tests3.cpp:35:24:35:56 | *call to createXMLReader | tests3.cpp:35:24:35:56 | *call to createXMLReader | provenance |  |
+| tests3.cpp:48:16:48:20 | **p_3_5 | tests3.cpp:48:16:48:20 | **p_3_5 | provenance |  |
 | tests3.cpp:48:16:48:20 | **p_3_5 | tests3.cpp:56:2:56:6 | *p_3_5 | provenance |  |
 | tests3.cpp:48:24:48:56 | *call to createXMLReader | tests3.cpp:48:16:48:20 | **p_3_5 | provenance |  |
 | tests3.cpp:48:24:48:56 | *call to createXMLReader | tests3.cpp:48:24:48:56 | *call to createXMLReader | provenance |  |
@@ -26,6 +28,7 @@ edges
 | tests5.cpp:55:25:55:38 | *call to createLSParser | tests5.cpp:55:25:55:38 | *call to createLSParser | provenance |  |
 | tests5.cpp:55:25:55:38 | *call to createLSParser | tests5.cpp:59:2:59:2 | *p | provenance |  |
 | tests5.cpp:55:25:55:38 | *call to createLSParser | tests5.cpp:59:2:59:2 | *p | provenance | Config |
+| tests5.cpp:63:21:63:24 | **g_p2 | tests5.cpp:63:21:63:24 | **g_p2 | provenance |  |
 | tests5.cpp:63:21:63:24 | **g_p2 | tests5.cpp:77:2:77:5 | *g_p2 | provenance |  |
 | tests5.cpp:70:2:70:32 | *... = ... | tests5.cpp:63:21:63:24 | **g_p2 | provenance |  |
 | tests5.cpp:70:17:70:30 | *call to createLSParser | tests5.cpp:70:2:70:32 | *... = ... | provenance |  |

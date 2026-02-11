@@ -1,0 +1,2 @@
+extractionWarning
+| bad_cargo/src/no_semantics.rs:1:1:1:1 | semantic analyzer unavailable (unable to load manifest) |

@@ -1,31 +1,31 @@
-export function unsafeDeserialize(data) {
-  return eval("(" + data + ")"); // NOT OK
+export function unsafeDeserialize(data) { // $ Source[js/unsafe-code-construction]
+  return eval("(" + data + ")"); // $ Alert[js/unsafe-code-construction]
 }
 
-export function unsafeGetter(obj, name) {
-    return eval("obj." + name); // NOT OK
+export function unsafeGetter(obj, name) { // $ Source[js/unsafe-code-construction]
+    return eval("obj." + name); // $ Alert[js/unsafe-code-construction]
 }
 
 export function safeAssignment(obj, value) {
-    eval("obj.foo = " + JSON.stringify(value)); // OK
+    eval("obj.foo = " + JSON.stringify(value));
 }
 
-global.unsafeDeserialize = function (data) {
-  return eval("(" + data + ")"); // NOT OK
+global.unsafeDeserialize = function (data) { // $ Source[js/unsafe-code-construction]
+  return eval("(" + data + ")"); // $ Alert[js/unsafe-code-construction]
 }
 
 const matter = require("gray-matter");
 
-export function greySink(data) {
+export function greySink(data) { // $ Source[js/unsafe-code-construction]
     const str = `
     ---js
-    ${data}
+    ${data /* $ Alert[js/unsafe-code-construction] */}
     ---
     `
     const res = matter(str);
     console.log(res);
 
-    matter(str, { // OK
+    matter(str, {
         engines: {
             js: function (data) {
                 console.log("NOPE");
@@ -48,7 +48,7 @@ export function Template(text, opts) {
 Template.prototype = {
   compile: function () {
     var opts = this.opts;
-    eval("  var " + opts.varName + " = something();"); // NOT OK
+    eval("  var " + opts.varName + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
   },
   // The below are justs tests that ensure the global-access-path computations terminate.
   pathsTerminate1: function (node, prev) {
@@ -100,10 +100,10 @@ export class AccessPathClass {
   }
 
   doesTaint() {
-    eval("  var " + this.options1.taintedOption + " = something();"); // NOT OK
-    eval("  var " + this.options2.taintedOption + " = something();"); // NOT OK
-    eval("  var " + this.options3.taintedOption + " = something();"); // NOT OK
-    eval("  var " + this.taint + " = something();"); // NOT OK
+    eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.options3.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+    eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
   }
 }
 
@@ -132,10 +132,10 @@ export class AccessPathClassBB {
     }
   
     doesTaint() {
-      eval("  var " + this.options1.taintedOption + " = something();"); // NOT OK
-      eval("  var " + this.options2.taintedOption + " = something();"); // NOT OK
-      eval("  var " + this.options3.taintedOption + " = something();"); // NOT OK
-      eval("  var " + this.taint + " = something();"); // NOT OK
+      eval("  var " + this.options1.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.options2.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.options3.taintedOption + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
+      eval("  var " + this.taint + " = something();"); // $ MISSING: Alert - due to lack of localFieldStep
     }
   }
   

@@ -1,4 +1,4 @@
-use crate::trap;
+use crate::{file_paths, trap};
 use globset::{GlobBuilder, GlobSetBuilder};
 use rayon::prelude::*;
 use std::fs::File;
@@ -20,7 +20,7 @@ pub struct Extractor {
     pub languages: Vec<LanguageSpec>,
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
-    pub file_list: PathBuf,
+    pub file_lists: Vec<PathBuf>,
     // Typically constructed via `trap::Compression::from_env`.
     // This allow us to report the error using our diagnostics system
     // without exposing it to consumers.
@@ -29,6 +29,7 @@ pub struct Extractor {
 
 impl Extractor {
     pub fn run(&self) -> std::io::Result<()> {
+        tracing::info!("Extraction started");
         let diagnostics = diagnostics::DiagnosticLoggers::new(&self.prefix);
         let mut main_thread_logger = diagnostics.logger();
         let num_threads = match crate::options::num_threads() {
@@ -74,7 +75,14 @@ impl Extractor {
             .build_global()
             .unwrap();
 
-        let file_list = File::open(&self.file_list)?;
+        let file_lists: Vec<File> = self
+            .file_lists
+            .iter()
+            .map(|file_list| {
+                File::open(file_list)
+                    .unwrap_or_else(|_| panic!("Unable to open file list at {file_list:?}"))
+            })
+            .collect();
 
         let mut schemas = vec![];
         for lang in &self.languages {
@@ -103,8 +111,12 @@ impl Extractor {
             )
         };
 
-        let lines: std::io::Result<Vec<String>> =
-            std::io::BufReader::new(file_list).lines().collect();
+        let path_transformer = file_paths::load_path_transformer()?;
+
+        let lines: std::io::Result<Vec<String>> = file_lists
+            .iter()
+            .flat_map(|file_list| std::io::BufReader::new(file_list).lines())
+            .collect();
         let lines = lines?;
 
         lines
@@ -112,8 +124,12 @@ impl Extractor {
             .try_for_each(|line| {
                 let mut diagnostics_writer = diagnostics.logger();
                 let path = PathBuf::from(line).canonicalize()?;
-                let src_archive_file =
-                    crate::file_paths::path_for(&self.source_archive_dir, &path, "");
+                let src_archive_file = crate::file_paths::path_for(
+                    &self.source_archive_dir,
+                    &path,
+                    "",
+                    path_transformer.as_ref(),
+                );
                 let source = std::fs::read(&path)?;
                 let mut trap_writer = trap::Writer::new();
 
@@ -142,6 +158,7 @@ impl Extractor {
                                     &schemas[i],
                                     &mut diagnostics_writer,
                                     &mut trap_writer,
+                                    None,
                                     &path,
                                     &source,
                                     &[],
@@ -161,7 +178,9 @@ impl Extractor {
         let mut trap_writer = trap::Writer::new();
         crate::extractor::populate_empty_location(&mut trap_writer);
 
-        write_trap(&self.trap_dir, &path, &trap_writer, trap_compression)
+        let res = write_trap(&self.trap_dir, &path, &trap_writer, trap_compression);
+        tracing::info!("Extraction complete");
+        res
     }
 }
 
@@ -171,7 +190,7 @@ fn write_trap(
     trap_writer: &trap::Writer,
     trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
-    let trap_file = crate::file_paths::path_for(trap_dir, path, trap_compression.extension());
+    let trap_file = crate::file_paths::path_for(trap_dir, path, trap_compression.extension(), None);
     std::fs::create_dir_all(trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }

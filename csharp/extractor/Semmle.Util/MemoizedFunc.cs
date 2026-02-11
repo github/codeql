@@ -7,7 +7,7 @@ namespace Semmle.Util;
 public class MemoizedFunc<T1, T2> where T1 : notnull
 {
     private readonly Func<T1, T2> f;
-    private readonly Dictionary<T1, T2> cache = new();
+    private readonly Dictionary<T1, T2> cache = [];
 
     public MemoizedFunc(Func<T1, T2> f)
     {
@@ -28,7 +28,7 @@ public class MemoizedFunc<T1, T2> where T1 : notnull
 public class ConcurrentMemoizedFunc<T1, T2> where T1 : notnull
 {
     private readonly Func<T1, T2> f;
-    private readonly ConcurrentDictionary<T1, T2> cache = new();
+    private readonly ConcurrentDictionary<T1, T2> cache = [];
 
     public ConcurrentMemoizedFunc(Func<T1, T2> f)
     {

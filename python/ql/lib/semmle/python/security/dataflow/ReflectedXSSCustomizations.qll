@@ -33,17 +33,20 @@ module ReflectedXss {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A data flow sink for "reflected cross-site scripting" vulnerabilities.
    */
   private class SinkFromModel extends Sink {
-    SinkFromModel() {
-      this = ModelOutput::getASinkNode(["html-injection", "js-injection"]).asSink()
-    }
+    SinkFromModel() { ModelOutput::sinkNode(this, ["html-injection", "js-injection"]) }
   }
 
   /**
@@ -75,7 +78,17 @@ module ReflectedXss {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier { }
+
+  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  /**
+   * A sanitizer defined via models-as-data with kind "html-injection" or "js-injection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, ["html-injection", "js-injection"]) }
+  }
 }

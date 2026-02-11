@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Quic, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Quic, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -29,9 +29,11 @@ namespace System
                 public static bool IsSupported { get => throw null; }
                 public System.Net.IPEndPoint LocalEndPoint { get => throw null; }
                 public System.Net.Security.SslApplicationProtocol NegotiatedApplicationProtocol { get => throw null; }
+                public System.Net.Security.TlsCipherSuite NegotiatedCipherSuite { get => throw null; }
                 public System.Threading.Tasks.ValueTask<System.Net.Quic.QuicStream> OpenOutboundStreamAsync(System.Net.Quic.QuicStreamType type, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public System.Security.Cryptography.X509Certificates.X509Certificate RemoteCertificate { get => throw null; }
                 public System.Net.IPEndPoint RemoteEndPoint { get => throw null; }
+                public System.Security.Authentication.SslProtocols SslProtocol { get => throw null; }
                 public string TargetHostName { get => throw null; }
                 public override string ToString() => throw null;
             }
@@ -39,9 +41,13 @@ namespace System
             {
                 public long DefaultCloseErrorCode { get => throw null; set { } }
                 public long DefaultStreamErrorCode { get => throw null; set { } }
+                public System.TimeSpan HandshakeTimeout { get => throw null; set { } }
                 public System.TimeSpan IdleTimeout { get => throw null; set { } }
+                public System.Net.Quic.QuicReceiveWindowSizes InitialReceiveWindowSizes { get => throw null; set { } }
+                public System.TimeSpan KeepAliveInterval { get => throw null; set { } }
                 public int MaxInboundBidirectionalStreams { get => throw null; set { } }
                 public int MaxInboundUnidirectionalStreams { get => throw null; set { } }
+                public System.Action<System.Net.Quic.QuicConnection, System.Net.Quic.QuicStreamCapacityChangedArgs> StreamCapacityCallback { get => throw null; set { } }
             }
             public enum QuicError
             {
@@ -81,6 +87,14 @@ namespace System
                 public QuicListenerOptions() => throw null;
                 public int ListenBacklog { get => throw null; set { } }
                 public System.Net.IPEndPoint ListenEndPoint { get => throw null; set { } }
+            }
+            public sealed class QuicReceiveWindowSizes
+            {
+                public int Connection { get => throw null; set { } }
+                public QuicReceiveWindowSizes() => throw null;
+                public int LocallyInitiatedBidirectionalStream { get => throw null; set { } }
+                public int RemotelyInitiatedBidirectionalStream { get => throw null; set { } }
+                public int UnidirectionalStream { get => throw null; set { } }
             }
             public sealed class QuicServerConnectionOptions : System.Net.Quic.QuicConnectionOptions
             {
@@ -125,6 +139,11 @@ namespace System
                 public override void WriteByte(byte value) => throw null;
                 public System.Threading.Tasks.Task WritesClosed { get => throw null; }
                 public override int WriteTimeout { get => throw null; set { } }
+            }
+            public struct QuicStreamCapacityChangedArgs
+            {
+                public int BidirectionalIncrement { get => throw null; set { } }
+                public int UnidirectionalIncrement { get => throw null; set { } }
             }
             public enum QuicStreamType
             {

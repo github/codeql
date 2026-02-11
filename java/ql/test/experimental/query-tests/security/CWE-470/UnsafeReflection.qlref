@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-470/UnsafeReflection.ql
+query: experimental/Security/CWE/CWE-470/UnsafeReflection.ql
+postprocess: utils/test/PrettyPrintModels.ql

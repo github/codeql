@@ -9,7 +9,7 @@ CodeQL 2.8.0 (2022-02-04)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -79,8 +79,8 @@ C/C++
 *   The "Uncontrolled data in arithmetic expression" (cpp/uncontrolled-arithmetic) query has been enhanced to reduce false positive results and its @precision increased to high.
 *   A new :code:`cpp/very-likely-overrunning-write` query has been added to the default query suite for C/C++. The query reports some results that were formerly flagged by :code:`cpp/overrunning-write`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   A new query "Use of implicit PendingIntents" (:code:`java/android/pending-intents`) has been added.
     This query finds implicit and mutable :code:`PendingIntents` sent to an unspecified third party component, which may provide an attacker with access to internal components of the application or cause other unintended effects.
@@ -108,8 +108,8 @@ Ruby
 Query Metadata Changes
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The "Random used only once" (:code:`java/random-used-once`) query no longer has a :code:`security-severity` score. This has been causing some tools to categorise it as a security query, when it is more useful as a code-quality query.
 
@@ -159,8 +159,8 @@ C#
 
 *   The :code:`codeql/csharp-upgrades` CodeQL pack has been removed. All upgrades scripts have been merged into the :code:`codeql/csharp-all` CodeQL pack.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`codeql/java-upgrades` CodeQL pack has been removed. All upgrades scripts have been merged into the :code:`codeql/java-all` CodeQL pack.
 

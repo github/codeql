@@ -6,7 +6,7 @@
  * @precision low
  * @problem.severity error
  * @security-severity 7.8
- * @tags security external/cwe/cwe-20
+ * @tags security external/cwe/cwe-020
  */
 
 import cpp

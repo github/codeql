@@ -1,3 +1,0 @@
-# We currently have a bug where gradle tests become flaky when executed in parallel
-# - sometimes, gradle fails to connect to the gradle daemon.
-# Therefore, force this test to run sequentially.

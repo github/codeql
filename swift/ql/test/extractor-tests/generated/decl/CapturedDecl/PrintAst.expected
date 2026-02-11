@@ -101,7 +101,7 @@ closures.swift:
 #   24|       getSubExpr(): [CallExpr] call to ...
 #   24|         getFunction(): [BindOptionalExpr] ...?
 #   24|           getSubExpr(): [DeclRefExpr] escape
-#   24|         getFunction().getFullyConverted(): [LoadExpr] ((() -> ())) ...
+#   24|         getFunction().getFullyConverted(): [LoadExpr] (() -> ()) ...
 #   24|       getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (()?) ...
 #   24|   getCapture(0): [CapturedDecl] escape
 #   27| [NamedFunction] logical()
@@ -145,8 +145,8 @@ closures.swift:
 #   30|         getArgument(0): [Argument] : ... .!=(_:_:) ...
 #   30|           getExpr(): [BinaryExpr] ... .!=(_:_:) ...
 #   30|             getFunction(): [MethodLookupExpr] .!=(_:_:)
-#   30|               getBase(): [TypeExpr] Optional<((Int) -> Int)>.Type
-#   30|                 getTypeRepr(): [TypeRepr] Optional<((Int) -> Int)>
+#   30|               getBase(): [TypeExpr] Optional<(Int) -> Int>.Type
+#   30|                 getTypeRepr(): [TypeRepr] Optional<(Int) -> Int>
 #   30|               getMethodRef(): [DeclRefExpr] !=(_:_:)
 #   30|             getArgument(0): [Argument] : f
 #   30|               getExpr(): [DeclRefExpr] f
@@ -222,14 +222,16 @@ closures.swift:
 #   39|                       getExpr(): [IntegerLiteralExpr] 1
 #   39|               getResult().getFullyConverted(): [AwaitExpr] await ...
 #   39|           getCapture(0): [CapturedDecl] callback
-#   41|         getElement(1): [CallExpr] call to Task<Success, Never>.init(priority:operation:)
-#   41|           getFunction(): [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
+#   41|         getElement(1): [CallExpr] call to Task<Success, Never>.init(name:priority:operation:)
+#   41|           getFunction(): [MethodLookupExpr] Task<Success, Never>.init(name:priority:operation:)
 #   41|             getBase(): [TypeExpr] Task<(), Never>.Type
 #   41|               getTypeRepr(): [TypeRepr] Task<(), Never>
-#   41|             getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(priority:operation:)
-#   41|           getArgument(0): [Argument] priority: default priority
+#   41|             getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(name:priority:operation:)
+#   41|           getArgument(0): [Argument] name: default name
+#   41|             getExpr(): [DefaultArgumentExpr] default name
+#   41|           getArgument(1): [Argument] priority: default priority
 #   41|             getExpr(): [DefaultArgumentExpr] default priority
-#   41|           getArgument(1): [Argument] operation: { ... }
+#   41|           getArgument(2): [Argument] operation: { ... }
 #   41|             getExpr(): [ExplicitClosureExpr] { ... }
 #   41|               getBody(): [BraceStmt] { ... }
 #   42|                 getElement(0): [ReturnStmt] return ...
@@ -251,6 +253,7 @@ closures.swift:
 #   42|                     getArgument(2): [Argument] terminator: default terminator
 #   42|                       getExpr(): [DefaultArgumentExpr] default terminator
 #   42|               getCapture(0): [CapturedDecl] wrapper(_:)
+#   41|             getExpr().getFullyConverted(): [FunctionConversionExpr] (@isolated(any) () async -> ()) ...
 #   45|     getElement(1): [CallExpr] call to withCallback(_:)
 #   45|       getFunction(): [DeclRefExpr] withCallback(_:)
 #   45|       getArgument(0): [Argument] : { ... }
@@ -268,6 +271,7 @@ closures.swift:
 #   46|                   getExpr(): [DeclRefExpr] x
 #   46|                 getArgument(1): [Argument] : 1
 #   46|                   getExpr(): [IntegerLiteralExpr] 1
+#   41| [NilLiteralExpr] nil
 #   41| [NilLiteralExpr] nil
 #   50| [NamedFunction] foo()
 #   50|     InterfaceType = () -> Int

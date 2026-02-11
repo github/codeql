@@ -115,9 +115,9 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private Extraction.Entities.Location? cachedLocation;
+        private Location? cachedLocation;
 
-        public Extraction.Entities.Location Location
+        public Location Location
         {
             get
             {
@@ -129,7 +129,13 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public ExprKind Kind { get; set; } = ExprKind.UNKNOWN;
 
-        public bool IsCompilerGenerated { get; set; }
+        public bool IsCompilerGenerated { get; init; }
+
+        /// <summary>
+        /// Whether the expression should have a compiler generated `ToString` call added,
+        /// if there is no suitable implicit cast.
+        /// </summary>
+        public bool ImplicitToString { get; private set; }
 
         public ExpressionNodeInfo SetParent(IExpressionParentEntity parent, int child)
         {
@@ -154,6 +160,12 @@ namespace Semmle.Extraction.CSharp.Entities
         public ExpressionNodeInfo SetNode(ExpressionSyntax node)
         {
             Node = node;
+            return this;
+        }
+
+        public ExpressionNodeInfo SetImplicitToString(bool value)
+        {
+            ImplicitToString = value;
             return this;
         }
 
@@ -193,7 +205,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public bool IsBoolLiteral()
         {
-            return TryGetBoolValueFromLiteral(out var _);
+            return TryGetBoolValueFromLiteral(out _);
         }
     }
 }

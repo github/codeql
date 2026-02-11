@@ -19,6 +19,7 @@ extensions:
       - ["hudson", "FilePath", True, "copyTo", "(FilePath)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "copyToWithPermission", "", "", "Argument[this]", "path-injection", "manual"]
       - ["hudson", "FilePath", True, "copyToWithPermission", "(FilePath)", "", "Argument[0]", "path-injection", "manual"]
+      - ["hudson", "FilePath", True, "exists", "()", "", "Argument[this]", "path-injection", "manual"]
       - ["hudson", "FilePath", True, "installIfNecessaryFrom", "(URL,TaskListener,String)", "", "Argument[0]", "request-forgery", "ai-manual"]
       - ["hudson", "FilePath", True, "newInputStreamDenyingSymlinkAsNeeded", "(File,String,boolean)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["hudson", "FilePath", True, "openInputStream", "(File,OpenOption[])", "", "Argument[0]", "path-injection", "manual"]
@@ -49,6 +50,12 @@ extensions:
       - ["hudson", "FilePath", False, "readToString", "", "", "ReturnValue", "file", "manual"]
       - ["hudson", "Plugin", True, "configure", "", "", "Parameter", "remote", "manual"]
       - ["hudson", "Plugin", True, "newInstance", "", "", "Parameter", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: barrierModel
+    data:
+      - ["hudson", "Util", True, "escape", "(String)", "", "ReturnValue", "html-injection", "manual"]
+        # Not including xmlEscape because it only accounts for >, <, and &. It does not account for ", or ', which makes it an incomplete XSS sanitizer.
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

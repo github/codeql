@@ -220,28 +220,32 @@ open class LoggerBase(val logCounter: LogCounter) {
         logStream.write(logMessage.toJsonLine())
     }
 
-    fun trace(tw: TrapWriter, msg: String) {
+    fun trace(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("TRACE", msg)
-            tw.writeComment(logMessage.toText())
+            dtw.writeComment(logMessage.toText())
             logStream.write(logMessage.toJsonLine())
         }
     }
 
-    fun debug(tw: TrapWriter, msg: String) {
+    fun debug(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 4) {
             val logMessage = LogMessage("DEBUG", msg)
-            tw.writeComment(logMessage.toText())
+            dtw.writeComment(logMessage.toText())
             logStream.write(logMessage.toJsonLine())
         }
     }
 
-    fun info(tw: TrapWriter, msg: String) {
+    fun info(dtw: DiagnosticTrapWriter, msg: String) {
         if (verbosity >= 3) {
             val logMessage = LogMessage("INFO", msg)
-            tw.writeComment(logMessage.toText())
+            dtw.writeComment(logMessage.toText())
             logStream.write(logMessage.toJsonLine())
         }
+    }
+
+    fun infoVerbosity(dtw: DiagnosticTrapWriter) {
+        info(dtw, "Kotlin extractor verbosity is " + verbosity.toString())
     }
 
     fun warn(dtw: DiagnosticTrapWriter, msg: String, extraInfo: String?) {
@@ -279,7 +283,7 @@ open class LoggerBase(val logCounter: LogCounter) {
     }
 }
 
-open class Logger(val loggerBase: LoggerBase, open val dtw: DiagnosticTrapWriter) {
+open class Logger(val loggerBase: LoggerBase, val dtw: DiagnosticTrapWriter) {
     fun flush() {
         dtw.flush()
         loggerBase.flush()
@@ -299,6 +303,10 @@ open class Logger(val loggerBase: LoggerBase, open val dtw: DiagnosticTrapWriter
 
     fun info(msg: String) {
         loggerBase.info(dtw, msg)
+    }
+
+    fun infoVerbosity() {
+        loggerBase.infoVerbosity(dtw)
     }
 
     private fun warn(msg: String, extraInfo: String?) {

@@ -40,4 +40,5 @@ select count(Instruction i | IRConsistency::missingOperand(i, _, _, _) | i) as m
   count(Instruction i | IRConsistency::nonUniqueEnclosingIRFunction(i, _, _, _) | i) as nonUniqueEnclosingIRFunction,
   count(FieldAddressInstruction i | IRConsistency::fieldAddressOnNonPointer(i, _, _, _) | i) as fieldAddressOnNonPointer,
   count(Instruction i | IRConsistency::thisArgumentIsNonPointer(i, _, _, _) | i) as thisArgumentIsNonPointer,
-  count(Instruction i | IRConsistency::nonUniqueIRVariable(i, _, _, _) | i) as nonUniqueIRVariable
+  count(Instruction i | IRConsistency::nonUniqueIRVariable(i, _, _, _) | i) as nonUniqueIRVariable,
+  count(Instruction i | IRConsistency::nonBooleanOperand(i, _, _, _) | i) as nonBooleanOperand

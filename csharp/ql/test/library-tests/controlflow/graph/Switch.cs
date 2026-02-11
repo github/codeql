@@ -159,4 +159,21 @@ class Switch
         else
             System.Console.WriteLine($"b = {s}");
     }
+
+    void M16(int i)
+    {
+        switch (i)
+        {
+            case 1:
+            case 2:
+                System.Console.WriteLine("1 or 2");
+                break;
+            case 3:
+                System.Console.WriteLine("3");
+                break;
+            default:
+                System.Console.WriteLine("def");
+                break;
+        }
+    }
 }

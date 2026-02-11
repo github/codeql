@@ -49,6 +49,8 @@ module Random {
       // succ = array_or_indexer[pred] - use of random numbers in an index
       succ.asExpr().(ElementAccess).getAnIndex() = pred.asExpr()
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

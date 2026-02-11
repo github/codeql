@@ -5,7 +5,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/override-of-finalize-method
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

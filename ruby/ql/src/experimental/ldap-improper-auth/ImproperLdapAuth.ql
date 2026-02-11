@@ -16,5 +16,5 @@ import ImproperLdapAuthFlow::PathGraph
 
 from ImproperLdapAuthFlow::PathNode source, ImproperLdapAuthFlow::PathNode sink
 where ImproperLdapAuthFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This LDAP authencation depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, "This LDAP authentication depends on a $@.", source.getNode(),
   "user-provided value"

@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kairos-io/kairos/.github/workflows/reusable-zfs-test.yaml", "*", "input.flavor", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-upgrade-with-cli-test.yaml", "*", "input.flavor_release", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-upgrade-with-cli-test.yaml", "*", "input.flavor", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-upgrade-latest-test.yaml", "*", "input.family", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-upgrade-latest-test.yaml", "*", "input.flavor_release", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-upgrade-latest-test.yaml", "*", "input.flavor", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-reset-test.yaml", "*", "input.flavor", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-netboot-test.yaml", "*", "input.base_image", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-netboot-test.yaml", "*", "input.family", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-netboot-test.yaml", "*", "input.model", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-netboot-test.yaml", "*", "input.flavor_release", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-netboot-test.yaml", "*", "input.variant", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-netboot-test.yaml", "*", "input.flavor", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-bundles-test.yaml", "*", "input.flavor", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-acceptance-test.yaml", "*", "input.port", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-qemu-acceptance-test.yaml", "*", "input.flavor", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-provider-upgrade-latest-test.yaml", "*", "input.flavor_release", "code-injection", "generated"]
+     - ["kairos-io/kairos/.github/workflows/reusable-provider-upgrade-latest-test.yaml", "*", "input.flavor", "code-injection", "generated"]

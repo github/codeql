@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["github.com/cristalhq/jwt", "", True, "NewSignerHS", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/cristalhq/jwt", "", False, "NewSignerHS", "", "", "Argument[1]", "credentials-key", "manual"]

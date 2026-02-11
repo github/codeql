@@ -196,6 +196,12 @@ module API {
     Node getReturn() { result = this.getASuccessor(Label::return()) }
 
     /**
+     * Gets a node representing instances of the class represented by this node, as specified via
+     * type annotations.
+     */
+    Node getInstanceFromAnnotation() { result = this.getASuccessor(Label::annotation()) }
+
+    /**
      * Gets a node representing the `i`th parameter of the function represented by this node.
      *
      * This predicate may have multiple results when there are multiple invocations of this API component.
@@ -229,7 +235,9 @@ module API {
     /**
      * Gets a node representing an instance of the class (or a transitive subclass of the class) represented by this node.
      */
-    Node getAnInstance() { result = this.getASubclass*().getReturn() }
+    Node getAnInstance() {
+      result in [this.getASubclass*().getReturn(), this.getASubclass*().getInstanceFromAnnotation()]
+    }
 
     /**
      * Gets a node representing the result from awaiting this node.
@@ -834,6 +842,10 @@ module API {
         lbl = Label::return() and
         ref = pred.getACall()
         or
+        // Getting an instance via a type annotation
+        lbl = Label::annotation() and
+        ref = pred.getAnAnnotatedInstance()
+        or
         // Awaiting a node that is a use of `base`
         lbl = Label::await() and
         ref = pred.getAnAwaited()
@@ -842,6 +854,13 @@ module API {
         lbl = Label::subscript() and
         ref = pred.getSubscript(_) and
         ref.asCfgNode().isLoad()
+        or
+        // Subscript via comprehension
+        lbl = Label::subscript() and
+        exists(PY::Comp comp |
+          pred.asExpr() = comp.getIterable() and
+          ref.asExpr() = comp.getNthInnerLoop(0).getTarget()
+        )
         or
         // Subclassing a node
         lbl = Label::subclass() and
@@ -1072,6 +1091,7 @@ module API {
         } or
         MkLabelSelfParameter() or
         MkLabelReturn() or
+        MkLabelAnnotation() or
         MkLabelSubclass() or
         MkLabelAwait() or
         MkLabelSubscript() or
@@ -1141,6 +1161,11 @@ module API {
         override string toString() { result = "getReturn()" }
       }
 
+      /** A label for annotations. */
+      class LabelAnnotation extends ApiLabel, MkLabelAnnotation {
+        override string toString() { result = "getAnnotatedInstance()" }
+      }
+
       /** A label that gets the subclass of a class. */
       class LabelSubclass extends ApiLabel, MkLabelSubclass {
         override string toString() { result = "getASubclass()" }
@@ -1199,6 +1224,9 @@ module API {
 
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
+
+    /** Gets the `annotation` edge label. */
+    LabelAnnotation annotation() { any() }
 
     /** Gets the `subclass` edge label. */
     LabelSubclass subclass() { any() }

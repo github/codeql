@@ -16,27 +16,6 @@ import go
 module CommandInjection {
   import CommandInjectionCustomizations::CommandInjection
 
-  /**
-   * DEPRECATED: Use `Flow` instead.
-   *
-   * A taint-tracking configuration for reasoning about command-injection vulnerabilities
-   * with sinks which are not sanitized by `--`.
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "CommandInjection" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) {
-      exists(Sink s | sink = s | not s.doubleDashIsSanitizing())
-    }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
-  }
-
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -45,6 +24,8 @@ module CommandInjection {
     }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**
@@ -92,28 +73,6 @@ module CommandInjection {
     }
   }
 
-  /**
-   * DEPRECATED: Use `DoubleDashSanitizingFlow` instead.
-   *
-   * A taint-tracking configuration for reasoning about command-injection vulnerabilities
-   * with sinks which are sanitized by `--`.
-   */
-  deprecated class DoubleDashSanitizingConfiguration extends TaintTracking::Configuration {
-    DoubleDashSanitizingConfiguration() { this = "CommandInjectionWithDoubleDashSanitizer" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) {
-      exists(Sink s | sink = s | s.doubleDashIsSanitizing())
-    }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer or
-      node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
-    }
-  }
-
   private module DoubleDashSanitizingConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -122,6 +81,30 @@ module CommandInjection {
     predicate isBarrier(DataFlow::Node node) {
       node instanceof Sanitizer or
       node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
+    }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    // Hack: with use-use flow, we might have x (use at line 1) -> x (use at line 2),
+    // x (use at line 1) -> array at line 1 and x (use at line 2) -> array at line 2,
+    // in the context
+    //
+    // array1 := {"--", x}
+    // array2 := {x, "--"}
+    //
+    // We want to taint array2 but not array1, which suggests excluding the edge x (use 1) -> array1
+    // However isSanitizer only allows us to remove nodes (isSanitizerIn/Out permit removing all outgoing
+    // or incoming edges); we can't remove an individual edge, so instead we supply extra edges connecting
+    // the definition with the next use.
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(
+        ArgumentArrayWithDoubleDash array, DataFlow::InstructionNode sanitized,
+        DataFlow::SsaNode defn
+      |
+        sanitized = array.getASanitizedElement() and sanitized = defn.getAUse()
+      |
+        pred = defn and succ = sanitized.getASuccessor()
+      )
     }
   }
 

@@ -1,0 +1,46 @@
+on: push
+
+jobs:
+  local_commands:
+    runs-on: ubuntu-latest
+    steps:
+      - run: venv/bin/activate # not supported yet
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { default: foo } = await import('${{ github.workspace }}/scripts/foo.mjs')
+            return foo({ github, context, core }, body, number, sender)
+      - run: . venv/bin/activate
+      - run: echo foo; . venv/bin/activate
+      - run: echo foo;. venv/bin/activate
+      - run: echo foo |. venv/bin/activate
+      - run: ./venv/bin/activate
+      - run: sh venv/bin/activate.sh
+      - run: echo $(sh venv/bin/activate.sh)
+      - run: echo foo; sh venv/bin/activate.sh; echo bar
+      - run: echo foo | sh venv/bin/activate.sh > output
+      - run: python venv/bin/activate.py
+      - run: echo foo; python venv/bin/activate.py
+      - run: pnpm run test:ct
+      - run: pip install nbformat && python scripts/generate_notebooks.py
+      - run: python scripts/generate_theme.py --outfile js/storybook/theme.css
+      - run: ruby scripts/generate_theme.rb --outfile js/storybook/theme.css
+      - run: bundle run exec ruby scripts/generate_theme.rb --outfile js/storybook/theme.css
+      - run: xvfb-run ./mvnw clean package
+      - run: echo "foo" && npm i && echo "bar"
+      - run: echo "foo" | npm i | echo "bar"
+      - run: echo "foo" | npm i | echo "bar"
+      - run: echo "foo `npm i` bar"
+      - run: dotnet test foo/Tests.csproj -c Release
+      - run: go run foo.go
+      - run: sed -i "s|git_branch = .*|git_branch = \"$GITHUB_HEAD_REF\"|" config.json # not supported yet
+      - run: sed -f ./config.sed file.txt > foo.txt
+      - run: sed -f config file.txt > foo.txt
+      - run: echo "foo" | awk -f ./config.awk > foo.txt
+      - run: gcloud builds submit --quiet --substitutions="COMMIT_SHA=foo
+      - run: ./foo/cmd
+      - run: |
+          sed -e 's#<branch_to_sync>#TITLE#' \
+              -e 's#<sot_repo>#${{ env.sot_repo }}#' \
+              -e 's#<destination_repo>#${TITLE}#' \
+              .github/workflows/common-copybara.bara.sky.template > .github/workflows/common-copybara.bara.sky

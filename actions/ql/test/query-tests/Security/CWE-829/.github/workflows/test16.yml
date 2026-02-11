@@ -1,0 +1,294 @@
+name: Post-Build
+run-name: Post-Build on ${{ github.event.workflow_run.head_branch }}
+on:
+  workflow_run:
+    types: [ 'completed' ]
+    workflows:
+      - Build
+concurrency:
+  # Cancel concurrent jobs on pull_request but not push, by including the run_id in the concurrency group for the latter.
+  group: post-build-${{ github.event.workflow_run.event == 'push' && github.run_id || 'pr' }}-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: true
+
+env:
+  COMPOSER_ROOT_VERSION: "dev-trunk"
+  SUMMARY: Post-Build run [#${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for Build run [#${{ github.event.workflow_run.id }}](${{ github.event.workflow_run.html_url }})
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: read
+
+# Note the job logic here is a bit unusual. That's because this workflow is triggered by `workflow_run`, and so is not shown on the PR by default.
+# Instead we have to manually report back, including where we could normally just skip or let a failure be handled.
+#  - If the "Build" job failed, we need to set our status as failed too (build_failed).
+#  - If the find_artifact job fails for some reason, we need a step to explicitly report that back.
+#  - If no plugins are found, we need to explicitly report back a "skipped" status.
+#  - And the upgrade_test job both explicitly sets "in progress" at its start and updates at its end.
+#
+# If you're wanting to add a new check, you'd want to do the following:
+#  - Add a step in the `setup` workflow to create your check, and a corresponding output for later steps to have the ID.
+#  - Add a step in the `build_failed` workflow to set your run to cancelled.
+#  - Add a job to run whatever tests you need to run, with steps similar to the `upgrade_test` workflow's "Get token", "Notify check in progress", and "Notify final status".
+#  - Add a step in the `no_plugins` workflow to set your run to skipped if your job only runs when there are plugins built.
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 2  # 2022-12-20: Seems like it should be fast.
+    outputs:
+      upgrade_check: ${{ steps.upgrade_check.outputs.id }}
+    steps:
+      - name: Log info
+        run: |
+          echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
+
+      - uses: actions/checkout@v4
+
+      - name: Get token
+        id: get_token
+        uses: ./.github/actions/gh-app-token
+        with:
+          app_id: ${{ secrets.JP_LAUNCH_CONTROL_ID }}
+          private_key: ${{ secrets.JP_LAUNCH_CONTROL_KEY }}
+
+      - name: 'Create "Test plugin upgrades" check'
+        id: upgrade_check
+        uses: ./.github/actions/check-run
+        with:
+          name: Test plugin upgrades
+          sha: ${{ github.event.workflow_run.head_sha }}
+          status: queued
+          title: Test queued...
+          summary: |
+            ${{ env.SUMMARY }}
+          token: ${{ steps.get_token.outputs.token }}
+
+  build_failed:
+    name: Handle build failure
+    runs-on: ubuntu-latest
+    needs: setup
+    if: github.event.workflow_run.conclusion != 'success'
+    timeout-minutes: 2  # 2022-08-26: Seems like it should be fast.
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get token
+        id: get_token
+        uses: ./.github/actions/gh-app-token
+        with:
+          app_id: ${{ secrets.JP_LAUNCH_CONTROL_ID }}
+          private_key: ${{ secrets.JP_LAUNCH_CONTROL_KEY }}
+
+      - name: 'Mark "Test plugin upgrades" cancelled'
+        uses: ./.github/actions/check-run
+        with:
+          id: ${{ needs.setup.outputs.upgrade_check }}
+          conclusion: cancelled
+          title: Build failed
+          summary: |
+            ${{ env.SUMMARY }}
+
+            Post-build run aborted because the build did not succeed.
+          token: ${{ steps.get_token.outputs.token }}
+
+  find_artifact:
+    name: Find artifact
+    runs-on: ubuntu-latest
+    needs: setup
+    if: github.event.workflow_run.conclusion == 'success'
+    timeout-minutes: 2  # 2022-08-26: Seems like it should be fast.
+    outputs:
+      zip_url: ${{ steps.run.outputs.zip_url }}
+      any_plugins: ${{ steps.run.outputs.any_plugins }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Find artifact
+        id: run
+        env:
+          TOKEN: ${{ github.token }}
+          URL: ${{ github.event.workflow_run.artifacts_url }}
+        run: |
+          for (( i=1; i<=5; i++ )); do
+            [[ $i -gt 1 ]] && sleep 10
+            echo "::group::Fetch list of artifacts (attempt $i/5)"
+            JSON="$(curl -v -L --get \
+              --header "Authorization: token $TOKEN" \
+              --url "$URL"
+            )"
+            echo "$JSON"
+            echo "::endgroup::"
+            ZIPURL="$(jq -r '.artifacts | map( select( .name == "jetpack-build" ) ) | sort_by( .created_at ) | last | .archive_download_url // empty' <<<"$JSON")"
+            PLUGINS="$(jq -r '.artifacts[] | select( .name == "plugins.tsv" )' <<<"$JSON")"
+            if [[ -n "$ZIPURL" ]]; then
+              break
+            fi
+          done
+          [[ -z "$ZIPURL" ]] && { echo "::error::Failed to find artifact."; exit 1; }
+          echo "Zip URL: $ZIPURL"
+          echo "zip_url=${ZIPURL}" >> "$GITHUB_OUTPUT"
+          if [[ -z "$PLUGINS" ]]; then
+            echo "Any plugins? No"
+            echo "any_plugins=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Any plugins? Yes"
+            echo "any_plugins=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Get token
+        id: get_token
+        if: ${{ ! success() }}
+        uses: ./.github/actions/gh-app-token
+        with:
+          app_id: ${{ secrets.JP_LAUNCH_CONTROL_ID }}
+          private_key: ${{ secrets.JP_LAUNCH_CONTROL_KEY }}
+      - name: 'Mark "Test plugin upgrades" failed'
+        if: ${{ ! success() }}
+        uses: ./.github/actions/check-run
+        with:
+          id: ${{ needs.setup.outputs.upgrade_check }}
+          conclusion: failure
+          title: Failed to find build artifact
+          summary: |
+            ${{ env.SUMMARY }}
+
+            Post-build run aborted because the "Find artifact" step failed.
+          token: ${{ steps.get_token.outputs.token }}
+
+  no_plugins:
+    name: Handle no-plugins
+    runs-on: ubuntu-latest
+    needs: [ setup, find_artifact ]
+    if: needs.find_artifact.outputs.any_plugins == 'false'
+    timeout-minutes: 2  # 2022-08-26: Seems like it should be fast.
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get token
+        id: get_token
+        uses: ./.github/actions/gh-app-token
+        with:
+          app_id: ${{ secrets.JP_LAUNCH_CONTROL_ID }}
+          private_key: ${{ secrets.JP_LAUNCH_CONTROL_KEY }}
+
+      - name: 'Mark "Test plugin upgrades" skipped'
+        uses: ./.github/actions/check-run
+        with:
+          id: ${{ needs.setup.outputs.upgrade_check }}
+          conclusion: skipped
+          title: No plugins were built
+          summary: |
+            ${{ env.SUMMARY }}
+
+            Post-build run skipped because no plugins were built.
+          token: ${{ steps.get_token.outputs.token }}
+
+  upgrade_test:
+    name: Test plugin upgrades
+    runs-on: ubuntu-latest
+    needs: [ setup, find_artifact ]
+    if: needs.find_artifact.outputs.any_plugins == 'true'
+    timeout-minutes: 15  # 2022-08-26: Successful runs seem to take about 6 minutes, but give some extra time for the downloads.
+    services:
+      db:
+        image: mariadb:lts
+        env:
+          MARIADB_ROOT_PASSWORD: wordpress
+        ports:
+          - 3306:3306
+        options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=5
+    container:
+      image: ghcr.io/automattic/jetpack-wordpress-dev:latest
+      env:
+        WP_DOMAIN: localhost
+        WP_ADMIN_USER: wordpress
+        WP_ADMIN_EMAIL: wordpress@example.com
+        WP_ADMIN_PASSWORD: wordpress
+        WP_TITLE: Hello World
+        MYSQL_HOST: db:3306
+        MYSQL_DATABASE: wordpress
+        MYSQL_USER: root
+        MYSQL_PASSWORD: wordpress
+        HOST_PORT: 80
+      ports:
+        - 80:80
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: trunk
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_commit.id }}
+          path: commit
+
+      - name: Get token
+        id: get_token
+        uses: ./trunk/.github/actions/gh-app-token
+        env:
+          # Work around a weird node 16/openssl 3 issue in the docker env
+          OPENSSL_CONF: '/dev/null'
+        with:
+          app_id: ${{ secrets.JP_LAUNCH_CONTROL_ID }}
+          private_key: ${{ secrets.JP_LAUNCH_CONTROL_KEY }}
+
+      - name: Notify check in progress
+        uses: ./trunk/.github/actions/check-run
+        with:
+          id: ${{ needs.setup.outputs.upgrade_check }}
+          status: in_progress
+          title: Test started...
+          summary: |
+            ${{ env.SUMMARY }}
+
+            See run [#${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
+          token: ${{ steps.get_token.outputs.token }}
+
+      - name: Download build artifact
+        env:
+          TOKEN: ${{ github.token }}
+          ZIPURL: ${{ needs.find_artifact.outputs.zip_url }}
+        shell: bash
+        run: |
+          for (( i=1; i<=2; i++ )); do
+            [[ $i -gt 1 ]] && sleep 10
+            echo "::group::Downloading artifact (attempt $i/2)"
+            curl -v -L --get \
+              --header "Authorization: token $TOKEN" \
+              --url "$ZIPURL" \
+              --output "artifact.zip"
+            echo "::endgroup::"
+            if [[ -e "artifact.zip" ]] && zipinfo artifact.zip &>/dev/null; then
+              break
+            fi
+          done
+          [[ ! -e "artifact.zip" ]] && { echo "::error::Failed to download artifact."; exit 1; }
+          unzip artifact.zip
+          tar --xz -xvvf build.tar.xz build
+
+      - name: Setup WordPress
+        run: trunk/.github/files/test-plugin-update/setup.sh
+
+      - name: Prepare plugin zips
+        id: zips
+        run: trunk/.github/files/test-plugin-update/prepare-zips.sh
+
+      - name: Test upgrades
+        id: tests
+        run: trunk/.github/files/test-plugin-update/test.sh
+
+      - name: Notify final status
+        if: always()
+        uses: ./trunk/.github/actions/check-run
+        with:
+          id: ${{ needs.setup.outputs.upgrade_check }}
+          conclusion: ${{ job.status }}
+          title: ${{ job.status == 'success' && 'Tests passed' || job.status == 'cancelled' && 'Cancelled' || 'Tests failed' }}
+          summary: |
+            ${{ env.SUMMARY }}
+
+            ${{ steps.zips.outputs.info }}${{ steps.tests.outputs.info }}
+
+            See run [#${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.
+          token: ${{ steps.get_token.outputs.token }}

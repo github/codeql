@@ -9,7 +9,7 @@ CodeQL 2.7.5 (2022-01-17)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -60,8 +60,8 @@ JavaScript/TypeScript
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`java/constant-comparison` query no longer raises false alerts regarding comparisons with Unicode surrogate character literals.
 
@@ -103,8 +103,8 @@ Language Libraries
 Bug Fixes
 ~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   :code:`CharacterLiteral`\ 's :code:`getCodePointValue` predicate now returns the correct value for UTF-16 surrogates.
 *   The :code:`RangeAnalysis` module now properly handles comparisons with Unicode surrogate character literals.
@@ -112,8 +112,8 @@ Java
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Data flow now propagates taint from remote source :code:`Parameter` types to read steps of their fields (e.g. :code:`tainted.publicField` or :code:`tainted.getField()`). This also applies to their subtypes and the types of their fields, recursively.
 

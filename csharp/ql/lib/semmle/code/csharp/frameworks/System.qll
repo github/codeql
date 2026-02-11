@@ -354,10 +354,18 @@ class SystemStringClass extends StringType {
     result.getReturnType() instanceof StringType
   }
 
+  /** Gets the `ReplaceLineEndings(string) method. */
+  Method getReplaceLineEndingsMethod() {
+    result.getDeclaringType() = this and
+    result.hasName("ReplaceLineEndings") and
+    result.getNumberOfParameters() = 1 and
+    result.getReturnType() instanceof StringType
+  }
+
   /** Gets a `Format(...)` method. */
   Method getFormatMethod() {
     result.getDeclaringType() = this and
-    result.hasName("Format") and
+    result.getName().regexpMatch("Format(<.*>)?") and
     result.getNumberOfParameters() in [2 .. 5] and
     result.getReturnType() instanceof StringType
   }
@@ -743,7 +751,40 @@ class SystemNotImplementedExceptionClass extends SystemClass {
   SystemNotImplementedExceptionClass() { this.hasName("NotImplementedException") }
 }
 
+/** The `System.MemoryExtensions` class. */
+class SystemMemoryExtensionsClass extends SystemClass {
+  SystemMemoryExtensionsClass() { this.hasName("MemoryExtensions") }
+
+  /** Gets a `TryWrite` method. */
+  Method getTryWriteMethod() {
+    result.getDeclaringType() = this and
+    result.getName().regexpMatch("TryWrite(<.*>)?") and
+    result.getParameter(0).getType().getUnboundDeclaration() instanceof SystemSpanStruct
+  }
+}
+
 /** The `System.DateTime` struct. */
 class SystemDateTimeStruct extends SystemStruct {
   SystemDateTimeStruct() { this.hasName("DateTime") }
+}
+
+/** The `System.DateTimeOffset` struct. */
+class SystemDateTimeOffsetStruct extends SystemStruct {
+  SystemDateTimeOffsetStruct() { this.hasName("DateTimeOffset") }
+}
+
+/** The `System.Span<T>` struct. */
+class SystemSpanStruct extends SystemUnboundGenericStruct {
+  SystemSpanStruct() {
+    this.hasName("Span`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
+}
+
+/** The `System.ReadOnlySpan<T>` struct. */
+class SystemReadOnlySpanStruct extends SystemUnboundGenericStruct {
+  SystemReadOnlySpanStruct() {
+    this.hasName("ReadOnlySpan`1") and
+    this.getNumberOfTypeParameters() = 1
+  }
 }

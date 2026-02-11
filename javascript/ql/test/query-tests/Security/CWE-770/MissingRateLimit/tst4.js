@@ -7,4 +7,4 @@ const limiter = rateLimit();
 app.use(limiter)
 
 function expensiveHandler(req, res) { login(); }
-app.get('/:path', expensiveHandler);  // OK
+app.get('/:path', expensiveHandler);

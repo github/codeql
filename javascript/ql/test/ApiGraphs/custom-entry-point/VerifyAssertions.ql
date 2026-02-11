@@ -1,3 +1,4 @@
+overlay[local?]
 class CustomEntryPoint extends API::EntryPoint {
   CustomEntryPoint() { this = "CustomEntryPoint" }
 

@@ -97,6 +97,10 @@ module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
     state instanceof IsSettings and
     node instanceof WebSettingsDisallowContentAccessSink
   }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // only used negatively
+  }
 }
 
 module WebViewDisallowContentAccessFlow =
@@ -114,7 +118,7 @@ where
   // implicit: no setAllowContentAccess(false)
   exists(WebViewSource source |
     source.asExpr() = e and
-    not WebViewDisallowContentAccessFlow::flow(source, _)
+    not WebViewDisallowContentAccessFlow::flowFrom(source)
   )
 select e,
   "Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView."

@@ -1,0 +1,13 @@
+instances
+| gen_const.rs:4:5:7:22 | Const | isConst: | yes | isDefault: | no | hasImplementation: | yes |
+getAttributeMacroExpansion
+getAttr
+getBody
+| gen_const.rs:4:5:7:22 | Const | gen_const.rs:7:20:7:21 | 42 |
+getGenericParamList
+getName
+| gen_const.rs:4:5:7:22 | Const | gen_const.rs:7:11:7:11 | X |
+getTypeRepr
+| gen_const.rs:4:5:7:22 | Const | gen_const.rs:7:14:7:16 | i32 |
+getVisibility
+getWhereClause

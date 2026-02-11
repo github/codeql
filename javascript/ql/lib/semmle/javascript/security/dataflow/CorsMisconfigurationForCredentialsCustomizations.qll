@@ -27,9 +27,16 @@ module CorsMisconfigurationForCredentials {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a flow source for CORS misconfiguration. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() { not this instanceof ClientSideRemoteFlowSource }
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() { not this.isClientSideSource() }
   }
 
   /**

@@ -1,0 +1,66 @@
+models
+| 1 | Summary: java.lang; AbstractStringBuilder; true; append; ; ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: java.lang; AbstractStringBuilder; true; append; ; ; Argument[this]; ReturnValue; value; manual |
+| 3 | Summary: java.lang; CharSequence; true; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 4 | Summary: java.lang; String; false; format; (String,Object[]); ; Argument[1].ArrayElement; ReturnValue; taint; manual |
+| 5 | Summary: java.lang; String; false; formatted; (Object[]); ; Argument[0].ArrayElement; ReturnValue; taint; manual |
+| 6 | Summary: java.lang; String; false; formatted; (Object[]); ; Argument[this]; ReturnValue; taint; manual |
+| 7 | Summary: java.util; Formatter; false; format; (String,Object[]); ; Argument[this]; ReturnValue; value; dfc-generated |
+edges
+| A.java:12:22:12:29 | source(...) : String | A.java:15:14:15:16 | bad : String | provenance |  |
+| A.java:12:22:12:29 | source(...) : String | A.java:16:34:16:36 | bad : String | provenance |  |
+| A.java:12:22:12:29 | source(...) : String | A.java:17:36:17:38 | bad : String | provenance |  |
+| A.java:12:22:12:29 | source(...) : String | A.java:19:107:19:109 | bad : String | provenance |  |
+| A.java:15:14:15:16 | bad : String | A.java:15:14:15:32 | formatted(...) | provenance | MaD:6 |
+| A.java:16:14:16:48 | new ..[] { .. } : Object[] [[]] : String | A.java:16:14:16:48 | formatted(...) | provenance | MaD:5 |
+| A.java:16:34:16:36 | bad : String | A.java:16:14:16:48 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
+| A.java:17:14:17:45 | new ..[] { .. } : Object[] [[]] : String | A.java:17:14:17:45 | format(...) | provenance | MaD:4 |
+| A.java:17:36:17:38 | bad : String | A.java:17:14:17:45 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
+| A.java:19:14:19:110 | new ..[] { .. } : Object[] [[]] : String | A.java:19:14:19:110 | format(...) | provenance | MaD:4 |
+| A.java:19:107:19:109 | bad : String | A.java:19:14:19:110 | new ..[] { .. } : Object[] [[]] : String | provenance |  |
+| A.java:23:22:23:29 | source(...) : String | A.java:27:14:27:32 | format(...) | provenance | TaintPreservingCallable |
+| A.java:23:22:23:29 | source(...) : String | A.java:28:14:28:25 | toString(...) | provenance | TaintPreservingCallable |
+| A.java:32:22:32:29 | source(...) : String | A.java:36:14:36:15 | sb : StringBuilder | provenance | formatStep |
+| A.java:32:22:32:29 | source(...) : String | A.java:37:14:37:32 | format(...) | provenance | TaintPreservingCallable |
+| A.java:32:22:32:29 | source(...) : String | A.java:38:14:38:15 | sb : StringBuilder | provenance | formatStep |
+| A.java:36:14:36:15 | sb : StringBuilder | A.java:36:14:36:26 | toString(...) | provenance | MaD:3 |
+| A.java:38:14:38:15 | sb : StringBuilder | A.java:38:14:38:26 | toString(...) | provenance | MaD:3 |
+| A.java:42:22:42:29 | source(...) : String | A.java:45:24:45:26 | bad : String | provenance |  |
+| A.java:45:14:45:15 | sb [post update] : StringBuilder | A.java:47:14:47:30 | new Formatter(...) : Formatter | provenance | TaintPreservingCallable |
+| A.java:45:14:45:15 | sb [post update] : StringBuilder | A.java:47:14:47:54 | toString(...) | provenance | TaintPreservingCallable |
+| A.java:45:24:45:26 | bad : String | A.java:45:14:45:15 | sb [post update] : StringBuilder | provenance | MaD:1 |
+| A.java:45:24:45:26 | bad : String | A.java:45:14:45:27 | append(...) | provenance | MaD:1+MaD:2 |
+| A.java:47:14:47:30 | new Formatter(...) : Formatter | A.java:47:14:47:43 | format(...) : Formatter | provenance | MaD:7 |
+| A.java:47:14:47:30 | new Formatter(...) : Formatter | A.java:47:14:47:54 | toString(...) | provenance | TaintPreservingCallable |
+| A.java:47:14:47:43 | format(...) : Formatter | A.java:47:14:47:54 | toString(...) | provenance | TaintPreservingCallable |
+nodes
+| A.java:12:22:12:29 | source(...) : String | semmle.label | source(...) : String |
+| A.java:15:14:15:16 | bad : String | semmle.label | bad : String |
+| A.java:15:14:15:32 | formatted(...) | semmle.label | formatted(...) |
+| A.java:16:14:16:48 | formatted(...) | semmle.label | formatted(...) |
+| A.java:16:14:16:48 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| A.java:16:34:16:36 | bad : String | semmle.label | bad : String |
+| A.java:17:14:17:45 | format(...) | semmle.label | format(...) |
+| A.java:17:14:17:45 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| A.java:17:36:17:38 | bad : String | semmle.label | bad : String |
+| A.java:19:14:19:110 | format(...) | semmle.label | format(...) |
+| A.java:19:14:19:110 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| A.java:19:107:19:109 | bad : String | semmle.label | bad : String |
+| A.java:23:22:23:29 | source(...) : String | semmle.label | source(...) : String |
+| A.java:27:14:27:32 | format(...) | semmle.label | format(...) |
+| A.java:28:14:28:25 | toString(...) | semmle.label | toString(...) |
+| A.java:32:22:32:29 | source(...) : String | semmle.label | source(...) : String |
+| A.java:36:14:36:15 | sb : StringBuilder | semmle.label | sb : StringBuilder |
+| A.java:36:14:36:26 | toString(...) | semmle.label | toString(...) |
+| A.java:37:14:37:32 | format(...) | semmle.label | format(...) |
+| A.java:38:14:38:15 | sb : StringBuilder | semmle.label | sb : StringBuilder |
+| A.java:38:14:38:26 | toString(...) | semmle.label | toString(...) |
+| A.java:42:22:42:29 | source(...) : String | semmle.label | source(...) : String |
+| A.java:45:14:45:15 | sb [post update] : StringBuilder | semmle.label | sb [post update] : StringBuilder |
+| A.java:45:14:45:27 | append(...) | semmle.label | append(...) |
+| A.java:45:24:45:26 | bad : String | semmle.label | bad : String |
+| A.java:47:14:47:30 | new Formatter(...) : Formatter | semmle.label | new Formatter(...) : Formatter |
+| A.java:47:14:47:43 | format(...) : Formatter | semmle.label | format(...) : Formatter |
+| A.java:47:14:47:54 | toString(...) | semmle.label | toString(...) |
+subpaths
+testFailures

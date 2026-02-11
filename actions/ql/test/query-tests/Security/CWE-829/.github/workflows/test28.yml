@@ -1,0 +1,20 @@
+on:
+  pull_request_target:
+    types: [opened, ready_for_review, synchronize, reopened, labeled, unlabeled]
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  setup-environment:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'major-update') && (github.actor == 'renovate[bot]' || contains(github.event.pull_request.labels.*.name, 'renovatebot')) }}
+    steps:
+      - uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
+        with:
+          ref: ${{ github.head_ref }}
+      - run: make foo

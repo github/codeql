@@ -1,15 +1,16 @@
 /**
  * Provides classes and predicates for working with XML files and their content.
  */
+overlay[local?]
+module;
 
 import semmle.files.FileSystem
-private import semmle.javascript.internal.Locations
 private import codeql.xml.Xml
 
-private module Input implements InputSig<File, DbLocation> {
+private module Input implements InputSig<File, Location> {
   class XmlLocatableBase = @xmllocatable or @xmlnamespaceable;
 
-  predicate xmllocations_(XmlLocatableBase e, DbLocation loc) { loc = getLocatableLocation(e) }
+  predicate xmllocations_(XmlLocatableBase e, Location loc) { xmllocations(e, loc) }
 
   class XmlParentBase = @xmlparent;
 
@@ -67,4 +68,4 @@ private module Input implements InputSig<File, DbLocation> {
   }
 }
 
-import Make<File, DbLocation, Input>
+import Make<File, Location, Input>

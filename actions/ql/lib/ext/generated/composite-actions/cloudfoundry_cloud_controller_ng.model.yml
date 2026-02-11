@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["cloudfoundry/cloud_controller/ng", "*", "input.BOSH_CLI_VERSION", "code-injection", "generated"]

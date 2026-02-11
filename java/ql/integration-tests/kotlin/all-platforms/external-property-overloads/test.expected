@@ -1,0 +1,2 @@
+| user.kt:3:14:3:22 | getF(...) | lib/lib/TestKt.class:0:0:0:0 | getF |
+| user.kt:3:26:3:28 | getF(...) | lib/lib/TestKt.class:0:0:0:0 | getF |

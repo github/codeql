@@ -74,10 +74,12 @@ When writing your own alert queries, you would typically import the standard lib
 - :ref:`CodeQL library guide for C and C++ <codeql-library-for-cpp>`
 - :ref:`CodeQL library guide for C# <codeql-library-for-csharp>`
 - :ref:`CodeQL library guide for Go <codeql-library-for-go>`
+- :ref:`CodeQL library guide for GitHub Actions <codeql-library-for-actions>`
 - :ref:`CodeQL library guide for Java and Kotlin <codeql-library-for-java>`
 - :ref:`CodeQL library guide for JavaScript <codeql-library-for-javascript>`
 - :ref:`CodeQL library guide for Python <codeql-library-for-python>`
 - :ref:`CodeQL library guide for Ruby <codeql-library-for-ruby>`
+- :ref:`CodeQL library guide for Rust <codeql-library-for-rust>`
 - :ref:`CodeQL library guide for TypeScript <codeql-library-for-typescript>`
 
 There are also libraries containing commonly used predicates, types, and other modules associated with different analyses, including data flow, control flow, and taint-tracking. In order to calculate path graphs, path queries require you to import a data flow library into the query file. For more information, see ":doc:`Creating path queries <creating-path-queries>`."

@@ -157,7 +157,7 @@ class Parameter extends LocalScopeVariable, Attributable, TopLevelExprParent, @p
   predicate isOutOrRef() { this.isOut() or this.isRef() }
 
   /**
-   * Holds if this parameter is a parameter array. For example, `args`
+   * Holds if this parameter is a parameter collection. For example, `args`
    * is a parameter array in
    *
    * ```csharp
@@ -213,7 +213,7 @@ class Parameter extends LocalScopeVariable, Attributable, TopLevelExprParent, @p
     params(this, _, getTypeRef(result), _, _, _, _)
   }
 
-  override Location getALocation() { param_location(this, result) }
+  override Location getALocation() { param_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = this.getName() }
 
@@ -449,7 +449,7 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
     fields(this, _, _, _, getTypeRef(result), _)
   }
 
-  override Location getALocation() { field_location(this, result) }
+  override Location getALocation() { field_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = Variable.super.toString() }
 

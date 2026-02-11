@@ -1,1 +1,2 @@
-RegExp/UnmatchableDollar.ql
+query: RegExp/UnmatchableDollar.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

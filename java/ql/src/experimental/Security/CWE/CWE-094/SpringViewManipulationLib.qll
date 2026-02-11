@@ -1,6 +1,7 @@
 /**
  * Provides classes for reasoning about Spring View Manipulation vulnerabilities
  */
+deprecated module;
 
 import java
 import semmle.code.java.dataflow.FlowSources
@@ -42,7 +43,7 @@ class PortletRenderRequestMethod extends Method {
  */
 module SpringViewManipulationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof ThreatModelFlowSource or
+    source instanceof ActiveThreatModelSource or
     source instanceof WebRequestSource or
     source.asExpr().(MethodCall).getMethod() instanceof PortletRenderRequestMethod
   }
@@ -55,7 +56,7 @@ module SpringViewManipulationConfig implements DataFlow::ConfigSig {
     // a = "redirect:" + taint`
     // ```
     exists(AddExpr e, StringLiteral sl |
-      node.asExpr() = e.getControlFlowNode().getASuccessor*() and
+      node.asExpr() = e.getControlFlowNode().getASuccessor*().asExpr() and
       sl = e.getLeftOperand*() and
       sl.getValue().matches(["redirect:%", "ajaxredirect:%", "forward:%"])
     )
@@ -124,10 +125,10 @@ private class StringFormatMethod extends StringCombiningMethod {
 class SpringViewManipulationSink extends DataFlow::ExprNode {
   SpringViewManipulationSink() {
     exists(ReturnStmt r, SpringRequestMappingMethod m |
-      r.getResult() = this.asExpr() and
+      r.getExpr() = this.asExpr() and
       m.getBody().getAStmt() = r and
       not m.isResponseBody() and
-      r.getResult().getType() instanceof TypeString
+      r.getExpr().getType() instanceof TypeString
     )
     or
     exists(ConstructorCall c | c.getConstructedType() instanceof ModelAndView |

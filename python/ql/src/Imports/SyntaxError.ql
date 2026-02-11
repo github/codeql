@@ -2,7 +2,8 @@
  * @name Syntax error
  * @description Syntax errors cause failures at runtime and prevent analysis of the code.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity high

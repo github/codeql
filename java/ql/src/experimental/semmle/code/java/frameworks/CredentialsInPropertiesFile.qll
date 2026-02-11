@@ -1,6 +1,7 @@
 /**
  * Provides classes for analyzing properties files.
  */
+deprecated module;
 
 import java
 import semmle.code.configfiles.ConfigFiles

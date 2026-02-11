@@ -1,1 +1,2 @@
-Declarations/AssignmentToConst.ql
+query: Declarations/AssignmentToConst.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

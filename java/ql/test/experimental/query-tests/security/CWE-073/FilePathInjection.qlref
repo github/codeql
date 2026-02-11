@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-073/FilePathInjection.ql
+query: experimental/Security/CWE/CWE-073/FilePathInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

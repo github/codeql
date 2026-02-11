@@ -305,6 +305,7 @@ were defined in the :ref:`QL tutorials <ql-tutorials>`:
 The module namespace of ``Villagers`` has entries for: 
     - The module ``S``.
     - Any modules exported by ``tutorial``.
+    - The built-in top-level module ``QlBuiltins``.
 
 The module namespace of ``S`` also has entries for the module ``S`` itself, and for any 
 modules exported by ``tutorial``.
@@ -314,7 +315,7 @@ modules exported by ``tutorial``.
 The type namespace of ``Villagers`` has entries for:
     - The class ``Child``.
     - The types exported by the module ``tutorial``.
-    - The built-in types, namely ``int``, ``float``, ``string``, ``date``, and ``boolean``.
+    - The built-in top-level types, namely ``int``, ``float``, ``string``, ``date``, and ``boolean``.
 
 The type namespace of ``S`` has entries for:
     - All the above types.

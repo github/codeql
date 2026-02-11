@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-346/UnvalidatedCors.ql
+query: experimental/Security/CWE/CWE-346/UnvalidatedCors.ql
+postprocess: utils/test/PrettyPrintModels.ql

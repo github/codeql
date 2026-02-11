@@ -23,6 +23,8 @@ module ApkInstallationConfig implements DataFlow::ConfigSig {
       )
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module ApkInstallationFlow = DataFlow::Global<ApkInstallationConfig>;

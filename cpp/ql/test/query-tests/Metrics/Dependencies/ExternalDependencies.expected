@@ -1,4 +1,4 @@
-| /query-tests/Metrics/Dependencies/main.cpp<\|>LibC<\|>unknown | 5 |
-| /query-tests/Metrics/Dependencies/include.h<\|>LibD<\|>unknown | 1 |
-| /query-tests/Metrics/Dependencies/main.cpp<\|>LibA<\|>unknown | 1 |
-| /query-tests/Metrics/Dependencies/main.cpp<\|>LibB<\|>unknown | 1 |
+| /main.cpp<\|>LibC<\|>unknown | 5 |
+| /include.h<\|>LibD<\|>unknown | 1 |
+| /main.cpp<\|>LibA<\|>unknown | 1 |
+| /main.cpp<\|>LibB<\|>unknown | 1 |

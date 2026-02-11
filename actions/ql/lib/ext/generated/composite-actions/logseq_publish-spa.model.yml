@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["logseq/publish-spa", "*", "input.accent-color", "code-injection", "generated"]
+     - ["logseq/publish-spa", "*", "input.theme-mode", "code-injection", "generated"]
+     - ["logseq/publish-spa", "*", "input.graph-directory", "code-injection", "generated"]
+     - ["logseq/publish-spa", "*", "input.output-directory", "code-injection", "generated"]

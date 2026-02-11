@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["conan-io/conan-center-index", "*", "input.files", "code-injection", "generated"]
+     - ["conan-io/conan-center-index", "*", "input.reviewers", "code-injection", "generated"]

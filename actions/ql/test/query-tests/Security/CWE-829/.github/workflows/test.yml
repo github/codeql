@@ -1,0 +1,37 @@
+name: Tests
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Fetch CodeQL
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gh extension install github/gh-codeql
+          gh codeql set-channel "nightly"
+          gh codeql version
+          printf "CODEQL_FETCHED_CODEQL_PATH=" >> "${GITHUB_ENV}"
+          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_ENV}"
+          gh codeql version --format=json | jq -r .unpackedLocation >> "${GITHUB_PATH}"
+      - name: Install Packs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          gh repo clone github/codeql
+          codeql pack install "ql/lib"
+          codeql pack install "ql/src"
+          codeql pack install "ql/test"
+      - name: Run Tests
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          codeql test run ql/test

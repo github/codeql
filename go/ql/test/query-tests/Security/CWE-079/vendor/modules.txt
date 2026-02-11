@@ -6,7 +6,7 @@ github.com/gobwas/ws
 github.com/gorilla/websocket
 # golang.org/x/net v0.0.0-20200505041828-1ed23360d12c
 ## explicit
-golang.org/x/net
+golang.org/x/net/websocket
 # nhooyr.io/websocket v1.8.5
 ## explicit
 nhooyr.io/websocket

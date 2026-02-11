@@ -6,8 +6,10 @@
  * @problem.severity recommendation
  * @precision low
  * @id java/garbage-collection
- * @tags reliability
- *       maintainability
+ * @previous-id java/do-not-use-finalizers
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

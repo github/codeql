@@ -46,7 +46,7 @@ class UserController < ActionController::Base
     def create4
         x = params[:user]
         x.permit!
-        User.new(x) # BAD
+        User.new(x) # BAD
         User.new(x.permit(:name,:address)) # GOOD
         User.new(params.permit(user: {})) # BAD
         User.new(params.permit(user: [:name, :address, {friends:{}}])) # BAD

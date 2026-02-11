@@ -17,7 +17,7 @@ public class JacksonTest {
         try (ServerSocket serverSocket = new ServerSocket(0)) {
             try (Socket socket = serverSocket.accept()) {
                 byte[] bytes = new byte[1024];
-                int n = socket.getInputStream().read(bytes);
+                int n = socket.getInputStream().read(bytes); // $ Source
                 String jexlExpr = new String(bytes, 0, n);
                 action.run(jexlExpr);
             }
@@ -73,7 +73,7 @@ class UnsafePersonDeserialization {
     private static void testUnsafeDeserialization() throws Exception {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(string, Person.class); // $unsafeDeserialization
+            mapper.readValue(string, Person.class); // $ Alert
         });
     }
 
@@ -82,7 +82,7 @@ class UnsafePersonDeserialization {
     private static void testUnsafeDeserializationWithExtendedClass() throws Exception {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(string, Employee.class); // $unsafeDeserialization
+            mapper.readValue(string, Employee.class); // $ Alert
         });
     }
 
@@ -91,7 +91,7 @@ class UnsafePersonDeserialization {
     private static void testUnsafeDeserializationWithWrapper() throws Exception {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(string, Task.class); // $unsafeDeserialization
+            mapper.readValue(string, Task.class); // $ Alert
         });
     }
 }
@@ -102,7 +102,7 @@ class SaferPersonDeserialization {
     //       has a validator
     private static void testSafeDeserializationWithValidator() throws Exception {
         JacksonTest.withSocket(string -> {
-            PolymorphicTypeValidator ptv = 
+            PolymorphicTypeValidator ptv =
                     BasicPolymorphicTypeValidator.builder()
                             .allowIfSubType("only.allowed.package")
                             .build();
@@ -118,7 +118,7 @@ class SaferPersonDeserialization {
     //       has a validator
     private static void testSafeDeserializationWithValidatorAndBuilder() throws Exception {
         JacksonTest.withSocket(string -> {
-            PolymorphicTypeValidator ptv = 
+            PolymorphicTypeValidator ptv =
                     BasicPolymorphicTypeValidator.builder()
                             .allowIfSubType("only.allowed.package")
                             .build();
@@ -139,7 +139,7 @@ class UnsafeCatDeserialization {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enableDefaultTyping();   // this enables polymorphic type handling
-            mapper.readValue(string, Cat.class); // $unsafeDeserialization
+            mapper.readValue(string, Cat.class); // $ Alert
         });
     }
 
@@ -148,7 +148,7 @@ class UnsafeCatDeserialization {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enableDefaultTyping();
-            mapper.readValues(new JsonFactory().createParser(string), Cat.class).readAll(); // $unsafeDeserialization
+            mapper.readValues(new JsonFactory().createParser(string), Cat.class).readAll(); // $ Alert
         });
     }
 
@@ -157,7 +157,7 @@ class UnsafeCatDeserialization {
         JacksonTest.withSocket(string -> {
             ObjectMapper mapper = new ObjectMapper();
             mapper.enableDefaultTyping();
-            mapper.treeToValue(mapper.readTree(string), Cat.class); // $unsafeDeserialization
+            mapper.treeToValue(mapper.readTree(string), Cat.class); // $ Alert
         });
     }
 
@@ -169,7 +169,7 @@ class UnsafeCatDeserialization {
             String type = parts[1];
             Class clazz = Class.forName(type);
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(data, clazz); // $unsafeDeserialization
+            mapper.readValue(data, clazz); // $ Alert
         });
     }
 
@@ -180,7 +180,7 @@ class UnsafeCatDeserialization {
             String data = parts[0];
             String type = parts[1];
             ObjectMapper mapper = new ObjectMapper();
-            mapper.readValue(data, resolveImpl(type, mapper)); // $unsafeDeserialization
+            mapper.readValue(data, resolveImpl(type, mapper)); // $ Alert
         });
     }
 
@@ -195,11 +195,11 @@ class SaferCatDeserialization {
     //       has a validator
     private static void testUnsafeDeserialization() throws Exception {
         JacksonTest.withSocket(string -> {
-            PolymorphicTypeValidator ptv = 
+            PolymorphicTypeValidator ptv =
                 BasicPolymorphicTypeValidator.builder()
                         .allowIfSubType("only.allowed.pachage")
                         .build();
-        
+
             ObjectMapper mapper = JsonMapper.builder().polymorphicTypeValidator(ptv).build();
             mapper.enableDefaultTyping(); // this enables polymorphic type handling
 

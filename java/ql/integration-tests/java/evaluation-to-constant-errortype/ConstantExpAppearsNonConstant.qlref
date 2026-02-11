@@ -1,0 +1,2 @@
+query: Likely Bugs/Arithmetic/ConstantExpAppearsNonConstant.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

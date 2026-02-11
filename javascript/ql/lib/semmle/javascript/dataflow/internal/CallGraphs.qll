@@ -97,9 +97,14 @@ module CallGraph {
       not exists(read.getPropertyName()) and
       result = read and
       // there exists only local reads of the object, nothing else.
-      forex(DataFlow::Node ref | ref = obj.getALocalUse() and exists(ref.asExpr()) |
-        ref = [obj, any(DataFlow::PropRead r).getBase()]
-      )
+      objectOnlyUsedForPropRead(obj)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate objectOnlyUsedForPropRead(DataFlow::ObjectLiteralNode obj) {
+    forex(DataFlow::Node ref | ref = obj.getALocalUse() and exists(ref.asExpr()) |
+      ref = [obj, any(DataFlow::PropRead r).getBase()]
     )
   }
 
@@ -254,7 +259,7 @@ module CallGraph {
     not exists(DataFlow::ClassNode cls |
       node = cls.getConstructor().getReceiver()
       or
-      node = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+      node = cls.(DataFlow::ClassNode).getAPrototypeReference()
     )
   }
 

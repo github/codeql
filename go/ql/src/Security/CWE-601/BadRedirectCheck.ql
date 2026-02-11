@@ -123,6 +123,17 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof OpenUrlRedirect::Sink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSourceLocation(DataFlow::Node source) {
+    result = source.getLocation()
+    or
+    exists(DataFlow::Node check |
+      isCheckedSource(source, check) and
+      result = check.getLocation()
+    )
+  }
 }
 
 module Flow = TaintTracking::Global<Config>;

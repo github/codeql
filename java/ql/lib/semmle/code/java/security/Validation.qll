@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import semmle.code.java.Expr
 import semmle.code.java.dataflow.SSA
 import semmle.code.java.controlflow.Guards
@@ -29,9 +32,9 @@ private predicate validationCall(MethodCall ma, VarAccess va) {
 }
 
 private predicate validatedAccess(VarAccess va) {
-  exists(SsaVariable v, MethodCall guardcall |
-    va = v.getAUse() and
-    validationCall(guardcall, v.getAUse())
+  exists(SsaDefinition v, MethodCall guardcall |
+    va = v.getARead() and
+    validationCall(guardcall, v.getARead())
   |
     guardcall.(Guard).controls(va.getBasicBlock(), _)
     or
@@ -40,17 +43,17 @@ private predicate validatedAccess(VarAccess va) {
       guardcall.getControlFlowNode() = node
     |
       exists(BasicBlock succ |
-        succ = node.getANormalSuccessor() and
+        succ.getFirstNode() = node.getANormalSuccessor() and
         dominatingEdge(node.getBasicBlock(), succ) and
-        succ.bbDominates(va.getBasicBlock())
+        succ.dominates(va.getBasicBlock())
       )
       or
       exists(BasicBlock bb, int i |
         bb.getNode(i) = node and
         bb.getNode(i + 1) = node.getANormalSuccessor()
       |
-        bb.bbStrictlyDominates(va.getBasicBlock()) or
-        bb.getNode(any(int j | j > i)) = va
+        bb.strictlyDominates(va.getBasicBlock()) or
+        bb.getNode(any(int j | j > i)).asExpr() = va
       )
     )
   )

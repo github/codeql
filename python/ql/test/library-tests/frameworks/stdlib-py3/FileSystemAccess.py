@@ -17,7 +17,7 @@ p.open("wt").write("hello")  # $ getAPathArgument=p fileWriteData="hello"
 
 name = windows.parent.name
 o = open
-o(name)  # $ getAPathArgument=name
+o(name)  # $ getAPathArgument=name threatModelSource[file]=o(..)
 
 wb = p.write_bytes
 wb(b"hello")  # $ getAPathArgument=p fileWriteData=b"hello"

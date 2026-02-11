@@ -1,0 +1,15 @@
+edges
+| action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:28:18:28:43 | inputs.who-to-greet | provenance |  |
+| action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:35:25:35:50 | inputs.who-to-greet | provenance |  |
+| action1/action.yml:24:7:31:4 | Uses Step: replace [value] | action1/action.yml:32:18:32:51 | steps.replace.outputs.value | provenance |  |
+| action1/action.yml:28:18:28:43 | inputs.who-to-greet | action1/action.yml:24:7:31:4 | Uses Step: replace [value] | provenance |  |
+nodes
+| action1/action.yml:4:3:4:14 | input who-to-greet | semmle.label | input who-to-greet |
+| action1/action.yml:24:7:31:4 | Uses Step: replace [value] | semmle.label | Uses Step: replace [value] |
+| action1/action.yml:28:18:28:43 | inputs.who-to-greet | semmle.label | inputs.who-to-greet |
+| action1/action.yml:32:18:32:51 | steps.replace.outputs.value | semmle.label | steps.replace.outputs.value |
+| action1/action.yml:35:25:35:50 | inputs.who-to-greet | semmle.label | inputs.who-to-greet |
+subpaths
+#select
+| action1/action.yml:32:18:32:51 | steps.replace.outputs.value | action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:32:18:32:51 | steps.replace.outputs.value | Sink |
+| action1/action.yml:35:25:35:50 | inputs.who-to-greet | action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:35:25:35:50 | inputs.who-to-greet | Sink |

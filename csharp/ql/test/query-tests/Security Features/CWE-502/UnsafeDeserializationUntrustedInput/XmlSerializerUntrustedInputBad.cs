@@ -10,6 +10,6 @@ class BadXmlSerializer
     {
         var ds = new XmlSerializer(Type.GetType(type.Text));
         // BAD
-        return ds.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(data.Text)));
+        return ds.Deserialize(new MemoryStream(Encoding.UTF8.GetBytes(data.Text))); // $ Alert[cs/unsafe-deserialization-untrusted-input]
     }
 }

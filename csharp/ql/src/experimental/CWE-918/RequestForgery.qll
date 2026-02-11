@@ -1,3 +1,5 @@
+deprecated module;
+
 import csharp
 
 module RequestForgery {
@@ -22,39 +24,6 @@ module RequestForgery {
    * server side request forgery vulnerabilities.
    */
   abstract private class Barrier extends DataFlow::Node { }
-
-  /**
-   * DEPRECATED: Use `RequestForgeryFlow` instead.
-   *
-   * A data flow configuration for detecting server side request forgery vulnerabilities.
-   */
-  deprecated class RequestForgeryConfiguration extends DataFlow::Configuration {
-    RequestForgeryConfiguration() { this = "Server Side Request forgery" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
-      interpolatedStringFlowStep(prev, succ)
-      or
-      stringReplaceStep(prev, succ)
-      or
-      uriCreationStep(prev, succ)
-      or
-      formatConvertStep(prev, succ)
-      or
-      toStringStep(prev, succ)
-      or
-      stringConcatStep(prev, succ)
-      or
-      stringFormatStep(prev, succ)
-      or
-      pathCombineStep(prev, succ)
-    }
-
-    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
-  }
 
   /**
    * A data flow configuration for detecting server side request forgery vulnerabilities.
@@ -93,7 +62,7 @@ module RequestForgery {
   /**
    * A dataflow source for Server Side Request Forgery(SSRF) Vulnerabilities.
    */
-  private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
+  private class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
   /**
    * An url argument to a `HttpRequestMessage` constructor call
@@ -164,14 +133,14 @@ module RequestForgery {
    * to be a guard for Server Side Request Forgery(SSRF) Vulnerabilities.
    * This guard considers all checks as valid.
    */
-  private predicate baseUriGuard(Guard g, Expr e, AbstractValue v) {
+  private predicate baseUriGuard(Guard g, Expr e, GuardValue v) {
     g.(MethodCall).getTarget().hasFullyQualifiedName("System", "Uri", "IsBaseOf") and
     // we consider any checks against the tainted value to sainitize the taint.
     // This implies any check such as shown below block the taint flow.
     // Uri url = new Uri("whitelist.com")
     // if (url.isBaseOf(`taint1))
     (e = g.(MethodCall).getArgument(0) or e = g.(MethodCall).getQualifier()) and
-    v.(AbstractValues::BooleanValue).getValue() = true
+    v.asBooleanValue() = true
   }
 
   private class BaseUriBarrier extends Barrier {
@@ -183,14 +152,14 @@ module RequestForgery {
    * to be a guard for Server Side Request Forgery(SSRF) Vulnerabilities.
    * This guard considers all checks as valid.
    */
-  private predicate stringStartsWithGuard(Guard g, Expr e, AbstractValue v) {
+  private predicate stringStartsWithGuard(Guard g, Expr e, GuardValue v) {
     g.(MethodCall).getTarget().hasFullyQualifiedName("System", "String", "StartsWith") and
     // Any check such as the ones shown below
     // "https://myurl.com/".startsWith(`taint`)
     // `taint`.startsWith("https://myurl.com/")
     // are assumed to sainitize the taint
     (e = g.(MethodCall).getQualifier() or g.(MethodCall).getArgument(0) = e) and
-    v.(AbstractValues::BooleanValue).getValue() = true
+    v.asBooleanValue() = true
   }
 
   private class StringStartsWithBarrier extends Barrier {

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Memory, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Memory, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Buffers
@@ -369,20 +369,30 @@ namespace System
         public static int CompareTo(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> other, System.StringComparison comparisonType) => throw null;
         public static bool Contains(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static bool Contains<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static bool Contains<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool Contains<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny(this System.ReadOnlySpan<char> span, System.Buffers.SearchValues<string> values) => throw null;
+        public static bool ContainsAny(this System.Span<char> span, System.Buffers.SearchValues<string> values) => throw null;
         public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool ContainsAny<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static bool ContainsAny<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static bool ContainsAny<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static bool ContainsAny<T>(this System.Span<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
         public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool ContainsAnyExcept<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static bool ContainsAnyExcept<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static bool ContainsAnyExcept<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
@@ -396,11 +406,19 @@ namespace System
         public static void CopyTo<T>(this T[] source, System.Span<T> destination) => throw null;
         public static int Count<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static int Count<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int Count<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int Count<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static int Count<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static int Count<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
+        public static int CountAny<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
+        public static int CountAny<T>(this System.ReadOnlySpan<T> span, params System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static int CountAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool EndsWith(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static bool EndsWith<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static bool EndsWith<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool EndsWith<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static bool EndsWith<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static bool EndsWith<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static System.Text.SpanLineEnumerator EnumerateLines(this System.ReadOnlySpan<char> span) => throw null;
         public static System.Text.SpanLineEnumerator EnumerateLines(this System.Span<char> span) => throw null;
         public static System.Text.SpanRuneEnumerator EnumerateRunes(this System.ReadOnlySpan<char> span) => throw null;
@@ -408,13 +426,20 @@ namespace System
         public static bool Equals(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> other, System.StringComparison comparisonType) => throw null;
         public static int IndexOf(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static int IndexOf<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static int IndexOf<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOf<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int IndexOf<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOf<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static int IndexOf<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAny(this System.ReadOnlySpan<char> span, System.Buffers.SearchValues<string> values) => throw null;
+        public static int IndexOfAny(this System.Span<char> span, System.Buffers.SearchValues<string> values) => throw null;
         public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOfAny<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
@@ -425,10 +450,14 @@ namespace System
         public static int IndexOfAnyExcept<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int IndexOfAnyExceptInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
         public static int IndexOfAnyExceptInRange<T>(this System.Span<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
         public static int IndexOfAnyInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
@@ -436,13 +465,18 @@ namespace System
         public static bool IsWhiteSpace(this System.ReadOnlySpan<char> span) => throw null;
         public static int LastIndexOf(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static int LastIndexOf<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOf<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOf<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOf<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOf<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOf<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOfAny<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
@@ -453,10 +487,14 @@ namespace System
         public static int LastIndexOfAnyExcept<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int LastIndexOfAnyExceptInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
         public static int LastIndexOfAnyExceptInRange<T>(this System.Span<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
         public static int LastIndexOfAnyInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
@@ -466,9 +504,16 @@ namespace System
         public static bool Overlaps<T>(this System.Span<T> span, System.ReadOnlySpan<T> other) => throw null;
         public static bool Overlaps<T>(this System.Span<T> span, System.ReadOnlySpan<T> other, out int elementOffset) => throw null;
         public static void Replace<T>(this System.Span<T> span, T oldValue, T newValue) where T : System.IEquatable<T> => throw null;
+        public static void Replace<T>(this System.Span<T> span, T oldValue, T newValue, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static void Replace<T>(this System.ReadOnlySpan<T> source, System.Span<T> destination, T oldValue, T newValue) where T : System.IEquatable<T> => throw null;
+        public static void Replace<T>(this System.ReadOnlySpan<T> source, System.Span<T> destination, T oldValue, T newValue, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
+        public static void ReplaceAny<T>(this System.ReadOnlySpan<T> source, System.Span<T> destination, System.Buffers.SearchValues<T> values, T newValue) where T : System.IEquatable<T> => throw null;
+        public static void ReplaceAny<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values, T newValue) where T : System.IEquatable<T> => throw null;
+        public static void ReplaceAnyExcept<T>(this System.ReadOnlySpan<T> source, System.Span<T> destination, System.Buffers.SearchValues<T> values, T newValue) where T : System.IEquatable<T> => throw null;
+        public static void ReplaceAnyExcept<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values, T newValue) where T : System.IEquatable<T> => throw null;
         public static void Reverse<T>(this System.Span<T> span) => throw null;
         public static int SequenceCompareTo<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other) where T : System.IComparable<T> => throw null;
+        public static int SequenceCompareTo<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other, System.Collections.Generic.IComparer<T> comparer = default(System.Collections.Generic.IComparer<T>)) => throw null;
         public static int SequenceCompareTo<T>(this System.Span<T> span, System.ReadOnlySpan<T> other) where T : System.IComparable<T> => throw null;
         public static bool SequenceEqual<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other) where T : System.IEquatable<T> => throw null;
         public static bool SequenceEqual<T>(this System.Span<T> span, System.ReadOnlySpan<T> other) where T : System.IEquatable<T> => throw null;
@@ -480,13 +525,30 @@ namespace System
         public static void Sort<TKey, TValue>(this System.Span<TKey> keys, System.Span<TValue> items, System.Comparison<TKey> comparison) => throw null;
         public static void Sort<T, TComparer>(this System.Span<T> span, TComparer comparer) where TComparer : System.Collections.Generic.IComparer<T> => throw null;
         public static void Sort<TKey, TValue, TComparer>(this System.Span<TKey> keys, System.Span<TValue> items, TComparer comparer) where TComparer : System.Collections.Generic.IComparer<TKey> => throw null;
+        public struct SpanSplitEnumerator<T> : System.IDisposable, System.Collections.Generic.IEnumerator<System.Range>, System.Collections.IEnumerator where T : System.IEquatable<T>
+        {
+            public System.Range Current { get => throw null; }
+            object System.Collections.IEnumerator.Current { get => throw null; }
+            void System.IDisposable.Dispose() => throw null;
+            public System.MemoryExtensions.SpanSplitEnumerator<T> GetEnumerator() => throw null;
+            public bool MoveNext() => throw null;
+            void System.Collections.IEnumerator.Reset() => throw null;
+            public System.ReadOnlySpan<T> Source { get => throw null; }
+        }
+        public static System.MemoryExtensions.SpanSplitEnumerator<T> Split<T>(this System.ReadOnlySpan<T> source, T separator) where T : System.IEquatable<T> => throw null;
+        public static System.MemoryExtensions.SpanSplitEnumerator<T> Split<T>(this System.ReadOnlySpan<T> source, System.ReadOnlySpan<T> separator) where T : System.IEquatable<T> => throw null;
         public static int Split(this System.ReadOnlySpan<char> source, System.Span<System.Range> destination, char separator, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
         public static int Split(this System.ReadOnlySpan<char> source, System.Span<System.Range> destination, System.ReadOnlySpan<char> separator, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
+        public static System.MemoryExtensions.SpanSplitEnumerator<T> SplitAny<T>(this System.ReadOnlySpan<T> source, params System.ReadOnlySpan<T> separators) where T : System.IEquatable<T> => throw null;
+        public static System.MemoryExtensions.SpanSplitEnumerator<T> SplitAny<T>(this System.ReadOnlySpan<T> source, System.Buffers.SearchValues<T> separators) where T : System.IEquatable<T> => throw null;
         public static int SplitAny(this System.ReadOnlySpan<char> source, System.Span<System.Range> destination, System.ReadOnlySpan<char> separators, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
         public static int SplitAny(this System.ReadOnlySpan<char> source, System.Span<System.Range> destination, System.ReadOnlySpan<string> separators, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
         public static bool StartsWith(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static bool StartsWith<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static bool StartsWith<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static bool StartsWith<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static bool StartsWith<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static bool StartsWith<T>(this System.ReadOnlySpan<T> span, T value, System.Collections.Generic.IEqualityComparer<T> comparer = default(System.Collections.Generic.IEqualityComparer<T>)) => throw null;
         public static int ToLower(this System.ReadOnlySpan<char> source, System.Span<char> destination, System.Globalization.CultureInfo culture) => throw null;
         public static int ToLowerInvariant(this System.ReadOnlySpan<char> source, System.Span<char> destination) => throw null;
         public static int ToUpper(this System.ReadOnlySpan<char> source, System.Span<char> destination, System.Globalization.CultureInfo culture) => throw null;
@@ -539,7 +601,7 @@ namespace System
         public static bool TryWrite<TArg0, TArg1>(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, TArg0 arg0, TArg1 arg1) => throw null;
         public static bool TryWrite<TArg0, TArg1, TArg2>(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, TArg0 arg0, TArg1 arg1, TArg2 arg2) => throw null;
         public static bool TryWrite(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, params object[] args) => throw null;
-        public static bool TryWrite(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, System.ReadOnlySpan<object> args) => throw null;
+        public static bool TryWrite(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, params System.ReadOnlySpan<object> args) => throw null;
         [System.Runtime.CompilerServices.InterpolatedStringHandler]
         public struct TryWriteInterpolatedStringHandler
         {
@@ -561,34 +623,6 @@ namespace System
     {
         namespace InteropServices
         {
-            public static class MemoryMarshal
-            {
-                public static System.ReadOnlySpan<byte> AsBytes<T>(System.ReadOnlySpan<T> span) where T : struct => throw null;
-                public static System.Span<byte> AsBytes<T>(System.Span<T> span) where T : struct => throw null;
-                public static System.Memory<T> AsMemory<T>(System.ReadOnlyMemory<T> memory) => throw null;
-                public static T AsRef<T>(System.ReadOnlySpan<byte> span) where T : struct => throw null;
-                public static T AsRef<T>(System.Span<byte> span) where T : struct => throw null;
-                public static System.ReadOnlySpan<TTo> Cast<TFrom, TTo>(System.ReadOnlySpan<TFrom> span) where TFrom : struct where TTo : struct => throw null;
-                public static System.Span<TTo> Cast<TFrom, TTo>(System.Span<TFrom> span) where TFrom : struct where TTo : struct => throw null;
-                public static System.Memory<T> CreateFromPinnedArray<T>(T[] array, int start, int length) => throw null;
-                public static System.ReadOnlySpan<T> CreateReadOnlySpan<T>(ref readonly T reference, int length) => throw null;
-                public static unsafe System.ReadOnlySpan<byte> CreateReadOnlySpanFromNullTerminated(byte* value) => throw null;
-                public static unsafe System.ReadOnlySpan<char> CreateReadOnlySpanFromNullTerminated(char* value) => throw null;
-                public static System.Span<T> CreateSpan<T>(ref T reference, int length) => throw null;
-                public static T GetArrayDataReference<T>(T[] array) => throw null;
-                public static byte GetArrayDataReference(System.Array array) => throw null;
-                public static T GetReference<T>(System.ReadOnlySpan<T> span) => throw null;
-                public static T GetReference<T>(System.Span<T> span) => throw null;
-                public static T Read<T>(System.ReadOnlySpan<byte> source) where T : struct => throw null;
-                public static System.Collections.Generic.IEnumerable<T> ToEnumerable<T>(System.ReadOnlyMemory<T> memory) => throw null;
-                public static bool TryGetArray<T>(System.ReadOnlyMemory<T> memory, out System.ArraySegment<T> segment) => throw null;
-                public static bool TryGetMemoryManager<T, TManager>(System.ReadOnlyMemory<T> memory, out TManager manager) where TManager : System.Buffers.MemoryManager<T> => throw null;
-                public static bool TryGetMemoryManager<T, TManager>(System.ReadOnlyMemory<T> memory, out TManager manager, out int start, out int length) where TManager : System.Buffers.MemoryManager<T> => throw null;
-                public static bool TryGetString(System.ReadOnlyMemory<char> memory, out string text, out int start, out int length) => throw null;
-                public static bool TryRead<T>(System.ReadOnlySpan<byte> source, out T value) where T : struct => throw null;
-                public static bool TryWrite<T>(System.Span<byte> destination, in T value) where T : struct => throw null;
-                public static void Write<T>(System.Span<byte> destination, in T value) where T : struct => throw null;
-            }
             public static class SequenceMarshal
             {
                 public static bool TryGetArray<T>(System.Buffers.ReadOnlySequence<T> sequence, out System.ArraySegment<T> segment) => throw null;
@@ -624,17 +658,23 @@ namespace System
             public static long GetChars(this System.Text.Encoding encoding, System.ReadOnlySpan<byte> bytes, System.Buffers.IBufferWriter<char> writer) => throw null;
             public static string GetString(this System.Text.Encoding encoding, in System.Buffers.ReadOnlySequence<byte> bytes) => throw null;
         }
-        public struct SpanLineEnumerator
+        public struct SpanLineEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.ReadOnlySpan<char>>, System.Collections.IEnumerator
         {
             public System.ReadOnlySpan<char> Current { get => throw null; }
+            object System.Collections.IEnumerator.Current { get => throw null; }
+            void System.IDisposable.Dispose() => throw null;
             public System.Text.SpanLineEnumerator GetEnumerator() => throw null;
             public bool MoveNext() => throw null;
+            void System.Collections.IEnumerator.Reset() => throw null;
         }
-        public struct SpanRuneEnumerator
+        public struct SpanRuneEnumerator : System.IDisposable, System.Collections.Generic.IEnumerator<System.Text.Rune>, System.Collections.IEnumerator
         {
             public System.Text.Rune Current { get => throw null; }
+            object System.Collections.IEnumerator.Current { get => throw null; }
+            void System.IDisposable.Dispose() => throw null;
             public System.Text.SpanRuneEnumerator GetEnumerator() => throw null;
             public bool MoveNext() => throw null;
+            void System.Collections.IEnumerator.Reset() => throw null;
         }
     }
 }

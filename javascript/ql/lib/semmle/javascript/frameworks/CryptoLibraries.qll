@@ -4,7 +4,7 @@
 
 import javascript
 import semmle.javascript.Concepts::Cryptography
-private import semmle.javascript.security.internal.CryptoAlgorithmNames
+private import codeql.concepts.internal.CryptoAlgorithmNames
 
 /**
  * A key used in a cryptographic algorithm.

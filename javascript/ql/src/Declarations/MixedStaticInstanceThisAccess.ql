@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity error
  * @id js/mixed-static-instance-this-access
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       methods
  * @precision high
  */

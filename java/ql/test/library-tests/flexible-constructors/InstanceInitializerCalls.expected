@@ -1,0 +1,2 @@
+| FlexibleConstructors.java:31:7:31:11 | <Expr>; | 1 | <obinit> | Instance initializer call at index 1 |
+| FlexibleConstructors.java:89:5:89:5 | <Expr>; | 3 | <obinit> | Instance initializer call at index 3 |

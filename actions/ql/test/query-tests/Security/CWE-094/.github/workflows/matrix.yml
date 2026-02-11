@@ -1,0 +1,42 @@
+name: "CodeQL Auto Language"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '17 19 * * 6'
+
+jobs:
+  create-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.all_changed_files }}
+    steps:
+      - name: Get changed files
+        id: set-matrix
+        uses: tj-actions/changed-files@v40
+          
+  analyze:
+    needs: create-matrix
+    if: ${{ needs.create-matrix.outputs.matrix != '[]' }}
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix: 
+        language: ${{ fromJSON(needs.create-matrix.outputs.matrix) }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Initializes the CodeQL tools for scanning.
+    - run: | 
+        ${{ matrix.language }}

@@ -1,0 +1,8 @@
+| .github/workflows/test1.yml:8:5:11:2 | Job: test1 | Job runs on self-hosted runner |
+| .github/workflows/test1.yml:12:5:17:2 | Job: test2 | Job runs on self-hosted runner |
+| .github/workflows/test1.yml:18:5:25:2 | Job: test3 | Job runs on self-hosted runner |
+| .github/workflows/test1.yml:26:5:29:2 | Job: test4 | Job runs on self-hosted runner |
+| .github/workflows/test1.yml:60:5:66:2 | Job: test7 | Job runs on self-hosted runner |
+| .github/workflows/test1.yml:67:5:78:2 | Job: test8 | Job runs on self-hosted runner |
+| .github/workflows/test1.yml:79:5:85:2 | Job: test9 | Job runs on self-hosted runner |
+| .github/workflows/test1.yml:86:5:94:15 | Job: test10 | Job runs on self-hosted runner |

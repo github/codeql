@@ -9,7 +9,7 @@ CodeQL 2.17.2 (2024-05-07)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -87,8 +87,8 @@ Golang
 
 *   Deleted the deprecated :code:`CsvRemoteSource` alias. Use :code:`MaDRemoteSource` instead.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Deleted the deprecated :code:`AssignLShiftExpr`, :code:`AssignRShiftExpr`, :code:`AssignURShiftExpr`, :code:`LShiftExpr`, :code:`RShiftExpr`, and :code:`URShiftExpr` aliases.
 

@@ -5,7 +5,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/useless-tostring-call
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       useless-code
  */
 
 import java

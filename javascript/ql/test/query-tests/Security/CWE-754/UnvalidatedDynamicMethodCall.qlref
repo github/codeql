@@ -1,1 +1,2 @@
-Security/CWE-754/UnvalidatedDynamicMethodCall.ql
+query: Security/CWE-754/UnvalidatedDynamicMethodCall.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

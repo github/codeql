@@ -38,7 +38,11 @@ newtype TInstructionTag =
   AllocationSizeTag() or
   AllocationElementSizeTag() or
   AllocationExtentConvertTag() or
+  ValueConditionCompareTag() or
+  ValueConditionConstantTag() or
   ValueConditionConditionalBranchTag() or
+  ValueConditionConditionalConstantTag() or
+  ValueConditionConditionalCompareTag() or
   ConditionValueTrueTempAddressTag() or
   ConditionValueTrueConstantTag() or
   ConditionValueTrueStoreTag() or
@@ -49,6 +53,8 @@ newtype TInstructionTag =
   ConditionValueResultLoadTag() or
   BoolConversionConstantTag() or
   BoolConversionCompareTag() or
+  NotExprOperationTag() or
+  NotExprConstantTag() or
   ResultCopyTag() or
   LoadTag() or // Implicit load due to lvalue-to-rvalue conversion
   CatchTag() or
@@ -90,7 +96,19 @@ newtype TInstructionTag =
     exists(Expr e | exists(e.getImplicitDestructorCall(index))) or
     exists(Stmt s | exists(s.getImplicitDestructorCall(index)))
   } or
-  CoAwaitBranchTag()
+  CoAwaitBranchTag() or
+  BoolToIntConversionTag() or
+  SizeofVlaBaseSizeTag() or
+  SizeofVlaConversionTag(int index) {
+    exists(VlaDeclStmt v | exists(v.getTransitiveVlaDimensionStmt(index)))
+  } or
+  SizeofVlaDimensionTag(int index) {
+    exists(VlaDeclStmt v | exists(v.getTransitiveVlaDimensionStmt(index)))
+  } or
+  AssertionVarAddressTag() or
+  AssertionVarLoadTag() or
+  AssertionOpTag() or
+  AssertionBranchTag()
 
 class InstructionTag extends TInstructionTag {
   final string toString() { result = getInstructionTagId(this) }
@@ -167,6 +185,14 @@ string getInstructionTagId(TInstructionTag tag) {
   or
   tag = ValueConditionConditionalBranchTag() and result = "ValCondCondBranch"
   or
+  tag = ValueConditionConditionalConstantTag() and result = "ValueConditionConditionalConstant"
+  or
+  tag = ValueConditionConditionalCompareTag() and result = "ValueConditionConditionalCompare"
+  or
+  tag = ValueConditionCompareTag() and result = "ValCondCondCompare"
+  or
+  tag = ValueConditionConstantTag() and result = "ValCondConstant"
+  or
   tag = ConditionValueTrueTempAddressTag() and result = "CondValTrueTempAddr"
   or
   tag = ConditionValueTrueConstantTag() and result = "CondValTrueConst"
@@ -186,6 +212,10 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = BoolConversionConstantTag() and result = "BoolConvConst"
   or
   tag = BoolConversionCompareTag() and result = "BoolConvComp"
+  or
+  tag = NotExprOperationTag() and result = "NotExprOperation"
+  or
+  tag = NotExprConstantTag() and result = "NotExprWithBoolConversionConstant"
   or
   tag = ResultCopyTag() and result = "ResultCopy"
   or
@@ -268,4 +298,14 @@ string getInstructionTagId(TInstructionTag tag) {
   )
   or
   tag = CoAwaitBranchTag() and result = "CoAwaitBranch"
+  or
+  tag = BoolToIntConversionTag() and result = "BoolToIntConversion"
+  or
+  tag = AssertionVarAddressTag() and result = "AssertionVarAddress"
+  or
+  tag = AssertionVarLoadTag() and result = "AssertionVarLoad"
+  or
+  tag = AssertionOpTag() and result = "AssertionOp"
+  or
+  tag = AssertionBranchTag() and result = "AssertionBranch"
 }

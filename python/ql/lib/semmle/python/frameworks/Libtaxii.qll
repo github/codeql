@@ -22,13 +22,13 @@ private module Libtaxii {
    * A call to `libtaxii.common.parse`.
    * When the `allow_url` parameter value is set to `True`, there is an SSRF vulnerability..
    */
-  private class ParseCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
+  private class ParseCall extends Http::Client::Request::Range instanceof DataFlow::CallCfgNode {
     ParseCall() {
       this = API::moduleImport("libtaxii").getMember("common").getMember("parse").getACall() and
       this.getArgByName("allow_url").getALocalSource().asExpr() = any(True t)
     }
 
-    override DataFlow::Node getAUrlPart() { result in [this.getArg(0), this.getArgByName("s")] }
+    override DataFlow::Node getAUrlPart() { result in [super.getArg(0), super.getArgByName("s")] }
 
     override string getFramework() { result = "libtaxii.common.parse" }
 

@@ -39,6 +39,14 @@ idParams
 | params.rb:86:14:86:14 | x | x |
 | params.rb:89:31:89:35 | array | array |
 | params.rb:94:36:94:39 | hash | hash |
+| params.rb:99:9:99:9 | x | x |
+| params.rb:99:12:99:16 | *rest | rest |
+| params.rb:99:19:99:19 | k | k |
+| params.rb:99:23:99:30 | **kwargs | kwargs |
+| params.rb:106:9:106:9 | y | y |
+| params.rb:106:12:106:16 | *rest | rest |
+| params.rb:106:19:106:19 | k | k |
+| params.rb:106:23:106:30 | **kwargs | kwargs |
 blockParams
 | params.rb:46:28:46:33 | &block | block |
 | params.rb:62:29:62:34 | &block | block |
@@ -56,10 +64,14 @@ splatParams
 | params.rb:30:31:30:36 | *splat | splat |
 | params.rb:34:21:34:26 | *splat | splat |
 | params.rb:38:29:38:33 | *blah | blah |
+| params.rb:99:12:99:16 | *rest | rest |
+| params.rb:106:12:106:16 | *rest | rest |
 hashSplatParams
 | params.rb:30:39:30:52 | **double_splat | double_splat |
 | params.rb:34:29:34:42 | **double_splat | double_splat |
 | params.rb:38:36:38:43 | **wibble | wibble |
+| params.rb:99:23:99:30 | **kwargs | kwargs |
+| params.rb:106:23:106:30 | **kwargs | kwargs |
 keywordParams
 | params.rb:41:35:41:37 | foo | foo | (none) |
 | params.rb:41:41:41:43 | bar | bar | 7 |
@@ -67,6 +79,8 @@ keywordParams
 | params.rb:49:33:49:34 | yy | yy | 100 |
 | params.rb:53:37:53:37 | y | y | (none) |
 | params.rb:53:41:53:41 | z | z | 3 |
+| params.rb:99:19:99:19 | k | k | (none) |
+| params.rb:106:19:106:19 | k | k | (none) |
 optionalParams
 | params.rb:58:39:58:42 | val2 | val2 | params.rb:58:46:58:46 | 0 |
 | params.rb:58:49:58:52 | val3 | val3 | params.rb:58:56:58:58 | 100 |
@@ -97,6 +111,14 @@ paramsInMethods
 | params.rb:89:1:91:3 | anonymous_splat_parameter | 1 | params.rb:89:38:89:38 | * | SplatParameter |
 | params.rb:94:1:96:3 | anonymous_hash_splat_parameter | 0 | params.rb:94:36:94:39 | hash | SimpleParameter |
 | params.rb:94:1:96:3 | anonymous_hash_splat_parameter | 1 | params.rb:94:42:94:43 | ** | HashSplatParameter |
+| params.rb:99:3:102:5 | m | 0 | params.rb:99:9:99:9 | x | SimpleParameter |
+| params.rb:99:3:102:5 | m | 1 | params.rb:99:12:99:16 | *rest | SplatParameter |
+| params.rb:99:3:102:5 | m | 2 | params.rb:99:19:99:19 | k | KeywordParameter |
+| params.rb:99:3:102:5 | m | 3 | params.rb:99:23:99:30 | **kwargs | HashSplatParameter |
+| params.rb:106:3:108:5 | m | 0 | params.rb:106:9:106:9 | y | SimpleParameter |
+| params.rb:106:3:108:5 | m | 1 | params.rb:106:12:106:16 | *rest | SplatParameter |
+| params.rb:106:3:108:5 | m | 2 | params.rb:106:19:106:19 | k | KeywordParameter |
+| params.rb:106:3:108:5 | m | 3 | params.rb:106:23:106:30 | **kwargs | HashSplatParameter |
 paramsInBlocks
 | params.rb:9:11:11:3 | do ... end | 0 | params.rb:9:15:9:17 | key | SimpleParameter |
 | params.rb:9:11:11:3 | do ... end | 1 | params.rb:9:20:9:24 | value | SimpleParameter |
@@ -175,3 +197,11 @@ params
 | params.rb:89:38:89:38 | * | 1 | SplatParameter |
 | params.rb:94:36:94:39 | hash | 0 | SimpleParameter |
 | params.rb:94:42:94:43 | ** | 1 | HashSplatParameter |
+| params.rb:99:9:99:9 | x | 0 | SimpleParameter |
+| params.rb:99:12:99:16 | *rest | 1 | SplatParameter |
+| params.rb:99:19:99:19 | k | 2 | KeywordParameter |
+| params.rb:99:23:99:30 | **kwargs | 3 | HashSplatParameter |
+| params.rb:106:9:106:9 | y | 0 | SimpleParameter |
+| params.rb:106:12:106:16 | *rest | 1 | SplatParameter |
+| params.rb:106:19:106:19 | k | 2 | KeywordParameter |
+| params.rb:106:23:106:30 | **kwargs | 3 | HashSplatParameter |

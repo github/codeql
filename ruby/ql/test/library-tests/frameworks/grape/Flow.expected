@@ -1,0 +1,201 @@
+models
+edges
+| app.rb:103:13:103:18 | call to params | app.rb:103:13:103:70 | call to select | provenance |  |
+| app.rb:103:13:103:18 | call to params | app.rb:103:13:103:70 | call to select : [collection] [element] | provenance |  |
+| app.rb:103:13:103:70 | call to select | app.rb:189:21:189:31 | call to user_params | provenance |  |
+| app.rb:103:13:103:70 | call to select | app.rb:205:21:205:31 | call to user_params | provenance |  |
+| app.rb:103:13:103:70 | call to select : [collection] [element] | app.rb:189:21:189:31 | call to user_params : [collection] [element] | provenance |  |
+| app.rb:103:13:103:70 | call to select : [collection] [element] | app.rb:205:21:205:31 | call to user_params : [collection] [element] | provenance |  |
+| app.rb:107:13:107:32 | call to source | app.rb:183:18:183:43 | call to vulnerable_helper | provenance |  |
+| app.rb:107:13:107:32 | call to source | app.rb:183:18:183:43 | call to vulnerable_helper | provenance |  |
+| app.rb:111:13:111:33 | call to source | app.rb:190:25:190:37 | call to simple_helper | provenance |  |
+| app.rb:111:13:111:33 | call to source | app.rb:190:25:190:37 | call to simple_helper | provenance |  |
+| app.rb:118:17:118:43 | call to source | app.rb:212:23:212:39 | call to authenticate_user | provenance |  |
+| app.rb:118:17:118:43 | call to source | app.rb:212:23:212:39 | call to authenticate_user | provenance |  |
+| app.rb:122:17:122:47 | call to source | app.rb:216:23:216:48 | call to check_permissions | provenance |  |
+| app.rb:122:17:122:47 | call to source | app.rb:216:23:216:48 | call to check_permissions | provenance |  |
+| app.rb:128:17:128:42 | call to source | app.rb:220:29:220:80 | call to validate_email | provenance |  |
+| app.rb:128:17:128:42 | call to source | app.rb:220:29:220:80 | call to validate_email | provenance |  |
+| app.rb:134:17:134:42 | call to source | app.rb:225:28:225:39 | call to debug_helper | provenance |  |
+| app.rb:134:17:134:42 | call to source | app.rb:225:28:225:39 | call to debug_helper | provenance |  |
+| app.rb:140:17:140:37 | call to source | app.rb:230:25:230:37 | call to rescue_helper | provenance |  |
+| app.rb:140:17:140:37 | call to source | app.rb:230:25:230:37 | call to rescue_helper | provenance |  |
+| app.rb:150:17:150:35 | call to source | app.rb:235:27:235:37 | call to test_helper | provenance |  |
+| app.rb:150:17:150:35 | call to source | app.rb:235:27:235:37 | call to test_helper | provenance |  |
+| app.rb:166:9:166:15 | user_id | app.rb:173:14:173:20 | user_id | provenance |  |
+| app.rb:166:19:166:24 | call to params | app.rb:166:19:166:34 | ...[...] | provenance |  |
+| app.rb:166:19:166:34 | ...[...] | app.rb:166:9:166:15 | user_id | provenance |  |
+| app.rb:167:9:167:16 | route_id | app.rb:174:14:174:21 | route_id | provenance |  |
+| app.rb:167:20:167:40 | call to route_param | app.rb:167:9:167:16 | route_id | provenance |  |
+| app.rb:168:9:168:12 | auth | app.rb:175:14:175:17 | auth | provenance |  |
+| app.rb:168:16:168:22 | call to headers | app.rb:168:16:168:38 | ...[...] | provenance |  |
+| app.rb:168:16:168:38 | ...[...] | app.rb:168:9:168:12 | auth | provenance |  |
+| app.rb:169:9:169:15 | session | app.rb:176:14:176:20 | session | provenance |  |
+| app.rb:169:19:169:25 | call to cookies | app.rb:169:19:169:38 | ...[...] | provenance |  |
+| app.rb:169:19:169:38 | ...[...] | app.rb:169:9:169:15 | session | provenance |  |
+| app.rb:183:9:183:14 | result | app.rb:184:14:184:19 | result | provenance |  |
+| app.rb:183:9:183:14 | result | app.rb:184:14:184:19 | result | provenance |  |
+| app.rb:183:18:183:43 | call to vulnerable_helper | app.rb:183:9:183:14 | result | provenance |  |
+| app.rb:183:18:183:43 | call to vulnerable_helper | app.rb:183:9:183:14 | result | provenance |  |
+| app.rb:189:9:189:17 | user_data | app.rb:191:14:191:22 | user_data | provenance |  |
+| app.rb:189:9:189:17 | user_data : [collection] [element] | app.rb:191:14:191:22 | user_data | provenance |  |
+| app.rb:189:21:189:31 | call to user_params | app.rb:189:9:189:17 | user_data | provenance |  |
+| app.rb:189:21:189:31 | call to user_params : [collection] [element] | app.rb:189:9:189:17 | user_data : [collection] [element] | provenance |  |
+| app.rb:190:9:190:21 | simple_result | app.rb:192:14:192:26 | simple_result | provenance |  |
+| app.rb:190:9:190:21 | simple_result | app.rb:192:14:192:26 | simple_result | provenance |  |
+| app.rb:190:25:190:37 | call to simple_helper | app.rb:190:9:190:21 | simple_result | provenance |  |
+| app.rb:190:25:190:37 | call to simple_helper | app.rb:190:9:190:21 | simple_result | provenance |  |
+| app.rb:199:13:199:19 | user_id | app.rb:200:18:200:24 | user_id | provenance |  |
+| app.rb:199:23:199:28 | call to params | app.rb:199:23:199:33 | ...[...] | provenance |  |
+| app.rb:199:23:199:33 | ...[...] | app.rb:199:13:199:19 | user_id | provenance |  |
+| app.rb:205:9:205:17 | user_data | app.rb:206:14:206:22 | user_data | provenance |  |
+| app.rb:205:9:205:17 | user_data : [collection] [element] | app.rb:206:14:206:22 | user_data | provenance |  |
+| app.rb:205:21:205:31 | call to user_params | app.rb:205:9:205:17 | user_data | provenance |  |
+| app.rb:205:21:205:31 | call to user_params : [collection] [element] | app.rb:205:9:205:17 | user_data : [collection] [element] | provenance |  |
+| app.rb:212:9:212:19 | auth_result | app.rb:213:14:213:24 | auth_result | provenance |  |
+| app.rb:212:9:212:19 | auth_result | app.rb:213:14:213:24 | auth_result | provenance |  |
+| app.rb:212:23:212:39 | call to authenticate_user | app.rb:212:9:212:19 | auth_result | provenance |  |
+| app.rb:212:23:212:39 | call to authenticate_user | app.rb:212:9:212:19 | auth_result | provenance |  |
+| app.rb:216:9:216:19 | perm_result | app.rb:217:14:217:24 | perm_result | provenance |  |
+| app.rb:216:9:216:19 | perm_result | app.rb:217:14:217:24 | perm_result | provenance |  |
+| app.rb:216:23:216:48 | call to check_permissions | app.rb:216:9:216:19 | perm_result | provenance |  |
+| app.rb:216:23:216:48 | call to check_permissions | app.rb:216:9:216:19 | perm_result | provenance |  |
+| app.rb:220:9:220:25 | validation_result | app.rb:221:14:221:30 | validation_result | provenance |  |
+| app.rb:220:9:220:25 | validation_result | app.rb:221:14:221:30 | validation_result | provenance |  |
+| app.rb:220:29:220:80 | call to validate_email | app.rb:220:9:220:25 | validation_result | provenance |  |
+| app.rb:220:29:220:80 | call to validate_email | app.rb:220:9:220:25 | validation_result | provenance |  |
+| app.rb:225:13:225:24 | debug_result | app.rb:226:18:226:29 | debug_result | provenance |  |
+| app.rb:225:13:225:24 | debug_result | app.rb:226:18:226:29 | debug_result | provenance |  |
+| app.rb:225:28:225:39 | call to debug_helper | app.rb:225:13:225:24 | debug_result | provenance |  |
+| app.rb:225:28:225:39 | call to debug_helper | app.rb:225:13:225:24 | debug_result | provenance |  |
+| app.rb:230:9:230:21 | rescue_result | app.rb:231:14:231:26 | rescue_result | provenance |  |
+| app.rb:230:9:230:21 | rescue_result | app.rb:231:14:231:26 | rescue_result | provenance |  |
+| app.rb:230:25:230:37 | call to rescue_helper | app.rb:230:9:230:21 | rescue_result | provenance |  |
+| app.rb:230:25:230:37 | call to rescue_helper | app.rb:230:9:230:21 | rescue_result | provenance |  |
+| app.rb:235:13:235:23 | case_result | app.rb:236:18:236:28 | case_result | provenance |  |
+| app.rb:235:13:235:23 | case_result | app.rb:236:18:236:28 | case_result | provenance |  |
+| app.rb:235:27:235:37 | call to test_helper | app.rb:235:13:235:23 | case_result | provenance |  |
+| app.rb:235:27:235:37 | call to test_helper | app.rb:235:13:235:23 | case_result | provenance |  |
+nodes
+| app.rb:103:13:103:18 | call to params | semmle.label | call to params |
+| app.rb:103:13:103:70 | call to select | semmle.label | call to select |
+| app.rb:103:13:103:70 | call to select : [collection] [element] | semmle.label | call to select : [collection] [element] |
+| app.rb:107:13:107:32 | call to source | semmle.label | call to source |
+| app.rb:107:13:107:32 | call to source | semmle.label | call to source |
+| app.rb:111:13:111:33 | call to source | semmle.label | call to source |
+| app.rb:111:13:111:33 | call to source | semmle.label | call to source |
+| app.rb:118:17:118:43 | call to source | semmle.label | call to source |
+| app.rb:118:17:118:43 | call to source | semmle.label | call to source |
+| app.rb:122:17:122:47 | call to source | semmle.label | call to source |
+| app.rb:122:17:122:47 | call to source | semmle.label | call to source |
+| app.rb:128:17:128:42 | call to source | semmle.label | call to source |
+| app.rb:128:17:128:42 | call to source | semmle.label | call to source |
+| app.rb:134:17:134:42 | call to source | semmle.label | call to source |
+| app.rb:134:17:134:42 | call to source | semmle.label | call to source |
+| app.rb:140:17:140:37 | call to source | semmle.label | call to source |
+| app.rb:140:17:140:37 | call to source | semmle.label | call to source |
+| app.rb:150:17:150:35 | call to source | semmle.label | call to source |
+| app.rb:150:17:150:35 | call to source | semmle.label | call to source |
+| app.rb:166:9:166:15 | user_id | semmle.label | user_id |
+| app.rb:166:19:166:24 | call to params | semmle.label | call to params |
+| app.rb:166:19:166:34 | ...[...] | semmle.label | ...[...] |
+| app.rb:167:9:167:16 | route_id | semmle.label | route_id |
+| app.rb:167:20:167:40 | call to route_param | semmle.label | call to route_param |
+| app.rb:168:9:168:12 | auth | semmle.label | auth |
+| app.rb:168:16:168:22 | call to headers | semmle.label | call to headers |
+| app.rb:168:16:168:38 | ...[...] | semmle.label | ...[...] |
+| app.rb:169:9:169:15 | session | semmle.label | session |
+| app.rb:169:19:169:25 | call to cookies | semmle.label | call to cookies |
+| app.rb:169:19:169:38 | ...[...] | semmle.label | ...[...] |
+| app.rb:173:14:173:20 | user_id | semmle.label | user_id |
+| app.rb:174:14:174:21 | route_id | semmle.label | route_id |
+| app.rb:175:14:175:17 | auth | semmle.label | auth |
+| app.rb:176:14:176:20 | session | semmle.label | session |
+| app.rb:183:9:183:14 | result | semmle.label | result |
+| app.rb:183:9:183:14 | result | semmle.label | result |
+| app.rb:183:18:183:43 | call to vulnerable_helper | semmle.label | call to vulnerable_helper |
+| app.rb:183:18:183:43 | call to vulnerable_helper | semmle.label | call to vulnerable_helper |
+| app.rb:184:14:184:19 | result | semmle.label | result |
+| app.rb:184:14:184:19 | result | semmle.label | result |
+| app.rb:189:9:189:17 | user_data | semmle.label | user_data |
+| app.rb:189:9:189:17 | user_data : [collection] [element] | semmle.label | user_data : [collection] [element] |
+| app.rb:189:21:189:31 | call to user_params | semmle.label | call to user_params |
+| app.rb:189:21:189:31 | call to user_params : [collection] [element] | semmle.label | call to user_params : [collection] [element] |
+| app.rb:190:9:190:21 | simple_result | semmle.label | simple_result |
+| app.rb:190:9:190:21 | simple_result | semmle.label | simple_result |
+| app.rb:190:25:190:37 | call to simple_helper | semmle.label | call to simple_helper |
+| app.rb:190:25:190:37 | call to simple_helper | semmle.label | call to simple_helper |
+| app.rb:191:14:191:22 | user_data | semmle.label | user_data |
+| app.rb:192:14:192:26 | simple_result | semmle.label | simple_result |
+| app.rb:192:14:192:26 | simple_result | semmle.label | simple_result |
+| app.rb:199:13:199:19 | user_id | semmle.label | user_id |
+| app.rb:199:23:199:28 | call to params | semmle.label | call to params |
+| app.rb:199:23:199:33 | ...[...] | semmle.label | ...[...] |
+| app.rb:200:18:200:24 | user_id | semmle.label | user_id |
+| app.rb:205:9:205:17 | user_data | semmle.label | user_data |
+| app.rb:205:9:205:17 | user_data : [collection] [element] | semmle.label | user_data : [collection] [element] |
+| app.rb:205:21:205:31 | call to user_params | semmle.label | call to user_params |
+| app.rb:205:21:205:31 | call to user_params : [collection] [element] | semmle.label | call to user_params : [collection] [element] |
+| app.rb:206:14:206:22 | user_data | semmle.label | user_data |
+| app.rb:212:9:212:19 | auth_result | semmle.label | auth_result |
+| app.rb:212:9:212:19 | auth_result | semmle.label | auth_result |
+| app.rb:212:23:212:39 | call to authenticate_user | semmle.label | call to authenticate_user |
+| app.rb:212:23:212:39 | call to authenticate_user | semmle.label | call to authenticate_user |
+| app.rb:213:14:213:24 | auth_result | semmle.label | auth_result |
+| app.rb:213:14:213:24 | auth_result | semmle.label | auth_result |
+| app.rb:216:9:216:19 | perm_result | semmle.label | perm_result |
+| app.rb:216:9:216:19 | perm_result | semmle.label | perm_result |
+| app.rb:216:23:216:48 | call to check_permissions | semmle.label | call to check_permissions |
+| app.rb:216:23:216:48 | call to check_permissions | semmle.label | call to check_permissions |
+| app.rb:217:14:217:24 | perm_result | semmle.label | perm_result |
+| app.rb:217:14:217:24 | perm_result | semmle.label | perm_result |
+| app.rb:220:9:220:25 | validation_result | semmle.label | validation_result |
+| app.rb:220:9:220:25 | validation_result | semmle.label | validation_result |
+| app.rb:220:29:220:80 | call to validate_email | semmle.label | call to validate_email |
+| app.rb:220:29:220:80 | call to validate_email | semmle.label | call to validate_email |
+| app.rb:221:14:221:30 | validation_result | semmle.label | validation_result |
+| app.rb:221:14:221:30 | validation_result | semmle.label | validation_result |
+| app.rb:225:13:225:24 | debug_result | semmle.label | debug_result |
+| app.rb:225:13:225:24 | debug_result | semmle.label | debug_result |
+| app.rb:225:28:225:39 | call to debug_helper | semmle.label | call to debug_helper |
+| app.rb:225:28:225:39 | call to debug_helper | semmle.label | call to debug_helper |
+| app.rb:226:18:226:29 | debug_result | semmle.label | debug_result |
+| app.rb:226:18:226:29 | debug_result | semmle.label | debug_result |
+| app.rb:230:9:230:21 | rescue_result | semmle.label | rescue_result |
+| app.rb:230:9:230:21 | rescue_result | semmle.label | rescue_result |
+| app.rb:230:25:230:37 | call to rescue_helper | semmle.label | call to rescue_helper |
+| app.rb:230:25:230:37 | call to rescue_helper | semmle.label | call to rescue_helper |
+| app.rb:231:14:231:26 | rescue_result | semmle.label | rescue_result |
+| app.rb:231:14:231:26 | rescue_result | semmle.label | rescue_result |
+| app.rb:235:13:235:23 | case_result | semmle.label | case_result |
+| app.rb:235:13:235:23 | case_result | semmle.label | case_result |
+| app.rb:235:27:235:37 | call to test_helper | semmle.label | call to test_helper |
+| app.rb:235:27:235:37 | call to test_helper | semmle.label | call to test_helper |
+| app.rb:236:18:236:28 | case_result | semmle.label | case_result |
+| app.rb:236:18:236:28 | case_result | semmle.label | case_result |
+subpaths
+testFailures
+#select
+| app.rb:173:14:173:20 | user_id | app.rb:166:19:166:24 | call to params | app.rb:173:14:173:20 | user_id | $@ | app.rb:166:19:166:24 | call to params | call to params |
+| app.rb:174:14:174:21 | route_id | app.rb:167:20:167:40 | call to route_param | app.rb:174:14:174:21 | route_id | $@ | app.rb:167:20:167:40 | call to route_param | call to route_param |
+| app.rb:175:14:175:17 | auth | app.rb:168:16:168:22 | call to headers | app.rb:175:14:175:17 | auth | $@ | app.rb:168:16:168:22 | call to headers | call to headers |
+| app.rb:176:14:176:20 | session | app.rb:169:19:169:25 | call to cookies | app.rb:176:14:176:20 | session | $@ | app.rb:169:19:169:25 | call to cookies | call to cookies |
+| app.rb:184:14:184:19 | result | app.rb:107:13:107:32 | call to source | app.rb:184:14:184:19 | result | $@ | app.rb:107:13:107:32 | call to source | call to source |
+| app.rb:184:14:184:19 | result | app.rb:107:13:107:32 | call to source | app.rb:184:14:184:19 | result | $@ | app.rb:107:13:107:32 | call to source | call to source |
+| app.rb:191:14:191:22 | user_data | app.rb:103:13:103:18 | call to params | app.rb:191:14:191:22 | user_data | $@ | app.rb:103:13:103:18 | call to params | call to params |
+| app.rb:192:14:192:26 | simple_result | app.rb:111:13:111:33 | call to source | app.rb:192:14:192:26 | simple_result | $@ | app.rb:111:13:111:33 | call to source | call to source |
+| app.rb:192:14:192:26 | simple_result | app.rb:111:13:111:33 | call to source | app.rb:192:14:192:26 | simple_result | $@ | app.rb:111:13:111:33 | call to source | call to source |
+| app.rb:200:18:200:24 | user_id | app.rb:199:23:199:28 | call to params | app.rb:200:18:200:24 | user_id | $@ | app.rb:199:23:199:28 | call to params | call to params |
+| app.rb:206:14:206:22 | user_data | app.rb:103:13:103:18 | call to params | app.rb:206:14:206:22 | user_data | $@ | app.rb:103:13:103:18 | call to params | call to params |
+| app.rb:213:14:213:24 | auth_result | app.rb:118:17:118:43 | call to source | app.rb:213:14:213:24 | auth_result | $@ | app.rb:118:17:118:43 | call to source | call to source |
+| app.rb:213:14:213:24 | auth_result | app.rb:118:17:118:43 | call to source | app.rb:213:14:213:24 | auth_result | $@ | app.rb:118:17:118:43 | call to source | call to source |
+| app.rb:217:14:217:24 | perm_result | app.rb:122:17:122:47 | call to source | app.rb:217:14:217:24 | perm_result | $@ | app.rb:122:17:122:47 | call to source | call to source |
+| app.rb:217:14:217:24 | perm_result | app.rb:122:17:122:47 | call to source | app.rb:217:14:217:24 | perm_result | $@ | app.rb:122:17:122:47 | call to source | call to source |
+| app.rb:221:14:221:30 | validation_result | app.rb:128:17:128:42 | call to source | app.rb:221:14:221:30 | validation_result | $@ | app.rb:128:17:128:42 | call to source | call to source |
+| app.rb:221:14:221:30 | validation_result | app.rb:128:17:128:42 | call to source | app.rb:221:14:221:30 | validation_result | $@ | app.rb:128:17:128:42 | call to source | call to source |
+| app.rb:226:18:226:29 | debug_result | app.rb:134:17:134:42 | call to source | app.rb:226:18:226:29 | debug_result | $@ | app.rb:134:17:134:42 | call to source | call to source |
+| app.rb:226:18:226:29 | debug_result | app.rb:134:17:134:42 | call to source | app.rb:226:18:226:29 | debug_result | $@ | app.rb:134:17:134:42 | call to source | call to source |
+| app.rb:231:14:231:26 | rescue_result | app.rb:140:17:140:37 | call to source | app.rb:231:14:231:26 | rescue_result | $@ | app.rb:140:17:140:37 | call to source | call to source |
+| app.rb:231:14:231:26 | rescue_result | app.rb:140:17:140:37 | call to source | app.rb:231:14:231:26 | rescue_result | $@ | app.rb:140:17:140:37 | call to source | call to source |
+| app.rb:236:18:236:28 | case_result | app.rb:150:17:150:35 | call to source | app.rb:236:18:236:28 | case_result | $@ | app.rb:150:17:150:35 | call to source | call to source |
+| app.rb:236:18:236:28 | case_result | app.rb:150:17:150:35 | call to source | app.rb:236:18:236:28 | case_result | $@ | app.rb:150:17:150:35 | call to source | call to source |

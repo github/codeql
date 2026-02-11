@@ -8,15 +8,6 @@ import semmle.code.cpp.models.interfaces.Deallocation
 predicate freeFunction(Function f, int argNum) { argNum = f.(DeallocationFunction).getFreedArg() }
 
 /**
- * A call to a library routine that frees memory.
- *
- * DEPRECATED: Use `DeallocationExpr` instead (this also includes `delete` expressions).
- */
-deprecated predicate freeCall(FunctionCall fc, Expr arg) {
-  arg = fc.(DeallocationExpr).getFreedExpr()
-}
-
-/**
  * Is e some kind of allocation or deallocation (`new`, `alloc`, `realloc`, `delete`, `free` etc)?
  */
 predicate isMemoryManagementExpr(Expr e) { isAllocationExpr(e) or e instanceof DeallocationExpr }

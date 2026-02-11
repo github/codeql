@@ -5,7 +5,7 @@ extensions:
       extensible: threatModelConfiguration
     data:
       - ["environment", true, 0]
-      - ["commandargs", true, 0]
+      - ["stdin", true, 0]
 
   - addsTo:
       pack: codeql/java-all

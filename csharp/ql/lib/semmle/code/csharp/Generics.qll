@@ -103,33 +103,6 @@ class ConstructedGeneric extends Generic {
   final int getNumberOfTypeArguments() { result = count(int i | exists(this.getTypeArgument(i))) }
 }
 
-/**
- * INTERNAL: Do not use.
- *
- * Constructs the label suffix for a generic method or type.
- */
-deprecated string getGenericsLabel(Generic g) {
-  result = "`" + g.(UnboundGeneric).getNumberOfTypeParameters()
-  or
-  result = "<" + typeArgs(g) + ">"
-}
-
-pragma[noinline]
-deprecated private string getTypeArgumentLabel(ConstructedGeneric generic, int p) {
-  result = generic.getTypeArgument(p).getLabel()
-}
-
-language[monotonicAggregates]
-pragma[nomagic]
-deprecated private string typeArgs(ConstructedGeneric generic) {
-  result =
-    concat(int p |
-      p in [0 .. generic.getNumberOfTypeArguments() - 1]
-    |
-      getTypeArgumentLabel(generic, p), ","
-    )
-}
-
 /** Gets the type arguments as a comma-separated string. */
 language[monotonicAggregates]
 private string getTypeArgumentsToString(ConstructedGeneric cg) {
@@ -137,9 +110,12 @@ private string getTypeArgumentsToString(ConstructedGeneric cg) {
     strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.toStringWithTypes(), ", " order by i)
 }
 
+language[monotonicAggregates]
 pragma[nomagic]
 private string getTypeArgumentName(ConstructedGeneric cg, int i) {
-  result = cg.getTypeArgument(i).getName()
+  // Normally, `cg.getTypeArgument(i)` will be unique, and in those cases the line below
+  // is simply the same as `result = cg.getTypeArgument(i).getName()`.
+  result = strictconcat(Type t | t = cg.getTypeArgument(i) | t.getName(), "/")
 }
 
 /** Gets the concatenation of the `getName()` of type arguments. */
@@ -168,18 +144,6 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
    */
   override ConstructedType getAConstructedGeneric() {
     result = UnboundGeneric.super.getAConstructedGeneric()
-  }
-
-  /**
-   * DEPRECATED: predicate does not contain any tuples.
-   *
-   * Gets the instance type of this type. For an unbound generic type, the instance type
-   * is a constructed type created from the unbound type, with each of the supplied type
-   * arguments being the corresponding type parameter.
-   */
-  deprecated ConstructedType getInstanceType() {
-    result = this.getAConstructedGeneric() and
-    forall(TypeParameter tp, int i | tp = this.getTypeParameter(i) | tp = result.getTypeArgument(i))
   }
 
   override Location getALocation() { type_location(this, result) }
@@ -264,8 +228,6 @@ class TypeParameter extends Type, @type_parameter {
   /** Gets the index of this type parameter. For example the index of `U` in `Func<T,U>` is 1. */
   override int getIndex() { type_parameters(this, result, _, _) }
 
-  deprecated final override string getLabel() { result = "!" + this.getIndex() }
-
   override string getUndecoratedName() { result = "!" + this.getIndex() }
 
   /** Gets the generic that defines this type parameter. */
@@ -316,6 +278,12 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
   /** Holds if these constraints include a nullable reference type constraint. */
   predicate hasNullableRefTypeConstraint() { general_type_parameter_constraints(this, 5) }
 
+  /** Holds if these constraints include a notnull type constraint. */
+  predicate hasNotNullTypeConstraint() { general_type_parameter_constraints(this, 6) }
+
+  /** Holds if these constraints include a `allows ref struct` constraint. */
+  predicate hasAllowRefLikeTypeConstraint() { general_type_parameter_constraints(this, 7) }
+
   /** Gets a textual representation of these constraints. */
   override string toString() { result = "where " + this.getTypeParameter().getName() + ": ..." }
 
@@ -335,10 +303,6 @@ class TypeParameterConstraints extends Element, @type_parameter_constraints {
  * ```
  */
 class UnboundGenericStruct extends Struct, UnboundGenericType {
-  deprecated override ConstructedStruct getInstanceType() {
-    result = UnboundGenericType.super.getInstanceType()
-  }
-
   override ConstructedStruct getAConstructedGeneric() {
     result = UnboundGenericType.super.getAConstructedGeneric()
   }
@@ -358,10 +322,6 @@ class UnboundGenericStruct extends Struct, UnboundGenericType {
  * ```
  */
 class UnboundGenericClass extends Class, UnboundGenericType {
-  deprecated override ConstructedClass getInstanceType() {
-    result = UnboundGenericType.super.getInstanceType()
-  }
-
   override ConstructedClass getAConstructedGeneric() {
     result = UnboundGenericType.super.getAConstructedGeneric()
   }
@@ -381,10 +341,6 @@ class UnboundGenericClass extends Class, UnboundGenericType {
  * ```
  */
 class UnboundGenericInterface extends Interface, UnboundGenericType {
-  deprecated override ConstructedInterface getInstanceType() {
-    result = UnboundGenericType.super.getInstanceType()
-  }
-
   override ConstructedInterface getAConstructedGeneric() {
     result = UnboundGenericType.super.getAConstructedGeneric()
   }
@@ -405,10 +361,6 @@ class UnboundGenericInterface extends Interface, UnboundGenericType {
  * ```
  */
 class UnboundGenericDelegateType extends DelegateType, UnboundGenericType {
-  deprecated override ConstructedDelegateType getInstanceType() {
-    result = UnboundGenericType.super.getInstanceType()
-  }
-
   override ConstructedDelegateType getAConstructedGeneric() {
     result = UnboundGenericType.super.getAConstructedGeneric()
   }

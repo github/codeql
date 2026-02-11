@@ -1,4 +1,6 @@
 /** Definitions related to the Apache Commons Lang library. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.FlowSteps
@@ -14,10 +16,12 @@ class TypeApacheRandomStringUtils extends Class {
 }
 
 /**
+ * DEPRECATED: Now modeled using data extensions instead.
+ *
  * The method `deserialize` in either `org.apache.commons.lang.SerializationUtils`
  * or `org.apache.commons.lang3.SerializationUtils`.
  */
-class MethodApacheSerializationUtilsDeserialize extends Method {
+deprecated class MethodApacheSerializationUtilsDeserialize extends Method {
   MethodApacheSerializationUtilsDeserialize() {
     this.getDeclaringType()
         .hasQualifiedName(["org.apache.commons.lang", "org.apache.commons.lang3"],

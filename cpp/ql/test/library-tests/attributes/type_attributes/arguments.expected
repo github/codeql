@@ -1,3 +1,5 @@
+| type_attributes2.cpp:5:14:5:20 | a_class | type_attributes2.cpp:5:7:5:12 | visibility | type_attributes2.cpp:5:7:5:12 | hidden |
+| type_attributes2.cpp:5:14:5:20 | a_class | type_attributes2.h:3:7:3:12 | visibility | type_attributes2.h:3:7:3:12 | hidden |
 | type_attributes_ms.cpp:4:67:4:75 | IDispatch | type_attributes_ms.cpp:4:19:4:22 | uuid | type_attributes_ms.cpp:4:24:4:63 | {00020400-0000-0000-c000-000000000046} |
 | type_attributes_ms.cpp:5:30:5:33 | Str1 | type_attributes_ms.cpp:5:12:5:16 | align | type_attributes_ms.cpp:5:18:5:19 | 32 |
 | type_attributes_ms.cpp:6:55:6:62 | IUnknown | type_attributes_ms.cpp:6:2:6:2 | uuid | type_attributes_ms.cpp:6:2:6:2 | 00000000-0000-0000-c000-000000000046 |

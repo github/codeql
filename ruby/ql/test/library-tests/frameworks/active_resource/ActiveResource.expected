@@ -10,29 +10,6 @@ modelClassMethodCalls
 | active_resource.rb:23:10:23:19 | call to all |
 | active_resource.rb:24:10:24:26 | call to find |
 | active_resource.rb:30:3:30:11 | call to site= |
-modelInstances
-| active_resource.rb:5:1:5:5 | alice |
-| active_resource.rb:5:1:5:33 | ... = ... |
-| active_resource.rb:5:9:5:33 | call to new |
-| active_resource.rb:6:1:6:5 | alice |
-| active_resource.rb:8:1:8:5 | alice |
-| active_resource.rb:8:1:8:22 | ... = ... |
-| active_resource.rb:8:9:8:22 | call to find |
-| active_resource.rb:9:1:9:5 | alice |
-| active_resource.rb:10:1:10:5 | alice |
-| active_resource.rb:12:1:12:5 | alice |
-| active_resource.rb:16:1:16:23 | call to new |
-| active_resource.rb:17:1:17:5 | alice |
-| active_resource.rb:18:1:18:22 | call to get |
-| active_resource.rb:19:1:19:5 | alice |
-| active_resource.rb:24:1:24:6 | people |
-| active_resource.rb:24:1:24:26 | ... = ... |
-| active_resource.rb:24:10:24:26 | call to find |
-| active_resource.rb:26:1:26:5 | alice |
-| active_resource.rb:26:1:26:20 | ... = ... |
-| active_resource.rb:26:9:26:14 | people |
-| active_resource.rb:26:9:26:20 | call to first |
-| active_resource.rb:27:1:27:5 | alice |
 modelInstancesAsSource
 | active_resource.rb:1:1:3:3 | Person | active_resource.rb:5:9:5:33 | call to new |
 | active_resource.rb:1:1:3:3 | Person | active_resource.rb:8:9:8:22 | call to find |
@@ -50,13 +27,6 @@ modelInstanceMethodCalls
 | active_resource.rb:19:1:19:19 | call to delete |
 | active_resource.rb:26:9:26:20 | call to first |
 | active_resource.rb:27:1:27:10 | call to save |
-collections
-| active_resource.rb:23:1:23:19 | ... = ... |
-| active_resource.rb:23:10:23:19 | call to all |
-| active_resource.rb:24:1:24:6 | people |
-| active_resource.rb:24:1:24:26 | ... = ... |
-| active_resource.rb:24:10:24:26 | call to find |
-| active_resource.rb:26:9:26:14 | people |
 collectionSources
 | active_resource.rb:23:10:23:19 | call to all |
 | active_resource.rb:24:10:24:26 | call to find |

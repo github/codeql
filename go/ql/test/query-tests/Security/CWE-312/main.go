@@ -4,51 +4,89 @@ package main
 //go:generate depstubber -vendor github.com/golang/glog "" Info
 
 import (
+	"log"
+	"math/rand"
+
 	"github.com/golang/glog"
 	"github.com/sirupsen/logrus"
-	"log"
 )
 
-func main() {
-	password := "P4ssw0rd"
+var i int = rand.Int()
 
-	log.Print(password)
-	log.Printf("", password)
-	log.Printf(password, "")
-	log.Println(password)
-	log.Fatal(password)
-	log.Fatalf("", password)
-	log.Fatalf(password, "")
-	log.Fatalln(password)
-	log.Panic(password)
-	log.Panicf("", password)
-	log.Panicf(password, "")
-	log.Panicln(password)
-	log.Output(0, password)
+func main() {
+	password := "P4ssw0rd" // $ Source
+
+	log.Print(password)        // $ Alert
+	log.Printf("%s", password) // $ Alert
+	log.Printf(password, "")   // $ Alert
+	log.Println(password)      // $ Alert
+	if i == 0 {
+		log.Fatal(password) // $ Alert
+	}
+	if i == 1 {
+		log.Fatalf("%s", password) // $ Alert
+	}
+	if i == 2 {
+		log.Fatalf(password, "") // $ Alert
+	}
+	if i == 3 {
+		log.Fatalln(password) // $ Alert
+	}
+	if i == 4 {
+		log.Panic(password) // $ Alert
+	}
+	if i == 5 {
+		log.Panicf("%s", password) // $ Alert
+	}
+	if i == 6 {
+		log.Panicf(password, "") // $ Alert
+	}
+	if i == 7 {
+		log.Panicln(password) // $ Alert
+	}
+	log.Output(0, password) // $ Alert
+	log.Printf("%T", password)
 
 	l := log.Default()
-	l.Print(password)
-	l.Printf("", password)
-	l.Printf(password, "")
-	l.Println(password)
-	l.Fatal(password)
-	l.Fatalf("", password)
-	l.Fatalf(password, "")
-	l.Fatalln(password)
-	l.Panic(password)
-	l.Panicf("", password)
-	l.Panicf(password, "")
-	l.Panicln(password)
-	l.Output(0, password)
+	l.Print(password)        // $ Alert
+	l.Printf("%s", password) // $ Alert
+	l.Printf(password, "")   // $ Alert
+	l.Println(password)      // $ Alert
+	if i == 100 {
+		l.Fatal(password) // $ Alert
+	}
+	if i == 101 {
+		l.Fatalf("%s", password) // $ Alert
+	}
+	if i == 102 {
+		l.Fatalf(password, "") // $ Alert
+	}
+	if i == 103 {
+		l.Fatalln(password) // $ Alert
+	}
+	if i == 104 {
+		l.Panic(password) // $ Alert
+	}
+	if i == 105 {
+		l.Panicf("%s", password) // $ Alert
+	}
+	if i == 106 {
+		l.Panicf(password, "") // $ Alert
+	}
+	if i == 107 {
+		l.Panicln(password) // $ Alert
+	}
+	l.Output(0, password) // $ Alert
+	l.Printf("%T", password)
 
-	glog.Info(password)
-	logrus.Warning(password)
+	glog.Info(password)      // $ Alert
+	logrus.Warning(password) // $ Alert
 
 	fields := make(logrus.Fields)
 	fields["pass"] = password
-	entry := logrus.WithFields(fields)
+	entry := logrus.WithFields(fields) // $ Alert
 	entry.Errorf("")
 
-	entry = logrus.WithField("pass", password)
+	entry = logrus.WithField("pass", password) // $ Alert
 	entry.Panic("")
 }

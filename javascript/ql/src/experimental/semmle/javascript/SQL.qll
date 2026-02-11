@@ -146,11 +146,42 @@ module ExperimentalSql {
       override DataFlow::Node getAQueryArgument() { result = this.getArgument(0) }
     }
 
+    /**
+     * A call to a TypeORM `Repository` (https://orkhan.gitbook.io/typeorm/docs/repository-api)
+     */
+    private class RepositoryCall extends DatabaseAccess {
+      API::Node repository;
+
+      RepositoryCall() {
+        (
+          repository = API::moduleImport("typeorm").getMember("Repository").getInstance() or
+          repository = dataSource().getMember("getRepository").getReturn()
+        ) and
+        this = repository.getMember(_).asSource()
+      }
+
+      override DataFlow::Node getAResult() {
+        result =
+          repository
+              .getMember([
+                  "find", "findBy", "findOne", "findOneBy", "findOneOrFail", "findOneByOrFail",
+                  "findAndCount", "findAndCountBy"
+                ])
+              .getReturn()
+              .asSource()
+      }
+
+      override DataFlow::Node getAQueryArgument() {
+        result = repository.getMember("query").getParameter(0).asSink()
+      }
+    }
+
     /** An expression that is passed to the `query` function and hence interpreted as SQL. */
     class QueryString extends SQL::SqlString {
       QueryString() {
         this = any(QueryRunner qr).getAQueryArgument() or
-        this = any(QueryBuilderCall qb).getAQueryArgument()
+        this = any(QueryBuilderCall qb).getAQueryArgument() or
+        this = any(RepositoryCall rc).getAQueryArgument()
       }
     }
   }

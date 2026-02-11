@@ -4,8 +4,10 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.rmi.dgc", "Lease", False, "Lease", "(VMID,long)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["java.rmi.dgc", "Lease", False, "getVMID", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.rmi.dgc", "DGC", True, "dirty", "(ObjID[],long,Lease)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["java.rmi.dgc", "DGC", True, "dirty", "(ObjID[],long,Lease)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
+      - ["java.rmi.dgc", "Lease", False, "Lease", "(VMID,long)", "", "Argument[0]", "Argument[this].SyntheticField[java.rmi.dgc.Lease.vmid]", "value", "dfc-generated"]
+      - ["java.rmi.dgc", "Lease", False, "getVMID", "()", "", "Argument[this].SyntheticField[java.rmi.dgc.Lease.vmid]", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel

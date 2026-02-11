@@ -5,8 +5,9 @@
  * @problem.severity recommendation
  * @precision very-high
  * @id cs/string-concatenation-in-loop
- * @tags efficiency
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       performance
  */
 
 import csharp

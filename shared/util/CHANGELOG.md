@@ -1,3 +1,171 @@
+## 2.0.28
+
+No user-facing changes.
+
+## 2.0.27
+
+No user-facing changes.
+
+## 2.0.26
+
+No user-facing changes.
+
+## 2.0.25
+
+No user-facing changes.
+
+## 2.0.24
+
+No user-facing changes.
+
+## 2.0.23
+
+No user-facing changes.
+
+## 2.0.22
+
+No user-facing changes.
+
+## 2.0.21
+
+No user-facing changes.
+
+## 2.0.20
+
+No user-facing changes.
+
+## 2.0.19
+
+No user-facing changes.
+
+## 2.0.18
+
+No user-facing changes.
+
+## 2.0.17
+
+### Minor Analysis Improvements
+
+* Added `LocatableOption` and `OptionWithLocationInfo` as modules providing option types with location information.
+
+## 2.0.16
+
+No user-facing changes.
+
+## 2.0.15
+
+No user-facing changes.
+
+## 2.0.14
+
+No user-facing changes.
+
+## 2.0.13
+
+No user-facing changes.
+
+## 2.0.12
+
+No user-facing changes.
+
+## 2.0.11
+
+No user-facing changes.
+
+## 2.0.10
+
+No user-facing changes.
+
+## 2.0.9
+
+No user-facing changes.
+
+## 2.0.8
+
+No user-facing changes.
+
+## 2.0.7
+
+No user-facing changes.
+
+## 2.0.6
+
+No user-facing changes.
+
+## 2.0.5
+
+No user-facing changes.
+
+## 2.0.4
+
+No user-facing changes.
+
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Deleted the old deprecated inline expectation test API that was based on the `InlineExpectationsTest` class.
+
+## 1.0.12
+
+No user-facing changes.
+
+## 1.0.11
+
+No user-facing changes.
+
+## 1.0.10
+
+No user-facing changes.
+
+## 1.0.9
+
+No user-facing changes.
+
+## 1.0.8
+
+No user-facing changes.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
 ## 1.0.0
 
 ### Breaking Changes

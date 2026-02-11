@@ -2,7 +2,10 @@
  * @name Unused parameter
  * @description Parameter is defined but not used
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       readability
  * @problem.severity recommendation
  * @sub-severity high
  * @precision medium
@@ -11,6 +14,7 @@
 
 import python
 import Definition
+private import LegacyPointsTo
 
 predicate unused_parameter(FunctionValue f, LocalVariable v) {
   v.isParameter() and

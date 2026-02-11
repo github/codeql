@@ -4,6 +4,7 @@
 | file://:0:0:0:0 | uls | file://:0:0:0:0 | unsigned long |
 | segfault.cpp:25:46:25:65 | call to S | file://:0:0:0:0 | void |
 | segfault.cpp:25:46:25:65 | call to S | file://:0:0:0:0 | void |
+| segfault.cpp:25:46:25:65 | constructor init | segfault.cpp:22:8:22:8 | S<T> |
 | segfault.cpp:25:48:25:55 | __second | segfault.cpp:15:7:15:11 | tuple |
 | segfault.cpp:25:48:25:55 | __second | segfault.cpp:15:7:15:11 | tuple |
 | segfault.cpp:25:48:25:55 | __second | segfault.cpp:15:7:15:11 | tuple |

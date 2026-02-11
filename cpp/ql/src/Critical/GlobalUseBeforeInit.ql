@@ -21,13 +21,29 @@ predicate initFunc(GlobalVariable v, Function f) {
   )
 }
 
+/** Holds if `v` has an initializer in function `f` that dominates `node`. */
+predicate dominatingInitInFunc(GlobalVariable v, Function f, ControlFlowNode node) {
+  exists(VariableAccess initAccess |
+    v.getAnAccess() = initAccess and
+    initAccess.isUsedAsLValue() and
+    initAccess.getEnclosingFunction() = f and
+    dominates(initAccess, node)
+  )
+}
+
+predicate safeAccess(VariableAccess access) {
+  // it is safe if the variable access is part of a `sizeof` expression
+  exists(SizeofExprOperator e | e.getAChild*() = access)
+}
+
 predicate useFunc(GlobalVariable v, Function f) {
   exists(VariableAccess access |
     v.getAnAccess() = access and
     access.isRValue() and
-    access.getEnclosingFunction() = f
-  ) and
-  not initFunc(v, f)
+    access.getEnclosingFunction() = f and
+    not safeAccess(access) and
+    not dominatingInitInFunc(v, f, access)
+  )
 }
 
 predicate uninitialisedBefore(GlobalVariable v, Function f) {
@@ -38,12 +54,14 @@ predicate uninitialisedBefore(GlobalVariable v, Function f) {
   exists(Call call, Function g |
     uninitialisedBefore(v, g) and
     call.getEnclosingFunction() = g and
-    (not functionInitialises(f, v) or locallyUninitialisedAt(v, call)) and
+    (not functionInitialises(g, v) or locallyUninitialisedAt(v, call)) and
     resolvedCall(call, f)
   )
 }
 
 predicate functionInitialises(Function f, GlobalVariable v) {
+  initFunc(v, f)
+  or
   exists(Call call |
     call.getEnclosingFunction() = f and
     initialisedBy(v, call)
@@ -60,7 +78,8 @@ predicate locallyUninitialisedAt(GlobalVariable v, Call call) {
     exists(Call mid |
       locallyUninitialisedAt(v, mid) and not initialisedBy(v, mid) and callPair(mid, call)
     )
-  )
+  ) and
+  not dominatingInitInFunc(v, call.getEnclosingFunction(), call)
 }
 
 predicate initialisedBy(GlobalVariable v, Call call) {

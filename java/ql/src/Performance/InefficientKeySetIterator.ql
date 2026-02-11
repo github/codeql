@@ -5,8 +5,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/inefficient-key-set-iterator
- * @tags efficiency
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       performance
  */
 
 import java

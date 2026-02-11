@@ -2,8 +2,9 @@
  * @name Non-portable comparison using is when operands support `__eq__`
  * @description Comparison using 'is' when equivalence is not the same as identity and may not be portable.
  * @kind problem
- * @tags portability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity recommendation
  * @sub-severity low
  * @precision medium
@@ -12,6 +13,7 @@
 
 import python
 import IsComparisons
+private import LegacyPointsTo
 
 from Compare comp, Cmpop op, ClassValue c
 where

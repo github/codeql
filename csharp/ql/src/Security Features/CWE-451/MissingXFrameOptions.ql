@@ -16,6 +16,17 @@ import csharp
 import semmle.code.asp.WebConfig
 import semmle.code.csharp.frameworks.system.Web
 
+XmlElement getAWebConfigRoot(WebConfigXml webConfig) {
+  result = webConfig.getARootElement()
+  or
+  result = webConfig.getARootElement().getAChild("location") and
+  (
+    not result.hasAttribute("path") // equivalent to path="."
+    or
+    result.getAttributeValue("path") = ["", "."]
+  )
+}
+
 /**
  * Holds if the `Web.config` file `webConfig` adds an `X-Frame-Options` header.
  */
@@ -30,8 +41,8 @@ predicate hasWebConfigXFrameOptions(WebConfigXml webConfig) {
   //   </httpProtocol>
   // </system.webServer>
   // ```
-  webConfig
-      .getARootElement()
+  // This can also be in a `location`
+  getAWebConfigRoot(webConfig)
       .getAChild("system.webServer")
       .getAChild("httpProtocol")
       .getAChild("customHeaders")

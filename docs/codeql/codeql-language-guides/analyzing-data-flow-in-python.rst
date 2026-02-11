@@ -62,8 +62,7 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 .. code-block:: python
 
-     temp = x
-     y = temp + ", " + temp
+     y = "Hello " + x
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
@@ -206,7 +205,7 @@ Global data flow tracks data flow throughout the entire program, and is therefor
 Using global data flow
 ~~~~~~~~~~~~~~~~~~~~~~
 
-The global data flow library is used by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
+We can use the global data flow library by implementing the signature ``DataFlow::ConfigSig`` and applying the module ``DataFlow::Global<ConfigSig>``:
 
 .. code-block:: ql
 
@@ -228,8 +227,8 @@ These predicates are defined in the configuration:
 
 -  ``isSource`` - defines where data may flow from.
 -  ``isSink`` - defines where data may flow to.
--  ``isBarrier`` - optionally, restricts the data flow.
--  ``isAdditionalFlowStep`` - optionally, adds additional flow steps.
+-  ``isBarrier`` - optional, defines where data flow is blocked.
+-  ``isAdditionalFlowStep`` - optional, adds additional flow steps.
 
 The data flow analysis is performed using the predicate ``flow(DataFlow::Node source, DataFlow::Node sink)``:
 
@@ -355,11 +354,50 @@ This data flow configuration tracks data flow from environment variables to open
     select fileOpen, "This call to 'os.open' uses data from $@.",
       environment, "call to 'os.getenv'"
 
+Path query example
+~~~~~~~~~~~~~~~~~~
+
+Here is the network input example above, converted into a path query:
+
+.. code-block:: ql
+
+    /**
+     * @kind path-problem
+     * @problem.severity warning
+     * @id file-system-access-from-remote-input
+     */
+
+    import python
+    import semmle.python.dataflow.new.DataFlow
+    import semmle.python.dataflow.new.TaintTracking
+    import semmle.python.dataflow.new.RemoteFlowSources
+    import semmle.python.Concepts
+
+    module RemoteToFileConfiguration implements DataFlow::ConfigSig {
+      predicate isSource(DataFlow::Node source) {
+        source instanceof RemoteFlowSource
+      }
+
+      predicate isSink(DataFlow::Node sink) {
+        sink = any(FileSystemAccess fa).getAPathArgument()
+      }
+    }
+
+    module RemoteToFileFlow = TaintTracking::Global<RemoteToFileConfiguration>;
+
+    import RemoteToFileFlow::PathGraph
+
+    from RemoteToFileFlow::PathNode input, RemoteToFileFlow::PathNode fileAccess
+    where RemoteToFileFlow::flowPath(input, fileAccess)
+    select fileAccess.getNode(), input, fileAccess, "This file access uses data from $@.",
+      input, "user-controllable input."
+
+For more information, see "`Creating path queries <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__".
 
 Further reading
 ---------------
 
-- `Exploring data flow with path queries  <https://docs.github.com/en/code-security/codeql-for-vs-code/getting-started-with-codeql-for-vs-code/exploring-data-flow-with-path-queries>`__ in the GitHub documentation.
+- `Creating path queries  <https://codeql.github.com/docs/writing-codeql-queries/creating-path-queries/>`__.
 
 
 .. include:: ../reusables/python-further-reading.rst

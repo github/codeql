@@ -36,6 +36,7 @@ private class ArraySummaries extends SummaryModelCsv {
         ";Array;true;withUnsafeMutableBytes(_:);;;Argument[-1].CollectionElement;Argument[0].Parameter[0].CollectionElement;taint",
         ";Array;true;withUnsafeMutableBytes(_:);;;Argument[0].Parameter[0].CollectionElement;Argument[-1].CollectionElement;taint",
         ";Array;true;withUnsafeMutableBytes(_:);;;Argument[0].ReturnValue;ReturnValue;value",
+        ";Array;true;makeIterator();;;Argument[-1].CollectionElement;ReturnValue.CollectionElement;value",
         ";ContiguousArray;true;withUnsafeBufferPointer(_:);;;Argument[-1];Argument[0].Parameter[0].CollectionElement;taint",
         ";ContiguousArray;true;withUnsafeBufferPointer(_:);;;Argument[-1].CollectionElement;Argument[0].Parameter[0].CollectionElement;value",
         ";ContiguousArray;true;withUnsafeBufferPointer(_:);;;Argument[0].ReturnValue;ReturnValue;value",

@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["r-lib/actions", "*", "input.lockfile-create-lib", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.dependencies", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.upgrade", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.pak-version", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.profile", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.install-pandoc", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.extra-packages", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.packages", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.needs", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.error-on", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.build_args", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.args", "code-injection", "generated"]
+     - ["r-lib/actions", "*", "input.check-dir", "code-injection", "generated"]

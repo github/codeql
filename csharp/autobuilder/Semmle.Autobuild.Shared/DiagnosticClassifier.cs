@@ -60,7 +60,7 @@ namespace Semmle.Autobuild.Shared
     public class DiagnosticClassifier
     {
         private readonly List<DiagnosticRule> rules;
-        public readonly List<IDiagnosticsResult> Results;
+        public List<IDiagnosticsResult> Results { get; }
 
         public DiagnosticClassifier()
         {

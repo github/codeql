@@ -4,7 +4,8 @@
  *              parameter of the called function or method, will result in a
  *              TypeError at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-628
  * @problem.severity error
@@ -15,6 +16,7 @@
 
 import python
 import Expressions.CallArgs
+private import LegacyPointsTo
 
 from Call call, FunctionObject func, string name
 where

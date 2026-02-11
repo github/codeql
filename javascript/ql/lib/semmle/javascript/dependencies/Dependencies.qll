@@ -151,6 +151,11 @@ class ExternalNpmDependency extends NpmDependency {
   }
 }
 
+pragma[nomagic]
+private string getPackagePrefix(Import i) {
+  result = i.getImportedPathString().(FilePath).getPackagePrefix()
+}
+
 /**
  * Holds if import `i` may refer to the declared dependency `dep` of package `pkg`,
  * where the result value is the nesting depth of the file containing `i` within `pkg`.
@@ -159,7 +164,7 @@ private int importsDependency(Import i, NpmPackage pkg, NpmDependency dep) {
   exists(string name |
     dep = pkg.getPackageJson().getADependenciesObject(_).getPropValue(name) and
     not exists(i.getImportedModule()) and
-    i.getImportedPath().getComponent(0) = name and
+    name = getPackagePrefix(i) and
     i.getEnclosingModule() = pkg.getAModule() and
     result = distance(pkg, i.getFile())
   )

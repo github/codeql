@@ -1,6 +1,6 @@
-| containserror.cpp:0:0:0:0 | containserror.cpp | query-tests/Diagnostics/containserror.cpp | fromSource, normalTermination |
-| containswarning.cpp:0:0:0:0 | containswarning.cpp | query-tests/Diagnostics/containswarning.cpp | fromSource, normalTermination |
-| doesnotcompile.cpp:0:0:0:0 | doesnotcompile.cpp | query-tests/Diagnostics/doesnotcompile.cpp | ExtractionProblem (severity 1), fromSource, normalTermination |
+| containserror.cpp:0:0:0:0 | containserror.cpp | containserror.cpp | ExtractionProblem (severity 1), fromSource, normalTermination |
+| containswarning.cpp:0:0:0:0 | containswarning.cpp | containswarning.cpp | fromSource, normalTermination |
+| doesnotcompile.cpp:0:0:0:0 | doesnotcompile.cpp | doesnotcompile.cpp | ExtractionProblem (severity 1), fromSource, normalTermination |
 | file://:0:0:0:0 |  |  |  |
-| header.h:0:0:0:0 | header.h | query-tests/Diagnostics/header.h | fromSource |
-| successful.cpp:0:0:0:0 | successful.cpp | query-tests/Diagnostics/successful.cpp | fromSource, normalTermination |
+| header.h:0:0:0:0 | header.h | header.h | fromSource |
+| successful.cpp:0:0:0:0 | successful.cpp | successful.cpp | fromSource, normalTermination |

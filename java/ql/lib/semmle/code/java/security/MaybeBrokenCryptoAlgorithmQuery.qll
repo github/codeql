@@ -30,7 +30,11 @@ class InsecureAlgoLiteral extends InsecureAlgorithm, ShortStringLiteral {
       s.length() > 1 and
       not s.regexpMatch(getSecureAlgorithmRegex()) and
       // Exclude results covered by another query.
-      not s.regexpMatch(getInsecureAlgorithmRegex())
+      not s.regexpMatch(getInsecureAlgorithmRegex()) and
+      // Exclude results covered by `InsecureAlgoProperty`.
+      // This removes duplicates when a string literal is a default value for the property,
+      // such as "MD5" in the following: `props.getProperty("hashAlg2", "MD5")`.
+      not exists(InsecureAlgoProperty insecAlgoProp | this = insecAlgoProp.getAnArgument())
     )
   }
 
@@ -72,6 +76,14 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node n) {
     objectToString(n.asExpr()) or
     n.getType().getErasure() instanceof TypeObject
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(CryptoAlgoSpec c | result = sink.getLocation() or result = c.getLocation() |
+      sink.asExpr() = c.getAlgoSpec()
+    )
   }
 }
 

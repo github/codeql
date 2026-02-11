@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.Collections
@@ -20,6 +23,7 @@ private import semmle.code.java.frameworks.JaxWS
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
@@ -27,6 +31,7 @@ predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
@@ -69,6 +74,7 @@ module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
    * (intra-procedural) steps that are restricted to be part of a path between
    * `source` and `sink`.
    */
+  overlay[caller?]
   pragma[inline]
   predicate hasFlow(DataFlow::Node n1, DataFlow::Node n2) { step*(n1, n2) }
 
@@ -77,6 +83,7 @@ module LocalTaintFlow<nodeSig/1 source, nodeSig/1 sink> {
    * (intra-procedural) steps that are restricted to be part of a path between
    * `source` and `sink`.
    */
+  overlay[caller?]
   pragma[inline]
   predicate hasExprFlow(Expr n1, Expr n2) {
     hasFlow(DataFlow::exprNode(n1), DataFlow::exprNode(n2))
@@ -161,6 +168,7 @@ private module Cached {
    */
   cached
   predicate defaultTaintSanitizer(DataFlow::Node node) {
+    node instanceof DefaultTaintSanitizer or
     // Ignore paths through test code.
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass or
     node.asExpr() instanceof ValidatedVariableAccess
@@ -270,21 +278,23 @@ private predicate inputStreamWrapper(Constructor c, int argi) {
 
 /** An object construction that preserves the data flow status of any of its arguments. */
 private predicate constructorStep(Expr tracked, ConstructorCall sink, string model) {
-  exists(int argi | sink.getArgument(argi) = tracked |
+  exists(int argi | sink.getArgument(pragma[only_bind_into](argi)) = tracked |
     // wrappers constructed by extension
     exists(Constructor c, Parameter p, SuperConstructorInvocationStmt sup |
       c = sink.getConstructor() and
-      p = c.getParameter(argi) and
+      p = c.getParameter(pragma[only_bind_into](argi)) and
       sup.getEnclosingCallable() = c and
       constructorStep(p.getAnAccess(), sup, model)
     )
     or
     // a custom InputStream that wraps a tainted data source is tainted
     model = "inputStreamWrapper" and
-    inputStreamWrapper(sink.getConstructor(), argi)
+    inputStreamWrapper(sink.getConstructor(), pragma[only_bind_into](argi))
     or
     model = "TaintPreservingCallable" and
-    sink.getConstructor().(TaintPreservingCallable).returnsTaintFrom(argToParam(sink, argi))
+    sink.getConstructor()
+        .(TaintPreservingCallable)
+        .returnsTaintFrom(argToParam(sink, pragma[only_bind_into](argi)))
   )
 }
 
@@ -316,9 +326,6 @@ private predicate qualifierToMethodStep(Expr tracked, MethodCall sink, string mo
  * Methods that return tainted data when called on tainted data.
  */
 private predicate taintPreservingQualifierToMethod(Method m, string model) {
-  model = "" and
-  m instanceof CloneMethod
-  or
   model = "%StringWriter" and
   m.getDeclaringType().getQualifiedName().matches("%StringWriter") and
   (
@@ -486,9 +493,6 @@ class ObjectOutputStreamVar extends LocalVariableDecl {
     result.getQualifier() = this.getAnAccess() and
     result.getMethod().hasName("writeObject")
   }
-
-  /** DEPRECATED: Alias for `getAWriteObjectMethodCall`. */
-  deprecated MethodCall getAWriteObjectMethodAccess() { result = this.getAWriteObjectMethodCall() }
 }
 
 /** Flow through string formatting. */
@@ -643,7 +647,7 @@ private MethodCall callReturningSameType(Expr ref) {
 }
 
 private SrcRefType entrypointType() {
-  exists(ThreatModelFlowSource s, RefType t |
+  exists(ActiveThreatModelSource s, RefType t |
     s instanceof DataFlow::ExplicitParameterNode and
     t = pragma[only_bind_out](s).getType() and
     not t instanceof TypeObject and
@@ -651,6 +655,8 @@ private SrcRefType entrypointType() {
   )
   or
   result = entrypointType().getAField().getType().(RefType).getSourceDeclaration()
+  or
+  result = entrypointType().(Array).getElementType().(RefType).getSourceDeclaration()
 }
 
 private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
@@ -660,4 +666,54 @@ private predicate entrypointFieldStep(DataFlow::Node src, DataFlow::Node sink) {
     not fa.getField().isStatic()
   ) and
   src.getType().(RefType).getSourceDeclaration() = entrypointType()
+}
+
+import SpeculativeTaintFlow
+
+private module SpeculativeTaintFlow {
+  private import semmle.code.java.dataflow.ExternalFlow as ExternalFlow
+  private import semmle.code.java.dataflow.internal.DataFlowNodes
+  private import semmle.code.java.dataflow.internal.FlowSummaryImpl as Impl
+  private import semmle.code.java.dispatch.VirtualDispatch
+  private import semmle.code.java.security.Sanitizers
+
+  private predicate hasTarget(Call call) {
+    exists(Impl::Public::SummarizedCallable sc | sc.getACall() = call)
+    or
+    exists(Impl::Public::NeutralSummaryCallable nc | nc.getACall() = call)
+    or
+    call.getCallee().getSourceDeclaration() instanceof ExternalFlow::SinkCallable
+    or
+    exists(FlowSummaryImpl::Public::NeutralSinkCallable sc | sc.getACall() = call)
+    or
+    exists(viableCallable(call))
+    or
+    call.getQualifier().getType() instanceof Array
+    or
+    call.getCallee().getSourceDeclaration() instanceof CloneMethod
+    or
+    call.getCallee()
+        .getSourceDeclaration()
+        .getDeclaringType()
+        .getPackage()
+        .hasName("java.util.function")
+  }
+
+  /**
+   * Holds if the additional step from `src` to `sink` should be considered in
+   * speculative taint flow exploration.
+   */
+  predicate speculativeTaintStep(DataFlow::Node src, DataFlow::Node sink) {
+    exists(DataFlowCall call, Call srcCall, int argpos |
+      not hasTarget(srcCall) and
+      call.asCall() = srcCall and
+      src.(ArgumentNode).argumentOf(call, argpos) and
+      not src instanceof SimpleTypeSanitizer
+    |
+      argpos != -1 and
+      sink.(DataFlow::PostUpdateNode).getPreUpdateNode() = Public::getInstanceArgument(srcCall)
+      or
+      sink.(OutNode).getCall() = call
+    )
+  }
 }

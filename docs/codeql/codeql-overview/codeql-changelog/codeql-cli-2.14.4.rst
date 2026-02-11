@@ -9,7 +9,7 @@ CodeQL 2.14.4 (2023-09-12)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -66,8 +66,8 @@ C/C++
 *   Some queries that had repeated results corresponding to different levels of indirection for :code:`argv` now only have a single result.
 *   The :code:`cpp/non-constant-format` query no longer considers an assignment on the right-hand side of another assignment to be a source of non-constant format strings. As a result, the query may now produce fewer results.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The queries "Resolving XML external entity in user-controlled data" (:code:`java/xxe`) and "Resolving XML external entity in user-controlled data from local source" (:code:`java/xxe-local`) now recognize sinks in the MDHT library.
 
@@ -91,8 +91,8 @@ C/C++
 
 *   Added a new query, :code:`cpp/invalid-pointer-deref`, to detect out-of-bounds pointer reads and writes.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added the :code:`java/trust-boundary-violation` query to detect trust boundary violations between HTTP requests and the HTTP session. Also added the :code:`trust-boundary-violation` sink kind for sinks which may cross a trust boundary, such as calls to the :code:`HttpSession#setAttribute` method.
 
@@ -136,8 +136,8 @@ Golang
 
 *   Added `http.Error <https://pkg.go.dev/net/http#Error>`__ to XSS sanitzers.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed the MaD signature specifications to use proper nested type names.
 *   Added new sanitizer to Java command injection model
@@ -172,8 +172,8 @@ C/C++
 
 *   Added :code:`DeleteOrDeleteArrayExpr` as a super type of :code:`DeleteExpr` and :code:`DeleteArrayExpr`
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Kotlin versions up to 1.9.10 are now supported.
 

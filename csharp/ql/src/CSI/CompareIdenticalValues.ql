@@ -7,7 +7,9 @@
  * @problem.severity warning
  * @precision high
  * @id cs/comparison-of-identical-expressions
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

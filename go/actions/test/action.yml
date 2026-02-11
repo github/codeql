@@ -4,7 +4,7 @@ inputs:
   go-test-version:
     description: Which Go version to use for running the tests
     required: false
-    default: ~1.22.0
+    default: "~1.26.0"
   run-code-checks:
     description: Whether to run formatting, code and qhelp generation checks
     required: false
@@ -40,7 +40,7 @@ runs:
     - name: Build
       shell: bash
       run: |
-        bazel run go:create-extractor-pack
+        bazel run go:go-installer
 
     - name: Check that all Go code is autoformatted
       if: inputs.run-code-checks == 'true' && !cancelled()
@@ -59,19 +59,7 @@ runs:
 
     - name: Upload qhelp markdown
       if: inputs.run-code-checks == 'true' && !cancelled()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: qhelp-markdown
         path: go/qhelp-out/**/*.md
-
-    - name: Cache compilation cache
-      id: query-cache
-      uses: ./.github/actions/cache-query-compilation
-      with:
-        key: go-qltest
-
-    - name: Test
-      shell: bash
-      run: |
-        cd go
-        make test cache="${{ steps.query-cache.outputs.cache-dir }}"

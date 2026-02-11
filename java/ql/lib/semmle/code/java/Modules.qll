@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Java modules.
  */
+overlay[local?]
+module;
 
 import CompilationUnit
 

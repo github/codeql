@@ -19,7 +19,6 @@ import semmle.code.cpp.security.Security
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.ir.dataflow.TaintTracking2
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.models.implementations.Strcat
 import ExecTaint::PathGraph
@@ -50,11 +49,17 @@ predicate interestingConcatenation(DataFlow::Node incoming, DataFlow::Node outgo
     call.getTarget() = op and
     op.hasQualifiedName("std", "operator+") and
     op.getType().(UserType).hasQualifiedName("std", "basic_string") and
-    incoming.asIndirectArgument() = call.getArgument(1) and // left operand
+    incoming.asIndirectArgument() = call.getArgument(1) and // right operand
     call = outgoing.asInstruction().getUnconvertedResultExpression()
   )
 }
 
+/**
+ * A state will represent the most recent concatenation that occurred in the data flow.
+ *  - `TConcatState` if the concetenation has not yet occurred.
+ *  - `TExecState(incoming, outgoing)`, representing the concatenation of data from `incoming`
+ *    into result `outgoing`.
+ */
 newtype TState =
   TConcatState() or
   TExecState(DataFlow::Node incoming, DataFlow::Node outgoing) {
@@ -75,7 +80,9 @@ class ExecState extends TExecState {
 
   DataFlow::Node getOutgoingNode() { result = outgoing }
 
-  /** Holds if this is a possible `ExecState` for `sink`. */
+  /**
+   * Holds if this is a possible `ExecState` at `sink`, that is, if `outgoing` flows to `sink`.
+   */
   predicate isFeasibleForSink(DataFlow::Node sink) { ExecState::flow(outgoing, sink) }
 
   string toString() { result = "ExecState" }
@@ -111,6 +118,12 @@ module ExecStateConfig implements DataFlow::ConfigSig {
 
 module ExecState = TaintTracking::Global<ExecStateConfig>;
 
+/**
+ * A full `TaintTracking` configuration from source to concatenation to sink, using a flow
+ * state to remember the concatenation. It's important that we track flow to the sink even though
+ * as soon as we reach the concatenation we know it will get there (due to the check of
+ * `isFeasibleForSink`), because this way we get a complete flow path.
+ */
 module ExecTaintConfig implements DataFlow::StateConfigSig {
   class FlowState = TState;
 
@@ -134,8 +147,19 @@ module ExecTaintConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node) { isBarrierImpl(node) }
 
-  predicate isBarrierOut(DataFlow::Node node) {
-    isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) {
+    isSink(node, state) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
+  }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    exists(DataFlow::Node concatResult, Expr command, ExecState state |
+      result = [concatResult.getLocation(), command.getLocation(), sink.getLocation()] and
+      isSink(sink, state) and
+      isSinkImpl(sink, command, _) and
+      concatResult = state.getOutgoingNode()
+    )
   }
 }
 

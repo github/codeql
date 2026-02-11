@@ -3,14 +3,14 @@ let cookieParser = require('cookie-parser');
 
 let app = express();
 
-app.use(cookieParser());
+app.use(cookieParser()); // $ Alert
 
-app.post('/doSomethingTerrible', (req, res) => { // NOT OK - uses cookies
+app.post('/doSomethingTerrible', (req, res) => { // uses cookies
     if (req.cookies['secret'] === app.secret) {
         somethingTerrible();
     }
     res.end('Ok');
-});
+}); // $ RelatedLocation
 
 app.post('/doSomethingElse', (req, res) => { // OK - doesn't actually use cookies
     somethingElse(req.query['data']);
@@ -26,14 +26,14 @@ app.post('/doWithCaptcha', (req, res) => { // OK - attacker can't guess the capt
     res.end('Ok');
 });
 
-app.post('/user', (req, res) => { // NOT OK - access to req.user is unprotected
+app.post('/user', (req, res) => { // access to req.user is unprotected
     somethingElse(req.user.name);
     res.end('Ok');
-});
+}); // $ RelatedLocation
 
-app.post('/session', (req, res) => { // NOT OK - access to req.session is unprotected
+app.post('/session', (req, res) => { // access to req.session is unprotected
     somethingElse(req.session.name);
     res.end('Ok');
-});
+}); // $ RelatedLocation
 
 app.listen();

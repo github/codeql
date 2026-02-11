@@ -7,30 +7,35 @@
  * type has a subtype or if an inferred upper bound passed through at least one
  * explicit or implicit cast that lost type information.
  */
+overlay[local?]
+module;
 
 import java as J
 private import semmle.code.java.dispatch.VirtualDispatch
-private import semmle.code.java.dataflow.internal.BaseSSA
+private import semmle.code.java.dataflow.internal.BaseSSA as Base
 private import semmle.code.java.controlflow.Guards
 private import codeql.typeflow.TypeFlow
+private import codeql.typeflow.UniversalFlow as UniversalFlow
 
-private module Input implements TypeFlowInput<Location> {
-  private newtype TTypeFlowNode =
+/** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
+private RefType boxIfNeeded(J::Type t) {
+  t.(PrimitiveType).getBoxedType() = result or
+  result = t
+}
+
+/** Provides the input types and predicates for instantiation of `UniversalFlow`. */
+module FlowStepsInput implements UniversalFlow::UniversalFlowInput<Location> {
+  private newtype TFlowNode =
     TField(Field f) { not f.getType() instanceof PrimitiveType } or
-    TSsa(BaseSsaVariable ssa) { not ssa.getSourceVariable().getType() instanceof PrimitiveType } or
+    TSsa(Base::SsaDefinition ssa) { not ssa.getSourceVariable().getType() instanceof PrimitiveType } or
     TExpr(Expr e) or
     TMethod(Method m) { not m.getReturnType() instanceof PrimitiveType }
-
-  /** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
-  private RefType boxIfNeeded(J::Type t) {
-    t.(PrimitiveType).getBoxedType() = result or
-    result = t
-  }
 
   /**
    * A `Field`, `BaseSsaVariable`, `Expr`, or `Method`.
    */
-  class TypeFlowNode extends TTypeFlowNode {
+  class FlowNode extends TFlowNode {
+    /** Gets a textual representation of this element. */
     string toString() {
       result = this.asField().toString() or
       result = this.asSsa().toString() or
@@ -38,6 +43,7 @@ private module Input implements TypeFlowInput<Location> {
       result = this.asMethod().toString()
     }
 
+    /** Gets the source location for this element. */
     Location getLocation() {
       result = this.asField().getLocation() or
       result = this.asSsa().getLocation() or
@@ -45,14 +51,19 @@ private module Input implements TypeFlowInput<Location> {
       result = this.asMethod().getLocation()
     }
 
+    /** Gets the field corresponding to this node, if any. */
     Field asField() { this = TField(result) }
 
-    BaseSsaVariable asSsa() { this = TSsa(result) }
+    /** Gets the SSA variable corresponding to this node, if any. */
+    Base::SsaDefinition asSsa() { this = TSsa(result) }
 
+    /** Gets the expression corresponding to this node, if any. */
     Expr asExpr() { this = TExpr(result) }
 
+    /** Gets the method corresponding to this node, if any. */
     Method asMethod() { this = TMethod(result) }
 
+    /** Gets the type of this node. */
     RefType getType() {
       result = this.asField().getType() or
       result = this.asSsa().getSourceVariable().getType() or
@@ -61,21 +72,32 @@ private module Input implements TypeFlowInput<Location> {
     }
   }
 
-  class Type = RefType;
-
-  /**
-   * Holds if `arg` is an argument for the parameter `p` in a private callable.
-   */
-  private predicate privateParamArg(Parameter p, Argument arg) {
-    p.getAnArgument() = arg and
-    p.getCallable().isPrivate()
+  private SrcCallable viableCallable_v1(Call c) {
+    result = viableImpl_v1(c)
+    or
+    c instanceof ConstructorCall and result = c.getCallee().getSourceDeclaration()
   }
 
   /**
-   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is not
-   * necessarily functionally determined by `n2`.
+   * Holds if `arg` is an argument for the parameter `p` in a sufficiently
+   * private callable that the closed-world assumption applies.
    */
-  predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
+  private predicate privateParamArg(Parameter p, Argument arg) {
+    exists(SrcCallable c, Call call |
+      c = p.getCallable() and
+      not c.isImplicitlyPublic() and
+      not p.isVarargs() and
+      c = viableCallable_v1(call) and
+      call.getArgument(pragma[only_bind_into](pragma[only_bind_out](p.getPosition()))) = arg
+    )
+  }
+
+  /**
+   * Holds if data can flow from `n1` to `n2` in one step.
+   *
+   * For a given `n2`, this predicate must include all possible `n1` that can flow to `n2`.
+   */
+  predicate step(FlowNode n1, FlowNode n2) {
     n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
     or
     exists(Field f, Expr e |
@@ -85,10 +107,10 @@ private module Input implements TypeFlowInput<Location> {
       not e.(FieldAccess).getField() = f
     )
     or
-    n2.asSsa().(BaseSsaPhiNode).getAnUltimateLocalDefinition() = n1.asSsa()
+    n2.asSsa().(Base::SsaPhiDefinition).getAnUltimateDefinition() = n1.asSsa()
     or
     exists(ReturnStmt ret |
-      n2.asMethod() = ret.getEnclosingCallable() and ret.getResult() = n1.asExpr()
+      n2.asMethod() = ret.getEnclosingCallable() and ret.getExpr() = n1.asExpr()
     )
     or
     viableImpl_v1(n2.asExpr()) = n1.asMethod()
@@ -96,20 +118,14 @@ private module Input implements TypeFlowInput<Location> {
     exists(Argument arg, Parameter p |
       privateParamArg(p, arg) and
       n1.asExpr() = arg and
-      n2.asSsa().(BaseSsaImplicitInit).isParameterDefinition(p) and
+      n2.asSsa().(Base::SsaParameterInit).getParameter() = p and
       // skip trivial recursion
-      not arg = n2.asSsa().getAUse()
+      not arg = n2.asSsa().getARead()
     )
-  }
-
-  /**
-   * Holds if data can flow from `n1` to `n2` in one step, and `n1` is
-   * functionally determined by `n2`.
-   */
-  predicate step(TypeFlowNode n1, TypeFlowNode n2) {
+    or
     n2.asExpr() = n1.asField().getAnAccess()
     or
-    n2.asExpr() = n1.asSsa().getAUse()
+    n2.asExpr() = n1.asSsa().getARead()
     or
     n2.asExpr().(CastingExpr).getExpr() = n1.asExpr() and
     not n2.asExpr().getType() instanceof PrimitiveType
@@ -117,29 +133,41 @@ private module Input implements TypeFlowInput<Location> {
     n2.asExpr().(AssignExpr).getSource() = n1.asExpr() and
     not n2.asExpr().getType() instanceof PrimitiveType
     or
-    n2.asSsa().(BaseSsaUpdate).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
+    n2.asSsa().(Base::SsaExplicitWrite).getDefiningExpr().(VariableAssign).getSource() = n1.asExpr()
     or
-    n2.asSsa().(BaseSsaImplicitInit).captures(n1.asSsa())
+    n2.asSsa().(Base::SsaCapturedDefinition).captures(n1.asSsa())
+    or
+    n2.asExpr().(NotNullExpr).getOperand() = n1.asExpr()
   }
 
   /**
    * Holds if `null` is the only value that flows to `n`.
    */
-  predicate isNullValue(TypeFlowNode n) {
+  predicate isNullValue(FlowNode n) {
     n.asExpr() instanceof NullLiteral
     or
     exists(LocalVariableDeclExpr decl |
-      n.asSsa().(BaseSsaUpdate).getDefiningExpr() = decl and
+      n.asSsa().(Base::SsaExplicitWrite).getDefiningExpr() = decl and
       not decl.hasImplicitInit() and
-      not exists(decl.getInit())
+      not exists(decl.getInitOrPatternSource())
     )
   }
 
-  predicate isExcludedFromNullAnalysis(TypeFlowNode n) {
+  predicate isExcludedFromNullAnalysis(FlowNode n) {
     // Fields that are never assigned a non-null value are probably set by
     // reflection and are thus not always null.
     exists(n.asField())
   }
+}
+
+private module Input implements TypeFlowInput<Location> {
+  import FlowStepsInput
+
+  class TypeFlowNode = FlowNode;
+
+  predicate isExcludedFromNullAnalysis = FlowStepsInput::isExcludedFromNullAnalysis/1;
+
+  class Type = RefType;
 
   predicate exactTypeBase(TypeFlowNode n, RefType t) {
     exists(ClassInstanceExpr e |
@@ -157,7 +185,7 @@ private module Input implements TypeFlowInput<Location> {
    */
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2, RefType t2e) {
-    exists(TypeFlowNode next | step(n, next) or joinStep(n, next) |
+    exists(TypeFlowNode next | step(n, next) |
       n.getType() = t1 and
       next.getType() = t2 and
       t1.getErasure() = t1e and
@@ -174,6 +202,13 @@ private module Input implements TypeFlowInput<Location> {
       t1e = t2e and
       unbound(t2) and
       not unbound(t1)
+      or
+      t1e = t2e and
+      exists(int pos |
+        partiallyUnbound(t2, pos) and
+        not partiallyUnbound(t1, pos) and
+        not unbound(t1)
+      )
     )
   }
 
@@ -188,7 +223,9 @@ private module Input implements TypeFlowInput<Location> {
     )
   }
 
-  private predicate upcastEnhancedForStmtAux(BaseSsaUpdate v, RefType t, RefType t1, RefType t2) {
+  private predicate upcastEnhancedForStmtAux(
+    Base::SsaExplicitWrite v, RefType t, RefType t1, RefType t2
+  ) {
     exists(EnhancedForStmt for |
       for.getVariable() = v.getDefiningExpr() and
       v.getSourceVariable().getType().getErasure() = t2 and
@@ -202,7 +239,7 @@ private module Input implements TypeFlowInput<Location> {
    * the type of the elements being iterated over, and this type is more precise
    * than the type of `v`.
    */
-  private predicate upcastEnhancedForStmt(BaseSsaUpdate v, RefType t) {
+  private predicate upcastEnhancedForStmt(Base::SsaExplicitWrite v, RefType t) {
     exists(RefType t1, RefType t2 |
       upcastEnhancedForStmtAux(v, t, t1, t2) and
       t1.getASourceSupertype+() = t2
@@ -210,9 +247,9 @@ private module Input implements TypeFlowInput<Location> {
   }
 
   private predicate downcastSuccessorAux(
-    CastingExpr cast, BaseSsaVariable v, RefType t, RefType t1, RefType t2
+    CastingExpr cast, Base::SsaDefinition v, RefType t, RefType t1, RefType t2
   ) {
-    cast.getExpr() = v.getAUse() and
+    cast.getExpr() = v.getARead() and
     t = cast.getType() and
     t1 = t.getErasure() and
     t2 = v.getSourceVariable().getType().getErasure()
@@ -222,12 +259,12 @@ private module Input implements TypeFlowInput<Location> {
    * Holds if `va` is an access to a value that has previously been downcast to `t`.
    */
   private predicate downcastSuccessor(VarAccess va, RefType t) {
-    exists(CastingExpr cast, BaseSsaVariable v, RefType t1, RefType t2 |
+    exists(CastingExpr cast, Base::SsaDefinition v, RefType t1, RefType t2 |
       downcastSuccessorAux(pragma[only_bind_into](cast), v, t, t1, t2) and
       t1.getASourceSupertype+() = t2 and
-      va = v.getAUse() and
-      dominates(cast, va) and
-      dominates(cast.(ControlFlowNode).getANormalSuccessor(), va)
+      va = v.getARead() and
+      dominates(cast.getControlFlowNode(), va.getControlFlowNode()) and
+      dominates(cast.getControlFlowNode().getANormalSuccessor(), va.getControlFlowNode())
     )
   }
 
@@ -235,9 +272,9 @@ private module Input implements TypeFlowInput<Location> {
    * Holds if `va` is an access to a value that is guarded by `instanceof t` or `case e t`.
    */
   private predicate typeTestGuarded(VarAccess va, RefType t) {
-    exists(Guard typeTest, BaseSsaVariable v |
-      typeTest.appliesTypeTest(v.getAUse(), t, _) and
-      va = v.getAUse() and
+    exists(Guard typeTest, Base::SsaDefinition v |
+      typeTest.appliesTypeTest(v.getARead(), t, _) and
+      va = v.getARead() and
       guardControls_v1(typeTest, va.getBasicBlock(), true)
     )
   }
@@ -246,12 +283,12 @@ private module Input implements TypeFlowInput<Location> {
    * Holds if `aa` is an access to a value that is guarded by `instanceof t` or `case e t`.
    */
   private predicate arrayTypeTestGuarded(ArrayAccess aa, RefType t) {
-    exists(Guard typeTest, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
+    exists(Guard typeTest, Base::SsaDefinition v1, Base::SsaDefinition v2, ArrayAccess aa1 |
       typeTest.appliesTypeTest(aa1, t, _) and
-      aa1.getArray() = v1.getAUse() and
-      aa1.getIndexExpr() = v2.getAUse() and
-      aa.getArray() = v1.getAUse() and
-      aa.getIndexExpr() = v2.getAUse() and
+      aa1.getArray() = v1.getARead() and
+      aa1.getIndexExpr() = v2.getARead() and
+      aa.getArray() = v1.getARead() and
+      aa.getIndexExpr() = v2.getARead() and
       guardControls_v1(typeTest, aa.getBasicBlock(), true)
     )
   }
@@ -293,16 +330,16 @@ private module Input implements TypeFlowInput<Location> {
    * Holds if `ioe` checks `v`, its true-successor is `bb`, and `bb` has multiple
    * predecessors.
    */
-  private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, BaseSsaVariable v) {
-    ioe.getExpr() = v.getAUse() and
-    strictcount(bb.getABBPredecessor()) > 1 and
+  private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, Base::SsaDefinition v) {
+    ioe.getExpr() = v.getARead() and
+    strictcount(bb.getAPredecessor()) > 1 and
     exists(ConditionBlock cb | cb.getCondition() = ioe and cb.getTestSuccessor(true) = bb)
   }
 
   /** Holds if `bb` is disjunctively guarded by multiple `instanceof` tests on `v`. */
-  private predicate instanceofDisjunction(BasicBlock bb, BaseSsaVariable v) {
+  private predicate instanceofDisjunction(BasicBlock bb, Base::SsaDefinition v) {
     strictcount(InstanceOfExpr ioe | instanceofDisjunct(ioe, bb, v)) =
-      strictcount(bb.getABBPredecessor())
+      strictcount(bb.getAPredecessor())
   }
 
   /**
@@ -310,10 +347,10 @@ private module Input implements TypeFlowInput<Location> {
    * `instanceof t_i` where `t` is one of those `t_i`.
    */
   predicate instanceofDisjunctionGuarded(TypeFlowNode n, RefType t) {
-    exists(BasicBlock bb, InstanceOfExpr ioe, BaseSsaVariable v, VarAccess va |
+    exists(BasicBlock bb, InstanceOfExpr ioe, Base::SsaDefinition v, VarAccess va |
       instanceofDisjunction(bb, v) and
-      bb.bbDominates(va.getBasicBlock()) and
-      va = v.getAUse() and
+      bb.dominates(va.getBasicBlock()) and
+      va = v.getARead() and
       instanceofDisjunct(ioe, bb, v) and
       t = ioe.getSyntacticCheckedType() and
       n.asExpr() = va
@@ -338,6 +375,11 @@ private module Input implements TypeFlowInput<Location> {
     exists(ParameterizedType pt | pt = t |
       forex(RefType arg | arg = pt.getATypeArgument() | unconstrained(arg))
     )
+  }
+
+  /** Holds if `t` is a parameterised type with unrestricted type argument at position `pos`. */
+  private predicate partiallyUnbound(ParameterizedType t, int pos) {
+    unconstrained(t.getTypeArgument(pos))
   }
 
   Type getErasure(Type t) { result = t.getErasure() }

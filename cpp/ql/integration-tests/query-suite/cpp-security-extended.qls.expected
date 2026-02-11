@@ -1,0 +1,97 @@
+ql/cpp/ql/src/Best Practices/Likely Errors/CommaBeforeMisleadingIndentation.ql
+ql/cpp/ql/src/Best Practices/Likely Errors/OffsetUseBeforeRangeCheck.ql
+ql/cpp/ql/src/Critical/DoubleFree.ql
+ql/cpp/ql/src/Critical/IncorrectCheckScanf.ql
+ql/cpp/ql/src/Critical/MissingCheckScanf.ql
+ql/cpp/ql/src/Critical/NewFreeMismatch.ql
+ql/cpp/ql/src/Critical/OverflowStatic.ql
+ql/cpp/ql/src/Critical/SizeCheck.ql
+ql/cpp/ql/src/Critical/SizeCheck2.ql
+ql/cpp/ql/src/Critical/UseAfterFree.ql
+ql/cpp/ql/src/Diagnostics/ExtractedFiles.ql
+ql/cpp/ql/src/Diagnostics/ExtractionWarnings.ql
+ql/cpp/ql/src/Diagnostics/FailedExtractorInvocations.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/BadAdditionOverflowCheck.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/IntMultToLong.ql
+ql/cpp/ql/src/Likely Bugs/Arithmetic/SignedOverflowCheck.ql
+ql/cpp/ql/src/Likely Bugs/Conversion/CastArrayPointerArithmetic.ql
+ql/cpp/ql/src/Likely Bugs/Format/NonConstantFormat.ql
+ql/cpp/ql/src/Likely Bugs/Format/SnprintfOverflow.ql
+ql/cpp/ql/src/Likely Bugs/Format/WrongNumberOfFormatArguments.ql
+ql/cpp/ql/src/Likely Bugs/Format/WrongTypeFormatArguments.ql
+ql/cpp/ql/src/Likely Bugs/Likely Typos/IncorrectNotOperatorUsage.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/AllocaInLoop.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/PointerOverflow.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/ReturnStackAllocatedMemory.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/StrncpyFlippedArgs.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/SuspiciousCallToStrncat.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/SuspiciousSizeof.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/UninitializedLocal.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/UnsafeUseOfStrcat.ql
+ql/cpp/ql/src/Likely Bugs/Memory Management/UsingExpiredStackAddress.ql
+ql/cpp/ql/src/Likely Bugs/OO/UnsafeUseOfThis.ql
+ql/cpp/ql/src/Likely Bugs/Protocols/TlsSettingsMisconfiguration.ql
+ql/cpp/ql/src/Likely Bugs/Protocols/UseOfDeprecatedHardcodedProtocol.ql
+ql/cpp/ql/src/Likely Bugs/RedundantNullCheckSimple.ql
+ql/cpp/ql/src/Likely Bugs/Underspecified Functions/TooFewArguments.ql
+ql/cpp/ql/src/Security/CWE/CWE-014/MemsetMayBeDeleted.ql
+ql/cpp/ql/src/Security/CWE/CWE-022/TaintedPath.ql
+ql/cpp/ql/src/Security/CWE/CWE-078/ExecTainted.ql
+ql/cpp/ql/src/Security/CWE/CWE-079/CgiXss.ql
+ql/cpp/ql/src/Security/CWE/CWE-089/SqlTainted.ql
+ql/cpp/ql/src/Security/CWE/CWE-114/UncontrolledProcessOperation.ql
+ql/cpp/ql/src/Security/CWE/CWE-119/OverflowBuffer.ql
+ql/cpp/ql/src/Security/CWE/CWE-119/OverrunWriteProductFlow.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/BadlyBoundedWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/OverrunWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/OverrunWriteFloat.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/UnboundedWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-120/VeryLikelyOverrunWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-121/UnterminatedVarargsCall.ql
+ql/cpp/ql/src/Security/CWE/CWE-131/NoSpaceForZeroTerminator.ql
+ql/cpp/ql/src/Security/CWE/CWE-134/UncontrolledFormatString.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/ArithmeticUncontrolled.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/ComparisonWithWiderType.ql
+ql/cpp/ql/src/Security/CWE/CWE-190/TaintedAllocationSize.ql
+ql/cpp/ql/src/Security/CWE/CWE-191/UnsignedDifferenceExpressionComparedZero.ql
+ql/cpp/ql/src/Security/CWE/CWE-193/InvalidPointerDeref.ql
+ql/cpp/ql/src/Security/CWE/CWE-253/HResultBooleanConversion.ql
+ql/cpp/ql/src/Security/CWE/CWE-290/AuthenticationBypass.ql
+ql/cpp/ql/src/Security/CWE/CWE-295/SSLResultConflation.ql
+ql/cpp/ql/src/Security/CWE/CWE-295/SSLResultNotChecked.ql
+ql/cpp/ql/src/Security/CWE/CWE-311/CleartextBufferWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-311/CleartextFileWrite.ql
+ql/cpp/ql/src/Security/CWE/CWE-311/CleartextTransmission.ql
+ql/cpp/ql/src/Security/CWE/CWE-313/CleartextSqliteDatabase.ql
+ql/cpp/ql/src/Security/CWE/CWE-319/UseOfHttp.ql
+ql/cpp/ql/src/Security/CWE/CWE-326/InsufficientKeySize.ql
+ql/cpp/ql/src/Security/CWE/CWE-327/BrokenCryptoAlgorithm.ql
+ql/cpp/ql/src/Security/CWE/CWE-327/OpenSslHeartbleed.ql
+ql/cpp/ql/src/Security/CWE/CWE-367/TOCTOUFilesystemRace.ql
+ql/cpp/ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql
+ql/cpp/ql/src/Security/CWE/CWE-416/UseOfStringAfterLifetimeEnds.ql
+ql/cpp/ql/src/Security/CWE/CWE-416/UseOfUniquePointerAfterLifetimeEnds.ql
+ql/cpp/ql/src/Security/CWE/CWE-428/UnsafeCreateProcessCall.ql
+ql/cpp/ql/src/Security/CWE/CWE-468/IncorrectPointerScaling.ql
+ql/cpp/ql/src/Security/CWE/CWE-468/IncorrectPointerScalingVoid.ql
+ql/cpp/ql/src/Security/CWE/CWE-468/SuspiciousAddWithSizeof.ql
+ql/cpp/ql/src/Security/CWE/CWE-497/ExposedSystemData.ql
+ql/cpp/ql/src/Security/CWE/CWE-497/PotentiallyExposedSystemData.ql
+ql/cpp/ql/src/Security/CWE/CWE-570/IncorrectAllocationErrorHandling.ql
+ql/cpp/ql/src/Security/CWE/CWE-611/XXE.ql
+ql/cpp/ql/src/Security/CWE/CWE-676/DangerousFunctionOverflow.ql
+ql/cpp/ql/src/Security/CWE/CWE-676/DangerousUseOfCin.ql
+ql/cpp/ql/src/Security/CWE/CWE-676/PotentiallyDangerousFunction.ql
+ql/cpp/ql/src/Security/CWE/CWE-704/WcharCharConversion.ql
+ql/cpp/ql/src/Security/CWE/CWE-732/DoNotCreateWorldWritable.ql
+ql/cpp/ql/src/Security/CWE/CWE-732/OpenCallMissingModeArgument.ql
+ql/cpp/ql/src/Security/CWE/CWE-732/UnsafeDaclSecurityDescriptor.ql
+ql/cpp/ql/src/Security/CWE/CWE-807/TaintedCondition.ql
+ql/cpp/ql/src/Security/CWE/CWE-843/TypeConfusion.ql
+ql/cpp/ql/src/Summary/LinesOfCode.ql
+ql/cpp/ql/src/Summary/LinesOfUserCode.ql
+ql/cpp/ql/src/Telemetry/CompilerErrors.ql
+ql/cpp/ql/src/Telemetry/DatabaseQuality.ql
+ql/cpp/ql/src/Telemetry/ExtractionMetrics.ql
+ql/cpp/ql/src/Telemetry/MissingIncludes.ql
+ql/cpp/ql/src/Telemetry/SucceededIncludes.ql

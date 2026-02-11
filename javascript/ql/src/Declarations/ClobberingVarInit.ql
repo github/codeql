@@ -5,7 +5,8 @@
  * @kind problem
  * @problem.severity error
  * @id js/variable-initialization-conflict
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       external/cwe/cwe-563
  * @precision very-high

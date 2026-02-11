@@ -50,7 +50,7 @@ CppType getEllipsisVariablePRValueType() {
 CppType getEllipsisVariableGLValueType() { result = getTypeForGLValue(any(UnknownType t)) }
 
 /**
- * Holds if the function returns a value, as opposed to returning `void`.
+ * Holds if the function `func` returns a value, as opposed to returning `void`.
  */
 predicate hasReturnValue(Function func) { not func.getUnspecifiedType() instanceof VoidType }
 
@@ -66,9 +66,6 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
   final override string toString() { result = func.toString() }
 
   final override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   /**
    * Gets the function being translated.
@@ -212,8 +209,13 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
       (
         // Only generate the `Unwind` instruction if there is any exception
         // handling present in the function.
-        exists(TryStmt try | try.getEnclosingFunction() = func) or
+        exists(TryOrMicrosoftTryStmt try | try.getEnclosingFunction() = func)
+        or
         exists(ThrowExpr throw | throw.getEnclosingFunction() = func)
+        or
+        exists(FunctionCall call | call.getEnclosingFunction() = func |
+          getTranslatedExpr(call).(TranslatedCallExpr).mayThrowException(_)
+        )
       )
       or
       tag = AliasedUseTag() and
@@ -304,11 +306,11 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
   final predicate hasReturnValue() { hasReturnValue(func) }
 
   /**
-   * Gets the single `InitializeThis` instruction for this function. Holds only
-   * if the function is an instance member function, constructor, or destructor.
+   * Gets the first load of `this` for this function. Holds only if the function
+   * is an instance member function, constructor, or destructor.
    */
-  final Instruction getInitializeThisInstruction() {
-    result = getTranslatedThisParameter(func).getInstruction(InitializerStoreTag())
+  final Instruction getLoadThisInstruction() {
+    result = getTranslatedThisParameter(func).getInstruction(InitializerIndirectAddressTag())
   }
 
   /**
@@ -483,9 +485,6 @@ class TranslatedThisParameter extends TranslatedParameter, TTranslatedThisParame
 
   final override Locatable getAst() { result = func }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Function getFunction() { result = func }
 
   final override predicate hasIndirection() { any() }
@@ -517,9 +516,6 @@ class TranslatedPositionalParameter extends TranslatedParameter, TTranslatedPara
   final override string toString() { result = param.toString() }
 
   final override Locatable getAst() { result = param }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   final override Function getFunction() {
     result = param.getFunction() or
@@ -558,9 +554,6 @@ class TranslatedEllipsisParameter extends TranslatedParameter, TTranslatedEllips
 
   final override Locatable getAst() { result = func }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   final override Function getFunction() { result = func }
 
   final override predicate hasIndirection() { any() }
@@ -596,9 +589,6 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
   override string toString() { result = "ctor init: " + func.toString() }
 
   override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override TranslatedElement getChild(int id) {
     exists(ConstructorFieldInit fieldInit |
@@ -649,7 +639,7 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
   }
 
   override Instruction getTargetAddress() {
-    result = getTranslatedFunction(func).getInitializeThisInstruction()
+    result = getTranslatedFunction(func).getLoadThisInstruction()
   }
 
   override Type getTargetType() { result = getTranslatedFunction(func).getThisType() }
@@ -676,9 +666,6 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
   override string toString() { result = "dtor destruction: " + func.toString() }
 
   override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override TranslatedElement getChild(int id) {
     exists(DestructorFieldDestruction fieldDestruction |
@@ -732,9 +719,6 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
   TranslatedReadEffects() { this = TTranslatedReadEffects(func) }
 
   override Locatable getAst() { result = func }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override Function getFunction() { result = func }
 
@@ -839,9 +823,6 @@ class TranslatedThisReadEffect extends TranslatedReadEffect, TTranslatedThisRead
 
   override Locatable getAst() { result = func }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
-
   override Function getFunction() { result = func }
 
   override string toString() { result = "read effect: this" }
@@ -864,9 +845,6 @@ class TranslatedParameterReadEffect extends TranslatedReadEffect, TTranslatedPar
   TranslatedParameterReadEffect() { this = TTranslatedParameterReadEffect(param) }
 
   override Locatable getAst() { result = param }
-
-  /** DEPRECATED: Alias for getAst */
-  deprecated override Locatable getAST() { result = this.getAst() }
 
   override string toString() { result = "read effect: " + param.toString() }
 

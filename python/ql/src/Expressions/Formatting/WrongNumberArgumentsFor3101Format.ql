@@ -3,7 +3,8 @@
  * @description A string formatting operation, such as '"{0}: {1}, {2}".format(a,b)',
  *              where the number of values to be formatted is too few for the format string will raise an IndexError.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low

@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-348/ClientSuppliedIpUsedInSecurityCheck.ql
+query: experimental/Security/CWE/CWE-348/ClientSuppliedIpUsedInSecurityCheck.ql
+postprocess: utils/test/PrettyPrintModels.ql

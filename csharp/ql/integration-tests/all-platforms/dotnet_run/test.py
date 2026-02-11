@@ -1,57 +1,69 @@
-from create_database_utils import *
-from diagnostics_test_utils import *
-
 def check_build_out(msg, s):
-    if "[build-stdout] " + msg not in s:
-        raise Exception("The C# tracer did not interpret the 'dotnet run' command correctly")
+    lines = s.splitlines()
+    assert (
+        any (("[build-stdout]" in line) and (msg in line) for line in lines)
+    ), "The C# tracer did not interpret the 'dotnet run' command correctly"
 
 # no arguments
-s = run_codeql_database_create_stdout(['dotnet run'], "test-db", "csharp")
-check_build_out("Default reply", s)
-check_diagnostics()
+def test_no_args(codeql, csharp):
+    s = codeql.database.create(command="dotnet run", _capture="stdout")
+    check_build_out("Default reply", s)
+
 
 # no arguments, but `--`
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test-db', 'dotnet run --'], "test2-db", "csharp")
-check_build_out("Default reply", s)
-check_diagnostics(test_db="test2-db")
+def test_no_arg_dash_dash(codeql, csharp):
+    s = codeql.database.create(command="dotnet run --", _capture="stdout")
+    check_build_out("Default reply", s)
+
 
 # one argument, no `--`
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test2-db', 'dotnet run hello'], "test3-db", "csharp")
-check_build_out("Default reply", s)
-check_diagnostics(test_db="test3-db")
+def test_one_arg_no_dash_dash(codeql, csharp):
+    s = codeql.database.create(command="dotnet run hello", _capture="stdout")
+    check_build_out("Default reply", s)
+
 
 # one argument, but `--`
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test3-db', 'dotnet run -- hello'], "test4-db", "csharp")
-check_build_out("Default reply", s)
-check_diagnostics(test_db="test4-db")
+def test_one_arg_dash_dash(codeql, csharp):
+    s = codeql.database.create(command="dotnet run -- hello", _capture="stdout")
+    check_build_out("Default reply", s)
+
 
 # two arguments, no `--`
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test4-db', 'dotnet run hello world'], "test5-db", "csharp")
-check_build_out("hello, world", s)
-check_diagnostics(test_db="test5-db")
+def test_two_args_no_dash_dash(codeql, csharp):
+    s = codeql.database.create(command="dotnet run hello world", _capture="stdout")
+    check_build_out("hello, world", s)
+
 
 # two arguments, and `--`
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test5-db', 'dotnet run -- hello world'], "test6-db", "csharp")
-check_build_out("hello, world", s)
-check_diagnostics(test_db="test6-db")
+def test_two_args_dash_dash(codeql, csharp):
+    s = codeql.database.create(command="dotnet run -- hello world", _capture="stdout")
+    check_build_out("hello, world", s)
+
 
 # shared compilation enabled; tracer should override by changing the command
 # to `dotnet run -p:UseSharedCompilation=true -p:UseSharedCompilation=false -- hello world`
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test6-db', 'dotnet run -p:UseSharedCompilation=true -- hello world'], "test7-db", "csharp")
-check_build_out("hello, world", s)
-check_diagnostics(test_db="test7-db")
+def test_shared_compilation(codeql, csharp):
+    s = codeql.database.create(
+        command="dotnet run -p:UseSharedCompilation=true -- hello world", _capture="stdout"
+    )
+    check_build_out("hello, world", s)
+
 
 # option passed into `dotnet run`
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test7-db', 'dotnet build', 'dotnet run --no-build hello world'], "test8-db", "csharp")
-check_build_out("hello, world", s)
-check_diagnostics(test_db="test8-db")
+def test_option(codeql, csharp):
+    s = codeql.database.create(
+        command=["dotnet build", "dotnet run --no-build hello world"], _capture="stdout"
+    )
+    check_build_out("hello, world", s)
+
 
 # two arguments, no '--' (first argument quoted)
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test8-db', 'dotnet run "hello world part1" part2'], "test9-db", "csharp")
-check_build_out("hello world part1, part2", s)
-check_diagnostics(test_db="test9-db")
+def test_two_args_no_dash_dash_quote_first(codeql, csharp):
+    s = codeql.database.create(command='dotnet run "hello world" part2', _capture="stdout")
+    check_build_out("hello world, part2", s)
+
 
 # two arguments, no '--' (second argument quoted) and using dotnet to execute dotnet
-s = run_codeql_database_create_stdout(['dotnet clean', 'rm -rf test9-db', 'dotnet dotnet run part1 "hello world part2"'], "test10-db", "csharp")
-check_build_out("part1, hello world part2", s)
-check_diagnostics(test_db="test10-db")
+def test_two_args_no_dash_dash_quote_second(codeql, csharp):
+    s = codeql.database.create(command='dotnet dotnet run hello "world part2"', _capture="stdout")
+    check_build_out("hello, world part2", s)

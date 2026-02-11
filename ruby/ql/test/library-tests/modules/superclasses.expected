@@ -1,24 +1,20 @@
+#-----| BasicObject
+
 #-----| Class
 #-----|  -> Module
 
-#-----| EsotericInstanceMethods
-
-#-----| MyStruct
-
-#-----| Struct
-
-#-----| UnresolvedNamespace
-
-#-----| BasicObject
-
 #-----| Complex
 #-----|  -> Numeric
+
+#-----| EsotericInstanceMethods
 
 #-----| FalseClass
 #-----|  -> Object
 
 #-----| Float
 #-----|  -> Numeric
+
+#-----| MyStruct
 
 #-----| NilClass
 #-----|  -> Object
@@ -31,10 +27,14 @@
 #-----| Rational
 #-----|  -> Numeric
 
+#-----| Struct
+
 #-----| Symbol
 
 #-----| TrueClass
 #-----|  -> Object
+
+#-----| UnresolvedNamespace
 
 #-----| UnresolvedNamespace::X1
 
@@ -146,6 +146,10 @@ calls.rb:
 #-----|  -> Object
 
 #  649| CustomNew2
+#-----|  -> Object
+
+element_reference.rb:
+#    1| ClassWithElementRef
 #-----|  -> Object
 
 hello.rb:

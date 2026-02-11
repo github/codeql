@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mavlink/qgroundcontrol", "*", "input.aws_secret_access_key", "code-injection", "generated"]
+     - ["mavlink/qgroundcontrol", "*", "input.aws_key_id", "code-injection", "generated"]
+     - ["mavlink/qgroundcontrol", "*", "input.artifact_name", "code-injection", "generated"]

@@ -1,3 +1,5 @@
+deprecated module;
+
 import python
 
 // Helper predicates for multiple call to __init__/__del__ queries.

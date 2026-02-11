@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: argumentInjectionSinksDataModel
+    # https://gtfobins.github.io/
+    # https://0xn3va.gitbook.io/cheat-sheets/web-application/command-injection/argument-injection
+    data:
+      - ["(awk)\\s(.*?)", 1, 2]
+      - ["(find)\\s(.*?)", 1, 2]
+      - ["(git clone)\\s(.*?)", 1, 2]
+      - ["(sed)\\s(.*?)", 1, 2]
+      - ["(tar)\\s(.*?)", 1, 2]
+      - ["(wget)\\s(.*?)", 1, 2]
+      - ["(zip)\\s(.*?)", 1, 2]
+

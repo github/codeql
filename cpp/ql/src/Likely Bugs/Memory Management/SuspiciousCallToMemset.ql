@@ -47,11 +47,17 @@ Type stripType(Type t) {
   or
   result = stripType(t.(Decltype).getBaseType())
   or
+  result = stripType(t.(TypeofType).getBaseType())
+  or
+  result = stripType(t.(IntrinsicTransformedType).getBaseType())
+  or
   not t instanceof TypedefType and
   not t instanceof ArrayType and
   not t instanceof ReferenceType and
   not t instanceof SpecifiedType and
   not t instanceof Decltype and
+  not t instanceof TypeofType and
+  not t instanceof IntrinsicTransformedType and
   result = t
 }
 

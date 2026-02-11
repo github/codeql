@@ -1,0 +1,21 @@
+edges
+| action1/action.yml:37:7:42:4 | Run Step: reflector [reflected] | action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | provenance |  |
+| action1/action.yml:41:30:41:55 | inputs.who-to-greet | action1/action.yml:37:7:42:4 | Run Step: reflector [reflected] | provenance |  |
+| action1/action.yml:42:7:44:4 | Uses Step: changed-files | action1/action.yml:48:19:48:70 | steps.changed-files.outputs.all_changed_files | provenance |  |
+| action1/action.yml:44:7:48:70 | Run Step: source [tainted] | action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | provenance |  |
+| action1/action.yml:48:19:48:70 | steps.changed-files.outputs.all_changed_files | action1/action.yml:44:7:48:70 | Run Step: source [tainted] | provenance |  |
+nodes
+| action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | semmle.label | steps.reflector.outputs.reflected |
+| action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | semmle.label | steps.source.outputs.tainted |
+| action1/action.yml:37:7:42:4 | Run Step: reflector [reflected] | semmle.label | Run Step: reflector [reflected] |
+| action1/action.yml:41:30:41:55 | inputs.who-to-greet | semmle.label | inputs.who-to-greet |
+| action1/action.yml:42:7:44:4 | Uses Step: changed-files | semmle.label | Uses Step: changed-files |
+| action1/action.yml:44:7:48:70 | Run Step: source [tainted] | semmle.label | Run Step: source [tainted] |
+| action1/action.yml:48:19:48:70 | steps.changed-files.outputs.all_changed_files | semmle.label | steps.changed-files.outputs.all_changed_files |
+subpaths
+#select
+| action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | Source |
+| action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | action1/action.yml:41:30:41:55 | inputs.who-to-greet | action1/action.yml:11:13:11:52 | steps.reflector.outputs.reflected | Source |
+| action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | Source |
+| action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | action1/action.yml:42:7:44:4 | Uses Step: changed-files | action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | Source |
+| action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | action1/action.yml:48:19:48:70 | steps.changed-files.outputs.all_changed_files | action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | Source |

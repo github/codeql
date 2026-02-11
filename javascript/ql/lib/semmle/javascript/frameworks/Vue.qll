@@ -3,9 +3,11 @@
  */
 
 import javascript
+import semmle.javascript.ViewComponentInput
 
 module Vue {
   /** The global variable `Vue`, as an API graph entry point. */
+  overlay[local?]
   private class GlobalVueEntryPoint extends API::EntryPoint {
     GlobalVueEntryPoint() { this = "VueEntryPoint" }
 
@@ -17,6 +19,7 @@ module Vue {
    *
    * This `EntryPoint` is used by `SingleFileComponent::getOwnOptions()`.
    */
+  overlay[local?]
   private class VueExportEntryPoint extends API::EntryPoint {
     VueExportEntryPoint() { this = "VueExportEntryPoint" }
 
@@ -85,17 +88,16 @@ module Vue {
    * A class with a `@Component` decorator, making it usable as an "options" object in Vue.
    */
   class ClassComponent extends DataFlow::ClassNode {
+    private ClassDefinition cls;
     DataFlow::Node decorator;
 
     ClassComponent() {
-      exists(ClassDefinition cls |
-        this = cls.flow() and
-        cls.getADecorator().getExpression() = decorator.asExpr() and
-        (
-          componentDecorator().flowsTo(decorator)
-          or
-          componentDecorator().getACall() = decorator
-        )
+      this = cls.flow() and
+      cls.getADecorator().getExpression() = decorator.asExpr() and
+      (
+        componentDecorator().flowsTo(decorator)
+        or
+        componentDecorator().getACall() = decorator
       )
     }
 
@@ -105,6 +107,9 @@ module Vue {
      * These options correspond to the options one would pass to `new Vue({...})` or similar.
      */
     API::Node getDecoratorOptions() { result = decorator.(API::CallNode).getParameter(0) }
+
+    /** Gets the AST node for the class definition. */
+    ClassDefinition getClassDefinition() { result = cls }
   }
 
   private string memberKindVerb(DataFlow::MemberKind kind) {
@@ -182,14 +187,6 @@ module Vue {
       or
       result = this.getAsClassComponent().getDecoratorOptions()
     }
-
-    /**
-     * DEPRECATED. Use `getOwnOptions().getASink()`.
-     *
-     * Gets the options passed to the Vue object, such as the object literal `{...}` in `new Vue{{...})`
-     * or the default export of a single-file component.
-     */
-    deprecated DataFlow::Node getOwnOptionsObject() { result = this.getOwnOptions().asSink() }
 
     /**
      * Gets the class implementing this Vue component, if any.
@@ -442,12 +439,13 @@ module Vue {
    *
    * This entry point is used in `SingleFileComponent::getComponentRef()`.
    */
+  overlay[local?]
   private class VueFileImportEntryPoint extends API::EntryPoint {
     VueFileImportEntryPoint() { this = "VueFileImportEntryPoint" }
 
     override DataFlow::SourceNode getASource() {
       exists(Import imprt |
-        imprt.getImportedPath().resolve() instanceof VueFile and
+        imprt.getImportedFile() instanceof VueFile and
         result = imprt.getImportedModuleNode()
       )
     }
@@ -467,6 +465,12 @@ module Vue {
     VueFile file;
 
     SingleFileComponent() { this = MkSingleFileComponent(file) }
+
+    /** Gets a call to `defineProps` in this component. */
+    DataFlow::CallNode getDefinePropsCall() {
+      result = DataFlow::globalVarRef("defineProps").getACall() and
+      result.getFile() = file
+    }
 
     override Template::Element getTemplateElement() {
       exists(HTML::Element e | result.(Template::HtmlElement).getElement() = e |
@@ -493,7 +497,7 @@ module Vue {
       // There is no explicit `new Vue()` call in .vue files, so instead get all the imports
       // of the .vue file.
       exists(Import imprt |
-        imprt.getImportedPath().resolve() = file and
+        imprt.getImportedFile() = file and
         result.asSource() = imprt.getImportedModuleNode()
       )
     }
@@ -663,6 +667,10 @@ module Vue {
       or
       result = routeConfig().getMember("beforeEnter").getParameter([0, 1]).asSource()
       or
+      result = routeConfig().getMember("props").getParameter(0).asSource()
+      or
+      result = routeConfig().getMember("props").getAMember().getParameter(0).asSource()
+      or
       exists(Component c |
         result = c.getABoundFunction().getAFunctionValue().getReceiver().getAPropertyRead("$route")
         or
@@ -704,5 +712,69 @@ module Vue {
     override string getSourceType() { result = "Vue route parameter" }
 
     override ClientSideRemoteFlowKind getKind() { result = kind }
+  }
+
+  /**
+   * Holds if the given type annotation indicates a value that is not typically considered taintable.
+   */
+  private predicate isSafeType(TypeAnnotation type) {
+    type.isBooleany() or
+    type.isNumbery() or
+    type.isRawFunction() or
+    type instanceof FunctionTypeExpr
+  }
+
+  /**
+   * Holds if the given field has a type that indicates that is can not contain a taintable value.
+   */
+  private predicate isSafeField(FieldDeclaration field) { isSafeType(field.getTypeAnnotation()) }
+
+  private DataFlow::Node getPropSpec(Component component) {
+    result = component.getOption("props")
+    or
+    result = component.(SingleFileComponent).getDefinePropsCall().getArgument(0)
+  }
+
+  /**
+   * Holds if `component` has an input prop with the given name, that is of a taintable type.
+   */
+  private predicate hasTaintableProp(Component component, string name) {
+    exists(DataFlow::SourceNode spec | spec = getPropSpec(component).getALocalSource() |
+      spec.(DataFlow::ArrayCreationNode).getAnElement().getStringValue() = name
+      or
+      exists(DataFlow::PropWrite write |
+        write = spec.getAPropertyWrite(name) and
+        not DataFlow::globalVarRef(["Number", "Boolean"]).flowsTo(write.getRhs())
+      )
+    )
+    or
+    exists(FieldDeclaration field |
+      field = component.getAsClassComponent().getClassDefinition().getField(name) and
+      DataFlow::moduleMember("vue-property-decorator", "Prop")
+          .getACall()
+          .flowsToExpr(field.getADecorator().getExpression()) and
+      not isSafeField(field)
+    )
+    or
+    // defineProps() can be called with only type arguments and then the Vue compiler will
+    // infer the prop types.
+    exists(CallExpr call, FieldDeclaration field |
+      call = component.(SingleFileComponent).getDefinePropsCall().asExpr() and
+      field = call.getTypeArgument(0).(InterfaceTypeExpr).getMember(name) and
+      not isSafeField(field)
+    )
+  }
+
+  private class PropAsViewComponentInput extends ViewComponentInput {
+    PropAsViewComponentInput() {
+      exists(Component component, string name | hasTaintableProp(component, name) |
+        this = component.getAnInstanceRef().getAPropertyRead(name)
+        or
+        // defineProps() returns the props
+        this = component.(SingleFileComponent).getDefinePropsCall().getAPropertyRead(name)
+      )
+    }
+
+    override string getSourceType() { result = "Vue prop" }
   }
 }

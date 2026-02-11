@@ -2,7 +2,8 @@
  * @name Unreachable code
  * @description Code is unreachable
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-561
  * @problem.severity warning
@@ -12,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate typing_import(ImportingStmt is) {
   exists(Module m |
@@ -32,7 +34,11 @@ predicate unique_yield(Stmt s) {
 /** Holds if `contextlib.suppress` may be used in the same scope as `s` */
 predicate suppression_in_scope(Stmt s) {
   exists(With w |
-    w.getContextExpr().(Call).getFunc().pointsTo(Value::named("contextlib.suppress")) and
+    w.getContextExpr()
+        .(Call)
+        .getFunc()
+        .(ExprWithPointsTo)
+        .pointsTo(Value::named("contextlib.suppress")) and
     w.getScope() = s.getScope()
   )
 }

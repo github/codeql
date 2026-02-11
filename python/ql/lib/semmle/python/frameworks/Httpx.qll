@@ -26,7 +26,7 @@ module HttpxModel {
    *
    * See https://www.python-httpx.org/api/
    */
-  private class RequestCall extends Http::Client::Request::Range, API::CallNode {
+  private class RequestCall extends Http::Client::Request::Range instanceof API::CallNode {
     string methodName;
 
     RequestCall() {
@@ -35,11 +35,11 @@ module HttpxModel {
     }
 
     override DataFlow::Node getAUrlPart() {
-      result = this.getArgByName("url")
+      result = super.getArgByName("url")
       or
       if methodName in ["request", "stream"]
-      then result = this.getArg(1)
-      else result = this.getArg(0)
+      then result = super.getArg(1)
+      else result = super.getArg(0)
     }
 
     override string getFramework() { result = "httpx" }
@@ -47,8 +47,8 @@ module HttpxModel {
     override predicate disablesCertificateValidation(
       DataFlow::Node disablingNode, DataFlow::Node argumentOrigin
     ) {
-      disablingNode = this.getKeywordParameter("verify").asSink() and
-      argumentOrigin = this.getKeywordParameter("verify").getAValueReachingSink() and
+      disablingNode = super.getKeywordParameter("verify").asSink() and
+      argumentOrigin = super.getKeywordParameter("verify").getAValueReachingSink() and
       // unlike `requests`, httpx treats `None` as turning off verify (and not as the default)
       argumentOrigin.asExpr().(ImmutableLiteral).booleanValue() = false
       // TODO: Handling of insecure SSLContext passed to verify argument
@@ -69,7 +69,8 @@ module HttpxModel {
     }
 
     /** A method call on a Client that sends off a request */
-    private class OutgoingRequestCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
+    private class OutgoingRequestCall extends Http::Client::Request::Range instanceof DataFlow::CallCfgNode
+    {
       string methodName;
 
       OutgoingRequestCall() {
@@ -78,11 +79,11 @@ module HttpxModel {
       }
 
       override DataFlow::Node getAUrlPart() {
-        result = this.getArgByName("url")
+        result = super.getArgByName("url")
         or
         if methodName in ["request", "stream"]
-        then result = this.getArg(1)
-        else result = this.getArg(0)
+        then result = super.getArg(1)
+        else result = super.getArg(0)
       }
 
       override string getFramework() { result = "httpx.[Async]Client" }

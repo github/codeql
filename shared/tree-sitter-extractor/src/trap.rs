@@ -7,6 +7,7 @@ use flate2::write::GzEncoder;
 
 #[derive(Clone, Copy, Eq, PartialEq, PartialOrd, Ord, Hash)]
 pub struct Location {
+    pub file_label: Label,
     pub start_line: usize,
     pub start_column: usize,
     pub end_line: usize,
@@ -22,6 +23,12 @@ pub struct Writer {
     global_keys: std::collections::HashMap<String, Label>,
     /// Labels for locations, which don't use global keys
     location_labels: std::collections::HashMap<Location, Label>,
+}
+
+impl Default for Writer {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl Writer {
@@ -89,18 +96,25 @@ impl Writer {
                 self.write_trap_entries(&mut trap_file)
             }
             Compression::Gzip => {
-                let trap_file = GzEncoder::new(trap_file, flate2::Compression::fast());
+                let trap_file = GzEncoder::new(trap_file, Compression::GZIP_LEVEL);
                 let mut trap_file = BufWriter::new(trap_file);
                 self.write_trap_entries(&mut trap_file)
+            }
+            Compression::Zstd => {
+                let trap_file = zstd::stream::Encoder::new(trap_file, Compression::ZSTD_LEVEL)?;
+                let mut trap_file = BufWriter::new(trap_file);
+                self.write_trap_entries(&mut trap_file)?;
+                trap_file.into_inner()?.finish()?;
+                Ok(())
             }
         }
     }
 
     fn write_trap_entries<W: Write>(&self, file: &mut W) -> std::io::Result<()> {
         for trap_entry in &self.trap_output {
-            writeln!(file, "{}", trap_entry)?;
+            writeln!(file, "{trap_entry}")?;
         }
-        std::io::Result::Ok(())
+        Ok(())
     }
 }
 
@@ -117,28 +131,34 @@ pub enum Entry {
 impl fmt::Display for Entry {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Entry::FreshId(label) => write!(f, "{}=*", label),
+            Entry::FreshId(label) => write!(f, "{label}=*"),
             Entry::MapLabelToKey(label, key) => {
                 write!(f, "{}=@\"{}\"", label, key.replace('"', "\"\""))
             }
             Entry::GenericTuple(name, args) => {
-                write!(f, "{}(", name)?;
+                write!(f, "{name}(")?;
                 for (index, arg) in args.iter().enumerate() {
                     if index > 0 {
                         write!(f, ",")?;
                     }
-                    write!(f, "{}", arg)?;
+                    write!(f, "{arg}")?;
                 }
                 write!(f, ")")
             }
-            Entry::Comment(line) => write!(f, "// {}", line),
+            Entry::Comment(line) => write!(f, "// {line}"),
         }
     }
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Copy, Clone, Hash, Eq, PartialEq, Ord, PartialOrd)]
 // Identifiers of the form #0, #1...
 pub struct Label(u32);
+
+impl fmt::Debug for Label {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Label({:#x})", self.0)
+    }
+}
 
 impl fmt::Display for Label {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -159,8 +179,8 @@ const MAX_STRLEN: usize = 1048576;
 impl fmt::Display for Arg {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            Arg::Label(x) => write!(f, "{}", x),
-            Arg::Int(x) => write!(f, "{}", x),
+            Arg::Label(x) => write!(f, "{x}"),
+            Arg::Int(x) => write!(f, "{x}"),
             Arg::String(x) => write!(
                 f,
                 "\"{}\"",
@@ -170,15 +190,39 @@ impl fmt::Display for Arg {
     }
 }
 
+impl From<String> for Arg {
+    fn from(value: String) -> Self {
+        Arg::String(value)
+    }
+}
+
+impl From<&str> for Arg {
+    fn from(value: &str) -> Self {
+        Arg::String(value.into())
+    }
+}
+
+impl From<Label> for Arg {
+    fn from(value: Label) -> Self {
+        Arg::Label(value)
+    }
+}
+
+impl From<usize> for Arg {
+    fn from(value: usize) -> Self {
+        Arg::Int(value)
+    }
+}
+
 pub struct Program(Vec<Entry>);
 
 impl fmt::Display for Program {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let mut text = String::new();
         for trap_entry in &self.0 {
-            text.push_str(&format!("{}\n", trap_entry));
+            text.push_str(&format!("{trap_entry}\n"));
         }
-        write!(f, "{}", text)
+        write!(f, "{text}")
     }
 }
 
@@ -243,9 +287,13 @@ fn limit_string(string: &str, max_size: usize) -> &str {
 pub enum Compression {
     None,
     Gzip,
+    Zstd,
 }
 
 impl Compression {
+    pub const ZSTD_LEVEL: i32 = 2;
+    pub const GZIP_LEVEL: flate2::Compression = flate2::Compression::fast();
+
     pub fn from_env(var_name: &str) -> Result<Compression, String> {
         match std::env::var(var_name) {
             Ok(method) => match Compression::from_string(&method) {
@@ -261,6 +309,7 @@ impl Compression {
         match s.to_lowercase().as_ref() {
             "none" => Some(Compression::None),
             "gzip" => Some(Compression::Gzip),
+            "zstd" => Some(Compression::Zstd),
             _ => None,
         }
     }
@@ -269,15 +318,16 @@ impl Compression {
         match self {
             Compression::None => "trap",
             Compression::Gzip => "trap.gz",
+            Compression::Zstd => "trap.zst",
         }
     }
 }
 
 #[test]
 fn limit_string_test() {
-    assert_eq!("hello", limit_string(&"hello world".to_owned(), 5));
-    assert_eq!("hi ☹", limit_string(&"hi ☹☹".to_owned(), 6));
-    assert_eq!("hi ", limit_string(&"hi ☹☹".to_owned(), 5));
+    assert_eq!("hello", limit_string("hello world", 5));
+    assert_eq!("hi ☹", limit_string("hi ☹☹", 6));
+    assert_eq!("hi ", limit_string("hi ☹☹", 5));
 }
 
 #[test]

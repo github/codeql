@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["home-assistant/android", "*", "input.lokalise-token", "code-injection", "generated"]
+     - ["home-assistant/android", "*", "input.lokalise-project", "code-injection", "generated"]
+     - ["home-assistant/android", "*", "input.tag-name", "code-injection", "generated"]

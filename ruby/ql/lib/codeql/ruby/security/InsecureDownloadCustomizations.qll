@@ -21,12 +21,6 @@ module InsecureDownload {
   abstract class Source extends DataFlow::Node {
     /**
      * Gets a flow-label for this source.
-     * DEPRECATED: Use `getAFlowLabel()`
-     */
-    abstract deprecated DataFlow::FlowState getALabel();
-
-    /**
-     * Gets a flow-label for this source.
      */
     abstract Label::State getAFlowLabel();
   }
@@ -39,12 +33,6 @@ module InsecureDownload {
      * Gets the call that downloads the sensitive file.
      */
     abstract DataFlow::Node getDownloadCall();
-
-    /**
-     * Gets a flow-label where this sink is vulnerable.
-     * DEPRECATED: Use `getAFlowLabel()`
-     */
-    abstract deprecated DataFlow::FlowState getALabel();
 
     /**
      * Gets a flow-label where this sink is vulnerable.
@@ -61,30 +49,6 @@ module InsecureDownload {
    * Flow-labels for reasoning about download of sensitive file through insecure connection.
    */
   module Label {
-    /**
-     * A flow-label for a URL that is downloaded over an insecure connection.
-     * DEPRECATED: Use `InsecureState()`
-     */
-    deprecated class Insecure extends DataFlow::FlowState {
-      Insecure() { this = "insecure" }
-    }
-
-    /**
-     * A flow-label for a URL that is sensitive.
-     * DEPRECATED: Use `SensitiveState()`
-     */
-    deprecated class Sensitive extends DataFlow::FlowState {
-      Sensitive() { this = "sensitive" }
-    }
-
-    /**
-     * A flow-label for file URLs that are both sensitive and downloaded over an insecure connection.
-     * DEPRECATED: Use `SensitiveInsecureState()`
-     */
-    deprecated class SensitiveInsecure extends DataFlow::FlowState {
-      SensitiveInsecure() { this = "sensitiveInsecure" }
-    }
-
     /**
      * Flow-labels for reasoning about download of sensitive file through insecure connection.
      */
@@ -114,13 +78,6 @@ module InsecureDownload {
    * seen as a source for downloads of sensitive files through an insecure connection.
    */
   class InsecureFileUrl extends Source, InsecureUrl {
-    deprecated override DataFlow::FlowState getALabel() {
-      result instanceof Label::Insecure
-      or
-      hasUnsafeExtension(str) and
-      result instanceof Label::SensitiveInsecure
-    }
-
     override Label::State getAFlowLabel() {
       result = Label::InsecureState()
       or
@@ -135,8 +92,6 @@ module InsecureDownload {
    */
   class SensitiveFileName extends Source {
     SensitiveFileName() { hasUnsafeExtension(this.asExpr().getConstantValue().getString()) }
-
-    deprecated override DataFlow::FlowState getALabel() { result instanceof Label::Sensitive }
 
     override Label::State getAFlowLabel() { result = Label::SensitiveState() }
   }
@@ -179,12 +134,6 @@ module InsecureDownload {
     }
 
     override DataFlow::Node getDownloadCall() { result = req }
-
-    deprecated override DataFlow::FlowState getALabel() {
-      result instanceof Label::SensitiveInsecure
-      or
-      any(req.getAUrlPart()) instanceof InsecureUrl and result instanceof Label::Sensitive
-    }
 
     override Label::State getAFlowLabel() {
       result = Label::SensitiveInsecureState()
@@ -231,8 +180,6 @@ module InsecureDownload {
         hasUnsafeExtension(file.getAPathArgument().asExpr().getConstantValue().getString())
       )
     }
-
-    deprecated override DataFlow::FlowState getALabel() { result instanceof Label::Insecure }
 
     override Label::State getAFlowLabel() { result = Label::InsecureState() }
 

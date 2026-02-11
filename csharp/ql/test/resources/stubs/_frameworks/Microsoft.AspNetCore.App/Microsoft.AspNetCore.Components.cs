@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -145,6 +145,8 @@ namespace Microsoft
             }
             public abstract class ComponentBase : Microsoft.AspNetCore.Components.IComponent, Microsoft.AspNetCore.Components.IHandleAfterRender, Microsoft.AspNetCore.Components.IHandleEvent
             {
+                protected Microsoft.AspNetCore.Components.ResourceAssetCollection Assets { get => throw null; }
+                protected Microsoft.AspNetCore.Components.IComponentRenderMode AssignedRenderMode { get => throw null; }
                 void Microsoft.AspNetCore.Components.IComponent.Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle) => throw null;
                 protected virtual void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
                 public ComponentBase() => throw null;
@@ -159,6 +161,7 @@ namespace Microsoft
                 protected virtual System.Threading.Tasks.Task OnInitializedAsync() => throw null;
                 protected virtual void OnParametersSet() => throw null;
                 protected virtual System.Threading.Tasks.Task OnParametersSetAsync() => throw null;
+                protected Microsoft.AspNetCore.Components.RendererInfo RendererInfo { get => throw null; }
                 public virtual System.Threading.Tasks.Task SetParametersAsync(Microsoft.AspNetCore.Components.ParameterView parameters) => throw null;
                 protected virtual bool ShouldRender() => throw null;
                 protected void StateHasChanged() => throw null;
@@ -338,6 +341,11 @@ namespace Microsoft
                 public bool EnableStopPropagation { get => throw null; }
                 public System.Type EventArgsType { get => throw null; }
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false)]
+            public sealed class ExcludeFromInteractiveRoutingAttribute : System.Attribute
+            {
+                public ExcludeFromInteractiveRoutingAttribute() => throw null;
+            }
             public interface IComponent
             {
                 void Attach(Microsoft.AspNetCore.Components.RenderHandle renderHandle);
@@ -360,12 +368,28 @@ namespace Microsoft
             }
             namespace Infrastructure
             {
+                public static partial class ComponentsMetricsServiceCollectionExtensions
+                {
+                    public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddComponentsMetrics(Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
+                    public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddComponentsTracing(Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
+                }
                 public class ComponentStatePersistenceManager
                 {
                     public ComponentStatePersistenceManager(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Components.Infrastructure.ComponentStatePersistenceManager> logger) => throw null;
+                    public ComponentStatePersistenceManager(Microsoft.Extensions.Logging.ILogger<Microsoft.AspNetCore.Components.Infrastructure.ComponentStatePersistenceManager> logger, System.IServiceProvider serviceProvider) => throw null;
                     public System.Threading.Tasks.Task PersistStateAsync(Microsoft.AspNetCore.Components.IPersistentComponentStateStore store, Microsoft.AspNetCore.Components.RenderTree.Renderer renderer) => throw null;
                     public System.Threading.Tasks.Task RestoreStateAsync(Microsoft.AspNetCore.Components.IPersistentComponentStateStore store) => throw null;
+                    public System.Threading.Tasks.Task RestoreStateAsync(Microsoft.AspNetCore.Components.IPersistentComponentStateStore store, Microsoft.AspNetCore.Components.RestoreContext context) => throw null;
+                    public void SetPlatformRenderMode(Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
                     public Microsoft.AspNetCore.Components.PersistentComponentState State { get => throw null; }
+                }
+                public static partial class PersistentStateProviderServiceCollectionExtensions
+                {
+                    public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddSupplyValueFromPersistentComponentStateProvider(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
+                }
+                public static partial class RegisterPersistentComponentStateServiceCollectionExtensions
+                {
+                    public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddPersistentServiceRegistration<TService>(Microsoft.Extensions.DependencyInjection.IServiceCollection services, Microsoft.AspNetCore.Components.IComponentRenderMode componentRenderMode) => throw null;
                 }
             }
             [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
@@ -430,8 +454,10 @@ namespace Microsoft
                 public void NavigateTo(string uri, Microsoft.AspNetCore.Components.NavigationOptions options) => throw null;
                 protected virtual void NavigateToCore(string uri, bool forceLoad) => throw null;
                 protected virtual void NavigateToCore(string uri, Microsoft.AspNetCore.Components.NavigationOptions options) => throw null;
+                public void NotFound() => throw null;
                 protected void NotifyLocationChanged(bool isInterceptedLink) => throw null;
                 protected System.Threading.Tasks.ValueTask<bool> NotifyLocationChangingAsync(string uri, string state, bool isNavigationIntercepted) => throw null;
+                public event System.EventHandler<Microsoft.AspNetCore.Components.Routing.NotFoundEventArgs> OnNotFound;
                 public virtual void Refresh(bool forceReload = default(bool)) => throw null;
                 public System.IDisposable RegisterLocationChangingHandler(System.Func<Microsoft.AspNetCore.Components.Routing.LocationChangingContext, System.Threading.Tasks.ValueTask> locationChangingHandler) => throw null;
                 protected virtual void SetNavigationLockState(bool value) => throw null;
@@ -471,11 +497,13 @@ namespace Microsoft
                 public string HistoryEntryState { get => throw null; set { } }
                 public bool ReplaceHistoryEntry { get => throw null; set { } }
             }
-            public abstract class OwningComponentBase : Microsoft.AspNetCore.Components.ComponentBase, System.IDisposable
+            public abstract class OwningComponentBase : Microsoft.AspNetCore.Components.ComponentBase, System.IAsyncDisposable, System.IDisposable
             {
                 protected OwningComponentBase() => throw null;
                 void System.IDisposable.Dispose() => throw null;
                 protected virtual void Dispose(bool disposing) => throw null;
+                System.Threading.Tasks.ValueTask System.IAsyncDisposable.DisposeAsync() => throw null;
+                protected virtual System.Threading.Tasks.ValueTask DisposeAsyncCore() => throw null;
                 protected bool IsDisposed { get => throw null; }
                 protected System.IServiceProvider ScopedServices { get => throw null; }
             }
@@ -517,21 +545,44 @@ namespace Microsoft
                 public void PersistAsJson<TValue>(string key, TValue instance) => throw null;
                 public Microsoft.AspNetCore.Components.PersistingComponentStateSubscription RegisterOnPersisting(System.Func<System.Threading.Tasks.Task> callback) => throw null;
                 public Microsoft.AspNetCore.Components.PersistingComponentStateSubscription RegisterOnPersisting(System.Func<System.Threading.Tasks.Task> callback, Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
+                public Microsoft.AspNetCore.Components.RestoringComponentStateSubscription RegisterOnRestoring(System.Action callback, Microsoft.AspNetCore.Components.RestoreOptions options) => throw null;
                 public bool TryTakeFromJson<TValue>(string key, out TValue instance) => throw null;
+            }
+            public abstract class PersistentComponentStateSerializer<T>
+            {
+                protected PersistentComponentStateSerializer() => throw null;
+                public abstract void Persist(T value, System.Buffers.IBufferWriter<byte> writer);
+                public abstract T Restore(System.Buffers.ReadOnlySequence<byte> data);
+            }
+            [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
+            public sealed class PersistentStateAttribute : Microsoft.AspNetCore.Components.CascadingParameterAttributeBase
+            {
+                public bool AllowUpdates { get => throw null; set { } }
+                public PersistentStateAttribute() => throw null;
+                public Microsoft.AspNetCore.Components.RestoreBehavior RestoreBehavior { get => throw null; set { } }
             }
             public struct PersistingComponentStateSubscription : System.IDisposable
             {
                 public void Dispose() => throw null;
             }
+            public sealed class RendererInfo
+            {
+                public RendererInfo(string rendererName, bool isInteractive) => throw null;
+                public bool IsInteractive { get => throw null; }
+                public string Name { get => throw null; }
+            }
             public delegate void RenderFragment(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder);
             public delegate Microsoft.AspNetCore.Components.RenderFragment RenderFragment<TValue>(TValue value);
             public struct RenderHandle
             {
+                public Microsoft.AspNetCore.Components.ResourceAssetCollection Assets { get => throw null; }
                 public Microsoft.AspNetCore.Components.Dispatcher Dispatcher { get => throw null; }
                 public System.Threading.Tasks.Task DispatchExceptionAsync(System.Exception exception) => throw null;
                 public bool IsInitialized { get => throw null; }
                 public bool IsRenderingOnMetadataUpdate { get => throw null; }
                 public void Render(Microsoft.AspNetCore.Components.RenderFragment renderFragment) => throw null;
+                public Microsoft.AspNetCore.Components.RendererInfo RendererInfo { get => throw null; }
+                public Microsoft.AspNetCore.Components.IComponentRenderMode RenderMode { get => throw null; }
             }
             namespace Rendering
             {
@@ -541,8 +592,10 @@ namespace Microsoft
                     public int ComponentId { get => throw null; }
                     public ComponentState(Microsoft.AspNetCore.Components.RenderTree.Renderer renderer, int componentId, Microsoft.AspNetCore.Components.IComponent component, Microsoft.AspNetCore.Components.Rendering.ComponentState parentComponentState) => throw null;
                     public virtual System.Threading.Tasks.ValueTask DisposeAsync() => throw null;
+                    protected virtual object GetComponentKey() => throw null;
                     public Microsoft.AspNetCore.Components.Rendering.ComponentState LogicalParentComponentState { get => throw null; }
                     public Microsoft.AspNetCore.Components.Rendering.ComponentState ParentComponentState { get => throw null; }
+                    protected Microsoft.AspNetCore.Components.RenderTree.Renderer Renderer { get => throw null; }
                 }
                 public sealed class RenderTreeBuilder : System.IDisposable
                 {
@@ -642,6 +695,7 @@ namespace Microsoft
                 public abstract class Renderer : System.IAsyncDisposable, System.IDisposable
                 {
                     protected virtual void AddPendingTask(Microsoft.AspNetCore.Components.Rendering.ComponentState componentState, System.Threading.Tasks.Task task) => throw null;
+                    protected virtual Microsoft.AspNetCore.Components.ResourceAssetCollection Assets { get => throw null; }
                     protected int AssignRootComponentId(Microsoft.AspNetCore.Components.IComponent component) => throw null;
                     protected virtual Microsoft.AspNetCore.Components.Rendering.ComponentState CreateComponentState(int componentId, Microsoft.AspNetCore.Components.IComponent component, Microsoft.AspNetCore.Components.Rendering.ComponentState parentComponentState) => throw null;
                     public Renderer(System.IServiceProvider serviceProvider, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) => throw null;
@@ -662,6 +716,7 @@ namespace Microsoft
                     protected Microsoft.AspNetCore.Components.IComponent InstantiateComponent(System.Type componentType) => throw null;
                     protected virtual void ProcessPendingRender() => throw null;
                     protected void RemoveRootComponent(int componentId) => throw null;
+                    protected virtual Microsoft.AspNetCore.Components.RendererInfo RendererInfo { get => throw null; }
                     protected System.Threading.Tasks.Task RenderRootComponentAsync(int componentId) => throw null;
                     protected System.Threading.Tasks.Task RenderRootComponentAsync(int componentId, Microsoft.AspNetCore.Components.ParameterView initialParameters) => throw null;
                     protected virtual Microsoft.AspNetCore.Components.IComponent ResolveComponentForRenderMode(System.Type componentType, int? parentComponentId, Microsoft.AspNetCore.Components.IComponentActivator componentActivator, Microsoft.AspNetCore.Components.IComponentRenderMode renderMode) => throw null;
@@ -738,6 +793,52 @@ namespace Microsoft
                     NamedEvent = 10,
                 }
             }
+            public sealed class ResourceAsset
+            {
+                public ResourceAsset(string url, System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.ResourceAssetProperty> properties = default(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.ResourceAssetProperty>)) => throw null;
+                public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.ResourceAssetProperty> Properties { get => throw null; }
+                public string Url { get => throw null; }
+            }
+            public sealed class ResourceAssetCollection : System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Components.ResourceAsset>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.Components.ResourceAsset>, System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.ResourceAsset>
+            {
+                int System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.Components.ResourceAsset>.Count { get => throw null; }
+                public ResourceAssetCollection(System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.ResourceAsset> resources) => throw null;
+                public static readonly Microsoft.AspNetCore.Components.ResourceAssetCollection Empty;
+                System.Collections.Generic.IEnumerator<Microsoft.AspNetCore.Components.ResourceAsset> System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Components.ResourceAsset>.GetEnumerator() => throw null;
+                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
+                public bool IsContentSpecificUrl(string path) => throw null;
+                Microsoft.AspNetCore.Components.ResourceAsset System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.ResourceAsset>.this[int index] { get => throw null; }
+                public string this[string key] { get => throw null; }
+            }
+            public sealed class ResourceAssetProperty
+            {
+                public ResourceAssetProperty(string name, string value) => throw null;
+                public string Name { get => throw null; }
+                public string Value { get => throw null; }
+            }
+            [System.Flags]
+            public enum RestoreBehavior
+            {
+                Default = 0,
+                SkipInitialValue = 1,
+                SkipLastSnapshot = 2,
+            }
+            public sealed class RestoreContext
+            {
+                public static Microsoft.AspNetCore.Components.RestoreContext InitialValue { get => throw null; }
+                public static Microsoft.AspNetCore.Components.RestoreContext LastSnapshot { get => throw null; }
+                public static Microsoft.AspNetCore.Components.RestoreContext ValueUpdate { get => throw null; }
+            }
+            public struct RestoreOptions
+            {
+                public bool AllowUpdates { get => throw null; set { } }
+                public RestoreOptions() => throw null;
+                public Microsoft.AspNetCore.Components.RestoreBehavior RestoreBehavior { get => throw null; set { } }
+            }
+            public struct RestoringComponentStateSubscription : System.IDisposable
+            {
+                public void Dispose() => throw null;
+            }
             [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = true, Inherited = false)]
             public sealed class RouteAttribute : System.Attribute
             {
@@ -765,6 +866,7 @@ namespace Microsoft
                 public interface IHostEnvironmentNavigationManager
                 {
                     void Initialize(string baseUri, string uri);
+                    virtual void Initialize(string baseUri, string uri, System.Func<string, System.Threading.Tasks.Task> onNavigateTo) => throw null;
                 }
                 public interface INavigationInterception
                 {
@@ -799,6 +901,11 @@ namespace Microsoft
                     public System.Threading.CancellationToken CancellationToken { get => throw null; }
                     public string Path { get => throw null; }
                 }
+                public sealed class NotFoundEventArgs : System.EventArgs
+                {
+                    public NotFoundEventArgs() => throw null;
+                    public string Path { get => throw null; set { } }
+                }
                 public class Router : Microsoft.AspNetCore.Components.IComponent, System.IDisposable, Microsoft.AspNetCore.Components.IHandleAfterRender
                 {
                     public System.Collections.Generic.IEnumerable<System.Reflection.Assembly> AdditionalAssemblies { get => throw null; set { } }
@@ -809,6 +916,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.RenderFragment<Microsoft.AspNetCore.Components.RouteData> Found { get => throw null; set { } }
                     public Microsoft.AspNetCore.Components.RenderFragment Navigating { get => throw null; set { } }
                     public Microsoft.AspNetCore.Components.RenderFragment NotFound { get => throw null; set { } }
+                    public System.Type NotFoundPage { get => throw null; set { } }
                     System.Threading.Tasks.Task Microsoft.AspNetCore.Components.IHandleAfterRender.OnAfterRenderAsync() => throw null;
                     public Microsoft.AspNetCore.Components.EventCallback<Microsoft.AspNetCore.Components.Routing.NavigationContext> OnNavigateAsync { get => throw null; set { } }
                     public bool PreferExactMatches { get => throw null; set { } }

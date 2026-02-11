@@ -8,10 +8,10 @@ public class TrustBoundaryViolations extends HttpServlet {
     Validator validator;
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
-        String input = request.getParameter("input");
+        String input = request.getParameter("input"); // $ Source
 
         // BAD: The input is written to the session without being sanitized.
-        request.getSession().setAttribute("input", input); // $ hasTaintFlow
+        request.getSession().setAttribute("input", input); // $ Alert
 
         String input2 = request.getParameter("input2");
 

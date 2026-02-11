@@ -22,9 +22,9 @@ public class MemberExpression extends Expression
     super("MemberExpression", loc);
     this.object = object;
     this.property = property;
-    this.computed = computed == Boolean.TRUE;
-    this.optional = optional == Boolean.TRUE;
-    this.onOptionalChain = onOptionalChain == Boolean.TRUE;
+    this.computed = Boolean.TRUE.equals(computed);
+    this.optional = Boolean.TRUE.equals(optional);
+    this.onOptionalChain = Boolean.TRUE.equals(onOptionalChain);
   }
 
   @Override
@@ -68,5 +68,10 @@ public class MemberExpression extends Expression
   @Override
   public void setSymbol(int symbol) {
     this.symbol = symbol;
+  }
+
+  @Override 
+  public boolean isValidTypeExpression() {
+    return object instanceof ITypeExpression && ((ITypeExpression)object).isValidTypeExpression() || object instanceof DynamicImport;
   }
 }

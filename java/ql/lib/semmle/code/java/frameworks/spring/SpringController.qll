@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.Maps
 import SpringWeb
@@ -153,8 +156,21 @@ class SpringRequestMappingMethod extends SpringControllerMethod {
     result = this.getProducesExpr().(CompileTimeConstantExpr).getStringValue()
   }
 
-  /** Gets the "value" @RequestMapping annotation value, if present. */
-  string getValue() { result = requestMappingAnnotation.getStringValue("value") }
+  /** DEPRECATED: Use `getAValue()` instead. */
+  deprecated string getValue() { result = requestMappingAnnotation.getStringValue("value") }
+
+  /**
+   * Gets a "value" @RequestMapping annotation string value, if present.
+   *
+   * If the annotation element is defined with an array initializer, then the result will be one of the
+   * elements of that array. Otherwise, the result will be the single expression used as value.
+   */
+  string getAValue() { result = requestMappingAnnotation.getAStringArrayValue("value") }
+
+  /** Gets the "method" @RequestMapping annotation value, if present. */
+  string getMethodValue() {
+    result = requestMappingAnnotation.getAnEnumConstantArrayValue("method").getName()
+  }
 
   /** Holds if this is considered an `@ResponseBody` method. */
   predicate isResponseBody() {
@@ -171,13 +187,10 @@ class SpringServletInputAnnotation extends Annotation {
       a = this.getType() and
       a.getPackage().getName() = "org.springframework.web.bind.annotation"
     |
-      a.hasName("MatrixVariable") or
-      a.hasName("RequestParam") or
-      a.hasName("RequestHeader") or
-      a.hasName("CookieValue") or
-      a.hasName("RequestPart") or
-      a.hasName("PathVariable") or
-      a.hasName("RequestBody")
+      a.hasName([
+          "MatrixVariable", "RequestParam", "RequestHeader", "CookieValue", "RequestPart",
+          "PathVariable", "RequestBody"
+        ])
     )
   }
 }

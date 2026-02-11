@@ -13,10 +13,13 @@
  *     https://github.com/cplusplus/draft/raw/master/papers/n4140.pdf
  */
 
+import Customizations
 import semmle.code.cpp.File
+import semmle.code.cpp.PchFile
 import semmle.code.cpp.Linkage
 import semmle.code.cpp.Location
 import semmle.code.cpp.Compilation
+import semmle.code.cpp.Concept
 import semmle.code.cpp.Element
 import semmle.code.cpp.Namespace
 import semmle.code.cpp.Specifier
@@ -34,6 +37,7 @@ import semmle.code.cpp.Field
 import semmle.code.cpp.Function
 import semmle.code.cpp.MemberFunction
 import semmle.code.cpp.Parameter
+import semmle.code.cpp.TemplateParameter
 import semmle.code.cpp.Variable
 import semmle.code.cpp.Initializer
 import semmle.code.cpp.FriendDecl
@@ -70,3 +74,4 @@ import semmle.code.cpp.Preprocessor
 import semmle.code.cpp.Iteration
 import semmle.code.cpp.NameQualifiers
 import DefaultOptions
+private import semmle.code.cpp.internal.Overlay

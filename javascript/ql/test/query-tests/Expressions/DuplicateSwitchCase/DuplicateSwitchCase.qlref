@@ -1,1 +1,2 @@
-Expressions/DuplicateSwitchCase.ql
+query: Expressions/DuplicateSwitchCase.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

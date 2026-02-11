@@ -6,7 +6,7 @@ module CustomSanitizerOverridesConfig implements DataFlow::ConfigSig {
 
   predicate isSink = TestTaintTrackingConfig::isSink/1;
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof StringConstCompareBarrier }
+  predicate isBarrier(DataFlow::Node node) { node instanceof ConstCompareBarrier }
 }
 
 import MakeInlineTaintTest<CustomSanitizerOverridesConfig>

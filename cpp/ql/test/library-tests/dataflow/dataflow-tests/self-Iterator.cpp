@@ -15,7 +15,7 @@ template<> struct std::iterator_traits<unsigned long>
 };
 
 
-int test() {
+int iterator_test() {
     unsigned long x = source();
     sink(x); // $ ast ir
 }

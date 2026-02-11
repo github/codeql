@@ -1,0 +1,53 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>In order to ensure the <code>==</code> and <code>!=</code> operators behave consistently as expected (i.e. they should be negations of each other), care should be taken when implementing the 
+<code>__eq__</code> and <code>__ne__</code> special methods.</p>
+
+<p>In Python 3, if the <code>__eq__</code> method is defined in a class while the <code>__ne__</code> is not, 
+then the <code>!=</code> operator will automatically delegate to the <code>__eq__</code> method in the expected way. 
+ </p>
+
+ <p>However, if the <code>__ne__</code> method is defined without a corresponding <code>__eq__</code> method, 
+ the <code>==</code> operator will still default to object identity (equivalent to the <code>is</code> operator), while the <code>!=</code>
+ operator will use the <code>__ne__</code> method, which may be inconsistent.
+ </p>
+
+<p>Additionally, if the <code>__ne__</code> method is defined on a superclass, and the subclass defines its own <code>__eq__</code> method without overriding
+the superclass <code>__ne__</code> method, the <code>!=</code> operator will use this superclass <code>__ne__</code> method, rather than automatically delegating
+to <code>__eq__</code>, which may be incorrect.
+</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that when an <code>__ne__</code> method is defined, the <code>__eq__</code> method is also defined, and their results are consistent.
+In most cases, the <code>__ne__</code> method does not need to be defined at all, as the default behavior is to delegate to <code>__eq__</code> and negate the result. </p>
+
+</recommendation>
+<example>
+<p>In the following example, <code>A</code> defines a <code>__ne__</code> method, but not an <code>__eq__</code> method.
+This leads to inconsistent results between equality and inequality operators. 
+</p>
+
+<sample src="examples/EqualsOrNotEquals1.py" />
+
+<p>In the following example, <code>C</code> defines an <code>__eq__</code> method, but its <code>__ne__</code> implementation is inherited from <code>B</code>, 
+which is not consistent with the equality operation.
+</p>
+
+<sample src="examples/EqualsOrNotEquals2.py" />
+
+</example>
+<references>
+
+
+<li>Python Language Reference: <a href="http://docs.python.org/3/reference/datamodel.html#object.__ne__">object.__ne__</a>, 
+<a href="http://docs.python.org/3/reference/expressions.html#comparisons">Comparisons</a>.</li>
+
+
+</references>
+</qhelp>

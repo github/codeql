@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["randombit/botan", "*", "input.target", "code-injection", "generated"]
+     - ["randombit/botan", "*", "input.arch", "code-injection", "generated"]

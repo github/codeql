@@ -86,13 +86,13 @@ module Routing {
    * ```
    */
   private class TopLevelRouteBlock extends RouteBlock, TTopLevelRouteBlock {
-    MethodCall call;
+    MethodCall methodCall;
     // Routing blocks create scopes which define the namespace for controllers and paths,
     // though they can be overridden in various ways.
     // The namespaces can differ, so we track them separately.
     Block block;
 
-    TopLevelRouteBlock() { this = TTopLevelRouteBlock(_, call, block) }
+    TopLevelRouteBlock() { this = TTopLevelRouteBlock(_, methodCall, block) }
 
     override string getAPrimaryQlClass() { result = "TopLevelRouteBlock" }
 
@@ -102,9 +102,9 @@ module Routing {
 
     override RouteBlock getParent() { none() }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
 
     override string getPathComponent() { none() }
 
@@ -122,9 +122,9 @@ module Routing {
    */
   private class ConstraintsRouteBlock extends NestedRouteBlock, TConstraintsRouteBlock {
     private Block block;
-    private MethodCall call;
+    private MethodCall methodCall;
 
-    ConstraintsRouteBlock() { this = TConstraintsRouteBlock(parent, call, block) }
+    ConstraintsRouteBlock() { this = TConstraintsRouteBlock(parent, methodCall, block) }
 
     override string getAPrimaryQlClass() { result = "ConstraintsRouteBlock" }
 
@@ -134,9 +134,9 @@ module Routing {
 
     override string getControllerComponent() { result = "" }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
   }
 
   /**
@@ -149,29 +149,54 @@ module Routing {
    * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Scoping.html#method-i-scope
    */
   private class ScopeRouteBlock extends NestedRouteBlock, TScopeRouteBlock {
-    private MethodCall call;
+    private MethodCall methodCall;
     private Block block;
 
-    ScopeRouteBlock() { this = TScopeRouteBlock(parent, call, block) }
+    ScopeRouteBlock() { this = TScopeRouteBlock(parent, methodCall, block) }
 
     override string getAPrimaryQlClass() { result = "ScopeRouteBlock" }
 
     override Stmt getAStmt() { result = block.getAStmt() }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
 
     override string getPathComponent() {
-      call.getKeywordArgument("path").getConstantValue().isStringlikeValue(result)
+      methodCall.getKeywordArgument("path").getConstantValue().isStringlikeValue(result)
       or
-      not exists(call.getKeywordArgument("path")) and
-      call.getArgument(0).getConstantValue().isStringlikeValue(result)
+      not exists(methodCall.getKeywordArgument("path")) and
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
     override string getControllerComponent() {
-      call.getKeywordArgument(["controller", "module"]).getConstantValue().isStringlikeValue(result)
+      methodCall
+          .getKeywordArgument(["controller", "module"])
+          .getConstantValue()
+          .isStringlikeValue(result)
     }
+  }
+
+  private Expr getActionFromMethodCall(MethodCall methodCall) {
+    result =
+      [
+        // e.g. `get "/comments", to: "comments#index"
+        methodCall.getKeywordArgument("to"),
+        // e.g. `get "/comments" => "comments#index"
+        methodCall.getArgument(0).(Pair).getValue()
+      ]
+  }
+
+  /**
+   * Gets a string representation of the controller-action pair that is routed
+   * to by this method call.
+   */
+  private string getActionStringFromMethodCall(MethodCall methodCall) {
+    getActionFromMethodCall(methodCall).getConstantValue().isStringlikeValue(result)
+    or
+    // TODO: use the redirect call argument to resolve the redirect target
+    getActionFromMethodCall(methodCall).(MethodCall).getMethodName() = "redirect" and
+    result = "<redirect>#<redirect>"
   }
 
   /**
@@ -184,10 +209,10 @@ module Routing {
    * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Resources.html#method-i-resources
    */
   private class ResourcesRouteBlock extends NestedRouteBlock, TResourcesRouteBlock {
-    private MethodCall call;
+    private MethodCall methodCall;
     private Block block;
 
-    ResourcesRouteBlock() { this = TResourcesRouteBlock(parent, call, block) }
+    ResourcesRouteBlock() { this = TResourcesRouteBlock(parent, methodCall, block) }
 
     override string getAPrimaryQlClass() { result = "ResourcesRouteBlock" }
 
@@ -196,19 +221,21 @@ module Routing {
     /**
      * Gets the `resources` call that gives rise to this route block.
      */
-    MethodCall getDefiningMethodCall() { result = call }
+    MethodCall getDefiningMethodCall() { result = methodCall }
 
     override string getPathComponent() {
-      exists(string resource | call.getArgument(0).getConstantValue().isStringlikeValue(resource) |
+      exists(string resource |
+        methodCall.getArgument(0).getConstantValue().isStringlikeValue(resource)
+      |
         result = resource + "/:" + singularize(resource) + "_id"
       )
     }
 
     override string getControllerComponent() { result = "" }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
   }
 
   /**
@@ -250,10 +277,10 @@ module Routing {
    * https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Scoping.html#method-i-namespace
    */
   private class NamespaceRouteBlock extends NestedRouteBlock, TNamespaceRouteBlock {
-    private MethodCall call;
+    private MethodCall methodCall;
     private Block block;
 
-    NamespaceRouteBlock() { this = TNamespaceRouteBlock(parent, call, block) }
+    NamespaceRouteBlock() { this = TNamespaceRouteBlock(parent, methodCall, block) }
 
     override Stmt getAStmt() { result = block.getAStmt() }
 
@@ -262,12 +289,12 @@ module Routing {
     override string getControllerComponent() { result = this.getNamespace() }
 
     private string getNamespace() {
-      call.getArgument(0).getConstantValue().isStringlikeValue(result)
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
-    override string toString() { result = call.toString() }
+    override string toString() { result = methodCall.toString() }
 
-    override Location getLocation() { result = call.getLocation() }
+    override Location getLocation() { result = methodCall.getLocation() }
   }
 
   /**
@@ -340,20 +367,20 @@ module Routing {
      */
     string getAPrimaryQlClass() { result = "RouteImpl" }
 
-    MethodCall method;
+    MethodCall methodCall;
 
     /** Gets a string representation of this route. */
-    string toString() { result = method.toString() }
+    string toString() { result = methodCall.toString() }
 
     /**
      * Gets the location of the method call that defines this route.
      */
-    Location getLocation() { result = method.getLocation() }
+    Location getLocation() { result = methodCall.getLocation() }
 
     /**
      * Gets the method call that defines this route.
      */
-    MethodCall getDefiningMethodCall() { result = method }
+    MethodCall getDefiningMethodCall() { result = methodCall }
 
     /**
      * Get the last component of the path. For example, in
@@ -473,20 +500,20 @@ module Routing {
   private class ExplicitRoute extends RouteImpl, TExplicitRoute {
     RouteBlock parentBlock;
 
-    ExplicitRoute() { this = TExplicitRoute(parentBlock, method) }
+    ExplicitRoute() { this = TExplicitRoute(parentBlock, methodCall) }
 
     override string getAPrimaryQlClass() { result = "ExplicitRoute" }
 
     override RouteBlock getParentBlock() { result = parentBlock }
 
     override string getLastPathComponent() {
-      method.getArgument(0).getConstantValue().isStringlikeValue(result)
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
     override string getLastControllerComponent() {
-      method.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result)
+      methodCall.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result)
       or
-      not exists(method.getKeywordArgument("controller")) and
+      not exists(methodCall.getKeywordArgument("controller")) and
       (
         result = extractController(this.getActionString())
         or
@@ -507,18 +534,13 @@ module Routing {
       )
     }
 
-    private string getActionString() {
-      method.getKeywordArgument("to").getConstantValue().isStringlikeValue(result)
-      or
-      method.getKeywordArgument("to").(MethodCall).getMethodName() = "redirect" and
-      result = "<redirect>#<redirect>"
-    }
+    private string getActionString() { result = getActionStringFromMethodCall(methodCall) }
 
     override string getAction() {
       // get "/photos", action: "index"
-      method.getKeywordArgument("action").getConstantValue().isStringlikeValue(result)
+      methodCall.getKeywordArgument("action").getConstantValue().isStringlikeValue(result)
       or
-      not exists(method.getKeywordArgument("action")) and
+      not exists(methodCall.getKeywordArgument("action")) and
       (
         // get "/photos", to: "photos#index"
         // get "/photos", to: redirect("some_url")
@@ -531,11 +553,11 @@ module Routing {
         or
         // get :some_action
         not exists(this.getActionString()) and
-        method.getArgument(0).getConstantValue().isStringlikeValue(result)
+        methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
       )
     }
 
-    override string getHttpMethod() { result = method.getMethodName().toString() }
+    override string getHttpMethod() { result = methodCall.getMethodName().toString() }
   }
 
   /**
@@ -577,8 +599,8 @@ module Routing {
 
     ResourcesRoute() {
       exists(string resource |
-        this = TResourcesRoute(parent, method, action) and
-        method.getArgument(0).getConstantValue().isStringlikeValue(resource) and
+        this = TResourcesRoute(parent, methodCall, action) and
+        methodCall.getArgument(0).getConstantValue().isStringlikeValue(resource) and
         isDefaultResourceRoute(resource, httpMethod, pathComponent, action)
       )
     }
@@ -590,7 +612,7 @@ module Routing {
     override string getLastPathComponent() { result = pathComponent }
 
     override string getLastControllerComponent() {
-      method.getArgument(0).getConstantValue().isStringlikeValue(result)
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
     override string getAction() { result = action }
@@ -615,8 +637,8 @@ module Routing {
 
     SingularResourceRoute() {
       exists(string resource |
-        this = TResourceRoute(parent, method, action) and
-        method.getArgument(0).getConstantValue().isStringlikeValue(resource) and
+        this = TResourceRoute(parent, methodCall, action) and
+        methodCall.getArgument(0).getConstantValue().isStringlikeValue(resource) and
         isDefaultSingularResourceRoute(resource, httpMethod, pathComponent, action)
       )
     }
@@ -628,7 +650,7 @@ module Routing {
     override string getLastPathComponent() { result = pathComponent }
 
     override string getLastControllerComponent() {
-      method.getArgument(0).getConstantValue().isStringlikeValue(result)
+      methodCall.getArgument(0).getConstantValue().isStringlikeValue(result)
     }
 
     override string getAction() { result = action }
@@ -652,24 +674,23 @@ module Routing {
   private class MatchRoute extends RouteImpl, TMatchRoute {
     private RouteBlock parent;
 
-    MatchRoute() { this = TMatchRoute(parent, method) }
+    MatchRoute() { this = TMatchRoute(parent, methodCall) }
 
     override string getAPrimaryQlClass() { result = "MatchRoute" }
 
     override RouteBlock getParentBlock() { result = parent }
 
     override string getLastPathComponent() {
-      [method.getArgument(0), method.getArgument(0).(Pair).getKey()]
+      [methodCall.getArgument(0), methodCall.getArgument(0).(Pair).getKey()]
           .getConstantValue()
           .isStringlikeValue(result)
     }
 
     override string getLastControllerComponent() {
+      result = extractController(getActionStringFromMethodCall(methodCall)) or
+      methodCall.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result) or
       result =
-        extractController(method.getKeywordArgument("to").getConstantValue().getStringlikeValue()) or
-      method.getKeywordArgument("controller").getConstantValue().isStringlikeValue(result) or
-      result =
-        extractController(method
+        extractController(methodCall
               .getArgument(0)
               .(Pair)
               .getValue()
@@ -679,7 +700,7 @@ module Routing {
 
     override string getHttpMethod() {
       exists(string via |
-        method.getKeywordArgument("via").getConstantValue().isStringlikeValue(via)
+        methodCall.getKeywordArgument("via").getConstantValue().isStringlikeValue(via)
       |
         via = "all" and result = anyHttpMethod()
         or
@@ -687,7 +708,7 @@ module Routing {
       )
       or
       result =
-        method
+        methodCall
             .getKeywordArgument("via")
             .(ArrayLiteral)
             .getElement(_)
@@ -696,11 +717,10 @@ module Routing {
     }
 
     override string getAction() {
+      result = extractAction(getActionStringFromMethodCall(methodCall)) or
+      methodCall.getKeywordArgument("action").getConstantValue().isStringlikeValue(result) or
       result =
-        extractAction(method.getKeywordArgument("to").getConstantValue().getStringlikeValue()) or
-      method.getKeywordArgument("action").getConstantValue().isStringlikeValue(result) or
-      result =
-        extractAction(method
+        extractAction(methodCall
               .getArgument(0)
               .(Pair)
               .getValue()
@@ -821,58 +841,58 @@ module Routing {
   }
 
   /**
-   * Holds if the (resource, method, path, action) combination would be generated by a call to `resources :<resource>`.
+   * Holds if the (resource, httpMethod, path, action) combination would be generated by a call to `resources :<resource>`.
    */
   bindingset[resource]
   private predicate isDefaultResourceRoute(
-    string resource, string method, string path, string action
+    string resource, string httpMethod, string path, string action
   ) {
     action = "create" and
-    (method = "post" and path = "/" + resource)
+    (httpMethod = "post" and path = "/" + resource)
     or
     action = "index" and
-    (method = "get" and path = "/" + resource)
+    (httpMethod = "get" and path = "/" + resource)
     or
     action = "new" and
-    (method = "get" and path = "/" + resource + "/new")
+    (httpMethod = "get" and path = "/" + resource + "/new")
     or
     action = "edit" and
-    (method = "get" and path = "/" + resource + ":id/edit")
+    (httpMethod = "get" and path = "/" + resource + ":id/edit")
     or
     action = "show" and
-    (method = "get" and path = "/" + resource + "/:id")
+    (httpMethod = "get" and path = "/" + resource + "/:id")
     or
     action = "update" and
-    (method in ["put", "patch"] and path = "/" + resource + "/:id")
+    (httpMethod in ["put", "patch"] and path = "/" + resource + "/:id")
     or
     action = "destroy" and
-    (method = "delete" and path = "/" + resource + "/:id")
+    (httpMethod = "delete" and path = "/" + resource + "/:id")
   }
 
   /**
-   * Holds if the (resource, method, path, action) combination would be generated by a call to `resource :<resource>`.
+   * Holds if the (resource, httpMethod, path, action) combination would be generated by a call to `resource :<resource>`.
    */
   bindingset[resource]
   private predicate isDefaultSingularResourceRoute(
-    string resource, string method, string path, string action
+    string resource, string httpMethod, string path, string action
   ) {
     action = "create" and
-    (method = "post" and path = "/" + resource)
+    (httpMethod = "post" and path = "/" + resource)
     or
     action = "new" and
-    (method = "get" and path = "/" + resource + "/new")
+    (httpMethod = "get" and path = "/" + resource + "/new")
     or
     action = "edit" and
-    (method = "get" and path = "/" + resource + "/edit")
+    (httpMethod = "get" and path = "/" + resource + "/edit")
     or
     action = "show" and
-    (method = "get" and path = "/" + resource)
+    (httpMethod = "get" and path = "/" + resource)
     or
     action = "update" and
-    (method in ["put", "patch"] and path = "/" + resource)
+    (httpMethod in ["put", "patch"] and path = "/" + resource)
     or
     action = "destroy" and
-    (method = "delete" and path = "/" + resource)
+    (httpMethod = "delete" and path = "/" + resource)
   }
 
   /**

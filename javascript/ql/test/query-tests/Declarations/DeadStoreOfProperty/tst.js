@@ -1,26 +1,26 @@
 (function(){
     var o = {};
-    o.pure1 = 42; // NOT OK
+    o.pure1 = 42; // $ Alert
     o.pure1 = 42;
 
-    o.pure2 = 42; // NOT OK
+    o.pure2 = 42; // $ Alert
     o.pure2 = 43;
 
     o.impure3 = 42;
     f();
     o.impure3 = 42;
 
-    o.pure4 = 42; // NOT OK
+    o.pure4 = 42; // $ Alert
     43;
     o.pure4 = 42;
 
     o.impure5 = 42;
     o.impure5 = f();
 
-    o.pure6 = f(); // NOT OK
+    o.pure6 = f(); // $ Alert
     o.pure6 = 42;
 
-    o.pure7 = 42; // NOT OK
+    o.pure7 = 42; // $ Alert
     if(x){}
     o.pure7 = 42;
 
@@ -73,7 +73,7 @@
     o15.pure15_aliasWrite = 42;
 
     var o16 = x? o: null;
-    o.pure16_simpleAliasWrite = 42; // NOT OK
+    o.pure16_simpleAliasWrite = 42; // $ Alert
     o16.pure16_simpleAliasWrite = 42;
 
     var o17 = {
@@ -82,57 +82,57 @@
     }
 
     // DOM
-    o.clientTop = 42; // OK
+    o.clientTop = 42;
     o.clientTop = 42;
 
-    o.defaulted1 = null; // OK
+    o.defaulted1 = null;
     o.defaulted1 = 42;
 
-    o.defaulted2 = -1; // OK
+    o.defaulted2 = -1;
     o.defaulted2 = 42;
 
     var o = {};
-    o.pure18 = 42; // NOT OK
-    o.pure18 = 42; // NOT OK
+    o.pure18 = 42; // $ Alert
+    o.pure18 = 42; // $ Alert
     o.pure18 = 42;
 
 	var o = {};
-	Object.defineProperty(o, "setter", { // OK
+	Object.defineProperty(o, "setter", {
 		set: function (value) { }
 	});
 	o.setter = "";
 
-	var o = { set setter(value) { } }; // OK
+	var o = { set setter(value) { } };
 	o.setter = "";
 
 	var o = {
-		set accessor(value) { }, // OK
+		set accessor(value) { },
 		get accessor() { }
 	};
 
 	var o = { set setter(value) { } };
-	o.setter = 42; // probably OK, but still flagged - it seems fishy
+	o.setter = 42; // $ Alert - probably OK, but still flagged - it seems fishy
 	o.setter = 87;
 
 	var o = {};
-	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1, value: getInitialValue()}) // NOT OK
+	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1, value: getInitialValue()}) // $ Alert
 	o.prop = 42;
 
 	var o = {};
-	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1, value: undefined}) // OK, default value
+	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1, value: undefined}) // OK - default value
 	o.prop = 42;
 
 	var o = {};
-	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1}) // OK
+	Object.defineProperty(o, "prop", {writable:!0,configurable:!0,enumerable:!1})
     o.prop = 42;
     
     var o = {};
-    o.pure19 = 42; // OK
+    o.pure19 = 42;
     o.some_other_property = 42;
     o.pure19 = 42;
 
     var o = {};
-    o.pure20 = 42; // OK
+    o.pure20 = 42;
     some_other_obj.some_other_property = 42;
     o.pure20 = 42;
 });

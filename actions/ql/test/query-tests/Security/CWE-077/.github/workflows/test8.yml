@@ -1,0 +1,39 @@
+name: Tests
+
+on:
+  workflow_run:
+    workflows: ["tests"]
+    types:
+      - completed
+
+permissions: { contents: read }
+
+jobs:
+  unit-test-results:
+    name: Test
+    runs-on: ubuntu-latest
+    permissions:
+        actions: write
+        statuses: write
+        checks: write
+        pull-requests: write
+        contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download and Extract Artifacts
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          run_id: ${{ github.event.workflow_run.id }}
+          path: ./artifacts
+
+      - name: assignment
+        run: |
+          foo=$(cat ./artifacts/parent-artifacts/event.txt)
+          echo "foo=$foo" >> $GITHUB_ENV
+      - name: direct 1 
+        run: |
+          echo "foo=$(cat ./artifacts/parent-artifacts/event.txt)" >> $GITHUB_ENV
+      - name: direct 2
+        run: |
+          echo "foo=$(< /artifacts/parent-artifacts/event.txt)" >> $GITHUB_ENV

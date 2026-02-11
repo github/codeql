@@ -373,11 +373,9 @@
 | i_imports.py:30 | ControlFlowNode for _io | import | Module _io | builtin-class module |
 | i_imports.py:31 | ControlFlowNode for Attribute | import | builtin-class _io.BytesIO | builtin-class type |
 | i_imports.py:31 | ControlFlowNode for _io | import | Module _io | builtin-class module |
-| i_imports.py:33 | ControlFlowNode for ImportExpr | import | Module io | builtin-class module |
-| i_imports.py:34 | ControlFlowNode for Attribute | import | builtin-class _io.StringIO | builtin-class type |
-| i_imports.py:34 | ControlFlowNode for io | import | Module io | builtin-class module |
-| i_imports.py:35 | ControlFlowNode for Attribute | import | builtin-class _io.BytesIO | builtin-class type |
-| i_imports.py:35 | ControlFlowNode for io | import | Module io | builtin-class module |
+| i_imports.py:33 | ControlFlowNode for ImportExpr | import | Missing module io | builtin-class module |
+| i_imports.py:34 | ControlFlowNode for io | import | Missing module io | builtin-class module |
+| i_imports.py:35 | ControlFlowNode for io | import | Missing module io | builtin-class module |
 | i_imports.py:37 | ControlFlowNode for ImportExpr | import | Package code | builtin-class module |
 | i_imports.py:38 | ControlFlowNode for Attribute | import | Function f2 | builtin-class function |
 | i_imports.py:38 | ControlFlowNode for Attribute | import | Module code.n_nesting | builtin-class module |

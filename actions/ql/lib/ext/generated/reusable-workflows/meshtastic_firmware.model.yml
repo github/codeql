@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["meshtastic/firmware/.github/workflows/build_rpi2040.yml", "*", "input.board", "code-injection", "generated"]
+     - ["meshtastic/firmware/.github/workflows/build_nrf52.yml", "*", "input.board", "code-injection", "generated"]
+     - ["meshtastic/firmware/.github/workflows/build_esp32_s3.yml", "*", "input.board", "code-injection", "generated"]
+     - ["meshtastic/firmware/.github/workflows/build_esp32_c3.yml", "*", "input.board", "code-injection", "generated"]
+     - ["meshtastic/firmware/.github/workflows/build_esp32.yml", "*", "input.board", "code-injection", "generated"]

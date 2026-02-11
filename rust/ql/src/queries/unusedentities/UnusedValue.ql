@@ -1,0 +1,27 @@
+/**
+ * @name Unused value
+ * @description Unused values may be an indication that the code is incomplete or has a typo.
+ * @kind problem
+ * @problem.severity recommendation
+ * @precision medium
+ * @id rust/unused-value
+ * @tags maintainability
+ *       quality
+ */
+
+import rust
+import codeql.rust.dataflow.Ssa
+import codeql.rust.dataflow.internal.SsaImpl
+import UnusedVariable
+
+from AstNode write, Ssa::Variable v
+where
+  variableWrite(_, write, v) and
+  not v instanceof DiscardVariable and
+  not write.isFromMacroExpansion() and
+  not isAllowableUnused(v) and
+  // SSA definitions are only created for live writes
+  not write = any(Ssa::WriteDefinition def).getWriteAccess() and
+  // avoid overlap with the unused variable query
+  not isUnused(v)
+select write, "Variable $@ is assigned a value that is never used.", v, v.getText()

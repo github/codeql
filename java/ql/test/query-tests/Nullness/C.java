@@ -60,7 +60,7 @@ public class C {
       arrLen = arr == null ? 0 : arr.length;
     }
     if (arrLen > 0) {
-      arr[0] = 0; // NPE - false positive
+      arr[0] = 0; // OK
     }
   }
 
@@ -97,7 +97,7 @@ public class C {
       arr2 = new int[arr1.length];
     }
     for (int i = 0; i < arr1.length; i++)
-      arr2[i] = arr1[i]; // NPE - false positive
+      arr2[i] = arr1[i]; // OK
   }
 
   public void ex8(int x, int lim) {
@@ -107,7 +107,7 @@ public class C {
     while (!stop) {
       int j = 0;
       while (!stop && j < lim) {
-        int step = (j * obj.hashCode()) % 10; // NPE - false positive
+        int step = (j * obj.hashCode()) % 10; // OK
         if (step == 0) {
           obj.hashCode();
           i += 1;
@@ -134,7 +134,7 @@ public class C {
       cond = true;
     }
     if (cond) {
-      obj2.hashCode(); // NPE - false positive
+      obj2.hashCode(); // OK
     }
   }
 
@@ -185,7 +185,7 @@ public class C {
         b = true;
       } else if (a[i] == 2) {
         verifyBool(b);
-        obj.hashCode(); // NPE - false positive
+        obj.hashCode(); // OK
       }
     }
   }
@@ -204,7 +204,7 @@ public class C {
         obj = new Object();
       } else if (a[i] == 2) {
         verifyNotNull(obj);
-        obj.hashCode(); // NPE - false positive
+        obj.hashCode(); // OK
       }
     }
   }
@@ -243,5 +243,26 @@ public class C {
       xs = new int[5];
     }
     xs[0]++; // OK
+  }
+
+  public void ex18(boolean b, int[] xs, Object related) {
+    assert (!b && xs == null && related == null) ||
+           (b && xs != null && related != null) ||
+           (b && xs == null && related == null);
+    if (b) {
+      if (related == null) { return; }
+      xs[0] = 42; // OK
+    }
+  }
+
+  public void ex19(Object t, Object x) {
+    boolean b = t != null || x != null;
+    if (b) {
+      if (t != null) {
+        t.hashCode(); // OK
+      } else {
+        x.hashCode(); // OK
+      }
+    }
   }
 }

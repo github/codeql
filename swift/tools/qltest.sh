@@ -10,10 +10,10 @@ export CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS=${CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS:-ou
 for src in *.swift; do
   env=()
   opts=(-resource-dir "$RESOURCE_DIR" -c -primary-file "$src")
-  opts+=($(sed -n '1 s=//codeql-extractor-options:==p' $src))
+  opts+=($(sed -n 's=//codeql-extractor-options:==p' $src))
   expected_status=$(sed -n 's=//codeql-extractor-expected-status:[[:space:]]*==p' $src)
   expected_status=${expected_status:-0}
-  env+=($(sed -n '1 s=//codeql-extractor-env:==p' $src))
+  env+=($(sed -n 's=//codeql-extractor-env:==p' $src))
   echo >> $QLTEST_LOG
   env "${env[@]}" "$EXTRACTOR" "${opts[@]}" >> $QLTEST_LOG 2>&1
   actual_status=$?

@@ -1,3 +1,227 @@
+## 1.7.6
+
+No user-facing changes.
+
+## 1.7.5
+
+No user-facing changes.
+
+## 1.7.4
+
+No user-facing changes.
+
+## 1.7.3
+
+No user-facing changes.
+
+## 1.7.2
+
+No user-facing changes.
+
+## 1.7.1
+
+No user-facing changes.
+
+## 1.7.0
+
+### Query Metadata Changes
+
+* Reduced the `security-severity` score of the `py/overly-large-range` query from 5.0 to 4.0 to better reflect its impact.
+
+## 1.6.8
+
+### Minor Analysis Improvements
+
+* The `py/insecure-cookie` query has been split into multiple queries; with `py/insecure-cookie` checking for cases in which `Secure` flag is not set, `py/client-exposed-cookie` checking for cases in which the `HttpOnly` flag is not set, and the `py/samesite-none` query checking for cases in which the `SameSite` attribute is set to `None`. These queries also now only alert for cases in which the cookie is detected to contain sensitive data.
+
+## 1.6.7
+
+No user-facing changes.
+
+## 1.6.6
+
+### Minor Analysis Improvements
+
+- The queries that check for unmatchable `$` and `^` in regular expressions did not account correctly for occurrences inside lookahead and lookbehind assertions. These occurrences are now handled correctly, eliminating this source of false positives.
+* The `py/inheritance/signature-mismatch` query has been modernized. It produces more precise results and more descriptive alert messages. 
+* The `py/inheritance/incorrect-overriding-signature` query has been deprecated. Its results have been consolidated into the `py/inheritance/signature-mismatch` query.
+
+## 1.6.5
+
+### Minor Analysis Improvements
+
+* The queries `py/missing-call-to-init`, `py/missing-calls-to-del`, `py/multiple-calls-to-init`, and `py/multiple-calls-to-del` queries have been modernized; no longer relying on outdated libraries, producing more precise results with more descriptive alert messages, and improved documentation.
+
+## 1.6.4
+
+### Minor Analysis Improvements
+
+* The `py/unexpected-raise-in-special-method` query has been modernized. It produces additional results in cases where the exception is 
+only raised conditionally. Its precision has been changed from `very-high` to `high`.
+* The queries `py/incomplete-ordering`, `py/inconsistent-equality`, and `py/equals-hash-mismatch` have been modernized; no longer relying on outdated libraries, improved documentation, and no longer producing alerts for problems specific to Python 2.
+
+## 1.6.3
+
+No user-facing changes.
+
+## 1.6.2
+
+No user-facing changes.
+
+## 1.6.1
+
+No user-facing changes.
+
+## 1.6.0
+
+### Query Metadata Changes
+
+* The tag `quality` has been added to multiple Python quality queries for consistency. They have all been given a tag for one of the two top-level categories `reliability` or `maintainability`, and a tag for a sub-category. See [Query file metadata and alert message style guide](https://github.com/github/codeql/blob/main/docs/query-metadata-style-guide.md#quality-query-sub-category-tags) for more information about these categories.
+
+### Minor Analysis Improvements
+
+* The `py/iter-returns-non-self` query has been modernized, and no longer alerts for certain cases where an equivalent iterator is returned.
+
+## 1.5.2
+
+### Minor Analysis Improvements
+
+* Added SQL injection models from the `pandas` PyPI package.
+
+## 1.5.1
+
+### Minor Analysis Improvements
+
+* The query `py/hardcoded-credentials` has been removed from all query suites.
+
+## 1.5.0
+
+### Query Metadata Changes
+
+* The tags `security/cwe/cwe-94` and `security/cwe/cwe-95` have been removed from `py/use-of-input` and the tags `external/cwe/cwe-094` and `external/cwe/cwe-095` have been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/count-untrusted-data-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/untrusted-data-to-external-api` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/cookie-injection` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-20` has been removed from `py/incomplete-url-substring-sanitization` and the tag `external/cwe/cwe-020` has been added.
+* The tag `external/cwe/cwe-94` has been removed from `py/js2py-rce` and the tag `external/cwe/cwe-094` has been added.
+
+## 1.4.8
+
+No user-facing changes.
+
+## 1.4.7
+
+### Minor Analysis Improvements
+
+- The `py/mixed-tuple-returns` query no longer flags instances where the tuple is passed into the function as an argument, as this led to too many false positives.
+
+## 1.4.6
+
+### Minor Analysis Improvements
+
+- The `py/special-method-wrong-signature` has been modernized and rewritten to no longer rely on outdated APIs. Moreover, the query no longer flags cases where a default value is never used, as these alerts were rarely useful.
+
+### Bug Fixes
+
+- The `py/unused-global-variable` now no longer flags variables that are only used in forward references (e.g. the `Foo` in `def bar(x: "Foo"): ...`).
+
+## 1.4.5
+
+No user-facing changes.
+
+## 1.4.4
+
+No user-facing changes.
+
+## 1.4.3
+
+No user-facing changes.
+
+## 1.4.2
+
+No user-facing changes.
+
+## 1.4.1
+
+No user-facing changes.
+
+## 1.4.0
+
+### New Queries
+
+* The Server Side Template Injection query (`py/template-injection`), originally contributed to the experimental query pack by @porcupineyhairs, has been promoted to the main query suite. This query finds instances of templates for a template engine such as Jinja being constructed with user input.
+
+## 1.3.4
+
+No user-facing changes.
+
+## 1.3.3
+
+No user-facing changes.
+
+## 1.3.2
+
+### Minor Analysis Improvements
+
+* Improved modelling for the `pycurl` framework.
+
+## 1.3.1
+
+No user-facing changes.
+
+## 1.3.0
+
+### New Queries
+
+* The experimental `py/cors-misconfiguration-with-credentials` query, which finds insecure CORS middleware configurations.
+
+## 1.2.2
+
+### Minor Analysis Improvements
+
+* The `py/clear-text-logging-sensitive-data` and `py/clear-text-storage-sensitive-data` queries have been updated to exclude the `certificate` classification of sensitive sources, which often do not contain sensitive data.
+
+## 1.2.1
+
+No user-facing changes.
+
+## 1.2.0
+
+### New Queries
+
+* The `py/cookie-injection` query, originally contributed to the experimental query pack by @jorgectf, has been promoted to the main query pack. This query finds instances of cookies being set without the `Secure`, `HttpOnly`, or `SameSite` attributes set to secure values.
+
+## 1.1.0
+
+### New Queries
+
+* The `py/cookie-injection` query, originally contributed to the experimental query pack by @jorgectf, has been promoted to the main query pack. This query finds instances of cookies being constructed from user input. 
+
+### Minor Analysis Improvements
+
+* Added models of `streamlit` PyPI package.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+### Minor Analysis Improvements
+
+* Adding Python support for Hardcoded Credentials as Models as Data
+* Additional sanitizers have been added to the `py/full-ssrf` and `py/partial-ssrf` queries for methods that verify a string contains only a certain set of characters, such as `.isalnum()` as well as regular expression tests.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+### Minor Analysis Improvements
+
+* Added models for `opml` library.
+
 ## 1.0.0
 
 ### Breaking Changes

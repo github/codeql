@@ -6,6 +6,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.Encryption
 import semmle.code.java.security.HttpsUrls
+private import semmle.code.java.frameworks.android.Android
 
 /** An Android Network Security Configuration XML file. */
 class AndroidNetworkSecurityConfigFile extends XmlFile {
@@ -19,8 +20,12 @@ class AndroidNetworkSecurityConfigFile extends XmlFile {
   }
 }
 
-/** Holds if this database is of an Android application. */
-predicate isAndroid() { exists(AndroidManifestXmlFile m) }
+/**
+ * DEPRECATED. Use `semmle.code.java.frameworks.android.Android::inAndroidApplication` instead.
+ *
+ * Holds if this database contains an Android manifest file.
+ */
+deprecated predicate isAndroid() { exists(AndroidManifestXmlFile m) }
 
 /** Holds if the given domain name is trusted by the Network Security Configuration XML file. */
 private predicate trustedDomainViaXml(string domainName) {
@@ -122,7 +127,7 @@ private module UntrustedUrlFlow = TaintTracking::Global<UntrustedUrlConfig>;
 
 /** Holds if `node` is a network communication call for which certificate pinning is not implemented. */
 predicate missingPinning(MissingPinningSink node, string domain) {
-  isAndroid() and
+  inAndroidApplication(node.getLocation().getFile()) and
   exists(DataFlow::Node src | UntrustedUrlFlow::flow(src, node) |
     if trustedDomain(_) then domain = getDomain(src.asExpr()) else domain = ""
   )

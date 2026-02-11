@@ -1,155 +1,204 @@
+#select
+| XPathInjection.go:16:29:16:91 | ...+... | XPathInjection.go:13:14:13:19 | selection of Form | XPathInjection.go:16:29:16:91 | ...+... | XPath expression depends on a $@. | XPathInjection.go:13:14:13:19 | selection of Form | user-provided value |
+| tst.go:38:23:38:85 | ...+... | tst.go:35:14:35:19 | selection of Form | tst.go:38:23:38:85 | ...+... | XPath expression depends on a $@. | tst.go:35:14:35:19 | selection of Form | user-provided value |
+| tst.go:39:29:39:87 | ...+... | tst.go:35:14:35:19 | selection of Form | tst.go:39:29:39:87 | ...+... | XPath expression depends on a $@. | tst.go:35:14:35:19 | selection of Form | user-provided value |
+| tst.go:40:24:40:86 | ...+... | tst.go:35:14:35:19 | selection of Form | tst.go:40:24:40:86 | ...+... | XPath expression depends on a $@. | tst.go:35:14:35:19 | selection of Form | user-provided value |
+| tst.go:41:24:41:82 | ...+... | tst.go:35:14:35:19 | selection of Form | tst.go:41:24:41:82 | ...+... | XPath expression depends on a $@. | tst.go:35:14:35:19 | selection of Form | user-provided value |
+| tst.go:49:26:49:84 | ...+... | tst.go:46:14:46:19 | selection of Form | tst.go:49:26:49:84 | ...+... | XPath expression depends on a $@. | tst.go:46:14:46:19 | selection of Form | user-provided value |
+| tst.go:50:29:50:87 | ...+... | tst.go:46:14:46:19 | selection of Form | tst.go:50:29:50:87 | ...+... | XPath expression depends on a $@. | tst.go:46:14:46:19 | selection of Form | user-provided value |
+| tst.go:51:30:51:88 | ...+... | tst.go:46:14:46:19 | selection of Form | tst.go:51:30:51:88 | ...+... | XPath expression depends on a $@. | tst.go:46:14:46:19 | selection of Form | user-provided value |
+| tst.go:52:33:52:91 | ...+... | tst.go:46:14:46:19 | selection of Form | tst.go:52:33:52:91 | ...+... | XPath expression depends on a $@. | tst.go:46:14:46:19 | selection of Form | user-provided value |
+| tst.go:60:25:60:83 | ...+... | tst.go:57:14:57:19 | selection of Form | tst.go:60:25:60:83 | ...+... | XPath expression depends on a $@. | tst.go:57:14:57:19 | selection of Form | user-provided value |
+| tst.go:61:28:61:86 | ...+... | tst.go:57:14:57:19 | selection of Form | tst.go:61:28:61:86 | ...+... | XPath expression depends on a $@. | tst.go:57:14:57:19 | selection of Form | user-provided value |
+| tst.go:62:25:62:83 | ...+... | tst.go:57:14:57:19 | selection of Form | tst.go:62:25:62:83 | ...+... | XPath expression depends on a $@. | tst.go:57:14:57:19 | selection of Form | user-provided value |
+| tst.go:63:34:63:92 | ...+... | tst.go:57:14:57:19 | selection of Form | tst.go:63:34:63:92 | ...+... | XPath expression depends on a $@. | tst.go:57:14:57:19 | selection of Form | user-provided value |
+| tst.go:64:29:64:87 | ...+... | tst.go:57:14:57:19 | selection of Form | tst.go:64:29:64:87 | ...+... | XPath expression depends on a $@. | tst.go:57:14:57:19 | selection of Form | user-provided value |
+| tst.go:65:32:65:90 | ...+... | tst.go:57:14:57:19 | selection of Form | tst.go:65:32:65:90 | ...+... | XPath expression depends on a $@. | tst.go:57:14:57:19 | selection of Form | user-provided value |
+| tst.go:66:23:66:85 | ...+... | tst.go:57:14:57:19 | selection of Form | tst.go:66:23:66:85 | ...+... | XPath expression depends on a $@. | tst.go:57:14:57:19 | selection of Form | user-provided value |
+| tst.go:67:22:67:84 | ...+... | tst.go:57:14:57:19 | selection of Form | tst.go:67:22:67:84 | ...+... | XPath expression depends on a $@. | tst.go:57:14:57:19 | selection of Form | user-provided value |
+| tst.go:75:26:75:84 | ...+... | tst.go:72:14:72:19 | selection of Form | tst.go:75:26:75:84 | ...+... | XPath expression depends on a $@. | tst.go:72:14:72:19 | selection of Form | user-provided value |
+| tst.go:76:29:76:87 | ...+... | tst.go:72:14:72:19 | selection of Form | tst.go:76:29:76:87 | ...+... | XPath expression depends on a $@. | tst.go:72:14:72:19 | selection of Form | user-provided value |
+| tst.go:77:30:77:88 | ...+... | tst.go:72:14:72:19 | selection of Form | tst.go:77:30:77:88 | ...+... | XPath expression depends on a $@. | tst.go:72:14:72:19 | selection of Form | user-provided value |
+| tst.go:78:33:78:91 | ...+... | tst.go:72:14:72:19 | selection of Form | tst.go:78:33:78:91 | ...+... | XPath expression depends on a $@. | tst.go:72:14:72:19 | selection of Form | user-provided value |
+| tst.go:86:25:86:87 | ...+... | tst.go:83:14:83:19 | selection of Form | tst.go:86:25:86:87 | ...+... | XPath expression depends on a $@. | tst.go:83:14:83:19 | selection of Form | user-provided value |
+| tst.go:87:26:87:88 | ...+... | tst.go:83:14:83:19 | selection of Form | tst.go:87:26:87:88 | ...+... | XPath expression depends on a $@. | tst.go:83:14:83:19 | selection of Form | user-provided value |
+| tst.go:96:23:96:126 | ...+... | tst.go:92:14:92:19 | selection of Form | tst.go:96:23:96:126 | ...+... | XPath expression depends on a $@. | tst.go:92:14:92:19 | selection of Form | user-provided value |
+| tst.go:96:23:96:126 | ...+... | tst.go:93:14:93:19 | selection of Form | tst.go:96:23:96:126 | ...+... | XPath expression depends on a $@. | tst.go:93:14:93:19 | selection of Form | user-provided value |
+| tst.go:97:24:97:127 | ...+... | tst.go:92:14:92:19 | selection of Form | tst.go:97:24:97:127 | ...+... | XPath expression depends on a $@. | tst.go:92:14:92:19 | selection of Form | user-provided value |
+| tst.go:97:24:97:127 | ...+... | tst.go:93:14:93:19 | selection of Form | tst.go:97:24:97:127 | ...+... | XPath expression depends on a $@. | tst.go:93:14:93:19 | selection of Form | user-provided value |
+| tst.go:98:27:98:122 | ...+... | tst.go:92:14:92:19 | selection of Form | tst.go:98:27:98:122 | ...+... | XPath expression depends on a $@. | tst.go:92:14:92:19 | selection of Form | user-provided value |
+| tst.go:98:27:98:122 | ...+... | tst.go:93:14:93:19 | selection of Form | tst.go:98:27:98:122 | ...+... | XPath expression depends on a $@. | tst.go:93:14:93:19 | selection of Form | user-provided value |
+| tst.go:109:27:109:89 | ...+... | tst.go:106:14:106:19 | selection of Form | tst.go:109:27:109:89 | ...+... | XPath expression depends on a $@. | tst.go:106:14:106:19 | selection of Form | user-provided value |
+| tst.go:110:28:110:90 | ...+... | tst.go:106:14:106:19 | selection of Form | tst.go:110:28:110:90 | ...+... | XPath expression depends on a $@. | tst.go:106:14:106:19 | selection of Form | user-provided value |
+| tst.go:119:33:119:136 | ...+... | tst.go:115:14:115:19 | selection of Form | tst.go:119:33:119:136 | ...+... | XPath expression depends on a $@. | tst.go:115:14:115:19 | selection of Form | user-provided value |
+| tst.go:119:33:119:136 | ...+... | tst.go:116:14:116:19 | selection of Form | tst.go:119:33:119:136 | ...+... | XPath expression depends on a $@. | tst.go:116:14:116:19 | selection of Form | user-provided value |
+| tst.go:120:18:120:121 | ...+... | tst.go:115:14:115:19 | selection of Form | tst.go:120:18:120:121 | ...+... | XPath expression depends on a $@. | tst.go:115:14:115:19 | selection of Form | user-provided value |
+| tst.go:120:18:120:121 | ...+... | tst.go:116:14:116:19 | selection of Form | tst.go:120:18:120:121 | ...+... | XPath expression depends on a $@. | tst.go:116:14:116:19 | selection of Form | user-provided value |
+| tst.go:121:31:121:126 | ...+... | tst.go:115:14:115:19 | selection of Form | tst.go:121:31:121:126 | ...+... | XPath expression depends on a $@. | tst.go:115:14:115:19 | selection of Form | user-provided value |
+| tst.go:121:31:121:126 | ...+... | tst.go:116:14:116:19 | selection of Form | tst.go:121:31:121:126 | ...+... | XPath expression depends on a $@. | tst.go:116:14:116:19 | selection of Form | user-provided value |
+| tst.go:122:21:122:116 | ...+... | tst.go:115:14:115:19 | selection of Form | tst.go:122:21:122:116 | ...+... | XPath expression depends on a $@. | tst.go:115:14:115:19 | selection of Form | user-provided value |
+| tst.go:122:21:122:116 | ...+... | tst.go:116:14:116:19 | selection of Form | tst.go:122:21:122:116 | ...+... | XPath expression depends on a $@. | tst.go:116:14:116:19 | selection of Form | user-provided value |
+| tst.go:123:27:123:122 | ...+... | tst.go:115:14:115:19 | selection of Form | tst.go:123:27:123:122 | ...+... | XPath expression depends on a $@. | tst.go:115:14:115:19 | selection of Form | user-provided value |
+| tst.go:123:27:123:122 | ...+... | tst.go:116:14:116:19 | selection of Form | tst.go:123:27:123:122 | ...+... | XPath expression depends on a $@. | tst.go:116:14:116:19 | selection of Form | user-provided value |
+| tst.go:144:17:144:87 | type conversion | tst.go:139:14:139:19 | selection of Form | tst.go:144:17:144:87 | type conversion | XPath expression depends on a $@. | tst.go:139:14:139:19 | selection of Form | user-provided value |
+| tst.go:146:23:146:85 | ...+... | tst.go:139:14:139:19 | selection of Form | tst.go:146:23:146:85 | ...+... | XPath expression depends on a $@. | tst.go:139:14:139:19 | selection of Form | user-provided value |
 edges
-| XPathInjection.go:13:14:13:19 | selection of Form | XPathInjection.go:13:14:13:35 | call to Get | provenance | MaD:742 |
-| XPathInjection.go:13:14:13:35 | call to Get | XPathInjection.go:16:29:16:91 | ...+... | provenance |  |
-| tst.go:34:14:34:19 | selection of Form | tst.go:34:14:34:35 | call to Get | provenance | MaD:742 |
-| tst.go:34:14:34:35 | call to Get | tst.go:37:23:37:85 | ...+... | provenance |  |
-| tst.go:34:14:34:35 | call to Get | tst.go:40:24:40:86 | ...+... | provenance |  |
-| tst.go:34:14:34:35 | call to Get | tst.go:43:24:43:82 | ...+... | provenance |  |
-| tst.go:48:14:48:19 | selection of Form | tst.go:48:14:48:35 | call to Get | provenance | MaD:742 |
-| tst.go:48:14:48:35 | call to Get | tst.go:51:26:51:84 | ...+... | provenance |  |
-| tst.go:48:14:48:35 | call to Get | tst.go:54:29:54:87 | ...+... | provenance |  |
-| tst.go:48:14:48:35 | call to Get | tst.go:57:33:57:91 | ...+... | provenance |  |
-| tst.go:48:14:48:35 | call to Get | tst.go:60:30:60:88 | ...+... | provenance |  |
-| tst.go:65:14:65:19 | selection of Form | tst.go:65:14:65:35 | call to Get | provenance | MaD:742 |
-| tst.go:65:14:65:35 | call to Get | tst.go:68:25:68:83 | ...+... | provenance |  |
-| tst.go:65:14:65:35 | call to Get | tst.go:71:28:71:86 | ...+... | provenance |  |
-| tst.go:65:14:65:35 | call to Get | tst.go:74:25:74:83 | ...+... | provenance |  |
-| tst.go:65:14:65:35 | call to Get | tst.go:77:34:77:92 | ...+... | provenance |  |
-| tst.go:65:14:65:35 | call to Get | tst.go:80:32:80:90 | ...+... | provenance |  |
-| tst.go:65:14:65:35 | call to Get | tst.go:83:29:83:87 | ...+... | provenance |  |
-| tst.go:65:14:65:35 | call to Get | tst.go:86:23:86:85 | ...+... | provenance |  |
-| tst.go:65:14:65:35 | call to Get | tst.go:89:22:89:84 | ...+... | provenance |  |
-| tst.go:94:14:94:19 | selection of Form | tst.go:94:14:94:35 | call to Get | provenance | MaD:742 |
-| tst.go:94:14:94:35 | call to Get | tst.go:97:26:97:84 | ...+... | provenance |  |
-| tst.go:94:14:94:35 | call to Get | tst.go:100:29:100:87 | ...+... | provenance |  |
-| tst.go:94:14:94:35 | call to Get | tst.go:103:33:103:91 | ...+... | provenance |  |
-| tst.go:94:14:94:35 | call to Get | tst.go:106:30:106:88 | ...+... | provenance |  |
-| tst.go:111:14:111:19 | selection of Form | tst.go:111:14:111:35 | call to Get | provenance | MaD:742 |
-| tst.go:111:14:111:35 | call to Get | tst.go:114:25:114:87 | ...+... | provenance |  |
-| tst.go:111:14:111:35 | call to Get | tst.go:117:26:117:88 | ...+... | provenance |  |
-| tst.go:122:14:122:19 | selection of Form | tst.go:122:14:122:35 | call to Get | provenance | MaD:742 |
-| tst.go:122:14:122:35 | call to Get | tst.go:126:23:126:126 | ...+... | provenance |  |
-| tst.go:122:14:122:35 | call to Get | tst.go:129:24:129:127 | ...+... | provenance |  |
-| tst.go:122:14:122:35 | call to Get | tst.go:132:27:132:122 | ...+... | provenance |  |
-| tst.go:123:14:123:19 | selection of Form | tst.go:123:14:123:35 | call to Get | provenance | MaD:742 |
-| tst.go:123:14:123:35 | call to Get | tst.go:126:23:126:126 | ...+... | provenance |  |
-| tst.go:123:14:123:35 | call to Get | tst.go:129:24:129:127 | ...+... | provenance |  |
-| tst.go:123:14:123:35 | call to Get | tst.go:132:27:132:122 | ...+... | provenance |  |
-| tst.go:140:14:140:19 | selection of Form | tst.go:140:14:140:35 | call to Get | provenance | MaD:742 |
-| tst.go:140:14:140:35 | call to Get | tst.go:143:27:143:89 | ...+... | provenance |  |
-| tst.go:140:14:140:35 | call to Get | tst.go:146:28:146:90 | ...+... | provenance |  |
-| tst.go:151:14:151:19 | selection of Form | tst.go:151:14:151:35 | call to Get | provenance | MaD:742 |
-| tst.go:151:14:151:35 | call to Get | tst.go:155:33:155:136 | ...+... | provenance |  |
-| tst.go:151:14:151:35 | call to Get | tst.go:158:18:158:121 | ...+... | provenance |  |
-| tst.go:151:14:151:35 | call to Get | tst.go:164:31:164:126 | ...+... | provenance |  |
-| tst.go:151:14:151:35 | call to Get | tst.go:173:21:173:116 | ...+... | provenance |  |
-| tst.go:151:14:151:35 | call to Get | tst.go:182:27:182:122 | ...+... | provenance |  |
-| tst.go:152:14:152:19 | selection of Form | tst.go:152:14:152:35 | call to Get | provenance | MaD:742 |
-| tst.go:152:14:152:35 | call to Get | tst.go:155:33:155:136 | ...+... | provenance |  |
-| tst.go:152:14:152:35 | call to Get | tst.go:158:18:158:121 | ...+... | provenance |  |
-| tst.go:152:14:152:35 | call to Get | tst.go:164:31:164:126 | ...+... | provenance |  |
-| tst.go:152:14:152:35 | call to Get | tst.go:173:21:173:116 | ...+... | provenance |  |
-| tst.go:152:14:152:35 | call to Get | tst.go:182:27:182:122 | ...+... | provenance |  |
-| tst.go:193:14:193:19 | selection of Form | tst.go:193:14:193:35 | call to Get | provenance | MaD:742 |
-| tst.go:193:14:193:35 | call to Get | tst.go:198:23:198:85 | ...+... | provenance |  |
+| XPathInjection.go:13:14:13:19 | selection of Form | XPathInjection.go:13:14:13:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| XPathInjection.go:13:14:13:35 | call to Get | XPathInjection.go:16:29:16:91 | ...+... | provenance | Sink:MaD:1 |
+| tst.go:35:14:35:19 | selection of Form | tst.go:35:14:35:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:35:14:35:35 | call to Get | tst.go:38:23:38:85 | ...+... | provenance | Sink:MaD:20 |
+| tst.go:35:14:35:35 | call to Get | tst.go:39:29:39:87 | ...+... | provenance | Sink:MaD:21 |
+| tst.go:35:14:35:35 | call to Get | tst.go:40:24:40:86 | ...+... | provenance | Sink:MaD:22 |
+| tst.go:35:14:35:35 | call to Get | tst.go:41:24:41:82 | ...+... | provenance | Sink:MaD:23 |
+| tst.go:46:14:46:19 | selection of Form | tst.go:46:14:46:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:46:14:46:35 | call to Get | tst.go:49:26:49:84 | ...+... | provenance | Sink:MaD:4 |
+| tst.go:46:14:46:35 | call to Get | tst.go:50:29:50:87 | ...+... | provenance | Sink:MaD:5 |
+| tst.go:46:14:46:35 | call to Get | tst.go:51:30:51:88 | ...+... | provenance | Sink:MaD:6 |
+| tst.go:46:14:46:35 | call to Get | tst.go:52:33:52:91 | ...+... | provenance | Sink:MaD:7 |
+| tst.go:57:14:57:19 | selection of Form | tst.go:57:14:57:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:57:14:57:35 | call to Get | tst.go:60:25:60:83 | ...+... | provenance | Sink:MaD:12 |
+| tst.go:57:14:57:35 | call to Get | tst.go:61:28:61:86 | ...+... | provenance | Sink:MaD:15 |
+| tst.go:57:14:57:35 | call to Get | tst.go:62:25:62:83 | ...+... | provenance | Sink:MaD:13 |
+| tst.go:57:14:57:35 | call to Get | tst.go:63:34:63:92 | ...+... | provenance | Sink:MaD:14 |
+| tst.go:57:14:57:35 | call to Get | tst.go:64:29:64:87 | ...+... | provenance | Sink:MaD:16 |
+| tst.go:57:14:57:35 | call to Get | tst.go:65:32:65:90 | ...+... | provenance | Sink:MaD:17 |
+| tst.go:57:14:57:35 | call to Get | tst.go:66:23:66:85 | ...+... | provenance | Sink:MaD:19 |
+| tst.go:57:14:57:35 | call to Get | tst.go:67:22:67:84 | ...+... | provenance | Sink:MaD:18 |
+| tst.go:72:14:72:19 | selection of Form | tst.go:72:14:72:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:72:14:72:35 | call to Get | tst.go:75:26:75:84 | ...+... | provenance | Sink:MaD:8 |
+| tst.go:72:14:72:35 | call to Get | tst.go:76:29:76:87 | ...+... | provenance | Sink:MaD:9 |
+| tst.go:72:14:72:35 | call to Get | tst.go:77:30:77:88 | ...+... | provenance | Sink:MaD:10 |
+| tst.go:72:14:72:35 | call to Get | tst.go:78:33:78:91 | ...+... | provenance | Sink:MaD:11 |
+| tst.go:83:14:83:19 | selection of Form | tst.go:83:14:83:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:83:14:83:35 | call to Get | tst.go:86:25:86:87 | ...+... | provenance | Sink:MaD:34 |
+| tst.go:83:14:83:35 | call to Get | tst.go:87:26:87:88 | ...+... | provenance | Sink:MaD:35 |
+| tst.go:92:14:92:19 | selection of Form | tst.go:92:14:92:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:92:14:92:35 | call to Get | tst.go:96:23:96:126 | ...+... | provenance | Sink:MaD:2 |
+| tst.go:92:14:92:35 | call to Get | tst.go:97:24:97:127 | ...+... | provenance | Sink:MaD:1 |
+| tst.go:92:14:92:35 | call to Get | tst.go:98:27:98:122 | ...+... | provenance | Sink:MaD:3 |
+| tst.go:93:14:93:19 | selection of Form | tst.go:93:14:93:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:93:14:93:35 | call to Get | tst.go:96:23:96:126 | ...+... | provenance | Sink:MaD:2 |
+| tst.go:93:14:93:35 | call to Get | tst.go:97:24:97:127 | ...+... | provenance | Sink:MaD:1 |
+| tst.go:93:14:93:35 | call to Get | tst.go:98:27:98:122 | ...+... | provenance | Sink:MaD:3 |
+| tst.go:106:14:106:19 | selection of Form | tst.go:106:14:106:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:106:14:106:35 | call to Get | tst.go:109:27:109:89 | ...+... | provenance | Sink:MaD:28 |
+| tst.go:106:14:106:35 | call to Get | tst.go:110:28:110:90 | ...+... | provenance | Sink:MaD:27 |
+| tst.go:115:14:115:19 | selection of Form | tst.go:115:14:115:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:115:14:115:35 | call to Get | tst.go:119:33:119:136 | ...+... | provenance | Sink:MaD:33 |
+| tst.go:115:14:115:35 | call to Get | tst.go:120:18:120:121 | ...+... | provenance | Sink:MaD:31 |
+| tst.go:115:14:115:35 | call to Get | tst.go:121:31:121:126 | ...+... | provenance | Sink:MaD:32 |
+| tst.go:115:14:115:35 | call to Get | tst.go:122:21:122:116 | ...+... | provenance | Sink:MaD:29 |
+| tst.go:115:14:115:35 | call to Get | tst.go:123:27:123:122 | ...+... | provenance | Sink:MaD:30 |
+| tst.go:116:14:116:19 | selection of Form | tst.go:116:14:116:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:116:14:116:35 | call to Get | tst.go:119:33:119:136 | ...+... | provenance | Sink:MaD:33 |
+| tst.go:116:14:116:35 | call to Get | tst.go:120:18:120:121 | ...+... | provenance | Sink:MaD:31 |
+| tst.go:116:14:116:35 | call to Get | tst.go:121:31:121:126 | ...+... | provenance | Sink:MaD:32 |
+| tst.go:116:14:116:35 | call to Get | tst.go:122:21:122:116 | ...+... | provenance | Sink:MaD:29 |
+| tst.go:116:14:116:35 | call to Get | tst.go:123:27:123:122 | ...+... | provenance | Sink:MaD:30 |
+| tst.go:139:14:139:19 | selection of Form | tst.go:139:14:139:35 | call to Get | provenance | Src:MaD:36 MaD:37 |
+| tst.go:139:14:139:35 | call to Get | tst.go:144:17:144:87 | type conversion | provenance | Sink:MaD:24 |
+| tst.go:139:14:139:35 | call to Get | tst.go:145:41:145:103 | ...+... | provenance |  |
+| tst.go:139:14:139:35 | call to Get | tst.go:146:23:146:85 | ...+... | provenance | Sink:MaD:26 |
+| tst.go:145:41:145:103 | ...+... | tst.go:145:23:145:104 | call to NewReader | provenance | MaD:38 Sink:MaD:25 |
+models
+| 1 | Sink: github.com/ChrisTrenkamp/goxpath; ; false; MustParse; ; ; Argument[0]; xpath-injection; manual |
+| 2 | Sink: github.com/ChrisTrenkamp/goxpath; ; false; Parse; ; ; Argument[0]; xpath-injection; manual |
+| 3 | Sink: github.com/ChrisTrenkamp/goxpath; ; false; ParseExec; ; ; Argument[0]; xpath-injection; manual |
+| 4 | Sink: github.com/antchfx/htmlquery; ; false; Find; ; ; Argument[1]; xpath-injection; manual |
+| 5 | Sink: github.com/antchfx/htmlquery; ; false; FindOne; ; ; Argument[1]; xpath-injection; manual |
+| 6 | Sink: github.com/antchfx/htmlquery; ; false; Query; ; ; Argument[1]; xpath-injection; manual |
+| 7 | Sink: github.com/antchfx/htmlquery; ; false; QueryAll; ; ; Argument[1]; xpath-injection; manual |
+| 8 | Sink: github.com/antchfx/jsonquery; ; false; Find; ; ; Argument[1]; xpath-injection; manual |
+| 9 | Sink: github.com/antchfx/jsonquery; ; false; FindOne; ; ; Argument[1]; xpath-injection; manual |
+| 10 | Sink: github.com/antchfx/jsonquery; ; false; Query; ; ; Argument[1]; xpath-injection; manual |
+| 11 | Sink: github.com/antchfx/jsonquery; ; false; QueryAll; ; ; Argument[1]; xpath-injection; manual |
+| 12 | Sink: github.com/antchfx/xmlquery; ; false; Find; ; ; Argument[1]; xpath-injection; manual |
+| 13 | Sink: github.com/antchfx/xmlquery; ; false; FindEach; ; ; Argument[1]; xpath-injection; manual |
+| 14 | Sink: github.com/antchfx/xmlquery; ; false; FindEachWithBreak; ; ; Argument[1]; xpath-injection; manual |
+| 15 | Sink: github.com/antchfx/xmlquery; ; false; FindOne; ; ; Argument[1]; xpath-injection; manual |
+| 16 | Sink: github.com/antchfx/xmlquery; ; false; Query; ; ; Argument[1]; xpath-injection; manual |
+| 17 | Sink: github.com/antchfx/xmlquery; ; false; QueryAll; ; ; Argument[1]; xpath-injection; manual |
+| 18 | Sink: github.com/antchfx/xmlquery; Node; true; SelectElement; ; ; Argument[0]; xpath-injection; manual |
+| 19 | Sink: github.com/antchfx/xmlquery; Node; true; SelectElements; ; ; Argument[0]; xpath-injection; manual |
+| 20 | Sink: github.com/antchfx/xpath; ; false; Compile; ; ; Argument[0]; xpath-injection; manual |
+| 21 | Sink: github.com/antchfx/xpath; ; false; CompileWithNS; ; ; Argument[0]; xpath-injection; manual |
+| 22 | Sink: github.com/antchfx/xpath; ; false; MustCompile; ; ; Argument[0]; xpath-injection; manual |
+| 23 | Sink: github.com/antchfx/xpath; ; false; Select; ; ; Argument[1]; xpath-injection; manual |
+| 24 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; Parse; ; ; Argument[0]; xpath-injection; manual |
+| 25 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; ParseReader; ; ; Argument[0]; xpath-injection; manual |
+| 26 | Sink: github.com/lestrrat-go/libxml2/parser; Parser; true; ParseString; ; ; Argument[0]; xpath-injection; manual |
+| 27 | Sink: github.com/santhosh-tekuri/xpathparser; ; false; MustParse; ; ; Argument[0]; xpath-injection; manual |
+| 28 | Sink: github.com/santhosh-tekuri/xpathparser; ; false; Parse; ; ; Argument[0]; xpath-injection; manual |
+| 29 | Sink: group:gokogiri/xml; Node; true; EvalXPath; ; ; Argument[0]; xpath-injection; manual |
+| 30 | Sink: group:gokogiri/xml; Node; true; EvalXPathAsBoolean; ; ; Argument[0]; xpath-injection; manual |
+| 31 | Sink: group:gokogiri/xml; Node; true; Search; ; ; Argument[0]; xpath-injection; manual |
+| 32 | Sink: group:gokogiri/xml; Node; true; SearchWithVariables; ; ; Argument[0]; xpath-injection; manual |
+| 33 | Sink: group:gokogiri/xpath; ; false; Compile; ; ; Argument[0]; xpath-injection; manual |
+| 34 | Sink: group:xmlpath; ; false; Compile; ; ; Argument[0]; xpath-injection; manual |
+| 35 | Sink: group:xmlpath; ; false; MustCompile; ; ; Argument[0]; xpath-injection; manual |
+| 36 | Source: net/http; Request; true; Form; ; ; ; remote; manual |
+| 37 | Summary: net/url; Values; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 38 | Summary: strings; ; false; NewReader; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
 | XPathInjection.go:13:14:13:19 | selection of Form | semmle.label | selection of Form |
 | XPathInjection.go:13:14:13:35 | call to Get | semmle.label | call to Get |
 | XPathInjection.go:16:29:16:91 | ...+... | semmle.label | ...+... |
-| tst.go:34:14:34:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:34:14:34:35 | call to Get | semmle.label | call to Get |
-| tst.go:37:23:37:85 | ...+... | semmle.label | ...+... |
+| tst.go:35:14:35:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:35:14:35:35 | call to Get | semmle.label | call to Get |
+| tst.go:38:23:38:85 | ...+... | semmle.label | ...+... |
+| tst.go:39:29:39:87 | ...+... | semmle.label | ...+... |
 | tst.go:40:24:40:86 | ...+... | semmle.label | ...+... |
-| tst.go:43:24:43:82 | ...+... | semmle.label | ...+... |
-| tst.go:48:14:48:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:48:14:48:35 | call to Get | semmle.label | call to Get |
-| tst.go:51:26:51:84 | ...+... | semmle.label | ...+... |
-| tst.go:54:29:54:87 | ...+... | semmle.label | ...+... |
-| tst.go:57:33:57:91 | ...+... | semmle.label | ...+... |
-| tst.go:60:30:60:88 | ...+... | semmle.label | ...+... |
-| tst.go:65:14:65:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:65:14:65:35 | call to Get | semmle.label | call to Get |
-| tst.go:68:25:68:83 | ...+... | semmle.label | ...+... |
-| tst.go:71:28:71:86 | ...+... | semmle.label | ...+... |
-| tst.go:74:25:74:83 | ...+... | semmle.label | ...+... |
-| tst.go:77:34:77:92 | ...+... | semmle.label | ...+... |
-| tst.go:80:32:80:90 | ...+... | semmle.label | ...+... |
-| tst.go:83:29:83:87 | ...+... | semmle.label | ...+... |
-| tst.go:86:23:86:85 | ...+... | semmle.label | ...+... |
-| tst.go:89:22:89:84 | ...+... | semmle.label | ...+... |
-| tst.go:94:14:94:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:94:14:94:35 | call to Get | semmle.label | call to Get |
-| tst.go:97:26:97:84 | ...+... | semmle.label | ...+... |
-| tst.go:100:29:100:87 | ...+... | semmle.label | ...+... |
-| tst.go:103:33:103:91 | ...+... | semmle.label | ...+... |
-| tst.go:106:30:106:88 | ...+... | semmle.label | ...+... |
-| tst.go:111:14:111:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:111:14:111:35 | call to Get | semmle.label | call to Get |
-| tst.go:114:25:114:87 | ...+... | semmle.label | ...+... |
-| tst.go:117:26:117:88 | ...+... | semmle.label | ...+... |
-| tst.go:122:14:122:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:122:14:122:35 | call to Get | semmle.label | call to Get |
-| tst.go:123:14:123:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:123:14:123:35 | call to Get | semmle.label | call to Get |
-| tst.go:126:23:126:126 | ...+... | semmle.label | ...+... |
-| tst.go:129:24:129:127 | ...+... | semmle.label | ...+... |
-| tst.go:132:27:132:122 | ...+... | semmle.label | ...+... |
-| tst.go:140:14:140:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:140:14:140:35 | call to Get | semmle.label | call to Get |
-| tst.go:143:27:143:89 | ...+... | semmle.label | ...+... |
-| tst.go:146:28:146:90 | ...+... | semmle.label | ...+... |
-| tst.go:151:14:151:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:151:14:151:35 | call to Get | semmle.label | call to Get |
-| tst.go:152:14:152:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:152:14:152:35 | call to Get | semmle.label | call to Get |
-| tst.go:155:33:155:136 | ...+... | semmle.label | ...+... |
-| tst.go:158:18:158:121 | ...+... | semmle.label | ...+... |
-| tst.go:164:31:164:126 | ...+... | semmle.label | ...+... |
-| tst.go:173:21:173:116 | ...+... | semmle.label | ...+... |
-| tst.go:182:27:182:122 | ...+... | semmle.label | ...+... |
-| tst.go:193:14:193:19 | selection of Form | semmle.label | selection of Form |
-| tst.go:193:14:193:35 | call to Get | semmle.label | call to Get |
-| tst.go:198:23:198:85 | ...+... | semmle.label | ...+... |
+| tst.go:41:24:41:82 | ...+... | semmle.label | ...+... |
+| tst.go:46:14:46:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:46:14:46:35 | call to Get | semmle.label | call to Get |
+| tst.go:49:26:49:84 | ...+... | semmle.label | ...+... |
+| tst.go:50:29:50:87 | ...+... | semmle.label | ...+... |
+| tst.go:51:30:51:88 | ...+... | semmle.label | ...+... |
+| tst.go:52:33:52:91 | ...+... | semmle.label | ...+... |
+| tst.go:57:14:57:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:57:14:57:35 | call to Get | semmle.label | call to Get |
+| tst.go:60:25:60:83 | ...+... | semmle.label | ...+... |
+| tst.go:61:28:61:86 | ...+... | semmle.label | ...+... |
+| tst.go:62:25:62:83 | ...+... | semmle.label | ...+... |
+| tst.go:63:34:63:92 | ...+... | semmle.label | ...+... |
+| tst.go:64:29:64:87 | ...+... | semmle.label | ...+... |
+| tst.go:65:32:65:90 | ...+... | semmle.label | ...+... |
+| tst.go:66:23:66:85 | ...+... | semmle.label | ...+... |
+| tst.go:67:22:67:84 | ...+... | semmle.label | ...+... |
+| tst.go:72:14:72:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:72:14:72:35 | call to Get | semmle.label | call to Get |
+| tst.go:75:26:75:84 | ...+... | semmle.label | ...+... |
+| tst.go:76:29:76:87 | ...+... | semmle.label | ...+... |
+| tst.go:77:30:77:88 | ...+... | semmle.label | ...+... |
+| tst.go:78:33:78:91 | ...+... | semmle.label | ...+... |
+| tst.go:83:14:83:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:83:14:83:35 | call to Get | semmle.label | call to Get |
+| tst.go:86:25:86:87 | ...+... | semmle.label | ...+... |
+| tst.go:87:26:87:88 | ...+... | semmle.label | ...+... |
+| tst.go:92:14:92:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:92:14:92:35 | call to Get | semmle.label | call to Get |
+| tst.go:93:14:93:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:93:14:93:35 | call to Get | semmle.label | call to Get |
+| tst.go:96:23:96:126 | ...+... | semmle.label | ...+... |
+| tst.go:97:24:97:127 | ...+... | semmle.label | ...+... |
+| tst.go:98:27:98:122 | ...+... | semmle.label | ...+... |
+| tst.go:106:14:106:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:106:14:106:35 | call to Get | semmle.label | call to Get |
+| tst.go:109:27:109:89 | ...+... | semmle.label | ...+... |
+| tst.go:110:28:110:90 | ...+... | semmle.label | ...+... |
+| tst.go:115:14:115:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:115:14:115:35 | call to Get | semmle.label | call to Get |
+| tst.go:116:14:116:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:116:14:116:35 | call to Get | semmle.label | call to Get |
+| tst.go:119:33:119:136 | ...+... | semmle.label | ...+... |
+| tst.go:120:18:120:121 | ...+... | semmle.label | ...+... |
+| tst.go:121:31:121:126 | ...+... | semmle.label | ...+... |
+| tst.go:122:21:122:116 | ...+... | semmle.label | ...+... |
+| tst.go:123:27:123:122 | ...+... | semmle.label | ...+... |
+| tst.go:139:14:139:19 | selection of Form | semmle.label | selection of Form |
+| tst.go:139:14:139:35 | call to Get | semmle.label | call to Get |
+| tst.go:144:17:144:87 | type conversion | semmle.label | type conversion |
+| tst.go:145:23:145:104 | call to NewReader | semmle.label | call to NewReader |
+| tst.go:145:41:145:103 | ...+... | semmle.label | ...+... |
+| tst.go:146:23:146:85 | ...+... | semmle.label | ...+... |
 subpaths
-#select
-| XPathInjection.go:16:29:16:91 | ...+... | XPathInjection.go:13:14:13:19 | selection of Form | XPathInjection.go:16:29:16:91 | ...+... | XPath expression depends on a $@. | XPathInjection.go:13:14:13:19 | selection of Form | user-provided value |
-| tst.go:37:23:37:85 | ...+... | tst.go:34:14:34:19 | selection of Form | tst.go:37:23:37:85 | ...+... | XPath expression depends on a $@. | tst.go:34:14:34:19 | selection of Form | user-provided value |
-| tst.go:40:24:40:86 | ...+... | tst.go:34:14:34:19 | selection of Form | tst.go:40:24:40:86 | ...+... | XPath expression depends on a $@. | tst.go:34:14:34:19 | selection of Form | user-provided value |
-| tst.go:43:24:43:82 | ...+... | tst.go:34:14:34:19 | selection of Form | tst.go:43:24:43:82 | ...+... | XPath expression depends on a $@. | tst.go:34:14:34:19 | selection of Form | user-provided value |
-| tst.go:51:26:51:84 | ...+... | tst.go:48:14:48:19 | selection of Form | tst.go:51:26:51:84 | ...+... | XPath expression depends on a $@. | tst.go:48:14:48:19 | selection of Form | user-provided value |
-| tst.go:54:29:54:87 | ...+... | tst.go:48:14:48:19 | selection of Form | tst.go:54:29:54:87 | ...+... | XPath expression depends on a $@. | tst.go:48:14:48:19 | selection of Form | user-provided value |
-| tst.go:57:33:57:91 | ...+... | tst.go:48:14:48:19 | selection of Form | tst.go:57:33:57:91 | ...+... | XPath expression depends on a $@. | tst.go:48:14:48:19 | selection of Form | user-provided value |
-| tst.go:60:30:60:88 | ...+... | tst.go:48:14:48:19 | selection of Form | tst.go:60:30:60:88 | ...+... | XPath expression depends on a $@. | tst.go:48:14:48:19 | selection of Form | user-provided value |
-| tst.go:68:25:68:83 | ...+... | tst.go:65:14:65:19 | selection of Form | tst.go:68:25:68:83 | ...+... | XPath expression depends on a $@. | tst.go:65:14:65:19 | selection of Form | user-provided value |
-| tst.go:71:28:71:86 | ...+... | tst.go:65:14:65:19 | selection of Form | tst.go:71:28:71:86 | ...+... | XPath expression depends on a $@. | tst.go:65:14:65:19 | selection of Form | user-provided value |
-| tst.go:74:25:74:83 | ...+... | tst.go:65:14:65:19 | selection of Form | tst.go:74:25:74:83 | ...+... | XPath expression depends on a $@. | tst.go:65:14:65:19 | selection of Form | user-provided value |
-| tst.go:77:34:77:92 | ...+... | tst.go:65:14:65:19 | selection of Form | tst.go:77:34:77:92 | ...+... | XPath expression depends on a $@. | tst.go:65:14:65:19 | selection of Form | user-provided value |
-| tst.go:80:32:80:90 | ...+... | tst.go:65:14:65:19 | selection of Form | tst.go:80:32:80:90 | ...+... | XPath expression depends on a $@. | tst.go:65:14:65:19 | selection of Form | user-provided value |
-| tst.go:83:29:83:87 | ...+... | tst.go:65:14:65:19 | selection of Form | tst.go:83:29:83:87 | ...+... | XPath expression depends on a $@. | tst.go:65:14:65:19 | selection of Form | user-provided value |
-| tst.go:86:23:86:85 | ...+... | tst.go:65:14:65:19 | selection of Form | tst.go:86:23:86:85 | ...+... | XPath expression depends on a $@. | tst.go:65:14:65:19 | selection of Form | user-provided value |
-| tst.go:89:22:89:84 | ...+... | tst.go:65:14:65:19 | selection of Form | tst.go:89:22:89:84 | ...+... | XPath expression depends on a $@. | tst.go:65:14:65:19 | selection of Form | user-provided value |
-| tst.go:97:26:97:84 | ...+... | tst.go:94:14:94:19 | selection of Form | tst.go:97:26:97:84 | ...+... | XPath expression depends on a $@. | tst.go:94:14:94:19 | selection of Form | user-provided value |
-| tst.go:100:29:100:87 | ...+... | tst.go:94:14:94:19 | selection of Form | tst.go:100:29:100:87 | ...+... | XPath expression depends on a $@. | tst.go:94:14:94:19 | selection of Form | user-provided value |
-| tst.go:103:33:103:91 | ...+... | tst.go:94:14:94:19 | selection of Form | tst.go:103:33:103:91 | ...+... | XPath expression depends on a $@. | tst.go:94:14:94:19 | selection of Form | user-provided value |
-| tst.go:106:30:106:88 | ...+... | tst.go:94:14:94:19 | selection of Form | tst.go:106:30:106:88 | ...+... | XPath expression depends on a $@. | tst.go:94:14:94:19 | selection of Form | user-provided value |
-| tst.go:114:25:114:87 | ...+... | tst.go:111:14:111:19 | selection of Form | tst.go:114:25:114:87 | ...+... | XPath expression depends on a $@. | tst.go:111:14:111:19 | selection of Form | user-provided value |
-| tst.go:117:26:117:88 | ...+... | tst.go:111:14:111:19 | selection of Form | tst.go:117:26:117:88 | ...+... | XPath expression depends on a $@. | tst.go:111:14:111:19 | selection of Form | user-provided value |
-| tst.go:126:23:126:126 | ...+... | tst.go:122:14:122:19 | selection of Form | tst.go:126:23:126:126 | ...+... | XPath expression depends on a $@. | tst.go:122:14:122:19 | selection of Form | user-provided value |
-| tst.go:126:23:126:126 | ...+... | tst.go:123:14:123:19 | selection of Form | tst.go:126:23:126:126 | ...+... | XPath expression depends on a $@. | tst.go:123:14:123:19 | selection of Form | user-provided value |
-| tst.go:129:24:129:127 | ...+... | tst.go:122:14:122:19 | selection of Form | tst.go:129:24:129:127 | ...+... | XPath expression depends on a $@. | tst.go:122:14:122:19 | selection of Form | user-provided value |
-| tst.go:129:24:129:127 | ...+... | tst.go:123:14:123:19 | selection of Form | tst.go:129:24:129:127 | ...+... | XPath expression depends on a $@. | tst.go:123:14:123:19 | selection of Form | user-provided value |
-| tst.go:132:27:132:122 | ...+... | tst.go:122:14:122:19 | selection of Form | tst.go:132:27:132:122 | ...+... | XPath expression depends on a $@. | tst.go:122:14:122:19 | selection of Form | user-provided value |
-| tst.go:132:27:132:122 | ...+... | tst.go:123:14:123:19 | selection of Form | tst.go:132:27:132:122 | ...+... | XPath expression depends on a $@. | tst.go:123:14:123:19 | selection of Form | user-provided value |
-| tst.go:143:27:143:89 | ...+... | tst.go:140:14:140:19 | selection of Form | tst.go:143:27:143:89 | ...+... | XPath expression depends on a $@. | tst.go:140:14:140:19 | selection of Form | user-provided value |
-| tst.go:146:28:146:90 | ...+... | tst.go:140:14:140:19 | selection of Form | tst.go:146:28:146:90 | ...+... | XPath expression depends on a $@. | tst.go:140:14:140:19 | selection of Form | user-provided value |
-| tst.go:155:33:155:136 | ...+... | tst.go:151:14:151:19 | selection of Form | tst.go:155:33:155:136 | ...+... | XPath expression depends on a $@. | tst.go:151:14:151:19 | selection of Form | user-provided value |
-| tst.go:155:33:155:136 | ...+... | tst.go:152:14:152:19 | selection of Form | tst.go:155:33:155:136 | ...+... | XPath expression depends on a $@. | tst.go:152:14:152:19 | selection of Form | user-provided value |
-| tst.go:158:18:158:121 | ...+... | tst.go:151:14:151:19 | selection of Form | tst.go:158:18:158:121 | ...+... | XPath expression depends on a $@. | tst.go:151:14:151:19 | selection of Form | user-provided value |
-| tst.go:158:18:158:121 | ...+... | tst.go:152:14:152:19 | selection of Form | tst.go:158:18:158:121 | ...+... | XPath expression depends on a $@. | tst.go:152:14:152:19 | selection of Form | user-provided value |
-| tst.go:164:31:164:126 | ...+... | tst.go:151:14:151:19 | selection of Form | tst.go:164:31:164:126 | ...+... | XPath expression depends on a $@. | tst.go:151:14:151:19 | selection of Form | user-provided value |
-| tst.go:164:31:164:126 | ...+... | tst.go:152:14:152:19 | selection of Form | tst.go:164:31:164:126 | ...+... | XPath expression depends on a $@. | tst.go:152:14:152:19 | selection of Form | user-provided value |
-| tst.go:173:21:173:116 | ...+... | tst.go:151:14:151:19 | selection of Form | tst.go:173:21:173:116 | ...+... | XPath expression depends on a $@. | tst.go:151:14:151:19 | selection of Form | user-provided value |
-| tst.go:173:21:173:116 | ...+... | tst.go:152:14:152:19 | selection of Form | tst.go:173:21:173:116 | ...+... | XPath expression depends on a $@. | tst.go:152:14:152:19 | selection of Form | user-provided value |
-| tst.go:182:27:182:122 | ...+... | tst.go:151:14:151:19 | selection of Form | tst.go:182:27:182:122 | ...+... | XPath expression depends on a $@. | tst.go:151:14:151:19 | selection of Form | user-provided value |
-| tst.go:182:27:182:122 | ...+... | tst.go:152:14:152:19 | selection of Form | tst.go:182:27:182:122 | ...+... | XPath expression depends on a $@. | tst.go:152:14:152:19 | selection of Form | user-provided value |
-| tst.go:198:23:198:85 | ...+... | tst.go:193:14:193:19 | selection of Form | tst.go:198:23:198:85 | ...+... | XPath expression depends on a $@. | tst.go:193:14:193:19 | selection of Form | user-provided value |

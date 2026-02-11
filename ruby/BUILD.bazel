@@ -1,6 +1,5 @@
-load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup", "pkg_files")
-load("@semmle_code//:dist.bzl", "dist", "pack_zip")
-load("//:defs.bzl", "codeql_platform")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_filegroup")
+load("//misc/bazel:pkg.bzl", "codeql_pack", "codeql_pkg_files")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -14,7 +13,7 @@ alias(
     actual = "//ruby/ql/lib:dbscheme-stats",
 )
 
-pkg_files(
+codeql_pkg_files(
     name = "dbscheme-group",
     srcs = [
         ":dbscheme",
@@ -31,30 +30,30 @@ pkg_filegroup(
     ],
 )
 
-pkg_files(
+codeql_pkg_files(
     name = "codeql-extractor-yml",
-    srcs = ["codeql-extractor.yml"],
+    srcs = [
+        "codeql-extractor.yml",
+        "//:LICENSE",
+    ],
     strip_prefix = None,
 )
 
-dist(
-    name = "extractor-generic",
+codeql_pkg_files(
+    name = "extractor-arch",
+    exes = [
+        "//ruby/extractor",
+    ],
+    prefix = "tools/{CODEQL_PLATFORM}",
+)
+
+codeql_pack(
+    name = "ruby",
     srcs = [
         ":codeql-extractor-yml",
         ":dbscheme-group",
+        ":extractor-arch",
         "//ruby/downgrades",
         "//ruby/tools",
     ],
-    prefix = "ruby",
-    visibility = ["//visibility:public"],
-)
-
-pack_zip(
-    name = "extractor-arch",
-    srcs = [
-        "//ruby/extractor",
-    ],
-    package_file_name = "extractor-" + codeql_platform + ".zip",
-    prefix = "ruby/tools/" + codeql_platform,
-    visibility = ["//visibility:public"],
 )

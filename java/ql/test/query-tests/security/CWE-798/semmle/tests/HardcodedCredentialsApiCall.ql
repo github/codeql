@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.HardcodedCredentialsApiCallQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HardcodedCredentialsApiCallTest implements TestSig {
   string getARelevantTag() { result = "HardcodedCredentialsApiCall" }

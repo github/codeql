@@ -21,5 +21,5 @@ string describe(Decl d) {
 }
 
 from Decl d
-where d.getLocation().getFile().getName() != ""
+where exists(d.getLocation().getFile().getRelativePath())
 select d, strictconcat(describe(d), ", ")

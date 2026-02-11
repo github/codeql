@@ -10,11 +10,10 @@ import (
 	"runtime"
 	"strings"
 
-	"golang.org/x/mod/semver"
-
 	"github.com/github/codeql-go/extractor/autobuilder"
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/project"
+	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/util"
 )
@@ -69,13 +68,13 @@ func restoreRepoLayout(fromDir string, dirEntries []string, scratchDirName strin
 
 // addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
 func addVersionToMod(version string) bool {
-	cmd := exec.Command("go", "mod", "edit", "-go="+version)
+	cmd := toolchain.GoCommand("mod", "edit", "-go="+version)
 	return util.RunCmd(cmd)
 }
 
 // checkVendor tests to see whether a vendor directory is inconsistent according to the go frontend
 func checkVendor() bool {
-	vendorCheckCmd := exec.Command("go", "list", "-mod=vendor", "./...")
+	vendorCheckCmd := toolchain.GoCommand("list", "-mod=vendor", "./...")
 	outp, err := vendorCheckCmd.CombinedOutput()
 	if err != nil {
 		badVendorRe := regexp.MustCompile(`(?m)^go: inconsistent vendoring in .*:$`)
@@ -156,7 +155,7 @@ func getNeedGopath(workspace project.GoWorkspace, importpath string) bool {
 // Try to update `go.mod` and `go.sum` if the go version is >= 1.16.
 func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && semver.Compare(toolchain.GetEnvGoSemVer(), "v1.16") >= 0 {
+	if workspace.ModMode != project.ModVendor && workspace.DepMode == project.GoGetWithModules && toolchain.GetEnvGoSemVer().IsAtLeast(toolchain.V1_16) {
 		for _, goMod := range workspace.Modules {
 			// stat go.mod and go.sum
 			goModPath := goMod.Path
@@ -170,7 +169,7 @@ func tryUpdateGoModAndGoSum(workspace project.GoWorkspace) {
 			beforeGoSumFileInfo, beforeGoSumErr := os.Stat(goSumPath)
 
 			// run `go mod tidy -e`
-			cmd := toolchain.TidyModule(goModDir)
+			cmd := goMod.Tidy()
 			res := util.RunCmd(cmd)
 
 			if !res {
@@ -275,7 +274,7 @@ func createPathTransformerFile(newdir string) *os.File {
 		log.Fatalf("Failed to chdir into %s: %s\n", newdir, err.Error())
 	}
 
-	// set up SEMMLE_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
+	// set up CODEQL_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
 	// match the original source location, not the location we moved it to
 	pt, err := os.CreateTemp("", "path-transformer")
 	if err != nil {
@@ -285,7 +284,7 @@ func createPathTransformerFile(newdir string) *os.File {
 }
 
 // Writes the path transformer file
-func writePathTransformerFile(pt *os.File, realSrc, root, newdir string) {
+func writePathTransformerFile(pt *os.File, realSrc, newdir string) {
 	_, err := pt.WriteString("#" + realSrc + "\n" + newdir + "//\n")
 	if err != nil {
 		log.Fatalf("Unable to write path transformer file: %s.", err.Error())
@@ -294,9 +293,9 @@ func writePathTransformerFile(pt *os.File, realSrc, root, newdir string) {
 	if err != nil {
 		log.Fatalf("Unable to close path transformer file: %s.", err.Error())
 	}
-	err = os.Setenv("SEMMLE_PATH_TRANSFORMER", pt.Name())
+	err = os.Setenv("CODEQL_PATH_TRANSFORMER", pt.Name())
 	if err != nil {
-		log.Fatalf("Unable to set SEMMLE_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
+		log.Fatalf("Unable to set CODEQL_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
 	}
 }
 
@@ -322,8 +321,7 @@ func setGopath(root string) {
 
 // Try to build the project with a build script. If that fails, return a boolean indicating
 // that we should install dependencies in the normal way.
-func buildWithoutCustomCommands(modMode project.ModMode) bool {
-	shouldInstallDependencies := false
+func buildWithoutCustomCommands(workspaces []project.GoWorkspace) {
 	// try to run a build script
 	scriptSucceeded, scriptsExecuted := autobuilder.Autobuild()
 	scriptCount := len(scriptsExecuted)
@@ -337,13 +335,19 @@ func buildWithoutCustomCommands(modMode project.ModMode) bool {
 			log.Println("Unable to find any build scripts, continuing to install dependencies in the normal way.")
 		}
 
-		shouldInstallDependencies = true
-	} else if toolchain.DepErrors("./...", modMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
-		log.Printf("Dependencies are still not resolving after executing %d build script(s), continuing to install dependencies in the normal way.\n", scriptCount)
+		// Install dependencies for all workspaces.
+		for i, _ := range workspaces {
+			workspaces[i].ShouldInstallDependencies = true
+		}
+	} else {
+		for i, workspace := range workspaces {
+			if toolchain.DepErrors("./...", workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...) {
+				log.Printf("Dependencies are still not resolving for `%s` after executing %d build script(s), continuing to install dependencies in the normal way.\n", workspace.BaseDir, scriptCount)
 
-		shouldInstallDependencies = true
+				workspaces[i].ShouldInstallDependencies = true
+			}
+		}
 	}
-	return shouldInstallDependencies
 }
 
 // Build the project with custom commands.
@@ -422,7 +426,7 @@ func installDependencies(workspace project.GoWorkspace) {
 	} else {
 		if workspace.Modules == nil {
 			project.InitGoModForLegacyProject(workspace.BaseDir)
-			workspace.Modules = project.LoadGoModules(true, []string{filepath.Join(workspace.BaseDir, "go.mod")})
+			workspace.Modules = project.LoadGoModules([]string{filepath.Join(workspace.BaseDir, "go.mod")})
 		}
 
 		// get dependencies for all modules
@@ -430,12 +434,12 @@ func installDependencies(workspace project.GoWorkspace) {
 			path := filepath.Dir(module.Path)
 
 			if util.DirExists(filepath.Join(path, "vendor")) {
-				vendor := toolchain.VendorModule(path)
+				vendor := module.Vendor()
 				log.Printf("Synchronizing vendor file using `go mod vendor` in %s.\n", path)
 				util.RunCmd(vendor)
 			}
 
-			install = exec.Command("go", "get", "-v", "./...")
+			install = toolchain.GoCommand("get", "-v", "./...")
 			install.Dir = path
 			log.Printf("Installing dependencies using `go get -v ./...` in `%s`.\n", path)
 			util.RunCmd(install)
@@ -444,7 +448,7 @@ func installDependencies(workspace project.GoWorkspace) {
 }
 
 // Run the extractor.
-func extract(workspace project.GoWorkspace) bool {
+func extract(workspace project.GoWorkspace, sourceRoot string) bool {
 	extractor, err := util.GetExtractorPath()
 	if err != nil {
 		log.Fatalf("Could not determine path of extractor: %v.\n", err)
@@ -453,6 +457,12 @@ func extract(workspace project.GoWorkspace) bool {
 	extractorArgs := []string{}
 	if workspace.DepMode == project.GoGetWithModules {
 		extractorArgs = append(extractorArgs, workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...)
+	}
+
+	if util.IsOverlayExtraction() {
+		// When we are extracting an overlay, pass the source root to the extractor so that it knows
+		// how to resolve the relative paths in the list of changed files.
+		extractorArgs = append(extractorArgs, "--source-root", sourceRoot)
 	}
 
 	if len(workspace.Modules) == 0 {
@@ -498,9 +508,6 @@ func installDependenciesAndBuild() {
 
 	srcdir := getSourceDir()
 
-	// we set `SEMMLE_PATH_TRANSFORMER` ourselves in some cases, so blank it out first for consistency
-	os.Setenv("SEMMLE_PATH_TRANSFORMER", "")
-
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
 	workspaces := project.GetWorkspaceInfo(true)
@@ -531,7 +538,21 @@ func installDependenciesAndBuild() {
 			pt := createPathTransformerFile(paths.newdir)
 			defer os.Remove(pt.Name())
 
-			writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
+			// We're about to create out own path transformer, so that paths containing the
+			// temporary GOPATH point to the right location. However, if there was already an
+			// incoming path transformer, the right location will be what _it_ wanted to transform
+			// paths to.
+			existingPathTransformer, err := srcarchive.LoadProjectLayoutFromEnv()
+			if err != nil {
+				log.Fatalf("Unable to load path transformer: %s.\n", err.Error())
+			}
+			var realSrc string
+			if existingPathTransformer == nil {
+				realSrc = paths.realSrc
+			} else {
+				realSrc = existingPathTransformer.To
+			}
+			writePathTransformerFile(pt, realSrc, paths.newdir)
 			setGopath(paths.root)
 		}
 	}
@@ -542,12 +563,12 @@ func installDependenciesAndBuild() {
 
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
-	if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && greatestGoVersion.Found && semver.Compare("v"+greatestGoVersion.Version, toolchain.GetEnvGoSemVer()) > 0 {
-		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+greatestGoVersion.Version)
-		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
+	if toolchain.GetEnvGoSemVer().IsOlderThan(toolchain.V1_21) && greatestGoVersion != nil && greatestGoVersion.IsNewerThan(toolchain.GetEnvGoSemVer()) {
+		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer().String(), greatestGoVersion.String())
+		if util.IsActionsWorkflow() {
 			log.Printf(
 				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
-				"v"+greatestGoVersion.Version,
+				greatestGoVersion,
 				toolchain.GetEnvGoSemVer())
 		}
 	}
@@ -555,23 +576,31 @@ func installDependenciesAndBuild() {
 	// Track all projects which could not be extracted successfully
 	var unsuccessfulProjects = []string{}
 
-	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
-	for i, workspace := range workspaces {
+	// Attempt to automatically fix issues with each workspace
+	for _, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 
-		fixGoVendorIssues(&workspace, goVersionInfo.Found)
+		fixGoVendorIssues(&workspace, goVersionInfo != nil)
 
 		tryUpdateGoModAndGoSum(workspace)
+	}
 
-		// check whether an explicit dependency installation command was provided
-		inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
-		shouldInstallDependencies := false
-		if inst == "" {
-			shouldInstallDependencies = buildWithoutCustomCommands(workspace.ModMode)
-		} else {
-			buildWithCustomCommands(inst)
-		}
+	// check whether an explicit dependency installation command was provided
+	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
+	if inst == "" {
+		buildWithoutCustomCommands(workspaces)
+	} else {
+		buildWithCustomCommands(inst)
+	}
 
+	// The autobuilder is invoked with its working directory set to the source directory.
+	sourceRoot, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Failed to get current working directory: %s\n", err.Error())
+	}
+
+	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
+	for i, workspace := range workspaces {
 		if workspace.ModMode == project.ModVendor {
 			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
 			// or not set if the go version < 1.14. Note we check this post-build in case the build brings
@@ -582,7 +611,7 @@ func installDependenciesAndBuild() {
 			}
 		}
 
-		if shouldInstallDependencies {
+		if workspace.ShouldInstallDependencies {
 			if workspace.ModMode == project.ModVendor {
 				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
 			} else {
@@ -590,7 +619,7 @@ func installDependenciesAndBuild() {
 			}
 		}
 
-		workspaces[i].Extracted = extract(workspace)
+		workspaces[i].Extracted = extract(workspace, sourceRoot)
 
 		if !workspaces[i].Extracted {
 			unsuccessfulProjects = append(unsuccessfulProjects, workspace.BaseDir)
@@ -615,9 +644,13 @@ func installDependenciesAndBuild() {
 	} else {
 		log.Printf("Success: extraction succeeded for all %d discovered project(s).\n", len(workspaces))
 	}
+
+	util.WriteOverlayBaseMetadata()
 }
 
 func main() {
+	util.SetLogLevel()
+
 	if len(os.Args) == 1 {
 		installDependenciesAndBuild()
 	} else if len(os.Args) == 2 && os.Args[1] == "--identify-environment" {

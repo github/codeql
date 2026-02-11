@@ -1,30 +1,51 @@
 #Subclass shadowing
 
-class Base(object):
+# BAD: `shadow` method shadows attribute
+class Base:
 
     def __init__(self):
         self.shadow = 4
 
 class Derived(Base):
 
-    def shadow(self):
+    def shadow(self): # $ Alert 
         pass
     
     
-#OK if the super class defines the method as well.
-#Since the original method must exist for some reason.
-#See JSONEncoder.default for real example
+# OK: Allow if superclass also shadows its own method, as this is likely intended.
+# Example: stdlib JSONEncoder.default uses this pattern.  
+class Base2:
 
-class Base2(object):
+    def __init__(self, default=None):
+        if default:
+            self.default = default
 
-    def __init__(self, shadowy=None):
-        if shadowy:
-            self.shadow = shadowy
-
-    def shadow(self):
+    def default(self):
         pass
 
 class Derived2(Base2):
 
-    def shadow(self):
+    def default(self): # No alert
         return 0
+
+# Properties 
+
+class Base3:
+    def __init__(self):
+        self.foo = 1 
+        self.bar = 2 
+
+class Derived3(Base3):
+    # BAD: Write to foo in superclass init raises an error.
+    @property 
+    def foo(self): # $ Alert
+        return 2 
+    
+    # OK: This property has a setter, so the write is OK.
+    @property 
+    def bar(self): # No alert
+        return self._bar 
+    
+    @bar.setter 
+    def bar(self, val):
+        self._bar = val

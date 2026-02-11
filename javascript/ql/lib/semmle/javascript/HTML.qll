@@ -1,4 +1,6 @@
 /** Provides classes for working with HTML documents. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -214,7 +216,7 @@ module HTML {
         result = path.regexpCapture("file://(/.*)", 1)
         or
         not path.regexpMatch("(\\w+:)?//.*") and
-        result = this.getSourcePath().(ScriptSrcPath).resolve(this.getSearchRoot()).toString()
+        result = ResolveScriptSrc::resolve(this.getSearchRoot(), this.getSourcePath()).toString()
       )
     }
 
@@ -274,10 +276,17 @@ module HTML {
     )
   }
 
+  private module ResolverConfig implements Folder::ResolveSig {
+    predicate shouldResolve(Container base, string path) { scriptSrc(path, base) }
+  }
+
+  private module ResolveScriptSrc = Folder::Resolve<ResolverConfig>;
+
   /**
    * A path string arising from the `src` attribute of a `script` tag.
    */
-  private class ScriptSrcPath extends PathString {
+  overlay[global]
+  deprecated private class ScriptSrcPath extends PathString {
     ScriptSrcPath() { scriptSrc(this, _) }
 
     override Folder getARootFolder() { scriptSrc(this, result) }

@@ -2,7 +2,8 @@
  * @name Formatted object is not a mapping
  * @description The formatted object must be a mapping when the format includes a named specifier; otherwise a TypeError will be raised."
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity low
@@ -11,9 +12,10 @@
  */
 
 import python
+private import LegacyPointsTo
 import semmle.python.strings
 
-from Expr e, ClassValue t
+from ExprWithPointsTo e, ClassValue t
 where
   exists(BinaryExpr b |
     b.getOp() instanceof Mod and

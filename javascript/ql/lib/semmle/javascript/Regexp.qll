@@ -4,6 +4,8 @@
  * Regular expression literals are represented as an abstract syntax tree of regular expression
  * terms.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.InferredTypes
@@ -150,6 +152,7 @@ class RegExpTerm extends Locatable, @regexpterm {
    * /[a-z]+/g; // YES - Regexp literals are always used as regexp
    * ```
    */
+  overlay[global]
   predicate isUsedAsRegExp() {
     exists(RegExpParent parent | parent = this.getRootTerm().getParent() |
       parent instanceof RegExpLiteral
@@ -299,6 +302,51 @@ class RegExpAlt extends RegExpTerm, @regexp_alt {
   override string getAMatchedString() { result = this.getAlternative().getAMatchedString() }
 
   override string getAPrimaryQlClass() { result = "RegExpAlt" }
+}
+
+/**
+ * An intersection term, that is, a term of the form `[[a]&&[ab]]`.
+ *
+ * Example:
+ *
+ * ```
+ * /[[abc]&&[bcd]]/v - which matches 'b' and 'c' only.
+ * ```
+ */
+class RegExpIntersection extends RegExpTerm, @regexp_intersection {
+  /** Gets an intersected term of this term. */
+  RegExpTerm getAnElement() { result = this.getAChild() }
+
+  /** Gets the number of intersected terms of this term. */
+  int getNumIntersectedTerm() { result = this.getNumChild() }
+
+  override predicate isNullable() { this.getAnElement().isNullable() }
+
+  override string getAPrimaryQlClass() { result = "RegExpIntersection" }
+}
+
+/**
+ * A subtraction term, that is, a term of the form `[[a]--[ab]]`.
+ *
+ * Example:
+ *
+ * ```
+ * /[[abc]--[bc]]/v - which matches 'a' only.
+ * ```
+ */
+class RegExpSubtraction extends RegExpTerm, @regexp_subtraction {
+  /** Gets the minuend (left operand) of this subtraction. */
+  RegExpTerm getFirstTerm() { result = this.getChild(0) }
+
+  /** Gets the number of subtractions terms of this term. */
+  int getNumSubtractedTerm() { result = this.getNumChild() - 1 }
+
+  /** Gets a subtrahend (right operand) of this subtraction. */
+  RegExpTerm getASubtractedTerm() { exists(int i | i > 0 and result = this.getChild(i)) }
+
+  override predicate isNullable() { none() }
+
+  override string getAPrimaryQlClass() { result = "RegExpSubtraction" }
 }
 
 /**
@@ -919,6 +967,7 @@ class RegExpParseError extends Error, @regexp_parse_error {
 /**
  * Holds if `func` is a method defined on `String.prototype` with name `name`.
  */
+overlay[global]
 private predicate isNativeStringMethod(Function func, string name) {
   exists(ExternalInstanceMemberDecl decl |
     decl.hasQualifiedName("String", name) and
@@ -930,6 +979,7 @@ private predicate isNativeStringMethod(Function func, string name) {
  * Holds if `name` is the name of a property on a Match object returned by `String.prototype.match`,
  * not including array indices.
  */
+overlay[global]
 private predicate isMatchObjectProperty(string name) {
   any(ExternalInstanceMemberDecl decl).hasQualifiedName("Array", name)
   or
@@ -937,8 +987,9 @@ private predicate isMatchObjectProperty(string name) {
 }
 
 /** Holds if `call` is a call to `match` whose result is used in a way that is incompatible with Match objects. */
+overlay[global]
 private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
-  call.getMethodName() = "match" and
+  call.getMethodName() = ["match", "matchAll"] and
   call.getNumArgument() = 1 and
   (
     // Accessing a property that is absent on Match objects
@@ -953,16 +1004,19 @@ private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
     or
     // Result is obviously unused
     call.asExpr() = any(ExprStmt stmt).getExpr()
+    or
+    call = API::moduleImport("sinon").getMember("match").getACall()
   )
 }
 
 /**
  * Holds if `value` is used in a way that suggests it returns a number.
  */
+overlay[global]
 pragma[inline]
 private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   any(Comparison compare)
-      .hasOperands(value.getALocalUse().asExpr(), any(Expr e | e.analyze().getAType() = TTNumber()))
+      .hasOperands(value.getALocalUse().asExpr(), any(Expr e | canBeNumber(e.analyze())))
   or
   value.flowsToExpr(any(ArithmeticExpr e).getAnOperand())
   or
@@ -972,31 +1026,42 @@ private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
   or
   exists(DataFlow::CallNode call |
     call.getCalleeName() =
-      ["substring", "substr", "slice", "splice", "charAt", "charCodeAt", "codePointAt"] and
+      ["substring", "substr", "slice", "splice", "charAt", "charCodeAt", "codePointAt", "toSpliced"] and
     value.flowsTo(call.getAnArgument())
   )
 }
 
+bindingset[node]
+overlay[global]
+pragma[inline_late]
+private predicate canBeString(DataFlow::AnalyzedNode node) { node.getAType() = TTString() }
+
+bindingset[node]
+overlay[global]
+pragma[inline_late]
+private predicate canBeNumber(DataFlow::AnalyzedNode node) { node.getAType() = TTNumber() }
+
 /**
  * Holds if `source` may be interpreted as a regular expression.
  */
+overlay[global]
 cached
 predicate isInterpretedAsRegExp(DataFlow::Node source) {
   Stages::Taint::ref() and
-  source.analyze().getAType() = TTString() and
+  canBeString(source) and
   (
     // The first argument to an invocation of `RegExp` (with or without `new`).
     source = DataFlow::globalVarRef("RegExp").getAnInvocation().getArgument(0)
     or
     // The argument of a call that coerces the argument to a regular expression.
     exists(DataFlow::MethodCallNode mce, string methodName |
-      mce.getReceiver().analyze().getAType() = TTString() and
+      canBeString(mce.getReceiver()) and
       mce.getMethodName() = methodName and
       not exists(Function func | func = mce.getACallee() |
         not isNativeStringMethod(func, methodName)
       )
     |
-      methodName = "match" and
+      methodName = ["match", "matchAll"] and
       source = mce.getArgument(0) and
       mce.getNumArgument() = 1 and
       not isUsedAsNonMatchObject(mce)
@@ -1026,6 +1091,7 @@ predicate isInterpretedAsRegExp(DataFlow::Node source) {
  * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker t) {
   t.start() and
   re = result and
@@ -1043,6 +1109,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re, DataFlow::TypeBackTracker
  * Gets a node whose value may flow (inter-procedurally) to `re`, where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 private DataFlow::Node regExpSource(DataFlow::Node re) {
   result = regExpSource(re, DataFlow::TypeBackTracker::end())
 }
@@ -1051,6 +1118,7 @@ private DataFlow::Node regExpSource(DataFlow::Node re) {
  * A node whose value may flow to a position where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 abstract class RegExpPatternSource extends DataFlow::Node {
   /**
    * Gets a node where the pattern of this node is parsed as a part of
@@ -1079,6 +1147,7 @@ abstract class RegExpPatternSource extends DataFlow::Node {
 /**
  * A regular expression literal, viewed as the pattern source for itself.
  */
+overlay[global]
 private class RegExpLiteralPatternSource extends RegExpPatternSource, DataFlow::ValueNode {
   override RegExpLiteral astNode;
 
@@ -1098,6 +1167,7 @@ private class RegExpLiteralPatternSource extends RegExpPatternSource, DataFlow::
  * A node whose string value may flow to a position where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 private class StringRegExpPatternSource extends RegExpPatternSource {
   DataFlow::Node parse;
 
@@ -1122,6 +1192,7 @@ private class StringRegExpPatternSource extends RegExpPatternSource {
  * A node whose string value may flow to a position where it is interpreted
  * as a part of a regular expression.
  */
+overlay[global]
 private class StringConcatRegExpPatternSource extends RegExpPatternSource {
   DataFlow::Node parse;
 
@@ -1140,6 +1211,28 @@ private class StringConcatRegExpPatternSource extends RegExpPatternSource {
   override string getPattern() { result = this.getStringValue() }
 
   override RegExpTerm getRegExpTerm() { result = this.asExpr().(AddExpr).asRegExp() }
+}
+
+/**
+ * A quoted string escape in a regular expression, using the `\q` syntax.
+ * The only operation supported inside a quoted string is alternation, using `|`.
+ *
+ * Example:
+ *
+ * ```
+ * \q{foo}
+ * \q{a|b|c}
+ * ```
+ */
+class RegExpQuotedString extends RegExpTerm, @regexp_quoted_string {
+  /** Gets the term representing the contents of this quoted string. */
+  RegExpTerm getTerm() { result = this.getAChild() }
+
+  override predicate isNullable() { none() }
+
+  override string getAMatchedString() { result = this.getTerm().getAMatchedString() }
+
+  override string getAPrimaryQlClass() { result = "RegExpQuotedString" }
 }
 
 module RegExp {
@@ -1161,6 +1254,10 @@ module RegExp {
   /** Holds if `flags` includes the `s` flag. */
   bindingset[flags]
   predicate isDotAll(string flags) { flags.matches("%s%") }
+
+  /** Holds if `flags` includes the `v` flag. */
+  bindingset[flags]
+  predicate isUnicodeSets(string flags) { flags.matches("%v%") }
 
   /** Holds if `flags` includes the `m` flag or is the unknown flag `?`. */
   bindingset[flags]
@@ -1258,6 +1355,7 @@ module RegExp {
   /**
    * Gets the AST of a regular expression object that can flow to `node`.
    */
+  overlay[global]
   RegExpTerm getRegExpObjectFromNode(DataFlow::Node node) {
     exists(DataFlow::RegExpCreationNode regexp |
       regexp.getAReference().flowsTo(node) and
@@ -1269,6 +1367,7 @@ module RegExp {
    * Gets the AST of a regular expression that can flow to `node`,
    * including `RegExp` objects as well as strings interpreted as regular expressions.
    */
+  overlay[global]
   RegExpTerm getRegExpFromNode(DataFlow::Node node) {
     result = getRegExpObjectFromNode(node)
     or

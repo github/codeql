@@ -23,30 +23,6 @@ private import semmle.python.dataflow.new.SensitiveDataSources
 module NormalHashFunction {
   import WeakSensitiveDataHashingCustomizations::NormalHashFunction
 
-  /**
-   * DEPRECATED: Use `Flow` module instead.
-   *
-   * A taint-tracking configuration for detecting use of a broken or weak
-   * cryptographic hashing algorithm on sensitive data.
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "NormalHashFunction" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node)
-      or
-      node instanceof Sanitizer
-    }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      sensitiveDataExtraStepForCalls(node1, node2)
-    }
-  }
-
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
 
@@ -57,6 +33,8 @@ module NormalHashFunction {
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       sensitiveDataExtraStepForCalls(node1, node2)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on sensitive data" vulnerabilities. */
@@ -74,33 +52,6 @@ module ComputationallyExpensiveHashFunction {
   import WeakSensitiveDataHashingCustomizations::ComputationallyExpensiveHashFunction
 
   /**
-   * DEPRECATED: Use `Flow` module instead.
-   *
-   * A taint-tracking configuration for detecting use of a broken or weak
-   * cryptographic hashing algorithm on passwords.
-   *
-   * Passwords has stricter requirements on the hashing algorithm used (must be
-   * computationally expensive to prevent brute-force attacks).
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "ComputationallyExpensiveHashFunction" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node)
-      or
-      node instanceof Sanitizer
-    }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-      sensitiveDataExtraStepForCalls(node1, node2)
-    }
-  }
-
-  /**
    * Passwords has stricter requirements on the hashing algorithm used (must be
    * computationally expensive to prevent brute-force attacks).
    */
@@ -114,6 +65,8 @@ module ComputationallyExpensiveHashFunction {
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       sensitiveDataExtraStepForCalls(node1, node2)
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global taint-tracking for detecting "use of a broken or weak cryptographic hashing algorithm on passwords" vulnerabilities. */

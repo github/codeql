@@ -33,7 +33,7 @@ public class FlexjsonServlet extends HttpServlet {
     // BAD: allow class name to be controlled by remote source
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JSONDeserializer<User> deserializer = new JSONDeserializer<>();
-        User user = (User) deserializer.deserialize(req.getReader()); // $unsafeDeserialization
+        User user = (User) deserializer.deserialize(req.getReader()); // $ Alert
 
     }
 
@@ -41,7 +41,7 @@ public class FlexjsonServlet extends HttpServlet {
     // BAD: allow class name to be controlled by remote source
     public void doTrace(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JSONDeserializer deserializer = new JSONDeserializer<>();
-        User user = (User) deserializer.deserialize(req.getReader()); // $unsafeDeserialization
+        User user = (User) deserializer.deserialize(req.getReader()); // $ Alert
 
     }
 
@@ -49,7 +49,7 @@ public class FlexjsonServlet extends HttpServlet {
     // BAD: specify overly generic class type
     public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JSONDeserializer deserializer = new JSONDeserializer();
-        User user = (User) deserializer.deserialize(req.getReader(), Object.class); // $unsafeDeserialization
+        User user = (User) deserializer.deserialize(req.getReader(), Object.class); // $ Alert
     }
 
     private Person fromJsonToPerson(String json) {
@@ -64,8 +64,8 @@ public class FlexjsonServlet extends HttpServlet {
 
     // BAD: Specify a concrete class type to `use` with `ObjectFactory`
     public void doPut3(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
-        Person person = new JSONDeserializer<Person>().use(Person.class, new ExistingObjectFactory(new Person())).deserialize(json); // $unsafeDeserialization
+        String json = req.getParameter("json"); // $ Source
+        Person person = new JSONDeserializer<Person>().use(Person.class, new ExistingObjectFactory(new Person())).deserialize(json); // $ Alert
     }
 
     // GOOD: Specify a null path to `use` with a concrete class type
@@ -76,8 +76,8 @@ public class FlexjsonServlet extends HttpServlet {
 
     // BAD: Specify a non-null json path to `use` with a concrete class type
     public void doPut5(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
-        Person person = new JSONDeserializer<Person>().use("abc", Person.class).deserialize(json); // $unsafeDeserialization
+        String json = req.getParameter("json"); // $ Source
+        Person person = new JSONDeserializer<Person>().use("abc", Person.class).deserialize(json); // $ Alert
     }
 
     // GOOD: Specify a null json path to `use` with `ObjectFactory`
@@ -116,11 +116,11 @@ public class FlexjsonServlet extends HttpServlet {
 
     // BAD: Specify a non-null json path to `use` with a concrete class type, interwoven with irrelevant use directives, without using fluent method chaining
     public void doPut11(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String json = req.getParameter("json");
+        String json = req.getParameter("json"); // $ Source
         JSONDeserializer<Person> deserializer = new JSONDeserializer<Person>();
         deserializer.use(Person.class, null);
         deserializer.use("someKey", Person.class);
         deserializer.use(String.class, null);
-        Person person = deserializer.deserialize(json); // $unsafeDeserialization
+        Person person = deserializer.deserialize(json); // $ Alert
     }
 }

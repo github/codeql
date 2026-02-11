@@ -23,5 +23,5 @@ where
   sink.getNode().asExpr() = c.getAlgoSpec() and
   InsecureCryptoFlow::flowPath(source, sink)
 select c, source, sink,
-  "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", source,
+  "Cryptographic algorithm $@ may not be secure. Consider using a different algorithm.", source,
   source.getNode().asExpr().(InsecureAlgorithm).getStringValue()

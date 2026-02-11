@@ -1,0 +1,94 @@
+name: test
+
+on:
+  pull_request:
+
+jobs:
+  test1:
+    runs-on: [self-hosted, X64, Linux, 16c32g]
+    steps:
+      - run: cmd
+  test2:
+    runs-on:
+      group: my-group
+      labels: [self-hosted, label-1]
+    steps:
+      - run: cmd
+  test3:
+    runs-on:
+      - 'self-hosted'
+      - 'linux'
+      - 'x64'
+      - 'metal'
+    steps:
+      - run: echo "foo"
+  test4:
+    runs-on: self-hosted-azure
+    steps:
+    - run: cmd
+  test5:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - name: Linux
+            os: ubuntu-latest
+            shell: bash
+          - name: macOS
+            os: macos-latest
+            shell: bash
+          - name: Windows
+            os: windows-latest
+            shell: cmd
+        node-version:
+          - 16.14.0
+          - 16.x
+          - 18.0.0
+          - 18.x
+          - 20.x
+    runs-on: ${{ matrix.platform.os }}
+    steps:
+    - run: cmd
+  test6:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - run: cmd
+  test7:
+    strategy:
+      matrix:
+        os: [self-hosted, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - run: cmd
+  test8:
+    strategy:
+      matrix:
+        settings:
+          - host:
+              - 'self-hosted'
+              - 'macos'
+              - 'arm64'
+            target: 'x86_64-apple-darwin'
+    runs-on: ${{ matrix.settings.host }}
+    steps:
+    - run: cmd
+  test9:
+    strategy:
+      matrix:
+        os: ${{ github.repository }}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - run: cmd
+  test10:
+    strategy:
+      matrix:
+        os: ${{ github.repository }}
+        foo:
+          - bar: ${{ github.repository }}
+            baz: "asdf"
+    runs-on: ${{ matrix.foo.bar }}
+    steps:
+    - run: cmd

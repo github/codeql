@@ -1,5 +1,6 @@
 import python
 import semmle.python.pointsto.MRO
+private import LegacyPointsTo
 
 from ClassValue cls
 where not cls.isBuiltin()

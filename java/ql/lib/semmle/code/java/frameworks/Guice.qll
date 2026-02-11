@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with the Guice framework.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.FlowSteps

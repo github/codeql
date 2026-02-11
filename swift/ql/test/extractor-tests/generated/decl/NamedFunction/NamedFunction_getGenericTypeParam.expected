@@ -1,2 +1,0 @@
-| functions.swift:17:1:19:1 | generic(x:y:) | 0 | functions.swift:17:14:17:14 | X |
-| functions.swift:17:1:19:1 | generic(x:y:) | 1 | functions.swift:17:17:17:17 | Y |

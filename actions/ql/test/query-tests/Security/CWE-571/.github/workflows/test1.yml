@@ -1,0 +1,111 @@
+name: Event
+
+on:
+  workflow_dispatch:
+
+jobs:
+  if-tests:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Test 1 
+        if: 1 == 2
+        run: echo "Test 1 should not be printed"
+      - name: Test 2 
+        if: |
+          ${{ 
+              1 == 2 ||
+              3 == 4
+          }}
+        run: echo "Test 2 should not be printed"
+      - name: Test 3 
+        if: ${{ 1 == 2 }}
+        run: echo "Test 3 should not be printed"
+      - name: Test 4 
+        if:   ${{ 1 == 2 }}
+        run: echo "Test 4 should not be printed"
+      - name: Test 5 
+        if: ${{ 
+              1 == 2 ||
+              3 == 4
+          }}
+        run: echo "Test 5 should not be printed"
+      - name: Test 6
+        if: ${{ 1 == 1 }} ${{ 1 == 2 }}
+        run: echo "Test 6 should not be printed"
+      - name: Test 7
+        run: echo "Test 7 should not be printed"
+        if: ${{ 
+              1 == 2 ||
+              3 == 4
+          }}
+          
+      - name: Test 8
+        run: echo "Test 8 should not be printed"
+        if: > 
+          ${{ 
+              1 == 2 ||
+              3 == 4 }}
+      - name: Test 9 
+        if:   '${{ 1 == 2  }}'
+        run: echo "Test 9 should not be printed"
+      - name: Test 10
+        if:   "${{1 == 2  }}"
+        run: echo "Test 10 should not be printed"
+      - name: Test 11
+        if:   " ${{ 1 == 2  }}"
+        run: echo "Test 11 should not be printed"
+      - name: Test 12
+        if:   " ${{ 1 == 2  }}"
+        run: echo "Test 12 should not be printed"
+      - name: Test 13
+        if: |
+          1 == 2 ||
+          3 == 4
+        run: echo "Test 13 should not be printed"
+      - name: Test 14
+        if: >-
+          ${{(
+            false || 1 == 2
+          )}}
+        run: echo "Test 14 should not be printed"
+      - name: Test 15
+        if: |-
+          ${{(
+            false || 1 == 2
+          )}}
+        run: echo "Test 15 should not be printed"
+      - name: Test 16
+        if: |+
+          ${{(
+            false || 1 == 2
+          )}}
+        run: echo "Test 16 should not be printed"
+      - name: Test 17
+        if: >+
+          ${{(
+            false || 1 == 2
+          )}}
+        run: echo "Test 17 should not be printed"
+      - name: Test 18
+        if: ${{ github.event_name }} == 'foo'
+        run: echo "Test 18 should not be printed"
+      - name: Test 19
+        if: ${{ contains(fromJSON('["OWNER", "MEMBER"]'), github.event.pull_request.foo )}} || github.event_name == 'foo'
+        run: echo "Test 19 should not be printed"
+      - name: Test 20
+        if: ${{ hashFiles('./docker/Dockerfile.debian') }} != ""
+        run: echo "Test 20 should not be printed"
+      - name: Test 21
+        if: >
+          ${{ github.event.workflow_run.event == 'pull_request' &&
+          github.event.workflow_run.conclusion == 'success' }}
+        run: echo "Test 21 should not be printed"
+      - name: Test 22
+        if: |
+          runner.os == 'Windows' && (
+            startsWith(inputs.node, 'v10.') ||
+            startsWith(inputs.node, 'v12.') ||
+            startsWith(inputs.node, 'v14.')
+          )
+        run: echo "Test 22 should not be printed"

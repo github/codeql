@@ -35,12 +35,13 @@ class Location = JS::Location;
  * Type names have form `package.type` or just `package` if referring to the package export
  * object. If `package` contains a `.` character it must be enclosed in single quotes, such as `'package'.type`.
  *
- * A type name of form `(package)` may also be used when refering to the package export object.
+ * A type name of form `(package)` may also be used when referring to the package export object.
  * We allow this syntax as an alternative to the above, so models generated based on `EndpointNaming` look more consistent.
  * However, access paths are deliberately not parsed here, as we can not handle aliasing at this stage.
  * The model generator must explicitly generate the step between `(package)` and `(package).foo`, for example.
  */
 bindingset[rawType]
+overlay[caller?]
 predicate parseTypeString(string rawType, string package, string qualifiedName) {
   exists(string regexp |
     regexp = "('[^']+'|[^.]+)(.*)" and
@@ -55,17 +56,21 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
 /**
  * Holds if models describing `package` may be relevant for the analysis of this database.
  */
+overlay[local?]
 predicate isPackageUsed(string package) {
-  exists(DataFlow::moduleImport(package))
-  or
-  exists(JS::PackageJson json | json.getPackageName() = package)
-  or
   package = "global"
   or
-  any(DataFlow::SourceNode sn).hasUnderlyingType(package, _)
+  // To simplify which dependencies are needed to construct DataFlow::Node, we don't want to rely on `Import` here.
+  // Just check all string literals.
+  package = any(JS::Expr imp).getStringValue()
+  or
+  package = any(JS::StringLiteralTypeExpr t).getValue() // Can be used in `import("foo")`
+  or
+  exists(JS::PackageJson json | json.getPackageName() = package)
 }
 
 bindingset[type]
+overlay[local?]
 predicate isTypeUsed(string type) {
   exists(string package |
     parseTypeString(type, package, _) and
@@ -77,8 +82,10 @@ predicate isTypeUsed(string type) {
  * Holds if `type` can be obtained from an instance of `otherType` due to
  * language semantics modeled by `getExtraNodeFromType`.
  */
+overlay[local?]
 predicate hasImplicitTypeModel(string type, string otherType) { none() }
 
+overlay[local?]
 pragma[nomagic]
 private predicate parseRelevantTypeString(string rawType, string package, string qualifiedName) {
   isRelevantFullPath(rawType, _) and
@@ -86,6 +93,7 @@ private predicate parseRelevantTypeString(string rawType, string package, string
 }
 
 /** Holds if `global` is a global variable referenced via a the `global` package in a CSV row. */
+overlay[local]
 private predicate isRelevantGlobal(string global) {
   exists(AccessPath path, AccessPathToken token |
     isRelevantFullPath("global", path) and
@@ -96,6 +104,7 @@ private predicate isRelevantGlobal(string global) {
 }
 
 /** An API graph entry point for global variables mentioned in a model. */
+overlay[local?]
 private class GlobalApiEntryPoint extends API::EntryPoint {
   string global;
 
@@ -136,7 +145,7 @@ API::Node getExtraNodeFromType(string type) {
     parseRelevantTypeString(type, package, qualifiedName)
   |
     qualifiedName = "" and
-    result = [API::moduleImport(package), API::moduleExport(package)]
+    result = [API::Internal::getAModuleImportRaw(package), API::moduleExport(package)]
     or
     // Access instance of a type based on type annotations
     result = API::Internal::getANodeOfTypeRaw(package, qualifiedName)
@@ -160,8 +169,8 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   token.getName() = "Awaited" and
   result = node.getPromised()
   or
-  token.getName() = "ArrayElement" and
-  result = node.getMember(DataFlow::PseudoProperties::arrayElement())
+  token.getName() = ["ArrayElement", "Element"] and
+  result = node.getArrayElement()
   or
   token.getName() = "Element" and
   result = node.getMember(DataFlow::PseudoProperties::arrayLikeElement())
@@ -169,11 +178,6 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   // Note: MapKey not currently supported
   token.getName() = "MapValue" and
   result = node.getMember(DataFlow::PseudoProperties::mapValueAll())
-  or
-  // Currently we need to include the "unknown member" for ArrayElement and Element since
-  // API graphs do not use store/load steps for arrays
-  token.getName() = ["ArrayElement", "Element"] and
-  result = node.getUnknownMember()
   or
   token.getName() = "Parameter" and
   token.getAnArgument() = "this" and
@@ -187,6 +191,21 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   or
   token.getName() = "DecoratedParameter" and
   result = node.getADecoratedParameter()
+  or
+  token.getName() = "GuardedRouteHandler" and
+  result = getAGuardedRouteHandlerApprox(node)
+}
+
+bindingset[node]
+overlay[caller?]
+pragma[inline_late]
+private API::Node getAGuardedRouteHandlerApprox(API::Node node) {
+  // For now just get any routing node with the same root (i.e. the same web app), as
+  // there are some known performance issues when checking if it is actually guarded by the given node.
+  exists(JS::Routing::Node root |
+    root = JS::Routing::getNode(node.getAValueReachableFromSource()).getRootNode() and
+    root = JS::Routing::getNode(result.asSink()).getRootNode()
+  )
 }
 
 /**
@@ -219,6 +238,7 @@ private predicate blockFuzzyCall(DataFlow::CallNode call) {
   isCommonBuiltinMethodName(call.getCalleeName())
 }
 
+overlay[caller?]
 pragma[inline]
 API::Node getAFuzzySuccessor(API::Node node) {
   result = node.getAMember() and
@@ -261,51 +281,6 @@ predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPat
   )
 }
 
-/**
- * Holds if `path` is an input or output spec for a summary with the given `base` node.
- */
-pragma[nomagic]
-private predicate relevantInputOutputPath(API::InvokeNode base, AccessPath inputOrOutput) {
-  exists(string type, string input, string output, string path |
-    ModelOutput::relevantSummaryModel(type, path, input, output, _, _) and
-    ModelOutput::resolvedSummaryBase(type, path, base) and
-    inputOrOutput = [input, output]
-  )
-}
-
-/**
- * Gets the API node for the first `n` tokens of the given input/output path, evaluated relative to `baseNode`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path, int n) {
-  relevantInputOutputPath(baseNode, path) and
-  (
-    n = 1 and
-    result = getSuccessorFromInvoke(baseNode, path.getToken(0))
-    or
-    result =
-      getSuccessorFromNode(getNodeFromInputOutputPath(baseNode, path, n - 1), path.getToken(n - 1))
-  )
-}
-
-/**
- * Gets the API node for the given input/output path, evaluated relative to `baseNode`.
- */
-private API::Node getNodeFromInputOutputPath(API::InvokeNode baseNode, AccessPath path) {
-  result = getNodeFromInputOutputPath(baseNode, path, path.getNumToken())
-}
-
-/**
- * Holds if a CSV summary contributed the step `pred -> succ` of the given `kind`.
- */
-predicate summaryStep(API::Node pred, API::Node succ, string kind) {
-  exists(string type, string path, API::InvokeNode base, AccessPath input, AccessPath output |
-    ModelOutput::relevantSummaryModel(type, path, input, output, kind, _) and
-    ModelOutput::resolvedSummaryBase(type, path, base) and
-    pred = getNodeFromInputOutputPath(base, input) and
-    succ = getNodeFromInputOutputPath(base, output)
-  )
-}
-
 class InvokeNode = API::InvokeNode;
 
 /** Gets an `InvokeNode` corresponding to an invocation of `node`. */
@@ -320,7 +295,7 @@ predicate isExtraValidTokenNameInIdentifyingAccessPath(string name) {
     [
       "Member", "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue",
       "NewCall", "Call", "DecoratedClass", "DecoratedMember", "DecoratedParameter",
-      "WithStringArgument"
+      "WithStringArgument", "GuardedRouteHandler"
     ]
 }
 
@@ -332,7 +307,7 @@ predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name) {
   name =
     [
       "AnyMember", "Instance", "Awaited", "ArrayElement", "Element", "MapValue", "NewCall", "Call",
-      "DecoratedClass", "DecoratedMember", "DecoratedParameter"
+      "DecoratedClass", "DecoratedMember", "DecoratedParameter", "GuardedRouteHandler"
     ]
 }
 
@@ -371,7 +346,7 @@ bindingset[pred]
 predicate apiGraphHasEdge(API::Node pred, string path, API::Node succ) {
   exists(string name | succ = pred.getMember(name) and path = "Member[" + name + "]")
   or
-  succ = pred.getUnknownMember() and path = "AnyMember"
+  succ = pred.getUnknownArrayElement() and path = "ArrayElement"
   or
   succ = pred.getInstance() and path = "Instance"
   or

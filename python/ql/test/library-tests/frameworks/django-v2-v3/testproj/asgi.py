@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testproj.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testproj.settings') # $ threatModelSource[environment]=os.environ
 
 application = get_asgi_application()

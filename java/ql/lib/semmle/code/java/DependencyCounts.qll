@@ -1,6 +1,8 @@
 /**
  * This library provides utility predicates for representing the number of dependencies between types.
  */
+overlay[local?]
+module;
 
 import Type
 import Generics
@@ -64,7 +66,7 @@ predicate numDepends(RefType t, RefType dep, int value) {
         elem = fa and
         fa.getEnclosingCallable().getDeclaringType() = t
       |
-        usesType(fa.getField().getSourceDeclaration().getDeclaringType(), dep)
+        usesType(fa.getField().getDeclaringType(), dep)
       )
       or
       // the type of a local variable declared in `t`,

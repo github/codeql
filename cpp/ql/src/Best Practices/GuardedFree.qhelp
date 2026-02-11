@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The <code>free</code> function, which deallocates heap memory, may accept a NULL pointer and take no action. Therefore, it is unnecessary to check the argument for the value of NULL before a function call to <code>free</code>. As such, these guards may hinder performance and readability.</p>
+</overview>
+
+<recommendation>
+<p>A function call to <code>free</code> should not depend upon the value of its argument. Delete the condition preceding a function call to <code>free</code> when its only purpose is to check the value of the pointer to be freed.</p>
+</recommendation>
+
+<example>
+<sample src = "GuardedFree.cpp" />
+
+<p>In this example, the condition checking the value of <code>foo</code> can be deleted.</p>
+
+</example>
+
+<references>
+<li>
+    The Open Group Base Specifications Issue 7, 2018 Edition:
+    <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/free.html">free - free allocated memory</a>.
+</li>
+</references>
+
+</qhelp>

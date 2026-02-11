@@ -1,6 +1,6 @@
 import cpp
 import semmle.code.cpp.security.InvalidPointerDereference.InvalidPointerToDereference
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.dataflow.new.DataFlow
 

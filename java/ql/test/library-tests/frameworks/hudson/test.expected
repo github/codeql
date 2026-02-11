@@ -1,0 +1,15 @@
+models
+| 1 | Summary: hudson.remoting; URLDeserializationHelper; true; wrapIfRequired; (URL); ; Argument[0]; ReturnValue; taint; ai-manual |
+edges
+| Test.java:21:13:21:26 | (...)... : URL | Test.java:22:50:22:51 | in : URL | provenance |  |
+| Test.java:21:19:21:26 | source(...) : Object | Test.java:21:13:21:26 | (...)... : URL | provenance |  |
+| Test.java:22:10:22:52 | wrapIfRequired(...) : URL | Test.java:23:9:23:11 | out | provenance |  |
+| Test.java:22:50:22:51 | in : URL | Test.java:22:10:22:52 | wrapIfRequired(...) : URL | provenance | MaD:1 |
+nodes
+| Test.java:21:13:21:26 | (...)... : URL | semmle.label | (...)... : URL |
+| Test.java:21:19:21:26 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:22:10:22:52 | wrapIfRequired(...) : URL | semmle.label | wrapIfRequired(...) : URL |
+| Test.java:22:50:22:51 | in : URL | semmle.label | in : URL |
+| Test.java:23:9:23:11 | out | semmle.label | out |
+subpaths
+testFailures

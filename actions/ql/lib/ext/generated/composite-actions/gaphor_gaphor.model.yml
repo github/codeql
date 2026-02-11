@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["gaphor/gaphor", "*", "input.version", "code-injection", "generated"]
+     - ["gaphor/gaphor", "*", "input.base64_encoded_pfx", "code-injection", "generated"]

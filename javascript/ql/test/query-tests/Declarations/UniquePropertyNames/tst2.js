@@ -7,7 +7,7 @@ var o = {
 
   setX: function(x) {
     this.x = x;
-  },
+  }, // $ Alert
 
   getX: function() {
     return this.x;

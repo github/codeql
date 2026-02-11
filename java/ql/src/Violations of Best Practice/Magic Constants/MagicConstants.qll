@@ -105,7 +105,7 @@ private predicate valueOccurrenceCount(string value, int n, string context) {
   n > 20
 }
 
-private predicate occurenceCount(Literal lit, string value, int n, string context) {
+private predicate occurrenceCount(Literal lit, string value, int n, string context) {
   valueOccurrenceCount(value, n, context) and
   value = lit.getValue() and
   nonTrivialValue(_, lit, context)
@@ -119,7 +119,7 @@ private predicate check(Literal lit, string value, int n, string context, Compil
   // Check that the literal is nontrivial
   not trivial(lit) and
   // Check that it is repeated a number of times
-  occurenceCount(lit, value, n, context) and
+  occurrenceCount(lit, value, n, context) and
   n > 20 and
   f = lit.getCompilationUnit()
 }

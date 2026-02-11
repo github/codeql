@@ -3,8 +3,8 @@ package com.github.codeql.utils
 import com.github.codeql.KotlinUsesExtractor
 import com.github.codeql.Logger
 import com.github.codeql.getJavaEquivalentClassId
-import com.github.codeql.utils.versions.codeQlWithHasQuestionMark
 import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
+import com.github.codeql.utils.versions.*
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
@@ -15,22 +15,35 @@ import org.jetbrains.kotlin.ir.declarations.IrTypeParametersContainer
 import org.jetbrains.kotlin.ir.declarations.impl.IrExternalPackageFragmentImpl
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
-import org.jetbrains.kotlin.ir.expressions.impl.IrConstructorCallImpl
+import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.symbols.impl.DescriptorlessExternalPackageFragmentSymbol
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.addAnnotations
+import org.jetbrains.kotlin.ir.types.classifierOrNull
+import org.jetbrains.kotlin.ir.types.makeNotNull
+import org.jetbrains.kotlin.ir.types.makeNullable
+import org.jetbrains.kotlin.ir.types.typeWith
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrStarProjection
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.IrTypeArgument
+import org.jetbrains.kotlin.ir.types.IrTypeProjection
 import org.jetbrains.kotlin.ir.types.impl.IrSimpleTypeImpl
 import org.jetbrains.kotlin.ir.types.impl.IrStarProjectionImpl
 import org.jetbrains.kotlin.ir.types.impl.makeTypeProjection
-import org.jetbrains.kotlin.ir.util.classId
-import org.jetbrains.kotlin.ir.util.constructedClassType
-import org.jetbrains.kotlin.ir.util.constructors
-import org.jetbrains.kotlin.ir.util.kotlinFqName
-import org.jetbrains.kotlin.ir.util.parents
+import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.utils.addToStdlib.firstIsInstanceOrNull
+
+fun IrType.codeQlWithHasQuestionMark(b: Boolean): IrType {
+    if (b) {
+        return this.makeNullable()
+    } else {
+        return this.makeNotNull()
+    }
+}
 
 fun IrType.substituteTypeArguments(params: List<IrTypeParameter>, arguments: List<IrTypeArgument>) =
     when (this) {
@@ -57,7 +70,7 @@ private fun IrSimpleType.substituteTypeArguments(
             }
         }
 
-    return IrSimpleTypeImpl(classifier, isNullable(), newArguments, annotations)
+    return IrSimpleTypeImpl(classifier, isNullableCodeQL(), newArguments, annotations)
 }
 
 /**
@@ -96,7 +109,7 @@ private fun subProjectedType(
             else {
                 val newProjectedType =
                     substitutedTypeArg.type.let {
-                        if (t.isNullable()) it.codeQlWithHasQuestionMark(true) else it
+                        if (t.isNullableCodeQL()) it.codeQlWithHasQuestionMark(true) else it
                     }
                 val newVariance = combineVariance(outerVariance, substitutedTypeArg.variance)
                 makeTypeProjection(newProjectedType, newVariance)
@@ -107,13 +120,14 @@ private fun subProjectedType(
     } ?: makeTypeProjection(t.substituteTypeArguments(substitutionMap), outerVariance)
 
 private fun IrTypeArgument.upperBound(context: IrPluginContext) =
+    @Suppress("REDUNDANT_ELSE_IN_WHEN")
     when (this) {
         is IrStarProjection -> context.irBuiltIns.anyNType
         is IrTypeProjection ->
             when (this.variance) {
                 Variance.INVARIANT -> this.type
                 Variance.IN_VARIANCE ->
-                    if (this.type.isNullable()) context.irBuiltIns.anyNType
+                    if (this.type.isNullableCodeQL()) context.irBuiltIns.anyNType
                     else context.irBuiltIns.anyType
                 Variance.OUT_VARIANCE -> this.type
             }
@@ -121,6 +135,7 @@ private fun IrTypeArgument.upperBound(context: IrPluginContext) =
     }
 
 private fun IrTypeArgument.lowerBound(context: IrPluginContext) =
+    @Suppress("REDUNDANT_ELSE_IN_WHEN")
     when (this) {
         is IrStarProjection -> context.irBuiltIns.nothingType
         is IrTypeProjection ->
@@ -128,7 +143,7 @@ private fun IrTypeArgument.lowerBound(context: IrPluginContext) =
                 Variance.INVARIANT -> this.type
                 Variance.IN_VARIANCE -> this.type
                 Variance.OUT_VARIANCE ->
-                    if (this.type.isNullable()) context.irBuiltIns.nothingNType
+                    if (this.type.isNullableCodeQL()) context.irBuiltIns.nothingNType
                     else context.irBuiltIns.nothingType
             }
         else -> context.irBuiltIns.nothingType
@@ -205,13 +220,14 @@ fun IrClass.toRawType(): IrType {
 }
 
 fun IrTypeArgument.withQuestionMark(b: Boolean): IrTypeArgument =
+    @Suppress("REDUNDANT_ELSE_IN_WHEN")
     when (this) {
         is IrStarProjection -> this
         is IrTypeProjection ->
             this.type.let {
                 when (it) {
                     is IrSimpleType ->
-                        if (it.isNullable() == b) this
+                        if (it.isNullableCodeQL() == b) this
                         else makeTypeProjection(it.codeQlWithHasQuestionMark(b), this.variance)
                     else -> this
                 }

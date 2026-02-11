@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-625/PermissiveDotRegex.ql
+query: experimental/Security/CWE/CWE-625/PermissiveDotRegex.ql
+postprocess: utils/test/PrettyPrintModels.ql

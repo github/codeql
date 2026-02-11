@@ -167,11 +167,17 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
             "precomposedStringWithCompatibilityMapping", "removingPercentEncoding"
           ]
         or
-        namedTypeDecl.getFullName() = "CustomStringConvertible" and
+        namedTypeDecl.getFullName() = ["CustomStringConvertible", "BinaryInteger"] and
         fieldDecl.getName() = "description"
         or
         namedTypeDecl.getFullName() = "CustomDebugStringConvertible" and
         fieldDecl.getName() = "debugDescription"
+        or
+        namedTypeDecl.getFullName() = "CustomTestStringConvertible" and
+        fieldDecl.getName() = "testDescription"
+        or
+        namedTypeDecl.getFullName() = "CustomURLRepresentationParameterConvertible" and
+        fieldDecl.getName() = "urlRepresentationParameter"
         or
         namedTypeDecl.getFullName() = "Substring" and
         fieldDecl.getName() = "base"

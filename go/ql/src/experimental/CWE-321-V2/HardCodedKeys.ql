@@ -24,7 +24,7 @@ module JwtParseWithConstantKeyConfig implements DataFlow::ConfigSig {
       or
       n = fd.(FuncDecl).getFunction().getARead()
     |
-      GolangJwtKeyFunc::flow(n, _) and
+      GolangJwtKeyFunc::flowFrom(n) and
       sink = rn and
       rn.getRoot() = fd and
       rn.getIndex() = 0
@@ -33,6 +33,8 @@ module JwtParseWithConstantKeyConfig implements DataFlow::ConfigSig {
     // second part is the JWT Parsing Functions that get a string or byte as an argument
     sink = any(JwtParse jp).getKeyArg()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module GolangJwtKeyFuncConfig implements DataFlow::ConfigSig {

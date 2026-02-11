@@ -8,7 +8,6 @@ private import swift
 private import codeql.swift.controlflow.ControlFlowGraph
 private import ControlFlowElements
 private import ControlFlowGraphImpl
-private import SuccessorTypes
 
 private newtype TCompletion =
   TSimpleCompletion() or
@@ -324,7 +323,7 @@ abstract class NormalCompletion extends Completion {
 
 /** A simple (normal) completion. */
 class SimpleCompletion extends NormalCompletion, TSimpleCompletion {
-  override NormalSuccessor getAMatchingSuccessorType() { any() }
+  override DirectSuccessor getAMatchingSuccessorType() { any() }
 
   override string toString() { result = "simple" }
 }
@@ -468,7 +467,7 @@ class FallthroughCompletion extends Completion, TFallthroughCompletion {
 
   FallthroughCompletion() { this = TFallthroughCompletion(dest) }
 
-  override FallthroughSuccessor getAMatchingSuccessorType() { any() }
+  override DirectSuccessor getAMatchingSuccessorType() { any() }
 
   CaseStmt getDestination() { result = dest }
 

@@ -40,7 +40,7 @@ type GenericMap1[V any] map[string]V
 type GenericMap2[K comparable, V any] map[K]V
 type GenericChannel[T comparable] chan<- T
 type MyMapType map[string]int
-type GenericNamed[T comparable] MyMapType
+type GenericDefined[T comparable] MyMapType
 type MyFuncType1[T any] func(T)
 type MyFuncType2[T1 any, T2 any] func(T1) T2
 
@@ -59,7 +59,7 @@ type MyInterface[U comparable] interface {
 	dummy14() GenericMap1[U]
 	dummy15() GenericMap2[U, U]
 	dummy17() GenericChannel[U]
-	dummy18() GenericNamed[U]
+	dummy18() GenericDefined[U]
 	dummy19() MyFuncType1[U]
 	dummy20() MyFuncType2[U, U]
 }

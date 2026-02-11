@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import internal.AST
@@ -12,6 +15,7 @@ private import internal.TreeSitter
  */
 class Expr extends Stmt, TExpr {
   /** Gets the constant value of this expression, if any. */
+  overlay[global]
   ConstantValue getConstantValue() { result = getConstantValueExpr(this) }
 }
 
@@ -248,13 +252,7 @@ class ParenthesizedExpr extends StmtSequence, TParenthesizedExpr {
  * baz(qux: 1)
  * ```
  */
-class Pair extends Expr, TPair {
-  private Ruby::Pair g;
-
-  Pair() { this = TPair(g) }
-
-  final override string getAPrimaryQlClass() { result = "Pair" }
-
+class Pair extends Expr instanceof PairImpl {
   /**
    * Gets the key expression of this pair. For example, the `SymbolLiteral`
    * representing the keyword `foo` in the following example:
@@ -266,7 +264,7 @@ class Pair extends Expr, TPair {
    * { 'foo' => 123 }
    * ```
    */
-  final Expr getKey() { toGenerated(result) = g.getKey() }
+  final Expr getKey() { result = PairImpl.super.getKey() }
 
   /**
    * Gets the value expression of this pair. For example, the `IntegerLiteral`
@@ -275,20 +273,9 @@ class Pair extends Expr, TPair {
    * { 'foo' => 123 }
    * ```
    */
-  final Expr getValue() {
-    toGenerated(result) = g.getValue() or
-    synthChild(this, 0, result)
-  }
+  final Expr getValue() { result = PairImpl.super.getValue() }
 
-  final override string toString() { result = "Pair" }
-
-  final override AstNode getAChild(string pred) {
-    result = super.getAChild(pred)
-    or
-    pred = "getKey" and result = this.getKey()
-    or
-    pred = "getValue" and result = this.getValue()
-  }
+  final override string getAPrimaryQlClass() { result = "Pair" }
 }
 
 /**
@@ -442,6 +429,7 @@ class StringConcatenation extends Expr, TStringConcatenation {
    * "foo" "bar#{ n }"
    * ```
    */
+  overlay[global]
   final string getConcatenatedValueText() {
     forall(StringLiteral c | c = this.getString(_) |
       exists(c.getConstantValue().getStringlikeValue())

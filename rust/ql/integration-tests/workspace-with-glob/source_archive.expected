@@ -1,0 +1,3 @@
+exe/src/main.rs
+lib/src/lib.rs
+other/src/lib.rs

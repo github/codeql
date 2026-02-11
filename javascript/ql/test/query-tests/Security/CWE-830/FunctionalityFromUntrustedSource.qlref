@@ -1,1 +1,2 @@
-Security/CWE-830/FunctionalityFromUntrustedSource.ql
+query: Security/CWE-830/FunctionalityFromUntrustedSource.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

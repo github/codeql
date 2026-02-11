@@ -1,4 +1,0 @@
-#select
-| src/main/java/com/github/springbootsample/SpringBootSampleApplication.java:0:0:0:0 | SpringBootSampleApplication |
-| src/test/java/com/github/springbootsample/SpringBootSampleApplicationTests.java:0:0:0:0 | SpringBootSampleApplicationTests |
-xmlFiles

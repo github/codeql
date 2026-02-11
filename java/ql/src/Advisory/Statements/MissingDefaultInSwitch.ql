@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/missing-default-in-switch
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-478
  */
 

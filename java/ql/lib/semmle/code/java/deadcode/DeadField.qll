@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import java
 import semmle.code.java.deadcode.DeadCode
 import semmle.code.java.frameworks.javaee.Persistence
@@ -161,10 +164,10 @@ class JpaReadField extends ReflectivelyReadField {
       this = entity.getAField() and
       (
         entity.getAccessType() = "field" or
-        this.hasAnnotation("javax.persistence", "Access")
+        this.hasAnnotation(getAPersistencePackageName(), "Access")
       )
     |
-      not this.hasAnnotation("javax.persistence", "Transient") and
+      not this.hasAnnotation(getAPersistencePackageName(), "Transient") and
       not this.isStatic() and
       not this.isFinal()
     )

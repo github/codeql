@@ -1,9 +1,9 @@
 // update variants
 React.createClass({
     render: function() {
-        this.setState({}); // NOT OK
-        this.replaceState({}); // NOT OK
-        this.forceUpdate({}); // NOT OK
+        this.setState({}); // $ Alert
+        this.replaceState({}); // $ Alert
+        this.forceUpdate({}); // $ Alert
         return <div/>
     }
 });
@@ -14,8 +14,8 @@ class MyClass1 extends React.Component {
         super(props);
     }
     render() {
-        this.indirectUpdate(); // NOT OK
-        this.veryIndirectUpdate(); // NOT OK
+        this.indirectUpdate(); // $ Alert
+        this.veryIndirectUpdate(); // $ Alert
         return <div/>
     }
 
@@ -34,24 +34,24 @@ class MyClass1 extends React.Component {
 // definiteness variants
 React.createClass({
     render: function() {
-        this.setState({}); // NOT OK
+        this.setState({}); // $ Alert
     },
     componentDidUpdate: function() {
-        this.setState({}); // NOT OK
+        this.setState({}); // $ Alert
         if (cond) {
-            this.setState({}); // OK
+            this.setState({});
         }
     },
     shouldComponentUpdate: function() {
-        this.setState({}); // NOT OK
+        this.setState({}); // $ Alert
         if (cond) {
-            this.setState({}); // OK
+            this.setState({});
         }
     },
     componentWillUpdate: function() {
-        this.setState({}); // NOT OK
+        this.setState({}); // $ Alert
         if (cond) {
-            this.setState({}); // OK
+            this.setState({});
         }
     }
 });
@@ -63,11 +63,11 @@ class MyClass2 extends React.Component {
     }
 
     componentWillUpdate() {
-        this.definiteIndirectUpdate(); // NOT OK
+        this.definiteIndirectUpdate(); // $ Alert
         if (cond) {
-            this.definiteIndirectUpdate(); // OK
+            this.definiteIndirectUpdate();
         }
-        this.indefiniteIndirectUpdate(); // OK
+        this.indefiniteIndirectUpdate();
         return <div/>
     }
 
@@ -86,7 +86,7 @@ class MyClass2 extends React.Component {
 React.createClass({
     render: function() {
         var app = this;
-        app.setState({}); // NOT OK
+        app.setState({}); // $ Alert
         return <div/>
     }
 });
@@ -97,7 +97,7 @@ React.createClass({
         this.setState({})
     },
     render: function() {
-        this.indirectUpdate();
+        this.indirectUpdate(); // $ Alert
         return <div/>
     }
 });
@@ -105,9 +105,9 @@ React.createClass({
 // eslint examples
 React.createClass({
   componentDidUpdate: function() {
-     this.setState({ // NOT OK
+     this.setState({
         name: this.props.name.toUpperCase()
-      });
+      }); // $ Alert
     },
   render: function() {
     return <div>Hello {this.state.name}</div>;
@@ -115,9 +115,9 @@ React.createClass({
 });
 React.createClass({
   componentWillUpdate: function() {
-     this.setState({ // NOT OK
+     this.setState({
         name: this.props.name.toUpperCase()
-      });
+      }); // $ Alert
     },
   render: function() {
     return <div>Hello {this.state.name}</div>;
@@ -138,7 +138,7 @@ class Search extends React.Component {
 
     render() {
         return (
-                <Button onClick={this.handleButtonChange()} ></Button> // NOT OK
+                <Button onClick={this.handleButtonChange()} ></Button> // $ Alert
         );
     }
 }
@@ -147,25 +147,25 @@ class Search extends React.Component {
 class MyClass3 extends React.Component {
     constructor(props) {
         super(props);
-        this.setState({}); // NOT OK
+        this.setState({}); // $ Alert
     }
     componentDidUnmount() {
-        this.setState({}); // NOT OK
+        this.setState({}); // $ Alert
     }
     getDefaultProps() {
-        this.setState({}); // NOT OK
+        this.setState({}); // $ Alert
     }
     getInitialState() {
-        this.setState({}); // NOT OK
+        this.setState({}); // $ Alert
     }
     componentWillUnmount() {
-        this.setState({}); // OK
+        this.setState({});
     }
     componentWillMount() {
-        this.setState({}); // OK
+        this.setState({});
     }
     componentDidMount() {
-        this.setState({}); // OK
+        this.setState({});
     }
 }
 
@@ -184,8 +184,8 @@ class MyClass4 extends React.Component {
             var doUpdate4 = () => this.myUpdate();
             doUpdate4();
         }
-        doUpdate1(); // NOT OK
-        doUpdate2(); // NOT OK
-        doUpdate3(); // NOT OK
+        doUpdate1(); // $ Alert
+        doUpdate2(); // $ Alert
+        doUpdate3(); // $ Alert
     }
 }

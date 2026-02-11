@@ -2,7 +2,8 @@
  * @name Inconsistent method resolution order
  * @description Class definition will raise a type error at runtime due to inconsistent method resolution order(MRO)
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity error
  * @sub-severity high
@@ -11,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 ClassObject left_base(ClassObject type, ClassObject base) {
   exists(int i | i > 0 and type.getBaseType(i) = base and result = type.getBaseType(i - 1))

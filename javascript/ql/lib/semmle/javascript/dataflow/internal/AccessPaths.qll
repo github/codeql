@@ -14,6 +14,8 @@
  * to the same value have the same access paths, so access paths are neither sound nor
  * complete as an approximation of expression semantics.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.internal.CachedStages
@@ -92,7 +94,7 @@ class AccessPath extends TAccessPath {
    * Gets an expression in `bb` represented by this access path.
    */
   cached
-  Expr getAnInstanceIn(BasicBlock bb) {
+  Expr getAnInstanceIn(ReachableBasicBlock bb) {
     Stages::DataFlowStage::ref() and
     exists(SsaVariable var |
       this = MkSsaRoot(var) and

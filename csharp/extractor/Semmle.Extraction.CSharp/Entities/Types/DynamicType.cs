@@ -11,15 +11,19 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public static DynamicType Create(Context cx, IDynamicTypeSymbol type) => DynamicTypeFactory.Instance.CreateEntityFromSymbol(cx, type);
 
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Context.Compilation.ObjectType.Locations.FirstOrDefault();
+        public override Microsoft.CodeAnalysis.Location? ReportingLocation => Context.Compilation.ObjectType.Locations.BestOrDefault();
 
         public override void Populate(TextWriter trapFile)
         {
             trapFile.types(this, Kinds.TypeKind.DYNAMIC, "dynamic");
-            trapFile.type_location(this, Location);
 
             trapFile.has_modifiers(this, Modifier.Create(Context, "public"));
             trapFile.parent_namespace(this, Namespace.Create(Context, Context.Compilation.GlobalNamespace));
+            if (Context.OnlyScaffold)
+            {
+                return;
+            }
+            WriteLocationToTrap(trapFile.type_location, this, Location);
         }
 
         public override void WriteId(EscapingTextWriter trapFile)

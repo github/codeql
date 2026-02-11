@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
 private import semmle.python.dataflow.new.TypeTracking
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
+private import semmle.python.essa.SsaDefinitions
 
 /**
  * Python modules and the way imports are resolved are... complicated. Here's a crash course in how
@@ -278,6 +279,12 @@ module ImportResolution {
       )
   }
 
+  /** Join-order helper for `getImmediateModuleReference`. */
+  pragma[nomagic]
+  private predicate module_reference_accesses(DataFlow::AttrRead ar, Module p, string attr_name) {
+    ar.accesses(getModuleReference(p), attr_name)
+  }
+
   /**
    * Gets a dataflow node that is an immediate reference to the module `m`.
    *
@@ -294,16 +301,13 @@ module ImportResolution {
     )
     or
     // Reading an attribute on a module may return a submodule (or subpackage).
-    exists(DataFlow::AttrRead ar, Module p, string attr_name |
-      ar.accesses(getModuleReference(p), attr_name) and
-      result = ar
-    |
+    exists(Module p, string attr_name | module_reference_accesses(result, p, attr_name) |
       m = getModuleFromName(p.getPackageName() + "." + attr_name)
     )
     or
     // This is also true for attributes that come from reexports.
     exists(Module reexporter, string attr_name |
-      result.(DataFlow::AttrRead).accesses(getModuleReference(reexporter), attr_name) and
+      module_reference_accesses(result, reexporter, attr_name) and
       module_reexport(reexporter, attr_name, m)
     )
     or

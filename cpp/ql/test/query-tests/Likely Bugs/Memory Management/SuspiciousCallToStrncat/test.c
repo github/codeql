@@ -82,3 +82,20 @@ void strncat_test5(char *s) {
   strncat(buf, s, len - strlen(buf) - 1); // GOOD
   strncat(buf, s, len - strlen(buf)); // GOOD
 }
+
+void strncat_test6() {
+  {
+  char dest[60];
+  dest[0] = '\0';
+  // Will write `dest[0 .. 5]`
+  strncat(dest, "small", sizeof(dest)); // GOOD [FALSE POSITIVE]
+  }
+
+  {
+  char dest[60];
+  memset(dest, 'a', sizeof(dest));
+  dest[54] = '\0';
+  // Will write `dest[54 .. 59]`
+  strncat(dest, "small", sizeof(dest)); // GOOD [FALSE POSITIVE]
+  }
+}

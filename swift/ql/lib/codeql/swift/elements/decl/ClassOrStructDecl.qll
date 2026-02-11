@@ -14,7 +14,7 @@ private import codeql.swift.elements.decl.NominalTypeDecl
  * }
  * ```
  */
-class ClassOrStructDecl extends NominalTypeDecl {
+final class ClassOrStructDecl extends NominalTypeDecl {
   ClassOrStructDecl() {
     this instanceof ClassDecl
     or

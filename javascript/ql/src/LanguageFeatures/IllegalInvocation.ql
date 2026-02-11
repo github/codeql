@@ -6,7 +6,9 @@
  * @kind problem
  * @problem.severity error
  * @id js/illegal-invocation
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       language-features
  * @precision high
  */

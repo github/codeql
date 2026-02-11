@@ -1,0 +1,12 @@
+name: Test Formalities
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Test Formalities
+    uses: TestOrg/TestRepo/.github/workflows/formal.yml@main

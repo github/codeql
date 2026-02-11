@@ -1,7 +1,7 @@
 .. _customizing-library-models-for-ruby:
 
 
-Customizing Library Models for Ruby
+Customizing library models for Ruby
 ===================================
 
 .. include:: ../reusables/beta-note-customizing-library-models.rst

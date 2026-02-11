@@ -5,7 +5,10 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/implicit-return
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       readability
  * @precision medium
  */
 

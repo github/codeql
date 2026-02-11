@@ -1,0 +1,6 @@
+| Test.java:7:46:7:67 | serialPersistentFields | Ignored serialization member found in record class $@. | Test.java:4:12:4:13 | T1 | T1 |
+| Test.java:10:18:10:28 | writeObject | Ignored serialization member found in record class $@. | Test.java:4:12:4:13 | T1 | T1 |
+| Test.java:13:18:13:27 | readObject | Ignored serialization member found in record class $@. | Test.java:4:12:4:13 | T1 | T1 |
+| Test.java:16:18:16:33 | readObjectNoData | Ignored serialization member found in record class $@. | Test.java:4:12:4:13 | T1 | T1 |
+| Test.java:24:17:24:29 | writeExternal | Ignored serialization member found in record class $@. | Test.java:21:12:21:13 | T2 | T2 |
+| Test.java:28:17:28:28 | readExternal | Ignored serialization member found in record class $@. | Test.java:21:12:21:13 | T2 | T2 |

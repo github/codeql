@@ -10,41 +10,10 @@ import go
  * (SSRF) vulnerabilities.
  */
 module ServerSideRequestForgery {
-  private import semmle.go.frameworks.Gin
   private import validator
   private import semmle.go.security.UrlConcatenation
   private import semmle.go.dataflow.barrierguardutil.RegexpCheck
   private import semmle.go.dataflow.Properties
-
-  /**
-   * DEPRECATED: Use `Flow` instead.
-   *
-   * A taint-tracking configuration for reasoning about request forgery.
-   */
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "SSRF" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-      // propagate to a URL when its host is assigned to
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, pred) and succ = v.getAUse()
-      )
-    }
-
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node) or
-      node instanceof Sanitizer
-    }
-
-    override predicate isSanitizerOut(DataFlow::Node node) {
-      super.isSanitizerOut(node) or
-      node instanceof SanitizerEdge
-    }
-  }
 
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -53,14 +22,22 @@ module ServerSideRequestForgery {
 
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       // propagate to a URL when its host is assigned to
-      exists(Write w, Field f, SsaWithFields v | f.hasQualifiedName("net/url", "URL", "Host") |
-        w.writesField(v.getAUse(), f, node1) and node2 = v.getAUse()
+      exists(Write w, Field f | f.hasQualifiedName("net/url", "URL", "Host") |
+        w.writesField(node2, f, node1)
       )
     }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
     predicate isBarrierOut(DataFlow::Node node) { node instanceof SanitizerEdge }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
+
+    Location getASelectedSinkLocation(DataFlow::Node sink) {
+      result = sink.(Sink).getLocation()
+      or
+      result = sink.(Sink).getARequest().getLocation()
+    }
   }
 
   /** Tracks taint flow for reasoning about request forgery vulnerabilities. */
@@ -88,14 +65,14 @@ module ServerSideRequestForgery {
   abstract class SanitizerEdge extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `RemoteFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
-  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /**
    * An user controlled input, considered as a flow source for request forgery.
    */
-  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /**
    * The URL of an HTTP request, viewed as a sink for request forgery.
@@ -136,7 +113,7 @@ module ServerSideRequestForgery {
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Sanitizer { }
+  class RegexpCheckAsBarrierGuard extends Sanitizer instanceof RegexpCheckBarrier { }
 
   private predicate equalityAsSanitizerGuard(DataFlow::Node g, Expr e, boolean outcome) {
     exists(DataFlow::Node url, DataFlow::EqualityTestNode eq |
@@ -179,5 +156,5 @@ module ServerSideRequestForgery {
    * The method Var of package validator is a sanitizer guard only if the check
    * of the error binding exists, and the tag to check is one of "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric".
    */
-  class ValidatorAsSanitizer extends Sanitizer, ValidatorVarCheckBarrier { }
+  class ValidatorAsSanitizer extends Sanitizer instanceof ValidatorVarCheckBarrier { }
 }

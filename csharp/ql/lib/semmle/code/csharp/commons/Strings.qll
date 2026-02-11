@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.frameworks.Format
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Text
@@ -33,7 +34,7 @@ class ImplicitToStringExpr extends Expr {
       or
       p instanceof StringFormatItemParameter and
       not p.getType() =
-        any(ArrayType at |
+        any(ParamsCollectionType at |
           at.getElementType() instanceof ObjectType and
           this.getType().isImplicitlyConvertibleTo(at)
         )
@@ -44,11 +45,11 @@ class ImplicitToStringExpr extends Expr {
     )
     or
     exists(AddExpr add, Expr o | o = add.getAnOperand() |
-      o.stripImplicitCasts().getType() instanceof StringType and
-      this = add.getOtherOperand(o)
+      o.stripImplicit().getType() instanceof StringType and
+      this = add.getOtherOperand(o).stripImplicit()
     )
     or
-    this = any(InterpolatedStringExpr ise).getAnInsert()
+    this = any(InterpolatedStringExpr ise).getAnInsert().stripImplicit()
   }
 }
 

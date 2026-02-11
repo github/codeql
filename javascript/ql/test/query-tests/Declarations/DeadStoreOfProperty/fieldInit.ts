@@ -1,5 +1,5 @@
 class C {
-  f; // OK
+  f;
   
   constructor() {
     this.f = 5;
@@ -7,7 +7,7 @@ class C {
 }
 
 class D {
-  f = 4; // NOT OK
+  f = 4; // $ Alert
   
   constructor() {
     this.f = 5;
@@ -15,7 +15,7 @@ class D {
 }
 
 class G {
-  constructor(public h: string) { // NOT OK
+  constructor(public h: string) { // $ Alert
     this.h = h;
   }
 }

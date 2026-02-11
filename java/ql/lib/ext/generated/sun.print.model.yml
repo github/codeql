@@ -1,7 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: neutralModel
-    data:
-      - ["sun.print", "DialogOwnerAccessor", "getOwnerID", "(DialogOwner)", "summary", "df-generated"]

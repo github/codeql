@@ -10,15 +10,15 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Appends a call to msbuild.
         /// </summary>
-        /// <param name="cmdBuilder"></param>
-        /// <param name="builder"></param>
         /// <returns></returns>
-        public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder)
+        public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder, bool preferDotnet)
         {
             // mono doesn't ship with `msbuild` on Arm-based Macs, but we can fall back to
             // msbuild that ships with `dotnet` which can be invoked with `dotnet msbuild`
             // perhaps we should do this on all platforms?
-            return builder.Actions.IsRunningOnAppleSilicon()
+            // Similarly, there's no point in trying to rely on mono if it's not installed.
+            // In which case we can still fall back to `dotnet msbuild`.
+            return preferDotnet
                 ? cmdBuilder.RunCommand("dotnet").Argument("msbuild")
                 : cmdBuilder.RunCommand("msbuild");
         }
@@ -32,7 +32,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// A list of solutions or projects which failed to build.
         /// </summary>
-        public readonly List<IProjectOrSolution> FailedProjectsOrSolutions = new();
+        public List<IProjectOrSolution> FailedProjectsOrSolutions { get; } = [];
 
         public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
@@ -60,7 +60,7 @@ namespace Semmle.Autobuild.Shared
             // Use `nuget.exe` from source code repo, if present, otherwise first attempt with global
             // `nuget` command, and if that fails, attempt to download `nuget.exe` from nuget.org
             var nuget = builder.GetFilename("nuget.exe").Select(t => t.Item1).FirstOrDefault() ?? "nuget";
-            var nugetDownloadPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".nuget", "nuget.exe");
+            var nugetDownloadPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out _), ".nuget", "nuget.exe");
             var nugetDownloaded = false;
 
             var ret = BuildScript.Success;
@@ -75,13 +75,16 @@ namespace Semmle.Autobuild.Shared
                         QuoteArgument(projectOrSolution.FullPath).
                         Argument("-DisableParallelProcessing").
                         Script;
+
+                var preferDotnet = builder.Actions.IsRunningOnAppleSilicon() || !builder.Actions.IsWindows() && !builder.Actions.IsMonoInstalled();
+
                 var nugetRestore = GetNugetRestoreScript();
                 var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
-                    MsBuildCommand(builder).
+                    MsBuildCommand(builder, preferDotnet).
                     Argument("/t:restore").
                     QuoteArgument(projectOrSolution.FullPath);
 
-                if (builder.Actions.IsRunningOnAppleSilicon())
+                if (preferDotnet)
                 {
                     // On Apple Silicon, only try package restore with `dotnet msbuild /t:restore`
                     ret &= BuildScript.Try(msbuildRestoreCommand.Script);
@@ -119,18 +122,18 @@ namespace Semmle.Autobuild.Shared
                     command.RunCommand("set Platform=&& type NUL", quoteExe: false);
                 }
 
-                command.MsBuildCommand(builder);
+                command.MsBuildCommand(builder, preferDotnet);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
                 var target = "rebuild";
                 var platform = projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null;
                 var configuration = projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null;
 
-                command.Argument("/t:" + target);
+                command.Argument($"/t:{target}");
                 if (platform is not null)
-                    command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
+                    command.Argument($"/p:Platform=\"{platform}\"");
                 if (configuration is not null)
-                    command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
+                    command.Argument($"/p:Configuration=\"{configuration}\"");
 
                 // append the build script which invokes msbuild to the overall build script `ret`;
                 // we insert a check that building the current project or solution was successful:
@@ -157,7 +160,8 @@ namespace Semmle.Autobuild.Shared
             BuildScript.DownloadFile(
                 FileUtils.NugetExeUrl,
                 path,
-                e => builder.Logger.LogWarning($"Failed to download 'nuget.exe': {e.Message}"))
+                e => builder.Logger.LogWarning($"Failed to download 'nuget.exe': {e.Message}"),
+                builder.Logger)
             &
             BuildScript.Create(_ =>
             {

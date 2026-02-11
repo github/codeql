@@ -1,4 +1,6 @@
 /** Provide classes to reason about Android Intents that can install APKs. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.frameworks.android.Intent
@@ -75,7 +77,7 @@ class ExternalApkSource extends ApiSourceNode {
     sourceNode(this, "android-external-storage-dir") or
     this.asExpr().(MethodCall).getMethod() instanceof UriConstructorMethod or
     this.asExpr().(StringLiteral).getValue().matches("file://%") or
-    this instanceof ThreatModelFlowSource
+    this instanceof ActiveThreatModelSource
   }
 }
 

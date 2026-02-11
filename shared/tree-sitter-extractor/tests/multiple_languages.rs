@@ -1,9 +1,8 @@
 use codeql_extractor::extractor::simple;
 use codeql_extractor::trap;
-use tree_sitter_ql;
 
 mod common;
-use common::{create_source_dir, expect_trap_file, SourceArchive};
+use common::{SourceArchive, create_source_dir, expect_trap_file};
 
 /// Like the `simple_extractor` test but with multiple languages.
 /// This is in a separate crate because the simple extractor API sets up a
@@ -12,13 +11,13 @@ use common::{create_source_dir, expect_trap_file, SourceArchive};
 fn multiple_language_extractor() {
     let lang_ql = simple::LanguageSpec {
         prefix: "ql",
-        ts_language: tree_sitter_ql::language(),
+        ts_language: tree_sitter_ql::LANGUAGE.into(),
         node_types: tree_sitter_ql::NODE_TYPES,
         file_globs: vec!["*.qll".into()],
     };
     let lang_json = simple::LanguageSpec {
         prefix: "json",
-        ts_language: tree_sitter_json::language(),
+        ts_language: tree_sitter_json::LANGUAGE.into(),
         node_types: tree_sitter_json::NODE_TYPES,
         file_globs: vec!["*.json".into(), "*Jsonfile".into()],
     };
@@ -39,7 +38,7 @@ fn multiple_language_extractor() {
         languages: vec![lang_ql, lang_json],
         trap_dir,
         source_archive_dir,
-        file_list,
+        file_lists: vec![file_list],
         trap_compression: Ok(trap::Compression::Gzip),
     };
 

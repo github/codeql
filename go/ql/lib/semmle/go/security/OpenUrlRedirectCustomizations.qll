@@ -6,7 +6,7 @@
 
 import go
 import UrlConcatenation
-import SafeUrlFlowCustomizations
+private import SafeUrlFlowCustomizations
 import semmle.go.dataflow.barrierguardutil.RedirectCheckBarrierGuard
 import semmle.go.dataflow.barrierguardutil.RegexpCheck
 import semmle.go.dataflow.barrierguardutil.UrlCheck
@@ -43,15 +43,15 @@ module OpenUrlRedirect {
   }
 
   /**
-   * DEPRECATED: Use `RemoteFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
-  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /**
    * A source of third-party user input, considered as a flow source for URL redirects.
    */
-  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowAsSource() {
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource {
+    ThreatModelFlowAsSource() {
       // exclude some fields and methods of URLs that are generally not attacker-controllable for
       // open redirect exploits
       not this instanceof Http::Redirect::UnexploitableSource
@@ -61,7 +61,7 @@ module OpenUrlRedirect {
   /**
    * An HTTP redirect, considered as a sink for `Configuration`.
    */
-  class RedirectSink extends Sink, DataFlow::Node {
+  class RedirectSink extends Sink {
     RedirectSink() { this = any(Http::Redirect redir).getUrl() }
   }
 
@@ -69,27 +69,28 @@ module OpenUrlRedirect {
    * A definition of the HTTP "Location" header, considered as a sink for
    * `Configuration`.
    */
-  class LocationHeaderSink extends Sink, DataFlow::Node {
+  class LocationHeaderSink extends Sink {
     LocationHeaderSink() {
       exists(Http::HeaderWrite hw | hw.getHeaderName() = "location" | this = hw.getValue())
     }
   }
 
+  private class ExternalBarrier extends Barrier {
+    ExternalBarrier() { barrierNode(this, "url-redirection") }
+  }
+
   /**
-   * An access to a variable that is preceded by an assignment to its `Path` field.
+   * An assignment of a safe value to the field `Path`, considered as a barrier for sanitizing
+   * untrusted URLs.
    *
    * This is overapproximate; this will currently remove flow through all `Url.Path` assignments
    * which contain a substring that could sanitize data.
    */
-  class PathAssignmentBarrier extends Barrier, Read {
+  class PathAssignmentBarrier extends Barrier {
     PathAssignmentBarrier() {
-      exists(Write w, Field f, SsaWithFields var |
-        f.getName() = "Path" and
-        hasHostnameSanitizingSubstring(w.getRhs()) and
-        this = var.getAUse()
-      |
-        w.writesField(var.getAUse(), f, _) and
-        w.dominatesNode(insn)
+      exists(Write w, DataFlow::Node rhs |
+        hasHostnameSanitizingSubstring(rhs) and
+        w.writesFieldPreUpdate(this, any(Field f | f.getName() = "Path"), rhs)
       )
     }
   }
@@ -98,39 +99,24 @@ module OpenUrlRedirect {
    * A call to a function called `isLocalUrl`, `isValidRedirect`, or similar, which is
    * considered a barrier guard for sanitizing untrusted URLs.
    */
-  class RedirectCheckBarrierGuardAsBarrierGuard extends RedirectCheckBarrier, Barrier { }
+  class RedirectCheckBarrierGuardAsBarrierGuard extends Barrier instanceof RedirectCheckBarrier { }
 
   /**
    * A call to a regexp match function, considered as a barrier guard for sanitizing untrusted URLs.
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Barrier { }
+  class RegexpCheckAsBarrierGuard extends Barrier instanceof RegexpCheckBarrier { }
 
   /**
    * A check against a constant value or the `Hostname` function,
    * considered a barrier guard for url flow.
    */
-  class UrlCheckAsBarrierGuard extends UrlCheckBarrier, Barrier { }
+  class UrlCheckAsBarrierGuard extends Barrier instanceof UrlCheckBarrier { }
 }
 
 /** A sink for an open redirect, considered as a sink for safe URL flow. */
 private class SafeUrlSink extends SafeUrlFlow::Sink instanceof OpenUrlRedirect::Sink { }
-
-/**
- * A read of a field considered unsafe to redirect to, considered as a sanitizer for a safe
- * URL.
- */
-private class UnsafeFieldReadSanitizer extends SafeUrlFlow::SanitizerEdge {
-  UnsafeFieldReadSanitizer() {
-    exists(DataFlow::FieldReadNode frn, string name |
-      name = ["User", "RawQuery", "Fragment"] and
-      frn.getField().hasQualifiedName("net/url", "URL")
-    |
-      this = frn.getBase()
-    )
-  }
-}
 
 /**
  * Reinstate the usual field propagation rules for fields, which the OpenURLRedirect

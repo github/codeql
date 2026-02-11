@@ -17,7 +17,7 @@ wrap the use of the object in a <code>with</code> statement.
 
 </recommendation>
 <example>
-<p>In the first example, rather than close the zip file in a conventional manner the programmer has called <code>__del__</code>.
+<p>In the first example, rather than close the zip file in a conventional manner, the programmer has called <code>__del__</code>.
 A safer alternative is shown in the second example.
 </p>
 

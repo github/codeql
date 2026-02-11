@@ -5,7 +5,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/useless-type-test
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       language-features
  *       external/cwe/cwe-561
  */

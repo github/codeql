@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/alert-call
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-489
  * @precision medium
  */

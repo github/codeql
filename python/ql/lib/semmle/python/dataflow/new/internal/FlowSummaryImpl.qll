@@ -10,7 +10,15 @@ private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 
 module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow> {
+  private import codeql.util.Void
+
   class SummarizedCallableBase = string;
+
+  class SourceBase = Void;
+
+  class SinkBase = Void;
+
+  predicate callableFromSource(SummarizedCallableBase c) { none() }
 
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
 
@@ -98,6 +106,12 @@ private module StepsInput implements Impl::Private::StepsInputSig {
           sc.(LibraryCallable).getACallSimple().asCfgNode()
         ])
   }
+
+  DataFlowCallable getSourceNodeEnclosingCallable(Input::SourceBase source) { none() }
+
+  Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) { none() }
+
+  Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) { none() }
 }
 
 module Private {

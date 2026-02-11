@@ -36,7 +36,7 @@ module Shared {
    */
   class MetacharEscapeSanitizer extends Sanitizer, StringReplaceCall {
     MetacharEscapeSanitizer() {
-      this.isGlobal() and
+      this.maybeGlobal() and
       (
         RegExp::alwaysMatchesMetaCharacter(this.getRegExp().getRoot(), ["<", "'", "\""])
         or
@@ -47,15 +47,22 @@ module Shared {
   }
 
   /**
-   * A call to `encodeURI` or `encodeURIComponent`, viewed as a sanitizer for
+   * A call to `encodeURI`, `encodeURIComponent` or `escape`, viewed as a sanitizer for
    * XSS vulnerabilities.
    */
   class UriEncodingSanitizer extends Sanitizer, DataFlow::CallNode {
+    string name;
+
     UriEncodingSanitizer() {
-      exists(string name | this = DataFlow::globalVarRef(name).getACall() |
-        name = "encodeURI" or name = "encodeURIComponent"
-      )
+      this = DataFlow::globalVarRef(name).getACall() and
+      name in ["encodeURI", "encodeURIComponent", "escape"]
     }
+
+    /**
+     * Holds if this URI encoding function properly encodes path separators,
+     * making it safe for request forgery prevention.
+     */
+    predicate encodesPathSeparators() { name = "encodeURIComponent" }
   }
 
   /**
@@ -72,9 +79,35 @@ module Shared {
   private import semmle.javascript.security.dataflow.IncompleteHtmlAttributeSanitizationCustomizations::IncompleteHtmlAttributeSanitization as IncompleteHtml
 
   /**
+   * A barrier guard that applies to multiple XSS queries.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  }
+
+  /**
+   * A barrier guard that applies to multiple XSS queries.
+   */
+  module BarrierGuard = DataFlow::MakeBarrierGuard<BarrierGuard>;
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
+  }
+
+  /**
    * A guard that checks if a string can contain quotes, which is a guard for strings that are inside an HTML attribute.
    */
-  abstract class QuoteGuard extends TaintTracking::SanitizerGuardNode, StringOps::Includes {
+  class QuoteGuard extends BarrierGuard, StringOps::Includes {
     QuoteGuard() {
       this.getSubstring().mayHaveStringValue("\"") and
       this.getBaseString()
@@ -82,7 +115,7 @@ module Shared {
           .flowsTo(any(IncompleteHtml::HtmlAttributeConcatenation attributeConcat))
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       e = this.getBaseString().getEnclosingExpr() and outcome = this.getPolarity().booleanNot()
     }
   }
@@ -91,7 +124,7 @@ module Shared {
    * A sanitizer guard that checks for the existence of HTML chars in a string.
    * E.g. `/["'&<>]/.exec(str)`.
    */
-  abstract class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, StringOps::RegExpTest {
+  class ContainsHtmlGuard extends BarrierGuard, StringOps::RegExpTest {
     ContainsHtmlGuard() {
       exists(RegExpCharacterClass regExp |
         regExp = this.getRegExp() and
@@ -99,7 +132,7 @@ module Shared {
       )
     }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate blocksExpr(boolean outcome, Expr e) {
       outcome = this.getPolarity().booleanNot() and e = this.getStringOperand().asExpr()
     }
   }

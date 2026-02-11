@@ -127,6 +127,7 @@ private class DefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 private class UnsafeJsEvalDefaultBarrier extends UnsafeJsEvalBarrier {
   UnsafeJsEvalDefaultBarrier() {
     // any numeric type
-    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() = "Numeric"
+    this.asExpr().getType().getUnderlyingType().getABaseType*().getName() =
+      ["Numeric", "SignedInteger", "UnsignedInteger"]
   }
 }

@@ -2,7 +2,9 @@
  * @name Use of exit() or quit()
  * @description exit() or quit() may fail if the interpreter is run with the -S option.
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity warning
  * @sub-severity low
  * @precision very-high
@@ -10,9 +12,10 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from CallNode call, string name
-where call.getFunction().pointsTo(Value::siteQuitter(name))
+where call.getFunction().(ControlFlowNodeWithPointsTo).pointsTo(Value::siteQuitter(name))
 select call,
   "The '" + name +
     "' site.Quitter object may not exist if the 'site' module is not loaded or is modified."

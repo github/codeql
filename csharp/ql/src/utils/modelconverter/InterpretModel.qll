@@ -8,7 +8,7 @@ predicate interpretCallable(
 ) {
   exists(Callable c, string signature1 |
     c = interpretBaseDeclaration(namespace0, type0, name0, signature0) and
-    partialModel(c, namespace, type, name, signature1) and
+    partialModel(c, namespace, type, _, name, signature1) and
     if signature0 = "" then signature = "" else signature = signature1
   )
   or

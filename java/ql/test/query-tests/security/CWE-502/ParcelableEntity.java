@@ -29,7 +29,7 @@ public class ParcelableEntity implements Parcelable {
         public ParcelableEntity createFromParcel(Parcel parcel) {
             try {
                 Class clazz = Class.forName(parcel.readString());
-                Object obj = GSON.fromJson(parcel.readString(), clazz); // $unsafeDeserialization
+                Object obj = GSON.fromJson(parcel.readString(), clazz); // $ Alert
                 return new ParcelableEntity(obj);
             }
             catch (ClassNotFoundException e) {

@@ -13,8 +13,8 @@ void free(void *ptr);
 
 void bad0(void) {
 
-    float *fptr = malloc(3); // BAD -- Too small
-    double *dptr = malloc(5); // BAD -- Too small
+    float *fptr = malloc(3); // $ Alert -- Too small
+    double *dptr = malloc(5); // $ Alert -- Too small
     free(fptr);
     free(dptr);
 }
@@ -29,8 +29,8 @@ void good0(void) {
 
 void bad1(void) {
 
-    float *fptr = malloc(sizeof(short)); // BAD -- Too small
-    double *dptr = malloc(sizeof(float)); // BAD -- Too small
+    float *fptr = malloc(sizeof(short)); // $ Alert -- Too small
+    double *dptr = malloc(sizeof(float)); // $ Alert -- Too small
     free(fptr);
     free(dptr);
 }
@@ -56,16 +56,16 @@ typedef union _myUnion
 
 void test_union() {
 	MyUnion *a = malloc(sizeof(MyUnion)); // GOOD
-	MyUnion *b = malloc(sizeof(MyStruct)); // BAD (too small)
+	MyUnion *b = malloc(sizeof(MyStruct)); // $ Alert (too small)
 }
 
 // --- custom allocators ---
- 
+
 void *MyMalloc1(size_t size) { return malloc(size); }
 void *MyMalloc2(size_t size);
 
 void customAllocatorTests()
 {
-    float *fptr1 = MyMalloc1(3); // BAD (too small) [NOT DETECTED]
-    float *fptr2 = MyMalloc2(3); // BAD (too small) [NOT DETECTED]
+    float *fptr1 = MyMalloc1(3); // $ MISSING: BAD (too small)
+    float *fptr2 = MyMalloc2(3); // $ MISSING: BAD (too small)
 }

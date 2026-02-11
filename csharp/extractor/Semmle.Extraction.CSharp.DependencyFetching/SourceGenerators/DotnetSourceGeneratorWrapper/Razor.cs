@@ -34,10 +34,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             using var sw = new StreamWriter(analyzerConfigPath);
             sw.WriteLine("is_global = true");
 
-            foreach (var f in cshtmls.Select(f => f.Replace('\\', '/')))
+            foreach (var cshtml in cshtmls)
             {
-                sw.WriteLine($"\n[{f}]");
-                var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(f)); // TODO: this should be the relative path of the file.
+                var adjustedPath = cshtml.Replace('\\', '/');
+                string? relativePath;
+
+                try
+                {
+                    var csprojFolder = Path.GetDirectoryName(csprojFile);
+                    relativePath = csprojFolder is not null ? Path.GetRelativePath(csprojFolder, cshtml) : cshtml;
+                    relativePath = relativePath.Replace('\\', '/');
+                }
+                catch (Exception e)
+                {
+                    logger.LogWarning($"Failed to get relative path for {cshtml}: {e.Message}");
+                    relativePath = adjustedPath;
+                }
+
+                sw.WriteLine($"\n[{adjustedPath}]");
+                var base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(relativePath));
                 sw.WriteLine($"build_metadata.AdditionalFiles.TargetPath = {base64}");
             }
         }

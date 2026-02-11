@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "input.base-pr-branch", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "input.head-pr-branch", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "input.reference-files", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/update-config-files.yml", "*", "input.target-folder", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/codeql-analysis.yml", "*", "input.build-command", "code-injection", "generated"]
+     - ["actions/reusable-workflows/.github/workflows/check-dist.yml", "*", "input.dist-path", "code-injection", "generated"]

@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["awslabs/amazon-eks-ami", "*", "input.max_resource_age_duration", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "input.aws_region", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "input.ami_id", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "input.k8s_version", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "input.os_distro", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "input.additional_arguments", "code-injection", "generated"]
+     - ["awslabs/amazon-eks-ami", "*", "input.build_id", "code-injection", "generated"]

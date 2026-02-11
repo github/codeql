@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-400/ThreadResourceAbuse.ql
+query: experimental/Security/CWE/CWE-400/ThreadResourceAbuse.ql
+postprocess: utils/test/PrettyPrintModels.ql

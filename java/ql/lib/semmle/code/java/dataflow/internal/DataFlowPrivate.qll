@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import java
 private import DataFlowUtil
 private import DataFlowImplCommon
@@ -8,6 +11,7 @@ private import ContainerFlow
 private import semmle.code.java.dataflow.FlowSteps
 private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.dataflow.InstanceAccess
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
@@ -58,29 +62,17 @@ private predicate fieldStep(Node node1, Node node2) {
 private predicate closureFlowStep(Expr e1, Expr e2) {
   simpleAstFlowStep(e1, e2)
   or
-  exists(SsaVariable v |
-    v.getAUse() = e2 and
-    v.getAnUltimateDefinition().(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() =
-      e1
+  exists(SsaDefinition v, SsaExplicitWrite def | v.getARead() = e2 and def.getValue() = e1 |
+    v.getAnUltimateDefinition() = def
+    or
+    v.(SsaCapturedDefinition).getAnUltimateCapturedDefinition() = def
   )
 }
 
-private module CaptureInput implements VariableCapture::InputSig<Location> {
+private module CaptureInput implements VariableCapture::InputSig<Location, BasicBlock> {
   private import java as J
 
-  class BasicBlock instanceof J::BasicBlock {
-    string toString() { result = super.toString() }
-
-    Callable getEnclosingCallable() { result = super.getEnclosingCallable() }
-
-    Location getLocation() { result = super.getLocation() }
-  }
-
-  BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { bbIDominates(result, bb) }
-
-  BasicBlock getABasicBlockSuccessor(BasicBlock bb) {
-    result = bb.(J::BasicBlock).getABBSuccessor()
-  }
+  Callable basicBlockGetEnclosingCallable(BasicBlock bb) { result = bb.getEnclosingCallable() }
 
   //TODO: support capture of `this` in lambdas
   class CapturedVariable instanceof LocalScopeVariable {
@@ -105,7 +97,7 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
 
     Location getLocation() { result = super.getLocation() }
 
-    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i) }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.(J::BasicBlock).getNode(i).asExpr() }
   }
 
   class VariableWrite extends Expr instanceof VariableUpdate {
@@ -140,7 +132,14 @@ private module CaptureInput implements VariableCapture::InputSig<Location> {
   }
 
   class Callable extends J::Callable {
-    predicate isConstructor() { this instanceof Constructor }
+    predicate isConstructor() {
+      // InstanceInitializers are called from constructors and are equally likely
+      // to capture variables for the purpose of field initialization, so we treat
+      // them as constructors for the heuristic identification of whether to allow
+      // this-to-this summaries.
+      this instanceof Constructor or
+      this instanceof InstanceInitializer
+    }
   }
 }
 
@@ -148,7 +147,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, Cfg, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -331,6 +330,16 @@ predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
 }
 
+pragma[nomagic]
+private predicate numericRepresentative(RefType t) {
+  t.(BoxedType).getPrimitiveType().getName() = "double"
+}
+
+pragma[nomagic]
+private predicate booleanRepresentative(RefType t) {
+  t.(BoxedType).getPrimitiveType().getName() = "boolean"
+}
+
 /**
  * Gets a representative (boxed) type for `t` for the purpose of pruning
  * possible flow. A single type is used for all numeric types to account for
@@ -339,18 +348,22 @@ predicate expectsContent(Node n, ContentSet c) {
 RefType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
-    then result.(BoxedType).getPrimitiveType().getName() = "double"
+    then numericRepresentative(result)
     else
       if e instanceof BooleanType
-      then result.(BoxedType).getPrimitiveType().getName() = "boolean"
+      then booleanRepresentative(result)
       else result = e
   )
   or
   t instanceof NullType and result instanceof TypeObject
 }
 
-class DataFlowType extends SrcRefType {
+final private class SrcRefTypeFinal = SrcRefType;
+
+class DataFlowType extends SrcRefTypeFinal {
   DataFlowType() { this = getErasedRepr(_) }
+
+  string toString() { result = ppReprType(this) }
 }
 
 pragma[nomagic]
@@ -364,55 +377,46 @@ DataFlowType getNodeType(Node n) {
 }
 
 /** Gets a string representation of a type returned by `getErasedRepr`. */
-string ppReprType(DataFlowType t) {
+private string ppReprType(SrcRefType t) {
   if t.(BoxedType).getPrimitiveType().getName() = "double"
   then result = "Number"
   else result = t.toString()
-}
-
-pragma[nomagic]
-private predicate compatibleTypes0(DataFlowType t1, DataFlowType t2) {
-  erasedHaveIntersection(t1, t2)
 }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-bindingset[t1, t2]
-pragma[inline_late]
-predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { compatibleTypes0(t1, t2) }
+pragma[nomagic]
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { erasedHaveIntersection(t1, t2) }
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
   CastNode() {
     this.getExpr() instanceof CastingExpr
     or
-    exists(SsaExplicitUpdate upd |
+    exists(SsaExplicitWrite upd |
       upd.getDefiningExpr().(VariableAssign).getSource() =
         [
           any(SwitchStmt ss).getExpr(), any(SwitchExpr se).getExpr(),
           any(InstanceOfExpr ioe).getExpr()
         ] and
-      this.asExpr() = upd.getAFirstUse()
+      this.asExpr() = ssaGetAFirstUse(upd)
     )
   }
 }
 
-private predicate id_member(Member x, Member y) { x = y }
-
-private predicate idOf_member(Member x, int y) = equivalenceRelation(id_member/2)(x, y)
-
-private int summarizedCallableId(SummarizedCallable c) {
-  c =
-    rank[result](SummarizedCallable c0, int b, int i, string s |
-      b = 0 and idOf_member(c0.asCallable(), i) and s = ""
-      or
-      b = 1 and i = 0 and s = c0.asSyntheticCallable()
-    |
-      c0 order by b, i, s
-    )
+/** Holds if `n1` is the qualifier of a call to `clone()` and `n2` is the result. */
+predicate cloneStep(Node n1, Node n2) {
+  exists(MethodCall mc |
+    mc.getMethod() instanceof CloneMethod and
+    n1 = getInstanceArgument(mc) and
+    n2.asExpr() = mc
+  )
 }
+
+bindingset[node1, node2]
+predicate validParameterAliasStep(Node node1, Node node2) { not cloneStep(node1, node2) }
 
 private newtype TDataFlowCallable =
   TSrcCallable(Callable c) or
@@ -447,27 +451,9 @@ class DataFlowCallable extends TDataFlowCallable {
     result = this.asSummarizedCallable().getLocation() or
     result = this.asFieldScope().getLocation()
   }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, int b, int i |
-        b = 0 and idOf_member(c.asCallable(), i)
-        or
-        b = 1 and i = summarizedCallableId(c.asSummarizedCallable())
-        or
-        b = 2 and idOf_member(c.asFieldScope(), i)
-      |
-        c order by b, i
-      )
-  }
 }
 
 class DataFlowExpr = Expr;
-
-private predicate id_call(Call x, Call y) { x = y }
-
-private predicate idOf_call(Call x, int y) = equivalenceRelation(id_call/2)(x, y)
 
 private newtype TDataFlowCall =
   TCall(Call c) or
@@ -500,19 +486,6 @@ class DataFlowCall extends TDataFlowCall {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int b, int i |
-        b = 0 and idOf_call(c.asCall(), i)
-        or
-        b = 1 and // not guaranteed to be total
-        exists(SummarizedCallable sc | c = TSummaryCall(sc, _) and i = summarizedCallableId(sc))
-      |
-        c order by b, i
-      )
   }
 }
 
@@ -548,25 +521,19 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
-private predicate id(BasicBlock x, BasicBlock y) { x = y }
-
-private predicate idOf(BasicBlock x, int y) = equivalenceRelation(id/2)(x, y)
-
 class NodeRegion instanceof BasicBlock {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { n.asExpr().getBasicBlock() = this }
-
-  int totalOrder() { idOf(this, result) }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
 private predicate constantBooleanExpr(Expr e, boolean val) {
   e.(CompileTimeConstantExpr).getBooleanValue() = val
   or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
+  exists(SsaExplicitWrite v, Expr src |
+    e = v.getARead() and
+    src = v.getValue() and
     constantBooleanExpr(src, val)
   )
 }
@@ -584,15 +551,15 @@ private class ConstantBooleanArgumentNode extends ArgumentNode, ExprNode {
  */
 predicate isUnreachableInCall(NodeRegion nr, DataFlowCall call) {
   exists(
-    ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaImplicitInit param,
+    ExplicitParameterNode paramNode, ConstantBooleanArgumentNode arg, SsaParameterInit param,
     Guard guard
   |
     // get constant bool argument and parameter for this call
     viableParamArg(call, pragma[only_bind_into](paramNode), arg) and
     // get the ssa variable definition for this parameter
-    param.isParameterDefinition(paramNode.getParameter()) and
+    param.getParameter() = paramNode.getParameter() and
     // which is used in a guard
-    param.getAUse() = guard and
+    param.getARead() = guard and
     // which controls `n` with the opposite value of `arg`
     guard
         .controls(nr,
@@ -609,7 +576,11 @@ predicate forceHighPrecision(Content c) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { n instanceof FlowSummaryNode }
+predicate nodeIsHidden(Node n) {
+  n instanceof FlowSummaryNode
+  or
+  n instanceof SsaNode
+}
 
 class LambdaCallKind = Method; // the "apply" method in the functional interface
 
@@ -710,8 +681,14 @@ class DataFlowSecondLevelScope extends TDataFlowSecondLevelScope {
 }
 
 private Expr getRelatedExpr(Node n) {
-  n.asExpr() = result or
-  n.(PostUpdateNode).getPreUpdateNode().asExpr() = result
+  n.asExpr() = result
+  or
+  exists(InstanceAccessExt iae | iae = n.(ImplicitInstanceAccess).getInstanceAccess() |
+    iae.isImplicitFieldQualifier(result) or
+    iae.isImplicitMethodQualifier(result)
+  )
+  or
+  getRelatedExpr(n.(PostUpdateNode).getPreUpdateNode()) = result
 }
 
 /** Gets the second-level scope containing the node `n`, if any. */
@@ -782,7 +759,7 @@ ContentApprox getContentApprox(Content c) {
 /**
  * Holds if the the content `c` is a container.
  */
-predicate containerContent(Content c) {
+predicate containerContent(ContentSet c) {
   c instanceof ArrayContent or
   c instanceof CollectionContent or
   c instanceof MapKeyContent or

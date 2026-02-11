@@ -1,6 +1,5 @@
-/**
- * Parses RA expressions.
- */
+overlay[local]
+module;
 
 /**
  * A predicate that contains RA.

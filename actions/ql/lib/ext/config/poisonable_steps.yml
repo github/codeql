@@ -1,0 +1,76 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: poisonableActionsDataModel
+    # source: https://boostsecurityio.github.io/lotp/
+    data:
+      - ["azure/powershell"]
+      - ["pre-commit/action"]
+      - ["oxsecurity/megalinter"]
+      - ["bridgecrewio/checkov-action"]
+      - ["ruby/setup-ruby"]
+      - ["actions/jekyll-build-pages"]
+      - ["qcastel/github-actions-maven/actions/maven"]
+      - ["sonarsource/sonarcloud-github-action"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: poisonableCommandsDataModel
+    # source: https://boostsecurityio.github.io/lotp/
+    data:
+      - ["ant"]
+      - ["asv"]
+      - ["awk\\s+-f"]
+      - ["bundle"]
+      - ["bun"]
+      - ["cargo"]
+      - ["checkov"]
+      - ["eslint"]
+      - ["gcloud\\s+builds submit"]
+      - ["golangci-lint"]
+      - ["gomplate"]
+      - ["goreleaser"]
+      - ["gradle"]
+      - ["java\\s+-jar"]
+      - ["make"]
+      - ["mdformat"]
+      - ["mkdocs"]
+      - ["msbuild"]
+      - ["mvn"]
+      - ["mypy"]
+      - ["(p)?npm\\s+[a-z]"]
+      - ["pre-commit"]
+      - ["prettier"]
+      - ["phpstan"]
+      - ["pip\\s+install(.*)\\s+-r"]
+      - ["pip\\s+install(.*)\\s+--requirement"]
+      - ["pip(x)?\\s+install(.*)\\s+\\."]
+      - ["poetry"]
+      - ["pylint"]
+      - ["pytest"]
+      - ["python[\\d\\.]*\\s+-m\\s+pip\\s+install\\s+-r"]
+      - ["python[\\d\\.]*\\s+-m\\s+pip\\s+install\\s+--requirement"]
+      - ["rake"]
+      - ["rails\\s+db:create"]
+      - ["rails\\s+assets:precompile"]
+      - ["rubocop"]
+      - ["sed\\s+-f"]
+      - ["sonar-scanner"]
+      - ["stylelint"]
+      - ["terraform"]
+      - ["tflint"]
+      - ["yarn"]
+      - ["webpack"]
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: poisonableLocalScriptsDataModel
+    data:
+      # TODO: It could also be in the form of `dir/cmd`
+      - ["(\\.\\/[^\\s]+)\\b", 1] # eg: ./venv/bin/activate
+      - ["(\\.\\s+[^\\s]+)\\b", 1] # eg: . venv/bin/activate
+      - ["(source|sh|bash|zsh|fish)\\s+([^\\s]+)\\b", 2]
+      - ["(node)\\s+([^\\s]+)(\\.js|\\.ts)\\b", 2]
+      - ["(python[\\d\\.]*)\\s+([^\\s]+)\\.py\\b", 2]
+      - ["(ruby)\\s+([^\\s]+)\\.rb\\b", 2]
+      - ["(go)\\s+(generate|run)\\s+([^\\s]+)\\.go\\b", 3]
+      - ["(dotnet)\\s+([^\\s]+)\\.csproj\\b", 2]
+

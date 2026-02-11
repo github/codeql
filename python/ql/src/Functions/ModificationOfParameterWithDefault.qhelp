@@ -37,7 +37,7 @@ function with a default of <code>default=None</code>, check if the parameter is
 <references>
 
   <li>Effbot: <a href="https://web.archive.org/web/20201112004749/http://effbot.org/zone/default-values.htm">Default Parameter Values in Python</a>.</li>
-  <li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#function-definitions">Function definitions</a>.</li>
+  <li>Python Language Reference: <a href="http://docs.python.org/3/reference/compound_stmts.html#function-definitions">Function definitions</a>.</li>
 
 
 </references>

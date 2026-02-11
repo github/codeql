@@ -9,7 +9,7 @@ CodeQL 2.11.4 (2022-11-24)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -68,8 +68,8 @@ Ruby
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The query :code:`java/insufficient-key-size` has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally `submitted as an experimental query by @luchua-bc <https://github.com/github/codeql/pull/4926>`__.
 *   Added a new query, :code:`java/android/sensitive-keyboard-cache`, to detect instances of sensitive information possibly being saved to the Android keyboard cache.
@@ -98,8 +98,8 @@ C#
 
 *   The :code:`[Summary|Sink|Source]ModelCsv` classes have been deprecated and Models as Data models are defined as data extensions instead.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The ReDoS libraries in :code:`semmle.code.java.security.regexp` has been moved to a shared pack inside the :code:`shared/` folder, and the previous location has been deprecated.
 *   Added data flow summaries for tainted Android intents sent to activities via :code:`Activity.startActivities`.
@@ -125,8 +125,8 @@ Ruby
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Kotlin support is now in beta. This means that Java analyses will also include Kotlin code by default. Kotlin support can be disabled by setting :code:`CODEQL_EXTRACTOR_JAVA_AGENT_DISABLE_KOTLIN` to :code:`true` in the environment.
 *   The new :code:`string Compilation.getInfo(string)` predicate provides access to some information about compilations.

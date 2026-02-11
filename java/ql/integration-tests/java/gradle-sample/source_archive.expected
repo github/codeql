@@ -1,0 +1,7 @@
+.gradle/6.6.1/gc.properties
+.gradle/buildOutputCleanup/cache.properties
+.gradle/configuration-cache/gc.properties
+.gradle/vcs-1/gc.properties
+gradle/wrapper/gradle-wrapper.properties
+src/main/java/com/example/App.java
+src/test/java/com/example/AppTest.java

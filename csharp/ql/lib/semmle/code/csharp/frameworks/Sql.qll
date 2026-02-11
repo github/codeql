@@ -6,7 +6,6 @@ private import semmle.code.csharp.frameworks.system.data.SqlClient
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Dapper
-private import semmle.code.csharp.dataflow.DataFlow4
 
 /** An expression containing a SQL command. */
 abstract class SqlExpr extends Expr {
@@ -36,6 +35,7 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
       ic.getParameter(0).getType() instanceof StringType and
       not exists(Type t | t = ic.getDeclaringType() |
         // Known sealed classes:
+        t.hasFullyQualifiedName("Microsoft.Data.SqlClient", "SqlCommand") or
         t.hasFullyQualifiedName("System.Data.SqlClient", "SqlCommand") or
         t.hasFullyQualifiedName("System.Data.Odbc", "OdbcCommand") or
         t.hasFullyQualifiedName("System.Data.OleDb", "OleDbCommand") or
@@ -52,7 +52,7 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
 class DapperCommandDefinitionMethodCallSqlExpr extends SqlExpr, ObjectCreation {
   DapperCommandDefinitionMethodCallSqlExpr() {
     this.getObjectType() instanceof Dapper::CommandDefinitionStruct and
-    DapperCommandDefinitionMethodCallSql::flow(DataFlow::exprNode(this), _)
+    DapperCommandDefinitionMethodCallSql::flowFromExpr(this)
   }
 
   override Expr getSql() { result = this.getArgumentForName("commandText") }

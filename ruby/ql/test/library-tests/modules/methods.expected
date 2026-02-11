@@ -51,6 +51,7 @@ getMethod
 | calls.rb:626:1:632:3 | Included | foo | calls.rb:627:5:629:7 | foo |
 | calls.rb:634:1:639:3 | IncludesIncluded | bar | calls.rb:636:5:638:7 | bar |
 | calls.rb:649:1:657:3 | CustomNew2 | instance | calls.rb:654:5:656:7 | instance |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | [] | element_reference.rb:2:5:4:7 | [] |
 | hello.rb:1:1:8:3 | EnglishWords | hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:1:1:8:3 | EnglishWords | world | hello.rb:5:5:7:7 | world |
 | hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
@@ -561,6 +562,10 @@ lookupMethod
 | calls.rb:649:1:657:3 | CustomNew2 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:649:1:657:3 | CustomNew2 | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:649:1:657:3 | CustomNew2 | to_s | calls.rb:172:5:173:7 | to_s |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | [] | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | new | calls.rb:117:5:117:16 | new |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | puts | calls.rb:102:5:102:30 | puts |
+| element_reference.rb:1:1:5:3 | ClassWithElementRef | to_s | calls.rb:172:5:173:7 | to_s |
 | file://:0:0:0:0 | Class | include | calls.rb:108:5:110:7 | include |
 | file://:0:0:0:0 | Class | module_eval | calls.rb:107:5:107:24 | module_eval |
 | file://:0:0:0:0 | Class | new | calls.rb:117:5:117:16 | new |
@@ -1080,6 +1085,12 @@ enclosingMethod
 | calls.rb:662:10:662:10 | 2 | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:662:18:664:7 | do ... end | calls.rb:661:1:665:3 | capture_parameter |
 | calls.rb:663:9:663:9 | x | calls.rb:661:1:665:3 | capture_parameter |
+| element_reference.rb:2:12:2:12 | x | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:2:12:2:12 | x | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:3:9:3:19 | yield ... | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:3:15:3:15 | x | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:3:15:3:19 | ... + ... | element_reference.rb:2:5:4:7 | [] |
+| element_reference.rb:3:19:3:19 | 1 | element_reference.rb:2:5:4:7 | [] |
 | hello.rb:3:9:3:22 | return | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:16:3:22 | "hello" | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:17:3:21 | hello | hello.rb:2:5:4:7 | hello |

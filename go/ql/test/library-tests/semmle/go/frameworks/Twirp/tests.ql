@@ -1,4 +1,6 @@
 import go
+import semmle.go.dataflow.ExternalFlow
+import ModelValidation
 import semmle.go.security.RequestForgery
 
 class InlineTest extends LineComment {
@@ -52,7 +54,7 @@ query predicate passingPositiveTests(string res, string expectation, InlineTest 
     exists(Twirp::ProtobufMessageType n | t.inType(n))
     or
     expectation = "serviceInterface" and
-    exists(Twirp::ServiceInterfaceType n | t.inType(n.getNamedType()))
+    exists(Twirp::ServiceInterfaceType n | t.inType(n.getDefinedType()))
     or
     expectation = "serviceClient" and
     exists(Twirp::ServiceClientType n | t.inType(n))
@@ -88,7 +90,7 @@ query predicate failingPositiveTests(string res, string expectation, InlineTest 
     not exists(Twirp::ProtobufMessageType n | t.inType(n))
     or
     expectation = "serviceInterface" and
-    not exists(Twirp::ServiceInterfaceType n | t.inType(n.getNamedType()))
+    not exists(Twirp::ServiceInterfaceType n | t.inType(n.getDefinedType()))
     or
     expectation = "serviceClient" and
     not exists(Twirp::ServiceClientType n | t.inType(n))

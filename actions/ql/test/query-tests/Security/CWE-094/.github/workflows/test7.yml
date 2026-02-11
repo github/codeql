@@ -1,0 +1,20 @@
+name: Test
+on: issue_comment
+permissions: write-all
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - id: comment-branch
+        uses: xt0rted/pull-request-comment-branch@v2
+        with:
+          repo_token: ${{ github.token }}
+      - id: refs
+        uses: eficode/resolve-pr-refs@main
+        with:
+          token: ${{ github.token }}
+      - run: |
+          echo "HEAD_REF1 from PR: ${{ steps.comment-branch.outputs.head_ref }}"
+      - run: |
+          echo "HEAD_REF2 from PR: ${{ steps.refs.outputs.head_ref }}"

@@ -7,8 +7,10 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
+private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -76,9 +78,14 @@ module UrlRedirect {
   }
 
   /**
-   * A source of remote user input, considered as a flow source.
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
    */
-  class RemoteFlowSourceAsSource extends Source, RemoteFlowSource { }
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A HTTP redirect response, considered as a flow sink.
@@ -87,6 +94,13 @@ module UrlRedirect {
     RedirectLocationAsSink() {
       this = any(Http::Server::HttpRedirectResponse e).getRedirectLocation()
     }
+  }
+
+  /**
+   * A sink for URL redirection defined via models-as-data.
+   */
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { ModelOutput::sinkNode(this, "url-redirection") }
   }
 
   /**
@@ -135,9 +149,25 @@ module UrlRedirect {
   }
 
   /**
-   * A comparison with a constant string, considered as a sanitizer-guard.
+   * A comparison with a constant, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier {
+  class ConstCompareAsSanitizerGuard extends Sanitizer, ConstCompareBarrier {
+    override predicate sanitizes(FlowState state) {
+      // sanitize all flow states
+      any()
+    }
+  }
+
+  /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
+  deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  /**
+   * A sanitizer which sanitizes all flow states, defined via models-as-data
+   * with kind "url-redirection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "url-redirection") }
+
     override predicate sanitizes(FlowState state) {
       // sanitize all flow states
       any()

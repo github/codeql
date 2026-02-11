@@ -7,6 +7,7 @@ using System.Linq;
 using Microsoft.Build.Construction;
 using System.Xml;
 using System.IO;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Cpp.Tests
 {
@@ -145,9 +146,17 @@ namespace Semmle.Autobuild.Cpp.Tests
 
         bool IBuildActions.IsMacOs() => IsMacOs;
 
+        public bool IsLinux { get; set; }
+
+        bool IBuildActions.IsLinux() => IsLinux;
+
         public bool IsRunningOnAppleSilicon { get; set; }
 
         bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;
+
+        public bool IsMonoInstalled { get; set; }
+
+        bool IBuildActions.IsMonoInstalled() => IsMonoInstalled;
 
         string IBuildActions.PathCombine(params string[] parts)
         {
@@ -189,7 +198,7 @@ namespace Semmle.Autobuild.Cpp.Tests
                 throw new ArgumentException($"Missing CreateDirectory, {path}");
         }
 
-        public void DownloadFile(string address, string fileName)
+        public void DownloadFile(string address, string fileName, ILogger logger)
         {
             if (!DownloadFiles.Contains((address, fileName)))
                 throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");

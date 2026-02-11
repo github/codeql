@@ -17,6 +17,7 @@ namespace Test
         Table table;
         Label label;
         string connectionString;
+        public Button button;
 
         public void WebUIXSS()
         {
@@ -100,6 +101,10 @@ namespace Test
             // GOOD: HTML encoding
             string name = context.Request.QueryString["name"];
             new StringContent(HttpUtility.HtmlEncode(name));
+
+            // GOOD: Implicit HTML encoding
+            string html = context.Request.QueryString["html"];
+            button.Attributes.Add("data-href", html);
         }
 
         public void UrlEncoded(HttpContextBase context)

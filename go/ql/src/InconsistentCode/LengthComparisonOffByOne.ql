@@ -5,9 +5,9 @@
  * @kind problem
  * @problem.severity error
  * @id go/index-out-of-bounds
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       logic
  *       external/cwe/cwe-193
  * @precision high
  */
@@ -70,10 +70,10 @@ predicate elementRead(
 }
 
 predicate isRegexpMethodCall(DataFlow::MethodCallNode c) {
-  exists(NamedType regexp, Type recvtp |
+  exists(DefinedType regexp, Type recvtp |
     regexp.getName() = "Regexp" and recvtp = c.getReceiver().getType()
   |
-    recvtp = regexp or recvtp.(PointerType).getBaseType() = regexp
+    lookThroughPointerType(recvtp) = regexp
   )
 }
 

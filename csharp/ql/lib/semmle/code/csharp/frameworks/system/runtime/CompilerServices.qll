@@ -74,11 +74,25 @@ class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiter
 /** An attribute of type `System.Runtime.CompilerServices.InlineArrayAttribute`. */
 class SystemRuntimeCompilerServicesInlineArrayAttribute extends Attribute {
   SystemRuntimeCompilerServicesInlineArrayAttribute() {
-    this.getType().hasFullyQualifiedName("System.Runtime.CompilerServices", "InlineArrayAttribute")
+    this.getNamespace() instanceof SystemRuntimeCompilerServicesNamespace and
+    this.getType().hasName("InlineArrayAttribute")
   }
 
   /**
    * Gets the length of the inline array.
    */
   int getLength() { result = this.getConstructorArgument(0).getValue().toInt() }
+}
+
+/** An attribute of type `System.Runtime.CompilerServices.OverloadResolutionPriority`. */
+class SystemRuntimeCompilerServicesOverloadResolutionPriorityAttribute extends Attribute {
+  SystemRuntimeCompilerServicesOverloadResolutionPriorityAttribute() {
+    this.getNamespace() instanceof SystemRuntimeCompilerServicesNamespace and
+    this.getType().hasName("OverloadResolutionPriorityAttribute")
+  }
+
+  /**
+   * Gets the priority number.
+   */
+  int getPriority() { result = this.getConstructorArgument(0).getValue().toInt() }
 }

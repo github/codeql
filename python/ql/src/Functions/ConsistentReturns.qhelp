@@ -6,7 +6,7 @@
 
 <overview>
 <p>When a function contains both explicit returns (<code>return value</code>) and implicit returns
-(where code falls off the end of a function) this often indicates that a return
+(where code falls off the end of a function), this often indicates that a return
 statement has been forgotten. It is best to return an explicit return value even when returning
 <code>None</code> because this makes it easier for other developers to read your code.
 </p>
@@ -29,7 +29,7 @@ return value of <code>None</code> as this equates to <code>False</code>. However
 </example>
 <references>
 
-<li>Python Language Reference: <a href="http://docs.python.org/2/reference/compound_stmts.html#function">Function definitions</a>.
+<li>Python Language Reference: <a href="http://docs.python.org/3/reference/compound_stmts.html#function">Function definitions</a>.
 </li>
 
 

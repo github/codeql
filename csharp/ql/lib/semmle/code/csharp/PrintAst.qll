@@ -32,7 +32,9 @@ private predicate shouldPrint(Element e, Location l) {
 }
 
 private predicate isImplicitExpression(ControlFlowElement element) {
-  element.(Expr).isImplicit() and
+  // Include compiler generated cast expressions and `ToString` calls if
+  // they wrap actual source expressions.
+  element.(Expr).stripImplicit().isImplicit() and
   not element instanceof CastExpr and
   not element.(OperatorCall).getTarget() instanceof ImplicitConversionOperator and
   not element instanceof ElementInitializer
@@ -521,11 +523,9 @@ final class AttributeNode extends ElementNode {
  * A node representing a `TypeParameter`.
  */
 final class TypeParameterNode extends ElementNode {
-  TypeParameter typeParameter;
-
   TypeParameterNode() {
-    typeParameter = element and
-    not isNotNeeded(typeParameter.getDeclaringGeneric())
+    element =
+      any(TypeParameter typeParameter | not isNotNeeded(typeParameter.getDeclaringGeneric()))
   }
 
   override ElementNode getChild(int childIndex) { none() }

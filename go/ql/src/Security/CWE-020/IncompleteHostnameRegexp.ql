@@ -9,7 +9,7 @@
  * @id go/incomplete-hostname-regexp
  * @tags correctness
  *       security
- *       external/cwe/cwe-20
+ *       external/cwe/cwe-020
  */
 
 import go
@@ -45,7 +45,7 @@ predicate writesHttpError(ReachableBasicBlock b) {
 predicate onlyErrors(BasicBlock block) {
   writesHttpError(block)
   or
-  forex(ReachableBasicBlock pred | pred = block.getAPredecessor() | onlyErrors(pred))
+  forex(ReachableBasicBlock pred | pred = block.getAPredecessor(_) | onlyErrors(pred))
 }
 
 /** Gets a node that refers to a handler that is considered to return an HTTP error. */
@@ -103,6 +103,8 @@ module IncompleteHostNameRegexpConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     StringOps::Concatenation::taintStep(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module Flow = DataFlow::Global<IncompleteHostNameRegexpConfig>;

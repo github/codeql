@@ -9,9 +9,9 @@ public class E
         long[][] a2 = null;
         var haveA2 = ix < len && (a2 = a1[ix]) != null;
         long[] a3 = null;
-        var haveA3 = haveA2 && (a3 = a2[ix]) != null; // GOOD (FALSE POSITIVE)
+        var haveA3 = haveA2 && (a3 = a2[ix]) != null; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         if (haveA3)
-            a3[0] = 0; // GOOD (FALSE POSITIVE)
+            a3[0] = 0; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
     }
 
     public void Ex2(bool x, bool y)
@@ -24,7 +24,7 @@ public class E
             s2 = (s1 == null) ? null : "";
         }
         if (s2 != null)
-            s1.ToString(); // GOOD (FALSE POSITIVE)
+            s1.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
     }
 
     public void Ex3(IEnumerable<string> ss)
@@ -32,7 +32,7 @@ public class E
         string last = null;
         foreach (var s in new string[] { "aa", "bb" })
             last = s;
-        last.ToString(); // GOOD
+        last.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
 
         last = null;
         if (ss.Any())
@@ -40,7 +40,7 @@ public class E
             foreach (var s in ss)
                 last = s;
 
-            last.ToString(); // GOOD
+            last.ToString(); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         }
     }
 
@@ -58,7 +58,7 @@ public class E
                 slice = new List<string>();
                 result.Add(slice);
             }
-            slice.Add(str); // GOOD (FALSE POSITIVE)
+            slice.Add(str); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
             ++index;
         }
     }
@@ -70,7 +70,7 @@ public class E
             arrLen = arr == null ? 0 : arr.Length;
 
         if (arrLen > 0)
-            arr[0] = 0; // GOOD (FALSE POSITIVE)
+            arr[0] = 0; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
     }
 
     public const int MY_CONST_A = 1;
@@ -109,7 +109,7 @@ public class E
             arr2 = new int[arr1.Length];
 
         for (var i = 0; i < arr1.Length; i++)
-            arr2[i] = arr1[i]; // GOOD (FALSE POSITIVE)
+            arr2[i] = arr1[i]; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
     }
 
     public void Ex8(int x, int lim)
@@ -122,7 +122,7 @@ public class E
             int j = 0;
             while (!stop && j < lim)
             {
-                int step = (j * obj.GetHashCode()) % 10; // GOOD (FALSE POSITIVE)
+                int step = (j * obj.GetHashCode()) % 10; // GOOD
                 if (step == 0)
                 {
                     obj.ToString(); // GOOD
@@ -156,7 +156,7 @@ public class E
             cond = true;
         }
         if (cond)
-            obj2.ToString(); // GOOD (FALSE POSITIVE)
+            obj2.ToString(); // GOOD
     }
 
     public void Ex10(int[] a)
@@ -164,7 +164,7 @@ public class E
         int n = a == null ? 0 : a.Length;
         for (var i = 0; i < n; i++)
         {
-            int x = a[i]; // GOOD (FALSE POSITIVE)
+            int x = a[i]; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
             if (x > 7)
                 a = new int[n];
         }
@@ -175,7 +175,7 @@ public class E
         bool b2 = obj == null ? false : b1;
         if (b2 == null)
         {
-            obj.ToString(); // GOOD (FALSE POSITIVE)
+            obj.ToString(); // GOOD
         }
         if (obj == null)
         {
@@ -183,31 +183,31 @@ public class E
         }
         if (b1 == null)
         {
-            obj.ToString(); // GOOD (FALSE POSITIVE)
+            obj.ToString(); // GOOD
         }
     }
 
     public void Ex12(object o)
     {
-        var i = o.GetHashCode(); // BAD (maybe)
+        var i = o.GetHashCode(); // $ Alert[cs/dereferenced-value-may-be-null]
         var s = o?.ToString();
     }
 
     public void Ex13(bool b)
     {
         var o = b ? null : "";
-        o.M1(); // GOOD
+        o.M1(); // GOOD (because M1 doesn't deref o)
         if (b)
-            o.M2(); // BAD (maybe)
+            o.M2(); // $ Alert[cs/dereferenced-value-may-be-null]
         else
-            o.Select(x => x); // BAD (maybe)
+            o.Select(x => x); // GOOD
     }
 
     public int Ex14(string s)
     {
         if (s is string)
             return s.Length;
-        return s.GetHashCode(); // BAD (always)
+        return s.GetHashCode(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     public void Ex15(bool b)
@@ -215,9 +215,9 @@ public class E
         var x = "";
         if (b)
             x = null;
-        x.ToString(); // BAD (maybe)
+        x.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
         if (b)
-            x.ToString(); // BAD (always)
+            x.ToString(); // dominated by prior deref, i.e. not reported
     }
 
     public void Ex16(bool b)
@@ -226,18 +226,18 @@ public class E
         if (b)
             x = null;
         if (b)
-            x.ToString(); // BAD (always)
-        x.ToString(); // BAD (maybe)
+            x.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
+        x.ToString(); // "dominated" by prior deref, i.e. not reported
     }
 
     public int Ex17(int? i)
     {
-        return i.Value; // BAD (maybe)
+        return i.Value; // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     public int Ex18(int? i)
     {
-        return (int)i; // BAD (maybe)
+        return (int)i; // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     public int Ex19(int? i)
@@ -282,7 +282,7 @@ public class E
             b.ToString();
         var o = Make();
         o?.ToString();
-        o.ToString(); // BAD (maybe)
+        o.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
         if (b)
             b.ToString();
     }
@@ -299,7 +299,7 @@ public class E
     public void Ex25(object o)
     {
         var s = o as string;
-        s.ToString(); // BAD (maybe)
+        s.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     private long? l;
@@ -320,15 +320,15 @@ public class E
     {
         if ((s1 ?? s2) is null)
         {
-            s1.ToString(); // BAD (always)
-            s2.ToString(); // BAD (always)
+            s1.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
+            s2.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         }
     }
 
     static void Ex28()
     {
         var x = (string)null ?? null;
-        x.ToString(); // BAD (always)
+        x.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     static void Ex29(string s)
@@ -340,13 +340,13 @@ public class E
     static void Ex30(string s, object o)
     {
         var x = s ?? o as string;
-        x.ToString(); // BAD (maybe)
+        x.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     static void Ex31(string s, object o)
     {
         dynamic x = s ?? o as string;
-        x.ToString(); // BAD (maybe)
+        x.ToString(); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     static void Ex32(string s, object o)
@@ -363,7 +363,7 @@ public class E
             x.ToString(); // GOOD
     }
 
-    static int Ex34(string s = null) => s.Length; // BAD (maybe)
+    static int Ex34(string s = null) => s.Length; // $ Alert[cs/dereferenced-value-may-be-null]
 
     static int Ex35(string s = "null") => s.Length; // GOOD
 
@@ -372,7 +372,7 @@ public class E
         if (o is string)
         {
             var s = o as string;
-            return s.Length; // GOOD (FALSE POSITIVE)
+            return s.Length; // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         }
         return -1;
     }
@@ -383,7 +383,7 @@ public class E
             return false;
         if (e1 == null && e2 == null)
             return true;
-        return e1.Long == e2.Long; // GOOD (FALSE POSITIVE)
+        return e1.Long == e2.Long; // GOOD
     }
 
     int Ex38(int? i)
@@ -402,7 +402,7 @@ public class E
     {
         int? i = null;
         i ??= null;
-        return i.Value; // BAD (always)
+        return i.Value; // $ Alert[cs/dereferenced-value-is-always-null]
     }
 
     int Ex41()
@@ -414,42 +414,51 @@ public class E
 
     static bool Ex42(int? i, IEnumerable<int> @is)
     {
-        return @is.Any(j => j == i.Value); // BAD (maybe)
+        return @is.Any(j => j == i.Value); // $ Alert[cs/dereferenced-value-may-be-null]
     }
 
     static bool Ex43(int? i, IEnumerable<int> @is)
     {
         if (i.HasValue)
-            return @is.Any(j => j == i.Value); // GOOD (FALSE POSITIVE)
+            return @is.Any(j => j == i.Value); // $ SPURIOUS (false positive): Alert[cs/dereferenced-value-may-be-null]
         return false;
     }
 
     static bool Ex44(int? i, IEnumerable<int> @is)
     {
         if (i.HasValue)
-            @is = @is.Where(j => j == i.Value); // BAD (always)
+            @is = @is.Where(j => j == i.Value); // $ Alert[cs/dereferenced-value-may-be-null]
         i = null;
         return @is.Any();
     }
 
-    static void Ex45(string s)
+    static void Ex45(string s, int i)
     {
-        if (s is null)
+        if (i == 0 && s is null)
         {
-            s.ToString(); // BAD (always)
+            s.ToString(); // $ Alert[cs/dereferenced-value-is-always-null]
         }
 
-        if (s is not not null)
+        if (i == 1 && s is not not null)
         {
-            s.ToString(); // BAD (always) (FALSE NEGATIVE)
+            s.ToString(); // $ Alert[cs/dereferenced-value-may-be-null] MISSING: Alert[cs/dereferenced-value-is-always-null]
         }
 
-        if (s is not null)
+        if (i == 2 && s is not null)
         {
             s.ToString(); // GOOD
         }
 
-        if (s is object)
+        if (i == 3 && s is object)
+        {
+            s.ToString(); // GOOD
+        }
+
+        if (s is not object)
+        {
+            s.ToString();  // $ Alert[cs/dereferenced-value-may-be-null]
+        }
+        else
         {
             s.ToString(); // GOOD
         }

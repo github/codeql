@@ -25,6 +25,7 @@ private class HostnameVerificationCall extends MethodCall {
   predicate isIgnored() { this instanceof ValueDiscardingExpr }
 }
 
-from HostnameVerificationCall verification
-where verification.isIgnored()
-select verification, "Ignored result of hostname verification."
+deprecated query predicate problems(HostnameVerificationCall verification, string message) {
+  verification.isIgnored() and
+  message = "Ignored result of hostname verification."
+}

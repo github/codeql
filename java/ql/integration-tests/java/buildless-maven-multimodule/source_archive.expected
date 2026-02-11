@@ -1,0 +1,14 @@
+pom.xml
+submod1/pom.xml
+submod1/src/main/java/com/example/App.java
+submod1/src/main/resources/my-app.properties
+submod1/src/main/resources/page.xml
+submod1/src/main/resources/struts.xml
+submod1/src/test/java/com/example/AppTest.java
+submod2/pom.xml
+submod2/src/main/java/com/example/App2.java
+submod2/src/main/resources/my-app.properties
+submod2/src/main/resources/page.xml
+submod2/src/main/resources/struts.xml
+submod2/src/test/java/com/example/AppTest2.java
+test-db/working/settings.xml

@@ -69,6 +69,7 @@ private class FollowsBarrierPrefix extends UrlForwardBarrier {
   FollowsBarrierPrefix() { this.asExpr() = any(BarrierPrefix fp).getAnAppendedExpression() }
 }
 
+overlay[local?]
 private class BarrierPrefix extends InterestingPrefix {
   int offset;
 
@@ -168,7 +169,7 @@ private class FullyDecodesUrlBarrier extends DataFlow::Node {
     exists(Variable v, Expr e | this.asExpr() = v.getAnAccess() |
       fullyDecodesUrlGuard(e) and
       e = v.getAnAccess() and
-      e.getBasicBlock().bbDominates(this.asExpr().getBasicBlock())
+      e.getBasicBlock().dominates(this.asExpr().getBasicBlock())
     )
   }
 }
@@ -178,7 +179,7 @@ private class FullyDecodesUrlBarrier extends DataFlow::Node {
  */
 module UrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof ThreatModelFlowSource and
+    source instanceof ActiveThreatModelSource and
     // excluded due to FPs
     not exists(MethodCall mc, Method m |
       m instanceof HttpServletRequestGetRequestUriMethod or
@@ -195,6 +196,8 @@ module UrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof UrlForwardBarrier }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

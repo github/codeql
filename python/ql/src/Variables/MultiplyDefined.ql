@@ -2,7 +2,8 @@
  * @name Variable defined multiple times
  * @description Assignment to a variable occurs multiple times without any intermediate use of that variable
  * @kind problem
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  *       external/cwe/cwe-563
  * @problem.severity warning

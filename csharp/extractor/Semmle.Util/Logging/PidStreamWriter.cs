@@ -1,5 +1,5 @@
 using System.IO;
-using System.Diagnostics;
+using System.Threading;
 
 namespace Semmle.Util.Logging
 {
@@ -18,7 +18,7 @@ namespace Semmle.Util.Logging
         /// <param name="stream">The stream to write to.</param>
         public PidStreamWriter(Stream stream) : base(stream) { }
 
-        private readonly string prefix = "[" + Process.GetCurrentProcess().Id + "] ";
+        private readonly string prefix = $"[{System.Environment.ProcessId}] ";
 
         public override void WriteLine(string? value)
         {
@@ -33,6 +33,6 @@ namespace Semmle.Util.Logging
             WriteLine(format is null ? format : string.Format(format, args));
         }
 
-        private readonly object mutex = new object();
+        private readonly Lock mutex = new();
     }
 }

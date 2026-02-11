@@ -3,7 +3,7 @@
  */
 
 import python
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 private newtype TSymbol =
   TModule(Module m) or

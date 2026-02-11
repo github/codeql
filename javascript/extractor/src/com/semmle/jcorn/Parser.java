@@ -61,6 +61,7 @@ import com.semmle.js.ast.IfStatement;
 import com.semmle.js.ast.ImportDeclaration;
 import com.semmle.js.ast.ImportDefaultSpecifier;
 import com.semmle.js.ast.ImportNamespaceSpecifier;
+import com.semmle.js.ast.ImportPhaseModifier;
 import com.semmle.js.ast.ImportSpecifier;
 import com.semmle.js.ast.LabeledStatement;
 import com.semmle.js.ast.Literal;
@@ -285,6 +286,7 @@ public class Parser {
     raise(pos, msg, false);
   }
 
+  @SuppressWarnings("ReturnValueIgnored")
   protected void raise(Position loc, String msg, boolean recoverable) {
     msg += " (" + loc.getLine() + ":" + loc.getColumn() + ")";
     SyntaxError err = new SyntaxError(msg, loc, this.pos);
@@ -788,6 +790,7 @@ public class Parser {
       String validFlags = "gim";
       if (this.options.ecmaVersion() >= 6) validFlags = "gimuy";
       if (this.options.ecmaVersion() >= 9) validFlags = "gimsuy";
+      if (this.options.ecmaVersion() >= 15) validFlags = "gimsuyv";
       if (!mods.matches("^[" + validFlags + "]*$"))
         this.raise(start, "Invalid regular expression flag");
       if (mods.indexOf('u') >= 0) {
@@ -3112,7 +3115,7 @@ public class Parser {
       }
       first = false;
     }
-    if (oldStrict == Boolean.FALSE) this.setStrict(false);
+    if (Boolean.FALSE.equals(oldStrict)) this.setStrict(false);
     return this.finishNode(new BlockStatement(new SourceLocation(startLoc), body));
   }
 
@@ -3547,7 +3550,19 @@ public class Parser {
 
       SourceLocation loc = new SourceLocation(this.startLoc);
       Identifier local = this.parseIdent(this.type == TokenType._default);
-      Identifier exported = this.eatContextual("as") ? this.parseIdent(true) : local;
+      Identifier exported;
+      if (!this.eatContextual("as")) {
+        exported = local;
+      } else {
+        if (this.type == TokenType.string) {
+          // e.g. `export { Foo_new as "Foo::new" }`
+          Expression string = this.parseExprAtom(null);
+          String str = ((Literal)string).getStringValue();
+          exported = this.finishNode(new Identifier(loc, str));
+        } else {
+          exported = this.parseIdent(true);
+        }
+      }
       checkExport(exports, exported.getName(), exported.getLoc().getStart());
       nodes.add(this.finishNode(new ExportSpecifier(loc, local, exported)));
     }
@@ -3574,6 +3589,7 @@ public class Parser {
   }
 
   protected ImportDeclaration parseImportRest(SourceLocation loc) {
+    ImportPhaseModifier[] phaseModifier = { ImportPhaseModifier.NONE };
     List<ImportSpecifier> specifiers;
     Literal source;
     // import '...'
@@ -3581,27 +3597,32 @@ public class Parser {
       specifiers = new ArrayList<ImportSpecifier>();
       source = (Literal) this.parseExprAtom(null);
     } else {
-      specifiers = this.parseImportSpecifiers();
+      specifiers = this.parseImportSpecifiers(phaseModifier);
       this.expectContextual("from");
       if (this.type != TokenType.string) this.unexpected();
       source = (Literal) this.parseExprAtom(null);
     }
     Expression attributes = this.parseImportOrExportAttributesAndSemicolon();
     if (specifiers == null) return null;
-    return this.finishNode(new ImportDeclaration(loc, specifiers, source, attributes));
+    return this.finishNode(new ImportDeclaration(loc, specifiers, source, attributes, phaseModifier[0]));
   }
 
   // Parses a comma-separated list of module imports.
-  protected List<ImportSpecifier> parseImportSpecifiers() {
+  protected List<ImportSpecifier> parseImportSpecifiers(ImportPhaseModifier[] phaseModifier) {
     List<ImportSpecifier> nodes = new ArrayList<ImportSpecifier>();
     boolean first = true;
     if (this.type == TokenType.name) {
       // import defaultObj, { x, y as z } from '...'
       SourceLocation loc = new SourceLocation(this.startLoc);
       Identifier local = this.parseIdent(false);
-      this.checkLVal(local, true, null);
-      nodes.add(this.finishNode(new ImportDefaultSpecifier(loc, local)));
-      if (!this.eat(TokenType.comma)) return nodes;
+      // Parse `import defer *` as the beginning of a deferred import, instead of a default import specifier
+      if (this.type == TokenType.star && local.getName().equals("defer")) {
+        phaseModifier[0] = ImportPhaseModifier.DEFER;
+      } else {
+        this.checkLVal(local, true, null);
+        nodes.add(this.finishNode(new ImportDefaultSpecifier(loc, local)));
+        if (!this.eat(TokenType.comma)) return nodes;
+      }
     }
     if (this.type == TokenType.star) {
       SourceLocation loc = new SourceLocation(this.startLoc);
@@ -3629,7 +3650,22 @@ public class Parser {
 
   protected ImportSpecifier parseImportSpecifier() {
     SourceLocation loc = new SourceLocation(this.startLoc);
-    Identifier imported = this.parseIdent(true), local;
+    Identifier imported, local;
+
+    if (this.type == TokenType.string) {
+      // Arbitrary Module Namespace Identifiers
+      // e.g. `import { "Foo::new" as Foo_new } from "./foo.wasm"`
+      Expression string = this.parseExprAtom(null);
+      String str = ((Literal)string).getStringValue();
+      imported = this.finishNode(new Identifier(loc, str));
+      // only makes sense if there is a local identifier
+      if (!this.isContextual("as")) {
+        this.raiseRecoverable(this.start, "Unexpected string");
+      }
+    } else {
+      imported = this.parseIdent(true);
+    }
+
     if (this.eatContextual("as")) {
       local = this.parseIdent(false);
     } else {

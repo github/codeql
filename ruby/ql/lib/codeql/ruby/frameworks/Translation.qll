@@ -35,7 +35,7 @@ private MethodCall getControllerHelperTranslateCall() {
 }
 
 /** Flow summary for translation methods. */
-private class TranslateSummary extends SummarizedCallable {
+private class TranslateSummary extends SummarizedCallable::Range {
   TranslateSummary() { this = "I18n.translate" }
 
   override MethodCall getACall() {

@@ -1,5 +1,5 @@
 /**
- * @name Unsafe usage of v1 version of Azure Storage client-side encryption.
+ * @name Unsafe usage of v1 version of Azure Storage client-side encryption
  * @description Using version v1 of Azure Storage client-side encryption is insecure, and may enable an attacker to decrypt encrypted data
  * @kind path-problem
  * @tags security
@@ -145,6 +145,8 @@ private module AzureBlobClientConfig implements DataFlow::StateConfigSig {
       node = call.getObject()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module AzureBlobClientFlow = DataFlow::GlobalWithState<AzureBlobClientConfig>;

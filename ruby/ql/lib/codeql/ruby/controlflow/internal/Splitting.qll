@@ -1,11 +1,13 @@
 /**
  * Provides classes and predicates relevant for splitting the control flow graph.
  */
+overlay[local]
+module;
 
 private import codeql.ruby.AST as Ast
-private import Completion
+private import Completion as Comp
+private import Comp
 private import ControlFlowGraphImpl
-private import SuccessorTypes
 private import codeql.ruby.controlflow.ControlFlowGraph
 
 cached
@@ -31,7 +33,7 @@ class Split extends TSplit {
   string toString() { none() }
 }
 
-private module ConditionalCompletionSplitting {
+module ConditionalCompletionSplitting {
   /**
    * A split for conditional completions. For example, in
    *
@@ -51,10 +53,12 @@ private module ConditionalCompletionSplitting {
 
     ConditionalCompletionSplit() { this = TConditionalCompletionSplit(completion) }
 
+    ConditionalCompletion getCompletion() { result = completion }
+
     override string toString() { result = completion.toString() }
   }
 
-  private class ConditionalCompletionSplitKind extends SplitKind, TConditionalCompletionSplitKind {
+  private class ConditionalCompletionSplitKind_ extends SplitKind, TConditionalCompletionSplitKind {
     override int getListOrder() { result = 0 }
 
     override predicate isEnabled(AstNode n) { this.appliesTo(n) }
@@ -62,56 +66,48 @@ private module ConditionalCompletionSplitting {
     override string toString() { result = "ConditionalCompletion" }
   }
 
+  module ConditionalCompletionSplittingInput {
+    private import Completion as Comp
+
+    class ConditionalCompletion = Comp::ConditionalCompletion;
+
+    class ConditionalCompletionSplitKind extends ConditionalCompletionSplitKind_, TSplitKind { }
+
+    class ConditionalCompletionSplit = ConditionalCompletionSplitting::ConditionalCompletionSplit;
+
+    bindingset[parent, parentCompletion]
+    predicate condPropagateExpr(
+      AstNode parent, ConditionalCompletion parentCompletion, AstNode child,
+      ConditionalCompletion childCompletion
+    ) {
+      child = parent.(Ast::NotExpr).getOperand() and
+      childCompletion.(BooleanCompletion).getDual() = parentCompletion
+      or
+      childCompletion = parentCompletion and
+      (
+        child = parent.(Ast::LogicalAndExpr).getAnOperand()
+        or
+        child = parent.(Ast::LogicalOrExpr).getAnOperand()
+        or
+        child = parent.(Ast::StmtSequence).getLastStmt()
+        or
+        child = parent.(Ast::ConditionalExpr).getBranch(_)
+      )
+    }
+  }
+
   int getNextListOrder() { result = 1 }
 
-  private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit
+  private class ConditionalCompletionSplitImpl extends SplitImplementations::ConditionalCompletionSplitting::ConditionalCompletionSplitImpl
   {
-    ConditionalCompletion completion;
-
-    ConditionalCompletionSplitImpl() { this = TConditionalCompletionSplit(completion) }
-
-    override ConditionalCompletionSplitKind getKind() { any() }
-
     override predicate hasEntry(AstNode pred, AstNode succ, Completion c) {
-      succ(pred, succ, c) and
-      last(succ, _, completion) and
-      (
-        last(succ.(Ast::NotExpr).getOperand(), pred, c) and
-        completion.(BooleanCompletion).getDual() = c
-        or
-        last(succ.(Ast::LogicalAndExpr).getAnOperand(), pred, c) and
-        completion = c
-        or
-        last(succ.(Ast::LogicalOrExpr).getAnOperand(), pred, c) and
-        completion = c
-        or
-        last(succ.(Ast::StmtSequence).getLastStmt(), pred, c) and
-        completion = c
-        or
-        last(succ.(Ast::ConditionalExpr).getBranch(_), pred, c) and
-        completion = c
-      )
+      super.hasEntry(pred, succ, c)
       or
+      // a non-standard case is needed for `when` clauses
       succ(pred, succ, c) and
       succ instanceof Ast::WhenClause and
-      completion = c
+      c = this.getCompletion()
     }
-
-    override predicate hasEntryScope(CfgScope scope, AstNode succ) { none() }
-
-    override predicate hasExit(AstNode pred, AstNode succ, Completion c) {
-      this.appliesTo(pred) and
-      succ(pred, succ, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
-    }
-
-    override predicate hasExitScope(CfgScope scope, AstNode last, Completion c) {
-      this.appliesTo(last) and
-      succExit(scope, last, c) and
-      if c instanceof ConditionalCompletion then completion = c else any()
-    }
-
-    override predicate hasSuccessor(AstNode pred, AstNode succ, Completion c) { none() }
   }
 }
 
@@ -135,7 +131,7 @@ module EnsureSplitting {
       then
         // If the entry into the `ensure` block completes with any normal completion,
         // it simply means normal execution after the `ensure` block
-        this instanceof NormalSuccessor
+        this instanceof DirectSuccessor
       else this = c.getAMatchingSuccessorType()
     }
   }
@@ -198,7 +194,7 @@ module EnsureSplitting {
     int getNestLevel() { result = nestLevel }
 
     override string toString() {
-      if type instanceof NormalSuccessor
+      if type instanceof DirectSuccessor
       then result = ""
       else
         if nestLevel > 0
@@ -274,14 +270,14 @@ module EnsureSplitting {
             or
             not c instanceof NormalCompletion
             or
-            type instanceof NormalSuccessor
+            type instanceof DirectSuccessor
           )
         else (
           // `ensure` block can exit with inherited completion `c`, which must
           // match this split
           inherited = true and
           type = c.getAMatchingSuccessorType() and
-          not type instanceof NormalSuccessor
+          not type instanceof DirectSuccessor
         )
       )
       or
@@ -311,7 +307,7 @@ module EnsureSplitting {
       exists(EnsureSplitImpl outer |
         outer.(EnsureSplit).getNestLevel() = super.getNestLevel() - 1 and
         outer.exit(pred, c, inherited) and
-        super.getType() instanceof NormalSuccessor and
+        super.getType() instanceof DirectSuccessor and
         inherited = true
       )
     }

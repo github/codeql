@@ -1,0 +1,4 @@
+query: queries/security/CWE-312/CleartextLogging.ql
+postprocess:
+ - utils/test/InlineExpectationsTestQuery.ql
+ - utils/test/PrettyPrintModels.ql

@@ -6,7 +6,7 @@ public void evaluate(Socket socket) throws IOException {
     JexlEngine jexl = new JexlBuilder().uberspect(sandbox).create();
       
     String input = reader.readLine();
-    JexlExpression expression = jexl.createExpression(input);
+    JexlExpression expression = jexl.createExpression(input); // GOOD: jexl uses a sandbox
     JexlContext context = new MapContext();
     expression.evaluate(context);
   }

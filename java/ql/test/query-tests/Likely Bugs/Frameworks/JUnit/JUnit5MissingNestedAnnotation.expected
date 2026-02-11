@@ -1,0 +1,5 @@
+| AnnotationTest.java:19:16:19:25 | Test2_Test | This JUnit 5 inner test class lacks a '@Nested' annotation. |
+| AnnotationTest.java:26:16:26:33 | Test2_RepeatedTest | This JUnit 5 inner test class lacks a '@Nested' annotation. |
+| AnnotationTest.java:33:16:33:38 | Test2_ParameterizedTest | This JUnit 5 inner test class lacks a '@Nested' annotation. |
+| AnnotationTest.java:41:16:41:32 | Test2_TestFactory | This JUnit 5 inner test class lacks a '@Nested' annotation. |
+| AnnotationTest.java:49:16:49:33 | Test2_TestTemplate | This JUnit 5 inner test class lacks a '@Nested' annotation. |

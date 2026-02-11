@@ -1,4 +1,4 @@
-// semmle-extractor-options: --edg --clang --edg --clang_version --edg 30801
+// semmle-extractor-options: --clang --clang_version 30801
 // Compilable with: clang --std=c++0x -msse4.1 vector_types.cpp
 // (some bits also compilable with gcc)
 int printf(...);
@@ -49,6 +49,11 @@ void shift_left(v16i *dst, v16i *src, int n) {
   // right-hand side is a vector fill expression (i.e. a vector filled with n in
   // each element).
   *dst = *src << n;
+}
+
+void logical(v16i *dst, v16i *src1, v16i *src2) {
+  *dst = *src1 && *src2;
+  *dst = *src1 || *src2;
 }
 
 typedef double vector4double __attribute__((__vector_size__(32)));

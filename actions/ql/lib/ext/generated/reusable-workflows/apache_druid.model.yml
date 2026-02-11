@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.module", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.jdk", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-unit-tests.yml", "*", "input.sql_compatibility", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "input.override_config_path", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "input.testing_groups", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "input.use_indexer", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-standard-its.yml", "*", "input.runtime_jdk", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "input.it", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "input.script", "code-injection", "generated"]
+     - ["apache/druid/.github/workflows/reusable-revised-its.yml", "*", "input.build_jdk", "code-injection", "generated"]

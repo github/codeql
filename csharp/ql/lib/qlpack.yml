@@ -1,5 +1,5 @@
 name: codeql/csharp-all
-version: 1.0.1-dev
+version: 5.4.7-dev
 groups: csharp
 dbscheme: semmlecode.csharp.dbscheme
 extractor: csharp
@@ -18,3 +18,4 @@ dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true

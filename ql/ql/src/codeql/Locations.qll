@@ -1,4 +1,6 @@
 /** Provides classes for working with locations. */
+overlay[local]
+module;
 
 import files.FileSystem
 

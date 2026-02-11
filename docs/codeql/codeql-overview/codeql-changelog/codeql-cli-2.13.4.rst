@@ -9,7 +9,7 @@ CodeQL 2.13.4 (2023-06-19)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -46,8 +46,8 @@ Python
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`java/summary/lines-of-code` query now only counts lines of Java code. The new :code:`java/summary/lines-of-code-kotlin` counts lines of Kotlin code.
 
@@ -135,8 +135,8 @@ C#
     *   :code:`xss` to :code:`js-injection`
     *   :code:`remote` to :code:`file-content-store`
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added flow through the block arguments of :code:`kotlin.io.use` and :code:`kotlin.with`.
     
@@ -239,7 +239,7 @@ Swift
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Kotlin versions up to 1.9.0 are now supported.

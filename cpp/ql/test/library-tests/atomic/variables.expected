@@ -1,7 +1,5 @@
 | (unnamed parameter 0) | __va_list_tag && | rvalue reference to {struct __va_list_tag} |
-| (unnamed parameter 0) | atomic_box<int> && | rvalue reference to {struct atomic_box<int>} |
 | (unnamed parameter 0) | const __va_list_tag & | reference to {const {struct __va_list_tag}} |
-| (unnamed parameter 0) | const atomic_box<int> & | reference to {const {struct atomic_box<int>}} |
 | a | _Atomic(int) | atomic {int} |
 | b | _Atomic(int) | atomic {int} |
 | c | _Atomic(int) * | pointer to {atomic {int}} |

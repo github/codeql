@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 9.8
- * @precision medium
+ * @precision low
  * @id go/hardcoded-credentials
  * @tags security
  *       external/cwe/cwe-259
@@ -23,8 +23,8 @@ import semmle.go.security.SensitiveActions
  */
 predicate isSensitive(DataFlow::Node sink, SensitiveExpr::Classification type) {
   exists(Write write, string name |
-    write.getRhs() = sink and
-    name = write.getLhs().getName() and
+    pragma[only_bind_out](write).getRhs() = sink and
+    name = pragma[only_bind_out](write).getLhs().getName() and
     // allow obvious test password variables
     not name.regexpMatch(HeuristicNames::notSensitive())
   |

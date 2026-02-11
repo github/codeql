@@ -1,4 +1,6 @@
 /** Provides classes representing various flow sinks for data flow / taint tracking. */
+overlay[local?]
+module;
 
 private import java
 private import semmle.code.java.dataflow.ExternalFlow

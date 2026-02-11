@@ -2,13 +2,22 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-deprecated import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.security.CleartextStorageQuery
 private import semmle.code.java.dataflow.FlowSinks
 private import semmle.code.java.dataflow.FlowSources
 
 private class CookieCleartextStorageSink extends CleartextStorageSink {
-  CookieCleartextStorageSink() { this.asExpr() = cookieInput(_) }
+  Cookie cookie;
+
+  CookieCleartextStorageSink() { this.asExpr() = cookieInput(cookie) }
+
+  override Location getASelectedLocation() {
+    result = this.getLocation()
+    or
+    result = cookie.getLocation()
+    or
+    result = cookie.getAStore().getLocation()
+  }
 }
 
 /** The instantiation of a cookie, which can act as storage. */

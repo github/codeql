@@ -10,7 +10,4 @@ module Rack {
   import rack.internal.Request
   import rack.internal.Response::Public as Response
   import rack.internal.Utils
-
-  /** DEPRECATED: Alias for App::AppCandidate */
-  deprecated class AppCandidate = App::AppCandidate;
 }

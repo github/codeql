@@ -29,7 +29,7 @@ module ImproperLdapAuth {
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, LdapSanitizer { }
+  class RegexpCheckAsBarrierGuard extends LdapSanitizer instanceof RegexpCheckBarrier { }
 
   /**
    * An empty string.
@@ -68,12 +68,14 @@ module ImproperLdapAuth {
 
   private module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
-      source instanceof RemoteFlowSource or source instanceof EmptyString
+      source instanceof ActiveThreatModelSource or source instanceof EmptyString
     }
 
     predicate isSink(DataFlow::Node sink) { sink instanceof LdapAuthSink }
 
     predicate isBarrier(DataFlow::Node node) { node instanceof LdapSanitizer }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /**

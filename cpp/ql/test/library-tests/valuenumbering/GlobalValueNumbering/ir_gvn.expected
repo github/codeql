@@ -468,7 +468,7 @@ test.cpp:
 #   56|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
 #   56|     r56_3(char *)        = Load[ptr]            : &:r56_2, m56_1
 #   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
-#   56|     r56_4(char)          = Load[?]              : &:r56_3, ~m49_4
+#   56|     r56_4(char)          = Load[?]              : &:r56_3, ~m49_12
 #   56|         valnum = r56_14, r56_4, r59_3
 #   56|     r56_5(int)           = Convert              : r56_4
 #   56|         valnum = r56_15, r56_5, r59_4
@@ -491,7 +491,7 @@ test.cpp:
 #   56|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
 #   56|     r56_13(char *)        = Load[ptr]            : &:r56_12, m56_1
 #   56|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
-#   56|     r56_14(char)          = Load[?]              : &:r56_13, ~m49_4
+#   56|     r56_14(char)          = Load[?]              : &:r56_13, ~m49_12
 #   56|         valnum = r56_14, r56_4, r59_3
 #   56|     r56_15(int)           = Convert              : r56_14
 #   56|         valnum = r56_15, r56_5, r59_4
@@ -521,7 +521,7 @@ test.cpp:
 #   59|         valnum = r50_1, r55_3, r56_12, r56_19, r56_2, r59_1
 #   59|     r59_2(char *)        = Load[ptr]            : &:r59_1, m56_1
 #   59|         valnum = m56_1, r56_13, r56_20, r56_3, r59_2
-#   59|     r59_3(char)          = Load[?]              : &:r59_2, ~m49_4
+#   59|     r59_3(char)          = Load[?]              : &:r59_2, ~m49_12
 #   59|         valnum = r56_14, r56_4, r59_3
 #   59|     r59_4(int)           = Convert              : r59_3
 #   59|         valnum = r56_15, r56_5, r59_4
@@ -1145,3 +1145,43 @@ test.cpp:
 #  152|     v152_7(void)       = ReturnVoid                : 
 #  152|     v152_8(void)       = AliasedUse                : ~m156_7
 #  152|     v152_9(void)       = ExitFunction              : 
+
+#  166| void test_constMemberFunction()
+#  166|   Block 0
+#  166|     v166_1(void)                                 = EnterFunction                        : 
+#  166|     m166_2(unknown)                              = AliasedDefinition                    : 
+#  166|         valnum = unique
+#  166|     m166_3(unknown)                              = InitializeNonLocal                   : 
+#  166|         valnum = unique
+#  166|     m166_4(unknown)                              = Chi                                  : total:m166_2, partial:m166_3
+#  166|         valnum = unique
+#  167|     r167_1(glval<StructWithConstMemberFunction>) = VariableAddress[s]                   : 
+#  167|         valnum = r167_1, r168_2, r169_1, r169_2
+#  167|     m167_2(StructWithConstMemberFunction)        = Uninitialized[s]                     : &:r167_1
+#  167|         valnum = m167_2, m168_4, r168_3
+#  167|     m167_3(unknown)                              = Chi                                  : total:m166_4, partial:m167_2
+#  167|         valnum = unique
+#  168|     r168_1(glval<StructWithConstMemberFunction>) = VariableAddress[s2]                  : 
+#  168|         valnum = unique
+#  168|     r168_2(glval<StructWithConstMemberFunction>) = VariableAddress[s]                   : 
+#  168|         valnum = r167_1, r168_2, r169_1, r169_2
+#  168|     r168_3(StructWithConstMemberFunction)        = Load[s]                              : &:r168_2, m167_2
+#  168|         valnum = m167_2, m168_4, r168_3
+#  168|     m168_4(StructWithConstMemberFunction)        = Store[s2]                            : &:r168_1, r168_3
+#  168|         valnum = m167_2, m168_4, r168_3
+#  169|     r169_1(glval<StructWithConstMemberFunction>) = VariableAddress[s]                   : 
+#  169|         valnum = r167_1, r168_2, r169_1, r169_2
+#  169|     r169_2(glval<StructWithConstMemberFunction>) = Convert                              : r169_1
+#  169|         valnum = r167_1, r168_2, r169_1, r169_2
+#  169|     r169_3(glval<unknown>)                       = FunctionAddress[constMemberFunction] : 
+#  169|         valnum = unique
+#  169|     v169_4(void)                                 = Call[constMemberFunction]            : func:r169_3, this:r169_2
+#  169|     m169_5(unknown)                              = ^CallSideEffect                      : ~m167_3
+#  169|         valnum = unique
+#  169|     m169_6(unknown)                              = Chi                                  : total:m167_3, partial:m169_5
+#  169|         valnum = unique
+#  169|     v169_7(void)                                 = ^IndirectReadSideEffect[-1]          : &:r169_2, ~m169_6
+#  170|     v170_1(void)                                 = NoOp                                 : 
+#  166|     v166_5(void)                                 = ReturnVoid                           : 
+#  166|     v166_6(void)                                 = AliasedUse                           : ~m169_6
+#  166|     v166_7(void)                                 = ExitFunction                         : 

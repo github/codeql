@@ -17,7 +17,8 @@ private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
  *
  * Either a value or reference type (`ValueOrRefType`), the `void` type (`VoidType`),
  * a pointer type (`PointerType`), the arglist type (`ArglistType`), an unknown
- * type (`UnknownType`), or a type parameter (`TypeParameter`).
+ * type (`UnknownType`), a type parameter (`TypeParameter`) or
+ * an extension type (`ExtensionType`).
  */
 class Type extends Member, TypeContainer, @type {
   /** Gets the name of this type without additional syntax such as `[]` or `*`. */
@@ -48,6 +49,13 @@ class Type extends Member, TypeContainer, @type {
 
   /** Holds if this type is a value type, or a type parameter that is a value type. */
   predicate isValueType() { none() }
+
+  /**
+   * Holds if this type is a ref like type.
+   *
+   * Only `ref struct` types are considered ref like types.
+   */
+  predicate isRefLikeType() { none() }
 }
 
 pragma[nomagic]
@@ -75,30 +83,6 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
 
   /** Gets a nested child type, if any. */
   NestedType getAChildType() { nested_types(result, this, _) }
-
-  deprecated private string getPrefixWithTypes() {
-    result = this.getDeclaringType().getLabel() + "."
-    or
-    if this.getDeclaringNamespace().isGlobalNamespace()
-    then result = ""
-    else result = this.getDeclaringNamespace().getFullName() + "."
-  }
-
-  pragma[noinline]
-  deprecated private string getLabelNonGeneric() {
-    not this instanceof Generic and
-    result = this.getPrefixWithTypes() + this.getUndecoratedName()
-  }
-
-  pragma[noinline]
-  deprecated private string getLabelGeneric() {
-    result = this.getPrefixWithTypes() + this.getUndecoratedName() + getGenericsLabel(this)
-  }
-
-  deprecated override string getLabel() {
-    result = this.getLabelNonGeneric() or
-    result = this.getLabelGeneric()
-  }
 
   /**
    * Gets the source namespace declaration in which this type is declared, if any.
@@ -154,6 +138,9 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
 
   /** Gets an immediate subtype of this type, if any. */
   ValueOrRefType getASubType() { result.getABaseType() = this }
+
+  /** Gets an immediate supertype of this type, if any. */
+  ValueOrRefType getASuperType() { this.getABaseType() = result }
 
   /** Gets a member of this type, if any. */
   Member getAMember() { result.getDeclaringType() = this }
@@ -215,7 +202,7 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
    */
   pragma[inline]
   predicate hasCallable(Callable c) {
-    this.hasMethod(c)
+    this.hasMember(c)
     or
     this.hasMember(c.(Accessor).getDeclaration())
   }
@@ -408,6 +395,8 @@ class NestedType extends ValueOrRefType {
   NestedType() { nested_types(this, _, _) }
 
   override ValueOrRefType getDeclaringType() { nested_types(this, result, _) }
+
+  override Location getALocation() { type_location(this.getUnboundDeclaration(), result) }
 }
 
 /**
@@ -728,13 +717,34 @@ class Enum extends ValueType, @enum_type {
  * ```
  */
 class Struct extends ValueType, @struct_type {
-  /** Holds if this `struct` has a `ref` modifier. */
-  predicate isRef() { this.hasModifier("ref") }
+  /**
+   * DEPRECATED: Use `instanceof RefStruct` instead.
+   *
+   * Holds if this `struct` has a `ref` modifier.
+   */
+  deprecated predicate isRef() { this.hasModifier("ref") }
 
   /** Holds if this `struct` has a `readonly` modifier. */
   predicate isReadonly() { this.hasModifier("readonly") }
 
   override string getAPrimaryQlClass() { result = "Struct" }
+}
+
+/**
+ * A `ref struct`, for example
+ *
+ * ```csharp
+ * ref struct S {
+ *  ...
+ * }
+ * ```
+ */
+class RefStruct extends Struct {
+  RefStruct() { this.hasModifier("ref") }
+
+  override string getAPrimaryQlClass() { result = "RefStruct" }
+
+  override predicate isRefLikeType() { any() }
 }
 
 /**
@@ -996,8 +1006,6 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
   AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
 
   override string getAPrimaryQlClass() { result = "FunctionPointerType" }
-
-  deprecated override string getLabel() { result = this.getName() }
 }
 
 /**
@@ -1116,8 +1124,6 @@ class ArrayType extends RefType, @array_type {
     array_element_type(this, _, _, getTypeRef(result))
   }
 
-  deprecated final override string getLabel() { result = this.getElementType().getLabel() + "[]" }
-
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
     this.getDimension() = that.getDimension() and
@@ -1180,8 +1186,6 @@ class PointerType extends Type, @pointer_type {
 
   final override string getName() { types(this, _, result) }
 
-  deprecated final override string getLabel() { result = this.getReferentType().getLabel() + "*" }
-
   final override string getUndecoratedName() {
     result = this.getReferentType().getUndecoratedName()
   }
@@ -1216,6 +1220,8 @@ class ArglistType extends Type, @arglist_type {
 class UnknownType extends Type, @unknown_type {
   /** Holds if this is the canonical unknown type, and not a type that failed to extract properly. */
   predicate isCanonical() { types(this, _, "<unknown type>") }
+
+  override string getAPrimaryQlClass() { result = "UnknownType" }
 }
 
 /**
@@ -1271,8 +1277,6 @@ class TupleType extends ValueType, @tuple_type {
         ")"
   }
 
-  deprecated override string getLabel() { result = this.getUnderlyingType().getLabel() }
-
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
 
   override string getAPrimaryQlClass() { result = "TupleType" }
@@ -1322,4 +1326,36 @@ class TypeMention extends @type_mention {
 
   /** Gets the location of this type mention. */
   Location getLocation() { type_mention_location(this, result) }
+}
+
+/**
+ * A type extension declaration, for example `extension(string s) { ... }` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) { ... }
+ * ```
+ */
+class ExtensionType extends Parameterizable, @extension_type {
+  /**
+   * Gets the receiver parameter of this extension type, if any.
+   */
+  Parameter getReceiverParameter() { result = this.getParameter(0) }
+
+  /**
+   * Holds if this extension type has a receiver parameter.
+   */
+  predicate hasReceiverParameter() { exists(this.getReceiverParameter()) }
+
+  /**
+   * Gets the type being extended by this extension type.
+   */
+  Type getExtendedType() {
+    extension_receiver_type(this, result)
+    or
+    not extension_receiver_type(this, any(Type t)) and
+    extension_receiver_type(this, getTypeRef(result))
+  }
+
+  override string getAPrimaryQlClass() { result = "ExtensionType" }
 }

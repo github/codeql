@@ -117,31 +117,25 @@ module KDF {
     override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC"] }
 
     override DataFlow::Node getIterationSizeSrc() {
-      if this.requiresIteration()
-      then
-        // ASSUMPTION: ONLY EVER in arg 3 in PBKDF2HMAC
-        result = Utils::getUltimateSrcFromApiNode(this.getParameter(3, "iterations"))
-      else none()
+      this.requiresIteration() and
+      // ASSUMPTION: ONLY EVER in arg 3 in PBKDF2HMAC
+      result = Utils::getUltimateSrcFromApiNode(this.getParameter(3, "iterations"))
     }
 
     override DataFlow::Node getSaltConfigSrc() {
-      if this.requiresSalt()
-      then
-        // SCRYPT has it in arg 1
-        if this.getAlgorithm().getKDFName() = "SCRYPT"
-        then result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "salt"))
-        else
-          // EVERYTHING ELSE that uses salt is in arg 2
-          result = Utils::getUltimateSrcFromApiNode(this.getParameter(2, "salt"))
-      else none()
+      this.requiresSalt() and
+      // SCRYPT has it in arg 1
+      if this.getAlgorithm().getKDFName() = "SCRYPT"
+      then result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "salt"))
+      else
+        // EVERYTHING ELSE that uses salt is in arg 2
+        result = Utils::getUltimateSrcFromApiNode(this.getParameter(2, "salt"))
     }
 
     override DataFlow::Node getHashConfigSrc() {
-      if this.requiresHash()
-      then
-        // ASSUMPTION: ONLY EVER in arg 0
-        result = Utils::getUltimateSrcFromApiNode(this.getParameter(0, "algorithm"))
-      else none()
+      this.requiresHash() and
+      // ASSUMPTION: ONLY EVER in arg 0
+      result = Utils::getUltimateSrcFromApiNode(this.getParameter(0, "algorithm"))
     }
 
     // TODO: get encryption algorithm for CBC-based KDF?
@@ -152,11 +146,9 @@ module KDF {
     }
 
     override DataFlow::Node getModeSrc() {
-      if this.requiresMode()
-      then
-        // ASSUMPTION: ONLY EVER in arg 1
-        result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "mode"))
-      else none()
+      this.requiresMode() and
+      // ASSUMPTION: ONLY EVER in arg 1
+      result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "mode"))
     }
   }
 }

@@ -20,7 +20,7 @@ import XmlInjection::PathGraph
  * A taint-tracking configuration for untrusted user input used in XML.
  */
 module XmlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
@@ -45,6 +45,8 @@ module XmlInjectionConfig implements DataFlow::ConfigSig {
       mc = node.asExpr()
     )
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

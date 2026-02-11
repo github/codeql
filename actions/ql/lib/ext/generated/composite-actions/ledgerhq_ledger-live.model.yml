@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["ledgerhq/ledger-live", "*", "input.os", "code-injection", "generated"]
+     - ["ledgerhq/ledger-live", "*", "input.turborepo-server-port", "code-injection", "generated"]
+     - ["ledgerhq/ledger-live", "*", "input.turbo-server-token", "code-injection", "generated"]

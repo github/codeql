@@ -178,6 +178,6 @@ func fsAccesses() {
 	os.ReadDir(path)                     // $ fsaccess=path
 	os.ReadFile(path)                    // $ fsaccess=path
 	os.MkdirTemp(path, part)             // $ fsaccess=path fsaccess=part
-	os.CreateTemp(path, part)            // $ fsaccess=path fsaccess=part
+	os.CreateTemp(path, part)            // $ fsaccess=path
 	os.WriteFile(path, []byte{}, 0600)   // $ fsaccess=path
 }

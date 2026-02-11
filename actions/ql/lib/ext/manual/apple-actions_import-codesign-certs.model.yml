@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["apple-actions/import-codesign-certs", "*", "input.keychain-password", "output.keychain-password", "taint", "manual"]

@@ -1,4 +1,4 @@
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import cpp
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.controlflow.IRGuards
@@ -17,7 +17,7 @@ module IRTestAllocationConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(GuardCondition gc | node.asExpr() = gc.getAChild*())
+    exists(GuardCondition gc | node.asExpr() = gc.(Expr).getAChild*())
   }
 }
 

@@ -22,7 +22,7 @@ class DangerousScheme extends string {
 /** Gets a data-flow node that checks an instance of `g` against the given `scheme`. */
 DataFlow::Node schemeCheck(GVN g, DangerousScheme scheme) {
   // check of the form `nd.Scheme == scheme`
-  exists(NamedType url, DataFlow::FieldReadNode fr, DataFlow::Node s |
+  exists(DefinedType url, DataFlow::FieldReadNode fr, DataFlow::Node s |
     url.hasQualifiedName("net/url", "URL") and
     fr.readsField(g.getANode(), url.getField("Scheme")) and
     s.getStringValue() = scheme and

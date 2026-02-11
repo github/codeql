@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["oven-sh/bun", "*", "input.download-url", "code-injection", "generated"]
+     - ["oven-sh/bun", "*", "input.bun-version", "code-injection", "generated"]

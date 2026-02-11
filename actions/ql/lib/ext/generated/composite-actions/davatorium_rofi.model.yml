@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["davatorium/rofi", "*", "input.logfile", "code-injection", "generated"]
+     - ["davatorium/rofi", "*", "input.windowmode", "code-injection", "generated"]
+     - ["davatorium/rofi", "*", "input.cc", "code-injection", "generated"]

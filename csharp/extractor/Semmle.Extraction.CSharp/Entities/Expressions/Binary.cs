@@ -14,11 +14,35 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public static Expression Create(ExpressionNodeInfo info) => new Binary(info).TryPopulate();
 
+        private Expression CreateChild(Context cx, ExpressionSyntax node, int child)
+        {
+            // If this is a "+" expression we might need to wrap the child expressions
+            // in ToString calls
+            return Kind == ExprKind.ADD && Type.IsStringType()
+                ? ImplicitToString.Create(cx, node, this, child)
+                : Create(cx, node, this, child);
+        }
+
+        /// <summary>
+        /// Creates an expression from a syntax node.
+        /// Inserts type conversion as required.
+        /// Population is deferred to avoid overflowing the stack.
+        /// </summary>
+        private void CreateDeferred(Context cx, ExpressionSyntax node, int child)
+        {
+            if (ContainsPattern(node))
+                // Expressions with patterns should be created right away, as they may introduce
+                // local variables referenced in `LocalVariable::GetAlreadyCreated()`
+                CreateChild(cx, node, child);
+            else
+                cx.PopulateLater(() => CreateChild(cx, node, child));
+        }
+
         protected override void PopulateExpression(TextWriter trapFile)
         {
             OperatorCall(trapFile, Syntax);
-            CreateDeferred(Context, Syntax.Left, this, 0);
-            CreateDeferred(Context, Syntax.Right, this, 1);
+            CreateDeferred(Context, Syntax.Left, 0);
+            CreateDeferred(Context, Syntax.Right, 1);
         }
 
         private static ExprKind GetKind(Context cx, BinaryExpressionSyntax node)

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["flux-iac/tofu-controller/.github/workflows/targeted-test.yaml", "*", "input.pattern", "code-injection", "generated"]

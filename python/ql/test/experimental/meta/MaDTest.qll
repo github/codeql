@@ -5,7 +5,7 @@ private import semmle.python.frameworks.data.ModelsAsData
 // need to import Frameworks to get the actual modeling imported
 private import semmle.python.Frameworks
 // this import needs to be public to get the query predicates propagated to the actual test files
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module MadSinkTest implements TestSig {
   string getARelevantTag() {
@@ -17,7 +17,7 @@ module MadSinkTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(DataFlow::Node sink, string kind |
-      sink = ModelOutput::getASinkNode(kind).asSink() and
+      ModelOutput::sinkNode(sink, kind) and
       location = sink.getLocation() and
       element = sink.toString() and
       value = prettyNodeForInlineTest(sink) and
@@ -34,7 +34,7 @@ module MadSourceTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(DataFlow::Node source, string kind |
-      source = ModelOutput::getASourceNode(kind).asSource() and
+      ModelOutput::sourceNode(source, kind) and
       location = source.getLocation() and
       element = source.toString() and
       value = prettyNodeForInlineTest(source) and

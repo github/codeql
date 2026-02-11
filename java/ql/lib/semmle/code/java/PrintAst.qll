@@ -5,6 +5,8 @@
  * extend `PrintAstConfiguration` and override `shouldPrint` to hold for only the elements
  * you wish to view the AST for.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.regex.RegexTreeView as RegexTreeView

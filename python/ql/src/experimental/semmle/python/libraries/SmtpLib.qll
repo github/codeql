@@ -38,6 +38,10 @@ module SmtpLib {
     predicate isSink(DataFlow::Node sink) {
       sink = smtpMimeMultipartInstance().getACall().getArgByName("_subparts")
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      none() // Used in library model
+    }
   }
 
   module SmtpMessageFlow = TaintTracking::Global<SmtpMessageConfig>;

@@ -1,0 +1,11 @@
+| .github/workflows/test2.yml:15:13:19:13 | \| | Expression always evaluates to true |
+| .github/workflows/test2.yml:34:13:34:54 | ${{ 1 = ... foo" }} | Expression always evaluates to true |
+| .github/workflows/test2.yml:45:13:48:24 | >  | Expression always evaluates to true |
+| .github/workflows/test2.yml:56:15:56:44 | " ${{ g ... 11  }}" | Expression always evaluates to true |
+| .github/workflows/test2.yml:59:15:59:44 | " ${{ g ... 11  }}" | Expression always evaluates to true |
+| .github/workflows/test2.yml:79:13:82:14 | \|+ | Expression always evaluates to true |
+| .github/workflows/test2.yml:85:13:88:14 | >+ | Expression always evaluates to true |
+| .github/workflows/test2.yml:91:13:91:40 | ${{ git ... = 'foo' | Expression always evaluates to true |
+| .github/workflows/test2.yml:94:13:94:141 | ${{ con ... e[bot]' | Expression always evaluates to true |
+| .github/workflows/test2.yml:97:13:97:37 | ${{ git ... } != "" | Expression always evaluates to true |
+| .github/workflows/test2.yml:100:13:102:63 | > | Expression always evaluates to true |

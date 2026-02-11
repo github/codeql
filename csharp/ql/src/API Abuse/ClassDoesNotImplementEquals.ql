@@ -7,8 +7,9 @@
  * @problem.severity error
  * @precision medium
  * @id cs/class-missing-equals
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import csharp

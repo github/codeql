@@ -1,11 +1,7 @@
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) |
+| file://:0:0:0:0 | declaration of (unnamed parameter 0) |
 | file://:0:0:0:0 | definition of fp_offset |
 | file://:0:0:0:0 | definition of gp_offset |
 | file://:0:0:0:0 | definition of overflow_arg_area |
@@ -72,12 +68,6 @@
 | test.cpp:64:19:64:19 | definition of T |
 | test.cpp:65:7:65:27 | declaration of tmplInstantiatedClass<T> |
 | test.cpp:66:19:66:19 | definition of T |
-| test.cpp:67:7:67:7 | declaration of operator= |
-| test.cpp:67:7:67:7 | declaration of operator= |
-| test.cpp:67:7:67:7 | declaration of operator= |
-| test.cpp:67:7:67:7 | declaration of operator= |
-| test.cpp:67:7:67:7 | definition of tmplInstantiatedClass |
-| test.cpp:67:7:67:7 | definition of tmplInstantiatedClass |
 | test.cpp:67:7:67:27 | definition of tmplInstantiatedClass<T> |
 | test.cpp:68:7:68:7 | definition of t |
 | test.cpp:68:7:68:7 | definition of t |

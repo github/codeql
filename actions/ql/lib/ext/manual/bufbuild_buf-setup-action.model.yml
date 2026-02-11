@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["bufbuild/buf-setup-action", "*", "input.buf_domain", "command-injection", "manual"]
+      - ["bufbuild/buf-setup-action", "*", "input.buf_user", "command-injection", "manual"]

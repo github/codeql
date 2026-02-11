@@ -25,6 +25,40 @@ namespace Semmle.Extraction.CSharp.Entities
                 symbol.ContainingType is not null && ConstructedOrParentIsConstructed(symbol.ContainingType);
         }
 
+
+        /// <summary>
+        /// A hashset containing the C# contextual keywords that could be confused with types (and typing).
+        ///
+        /// For the list of all contextual keywords, see
+        /// https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/#contextual-keywords
+        /// </summary>
+        private readonly HashSet<string> ContextualKeywordTypes = [
+            "dynamic",
+            "nint",
+            "nuint",
+            "var"
+            ];
+
+        /// <summary>
+        /// Returns true in case we suspect this is a broken type.
+        /// </summary>
+        /// <param name="symbol">Type symbol</param>
+        private bool IsBrokenType(ITypeSymbol symbol)
+        {
+            if (!Context.ExtractionContext.IsStandalone ||
+                !symbol.FromSource() ||
+                symbol.IsAnonymousType)
+            {
+                return false;
+            }
+
+            // (1) public class { ... } is a broken type as it doesn't have a name.
+            // (2) public class var { ... } is an allowed type, but it overrides the `var` keyword for all uses.
+            //     The same goes for other contextual keywords that could be used as type names.
+            //     It is probably a better heuristic to treat these as broken types.
+            return string.IsNullOrEmpty(symbol.Name) || ContextualKeywordTypes.Contains(symbol.Name);
+        }
+
         public Kinds.TypeKind GetTypeKind(Context cx, bool constructUnderlyingTupleType)
         {
             switch (Symbol.SpecialType)
@@ -48,6 +82,9 @@ namespace Semmle.Extraction.CSharp.Entities
                     if (Symbol.IsBoundNullable())
                         return Kinds.TypeKind.NULLABLE;
 
+                    if (IsBrokenType(Symbol))
+                        return Kinds.TypeKind.UNKNOWN;
+
                     switch (Symbol.TypeKind)
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;
@@ -68,6 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         case TypeKind.Pointer: return Kinds.TypeKind.POINTER;
                         case TypeKind.FunctionPointer: return Kinds.TypeKind.FUNCTION_POINTER;
                         case TypeKind.Error: return Kinds.TypeKind.UNKNOWN;
+                        case TypeKind.Extension: return Kinds.TypeKind.EXTENSION;
                         default:
                             cx.ModelError(Symbol, $"Unhandled type kind '{Symbol.TypeKind}'");
                             return Kinds.TypeKind.UNKNOWN;
@@ -77,7 +115,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         protected void PopulateType(TextWriter trapFile, bool constructUnderlyingTupleType = false)
         {
-            PopulateMetadataHandle(trapFile);
             PopulateAttributes();
 
             trapFile.Write("types(");
@@ -186,7 +223,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private IEnumerable<BaseTypeSyntax> GetBaseTypeDeclarations()
         {
-            if (!IsSourceDeclaration || !Symbol.FromSource())
+            if (!IsSourceDeclaration || !Symbol.FromSource() || Context.OnlyScaffold)
             {
                 return Enumerable.Empty<BaseTypeSyntax>();
             }
@@ -226,7 +263,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// Called to extract all members and nested types.
+        /// Called to extract members and nested types.
         /// This is called on each member of a namespace,
         /// in either source code or an assembly.
         /// </summary>
@@ -237,7 +274,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.BindComments(this, l);
             }
 
-            foreach (var member in Symbol.GetMembers())
+            foreach (var member in Symbol.GetMembers().ExtractionCandidates())
             {
                 switch (member.Kind)
                 {
@@ -263,16 +300,16 @@ namespace Semmle.Extraction.CSharp.Entities
 
                 var members = new List<ISymbol>();
 
-                foreach (var member in Symbol.GetMembers())
+                foreach (var member in Symbol.GetMembers().ExtractionCandidates())
                     members.Add(member);
-                foreach (var member in Symbol.GetTypeMembers())
+                foreach (var member in Symbol.GetTypeMembers().ExtractionCandidates())
                     members.Add(member);
 
                 // Mono extractor puts all BASE interface members as members of the current interface.
 
                 if (Symbol.TypeKind == TypeKind.Interface)
                 {
-                    foreach (var baseInterface in Symbol.Interfaces)
+                    foreach (var baseInterface in Symbol.Interfaces.ExtractionCandidates())
                     {
                         foreach (var member in baseInterface.GetMembers())
                             members.Add(member);
@@ -289,7 +326,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 if (Symbol.BaseType is not null)
                     Create(Context, Symbol.BaseType).PopulateGenerics();
 
-                foreach (var i in Symbol.Interfaces)
+                foreach (var i in Symbol.Interfaces.ExtractionCandidates())
                 {
                     Create(Context, i).PopulateGenerics();
                 }
@@ -330,7 +367,7 @@ namespace Semmle.Extraction.CSharp.Entities
             private DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter? original)
                 : base(cx, init, parent, original) { }
 
-            public static new DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
+            public static DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
                // We need to use a different cache key than `param` to avoid mixing up
                // `DelegateTypeParameter`s and `Parameter`s
                DelegateTypeParameterFactory.Instance.CreateEntity(cx, (typeof(DelegateTypeParameter), new SymbolEqualityWrapper(param)), (param, parent, original));

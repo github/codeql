@@ -29,7 +29,7 @@ module DecompressionBomb {
     class FlowState = DecompressionBombs::FlowState;
 
     predicate isSource(DataFlow::Node source, FlowState state) {
-      source instanceof RemoteFlowSource and
+      source instanceof ActiveThreatModelSource and
       state = ""
     }
 
@@ -56,6 +56,8 @@ module DecompressionBomb {
         addStep.isAdditionalFlowStep(fromNode, fromState, toNode, toState)
       )
     }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Tracks taint flow for reasoning about decompression bomb vulnerabilities. */

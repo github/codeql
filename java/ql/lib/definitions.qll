@@ -2,6 +2,8 @@
  * Provides classes and predicates related to jump-to-definition links
  * in the code viewer.
  */
+overlay[local?]
+module;
 
 import java
 import IDEContextual
@@ -159,7 +161,7 @@ private Element definition(Element e, string kind) {
   e.(TypeAccess).getType().(RefType).getSourceDeclaration() = result and kind = "T"
   or
   exists(Variable v | v = e.(VarAccess).getVariable() |
-    result = v.(Field).getSourceDeclaration() or
+    result = v.(Field) or
     result = v.(Parameter).getSourceDeclaration() or
     result = v.(LocalVariableDecl)
   ) and

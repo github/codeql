@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["expensify/app/.github/workflows/e2ePerformanceTests.yml", "*", "input.PR_NUMBER", "code-injection", "generated"]

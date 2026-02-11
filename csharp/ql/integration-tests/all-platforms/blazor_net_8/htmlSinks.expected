@@ -1,0 +1,8 @@
+| BlazorTest/Components/MyOutput.razor:5:53:5:57 | access to property Value |
+| BlazorTest/Components/Pages/TestPage.razor:11:48:11:55 | access to property UrlParam |
+| BlazorTest/Components/Pages/TestPage.razor:20:60:20:69 | access to property QueryParam |
+| BlazorTest/Components/Pages/TestPage.razor:29:53:29:63 | access to property InputValue1 |
+| BlazorTest/Components/Pages/TestPage.razor:38:53:38:63 | access to property InputValue2 |
+| BlazorTest/Components/Pages/TestPage.razor:47:53:47:68 | access to property Value |
+| BlazorTest/Components/Pages/TestPage.razor:56:53:56:63 | access to property InputValue3 |
+| BlazorTest/Components/Pages/TestPage.razor:65:53:65:63 | access to property InputValue4 |

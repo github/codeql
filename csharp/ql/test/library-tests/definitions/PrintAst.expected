@@ -17,15 +17,15 @@ definitions.cs:
 #   15|       1: [IntLiteral] 2
 #   15|     7: [Field] e3
 #   18|   3: [Class] C1
-#   20|     4: [InstanceConstructor] C1
+#   20|     5: [InstanceConstructor] C1
 #-----|       2: (Parameters)
 #   20|         0: [Parameter] args
 #   20|           -1: [TypeMention] Int32[]
 #   20|             1: [TypeMention] int
 #   20|       4: [BlockStmt] {...}
-#   22|     5: [Field] field1
+#   22|     6: [Field] field1
 #   22|       -1: [TypeMention] int
-#   24|     6: [Property] property1
+#   24|     7: [Property] property1
 #   24|       -1: [TypeMention] int
 #   26|       3: [Getter] get_property1
 #   26|         4: [BlockStmt] {...}
@@ -39,7 +39,7 @@ definitions.cs:
 #   27|             0: [AssignExpr] ... = ...
 #   27|               0: [FieldAccess] access to field field1
 #   27|               1: [ParameterAccess] access to parameter value
-#   30|     7: [Method] f1
+#   30|     8: [Method] f1
 #   30|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   30|         0: [Parameter] args
@@ -157,7 +157,7 @@ definitions.cs:
 #   67|             0: [LocalVariableAccess] access to local variable m1
 #   67|             1: [ImplicitDelegateCreation] delegate creation of type Action<Int32>
 #   67|               0: [MethodAccess] access to method GenericFn<Int32>
-#   70|     8: [Method] VariableTypeUse
+#   70|     9: [Method] VariableTypeUse
 #   70|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
 #   70|         0: [Parameter] c1
@@ -168,7 +168,7 @@ definitions.cs:
 #   72|             -1: [TypeMention] C1
 #   72|             0: [LocalVariableAccess] access to local variable c2
 #   72|             1: [NullLiteral] null
-#   75|     10: [Method] GenericFn`1
+#   75|     11: [Method] GenericFn`1
 #   75|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #   75|         0: [TypeParameter] T
@@ -177,7 +177,7 @@ definitions.cs:
 #   75|           -1: [TypeMention] T
 #   75|       4: [BlockStmt] {...}
 #   78|   4: [Struct] S1
-#   80|     5: [Method] M
+#   80|     6: [Method] M
 #   80|       -1: [TypeMention] S1
 #-----|       2: (Parameters)
 #   80|         0: [Parameter] ss
@@ -216,8 +216,8 @@ definitions.cs:
 #   93|           0: [ObjectCreation] object creation of type S1
 #   93|             0: [TypeMention] S1
 #   97|   5: [Class] A
-#   99|     5: [DelegateType] EventHandler
-#  101|     6: [Event] Click
+#   99|     6: [DelegateType] EventHandler
+#  101|     7: [Event] Click
 #  101|       -1: [TypeMention] EventHandler
 #  101|       3: [AddEventAccessor] add_Click
 #-----|         2: (Parameters)
@@ -225,7 +225,7 @@ definitions.cs:
 #  101|       4: [RemoveEventAccessor] remove_Click
 #-----|         2: (Parameters)
 #  101|           0: [Parameter] value
-#  103|     7: [Method] M
+#  103|     8: [Method] M
 #  103|       -1: [TypeMention] Void
 #  104|       4: [BlockStmt] {...}
 #  105|         0: [ExprStmt] ...;
@@ -265,24 +265,24 @@ definitions.cs:
 #  121|       1: [TypeMention] I1
 #  121|       2: [TypeMention] I2<A>
 #  121|         1: [TypeMention] A
-#  123|     5: [Method] M
+#  123|     6: [Method] M
 #  123|       -1: [TypeMention] Void
 #  124|       4: [BlockStmt] {...}
 #  125|         0: [ExprStmt] ...;
 #  125|           0: [MethodCall] call to method M
 #  125|             -1: [BaseAccess] base access
-#  128|     6: [Method] M2`1
-#  128|       -1: [TypeMention] Void
+#  128|     7: [Method] M2`1
 #  128|       -1: [TypeMention] I1
+#  128|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
 #  128|         0: [TypeParameter] T
 #  128|       4: [BlockStmt] {...}
-#  130|     7: [Struct] S`1
+#  130|     8: [Struct] S`1
 #-----|       1: (Type parameters)
 #  130|         0: [TypeParameter] T2
 #-----|       3: (Base types)
 #  130|         1: [TypeMention] I3
-#  132|     8: [Method] Tuple
+#  132|     9: [Method] Tuple
 #  132|       -1: [TypeMention] (I1, B<A>)
 #  132|         1: [TypeMention] I1
 #  132|         2: [TypeMention] B<A>
@@ -290,7 +290,7 @@ definitions.cs:
 #  132|       4: [ThrowExpr] throw ...
 #  132|         0: [ObjectCreation] object creation of type Exception
 #  132|           0: [TypeMention] Exception
-#  134|     9: [Indexer] Item
+#  134|     10: [Indexer] Item
 #  134|       -1: [TypeMention] B<A>
 #  134|         1: [TypeMention] A
 #-----|       1: (Parameters)
@@ -306,8 +306,8 @@ definitions.cs:
 #  134|                 0: [TypeMention] B<A>
 #  134|                   1: [TypeMention] A
 #  137|   10: [Class] C
-#  139|     5: [Enum] E
-#  140|     6: [Method] Pointer
+#  139|     6: [Enum] E
+#  140|     7: [Method] Pointer
 #  140|       -1: [TypeMention] E*
 #  140|         1: [TypeMention] E
 #  140|       4: [ThrowExpr] throw ...
@@ -345,7 +345,7 @@ definitions.cs:
 #  151|   12: [Class] C4
 #-----|     3: (Base types)
 #  151|       1: [TypeMention] I4
-#  153|     5: [Event] EH
+#  153|     6: [Event] EH
 #  153|       -1: [TypeMention] I4
 #  153|       3: [AddEventAccessor] add_EH
 #-----|         2: (Parameters)
@@ -355,20 +355,20 @@ definitions.cs:
 #-----|         2: (Parameters)
 #  153|           0: [Parameter] value
 #  153|         4: [BlockStmt] {...}
-#  154|     6: [Method] M
-#  154|       -1: [TypeMention] A
+#  154|     7: [Method] M
 #  154|       -1: [TypeMention] I4
+#  154|       -1: [TypeMention] A
 #  154|       4: [ThrowExpr] throw ...
 #  154|         0: [ObjectCreation] object creation of type Exception
 #  154|           0: [TypeMention] Exception
-#  155|     7: [Property] P
+#  155|     8: [Property] P
 #  155|       -1: [TypeMention] I4
 #  155|       -1: [TypeMention] I3
 #  155|       3: [Getter] get_P
 #  155|         4: [ThrowExpr] throw ...
 #  155|           0: [ObjectCreation] object creation of type Exception
 #  155|             0: [TypeMention] Exception
-#  156|     8: [Indexer] Item
+#  156|     9: [Indexer] Item
 #  156|       -1: [TypeMention] I4
 #  156|       -1: [TypeMention] S1
 #-----|       1: (Parameters)
@@ -385,10 +385,10 @@ definitions.cs:
 #  156|                 0: [TypeMention] S1
 #  156|               1: [ObjectCreation] object creation of type S1
 #  156|                 0: [TypeMention] S1
-#  158|     10: [Class] Nested`1
+#  158|     11: [Class] Nested`1
 #-----|       1: (Type parameters)
 #  158|         0: [TypeParameter] T
-#  160|       5: [Method] Create
+#  160|       6: [Method] Create
 #  160|         -1: [TypeMention] Nested<T>
 #  160|           1: [TypeMention] T
 #  160|         4: [BlockStmt] {...}
@@ -397,7 +397,7 @@ definitions.cs:
 #  160|               0: [TypeMention] Nested<T>
 #  160|                 1: [TypeMention] T
 #  164|   13: [Class] C5
-#  166|     5: [Field] f
+#  166|     6: [Field] f
 #  166|       -1: [TypeMention] Nested<I4>
 #  166|         1: [TypeMention] C4
 #  166|         2: [TypeMention] I4
@@ -407,9 +407,9 @@ definitions.cs:
 #  166|             1: [TypeMention] I4
 #  166|           -1: [TypeAccess] access to type C4
 #  166|             0: [TypeMention] C4
-#  167|     6: [Field] c1
+#  167|     7: [Field] c1
 #  167|       -1: [TypeMention] C1
-#  169|     7: [Method] M
+#  169|     8: [Method] M
 #  169|       -1: [TypeMention] Void
 #  170|       4: [BlockStmt] {...}
 #  171|         0: [LocalVariableDeclStmt] ... ...;
@@ -450,7 +450,7 @@ definitions.cs:
 #  175|                   1: [TypeMention] C4
 #  175|                   2: [TypeMention] I4
 #  179|   14: [Class] C6
-#  181|     5: [ExplicitConversionOperator] explicit conversion
+#  181|     6: [ExplicitConversionOperator] explicit conversion
 #  181|       -1: [TypeMention] C5
 #-----|       2: (Parameters)
 #  181|         0: [Parameter] c
@@ -461,14 +461,14 @@ definitions.cs:
 #  182|       4: [BlockStmt] {...}
 #  183|         0: [ReturnStmt] return ...;
 #  183|           0: [NullLiteral] null
-#  186|     6: [Method] M
+#  186|     7: [Method] M
 #  186|       -1: [TypeMention] C5
 #  187|       4: [BlockStmt] {...}
 #  188|         0: [ReturnStmt] return ...;
 #  188|           0: [OperatorCall] call to operator explicit conversion
 #  188|             -1: [TypeMention] C5
 #  188|             0: [ThisAccess] this access
-#  191|     7: [AddOperator] +
+#  191|     8: [AddOperator] +
 #  191|       -1: [TypeMention] C6
 #-----|       2: (Parameters)
 #  191|         0: [Parameter] x
@@ -480,10 +480,10 @@ definitions.cs:
 #-----|     3: (Base types)
 #  194|       0: [TypeMention] Attribute
 #  196|   16: [Class] C7
-#  198|     5: [Method] M
+#  198|     6: [Method] M
 #  198|       -1: [TypeMention] Void
 #  198|       4: [BlockStmt] {...}
-#  200|     6: [Method] M2
+#  200|     7: [Method] M2
 #  200|       -1: [TypeMention] Void
 #  201|       4: [BlockStmt] {...}
 #  202|         0: [ExprStmt] ...;
@@ -491,7 +491,7 @@ definitions.cs:
 #  202|             -1: [TypeAccess] access to type C7
 #  202|               0: [TypeMention] C7
 #  206|   17: [Class] C8
-#  208|     5: [Method] F
+#  208|     6: [Method] F
 #  208|       -1: [TypeMention] Void
 #  209|       4: [BlockStmt] {...}
 #  210|         0: [LocalVariableDeclStmt] ... ...;

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["zaproxy/action-baseline", "*", "input.docker_name", "command-injection", "manual"]
+      - ["zaproxy/action-baseline", "*", "input.target", "command-injection", "manual"]
+      - ["zaproxy/action-baseline", "*", "input.rules_file_name", "command-injection", "manual"]
+      - ["zaproxy/action-baseline", "*", "input.cmd_options", "command-injection", "manual"]

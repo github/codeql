@@ -1,5 +1,5 @@
 (function() {
-    var React  = require("probably-react"); // NOT OK
+    var React  = require("probably-react"); // $ Alert
 })
 (function() {
     (<e/>);

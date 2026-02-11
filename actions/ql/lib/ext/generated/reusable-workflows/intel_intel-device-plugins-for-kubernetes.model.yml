@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["intel/intel-device-plugins-for-kubernetes/.github/workflows/lib-publish.yaml", "*", "input.image_tag", "code-injection", "generated"]

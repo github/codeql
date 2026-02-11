@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-
+using System.Threading;
 using Newtonsoft.Json.Linq;
 
 using Semmle.Util;
@@ -19,26 +20,46 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
         private readonly TemporaryDirectory? tempWorkingDirectory;
 
-        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, TemporaryDirectory? tempWorkingDirectory = null)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo, TemporaryDirectory? tempWorkingDirectory = null)
         {
             this.tempWorkingDirectory = tempWorkingDirectory;
             this.dotnetCliInvoker = dotnetCliInvoker;
             this.logger = logger;
-            Info();
+            if (runDotnetInfo)
+            {
+                Info();
+            }
         }
 
-        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet")), logger, tempWorkingDirectory) { }
+        private DotNet(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) : this(new DotNetCliInvoker(logger, Path.Combine(dotNetPath ?? string.Empty, "dotnet"), dependabotProxy), logger, dotNetPath is null, tempWorkingDirectory) { }
 
-        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger) => new DotNet(dotnetCliInvoker, logger);
+        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, bool runDotnetInfo) => new DotNet(dotnetCliInvoker, logger, runDotnetInfo);
 
-        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory) => new DotNet(logger, dotNetPath, tempWorkingDirectory);
+        public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
+
+        private static void HandleRetryExitCode143(string dotnet, int attempt, ILogger logger)
+        {
+            logger.LogWarning($"Running '{dotnet} --info' failed with exit code 143. Retrying...");
+            var sleep = Math.Pow(2, attempt) * 1000;
+            Thread.Sleep((int)sleep);
+        }
 
         private void Info()
         {
-            var res = dotnetCliInvoker.RunCommand("--info", silent: false);
-            if (!res)
+            // Allow up to four attempts (with up to three retries) to run `dotnet --info`, to mitigate transient issues
+            for (int attempt = 0; attempt < 4; attempt++)
             {
-                throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
+                var exitCode = dotnetCliInvoker.RunCommandExitCode("--info", silent: false);
+                switch (exitCode)
+                {
+                    case 0:
+                        return;
+                    case 143 when attempt < 3:
+                        HandleRetryExitCode143(dotnetCliInvoker.Exec, attempt, logger);
+                        continue;
+                    default:
+                        throw new Exception($"{dotnetCliInvoker.Exec} --info failed with exit code {exitCode}.");
+                }
             }
         }
 
@@ -56,7 +77,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     Directory.CreateDirectory(path);
                 }
 
-                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\"";
+                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\" /p:AllowMissingPrunePackageData=true";
             }
 
             if (restoreSettings.PathToNugetConfig != null)
@@ -67,6 +88,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (restoreSettings.ForceReevaluation)
             {
                 args += " --force";
+            }
+
+            if (restoreSettings.TargetWindows)
+            {
+                args += " /p:EnableWindowsTargeting=true";
+            }
+
+            if (restoreSettings.ExtraArgs is not null)
+            {
+                args += $" {restoreSettings.ExtraArgs}";
             }
 
             return args;
@@ -115,18 +146,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public IList<string> GetNugetFeeds(string nugetConfig)
         {
-            logger.LogInfo($"Getting Nuget feeds from '{nugetConfig}'...");
+            logger.LogInfo($"Getting NuGet feeds from '{nugetConfig}'...");
             return GetResultList($"{nugetListSourceCommand} --configfile \"{nugetConfig}\"");
         }
 
         public IList<string> GetNugetFeedsFromFolder(string folderPath)
         {
-            logger.LogInfo($"Getting Nuget feeds in folder '{folderPath}'...");
+            logger.LogInfo($"Getting NuGet feeds in folder '{folderPath}'...");
             return GetResultList(nugetListSourceCommand, folderPath);
         }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
-        public const string LatestDotNetSdkVersion = "8.0.101";
+        public const string LatestDotNetSdkVersion = "10.0.100";
+
+        public static ReadOnlyDictionary<string, string> MinimalEnvironment => IDotNetCliInvoker.MinimalEnvironment;
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the
@@ -164,7 +197,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (versions.Count > 0)
             {
-                return DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, versions);
+                return
+                    DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, versions) |
+                    // if neither of the versions succeed, try the latest version
+                    DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, [LatestDotNetSdkVersion], needExactVersion: false);
             }
 
             if (ensureDotNetAvailable)
@@ -173,6 +209,35 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             return BuildScript.Failure;
+        }
+
+        /// <summary>
+        /// Returns a script for running `dotnet --info`, with retries on exit code 143.
+        /// </summary>
+        public static BuildScript InfoScript(IBuildActions actions, string dotnet, IDictionary<string, string>? environment, ILogger logger)
+        {
+            var info = new CommandBuilder(actions, null, environment).
+                RunCommand(dotnet).
+                Argument("--info");
+            var script = info.Script;
+            for (var attempt = 0; attempt < 4; attempt++)
+            {
+                var attemptCopy = attempt; // Capture in local variable
+                script = BuildScript.Bind(script, ret =>
+                    {
+                        switch (ret)
+                        {
+                            case 0:
+                                return BuildScript.Success;
+                            case 143 when attemptCopy < 3:
+                                HandleRetryExitCode143(dotnet, attemptCopy, logger);
+                                return info.Script;
+                            default:
+                                return BuildScript.Failure;
+                        }
+                    });
+            }
+            return script;
         }
 
         /// <summary>
@@ -230,7 +295,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                             Argument("-ExecutionPolicy").
                             Argument("unrestricted").
                             Argument("-Command").
-                            Argument("\"" + psCommand + "\"").
+                            Argument($"\"{psCommand}\"").
                             Script;
 
                         return GetInstall("pwsh") | GetInstall("powershell");
@@ -239,11 +304,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 else
                 {
                     var dotnetInstallPath = actions.PathCombine(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
-
                     var downloadDotNetInstallSh = BuildScript.DownloadFile(
                         "https://dot.net/v1/dotnet-install.sh",
                         dotnetInstallPath,
-                        e => logger.LogWarning($"Failed to download 'dotnet-install.sh': {e.Message}"));
+                        e => logger.LogWarning($"Failed to download 'dotnet-install.sh': {e.Message}"),
+                        logger);
 
                     var chmod = new CommandBuilder(actions).
                         RunCommand("chmod").
@@ -253,15 +318,32 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     prelude = downloadDotNetInstallSh & chmod.Script;
                     postlude = shouldCleanUp ? BuildScript.DeleteFile(dotnetInstallPath) : BuildScript.Success;
 
-                    getInstall = version => new CommandBuilder(actions).
-                        RunCommand(dotnetInstallPath).
-                        Argument("--channel").
-                        Argument("release").
-                        Argument("--version").
-                        Argument(version).
-                        Argument("--install-dir").
-                        Argument(path).Script;
+                    getInstall = version =>
+                    {
+                        var cb = new CommandBuilder(actions).
+                            RunCommand(dotnetInstallPath).
+                            Argument("--channel").
+                            Argument("release").
+                            Argument("--version").
+                            Argument(version);
+
+                        // Request ARM64 architecture on Apple Silicon machines
+                        if (actions.IsRunningOnAppleSilicon())
+                        {
+                            cb.Argument("--architecture").
+                                Argument("arm64");
+                        }
+
+                        return cb.Argument("--install-dir").
+                            Argument(path).Script;
+                    };
                 }
+
+                var dotnetInfo = InfoScript(actions, actions.PathCombine(path, "dotnet"), MinimalEnvironment.ToDictionary(), logger);
+
+                Func<string, BuildScript> getInstallAndVerify = version =>
+                    // run `dotnet --info` after install, to check that it executes successfully
+                    getInstall(version) & dotnetInfo;
 
                 var installScript = prelude & BuildScript.Failure;
 
@@ -277,7 +359,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                         // When there are multiple versions requested, we want to try to fetch them all, reporting
                         // a successful exit code when at least one of them succeeds
-                        return combinedExit != 0 ? getInstall(version) : BuildScript.Bind(getInstall(version), _ => BuildScript.Success);
+                        return combinedExit != 0 ? getInstallAndVerify(version) : BuildScript.Bind(getInstallAndVerify(version), _ => BuildScript.Success);
                     });
                 }
 
@@ -287,7 +369,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private static BuildScript GetInstalledSdksScript(IBuildActions actions)
         {
-            var listSdks = new CommandBuilder(actions, silent: true).
+            var listSdks = new CommandBuilder(actions, silent: true, environment: MinimalEnvironment).
                 RunCommand("dotnet").
                 Argument("--list-sdks");
             return listSdks.Script;

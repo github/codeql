@@ -6,7 +6,9 @@
  * @problem.severity warning
  * @id js/unused-index-variable
  * @precision high
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import javascript

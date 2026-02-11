@@ -68,7 +68,7 @@ class Event extends DeclarationWithAccessors, @event {
     result = DeclarationWithAccessors.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { event_location(this, result) }
+  override Location getALocation() { event_location(this.getUnboundDeclaration(), result) }
 
   override string getAPrimaryQlClass() { result = "Event" }
 }
@@ -99,7 +99,7 @@ class EventAccessor extends Accessor, @event_accessor {
 
   override Event getDeclaration() { event_accessors(this, _, _, result, _) }
 
-  override Location getALocation() { event_accessor_location(this, result) }
+  override Location getALocation() { event_accessor_location(this.getUnboundDeclaration(), result) }
 }
 
 /**

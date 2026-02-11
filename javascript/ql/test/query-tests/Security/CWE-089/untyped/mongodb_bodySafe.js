@@ -14,18 +14,17 @@ app.post('/documents/find', (req, res) => {
     MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
       let doc = db.collection('doc');
 
-      // OK: req.body is safe
+      // OK - req.body is safe
       doc.find(query);
     });
 });
 
 app.post('/documents/find', (req, res) => {
     const query = {};
-    query.title = req.query.title;
+    query.title = req.query.title; // $ Source
     MongoClient.connect('mongodb://localhost:27017/test', (err, db) => {
       let doc = db.collection('doc');
 
-      // NOT OK: regardless of body parser, query value is still tainted
-      doc.find(query);
+      doc.find(query); // $ Alert - regardless of body parser, query value is still tainted
     });
 });

@@ -12,9 +12,9 @@ go_library(
         "//go/extractor/autobuilder",
         "//go/extractor/diagnostics",
         "//go/extractor/project",
+        "//go/extractor/srcarchive",
         "//go/extractor/toolchain",
         "//go/extractor/util",
-        "//go/extractor/vendor/golang.org/x/mod/semver",
     ],
 )
 

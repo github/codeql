@@ -4,7 +4,7 @@ const fp = require('fastify-plugin');
 const app = fastify();
 
 function plugin(app) {
-  app.register(require('fastify-cookie'));
+  app.register(require('fastify-cookie')); // $ Alert
   app.register(require('fastify-csrf'));
 }
 app.register(fp(plugin));
@@ -12,7 +12,7 @@ app.register(fp(plugin));
 app.route({
   method: 'GET',
   path: '/getter',
-  handler: async (req, reply) => { // OK
+  handler: async (req, reply) => {
     return 'hello';
   }
 })
@@ -21,10 +21,10 @@ app.route({
 app.route({
   method: 'POST',
   path: '/',
-  handler: async (req, reply) => { // NOT OK - lacks CSRF protection
+  handler: async (req, reply) => { // lacks CSRF protection
     req.session.blah;
     return req.body
-  }
+  } // $ RelatedLocation
 })
 
 

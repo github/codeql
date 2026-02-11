@@ -10,7 +10,7 @@ private import semmle.python.ApiGraphs
 module RecursionGuard {
   private import semmle.python.dataflow.new.internal.TypeTrackingImpl::TypeTrackingInput as TT
 
-  private class RecursionGuard extends SummarizedCallable {
+  private class RecursionGuard extends SummarizedCallable::Range {
     RecursionGuard() { this = "TypeTrackingSummariesRecursionGuard" }
 
     override DataFlow::CallCfgNode getACall() {
@@ -32,7 +32,7 @@ module RecursionGuard {
   }
 }
 
-private class SummarizedCallableIdentity extends SummarizedCallable {
+private class SummarizedCallableIdentity extends SummarizedCallable::Range {
   SummarizedCallableIdentity() { this = "TTS_identity" }
 
   override DataFlow::CallCfgNode getACall() { none() }
@@ -51,7 +51,7 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
 }
 
 // For lambda flow to work, implement lambdaCall and lambdaCreation
-private class SummarizedCallableApplyLambda extends SummarizedCallable {
+private class SummarizedCallableApplyLambda extends SummarizedCallable::Range {
   SummarizedCallableApplyLambda() { this = "TTS_apply_lambda" }
 
   override DataFlow::CallCfgNode getACall() { none() }
@@ -73,7 +73,7 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableReversed extends SummarizedCallable {
+private class SummarizedCallableReversed extends SummarizedCallable::Range {
   SummarizedCallableReversed() { this = "TTS_reversed" }
 
   override DataFlow::CallCfgNode getACall() { none() }
@@ -91,7 +91,7 @@ private class SummarizedCallableReversed extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableMap extends SummarizedCallable {
+private class SummarizedCallableMap extends SummarizedCallable::Range {
   SummarizedCallableMap() { this = "TTS_list_map" }
 
   override DataFlow::CallCfgNode getACall() { none() }
@@ -113,7 +113,7 @@ private class SummarizedCallableMap extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableAppend extends SummarizedCallable {
+private class SummarizedCallableAppend extends SummarizedCallable::Range {
   SummarizedCallableAppend() { this = "TTS_append_to_list" }
 
   override DataFlow::CallCfgNode getACall() { none() }
@@ -135,7 +135,7 @@ private class SummarizedCallableAppend extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableJsonLoads extends SummarizedCallable {
+private class SummarizedCallableJsonLoads extends SummarizedCallable::Range {
   SummarizedCallableJsonLoads() { this = "TTS_json.loads" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -156,7 +156,7 @@ private class SummarizedCallableJsonLoads extends SummarizedCallable {
 }
 
 // read and store
-private class SummarizedCallableReadSecret extends SummarizedCallable {
+private class SummarizedCallableReadSecret extends SummarizedCallable::Range {
   SummarizedCallableReadSecret() { this = "TTS_read_secret" }
 
   override DataFlow::CallCfgNode getACall() { none() }
@@ -174,7 +174,7 @@ private class SummarizedCallableReadSecret extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableSetSecret extends SummarizedCallable {
+private class SummarizedCallableSetSecret extends SummarizedCallable::Range {
   SummarizedCallableSetSecret() { this = "TTS_set_secret" }
 
   override DataFlow::CallCfgNode getACall() { none() }

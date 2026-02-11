@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="MyBatisMapper">
+
+  <resultMap id="BaseResultMap" type="Test">
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="name" jdbcType="VARCHAR" property="name"/>
+    <result column="pass" jdbcType="VARCHAR" property="pass"/>
+  </resultMap>
+
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <if test="test.name != null">
+        and name = ${ test . name , jdbcType = VARCHAR }
+      </if>
+      <if test="test.id != null">
+        and id = #{test.id}
+      </if>
+    </where>
+  </sql>
+
+  <insert id="bad7" parameterType="Test">
+    insert into test (name, pass)
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name = ${name,jdbcType=VARCHAR},
+      </if>
+      <if test="pass != null">
+        pass = ${pass},
+      </if>
+    </trim>
+  </insert>
+
+</mapper>

@@ -1,0 +1,15 @@
+instances
+| gen_method_call_expr.rs:9:5:9:13 | x.foo(...) |
+| gen_method_call_expr.rs:10:5:10:25 | x.foo(...) |
+getArgList
+| gen_method_call_expr.rs:9:5:9:13 | x.foo(...) | gen_method_call_expr.rs:9:10:9:13 | ArgList |
+| gen_method_call_expr.rs:10:5:10:25 | x.foo(...) | gen_method_call_expr.rs:10:22:10:25 | ArgList |
+getAttr
+getGenericArgList
+| gen_method_call_expr.rs:10:5:10:25 | x.foo(...) | gen_method_call_expr.rs:10:10:10:21 | <...> |
+getIdentifier
+| gen_method_call_expr.rs:9:5:9:13 | x.foo(...) | gen_method_call_expr.rs:9:7:9:9 | foo |
+| gen_method_call_expr.rs:10:5:10:25 | x.foo(...) | gen_method_call_expr.rs:10:7:10:9 | foo |
+getReceiver
+| gen_method_call_expr.rs:9:5:9:13 | x.foo(...) | gen_method_call_expr.rs:9:5:9:5 | x |
+| gen_method_call_expr.rs:10:5:10:25 | x.foo(...) | gen_method_call_expr.rs:10:5:10:5 | x |

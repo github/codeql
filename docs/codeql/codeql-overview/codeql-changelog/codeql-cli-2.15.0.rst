@@ -9,7 +9,7 @@ CodeQL 2.15.0 (2023-10-11)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -121,8 +121,8 @@ Language Libraries
 Bug Fixes
 ~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The regular expressions library no longer incorrectly matches mode flag characters against the input.
 
@@ -169,8 +169,8 @@ Golang
 
 *   Added Numeric and Boolean types to SQL injection sanitzers.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Fixed a control-flow bug where case rule statements would incorrectly include a fall-through edge.
 *   Added support for default cases as proper guards in switch expressions to match switch statements.
@@ -207,8 +207,8 @@ Swift
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Kotlin versions up to 1.9.20 are now supported.
 

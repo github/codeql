@@ -1,1 +1,2 @@
-Expressions/CompareIdenticalValues.ql
+query: Expressions/CompareIdenticalValues.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -7,20 +7,19 @@
 
 use std::path::Path;
 
-use anyhow::anyhow;
 use anyhow::Context as _;
 use anyhow::Result;
-use clap::App;
-use clap::Arg;
+use anyhow::anyhow;
+use clap::{Arg, ArgAction, Command};
 use tree_sitter::Parser;
-use tree_sitter_graph::ast::File;
-use tree_sitter_graph::functions::Functions;
 use tree_sitter_graph::ExecutionConfig;
 use tree_sitter_graph::Identifier;
 use tree_sitter_graph::NoCancellation;
 use tree_sitter_graph::Variables;
+use tree_sitter_graph::ast::File;
+use tree_sitter_graph::functions::Functions;
 
-const BUILD_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const BUILD_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 pub mod extra_functions {
     use tree_sitter_graph::functions::{Function, Parameters};
@@ -141,15 +140,22 @@ pub mod extra_functions {
         }
 
         fn safe(&self) -> Prefix {
+            // Remove format (f/F) and template (t/T) flags when generating a safe prefix.
             Prefix {
-                flags: self.flags.clone().replace("f", "").replace("F", ""),
+                flags: self
+                    .flags
+                    .clone()
+                    .replace("f", "")
+                    .replace("F", "")
+                    .replace("t", "")
+                    .replace("T", ""),
                 quotes: self.quotes.clone(),
             }
         }
     }
 
     fn get_prefix(s: &str) -> Prefix {
-        let flags_matcher = regex::Regex::new("^[bfurBFUR]{0,2}").unwrap();
+        let flags_matcher = regex::Regex::new("^[bfurtBFURT]{0,2}").unwrap();
         let mut end = 0;
         let flags = match flags_matcher.find(s) {
             Some(m) => {
@@ -171,7 +177,7 @@ pub mod extra_functions {
             quotes = "}";
         }
         Prefix {
-            flags: flags.to_lowercase().to_owned(),
+            flags: flags.to_owned(),
             quotes: quotes.to_owned(),
         }
     }
@@ -199,6 +205,12 @@ pub mod extra_functions {
         let p = get_prefix("\"\"\"\"\"\"");
         assert_eq!(p.flags, "");
         assert_eq!(p.quotes, "\"\"\"");
+        let p = get_prefix("t\"hello\"");
+        assert_eq!(p.flags, "t");
+        assert_eq!(p.quotes, "\"");
+        let p = get_prefix("Tr'world'");
+        assert_eq!(p.flags, "Tr");
+        assert_eq!(p.quotes, "'");
     }
 
     fn get_string_contents(s: String) -> String {
@@ -228,6 +240,10 @@ pub mod extra_functions {
         assert_eq!(get_string_contents(s.to_owned()), "");
         let s = "''''''";
         assert_eq!(get_string_contents(s.to_owned()), "");
+        let s = "t\"tmpl\"";
+        assert_eq!(get_string_contents(s.to_owned()), "tmpl");
+        let s = "Tr'world'";
+        assert_eq!(get_string_contents(s.to_owned()), "world");
     }
 
     pub struct StringPrefix;
@@ -292,7 +308,11 @@ pub mod extra_functions {
             let node = graph[parameters.param()?.into_syntax_node_ref()?];
             parameters.finish()?;
             let prefix = get_prefix(&source[node.byte_range()]).full();
-            let prefix = prefix.replace("f", "").replace("F", "");
+            let prefix = prefix
+                .replace("f", "")
+                .replace("F", "")
+                .replace("t", "")
+                .replace("T", "");
             Ok(Value::String(prefix))
         }
     }
@@ -332,8 +352,8 @@ pub mod extra_functions {
                 None => {
                     return Err(ExecutionError::FunctionFailed(
                         "unnamed-child-index".into(),
-                        format!("Cannot call child-index on the root node"),
-                    ))
+                        "Cannot call child-index on the root node".to_string(),
+                    ));
                 }
             };
             let mut tree_cursor = parent.walk();
@@ -343,7 +363,7 @@ pub mod extra_functions {
                 .ok_or_else(|| {
                     ExecutionError::FunctionFailed(
                         "unnamed-child-index".into(),
-                        format!("Called child-index on a non-named child"),
+                        "Called child-index on a non-named child".to_string(),
                     )
                 })?;
             Ok(Value::Integer(index as u32))
@@ -401,7 +421,7 @@ pub mod extra_functions {
             let parent = node.parent().ok_or_else(|| {
                 ExecutionError::FunctionFailed(
                     "get-parent".into(),
-                    format!("Cannot call get-parent on the root node"),
+                    "Cannot call get-parent on the root node".to_string(),
                 )
             })?;
             Ok(Value::SyntaxNode(graph.add_syntax_node(parent)))
@@ -463,36 +483,145 @@ pub mod extra_functions {
             Ok(Value::Integer(left % right))
         }
     }
+
+    pub struct GetLastElement;
+
+    impl Function for GetLastElement {
+        fn call(
+            &self,
+            _graph: &mut Graph,
+            _source: &str,
+            parameters: &mut dyn Parameters,
+        ) -> Result<Value, ExecutionError> {
+            let list = parameters.param()?.into_list()?;
+            parameters.finish()?;
+            let last = list.last().unwrap_or(&Value::Null).clone();
+            Ok(last)
+        }
+    }
+}
+
+struct TreeIterator<'a> {
+    nodes_to_visit: Vec<tree_sitter::Node<'a>>,
+}
+
+impl<'a> TreeIterator<'a> {
+    fn new(root: tree_sitter::Node<'a>) -> Self {
+        Self {
+            nodes_to_visit: vec![root],
+        }
+    }
+}
+
+impl<'a> Iterator for TreeIterator<'a> {
+    type Item = tree_sitter::Node<'a>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if let Some(node) = self.nodes_to_visit.pop() {
+            // Add all children to the queue for processing
+            let children: Vec<_> = (0..node.child_count())
+                .rev()
+                .filter_map(|i| node.child(i))
+                .collect();
+            self.nodes_to_visit.extend(children);
+            Some(node)
+        } else {
+            None
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+struct SyntaxError {
+    start_pos: tree_sitter::Point,
+    end_pos: tree_sitter::Point,
+    source: String,
+}
+
+fn syntax_errors_from_tree<'a>(
+    root: tree_sitter::Node<'a>,
+    source: &'a str,
+) -> impl Iterator<Item = SyntaxError> + 'a {
+    TreeIterator::new(root)
+        .filter(|&node| node.is_error() || node.is_missing())
+        .map(move |node| {
+            let start_pos = node.start_position();
+            let end_pos = node.end_position();
+            let text = &source.get(node.byte_range()).unwrap_or("");
+            SyntaxError {
+                start_pos,
+                end_pos,
+                source: text.to_string(),
+            }
+        })
+}
+
+fn add_syntax_error_nodes(graph: &mut tree_sitter_graph::graph::Graph, errors: &[SyntaxError]) {
+    for error in errors {
+        let error_node = graph.add_graph_node();
+
+        // Add _kind attribute
+        graph[error_node]
+            .attributes
+            .add(
+                tree_sitter_graph::Identifier::from("_kind"),
+                tree_sitter_graph::graph::Value::String("SyntaxErrorNode".to_string()),
+            )
+            .expect("Fresh node should not have duplicate attributes");
+
+        // Add _location attribute
+        let location = tree_sitter_graph::graph::Value::List(
+            vec![
+                error.start_pos.row,
+                error.start_pos.column,
+                error.end_pos.row,
+                error.end_pos.column,
+            ]
+            .into_iter()
+            .map(|v| tree_sitter_graph::graph::Value::from(v as u32))
+            .collect(),
+        );
+        graph[error_node]
+            .attributes
+            .add(tree_sitter_graph::Identifier::from("_location"), location)
+            .expect("Fresh node should not have duplicate attributes");
+
+        // Add source attribute
+        graph[error_node]
+            .attributes
+            .add(
+                tree_sitter_graph::Identifier::from("source"),
+                tree_sitter_graph::graph::Value::String(error.source.clone()),
+            )
+            .expect("Fresh node should not have duplicate attributes");
+    }
 }
 
 fn main() -> Result<()> {
-    let matches = App::new("tsg-python")
+    let matches = Command::new("tsg-python")
         .version(BUILD_VERSION)
         .author("Taus Brock-Nannestad <tausbn@github.com>")
         .about("Extracts a Python AST from the parse tree given by tree-sitter-python")
         .arg(
-            Arg::with_name("tsg")
-                .short("t")
+            Arg::new("tsg")
+                .short('t')
                 .long("tsg")
-                .takes_value(true)
+                .action(ArgAction::Set)
                 .required(false),
         )
-        .arg(Arg::with_name("source").index(1).required(true))
+        .arg(Arg::new("source").index(1).required(true))
         .get_matches();
 
-    let tsg_path = if matches.is_present("tsg") {
-        Path::new(matches.value_of("tsg").unwrap())
-            .display()
-            .to_string()
-    } else {
-        "bundled `python.tsg`".to_owned()
-    };
-    let source_path = Path::new(matches.value_of("source").unwrap());
+    let tsg_path = matches
+        .get_one::<String>("tsg")
+        .map(|s| Path::new(s).display().to_string())
+        .unwrap_or_else(|| "bundled `python.tsg`".to_owned());
+    let source_path = Path::new(matches.get_one::<String>("source").unwrap());
     let language = tsp::language();
     let mut parser = Parser::new();
-    parser.set_language(language)?;
+    parser.set_language(&language)?;
     // Statically include `python.tsg`:
-    let tsg = if matches.is_present("tsg") {
+    let tsg = if matches.contains_id("tsg") {
         std::fs::read(&tsg_path).with_context(|| format!("Error reading TSG file {}", tsg_path))?
     } else {
         include_bytes!("../python.tsg").to_vec()
@@ -562,11 +691,25 @@ fn main() -> Result<()> {
     );
 
     functions.add(Identifier::from("mod"), extra_functions::Modulo);
+
+    functions.add(
+        Identifier::from("get-last-element"),
+        extra_functions::GetLastElement,
+    );
+
     let globals = Variables::new();
-    let mut config = ExecutionConfig::new(&mut functions, &globals).lazy(false);
-    let graph = file
-        .execute(&tree, &source, &mut config, &NoCancellation)
+    let config = ExecutionConfig::new(&functions, &globals).lazy(false);
+    let mut graph = file
+        .execute(&tree, &source, &config, &NoCancellation)
         .with_context(|| format!("Could not execute TSG file {}", tsg_path))?;
+
+    // Collect and add syntax error nodes to the graph
+    if tree.root_node().has_error() {
+        let syntax_errors: Vec<SyntaxError> =
+            syntax_errors_from_tree(tree.root_node(), &source).collect();
+        add_syntax_error_nodes(&mut graph, &syntax_errors);
+    }
+
     print!("{}", graph.pretty_print());
     Ok(())
 }

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -8,6 +8,24 @@ namespace Microsoft
         {
             namespace Abstractions
             {
+                public abstract class BufferedLogRecord
+                {
+                    public virtual System.Diagnostics.ActivitySpanId? ActivitySpanId { get => throw null; }
+                    public virtual System.Diagnostics.ActivityTraceId? ActivityTraceId { get => throw null; }
+                    public virtual System.Collections.Generic.IReadOnlyList<System.Collections.Generic.KeyValuePair<string, object>> Attributes { get => throw null; }
+                    protected BufferedLogRecord() => throw null;
+                    public abstract Microsoft.Extensions.Logging.EventId EventId { get; }
+                    public virtual string Exception { get => throw null; }
+                    public virtual string FormattedMessage { get => throw null; }
+                    public abstract Microsoft.Extensions.Logging.LogLevel LogLevel { get; }
+                    public virtual int? ManagedThreadId { get => throw null; }
+                    public virtual string MessageTemplate { get => throw null; }
+                    public abstract System.DateTimeOffset Timestamp { get; }
+                }
+                public interface IBufferedLogger
+                {
+                    void LogRecords(System.Collections.Generic.IEnumerable<Microsoft.Extensions.Logging.Abstractions.BufferedLogRecord> records);
+                }
                 public struct LogEntry<TState>
                 {
                     public string Category { get => throw null; }
@@ -18,7 +36,7 @@ namespace Microsoft
                     public Microsoft.Extensions.Logging.LogLevel LogLevel { get => throw null; }
                     public TState State { get => throw null; }
                 }
-                public class NullLogger : Microsoft.Extensions.Logging.ILogger
+                public sealed class NullLogger : Microsoft.Extensions.Logging.ILogger
                 {
                     public System.IDisposable BeginScope<TState>(TState state) => throw null;
                     public static Microsoft.Extensions.Logging.Abstractions.NullLogger Instance { get => throw null; }
@@ -41,7 +59,7 @@ namespace Microsoft
                     public void Dispose() => throw null;
                     public static readonly Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory Instance;
                 }
-                public class NullLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
+                public sealed class NullLoggerProvider : System.IDisposable, Microsoft.Extensions.Logging.ILoggerProvider
                 {
                     public Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName) => throw null;
                     public void Dispose() => throw null;
@@ -194,6 +212,12 @@ namespace Microsoft
                 Error = 4,
                 Critical = 5,
                 None = 6,
+            }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
+            public class ProviderAliasAttribute : System.Attribute
+            {
+                public string Alias { get => throw null; }
+                public ProviderAliasAttribute(string alias) => throw null;
             }
         }
     }

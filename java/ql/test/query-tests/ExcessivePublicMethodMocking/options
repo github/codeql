@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args -cp ${testdir}/../../stubs/junit-4.13:${testdir}/../../stubs/mockito-5.14

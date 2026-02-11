@@ -4,6 +4,8 @@
  * Class declarations and class expressions are modeled by (QL) classes `ClassDeclaration`
  * and `ClassExpression`, respectively, which are both subclasses of `ClassDefinition`.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -119,7 +121,8 @@ class ClassOrInterface extends @class_or_interface, TypeParameterized {
    *
    * Anonymous classes and interfaces do not have a canonical name.
    */
-  TypeName getTypeName() { result.getADefinition() = this }
+  overlay[global]
+  deprecated TypeName getTypeName() { result.getADefinition() = this }
 
   /**
    * Gets the ClassOrInterface corresponding to either a super type or an implemented interface.
@@ -253,6 +256,7 @@ class ClassDefinition extends @class_definition, ClassOrInterface, AST::ValueNod
   /**
    * Gets the definition of the super class of this class, if it can be determined.
    */
+  overlay[global]
   ClassDefinition getSuperClassDefinition() {
     result = this.getSuperClass().analyze().getAValue().(AbstractClass).getClass()
   }
@@ -580,6 +584,7 @@ class MemberDeclaration extends @property, Documentable {
   int getMemberIndex() { properties(this, _, result, _, _) }
 
   /** Holds if the name of this member is computed by an impure expression. */
+  overlay[global]
   predicate hasImpureNameExpr() { this.isComputed() and this.getNameExpr().isImpure() }
 
   /**

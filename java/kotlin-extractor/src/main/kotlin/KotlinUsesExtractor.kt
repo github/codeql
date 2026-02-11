@@ -5,14 +5,31 @@ import com.github.codeql.utils.versions.*
 import com.semmle.extractor.java.OdasaOutput
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.ir.*
-import org.jetbrains.kotlin.backend.jvm.ir.propertyIfAccessor
+import org.jetbrains.kotlin.backend.jvm.ir.*
 import org.jetbrains.kotlin.codegen.JvmCodegenUtil
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.*
-import org.jetbrains.kotlin.ir.types.*
+import org.jetbrains.kotlin.ir.types.addAnnotations
+import org.jetbrains.kotlin.ir.types.classFqName
+import org.jetbrains.kotlin.ir.types.classifierOrNull
+import org.jetbrains.kotlin.ir.types.classOrNull
+import org.jetbrains.kotlin.ir.types.isAny
+import org.jetbrains.kotlin.ir.types.isNullableAny
+import org.jetbrains.kotlin.ir.types.isPrimitiveType
+import org.jetbrains.kotlin.ir.types.makeNullable
+import org.jetbrains.kotlin.ir.types.typeOrNull
+import org.jetbrains.kotlin.ir.types.typeWith
+import org.jetbrains.kotlin.ir.types.typeWithArguments
+import org.jetbrains.kotlin.ir.types.IrDynamicType
+import org.jetbrains.kotlin.ir.types.IrErrorType
+import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.types.IrStarProjection
+import org.jetbrains.kotlin.ir.types.IrType
+import org.jetbrains.kotlin.ir.types.IrTypeArgument
+import org.jetbrains.kotlin.ir.types.IrTypeProjection
 import org.jetbrains.kotlin.ir.types.impl.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.load.java.BuiltinMethodsWithSpecialGenericSignature
@@ -20,10 +37,10 @@ import org.jetbrains.kotlin.load.java.JvmAbi
 import org.jetbrains.kotlin.load.java.sources.JavaSourceElement
 import org.jetbrains.kotlin.load.java.structure.*
 import org.jetbrains.kotlin.load.java.typeEnhancement.hasEnhancedNullability
-import org.jetbrains.kotlin.load.kotlin.getJvmModuleNameForDeserializedDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.NameUtils
 import org.jetbrains.kotlin.name.SpecialNames
+import org.jetbrains.kotlin.resolve.descriptorUtil.propertyIfAccessor
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
 
@@ -32,6 +49,7 @@ open class KotlinUsesExtractor(
     open val tw: TrapWriter,
     val dependencyCollector: OdasaOutput.TrapFileManager?,
     val externalClassExtractor: ExternalDeclExtractor,
+    val classInstanceStack: ClassInstanceStack,
     val primitiveTypeMapping: PrimitiveTypeMapping,
     val pluginContext: IrPluginContext,
     val globalExtensionState: KotlinExtractorGlobalState
@@ -84,7 +102,7 @@ open class KotlinUsesExtractor(
     }
 
     private fun extractFileClass(fqName: FqName): Label<out DbClassorinterface> {
-        val pkg = if (fqName.isRoot()) "" else fqName.parent().asString()
+        val pkg = if (fqName.codeQlIsRoot()) "" else fqName.parent().asString()
         val jvmName = fqName.shortName().asString()
         return extractFileClass(pkg, jvmName)
     }
@@ -165,6 +183,7 @@ open class KotlinUsesExtractor(
                 filePath,
                 dependencyCollector,
                 externalClassExtractor,
+                classInstanceStack,
                 primitiveTypeMapping,
                 pluginContext,
                 newDeclarationStack,
@@ -182,6 +201,7 @@ open class KotlinUsesExtractor(
             clsFile.path,
             dependencyCollector,
             externalClassExtractor,
+            classInstanceStack,
             primitiveTypeMapping,
             pluginContext,
             newDeclarationStack,
@@ -520,6 +540,19 @@ open class KotlinUsesExtractor(
         return Pair(p?.first ?: c, p?.second ?: argsIncludingOuterClassesBeforeReplacement)
     }
 
+    private fun avoidInfiniteRecursion(
+        pair: Pair<IrClass, List<IrTypeArgument>?>
+    ): Pair<IrClass, List<IrTypeArgument>?> {
+        val c = pair.first
+        val args = pair.second
+        if (args != null && args.isNotEmpty() && classInstanceStack.possiblyCyclicExtraction(c, args)) {
+            logger.warn("Making use of ${c.name} a raw type to avoid infinite recursion")
+            return Pair(c, null)
+        } else {
+            return pair
+        }
+    }
+
     // `typeArgs` can be null to describe a raw generic type.
     // For non-generic types it will be zero-length list.
     private fun addClassLabel(
@@ -528,7 +561,7 @@ open class KotlinUsesExtractor(
         inReceiverContext: Boolean = false
     ): TypeResult<DbClassorinterface> {
         val replaced =
-            tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement)
+            avoidInfiniteRecursion(tryReplaceType(cBeforeReplacement, argsIncludingOuterClassesBeforeReplacement))
         val replacedClass = replaced.first
         val replacedArgsIncludingOuterClasses = replaced.second
 
@@ -678,7 +711,7 @@ open class KotlinUsesExtractor(
     private fun getInvariantNullableArrayType(arrayType: IrSimpleType): IrSimpleType =
         if (arrayType.isPrimitiveArray()) arrayType
         else {
-            val componentType = arrayType.getArrayElementType(pluginContext.irBuiltIns)
+            val componentType = arrayType.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
             val componentTypeBroadened =
                 when (componentType) {
                     is IrSimpleType ->
@@ -689,7 +722,7 @@ open class KotlinUsesExtractor(
             val unchanged =
                 componentType == componentTypeBroadened &&
                     (arrayType.arguments[0] as? IrTypeProjection)?.variance == Variance.INVARIANT &&
-                    componentType.isNullable()
+                    componentType.isNullableCodeQL()
             if (unchanged) arrayType
             else
                 IrSimpleTypeImpl(
@@ -704,7 +737,7 @@ open class KotlinUsesExtractor(
     Kotlin arrays can be broken down as:
 
     isArray(t)
-    |- t.isBoxedArray
+    |- t.isBoxedArrayCodeQL
     |  |- t.isArray()         e.g. Array<Boolean>, Array<Boolean?>
     |  |- t.isNullableArray() e.g. Array<Boolean>?, Array<Boolean?>?
     |- t.isPrimitiveArray()   e.g. BooleanArray
@@ -714,7 +747,7 @@ open class KotlinUsesExtractor(
     Primitive arrays are represented as e.g. boolean[].
     */
 
-    private fun isArray(t: IrType) = t.isBoxedArray || t.isPrimitiveArray()
+    private fun isArray(t: IrType) = t.isBoxedArrayCodeQL || t.isPrimitiveArray()
 
     data class ArrayInfo(
         val elementTypeResults: TypeResults,
@@ -755,7 +788,7 @@ open class KotlinUsesExtractor(
             ) {
                 pluginContext.irBuiltIns.anyType
             } else {
-                t.getArrayElementType(pluginContext.irBuiltIns)
+                t.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
             }
 
         val recInfo = useArrayType(elementType, t.isPrimitiveArray())
@@ -779,7 +812,7 @@ open class KotlinUsesExtractor(
                 // array.length
                 val length = tw.getLabelFor<DbField>("@\"field;{$it};length\"")
                 val intTypeIds = useType(pluginContext.irBuiltIns.intType)
-                tw.writeFields(length, "length", intTypeIds.javaResult.id, it, length)
+                tw.writeFields(length, "length", intTypeIds.javaResult.id, it)
                 tw.writeFieldsKotlinType(length, intTypeIds.kotlinResult.id)
                 addModifiers(length, "public", "final")
 
@@ -816,9 +849,6 @@ open class KotlinUsesExtractor(
     }
 
     private fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
-        if (s.abbreviation != null) {
-            // TODO: Extract this information
-        }
         // We use this when we don't actually have an IrClass for a class
         // we want to refer to
         // TODO: Eliminate the need for this if possible
@@ -843,7 +873,7 @@ open class KotlinUsesExtractor(
                 if (
                     (context == TypeContext.RETURN ||
                         (context == TypeContext.OTHER && otherIsPrimitive)) &&
-                        !s.isNullable() &&
+                        !s.isNullableCodeQL() &&
                         getKotlinType(s)?.hasEnhancedNullability() != true &&
                         primitiveName != null
                 ) {
@@ -859,7 +889,7 @@ open class KotlinUsesExtractor(
             val kotlinClassId = useClassInstance(kotlinClass, listOf()).typeResult.id
             val kotlinResult =
                 if (true) TypeResult(fakeKotlinType(), "TODO", "TODO")
-                else if (s.isNullable()) {
+                else if (s.isNullableCodeQL()) {
                     val kotlinSignature =
                         "$kotlinPackageName.$kotlinClassName?" // TODO: Is this right?
                     val kotlinLabel = "@\"kt_type;nullable;$kotlinPackageName.$kotlinClassName\""
@@ -901,21 +931,21 @@ open class KotlinUsesExtractor(
                     return extractErrorType()
                 }
             }
-            (s.isBoxedArray && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
+            (s.isBoxedArrayCodeQL && s.arguments.isNotEmpty()) || s.isPrimitiveArray() -> {
                 val arrayInfo = useArrayType(s, false)
                 return arrayInfo.componentTypeResults
             }
             owner is IrClass -> {
                 val args = if (s.isRawType()) null else s.arguments
 
-                return useSimpleTypeClass(owner, args, s.isNullable())
+                return useSimpleTypeClass(owner, args, s.isNullableCodeQL())
             }
             owner is IrTypeParameter -> {
                 val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult =
                     if (true) TypeResult(fakeKotlinType(), "TODO", "TODO")
-                    else if (s.isNullable()) {
+                    else if (s.isNullableCodeQL()) {
                         val kotlinSignature = "${javaResult.signature}?" // TODO: Wrong
                         val kotlinLabel = "@\"kt_type;nullable;type_param\"" // TODO: Wrong
                         val kotlinId: Label<DbKt_nullable_type> =
@@ -1199,7 +1229,7 @@ open class KotlinUsesExtractor(
         }
 
     private fun extendsAdditionAllowed(t: IrType) =
-        if (t.isBoxedArray) {
+        if (t.isBoxedArrayCodeQL) {
             if (t is IrSimpleType) {
                 arrayExtendsAdditionAllowed(t)
             } else {
@@ -1232,9 +1262,10 @@ open class KotlinUsesExtractor(
     // false if it has `@JvmSuppressWildcards(false)`,
     // and null if the annotation is not present.
     @Suppress("UNCHECKED_CAST")
-    private fun getWildcardSuppressionDirective(t: IrAnnotationContainer) =
+    private fun getWildcardSuppressionDirective(t: IrAnnotationContainer): Boolean? =
         t.getAnnotation(jvmWildcardSuppressionAnnotation)?.let {
-            (it.getValueArgument(0) as? IrConst<Boolean>)?.value ?: true
+            @Suppress("USELESS_CAST") // `as? Boolean` is not needed for Kotlin < 2.1
+            (it.getValueArgument(0) as? CodeQLIrConst<Boolean>)?.value as? Boolean ?: true
         }
 
     private fun addJavaLoweringArgumentWildcards(
@@ -1491,7 +1522,7 @@ open class KotlinUsesExtractor(
                     }
                 } else {
                     t.classOrNull?.let { tCls ->
-                        if (t.isBoxedArray) {
+                        if (t.isBoxedArrayCodeQL) {
                             (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg
                                 ->
                                 val elementType = elementTypeArg.type
@@ -1504,13 +1535,15 @@ open class KotlinUsesExtractor(
                                         )
                                     return tCls
                                         .typeWithArguments(listOf(newArg))
-                                        .codeQlWithHasQuestionMark(t.isNullable())
+                                        .codeQlWithHasQuestionMark(t.isNullableCodeQL())
                                 }
                             }
                         }
                     }
                 }
             }
+            is IrDynamicType -> {}
+            is IrErrorType -> {}
         }
         return t
     }
@@ -1800,6 +1833,7 @@ open class KotlinUsesExtractor(
 
         // Note this function doesn't return a signature because type arguments are never
         // incorporated into function signatures.
+        @Suppress("REDUNDANT_ELSE_IN_WHEN")
         return when (arg) {
             is IrStarProjection -> {
                 val anyTypeLabel =
@@ -2082,12 +2116,12 @@ open class KotlinUsesExtractor(
             }
 
             if (owner is IrClass) {
-                if (t.isBoxedArray) {
-                    val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
+                if (t.isBoxedArrayCodeQL) {
+                    val elementType = t.getArrayElementTypeCodeQL(pluginContext.irBuiltIns)
                     val erasedElementType = erase(elementType)
                     return owner
                         .typeWith(erasedElementType)
-                        .codeQlWithHasQuestionMark(t.isNullable())
+                        .codeQlWithHasQuestionMark(t.isNullableCodeQL())
                 }
 
                 return if (t.arguments.isNotEmpty())
@@ -2115,7 +2149,7 @@ open class KotlinUsesExtractor(
             }
         val parentId = parent ?: overriddenParentAttributes?.id ?: useDeclarationParentOf(vp, false)
 
-        val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: vp.index
+        val idxBase = overriddenParentAttributes?.valueParameters?.indexOf(vp) ?: parameterIndexExcludingReceivers(vp)
         val idxOffset =
             if (
                 declarationParent is IrFunction &&

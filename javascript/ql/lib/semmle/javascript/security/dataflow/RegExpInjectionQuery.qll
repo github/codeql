@@ -13,7 +13,25 @@ import RegExpInjectionCustomizations::RegExpInjection
 /**
  * A taint-tracking configuration for untrusted user input used to construct regular expressions.
  */
-class Configuration extends TaintTracking::Configuration {
+module RegExpInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+}
+
+/**
+ * Taint-tracking for untrusted user input used to construct regular expressions.
+ */
+module RegExpInjectionFlow = TaintTracking::Global<RegExpInjectionConfig>;
+
+/**
+ * DEPRECATED. Use the `RegExpInjectionFlow` module instead.
+ */
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "RegExpInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

@@ -31,11 +31,39 @@ module ResourceExhaustion {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /** A source of remote user input, considered as a data flow source for resource exhaustion vulnerabilities. */
-  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
-    RemoteFlowSourceAsSource() {
+  /**
+   * A barrier guard for resource exhaustion vulnerabilities.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /** DEPRECATED. Use `blocksExpr` instead. */
+    deprecated predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  deprecated final private class BarrierGuardLegacy extends TaintTracking::SanitizerGuardNode instanceof BarrierGuard
+  {
+    override predicate sanitizes(boolean outcome, Expr e) {
+      BarrierGuard.super.sanitizes(outcome, e)
+    }
+  }
+
+  /**
+   * DEPRECATED: Use `ActiveThreatModelSource` from Concepts instead!
+   */
+  deprecated class RemoteFlowSourceAsSource = ActiveThreatModelSourceAsSource;
+
+  /**
+   * An active threat-model source, considered as a flow source.
+   */
+  private class ActiveThreatModelSourceAsSource extends Source instanceof ActiveThreatModelSource {
+    ActiveThreatModelSourceAsSource() {
       // exclude source that only happen client-side
-      not this instanceof ClientSideRemoteFlowSource and
+      not this.isClientSideSource() and
       not this = DataFlow::parameterNode(any(PostMessageEventHandler pmeh).getEventParameter())
     }
   }

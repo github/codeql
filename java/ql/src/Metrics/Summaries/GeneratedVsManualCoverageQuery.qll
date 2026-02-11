@@ -10,19 +10,19 @@ bindingset[package, apiSubset]
 private int getNumMadModeledApis(string package, string provenance, string apiSubset) {
   provenance in ["generated", "manual", "both"] and
   result =
-    count(SummarizedCallable sc |
+    count(SummarizedCallable::Range sc |
       callableSubset(sc.asCallable(), apiSubset) and
       package = sc.asCallable().getCompilationUnit().getPackage().getName() and
       sc.asCallable() instanceof ModelApi and
       (
         // "auto-only"
         not sc.hasManualModel() and
-        sc.hasProvenance("df-generated") and
+        any(Provenance p | sc.propagatesFlow(_, _, _, p, _, _)).isGenerated() and
         provenance = "generated"
         or
         sc.hasManualModel() and
         (
-          if sc.hasProvenance("df-generated")
+          if any(Provenance p | sc.propagatesFlow(_, _, _, p, _, _)).isGenerated()
           then
             // "both"
             provenance = "both"

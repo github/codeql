@@ -6,7 +6,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id java/use-of-clone-method
- * @tags reliability
+ * @tags quality
+ *       reliability
+ *       correctness
  */
 
 import java

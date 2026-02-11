@@ -4,7 +4,7 @@ public void evaluate(Socket socket) throws IOException {
     
     JexlSandbox onlyMath = new JexlSandbox(false);
     onlyMath.white("java.lang.Math");
-    JexlEngine jexl = new JexlBuilder().sandbox(onlyMath).create();
+    JexlEngine jexl = new JexlBuilder().sandbox(onlyMath).create(); // GOOD: using a sandbox
       
     String input = reader.readLine();
     JexlExpression expression = jexl.createExpression(input);

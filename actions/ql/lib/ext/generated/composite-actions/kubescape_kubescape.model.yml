@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kubescape/kubescape", "*", "input.ORIGINAL_TAG", "code-injection", "generated"]
+     - ["kubescape/kubescape", "*", "input.SUB_STRING", "code-injection", "generated"]

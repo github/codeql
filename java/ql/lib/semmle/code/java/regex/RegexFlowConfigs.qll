@@ -1,6 +1,8 @@
 /**
  * Defines configurations and steps for handling regexes
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.ExternalFlow
@@ -13,9 +15,17 @@ private class ExploitableStringLiteral extends StringLiteral {
 
 /**
  * Holds if `kind` is an external sink kind that is relevant for regex flow.
- * `full` is true if sinks with this kind match against the full string of its input.
- * `strArg` is the index of the argument to methods with this sink kind that contan the string to be matched against,
- * where -1 is the qualifier; or -2 if no such argument exists.
+ * `full` is true if sinks with this kind match against the full string of its
+ * input.
+ * `strArg` is the index of the argument to methods with this sink kind that
+ * contain the string to be matched against, where -1 is the qualifier; or -2
+ * if no such argument exists.
+ *
+ * Note that `regex-use` is deliberately not a possible value for `kind` here,
+ * as it is used for regular expression injection sinks that need to be selected
+ * separately from existing `regex-use[0]` sinks.
+ * TODO: refactor the `regex-use%` sink kind so that the polynomial ReDoS query
+ * can also use the `regex-use` sinks.
  */
 private predicate regexSinkKindInfo(string kind, boolean full, int strArg) {
   sinkModel(_, _, _, _, _, _, _, kind, _, _) and
@@ -153,6 +163,12 @@ private module RegexFlowConfig implements DataFlow::ConfigSig {
 
 private module RegexFlow = DataFlow::Global<RegexFlowConfig>;
 
+private predicate usedAsRegexImpl(StringLiteral regex, string mode, boolean match_full_string) {
+  RegexFlow::flowFromExpr(regex) and
+  mode = "None" and // TODO: proper mode detection
+  (if matchesFullString(regex) then match_full_string = true else match_full_string = false)
+}
+
 /**
  * Holds if `regex` is used as a regex, with the mode `mode` (if known).
  * If regex mode is not known, `mode` will be `"None"`.
@@ -160,11 +176,9 @@ private module RegexFlow = DataFlow::Global<RegexFlowConfig>;
  * As an optimisation, only regexes containing an infinite repitition quatifier (`+`, `*`, or `{x,}`)
  * and therefore may be relevant for ReDoS queries are considered.
  */
-predicate usedAsRegex(StringLiteral regex, string mode, boolean match_full_string) {
-  RegexFlow::flow(DataFlow::exprNode(regex), _) and
-  mode = "None" and // TODO: proper mode detection
-  (if matchesFullString(regex) then match_full_string = true else match_full_string = false)
-}
+overlay[local]
+predicate usedAsRegex(StringLiteral regex, string mode, boolean match_full_string) =
+  forceLocal(usedAsRegexImpl/3)(regex, mode, match_full_string)
 
 /**
  * Holds if `regex` is used as a regular expression that is matched against a full string,

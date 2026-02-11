@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// Creates a new generated expression with an implicit conversion added.
         /// </summary>
         public static Expression CreateGeneratedConversion(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
-            Extraction.Entities.Location location)
+            Location location)
         {
             ExpressionInfo create(ExprKind kind, string? v) =>
                 new ExpressionInfo(
@@ -85,7 +85,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// Creates a new generated cast expression.
         /// </summary>
         public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
-                    Extraction.Entities.Location location)
+                    Location location)
         {
             var info = new ExpressionInfo(cx,
                     AnnotatedTypeSymbol.CreateNotAnnotated(type),
@@ -154,6 +154,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 // int[] -> int*
                 // string -> char*
                 return new ImplicitCast(info);
+            }
+
+            if (info.ImplicitToString)
+            {
+                // x -> x.ToString() in "abc" + x
+                return ImplicitToString.Wrap(info);
             }
 
             // Default: Just create the expression without a conversion.

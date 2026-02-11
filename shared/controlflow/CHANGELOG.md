@@ -1,3 +1,172 @@
+## 2.0.25
+
+No user-facing changes.
+
+## 2.0.24
+
+No user-facing changes.
+
+## 2.0.23
+
+No user-facing changes.
+
+## 2.0.22
+
+No user-facing changes.
+
+## 2.0.21
+
+No user-facing changes.
+
+## 2.0.20
+
+No user-facing changes.
+
+## 2.0.19
+
+No user-facing changes.
+
+## 2.0.18
+
+No user-facing changes.
+
+## 2.0.17
+
+No user-facing changes.
+
+## 2.0.16
+
+No user-facing changes.
+
+## 2.0.15
+
+No user-facing changes.
+
+## 2.0.14
+
+No user-facing changes.
+
+## 2.0.13
+
+No user-facing changes.
+
+## 2.0.12
+
+No user-facing changes.
+
+## 2.0.11
+
+No user-facing changes.
+
+## 2.0.10
+
+No user-facing changes.
+
+## 2.0.9
+
+No user-facing changes.
+
+## 2.0.8
+
+No user-facing changes.
+
+## 2.0.7
+
+No user-facing changes.
+
+## 2.0.6
+
+No user-facing changes.
+
+## 2.0.5
+
+No user-facing changes.
+
+## 2.0.4
+
+No user-facing changes.
+
+## 2.0.3
+
+No user-facing changes.
+
+## 2.0.2
+
+No user-facing changes.
+
+## 2.0.1
+
+No user-facing changes.
+
+## 2.0.0
+
+### Breaking Changes
+
+* Added a basic block construction as part of the library. This is currently
+  considered an internal unstable API. The input signature to the control flow
+  graph now requires two additional predicates: `idOfAstNode` and
+  `idOfCfgScope`.
+
+## 1.0.15
+
+No user-facing changes.
+
+## 1.0.14
+
+No user-facing changes.
+
+## 1.0.13
+
+No user-facing changes.
+
+## 1.0.12
+
+No user-facing changes.
+
+## 1.0.11
+
+No user-facing changes.
+
+## 1.0.10
+
+No user-facing changes.
+
+## 1.0.9
+
+No user-facing changes.
+
+## 1.0.8
+
+No user-facing changes.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+No user-facing changes.
+
+## 1.0.5
+
+No user-facing changes.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
 ## 1.0.0
 
 ### Breaking Changes

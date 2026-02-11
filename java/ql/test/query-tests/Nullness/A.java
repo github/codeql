@@ -301,7 +301,7 @@ public class A {
   public void assertThatTest() {
     Object assertThat_ok1 = maybe() ? null : new Object();
     assertThat(assertThat_ok1, notNullValue());
-    assertThat_ok1.toString();
+    assertThat_ok1.toString(); // OK
   }
 
   private boolean m;

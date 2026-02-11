@@ -10,10 +10,11 @@
  *
  * NOTE: This library should only be used for debugging and exploration, not in production code.
  */
+deprecated module;
 
 import javascript
 
-private class ForwardExploringConfiguration extends DataFlow::Configuration {
+deprecated private class ForwardExploringConfiguration extends DataFlow::Configuration {
   ForwardExploringConfiguration() { this = any(DataFlow::Configuration cfg) }
 
   override predicate isSink(DataFlow::Node node) { any() }

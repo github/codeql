@@ -14,13 +14,17 @@ import go
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource
+    source instanceof ActiveThreatModelSource
     or
     source = any(Field f | f.hasQualifiedName("net/http", "Request", "Host")).getARead()
   }
 
   predicate isSink(DataFlow::Node sink) {
     exists(ComparisonExpr c | c.getAnOperand() = sink.asExpr())
+  }
+
+  predicate observeDiffInformedIncrementalMode() {
+    none() // can't override the locations accurately because of secondary use of config.
   }
 }
 

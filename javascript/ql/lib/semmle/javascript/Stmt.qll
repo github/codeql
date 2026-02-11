@@ -1,4 +1,6 @@
 /** Provides classes for working with statements. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -432,37 +434,22 @@ module Directive {
   class UseClientDirective extends KnownDirective {
     UseClientDirective() { this.getDirectiveText() = "use client" }
   }
+
+  /**
+   * A `use cache` directive.
+   *
+   * Examples:
+   *
+   * ```
+   * "use cache";
+   * "use cache: remote";
+   * "use cache: private";
+   * ```
+   */
+  class UseCacheDirective extends KnownDirective {
+    UseCacheDirective() { this.getDirectiveText().regexpMatch("use cache(:.*)?") }
+  }
 }
-
-/** DEPRECATED. Use `Directive::KnownDirective` instead. */
-deprecated class KnownDirective = Directive::KnownDirective;
-
-/** DEPRECATED. Use `Directive::StrictModeDecl` instead. */
-deprecated class StrictModeDecl = Directive::StrictModeDecl;
-
-/** DEPRECATED. Use `Directive::AsmJSDirective` instead. */
-deprecated class AsmJSDirective = Directive::AsmJSDirective;
-
-/** DEPRECATED. Use `Directive::BabelDirective` instead. */
-deprecated class BabelDirective = Directive::BabelDirective;
-
-/** DEPRECATED. Use `Directive::SixToFiveDirective` instead. */
-deprecated class SixToFiveDirective = Directive::SixToFiveDirective;
-
-/** DEPRECATED. Use `Directive::SystemJSFormatDirective` instead. */
-deprecated class SystemJSFormatDirective = Directive::SystemJSFormatDirective;
-
-/** DEPRECATED. Use `Directive::NgInjectDirective` instead. */
-deprecated class NgInjectDirective = Directive::NgInjectDirective;
-
-/** DEPRECATED. Use `Directive::YuiDirective` instead. */
-deprecated class YuiDirective = Directive::YuiDirective;
-
-/** DEPRECATED. Use `Directive::SystemJSDepsDirective` instead. */
-deprecated class SystemJSDepsDirective = Directive::SystemJSDepsDirective;
-
-/** DEPRECATED. Use `Directive::BundleDirective` instead. */
-deprecated class BundleDirective = Directive::BundleDirective;
 
 /**
  * An `if` statement.

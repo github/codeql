@@ -1,4 +1,0 @@
-dependencies:
-  codeql/javascript-all: '*'
-  codeql/javascript-queries: '*'
-warnOnImplicitThis: true

@@ -6,7 +6,7 @@
  * @id go/dsn-injection-local
  * @tags security
  *       experimental
- *       external/cwe/cwe-74
+ *       external/cwe/cwe-074
  */
 
 import go

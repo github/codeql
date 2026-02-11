@@ -3,4 +3,4 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["github.com/go-chi/jwtauth", "", True, "New", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/go-chi/jwtauth", "", False, "New", "", "", "Argument[1]", "credentials-key", "manual"]

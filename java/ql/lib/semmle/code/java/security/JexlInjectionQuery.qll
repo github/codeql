@@ -39,37 +39,20 @@ private class DefaultJexlInjectionAdditionalTaintStep extends JexlInjectionAddit
 }
 
 /**
- * DEPRECATED: Use `JexlInjectionFlow` instead.
- *
- * A taint-tracking configuration for unsafe user input
- * that is used to construct and evaluate a JEXL expression.
- * It supports both JEXL 2 and 3.
- */
-deprecated class JexlInjectionConfig extends TaintTracking::Configuration {
-  JexlInjectionConfig() { this = "JexlInjectionConfig" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(JexlInjectionAdditionalTaintStep c).step(node1, node2)
-  }
-}
-
-/**
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate a JEXL expression.
  * It supports both JEXL 2 and 3.
  */
 module JexlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JexlEvaluationSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(JexlInjectionAdditionalTaintStep c).step(node1, node2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

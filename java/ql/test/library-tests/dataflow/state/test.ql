@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import DataFlow
 
 predicate src(Node n, string s) {

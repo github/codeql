@@ -1,5 +1,5 @@
 /**
- * @name Extract MaD sink model rows.
+ * @name Extract MaD sink model rows
  * @description This extracts the Models as data sink model rows.
  * @id java/utils/modelconverter/generate-data-extensions-sink
  */

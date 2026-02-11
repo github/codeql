@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/github/codeql-go/extractor/util"
 )
 
 // ProjectLayout describes a very simple project layout rewriting paths starting
@@ -16,7 +18,7 @@ import (
 //	# to
 //	from//
 type ProjectLayout struct {
-	from, to string
+	From, To string
 }
 
 // normaliseSlashes adds an initial slash to `path` if there isn't one, and trims
@@ -26,6 +28,25 @@ func normaliseSlashes(path string) string {
 		path = "/" + path
 	}
 	return strings.TrimSuffix(path, "/")
+}
+
+// LoadProjectLayoutFromEnv loads a project layout from the file referenced by the
+// {CODEQL,SEMMLE}_PATH_TRANSFORMER environment variable. If neither env var is set, returns nil. If
+// the file cannot be read or does not have the right format, it returns an error.
+func LoadProjectLayoutFromEnv() (*ProjectLayout, error) {
+	pt := util.Getenv("CODEQL_PATH_TRANSFORMER", "SEMMLE_PATH_TRANSFORMER")
+	if pt == "" {
+		return nil, nil
+	}
+	ptf, err := os.Open(pt)
+	if err != nil {
+		return nil, err
+	}
+	projLayout, err := LoadProjectLayout(ptf)
+	if err != nil {
+		return nil, err
+	}
+	return projLayout, nil
 }
 
 // LoadProjectLayout loads a project layout from the given file, returning an error
@@ -41,7 +62,7 @@ func LoadProjectLayout(file *os.File) (*ProjectLayout, error) {
 	if !strings.HasPrefix(line, "#") {
 		return nil, fmt.Errorf("first line of project layout should start with #, but got %s", line)
 	}
-	res.to = normaliseSlashes(strings.TrimSpace(strings.TrimPrefix(line, "#")))
+	res.To = normaliseSlashes(strings.TrimSpace(strings.TrimPrefix(line, "#")))
 
 	if !scanner.Scan() {
 		return nil, errors.New("empty section in project-layout file")
@@ -57,7 +78,7 @@ func LoadProjectLayout(file *os.File) (*ProjectLayout, error) {
 	if strings.HasPrefix(line, "-") || strings.Contains(line, "*") || strings.Contains(line, "//") {
 		return nil, errors.New("unsupported project-layout feature")
 	}
-	res.from = normaliseSlashes(line)
+	res.From = normaliseSlashes(line)
 
 	for scanner.Scan() {
 		if strings.TrimSpace(scanner.Text()) != "" {
@@ -71,11 +92,11 @@ func LoadProjectLayout(file *os.File) (*ProjectLayout, error) {
 // transformString transforms `str` as specified by the project layout: if it starts with the `from`
 // prefix, that prefix is relaced by `to`; otherwise the string is returned unchanged
 func (p *ProjectLayout) transformString(str string) string {
-	if str == p.from {
-		return p.to
+	if str == p.From {
+		return p.To
 	}
-	if strings.HasPrefix(str, p.from+"/") {
-		return p.to + "/" + str[len(p.from)+1:]
+	if strings.HasPrefix(str, p.From+"/") {
+		return p.To + "/" + str[len(p.From)+1:]
 	}
 	return str
 }

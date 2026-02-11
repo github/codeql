@@ -3,8 +3,9 @@
  * @description Side-effects in assert statements result in differences between normal
  *              and optimized behavior.
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high
@@ -12,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate func_with_side_effects(Expr e) {
   exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |

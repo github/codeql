@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["filecoin-project/venus/.github/workflows/common_go.yml", "*", "input.test_timeout", "code-injection", "generated"]
+     - ["filecoin-project/venus/.github/workflows/common_go.yml", "*", "input.log_level", "code-injection", "generated"]
+     - ["filecoin-project/venus/.github/workflows/common_build_upload.yml", "*", "input.bin_name", "code-injection", "generated"]
+     - ["filecoin-project/venus/.github/workflows/common_build_upload.yml", "*", "input.has_ffi", "code-injection", "generated"]

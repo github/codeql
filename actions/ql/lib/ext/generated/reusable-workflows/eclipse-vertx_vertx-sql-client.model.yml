@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["eclipse-vertx/vertx-sql-client/.github/workflows/ci.yml", "*", "input.profile", "code-injection", "generated"]

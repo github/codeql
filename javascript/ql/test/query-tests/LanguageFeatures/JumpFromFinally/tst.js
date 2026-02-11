@@ -4,7 +4,7 @@ function foo(resource) {
 			throw new Error();
 	} finally {
 		resource.close();
-		return true;
+		return true; // $ Alert
 	}
 }
 
@@ -25,7 +25,7 @@ function baz(resource) {
 				throw new Error();
 		} finally {
 			resource.close();
-			break;
+			break; // $ Alert
 		}
 	}
 }

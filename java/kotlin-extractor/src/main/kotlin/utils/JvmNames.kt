@@ -1,14 +1,14 @@
 package com.github.codeql.utils
 
-import com.github.codeql.utils.versions.allOverriddenIncludingSelf
+import com.github.codeql.utils.versions.CodeQLIrConst
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.ir.declarations.IrAnnotationContainer
 import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrFunction
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
-import org.jetbrains.kotlin.ir.expressions.IrConst
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.types.IrSimpleType
+import org.jetbrains.kotlin.ir.util.allOverridden
 import org.jetbrains.kotlin.ir.util.fqNameWhenAvailable
 import org.jetbrains.kotlin.ir.util.packageFqName
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
@@ -62,7 +62,7 @@ private val specialFunctionShortNames = specialFunctions.keys.map { it.functionN
 
 private fun getSpecialJvmName(f: IrFunction): String? {
     if (specialFunctionShortNames.contains(f.name) && f is IrSimpleFunction) {
-        f.allOverriddenIncludingSelf().forEach { overriddenFunc ->
+        f.allOverridden(includeSelf = true).forEach { overriddenFunc ->
             overriddenFunc.parentClassOrNull?.fqNameWhenAvailable?.let { parentFqName ->
                 specialFunctions[MethodKey(parentFqName, f.name)]?.let {
                     return it
@@ -82,7 +82,7 @@ fun getJvmName(container: IrAnnotationContainer): String? {
             if (owner is IrClass) {
                 val aPkg = owner.packageFqName?.asString()
                 val name = owner.name.asString()
-                if (aPkg == "kotlin.jvm" && name == "JvmName" && v is IrConst<*>) {
+                if (aPkg == "kotlin.jvm" && name == "JvmName" && v is CodeQLIrConst<*>) {
                     val value = v.value
                     if (value is String) {
                         return value

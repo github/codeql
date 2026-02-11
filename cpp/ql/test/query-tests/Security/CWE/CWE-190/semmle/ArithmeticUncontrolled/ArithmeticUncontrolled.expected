@@ -32,6 +32,8 @@ edges
 | test.cpp:24:11:24:18 | call to get_rand | test.cpp:25:7:25:7 | r | provenance |  |
 | test.cpp:30:13:30:14 | get_rand2 output argument | test.cpp:31:7:31:7 | r | provenance |  |
 | test.cpp:36:13:36:13 | get_rand3 output argument | test.cpp:37:7:37:7 | r | provenance |  |
+| test.cpp:62:19:62:24 | call to rand | test.cpp:62:19:62:24 | call to rand | provenance |  |
+| test.cpp:62:19:62:24 | call to rand | test.cpp:65:9:65:9 | x | provenance |  |
 | test.cpp:86:10:86:13 | call to rand | test.cpp:86:10:86:13 | call to rand | provenance |  |
 | test.cpp:86:10:86:13 | call to rand | test.cpp:90:10:90:10 | x | provenance |  |
 | test.cpp:98:10:98:13 | call to rand | test.cpp:98:10:98:13 | call to rand | provenance |  |
@@ -105,6 +107,9 @@ nodes
 | test.cpp:31:7:31:7 | r | semmle.label | r |
 | test.cpp:36:13:36:13 | get_rand3 output argument | semmle.label | get_rand3 output argument |
 | test.cpp:37:7:37:7 | r | semmle.label | r |
+| test.cpp:62:19:62:24 | call to rand | semmle.label | call to rand |
+| test.cpp:62:19:62:24 | call to rand | semmle.label | call to rand |
+| test.cpp:65:9:65:9 | x | semmle.label | x |
 | test.cpp:86:10:86:13 | call to rand | semmle.label | call to rand |
 | test.cpp:86:10:86:13 | call to rand | semmle.label | call to rand |
 | test.cpp:90:10:90:10 | x | semmle.label | x |
@@ -156,6 +161,7 @@ subpaths
 | test.cpp:25:7:25:7 | r | test.cpp:8:9:8:12 | call to rand | test.cpp:25:7:25:7 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:8:9:8:12 | call to rand | uncontrolled value |
 | test.cpp:31:7:31:7 | r | test.cpp:13:10:13:13 | call to rand | test.cpp:31:7:31:7 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:13:10:13:13 | call to rand | uncontrolled value |
 | test.cpp:37:7:37:7 | r | test.cpp:18:9:18:12 | call to rand | test.cpp:37:7:37:7 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:18:9:18:12 | call to rand | uncontrolled value |
+| test.cpp:65:9:65:9 | x | test.cpp:62:19:62:24 | call to rand | test.cpp:65:9:65:9 | x | This arithmetic expression depends on an $@, potentially causing an underflow. | test.cpp:62:19:62:22 | call to rand | uncontrolled value |
 | test.cpp:90:10:90:10 | x | test.cpp:86:10:86:13 | call to rand | test.cpp:90:10:90:10 | x | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:86:10:86:13 | call to rand | uncontrolled value |
 | test.cpp:102:10:102:10 | x | test.cpp:98:10:98:13 | call to rand | test.cpp:102:10:102:10 | x | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:98:10:98:13 | call to rand | uncontrolled value |
 | test.cpp:146:9:146:9 | y | test.cpp:137:10:137:13 | call to rand | test.cpp:146:9:146:9 | y | This arithmetic expression depends on an $@, potentially causing an overflow. | test.cpp:137:10:137:13 | call to rand | uncontrolled value |

@@ -1,0 +1,28 @@
+name: Test
+
+on:
+  pull_request_target:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          FOO=${TITLE##*/}
+          echo PR_TITLE=${FOO} >> $GITHUB_ENV
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          FOO=$TITLE+
+          echo PR_TITLE=$FOO >> $GITHUB_ENV
+      - env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          venv="$(echo $TITLE)')"
+          echo "VIRTUAL_ENV=${venv}" >> $GITHUB_ENV
+
+
+
+

@@ -49,6 +49,8 @@ class ParserTest(unittest.TestCase):
             diff = e.output
         if diff:
             pytest.fail(diff.decode("utf-8"))
+        self.check_for_stdout_errors(logger)
+
         self.assertEqual(self.capsys.readouterr().err, "")
         os.remove(oldfile)
         os.remove(newfile)
@@ -84,9 +86,15 @@ class ParserTest(unittest.TestCase):
             diff = e.output
         if diff:
             pytest.fail(diff.decode("utf-8"))
+
+        self.check_for_stdout_errors(logger)
         self.assertEqual(self.capsys.readouterr().err, "")
         os.remove(actual)
 
+    def check_for_stdout_errors(self, logger):
+        if logger.had_errors():
+            logger.reset_error_count()
+            pytest.fail("Errors/warnings were logged to stdout during testing.")
 
 def setup_tests():
     test_folder = os.path.join(os.path.dirname(__file__), "parser")

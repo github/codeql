@@ -1,0 +1,42 @@
+on:
+  workflow_run:
+    workflows: [ "build" ]
+    types: [ completed ]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publish-build-scans:
+    name: Build scan publish
+    if: github.repository == 'test/test' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion != 'cancelled'
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout target branch which has trusted code
+      - name: Check out target branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.ref }}
+      - name: Download build scan
+        id: downloadBuildScan
+        uses: actions/download-artifact@v4
+        with:
+          name: build-scan
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
+        # Don't fail a build if the file doesn't exist
+        continue-on-error: true
+      - name: Extract previously uploaded build scan content
+        if: ${{ steps.downloadBuildScan.outcome != 'failure'}}
+        run: tar -xzf build-scan.tgz -C ~
+      - name: Publish
+        if: ${{ steps.downloadBuildScan.outcome != 'failure'}}
+        # Don't fail a build if publishing fails
+        continue-on-error: true
+        run: |
+          ./gradlew buildScanPublishPrevious
+        env:
+          ACCESS_KEY: ${{ secrets.TEST_ACCESS_KEY }}

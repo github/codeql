@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Components.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Components.Web, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -168,6 +168,13 @@ namespace Microsoft
                     public int FileCount { get => throw null; }
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> GetMultipleFiles(int maximumFileCount = default(int)) => throw null;
                 }
+                public class InputHidden : Microsoft.AspNetCore.Components.Forms.InputBase<string>
+                {
+                    protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
+                    public InputHidden() => throw null;
+                    public Microsoft.AspNetCore.Components.ElementReference? Element { get => throw null; set { } }
+                    protected override bool TryParseValueFromString(string value, out string result, out string validationErrorMessage) => throw null;
+                }
                 public class InputNumber<TValue> : Microsoft.AspNetCore.Components.Forms.InputBase<TValue>
                 {
                     protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
@@ -290,6 +297,7 @@ namespace Microsoft
                         public override Microsoft.AspNetCore.Components.Dispatcher Dispatcher { get => throw null; }
                         protected override void HandleException(System.Exception exception) => throw null;
                         protected virtual void RenderChildComponent(System.IO.TextWriter output, ref Microsoft.AspNetCore.Components.RenderTree.RenderTreeFrame componentFrame) => throw null;
+                        protected override Microsoft.AspNetCore.Components.RendererInfo RendererInfo { get => throw null; }
                         protected bool TryCreateScopeQualifiedEventName(int componentId, string assignedEventName, out string scopeQualifiedEventName) => throw null;
                         protected override System.Threading.Tasks.Task UpdateDisplayAsync(in Microsoft.AspNetCore.Components.RenderTree.RenderBatch renderBatch) => throw null;
                         protected virtual void WriteComponentHtml(int componentId, System.IO.TextWriter output) => throw null;
@@ -319,6 +327,7 @@ namespace Microsoft
             {
                 public class FocusOnNavigate : Microsoft.AspNetCore.Components.ComponentBase
                 {
+                    protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder builder) => throw null;
                     public FocusOnNavigate() => throw null;
                     protected override System.Threading.Tasks.Task OnAfterRenderAsync(bool firstRender) => throw null;
                     protected override void OnParametersSet() => throw null;
@@ -347,6 +356,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Components.Routing.NavLinkMatch Match { get => throw null; set { } }
                     protected override void OnInitialized() => throw null;
                     protected override void OnParametersSet() => throw null;
+                    protected virtual bool ShouldMatch(string uriAbsolute) => throw null;
                 }
                 public enum NavLinkMatch
                 {
@@ -486,6 +496,14 @@ namespace Microsoft
                     public InteractiveWebAssemblyRenderMode(bool prerender) => throw null;
                     public bool Prerender { get => throw null; }
                 }
+                namespace Internal
+                {
+                    public interface IInternalWebJSInProcessRuntime
+                    {
+                        string InvokeJS(string identifier, string argsJson, Microsoft.JSInterop.JSCallResultType resultType, long targetInstanceId);
+                        virtual string InvokeJS(in Microsoft.JSInterop.Infrastructure.JSInvocationInfo invocationInfo) => throw null;
+                    }
+                }
                 public static partial class JSComponentConfigurationExtensions
                 {
                     public static void RegisterForJavaScript<TComponent>(this Microsoft.AspNetCore.Components.Web.IJSComponentConfiguration configuration, string identifier) where TComponent : Microsoft.AspNetCore.Components.IComponent => throw null;
@@ -503,6 +521,7 @@ namespace Microsoft
                     public string Code { get => throw null; set { } }
                     public KeyboardEventArgs() => throw null;
                     public bool CtrlKey { get => throw null; set { } }
+                    public bool IsComposing { get => throw null; set { } }
                     public string Key { get => throw null; set { } }
                     public float Location { get => throw null; set { } }
                     public bool MetaKey { get => throw null; set { } }
@@ -621,6 +640,7 @@ namespace Microsoft
                         public System.Collections.Generic.ICollection<TItem> Items { get => throw null; set { } }
                         public float ItemSize { get => throw null; set { } }
                         public Microsoft.AspNetCore.Components.Web.Virtualization.ItemsProviderDelegate<TItem> ItemsProvider { get => throw null; set { } }
+                        public int MaxItemCount { get => throw null; set { } }
                         protected override System.Threading.Tasks.Task OnAfterRenderAsync(bool firstRender) => throw null;
                         protected override void OnParametersSet() => throw null;
                         public int OverscanCount { get => throw null; set { } }

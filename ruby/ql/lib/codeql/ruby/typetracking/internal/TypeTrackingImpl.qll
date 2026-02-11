@@ -223,7 +223,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
     predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      super.propagatesFlow(input, output, preservesValue, _)
+      super.propagatesFlow(input, output, preservesValue, _, _, _)
     }
   }
 
@@ -265,7 +265,7 @@ private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryT
 
 private newtype TContentFilter = MkElementFilter()
 
-module TypeTrackingInput implements Shared::TypeTrackingInput {
+module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
   class Node = DataFlowPublic::Node;
 
   class LocalSourceNode = DataFlowPublic::LocalSourceNode;
@@ -467,4 +467,4 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
   predicate hasFeatureBacktrackStoreTarget() { none() }
 }
 
-import SharedImpl::TypeTracking<TypeTrackingInput>
+import SharedImpl::TypeTracking<Location, TypeTrackingInput>

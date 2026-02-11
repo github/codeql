@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 newtype TSign =
   TNeg() or
   TZero() or

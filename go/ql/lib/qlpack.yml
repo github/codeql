@@ -1,15 +1,19 @@
 name: codeql/go-all
-version: 1.0.1-dev
+version: 6.0.2-dev
 groups: go
 dbscheme: go.dbscheme
 extractor: go
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/concepts: ${workspace}
+  codeql/controlflow: ${workspace}
   codeql/dataflow: ${workspace}
   codeql/mad: ${workspace}
+  codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:
   - ext/*.model.yml
 warnOnImplicitThis: true
+compileForOverlayEval: true

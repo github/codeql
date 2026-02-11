@@ -1,0 +1,26 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Cookies without the <code>HttpOnly</code> flag set are accessible to JavaScript running in the same origin. 
+In case of a Cross-Site Scripting (XSS) vulnerability, the cookie can be stolen by a malicious script.
+If a sensitive cookie does not need to be accessed directly by client-side JS, the <code>HttpOnly</code> flag should be set.</p>
+</overview>
+
+<recommendation>
+<p>Set <code>httponly</code> to <code>True</code>, or add <code>; HttpOnly;</code> to the cookie's raw header value, to ensure that the cookie is not accessible via JavaScript.</p>
+</recommendation>
+
+<example>
+<p>In the following examples, the cases marked GOOD show secure cookie attributes being set; whereas in the case marked BAD they are not set.</p>
+<sample src="examples/InsecureCookie.py" />
+</example>
+
+<references>
+<li>PortSwigger: <a href="https://portswigger.net/kb/issues/00500600_cookie-without-httponly-flag-set">Cookie without HttpOnly flag set</a></li>
+<li>MDN: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie</a>.</li>
+</references>
+
+</qhelp>

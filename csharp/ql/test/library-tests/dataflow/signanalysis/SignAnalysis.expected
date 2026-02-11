@@ -95,6 +95,7 @@
 | SignAnalysis.cs:120:9:120:10 | access to field f0 | positive |
 | SignAnalysis.cs:120:9:120:12 | ...++ | positive |
 | SignAnalysis.cs:121:34:121:35 | access to field f0 | strictlyPositive |
+| SignAnalysis.cs:122:9:122:10 | access to field f0 | positive |
 | SignAnalysis.cs:129:9:129:16 | ... = ... | strictlyNegative |
 | SignAnalysis.cs:129:14:129:16 | -... | strictlyNegative |
 | SignAnalysis.cs:129:15:129:16 | 10 | strictlyPositive |
@@ -213,6 +214,7 @@
 | SignAnalysis.cs:414:13:414:13 | access to local variable i | strictlyPositive |
 | SignAnalysis.cs:415:31:415:31 | access to local variable i | strictlyPositive |
 | SignAnalysis.cs:424:31:424:31 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:428:19:428:19 | access to constant A | strictlyPositive |
 | SignAnalysis.cs:428:19:428:24 | ... = ... | strictlyPositive |
 | SignAnalysis.cs:428:23:428:24 | 12 | strictlyPositive |
 | SignAnalysis.cs:434:38:434:38 | access to local variable i | strictlyNegative |
@@ -236,15 +238,11 @@
 | SignAnalysis.cs:464:9:464:9 | access to local variable x | positive |
 | SignAnalysis.cs:464:9:464:11 | ...++ | positive |
 | SignAnalysis.cs:465:34:465:34 | access to local variable x | strictlyPositive |
-| SignAnalysis.cs:470:21:470:21 | [b (line 468): true] 1 | strictlyPositive |
-| SignAnalysis.cs:470:25:470:26 | [b (line 468): false] -... | strictlyNegative |
-| SignAnalysis.cs:470:26:470:26 | [b (line 468): false] 1 | strictlyPositive |
-| SignAnalysis.cs:480:16:480:20 | [b (line 477): true] ... = ... | strictlyPositive |
-| SignAnalysis.cs:480:20:480:20 | [b (line 477): true] 1 | strictlyPositive |
-| SignAnalysis.cs:480:28:480:33 | [b (line 477): false] ... = ... | strictlyNegative |
-| SignAnalysis.cs:480:32:480:33 | [b (line 477): false] -... | strictlyNegative |
-| SignAnalysis.cs:480:33:480:33 | [b (line 477): false] 1 | strictlyPositive |
-| SignAnalysis.cs:482:34:482:34 | [b (line 477): false] access to local variable x | strictlyNegative |
-| SignAnalysis.cs:482:34:482:34 | [b (line 477): true] access to local variable x | strictlyPositive |
-| SignAnalysis.cs:485:38:485:38 | access to local variable x | strictlyPositive |
-| SignAnalysis.cs:487:38:487:38 | access to local variable x | strictlyNegative |
+| SignAnalysis.cs:470:21:470:21 | 1 | strictlyPositive |
+| SignAnalysis.cs:470:25:470:26 | -... | strictlyNegative |
+| SignAnalysis.cs:470:26:470:26 | 1 | strictlyPositive |
+| SignAnalysis.cs:480:16:480:20 | ... = ... | strictlyPositive |
+| SignAnalysis.cs:480:20:480:20 | 1 | strictlyPositive |
+| SignAnalysis.cs:480:28:480:33 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:480:32:480:33 | -... | strictlyNegative |
+| SignAnalysis.cs:480:33:480:33 | 1 | strictlyPositive |

@@ -9,7 +9,7 @@ CodeQL 2.11.1 (2022-10-11)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -63,8 +63,8 @@ C#
 
 *   The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The alert message of many queries have been changed to better follow the style guide and make the message consistent with other languages.
 *   :code:`PathSanitizer.qll` has been promoted from experimental to the main query pack. This sanitizer was originally `submitted as part of an experimental query by @luchua-bc <https://github.com/github/codeql/pull/7286>`__.
@@ -81,8 +81,8 @@ Ruby
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query, :code:`java/android/webview-debugging-enabled`, to detect instances of WebView debugging being enabled in production builds.
 
@@ -103,8 +103,8 @@ Golang
 
 *   Added support for :code:`BeegoInput.RequestBody` as a source of untrusted data.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added external flow sources for the intents received in exported Android services.
 

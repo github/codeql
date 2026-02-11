@@ -2,6 +2,8 @@
  * Provides consistency queries for checking invariants in the language-specific
  * data-flow classes and predicates.
  */
+overlay[local?]
+module;
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
@@ -13,6 +15,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowL
 
   /** Holds if `call` should be excluded from the consistency test `uniqueCallEnclosingCallable`. */
   default predicate uniqueCallEnclosingCallableExclude(DataFlowLang::DataFlowCall call) { none() }
+
+  /** Holds if `n` should be excluded from the consistency test `uniqueType`. */
+  default predicate uniqueTypeExclude(DataFlowLang::Node n) { none() }
 
   /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
   default predicate uniqueNodeLocationExclude(DataFlowLang::Node n) { none() }
@@ -69,6 +74,9 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowL
   ) {
     none()
   }
+
+  /** Holds if `(n1, n2)` should be excluded from the consistency test `localFlowIsLocal`. */
+  default predicate localFlowIsLocalExclude(DataFlowLang::Node n1, DataFlowLang::Node n2) { none() }
 }
 
 module MakeConsistency<
@@ -123,6 +131,7 @@ module MakeConsistency<
       n instanceof RelevantNode and
       c = count(getNodeType(n)) and
       c != 1 and
+      not Input::uniqueTypeExclude(n) and
       msg = "Node should have one type but has " + c + "."
     )
   }
@@ -163,6 +172,7 @@ module MakeConsistency<
   query predicate localFlowIsLocal(Node n1, Node n2, string msg) {
     simpleLocalFlowStep(n1, n2, _) and
     nodeGetEnclosingCallable(n1) != nodeGetEnclosingCallable(n2) and
+    not Input::localFlowIsLocalExclude(n1, n2) and
     msg = "Local flow step does not preserve enclosing callable."
   }
 
@@ -234,6 +244,13 @@ module MakeConsistency<
 
   private predicate hasPost(Node n) { exists(PostUpdateNode post | post.getPreUpdateNode() = n) }
 
+  /**
+   * Consider code like `a.b.f = source()`. There is flow from `source()` to
+   * `[post] a.b` (with an appropriate access path), but we also want there to
+   * be flow to `[post] a` (with an appropriate access path). The data flow
+   * library is able to infer this step because there is a read step from `a`
+   * to `a.b`, as long as the post-update node for `a` exists.
+   */
   query predicate reverseRead(Node n, string msg) {
     exists(Node n2 | readStep(n, _, n2) and hasPost(n2) and not hasPost(n)) and
     not Input::reverseReadExclude(n) and
@@ -248,7 +265,10 @@ module MakeConsistency<
 
   query predicate postWithInFlow(PostUpdateNode n, string msg) {
     not clearsContent(n, _) and
-    simpleLocalFlowStep(_, n, _) and
+    exists(Node pred |
+      simpleLocalFlowStep(pred, n, _) and
+      not pred instanceof PostUpdateNode
+    ) and
     not Input::postWithInFlowExclude(n) and
     msg = "PostUpdateNode should not be the target of local flow."
   }
@@ -322,5 +342,122 @@ module MakeConsistency<
   query predicate lambdaCallEnclosingCallableMismatch(DataFlowCall call, Node receiver) {
     lambdaCall(call, _, receiver) and
     not nodeGetEnclosingCallable(receiver) = call.getEnclosingCallable()
+  }
+
+  query predicate speculativeStepAlreadyHasModel(Node n1, Node n2, string model) {
+    speculativeTaintStep(n1, n2) and
+    not defaultAdditionalTaintStep(n1, n2, _) and
+    (
+      simpleLocalFlowStep(n1, n2, _) and model = "SimpleLocalFlowStep"
+      or
+      exists(DataFlowCall call |
+        exists(viableCallable(call)) and
+        isArgumentNode(n1, call, _) and
+        model = "dispatch"
+      )
+    )
+  }
+
+  /**
+   * Gets counts of inconsistencies of each type.
+   */
+  int getInconsistencyCounts(string type) {
+    // total results from all the AST consistency query predicates.
+    type = "Node should have one enclosing callable" and
+    result = count(Node n | uniqueEnclosingCallable(n, _))
+    or
+    type = "Call should have one enclosing callable" and
+    result = count(DataFlowCall c | uniqueCallEnclosingCallable(c, _))
+    or
+    type = "Node should have one type" and
+    result = count(Node n | uniqueType(n, _))
+    or
+    type = "Node should have one location" and
+    result = count(Node n | uniqueNodeLocation(n, _))
+    or
+    type = "Nodes without location" and
+    result = count( | missingLocation(_) | 1)
+    or
+    type = "Node should have one toString" and
+    result = count(Node n | uniqueNodeToString(n, _))
+    or
+    type = "Callable mismatch for parameter" and
+    result = count(ParameterNode p | parameterCallable(p, _))
+    or
+    type = "Local flow step does not preserve enclosing callable" and
+    result = count(Node n1, Node n2 | localFlowIsLocal(n1, n2, _))
+    or
+    type = "Read step does not preserve enclosing callable" and
+    result = count(Node n1, Node n2 | readStepIsLocal(n1, n2, _))
+    or
+    type = "Store step does not preserve enclosing callable" and
+    result = count(Node n1, Node n2 | storeStepIsLocal(n1, n2, _))
+    or
+    type = "Type compatibility predicate is not reflexive" and
+    result = count(DataFlowType t | compatibleTypesReflexive(t, _))
+    or
+    type = "Call context for isUnreachableInCall is inconsistent with call graph" and
+    result = count(Node n, DataFlowCall call | unreachableNodeCCtx(n, call, _))
+    or
+    type = "Node and call does not share enclosing callable" and
+    result = count(DataFlowCall call, Node n | localCallNodes(call, n, _))
+    or
+    type = "PostUpdateNode should not equal its pre-update node" and
+    result = count(PostUpdateNode n | postIsNotPre(n, _))
+    or
+    type = "PostUpdateNode should have one pre-update node" and
+    result = count(PostUpdateNode n | postHasUniquePre(n, _))
+    or
+    type = "Node has multiple PostUpdateNodes" and
+    result = count(Node n | uniquePostUpdate(n, _))
+    or
+    type = "PostUpdateNode does not share callable with its pre-update node" and
+    result = count(PostUpdateNode n | postIsInSameCallable(n, _))
+    or
+    type = "Origin of readStep is missing a PostUpdateNode" and
+    result = count(Node n | reverseRead(n, _))
+    or
+    type = "ArgumentNode is missing PostUpdateNode" and
+    result = count(ArgumentNode n | argHasPostUpdate(n, _))
+    or
+    type = "PostUpdateNode should not be the target of local flow" and
+    result = count(PostUpdateNode n | postWithInFlow(n, _))
+    or
+    type = "Call context too large" and
+    result =
+      count(DataFlowCall call, DataFlowCall ctx, DataFlowCallable callable |
+        viableImplInCallContextTooLarge(call, ctx, callable)
+      )
+    or
+    type = "Parameters with overlapping positions" and
+    result =
+      count(DataFlowCallable c, ParameterPosition pos, Node p |
+        uniqueParameterNodeAtPosition(c, pos, p, _)
+      )
+    or
+    type = "Parameter node with multiple positions" and
+    result =
+      count(DataFlowCallable c, ParameterPosition pos, Node p |
+        uniqueParameterNodePosition(c, pos, p, _)
+      )
+    or
+    type = "Non-unique content approximation" and
+    result = count(Content c | uniqueContentApprox(c, _))
+    or
+    type = "Node steps to itself" and
+    result = count(Node n | identityLocalStep(n, _))
+    or
+    type = "Missing call for argument node" and
+    result = count(ArgumentNode n | missingArgumentCall(n, _))
+    or
+    type = "Multiple calls for argument node" and
+    result = count(ArgumentNode arg, DataFlowCall call | multipleArgumentCall(arg, call, _))
+    or
+    type = "Lambda call enclosing callable mismatch" and
+    result =
+      count(DataFlowCall call, Node receiver | lambdaCallEnclosingCallableMismatch(call, receiver))
+    or
+    type = "Speculative step already has Model" and
+    result = count(Node n1, Node n2 | speculativeStepAlreadyHasModel(n1, n2, _))
   }
 }

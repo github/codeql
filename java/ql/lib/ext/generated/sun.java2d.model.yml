@@ -1,7 +1,0 @@
-# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: neutralModel
-    data:
-      - ["sun.java2d", "DisposerRecord", "dispose", "()", "summary", "df-generated"]

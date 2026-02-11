@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module SourceTest implements TestSig {
   string getARelevantTag() { result = "source" }

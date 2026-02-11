@@ -1,1 +1,2 @@
-experimental/Security/CWE/CWE-352/JsonpInjection.ql
+query: experimental/Security/CWE/CWE-352/JsonpInjection.ql
+postprocess: utils/test/PrettyPrintModels.ql

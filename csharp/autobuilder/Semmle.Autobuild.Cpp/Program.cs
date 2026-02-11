@@ -22,12 +22,12 @@ namespace Semmle.Autobuild.Cpp
                 }
                 catch (InvalidEnvironmentException ex)
                 {
-                    Console.WriteLine("The environment is invalid: {0}", ex.Message);
+                    Console.WriteLine($"The environment is invalid: {ex.Message}");
                 }
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                Console.WriteLine("The value \"{0}\" for parameter \"{1}\" is invalid", ex.ActualValue, ex.ParamName);
+                Console.WriteLine($"The value \"{ex.ActualValue}\" for parameter \"{ex.ParamName}\" is invalid");
             }
             return 1;
         }

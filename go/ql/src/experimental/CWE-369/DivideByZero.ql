@@ -28,7 +28,7 @@ predicate divideByZeroSanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
 }
 
 module Config implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(Function f, DataFlow::CallNode cn | cn = f.getACall() |
@@ -45,6 +45,8 @@ module Config implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink = DataFlow::exprNode(any(QuoExpr e).getRightOperand())
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

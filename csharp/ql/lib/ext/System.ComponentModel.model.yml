@@ -36,3 +36,8 @@ extensions:
       - ["System.ComponentModel", "PropertyDescriptorCollection", False, "set_Item", "(System.Int32,System.Object)", "", "Argument[0]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Key]", "value", "manual"]
       - ["System.ComponentModel", "PropertyDescriptorCollection", False, "set_Item", "(System.Int32,System.Object)", "", "Argument[1]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair`2.Value]", "value", "manual"]
       - ["System.ComponentModel", "PropertyDescriptorCollection", False, "set_Item", "(System.Object,System.Object)", "", "Argument[1]", "Argument[this].Element", "value", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+       - ["System.ComponentModel", "PropertyDescriptor", "GetValue", "(System.Object)", "summary", "manual"]

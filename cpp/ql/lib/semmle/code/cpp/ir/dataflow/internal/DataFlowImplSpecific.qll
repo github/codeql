@@ -31,4 +31,6 @@ module CppDataFlow implements InputSig<Location> {
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
 
   predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
+
+  int defaultFieldFlowBranchLimit() { result = 3 }
 }

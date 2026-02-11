@@ -6,8 +6,9 @@
  * @problem.severity recommendation
  * @precision high
  * @id java/internal-representation-exposure
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  *       modularity
  *       external/cwe/cwe-485
  */
@@ -50,7 +51,7 @@ predicate storesArray(Callable c, int i, Field f) {
 predicate returnsArray(Callable c, Field f) {
   f.getDeclaringType() = c.getDeclaringType().getAnAncestor().getSourceDeclaration() and
   relevantType(f.getType()) and
-  exists(ReturnStmt rs | rs.getEnclosingCallable() = c and rs.getResult() = f.getAnAccess()) and
+  exists(ReturnStmt rs | rs.getEnclosingCallable() = c and rs.getExpr() = f.getAnAccess()) and
   not c.isStatic()
 }
 
@@ -70,7 +71,7 @@ predicate mayWriteToArray(Expr modified) {
   )
   or
   // return __array__;    ...  method()[1] = 0
-  exists(ReturnStmt rs | modified = rs.getResult() and relevantType(modified.getType()) |
+  exists(ReturnStmt rs | modified = rs.getExpr() and relevantType(modified.getType()) |
     exists(Callable enclosing, MethodCall ma |
       enclosing = rs.getEnclosingCallable() and ma.getMethod().getSourceDeclaration() = enclosing
     |

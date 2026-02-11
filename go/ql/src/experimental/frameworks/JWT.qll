@@ -172,7 +172,11 @@ class GolangJwtParseFromRequestWithClaims extends JwtParseWithKeyFunction {
  * Gets `gopkg.in/square/go-jose` and `github.com/go-jose/go-jose` jwt package
  */
 string goJoseJwtPackage() {
-  result = package(["gopkg.in/square/go-jose", "github.com/go-jose/go-jose"], "jwt")
+  result =
+    package([
+        "gopkg.in/square/go-jose", "gopkg.in/go-jose/go-jose", "github.com/square/go-jose",
+        "github.com/go-jose/go-jose"
+      ], "jwt")
 }
 
 /**

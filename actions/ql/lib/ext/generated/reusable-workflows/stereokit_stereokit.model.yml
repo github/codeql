@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "input.patch", "code-injection", "generated"]
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "input.minor", "code-injection", "generated"]
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "input.major", "code-injection", "generated"]
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "input.preName", "code-injection", "generated"]
+     - ["stereokit/stereokit/.github/workflows/build.yml", "*", "input.pre", "code-injection", "generated"]

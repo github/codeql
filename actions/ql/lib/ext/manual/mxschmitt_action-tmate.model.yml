@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["mxschmitt/action-tmate", "*", "input.tmate-server-rsa-fingerprint", "command-injection", "manual"]
+      - ["mxschmitt/action-tmate", "*", "input.tmate-server-ed25519-fingerprint", "command-injection", "manual"]

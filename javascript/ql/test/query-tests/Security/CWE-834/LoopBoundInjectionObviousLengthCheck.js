@@ -16,7 +16,7 @@ function problem(val) {
         return [];
     }
 
-    for (var i = 0; i < val.length; i++) { // OK
+    for (var i = 0; i < val.length; i++) {
         ret.push(val[i]);
     }
 }

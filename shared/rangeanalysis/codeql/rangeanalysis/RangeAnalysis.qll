@@ -8,6 +8,8 @@
  * If an inferred bound relies directly on a condition, then this condition is
  * reported as the reason for the bound.
  */
+overlay[local?]
+module;
 
 /*
  * This library tackles range analysis as a flow problem. Consider e.g.:
@@ -65,11 +67,13 @@
 
 private import codeql.util.Location
 
-signature module Semantic {
+signature module Semantic<LocationSig Location> {
   class Expr {
     string toString();
 
     BasicBlock getBasicBlock();
+
+    Location getLocation();
   }
 
   class ConstantIntegerExpr extends Expr {
@@ -144,7 +148,7 @@ signature module Semantic {
 
   class BasicBlock {
     /** Holds if this block (transitively) dominates `otherblock`. */
-    predicate bbDominates(BasicBlock otherBlock);
+    predicate dominates(BasicBlock otherBlock);
   }
 
   /** Gets an immediate successor of basic block `bb`, if any. */
@@ -180,21 +184,6 @@ signature module Semantic {
     Expr asExpr();
 
     /**
-     * Holds if the guard directly controls a given basic block. For example in
-     * the following code, the guard `(x > y)` directly controls the block
-     * beneath it:
-     * ```
-     * if (x > y)
-     * {
-     *   Console.WriteLine("x is greater than y");
-     * }
-     * ```
-     * `branch` indicates whether the basic block is entered when the guard
-     * evaluates to `true` or when it evaluates to `false`.
-     */
-    predicate directlyControls(BasicBlock controlled, boolean branch);
-
-    /**
      * Holds if this guard is an equality test between `e1` and `e2`. If the
      * test is negated, that is `!=`, then `polarity` is false, otherwise
      * `polarity` is true.
@@ -202,24 +191,19 @@ signature module Semantic {
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
     /**
-     * Holds if there is a branch edge between two basic blocks. For example
-     * in the following C code, there are two branch edges from the basic block
-     * containing the condition `(x > y)` to the beginnings of the true and
-     * false blocks that follow:
-     * ```
-     * if (x > y) {
-     *   printf("x is greater than y\n");
-     * } else {
-     *   printf("x is not greater than y\n");
-     * }
-     * ```
-     * `branch` indicates whether the second basic block is the one entered
-     * when the guard evaluates to `true` or when it evaluates to `false`.
+     * Holds if this guard evaluating to `branch` controls the control-flow
+     * branch edge from `bb1` to `bb2`. That is, following the edge from
+     * `bb1` to `bb2` implies that this guard evaluated to `branch`.
      */
-    predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
-  }
+    predicate controlsBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
 
-  predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2);
+    /**
+     * Holds if this guard evaluating to `branch` directly or indirectly controls
+     * the block `controlled`. That is, the evaluation of `controlled` is
+     * dominated by this guard evaluating to `branch`.
+     */
+    predicate controls(BasicBlock controlled, boolean branch);
+  }
 
   class Type;
 
@@ -294,7 +278,7 @@ signature module Semantic {
   predicate conversionCannotOverflow(Type fromType, Type toType);
 }
 
-signature module SignAnalysisSig<Semantic Sem> {
+signature module SignAnalysisSig<LocationSig Location, Semantic<Location> Sem> {
   /** Holds if `e` can be positive and cannot be negative. */
   predicate semPositive(Sem::Expr e);
 
@@ -320,7 +304,7 @@ signature module SignAnalysisSig<Semantic Sem> {
   predicate semMayBeNegative(Sem::Expr e);
 }
 
-signature module ModulusAnalysisSig<Semantic Sem> {
+signature module ModulusAnalysisSig<LocationSig Location, Semantic<Location> Sem> {
   class ModBound;
 
   predicate exprModulus(Sem::Expr e, ModBound b, int val, int mod);
@@ -346,7 +330,7 @@ signature module DeltaSig {
   Delta fromFloat(float f);
 }
 
-signature module LangSig<Semantic Sem, DeltaSig D> {
+signature module LangSig<LocationSig Location, Semantic<Location> Sem, DeltaSig D> {
   /**
    * Holds if `e >= bound` (if `upper = false`) or `e <= bound` (if `upper = true`).
    */
@@ -372,7 +356,7 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
   default predicate includeRelativeBounds() { any() }
 }
 
-signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
+signature module BoundSig<LocationSig Location, Semantic<Location> Sem, DeltaSig D> {
   /**
    * A bound that the range analysis can infer for a variable. This includes
    * constant bounds represented by the abstract value zero, SSA bounds for when
@@ -409,14 +393,15 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   }
 }
 
-signature module OverflowSig<Semantic Sem, DeltaSig D> {
+signature module OverflowSig<LocationSig Location, Semantic<Location> Sem, DeltaSig D> {
   predicate semExprDoesNotOverflow(boolean positively, Sem::Expr expr);
 }
 
 module RangeStage<
-  LocationSig Location, Semantic Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
-  OverflowSig<Sem, D> OverflowParam, LangSig<Sem, D> LangParam, SignAnalysisSig<Sem> SignAnalysis,
-  ModulusAnalysisSig<Sem> ModulusAnalysisParam>
+  LocationSig Location, Semantic<Location> Sem, DeltaSig D, BoundSig<Location, Sem, D> Bounds,
+  OverflowSig<Location, Sem, D> OverflowParam, LangSig<Location, Sem, D> LangParam,
+  SignAnalysisSig<Location, Sem> SignAnalysis,
+  ModulusAnalysisSig<Location, Sem> ModulusAnalysisParam>
 {
   private import Bounds
   private import LangParam
@@ -424,7 +409,7 @@ module RangeStage<
   private import OverflowParam
   private import SignAnalysis
   private import ModulusAnalysisParam
-  private import internal.RangeUtils::MakeUtils<Sem, D>
+  private import internal.RangeUtils::MakeUtils<Location, Sem, D>
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -667,19 +652,14 @@ module RangeStage<
       delta = D::fromFloat(D::toFloat(d1) + d2 + d3)
     )
     or
-    exists(boolean testIsTrue0 |
-      Sem::implies_v2(result, testIsTrue, boundFlowCond(v, e, delta, upper, testIsTrue0),
-        testIsTrue0)
-    )
-    or
     result = eqFlowCond(v, e, delta, true, testIsTrue) and
     (upper = true or upper = false)
     or
-    // guard that tests whether `v2` is bounded by `e + delta + d1 - d2` and
-    // exists a guard `guardEq` such that `v = v2 - d1 + d2`.
+    // guard that tests whether `v2` is bounded by `e + delta - d` and
+    // exists a guard `guardEq` such that `v = v2 + d`.
     exists(Sem::SsaVariable v2, D::Delta oldDelta, float d |
       // equality needs to control guard
-      result.getBasicBlock() = eqSsaCondDirectlyControls(v, v2, d) and
+      result.getBasicBlock() = eqSsaCondControls(v, v2, d) and
       result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
       delta = D::fromFloat(D::toFloat(oldDelta) + d)
     )
@@ -689,13 +669,11 @@ module RangeStage<
    * Gets a basic block in which `v1` equals `v2 + delta`.
    */
   pragma[nomagic]
-  private Sem::BasicBlock eqSsaCondDirectlyControls(
-    Sem::SsaVariable v1, Sem::SsaVariable v2, float delta
-  ) {
+  private Sem::BasicBlock eqSsaCondControls(Sem::SsaVariable v1, Sem::SsaVariable v2, float delta) {
     exists(Sem::Guard guardEq, D::Delta d1, D::Delta d2, boolean eqIsTrue |
       guardEq = eqFlowCond(v1, ssaRead(v2, d1), d2, true, eqIsTrue) and
       delta = D::toFloat(d2) - D::toFloat(d1) and
-      guardEq.directlyControls(result, eqIsTrue)
+      guardEq.controls(result, eqIsTrue)
     )
   }
 
@@ -746,7 +724,7 @@ module RangeStage<
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = boundFlowCond(v, e, delta, upper, testIsTrue) and
-      guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
+      guardControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
   }
@@ -759,7 +737,7 @@ module RangeStage<
     exists(Sem::Guard guard, boolean testIsTrue |
       pos.hasReadOfVar(v) and
       guard = eqFlowCond(v, e, delta, false, testIsTrue) and
-      guardDirectlyControlsSsaRead(guard, pos, testIsTrue) and
+      guardControlsSsaRead(guard, pos, testIsTrue) and
       reason = TSemCondReason(guard)
     )
   }
@@ -945,17 +923,18 @@ module RangeStage<
   }
 
   /**
-   * Holds if `b + delta` is a valid bound for `inp` when used as an input to
-   * `phi` along `edge`.
+   * Holds if `b + delta` is a valid bound for the input `inp` to `phi` along
+   * the edge with rank `rix`.
    * - `upper = true`  : `inp <= b + delta`
    * - `upper = false` : `inp >= b + delta`
    */
   private predicate boundedPhiInp(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, SemBound b,
-    D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta, SemReason reason
+    Sem::SsaPhiNode phi, int rix, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason
   ) {
-    edge.phiInput(phi, inp) and
-    exists(D::Delta d, boolean fromBackEdge0 |
+    exists(
+      D::Delta d, boolean fromBackEdge0, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge
+    |
       boundedSsa(inp, b, d, edge, upper, fromBackEdge0, origdelta, reason)
       or
       boundedPhi(inp, b, d, upper, fromBackEdge0, origdelta, reason)
@@ -967,6 +946,7 @@ module RangeStage<
       origdelta = D::fromFloat(0) and
       reason = TSemNoReason()
     |
+      rankedPhiInput(phi, inp, edge, rix) and
       if backEdge(phi, inp, edge)
       then
         fromBackEdge = true and
@@ -985,33 +965,30 @@ module RangeStage<
   }
 
   /**
-   * Holds if `b + delta` is a valid bound for `inp` when used as an input to
-   * `phi` along `edge`.
+   * Holds if `b + delta` is a valid bound for the input `inp` to `phi` along
+   * the edge with rank `rix`.
    * - `upper = true`  : `inp <= b + delta`
    * - `upper = false` : `inp >= b + delta`
    *
-   * Equivalent to `boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)`.
+   * Equivalent to `boundedPhiInp(phi, rix, b, delta, upper, _, _, _)`.
    */
   pragma[noinline]
   private predicate boundedPhiInp1(
-    Sem::SsaPhiNode phi, SemBound b, boolean upper, Sem::SsaVariable inp,
-    SsaReadPositionPhiInputEdge edge, D::Delta delta
+    Sem::SsaPhiNode phi, SemBound b, boolean upper, int rix, D::Delta delta
   ) {
-    boundedPhiInp(phi, inp, edge, b, delta, upper, _, _, _)
+    boundedPhiInp(phi, rix, b, delta, upper, _, _, _)
   }
 
   /**
-   * Holds if `phi` is a valid bound for `inp` when used as an input to `phi`
-   * along `edge`.
+   * Holds if `phi` is a valid bound for the input `inp` to `phi` along the
+   * edge with rank `rix`.
    * - `upper = true`  : `inp <= phi`
    * - `upper = false` : `inp >= phi`
    */
-  private predicate selfBoundedPhiInp(
-    Sem::SsaPhiNode phi, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge, boolean upper
-  ) {
+  private predicate selfBoundedPhiInp(Sem::SsaPhiNode phi, int rix, boolean upper) {
     exists(D::Delta d, SemSsaBound phibound |
       phibound.getVariable() = phi and
-      boundedPhiInp(phi, inp, edge, phibound, d, upper, _, _, _) and
+      boundedPhiInp(phi, rix, phibound, d, upper, _, _, _) and
       (
         upper = true and D::toFloat(d) <= 0
         or
@@ -1031,33 +1008,34 @@ module RangeStage<
     Sem::SsaPhiNode phi, boolean upper, SemBound b, D::Delta delta, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
   ) {
-    boundedPhiInp(phi, _, _, b, delta, upper, fromBackEdge, origdelta, reason)
+    boundedPhiInp(phi, _, b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
   /**
    * Holds if the candidate bound `b + delta` for `phi` is valid for the phi input
-   * `inp` along `edge`.
+   * along the edge with rank `rix`.
    */
   private predicate boundedPhiCandValidForEdge(
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason, Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge
+    D::Delta origdelta, SemReason reason, int rix
   ) {
     boundedPhiCand(phi, upper, b, delta, fromBackEdge, origdelta, reason) and
     (
-      exists(D::Delta d | boundedPhiInp1(phi, b, upper, inp, edge, d) |
+      exists(D::Delta d | boundedPhiInp1(phi, b, upper, rix, d) |
         upper = true and D::toFloat(d) <= D::toFloat(delta)
       )
       or
-      exists(D::Delta d | boundedPhiInp1(phi, b, upper, inp, edge, d) |
+      exists(D::Delta d | boundedPhiInp1(phi, b, upper, rix, d) |
         upper = false and D::toFloat(d) >= D::toFloat(delta)
       )
       or
-      selfBoundedPhiInp(phi, inp, edge, upper)
+      selfBoundedPhiInp(phi, rix, upper)
     )
   }
 
   /**
-   * Holds if `b + delta` is a valid bound for `phi`'s `rix`th input edge.
+   * Holds if `b + delta` is a valid bound for `phi` when accounting for the
+   * input edges ranked 1 through `rix`.
    * - `upper = true`  : `phi <= b + delta`
    * - `upper = false` : `phi >= b + delta`
    */
@@ -1066,10 +1044,8 @@ module RangeStage<
     Sem::SsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason, int rix
   ) {
-    exists(Sem::SsaVariable inp, SsaReadPositionPhiInputEdge edge |
-      rankedPhiInput(phi, inp, edge, rix) and
-      boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
-    |
+    boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix) and
+    (
       rix = 1
       or
       boundedPhiRankStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix - 1)

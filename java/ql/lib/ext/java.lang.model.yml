@@ -91,9 +91,6 @@ extensions:
       - ["java.lang", "Iterable", True, "iterator", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Iterable", True, "spliterator", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "NullPointerException", False, "NullPointerException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
-      - ["java.lang", "Object", True, "clone", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
-      - ["java.lang", "Object", True, "clone", "", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
-      - ["java.lang", "Object", True, "clone", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
       - ["java.lang", "RuntimeException", False, "RuntimeException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "RuntimeException", False, "RuntimeException", "(String,Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "RuntimeException", False, "RuntimeException", "(String,Throwable)", "", "Argument[1]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
@@ -165,6 +162,10 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.lang", "AbstractStringBuilder", "indexOf", "(String)", "summary", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "indexOf", "(String,int)", "summary", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "lastIndexOf", "(String)", "summary", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "lastIndexOf", "(String,int)", "summary", "manual"]
       - ["java.lang", "AbstractStringBuilder", "length", "()", "summary", "manual"]
       - ["java.lang", "AbstractStringBuilder", "setCharAt", "(int,char)", "summary", "manual"]
       - ["java.lang", "AbstractStringBuilder", "setLength", "(int)", "summary", "manual"]
@@ -199,6 +200,7 @@ extensions:
       - ["java.lang", "ClassLoader", "loadClass", "(String,boolean)", "summary", "df-manual"]
       - ["java.lang", "ClassLoader", "setClassAssertionStatus", "(String,boolean)", "summary", "df-manual"]
       - ["java.lang", "ClassLoader", "setPackageAssertionStatus", "(String,boolean)", "summary", "df-manual"]
+      - ["java.lang", "Comparable", "compareTo", "", "summary", "manual"]
       - ["java.lang", "Enum", "Enum", "(String,int)", "summary", "manual"]
       - ["java.lang", "Enum", "equals", "(Object)", "summary", "manual"]
       - ["java.lang", "Enum", "hashCode", "()", "summary", "manual"]
@@ -210,7 +212,6 @@ extensions:
       - ["java.lang", "Object", "equals", "(Object)", "summary", "manual"]
       - ["java.lang", "Object", "getClass", "()", "summary", "manual"]
       - ["java.lang", "Object", "hashCode", "()", "summary", "manual"]
-      - ["java.lang", "Object", "toString", "()", "summary", "manual"]
       - ["java.lang", "Runtime", "getRuntime", "()", "summary", "manual"]
       - ["java.lang", "String", "compareTo", "(String)", "summary", "manual"]
       - ["java.lang", "String", "contains", "(CharSequence)", "summary", "manual"]

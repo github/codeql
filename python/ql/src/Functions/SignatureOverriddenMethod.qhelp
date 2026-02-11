@@ -5,31 +5,24 @@
 
 
 <overview>
-<p> There are one (or more) legal parameters for an overridden method that are
-not legal for an overriding method. This will cause an error when the overriding 
-method is called with a number of parameters that is legal for the overridden method. 
-This violates the Liskov substitution principle.
+<p> When the signature of a method of a base class and a method of a subclass that overrides it don't match, a call to the base class method 
+may not be a valid call to the subclass method, and thus raise an exception if an instance of the subclass is passed instead. 
+If following the Liskov Substitution Principle, in which an instance of a subclass should be usable in every context as though it were an 
+instance of the base class, this behavior breaks the principle.
 </p>
 
 </overview>
 <recommendation>
 
-<p>Ensure that the overriding method accepts all the parameters that are legal for
-overridden method.</p>
+<p>Ensure that the overriding method in the subclass accepts the same parameters as the base method. </p>
 
 </recommendation>
 <example>
-<p>In this example there is a mismatch between the legal parameters for the base 
-class method <code>(self, source, filename, symbol)</code> and the extension method 
-<code>(self, source)</code>. The extension method can be used to override the base 
-method as long as values are not specified for the <code>filename</code> and 
-<code>symbol</code> parameters. If the extension method was passed the additional 
-parameters accepted by the base method then an error would occur.</p>
+<p>In the following example, <code>Base.runsource</code> takes an optional <code>filename</code> argument. However, the overriding method 
+<code>Sub.runsource</code> does not. This means the <code>run</code> function will fail if passed an instance of <code>Sub</code>.
+</p>
 
 <sample src="SignatureOverriddenMethod.py" />
-
-<p>The extension method should be updated to support the <code>filename</code> and 
-<code>symbol</code> parameters supported by the overridden method.</p>
 
 </example>
 <references>

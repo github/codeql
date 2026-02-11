@@ -1,4 +1,6 @@
 /** Provides classes representing various flow sources for data flow / taint tracking. */
+overlay[local?]
+module;
 
 private import semmle.code.java.dataflow.FlowSources as FlowSources
 
@@ -19,5 +21,6 @@ private module AllApiSources {
   private import semmle.code.java.security.InsecureTrustManager
   private import semmle.code.java.security.JWT
   private import semmle.code.java.security.StackTraceExposureQuery
+  private import semmle.code.java.security.SensitiveDataExposureThroughErrorMessageQuery
   private import semmle.code.java.security.ZipSlipQuery
 }

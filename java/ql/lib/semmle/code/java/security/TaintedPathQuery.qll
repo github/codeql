@@ -60,7 +60,7 @@ private class TaintPreservingUriCtorParam extends Parameter {
  * A taint-tracking configuration for tracking flow from remote sources to the creation of a path.
  */
 module TaintedPathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TaintedPathSink }
 
@@ -72,6 +72,8 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(TaintedPathAdditionalTaintStep s).step(n1, n2)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /** Tracks flow from remote sources to the creation of a path. */

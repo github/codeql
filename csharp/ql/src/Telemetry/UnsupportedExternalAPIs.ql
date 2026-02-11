@@ -7,7 +7,7 @@
  */
 
 private import csharp
-private import ExternalApi
+private import semmle.code.csharp.telemetry.ExternalApi
 
 private predicate relevant(ExternalApi api) { not api.isSupported() }
 

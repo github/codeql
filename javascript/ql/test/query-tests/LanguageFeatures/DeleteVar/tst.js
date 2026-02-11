@@ -1,8 +1,8 @@
 delete this.Object;
-delete String;
+delete String; // $ Alert
 function f(o, x) {
 	delete o.p;
 	delete o[x];
-	delete x;
+	delete x; // $ Alert
 	delete (o.p);
 }

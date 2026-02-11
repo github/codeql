@@ -14,10 +14,10 @@
 
 import javascript
 import semmle.javascript.security.dataflow.ExceptionXssQuery
-import DataFlow::PathGraph
+import DataFlow::DeduplicatePathGraph<ExceptionXssFlow::PathNode, ExceptionXssFlow::PathGraph>
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where ExceptionXssFlow::flowPath(source.getAnOriginalPathNode(), sink.getAnOriginalPathNode())
 select sink.getNode(), source, sink,
   "$@ is reinterpreted as HTML without escaping meta-characters.", source.getNode(),
   source.getNode().(Source).getDescription()

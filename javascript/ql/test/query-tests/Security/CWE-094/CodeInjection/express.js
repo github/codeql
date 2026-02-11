@@ -3,35 +3,28 @@ var express = require('express');
 var app = express();
 
 app.get('/some/path', function(req, res) {
-  // NOT OK
-  var f = new Function("return wibbles[" + req.param("wobble") + "];");
-  // NOT OK
-  require("vm").runInThisContext("return wibbles[" + req.param("wobble") + "];");
+  var f = new Function("return wibbles[" + req.param("wobble") + "];"); // $ Alert[js/code-injection]
+  require("vm").runInThisContext("return wibbles[" + req.param("wobble") + "];"); // $ Alert[js/code-injection]
   var runC = require("vm").runInNewContext;
-  // NOT OK
-  runC("return wibbles[" + req.param("wobble") + "];");
+  runC("return wibbles[" + req.param("wobble") + "];"); // $ Alert[js/code-injection]
   var vm = require("vm");
-  // NOT OK
-  vm.compileFunction(req.param("code_compileFunction"));
-  // NOT OK
-  var script = new vm.Script(req.param("code_Script"));
-  // NOT OK
-  var mdl = new vm.SourceTextModule(req.param("code_SourceTextModule"));
-  // NOT OK
-  vm.runInContext(req.param("code_runInContext"), vm.createContext());
+  vm.compileFunction(req.param("code_compileFunction")); // $ Alert[js/code-injection]
+  var script = new vm.Script(req.param("code_Script")); // $ Alert[js/code-injection]
+  var mdl = new vm.SourceTextModule(req.param("code_SourceTextModule")); // $ Alert[js/code-injection]
+  vm.runInContext(req.param("code_runInContext"), vm.createContext()); // $ Alert[js/code-injection]
 });
 
 const cp = require('child_process');
 app.get('/other/path', function(req, res) {
-  const taint = req.param("wobble");
-  cp.execFileSync('node', ['-e', taint]); // NOT OK
+  const taint = req.param("wobble"); // $ Source[js/code-injection]
+  cp.execFileSync('node', ['-e', taint]); // $ Alert[js/code-injection]
 
-  cp.execFileSync('node', ['-e', `console.log(${JSON.stringify(taint)})`]); // OK
+  cp.execFileSync('node', ['-e', `console.log(${JSON.stringify(taint)})`]);
 });
 
 const pty = require('node-pty');
 app.get('/terminal', function(req, res) {
-  const taint = req.param("wobble");
+  const taint = req.param("wobble"); // $ Source[js/code-injection]
   const shell = pty.spawn('bash', [], {
     name: 'xterm-color',
     cols: 80,
@@ -40,13 +33,13 @@ app.get('/terminal', function(req, res) {
     env: process.env
   });
 
-  shell.write(taint); // NOT OK
+  shell.write(taint); // $ Alert[js/code-injection]
 });
   
 require("express-ws")(app);
 
 app.ws("/socket-thing/", function (ws, req) {
-  ws.on("message", function (msg) {
-    eval(msg); // NOT OK
+  ws.on("message", function (msg) { // $ Source[js/code-injection]
+    eval(msg); // $ Alert[js/code-injection]
   });
 });

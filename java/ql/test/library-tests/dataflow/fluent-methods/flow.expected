@@ -1,0 +1,72 @@
+models
+edges
+| Test.java:23:25:23:32 | x : String | Test.java:24:18:24:18 | x : String | provenance |  |
+| Test.java:24:5:24:8 | this [post update] : Test [field] : String | Test.java:23:15:23:23 | parameter this [Return] : Test [field] : String | provenance |  |
+| Test.java:24:18:24:18 | x : String | Test.java:24:5:24:8 | this [post update] : Test [field] : String | provenance |  |
+| Test.java:32:17:32:19 | parameter this : Test [field] : String | Test.java:33:12:33:16 | this <.field> : Test [field] : String | provenance |  |
+| Test.java:33:12:33:16 | this <.field> : Test [field] : String | Test.java:33:12:33:16 | field : String | provenance |  |
+| Test.java:44:5:44:18 | fluentNoop(...) [post update] : Test [field] : String | Test.java:45:10:45:10 | t : Test [field] : String | provenance |  |
+| Test.java:44:30:44:37 | source(...) : String | Test.java:23:25:23:32 | x : String | provenance |  |
+| Test.java:44:30:44:37 | source(...) : String | Test.java:44:5:44:18 | fluentNoop(...) [post update] : Test [field] : String | provenance |  |
+| Test.java:45:10:45:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | provenance |  |
+| Test.java:45:10:45:10 | t : Test [field] : String | Test.java:45:10:45:16 | get(...) | provenance |  |
+| Test.java:50:5:50:33 | fluentNoop(...) [post update] : Test [field] : String | Test.java:51:10:51:10 | t : Test [field] : String | provenance |  |
+| Test.java:50:45:50:52 | source(...) : String | Test.java:23:25:23:32 | x : String | provenance |  |
+| Test.java:50:45:50:52 | source(...) : String | Test.java:50:5:50:33 | fluentNoop(...) [post update] : Test [field] : String | provenance |  |
+| Test.java:51:10:51:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | provenance |  |
+| Test.java:51:10:51:10 | t : Test [field] : String | Test.java:51:10:51:16 | get(...) | provenance |  |
+| Test.java:56:5:56:28 | indirectlyFluentNoop(...) [post update] : Test [field] : String | Test.java:57:10:57:10 | t : Test [field] : String | provenance |  |
+| Test.java:56:40:56:47 | source(...) : String | Test.java:23:25:23:32 | x : String | provenance |  |
+| Test.java:56:40:56:47 | source(...) : String | Test.java:56:5:56:28 | indirectlyFluentNoop(...) [post update] : Test [field] : String | provenance |  |
+| Test.java:57:10:57:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | provenance |  |
+| Test.java:57:10:57:10 | t : Test [field] : String | Test.java:57:10:57:16 | get(...) | provenance |  |
+| Test.java:62:5:62:51 | modelledFluentMethod(...) [post update] : Test [field] : String | Test.java:63:10:63:10 | t : Test [field] : String | provenance | ValuePreservingMethod |
+| Test.java:62:63:62:70 | source(...) : String | Test.java:23:25:23:32 | x : String | provenance |  |
+| Test.java:62:63:62:70 | source(...) : String | Test.java:62:5:62:51 | modelledFluentMethod(...) [post update] : Test [field] : String | provenance |  |
+| Test.java:63:10:63:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | provenance |  |
+| Test.java:63:10:63:10 | t : Test [field] : String | Test.java:63:10:63:16 | get(...) | provenance |  |
+| Test.java:68:5:68:74 | modelledFluentMethod(...) [post update] : Test [field] : String | Test.java:69:10:69:10 | t : Test [field] : String | provenance | ValuePreservingMethod |
+| Test.java:68:86:68:93 | source(...) : String | Test.java:23:25:23:32 | x : String | provenance |  |
+| Test.java:68:86:68:93 | source(...) : String | Test.java:68:5:68:74 | modelledFluentMethod(...) [post update] : Test [field] : String | provenance |  |
+| Test.java:69:10:69:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | provenance |  |
+| Test.java:69:10:69:10 | t : Test [field] : String | Test.java:69:10:69:16 | get(...) | provenance |  |
+nodes
+| Test.java:23:15:23:23 | parameter this [Return] : Test [field] : String | semmle.label | parameter this [Return] : Test [field] : String |
+| Test.java:23:25:23:32 | x : String | semmle.label | x : String |
+| Test.java:24:5:24:8 | this [post update] : Test [field] : String | semmle.label | this [post update] : Test [field] : String |
+| Test.java:24:18:24:18 | x : String | semmle.label | x : String |
+| Test.java:32:17:32:19 | parameter this : Test [field] : String | semmle.label | parameter this : Test [field] : String |
+| Test.java:33:12:33:16 | field : String | semmle.label | field : String |
+| Test.java:33:12:33:16 | this <.field> : Test [field] : String | semmle.label | this <.field> : Test [field] : String |
+| Test.java:44:5:44:18 | fluentNoop(...) [post update] : Test [field] : String | semmle.label | fluentNoop(...) [post update] : Test [field] : String |
+| Test.java:44:30:44:37 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:45:10:45:10 | t : Test [field] : String | semmle.label | t : Test [field] : String |
+| Test.java:45:10:45:16 | get(...) | semmle.label | get(...) |
+| Test.java:50:5:50:33 | fluentNoop(...) [post update] : Test [field] : String | semmle.label | fluentNoop(...) [post update] : Test [field] : String |
+| Test.java:50:45:50:52 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:51:10:51:10 | t : Test [field] : String | semmle.label | t : Test [field] : String |
+| Test.java:51:10:51:16 | get(...) | semmle.label | get(...) |
+| Test.java:56:5:56:28 | indirectlyFluentNoop(...) [post update] : Test [field] : String | semmle.label | indirectlyFluentNoop(...) [post update] : Test [field] : String |
+| Test.java:56:40:56:47 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:57:10:57:10 | t : Test [field] : String | semmle.label | t : Test [field] : String |
+| Test.java:57:10:57:16 | get(...) | semmle.label | get(...) |
+| Test.java:62:5:62:51 | modelledFluentMethod(...) [post update] : Test [field] : String | semmle.label | modelledFluentMethod(...) [post update] : Test [field] : String |
+| Test.java:62:63:62:70 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:63:10:63:10 | t : Test [field] : String | semmle.label | t : Test [field] : String |
+| Test.java:63:10:63:16 | get(...) | semmle.label | get(...) |
+| Test.java:68:5:68:74 | modelledFluentMethod(...) [post update] : Test [field] : String | semmle.label | modelledFluentMethod(...) [post update] : Test [field] : String |
+| Test.java:68:86:68:93 | source(...) : String | semmle.label | source(...) : String |
+| Test.java:69:10:69:10 | t : Test [field] : String | semmle.label | t : Test [field] : String |
+| Test.java:69:10:69:16 | get(...) | semmle.label | get(...) |
+subpaths
+| Test.java:44:30:44:37 | source(...) : String | Test.java:23:25:23:32 | x : String | Test.java:23:15:23:23 | parameter this [Return] : Test [field] : String | Test.java:44:5:44:18 | fluentNoop(...) [post update] : Test [field] : String |
+| Test.java:45:10:45:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | Test.java:33:12:33:16 | field : String | Test.java:45:10:45:16 | get(...) |
+| Test.java:50:45:50:52 | source(...) : String | Test.java:23:25:23:32 | x : String | Test.java:23:15:23:23 | parameter this [Return] : Test [field] : String | Test.java:50:5:50:33 | fluentNoop(...) [post update] : Test [field] : String |
+| Test.java:51:10:51:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | Test.java:33:12:33:16 | field : String | Test.java:51:10:51:16 | get(...) |
+| Test.java:56:40:56:47 | source(...) : String | Test.java:23:25:23:32 | x : String | Test.java:23:15:23:23 | parameter this [Return] : Test [field] : String | Test.java:56:5:56:28 | indirectlyFluentNoop(...) [post update] : Test [field] : String |
+| Test.java:57:10:57:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | Test.java:33:12:33:16 | field : String | Test.java:57:10:57:16 | get(...) |
+| Test.java:62:63:62:70 | source(...) : String | Test.java:23:25:23:32 | x : String | Test.java:23:15:23:23 | parameter this [Return] : Test [field] : String | Test.java:62:5:62:51 | modelledFluentMethod(...) [post update] : Test [field] : String |
+| Test.java:63:10:63:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | Test.java:33:12:33:16 | field : String | Test.java:63:10:63:16 | get(...) |
+| Test.java:68:86:68:93 | source(...) : String | Test.java:23:25:23:32 | x : String | Test.java:23:15:23:23 | parameter this [Return] : Test [field] : String | Test.java:68:5:68:74 | modelledFluentMethod(...) [post update] : Test [field] : String |
+| Test.java:69:10:69:10 | t : Test [field] : String | Test.java:32:17:32:19 | parameter this : Test [field] : String | Test.java:33:12:33:16 | field : String | Test.java:69:10:69:16 | get(...) |
+testFailures

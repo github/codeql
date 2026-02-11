@@ -1,4 +1,3 @@
 import javascript
 
-from CanonicalName name
-select name
+select "Just test extraction"

@@ -23,91 +23,96 @@ arguments
 | Assembly1.dll:0:0:0:0 | [return: Custom(...)] | 3 | Assembly1.dll:0:0:0:0 | (...) ... |
 | Assembly1.dll:0:0:0:0 | [return: Custom(...)] | 4 | Assembly1.dll:0:0:0:0 | array creation of type Int32[] |
 | Assembly1.dll:0:0:0:0 | [return: Custom(...)] | 5 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
-| attributes.cs:11:12:11:24 | [assembly: AssemblyTitle(...)] | 0 | attributes.cs:11:26:11:45 | "C# attributes test" |
-| attributes.cs:12:12:12:30 | [assembly: AssemblyDescription(...)] | 0 | attributes.cs:12:32:12:56 | "A test of C# attributes" |
-| attributes.cs:13:12:13:32 | [assembly: AssemblyConfiguration(...)] | 0 | attributes.cs:13:34:13:35 | "" |
-| attributes.cs:14:12:14:26 | [assembly: AssemblyCompany(...)] | 0 | attributes.cs:14:28:14:39 | "Semmle Plc" |
-| attributes.cs:15:12:15:26 | [assembly: AssemblyProduct(...)] | 0 | attributes.cs:15:28:15:34 | "Odasa" |
-| attributes.cs:16:12:16:28 | [assembly: AssemblyCopyright(...)] | 0 | attributes.cs:16:30:16:54 | "Copyright \u00a9 Semmle 2018" |
-| attributes.cs:17:12:17:28 | [assembly: AssemblyTrademark(...)] | 0 | attributes.cs:17:30:17:31 | "" |
-| attributes.cs:18:12:18:26 | [assembly: AssemblyCulture(...)] | 0 | attributes.cs:18:28:18:29 | "" |
-| attributes.cs:23:12:23:21 | [assembly: ComVisible(...)] | 0 | attributes.cs:23:23:23:27 | false |
-| attributes.cs:26:12:26:15 | [assembly: Guid(...)] | 0 | attributes.cs:26:17:26:54 | "2f70fdd6-14aa-4850-b053-d547adb1f476" |
-| attributes.cs:38:12:38:26 | [assembly: AssemblyVersion(...)] | 0 | attributes.cs:38:28:38:36 | "1.0.0.0" |
-| attributes.cs:39:12:39:30 | [assembly: AssemblyFileVersion(...)] | 0 | attributes.cs:39:32:39:40 | "1.0.0.0" |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 0 | attributes.cs:41:17:41:17 | 0 |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 1 | attributes.cs:41:20:41:46 | array creation of type Object[] |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 2 | attributes.cs:41:49:41:69 | typeof(...) |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 3 | attributes.cs:41:72:41:76 | (...) ... |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 4 | attributes.cs:41:79:41:82 | null |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 5 | attributes.cs:41:92:41:122 | array creation of type Object[] |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 0 | attributes.cs:42:15:42:15 | 0 |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 1 | attributes.cs:42:18:42:44 | array creation of type Object[] |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 2 | attributes.cs:42:47:42:67 | typeof(...) |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 3 | attributes.cs:42:70:42:74 | (...) ... |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 4 | attributes.cs:42:77:42:80 | null |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 5 | attributes.cs:42:90:42:120 | array creation of type Object[] |
-| attributes.cs:44:2:44:22 | [AttributeUsage(...)] | 0 | attributes.cs:44:24:44:50 | access to constant All |
-| attributes.cs:47:6:47:16 | [Conditional(...)] | 0 | attributes.cs:47:18:47:25 | "DEBUG2" |
-| attributes.cs:55:6:55:16 | [My(...)] | 0 | attributes.cs:55:18:55:22 | false |
-| attributes.cs:58:6:58:16 | [My(...)] | 0 | attributes.cs:58:18:58:21 | true |
-| attributes.cs:58:6:58:16 | [My(...)] | 1 | attributes.cs:58:28:58:29 | "" |
-| attributes.cs:58:6:58:16 | [My(...)] | 2 | attributes.cs:58:36:58:36 | 0 |
-| attributes.cs:59:6:59:8 | [My2(...)] | 0 | attributes.cs:59:28:59:32 | false |
-| attributes.cs:59:6:59:8 | [My2(...)] | 1 | attributes.cs:59:13:59:16 | true |
-| attributes.cs:59:6:59:8 | [My2(...)] | 2 | attributes.cs:59:6:59:8 | 12 |
-| attributes.cs:59:6:59:8 | [My2(...)] | 3 | attributes.cs:59:22:59:22 | 1 |
-| attributes.cs:59:6:59:8 | [My2(...)] | 4 | attributes.cs:59:39:59:40 | 42 |
-| attributes.cs:78:2:78:5 | [Args(...)] | 0 | attributes.cs:78:7:78:8 | 42 |
-| attributes.cs:78:2:78:5 | [Args(...)] | 1 | attributes.cs:78:11:78:14 | null |
-| attributes.cs:78:2:78:5 | [Args(...)] | 2 | attributes.cs:78:17:78:25 | typeof(...) |
-| attributes.cs:78:2:78:5 | [Args(...)] | 3 | attributes.cs:78:28:78:30 | access to constant A |
-| attributes.cs:78:2:78:5 | [Args(...)] | 4 | attributes.cs:78:33:78:53 | array creation of type Int32[] |
-| attributes.cs:78:2:78:5 | [Args(...)] | 5 | attributes.cs:78:63:78:93 | array creation of type Object[] |
-| attributes.cs:81:6:81:9 | [Args(...)] | 0 | attributes.cs:81:11:81:16 | ... + ... |
-| attributes.cs:81:6:81:9 | [Args(...)] | 1 | attributes.cs:81:19:81:39 | array creation of type Int32[] |
-| attributes.cs:81:6:81:9 | [Args(...)] | 2 | attributes.cs:81:42:81:45 | null |
-| attributes.cs:81:6:81:9 | [Args(...)] | 3 | attributes.cs:81:48:81:52 | (...) ... |
-| attributes.cs:81:6:81:9 | [Args(...)] | 4 | attributes.cs:81:55:81:58 | null |
-| attributes.cs:81:6:81:9 | [Args(...)] | 5 | attributes.cs:81:68:81:98 | array creation of type Object[] |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 0 | attributes.cs:82:19:82:24 | ... + ... |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 1 | attributes.cs:82:27:82:47 | array creation of type Int32[] |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 2 | attributes.cs:82:50:82:53 | null |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 3 | attributes.cs:82:56:82:60 | (...) ... |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 4 | attributes.cs:82:63:82:66 | null |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 5 | attributes.cs:82:76:82:106 | array creation of type Object[] |
-| attributes.cs:97:2:97:13 | [My3(...)] | 0 | attributes.cs:97:15:97:15 | 1 |
-| attributes.cs:98:10:98:21 | [return: My3(...)] | 0 | attributes.cs:98:23:98:23 | 2 |
-| attributes.cs:101:10:101:21 | [return: My3(...)] | 0 | attributes.cs:101:23:101:23 | 3 |
-| attributes.cs:102:8:102:19 | [My3(...)] | 0 | attributes.cs:102:21:102:21 | 4 |
-| attributes.cs:107:6:107:17 | [My3(...)] | 0 | attributes.cs:107:19:107:19 | 5 |
-| attributes.cs:108:14:108:25 | [return: My3(...)] | 0 | attributes.cs:108:27:108:27 | 6 |
-| attributes.cs:113:10:113:21 | [My3(...)] | 0 | attributes.cs:113:23:113:23 | 7 |
-| attributes.cs:114:18:114:29 | [return: My3(...)] | 0 | attributes.cs:114:31:114:31 | 8 |
-| attributes.cs:117:18:117:29 | [My3(...)] | 0 | attributes.cs:117:31:117:31 | 9 |
-| attributes.cs:118:17:118:28 | [My3(...)] | 0 | attributes.cs:118:30:118:31 | 10 |
-| attributes.cs:125:18:125:29 | [My3(...)] | 0 | attributes.cs:125:31:125:32 | 11 |
-| attributes.cs:126:18:126:29 | [return: My3(...)] | 0 | attributes.cs:126:31:126:32 | 12 |
-| attributes.cs:129:10:129:21 | [My3(...)] | 0 | attributes.cs:129:23:129:24 | 13 |
-| attributes.cs:130:17:130:28 | [My3(...)] | 0 | attributes.cs:130:30:130:31 | 14 |
-| attributes.cs:142:6:142:11 | [Params(...)] | 0 | attributes.cs:142:13:142:15 | "a" |
-| attributes.cs:142:6:142:11 | [Params(...)] | 1 | attributes.cs:142:18:142:20 | "b" |
-| attributes.cs:142:6:142:11 | [Params(...)] | 2 | attributes.cs:142:23:142:23 | 1 |
-| attributes.cs:142:6:142:11 | [Params(...)] | 3 | attributes.cs:142:26:142:26 | 2 |
-| attributes.cs:142:6:142:11 | [Params(...)] | 4 | attributes.cs:142:29:142:29 | 3 |
-| attributes.cs:145:6:145:11 | [Params(...)] | 0 | attributes.cs:145:17:145:19 | "a" |
-| attributes.cs:145:6:145:11 | [Params(...)] | 1 | attributes.cs:145:26:145:28 | "b" |
-| attributes.cs:145:6:145:11 | [Params(...)] | 2 | attributes.cs:145:31:145:31 | 1 |
-| attributes.cs:145:6:145:11 | [Params(...)] | 3 | attributes.cs:145:34:145:34 | 2 |
-| attributes.cs:145:6:145:11 | [Params(...)] | 4 | attributes.cs:145:37:145:37 | 3 |
-| attributes.cs:148:6:148:11 | [Params(...)] | 0 | attributes.cs:148:35:148:37 | "a" |
+| attributes.cs:12:12:12:24 | [assembly: AssemblyTitle(...)] | 0 | attributes.cs:12:26:12:45 | "C# attributes test" |
+| attributes.cs:13:12:13:30 | [assembly: AssemblyDescription(...)] | 0 | attributes.cs:13:32:13:56 | "A test of C# attributes" |
+| attributes.cs:14:12:14:32 | [assembly: AssemblyConfiguration(...)] | 0 | attributes.cs:14:34:14:35 | "" |
+| attributes.cs:15:12:15:26 | [assembly: AssemblyCompany(...)] | 0 | attributes.cs:15:28:15:39 | "Semmle Plc" |
+| attributes.cs:16:12:16:26 | [assembly: AssemblyProduct(...)] | 0 | attributes.cs:16:28:16:34 | "Odasa" |
+| attributes.cs:17:12:17:28 | [assembly: AssemblyCopyright(...)] | 0 | attributes.cs:17:30:17:54 | "Copyright \u00a9 Semmle 2018" |
+| attributes.cs:18:12:18:28 | [assembly: AssemblyTrademark(...)] | 0 | attributes.cs:18:30:18:31 | "" |
+| attributes.cs:19:12:19:26 | [assembly: AssemblyCulture(...)] | 0 | attributes.cs:19:28:19:29 | "" |
+| attributes.cs:24:12:24:21 | [assembly: ComVisible(...)] | 0 | attributes.cs:24:23:24:27 | false |
+| attributes.cs:27:12:27:15 | [assembly: Guid(...)] | 0 | attributes.cs:27:17:27:54 | "2f70fdd6-14aa-4850-b053-d547adb1f476" |
+| attributes.cs:39:12:39:26 | [assembly: AssemblyVersion(...)] | 0 | attributes.cs:39:28:39:36 | "1.0.0.0" |
+| attributes.cs:40:12:40:30 | [assembly: AssemblyFileVersion(...)] | 0 | attributes.cs:40:32:40:40 | "1.0.0.0" |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 0 | attributes.cs:42:17:42:17 | 0 |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 1 | attributes.cs:42:20:42:46 | array creation of type Object[] |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 2 | attributes.cs:42:49:42:69 | typeof(...) |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 3 | attributes.cs:42:72:42:76 | (...) ... |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 4 | attributes.cs:42:79:42:82 | null |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 5 | attributes.cs:42:92:42:122 | array creation of type Object[] |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 0 | attributes.cs:43:15:43:15 | 0 |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 1 | attributes.cs:43:18:43:44 | array creation of type Object[] |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 2 | attributes.cs:43:47:43:67 | typeof(...) |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 3 | attributes.cs:43:70:43:74 | (...) ... |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 4 | attributes.cs:43:77:43:80 | null |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 5 | attributes.cs:43:90:43:120 | array creation of type Object[] |
+| attributes.cs:45:2:45:22 | [AttributeUsage(...)] | 0 | attributes.cs:45:24:45:50 | access to constant All |
+| attributes.cs:48:6:48:16 | [Conditional(...)] | 0 | attributes.cs:48:18:48:25 | "DEBUG2" |
+| attributes.cs:56:6:56:16 | [My(...)] | 0 | attributes.cs:56:18:56:22 | false |
+| attributes.cs:59:6:59:16 | [My(...)] | 0 | attributes.cs:59:18:59:21 | true |
+| attributes.cs:59:6:59:16 | [My(...)] | 1 | attributes.cs:59:28:59:29 | "" |
+| attributes.cs:59:6:59:16 | [My(...)] | 2 | attributes.cs:59:36:59:36 | 0 |
+| attributes.cs:60:6:60:8 | [My2(...)] | 0 | attributes.cs:60:28:60:32 | false |
+| attributes.cs:60:6:60:8 | [My2(...)] | 1 | attributes.cs:60:13:60:16 | true |
+| attributes.cs:60:6:60:8 | [My2(...)] | 2 | attributes.cs:60:6:60:8 | 12 |
+| attributes.cs:60:6:60:8 | [My2(...)] | 3 | attributes.cs:60:22:60:22 | 1 |
+| attributes.cs:60:6:60:8 | [My2(...)] | 4 | attributes.cs:60:39:60:40 | 42 |
+| attributes.cs:79:2:79:5 | [Args(...)] | 0 | attributes.cs:79:7:79:8 | 42 |
+| attributes.cs:79:2:79:5 | [Args(...)] | 1 | attributes.cs:79:11:79:14 | null |
+| attributes.cs:79:2:79:5 | [Args(...)] | 2 | attributes.cs:79:17:79:25 | typeof(...) |
+| attributes.cs:79:2:79:5 | [Args(...)] | 3 | attributes.cs:79:28:79:30 | access to constant A |
+| attributes.cs:79:2:79:5 | [Args(...)] | 4 | attributes.cs:79:33:79:53 | array creation of type Int32[] |
+| attributes.cs:79:2:79:5 | [Args(...)] | 5 | attributes.cs:79:63:79:93 | array creation of type Object[] |
+| attributes.cs:82:6:82:9 | [Args(...)] | 0 | attributes.cs:82:11:82:16 | ... + ... |
+| attributes.cs:82:6:82:9 | [Args(...)] | 1 | attributes.cs:82:19:82:39 | array creation of type Int32[] |
+| attributes.cs:82:6:82:9 | [Args(...)] | 2 | attributes.cs:82:42:82:45 | null |
+| attributes.cs:82:6:82:9 | [Args(...)] | 3 | attributes.cs:82:48:82:52 | (...) ... |
+| attributes.cs:82:6:82:9 | [Args(...)] | 4 | attributes.cs:82:55:82:58 | null |
+| attributes.cs:82:6:82:9 | [Args(...)] | 5 | attributes.cs:82:68:82:98 | array creation of type Object[] |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 0 | attributes.cs:83:19:83:24 | ... + ... |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 1 | attributes.cs:83:27:83:47 | array creation of type Int32[] |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 2 | attributes.cs:83:50:83:53 | null |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 3 | attributes.cs:83:56:83:60 | (...) ... |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 4 | attributes.cs:83:63:83:66 | null |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 5 | attributes.cs:83:76:83:106 | array creation of type Object[] |
+| attributes.cs:98:2:98:13 | [My3(...)] | 0 | attributes.cs:98:15:98:15 | 1 |
+| attributes.cs:99:10:99:21 | [return: My3(...)] | 0 | attributes.cs:99:23:99:23 | 2 |
+| attributes.cs:102:10:102:21 | [return: My3(...)] | 0 | attributes.cs:102:23:102:23 | 3 |
+| attributes.cs:103:8:103:19 | [My3(...)] | 0 | attributes.cs:103:21:103:21 | 4 |
+| attributes.cs:108:6:108:17 | [My3(...)] | 0 | attributes.cs:108:19:108:19 | 5 |
+| attributes.cs:109:14:109:25 | [return: My3(...)] | 0 | attributes.cs:109:27:109:27 | 6 |
+| attributes.cs:112:6:112:17 | [My3(...)] | 0 | attributes.cs:112:19:112:20 | 15 |
+| attributes.cs:115:10:115:21 | [My3(...)] | 0 | attributes.cs:115:23:115:23 | 7 |
+| attributes.cs:116:18:116:29 | [return: My3(...)] | 0 | attributes.cs:116:31:116:31 | 8 |
+| attributes.cs:119:18:119:29 | [My3(...)] | 0 | attributes.cs:119:31:119:31 | 9 |
+| attributes.cs:120:17:120:28 | [My3(...)] | 0 | attributes.cs:120:30:120:31 | 10 |
+| attributes.cs:125:6:125:17 | [My3(...)] | 0 | attributes.cs:125:19:125:20 | 16 |
+| attributes.cs:128:18:128:29 | [My3(...)] | 0 | attributes.cs:128:31:128:32 | 11 |
+| attributes.cs:129:18:129:29 | [return: My3(...)] | 0 | attributes.cs:129:31:129:32 | 12 |
+| attributes.cs:132:10:132:21 | [My3(...)] | 0 | attributes.cs:132:23:132:24 | 13 |
+| attributes.cs:133:17:133:28 | [My3(...)] | 0 | attributes.cs:133:30:133:31 | 14 |
+| attributes.cs:145:6:145:11 | [Params(...)] | 0 | attributes.cs:145:13:145:15 | "a" |
+| attributes.cs:145:6:145:11 | [Params(...)] | 1 | attributes.cs:145:18:145:20 | "b" |
+| attributes.cs:145:6:145:11 | [Params(...)] | 2 | attributes.cs:145:23:145:23 | 1 |
+| attributes.cs:145:6:145:11 | [Params(...)] | 3 | attributes.cs:145:26:145:26 | 2 |
+| attributes.cs:145:6:145:11 | [Params(...)] | 4 | attributes.cs:145:29:145:29 | 3 |
+| attributes.cs:148:6:148:11 | [Params(...)] | 0 | attributes.cs:148:17:148:19 | "a" |
 | attributes.cs:148:6:148:11 | [Params(...)] | 1 | attributes.cs:148:26:148:28 | "b" |
-| attributes.cs:148:6:148:11 | [Params(...)] | 2 | attributes.cs:148:19:148:19 | 1 |
-| attributes.cs:151:6:151:11 | [Params(...)] | 0 | attributes.cs:151:45:151:47 | "a" |
-| attributes.cs:151:6:151:11 | [Params(...)] | 1 | attributes.cs:151:36:151:38 | "b" |
-| attributes.cs:151:6:151:11 | [Params(...)] | 2 | attributes.cs:151:19:151:29 | array creation of type Int32[] |
-| attributes.cs:155:2:155:13 | [Experimental(...)] | 0 | attributes.cs:155:15:155:37 | "MyExperimentalClassId" |
-| attributes.cs:158:6:158:17 | [Experimental(...)] | 0 | attributes.cs:158:19:158:42 | "MyExperimentalMethodId" |
+| attributes.cs:148:6:148:11 | [Params(...)] | 2 | attributes.cs:148:31:148:31 | 1 |
+| attributes.cs:148:6:148:11 | [Params(...)] | 3 | attributes.cs:148:34:148:34 | 2 |
+| attributes.cs:148:6:148:11 | [Params(...)] | 4 | attributes.cs:148:37:148:37 | 3 |
+| attributes.cs:151:6:151:11 | [Params(...)] | 0 | attributes.cs:151:35:151:37 | "a" |
+| attributes.cs:151:6:151:11 | [Params(...)] | 1 | attributes.cs:151:26:151:28 | "b" |
+| attributes.cs:151:6:151:11 | [Params(...)] | 2 | attributes.cs:151:19:151:19 | 1 |
+| attributes.cs:154:6:154:11 | [Params(...)] | 0 | attributes.cs:154:45:154:47 | "a" |
+| attributes.cs:154:6:154:11 | [Params(...)] | 1 | attributes.cs:154:36:154:38 | "b" |
+| attributes.cs:154:6:154:11 | [Params(...)] | 2 | attributes.cs:154:19:154:29 | array creation of type Int32[] |
+| attributes.cs:158:2:158:13 | [Experimental(...)] | 0 | attributes.cs:158:15:158:37 | "MyExperimentalClassId" |
+| attributes.cs:161:6:161:17 | [Experimental(...)] | 0 | attributes.cs:161:19:161:42 | "MyExperimentalMethodId" |
+| attributes.cs:167:6:167:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:167:33:167:34 | -... |
+| attributes.cs:170:6:170:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:170:33:170:33 | 1 |
+| attributes.cs:173:6:173:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:173:33:173:33 | 2 |
 constructorArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 1 |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 3 |
@@ -129,93 +134,98 @@ constructorArguments
 | Assembly1.dll:0:0:0:0 | [return: Custom(...)] | 2 | Assembly1.dll:0:0:0:0 | null |
 | Assembly1.dll:0:0:0:0 | [return: Custom(...)] | 3 | Assembly1.dll:0:0:0:0 | (...) ... |
 | Assembly1.dll:0:0:0:0 | [return: Custom(...)] | 4 | Assembly1.dll:0:0:0:0 | array creation of type Int32[] |
-| attributes.cs:11:12:11:24 | [assembly: AssemblyTitle(...)] | 0 | attributes.cs:11:26:11:45 | "C# attributes test" |
-| attributes.cs:12:12:12:30 | [assembly: AssemblyDescription(...)] | 0 | attributes.cs:12:32:12:56 | "A test of C# attributes" |
-| attributes.cs:13:12:13:32 | [assembly: AssemblyConfiguration(...)] | 0 | attributes.cs:13:34:13:35 | "" |
-| attributes.cs:14:12:14:26 | [assembly: AssemblyCompany(...)] | 0 | attributes.cs:14:28:14:39 | "Semmle Plc" |
-| attributes.cs:15:12:15:26 | [assembly: AssemblyProduct(...)] | 0 | attributes.cs:15:28:15:34 | "Odasa" |
-| attributes.cs:16:12:16:28 | [assembly: AssemblyCopyright(...)] | 0 | attributes.cs:16:30:16:54 | "Copyright \u00a9 Semmle 2018" |
-| attributes.cs:17:12:17:28 | [assembly: AssemblyTrademark(...)] | 0 | attributes.cs:17:30:17:31 | "" |
-| attributes.cs:18:12:18:26 | [assembly: AssemblyCulture(...)] | 0 | attributes.cs:18:28:18:29 | "" |
-| attributes.cs:23:12:23:21 | [assembly: ComVisible(...)] | 0 | attributes.cs:23:23:23:27 | false |
-| attributes.cs:26:12:26:15 | [assembly: Guid(...)] | 0 | attributes.cs:26:17:26:54 | "2f70fdd6-14aa-4850-b053-d547adb1f476" |
-| attributes.cs:38:12:38:26 | [assembly: AssemblyVersion(...)] | 0 | attributes.cs:38:28:38:36 | "1.0.0.0" |
-| attributes.cs:39:12:39:30 | [assembly: AssemblyFileVersion(...)] | 0 | attributes.cs:39:32:39:40 | "1.0.0.0" |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 0 | attributes.cs:41:17:41:17 | 0 |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 1 | attributes.cs:41:20:41:46 | array creation of type Object[] |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 2 | attributes.cs:41:49:41:69 | typeof(...) |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 3 | attributes.cs:41:72:41:76 | (...) ... |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | 4 | attributes.cs:41:79:41:82 | null |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 0 | attributes.cs:42:15:42:15 | 0 |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 1 | attributes.cs:42:18:42:44 | array creation of type Object[] |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 2 | attributes.cs:42:47:42:67 | typeof(...) |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 3 | attributes.cs:42:70:42:74 | (...) ... |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | 4 | attributes.cs:42:77:42:80 | null |
-| attributes.cs:44:2:44:22 | [AttributeUsage(...)] | 0 | attributes.cs:44:24:44:50 | access to constant All |
-| attributes.cs:47:6:47:16 | [Conditional(...)] | 0 | attributes.cs:47:18:47:25 | "DEBUG2" |
-| attributes.cs:55:6:55:16 | [My(...)] | 0 | attributes.cs:55:18:55:22 | false |
-| attributes.cs:58:6:58:16 | [My(...)] | 0 | attributes.cs:58:18:58:21 | true |
-| attributes.cs:59:6:59:8 | [My2(...)] | 0 | attributes.cs:59:28:59:32 | false |
-| attributes.cs:59:6:59:8 | [My2(...)] | 1 | attributes.cs:59:13:59:16 | true |
-| attributes.cs:59:6:59:8 | [My2(...)] | 2 | attributes.cs:59:6:59:8 | 12 |
-| attributes.cs:59:6:59:8 | [My2(...)] | 3 | attributes.cs:59:22:59:22 | 1 |
-| attributes.cs:78:2:78:5 | [Args(...)] | 0 | attributes.cs:78:7:78:8 | 42 |
-| attributes.cs:78:2:78:5 | [Args(...)] | 1 | attributes.cs:78:11:78:14 | null |
-| attributes.cs:78:2:78:5 | [Args(...)] | 2 | attributes.cs:78:17:78:25 | typeof(...) |
-| attributes.cs:78:2:78:5 | [Args(...)] | 3 | attributes.cs:78:28:78:30 | access to constant A |
-| attributes.cs:78:2:78:5 | [Args(...)] | 4 | attributes.cs:78:33:78:53 | array creation of type Int32[] |
-| attributes.cs:81:6:81:9 | [Args(...)] | 0 | attributes.cs:81:11:81:16 | ... + ... |
-| attributes.cs:81:6:81:9 | [Args(...)] | 1 | attributes.cs:81:19:81:39 | array creation of type Int32[] |
-| attributes.cs:81:6:81:9 | [Args(...)] | 2 | attributes.cs:81:42:81:45 | null |
-| attributes.cs:81:6:81:9 | [Args(...)] | 3 | attributes.cs:81:48:81:52 | (...) ... |
-| attributes.cs:81:6:81:9 | [Args(...)] | 4 | attributes.cs:81:55:81:58 | null |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 0 | attributes.cs:82:19:82:24 | ... + ... |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 1 | attributes.cs:82:27:82:47 | array creation of type Int32[] |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 2 | attributes.cs:82:50:82:53 | null |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 3 | attributes.cs:82:56:82:60 | (...) ... |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | 4 | attributes.cs:82:63:82:66 | null |
-| attributes.cs:97:2:97:13 | [My3(...)] | 0 | attributes.cs:97:15:97:15 | 1 |
-| attributes.cs:98:10:98:21 | [return: My3(...)] | 0 | attributes.cs:98:23:98:23 | 2 |
-| attributes.cs:101:10:101:21 | [return: My3(...)] | 0 | attributes.cs:101:23:101:23 | 3 |
-| attributes.cs:102:8:102:19 | [My3(...)] | 0 | attributes.cs:102:21:102:21 | 4 |
-| attributes.cs:107:6:107:17 | [My3(...)] | 0 | attributes.cs:107:19:107:19 | 5 |
-| attributes.cs:108:14:108:25 | [return: My3(...)] | 0 | attributes.cs:108:27:108:27 | 6 |
-| attributes.cs:113:10:113:21 | [My3(...)] | 0 | attributes.cs:113:23:113:23 | 7 |
-| attributes.cs:114:18:114:29 | [return: My3(...)] | 0 | attributes.cs:114:31:114:31 | 8 |
-| attributes.cs:117:18:117:29 | [My3(...)] | 0 | attributes.cs:117:31:117:31 | 9 |
-| attributes.cs:118:17:118:28 | [My3(...)] | 0 | attributes.cs:118:30:118:31 | 10 |
-| attributes.cs:125:18:125:29 | [My3(...)] | 0 | attributes.cs:125:31:125:32 | 11 |
-| attributes.cs:126:18:126:29 | [return: My3(...)] | 0 | attributes.cs:126:31:126:32 | 12 |
-| attributes.cs:129:10:129:21 | [My3(...)] | 0 | attributes.cs:129:23:129:24 | 13 |
-| attributes.cs:130:17:130:28 | [My3(...)] | 0 | attributes.cs:130:30:130:31 | 14 |
-| attributes.cs:142:6:142:11 | [Params(...)] | 0 | attributes.cs:142:13:142:15 | "a" |
-| attributes.cs:142:6:142:11 | [Params(...)] | 1 | attributes.cs:142:18:142:20 | "b" |
-| attributes.cs:142:6:142:11 | [Params(...)] | 2 | attributes.cs:142:23:142:23 | 1 |
-| attributes.cs:142:6:142:11 | [Params(...)] | 3 | attributes.cs:142:26:142:26 | 2 |
-| attributes.cs:142:6:142:11 | [Params(...)] | 4 | attributes.cs:142:29:142:29 | 3 |
-| attributes.cs:145:6:145:11 | [Params(...)] | 0 | attributes.cs:145:17:145:19 | "a" |
-| attributes.cs:145:6:145:11 | [Params(...)] | 1 | attributes.cs:145:26:145:28 | "b" |
-| attributes.cs:145:6:145:11 | [Params(...)] | 2 | attributes.cs:145:31:145:31 | 1 |
-| attributes.cs:145:6:145:11 | [Params(...)] | 3 | attributes.cs:145:34:145:34 | 2 |
-| attributes.cs:145:6:145:11 | [Params(...)] | 4 | attributes.cs:145:37:145:37 | 3 |
-| attributes.cs:148:6:148:11 | [Params(...)] | 0 | attributes.cs:148:35:148:37 | "a" |
+| attributes.cs:12:12:12:24 | [assembly: AssemblyTitle(...)] | 0 | attributes.cs:12:26:12:45 | "C# attributes test" |
+| attributes.cs:13:12:13:30 | [assembly: AssemblyDescription(...)] | 0 | attributes.cs:13:32:13:56 | "A test of C# attributes" |
+| attributes.cs:14:12:14:32 | [assembly: AssemblyConfiguration(...)] | 0 | attributes.cs:14:34:14:35 | "" |
+| attributes.cs:15:12:15:26 | [assembly: AssemblyCompany(...)] | 0 | attributes.cs:15:28:15:39 | "Semmle Plc" |
+| attributes.cs:16:12:16:26 | [assembly: AssemblyProduct(...)] | 0 | attributes.cs:16:28:16:34 | "Odasa" |
+| attributes.cs:17:12:17:28 | [assembly: AssemblyCopyright(...)] | 0 | attributes.cs:17:30:17:54 | "Copyright \u00a9 Semmle 2018" |
+| attributes.cs:18:12:18:28 | [assembly: AssemblyTrademark(...)] | 0 | attributes.cs:18:30:18:31 | "" |
+| attributes.cs:19:12:19:26 | [assembly: AssemblyCulture(...)] | 0 | attributes.cs:19:28:19:29 | "" |
+| attributes.cs:24:12:24:21 | [assembly: ComVisible(...)] | 0 | attributes.cs:24:23:24:27 | false |
+| attributes.cs:27:12:27:15 | [assembly: Guid(...)] | 0 | attributes.cs:27:17:27:54 | "2f70fdd6-14aa-4850-b053-d547adb1f476" |
+| attributes.cs:39:12:39:26 | [assembly: AssemblyVersion(...)] | 0 | attributes.cs:39:28:39:36 | "1.0.0.0" |
+| attributes.cs:40:12:40:30 | [assembly: AssemblyFileVersion(...)] | 0 | attributes.cs:40:32:40:40 | "1.0.0.0" |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 0 | attributes.cs:42:17:42:17 | 0 |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 1 | attributes.cs:42:20:42:46 | array creation of type Object[] |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 2 | attributes.cs:42:49:42:69 | typeof(...) |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 3 | attributes.cs:42:72:42:76 | (...) ... |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | 4 | attributes.cs:42:79:42:82 | null |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 0 | attributes.cs:43:15:43:15 | 0 |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 1 | attributes.cs:43:18:43:44 | array creation of type Object[] |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 2 | attributes.cs:43:47:43:67 | typeof(...) |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 3 | attributes.cs:43:70:43:74 | (...) ... |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | 4 | attributes.cs:43:77:43:80 | null |
+| attributes.cs:45:2:45:22 | [AttributeUsage(...)] | 0 | attributes.cs:45:24:45:50 | access to constant All |
+| attributes.cs:48:6:48:16 | [Conditional(...)] | 0 | attributes.cs:48:18:48:25 | "DEBUG2" |
+| attributes.cs:56:6:56:16 | [My(...)] | 0 | attributes.cs:56:18:56:22 | false |
+| attributes.cs:59:6:59:16 | [My(...)] | 0 | attributes.cs:59:18:59:21 | true |
+| attributes.cs:60:6:60:8 | [My2(...)] | 0 | attributes.cs:60:28:60:32 | false |
+| attributes.cs:60:6:60:8 | [My2(...)] | 1 | attributes.cs:60:13:60:16 | true |
+| attributes.cs:60:6:60:8 | [My2(...)] | 2 | attributes.cs:60:6:60:8 | 12 |
+| attributes.cs:60:6:60:8 | [My2(...)] | 3 | attributes.cs:60:22:60:22 | 1 |
+| attributes.cs:79:2:79:5 | [Args(...)] | 0 | attributes.cs:79:7:79:8 | 42 |
+| attributes.cs:79:2:79:5 | [Args(...)] | 1 | attributes.cs:79:11:79:14 | null |
+| attributes.cs:79:2:79:5 | [Args(...)] | 2 | attributes.cs:79:17:79:25 | typeof(...) |
+| attributes.cs:79:2:79:5 | [Args(...)] | 3 | attributes.cs:79:28:79:30 | access to constant A |
+| attributes.cs:79:2:79:5 | [Args(...)] | 4 | attributes.cs:79:33:79:53 | array creation of type Int32[] |
+| attributes.cs:82:6:82:9 | [Args(...)] | 0 | attributes.cs:82:11:82:16 | ... + ... |
+| attributes.cs:82:6:82:9 | [Args(...)] | 1 | attributes.cs:82:19:82:39 | array creation of type Int32[] |
+| attributes.cs:82:6:82:9 | [Args(...)] | 2 | attributes.cs:82:42:82:45 | null |
+| attributes.cs:82:6:82:9 | [Args(...)] | 3 | attributes.cs:82:48:82:52 | (...) ... |
+| attributes.cs:82:6:82:9 | [Args(...)] | 4 | attributes.cs:82:55:82:58 | null |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 0 | attributes.cs:83:19:83:24 | ... + ... |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 1 | attributes.cs:83:27:83:47 | array creation of type Int32[] |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 2 | attributes.cs:83:50:83:53 | null |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 3 | attributes.cs:83:56:83:60 | (...) ... |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | 4 | attributes.cs:83:63:83:66 | null |
+| attributes.cs:98:2:98:13 | [My3(...)] | 0 | attributes.cs:98:15:98:15 | 1 |
+| attributes.cs:99:10:99:21 | [return: My3(...)] | 0 | attributes.cs:99:23:99:23 | 2 |
+| attributes.cs:102:10:102:21 | [return: My3(...)] | 0 | attributes.cs:102:23:102:23 | 3 |
+| attributes.cs:103:8:103:19 | [My3(...)] | 0 | attributes.cs:103:21:103:21 | 4 |
+| attributes.cs:108:6:108:17 | [My3(...)] | 0 | attributes.cs:108:19:108:19 | 5 |
+| attributes.cs:109:14:109:25 | [return: My3(...)] | 0 | attributes.cs:109:27:109:27 | 6 |
+| attributes.cs:112:6:112:17 | [My3(...)] | 0 | attributes.cs:112:19:112:20 | 15 |
+| attributes.cs:115:10:115:21 | [My3(...)] | 0 | attributes.cs:115:23:115:23 | 7 |
+| attributes.cs:116:18:116:29 | [return: My3(...)] | 0 | attributes.cs:116:31:116:31 | 8 |
+| attributes.cs:119:18:119:29 | [My3(...)] | 0 | attributes.cs:119:31:119:31 | 9 |
+| attributes.cs:120:17:120:28 | [My3(...)] | 0 | attributes.cs:120:30:120:31 | 10 |
+| attributes.cs:125:6:125:17 | [My3(...)] | 0 | attributes.cs:125:19:125:20 | 16 |
+| attributes.cs:128:18:128:29 | [My3(...)] | 0 | attributes.cs:128:31:128:32 | 11 |
+| attributes.cs:129:18:129:29 | [return: My3(...)] | 0 | attributes.cs:129:31:129:32 | 12 |
+| attributes.cs:132:10:132:21 | [My3(...)] | 0 | attributes.cs:132:23:132:24 | 13 |
+| attributes.cs:133:17:133:28 | [My3(...)] | 0 | attributes.cs:133:30:133:31 | 14 |
+| attributes.cs:145:6:145:11 | [Params(...)] | 0 | attributes.cs:145:13:145:15 | "a" |
+| attributes.cs:145:6:145:11 | [Params(...)] | 1 | attributes.cs:145:18:145:20 | "b" |
+| attributes.cs:145:6:145:11 | [Params(...)] | 2 | attributes.cs:145:23:145:23 | 1 |
+| attributes.cs:145:6:145:11 | [Params(...)] | 3 | attributes.cs:145:26:145:26 | 2 |
+| attributes.cs:145:6:145:11 | [Params(...)] | 4 | attributes.cs:145:29:145:29 | 3 |
+| attributes.cs:148:6:148:11 | [Params(...)] | 0 | attributes.cs:148:17:148:19 | "a" |
 | attributes.cs:148:6:148:11 | [Params(...)] | 1 | attributes.cs:148:26:148:28 | "b" |
-| attributes.cs:148:6:148:11 | [Params(...)] | 2 | attributes.cs:148:19:148:19 | 1 |
-| attributes.cs:151:6:151:11 | [Params(...)] | 0 | attributes.cs:151:45:151:47 | "a" |
-| attributes.cs:151:6:151:11 | [Params(...)] | 1 | attributes.cs:151:36:151:38 | "b" |
-| attributes.cs:151:6:151:11 | [Params(...)] | 2 | attributes.cs:151:19:151:29 | array creation of type Int32[] |
-| attributes.cs:155:2:155:13 | [Experimental(...)] | 0 | attributes.cs:155:15:155:37 | "MyExperimentalClassId" |
-| attributes.cs:158:6:158:17 | [Experimental(...)] | 0 | attributes.cs:158:19:158:42 | "MyExperimentalMethodId" |
+| attributes.cs:148:6:148:11 | [Params(...)] | 2 | attributes.cs:148:31:148:31 | 1 |
+| attributes.cs:148:6:148:11 | [Params(...)] | 3 | attributes.cs:148:34:148:34 | 2 |
+| attributes.cs:148:6:148:11 | [Params(...)] | 4 | attributes.cs:148:37:148:37 | 3 |
+| attributes.cs:151:6:151:11 | [Params(...)] | 0 | attributes.cs:151:35:151:37 | "a" |
+| attributes.cs:151:6:151:11 | [Params(...)] | 1 | attributes.cs:151:26:151:28 | "b" |
+| attributes.cs:151:6:151:11 | [Params(...)] | 2 | attributes.cs:151:19:151:19 | 1 |
+| attributes.cs:154:6:154:11 | [Params(...)] | 0 | attributes.cs:154:45:154:47 | "a" |
+| attributes.cs:154:6:154:11 | [Params(...)] | 1 | attributes.cs:154:36:154:38 | "b" |
+| attributes.cs:154:6:154:11 | [Params(...)] | 2 | attributes.cs:154:19:154:29 | array creation of type Int32[] |
+| attributes.cs:158:2:158:13 | [Experimental(...)] | 0 | attributes.cs:158:15:158:37 | "MyExperimentalClassId" |
+| attributes.cs:161:6:161:17 | [Experimental(...)] | 0 | attributes.cs:161:19:161:42 | "MyExperimentalMethodId" |
+| attributes.cs:167:6:167:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:167:33:167:34 | -... |
+| attributes.cs:170:6:170:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:170:33:170:33 | 1 |
+| attributes.cs:173:6:173:31 | [OverloadResolutionPriority(...)] | 0 | attributes.cs:173:33:173:33 | 2 |
 namedArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | Assembly1.dll:0:0:0:0 | [return: Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
-| attributes.cs:41:12:41:15 | [assembly: Args(...)] | Prop | attributes.cs:41:92:41:122 | array creation of type Object[] |
-| attributes.cs:42:10:42:13 | [module: Args(...)] | Prop | attributes.cs:42:90:42:120 | array creation of type Object[] |
-| attributes.cs:58:6:58:16 | [My(...)] | x | attributes.cs:58:36:58:36 | 0 |
-| attributes.cs:58:6:58:16 | [My(...)] | y | attributes.cs:58:28:58:29 | "" |
-| attributes.cs:59:6:59:8 | [My2(...)] | X | attributes.cs:59:39:59:40 | 42 |
-| attributes.cs:78:2:78:5 | [Args(...)] | Prop | attributes.cs:78:63:78:93 | array creation of type Object[] |
-| attributes.cs:81:6:81:9 | [Args(...)] | Prop | attributes.cs:81:68:81:98 | array creation of type Object[] |
-| attributes.cs:82:14:82:17 | [return: Args(...)] | Prop | attributes.cs:82:76:82:106 | array creation of type Object[] |
+| attributes.cs:42:12:42:15 | [assembly: Args(...)] | Prop | attributes.cs:42:92:42:122 | array creation of type Object[] |
+| attributes.cs:43:10:43:13 | [module: Args(...)] | Prop | attributes.cs:43:90:43:120 | array creation of type Object[] |
+| attributes.cs:59:6:59:16 | [My(...)] | x | attributes.cs:59:36:59:36 | 0 |
+| attributes.cs:59:6:59:16 | [My(...)] | y | attributes.cs:59:28:59:29 | "" |
+| attributes.cs:60:6:60:8 | [My2(...)] | X | attributes.cs:60:39:60:40 | 42 |
+| attributes.cs:79:2:79:5 | [Args(...)] | Prop | attributes.cs:79:63:79:93 | array creation of type Object[] |
+| attributes.cs:82:6:82:9 | [Args(...)] | Prop | attributes.cs:82:68:82:98 | array creation of type Object[] |
+| attributes.cs:83:14:83:17 | [return: Args(...)] | Prop | attributes.cs:83:76:83:106 | array creation of type Object[] |

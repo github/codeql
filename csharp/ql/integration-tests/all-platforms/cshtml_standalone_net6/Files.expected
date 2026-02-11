@@ -1,4 +1,4 @@
 | Program.cs |
 | Views/Home/Index.cshtml |
-| _semmle_code_target_codeql_csharp_integration_tests_ql_csharp_ql_integration_tests_all_platforms_cshtml_standalone_net6_Views_Home_Index_cshtml.g.cs |
 | test-db/working/implicitUsings/GlobalUsings.g.cs |
+| test-db/working/razor/EC52D77FE9BF67AD10C5C3F248392316/[...]/Microsoft.NET.Sdk.Razor.SourceGenerators.RazorSourceGenerator/Views_Home_Index_cshtml.g.cs |

@@ -1,0 +1,5 @@
+query: Security/CWE-681/IncorrectIntegerConversionQuery.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql
+  - ./FilterTestResults.ql

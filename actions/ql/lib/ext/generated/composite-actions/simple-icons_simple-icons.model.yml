@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["simple-icons/simple-icons", "*", "input.issue_number", "code-injection", "generated"]

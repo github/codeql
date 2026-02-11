@@ -16,7 +16,7 @@ public class NodeJSDetectorTests {
   private static final ExtractorConfig CONFIG = new ExtractorConfig(true);
 
   private void isNodeJS(String src, boolean expected) {
-    Result res = JSParser.parse(CONFIG, SourceType.SCRIPT, src, new ExtractionMetrics());
+    Result res = JSParser.parse(CONFIG, SourceType.SCRIPT, ".jsx", src, new ExtractionMetrics());
     Node ast = res.getAST();
     Assert.assertNotNull(ast);
     Assert.assertTrue(NodeJSDetector.looksLikeNodeJS(ast) == expected);

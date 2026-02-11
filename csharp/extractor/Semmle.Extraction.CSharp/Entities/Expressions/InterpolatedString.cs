@@ -20,7 +20,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 {
                     case SyntaxKind.Interpolation:
                         var interpolation = (InterpolationSyntax)c;
-                        Create(Context, interpolation.Expression, this, child++);
+                        new InterpolatedStringInsert(Context, interpolation, this, child++);
                         break;
                     case SyntaxKind.InterpolatedStringText:
                         // Create a string literal

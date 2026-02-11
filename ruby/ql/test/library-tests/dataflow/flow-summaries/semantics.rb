@@ -33,7 +33,7 @@ def m5(x, y, z)
 end
 
 def m6
-    sink s6(foo: source "a", bar: source "b") # $ MISSING: hasValueFlow=a
+    sink s6(foo: (source "a"), bar: (source "b")) # $ hasValueFlow=a
 end
 
 def m7(x)
@@ -270,7 +270,7 @@ def m32(h, i)
     h[1] = source("d")
     h[i] = source("e")
     
-    sink s32(h) # $ hasValueFlow=b hasValueFlow=e
+    sink s32(h) # $ hasValueFlow=b $ hasValueFlow=e $ SPURIOUS: hasValueFlow=a
 end
 
 def m33(h, i)
@@ -295,7 +295,7 @@ end
 
 def m36(h, i)
     x = s36(source("a"))
-    sink x[:foo]
+    sink x[:foo] # $ SPURIOUS: hasValueFlow=a
     sink x["foo"] # $ hasValueFlow=a
     sink x[:bar]
     sink x[i] # $ hasValueFlow=a

@@ -1046,6 +1046,42 @@ void memset_test(char* buf) { // $ ast-def=buf ir-def=*buf
 	sink(*buf); // $ ir MISSING: ast
 }
 
+void *realloc(void *, size_t);
+
+void test_realloc() {
+	int *src = indirect_source();
+	int *dest = (int*)realloc(src, sizeof(int));
+	sink(*dest); // $ ir, MISSING: ast
+}
+
+struct MyInt {
+  int i;
+  MyInt();
+  void swap(MyInt &j);
+};
+
+void test_member_swap() {
+	MyInt s1;
+	MyInt s2;
+	s2.i = source();
+	MyInt s3;
+	MyInt s4;
+	s4.i = source();
+
+	sink(s1.i);
+	sink(s2.i); // $ ast,ir
+	sink(s3.i);
+	sink(s4.i); // $ ast,ir
+
+	s1.swap(s2);
+	s4.swap(s3);
+
+	sink(s1.i); // $ ir
+	sink(s2.i); // $ SPURIOUS: ast
+	sink(s3.i); // $ ir
+	sink(s4.i); // $ SPURIOUS: ast
+}
+
 void flow_out_of_address_with_local_flow() {
   MyStruct a;
   a.content = nullptr;
@@ -1072,4 +1108,208 @@ void single_object_in_both_cases(bool b, int x, int y) {
   *p = source();
   *p = 0;
   sink(*p); // clean
+}
+
+template<typename T>
+void indirect_sink_const_ref(const T&);
+
+void test_temp_with_conversion_from_materialization() {
+  indirect_sink_const_ref(source()); // $ ir MISSING: ast
+}
+
+void reads_input(int x) {
+  sink(x); // $ ir MISSING: ast
+}
+
+void not_does_read_input(int x);
+
+void (*dispatch_table[])(int) = {
+  reads_input,
+  not_does_read_input
+};
+
+void test_dispatch_table(int i) {
+  int x = source();
+  dispatch_table[i](x);
+}
+
+void test_uncertain_array(int n1, int n2) {
+  int data[10];
+  *(data + 1) = source();
+  *data = 0;
+  sink(*(data + 1)); // $ ast=1138:17 ast=1137:7 ir
+}
+
+namespace conflation_regression {
+
+  char* source(int);
+
+  void read_deref_deref(char **l) { // $ ast-def=l ir-def=*l ir-def=**l
+    sink(**l); // Clean. Only *l is tainted
+  }
+
+  void f(char ** p) // $ ast-def=p ir-def=*p ir-def=**p
+  {
+    *p = source(0);
+    read_deref_deref(p);
+  }
+}
+
+int recursion = (sink(recursion), source()); // clean
+
+
+namespace globals_without_explicit_def {
+  int* global_int_ptr;
+
+  void set(int* p) { // $ ast-def=p ir-def=*p
+    *p = source();
+  }
+
+  void test1() {
+    set(global_int_ptr);
+    indirect_sink(global_int_ptr); // $ ir,ast
+  }
+
+  void test2() {
+    set(global_int_ptr);
+    sink(*global_int_ptr); // $ ir MISSING: ast
+  }
+
+  void calls_set() {
+    set(global_int_ptr);
+  }
+
+  void test3() {
+    calls_set();
+    indirect_sink(global_int_ptr); // $ ir MISSING: ast
+  }
+
+  void test4() {
+    calls_set();
+    sink(*global_int_ptr); // $ ir MISSING: ast
+  }
+
+  int** global_int_ptr_ptr;
+
+  void set_indirect(int** p) { // $ ast-def=p ir-def=*p ir-def=**p
+    *p = indirect_source();
+  }
+
+  void test5() {
+    set_indirect(global_int_ptr_ptr);
+    indirect_sink(global_int_ptr_ptr); // $ ir,ast
+    sink(global_int_ptr_ptr); // $ SPURIOUS: ast
+  }
+
+  void test6() {
+    set_indirect(global_int_ptr_ptr);
+    indirect_sink(*global_int_ptr_ptr); // $ ir MISSING: ast
+    sink(*global_int_ptr_ptr);
+    indirect_sink(**global_int_ptr_ptr);
+    sink(**global_int_ptr_ptr); // $ ir
+  }
+
+  void calls_set_indirect() {
+    set_indirect(global_int_ptr_ptr);
+  }
+
+  void test7() {
+    calls_set_indirect();
+    indirect_sink(global_int_ptr_ptr); // $ ir MISSING: ast
+    sink(global_int_ptr_ptr); // $ MISSING: ast
+  }
+
+  void test8() {
+    calls_set_indirect();
+    indirect_sink(*global_int_ptr_ptr); // $ ir MISSING: ast
+    sink(*global_int_ptr_ptr);
+    indirect_sink(**global_int_ptr_ptr);
+    sink(**global_int_ptr_ptr); // $ ir MISSING: ast
+  }
+
+  int global_int_array[10];
+
+  void test9() {
+    set(global_int_array);
+    indirect_sink(global_int_array); // $ ir,ast
+  }
+
+  void test10() {
+    set(global_int_array);
+    sink(*global_int_array); // $ ir,ast
+  }
+
+  void calls_set_array() {
+    set(global_int_array);
+  }
+
+  void test11() {
+    calls_set_array();
+    indirect_sink(global_int_array); // $ ir MISSING: ast
+  }
+
+  void test12() {
+    calls_set_array();
+    sink(*global_int_array); // $ ir MISSING: ast
+  }
+}
+
+void crement_test1() {
+  int x = source();
+  sink(x++); // $ ir ast
+  sink(x);
+
+  x = source();
+  sink(x--); // $ ir ast
+  sink(x);
+
+  x = source();
+  sink(++x); // $ SPURIOUS: ast
+  sink(x); // $ SPURIOUS: ast
+
+  x = source();
+  sink(--x); // $ SPURIOUS: ast
+  sink(x); // $ SPURIOUS: ast
+
+  x = source();
+  sink(x += 10); // $ SPURIOUS: ast
+  sink(x); // $ SPURIOUS: ast
+
+  x = source();
+  sink(x -= 10); // $ SPURIOUS: ast
+  sink(x); // $ SPURIOUS: ast
+}
+
+void crement_test2(bool b, int y) {
+  int x = source();
+  sink(b ? x++ : x--); // $ ir ast
+  sink(x);
+
+  x = source();
+  sink((b ? x : y)++); // $ ast MISSING: ir
+  sink(x); // $ ir ast
+
+  x = source();
+  sink(++(b ? x : y));
+  sink(x); // $ ir ast
+
+  x = source();
+  sink(b ? x++ : y); // $ ir ast
+  sink(x); // $ ir ast
+
+  x = source();
+  sink(b ? x : y++); // $ ir ast
+  sink(x); // $ ir ast
+
+  x = source();
+  sink(b ? ++x : y); // $ SPURIOUS: ast
+  sink(x); // $ ir ast
+
+  x = source();
+  sink((long)x++); // $ ir ast
+  sink(x);
+
+  x = source();
+  sink(b ? (long)x++ : 0); // $ ir ast
+  sink(x); // $ ir ast
 }

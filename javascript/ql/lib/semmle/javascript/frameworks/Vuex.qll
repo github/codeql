@@ -104,8 +104,7 @@ module Vuex {
       storeName = this.getNamespace() + localName
       or
       // mapGetters(['foo', 'bar'])
-      this.getLastParameter().getUnknownMember().getAValueReachingSink().getStringValue() =
-        localName and
+      this.getLastParameter().getArrayElement().getAValueReachingSink().getStringValue() = localName and
       storeName = this.getNamespace() + localName
       or
       // mapGetters({foo: 'bar'})

@@ -1,1 +1,2 @@
-Security/CWE/CWE-327/BrokenCryptoAlgorithm.ql
+query: Security/CWE/CWE-327/BrokenCryptoAlgorithm.ql
+postprocess: utils/test/PrettyPrintModels.ql

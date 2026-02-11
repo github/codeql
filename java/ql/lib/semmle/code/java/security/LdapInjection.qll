@@ -1,4 +1,6 @@
 /** Provides classes to reason about LDAP injection attacks. */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dataflow.TaintTracking
@@ -62,7 +64,7 @@ private predicate ldapNameAddAllStep(DataFlow::ExprNode n1, DataFlow::ExprNode n
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that converts between `LdapName` and `LdapName` or
- * `String`, i.e. `taintedLdapName.clone()`, `taintedLdapName.getAll()`,
+ * `String`, i.e. `taintedLdapName.getAll()`,
  * `taintedLdapName.getRdns()` or `taintedLdapName.toString()`.
  */
 private predicate ldapNameGetCloneStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
@@ -71,7 +73,6 @@ private predicate ldapNameGetCloneStep(DataFlow::ExprNode n1, DataFlow::ExprNode
     n2.asExpr() = ma and
     ma.getMethod() = m
   |
-    m instanceof MethodLdapNameClone or
     m instanceof MethodLdapNameGetAll or
     m instanceof MethodLdapNameGetRdns or
     m instanceof MethodLdapNameToString

@@ -1,14 +1,28 @@
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "csharp_test", "publish_binary")
 load("@rules_pkg//pkg:mappings.bzl", "strip_prefix")
-load("@semmle_code//:dist.bzl", "pack_zip")
-load("//:defs.bzl", "codeql_platform")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files")
 
-TARGET_FRAMEWORK = "net8.0"
+TARGET_FRAMEWORK = "net10.0"
+
+def _gen_assembly_info(name):
+    assembly_info_gen = name + "-assembly-info"
+
+    native.genrule(
+        name = assembly_info_gen,
+        outs = [name + "AssemblyInfo.cs"],
+        cmd = "$(execpath //csharp/scripts:gen-assembly-info) $@ " + name,
+        tools = ["//csharp/scripts:gen-assembly-info"],
+    )
+    return ":" + assembly_info_gen
 
 def codeql_csharp_library(name, **kwargs):
+    assembly_info_gen = _gen_assembly_info(name)
+    srcs = kwargs.pop("srcs", [])
+    srcs.append(assembly_info_gen)
+
     kwargs.setdefault("nullable", "enable")
     kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
-    csharp_library(name = name, **kwargs)
+    csharp_library(name = name, srcs = srcs, **kwargs)
 
 def codeql_xunit_test(name, **kwargs):
     kwargs.setdefault("nullable", "enable")
@@ -33,7 +47,31 @@ def codeql_xunit_test(name, **kwargs):
         **kwargs
     )
 
-def codeql_csharp_binary(name, language_prefix = "csharp", **kwargs):
+def _filter_published_files_impl(ctx):
+    dir = ctx.attr.src[DefaultInfo].files_to_run.executable.dirname
+    files = ctx.attr.src[DefaultInfo].files.to_list()
+
+    # filter out all unneeded localization directories, that contain
+    # duplicate files that would break our packaging
+    files = [
+        f
+        for f in files
+        if f.dirname in (dir, dir + "/bin", dir + "\\bin")
+    ]
+    return [
+        DefaultInfo(
+            files = depset(files),
+        ),
+    ]
+
+_filter_published_files = rule(
+    implementation = _filter_published_files_impl,
+    attrs = {
+        "src": attr.label(),
+    },
+)
+
+def codeql_csharp_binary(name, **kwargs):
     kwargs.setdefault("nullable", "enable")
     kwargs.setdefault("target_frameworks", [TARGET_FRAMEWORK])
 
@@ -41,11 +79,15 @@ def codeql_csharp_binary(name, language_prefix = "csharp", **kwargs):
     resources = kwargs.pop("resources", [])
     srcs = kwargs.pop("srcs", [])
 
+    assembly_info_gen = _gen_assembly_info(name)
+    srcs.append(assembly_info_gen)
+
     # always add the assembly info file that sets the AssemblyInformationalVersion attribute to the extractor version
-    srcs.append("//csharp/scripts:assembly-info-src")
+    srcs.append("//csharp/scripts:git-assembly-info-src")
 
     csharp_binary_target = "bin/" + name
     publish_binary_target = "publish/" + name
+    filtered_target = "filtered/" + name
     csharp_binary(name = csharp_binary_target, srcs = srcs, resources = resources, visibility = visibility, **kwargs)
     publish_binary(
         name = publish_binary_target,
@@ -59,11 +101,15 @@ def codeql_csharp_binary(name, language_prefix = "csharp", **kwargs):
             },
         ),
     )
+    _filter_published_files(
+        name = filtered_target,
+        src = publish_binary_target,
+    )
 
-    pack_zip(
+    codeql_pkg_files(
         name = name,
-        srcs = [publish_binary_target],
-        prefix = language_prefix + "/tools/" + codeql_platform,
+        exes = [filtered_target],
+        prefix = "tools/{CODEQL_PLATFORM}",
         strip_prefix = strip_prefix.files_only(),
         visibility = visibility,
     )

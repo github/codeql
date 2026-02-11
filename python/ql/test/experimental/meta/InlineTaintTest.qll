@@ -13,8 +13,9 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.PrintNode
+private import semmle.python.Concepts
 
 DataFlow::Node shouldBeTainted() {
   exists(DataFlow::CallCfgNode call |
@@ -45,7 +46,7 @@ module Conf {
         source.(DataFlow::CfgNode).getNode() = call.getAnArg()
       )
       or
-      source instanceof RemoteFlowSource
+      source instanceof ThreatModelSource
     }
 
     predicate isSink(DataFlow::Node sink) {

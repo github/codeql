@@ -21,10 +21,10 @@ predicate loginMethod(Method m, ControlFlow::SuccessorType flowFrom) {
     or
     m = any(SystemWebSecurityFormsAuthenticationClass c).getAuthenticateMethod()
   ) and
-  flowFrom.(ControlFlow::SuccessorTypes::BooleanSuccessor).getValue() = true
+  flowFrom.(ControlFlow::BooleanSuccessor).getValue() = true
   or
   m = any(SystemWebSecurityFormsAuthenticationClass c).getSignOutMethod() and
-  flowFrom instanceof ControlFlow::SuccessorTypes::NormalSuccessor
+  flowFrom instanceof ControlFlow::DirectSuccessor
 }
 
 /** The `System.Web.SessionState.HttpSessionState` class. */

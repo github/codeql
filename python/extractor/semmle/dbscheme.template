@@ -40,6 +40,28 @@ externalData(
   string value : string ref
 );
 
+/*- Database metadata -*/
+
+/**
+ * The CLI will automatically emit applicable tuples for this table,
+ * such as `databaseMetadata("isOverlay", "true")` when building an
+ * overlay database.
+ */
+databaseMetadata(
+  string metadataKey: string ref,
+  string value: string ref
+);
+
+/*- Overlay support -*/
+
+/**
+ * The CLI will automatically emit tuples for each new/modified/deleted file
+ * when building an overlay database.
+ */
+overlayChangedFiles(
+  string path: string ref
+);
+
 /*- DEPRECATED: Snapshot date -*/
 
 snapshotDate(unique date snapshotDate : date ref);
@@ -420,3 +442,12 @@ py_decorated_object(int object : @py_object ref,
 @py_object = @py_cobject | @py_flow_node;
 
 @py_source_element = @py_ast_node | @container;
+
+/** The union of all Python database entities */
+@top =
+  @py_source_element | @py_object | @py_base_var | @location | @py_line | @py_comment |
+      @py_expr_parent | @py_expr_context |
+      @py_operator | @py_boolop | @py_cmpop | @py_unaryop |
+      @py_cmpop_list | @py_alias_list | @py_StringPart_list | @py_comprehension_list | @py_dict_item_list | @py_pattern_list | @py_stmt_list | @py_str_list | @py_type_parameter_list |
+      @externalDefect | @externalMetric | @externalDataElement | @duplication_or_similarity | @svnentry |
+      @xmllocatable | @yaml_locatable;

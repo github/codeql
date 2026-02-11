@@ -14,7 +14,7 @@ import cpp
 import semmle.code.cpp.security.boostorg.asio.protocols
 
 predicate isSourceImpl(DataFlow::Node source, ConstructorCall cc) {
-  exists(BoostorgAsio::SslContextClass c | c.getAContructorCall() = cc and cc = source.asExpr())
+  exists(BoostorgAsio::SslContextClass c | c.getAConstructorCall() = cc and cc = source.asExpr())
 }
 
 predicate isSinkImpl(DataFlow::Node sink, FunctionCall fcSetOptions) {

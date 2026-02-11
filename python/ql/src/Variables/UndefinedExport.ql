@@ -3,8 +3,9 @@
  * @description Including an undefined attribute in `__all__` causes an exception when
  *              the module is imported using '*'
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
  * @problem.severity error
  * @sub-severity low
  * @precision high
@@ -12,6 +13,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 /** Whether name is declared in the __all__ list of this module */
 predicate declaredInAll(Module m, StringLiteral name) {
@@ -43,7 +45,7 @@ predicate mutates_globals(ModuleValue m) {
         enum_convert = enum_class.attr("_convert") and
         exists(CallNode call | call.getScope() = m.getScope() |
           enum_convert.getACall() = call or
-          call.getFunction().pointsTo(enum_convert)
+          call.getFunction().(ControlFlowNodeWithPointsTo).pointsTo(enum_convert)
         )
       )
       or
@@ -51,7 +53,11 @@ predicate mutates_globals(ModuleValue m) {
       // analysis doesn't handle that well enough. So we need a special case for this
       not exists(enum_class.attr("_convert")) and
       exists(CallNode call | call.getScope() = m.getScope() |
-        call.getFunction().(AttrNode).getObject(["_convert", "_convert_"]).pointsTo() = enum_class
+        call.getFunction()
+            .(AttrNode)
+            .getObject(["_convert", "_convert_"])
+            .(ControlFlowNodeWithPointsTo)
+            .pointsTo() = enum_class
       )
     )
   )
@@ -64,9 +70,9 @@ predicate is_exported_submodule_name(ModuleValue m, string exported_name) {
 
 predicate contains_unknown_import_star(ModuleValue m) {
   exists(ImportStarNode imp | imp.getEnclosingModule() = m.getScope() |
-    imp.getModule().pointsTo().isAbsent()
+    imp.getModule().(ControlFlowNodeWithPointsTo).pointsTo().isAbsent()
     or
-    not exists(imp.getModule().pointsTo())
+    not exists(imp.getModule().(ControlFlowNodeWithPointsTo).pointsTo())
   )
 }
 

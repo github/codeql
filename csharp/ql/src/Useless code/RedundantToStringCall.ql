@@ -6,7 +6,8 @@
  * @problem.severity recommendation
  * @precision high
  * @id cs/useless-tostring-call
- * @tags maintainability
+ * @tags quality
+ *       maintainability
  *       useless-code
  */
 

@@ -1,4 +1,6 @@
 /** Provides classes and predicates related to regex injection in Java. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -19,17 +21,8 @@ private class DefaultRegexInjectionSink extends RegexInjectionSink {
   }
 }
 
-/**
- * A call to the `Pattern.quote` method, which gives metacharacters or escape sequences
- * no special meaning.
- */
-private class PatternQuoteCall extends RegexInjectionSanitizer {
-  PatternQuoteCall() {
-    exists(MethodCall ma, Method m | m = ma.getMethod() |
-      ma.getArgument(0) = this.asExpr() and
-      m instanceof PatternQuoteMethod
-    )
-  }
+private class ExternalRegexInjectionSanitizer extends RegexInjectionSanitizer {
+  ExternalRegexInjectionSanitizer() { barrierNode(this, "regex-use") }
 }
 
 /**

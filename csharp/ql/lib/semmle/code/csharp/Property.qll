@@ -6,6 +6,7 @@ import Member
 import Stmt
 import Type
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.internal.Callable
 private import TypeRef
 
 /**
@@ -196,7 +197,7 @@ class Property extends DeclarationWithGetSetAccessors, @property {
 
   override PropertyAccess getAnAccess() { result.getTarget() = this }
 
-  override Location getALocation() { property_location(this, result) }
+  override Location getALocation() { property_location(this.getUnboundDeclaration(), result) }
 
   override Expr getAnAssignedValue() {
     result = DeclarationWithGetSetAccessors.super.getAnAssignedValue()
@@ -258,6 +259,21 @@ class Property extends DeclarationWithGetSetAccessors, @property {
   override Setter getSetter() { result = DeclarationWithGetSetAccessors.super.getSetter() }
 
   override string getAPrimaryQlClass() { result = "Property" }
+}
+
+/**
+ * An extension property, for example `FirstChar` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionProperty extends Property {
+  ExtensionProperty() { this.isInExtension() }
 }
 
 /**
@@ -328,7 +344,7 @@ class Indexer extends DeclarationWithGetSetAccessors, Parameterizable, @indexer 
     result = DeclarationWithGetSetAccessors.super.getAnUltimateImplementor()
   }
 
-  override Location getALocation() { indexer_location(this, result) }
+  override Location getALocation() { indexer_location(this.getUnboundDeclaration(), result) }
 
   override string toStringWithTypes() {
     result = this.getName() + "[" + this.parameterTypesToString() + "]"
@@ -408,9 +424,25 @@ class Accessor extends Callable, Modifiable, Attributable, Overridable, @callabl
 
   override Accessor getUnboundDeclaration() { accessors(this, _, _, _, result) }
 
-  override Location getALocation() { accessor_location(this, result) }
+  override Location getALocation() { accessor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = this.getName() }
+}
+
+/**
+ *  An extension accessor. Either a getter (`Getter`) or a setter (`Setter`) of an
+ *  extension property, for example `get` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionAccessor extends ExtensionCallableImpl, Accessor {
+  ExtensionAccessor() { this.isInExtension() }
 }
 
 /**

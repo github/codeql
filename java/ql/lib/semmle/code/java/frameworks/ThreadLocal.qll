@@ -1,4 +1,6 @@
 /** Definitions related to `java.lang.ThreadLocal`. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
@@ -13,7 +15,7 @@ private predicate threadLocalInitialValue(ClassInstanceExpr cie, Method initialV
   exists(RefType t, ReturnStmt ret |
     cie.getConstructedType().getSourceDeclaration() = t and
     t.getASourceSupertype+().hasQualifiedName("java.lang", "ThreadLocal") and
-    ret.getResult() = init and
+    ret.getExpr() = init and
     ret.getEnclosingCallable() = initialValue and
     initialValue.hasName("initialValue") and
     initialValue.getDeclaringType() = t

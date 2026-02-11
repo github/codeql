@@ -125,8 +125,7 @@ nodes
 | UnsafeTlsVersion.java:112:21:112:29 | "TLSv1.1" : String | semmle.label | "TLSv1.1" : String |
 | UnsafeTlsVersion.java:119:43:119:61 | protocols : String[] [[]] : String | semmle.label | protocols : String[] [[]] : String |
 | UnsafeTlsVersion.java:121:32:121:40 | protocols | semmle.label | protocols |
-subpaths
-#select
+problems
 | UnsafeTlsVersion.java:16:28:16:32 | "SSL" | UnsafeTlsVersion.java:16:28:16:32 | "SSL" | UnsafeTlsVersion.java:16:28:16:32 | "SSL" | $@ is unsafe. | UnsafeTlsVersion.java:16:28:16:32 | "SSL" | SSL |
 | UnsafeTlsVersion.java:17:28:17:34 | "SSLv2" | UnsafeTlsVersion.java:17:28:17:34 | "SSLv2" | UnsafeTlsVersion.java:17:28:17:34 | "SSLv2" | $@ is unsafe. | UnsafeTlsVersion.java:17:28:17:34 | "SSLv2" | SSLv2 |
 | UnsafeTlsVersion.java:18:28:18:34 | "SSLv3" | UnsafeTlsVersion.java:18:28:18:34 | "SSLv3" | UnsafeTlsVersion.java:18:28:18:34 | "SSLv3" | $@ is unsafe. | UnsafeTlsVersion.java:18:28:18:34 | "SSLv3" | SSLv3 |
@@ -159,3 +158,4 @@ subpaths
 | UnsafeTlsVersion.java:121:32:121:40 | protocols | UnsafeTlsVersion.java:110:21:110:27 | "TLSv1" : String | UnsafeTlsVersion.java:121:32:121:40 | protocols | $@ is unsafe. | UnsafeTlsVersion.java:110:21:110:27 | "TLSv1" | TLSv1 |
 | UnsafeTlsVersion.java:121:32:121:40 | protocols | UnsafeTlsVersion.java:111:21:111:29 | "TLSv1.1" : String | UnsafeTlsVersion.java:121:32:121:40 | protocols | $@ is unsafe. | UnsafeTlsVersion.java:111:21:111:29 | "TLSv1.1" | TLSv1.1 |
 | UnsafeTlsVersion.java:121:32:121:40 | protocols | UnsafeTlsVersion.java:112:21:112:29 | "TLSv1.1" : String | UnsafeTlsVersion.java:121:32:121:40 | protocols | $@ is unsafe. | UnsafeTlsVersion.java:112:21:112:29 | "TLSv1.1" | TLSv1.1 |
+subpaths

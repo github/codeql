@@ -1,1 +1,2 @@
-Vue/ArrowMethodOnVueInstance.ql
+query: Vue/ArrowMethodOnVueInstance.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

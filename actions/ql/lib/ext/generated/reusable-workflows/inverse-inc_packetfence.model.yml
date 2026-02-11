@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["inverse-inc/packetfence/.github/workflows/reusable_upload_packages.yml", "*", "input._PACKAGE_NAME", "code-injection", "generated"]

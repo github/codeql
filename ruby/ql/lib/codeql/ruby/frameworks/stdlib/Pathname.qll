@@ -52,6 +52,10 @@ module Pathname {
             ]
         )
     }
+
+    predicate observeDiffInformedIncrementalMode() {
+      none() // Used for a library model
+    }
   }
 
   private module PathnameFlow = DataFlow::Global<PathnameConfig>;

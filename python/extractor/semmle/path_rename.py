@@ -25,7 +25,7 @@ def renamer_from_options_and_env(options, logger):
         except (AttributeError, ImportError):
             raise SemmleError("Cannot get renamer from module " + options.renamer)
     else:
-        path_transformer = os.environ.get("SEMMLE_PATH_TRANSFORMER", None)
+        path_transformer = os.environ.get("CODEQL_PATH_TRANSFORMER", None) or os.environ.get("SEMMLE_PATH_TRANSFORMER", None)
         if path_transformer:
             logger.info("Using path transformer '%s'", path_transformer)
             rename = projectlayout.get_renamer(path_transformer)

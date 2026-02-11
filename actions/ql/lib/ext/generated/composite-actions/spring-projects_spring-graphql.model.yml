@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["spring-projects/spring-graphql", "*", "input.run-name", "code-injection", "generated"]
+     - ["spring-projects/spring-graphql", "*", "input.webhook-url", "code-injection", "generated"]

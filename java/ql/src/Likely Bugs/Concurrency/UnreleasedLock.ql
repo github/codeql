@@ -16,54 +16,14 @@
 import java
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.SSA
-import semmle.code.java.frameworks.Mockito
-
-class LockType extends RefType {
-  LockType() {
-    this.getAMethod().hasName("lock") and
-    this.getAMethod().hasName("unlock")
-  }
-
-  Method getLockMethod() {
-    result.getDeclaringType() = this and
-    (result.hasName("lock") or result.hasName("tryLock"))
-  }
-
-  Method getUnlockMethod() {
-    result.getDeclaringType() = this and
-    result.hasName("unlock")
-  }
-
-  Method getIsHeldByCurrentThreadMethod() {
-    result.getDeclaringType() = this and
-    result.hasName("isHeldByCurrentThread")
-  }
-
-  MethodCall getLockAccess() {
-    result.getMethod() = this.getLockMethod() and
-    // Not part of a Mockito verification call
-    not result instanceof MockitoVerifiedMethodCall
-  }
-
-  MethodCall getUnlockAccess() {
-    result.getMethod() = this.getUnlockMethod() and
-    // Not part of a Mockito verification call
-    not result instanceof MockitoVerifiedMethodCall
-  }
-
-  MethodCall getIsHeldByCurrentThreadAccess() {
-    result.getMethod() = this.getIsHeldByCurrentThreadMethod() and
-    // Not part of a Mockito verification call
-    not result instanceof MockitoVerifiedMethodCall
-  }
-}
+import semmle.code.java.Concurrency
 
 predicate lockBlock(LockType t, BasicBlock b, int locks) {
-  locks = strictcount(int i | b.getNode(i) = t.getLockAccess())
+  locks = strictcount(int i | b.getNode(i).asExpr() = t.getLockAccess())
 }
 
 predicate unlockBlock(LockType t, BasicBlock b, int unlocks) {
-  unlocks = strictcount(int i | b.getNode(i) = t.getUnlockAccess())
+  unlocks = strictcount(int i | b.getNode(i).asExpr() = t.getUnlockAccess())
 }
 
 /**
@@ -90,17 +50,17 @@ predicate failedLock(LockType t, BasicBlock lockblock, BasicBlock exblock) {
   exists(ControlFlowNode lock |
     lock = lockblock.getLastNode() and
     (
-      lock = t.getLockAccess()
+      lock.asExpr() = t.getLockAccess()
       or
-      exists(SsaExplicitUpdate lockbool |
+      exists(SsaExplicitWrite lockbool |
         // Using the value of `t.getLockAccess()` ensures that it is a `tryLock` call.
-        lock = lockbool.getAUse() and
-        lockbool.getDefiningExpr().(VariableAssign).getSource() = t.getLockAccess()
+        lock.asExpr() = lockbool.getARead() and
+        lockbool.getValue() = t.getLockAccess()
       )
     ) and
     (
-      lock.getAnExceptionSuccessor() = exblock or
-      lock.(ConditionNode).getAFalseSuccessor() = exblock
+      lock.getAnExceptionSuccessor() = exblock.getFirstNode() or
+      lock.(ConditionNode).getAFalseSuccessor() = exblock.getFirstNode()
     )
   )
 }
@@ -113,7 +73,27 @@ predicate heldByCurrentThreadCheck(LockType t, BasicBlock checkblock, BasicBlock
   exists(ConditionBlock conditionBlock |
     conditionBlock.getCondition() = t.getIsHeldByCurrentThreadAccess()
   |
-    conditionBlock.getBasicBlock() = checkblock and
+    conditionBlock = checkblock and
+    conditionBlock.getTestSuccessor(false) = falsesucc
+  )
+}
+
+/**
+ * Holds if there is a variable access in `checkblock` that has `falsesucc` as the false successor.
+ *
+ * The variable access must have an assigned value that is a lock access on `t`, and
+ * the true successor of `checkblock` must contain an unlock access.
+ */
+predicate variableLockStateCheck(LockType t, BasicBlock checkblock, BasicBlock falsesucc) {
+  exists(ConditionBlock conditionBlock, VarAccess v |
+    v.getType() instanceof BooleanType and
+    // Ensure that a lock access is assigned to the variable
+    v.getVariable().getAnAssignedValue() = t.getLockAccess() and
+    // Ensure that the `true` successor of the condition block contains an unlock access
+    conditionBlock.getTestSuccessor(true) = t.getUnlockAccess().getBasicBlock() and
+    conditionBlock.getCondition() = v
+  |
+    conditionBlock = checkblock and
     conditionBlock.getTestSuccessor(false) = falsesucc
   )
 }
@@ -125,14 +105,13 @@ predicate heldByCurrentThreadCheck(LockType t, BasicBlock checkblock, BasicBlock
 predicate blockIsLocked(LockType t, BasicBlock src, BasicBlock b, int locks) {
   lockUnlockBlock(t, b, locks) and src = b and locks > 0
   or
-  exists(BasicBlock pred, int predlocks, int curlocks, int failedlock |
-    pred = b.getABBPredecessor()
-  |
+  exists(BasicBlock pred, int predlocks, int curlocks, int failedlock | pred = b.getAPredecessor() |
     // The number of net locks from the `src` block to the predecessor block `pred` is `predlocks`.
     blockIsLocked(t, src, pred, predlocks) and
     // The recursive call ensures that at least one lock is held, so do not consider the false
-    // successor of the `isHeldByCurrentThread()` check.
+    // successor of the `isHeldByCurrentThread()` check or of `variableLockStateCheck`.
     not heldByCurrentThreadCheck(t, pred, b) and
+    not variableLockStateCheck(t, pred, b) and
     // Count a failed lock as an unlock so the net is zero.
     (if failedLock(t, pred, b) then failedlock = 1 else failedlock = 0) and
     (
@@ -147,12 +126,12 @@ predicate blockIsLocked(LockType t, BasicBlock src, BasicBlock b, int locks) {
   )
 }
 
-from Callable c, LockType t, BasicBlock src, BasicBlock exit, MethodCall lock
+from Callable c, LockType t, BasicBlock src, ExitBlock exit, MethodCall lock
 where
   // Restrict results to those methods that actually attempt to unlock.
   t.getUnlockAccess().getEnclosingCallable() = c and
   blockIsLocked(t, src, exit, _) and
-  exit.getLastNode() = c and
-  lock = src.getANode() and
+  exit.getEnclosingCallable() = c and
+  lock = src.getANode().asExpr() and
   lock = t.getLockAccess()
 select lock, "This lock might not be unlocked or might be locked more times than it is unlocked."

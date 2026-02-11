@@ -1,4 +1,5 @@
-load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
+load("//misc/bazel:pkg.bzl", "codeql_pkg_files", "codeql_pkg_runfiles")
 load("//swift:rules.bzl", "swift_cc_binary")
 
 swift_cc_binary(
@@ -18,7 +19,7 @@ swift_cc_binary(
         "//swift/extractor/invocation",
         "//swift/extractor/remapping",
         "//swift/extractor/translators",
-        "//swift/third_party/swift-llvm-support",
+        "//swift/third_party/resources:prebuilt",
         "@absl//absl/strings",
     ],
 )
@@ -29,9 +30,17 @@ sh_binary(
     data = [":extractor.real"],
 )
 
-pkg_runfiles(
+codeql_pkg_runfiles(
     name = "pkg",
-    srcs = [":extractor"],
     excludes = ["extractor.sh"],  # script gets copied as "extractor", no need for the original .sh file
+    exes = [":extractor"],
+    visibility = ["//swift:__pkg__"],
+)
+
+codeql_pkg_files(
+    name = "incompatible",
+    exes = ["incompatible-extractor.sh"],
+    renames = {"incompatible-extractor.sh": "extractor"},
+    target_compatible_with = ["@platforms//os:linux"],
     visibility = ["//swift:__pkg__"],
 )

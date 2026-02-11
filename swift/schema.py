@@ -117,6 +117,10 @@ class GenericContext(Element):
 class EnumCaseDecl(Decl):
     elements: list["EnumElementDecl"]
 
+class UsingDecl(Decl):
+    is_main_actor: predicate
+    is_nonisolated: predicate
+
 class ExtensionDecl(GenericContext, Decl):
     extended_type_decl: "NominalTypeDecl"
     protocols: list["ProtocolDecl"]
@@ -242,7 +246,7 @@ class ParamDecl(VarDecl):
         has a property wrapper.
     """)
 
-class Callable(Element):
+class Callable(AstNode):
     name: optional[string] | doc("name of this callable") | desc("The name includes argument "
         "labels of the callable, for example `myFunction(arg:)`.")
     self_param: optional[ParamDecl] | child
@@ -315,6 +319,10 @@ class Accessor(AccessorOrNamedFunction):
     is_modify: predicate | doc('this accessor is a `_modify` coroutine, yielding an inout value of the property')
     is_unsafe_address: predicate | doc('this accessor is an `unsafeAddress` immutable addressor')
     is_unsafe_mutable_address: predicate | doc('this accessor is an `unsafeMutableAddress` mutable addressor')
+    is_distributed_get: predicate | doc('this accessor is a distributed getter')
+    is_read2: predicate | doc('this accessor is a `read` coroutine, yielding a borrowed value of the property')
+    is_modify2: predicate | doc('this accessor is a `modify` coroutine, yielding an inout value of the property')
+    is_init: predicate | doc('this accessor is an `init` accessor')
 
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass
@@ -486,13 +494,13 @@ class KeyPathComponent(AstNode):
     kind: int | doc("kind of key path component") | desc("""
         INTERNAL: Do not use.
 
-        This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
-        (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
-        and 9 for tuple element indexing.
+        This is 4 for method or initializer application, 5 for members, 6 for array and dictionary
+        subscripts, 7 for optional forcing (`!`), 8 for optional chaining (`?`), 9 for implicit
+        optional wrapping, 10 for `self`, and 11 for tuple element indexing.
 
         The following values should not appear: 0 for invalid components, 1 for unresolved
-        properties, 2 for unresolved subscripts, 10 for #keyPath dictionary keys, and 11 for
-        implicit IDE code completion data.
+        method or initializer applications, 2 for unresolved members, 3 for unresolved subscripts,
+        12 for #keyPath dictionary keys, and 13 for implicit IDE code completion data.
     """)
     subscript_arguments : list[Argument] | child | doc(
         "arguments to an array or dictionary subscript expression")
@@ -626,6 +634,9 @@ class AutoClosureExpr(ClosureExpr):
     pass
 
 class AwaitExpr(IdentityExpr):
+    pass
+
+class UnsafeExpr(IdentityExpr):
     pass
 
 class BinaryExpr(ApplyExpr):
@@ -905,20 +916,9 @@ class AvailabilitySpec(AstNode):
     if #available(iOS 12, *)
     ```
     """
-    pass
-
-class PlatformVersionAvailabilitySpec(AvailabilitySpec):
-    """
-    An availability spec based on platform and version, for example `macOS 12` or `watchOS 14`
-    """
-    platform: string
-    version: string
-
-class OtherAvailabilitySpec(AvailabilitySpec):
-    """
-    A wildcard availability spec `*`
-    """
-    pass
+    platform: optional[string]
+    version: optional[string]
+    is_wildcard: predicate
 
 class AvailabilityInfo(AstNode):
     """
@@ -1016,6 +1016,7 @@ class DoStmt(LabeledStmt):
     body: BraceStmt | child
 
 class ForEachStmt(LabeledStmt):
+    variables: list[VarDecl] | child
     pattern: Pattern | child
     where: optional[Expr] | child
     iteratorVar: optional[PatternBindingDecl] | child
@@ -1191,6 +1192,10 @@ class BuiltinIntegerLiteralType(AnyBuiltinIntegerType):
 class BuiltinIntegerType(AnyBuiltinIntegerType):
     width: optional[int]
 
+class InlineArrayType(SyntaxSugarType):
+    count_type: Type
+    element_type: Type
+
 class DictionaryType(SyntaxSugarType):
     key_type: Type
     value_type: Type
@@ -1210,7 +1215,7 @@ class PrimaryArchetypeType(ArchetypeType):
 class LocalArchetypeType(ArchetypeType):
     pass
 
-class OpenedArchetypeType(LocalArchetypeType):
+class ExistentialArchetypeType(LocalArchetypeType):
     pass
 
 @qltest.test_with("PackType")
@@ -1393,7 +1398,7 @@ class MacroRole(AstNode):
     """
     kind: int | doc("kind of this macro role (declaration, expression, member, etc.)") | ql.internal
     macro_syntax: int | doc("#freestanding or @attached") | ql.internal
-    conformances: list[TypeExpr] | doc("conformances of this macro role")
+    conformances: list[Expr] | doc("conformances of this macro role")
     names: list[string] | doc("names of this macro role")
 
 class MacroDecl(GenericContext, ValueDecl):
@@ -1424,3 +1429,59 @@ class DiscardStmt(Stmt):
     ```
     """
     sub_expr: Expr | child
+
+
+class ExtractFunctionIsolationExpr(Expr):
+    """
+    An expression that extracts the function isolation of an expression with `@isolated(any)`
+    function type.
+
+    For example:
+    ```
+    func foo(x: @isolated(any) () -> ()) {
+        let isolation = x.isolation
+    }
+    ```
+    """
+    function_expr: Expr | child
+
+
+@qltest.skip
+class CurrentContextIsolationExpr(Expr):
+    """
+    An expression that extracts the actor isolation of the current context, of type `(any Actor)?`.
+    This is synthesized by the type checker and does not have any way to be expressed explicitly in
+    the source.
+    """
+    actor: Expr
+
+
+class ActorIsolationErasureExpr(ImplicitConversionExpr):
+    """
+    A conversion that erases the actor isolation of an expression with `@isolated(any)` function
+    type.
+    """
+
+
+class UnreachableExpr(ImplicitConversionExpr):
+    """
+    A conversion from the uninhabited type to any other type. It's never evaluated.
+    """
+
+
+class UnsafeCastExpr(ImplicitConversionExpr):
+    """
+    A conversion that performs an unsafe bitcast.
+    """
+
+class TypeValueExpr(Expr):
+    type_repr: TypeRepr | child
+
+class IntegerType(Type):
+    value: string
+
+class BuiltinFixedArrayType(BuiltinType):
+    """
+    A builtin type representing N values stored contiguously.
+    """
+    pass

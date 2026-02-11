@@ -1,12 +1,15 @@
 private import codeql.swift.elements
 private import codeql.swift.generated.ParentChild
 // Internal classes are not imported by the tests:
-import codeql.swift.elements.expr.InitializerRefCallExpr
-import codeql.swift.elements.expr.DotSyntaxCallExpr
+import codeql.swift.elements.expr.internal.InitializerRefCallExpr
+import codeql.swift.elements.expr.internal.DotSyntaxCallExpr
 
 cached
 predicate toBeTested(Element e) {
-  e instanceof File
+  e instanceof File and
+  (exists(e.(File).getRelativePath()) or e instanceof UnknownFile)
+  or
+  e instanceof IntegerType
   or
   e instanceof ParameterizedProtocolType
   or

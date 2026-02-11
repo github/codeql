@@ -7,6 +7,7 @@
  * @precision medium
  * @id cs/xmldoc/missing-xmldoc
  * @tags maintainability
+ *       readability
  */
 
 import Documentation

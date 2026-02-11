@@ -26,19 +26,19 @@ type MyRoute struct {
 // Implement some request handlers on that Controller exhibiting some common problems:
 
 func (c MyRoute) Handler1() revel.Result {
-	// GOOD: the Render function is likely to properly escape the user-controlled parameter.
+	// GOOD: the Render function is likely to properly escape the user-controlled parameter.
 	return c.Render("someviewparam", c.Params.Form.Get("someField"))
 }
 
 func (c MyRoute) Handler2() revel.Result {
-	// BAD: the RenderBinary function copies an `io.Reader` to the user's browser.
+	// BAD: the RenderBinary function copies an `io.Reader` to the user's browser.
 	buf := &bytes.Buffer{}
 	buf.WriteString(c.Params.Form.Get("someField"))
 	return c.RenderBinary(buf, "index.html", revel.Inline, time.Now()) // $ responsebody='buf'
 }
 
 func (c MyRoute) Handler3() revel.Result {
-	// GOOD: the RenderBinary function copies an `io.Reader` to the user's browser, but the filename
+	// GOOD: the RenderBinary function copies an `io.Reader` to the user's browser, but the filename
 	// means it will be given a safe content-type.
 	buf := &bytes.Buffer{}
 	buf.WriteString(c.Params.Form.Get("someField"))

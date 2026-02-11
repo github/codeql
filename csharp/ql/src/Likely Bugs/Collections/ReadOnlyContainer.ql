@@ -5,9 +5,9 @@
  * @problem.severity error
  * @precision high
  * @id cs/empty-collection
- * @tags reliability
- *       maintainability
- *       useless-code
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-561
  */
 

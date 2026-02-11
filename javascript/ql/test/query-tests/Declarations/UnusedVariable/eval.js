@@ -7,7 +7,7 @@
     var used_by_eval = f();
 });
 (function(){
-    var not_used_by_eval = f();
+    var not_used_by_eval = f(); // $ Alert
     (function(){
         eval(src);
     })
@@ -16,5 +16,5 @@
     (function(){
         eval(src);
     })
-    var not_used_by_eval = f();
+    var not_used_by_eval = f(); // $ Alert
 });

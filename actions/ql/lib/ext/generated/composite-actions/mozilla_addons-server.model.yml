@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mozilla/addons-server", "*", "input.run", "code-injection", "generated"]
+     - ["mozilla/addons-server", "*", "input.push", "code-injection", "generated"]

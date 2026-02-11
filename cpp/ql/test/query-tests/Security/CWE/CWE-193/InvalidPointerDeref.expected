@@ -27,6 +27,10 @@ edges
 | test.cpp:53:5:53:23 | ... = ... | test.cpp:51:33:51:35 | *end | provenance |  |
 | test.cpp:53:12:53:23 | ... + ... | test.cpp:53:5:53:23 | ... = ... | provenance |  |
 | test.cpp:60:34:60:37 | mk_array output argument | test.cpp:67:9:67:14 | ... = ... | provenance | Config |
+| test.cpp:60:34:60:37 | mk_array output argument | test.cpp:67:9:67:14 | ... = ... | provenance | Config |
+| test.cpp:66:37:66:39 | *++ ... | test.cpp:67:9:67:14 | ... = ... | provenance |  |
+| test.cpp:66:37:66:39 | *++ ... | test.cpp:67:9:67:14 | ... = ... | provenance |  |
+| test.cpp:67:9:67:14 | ... = ... | test.cpp:66:37:66:39 | *++ ... | provenance |  |
 | test.cpp:205:15:205:33 | call to malloc | test.cpp:205:15:205:33 | call to malloc | provenance |  |
 | test.cpp:205:15:205:33 | call to malloc | test.cpp:206:17:206:23 | ... + ... | provenance | Config |
 | test.cpp:206:17:206:23 | ... + ... | test.cpp:206:17:206:23 | ... + ... | provenance |  |
@@ -47,6 +51,11 @@ edges
 | test.cpp:271:14:271:21 | ... + ... | test.cpp:271:14:271:21 | ... + ... | provenance |  |
 | test.cpp:271:14:271:21 | ... + ... | test.cpp:274:5:274:10 | ... = ... | provenance | Config |
 | test.cpp:271:14:271:21 | ... + ... | test.cpp:274:5:274:10 | ... = ... | provenance | Config |
+| test.cpp:271:14:271:21 | ... + ... | test.cpp:274:5:274:10 | ... = ... | provenance | Config |
+| test.cpp:271:14:271:21 | ... + ... | test.cpp:274:5:274:10 | ... = ... | provenance | Config |
+| test.cpp:272:31:272:33 | *... ++ | test.cpp:274:5:274:10 | ... = ... | provenance |  |
+| test.cpp:272:31:272:33 | *... ++ | test.cpp:274:5:274:10 | ... = ... | provenance |  |
+| test.cpp:274:5:274:10 | ... = ... | test.cpp:272:31:272:33 | *... ++ | provenance |  |
 | test.cpp:355:14:355:27 | new[] | test.cpp:355:14:355:27 | new[] | provenance |  |
 | test.cpp:355:14:355:27 | new[] | test.cpp:356:15:356:23 | ... + ... | provenance | Config |
 | test.cpp:356:15:356:23 | ... + ... | test.cpp:356:15:356:23 | ... + ... | provenance |  |
@@ -114,9 +123,18 @@ edges
 | test.cpp:794:5:794:24 | ... = ... | test.cpp:792:60:792:62 | *end | provenance |  |
 | test.cpp:794:12:794:24 | ... + ... | test.cpp:794:5:794:24 | ... = ... | provenance |  |
 | test.cpp:800:40:800:43 | mk_array_no_field_flow output argument | test.cpp:807:7:807:12 | ... = ... | provenance | Config |
+| test.cpp:800:40:800:43 | mk_array_no_field_flow output argument | test.cpp:807:7:807:12 | ... = ... | provenance | Config |
+| test.cpp:806:35:806:37 | *++ ... | test.cpp:807:7:807:12 | ... = ... | provenance |  |
+| test.cpp:806:35:806:37 | *++ ... | test.cpp:807:7:807:12 | ... = ... | provenance |  |
+| test.cpp:807:7:807:12 | ... = ... | test.cpp:806:35:806:37 | *++ ... | provenance |  |
 | test.cpp:815:52:815:54 | end | test.cpp:815:52:815:54 | end | provenance |  |
 | test.cpp:815:52:815:54 | end | test.cpp:821:7:821:12 | ... = ... | provenance | Config |
 | test.cpp:815:52:815:54 | end | test.cpp:821:7:821:12 | ... = ... | provenance | Config |
+| test.cpp:815:52:815:54 | end | test.cpp:821:7:821:12 | ... = ... | provenance | Config |
+| test.cpp:815:52:815:54 | end | test.cpp:821:7:821:12 | ... = ... | provenance | Config |
+| test.cpp:820:35:820:37 | *++ ... | test.cpp:821:7:821:12 | ... = ... | provenance |  |
+| test.cpp:820:35:820:37 | *++ ... | test.cpp:821:7:821:12 | ... = ... | provenance |  |
+| test.cpp:821:7:821:12 | ... = ... | test.cpp:820:35:820:37 | *++ ... | provenance |  |
 | test.cpp:832:40:832:43 | mk_array_no_field_flow output argument | test.cpp:833:37:833:39 | end | provenance |  |
 | test.cpp:833:37:833:39 | end | test.cpp:815:52:815:54 | end | provenance |  |
 | test.cpp:841:18:841:35 | call to malloc | test.cpp:841:18:841:35 | call to malloc | provenance |  |
@@ -157,6 +175,8 @@ nodes
 | test.cpp:53:5:53:23 | ... = ... | semmle.label | ... = ... |
 | test.cpp:53:12:53:23 | ... + ... | semmle.label | ... + ... |
 | test.cpp:60:34:60:37 | mk_array output argument | semmle.label | mk_array output argument |
+| test.cpp:66:37:66:39 | *++ ... | semmle.label | *++ ... |
+| test.cpp:67:9:67:14 | ... = ... | semmle.label | ... = ... |
 | test.cpp:67:9:67:14 | ... = ... | semmle.label | ... = ... |
 | test.cpp:205:15:205:33 | call to malloc | semmle.label | call to malloc |
 | test.cpp:205:15:205:33 | call to malloc | semmle.label | call to malloc |
@@ -174,6 +194,8 @@ nodes
 | test.cpp:270:13:270:24 | new[] | semmle.label | new[] |
 | test.cpp:271:14:271:21 | ... + ... | semmle.label | ... + ... |
 | test.cpp:271:14:271:21 | ... + ... | semmle.label | ... + ... |
+| test.cpp:272:31:272:33 | *... ++ | semmle.label | *... ++ |
+| test.cpp:274:5:274:10 | ... = ... | semmle.label | ... = ... |
 | test.cpp:274:5:274:10 | ... = ... | semmle.label | ... = ... |
 | test.cpp:355:14:355:27 | new[] | semmle.label | new[] |
 | test.cpp:355:14:355:27 | new[] | semmle.label | new[] |
@@ -240,9 +262,13 @@ nodes
 | test.cpp:794:5:794:24 | ... = ... | semmle.label | ... = ... |
 | test.cpp:794:12:794:24 | ... + ... | semmle.label | ... + ... |
 | test.cpp:800:40:800:43 | mk_array_no_field_flow output argument | semmle.label | mk_array_no_field_flow output argument |
+| test.cpp:806:35:806:37 | *++ ... | semmle.label | *++ ... |
+| test.cpp:807:7:807:12 | ... = ... | semmle.label | ... = ... |
 | test.cpp:807:7:807:12 | ... = ... | semmle.label | ... = ... |
 | test.cpp:815:52:815:54 | end | semmle.label | end |
 | test.cpp:815:52:815:54 | end | semmle.label | end |
+| test.cpp:820:35:820:37 | *++ ... | semmle.label | *++ ... |
+| test.cpp:821:7:821:12 | ... = ... | semmle.label | ... = ... |
 | test.cpp:821:7:821:12 | ... = ... | semmle.label | ... = ... |
 | test.cpp:832:40:832:43 | mk_array_no_field_flow output argument | semmle.label | mk_array_no_field_flow output argument |
 | test.cpp:833:37:833:39 | end | semmle.label | end |

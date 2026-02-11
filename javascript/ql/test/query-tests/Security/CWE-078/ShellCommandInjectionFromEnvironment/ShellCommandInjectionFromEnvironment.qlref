@@ -1,1 +1,2 @@
-Security/CWE-078/ShellCommandInjectionFromEnvironment.ql
+query: Security/CWE-078/ShellCommandInjectionFromEnvironment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

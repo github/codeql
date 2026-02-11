@@ -25,6 +25,8 @@ module Config implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<comparisonBarrierGuard/3>::getABarrierNode()
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 /**

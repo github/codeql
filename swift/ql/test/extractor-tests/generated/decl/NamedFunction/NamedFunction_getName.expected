@@ -1,5 +1,0 @@
-| functions.swift:1:1:3:1 | foo() | foo() |
-| functions.swift:5:1:7:1 | bar(_:d:) | bar(_:d:) |
-| functions.swift:10:5:10:28 | noBody(x:) | noBody(x:) |
-| functions.swift:13:1:15:1 | variadic(_:) | variadic(_:) |
-| functions.swift:17:1:19:1 | generic(x:y:) | generic(x:y:) |

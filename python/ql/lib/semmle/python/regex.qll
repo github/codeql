@@ -14,8 +14,3 @@ RegExpTerm getTermForExecution(Concepts::RegexExecution exec) {
     result.isRootTerm()
   )
 }
-
-/** A StringLiteral used as a regular expression */
-deprecated class RegexString extends Regex {
-  RegexString() { this = RegExpTracking::regExpSource(_).asExpr() }
-}

@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id cs/useless-assignment-to-local
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       useless-code
  *       external/cwe/cwe-563
  * @precision very-high
  */
@@ -127,7 +129,7 @@ class RelevantDefinition extends AssignableDefinition {
   /** Holds if this definition is dead and we want to report it. */
   predicate isDead() {
     // Ensure that the definition is not in dead code
-    exists(this.getAControlFlowNode()) and
+    exists(this.getExpr().getAControlFlowNode()) and
     not this.isMaybeLive() and
     // Allow dead initializer assignments, such as `string s = string.Empty`, but only
     // if the initializer expression assigns a default-like value, and there exists another

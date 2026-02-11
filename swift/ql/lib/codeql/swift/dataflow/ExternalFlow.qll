@@ -191,8 +191,10 @@ private predicate canonicalNamespaceLink(string namespace, string subns) {
 }
 
 /**
- * Holds if CSV framework coverage of `namespace` is `n` api endpoints of the
- * kind `(kind, part)`.
+ * Holds if MaD framework coverage of `namespace` is `n` api endpoints of the
+ * kind `(kind, part)`, and `namespaces` is the number of subnamespaces of
+ * `namespace` which have MaD framework coverage (including `namespace`
+ * itself).
  */
 predicate modelCoverage(string namespace, int namespaces, string kind, string part, int n) {
   namespaces = strictcount(string subns | canonicalNamespaceLink(namespace, subns)) and
@@ -444,44 +446,6 @@ Element interpretElement(
   )
 }
 
-deprecated private predicate parseField(AccessPathToken c, Content::FieldContent f) {
-  exists(string fieldRegex, string name |
-    c.getName() = "Field" and
-    fieldRegex = "^([^.]+)$" and
-    name = c.getAnArgument().regexpCapture(fieldRegex, 1) and
-    f.getField().getName() = name
-  )
-}
-
-deprecated private predicate parseTuple(AccessPathToken c, Content::TupleContent t) {
-  c.getName() = "TupleElement" and
-  t.getIndex() = c.getAnArgument().toInt()
-}
-
-deprecated private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
-  c.getName() = "EnumElement" and
-  c.getAnArgument() = e.getSignature()
-  or
-  c.getName() = "OptionalSome" and
-  e.getSignature() = "some:0"
-}
-
-/** Holds if the specification component parses as a `Content`. */
-deprecated predicate parseContent(AccessPathToken component, Content content) {
-  parseField(component, content)
-  or
-  parseTuple(component, content)
-  or
-  parseEnum(component, content)
-  or
-  // map legacy "ArrayElement" specification components to `CollectionContent`
-  component.getName() = "ArrayElement" and
-  content instanceof Content::CollectionContent
-  or
-  component.getName() = "CollectionElement" and
-  content instanceof Content::CollectionContent
-}
-
 cached
 private module Cached {
   /**
@@ -535,58 +499,22 @@ private predicate interpretSummary(
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
-  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _, _) }
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  string model_;
 
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isGenerated()
-    )
-  }
+  SummarizedCallableAdapter() { interpretSummary(this, input_, output_, kind, p_, model_) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
-      or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
-    |
-      if kind = "value" then preservesValue = true else preservesValue = false
-    )
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = true and
+    model = model_
   }
-
-  override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance, _)
-  }
-}
-
-// adapter class for converting Mad neutrals to `NeutralCallable`s
-private class NeutralCallableAdapter extends NeutralCallable {
-  string kind;
-  string provenance_;
-
-  NeutralCallableAdapter() {
-    // Neutral models have not been implemented for Swift.
-    none() and
-    exists(this) and
-    exists(kind) and
-    exists(provenance_)
-  }
-
-  override string getKind() { result = kind }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
 }

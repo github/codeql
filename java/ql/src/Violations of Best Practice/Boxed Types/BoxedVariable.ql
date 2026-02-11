@@ -6,7 +6,9 @@
  * @problem.severity warning
  * @precision very-high
  * @id java/non-null-boxed-variable
- * @tags readability
+ * @tags quality
+ *       maintainability
+ *       readability
  *       types
  */
 
@@ -33,7 +35,7 @@ predicate notDeliberatelyBoxed(LocalBoxedVar v) {
     )
     or
     exists(ReturnStmt ret |
-      ret.getResult() = a and
+      ret.getExpr() = a and
       ret.getEnclosingCallable().getReturnType() instanceof RefType
     )
   )

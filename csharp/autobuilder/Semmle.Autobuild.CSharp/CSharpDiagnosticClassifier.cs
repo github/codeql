@@ -99,7 +99,7 @@ namespace Semmle.Autobuild.CSharp
         {
             if (!match.Groups.TryGetValue("projectFile", out var projectFile))
                 throw new ArgumentException("Expected regular expression match to contain projectFile");
-            if (!match.Groups.TryGetValue("location", out var location))
+            if (!match.Groups.TryGetValue("location", out _))
                 throw new ArgumentException("Expected regular expression match to contain location");
 
             var result = classifier.Results.OfType<Result>().FirstOrDefault();

@@ -114,15 +114,7 @@ private module Cached {
    * Holds if `t` is a struct, class, union, or template.
    */
   cached
-  predicate isClass(@usertype t) {
-    usertypes(t, _, 1) or
-    usertypes(t, _, 2) or
-    usertypes(t, _, 3) or
-    usertypes(t, _, 6) or
-    usertypes(t, _, 10) or
-    usertypes(t, _, 11) or
-    usertypes(t, _, 12)
-  }
+  predicate isClass(@usertype t) { usertypes(t, _, [1, 2, 3, 15, 16, 17]) }
 
   cached
   predicate isType(@type t) {

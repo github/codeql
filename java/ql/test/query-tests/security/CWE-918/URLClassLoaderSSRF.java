@@ -13,9 +13,9 @@ public class URLClassLoaderSSRF extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String url = request.getParameter("uri");
+            String url = request.getParameter("uri"); // $ Source
             URI uri = new URI(url);
-            URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{uri.toURL()}); // $ SSRF
+            URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{uri.toURL()}); // $ Alert
             Class<?> test = urlClassLoader.loadClass("test");
         } catch (Exception e) {
             // Ignore
@@ -25,9 +25,9 @@ public class URLClassLoaderSSRF extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String url = request.getParameter("uri");
+            String url = request.getParameter("uri"); // $ Source
             URI uri = new URI(url);
-            URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{uri.toURL()}, URLClassLoaderSSRF.class.getClassLoader()); // $ SSRF
+            URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{uri.toURL()}, URLClassLoaderSSRF.class.getClassLoader()); // $ Alert
             Class<?> test = urlClassLoader.loadClass("test");
         } catch (Exception e) {
             // Ignore
@@ -37,11 +37,11 @@ public class URLClassLoaderSSRF extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String url = request.getParameter("uri");
+            String url = request.getParameter("uri"); // $ Source
             URI uri = new URI(url);
 
             URLStreamHandlerFactory urlStreamHandlerFactory = null;
-            URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{uri.toURL()}, URLClassLoaderSSRF.class.getClassLoader(), urlStreamHandlerFactory); // $ SSRF
+            URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{uri.toURL()}, URLClassLoaderSSRF.class.getClassLoader(), urlStreamHandlerFactory); // $ Alert
             urlClassLoader.findResource("test");
         } catch (Exception e) {
             // Ignore
@@ -51,9 +51,9 @@ public class URLClassLoaderSSRF extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String url = request.getParameter("uri");
+            String url = request.getParameter("uri"); // $ Source
             URI uri = new URI(url);
-            URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{uri.toURL()}); // $ SSRF
+            URLClassLoader urlClassLoader = URLClassLoader.newInstance(new URL[]{uri.toURL()}); // $ Alert
             urlClassLoader.getResourceAsStream("test");
         } catch (Exception e) {
             // Ignore
@@ -63,11 +63,11 @@ public class URLClassLoaderSSRF extends HttpServlet {
     protected void doOptions(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String url = request.getParameter("uri");
+            String url = request.getParameter("uri"); // $ Source
             URI uri = new URI(url);
             URLClassLoader urlClassLoader =
                 new URLClassLoader("testClassLoader",
-                    new URL[]{uri.toURL()}, // $ SSRF
+                    new URL[]{uri.toURL()}, // $ Alert
                     URLClassLoaderSSRF.class.getClassLoader()
                 );
 
@@ -80,13 +80,13 @@ public class URLClassLoaderSSRF extends HttpServlet {
     protected void doTrace(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            String url = request.getParameter("uri");
+            String url = request.getParameter("uri"); // $ Source
             URI uri = new URI(url);
             URLStreamHandlerFactory urlStreamHandlerFactory = null;
 
             URLClassLoader urlClassLoader =
                 new URLClassLoader("testClassLoader",
-                    new URL[]{uri.toURL()}, // $ SSRF
+                    new URL[]{uri.toURL()}, // $ Alert
                     URLClassLoaderSSRF.class.getClassLoader(),
                     urlStreamHandlerFactory
                 );

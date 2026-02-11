@@ -49,7 +49,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         // The `type` symbol must be a System.DateTime type and the value must be a System.DateTime object.
         // The expression that is being created is a call to the System.DateTime(long) constructor, where
         // the number of ticks from the `value` object is used as the argument to the constructor call.
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object? value, Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object? value, Location location)
         {
             var constructorSymbol = GetDateTimeConstructor(type) ?? throw new InternalError("Could not find symbol for System.DateTime(long)");
             var expr = new DateTimeObjectCreation(constructorSymbol, new ExpressionInfo(

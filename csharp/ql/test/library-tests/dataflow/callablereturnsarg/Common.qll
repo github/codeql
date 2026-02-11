@@ -18,9 +18,7 @@ module Config implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(AbstractValues::NullValue nv | node.(GuardedDataFlowNode).mustHaveValue(nv) |
-      nv.isNull()
-    )
+    exists(GuardValue nv | node.(GuardedDataFlowNode).mustHaveValue(nv) | nv.isNullValue())
   }
 }
 

@@ -1,4 +1,4 @@
-// semmle-extractor-options: --microsoft --edg --c99
+// semmle-extractor-options: --microsoft -std=c99
 void f(_Imaginary double x, _Imaginary double y) {
     double z;
     _Complex double w;

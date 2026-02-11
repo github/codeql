@@ -11,9 +11,9 @@
  */
 
 import java
-import SpringViewManipulationLib
+deprecated import SpringViewManipulationLib
 
-private predicate canResultInImplicitViewConversion(Method m) {
+deprecated private predicate canResultInImplicitViewConversion(Method m) {
   m.getReturnType() instanceof VoidType
   or
   m.getReturnType() instanceof MapType
@@ -31,7 +31,7 @@ private predicate maybeATestMethod(Method m) {
   )
 }
 
-private predicate mayBeExploitable(Method m) {
+deprecated private predicate mayBeExploitable(Method m) {
   // There should be a attacker controlled parameter in the URI for the attack to be exploitable.
   // This is possible only when there exists a parameter with the Spring `@PathVariable` annotation
   // applied to it.
@@ -48,8 +48,7 @@ private predicate mayBeExploitable(Method m) {
   not maybeATestMethod(m)
 }
 
-from SpringRequestMappingMethod m
-where
+deprecated query predicate problems(SpringRequestMappingMethod m, string message) {
   thymeleafIsUsed() and
   mayBeExploitable(m) and
   canResultInImplicitViewConversion(m) and
@@ -61,5 +60,6 @@ where
   m.getAnAnnotation().getType() instanceof SpringRequestMappingAnnotationType and
   not m.getAnAnnotation().getType() instanceof SpringResponseBodyAnnotationType and
   // `@RestController` inherits `@ResponseBody` internally so it should be ignored.
-  not m.getDeclaringType() instanceof SpringRestController
-select m, "This method may be vulnerable to spring view manipulation vulnerabilities."
+  not m.getDeclaringType() instanceof SpringRestController and
+  message = "This method may be vulnerable to spring view manipulation vulnerabilities."
+}

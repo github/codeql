@@ -1,3 +1,4 @@
 | documentation.cs:39:16:39:22 | method3 | Public method should be documented. |
 | documentation.cs:51:18:51:23 | Class2 | Public class should be documented. |
 | documentation.cs:74:12:74:17 | Class1 | Public constructor should be documented. |
+| documentation.cs:135:17:135:23 | method6 | Public method should be documented. |

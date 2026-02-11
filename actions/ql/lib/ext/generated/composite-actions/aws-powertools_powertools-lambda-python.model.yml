@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSummaryModel
+    data:
+      - ["aws-powertools/powertools-lambda-python", "*", "input.artifact_name_prefix", "output.artifact_name", "taint", "manual"]

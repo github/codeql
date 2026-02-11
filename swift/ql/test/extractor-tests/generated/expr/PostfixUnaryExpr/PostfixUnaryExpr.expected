@@ -1,2 +1,9 @@
-| postfix.swift:1:5:1:6 | call to ...(_:) | hasType: | yes | getFunction: | postfix.swift:1:6:1:6 | ....(_:) | getNumberOfArguments: | 1 |
-| postfix.swift:7:1:7:2 | call to **(_:) | hasType: | yes | getFunction: | postfix.swift:7:2:7:2 | **(_:) | getNumberOfArguments: | 1 |
+instances
+| postfix.swift:1:5:1:6 | call to ...(_:) | getFunction: | postfix.swift:1:6:1:6 | ....(_:) |
+| postfix.swift:7:1:7:2 | call to **(_:) | getFunction: | postfix.swift:7:2:7:2 | **(_:) |
+getType
+| postfix.swift:1:5:1:6 | call to ...(_:) | PartialRangeFrom<Int> |
+| postfix.swift:7:1:7:2 | call to **(_:) | () |
+getArgument
+| postfix.swift:1:5:1:6 | call to ...(_:) | 0 | postfix.swift:1:5:1:5 | : 3 |
+| postfix.swift:7:1:7:2 | call to **(_:) | 0 | postfix.swift:7:1:7:1 | : 3 |

@@ -1,0 +1,61 @@
+models
+| 1 | Summary: org.thymeleaf; TemplateSpec; false; TemplateSpec; ; ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: org.thymeleaf; TemplateSpec; false; getTemplate; ; ; Argument[this]; ReturnValue; taint; manual |
+edges
+| Test.java:19:16:19:31 | (...)... : String | Test.java:20:27:20:28 | in : String | provenance |  |
+| Test.java:19:24:19:31 | source(...) : Object | Test.java:19:16:19:31 | (...)... : String | provenance |  |
+| Test.java:20:10:20:40 | new TemplateSpec(...) : TemplateSpec | Test.java:21:9:21:11 | out | provenance |  |
+| Test.java:20:27:20:28 | in : String | Test.java:20:10:20:40 | new TemplateSpec(...) : TemplateSpec | provenance | MaD:1 |
+| Test.java:26:16:26:31 | (...)... : String | Test.java:27:27:27:28 | in : String | provenance |  |
+| Test.java:26:24:26:31 | source(...) : Object | Test.java:26:16:26:31 | (...)... : String | provenance |  |
+| Test.java:27:10:27:65 | new TemplateSpec(...) : TemplateSpec | Test.java:28:9:28:11 | out | provenance |  |
+| Test.java:27:27:27:28 | in : String | Test.java:27:10:27:65 | new TemplateSpec(...) : TemplateSpec | provenance | MaD:1 |
+| Test.java:33:16:33:31 | (...)... : String | Test.java:34:27:34:28 | in : String | provenance |  |
+| Test.java:33:24:33:31 | source(...) : Object | Test.java:33:16:33:31 | (...)... : String | provenance |  |
+| Test.java:34:10:34:71 | new TemplateSpec(...) : TemplateSpec | Test.java:35:9:35:11 | out | provenance |  |
+| Test.java:34:27:34:28 | in : String | Test.java:34:10:34:71 | new TemplateSpec(...) : TemplateSpec | provenance | MaD:1 |
+| Test.java:40:16:40:31 | (...)... : String | Test.java:41:27:41:28 | in : String | provenance |  |
+| Test.java:40:24:40:31 | source(...) : Object | Test.java:40:16:40:31 | (...)... : String | provenance |  |
+| Test.java:41:10:41:43 | new TemplateSpec(...) : TemplateSpec | Test.java:42:9:42:11 | out | provenance |  |
+| Test.java:41:27:41:28 | in : String | Test.java:41:10:41:43 | new TemplateSpec(...) : TemplateSpec | provenance | MaD:1 |
+| Test.java:47:16:47:31 | (...)... : String | Test.java:48:27:48:28 | in : String | provenance |  |
+| Test.java:47:24:47:31 | source(...) : Object | Test.java:47:16:47:31 | (...)... : String | provenance |  |
+| Test.java:48:10:48:49 | new TemplateSpec(...) : TemplateSpec | Test.java:49:9:49:11 | out | provenance |  |
+| Test.java:48:27:48:28 | in : String | Test.java:48:10:48:49 | new TemplateSpec(...) : TemplateSpec | provenance | MaD:1 |
+| Test.java:54:22:54:43 | (...)... : TemplateSpec | Test.java:55:10:55:11 | in : TemplateSpec | provenance |  |
+| Test.java:54:36:54:43 | source(...) : Object | Test.java:54:22:54:43 | (...)... : TemplateSpec | provenance |  |
+| Test.java:55:10:55:11 | in : TemplateSpec | Test.java:55:10:55:25 | getTemplate(...) : String | provenance | MaD:2 |
+| Test.java:55:10:55:25 | getTemplate(...) : String | Test.java:56:9:56:11 | out | provenance |  |
+nodes
+| Test.java:19:16:19:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:19:24:19:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:20:10:20:40 | new TemplateSpec(...) : TemplateSpec | semmle.label | new TemplateSpec(...) : TemplateSpec |
+| Test.java:20:27:20:28 | in : String | semmle.label | in : String |
+| Test.java:21:9:21:11 | out | semmle.label | out |
+| Test.java:26:16:26:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:26:24:26:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:27:10:27:65 | new TemplateSpec(...) : TemplateSpec | semmle.label | new TemplateSpec(...) : TemplateSpec |
+| Test.java:27:27:27:28 | in : String | semmle.label | in : String |
+| Test.java:28:9:28:11 | out | semmle.label | out |
+| Test.java:33:16:33:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:33:24:33:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:34:10:34:71 | new TemplateSpec(...) : TemplateSpec | semmle.label | new TemplateSpec(...) : TemplateSpec |
+| Test.java:34:27:34:28 | in : String | semmle.label | in : String |
+| Test.java:35:9:35:11 | out | semmle.label | out |
+| Test.java:40:16:40:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:40:24:40:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:41:10:41:43 | new TemplateSpec(...) : TemplateSpec | semmle.label | new TemplateSpec(...) : TemplateSpec |
+| Test.java:41:27:41:28 | in : String | semmle.label | in : String |
+| Test.java:42:9:42:11 | out | semmle.label | out |
+| Test.java:47:16:47:31 | (...)... : String | semmle.label | (...)... : String |
+| Test.java:47:24:47:31 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:48:10:48:49 | new TemplateSpec(...) : TemplateSpec | semmle.label | new TemplateSpec(...) : TemplateSpec |
+| Test.java:48:27:48:28 | in : String | semmle.label | in : String |
+| Test.java:49:9:49:11 | out | semmle.label | out |
+| Test.java:54:22:54:43 | (...)... : TemplateSpec | semmle.label | (...)... : TemplateSpec |
+| Test.java:54:36:54:43 | source(...) : Object | semmle.label | source(...) : Object |
+| Test.java:55:10:55:11 | in : TemplateSpec | semmle.label | in : TemplateSpec |
+| Test.java:55:10:55:25 | getTemplate(...) : String | semmle.label | getTemplate(...) : String |
+| Test.java:56:9:56:11 | out | semmle.label | out |
+subpaths
+testFailures

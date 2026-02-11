@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for guards that check for the current OS.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.controlflow.Guards

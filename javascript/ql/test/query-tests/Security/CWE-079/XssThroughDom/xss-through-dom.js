@@ -1,35 +1,35 @@
 (function () {
-	$("#id").html($("textarea").val()); // NOT OK.
+	$("#id").html($("textarea").val()); // $ Alert
 	
-	$("#id").html($(".some-element").text()); // NOT OK.
+	$("#id").html($(".some-element").text()); // $ Alert
 	
-	$("#id").html($(".some-element").attr("foo", "bar")); // OK.
-	$("#id").html($(".some-element").attr({"foo": "bar"})); // OK.
-	$("#id").html($(".some-element").attr("data-target")); // NOT OK.
+	$("#id").html($(".some-element").attr("foo", "bar"));
+	$("#id").html($(".some-element").attr({"foo": "bar"}));
+	$("#id").html($(".some-element").attr("data-target")); // $ Alert
 	
 	$("#id").html(
-		document.getElementById("foo").innerText // NOT OK.	
+		document.getElementById("foo").innerText // $ Alert
 	);
 	
 	$("#id").html(
-		document.getElementById("foo").innerHTML // OK - only repeats existing XSS. 	
+		document.getElementById("foo").innerHTML // OK - only repeats existing XSS.
 	);
 	
 	$("#id").html(
-		document.getElementById("foo").textContent // NOT OK. 	
+		document.getElementById("foo").textContent // $ Alert
 	);
 	
 	$("#id").html(
-		document.querySelectorAll("textarea")[0].value // NOT OK. 	
+		document.querySelectorAll("textarea")[0].value // $ Alert
 	);
 	
 	$("#id").html(
-		document.getElementById('div1').getAttribute('data-target') // NOT OK
+		document.getElementById('div1').getAttribute('data-target') // $ Alert
 	);
 	
 	function safe1(x) { // overloaded function. 
 		if (x.jquery) {
-			var foo = $(x); // OK
+			var foo = $(x);
 		}
 		 	
 	}
@@ -37,7 +37,7 @@
 	
 	function safe2(x) { // overloaded function. 
 		if (typeof x === "object") {
-			var foo = $(x); // OK
+			var foo = $(x);
 		} 	
 	}
 	safe2($("textarea").val());
@@ -48,52 +48,52 @@
 	);
 	
 	
-	$("#id").get(0).innerHTML = $("textarea").val(); // NOT OK.
+	$("#id").get(0).innerHTML = $("textarea").val(); // $ Alert
 	
 	var base = $("#id");
-	base[html ? 'html' : 'text']($("textarea").val()); // NOT OK.
+	base[html ? 'html' : 'text']($("textarea").val()); // $ Alert
 	
-	$("#id").get(0).innerHTML = $("input").get(0).name; // NOT OK.
-	$("#id").get(0).innerHTML = $("input").get(0).getAttribute("name"); // NOT OK.
+	$("#id").get(0).innerHTML = $("input").get(0).name; // $ Alert
+	$("#id").get(0).innerHTML = $("input").get(0).getAttribute("name"); // $ Alert
 	
-	$("#id").get(0).innerHTML = $("input").getAttribute("id"); // OK.
+	$("#id").get(0).innerHTML = $("input").getAttribute("id");
 	
-	$("#id").get(0).innerHTML = $(document).find("option").attr("value"); // NOT OK.
+	$("#id").get(0).innerHTML = $(document).find("option").attr("value"); // $ Alert
 	
 	var valMethod = $("textarea").val;
-	$("#id").get(0).innerHTML = valMethod(); // NOT OK
+	$("#id").get(0).innerHTML = valMethod(); // $ Alert
 	
 	var myValue = $(document).find("option").attr("value");
 	if(myValue.property) {
-		$("#id").get(0).innerHTML = myValue; // OK.
+		$("#id").get(0).innerHTML = myValue;
 	}
 	
-	$.jGrowl($("input").get(0).name); // NOT OK.
+	$.jGrowl($("input").get(0).name); // $ Alert
 	
-    let selector = $("input").get(0).name;
+    let selector = $("input").get(0).name; // $ Source
     if (something()) {
         selector = $("textarea").val || ''
     }
-	$(selector); // NOT OK
+	$(selector); // $ Alert
 	
-	$(document.my_form.my_input.value); // NOT OK
+	$(document.my_form.my_input.value); // $ Alert
 
-	$("#id").html( $('#foo').prop('innerText') ); // NOT OK
+	$("#id").html( $('#foo').prop('innerText') ); // $ Alert
 
 	const anser = require("anser");
-	const text = $("text").text();
+	const text = $("text").text(); // $ Source
 
-	$("#id").html(anser.ansiToHtml(text)); // NOT OK
-	$("#id").html(new anser().process(text)); // NOT OK
+	$("#id").html(anser.ansiToHtml(text)); // $ Alert
+	$("#id").html(new anser().process(text)); // $ Alert
 	
 	$("section h1").each(function(){
-		$("nav ul").append("<a href='#" + $(this).text().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g,'') + "'>Section</a>"); // OK
+		$("nav ul").append("<a href='#" + $(this).text().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g,'') + "'>Section</a>");
 	});
 
-	$("#id").html($("#foo").find(".bla")[0].value); // NOT OK.
+	$("#id").html($("#foo").find(".bla")[0].value); // $ Alert
 
 	for (var i = 0; i < foo.length; i++) {
-		$("#id").html($("#foo").find(".bla")[i].value); // NOT OK.
+		$("#id").html($("#foo").find(".bla")[i].value); // $ Alert
 	}
 })();
 
@@ -106,20 +106,20 @@ class Super {
 class Sub extends Super {
 	constructor() {
 		super();
-		$("#id").get(0).innerHTML = "<a src=\"" + this.el.src + "\">foo</a>"; // NOT OK. Attack: `<mytag id="id" src="x:&quot;&gt;&lt;img src=1 onerror=&quot;alert(1)&quot;&gt;" />`
+		$("#id").get(0).innerHTML = "<a src=\"" + this.el.src + "\">foo</a>"; // $ Alert - Attack: `<mytag id="id" src="x:&quot;&gt;&lt;img src=1 onerror=&quot;alert(1)&quot;&gt;" />`
 	}
 }
 
 (function () {
-    const src = document.getElementById("#link").src;
-	$("#id").html(src); // NOT OK.
+    const src = document.getElementById("#link").src; // $ Source
+	$("#id").html(src); // $ Alert
 
-    $("#id").attr("src", src); // OK
+    $("#id").attr("src", src);
 
     $("input.foo")[0].onchange = function (ev) {
-        $("#id").html(ev.target.files[0].name); // NOT OK.
+        $("#id").html(ev.target.files[0].name); // $ Alert
 
-        $("img#id").attr("src", URL.createObjectURL(ev.target.files[0])); // NOT OK
+        $("img#id").attr("src", URL.createObjectURL(ev.target.files[0])); // $ Alert
     }
 })();
 
@@ -127,36 +127,36 @@ class Sub extends Super {
 	let elem = document.createElement('a');
 	const wSelection = getSelection();
 	const dSelection = document.getSelection();
-	let linkText = wSelection.toString() || dSelection.toString() || '';
-	elem.innerHTML = linkText; // NOT OK
-	$("#id").html(linkText); // NOT OK
-	elem.innerText = linkText; // OK
+	let linkText = wSelection.toString() || dSelection.toString() || ''; // $ Source
+	elem.innerHTML = linkText; // $ Alert
+	$("#id").html(linkText); // $ Alert
+	elem.innerText = linkText;
 })();
 
 const cashDom = require("cash-dom");
 
 (function () {
-    const src = document.getElementById("#link").src;
-	cash("#id").html(src); // NOT OK.
-    cashDom("#id").html(src); // NOT OK
+    const src = document.getElementById("#link").src; // $ Source
+	cash("#id").html(src); // $ Alert
+    cashDom("#id").html(src); // $ Alert
 
     var DOMPurify = {
         sanitize: function (src) {
             return src; // to model spuriously finding an edge. The below is still OK.
         }
     };
-    cashDom("#id").html(DOMPurify ? DOMPurify.sanitize(src) : src); // OK
+    cashDom("#id").html(DOMPurify ? DOMPurify.sanitize(src) : src);
 
-    $("<a />", { html: src }).appendTo("#id"); // NOT OK
+    $("<a />", { html: src }).appendTo("#id"); // $ Alert
 
     function foo() {
       window.VeryUniqueXssTestName = {
         send: function (msg) {
-            $("#id").html(msg); // NOT OK
+            $("#id").html(msg); // $ Alert
         },
       };
     
-      VeryUniqueXssTestName.send($("textarea").val());
+      VeryUniqueXssTestName.send($("textarea").val()); // $ Source
     }
     foo()
 })();

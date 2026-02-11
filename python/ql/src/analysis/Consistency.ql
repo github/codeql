@@ -5,6 +5,7 @@
  */
 
 import python
+private import LegacyPointsTo
 import analysis.DefinitionTracking
 
 predicate uniqueness_error(int number, string what, string problem) {
@@ -208,18 +209,22 @@ predicate function_object_consistency(string clsname, string problem, string wha
 predicate multiple_origins_per_object(Object obj) {
   not obj.isC() and
   not obj instanceof ModuleObject and
-  exists(ControlFlowNode use, Context ctx |
+  exists(ControlFlowNodeWithPointsTo use, Context ctx |
     strictcount(ControlFlowNode orig | use.refersTo(ctx, obj, _, orig)) > 1
   )
 }
 
-predicate intermediate_origins(ControlFlowNode use, ControlFlowNode inter, Object obj) {
+predicate intermediate_origins(
+  ControlFlowNodeWithPointsTo use, ControlFlowNodeWithPointsTo inter, Object obj
+) {
   exists(ControlFlowNode orig, Context ctx | not inter = orig |
     use.refersTo(ctx, obj, _, inter) and
     inter.refersTo(ctx, obj, _, orig) and
     // It can sometimes happen that two different modules (e.g. cPickle and Pickle)
     // have the same attribute, but different origins.
-    not strictcount(Object val | inter.(AttrNode).getObject().refersTo(val)) > 1
+    not strictcount(Object val |
+      inter.(AttrNode).getObject().(ControlFlowNodeWithPointsTo).refersTo(val)
+    ) > 1
   )
 }
 

@@ -1,0 +1,10 @@
+instances
+| gen_stmt_list.rs:3:27:14:1 | StmtList |
+| gen_stmt_list.rs:8:5:12:5 | StmtList |
+getAttr
+getStatement
+| gen_stmt_list.rs:8:5:12:5 | StmtList | 0 | gen_stmt_list.rs:9:9:9:18 | let ... = 1 |
+| gen_stmt_list.rs:8:5:12:5 | StmtList | 1 | gen_stmt_list.rs:10:9:10:18 | let ... = 2 |
+getTailExpr
+| gen_stmt_list.rs:3:27:14:1 | StmtList | gen_stmt_list.rs:8:5:12:5 | { ... } |
+| gen_stmt_list.rs:8:5:12:5 | StmtList | gen_stmt_list.rs:11:9:11:13 | ... + ... |

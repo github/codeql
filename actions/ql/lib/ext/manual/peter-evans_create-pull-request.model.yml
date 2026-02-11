@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+      - ["peter-evans/create-pull-request", "*", "input.branch", "command-injection", "manual"]

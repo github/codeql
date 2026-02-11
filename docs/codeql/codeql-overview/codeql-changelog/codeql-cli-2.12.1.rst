@@ -9,7 +9,7 @@ CodeQL 2.12.1 (2023-01-23)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -41,8 +41,8 @@ Golang
 *   Replacing "\r" or "\n" using the functions :code:`strings.ReplaceAll`, :code:`strings.Replace`, :code:`strings.Replacer.Replace` and :code:`strings.Replacer.WriteString` has been added as a sanitizer for the queries "Log entries created from user input".
 *   The functions :code:`strings.Replacer.Replace` and :code:`strings.Replacer.WriteString` have been added as sanitizers for the query "Potentially unsafe quoting".
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The name, description and alert message for the query :code:`java/concatenated-sql-query` have been altered to emphasize that the query flags the use of string concatenation to construct SQL queries, not the lack of appropriate escaping. The query's files have been renamed from :code:`SqlUnescaped.ql` and :code:`SqlUnescapedLib.qll` to :code:`SqlConcatenated.ql` and :code:`SqlConcatenatedLib.qll` respectively; in the unlikely event your custom configuration or queries refer to either of these files by name, those references will need to be adjusted. The query id remains :code:`java/concatenated-sql-query`, so alerts should not be re-raised as a result of this change.
 
@@ -54,8 +54,8 @@ Ruby
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query :code:`java/android/websettings-allow-content-access` to detect Android WebViews which do not disable access to :code:`content://` urls.
 
@@ -88,8 +88,8 @@ C#
 *   C# 11: Added support for the unsigned right shift :code:`>>>` and unsigned right shift assignment :code:`>>>=` operators.
 *   Query id's have been aligned such that they are prefixed with :code:`cs` instead of :code:`csharp`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added sink models for the constructors of :code:`org.springframework.jdbc.object.MappingSqlQuery` and :code:`org.springframework.jdbc.object.MappingSqlQueryWithParameters`.
 *   Added more dataflow models for frequently-used JDK APIs.

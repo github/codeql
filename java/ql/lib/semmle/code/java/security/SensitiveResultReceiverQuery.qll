@@ -19,7 +19,7 @@ private class ResultReceiverSendCall extends MethodCall {
 }
 
 private module UntrustedResultReceiverConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node node) { node instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node node) {
     node.asExpr() = any(ResultReceiverSendCall c).getReceiver()
@@ -30,25 +30,6 @@ private module UntrustedResultReceiverFlow = TaintTracking::Global<UntrustedResu
 
 private predicate untrustedResultReceiverSend(DataFlow::Node src, ResultReceiverSendCall call) {
   UntrustedResultReceiverFlow::flow(src, DataFlow::exprNode(call.getReceiver()))
-}
-
-deprecated private class SensitiveResultReceiverConf extends TaintTracking::Configuration {
-  SensitiveResultReceiverConf() { this = "SensitiveResultReceiverConf" }
-
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
-
-  override predicate isSink(DataFlow::Node node) {
-    exists(ResultReceiverSendCall call |
-      untrustedResultReceiverSend(_, call) and
-      node.asExpr() = call.getSentData()
-    )
-  }
-
-  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
-    super.allowImplicitRead(node, c)
-    or
-    this.isSink(node)
-  }
 }
 
 /**
@@ -73,21 +54,6 @@ private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
 
 /** Taint tracking flow for sensitive expressions flowing to untrusted result receivers. */
 module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiverConfig>;
-
-/**
- * DEPRECATED: Use `isSensitiveResultReceiver` instead.
- *
- * Holds if there is a path from sensitive data at `src` to a result receiver at `sink`, and the receiver was obtained from an untrusted source `recSrc`.
- */
-deprecated predicate sensitiveResultReceiver(
-  DataFlow::PathNode src, DataFlow::PathNode sink, DataFlow::Node recSrc
-) {
-  exists(ResultReceiverSendCall call |
-    any(SensitiveResultReceiverConf c).hasFlowPath(src, sink) and
-    sink.getNode().asExpr() = call.getSentData() and
-    untrustedResultReceiverSend(recSrc, call)
-  )
-}
 
 /**
  * Holds if there is a path from sensitive data at `src` to a result receiver at `sink`, and the receiver was obtained from an untrusted source `recSrc`.

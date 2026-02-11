@@ -1,0 +1,4 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - ctor = { version = "0.2.9" }
+    - libc-print = { version = "0.1.23" }

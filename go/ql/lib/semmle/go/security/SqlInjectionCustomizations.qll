@@ -4,6 +4,7 @@
  */
 
 import go
+private import semmle.go.security.Sanitizers
 
 /**
  * Provides extension points for customizing the taint tracking configuration for reasoning about
@@ -26,12 +27,12 @@ module SqlInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `RemoteFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
-  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /** A source of untrusted data, considered as a taint source for SQL injection. */
-  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /** An SQL string, considered as a taint sink for SQL injection. */
   class SqlQueryAsSink extends Sink instanceof SQL::QueryString { }
@@ -39,12 +40,15 @@ module SqlInjection {
   /** A NoSql query, considered as a taint sink for SQL injection. */
   class NoSqlQueryAsSink extends Sink instanceof NoSql::Query { }
 
+  /** DEPRECATED: Use `SimpleTypeSanitizer` from semmle.go.security.Sanitizers instead. */
+  deprecated class NumericOrBooleanSanitizer = SimpleTypeSanitizer;
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, ["nosql-injection", "sql-injection"]) }
+  }
+
   /**
    * A numeric- or boolean-typed node, considered a sanitizer for sql injection.
    */
-  class NumericOrBooleanSanitizer extends Sanitizer {
-    NumericOrBooleanSanitizer() {
-      this.getType() instanceof NumericType or this.getType() instanceof BoolType
-    }
-  }
+  private class DefaultSanitizer extends Sanitizer instanceof SimpleTypeSanitizer { }
 }

@@ -76,7 +76,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 case SyntaxKind.QuestionQuestionEqualsToken:
                     return ExprKind.ASSIGN_COALESCE;
                 default:
-                    cx.ModelError(syntax, "Unrecognised assignment type " + GetKind(cx, syntax));
+                    cx.ModelError(syntax, $"Unrecognised assignment type {GetKind(cx, syntax)}");
                     return ExprKind.UNKNOWN;
             }
         }
@@ -152,7 +152,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case ExprKind.ASSIGN_COALESCE:
                         return ExprKind.NULL_COALESCING;
                     default:
-                        Context.ModelError(Syntax, "Couldn't unfold assignment of type " + kind);
+                        Context.ModelError(Syntax, $"Couldn't unfold assignment of type {kind}");
                         return ExprKind.UNKNOWN;
                 }
             }

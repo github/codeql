@@ -9,7 +9,7 @@ CodeQL 2.11.2 (2022-10-25)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -114,8 +114,8 @@ C/C++
 
 *   Added a new medium-precision query, :code:`cpp/comma-before-misleading-indentation`, which detects instances of whitespace that have readability issues.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query, :code:`java/android/incomplete-provider-permissions`, to detect if an Android ContentProvider is not protected with a correct set of permissions.
 *   A new query "Uncontrolled data used in content resolution" (:code:`java/androd/unsafe-content-uri-resolution`) has been added. This query finds paths from user-provided data to URI resolution operations in Android's :code:`ContentResolver` without previous validation or sanitization.
@@ -132,8 +132,8 @@ Language Libraries
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added support for common patterns involving :code:`Stream.collect` and common collectors like :code:`Collectors.toList()`.
 *   The class :code:`TypeVariable` now also extends :code:`Modifiable`.
@@ -161,15 +161,15 @@ Ruby
 Deprecated APIs
 ~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Deprecated :code:`ContextStartActivityMethod`. Use :code:`StartActivityMethod` instead.
 
 New Features
 ~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new predicate, :code:`hasIncompletePermissions`, in the :code:`AndroidProviderXmlElement` class. This predicate detects if a provider element does not provide both read and write permissions.

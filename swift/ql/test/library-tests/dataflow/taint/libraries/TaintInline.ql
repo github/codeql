@@ -1,4 +1,4 @@
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
 string customTaintFlowTag() { result = "tainted" }
 

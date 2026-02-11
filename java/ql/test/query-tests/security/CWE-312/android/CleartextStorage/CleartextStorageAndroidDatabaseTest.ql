@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.CleartextStorageAndroidDatabaseQuery
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module CleartextStorageAndroidDatabaseTest implements TestSig {
   string getARelevantTag() { result = "hasCleartextStorageAndroidDatabase" }

@@ -1,6 +1,6 @@
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal class EnvironmentVariableNames
+    internal static class EnvironmentVariableNames
     {
         /// <summary>
         /// Controls whether to generate source files from resources (`.resx`).
@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         internal const string NugetFeedResponsivenessRequestCountForFallback = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_FALLBACK_LIMIT";
 
         /// <summary>
-        /// Specifies the NuGet feeds to use for fallback Nuget dependency fetching. The value is a space-separated list of feed URLs.
+        /// Specifies the NuGet feeds to use for fallback NuGet dependency fetching. The value is a space-separated list of feed URLs.
         /// The default value is `https://api.nuget.org/v3/index.json`.
         /// </summary>
         public const string FallbackNugetFeeds = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK";
@@ -74,5 +74,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Specifies the location of the diagnostic directory.
         /// </summary>
         public const string DiagnosticDir = "CODEQL_EXTRACTOR_CSHARP_DIAGNOSTIC_DIR";
+
+        /// <summary>
+        /// Specifies the hostname of the Dependabot proxy.
+        /// </summary>
+        public const string ProxyHost = "CODEQL_PROXY_HOST";
+
+        /// <summary>
+        /// Specifies the hostname of the Dependabot proxy.
+        /// </summary>
+        public const string ProxyPort = "CODEQL_PROXY_PORT";
+
+        /// <summary>
+        /// Contains the certificate used by the Dependabot proxy.
+        /// </summary>
+        public const string ProxyCertificate = "CODEQL_PROXY_CA_CERTIFICATE";
+
+        /// <summary>
+        /// Contains the URLs of private nuget registries as a JSON array.
+        /// </summary>
+        public const string ProxyURLs = "CODEQL_PROXY_URLS";
     }
 }

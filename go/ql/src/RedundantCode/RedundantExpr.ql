@@ -6,7 +6,9 @@
  * @kind problem
  * @problem.severity warning
  * @id go/redundant-operation
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  *       external/cwe/cwe-480
  *       external/cwe/cwe-561
  * @precision very-high
@@ -70,10 +72,6 @@ class AverageExpr extends PotentiallyRedundantExpr, AddExpr {
       div.getRightOperand().getNumericValue() = 2 and
       this.getLeftOperand().getKind() = this.getRightOperand().getKind()
     )
-  }
-
-  override predicate operands(Expr left, Expr right) {
-    left = this.getLeftOperand() and right = this.getRightOperand()
   }
 }
 

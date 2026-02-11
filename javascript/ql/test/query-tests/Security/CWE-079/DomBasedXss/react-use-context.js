@@ -7,13 +7,13 @@ function useMyContext() {
 
 export function useDoc1() {
     let { root } = useMyContext();
-    root.appendChild(window.name); // NOT OK
+    root.appendChild(window.name); // $ Alert
 }
 
 class C extends Component {
     foo() {
         let { root } = this.context;
-        root.appendChild(window.name); // NOT OK
+        root.appendChild(window.name); // $ Alert
     }
 }
 

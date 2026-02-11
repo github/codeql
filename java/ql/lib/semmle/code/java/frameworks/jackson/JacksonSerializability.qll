@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with Java Serialization in the context of
  * the `com.fasterxml.jackson` JSON processing framework.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.Serializability
@@ -108,7 +110,7 @@ private module TypeLiteralToJacksonDatabindFlow =
   DataFlow::Global<TypeLiteralToJacksonDatabindFlowConfig>;
 
 private TypeLiteral getSourceWithFlowToJacksonDatabind() {
-  TypeLiteralToJacksonDatabindFlow::flow(DataFlow::exprNode(result), _)
+  TypeLiteralToJacksonDatabindFlow::flowFromExpr(result)
 }
 
 /** A type whose values are explicitly deserialized in a call to a Jackson method. */

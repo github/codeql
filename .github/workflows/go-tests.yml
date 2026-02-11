@@ -1,20 +1,16 @@
 name: "Go: Run Tests"
 on:
-  push:
-    paths:
-      - "go/**"
-      - .github/workflows/go-tests.yml
-      - .github/actions/**
-      - codeql-workspace.yml
-    branches:
-      - main
-      - "rc/*"
   pull_request:
     paths:
       - "go/**"
+      - "!go/documentation/**"
+      - "shared/**"
       - .github/workflows/go-tests.yml
       - .github/actions/**
       - codeql-workspace.yml
+      - MODULE.bazel
+      - .bazelrc
+      - misc/bazel/**
 
 permissions:
   contents: read
@@ -26,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest-xl
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Run tests
         uses: ./go/actions/test
         with:

@@ -31,6 +31,8 @@ private module XxeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 private module XxeFlow = TaintTracking::Global<XxeConfig>;

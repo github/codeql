@@ -22,7 +22,7 @@ the returned pointer.</p>
 
 <sample src="MissingErrorCheck.go" />
 
-<p>The corrected version of <code>user</code> checks <code>err</code> before using <code>ptr</code>.</p>
+<p>The corrected version of <code>user</code> checks <code>err</code> before using <code>ptr</code>.</p>
 
 <sample src="MissingErrorCheckGood.go" />
 

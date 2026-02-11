@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,11 +18,11 @@ public class SanitizationTests extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            URI uri = new URI(request.getParameter("uri"));
+            URI uri = new URI(request.getParameter("uri")); // $ Source
             // BAD: a request parameter is incorporated without validation into a Http
             // request
-            HttpRequest r = HttpRequest.newBuilder(uri).build(); // $ SSRF
-            client.send(r, null);
+            HttpRequest r = HttpRequest.newBuilder(uri).build(); // $ Alert
+            client.send(r, null); // $ Alert
 
             // GOOD: sanitisation by concatenation with a prefix that prevents targeting an arbitrary host.
             // We test a few different ways of sanitisation: via string conctentation (perhaps nested),
@@ -72,55 +74,87 @@ public class SanitizationTests extends HttpServlet {
 
             // BAD: cases where a string that would sanitise is used, but occurs in the wrong
             // place to sanitise user input:
-            String unsafeUri3 = request.getParameter("baduri3") + "https://example.com/";
-            HttpRequest unsafer3 = HttpRequest.newBuilder(new URI(unsafeUri3)).build();  // $ SSRF
-            client.send(unsafer3, null);
+            String unsafeUri3 = request.getParameter("baduri3") + "https://example.com/"; // $ Source
+            HttpRequest unsafer3 = HttpRequest.newBuilder(new URI(unsafeUri3)).build();  // $ Alert
+            client.send(unsafer3, null); // $ Alert
 
-            String unsafeUri4 = ("someprefix" + request.getParameter("baduri4")) + "https://example.com/";
-            HttpRequest unsafer4 = HttpRequest.newBuilder(new URI(unsafeUri4)).build(); // $ SSRF
-            client.send(unsafer4, null);
+            String unsafeUri4 = ("someprefix" + request.getParameter("baduri4")) + "https://example.com/"; // $ Source
+            HttpRequest unsafer4 = HttpRequest.newBuilder(new URI(unsafeUri4)).build(); // $ Alert
+            client.send(unsafer4, null); // $ Alert
 
             StringBuilder unsafeUri5 = new StringBuilder();
-            unsafeUri5.append(request.getParameter("baduri5")).append("https://example.com/");
-            HttpRequest unsafer5 = HttpRequest.newBuilder(new URI(unsafeUri5.toString())).build(); // $ SSRF
-            client.send(unsafer5, null);
+            unsafeUri5.append(request.getParameter("baduri5")).append("https://example.com/"); // $ Source
+            HttpRequest unsafer5 = HttpRequest.newBuilder(new URI(unsafeUri5.toString())).build(); // $ Alert
+            client.send(unsafer5, null); // $ Alert
 
-            StringBuilder unafeUri5a = new StringBuilder(request.getParameter("uri5a"));
+            StringBuilder unafeUri5a = new StringBuilder(request.getParameter("uri5a")); // $ Source
             unafeUri5a.append("https://example.com/");
-            HttpRequest unsafer5a = HttpRequest.newBuilder(new URI(unafeUri5a.toString())).build(); // $ SSRF
-            client.send(unsafer5a, null);
+            HttpRequest unsafer5a = HttpRequest.newBuilder(new URI(unafeUri5a.toString())).build(); // $ Alert
+            client.send(unsafer5a, null); // $ Alert
 
-            StringBuilder unsafeUri5b = (new StringBuilder(request.getParameter("uri5b"))).append("dir/");
+            StringBuilder unsafeUri5b = (new StringBuilder(request.getParameter("uri5b"))).append("dir/"); // $ Source
             unsafeUri5b.append("https://example.com/");
-            HttpRequest unsafer5b = HttpRequest.newBuilder(new URI(unsafeUri5b.toString())).build(); // $ SSRF
-            client.send(unsafer5b, null);
+            HttpRequest unsafer5b = HttpRequest.newBuilder(new URI(unsafeUri5b.toString())).build(); // $ Alert
+            client.send(unsafer5b, null); // $ Alert
 
-            StringBuilder unsafeUri5c = (new StringBuilder("https")).append(request.getParameter("uri5c"));
+            StringBuilder unsafeUri5c = (new StringBuilder("https")).append(request.getParameter("uri5c")); // $ Source
             unsafeUri5c.append("://example.com/dir/");
-            HttpRequest unsafer5c = HttpRequest.newBuilder(new URI(unsafeUri5c.toString())).build(); // $ SSRF
-            client.send(unsafer5c, null);
+            HttpRequest unsafer5c = HttpRequest.newBuilder(new URI(unsafeUri5c.toString())).build(); // $ Alert
+            client.send(unsafer5c, null); // $ Alert
 
-            String unsafeUri6 = String.format("%shttps://example.com/", request.getParameter("baduri6"));
-            HttpRequest unsafer6 = HttpRequest.newBuilder(new URI(unsafeUri6)).build(); // $ SSRF
-            client.send(unsafer6, null);
+            String unsafeUri6 = String.format("%shttps://example.com/", request.getParameter("baduri6")); // $ Source
+            HttpRequest unsafer6 = HttpRequest.newBuilder(new URI(unsafeUri6)).build(); // $ Alert
+            client.send(unsafer6, null); // $ Alert
 
-            String unsafeUri7 = String.format("%s/%s", request.getParameter("baduri7"), "https://example.com");
-            HttpRequest unsafer7 = HttpRequest.newBuilder(new URI(unsafeUri7)).build(); // $ SSRF
-            client.send(unsafer7, null);
+            String unsafeUri7 = String.format("%s/%s", request.getParameter("baduri7"), "https://example.com"); // $ Source
+            HttpRequest unsafer7 = HttpRequest.newBuilder(new URI(unsafeUri7)).build(); // $ Alert
+            client.send(unsafer7, null); // $ Alert
 
-            String unsafeUri8 = String.format("%s%s", request.getParameter("baduri8"), "https://example.com/");
-            HttpRequest unsafer8 = HttpRequest.newBuilder(new URI(unsafeUri8)).build(); // $ SSRF
-            client.send(unsafer8, null);
+            String unsafeUri8 = String.format("%s%s", request.getParameter("baduri8"), "https://example.com/"); // $ Source
+            HttpRequest unsafer8 = HttpRequest.newBuilder(new URI(unsafeUri8)).build(); // $ Alert
+            client.send(unsafer8, null); // $ Alert
 
-            String unsafeUri9 = request.getParameter("baduri9") + "/" + String.format("http://%s", "myserver.com");
-            HttpRequest unsafer9 = HttpRequest.newBuilder(new URI(unsafeUri9)).build(); // $ SSRF
-            client.send(unsafer9, null);
+            String unsafeUri9 = request.getParameter("baduri9") + "/" + String.format("http://%s", "myserver.com"); // $ Source
+            HttpRequest unsafer9 = HttpRequest.newBuilder(new URI(unsafeUri9)).build(); // $ Alert
+            client.send(unsafer9, null); // $ Alert
 
-            String unsafeUri10 = String.format("%s://%s:%s%s", "http", "myserver.com", "80", request.getParameter("baduri10"));
-            HttpRequest unsafer10 = HttpRequest.newBuilder(new URI(unsafeUri10)).build(); // $ SSRF
-            client.send(unsafer10, null);
+            String unsafeUri10 = String.format("%s://%s:%s%s", "http", "myserver.com", "80", request.getParameter("baduri10")); // $ Source
+            HttpRequest unsafer10 = HttpRequest.newBuilder(new URI(unsafeUri10)).build(); // $ Alert
+            client.send(unsafer10, null); // $ Alert
+
+            // GOOD: sanitisation by regexp validation
+            String param10 = request.getParameter("uri10");
+            if (param10.matches("[a-zA-Z0-9_-]+")) {
+                HttpRequest r10 = HttpRequest.newBuilder(new URI(param10)).build();
+                client.send(r10, null);
+            }
+
+            String param11 = request.getParameter("uri11");
+            validate(param11);
+            HttpRequest r11 = HttpRequest.newBuilder(new URI(param11)).build();
+            client.send(r11, null);
+
+            String param12 = request.getParameter("uri12");
+            if (Pattern.matches("[a-zA-Z0-9_-]+", param12)) {
+                HttpRequest r12 = HttpRequest.newBuilder(new URI(param12)).build();
+                client.send(r12, null);
+            }
+
+            Pattern pattern = Pattern.compile("[a-zA-Z0-9_-]+");
+            String param13 = request.getParameter("uri13");
+            Matcher matcher = pattern.matcher(param13);
+            if (matcher.matches()) {
+                HttpRequest r13 = HttpRequest.newBuilder(new URI(param13)).build();
+                client.send(r13, null);
+            }
         } catch (Exception e) {
             // TODO: handle exception
+        }
+    }
+
+    private void validate(String s) {
+        if (!s.matches("[a-zA-Z0-9_-]+")) {
+            throw new IllegalArgumentException("Invalid ID");
         }
     }
 }

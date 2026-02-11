@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["corretto/corretto-8", "*", "input.version-branch", "code-injection", "generated"]
+     - ["corretto/corretto-8", "*", "input.upstream", "code-injection", "generated"]
+     - ["corretto/corretto-8", "*", "input.merge-branch", "code-injection", "generated"]
+     - ["corretto/corretto-8", "*", "input.local-branch", "code-injection", "generated"]

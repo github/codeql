@@ -65,8 +65,8 @@ predicate isCaseSensitiveMiddleware(
     arg = call.getArgument(0) and
     regexp.getAReference().flowsTo(arg) and
     exists(string flags |
-      flags = regexp.getFlags() and
-      not RegExp::isIgnoreCase(flags)
+      flags = regexp.tryGetFlags() and
+      not RegExp::maybeIgnoreCase(flags)
     )
   )
 }

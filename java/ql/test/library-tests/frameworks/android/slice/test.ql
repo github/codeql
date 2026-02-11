@@ -1,11 +1,11 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 import semmle.code.java.dataflow.FlowSources
 
 module SliceValueFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    DefaultFlowConfig::isSource(source) or source instanceof ThreatModelFlowSource
+    DefaultFlowConfig::isSource(source) or source instanceof ActiveThreatModelSource
   }
 
   predicate isSink = DefaultFlowConfig::isSink/1;

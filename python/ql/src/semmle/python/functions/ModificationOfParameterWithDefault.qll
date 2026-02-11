@@ -8,44 +8,13 @@
 
 private import python
 import semmle.python.dataflow.new.DataFlow
-private import semmle.python.dataflow.new.internal.TaintTrackingPrivate as TTP
+private import semmle.python.ApiGraphs
 
 /**
  * Provides a data-flow configuration for detecting modifications of a parameters default value.
  */
 module ModificationOfParameterWithDefault {
   import ModificationOfParameterWithDefaultCustomizations::ModificationOfParameterWithDefault
-
-  /**
-   * DEPRECATED: Use `Flow` module instead.
-   *
-   * A data-flow configuration for detecting modifications of a parameters default value.
-   */
-  deprecated class Configuration extends DataFlow::Configuration {
-    /** Record whether the default value being tracked is non-empty. */
-    boolean nonEmptyDefault;
-
-    Configuration() {
-      nonEmptyDefault in [true, false] and
-      this = "ModificationOfParameterWithDefault:" + nonEmptyDefault.toString()
-    }
-
-    override predicate isSource(DataFlow::Node source) {
-      source.(Source).isNonEmpty() = nonEmptyDefault
-    }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isBarrier(DataFlow::Node node) {
-      // if we are tracking a non-empty default, then it is ok to modify empty values,
-      // so our tracking ends at those.
-      nonEmptyDefault = true and node instanceof MustBeEmpty
-      or
-      // if we are tracking a empty default, then it is ok to modify non-empty values,
-      // so our tracking ends at those.
-      nonEmptyDefault = false and node instanceof MustBeNonEmpty
-    }
-  }
 
   private module Config implements DataFlow::StateConfigSig {
     class FlowState = boolean;
@@ -73,8 +42,16 @@ module ModificationOfParameterWithDefault {
       or
       // the target of a copy step is (presumably) a different object, and hence modifications of
       // this object no longer matter for the purposes of this query.
-      TTP::copyStep(_, node) and state in [true, false]
+      copyTarget(node) and state in [true, false]
     }
+
+    private predicate copyTarget(DataFlow::Node node) {
+      node = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall()
+      or
+      node.(DataFlow::MethodCallNode).calls(_, "copy")
+    }
+
+    predicate observeDiffInformedIncrementalMode() { any() }
   }
 
   /** Global data-flow for detecting modifications of a parameters default value. */

@@ -5,7 +5,7 @@
 // by comparing the value to 0. This means that the cast cannot overflow,
 // regardless of what the input type is.
 
-int main(int argc, char **argv) {
+int main4(int argc, char **argv) {
   char *p = argv[0];
   if (!p[0]) {  // GOOD: cast to bool.
     return 1;

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["mealie-recipes/mealie/.github/workflows/partial-builder.yml", "*", "input.tag", "code-injection", "generated"]

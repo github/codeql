@@ -5,7 +5,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/loop-iteration-skipped-due-to-shifting
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
  * @precision high
  */
 
@@ -146,7 +148,12 @@ class ArrayIterationLoop extends ForStmt {
     or
     this.hasPathThrough(splice, cfg.getAPredecessor()) and
     this.getLoopEntry().dominates(cfg.getBasicBlock()) and
-    not this.hasIndexingManipulation(cfg)
+    not this.hasIndexingManipulation(cfg) and
+    // Don't continue through a branch that tests the splice call's return value
+    not exists(ConditionGuardNode guard | cfg = guard |
+      guard.getTest() = splice.asExpr() and
+      guard.getOutcome() = false
+    )
   }
 }
 

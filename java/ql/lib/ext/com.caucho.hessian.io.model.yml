@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.caucho.hessian.io", "AbstractHessianInput", True, "readObject", "", "", "Argument[this]", "unsafe-deserialization", "manual"]
+      - ["com.caucho.hessian.io", "Hessian2StreamingInput", True, "readObject", "", "", "Argument[this]", "unsafe-deserialization", "manual"]

@@ -2,9 +2,9 @@
  * @name Non-callable called
  * @description A call to an object which is not a callable will raise a TypeError at runtime.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
- *       types
  * @problem.severity error
  * @sub-severity high
  * @precision high
@@ -12,9 +12,10 @@
  */
 
 import python
+private import LegacyPointsTo
 import Exceptions.NotImplemented
 
-from Call c, Value v, ClassValue t, Expr f, AstNode origin
+from Call c, Value v, ClassValue t, ExprWithPointsTo f, AstNode origin
 where
   f = c.getFunc() and
   f.pointsTo(v, origin) and

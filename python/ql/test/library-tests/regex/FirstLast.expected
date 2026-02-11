@@ -4,6 +4,7 @@
 | (?!not-this)^[A-Z_]+$ | first | 12 | 13 |
 | (?!not-this)^[A-Z_]+$ | first | 13 | 19 |
 | (?!not-this)^[A-Z_]+$ | first | 13 | 20 |
+| (?!not-this)^[A-Z_]+$ | last | 3 | 11 |
 | (?!not-this)^[A-Z_]+$ | last | 13 | 19 |
 | (?!not-this)^[A-Z_]+$ | last | 13 | 20 |
 | (?!not-this)^[A-Z_]+$ | last | 20 | 21 |
@@ -101,6 +102,7 @@
 | ^[A-Z_]+$(?<!not-this) | first | 0 | 1 |
 | ^[A-Z_]+$(?<!not-this) | first | 1 | 7 |
 | ^[A-Z_]+$(?<!not-this) | first | 1 | 8 |
+| ^[A-Z_]+$(?<!not-this) | first | 13 | 21 |
 | ^[A-Z_]+$(?<!not-this) | last | 1 | 7 |
 | ^[A-Z_]+$(?<!not-this) | last | 1 | 8 |
 | ^[A-Z_]+$(?<!not-this) | last | 8 | 9 |

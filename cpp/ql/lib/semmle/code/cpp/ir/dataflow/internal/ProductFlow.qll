@@ -16,6 +16,7 @@ import semmle.code.cpp.dataflow.new.DataFlow
 private import DataFlowPrivate
 private import DataFlowUtil
 private import DataFlowImplCommon
+private import DataFlowImplSpecific
 private import codeql.util.Unit
 
 /**
@@ -95,10 +96,7 @@ module ProductFlow {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit1() {
-      // NOTE: This should be synchronized with the default value in the shared dataflow library
-      result = 2
-    }
+    default int fieldFlowBranchLimit1() { result = CppDataFlow::defaultFieldFlowBranchLimit() }
 
     /**
      * Gets the virtual dispatch branching limit when calculating field flow in the second
@@ -107,10 +105,7 @@ module ProductFlow {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit2() {
-      // NOTE: This should be synchronized with the default value in the shared dataflow library
-      result = 2
-    }
+    default int fieldFlowBranchLimit2() { result = CppDataFlow::defaultFieldFlowBranchLimit() }
   }
 
   /**
@@ -304,10 +299,7 @@ module ProductFlow {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit1() {
-      // NOTE: This should be synchronized with the default value in the shared dataflow library
-      result = 2
-    }
+    default int fieldFlowBranchLimit1() { result = CppDataFlow::defaultFieldFlowBranchLimit() }
 
     /**
      * Gets the virtual dispatch branching limit when calculating field flow in the second
@@ -316,10 +308,7 @@ module ProductFlow {
      * This can be overridden to a smaller value to improve performance (a
      * value of 0 disables field flow), or a larger value to get more results.
      */
-    default int fieldFlowBranchLimit2() {
-      // NOTE: This should be synchronized with the default value in the shared dataflow library
-      result = 2
-    }
+    default int fieldFlowBranchLimit2() { result = CppDataFlow::defaultFieldFlowBranchLimit() }
   }
 
   /**
@@ -545,8 +534,8 @@ module ProductFlow {
     private predicate outImpl1(Flow1::PathNode pred1, Flow1::PathNode succ1, DataFlowCall call) {
       Flow1::PathGraph::edges(pred1, succ1, _, _) and
       exists(ReturnKindExt returnKind |
-        succ1.getNode() = returnKind.getAnOutNode(call) and
-        paramReturnNode(_, pred1.asParameterReturnNode(), _, returnKind)
+        succ1.getNode() = getAnOutNodeExt(call, returnKind) and
+        returnKind = getParamReturnPosition(_, pred1.asParameterReturnNode()).getKind()
       )
     }
 
@@ -573,8 +562,8 @@ module ProductFlow {
     private predicate outImpl2(Flow2::PathNode pred2, Flow2::PathNode succ2, DataFlowCall call) {
       Flow2::PathGraph::edges(pred2, succ2, _, _) and
       exists(ReturnKindExt returnKind |
-        succ2.getNode() = returnKind.getAnOutNode(call) and
-        paramReturnNode(_, pred2.asParameterReturnNode(), _, returnKind)
+        succ2.getNode() = getAnOutNodeExt(call, returnKind) and
+        returnKind = getParamReturnPosition(_, pred2.asParameterReturnNode()).getKind()
       )
     }
 
@@ -587,8 +576,8 @@ module ProductFlow {
 
     pragma[nomagic]
     private predicate interprocEdge1(
-      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1,
-      TKind kind
+      DataFlowCallable predDecl, DataFlowCallable succDecl, Flow1::PathNode pred1,
+      Flow1::PathNode succ1, TKind kind
     ) {
       Flow1::PathGraph::edges(pred1, succ1, _, _) and
       predDecl != succDecl and
@@ -607,8 +596,8 @@ module ProductFlow {
 
     pragma[nomagic]
     private predicate interprocEdge2(
-      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2,
-      TKind kind
+      DataFlowCallable predDecl, DataFlowCallable succDecl, Flow2::PathNode pred2,
+      Flow2::PathNode succ2, TKind kind
     ) {
       Flow2::PathGraph::edges(pred2, succ2, _, _) and
       predDecl != succDecl and
@@ -628,7 +617,7 @@ module ProductFlow {
     private predicate interprocEdgePair(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
-      exists(Declaration predDecl, Declaration succDecl, TKind kind |
+      exists(DataFlowCallable predDecl, DataFlowCallable succDecl, TKind kind |
         interprocEdge1(predDecl, succDecl, pred1, succ1, kind) and
         interprocEdge2(predDecl, succDecl, pred2, succ2, kind)
       )

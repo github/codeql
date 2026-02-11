@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSourceModel
+    data:
+      # https://github.com/the-coding-turtle/ga-file-list
+      - ["the-coding-turtle/ga-file-list", "*", "output.files", "filename", "manual"]
+      - ["the-coding-turtle/ga-file-list", "*", "output.file_names", "filename", "manual"]

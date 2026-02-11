@@ -20,6 +20,6 @@ namespace Semmle.Util.Logging
 
         void LogDebug(string text, int? threadId = null) => Log(Severity.Debug, text, threadId);
 
-        void Log(Severity s, string text, params object?[] args) => Log(s, string.Format(text, args));
+        void LogTrace(string text, int? threadId = null) => Log(Severity.Trace, text, threadId);
     }
 }

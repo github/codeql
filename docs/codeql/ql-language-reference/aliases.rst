@@ -137,6 +137,6 @@ During :ref:`name resolution <name-resolution>`, ambiguity between aliases from 
 for the same module/type/predicate is allowed, but ambiguity between between aliases from distinct **strong**
 alias definitions is invalid QL.
 Likewise, for the purpose of applicative instantiation of :ref:`parameterised modules <parameterized-modules>`
-and `:ref:`parameterised module signatures <parameterized-module-signatures>`, aliases from **weak** alias
+and :ref:`parameterised module signatures <parameterized-module-signatures>`, aliases from **weak** alias
 definitions for instantiation arguments do not result in separate instantiations, but aliases from **strong**
 alias definitions for instantiation arguments do.

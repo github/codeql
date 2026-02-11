@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["loginjection", "LogInjectionTest", False, "source", "()", "", "ReturnValue", "remote", "manual"]

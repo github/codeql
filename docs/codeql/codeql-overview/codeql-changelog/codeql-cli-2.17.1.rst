@@ -9,7 +9,7 @@ CodeQL 2.17.1 (2024-04-24)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -42,8 +42,8 @@ Query Packs
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   The :code:`java/unknown-javadoc-parameter` now accepts :code:`@param` tags that apply to the parameters of a record.
 
@@ -79,8 +79,8 @@ Golang
 *   Data flow through variables declared in statements of the form :code:`x := y.(type)` at the beginning of type switches has been fixed, which may result in more alerts.
 *   Added strings.ReplaceAll, http.ParseMultipartForm sanitizers and remove path sanitizer.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   About 6,700 summary models and 6,800 neutral summary models for the JDK that were generated using data flow have been added. This may lead to new alerts being reported.
 

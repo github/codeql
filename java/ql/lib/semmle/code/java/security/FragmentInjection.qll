@@ -1,4 +1,6 @@
 /** Provides classes and predicates to reason about Android Fragment injection vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.TaintTracking
@@ -23,7 +25,7 @@ class IsValidFragmentMethod extends Method {
   predicate isUnsafe() {
     this.getDeclaringType().(AndroidActivity).isExported() and
     forex(ReturnStmt retStmt | retStmt.getEnclosingCallable() = this |
-      retStmt.getResult().(BooleanLiteral).getBooleanValue() = true
+      retStmt.getExpr().(BooleanLiteral).getBooleanValue() = true
     )
   }
 }
@@ -45,6 +47,15 @@ class FragmentInjectionAdditionalTaintStep extends Unit {
 
 private class DefaultFragmentInjectionSink extends FragmentInjectionSink {
   DefaultFragmentInjectionSink() { sinkNode(this, "fragment-injection") }
+}
+
+/**
+ * A sanitizer for Fragment injection vulnerabilities.
+ */
+abstract class FragmentInjectionSanitizer extends DataFlow::Node { }
+
+private class ExternalFragmentInjectionSanitizer extends FragmentInjectionSanitizer {
+  ExternalFragmentInjectionSanitizer() { barrierNode(this, "fragment-injection") }
 }
 
 private class DefaultFragmentInjectionAdditionalTaintStep extends FragmentInjectionAdditionalTaintStep

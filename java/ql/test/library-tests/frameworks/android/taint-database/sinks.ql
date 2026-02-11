@@ -2,7 +2,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.QueryInjection
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -20,7 +20,7 @@ module SinkTest implements TestSig {
   predicate hasActualResult(Location l, string element, string tag, string value) {
     tag = "taintReachesSink" and
     value = "" and
-    exists(DataFlow::Node source | Flow::flow(source, _) |
+    exists(DataFlow::Node source | Flow::flowFrom(source) |
       l = source.getLocation() and
       element = source.toString()
     )

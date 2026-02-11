@@ -31,12 +31,12 @@ module CommandInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `RemoteFlowSource` or `Source` instead.
+   * DEPRECATED: Use `ActiveThreatModelSource` or `Source` instead.
    */
-  deprecated class UntrustedFlowAsSource = RemoteFlowAsSource;
+  deprecated class UntrustedFlowAsSource = ThreatModelFlowAsSource;
 
   /** A source of untrusted data, considered as a taint source for command injection. */
-  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
+  private class ThreatModelFlowAsSource extends Source instanceof ActiveThreatModelSource { }
 
   /** A command name, considered as a taint sink for command injection. */
   class CommandNameAsSink extends Sink {
@@ -45,6 +45,10 @@ module CommandInjection {
     CommandNameAsSink() { this = exec.getCommandName() }
 
     override predicate doubleDashIsSanitizing() { exec.doubleDashIsSanitizing() }
+  }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "command-injection") }
   }
 
   /**

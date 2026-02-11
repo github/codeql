@@ -30,6 +30,10 @@ namespace Semmle.Extraction.CSharp.Entities
             return props.SingleOrDefault();
         }
 
+        public override bool NeedsPopulation =>
+            base.NeedsPopulation &&
+            !Symbol.IsPartialDefinition; // Accessors always have an implementing declaration as well.
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
@@ -59,8 +63,10 @@ namespace Semmle.Extraction.CSharp.Entities
 
             trapFile.accessors(this, kind, Symbol.Name, parent, unboundAccessor);
 
-            foreach (var l in Locations)
-                trapFile.accessor_location(this, l);
+            if (Context.ExtractLocation(Symbol))
+            {
+                WriteLocationsToTrap(trapFile.accessor_location, this, Locations);
+            }
 
             Overrides(trapFile);
 

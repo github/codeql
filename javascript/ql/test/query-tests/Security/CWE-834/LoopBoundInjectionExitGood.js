@@ -17,7 +17,7 @@ rootRoute.post(function (req, res) {
 function breaks(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) { // OK
+	for (var i = 0; i < val.length; i++) {
 	  if (val[i] == null) {
 		  break; // Prevents DoS.
 	  }
@@ -28,7 +28,7 @@ function breaks(val) {
 function throws(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) { // OK
+	for (var i = 0; i < val.length; i++) {
 	  if (val[i] == null) {
 		  throw 2; // Prevents DoS.
 	  }
@@ -40,7 +40,7 @@ function throws(val) {
 function returns(val) {
 	var ret = [];
 	
-	for (var i = 0; i < val.length; i++) { // OK
+	for (var i = 0; i < val.length; i++) {
 	  if (val[i] == null) {
 		  return 2; // Prevents DoS.
 	  }
@@ -49,7 +49,7 @@ function returns(val) {
 }
 
 function lodashThrow(val) {
-	_.map(val, function (e) { // OK
+	_.map(val, function (e) {
 		if (!e) {
 			throw new Error(); // Prevents DoS.
 		}

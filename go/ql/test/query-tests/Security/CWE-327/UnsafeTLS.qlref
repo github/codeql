@@ -1,1 +1,2 @@
-Security/CWE-327/InsecureTLS.ql
+query: Security/CWE-327/InsecureTLS.ql
+postprocess: utils/test/PrettyPrintModels.ql

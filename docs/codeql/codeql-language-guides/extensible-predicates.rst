@@ -27,8 +27,8 @@ This example of an extensible predicate for a source is taken from the core Java
 .. code-block:: ql
 
     extensible predicate sourceModel(
-      string package, string type, boolean subtypes, string name, 
-      string signature, string ext, string output, string kind, 
+      string package, string type, boolean subtypes, string name,
+      string signature, string ext, string output, string kind,
       string provenance
     );
 
@@ -36,7 +36,7 @@ An extensible predicate is a CodeQL predicate with the following restrictions:
 
 - It uses the ``extensible`` keyword.
 - It has no body.
-- All predicate parameters have primitive types.
+- All predicate parameters have type ``string``, ``int``, ``float``, ``boolean``, or ``date``.
 - It is not in a module.
 
 Columns shared by all extensible predicates

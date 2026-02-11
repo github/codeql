@@ -276,7 +276,7 @@ public class B {
     int[] a = null;
     if (iters > 0) a = new int[iters];
     for (int i = 0; i < iters; ++i)
-      a[i] = 0; // NPE - false positive
+      a[i] = 0; // OK
 
     if (iters > 0) {
       String last = null;
@@ -289,7 +289,7 @@ public class B {
       throw new RuntimeException();
     }
     for (int i = 0; i < iters; ++i) {
-      b[i] = 0; // NPE - false positive
+      b[i] = 0; // OK
     }
   }
 
@@ -331,7 +331,7 @@ public class B {
       x = new Object();
     }
     if(y instanceof String) {
-      x.hashCode(); // OK
+      x.hashCode(); // Spurious NPE - false positive
     }
   }
 
@@ -341,7 +341,7 @@ public class B {
       x = new Object();
     }
     if(!(y instanceof String)) {
-      x.hashCode(); // OK
+      x.hashCode(); // Spurious NPE - false positive
     }
   }
 
@@ -351,7 +351,7 @@ public class B {
       x = new Object();
     }
     if(y == z) {
-      x.hashCode(); // OK
+      x.hashCode(); // Spurious NPE - false positive
     }
 
     Object x2 = null;
@@ -359,7 +359,7 @@ public class B {
       x2 = new Object();
     }
     if(y != z) {
-      x2.hashCode(); // OK
+      x2.hashCode(); // Spurious NPE - false positive
     }
 
     Object x3 = null;
@@ -367,7 +367,7 @@ public class B {
       x3 = new Object();
     }
     if(!(y == z)) {
-      x3.hashCode(); // OK
+      x3.hashCode(); // Spurious NPE - false positive
     }
   }
 
@@ -407,5 +407,154 @@ public class B {
     if (g5) {
       x.hashCode(); // NPE
     }
+  }
+
+  public void corrCondLoop1(boolean a[]) {
+    Object x = new Object();
+    for (int i = 0; i < a.length; i++) {
+      boolean b = a[i];
+      if (b) {
+        x = null;
+      }
+      if (!b) {
+        x.hashCode(); // NPE
+      }
+      // flow can loop around from one iteration to the next
+    }
+  }
+
+  public void corrCondLoop2(boolean a[]) {
+    for (int i = 0; i < a.length; i++) {
+      // x is local to the loop iteration and thus cannot loop around and reach the sink
+      Object x = new Object();
+      boolean b = a[i];
+      if (b) {
+        x = null;
+      }
+      if (!b) {
+        x.hashCode(); // OK
+      }
+    }
+  }
+
+  public void loopCorrTest1(int[] a) {
+    boolean ready = a.length > 7;
+    Object x = new Object();
+    for (int i = 0; i < a.length; i++) {
+      // condition correlates with itself through iterations when ready isn't updated
+      if (!ready) {
+        x = null;
+      } else {
+        x.hashCode(); // OK
+      }
+      if ((a[i] & 1) != 0) {
+        ready = (a[i] & 2) != 0;
+        x = new Object();
+      }
+    }
+  }
+
+  public void loopCorrTest2(boolean[] a) {
+    Object x = new Object();
+    boolean cur = a[0];
+    for (int i = 1; i < a.length; i++) {
+      boolean prev = cur;
+      cur = a[i];
+      if (!prev) {
+        // correctly guarded by !cur from the _previous_ iteration
+        x.hashCode(); // Spurious NPE - false positive
+      } else {
+        x = new Object();
+      }
+      if (cur) {
+        x = null;
+      }
+    }
+  }
+
+  public void loopCorrTest3(String[] ss) {
+    Object x = null;
+    Object t = null;
+    for (String s : ss) {
+      if (t == null) {
+        t = s;
+      } else {
+        if (t instanceof String) {
+          x = new Object();
+          t = new Object();
+        }
+        // correctly guarded by t: null -> String -> Object
+        x.hashCode(); // Spurious NPE - false positive
+      }
+    }
+  }
+
+  public void initCorr(boolean b) {
+    Object o2 = b ? null : "";
+    if (b)
+      o2 = "";
+    else
+      o2.hashCode(); // OK
+  }
+
+  public void complexLoopTest(int[] xs, int[] ys) {
+    int len = ys != null ? ys.length : 0;
+    for (int i = 0, j = 0; i < xs.length; i++) {
+      if (j < len && ys[j] == 42) { // OK
+        j++;
+      } else if (j > 0) {
+        ys[0]++; // OK
+      }
+    }
+  }
+
+  public void trackTest(Object o, int n) {
+    boolean isnull = o == null;
+    int c = -1;
+    if (maybe) { }
+    if (c == 100) { return; }
+    o.hashCode(); // NPE
+  }
+
+  public void testFinally(int[] xs, int[] ys) {
+    if (xs.length == 0) return;
+    if (ys.length == 0) return;
+    String s1 = null;
+    String s2 = null;
+    for (int x : xs) {
+      try {
+        if (x == 0) { break; }
+        s1 = "1";
+        for (int y : ys) {
+          if (y == 0) { break; }
+          s2 = "2";
+        }
+      } finally {
+      }
+      s1.hashCode(); // OK
+      s2.hashCode(); // NPE
+    }
+    s1.hashCode(); // NPE - false negative, Java CFG lacks proper edge label
+  }
+
+  public void lenCheck(int[] xs, int n, int t) {
+    if (n > 42) return;
+    if (maybe) {}
+    if (n > 0 && (xs == null || xs.length < n)) {
+      return;
+    }
+    if (maybe) {}
+    if (n > 21) return;
+    if (maybe) {}
+    for (int i = 0; i < n; ++i) {
+      xs[i]++; // OK
+    }
+  }
+
+  public void rangetest(int n) {
+    String s = null;
+    if (n < 0 || n > 10) s = "A";
+    if (n > 100) s.hashCode(); // OK
+    if (n == 42) s.hashCode(); // OK
   }
 }

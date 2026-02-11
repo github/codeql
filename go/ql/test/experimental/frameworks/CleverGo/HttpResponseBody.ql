@@ -1,5 +1,5 @@
 import go
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import experimental.frameworks.CleverGo
 
 module HttpResponseBodyTest implements TestSig {
@@ -7,8 +7,7 @@ module HttpResponseBodyTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Http::ResponseBody rd |
-      rd.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      rd.getLocation() = location and
       (
         element = rd.getAContentType().toString() and
         value = rd.getAContentType().toString() and

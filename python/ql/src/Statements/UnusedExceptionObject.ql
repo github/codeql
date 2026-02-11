@@ -2,8 +2,9 @@
  * @name Unused exception object
  * @description An exception object is created, but is not used.
  * @kind problem
- * @tags reliability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       error-handling
  * @problem.severity error
  * @sub-severity low
  * @precision very-high
@@ -11,10 +12,11 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from Call call, ClassValue ex
 where
-  call.getFunc().pointsTo(ex) and
+  call.getFunc().(ExprWithPointsTo).pointsTo(ex) and
   ex.getASuperType() = ClassValue::exception() and
   exists(ExprStmt s | s.getValue() = call)
 select call, "Instantiating an exception, but not raising it, has no effect."

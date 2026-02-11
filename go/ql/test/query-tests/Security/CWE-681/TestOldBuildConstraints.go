@@ -20,11 +20,11 @@ func oldTestIntSink64() {
 		_ = uint(parsed)
 	}
 	{
-		parsed, err := strconv.ParseUint("3456", 10, 64)
+		parsed, err := strconv.ParseUint("3456", 10, 64) // $ Source
 		if err != nil {
 			panic(err)
 		}
-		_ = int(parsed) // $ hasValueFlow="parsed"
+		_ = int(parsed) // $ Alert
 		_ = uint(parsed)
 	}
 }

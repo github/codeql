@@ -1,0 +1,7 @@
+qltest_cargo_check: true
+qltest_dependencies:
+    - reqwest = { version = "0.12.9", features = ["blocking"] }
+    - sqlx = { version = "0.8", features = ["mysql", "sqlite", "postgres", "runtime-async-std", "tls-native-tls"] }
+    - futures = { version = "0.3" }
+    - mysql = { version = "26.0.1" }
+    - mysql_async = { version = "0.36.1" }

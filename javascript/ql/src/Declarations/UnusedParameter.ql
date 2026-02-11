@@ -4,7 +4,10 @@
  * @kind problem
  * @problem.severity recommendation
  * @id js/unused-parameter
- * @tags maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       readability
  * @precision medium
  */
 

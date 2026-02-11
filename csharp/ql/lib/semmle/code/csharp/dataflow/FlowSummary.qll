@@ -18,6 +18,11 @@ deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
 deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;
 
-class SummarizedCallable = Impl::Public::SummarizedCallable;
+/** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
+module SummarizedCallable {
+  class Range = Impl::Public::SummarizedCallable;
+}
+
+class SummarizedCallable = Impl::Public::RelevantSummarizedCallable;
 
 class Provenance = Impl::Public::Provenance;

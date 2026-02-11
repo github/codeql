@@ -1,0 +1,48 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+When initializing an instance of the class in the class' <code>__init__</code> method, calls tha are made using the instance may receive an instance of the class that is not 
+yet fully initialized. When a method called in an initializer is overridden in a subclass, the subclass method receives the instance
+in a potentially unexpected state. Fields that would be initialized after the call, including potentially in the subclass' <code>__init__</code> method, 
+will not be initialized. This may lead to runtime errors, as well as make the code more difficult to maintain, as future changes may not 
+be aware of which fields would not be initialized.
+</p>
+
+</overview>
+<recommendation>
+
+<p>If possible, refactor the initializer method such that initialization is complete before calling any overridden methods. 
+For helper methods used as part of initialization, avoid overriding them, and instead call any additional logic required 
+in the subclass' <code>__init__</code> method.
+</p>
+<p>
+If the overridden method does not depend on the instance <code>self</code>, and only on its class, consider making it a <code>@classmethod</code> or <code>@staticmethod</code> instead. 
+</p>
+<p>
+If calling an overridden method is absolutely required, consider marking it as an internal method (by using an <code>_</code> prefix) to 
+discourage external users of the library from overriding it and observing partially initialized state, and ensure that the fact it is called during initialization
+is mentioned in the documentation. 
+</p>
+
+</recommendation>
+<example>
+<p>In the following case, the <code>__init__</code> method of <code>Super</code> calls the <code>set_up</code> method that is overridden by <code>Sub</code>. 
+This results in <code>Sub.set_up</code> being called with a partially initialized instance of <code>Super</code> which may be unexpected. </p>
+<sample src="examples/InitCallsSubclassMethodBad.py" />
+<p>In the following case, the initialization methods are separate between the superclass and the subclass.</p>
+<sample src="examples/InitCallsSubclassMethodGood.py" />
+</example>
+<references>
+
+
+<li>CERT Secure Coding: <a href="https://www.securecoding.cert.org/confluence/display/java/MET05-J.+Ensure+that+constructors+do+not+call+overridable+methods">
+Rule MET05-J</a>. Reference discusses Java but is applicable to object oriented programming in many languages.</li>
+<li>StackOverflow: <a href="https://stackoverflow.com/questions/3404301/whats-wrong-with-overridable-method-calls-in-constructors">Overridable method calls in constructors</a>.</li>
+<li>Python documentation: <a href="https://docs.python.org/3/library/functions.html#classmethod">@classmethod</a>.</li>
+
+
+</references>
+</qhelp>

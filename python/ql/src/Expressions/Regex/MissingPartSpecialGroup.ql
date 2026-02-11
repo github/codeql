@@ -2,7 +2,8 @@
  * @name Missing part of special group in regular expression
  * @description Incomplete special groups are parsed as normal groups and are unlikely to match the intended strings.
  * @kind problem
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  * @problem.severity warning
  * @sub-severity high

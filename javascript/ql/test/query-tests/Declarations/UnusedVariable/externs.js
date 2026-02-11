@@ -2,10 +2,9 @@
  * @externs
  */
 
-// NOT OK
-var iAmUnused;
+var iAmUnused; // $ Alert
 
-// OK: used as a type
+// OK - used as a type
 /**
  * @typedef string 
  */

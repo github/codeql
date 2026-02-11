@@ -19,16 +19,17 @@ import cpp
  * Errors when using a variable declaration inside a loop.
  */
 class DangerousWhileLoop extends WhileStmt {
-  Expr exp;
   Declaration dl;
 
   DangerousWhileLoop() {
     this = dl.getParentScope().(BlockStmt).getParent*() and
-    exp = this.getCondition().getAChild*() and
-    not exp instanceof PointerFieldAccess and
-    not exp instanceof ValueFieldAccess and
-    exp.(VariableAccess).getTarget().getName() = dl.getName() and
-    not exp.getParent*() instanceof FunctionCall
+    exists(Expr exp |
+      exp = this.getCondition().getAChild*() and
+      not exp instanceof PointerFieldAccess and
+      not exp instanceof ValueFieldAccess and
+      exp.(VariableAccess).getTarget().getName() = dl.getName() and
+      not exp.getParent*() instanceof FunctionCall
+    )
   }
 
   Declaration getDeclaration() { result = dl }

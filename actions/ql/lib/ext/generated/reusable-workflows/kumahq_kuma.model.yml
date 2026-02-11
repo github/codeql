@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["kumahq/kuma/.github/workflows/_build_publish.yaml", "*", "input.VERSION_NAME", "code-injection", "generated"]
+     - ["kumahq/kuma/.github/workflows/_build_publish.yaml", "*", "input.REGISTRY", "code-injection", "generated"]
+     - ["kumahq/kuma/.github/workflows/_test.yaml", "*", "input.FULL_MATRIX", "code-injection", "generated"]
+     - ["kumahq/kuma/.github/workflows/_e2e.yaml", "*", "input.matrix", "code-injection", "generated"]

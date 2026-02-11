@@ -1,4 +1,6 @@
 /** Provides predicates to reason about disabling CSRF protection in Spring. */
+overlay[local?]
+module;
 
 import java
 
@@ -17,4 +19,18 @@ predicate disablesSpringCsrfProtection(MethodCall call) {
       .getReferencedCallable()
       .hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
         "AbstractHttpConfigurer", "disable")
+  or
+  call.getMethod().hasName("disable") and
+  call.getReceiverType()
+      .hasQualifiedName("org.springframework.security.config.web.server",
+        "ServerHttpSecurity$CsrfSpec")
+  or
+  call.getMethod()
+      .hasQualifiedName("org.springframework.security.config.web.server", "ServerHttpSecurity",
+        "csrf") and
+  call.getArgument(0)
+      .(MemberRefExpr)
+      .getReferencedCallable()
+      .hasQualifiedName("org.springframework.security.config.web.server",
+        "ServerHttpSecurity$CsrfSpec", "disable")
 }

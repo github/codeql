@@ -5,8 +5,10 @@
  * @problem.severity warning
  * @precision very-high
  * @id cs/useless-if-statement
- * @tags reliability
+ * @tags quality
+ *       maintainability
  *       readability
+ *       useless-code
  */
 
 import csharp
@@ -16,7 +18,8 @@ predicate emptyStmt(Stmt s) {
   or
   s =
     any(BlockStmt bs |
-      bs.getNumberOfStmts() = 0
+      bs.getNumberOfStmts() = 0 and
+      not any(CommentBlock cb).getParent() = bs
       or
       bs.getNumberOfStmts() = 1 and
       emptyStmt(bs.getStmt(0))

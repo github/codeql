@@ -32,7 +32,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Syntax.GetLocation();
 
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, object? value, Action<Expression, int> createChild, Extraction.Entities.Location location)
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, Microsoft.CodeAnalysis.ITypeSymbol type, object? value, Action<Expression, int> createChild, Location location)
         {
             var info = new ExpressionInfo(
                 cx,

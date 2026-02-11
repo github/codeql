@@ -49,6 +49,10 @@ module SharedXss {
     override Locatable getAssociatedLoc() { result = this.getRead().getEnclosingTextNode() }
   }
 
+  private class ExternalSink extends Sink {
+    ExternalSink() { sinkNode(this, ["html-injection", "js-injection"]) }
+  }
+
   /**
    * Holds if `body` may send a response with a content type other than HTML.
    */
@@ -82,6 +86,10 @@ module SharedXss {
    */
   private predicate htmlTypeSpecified(Http::ResponseBody body) {
     body.getAContentType().regexpMatch("(?i).*html.*")
+  }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, ["html-injection", "js-injection"]) }
   }
 
   /**
@@ -131,14 +139,14 @@ module SharedXss {
    * A `Template` from `html/template` will HTML-escape data automatically
    * and therefore acts as a sanitizer for XSS vulnerabilities.
    */
-  class HtmlTemplateSanitizer extends Sanitizer, DataFlow::Node {
+  class HtmlTemplateSanitizer extends Sanitizer {
     HtmlTemplateSanitizer() {
       exists(Method m, DataFlow::CallNode call | m = call.getCall().getTarget() |
         m.hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
-        call.getArgument(2) = this
+        this = call.getArgument(2)
         or
         m.hasQualifiedName("html/template", "Template", "Execute") and
-        call.getArgument(1) = this
+        this = call.getArgument(1)
       )
     }
   }

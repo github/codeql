@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["citusdata/citus", "*", "input.flags", "code-injection", "generated"]
+     - ["citusdata/citus", "*", "input.pg_major", "code-injection", "generated"]
+     - ["citusdata/citus", "*", "input.count", "code-injection", "generated"]

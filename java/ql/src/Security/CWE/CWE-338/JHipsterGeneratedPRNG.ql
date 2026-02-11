@@ -41,7 +41,7 @@ private class VulnerableJHipsterRandomUtilMethod extends Method {
     this.getReturnType() instanceof TypeString and
     exists(ReturnStmt s |
       s = this.getBody().(SingletonBlock).getStmt() and
-      s.getResult() instanceof PredictableApacheRandomStringUtilsMethodCall
+      s.getExpr() instanceof PredictableApacheRandomStringUtilsMethodCall
     )
   }
 }

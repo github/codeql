@@ -29,5 +29,5 @@
 });
 
 (function(){
-    function a(){return null;} a(1)[0];
+    function a(){return null;} a(1)[0]; // $ Alert
 });

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: sourceModel
+    data: # namespace, type, subtypes, name, signature, ext, output, kind, provenance
+      - ["", "", False, "ymlSource", "", "", "ReturnValue", "local", "manual"]

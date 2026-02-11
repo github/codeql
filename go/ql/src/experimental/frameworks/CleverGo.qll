@@ -172,25 +172,6 @@ private module CleverGo {
   }
 
   /**
-   * Models HTTP redirects.
-   */
-  private class HttpRedirect extends Http::Redirect::Range, DataFlow::CallNode {
-    DataFlow::Node urlNode;
-
-    HttpRedirect() {
-      // HTTP redirect models for package: clevergo.tech/clevergo@v0.5.2
-      // Receiver type: Context
-      // signature: func (*Context) Redirect(code int, url string) error
-      this = any(Method m | m.hasQualifiedName(packagePath(), "Context", "Redirect")).getACall() and
-      urlNode = this.getArgument(1)
-    }
-
-    override DataFlow::Node getUrl() { result = urlNode }
-
-    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
-  }
-
-  /**
    * Models HTTP ResponseBody where the content-type is static and non-modifiable.
    */
   private class HttpResponseBodyStaticContentType extends Http::ResponseBody::Range {

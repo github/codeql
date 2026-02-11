@@ -5,7 +5,8 @@
  * @kind problem
  * @problem.severity warning
  * @id js/regex/duplicate-in-character-class
- * @tags reliability
+ * @tags quality
+ *       reliability
  *       correctness
  *       regular-expressions
  * @precision very-high

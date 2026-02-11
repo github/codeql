@@ -1,0 +1,11 @@
+#select
+| TrustBoundaryViolations.java:14:52:14:56 | input | TrustBoundaryViolations.java:11:24:11:52 | getParameter(...) : String | TrustBoundaryViolations.java:14:52:14:56 | input | This servlet reads data from a $@ and writes it to a session variable. | TrustBoundaryViolations.java:11:24:11:52 | getParameter(...) : String | remote source |
+edges
+| TrustBoundaryViolations.java:11:24:11:52 | getParameter(...) : String | TrustBoundaryViolations.java:14:52:14:56 | input | provenance | Src:MaD:2 Sink:MaD:1 |
+models
+| 1 | Sink: javax.servlet.http; HttpSession; true; setAttribute; ; ; Argument[0..1]; trust-boundary-violation; manual |
+| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+nodes
+| TrustBoundaryViolations.java:11:24:11:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| TrustBoundaryViolations.java:14:52:14:56 | input | semmle.label | input |
+subpaths

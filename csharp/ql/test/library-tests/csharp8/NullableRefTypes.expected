@@ -153,6 +153,7 @@ arrayElements
 | NullableRefTypes.cs:150:27:150:27 | k | NullableRefTypes.cs:6:7:6:13 | MyClass[,,,][][,][,,] | NullableRefTypes.cs:6:7:6:13 | MyClass[][,][,,] |
 | NullableRefTypes.cs:151:29:151:29 | l | NullableRefTypes.cs:6:7:6:13 | MyClass?[,,,][][,]?[,,] | NullableRefTypes.cs:6:7:6:13 | MyClass?[,,,][][,]? |
 returnTypes
+| NullableRefTypes.cs:6:7:6:13 | <object initializer> | Void |
 | NullableRefTypes.cs:6:7:6:13 | MyClass | Void! |
 | NullableRefTypes.cs:13:19:13:22 | get_C | MyClass? |
 | NullableRefTypes.cs:14:18:14:21 | get_D | MyClass! |
@@ -178,15 +179,19 @@ returnTypes
 | NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object |
 | NullableRefTypes.cs:51:12:51:15 | Q<MyClass> | object! |
 | NullableRefTypes.cs:51:12:51:15 | Q`1 | object! |
-| NullableRefTypes.cs:54:11:54:33 | Generic | Void! |
-| NullableRefTypes.cs:58:11:58:26 | Generic2 | Void! |
+| NullableRefTypes.cs:54:11:54:17 | Generic | Void! |
+| NullableRefTypes.cs:54:11:54:33 | <object initializer> | Void |
+| NullableRefTypes.cs:58:11:58:18 | Generic2 | Void! |
+| NullableRefTypes.cs:58:11:58:26 | <object initializer> | Void |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn<MyClass> | Void! |
 | NullableRefTypes.cs:67:10:67:21 | GenericFn`1 | Void! |
 | NullableRefTypes.cs:71:14:71:18 | CallF | MyStruct! |
+| NullableRefTypes.cs:80:7:80:22 | <object initializer> | Void |
 | NullableRefTypes.cs:80:7:80:22 | NullableRefTypes | Void! |
 | NullableRefTypes.cs:82:10:82:40 | TestSuppressNullableWarningExpr | Void! |
 | NullableRefTypes.cs:91:10:91:34 | FunctionInNullableContext | Void! |
+| NullableRefTypes.cs:100:7:100:14 | <object initializer> | Void |
 | NullableRefTypes.cs:100:7:100:14 | RefTypes | Void! |
 | NullableRefTypes.cs:103:18:103:28 | ReturnsRef1 | ref MyClass? |
 | NullableRefTypes.cs:104:17:104:27 | ReturnsRef2 | ref MyClass! |
@@ -196,12 +201,17 @@ returnTypes
 | NullableRefTypes.cs:108:26:108:36 | ReturnsRef6 | readonly MyClass! |
 | NullableRefTypes.cs:110:10:110:20 | Parameters1 | Void! |
 | NullableRefTypes.cs:113:32:113:44 | get_RefProperty | MyClass! |
+| NullableRefTypes.cs:116:7:116:23 | <object initializer> | Void |
 | NullableRefTypes.cs:116:7:116:23 | ToStringWithTypes | Void! |
+| NullableRefTypes.cs:136:7:136:24 | <object initializer> | Void |
 | NullableRefTypes.cs:136:7:136:24 | ToStringWithTypes2 | Void! |
+| NullableRefTypes.cs:154:7:154:25 | <object initializer> | Void |
 | NullableRefTypes.cs:154:7:154:25 | DisabledNullability | Void! |
 | NullableRefTypes.cs:157:18:157:30 | get_P | MyClass |
 | NullableRefTypes.cs:158:13:158:14 | Fn | MyClass |
+| NullableRefTypes.cs:165:8:165:15 | <object initializer> | Void |
 | NullableRefTypes.cs:165:8:165:15 | MyStruct | Void! |
+| NullableRefTypes.cs:171:16:171:37 | <object initializer> | Void |
 | NullableRefTypes.cs:171:16:171:37 | TestNullableFlowStates | Void! |
 | NullableRefTypes.cs:173:29:173:37 | MaybeNull | string? |
 | NullableRefTypes.cs:175:26:175:30 | Check | Void! |
@@ -245,6 +255,8 @@ annotatedTypeConstraints
 typeNotAnnotated
 expressionTypes
 | NullableRefTypes.cs:6:7:6:13 | call to constructor Object | object |
+| NullableRefTypes.cs:6:7:6:13 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:6:7:6:13 | this access | MyClass |
 | NullableRefTypes.cs:13:19:13:22 | null | null |
 | NullableRefTypes.cs:14:18:14:21 | this access | MyClass! |
 | NullableRefTypes.cs:17:29:17:32 | null | null |
@@ -271,8 +283,12 @@ expressionTypes
 | NullableRefTypes.cs:40:26:40:30 | ref ... | MyClass |
 | NullableRefTypes.cs:40:30:40:30 | access to local variable b | MyClass? |
 | NullableRefTypes.cs:51:44:51:47 | null | null |
-| NullableRefTypes.cs:54:11:54:33 | call to constructor Object | object |
-| NullableRefTypes.cs:58:11:58:26 | call to constructor Object | object |
+| NullableRefTypes.cs:54:11:54:17 | call to constructor Object | object |
+| NullableRefTypes.cs:54:11:54:17 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:54:11:54:17 | this access | Generic<T1, T2, T3, T4> |
+| NullableRefTypes.cs:58:11:58:18 | call to constructor Object | object |
+| NullableRefTypes.cs:58:11:58:18 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:58:11:58:18 | this access | Generic2<T1, T2> |
 | NullableRefTypes.cs:73:18:73:18 | access to local variable x | MyClass! |
 | NullableRefTypes.cs:73:18:73:25 | MyClass x = ... | MyClass! |
 | NullableRefTypes.cs:73:22:73:25 | null | null |
@@ -285,6 +301,8 @@ expressionTypes
 | NullableRefTypes.cs:76:16:76:32 | default(...) | MyStruct! |
 | NullableRefTypes.cs:76:24:76:31 | access to type MyStruct | MyStruct |
 | NullableRefTypes.cs:80:7:80:22 | call to constructor Object | object |
+| NullableRefTypes.cs:80:7:80:22 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:80:7:80:22 | this access | NullableRefTypes |
 | NullableRefTypes.cs:84:17:84:17 | access to local variable x | string! |
 | NullableRefTypes.cs:84:17:84:28 | String x = ... | string! |
 | NullableRefTypes.cs:84:21:84:28 | "source" | string! |
@@ -318,6 +336,8 @@ expressionTypes
 | NullableRefTypes.cs:96:9:96:28 | call to method WriteLine | Void! |
 | NullableRefTypes.cs:96:27:96:27 | access to local variable x | string? |
 | NullableRefTypes.cs:100:7:100:14 | call to constructor Object | object |
+| NullableRefTypes.cs:100:7:100:14 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:100:7:100:14 | this access | RefTypes |
 | NullableRefTypes.cs:103:48:103:52 | ref ... | MyClass |
 | NullableRefTypes.cs:103:52:103:52 | access to parameter r | MyClass! |
 | NullableRefTypes.cs:104:48:104:52 | ref ... | MyClass |
@@ -337,15 +357,25 @@ expressionTypes
 | NullableRefTypes.cs:113:36:113:43 | this access | RefTypes |
 | NullableRefTypes.cs:113:36:113:44 | ...! | MyClass? |
 | NullableRefTypes.cs:116:7:116:23 | call to constructor Object | object |
+| NullableRefTypes.cs:116:7:116:23 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:116:7:116:23 | this access | ToStringWithTypes |
 | NullableRefTypes.cs:136:7:136:24 | call to constructor Object | object |
+| NullableRefTypes.cs:136:7:136:24 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:136:7:136:24 | this access | ToStringWithTypes2 |
 | NullableRefTypes.cs:154:7:154:25 | call to constructor Object | object |
+| NullableRefTypes.cs:154:7:154:25 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:154:7:154:25 | this access | DisabledNullability |
 | NullableRefTypes.cs:157:18:157:30 | object creation of type MyClass | MyClass |
 | NullableRefTypes.cs:160:17:160:17 | access to local variable a | MyClass |
 | NullableRefTypes.cs:160:17:160:21 | MyClass a = ... | MyClass |
 | NullableRefTypes.cs:160:21:160:21 | access to parameter p | MyClass |
 | NullableRefTypes.cs:161:16:161:16 | access to local variable a | MyClass |
 | NullableRefTypes.cs:165:8:165:15 | call to constructor ValueType | ValueType |
+| NullableRefTypes.cs:165:8:165:15 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:165:8:165:15 | this access | MyStruct |
 | NullableRefTypes.cs:171:16:171:37 | call to constructor Object | object |
+| NullableRefTypes.cs:171:16:171:37 | call to method <object initializer> | Void |
+| NullableRefTypes.cs:171:16:171:37 | this access | TestNullableFlowStates |
 | NullableRefTypes.cs:181:17:181:17 | access to local variable x | string! |
 | NullableRefTypes.cs:181:17:181:31 | String x = ... | string! |
 | NullableRefTypes.cs:181:21:181:31 | call to method MaybeNull | string? |

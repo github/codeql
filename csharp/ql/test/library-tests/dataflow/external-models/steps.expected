@@ -11,12 +11,12 @@ summaryThroughStep
 | Steps.cs:41:29:41:29 | 0 | Steps.cs:41:13:41:30 | call to method StepGeneric | true |
 | Steps.cs:42:30:42:34 | false | Steps.cs:42:13:42:35 | call to method StepGeneric2<Boolean> | true |
 | Steps.cs:44:36:44:43 | "string" | Steps.cs:44:13:44:44 | call to method StepOverride | true |
-| Steps.cs:47:39:47:42 | access to local variable arg4 | Steps.cs:47:13:47:16 | [post] this access | false |
+| Steps.cs:47:44:47:47 | access to local variable arg4 | Steps.cs:47:13:47:48 | call to method StepArgReturnGenerated | false |
 summaryGetterStep
-| Steps.cs:28:13:28:16 | this access | Steps.cs:28:13:28:34 | call to method StepFieldGetter | Steps.cs:67:13:67:17 | field Field |
-| Steps.cs:32:13:32:16 | this access | Steps.cs:32:13:32:37 | call to method StepPropertyGetter | Steps.cs:73:13:73:20 | property Property |
+| Steps.cs:28:13:28:16 | this access | Steps.cs:28:13:28:34 | call to method StepFieldGetter | Steps.cs:63:13:63:17 | field Field |
+| Steps.cs:32:13:32:16 | this access | Steps.cs:32:13:32:37 | call to method StepPropertyGetter | Steps.cs:69:13:69:20 | property Property |
 | Steps.cs:36:13:36:16 | this access | Steps.cs:36:13:36:36 | call to method StepElementGetter | file://:0:0:0:0 | element |
 summarySetterStep
-| Steps.cs:30:34:30:34 | 0 | Steps.cs:30:13:30:16 | [post] this access | Steps.cs:67:13:67:17 | field Field |
-| Steps.cs:34:37:34:37 | 0 | Steps.cs:34:13:34:16 | [post] this access | Steps.cs:73:13:73:20 | property Property |
+| Steps.cs:30:34:30:34 | 0 | Steps.cs:30:13:30:16 | [post] this access | Steps.cs:63:13:63:17 | field Field |
+| Steps.cs:34:37:34:37 | 0 | Steps.cs:34:13:34:16 | [post] this access | Steps.cs:69:13:69:20 | property Property |
 | Steps.cs:38:36:38:36 | 0 | Steps.cs:38:13:38:16 | [post] this access | file://:0:0:0:0 | element |

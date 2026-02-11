@@ -1,4 +1,6 @@
 /** Provides classes to reason about Android Intent redirect vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.controlflow.Guards
@@ -31,6 +33,11 @@ class IntentRedirectionAdditionalTaintStep extends Unit {
 /** Default sink for Intent redirection vulnerabilities. */
 private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
   DefaultIntentRedirectionSink() { sinkNode(this, "intent-redirection") }
+}
+
+/** An external sanitizer for Intent redirection vulnerabilities. */
+private class ExternalIntentRedirectionSanitizer extends IntentRedirectionSanitizer {
+  ExternalIntentRedirectionSanitizer() { barrierNode(this, "intent-redirection") }
 }
 
 /**

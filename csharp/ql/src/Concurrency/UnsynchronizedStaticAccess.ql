@@ -6,7 +6,9 @@
  * @problem.severity error
  * @precision medium
  * @id cs/unsynchronized-static-access
- * @tags concurrency
+ * @tags quality
+ *       reliability
+ *       concurrency
  *       external/cwe/cwe-362
  *       external/cwe/cwe-567
  */

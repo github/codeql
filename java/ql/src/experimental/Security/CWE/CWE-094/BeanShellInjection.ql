@@ -12,13 +12,13 @@
  */
 
 import java
-import BeanShellInjection
+deprecated import BeanShellInjection
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import BeanShellInjectionFlow::PathGraph
+deprecated import BeanShellInjectionFlow::PathGraph
 
-module BeanShellInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+deprecated module BeanShellInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof BeanShellInjectionSink }
 
@@ -41,9 +41,15 @@ module BeanShellInjectionConfig implements DataFlow::ConfigSig {
   }
 }
 
-module BeanShellInjectionFlow = TaintTracking::Global<BeanShellInjectionConfig>;
+deprecated module BeanShellInjectionFlow = TaintTracking::Global<BeanShellInjectionConfig>;
 
-from BeanShellInjectionFlow::PathNode source, BeanShellInjectionFlow::PathNode sink
-where BeanShellInjectionFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "BeanShell injection from $@.", source.getNode(),
-  "this user input"
+deprecated query predicate problems(
+  DataFlow::Node sinkNode, BeanShellInjectionFlow::PathNode source,
+  BeanShellInjectionFlow::PathNode sink, string message1, DataFlow::Node sourceNode, string message2
+) {
+  BeanShellInjectionFlow::flowPath(source, sink) and
+  sinkNode = sink.getNode() and
+  message1 = "BeanShell injection from $@." and
+  sourceNode = source.getNode() and
+  message2 = "this user input"
+}

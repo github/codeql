@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.PathSanitizer
-import TestUtilities.InlineFlowTest
+import utils.test.InlineFlowTest
 
 module PathSanitizerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { DefaultFlowConfig::isSource(source) }

@@ -1,5 +1,4 @@
 import go
-private import semmle.go.internal.Locations
 
 bindingset[path]
 string baseName(string path) { result = path.regexpCapture(".*(/|\\\\)([^/\\\\]+)(/|\\\\)?$", 2) }
@@ -31,12 +30,7 @@ class Diagnostic extends @diagnostic {
     diagnostic_for(this, c, fileNum, idx)
   }
 
-  DbLocation getLocation() {
-    exists(@location loc |
-      diagnostics(this, _, _, _, _, loc) and
-      result = TDbLocation(loc)
-    )
-  }
+  Location getLocation() { diagnostics(this, _, _, _, _, result) }
 
   // string getTag() {
   //   diagnostics(this, _, result, _, _, _)

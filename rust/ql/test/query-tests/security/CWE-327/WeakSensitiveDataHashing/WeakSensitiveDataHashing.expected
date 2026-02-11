@@ -1,0 +1,14 @@
+#select
+| test.rs:20:9:20:24 | ...::compute | test.rs:20:26:20:39 | credit_card_no | test.rs:20:9:20:24 | ...::compute | $@ is used in a hashing algorithm (MD5) that is insecure. | test.rs:20:26:20:39 | credit_card_no | Sensitive data (private) |
+| test.rs:21:9:21:24 | ...::compute | test.rs:21:26:21:33 | password | test.rs:21:9:21:24 | ...::compute | $@ is used in a hashing algorithm (MD5) that is insecure for password hashing, since it is not a computationally expensive hash function. | test.rs:21:26:21:33 | password | Sensitive data (password) |
+edges
+| test.rs:20:26:20:39 | credit_card_no | test.rs:20:9:20:24 | ...::compute | provenance | MaD:1 Sink:MaD:1 |
+| test.rs:21:26:21:33 | password | test.rs:21:9:21:24 | ...::compute | provenance | MaD:1 Sink:MaD:1 |
+models
+| 1 | Sink: md5::compute; Argument[0]; hasher-input |
+nodes
+| test.rs:20:9:20:24 | ...::compute | semmle.label | ...::compute |
+| test.rs:20:26:20:39 | credit_card_no | semmle.label | credit_card_no |
+| test.rs:21:9:21:24 | ...::compute | semmle.label | ...::compute |
+| test.rs:21:26:21:33 | password | semmle.label | password |
+subpaths

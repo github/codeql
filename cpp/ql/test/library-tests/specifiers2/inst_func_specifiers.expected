@@ -1,0 +1,8 @@
+| cpp20.cpp:15:8:15:23 | TestExplicitBool<char> | file://:0:0:0:0 | char | cpp20.cpp:17:5:17:20 | TestExplicitBool | explicit, extern, public |
+| cpp20.cpp:15:8:15:23 | TestExplicitBool<int> | file://:0:0:0:0 | int | cpp20.cpp:17:5:17:20 | TestExplicitBool | extern, public |
+| cpp20.cpp:34:8:34:24 | TestExplicitBool2<char> | file://:0:0:0:0 | char | cpp20.cpp:40:23:40:23 | TestExplicitBool2 | explicit, public |
+| cpp20.cpp:34:8:34:24 | TestExplicitBool2<int> | file://:0:0:0:0 | int | cpp20.cpp:40:23:40:23 | TestExplicitBool2 | public |
+| cpp20.cpp:48:8:48:24 | TestExplicitBool3<char> | file://:0:0:0:0 | char | cpp20.cpp:51:5:51:5 | TestExplicitBool3 | explicit, public |
+| cpp20.cpp:48:8:48:24 | TestExplicitBool3<char> | file://:0:0:0:0 | char | cpp20.cpp:51:5:51:21 | TestExplicitBool3 | explicit, extern, public |
+| cpp20.cpp:48:8:48:24 | TestExplicitBool3<int> | file://:0:0:0:0 | int | cpp20.cpp:51:5:51:5 | TestExplicitBool3 | public |
+| cpp20.cpp:48:8:48:24 | TestExplicitBool3<int> | file://:0:0:0:0 | int | cpp20.cpp:51:5:51:21 | TestExplicitBool3 | extern, public |

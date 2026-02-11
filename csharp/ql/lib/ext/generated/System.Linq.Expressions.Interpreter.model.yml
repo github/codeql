@@ -4,7 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["System.Linq.Expressions.Interpreter", "LightLambda", False, "Run", "(System.Object[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.Linq.Expressions.Interpreter", "LightLambda", False, "Run", "(System.Object[])", "", "Argument[0].Element", "ReturnValue", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

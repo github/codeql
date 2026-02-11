@@ -1,7 +1,7 @@
 /** This tests that we are able to detect local flow sources. */
 
 import cpp
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 import semmle.code.cpp.security.FlowSources
 
 module LocalFlowSourceTest implements TestSig {

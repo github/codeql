@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["jupyter/docker-stacks/.github/workflows/docker-tag-push.yml", "*", "input.image", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-tag-push.yml", "*", "input.variant", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-tag-push.yml", "*", "input.platform", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-merge-tags.yml", "*", "input.variant", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-merge-tags.yml", "*", "input.image", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-build-test-upload.yml", "*", "input.variant", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-build-test-upload.yml", "*", "input.image", "code-injection", "generated"]
+     - ["jupyter/docker-stacks/.github/workflows/docker-build-test-upload.yml", "*", "input.platform", "code-injection", "generated"]

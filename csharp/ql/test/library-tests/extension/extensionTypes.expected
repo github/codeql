@@ -1,0 +1,37 @@
+extensionTypeReceiverParameter
+| extensionTypes.cs:6:5:9:5 | extension(String) | extensionTypes.cs:6:32:6:32 | s |
+| extensionTypes.cs:10:5:13:5 | extension(Int32) | extensionTypes.cs:10:32:10:33 | i1 |
+| extensionTypes.cs:14:5:17:5 | extension(Int32) | extensionTypes.cs:14:22:14:23 | i2 |
+| extensionTypes.cs:18:5:21:5 | extension(Int32) | extensionTypes.cs:18:23:18:24 | i3 |
+| extensionTypes.cs:22:5:25:5 | extension(String) | extensionTypes.cs:22:23:22:23 | s |
+| extensionTypes.cs:26:5:29:5 | extension(T1)`1 | extensionTypes.cs:26:42:26:43 | t1 |
+| extensions.cs:6:5:17:5 | extension(String) | extensions.cs:6:22:6:22 | s |
+| extensions.cs:26:5:35:5 | extension(Object)<Object> | extensions.cs:26:20:26:20 | t |
+| extensions.cs:26:5:35:5 | extension(String)<String> | extensions.cs:26:20:26:20 | t |
+| extensions.cs:26:5:35:5 | extension(T)`1 | extensions.cs:26:20:26:20 | t |
+extensionTypeExtendedType
+| extensionTypes.cs:6:5:9:5 | extension(String) | string |
+| extensionTypes.cs:10:5:13:5 | extension(Int32) | int |
+| extensionTypes.cs:14:5:17:5 | extension(Int32) | int |
+| extensionTypes.cs:18:5:21:5 | extension(Int32) | int |
+| extensionTypes.cs:22:5:25:5 | extension(String) | string |
+| extensionTypes.cs:26:5:29:5 | extension(T1)`1 | T1 |
+| extensions.cs:6:5:17:5 | extension(String) | string |
+| extensions.cs:19:5:24:5 | extension(Object) | object |
+| extensions.cs:26:5:35:5 | extension(Object)<Object> | object |
+| extensions.cs:26:5:35:5 | extension(String)<String> | string |
+| extensions.cs:26:5:35:5 | extension(T)`1 | T |
+extensionTypeReceiverParameterAttribute
+| extensionTypes.cs:6:5:9:5 | extension(String) | extensionTypes.cs:6:32:6:32 | s | extensionTypes.cs:6:16:6:22 | [NotNull(...)] |
+| extensionTypes.cs:26:5:29:5 | extension(T1)`1 | extensionTypes.cs:26:42:26:43 | t1 | extensionTypes.cs:26:20:26:30 | [NotNullWhen(...)] |
+extensionTypeReceiverParameterModifier
+| extensionTypes.cs:10:5:13:5 | extension(Int32) | extensionTypes.cs:10:32:10:33 | i1 | ref readonly |
+| extensionTypes.cs:14:5:17:5 | extension(Int32) | extensionTypes.cs:14:22:14:23 | i2 | in |
+| extensionTypes.cs:18:5:21:5 | extension(Int32) | extensionTypes.cs:18:23:18:24 | i3 | ref |
+extensionTypeParameterConstraints
+| extensionTypes.cs:26:5:29:5 | extension(T1)`1 | extensionTypes.cs:26:15:26:16 | T1 | file://:0:0:0:0 | where T1: ... |
+| extensions.cs:26:5:35:5 | extension(T)`1 | extensions.cs:26:15:26:15 | T | file://:0:0:0:0 | where T: ... |
+syntheticParameterModifier
+| extensionTypes.cs:10:5:13:5 | extension(Int32) | extensionTypes.cs:12:21:12:23 | M21 | extensionTypes.cs:10:32:10:33 | i1 | ref readonly |
+| extensionTypes.cs:14:5:17:5 | extension(Int32) | extensionTypes.cs:16:21:16:23 | M31 | extensionTypes.cs:14:22:14:23 | i2 | in |
+| extensionTypes.cs:18:5:21:5 | extension(Int32) | extensionTypes.cs:20:21:20:23 | M41 | extensionTypes.cs:18:23:18:24 | i3 | ref |

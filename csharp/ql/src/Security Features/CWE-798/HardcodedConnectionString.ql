@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
- * @precision medium
+ * @precision low
  * @id cs/hardcoded-connection-string-credentials
  * @tags security
  *       external/cwe/cwe-259
@@ -38,6 +38,12 @@ module ConnectionStringConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof StringFormatSanitizer }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
+
+  Location getASelectedSinkLocation(DataFlow::Node sink) {
+    any(Call call | call.getAnArgument() = sink.asExpr()).getLocation() = result
+  }
 }
 
 /**

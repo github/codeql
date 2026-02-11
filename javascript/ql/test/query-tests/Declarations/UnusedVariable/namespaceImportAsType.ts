@@ -1,6 +1,6 @@
-import * as X from "x"; // OK
-import * as Y from "y"; // OK
-import * as Z from "z"; // NOT OK
+import * as X from "x";
+import * as Y from "y";
+import * as Z from "z"; // $ Alert
 
 function f(x: X) {}
 function g(x: Y.T) {}

@@ -15,52 +15,13 @@ private import AngularJS
 /**
  * Holds if `nd` is a reference to the `angular` variable.
  */
+overlay[local?]
 DataFlow::SourceNode angular() {
   // either as a global
   result = DataFlow::globalVarRef("angular")
   or
   // or imported from a module named `angular`
   result = DataFlow::moduleImport("angular")
-}
-
-/**
- * Holds if `tl` appears to be a top-level using the AngularJS library.
- *
- * Should not depend on the `SourceNode` class.
- */
-pragma[nomagic]
-private predicate isAngularTopLevel(TopLevel tl) {
-  exists(Import imprt |
-    imprt.getTopLevel() = tl and
-    imprt.getImportedPath().getValue() = "angular"
-  )
-  or
-  exists(GlobalVarAccess global |
-    global.getName() = "angular" and
-    global.getTopLevel() = tl
-  )
-}
-
-/**
- * Holds if `s` is a string in a top-level using the AngularJS library.
- *
- * Should not depend on the `SourceNode` class.
- */
-pragma[nomagic]
-private predicate isAngularString(Expr s) {
-  isAngularTopLevel(s.getTopLevel()) and
-  (
-    s instanceof StringLiteral or
-    s instanceof TemplateLiteral
-  )
-}
-
-/**
- * String literals in Angular code are often used as identifiers or references, so we
- * want to track them.
- */
-private class TrackStringsInAngularCode extends DataFlow::SourceNode::Range, DataFlow::ValueNode {
-  TrackStringsInAngularCode() { isAngularString(astNode) }
 }
 
 /**
@@ -550,20 +511,25 @@ class DirectiveTargetName extends string {
  *
  * See https://docs.angularjs.org/api/ng/service/$location for details.
  */
-private class LocationFlowSource extends RemoteFlowSource instanceof DataFlow::MethodCallNode {
+private class LocationFlowSource extends ClientSideRemoteFlowSource instanceof DataFlow::MethodCallNode
+{
+  private ClientSideRemoteFlowKind kind;
+
   LocationFlowSource() {
     exists(ServiceReference service, string m, int n |
       service.getName() = "$location" and
       this = service.getAMethodCall(m) and
       n = super.getNumArgument()
     |
-      m = "search" and n < 2
+      m = "search" and n < 2 and kind.isQuery()
       or
-      m = "hash" and n = 0
+      m = "hash" and n = 0 and kind.isFragment()
     )
   }
 
   override string getSourceType() { result = "$location" }
+
+  override ClientSideRemoteFlowKind getKind() { result = kind }
 }
 
 /**

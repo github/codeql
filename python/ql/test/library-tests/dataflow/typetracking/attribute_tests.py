@@ -35,7 +35,7 @@ def set_foo(some_class_instance): # $ tracked=foo
     some_class_instance.foo = tracked # $ tracked=foo tracked
 
 def test_set_x():
-    x = SomeClass() # $ MISSING: tracked=foo
+    x = SomeClass() # $ MISSING: tracked=foo
     set_foo(x) # $ MISSING: tracked=foo
     print(x.foo) # $ MISSING: tracked=foo tracked
 
@@ -51,7 +51,7 @@ def test_create_with_foo():
 
 def test_global_attribute_assignment():
     global global_var
-    global_var.foo = tracked # $ tracked tracked=foo
+    global_var.foo = tracked # $ tracked tracked=foo
 
 def test_global_attribute_read():
     x = global_var.foo # $ tracked tracked=foo
@@ -61,7 +61,7 @@ def test_local_attribute_assignment():
     # In this case, we don't want flow going to the `ModuleVariableNode` for `local_var` 
     # (which is referenced in `test_local_attribute_read`).
     local_var = object() # $ tracked=foo
-    local_var.foo = tracked # $ tracked tracked=foo
+    local_var.foo = tracked # $ tracked tracked=foo
 
 def test_local_attribute_read():
     x = local_var.foo
@@ -129,7 +129,7 @@ def dunder_dict_indirect_write():
     x = SomeClass() # $ MISSING: tracked=foo
     x.__dict__[attr] = tracked # $tracked MISSING: tracked=foo
     y = x.foo # $ MISSING: tracked tracked=foo
-    do_stuff(y) # $ MISSING: tracked
+    do_stuff(y) # $ MISSING: tracked
 
 def dunder_dict_indirect_read():
     attr = "foo"
@@ -153,7 +153,7 @@ class MyClass2(object):
     def print_foo(self): # $ MISSING: tracked=foo
         print(self.foo) # $ MISSING: tracked=foo tracked
 
-    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
+    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
         print(self.foo) # $ MISSING: tracked=foo tracked
 
 instance = MyClass2()
@@ -170,7 +170,7 @@ class MyClass3(object):
     def print_foo(self): # $ tracked=foo
         print(self.foo) # $ tracked=foo tracked
 
-    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
+    def possibly_uncalled_method(self): # $ MISSING: tracked=foo
         print(self.foo) # $ MISSING: tracked=foo tracked
 
 instance = MyClass3() # $ tracked=foo

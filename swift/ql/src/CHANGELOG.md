@@ -1,3 +1,180 @@
+## 1.2.15
+
+No user-facing changes.
+
+## 1.2.14
+
+No user-facing changes.
+
+## 1.2.13
+
+No user-facing changes.
+
+## 1.2.12
+
+No user-facing changes.
+
+## 1.2.11
+
+No user-facing changes.
+
+## 1.2.10
+
+No user-facing changes.
+
+## 1.2.9
+
+No user-facing changes.
+
+## 1.2.8
+
+No user-facing changes.
+
+## 1.2.7
+
+No user-facing changes.
+
+## 1.2.6
+
+No user-facing changes.
+
+## 1.2.5
+
+No user-facing changes.
+
+## 1.2.4
+
+### Bug Fixes
+
+* Fixed an inconsistency across languages where most have a `Customizations.qll` file for adding customizations, but not all did.
+
+## 1.2.3
+
+No user-facing changes.
+
+## 1.2.2
+
+No user-facing changes.
+
+## 1.2.1
+
+No user-facing changes.
+
+## 1.2.0
+
+### Query Metadata Changes
+
+* Adjusts the `@security-severity` from 9.3 to 7.3 for `swift/uncontrolled-format-string` to align `CWE-134` severity for memory safe languages to better reflect their impact.
+
+## 1.1.5
+
+No user-facing changes.
+
+## 1.1.4
+
+### Minor Analysis Improvements
+
+* The queries `swift/hardcoded-key` and `swift/constant-password` have been removed from all query suites.
+
+## 1.1.3
+
+No user-facing changes.
+
+## 1.1.2
+
+No user-facing changes.
+
+## 1.1.1
+
+No user-facing changes.
+
+## 1.1.0
+
+### New Queries
+
+* Added a new summary query counting the total number of extracted AST nodes.
+
+## 1.0.19
+
+No user-facing changes.
+
+## 1.0.18
+
+No user-facing changes.
+
+## 1.0.17
+
+No user-facing changes.
+
+## 1.0.16
+
+No user-facing changes.
+
+## 1.0.15
+
+No user-facing changes.
+
+## 1.0.14
+
+No user-facing changes.
+
+## 1.0.13
+
+No user-facing changes.
+
+## 1.0.12
+
+No user-facing changes.
+
+## 1.0.11
+
+No user-facing changes.
+
+## 1.0.10
+
+No user-facing changes.
+
+## 1.0.9
+
+No user-facing changes.
+
+## 1.0.8
+
+No user-facing changes.
+
+## 1.0.7
+
+No user-facing changes.
+
+## 1.0.6
+
+### Minor Analysis Improvements
+
+* False positive results from the `swift/cleartext-transmission` ("Cleartext transmission of sensitive information") query involving `tel:`, `mailto:` and similar URLs have been fixed.
+
+## 1.0.5
+
+### Minor Analysis Improvements
+
+* The `swift/constant-salt` ("Use of constant salts") query now considers string concatenation and interpolation as a barrier. As a result, there will be fewer false positive results from this query involving constructed strings.
+* The `swift/constant-salt` ("Use of constant salts") query message now contains a link to the source node.
+
+## 1.0.4
+
+No user-facing changes.
+
+## 1.0.3
+
+No user-facing changes.
+
+## 1.0.2
+
+No user-facing changes.
+
+## 1.0.1
+
+No user-facing changes.
+
 ## 1.0.0
 
 ### Breaking Changes

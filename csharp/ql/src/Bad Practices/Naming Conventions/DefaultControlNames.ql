@@ -6,8 +6,9 @@
  * @problem.severity recommendation
  * @precision medium
  * @id cs/forms/default-control-name
- * @tags readability
- *       naming
+ * @tags quality
+ *       maintainability
+ *       readability
  */
 
 import csharp

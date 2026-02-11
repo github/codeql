@@ -1,0 +1,105 @@
+#select
+| InsecureBasicAuthTest.java:28:4:28:7 | post | InsecureBasicAuthTest.java:25:40:25:48 | "http://" : String | InsecureBasicAuthTest.java:28:4:28:7 | post | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:25:40:25:48 | "http://" | HTTP URL |
+| InsecureBasicAuthTest.java:46:4:46:6 | get | InsecureBasicAuthTest.java:43:20:43:65 | "http://www.example.com:8000/payment/retrieve" : String | InsecureBasicAuthTest.java:46:4:46:6 | get | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:43:20:43:65 | "http://www.example.com:8000/payment/retrieve" | HTTP URL |
+| InsecureBasicAuthTest.java:70:4:70:7 | post | InsecureBasicAuthTest.java:66:20:66:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:70:4:70:7 | post | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:66:20:66:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP URL |
+| InsecureBasicAuthTest.java:95:4:95:7 | post | InsecureBasicAuthTest.java:90:20:90:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:95:4:95:7 | post | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:90:20:90:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP URL |
+| InsecureBasicAuthTest.java:120:4:120:7 | post | InsecureBasicAuthTest.java:117:27:117:32 | "http" : String | InsecureBasicAuthTest.java:120:4:120:7 | post | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:117:27:117:32 | "http" | HTTP URL |
+| InsecureBasicAuthTest.java:143:4:143:7 | post | InsecureBasicAuthTest.java:139:20:139:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:143:4:143:7 | post | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:139:20:139:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP URL |
+| InsecureBasicAuthTest.java:167:4:167:7 | post | InsecureBasicAuthTest.java:162:20:162:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:167:4:167:7 | post | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:162:20:162:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP URL |
+| InsecureBasicAuthTest.java:192:4:192:7 | conn | InsecureBasicAuthTest.java:187:20:187:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:192:4:192:7 | conn | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:187:20:187:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" | HTTP URL |
+| InsecureBasicAuthTest.java:219:4:219:7 | conn | InsecureBasicAuthTest.java:214:22:214:27 | "http" : String | InsecureBasicAuthTest.java:219:4:219:7 | conn | Insecure basic authentication from a $@. | InsecureBasicAuthTest.java:214:22:214:27 | "http" | HTTP URL |
+edges
+| InsecureBasicAuthTest.java:25:27:25:87 | new HttpPost(...) : HttpPost | InsecureBasicAuthTest.java:28:4:28:7 | post | provenance |  |
+| InsecureBasicAuthTest.java:25:40:25:48 | "http://" : String | InsecureBasicAuthTest.java:25:40:25:86 | ... + ... : String | provenance |  |
+| InsecureBasicAuthTest.java:25:40:25:86 | ... + ... : String | InsecureBasicAuthTest.java:25:27:25:87 | new HttpPost(...) : HttpPost | provenance | Config |
+| InsecureBasicAuthTest.java:43:20:43:65 | "http://www.example.com:8000/payment/retrieve" : String | InsecureBasicAuthTest.java:44:30:44:35 | urlStr : String | provenance |  |
+| InsecureBasicAuthTest.java:44:18:44:36 | new HttpGet(...) : HttpGet | InsecureBasicAuthTest.java:46:4:46:6 | get | provenance |  |
+| InsecureBasicAuthTest.java:44:30:44:35 | urlStr : String | InsecureBasicAuthTest.java:44:18:44:36 | new HttpGet(...) : HttpGet | provenance | Config |
+| InsecureBasicAuthTest.java:66:20:66:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:67:51:67:56 | uriStr : String | provenance |  |
+| InsecureBasicAuthTest.java:67:27:67:58 | new HttpPost(...) : HttpPost | InsecureBasicAuthTest.java:70:4:70:7 | post | provenance |  |
+| InsecureBasicAuthTest.java:67:40:67:57 | create(...) : URI | InsecureBasicAuthTest.java:67:27:67:58 | new HttpPost(...) : HttpPost | provenance | Config |
+| InsecureBasicAuthTest.java:67:51:67:56 | uriStr : String | InsecureBasicAuthTest.java:67:40:67:57 | create(...) : URI | provenance | MaD:2 |
+| InsecureBasicAuthTest.java:90:20:90:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:91:22:91:27 | uriStr : String | provenance |  |
+| InsecureBasicAuthTest.java:91:14:91:28 | new URI(...) : URI | InsecureBasicAuthTest.java:92:40:92:42 | uri : URI | provenance |  |
+| InsecureBasicAuthTest.java:91:22:91:27 | uriStr : String | InsecureBasicAuthTest.java:91:14:91:28 | new URI(...) : URI | provenance | Config |
+| InsecureBasicAuthTest.java:91:22:91:27 | uriStr : String | InsecureBasicAuthTest.java:91:14:91:28 | new URI(...) : URI | provenance | MaD:1 |
+| InsecureBasicAuthTest.java:92:27:92:43 | new HttpPost(...) : HttpPost | InsecureBasicAuthTest.java:95:4:95:7 | post | provenance |  |
+| InsecureBasicAuthTest.java:92:40:92:42 | uri : URI | InsecureBasicAuthTest.java:92:27:92:43 | new HttpPost(...) : HttpPost | provenance | Config |
+| InsecureBasicAuthTest.java:117:6:117:79 | new HttpPost(...) : HttpPost | InsecureBasicAuthTest.java:120:4:120:7 | post | provenance |  |
+| InsecureBasicAuthTest.java:117:19:117:78 | new URI(...) : URI | InsecureBasicAuthTest.java:117:6:117:79 | new HttpPost(...) : HttpPost | provenance | Config |
+| InsecureBasicAuthTest.java:117:27:117:32 | "http" : String | InsecureBasicAuthTest.java:117:19:117:78 | new URI(...) : URI | provenance | Config |
+| InsecureBasicAuthTest.java:139:20:139:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:140:57:140:62 | uriStr : String | provenance |  |
+| InsecureBasicAuthTest.java:140:28:140:63 | new BasicHttpRequest(...) : BasicHttpRequest | InsecureBasicAuthTest.java:143:4:143:7 | post | provenance |  |
+| InsecureBasicAuthTest.java:140:57:140:62 | uriStr : String | InsecureBasicAuthTest.java:140:28:140:63 | new BasicHttpRequest(...) : BasicHttpRequest | provenance | Config |
+| InsecureBasicAuthTest.java:162:20:162:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:163:59:163:64 | uriStr : String | provenance |  |
+| InsecureBasicAuthTest.java:163:30:163:71 | new BasicRequestLine(...) : BasicRequestLine | InsecureBasicAuthTest.java:164:49:164:59 | requestLine : BasicRequestLine | provenance |  |
+| InsecureBasicAuthTest.java:163:59:163:64 | uriStr : String | InsecureBasicAuthTest.java:163:30:163:71 | new BasicRequestLine(...) : BasicRequestLine | provenance | MaD:4 |
+| InsecureBasicAuthTest.java:164:28:164:60 | new BasicHttpRequest(...) : BasicHttpRequest | InsecureBasicAuthTest.java:167:4:167:7 | post | provenance |  |
+| InsecureBasicAuthTest.java:164:49:164:59 | requestLine : BasicRequestLine | InsecureBasicAuthTest.java:164:28:164:60 | new BasicHttpRequest(...) : BasicHttpRequest | provenance | Config |
+| InsecureBasicAuthTest.java:187:20:187:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | InsecureBasicAuthTest.java:188:22:188:27 | urlStr : String | provenance |  |
+| InsecureBasicAuthTest.java:188:14:188:28 | new URL(...) : URL | InsecureBasicAuthTest.java:189:49:189:51 | url : URL | provenance |  |
+| InsecureBasicAuthTest.java:188:22:188:27 | urlStr : String | InsecureBasicAuthTest.java:188:14:188:28 | new URL(...) : URL | provenance | Config |
+| InsecureBasicAuthTest.java:188:22:188:27 | urlStr : String | InsecureBasicAuthTest.java:188:14:188:28 | new URL(...) : URL | provenance | MaD:3 |
+| InsecureBasicAuthTest.java:189:29:189:68 | (...)... : HttpURLConnection | InsecureBasicAuthTest.java:192:4:192:7 | conn | provenance |  |
+| InsecureBasicAuthTest.java:189:49:189:51 | url : URL | InsecureBasicAuthTest.java:189:49:189:68 | openConnection(...) : URLConnection | provenance | Config |
+| InsecureBasicAuthTest.java:189:49:189:68 | openConnection(...) : URLConnection | InsecureBasicAuthTest.java:189:29:189:68 | (...)... : HttpURLConnection | provenance |  |
+| InsecureBasicAuthTest.java:214:22:214:27 | "http" : String | InsecureBasicAuthTest.java:215:22:215:29 | protocol : String | provenance |  |
+| InsecureBasicAuthTest.java:215:14:215:42 | new URL(...) : URL | InsecureBasicAuthTest.java:216:49:216:51 | url : URL | provenance |  |
+| InsecureBasicAuthTest.java:215:22:215:29 | protocol : String | InsecureBasicAuthTest.java:215:14:215:42 | new URL(...) : URL | provenance | Config |
+| InsecureBasicAuthTest.java:216:29:216:68 | (...)... : HttpURLConnection | InsecureBasicAuthTest.java:219:4:219:7 | conn | provenance |  |
+| InsecureBasicAuthTest.java:216:49:216:51 | url : URL | InsecureBasicAuthTest.java:216:49:216:68 | openConnection(...) : URLConnection | provenance | Config |
+| InsecureBasicAuthTest.java:216:49:216:68 | openConnection(...) : URLConnection | InsecureBasicAuthTest.java:216:29:216:68 | (...)... : HttpURLConnection | provenance |  |
+models
+| 1 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 2 | Summary: java.net; URI; false; create; ; ; Argument[0]; ReturnValue; taint; manual |
+| 3 | Summary: java.net; URL; false; URL; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 4 | Summary: org.apache.http.message; BasicRequestLine; false; BasicRequestLine; ; ; Argument[1]; Argument[this]; taint; manual |
+nodes
+| InsecureBasicAuthTest.java:25:27:25:87 | new HttpPost(...) : HttpPost | semmle.label | new HttpPost(...) : HttpPost |
+| InsecureBasicAuthTest.java:25:40:25:48 | "http://" : String | semmle.label | "http://" : String |
+| InsecureBasicAuthTest.java:25:40:25:86 | ... + ... : String | semmle.label | ... + ... : String |
+| InsecureBasicAuthTest.java:28:4:28:7 | post | semmle.label | post |
+| InsecureBasicAuthTest.java:43:20:43:65 | "http://www.example.com:8000/payment/retrieve" : String | semmle.label | "http://www.example.com:8000/payment/retrieve" : String |
+| InsecureBasicAuthTest.java:44:18:44:36 | new HttpGet(...) : HttpGet | semmle.label | new HttpGet(...) : HttpGet |
+| InsecureBasicAuthTest.java:44:30:44:35 | urlStr : String | semmle.label | urlStr : String |
+| InsecureBasicAuthTest.java:46:4:46:6 | get | semmle.label | get |
+| InsecureBasicAuthTest.java:66:20:66:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuthTest.java:67:27:67:58 | new HttpPost(...) : HttpPost | semmle.label | new HttpPost(...) : HttpPost |
+| InsecureBasicAuthTest.java:67:40:67:57 | create(...) : URI | semmle.label | create(...) : URI |
+| InsecureBasicAuthTest.java:67:51:67:56 | uriStr : String | semmle.label | uriStr : String |
+| InsecureBasicAuthTest.java:70:4:70:7 | post | semmle.label | post |
+| InsecureBasicAuthTest.java:90:20:90:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuthTest.java:91:14:91:28 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| InsecureBasicAuthTest.java:91:22:91:27 | uriStr : String | semmle.label | uriStr : String |
+| InsecureBasicAuthTest.java:92:27:92:43 | new HttpPost(...) : HttpPost | semmle.label | new HttpPost(...) : HttpPost |
+| InsecureBasicAuthTest.java:92:40:92:42 | uri : URI | semmle.label | uri : URI |
+| InsecureBasicAuthTest.java:95:4:95:7 | post | semmle.label | post |
+| InsecureBasicAuthTest.java:117:6:117:79 | new HttpPost(...) : HttpPost | semmle.label | new HttpPost(...) : HttpPost |
+| InsecureBasicAuthTest.java:117:19:117:78 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| InsecureBasicAuthTest.java:117:27:117:32 | "http" : String | semmle.label | "http" : String |
+| InsecureBasicAuthTest.java:120:4:120:7 | post | semmle.label | post |
+| InsecureBasicAuthTest.java:139:20:139:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuthTest.java:140:28:140:63 | new BasicHttpRequest(...) : BasicHttpRequest | semmle.label | new BasicHttpRequest(...) : BasicHttpRequest |
+| InsecureBasicAuthTest.java:140:57:140:62 | uriStr : String | semmle.label | uriStr : String |
+| InsecureBasicAuthTest.java:143:4:143:7 | post | semmle.label | post |
+| InsecureBasicAuthTest.java:162:20:162:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuthTest.java:163:30:163:71 | new BasicRequestLine(...) : BasicRequestLine | semmle.label | new BasicRequestLine(...) : BasicRequestLine |
+| InsecureBasicAuthTest.java:163:59:163:64 | uriStr : String | semmle.label | uriStr : String |
+| InsecureBasicAuthTest.java:164:28:164:60 | new BasicHttpRequest(...) : BasicHttpRequest | semmle.label | new BasicHttpRequest(...) : BasicHttpRequest |
+| InsecureBasicAuthTest.java:164:49:164:59 | requestLine : BasicRequestLine | semmle.label | requestLine : BasicRequestLine |
+| InsecureBasicAuthTest.java:167:4:167:7 | post | semmle.label | post |
+| InsecureBasicAuthTest.java:187:20:187:69 | "http://www.example.com/rest/getuser.do?uid=abcdx" : String | semmle.label | "http://www.example.com/rest/getuser.do?uid=abcdx" : String |
+| InsecureBasicAuthTest.java:188:14:188:28 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| InsecureBasicAuthTest.java:188:22:188:27 | urlStr : String | semmle.label | urlStr : String |
+| InsecureBasicAuthTest.java:189:29:189:68 | (...)... : HttpURLConnection | semmle.label | (...)... : HttpURLConnection |
+| InsecureBasicAuthTest.java:189:49:189:51 | url : URL | semmle.label | url : URL |
+| InsecureBasicAuthTest.java:189:49:189:68 | openConnection(...) : URLConnection | semmle.label | openConnection(...) : URLConnection |
+| InsecureBasicAuthTest.java:192:4:192:7 | conn | semmle.label | conn |
+| InsecureBasicAuthTest.java:214:22:214:27 | "http" : String | semmle.label | "http" : String |
+| InsecureBasicAuthTest.java:215:14:215:42 | new URL(...) : URL | semmle.label | new URL(...) : URL |
+| InsecureBasicAuthTest.java:215:22:215:29 | protocol : String | semmle.label | protocol : String |
+| InsecureBasicAuthTest.java:216:29:216:68 | (...)... : HttpURLConnection | semmle.label | (...)... : HttpURLConnection |
+| InsecureBasicAuthTest.java:216:49:216:51 | url : URL | semmle.label | url : URL |
+| InsecureBasicAuthTest.java:216:49:216:68 | openConnection(...) : URLConnection | semmle.label | openConnection(...) : URLConnection |
+| InsecureBasicAuthTest.java:219:4:219:7 | conn | semmle.label | conn |
+subpaths

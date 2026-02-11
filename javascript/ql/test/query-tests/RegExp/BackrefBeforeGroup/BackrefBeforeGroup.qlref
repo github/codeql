@@ -1,1 +1,2 @@
-RegExp/BackrefBeforeGroup.ql
+query: RegExp/BackrefBeforeGroup.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

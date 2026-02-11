@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: actionsSinkModel
+    data:
+     - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.package_name_prefix", "code-injection", "generated"]
+     - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.install", "code-injection", "generated"]
+     - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.llvm_force_enable_stats", "code-injection", "generated"]
+     - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.llvm_enable_assertions", "code-injection", "generated"]
+     - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.build_shared_libs", "code-injection", "generated"]
+     - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.cmake_build_type", "code-injection", "generated"]
+     - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.cmake_cxx_compiler", "code-injection", "generated"]
+     - ["llvm/circt/.github/workflows/unifiedBuildTestAndInstall.yml", "*", "input.cmake_c_compiler", "code-injection", "generated"]

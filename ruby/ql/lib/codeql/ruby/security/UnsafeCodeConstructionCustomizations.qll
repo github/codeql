@@ -43,8 +43,6 @@ module UnsafeCodeConstruction {
     result = getANodeExecutedAsCode(TypeBackTracker::end(), codeExec)
   }
 
-  deprecated import codeql.ruby.typetracking.TypeTracker as TypeTracker
-
   /** Gets a node that is eventually executed as code at `codeExec`, type-tracked with `t`. */
   private DataFlow::LocalSourceNode getANodeExecutedAsCode(
     TypeBackTracker t, Concepts::CodeExecution codeExec

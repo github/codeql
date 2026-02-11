@@ -1,96 +1,151 @@
 edges
-| app/controllers/users_controller.rb:3:5:3:16 | new_password | app/controllers/users_controller.rb:5:39:5:50 | new_password | provenance |  |
-| app/controllers/users_controller.rb:3:5:3:16 | new_password | app/controllers/users_controller.rb:7:41:7:52 | new_password | provenance |  |
-| app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | app/controllers/users_controller.rb:3:5:3:16 | new_password | provenance |  |
-| app/controllers/users_controller.rb:11:5:11:16 | new_password | app/controllers/users_controller.rb:13:42:13:53 | new_password | provenance |  |
-| app/controllers/users_controller.rb:11:5:11:16 | new_password | app/controllers/users_controller.rb:15:49:15:60 | new_password | provenance |  |
-| app/controllers/users_controller.rb:11:5:11:16 | new_password | app/controllers/users_controller.rb:15:49:15:60 | new_password | provenance |  |
-| app/controllers/users_controller.rb:11:5:11:16 | new_password | app/controllers/users_controller.rb:15:87:15:98 | new_password | provenance |  |
-| app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | app/controllers/users_controller.rb:11:5:11:16 | new_password | provenance |  |
+| app/controllers/users_controller.rb:3:5:3:16 | new_password : String | app/controllers/users_controller.rb:5:39:5:50 | new_password | provenance |  |
+| app/controllers/users_controller.rb:3:5:3:16 | new_password : String | app/controllers/users_controller.rb:7:41:7:52 | new_password | provenance |  |
+| app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" : String | app/controllers/users_controller.rb:3:5:3:16 | new_password : String | provenance |  |
+| app/controllers/users_controller.rb:11:5:11:16 | new_password : String | app/controllers/users_controller.rb:13:42:13:53 | new_password | provenance |  |
+| app/controllers/users_controller.rb:11:5:11:16 | new_password : String | app/controllers/users_controller.rb:15:49:15:60 | new_password | provenance |  |
+| app/controllers/users_controller.rb:11:5:11:16 | new_password : String | app/controllers/users_controller.rb:15:49:15:60 | new_password : String | provenance |  |
+| app/controllers/users_controller.rb:11:5:11:16 | new_password : String | app/controllers/users_controller.rb:15:87:15:98 | new_password | provenance |  |
+| app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" : String | app/controllers/users_controller.rb:11:5:11:16 | new_password : String | provenance |  |
 | app/controllers/users_controller.rb:15:49:15:60 | new_password | app/controllers/users_controller.rb:15:87:15:98 | new_password | provenance |  |
-| app/controllers/users_controller.rb:19:5:19:16 | new_password | app/controllers/users_controller.rb:21:45:21:56 | new_password | provenance |  |
-| app/controllers/users_controller.rb:19:5:19:16 | new_password | app/controllers/users_controller.rb:21:45:21:56 | new_password | provenance |  |
-| app/controllers/users_controller.rb:19:5:19:16 | new_password | app/controllers/users_controller.rb:21:83:21:94 | new_password | provenance |  |
-| app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" | app/controllers/users_controller.rb:19:5:19:16 | new_password | provenance |  |
+| app/controllers/users_controller.rb:15:49:15:60 | new_password : String | app/controllers/users_controller.rb:15:87:15:98 | new_password | provenance |  |
+| app/controllers/users_controller.rb:19:5:19:16 | new_password : String | app/controllers/users_controller.rb:21:45:21:56 | new_password | provenance |  |
+| app/controllers/users_controller.rb:19:5:19:16 | new_password : String | app/controllers/users_controller.rb:21:45:21:56 | new_password : String | provenance |  |
+| app/controllers/users_controller.rb:19:5:19:16 | new_password : String | app/controllers/users_controller.rb:21:83:21:94 | new_password | provenance |  |
+| app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" : String | app/controllers/users_controller.rb:19:5:19:16 | new_password : String | provenance |  |
 | app/controllers/users_controller.rb:21:45:21:56 | new_password | app/controllers/users_controller.rb:21:83:21:94 | new_password | provenance |  |
-| app/controllers/users_controller.rb:26:5:26:16 | new_password | app/controllers/users_controller.rb:28:27:28:38 | new_password | provenance |  |
-| app/controllers/users_controller.rb:26:5:26:16 | new_password | app/controllers/users_controller.rb:30:28:30:39 | new_password | provenance |  |
-| app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" | app/controllers/users_controller.rb:26:5:26:16 | new_password | provenance |  |
-| app/controllers/users_controller.rb:35:5:35:16 | new_password | app/controllers/users_controller.rb:37:39:37:50 | new_password | provenance |  |
-| app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" | app/controllers/users_controller.rb:35:5:35:16 | new_password | provenance |  |
-| app/controllers/users_controller.rb:42:5:42:16 | new_password | app/controllers/users_controller.rb:44:21:44:32 | new_password | provenance |  |
-| app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | app/controllers/users_controller.rb:42:5:42:16 | new_password | provenance |  |
-| app/controllers/users_controller.rb:58:5:58:16 | new_password | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | provenance | AdditionalTaintStep |
-| app/controllers/users_controller.rb:58:5:58:16 | new_password | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | provenance | AdditionalTaintStep |
-| app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:58:5:58:16 | new_password | provenance |  |
-| app/models/user.rb:3:5:3:16 | new_password | app/models/user.rb:5:27:5:38 | new_password | provenance |  |
-| app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | app/models/user.rb:3:5:3:16 | new_password | provenance |  |
-| app/models/user.rb:9:5:9:16 | new_password | app/models/user.rb:11:22:11:33 | new_password | provenance |  |
-| app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | app/models/user.rb:9:5:9:16 | new_password | provenance |  |
-| app/models/user.rb:15:5:15:16 | new_password | app/models/user.rb:17:21:17:32 | new_password | provenance |  |
-| app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | app/models/user.rb:15:5:15:16 | new_password | provenance |  |
+| app/controllers/users_controller.rb:21:45:21:56 | new_password : String | app/controllers/users_controller.rb:21:83:21:94 | new_password | provenance |  |
+| app/controllers/users_controller.rb:26:5:26:16 | new_password : String | app/controllers/users_controller.rb:28:27:28:38 | new_password | provenance |  |
+| app/controllers/users_controller.rb:26:5:26:16 | new_password : String | app/controllers/users_controller.rb:30:28:30:39 | new_password | provenance |  |
+| app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" : String | app/controllers/users_controller.rb:26:5:26:16 | new_password : String | provenance |  |
+| app/controllers/users_controller.rb:35:5:35:16 | new_password : String | app/controllers/users_controller.rb:37:39:37:50 | new_password | provenance |  |
+| app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" : String | app/controllers/users_controller.rb:35:5:35:16 | new_password : String | provenance |  |
+| app/controllers/users_controller.rb:42:5:42:16 | new_password : String | app/controllers/users_controller.rb:44:21:44:32 | new_password | provenance |  |
+| app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" : String | app/controllers/users_controller.rb:42:5:42:16 | new_password : String | provenance |  |
+| app/controllers/users_controller.rb:58:5:58:16 | new_password : String | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | provenance | AdditionalTaintStep |
+| app/controllers/users_controller.rb:58:5:58:16 | new_password : String | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | provenance | AdditionalTaintStep |
+| app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" : String | app/controllers/users_controller.rb:58:5:58:16 | new_password : String | provenance |  |
+| app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :SSN] : String | app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :SSN] : String | provenance |  |
+| app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :credit_card_number] : String | app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :credit_card_number] : String | provenance |  |
+| app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :password] : String | app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 1, element :password] : String | app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 1, element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :SSN] : String | app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :SSN] : String | provenance |  |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :credit_card_number] : String | app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :credit_card_number] : String | provenance |  |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :password] : String | app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 1, element :password] : String | app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 1, element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :SSN] : String | app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :SSN] : String | provenance |  |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :credit_card_number] : String | app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :credit_card_number] : String | provenance |  |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :password] : String | app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:79:19:79:30 | "aaaaaaaaaa" : String | app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:80:29:80:49 | "0000-0000-0000-0000" : String | app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :credit_card_number] : String | provenance |  |
+| app/controllers/users_controller.rb:81:14:81:27 | "000-00-00000" : String | app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :SSN] : String | provenance |  |
+| app/controllers/users_controller.rb:83:7:83:39 | call to [] : Hash [element :password] : String | app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 1, element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:83:30:83:38 | "bbbbbbb" : String | app/controllers/users_controller.rb:83:7:83:39 | call to [] : Hash [element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :SSN] : String | app/controllers/users_controller.rb:85:19:85:21 | inf [element :SSN] : String | provenance |  |
+| app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :credit_card_number] : String | app/controllers/users_controller.rb:85:19:85:21 | inf [element :credit_card_number] : String | provenance |  |
+| app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :password] : String | app/controllers/users_controller.rb:85:19:85:21 | inf [element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 1, element :password] : String | app/controllers/users_controller.rb:85:19:85:21 | inf [element :password] : String | provenance |  |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :SSN] : String | app/controllers/users_controller.rb:87:20:87:22 | inf | provenance |  |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :credit_card_number] : String | app/controllers/users_controller.rb:87:20:87:22 | inf | provenance |  |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :password] : String | app/controllers/users_controller.rb:87:20:87:22 | inf | provenance |  |
+| app/models/user.rb:3:5:3:16 | new_password : String | app/models/user.rb:5:27:5:38 | new_password | provenance |  |
+| app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" : String | app/models/user.rb:3:5:3:16 | new_password : String | provenance |  |
+| app/models/user.rb:9:5:9:16 | new_password : String | app/models/user.rb:11:22:11:33 | new_password | provenance |  |
+| app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" : String | app/models/user.rb:9:5:9:16 | new_password : String | provenance |  |
+| app/models/user.rb:15:5:15:16 | new_password : String | app/models/user.rb:17:21:17:32 | new_password | provenance |  |
+| app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" : String | app/models/user.rb:15:5:15:16 | new_password : String | provenance |  |
 nodes
-| app/controllers/users_controller.rb:3:5:3:16 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | semmle.label | "043697b96909e03ca907599d6420555f" |
+| app/controllers/users_controller.rb:3:5:3:16 | new_password : String | semmle.label | new_password : String |
+| app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" : String | semmle.label | "043697b96909e03ca907599d6420555f" : String |
 | app/controllers/users_controller.rb:5:39:5:50 | new_password | semmle.label | new_password |
 | app/controllers/users_controller.rb:7:41:7:52 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:11:5:11:16 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | semmle.label | "083c9e1da4cc0c2f5480bb4dbe6ff141" |
+| app/controllers/users_controller.rb:11:5:11:16 | new_password : String | semmle.label | new_password : String |
+| app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" : String | semmle.label | "083c9e1da4cc0c2f5480bb4dbe6ff141" : String |
 | app/controllers/users_controller.rb:13:42:13:53 | new_password | semmle.label | new_password |
 | app/controllers/users_controller.rb:15:49:15:60 | new_password | semmle.label | new_password |
 | app/controllers/users_controller.rb:15:49:15:60 | new_password | semmle.label | new_password |
+| app/controllers/users_controller.rb:15:49:15:60 | new_password : String | semmle.label | new_password : String |
 | app/controllers/users_controller.rb:15:87:15:98 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:19:5:19:16 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" | semmle.label | "504d224a806cf8073cd14ef08242d422" |
+| app/controllers/users_controller.rb:19:5:19:16 | new_password : String | semmle.label | new_password : String |
+| app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" : String | semmle.label | "504d224a806cf8073cd14ef08242d422" : String |
 | app/controllers/users_controller.rb:21:45:21:56 | new_password | semmle.label | new_password |
 | app/controllers/users_controller.rb:21:45:21:56 | new_password | semmle.label | new_password |
+| app/controllers/users_controller.rb:21:45:21:56 | new_password : String | semmle.label | new_password : String |
 | app/controllers/users_controller.rb:21:83:21:94 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:26:5:26:16 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" | semmle.label | "7d6ae08394c3f284506dca70f05995f6" |
+| app/controllers/users_controller.rb:26:5:26:16 | new_password : String | semmle.label | new_password : String |
+| app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" : String | semmle.label | "7d6ae08394c3f284506dca70f05995f6" : String |
 | app/controllers/users_controller.rb:28:27:28:38 | new_password | semmle.label | new_password |
 | app/controllers/users_controller.rb:30:28:30:39 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:35:5:35:16 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" | semmle.label | "ff295f8648a406c37fbe378377320e4c" |
+| app/controllers/users_controller.rb:35:5:35:16 | new_password : String | semmle.label | new_password : String |
+| app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" : String | semmle.label | "ff295f8648a406c37fbe378377320e4c" : String |
 | app/controllers/users_controller.rb:37:39:37:50 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:42:5:42:16 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | semmle.label | "78ffbec583b546bd073efd898f833184" |
+| app/controllers/users_controller.rb:42:5:42:16 | new_password : String | semmle.label | new_password : String |
+| app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" : String | semmle.label | "78ffbec583b546bd073efd898f833184" : String |
 | app/controllers/users_controller.rb:44:21:44:32 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:58:5:58:16 | new_password | semmle.label | new_password |
-| app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | semmle.label | "0157af7c38cbdd24f1616de4e5321861" |
+| app/controllers/users_controller.rb:58:5:58:16 | new_password : String | semmle.label | new_password : String |
+| app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" : String | semmle.label | "0157af7c38cbdd24f1616de4e5321861" : String |
 | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | semmle.label | "password: #{...}\\n" |
 | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | semmle.label | "password: #{...}" |
-| app/models/user.rb:3:5:3:16 | new_password | semmle.label | new_password |
-| app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | semmle.label | "06c38c6a8a9c11a9d3b209a3193047b4" |
+| app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :SSN] : String | semmle.label | info : Array [element 0, element :SSN] : String |
+| app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :credit_card_number] : String | semmle.label | info : Array [element 0, element :credit_card_number] : String |
+| app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 0, element :password] : String | semmle.label | info : Array [element 0, element :password] : String |
+| app/controllers/users_controller.rb:76:5:76:8 | info : Array [element 1, element :password] : String | semmle.label | info : Array [element 1, element :password] : String |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :SSN] : String | semmle.label | call to [] : Array [element 0, element :SSN] : String |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :credit_card_number] : String | semmle.label | call to [] : Array [element 0, element :credit_card_number] : String |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 0, element :password] : String | semmle.label | call to [] : Array [element 0, element :password] : String |
+| app/controllers/users_controller.rb:76:12:84:5 | call to [] : Array [element 1, element :password] : String | semmle.label | call to [] : Array [element 1, element :password] : String |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :SSN] : String | semmle.label | call to [] : Hash [element :SSN] : String |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :credit_card_number] : String | semmle.label | call to [] : Hash [element :credit_card_number] : String |
+| app/controllers/users_controller.rb:77:7:82:7 | call to [] : Hash [element :password] : String | semmle.label | call to [] : Hash [element :password] : String |
+| app/controllers/users_controller.rb:79:19:79:30 | "aaaaaaaaaa" : String | semmle.label | "aaaaaaaaaa" : String |
+| app/controllers/users_controller.rb:80:29:80:49 | "0000-0000-0000-0000" : String | semmle.label | "0000-0000-0000-0000" : String |
+| app/controllers/users_controller.rb:81:14:81:27 | "000-00-00000" : String | semmle.label | "000-00-00000" : String |
+| app/controllers/users_controller.rb:83:7:83:39 | call to [] : Hash [element :password] : String | semmle.label | call to [] : Hash [element :password] : String |
+| app/controllers/users_controller.rb:83:30:83:38 | "bbbbbbb" : String | semmle.label | "bbbbbbb" : String |
+| app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :SSN] : String | semmle.label | info : Array [element 0, element :SSN] : String |
+| app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :credit_card_number] : String | semmle.label | info : Array [element 0, element :credit_card_number] : String |
+| app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 0, element :password] : String | semmle.label | info : Array [element 0, element :password] : String |
+| app/controllers/users_controller.rb:85:5:85:8 | info : Array [element 1, element :password] : String | semmle.label | info : Array [element 1, element :password] : String |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :SSN] : String | semmle.label | inf [element :SSN] : String |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :credit_card_number] : String | semmle.label | inf [element :credit_card_number] : String |
+| app/controllers/users_controller.rb:85:19:85:21 | inf [element :password] : String | semmle.label | inf [element :password] : String |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | semmle.label | inf |
+| app/models/user.rb:3:5:3:16 | new_password : String | semmle.label | new_password : String |
+| app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" : String | semmle.label | "06c38c6a8a9c11a9d3b209a3193047b4" : String |
 | app/models/user.rb:5:27:5:38 | new_password | semmle.label | new_password |
-| app/models/user.rb:9:5:9:16 | new_password | semmle.label | new_password |
-| app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | semmle.label | "52652fb5c709fb6b9b5a0194af7c6067" |
+| app/models/user.rb:9:5:9:16 | new_password : String | semmle.label | new_password : String |
+| app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" : String | semmle.label | "52652fb5c709fb6b9b5a0194af7c6067" : String |
 | app/models/user.rb:11:22:11:33 | new_password | semmle.label | new_password |
-| app/models/user.rb:15:5:15:16 | new_password | semmle.label | new_password |
-| app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | semmle.label | "f982bf2531c149a8a1444a951b12e830" |
+| app/models/user.rb:15:5:15:16 | new_password : String | semmle.label | new_password : String |
+| app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" : String | semmle.label | "f982bf2531c149a8a1444a951b12e830" : String |
 | app/models/user.rb:17:21:17:32 | new_password | semmle.label | new_password |
 subpaths
 #select
-| app/controllers/users_controller.rb:5:39:5:50 | new_password | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | app/controllers/users_controller.rb:5:39:5:50 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | an assignment to new_password |
-| app/controllers/users_controller.rb:7:41:7:52 | new_password | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | app/controllers/users_controller.rb:7:41:7:52 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | an assignment to new_password |
+| app/controllers/users_controller.rb:5:39:5:50 | new_password | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" : String | app/controllers/users_controller.rb:5:39:5:50 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | an assignment to new_password |
+| app/controllers/users_controller.rb:7:41:7:52 | new_password | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" : String | app/controllers/users_controller.rb:7:41:7:52 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | an assignment to new_password |
 | app/controllers/users_controller.rb:7:41:7:52 | new_password | app/controllers/users_controller.rb:7:41:7:52 | new_password | app/controllers/users_controller.rb:7:41:7:52 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:7:41:7:52 | new_password | a write to password |
-| app/controllers/users_controller.rb:13:42:13:53 | new_password | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | app/controllers/users_controller.rb:13:42:13:53 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | an assignment to new_password |
-| app/controllers/users_controller.rb:15:49:15:60 | new_password | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | app/controllers/users_controller.rb:15:49:15:60 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | an assignment to new_password |
+| app/controllers/users_controller.rb:13:42:13:53 | new_password | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" : String | app/controllers/users_controller.rb:13:42:13:53 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | an assignment to new_password |
+| app/controllers/users_controller.rb:15:49:15:60 | new_password | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" : String | app/controllers/users_controller.rb:15:49:15:60 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | an assignment to new_password |
 | app/controllers/users_controller.rb:15:49:15:60 | new_password | app/controllers/users_controller.rb:15:49:15:60 | new_password | app/controllers/users_controller.rb:15:49:15:60 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:15:49:15:60 | new_password | a write to password |
-| app/controllers/users_controller.rb:15:87:15:98 | new_password | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | app/controllers/users_controller.rb:15:87:15:98 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | an assignment to new_password |
+| app/controllers/users_controller.rb:15:87:15:98 | new_password | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" : String | app/controllers/users_controller.rb:15:87:15:98 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:11:20:11:53 | "083c9e1da4cc0c2f5480bb4dbe6ff141" | an assignment to new_password |
 | app/controllers/users_controller.rb:15:87:15:98 | new_password | app/controllers/users_controller.rb:15:49:15:60 | new_password | app/controllers/users_controller.rb:15:87:15:98 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:15:49:15:60 | new_password | a write to password |
 | app/controllers/users_controller.rb:15:87:15:98 | new_password | app/controllers/users_controller.rb:15:87:15:98 | new_password | app/controllers/users_controller.rb:15:87:15:98 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:15:87:15:98 | new_password | a write to password |
-| app/controllers/users_controller.rb:21:45:21:56 | new_password | app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" | app/controllers/users_controller.rb:21:45:21:56 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" | an assignment to new_password |
+| app/controllers/users_controller.rb:21:45:21:56 | new_password | app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" : String | app/controllers/users_controller.rb:21:45:21:56 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" | an assignment to new_password |
 | app/controllers/users_controller.rb:21:45:21:56 | new_password | app/controllers/users_controller.rb:21:45:21:56 | new_password | app/controllers/users_controller.rb:21:45:21:56 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:21:45:21:56 | new_password | a write to password |
-| app/controllers/users_controller.rb:21:83:21:94 | new_password | app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" | app/controllers/users_controller.rb:21:83:21:94 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" | an assignment to new_password |
+| app/controllers/users_controller.rb:21:83:21:94 | new_password | app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" : String | app/controllers/users_controller.rb:21:83:21:94 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:19:20:19:53 | "504d224a806cf8073cd14ef08242d422" | an assignment to new_password |
 | app/controllers/users_controller.rb:21:83:21:94 | new_password | app/controllers/users_controller.rb:21:45:21:56 | new_password | app/controllers/users_controller.rb:21:83:21:94 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:21:45:21:56 | new_password | a write to password |
 | app/controllers/users_controller.rb:21:83:21:94 | new_password | app/controllers/users_controller.rb:21:83:21:94 | new_password | app/controllers/users_controller.rb:21:83:21:94 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:21:83:21:94 | new_password | a write to password |
-| app/controllers/users_controller.rb:28:27:28:38 | new_password | app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" | app/controllers/users_controller.rb:28:27:28:38 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" | an assignment to new_password |
-| app/controllers/users_controller.rb:30:28:30:39 | new_password | app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" | app/controllers/users_controller.rb:30:28:30:39 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" | an assignment to new_password |
+| app/controllers/users_controller.rb:28:27:28:38 | new_password | app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" : String | app/controllers/users_controller.rb:28:27:28:38 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" | an assignment to new_password |
+| app/controllers/users_controller.rb:30:28:30:39 | new_password | app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" : String | app/controllers/users_controller.rb:30:28:30:39 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:26:20:26:53 | "7d6ae08394c3f284506dca70f05995f6" | an assignment to new_password |
 | app/controllers/users_controller.rb:30:28:30:39 | new_password | app/controllers/users_controller.rb:30:28:30:39 | new_password | app/controllers/users_controller.rb:30:28:30:39 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:30:28:30:39 | new_password | a write to password |
-| app/controllers/users_controller.rb:37:39:37:50 | new_password | app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" | app/controllers/users_controller.rb:37:39:37:50 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" | an assignment to new_password |
-| app/controllers/users_controller.rb:44:21:44:32 | new_password | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | app/controllers/users_controller.rb:44:21:44:32 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | an assignment to new_password |
-| app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | an assignment to new_password |
-| app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | an assignment to new_password |
-| app/models/user.rb:5:27:5:38 | new_password | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | app/models/user.rb:5:27:5:38 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | an assignment to new_password |
-| app/models/user.rb:11:22:11:33 | new_password | app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | app/models/user.rb:11:22:11:33 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | an assignment to new_password |
-| app/models/user.rb:17:21:17:32 | new_password | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | app/models/user.rb:17:21:17:32 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | an assignment to new_password |
+| app/controllers/users_controller.rb:37:39:37:50 | new_password | app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" : String | app/controllers/users_controller.rb:37:39:37:50 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:35:20:35:53 | "ff295f8648a406c37fbe378377320e4c" | an assignment to new_password |
+| app/controllers/users_controller.rb:44:21:44:32 | new_password | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" : String | app/controllers/users_controller.rb:44:21:44:32 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:42:20:42:53 | "78ffbec583b546bd073efd898f833184" | an assignment to new_password |
+| app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" : String | app/controllers/users_controller.rb:61:25:61:53 | "password: #{...}\\n" | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | an assignment to new_password |
+| app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" : String | app/controllers/users_controller.rb:64:35:64:61 | "password: #{...}" | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:58:20:58:53 | "0157af7c38cbdd24f1616de4e5321861" | an assignment to new_password |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | app/controllers/users_controller.rb:79:19:79:30 | "aaaaaaaaaa" : String | app/controllers/users_controller.rb:87:20:87:22 | inf | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:79:19:79:30 | "aaaaaaaaaa" | a write to password |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | app/controllers/users_controller.rb:80:29:80:49 | "0000-0000-0000-0000" : String | app/controllers/users_controller.rb:87:20:87:22 | inf | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:80:29:80:49 | "0000-0000-0000-0000" | a write to credit_card_number |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | app/controllers/users_controller.rb:81:14:81:27 | "000-00-00000" : String | app/controllers/users_controller.rb:87:20:87:22 | inf | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:81:14:81:27 | "000-00-00000" | a write to SSN |
+| app/controllers/users_controller.rb:87:20:87:22 | inf | app/controllers/users_controller.rb:83:30:83:38 | "bbbbbbb" : String | app/controllers/users_controller.rb:87:20:87:22 | inf | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:83:30:83:38 | "bbbbbbb" | a write to password |
+| app/models/user.rb:5:27:5:38 | new_password | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" : String | app/models/user.rb:5:27:5:38 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:3:20:3:53 | "06c38c6a8a9c11a9d3b209a3193047b4" | an assignment to new_password |
+| app/models/user.rb:11:22:11:33 | new_password | app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" : String | app/models/user.rb:11:22:11:33 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:9:20:9:53 | "52652fb5c709fb6b9b5a0194af7c6067" | an assignment to new_password |
+| app/models/user.rb:17:21:17:32 | new_password | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" : String | app/models/user.rb:17:21:17:32 | new_password | This stores sensitive data returned by $@ as clear text. | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | an assignment to new_password |

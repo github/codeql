@@ -28,4 +28,5 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
+nonBooleanOperand
 missingCppType

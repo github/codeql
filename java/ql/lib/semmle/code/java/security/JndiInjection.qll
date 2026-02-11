@@ -1,4 +1,6 @@
 /** Provides classes to reason about JNDI injection vulnerabilities. */
+overlay[local?]
+module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow

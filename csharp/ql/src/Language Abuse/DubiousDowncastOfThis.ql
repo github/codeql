@@ -5,8 +5,10 @@
  * @problem.severity warning
  * @precision high
  * @id cs/downcast-of-this
- * @tags testability
- *       maintainability
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       testability
  *       language-features
  */
 

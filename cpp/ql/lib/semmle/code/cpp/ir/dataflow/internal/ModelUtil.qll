@@ -4,15 +4,15 @@
  */
 
 private import semmle.code.cpp.ir.IR
-private import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 private import DataFlowUtil
 private import DataFlowPrivate
-private import SsaInternals as Ssa
+private import SsaImpl as Ssa
 
 /**
  * Gets the instruction that goes into `input` for `call`.
  */
-DataFlow::Node callInput(CallInstruction call, FunctionInput input) {
+Node callInput(CallInstruction call, FunctionInput input) {
   // An argument or qualifier
   exists(int index |
     result.asOperand() = call.getArgumentOperand(index) and
@@ -62,8 +62,8 @@ Node callOutput(CallInstruction call, FunctionOutput output) {
   result = callOutputWithIndirectionIndex(call, output, _)
 }
 
-DataFlow::Node callInput(CallInstruction call, FunctionInput input, int d) {
-  exists(DataFlow::Node n | n = callInput(call, input) and d > 0 |
+Node callInput(CallInstruction call, FunctionInput input, int d) {
+  exists(Node n | n = callInput(call, input) and d > 0 |
     // An argument or qualifier
     hasOperandAndIndex(result, n.asOperand(), d)
     or
@@ -85,7 +85,7 @@ private IndirectReturnOutNode getIndirectReturnOutNode(CallInstruction call, int
  */
 bindingset[d]
 Node callOutput(CallInstruction call, FunctionOutput output, int d) {
-  exists(DataFlow::Node n, int indirectionIndex |
+  exists(Node n, int indirectionIndex |
     n = callOutputWithIndirectionIndex(call, output, indirectionIndex) and d > 0
   |
     // The return value

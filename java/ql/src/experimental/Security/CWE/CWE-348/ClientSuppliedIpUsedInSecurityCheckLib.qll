@@ -1,3 +1,5 @@
+deprecated module;
+
 import java
 import DataFlow
 import semmle.code.java.frameworks.Networking

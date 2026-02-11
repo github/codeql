@@ -65,24 +65,32 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     else nodeTo.asInstruction() = evalAssert
   )
   or
-  // Instruction -> SSA
+  // Instruction -> SSA defn
   exists(IR::Instruction pred, SsaExplicitDefinition succ |
     succ.getRhs() = pred and
-    nodeFrom = instructionNode(pred) and
-    nodeTo = ssaNode(succ)
+    (
+      nodeFrom = instructionNode(pred) or
+      nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
+    ) and
+    nodeTo = ssaNode(succ.getVariable())
   )
   or
-  // SSA -> SSA
-  exists(SsaDefinition pred, SsaPseudoDefinition succ | succ.getAnInput() = pred |
-    nodeFrom = ssaNode(pred) and
-    nodeTo = ssaNode(succ)
-  )
-  or
-  // SSA -> Instruction
-  exists(SsaDefinition pred, IR::Instruction succ |
-    succ = pred.getVariable().getAUse() and
-    nodeFrom = ssaNode(pred) and
+  // SSA defn -> first SSA use
+  exists(SsaDefinition pred, IR::Instruction succ | succ = pred.getAFirstUse() |
+    (pred instanceof SsaExplicitDefinition or pred instanceof SsaVariableCapture) and
+    nodeFrom = ssaNode(pred.getVariable()) and
     nodeTo = instructionNode(succ)
+  )
+  or
+  // SSA use -> successive SSA use
+  // Note this case includes Phi node traversal
+  exists(IR::Instruction pred, IR::Instruction succ | succ = getAnAdjacentUse(pred) |
+    (
+      nodeFrom = instructionNode(pred) or
+      nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
+    ) and
+    nodeTo = instructionNode(succ) and
+    nodeTo != nodeFrom
   )
   or
   // GlobalFunctionNode -> use
@@ -96,24 +104,40 @@ private Field getASparselyUsedChannelTypedField() {
   count(result.getARead()) = 2
 }
 
+bindingset[v]
+pragma[inline_late]
+private predicate isValueEntityRead(ValueEntity v, Node n) { n = v.getARead() }
+
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
  * calling context. For example, this would happen with flow through a
  * global or static variable.
  */
 predicate jumpStep(Node n1, Node n2) {
-  exists(ValueEntity v, Write w |
+  exists(ValueEntity v |
     not v instanceof SsaSourceVariable and
     not v instanceof Field and
-    w.writes(v, n1) and
-    n2 = v.getARead()
+    (
+      any(Write w).writes(v, n1)
+      or
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = v.getARead()
+    ) and
+    isValueEntityRead(v, n2)
   )
   or
-  exists(SsaDefinition pred, SsaDefinition succ |
-    succ.(SsaVariableCapture).getSourceVariable() = pred.(SsaExplicitDefinition).getSourceVariable()
-  |
-    n1 = ssaNode(pred) and
+  exists(SsaExplicitDefinition def, SsaVariableCapture succ |
+    succ.getSourceVariable() = def.getSourceVariable() and
     n2 = ssaNode(succ)
+  |
+    not exists(def.getAFirstUse()) and n1 = ssaNode(def)
+    or
+    exists(IR::Instruction lastUse |
+      lastUse = getAnAdjacentUse*(def.getAFirstUse()) and
+      not exists(getAnAdjacentUse(lastUse))
+    |
+      n1 = instructionNode(lastUse) or
+      n1.(DataFlow::PostUpdateNode).getPreUpdateNode() = instructionNode(lastUse)
+    )
   )
   or
   // If a channel-typed field is referenced exactly once in the context of
@@ -139,26 +163,30 @@ predicate jumpStep(Node n1, Node n2) {
  * Thus, `node2` references an object with a content `x` that contains the
  * value of `node1`.
  */
-predicate storeStep(Node node1, ContentSet c, Node node2) {
-  // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of `(*p)`,
-  // which in turn flows into the pointer content of `p`
-  exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
-    node1 = rhs and
-    node2.(PostUpdateNode).getPreUpdateNode() = base and
-    c = any(DataFlow::FieldContent fc | fc.getField() = f)
+predicate storeStep(Node node1, ContentSet cs, Node node2) {
+  exists(Content c | cs.asOneContent() = c |
+    // a write `(*p).f = rhs` is modeled as two store steps: `rhs` is flows into field `f` of the
+    // post-update node of `(*p)`, which in turn flows into the pointer content of the post-update
+    // node of `p`
+    exists(Write w, Field f, DataFlow::Node base, DataFlow::Node rhs | w.writesField(base, f, rhs) |
+      node1 = rhs and
+      node2 = base and
+      c = any(DataFlow::FieldContent fc | fc.getField() = f)
+      or
+      node1 = base and
+      node2.(PostUpdateNode).getPreUpdateNode() =
+        node1.(PostUpdateNode).getPreUpdateNode().(PointerDereferenceNode).getOperand() and
+      c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    )
     or
-    node1 = base and
-    node2.(PostUpdateNode).getPreUpdateNode() = node1.(PointerDereferenceNode).getOperand() and
+    node1 = node2.(AddressOperationNode).getOperand() and
     c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
+    or
+    containerStoreStep(node1, node2, c)
   )
   or
-  node1 = node2.(AddressOperationNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node2.getType())
-  or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
     node2.(FlowSummaryNode).getSummaryNode())
-  or
-  containerStoreStep(node1, node2, c)
 }
 
 /**
@@ -166,20 +194,26 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  * Thus, `node1` references an object with a content `c` whose value ends up in
  * `node2`.
  */
-predicate readStep(Node node1, ContentSet c, Node node2) {
-  node1 = node2.(PointerDereferenceNode).getOperand() and
-  c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
-  or
-  exists(FieldReadNode read |
-    node2 = read and
-    node1 = read.getBase() and
-    c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+predicate readStep(Node node1, ContentSet cs, Node node2) {
+  exists(Content c | cs.asOneContent() = c |
+    node1 = node2.(PointerDereferenceNode).getOperand() and
+    c = any(DataFlow::PointerContent pc | pc.getPointerType() = node1.getType())
+    or
+    exists(FieldReadNode read |
+      node2 = read and
+      node1 = read.getBase() and
+      c = any(DataFlow::FieldContent fc | fc.getField() = read.getField())
+    )
+    or
+    containerReadStep(node1, node2, c)
   )
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), cs,
     node2.(FlowSummaryNode).getSummaryNode())
   or
-  containerReadStep(node1, node2, c)
+  any(ImplicitFieldReadNode ifrn).shouldImplicitlyReadAllFields(node1) and
+  cs.isUniversalContent() and
+  node1 = node2
 }
 
 /**
@@ -211,16 +245,12 @@ predicate localMustFlowStep(Node node1, Node node2) { none() }
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
 
-/** Gets a string representation of a type returned by `getNodeType()`. */
-string ppReprType(DataFlowType t) { none() }
-
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
-pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
-  any() // stub implementation
+  t1 = TTodoDataFlowType() and t2 = TTodoDataFlowType() // stub implementation
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -243,9 +273,7 @@ predicate neverSkipInPathGraph(Node n) {
 
 class DataFlowExpr = Expr;
 
-private newtype TDataFlowType =
-  TTodoDataFlowType() or
-  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+private newtype TDataFlowType = TTodoDataFlowType()
 
 class DataFlowType extends TDataFlowType {
   /** Gets a textual representation of this element. */
@@ -295,45 +323,27 @@ class DataFlowCallable extends TDataFlowCallable {
     result = "Summary: " + this.asSummarizedCallable().toString()
   }
 
+  /** Gets the location of this callable. */
+  Location getLocation() {
+    result = this.asCallable().getLocation() or
+    result = this.asFileScope().getLocation() or
+    result = this.asSummarizedCallable().getLocation()
+  }
+
   /**
+   * DEPRECATED: Use `getLocation()` instead.
+   *
    * Holds if this callable is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.asCallable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asSummarizedCallable()
-        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
-
-  /** Gets the location of this callable. */
-  Location getLocation() {
-    result = getCallableLocation(this.asCallable()) or
-    result = this.asFileScope().getLocation() or
-    result = getCallableLocation(this.asSummarizedCallable())
-  }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCallable c, string file, int startline, int startcolumn |
-        c.hasLocationInfo(file, startline, startcolumn, _, _)
-      |
-        c order by file, startline, startcolumn
-      )
-  }
-}
-
-private Location getCallableLocation(Callable c) {
-  exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-    c.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
-    result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-  )
 }
 
 /** A function call relevant for data flow. */
@@ -360,16 +370,6 @@ class DataFlowCall extends Expr {
 
   /** Gets the location of this call. */
   Location getLocation() { result = super.getLocation() }
-
-  /** Gets a best-effort total ordering. */
-  int totalorder() {
-    this =
-      rank[result](DataFlowCall c, int startline, int startcolumn |
-        c.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        c order by startline, startcolumn
-      )
-  }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */
@@ -412,15 +412,6 @@ class NodeRegion instanceof BasicBlock {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { n.getBasicBlock() = this }
-
-  int totalOrder() {
-    this =
-      rank[result](BasicBlock b, int startline, int startcolumn |
-        b.hasLocationInfo(_, startline, startcolumn, _, _)
-      |
-        b order by startline, startcolumn
-      )
-  }
 }
 
 /**

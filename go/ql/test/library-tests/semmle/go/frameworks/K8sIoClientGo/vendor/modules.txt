@@ -18,7 +18,7 @@ golang.org/x/oauth2
 golang.org/x/time
 # k8s.io/client-go v0.19.0
 ## explicit
-k8s.io/client-go
+k8s.io/client-go/kubernetes/typed/core/v1
 # k8s.io/utils v0.0.0-20201110183641-67b214c5f920
 ## explicit
 k8s.io/utils

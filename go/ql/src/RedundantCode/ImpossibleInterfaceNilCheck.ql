@@ -4,7 +4,10 @@
  * @kind problem
  * @problem.severity warning
  * @id go/impossible-interface-nil-check
- * @tags correctness
+ * @tags quality
+ *       reliability
+ *       correctness
+ *       external/cwe/cwe-570
  * @precision high
  */
 
@@ -32,7 +35,9 @@ predicate flowsToInterfaceNilCheck(DataFlow::Node nd) {
  */
 predicate nonNilWrapper(DataFlow::Node nd) {
   flowsToInterfaceNilCheck(nd) and
-  forex(DataFlow::Node pred | pred = nd.getAPredecessor() |
+  forex(DataFlow::Node pred |
+    pred = nd.getAPredecessor() and not pred instanceof DataFlow::PostUpdateNode
+  |
     exists(Type predtp | predtp = pred.getType().getUnderlyingType() |
       not predtp instanceof InterfaceType and
       not predtp instanceof NilLiteralType and

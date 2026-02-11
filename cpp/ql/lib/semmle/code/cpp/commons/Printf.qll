@@ -877,7 +877,7 @@ class FormatLiteral extends Literal instanceof StringLiteral {
   }
 
   /**
-   * Gets the char type required by the nth conversion specifier.
+   * Gets the char type required by the `n`th conversion specifier.
    *  - in the base case this is the default for the formatting function
    *    (e.g. `char` for `printf`, `char` or `wchar_t` for `wprintf`).
    *  - the `%C` format character reverses wideness.
@@ -922,7 +922,7 @@ class FormatLiteral extends Literal instanceof StringLiteral {
   }
 
   /**
-   * Gets the string type required by the nth conversion specifier.
+   * Gets the string type required by the `n`th conversion specifier.
    *  - in the base case this is the default for the formatting function
    *    (e.g. `char *` for `printf`, `char *` or `wchar_t *` for `wprintf`).
    *  - the `%S` format character reverses wideness on some platforms.

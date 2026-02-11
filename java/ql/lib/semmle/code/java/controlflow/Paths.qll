@@ -2,6 +2,8 @@
  * This library provides predicates for reasoning about the set of all paths
  * through a callable.
  */
+overlay[local?]
+module;
 
 import java
 import semmle.code.java.dispatch.VirtualDispatch
@@ -32,7 +34,7 @@ abstract class ActionConfiguration extends string {
 private BasicBlock actionBlock(ActionConfiguration conf) {
   exists(ControlFlowNode node | result = node.getBasicBlock() |
     conf.isAction(node) or
-    callAlwaysPerformsAction(node, conf)
+    callAlwaysPerformsAction(node.asCall(), conf)
   )
 }
 
@@ -45,23 +47,27 @@ private predicate callAlwaysPerformsAction(Call call, ActionConfiguration conf) 
 
 /** Holds if an action dominates the exit of the callable. */
 private predicate actionDominatesExit(Callable callable, ActionConfiguration conf) {
-  exists(BasicBlock exit |
-    exit.getLastNode() = callable and
-    actionBlock(conf).bbDominates(exit)
+  exists(ExitBlock exit |
+    exit.getEnclosingCallable() = callable and
+    actionBlock(conf).dominates(exit)
   )
 }
 
 /** Gets a `BasicBlock` that contains an action that does not dominate the exit. */
 private BasicBlock nonDominatingActionBlock(ActionConfiguration conf) {
-  exists(BasicBlock exit |
+  exists(ExitBlock exit |
     result = actionBlock(conf) and
-    exit.getLastNode() = result.getEnclosingCallable() and
-    not result.bbDominates(exit)
+    exit.getEnclosingCallable() = result.getEnclosingCallable() and
+    not result.dominates(exit)
   )
 }
 
 private class JoinBlock extends BasicBlock {
-  JoinBlock() { 2 <= strictcount(this.getABBPredecessor()) }
+  JoinBlock() { 2 <= strictcount(this.getAPredecessor()) }
+}
+
+private class ReachableBlock extends BasicBlock {
+  ReachableBlock() { hasDominanceInformation(this) }
 }
 
 /**
@@ -72,16 +78,16 @@ private predicate postActionBlock(BasicBlock bb, ActionConfiguration conf) {
   bb = nonDominatingActionBlock(conf)
   or
   if bb instanceof JoinBlock
-  then forall(BasicBlock pred | pred = bb.getABBPredecessor() | postActionBlock(pred, conf))
-  else postActionBlock(bb.getABBPredecessor(), conf)
+  then forall(ReachableBlock pred | pred = bb.getAPredecessor() | postActionBlock(pred, conf))
+  else postActionBlock(bb.getAPredecessor(), conf)
 }
 
 /** Holds if every path through `callable` goes through at least one action node. */
 private predicate callableAlwaysPerformsAction(Callable callable, ActionConfiguration conf) {
   actionDominatesExit(callable, conf)
   or
-  exists(BasicBlock exit |
-    exit.getLastNode() = callable and
+  exists(ExitBlock exit |
+    exit.getEnclosingCallable() = callable and
     postActionBlock(exit, conf)
   )
 }

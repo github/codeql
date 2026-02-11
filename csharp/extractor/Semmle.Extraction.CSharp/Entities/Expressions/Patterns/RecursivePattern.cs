@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Expressions.TypeAccess.Create(cx, t, this, 1);
 
             // Extract the local variable declaration
-            if (syntax.Designation is VariableDesignationSyntax designation && cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
+            if (syntax.Designation is SingleVariableDesignationSyntax designation && cx.GetModel(syntax).GetDeclaredSymbol(designation) is ILocalSymbol symbol)
             {
                 var type = symbol.GetAnnotatedType();
 

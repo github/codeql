@@ -1,5 +1,5 @@
 /**
- * @name Dangerous use convert function.
+ * @name Dangerous use convert function
  * @description Using convert function with an invalid length argument can result in an out-of-bounds access error or unexpected result.
  * @kind problem
  * @id cpp/dangerous-use-convert-function
@@ -46,7 +46,7 @@ predicate exprMayBeString(Expr exp) {
   )
 }
 
-/** Holds if expression is constant or operator call `sizeof`. */
+/** Holds if expression `exp` is constant or operator call `sizeof`. */
 predicate argConstOrSizeof(Expr exp) {
   exp.getValue().toInt() > 1 or
   exp.(SizeofTypeOperator).getTypeOperand().getSize() > 1

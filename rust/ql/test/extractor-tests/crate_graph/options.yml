@@ -1,0 +1,3 @@
+qltest_dependencies:
+    - md-5 = { version = "0.10.6" }
+    - md5_alt = { package = "md5", version = "0.7.0" }

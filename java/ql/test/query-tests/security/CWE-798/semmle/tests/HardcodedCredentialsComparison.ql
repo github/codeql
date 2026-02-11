@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.security.HardcodedCredentialsComparison
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module HardcodedCredentialsComparisonTest implements TestSig {
   string getARelevantTag() { result = "HardcodedCredentialsComparison" }

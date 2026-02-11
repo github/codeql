@@ -2,14 +2,14 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.QueryInjection
-import TestUtilities.InlineExpectationsTest
+import utils.test.InlineExpectationsTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr().(MethodCall).getMethod().hasName("taint")
   }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ReturnStmt r).getResult() }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ReturnStmt r).getExpr() }
 }
 
 module Flow = TaintTracking::Global<Config>;
@@ -20,7 +20,7 @@ module FlowStepTest implements TestSig {
   predicate hasActualResult(Location l, string element, string tag, string value) {
     tag = "taintReachesReturn" and
     value = "" and
-    exists(DataFlow::Node source | Flow::flow(source, _) |
+    exists(DataFlow::Node source | Flow::flowFrom(source) |
       l = source.getLocation() and
       element = source.toString()
     )

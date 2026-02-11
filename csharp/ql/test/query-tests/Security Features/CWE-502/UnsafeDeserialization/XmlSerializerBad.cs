@@ -8,6 +8,6 @@ class BadXmlSerializer
     {
         var ds = new XmlSerializer(type);
         // BAD
-        return ds.Deserialize(s);
+        return ds.Deserialize(s); // $ Alert[cs/unsafe-deserialization]
     }
 }

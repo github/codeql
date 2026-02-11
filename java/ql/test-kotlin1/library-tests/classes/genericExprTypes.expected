@@ -45,9 +45,9 @@
 | generic_anonymous.kt:13:27:13:47 | get(...) | int |
 | generic_anonymous.kt:13:40:13:40 | i | int |
 | generic_anonymous.kt:17:9:17:29 | T0 | T0 |
-| generic_anonymous.kt:17:26:17:29 | null | Void |
+| generic_anonymous.kt:17:26:17:29 | null | <nulltype> |
 | generic_anonymous.kt:21:9:21:29 | T1 | T1 |
-| generic_anonymous.kt:21:26:21:29 | null | Void |
+| generic_anonymous.kt:21:26:21:29 | null | <nulltype> |
 | generic_anonymous.kt:24:5:32:5 | Unit | Unit |
 | generic_anonymous.kt:25:9:31:9 | Unit | Unit |
 | generic_anonymous.kt:26:13:26:37 | <Stmt> | new Object(...) { ... } |

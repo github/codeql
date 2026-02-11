@@ -29,8 +29,14 @@ namespace InsecureSQLConnection
             conBuilder.Encrypt = true;
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = conBuilder.ToString();
-
         }
+
+        public void StringInInitializer()
+        {
+            string connectString = "Server=1.2.3.4;Database=Anything;UID=ab;Pwd=cd;Encrypt=false";
+            SqlConnectionStringBuilder conBuilder = new SqlConnectionStringBuilder(connectString) { Encrypt = true};
+        }
+        
 
         public void TriggerThis()
         {

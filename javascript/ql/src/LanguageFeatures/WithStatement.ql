@@ -4,7 +4,9 @@
  * @kind problem
  * @problem.severity warning
  * @id js/with-statement
- * @tags maintainability
+ * @tags quality
+ *       maintainability
+ *       complexity
  *       language-features
  * @precision very-high
  */

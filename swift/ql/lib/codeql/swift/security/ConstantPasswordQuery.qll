@@ -38,6 +38,8 @@ module ConstantPasswordConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(ConstantPasswordAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
+
+  predicate observeDiffInformedIncrementalMode() { any() }
 }
 
 module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;

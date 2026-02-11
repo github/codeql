@@ -9,7 +9,7 @@ CodeQL 2.16.2 (2024-02-12)
    :local:
    :backlinks: none
 
-This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/code-scanning/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
+This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the `code scanning section on the GitHub blog <https://github.blog/tag/code-scanning/>`__, `relevant GitHub Changelog updates <https://github.blog/changelog/label/application-security/>`__, `changes in the CodeQL extension for Visual Studio Code <https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog>`__, and the `CodeQL Action changelog <https://github.com/github/codeql-action/blob/main/CHANGELOG.md>`__.
 
 Security Coverage
 -----------------
@@ -50,8 +50,8 @@ Ruby
 New Queries
 ~~~~~~~~~~~
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added a new query :code:`java/android/sensitive-text` to detect instances of sensitive data being exposed through text fields without being properly masked.
 *   Added a new query :code:`java/android/sensitive-notification` to detect instances of sensitive data being exposed through Android notifications.
@@ -82,8 +82,8 @@ C#
 *   C# 12: Added extractor, QL library and data flow support for collection expressions like :code:`[1, y, 4, .. x]`.
 *   The C# extractor now accepts an extractor option :code:`logging.verbosity` that specifies the verbosity of the logs. The option is added via :code:`codeql database create --language=csharp -Ologging.verbosity=debug ...` or by setting the corresponding environment variable :code:`CODEQL_EXTRACTOR_CSHARP_OPTION_LOGGING_VERBOSITY`.
 
-Java
-""""
+Java/Kotlin
+"""""""""""
 
 *   Added models for the following packages:
 

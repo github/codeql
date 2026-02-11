@@ -1,0 +1,30 @@
+# It consumes an artifact produced by the First Workflow
+
+on: workflow_run
+jobs:
+  my-second-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: download pr artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+            workflow: ${{github.event.workflow_run.workflow_id}}
+            run_id: ${{github.event.workflow_run.id}}
+            name: artifact
+
+      - id: artifact
+        run: |
+          echo "::set-output name=pr_number::$(<artifact.txt)"
+          mkdir firebase-android
+          unzip firebase-android.zip -d firebase-android
+      - name: Use artifact
+        run: echo ${{ steps.artifact.outputs.pr_number }} 
+
+      - id: artifact2
+        run: |
+          echo "::set-output name=pr_number::$(cat -e artifact.txt)"
+          mkdir firebase-android
+          unzip firebase-android.zip -d firebase-android
+      - name: Use artifact
+        run: echo ${{ steps.artifact2.outputs.pr_number }} 
+

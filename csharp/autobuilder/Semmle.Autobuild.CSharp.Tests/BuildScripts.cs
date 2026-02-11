@@ -7,6 +7,7 @@ using System.Xml;
 using Microsoft.Build.Construction;
 using Semmle.Util;
 using Semmle.Autobuild.Shared;
+using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.CSharp.Tests
 {
@@ -157,9 +158,17 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         bool IBuildActions.IsMacOs() => IsMacOs;
 
+        public bool IsLinux { get; set; }
+
+        bool IBuildActions.IsLinux() => IsLinux;
+
         public bool IsRunningOnAppleSilicon { get; set; }
 
         bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;
+
+        public bool IsMonoInstalled { get; set; }
+
+        bool IBuildActions.IsMonoInstalled() => IsMonoInstalled;
 
         public string PathCombine(params string[] parts)
         {
@@ -203,7 +212,7 @@ namespace Semmle.Autobuild.CSharp.Tests
                 throw new ArgumentException($"Missing CreateDirectory, {path}");
         }
 
-        public void DownloadFile(string address, string fileName)
+        public void DownloadFile(string address, string fileName, ILogger logger)
         {
             if (!DownloadFiles.Contains((address, fileName)))
                 throw new ArgumentException($"Missing DownloadFile, {address}, {fileName}");
@@ -423,8 +432,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             return new CSharpAutobuilder(actions, options);
         }
 
-        [Fact]
-        public void TestDefaultCSharpAutoBuilder()
+        private void SetupActionForDotnet()
         {
             actions.RunProcess["cmd.exe /C dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C dotnet clean C:\Project\test.csproj"] = 0;
@@ -437,18 +445,78 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbar.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
-            var xml = new XmlDocument();
-            xml.LoadXml(@"<Project Sdk=""Microsoft.NET.Sdk"">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-  </PropertyGroup>
+        }
 
-</Project>");
+        private void CreateAndVerifyDotnetScript(XmlDocument xml)
+        {
             actions.LoadXml[@"C:\Project\test.csproj"] = xml;
 
             var autobuilder = CreateAutoBuilder(true);
             TestAutobuilderScript(autobuilder, 0, 4);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder1()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+            xml.LoadXml(
+            """
+            <Project Sdk="Microsoft.NET.Sdk">
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>netcoreapp2.1</TargetFramework>
+              </PropertyGroup>
+            </Project>
+            """);
+            CreateAndVerifyDotnetScript(xml);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder2()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+
+            xml.LoadXml(
+            """
+            <Project>
+              <Sdk Name="Microsoft.NET.Sdk" />
+
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>net9.0</TargetFramework>
+                <ImplicitUsings>enable</ImplicitUsings>
+                <Nullable>enable</Nullable>
+              </PropertyGroup>
+            </Project>
+            """
+            );
+            CreateAndVerifyDotnetScript(xml);
+        }
+
+        [Fact]
+        public void TestDefaultCSharpAutoBuilder3()
+        {
+            SetupActionForDotnet();
+            var xml = new XmlDocument();
+
+            xml.LoadXml(
+            """
+            <Project>
+              <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+              <PropertyGroup>
+                <OutputType>Exe</OutputType>
+                <TargetFramework>net9.0</TargetFramework>
+                <ImplicitUsings>enable</ImplicitUsings>
+                <Nullable>enable</Nullable>
+              </PropertyGroup>
+              <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+            </Project>
+            """
+            );
+            CreateAndVerifyDotnetScript(xml);
         }
 
         [Fact]
@@ -796,11 +864,32 @@ namespace Semmle.Autobuild.CSharp.Tests
         }
 
         [Fact]
-        public void TestDirsProjLinux()
+        public void TestDirsProjLinux_WithMono()
         {
+            actions.IsMonoInstalled = true;
+
             actions.RunProcess[@"nuget restore C:\Project/dirs.proj -DisableParallelProcessing"] = 1;
             actions.RunProcess[@"mono scratch/.nuget/nuget.exe restore C:\Project/dirs.proj -DisableParallelProcessing"] = 0;
             actions.RunProcess[@"msbuild C:\Project/dirs.proj /t:rebuild"] = 0;
+
+            var autobuilder = TestDirsProjLinux();
+            TestAutobuilderScript(autobuilder, 0, 3);
+        }
+
+        [Fact]
+        public void TestDirsProjLinux_WithoutMono()
+        {
+            actions.IsMonoInstalled = false;
+
+            actions.RunProcess[@"dotnet msbuild /t:restore C:\Project/dirs.proj"] = 0;
+            actions.RunProcess[@"dotnet msbuild C:\Project/dirs.proj /t:rebuild"] = 0;
+
+            var autobuilder = TestDirsProjLinux();
+            TestAutobuilderScript(autobuilder, 0, 2);
+        }
+
+        private CSharpAutobuilder TestDirsProjLinux()
+        {
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/a/test.csproj"] = true;
             actions.FileExists[@"C:\Project/dirs.proj"] = true;
@@ -829,8 +918,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 </Project>");
             actions.LoadXml[@"C:\Project/dirs.proj"] = dirsproj;
 
-            var autobuilder = CreateAutoBuilder(false);
-            TestAutobuilderScript(autobuilder, 0, 3);
+            return CreateAutoBuilder(false);
         }
 
         [Fact]
