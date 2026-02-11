@@ -35,6 +35,13 @@ func TaintStepTest_ErrorsJoin2(sourceCQL interface{}) interface{} {
 	return intoError957
 }
 
+func TaintStepTest_ErrorsAsType(sourceCQL interface{}) interface{} {
+	fromError := sourceCQL.(error)
+	var intoInterface interface{}
+	intoInterface, _ = errors.AsType[error](fromError)
+	return intoInterface
+}
+
 func RunAllTaints_Errors() {
 	{
 		source := newSource(0)
@@ -60,5 +67,10 @@ func RunAllTaints_Errors() {
 		source := newSource(4)
 		out := TaintStepTest_ErrorsJoin2(source)
 		sink(4, out)
+	}
+	{
+		source := newSource(5)
+		out := TaintStepTest_ErrorsAsType(source)
+		sink(5, out)
 	}
 }
