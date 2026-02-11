@@ -96,10 +96,20 @@ class PatternMatchesCall extends MethodCall, RegexExecutionExpr::Range {
 class MatcherMatchesCall extends MethodCall, RegexExecutionExpr::Range {
   MatcherMatchesCall() { this.getMethod() instanceof MatcherMatchesMethod }
 
+  /**
+   * Get the call to `java.util.regex.Pattern.matcher` which returned the
+   * qualifier of this call. This is needed to determine the string being
+   * matched.
+   */
   PatternMatcherCall getPatternMatcherCall() {
     DataFlow::localExprFlow(result, this.getQualifier())
   }
 
+  /**
+   * Get the call to `java.util.regex.Pattern.compile` which returned the
+   * `Pattern` used by this matcher. This is needed to determine the regular
+   * expression being used.
+   */
   PatternCompileCall getPatternCompileCall() {
     DataFlow::localExprFlow(result, this.getPatternMatcherCall())
   }
