@@ -26,18 +26,21 @@ module Ast implements AstSig<Location> {
 
   class AstNode = ExprParent;
 
-  private predicate skipControlFlow(Expr e) {
-    exists(ConstCase cc | e = cc.getValue(_)) or
-    e.getParent*() instanceof Annotation or
+  private predicate skipControlFlow(AstNode e) {
+    e.(Expr).getParent*() instanceof Annotation or
     e instanceof TypeAccess or
     e instanceof ArrayTypeAccess or
     e instanceof UnionTypeAccess or
     e instanceof IntersectionTypeAccess or
-    e instanceof WildcardTypeAccess
+    e instanceof WildcardTypeAccess or
+    // Switch cases of the form `case e1 -> e2;` skip the ExprStmt and treat
+    // the right-hand side as an expression. See `SwitchCase.getRuleExpression()`.
+    any(SwitchCase sc).getRuleExpression() = e.(J::ExprStmt).getExpr()
   }
 
   AstNode getChild(AstNode n, int index) {
     not skipControlFlow(result) and
+    not skipControlFlow(n) and
     result.(Expr).isNthChildOf(n, index)
     or
     result.(Stmt).isNthChildOf(n, index)
@@ -58,7 +61,9 @@ module Ast implements AstSig<Location> {
 
   class BlockStmt = J::BlockStmt;
 
-  class ExprStmt = J::ExprStmt;
+  class ExprStmt extends J::ExprStmt {
+    ExprStmt() { not skipControlFlow(this) }
+  }
 
   class IfStmt = J::IfStmt;
 
