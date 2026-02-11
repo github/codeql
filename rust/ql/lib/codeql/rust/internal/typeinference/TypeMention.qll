@@ -6,7 +6,7 @@ private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
 private import TypeAbstraction
 private import TypeInference
-private import AssociatedTypes
+private import AssociatedType
 
 bindingset[trait, name]
 pragma[inline_late]
@@ -390,7 +390,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       // Handles paths of the form `Self::AssocType` within a trait block
       result = TAssociatedTypeTypeParameter(resolvePath(this.getQualifier()), resolved)
       or
-      result.(TypeParamAssociatedTypeTypeParameter).getPath() = this
+      result.(TypeParamAssociatedTypeTypeParameter).getAPath() = this
     }
 
     override Type resolvePathTypeAt(TypePath typePath) {
@@ -710,7 +710,7 @@ private predicate pathConcreteTypeAssocType(
     // path of the form `<Type as Trait>::AssocType`
     //                    ^^^ tm          ^^^^^^^^^ name
     exists(string name, Path traitPath |
-      asTraitPath(path, tm, traitPath, name) and
+      pathTypeAsTraitAssoc(path, tm, traitPath, name) and
       trait = resolvePath(traitPath) and
       getTraitAssocType(trait, name) = alias
     )

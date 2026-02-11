@@ -20,12 +20,11 @@ final class AssocType extends TypeAlias {
 }
 
 /** Gets an associated type of `trait` or of a supertrait of `trait`. */
-AssocType getTraitAssocType(Trait trait) {
-  result.getTrait() = trait.getSupertrait*()
-}
+AssocType getTraitAssocType(Trait trait) { result.getTrait() = trait.getSupertrait*() }
 
 /** Holds if `path` is of the form `<type as trait>::name` */
-predicate asTraitPath(Path path, TypeRepr typeRepr, Path traitPath, string name) {
+pragma[nomagic]
+predicate pathTypeAsTraitAssoc(Path path, TypeRepr typeRepr, Path traitPath, string name) {
   exists(PathSegment segment |
     segment = path.getQualifier().getSegment() and
     typeRepr = segment.getTypeRepr() and
@@ -45,8 +44,8 @@ predicate tpAssociatedType(TypeParam tp, AssocType assoc, Path path) {
   resolvePath(path) = assoc
   or
   exists(PathTypeRepr typeRepr, Path traitPath, string name |
-    asTraitPath(path, typeRepr, traitPath, name) and
-    tp = resolvePath(typeRepr.(PathTypeRepr).getPath()) and
+    pathTypeAsTraitAssoc(path, typeRepr, traitPath, name) and
+    tp = resolvePath(typeRepr.getPath()) and
     assoc = resolvePath(traitPath).(TraitItemNode).getAssocItem(name)
   )
 }

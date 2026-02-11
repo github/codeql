@@ -8,7 +8,7 @@ private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
-private import AssociatedTypes
+private import AssociatedType
 
 /**
  * Holds if a dyn trait type for the trait `trait` should have a type parameter
