@@ -1,5 +1,4 @@
-load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
-load("@rules_cc//cc/common:cc_info.bzl", "CcInfo")
+load("@rules_cc//cc:defs.bzl", "CcInfo", "cc_binary", "cc_library")
 load("//misc/bazel:os.bzl", "os_select")
 
 # TODO: make a shared library with the internal repos for transitions
