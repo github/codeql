@@ -322,7 +322,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       )
       or
       // If this path is a type parameter bound, then any associated types
-      // accessed on the type parameter, that originate from this bound, should
+      // accessed on the type parameter, which originate from this bound, should
       // be instantiated into the bound, as explained in the comment for
       // `TypeParamAssociatedTypeTypeParameter`.
       // ```rust

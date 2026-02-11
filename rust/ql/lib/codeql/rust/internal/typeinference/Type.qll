@@ -496,7 +496,7 @@ class TypeParamAssociatedTypeTypeParameter extends TypeParameter,
   AssocType getTypeAlias() { result = assoc }
 
   /** Gets a path that accesses this type parameter. */
-  Path getPath() { tpAssociatedType(typeParam, assoc, result) }
+  Path getAPath() { tpAssociatedType(typeParam, assoc, result) }
 
   override ItemNode getDeclaringItem() { result.getTypeParam(_) = typeParam }
 
