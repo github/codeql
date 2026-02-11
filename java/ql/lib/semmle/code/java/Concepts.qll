@@ -19,7 +19,7 @@ class RegexExecution extends DataFlow::Node instanceof RegexExecution::Range {
   /** Gets the data flow node for the regex being executed by this node. */
   DataFlow::Node getRegex() { result = super.getRegex() }
 
-  /** Gets a dataflow node for the string to be searched or matched against. */
+  /** Gets a data flow node for the string to be searched or matched against. */
   DataFlow::Node getString() { result = super.getString() }
 
   /**
