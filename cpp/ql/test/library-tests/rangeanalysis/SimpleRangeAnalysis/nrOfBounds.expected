@@ -37,6 +37,36 @@ estimateNrOfBounds
 | minmax.c:26:37:26:37 | x | 1.0 |
 | minmax.c:26:40:26:40 | y | 1.0 |
 | minmax.c:26:43:26:43 | z | 2.0 |
+| missing_bounds.cpp:40:5:40:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:40:5:40:20 | x | 1.0 |
+| missing_bounds.cpp:40:5:40:20 | x | 1.0 |
+| missing_bounds.cpp:40:19:40:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:40:19:40:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:40:19:40:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:41:5:41:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:41:19:41:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:41:19:41:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:41:19:41:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:42:5:42:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:42:19:42:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:42:19:42:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:42:19:42:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:43:5:43:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:43:19:43:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:43:19:43:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:43:19:43:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:44:5:44:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:44:19:44:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:44:19:44:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:44:19:44:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:45:5:45:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:45:19:45:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:45:19:45:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:45:19:45:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:46:5:46:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:46:19:46:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:46:19:46:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:46:19:46:19 | (unsigned int)... | 1.0 |
 | test.c:6:14:6:15 | 0 | 1.0 |
 | test.c:8:5:8:9 | count | 1.0 |
 | test.c:8:5:8:19 | ... = ... | 13.0 |
