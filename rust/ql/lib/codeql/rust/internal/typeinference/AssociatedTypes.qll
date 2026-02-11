@@ -37,7 +37,7 @@ predicate asTraitPath(Path path, TypeRepr typeRepr, Path traitPath, string name)
 /**
  * Holds if `assoc` is accessed on `tp` in `path`.
  *
- * That is this is the case when `path` is of the form `<tp as
+ * That is, this is the case when `path` is of the form `<tp as
  * Trait>::AssocType` or `tp::AssocType`; and `AssocType` resolves to `assoc`.
  */
 predicate tpAssociatedType(TypeParam tp, AssocType assoc, Path path) {
