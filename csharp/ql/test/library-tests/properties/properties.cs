@@ -124,4 +124,13 @@ namespace Properties
             set { }
         }
     }
+
+    class UseFieldKeyword
+    {
+        public object Prop
+        {
+            get { return field; }
+            set { field = value; }
+        }
+    }
 }
