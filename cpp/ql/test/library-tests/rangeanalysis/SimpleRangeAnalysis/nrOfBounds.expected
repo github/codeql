@@ -37,36 +37,121 @@ estimateNrOfBounds
 | minmax.c:26:37:26:37 | x | 1.0 |
 | minmax.c:26:40:26:40 | y | 1.0 |
 | minmax.c:26:43:26:43 | z | 2.0 |
+| missing_bounds.cpp:2:9:2:11 | 1 | 1.0 |
+| missing_bounds.cpp:3:9:3:11 | 2 | 1.0 |
+| missing_bounds.cpp:4:9:4:11 | 4 | 1.0 |
+| missing_bounds.cpp:5:9:5:11 | 8 | 1.0 |
+| missing_bounds.cpp:6:9:6:12 | 16 | 1.0 |
+| missing_bounds.cpp:7:9:7:12 | 32 | 1.0 |
+| missing_bounds.cpp:8:9:8:12 | 64 | 1.0 |
+| missing_bounds.cpp:9:9:9:12 | 128 | 1.0 |
+| missing_bounds.cpp:10:9:10:13 | 256 | 1.0 |
+| missing_bounds.cpp:11:9:11:13 | 512 | 1.0 |
+| missing_bounds.cpp:12:9:12:13 | 1024 | 1.0 |
+| missing_bounds.cpp:13:9:13:13 | 2048 | 1.0 |
+| missing_bounds.cpp:14:9:14:14 | 4096 | 1.0 |
+| missing_bounds.cpp:15:9:15:14 | 8192 | 1.0 |
+| missing_bounds.cpp:16:9:16:14 | 16384 | 1.0 |
+| missing_bounds.cpp:17:9:17:14 | 32768 | 1.0 |
+| missing_bounds.cpp:18:9:18:15 | 65536 | 1.0 |
+| missing_bounds.cpp:19:9:19:15 | 131072 | 1.0 |
+| missing_bounds.cpp:20:9:20:15 | 262144 | 1.0 |
+| missing_bounds.cpp:21:9:21:15 | 524288 | 1.0 |
+| missing_bounds.cpp:22:9:22:16 | 1048576 | 1.0 |
+| missing_bounds.cpp:23:9:23:16 | 2097152 | 1.0 |
+| missing_bounds.cpp:24:9:24:16 | 4194304 | 1.0 |
+| missing_bounds.cpp:25:9:25:16 | 8388608 | 1.0 |
+| missing_bounds.cpp:26:9:26:17 | 16777216 | 1.0 |
+| missing_bounds.cpp:27:10:27:18 | 33554432 | 1.0 |
+| missing_bounds.cpp:28:10:28:18 | 67108864 | 1.0 |
+| missing_bounds.cpp:29:10:29:18 | 134217728 | 1.0 |
+| missing_bounds.cpp:30:10:30:19 | 268435456 | 1.0 |
+| missing_bounds.cpp:31:10:31:19 | 536870912 | 1.0 |
+| missing_bounds.cpp:40:5:40:19 | ... & ... | 1.0 |
+| missing_bounds.cpp:40:5:40:19 | ... -= ... | 1.0 |
 | missing_bounds.cpp:40:5:40:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:40:5:40:20 | (...) | 1.0 |
 | missing_bounds.cpp:40:5:40:20 | x | 1.0 |
 | missing_bounds.cpp:40:5:40:20 | x | 1.0 |
 | missing_bounds.cpp:40:19:40:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:40:19:40:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:40:19:40:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:40:19:40:19 | A | 1.0 |
+| missing_bounds.cpp:40:19:40:19 | A | 1.0 |
+| missing_bounds.cpp:40:19:40:19 | A | 1.0 |
+| missing_bounds.cpp:41:5:41:19 | ... & ... | 2.0 |
+| missing_bounds.cpp:41:5:41:19 | ... -= ... | 2.0 |
 | missing_bounds.cpp:41:5:41:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:41:5:41:20 | (...) | 2.0 |
+| missing_bounds.cpp:41:5:41:20 | x | 2.0 |
+| missing_bounds.cpp:41:5:41:20 | x | 2.0 |
 | missing_bounds.cpp:41:19:41:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:41:19:41:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:41:19:41:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:41:19:41:19 | B | 1.0 |
+| missing_bounds.cpp:41:19:41:19 | B | 1.0 |
+| missing_bounds.cpp:41:19:41:19 | B | 1.0 |
+| missing_bounds.cpp:42:5:42:19 | ... & ... | 4.0 |
+| missing_bounds.cpp:42:5:42:19 | ... -= ... | 4.0 |
 | missing_bounds.cpp:42:5:42:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:42:5:42:20 | (...) | 4.0 |
+| missing_bounds.cpp:42:5:42:20 | x | 4.0 |
+| missing_bounds.cpp:42:5:42:20 | x | 4.0 |
 | missing_bounds.cpp:42:19:42:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:42:19:42:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:42:19:42:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:42:19:42:19 | C | 1.0 |
+| missing_bounds.cpp:42:19:42:19 | C | 1.0 |
+| missing_bounds.cpp:42:19:42:19 | C | 1.0 |
+| missing_bounds.cpp:43:5:43:19 | ... & ... | 8.0 |
+| missing_bounds.cpp:43:5:43:19 | ... -= ... | 8.0 |
 | missing_bounds.cpp:43:5:43:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:43:5:43:20 | (...) | 8.0 |
+| missing_bounds.cpp:43:5:43:20 | x | 8.0 |
+| missing_bounds.cpp:43:5:43:20 | x | 8.0 |
 | missing_bounds.cpp:43:19:43:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:43:19:43:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:43:19:43:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:43:19:43:19 | D | 1.0 |
+| missing_bounds.cpp:43:19:43:19 | D | 1.0 |
+| missing_bounds.cpp:43:19:43:19 | D | 1.0 |
+| missing_bounds.cpp:44:5:44:19 | ... & ... | 16.0 |
+| missing_bounds.cpp:44:5:44:19 | ... -= ... | 16.0 |
 | missing_bounds.cpp:44:5:44:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:44:5:44:20 | (...) | 16.0 |
+| missing_bounds.cpp:44:5:44:20 | x | 16.0 |
+| missing_bounds.cpp:44:5:44:20 | x | 16.0 |
 | missing_bounds.cpp:44:19:44:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:44:19:44:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:44:19:44:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:44:19:44:19 | E | 1.0 |
+| missing_bounds.cpp:44:19:44:19 | E | 1.0 |
+| missing_bounds.cpp:44:19:44:19 | E | 1.0 |
+| missing_bounds.cpp:45:5:45:19 | ... & ... | 32.0 |
+| missing_bounds.cpp:45:5:45:19 | ... -= ... | 32.0 |
 | missing_bounds.cpp:45:5:45:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:45:5:45:20 | (...) | 32.0 |
+| missing_bounds.cpp:45:5:45:20 | x | 32.0 |
+| missing_bounds.cpp:45:5:45:20 | x | 32.0 |
 | missing_bounds.cpp:45:19:45:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:45:19:45:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:45:19:45:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:45:19:45:19 | F | 1.0 |
+| missing_bounds.cpp:45:19:45:19 | F | 1.0 |
+| missing_bounds.cpp:45:19:45:19 | F | 1.0 |
+| missing_bounds.cpp:46:5:46:19 | ... & ... | 64.0 |
+| missing_bounds.cpp:46:5:46:19 | ... -= ... | 64.0 |
 | missing_bounds.cpp:46:5:46:19 | ... == ... | 1.0 |
+| missing_bounds.cpp:46:5:46:20 | (...) | 64.0 |
+| missing_bounds.cpp:46:5:46:20 | x | 64.0 |
+| missing_bounds.cpp:46:5:46:20 | x | 64.0 |
 | missing_bounds.cpp:46:19:46:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:46:19:46:19 | (unsigned int)... | 1.0 |
 | missing_bounds.cpp:46:19:46:19 | (unsigned int)... | 1.0 |
+| missing_bounds.cpp:46:19:46:19 | G | 1.0 |
+| missing_bounds.cpp:46:19:46:19 | G | 1.0 |
+| missing_bounds.cpp:46:19:46:19 | G | 1.0 |
+| missing_bounds.cpp:72:12:72:12 | x | 128.0 |
 | test.c:6:14:6:15 | 0 | 1.0 |
 | test.c:8:5:8:9 | count | 1.0 |
 | test.c:8:5:8:19 | ... = ... | 13.0 |

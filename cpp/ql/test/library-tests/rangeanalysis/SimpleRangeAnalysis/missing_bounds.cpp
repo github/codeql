@@ -1,34 +1,34 @@
 enum MY_ENUM {
-    A = 0x1, // $ nonFunctionalNrOfBounds
-    B = 0x2, // $ nonFunctionalNrOfBounds
-    C = 0x4, // $ nonFunctionalNrOfBounds
-    D = 0x8, // $ nonFunctionalNrOfBounds
-    E = 0x10, // $ nonFunctionalNrOfBounds
-    F = 0x20, // $ nonFunctionalNrOfBounds
-    G = 0x40, // $ nonFunctionalNrOfBounds
-    H = 0x80, // $ nonFunctionalNrOfBounds
-    I = 0x100, // $ nonFunctionalNrOfBounds
-    J = 0x200, // $ nonFunctionalNrOfBounds
-    L = 0x400, // $ nonFunctionalNrOfBounds
-    M = 0x800, // $ nonFunctionalNrOfBounds
-    N = 0x1000, // $ nonFunctionalNrOfBounds
-    O = 0x2000, // $ nonFunctionalNrOfBounds
-    P = 0x4000, // $ nonFunctionalNrOfBounds
-    Q = 0x8000, // $ nonFunctionalNrOfBounds
-    R = 0x10000, // $ nonFunctionalNrOfBounds
-    S = 0x20000, // $ nonFunctionalNrOfBounds
-    T = 0x40000, // $ nonFunctionalNrOfBounds
-    U = 0x80000, // $ nonFunctionalNrOfBounds
-    V = 0x100000, // $ nonFunctionalNrOfBounds
-    W = 0x200000, // $ nonFunctionalNrOfBounds
-    X = 0x400000, // $ nonFunctionalNrOfBounds
-    Y = 0x800000, // $ nonFunctionalNrOfBounds
-    Z = 0x1000000, // $ nonFunctionalNrOfBounds
-    AA = 0x2000000, // $ nonFunctionalNrOfBounds
-    AB = 0x4000000, // $ nonFunctionalNrOfBounds
-    AC = 0x8000000, // $ nonFunctionalNrOfBounds
-    AD = 0x10000000, // $ nonFunctionalNrOfBounds
-    AE = 0x20000000 // $ nonFunctionalNrOfBounds
+    A = 0x1,
+    B = 0x2,
+    C = 0x4,
+    D = 0x8,
+    E = 0x10,
+    F = 0x20,
+    G = 0x40,
+    H = 0x80,
+    I = 0x100,
+    J = 0x200,
+    L = 0x400,
+    M = 0x800,
+    N = 0x1000,
+    O = 0x2000,
+    P = 0x4000,
+    Q = 0x8000,
+    R = 0x10000,
+    S = 0x20000,
+    T = 0x40000,
+    U = 0x80000,
+    V = 0x100000,
+    W = 0x200000,
+    X = 0x400000,
+    Y = 0x800000,
+    Z = 0x1000000,
+    AA = 0x2000000,
+    AB = 0x4000000,
+    AC = 0x8000000,
+    AD = 0x10000000,
+    AE = 0x20000000
 };
 
 typedef unsigned int MY_ENUM_FLAGS;
@@ -37,13 +37,13 @@ MY_ENUM_FLAGS check_and_subs(MY_ENUM_FLAGS x)
 {
 
     #define CHECK_AND_SUB(flag) if ((x & flag) == flag) { x -= flag; }
-    CHECK_AND_SUB(A); // $ nonFunctionalNrOfBounds
-    CHECK_AND_SUB(B); // $ nonFunctionalNrOfBounds
-    CHECK_AND_SUB(C); // $ nonFunctionalNrOfBounds
-    CHECK_AND_SUB(D); // $ nonFunctionalNrOfBounds
-    CHECK_AND_SUB(E); // $ nonFunctionalNrOfBounds
-    CHECK_AND_SUB(F); // $ nonFunctionalNrOfBounds
-    CHECK_AND_SUB(G); // $ nonFunctionalNrOfBounds
+    CHECK_AND_SUB(A);
+    CHECK_AND_SUB(B);
+    CHECK_AND_SUB(C);
+    CHECK_AND_SUB(D);
+    CHECK_AND_SUB(E);
+    CHECK_AND_SUB(F);
+    CHECK_AND_SUB(G);
     // CHECK_AND_SUB(H);
     // CHECK_AND_SUB(I);
     // CHECK_AND_SUB(J);
@@ -69,5 +69,5 @@ MY_ENUM_FLAGS check_and_subs(MY_ENUM_FLAGS x)
     // CHECK_AND_SUB(AE);
     #undef CHECK_AND_SUB
     
-    return x; // $ nonFunctionalNrOfBounds
+    return x;
 }
