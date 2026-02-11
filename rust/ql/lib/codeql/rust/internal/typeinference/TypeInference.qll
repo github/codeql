@@ -108,6 +108,10 @@ private module Input implements InputSig1<Location>, InputSig2<PreTypeMention> {
         id2 = idOfTypeParameterAstNode(tp0.(AssociatedTypeTypeParameter).getTypeAlias())
         or
         kind = 4 and
+        id1 = idOfTypeParameterAstNode(tp0.(TypeParamAssociatedTypeTypeParameter).getTypeParam()) and
+        id2 = idOfTypeParameterAstNode(tp0.(TypeParamAssociatedTypeTypeParameter).getTypeAlias())
+        or
+        kind = 5 and
         id1 = 0 and
         exists(AstNode node | id2 = idOfTypeParameterAstNode(node) |
           node = tp0.(TypeParamTypeParameter).getTypeParam() or
@@ -270,13 +274,21 @@ private class FunctionDeclaration extends Function {
     this = i.asSome().getAnAssocItem()
   }
 
+  TypeParam getTypeParam(ImplOrTraitItemNodeOption i) {
+    i = parent and
+    result = [this.getGenericParamList().getATypeParam(), i.asSome().getTypeParam(_)]
+  }
+
   TypeParameter getTypeParameter(ImplOrTraitItemNodeOption i, TypeParameterPosition ppos) {
+    typeParamMatchPosition(this.getTypeParam(i), result, ppos)
+    or
+    // For every `TypeParam` of this function, any associated types accessed on
+    // the type parameter are also type parameters.
+    ppos.isImplicit() and
+    result.(TypeParamAssociatedTypeTypeParameter).getTypeParam() = this.getTypeParam(i)
+    or
     i = parent and
     (
-      typeParamMatchPosition(this.getGenericParamList().getATypeParam(), result, ppos)
-      or
-      typeParamMatchPosition(i.asSome().getTypeParam(_), result, ppos)
-      or
       ppos.isImplicit() and result = TSelfTypeParameter(i.asSome())
       or
       ppos.isImplicit() and result.(AssociatedTypeTypeParameter).getTrait() = i.asSome()

@@ -6,6 +6,7 @@ private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
 private import TypeAbstraction
 private import TypeInference
+private import AssociatedType
 
 bindingset[trait, name]
 pragma[inline_late]
@@ -319,6 +320,22 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
         tp = TAssociatedTypeTypeParameter(resolved, alias) and
         path.isEmpty()
       )
+      or
+      // If this path is a type parameter bound, then any associated types
+      // accessed on the type parameter, which originate from this bound, should
+      // be instantiated into the bound, as explained in the comment for
+      // `TypeParamAssociatedTypeTypeParameter`.
+      // ```rust
+      // fn foo<T: SomeTrait<Assoc = T_Assoc>, T_Assoc>(arg: T_Assoc) { }
+      //           ^^^^^^^^^ ^^^^^   ^^^^^^^
+      //           this      path    result
+      // ```
+      exists(TypeParam typeParam, Trait trait, AssocType assoc |
+        tpBoundAssociatedType(typeParam, _, this, trait, assoc) and
+        tp = TAssociatedTypeTypeParameter(resolved, assoc) and
+        result = TTypeParamAssociatedTypeTypeParameter(typeParam, assoc) and
+        path.isEmpty()
+      )
     }
 
     bindingset[name]
@@ -372,6 +389,8 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       or
       // Handles paths of the form `Self::AssocType` within a trait block
       result = TAssociatedTypeTypeParameter(resolvePath(this.getQualifier()), resolved)
+      or
+      result.(TypeParamAssociatedTypeTypeParameter).getAPath() = this
     }
 
     override Type resolvePathTypeAt(TypePath typePath) {
@@ -690,11 +709,10 @@ private predicate pathConcreteTypeAssocType(
   |
     // path of the form `<Type as Trait>::AssocType`
     //                    ^^^ tm          ^^^^^^^^^ name
-    exists(string name |
-      name = path.getText() and
-      trait = resolvePath(qualifier.getSegment().getTraitTypeRepr().getPath()) and
-      getTraitAssocType(trait, name) = alias and
-      tm = qualifier.getSegment().getTypeRepr()
+    exists(string name, Path traitPath |
+      pathTypeAsTraitAssoc(path, tm, traitPath, name) and
+      trait = resolvePath(traitPath) and
+      getTraitAssocType(trait, name) = alias
     )
     or
     // path of the form `Self::AssocType` within an `impl` block
