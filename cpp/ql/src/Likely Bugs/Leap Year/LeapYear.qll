@@ -310,7 +310,9 @@ module PossibleYearArithmeticOperationCheckFlow =
   TaintTracking::Global<PossibleYearArithmeticOperationCheckConfig>;
 
 /**
- * This list of APIs should check for the return value to detect problems during the conversion.
+ * Time conversion functions where either
+ * 1) an incorrect leap year date would result in an error that can be checked from the return value or
+ * 2) an incorrect leap year date is auto corrected (no checks required)
  */
 class TimeConversionFunction extends Function {
   boolean autoLeapYearCorrecting;
