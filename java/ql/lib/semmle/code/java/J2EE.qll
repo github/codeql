@@ -6,6 +6,7 @@ module;
 
 import Type
 
+/** Gets "java" or "jakarta". */
 string javaxOrJakarta() { result = ["javax", "jakarta"] }
 
 /** An entity bean. */
