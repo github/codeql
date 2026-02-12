@@ -233,32 +233,29 @@ class IgnorableAssignmentBitwiseOperation extends IgnorableOperation instanceof 
 class IgnorablePointerOrCharArithmetic extends IgnorableOperation {
   IgnorablePointerOrCharArithmetic() {
     this instanceof BinaryArithmeticOperation and
-    (
-      this.(BinaryArithmeticOperation).getAnOperand().getUnspecifiedType() instanceof PointerType
+    exists(Expr op | op = this.(BinaryArithmeticOperation).getAnOperand() |
+      op.getUnspecifiedType() instanceof PointerType
       or
-      this.(BinaryArithmeticOperation).getAnOperand().getUnspecifiedType() instanceof CharType
+      op.getUnspecifiedType() instanceof CharType
       or
       // Operations on calls to functions that accept char or char*
-      this.(BinaryArithmeticOperation)
-          .getAnOperand()
-          .(Call)
-          .getAnArgument()
-          .getUnspecifiedType()
-          .stripType() instanceof CharType
+      op.(Call).getAnArgument().getUnspecifiedType().stripType() instanceof CharType
       or
       // Operations on calls to functions named like "strlen", "wcslen", etc
       // NOTE: workaround for cases where the wchar_t type is not a char, but an unsigned short
       // unclear if there is a best way to filter cases like these out based on type info.
-      this.(BinaryArithmeticOperation).getAnOperand().(Call).getTarget().getName().matches("%len%")
+      op.(Call).getTarget().getName().matches("%len%")
     )
     or
     exists(AssignArithmeticOperation a | a.getRValue() = this |
-      a.getAnOperand().getUnspecifiedType() instanceof PointerType
-      or
-      a.getAnOperand().getUnspecifiedType() instanceof CharType
-      or
-      // Operations on calls to functions that accept char or char*
-      a.getAnOperand().(Call).getAnArgument().getUnspecifiedType().stripType() instanceof CharType
+      exists(Expr op | op = a.getAnOperand() |
+        op.getUnspecifiedType() instanceof PointerType
+        or
+        op.getUnspecifiedType() instanceof CharType
+        or
+        // Operations on calls to functions that accept char or char*
+        op.(Call).getAnArgument().getUnspecifiedType().stripType() instanceof CharType
+      )
       or
       // Operations on calls to functions named like "strlen", "wcslen", etc
       this.(BinaryArithmeticOperation).getAnOperand().(Call).getTarget().getName().matches("%len%")
