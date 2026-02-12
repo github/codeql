@@ -6,6 +6,8 @@ module;
 
 import Type
 
+string javaxOrJakarta() { result = ["javax", "jakarta"] }
+
 /** An entity bean. */
 class EntityBean extends Class {
   EntityBean() {
