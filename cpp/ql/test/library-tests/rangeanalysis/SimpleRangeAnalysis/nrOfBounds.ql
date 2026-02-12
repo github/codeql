@@ -12,6 +12,9 @@ query predicate estimateNrOfBounds(Expr e, float nrOfBounds) {
  */
 private predicate nonFunctionalNrOfBounds(Expr e) {
   strictcount(SimpleRangeAnalysisInternal::estimateNrOfBounds(e)) > 1
+  or
+  e.getFile().getBaseName() = "missing_bounds.cpp" and
+  count(SimpleRangeAnalysisInternal::estimateNrOfBounds(e)) != 1
 }
 
 module FunctionalityTest implements TestSig {

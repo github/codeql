@@ -513,7 +513,7 @@ private module BoundsEstimate {
   float getBoundsLimit() {
     // This limit is arbitrary, but low enough that it prevents timeouts on
     // specific observed customer databases (and the in the tests).
-    result = 2.0.pow(40)
+    result = 2.0.pow(29)
   }
 
   /** Gets the maximum number of bounds possible for `t` when widening is used. */
