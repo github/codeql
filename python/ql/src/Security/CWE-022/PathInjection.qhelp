@@ -23,14 +23,15 @@ The choice of validation depends on the use case.
 <p>
 If you want to allow paths spanning multiple folders, a common strategy is to make sure that the constructed
 file path is contained within a safe root folder. First, normalize the path using <code>os.path.normpath</code> or
-<code>os.path.realpath</code> to remove any ".." segments. Then check that the normalized path starts with the
+<code>os.path.realpath</code> (make sure to use the latter if symlinks are a consideration)
+to remove any internal ".." segments and/or follow links. Then check that the normalized path starts with the
 root folder. Note that the normalization step is important, since otherwise even a path that starts with the root
 folder could be used to access files outside the root folder.
 </p>
 
 <p>
 More restrictive options include using a library function like <code>werkzeug.utils.secure_filename</code> to eliminate
-any special characters from the file path, or restricting the path to an allow list of safe paths. These options are
+any special characters from the file path, or restricting the path to a known list of safe paths. These options are
 safe, but can only be used in particular circumstances.
 </p>
 </recommendation>
