@@ -266,7 +266,7 @@ class IgnorablePointerOrCharArithmetic extends IgnorableOperation {
 }
 
 /**
- * Holds for an expression that is a operation that could flow to a Year field.
+ * Holds for an expression that is an add or similar operation that could flow to a Year field.
  */
 predicate isOperationSourceCandidate(Expr e) {
   not e instanceof IgnorableOperation and
