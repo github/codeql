@@ -534,7 +534,7 @@ public class B {
       s1.hashCode(); // OK
       s2.hashCode(); // NPE
     }
-    s1.hashCode(); // NPE - false negative, Java CFG lacks proper edge label
+    s1.hashCode(); // NPE
   }
 
   public void lenCheck(int[] xs, int n, int t) {
