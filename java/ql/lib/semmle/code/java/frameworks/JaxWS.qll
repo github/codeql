@@ -13,7 +13,7 @@ private import semmle.code.java.security.XSS
 /**
  * Gets a name for the root package of JAX-RS.
  */
-string getAJaxRsPackage() { result in ["javax.ws.rs", "jakarta.ws.rs"] }
+string getAJaxRsPackage() { result in [javaxOrJakarta() + ".ws.rs", "jakarta.ws.rs"] }
 
 /**
  * Gets a name for package `subpackage` within the JAX-RS hierarchy.
@@ -42,7 +42,7 @@ class JaxWsEndpoint extends Class {
     result.isPublic() and
     not result instanceof InitializerMethod and
     not exists(Annotation a | a = result.getAnAnnotation() |
-      a.getType().hasQualifiedName(["javax", "jakarta"] + ".jws", "WebMethod") and
+      a.getType().hasQualifiedName([javaxOrJakarta() + "", "jakarta"] + ".jws", "WebMethod") and
       a.getValue("exclude").(BooleanLiteral).getBooleanValue() = true
     ) and
     forex(ParamOrReturn paramOrRet | paramOrRet = result.getAParameter() or paramOrRet = result |
@@ -62,7 +62,7 @@ class JaxWsEndpoint extends Class {
 /** The annotation type `@XmlJavaTypeAdapter`. */
 class XmlJavaTypeAdapter extends AnnotationType {
   XmlJavaTypeAdapter() {
-    this.hasQualifiedName(["javax", "jakarta"] + ".xml.bind.annotation.adapters",
+    this.hasQualifiedName([javaxOrJakarta() + "", "jakarta"] + ".xml.bind.annotation.adapters",
       "XmlJavaTypeAdapter")
   }
 }
@@ -115,7 +115,7 @@ private class JaxAcceptableStandardClass extends RefType {
     this.hasQualifiedName("java.util", "Calendar") or
     this.hasQualifiedName("java.math", "BigInteger") or
     this.hasQualifiedName("java.math", "BigDecimal") or
-    this.hasQualifiedName("javax.xml.namespace", "QName") or
+    this.hasQualifiedName(javaxOrJakarta() + ".xml.namespace", "QName") or
     this instanceof TypeUri
   }
 }
@@ -292,7 +292,9 @@ class JaxRSAnnotation extends Annotation {
   JaxRSAnnotation() {
     exists(AnnotationType a |
       a = this.getType() and
-      a.getPackage().getName().regexpMatch(["javax\\.ws\\.rs(\\..*)?", "jakarta\\.ws\\.rs(\\..*)?"])
+      a.getPackage()
+          .getName()
+          .regexpMatch([javaxOrJakarta() + "\\.ws\\.rs(\\..*)?", "jakarta\\.ws\\.rs(\\..*)?"])
     )
   }
 }

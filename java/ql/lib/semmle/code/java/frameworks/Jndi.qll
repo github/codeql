@@ -9,32 +9,34 @@ import java
 /*--- Types ---*/
 /** The interface `javax.naming.Context`. */
 class TypeNamingContext extends Interface {
-  TypeNamingContext() { this.hasQualifiedName("javax.naming", "Context") }
+  TypeNamingContext() { this.hasQualifiedName(javaxOrJakarta() + ".naming", "Context") }
 }
 
 /** The class `javax.naming.CompositeName`. */
 class TypeCompositeName extends Class {
-  TypeCompositeName() { this.hasQualifiedName("javax.naming", "CompositeName") }
+  TypeCompositeName() { this.hasQualifiedName(javaxOrJakarta() + ".naming", "CompositeName") }
 }
 
 /** The class `javax.naming.CompoundName`. */
 class TypeCompoundName extends Class {
-  TypeCompoundName() { this.hasQualifiedName("javax.naming", "CompoundName") }
+  TypeCompoundName() { this.hasQualifiedName(javaxOrJakarta() + ".naming", "CompoundName") }
 }
 
 /** The interface `javax.naming.directory.DirContext`. */
 class TypeDirContext extends Interface {
-  TypeDirContext() { this.hasQualifiedName("javax.naming.directory", "DirContext") }
+  TypeDirContext() { this.hasQualifiedName(javaxOrJakarta() + ".naming.directory", "DirContext") }
 }
 
 /** The class `javax.naming.directory.SearchControls` */
 class TypeSearchControls extends Class {
-  TypeSearchControls() { this.hasQualifiedName("javax.naming.directory", "SearchControls") }
+  TypeSearchControls() {
+    this.hasQualifiedName(javaxOrJakarta() + ".naming.directory", "SearchControls")
+  }
 }
 
 /** The class `javax.naming.ldap.LdapName`. */
 class TypeLdapName extends Class {
-  TypeLdapName() { this.hasQualifiedName("javax.naming.ldap", "LdapName") }
+  TypeLdapName() { this.hasQualifiedName(javaxOrJakarta() + ".naming.ldap", "LdapName") }
 }
 
 /*--- Methods ---*/

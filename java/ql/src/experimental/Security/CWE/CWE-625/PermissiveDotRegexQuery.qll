@@ -38,7 +38,9 @@ private class UrlDispatchSink extends UrlRedirectSink {
 /** The `doFilter` method of `javax.servlet.FilterChain`. */
 private class ServletFilterMethod extends Method {
   ServletFilterMethod() {
-    this.getDeclaringType().getASupertype*().hasQualifiedName("javax.servlet", "FilterChain") and
+    this.getDeclaringType()
+        .getASupertype*()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet", "FilterChain") and
     this.hasName("doFilter")
   }
 }

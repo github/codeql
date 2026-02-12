@@ -9,7 +9,8 @@ import java
  */
 class FacesContext extends RefType {
   FacesContext() {
-    this.hasQualifiedName(["javax.faces.context", "jakarta.faces.context"], "FacesContext")
+    this.hasQualifiedName([javaxOrJakarta() + ".faces.context", "jakarta.faces.context"],
+      "FacesContext")
   }
 }
 

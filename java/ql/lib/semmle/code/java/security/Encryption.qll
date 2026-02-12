@@ -9,56 +9,58 @@ import java
 class SslClass extends RefType {
   SslClass() {
     exists(Class c | this.getAnAncestor() = c |
-      c.hasQualifiedName("javax.net.ssl", _) or
-      c.hasQualifiedName("javax.rmi.ssl", _)
+      c.hasQualifiedName(javaxOrJakarta() + ".net.ssl", _) or
+      c.hasQualifiedName(javaxOrJakarta() + ".rmi.ssl", _)
     )
   }
 }
 
 class X509TrustManager extends RefType {
-  X509TrustManager() { this.hasQualifiedName("javax.net.ssl", "X509TrustManager") }
+  X509TrustManager() { this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "X509TrustManager") }
 }
 
 /** The `javax.net.ssl.HttpsURLConnection` class. */
 class HttpsUrlConnection extends RefType {
-  HttpsUrlConnection() { this.hasQualifiedName("javax.net.ssl", "HttpsURLConnection") }
+  HttpsUrlConnection() {
+    this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "HttpsURLConnection")
+  }
 }
 
 class SslSocketFactory extends RefType {
-  SslSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
+  SslSocketFactory() { this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "SSLSocketFactory") }
 }
 
 class SslContext extends RefType {
-  SslContext() { this.hasQualifiedName("javax.net.ssl", "SSLContext") }
+  SslContext() { this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "SSLContext") }
 }
 
 /** The `javax.net.ssl.SslSession` class. */
 class SslSession extends RefType {
-  SslSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
+  SslSession() { this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "SSLSession") }
 }
 
 /** The `javax.net.ssl.SslEngine` class. */
 class SslEngine extends RefType {
-  SslEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
+  SslEngine() { this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "SSLEngine") }
 }
 
 /** The `javax.net.ssl.SslSocket` class. */
 class SslSocket extends RefType {
-  SslSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
+  SslSocket() { this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "SSLSocket") }
 }
 
 /** The `javax.net.ssl.SslParameters` class. */
 class SslParameters extends RefType {
-  SslParameters() { this.hasQualifiedName("javax.net.ssl", "SSLParameters") }
+  SslParameters() { this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "SSLParameters") }
 }
 
 class HostnameVerifier extends RefType {
-  HostnameVerifier() { this.hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
+  HostnameVerifier() { this.hasQualifiedName(javaxOrJakarta() + ".net.ssl", "HostnameVerifier") }
 }
 
 /** The Java class `javax.crypto.KeyGenerator`. */
 class KeyGenerator extends RefType {
-  KeyGenerator() { this.hasQualifiedName("javax.crypto", "KeyGenerator") }
+  KeyGenerator() { this.hasQualifiedName(javaxOrJakarta() + ".crypto", "KeyGenerator") }
 }
 
 /** The Java class `java.security.KeyPairGenerator`. */
@@ -292,7 +294,7 @@ abstract class JavaxCryptoAlgoSpec extends CryptoAlgoSpec { }
 class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
   JavaxCryptoCipher() {
     exists(Method m | m.getAReference() = this |
-      m.hasQualifiedName("javax.crypto", "Cipher", "getInstance")
+      m.hasQualifiedName(javaxOrJakarta() + ".crypto", "Cipher", "getInstance")
     )
   }
 
@@ -302,7 +304,7 @@ class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
 class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
   JavaxCryptoSecretKey() {
     exists(Constructor c | c.getAReference() = this |
-      c.getDeclaringType().hasQualifiedName("javax.crypto.spec", "SecretKeySpec")
+      c.getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".crypto.spec", "SecretKeySpec")
     )
   }
 
@@ -327,7 +329,7 @@ class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyAgreement() {
     exists(Method m | m.getAReference() = this |
-      m.hasQualifiedName("javax.crypto", "KeyAgreement", "getInstance")
+      m.hasQualifiedName(javaxOrJakarta() + ".crypto", "KeyAgreement", "getInstance")
     )
   }
 
@@ -337,7 +339,7 @@ class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
 class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
   JavaxCryptoKeyFactory() {
     exists(Method m | m.getAReference() = this |
-      m.hasQualifiedName("javax.crypto", "SecretKeyFactory", "getInstance")
+      m.hasQualifiedName(javaxOrJakarta() + ".crypto", "SecretKeyFactory", "getInstance")
     )
   }
 
@@ -429,5 +431,7 @@ class DsaGenParameterSpec extends AlgorithmParameterSpec {
 
 /** The Java class `javax.crypto.spec.DHGenParameterSpec`. */
 class DhGenParameterSpec extends AlgorithmParameterSpec {
-  DhGenParameterSpec() { this.hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec") }
+  DhGenParameterSpec() {
+    this.hasQualifiedName(javaxOrJakarta() + ".crypto.spec", "DHGenParameterSpec")
+  }
 }
