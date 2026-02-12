@@ -106,8 +106,7 @@ class IgnorableExpr10MultipleComponent extends IgnorableOperation {
 }
 
 /**
- * An operation involving a sub expression with char literal 48, ignore as a likely string conversion
- * e.g., X - '0'
+ * An operation involving a sub expression with char literal `48`, ignore as a likely string conversion. For example: `X - '0'`
  */
 class IgnorableExpr48Mapping extends IgnorableOperation {
   IgnorableExpr48Mapping() {
@@ -208,7 +207,7 @@ class OperationAsArgToIgnorableFunction extends IgnorableOperation {
 }
 
 /**
- * A Literal OP literal means the result is constant/known
+ * A binary operation on two literals means the result is constant/known
  * and the operation is basically ignorable (it's not a real operation but
  * probably one visual simplicity what it means).
  */
@@ -264,7 +263,7 @@ class IgnorablePointerOrCharArithmetic extends IgnorableOperation {
 }
 
 /**
- * Holds for an expression that is a operation that could flow to a Year field.
+ * Holds for an expression that is an add or similar operation that could flow to a Year field.
  */
 predicate isOperationSourceCandidate(Expr e) {
   not e instanceof IgnorableOperation and
@@ -286,7 +285,7 @@ predicate isOperationSourceCandidate(Expr e) {
 }
 
 /**
- * A dataflow that tracks an ignorable operation (eg. bitwise op) to a operation source, so we may disqualify it.
+ * A data flow that tracks an ignorable operation (such as a bitwise operation) to an operation source, so we may disqualify it.
  */
 module IgnorableOperationToOperationSourceCandidateConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr() instanceof IgnorableOperation }
@@ -352,7 +351,7 @@ class YearFieldAssignmentNode extends DataFlow::Node {
 }
 
 /**
- * A DataFlow configuration for identifying flows from some non trivial access or literal
+ * A DataFlow configuration for identifying flows from an identified source
  * to the Year field of a date object.
  */
 module OperationToYearAssignmentConfig implements DataFlow::ConfigSig {
