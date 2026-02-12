@@ -2,8 +2,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -147,6 +148,32 @@ public class SanitizationTests extends HttpServlet {
                 HttpRequest r13 = HttpRequest.newBuilder(new URI(param13)).build();
                 client.send(r13, null);
             }
+
+            // GOOD: sanitisation by @Pattern annotation on a field
+            AnnotatedFieldObject obj14 = new AnnotatedFieldObject(request.getParameter("uri14"));
+            HttpRequest r14a = HttpRequest.newBuilder(new URI(obj14.uri)).build();
+            client.send(r14a, null);
+            HttpRequest r14b = HttpRequest.newBuilder(new URI(obj14.getUri())).build();
+            client.send(r14b, null);
+
+            // GOOD: sanitisation by @Pattern annotation on a parameter of a constructor
+            AnnotatedParameterObject obj15 = new AnnotatedParameterObject(request.getParameter("uri15"));
+            HttpRequest r15a = HttpRequest.newBuilder(new URI(obj15.uri)).build();
+            client.send(r15a, null);
+            HttpRequest r15b = HttpRequest.newBuilder(new URI(obj15.getUri())).build();
+            client.send(r15b, null);
+
+            // GOOD: sanitisation by @Pattern annotation on a parameter of a method
+            HttpRequest r16 = HttpRequest.newBuilder(new URI(identity1(request.getParameter("uri16")))).build();
+            client.send(r16, null);
+
+            // GOOD: sanitisation by @Pattern annotation on a method (which constrains the return value)
+            HttpRequest r17 = HttpRequest.newBuilder(new URI(identity2(request.getParameter("uri17")))).build();
+            client.send(r17, null);
+
+            // GOOD: sanitisation by @Pattern annotation on a type (we do not recognise this, so we get an FP)
+            HttpRequest r18 = HttpRequest.newBuilder(new URI(getFromList(List.of(request.getParameter("uri18"))))).build(); // $ SPURIOUS: Source Alert
+            client.send(r18, null); // $ SPURIOUS: Alert
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -155,6 +182,46 @@ public class SanitizationTests extends HttpServlet {
     private void validate(String s) {
         if (!s.matches("[a-zA-Z0-9_-]+")) {
             throw new IllegalArgumentException("Invalid ID");
+        }
+    }
+
+    public String identity1(@javax.validation.constraints.Pattern(regexp = "[a-zA-Z0-9_-]+") String uri) {
+        return uri;
+    }
+
+    @javax.validation.constraints.Pattern(regexp = "[a-zA-Z0-9_-]+")
+    public String identity2(String uri) {
+        return uri;
+    }
+
+    public String getFromList(List<@javax.validation.constraints.Pattern(regexp = "[a-zA-Z0-9_-]+") String> list) {
+        return list.get(0);
+    }
+
+    public class AnnotatedFieldObject {
+        @javax.validation.constraints.Pattern(regexp = "[a-zA-Z0-9_-]+")
+        String uri;
+
+        String otherField;
+
+        public AnnotatedFieldObject(String uri) {
+            this.uri = uri;
+        }
+
+        public String getUri() {
+            return uri;
+        }
+    }
+
+    public class AnnotatedParameterObject {
+        String uri;
+
+        public AnnotatedParameterObject(@javax.validation.constraints.Pattern(regexp = "[a-zA-Z0-9_-]+") String uri) {
+            this.uri = uri;
+        }
+
+        public String getUri() {
+            return uri;
         }
     }
 }
