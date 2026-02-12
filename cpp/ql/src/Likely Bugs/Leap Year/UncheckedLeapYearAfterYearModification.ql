@@ -106,8 +106,7 @@ class IgnorableExpr10MultipleComponent extends IgnorableOperation {
 }
 
 /**
- * An operation involving a sub expression with char literal 48, ignore as a likely string conversion
- * e.g., X - '0'
+ * An operation involving a sub expression with char literal `48`, ignore as a likely string conversion. For example: `X - '0'`
  */
 class IgnorableExpr48Mapping extends IgnorableOperation {
   IgnorableExpr48Mapping() {
