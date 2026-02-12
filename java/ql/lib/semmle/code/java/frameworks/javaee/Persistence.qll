@@ -9,7 +9,9 @@ import java
 /**
  * Gets a JavaEE Persistence API package name.
  */
-string getAPersistencePackageName() { result = ["javax.persistence", "jakarta.persistence"] }
+string getAPersistencePackageName() {
+  result = [javaxOrJakarta() + ".persistence", "jakarta.persistence"]
+}
 
 /**
  * A `RefType` with the `@Entity` annotation that indicates that it can be persisted using a JPA

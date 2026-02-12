@@ -16,7 +16,9 @@ deprecated import TestLib
 
 /** The java type `javax.servlet.Filter`. */
 class ServletFilterClass extends Class {
-  ServletFilterClass() { this.getAnAncestor().hasQualifiedName("javax.servlet", "Filter") }
+  ServletFilterClass() {
+    this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".servlet", "Filter")
+  }
 }
 
 /** Listener class in the package `javax.servlet` and `javax.servlet.http` */
@@ -26,7 +28,8 @@ class ServletListenerClass extends Class {
     this.getAnAncestor()
         .getQualifiedName()
         .regexpMatch([
-            "javax\\.servlet\\.[a-zA-Z]+Listener", "javax\\.servlet\\.http\\.[a-zA-Z]+Listener"
+            javaxOrJakarta() + "\\.servlet\\.[a-zA-Z]+Listener",
+            javaxOrJakarta() + "\\.servlet\\.http\\.[a-zA-Z]+Listener"
           ])
   }
 }

@@ -18,7 +18,7 @@ class MBean extends ManagedBean {
 class MXBean extends ManagedBean {
   MXBean() {
     this.getQualifiedName().matches("%MXBean%") or
-    this.getAnAnnotation().getType().hasQualifiedName("javax.management", "MXBean")
+    this.getAnAnnotation().getType().hasQualifiedName(javaxOrJakarta() + ".management", "MXBean")
   }
 }
 
@@ -61,7 +61,7 @@ class JmxRegistrationCall extends MethodCall {
 class JmxRegistrationMethod extends Method {
   JmxRegistrationMethod() {
     // A direct registration with the `MBeanServer`.
-    this.getDeclaringType().hasQualifiedName("javax.management", "MBeanServer") and
+    this.getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".management", "MBeanServer") and
     this.getName() = "registerMBean"
     or
     // The `MBeanServer` is often wrapped by an application specific management class, so identify
@@ -78,7 +78,7 @@ class JmxRegistrationMethod extends Method {
    */
   int getObjectPosition() {
     // Passed as the first argument to `registerMBean`.
-    this.getDeclaringType().hasQualifiedName("javax.management", "MBeanServer") and
+    this.getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".management", "MBeanServer") and
     this.getName() = "registerMBean" and
     result = 0
     or
@@ -92,16 +92,20 @@ class JmxRegistrationMethod extends Method {
 /** The class `javax.management.remote.JMXConnectorFactory`. */
 class TypeJmxConnectorFactory extends Class {
   TypeJmxConnectorFactory() {
-    this.hasQualifiedName("javax.management.remote", "JMXConnectorFactory")
+    this.hasQualifiedName(javaxOrJakarta() + ".management.remote", "JMXConnectorFactory")
   }
 }
 
 /** The class `javax.management.remote.JMXServiceURL`. */
 class TypeJmxServiceUrl extends Class {
-  TypeJmxServiceUrl() { this.hasQualifiedName("javax.management.remote", "JMXServiceURL") }
+  TypeJmxServiceUrl() {
+    this.hasQualifiedName(javaxOrJakarta() + ".management.remote", "JMXServiceURL")
+  }
 }
 
 /** The class `javax.management.remote.rmi.RMIConnector`. */
 class TypeRmiConnector extends Class {
-  TypeRmiConnector() { this.hasQualifiedName("javax.management.remote.rmi", "RMIConnector") }
+  TypeRmiConnector() {
+    this.hasQualifiedName(javaxOrJakarta() + ".management.remote.rmi", "RMIConnector")
+  }
 }
