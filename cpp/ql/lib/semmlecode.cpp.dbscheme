@@ -246,13 +246,21 @@ trap_filename(
 );
 
 /**
+ * Gives the name for the source file.
+ */
+source_file_name(
+    int sf: @source_file,
+    string name: string ref
+);
+
+/**
  * In `build-mode: none` overlay mode, indicates that `source_file`
  * (`/path/to/foo.c`) uses the TRAP file `trap_file`; i.e. it is the
  * TRAP file corresponding to `foo.c`, something it transitively
  * includes, or a template instantiation it transitively uses.
  */
 source_file_uses_trap(
-    string source_file: string ref,
+    int source_file: @source_file ref,
     int trap_file: @trap ref
 );
 
