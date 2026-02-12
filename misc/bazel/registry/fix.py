@@ -62,10 +62,10 @@ for entry in this_dir.joinpath("modules").iterdir():
         patch_json(
             version / "source.json",
             patches={
-                p.name: sha256(p) for p in patches.iterdir()
+                p.name: sha256(p) for p in sorted(patches.iterdir())
             } if patches.is_dir() else None,
             patch_strip=1 if patches.is_dir() else None,
             overlay={
-                o.name: sha256(o) for o in overlay.iterdir()
+                o.name: sha256(o) for o in sorted(overlay.iterdir())
             } if overlay.is_dir() else None,
         )
