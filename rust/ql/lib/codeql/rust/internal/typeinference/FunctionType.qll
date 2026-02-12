@@ -420,13 +420,20 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     ArgIsInstantiationOf<CallAndPos, ArgIsInstantiationOfToIndexInput>;
 
   pragma[nomagic]
+  private predicate argIsInstantiationOf(
+    Input::Call call, FunctionPosition pos, ImplOrTraitItemNode i, Function f, int rnk
+  ) {
+    ArgIsInstantiationOfToIndex::argIsInstantiationOf(MkCallAndPos(call, pos), i, _) and
+    toCheckRanked(i, f, _, pos, rnk)
+  }
+
+  pragma[nomagic]
   private predicate argsAreInstantiationsOfToIndex(
     Input::Call call, ImplOrTraitItemNode i, Function f, int rnk
   ) {
     exists(FunctionPosition pos |
-      ArgIsInstantiationOfToIndex::argIsInstantiationOf(MkCallAndPos(call, pos), i, _) and
-      call.hasTargetCand(i, f) and
-      toCheckRanked(i, f, _, pos, rnk)
+      argIsInstantiationOf(call, pos, i, f, rnk) and
+      call.hasTargetCand(i, f)
     |
       rnk = 0
       or
