@@ -207,7 +207,7 @@ class OperationAsArgToIgnorableFunction extends IgnorableOperation {
 }
 
 /**
- * A Literal OP literal means the result is constant/known
+ * A binary operation on two literals means the result is constant/known
  * and the operation is basically ignorable (it's not a real operation but
  * probably one visual simplicity what it means).
  */
