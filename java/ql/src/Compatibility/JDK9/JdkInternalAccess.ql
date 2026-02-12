@@ -115,8 +115,8 @@ predicate jdkPackage(Package p) {
   |
     pkgName =
       [
-        "com.sun", "sun", "java", javaxOrJakarta() + "", "com.oracle.net", "genstubs", "jdk",
-        "build.tools", "org.omg.CORBA", "org.ietf.jgss"
+        "com.sun", "sun", "java", "javax", "com.oracle.net", "genstubs", "jdk", "build.tools",
+        "org.omg.CORBA", "org.ietf.jgss"
       ]
   )
 }
