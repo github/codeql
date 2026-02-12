@@ -18,13 +18,15 @@ import semmle.code.java.Maps
 predicate isRmiOrJmxServerCreateConstructor(Constructor constructor) {
   constructor
       .getDeclaringType()
-      .hasQualifiedName("javax.management.remote.rmi", "RMIConnectorServer")
+      .hasQualifiedName(javaxOrJakarta() + ".management.remote.rmi", "RMIConnectorServer")
 }
 
 /** Holds if `method` creates an RMI or JMX server. */
 predicate isRmiOrJmxServerCreateMethod(Method method) {
   method.getName() = "newJMXConnectorServer" and
-  method.getDeclaringType().hasQualifiedName("javax.management.remote", "JMXConnectorServerFactory")
+  method
+      .getDeclaringType()
+      .hasQualifiedName(javaxOrJakarta() + ".management.remote", "JMXConnectorServerFactory")
 }
 
 /**
@@ -59,7 +61,7 @@ module SafeFlowConfig implements DataFlow::ConfigSig {
       put.getKey()
           .(FieldAccess)
           .getField()
-          .hasQualifiedName("javax.management.remote.rmi", "RMIConnectorServer",
+          .hasQualifiedName(javaxOrJakarta() + ".management.remote.rmi", "RMIConnectorServer",
             ["CREDENTIAL_TYPES", "CREDENTIALS_FILTER_PATTERN"])
     |
       put.getQualifier() = qualifier and

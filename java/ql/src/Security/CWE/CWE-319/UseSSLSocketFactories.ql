@@ -27,7 +27,7 @@ class SocketFactoryType extends RefType {
   SocketFactoryType() {
     this.hasQualifiedName("java.rmi.server", "RMIServerSocketFactory") or
     this.hasQualifiedName("java.rmi.server", "RMIClientSocketFactory") or
-    this.hasQualifiedName("javax.net", "SocketFactory") or
+    this.hasQualifiedName(javaxOrJakarta() + ".net", "SocketFactory") or
     this.hasQualifiedName("java.net", "SocketImplFactory")
   }
 }

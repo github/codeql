@@ -9,6 +9,7 @@ import java
 class SslClass extends RefType {
   SslClass() {
     exists(Class c | this.getAnAncestor() = c |
+      // Note there are no jakarta equivalents of these classes.
       c.hasQualifiedName("javax.net.ssl", _) or
       c.hasQualifiedName("javax.rmi.ssl", _)
     )
