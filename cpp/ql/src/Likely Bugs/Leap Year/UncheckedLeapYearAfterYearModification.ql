@@ -434,8 +434,7 @@ predicate yearAssignmentToCheckCommonSteps(DataFlow::Node node1, DataFlow::Node 
   node1.(YearFieldAssignmentNode).getYearFieldAccess().getQualifier() = node2.asExpr()
   or
   // Pass through any intermediate struct
-  exists(Assignment a, DataFlow::PostUpdateNode pun |
-    a.getLValue().(YearFieldAccess).getQualifier*() = pun.getPreUpdateNode().asExpr() and
+  exists(Assignment a |
     a.getRValue() = node1.asExpr() and
     node2.asExpr() = a.getLValue().(YearFieldAccess).getQualifier*()
   )
