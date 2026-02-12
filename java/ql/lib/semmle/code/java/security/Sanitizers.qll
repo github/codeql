@@ -41,17 +41,11 @@ class SimpleTypeSanitizer extends DataFlow::Node {
  * make the type recursive. Otherwise use `RegexpCheckBarrier`.
  */
 predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
-  exists(Method method, MethodCall mc |
-    method = mc.getMethod() and
-    guard = mc and
-    branch = true
-  |
-    e = mc.(RegexExecutionExpr::Range).getString()
-    or
-    // Other `matches` methods.
-    method.getName() = "matches" and
-    e = mc.getQualifier()
-  )
+  exists(RegexExecutionExpr::Range ree | not ree instanceof Annotation |
+    guard = ree and
+    e = ree.getString()
+  ) and
+  branch = true
 }
 
 /**
@@ -62,5 +56,12 @@ predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
 class RegexpCheckBarrier extends DataFlow::Node {
   RegexpCheckBarrier() {
     this = DataFlow::BarrierGuard<regexpMatchGuardChecks/3>::getABarrierNode()
+    or
+    // Annotations don't fit into the model of barrier guards because the
+    // annotation doesn't dominate the sanitized expression, so we instead
+    // treat them as barriers directly.
+    exists(RegexExecutionExpr::Range ree | ree instanceof Annotation |
+      this.asExpr() = ree.getString()
+    )
   }
 }

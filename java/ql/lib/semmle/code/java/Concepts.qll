@@ -8,6 +8,7 @@ module;
 
 import java
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.frameworks.JavaxAnnotations
 
 /**
  * A data-flow node that executes a regular expression.
