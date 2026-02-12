@@ -1,2 +1,4 @@
 query: Security/CWE-918/FullServerSideRequestForgery.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+postprocess:
+- utils/test/InlineExpectationsTestQuery.ql
+- utils/test/PrettyPrintModels.ql
