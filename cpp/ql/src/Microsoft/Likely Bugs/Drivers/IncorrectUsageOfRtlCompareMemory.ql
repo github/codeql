@@ -55,14 +55,6 @@ where
       msg =
         "as an operand in an equality operation where the other operand is a boolean value (high precision result)"
     )
-    or
-    exists(EqualityOperation bao, Expr e2 | e = bao |
-      bao.hasOperands(fc, e2) and
-      (e2.(Literal).getValue().toInt() = 1 or e2.(Literal).getValue().toInt() = 0) and
-      not isLiteralABooleanMacro(e2) and
-      msg =
-        "as an operand in an equality operation where the other operand is likely a boolean value (lower precision result, needs to be reviewed)"
-    )
   )
 select e,
   "This $@ is being handled $@ instead of the number of matching bytes. Please review the usage of this function and consider replacing it with `RtlEqualMemory`.",

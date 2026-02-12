@@ -46,7 +46,7 @@ int Test(const void* ptr)
 		t++;
 	}
 
-	if (0 == RtlCompareMemory("test", ptr, 4)) // potentially a bug (lower precision)
+	if (0 == RtlCompareMemory("test", ptr, 4)) // FALSE NEGATIVE: potentially a bug but results in too many false positives (lower precision, perhaps != 0 is a good case but == 0 isn't?)
 	{
 		t++;
 	}
