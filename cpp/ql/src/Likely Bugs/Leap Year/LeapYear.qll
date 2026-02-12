@@ -310,7 +310,7 @@ module PossibleYearArithmeticOperationCheckFlow =
   TaintTracking::Global<PossibleYearArithmeticOperationCheckConfig>;
 
 /**
- * Time conversion functions where either
+ * A time conversion function where either
  * 1) an incorrect leap year date would result in an error that can be checked from the return value or
  * 2) an incorrect leap year date is auto corrected (no checks required)
  */

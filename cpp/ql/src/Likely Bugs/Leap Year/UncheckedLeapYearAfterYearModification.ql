@@ -27,6 +27,8 @@ import semmle.code.cpp.controlflow.IRGuards
  */
 class IgnorableFunction extends Function {
   IgnorableFunction() {
+    // arithmetic in known time conversion functions may look like dangerous operations
+    // we assume all known time conversion functions are safe.
     this instanceof TimeConversionFunction
     or
     // Helper utility in postgres with string time conversions
@@ -421,6 +423,41 @@ predicate isLeapYearCheckSink(DataFlow::Node sink) {
   isLeapYearCheckCall(_, [sink.asExpr(), sink.asIndirectExpr()])
 }
 
+predicate yearAssignmentToCheckCommonSteps(DataFlow::Node node1, DataFlow::Node node2) {
+  // flow from a YearFieldAccess to the qualifier
+  node2.asExpr() = node1.asExpr().(YearFieldAccess).getQualifier*()
+  or
+  // getting the 'access' can be tricky at definitions (assignments especially)
+  // as dataflow uses asDefinition not asExpr.
+  // the YearFieldAssignmentNode holds the access in these cases
+  node1.(YearFieldAssignmentNode).getYearFieldAccess().getQualifier() = node2.asExpr()
+  or
+  // flow from a year access qualifier to a year field
+  exists(YearFieldAccess yfa | node2.asExpr() = yfa and node1.asExpr() = yfa.getQualifier())
+  or
+  node1.(YearFieldAssignmentNode).getYearFieldAccess().getQualifier() = node2.asExpr()
+  or
+  // Pass through any intermediate struct
+  exists(Assignment a, DataFlow::PostUpdateNode pun |
+    a.getLValue().(YearFieldAccess).getQualifier*() = pun.getPreUpdateNode().asExpr() and
+    a.getRValue() = node1.asExpr() and
+    node2.asExpr() = a.getLValue().(YearFieldAccess).getQualifier*()
+  )
+  or
+  // in cases of t.year = x and the value of x is checked, but the year t.year isn't directly checked
+  // flow from a year assignment node to an RHS if it is an assignment
+  // e.g.,
+  //    t.year = x;
+  //    isLeapYear(x);
+  //    --> at this point there is no flow of t.year to a check, but only its raw value
+  // To detect the flow of 'x' to the isLeapYear check,
+  // flow from t.year to 'x' (at assignment, t.year = x, flow to the RHS to track use-use flow of x)
+  exists(YearFieldAssignmentNode yfan |
+    node1 = yfan and
+    node2.asExpr() = yfan.asDefinition().(Assignment).getRValue()
+  )
+}
+
 /**
  * A flow configuration from a Year field access to some Leap year check or guard
  */
@@ -430,25 +467,7 @@ module YearAssignmentToLeapYearCheckConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isLeapYearCheckSink(sink) }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // flow from a YearFieldAccess to the qualifier
-    node2.asExpr() = node1.asExpr().(YearFieldAccess).getQualifier*()
-    or
-    // Pass through any intermediate struct
-    exists(Assignment a, DataFlow::PostUpdateNode pun |
-      a.getLValue().(YearFieldAccess).getQualifier*() = pun.getPreUpdateNode().asExpr() and
-      a.getRValue() = node1.asExpr() and
-      node2.asExpr() = a.getLValue().(YearFieldAccess).getQualifier*()
-    )
-    or
-    // flow from a year access qualifier to a year field
-    exists(YearFieldAccess yfa | node2.asExpr() = yfa and node1.asExpr() = yfa.getQualifier())
-    or
-    // in cases of x.year = x and the x is checked, but the year x.year isn't directly
-    // flow from a year assignment node to an RHS if it is an assignment
-    exists(YearFieldAssignmentNode yfan |
-      node1 = yfan and
-      node2.asExpr() = yfan.asDefinition().(Assignment).getRValue()
-    )
+    yearAssignmentToCheckCommonSteps(node1, node2)
   }
 
   /**
@@ -514,6 +533,11 @@ predicate isControlledByMonthEqualityCheckNonFebruary(Expr e) {
  * auto convert to a sanity check guard of the result for error conditions.
  */
 module YearAssignmentToCheckedTimeConversionConfig implements DataFlow::StateConfigSig {
+  // Flow state tracks if flow goes through a known time conversion function
+  // see `TimeConversionFunction`.
+  // A valid check with a time conversion function is either the case:
+  // 1) the year flows into a time conversion function, and the time conversion function's result is checked or
+  // 2) the year flows into a time conversion function that auto corrects for leap year, so no check is necessary.
   class FlowState = boolean;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
@@ -522,6 +546,9 @@ module YearAssignmentToCheckedTimeConversionConfig implements DataFlow::StateCon
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
+    // Case 1: Flow through a time conversion function that requires a check,
+    // and we have arrived at a guard, implying the result was checked for possible error, including leap year error.
+    // state = true indicates the flow went through a time conversion function
     state = true and
     (
       exists(IfStmt ifs | ifs.getCondition().getAChild*() = [sink.asExpr(), sink.asIndirectExpr()])
@@ -533,6 +560,8 @@ module YearAssignmentToCheckedTimeConversionConfig implements DataFlow::StateCon
       exists(Loop l | l.getCondition().getAChild*() = [sink.asExpr(), sink.asIndirectExpr()])
     )
     or
+    // Case 2: Flow through a time conversion function that auto corrects for leap year, so no check is necessary.
+    // state true or false, as flowing through a time conversion function is not necessary in this instance.
     state in [true, false] and
     exists(Call c, TimeConversionFunction f |
       f.isAutoLeapYearCorrecting() and
@@ -554,20 +583,7 @@ module YearAssignmentToCheckedTimeConversionConfig implements DataFlow::StateCon
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    // flow from a YearFieldAccess to the qualifier
-    node2.asExpr() = node1.asExpr().(YearFieldAccess).getQualifier*()
-    or
-    node1.(YearFieldAssignmentNode).getYearFieldAccess().getQualifier() = node2.asExpr()
-    or
-    // Pass through any intermediate struct
-    exists(Assignment a, DataFlow::PostUpdateNode pun |
-      a.getLValue().(YearFieldAccess).getQualifier*() = pun.getPreUpdateNode().asExpr() and
-      a.getRValue() = node1.asExpr() and
-      node2.asExpr() = a.getLValue().(YearFieldAccess).getQualifier*()
-    )
-    or
-    // flow from a year access qualifier to a year field
-    exists(YearFieldAccess yfa | node2.asExpr() = yfa and node1.asExpr() = yfa.getQualifier())
+    yearAssignmentToCheckCommonSteps(node1, node2)
   }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
