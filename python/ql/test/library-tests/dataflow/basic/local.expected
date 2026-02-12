@@ -1,3 +1,8 @@
+| test.py:0:0:0:0 | ModuleVariableNode in Module test for __name__ | test.py:0:0:0:0 | ModuleVariableNode in Module test for __name__ |
+| test.py:0:0:0:0 | ModuleVariableNode in Module test for __package__ | test.py:0:0:0:0 | ModuleVariableNode in Module test for __package__ |
+| test.py:0:0:0:0 | ModuleVariableNode in Module test for a | test.py:0:0:0:0 | ModuleVariableNode in Module test for a |
+| test.py:0:0:0:0 | ModuleVariableNode in Module test for b | test.py:0:0:0:0 | ModuleVariableNode in Module test for b |
+| test.py:0:0:0:0 | ModuleVariableNode in Module test for obfuscated_id | test.py:0:0:0:0 | ModuleVariableNode in Module test for obfuscated_id |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:5:1:17 | ControlFlowNode for obfuscated_id |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
@@ -31,7 +36,9 @@
 | test.py:6:5:6:6 | ControlFlowNode for IntegerLiteral | test.py:6:5:6:6 | ControlFlowNode for IntegerLiteral |
 | test.py:6:5:6:6 | ControlFlowNode for IntegerLiteral | test.py:7:19:7:19 | ControlFlowNode for a |
 | test.py:7:1:7:1 | ControlFlowNode for b | test.py:7:1:7:1 | ControlFlowNode for b |
+| test.py:7:5:7:17 | Capturing closure argument | test.py:7:5:7:17 | Capturing closure argument |
 | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
+| test.py:7:5:7:17 | [post] Capturing closure argument | test.py:7:5:7:17 | [post] Capturing closure argument |
 | test.py:7:5:7:17 | [post] ControlFlowNode for obfuscated_id | test.py:7:5:7:17 | [post] ControlFlowNode for obfuscated_id |
 | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() | test.py:7:1:7:1 | ControlFlowNode for b |
 | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |
