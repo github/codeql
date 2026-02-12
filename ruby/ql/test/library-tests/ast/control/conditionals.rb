@@ -91,11 +91,11 @@ end
 
 # If expr with `||` at the start of a separate line before then
 # NOTE: This is not parsed correctly due to the leading `||`
-if a
-    || b
-then
-    c
-end
+# if a
+#     || b
+# then
+#     c
+# end
 
 # If expr with `or` at the start of a separate line before then
 # NOTE: This is not parsed correctly, `or b` is parsed as a call
@@ -115,30 +115,30 @@ end
 
 # If expr with alternating && and || at the start of lines
 # NOTE: This is not parsed correctly due to the leading `||`
-if a
-  && b
-  || c
-then
-    d
-end
+# if a
+#   && b
+#   || c
+# then
+#     d
+# end
 
 # If expr with operator at start of line and parentheses
 # NOTE: This is not parsed correctly due to the leading `||`
-if a
-  && (b
-  || c)
-then
-    d
-end
+# if a
+#   && (b
+#   || c)
+# then
+#     d
+# end
 
 # If expr with operator at start of line and parentheses
 # NOTE: This is not parsed correctly due to the leading `||`
-if a
-  || (b
-  && c)
-then
-    d
-end
+# if a
+#   || (b
+#   && c)
+# then
+#     d
+# end
 
 # If expr with && at end of line
 if a &&

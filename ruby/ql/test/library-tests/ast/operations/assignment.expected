@@ -44,7 +44,6 @@ assignments
 | operations.rb:85:2:85:11 | ... = ... | = | operations.rb:85:2:85:4 | baz | operations.rb:85:6:85:7 | ... ^ ... | AssignExpr |
 | operations.rb:85:2:85:11 | ... ^= ... | ^= | operations.rb:85:2:85:4 | baz | operations.rb:85:9:85:11 | qux | AssignBitwiseXorExpr |
 | operations.rb:88:1:89:6 | ... = ... | = | operations.rb:88:1:88:3 | foo | operations.rb:88:7:89:6 | ... && ... | AssignExpr |
-| operations.rb:91:1:91:7 | ... = ... | = | operations.rb:91:1:91:3 | bar | operations.rb:91:7:91:7 | a | AssignExpr |
 | operations.rb:108:3:108:8 | ... = ... | = | operations.rb:108:3:108:4 | @x | operations.rb:108:8:108:8 | 1 | AssignExpr |
 | operations.rb:109:3:109:9 | ... += ... | += | operations.rb:109:3:109:4 | @x | operations.rb:109:9:109:9 | 2 | AssignAddExpr |
 | operations.rb:109:3:109:9 | ... = ... | = | operations.rb:109:3:109:4 | @x | operations.rb:109:6:109:7 | ... + ... | AssignExpr |

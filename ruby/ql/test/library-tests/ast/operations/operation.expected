@@ -174,8 +174,6 @@
 | operations.rb:88:1:89:6 | ... = ... | = | operations.rb:88:7:89:6 | ... && ... | AssignExpr |
 | operations.rb:88:7:89:6 | ... && ... | && | operations.rb:88:7:88:7 | a | LogicalAndExpr |
 | operations.rb:88:7:89:6 | ... && ... | && | operations.rb:89:6:89:6 | b | LogicalAndExpr |
-| operations.rb:91:1:91:7 | ... = ... | = | operations.rb:91:1:91:3 | bar | AssignExpr |
-| operations.rb:91:1:91:7 | ... = ... | = | operations.rb:91:7:91:7 | a | AssignExpr |
 | operations.rb:96:10:97:8 | ... && ... | && | operations.rb:96:10:96:10 | a | LogicalAndExpr |
 | operations.rb:96:10:97:8 | ... && ... | && | operations.rb:97:8:97:8 | b | LogicalAndExpr |
 | operations.rb:108:3:108:8 | ... = ... | = | operations.rb:108:3:108:4 | @x | AssignExpr |

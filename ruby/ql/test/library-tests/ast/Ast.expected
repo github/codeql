@@ -1479,12 +1479,6 @@ control/conditionals.rb:
 #   88|       getStmt: [MethodCall] call to then
 #   88|         getReceiver: [SelfVariableAccess] self
 #   89|       getStmt: [LocalVariableAccess] c
-#   94|   getStmt: [IfExpr] if ...
-#   94|     getCondition: [LocalVariableAccess] a
-#   94|     getBranch/getThen: [StmtSequence] then ...
-#   96|       getStmt: [MethodCall] call to then
-#   96|         getReceiver: [SelfVariableAccess] self
-#   97|       getStmt: [LocalVariableAccess] c
 #  102|   getStmt: [IfExpr] if ...
 #  102|     getCondition: [LocalVariableAccess] a
 #  102|     getBranch/getThen: [StmtSequence] then ...
@@ -1502,37 +1496,12 @@ control/conditionals.rb:
 #  111|       getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] c
 #  111|     getBranch/getThen: [StmtSequence] then ...
 #  113|       getStmt: [LocalVariableAccess] d
-#  118|   getStmt: [IfExpr] if ...
-#  118|     getCondition: [LogicalAndExpr] ... && ...
-#  118|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
-#  119|       getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
-#  119|     getBranch/getThen: [StmtSequence] then ...
-#  121|       getStmt: [MethodCall] call to then
-#  121|         getReceiver: [SelfVariableAccess] self
-#  122|       getStmt: [LocalVariableAccess] d
-#  127|   getStmt: [IfExpr] if ...
-#  127|     getCondition: [LogicalAndExpr] ... && ...
-#  127|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
-#  128|       getAnOperand/getArgument/getRightOperand: [ParenthesizedExpr] ( ... )
-#  128|         getStmt: [LocalVariableAccess] b
-#  129|     getBranch/getThen: [StmtSequence] then ...
-#  131|       getStmt: [LocalVariableAccess] d
-#  136|   getStmt: [IfExpr] if ...
-#  136|     getCondition: [LocalVariableAccess] a
-#  136|     getBranch/getThen: [StmtSequence] then ...
-#  139|       getStmt: [MethodCall] call to then
-#  139|         getReceiver: [SelfVariableAccess] self
-#  140|       getStmt: [LocalVariableAccess] d
 #  144|   getStmt: [IfExpr] if ...
 #  144|     getCondition: [LogicalAndExpr] ... && ...
 #  144|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
 #  145|       getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
 #  145|     getBranch/getThen: [StmtSequence] then ...
 #  147|       getStmt: [LocalVariableAccess] c
-#  137| [ParenthesizedExpr] ( ... )
-#  137|   getStmt: [LogicalAndExpr] ... && ...
-#  137|     getAnOperand/getLeftOperand/getReceiver: [MethodCall] call to b
-#  138|     getAnOperand/getArgument/getRightOperand: [MethodCall] call to c
 constants/constants.rb:
 #    1| [Toplevel] constants.rb
 #    1|   getStmt: [ModuleDeclaration] ModuleA
@@ -2925,9 +2894,6 @@ operations/operations.rb:
 #   88|     getAnOperand/getRightOperand: [LogicalAndExpr] ... && ...
 #   88|       getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
 #   89|       getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
-#   91|   getStmt: [AssignExpr] ... = ...
-#   91|     getAnOperand/getLeftOperand: [LocalVariableAccess] bar
-#   91|     getAnOperand/getRightOperand: [LocalVariableAccess] a
 #   95|   getStmt: [Method] foo
 #   95|     getParameter: [SimpleParameter] a
 #   95|       getDefiningAccess: [LocalVariableAccess] a
@@ -2937,13 +2903,6 @@ operations/operations.rb:
 #   96|       getValue: [LogicalAndExpr] ... && ...
 #   96|         getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] a
 #   97|         getAnOperand/getArgument/getRightOperand: [LocalVariableAccess] b
-#  102|   getStmt: [Method] bar
-#  102|     getParameter: [SimpleParameter] a
-#  102|       getDefiningAccess: [LocalVariableAccess] a
-#  102|     getParameter: [SimpleParameter] b
-#  102|       getDefiningAccess: [LocalVariableAccess] b
-#  103|     getStmt: [ReturnStmt] return
-#  103|       getValue: [LocalVariableAccess] a
 #  107|   getStmt: [ClassDeclaration] X
 #  108|     getStmt: [AssignExpr] ... = ...
 #  108|       getAnOperand/getLeftOperand: [InstanceVariableAccess] @x

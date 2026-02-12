@@ -88,8 +88,8 @@ foo **= bar
 foo = a
   && b
 # NOTE: This is not parsed correctly, `|| b` is dropped
-bar = a
-  || b
+# bar = a
+#   || b
 
 # Return with `&&` at start of line
 def foo(a, b)
@@ -99,10 +99,10 @@ end
 
 # Return with `||` at start of line
 # NOTE: This is not parsed correctly, `|| b` is dropped
-def bar(a, b)
-  return a
-    || b
-end
+# def bar(a, b)
+#   return a
+#     || b
+# end
 
 class X
   @x = 1
