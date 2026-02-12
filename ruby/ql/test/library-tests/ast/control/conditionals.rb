@@ -68,3 +68,22 @@ if a > b then
 else
     c
 end
+
+# If expr with && on same line as condition and then
+if a && b then
+    c
+end
+
+# If expr with && at the start of a separate line before then
+if a
+    && b
+then
+    c
+end
+
+# If expr with && at end of line
+if a &&
+    b
+then
+    c
+end

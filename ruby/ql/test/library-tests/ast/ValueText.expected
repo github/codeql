@@ -336,6 +336,12 @@ exprValue
 | control/conditionals.rb:62:5:62:5 | c | 0 | int |
 | control/conditionals.rb:67:8:67:8 | b | 0 | int |
 | control/conditionals.rb:69:5:69:5 | c | 0 | int |
+| control/conditionals.rb:73:9:73:9 | b | 0 | int |
+| control/conditionals.rb:74:5:74:5 | c | 0 | int |
+| control/conditionals.rb:79:8:79:8 | b | 0 | int |
+| control/conditionals.rb:81:5:81:5 | c | 0 | int |
+| control/conditionals.rb:86:5:86:5 | b | 0 | int |
+| control/conditionals.rb:88:5:88:5 | c | 0 | int |
 | control/loops.rb:2:7:2:7 | 0 | 0 | int |
 | control/loops.rb:3:7:3:7 | 0 | 0 | int |
 | control/loops.rb:4:5:4:5 | 0 | 0 | int |
@@ -1257,6 +1263,12 @@ exprCfgNodeValue
 | control/conditionals.rb:62:5:62:5 | c | 0 | int |
 | control/conditionals.rb:67:8:67:8 | b | 0 | int |
 | control/conditionals.rb:69:5:69:5 | c | 0 | int |
+| control/conditionals.rb:73:9:73:9 | b | 0 | int |
+| control/conditionals.rb:74:5:74:5 | c | 0 | int |
+| control/conditionals.rb:79:8:79:8 | b | 0 | int |
+| control/conditionals.rb:81:5:81:5 | c | 0 | int |
+| control/conditionals.rb:86:5:86:5 | b | 0 | int |
+| control/conditionals.rb:88:5:88:5 | c | 0 | int |
 | control/loops.rb:2:7:2:7 | 0 | 0 | int |
 | control/loops.rb:3:7:3:7 | 0 | 0 | int |
 | control/loops.rb:4:5:4:5 | 0 | 0 | int |

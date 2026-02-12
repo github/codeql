@@ -2962,6 +2962,36 @@ control/conditionals.rb:
 #   68|       0: [ReservedWord] else
 #   69|       1: [Identifier] c
 #   70|     4: [ReservedWord] end
+#   73|   17: [If] If
+#   73|     0: [ReservedWord] if
+#   73|     1: [Binary] Binary
+#   73|       0: [Identifier] a
+#   73|       1: [ReservedWord] &&
+#   73|       2: [Identifier] b
+#   73|     2: [Then] Then
+#   73|       0: [ReservedWord] then
+#   74|       1: [Identifier] c
+#   75|     3: [ReservedWord] end
+#   78|   18: [If] If
+#   78|     0: [ReservedWord] if
+#   78|     1: [Binary] Binary
+#   78|       0: [Identifier] a
+#   79|       1: [ReservedWord] &&
+#   79|       2: [Identifier] b
+#   79|     2: [Then] Then
+#   80|       0: [ReservedWord] then
+#   81|       1: [Identifier] c
+#   82|     3: [ReservedWord] end
+#   85|   19: [If] If
+#   85|     0: [ReservedWord] if
+#   85|     1: [Binary] Binary
+#   85|       0: [Identifier] a
+#   85|       1: [ReservedWord] &&
+#   86|       2: [Identifier] b
+#   86|     2: [Then] Then
+#   87|       0: [ReservedWord] then
+#   88|       1: [Identifier] c
+#   89|     3: [ReservedWord] end
 #    1| [Comment] # Define some variables used below
 #    9| [Comment] # If expr with no else
 #   14| [Comment] # If expr with single else
@@ -2974,6 +3004,9 @@ control/conditionals.rb:
 #   57| [Comment] # Ternary if expr
 #   60| [Comment] # If expr with empty else (treated as no else)
 #   66| [Comment] # If expr with empty then (treated as no then)
+#   72| [Comment] # If expr with && on same line as condition and then
+#   77| [Comment] # If expr with && at the start of a separate line before then
+#   84| [Comment] # If expr with && at end of line
 control/loops.rb:
 #    1| [Program] Program
 #    2|   0: [Assignment] Assignment
