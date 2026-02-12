@@ -77,7 +77,7 @@ module RegexExecutionExpr {
     /** Gets the expression for the regex being executed by this node. */
     abstract Expr getRegex();
 
-    /** Gets a expression for the string to be searched or matched against. */
+    /** Gets an expression for the string to be searched or matched against. */
     abstract Expr getString();
 
     /**

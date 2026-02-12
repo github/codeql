@@ -71,17 +71,17 @@ class PatternLiteralField extends Field {
   }
 }
 
-/** A call to the `compile` method of `java.util.regex.Pattern` */
+/** A call to the `compile` method of `java.util.regex.Pattern`. */
 class PatternCompileCall extends MethodCall {
   PatternCompileCall() { this.getMethod() instanceof PatternCompileMethod }
 }
 
-/** A call to the `matcher` method of `java.util.regex.Pattern` */
+/** A call to the `matcher` method of `java.util.regex.Pattern`. */
 class PatternMatcherCall extends MethodCall {
   PatternMatcherCall() { this.getMethod() instanceof PatternMatcherMethod }
 }
 
-/** A call to the `matches` method of `java.util.regex.Pattern` */
+/** A call to the `matches` method of `java.util.regex.Pattern`. */
 class PatternMatchesCall extends MethodCall, RegexExecutionExpr::Range {
   PatternMatchesCall() { this.getMethod() instanceof PatternMatchesMethod }
 
@@ -92,7 +92,7 @@ class PatternMatchesCall extends MethodCall, RegexExecutionExpr::Range {
   override string getName() { result = "Pattern.matches" }
 }
 
-/** A call to the `matches` method of `java.util.regex.Matcher` */
+/** A call to the `matches` method of `java.util.regex.Matcher`. */
 class MatcherMatchesCall extends MethodCall, RegexExecutionExpr::Range {
   MatcherMatchesCall() { this.getMethod() instanceof MatcherMatchesMethod }
 
