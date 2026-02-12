@@ -288,7 +288,7 @@ predicate isOperationSourceCandidate(Expr e) {
 }
 
 /**
- * A dataflow that tracks an ignorable operation (eg. bitwise op) to a operation source, so we may disqualify it.
+ * A data flow that tracks an ignorable operation (such as a bitwise operation) to an operation source, so we may disqualify it.
  */
 module IgnorableOperationToOperationSourceCandidateConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr() instanceof IgnorableOperation }
