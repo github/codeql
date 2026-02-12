@@ -14,7 +14,9 @@ class PackedTimeType extends Type {
   }
 }
 
-private predicate timeType(string typeName) { typeName = ["_SYSTEMTIME", "SYSTEMTIME", "tm"] }
+private predicate timeType(string typeName) {
+  typeName = ["_SYSTEMTIME", "SYSTEMTIME", "tm", "TIME_FIELDS", "_TIME_FIELDS", "PTIME_FIELDS"]
+}
 
 /**
  * A type that is used to represent times and dates in an 'unpacked' form, that is,
@@ -94,4 +96,25 @@ class StructTmMonthFieldAccess extends MonthFieldAccess {
  */
 class StructTmYearFieldAccess extends YearFieldAccess {
   StructTmYearFieldAccess() { this.getTarget().getName() = "tm_year" }
+}
+
+/**
+ * A `DayFieldAccess` for the `TIME_FIELDS` struct.
+ */
+class TimeFieldsDayFieldAccess extends DayFieldAccess {
+  TimeFieldsDayFieldAccess() { this.getTarget().getName() = "Day" }
+}
+
+/**
+ * A `MonthFieldAccess` for the `TIME_FIELDS` struct.
+ */
+class TimeFieldsMonthFieldAccess extends MonthFieldAccess {
+  TimeFieldsMonthFieldAccess() { this.getTarget().getName() = "Month" }
+}
+
+/**
+ * A `YearFieldAccess` for the `TIME_FIELDS` struct.
+ */
+class TimeFieldsYearFieldAccess extends YearFieldAccess {
+  TimeFieldsYearFieldAccess() { this.getTarget().getName() = "Year" }
 }
