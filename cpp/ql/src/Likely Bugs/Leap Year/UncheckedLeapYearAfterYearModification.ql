@@ -767,7 +767,7 @@ class LeapYearGuardCondition extends GuardCondition {
  *        ... values eventually used in the same time struct
  * If this is even more challenging if the struct the values end up in are not
  * local (set inter-procedurally).
- * This flow flows constants 1-31 to a month or day assignment.
+ * This configuration looks for constants 1-31 flowing to a month or day assignment.
  * It is assumed a user of this flow will check if the month/day source and month/day sink
  * are in the same basic blocks as a year modification source and a year modification sink.
  * It is also assumed a user will check if the constant source is a value that is ignorable
