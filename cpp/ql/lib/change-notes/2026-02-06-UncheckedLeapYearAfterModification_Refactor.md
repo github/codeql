@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Refactor of UncheckedLeapYearAfterYearModification.ql to address large numbers of false positives. Reduced alerts from 40k to 2k.
+* Refactored the "Year field changed using an arithmetic operation without checking for leap year" query (`cpp/leap-year/unchecked-after-arithmetic-year-modification`) to address large numbers of false positive results.
