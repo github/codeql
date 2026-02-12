@@ -354,7 +354,7 @@ class YearFieldAssignmentNode extends DataFlow::Node {
 }
 
 /**
- * A DataFlow configuration for identifying flows from some non trivial access or literal
+ * A DataFlow configuration for identifying flows from an identified source
  * to the Year field of a date object.
  */
 module OperationToYearAssignmentConfig implements DataFlow::ConfigSig {
