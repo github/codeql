@@ -13,7 +13,7 @@ private import semmle.code.java.security.XSS
 /**
  * Gets a name for the root package of JAX-RS.
  */
-string getAJaxRsPackage() { result in [javaxOrJakarta() + ".ws.rs"] }
+string getAJaxRsPackage() { result = javaxOrJakarta() + ".ws.rs" }
 
 /**
  * Gets a name for package `subpackage` within the JAX-RS hierarchy.
@@ -114,7 +114,7 @@ private class JaxAcceptableStandardClass extends RefType {
     this.hasQualifiedName("java.util", "Calendar") or
     this.hasQualifiedName("java.math", "BigInteger") or
     this.hasQualifiedName("java.math", "BigDecimal") or
-    this.hasQualifiedName(javaxOrJakarta() + ".xml.namespace", "QName") or
+    this.hasQualifiedName("javax.xml.namespace", "QName") or
     this instanceof TypeUri
   }
 }
