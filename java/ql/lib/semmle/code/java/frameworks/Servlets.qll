@@ -377,7 +377,7 @@ predicate isRequestGetParamMethod(MethodCall ma) {
 /** The Java EE RequestDispatcher. */
 class RequestDispatcher extends RefType {
   RequestDispatcher() {
-    this.hasQualifiedName([javaxOrJakarta() + ".servlet", "jakarta.servlet"], "RequestDispatcher") or
+    this.hasQualifiedName(javaxOrJakarta() + ".servlet", "RequestDispatcher") or
     this.hasQualifiedName(javaxOrJakarta() + ".portlet", "PortletRequestDispatcher")
   }
 }

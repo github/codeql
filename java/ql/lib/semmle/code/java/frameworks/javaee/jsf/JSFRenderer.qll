@@ -8,10 +8,7 @@ import java
  * The JSF class `FacesContext` for processing HTTP requests.
  */
 class FacesContext extends RefType {
-  FacesContext() {
-    this.hasQualifiedName([javaxOrJakarta() + ".faces.context", "jakarta.faces.context"],
-      "FacesContext")
-  }
+  FacesContext() { this.hasQualifiedName(javaxOrJakarta() + ".faces.context", "FacesContext") }
 }
 
 /**

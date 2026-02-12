@@ -145,8 +145,7 @@ class CookieResponseWithoutHttpOnlySink extends DataFlow::ExprNode {
 
 /** Holds if `cie` is an invocation of a JAX-RS `NewCookie` constructor that sets `HttpOnly` to true. */
 predicate setsHttpOnlyInNewCookie(ClassInstanceExpr cie) {
-  cie.getConstructedType()
-      .hasQualifiedName([javaxOrJakarta() + ".ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
+  cie.getConstructedType().hasQualifiedName(javaxOrJakarta() + ".ws.rs.core", "NewCookie") and
   (
     cie.getNumArgument() = 6 and
     mayBeBooleanTrue(cie.getArgument(5)) // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)
