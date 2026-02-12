@@ -2962,6 +2962,71 @@ control/conditionals.rb:
 #   68|       0: [ReservedWord] else
 #   69|       1: [Identifier] c
 #   70|     4: [ReservedWord] end
+#   73|   17: [If] If
+#   73|     0: [ReservedWord] if
+#   73|     1: [Binary] Binary
+#   73|       0: [Identifier] a
+#   73|       1: [ReservedWord] &&
+#   73|       2: [Identifier] b
+#   73|     2: [Then] Then
+#   73|       0: [ReservedWord] then
+#   74|       1: [Identifier] c
+#   75|     3: [ReservedWord] end
+#   78|   18: [If] If
+#   78|     0: [ReservedWord] if
+#   78|     1: [Binary] Binary
+#   78|       0: [Identifier] a
+#   79|       1: [ReservedWord] &&
+#   79|       2: [Identifier] b
+#   79|     2: [Then] Then
+#   80|       0: [ReservedWord] then
+#   81|       1: [Identifier] c
+#   82|     3: [ReservedWord] end
+#   86|   19: [If] If
+#   86|     0: [ReservedWord] if
+#   86|     1: [Identifier] a
+#   86|     2: [Then] Then
+#   87|       0: [Call] Call
+#   87|         0: [Identifier] and
+#   87|         1: [ArgumentList] ArgumentList
+#   87|           0: [Identifier] b
+#   88|       1: [Identifier] then
+#   89|       2: [Identifier] c
+#   90|     3: [ReservedWord] end
+#  102|   20: [If] If
+#  102|     0: [ReservedWord] if
+#  102|     1: [Identifier] a
+#  102|     2: [Then] Then
+#  103|       0: [Call] Call
+#  103|         0: [Identifier] or
+#  103|         1: [ArgumentList] ArgumentList
+#  103|           0: [Identifier] b
+#  104|       1: [Identifier] then
+#  105|       2: [Identifier] c
+#  106|     3: [ReservedWord] end
+#  109|   21: [If] If
+#  109|     0: [ReservedWord] if
+#  109|     1: [Binary] Binary
+#  109|       0: [Binary] Binary
+#  109|         0: [Identifier] a
+#  110|         1: [ReservedWord] &&
+#  110|         2: [Identifier] b
+#  111|       1: [ReservedWord] &&
+#  111|       2: [Identifier] c
+#  111|     2: [Then] Then
+#  112|       0: [ReservedWord] then
+#  113|       1: [Identifier] d
+#  114|     3: [ReservedWord] end
+#  144|   22: [If] If
+#  144|     0: [ReservedWord] if
+#  144|     1: [Binary] Binary
+#  144|       0: [Identifier] a
+#  144|       1: [ReservedWord] &&
+#  145|       2: [Identifier] b
+#  145|     2: [Then] Then
+#  146|       0: [ReservedWord] then
+#  147|       1: [Identifier] c
+#  148|     3: [ReservedWord] end
 #    1| [Comment] # Define some variables used below
 #    9| [Comment] # If expr with no else
 #   14| [Comment] # If expr with single else
@@ -2974,6 +3039,45 @@ control/conditionals.rb:
 #   57| [Comment] # Ternary if expr
 #   60| [Comment] # If expr with empty else (treated as no else)
 #   66| [Comment] # If expr with empty then (treated as no then)
+#   72| [Comment] # If expr with `&&` on same line as condition and then
+#   77| [Comment] # If expr with `&&` at the start of a separate line before then
+#   84| [Comment] # If expr with `and` at the start of a separate line before then
+#   85| [Comment] # NOTE: This is not parsed correctly, `and b` is parsed as a call
+#   92| [Comment] # If expr with `||` at the start of a separate line before then
+#   93| [Comment] # NOTE: This is not parsed correctly due to the leading `||`
+#   94| [Comment] # if a
+#   95| [Comment] #     || b
+#   96| [Comment] # then
+#   97| [Comment] #     c
+#   98| [Comment] # end
+#  100| [Comment] # If expr with `or` at the start of a separate line before then
+#  101| [Comment] # NOTE: This is not parsed correctly, `or b` is parsed as a call
+#  108| [Comment] # If expr with repeated && at the start of a separate line before then
+#  116| [Comment] # If expr with alternating && and || at the start of lines
+#  117| [Comment] # NOTE: This is not parsed correctly due to the leading `||`
+#  118| [Comment] # if a
+#  119| [Comment] #   && b
+#  120| [Comment] #   || c
+#  121| [Comment] # then
+#  122| [Comment] #     d
+#  123| [Comment] # end
+#  125| [Comment] # If expr with operator at start of line and parentheses
+#  126| [Comment] # NOTE: This is not parsed correctly due to the leading `||`
+#  127| [Comment] # if a
+#  128| [Comment] #   && (b
+#  129| [Comment] #   || c)
+#  130| [Comment] # then
+#  131| [Comment] #     d
+#  132| [Comment] # end
+#  134| [Comment] # If expr with operator at start of line and parentheses
+#  135| [Comment] # NOTE: This is not parsed correctly due to the leading `||`
+#  136| [Comment] # if a
+#  137| [Comment] #   || (b
+#  138| [Comment] #   && c)
+#  139| [Comment] # then
+#  140| [Comment] #     d
+#  141| [Comment] # end
+#  143| [Comment] # If expr with && at end of line
 control/loops.rb:
 #    1| [Program] Program
 #    2|   0: [Assignment] Assignment
@@ -5564,100 +5668,125 @@ operations/operations.rb:
 #   85|     0: [Identifier] baz
 #   85|     1: [ReservedWord] ^=
 #   85|     2: [Identifier] qux
-#   87|   63: [Class] Class
-#   87|     0: [ReservedWord] class
-#   87|     1: [Constant] X
-#   88|     2: [BodyStatement] BodyStatement
-#   88|       0: [Assignment] Assignment
-#   88|         0: [InstanceVariable] @x
-#   88|         1: [ReservedWord] =
-#   88|         2: [Integer] 1
-#   89|       1: [OperatorAssignment] OperatorAssignment
-#   89|         0: [InstanceVariable] @x
-#   89|         1: [ReservedWord] +=
-#   89|         2: [Integer] 2
-#   91|       2: [Assignment] Assignment
-#   91|         0: [ClassVariable] @@y
-#   91|         1: [ReservedWord] =
-#   91|         2: [Integer] 3
-#   92|       3: [OperatorAssignment] OperatorAssignment
-#   92|         0: [ClassVariable] @@y
-#   92|         1: [ReservedWord] /=
-#   92|         2: [Integer] 4
-#   93|     3: [ReservedWord] end
-#   95|   64: [Assignment] Assignment
-#   95|     0: [GlobalVariable] $global_var
-#   95|     1: [ReservedWord] =
-#   95|     2: [Integer] 5
-#   96|   65: [OperatorAssignment] OperatorAssignment
-#   96|     0: [GlobalVariable] $global_var
-#   96|     1: [ReservedWord] *=
-#   96|     2: [Integer] 6
-#   98|   66: [Assignment] Assignment
-#   98|     0: [Constant] CONSTANT1
-#   98|     1: [ReservedWord] =
-#   98|     2: [Integer] 5
-#   99|   67: [OperatorAssignment] OperatorAssignment
-#   99|     0: [Constant] CONSTANT2
-#   99|     1: [ReservedWord] +=
-#   99|     2: [Integer] 6
-#  100|   68: [OperatorAssignment] OperatorAssignment
-#  100|     0: [Constant] CONSTANT3
-#  100|     1: [ReservedWord] ||=
-#  100|     2: [Integer] 7
-#  101|   69: [OperatorAssignment] OperatorAssignment
-#  101|     0: [ScopeResolution] ScopeResolution
-#  101|       0: [Constant] Foo
-#  101|       1: [ReservedWord] ::
-#  101|       2: [Constant] MemberConstant
-#  101|     1: [ReservedWord] ||=
-#  101|     2: [Integer] 8
-#  102|   70: [OperatorAssignment] OperatorAssignment
-#  102|     0: [ScopeResolution] ScopeResolution
-#  102|       0: [Call] Call
-#  102|         0: [Call] Call
-#  102|           0: [Identifier] foo
-#  102|           1: [ArgumentList] ArgumentList
-#  102|             0: [ReservedWord] (
-#  102|             1: [Integer] 1
-#  102|             2: [ReservedWord] )
-#  102|         1: [ReservedWord] .
-#  102|         2: [Identifier] bar
-#  102|       1: [ReservedWord] ::
-#  102|       2: [Constant] OtherConstant
-#  102|     1: [ReservedWord] ||=
-#  102|     2: [Integer] 7
-#  103|   71: [OperatorAssignment] OperatorAssignment
-#  103|     0: [ScopeResolution] ScopeResolution
-#  103|       0: [ReservedWord] ::
-#  103|       1: [Constant] CONSTANT4
-#  103|     1: [ReservedWord] ||=
-#  103|     2: [Integer] 7
-#  104|   72: [Assignment] Assignment
-#  104|     0: [LeftAssignmentList] LeftAssignmentList
-#  104|       0: [Constant] FOO
-#  104|       1: [ReservedWord] ,
-#  104|       2: [ScopeResolution] ScopeResolution
-#  104|         0: [ReservedWord] ::
-#  104|         1: [Constant] BAR
-#  104|       3: [ReservedWord] ,
-#  104|       4: [ScopeResolution] ScopeResolution
-#  104|         0: [Identifier] foo
-#  104|         1: [ReservedWord] ::
-#  104|         2: [Constant] FOO
-#  104|     1: [ReservedWord] =
-#  104|     2: [Array] Array
-#  104|       0: [ReservedWord] [
-#  104|       1: [Integer] 1
-#  104|       2: [ReservedWord] ,
-#  104|       3: [Integer] 2
-#  104|       4: [ReservedWord] ,
-#  104|       5: [Integer] 3
-#  104|       6: [ReservedWord] ]
-#  106|   73: [Binary] Binary
-#  106|     0: [Identifier] foo
-#  106|     1: [ReservedWord] /
-#  107|     2: [Integer] 5
+#   88|   63: [Assignment] Assignment
+#   88|     0: [Identifier] foo
+#   88|     1: [ReservedWord] =
+#   88|     2: [Binary] Binary
+#   88|       0: [Identifier] a
+#   89|       1: [ReservedWord] &&
+#   89|       2: [Identifier] b
+#   95|   64: [Method] Method
+#   95|     0: [ReservedWord] def
+#   95|     1: [Identifier] foo
+#   95|     2: [MethodParameters] MethodParameters
+#   95|       0: [ReservedWord] (
+#   95|       1: [Identifier] a
+#   95|       2: [ReservedWord] ,
+#   95|       3: [Identifier] b
+#   95|       4: [ReservedWord] )
+#   96|     3: [BodyStatement] BodyStatement
+#   96|       0: [Return] Return
+#   96|         0: [ReservedWord] return
+#   96|         1: [ArgumentList] ArgumentList
+#   96|           0: [Binary] Binary
+#   96|             0: [Identifier] a
+#   97|             1: [ReservedWord] &&
+#   97|             2: [Identifier] b
+#   98|     4: [ReservedWord] end
+#  107|   65: [Class] Class
+#  107|     0: [ReservedWord] class
+#  107|     1: [Constant] X
+#  108|     2: [BodyStatement] BodyStatement
+#  108|       0: [Assignment] Assignment
+#  108|         0: [InstanceVariable] @x
+#  108|         1: [ReservedWord] =
+#  108|         2: [Integer] 1
+#  109|       1: [OperatorAssignment] OperatorAssignment
+#  109|         0: [InstanceVariable] @x
+#  109|         1: [ReservedWord] +=
+#  109|         2: [Integer] 2
+#  111|       2: [Assignment] Assignment
+#  111|         0: [ClassVariable] @@y
+#  111|         1: [ReservedWord] =
+#  111|         2: [Integer] 3
+#  112|       3: [OperatorAssignment] OperatorAssignment
+#  112|         0: [ClassVariable] @@y
+#  112|         1: [ReservedWord] /=
+#  112|         2: [Integer] 4
+#  113|     3: [ReservedWord] end
+#  115|   66: [Assignment] Assignment
+#  115|     0: [GlobalVariable] $global_var
+#  115|     1: [ReservedWord] =
+#  115|     2: [Integer] 5
+#  116|   67: [OperatorAssignment] OperatorAssignment
+#  116|     0: [GlobalVariable] $global_var
+#  116|     1: [ReservedWord] *=
+#  116|     2: [Integer] 6
+#  118|   68: [Assignment] Assignment
+#  118|     0: [Constant] CONSTANT1
+#  118|     1: [ReservedWord] =
+#  118|     2: [Integer] 5
+#  119|   69: [OperatorAssignment] OperatorAssignment
+#  119|     0: [Constant] CONSTANT2
+#  119|     1: [ReservedWord] +=
+#  119|     2: [Integer] 6
+#  120|   70: [OperatorAssignment] OperatorAssignment
+#  120|     0: [Constant] CONSTANT3
+#  120|     1: [ReservedWord] ||=
+#  120|     2: [Integer] 7
+#  121|   71: [OperatorAssignment] OperatorAssignment
+#  121|     0: [ScopeResolution] ScopeResolution
+#  121|       0: [Constant] Foo
+#  121|       1: [ReservedWord] ::
+#  121|       2: [Constant] MemberConstant
+#  121|     1: [ReservedWord] ||=
+#  121|     2: [Integer] 8
+#  122|   72: [OperatorAssignment] OperatorAssignment
+#  122|     0: [ScopeResolution] ScopeResolution
+#  122|       0: [Call] Call
+#  122|         0: [Call] Call
+#  122|           0: [Identifier] foo
+#  122|           1: [ArgumentList] ArgumentList
+#  122|             0: [ReservedWord] (
+#  122|             1: [Integer] 1
+#  122|             2: [ReservedWord] )
+#  122|         1: [ReservedWord] .
+#  122|         2: [Identifier] bar
+#  122|       1: [ReservedWord] ::
+#  122|       2: [Constant] OtherConstant
+#  122|     1: [ReservedWord] ||=
+#  122|     2: [Integer] 7
+#  123|   73: [OperatorAssignment] OperatorAssignment
+#  123|     0: [ScopeResolution] ScopeResolution
+#  123|       0: [ReservedWord] ::
+#  123|       1: [Constant] CONSTANT4
+#  123|     1: [ReservedWord] ||=
+#  123|     2: [Integer] 7
+#  124|   74: [Assignment] Assignment
+#  124|     0: [LeftAssignmentList] LeftAssignmentList
+#  124|       0: [Constant] FOO
+#  124|       1: [ReservedWord] ,
+#  124|       2: [ScopeResolution] ScopeResolution
+#  124|         0: [ReservedWord] ::
+#  124|         1: [Constant] BAR
+#  124|       3: [ReservedWord] ,
+#  124|       4: [ScopeResolution] ScopeResolution
+#  124|         0: [Identifier] foo
+#  124|         1: [ReservedWord] ::
+#  124|         2: [Constant] FOO
+#  124|     1: [ReservedWord] =
+#  124|     2: [Array] Array
+#  124|       0: [ReservedWord] [
+#  124|       1: [Integer] 1
+#  124|       2: [ReservedWord] ,
+#  124|       3: [Integer] 2
+#  124|       4: [ReservedWord] ,
+#  124|       5: [Integer] 3
+#  124|       6: [ReservedWord] ]
+#  126|   75: [Binary] Binary
+#  126|     0: [Identifier] foo
+#  126|     1: [ReservedWord] /
+#  127|     2: [Integer] 5
 #    1| [Comment] # Start with assignments to all the identifiers used below, so that they are
 #    2| [Comment] # interpreted as variables.
 #   22| [Comment] # Unary operations
@@ -5670,6 +5799,17 @@ operations/operations.rb:
 #   68| [Comment] # Arithmetic assign operations
 #   76| [Comment] # Logical assign operations
 #   80| [Comment] # Bitwise assign operations
+#   87| [Comment] # Assignments with operation at start of line
+#   90| [Comment] # NOTE: This is not parsed correctly, `|| b` is dropped
+#   91| [Comment] # bar = a
+#   92| [Comment] #   || b
+#   94| [Comment] # Return with `&&` at start of line
+#  100| [Comment] # Return with `||` at start of line
+#  101| [Comment] # NOTE: This is not parsed correctly, `|| b` is dropped
+#  102| [Comment] # def bar(a, b)
+#  103| [Comment] #   return a
+#  104| [Comment] #     || b
+#  105| [Comment] # end
 params/params.rb:
 #    1| [Program] Program
 #    4|   0: [Method] Method
