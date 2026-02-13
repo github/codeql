@@ -431,9 +431,7 @@ private class ReplaceDirectoryCharactersSanitizer extends StringReplaceOrReplace
  * Holds if `matchesCall` confirms that `checkedExpr` does not contain any directory characters
  * on the given `branch`.
  */
-private predicate isMatchesCall(
-  RegexExecutionExpr::Range regexMatch, Expr checkedExpr, boolean branch
-) {
+private predicate isMatchesCall(RegexMatch regexMatch, Expr checkedExpr, boolean branch) {
   exists(CompileTimeConstantExpr target, string targetValue |
     target = regexMatch.getRegex() and
     target.getStringValue() = targetValue and

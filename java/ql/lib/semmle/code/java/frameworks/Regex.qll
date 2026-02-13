@@ -82,7 +82,7 @@ class PatternMatcherCall extends MethodCall {
 }
 
 /** A call to the `matches` method of `java.util.regex.Pattern`. */
-class PatternMatchesCall extends MethodCall, RegexExecutionExpr::Range {
+class PatternMatchesCall extends MethodCall, RegexMatch::Range {
   PatternMatchesCall() { this.getMethod() instanceof PatternMatchesMethod }
 
   override Expr getRegex() { result = this.getArgument(0) }
@@ -93,7 +93,7 @@ class PatternMatchesCall extends MethodCall, RegexExecutionExpr::Range {
 }
 
 /** A call to the `matches` method of `java.util.regex.Matcher`. */
-class MatcherMatchesCall extends MethodCall, RegexExecutionExpr::Range {
+class MatcherMatchesCall extends MethodCall, RegexMatch::Range {
   MatcherMatchesCall() { this.getMethod() instanceof MatcherMatchesMethod }
 
   /**

@@ -48,7 +48,7 @@ class StringContainsMethod extends Method {
 }
 
 /** A call to the `java.lang.String.matches` method. */
-class StringMatchesCall extends MethodCall, RegexExecutionExpr::Range {
+class StringMatchesCall extends MethodCall, RegexMatch::Range {
   StringMatchesCall() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypeString and

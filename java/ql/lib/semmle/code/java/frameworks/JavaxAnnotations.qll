@@ -171,7 +171,7 @@ class WebServiceRefAnnotation extends Annotation {
 /**
  * A `@javax.validation.constraints.Pattern` annotation.
  */
-class PatternAnnotation extends Annotation, RegexExecutionExpr::Range {
+class PatternAnnotation extends Annotation, RegexMatch::Range {
   PatternAnnotation() {
     this.getType()
         .hasQualifiedName(["javax.validation.constraints", "jakarta.validation.constraints"],

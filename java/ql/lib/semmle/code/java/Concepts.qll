@@ -7,71 +7,35 @@ overlay[local?]
 module;
 
 import java
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.frameworks.JavaxAnnotations
 
 /**
- * A data-flow node that executes a regular expression.
+ * An expression that represents a regular expression match.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
- * extend `RegexExecution::Range` instead.
+ * extend `RegexMatch::Range` instead.
  */
-class RegexExecution extends DataFlow::Node instanceof RegexExecution::Range {
-  /** Gets the data flow node for the regex being executed by this node. */
-  DataFlow::Node getRegex() { result = super.getRegex() }
+class RegexMatch extends Expr instanceof RegexMatch::Range {
+  /** Gets the expression for the regex being executed by this node. */
+  Expr getRegex() { result = super.getRegex() }
 
-  /** Gets a data flow node for the string to be searched or matched against. */
-  DataFlow::Node getString() { result = super.getString() }
+  /** Gets an expression for the string to be searched or matched against. */
+  Expr getString() { result = super.getString() }
 
   /**
-   * Gets the name of this regex execution, typically the name of an executing method.
+   * Gets the name of this regex match, typically the name of an executing method.
    * This is used for nice alert messages and should include the module if possible.
    */
   string getName() { result = super.getName() }
 }
 
-/** Provides classes for modeling new regular-expression execution APIs. */
-module RegexExecution {
-  /**
-   * A data flow node that executes a regular expression.
-   *
-   * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `RegexExecution` instead.
-   */
-  abstract class Range extends DataFlow::Node {
-    /** Gets the data flow node for the regex being executed by this node. */
-    abstract DataFlow::Node getRegex();
-
-    /** Gets a data flow node for the string to be searched or matched against. */
-    abstract DataFlow::Node getString();
-
-    /**
-     * Gets the name of this regex execution, typically the name of an executing method.
-     * This is used for nice alert messages and should include the module if possible.
-     */
-    abstract string getName();
-  }
-
-  private class RangeFromExpr extends Range {
-    private RegexExecutionExpr::Range ree;
-
-    RangeFromExpr() { this.asExpr() = ree }
-
-    override DataFlow::Node getRegex() { result.asExpr() = ree.getRegex() }
-
-    override DataFlow::Node getString() { result.asExpr() = ree.getString() }
-
-    override string getName() { result = ree.getName() }
-  }
-}
-
-/** Provides classes for modeling new regular-expression execution APIs. */
-module RegexExecutionExpr {
+/** Provides classes for modeling regular-expression execution APIs. */
+module RegexMatch {
   /**
    * An expression that executes a regular expression.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
-   * extend `RegexExecution` instead.
+   * extend `RegexMatch` instead.
    */
   abstract class Range extends Expr {
     /** Gets the expression for the regex being executed by this node. */
@@ -81,7 +45,7 @@ module RegexExecutionExpr {
     abstract Expr getString();
 
     /**
-     * Gets the name of this regex execution, typically the name of an executing method.
+     * Gets the name of this regex match, typically the name of an executing method.
      * This is used for nice alert messages and should include the module if possible.
      */
     abstract string getName();
