@@ -182,7 +182,7 @@ class PatternAnnotation extends Annotation, RegexExecutionExpr::Range {
 
   override Expr getString() {
     // Annotation on field accessed by direct read - value of field will match regexp
-    result = this.getAnnotatedElement().(Field).getAnAccess()
+    result.(FieldRead).getField() = this.getAnnotatedElement()
     or
     // Annotation on field accessed by getter - value of field will match regexp
     result.(MethodCall).getMethod().(GetterMethod).getField() = this.getAnnotatedElement()
