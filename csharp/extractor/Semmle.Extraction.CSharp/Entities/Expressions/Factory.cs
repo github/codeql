@@ -160,6 +160,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.ThisExpression:
                         return This.CreateExplicit(info);
 
+                    case SyntaxKind.FieldExpression:
+                        return PropertyFieldAccess.Create(info);
+
                     case SyntaxKind.AddressOfExpression:
                         return Unary.Create(info.SetKind(ExprKind.ADDRESS_OF));
 
