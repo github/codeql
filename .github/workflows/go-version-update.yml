@@ -38,18 +38,18 @@ jobs:
           echo "version_num=$LATEST_VERSION_NUM" >> $GITHUB_OUTPUT
           
           # Extract major.minor version (e.g., 1.26.0 -> 1.26)
-          LATEST_MAJOR_MINOR=$(echo $LATEST_VERSION_NUM | grep -oP '^\d+\.\d+')
+          LATEST_MAJOR_MINOR=$(echo $LATEST_VERSION_NUM | sed -n 's/^\([0-9]\+\.[0-9]\+\).*/\1/p')
           echo "major_minor=$LATEST_MAJOR_MINOR" >> $GITHUB_OUTPUT
 
       - name: Check current Go version
         id: current-version
         run: |
-          CURRENT_VERSION=$(grep -oP 'go_sdk.download\(version = "\K[^"]+' MODULE.bazel)
+          CURRENT_VERSION=$(sed -n 's/.*go_sdk\.download(version = \"\([^\"]*\)\".*/\1/p' MODULE.bazel)
           echo "Current Go version in MODULE.bazel: $CURRENT_VERSION"
           echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           
           # Extract major.minor version
-          CURRENT_MAJOR_MINOR=$(echo $CURRENT_VERSION | grep -oP '^\d+\.\d+')
+          CURRENT_MAJOR_MINOR=$(echo $CURRENT_VERSION | sed -n 's/^\([0-9]\+\.[0-9]\+\).*/\1/p')
           echo "major_minor=$CURRENT_MAJOR_MINOR" >> $GITHUB_OUTPUT
 
       - name: Compare versions
@@ -114,7 +114,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH_NAME="workflow/go-version-update"
-          PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[0].number // ""')
+          PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[]? | .number')
           
           if [ -n "$PR_NUMBER" ]; then
             echo "Existing PR found: #$PR_NUMBER"
