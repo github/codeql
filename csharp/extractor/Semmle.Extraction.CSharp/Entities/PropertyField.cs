@@ -28,6 +28,9 @@ namespace Semmle.Extraction.CSharp.Entities
             var unboundFieldKey = PropertyField.Create(Context, Symbol.OriginalDefinition);
             var name = Symbol.AssociatedSymbol is not null ? $"{Symbol.AssociatedSymbol.GetName()}.field" : Symbol.Name;
             trapFile.fields(this, VariableKind.None, name, ContainingType!, Type.TypeRef, unboundFieldKey);
+            trapFile.compiler_generated(this);
+
+            PopulateModifiers(trapFile);
 
             if (Context.OnlyScaffold)
             {
