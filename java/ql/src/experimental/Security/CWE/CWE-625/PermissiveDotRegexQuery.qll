@@ -77,17 +77,12 @@ private class SpringUriInputParameterSource extends DataFlow::Node {
  */
 private class CompileRegexSink extends DataFlow::ExprNode {
   CompileRegexSink() {
-    exists(MethodCall ma, Method m | m = ma.getMethod() |
-      (
-        ma.getArgument(0) = this.asExpr() and
-        (
-          ma instanceof StringMatchesCall // input.matches(regexPattern)
-          or
-          ma instanceof PatternCompileCall // p = Pattern.compile(regexPattern)
-          or
-          ma instanceof PatternMatchesCall // p = Pattern.matches(regexPattern, input)
-        )
-      )
+    exists(MethodCall ma | ma.getArgument(0) = this.asExpr() |
+      ma instanceof StringMatchesCall // input.matches(regexPattern)
+      or
+      ma instanceof PatternCompileCall // p = Pattern.compile(regexPattern)
+      or
+      ma instanceof PatternMatchesCall // p = Pattern.matches(regexPattern, input)
     )
   }
 }
