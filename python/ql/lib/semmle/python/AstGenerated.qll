@@ -3,6 +3,8 @@
  *      WARNING: Any modifications to this file will be lost.
  *      Relations can be changed by modifying master.py.
  */
+overlay[local]
+module;
 
 import python
 
