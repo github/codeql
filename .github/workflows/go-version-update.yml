@@ -1,0 +1,176 @@
+name: Update Go version
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 1"  # Run weekly on Monday at 3 AM UTC
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-go-version:
+    name: Check and update Go version
+    if: github.repository == 'github/codeql'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch latest Go version
+        id: fetch-version
+        run: |
+          LATEST_GO_VERSION=$(curl -s https://go.dev/dl/\?mode\=json | jq -r '.[0].version')
+          echo "Latest Go version from go.dev: $LATEST_GO_VERSION"
+          echo "version=$LATEST_GO_VERSION" >> $GITHUB_OUTPUT
+          
+          # Extract version numbers (e.g., go1.26.0 -> 1.26.0)
+          LATEST_VERSION_NUM=$(echo $LATEST_GO_VERSION | sed 's/^go//')
+          echo "version_num=$LATEST_VERSION_NUM" >> $GITHUB_OUTPUT
+          
+          # Extract major.minor version (e.g., 1.26.0 -> 1.26)
+          LATEST_MAJOR_MINOR=$(echo $LATEST_VERSION_NUM | grep -oP '^\d+\.\d+')
+          echo "major_minor=$LATEST_MAJOR_MINOR" >> $GITHUB_OUTPUT
+
+      - name: Check current Go version
+        id: current-version
+        run: |
+          CURRENT_VERSION=$(grep -oP 'go_sdk.download\(version = "\K[^"]+' MODULE.bazel)
+          echo "Current Go version in MODULE.bazel: $CURRENT_VERSION"
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          
+          # Extract major.minor version
+          CURRENT_MAJOR_MINOR=$(echo $CURRENT_VERSION | grep -oP '^\d+\.\d+')
+          echo "major_minor=$CURRENT_MAJOR_MINOR" >> $GITHUB_OUTPUT
+
+      - name: Compare versions
+        id: compare
+        run: |
+          LATEST="${{ steps.fetch-version.outputs.version_num }}"
+          CURRENT="${{ steps.current-version.outputs.version }}"
+          
+          echo "Latest: $LATEST"
+          echo "Current: $CURRENT"
+          
+          if [ "$LATEST" = "$CURRENT" ]; then
+            echo "Go version is up to date"
+            echo "needs_update=false" >> $GITHUB_OUTPUT
+          else
+            echo "Go version needs update from $CURRENT to $LATEST"
+            echo "needs_update=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Go version in files
+        if: steps.compare.outputs.needs_update == 'true'
+        run: |
+          LATEST_VERSION_NUM="${{ steps.fetch-version.outputs.version_num }}"
+          LATEST_MAJOR_MINOR="${{ steps.fetch-version.outputs.major_minor }}"
+          CURRENT_VERSION="${{ steps.current-version.outputs.version }}"
+          CURRENT_MAJOR_MINOR="${{ steps.current-version.outputs.major_minor }}"
+          
+          echo "Updating from $CURRENT_VERSION to $LATEST_VERSION_NUM"
+          
+          # Update MODULE.bazel
+          sed -i "s/go_sdk.download(version = \"$CURRENT_VERSION\")/go_sdk.download(version = \"$LATEST_VERSION_NUM\")/" MODULE.bazel
+          
+          # Update go/extractor/go.mod
+          sed -i "s/^go $CURRENT_MAJOR_MINOR$/go $LATEST_MAJOR_MINOR/" go/extractor/go.mod
+          sed -i "s/^toolchain go$CURRENT_VERSION$/toolchain go$LATEST_VERSION_NUM/" go/extractor/go.mod
+          
+          # Update go/extractor/autobuilder/build-environment.go
+          sed -i "s/var maxGoVersion = util.NewSemVer(\"$CURRENT_MAJOR_MINOR\")/var maxGoVersion = util.NewSemVer(\"$LATEST_MAJOR_MINOR\")/" go/extractor/autobuilder/build-environment.go
+          
+          # Update go/actions/test/action.yml
+          sed -i "s/default: \"~$CURRENT_VERSION\"/default: \"~$LATEST_VERSION_NUM\"/" go/actions/test/action.yml
+          
+          # Show what changed
+          git diff
+
+      - name: Check for changes
+        id: check-changes
+        if: steps.compare.outputs.needs_update == 'true'
+        run: |
+          if git diff --quiet; then
+            echo "No changes detected"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check for existing PR
+        if: steps.check-changes.outputs.has_changes == 'true'
+        id: check-pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME="workflow/go-version-update"
+          PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[0].number // ""')
+          
+          if [ -n "$PR_NUMBER" ]; then
+            echo "Existing PR found: #$PR_NUMBER"
+            echo "pr_exists=true" >> $GITHUB_OUTPUT
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+          else
+            echo "No existing PR found"
+            echo "pr_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          BRANCH_NAME="workflow/go-version-update"
+          LATEST_VERSION_NUM="${{ steps.fetch-version.outputs.version_num }}"
+          LATEST_MAJOR_MINOR="${{ steps.fetch-version.outputs.major_minor }}"
+          
+          # Create or switch to branch
+          git checkout -B "$BRANCH_NAME"
+          
+          # Stage and commit changes
+          git add MODULE.bazel go/extractor/go.mod go/extractor/autobuilder/build-environment.go go/actions/test/action.yml
+          git commit -m "Go: Update to $LATEST_MAJOR_MINOR"
+          
+          # Push changes
+          git push -f origin "$BRANCH_NAME"
+
+      - name: Create or update PR
+        if: steps.check-changes.outputs.has_changes == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME="workflow/go-version-update"
+          LATEST_MAJOR_MINOR="${{ steps.fetch-version.outputs.major_minor }}"
+          CURRENT_MAJOR_MINOR="${{ steps.current-version.outputs.major_minor }}"
+          
+          PR_TITLE="Go: Update to $LATEST_MAJOR_MINOR"
+          PR_BODY="This PR updates Go from $CURRENT_MAJOR_MINOR to $LATEST_MAJOR_MINOR.
+
+          Updated files:
+          - \`MODULE.bazel\` - go_sdk.download version
+          - \`go/extractor/go.mod\` - go directive and toolchain
+          - \`go/extractor/autobuilder/build-environment.go\` - maxGoVersion
+          - \`go/actions/test/action.yml\` - default go-test-version
+
+          This PR was automatically created by the [Go version update workflow](.github/workflows/go-version-update.yml)."
+          
+          if [ "${{ steps.check-pr.outputs.pr_exists }}" = "true" ]; then
+            echo "Updating existing PR #${{ steps.check-pr.outputs.pr_number }}"
+            gh pr edit "${{ steps.check-pr.outputs.pr_number }}" --title "$PR_TITLE" --body "$PR_BODY"
+          else
+            echo "Creating new PR"
+            gh pr create \
+              --title "$PR_TITLE" \
+              --body "$PR_BODY" \
+              --base main \
+              --head "$BRANCH_NAME" \
+              --label "Go"
+          fi
