@@ -30,6 +30,12 @@ jobs:
         id: fetch-version
         run: |
           LATEST_GO_VERSION=$(curl -s https://go.dev/dl/\?mode\=json | jq -r '.[0].version')
+          
+          if [ -z "$LATEST_GO_VERSION" ] || [ "$LATEST_GO_VERSION" = "null" ]; then
+            echo "Error: Failed to fetch latest Go version from go.dev"
+            exit 1
+          fi
+          
           echo "Latest Go version from go.dev: $LATEST_GO_VERSION"
           echo "version=$LATEST_GO_VERSION" >> $GITHUB_OUTPUT
           
@@ -45,6 +51,12 @@ jobs:
         id: current-version
         run: |
           CURRENT_VERSION=$(sed -n 's/.*go_sdk\.download(version = \"\([^\"]*\)\".*/\1/p' MODULE.bazel)
+          
+          if [ -z "$CURRENT_VERSION" ]; then
+            echo "Error: Could not extract Go version from MODULE.bazel"
+            exit 1
+          fi
+          
           echo "Current Go version in MODULE.bazel: $CURRENT_VERSION"
           echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           
@@ -79,18 +91,34 @@ jobs:
           
           echo "Updating from $CURRENT_VERSION to $LATEST_VERSION_NUM"
           
+          # Escape dots in version strings for use in sed patterns
+          CURRENT_VERSION_ESCAPED=$(echo "$CURRENT_VERSION" | sed 's/\./\\./g')
+          LATEST_VERSION_NUM_ESCAPED=$(echo "$LATEST_VERSION_NUM" | sed 's/\./\\./g')
+          CURRENT_MAJOR_MINOR_ESCAPED=$(echo "$CURRENT_MAJOR_MINOR" | sed 's/\./\\./g')
+          LATEST_MAJOR_MINOR_ESCAPED=$(echo "$LATEST_MAJOR_MINOR" | sed 's/\./\\./g')
+          
           # Update MODULE.bazel
-          sed -i "s/go_sdk.download(version = \"$CURRENT_VERSION\")/go_sdk.download(version = \"$LATEST_VERSION_NUM\")/" MODULE.bazel
+          if ! sed -i "s/go_sdk\.download(version = \"$CURRENT_VERSION_ESCAPED\")/go_sdk.download(version = \"$LATEST_VERSION_NUM\")/" MODULE.bazel; then
+            echo "Warning: Failed to update MODULE.bazel"
+          fi
           
           # Update go/extractor/go.mod
-          sed -i "s/^go $CURRENT_MAJOR_MINOR$/go $LATEST_MAJOR_MINOR/" go/extractor/go.mod
-          sed -i "s/^toolchain go$CURRENT_VERSION$/toolchain go$LATEST_VERSION_NUM/" go/extractor/go.mod
+          if ! sed -i "s/^go $CURRENT_MAJOR_MINOR_ESCAPED\$/go $LATEST_MAJOR_MINOR/" go/extractor/go.mod; then
+            echo "Warning: Failed to update go directive in go.mod"
+          fi
+          if ! sed -i "s/^toolchain go$CURRENT_VERSION_ESCAPED\$/toolchain go$LATEST_VERSION_NUM/" go/extractor/go.mod; then
+            echo "Warning: Failed to update toolchain in go.mod"
+          fi
           
           # Update go/extractor/autobuilder/build-environment.go
-          sed -i "s/var maxGoVersion = util.NewSemVer(\"$CURRENT_MAJOR_MINOR\")/var maxGoVersion = util.NewSemVer(\"$LATEST_MAJOR_MINOR\")/" go/extractor/autobuilder/build-environment.go
+          if ! sed -i "s/var maxGoVersion = util\.NewSemVer(\"$CURRENT_MAJOR_MINOR_ESCAPED\")/var maxGoVersion = util.NewSemVer(\"$LATEST_MAJOR_MINOR\")/" go/extractor/autobuilder/build-environment.go; then
+            echo "Warning: Failed to update build-environment.go"
+          fi
           
           # Update go/actions/test/action.yml
-          sed -i "s/default: \"~$CURRENT_VERSION\"/default: \"~$LATEST_VERSION_NUM\"/" go/actions/test/action.yml
+          if ! sed -i "s/default: \"~$CURRENT_VERSION_ESCAPED\"/default: \"~$LATEST_VERSION_NUM\"/" go/actions/test/action.yml; then
+            echo "Warning: Failed to update action.yml"
+          fi
           
           # Show what changed
           git diff
@@ -162,7 +190,7 @@ jobs:
           - \`go/extractor/autobuilder/build-environment.go\` - maxGoVersion
           - \`go/actions/test/action.yml\` - default go-test-version
 
-          This PR was automatically created by the [Go version update workflow](.github/workflows/go-version-update.yml).
+          This PR was automatically created by the [Go version update workflow](https://github.com/${{ github.repository }}/blob/main/.github/workflows/go-version-update.yml).
           EOF
           )
           
