@@ -2,7 +2,8 @@
  * @name Operations using known hashing algorithms (slice)
  * @description Outputs operations where the algorithm used is a known hashing algorithm.
  * @id java/quantum/slices/operation-with-known-hashing-algorithm
- * @kind table
+ * @kind problem
+ * @severity recommendation
  * @tags quantum
  *       experimental
  */

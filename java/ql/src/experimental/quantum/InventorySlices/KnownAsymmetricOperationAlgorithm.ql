@@ -2,7 +2,8 @@
  * @name Operations using known asymmetric algorithms (slice)
  * @description Outputs operations where the algorithm used is a known asymmetric algorithm.
  * @id java/quantum/slices/known-asymmetric-operation-algorithm
- * @kind table
+ * @kind problem
+ * @severity recommendation
  * @tags quantum
  *       experimental
  */
