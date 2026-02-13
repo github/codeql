@@ -97,7 +97,7 @@ class MatcherMatchesCall extends MethodCall, RegexExecutionExpr::Range {
   MatcherMatchesCall() { this.getMethod() instanceof MatcherMatchesMethod }
 
   /**
-   * Get the call to `java.util.regex.Pattern.matcher` which returned the
+   * Gets the call to `java.util.regex.Pattern.matcher` that returned the
    * qualifier of this call. This is needed to determine the string being
    * matched.
    */
@@ -106,7 +106,7 @@ class MatcherMatchesCall extends MethodCall, RegexExecutionExpr::Range {
   }
 
   /**
-   * Get the call to `java.util.regex.Pattern.compile` which returned the
+   * Gets the call to `java.util.regex.Pattern.compile` that returned the
    * `Pattern` used by this matcher. This is needed to determine the regular
    * expression being used.
    */
