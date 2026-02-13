@@ -1,5 +1,6 @@
 import default
+import utils.test.AstCfg
 
 from ControlFlowNode n
 where n.getEnclosingCallable().getCompilationUnit().fromSource()
-select n, n.getASuccessor()
+select n, getAnAstSuccessor(n)
