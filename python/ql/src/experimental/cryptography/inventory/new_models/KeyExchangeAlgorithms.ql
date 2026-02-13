@@ -3,7 +3,7 @@
  * @description Finds all potential usage of key exchange using the supported libraries.
  * @kind problem
  * @id py/quantum-readiness/cbom/key-exchange
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
