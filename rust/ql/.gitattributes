@@ -61,6 +61,7 @@
 /lib/codeql/rust/elements/ForTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/Format.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgsArg.qll linguist-generated
+/lib/codeql/rust/elements/FormatArgsArgName.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgsExpr.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgument.qll linguist-generated
 /lib/codeql/rust/elements/FormatTemplateVariableAccess.qll linguist-generated
@@ -156,7 +157,6 @@
 /lib/codeql/rust/elements/Token.qll linguist-generated
 /lib/codeql/rust/elements/TokenTree.qll linguist-generated
 /lib/codeql/rust/elements/Trait.qll linguist-generated
-/lib/codeql/rust/elements/TraitAlias.qll linguist-generated
 /lib/codeql/rust/elements/TryExpr.qll linguist-generated
 /lib/codeql/rust/elements/TupleExpr.qll linguist-generated
 /lib/codeql/rust/elements/TupleField.qll linguist-generated
@@ -273,6 +273,8 @@
 /lib/codeql/rust/elements/internal/ForTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsArgImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/FormatArgsArgNameConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/FormatArgsArgNameImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FunctionConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgImpl.qll linguist-generated
@@ -394,8 +396,6 @@
 /lib/codeql/rust/elements/internal/TokenImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenTreeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenTreeImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/TraitAliasConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TraitAliasImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TraitConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TryExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TryExprImpl.qll linguist-generated
@@ -504,6 +504,7 @@
 /lib/codeql/rust/elements/internal/generated/ForTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Format.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgsArg.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/FormatArgsArgName.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgsExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgument.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatTemplateVariableAccess.qll linguist-generated
@@ -605,7 +606,6 @@
 /lib/codeql/rust/elements/internal/generated/Token.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TokenTree.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Trait.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/TraitAlias.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TryExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TupleExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TupleField.qll linguist-generated
@@ -685,6 +685,7 @@
 /test/extractor-tests/generated/ForBinder/ForBinder.ql linguist-generated
 /test/extractor-tests/generated/ForExpr/ForExpr.ql linguist-generated
 /test/extractor-tests/generated/ForTypeRepr/ForTypeRepr.ql linguist-generated
+/test/extractor-tests/generated/FormatArgsArgName/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/Format.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgsArg.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgsExpr.ql linguist-generated
@@ -770,7 +771,6 @@
 /test/extractor-tests/generated/TokenTree/TokenTree.ql linguist-generated
 /test/extractor-tests/generated/Trait/AssocItemList.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait.ql linguist-generated
-/test/extractor-tests/generated/TraitAlias/TraitAlias.ql linguist-generated
 /test/extractor-tests/generated/TryExpr/TryExpr.ql linguist-generated
 /test/extractor-tests/generated/TupleExpr/TupleExpr.ql linguist-generated
 /test/extractor-tests/generated/TupleField/TupleField.ql linguist-generated

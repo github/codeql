@@ -98,8 +98,8 @@ rust_library(
     }),
     version = "0.2.0",
     deps = [
-        "@vendor_ts__log-0.4.28//:log",
+        "@vendor_ts__log-0.4.29//:log",
         "@vendor_ts__once_cell-1.21.3//:once_cell",
-        "@vendor_ts__tracing-core-0.1.34//:tracing_core",
+        "@vendor_ts__tracing-core-0.1.36//:tracing_core",
     ],
 )

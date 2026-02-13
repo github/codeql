@@ -64,6 +64,7 @@ import codeql.rust.elements.ForExpr
 import codeql.rust.elements.ForTypeRepr
 import codeql.rust.elements.Format
 import codeql.rust.elements.FormatArgsArg
+import codeql.rust.elements.FormatArgsArgName
 import codeql.rust.elements.FormatArgsExpr
 import codeql.rust.elements.FormatArgument
 import codeql.rust.elements.FormatTemplateVariableAccess
@@ -159,7 +160,6 @@ import codeql.rust.elements.StructPatFieldList
 import codeql.rust.elements.Token
 import codeql.rust.elements.TokenTree
 import codeql.rust.elements.Trait
-import codeql.rust.elements.TraitAlias
 import codeql.rust.elements.TryExpr
 import codeql.rust.elements.TupleExpr
 import codeql.rust.elements.TupleField
