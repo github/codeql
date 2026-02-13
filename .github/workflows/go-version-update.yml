@@ -29,7 +29,7 @@ jobs:
       - name: Fetch latest Go version
         id: fetch-version
         run: |
-          LATEST_GO_VERSION=$(curl -s https://go.dev/dl/\?mode\=json | jq -r '.[0].version')
+          LATEST_GO_VERSION=$(curl -s https://go.dev/dl/?mode=json | jq -r '.[0].version')
           
           if [ -z "$LATEST_GO_VERSION" ] || [ "$LATEST_GO_VERSION" = "null" ]; then
             echo "Error: Failed to fetch latest Go version from go.dev"
@@ -91,11 +91,9 @@ jobs:
           
           echo "Updating from $CURRENT_VERSION to $LATEST_VERSION_NUM"
           
-          # Escape dots in version strings for use in sed patterns
+          # Escape dots in current version strings for use in sed patterns
           CURRENT_VERSION_ESCAPED=$(echo "$CURRENT_VERSION" | sed 's/\./\\./g')
-          LATEST_VERSION_NUM_ESCAPED=$(echo "$LATEST_VERSION_NUM" | sed 's/\./\\./g')
           CURRENT_MAJOR_MINOR_ESCAPED=$(echo "$CURRENT_MAJOR_MINOR" | sed 's/\./\\./g')
-          LATEST_MAJOR_MINOR_ESCAPED=$(echo "$LATEST_MAJOR_MINOR" | sed 's/\./\\./g')
           
           # Update MODULE.bazel
           if ! sed -i "s/go_sdk\.download(version = \"$CURRENT_VERSION_ESCAPED\")/go_sdk.download(version = \"$LATEST_VERSION_NUM\")/" MODULE.bazel; then
@@ -144,7 +142,7 @@ jobs:
           BRANCH_NAME="workflow/go-version-update"
           PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[0].number')
           
-          if [ "$PR_NUMBER" != "null" ] && [ -n "$PR_NUMBER" ]; then
+          if [ -n "$PR_NUMBER" ]; then
             echo "Existing PR found: #$PR_NUMBER"
             echo "pr_exists=true" >> $GITHUB_OUTPUT
             echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
