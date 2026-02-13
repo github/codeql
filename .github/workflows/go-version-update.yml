@@ -3,7 +3,7 @@ name: Update Go version
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 3 * * 1"  # Run weekly on Monday at 3 AM UTC
+    - cron: "0 3 * * 1"  # Run weekly on Mondays at 3 AM UTC (1 = Monday)
 
 permissions:
   contents: write
@@ -38,7 +38,7 @@ jobs:
           echo "version_num=$LATEST_VERSION_NUM" >> $GITHUB_OUTPUT
           
           # Extract major.minor version (e.g., 1.26.0 -> 1.26)
-          LATEST_MAJOR_MINOR=$(echo $LATEST_VERSION_NUM | sed -n 's/^\([0-9]\+\.[0-9]\+\).*/\1/p')
+          LATEST_MAJOR_MINOR=$(echo $LATEST_VERSION_NUM | sed -E 's/^([0-9]+\.[0-9]+).*/\1/')
           echo "major_minor=$LATEST_MAJOR_MINOR" >> $GITHUB_OUTPUT
 
       - name: Check current Go version
@@ -49,7 +49,7 @@ jobs:
           echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
           
           # Extract major.minor version
-          CURRENT_MAJOR_MINOR=$(echo $CURRENT_VERSION | sed -n 's/^\([0-9]\+\.[0-9]\+\).*/\1/p')
+          CURRENT_MAJOR_MINOR=$(echo $CURRENT_VERSION | sed -E 's/^([0-9]+\.[0-9]+).*/\1/')
           echo "major_minor=$CURRENT_MAJOR_MINOR" >> $GITHUB_OUTPUT
 
       - name: Compare versions
@@ -114,9 +114,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH_NAME="workflow/go-version-update"
-          PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[]? | .number')
+          PR_NUMBER=$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq '.[0].number')
           
-          if [ -n "$PR_NUMBER" ]; then
+          if [ "$PR_NUMBER" != "null" ] && [ -n "$PR_NUMBER" ]; then
             echo "Existing PR found: #$PR_NUMBER"
             echo "pr_exists=true" >> $GITHUB_OUTPUT
             echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
@@ -152,7 +152,9 @@ jobs:
           CURRENT_MAJOR_MINOR="${{ steps.current-version.outputs.major_minor }}"
           
           PR_TITLE="Go: Update to $LATEST_MAJOR_MINOR"
-          PR_BODY="This PR updates Go from $CURRENT_MAJOR_MINOR to $LATEST_MAJOR_MINOR.
+          
+          PR_BODY=$(cat <<EOF
+          This PR updates Go from $CURRENT_MAJOR_MINOR to $LATEST_MAJOR_MINOR.
 
           Updated files:
           - \`MODULE.bazel\` - go_sdk.download version
@@ -160,7 +162,9 @@ jobs:
           - \`go/extractor/autobuilder/build-environment.go\` - maxGoVersion
           - \`go/actions/test/action.yml\` - default go-test-version
 
-          This PR was automatically created by the [Go version update workflow](.github/workflows/go-version-update.yml)."
+          This PR was automatically created by the [Go version update workflow](.github/workflows/go-version-update.yml).
+          EOF
+          )
           
           if [ "${{ steps.check-pr.outputs.pr_exists }}" = "true" ]; then
             echo "Updating existing PR #${{ steps.check-pr.outputs.pr_number }}"
