@@ -22,6 +22,9 @@ namespace Semmle.Extraction.CSharp.Entities
                     .ToList();
         }
 
+        protected override IMethodSymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
+
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
