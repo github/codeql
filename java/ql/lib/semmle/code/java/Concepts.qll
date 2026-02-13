@@ -7,7 +7,15 @@ overlay[local?]
 module;
 
 import java
-private import semmle.code.java.frameworks.JavaxAnnotations
+
+/**
+ * A module importing the frameworks that implement `RegexMatch`es,
+ * ensuring that they are visible to the concepts library.
+ */
+private module Frameworks {
+  private import semmle.code.java.JDK
+  private import semmle.code.java.frameworks.JavaxAnnotations
+}
 
 /**
  * An expression that represents a regular expression match.
