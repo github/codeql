@@ -14,6 +14,9 @@ private import semmle.code.java.frameworks.JavaxAnnotations
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegexMatch::Range` instead.
+ *
+ * These are either method calls, which return `true` when there is a match, or
+ * annotations, which are considered to match if they are present.
  */
 class RegexMatch extends Expr instanceof RegexMatch::Range {
   /** Gets the expression for the regex being executed by this node. */
@@ -36,6 +39,9 @@ module RegexMatch {
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `RegexMatch` instead.
+   *
+   * These are either method calls, which return `true` when there is a match, or
+   * annotations, which are considered to match if they are present.
    */
   abstract class Range extends Expr {
     /** Gets the expression for the regex being executed by this node. */
