@@ -34,8 +34,9 @@ class RegexMatch extends Expr instanceof RegexMatch::Range {
   Expr getString() { result = super.getString() }
 
   /**
-   * Gets the name of this regex match, typically the name of an executing method.
-   * This is used for nice alert messages and should include the module if possible.
+   * Gets the name of this regex match, typically the name of an executing
+   * method. This is used for nice alert messages and should include the
+   * type-qualified name if possible.
    */
   string getName() { result = super.getName() }
 }
@@ -59,8 +60,9 @@ module RegexMatch {
     abstract Expr getString();
 
     /**
-     * Gets the name of this regex match, typically the name of an executing method.
-     * This is used for nice alert messages and should include the module if possible.
+     * Gets the name of this regex match, typically the name of an executing
+     * method. This is used for nice alert messages and should include the
+     * type-qualified name if possible.
      */
     abstract string getName();
   }
