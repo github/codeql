@@ -64,11 +64,12 @@ private predicate stringMethodArgumentValueMatches(CompileTimeConstantExpr const
 }
 
 /**
- * Holds if the return value of `ma` is sanitized against log injection attacks
- * by removing line breaks from it.
+ * Holds if `e` is sanitized against log injection attacks by removing line
+ * breaks from it.
  */
-private predicate logInjectionSanitizer(MethodCall ma) {
-  exists(CompileTimeConstantExpr target, CompileTimeConstantExpr replacement |
+private predicate logInjectionSanitizer(Expr e) {
+  exists(MethodCall ma, CompileTimeConstantExpr target, CompileTimeConstantExpr replacement |
+    e = ma and
     stringMethodCall(ma, target, replacement) and
     not stringMethodArgumentValueMatches(replacement, ["%\n%", "%\r%"])
   |
@@ -88,6 +89,13 @@ private predicate logInjectionSanitizer(MethodCall ma) {
       // Replace line breaks
       target.getStringValue() = ["\n", "\r", "\\n", "\\r", "\\R"]
     )
+  )
+  or
+  exists(RegexMatch rm, CompileTimeConstantExpr target |
+    rm instanceof Annotation and
+    e = rm.getASanitizedExpr() and
+    target = rm.getRegex() and
+    regexPreventsLogInjection(target.getStringValue(), true)
   )
 }
 

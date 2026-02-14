@@ -46,8 +46,6 @@
 | LogInjectionTest.java:183:26:183:31 | source | LogInjectionTest.java:75:34:75:41 | source(...) : Object | LogInjectionTest.java:183:26:183:31 | source | This log entry depends on a $@. | LogInjectionTest.java:75:34:75:41 | source(...) | user-provided value |
 | LogInjectionTest.java:187:26:187:31 | source | LogInjectionTest.java:75:34:75:41 | source(...) : Object | LogInjectionTest.java:187:26:187:31 | source | This log entry depends on a $@. | LogInjectionTest.java:75:34:75:41 | source(...) | user-provided value |
 | LogInjectionTest.java:193:26:193:31 | source | LogInjectionTest.java:75:34:75:41 | source(...) : Object | LogInjectionTest.java:193:26:193:31 | source | This log entry depends on a $@. | LogInjectionTest.java:75:34:75:41 | source(...) | user-provided value |
-| LogInjectionTest.java:198:22:198:40 | validatedInputField | LogInjectionTest.java:198:22:198:40 | validatedInputField | LogInjectionTest.java:198:22:198:40 | validatedInputField | This log entry depends on a $@. | LogInjectionTest.java:198:22:198:40 | validatedInputField | user-provided value |
-| LogInjectionTest.java:199:22:199:37 | validatedInput(...) | LogInjectionTest.java:199:22:199:37 | validatedInput(...) | LogInjectionTest.java:199:22:199:37 | validatedInput(...) | This log entry depends on a $@. | LogInjectionTest.java:199:22:199:37 | validatedInput(...) | user-provided value |
 | LogInjectionTest.java:205:39:205:55 | (...)... | LogInjectionTest.java:205:48:205:55 | source(...) : Object | LogInjectionTest.java:205:39:205:55 | (...)... | This log entry depends on a $@. | LogInjectionTest.java:205:48:205:55 | source(...) | user-provided value |
 | LogInjectionTest.java:206:28:206:35 | source(...) | LogInjectionTest.java:206:28:206:35 | source(...) | LogInjectionTest.java:206:28:206:35 | source(...) | This log entry depends on a $@. | LogInjectionTest.java:206:28:206:35 | source(...) | user-provided value |
 | LogInjectionTest.java:207:28:207:35 | source(...) | LogInjectionTest.java:207:28:207:35 | source(...) | LogInjectionTest.java:207:28:207:35 | source(...) | This log entry depends on a $@. | LogInjectionTest.java:207:28:207:35 | source(...) | user-provided value |
@@ -4517,8 +4515,6 @@ nodes
 | LogInjectionTest.java:183:26:183:31 | source | semmle.label | source |
 | LogInjectionTest.java:187:26:187:31 | source | semmle.label | source |
 | LogInjectionTest.java:193:26:193:31 | source | semmle.label | source |
-| LogInjectionTest.java:198:22:198:40 | validatedInputField | semmle.label | validatedInputField |
-| LogInjectionTest.java:199:22:199:37 | validatedInput(...) | semmle.label | validatedInput(...) |
 | LogInjectionTest.java:205:39:205:55 | (...)... | semmle.label | (...)... |
 | LogInjectionTest.java:205:48:205:55 | source(...) : Object | semmle.label | source(...) : Object |
 | LogInjectionTest.java:206:28:206:35 | source(...) | semmle.label | source(...) |
@@ -8133,3 +8129,6 @@ nodes
 | LogInjectionTest.java:2151:38:2151:54 | (...)... | semmle.label | (...)... |
 | LogInjectionTest.java:2151:47:2151:54 | source(...) : Object | semmle.label | source(...) : Object |
 subpaths
+testFailures
+| LogInjectionTest.java:198:44:198:63 | // $ SPURIOUS: Alert | Fixed spurious result: Alert |
+| LogInjectionTest.java:199:41:199:60 | // $ SPURIOUS: Alert | Fixed spurious result: Alert |
