@@ -103,35 +103,26 @@ private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
     branch = false
   )
   or
-  exists(MethodCall ma, CompileTimeConstantExpr target |
-    ma = g and
-    target = ma.getArgument(0)
+  exists(RegexMatch rm, CompileTimeConstantExpr target |
+    rm = g and
+    target = rm.getRegex() and
+    e = rm.getString()
   |
-    ma.getMethod().hasName("matches") and
+    // Allow anything except line breaks
     (
-      ma.getMethod().getDeclaringType() instanceof TypeString and
-      e = ma.getQualifier()
+      not target.getStringValue().matches("%[^%]%") and
+      not target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
       or
-      ma.getMethod().getDeclaringType().hasQualifiedName("java.util.regex", "Pattern") and
-      e = ma.getArgument(1)
+      target.getStringValue().matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%")
     ) and
+    branch = true
+    or
+    // Disallow line breaks
     (
-      // Allow anything except line breaks
-      (
-        not target.getStringValue().matches("%[^%]%") and
-        not target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
-        or
-        target.getStringValue().matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%")
-      ) and
-      branch = true
-      or
-      // Disallow line breaks
-      (
-        not target.getStringValue().matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%") and
-        // Assuming a regex containing line breaks is correctly matching line breaks in a string
-        target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
-      ) and
-      branch = false
-    )
+      not target.getStringValue().matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%") and
+      // Assuming a regex containing line breaks is correctly matching line breaks in a string
+      target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
+    ) and
+    branch = false
   )
 }
