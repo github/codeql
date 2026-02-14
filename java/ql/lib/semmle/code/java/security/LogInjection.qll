@@ -45,11 +45,11 @@ private class LineBreaksLogInjectionSanitizer extends LogInjectionSanitizer {
 }
 
 private predicate stringMethodCall(
-  MethodCall ma, CompileTimeConstantExpr arg0, CompileTimeConstantExpr arg1
+  MethodCall mc, CompileTimeConstantExpr arg0, CompileTimeConstantExpr arg1
 ) {
-  ma.getMethod().getDeclaringType() instanceof TypeString and
-  arg0 = ma.getArgument(0) and
-  arg1 = ma.getArgument(1)
+  mc.getMethod().getDeclaringType() instanceof TypeString and
+  arg0 = mc.getArgument(0) and
+  arg1 = mc.getArgument(1)
 }
 
 private predicate stringMethodArgument(CompileTimeConstantExpr arg) {
@@ -68,19 +68,19 @@ private predicate stringMethodArgumentValueMatches(CompileTimeConstantExpr const
  * breaks from it.
  */
 private predicate logInjectionSanitizer(Expr e) {
-  exists(MethodCall ma, CompileTimeConstantExpr target, CompileTimeConstantExpr replacement |
-    e = ma and
-    stringMethodCall(ma, target, replacement) and
+  exists(MethodCall mc, CompileTimeConstantExpr target, CompileTimeConstantExpr replacement |
+    e = mc and
+    stringMethodCall(mc, target, replacement) and
     not stringMethodArgumentValueMatches(replacement, ["%\n%", "%\r%"])
   |
-    ma.getMethod().hasName("replace") and
+    mc.getMethod().hasName("replace") and
     not replacement.getIntValue() = [10, 13] and
     (
       target.getIntValue() = [10, 13] or // 10 == '\n', 13 == '\r'
       target.getStringValue() = ["\n", "\r"]
     )
     or
-    ma.getMethod().hasName("replaceAll") and
+    mc.getMethod().hasName("replaceAll") and
     (
       // Replace anything not in an allow list
       target.getStringValue().matches("[^%]") and
@@ -104,10 +104,10 @@ private predicate logInjectionSanitizer(Expr e) {
  * by checking if there are line breaks in `e`.
  */
 private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
-  exists(MethodCall ma | ma = g |
-    ma.getMethod() instanceof StringContainsMethod and
-    ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ["\n", "\r"] and
-    e = ma.getQualifier() and
+  exists(MethodCall mc | mc = g |
+    mc.getMethod() instanceof StringContainsMethod and
+    mc.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ["\n", "\r"] and
+    e = mc.getQualifier() and
     branch = false
   )
   or
