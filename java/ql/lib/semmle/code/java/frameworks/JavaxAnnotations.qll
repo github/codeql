@@ -188,7 +188,7 @@ class PatternAnnotation extends Annotation, RegexMatch::Range {
     result.(MethodCall).getMethod().(GetterMethod).getField() = this.getAnnotatedElement()
     or
     // Annotation on parameter - value of parameter will match regexp
-    result = this.getAnnotatedElement().(Parameter).getAnAccess().(VarRead)
+    result.(VarRead).getVariable().(Parameter) = this.getAnnotatedElement()
     or
     // Annotation on method - return value of method will match regexp
     result.(Call).getCallee() = this.getAnnotatedElement()
