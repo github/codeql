@@ -96,16 +96,17 @@ private predicate logInjectionSanitizer(MethodCall ma) {
  * by checking if there are line breaks in `e`.
  */
 private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
+  exists(MethodCall ma | ma = g |
+    ma.getMethod() instanceof StringContainsMethod and
+    ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = ["\n", "\r"] and
+    e = ma.getQualifier() and
+    branch = false
+  )
+  or
   exists(MethodCall ma, CompileTimeConstantExpr target |
     ma = g and
     target = ma.getArgument(0)
   |
-    ma.getMethod().getDeclaringType() instanceof TypeString and
-    ma.getMethod().hasName("contains") and
-    target.getStringValue() = ["\n", "\r"] and
-    e = ma.getQualifier() and
-    branch = false
-    or
     ma.getMethod().hasName("matches") and
     (
       ma.getMethod().getDeclaringType() instanceof TypeString and
