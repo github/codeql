@@ -141,12 +141,14 @@ public class SanitizationTests extends HttpServlet {
                 client.send(r12, null);
             }
 
-            Pattern pattern = Pattern.compile("[a-zA-Z0-9_-]+");
-            String param13 = request.getParameter("uri13");
+            Pattern pattern = Pattern.compile("([a-zA-Z0-9_-]+)");
+            String param13 = request.getParameter("uri13"); // $ SPURIOUS: Source
             Matcher matcher = pattern.matcher(param13);
             if (matcher.matches()) {
-                HttpRequest r13 = HttpRequest.newBuilder(new URI(param13)).build();
-                client.send(r13, null);
+                HttpRequest r13a = HttpRequest.newBuilder(new URI(param13)).build();
+                client.send(r13a, null);
+                HttpRequest r13b = HttpRequest.newBuilder(new URI(matcher.group(1))).build(); // $ SPURIOUS: Alert
+                client.send(r13b, null); // $ SPURIOUS: Alert
             }
 
             // GOOD: sanitisation by @Pattern annotation on a field
