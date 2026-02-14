@@ -105,24 +105,35 @@ private predicate logInjectionGuard(Guard g, Expr e, boolean branch) {
   or
   exists(RegexMatch rm, CompileTimeConstantExpr target |
     rm = g and
+    not rm instanceof Annotation and
     target = rm.getRegex() and
-    e = rm.getString()
+    e = rm.getASanitizedExpr()
   |
-    // Allow anything except line breaks
-    (
-      not target.getStringValue().matches("%[^%]%") and
-      not target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
-      or
-      target.getStringValue().matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%")
-    ) and
-    branch = true
-    or
-    // Disallow line breaks
-    (
-      not target.getStringValue().matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%") and
-      // Assuming a regex containing line breaks is correctly matching line breaks in a string
-      target.getStringValue().matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
-    ) and
-    branch = false
+    regexPreventsLogInjection(target.getStringValue(), branch)
   )
+}
+
+/**
+ * Holds if `regex` matches against a pattern that allows anything except
+ * line breaks when `branch` is `true`, or a pattern that matches line breaks
+ * when `branch` is `false`.
+ */
+bindingset[regex]
+private predicate regexPreventsLogInjection(string regex, boolean branch) {
+  // Allow anything except line breaks
+  (
+    not regex.matches("%[^%]%") and
+    not regex.matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
+    or
+    regex.matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%")
+  ) and
+  branch = true
+  or
+  // Disallow line breaks
+  (
+    not regex.matches("%[^%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%]%") and
+    // Assuming a regex containing line breaks is correctly matching line breaks in a string
+    regex.matches("%" + ["\n", "\r", "\\n", "\\r", "\\R"] + "%")
+  ) and
+  branch = false
 }
