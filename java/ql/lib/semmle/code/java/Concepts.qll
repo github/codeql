@@ -33,6 +33,9 @@ class RegexMatch extends Expr instanceof RegexMatch::Range {
   /** Gets an expression for the string to be searched or matched against. */
   Expr getString() { result = super.getString() }
 
+  /** Gets an expression to be sanitized. */
+  Expr getASanitizedExpr() { result = [this.getString(), super.getAdditionalSanitizedExpr()] }
+
   /**
    * Gets the name of this regex match, typically the name of an executing
    * method. This is used for nice alert messages and should include the
@@ -58,6 +61,9 @@ module RegexMatch {
 
     /** Gets an expression for the string to be searched or matched against. */
     abstract Expr getString();
+
+    /** Gets an additional expression to be sanitized, if any. */
+    Expr getAdditionalSanitizedExpr() { none() }
 
     /**
      * Gets the name of this regex match, typically the name of an executing

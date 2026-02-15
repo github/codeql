@@ -118,5 +118,18 @@ class MatcherMatchesCall extends MethodCall, RegexMatch::Range {
 
   override Expr getString() { result = this.getPatternMatcherCall().getArgument(0) }
 
+  override Expr getAdditionalSanitizedExpr() {
+    // Special case for MatcherMatchesCall. Consider the following code:
+    //
+    // Matcher matcher = Pattern.compile(regexp).matcher(taintedInput);
+    // if (matcher.matches()) {
+    //     sink(matcher.group(1));
+    // }
+    //
+    // Even though the string is `taintedInput`, we also want to sanitize
+    // `matcher` as it can be used to get substrings of `taintedInput`.
+    result = this.getQualifier()
+  }
+
   override string getName() { result = "Matcher.matches" }
 }

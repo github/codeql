@@ -43,22 +43,9 @@ class SimpleTypeSanitizer extends DataFlow::Node {
 predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
   exists(RegexMatch rm | not rm instanceof Annotation |
     guard = rm and
-    (
-      e = rm.getString()
-      or
-      // Special case for MatcherMatchesCall. Consider the following code:
-      //
-      // Matcher matcher = Pattern.compile(regexp).matcher(taintedInput);
-      // if (matcher.matches()) {
-      //     sink(matcher.group(1));
-      // }
-      //
-      // Even though the string is `taintedInput`, we also want to sanitize
-      // `matcher` as it can be used to get substrings of `taintedInput`.
-      e = rm.(MatcherMatchesCall).getQualifier()
-    )
-  ) and
-  branch = true
+    e = rm.getASanitizedExpr() and
+    branch = true
+  )
 }
 
 /**
