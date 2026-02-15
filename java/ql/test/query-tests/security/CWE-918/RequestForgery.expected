@@ -228,30 +228,32 @@
 | JdbcUrlSSRF.java:88:19:88:25 | jdbcUrl | JdbcUrlSSRF.java:80:26:80:56 | getParameter(...) : String | JdbcUrlSSRF.java:88:19:88:25 | jdbcUrl | Potential server-side request forgery due to a $@. | JdbcUrlSSRF.java:80:26:80:56 | getParameter(...) | user-provided value |
 | ReactiveWebClientSSRF.java:16:52:16:54 | url | ReactiveWebClientSSRF.java:15:26:15:52 | getParameter(...) : String | ReactiveWebClientSSRF.java:16:52:16:54 | url | Potential server-side request forgery due to a $@. | ReactiveWebClientSSRF.java:15:26:15:52 | getParameter(...) | user-provided value |
 | ReactiveWebClientSSRF.java:35:30:35:32 | url | ReactiveWebClientSSRF.java:32:26:32:52 | getParameter(...) : String | ReactiveWebClientSSRF.java:35:30:35:32 | url | Potential server-side request forgery due to a $@. | ReactiveWebClientSSRF.java:32:26:32:52 | getParameter(...) | user-provided value |
-| SanitizationTests.java:24:52:24:54 | uri | SanitizationTests.java:21:31:21:57 | getParameter(...) : String | SanitizationTests.java:24:52:24:54 | uri | Potential server-side request forgery due to a $@. | SanitizationTests.java:21:31:21:57 | getParameter(...) | user-provided value |
-| SanitizationTests.java:25:25:25:25 | r | SanitizationTests.java:21:31:21:57 | getParameter(...) : String | SanitizationTests.java:25:25:25:25 | r | Potential server-side request forgery due to a $@. | SanitizationTests.java:21:31:21:57 | getParameter(...) | user-provided value |
-| SanitizationTests.java:78:59:78:77 | new URI(...) | SanitizationTests.java:77:33:77:63 | getParameter(...) : String | SanitizationTests.java:78:59:78:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:77:33:77:63 | getParameter(...) | user-provided value |
-| SanitizationTests.java:79:25:79:32 | unsafer3 | SanitizationTests.java:77:33:77:63 | getParameter(...) : String | SanitizationTests.java:79:25:79:32 | unsafer3 | Potential server-side request forgery due to a $@. | SanitizationTests.java:77:33:77:63 | getParameter(...) | user-provided value |
-| SanitizationTests.java:82:59:82:77 | new URI(...) | SanitizationTests.java:81:49:81:79 | getParameter(...) : String | SanitizationTests.java:82:59:82:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:81:49:81:79 | getParameter(...) | user-provided value |
-| SanitizationTests.java:83:25:83:32 | unsafer4 | SanitizationTests.java:81:49:81:79 | getParameter(...) : String | SanitizationTests.java:83:25:83:32 | unsafer4 | Potential server-side request forgery due to a $@. | SanitizationTests.java:81:49:81:79 | getParameter(...) | user-provided value |
-| SanitizationTests.java:87:59:87:88 | new URI(...) | SanitizationTests.java:86:31:86:61 | getParameter(...) : String | SanitizationTests.java:87:59:87:88 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:86:31:86:61 | getParameter(...) | user-provided value |
-| SanitizationTests.java:88:25:88:32 | unsafer5 | SanitizationTests.java:86:31:86:61 | getParameter(...) : String | SanitizationTests.java:88:25:88:32 | unsafer5 | Potential server-side request forgery due to a $@. | SanitizationTests.java:86:31:86:61 | getParameter(...) | user-provided value |
-| SanitizationTests.java:92:60:92:89 | new URI(...) | SanitizationTests.java:90:58:90:86 | getParameter(...) : String | SanitizationTests.java:92:60:92:89 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:90:58:90:86 | getParameter(...) | user-provided value |
-| SanitizationTests.java:93:25:93:33 | unsafer5a | SanitizationTests.java:90:58:90:86 | getParameter(...) : String | SanitizationTests.java:93:25:93:33 | unsafer5a | Potential server-side request forgery due to a $@. | SanitizationTests.java:90:58:90:86 | getParameter(...) | user-provided value |
-| SanitizationTests.java:97:60:97:90 | new URI(...) | SanitizationTests.java:95:60:95:88 | getParameter(...) : String | SanitizationTests.java:97:60:97:90 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:95:60:95:88 | getParameter(...) | user-provided value |
-| SanitizationTests.java:98:25:98:33 | unsafer5b | SanitizationTests.java:95:60:95:88 | getParameter(...) : String | SanitizationTests.java:98:25:98:33 | unsafer5b | Potential server-side request forgery due to a $@. | SanitizationTests.java:95:60:95:88 | getParameter(...) | user-provided value |
-| SanitizationTests.java:102:60:102:90 | new URI(...) | SanitizationTests.java:100:77:100:105 | getParameter(...) : String | SanitizationTests.java:102:60:102:90 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:100:77:100:105 | getParameter(...) | user-provided value |
-| SanitizationTests.java:103:25:103:33 | unsafer5c | SanitizationTests.java:100:77:100:105 | getParameter(...) : String | SanitizationTests.java:103:25:103:33 | unsafer5c | Potential server-side request forgery due to a $@. | SanitizationTests.java:100:77:100:105 | getParameter(...) | user-provided value |
-| SanitizationTests.java:106:59:106:77 | new URI(...) | SanitizationTests.java:105:73:105:103 | getParameter(...) : String | SanitizationTests.java:106:59:106:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:105:73:105:103 | getParameter(...) | user-provided value |
-| SanitizationTests.java:107:25:107:32 | unsafer6 | SanitizationTests.java:105:73:105:103 | getParameter(...) : String | SanitizationTests.java:107:25:107:32 | unsafer6 | Potential server-side request forgery due to a $@. | SanitizationTests.java:105:73:105:103 | getParameter(...) | user-provided value |
-| SanitizationTests.java:110:59:110:77 | new URI(...) | SanitizationTests.java:109:56:109:86 | getParameter(...) : String | SanitizationTests.java:110:59:110:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:109:56:109:86 | getParameter(...) | user-provided value |
-| SanitizationTests.java:111:25:111:32 | unsafer7 | SanitizationTests.java:109:56:109:86 | getParameter(...) : String | SanitizationTests.java:111:25:111:32 | unsafer7 | Potential server-side request forgery due to a $@. | SanitizationTests.java:109:56:109:86 | getParameter(...) | user-provided value |
-| SanitizationTests.java:114:59:114:77 | new URI(...) | SanitizationTests.java:113:55:113:85 | getParameter(...) : String | SanitizationTests.java:114:59:114:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:113:55:113:85 | getParameter(...) | user-provided value |
-| SanitizationTests.java:115:25:115:32 | unsafer8 | SanitizationTests.java:113:55:113:85 | getParameter(...) : String | SanitizationTests.java:115:25:115:32 | unsafer8 | Potential server-side request forgery due to a $@. | SanitizationTests.java:113:55:113:85 | getParameter(...) | user-provided value |
-| SanitizationTests.java:118:59:118:77 | new URI(...) | SanitizationTests.java:117:33:117:63 | getParameter(...) : String | SanitizationTests.java:118:59:118:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:117:33:117:63 | getParameter(...) | user-provided value |
-| SanitizationTests.java:119:25:119:32 | unsafer9 | SanitizationTests.java:117:33:117:63 | getParameter(...) : String | SanitizationTests.java:119:25:119:32 | unsafer9 | Potential server-side request forgery due to a $@. | SanitizationTests.java:117:33:117:63 | getParameter(...) | user-provided value |
-| SanitizationTests.java:122:60:122:79 | new URI(...) | SanitizationTests.java:121:94:121:125 | getParameter(...) : String | SanitizationTests.java:122:60:122:79 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:121:94:121:125 | getParameter(...) | user-provided value |
-| SanitizationTests.java:123:25:123:33 | unsafer10 | SanitizationTests.java:121:94:121:125 | getParameter(...) : String | SanitizationTests.java:123:25:123:33 | unsafer10 | Potential server-side request forgery due to a $@. | SanitizationTests.java:121:94:121:125 | getParameter(...) | user-provided value |
+| SanitizationTests.java:25:52:25:54 | uri | SanitizationTests.java:22:31:22:57 | getParameter(...) : String | SanitizationTests.java:25:52:25:54 | uri | Potential server-side request forgery due to a $@. | SanitizationTests.java:22:31:22:57 | getParameter(...) | user-provided value |
+| SanitizationTests.java:26:25:26:25 | r | SanitizationTests.java:22:31:22:57 | getParameter(...) : String | SanitizationTests.java:26:25:26:25 | r | Potential server-side request forgery due to a $@. | SanitizationTests.java:22:31:22:57 | getParameter(...) | user-provided value |
+| SanitizationTests.java:79:59:79:77 | new URI(...) | SanitizationTests.java:78:33:78:63 | getParameter(...) : String | SanitizationTests.java:79:59:79:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:78:33:78:63 | getParameter(...) | user-provided value |
+| SanitizationTests.java:80:25:80:32 | unsafer3 | SanitizationTests.java:78:33:78:63 | getParameter(...) : String | SanitizationTests.java:80:25:80:32 | unsafer3 | Potential server-side request forgery due to a $@. | SanitizationTests.java:78:33:78:63 | getParameter(...) | user-provided value |
+| SanitizationTests.java:83:59:83:77 | new URI(...) | SanitizationTests.java:82:49:82:79 | getParameter(...) : String | SanitizationTests.java:83:59:83:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:82:49:82:79 | getParameter(...) | user-provided value |
+| SanitizationTests.java:84:25:84:32 | unsafer4 | SanitizationTests.java:82:49:82:79 | getParameter(...) : String | SanitizationTests.java:84:25:84:32 | unsafer4 | Potential server-side request forgery due to a $@. | SanitizationTests.java:82:49:82:79 | getParameter(...) | user-provided value |
+| SanitizationTests.java:88:59:88:88 | new URI(...) | SanitizationTests.java:87:31:87:61 | getParameter(...) : String | SanitizationTests.java:88:59:88:88 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:87:31:87:61 | getParameter(...) | user-provided value |
+| SanitizationTests.java:89:25:89:32 | unsafer5 | SanitizationTests.java:87:31:87:61 | getParameter(...) : String | SanitizationTests.java:89:25:89:32 | unsafer5 | Potential server-side request forgery due to a $@. | SanitizationTests.java:87:31:87:61 | getParameter(...) | user-provided value |
+| SanitizationTests.java:93:60:93:89 | new URI(...) | SanitizationTests.java:91:58:91:86 | getParameter(...) : String | SanitizationTests.java:93:60:93:89 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:91:58:91:86 | getParameter(...) | user-provided value |
+| SanitizationTests.java:94:25:94:33 | unsafer5a | SanitizationTests.java:91:58:91:86 | getParameter(...) : String | SanitizationTests.java:94:25:94:33 | unsafer5a | Potential server-side request forgery due to a $@. | SanitizationTests.java:91:58:91:86 | getParameter(...) | user-provided value |
+| SanitizationTests.java:98:60:98:90 | new URI(...) | SanitizationTests.java:96:60:96:88 | getParameter(...) : String | SanitizationTests.java:98:60:98:90 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:96:60:96:88 | getParameter(...) | user-provided value |
+| SanitizationTests.java:99:25:99:33 | unsafer5b | SanitizationTests.java:96:60:96:88 | getParameter(...) : String | SanitizationTests.java:99:25:99:33 | unsafer5b | Potential server-side request forgery due to a $@. | SanitizationTests.java:96:60:96:88 | getParameter(...) | user-provided value |
+| SanitizationTests.java:103:60:103:90 | new URI(...) | SanitizationTests.java:101:77:101:105 | getParameter(...) : String | SanitizationTests.java:103:60:103:90 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:101:77:101:105 | getParameter(...) | user-provided value |
+| SanitizationTests.java:104:25:104:33 | unsafer5c | SanitizationTests.java:101:77:101:105 | getParameter(...) : String | SanitizationTests.java:104:25:104:33 | unsafer5c | Potential server-side request forgery due to a $@. | SanitizationTests.java:101:77:101:105 | getParameter(...) | user-provided value |
+| SanitizationTests.java:107:59:107:77 | new URI(...) | SanitizationTests.java:106:73:106:103 | getParameter(...) : String | SanitizationTests.java:107:59:107:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:106:73:106:103 | getParameter(...) | user-provided value |
+| SanitizationTests.java:108:25:108:32 | unsafer6 | SanitizationTests.java:106:73:106:103 | getParameter(...) : String | SanitizationTests.java:108:25:108:32 | unsafer6 | Potential server-side request forgery due to a $@. | SanitizationTests.java:106:73:106:103 | getParameter(...) | user-provided value |
+| SanitizationTests.java:111:59:111:77 | new URI(...) | SanitizationTests.java:110:56:110:86 | getParameter(...) : String | SanitizationTests.java:111:59:111:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:110:56:110:86 | getParameter(...) | user-provided value |
+| SanitizationTests.java:112:25:112:32 | unsafer7 | SanitizationTests.java:110:56:110:86 | getParameter(...) : String | SanitizationTests.java:112:25:112:32 | unsafer7 | Potential server-side request forgery due to a $@. | SanitizationTests.java:110:56:110:86 | getParameter(...) | user-provided value |
+| SanitizationTests.java:115:59:115:77 | new URI(...) | SanitizationTests.java:114:55:114:85 | getParameter(...) : String | SanitizationTests.java:115:59:115:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:114:55:114:85 | getParameter(...) | user-provided value |
+| SanitizationTests.java:116:25:116:32 | unsafer8 | SanitizationTests.java:114:55:114:85 | getParameter(...) : String | SanitizationTests.java:116:25:116:32 | unsafer8 | Potential server-side request forgery due to a $@. | SanitizationTests.java:114:55:114:85 | getParameter(...) | user-provided value |
+| SanitizationTests.java:119:59:119:77 | new URI(...) | SanitizationTests.java:118:33:118:63 | getParameter(...) : String | SanitizationTests.java:119:59:119:77 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:118:33:118:63 | getParameter(...) | user-provided value |
+| SanitizationTests.java:120:25:120:32 | unsafer9 | SanitizationTests.java:118:33:118:63 | getParameter(...) : String | SanitizationTests.java:120:25:120:32 | unsafer9 | Potential server-side request forgery due to a $@. | SanitizationTests.java:118:33:118:63 | getParameter(...) | user-provided value |
+| SanitizationTests.java:123:60:123:79 | new URI(...) | SanitizationTests.java:122:94:122:125 | getParameter(...) : String | SanitizationTests.java:123:60:123:79 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:122:94:122:125 | getParameter(...) | user-provided value |
+| SanitizationTests.java:124:25:124:33 | unsafer10 | SanitizationTests.java:122:94:122:125 | getParameter(...) : String | SanitizationTests.java:124:25:124:33 | unsafer10 | Potential server-side request forgery due to a $@. | SanitizationTests.java:122:94:122:125 | getParameter(...) | user-provided value |
+| SanitizationTests.java:177:54:177:113 | new URI(...) | SanitizationTests.java:177:82:177:110 | getParameter(...) : String | SanitizationTests.java:177:54:177:113 | new URI(...) | Potential server-side request forgery due to a $@. | SanitizationTests.java:177:82:177:110 | getParameter(...) | user-provided value |
+| SanitizationTests.java:178:25:178:27 | r18 | SanitizationTests.java:177:82:177:110 | getParameter(...) : String | SanitizationTests.java:178:25:178:27 | r18 | Potential server-side request forgery due to a $@. | SanitizationTests.java:177:82:177:110 | getParameter(...) | user-provided value |
 | SpringSSRF.java:32:39:32:59 | ... + ... | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:32:39:32:59 | ... + ... | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
 | SpringSSRF.java:33:69:33:82 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:33:69:33:82 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
 | SpringSSRF.java:34:73:34:86 | fooResourceUrl | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:34:73:34:86 | fooResourceUrl | Potential server-side request forgery due to a $@. | SpringSSRF.java:28:33:28:60 | getParameter(...) | user-provided value |
@@ -403,11 +405,11 @@ edges
 | ApacheHttpSSRF.java:28:31:28:34 | sink : String | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | provenance | Config |
 | ApacheHttpSSRF.java:28:31:28:34 | sink : String | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | provenance | MaD:285 |
 | ApacheHttpSSRF.java:42:62:42:64 | uri : URI | ApacheHttpSSRF.java:42:62:42:75 | toString(...) : String | provenance | MaD:286 |
-| ApacheHttpSSRF.java:42:62:42:75 | toString(...) : String | ApacheHttpSSRF.java:42:34:42:82 | new BasicRequestLine(...) | provenance | MaD:293 Sink:MaD:231 |
+| ApacheHttpSSRF.java:42:62:42:75 | toString(...) : String | ApacheHttpSSRF.java:42:34:42:82 | new BasicRequestLine(...) | provenance | MaD:295 Sink:MaD:231 |
 | ApacheHttpSSRF.java:43:41:43:43 | uri : URI | ApacheHttpSSRF.java:43:41:43:54 | toString(...) | provenance | MaD:286 Sink:MaD:232 |
 | ApacheHttpSSRF.java:44:41:44:43 | uri : URI | ApacheHttpSSRF.java:44:41:44:54 | toString(...) | provenance | MaD:286 Sink:MaD:233 |
 | ApacheHttpSSRF.java:46:77:46:79 | uri : URI | ApacheHttpSSRF.java:46:77:46:90 | toString(...) : String | provenance | MaD:286 |
-| ApacheHttpSSRF.java:46:77:46:90 | toString(...) : String | ApacheHttpSSRF.java:46:49:46:97 | new BasicRequestLine(...) | provenance | MaD:293 Sink:MaD:228 |
+| ApacheHttpSSRF.java:46:77:46:90 | toString(...) : String | ApacheHttpSSRF.java:46:49:46:97 | new BasicRequestLine(...) | provenance | MaD:295 Sink:MaD:228 |
 | ApacheHttpSSRF.java:47:56:47:58 | uri : URI | ApacheHttpSSRF.java:47:56:47:69 | toString(...) | provenance | MaD:286 Sink:MaD:229 |
 | ApacheHttpSSRF.java:48:56:48:58 | uri : URI | ApacheHttpSSRF.java:48:56:48:69 | toString(...) | provenance | MaD:286 Sink:MaD:230 |
 | ApacheHttpSSRFVersion5.java:41:30:41:56 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:42:31:42:37 | uriSink : String | provenance | Src:MaD:277  |
@@ -501,7 +503,7 @@ edges
 | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:132:36:132:39 | host | provenance | Sink:MaD:100 |
 | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:136:38:136:41 | host | provenance | Sink:MaD:103 |
 | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:162:52:162:55 | host | provenance | Sink:MaD:204 |
-| ApacheHttpSSRFVersion5.java:45:42:45:49 | hostSink : String | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | provenance | MaD:292 |
+| ApacheHttpSSRFVersion5.java:45:42:45:49 | hostSink : String | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | provenance | MaD:294 |
 | ApacheHttpSSRFVersion5.java:49:54:49:56 | uri : URI | ApacheHttpSSRFVersion5.java:49:54:49:67 | toString(...) | provenance | MaD:286 Sink:MaD:39 |
 | ApacheHttpSSRFVersion5.java:51:48:51:50 | uri : URI | ApacheHttpSSRFVersion5.java:51:48:51:61 | toString(...) | provenance | MaD:286 Sink:MaD:41 |
 | ApacheHttpSSRFVersion5.java:55:38:55:40 | uri : URI | ApacheHttpSSRFVersion5.java:55:38:55:51 | toString(...) | provenance | MaD:286 Sink:MaD:44 |
@@ -631,7 +633,7 @@ edges
 | ApacheHttpSSRFVersion5.java:298:31:298:58 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:299:42:299:49 | hostSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:299:29:299:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:303:34:303:37 | host | provenance | Sink:MaD:178 |
 | ApacheHttpSSRFVersion5.java:299:29:299:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:304:34:304:37 | host | provenance | Sink:MaD:179 |
-| ApacheHttpSSRFVersion5.java:299:42:299:49 | hostSink : String | ApacheHttpSSRFVersion5.java:299:29:299:50 | new HttpHost(...) : HttpHost | provenance | MaD:292 |
+| ApacheHttpSSRFVersion5.java:299:42:299:49 | hostSink : String | ApacheHttpSSRFVersion5.java:299:29:299:50 | new HttpHost(...) : HttpHost | provenance | MaD:294 |
 | ApacheHttpSSRFVersion5.java:308:60:308:62 | uri : URI | ApacheHttpSSRFVersion5.java:308:60:308:73 | toString(...) | provenance | MaD:286 Sink:MaD:208 |
 | ApacheHttpSSRFVersion5.java:313:53:313:55 | uri : URI | ApacheHttpSSRFVersion5.java:313:53:313:66 | toString(...) | provenance | MaD:286 Sink:MaD:208 |
 | ApacheHttpSSRFVersion5.java:326:30:326:56 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:327:31:327:37 | uriSink : String | provenance | Src:MaD:277  |
@@ -657,7 +659,7 @@ edges
 | ApacheHttpSSRFVersion5.java:327:31:327:37 | uriSink : String | ApacheHttpSSRFVersion5.java:327:23:327:38 | new URI(...) : URI | provenance | MaD:285 |
 | ApacheHttpSSRFVersion5.java:329:31:329:58 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:330:42:330:49 | hostSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:330:29:330:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:354:53:354:56 | host | provenance | Sink:MaD:204 |
-| ApacheHttpSSRFVersion5.java:330:42:330:49 | hostSink : String | ApacheHttpSSRFVersion5.java:330:29:330:50 | new HttpHost(...) : HttpHost | provenance | MaD:292 |
+| ApacheHttpSSRFVersion5.java:330:42:330:49 | hostSink : String | ApacheHttpSSRFVersion5.java:330:29:330:50 | new HttpHost(...) : HttpHost | provenance | MaD:294 |
 | ApacheHttpSSRFVersion5.java:333:42:333:44 | uri : URI | ApacheHttpSSRFVersion5.java:333:42:333:55 | toString(...) | provenance | MaD:286 Sink:MaD:180 |
 | ApacheHttpSSRFVersion5.java:336:39:336:41 | uri : URI | ApacheHttpSSRFVersion5.java:336:39:336:52 | toString(...) | provenance | MaD:286 Sink:MaD:182 |
 | ApacheHttpSSRFVersion5.java:339:40:339:42 | uri : URI | ApacheHttpSSRFVersion5.java:339:40:339:53 | toString(...) | provenance | MaD:286 Sink:MaD:184 |
@@ -681,7 +683,7 @@ edges
 | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:381:51:381:54 | host | provenance | Sink:MaD:198 |
 | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:385:50:385:53 | host | provenance | Sink:MaD:200 |
 | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:387:44:387:47 | host | provenance | Sink:MaD:202 |
-| ApacheHttpSSRFVersion5.java:376:42:376:49 | hostSink : String | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | provenance | MaD:292 |
+| ApacheHttpSSRFVersion5.java:376:42:376:49 | hostSink : String | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | provenance | MaD:294 |
 | JakartaWsSSRF.java:14:22:14:48 | getParameter(...) : String | JakartaWsSSRF.java:15:23:15:25 | url | provenance | Src:MaD:277 Sink:MaD:3 |
 | JavaNetHttpSSRF.java:25:27:25:53 | getParameter(...) : String | JavaNetHttpSSRF.java:26:31:26:34 | sink : String | provenance | Src:MaD:277  |
 | JavaNetHttpSSRF.java:26:23:26:35 | new URI(...) : URI | JavaNetHttpSSRF.java:39:59:39:61 | uri | provenance | Sink:MaD:6 |
@@ -708,7 +710,7 @@ edges
 | JdbcUrlSSRF.java:52:9:52:13 | props : Properties | JdbcUrlSSRF.java:54:49:54:53 | props | provenance | Sink:MaD:1 |
 | JdbcUrlSSRF.java:52:9:52:13 | props [post update] : Properties [<map.value>] : String | JdbcUrlSSRF.java:54:49:54:53 | props | provenance | Sink:MaD:1 |
 | JdbcUrlSSRF.java:52:38:52:44 | jdbcUrl : String | JdbcUrlSSRF.java:52:9:52:13 | props : Properties | provenance | Config |
-| JdbcUrlSSRF.java:52:38:52:44 | jdbcUrl : String | JdbcUrlSSRF.java:52:9:52:13 | props [post update] : Properties [<map.value>] : String | provenance | MaD:291 |
+| JdbcUrlSSRF.java:52:38:52:44 | jdbcUrl : String | JdbcUrlSSRF.java:52:9:52:13 | props [post update] : Properties [<map.value>] : String | provenance | MaD:293 |
 | JdbcUrlSSRF.java:60:26:60:56 | getParameter(...) : String | JdbcUrlSSRF.java:65:27:65:33 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:257 |
 | JdbcUrlSSRF.java:60:26:60:56 | getParameter(...) : String | JdbcUrlSSRF.java:67:75:67:81 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:258 |
 | JdbcUrlSSRF.java:60:26:60:56 | getParameter(...) : String | JdbcUrlSSRF.java:70:75:70:81 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:260 |
@@ -721,118 +723,130 @@ edges
 | JdbcUrlSSRF.java:80:26:80:56 | getParameter(...) : String | JdbcUrlSSRF.java:88:19:88:25 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:240 |
 | ReactiveWebClientSSRF.java:15:26:15:52 | getParameter(...) : String | ReactiveWebClientSSRF.java:16:52:16:54 | url | provenance | Src:MaD:277 Sink:MaD:274 |
 | ReactiveWebClientSSRF.java:32:26:32:52 | getParameter(...) : String | ReactiveWebClientSSRF.java:35:30:35:32 | url | provenance | Src:MaD:277 Sink:MaD:273 |
-| SanitizationTests.java:21:23:21:58 | new URI(...) : URI | SanitizationTests.java:24:52:24:54 | uri | provenance | Sink:MaD:6 |
-| SanitizationTests.java:21:23:21:58 | new URI(...) : URI | SanitizationTests.java:24:52:24:54 | uri : URI | provenance |  |
-| SanitizationTests.java:21:31:21:57 | getParameter(...) : String | SanitizationTests.java:21:23:21:58 | new URI(...) : URI | provenance | Src:MaD:277 Config |
-| SanitizationTests.java:21:31:21:57 | getParameter(...) : String | SanitizationTests.java:21:23:21:58 | new URI(...) : URI | provenance | Src:MaD:277 MaD:285 |
-| SanitizationTests.java:24:29:24:55 | newBuilder(...) : Builder | SanitizationTests.java:24:29:24:63 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:24:29:24:63 | build(...) : HttpRequest | SanitizationTests.java:25:25:25:25 | r | provenance | Sink:MaD:4 |
-| SanitizationTests.java:24:52:24:54 | uri : URI | SanitizationTests.java:24:29:24:55 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:77:33:77:63 | getParameter(...) : String | SanitizationTests.java:78:67:78:76 | unsafeUri3 : String | provenance | Src:MaD:277  |
-| SanitizationTests.java:78:36:78:78 | newBuilder(...) : Builder | SanitizationTests.java:78:36:78:86 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:78:36:78:86 | build(...) : HttpRequest | SanitizationTests.java:79:25:79:32 | unsafer3 | provenance | Sink:MaD:4 |
-| SanitizationTests.java:78:59:78:77 | new URI(...) : URI | SanitizationTests.java:78:36:78:78 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:78:67:78:76 | unsafeUri3 : String | SanitizationTests.java:78:59:78:77 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:78:67:78:76 | unsafeUri3 : String | SanitizationTests.java:78:59:78:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:78:67:78:76 | unsafeUri3 : String | SanitizationTests.java:78:59:78:77 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:78:67:78:76 | unsafeUri3 : String | SanitizationTests.java:78:59:78:77 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:81:49:81:79 | getParameter(...) : String | SanitizationTests.java:82:67:82:76 | unsafeUri4 : String | provenance | Src:MaD:277  |
-| SanitizationTests.java:82:36:82:78 | newBuilder(...) : Builder | SanitizationTests.java:82:36:82:86 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:82:36:82:86 | build(...) : HttpRequest | SanitizationTests.java:83:25:83:32 | unsafer4 | provenance | Sink:MaD:4 |
-| SanitizationTests.java:82:59:82:77 | new URI(...) : URI | SanitizationTests.java:82:36:82:78 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:82:67:82:76 | unsafeUri4 : String | SanitizationTests.java:82:59:82:77 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:82:67:82:76 | unsafeUri4 : String | SanitizationTests.java:82:59:82:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:82:67:82:76 | unsafeUri4 : String | SanitizationTests.java:82:59:82:77 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:82:67:82:76 | unsafeUri4 : String | SanitizationTests.java:82:59:82:77 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:86:13:86:22 | unsafeUri5 [post update] : StringBuilder | SanitizationTests.java:87:67:87:76 | unsafeUri5 : StringBuilder | provenance |  |
-| SanitizationTests.java:86:31:86:61 | getParameter(...) : String | SanitizationTests.java:86:13:86:22 | unsafeUri5 [post update] : StringBuilder | provenance | Src:MaD:277 MaD:278 |
-| SanitizationTests.java:87:36:87:89 | newBuilder(...) : Builder | SanitizationTests.java:87:36:87:97 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:87:36:87:97 | build(...) : HttpRequest | SanitizationTests.java:88:25:88:32 | unsafer5 | provenance | Sink:MaD:4 |
-| SanitizationTests.java:87:59:87:88 | new URI(...) : URI | SanitizationTests.java:87:36:87:89 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:87:67:87:76 | unsafeUri5 : StringBuilder | SanitizationTests.java:87:67:87:87 | toString(...) : String | provenance | MaD:280 |
-| SanitizationTests.java:87:67:87:87 | toString(...) : String | SanitizationTests.java:87:59:87:88 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:87:67:87:87 | toString(...) : String | SanitizationTests.java:87:59:87:88 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:87:67:87:87 | toString(...) : String | SanitizationTests.java:87:59:87:88 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:87:67:87:87 | toString(...) : String | SanitizationTests.java:87:59:87:88 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:90:40:90:87 | new StringBuilder(...) : StringBuilder | SanitizationTests.java:92:68:92:77 | unafeUri5a : StringBuilder | provenance |  |
-| SanitizationTests.java:90:58:90:86 | getParameter(...) : String | SanitizationTests.java:90:40:90:87 | new StringBuilder(...) : StringBuilder | provenance | Src:MaD:277 MaD:282 |
-| SanitizationTests.java:92:37:92:90 | newBuilder(...) : Builder | SanitizationTests.java:92:37:92:98 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:92:37:92:98 | build(...) : HttpRequest | SanitizationTests.java:93:25:93:33 | unsafer5a | provenance | Sink:MaD:4 |
-| SanitizationTests.java:92:60:92:89 | new URI(...) : URI | SanitizationTests.java:92:37:92:90 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:92:68:92:77 | unafeUri5a : StringBuilder | SanitizationTests.java:92:68:92:88 | toString(...) : String | provenance | MaD:280 |
-| SanitizationTests.java:92:68:92:88 | toString(...) : String | SanitizationTests.java:92:60:92:89 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:92:68:92:88 | toString(...) : String | SanitizationTests.java:92:60:92:89 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:92:68:92:88 | toString(...) : String | SanitizationTests.java:92:60:92:89 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:92:68:92:88 | toString(...) : String | SanitizationTests.java:92:60:92:89 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:95:41:95:105 | append(...) : StringBuilder | SanitizationTests.java:97:68:97:78 | unsafeUri5b : StringBuilder | provenance |  |
-| SanitizationTests.java:95:42:95:89 | new StringBuilder(...) : StringBuilder | SanitizationTests.java:95:41:95:105 | append(...) : StringBuilder | provenance | MaD:279 |
-| SanitizationTests.java:95:60:95:88 | getParameter(...) : String | SanitizationTests.java:95:42:95:89 | new StringBuilder(...) : StringBuilder | provenance | Src:MaD:277 MaD:282 |
-| SanitizationTests.java:97:37:97:91 | newBuilder(...) : Builder | SanitizationTests.java:97:37:97:99 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:97:37:97:99 | build(...) : HttpRequest | SanitizationTests.java:98:25:98:33 | unsafer5b | provenance | Sink:MaD:4 |
-| SanitizationTests.java:97:60:97:90 | new URI(...) : URI | SanitizationTests.java:97:37:97:91 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:97:68:97:78 | unsafeUri5b : StringBuilder | SanitizationTests.java:97:68:97:89 | toString(...) : String | provenance | MaD:280 |
-| SanitizationTests.java:97:68:97:89 | toString(...) : String | SanitizationTests.java:97:60:97:90 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:97:68:97:89 | toString(...) : String | SanitizationTests.java:97:60:97:90 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:97:68:97:89 | toString(...) : String | SanitizationTests.java:97:60:97:90 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:97:68:97:89 | toString(...) : String | SanitizationTests.java:97:60:97:90 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:100:41:100:106 | append(...) : StringBuilder | SanitizationTests.java:102:68:102:78 | unsafeUri5c : StringBuilder | provenance |  |
-| SanitizationTests.java:100:77:100:105 | getParameter(...) : String | SanitizationTests.java:100:41:100:106 | append(...) : StringBuilder | provenance | Src:MaD:277 MaD:278+MaD:279 |
-| SanitizationTests.java:102:37:102:91 | newBuilder(...) : Builder | SanitizationTests.java:102:37:102:99 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:102:37:102:99 | build(...) : HttpRequest | SanitizationTests.java:103:25:103:33 | unsafer5c | provenance | Sink:MaD:4 |
-| SanitizationTests.java:102:60:102:90 | new URI(...) : URI | SanitizationTests.java:102:37:102:91 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:102:68:102:78 | unsafeUri5c : StringBuilder | SanitizationTests.java:102:68:102:89 | toString(...) : String | provenance | MaD:280 |
-| SanitizationTests.java:102:68:102:89 | toString(...) : String | SanitizationTests.java:102:60:102:90 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:102:68:102:89 | toString(...) : String | SanitizationTests.java:102:60:102:90 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:102:68:102:89 | toString(...) : String | SanitizationTests.java:102:60:102:90 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:102:68:102:89 | toString(...) : String | SanitizationTests.java:102:60:102:90 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:105:33:105:104 | format(...) : String | SanitizationTests.java:106:67:106:76 | unsafeUri6 : String | provenance |  |
-| SanitizationTests.java:105:33:105:104 | new ..[] { .. } : Object[] [[]] : String | SanitizationTests.java:105:33:105:104 | format(...) : String | provenance | MaD:281 |
-| SanitizationTests.java:105:73:105:103 | getParameter(...) : String | SanitizationTests.java:105:33:105:104 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:277  |
-| SanitizationTests.java:106:36:106:78 | newBuilder(...) : Builder | SanitizationTests.java:106:36:106:86 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:106:36:106:86 | build(...) : HttpRequest | SanitizationTests.java:107:25:107:32 | unsafer6 | provenance | Sink:MaD:4 |
-| SanitizationTests.java:106:59:106:77 | new URI(...) : URI | SanitizationTests.java:106:36:106:78 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:106:67:106:76 | unsafeUri6 : String | SanitizationTests.java:106:59:106:77 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:106:67:106:76 | unsafeUri6 : String | SanitizationTests.java:106:59:106:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:106:67:106:76 | unsafeUri6 : String | SanitizationTests.java:106:59:106:77 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:106:67:106:76 | unsafeUri6 : String | SanitizationTests.java:106:59:106:77 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:109:33:109:110 | format(...) : String | SanitizationTests.java:110:67:110:76 | unsafeUri7 : String | provenance |  |
-| SanitizationTests.java:109:33:109:110 | new ..[] { .. } : Object[] [[]] : String | SanitizationTests.java:109:33:109:110 | format(...) : String | provenance | MaD:281 |
-| SanitizationTests.java:109:56:109:86 | getParameter(...) : String | SanitizationTests.java:109:33:109:110 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:277  |
-| SanitizationTests.java:110:36:110:78 | newBuilder(...) : Builder | SanitizationTests.java:110:36:110:86 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:110:36:110:86 | build(...) : HttpRequest | SanitizationTests.java:111:25:111:32 | unsafer7 | provenance | Sink:MaD:4 |
-| SanitizationTests.java:110:59:110:77 | new URI(...) : URI | SanitizationTests.java:110:36:110:78 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:110:67:110:76 | unsafeUri7 : String | SanitizationTests.java:110:59:110:77 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:110:67:110:76 | unsafeUri7 : String | SanitizationTests.java:110:59:110:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:110:67:110:76 | unsafeUri7 : String | SanitizationTests.java:110:59:110:77 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:110:67:110:76 | unsafeUri7 : String | SanitizationTests.java:110:59:110:77 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:113:33:113:110 | format(...) : String | SanitizationTests.java:114:67:114:76 | unsafeUri8 : String | provenance |  |
-| SanitizationTests.java:113:33:113:110 | new ..[] { .. } : Object[] [[]] : String | SanitizationTests.java:113:33:113:110 | format(...) : String | provenance | MaD:281 |
-| SanitizationTests.java:113:55:113:85 | getParameter(...) : String | SanitizationTests.java:113:33:113:110 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:277  |
-| SanitizationTests.java:114:36:114:78 | newBuilder(...) : Builder | SanitizationTests.java:114:36:114:86 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:114:36:114:86 | build(...) : HttpRequest | SanitizationTests.java:115:25:115:32 | unsafer8 | provenance | Sink:MaD:4 |
-| SanitizationTests.java:114:59:114:77 | new URI(...) : URI | SanitizationTests.java:114:36:114:78 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:114:67:114:76 | unsafeUri8 : String | SanitizationTests.java:114:59:114:77 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:114:67:114:76 | unsafeUri8 : String | SanitizationTests.java:114:59:114:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:114:67:114:76 | unsafeUri8 : String | SanitizationTests.java:114:59:114:77 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:114:67:114:76 | unsafeUri8 : String | SanitizationTests.java:114:59:114:77 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:117:33:117:63 | getParameter(...) : String | SanitizationTests.java:118:67:118:76 | unsafeUri9 : String | provenance | Src:MaD:277  |
-| SanitizationTests.java:118:36:118:78 | newBuilder(...) : Builder | SanitizationTests.java:118:36:118:86 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:118:36:118:86 | build(...) : HttpRequest | SanitizationTests.java:119:25:119:32 | unsafer9 | provenance | Sink:MaD:4 |
-| SanitizationTests.java:118:59:118:77 | new URI(...) : URI | SanitizationTests.java:118:36:118:78 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:118:67:118:76 | unsafeUri9 : String | SanitizationTests.java:118:59:118:77 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:118:67:118:76 | unsafeUri9 : String | SanitizationTests.java:118:59:118:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:118:67:118:76 | unsafeUri9 : String | SanitizationTests.java:118:59:118:77 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:118:67:118:76 | unsafeUri9 : String | SanitizationTests.java:118:59:118:77 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:121:34:121:126 | format(...) : String | SanitizationTests.java:122:68:122:78 | unsafeUri10 : String | provenance |  |
-| SanitizationTests.java:121:34:121:126 | new ..[] { .. } : Object[] [[]] : String | SanitizationTests.java:121:34:121:126 | format(...) : String | provenance | MaD:281 |
-| SanitizationTests.java:121:94:121:125 | getParameter(...) : String | SanitizationTests.java:121:34:121:126 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:277  |
-| SanitizationTests.java:122:37:122:80 | newBuilder(...) : Builder | SanitizationTests.java:122:37:122:88 | build(...) : HttpRequest | provenance | MaD:283 |
-| SanitizationTests.java:122:37:122:88 | build(...) : HttpRequest | SanitizationTests.java:123:25:123:33 | unsafer10 | provenance | Sink:MaD:4 |
-| SanitizationTests.java:122:60:122:79 | new URI(...) : URI | SanitizationTests.java:122:37:122:80 | newBuilder(...) : Builder | provenance | MaD:284 |
-| SanitizationTests.java:122:68:122:78 | unsafeUri10 : String | SanitizationTests.java:122:60:122:79 | new URI(...) | provenance | Config Sink:MaD:6 |
-| SanitizationTests.java:122:68:122:78 | unsafeUri10 : String | SanitizationTests.java:122:60:122:79 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
-| SanitizationTests.java:122:68:122:78 | unsafeUri10 : String | SanitizationTests.java:122:60:122:79 | new URI(...) : URI | provenance | Config |
-| SanitizationTests.java:122:68:122:78 | unsafeUri10 : String | SanitizationTests.java:122:60:122:79 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:22:23:22:58 | new URI(...) : URI | SanitizationTests.java:25:52:25:54 | uri | provenance | Sink:MaD:6 |
+| SanitizationTests.java:22:23:22:58 | new URI(...) : URI | SanitizationTests.java:25:52:25:54 | uri : URI | provenance |  |
+| SanitizationTests.java:22:31:22:57 | getParameter(...) : String | SanitizationTests.java:22:23:22:58 | new URI(...) : URI | provenance | Src:MaD:277 Config |
+| SanitizationTests.java:22:31:22:57 | getParameter(...) : String | SanitizationTests.java:22:23:22:58 | new URI(...) : URI | provenance | Src:MaD:277 MaD:285 |
+| SanitizationTests.java:25:29:25:55 | newBuilder(...) : Builder | SanitizationTests.java:25:29:25:63 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:25:29:25:63 | build(...) : HttpRequest | SanitizationTests.java:26:25:26:25 | r | provenance | Sink:MaD:4 |
+| SanitizationTests.java:25:52:25:54 | uri : URI | SanitizationTests.java:25:29:25:55 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:78:33:78:63 | getParameter(...) : String | SanitizationTests.java:79:67:79:76 | unsafeUri3 : String | provenance | Src:MaD:277  |
+| SanitizationTests.java:79:36:79:78 | newBuilder(...) : Builder | SanitizationTests.java:79:36:79:86 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:79:36:79:86 | build(...) : HttpRequest | SanitizationTests.java:80:25:80:32 | unsafer3 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:79:59:79:77 | new URI(...) : URI | SanitizationTests.java:79:36:79:78 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:79:67:79:76 | unsafeUri3 : String | SanitizationTests.java:79:59:79:77 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:79:67:79:76 | unsafeUri3 : String | SanitizationTests.java:79:59:79:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:79:67:79:76 | unsafeUri3 : String | SanitizationTests.java:79:59:79:77 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:79:67:79:76 | unsafeUri3 : String | SanitizationTests.java:79:59:79:77 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:82:49:82:79 | getParameter(...) : String | SanitizationTests.java:83:67:83:76 | unsafeUri4 : String | provenance | Src:MaD:277  |
+| SanitizationTests.java:83:36:83:78 | newBuilder(...) : Builder | SanitizationTests.java:83:36:83:86 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:83:36:83:86 | build(...) : HttpRequest | SanitizationTests.java:84:25:84:32 | unsafer4 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:83:59:83:77 | new URI(...) : URI | SanitizationTests.java:83:36:83:78 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:83:67:83:76 | unsafeUri4 : String | SanitizationTests.java:83:59:83:77 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:83:67:83:76 | unsafeUri4 : String | SanitizationTests.java:83:59:83:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:83:67:83:76 | unsafeUri4 : String | SanitizationTests.java:83:59:83:77 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:83:67:83:76 | unsafeUri4 : String | SanitizationTests.java:83:59:83:77 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:87:13:87:22 | unsafeUri5 [post update] : StringBuilder | SanitizationTests.java:88:67:88:76 | unsafeUri5 : StringBuilder | provenance |  |
+| SanitizationTests.java:87:31:87:61 | getParameter(...) : String | SanitizationTests.java:87:13:87:22 | unsafeUri5 [post update] : StringBuilder | provenance | Src:MaD:277 MaD:278 |
+| SanitizationTests.java:88:36:88:89 | newBuilder(...) : Builder | SanitizationTests.java:88:36:88:97 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:88:36:88:97 | build(...) : HttpRequest | SanitizationTests.java:89:25:89:32 | unsafer5 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:88:59:88:88 | new URI(...) : URI | SanitizationTests.java:88:36:88:89 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:88:67:88:76 | unsafeUri5 : StringBuilder | SanitizationTests.java:88:67:88:87 | toString(...) : String | provenance | MaD:280 |
+| SanitizationTests.java:88:67:88:87 | toString(...) : String | SanitizationTests.java:88:59:88:88 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:88:67:88:87 | toString(...) : String | SanitizationTests.java:88:59:88:88 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:88:67:88:87 | toString(...) : String | SanitizationTests.java:88:59:88:88 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:88:67:88:87 | toString(...) : String | SanitizationTests.java:88:59:88:88 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:91:40:91:87 | new StringBuilder(...) : StringBuilder | SanitizationTests.java:93:68:93:77 | unafeUri5a : StringBuilder | provenance |  |
+| SanitizationTests.java:91:58:91:86 | getParameter(...) : String | SanitizationTests.java:91:40:91:87 | new StringBuilder(...) : StringBuilder | provenance | Src:MaD:277 MaD:282 |
+| SanitizationTests.java:93:37:93:90 | newBuilder(...) : Builder | SanitizationTests.java:93:37:93:98 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:93:37:93:98 | build(...) : HttpRequest | SanitizationTests.java:94:25:94:33 | unsafer5a | provenance | Sink:MaD:4 |
+| SanitizationTests.java:93:60:93:89 | new URI(...) : URI | SanitizationTests.java:93:37:93:90 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:93:68:93:77 | unafeUri5a : StringBuilder | SanitizationTests.java:93:68:93:88 | toString(...) : String | provenance | MaD:280 |
+| SanitizationTests.java:93:68:93:88 | toString(...) : String | SanitizationTests.java:93:60:93:89 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:93:68:93:88 | toString(...) : String | SanitizationTests.java:93:60:93:89 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:93:68:93:88 | toString(...) : String | SanitizationTests.java:93:60:93:89 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:93:68:93:88 | toString(...) : String | SanitizationTests.java:93:60:93:89 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:96:41:96:105 | append(...) : StringBuilder | SanitizationTests.java:98:68:98:78 | unsafeUri5b : StringBuilder | provenance |  |
+| SanitizationTests.java:96:42:96:89 | new StringBuilder(...) : StringBuilder | SanitizationTests.java:96:41:96:105 | append(...) : StringBuilder | provenance | MaD:279 |
+| SanitizationTests.java:96:60:96:88 | getParameter(...) : String | SanitizationTests.java:96:42:96:89 | new StringBuilder(...) : StringBuilder | provenance | Src:MaD:277 MaD:282 |
+| SanitizationTests.java:98:37:98:91 | newBuilder(...) : Builder | SanitizationTests.java:98:37:98:99 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:98:37:98:99 | build(...) : HttpRequest | SanitizationTests.java:99:25:99:33 | unsafer5b | provenance | Sink:MaD:4 |
+| SanitizationTests.java:98:60:98:90 | new URI(...) : URI | SanitizationTests.java:98:37:98:91 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:98:68:98:78 | unsafeUri5b : StringBuilder | SanitizationTests.java:98:68:98:89 | toString(...) : String | provenance | MaD:280 |
+| SanitizationTests.java:98:68:98:89 | toString(...) : String | SanitizationTests.java:98:60:98:90 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:98:68:98:89 | toString(...) : String | SanitizationTests.java:98:60:98:90 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:98:68:98:89 | toString(...) : String | SanitizationTests.java:98:60:98:90 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:98:68:98:89 | toString(...) : String | SanitizationTests.java:98:60:98:90 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:101:41:101:106 | append(...) : StringBuilder | SanitizationTests.java:103:68:103:78 | unsafeUri5c : StringBuilder | provenance |  |
+| SanitizationTests.java:101:77:101:105 | getParameter(...) : String | SanitizationTests.java:101:41:101:106 | append(...) : StringBuilder | provenance | Src:MaD:277 MaD:278+MaD:279 |
+| SanitizationTests.java:103:37:103:91 | newBuilder(...) : Builder | SanitizationTests.java:103:37:103:99 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:103:37:103:99 | build(...) : HttpRequest | SanitizationTests.java:104:25:104:33 | unsafer5c | provenance | Sink:MaD:4 |
+| SanitizationTests.java:103:60:103:90 | new URI(...) : URI | SanitizationTests.java:103:37:103:91 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:103:68:103:78 | unsafeUri5c : StringBuilder | SanitizationTests.java:103:68:103:89 | toString(...) : String | provenance | MaD:280 |
+| SanitizationTests.java:103:68:103:89 | toString(...) : String | SanitizationTests.java:103:60:103:90 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:103:68:103:89 | toString(...) : String | SanitizationTests.java:103:60:103:90 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:103:68:103:89 | toString(...) : String | SanitizationTests.java:103:60:103:90 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:103:68:103:89 | toString(...) : String | SanitizationTests.java:103:60:103:90 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:106:33:106:104 | format(...) : String | SanitizationTests.java:107:67:107:76 | unsafeUri6 : String | provenance |  |
+| SanitizationTests.java:106:33:106:104 | new ..[] { .. } : Object[] [[]] : String | SanitizationTests.java:106:33:106:104 | format(...) : String | provenance | MaD:281 |
+| SanitizationTests.java:106:73:106:103 | getParameter(...) : String | SanitizationTests.java:106:33:106:104 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:277  |
+| SanitizationTests.java:107:36:107:78 | newBuilder(...) : Builder | SanitizationTests.java:107:36:107:86 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:107:36:107:86 | build(...) : HttpRequest | SanitizationTests.java:108:25:108:32 | unsafer6 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:107:59:107:77 | new URI(...) : URI | SanitizationTests.java:107:36:107:78 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:107:67:107:76 | unsafeUri6 : String | SanitizationTests.java:107:59:107:77 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:107:67:107:76 | unsafeUri6 : String | SanitizationTests.java:107:59:107:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:107:67:107:76 | unsafeUri6 : String | SanitizationTests.java:107:59:107:77 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:107:67:107:76 | unsafeUri6 : String | SanitizationTests.java:107:59:107:77 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:110:33:110:110 | format(...) : String | SanitizationTests.java:111:67:111:76 | unsafeUri7 : String | provenance |  |
+| SanitizationTests.java:110:33:110:110 | new ..[] { .. } : Object[] [[]] : String | SanitizationTests.java:110:33:110:110 | format(...) : String | provenance | MaD:281 |
+| SanitizationTests.java:110:56:110:86 | getParameter(...) : String | SanitizationTests.java:110:33:110:110 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:277  |
+| SanitizationTests.java:111:36:111:78 | newBuilder(...) : Builder | SanitizationTests.java:111:36:111:86 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:111:36:111:86 | build(...) : HttpRequest | SanitizationTests.java:112:25:112:32 | unsafer7 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:111:59:111:77 | new URI(...) : URI | SanitizationTests.java:111:36:111:78 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:111:67:111:76 | unsafeUri7 : String | SanitizationTests.java:111:59:111:77 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:111:67:111:76 | unsafeUri7 : String | SanitizationTests.java:111:59:111:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:111:67:111:76 | unsafeUri7 : String | SanitizationTests.java:111:59:111:77 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:111:67:111:76 | unsafeUri7 : String | SanitizationTests.java:111:59:111:77 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:114:33:114:110 | format(...) : String | SanitizationTests.java:115:67:115:76 | unsafeUri8 : String | provenance |  |
+| SanitizationTests.java:114:33:114:110 | new ..[] { .. } : Object[] [[]] : String | SanitizationTests.java:114:33:114:110 | format(...) : String | provenance | MaD:281 |
+| SanitizationTests.java:114:55:114:85 | getParameter(...) : String | SanitizationTests.java:114:33:114:110 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:277  |
+| SanitizationTests.java:115:36:115:78 | newBuilder(...) : Builder | SanitizationTests.java:115:36:115:86 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:115:36:115:86 | build(...) : HttpRequest | SanitizationTests.java:116:25:116:32 | unsafer8 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:115:59:115:77 | new URI(...) : URI | SanitizationTests.java:115:36:115:78 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:115:67:115:76 | unsafeUri8 : String | SanitizationTests.java:115:59:115:77 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:115:67:115:76 | unsafeUri8 : String | SanitizationTests.java:115:59:115:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:115:67:115:76 | unsafeUri8 : String | SanitizationTests.java:115:59:115:77 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:115:67:115:76 | unsafeUri8 : String | SanitizationTests.java:115:59:115:77 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:118:33:118:63 | getParameter(...) : String | SanitizationTests.java:119:67:119:76 | unsafeUri9 : String | provenance | Src:MaD:277  |
+| SanitizationTests.java:119:36:119:78 | newBuilder(...) : Builder | SanitizationTests.java:119:36:119:86 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:119:36:119:86 | build(...) : HttpRequest | SanitizationTests.java:120:25:120:32 | unsafer9 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:119:59:119:77 | new URI(...) : URI | SanitizationTests.java:119:36:119:78 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:119:67:119:76 | unsafeUri9 : String | SanitizationTests.java:119:59:119:77 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:119:67:119:76 | unsafeUri9 : String | SanitizationTests.java:119:59:119:77 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:119:67:119:76 | unsafeUri9 : String | SanitizationTests.java:119:59:119:77 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:119:67:119:76 | unsafeUri9 : String | SanitizationTests.java:119:59:119:77 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:122:34:122:126 | format(...) : String | SanitizationTests.java:123:68:123:78 | unsafeUri10 : String | provenance |  |
+| SanitizationTests.java:122:34:122:126 | new ..[] { .. } : Object[] [[]] : String | SanitizationTests.java:122:34:122:126 | format(...) : String | provenance | MaD:281 |
+| SanitizationTests.java:122:94:122:125 | getParameter(...) : String | SanitizationTests.java:122:34:122:126 | new ..[] { .. } : Object[] [[]] : String | provenance | Src:MaD:277  |
+| SanitizationTests.java:123:37:123:80 | newBuilder(...) : Builder | SanitizationTests.java:123:37:123:88 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:123:37:123:88 | build(...) : HttpRequest | SanitizationTests.java:124:25:124:33 | unsafer10 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:123:60:123:79 | new URI(...) : URI | SanitizationTests.java:123:37:123:80 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:123:68:123:78 | unsafeUri10 : String | SanitizationTests.java:123:60:123:79 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:123:68:123:78 | unsafeUri10 : String | SanitizationTests.java:123:60:123:79 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:123:68:123:78 | unsafeUri10 : String | SanitizationTests.java:123:60:123:79 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:123:68:123:78 | unsafeUri10 : String | SanitizationTests.java:123:60:123:79 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:177:31:177:114 | newBuilder(...) : Builder | SanitizationTests.java:177:31:177:122 | build(...) : HttpRequest | provenance | MaD:283 |
+| SanitizationTests.java:177:31:177:122 | build(...) : HttpRequest | SanitizationTests.java:178:25:178:27 | r18 | provenance | Sink:MaD:4 |
+| SanitizationTests.java:177:54:177:113 | new URI(...) : URI | SanitizationTests.java:177:31:177:114 | newBuilder(...) : Builder | provenance | MaD:284 |
+| SanitizationTests.java:177:62:177:112 | getFromList(...) : String | SanitizationTests.java:177:54:177:113 | new URI(...) | provenance | Config Sink:MaD:6 |
+| SanitizationTests.java:177:62:177:112 | getFromList(...) : String | SanitizationTests.java:177:54:177:113 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
+| SanitizationTests.java:177:62:177:112 | getFromList(...) : String | SanitizationTests.java:177:54:177:113 | new URI(...) : URI | provenance | Config |
+| SanitizationTests.java:177:62:177:112 | getFromList(...) : String | SanitizationTests.java:177:54:177:113 | new URI(...) : URI | provenance | MaD:285 |
+| SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | SanitizationTests.java:177:62:177:112 | getFromList(...) : String | provenance | MaD:290 |
+| SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | SanitizationTests.java:199:31:199:112 | list : List [<element>] : String | provenance |  |
+| SanitizationTests.java:177:82:177:110 | getParameter(...) : String | SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | provenance | Src:MaD:277 MaD:289 |
+| SanitizationTests.java:199:31:199:112 | list : List [<element>] : String | SanitizationTests.java:200:16:200:19 | list : List [<element>] : String | provenance |  |
+| SanitizationTests.java:200:16:200:19 | list : List [<element>] : String | SanitizationTests.java:200:16:200:26 | get(...) : String | provenance | MaD:290 |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:32:39:32:59 | ... + ... | provenance | Src:MaD:277 Sink:MaD:264 |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:33:69:33:82 | fooResourceUrl | provenance | Src:MaD:277  |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:34:73:34:86 | fooResourceUrl | provenance | Src:MaD:277  |
@@ -864,16 +878,16 @@ edges
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | provenance | Src:MaD:277  |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | provenance | Src:MaD:277  |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | provenance | Src:MaD:277  |
-| SpringSSRF.java:38:83:38:96 | fooResourceUrl : String | SpringSSRF.java:38:69:38:97 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:40:105:40:118 | fooResourceUrl : String | SpringSSRF.java:40:69:40:119 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:49:105:49:118 | fooResourceUrl : String | SpringSSRF.java:49:91:49:119 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:51:127:51:140 | fooResourceUrl : String | SpringSSRF.java:51:91:51:141 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:60:93:60:106 | fooResourceUrl : String | SpringSSRF.java:60:79:60:107 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:62:115:62:128 | fooResourceUrl : String | SpringSSRF.java:62:79:62:129 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:71:83:71:96 | fooResourceUrl : String | SpringSSRF.java:71:69:71:97 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:73:105:73:118 | fooResourceUrl : String | SpringSSRF.java:73:69:73:119 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | SpringSSRF.java:82:93:82:121 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | SpringSSRF.java:84:93:84:143 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:38:83:38:96 | fooResourceUrl : String | SpringSSRF.java:38:69:38:97 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:40:105:40:118 | fooResourceUrl : String | SpringSSRF.java:40:69:40:119 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:49:105:49:118 | fooResourceUrl : String | SpringSSRF.java:49:91:49:119 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:51:127:51:140 | fooResourceUrl : String | SpringSSRF.java:51:91:51:141 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:60:93:60:106 | fooResourceUrl : String | SpringSSRF.java:60:79:60:107 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:62:115:62:128 | fooResourceUrl : String | SpringSSRF.java:62:79:62:129 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:71:83:71:96 | fooResourceUrl : String | SpringSSRF.java:71:69:71:97 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:73:105:73:118 | fooResourceUrl : String | SpringSSRF.java:73:69:73:119 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | SpringSSRF.java:82:93:82:121 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | SpringSSRF.java:84:93:84:143 | of(...) | provenance | MaD:292 |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:87:40:87:62 | new URI(...) | provenance | Config Sink:MaD:269 |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:87:40:87:62 | new URI(...) | provenance | MaD:285 Sink:MaD:269 |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:88:92:88:105 | fooResourceUrl | provenance |  |
@@ -918,20 +932,20 @@ edges
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | provenance |  |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | provenance |  |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:166:35:166:48 | fooResourceUrl : String | provenance |  |
-| SpringSSRF.java:93:106:93:119 | fooResourceUrl : String | SpringSSRF.java:93:92:93:120 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:95:128:95:141 | fooResourceUrl : String | SpringSSRF.java:95:92:95:142 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:104:94:104:107 | fooResourceUrl : String | SpringSSRF.java:104:80:104:108 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:106:116:106:129 | fooResourceUrl : String | SpringSSRF.java:106:80:106:130 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:115:106:115:119 | fooResourceUrl : String | SpringSSRF.java:115:92:115:120 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:117:128:117:141 | fooResourceUrl : String | SpringSSRF.java:117:92:117:142 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:126:82:126:95 | fooResourceUrl : String | SpringSSRF.java:126:68:126:96 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:128:104:128:117 | fooResourceUrl : String | SpringSSRF.java:128:68:128:118 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:137:63:137:76 | fooResourceUrl : String | SpringSSRF.java:137:49:137:77 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:139:85:139:98 | fooResourceUrl : String | SpringSSRF.java:139:49:139:99 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:148:71:148:84 | fooResourceUrl : String | SpringSSRF.java:148:57:148:85 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:150:93:150:106 | fooResourceUrl : String | SpringSSRF.java:150:57:150:107 | of(...) | provenance | MaD:290 |
-| SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | SpringSSRF.java:159:58:159:86 | of(...) | provenance | MaD:289 |
-| SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | SpringSSRF.java:161:58:161:108 | of(...) | provenance | MaD:290 |
+| SpringSSRF.java:93:106:93:119 | fooResourceUrl : String | SpringSSRF.java:93:92:93:120 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:95:128:95:141 | fooResourceUrl : String | SpringSSRF.java:95:92:95:142 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:104:94:104:107 | fooResourceUrl : String | SpringSSRF.java:104:80:104:108 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:106:116:106:129 | fooResourceUrl : String | SpringSSRF.java:106:80:106:130 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:115:106:115:119 | fooResourceUrl : String | SpringSSRF.java:115:92:115:120 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:117:128:117:141 | fooResourceUrl : String | SpringSSRF.java:117:92:117:142 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:126:82:126:95 | fooResourceUrl : String | SpringSSRF.java:126:68:126:96 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:128:104:128:117 | fooResourceUrl : String | SpringSSRF.java:128:68:128:118 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:137:63:137:76 | fooResourceUrl : String | SpringSSRF.java:137:49:137:77 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:139:85:139:98 | fooResourceUrl : String | SpringSSRF.java:139:49:139:99 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:148:71:148:84 | fooResourceUrl : String | SpringSSRF.java:148:57:148:85 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:150:93:150:106 | fooResourceUrl : String | SpringSSRF.java:150:57:150:107 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | SpringSSRF.java:159:58:159:86 | of(...) | provenance | MaD:291 |
+| SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | SpringSSRF.java:161:58:161:108 | of(...) | provenance | MaD:292 |
 | SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:168:44:168:46 | uri | provenance | Sink:MaD:255 |
 | SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:170:35:170:37 | uri | provenance | Sink:MaD:250 |
 | SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:171:35:171:37 | uri | provenance | Sink:MaD:256 |
@@ -1352,11 +1366,13 @@ models
 | 286 | Summary: java.net; URI; false; toString; ; ; Argument[this]; ReturnValue; taint; manual |
 | 287 | Summary: java.net; URI; false; toURL; ; ; Argument[this]; ReturnValue; taint; manual |
 | 288 | Summary: java.net; URL; false; URL; (String); ; Argument[0]; Argument[this]; taint; manual |
-| 289 | Summary: java.util; Map; false; of; ; ; Argument[1]; ReturnValue.MapValue; value; manual |
-| 290 | Summary: java.util; Map; false; of; ; ; Argument[3]; ReturnValue.MapValue; value; manual |
-| 291 | Summary: java.util; Properties; true; setProperty; (String,String); ; Argument[1]; Argument[this].MapValue; value; manual |
-| 292 | Summary: org.apache.hc.core5.http; HttpHost; true; HttpHost; (String); ; Argument[0]; Argument[this]; taint; hq-manual |
-| 293 | Summary: org.apache.http.message; BasicRequestLine; false; BasicRequestLine; ; ; Argument[1]; Argument[this]; taint; manual |
+| 289 | Summary: java.util; List; false; of; (Object); ; Argument[0]; ReturnValue.Element; value; manual |
+| 290 | Summary: java.util; List; true; get; (int); ; Argument[this].Element; ReturnValue; value; manual |
+| 291 | Summary: java.util; Map; false; of; ; ; Argument[1]; ReturnValue.MapValue; value; manual |
+| 292 | Summary: java.util; Map; false; of; ; ; Argument[3]; ReturnValue.MapValue; value; manual |
+| 293 | Summary: java.util; Properties; true; setProperty; (String,String); ; Argument[1]; Argument[this].MapValue; value; manual |
+| 294 | Summary: org.apache.hc.core5.http; HttpHost; true; HttpHost; (String); ; Argument[0]; Argument[this]; taint; hq-manual |
+| 295 | Summary: org.apache.http.message; BasicRequestLine; false; BasicRequestLine; ; ; Argument[1]; Argument[this]; taint; manual |
 nodes
 | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | semmle.label | new URI(...) : URI |
@@ -1714,107 +1730,118 @@ nodes
 | ReactiveWebClientSSRF.java:16:52:16:54 | url | semmle.label | url |
 | ReactiveWebClientSSRF.java:32:26:32:52 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | ReactiveWebClientSSRF.java:35:30:35:32 | url | semmle.label | url |
-| SanitizationTests.java:21:23:21:58 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:21:31:21:57 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:24:29:24:55 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:24:29:24:63 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:24:52:24:54 | uri | semmle.label | uri |
-| SanitizationTests.java:24:52:24:54 | uri : URI | semmle.label | uri : URI |
-| SanitizationTests.java:25:25:25:25 | r | semmle.label | r |
-| SanitizationTests.java:77:33:77:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:78:36:78:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:78:36:78:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:78:59:78:77 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:78:59:78:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:78:67:78:76 | unsafeUri3 : String | semmle.label | unsafeUri3 : String |
-| SanitizationTests.java:79:25:79:32 | unsafer3 | semmle.label | unsafer3 |
-| SanitizationTests.java:81:49:81:79 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:82:36:82:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:82:36:82:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:82:59:82:77 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:82:59:82:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:82:67:82:76 | unsafeUri4 : String | semmle.label | unsafeUri4 : String |
-| SanitizationTests.java:83:25:83:32 | unsafer4 | semmle.label | unsafer4 |
-| SanitizationTests.java:86:13:86:22 | unsafeUri5 [post update] : StringBuilder | semmle.label | unsafeUri5 [post update] : StringBuilder |
-| SanitizationTests.java:86:31:86:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:87:36:87:89 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:87:36:87:97 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:87:59:87:88 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:87:59:87:88 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:87:67:87:76 | unsafeUri5 : StringBuilder | semmle.label | unsafeUri5 : StringBuilder |
-| SanitizationTests.java:87:67:87:87 | toString(...) : String | semmle.label | toString(...) : String |
-| SanitizationTests.java:88:25:88:32 | unsafer5 | semmle.label | unsafer5 |
-| SanitizationTests.java:90:40:90:87 | new StringBuilder(...) : StringBuilder | semmle.label | new StringBuilder(...) : StringBuilder |
-| SanitizationTests.java:90:58:90:86 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:92:37:92:90 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:92:37:92:98 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:92:60:92:89 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:92:60:92:89 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:92:68:92:77 | unafeUri5a : StringBuilder | semmle.label | unafeUri5a : StringBuilder |
-| SanitizationTests.java:92:68:92:88 | toString(...) : String | semmle.label | toString(...) : String |
-| SanitizationTests.java:93:25:93:33 | unsafer5a | semmle.label | unsafer5a |
-| SanitizationTests.java:95:41:95:105 | append(...) : StringBuilder | semmle.label | append(...) : StringBuilder |
-| SanitizationTests.java:95:42:95:89 | new StringBuilder(...) : StringBuilder | semmle.label | new StringBuilder(...) : StringBuilder |
-| SanitizationTests.java:95:60:95:88 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:97:37:97:91 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:97:37:97:99 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:97:60:97:90 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:97:60:97:90 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:97:68:97:78 | unsafeUri5b : StringBuilder | semmle.label | unsafeUri5b : StringBuilder |
-| SanitizationTests.java:97:68:97:89 | toString(...) : String | semmle.label | toString(...) : String |
-| SanitizationTests.java:98:25:98:33 | unsafer5b | semmle.label | unsafer5b |
-| SanitizationTests.java:100:41:100:106 | append(...) : StringBuilder | semmle.label | append(...) : StringBuilder |
-| SanitizationTests.java:100:77:100:105 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:102:37:102:91 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:102:37:102:99 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:102:60:102:90 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:102:60:102:90 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:102:68:102:78 | unsafeUri5c : StringBuilder | semmle.label | unsafeUri5c : StringBuilder |
-| SanitizationTests.java:102:68:102:89 | toString(...) : String | semmle.label | toString(...) : String |
-| SanitizationTests.java:103:25:103:33 | unsafer5c | semmle.label | unsafer5c |
-| SanitizationTests.java:105:33:105:104 | format(...) : String | semmle.label | format(...) : String |
-| SanitizationTests.java:105:33:105:104 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
-| SanitizationTests.java:105:73:105:103 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:106:36:106:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:106:36:106:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:106:59:106:77 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:106:59:106:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:106:67:106:76 | unsafeUri6 : String | semmle.label | unsafeUri6 : String |
-| SanitizationTests.java:107:25:107:32 | unsafer6 | semmle.label | unsafer6 |
-| SanitizationTests.java:109:33:109:110 | format(...) : String | semmle.label | format(...) : String |
-| SanitizationTests.java:109:33:109:110 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
-| SanitizationTests.java:109:56:109:86 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:110:36:110:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:110:36:110:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:110:59:110:77 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:110:59:110:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:110:67:110:76 | unsafeUri7 : String | semmle.label | unsafeUri7 : String |
-| SanitizationTests.java:111:25:111:32 | unsafer7 | semmle.label | unsafer7 |
-| SanitizationTests.java:113:33:113:110 | format(...) : String | semmle.label | format(...) : String |
-| SanitizationTests.java:113:33:113:110 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
-| SanitizationTests.java:113:55:113:85 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:114:36:114:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:114:36:114:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:114:59:114:77 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:114:59:114:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:114:67:114:76 | unsafeUri8 : String | semmle.label | unsafeUri8 : String |
-| SanitizationTests.java:115:25:115:32 | unsafer8 | semmle.label | unsafer8 |
-| SanitizationTests.java:117:33:117:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:118:36:118:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:118:36:118:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:118:59:118:77 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:118:59:118:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:118:67:118:76 | unsafeUri9 : String | semmle.label | unsafeUri9 : String |
-| SanitizationTests.java:119:25:119:32 | unsafer9 | semmle.label | unsafer9 |
-| SanitizationTests.java:121:34:121:126 | format(...) : String | semmle.label | format(...) : String |
-| SanitizationTests.java:121:34:121:126 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
-| SanitizationTests.java:121:94:121:125 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| SanitizationTests.java:122:37:122:80 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
-| SanitizationTests.java:122:37:122:88 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
-| SanitizationTests.java:122:60:122:79 | new URI(...) | semmle.label | new URI(...) |
-| SanitizationTests.java:122:60:122:79 | new URI(...) : URI | semmle.label | new URI(...) : URI |
-| SanitizationTests.java:122:68:122:78 | unsafeUri10 : String | semmle.label | unsafeUri10 : String |
-| SanitizationTests.java:123:25:123:33 | unsafer10 | semmle.label | unsafer10 |
+| SanitizationTests.java:22:23:22:58 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:22:31:22:57 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:25:29:25:55 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:25:29:25:63 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:25:52:25:54 | uri | semmle.label | uri |
+| SanitizationTests.java:25:52:25:54 | uri : URI | semmle.label | uri : URI |
+| SanitizationTests.java:26:25:26:25 | r | semmle.label | r |
+| SanitizationTests.java:78:33:78:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:79:36:79:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:79:36:79:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:79:59:79:77 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:79:59:79:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:79:67:79:76 | unsafeUri3 : String | semmle.label | unsafeUri3 : String |
+| SanitizationTests.java:80:25:80:32 | unsafer3 | semmle.label | unsafer3 |
+| SanitizationTests.java:82:49:82:79 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:83:36:83:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:83:36:83:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:83:59:83:77 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:83:59:83:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:83:67:83:76 | unsafeUri4 : String | semmle.label | unsafeUri4 : String |
+| SanitizationTests.java:84:25:84:32 | unsafer4 | semmle.label | unsafer4 |
+| SanitizationTests.java:87:13:87:22 | unsafeUri5 [post update] : StringBuilder | semmle.label | unsafeUri5 [post update] : StringBuilder |
+| SanitizationTests.java:87:31:87:61 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:88:36:88:89 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:88:36:88:97 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:88:59:88:88 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:88:59:88:88 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:88:67:88:76 | unsafeUri5 : StringBuilder | semmle.label | unsafeUri5 : StringBuilder |
+| SanitizationTests.java:88:67:88:87 | toString(...) : String | semmle.label | toString(...) : String |
+| SanitizationTests.java:89:25:89:32 | unsafer5 | semmle.label | unsafer5 |
+| SanitizationTests.java:91:40:91:87 | new StringBuilder(...) : StringBuilder | semmle.label | new StringBuilder(...) : StringBuilder |
+| SanitizationTests.java:91:58:91:86 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:93:37:93:90 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:93:37:93:98 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:93:60:93:89 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:93:60:93:89 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:93:68:93:77 | unafeUri5a : StringBuilder | semmle.label | unafeUri5a : StringBuilder |
+| SanitizationTests.java:93:68:93:88 | toString(...) : String | semmle.label | toString(...) : String |
+| SanitizationTests.java:94:25:94:33 | unsafer5a | semmle.label | unsafer5a |
+| SanitizationTests.java:96:41:96:105 | append(...) : StringBuilder | semmle.label | append(...) : StringBuilder |
+| SanitizationTests.java:96:42:96:89 | new StringBuilder(...) : StringBuilder | semmle.label | new StringBuilder(...) : StringBuilder |
+| SanitizationTests.java:96:60:96:88 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:98:37:98:91 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:98:37:98:99 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:98:60:98:90 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:98:60:98:90 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:98:68:98:78 | unsafeUri5b : StringBuilder | semmle.label | unsafeUri5b : StringBuilder |
+| SanitizationTests.java:98:68:98:89 | toString(...) : String | semmle.label | toString(...) : String |
+| SanitizationTests.java:99:25:99:33 | unsafer5b | semmle.label | unsafer5b |
+| SanitizationTests.java:101:41:101:106 | append(...) : StringBuilder | semmle.label | append(...) : StringBuilder |
+| SanitizationTests.java:101:77:101:105 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:103:37:103:91 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:103:37:103:99 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:103:60:103:90 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:103:60:103:90 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:103:68:103:78 | unsafeUri5c : StringBuilder | semmle.label | unsafeUri5c : StringBuilder |
+| SanitizationTests.java:103:68:103:89 | toString(...) : String | semmle.label | toString(...) : String |
+| SanitizationTests.java:104:25:104:33 | unsafer5c | semmle.label | unsafer5c |
+| SanitizationTests.java:106:33:106:104 | format(...) : String | semmle.label | format(...) : String |
+| SanitizationTests.java:106:33:106:104 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| SanitizationTests.java:106:73:106:103 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:107:36:107:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:107:36:107:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:107:59:107:77 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:107:59:107:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:107:67:107:76 | unsafeUri6 : String | semmle.label | unsafeUri6 : String |
+| SanitizationTests.java:108:25:108:32 | unsafer6 | semmle.label | unsafer6 |
+| SanitizationTests.java:110:33:110:110 | format(...) : String | semmle.label | format(...) : String |
+| SanitizationTests.java:110:33:110:110 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| SanitizationTests.java:110:56:110:86 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:111:36:111:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:111:36:111:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:111:59:111:77 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:111:59:111:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:111:67:111:76 | unsafeUri7 : String | semmle.label | unsafeUri7 : String |
+| SanitizationTests.java:112:25:112:32 | unsafer7 | semmle.label | unsafer7 |
+| SanitizationTests.java:114:33:114:110 | format(...) : String | semmle.label | format(...) : String |
+| SanitizationTests.java:114:33:114:110 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| SanitizationTests.java:114:55:114:85 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:115:36:115:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:115:36:115:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:115:59:115:77 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:115:59:115:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:115:67:115:76 | unsafeUri8 : String | semmle.label | unsafeUri8 : String |
+| SanitizationTests.java:116:25:116:32 | unsafer8 | semmle.label | unsafer8 |
+| SanitizationTests.java:118:33:118:63 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:119:36:119:78 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:119:36:119:86 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:119:59:119:77 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:119:59:119:77 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:119:67:119:76 | unsafeUri9 : String | semmle.label | unsafeUri9 : String |
+| SanitizationTests.java:120:25:120:32 | unsafer9 | semmle.label | unsafer9 |
+| SanitizationTests.java:122:34:122:126 | format(...) : String | semmle.label | format(...) : String |
+| SanitizationTests.java:122:34:122:126 | new ..[] { .. } : Object[] [[]] : String | semmle.label | new ..[] { .. } : Object[] [[]] : String |
+| SanitizationTests.java:122:94:122:125 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:123:37:123:80 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:123:37:123:88 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:123:60:123:79 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:123:60:123:79 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:123:68:123:78 | unsafeUri10 : String | semmle.label | unsafeUri10 : String |
+| SanitizationTests.java:124:25:124:33 | unsafer10 | semmle.label | unsafer10 |
+| SanitizationTests.java:177:31:177:114 | newBuilder(...) : Builder | semmle.label | newBuilder(...) : Builder |
+| SanitizationTests.java:177:31:177:122 | build(...) : HttpRequest | semmle.label | build(...) : HttpRequest |
+| SanitizationTests.java:177:54:177:113 | new URI(...) | semmle.label | new URI(...) |
+| SanitizationTests.java:177:54:177:113 | new URI(...) : URI | semmle.label | new URI(...) : URI |
+| SanitizationTests.java:177:62:177:112 | getFromList(...) : String | semmle.label | getFromList(...) : String |
+| SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | semmle.label | of(...) : List [<element>] : String |
+| SanitizationTests.java:177:82:177:110 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| SanitizationTests.java:178:25:178:27 | r18 | semmle.label | r18 |
+| SanitizationTests.java:199:31:199:112 | list : List [<element>] : String | semmle.label | list : List [<element>] : String |
+| SanitizationTests.java:200:16:200:19 | list : List [<element>] : String | semmle.label | list : List [<element>] : String |
+| SanitizationTests.java:200:16:200:26 | get(...) : String | semmle.label | get(...) : String |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | SpringSSRF.java:32:39:32:59 | ... + ... | semmle.label | ... + ... |
 | SpringSSRF.java:33:69:33:82 | fooResourceUrl | semmle.label | fooResourceUrl |
@@ -2035,3 +2062,4 @@ nodes
 | mad/Test.java:112:15:112:31 | (...)... | semmle.label | (...)... |
 | mad/Test.java:112:24:112:31 | source(...) : String | semmle.label | source(...) : String |
 subpaths
+| SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | SanitizationTests.java:199:31:199:112 | list : List [<element>] : String | SanitizationTests.java:200:16:200:26 | get(...) : String | SanitizationTests.java:177:62:177:112 | getFromList(...) : String |

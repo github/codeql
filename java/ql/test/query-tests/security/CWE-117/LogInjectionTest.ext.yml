@@ -4,3 +4,5 @@ extensions:
       extensible: sourceModel
     data:
       - ["loginjection", "LogInjectionTest", False, "source", "()", "", "ReturnValue", "remote", "manual"]
+      - ["loginjection", "LogInjectionTest", False, "validatedInput", "()", "", "ReturnValue", "remote", "manual"]
+      - ["loginjection", "LogInjectionTest", False, "validatedInputField", "", "", "", "remote", "manual"]
