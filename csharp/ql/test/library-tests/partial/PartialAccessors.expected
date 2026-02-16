@@ -1,9 +1,9 @@
-| Partial.cs:13:39:13:51 | add_PartialEvent1 | false |
-| Partial.cs:13:39:13:51 | remove_PartialEvent1 | false |
 | Partial.cs:24:9:24:11 | get_PartialProperty1 | true |
 | Partial.cs:25:9:25:11 | set_PartialProperty1 | true |
 | Partial.cs:31:9:31:11 | get_Item | true |
 | Partial.cs:32:9:32:11 | set_Item | true |
+| Partial.cs:36:55:36:57 | add_PartialEvent1 | true |
+| Partial.cs:36:63:36:68 | remove_PartialEvent1 | true |
 | Partial.cs:48:30:48:32 | get_Property | false |
 | Partial.cs:48:35:48:37 | set_Property | false |
 | Partial.cs:51:9:51:11 | get_Item | false |

@@ -8,6 +8,9 @@
 | Partial.cs:29:27:29:30 | Item |
 | Partial.cs:31:9:31:11 | get_Item |
 | Partial.cs:32:9:32:11 | set_Item |
+| Partial.cs:36:39:36:51 | PartialEvent1 |
+| Partial.cs:36:55:36:57 | add_PartialEvent1 |
+| Partial.cs:36:63:36:68 | remove_PartialEvent1 |
 | Partial.cs:39:15:39:33 | OnePartPartialClass |
 | Partial.cs:41:18:41:42 | PartialMethodWithoutBody2 |
 | PartialMultipleFiles1.cs:1:22:1:41 | PartialMultipleFiles |
