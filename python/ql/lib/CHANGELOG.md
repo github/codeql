@@ -1,3 +1,14 @@
+## 6.1.1
+
+### Minor Analysis Improvements
+
+* Added request forgery sink models for the Azure SDK.
+* Made it so that models-as-data sinks with the kind `request-forgery` contribute to the class `Http::Client::Request` which represents HTTP client requests.
+
+### Bug Fixes
+
+- Using `=` as a fill character in a format specifier (e.g `f"{x:=^20}"`) now no longer results in a syntax error during parsing.
+
 ## 6.1.0
 
 ### New Features
