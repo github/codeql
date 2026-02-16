@@ -972,3 +972,15 @@ void test_overflow() {
     out(y);
   }
 }
+
+enum MY_ENUM_2 {
+    A = 0x1,
+    B = 0x2,
+    C = 0x4,
+    D = 0x8,
+    E = 0x10
+};
+
+void test_enum(enum MY_ENUM_2 e) {
+  out(e);
+}
