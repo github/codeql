@@ -252,6 +252,6 @@ void* test_strndupa(const char* s, size_t size) {
 
 int* f_rec(int *p, bool b) {
   int x;
-  int* px = f_rec(&x, b); // GOOD [FALSE POSITIVE]
+  int* px = f_rec(&x, b); // GOOD
   return p;
 }

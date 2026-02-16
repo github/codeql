@@ -87,24 +87,12 @@ module MustFlow {
       )
     }
 
-    /**
-     * Gets the enclosing callable of `n`. Unlike `n.getEnclosingCallable()`, this
-     * predicate ensures that joins go from `n` to the result instead of the other
-     * way around.
-     */
-    pragma[inline]
-    private IRFunction getEnclosingCallable(Instruction n) {
-      pragma[only_bind_into](result) = pragma[only_bind_out](n).getEnclosingIRFunction()
-    }
-
     /** Holds if `nodeFrom` flows to `nodeTo`. */
     private predicate step(Instruction nodeFrom, Instruction nodeTo) {
-      Cached::step(pragma[only_bind_into](nodeFrom), pragma[only_bind_into](nodeTo)) and
-      (
-        allowInterproceduralFlow()
-        or
-        getEnclosingCallable(nodeFrom) = getEnclosingCallable(nodeTo)
-      )
+      Cached::localStep(pragma[only_bind_into](nodeFrom), pragma[only_bind_into](nodeTo))
+      or
+      allowInterproceduralFlow() and
+      Cached::flowThroughCallable(pragma[only_bind_into](nodeFrom), pragma[only_bind_into](nodeTo))
       or
       isAdditionalFlowStep(nodeFrom.getAUse(), nodeTo)
     }
@@ -230,7 +218,8 @@ module MustFlow {
      * Holds if `argument` is an argument (or argument indirection) to a call, and
      * `parameter` is the corresponding initialization instruction in the call target.
      */
-    private predicate flowThroughCallable(Instruction argument, Instruction parameter) {
+    cached
+    predicate flowThroughCallable(Instruction argument, Instruction parameter) {
       // Flow from an argument to a parameter
       exists(CallInstruction call, InitializeParameterInstruction init | init = parameter |
         isPositionalArgumentInitParam(call, argument, init, call.getStaticCallTarget())
@@ -279,13 +268,11 @@ module MustFlow {
     }
 
     cached
-    predicate step(Instruction nodeFrom, Instruction nodeTo) {
+    predicate localStep(Instruction nodeFrom, Instruction nodeTo) {
       exists(Operand mid |
         instructionToOperandStep(nodeFrom, mid) and
         operandToInstructionStep(mid, nodeTo)
       )
-      or
-      flowThroughCallable(nodeFrom, nodeTo)
     }
   }
 }
