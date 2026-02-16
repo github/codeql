@@ -1,10 +1,10 @@
-| Test.java:2:6:2:9 | Normal Exit | Test.java:2:6:2:9 | Exit |
 | Test.java:2:32:72:2 | { ... } | Test.java:7:14:10:3 | { ... } |
 | Test.java:2:32:72:2 | { ... } | Test.java:10:10:12:3 | { ... } |
 | Test.java:2:32:72:2 | { ... } | Test.java:14:3:14:20 | <Expr>; |
 | Test.java:14:3:14:20 | <Expr>; | Test.java:2:6:2:9 | Normal Exit |
 | Test.java:14:3:14:20 | <Expr>; | Test.java:18:4:18:10 | <Expr>; |
 | Test.java:14:3:14:20 | <Expr>; | Test.java:20:11:20:11 | z |
+| Test.java:18:4:18:10 | <Expr>; | Test.java:26:7:26:12 | After ... == ... [false] |
 | Test.java:18:4:18:10 | <Expr>; | Test.java:26:15:29:3 | { ... } |
 | Test.java:18:4:18:10 | <Expr>; | Test.java:31:3:31:9 | <Expr>; |
 | Test.java:31:3:31:9 | <Expr>; | Test.java:34:10:34:10 | x |
@@ -14,6 +14,7 @@
 | Test.java:42:15:42:15 | j | Test.java:42:28:45:3 | { ... } |
 | Test.java:42:15:42:15 | j | Test.java:47:3:47:9 | <Expr>; |
 | Test.java:47:3:47:9 | <Expr>; | Test.java:50:15:50:15 | j |
+| Test.java:50:15:50:15 | j | Test.java:50:15:50:20 | After ... < ... [false] |
 | Test.java:50:15:50:15 | j | Test.java:50:28:64:3 | { ... } |
 | Test.java:50:15:50:15 | j | Test.java:66:3:66:17 | <Expr>; |
 | Test.java:50:28:64:3 | { ... } | Test.java:50:23:50:23 | j |
@@ -21,11 +22,12 @@
 | Test.java:50:28:64:3 | { ... } | Test.java:59:9:62:4 | { ... } |
 | Test.java:53:5:53:14 | if (...) | Test.java:53:16:56:5 | { ... } |
 | Test.java:53:5:53:14 | if (...) | Test.java:56:12:58:5 | { ... } |
-| Test.java:74:6:74:10 | Normal Exit | Test.java:74:6:74:10 | Exit |
 | Test.java:74:19:91:2 | { ... } | Test.java:79:9:79:12 | true |
+| Test.java:79:9:79:12 | true | Test.java:81:8:81:14 | After ... > ... [false] |
 | Test.java:79:9:79:12 | true | Test.java:81:17:84:4 | { ... } |
 | Test.java:79:9:79:12 | true | Test.java:85:4:85:15 | if (...) |
 | Test.java:85:4:85:15 | if (...) | Test.java:74:6:74:10 | Normal Exit |
 | Test.java:85:4:85:15 | if (...) | Test.java:86:5:86:10 | break |
 | Test.java:85:4:85:15 | if (...) | Test.java:87:4:87:15 | if (...) |
+| Test.java:87:4:87:15 | if (...) | Test.java:87:8:87:14 | After ... == ... [false] |
 | Test.java:87:4:87:15 | if (...) | Test.java:88:12:88:12 | c |
