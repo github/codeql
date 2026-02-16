@@ -42,6 +42,4 @@
  *   be represented as the `IRType` `uint4`, a four-byte unsigned integer.
  */
 
-// Most queries should operate on the aliased SSA IR, so that's what we expose
-// publicly as the "IR".
-import implementation.aliased_ssa.IR
+import implementation.unaliased_ssa.IR
