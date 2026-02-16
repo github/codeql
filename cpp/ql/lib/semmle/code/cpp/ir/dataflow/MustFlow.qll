@@ -7,6 +7,9 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
 
+/**
+ * Provides an inter-procedural must-flow data flow analysis.
+ */
 module MustFlow {
   /**
    * An input configuration of a data flow analysis that performs must-flow analysis. This is different
@@ -39,6 +42,9 @@ module MustFlow {
     default predicate allowInterproceduralFlow() { any() }
   }
 
+  /**
+   * Constructs a global must-flow computation.
+   */
   module Global<ConfigSig Config> {
     import Config
 
@@ -170,7 +176,7 @@ module MustFlow {
       not f.isVirtual() and
       call.getPositionalArgument(n) = instr and
       f = call.getStaticCallTarget() and
-      getEnclosingNonVirtualFunctionInitializeParameter(init, f) and
+      isEnclosingNonVirtualFunctionInitializeParameter(init, f) and
       init.getParameter().getIndex() = pragma[only_bind_into](pragma[only_bind_out](n))
     }
 
@@ -179,7 +185,7 @@ module MustFlow {
      * corresponding initialization instruction that receives the value of `instr` in `f`.
      */
     pragma[noinline]
-    private predicate getPositionalArgumentInitParam(
+    private predicate isPositionalArgumentInitParam(
       CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
     ) {
       exists(int n |
@@ -194,18 +200,18 @@ module MustFlow {
      * `instr` in `f`.
      */
     pragma[noinline]
-    private predicate getThisArgumentInitParam(
+    private predicate isThisArgumentInitParam(
       CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
     ) {
       not f.isVirtual() and
       call.getStaticCallTarget() = f and
-      getEnclosingNonVirtualFunctionInitializeParameter(init, f) and
+      isEnclosingNonVirtualFunctionInitializeParameter(init, f) and
       call.getThisArgument() = instr and
       init.getIRVariable() instanceof IRThisVariable
     }
 
     /** Holds if `f` is the enclosing non-virtual function of `init`. */
-    private predicate getEnclosingNonVirtualFunctionInitializeParameter(
+    private predicate isEnclosingNonVirtualFunctionInitializeParameter(
       InitializeParameterInstruction init, Function f
     ) {
       not f.isVirtual() and
@@ -213,7 +219,7 @@ module MustFlow {
     }
 
     /** Holds if `f` is the enclosing non-virtual function of `init`. */
-    private predicate getEnclosingNonVirtualFunctionInitializeIndirection(
+    private predicate isEnclosingNonVirtualFunctionInitializeIndirection(
       InitializeIndirectionInstruction init, Function f
     ) {
       not f.isVirtual() and
@@ -221,15 +227,15 @@ module MustFlow {
     }
 
     /**
-     * Holds if `instr` is an argument (or argument indirection) to a call, and
-     * `succ` is the corresponding initialization instruction in the call target.
+     * Holds if `argument` is an argument (or argument indirection) to a call, and
+     * `parameter` is the corresponding initialization instruction in the call target.
      */
     private predicate flowThroughCallable(Instruction argument, Instruction parameter) {
       // Flow from an argument to a parameter
       exists(CallInstruction call, InitializeParameterInstruction init | init = parameter |
-        getPositionalArgumentInitParam(call, argument, init, call.getStaticCallTarget())
+        isPositionalArgumentInitParam(call, argument, init, call.getStaticCallTarget())
         or
-        getThisArgumentInitParam(call, argument, init, call.getStaticCallTarget())
+        isThisArgumentInitParam(call, argument, init, call.getStaticCallTarget())
       )
       or
       // Flow from argument indirection to parameter indirection
@@ -238,7 +244,7 @@ module MustFlow {
       |
         init = parameter and
         read.getPrimaryInstruction() = call and
-        getEnclosingNonVirtualFunctionInitializeIndirection(init, call.getStaticCallTarget())
+        isEnclosingNonVirtualFunctionInitializeIndirection(init, call.getStaticCallTarget())
       |
         exists(int n |
           read.getSideEffectOperand().getAnyDef() = argument and
