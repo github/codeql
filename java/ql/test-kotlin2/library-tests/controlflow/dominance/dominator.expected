@@ -1,20 +1,21 @@
-| Test.kt:2:2:79:2 | Normal Exit | Test.kt:2:2:79:2 | Exit |
 | Test.kt:2:43:79:2 | { ... } | Test.kt:11:14:14:3 | { ... } |
 | Test.kt:2:43:79:2 | { ... } | Test.kt:14:10:16:3 | ... -> ... |
 | Test.kt:2:43:79:2 | { ... } | Test.kt:18:3:18:20 | <Expr>; |
 | Test.kt:18:3:18:20 | <Expr>; | Test.kt:2:2:79:2 | Normal Exit |
 | Test.kt:18:3:18:20 | <Expr>; | Test.kt:22:4:22:9 | <Expr>; |
 | Test.kt:18:3:18:20 | <Expr>; | Test.kt:24:4:24:11 | ... -> ... |
+| Test.kt:22:4:22:9 | <Expr>; | Test.kt:30:7:30:12 | After ... (value equals) ... [false] |
 | Test.kt:22:4:22:9 | <Expr>; | Test.kt:30:15:33:3 | { ... } |
 | Test.kt:22:4:22:9 | <Expr>; | Test.kt:35:3:35:8 | <Expr>; |
 | Test.kt:35:3:35:8 | <Expr>; | Test.kt:38:10:38:10 | x |
 | Test.kt:38:10:38:10 | x | Test.kt:38:17:41:3 | { ... } |
 | Test.kt:38:10:38:10 | x | Test.kt:43:3:43:15 | <Expr>; |
-| Test.kt:81:2:98:2 | Normal Exit | Test.kt:81:2:98:2 | Exit |
 | Test.kt:81:25:98:2 | { ... } | Test.kt:86:9:86:12 | true |
+| Test.kt:86:9:86:12 | true | Test.kt:88:8:88:14 | After ... > ... [false] |
 | Test.kt:86:9:86:12 | true | Test.kt:88:17:91:4 | { ... } |
 | Test.kt:86:9:86:12 | true | Test.kt:92:4:93:9 | <Expr>; |
-| Test.kt:92:4:93:9 | <Expr>; | Test.kt:81:2:98:2 | Normal Exit |
+| Test.kt:92:4:93:9 | <Expr>; | Test.kt:92:8:92:14 | After ... (value equals) ... [false] |
 | Test.kt:92:4:93:9 | <Expr>; | Test.kt:93:5:93:9 | break |
 | Test.kt:92:4:93:9 | <Expr>; | Test.kt:94:4:95:12 | <Expr>; |
+| Test.kt:94:4:95:12 | <Expr>; | Test.kt:94:8:94:14 | After ... (value equals) ... [false] |
 | Test.kt:94:4:95:12 | <Expr>; | Test.kt:95:12:95:12 | c |
