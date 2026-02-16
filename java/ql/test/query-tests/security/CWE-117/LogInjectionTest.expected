@@ -8129,6 +8129,3 @@ nodes
 | LogInjectionTest.java:2151:38:2151:54 | (...)... | semmle.label | (...)... |
 | LogInjectionTest.java:2151:47:2151:54 | source(...) : Object | semmle.label | source(...) : Object |
 subpaths
-testFailures
-| LogInjectionTest.java:198:44:198:63 | // $ SPURIOUS: Alert | Fixed spurious result: Alert |
-| LogInjectionTest.java:199:41:199:60 | // $ SPURIOUS: Alert | Fixed spurious result: Alert |

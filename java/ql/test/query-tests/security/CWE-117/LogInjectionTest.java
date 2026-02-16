@@ -195,8 +195,8 @@ public class LogInjectionTest {
             logger.debug(source); // $ MISSING: $ Alert
         }
 
-        logger.debug(validatedInputField); // $ SPURIOUS: Alert
-        logger.debug(validatedInput()); // $ SPURIOUS: Alert
+        logger.debug(validatedInputField);
+        logger.debug(validatedInput());
     }
 
     public void test() {
