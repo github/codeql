@@ -144,7 +144,6 @@ class SystemIComparableInterface extends SystemInterface {
     result.getDeclaringType() = this and
     result.hasName("CompareTo") and
     result.getNumberOfParameters() = 1 and
-    result.getParameter(0).getType() instanceof ObjectType and
     result.getReturnType() instanceof IntType
   }
 }
@@ -263,7 +262,6 @@ class SystemObjectClass extends SystemClass instanceof ObjectType {
     result.getDeclaringType() = this and
     result.hasName("Equals") and
     result.getNumberOfParameters() = 1 and
-    result.getParameter(0).getType() instanceof ObjectType and
     result.getReturnType() instanceof BoolType
   }
 
@@ -273,8 +271,6 @@ class SystemObjectClass extends SystemClass instanceof ObjectType {
     result.getDeclaringType() = this and
     result.hasName("Equals") and
     result.getNumberOfParameters() = 2 and
-    result.getParameter(0).getType() instanceof ObjectType and
-    result.getParameter(1).getType() instanceof ObjectType and
     result.getReturnType() instanceof BoolType
   }
 
@@ -284,8 +280,6 @@ class SystemObjectClass extends SystemClass instanceof ObjectType {
     result.getDeclaringType() = this and
     result.hasName("ReferenceEquals") and
     result.getNumberOfParameters() = 2 and
-    result.getParameter(0).getType() instanceof ObjectType and
-    result.getParameter(1).getType() instanceof ObjectType and
     result.getReturnType() instanceof BoolType
   }
 
