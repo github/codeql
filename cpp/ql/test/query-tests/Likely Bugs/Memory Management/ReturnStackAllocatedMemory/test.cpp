@@ -250,8 +250,8 @@ void* test_strndupa(const char* s, size_t size) {
 	return s2; // BAD
 }
 
-int* f_rec(int *p, bool b) {
+int* f_rec(int *p) {
   int x;
-  int* px = f_rec(&x, b); // GOOD
+  int* px = f_rec(&x); // GOOD
   return p;
 }
