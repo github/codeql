@@ -195,9 +195,7 @@ class WebServiceRefAnnotation extends Annotation {
  */
 class PatternAnnotation extends Annotation, RegexMatch::Range {
   PatternAnnotation() {
-    this.getType()
-        .hasQualifiedName(["javax.validation.constraints", "jakarta.validation.constraints"],
-          "Pattern")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".validation.constraints", "Pattern")
   }
 
   override Expr getRegex() { result = this.getValue("regexp") }
