@@ -2180,6 +2180,16 @@ module SimpleRangeAnalysisInternal {
 
   /** Gets the estimate of the number of bounds for `e`. */
   float estimateNrOfBounds(Expr e) { result = BoundsEstimate::nrOfBoundsExpr(e) }
+
+  /** Counts the numbers of lower bounds that are computed internally for `e`. */
+  float countNrOfLowerBounds(Expr e) {
+    result = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
+  }
+
+  /** Counts the numbers of upper bounds that are computed internally for `e`. */
+  float countNrOfUpperBounds(Expr e) {
+    result = strictcount(float ub | ub = getUpperBoundsImpl(e) | ub)
+  }
 }
 
 /** Provides predicates for debugging the simple range analysis library. */
@@ -2208,7 +2218,7 @@ private module Debug {
    */
   predicate countGetLowerBoundsImpl(Expr e, int n) {
     e = getRelevantLocatable() and
-    n = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
+    n = SimpleRangeAnalysisInternal::countNrOfLowerBounds(e)
   }
 
   float debugNrOfBounds(Expr e) {
