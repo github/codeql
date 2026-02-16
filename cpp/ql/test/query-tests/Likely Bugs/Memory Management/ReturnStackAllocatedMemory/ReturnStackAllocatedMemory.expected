@@ -48,6 +48,9 @@ edges
 | test.cpp:249:13:249:20 | call to strndupa | test.cpp:249:13:249:20 | call to strndupa |
 | test.cpp:249:13:249:20 | call to strndupa | test.cpp:250:9:250:10 | s2 |
 | test.cpp:250:9:250:10 | s2 | test.cpp:250:9:250:10 | (void *)... |
+| test.cpp:253:17:253:17 | p | test.cpp:256:10:256:10 | p |
+| test.cpp:255:19:255:20 | & ... | test.cpp:253:17:253:17 | p |
+| test.cpp:255:20:255:20 | x | test.cpp:255:19:255:20 | & ... |
 nodes
 | test.cpp:17:9:17:11 | & ... | semmle.label | & ... |
 | test.cpp:17:10:17:11 | mc | semmle.label | mc |
@@ -114,6 +117,10 @@ nodes
 | test.cpp:249:13:249:20 | call to strndupa | semmle.label | call to strndupa |
 | test.cpp:250:9:250:10 | (void *)... | semmle.label | (void *)... |
 | test.cpp:250:9:250:10 | s2 | semmle.label | s2 |
+| test.cpp:253:17:253:17 | p | semmle.label | p |
+| test.cpp:255:19:255:20 | & ... | semmle.label | & ... |
+| test.cpp:255:20:255:20 | x | semmle.label | x |
+| test.cpp:256:10:256:10 | p | semmle.label | p |
 #select
 | test.cpp:17:9:17:11 | CopyValue: & ... | test.cpp:17:10:17:11 | mc | test.cpp:17:9:17:11 | & ... | May return stack-allocated memory from $@. | test.cpp:17:10:17:11 | mc | mc |
 | test.cpp:25:9:25:11 | Load: ptr | test.cpp:23:18:23:19 | mc | test.cpp:25:9:25:11 | ptr | May return stack-allocated memory from $@. | test.cpp:23:18:23:19 | mc | mc |
@@ -131,3 +138,4 @@ nodes
 | test.cpp:238:9:238:9 | Load: p | test.cpp:237:12:237:17 | call to alloca | test.cpp:238:9:238:9 | p | May return stack-allocated memory from $@. | test.cpp:237:12:237:17 | call to alloca | call to alloca |
 | test.cpp:245:9:245:15 | Call: call to strdupa | test.cpp:245:9:245:15 | call to strdupa | test.cpp:245:9:245:15 | call to strdupa | May return stack-allocated memory from $@. | test.cpp:245:9:245:15 | call to strdupa | call to strdupa |
 | test.cpp:250:9:250:10 | Convert: (void *)... | test.cpp:249:13:249:20 | call to strndupa | test.cpp:250:9:250:10 | (void *)... | May return stack-allocated memory from $@. | test.cpp:249:13:249:20 | call to strndupa | call to strndupa |
+| test.cpp:256:10:256:10 | Load: p | test.cpp:255:20:255:20 | x | test.cpp:256:10:256:10 | p | May return stack-allocated memory from $@. | test.cpp:255:20:255:20 | x | x |
