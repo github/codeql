@@ -2,8 +2,20 @@ import cpp
 import utils.test.InlineExpectationsTest
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 
-query predicate estimateNrOfBounds(Expr e, float nrOfBounds) {
-  nrOfBounds = SimpleRangeAnalysisInternal::estimateNrOfBounds(e)
+query predicate estimateNrOfBounds(
+  Expr e, float nrOfBounds, float actualNrOfLowerBounds, float actualNrOfUpperBounds
+) {
+  nrOfBounds = SimpleRangeAnalysisInternal::estimateNrOfBounds(e) and
+  (
+    actualNrOfLowerBounds = SimpleRangeAnalysisInternal::countNrOfLowerBounds(e)
+    or
+    not exists(SimpleRangeAnalysisInternal::countNrOfLowerBounds(e)) and actualNrOfLowerBounds = -1
+  ) and
+  (
+    actualNrOfUpperBounds = SimpleRangeAnalysisInternal::countNrOfUpperBounds(e)
+    or
+    not exists(SimpleRangeAnalysisInternal::countNrOfUpperBounds(e)) and actualNrOfUpperBounds = -1
+  )
 }
 
 /**
