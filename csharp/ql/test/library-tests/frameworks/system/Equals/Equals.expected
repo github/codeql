@@ -5,3 +5,5 @@
 | Equals.cs:16:7:16:13 | Equals3 | Equals3.Equals(Equals3) | true |
 | Equals.cs:21:8:21:21 | NoEqualsStruct | System.ValueType.Equals(object) | false |
 | Equals.cs:23:8:23:20 | Equals1Struct | Equals1Struct.Equals(object) | true |
+| Equals.cs:31:7:31:21 | NullableEquals1 | NullableEquals1.Equals(object) | true |
+| Equals.cs:36:7:36:21 | NullableEquals2 | NullableEquals2.Equals(NullableEquals2) | true |

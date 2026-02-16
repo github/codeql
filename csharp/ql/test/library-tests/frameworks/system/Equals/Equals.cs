@@ -24,3 +24,16 @@ struct Equals1Struct
 {
     public override bool Equals(object other) => false;
 }
+
+#nullable enable
+
+class NullableEquals1
+{
+    public override bool Equals(object? other) => false;
+}
+
+class NullableEquals2 : IEquatable<NullableEquals2>
+{
+    public bool Equals(NullableEquals2? other) => other != null;
+    public override bool Equals(object? other) => other is NullableEquals2 n && Equals(n);
+}
