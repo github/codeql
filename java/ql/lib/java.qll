@@ -9,6 +9,7 @@ import semmle.code.Unit
 import semmle.code.java.Annotation
 import semmle.code.java.Compilation
 import semmle.code.java.CompilationUnit
+import semmle.code.java.Concepts
 import semmle.code.java.ControlFlowGraph
 import semmle.code.java.Dependency
 import semmle.code.java.Element

@@ -163,3 +163,38 @@ class WebServiceAnnotation extends Annotation {
 class WebServiceRefAnnotation extends Annotation {
   WebServiceRefAnnotation() { this.getType().hasQualifiedName("javax.xml.ws", "WebServiceRef") }
 }
+
+/*
+ * Annotations in the package `javax.validation.constraints`.
+ */
+
+/**
+ * A `@javax.validation.constraints.Pattern` annotation.
+ */
+class PatternAnnotation extends Annotation, RegexMatch::Range {
+  PatternAnnotation() {
+    this.getType()
+        .hasQualifiedName(["javax.validation.constraints", "jakarta.validation.constraints"],
+          "Pattern")
+  }
+
+  override Expr getRegex() { result = this.getValue("regexp") }
+
+  override Expr getString() {
+    // Annotation on field accessed by direct read - value of field will match regexp
+    result.(FieldRead).getField() = this.getAnnotatedElement()
+    or
+    // Annotation on field accessed by getter - value of field will match regexp
+    result.(MethodCall).getMethod().(GetterMethod).getField() = this.getAnnotatedElement()
+    or
+    // Annotation on parameter - value of parameter will match regexp
+    result.(VarRead).getVariable().(Parameter) = this.getAnnotatedElement()
+    or
+    // Annotation on method - return value of method will match regexp
+    result.(Call).getCallee() = this.getAnnotatedElement()
+    // TODO - we could also consider the case where the annotation is on a type
+    // but this harder to model and not very common.
+  }
+
+  override string getName() { result = "@javax.validation.constraints.Pattern annotation" }
+}
