@@ -1726,9 +1726,7 @@ private module Cached {
       SsaImpl::ssaFlow(n, succ) and
       bb1 = n.getBasicBlock() and
       bb2 = succ.getBasicBlock() and
-      bb1 != bb2 and
-      bb2.dominates(bb1) and
-      bb1.getASuccessor+() = bb2
+      bb2.strictlyDominates(bb1)
     )
   }
 

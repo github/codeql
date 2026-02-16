@@ -8,7 +8,9 @@ module MaximalFlowTest implements FlowTestSig {
 
   predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink) {
     source != sink and
-    MaximalFlows::flow(source, sink)
+    MaximalFlows::flow(source, sink) and
+    // exclude ModuleVariableNodes (which have location 0:0:0:0)
+    not sink instanceof DataFlow::ModuleVariableNode
   }
 }
 
@@ -33,7 +35,7 @@ module MaximalFlowsConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) {
     exists(node.getLocation().getFile().getRelativePath()) and
     not any(CallNode c).getArg(_) = node.asCfgNode() and
-    not node instanceof DataFlow::ArgumentNode and
+    not isArgumentNode(node, _, _) and
     not node.asCfgNode().(NameNode).getId().matches("SINK%") and
     not DataFlow::localFlowStep(node, _)
   }

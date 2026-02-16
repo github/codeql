@@ -76,15 +76,7 @@ newtype TNode =
     node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
-  TModuleVariableNode(Module m, GlobalVariable v) {
-    v.getScope() = m and
-    (
-      v.escapes()
-      or
-      isAccessedThroughImportStar(m) and
-      ImportStar::globalNameDefinedInModule(v.getId(), m)
-    )
-  } or
+  TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m } or
   /**
    * A synthetic node representing that an iterable sequence flows to consumer.
    */
@@ -128,6 +120,20 @@ newtype TNode =
   TSynthCapturedVariablesParameterNode(Function f) {
     f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
     exists(TFunction(f))
+  } or
+  /**
+   * A synthetic node representing the values of the variables captured
+   * by the callable being called.
+   */
+  TSynthCapturedVariablesArgumentNode(ControlFlowNode callable) {
+    callable = any(CallNode c).getFunction()
+  } or
+  /**
+   * A synthetic node representing the values of the variables captured
+   * by the callable being called, after the output has been computed.
+   */
+  TSynthCapturedVariablesArgumentPostUpdateNode(ControlFlowNode callable) {
+    callable = any(CallNode c).getFunction()
   } or
   /** A synthetic node representing the values of variables captured by a comprehension. */
   TSynthCompCapturedVariablesArgumentNode(Comp comp) {
@@ -347,27 +353,51 @@ abstract class ArgumentNode extends Node {
   final ExtractedDataFlowCall getCall() { this.argumentOf(result, _) }
 }
 
+/** Gets an overapproximation of the argument nodes that are included in `getCallArg`. */
+Node getCallArgApproximation() {
+  // pre-update nodes for calls
+  result = any(CallCfgNode c).(PostUpdateNode).getPreUpdateNode()
+  or
+  // self parameters in methods
+  exists(Class c | result.asExpr() = c.getAMethod().getArg(0))
+  or
+  // the object part of an attribute expression (which might be a bound method)
+  result.asCfgNode() = any(AttrNode a).getObject()
+  or
+  // the function part of any call
+  result.asCfgNode() = any(CallNode c).getFunction()
+}
+
+/** Gets the extracted argument nodes that do not rely on `getCallArg`. */
+private Node implicitArgumentNode() {
+  // for potential summaries we allow all normal call arguments
+  normalCallArg(_, result, _)
+  or
+  // and self arguments
+  result.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+  or
+  // for comprehensions, we allow the synthetic `iterable` argument
+  result.asExpr() = any(Comp c).getIterable()
+}
+
 /**
  * A data flow node that represents a call argument found in the source code.
  */
 class ExtractedArgumentNode extends ArgumentNode {
   ExtractedArgumentNode() {
-    // for resolved calls, we need to allow all argument nodes
-    getCallArg(_, _, _, this, _)
+    this = getCallArgApproximation()
     or
-    // for potential summaries we allow all normal call arguments
-    normalCallArg(_, this, _)
-    or
-    // and self arguments
-    this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
-    or
-    // for comprehensions, we allow the synthetic `iterable` argument
-    this.asExpr() = any(Comp c).getIterable()
+    this = implicitArgumentNode()
   }
 
   final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this = call.getArgument(pos) and
-    call instanceof ExtractedDataFlowCall
+    call instanceof ExtractedDataFlowCall and
+    (
+      this = implicitArgumentNode()
+      or
+      this = getCallArgApproximation() and getCallArg(_, _, _, this, _)
+    )
   }
 }
 
@@ -440,11 +470,15 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   /** Gets a node that reads this variable. */
   Node getARead() {
-    result.asCfgNode() = var.getALoad().getAFlowNode() and
-    // Ignore reads that happen when the module is imported. These are only executed once.
-    not result.getScope() = mod
+    result = this.getALocalRead()
     or
     this = import_star_read(result)
+  }
+
+  /** Gets a node that reads this variable, excluding reads that happen through `from ... import *`. */
+  Node getALocalRead() {
+    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    not result.getScope() = mod
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
@@ -465,8 +499,6 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   override Location getLocation() { result = mod.getLocation() }
 }
-
-private predicate isAccessedThroughImportStar(Module m) { m = ImportStar::getStarImported(_) }
 
 private ModuleVariableNode import_star_read(Node n) {
   resolved_import_star_module(result.getModule(), result.getVariable().getId(), n)
