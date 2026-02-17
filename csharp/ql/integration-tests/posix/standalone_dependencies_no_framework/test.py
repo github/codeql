@@ -1,6 +1,7 @@
 import pytest
 import os
-from conftest import _supports_mono_nuget
+from ..conftest import _supports_mono_nuget
+
 
 
 @pytest.mark.only_if(_supports_mono_nuget())
