@@ -13,6 +13,10 @@ namespace Semmle.Extraction.CSharp.Entities
             this.@event = @event;
         }
 
+        public override bool NeedsPopulation =>
+            base.NeedsPopulation &&
+            !Symbol.IsPartialDefinition; // Accessors always have an implementing declaration as well.
+
         /// <summary>
         /// Gets the event symbol associated with accessor `symbol`, or `null`
         /// if there is no associated symbol.
