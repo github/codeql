@@ -147,7 +147,7 @@ predicate isLikelyConversionConstant(int c) {
         1721119, // alt epoch offset
         2400000, // MJD -> JDN conversion
         2400001, // alt MJD -> JDN conversion
-        2141, // fixed‑point month/day extraction
+        2141, // fixed-point month/day extraction
         65536, // observed in some conversions
         7834, // observed in some conversions
         256, // observed in some conversions
