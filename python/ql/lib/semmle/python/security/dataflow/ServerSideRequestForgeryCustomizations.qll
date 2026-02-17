@@ -186,37 +186,25 @@ module ServerSideRequestForgery {
 
   private predicate uri_validator(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
     exists(DataFlow::CallCfgNode call, string funcs |
-      funcs in ["in_domain", "in_azure_keyvault_domain", "in_azure_storage_domain"]
-    |
+      funcs in ["in_domain", "in_azure_keyvault_domain", "in_azure_storage_domain"] and
       call = API::moduleImport("AntiSSRF").getMember("URIValidator").getMember(funcs).getACall() and
-      call.getArg(0).asCfgNode() = node and
-      (
-        // validator used in a comparison
-        exists(CompareNode cn, Cmpop op, Node n | cn = g and n.getALocalSource() = call |
-          (
-            // validator == true or validator == false or validator is True or validator is False
-            (op instanceof Eq or op instanceof Is) and
-            exists(ControlFlowNode l, boolean bool |
-              l.getNode().(BooleanLiteral).booleanValue() = bool and
-              bool in [true, false] and
-              branch = bool and
-              cn.operands(n.asCfgNode(), op, l)
-            )
-            or
-            // validator != false or validator != true or validator is not True or validator is not False
-            (op instanceof NotEq or op instanceof IsNot) and
-            exists(ControlFlowNode l, boolean bool |
-              l.getNode().(BooleanLiteral).booleanValue() = bool and
-              bool in [true, false] and
-              branch = bool.booleanNot() and
-              cn.operands(n.asCfgNode(), op, l)
-            )
-          )
-        )
+      call.getArg(0).asCfgNode() = node
+    |
+      // validator call directly (e.g., if URIValidator.in_domain(...) )
+      g = call.asCfgNode() and
+      branch = true
+      or
+      // validator used in a comparison
+      exists(Cmpop op, Node n, ControlFlowNode l |
+        n.getALocalSource() = call and g.(CompareNode).operands(n.asCfgNode(), op, l)
+      |
+        // validator == true or validator == false or validator is True or validator is False
+        (op instanceof Eq or op instanceof Is) and
+        branch = l.getNode().(BooleanLiteral).booleanValue()
         or
-        // validator call directly (e.g., if URIValidator.in_domain(...) )
-        g = call.asCfgNode() and
-        branch = true
+        // validator != false or validator != true or validator is not True or validator is not False
+        (op instanceof NotEq or op instanceof IsNot) and
+        branch = l.getNode().(BooleanLiteral).booleanValue().booleanNot()
       )
     )
   }
