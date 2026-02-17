@@ -1,23 +1,24 @@
 Partial.cs:
 #    3| [Class] TwoPartClass
-#    6|   4: [InstanceConstructor] TwoPartClass
-#-----|     2: (Parameters)
-#    6|       0: [Parameter] obj
-#    6|         -1: [TypeMention] object
 #    8|   5: [Method] PartialMethodWithoutBody1
 #    8|     -1: [TypeMention] Void
 #    9|   6: [Method] Method2
 #    9|     -1: [TypeMention] Void
 #    9|     4: [BlockStmt] {...}
-#   22|   7: [Method] PartialMethodWithBody1
+#   21|   7: [InstanceConstructor] TwoPartClass
+#-----|     2: (Parameters)
+#    6|       0: [Parameter] obj
+#    6|         -1: [TypeMention] object
+#   21|     4: [BlockStmt] {...}
+#   22|   8: [Method] PartialMethodWithBody1
 #    7|     -1: [TypeMention] Void
 #   22|     4: [BlockStmt] {...}
-#   23|   8: [Method] Method3
+#   23|   9: [Method] Method3
 #   23|     -1: [TypeMention] Void
 #   23|     4: [BlockStmt] {...}
-#   24|   9: [Field] _backingField
+#   24|   10: [Field] _backingField
 #   24|     -1: [TypeMention] object
-#   26|   10: [Property] PartialProperty1
+#   26|   11: [Property] PartialProperty1
 #   11|     -1: [TypeMention] object
 #   26|     -1: [TypeMention] object
 #   28|     3: [Getter] get_PartialProperty1
@@ -32,10 +33,10 @@ Partial.cs:
 #   29|           0: [AssignExpr] ... = ...
 #   29|             0: [FieldAccess] access to field _backingField
 #   29|             1: [ParameterAccess] access to parameter value
-#   31|   11: [Field] _backingArray
+#   31|   12: [Field] _backingArray
 #   31|     -1: [TypeMention] Object[]
 #   31|       1: [TypeMention] object
-#   33|   12: [Indexer] Item
+#   33|   13: [Indexer] Item
 #   13|     -1: [TypeMention] object
 #   33|     -1: [TypeMention] object
 #-----|     1: (Parameters)
@@ -61,7 +62,7 @@ Partial.cs:
 #   36|               -1: [FieldAccess] access to field _backingArray
 #   36|               0: [ParameterAccess] access to parameter index
 #   36|             1: [ParameterAccess] access to parameter value
-#   40|   13: [Event] PartialEvent1
+#   40|   14: [Event] PartialEvent1
 #   15|     -1: [TypeMention] EventHandler
 #   40|     3: [AddEventAccessor] add_PartialEvent1
 #-----|       2: (Parameters)

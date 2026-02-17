@@ -1,7 +1,7 @@
 | Partial.cs:3:15:3:26 | TwoPartClass |
-| Partial.cs:6:20:6:31 | TwoPartClass |
 | Partial.cs:8:18:8:42 | PartialMethodWithoutBody1 |
 | Partial.cs:18:15:18:26 | TwoPartClass |
+| Partial.cs:21:20:21:31 | TwoPartClass |
 | Partial.cs:22:18:22:39 | PartialMethodWithBody1 |
 | Partial.cs:26:27:26:42 | PartialProperty1 |
 | Partial.cs:28:9:28:11 | get_PartialProperty1 |

@@ -1,3 +1,4 @@
+| Partial.cs:21:20:21:31 | TwoPartClass | Partial.cs:21:45:21:47 | {...} |
 | Partial.cs:43:15:43:33 | OnePartPartialClass | Partial.cs:43:15:43:33 | {...} |
 | Partial.cs:51:12:51:26 | NonPartialClass | Partial.cs:51:40:51:42 | {...} |
 | PartialMultipleFiles1.cs:1:22:1:41 | PartialMultipleFiles | PartialMultipleFiles1.cs:1:22:1:41 | {...} |
