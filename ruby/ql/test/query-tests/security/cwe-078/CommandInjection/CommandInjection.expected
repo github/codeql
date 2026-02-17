@@ -4,8 +4,6 @@
 | CommandInjection.rb:10:14:10:16 | cmd | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:10:14:10:16 | cmd | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
 | CommandInjection.rb:11:17:11:22 | #{...} | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:11:17:11:22 | #{...} | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
 | CommandInjection.rb:13:9:13:14 | #{...} | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:13:9:13:14 | #{...} | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
-| CommandInjection.rb:18:15:18:27 | #{...} | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:18:15:18:27 | #{...} | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
-| CommandInjection.rb:21:15:21:27 | #{...} | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:21:15:21:27 | #{...} | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
 | CommandInjection.rb:30:19:30:24 | #{...} | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:30:19:30:24 | #{...} | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
 | CommandInjection.rb:34:24:34:36 | "echo #{...}" | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:34:24:34:36 | "echo #{...}" | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
 | CommandInjection.rb:35:39:35:51 | "grep #{...}" | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:35:39:35:51 | "grep #{...}" | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |
@@ -24,19 +22,11 @@ edges
 | CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:10:14:10:16 | cmd | provenance |  |
 | CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:11:17:11:22 | #{...} | provenance |  |
 | CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:13:9:13:14 | #{...} | provenance |  |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:17:40:17:42 | cmd | provenance |  |
-| CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:20:45:20:47 | cmd | provenance |  |
 | CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:30:19:30:24 | #{...} | provenance |  |
 | CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:34:24:34:36 | "echo #{...}" | provenance | AdditionalTaintStep |
 | CommandInjection.rb:6:9:6:11 | cmd | CommandInjection.rb:35:39:35:51 | "grep #{...}" | provenance | AdditionalTaintStep |
 | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:6:15:6:26 | ...[...] | provenance |  |
 | CommandInjection.rb:6:15:6:26 | ...[...] | CommandInjection.rb:6:9:6:11 | cmd | provenance |  |
-| CommandInjection.rb:17:9:17:18 | safe_cmd_1 | CommandInjection.rb:18:15:18:27 | #{...} | provenance |  |
-| CommandInjection.rb:17:22:17:43 | call to escape | CommandInjection.rb:17:9:17:18 | safe_cmd_1 | provenance |  |
-| CommandInjection.rb:17:40:17:42 | cmd | CommandInjection.rb:17:22:17:43 | call to escape | provenance | MaD:3 |
-| CommandInjection.rb:20:9:20:18 | safe_cmd_2 | CommandInjection.rb:21:15:21:27 | #{...} | provenance |  |
-| CommandInjection.rb:20:22:20:48 | call to shellescape | CommandInjection.rb:20:9:20:18 | safe_cmd_2 | provenance |  |
-| CommandInjection.rb:20:45:20:47 | cmd | CommandInjection.rb:20:22:20:48 | call to shellescape | provenance | MaD:3 |
 | CommandInjection.rb:47:9:47:11 | cmd | CommandInjection.rb:51:24:51:36 | "echo #{...}" | provenance | AdditionalTaintStep |
 | CommandInjection.rb:47:15:47:20 | call to params | CommandInjection.rb:47:15:47:26 | ...[...] | provenance |  |
 | CommandInjection.rb:47:15:47:26 | ...[...] | CommandInjection.rb:47:9:47:11 | cmd | provenance |  |
@@ -58,7 +48,6 @@ edges
 models
 | 1 | Sink: Terrapin::CommandLine!; Method[new].Argument[0]; command-injection |
 | 2 | Sink: Terrapin::CommandLine!; Method[new].Argument[1]; command-injection |
-| 3 | Summary: Shellwords!; Method[escape,shellescape]; Argument[0]; ReturnValue; taint |
 nodes
 | CommandInjection.rb:6:9:6:11 | cmd | semmle.label | cmd |
 | CommandInjection.rb:6:15:6:20 | call to params | semmle.label | call to params |
@@ -68,14 +57,6 @@ nodes
 | CommandInjection.rb:10:14:10:16 | cmd | semmle.label | cmd |
 | CommandInjection.rb:11:17:11:22 | #{...} | semmle.label | #{...} |
 | CommandInjection.rb:13:9:13:14 | #{...} | semmle.label | #{...} |
-| CommandInjection.rb:17:9:17:18 | safe_cmd_1 | semmle.label | safe_cmd_1 |
-| CommandInjection.rb:17:22:17:43 | call to escape | semmle.label | call to escape |
-| CommandInjection.rb:17:40:17:42 | cmd | semmle.label | cmd |
-| CommandInjection.rb:18:15:18:27 | #{...} | semmle.label | #{...} |
-| CommandInjection.rb:20:9:20:18 | safe_cmd_2 | semmle.label | safe_cmd_2 |
-| CommandInjection.rb:20:22:20:48 | call to shellescape | semmle.label | call to shellescape |
-| CommandInjection.rb:20:45:20:47 | cmd | semmle.label | cmd |
-| CommandInjection.rb:21:15:21:27 | #{...} | semmle.label | #{...} |
 | CommandInjection.rb:30:19:30:24 | #{...} | semmle.label | #{...} |
 | CommandInjection.rb:34:24:34:36 | "echo #{...}" | semmle.label | "echo #{...}" |
 | CommandInjection.rb:35:39:35:51 | "grep #{...}" | semmle.label | "grep #{...}" |
@@ -107,6 +88,4 @@ nodes
 | CommandInjection.rb:114:44:114:54 | ...[...] | semmle.label | ...[...] |
 subpaths
 testFailures
-| CommandInjection.rb:18:15:18:27 | #{...} | Unexpected result: Alert |
-| CommandInjection.rb:21:15:21:27 | #{...} | Unexpected result: Alert |
 | CommandInjection.rb:107:16:107:40 | "cat #{...}" | Unexpected result: Alert |
