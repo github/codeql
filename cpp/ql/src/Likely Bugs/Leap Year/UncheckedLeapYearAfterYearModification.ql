@@ -142,7 +142,7 @@ predicate isLikelyConversionConstant(int c) {
         146097, // days in 400-year Gregorian cycle
         36524, // days in 100-year Gregorian subcycle
         1461, // days in 4-year cycle (incl. 1 leap)
-        32044, // Fliegel–van Flandern JDN epoch shift
+        32044, // Fliegel-van Flandern JDN epoch shift
         1721425, // JDN of 0001‑01‑01 (Gregorian)
         1721119, // alt epoch offset
         2400000, // MJD → JDN conversion
