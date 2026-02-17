@@ -2740,6 +2740,7 @@ mod blanket_impl;
 mod closure;
 mod dereference;
 mod dyn_type;
+mod regressions;
 
 fn main() {
     field_access::f(); // $ target=f

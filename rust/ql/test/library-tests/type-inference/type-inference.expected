@@ -3711,48 +3711,48 @@ inferCertainType
 | main.rs:2730:21:2730:21 | y |  | {EXTERNAL LOCATION} | & |
 | main.rs:2733:13:2733:13 | y |  | {EXTERNAL LOCATION} | usize |
 | main.rs:2734:23:2734:23 | y |  | {EXTERNAL LOCATION} | usize |
-| main.rs:2744:11:2779:1 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2745:5:2745:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2746:5:2746:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2747:5:2747:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2747:20:2747:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2747:41:2747:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2748:5:2748:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2749:5:2749:41 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2750:5:2750:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2751:5:2751:30 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2752:5:2752:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2753:5:2753:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2754:5:2754:32 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2755:5:2755:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2756:5:2756:36 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2757:5:2757:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2758:5:2758:29 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2759:5:2759:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2760:5:2760:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2761:5:2761:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2762:5:2762:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2763:5:2763:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
-| main.rs:2763:5:2763:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
-| main.rs:2764:5:2764:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2765:5:2765:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2766:5:2766:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2767:5:2767:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2768:5:2768:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2769:5:2769:43 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2770:5:2770:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2771:5:2771:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2772:5:2772:28 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2773:5:2773:23 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2774:5:2774:41 | ...::test_all_patterns(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2775:5:2775:49 | ...::box_patterns(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2776:5:2776:20 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2777:5:2777:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
-| main.rs:2777:5:2777:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2777:5:2777:20 | ...::f(...) | T | main.rs:2547:5:2549:5 | dyn MyTrait |
-| main.rs:2777:5:2777:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
-| main.rs:2777:16:2777:19 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:2778:5:2778:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2745:11:2780:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2746:5:2746:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2747:5:2747:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2748:5:2748:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2748:20:2748:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2748:41:2748:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2749:5:2749:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2750:5:2750:41 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2751:5:2751:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2752:5:2752:30 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2753:5:2753:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2754:5:2754:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2755:5:2755:32 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2756:5:2756:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2757:5:2757:36 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2758:5:2758:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2759:5:2759:29 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2760:5:2760:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2761:5:2761:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2762:5:2762:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2763:5:2763:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2764:5:2764:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2764:5:2764:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
+| main.rs:2765:5:2765:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2766:5:2766:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2767:5:2767:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2768:5:2768:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2769:5:2769:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2770:5:2770:43 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2771:5:2771:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2772:5:2772:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2773:5:2773:28 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2774:5:2774:23 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2775:5:2775:41 | ...::test_all_patterns(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2776:5:2776:49 | ...::box_patterns(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2777:5:2777:20 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2778:5:2778:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
+| main.rs:2778:5:2778:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2778:5:2778:20 | ...::f(...) | T | main.rs:2547:5:2549:5 | dyn MyTrait |
+| main.rs:2778:5:2778:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
+| main.rs:2778:16:2778:19 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2779:5:2779:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
 | overloading.rs:4:19:4:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | overloading.rs:4:19:4:23 | SelfParam | TRef | overloading.rs:2:5:11:5 | Self [trait FirstTrait] |
 | overloading.rs:4:34:6:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
@@ -4920,6 +4920,30 @@ inferCertainType
 | raw_pointer.rs:58:19:58:23 | false |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:59:5:59:30 | raw_type_from_deref(...) |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:59:25:59:29 | false |  | {EXTERNAL LOCATION} | bool |
+| regressions.rs:10:17:10:17 | s |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:10:17:10:17 | s | T | regressions.rs:9:10:9:10 | T |
+| regressions.rs:10:34:12:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:10:34:12:9 | { ... } | T | regressions.rs:9:10:9:10 | T |
+| regressions.rs:11:18:11:18 | s |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:11:18:11:18 | s | T | regressions.rs:9:10:9:10 | T |
+| regressions.rs:15:21:33:5 | { ... } |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:16:17:16:21 | vec_e | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:16:25:16:34 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:16:25:16:34 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:19:13:19:13 | e |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:19:17:19:40 | ...::V {...} |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:19:29:19:38 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:19:29:19:38 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:21:9:23:9 | if ... {...} |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:21:32:23:9 | { ... } |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:22:13:22:17 | vec_e |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:22:13:22:17 | vec_e | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:24:17:24:17 | e |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:17:30:9 | if ... {...} |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:27:37:27:41 | vec_e |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:27:37:27:41 | vec_e | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:28:9:30:9 | { ... } |  | {EXTERNAL LOCATION} | () |
 inferType
 | associated_types.rs:5:15:5:18 | SelfParam |  | associated_types.rs:1:1:2:21 | Wrapper |
 | associated_types.rs:5:15:5:18 | SelfParam | A | associated_types.rs:4:6:4:6 | A |
@@ -12134,48 +12158,48 @@ inferType
 | main.rs:2734:17:2734:17 | x |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2734:17:2734:24 | x.max(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2734:23:2734:23 | y |  | {EXTERNAL LOCATION} | usize |
-| main.rs:2744:11:2779:1 | { ... } |  | {EXTERNAL LOCATION} | () |
-| main.rs:2745:5:2745:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2746:5:2746:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2747:5:2747:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2747:20:2747:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2747:41:2747:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
-| main.rs:2748:5:2748:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2749:5:2749:41 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2750:5:2750:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2751:5:2751:30 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2752:5:2752:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2753:5:2753:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2754:5:2754:32 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2755:5:2755:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2756:5:2756:36 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2757:5:2757:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2758:5:2758:29 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2759:5:2759:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2760:5:2760:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2761:5:2761:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2762:5:2762:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2763:5:2763:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
-| main.rs:2763:5:2763:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
-| main.rs:2764:5:2764:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2765:5:2765:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2766:5:2766:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2767:5:2767:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2768:5:2768:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2769:5:2769:43 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2770:5:2770:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2771:5:2771:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2772:5:2772:28 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2773:5:2773:23 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2774:5:2774:41 | ...::test_all_patterns(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2775:5:2775:49 | ...::box_patterns(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2776:5:2776:20 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
-| main.rs:2777:5:2777:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
-| main.rs:2777:5:2777:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2777:5:2777:20 | ...::f(...) | T | main.rs:2547:5:2549:5 | dyn MyTrait |
-| main.rs:2777:5:2777:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
-| main.rs:2777:16:2777:19 | true |  | {EXTERNAL LOCATION} | bool |
-| main.rs:2778:5:2778:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2745:11:2780:1 | { ... } |  | {EXTERNAL LOCATION} | () |
+| main.rs:2746:5:2746:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2747:5:2747:20 | ...::f(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2748:5:2748:60 | ...::g(...) |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2748:20:2748:38 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2748:41:2748:59 | ...::Foo {...} |  | main.rs:72:5:72:21 | Foo |
+| main.rs:2749:5:2749:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2750:5:2750:41 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2751:5:2751:45 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2752:5:2752:30 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2753:5:2753:21 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2754:5:2754:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2755:5:2755:32 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2756:5:2756:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2757:5:2757:36 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2758:5:2758:35 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2759:5:2759:29 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2760:5:2760:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2761:5:2761:24 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2762:5:2762:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2763:5:2763:18 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2764:5:2764:15 | ...::f(...) |  | {EXTERNAL LOCATION} | dyn Future |
+| main.rs:2764:5:2764:15 | ...::f(...) | dyn(Output) | {EXTERNAL LOCATION} | () |
+| main.rs:2765:5:2765:19 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2766:5:2766:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2767:5:2767:14 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2768:5:2768:27 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2769:5:2769:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2770:5:2770:43 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2771:5:2771:15 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2772:5:2772:17 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2773:5:2773:28 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2774:5:2774:23 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2775:5:2775:41 | ...::test_all_patterns(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2776:5:2776:49 | ...::box_patterns(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2777:5:2777:20 | ...::test(...) |  | {EXTERNAL LOCATION} | () |
+| main.rs:2778:5:2778:20 | ...::f(...) |  | {EXTERNAL LOCATION} | Box |
+| main.rs:2778:5:2778:20 | ...::f(...) | A | {EXTERNAL LOCATION} | Global |
+| main.rs:2778:5:2778:20 | ...::f(...) | T | main.rs:2547:5:2549:5 | dyn MyTrait |
+| main.rs:2778:5:2778:20 | ...::f(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
+| main.rs:2778:16:2778:19 | true |  | {EXTERNAL LOCATION} | bool |
+| main.rs:2779:5:2779:23 | ...::f(...) |  | {EXTERNAL LOCATION} | () |
 | overloading.rs:4:19:4:23 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | overloading.rs:4:19:4:23 | SelfParam | TRef | overloading.rs:2:5:11:5 | Self [trait FirstTrait] |
 | overloading.rs:4:34:6:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
@@ -14681,4 +14705,415 @@ inferType
 | raw_pointer.rs:58:19:58:23 | false |  | {EXTERNAL LOCATION} | bool |
 | raw_pointer.rs:59:5:59:30 | raw_type_from_deref(...) |  | {EXTERNAL LOCATION} | () |
 | raw_pointer.rs:59:25:59:29 | false |  | {EXTERNAL LOCATION} | bool |
+| regressions.rs:10:17:10:17 | s |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:10:17:10:17 | s | T | regressions.rs:9:10:9:10 | T |
+| regressions.rs:10:34:12:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:10:34:12:9 | { ... } | T | regressions.rs:9:10:9:10 | T |
+| regressions.rs:11:13:11:21 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:11:13:11:21 | Some(...) | T | regressions.rs:9:10:9:10 | T |
+| regressions.rs:11:18:11:18 | s |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:11:18:11:18 | s | T | regressions.rs:9:10:9:10 | T |
+| regressions.rs:11:18:11:20 | s.0 |  | regressions.rs:9:10:9:10 | T |
+| regressions.rs:15:21:33:5 | { ... } |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:16:17:16:21 | vec_e | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:16:17:16:21 | vec_e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:17:16:21 | vec_e | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:16:25:16:34 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:16:25:16:34 | ...::new(...) | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:16:25:16:34 | ...::new(...) | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:17:17:17:21 | opt_e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:17:17:21 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:17:25:17:28 | None | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:17:25:17:28 | None | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:19:13:19:13 | e |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:19:17:19:40 | ...::V {...} |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:19:29:19:38 | ...::new(...) |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:19:29:19:38 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:19:29:19:38 | ...::new(...) | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:9:23:9 | if ... {...} |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:21:16:21:22 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:21:16:21:22 | Some(...) | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:16:21:22 | Some(...) | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:16:21:22 | Some(...) | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:21:21:21 | e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:21:21:21 | e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:21:26:21:30 | opt_e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:21:26:21:30 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:21:32:23:9 | { ... } |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:22:13:22:17 | vec_e |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:22:13:22:17 | vec_e | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:22:13:22:17 | vec_e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:17 | vec_e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:13:22:17 | vec_e | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:13:22:25 | vec_e.push(...) |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:22:24:22:24 | e |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:24:22:24 | e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:24:22:24 | e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:24:22:24 | e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:24:22:24 | e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:24:22:24 | e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:24:22:24 | e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:24:22:24 | e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:22:24:22:24 | e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:22:24:22:24 | e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:24:9:24:13 | opt_e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:9:24:13 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:9:24:24 | ... = ... |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:24:17:24:17 | e |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:24:17:24:24 | e.into() | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:24:17:24:24 | e.into() | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:13:27:13 | _ |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:27:17:30:9 | if ... {...} |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:27:24:27:33 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:27:24:27:33 | Some(...) | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:24:27:33 | Some(...) | T.T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:29:27:32 | last | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e |  | {EXTERNAL LOCATION} | Vec |
+| regressions.rs:27:37:27:41 | vec_e | A | {EXTERNAL LOCATION} | Global |
+| regressions.rs:27:37:27:41 | vec_e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:41 | vec_e | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:27:37:27:47 | vec_e.pop() | T.T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:28:9:30:9 | { ... } |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:29:13:29:17 | opt_e |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:29:13:29:17 | opt_e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:17 | opt_e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:13:29:17 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:13:29:31 | ... = ... |  | {EXTERNAL LOCATION} | () |
+| regressions.rs:29:21:29:24 | last |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:24 | last | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:29:21:29:31 | last.into() | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:29:21:29:31 | last.into() | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:32:9:32:13 | opt_e | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:13 | opt_e | T.T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() |  | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() |  | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T.T.T.T.T | regressions.rs:3:5:3:23 | S |
+| regressions.rs:32:9:32:22 | opt_e.unwrap() | T.T.T.T.T.T.T.T | regressions.rs:5:5:7:5 | E |
 testFailures
