@@ -57,4 +57,8 @@ module CommandInjection {
   private class ExternalCommandInjectionSink extends Sink {
     ExternalCommandInjectionSink() { ModelOutput::sinkNode(this, "command-injection") }
   }
+
+  private class ExternalCommandInjectionSanitizer extends Sanitizer {
+    ExternalCommandInjectionSanitizer() { ModelOutput::barrierNode(this, "command-injection") }
+  }
 }
