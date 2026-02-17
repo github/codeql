@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ['SQLite3::Database!', 'Method[quote]', 'Argument[0]', 'ReturnValue', 'taint']
