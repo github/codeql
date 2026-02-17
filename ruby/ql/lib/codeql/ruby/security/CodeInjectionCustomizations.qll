@@ -118,4 +118,8 @@ module CodeInjection {
   private class ExternalCodeInjectionSink extends Sink {
     ExternalCodeInjectionSink() { ModelOutput::sinkNode(this, "code-injection") }
   }
+
+  private class ExternalCodeInjectionSanitizer extends Sanitizer {
+    ExternalCodeInjectionSanitizer() { ModelOutput::barrierNode(this, "code-injection") }
+  }
 }

@@ -125,6 +125,10 @@ module UrlRedirect {
    */
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
 
+  private class ExternalUrlRedirectSanitizer extends Sanitizer {
+    ExternalUrlRedirectSanitizer() { ModelOutput::barrierNode(this, "url-redirection") }
+  }
+
   /**
    * These methods return a new `ActionController::Parameters` or a `Hash` containing a subset of
    * the original values. This may still contain user input, so the results are tainted.
