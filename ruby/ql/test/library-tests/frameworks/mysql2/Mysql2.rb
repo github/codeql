@@ -1,6 +1,6 @@
 class UsersController < ActionController::Base
   def mysql2_handler(event:, context:)
-    name = params[:user_name]
+    name = params[:user_name] # $ Source[rb/sql-injection]
 
     conn = Mysql2::Client.new(
         host: "127.0.0.1",
@@ -10,7 +10,7 @@ class UsersController < ActionController::Base
     results1 = conn.query("SELECT * FROM users")
 
     # BAD: SQL statement constructed from user input
-    results2 = conn.query("SELECT * FROM users WHERE username='#{name}'")
+    results2 = conn.query("SELECT * FROM users WHERE username='#{name}'") # $ Alert[rb/sql-injection]
 
     # GOOD: user input is escaped
     escaped = Mysql2::Client.escape(name)
@@ -21,7 +21,7 @@ class UsersController < ActionController::Base
     results4 = statement1.execute(1, name, :as => :array)
 
     # BAD: SQL statement constructed from user input
-    statement2 = conn.prepare("SELECT * FROM users WHERE username='#{name}' AND password = ?")
+    statement2 = conn.prepare("SELECT * FROM users WHERE username='#{name}' AND password = ?") # $ Alert[rb/sql-injection]
     results4 = statement2.execute("password", :as => :array)
 
     # NOT EXECUTED
