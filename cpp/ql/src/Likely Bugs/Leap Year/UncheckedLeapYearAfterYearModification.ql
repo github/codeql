@@ -162,7 +162,8 @@ predicate isLikelyConversionConstant(int c) {
         1400, // Hijri base year, used when converting a 2 digit year
         1980, // FAT filesystem epoch start year
         227013, // constant observed for Hirji year conversion, and Hirji years are not applicable for gregorian leap year
-        10631, // constant observed for Hirji year conversion, and Hirji years are not applicable for gregorian leap year
+        10631, // constant observed for Hirji year conversion, and Hirji years are not applicable for gregorian leap year,
+        80, // 1980/01/01 is the start of the epoch on DOS
         0
       ]
   )
