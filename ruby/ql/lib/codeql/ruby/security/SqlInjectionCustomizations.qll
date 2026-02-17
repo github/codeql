@@ -61,8 +61,4 @@ module SqlInjection {
   private class ExternalSqlInjectionSink extends Sink {
     ExternalSqlInjectionSink() { ModelOutput::sinkNode(this, "sql-injection") }
   }
-
-  private class ExternalSqlInjectionSanitizer extends Sanitizer {
-    ExternalSqlInjectionSanitizer() { ModelOutput::barrierNode(this, "sql-injection") }
-  }
 }
