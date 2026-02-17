@@ -257,6 +257,7 @@ class IgnorablePointerOrCharArithmetic extends IgnorableOperation {
       )
       or
       // Operations on calls to functions named like "strlen", "wcslen", etc
+      // for example `strlen(foo) + bar`
       this.(BinaryArithmeticOperation).getAnOperand().(Call).getTarget().getName().matches("%len%")
     )
   }
