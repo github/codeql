@@ -4,3 +4,9 @@ extensions:
       extensible: summaryModel
     data:
       - ['Shellwords!', 'Method[escape,shellescape]', 'Argument[0]', 'ReturnValue', 'taint']
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: barrierModel
+    data:
+      - ['Shellwords!', 'Method[escape,shellescape].ReturnValue', 'command-injection']
