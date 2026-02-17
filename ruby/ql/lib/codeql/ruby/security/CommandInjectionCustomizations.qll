@@ -42,6 +42,16 @@ module CommandInjection {
     SystemCommandExecutionSink() { exists(SystemCommandExecution c | c.isShellInterpreted(this)) }
   }
 
+  /**
+   * A call to `String#shellescape` sanitizes its input.
+   */
+  class ShellwordsEscapeAsSanitizer extends Sanitizer {
+    ShellwordsEscapeAsSanitizer() {
+      // The `Shellwords.shellescape` method is also added as `String#shellescape`.
+      this.(DataFlow::CallNode).getMethodName() = "shellescape"
+    }
+  }
+
   private class ExternalCommandInjectionSink extends Sink {
     ExternalCommandInjectionSink() { ModelOutput::sinkNode(this, "command-injection") }
   }
