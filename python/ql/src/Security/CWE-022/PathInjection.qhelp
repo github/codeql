@@ -13,21 +13,27 @@ attacker being able to influence behavior by modifying unexpected files.
 
 <recommendation>
 <p>
-Validate user input before using it to construct a file path, either using an off-the-shelf library function
-like <code>werkzeug.utils.secure_filename</code>, or by performing custom validation.
+Validate paths constructed from untrusted user input before using them to access files.
 </p>
 
 <p>
-Ideally, follow these rules:
+The choice of validation depends on the use case.
 </p>
 
-<ul>
-<li>Do not allow more than a single "." character.</li>
-<li>Do not allow directory separators such as "/" or "\" (depending on the file system).</li>
-<li>Do not rely on simply replacing problematic sequences such as "../". For example, after
-applying this filter to ".../...//", the resulting string would still be "../".</li>
-<li>Use an allowlist of known good patterns.</li>
-</ul>
+<p>
+If you want to allow paths spanning multiple folders, a common strategy is to make sure that the constructed
+file path is contained within a safe root folder. First, normalize the path using <code>os.path.normpath</code> or
+<code>os.path.realpath</code> (make sure to use the latter if symlinks are a consideration)
+to remove any internal ".." segments and/or follow links. Then check that the normalized path starts with the
+root folder. Note that the normalization step is important, since otherwise even a path that starts with the root
+folder could be used to access files outside the root folder.
+</p>
+
+<p>
+More restrictive options include using a library function like <code>werkzeug.utils.secure_filename</code> to eliminate
+any special characters from the file path, or restricting the path to a known list of safe paths. These options are
+safe, but can only be used in particular circumstances.
+</p>
 </recommendation>
 
 <example>

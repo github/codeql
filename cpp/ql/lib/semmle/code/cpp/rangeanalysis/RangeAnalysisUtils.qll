@@ -404,7 +404,7 @@ predicate cmpWithLinearBound(
  * For example, if `t` is a signed 32-bit type then holds if `lb` is
  * `-2^31` and `ub` is `2^31 - 1`.
  */
-private predicate typeBounds(ArithmeticType t, float lb, float ub) {
+private predicate typeBounds0(ArithmeticType t, float lb, float ub) {
   exists(IntegralType integralType, float limit |
     integralType = t and limit = 2.pow(8 * integralType.getSize())
   |
@@ -421,6 +421,42 @@ private predicate typeBounds(ArithmeticType t, float lb, float ub) {
   or
   // This covers all floating point types. The range is (-Inf, +Inf).
   t instanceof FloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
+}
+
+/**
+ * Gets the underlying type for an enumeration `e`.
+ *
+ * If the enumeration does not have an explicit type we approximate it using
+ * the following rules:
+ * - The result type is always `signed`, and
+ * - if the largest value fits in an `int` the result is `int`. Otherwise, the
+ * result is `long`.
+ */
+private IntegralType getUnderlyingTypeForEnum(Enum e) {
+  result = e.getExplicitUnderlyingType()
+  or
+  not e.hasExplicitUnderlyingType() and
+  result.isSigned() and
+  exists(IntType intType |
+    if max(e.getAnEnumConstant().getValue().toFloat()) >= 2.pow(8 * intType.getSize() - 1)
+    then result instanceof LongType
+    else result = intType
+  )
+}
+
+/**
+ * Holds if `lb` and `ub` are the lower and upper bounds of the unspecified
+ * type `t`.
+ *
+ * For example, if `t` is a signed 32-bit type then holds if `lb` is
+ * `-2^31` and `ub` is `2^31 - 1`.
+ *
+ * Unlike `typeBounds0`, this predicate also handles `Enum` types.
+ */
+private predicate typeBounds(Type t, float lb, float ub) {
+  typeBounds0(t, lb, ub)
+  or
+  typeBounds0(getUnderlyingTypeForEnum(t), lb, ub)
 }
 
 private Type stripReference(Type t) {
