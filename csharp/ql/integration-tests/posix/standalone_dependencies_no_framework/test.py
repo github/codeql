@@ -3,7 +3,7 @@ import pytest
 import os
 
 
-# Skipping the test on the ARM runners, macos-15 and macos-26, as we're running 
+# Skipping the test on the ARM runners, macos-15 and macos-26, as we're running
 # into trouble with Mono and nuget.
 @pytest.mark.only_if(
     runs_on.linux
