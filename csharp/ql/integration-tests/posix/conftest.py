@@ -1,5 +1,4 @@
 import runs_on
-import pytest
 
 
 def _supports_mono_nuget():
