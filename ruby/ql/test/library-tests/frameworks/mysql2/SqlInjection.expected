@@ -1,28 +1,15 @@
 #select
 | Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." | Mysql2.rb:3:12:3:17 | call to params | Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." | This SQL query depends on a $@. | Mysql2.rb:3:12:3:17 | call to params | user-provided value |
-| Mysql2.rb:17:27:17:75 | "SELECT * FROM users WHERE use..." | Mysql2.rb:3:12:3:17 | call to params | Mysql2.rb:17:27:17:75 | "SELECT * FROM users WHERE use..." | This SQL query depends on a $@. | Mysql2.rb:3:12:3:17 | call to params | user-provided value |
 | Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." | Mysql2.rb:3:12:3:17 | call to params | Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." | This SQL query depends on a $@. | Mysql2.rb:3:12:3:17 | call to params | user-provided value |
 edges
 | Mysql2.rb:3:5:3:8 | name | Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." | provenance | AdditionalTaintStep |
-| Mysql2.rb:3:5:3:8 | name | Mysql2.rb:16:37:16:40 | name | provenance |  |
 | Mysql2.rb:3:5:3:8 | name | Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." | provenance | AdditionalTaintStep |
 | Mysql2.rb:3:12:3:17 | call to params | Mysql2.rb:3:12:3:29 | ...[...] | provenance |  |
 | Mysql2.rb:3:12:3:29 | ...[...] | Mysql2.rb:3:5:3:8 | name | provenance |  |
-| Mysql2.rb:16:5:16:11 | escaped | Mysql2.rb:17:27:17:75 | "SELECT * FROM users WHERE use..." | provenance | AdditionalTaintStep |
-| Mysql2.rb:16:15:16:41 | call to escape | Mysql2.rb:16:5:16:11 | escaped | provenance |  |
-| Mysql2.rb:16:37:16:40 | name | Mysql2.rb:16:15:16:41 | call to escape | provenance | MaD:1 |
-models
-| 1 | Summary: Mysql2::Client!; Method[escape]; Argument[0]; ReturnValue; taint |
 nodes
 | Mysql2.rb:3:5:3:8 | name | semmle.label | name |
 | Mysql2.rb:3:12:3:17 | call to params | semmle.label | call to params |
 | Mysql2.rb:3:12:3:29 | ...[...] | semmle.label | ...[...] |
 | Mysql2.rb:13:27:13:72 | "SELECT * FROM users WHERE use..." | semmle.label | "SELECT * FROM users WHERE use..." |
-| Mysql2.rb:16:5:16:11 | escaped | semmle.label | escaped |
-| Mysql2.rb:16:15:16:41 | call to escape | semmle.label | call to escape |
-| Mysql2.rb:16:37:16:40 | name | semmle.label | name |
-| Mysql2.rb:17:27:17:75 | "SELECT * FROM users WHERE use..." | semmle.label | "SELECT * FROM users WHERE use..." |
 | Mysql2.rb:24:31:24:93 | "SELECT * FROM users WHERE use..." | semmle.label | "SELECT * FROM users WHERE use..." |
 subpaths
-testFailures
-| Mysql2.rb:17:27:17:75 | "SELECT * FROM users WHERE use..." | Unexpected result: Alert |
