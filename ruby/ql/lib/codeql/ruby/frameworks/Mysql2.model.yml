@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ['Mysql2::Client!', 'Method[escape]', 'Argument[0]', 'ReturnValue', 'taint']
