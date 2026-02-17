@@ -518,9 +518,10 @@
 | ViableCallable.cs:683:9:683:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(Int32[]) |
 | ViableCallable.cs:687:9:687:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(List<int>) |
 | ViableCallable.cs:687:9:687:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(List<int>) |
-| ViableCallable.cs:714:9:714:18 | access to property Property | C23+Partial1.set_Property(object) |
-| ViableCallable.cs:717:13:717:22 | access to property Property | C23+Partial1.get_Property() |
-| ViableCallable.cs:720:9:720:12 | access to indexer | C23+Partial1.set_Item(int, object) |
-| ViableCallable.cs:723:13:723:16 | access to indexer | C23+Partial1.get_Item(int) |
-| ViableCallable.cs:726:9:726:15 | access to event Event | C23+Partial1.add_Event(EventHandler) |
-| ViableCallable.cs:729:9:729:15 | access to event Event | C23+Partial1.remove_Event(EventHandler) |
+| ViableCallable.cs:716:9:716:18 | access to property Property | C23+Partial1.set_Property(object) |
+| ViableCallable.cs:719:13:719:22 | access to property Property | C23+Partial1.get_Property() |
+| ViableCallable.cs:722:9:722:12 | access to indexer | C23+Partial1.set_Item(int, object) |
+| ViableCallable.cs:725:13:725:16 | access to indexer | C23+Partial1.get_Item(int) |
+| ViableCallable.cs:728:9:728:15 | access to event Event | C23+Partial1.add_Event(EventHandler) |
+| ViableCallable.cs:731:9:731:15 | access to event Event | C23+Partial1.remove_Event(EventHandler) |
+| ViableCallable.cs:734:18:734:43 | object creation of type Partial1 | C23+Partial1.Partial1(object) |
