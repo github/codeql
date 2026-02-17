@@ -4,3 +4,8 @@ extensions:
       extensible: summaryModel
     data:
       - ['SQLite3::Database!', 'Method[quote]', 'Argument[0]', 'ReturnValue', 'taint']
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: barrierModel
+    data:
+      - ['SQLite3::Database!', 'Method[quote].ReturnValue', 'sql-injection']
