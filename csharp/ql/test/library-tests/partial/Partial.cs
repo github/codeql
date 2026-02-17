@@ -2,6 +2,8 @@ using System;
 
 partial class TwoPartClass
 {
+    // Declaring declaration.
+    public partial TwoPartClass(object obj);
     partial void PartialMethodWithBody1();
     partial void PartialMethodWithoutBody1();
     public void Method2() { }
@@ -15,6 +17,8 @@ partial class TwoPartClass
 
 partial class TwoPartClass
 {
+    // Implementation declaration.
+    public partial TwoPartClass(object obj) { }
     partial void PartialMethodWithBody1() { }
     public void Method3() { }
     private object _backingField;
@@ -44,6 +48,7 @@ partial class OnePartPartialClass
 
 class NonPartialClass
 {
+    public NonPartialClass(object obj) { }
     public void Method5() { }
     public object Property { get; set; }
     public object this[int index]
