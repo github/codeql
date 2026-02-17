@@ -89,10 +89,10 @@ module MustFlow {
 
     /** Holds if `nodeFrom` flows to `nodeTo`. */
     private predicate step(Instruction nodeFrom, Instruction nodeTo) {
-      Cached::localStep(pragma[only_bind_into](nodeFrom), pragma[only_bind_into](nodeTo))
+      Cached::localStep(nodeFrom, nodeTo)
       or
       allowInterproceduralFlow() and
-      Cached::flowThroughCallable(pragma[only_bind_into](nodeFrom), pragma[only_bind_into](nodeTo))
+      Cached::flowThroughCallable(nodeFrom, nodeTo)
       or
       isAdditionalFlowStep(nodeFrom.getAUse(), nodeTo)
     }
@@ -145,134 +145,133 @@ module MustFlow {
       }
     }
   }
+}
+
+cached
+private module Cached {
+  /** Holds if `p` is the `n`'th parameter of the non-virtual function `f`. */
+  private predicate parameterOf(Parameter p, Function f, int n) {
+    not f.isVirtual() and f.getParameter(n) = p
+  }
+
+  /**
+   * Holds if `instr` is the `n`'th argument to a call to the non-virtual function `f`, and
+   * `init` is the corresponding initialization instruction that receives the value of `instr` in `f`.
+   */
+  private predicate flowIntoParameter(
+    Function f, int n, CallInstruction call, Instruction instr, InitializeParameterInstruction init
+  ) {
+    not f.isVirtual() and
+    call.getPositionalArgument(n) = instr and
+    f = call.getStaticCallTarget() and
+    isEnclosingNonVirtualFunctionInitializeParameter(init, f) and
+    init.getParameter().getIndex() = pragma[only_bind_into](pragma[only_bind_out](n))
+  }
+
+  /**
+   * Holds if `instr` is an argument to a call to the function `f`, and `init` is the
+   * corresponding initialization instruction that receives the value of `instr` in `f`.
+   */
+  pragma[noinline]
+  private predicate isPositionalArgumentInitParam(
+    CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
+  ) {
+    exists(int n |
+      parameterOf(_, f, n) and
+      flowIntoParameter(f, pragma[only_bind_into](pragma[only_bind_out](n)), call, instr, init)
+    )
+  }
+
+  /**
+   * Holds if `instr` is the qualifier to a call to the non-virtual function `f`, and
+   * `init` is the corresponding initialization instruction that receives the value of
+   * `instr` in `f`.
+   */
+  pragma[noinline]
+  private predicate isThisArgumentInitParam(
+    CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
+  ) {
+    not f.isVirtual() and
+    call.getStaticCallTarget() = f and
+    isEnclosingNonVirtualFunctionInitializeParameter(init, f) and
+    call.getThisArgument() = instr and
+    init.getIRVariable() instanceof IRThisVariable
+  }
+
+  /** Holds if `f` is the enclosing non-virtual function of `init`. */
+  private predicate isEnclosingNonVirtualFunctionInitializeParameter(
+    InitializeParameterInstruction init, Function f
+  ) {
+    not f.isVirtual() and
+    init.getEnclosingFunction() = f
+  }
+
+  /** Holds if `f` is the enclosing non-virtual function of `init`. */
+  private predicate isEnclosingNonVirtualFunctionInitializeIndirection(
+    InitializeIndirectionInstruction init, Function f
+  ) {
+    not f.isVirtual() and
+    init.getEnclosingFunction() = f
+  }
+
+  /**
+   * Holds if `argument` is an argument (or argument indirection) to a call, and
+   * `parameter` is the corresponding initialization instruction in the call target.
+   */
+  cached
+  predicate flowThroughCallable(Instruction argument, Instruction parameter) {
+    // Flow from an argument to a parameter
+    exists(CallInstruction call, InitializeParameterInstruction init | init = parameter |
+      isPositionalArgumentInitParam(call, argument, init, call.getStaticCallTarget())
+      or
+      isThisArgumentInitParam(call, argument, init, call.getStaticCallTarget())
+    )
+    or
+    // Flow from argument indirection to parameter indirection
+    exists(
+      CallInstruction call, ReadSideEffectInstruction read, InitializeIndirectionInstruction init
+    |
+      init = parameter and
+      read.getPrimaryInstruction() = call and
+      isEnclosingNonVirtualFunctionInitializeIndirection(init, call.getStaticCallTarget())
+    |
+      exists(int n |
+        read.getSideEffectOperand().getAnyDef() = argument and
+        read.getIndex() = pragma[only_bind_into](n) and
+        init.getParameter().getIndex() = pragma[only_bind_into](n)
+      )
+      or
+      call.getThisArgument() = argument and
+      init.getIRVariable() instanceof IRThisVariable
+    )
+  }
+
+  private predicate instructionToOperandStep(Instruction instr, Operand operand) {
+    operand.getDef() = instr
+  }
+
+  /**
+   * Holds if data flows from `operand` to `instr`.
+   *
+   * This predicate ignores flow through `PhiInstruction`s to create a 'must flow' relation.
+   */
+  private predicate operandToInstructionStep(Operand operand, Instruction instr) {
+    instr.(CopyInstruction).getSourceValueOperand() = operand
+    or
+    instr.(ConvertInstruction).getUnaryOperand() = operand
+    or
+    instr.(CheckedConvertOrNullInstruction).getUnaryOperand() = operand
+    or
+    instr.(InheritanceConversionInstruction).getUnaryOperand() = operand
+    or
+    instr.(ChiInstruction).getTotalOperand() = operand
+  }
 
   cached
-  private module Cached {
-    /** Holds if `p` is the `n`'th parameter of the non-virtual function `f`. */
-    private predicate parameterOf(Parameter p, Function f, int n) {
-      not f.isVirtual() and f.getParameter(n) = p
-    }
-
-    /**
-     * Holds if `instr` is the `n`'th argument to a call to the non-virtual function `f`, and
-     * `init` is the corresponding initialization instruction that receives the value of `instr` in `f`.
-     */
-    private predicate flowIntoParameter(
-      Function f, int n, CallInstruction call, Instruction instr,
-      InitializeParameterInstruction init
-    ) {
-      not f.isVirtual() and
-      call.getPositionalArgument(n) = instr and
-      f = call.getStaticCallTarget() and
-      isEnclosingNonVirtualFunctionInitializeParameter(init, f) and
-      init.getParameter().getIndex() = pragma[only_bind_into](pragma[only_bind_out](n))
-    }
-
-    /**
-     * Holds if `instr` is an argument to a call to the function `f`, and `init` is the
-     * corresponding initialization instruction that receives the value of `instr` in `f`.
-     */
-    pragma[noinline]
-    private predicate isPositionalArgumentInitParam(
-      CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
-    ) {
-      exists(int n |
-        parameterOf(_, f, n) and
-        flowIntoParameter(f, pragma[only_bind_into](pragma[only_bind_out](n)), call, instr, init)
-      )
-    }
-
-    /**
-     * Holds if `instr` is the qualifier to a call to the non-virtual function `f`, and
-     * `init` is the corresponding initialization instruction that receives the value of
-     * `instr` in `f`.
-     */
-    pragma[noinline]
-    private predicate isThisArgumentInitParam(
-      CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
-    ) {
-      not f.isVirtual() and
-      call.getStaticCallTarget() = f and
-      isEnclosingNonVirtualFunctionInitializeParameter(init, f) and
-      call.getThisArgument() = instr and
-      init.getIRVariable() instanceof IRThisVariable
-    }
-
-    /** Holds if `f` is the enclosing non-virtual function of `init`. */
-    private predicate isEnclosingNonVirtualFunctionInitializeParameter(
-      InitializeParameterInstruction init, Function f
-    ) {
-      not f.isVirtual() and
-      init.getEnclosingFunction() = f
-    }
-
-    /** Holds if `f` is the enclosing non-virtual function of `init`. */
-    private predicate isEnclosingNonVirtualFunctionInitializeIndirection(
-      InitializeIndirectionInstruction init, Function f
-    ) {
-      not f.isVirtual() and
-      init.getEnclosingFunction() = f
-    }
-
-    /**
-     * Holds if `argument` is an argument (or argument indirection) to a call, and
-     * `parameter` is the corresponding initialization instruction in the call target.
-     */
-    cached
-    predicate flowThroughCallable(Instruction argument, Instruction parameter) {
-      // Flow from an argument to a parameter
-      exists(CallInstruction call, InitializeParameterInstruction init | init = parameter |
-        isPositionalArgumentInitParam(call, argument, init, call.getStaticCallTarget())
-        or
-        isThisArgumentInitParam(call, argument, init, call.getStaticCallTarget())
-      )
-      or
-      // Flow from argument indirection to parameter indirection
-      exists(
-        CallInstruction call, ReadSideEffectInstruction read, InitializeIndirectionInstruction init
-      |
-        init = parameter and
-        read.getPrimaryInstruction() = call and
-        isEnclosingNonVirtualFunctionInitializeIndirection(init, call.getStaticCallTarget())
-      |
-        exists(int n |
-          read.getSideEffectOperand().getAnyDef() = argument and
-          read.getIndex() = pragma[only_bind_into](n) and
-          init.getParameter().getIndex() = pragma[only_bind_into](n)
-        )
-        or
-        call.getThisArgument() = argument and
-        init.getIRVariable() instanceof IRThisVariable
-      )
-    }
-
-    private predicate instructionToOperandStep(Instruction instr, Operand operand) {
-      operand.getDef() = instr
-    }
-
-    /**
-     * Holds if data flows from `operand` to `instr`.
-     *
-     * This predicate ignores flow through `PhiInstruction`s to create a 'must flow' relation.
-     */
-    private predicate operandToInstructionStep(Operand operand, Instruction instr) {
-      instr.(CopyInstruction).getSourceValueOperand() = operand
-      or
-      instr.(ConvertInstruction).getUnaryOperand() = operand
-      or
-      instr.(CheckedConvertOrNullInstruction).getUnaryOperand() = operand
-      or
-      instr.(InheritanceConversionInstruction).getUnaryOperand() = operand
-      or
-      instr.(ChiInstruction).getTotalOperand() = operand
-    }
-
-    cached
-    predicate localStep(Instruction nodeFrom, Instruction nodeTo) {
-      exists(Operand mid |
-        instructionToOperandStep(nodeFrom, mid) and
-        operandToInstructionStep(mid, nodeTo)
-      )
-    }
+  predicate localStep(Instruction nodeFrom, Instruction nodeTo) {
+    exists(Operand mid |
+      instructionToOperandStep(nodeFrom, mid) and
+      operandToInstructionStep(mid, nodeTo)
+    )
   }
 }
