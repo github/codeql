@@ -145,8 +145,8 @@ predicate isLikelyConversionConstant(int c) {
         32044, // Fliegel-van Flandern JDN epoch shift
         1721425, // JDN of 0001‑01‑01 (Gregorian)
         1721119, // alt epoch offset
-        2400000, // MJD → JDN conversion
-        2400001, // alt MJD → JDN conversion
+        2400000, // MJD -> JDN conversion
+        2400001, // alt MJD -> JDN conversion
         2141, // fixed‑point month/day extraction
         65536, // observed in some conversions
         7834, // observed in some conversions
