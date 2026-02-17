@@ -6,20 +6,20 @@ import semmle.code.java.Type
 
 class JaxbElement extends Class {
   JaxbElement() {
-    this.getAnAncestor().hasQualifiedName("javax.xml.bind", "JAXBElement") or
+    this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".xml.bind", "JAXBElement") or
     this.getAnAnnotation().getType().getName() = "XmlRootElement"
   }
 }
 
 class JaxbMarshalMethod extends Method {
   JaxbMarshalMethod() {
-    this.getDeclaringType().hasQualifiedName("javax.xml.bind", "Marshaller") and
+    this.getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".xml.bind", "Marshaller") and
     this.getName() = "marshal"
   }
 }
 
 class JaxbAnnotationType extends AnnotationType {
-  JaxbAnnotationType() { this.getPackage().getName() = "javax.xml.bind.annotation" }
+  JaxbAnnotationType() { this.getPackage().getName() = javaxOrJakarta() + ".xml.bind.annotation" }
 }
 
 class JaxbAnnotated extends Annotatable {

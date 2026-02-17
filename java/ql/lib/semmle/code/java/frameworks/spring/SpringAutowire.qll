@@ -14,7 +14,7 @@ import SpringComponentScan
 predicate hasInjectAnnotation(Annotatable a) {
   a.hasAnnotation("org.springframework.beans.factory.annotation", "Autowired") or
   a.getAnAnnotation() instanceof SpringResourceAnnotation or
-  a.hasAnnotation("javax.inject", "Inject")
+  a.hasAnnotation(javaxOrJakarta() + ".inject", "Inject")
 }
 
 /**
@@ -292,7 +292,7 @@ class SpringBeanAutowiredField extends Field {
 class SpringQualifierAnnotationType extends AnnotationType {
   SpringQualifierAnnotationType() {
     this.hasQualifiedName("org.springframework.beans.factory.annotation", "Qualifier") or
-    this.hasQualifiedName("javax.inject", "Qualifier") or
+    this.hasQualifiedName(javaxOrJakarta() + ".inject", "Qualifier") or
     this.getAnAnnotation().getType() instanceof SpringQualifierAnnotationType
   }
 }
@@ -340,7 +340,9 @@ class SpringQualifierAnnotation extends Annotation {
  * autowired by Spring, and can optionally specify a qualifier in the "name".
  */
 class SpringResourceAnnotation extends Annotation {
-  SpringResourceAnnotation() { this.getType().hasQualifiedName("javax.inject", "Resource") }
+  SpringResourceAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".inject", "Resource")
+  }
 
   /**
    * Gets the specified name value, if any.

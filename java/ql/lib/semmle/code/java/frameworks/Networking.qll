@@ -20,7 +20,7 @@ class TypeSocket extends RefType {
 
 /** The type `javax.net.SocketFactory` */
 class TypeSocketFactory extends RefType {
-  TypeSocketFactory() { this.hasQualifiedName("javax.net", "SocketFactory") }
+  TypeSocketFactory() { this.hasQualifiedName(javaxOrJakarta() + ".net", "SocketFactory") }
 }
 
 /** The type `java.net.URL`. */
