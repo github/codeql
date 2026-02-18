@@ -1033,7 +1033,7 @@ pragma[nomagic]
 private Type inferStructExprType0(AstNode n, FunctionPosition pos, TypePath path) {
   exists(StructExprMatchingInput::Access a, StructExprMatchingInput::AccessPosition apos |
     n = a.getNodeAt(apos) and
-    if apos.isStructPos() then pos.isReturn() else pos.asPosition() = 0 // the acutal position doesn't matter, as long as it is positional
+    if apos.isStructPos() then pos.isReturn() else pos.asPosition() = 0 // the actual position doesn't matter, as long as it is positional
   |
     result = StructExprMatching::inferAccessType(a, apos, path)
     or
