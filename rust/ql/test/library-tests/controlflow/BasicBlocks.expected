@@ -743,6 +743,7 @@ dominates
 | test.rs:529:5:537:5 | enter fn const_block_assert | test.rs:533:21:533:48 | [boolean(true)] ! ... |
 | test.rs:529:5:537:5 | enter fn const_block_assert | test.rs:533:21:533:48 | if ... {...} |
 | test.rs:533:13:533:19 | ExprStmt | test.rs:533:13:533:19 | ExprStmt |
+| test.rs:533:13:533:19 | enter fn panic_cold_explicit | test.rs:533:13:533:19 | enter fn panic_cold_explicit |
 | test.rs:533:21:533:48 | [boolean(false)] ! ... | test.rs:533:21:533:48 | [boolean(false)] ! ... |
 | test.rs:533:21:533:48 | [boolean(true)] ! ... | test.rs:533:13:533:19 | ExprStmt |
 | test.rs:533:21:533:48 | [boolean(true)] ! ... | test.rs:533:21:533:48 | [boolean(true)] ! ... |
@@ -750,6 +751,7 @@ dominates
 | test.rs:539:5:548:5 | enter fn const_block_panic | test.rs:539:5:548:5 | enter fn const_block_panic |
 | test.rs:539:5:548:5 | enter fn const_block_panic | test.rs:541:9:546:9 | if false {...} |
 | test.rs:541:9:546:9 | if false {...} | test.rs:541:9:546:9 | if false {...} |
+| test.rs:544:17:544:22 | enter fn panic_cold_explicit | test.rs:544:17:544:22 | enter fn panic_cold_explicit |
 | test.rs:551:1:556:1 | enter fn dead_code | test.rs:551:1:556:1 | enter fn dead_code |
 | test.rs:551:1:556:1 | enter fn dead_code | test.rs:553:9:553:17 | ExprStmt |
 | test.rs:553:9:553:17 | ExprStmt | test.rs:553:9:553:17 | ExprStmt |
@@ -1422,6 +1424,7 @@ postDominance
 | test.rs:529:5:537:5 | enter fn const_block_assert | test.rs:529:5:537:5 | enter fn const_block_assert |
 | test.rs:533:13:533:19 | ExprStmt | test.rs:533:13:533:19 | ExprStmt |
 | test.rs:533:13:533:19 | ExprStmt | test.rs:533:21:533:48 | [boolean(true)] ! ... |
+| test.rs:533:13:533:19 | enter fn panic_cold_explicit | test.rs:533:13:533:19 | enter fn panic_cold_explicit |
 | test.rs:533:21:533:48 | [boolean(false)] ! ... | test.rs:533:21:533:48 | [boolean(false)] ! ... |
 | test.rs:533:21:533:48 | [boolean(true)] ! ... | test.rs:533:21:533:48 | [boolean(true)] ! ... |
 | test.rs:533:21:533:48 | if ... {...} | test.rs:529:5:537:5 | enter fn const_block_assert |
@@ -1432,6 +1435,7 @@ postDominance
 | test.rs:539:5:548:5 | enter fn const_block_panic | test.rs:539:5:548:5 | enter fn const_block_panic |
 | test.rs:541:9:546:9 | if false {...} | test.rs:539:5:548:5 | enter fn const_block_panic |
 | test.rs:541:9:546:9 | if false {...} | test.rs:541:9:546:9 | if false {...} |
+| test.rs:544:17:544:22 | enter fn panic_cold_explicit | test.rs:544:17:544:22 | enter fn panic_cold_explicit |
 | test.rs:551:1:556:1 | enter fn dead_code | test.rs:551:1:556:1 | enter fn dead_code |
 | test.rs:553:9:553:17 | ExprStmt | test.rs:551:1:556:1 | enter fn dead_code |
 | test.rs:553:9:553:17 | ExprStmt | test.rs:553:9:553:17 | ExprStmt |
