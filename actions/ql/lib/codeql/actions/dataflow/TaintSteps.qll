@@ -37,7 +37,7 @@ predicate fileDownloadToRunStep(DataFlow::Node pred, DataFlow::Node succ) {
  * A read of the _files field of the dorny/paths-filter action.
  */
 predicate dornyPathsFilterTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(StepsExpression o |
+  exists(StepOutputExpression o |
     pred instanceof DornyPathsFilterSource and
     o.getStepId() = pred.asExpr().(UsesStep).getId() and
     o.getFieldName().matches("%_files") and
@@ -49,7 +49,7 @@ predicate dornyPathsFilterTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
  * A read of user-controlled field of the tj-actions/changed-files action.
  */
 predicate tjActionsChangedFilesTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(StepsExpression o |
+  exists(StepOutputExpression o |
     pred instanceof TJActionsChangedFilesSource and
     o.getTarget() = pred.asExpr() and
     o.getStepId() = pred.asExpr().(UsesStep).getId() and
@@ -69,7 +69,7 @@ predicate tjActionsChangedFilesTaintStep(DataFlow::Node pred, DataFlow::Node suc
  * A read of user-controlled field of the tj-actions/verify-changed-files action.
  */
 predicate tjActionsVerifyChangedFilesTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(StepsExpression o |
+  exists(StepOutputExpression o |
     pred instanceof TJActionsVerifyChangedFilesSource and
     o.getTarget() = pred.asExpr() and
     o.getStepId() = pred.asExpr().(UsesStep).getId() and
@@ -82,7 +82,7 @@ predicate tjActionsVerifyChangedFilesTaintStep(DataFlow::Node pred, DataFlow::No
  * A read of user-controlled field of the xt0rted/slash-command-action action.
  */
 predicate xt0rtedSlashCommandActionTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(StepsExpression o |
+  exists(StepOutputExpression o |
     pred instanceof Xt0rtedSlashCommandSource and
     o.getTarget() = pred.asExpr() and
     o.getStepId() = pred.asExpr().(UsesStep).getId() and
@@ -95,7 +95,7 @@ predicate xt0rtedSlashCommandActionTaintStep(DataFlow::Node pred, DataFlow::Node
  * A read of user-controlled field of the zentered/issue-forms-body-parser action.
  */
 predicate zenteredIssueFormBodyParserSource(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(StepsExpression o |
+  exists(StepOutputExpression o |
     pred instanceof ZenteredIssueFormBodyParserSource and
     o.getTarget() = pred.asExpr() and
     o.getStepId() = pred.asExpr().(UsesStep).getId() and
@@ -114,7 +114,7 @@ predicate zenteredIssueFormBodyParserSource(DataFlow::Node pred, DataFlow::Node 
  * A read of user-controlled field of the octokit/request-action action.
  */
 predicate octokitRequestActionTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(StepsExpression o |
+  exists(StepOutputExpression o |
     pred instanceof OctokitRequestActionSource and
     o.getTarget() = pred.asExpr() and
     o.getStepId() = pred.asExpr().(UsesStep).getId() and
