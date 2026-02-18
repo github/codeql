@@ -28,7 +28,6 @@ ql/javascript/ql/src/Declarations/SuspiciousMethodNameDeclaration.ql
 ql/javascript/ql/src/Declarations/TemporalDeadZone.ql
 ql/javascript/ql/src/Declarations/UniqueParameterNames.ql
 ql/javascript/ql/src/Declarations/UniquePropertyNames.ql
-ql/javascript/ql/src/Declarations/UnreachableMethodOverloads.ql
 ql/javascript/ql/src/Declarations/UnusedParameter.ql
 ql/javascript/ql/src/Declarations/UnusedVariable.ql
 ql/javascript/ql/src/Expressions/ComparisonWithNaN.ql
