@@ -10,7 +10,6 @@
 
 import python
 import external.VCS
-private import LegacyPointsTo
 
 int committedFiles(Commit commit) { result = count(commit.getAnAffectedFile()) }
 
