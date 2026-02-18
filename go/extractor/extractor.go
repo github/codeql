@@ -706,12 +706,18 @@ func (extraction *Extraction) extractPackage(pkg *packages.Package) {
 		extraction.WaitGroup.Add(1)
 		extraction.GoroutineSem.acquire(1)
 		go func(astFile *ast.File) {
+			defer func() {
+				if r := recover(); r != nil {
+					log.Printf("Panic during file extraction in package %s: %v", pkg.PkgPath, r)
+				}
+				extraction.GoroutineSem.release(1)
+				extraction.WaitGroup.Done()
+			}()
+
 			err := extraction.extractFile(astFile, pkg)
 			if err != nil {
-				log.Fatal(err)
+				log.Printf("Error extracting file in package %s: %v", pkg.PkgPath, err)
 			}
-			extraction.GoroutineSem.release(1)
-			extraction.WaitGroup.Done()
 		}(astFile)
 	}
 }
