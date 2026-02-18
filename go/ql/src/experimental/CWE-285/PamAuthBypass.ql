@@ -43,9 +43,9 @@ module PamStartToAcctMgmtConfig implements DataFlow::ConfigSig {
     exists(PamAcctMgmt p | p.getACall().getReceiver() = sink)
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
+  predicate observeDiffInformedIncrementalMode() {
+    none() // used as secondary flow
+  }
 }
 
 module PamStartToAcctMgmtFlow = TaintTracking::Global<PamStartToAcctMgmtConfig>;
@@ -60,9 +60,9 @@ module PamStartToAuthenticateConfig implements DataFlow::ConfigSig {
     exists(PamAuthenticate p | p.getACall().getReceiver() = sink)
   }
 
-  predicate observeDiffInformedIncrementalMode() { any() }
-
-  Location getASelectedSinkLocation(DataFlow::Node sink) { none() }
+  predicate observeDiffInformedIncrementalMode() {
+    none() // uses secondary flow
+  }
 }
 
 module PamStartToAuthenticateFlow = TaintTracking::Global<PamStartToAuthenticateConfig>;
