@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 
 class KeyValuePair extends KeyValuePair_, DictDisplayItem {

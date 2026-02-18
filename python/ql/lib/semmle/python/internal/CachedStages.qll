@@ -35,6 +35,7 @@ module Stages {
    * Computes predicates based on the AST.
    * These include SSA and basic-blocks.
    */
+  overlay[local]
   cached
   module AST {
     /**

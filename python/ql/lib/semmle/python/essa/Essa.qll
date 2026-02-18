@@ -1,6 +1,8 @@
 /**
  * Library for SSA representation (Static Single Assignment form).
  */
+overlay[local]
+module;
 
 import python
 private import SsaCompute
