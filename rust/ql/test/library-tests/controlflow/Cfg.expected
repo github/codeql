@@ -1288,20 +1288,13 @@ edges
 | test.rs:529:41:537:5 | { ... } | test.rs:529:5:537:5 | exit fn const_block_assert (normal) |  |
 | test.rs:532:9:534:9 | ExprStmt | test.rs:533:13:533:50 | ExprStmt |  |
 | test.rs:532:9:534:9 | { ... } | test.rs:536:9:536:10 | 42 |  |
+| test.rs:533:13:533:19 | "explicit panic" | test.rs:533:13:533:19 | ...::panic(...) |  |
+| test.rs:533:13:533:19 | ...::panic | test.rs:533:13:533:19 | "explicit panic" |  |
+| test.rs:533:13:533:19 | ...::panic(...) | test.rs:533:13:533:19 | { ... } |  |
 | test.rs:533:13:533:19 | ...::panic_2021!... | test.rs:533:13:533:19 | MacroExpr |  |
-| test.rs:533:13:533:19 | ...::panic_explicit | test.rs:533:13:533:19 | ...::panic_explicit(...) |  |
-| test.rs:533:13:533:19 | ...::panic_explicit(...) | test.rs:533:13:533:19 | { ... } |  |
-| test.rs:533:13:533:19 | ExprStmt | test.rs:533:13:533:19 | fn panic_cold_explicit |  |
-| test.rs:533:13:533:19 | ExprStmt | test.rs:533:13:533:19 | panic_cold_explicit |  |
+| test.rs:533:13:533:19 | ExprStmt | test.rs:533:13:533:19 | ...::panic |  |
 | test.rs:533:13:533:19 | MacroExpr | test.rs:533:13:533:19 | { ... } |  |
-| test.rs:533:13:533:19 | enter fn panic_cold_explicit | test.rs:533:13:533:19 | ...::panic_explicit |  |
-| test.rs:533:13:533:19 | exit fn panic_cold_explicit (normal) | test.rs:533:13:533:19 | exit fn panic_cold_explicit |  |
-| test.rs:533:13:533:19 | fn panic_cold_explicit | test.rs:533:13:533:19 | ExprStmt |  |
-| test.rs:533:13:533:19 | panic_cold_explicit | test.rs:533:13:533:19 | panic_cold_explicit(...) |  |
-| test.rs:533:13:533:19 | panic_cold_explicit(...) | test.rs:533:13:533:19 | { ... } |  |
 | test.rs:533:13:533:19 | { ... } | test.rs:533:13:533:19 | ...::panic_2021!... |  |
-| test.rs:533:13:533:19 | { ... } | test.rs:533:13:533:19 | exit fn panic_cold_explicit (normal) |  |
-| test.rs:533:13:533:19 | { ... } | test.rs:533:13:533:19 | { ... } |  |
 | test.rs:533:13:533:19 | { ... } | test.rs:533:21:533:48 | if ... {...} |  |
 | test.rs:533:13:533:49 | MacroExpr | test.rs:532:9:534:9 | { ... } |  |
 | test.rs:533:13:533:49 | assert!... | test.rs:533:13:533:49 | MacroExpr |  |
@@ -1324,11 +1317,6 @@ edges
 | test.rs:541:9:546:9 | ExprStmt | test.rs:541:12:541:16 | false |  |
 | test.rs:541:9:546:9 | if false {...} | test.rs:547:9:547:9 | N |  |
 | test.rs:541:12:541:16 | false | test.rs:541:9:546:9 | if false {...} | false |
-| test.rs:544:17:544:22 | ...::panic_explicit | test.rs:544:17:544:22 | ...::panic_explicit(...) |  |
-| test.rs:544:17:544:22 | ...::panic_explicit(...) | test.rs:544:17:544:22 | { ... } |  |
-| test.rs:544:17:544:22 | enter fn panic_cold_explicit | test.rs:544:17:544:22 | ...::panic_explicit |  |
-| test.rs:544:17:544:22 | exit fn panic_cold_explicit (normal) | test.rs:544:17:544:22 | exit fn panic_cold_explicit |  |
-| test.rs:544:17:544:22 | { ... } | test.rs:544:17:544:22 | exit fn panic_cold_explicit (normal) |  |
 | test.rs:547:9:547:9 | N | test.rs:539:35:548:5 | { ... } |  |
 | test.rs:551:1:556:1 | enter fn dead_code | test.rs:552:5:554:5 | ExprStmt |  |
 | test.rs:551:1:556:1 | exit fn dead_code (normal) | test.rs:551:1:556:1 | exit fn dead_code |  |
