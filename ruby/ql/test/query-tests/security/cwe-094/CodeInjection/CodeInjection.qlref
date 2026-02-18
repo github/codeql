@@ -1,1 +1,4 @@
-queries/security/cwe-094/CodeInjection.ql
+query: queries/security/cwe-094/CodeInjection.ql
+postprocess:
+  - utils/test/PrettyPrintModels.ql
+  - utils/test/InlineExpectationsTestQuery.ql
