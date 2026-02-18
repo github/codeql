@@ -2,13 +2,15 @@
  * @name Known cipher algorithms (slice)
  * @description Outputs known cipher algorithms.
  * @id java/quantum/slices/known-cipher-algorithm
- * @kind table
+ * @kind problem
+ * @severity recommendation
  * @tags quantum
  *       experimental
  */
 
 import java
 import experimental.quantum.Language
+import codeql.quantum.experimental.Model
 
 // TODO: should there be a cipher algorithm node?
 from Crypto::KeyOperationAlgorithmNode a
