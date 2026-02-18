@@ -12,7 +12,7 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.ApiGraphs
 import Definition
 
 predicate is_increment(Stmt s) {
@@ -41,23 +41,16 @@ predicate one_item_only(For f) {
   )
 }
 
-predicate points_to_call_to_range(ControlFlowNode f) {
-  /* (x)range is a function in Py2 and a class in Py3, so we must treat it as a plain object */
-  exists(Value range |
-    range = Value::named("range") or
-    range = Value::named("xrange")
-  |
-    f = range.getACall()
-  )
+/** Holds if `node` is a call to `range`, `xrange`, or `list(range(...))`. */
+predicate call_to_range(DataFlow::Node node) {
+  node = API::builtin(["range", "xrange"]).getACall()
   or
-  /* In case points-to fails due to 'from six.moves import range' or similar. */
-  exists(string range | f.getNode().(Call).getFunc().(Name).getId() = range |
-    range = "range" or range = "xrange"
-  )
+  /* Handle 'from six.moves import range' or similar. */
+  node = API::moduleImport("six").getMember("moves").getMember(["range", "xrange"]).getACall()
   or
   /* Handle list(range(...)) and list(list(range(...))) */
-  f.(CallNode).(ControlFlowNodeWithPointsTo).pointsTo().getClass() = ClassValue::list() and
-  points_to_call_to_range(f.(CallNode).getArg(0))
+  node = API::builtin("list").getACall() and
+  call_to_range(node.(DataFlow::CallCfgNode).getArg(0))
 }
 
 /** Whether n is a use of a variable that is a not effectively a constant. */
@@ -102,8 +95,8 @@ from For f, Variable v, string msg
 where
   f.getTarget() = v.getAnAccess() and
   not f.getAStmt().contains(v.getAnAccess()) and
-  not points_to_call_to_range(f.getIter().getAFlowNode()) and
-  not points_to_call_to_range(get_comp_iterable(f)) and
+  not call_to_range(DataFlow::exprNode(f.getIter())) and
+  not call_to_range(DataFlow::exprNode(get_comp_iterable(f).getNode())) and
   not name_acceptable_for_unused_variable(v) and
   not f.getScope().getName() = "genexpr" and
   not empty_loop(f) and

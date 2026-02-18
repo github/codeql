@@ -30,7 +30,9 @@ module Builtins {
         "UnicodeDecodeError", "UnicodeEncodeError", "UnicodeError", "UnicodeTranslateError",
         "UnicodeWarning", "UserWarning", "ValueError", "Warning", "ZeroDivisionError",
         // Added for compatibility
-        "exec"
+        "exec",
+        // Added by the `site` module (available by default unless `-S` is used)
+        "copyright", "credits", "exit", "quit"
       ]
     or
     // Built-in constants shared between Python 2 and 3
@@ -49,8 +51,8 @@ module Builtins {
     or
     // Python 2 only
     result in [
-        "basestring", "cmp", "execfile", "file", "long", "raw_input", "reduce", "reload", "unichr",
-        "unicode", "xrange"
+        "apply", "basestring", "cmp", "execfile", "file", "long", "raw_input", "reduce", "reload",
+        "unichr", "unicode", "xrange"
       ]
   }
 

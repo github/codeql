@@ -13,7 +13,7 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.ApiGraphs
 
 predicate isInsideLoop(AstNode node) {
   node.getParentNode() instanceof While
@@ -33,9 +33,9 @@ where
   not isInsideLoop(del) and
   // False positive: calling `sys.exc_info` within a function results in a
   //       reference cycle, and an explicit call to `del` helps break this cycle.
-  not exists(FunctionValue ex |
-    ex = Value::named("sys.exc_info") and
-    ex.getACall().getScope() = f
+  not exists(API::CallNode call |
+    call = API::moduleImport("sys").getMember("exc_info").getACall() and
+    call.getScope() = f
   )
 select del, "Unnecessary deletion of local variable $@ in function $@.", e, e.toString(), f,
   f.getName()
