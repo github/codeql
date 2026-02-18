@@ -1,4 +1,4 @@
-typedef unsigned short      WORD; 
+typedef unsigned short      WORD;
 typedef unsigned long       DWORD, HANDLE;
 typedef int					BOOL, BOOLEAN, errno_t;
 typedef char CHAR;
@@ -392,7 +392,7 @@ void AntiPattern_unchecked_filetime_conversion2(SYSTEMTIME* st)
 }
 
 /**
- * Positive (Out of Scope) 
+ * Positive (Out of Scope)
  * SYSTEMTIME.wDay is incremented by one (and no guard exists)
 */
 void AntiPattern_unchecked_filetime_conversion2()
@@ -409,7 +409,7 @@ void AntiPattern_unchecked_filetime_conversion2()
 
 /**
  * Positive Cases
- * 	- Anti-pattern 1: [year ±n, month, day]
+ * 	- Anti-pattern 1: [year +-n, month, day]
  * 	- Generic (Out of Scope) - UncheckedReturnValueForTimeFunctions
 */
 void AntiPattern_unchecked_filetime_conversion2a()
@@ -427,7 +427,7 @@ void AntiPattern_unchecked_filetime_conversion2a()
 
 /**
  * Positive Cases
- * 	- Anti-pattern 1: [year ±n, month, day]
+ * 	- Anti-pattern 1: [year +-n, month, day]
  * 	- Generic (Out of Scope) - UncheckedReturnValueForTimeFunctions
 */
 void AntiPattern_unchecked_filetime_conversion2b()
@@ -445,7 +445,7 @@ void AntiPattern_unchecked_filetime_conversion2b()
 
 /**
  * Positive Cases
- * 	- Anti-pattern 1: [year ±n, month, day]
+ * 	- Anti-pattern 1: [year +-n, month, day]
  * 	- Generic (Out of Scope) - UncheckedReturnValueForTimeFunctions
 */
 void AntiPattern_unchecked_filetime_conversion2b(SYSTEMTIME* st)
@@ -461,7 +461,7 @@ void AntiPattern_unchecked_filetime_conversion2b(SYSTEMTIME* st)
 
 /**
  * Positive Cases
- * 	- Anti-pattern 3: datetime.AddDays(±28)
+ * 	- Anti-pattern 3: datetime.AddDays(+-28)
  * 	- Generic (Out of Scope) - UncheckedReturnValueForTimeFunctions
 */
 void AntiPattern_unchecked_filetime_conversion3()
@@ -472,7 +472,7 @@ void AntiPattern_unchecked_filetime_conversion3()
 
 	if (st.wMonth < 12)
 	{
-		// Anti-pattern 3: datetime.AddDays(±28)
+		// Anti-pattern 3: datetime.AddDays(+-28)
 		st.wMonth++;
 	}
 	else
@@ -489,7 +489,7 @@ void AntiPattern_unchecked_filetime_conversion3()
 //////////////////////////////////////////////
 
 /**
- * Negative Case - Anti-pattern 1: [year ±n, month, day]
+ * Negative Case - Anti-pattern 1: [year +-n, month, day]
  * Year is incremented and if we are on Feb the 29th, set to the 28th if the new year is a common year.
 */
 void CorrectPattern_check1()
@@ -515,7 +515,7 @@ void CorrectPattern_check1()
 }
 
 /**
- * Negative Case - Anti-pattern 1: [year ±n, month, day]
+ * Negative Case - Anti-pattern 1: [year +-n, month, day]
  * Years is incremented by some integer and then the leap year case is correctly guarded and handled.
 */
 void CorrectPattern_check2(int yearsToAdd)
@@ -542,7 +542,7 @@ bool isLeapYear(SYSTEMTIME& st)
 }
 
 /**
- * Negative Case - Anti-pattern 1: [year ±n, month, day]
+ * Negative Case - Anti-pattern 1: [year +-n, month, day]
  * Years is incremented by some integer and then the leap year case is correctly guarded and handled.
 */
 void CorrectPattern_check3()
@@ -580,7 +580,7 @@ bool fixDate(int day, int month, int year)
 }
 
 /**
- * Negative Case - Anti-pattern 1: [year ±n, month, day]
+ * Negative Case - Anti-pattern 1: [year +-n, month, day]
  * Years is incremented by some integer and then the leap year case is correctly guarded and handled.
 */
 void CorrectPattern_check4()
@@ -635,7 +635,7 @@ void CorrectPattern_NotManipulated_DateFromAPI_1(HANDLE hWatchdog)
 /////////////////////////////////////////////////////////////////
 
 /**
- * Negative Case - Anti-pattern 1: [year ±n, month, day]
+ * Negative Case - Anti-pattern 1: [year +-n, month, day]
  * Year is incremented by some integer and checked through a conversion through an inter procedural function check
 */
 void AntiPattern_1_year_addition()
@@ -644,7 +644,7 @@ void AntiPattern_1_year_addition()
 	GetSystemTime(&st);
 
 	// Safe, checked interprocedurally through Correct_filetime_conversion_check
-	st.wYear++; 
+	st.wYear++;
 
 	// Usage of potentially invalid date
 	Correct_filetime_conversion_check(st);
@@ -653,7 +653,7 @@ void AntiPattern_1_year_addition()
 
 
 /**
- * Negative Case - Anti-pattern 1: [year ±n, month, day]
+ * Negative Case - Anti-pattern 1: [year +-n, month, day]
  * Years is incremented by some integer and checked through a conversion through an inter procedural function check
 */
 void AntiPattern_simple_addition(int yearAddition)
@@ -662,14 +662,14 @@ void AntiPattern_simple_addition(int yearAddition)
 
 	GetSystemTime(&st);
 
-	st.wYear += yearAddition; 
+	st.wYear += yearAddition;
 
 	// Usage of potentially invalid date
 	Correct_filetime_conversion_check(st);
 }
 
 /**
- * Positive Case - Anti-pattern 1: [year ±n, month, day]
+ * Positive Case - Anti-pattern 1: [year +-n, month, day]
  * Years is incremented by some integer but a leap year is not handled *correctly*.
 */
 void AntiPattern_IncorrectGuard(int yearsToAdd)
@@ -683,7 +683,7 @@ void AntiPattern_IncorrectGuard(int yearsToAdd)
 	// Incorrect Guard
 	if (st.wMonth == 2 && st.wDay == 29)
 	{
-		// Part of a different anti-pattern (AntiPattern 5). 
+		// Part of a different anti-pattern (AntiPattern 5).
 		// Make sure the guard includes the proper check
 		bool isLeapYear = st.wYear % 4 == 0;
 		if (!isLeapYear)
@@ -724,7 +724,7 @@ void AntiPattern_uncheckedUsageOf_mkgmtime(struct tm& timeinfo)
 //////////////////////////////////////////////////////////
 
 /**
- * Negative Case - Anti-pattern 1: [year ±n, month, day]
+ * Negative Case - Anti-pattern 1: [year +-n, month, day]
  * Years is incremented by some integer and leap year is not handled correctly.
 */
 void Correct_year_addition_struct_tm()
@@ -744,7 +744,7 @@ void Correct_year_addition_struct_tm()
 	timeinfo.tm_year++;
 
 	// Guard
-	// move back a day when landing on Feb 29 in an non-leap year 
+	// move back a day when landing on Feb 29 in an non-leap year
 	bool isLeapYear = timeinfo.tm_year % 4 == 0 && (timeinfo.tm_year % 100 != 0 || (timeinfo.tm_year + 1900) % 400 == 0);
 	timeinfo.tm_mday = timeinfo.tm_mon == 1 && timeinfo.tm_mday == 29 && !isLeapYear ? 28 : timeinfo.tm_mday;
 
@@ -753,7 +753,7 @@ void Correct_year_addition_struct_tm()
 }
 
 /**
- * Positive Case - Anti-pattern 1: [year ±n, month, day]
+ * Positive Case - Anti-pattern 1: [year +-n, month, day]
  * Years is incremented by some integer and leap year is not handled correctly.
 */
 void Incorrect_LinuxPattern()
@@ -779,9 +779,9 @@ void Incorrect_LinuxPattern()
 //////////////////////////////////////////
 
 /**
- * Negative Case - Anti-pattern 1: [year ±n, month, day]
+ * Negative Case - Anti-pattern 1: [year +-n, month, day]
  * Years is incremented by some integer and leap year is assumed checked through
- * check of a conversion functions return value. 
+ * check of a conversion functions return value.
 */
 void AntiPattern_year_addition_struct_tm()
 {
@@ -789,7 +789,7 @@ void AntiPattern_year_addition_struct_tm()
 	struct tm timeinfo;
 	time(&rawtime);
 	gmtime_s(&timeinfo, &rawtime);
-	timeinfo.tm_year++; 
+	timeinfo.tm_year++;
 
 	// mkgmtime result checked in nested call here, assume leap year conversion is potentially handled
 	CorrectUsageOf_mkgmtime(timeinfo);
@@ -799,7 +799,7 @@ void AntiPattern_year_addition_struct_tm()
 
 
 /**
- * Positive Case - Anti-pattern 1: [year ±n, month, day]
+ * Positive Case - Anti-pattern 1: [year +-n, month, day]
 */
 void test(int x)
 {
@@ -809,12 +809,12 @@ void test(int x)
 	timeinfo.tm_year = x;
 
 	// BUG - UncheckedLeapYearAfterYearModification
-	// Positive Case - Anti-pattern 1: [year ±n, month, day]
+	// Positive Case - Anti-pattern 1: [year +-n, month, day]
 	timeinfo.tm_year = x + timeinfo.tm_year;	// $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 
 	st.wYear = x;
 	// BUG - UncheckedLeapYearAfterYearModification
-	// Positive Case - Anti-pattern 1: [year ±n, month, day]
+	// Positive Case - Anti-pattern 1: [year +-n, month, day]
 	st.wYear = x + st.wYear;  // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 }
 
@@ -848,10 +848,10 @@ void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 	timestamp_remote.tm = tm_parsed;
 	timestamp_remote.tm.tm_isdst = -1;
 	timestamp_remote.usec = now.tv_nsec * 0.001;
-	for (year = tm_now.tm_year + 1;; --year) 
+	for (year = tm_now.tm_year + 1;; --year)
 	{
 		// assert(year >= tm_now.tm_year - 1);
-		timestamp_remote.tm.tm_year = year; 
+		timestamp_remote.tm.tm_year = year;
 		if (mktime(&timestamp_remote.tm) < t_now + 7 * 24 * 60 * 60)
 			break;
 	}
@@ -936,7 +936,7 @@ void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 	}
 
 	/**
-	 * Positive Case - Anti-pattern 1: [year ±n, month, day]
+	 * Positive Case - Anti-pattern 1: [year +-n, month, day]
 	 * Modification of SYSTEMTIME struct adding to year but no leap year guard is conducted.
 	 */
 	void modified3()
@@ -954,7 +954,7 @@ void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 	}
 
 	/**
-	 * Positive Case - Anti-pattern 1: [year ±n, month, day]
+	 * Positive Case - Anti-pattern 1: [year +-n, month, day]
 	 * Modification of SYSTEMTIME struct adding to year but no leap year guard is conducted.
 	 */
 	void modified4()
@@ -972,9 +972,9 @@ void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 	}
 
 	/**
-	 * Negative Case - Anti-pattern 1: [year ±n, month, day]
-	 * Modification of SYSTEMTIME struct adding to year but value passed to a 
-	 * conversion function that can be checked for success, and the result is checked. 
+	 * Negative Case - Anti-pattern 1: [year +-n, month, day]
+	 * Modification of SYSTEMTIME struct adding to year but value passed to a
+	 * conversion function that can be checked for success, and the result is checked.
 	 */
 	void modified5()
 	{
@@ -984,11 +984,11 @@ void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 
 		GetSystemTime(&st);
 
-		st.wYear++; 
+		st.wYear++;
 
-		// Presumed safe usage, as if the conversion is incorrect, a user can handle the error. 
+		// Presumed safe usage, as if the conversion is incorrect, a user can handle the error.
 		// NOTE: it doesn't mean the user actually does the correct conversion and it it also
-		// doesn't mean it will error our in all cases that may be invalid. 
+		// doesn't mean it will error our in all cases that may be invalid.
 		// For example, if a leap year and the date is 28, we may want 29 if the time is meant
 		// to capture the end of the month, but 28 is still valid and will not error out.
 		if (SystemTimeToFileTime(&st, &ft))
@@ -998,7 +998,7 @@ void tp_intermediaryVar(struct timespec now, struct logtime &timestamp_remote)
 	}
 
 /**
-* Negative Case - Anti-pattern 1: [year ±n, month, day]
+* Negative Case - Anti-pattern 1: [year +-n, month, day]
 * Modification of SYSTEMTIME struct by copying from another struct, but no arithmetic is performed.
 */
 bool
@@ -1018,7 +1018,7 @@ FMAPITimeToSysTimeW(LPCWSTR wszTime, SYSTEMTIME *psystime)
 }
 
 /**
-* Negative Case - Anti-pattern 1: [year ±n, month, day]
+* Negative Case - Anti-pattern 1: [year +-n, month, day]
 * Modification of SYSTEMTIME struct by copying from another struct, but no arithmetic is performed.
 */
 void fp_daymonth_guard(){
@@ -1128,7 +1128,7 @@ void leap_year_checked_raw_false_positive1(WORD year, WORD offset, WORD day){
 	}
 
 	// Assume the check handled leap year correctly
-	tmp.tm_year = year; // GOOD 
+	tmp.tm_year = year; // GOOD
 	tmp.tm_mday = day;
 }
 
@@ -1313,7 +1313,7 @@ void compound_leap_year_check(WORD year, WORD offset, WORD month, WORD day){
 	tmp.tm_year = year + offset;
 
 	bool isLeap = tmp.tm_year % 4 == 0 && (tmp.tm_year % 100 != 0 || tmp.tm_year % 400 == 0) && (month == 2 && day == 29);
-	
+
 	if(isLeap){
 		// do something
 	}
@@ -1331,7 +1331,7 @@ void indirect_time_conversion_check(WORD year, WORD offset){
 	// (out-of-scope) GeneralBug: Unchecked call to SystemTimeToFileTime. this may have failed, but we didn't check the return value!
 	BOOL res = SystemTimeToFileTime(&tmp, &ft);
 
-	// Assume this check of the result is sufficient as an implicit leap year check. 
+	// Assume this check of the result is sufficient as an implicit leap year check.
 	bool x = (res == 0) ? true : false;
 }
 
@@ -1365,10 +1365,10 @@ void constant_month_on_year_modification2(WORD year, WORD offset, WORD month){
 		tmp.wYear = year + 1;// OK since the year is incremented with a known non-leap year month change
 	}
 
-	
+
 	if(month++ > 12){
 		// some heuristics to detect a false positive here rely on variable names
-		// which is often consistent in the wild. 
+		// which is often consistent in the wild.
 		// This variant uses the variable names yeartmp and monthtmp
 		WORD yeartmp;
 		WORD monthtmp;
@@ -1400,7 +1400,7 @@ void intermediate_time_struct(WORD year, WORD offset){
 	SYSTEMTIME tm, tm2;
 	FILETIME ftTime;
 
-	tm.wYear = year + offset; 
+	tm.wYear = year + offset;
 
 	tm2.wYear = tm.wYear;
 
@@ -1428,7 +1428,7 @@ void constant_day_on_year_modification1(WORD year, WORD offset, WORD month){
 	if(month++ > 12){
 
 		// BAD, year incremented, month unknown in block, and date is set to 31
-		// which is dangerous. 
+		// which is dangerous.
 		set_time(year+1, month, 31);// $ Source
 	}
 }
@@ -1460,7 +1460,7 @@ void constant_day_on_year_modification2(WORD year, WORD month){
 	if(month++ > 12){
 
 		// BAD, year incremented, month unknown in block, and date is set to 31
-		// which is dangerous. 
+		// which is dangerous.
 		set_time(year, month, 31);
 	}
 }
@@ -1468,7 +1468,7 @@ void constant_day_on_year_modification2(WORD year, WORD month){
 
 void modification_after_conversion1(tm timeinfo){
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = timeinfo.tm_year + 1900;
 
@@ -1481,7 +1481,7 @@ WORD get_civil_year(tm timeinfo){
 
 void modification_after_conversion2(tm timeinfo){
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = get_civil_year(timeinfo);
 	year += 1; // $ MISSING: Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
@@ -1489,14 +1489,14 @@ void modification_after_conversion2(tm timeinfo){
 
 void modification_after_conversion_saved_to_other_time_struct1(tm timeinfo){
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = timeinfo.tm_year + 1900;
 
 	year += 1; // $ MISSING: Source
 
 	SYSTEMTIME s;
-	// FALSE NEGATIVE: missing this because the conversion happens locally before 
+	// FALSE NEGATIVE: missing this because the conversion happens locally before
 	// the year adjustment, which seems as though it is part of a conversion itself
 	s.wYear = year; // $ MISSING: Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 }
@@ -1505,7 +1505,7 @@ void modification_after_conversion_saved_to_other_time_struct1(tm timeinfo){
 
 void modification_after_conversion_saved_to_other_time_struct2(tm timeinfo){
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = get_civil_year(timeinfo);
 
@@ -1517,25 +1517,25 @@ void modification_after_conversion_saved_to_other_time_struct2(tm timeinfo){
 
 void modification_after_conversion_saved_to_other_time_struct3(tm timeinfo){
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = timeinfo.tm_year + 1900;
 
 	year = year + 1; // $ MISSING: Source
 
 	SYSTEMTIME s;
-	// FALSE NEGATIVE: missing this because the conversion happens locally before 
+	// FALSE NEGATIVE: missing this because the conversion happens locally before
 	// the year adjustment, which seems as though it is part of a conversion itself
 	s.wYear = year; // $ MISSING: Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 }
 
 
 void year_saved_to_variable_then_modified1(tm timeinfo){
-	// A modified year is not directly assigned to the year, rather, the year is 
-	// saved to a variable, modified, used, but never assigned back.  
+	// A modified year is not directly assigned to the year, rather, the year is
+	// saved to a variable, modified, used, but never assigned back.
 	WORD year = timeinfo.tm_year;
 
-	// NOTE: should we even try to detect cases like this? 
+	// NOTE: should we even try to detect cases like this?
 	// Our current rationale is that a year in a struct is more dangerous than a year in isolation
 	// A year in isolation is harder to interpret
 	year += 1; // MISSING: $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
@@ -1544,7 +1544,7 @@ void year_saved_to_variable_then_modified1(tm timeinfo){
 void modification_before_conversion1(tm timeinfo){
 	timeinfo.tm_year += 1; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = timeinfo.tm_year + 1900;
 }
@@ -1552,7 +1552,7 @@ void modification_before_conversion1(tm timeinfo){
 void modification_before_conversion2(tm timeinfo){
 	timeinfo.tm_year += 1; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = get_civil_year(timeinfo);
 }
@@ -1560,11 +1560,11 @@ void modification_before_conversion2(tm timeinfo){
 
 
 void year_saved_to_variable_then_modified_with_leap_check1(tm timeinfo){
-	// A modified year is not directly assigned to the year, rather, the year is 
-	// saved to a variable, modified, used, but never assigned back.  
+	// A modified year is not directly assigned to the year, rather, the year is
+	// saved to a variable, modified, used, but never assigned back.
 	WORD year = timeinfo.tm_year;
 
-	year += 1; 
+	year += 1;
 
 	// performing a check is considered good enough, even if not used correctly
 	bool b = (year+1900) % 4 == 0 && ((year+1900) % 100 != 0 || (year+1900) % 400 == 0);
@@ -1573,11 +1573,11 @@ void year_saved_to_variable_then_modified_with_leap_check1(tm timeinfo){
 
 void modification_after_conversion_with_leap_check1(tm timeinfo){
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = timeinfo.tm_year + 1900;
 
-	year += 1; 
+	year += 1;
 
 	// performing a check is considered good enough, even if not used correctly
 	bool b = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
@@ -1585,20 +1585,20 @@ void modification_after_conversion_with_leap_check1(tm timeinfo){
 
 void modification_after_conversion_with_leap_check2(tm timeinfo){
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = get_civil_year(timeinfo);
 
-	year += 1; 
+	year += 1;
 
 	// performing a check is considered good enough, even if not used correctly
 	bool b = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 }
 
 void modification_before_conversion_with_leap_check1(tm timeinfo){
-	timeinfo.tm_year += 1; 
+	timeinfo.tm_year += 1;
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = timeinfo.tm_year + 1900;
 
@@ -1607,9 +1607,9 @@ void modification_before_conversion_with_leap_check1(tm timeinfo){
 }
 
 void modification_before_conversion_with_leap_check2(tm timeinfo){
-	timeinfo.tm_year += 1; 
+	timeinfo.tm_year += 1;
 	// convert a tm year into a civil year, then modify after conversion
-	// This case shows a false negative where the year might be used and it is incorrectly modified, 
+	// This case shows a false negative where the year might be used and it is incorrectly modified,
 	// and never reassigned to another struct.
 	WORD year = get_civil_year(timeinfo);
 
@@ -1653,7 +1653,7 @@ void odd_leap_year_check3(tm timeinfo){
 }
 
 void odd_leap_year_check4(tm timeinfo){
-	timeinfo.tm_year += 1; 
+	timeinfo.tm_year += 1;
 	WORD year = timeinfo.tm_year + 1900;
 
 	if( (year % 4 == 0) && (year % 100 > 0 || (year % 400 == 0)))
@@ -1663,7 +1663,7 @@ void odd_leap_year_check4(tm timeinfo){
 }
 
 void odd_leap_year_check5(tm timeinfo){
-	timeinfo.tm_year += 1; 
+	timeinfo.tm_year += 1;
 	WORD year = timeinfo.tm_year + 1900;
 
 	if( (year % 4 > 0) || (year % 100 == 0 && (year % 400 > 0)))
@@ -1694,7 +1694,7 @@ void interproc_data_killer1(tm timeinfo, WORD delta){
 	WORD year = delta + 1;
 
 	if(data_killer(&year)){
-		timeinfo.tm_year = year; 
+		timeinfo.tm_year = year;
 	}
 }
 
@@ -1703,18 +1703,18 @@ void leap_year_check_after_normalization(tm timeinfo, WORD delta){
 	WORD year = delta + 1;
 
 	if(data_killer(&year)){
-		timeinfo.tm_year = year; 
+		timeinfo.tm_year = year;
 	}
 }
 
 
 void leap_year_check_call_on_conversion1(tm timeinfo){
-	timeinfo.tm_year += 1; 
+	timeinfo.tm_year += 1;
 	isLeapYearRaw(timeinfo.tm_year + 1900);
 }
 
 void leap_year_check_call_on_conversion2(tm timeinfo){
-	timeinfo.tm_year += 1; 
+	timeinfo.tm_year += 1;
 	WORD year = get_civil_year(timeinfo);
 	isLeapYearRaw(year);
 }
@@ -1724,7 +1724,7 @@ WORD getDaysInMonth(WORD year, WORD month){
 	if(month == 2){
 		return isLeapYearRaw(year) ? 29 : 28;
 	}
-	// else assume logic for every other month, 
+	// else assume logic for every other month,
 	// returning 30 for simplicity
 	return 30;
 }
@@ -1758,4 +1758,3 @@ void bad_leap_year_check_logic1(tm timeinfo){
 	//(year % 4) && ((year % 100) || !(year % 400 )))
  	WORD days = (!(year % 4) && (!(year % 100) || (year % 400))) ? 366 : 365;
 }
-
