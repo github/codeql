@@ -3,7 +3,7 @@
  * @description Finds all potential usage of authenticated encryption schemes using the supported libraries.
  * @kind problem
  * @id py/quantum-readiness/cbom/authenticated-encryption-algorithms
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */

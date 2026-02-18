@@ -3,7 +3,7 @@
  * @description Finds all known potential sources for asymmetric key generation while using the supported libraries.
  * @kind problem
  * @id cpp/quantum-readiness/cbom/asymmetric-key-generation
- * @problem.severity error
+ * @severity recommendation
  * @tags cbom
  *       cryptography
  */
