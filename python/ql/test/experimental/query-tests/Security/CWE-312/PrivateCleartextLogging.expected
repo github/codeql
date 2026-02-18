@@ -1,0 +1,7 @@
+edges
+| test.py:7:19:7:35 | an ID | test.py:8:38:8:48 | an ID |
+| test.py:7:19:7:35 | bank account related information | test.py:8:38:8:48 | bank account related information |
+#select
+| test.py:8:38:8:48 | bankaccount | test.py:7:19:7:35 | bank account related information | test.py:8:38:8:48 | bank account related information | Private data returned by $@ is logged here. | test.py:7:19:7:35 | get_bankaccount() | a call returning bank account related information |
+| test.py:14:32:14:43 | get_salary() | test.py:14:32:14:43 | a salary | test.py:14:32:14:43 | a salary | Private data returned by $@ is logged here. | test.py:14:32:14:43 | get_salary() | a call returning a salary |
+| test.py:17:11:17:27 | get_bankaccount() | test.py:17:11:17:27 | bank account related information | test.py:17:11:17:27 | bank account related information | Private data returned by $@ is logged here. | test.py:17:11:17:27 | get_bankaccount() | a call returning bank account related information |
