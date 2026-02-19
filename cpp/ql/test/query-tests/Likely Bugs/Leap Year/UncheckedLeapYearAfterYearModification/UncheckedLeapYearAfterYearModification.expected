@@ -3,7 +3,6 @@
 | test.cpp:440:2:440:11 | ... ++ | test.cpp:440:2:440:11 | ... ++ | test.cpp:440:2:440:11 | ... ++ | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:456:2:456:12 | ... ++ | test.cpp:456:2:456:12 | ... ++ | test.cpp:456:2:456:12 | ... ++ | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:681:2:681:23 | ... += ... | test.cpp:681:2:681:23 | ... += ... | test.cpp:681:2:681:23 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
-| test.cpp:769:2:769:23 | ... -= ... | test.cpp:769:2:769:23 | ... -= ... | test.cpp:769:2:769:23 | ... -= ... | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:813:2:813:40 | ... = ... | test.cpp:813:21:813:40 | ... + ... | test.cpp:813:2:813:40 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:818:2:818:24 | ... = ... | test.cpp:818:13:818:24 | ... + ... | test.cpp:818:2:818:24 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
 | test.cpp:951:3:951:25 | ... = ... | test.cpp:951:14:951:25 | ... + ... | test.cpp:951:3:951:25 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
@@ -75,7 +74,6 @@ nodes
 | test.cpp:456:2:456:12 | ... ++ | semmle.label | ... ++ |
 | test.cpp:482:3:482:12 | ... ++ | semmle.label | ... ++ |
 | test.cpp:681:2:681:23 | ... += ... | semmle.label | ... += ... |
-| test.cpp:769:2:769:23 | ... -= ... | semmle.label | ... -= ... |
 | test.cpp:813:2:813:40 | ... = ... | semmle.label | ... = ... |
 | test.cpp:813:21:813:40 | ... + ... | semmle.label | ... + ... |
 | test.cpp:818:2:818:24 | ... = ... | semmle.label | ... = ... |

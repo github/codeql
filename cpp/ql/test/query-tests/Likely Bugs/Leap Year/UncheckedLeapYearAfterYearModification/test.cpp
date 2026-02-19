@@ -766,7 +766,7 @@ void Incorrect_LinuxPattern()
 
 	/* from 1900 -> from 1980 */
 	// BUG - UncheckedLeapYearAfterYearModification
-	timeinfo.tm_year -= 80; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
+	timeinfo.tm_year -= 80;
 	/* 0~11 -> 1~12 */
 	timeinfo.tm_mon++;
 	/* 0~59 -> 0~29(2sec counts) */
