@@ -1,0 +1,11 @@
+{
+    "homepage": "https://github.com/bazelbuild/rules_rust",
+    "maintainers": [],
+    "repository": [
+        "github:bazelbuild/rules_rust"
+    ],
+    "versions": [
+        "0.68.1.codeql.1"
+    ],
+    "yanked_versions": {}
+}
