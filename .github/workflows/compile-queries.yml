@@ -1,6 +1,7 @@
 name: "Compile all queries using the latest stable CodeQL CLI"
 
 on:
+  workflow_dispatch:
   push:
     branches:  # makes sure the cache gets populated - running on the branches people tend to merge into.
       - main
