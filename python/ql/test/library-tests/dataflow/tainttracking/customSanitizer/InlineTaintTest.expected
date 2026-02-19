@@ -22,4 +22,12 @@ isSanitizer
 | test_logical.py:176:24:176:24 | ControlFlowNode for s |
 | test_logical.py:185:24:185:24 | ControlFlowNode for s |
 | test_logical.py:193:24:193:24 | ControlFlowNode for s |
+| test_logical.py:199:28:199:28 | ControlFlowNode for s |
+| test_logical.py:206:28:206:28 | ControlFlowNode for s |
+| test_logical.py:211:28:211:28 | ControlFlowNode for s |
+| test_logical.py:214:28:214:28 | ControlFlowNode for s |
+| test_logical.py:219:28:219:28 | ControlFlowNode for s |
+| test_logical.py:226:28:226:28 | ControlFlowNode for s |
+| test_logical.py:231:28:231:28 | ControlFlowNode for s |
+| test_logical.py:234:28:234:28 | ControlFlowNode for s |
 | test_reference.py:31:28:31:28 | ControlFlowNode for s |
