@@ -94,9 +94,19 @@ private Element getAChild(Element p) {
   result = p.(AssignOperation).getExpandedAssignment()
 }
 
+pragma[nomagic]
+private predicate astNode(Element e) {
+  e = any(@top_level_exprorstmt_parent p | not p instanceof Attribute)
+  or
+  exists(Element parent |
+    astNode(parent) and
+    e = getAChild(parent)
+  )
+}
+
 /** An AST node. */
 class AstNode extends Element, TAstNode {
-  AstNode() { this = getAChild*(any(@top_level_exprorstmt_parent p | not p instanceof Attribute)) }
+  AstNode() { astNode(this) }
 
   int getId() { idOf(this, result) }
 }
