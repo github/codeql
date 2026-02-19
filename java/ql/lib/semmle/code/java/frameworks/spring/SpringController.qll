@@ -210,10 +210,22 @@ class SpringRequestMappingParameter extends Parameter {
   predicate isNotDirectlyTaintedInput() {
     this.getType().(RefType).getAnAncestor() instanceof SpringWebRequest or
     this.getType().(RefType).getAnAncestor() instanceof SpringNativeWebRequest or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletRequest") or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet", "ServletResponse") or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "HttpSession") or
-    this.getType().(RefType).getAnAncestor().hasQualifiedName("javax.servlet.http", "PushBuilder") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletRequest") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet", "ServletResponse") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpSession") or
+    this.getType()
+        .(RefType)
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet.http", "PushBuilder") or
     this.getType().(RefType).getAnAncestor().hasQualifiedName("java.security", "Principal") or
     this.getType()
         .(RefType)

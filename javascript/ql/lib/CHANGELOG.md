@@ -1,3 +1,7 @@
+## 2.6.22
+
+No user-facing changes.
+
 ## 2.6.21
 
 ### Minor Analysis Improvements

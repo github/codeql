@@ -23,7 +23,9 @@ private class CookieCleartextStorageSink extends CleartextStorageSink {
 /** The instantiation of a cookie, which can act as storage. */
 class Cookie extends Storable, ClassInstanceExpr {
   Cookie() {
-    this.getConstructor().getDeclaringType().hasQualifiedName("javax.servlet.http", "Cookie")
+    this.getConstructor()
+        .getDeclaringType()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet.http", "Cookie")
   }
 
   /** Gets an input, for example `input` in `new Cookie("...", input);`. */
@@ -42,7 +44,8 @@ private predicate cookieStore(DataFlow::Node cookie, Expr store) {
   exists(MethodCall m, Method def |
     m.getMethod() = def and
     def.getName() = "addCookie" and
-    def.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletResponse") and
+    def.getDeclaringType()
+        .hasQualifiedName(javaxOrJakarta() + ".servlet.http", "HttpServletResponse") and
     store = m and
     cookie.asExpr() = m.getAnArgument()
   )
