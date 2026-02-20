@@ -1,19 +1,21 @@
 module(
     name = "rules_kotlin",
-    version = "2.2.0-codeql.1",
+    version = "2.2.2-codeql.1",
     compatibility_level = 1,
     repo_name = "rules_kotlin",
 )
 
 bazel_dep(name = "platforms", version = "0.0.11")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
-bazel_dep(name = "rules_java", version = "7.2.0")
+bazel_dep(name = "rules_java", version = "8.9.0")
 bazel_dep(name = "rules_android", version = "0.6.4")
 bazel_dep(name = "bazel_features", version = "1.25.0")
 bazel_dep(name = "protobuf", version = "29.0", repo_name = "com_google_protobuf")
 bazel_dep(name = "rules_proto", version = "6.0.2", repo_name = "rules_proto")
 bazel_dep(name = "abseil-py", version = "2.1.0", repo_name = "py_absl")
 bazel_dep(name = "rules_cc", version = "0.0.16")
+bazel_dep(name = "bazel_worker_api", version = "0.0.8")
+bazel_dep(name = "bazel_worker_java", version = "0.0.8")
 
 rules_java_toolchains = use_extension("@rules_java//java:extensions.bzl", "toolchains")
 use_repo(rules_java_toolchains, "remote_java_tools")

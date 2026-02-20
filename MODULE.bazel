@@ -15,17 +15,19 @@ local_path_override(
 # see https://registry.bazel.build/ for a list of available packages
 
 bazel_dep(name = "platforms", version = "1.0.0")
-bazel_dep(name = "rules_go", version = "0.56.1")
+bazel_dep(name = "rules_cc", version = "0.2.16")
+bazel_dep(name = "rules_go", version = "0.59.0")
+bazel_dep(name = "rules_java", version = "9.0.3")
 bazel_dep(name = "rules_pkg", version = "1.0.1")
-bazel_dep(name = "rules_nodejs", version = "6.2.0-codeql.1")
+bazel_dep(name = "rules_nodejs", version = "6.7.3")
 bazel_dep(name = "rules_python", version = "0.40.0")
 bazel_dep(name = "rules_shell", version = "0.5.0")
 bazel_dep(name = "bazel_skylib", version = "1.8.1")
 bazel_dep(name = "abseil-cpp", version = "20240116.1", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "12.1.0-codeql.1")
-bazel_dep(name = "rules_kotlin", version = "2.2.0-codeql.1")
-bazel_dep(name = "gazelle", version = "0.40.0")
+bazel_dep(name = "rules_kotlin", version = "2.2.2-codeql.1")
+bazel_dep(name = "gazelle", version = "0.47.0")
 bazel_dep(name = "rules_dotnet", version = "0.21.5-codeql.1")
 bazel_dep(name = "googletest", version = "1.14.0.bcr.1")
 bazel_dep(name = "rules_rust", version = "0.68.1.codeql.1")
@@ -187,6 +189,15 @@ pip.parse(
     requirements_lock = "//misc/codegen:requirements_lock.txt",
 )
 use_repo(pip, "codegen_deps")
+
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(
+    is_default = True,
+    python_version = "3.12",
+)
+use_repo(python, "python_3_12", "python_versions")
+
+register_toolchains("@python_versions//3.12:all")
 
 swift_deps = use_extension("//swift/third_party:load.bzl", "swift_deps")
 
