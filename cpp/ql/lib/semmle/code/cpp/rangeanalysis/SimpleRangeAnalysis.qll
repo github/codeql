@@ -560,7 +560,7 @@ private module BoundsEstimate {
     // by the condition. In this case all lower bounds flow to `{ e1 }` and only
     // lower bounds that are smaller than `c` flow to `{ e2 }`.
     //
-    // The largest bound possible for `e3` is the number of bounds on `x` plus
+    // The largest number of bounds possible for `e3` is the number of bounds on `x` plus
     // one. This happens when all bounds flow from `x` to `e1` to `e3` and the
     // bound `c` can flow to `e2` to `e3`.
     //
