@@ -552,34 +552,47 @@ private module BoundsEstimate {
   private float nrOfBoundsPhiGuard(RangeSsaDefinition def, StackVariable v) {
     // If we have
     //
+    //   if (x < c) { e1 } else { e2 }
+    //   e3
+    //
+    // then `{ e1 }` and `{ e2 }` are both guard phi nodes guarded by `x < c`.
+    // The range analysis propagates bounds on `x` into both branches, filtered
+    // by the condition. In this case all lower bounds flow to `{ e1 }` and only
+    // lower bounds that are smaller than `c` flow to `{ e2 }`.
+    //
+    // The largest number of bounds possible for `e3` is the number of bounds on `x` plus
+    // one. This happens when all bounds flow from `x` to `e1` to `e3` and the
+    // bound `c` can flow to `e2` to `e3`.
+    //
+    // We want to optimize our bounds estimate for `e3`, as that is the estimate
+    // that can continue propagating forward. We don't know how the existing
+    // bounds will be split between the different branches. That depends on
+    // whether the range analysis is tracking lower bounds or upper bounds, and
+    // on the meaning of the condition.
+    //
+    // As a heuristic we divide the number of bounds on `x` by 2 to "average"
+    // the effect of the condition and add 1 to account for the bound from the
+    // condition itself. This will approximate estimates inside the branches,
+    // but will give a good estimate after the branches are merged.
+    //
+    // This also handles cases such as this one
+    //
     //   if (x < c) { e1 }
-    //   e2
+    //   e3
     //
-    // then `e2` is both a guard phi node (guarded by `x < c`) and a normal
-    // phi node (control is merged after the `if` statement).
-    //
-    // Assume `x` has `n` bounds. Then `n` bounds are propagated to the guard
-    // phi node `{ e1 }` and, since `{ e1 }` is input to `e2` as a normal phi
-    // node, `n` bounds are propagated to `e2`. If we also propagate the `n`
-    // bounds to `e2` as a guard phi node, then we square the number of
-    // bounds.
-    //
-    // However in practice `x < c` is going to cut down the number of bounds:
-    // The tracked bounds can't flow to both branches as that would require
-    // them to simultaneously be greater and smaller than `c`. To approximate
-    // this better, the contribution from a guard phi node that is also a
-    // normal phi node is 1.
-    exists(def.getAPhiInput(v)) and
-    isGuardPhiWithBound(def, v, _) and
-    result = 1
-    or
-    not exists(def.getAPhiInput(v)) and
-    // If there's different `access`es, then they refer to the same variable
-    // with the same lower bounds. Hence adding these guards make no sense (the
-    // implementation will take the union, but they'll be removed by
-    // deduplication). Hence we use `max` as an approximation.
-    result =
-      max(VariableAccess access | isGuardPhiWithBound(def, v, access) | nrOfBoundsExpr(access))
+    // where `e3` is both a guard phi node (guarded by `x < c`) and a normal
+    // phi node (control is merged after the `if` statement). Here half of the
+    // bounds flow into the branch and then to `e3` as a normal phi node and the
+    // "other" half flow from the condition to `e3` as a guard phi node.
+    exists(float varBounds |
+      // If there's different `access`es, then they refer to the same
+      // variable with the same lower bounds. Hence adding these guards makes no
+      // sense (the implementation will take the union, but they'll be removed by
+      // deduplication). Hence we use `max` as an approximation.
+      varBounds =
+        max(VariableAccess access | isGuardPhiWithBound(def, v, access) | nrOfBoundsExpr(access)) and
+      result = (varBounds + 1) / 2
+    )
     or
     def.isPhiNode(v) and
     not isGuardPhiWithBound(def, v, _) and
@@ -2180,6 +2193,16 @@ module SimpleRangeAnalysisInternal {
 
   /** Gets the estimate of the number of bounds for `e`. */
   float estimateNrOfBounds(Expr e) { result = BoundsEstimate::nrOfBoundsExpr(e) }
+
+  /** Counts the numbers of lower bounds that are computed internally for `e`. */
+  float countNrOfLowerBounds(Expr e) {
+    result = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
+  }
+
+  /** Counts the numbers of upper bounds that are computed internally for `e`. */
+  float countNrOfUpperBounds(Expr e) {
+    result = strictcount(float ub | ub = getUpperBoundsImpl(e) | ub)
+  }
 }
 
 /** Provides predicates for debugging the simple range analysis library. */
@@ -2208,7 +2231,7 @@ private module Debug {
    */
   predicate countGetLowerBoundsImpl(Expr e, int n) {
     e = getRelevantLocatable() and
-    n = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
+    n = SimpleRangeAnalysisInternal::countNrOfLowerBounds(e)
   }
 
   float debugNrOfBounds(Expr e) {

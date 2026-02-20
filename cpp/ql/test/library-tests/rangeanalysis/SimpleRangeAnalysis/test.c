@@ -446,6 +446,23 @@ int repeated_if_statements(unsigned int rhs) {
   return rhs; // rhs has 6 bounds
 }
 
+int repeated_if_else_statements(unsigned int rhs) {
+  // Test how many bounds we estimate for repeated `if`-`else` statements that
+  // guard the same variable.
+  if (rhs < 10) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 11) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 12) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 13) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 14) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 15) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 16) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 17) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 18) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 19) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 20) { rhs << 1; } else { rhs << 2; }
+  return rhs; // rhs has 12 bounds
+}
+
 int ne_phi_nodes(int a, int b) {
   if (a == 17) {
     if (b == 23) {
