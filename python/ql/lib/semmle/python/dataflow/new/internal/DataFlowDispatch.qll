@@ -2012,4 +2012,30 @@ module DuckTyping {
     hasMethod(cls, "__getitem__") and
     (hasMethod(cls, "keys") or hasMethod(cls, "__iter__"))
   }
+
+  /**
+   * Holds if `cls` is a new-style class. In Python 3, all classes are new-style.
+   * In Python 2, a class is new-style if it (transitively) inherits from `object`,
+   * or has a declared `__metaclass__`, or has an unresolved base class.
+   */
+  predicate isNewStyle(Class cls) {
+    major_version() = 3
+    or
+    major_version() = 2 and
+    (
+      cls.getABase() = API::builtin("object").getAValueReachableFromSource().asExpr()
+      or
+      isNewStyle(getADirectSuperclass(cls))
+      or
+      hasUnresolvedBase(cls)
+      or
+      exists(cls.getMetaClass())
+      or
+      // Module-level __metaclass__ = type makes all classes in the module new-style
+      exists(Assign a |
+        a.getScope() = cls.getEnclosingModule() and
+        a.getATarget().(Name).getId() = "__metaclass__"
+      )
+    )
+  }
 }
