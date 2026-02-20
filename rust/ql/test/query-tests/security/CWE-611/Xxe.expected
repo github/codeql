@@ -23,14 +23,14 @@ edges
 | main.rs:132:9:132:16 | user_xml | main.rs:140:33:140:40 | user_xml | provenance |  |
 | main.rs:132:9:132:16 | user_xml | main.rs:141:36:141:43 | user_xml | provenance |  |
 | main.rs:132:9:132:16 | user_xml | main.rs:142:31:142:38 | user_xml | provenance |  |
-| main.rs:132:20:132:33 | ...::args | main.rs:132:20:132:35 | ...::args(...) [element] | provenance | Src:MaD:488  |
-| main.rs:132:20:132:35 | ...::args(...) [element] | main.rs:132:20:132:42 | ... .nth(...) [Some] | provenance | MaD:440 |
-| main.rs:132:20:132:42 | ... .nth(...) [Some] | main.rs:132:20:132:62 | ... .unwrap_or_default() | provenance | MaD:9229 |
+| main.rs:132:20:132:33 | ...::args | main.rs:132:20:132:35 | ...::args(...) [element] | provenance | Src:MaD:1  |
+| main.rs:132:20:132:35 | ...::args(...) [element] | main.rs:132:20:132:42 | ... .nth(...) [Some] | provenance | MaD:2 |
+| main.rs:132:20:132:42 | ... .nth(...) [Some] | main.rs:132:20:132:62 | ... .unwrap_or_default() | provenance | MaD:3 |
 | main.rs:132:20:132:62 | ... .unwrap_or_default() | main.rs:132:9:132:16 | user_xml | provenance |  |
 | main.rs:133:9:133:21 | user_filename | main.rs:138:29:138:41 | user_filename | provenance |  |
-| main.rs:133:25:133:38 | ...::args | main.rs:133:25:133:40 | ...::args(...) [element] | provenance | Src:MaD:488  |
-| main.rs:133:25:133:40 | ...::args(...) [element] | main.rs:133:25:133:47 | ... .nth(...) [Some] | provenance | MaD:440 |
-| main.rs:133:25:133:47 | ... .nth(...) [Some] | main.rs:133:25:133:67 | ... .unwrap_or_default() | provenance | MaD:9229 |
+| main.rs:133:25:133:38 | ...::args | main.rs:133:25:133:40 | ...::args(...) [element] | provenance | Src:MaD:1  |
+| main.rs:133:25:133:40 | ...::args(...) [element] | main.rs:133:25:133:47 | ... .nth(...) [Some] | provenance | MaD:2 |
+| main.rs:133:25:133:47 | ... .nth(...) [Some] | main.rs:133:25:133:67 | ... .unwrap_or_default() | provenance | MaD:3 |
 | main.rs:133:25:133:67 | ... .unwrap_or_default() | main.rs:133:9:133:21 | user_filename | provenance |  |
 | main.rs:135:26:135:34 | &user_xml [&ref] | main.rs:66:25:66:38 | ...: ... [&ref] | provenance |  |
 | main.rs:135:27:135:34 | user_xml | main.rs:135:26:135:34 | &user_xml [&ref] | provenance |  |
@@ -48,6 +48,10 @@ edges
 | main.rs:141:36:141:43 | user_xml | main.rs:141:35:141:43 | &user_xml [&ref] | provenance |  |
 | main.rs:142:30:142:38 | &user_xml [&ref] | main.rs:108:29:108:42 | ...: ... [&ref] | provenance |  |
 | main.rs:142:31:142:38 | user_xml | main.rs:142:30:142:38 | &user_xml [&ref] | provenance |  |
+models
+| 1 | Source: std::env::args; ReturnValue.Element; commandargs |
+| 2 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
+| 3 | Summary: <core::option::Option>::unwrap_or_default; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 nodes
 | main.rs:66:25:66:38 | ...: ... [&ref] | semmle.label | ...: ... [&ref] |
 | main.rs:68:19:68:26 | user_xml | semmle.label | user_xml |

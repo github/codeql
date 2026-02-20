@@ -58,8 +58,6 @@ module Xxe {
  */
 private predicate libxml2ParseCall(Call call, int xmlArg, int optionsArg) {
   exists(string fname | call.getStaticTarget().getName().getText() = fname |
-    fname = "xmlCtxtUseOptions" and xmlArg = 0 and optionsArg = 1
-    or
     fname = "xmlReadFile" and xmlArg = 0 and optionsArg = 2
     or
     fname = ["xmlReadDoc", "xmlReadFd"] and xmlArg = 0 and optionsArg = 3
