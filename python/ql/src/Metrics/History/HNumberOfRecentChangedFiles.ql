@@ -10,7 +10,6 @@
 
 import python
 import external.VCS
-private import LegacyPointsTo
 
 from ModuleMetrics m
 where
