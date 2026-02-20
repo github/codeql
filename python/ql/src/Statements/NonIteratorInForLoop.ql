@@ -12,16 +12,15 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-from For loop, ControlFlowNodeWithPointsTo iter, Value v, ClassValue t, ControlFlowNode origin
+from For loop, Expr iter, Class cls
 where
-  loop.getIter().getAFlowNode() = iter and
-  iter.pointsTo(_, v, origin) and
-  v.getClass() = t and
-  not t.isIterable() and
-  not t.failedInference(_) and
-  not v = Value::named("None") and
-  not t.isDescriptorType()
-select loop, "This for-loop may attempt to iterate over a $@ of class $@.", origin,
-  "non-iterable instance", t, t.getName()
+  iter = loop.getIter() and
+  classInstanceTracker(cls).asExpr() = iter and
+  not DuckTyping::isIterable(cls) and
+  not DuckTyping::isDescriptor(cls) and
+  not (loop.isAsync() and DuckTyping::hasMethod(cls, "__aiter__")) and
+  not DuckTyping::hasUnresolvedBase(getADirectSuperclass*(cls))
+select loop, "This for-loop may attempt to iterate over a $@ of class $@.", iter,
+  "non-iterable instance", cls, cls.getName()
