@@ -12,25 +12,21 @@
  */
 
 import python
-private import LegacyPointsTo
+import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-predicate rhs_in_expr(ControlFlowNode rhs, Compare cmp) {
-  exists(Cmpop op, int i | cmp.getOp(i) = op and cmp.getComparator(i) = rhs.getNode() |
+predicate rhs_in_expr(Expr rhs, Compare cmp) {
+  exists(Cmpop op, int i | cmp.getOp(i) = op and cmp.getComparator(i) = rhs |
     op instanceof In or op instanceof NotIn
   )
 }
 
-from
-  ControlFlowNodeWithPointsTo non_seq, Compare cmp, Value v, ClassValue cls, ControlFlowNode origin
+from Compare cmp, DataFlow::LocalSourceNode origin, DataFlow::Node rhs, Class cls
 where
-  rhs_in_expr(non_seq, cmp) and
-  non_seq.pointsTo(_, v, origin) and
-  v.getClass() = cls and
-  not Types::failedInference(cls, _) and
-  not cls.hasAttribute("__contains__") and
-  not cls.hasAttribute("__iter__") and
-  not cls.hasAttribute("__getitem__") and
-  not cls = ClassValue::nonetype() and
-  not cls = Value::named("types.MappingProxyType")
+  origin = classInstanceTracker(cls) and
+  origin.flowsTo(rhs) and
+  not DuckTyping::isContainer(cls) and
+  not DuckTyping::hasUnresolvedBase(getADirectSuperclass*(cls)) and
+  rhs_in_expr(rhs.asExpr(), cmp)
 select cmp, "This test may raise an Exception as the $@ may be of non-container class $@.", origin,
   "target", cls, cls.getName()
