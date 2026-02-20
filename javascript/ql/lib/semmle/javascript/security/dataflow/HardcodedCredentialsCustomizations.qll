@@ -44,4 +44,14 @@ module HardcodedCredentials {
       not (super.getCredentialsKind() = "jwt key" and isTestFile(this.getFile()))
     }
   }
+
+  /**
+   * Note that a sanitizer with kind `credentials-key` will sanitize flow to
+   * all sinks, not just sinks with the same kind.
+   */
+  private class CredentialSanitizerFromModel extends Sanitizer {
+    CredentialSanitizerFromModel() {
+      exists(string kind | ModelOutput::barrierNode(this, "credentials-" + kind))
+    }
+  }
 }

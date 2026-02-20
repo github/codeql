@@ -74,4 +74,8 @@ module SqlInjection {
       )
     }
   }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "sql-injection") }
+  }
 }
