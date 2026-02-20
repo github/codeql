@@ -22,6 +22,8 @@ namespace Semmle.Extraction.CSharp.Entities
                     .ToList();
         }
 
+        protected override IMethodSymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
+
         public override void Populate(TextWriter trapFile)
         {
             PopulateMethod(trapFile);
@@ -176,6 +178,14 @@ namespace Semmle.Extraction.CSharp.Entities
             init.PopulateArguments(trapFile, arguments, 0);
         }
 
+        private ConstructorDeclarationSyntax? OrdinaryConstructorSyntaxForLocation =>
+            BodyDeclaringSymbol
+                .DeclaringSyntaxReferences
+                .Select(r => r.GetSyntax())
+                .ToList()
+                .OfType<ConstructorDeclarationSyntax>()
+                .FirstOrDefault();
+
         private ConstructorDeclarationSyntax? OrdinaryConstructorSyntax =>
             declaringReferenceSyntax
                 .OfType<ConstructorDeclarationSyntax>()
@@ -253,14 +263,14 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             get
             {
-                if (OrdinaryConstructorSyntax is not null)
+                if (OrdinaryConstructorSyntaxForLocation is ConstructorDeclarationSyntax constructor)
                 {
-                    return OrdinaryConstructorSyntax.Identifier.GetLocation();
+                    return constructor.Identifier.GetLocation();
                 }
 
-                if (PrimaryConstructorSyntax is not null)
+                if (PrimaryConstructorSyntax is TypeDeclarationSyntax primary)
                 {
-                    return PrimaryConstructorSyntax.Identifier.GetLocation();
+                    return primary.Identifier.GetLocation();
                 }
 
                 if (Symbol.IsImplicitlyDeclared)

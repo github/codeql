@@ -122,6 +122,22 @@ edges
 | Constructors.cs:143:29:143:30 | access to local variable o2 : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj2] : Object | provenance |  |
 | Constructors.cs:144:14:144:15 | access to local variable r1 : R1 [property Obj1] : Object | Constructors.cs:144:14:144:20 | access to property Obj1 | provenance |  |
 | Constructors.cs:145:14:145:15 | access to local variable r1 : R1 [property Obj2] : Object | Constructors.cs:145:14:145:20 | access to property Obj2 | provenance |  |
+| Constructors.cs:152:40:152:40 | o : Object | Constructors.cs:157:52:157:52 | access to parameter o : Object | provenance |  |
+| Constructors.cs:152:40:152:40 | o : Object | Constructors.cs:157:52:157:52 | access to parameter o : Object | provenance |  |
+| Constructors.cs:157:40:157:40 | o : Object | Constructors.cs:157:52:157:52 | access to parameter o : Object | provenance |  |
+| Constructors.cs:157:40:157:40 | o : Object | Constructors.cs:157:52:157:52 | access to parameter o : Object | provenance |  |
+| Constructors.cs:157:46:157:48 | [post] this access : CPartial [property Obj] : Object | Constructors.cs:157:24:157:31 | this [Return] : CPartial [property Obj] : Object | provenance |  |
+| Constructors.cs:157:46:157:48 | [post] this access : CPartial [property Obj] : Object | Constructors.cs:157:24:157:31 | this [Return] : CPartial [property Obj] : Object | provenance |  |
+| Constructors.cs:157:52:157:52 | access to parameter o : Object | Constructors.cs:157:46:157:48 | [post] this access : CPartial [property Obj] : Object | provenance |  |
+| Constructors.cs:157:52:157:52 | access to parameter o : Object | Constructors.cs:157:46:157:48 | [post] this access : CPartial [property Obj] : Object | provenance |  |
+| Constructors.cs:162:13:162:13 | access to local variable o : Object | Constructors.cs:163:37:163:37 | access to local variable o : Object | provenance |  |
+| Constructors.cs:162:17:162:34 | call to method Source<Object> : Object | Constructors.cs:162:13:162:13 | access to local variable o : Object | provenance |  |
+| Constructors.cs:163:13:163:20 | access to local variable cPartial : CPartial [property Obj] : Object | Constructors.cs:164:14:164:21 | access to local variable cPartial : CPartial [property Obj] : Object | provenance |  |
+| Constructors.cs:163:24:163:38 | object creation of type CPartial : CPartial [property Obj] : Object | Constructors.cs:163:13:163:20 | access to local variable cPartial : CPartial [property Obj] : Object | provenance |  |
+| Constructors.cs:163:37:163:37 | access to local variable o : Object | Constructors.cs:152:40:152:40 | o : Object | provenance |  |
+| Constructors.cs:163:37:163:37 | access to local variable o : Object | Constructors.cs:157:40:157:40 | o : Object | provenance |  |
+| Constructors.cs:163:37:163:37 | access to local variable o : Object | Constructors.cs:163:24:163:38 | object creation of type CPartial : CPartial [property Obj] : Object | provenance |  |
+| Constructors.cs:164:14:164:21 | access to local variable cPartial : CPartial [property Obj] : Object | Constructors.cs:164:14:164:25 | access to property Obj | provenance |  |
 nodes
 | Constructors.cs:3:18:3:26 | [post] this access : C_no_ctor [field s1] : Object | semmle.label | [post] this access : C_no_ctor [field s1] : Object |
 | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | semmle.label | [post] this access : C_no_ctor [field s1] : Object |
@@ -255,6 +271,20 @@ nodes
 | Constructors.cs:144:14:144:20 | access to property Obj1 | semmle.label | access to property Obj1 |
 | Constructors.cs:145:14:145:15 | access to local variable r1 : R1 [property Obj2] : Object | semmle.label | access to local variable r1 : R1 [property Obj2] : Object |
 | Constructors.cs:145:14:145:20 | access to property Obj2 | semmle.label | access to property Obj2 |
+| Constructors.cs:152:40:152:40 | o : Object | semmle.label | o : Object |
+| Constructors.cs:157:24:157:31 | this [Return] : CPartial [property Obj] : Object | semmle.label | this [Return] : CPartial [property Obj] : Object |
+| Constructors.cs:157:40:157:40 | o : Object | semmle.label | o : Object |
+| Constructors.cs:157:46:157:48 | [post] this access : CPartial [property Obj] : Object | semmle.label | [post] this access : CPartial [property Obj] : Object |
+| Constructors.cs:157:46:157:48 | [post] this access : CPartial [property Obj] : Object | semmle.label | [post] this access : CPartial [property Obj] : Object |
+| Constructors.cs:157:52:157:52 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| Constructors.cs:157:52:157:52 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| Constructors.cs:162:13:162:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Constructors.cs:162:17:162:34 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:163:13:163:20 | access to local variable cPartial : CPartial [property Obj] : Object | semmle.label | access to local variable cPartial : CPartial [property Obj] : Object |
+| Constructors.cs:163:24:163:38 | object creation of type CPartial : CPartial [property Obj] : Object | semmle.label | object creation of type CPartial : CPartial [property Obj] : Object |
+| Constructors.cs:163:37:163:37 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| Constructors.cs:164:14:164:21 | access to local variable cPartial : CPartial [property Obj] : Object | semmle.label | access to local variable cPartial : CPartial [property Obj] : Object |
+| Constructors.cs:164:14:164:25 | access to property Obj | semmle.label | access to property Obj |
 subpaths
 | Constructors.cs:44:18:44:19 | this access : C2 [parameter o21param] : Object | Constructors.cs:46:23:46:27 | this access : C2 [parameter o21param] : Object | Constructors.cs:46:23:46:27 | [post] this access : C2 [field Obj21] : Object | Constructors.cs:44:18:44:19 | [post] this access : C2 [field Obj21] : Object |
 | Constructors.cs:64:37:64:37 | access to parameter o : Object | Constructors.cs:57:54:57:55 | o2 : Object | Constructors.cs:59:13:59:14 | access to parameter o1 : Object | Constructors.cs:64:27:64:34 | access to parameter o22param : Object |
@@ -273,6 +303,8 @@ subpaths
 | Constructors.cs:132:29:132:30 | access to local variable o2 : Object | Constructors.cs:121:38:121:40 | oc2 : Object | Constructors.cs:121:16:121:17 | this [Return] : C4 [property Obj2] : Object | Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj2] : Object |
 | Constructors.cs:143:25:143:26 | access to local variable o1 : Object | Constructors.cs:137:29:137:32 | Obj1 : Object | Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj1] : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj1] : Object |
 | Constructors.cs:143:29:143:30 | access to local variable o2 : Object | Constructors.cs:137:42:137:45 | Obj2 : Object | Constructors.cs:137:19:137:20 | this [Return] : R1 [property Obj2] : Object | Constructors.cs:143:18:143:31 | object creation of type R1 : R1 [property Obj2] : Object |
+| Constructors.cs:163:37:163:37 | access to local variable o : Object | Constructors.cs:152:40:152:40 | o : Object | Constructors.cs:157:24:157:31 | this [Return] : CPartial [property Obj] : Object | Constructors.cs:163:24:163:38 | object creation of type CPartial : CPartial [property Obj] : Object |
+| Constructors.cs:163:37:163:37 | access to local variable o : Object | Constructors.cs:157:40:157:40 | o : Object | Constructors.cs:157:24:157:31 | this [Return] : CPartial [property Obj] : Object | Constructors.cs:163:24:163:38 | object creation of type CPartial : CPartial [property Obj] : Object |
 testFailures
 #select
 | Constructors.cs:15:18:15:19 | access to field s1 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:15:18:15:19 | access to field s1 | $@ | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
@@ -288,3 +320,4 @@ testFailures
 | Constructors.cs:134:14:134:20 | access to property Obj2 | Constructors.cs:131:18:131:34 | call to method Source<Object> : Object | Constructors.cs:134:14:134:20 | access to property Obj2 | $@ | Constructors.cs:131:18:131:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Constructors.cs:144:14:144:20 | access to property Obj1 | Constructors.cs:141:18:141:34 | call to method Source<Object> : Object | Constructors.cs:144:14:144:20 | access to property Obj1 | $@ | Constructors.cs:141:18:141:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Constructors.cs:145:14:145:20 | access to property Obj2 | Constructors.cs:142:18:142:35 | call to method Source<Object> : Object | Constructors.cs:145:14:145:20 | access to property Obj2 | $@ | Constructors.cs:142:18:142:35 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:164:14:164:25 | access to property Obj | Constructors.cs:162:17:162:34 | call to method Source<Object> : Object | Constructors.cs:164:14:164:25 | access to property Obj | $@ | Constructors.cs:162:17:162:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
