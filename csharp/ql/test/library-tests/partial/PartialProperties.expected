@@ -1,2 +1,2 @@
-| Partial.cs:18:27:18:42 | PartialProperty1 | true |
-| Partial.cs:41:19:41:26 | Property | false |
+| Partial.cs:22:27:22:42 | PartialProperty1 | true |
+| Partial.cs:48:19:48:26 | Property | false |

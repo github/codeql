@@ -9,7 +9,7 @@ import default
  */
 class FacesManagedBeanAnnotation extends Annotation {
   FacesManagedBeanAnnotation() {
-    this.getType().hasQualifiedName("javax.faces.bean", "ManagedBean")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".faces.bean", "ManagedBean")
   }
 
   /**
@@ -25,7 +25,7 @@ class FacesManagedBeanAnnotation extends Annotation {
  */
 class FacesComponentAnnotation extends Annotation {
   FacesComponentAnnotation() {
-    this.getType().hasQualifiedName("javax.faces.component", "FacesComponent")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".faces.component", "FacesComponent")
   }
 
   /**

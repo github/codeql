@@ -14,35 +14,45 @@ import java
  * A `@javax.annotation.Generated` annotation.
  */
 class GeneratedAnnotation extends Annotation {
-  GeneratedAnnotation() { this.getType().hasQualifiedName("javax.annotation", "Generated") }
+  GeneratedAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation", "Generated")
+  }
 }
 
 /**
  * A `@javax.annotation.PostConstruct` annotation.
  */
 class PostConstructAnnotation extends Annotation {
-  PostConstructAnnotation() { this.getType().hasQualifiedName("javax.annotation", "PostConstruct") }
+  PostConstructAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation", "PostConstruct")
+  }
 }
 
 /**
  * A `@javax.annotation.PreDestroy` annotation.
  */
 class PreDestroyAnnotation extends Annotation {
-  PreDestroyAnnotation() { this.getType().hasQualifiedName("javax.annotation", "PreDestroy") }
+  PreDestroyAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation", "PreDestroy")
+  }
 }
 
 /**
  * A `@javax.annotation.Resource` annotation.
  */
 class ResourceAnnotation extends Annotation {
-  ResourceAnnotation() { this.getType().hasQualifiedName("javax.annotation", "Resource") }
+  ResourceAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation", "Resource")
+  }
 }
 
 /**
  * A `@javax.annotation.Resources` annotation.
  */
 class ResourcesAnnotation extends Annotation {
-  ResourcesAnnotation() { this.getType().hasQualifiedName("javax.annotation", "Resources") }
+  ResourcesAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation", "Resources")
+  }
 }
 
 /**
@@ -50,7 +60,7 @@ class ResourcesAnnotation extends Annotation {
  */
 class JavaxManagedBeanAnnotation extends Annotation {
   JavaxManagedBeanAnnotation() {
-    this.getType().hasQualifiedName("javax.annotation", "ManagedBean")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation", "ManagedBean")
   }
 }
 
@@ -63,7 +73,7 @@ class JavaxManagedBeanAnnotation extends Annotation {
  */
 class DeclareRolesAnnotation extends Annotation {
   DeclareRolesAnnotation() {
-    this.getType().hasQualifiedName("javax.annotation.security", "DeclareRoles")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation.security", "DeclareRoles")
   }
 }
 
@@ -71,7 +81,9 @@ class DeclareRolesAnnotation extends Annotation {
  * A `@javax.annotation.security.DenyAll` annotation.
  */
 class DenyAllAnnotation extends Annotation {
-  DenyAllAnnotation() { this.getType().hasQualifiedName("javax.annotation.security", "DenyAll") }
+  DenyAllAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation.security", "DenyAll")
+  }
 }
 
 /**
@@ -79,7 +91,7 @@ class DenyAllAnnotation extends Annotation {
  */
 class PermitAllAnnotation extends Annotation {
   PermitAllAnnotation() {
-    this.getType().hasQualifiedName("javax.annotation.security", "PermitAll")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation.security", "PermitAll")
   }
 }
 
@@ -88,7 +100,7 @@ class PermitAllAnnotation extends Annotation {
  */
 class RolesAllowedAnnotation extends Annotation {
   RolesAllowedAnnotation() {
-    this.getType().hasQualifiedName("javax.annotation.security", "RolesAllowed")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation.security", "RolesAllowed")
   }
 }
 
@@ -96,7 +108,9 @@ class RolesAllowedAnnotation extends Annotation {
  * A `@javax.annotation.security.RunAs` annotation.
  */
 class RunAsAnnotation extends Annotation {
-  RunAsAnnotation() { this.getType().hasQualifiedName("javax.annotation.security", "RunAs") }
+  RunAsAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".annotation.security", "RunAs")
+  }
 }
 
 /*
@@ -107,7 +121,9 @@ class RunAsAnnotation extends Annotation {
  * A `@javax.interceptor.AroundInvoke` annotation.
  */
 class AroundInvokeAnnotation extends Annotation {
-  AroundInvokeAnnotation() { this.getType().hasQualifiedName("javax.interceptor", "AroundInvoke") }
+  AroundInvokeAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".interceptor", "AroundInvoke")
+  }
 }
 
 /**
@@ -115,7 +131,7 @@ class AroundInvokeAnnotation extends Annotation {
  */
 class ExcludeClassInterceptorsAnnotation extends Annotation {
   ExcludeClassInterceptorsAnnotation() {
-    this.getType().hasQualifiedName("javax.interceptor", "ExcludeClassInterceptors")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".interceptor", "ExcludeClassInterceptors")
   }
 }
 
@@ -124,7 +140,7 @@ class ExcludeClassInterceptorsAnnotation extends Annotation {
  */
 class ExcludeDefaultInterceptorsAnnotation extends Annotation {
   ExcludeDefaultInterceptorsAnnotation() {
-    this.getType().hasQualifiedName("javax.interceptor", "ExcludeDefaultInterceptors")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".interceptor", "ExcludeDefaultInterceptors")
   }
 }
 
@@ -132,7 +148,9 @@ class ExcludeDefaultInterceptorsAnnotation extends Annotation {
  * A `@javax.interceptor.Interceptors` annotation.
  */
 class InterceptorsAnnotation extends Annotation {
-  InterceptorsAnnotation() { this.getType().hasQualifiedName("javax.interceptor", "Interceptors") }
+  InterceptorsAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".interceptor", "Interceptors")
+  }
 }
 
 /*
@@ -143,14 +161,16 @@ class InterceptorsAnnotation extends Annotation {
  * A `@javax.jws.WebMethod` annotation.
  */
 class WebMethodAnnotation extends Annotation {
-  WebMethodAnnotation() { this.getType().hasQualifiedName("javax.jws", "WebMethod") }
+  WebMethodAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".jws", "WebMethod") }
 }
 
 /**
  * A `@javax.jws.WebService` annotation.
  */
 class WebServiceAnnotation extends Annotation {
-  WebServiceAnnotation() { this.getType().hasQualifiedName("javax.jws", "WebService") }
+  WebServiceAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".jws", "WebService")
+  }
 }
 
 /*
@@ -161,7 +181,9 @@ class WebServiceAnnotation extends Annotation {
  * A `@javax.xml.ws.WebServiceRef` annotation.
  */
 class WebServiceRefAnnotation extends Annotation {
-  WebServiceRefAnnotation() { this.getType().hasQualifiedName("javax.xml.ws", "WebServiceRef") }
+  WebServiceRefAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".xml.ws", "WebServiceRef")
+  }
 }
 
 /*
@@ -173,9 +195,7 @@ class WebServiceRefAnnotation extends Annotation {
  */
 class PatternAnnotation extends Annotation, RegexMatch::Range {
   PatternAnnotation() {
-    this.getType()
-        .hasQualifiedName(["javax.validation.constraints", "jakarta.validation.constraints"],
-          "Pattern")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".validation.constraints", "Pattern")
   }
 
   override Expr getRegex() { result = this.getValue("regexp") }

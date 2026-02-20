@@ -1,3 +1,5 @@
+using System;
+
 partial class TwoPartClass
 {
     partial void PartialMethodWithBody1();
@@ -7,6 +9,8 @@ partial class TwoPartClass
     public partial object PartialProperty1 { get; set; }
     // Declaring declaration.
     public partial object this[int index] { get; set; }
+    // Declaring declaration.
+    public partial event EventHandler PartialEvent1;
 }
 
 partial class TwoPartClass
@@ -27,6 +31,9 @@ partial class TwoPartClass
         get { return _backingArray[index]; }
         set { _backingArray[index] = value; }
     }
+
+    // Implementation declaration.
+    public partial event EventHandler PartialEvent1 { add { } remove { } }
 }
 
 partial class OnePartPartialClass
@@ -44,4 +51,5 @@ class NonPartialClass
         get { return null; }
         set { }
     }
+    public event EventHandler Event;
 }

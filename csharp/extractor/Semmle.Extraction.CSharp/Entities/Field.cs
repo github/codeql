@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Field : CachedSymbol<IFieldSymbol>, IExpressionParentEntity
     {
-        private Field(Context cx, IFieldSymbol init)
+        protected Field(Context cx, IFieldSymbol init)
             : base(cx, init)
         {
             type = new Lazy<Type>(() => Entities.Type.Create(cx, Symbol.Type));
