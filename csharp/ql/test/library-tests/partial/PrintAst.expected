@@ -22,7 +22,6 @@ Partial.cs:
 #   25|   11: [Field] _backingField
 #   25|     -1: [TypeMention] object
 #   27|   12: [Property] PartialProperty1
-#   10|     -1: [TypeMention] object
 #   27|     -1: [TypeMention] object
 #   29|     3: [Getter] get_PartialProperty1
 #   29|       4: [BlockStmt] {...}
@@ -40,11 +39,9 @@ Partial.cs:
 #   32|     -1: [TypeMention] Object[]
 #   32|       1: [TypeMention] object
 #   34|   14: [Indexer] Item
-#   12|     -1: [TypeMention] object
 #   34|     -1: [TypeMention] object
 #-----|     1: (Parameters)
-#   12|       0: [Parameter] index
-#   12|         -1: [TypeMention] int
+#   34|       0: [Parameter] index
 #   34|         -1: [TypeMention] int
 #   36|     3: [Getter] get_Item
 #-----|       2: (Parameters)
@@ -66,7 +63,6 @@ Partial.cs:
 #   37|               0: [ParameterAccess] access to parameter index
 #   37|             1: [ParameterAccess] access to parameter value
 #   41|   15: [Event] PartialEvent1
-#   14|     -1: [TypeMention] EventHandler
 #   41|     3: [AddEventAccessor] add_PartialEvent1
 #-----|       2: (Parameters)
 #   41|         0: [Parameter] value
