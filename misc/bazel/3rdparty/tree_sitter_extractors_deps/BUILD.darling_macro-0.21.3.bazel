@@ -95,7 +95,7 @@ rust_proc_macro(
     version = "0.21.3",
     deps = [
         "@vendor_ts__darling_core-0.21.3//:darling_core",
-        "@vendor_ts__quote-1.0.41//:quote",
-        "@vendor_ts__syn-2.0.106//:syn",
+        "@vendor_ts__quote-1.0.44//:quote",
+        "@vendor_ts__syn-2.0.114//:syn",
     ],
 )

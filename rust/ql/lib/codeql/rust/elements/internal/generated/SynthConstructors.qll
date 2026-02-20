@@ -54,6 +54,7 @@ import codeql.rust.elements.internal.ForExprConstructor
 import codeql.rust.elements.internal.ForTypeReprConstructor
 import codeql.rust.elements.internal.FormatConstructor
 import codeql.rust.elements.internal.FormatArgsArgConstructor
+import codeql.rust.elements.internal.FormatArgsArgNameConstructor
 import codeql.rust.elements.internal.FormatArgsExprConstructor
 import codeql.rust.elements.internal.FormatArgumentConstructor
 import codeql.rust.elements.internal.FormatTemplateVariableAccessConstructor
@@ -138,7 +139,6 @@ import codeql.rust.elements.internal.StructPatFieldConstructor
 import codeql.rust.elements.internal.StructPatFieldListConstructor
 import codeql.rust.elements.internal.TokenTreeConstructor
 import codeql.rust.elements.internal.TraitConstructor
-import codeql.rust.elements.internal.TraitAliasConstructor
 import codeql.rust.elements.internal.TryExprConstructor
 import codeql.rust.elements.internal.TupleExprConstructor
 import codeql.rust.elements.internal.TupleFieldConstructor
