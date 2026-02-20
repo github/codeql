@@ -2000,6 +2000,23 @@ module DuckTyping {
   }
 
   /**
+   * Holds if `cls` directly assigns to an attribute named `name` in its class body.
+   * This covers attribute assignments like `x = value`, but not method definitions.
+   */
+  predicate declaresAttribute(Class cls, string name) { exists(getAnAttributeValue(cls, name)) }
+
+  /**
+   * Gets the value expression assigned to attribute `name` directly in the class body of `cls`.
+   */
+  Expr getAnAttributeValue(Class cls, string name) {
+    exists(Assign a |
+      a.getScope() = cls and
+      a.getATarget().(Name).getId() = name and
+      result = a.getValue()
+    )
+  }
+
+  /**
    * Holds if `cls` is callable, i.e. it declares `__call__`.
    */
   predicate isCallable(Class cls) { hasMethod(cls, "__call__") }
