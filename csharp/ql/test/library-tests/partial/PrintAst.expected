@@ -1,112 +1,125 @@
 Partial.cs:
 #    3| [Class] TwoPartClass
-#    6|   6: [Method] PartialMethodWithoutBody1
-#    6|     -1: [TypeMention] Void
-#    7|   7: [Method] Method2
+#    7|   6: [Method] PartialMethodWithoutBody1
 #    7|     -1: [TypeMention] Void
-#    7|     4: [BlockStmt] {...}
-#   18|   8: [Method] PartialMethodWithBody1
+#    8|   7: [Method] Method2
+#    8|     -1: [TypeMention] Void
+#    8|     4: [BlockStmt] {...}
+#   19|   8: [Method] PartialMethodWithBody1
 #    5|     -1: [TypeMention] Void
-#   18|     4: [BlockStmt] {...}
-#   19|   9: [Method] Method3
-#   19|     -1: [TypeMention] Void
 #   19|     4: [BlockStmt] {...}
-#   20|   10: [Field] _backingField
+#   20|   9: [Method] PartialMethodWithBody2
+#    6|     -1: [TypeMention] object
 #   20|     -1: [TypeMention] object
-#   22|   11: [Property] PartialProperty1
-#    9|     -1: [TypeMention] object
-#   22|     -1: [TypeMention] object
-#   24|     3: [Getter] get_PartialProperty1
-#   24|       4: [BlockStmt] {...}
-#   24|         0: [ReturnStmt] return ...;
-#   24|           0: [FieldAccess] access to field _backingField
-#   25|     4: [Setter] set_PartialProperty1
+#-----|     2: (Parameters)
+#    6|       0: [Parameter] obj
+#    6|         -1: [TypeMention] object
+#   20|         -1: [TypeMention] object
+#   21|     4: [BlockStmt] {...}
+#   22|       0: [ReturnStmt] return ...;
+#   22|         0: [ParameterAccess] access to parameter obj
+#   21|     4: [BlockStmt] {...}
+#   22|       0: [ReturnStmt] return ...;
+#   22|         0: [ParameterAccess] access to parameter obj
+#   24|   10: [Method] Method3
+#   24|     -1: [TypeMention] Void
+#   24|     4: [BlockStmt] {...}
+#   25|   11: [Field] _backingField
+#   25|     -1: [TypeMention] object
+#   27|   12: [Property] PartialProperty1
+#   10|     -1: [TypeMention] object
+#   27|     -1: [TypeMention] object
+#   29|     3: [Getter] get_PartialProperty1
+#   29|       4: [BlockStmt] {...}
+#   29|         0: [ReturnStmt] return ...;
+#   29|           0: [FieldAccess] access to field _backingField
+#   30|     4: [Setter] set_PartialProperty1
 #-----|       2: (Parameters)
-#   25|         0: [Parameter] value
-#   25|       4: [BlockStmt] {...}
-#   25|         0: [ExprStmt] ...;
-#   25|           0: [AssignExpr] ... = ...
-#   25|             0: [FieldAccess] access to field _backingField
-#   25|             1: [ParameterAccess] access to parameter value
-#   27|   12: [Field] _backingArray
-#   27|     -1: [TypeMention] Object[]
-#   27|       1: [TypeMention] object
-#   29|   13: [Indexer] Item
-#   11|     -1: [TypeMention] object
-#   29|     -1: [TypeMention] object
+#   30|         0: [Parameter] value
+#   30|       4: [BlockStmt] {...}
+#   30|         0: [ExprStmt] ...;
+#   30|           0: [AssignExpr] ... = ...
+#   30|             0: [FieldAccess] access to field _backingField
+#   30|             1: [ParameterAccess] access to parameter value
+#   32|   13: [Field] _backingArray
+#   32|     -1: [TypeMention] Object[]
+#   32|       1: [TypeMention] object
+#   34|   14: [Indexer] Item
+#   12|     -1: [TypeMention] object
+#   34|     -1: [TypeMention] object
 #-----|     1: (Parameters)
-#   11|       0: [Parameter] index
-#   11|         -1: [TypeMention] int
-#   29|         -1: [TypeMention] int
-#   31|     3: [Getter] get_Item
+#   12|       0: [Parameter] index
+#   12|         -1: [TypeMention] int
+#   34|         -1: [TypeMention] int
+#   36|     3: [Getter] get_Item
 #-----|       2: (Parameters)
-#   29|         0: [Parameter] index
-#   31|       4: [BlockStmt] {...}
-#   31|         0: [ReturnStmt] return ...;
-#   31|           0: [ArrayAccess] access to array element
-#   31|             -1: [FieldAccess] access to field _backingArray
-#   31|             0: [ParameterAccess] access to parameter index
-#   32|     4: [Setter] set_Item
-#-----|       2: (Parameters)
-#   29|         0: [Parameter] index
-#   32|         1: [Parameter] value
-#   32|       4: [BlockStmt] {...}
-#   32|         0: [ExprStmt] ...;
-#   32|           0: [AssignExpr] ... = ...
-#   32|             0: [ArrayAccess] access to array element
-#   32|               -1: [FieldAccess] access to field _backingArray
-#   32|               0: [ParameterAccess] access to parameter index
-#   32|             1: [ParameterAccess] access to parameter value
-#   36|   14: [Event] PartialEvent1
-#   13|     -1: [TypeMention] EventHandler
-#   36|     3: [AddEventAccessor] add_PartialEvent1
-#-----|       2: (Parameters)
-#   36|         0: [Parameter] value
+#   34|         0: [Parameter] index
 #   36|       4: [BlockStmt] {...}
-#   36|     4: [RemoveEventAccessor] remove_PartialEvent1
+#   36|         0: [ReturnStmt] return ...;
+#   36|           0: [ArrayAccess] access to array element
+#   36|             -1: [FieldAccess] access to field _backingArray
+#   36|             0: [ParameterAccess] access to parameter index
+#   37|     4: [Setter] set_Item
 #-----|       2: (Parameters)
-#   36|         0: [Parameter] value
-#   36|       4: [BlockStmt] {...}
-#   39| [Class] OnePartPartialClass
-#   41|   6: [Method] PartialMethodWithoutBody2
-#   41|     -1: [TypeMention] Void
-#   42|   7: [Method] Method4
-#   42|     -1: [TypeMention] Void
-#   42|     4: [BlockStmt] {...}
-#   45| [Class] NonPartialClass
-#   47|   6: [Method] Method5
+#   34|         0: [Parameter] index
+#   37|         1: [Parameter] value
+#   37|       4: [BlockStmt] {...}
+#   37|         0: [ExprStmt] ...;
+#   37|           0: [AssignExpr] ... = ...
+#   37|             0: [ArrayAccess] access to array element
+#   37|               -1: [FieldAccess] access to field _backingArray
+#   37|               0: [ParameterAccess] access to parameter index
+#   37|             1: [ParameterAccess] access to parameter value
+#   41|   15: [Event] PartialEvent1
+#   14|     -1: [TypeMention] EventHandler
+#   41|     3: [AddEventAccessor] add_PartialEvent1
+#-----|       2: (Parameters)
+#   41|         0: [Parameter] value
+#   41|       4: [BlockStmt] {...}
+#   41|     4: [RemoveEventAccessor] remove_PartialEvent1
+#-----|       2: (Parameters)
+#   41|         0: [Parameter] value
+#   41|       4: [BlockStmt] {...}
+#   44| [Class] OnePartPartialClass
+#   46|   6: [Method] PartialMethodWithoutBody2
+#   46|     -1: [TypeMention] Void
+#   47|   7: [Method] Method4
 #   47|     -1: [TypeMention] Void
 #   47|     4: [BlockStmt] {...}
-#   48|   7: [Property] Property
-#   48|     -1: [TypeMention] object
-#   48|     3: [Getter] get_Property
-#   48|     4: [Setter] set_Property
+#   50| [Class] NonPartialClass
+#   52|   6: [Method] Method5
+#   52|     -1: [TypeMention] Void
+#   52|     4: [BlockStmt] {...}
+#   53|   7: [Property] Property
+#   53|     -1: [TypeMention] object
+#   53|     3: [Getter] get_Property
+#   53|     4: [Setter] set_Property
 #-----|       2: (Parameters)
-#   48|         0: [Parameter] value
-#   49|   8: [Indexer] Item
-#   49|     -1: [TypeMention] object
+#   53|         0: [Parameter] value
+#   54|   8: [Indexer] Item
+#   54|     -1: [TypeMention] object
 #-----|     1: (Parameters)
-#   49|       0: [Parameter] index
-#   49|         -1: [TypeMention] int
-#   51|     3: [Getter] get_Item
+#   54|       0: [Parameter] index
+#   54|         -1: [TypeMention] int
+#   56|     3: [Getter] get_Item
 #-----|       2: (Parameters)
-#   49|         0: [Parameter] index
-#   51|       4: [BlockStmt] {...}
-#   51|         0: [ReturnStmt] return ...;
-#   51|           0: [NullLiteral] null
-#   52|     4: [Setter] set_Item
+#   54|         0: [Parameter] index
+#   56|       4: [BlockStmt] {...}
+#   56|         0: [ReturnStmt] return ...;
+#   56|           0: [NullLiteral] null
+#   57|     4: [Setter] set_Item
 #-----|       2: (Parameters)
-#   49|         0: [Parameter] index
-#   52|         1: [Parameter] value
-#   52|       4: [BlockStmt] {...}
-#   54|   9: [Event] Event
-#   54|     -1: [TypeMention] EventHandler
-#   54|     3: [AddEventAccessor] add_Event
+#   54|         0: [Parameter] index
+#   57|         1: [Parameter] value
+#   57|       4: [BlockStmt] {...}
+#   59|   9: [Event] Event
+#   59|     -1: [TypeMention] EventHandler
+#   59|     3: [AddEventAccessor] add_Event
 #-----|       2: (Parameters)
-#   54|         0: [Parameter] value
-#   54|     4: [RemoveEventAccessor] remove_Event
+#   59|         0: [Parameter] value
+#   59|     4: [RemoveEventAccessor] remove_Event
 #-----|       2: (Parameters)
-#   54|         0: [Parameter] value
+#   59|         0: [Parameter] value
 PartialMultipleFiles1.cs:
 #    1| [Class] PartialMultipleFiles
 PartialMultipleFiles2.cs:

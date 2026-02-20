@@ -1,3 +1,4 @@
-| Partial.cs:6:18:6:42 | PartialMethodWithoutBody1 | false |
-| Partial.cs:18:18:18:39 | PartialMethodWithBody1 | true |
-| Partial.cs:41:18:41:42 | PartialMethodWithoutBody2 | false |
+| Partial.cs:7:18:7:42 | PartialMethodWithoutBody1 | false |
+| Partial.cs:19:18:19:39 | PartialMethodWithBody1 | true |
+| Partial.cs:20:27:20:48 | PartialMethodWithBody2 | true |
+| Partial.cs:46:18:46:42 | PartialMethodWithoutBody2 | false |

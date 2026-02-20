@@ -3,6 +3,7 @@ using System;
 partial class TwoPartClass
 {
     partial void PartialMethodWithBody1();
+    public partial object PartialMethodWithBody2(object obj);
     partial void PartialMethodWithoutBody1();
     public void Method2() { }
     // Declaring declaration.
@@ -16,6 +17,10 @@ partial class TwoPartClass
 partial class TwoPartClass
 {
     partial void PartialMethodWithBody1() { }
+    public partial object PartialMethodWithBody2(object obj)
+    {
+        return obj;
+    }
     public void Method3() { }
     private object _backingField;
     // Implementation declaration.
