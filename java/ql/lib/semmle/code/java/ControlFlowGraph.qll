@@ -286,12 +286,53 @@ private module Exceptions {
   }
 
   /**
+   * Holds if a catch clause of `try` catches checked exceptions of type
+   * `caught`, and that `call` is contained within the try block.
+   */
+  private predicate checkedExceptionFromCatchCandidate(TryStmt try, RefType caught, Call call) {
+    (
+      call.getEnclosingStmt().getEnclosingStmt+() = try.getBlock() or
+      call.(Expr).getParent*() = try.getAResource()
+    ) and
+    try.getACatchClause().getACaughtType() = caught and
+    not caught instanceof UncheckedThrowableSuperType
+  }
+
+  /**
+   * Holds if a catch clause of `try` catches checked exceptions of type
+   * `caught`, and that there is a call within the try block that declares that
+   * it may throw `caught` or a subtype thereof.
+   */
+  private predicate declaredCheckedExceptionFromCatchCandidate(TryStmt try, RefType caught) {
+    exists(Call call |
+      checkedExceptionFromCatchCandidate(try, caught, call) and
+      call.getCallee().getAThrownExceptionType().getASourceSupertype*() = caught
+    )
+  }
+
+  /**
+   * Holds if `call` is contained within a try block that has a catch clause
+   * that catches a checked exception, but there is no call within the try
+   * block that declares that it may throw that exception. In this case, it is
+   * likely that the throws declaration for some reason was not extracted, so
+   * we conseratively assume that `call` may throw such an exception.
+   */
+  private predicate checkedExceptionFromCatchCandidate(Call call) {
+    exists(TryStmt try, RefType caught |
+      checkedExceptionFromCatchCandidate(try, caught, call) and
+      not declaredCheckedExceptionFromCatchCandidate(try, caught)
+    )
+  }
+
+  /**
    * Holds if `n` is expected to possibly throw an exception. This can either
    * be due to a declared (likely checked) exception on a call target
    * or due to an enclosing try/catch/finally.
    */
   predicate mayThrow(Ast::AstNode n) {
     exists(n.(Call).getCallee().getAThrownExceptionType())
+    or
+    checkedExceptionFromCatchCandidate(n)
     or
     uncheckedExceptionFromMethod(n)
     or
