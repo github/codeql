@@ -6,18 +6,13 @@ Partial.cs:
 #    8|     -1: [TypeMention] Void
 #    8|     4: [BlockStmt] {...}
 #   19|   8: [Method] PartialMethodWithBody1
-#    5|     -1: [TypeMention] Void
+#   19|     -1: [TypeMention] Void
 #   19|     4: [BlockStmt] {...}
 #   20|   9: [Method] PartialMethodWithBody2
-#    6|     -1: [TypeMention] object
 #   20|     -1: [TypeMention] object
 #-----|     2: (Parameters)
-#    6|       0: [Parameter] obj
-#    6|         -1: [TypeMention] object
+#   20|       0: [Parameter] obj
 #   20|         -1: [TypeMention] object
-#   21|     4: [BlockStmt] {...}
-#   22|       0: [ReturnStmt] return ...;
-#   22|         0: [ParameterAccess] access to parameter obj
 #   21|     4: [BlockStmt] {...}
 #   22|       0: [ReturnStmt] return ...;
 #   22|         0: [ParameterAccess] access to parameter obj

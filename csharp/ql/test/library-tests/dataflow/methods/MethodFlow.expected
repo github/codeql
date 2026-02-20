@@ -1,11 +1,5 @@
 models
 edges
-| Methods.cs:3:48:3:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | provenance |  |
-| Methods.cs:3:48:3:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | provenance |  |
-| Methods.cs:3:48:3:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | provenance |  |
-| Methods.cs:3:48:3:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | provenance |  |
-| Methods.cs:8:48:8:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | provenance |  |
-| Methods.cs:8:48:8:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | provenance |  |
 | Methods.cs:8:48:8:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | provenance |  |
 | Methods.cs:8:48:8:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | provenance |  |
 | Methods.cs:17:13:17:13 | access to local variable o : Object | Methods.cs:19:38:19:38 | access to local variable o : Object | provenance |  |
@@ -16,19 +10,13 @@ edges
 | Methods.cs:19:13:19:18 | access to local variable result : Object | Methods.cs:20:14:20:19 | access to local variable result | provenance |  |
 | Methods.cs:19:22:19:39 | call to method PartialMethod : Object | Methods.cs:19:13:19:18 | access to local variable result : Object | provenance |  |
 | Methods.cs:19:22:19:39 | call to method PartialMethod : Object | Methods.cs:19:13:19:18 | access to local variable result : Object | provenance |  |
-| Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:3:48:3:48 | o : Object | provenance |  |
-| Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:3:48:3:48 | o : Object | provenance |  |
 | Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:8:48:8:48 | o : Object | provenance |  |
 | Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:8:48:8:48 | o : Object | provenance |  |
 | Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object | provenance |  |
 | Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object | provenance |  |
 nodes
-| Methods.cs:3:48:3:48 | o : Object | semmle.label | o : Object |
-| Methods.cs:3:48:3:48 | o : Object | semmle.label | o : Object |
 | Methods.cs:8:48:8:48 | o : Object | semmle.label | o : Object |
 | Methods.cs:8:48:8:48 | o : Object | semmle.label | o : Object |
-| Methods.cs:10:16:10:16 | access to parameter o : Object | semmle.label | access to parameter o : Object |
-| Methods.cs:10:16:10:16 | access to parameter o : Object | semmle.label | access to parameter o : Object |
 | Methods.cs:10:16:10:16 | access to parameter o : Object | semmle.label | access to parameter o : Object |
 | Methods.cs:10:16:10:16 | access to parameter o : Object | semmle.label | access to parameter o : Object |
 | Methods.cs:17:13:17:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
@@ -44,12 +32,6 @@ nodes
 | Methods.cs:20:14:20:19 | access to local variable result | semmle.label | access to local variable result |
 | Methods.cs:20:14:20:19 | access to local variable result | semmle.label | access to local variable result |
 subpaths
-| Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:3:48:3:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object |
-| Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:3:48:3:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object |
-| Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:3:48:3:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object |
-| Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:3:48:3:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object |
-| Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:8:48:8:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object |
-| Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:8:48:8:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object |
 | Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:8:48:8:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object |
 | Methods.cs:19:38:19:38 | access to local variable o : Object | Methods.cs:8:48:8:48 | o : Object | Methods.cs:10:16:10:16 | access to parameter o : Object | Methods.cs:19:22:19:39 | call to method PartialMethod : Object |
 testFailures
