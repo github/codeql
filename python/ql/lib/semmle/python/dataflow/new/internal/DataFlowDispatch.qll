@@ -1921,3 +1921,95 @@ private module OutNodes {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
+
+/**
+ * Provides predicates for approximating type properties of user-defined classes
+ * based on their structure (method declarations, base classes).
+ *
+ * This module should _not_ be used in the call graph computation itself, as parts of it may depend
+ * on layers that themselves build upon the call graph (e.g. API graphs).
+ */
+module DuckTyping {
+  private import semmle.python.ApiGraphs
+
+  /**
+   * Holds if `cls` or any of its resolved superclasses declares a method with the given `name`.
+   */
+  predicate hasMethod(Class cls, string name) {
+    cls.getAMethod().getName() = name
+    or
+    hasMethod(getADirectSuperclass(cls), name)
+  }
+
+  /**
+   * Holds if `cls` has a base class that cannot be resolved to a user-defined class
+   * and is not just `object`, meaning it may inherit methods from an unknown class.
+   */
+  predicate hasUnresolvedBase(Class cls) {
+    exists(Expr base | base = cls.getABase() |
+      not base = classTracker(_).asExpr() and
+      not base = API::builtin("object").getAValueReachableFromSource().asExpr()
+    )
+  }
+
+  /**
+   * Holds if `cls` supports the container protocol, i.e. it declares
+   * `__contains__`, `__iter__`, or `__getitem__`.
+   */
+  predicate isContainer(Class cls) {
+    hasMethod(cls, "__contains__") or
+    hasMethod(cls, "__iter__") or
+    hasMethod(cls, "__getitem__")
+  }
+
+  /**
+   * Holds if `cls` supports the iterable protocol, i.e. it declares
+   * `__iter__` or `__getitem__`.
+   */
+  predicate isIterable(Class cls) {
+    hasMethod(cls, "__iter__") or
+    hasMethod(cls, "__getitem__")
+  }
+
+  /**
+   * Holds if `cls` supports the iterator protocol, i.e. it declares
+   * both `__iter__` and `__next__`.
+   */
+  predicate isIterator(Class cls) {
+    hasMethod(cls, "__iter__") and
+    hasMethod(cls, "__next__")
+  }
+
+  /**
+   * Holds if `cls` supports the context manager protocol, i.e. it declares
+   * both `__enter__` and `__exit__`.
+   */
+  predicate isContextManager(Class cls) {
+    hasMethod(cls, "__enter__") and
+    hasMethod(cls, "__exit__")
+  }
+
+  /**
+   * Holds if `cls` supports the descriptor protocol, i.e. it declares
+   * `__get__`, `__set__`, or `__delete__`.
+   */
+  predicate isDescriptor(Class cls) {
+    hasMethod(cls, "__get__") or
+    hasMethod(cls, "__set__") or
+    hasMethod(cls, "__delete__")
+  }
+
+  /**
+   * Holds if `cls` is callable, i.e. it declares `__call__`.
+   */
+  predicate isCallable(Class cls) { hasMethod(cls, "__call__") }
+
+  /**
+   * Holds if `cls` supports the mapping protocol, i.e. it declares
+   * `__getitem__` and `__keys__`, or `__getitem__` and `__iter__`.
+   */
+  predicate isMapping(Class cls) {
+    hasMethod(cls, "__getitem__") and
+    (hasMethod(cls, "keys") or hasMethod(cls, "__iter__"))
+  }
+}
