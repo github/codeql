@@ -87,8 +87,6 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.BindComments(this, FullLocation);
         }
 
-        protected virtual T BodyDeclaringSymbol => Symbol;
-
         private static BlockSyntax? GetBlock(T symbol)
         {
             return symbol.DeclaringSyntaxReferences
@@ -107,10 +105,10 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         private BlockSyntax? vBlock;
-        public BlockSyntax? Block => vBlock ??= GetBlock(BodyDeclaringSymbol);
+        public BlockSyntax? Block => vBlock ??= GetBlock(Symbol);
 
         private ExpressionSyntax? vExpressionBody;
-        public ExpressionSyntax? ExpressionBody => vExpressionBody ??= GetExpressionBody(BodyDeclaringSymbol);
+        public ExpressionSyntax? ExpressionBody => vExpressionBody ??= GetExpressionBody(Symbol);
 
         private bool? vHasBody;
         public bool HasBody => vHasBody ??= Block is not null || ExpressionBody is not null;

@@ -20,8 +20,8 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type.Create(Context, Symbol.Type);
             trapFile.indexers(this, Symbol.GetName(useMetadataName: true), ContainingType!, type.TypeRef, OriginalDefinition);
 
-            var getter = BodyDeclaringSymbol.GetMethod;
-            var setter = BodyDeclaringSymbol.SetMethod;
+            var getter = Symbol.GetMethod;
+            var setter = Symbol.SetMethod;
 
             if (getter is null && setter is null)
                 Context.ModelError(Symbol, "No indexer accessor defined");
@@ -81,7 +81,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 TypeMention.Create(Context, syntax.Type, this, type);
         }
 
-        public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntityFromSymbol(cx, prop);
+        public static new Indexer Create(Context cx, IPropertySymbol prop) => IndexerFactory.Instance.CreateEntityFromSymbol(cx, prop.GetBodyDeclaringSymbol());
 
         public override void WriteId(EscapingTextWriter trapFile)
         {

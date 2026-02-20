@@ -731,6 +731,12 @@ namespace Semmle.Extraction.CSharp
         public static IMethodSymbol GetBodyDeclaringSymbol(this IMethodSymbol method) =>
             method.PartialImplementationPart ?? method;
 
+        public static IPropertySymbol GetBodyDeclaringSymbol(this IPropertySymbol property) =>
+            property.PartialImplementationPart ?? property;
+
+        public static IEventSymbol GetBodyDeclaringSymbol(this IEventSymbol symbol) =>
+            symbol.PartialImplementationPart ?? symbol;
+
         [return: NotNullIfNotNull(nameof(symbol))]
         public static IEntity? CreateEntity(this Context cx, ISymbol symbol)
         {
