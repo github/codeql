@@ -586,7 +586,7 @@ private module BoundsEstimate {
     // "other" half flow from the condition to `e3` as a guard phi node.
     exists(float varBounds |
       // If there's different `access`es, then they refer to the same
-      // variable with the same lower bounds. Hence adding these guards make no
+      // variable with the same lower bounds. Hence adding these guards makes no
       // sense (the implementation will take the union, but they'll be removed by
       // deduplication). Hence we use `max` as an approximation.
       varBounds =
