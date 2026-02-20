@@ -14,10 +14,12 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-from ClassValue c
-where not c.isBuiltin() and not c.isContextManager() and exists(c.declaredAttribute("__del__"))
+from Class c
+where
+  not DuckTyping::isContextManager(c) and
+  DuckTyping::hasMethod(c, "__del__")
 select c,
   "Class " + c.getName() +
     " implements __del__ (presumably to release some resource). Consider making it a context manager."
