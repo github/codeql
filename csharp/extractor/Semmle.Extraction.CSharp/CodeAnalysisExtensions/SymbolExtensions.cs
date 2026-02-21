@@ -728,6 +728,15 @@ namespace Semmle.Extraction.CSharp
         public static INamedTypeSymbol? GetNonObjectBaseType(this ITypeSymbol symbol, Context cx) =>
             symbol is ITypeParameterSymbol || SymbolEqualityComparer.Default.Equals(symbol.BaseType, cx.Compilation.ObjectType) ? null : symbol.BaseType;
 
+        public static IMethodSymbol GetBodyDeclaringSymbol(this IMethodSymbol method) =>
+            method.PartialImplementationPart ?? method;
+
+        public static IPropertySymbol GetBodyDeclaringSymbol(this IPropertySymbol property) =>
+            property.PartialImplementationPart ?? property;
+
+        public static IEventSymbol GetBodyDeclaringSymbol(this IEventSymbol symbol) =>
+            symbol.PartialImplementationPart ?? symbol;
+
         [return: NotNullIfNotNull(nameof(symbol))]
         public static IEntity? CreateEntity(this Context cx, ISymbol symbol)
         {

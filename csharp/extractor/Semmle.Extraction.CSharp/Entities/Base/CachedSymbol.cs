@@ -87,30 +87,31 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.BindComments(this, FullLocation);
         }
 
-        protected virtual T BodyDeclaringSymbol => Symbol;
-
-        public BlockSyntax? Block
+        private static BlockSyntax? GetBlock(T symbol)
         {
-            get
-            {
-                return BodyDeclaringSymbol.DeclaringSyntaxReferences
+            return symbol.DeclaringSyntaxReferences
                     .SelectMany(r => r.GetSyntax().ChildNodes())
                     .OfType<BlockSyntax>()
                     .FirstOrDefault();
-            }
         }
 
-        public ExpressionSyntax? ExpressionBody
+        private static ExpressionSyntax? GetExpressionBody(T symbol)
         {
-            get
-            {
-                return BodyDeclaringSymbol.DeclaringSyntaxReferences
+            return symbol.DeclaringSyntaxReferences
                     .SelectMany(r => r.GetSyntax().ChildNodes())
                     .OfType<ArrowExpressionClauseSyntax>()
                     .Select(arrow => arrow.Expression)
                     .FirstOrDefault();
-            }
         }
+
+        private BlockSyntax? vBlock;
+        public BlockSyntax? Block => vBlock ??= GetBlock(Symbol);
+
+        private ExpressionSyntax? vExpressionBody;
+        public ExpressionSyntax? ExpressionBody => vExpressionBody ??= GetExpressionBody(Symbol);
+
+        private bool? vHasBody;
+        public bool HasBody => vHasBody ??= Block is not null || ExpressionBody is not null;
 
         public virtual bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 

@@ -1,15 +1,17 @@
 | Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:3:15:3:26 | <object initializer> |
-| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:6:18:6:42 | PartialMethodWithoutBody1 |
-| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:7:17:7:23 | Method2 |
-| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:18:18:18:39 | PartialMethodWithBody1 |
-| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:19:17:19:23 | Method3 |
-| Partial.cs:16:15:16:26 | TwoPartClass | Partial.cs:3:15:3:26 | <object initializer> |
-| Partial.cs:16:15:16:26 | TwoPartClass | Partial.cs:6:18:6:42 | PartialMethodWithoutBody1 |
-| Partial.cs:16:15:16:26 | TwoPartClass | Partial.cs:7:17:7:23 | Method2 |
-| Partial.cs:16:15:16:26 | TwoPartClass | Partial.cs:18:18:18:39 | PartialMethodWithBody1 |
-| Partial.cs:16:15:16:26 | TwoPartClass | Partial.cs:19:17:19:23 | Method3 |
-| Partial.cs:39:15:39:33 | OnePartPartialClass | Partial.cs:39:15:39:33 | <object initializer> |
-| Partial.cs:39:15:39:33 | OnePartPartialClass | Partial.cs:41:18:41:42 | PartialMethodWithoutBody2 |
-| Partial.cs:39:15:39:33 | OnePartPartialClass | Partial.cs:42:17:42:23 | Method4 |
+| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:7:18:7:42 | PartialMethodWithoutBody1 |
+| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:8:17:8:23 | Method2 |
+| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:19:18:19:39 | PartialMethodWithBody1 |
+| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:20:27:20:48 | PartialMethodWithBody2 |
+| Partial.cs:3:15:3:26 | TwoPartClass | Partial.cs:24:17:24:23 | Method3 |
+| Partial.cs:17:15:17:26 | TwoPartClass | Partial.cs:3:15:3:26 | <object initializer> |
+| Partial.cs:17:15:17:26 | TwoPartClass | Partial.cs:7:18:7:42 | PartialMethodWithoutBody1 |
+| Partial.cs:17:15:17:26 | TwoPartClass | Partial.cs:8:17:8:23 | Method2 |
+| Partial.cs:17:15:17:26 | TwoPartClass | Partial.cs:19:18:19:39 | PartialMethodWithBody1 |
+| Partial.cs:17:15:17:26 | TwoPartClass | Partial.cs:20:27:20:48 | PartialMethodWithBody2 |
+| Partial.cs:17:15:17:26 | TwoPartClass | Partial.cs:24:17:24:23 | Method3 |
+| Partial.cs:44:15:44:33 | OnePartPartialClass | Partial.cs:44:15:44:33 | <object initializer> |
+| Partial.cs:44:15:44:33 | OnePartPartialClass | Partial.cs:46:18:46:42 | PartialMethodWithoutBody2 |
+| Partial.cs:44:15:44:33 | OnePartPartialClass | Partial.cs:47:17:47:23 | Method4 |
 | PartialMultipleFiles1.cs:1:22:1:41 | PartialMultipleFiles | PartialMultipleFiles1.cs:1:22:1:41 | <object initializer> |
 | PartialMultipleFiles2.cs:1:22:1:41 | PartialMultipleFiles | PartialMultipleFiles1.cs:1:22:1:41 | <object initializer> |

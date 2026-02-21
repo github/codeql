@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            if (MakeSynthetic)
+            if (MakeSyntheticBody)
             {
                 // Create a synthetic empty body for primary and default constructors.
                 Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
@@ -60,7 +60,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Do not extract initializers for constructed types.
             // Extract initializers for constructors with a body, primary constructors
             // and default constructors for classes and structs declared in source code.
-            if (Block is null && ExpressionBody is null && !MakeSynthetic || Context.OnlyScaffold)
+            if (!HasBody && !MakeSyntheticBody || Context.OnlyScaffold)
             {
                 return;
             }
@@ -211,7 +211,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         private bool IsBestSourceLocation => ReportingLocation is not null && Context.IsLocationInContext(ReportingLocation);
 
-        private bool MakeSynthetic => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !Context.OnlyScaffold;
+        private bool MakeSyntheticBody => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !Context.OnlyScaffold;
 
         [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
