@@ -197,6 +197,10 @@ module KDF {
     override predicate requiresSalt() { any() }
 
     override predicate requiresIteration() { any() }
+
+    override predicate requiresLanes() { none() }
+
+    override predicate requiresMemoryCost() { none() }
   }
 
   // TODO: better modeling of scrypt
@@ -233,5 +237,9 @@ module KDF {
     override predicate requiresSalt() { any() }
 
     override predicate requiresIteration() { none() }
+
+    override predicate requiresLanes() { none() }
+
+    override predicate requiresMemoryCost() { none() }
   }
 }
