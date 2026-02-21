@@ -1,0 +1,10 @@
+--- old/aggregate_array_init
++++ new/aggregate_array_init
+-| 0 | 3 | 42 |
++| 0 | 3 | 42 | 17 |
+
+--- old/aggregate_field_init
++++ new/aggregate_field_init
+-| 0 | 1 | 2 |
++| 0 | 1 | 2 | 3 |
+
