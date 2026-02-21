@@ -1,0 +1,10 @@
+
+import "../../../lib.just"
+
+
+[no-cd]
+test *ARGS=".": (_if_not_on_ci_just "generate" source_dir()) (_integration_test ARGS)
+
+# TODO in separate PR
+# [no-cd]
+# format *ARGS=".": (_format_ql ARGS) (_format_py ARGS)
