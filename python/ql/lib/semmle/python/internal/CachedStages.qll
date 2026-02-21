@@ -35,6 +35,7 @@ module Stages {
    * Computes predicates based on the AST.
    * These include SSA and basic-blocks.
    */
+  overlay[local]
   cached
   module AST {
     /**
@@ -176,6 +177,7 @@ module Stages {
      * Always holds.
      * Ensures that a predicate is evaluated as part of the DataFlow stage.
      */
+    overlay[local]
     cached
     predicate ref() { 1 = 1 }
 
