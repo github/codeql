@@ -1,48 +1,85 @@
-| main.rs:3:5:3:7 | lib | lib.rs:1:1:1:1 | SourceFile | file |
-| main.rs:9:14:9:14 | S | main.rs:7:9:7:21 | struct S | path |
-| main.rs:10:36:10:39 | Self | main.rs:7:9:7:21 | struct S | path |
-| main.rs:11:17:11:17 | S | main.rs:7:9:7:21 | struct S | path |
-| main.rs:16:22:16:22 | T | main.rs:16:19:16:19 | T | path |
-| main.rs:18:13:18:14 | S2 | main.rs:16:5:16:24 | struct S2 | path |
-| main.rs:18:16:18:16 | T | main.rs:18:10:18:10 | T | path |
-| main.rs:19:23:19:23 | T | main.rs:18:10:18:10 | T | path |
-| main.rs:19:29:19:32 | Self | main.rs:16:5:16:24 | struct S2 | path |
-| main.rs:20:13:20:14 | S2 | main.rs:16:5:16:24 | struct S2 | path |
-| main.rs:20:16:20:16 | x | main.rs:19:20:19:20 | x | local variable |
-| main.rs:29:5:29:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
-| main.rs:29:22:29:26 | value | main.rs:29:50:29:54 | value | format argument |
-| main.rs:29:29:29:33 | width | main.rs:26:9:26:13 | width | local variable |
-| main.rs:29:36:29:44 | precision | main.rs:27:9:27:17 | precision | local variable |
-| main.rs:30:5:30:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
-| main.rs:30:22:30:22 | 0 | main.rs:30:34:30:38 | value | format argument |
-| main.rs:30:25:30:25 | 1 | main.rs:30:41:30:45 | width | format argument |
-| main.rs:30:28:30:28 | 2 | main.rs:30:48:30:56 | precision | format argument |
-| main.rs:30:34:30:38 | value | main.rs:28:9:28:13 | value | local variable |
-| main.rs:30:41:30:45 | width | main.rs:26:9:26:13 | width | local variable |
-| main.rs:30:48:30:56 | precision | main.rs:27:9:27:17 | precision | local variable |
-| main.rs:31:5:31:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
-| main.rs:31:21:31:22 | {} | main.rs:31:29:31:33 | value | format argument |
-| main.rs:31:24:31:25 | {} | main.rs:31:36:31:40 | width | format argument |
-| main.rs:31:29:31:33 | value | main.rs:28:9:28:13 | value | local variable |
-| main.rs:31:36:31:40 | width | main.rs:26:9:26:13 | width | local variable |
-| main.rs:33:5:33:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
-| main.rs:33:22:33:27 | people | main.rs:32:9:32:14 | people | local variable |
-| main.rs:34:5:34:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
-| main.rs:34:16:34:16 | 1 | main.rs:34:34:34:34 | 2 | format argument |
-| main.rs:34:19:34:20 | {} | main.rs:34:31:34:31 | 1 | format argument |
-| main.rs:34:23:34:23 | 0 | main.rs:34:31:34:31 | 1 | format argument |
-| main.rs:34:26:34:27 | {} | main.rs:34:34:34:34 | 2 | format argument |
-| main.rs:35:5:35:13 | assert_eq | {EXTERNAL LOCATION} | MacroRules | path |
-| main.rs:35:16:35:21 | format | {EXTERNAL LOCATION} | MacroRules | path |
-| main.rs:35:31:35:35 | {:<5} | main.rs:35:40:35:42 | "x" | format argument |
-| main.rs:36:13:36:13 | S | main.rs:1:1:1:9 | struct S | path |
-| main.rs:37:13:37:14 | M1 | main.rs:5:1:23:1 | mod M1 | path |
-| main.rs:37:17:37:18 | M2 | main.rs:6:5:14:5 | mod M2 | path |
-| main.rs:37:21:37:21 | S | main.rs:7:9:7:21 | struct S | path |
-| main.rs:38:5:38:5 | s | main.rs:37:9:37:9 | s | local variable |
-| main.rs:38:7:38:12 | method | main.rs:10:13:12:13 | fn method | method |
-| main.rs:39:5:39:6 | M1 | main.rs:5:1:23:1 | mod M1 | path |
-| main.rs:39:9:39:10 | S2 | main.rs:16:5:16:24 | struct S2 | path |
-| main.rs:39:14:39:14 | S | main.rs:1:1:1:9 | struct S | path |
-| main.rs:39:18:39:20 | new | main.rs:19:9:21:9 | fn new | path |
-| main.rs:39:22:39:22 | S | main.rs:1:1:1:9 | struct S | path |
+| main.rs:1:5:1:7 | std | {EXTERNAL LOCATION} | Crate(std@0.0.0) | path |
+| main.rs:1:10:1:12 | ops | {EXTERNAL LOCATION} | mod ops | path |
+| main.rs:3:3:3:8 | derive | {EXTERNAL LOCATION} | MacroDef | path |
+| main.rs:6:5:6:7 | lib | lib.rs:1:1:1:1 | SourceFile | file |
+| main.rs:8:6:8:8 | Neg | {EXTERNAL LOCATION} | trait Neg | path |
+| main.rs:8:14:8:14 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:9:19:9:22 | Self | main.rs:3:1:4:9 | struct S | path |
+| main.rs:11:21:11:24 | Self | main.rs:3:1:4:9 | struct S | path |
+| main.rs:12:9:12:9 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:16:6:16:8 | Add | {EXTERNAL LOCATION} | trait Add | path |
+| main.rs:16:14:16:14 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:17:19:17:22 | Self | main.rs:3:1:4:9 | struct S | path |
+| main.rs:19:23:19:26 | Self | main.rs:3:1:4:9 | struct S | path |
+| main.rs:19:32:19:35 | Self | main.rs:3:1:4:9 | struct S | path |
+| main.rs:20:9:20:9 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:24:6:24:10 | Index | {EXTERNAL LOCATION} | trait Index | path |
+| main.rs:24:12:24:16 | usize | {EXTERNAL LOCATION} | struct usize | path |
+| main.rs:24:23:24:23 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:25:19:25:19 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:27:28:27:32 | usize | {EXTERNAL LOCATION} | struct usize | path |
+| main.rs:27:39:27:42 | Self | main.rs:3:1:4:9 | struct S | path |
+| main.rs:27:45:27:50 | Output | main.rs:25:5:25:20 | type Output | path |
+| main.rs:28:10:28:10 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:36:14:36:14 | S | main.rs:34:9:34:21 | struct S | path |
+| main.rs:37:36:37:39 | Self | main.rs:34:9:34:21 | struct S | path |
+| main.rs:38:17:38:17 | S | main.rs:34:9:34:21 | struct S | path |
+| main.rs:43:22:43:22 | T | main.rs:43:19:43:19 | T | path |
+| main.rs:45:13:45:14 | S2 | main.rs:43:5:43:24 | struct S2 | path |
+| main.rs:45:16:45:16 | T | main.rs:45:10:45:10 | T | path |
+| main.rs:46:23:46:23 | T | main.rs:45:10:45:10 | T | path |
+| main.rs:46:29:46:32 | Self | main.rs:43:5:43:24 | struct S2 | path |
+| main.rs:47:13:47:14 | S2 | main.rs:43:5:43:24 | struct S2 | path |
+| main.rs:47:16:47:16 | x | main.rs:46:20:46:20 | x | local variable |
+| main.rs:56:5:56:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
+| main.rs:56:22:56:26 | value | main.rs:56:50:56:54 | value | format argument |
+| main.rs:56:29:56:33 | width | main.rs:53:9:53:13 | width | local variable |
+| main.rs:56:36:56:44 | precision | main.rs:54:9:54:17 | precision | local variable |
+| main.rs:57:5:57:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
+| main.rs:57:22:57:22 | 0 | main.rs:57:34:57:38 | value | format argument |
+| main.rs:57:25:57:25 | 1 | main.rs:57:41:57:45 | width | format argument |
+| main.rs:57:28:57:28 | 2 | main.rs:57:48:57:56 | precision | format argument |
+| main.rs:57:34:57:38 | value | main.rs:55:9:55:13 | value | local variable |
+| main.rs:57:41:57:45 | width | main.rs:53:9:53:13 | width | local variable |
+| main.rs:57:48:57:56 | precision | main.rs:54:9:54:17 | precision | local variable |
+| main.rs:58:5:58:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
+| main.rs:58:21:58:22 | {} | main.rs:58:29:58:33 | value | format argument |
+| main.rs:58:24:58:25 | {} | main.rs:58:36:58:40 | width | format argument |
+| main.rs:58:29:58:33 | value | main.rs:55:9:55:13 | value | local variable |
+| main.rs:58:36:58:40 | width | main.rs:53:9:53:13 | width | local variable |
+| main.rs:60:5:60:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
+| main.rs:60:22:60:27 | people | main.rs:59:9:59:14 | people | local variable |
+| main.rs:61:5:61:11 | println | {EXTERNAL LOCATION} | MacroRules | path |
+| main.rs:61:16:61:16 | 1 | main.rs:61:34:61:34 | 2 | format argument |
+| main.rs:61:19:61:20 | {} | main.rs:61:31:61:31 | 1 | format argument |
+| main.rs:61:23:61:23 | 0 | main.rs:61:31:61:31 | 1 | format argument |
+| main.rs:61:26:61:27 | {} | main.rs:61:34:61:34 | 2 | format argument |
+| main.rs:62:5:62:13 | assert_eq | {EXTERNAL LOCATION} | MacroRules | path |
+| main.rs:62:16:62:21 | format | {EXTERNAL LOCATION} | MacroRules | path |
+| main.rs:62:31:62:35 | {:<5} | main.rs:62:40:62:42 | "x" | format argument |
+| main.rs:63:13:63:13 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:64:13:64:14 | M1 | main.rs:32:1:50:1 | mod M1 | path |
+| main.rs:64:17:64:18 | M2 | main.rs:33:5:41:5 | mod M2 | path |
+| main.rs:64:21:64:21 | S | main.rs:34:9:34:21 | struct S | path |
+| main.rs:65:5:65:5 | s | main.rs:64:9:64:9 | s | local variable |
+| main.rs:65:7:65:12 | method | main.rs:37:13:39:13 | fn method | method |
+| main.rs:66:5:66:6 | M1 | main.rs:32:1:50:1 | mod M1 | path |
+| main.rs:66:9:66:10 | S2 | main.rs:43:5:43:24 | struct S2 | path |
+| main.rs:66:14:66:14 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:66:18:66:20 | new | main.rs:46:9:48:9 | fn new | path |
+| main.rs:66:22:66:22 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:67:5:67:4 | - ... | main.rs:11:5:13:5 | fn neg | method |
+| main.rs:67:6:67:6 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:68:5:68:5 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:68:7:68:7 | ... + ... | main.rs:19:5:21:5 | fn add | method |
+| main.rs:68:9:68:9 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:70:13:70:13 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:70:15:70:15 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:72:13:72:13 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:72:15:73:4 | ... + ... | main.rs:19:5:21:5 | fn add | method |
+| main.rs:73:6:73:6 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:75:13:75:13 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:75:15:77:3 | ... + ... | main.rs:19:5:21:5 | fn add | method |
+| main.rs:77:5:77:5 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:78:5:78:5 | S | main.rs:3:1:4:9 | struct S | path |
+| main.rs:78:9:78:8 | S[0] | main.rs:27:5:29:5 | fn index | method |
