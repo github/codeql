@@ -631,7 +631,7 @@ module JCAModel {
       }
 
       predicate isBarrier(DataFlow::Node node, FlowState state) {
-        exists(CipherInitCall call | node.asExpr() = call.getQualifier() |
+        exists(Init call | node.asExpr() = call.(MethodCall).getQualifier() |
           state instanceof UninitializedFlowState
           or
           state.(InitializedFlowState).getInitCall() != call
