@@ -1,0 +1,1 @@
+| CryptoClassificationTest.java:32:51:32:89 | KeyOperationAlgorithm | RSA-OAEP protocol detected with OAEP padding $@. | CryptoClassificationTest.java:32:51:32:89 | PaddingAlgorithm | PaddingAlgorithm |

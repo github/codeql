@@ -1,0 +1,5 @@
+| CryptoClassificationTest.java:27:47:27:68 | KeyOperationAlgorithm | Insecure block mode $@ detected. | CryptoClassificationTest.java:27:47:27:68 | ModeOfOperation | ECB |
+| CryptoClassificationTest.java:32:51:32:89 | KeyOperationAlgorithm | Insecure block mode $@ detected. | CryptoClassificationTest.java:32:51:32:89 | ModeOfOperation | ECB |
+| CryptoClassificationTest.java:263:47:263:68 | KeyOperationAlgorithm | Insecure block mode $@ detected. | CryptoClassificationTest.java:263:47:263:68 | ModeOfOperation | ECB |
+| CryptoClassificationTest.java:268:47:268:65 | KeyOperationAlgorithm | Insecure block mode $@ detected. | CryptoClassificationTest.java:268:47:268:65 | ModeOfOperation | CFB |
+| CryptoClassificationTest.java:273:47:273:65 | KeyOperationAlgorithm | Insecure block mode $@ detected. | CryptoClassificationTest.java:273:47:273:65 | ModeOfOperation | OFB |

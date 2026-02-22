@@ -1,0 +1,13 @@
+| CryptoClassificationTest.java:27:47:27:68 | PaddingAlgorithm | Padding scheme: PKCS1_v1_5. |
+| CryptoClassificationTest.java:32:51:32:89 | PaddingAlgorithm | Padding scheme: OAEP. |
+| CryptoClassificationTest.java:69:53:69:64 | PaddingAlgorithm | Padding scheme: PSS. |
+| CryptoClassificationTest.java:105:49:105:70 | PaddingAlgorithm | Padding scheme: PSS. |
+| CryptoClassificationTest.java:108:49:108:70 | PaddingAlgorithm | Padding scheme: PSS. |
+| CryptoClassificationTest.java:111:49:111:70 | PaddingAlgorithm | Padding scheme: PSS. |
+| CryptoClassificationTest.java:263:47:263:68 | PaddingAlgorithm | Padding scheme: PKCS7. |
+| CryptoClassificationTest.java:268:47:268:65 | PaddingAlgorithm | Padding scheme: UnknownPadding. |
+| CryptoClassificationTest.java:273:47:273:65 | PaddingAlgorithm | Padding scheme: UnknownPadding. |
+| CryptoClassificationTest.java:299:47:299:65 | PaddingAlgorithm | Padding scheme: UnknownPadding. |
+| CryptoClassificationTest.java:307:47:307:65 | PaddingAlgorithm | Padding scheme: UnknownPadding. |
+| CryptoClassificationTest.java:315:47:315:65 | PaddingAlgorithm | Padding scheme: UnknownPadding. |
+| CryptoClassificationTest.java:324:44:324:65 | PaddingAlgorithm | Padding scheme: PKCS7. |
