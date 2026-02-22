@@ -96,7 +96,15 @@ private Element getAChild(Element p) {
 
 /** An AST node. */
 class AstNode extends Element, TAstNode {
-  AstNode() { this = getAChild*(any(@top_level_exprorstmt_parent p | not p instanceof Attribute)) }
+  AstNode() {
+    exists(@top_level_exprorstmt_parent p | not p instanceof Attribute |
+      this = p
+      or
+      this = getAChild(p)
+    )
+    or
+    this = getAChild(any(AstNode parent))
+  }
 
   int getId() { idOf(this, result) }
 }

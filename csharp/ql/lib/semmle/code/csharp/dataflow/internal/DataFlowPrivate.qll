@@ -7,6 +7,7 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.Conversion
+private import semmle.code.csharp.exprs.internal.Expr
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.Unification
@@ -2377,6 +2378,15 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   storeStepDelegateCall(node1, c, node2)
 }
 
+private predicate isAssignExprLValue(Expr e) {
+  e = any(AssignExpr ae).getLValue()
+  or
+  exists(Expr parent |
+    isAssignExprLValue(parent) and
+    e = parent.getAChildExpr()
+  )
+}
+
 private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
   ReadStepConfiguration() { this = "ReadStepConfiguration" }
 
@@ -2432,7 +2442,7 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     scope =
       any(AssignExpr ae |
         ae = defTo.(AssignableDefinitions::TupleAssignmentDefinition).getAssignment() and
-        e = ae.getLValue().getAChildExpr*().(TupleExpr) and
+        isAssignExprLValue(e.(TupleExpr)) and
         exactScope = false and
         isSuccessor = true
       )
@@ -2488,7 +2498,7 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
       )
       or
       // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
-      te = any(PatternExpr pe).getAChildExpr*() and
+      isPatternExprAncestor(te) and
       exists(AssignableDefinitions::LocalVariableDefinition lvd |
         node2.(AssignableDefinitionNode).getDefinition() = lvd and
         lvd.getDeclaration() = item and

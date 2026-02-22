@@ -142,6 +142,7 @@ private module GuardsInput implements
     }
   }
 
+  pragma[nomagic]
   predicate equalityTest(Expr eqtest, Expr left, Expr right, boolean polarity) {
     exists(ComparisonTest ct |
       ct.getExpr() = eqtest and
@@ -410,6 +411,21 @@ private predicate typePattern(PatternMatch pm, TypePatternExpr tpe, Type t) {
   t = pm.getExpr().getType()
 }
 
+private predicate dereferenceableExpr(Expr e, boolean isNullableType) {
+  exists(Type t | t = e.getType() |
+    t instanceof NullableType and
+    isNullableType = true
+    or
+    t instanceof RefType and
+    isNullableType = false
+  )
+  or
+  exists(Expr parent |
+    dereferenceableExpr(parent, isNullableType) and
+    e = getNullEquivParent(parent)
+  )
+}
+
 /**
  * An expression that evaluates to a value that can be dereferenced. That is,
  * an expression that may evaluate to `null`.
@@ -418,21 +434,12 @@ class DereferenceableExpr extends Expr {
   private boolean isNullableType;
 
   DereferenceableExpr() {
-    exists(Expr e, Type t |
-      // There is currently a bug in the extractor: the type of `x?.Length` is
-      // incorrectly `int`, while it should have been `int?`. We apply
-      // `getNullEquivParent()` as a workaround
-      this = getNullEquivParent*(e) and
-      t = e.getType() and
-      not this instanceof SwitchCaseExpr and
-      not this instanceof PatternExpr
-    |
-      t instanceof NullableType and
-      isNullableType = true
-      or
-      t instanceof RefType and
-      isNullableType = false
-    )
+    // There is currently a bug in the extractor: the type of `x?.Length` is
+    // incorrectly `int`, while it should have been `int?`. We apply
+    // `getNullEquivParent()` as a workaround
+    dereferenceableExpr(this, isNullableType) and
+    not this instanceof SwitchCaseExpr and
+    not this instanceof PatternExpr
   }
 
   /** Holds if this expression has a nullable type `T?`. */
