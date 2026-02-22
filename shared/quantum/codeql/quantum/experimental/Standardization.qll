@@ -338,6 +338,7 @@ module Types {
     DH() or // Diffie-Hellman
     EDH() or // Ephemeral Diffie-Hellman
     ECDH() or // Elliptic Curve Diffie-Hellman
+    ECMQV() or // Elliptic Curve Menezes-Qu-Vanstone
     // NOTE: for now ESDH is considered simply EDH
     //ESDH() or // Ephemeral-Static Diffie-Hellman
     // Note: x25519 and x448 are applications of ECDH
@@ -350,6 +351,8 @@ module Types {
       this = EDH() and result = "EDH"
       or
       this = ECDH() and result = "ECDH"
+      or
+      this = ECMQV() and result = "ECMQV"
       or
       this = OtherKeyAgreementType() and result = "UnknownKeyAgreementType"
     }
