@@ -1,32 +1,35 @@
-| Exhaustive.java:1:14:1:23 | Exceptional Exit | Exhaustive.java:1:14:1:23 | Exit |
+| Exhaustive.java:1:14:1:23 | Entry | Exhaustive.java:1:14:1:23 | { ... } |
 | Exhaustive.java:1:14:1:23 | Normal Exit | Exhaustive.java:1:14:1:23 | Exit |
 | Exhaustive.java:1:14:1:23 | super(...) | Exhaustive.java:1:14:1:23 | Normal Exit |
 | Exhaustive.java:1:14:1:23 | { ... } | Exhaustive.java:1:14:1:23 | super(...) |
-| Exhaustive.java:3:8:3:8 | Exceptional Exit | Exhaustive.java:3:8:3:8 | Exit |
-| Exhaustive.java:3:8:3:8 | Exceptional Exit | Exhaustive.java:3:8:3:8 | Exit |
+| Exhaustive.java:3:8:3:8 | Entry | Exhaustive.java:3:8:3:8 | { ... } |
+| Exhaustive.java:3:8:3:8 | Entry | Exhaustive.java:3:8:3:8 | { ... } |
 | Exhaustive.java:3:8:3:8 | Normal Exit | Exhaustive.java:3:8:3:8 | Exit |
 | Exhaustive.java:3:8:3:8 | Normal Exit | Exhaustive.java:3:8:3:8 | Exit |
 | Exhaustive.java:3:8:3:8 | super(...) | Exhaustive.java:3:8:3:8 | Normal Exit |
 | Exhaustive.java:3:8:3:8 | { ... } | Exhaustive.java:3:8:3:8 | super(...) |
 | Exhaustive.java:3:8:3:8 | { ... } | Exhaustive.java:3:12:3:12 | <Expr>; |
 | Exhaustive.java:3:12:3:12 | ...=... | Exhaustive.java:3:15:3:15 | <Expr>; |
-| Exhaustive.java:3:12:3:12 | <Expr>; | Exhaustive.java:3:12:3:12 | new E(...) |
+| Exhaustive.java:3:12:3:12 | <Expr>; | Exhaustive.java:3:12:3:12 | A |
+| Exhaustive.java:3:12:3:12 | A | Exhaustive.java:3:12:3:12 | new E(...) |
 | Exhaustive.java:3:12:3:12 | new E(...) | Exhaustive.java:3:12:3:12 | ...=... |
 | Exhaustive.java:3:15:3:15 | ...=... | Exhaustive.java:3:18:3:18 | <Expr>; |
-| Exhaustive.java:3:15:3:15 | <Expr>; | Exhaustive.java:3:15:3:15 | new E(...) |
+| Exhaustive.java:3:15:3:15 | <Expr>; | Exhaustive.java:3:15:3:15 | B |
+| Exhaustive.java:3:15:3:15 | B | Exhaustive.java:3:15:3:15 | new E(...) |
 | Exhaustive.java:3:15:3:15 | new E(...) | Exhaustive.java:3:15:3:15 | ...=... |
 | Exhaustive.java:3:18:3:18 | ...=... | Exhaustive.java:3:8:3:8 | Normal Exit |
-| Exhaustive.java:3:18:3:18 | <Expr>; | Exhaustive.java:3:18:3:18 | new E(...) |
+| Exhaustive.java:3:18:3:18 | <Expr>; | Exhaustive.java:3:18:3:18 | C |
+| Exhaustive.java:3:18:3:18 | C | Exhaustive.java:3:18:3:18 | new E(...) |
 | Exhaustive.java:3:18:3:18 | new E(...) | Exhaustive.java:3:18:3:18 | ...=... |
-| Exhaustive.java:5:15:5:15 | Exceptional Exit | Exhaustive.java:5:15:5:15 | Exit |
+| Exhaustive.java:5:15:5:15 | Entry | Exhaustive.java:5:15:5:15 | { ... } |
 | Exhaustive.java:5:15:5:15 | Normal Exit | Exhaustive.java:5:15:5:15 | Exit |
 | Exhaustive.java:5:15:5:15 | super(...) | Exhaustive.java:5:15:5:15 | Normal Exit |
 | Exhaustive.java:5:15:5:15 | { ... } | Exhaustive.java:5:15:5:15 | super(...) |
-| Exhaustive.java:6:15:6:15 | Exceptional Exit | Exhaustive.java:6:15:6:15 | Exit |
+| Exhaustive.java:6:15:6:15 | Entry | Exhaustive.java:6:15:6:15 | { ... } |
 | Exhaustive.java:6:15:6:15 | Normal Exit | Exhaustive.java:6:15:6:15 | Exit |
 | Exhaustive.java:6:15:6:15 | super(...) | Exhaustive.java:6:15:6:15 | Normal Exit |
 | Exhaustive.java:6:15:6:15 | { ... } | Exhaustive.java:6:15:6:15 | super(...) |
-| Exhaustive.java:8:22:8:25 | Exceptional Exit | Exhaustive.java:8:22:8:25 | Exit |
+| Exhaustive.java:8:22:8:25 | Entry | Exhaustive.java:8:47:35:3 | { ... } |
 | Exhaustive.java:8:22:8:25 | Normal Exit | Exhaustive.java:8:22:8:25 | Exit |
 | Exhaustive.java:8:47:35:3 | { ... } | Exhaustive.java:11:5:11:14 | switch (...) |
 | Exhaustive.java:11:5:11:14 | switch (...) | Exhaustive.java:11:13:11:13 | o |
@@ -40,14 +43,17 @@
 | Exhaustive.java:13:25:13:27 | { ... } | Exhaustive.java:18:5:18:14 | switch (...) |
 | Exhaustive.java:18:5:18:14 | switch (...) | Exhaustive.java:18:13:18:13 | e |
 | Exhaustive.java:18:13:18:13 | e | Exhaustive.java:19:7:19:15 | case ... |
-| Exhaustive.java:18:13:18:13 | e | Exhaustive.java:20:7:20:15 | case ... |
-| Exhaustive.java:18:13:18:13 | e | Exhaustive.java:21:7:21:15 | case ... |
-| Exhaustive.java:18:13:18:13 | e | Exhaustive.java:24:5:24:14 | switch (...) |
-| Exhaustive.java:19:7:19:15 | case ... | Exhaustive.java:19:17:19:19 | { ... } |
+| Exhaustive.java:19:7:19:15 | case ... | Exhaustive.java:19:12:19:12 | A |
+| Exhaustive.java:19:7:19:15 | case ... | Exhaustive.java:20:7:20:15 | case ... |
+| Exhaustive.java:19:12:19:12 | A | Exhaustive.java:19:17:19:19 | { ... } |
 | Exhaustive.java:19:17:19:19 | { ... } | Exhaustive.java:24:5:24:14 | switch (...) |
-| Exhaustive.java:20:7:20:15 | case ... | Exhaustive.java:20:17:20:19 | { ... } |
+| Exhaustive.java:20:7:20:15 | case ... | Exhaustive.java:20:12:20:12 | B |
+| Exhaustive.java:20:7:20:15 | case ... | Exhaustive.java:21:7:21:15 | case ... |
+| Exhaustive.java:20:12:20:12 | B | Exhaustive.java:20:17:20:19 | { ... } |
 | Exhaustive.java:20:17:20:19 | { ... } | Exhaustive.java:24:5:24:14 | switch (...) |
-| Exhaustive.java:21:7:21:15 | case ... | Exhaustive.java:21:17:21:19 | { ... } |
+| Exhaustive.java:21:7:21:15 | case ... | Exhaustive.java:21:12:21:12 | C |
+| Exhaustive.java:21:7:21:15 | case ... | Exhaustive.java:24:5:24:14 | switch (...) |
+| Exhaustive.java:21:12:21:12 | C | Exhaustive.java:21:17:21:19 | { ... } |
 | Exhaustive.java:21:17:21:19 | { ... } | Exhaustive.java:24:5:24:14 | switch (...) |
 | Exhaustive.java:24:5:24:14 | switch (...) | Exhaustive.java:24:13:24:13 | i |
 | Exhaustive.java:24:13:24:13 | i | Exhaustive.java:25:7:25:17 | case <Pattern> |
@@ -65,11 +71,11 @@
 | Exhaustive.java:31:14:31:14 | <anonymous local variable> | Exhaustive.java:8:22:8:25 | Normal Exit |
 | Exhaustive.java:32:7:32:15 | case <Pattern> | Exhaustive.java:32:14:32:14 | <anonymous local variable> |
 | Exhaustive.java:32:14:32:14 | <anonymous local variable> | Exhaustive.java:8:22:8:25 | Normal Exit |
-| Test.java:1:14:1:17 | Exceptional Exit | Test.java:1:14:1:17 | Exit |
+| Test.java:1:14:1:17 | Entry | Test.java:1:14:1:17 | { ... } |
 | Test.java:1:14:1:17 | Normal Exit | Test.java:1:14:1:17 | Exit |
 | Test.java:1:14:1:17 | super(...) | Test.java:1:14:1:17 | Normal Exit |
 | Test.java:1:14:1:17 | { ... } | Test.java:1:14:1:17 | super(...) |
-| Test.java:3:22:3:25 | Exceptional Exit | Test.java:3:22:3:25 | Exit |
+| Test.java:3:22:3:25 | Entry | Test.java:3:41:134:3 | { ... } |
 | Test.java:3:22:3:25 | Normal Exit | Test.java:3:22:3:25 | Exit |
 | Test.java:3:41:134:3 | { ... } | Test.java:5:6:5:19 | switch (...) |
 | Test.java:5:6:5:19 | switch (...) | Test.java:5:14:5:18 | thing |
@@ -79,14 +85,12 @@
 | Test.java:6:20:6:20 | s | Test.java:6:25:6:34 | System.out |
 | Test.java:6:25:6:34 | System.out | Test.java:6:44:6:44 | s |
 | Test.java:6:25:6:45 | println(...) | Test.java:11:6:11:19 | switch (...) |
-| Test.java:6:25:6:46 | <Expr>; | Test.java:6:25:6:34 | System.out |
 | Test.java:6:44:6:44 | s | Test.java:6:25:6:45 | println(...) |
 | Test.java:7:8:7:24 | case <Pattern> | Test.java:7:21:7:21 | i |
 | Test.java:7:8:7:24 | case <Pattern> | Test.java:8:8:8:17 | default |
 | Test.java:7:21:7:21 | i | Test.java:7:26:7:35 | System.out |
 | Test.java:7:26:7:35 | System.out | Test.java:7:45:7:58 | "An integer: " |
 | Test.java:7:26:7:63 | println(...) | Test.java:11:6:11:19 | switch (...) |
-| Test.java:7:26:7:64 | <Expr>; | Test.java:7:26:7:35 | System.out |
 | Test.java:7:45:7:58 | "An integer: " | Test.java:7:62:7:62 | i |
 | Test.java:7:45:7:62 | ... + ... | Test.java:7:26:7:63 | println(...) |
 | Test.java:7:62:7:62 | i | Test.java:7:45:7:62 | ... + ... |
@@ -136,19 +140,19 @@
 | Test.java:28:34:28:38 | thing | Test.java:29:8:29:21 | case <Pattern> |
 | Test.java:29:8:29:21 | case <Pattern> | Test.java:29:20:29:20 | s |
 | Test.java:29:8:29:21 | case <Pattern> | Test.java:31:8:31:22 | case <Pattern> |
-| Test.java:29:20:29:20 | s | Test.java:30:10:30:17 | yield ... |
-| Test.java:30:10:30:17 | yield ... | Test.java:30:16:30:16 | s |
-| Test.java:30:16:30:16 | s | Test.java:28:10:28:39 | thingAsString2 |
+| Test.java:29:20:29:20 | s | Test.java:30:16:30:16 | s |
+| Test.java:30:10:30:17 | yield ... | Test.java:28:10:28:39 | thingAsString2 |
+| Test.java:30:16:30:16 | s | Test.java:30:10:30:17 | yield ... |
 | Test.java:31:8:31:22 | case <Pattern> | Test.java:31:21:31:21 | i |
 | Test.java:31:8:31:22 | case <Pattern> | Test.java:33:8:33:15 | default |
-| Test.java:31:21:31:21 | i | Test.java:32:10:32:34 | yield ... |
-| Test.java:32:10:32:34 | yield ... | Test.java:32:16:32:29 | "An integer: " |
+| Test.java:31:21:31:21 | i | Test.java:32:16:32:29 | "An integer: " |
+| Test.java:32:10:32:34 | yield ... | Test.java:28:10:28:39 | thingAsString2 |
 | Test.java:32:16:32:29 | "An integer: " | Test.java:32:33:32:33 | i |
-| Test.java:32:16:32:33 | ... + ... | Test.java:28:10:28:39 | thingAsString2 |
+| Test.java:32:16:32:33 | ... + ... | Test.java:32:10:32:34 | yield ... |
 | Test.java:32:33:32:33 | i | Test.java:32:16:32:33 | ... + ... |
-| Test.java:33:8:33:15 | default | Test.java:34:10:34:32 | yield ... |
-| Test.java:34:10:34:32 | yield ... | Test.java:34:16:34:31 | "Something else" |
-| Test.java:34:16:34:31 | "Something else" | Test.java:28:10:28:39 | thingAsString2 |
+| Test.java:33:8:33:15 | default | Test.java:34:16:34:31 | "Something else" |
+| Test.java:34:10:34:32 | yield ... | Test.java:28:10:28:39 | thingAsString2 |
+| Test.java:34:16:34:31 | "Something else" | Test.java:34:10:34:32 | yield ... |
 | Test.java:37:6:37:18 | switch (...) | Test.java:37:13:37:17 | thing |
 | Test.java:37:13:37:17 | thing | Test.java:38:8:38:42 | case <Pattern> |
 | Test.java:38:8:38:42 | case <Pattern> | Test.java:38:20:38:20 | s |
@@ -195,7 +199,6 @@
 | Test.java:50:41:50:41 | 3 | Test.java:50:27:50:41 | ... == ... |
 | Test.java:50:46:50:55 | System.out | Test.java:50:65:50:74 | "Length 3" |
 | Test.java:50:46:50:75 | println(...) | Test.java:55:6:55:26 | switch (...) |
-| Test.java:50:46:50:76 | <Expr>; | Test.java:50:46:50:55 | System.out |
 | Test.java:50:65:50:74 | "Length 3" | Test.java:50:46:50:75 | println(...) |
 | Test.java:51:8:51:44 | case <Pattern> | Test.java:51:20:51:20 | s |
 | Test.java:51:8:51:44 | case <Pattern> | Test.java:52:8:52:17 | default |
@@ -207,22 +210,22 @@
 | Test.java:51:41:51:41 | 5 | Test.java:51:27:51:41 | ... == ... |
 | Test.java:51:46:51:55 | System.out | Test.java:51:65:51:74 | "Length 5" |
 | Test.java:51:46:51:75 | println(...) | Test.java:55:6:55:26 | switch (...) |
-| Test.java:51:46:51:76 | <Expr>; | Test.java:51:46:51:55 | System.out |
 | Test.java:51:65:51:74 | "Length 5" | Test.java:51:46:51:75 | println(...) |
 | Test.java:52:8:52:17 | default | Test.java:52:19:52:21 | { ... } |
 | Test.java:52:19:52:21 | { ... } | Test.java:55:6:55:26 | switch (...) |
 | Test.java:55:6:55:26 | switch (...) | Test.java:55:21:55:25 | thing |
 | Test.java:55:13:55:25 | (...)... | Test.java:56:8:56:21 | case ... |
-| Test.java:55:13:55:25 | (...)... | Test.java:58:8:58:21 | case ... |
-| Test.java:55:13:55:25 | (...)... | Test.java:61:8:61:42 | case <Pattern> |
-| Test.java:55:13:55:25 | (...)... | Test.java:69:8:69:26 | case null, default |
 | Test.java:55:21:55:25 | thing | Test.java:55:13:55:25 | (...)... |
-| Test.java:56:8:56:21 | case ... | Test.java:57:10:57:44 | <Expr>; |
+| Test.java:56:8:56:21 | case ... | Test.java:56:13:56:20 | "Const1" |
+| Test.java:56:8:56:21 | case ... | Test.java:58:8:58:21 | case ... |
+| Test.java:56:13:56:20 | "Const1" | Test.java:57:10:57:44 | <Expr>; |
 | Test.java:57:10:57:19 | System.out | Test.java:57:29:57:42 | "It's Const1!" |
-| Test.java:57:10:57:43 | println(...) | Test.java:58:8:58:21 | case ... |
+| Test.java:57:10:57:43 | println(...) | Test.java:59:10:59:54 | <Expr>; |
 | Test.java:57:10:57:44 | <Expr>; | Test.java:57:10:57:19 | System.out |
 | Test.java:57:29:57:42 | "It's Const1!" | Test.java:57:10:57:43 | println(...) |
-| Test.java:58:8:58:21 | case ... | Test.java:59:10:59:54 | <Expr>; |
+| Test.java:58:8:58:21 | case ... | Test.java:58:13:58:20 | "Const2" |
+| Test.java:58:8:58:21 | case ... | Test.java:61:8:61:42 | case <Pattern> |
+| Test.java:58:13:58:20 | "Const2" | Test.java:59:10:59:54 | <Expr>; |
 | Test.java:59:10:59:19 | System.out | Test.java:59:29:59:52 | "It's Const1 or Const2!" |
 | Test.java:59:10:59:53 | println(...) | Test.java:60:10:60:15 | break |
 | Test.java:59:10:59:54 | <Expr>; | Test.java:59:10:59:19 | System.out |
@@ -230,27 +233,27 @@
 | Test.java:60:10:60:15 | break | Test.java:73:6:73:18 | switch (...) |
 | Test.java:61:8:61:42 | case <Pattern> | Test.java:61:20:61:20 | s |
 | Test.java:61:8:61:42 | case <Pattern> | Test.java:63:8:63:21 | case ... |
-| Test.java:61:8:61:42 | case <Pattern> | Test.java:66:8:66:22 | case ... |
-| Test.java:61:8:61:42 | case <Pattern> | Test.java:69:8:69:26 | case null, default |
 | Test.java:61:20:61:20 | s | Test.java:61:27:61:27 | s |
 | Test.java:61:27:61:27 | s | Test.java:61:27:61:36 | length(...) |
 | Test.java:61:27:61:36 | length(...) | Test.java:61:41:61:41 | 6 |
 | Test.java:61:27:61:41 | ... <= ... | Test.java:62:10:62:83 | <Expr>; |
 | Test.java:61:27:61:41 | ... <= ... | Test.java:63:8:63:21 | case ... |
-| Test.java:61:27:61:41 | ... <= ... | Test.java:66:8:66:22 | case ... |
-| Test.java:61:27:61:41 | ... <= ... | Test.java:69:8:69:26 | case null, default |
 | Test.java:61:41:61:41 | 6 | Test.java:61:27:61:41 | ... <= ... |
 | Test.java:62:10:62:19 | System.out | Test.java:62:29:62:81 | "It's <= 6 chars long, and neither Const1 nor Const2" |
-| Test.java:62:10:62:82 | println(...) | Test.java:63:8:63:21 | case ... |
+| Test.java:62:10:62:82 | println(...) | Test.java:64:10:64:96 | <Expr>; |
 | Test.java:62:10:62:83 | <Expr>; | Test.java:62:10:62:19 | System.out |
 | Test.java:62:29:62:81 | "It's <= 6 chars long, and neither Const1 nor Const2" | Test.java:62:10:62:82 | println(...) |
-| Test.java:63:8:63:21 | case ... | Test.java:64:10:64:96 | <Expr>; |
+| Test.java:63:8:63:21 | case ... | Test.java:63:13:63:20 | "Const3" |
+| Test.java:63:8:63:21 | case ... | Test.java:66:8:66:22 | case ... |
+| Test.java:63:13:63:20 | "Const3" | Test.java:64:10:64:96 | <Expr>; |
 | Test.java:64:10:64:19 | System.out | Test.java:64:29:64:94 | "It's (<= 6 chars long, and neither Const1 nor Const2), or Const3" |
 | Test.java:64:10:64:95 | println(...) | Test.java:65:10:65:15 | break |
 | Test.java:64:10:64:96 | <Expr>; | Test.java:64:10:64:19 | System.out |
 | Test.java:64:29:64:94 | "It's (<= 6 chars long, and neither Const1 nor Const2), or Const3" | Test.java:64:10:64:95 | println(...) |
 | Test.java:65:10:65:15 | break | Test.java:73:6:73:18 | switch (...) |
-| Test.java:66:8:66:22 | case ... | Test.java:67:10:67:44 | <Expr>; |
+| Test.java:66:8:66:22 | case ... | Test.java:66:13:66:21 | "Const30" |
+| Test.java:66:8:66:22 | case ... | Test.java:69:8:69:26 | case null, default |
+| Test.java:66:13:66:21 | "Const30" | Test.java:67:10:67:44 | <Expr>; |
 | Test.java:67:10:67:19 | System.out | Test.java:67:29:67:42 | "It's Const30" |
 | Test.java:67:10:67:43 | println(...) | Test.java:68:10:68:15 | break |
 | Test.java:67:10:67:44 | <Expr>; | Test.java:67:10:67:19 | System.out |
@@ -263,16 +266,17 @@
 | Test.java:70:29:70:58 | "It's null, or something else" | Test.java:70:10:70:59 | println(...) |
 | Test.java:73:6:73:18 | switch (...) | Test.java:73:13:73:17 | thing |
 | Test.java:73:13:73:17 | thing | Test.java:74:8:74:21 | case <Pattern> |
-| Test.java:73:13:73:17 | thing | Test.java:77:8:77:17 | case ... |
 | Test.java:74:8:74:21 | case <Pattern> | Test.java:74:20:74:20 | s |
-| Test.java:74:8:74:21 | case <Pattern> | Test.java:80:8:80:22 | case <Pattern> |
+| Test.java:74:8:74:21 | case <Pattern> | Test.java:77:8:77:17 | case ... |
 | Test.java:74:20:74:20 | s | Test.java:75:10:75:31 | <Expr>; |
 | Test.java:75:10:75:19 | System.out | Test.java:75:29:75:29 | s |
 | Test.java:75:10:75:30 | println(...) | Test.java:76:10:76:15 | break |
 | Test.java:75:10:75:31 | <Expr>; | Test.java:75:10:75:19 | System.out |
 | Test.java:75:29:75:29 | s | Test.java:75:10:75:30 | println(...) |
 | Test.java:76:10:76:15 | break | Test.java:87:6:87:18 | switch (...) |
-| Test.java:77:8:77:17 | case ... | Test.java:78:10:78:41 | <Expr>; |
+| Test.java:77:8:77:17 | case ... | Test.java:77:13:77:16 | null |
+| Test.java:77:8:77:17 | case ... | Test.java:80:8:80:22 | case <Pattern> |
+| Test.java:77:13:77:16 | null | Test.java:78:10:78:41 | <Expr>; |
 | Test.java:78:10:78:19 | System.out | Test.java:78:29:78:39 | "It's null" |
 | Test.java:78:10:78:40 | println(...) | Test.java:79:10:79:15 | break |
 | Test.java:78:10:78:41 | <Expr>; | Test.java:78:10:78:19 | System.out |
@@ -347,7 +351,7 @@
 | Test.java:110:26:110:30 | thing | Test.java:111:8:111:20 | case <Pattern> |
 | Test.java:111:8:111:20 | case <Pattern> | Test.java:111:15:111:15 | <anonymous local variable> |
 | Test.java:111:8:111:20 | case <Pattern> | Test.java:112:8:112:77 | case <Pattern> |
-| Test.java:111:13:111:19 | B(...) | Test.java:114:10:114:17 | yield ... |
+| Test.java:111:13:111:19 | B(...) | Test.java:114:16:114:16 | 1 |
 | Test.java:111:15:111:15 | <anonymous local variable> | Test.java:111:18:111:18 | <anonymous local variable> |
 | Test.java:111:18:111:18 | <anonymous local variable> | Test.java:111:13:111:19 | B(...) |
 | Test.java:112:8:112:77 | case <Pattern> | Test.java:112:21:112:21 | <anonymous local variable> |
@@ -362,32 +366,34 @@
 | Test.java:112:47:112:51 | thing | Test.java:112:47:112:62 | toString(...) |
 | Test.java:112:47:112:62 | toString(...) | Test.java:112:71:112:75 | "abc" |
 | Test.java:112:47:112:76 | equals(...) | Test.java:113:8:113:20 | case <Pattern> |
-| Test.java:112:47:112:76 | equals(...) | Test.java:114:10:114:17 | yield ... |
+| Test.java:112:47:112:76 | equals(...) | Test.java:114:16:114:16 | 1 |
 | Test.java:112:71:112:75 | "abc" | Test.java:112:47:112:76 | equals(...) |
 | Test.java:113:8:113:20 | case <Pattern> | Test.java:113:19:113:19 | <anonymous local variable> |
 | Test.java:113:8:113:20 | case <Pattern> | Test.java:115:8:115:15 | default |
-| Test.java:113:19:113:19 | <anonymous local variable> | Test.java:114:10:114:17 | yield ... |
-| Test.java:114:10:114:17 | yield ... | Test.java:114:16:114:16 | 1 |
-| Test.java:114:16:114:16 | 1 | Test.java:110:10:110:31 | result |
-| Test.java:115:8:115:15 | default | Test.java:116:10:116:17 | yield ... |
-| Test.java:116:10:116:17 | yield ... | Test.java:116:16:116:16 | 2 |
-| Test.java:116:16:116:16 | 2 | Test.java:110:10:110:31 | result |
+| Test.java:113:19:113:19 | <anonymous local variable> | Test.java:114:16:114:16 | 1 |
+| Test.java:114:10:114:17 | yield ... | Test.java:110:10:110:31 | result |
+| Test.java:114:16:114:16 | 1 | Test.java:114:10:114:17 | yield ... |
+| Test.java:115:8:115:15 | default | Test.java:116:16:116:16 | 2 |
+| Test.java:116:10:116:17 | yield ... | Test.java:110:10:110:31 | result |
+| Test.java:116:16:116:16 | 2 | Test.java:116:10:116:17 | yield ... |
 | Test.java:119:6:119:27 | switch (...) | Test.java:119:22:119:26 | thing |
 | Test.java:119:14:119:26 | (...)... | Test.java:120:8:120:16 | case ... |
-| Test.java:119:14:119:26 | (...)... | Test.java:121:8:121:56 | case <Pattern> |
 | Test.java:119:22:119:26 | thing | Test.java:119:14:119:26 | (...)... |
-| Test.java:120:8:120:16 | case ... | Test.java:122:8:122:16 | case ... |
+| Test.java:120:8:120:16 | case ... | Test.java:120:13:120:15 | "a" |
+| Test.java:120:8:120:16 | case ... | Test.java:121:8:121:56 | case <Pattern> |
+| Test.java:120:13:120:15 | "a" | Test.java:123:10:123:15 | break |
 | Test.java:121:8:121:56 | case <Pattern> | Test.java:121:20:121:20 | <anonymous local variable> |
 | Test.java:121:8:121:56 | case <Pattern> | Test.java:122:8:122:16 | case ... |
-| Test.java:121:8:121:56 | case <Pattern> | Test.java:124:8:124:15 | default |
 | Test.java:121:20:121:20 | <anonymous local variable> | Test.java:121:36:121:40 | thing |
 | Test.java:121:27:121:50 | length(...) | Test.java:121:55:121:55 | 5 |
 | Test.java:121:27:121:55 | ... == ... | Test.java:122:8:122:16 | case ... |
-| Test.java:121:27:121:55 | ... == ... | Test.java:124:8:124:15 | default |
+| Test.java:121:27:121:55 | ... == ... | Test.java:123:10:123:15 | break |
 | Test.java:121:28:121:40 | (...)... | Test.java:121:27:121:50 | length(...) |
 | Test.java:121:36:121:40 | thing | Test.java:121:28:121:40 | (...)... |
 | Test.java:121:55:121:55 | 5 | Test.java:121:27:121:55 | ... == ... |
-| Test.java:122:8:122:16 | case ... | Test.java:123:10:123:15 | break |
+| Test.java:122:8:122:16 | case ... | Test.java:122:13:122:15 | "b" |
+| Test.java:122:8:122:16 | case ... | Test.java:124:8:124:15 | default |
+| Test.java:122:13:122:15 | "b" | Test.java:123:10:123:15 | break |
 | Test.java:123:10:123:15 | break | Test.java:129:6:129:18 | switch (...) |
 | Test.java:124:8:124:15 | default | Test.java:125:10:125:15 | break |
 | Test.java:125:10:125:15 | break | Test.java:129:6:129:18 | switch (...) |
@@ -395,29 +401,33 @@
 | Test.java:129:13:129:17 | thing | Test.java:130:8:130:21 | case <Pattern> |
 | Test.java:130:8:130:21 | case <Pattern> | Test.java:130:20:130:20 | <anonymous local variable> |
 | Test.java:130:8:130:21 | case <Pattern> | Test.java:131:8:131:15 | default |
-| Test.java:130:20:130:20 | <anonymous local variable> | Test.java:131:8:131:15 | default |
+| Test.java:130:20:130:20 | <anonymous local variable> | Test.java:3:22:3:25 | Normal Exit |
 | Test.java:131:8:131:15 | default | Test.java:3:22:3:25 | Normal Exit |
 | Test.java:138:8:138:8 | ...=... | Test.java:138:8:138:8 | <Expr>; |
 | Test.java:138:8:138:8 | ...=... | Test.java:138:8:138:8 | Normal Exit |
 | Test.java:138:8:138:8 | <Expr>; | Test.java:138:8:138:8 | this |
 | Test.java:138:8:138:8 | <Expr>; | Test.java:138:8:138:8 | this |
-| Test.java:138:8:138:8 | Exceptional Exit | Test.java:138:8:138:8 | Exit |
+| Test.java:138:8:138:8 | Entry | Test.java:138:8:138:8 | { ... } |
 | Test.java:138:8:138:8 | Normal Exit | Test.java:138:8:138:8 | Exit |
 | Test.java:138:8:138:8 | b | Test.java:138:8:138:8 | ...=... |
 | Test.java:138:8:138:8 | field3 | Test.java:138:8:138:8 | ...=... |
 | Test.java:138:8:138:8 | super(...) | Test.java:138:8:138:8 | <Expr>; |
-| Test.java:138:8:138:8 | this | Test.java:138:8:138:8 | b |
-| Test.java:138:8:138:8 | this | Test.java:138:8:138:8 | field3 |
+| Test.java:138:8:138:8 | this | Test.java:138:8:138:8 | this.b |
+| Test.java:138:8:138:8 | this | Test.java:138:8:138:8 | this.field3 |
+| Test.java:138:8:138:8 | this.b | Test.java:138:8:138:8 | b |
+| Test.java:138:8:138:8 | this.field3 | Test.java:138:8:138:8 | field3 |
 | Test.java:138:8:138:8 | { ... } | Test.java:138:8:138:8 | super(...) |
 | Test.java:139:8:139:8 | ...=... | Test.java:139:8:139:8 | <Expr>; |
 | Test.java:139:8:139:8 | ...=... | Test.java:139:8:139:8 | Normal Exit |
 | Test.java:139:8:139:8 | <Expr>; | Test.java:139:8:139:8 | this |
 | Test.java:139:8:139:8 | <Expr>; | Test.java:139:8:139:8 | this |
-| Test.java:139:8:139:8 | Exceptional Exit | Test.java:139:8:139:8 | Exit |
+| Test.java:139:8:139:8 | Entry | Test.java:139:8:139:8 | { ... } |
 | Test.java:139:8:139:8 | Normal Exit | Test.java:139:8:139:8 | Exit |
 | Test.java:139:8:139:8 | field1 | Test.java:139:8:139:8 | ...=... |
 | Test.java:139:8:139:8 | field2 | Test.java:139:8:139:8 | ...=... |
 | Test.java:139:8:139:8 | super(...) | Test.java:139:8:139:8 | <Expr>; |
-| Test.java:139:8:139:8 | this | Test.java:139:8:139:8 | field1 |
-| Test.java:139:8:139:8 | this | Test.java:139:8:139:8 | field2 |
+| Test.java:139:8:139:8 | this | Test.java:139:8:139:8 | this.field1 |
+| Test.java:139:8:139:8 | this | Test.java:139:8:139:8 | this.field2 |
+| Test.java:139:8:139:8 | this.field1 | Test.java:139:8:139:8 | field1 |
+| Test.java:139:8:139:8 | this.field2 | Test.java:139:8:139:8 | field2 |
 | Test.java:139:8:139:8 | { ... } | Test.java:139:8:139:8 | super(...) |

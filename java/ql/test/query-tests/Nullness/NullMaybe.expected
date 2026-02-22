@@ -26,6 +26,7 @@
 | B.java:487:9:487:9 | x | Variable $@ may be null at this access because of $@ assignment. | B.java:476:5:476:20 | Object x | x | B.java:476:12:476:19 | x | this |
 | B.java:516:5:516:5 | o | Variable $@ may be null at this access as suggested by $@ null guard. | B.java:511:25:511:32 | o | o | B.java:512:22:512:30 | ... == ... | this |
 | B.java:535:7:535:8 | s2 | Variable $@ may be null at this access because of $@ assignment. | B.java:523:5:523:21 | String s2 | s2 | B.java:523:12:523:20 | s2 | this |
+| B.java:537:5:537:6 | s1 | Variable $@ may be null at this access because of $@ assignment. | B.java:522:5:522:21 | String s1 | s1 | B.java:522:12:522:20 | s1 | this |
 | C.java:9:44:9:45 | a2 | Variable $@ may be null at this access as suggested by $@ null guard. | C.java:6:5:6:23 | long[][] a2 | a2 | C.java:7:34:7:54 | ... != ... | this |
 | C.java:9:44:9:45 | a2 | Variable $@ may be null at this access because of $@ assignment. | C.java:6:5:6:23 | long[][] a2 | a2 | C.java:6:14:6:22 | a2 | this |
 | C.java:10:17:10:18 | a3 | Variable $@ may be null at this access as suggested by $@ null guard. | C.java:8:5:8:21 | long[] a3 | a3 | C.java:9:38:9:58 | ... != ... | this |

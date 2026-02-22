@@ -25,7 +25,7 @@ public class Test {
 
     switch(i) {
       case C1 c1 -> { }
-      case null, default -> i.take(source()); // Can't call C1.take (but we don't currently notice)
+      case null, default -> i.take(source()); // Can't call C1.take
     }
 
     switch(i) {
@@ -55,7 +55,7 @@ public class Test {
 
     switch(i) {
       case C1 c1: break;
-      case null: default: i.take(source()); // Can't call C1.take (but we don't currently notice)
+      case null: default: i.take(source()); // Can't call C1.take
     }
 
     switch(i) {

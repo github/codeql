@@ -1245,6 +1245,9 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   /** Gets the immediately enclosing statement of this class instance creation expression. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
+  /** Gets the `ControlFlowNode` corresponding to this call. */
+  override ControlFlowNode getControlFlowNode() { result = Expr.super.getControlFlowNode() }
+
   /** Gets a printable representation of this expression. */
   override string toString() {
     result = "new " + this.getConstructor().getName() + "(...)"
@@ -2113,6 +2116,9 @@ class MethodCall extends Expr, Call, @methodaccess {
   /** Gets the immediately enclosing statement that contains this method access. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
+  /** Gets the `ControlFlowNode` corresponding to this call. */
+  override ControlFlowNode getControlFlowNode() { result = Expr.super.getControlFlowNode() }
+
   /** Gets a printable representation of this expression. */
   override string toString() {
     if exists(this.getMethod())
@@ -2304,6 +2310,9 @@ class Call extends ExprParent, @caller {
 
   /** Gets the enclosing statement of this call. */
   /*abstract*/ Stmt getEnclosingStmt() { none() }
+
+  /** Gets the `ControlFlowNode` corresponding to this call. */
+  /*abstract*/ ControlFlowNode getControlFlowNode() { none() }
 
   /** Gets the number of arguments provided in this call. */
   int getNumArgument() { count(this.getAnArgument()) = result }
