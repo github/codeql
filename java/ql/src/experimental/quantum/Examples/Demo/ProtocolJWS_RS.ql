@@ -18,7 +18,7 @@ where
   alg = sigOp.getAKnownAlgorithm() and
   alg.getAlgorithmType() = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA()) and
   // No PSS padding — implies PKCS#1 v1.5
-  not alg.getPaddingAlgorithm() instanceof Crypto::PSSPaddingAlgorithmNode and
+  not alg.getPaddingAlgorithm() instanceof Crypto::PssPaddingAlgorithmNode and
   // Hash is SHA-2 with standard JWS digest lengths
   hash = sigOp.getHashAlgorithm() and
   hash.getHashType() = Crypto::SHA2() and

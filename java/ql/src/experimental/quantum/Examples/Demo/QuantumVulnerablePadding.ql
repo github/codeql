@@ -14,14 +14,14 @@ from Crypto::PaddingAlgorithmNode pad, string msg
 where
   isQuantumVulnerablePaddingType(pad.getPaddingType()) and
   (
-    pad instanceof Crypto::PSSPaddingAlgorithmNode and
+    pad instanceof Crypto::PssPaddingAlgorithmNode and
     msg = "Quantum-vulnerable PSS padding scheme detected."
     or
-    pad instanceof Crypto::OAEPPaddingAlgorithmNode and
+    pad instanceof Crypto::OaepPaddingAlgorithmNode and
     msg = "Quantum-vulnerable OAEP padding scheme detected."
     or
-    not pad instanceof Crypto::PSSPaddingAlgorithmNode and
-    not pad instanceof Crypto::OAEPPaddingAlgorithmNode and
+    not pad instanceof Crypto::PssPaddingAlgorithmNode and
+    not pad instanceof Crypto::OaepPaddingAlgorithmNode and
     msg = "Quantum-vulnerable padding scheme: " + pad.getPaddingType().toString() + "."
   )
 select pad, msg

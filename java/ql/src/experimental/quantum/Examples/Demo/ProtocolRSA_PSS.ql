@@ -11,7 +11,7 @@
 import experimental.quantum.Language
 import Crypto::KeyOpAlg as KeyOpAlg
 
-from Crypto::KeyOperationAlgorithmNode alg, Crypto::PSSPaddingAlgorithmNode pss
+from Crypto::KeyOperationAlgorithmNode alg, Crypto::PssPaddingAlgorithmNode pss
 where
   alg.getAlgorithmType() = KeyOpAlg::TAsymmetricCipher(KeyOpAlg::RSA()) and
   pss = alg.getPaddingAlgorithm()

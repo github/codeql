@@ -2155,16 +2155,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getRawAlgorithmName() { result = instance.getRawPaddingAlgorithmName() }
   }
 
-  class OAEPPaddingAlgorithmNode extends PaddingAlgorithmNode {
+  class OaepPaddingAlgorithmNode extends PaddingAlgorithmNode {
     override OaepPaddingAlgorithmInstance instance;
 
-    OAEPPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
+    OaepPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
 
-    HashAlgorithmNode getOAEPEncodingHashAlgorithm() {
+    HashAlgorithmNode getOaepEncodingHashAlgorithm() {
       result.asElement() = instance.getOaepEncodingHashAlgorithm()
     }
 
-    HashAlgorithmNode getMGF1HashAlgorithm() {
+    HashAlgorithmNode getMgf1HashAlgorithm() {
       result.asElement() = instance.getMgf1HashAlgorithm()
     }
 
@@ -2173,26 +2173,26 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "MD" and
-      if exists(this.getOAEPEncodingHashAlgorithm())
-      then result = this.getOAEPEncodingHashAlgorithm()
+      if exists(this.getOaepEncodingHashAlgorithm())
+      then result = this.getOaepEncodingHashAlgorithm()
       else result = this
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "MGF1Hash" and
-      if exists(this.getMGF1HashAlgorithm())
-      then result = this.getMGF1HashAlgorithm()
+      if exists(this.getMgf1HashAlgorithm())
+      then result = this.getMgf1HashAlgorithm()
       else result = this
     }
   }
 
-  class PSSPaddingAlgorithmNode extends PaddingAlgorithmNode {
+  class PssPaddingAlgorithmNode extends PaddingAlgorithmNode {
     override PssPaddingAlgorithmInstance instance;
 
-    PSSPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
+    PssPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
 
-    HashAlgorithmNode getPSSHashAlgorithm() { result.asElement() = instance.getHashAlgorithm() }
+    HashAlgorithmNode getPssHashAlgorithm() { result.asElement() = instance.getHashAlgorithm() }
 
-    HashAlgorithmNode getMGF1HashAlgorithm() {
+    HashAlgorithmNode getMgf1HashAlgorithm() {
       result.asElement() = instance.getMgf1HashAlgorithm()
     }
 
@@ -2201,14 +2201,14 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "MD" and
-      if exists(this.getPSSHashAlgorithm())
-      then result = this.getPSSHashAlgorithm()
+      if exists(this.getPssHashAlgorithm())
+      then result = this.getPssHashAlgorithm()
       else result = this
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "MGF1Hash" and
-      if exists(this.getMGF1HashAlgorithm())
-      then result = this.getMGF1HashAlgorithm()
+      if exists(this.getMgf1HashAlgorithm())
+      then result = this.getMgf1HashAlgorithm()
       else result = this
     }
   }

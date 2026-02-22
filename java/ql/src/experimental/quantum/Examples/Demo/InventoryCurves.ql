@@ -12,7 +12,7 @@ import experimental.quantum.Language
 
 from Crypto::EllipticCurveNode c, string detail
 where
-  if exists(string ks | c.properties("KeySize", ks, _))
+  if c.properties("KeySize", _, _)
   then
     exists(string ks |
       c.properties("KeySize", ks, _) and

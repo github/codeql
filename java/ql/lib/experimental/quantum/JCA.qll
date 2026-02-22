@@ -1954,9 +1954,9 @@ module JCAModel {
       result = this
       or
       // Explicit PSS hash from PSSParameterSpec via Signature.setParameter()
-      exists(PSSParameterSpecInstantiation spec |
+      exists(PssParameterSpecInstantiation spec |
         pssSpecForSignatureLiteral(spec, this) and
-        result.(PSSParameterSpecDigestHashAlgorithmInstance).getSpec() = spec
+        result.(PssParameterSpecDigestHashAlgorithmInstance).getSpec() = spec
       )
     }
 
@@ -1965,9 +1965,9 @@ module JCAModel {
       result = this
       or
       // Explicit MGF1 hash from PSSParameterSpec via Signature.setParameter()
-      exists(PSSParameterSpecInstantiation spec |
+      exists(PssParameterSpecInstantiation spec |
         pssSpecForSignatureLiteral(spec, this) and
-        result.(PSSParameterSpecMgf1HashAlgorithmInstance).getSpec() = spec
+        result.(PssParameterSpecMgf1HashAlgorithmInstance).getSpec() = spec
       )
     }
   }
@@ -1976,8 +1976,8 @@ module JCAModel {
    * A PSSParameterSpec instantiation, e.g.,
    * new PSSParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, 32, 1)
    */
-  class PSSParameterSpecInstantiation extends ClassInstanceExpr {
-    PSSParameterSpecInstantiation() {
+  class PssParameterSpecInstantiation extends ClassInstanceExpr {
+    PssParameterSpecInstantiation() {
       this.getConstructedType().hasQualifiedName("java.security.spec", "PSSParameterSpec")
     }
 
@@ -1999,8 +1999,8 @@ module JCAModel {
    * `MGF1ParameterSpec.SHA256`. These fields represent well-known MGF1 hash
    * algorithm configurations.
    */
-  class MGF1ParameterSpecFieldAccess extends FieldAccess {
-    MGF1ParameterSpecFieldAccess() {
+  class Mgf1ParameterSpecFieldAccess extends FieldAccess {
+    Mgf1ParameterSpecFieldAccess() {
       this.getField().getDeclaringType().hasQualifiedName("java.security.spec", "MGF1ParameterSpec") and
       this.getField().isStatic()
     }
@@ -2030,18 +2030,18 @@ module JCAModel {
    *
    * Type resolution delegates to hash_name_to_type_known from Standardization.
    */
-  class PSSParameterSpecDigestHashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof JavaConstant
+  class PssParameterSpecDigestHashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof JavaConstant
   {
-    PSSParameterSpecInstantiation spec;
+    PssParameterSpecInstantiation spec;
 
-    PSSParameterSpecDigestHashAlgorithmInstance() {
+    PssParameterSpecDigestHashAlgorithmInstance() {
       this = spec.getDigestAlgorithmArg() and
       // Only instantiate when the value resolves to a known hash type
       exists(hash_name_to_type_known(super.getValue(), _))
     }
 
     /** Gets the PSSParameterSpec this digest hash belongs to. */
-    PSSParameterSpecInstantiation getSpec() { result = spec }
+    PssParameterSpecInstantiation getSpec() { result = spec }
 
     override string getRawHashAlgorithmName() { result = super.getValue() }
 
@@ -2062,12 +2062,12 @@ module JCAModel {
    * The field name is normalized to a standard hash algorithm name (e.g.,
    * SHA256 -> SHA-256), then type resolution delegates to hash_name_to_type_known.
    */
-  class PSSParameterSpecMgf1HashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof MGF1ParameterSpecFieldAccess
+  class PssParameterSpecMgf1HashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof Mgf1ParameterSpecFieldAccess
   {
-    PSSParameterSpecInstantiation spec;
+    PssParameterSpecInstantiation spec;
     string normalizedName;
 
-    PSSParameterSpecMgf1HashAlgorithmInstance() {
+    PssParameterSpecMgf1HashAlgorithmInstance() {
       this = spec.getMgfSpecArg() and
       normalizedName = super.getHashAlgorithmName() and
       // Only instantiate when the normalized name resolves to a known hash type
@@ -2075,7 +2075,7 @@ module JCAModel {
     }
 
     /** Gets the PSSParameterSpec this MGF1 hash belongs to. */
-    PSSParameterSpecInstantiation getSpec() { result = spec }
+    PssParameterSpecInstantiation getSpec() { result = spec }
 
     override string getRawHashAlgorithmName() { result = super.getField().getName() }
 
@@ -2219,15 +2219,15 @@ module JCAModel {
   /**
    * Flow from `PSSParameterSpec` instantiation to `Signature.setParameter()` argument.
    */
-  module PSSSpecToSetParameterConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof PSSParameterSpecInstantiation }
+  module PssSpecToSetParameterConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof PssParameterSpecInstantiation }
 
     predicate isSink(DataFlow::Node sink) {
       exists(SignatureSetParameterCall c | sink.asExpr() = c.getParameterSpecArg())
     }
   }
 
-  module PSSSpecToSetParameterFlow = DataFlow::Global<PSSSpecToSetParameterConfig>;
+  module PssSpecToSetParameterFlow = DataFlow::Global<PssSpecToSetParameterConfig>;
 
   /**
    * Connects a PSSParameterSpec instantiation to the signature PSS padding literal
@@ -2239,7 +2239,7 @@ module JCAModel {
    * 3. The PSSParameterSpec flows to the same setParameter's argument
    */
   private predicate pssSpecForSignatureLiteral(
-    PSSParameterSpecInstantiation spec, SignaturePssPaddingAlgorithmInstance literal
+    PssParameterSpecInstantiation spec, SignaturePssPaddingAlgorithmInstance literal
   ) {
     exists(
       SignatureSetParameterCall setParam, SignatureGetInstanceCall getInstance,
@@ -2249,7 +2249,7 @@ module JCAModel {
       consumer = getInstance.getAlgorithmArg() and
       SignatureToSetParameterFlow::flow(DataFlow::exprNode(getInstance),
         DataFlow::exprNode(setParam.getQualifier())) and
-      PSSSpecToSetParameterFlow::flow(DataFlow::exprNode(spec),
+      PssSpecToSetParameterFlow::flow(DataFlow::exprNode(spec),
         DataFlow::exprNode(setParam.getParameterSpecArg()))
     )
   }

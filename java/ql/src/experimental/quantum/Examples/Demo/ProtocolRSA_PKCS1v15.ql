@@ -21,7 +21,7 @@ where
     or
     // RSA signature without PSS — implies PKCS#1 v1.5 (e.g., SHA256withRSA)
     exists(Crypto::SignatureOperationNode sigOp | alg = sigOp.getAKnownAlgorithm()) and
-    not alg.getPaddingAlgorithm() instanceof Crypto::PSSPaddingAlgorithmNode and
+    not alg.getPaddingAlgorithm() instanceof Crypto::PssPaddingAlgorithmNode and
     variant = "implicit PKCS#1 v1.5 (RSA signature without PSS)"
   )
 select alg, "RSA PKCS#1 v1.5 protocol detected: " + variant + "."
