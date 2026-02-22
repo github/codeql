@@ -9,6 +9,7 @@ private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowImplSpecific
 private import codeql.ruby.Frameworks
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Regexp as RE
@@ -93,6 +94,10 @@ module SqlSanitization {
    * A data-flow node that performs SQL sanitization.
    */
   abstract class Range extends DataFlow::Node { }
+}
+
+private class ExternalSqlInjectionSanitizer extends SqlSanitization::Range {
+  ExternalSqlInjectionSanitizer() { ModelOutput::barrierNode(this, "sql-injection") }
 }
 
 /**

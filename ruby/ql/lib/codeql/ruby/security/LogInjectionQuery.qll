@@ -67,6 +67,10 @@ class HtmlEscapingAsSanitizer extends Sanitizer {
   HtmlEscapingAsSanitizer() { this = any(HtmlEscaping esc).getOutput() }
 }
 
+private class ExternalLogInjectionSanitizer extends Sanitizer {
+  ExternalLogInjectionSanitizer() { ModelOutput::barrierNode(this, "log-injection") }
+}
+
 private module LogInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
