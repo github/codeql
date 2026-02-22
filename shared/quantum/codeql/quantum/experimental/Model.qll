@@ -2190,9 +2190,7 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
 
     PSSPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
 
-    HashAlgorithmNode getPSSHashAlgorithm() {
-      result.asElement() = instance.getHashAlgorithm()
-    }
+    HashAlgorithmNode getPSSHashAlgorithm() { result.asElement() = instance.getHashAlgorithm() }
 
     HashAlgorithmNode getMGF1HashAlgorithm() {
       result.asElement() = instance.getMgf1HashAlgorithm()

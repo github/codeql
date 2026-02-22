@@ -23,6 +23,5 @@ where
       kaAlg = alg and isQuantumVulnerableKeyAgreementType(kaAlg.getKeyAgreementType())
     )
   )
-select keygen,
-  "Quantum-vulnerable key size (" + keySize.toString() + " bits) for algorithm $@.", alg,
-  alg.getAlgorithmName()
+select keygen, "Quantum-vulnerable key size (" + keySize.toString() + " bits) for algorithm $@.",
+  alg, alg.getAlgorithmName()

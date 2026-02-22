@@ -27,10 +27,9 @@ module JCAModel {
   predicate cipher_names(string algo) {
     algo.toUpperCase()
         .matches([
-            "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "ARIA", "Blowfish", "Camellia",
-            "ChaCha20", "ChaCha20-Poly1305", "DES", "DESede", "DESedeWrap", "ECIES",
-            "PBEWith%", "RC2", "RC4", "RC5", "RSA", "Salsa20", "SEED", "Skipjack", "Idea",
-            "Twofish"
+            "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "ARIA", "Blowfish", "Camellia", "ChaCha20",
+            "ChaCha20-Poly1305", "DES", "DESede", "DESedeWrap", "ECIES", "PBEWith%", "RC2", "RC4",
+            "RC5", "RSA", "Salsa20", "SEED", "Skipjack", "Idea", "Twofish"
           ].toUpperCase())
   }
 
@@ -204,7 +203,8 @@ module JCAModel {
       upper.matches("DESEDE%") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
       or
-      not upper.matches("DESEDE%") and upper.matches("DES%") and
+      not upper.matches("DESEDE%") and
+      upper.matches("DES%") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
       upper = "TRIPLEDES" and
@@ -1879,9 +1879,7 @@ module JCAModel {
 
     override Crypto::ModeOfOperationAlgorithmInstance getModeOfOperationAlgorithm() { none() }
 
-    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() {
-      result = this
-    }
+    override Crypto::PaddingAlgorithmInstance getPaddingAlgorithm() { result = this }
 
     override predicate shouldHaveModeOfOperation() { none() }
 
@@ -1984,24 +1982,16 @@ module JCAModel {
     }
 
     /** Gets the digest algorithm name argument (arg 0). */
-    Expr getDigestAlgorithmArg() {
-      result = this.getArgument(0)
-    }
+    Expr getDigestAlgorithmArg() { result = this.getArgument(0) }
 
     /** Gets the MGF algorithm name argument (arg 1). */
-    Expr getMgfAlgorithmArg() {
-      result = this.getArgument(1)
-    }
+    Expr getMgfAlgorithmArg() { result = this.getArgument(1) }
 
     /** Gets the salt length argument (arg 3). */
-    Expr getSaltLengthArg() {
-      result = this.getArgument(3)
-    }
+    Expr getSaltLengthArg() { result = this.getArgument(3) }
 
     /** Gets the MGF parameter spec argument (arg 2), e.g., MGF1ParameterSpec.SHA256. */
-    Expr getMgfSpecArg() {
-      result = this.getArgument(2)
-    }
+    Expr getMgfSpecArg() { result = this.getArgument(2) }
   }
 
   /**
@@ -2011,9 +2001,7 @@ module JCAModel {
    */
   class MGF1ParameterSpecFieldAccess extends FieldAccess {
     MGF1ParameterSpecFieldAccess() {
-      this.getField()
-          .getDeclaringType()
-          .hasQualifiedName("java.security.spec", "MGF1ParameterSpec") and
+      this.getField().getDeclaringType().hasQualifiedName("java.security.spec", "MGF1ParameterSpec") and
       this.getField().isStatic()
     }
 
@@ -2042,8 +2030,7 @@ module JCAModel {
    *
    * Type resolution delegates to hash_name_to_type_known from Standardization.
    */
-  class PSSParameterSpecDigestHashAlgorithmInstance extends Crypto::HashAlgorithmInstance
-    instanceof JavaConstant
+  class PSSParameterSpecDigestHashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof JavaConstant
   {
     PSSParameterSpecInstantiation spec;
 
@@ -2075,8 +2062,7 @@ module JCAModel {
    * The field name is normalized to a standard hash algorithm name (e.g.,
    * SHA256 -> SHA-256), then type resolution delegates to hash_name_to_type_known.
    */
-  class PSSParameterSpecMgf1HashAlgorithmInstance extends Crypto::HashAlgorithmInstance
-    instanceof MGF1ParameterSpecFieldAccess
+  class PSSParameterSpecMgf1HashAlgorithmInstance extends Crypto::HashAlgorithmInstance instanceof MGF1ParameterSpecFieldAccess
   {
     PSSParameterSpecInstantiation spec;
     string normalizedName;
@@ -2093,13 +2079,9 @@ module JCAModel {
 
     override string getRawHashAlgorithmName() { result = super.getField().getName() }
 
-    override Crypto::THashType getHashType() {
-      result = hash_name_to_type_known(normalizedName, _)
-    }
+    override Crypto::THashType getHashType() { result = hash_name_to_type_known(normalizedName, _) }
 
-    override int getFixedDigestLength() {
-      exists(hash_name_to_type_known(normalizedName, result))
-    }
+    override int getFixedDigestLength() { exists(hash_name_to_type_known(normalizedName, result)) }
   }
 
   class SignatureInitCall extends MethodCall {
@@ -2119,9 +2101,11 @@ module JCAModel {
    */
   class SignatureSetParameterCall extends MethodCall {
     SignatureSetParameterCall() {
+      this.getMethod().hasQualifiedName("java.security", "Signature", "setParameter") and
       this.getMethod()
-          .hasQualifiedName("java.security", "Signature", "setParameter") and
-      this.getMethod().getParameterType(0).(RefType).hasQualifiedName("java.security.spec", "AlgorithmParameterSpec")
+          .getParameterType(0)
+          .(RefType)
+          .hasQualifiedName("java.security.spec", "AlgorithmParameterSpec")
     }
 
     /** Gets the AlgorithmParameterSpec argument. */
@@ -2236,9 +2220,7 @@ module JCAModel {
    * Flow from `PSSParameterSpec` instantiation to `Signature.setParameter()` argument.
    */
   module PSSSpecToSetParameterConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node src) {
-      src.asExpr() instanceof PSSParameterSpecInstantiation
-    }
+    predicate isSource(DataFlow::Node src) { src.asExpr() instanceof PSSParameterSpecInstantiation }
 
     predicate isSink(DataFlow::Node sink) {
       exists(SignatureSetParameterCall c | sink.asExpr() = c.getParameterSpecArg())
@@ -2260,8 +2242,7 @@ module JCAModel {
     PSSParameterSpecInstantiation spec, SignaturePssPaddingAlgorithmInstance literal
   ) {
     exists(
-      SignatureSetParameterCall setParam,
-      SignatureGetInstanceCall getInstance,
+      SignatureSetParameterCall setParam, SignatureGetInstanceCall getInstance,
       SignatureGetInstanceAlgorithmValueConsumer consumer
     |
       consumer = literal.getConsumer() and

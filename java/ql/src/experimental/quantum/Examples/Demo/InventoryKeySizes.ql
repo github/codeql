@@ -14,6 +14,5 @@ from Crypto::KeyCreationOperationNode keygen, Crypto::AlgorithmNode alg, int key
 where
   alg = keygen.getAKnownAlgorithm() and
   keygen.getAKeySizeSource().asElement().(Literal).getValue().toInt() = keySize
-select keygen,
-  "Key creation with algorithm $@ using " + keySize.toString() + "-bit key.", alg,
+select keygen, "Key creation with algorithm $@ using " + keySize.toString() + "-bit key.", alg,
   alg.getAlgorithmName()
