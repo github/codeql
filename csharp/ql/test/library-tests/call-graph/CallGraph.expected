@@ -1,0 +1,8 @@
+| CallGraph.cs:77:13:77:16 | call to method M2 | Unexpected result: StaticTarget=N2.C3.M2() |
+| CallGraph.cs:77:19:77:44 | // ... | Missing result:StaticTarget=N2.C3.M2 |
+| CallGraph.cs:79:13:79:19 | call to method M2 | Unexpected result: StaticTarget=N2.C3.M2() |
+| CallGraph.cs:79:22:79:47 | // ... | Missing result:StaticTarget=N2.C3.M2 |
+| CallGraph.cs:322:16:322:19 | call to constructor C1 | Unexpected result: StaticTarget=N9.C1.C1 |
+| CallGraph.cs:324:21:324:46 | // ... | Missing result:StaticTarget=N9.C1.C1 |
+| CallGraph.cs:328:15:328:18 | call to constructor C2 | Unexpected result: StaticTarget=N9.C2.C2 |
+| CallGraph.cs:328:25:328:52 | // ... | Missing result:StaticTarget=N9.C2.C2() |
