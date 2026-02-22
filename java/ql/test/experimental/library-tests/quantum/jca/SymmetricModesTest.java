@@ -128,4 +128,38 @@ public class SymmetricModesTest {
         kg.init(256, new SecureRandom());
         return kg.generateKey();
     }
+
+    // ---------------------------
+    // DESede and DES Mode Variants
+    // ---------------------------
+    /**
+     * DESede (TripleDES) in ECB mode.
+     */
+    public byte[] tripleDesEcbEncrypt(SecretKey key, byte[] plaintext) throws Exception {
+        Cipher cipher = Cipher.getInstance("DESede/ECB/NoPadding");
+        cipher.init(Cipher.ENCRYPT_MODE, key);
+        return cipher.doFinal(plaintext);
+    }
+
+    /**
+     * DES in CFB mode.
+     */
+    public byte[] desCfbEncrypt(SecretKey key, byte[] plaintext) throws Exception {
+        Cipher cipher = Cipher.getInstance("DES/CFB/NoPadding");
+        byte[] iv = new byte[8];
+        new SecureRandom().nextBytes(iv);
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+        return cipher.doFinal(plaintext);
+    }
+
+    /**
+     * DES in OFB mode.
+     */
+    public byte[] desOfbEncrypt(SecretKey key, byte[] plaintext) throws Exception {
+        Cipher cipher = Cipher.getInstance("DES/OFB/NoPadding");
+        byte[] iv = new byte[8];
+        new SecureRandom().nextBytes(iv);
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
+        return cipher.doFinal(plaintext);
+    }
 }

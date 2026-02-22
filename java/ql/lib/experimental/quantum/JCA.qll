@@ -27,9 +27,10 @@ module JCAModel {
   predicate cipher_names(string algo) {
     algo.toUpperCase()
         .matches([
-            "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "Blowfish", "ChaCha20", "ChaCha20-Poly1305",
-            "DES", "DESede", "DESedeWrap", "ECIES", "PBEWith%", "RC2", "RC4", "RC5", "RSA",
-            "Skipjack", "Idea"
+            "AES", "AESWrap", "AESWrapPad", "ARCFOUR", "ARIA", "Blowfish", "Camellia",
+            "ChaCha20", "ChaCha20-Poly1305", "DES", "DESede", "DESedeWrap", "ECIES",
+            "PBEWith%", "RC2", "RC4", "RC5", "RSA", "Salsa20", "SEED", "Skipjack", "Idea",
+            "Twofish"
           ].toUpperCase())
   }
 
@@ -189,6 +190,8 @@ module JCAModel {
     type = KeyOpAlg::PCBC() and name = "PCBC"
     or
     type = KeyOpAlg::KWP() and name = "KWP"
+    or
+    type = KeyOpAlg::LRW() and name = "LRW"
   }
 
   bindingset[name]
@@ -197,12 +200,30 @@ module JCAModel {
       upper.matches("AES%") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::AES())
       or
-      // NOTE: there is DES and DESede
-      upper.matches("DES%") and
+      // NOTE: DESede (TripleDES) must be matched before DES% to avoid misclassification
+      upper.matches("DESEDE%") and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
+      or
+      not upper.matches("DESEDE%") and upper.matches("DES%") and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::DES())
       or
       upper = "TRIPLEDES" and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TRIPLE_DES())
+      or
+      upper = "ARIA" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::ARIA())
+      or
+      upper = "CAMELLIA" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::CAMELLIA())
+      or
+      upper = "TWOFISH" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::TWOFISH())
+      or
+      upper = "SEED" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SEED())
+      or
+      upper = "SALSA20" and
+      type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::SALSA20())
       or
       upper = "IDEA" and
       type = KeyOpAlg::TSymmetricCipher(KeyOpAlg::IDEA())
@@ -363,6 +384,10 @@ module JCAModel {
       type instanceof KeyOpAlg::PKCS7 and name = ["PKCS5Padding", "PKCS7Padding"] // TODO: misnomer in the JCA?
       or
       type instanceof KeyOpAlg::OAEP and name.matches("OAEP%") // TODO: handle OAEPWith%
+      or
+      type instanceof KeyOpAlg::PKCS1_V1_5 and name = "PKCS1Padding"
+      or
+      type instanceof KeyOpAlg::PSS and name = "PSS"
     }
 
     override KeyOpAlg::PaddingSchemeType getPaddingType() {
