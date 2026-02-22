@@ -12,10 +12,10 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.ApiGraphs
 
-predicate originIsLocals(ControlFlowNodeWithPointsTo n) {
-  n.pointsTo(_, _, Value::named("locals").getACall())
+predicate originIsLocals(ControlFlowNode n) {
+  API::builtin("locals").getReturn().getAValueReachableFromSource().asCfgNode() = n
 }
 
 predicate modification_of_locals(ControlFlowNode f) {
@@ -37,5 +37,5 @@ where
   // in module level scope `locals() == globals()`
   // see https://docs.python.org/3/library/functions.html#locals
   // FP report in https://github.com/github/codeql/issues/6674
-  not a.getScope() instanceof ModuleScope
+  not a.getScope() instanceof Module
 select a, "Modification of the locals() dictionary will have no effect on the local variables."

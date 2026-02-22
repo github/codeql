@@ -12,9 +12,11 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-from ClassObject c
-where not c.isNewStyle() and c.declaresAttribute("__slots__") and not c.failedInference()
+from Class c
+where
+  not DuckTyping::isNewStyle(c) and
+  DuckTyping::declaresAttribute(c, "__slots__")
 select c,
   "Using '__slots__' in an old style class just creates a class attribute called '__slots__'."

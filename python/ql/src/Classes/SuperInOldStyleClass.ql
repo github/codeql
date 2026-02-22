@@ -11,14 +11,13 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 predicate uses_of_super_in_old_style_class(Call s) {
-  exists(Function f, ClassObject c |
+  exists(Function f, Class c |
     s.getScope() = f and
-    f.getScope() = c.getPyClass() and
-    not c.failedInference() and
-    not c.isNewStyle() and
+    f.getScope() = c and
+    not DuckTyping::isNewStyle(c) and
     s.getFunc().(Name).getId() = "super"
   )
 }

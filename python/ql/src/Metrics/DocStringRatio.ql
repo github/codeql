@@ -11,7 +11,6 @@
  */
 
 import python
-private import LegacyPointsTo
 
 from ModuleMetrics mm
 where mm.getNumberOfLines() > 0
