@@ -1320,7 +1320,9 @@ module MakeWithSplitting<
   private module PrintGraphInput implements Pp::InputSig<Location> {
     class Callable = CfgScope;
 
-    class Node = FinalNode;
+    class Node extends FinalNode {
+      string getOrderDisambiguation() { result = "" }
+    }
 
     Node getASuccessor(Node n, string s) {
       exists(SuccessorType t |

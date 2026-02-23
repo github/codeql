@@ -18,6 +18,9 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
 
     string toString();
+
+    /** Gets a string to distinguish nodes that have the same location and toString value. */
+    string getOrderDisambiguation();
   }
 
   Node getASuccessor(Node n, string label);
@@ -53,7 +56,10 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
                 p.getLocation()
                     .hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
               |
-                p order by filePath, startLine, startColumn, endLine, endColumn, p.toString()
+                p
+                order by
+                  filePath, startLine, startColumn, endLine, endColumn, p.toString(),
+                  p.getOrderDisambiguation()
               )
           ).toString()
       }
@@ -87,7 +93,8 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
           |
             edge, "\n"
             order by
-              filePath, startLine, startColumn, endLine, endColumn, pred.toString()
+              filePath, startLine, startColumn, endLine, endColumn, pred.toString(),
+              pred.getOrderDisambiguation()
           )
       }
 
@@ -165,8 +172,6 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
           smallestEnclosingScope(getFileBySourceArchiveName(selectedSourceFile()),
             selectedSourceLine(), selectedSourceColumn())
       }
-
-      string getOrderDisambiguation() { result = "" }
     }
 
     private module Output = TestOutput<RelevantNode>;
