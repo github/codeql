@@ -1324,10 +1324,10 @@ module MakeWithSplitting<
       string getOrderDisambiguation() { result = "" }
     }
 
-    Node getASuccessor(Node n, string s) {
+    predicate edge(Node node1, string label, Node node2) {
       exists(SuccessorType t |
-        result = n.getASuccessor(t) and
-        if t instanceof DirectSuccessor then s = "" else s = t.toString()
+        node2 = node1.getASuccessor(t) and
+        if t instanceof DirectSuccessor then label = "" else label = t.toString()
       )
     }
   }

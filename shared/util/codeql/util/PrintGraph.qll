@@ -23,7 +23,7 @@ signature module InputSig<LocationSig Location> {
     string getOrderDisambiguation();
   }
 
-  Node getASuccessor(Node n, string label);
+  predicate edge(Node node1, string label, Node node2);
 }
 
 /** Provides modules for printing flow graphs. */
@@ -40,7 +40,7 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
   module TestOutput<RelevantNodeSig RelevantNode> {
     /** Holds if `pred -> succ` is an edge in the graph. */
     query predicate edges(RelevantNode pred, RelevantNode succ, string label) {
-      label = strictconcat(string s | succ = getASuccessor(pred, s) | s, ", " order by s)
+      label = strictconcat(string s | edge(pred, s, succ) | s, ", " order by s)
     }
 
     /**
