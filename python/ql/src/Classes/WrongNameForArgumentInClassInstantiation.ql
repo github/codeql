@@ -15,12 +15,34 @@
  */
 
 import python
-import Expressions.CallArgs
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-from Call call, ClassValue cls, string name, FunctionValue init
+/**
+ * Holds if `name` is a legal argument name for calling `init`.
+ */
+bindingset[name]
+predicate isLegalArgumentName(Function init, string name) {
+  exists(init.getArgByName(name))
+  or
+  init.hasKwArg()
+}
+
+/**
+ * Holds if `call` constructs class `cls` and passes a keyword argument `name`
+ * that does not correspond to any parameter of `cls.__init__`.
+ */
+predicate illegally_named_parameter(Call call, Class cls, string name) {
+  exists(Function init |
+    resolveClassCall(call.getAFlowNode(), cls) and
+    init = DuckTyping::getInit(cls) and
+    name = call.getANamedArgumentName() and
+    not isLegalArgumentName(init, name)
+  )
+}
+
+from Call call, Class cls, string name, Function init
 where
   illegally_named_parameter(call, cls, name) and
-  init = get_function_or_initializer(cls)
+  init = DuckTyping::getInit(cls)
 select call, "Keyword argument '" + name + "' is not a supported parameter name of $@.", init,
   init.getQualifiedName()
