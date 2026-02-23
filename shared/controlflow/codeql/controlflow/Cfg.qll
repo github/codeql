@@ -1315,13 +1315,18 @@ module MakeWithSplitting<
 
   private import PrintGraph as Pp
 
+  final private class FinalNode = Node;
+
   private module PrintGraphInput implements Pp::InputSig<Location> {
     class Callable = CfgScope;
 
-    class ControlFlowNode = Node;
+    class Node = FinalNode;
 
-    ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t) {
-      result = n.getASuccessor(t)
+    Node getASuccessor(Node n, string s) {
+      exists(SuccessorType t |
+        result = n.getASuccessor(t) and
+        if t instanceof DirectSuccessor then s = "" else s = t.toString()
+      )
     }
   }
 
