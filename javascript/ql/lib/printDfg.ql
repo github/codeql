@@ -24,7 +24,7 @@ external int selectedSourceColumn();
 
 private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-module ViewCfgQueryInput implements ViewGraphQueryInputSig<File> {
+module ViewGraphInput implements ViewGraphQueryInputSig<File> {
   predicate selectedSourceFile = selectedSourceFileAlias/0;
 
   predicate selectedSourceLine = selectedSourceLineAlias/0;
