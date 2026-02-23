@@ -557,4 +557,23 @@ public class B {
     if (n > 100) s.hashCode(); // OK
     if (n == 42) s.hashCode(); // OK
   }
+
+  public void testFinally2(int[] xs) {
+    String s = null;
+    int i = 0;
+    while (true) {
+      try {
+        int x = xs[i++];
+        if (x == 0) {
+          s = "foo";
+          break;
+        } else if (x == 1) {
+          continue;
+        }
+      } finally {
+      }
+    }
+    s.hashCode(); // Spurious NPE - false positive
+    // CFG reachability does not distinguish abrupt successors
+  }
 }
