@@ -2111,4 +2111,10 @@ module DuckTyping {
       )
     )
   }
+
+  /**
+   * Gets the `__init__` function that will be invoked when `cls` is constructed,
+   * resolved according to the MRO.
+   */
+  Function getInit(Class cls) { result = invokedFunctionFromClassConstruction(cls, "__init__") }
 }
