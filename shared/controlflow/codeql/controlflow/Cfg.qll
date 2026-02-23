@@ -1313,7 +1313,7 @@ module MakeWithSplitting<
     }
   }
 
-  private import PrintGraph as Pp
+  private import codeql.util.PrintGraph as Pp
 
   final private class FinalNode = Node;
 
