@@ -2096,4 +2096,21 @@ module DuckTyping {
    * resolved according to the MRO.
    */
   Function getInit(Class cls) { result = invokedFunctionFromClassConstruction(cls, "__init__") }
+
+  /**
+   * Holds if `f` overrides a method in a superclass with the same name.
+   */
+  predicate overridesMethod(Function f) {
+    exists(Class cls | f.getScope() = cls | hasMethod(getADirectSuperclass(cls), f.getName()))
+  }
+
+  /**
+   * Holds if `f` is a property accessor (decorated with `@property`, `@name.setter`,
+   * or `@name.deleter`).
+   */
+  predicate isPropertyAccessor(Function f) {
+    exists(Attribute a | a = f.getADecorator() | a.getName() = "setter" or a.getName() = "deleter")
+    or
+    f.getADecorator().(Name).getId() = "property"
+  }
 }
