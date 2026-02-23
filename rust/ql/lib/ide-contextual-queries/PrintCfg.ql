@@ -10,6 +10,7 @@
 private import codeql.files.FileSystem
 private import codeql.rust.controlflow.internal.ControlFlowGraphImpl
 private import codeql.rust.controlflow.ControlFlowGraph
+private import PrintCfg
 
 /**
  * Gets the source file to generate a CFG from.
@@ -32,14 +33,14 @@ external int selectedSourceColumn();
 
 private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-private module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
+private module ViewCfgQueryInput implements ViewGraphQueryInputSig<File> {
   predicate selectedSourceFile = selectedSourceFileAlias/0;
 
   predicate selectedSourceLine = selectedSourceLineAlias/0;
 
   predicate selectedSourceColumn = selectedSourceColumnAlias/0;
 
-  predicate cfgScopeSpan(
+  predicate callableSpan(
     CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
   ) {
     file = scope.getFile() and
@@ -47,4 +48,4 @@ private module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
   }
 }
 
-import ViewCfgQuery<File, ViewCfgQueryInput>
+import ViewGraphQuery<File, ViewCfgQueryInput>

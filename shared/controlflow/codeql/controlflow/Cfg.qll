@@ -1330,7 +1330,10 @@ module MakeWithSplitting<
     }
   }
 
-  import Pp::PrintGraph<Location, PrintGraphInput>
+  /** Provides utilities for visualising the CFG. */
+  module PrintCfg {
+    import Pp::PrintGraph<Location, PrintGraphInput>
+  }
 
   /** Provides a set of consistency queries. */
   module Consistency {
