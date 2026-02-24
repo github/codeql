@@ -2175,12 +2175,27 @@ module ExceptionTypes {
     /** Gets a string representation of this exception type. */
     string toString() { result = this.getName() }
 
+    /** Gets a data-flow node that refers to an instance of this exception type. */
+    DataFlow::Node getAnInstance() { none() }
+
+    /** Holds if this is a legal exception type (a subclass of `BaseException`). */
+    predicate isLegalExceptionType() { this.getADirectSuperclass*() instanceof BaseException }
+
+    /**
+     * Holds if this exception type is raised by `r`, either as a class reference
+     * (e.g. `raise ValueError`) or as an instantiation (e.g. `raise ValueError("msg")`).
+     */
+    predicate isRaisedBy(Raise r) {
+      exists(Expr raised | raised = r.getRaised() |
+        this.getAUse().asExpr() in [raised, raised.(Call).getFunc()]
+        or
+        this.getAnInstance().asExpr() = raised
+      )
+    }
+
     /** Holds if this exception type may be raised at control flow node `r`. */
     predicate isRaisedAt(ControlFlowNode r) {
-      exists(Expr raised |
-        raised = r.getNode().(Raise).getRaised() and
-        this.getAUse().asExpr() in [raised, raised.(Call).getFunc()]
-      )
+      this.isRaisedBy(r.getNode())
       or
       exists(Function callee |
         resolveCall(r, callee, _) and
@@ -2207,7 +2222,7 @@ module ExceptionTypes {
       or
       // A bare `except:` handles everything
       not exists(handler.getNode().(ExceptStmt).getType()) and
-      this.(BuiltinExceptType).getName() = "BaseException"
+      this instanceof BaseException
     }
 
     /**
@@ -2237,6 +2252,8 @@ module ExceptionTypes {
 
     override DataFlow::Node getAUse() { result = classTracker(cls) }
 
+    override DataFlow::Node getAnInstance() { result = classInstanceTracker(cls) }
+
     override ExceptType getADirectSuperclass() {
       result.(UserExceptType).asClass() = getADirectSuperclass(cls)
       or
@@ -2261,7 +2278,11 @@ module ExceptionTypes {
 
     override string getName() { result = name }
 
-    override DataFlow::Node getAUse() { API::builtin(name).asSource().flowsTo(result) }
+    override DataFlow::Node getAUse() { result = API::builtin(name).getAValueReachableFromSource() }
+
+    override DataFlow::Node getAnInstance() {
+      result = API::builtin(name).getAnInstance().getAValueReachableFromSource()
+    }
 
     override ExceptType getADirectSuperclass() {
       builtinExceptionSubclass(result.(BuiltinExceptType).asBuiltinName(), name) and
@@ -2277,6 +2298,11 @@ module ExceptionTypes {
       endLine = 0 and
       endColumn = 0
     }
+  }
+
+  /** The builtin `BaseException` type. */
+  class BaseException extends BuiltinExceptType {
+    BaseException() { name = "BaseException" }
   }
 
   /**
