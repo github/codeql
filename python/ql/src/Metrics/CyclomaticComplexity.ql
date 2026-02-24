@@ -13,8 +13,8 @@
  */
 
 import python
-private import LegacyPointsTo
+import semmle.python.Metrics
 
-from FunctionMetricsWithPointsTo func, int complexity
+from FunctionMetrics func, int complexity
 where complexity = func.getCyclomaticComplexity()
 select func, complexity order by complexity desc

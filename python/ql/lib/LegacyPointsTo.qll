@@ -434,38 +434,6 @@ private predicate exits_early(BasicBlock b) {
 /** The metrics for a function that require points-to analysis */
 class FunctionMetricsWithPointsTo extends FunctionMetrics {
   /**
-   * Gets the cyclomatic complexity of the function:
-   * The number of linearly independent paths through the source code.
-   * Computed as     E - N + 2P,
-   * where
-   *  E = the number of edges of the graph.
-   *  N = the number of nodes of the graph.
-   *  P = the number of connected components, which for a single function is 1.
-   */
-  int getCyclomaticComplexity() {
-    exists(int e, int n |
-      n = count(BasicBlockWithPointsTo b | b = this.getABasicBlock() and b.likelyReachable()) and
-      e =
-        count(BasicBlockWithPointsTo b1, BasicBlockWithPointsTo b2 |
-          b1 = this.getABasicBlock() and
-          b1.likelyReachable() and
-          b2 = this.getABasicBlock() and
-          b2.likelyReachable() and
-          b2 = b1.getASuccessor() and
-          not b1.unlikelySuccessor(b2)
-        )
-    |
-      result = e - n + 2
-    )
-  }
-
-  private BasicBlock getABasicBlock() {
-    result = this.getEntryNode().getBasicBlock()
-    or
-    exists(BasicBlock mid | mid = this.getABasicBlock() and result = mid.getASuccessor())
-  }
-
-  /**
    * Dependency of Callables
    * One callable "this" depends on another callable "result"
    * if "this" makes some call to a method that may end up being "result".
