@@ -12,15 +12,48 @@
  */
 
 import python
-import Raising
-import Exceptions.NotImplemented
-private import LegacyPointsTo
+import semmle.python.dataflow.new.internal.DataFlowDispatch
+import semmle.python.ApiGraphs
+private import ExceptionTypes
 
-from Raise r, ClassValue t
+/**
+ * Holds if `r` raises an instance of a builtin non-exception class named `name`.
+ */
+private predicate raisesNonExceptionBuiltin(Raise r, string name) {
+  exists(Expr raised | raised = r.getRaised() |
+    API::builtin(name).getAValueReachableFromSource().asExpr() = raised
+    or
+    API::builtin(name).getAValueReachableFromSource().asExpr() = raised.(Call).getFunc() and
+    // Exclude `type` since `type(x)` returns the class of `x`, not a `type` instance
+    not name = "type"
+  ) and
+  not builtinException(name)
+}
+
+from Raise r, string msg
 where
-  type_or_typeof(r, t, _) and
-  not t.isLegalExceptionType() and
-  not t.failedInference(_) and
-  not use_of_not_implemented_in_raise(r, _)
-select r,
-  "Illegal class '" + t.getName() + "' raised; will result in a TypeError being raised instead."
+  not raisesNonExceptionBuiltin(r, "NotImplemented") and
+  (
+    exists(ExceptType t |
+      t.isRaisedBy(r) and
+      not t.isLegalExceptionType() and
+      not t.getName() = "None" and
+      msg =
+        "Illegal class '" + t.getName() +
+          "' raised; will result in a TypeError being raised instead."
+    )
+    or
+    exists(ImmutableLiteral lit | lit = r.getRaised() |
+      msg =
+        "Illegal class '" + DuckTyping::getClassName(lit) +
+          "' raised; will result in a TypeError being raised instead."
+    )
+    or
+    exists(string name |
+      raisesNonExceptionBuiltin(r, name) and
+      not r.getRaised() instanceof ImmutableLiteral and
+      not name = "None" and
+      msg = "Illegal class '" + name + "' raised; will result in a TypeError being raised instead."
+    )
+  )
+select r, msg
