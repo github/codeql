@@ -1,3 +1,5 @@
+use std::os::fd::AsRawFd;
+
 // Stub types and constants to simulate libxml2 bindings
 pub struct XmlDoc;
 pub struct XmlParserCtxt;
@@ -88,6 +90,16 @@ fn test_xml_read_doc_bad(user_xml: &str) {
     xmlReadDoc(user_xml, "", "", XML_PARSE_DTDLOAD); // $ Alert[rust/xxe]
 }
 
+fn test_xml_read_fd_bad(user_fd: i32) {
+    // BAD: user-controlled file descriptor with XML_PARSE_DTDLOAD
+    xmlReadFd(user_fd, "", "", XML_PARSE_DTDLOAD); // $ Alert[rust/xxe]
+}
+
+fn test_xml_ctxt_read_file_bad(user_filename: &str) {
+    // BAD: user-controlled filename with XML_PARSE_NOENT via ctxt variant
+    xmlCtxtReadFile(std::ptr::null_mut(), user_filename, "", XML_PARSE_NOENT); // $ Alert[rust/xxe]
+}
+
 fn test_xml_ctxt_read_doc_bad(user_xml: &str) {
     // BAD: user-controlled XML with unsafe options via ctxt variant
     xmlCtxtReadDoc(std::ptr::null_mut(), user_xml, "", "", XML_PARSE_NOENT); // $ Alert[rust/xxe]
@@ -131,12 +143,16 @@ fn test_xml_hardcoded_unsafe() {
 fn main() {
     let user_xml = std::env::args().nth(1).unwrap_or_default(); // $ Source
     let user_filename = std::env::args().nth(2).unwrap_or_default(); // $ Source
+    let user_file = std::fs::File::open(&user_filename).ok(); // $ Source
+    let user_fd = user_file.as_ref().map_or(-1, |file| file.as_raw_fd());
 
     test_xml_parse_noent(&user_xml);
     test_xml_parse_dtdload(&user_xml);
     test_xml_parse_combined(&user_xml);
     test_xml_read_file_bad(&user_filename);
     test_xml_read_doc_bad(&user_xml);
+    test_xml_read_fd_bad(user_fd);
+    test_xml_ctxt_read_file_bad(&user_filename);
     test_xml_ctxt_read_doc_bad(&user_xml);
     test_xml_ctxt_read_memory_bad(&user_xml);
     test_integer_literal_bad(&user_xml);
