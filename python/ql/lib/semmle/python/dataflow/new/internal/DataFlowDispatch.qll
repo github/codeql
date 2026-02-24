@@ -2113,6 +2113,23 @@ module DuckTyping {
     or
     f.getADecorator().(Name).getId() = "property"
   }
+
+  /** Gets the name of the builtin class of the immutable literal `lit`. */
+  string getClassName(ImmutableLiteral lit) {
+    lit instanceof IntegerLiteral and result = "int"
+    or
+    lit instanceof FloatLiteral and result = "float"
+    or
+    lit instanceof ImaginaryLiteral and result = "complex"
+    or
+    lit instanceof NegativeIntegerLiteral and result = "int"
+    or
+    lit instanceof StringLiteral and result = "str"
+    or
+    lit instanceof BooleanLiteral and result = "bool"
+    or
+    lit instanceof None and result = "NoneType"
+  }
 }
 
 /**
