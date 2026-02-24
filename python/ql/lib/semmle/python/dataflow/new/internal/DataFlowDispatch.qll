@@ -2114,3 +2114,113 @@ module DuckTyping {
     f.getADecorator().(Name).getId() = "property"
   }
 }
+
+/**
+ * Provides a class hierarchy for exception types, covering both builtin
+ * exceptions (from typeshed models) and user-defined exception classes.
+ */
+module ExceptionTypes {
+  private import semmle.python.ApiGraphs
+  private import semmle.python.frameworks.data.internal.ApiGraphModels
+
+  /** Holds if `name` is a builtin exception class name. */
+  predicate builtinException(string name) {
+    typeModel("builtins.BaseException~Subclass", "builtins." + name, "")
+  }
+
+  /** Holds if builtin exception `sub` is a direct subclass of builtin exception `base`. */
+  private predicate builtinExceptionSubclass(string base, string sub) {
+    typeModel("builtins." + base + "~Subclass", "builtins." + sub, "")
+  }
+
+  /** An exception type, either a builtin exception or a user-defined exception class. */
+  newtype TExceptType =
+    /** A user-defined exception class. */
+    TUserExceptType(Class c) or
+    /** A builtin exception class, identified by name. */
+    TBuiltinExceptType(string name) { builtinException(name) }
+
+  /** An exception type, either a builtin exception or a user-defined exception class. */
+  class ExceptType extends TExceptType {
+    /** Gets the name of this exception type. */
+    string getName() { none() }
+
+    /** Gets a data-flow node that refers to this exception type. */
+    DataFlow::Node getAUse() { none() }
+
+    /** Gets a direct superclass of this exception type. */
+    ExceptType getADirectSuperclass() { none() }
+
+    /** Gets a string representation of this exception type. */
+    string toString() { result = this.getName() }
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startColumn` of line `startLine` to
+     * column `endColumn` of line `endLine` in file `filepath`.
+     * For more information, see
+     * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    predicate hasLocationInfo(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn
+    ) {
+      none()
+    }
+  }
+
+  /** A user-defined exception class. */
+  class UserExceptType extends ExceptType, TUserExceptType {
+    Class cls;
+
+    UserExceptType() { this = TUserExceptType(cls) }
+
+    /** Gets the underlying class. */
+    Class asClass() { result = cls }
+
+    override string getName() { result = cls.getName() }
+
+    override DataFlow::Node getAUse() { result = classTracker(cls) }
+
+    override ExceptType getADirectSuperclass() {
+      result.(UserExceptType).asClass() = getADirectSuperclass(cls)
+      or
+      result.(BuiltinExceptType).getAUse().asExpr() = cls.getABase()
+    }
+
+    override predicate hasLocationInfo(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn
+    ) {
+      cls.getLocation().hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+    }
+  }
+
+  /** A builtin exception class, identified by name. */
+  class BuiltinExceptType extends ExceptType, TBuiltinExceptType {
+    string name;
+
+    BuiltinExceptType() { this = TBuiltinExceptType(name) }
+
+    /** Gets the builtin name. */
+    string asBuiltinName() { result = name }
+
+    override string getName() { result = name }
+
+    override DataFlow::Node getAUse() { API::builtin(name).asSource().flowsTo(result) }
+
+    override ExceptType getADirectSuperclass() {
+      builtinExceptionSubclass(result.(BuiltinExceptType).asBuiltinName(), name) and
+      result != this
+    }
+
+    override predicate hasLocationInfo(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn
+    ) {
+      filePath = "" and
+      startLine = 0 and
+      startColumn = 0 and
+      endLine = 0 and
+      endColumn = 0
+    }
+  }
+}
+
