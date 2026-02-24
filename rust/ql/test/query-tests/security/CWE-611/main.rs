@@ -122,6 +122,12 @@ fn test_integer_literal_bad(user_xml: &str) {
     xmlReadMemory(user_xml, user_xml.len() as i32, "", "", 2); // $ Alert[rust/xxe]
 }
 
+fn test_dataflow_bad(user_xml: &str) {
+    // BAD: user-controlled XML with unsafe parser options via dataflow
+    let flags = XML_PARSE_NOENT | 1024;
+    xmlReadMemory(user_xml, user_xml.len() as i32, "", "", flags); // $ MISSING: Alert[rust/xxe]
+}
+
 // --- GOOD: user-controlled XML with safe parser options ---
 
 fn test_xml_parse_safe_options(user_xml: &str) {
@@ -156,6 +162,7 @@ fn main() {
     test_xml_ctxt_read_doc_bad(&user_xml);
     test_xml_ctxt_read_memory_bad(&user_xml);
     test_integer_literal_bad(&user_xml);
+    test_dataflow_bad(&user_xml);
     test_xml_parse_safe_options(&user_xml);
     test_xml_hardcoded_unsafe();
 }
