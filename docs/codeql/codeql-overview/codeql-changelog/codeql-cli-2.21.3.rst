@@ -144,7 +144,7 @@ New Features
 Java/Kotlin
 """""""""""
 
-*   Kotlin versions up to 2.2.0\ *x* are now supported. Support for the Kotlin 1.5.x series is dropped (so the minimum Kotlin version is now 1.6.0).
+*   Kotlin versions up to 2.2.0*x* are now supported. Support for the Kotlin 1.5.x series is dropped (so the minimum Kotlin version is now 1.6.0).
 
 Swift
 """""

@@ -88,7 +88,7 @@ JavaScript/TypeScript
 *   Data flow is now tracked through the :code:`Promise.try` and :code:`Array.prototype.with` functions.
 *   Query :code:`js/index-out-of-bounds` no longer produces a false-positive when a strictly-less-than check overrides a previous less-than-or-equal test.
 *   The query :code:`js/remote-property-injection` now detects property injection vulnerabilities through object enumeration patterns such as :code:`Object.keys()`.
-*   The query "Permissive CORS configuration" (:code:`js/cors-permissive-configuration`) has been promoted from experimental and is now part of the default security suite. Thank you to @maikypedia who `submitted the original experimental query <https://github.com/github/codeql/pull/14342>`__!
+*   The query "Permissive CORS configuration" (:code:`js/cors-permissive-configuration`) has been promoted from experimental and is now part of the default security suite. Thank you to @maikypedia who `submitted the original experimental query <https://github.com/github/codeql/pull/14342>`__\ !
 
 Python
 """"""
@@ -126,7 +126,7 @@ Golang
 """"""
 
 *   The second argument of the :code:`CreateTemp` function, from the :code:`os` package, is no longer a path-injection sink due to proper sanitization by Go.
-*   The query "Uncontrolled data used in path expression" (:code:`go/path-injection`) now detects sanitizing a path by adding :code:`os.PathSeparator` or ``\`` to the beginning.
+*   The query "Uncontrolled data used in path expression" (:code:`go/path-injection`) now detects sanitizing a path by adding :code:`os.PathSeparator` or :code:`\` to the beginning.
 
 Java/Kotlin
 """""""""""

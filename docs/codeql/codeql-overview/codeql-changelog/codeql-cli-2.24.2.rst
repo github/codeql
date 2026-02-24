@@ -44,7 +44,7 @@ Bug Fixes
 Python
 """"""
 
-*   Using :code:`=` as a fill character in a format specifier (e.g. :code:`f"{x:=^20}"`) now no longer results in a syntax error during parsing.
+*   Using :code:`=` as a fill character in a format specifier (e.g :code:`f"{x:=^20}"`) now no longer results in a syntax error during parsing.
 
 Breaking Changes
 ~~~~~~~~~~~~~~~~
