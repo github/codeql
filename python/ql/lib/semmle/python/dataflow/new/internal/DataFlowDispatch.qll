@@ -2154,6 +2154,41 @@ module ExceptionTypes {
     /** Gets a string representation of this exception type. */
     string toString() { result = this.getName() }
 
+    /** Holds if this exception type may be raised at control flow node `r`. */
+    predicate isRaisedAt(ControlFlowNode r) {
+      exists(Expr raised |
+        raised = r.getNode().(Raise).getRaised() and
+        this.getAUse().asExpr() in [raised, raised.(Call).getFunc()]
+      )
+      or
+      exists(Function callee |
+        resolveCall(r, callee, _) and
+        this.isRaisedIn(callee)
+      )
+    }
+
+    /**
+     * Holds if this exception type may be raised in function `f`, either
+     * directly via `raise` statements or transitively through calls to other functions.
+     */
+    predicate isRaisedIn(Function f) { this.isRaisedAt(any(ControlFlowNode r | r.getScope() = f)) }
+
+    /** Holds if this exception type is handled by the `except` clause at `handler`. */
+    predicate isHandledAt(ExceptFlowNode handler) {
+      exists(ExceptStmt ex, Expr typeExpr | ex = handler.getNode() |
+        (
+          typeExpr = ex.getType()
+          or
+          typeExpr = ex.getType().(Tuple).getAnElt()
+        ) and
+        this.getAUse().asExpr() = typeExpr
+      )
+      or
+      // A bare `except:` handles everything
+      not exists(handler.getNode().(ExceptStmt).getType()) and
+      this.(BuiltinExceptType).getName() = "BaseException"
+    }
+
     /**
      * Holds if this element is at the specified location.
      * The location spans column `startColumn` of line `startLine` to
@@ -2222,5 +2257,128 @@ module ExceptionTypes {
       endColumn = 0
     }
   }
+
+  /**
+   * Holds if the exception edge from `r` to `handler` is unlikely because
+   * none of the exception types that `r` may raise are handled by `handler`.
+   */
+  predicate unlikelyExceptionEdge(ControlFlowNode r, ExceptFlowNode handler) {
+    handler = r.getAnExceptionalSuccessor() and
+    // We can determine at least one raised type
+    exists(ExceptType t | t.isRaisedAt(r)) and
+    // But none of them are handled by this handler
+    not exists(ExceptType raised, ExceptType handled |
+      raised.isRaisedAt(r) and
+      handled.isHandledAt(handler) and
+      raised.getADirectSuperclass*() = handled
+    )
+  }
 }
 
+/**
+ * Provides predicates for reasoning about the reachability of control flow nodes
+ * and basic blocks.
+ */
+module Reachability {
+  private import semmle.python.ApiGraphs
+  import ExceptionTypes
+
+  /**
+   * Holds if `call` is a call to a function that is known to never return normally
+   * (e.g. `sys.exit()`, `os._exit()`, `os.abort()`).
+   */
+  predicate isCallToNeverReturningFunction(CallNode call) {
+    // Known never-returning builtins/stdlib functions via API graphs
+    call = API::builtin("exit").getACall().asCfgNode()
+    or
+    call = API::builtin("quit").getACall().asCfgNode()
+    or
+    call = API::moduleImport("sys").getMember("exit").getACall().asCfgNode()
+    or
+    call = API::moduleImport("os").getMember("_exit").getACall().asCfgNode()
+    or
+    call = API::moduleImport("os").getMember("abort").getACall().asCfgNode()
+    or
+    // User-defined functions that only contain raise statements (no normal returns)
+    exists(Function target |
+      resolveCall(call, target, _) and
+      neverReturns(target)
+    )
+  }
+
+  /**
+   * Holds if function `f` never returns normally, because every normal exit
+   * is dominated by a call to a never-returning function or an unconditional raise.
+   */
+  predicate neverReturns(Function f) {
+    exists(f.getANormalExit()) and
+    forall(BasicBlock exit | exit = f.getANormalExit().getBasicBlock() |
+      exists(BasicBlock raising |
+        raising.dominates(exit) and
+        (
+          isCallToNeverReturningFunction(raising.getLastNode())
+          or
+          raising.getLastNode().getNode() instanceof Raise
+        )
+      )
+    )
+  }
+
+  /**
+   * Holds if it is highly unlikely for control to flow from `node` to `succ`.
+   */
+  predicate unlikelySuccessor(ControlFlowNode node, ControlFlowNode succ) {
+    // Exceptional edge where the raised type doesn't match the handler
+    unlikelyExceptionEdge(node, succ)
+    or
+    // Normal successor of a never-returning call
+    isCallToNeverReturningFunction(node) and
+    succ = node.getASuccessor() and
+    not succ = node.getAnExceptionalSuccessor() and
+    not succ.getNode() instanceof Yield
+  }
+
+  private predicate startBbLikelyReachable(BasicBlock b) {
+    exists(Scope s | s.getEntryNode() = b.getNode(_))
+    or
+    exists(BasicBlock pred |
+      pred = b.getAPredecessor() and
+      endBbLikelyReachable(pred) and
+      not unlikelySuccessor(pred.getLastNode(), b)
+    )
+  }
+
+  private predicate endBbLikelyReachable(BasicBlock b) {
+    startBbLikelyReachable(b) and
+    not exists(ControlFlowNode p, ControlFlowNode s |
+      unlikelySuccessor(p, s) and
+      p = b.getNode(_) and
+      s = b.getNode(_) and
+      not p = b.getLastNode()
+    )
+  }
+
+  /**
+   * Holds if basic block `b` is likely to be reachable from the entry of its
+   * enclosing scope.
+   */
+  predicate likelyReachable(BasicBlock b) { startBbLikelyReachable(b) }
+
+  /**
+   * Holds if it is unlikely that `node` can be reached during execution.
+   */
+  predicate unlikelyReachable(ControlFlowNode node) {
+    not startBbLikelyReachable(node.getBasicBlock())
+    or
+    exists(BasicBlock b |
+      startBbLikelyReachable(b) and
+      not endBbLikelyReachable(b) and
+      exists(ControlFlowNode p, int i, int j |
+        unlikelySuccessor(p, _) and
+        p = b.getNode(i) and
+        node = b.getNode(j) and
+        i < j
+      )
+    )
+  }
+}
