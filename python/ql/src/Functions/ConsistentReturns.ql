@@ -12,7 +12,7 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 predicate explicitly_returns_non_none(Function func) {
   exists(Return return |
@@ -22,8 +22,8 @@ predicate explicitly_returns_non_none(Function func) {
 }
 
 predicate has_implicit_return(Function func) {
-  exists(ControlFlowNodeWithPointsTo fallthru |
-    fallthru = func.getFallthroughNode() and not fallthru.unlikelyReachable()
+  exists(ControlFlowNode fallthru |
+    fallthru = func.getFallthroughNode() and not Reachability::unlikelyReachable(fallthru)
   )
   or
   exists(Return return | return.getScope() = func and not exists(return.getValue()))
