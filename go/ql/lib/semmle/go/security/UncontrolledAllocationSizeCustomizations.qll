@@ -2,6 +2,8 @@
  * Provides default sources, sinks, and sanitizers for reasoning about uncontrolled allocation size issues,
  * as well as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.AllocationSizeOverflow

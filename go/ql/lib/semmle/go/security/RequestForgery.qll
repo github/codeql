@@ -6,6 +6,8 @@
  * `RequestForgery::Configuration` is needed, otherwise
  * `RequestForgeryCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

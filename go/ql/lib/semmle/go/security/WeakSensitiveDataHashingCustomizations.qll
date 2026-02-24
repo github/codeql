@@ -7,6 +7,8 @@
  *  - hashing passwords (which requires the hashing algorithm to be
  *    sufficiently computationally expensive in addition to other requirements)
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.SensitiveActions

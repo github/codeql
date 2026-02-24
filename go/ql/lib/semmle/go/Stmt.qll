@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with statements.
  */
+overlay[local?]
+module;
 
 import go
 

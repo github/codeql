@@ -2,6 +2,8 @@
  * Provides classes for working with remote flow sources, taint propagators, and HTTP sinks
  * from the `github.com/labstack/echo` package.
  */
+overlay[local?]
+module;
 
 import go
 

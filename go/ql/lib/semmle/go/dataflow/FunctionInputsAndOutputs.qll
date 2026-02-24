@@ -2,6 +2,8 @@
  * Provides QL classes for indicating data flow through a function parameter, return value,
  * or receiver.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.dataflow.internal.DataFlowPrivate

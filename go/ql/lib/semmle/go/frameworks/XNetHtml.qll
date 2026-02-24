@@ -6,6 +6,8 @@
  * that were already untrusted. We do not yet model adding a child `Node` to a tree then calling `Render`
  * yielding an untrustworthy string.
  */
+overlay[local?]
+module;
 
 import go
 

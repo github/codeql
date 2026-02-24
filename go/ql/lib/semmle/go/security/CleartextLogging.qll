@@ -6,6 +6,8 @@
  * `CleartextLogging::Configuration` is needed, otherwise
  * `CleartextLoggingCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

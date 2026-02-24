@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with go.mod files.
  */
+overlay[local?]
+module;
 
 import go
 

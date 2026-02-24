@@ -2,6 +2,8 @@
  * Provides default sources, sinks and sanitizers for reasoning about untrusted user input used in an XPath expression,
  * as well as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import go
 

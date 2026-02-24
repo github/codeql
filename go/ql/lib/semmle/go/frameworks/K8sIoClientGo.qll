@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions in the `k8s.io/client-go/kubernetes/typed/core/v1` package. */
+overlay[local?]
+module;
 
 import go
 

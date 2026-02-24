@@ -3,6 +3,8 @@
  * unvalidated URL redirection problems, as well as extension points
  * for adding your own.
  */
+overlay[local?]
+module;
 
 import go
 import UrlConcatenation

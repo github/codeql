@@ -6,6 +6,8 @@
  * `ReflectedXss::Configuration` is needed, otherwise
  * `ReflectedXssCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

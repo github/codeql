@@ -1,4 +1,6 @@
 /** Provides classes for working with errors and warnings recorded during extraction. */
+overlay[local?]
+module;
 
 import go
 

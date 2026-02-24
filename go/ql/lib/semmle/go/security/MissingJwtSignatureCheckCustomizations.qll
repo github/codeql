@@ -2,6 +2,8 @@
  * Provides default sources, sinks, and sanitizers for reasoning about
  * JWT vulnerabilities, as well as extension points for adding your own.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.dataflow.ExternalFlow

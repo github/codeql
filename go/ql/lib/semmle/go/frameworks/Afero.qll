@@ -2,6 +2,8 @@
  * Provides classes for working with sinks and taint propagators
  * from the `github.com/spf13/afero` package.
  */
+overlay[local?]
+module;
 
 import go
 

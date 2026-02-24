@@ -1,6 +1,8 @@
 /**
  * Provides utility predicates to spot variable and parameter names that suggest deliberately insecure settings.
  */
+overlay[local?]
+module;
 
 import go
 

@@ -4,6 +4,8 @@
  * Note: for performance reasons, only import this file if `TaintedPath::Configuration` is needed,
  * otherwise `TaintedPathCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

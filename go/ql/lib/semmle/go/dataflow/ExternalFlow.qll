@@ -84,6 +84,8 @@
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step.
  */
+overlay[local?]
+module;
 
 private import go
 private import internal.ExternalFlowExtensions::Extensions as Extensions

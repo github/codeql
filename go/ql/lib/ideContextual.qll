@@ -2,6 +2,8 @@
  * Provides classes and predicates related to contextual queries
  * in the code viewer.
  */
+overlay[local?]
+module;
 
 import go
 private import codeql.util.FileSystem

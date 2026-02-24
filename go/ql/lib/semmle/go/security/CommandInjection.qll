@@ -6,6 +6,8 @@
  * `CommandInjection::Configuration` is needed, otherwise
  * `CommandInjectionCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

@@ -1,6 +1,8 @@
 /**
  * Provides a taint-tracking configuration for reasoning about uncontrolled allocation size issues.
  */
+overlay[local?]
+module;
 
 import go
 

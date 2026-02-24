@@ -3,6 +3,8 @@
  * clear-text logging of sensitive information, as well as extension
  * points for adding your own.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.SensitiveActions::HeuristicNames

@@ -6,6 +6,8 @@
  * `StoredCommand::Configuration` is needed, otherwise
  * `StoredCommandCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 import StoredXssCustomizations

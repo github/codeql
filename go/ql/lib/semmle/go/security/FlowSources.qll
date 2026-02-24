@@ -1,6 +1,8 @@
 /**
  * Provides classes representing various flow sources for taint tracking.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.dataflow.ExternalFlow as ExternalFlow

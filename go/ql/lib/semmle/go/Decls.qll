@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with declarations.
  */
+overlay[local?]
+module;
 
 import go
 

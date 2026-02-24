@@ -4,6 +4,8 @@
  * Note: for performance reasons, only import this file if `StringBreak::Configuration` is needed,
  * otherwise `StringBreakCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

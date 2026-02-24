@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates used by the request forgery query.
  */
+overlay[local?]
+module;
 
 import go
 import UrlConcatenation

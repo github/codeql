@@ -6,6 +6,8 @@
  * `InsecureRandomness::Configuration` is needed, otherwise
  * `InsecureRandomnessCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

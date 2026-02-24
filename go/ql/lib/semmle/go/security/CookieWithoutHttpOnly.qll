@@ -1,4 +1,6 @@
 /** Provides classes and predicates for identifying HTTP cookies without the `HttpOnly` attribute. */
+overlay[local?]
+module;
 
 import go
 import semmle.go.concepts.HTTP

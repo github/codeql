@@ -2,6 +2,8 @@
  * Provides models of commonly used functions in the `github.com/golang/glog` and `k8s.io/klog`
  * packages.
  */
+overlay[local?]
+module;
 
 import go
 

@@ -1,6 +1,8 @@
 /**
  * Provides Go-specific definitions for use in the data flow library.
  */
+overlay[local?]
+module;
 
 private import codeql.dataflow.DataFlow
 private import semmle.go.Locations

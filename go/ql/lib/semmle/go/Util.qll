@@ -1,4 +1,6 @@
 /** This module provides general utility classes and predicates. */
+overlay[local?]
+module;
 
 /**
  * A Boolean value.
