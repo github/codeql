@@ -1,15 +1,14 @@
-# github.com/go-jose/go-jose/v3 v3.0.0
-## explicit
+# github.com/go-jose/go-jose/v3 v3.0.4
+## explicit; go 1.12
+github.com/go-jose/go-jose/v3
+github.com/go-jose/go-jose/v3/cipher
+github.com/go-jose/go-jose/v3/json
 github.com/go-jose/go-jose/v3/jwt
-# github.com/golang-jwt/jwt/v5 v5.0.0
-## explicit
+# github.com/golang-jwt/jwt/v5 v5.2.2
+## explicit; go 1.18
 github.com/golang-jwt/jwt/v5
-# github.com/google/go-cmp v0.5.9
-## explicit
-github.com/google/go-cmp
 # github.com/stretchr/testify v1.8.3
-## explicit
-github.com/stretchr/testify
-# golang.org/x/crypto v0.12.0
-## explicit
-golang.org/x/crypto
+## explicit; go 1.20
+# golang.org/x/crypto v0.19.0
+## explicit; go 1.18
+golang.org/x/crypto/pbkdf2
