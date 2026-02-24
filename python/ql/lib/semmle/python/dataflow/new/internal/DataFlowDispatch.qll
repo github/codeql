@@ -2325,6 +2325,19 @@ module Reachability {
   }
 
   /**
+   * Holds if `node` is unlikely to raise an exception. This includes entry nodes
+   * and simple name lookups.
+   */
+  private predicate unlikelyToRaise(ControlFlowNode node) {
+    exists(node.getAnExceptionalSuccessor()) and
+    (
+      node.getNode() instanceof Name
+      or
+      exists(Scope s | s.getEntryNode() = node)
+    )
+  }
+
+  /**
    * Holds if it is highly unlikely for control to flow from `node` to `succ`.
    */
   predicate unlikelySuccessor(ControlFlowNode node, ControlFlowNode succ) {
@@ -2336,6 +2349,10 @@ module Reachability {
     succ = node.getASuccessor() and
     not succ = node.getAnExceptionalSuccessor() and
     not succ.getNode() instanceof Yield
+    or
+    // Exception edge from a node that is unlikely to raise
+    unlikelyToRaise(node) and
+    succ = node.getAnExceptionalSuccessor()
   }
 
   private predicate startBbLikelyReachable(BasicBlock b) {
