@@ -12,12 +12,11 @@
  */
 
 import python
-private import LegacyPointsTo
+import semmle.python.Metrics
 
-from FunctionValue method
+from FunctionMetrics method
 where
-  exists(ClassValue c |
-    c.declaredAttribute("__del__") = method and
-    method.getScope().(FunctionMetricsWithPointsTo).getCyclomaticComplexity() > 3
-  )
+  method.getName() = "__del__" and
+  method.isMethod() and
+  method.getCyclomaticComplexity() > 3
 select method, "Overly complex '__del__' method."
