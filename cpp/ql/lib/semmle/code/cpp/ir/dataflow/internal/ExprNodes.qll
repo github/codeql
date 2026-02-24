@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowPrivate
+private import DataFlowNodes
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
 

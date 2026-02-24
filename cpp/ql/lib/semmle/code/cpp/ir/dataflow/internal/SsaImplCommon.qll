@@ -4,6 +4,7 @@ import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.implementation.raw.internal.SideEffects as SideEffects
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
+private import DataFlowNodes
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
 private import TypeFlow
@@ -53,26 +54,6 @@ predicate ignoreInstruction(Instruction instr) {
 bindingset[isGLValue]
 private CppType getThisType(Cpp::MemberFunction f, boolean isGLValue) {
   result.hasType(f.getTypeOfThis(), isGLValue)
-}
-
-/**
- * Gets the C++ type of the instruction `i`.
- *
- * This is equivalent to `i.getResultLanguageType()` with the exception
- * of instructions that directly references a `this` IRVariable. In this
- * case, `i.getResultLanguageType()` gives an unknown type, whereas the
- * predicate gives the expected type (i.e., a potentially cv-qualified
- * type `A*` where `A` is the declaring type of the member function that
- * contains `i`).
- */
-cached
-CppType getResultLanguageType(Instruction i) {
-  if i.(VariableAddressInstruction).getIRVariable() instanceof IRThisVariable
-  then
-    if i.isGLValue()
-    then result = getThisType(i.getEnclosingFunction(), true)
-    else result = getThisType(i.getEnclosingFunction(), false)
-  else result = i.getResultLanguageType()
 }
 
 /**
@@ -572,6 +553,26 @@ private class BaseCallInstruction extends BaseSourceVariableInstruction, CallIns
 
 cached
 private module Cached {
+  /**
+   * Gets the C++ type of the instruction `i`.
+   *
+   * This is equivalent to `i.getResultLanguageType()` with the exception
+   * of instructions that directly references a `this` IRVariable. In this
+   * case, `i.getResultLanguageType()` gives an unknown type, whereas the
+   * predicate gives the expected type (i.e., a potentially cv-qualified
+   * type `A*` where `A` is the declaring type of the member function that
+   * contains `i`).
+   */
+  cached
+  CppType getResultLanguageType(Instruction i) {
+    if i.(VariableAddressInstruction).getIRVariable() instanceof IRThisVariable
+    then
+      if i.isGLValue()
+      then result = getThisType(i.getEnclosingFunction(), true)
+      else result = getThisType(i.getEnclosingFunction(), false)
+    else result = i.getResultLanguageType()
+  }
+
   /** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
   private predicate isConversion(Operand op) {
     exists(Instruction def, Operand use |

@@ -6,6 +6,7 @@
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs
 private import DataFlowUtil
+private import DataFlowNodes
 private import DataFlowPrivate
 private import SsaImpl as Ssa
 
