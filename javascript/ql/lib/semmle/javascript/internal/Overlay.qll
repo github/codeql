@@ -1,4 +1,3 @@
-private import javascript
 private import OverlayXml
 
 /** Holds if the database is an overlay. */

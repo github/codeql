@@ -18,4 +18,4 @@ where
     invoke.(DataFlow::PropRef).getAnAccessorCallee().getFunction() = f and kind = "Accessor call"
   ) and
   not f.getTopLevel().isExterns()
-select invoke, kind + " to $@", f, f.describe()
+select invoke, kind + " to $@", f, f.toString()

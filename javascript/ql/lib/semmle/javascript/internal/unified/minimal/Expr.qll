@@ -4,9 +4,7 @@
 overlay[local?]
 module;
 
-import javascript
-private import semmle.javascript.internal.CachedStages
-private import semmle.javascript.internal.TypeResolution
+import minimal
 
 /**
  * A program element that is either an expression or a type annotation.
@@ -93,7 +91,7 @@ class ExprOrType extends @expr_or_type, Documentable {
    * Also see `getUnderlyingReference` and `stripParens`.
    */
   cached
-  Expr getUnderlyingValue() { Stages::Ast::ref() and result = this }
+  Expr getUnderlyingValue() { result = this }
 }
 
 /**
@@ -114,7 +112,7 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
 
   /** Gets the constant string value this expression evaluates to, if any. */
   cached
-  string getStringValue() { Stages::Ast::ref() and result = getStringValue(this) }
+  string getStringValue() { result = getStringValue(this) }
 
   /** Holds if this expression is impure, that is, its evaluation could have side effects. */
   overlay[global]
@@ -152,42 +150,6 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       this = prop.getAChildExpr()
     )
   }
-
-  /**
-   * Holds if this expression accesses the global variable `g`, either directly
-   * or through the `window` object.
-   */
-  overlay[global]
-  predicate accessesGlobal(string g) { this.flow().accessesGlobal(g) }
-
-  /**
-   * Holds if this expression may evaluate to `s`.
-   */
-  overlay[global]
-  predicate mayHaveStringValue(string s) { this.flow().mayHaveStringValue(s) }
-
-  /**
-   * Holds if this expression may evaluate to `b`.
-   */
-  overlay[global]
-  predicate mayHaveBooleanValue(boolean b) { this.flow().mayHaveBooleanValue(b) }
-
-  /**
-   * Holds if this expression may refer to the initial value of parameter `p`.
-   */
-  overlay[global]
-  predicate mayReferToParameter(Parameter p) { DataFlow::parameterNode(p).flowsToExpr(this) }
-
-  /**
-   * DEPRECATED. Use `getTypeBinding()` instead.
-   *
-   * Gets the static type of this expression, as determined by the TypeScript type system.
-   *
-   * Has no result if the expression is in a JavaScript file or in a TypeScript
-   * file that was extracted without type information.
-   */
-  overlay[global]
-  deprecated Type getType() { ast_node_type(this, result) }
 
   /**
    * Holds if the syntactic context that the expression appears in relies on the expression
@@ -248,34 +210,6 @@ class Expr extends @expr, ExprOrStmt, ExprOrType, AST::ValueNode {
       ctx.(ConditionalExpr).inNullSensitiveContext()
     )
   }
-
-  /**
-   * Gets the data-flow node where exceptions thrown by this expression will
-   * propagate if this expression causes an exception to be thrown.
-   */
-  overlay[caller?]
-  pragma[inline]
-  DataFlow::Node getExceptionTarget() {
-    result = getCatchParameterFromStmt(getRawEnclosingStmt(this))
-    or
-    not exists(getCatchParameterFromStmt(getRawEnclosingStmt(this))) and
-    result =
-      any(DataFlow::FunctionNode f | f.getFunction() = this.getContainer()).getExceptionalReturn()
-  }
-}
-
-cached
-private DataFlow::Node getCatchParameterFromStmt(Stmt stmt) {
-  Stages::DataFlowStage::ref() and
-  result =
-    DataFlow::parameterNode(stmt.getEnclosingTryCatchStmt().getACatchClause().getAParameter())
-}
-
-overlay[caller?]
-pragma[inline]
-private Stmt getRawEnclosingStmt(Expr e) {
-  // For performance reasons, we need the enclosing statement without overrides
-  enclosing_stmt(e, result)
 }
 
 /**
@@ -290,10 +224,7 @@ private Stmt getRawEnclosingStmt(Expr e) {
 class Identifier extends @identifier, ExprOrType {
   /** Gets the name of this identifier. */
   cached
-  string getName() {
-    Stages::Ast::ref() and
-    literals(result, _, this)
-  }
+  string getName() { literals(result, _, this) }
 
   override string getAPrimaryQlClass() { result = "Identifier" }
 }
@@ -457,15 +388,7 @@ class BigIntLiteral extends @bigint_literal, Literal {
  * 'Hello, "world"!'
  * ```
  */
-class StringLiteral extends @string_literal, Literal {
-  /**
-   * Gets the value of this string literal parsed as a regular expression, if possible.
-   *
-   * All string literals have an associated regular expression tree, provided they can
-   * be parsed without syntax errors.
-   */
-  RegExpTerm asRegExp() { this = result.getParent() }
-}
+class StringLiteral extends @string_literal, Literal { }
 
 /**
  * A regular expression literal.
@@ -479,27 +402,9 @@ class StringLiteral extends @string_literal, Literal {
  * /(?i)ab*c(d|e)$/
  * ```
  */
-class RegExpLiteral extends @regexp_literal, Literal, RegExpParent {
-  /** Gets the root term of this regular expression literal. */
-  RegExpTerm getRoot() { this = result.getParent() }
-
+class RegExpLiteral extends @regexp_literal, Literal {
   /** Gets the flags of this regular expression. */
   string getFlags() { result = this.getValue().regexpCapture(".*/(\\w*)$", 1) }
-
-  /** Holds if this regular expression has an `m` flag. */
-  predicate isMultiline() { RegExp::isMultiline(this.getFlags()) }
-
-  /** Holds if this regular expression has a `g` flag. */
-  predicate isGlobal() { RegExp::isGlobal(this.getFlags()) }
-
-  /** Holds if this regular expression has an `i` flag. */
-  predicate isIgnoreCase() { RegExp::isIgnoreCase(this.getFlags()) }
-
-  /** Holds if this regular expression has an `s` flag. */
-  predicate isDotAll() { RegExp::isDotAll(this.getFlags()) }
-
-  /** Holds if this regular expression has an `v` flag. */
-  predicate isUnicodeSets() { RegExp::isUnicodeSets(this.getFlags()) }
 
   override string getAPrimaryQlClass() { result = "RegExpLiteral" }
 }
@@ -843,9 +748,7 @@ class FunctionExpr extends @function_expr, Expr, Function {
   /** Gets the statement in which this function expression appears. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
-  override StmtContainer getEnclosingContainer() {
-    Stages::Ast::ref() and result = Expr.super.getContainer()
-  }
+  override StmtContainer getEnclosingContainer() { result = Expr.super.getContainer() }
 
   overlay[global]
   override predicate isImpure() { none() }
@@ -1008,53 +911,12 @@ class InvokeExpr extends @invokeexpr, Expr {
   int getFirstSpreadIndex() { result = min(int i | this.isSpreadArgument(i)) }
 
   /**
-   * Holds if the `i`th argument of this invocation is an object literal whose property
-   * `name` is set to `value`.
-   *
-   * This predicate is an approximation, computed using only local data flow.
-   */
-  overlay[global]
-  predicate hasOptionArgument(int i, string name, Expr value) {
-    value = this.flow().(DataFlow::InvokeNode).getOptionArgument(i, name).asExpr()
-  }
-
-  /**
-   * DEPRECATED. No longer supported.
-   *
-   * Gets the call signature of the invoked function, as determined by the TypeScript
-   * type system, with overloading resolved and type parameters substituted.
-   *
-   * This predicate is only populated for files extracted with full TypeScript extraction.
-   */
-  overlay[global]
-  deprecated CallSignatureType getResolvedSignature() { invoke_expr_signature(this, result) }
-
-  /**
    * Gets the index of the targeted call signature among the overload signatures
    * on the invoked function.
    *
    * This predicate is only populated for files extracted with full TypeScript extraction.
    */
   int getResolvedOverloadIndex() { invoke_expr_overload_index(this, result) }
-
-  /**
-   * DEPRECATED. No longer directly supported, but `getResolvedCallee()` may be usable as an alternative.
-   *
-   * Gets the canonical name of the static call target, as determined by the TypeScript type system.
-   *
-   * This predicate is only populated for files extracted with full TypeScript extraction.
-   */
-  overlay[global]
-  deprecated CanonicalFunctionName getResolvedCalleeName() { ast_node_symbol(this, result) }
-
-  /**
-   * Gets the statically resolved target function, as determined by the TypeScript type system, if any.
-   *
-   * Note that the resolved function may be overridden in a subclass and thus is not
-   * necessarily the actual target of this invocation at runtime.
-   */
-  overlay[global]
-  Function getResolvedCallee() { TypeResolution::callTarget(this, result) }
 }
 
 /**
@@ -1614,25 +1476,13 @@ class URShiftExpr extends @urshift_expr, BinaryExpr {
  */
 class AddExpr extends @add_expr, BinaryExpr {
   override string getOperator() { result = "+" }
-
-  /**
-   * Gets the value of this string concatenation parsed as a regular expression, if possible.
-   *
-   * All string literals have an associated regular expression tree, provided they can
-   * be parsed without syntax errors.
-   */
-  RegExpTerm asRegExp() { this = result.getParent() }
 }
 
 /**
  * Gets the string value for the expression `e`.
  * This string-value is either a constant-string, or the result from a simple string-concatenation.
  */
-private string getStringValue(Expr e) {
-  result = getConstantString(e)
-  or
-  result = getConcatenatedString(e)
-}
+private string getStringValue(Expr e) { result = getConstantString(e) }
 
 /**
  * Gets the constant string value for the expression `e`.
@@ -1653,56 +1503,6 @@ private string getConstantString(Expr e) {
   or
   result = e.(TemplateElement).getValue()
 }
-
-pragma[nomagic]
-private predicate hasConstantStringValue(Expr e) {
-  exists(getConstantString(e))
-  or
-  hasAllConstantLeafs(e.getUnderlyingValue())
-}
-
-/**
- * Holds if `add` is a string-concatenation where all the transitive leafs have a constant string value.
- */
-private predicate hasAllConstantLeafs(AddExpr add) {
-  hasConstantStringValue(add.getLeftOperand()) and
-  hasConstantStringValue(add.getRightOperand())
-}
-
-/**
- * Gets the concatenated string for a string-concatenation `add`.
- * Only has a result if `add` is not itself an operand in another string-concatenation with all constant leafs.
- */
-private string getConcatenatedString(Expr add) {
-  result = getConcatenatedString(add.getUnderlyingValue())
-  or
-  result =
-    strictconcat(Expr leaf |
-      leaf = getAnAddOperand*(add.(SmallConcatRoot))
-    |
-      getConstantString(leaf)
-      order by
-        leaf.getLocation().getStartLine(), leaf.getLocation().getStartColumn()
-    )
-}
-
-/**
- * An expr that is the root of a string concatenation of constant parts,
- * and the length of the resulting concatenation is less than 1 million chars.
- */
-private class SmallConcatRoot extends Expr {
-  SmallConcatRoot() {
-    not this = getAnAddOperand(any(AddExpr parent | hasAllConstantLeafs(parent))) and
-    hasAllConstantLeafs(this) and
-    sum(Expr leaf | leaf = getAnAddOperand*(this) | getConstantString(leaf).length()) < 1000 * 1000
-  }
-}
-
-/**
- * Gets an operand from `add`.
- * Is specialized to `AddExpr` such that `getAnAddOperand*(add)` can be used to get a leaf from a string-concatenation transitively.
- */
-private Expr getAnAddOperand(AddExpr add) { result = add.getAnOperand().getUnderlyingValue() }
 
 /**
  * A subtraction expression.
@@ -2866,7 +2666,7 @@ class FunctionBindExpr extends @bind_expr, Expr {
  * import("foo", { with: { type: "json" }})
  * ```
  */
-class DynamicImportExpr extends @dynamic_import, Expr, Import {
+class DynamicImportExpr extends @dynamic_import, Expr {
   /** Gets the expression specifying the path of the imported module. */
   Expr getSource() { result = this.getChildExpr(0) }
 
@@ -2874,7 +2674,7 @@ class DynamicImportExpr extends @dynamic_import, Expr, Import {
     result = this.getSource().getFirstControlFlowNode()
   }
 
-  override Expr getImportedPathExpr() { result = this.getSource() }
+  Expr getImportedPathExpr() { result = this.getSource() }
 
   /**
    * Gets the second "argument" to the import expression, that is, the `Y` in `import(X, Y)`.
@@ -2897,21 +2697,7 @@ class DynamicImportExpr extends @dynamic_import, Expr, Import {
    */
   deprecated Expr getImportAttributes() { result = this.getImportOptions() }
 
-  override Module getEnclosingModule() { result = this.getTopLevel() }
-
-  override DataFlow::Node getImportedModuleNode() { result = DataFlow::valueNode(this) }
-
   override string getAPrimaryQlClass() { result = "DynamicImportExpr" }
-}
-
-/** A literal path expression appearing in a dynamic import. */
-overlay[global]
-deprecated private class LiteralDynamicImportPath extends PathExpr, ConstantString {
-  LiteralDynamicImportPath() {
-    exists(DynamicImportExpr di | this.getParentExpr*() = di.getSource())
-  }
-
-  override string getValue() { result = this.getStringValue() }
 }
 
 /**
@@ -2994,8 +2780,5 @@ class ImportMetaExpr extends @import_meta_expr, Expr {
  * ```
  */
 class GeneratedCodeExpr extends @generated_code_expr, Expr {
-  /** Gets the placeholder tag that was parsed as an expression. */
-  Templating::TemplatePlaceholderTag getPlaceholderTag() { this = result.getEnclosingExpr() }
-
   override string getAPrimaryQlClass() { result = "GeneratedCodeExpr" }
 }

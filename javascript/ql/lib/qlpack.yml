@@ -17,6 +17,7 @@ dependencies:
   codeql/util: ${workspace}
   codeql/xml: ${workspace}
   codeql/yaml: ${workspace}
+  codeql/unified: ${workspace}
 dataExtensions:
   - semmle/javascript/frameworks/**/model.yml
   - semmle/javascript/frameworks/**/*.model.yml

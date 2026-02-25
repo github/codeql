@@ -3,7 +3,7 @@
  * @description An edge in the call graph.
  * @kind problem
  * @problem.severity recommendation
- * @id js/meta/alerts/call-graph-for-comparison
+ * @id js/meta/alerts/full-call-graph-unified
  * @tags meta
  * @precision very-low
  */
