@@ -377,4 +377,30 @@ module ImportResolution {
   }
 
   Module getModule(DataFlow::CfgNode node) { node = getModuleReference(result) }
+
+  /** Holds if module `importer` directly imports module `imported`. */
+  predicate imports(Module importer, Module imported) {
+    getImmediateModuleReference(imported).getScope() = importer
+  }
+
+  /**
+   * Holds if the import statement `i` causes module `imported` to be imported.
+   * For `from pkg import submodule`, both `pkg` and `pkg.submodule` are considered imported.
+   */
+  predicate importedBy(ImportingStmt i, Module imported) {
+    exists(Alias a | a = i.(Import).getAName() |
+      getImmediateModuleReference(imported).asExpr() = a.getAsname()
+    )
+    or
+    exists(ImportMember im | im = i.(Import).getAName().getValue() |
+      getImmediateModuleReference(imported).asExpr() = im.getModule()
+    )
+    or
+    getImmediateModuleReference(imported).asExpr() = i.(ImportStar).getModule().(ImportExpr)
+  }
+
+  /** Gets a user-friendly name for module `m`, using the package name for `__init__` modules. */
+  string moduleName(Module m) {
+    if m.isPackageInit() then result = m.getPackageName() else result = m.getName()
+  }
 }
