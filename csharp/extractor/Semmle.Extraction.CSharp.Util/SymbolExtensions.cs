@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 
@@ -18,111 +19,61 @@ namespace Semmle.Extraction.CSharp.Util
             return symbol.CanBeReferencedByName ? name : name.Substring(symbol.Name.LastIndexOf('.') + 1);
         }
 
+        private static readonly Dictionary<string, string> methodToOperator = new Dictionary<string, string>
+        {
+            { "op_LogicalNot", "!" },
+            { "op_BitwiseAnd", "&" },
+            { "op_Equality", "==" },
+            { "op_Inequality", "!=" },
+            { "op_UnaryPlus", "+" },
+            { "op_Addition", "+" },
+            { "op_UnaryNegation", "-" },
+            { "op_Subtraction", "-" },
+            { "op_Multiply", "*" },
+            { "op_Division", "/" },
+            { "op_Modulus", "%" },
+            { "op_GreaterThan", ">" },
+            { "op_GreaterThanOrEqual", ">=" },
+            { "op_LessThan", "<" },
+            { "op_LessThanOrEqual", "<=" },
+            { "op_Decrement", "--" },
+            { "op_Increment", "++" },
+            { "op_Implicit", "implicit conversion" },
+            { "op_Explicit", "explicit conversion" },
+            { "op_OnesComplement", "~" },
+            { "op_RightShift", ">>" },
+            { "op_UnsignedRightShift", ">>>" },
+            { "op_LeftShift", "<<" },
+            { "op_BitwiseOr", "|" },
+            { "op_ExclusiveOr", "^" },
+            { "op_True", "true" },
+            { "op_False", "false" }
+        };
+
         /// <summary>
         /// Convert an operator method name in to a symbolic name.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
         public static bool TryGetOperatorSymbol(this ISymbol symbol, out string operatorName)
         {
-            static bool TryGetOperatorSymbolFromName(string methodName, out string operatorName)
+            var methodName = symbol.GetName(useMetadataName: false);
+
+            // Most common use-case.
+            if (methodToOperator.TryGetValue(methodName, out var opName))
             {
-                var success = true;
-                switch (methodName)
-                {
-                    case "op_LogicalNot":
-                        operatorName = "!";
-                        break;
-                    case "op_BitwiseAnd":
-                        operatorName = "&";
-                        break;
-                    case "op_Equality":
-                        operatorName = "==";
-                        break;
-                    case "op_Inequality":
-                        operatorName = "!=";
-                        break;
-                    case "op_UnaryPlus":
-                    case "op_Addition":
-                        operatorName = "+";
-                        break;
-                    case "op_UnaryNegation":
-                    case "op_Subtraction":
-                        operatorName = "-";
-                        break;
-                    case "op_Multiply":
-                        operatorName = "*";
-                        break;
-                    case "op_Division":
-                        operatorName = "/";
-                        break;
-                    case "op_Modulus":
-                        operatorName = "%";
-                        break;
-                    case "op_GreaterThan":
-                        operatorName = ">";
-                        break;
-                    case "op_GreaterThanOrEqual":
-                        operatorName = ">=";
-                        break;
-                    case "op_LessThan":
-                        operatorName = "<";
-                        break;
-                    case "op_LessThanOrEqual":
-                        operatorName = "<=";
-                        break;
-                    case "op_Decrement":
-                        operatorName = "--";
-                        break;
-                    case "op_Increment":
-                        operatorName = "++";
-                        break;
-                    case "op_Implicit":
-                        operatorName = "implicit conversion";
-                        break;
-                    case "op_Explicit":
-                        operatorName = "explicit conversion";
-                        break;
-                    case "op_OnesComplement":
-                        operatorName = "~";
-                        break;
-                    case "op_RightShift":
-                        operatorName = ">>";
-                        break;
-                    case "op_UnsignedRightShift":
-                        operatorName = ">>>";
-                        break;
-                    case "op_LeftShift":
-                        operatorName = "<<";
-                        break;
-                    case "op_BitwiseOr":
-                        operatorName = "|";
-                        break;
-                    case "op_ExclusiveOr":
-                        operatorName = "^";
-                        break;
-                    case "op_True":
-                        operatorName = "true";
-                        break;
-                    case "op_False":
-                        operatorName = "false";
-                        break;
-                    default:
-                        var match = CheckedRegex().Match(methodName);
-                        if (match.Success)
-                        {
-                            TryGetOperatorSymbolFromName($"op_{match.Groups[1]}", out var uncheckedName);
-                            operatorName = $"checked {uncheckedName}";
-                            break;
-                        }
-                        operatorName = methodName;
-                        success = false;
-                        break;
-                }
-                return success;
+                operatorName = opName;
+                return true;
             }
 
-            var methodName = symbol.GetName(useMetadataName: false);
-            return TryGetOperatorSymbolFromName(methodName, out operatorName);
+            var match = CheckedRegex().Match(methodName);
+            if (match.Success && methodToOperator.TryGetValue($"op_{match.Groups[1]}", out var uncheckedName))
+            {
+                operatorName = $"checked {uncheckedName}";
+                return true;
+            }
+
+            operatorName = methodName;
+            return false;
         }
 
         [GeneratedRegex("^op_Checked(.*)$")]
