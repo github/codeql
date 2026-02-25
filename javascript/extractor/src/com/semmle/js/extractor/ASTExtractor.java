@@ -819,6 +819,7 @@ public class ASTExtractor {
       // add all declared global (or module-scoped) names, both non-lexical and lexical
       scopeManager.addNames(scopeManager.collectDeclaredNames(nd, isStrict, false, DeclKind.none));
       scopeManager.addNames(scopeManager.collectDeclaredNames(nd, isStrict, true, DeclKind.none));
+      scopeManager.addVariables("this");
 
       visitAll(nd.getBody(), toplevelLabel);
 
@@ -1070,6 +1071,9 @@ public class ASTExtractor {
 
       scopeManager.enterScope((Node) nd);
       scopeManager.addNames(locals);
+      if (!(nd instanceof ArrowFunctionExpression)) {
+        scopeManager.addVariables("this");
+      }
 
       // The name of a function expression binds to its own scope.
       if (nd.getId() != null && nd instanceof AFunctionExpression) {
