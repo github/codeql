@@ -3,6 +3,7 @@
 | clientSide.js:14:5:14:64 | request ... search) | clientSide.js:14:42:14:63 | window. ... .search | clientSide.js:14:13:14:63 | 'https: ... .search | The $@ of this request depends on a $@. | clientSide.js:14:13:14:63 | 'https: ... .search | URL | clientSide.js:14:42:14:63 | window. ... .search | user-provided value |
 | clientSide.js:17:5:17:58 | request ...  '/id') | clientSide.js:16:22:16:41 | window.location.hash | clientSide.js:17:13:17:57 | 'https: ... + '/id' | The $@ of this request depends on a $@. | clientSide.js:17:13:17:57 | 'https: ... + '/id' | URL | clientSide.js:16:22:16:41 | window.location.hash | user-provided value |
 | clientSide.js:21:5:21:54 | request ...  '/id') | clientSide.js:20:18:20:28 | window.name | clientSide.js:21:13:21:53 | 'https: ... + '/id' | The $@ of this request depends on a $@. | clientSide.js:21:13:21:53 | 'https: ... + '/id' | URL | clientSide.js:20:18:20:28 | window.name | user-provided value |
+| clientSide.js:27:5:27:19 | request(custom) | clientSide.js:26:20:26:56 | require ... ource() | clientSide.js:27:13:27:18 | custom | The $@ of this request depends on a $@. | clientSide.js:27:13:27:18 | custom | URL | clientSide.js:26:20:26:56 | require ... ource() | user-provided value |
 edges
 | clientSide.js:11:11:11:15 | query | clientSide.js:12:42:12:46 | query | provenance |  |
 | clientSide.js:11:19:11:40 | window. ... .search | clientSide.js:11:19:11:53 | window. ... ring(1) | provenance |  |
@@ -16,6 +17,8 @@ edges
 | clientSide.js:20:11:20:14 | name | clientSide.js:21:42:21:45 | name | provenance |  |
 | clientSide.js:20:18:20:28 | window.name | clientSide.js:20:11:20:14 | name | provenance |  |
 | clientSide.js:21:42:21:45 | name | clientSide.js:21:13:21:53 | 'https: ... + '/id' | provenance |  |
+| clientSide.js:26:11:26:16 | custom | clientSide.js:27:13:27:18 | custom | provenance |  |
+| clientSide.js:26:20:26:56 | require ... ource() | clientSide.js:26:11:26:16 | custom | provenance |  |
 nodes
 | clientSide.js:11:11:11:15 | query | semmle.label | query |
 | clientSide.js:11:19:11:40 | window. ... .search | semmle.label | window. ... .search |
@@ -33,4 +36,7 @@ nodes
 | clientSide.js:20:18:20:28 | window.name | semmle.label | window.name |
 | clientSide.js:21:13:21:53 | 'https: ... + '/id' | semmle.label | 'https: ... + '/id' |
 | clientSide.js:21:42:21:45 | name | semmle.label | name |
+| clientSide.js:26:11:26:16 | custom | semmle.label | custom |
+| clientSide.js:26:20:26:56 | require ... ource() | semmle.label | require ... ource() |
+| clientSide.js:27:13:27:18 | custom | semmle.label | custom |
 subpaths
