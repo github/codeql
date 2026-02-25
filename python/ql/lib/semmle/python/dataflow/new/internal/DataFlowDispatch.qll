@@ -2396,6 +2396,24 @@ module Reachability {
     // Exception edge from a node that is unlikely to raise
     unlikelyToRaise(node) and
     succ = node.getAnExceptionalSuccessor()
+    or
+    // True branch of `if False:` or `if TYPE_CHECKING:`
+    isAlwaysFalseGuard(node) and
+    succ = node.getATrueSuccessor()
+  }
+
+  /**
+   * Holds if `node` is a condition that is always `False` at runtime.
+   * This covers `if False:` and `if typing.TYPE_CHECKING:`.
+   */
+  private predicate isAlwaysFalseGuard(ControlFlowNode node) {
+    node.getNode() instanceof False
+    or
+    node =
+      API::moduleImport("typing")
+          .getMember("TYPE_CHECKING")
+          .getAValueReachableFromSource()
+          .asCfgNode()
   }
 
   private predicate startBbLikelyReachable(BasicBlock b) {
