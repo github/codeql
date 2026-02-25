@@ -101,6 +101,8 @@ fn test_indirect_flows(data: &str) {
     }
 }
 
+extern crate alloc;
+
 // Additional test patterns for different logging scenarios
 mod additional_tests {
     use log::*;
@@ -117,6 +119,10 @@ mod additional_tests {
 
         // BAD: Complex format strings
         info!("User {} did action {} at time {}", user_data, "login", "now"); // $ Alert[rust/log-injection]=commandargs
+
+        // GOOD: non-sinks
+        let _ : Vec<u8> = From::from(user_data.clone()); // $ SPURIOUS: Alert[rust/log-injection]=commandargs
+        let _ : Box<str> = From::from(user_data); // $ SPURIOUS: Alert[rust/log-injection]=commandargs
     }
 
     pub fn test_println_patterns() {
