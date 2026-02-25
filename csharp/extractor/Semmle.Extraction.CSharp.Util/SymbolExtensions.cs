@@ -65,10 +65,13 @@ namespace Semmle.Extraction.CSharp.Util
                 return true;
             }
 
-            var match = CheckedRegex().Match(methodName);
-            if (match.Success && methodToOperator.TryGetValue($"op_{match.Groups[1]}", out var uncheckedName))
+            // Attempt to parse using a regexp.
+            var match = OperatorRegex().Match(methodName);
+            if (match.Success && methodToOperator.TryGetValue($"op_{match.Groups[2]}", out var rawOperatorName))
             {
-                operatorName = $"checked {uncheckedName}";
+                var prefix = match.Groups[1].Success ? "checked " : "";
+                var postfix = match.Groups[3].Success ? "=" : "";
+                operatorName = $"{prefix}{rawOperatorName}{postfix}";
                 return true;
             }
 
@@ -76,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Util
             return false;
         }
 
-        [GeneratedRegex("^op_Checked(.*)$")]
-        private static partial Regex CheckedRegex();
+        [GeneratedRegex("^op_(Checked)?(.*?)(Assignment)?$")]
+        private static partial Regex OperatorRegex();
     }
 }
