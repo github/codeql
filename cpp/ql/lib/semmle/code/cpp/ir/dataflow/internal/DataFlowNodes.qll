@@ -975,7 +975,7 @@ private class Node0 extends Node, TNode0 {
 
   override Location getLocationImpl() { result = node.getLocation() }
 
-  override string toStringImpl() { result = node.toString() }
+  override string toStringImpl() { result = node.toStringImpl() }
 
   override Type getType() { result = node.getType() }
 
@@ -1027,7 +1027,9 @@ class PostFieldUpdateNode extends PostUpdateNodeImpl {
 
   Field getUpdatedField() { result = this.getFieldAddress().getField() }
 
-  override string toStringImpl() { result = this.getPreUpdateNode() + " [post update]" }
+  override string toStringImpl() {
+    result = this.getPreUpdateNode().toStringImpl() + " [post update]"
+  }
 }
 
 /**
@@ -1195,9 +1197,7 @@ private module RawIndirectNodes {
       else result instanceof UnknownLocation
     }
 
-    override string toStringImpl() {
-      result = stars(this) + operandNode(this.getOperand()).toStringImpl()
-    }
+    override string toStringImpl() { result = stars(this) + operandToString(this.getOperand()) }
   }
 
   /**
@@ -1240,7 +1240,7 @@ private module RawIndirectNodes {
     }
 
     override string toStringImpl() {
-      result = stars(this) + instructionNode(this.getInstruction()).toStringImpl()
+      result = stars(this) + instructionToString(this.getInstruction())
     }
   }
 
