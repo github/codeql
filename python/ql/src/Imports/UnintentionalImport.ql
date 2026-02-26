@@ -13,23 +13,19 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.ImportResolution
 private import semmle.python.types.ImportTime
 
-predicate import_star(ImportStar imp, ModuleValue exporter) {
-  exporter.importedAs(imp.getImportedModuleName())
+predicate all_defined(Module exporter) {
+  exporter.(ImportTimeScope).definesName("__all__")
+  or
+  exporter.getInitModule().(ImportTimeScope).definesName("__all__")
 }
 
-predicate all_defined(ModuleValue exporter) {
-  exporter.isBuiltin()
-  or
-  exporter.getScope().(ImportTimeScope).definesName("__all__")
-  or
-  exporter.getScope().getInitModule().(ImportTimeScope).definesName("__all__")
-}
-
-from ImportStar imp, ModuleValue exporter
-where import_star(imp, exporter) and not all_defined(exporter) and not exporter.isAbsent()
+from ImportStar imp, Module exporter
+where
+  exporter = ImportResolution::getModuleImportedByImportStar(imp) and
+  not all_defined(exporter)
 select imp,
   "Import pollutes the enclosing namespace, as the imported module $@ does not define '__all__'.",
   exporter, exporter.getName()
