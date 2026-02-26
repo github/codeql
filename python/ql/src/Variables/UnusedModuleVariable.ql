@@ -13,8 +13,20 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.ImportResolution
 import Definition
+
+/**
+ * Whether `name` is exported from module `m`, following Python's convention:
+ * if `__all__` is defined, use its entries; otherwise, export public names (not starting with `_`).
+ */
+private predicate isExported(Module m, string name) {
+  py_exports(m, name)
+  or
+  not py_exports(m, _) and
+  ImportResolution::module_export(m, name, _) and
+  not name.charAt(0) = "_"
+}
 
 /**
  * Whether the module contains an __all__ definition,
@@ -59,7 +71,7 @@ predicate unused_global(Name unused, GlobalVariable v) {
       // indirectly
       defn.getBasicBlock().reachesExit() and u.getScope() != unused.getScope()
     ) and
-    not unused.getEnclosingModule().(ModuleWithPointsTo).getAnExport() = v.getId() and
+    not isExported(unused.getEnclosingModule(), v.getId()) and
     not exists(unused.getParentNode().(ClassDef).getDefinedClass().getADecorator()) and
     not exists(unused.getParentNode().(FunctionDef).getDefinedFunction().getADecorator()) and
     unused.defines(v) and
