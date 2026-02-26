@@ -2322,6 +2322,11 @@ module ExceptionTypes {
     BaseException() { name = "BaseException" }
   }
 
+  /** The builtin `NameError` exception type. */
+  class NameError extends BuiltinExceptType {
+    NameError() { name = "NameError" }
+  }
+
   /**
    * Holds if the exception edge from `r` to `handler` is unlikely because
    * none of the exception types that `r` may raise are handled by `handler`.

@@ -12,7 +12,7 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 import Undefined
 
 predicate uninitialized_local(NameNode use) {
@@ -21,16 +21,16 @@ predicate uninitialized_local(NameNode use) {
   ) and
   (
     any(Uninitialized uninit).taints(use) and
-    PointsToInternal::reachableBlock(use.getBasicBlock(), _)
+    Reachability::likelyReachable(use.getBasicBlock())
     or
     not exists(EssaVariable var | var.getASourceUse() = use)
   )
 }
 
 predicate explicitly_guarded(NameNode u) {
-  exists(Try t |
+  exists(Try t, ExceptionTypes::NameError nameError |
     t.getBody().contains(u.getNode()) and
-    t.getAHandler().getType().(ExprWithPointsTo).pointsTo(ClassValue::nameError())
+    nameError.getAUse().asExpr() = t.getAHandler().getType()
   )
 }
 
