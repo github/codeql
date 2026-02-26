@@ -11,42 +11,6 @@ private import TypeFlow
 private import semmle.code.cpp.ir.ValueNumbering
 
 /**
- * Holds if `operand` is an operand that is not used by the dataflow library.
- * Ignored operands are not recognized as uses by SSA, and they don't have a
- * corresponding `(Indirect)OperandNode`.
- */
-predicate ignoreOperand(Operand operand) {
-  operand = any(Instruction instr | ignoreInstruction(instr)).getAnOperand() or
-  operand = any(Instruction instr | ignoreInstruction(instr)).getAUse() or
-  operand instanceof MemoryOperand
-}
-
-/**
- * Holds if `instr` is an instruction that is not used by the dataflow library.
- * Ignored instructions are not recognized as reads/writes by SSA, and they
- * don't have a corresponding `(Indirect)InstructionNode`.
- */
-predicate ignoreInstruction(Instruction instr) {
-  DataFlowImplCommon::forceCachingInSameStage() and
-  (
-    instr instanceof CallSideEffectInstruction or
-    instr instanceof CallReadSideEffectInstruction or
-    instr instanceof ExitFunctionInstruction or
-    instr instanceof EnterFunctionInstruction or
-    instr instanceof WriteSideEffectInstruction or
-    instr instanceof PhiInstruction or
-    instr instanceof ReadSideEffectInstruction or
-    instr instanceof ChiInstruction or
-    instr instanceof InitializeIndirectionInstruction or
-    instr instanceof AliasedDefinitionInstruction or
-    instr instanceof AliasedUseInstruction or
-    instr instanceof InitializeNonLocalInstruction or
-    instr instanceof ReturnIndirectionInstruction or
-    instr instanceof UninitializedGroupInstruction
-  )
-}
-
-/**
  * Gets the C++ type of `this` in the member function `f`.
  * The result is a glvalue if `isGLValue` is true, and
  * a prvalue if `isGLValue` is false.
@@ -328,10 +292,6 @@ predicate isWrite(Node0Impl value, Operand address, boolean certain) {
   )
 }
 
-predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
-  any(Indirection ind).isAdditionalConversionFlow(opFrom, instrTo)
-}
-
 newtype TBaseSourceVariable =
   // Each IR variable gets its own source variable
   TBaseIRVariable(IRVariable var) or
@@ -553,6 +513,49 @@ private class BaseCallInstruction extends BaseSourceVariableInstruction, CallIns
 
 cached
 private module Cached {
+  /**
+   * Holds if `operand` is an operand that is not used by the dataflow library.
+   * Ignored operands are not recognized as uses by SSA, and they don't have a
+   * corresponding `(Indirect)OperandNode`.
+   */
+  cached
+  predicate ignoreOperand(Operand operand) {
+    operand = any(Instruction instr | ignoreInstruction(instr)).getAnOperand() or
+    operand = any(Instruction instr | ignoreInstruction(instr)).getAUse() or
+    operand instanceof MemoryOperand
+  }
+
+  /**
+   * Holds if `instr` is an instruction that is not used by the dataflow library.
+   * Ignored instructions are not recognized as reads/writes by SSA, and they
+   * don't have a corresponding `(Indirect)InstructionNode`.
+   */
+  cached
+  predicate ignoreInstruction(Instruction instr) {
+    DataFlowImplCommon::forceCachingInSameStage() and
+    (
+      instr instanceof CallSideEffectInstruction or
+      instr instanceof CallReadSideEffectInstruction or
+      instr instanceof ExitFunctionInstruction or
+      instr instanceof EnterFunctionInstruction or
+      instr instanceof WriteSideEffectInstruction or
+      instr instanceof PhiInstruction or
+      instr instanceof ReadSideEffectInstruction or
+      instr instanceof ChiInstruction or
+      instr instanceof InitializeIndirectionInstruction or
+      instr instanceof AliasedDefinitionInstruction or
+      instr instanceof AliasedUseInstruction or
+      instr instanceof InitializeNonLocalInstruction or
+      instr instanceof ReturnIndirectionInstruction or
+      instr instanceof UninitializedGroupInstruction
+    )
+  }
+
+  cached
+  predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
+    any(Indirection ind).isAdditionalConversionFlow(opFrom, instrTo)
+  }
+
   /**
    * Gets the C++ type of the instruction `i`.
    *
