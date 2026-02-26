@@ -121,8 +121,8 @@ mod additional_tests {
         info!("User {} did action {} at time {}", user_data, "login", "now"); // $ Alert[rust/log-injection]=commandargs
 
         // GOOD: non-sinks
-        let _ : Vec<u8> = From::from(user_data.clone()); // $ SPURIOUS: Alert[rust/log-injection]=commandargs
-        let _ : Box<str> = From::from(user_data); // $ SPURIOUS: Alert[rust/log-injection]=commandargs
+        let _ : Vec<u8> = From::from(user_data.clone());
+        let _ : Box<str> = From::from(user_data);
     }
 
     pub fn test_println_patterns() {

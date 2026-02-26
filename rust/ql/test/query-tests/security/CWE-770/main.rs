@@ -321,12 +321,12 @@ unsafe fn test_non_sinks(a: usize) {
     let _ = std::vec::Vec::from([a]);
     let _ = alloc::vec::Vec::from([a]);
 
-    let _ : Vec<usize> = From::from([a]); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ : std::vec::Vec<usize> = From::from([a]); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
-    let _ : alloc::vec::Vec<usize> = From::from([a]); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ : Vec<usize> = From::from([a]);
+    let _ : std::vec::Vec<usize> = From::from([a]);
+    let _ : alloc::vec::Vec<usize> = From::from([a]);
 
     let _ = i128 ::from(b);
-    let _ : i128 = From::from(b); // $ SPURIOUS: Alert[rust/uncontrolled-allocation-size]=arg1
+    let _ : i128 = From::from(b);
 
     let _ = libc::malloc(a); // $ Alert[rust/uncontrolled-allocation-size]=arg1
 }
