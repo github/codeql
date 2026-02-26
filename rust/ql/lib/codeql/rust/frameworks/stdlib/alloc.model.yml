@@ -64,3 +64,5 @@ extensions:
       - ["<alloc::collections::vec_deque::VecDeque as core::convert::From>::from", "sink", "manual"]
       - ["<alloc::sync::Arc as core::convert::From>::from", "sink", "manual"]
       - ["<alloc::rc::Rc as core::convert::From>::from", "sink", "manual"]
+      - ["<alloc::string::String>::split_off", "sink", "manual"]
+      - ["<alloc::vec::Vec>::split_off", "sink", "manual"]
