@@ -101,8 +101,6 @@ fn test_indirect_flows(data: &str) {
     }
 }
 
-extern crate alloc;
-
 // Additional test patterns for different logging scenarios
 mod additional_tests {
     use log::*;
@@ -135,8 +133,8 @@ mod additional_tests {
 }
 
 mod axum_tests {
-    use axum::extract::{Json, Path, Query, Request};
-    use axum::routing::{get, post, put, MethodFilter};
+    use axum::extract::Path;
+    use axum::routing::get;
     use axum::Router;
 
     async fn my_axum_handler_1(o_path: Option<Path<String>>) -> &'static str {
