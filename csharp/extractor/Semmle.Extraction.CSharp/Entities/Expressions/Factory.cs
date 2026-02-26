@@ -70,6 +70,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return NormalElementAccess.Create(info);
 
                     case SyntaxKind.SimpleAssignmentExpression:
+                    case SyntaxKind.CoalesceAssignmentExpression:
+                        return Assignment.Create(info);
+
                     case SyntaxKind.OrAssignmentExpression:
                     case SyntaxKind.AndAssignmentExpression:
                     case SyntaxKind.SubtractAssignmentExpression:
@@ -81,8 +84,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                     case SyntaxKind.UnsignedRightShiftAssignmentExpression:
                     case SyntaxKind.DivideAssignmentExpression:
                     case SyntaxKind.ModuloAssignmentExpression:
-                    case SyntaxKind.CoalesceAssignmentExpression:
-                        return Assignment.Create(info);
+                        return CompoundAssignment.Create(info);
 
                     case SyntaxKind.ObjectCreationExpression:
                         return ExplicitObjectCreation.Create(info);
