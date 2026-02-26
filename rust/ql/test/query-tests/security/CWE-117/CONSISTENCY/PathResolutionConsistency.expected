@@ -1,3 +1,2 @@
 multipleResolvedTargets
-| main.rs:124:27:124:55 | ...::from(...) |
-| main.rs:125:28:125:48 | ...::from(...) |
+| main.rs:123:28:123:48 | ...::from(...) |
