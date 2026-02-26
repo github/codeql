@@ -1989,6 +1989,30 @@ module DuckTyping {
   private import semmle.python.ApiGraphs
 
   /**
+   * Holds if `name` is a globally defined name (a builtin or VM-defined name).
+   */
+  predicate globallyDefinedName(string name) {
+    exists(API::builtin(name))
+    or
+    name = "WindowsError"
+    or
+    name = "_" and exists(Module m | m.getName() = "gettext")
+    or
+    name in ["__file__", "__builtins__", "__name__"]
+  }
+
+  /**
+   * Holds if `name` is monkey-patched into the builtins module.
+   */
+  predicate monkeyPatchedBuiltin(string name) {
+    exists(DataFlow::AttrWrite aw |
+      API::moduleImport("builtins").getAValueReachableFromSource().asExpr() =
+        aw.getObject().asExpr() and
+      aw.getAttributeName() = name
+    )
+  }
+
+  /**
    * Holds if `cls` or any of its resolved superclasses declares a method with the given `name`.
    */
   predicate hasMethod(Class cls, string name) {

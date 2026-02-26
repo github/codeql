@@ -12,17 +12,23 @@
  */
 
 import python
-import Variables.MonkeyPatched
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.ImportResolution
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 private import semmle.python.types.ImportTime
+
+/* Global Stuff */
+predicate not_a_global(PlaceHolder use) {
+  not ImportResolution::module_export(use.getEnclosingModule(), use.getId(), _) and
+  not DuckTyping::globallyDefinedName(use.getId()) and
+  not DuckTyping::monkeyPatchedBuiltin(use.getId())
+}
 
 /* Local variable part */
 predicate initialized_as_local(PlaceHolder use) {
-  exists(SsaVariableWithPointsTo l, Function f |
-    f = use.getScope() and l.getAUse() = use.getAFlowNode()
-  |
+  exists(SsaVariable l, Function f | f = use.getScope() and l.getAUse() = use.getAFlowNode() |
     l.getVariable() instanceof LocalVariable and
-    not l.maybeUndefined()
+    exists(l.getDefinition()) and
+    not l.getDefinition().isDelete()
   )
 }
 
@@ -31,16 +37,6 @@ Class enclosing_class(PlaceHolder use) { result.getAMethod() = use.getScope() }
 
 predicate template_attribute(PlaceHolder use) {
   exists(ImportTimeScope cls | cls = enclosing_class(use) | cls.definesName(use.getId()))
-}
-
-/* Global Stuff */
-predicate not_a_global(PlaceHolder use) {
-  not exists(PythonModuleObject mo |
-    mo.hasAttribute(use.getId()) and mo.getModule() = use.getEnclosingModule()
-  ) and
-  not globallyDefinedName(use.getId()) and
-  not monkey_patched_builtin(use.getId()) and
-  not globallyDefinedName(use.getId())
 }
 
 from PlaceHolder p
