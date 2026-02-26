@@ -14,11 +14,11 @@
 
 import python
 import Definition
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-predicate unused_parameter(FunctionValue f, LocalVariable v) {
+predicate unused_parameter(Function f, LocalVariable v) {
   v.isParameter() and
-  v.getScope() = f.getScope() and
+  v.getScope() = f and
   not name_acceptable_for_unused_variable(v) and
   not exists(NameNode u | u.uses(v)) and
   not exists(Name inner, LocalVariable iv |
@@ -26,15 +26,19 @@ predicate unused_parameter(FunctionValue f, LocalVariable v) {
   )
 }
 
-predicate is_abstract(FunctionValue func) {
-  func.getScope().getADecorator().(Name).getId().matches("%abstract%")
+predicate is_abstract(Function func) { func.getADecorator().(Name).getId().matches("%abstract%") }
+
+predicate is_overridden(Function f) {
+  exists(Class cls | f.getScope() = cls |
+    DuckTyping::hasMethod(getADirectSubclass(cls), f.getName())
+  )
 }
 
-from PythonFunctionValue f, LocalVariable v
+from Function f, LocalVariable v
 where
   v.getId() != "self" and
   unused_parameter(f, v) and
-  not f.isOverridingMethod() and
-  not f.isOverriddenMethod() and
+  not DuckTyping::overridesMethod(f) and
+  not is_overridden(f) and
   not is_abstract(f)
 select f, "The parameter '" + v.getId() + "' is never used."
