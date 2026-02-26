@@ -12,9 +12,10 @@
  */
 
 import python
-private import LegacyPointsTo
 import Variables.Definition
 import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.internal.ImportResolution
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 private predicate is_pytest_fixture(Import imp, Variable name) {
   exists(Alias a, API::Node pytest_fixture, API::Node decorator |
@@ -95,7 +96,7 @@ private string typehint_annotation_in_module(Module module_scope) {
     or
     annotation = any(FunctionExpr f).getReturns().getASubExpression*()
   |
-    annotation.(ExprWithPointsTo).pointsTo(Value::forString(result)) and
+    annotation.getText() = result and
     annotation.getEnclosingModule() = module_scope
   )
 }
@@ -143,9 +144,8 @@ predicate unused_import(Import imp, Variable name) {
   not imported_module_used_in_doctest(imp) and
   not imported_alias_used_in_typehint(imp, name) and
   not is_pytest_fixture(imp, name) and
-  // Only consider import statements that actually point-to something (possibly an unknown module).
-  // If this is not the case, it's likely that the import statement never gets executed.
-  imp.getAName().getValue().(ExprWithPointsTo).pointsTo(_)
+  // Only consider import statements in reachable code.
+  Reachability::likelyReachable(imp.getAName().getValue().getAFlowNode().getBasicBlock())
 }
 
 from Stmt s, Variable name
