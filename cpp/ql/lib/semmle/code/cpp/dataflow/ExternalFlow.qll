@@ -555,6 +555,7 @@ private Locatable getSupportedFunctionTemplateArgument(Function templateFunction
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `func:N` (where `N` is the index of the template).
  */
+pragma[nomagic]
 private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remaining) {
   exists(Function templateFunction |
     templateFunction = getFullyTemplatedFunction(f) and
