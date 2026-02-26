@@ -98,7 +98,9 @@ edges
 | main.rs:142:32:142:59 | ...: Option::<...> | main.rs:143:22:143:27 | o_path | provenance |  |
 | main.rs:143:13:143:18 | m_path | main.rs:145:26:145:31 | m_path | provenance |  |
 | main.rs:143:22:143:27 | o_path | main.rs:143:22:143:38 | o_path.map(...) | provenance | MaD:14 |
+| main.rs:143:22:143:27 | o_path | main.rs:143:34:143:34 | ... | provenance | MaD:14 |
 | main.rs:143:22:143:38 | o_path.map(...) | main.rs:143:13:143:18 | m_path | provenance |  |
+| main.rs:143:34:143:34 | ... | main.rs:143:37:143:37 | x | provenance |  |
 | main.rs:145:18:145:40 | MacroExpr | main.rs:145:9:145:16 | ...::_print | provenance | MaD:3 Sink:MaD:3 |
 | main.rs:145:26:145:31 | m_path | main.rs:145:26:145:40 | m_path.unwrap() | provenance | MaD:15 |
 | main.rs:145:26:145:40 | m_path.unwrap() | main.rs:145:18:145:40 | MacroExpr | provenance |  |
@@ -117,7 +119,7 @@ models
 | 11 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 12 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
 | 13 | Summary: <alloc::vec::Vec as core::ops::deref::Deref>::deref; Argument[self].Reference.Element; ReturnValue.Reference.Element; value |
-| 14 | Summary: <core::option::Option>::map; Argument[self]; ReturnValue; taint |
+| 14 | Summary: <core::option::Option>::map; Argument[self]; Argument[0].Parameter[0]; taint |
 | 15 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 16 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 17 | Summary: <core::option::Option>::unwrap_or_default; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
@@ -212,9 +214,12 @@ nodes
 | main.rs:143:13:143:18 | m_path | semmle.label | m_path |
 | main.rs:143:22:143:27 | o_path | semmle.label | o_path |
 | main.rs:143:22:143:38 | o_path.map(...) | semmle.label | o_path.map(...) |
+| main.rs:143:34:143:34 | ... | semmle.label | ... |
+| main.rs:143:37:143:37 | x | semmle.label | x |
 | main.rs:145:9:145:16 | ...::_print | semmle.label | ...::_print |
 | main.rs:145:18:145:40 | MacroExpr | semmle.label | MacroExpr |
 | main.rs:145:26:145:31 | m_path | semmle.label | m_path |
 | main.rs:145:26:145:40 | m_path.unwrap() | semmle.label | m_path.unwrap() |
 | main.rs:152:28:152:30 | get | semmle.label | get |
 subpaths
+| main.rs:143:22:143:27 | o_path | main.rs:143:34:143:34 | ... | main.rs:143:37:143:37 | x | main.rs:143:22:143:38 | o_path.map(...) |
