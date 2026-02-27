@@ -2509,4 +2509,64 @@ module Reachability {
       )
     )
   }
+
+  /**
+   * Holds if `var` is an SSA variable that is implicitly defined (a builtin,
+   * VM-defined name, or `__path__` in a package init).
+   */
+  private predicate implicitlyDefined(SsaVariable var) {
+    not exists(var.getDefinition()) and
+    not py_ssa_phi(var, _) and
+    exists(GlobalVariable gv | var.getVariable() = gv |
+      DuckTyping::globallyDefinedName(gv.getId())
+      or
+      gv.getId() = "__path__" and gv.getScope().(Module).isPackageInit()
+    )
+  }
+
+  /**
+   * Gets a phi input of `var`, pruned of unlikely edges.
+   */
+  private SsaVariable getAPrunedPhiInput(SsaVariable var) {
+    result = var.getAPhiInput() and
+    exists(BasicBlock incoming | incoming = var.getPredecessorBlockForPhiArgument(result) |
+      not unlikelySuccessor(incoming.getLastNode(), var.getDefinition().getBasicBlock().firstNode())
+    )
+  }
+
+  /**
+   * Gets a predecessor block for a phi node, pruned of unlikely edges.
+   */
+  private BasicBlock getAPrunedPredecessorBlockForPhi(SsaVariable var) {
+    result = var.getAPredecessorBlockForPhi() and
+    not unlikelySuccessor(result.getLastNode(), var.getDefinition().getBasicBlock().firstNode())
+  }
+
+  /**
+   * Holds if the SSA variable `var` may be undefined at some use.
+   */
+  private predicate ssaMaybeUndefined(SsaVariable var) {
+    // No definition, not a phi, not implicitly defined
+    not exists(var.getDefinition()) and not py_ssa_phi(var, _) and not implicitlyDefined(var)
+    or
+    // Defined by a deletion
+    var.getDefinition().isDelete()
+    or
+    // A phi input may be undefined
+    exists(SsaVariable input | input = getAPrunedPhiInput(var) | ssaMaybeUndefined(input))
+    or
+    // A phi predecessor has no dominating definition
+    exists(BasicBlock incoming |
+      likelyReachable(incoming) and
+      incoming = getAPrunedPredecessorBlockForPhi(var) and
+      not var.getAPhiInput().getDefinition().getBasicBlock().dominates(incoming)
+    )
+  }
+
+  /**
+   * Holds if the name `u` may be undefined at its use.
+   */
+  predicate maybeUndefined(Name u) {
+    exists(SsaVariable var | var.getAUse().getNode() = u | ssaMaybeUndefined(var))
+  }
 }
