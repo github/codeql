@@ -10,7 +10,6 @@ private import SsaImpl as SsaImpl
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
 private import Node0ToString
-import ExprNodes
 
 /**
  * A canonical representation of a field.
@@ -281,6 +280,8 @@ predicate conversionFlow(
 }
 
 module Public {
+  import ExprNodes
+
   /**
    * A node in a data flow graph.
    *
