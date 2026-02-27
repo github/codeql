@@ -36,6 +36,17 @@ private module Cached {
     }
 
   cached
+  string toStringCached(Node n) {
+    result = toExprString(n)
+    or
+    not exists(toExprString(n)) and
+    result = n.toStringImpl()
+  }
+
+  cached
+  Location getLocationCached(Node n) { result = n.getLocationImpl() }
+
+  cached
   newtype TContentApprox =
     TFieldApproxContent(string s) { fieldHasApproxName(_, s) } or
     TUnionApproxContent(string s) { unionHasApproxName(_, s) } or
