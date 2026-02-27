@@ -1545,8 +1545,9 @@ public class ASTExtractor {
       if (!isClassExpression) {
         visit(ac.getId(), key, 0, IdContext.VAR_AND_TYPE_DECL);
       }
+      scopeManager.enterScope(scopeNode);
+      scopeManager.addVariables("this"); // 'this' in static field initialiers refers to the class
       if (ac.hasId() || ac.hasTypeParameters()) {
-        scopeManager.enterScope(scopeNode);
         if (isClassExpression && ac.hasId()) {
           scopeManager.addVariables(ac.getId().getName());
           scopeManager.addTypeName(ac.getId().getName());
@@ -1569,9 +1570,7 @@ public class ASTExtractor {
         addDefaultConstructor(ac);
       }
       visit(ac.getBody(), key, 2);
-      if (ac.hasId() || ac.hasTypeParameters()) {
-        scopeManager.leaveScope();
-      }
+      scopeManager.leaveScope();
       emitNodeSymbol(ac, key);
       return key;
     }
