@@ -1,6 +1,6 @@
 /**
- * Provides modules for printing control flow graphs in VSCode via the "View
- * CFG" query. Also provides modules for printing control flow graphs in tests
+ * Provides modules for printing control flow and data flow graphs in VSCode via the
+ * "View CFG/DFG" queries. Also provides modules for printing such graphs in tests
  * and as Mermaid diagrams.
  */
 overlay[local?]
@@ -8,12 +8,11 @@ module;
 
 private import codeql.util.FileSystem
 private import codeql.util.Location
-private import SuccessorType
 
 signature module InputSig<LocationSig Location> {
   class Callable;
 
-  class ControlFlowNode {
+  class Node {
     Callable getEnclosingCallable();
 
     Location getLocation();
@@ -21,34 +20,28 @@ signature module InputSig<LocationSig Location> {
     string toString();
   }
 
-  ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t);
+  Node getASuccessor(Node n, string label);
 }
 
-/** Provides modules for printing control flow graphs. */
+/** Provides modules for printing flow graphs. */
 module PrintGraph<LocationSig Location, InputSig<Location> Input> {
   private import Input
 
   /** A node to be included in the output of `TestOutput`. */
-  signature class RelevantNodeSig extends ControlFlowNode;
+  signature class RelevantNodeSig extends Node;
 
   /**
-   * Import this module into a `.ql` file to output a CFG. The
+   * Import this module into a `.ql` file to output a graph. The
    * graph is restricted to nodes from `RelevantNode`.
    */
   module TestOutput<RelevantNodeSig RelevantNode> {
-    /** Holds if `pred -> succ` is an edge in the CFG. */
+    /** Holds if `pred -> succ` is an edge in the graph. */
     query predicate edges(RelevantNode pred, RelevantNode succ, string label) {
-      label =
-        strictconcat(SuccessorType t, string s |
-          succ = getASuccessor(pred, t) and
-          if t instanceof DirectSuccessor then s = "" else s = t.toString()
-        |
-          s, ", " order by s
-        )
+      label = strictconcat(string s | succ = getASuccessor(pred, s) | s, ", " order by s)
     }
 
     /**
-     * Provides logic for representing a CFG as a [Mermaid diagram](https://mermaid.js.org/).
+     * Provides logic for representing a graph as a [Mermaid diagram](https://mermaid.js.org/).
      */
     module Mermaid {
       private string nodeId(RelevantNode n) {
@@ -103,8 +96,8 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
     }
   }
 
-  /** Provides the input to `ViewCfgQuery`. */
-  signature module ViewCfgQueryInputSig<FileSig File> {
+  /** Provides the input to `ViewGraphQuery`. */
+  signature module ViewGraphQueryInputSig<FileSig File> {
     /** Gets the source file selected in the IDE. Should be an `external` predicate. */
     string selectedSourceFile();
 
@@ -118,15 +111,15 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
      * Holds if `callable` spans column `startColumn` of line `startLine` to
      * column `endColumn` of line `endLine` in `file`.
      */
-    predicate cfgScopeSpan(
+    predicate callableSpan(
       Callable callable, File file, int startLine, int startColumn, int endLine, int endColumn
     );
   }
 
   /**
-   * Provides an implementation for a `View CFG` query.
+   * Provides an implementation for a `View CFG` or `View DFG` query.
    *
-   * Import this module into a `.ql` that looks like
+   * Import this module into a `.ql` that looks like (for the `View CFG` query):
    *
    * ```ql
    * @name Print CFG
@@ -136,15 +129,17 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
    * @kind graph
    * @tags ide-contextual-queries/print-cfg
    * ```
+   *
+   * For the `View DFG` query replace "cfg" with "dfg" above and "control flow" with "data flow".
    */
-  module ViewCfgQuery<FileSig File, ViewCfgQueryInputSig<File> ViewCfgQueryInput> {
-    private import ViewCfgQueryInput
+  module ViewGraphQuery<FileSig File, ViewGraphQueryInputSig<File> ViewGraphQueryInput> {
+    private import ViewGraphQueryInput
 
     bindingset[file, line, column]
     private Callable smallestEnclosingScope(File file, int line, int column) {
       result =
         min(Callable callable, int startLine, int startColumn, int endLine, int endColumn |
-          cfgScopeSpan(callable, file, startLine, startColumn, endLine, endColumn) and
+          callableSpan(callable, file, startLine, startColumn, endLine, endColumn) and
           (
             startLine < line
             or
@@ -162,9 +157,9 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
 
     private import IdeContextual<File>
 
-    final private class FinalControlFlowNode = ControlFlowNode;
+    final private class FinalNode = Node;
 
-    private class RelevantNode extends FinalControlFlowNode {
+    private class RelevantNode extends FinalNode {
       RelevantNode() {
         this.getEnclosingCallable() =
           smallestEnclosingScope(getFileBySourceArchiveName(selectedSourceFile()),
@@ -178,7 +173,7 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
 
     import Output::Mermaid
 
-    /** Holds if `pred` -> `succ` is an edge in the CFG. */
+    /** Holds if `pred` -> `succ` is an edge in the graph. */
     query predicate edges(RelevantNode pred, RelevantNode succ, string attr, string val) {
       attr = "semmle.label" and
       Output::edges(pred, succ, val)
