@@ -438,7 +438,7 @@ class FunctionMetricsWithPointsTo extends FunctionMetrics {
    * One callable "this" depends on another callable "result"
    * if "this" makes some call to a method that may end up being "result".
    */
-  FunctionMetricsWithPointsTo getADependency() {
+  override FunctionMetricsWithPointsTo getADependency() {
     result != this and
     not non_coupling_method(result) and
     exists(Call call | call.getScope() = this |
@@ -462,7 +462,7 @@ class FunctionMetricsWithPointsTo extends FunctionMetrics {
    * the number of callables that depend on this method.
    * This is sometimes called the "fan-in" of a method.
    */
-  int getAfferentCoupling() {
+  override int getAfferentCoupling() {
     result = count(FunctionMetricsWithPointsTo m | m.getADependency() = this)
   }
 
@@ -471,7 +471,7 @@ class FunctionMetricsWithPointsTo extends FunctionMetrics {
    * the number of methods that this method depends on
    * This is sometimes called the "fan-out" of a method.
    */
-  int getEfferentCoupling() {
+  override int getEfferentCoupling() {
     result = count(FunctionMetricsWithPointsTo m | this.getADependency() = m)
   }
 
@@ -500,13 +500,17 @@ class ClassMetricsWithPointsTo extends ClassMetrics {
    * Gets the afferent coupling of a class -- the number of classes that
    * directly depend on it.
    */
-  int getAfferentCoupling() { result = count(ClassMetricsWithPointsTo t | t.dependsOn(this)) }
+  override int getAfferentCoupling() {
+    result = count(ClassMetricsWithPointsTo t | t.dependsOn(this))
+  }
 
   /**
    * Gets the efferent coupling of a class -- the number of classes that
    * it directly depends on.
    */
-  int getEfferentCoupling() { result = count(ClassMetricsWithPointsTo t | this.dependsOn(t)) }
+  override int getEfferentCoupling() {
+    result = count(ClassMetricsWithPointsTo t | this.dependsOn(t))
+  }
 
   /** Gets the depth of inheritance of the class. */
   int getInheritanceDepth() {
@@ -537,13 +541,17 @@ class ModuleMetricsWithPointsTo extends ModuleMetrics {
    * Gets the afferent coupling of a module -- the number of modules that
    *  directly depend on it.
    */
-  int getAfferentCoupling() { result = count(ModuleMetricsWithPointsTo t | t.dependsOn(this)) }
+  override int getAfferentCoupling() {
+    result = count(ModuleMetricsWithPointsTo t | t.dependsOn(this))
+  }
 
   /**
    * Gets the efferent coupling of a module -- the number of modules that
    *  it directly depends on.
    */
-  int getEfferentCoupling() { result = count(ModuleMetricsWithPointsTo t | this.dependsOn(t)) }
+  override int getEfferentCoupling() {
+    result = count(ModuleMetricsWithPointsTo t | this.dependsOn(t))
+  }
 
   private predicate dependsOn(Module other) {
     other != this and

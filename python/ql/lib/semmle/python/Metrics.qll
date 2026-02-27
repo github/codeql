@@ -54,6 +54,31 @@ class FunctionMetrics extends Function {
       result = e - n + 2
     )
   }
+
+  /**
+   * Gets a function that this function depends on via a call.
+   * One callable depends on another if it makes a call that resolves to that callable.
+   */
+  FunctionMetrics getADependency() {
+    result != this and
+    not non_coupling_method(result) and
+    exists(CallNode call |
+      call.getScope() = this and
+      resolveCall(call, result, _)
+    )
+  }
+
+  /**
+   * Gets the afferent coupling of this function -- the number of
+   * functions that depend on it.
+   */
+  int getAfferentCoupling() { result = count(FunctionMetrics m | m.getADependency() = this) }
+
+  /**
+   * Gets the efferent coupling of this function -- the number of
+   * functions that it depends on.
+   */
+  int getEfferentCoupling() { result = count(FunctionMetrics m | this.getADependency() = m) }
 }
 
 /** The metrics for a class */
@@ -170,6 +195,25 @@ class ClassMetrics extends Class {
 
   /** return Hitz and Montazeri Lack of Cohesion */
   int getLackOfCohesionHM() { result = count(int line | this.unionSubgraph(_, line)) }
+
+  private predicate dependsOn(Class other) {
+    other != this and
+    exists(FunctionMetrics f1, FunctionMetrics f2 | f1.getADependency() = f2 |
+      f1.getScope() = this and f2.getScope() = other
+    )
+  }
+
+  /**
+   * Gets the afferent coupling of this class -- the number of classes that
+   * directly depend on it.
+   */
+  int getAfferentCoupling() { result = count(ClassMetrics t | t.dependsOn(this)) }
+
+  /**
+   * Gets the efferent coupling of this class -- the number of classes that
+   * it directly depends on.
+   */
+  int getEfferentCoupling() { result = count(ClassMetrics t | this.dependsOn(t)) }
 }
 
 class ModuleMetrics extends Module {
@@ -184,6 +228,25 @@ class ModuleMetrics extends Module {
 
   /** Gets the number of lines of docstrings in the module */
   int getNumberOfLinesOfDocStrings() { py_docstringlines(this, result) }
+
+  private predicate dependsOn(Module other) {
+    other != this and
+    exists(FunctionMetrics f1, FunctionMetrics f2 | f1.getADependency() = f2 |
+      f1.getEnclosingModule() = this and f2.getEnclosingModule() = other
+    )
+  }
+
+  /**
+   * Gets the afferent coupling of this module -- the number of modules that
+   * directly depend on it.
+   */
+  int getAfferentCoupling() { result = count(ModuleMetrics t | t.dependsOn(this)) }
+
+  /**
+   * Gets the efferent coupling of this module -- the number of modules that
+   * it directly depends on.
+   */
+  int getEfferentCoupling() { result = count(ModuleMetrics t | this.dependsOn(t)) }
 }
 
 predicate non_coupling_method(Function f) {
