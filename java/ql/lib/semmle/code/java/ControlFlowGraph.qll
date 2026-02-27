@@ -1776,16 +1776,25 @@ class ConditionNode extends ControlFlow::Node {
   ExprParent getCondition() { result = this.asExpr() or result = this.asStmt() }
 }
 
-private import codeql.controlflow.PrintGraph as PrintGraph
+private import codeql.util.PrintGraph as PrintGraph
 
 private module PrintGraphInput implements PrintGraph::InputSig<Location> {
   private import java as J
 
   class Callable = J::Callable;
 
-  class ControlFlowNode = J::ControlFlowNode;
+  final private class FinalControlFlowNode = J::ControlFlowNode;
 
-  ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t) { result = n.getASuccessor(t) }
+  class Node extends FinalControlFlowNode {
+    string getOrderDisambiguation() { result = "" }
+  }
+
+  predicate edge(Node node1, string s, Node node2) {
+    exists(SuccessorType t |
+      node2 = node1.getASuccessor(t) and
+      if t instanceof DirectSuccessor then s = "" else s = t.toString()
+    )
+  }
 }
 
 /** Provides utilities for visualising the CFG. */
