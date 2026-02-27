@@ -192,6 +192,34 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return assemblyLookupLocations;
         }
 
+        /// <summary>
+        /// Tests which of the feeds given by <paramref name="feedsToCheck"/> are reachable.
+        /// </summary>
+        /// <param name="feedsToCheck">The feeds to check.</param>
+        /// <param name="isFallback">Whether the feeds are fallback feeds or not.</param>
+        /// <returns>The list of feeds that could be reached.</returns>
+        private List<string> GetReachableNuGetFeeds(HashSet<string> feedsToCheck, bool isFallback)
+        {
+            var fallbackStr = isFallback ? "fallback " : "";
+            logger.LogInfo($"Checking {fallbackStr}NuGet feed reachability on feeds: {string.Join(", ", feedsToCheck.OrderBy(f => f))}");
+
+            var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback);
+            var reachableFeeds = feedsToCheck
+                .Where(feed => IsFeedReachable(feed, initialTimeout, tryCount, allowExceptions: false))
+                .ToList();
+
+            if (reachableFeeds.Count == 0)
+            {
+                logger.LogWarning($"No {fallbackStr}NuGet feeds are reachable.");
+            }
+            else
+            {
+                logger.LogInfo($"Reachable {fallbackStr}NuGet feeds: {string.Join(", ", reachableFeeds.OrderBy(f => f))}");
+            }
+
+            return reachableFeeds;
+        }
+
         private List<string> GetReachableFallbackNugetFeeds(HashSet<string>? feedsFromNugetConfigs)
         {
             var fallbackFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.FallbackNugetFeeds).ToHashSet();
@@ -212,21 +240,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            logger.LogInfo($"Checking fallback NuGet feed reachability on feeds: {string.Join(", ", fallbackFeeds.OrderBy(f => f))}");
-            var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: true);
-            var reachableFallbackFeeds = fallbackFeeds.Where(feed => IsFeedReachable(feed, initialTimeout, tryCount, allowExceptions: false)).ToList();
-            if (reachableFallbackFeeds.Count == 0)
-            {
-                logger.LogWarning("No fallback NuGet feeds are reachable.");
-            }
-            else
-            {
-                logger.LogInfo($"Reachable fallback NuGet feeds: {string.Join(", ", reachableFallbackFeeds.OrderBy(f => f))}");
-            }
-
-            compilationInfoContainer.CompilationInfos.Add(("Reachable fallback NuGet feed count", reachableFallbackFeeds.Count.ToString()));
-
-            return reachableFallbackFeeds;
+            return GetReachableNuGetFeeds(fallbackFeeds, isFallback: true);
         }
 
         /// <summary>
