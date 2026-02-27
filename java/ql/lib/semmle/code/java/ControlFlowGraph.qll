@@ -1783,11 +1783,7 @@ private module PrintGraphInput implements PrintGraph::InputSig<Location> {
 
   class Callable = J::Callable;
 
-  final private class FinalControlFlowNode = J::ControlFlowNode;
-
-  class Node extends FinalControlFlowNode {
-    string getOrderDisambiguation() { result = "" }
-  }
+  class Node = J::ControlFlowNode;
 
   predicate edge(Node node1, string s, Node node2) {
     exists(SuccessorType t |

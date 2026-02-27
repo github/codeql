@@ -1315,14 +1315,12 @@ module MakeWithSplitting<
 
   private import codeql.util.PrintGraph as Pp
 
-  final private class FinalNode = Node;
+  private class NodeAlias = Node;
 
   private module PrintGraphInput implements Pp::InputSig<Location> {
     class Callable = CfgScope;
 
-    class Node extends FinalNode {
-      string getOrderDisambiguation() { result = "" }
-    }
+    class Node = NodeAlias;
 
     predicate edge(Node node1, string label, Node node2) {
       exists(SuccessorType t |

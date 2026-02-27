@@ -18,12 +18,12 @@ signature module InputSig<LocationSig Location> {
     Location getLocation();
 
     string toString();
-
-    /** Gets a string to distinguish nodes that have the same location and toString value. */
-    string getOrderDisambiguation();
   }
 
   predicate edge(Node node1, string label, Node node2);
+
+  /** Gets a string to distinguish nodes that have the same location and toString value. */
+  default string nodeGetOrderDisambiguation(Node node) { result = "" }
 }
 
 /** Provides modules for printing flow graphs. */
@@ -59,7 +59,7 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
                 p
                 order by
                   filePath, startLine, startColumn, endLine, endColumn, p.toString(),
-                  p.getOrderDisambiguation()
+                  nodeGetOrderDisambiguation(p)
               )
           ).toString()
       }
@@ -94,7 +94,7 @@ module PrintGraph<LocationSig Location, InputSig<Location> Input> {
             edge, "\n"
             order by
               filePath, startLine, startColumn, endLine, endColumn, pred.toString(),
-              pred.getOrderDisambiguation()
+              nodeGetOrderDisambiguation(pred)
           )
       }
 

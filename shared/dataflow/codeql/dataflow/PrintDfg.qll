@@ -21,8 +21,6 @@ module MakePrintDfg<
     class Callable = DataFlowLang::DataFlowCallable;
 
     class Node extends FinalNode {
-      string getOrderDisambiguation() { result = DataFlowLang::nodeGetOrderDisambiguation(this) }
-
       Callable getEnclosingCallable() { result = DataFlowLang::nodeGetEnclosingCallable(this) }
     }
 
@@ -40,6 +38,10 @@ module MakePrintDfg<
       )
       or
       node1 = node2.(PostUpdateNode).getPreUpdateNode() and label = "post-update"
+    }
+
+    string nodeGetOrderDisambiguation(Node node) {
+      result = DataFlowLang::nodeGetOrderDisambiguation(node)
     }
   }
 
