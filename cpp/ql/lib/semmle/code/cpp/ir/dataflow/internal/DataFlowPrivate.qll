@@ -222,28 +222,25 @@ private module Cached {
 
 import Cached
 
-  private int getNumberOfIndirections(Node n) {
-    result = n.(RawIndirectOperand).getIndirectionIndex()
-    or
-    result = n.(RawIndirectInstruction).getIndirectionIndex()
-    or
-    result = n.(VariableNode).getIndirectionIndex()
-    or
-    result = n.(PostUpdateNodeImpl).getIndirectionIndex()
-    or
-    result = n.(FinalParameterNode).getIndirectionIndex()
-    or
-    result = n.(BodyLessParameterNodeImpl).getIndirectionIndex()
-  }
-
-  /**
-   * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
-   * output for `n`.
-   */
-  string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
+private int getNumberOfIndirections(Node n) {
+  result = n.(RawIndirectOperand).getIndirectionIndex()
+  or
+  result = n.(RawIndirectInstruction).getIndirectionIndex()
+  or
+  result = n.(VariableNode).getIndirectionIndex()
+  or
+  result = n.(PostUpdateNodeImpl).getIndirectionIndex()
+  or
+  result = n.(FinalParameterNode).getIndirectionIndex()
+  or
+  result = n.(BodyLessParameterNodeImpl).getIndirectionIndex()
 }
 
-import NodeStars
+/**
+ * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
+ * output for `n`.
+ */
+string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
 
 /**
  * A cut-down `DataFlow::Node` class that does not depend on the output of SSA.
