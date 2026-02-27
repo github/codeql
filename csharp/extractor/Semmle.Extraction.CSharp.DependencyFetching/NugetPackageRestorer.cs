@@ -132,10 +132,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     this.dependabotProxy?.RegistryURLs.ForEach(url => explicitFeeds.Add(url));
 
                     var explicitFeedsReachable = this.CheckSpecifiedFeeds(explicitFeeds);
+                    this.GetReachableNuGetFeeds(inheritedFeeds, isFallback: false);
 
                     if (inheritedFeeds.Count > 0)
                     {
-                        logger.LogInfo($"Inherited NuGet feeds (not checked for reachability): {string.Join(", ", inheritedFeeds.OrderBy(f => f))}");
                         compilationInfoContainer.CompilationInfos.Add(("Inherited NuGet feed count", inheritedFeeds.Count.ToString()));
                     }
 
