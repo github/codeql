@@ -66,6 +66,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private string GetRestoreArgs(RestoreSettings restoreSettings)
         {
             var args = $"restore --no-dependencies \"{restoreSettings.File}\" --packages \"{restoreSettings.PackageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
+            args += " /p:RestoreIgnoreFailedSources=true";
 
             if (restoreSettings.ForceDotnetRefAssemblyFetching)
             {
