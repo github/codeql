@@ -87,7 +87,7 @@ class MicronautRequestMappingParameter extends Parameter {
   }
 
   private predicate isExplicitlyTaintedInput() {
-    // The MicronautHttpInputAnnotations allow access to the URI path,
+    // The MicronautHttpInputAnnotation allows access to the URI path,
     // request parameters, cookie values, headers, and the body of the request.
     this.getAnAnnotation() instanceof MicronautHttpInputAnnotation
     or

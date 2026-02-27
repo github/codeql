@@ -1,6 +1,4 @@
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.RequestForgery
 import semmle.code.java.security.UrlRedirect
 import semmle.code.java.security.ResponseSplitting
