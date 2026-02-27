@@ -767,8 +767,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <returns>True if all feeds are reachable or false otherwise.</returns>
         private bool CheckSpecifiedFeeds(HashSet<string> feeds)
         {
-            logger.LogInfo("Checking that NuGet feeds are reachable...");
-
+            // Exclude any feeds that are configured by the corresponding environment variable.
             var excludedFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
                 .ToHashSet();
 
@@ -777,9 +776,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Excluded NuGet feeds from responsiveness check: {string.Join(", ", excludedFeeds.OrderBy(f => f))}");
             }
 
-            var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: false);
+            var feedsToCheck = feeds.Where(feed => !excludedFeeds.Contains(feed)).ToHashSet();
+            var reachableFeeds = this.GetReachableNuGetFeeds(feedsToCheck, isFallback: false);
+            var allFeedsReachable = reachableFeeds.Count == feedsToCheck.Count;
 
-            var allFeedsReachable = feeds.All(feed => excludedFeeds.Contains(feed) || IsFeedReachable(feed, initialTimeout, tryCount));
             if (!allFeedsReachable)
             {
                 logger.LogWarning("Found unreachable NuGet feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.");
