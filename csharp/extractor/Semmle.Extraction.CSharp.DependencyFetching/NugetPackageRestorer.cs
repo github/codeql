@@ -116,6 +116,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             HashSet<string>? explicitFeeds = null;
             HashSet<string>? allFeeds = null;
+            HashSet<string>? reachableFeeds = [];
 
             try
             {
@@ -131,8 +132,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     // in addition to the ones that are configured in `nuget.config` files.
                     this.dependabotProxy?.RegistryURLs.ForEach(url => explicitFeeds.Add(url));
 
-                    var explicitFeedsReachable = this.CheckSpecifiedFeeds(explicitFeeds);
-                    this.GetReachableNuGetFeeds(inheritedFeeds, isFallback: false);
+                    var (explicitFeedsReachable, reachableExplicitFeeds) =
+                        this.CheckSpecifiedFeeds(explicitFeeds);
+                    reachableFeeds.UnionWith(reachableExplicitFeeds);
+
+                    reachableFeeds.UnionWith(this.GetReachableNuGetFeeds(inheritedFeeds, isFallback: false));
 
                     if (inheritedFeeds.Count > 0)
                     {
@@ -191,7 +195,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Restore project dependencies with `dotnet restore`.
             var restoredProjects = RestoreSolutions(out var container);
             var projects = fileProvider.Projects.Except(restoredProjects);
-            RestoreProjects(projects, allFeeds, out var containers);
+            RestoreProjects(projects, reachableFeeds, out var containers);
 
             var dependencies = containers.Flatten(container);
 
@@ -774,8 +778,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Checks that we can connect to the specified NuGet feeds.
         /// </summary>
         /// <param name="feeds">The set of package feeds to check.</param>
-        /// <returns>True if all feeds are reachable or false otherwise.</returns>
-        private bool CheckSpecifiedFeeds(HashSet<string> feeds)
+        /// <returns>
+        /// True if all feeds are reachable or false otherwise.
+        /// Also returns the list of reachable feeds.
+        /// </returns>
+        private (bool, List<string>) CheckSpecifiedFeeds(HashSet<string> feeds)
         {
             // Exclude any feeds that are configured by the corresponding environment variable.
             var excludedFeeds = GetExcludedFeeds();
@@ -786,7 +793,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             this.EmitUnreachableFeedsDiagnostics(allFeedsReachable);
 
-            return allFeedsReachable;
+            return (allFeedsReachable, reachableFeeds);
         }
 
         /// <summary>
