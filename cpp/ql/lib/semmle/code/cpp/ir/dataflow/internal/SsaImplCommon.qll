@@ -56,26 +56,6 @@ private CppType getThisType(Cpp::MemberFunction f, boolean isGLValue) {
 }
 
 /**
- * Gets the C++ type of the instruction `i`.
- *
- * This is equivalent to `i.getResultLanguageType()` with the exception
- * of instructions that directly references a `this` IRVariable. In this
- * case, `i.getResultLanguageType()` gives an unknown type, whereas the
- * predicate gives the expected type (i.e., a potentially cv-qualified
- * type `A*` where `A` is the declaring type of the member function that
- * contains `i`).
- */
-cached
-CppType getResultLanguageType(Instruction i) {
-  if i.(VariableAddressInstruction).getIRVariable() instanceof IRThisVariable
-  then
-    if i.isGLValue()
-    then result = getThisType(i.getEnclosingFunction(), true)
-    else result = getThisType(i.getEnclosingFunction(), false)
-  else result = i.getResultLanguageType()
-}
-
-/**
  * Gets the C++ type of the operand `operand`.
  * This is equivalent to the type of the operand's defining instruction.
  *
@@ -572,6 +552,26 @@ private class BaseCallInstruction extends BaseSourceVariableInstruction, CallIns
 
 cached
 private module Cached {
+  /**
+   * Gets the C++ type of the instruction `i`.
+   *
+   * This is equivalent to `i.getResultLanguageType()` with the exception
+   * of instructions that directly references a `this` IRVariable. In this
+   * case, `i.getResultLanguageType()` gives an unknown type, whereas the
+   * predicate gives the expected type (i.e., a potentially cv-qualified
+   * type `A*` where `A` is the declaring type of the member function that
+   * contains `i`).
+   */
+  cached
+  CppType getResultLanguageType(Instruction i) {
+    if i.(VariableAddressInstruction).getIRVariable() instanceof IRThisVariable
+    then
+      if i.isGLValue()
+      then result = getThisType(i.getEnclosingFunction(), true)
+      else result = getThisType(i.getEnclosingFunction(), false)
+    else result = i.getResultLanguageType()
+  }
+
   /** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
   private predicate isConversion(Operand op) {
     exists(Instruction def, Operand use |
