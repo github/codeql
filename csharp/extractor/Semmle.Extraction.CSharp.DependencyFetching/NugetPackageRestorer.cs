@@ -127,14 +127,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     (explicitFeeds, allFeeds) = GetAllFeeds();
                     var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
 
-                    // Check whether the explicit feeds can be reached.
-                    HashSet<string> feedsToCheck = explicitFeeds;
-
-                    // If private package registries are configured for C#, then check those
+                    // If private package registries are configured for C#, then consider those
                     // in addition to the ones that are configured in `nuget.config` files.
-                    this.dependabotProxy?.RegistryURLs.ForEach(url => feedsToCheck.Add(url));
+                    this.dependabotProxy?.RegistryURLs.ForEach(url => explicitFeeds.Add(url));
 
-                    var explicitFeedsReachable = this.CheckSpecifiedFeeds(feedsToCheck);
+                    var explicitFeedsReachable = this.CheckSpecifiedFeeds(explicitFeeds);
 
                     if (inheritedFeeds.Count > 0)
                     {
@@ -191,6 +188,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogError($"Failed to restore NuGet packages with nuget.exe: {exc.Message}");
             }
 
+            // Restore project dependencies with `dotnet restore`.
             var restoredProjects = RestoreSolutions(out var container);
             var projects = fileProvider.Projects.Except(restoredProjects);
             RestoreProjects(projects, allFeeds, out var containers);
