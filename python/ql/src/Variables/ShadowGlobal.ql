@@ -15,9 +15,9 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.ApiGraphs
 import Shadowing
-import semmle.python.types.Builtins
 
 predicate shadows(Name d, GlobalVariable g, Function scope, int line) {
   g.getScope() = scope.getScope() and
@@ -28,34 +28,19 @@ predicate shadows(Name d, GlobalVariable g, Function scope, int line) {
   ) and
   not exists(Import il, Import ig, Name gd | il.contains(d) and gd.defines(g) and ig.contains(gd)) and
   not exists(Assign a | a.getATarget() = d and a.getValue() = g.getAnAccess()) and
-  not exists(Builtin::builtin(g.getId())) and
+  not DuckTyping::globallyDefinedName(g.getId()) and
   d.getLocation().getStartLine() = line and
   exists(Name defn | defn.defines(g) | not exists(If i | i.isNameEqMain() | i.contains(defn))) and
   not optimizing_parameter(d)
 }
 
-/* pytest dynamically populates its namespace so, we cannot look directly for the pytest.fixture function */
-AttrNode pytest_fixture_attr() {
-  exists(ModuleValue pytest |
-    result.getObject("fixture").(ControlFlowNodeWithPointsTo).pointsTo(pytest)
-  )
-}
-
-Value pytest_fixture() {
-  exists(CallNode call |
-    call.getFunction() = pytest_fixture_attr()
-    or
-    call.getFunction().(CallNode).getFunction() = pytest_fixture_attr()
-  |
-    call.(ControlFlowNodeWithPointsTo).pointsTo(result)
-  )
-}
-
 /* pytest fixtures require that the parameter name is also a global */
 predicate assigned_pytest_fixture(GlobalVariable v) {
-  exists(NameNode def |
+  exists(NameNode def, API::Node fixture |
+    fixture = API::moduleImport("pytest").getMember("fixture") and
     def.defines(v) and
-    def.(DefinitionNode).getValue().(ControlFlowNodeWithPointsTo).pointsTo(pytest_fixture())
+    def.(DefinitionNode).getValue() =
+      [fixture.getACall(), fixture.getReturn().getACall()].asCfgNode()
   )
 }
 
