@@ -926,19 +926,25 @@ module Public {
   }
 
   /**
-   * DEPRECATED: See UninitializedNode.
-   *
    * Gets the `Node` corresponding to the value of an uninitialized local
    * variable `v`.
    */
-  Node uninitializedNode(LocalVariable v) { none() }
+  Node uninitializedNode(LocalVariable v) { result.asUninitialized() = v }
 
+  /**
+   * Holds if `indirectOperand` is the dataflow node that represents the
+   * indirection of `operand` with indirection index `indirectionIndex`.
+   */
   predicate hasOperandAndIndex(
     IndirectOperand indirectOperand, Operand operand, int indirectionIndex
   ) {
     indirectOperand.hasOperandAndIndirectionIndex(operand, indirectionIndex)
   }
 
+  /**
+   * Holds if `indirectInstr` is the dataflow node that represents the
+   * indirection of `instr` with indirection index `indirectionIndex`.
+   */
   predicate hasInstructionAndIndex(
     IndirectInstruction indirectInstr, Instruction instr, int indirectionIndex
   ) {
@@ -1054,12 +1060,24 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
 class IndirectArgumentOutNode extends PostUpdateNodeImpl {
   override ArgumentOperand operand;
 
+  /**
+   * Gets the index of the argument that is associated with this post-
+   * update node.
+   */
   int getArgumentIndex() {
     exists(CallInstruction call | call.getArgumentOperand(result) = operand)
   }
 
+  /**
+   * Gets the `Operand` that represents the address of the value that is being
+   * updated.
+   */
   Operand getAddressOperand() { result = operand }
 
+  /**
+   * Gets the `CallInstruction` that represents the call that updated the
+   * argument.
+   */
   CallInstruction getCallInstruction() { result.getAnArgumentOperand() = operand }
 
   /**

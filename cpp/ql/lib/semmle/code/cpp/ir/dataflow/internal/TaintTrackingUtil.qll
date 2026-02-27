@@ -14,6 +14,11 @@ cached
 private module Cached {
   private import DataFlowImplCommon as DataFlowImplCommon
 
+  /**
+   * This predicate exists to collapse the `cached` predicates in this module with the
+   * `cached` predicates in other C/C++ dataflow files, which is then collapsed
+   * with the `cached` predicates in `DataFlowImplCommon.qll`.
+   */
   cached
   predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
 
