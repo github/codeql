@@ -21066,6 +21066,66 @@ ir.cpp:
 # 2867|     v2867_14(void)      = ReturnVoid                    : 
 #-----|   Goto -> Block 1
 
+# 2897| void StructInit::StructInit(int)
+# 2897|   Block 0
+# 2897|     v2897_1(void)              = EnterFunction                : 
+# 2897|     m2897_2(unknown)           = AliasedDefinition            : 
+# 2897|     m2897_3(unknown)           = InitializeNonLocal           : 
+# 2897|     m2897_4(unknown)           = Chi                          : total:m2897_2, partial:m2897_3
+# 2897|     r2897_5(glval<unknown>)    = VariableAddress[#this]       : 
+# 2897|     m2897_6(glval<StructInit>) = InitializeParameter[#this]   : &:r2897_5
+# 2897|     r2897_7(glval<StructInit>) = Load[#this]                  : &:r2897_5, m2897_6
+# 2897|     m2897_8(StructInit)        = InitializeIndirection[#this] : &:r2897_7
+# 2897|     r2897_9(glval<int>)        = VariableAddress[j]           : 
+# 2897|     m2897_10(int)              = InitializeParameter[j]       : &:r2897_9
+# 2897|     v2897_11(void)             = NoOp                         : 
+# 2897|     v2897_12(void)             = ReturnIndirection[#this]     : &:r2897_7, m2897_8
+# 2897|     v2897_13(void)             = ReturnVoid                   : 
+# 2897|     v2897_14(void)             = AliasedUse                   : m2897_3
+# 2897|     v2897_15(void)             = ExitFunction                 : 
+
+# 2899| void StructInit::StructInit()
+# 2899|   Block 0
+# 2899|     v2899_1(void)              = EnterFunction                : 
+# 2899|     m2899_2(unknown)           = AliasedDefinition            : 
+# 2899|     m2899_3(unknown)           = InitializeNonLocal           : 
+# 2899|     m2899_4(unknown)           = Chi                          : total:m2899_2, partial:m2899_3
+# 2899|     r2899_5(glval<unknown>)    = VariableAddress[#this]       : 
+# 2899|     m2899_6(glval<StructInit>) = InitializeParameter[#this]   : &:r2899_5
+# 2899|     r2899_7(glval<StructInit>) = Load[#this]                  : &:r2899_5, m2899_6
+# 2899|     m2899_8(StructInit)        = InitializeIndirection[#this] : &:r2899_7
+# 2899|     r2899_9(glval<int>)        = FieldAddress[i]              : r2899_7
+# 2899|     r2899_10(int)              = Constant[41]                 : 
+# 2899|     m2899_11(int)              = Store[?]                     : &:r2899_9, r2899_10
+# 2899|     m2899_12(unknown)          = Chi                          : total:m2899_8, partial:m2899_11
+# 2899|     v2899_13(void)             = NoOp                         : 
+# 2899|     v2899_14(void)             = ReturnIndirection[#this]     : &:r2899_7, m2899_12
+# 2899|     v2899_15(void)             = ReturnVoid                   : 
+# 2899|     v2899_16(void)             = AliasedUse                   : m2899_3
+# 2899|     v2899_17(void)             = ExitFunction                 : 
+
+# 2901| int StructInit::get_val()
+# 2901|   Block 0
+# 2901|     v2901_1(void)              = EnterFunction                : 
+# 2901|     m2901_2(unknown)           = AliasedDefinition            : 
+# 2901|     m2901_3(unknown)           = InitializeNonLocal           : 
+# 2901|     m2901_4(unknown)           = Chi                          : total:m2901_2, partial:m2901_3
+# 2901|     r2901_5(glval<unknown>)    = VariableAddress[#this]       : 
+# 2901|     m2901_6(glval<StructInit>) = InitializeParameter[#this]   : &:r2901_5
+# 2901|     r2901_7(glval<StructInit>) = Load[#this]                  : &:r2901_5, m2901_6
+# 2901|     m2901_8(StructInit)        = InitializeIndirection[#this] : &:r2901_7
+# 2901|     r2901_9(glval<int>)        = VariableAddress[#return]     : 
+# 2901|     r2901_10(glval<unknown>)   = VariableAddress[#this]       : 
+# 2901|     r2901_11(StructInit *)     = Load[#this]                  : &:r2901_10, m2901_6
+# 2901|     r2901_12(glval<int>)       = FieldAddress[k]              : r2901_11
+# 2901|     r2901_13(int)              = Load[?]                      : &:r2901_12, ~m2901_8
+# 2901|     m2901_14(int)              = Store[#return]               : &:r2901_9, r2901_13
+# 2901|     v2901_15(void)             = ReturnIndirection[#this]     : &:r2901_7, m2901_8
+# 2901|     r2901_16(glval<int>)       = VariableAddress[#return]     : 
+# 2901|     v2901_17(void)             = ReturnValue                  : &:r2901_16, m2901_14
+# 2901|     v2901_18(void)             = AliasedUse                   : m2901_3
+# 2901|     v2901_19(void)             = ExitFunction                 : 
+
 ir23.cpp:
 #    1| bool consteval_1()
 #    1|   Block 0
