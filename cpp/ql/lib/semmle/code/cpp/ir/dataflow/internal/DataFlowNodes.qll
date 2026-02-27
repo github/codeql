@@ -221,6 +221,65 @@ private module Cached {
 
 import Cached
 
+/**
+ * An operand that is defined by a `FieldAddressInstruction`.
+ */
+class FieldAddress extends Operand {
+  FieldAddressInstruction fai;
+
+  FieldAddress() { fai = this.getDef() and not SsaImpl::ignoreOperand(this) }
+
+  /** Gets the field associated with this instruction. */
+  Field getField() { result = fai.getField() }
+
+  /** Gets the instruction whose result provides the address of the object containing the field. */
+  Instruction getObjectAddress() { result = fai.getObjectAddress() }
+
+  /** Gets the operand that provides the address of the object containing the field. */
+  Operand getObjectAddressOperand() { result = fai.getObjectAddressOperand() }
+}
+
+/**
+ * Holds if `opFrom` is an operand whose value flows to the result of `instrTo`.
+ *
+ * `isPointerArith` is `true` if `instrTo` is a `PointerArithmeticInstruction` and `opFrom`
+ * is the left operand.
+ *
+ * `additional` is `true` if the conversion is supplied by an implementation of the
+ * `Indirection` class. It is sometimes useful to exclude such conversions.
+ */
+predicate conversionFlow(
+  Operand opFrom, Instruction instrTo, boolean isPointerArith, boolean additional
+) {
+  isPointerArith = false and
+  (
+    additional = false and
+    (
+      instrTo.(CopyValueInstruction).getSourceValueOperand() = opFrom
+      or
+      instrTo.(ConvertInstruction).getUnaryOperand() = opFrom
+      or
+      instrTo.(CheckedConvertOrNullInstruction).getUnaryOperand() = opFrom
+      or
+      instrTo.(InheritanceConversionInstruction).getUnaryOperand() = opFrom
+      or
+      exists(BuiltInInstruction builtIn |
+        builtIn = instrTo and
+        // __builtin_bit_cast
+        builtIn.getBuiltInOperation() instanceof BuiltInBitCast and
+        opFrom = builtIn.getAnOperand()
+      )
+    )
+    or
+    additional = true and
+    SsaImpl::isAdditionalConversionFlow(opFrom, instrTo)
+  )
+  or
+  isPointerArith = true and
+  additional = false and
+  instrTo.(PointerArithmeticInstruction).getLeftOperand() = opFrom
+}
+
 module Public {
 
 }
