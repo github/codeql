@@ -8,6 +8,7 @@
  */
 
 import java
+import PrintCfg
 
 external string selectedSourceFile();
 

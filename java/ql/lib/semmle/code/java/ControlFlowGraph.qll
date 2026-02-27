@@ -1788,4 +1788,7 @@ private module PrintGraphInput implements PrintGraph::InputSig<Location> {
   ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t) { result = n.getASuccessor(t) }
 }
 
-import PrintGraph::PrintGraph<Location, PrintGraphInput>
+/** Provides utilities for visualising the CFG. */
+module PrintCfg {
+  import PrintGraph::PrintGraph<Location, PrintGraphInput>
+}
