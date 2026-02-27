@@ -225,35 +225,7 @@ private module Cached {
       )
     )
   }
-}
 
-import Cached
-
-/**
- * Holds if data flows from `source` to `sink` in zero or more local
- * (intra-procedural) steps.
- */
-pragma[inline]
-predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
-
-/**
- * Holds if data can flow from `i1` to `i2` in zero or more
- * local (intra-procedural) steps.
- */
-pragma[inline]
-predicate localInstructionFlow(Instruction e1, Instruction e2) {
-  localFlow(instructionNode(e1), instructionNode(e2))
-}
-
-/**
- * INTERNAL: Do not use.
- *
- * Ideally this module would be private, but the `asExprInternal` predicate is
- * needed in `DefaultTaintTrackingImpl`. Once `DefaultTaintTrackingImpl` is gone
- * we can make this module private.
- */
-cached
-module ExprFlowCached {
   /**
    * Holds if `n` is an indirect operand of a `PointerArithmeticInstruction`, and
    * `e` is the result of loading from the `PointerArithmeticInstruction`.
@@ -303,8 +275,7 @@ module ExprFlowCached {
    * `x[i]` steps to the expression `x[i - 1]` without traversing the
    * entire chain.
    */
-  cached
-  Expr asExprInternal(Node n) {
+  private Expr asExprInternal(Node n) {
     isIndirectBaseOfArrayAccess(n, result)
     or
     not isIndirectBaseOfArrayAccess(n, _) and
@@ -366,7 +337,23 @@ module ExprFlowCached {
   predicate localExprFlowStep(Expr e1, Expr e2) { localExprFlowStepImpl(_, e1, _, e2) }
 }
 
-import ExprFlowCached
+import Cached
+
+/**
+ * Holds if data flows from `source` to `sink` in zero or more local
+ * (intra-procedural) steps.
+ */
+pragma[inline]
+predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
+
+/**
+ * Holds if data can flow from `i1` to `i2` in zero or more
+ * local (intra-procedural) steps.
+ */
+pragma[inline]
+predicate localInstructionFlow(Instruction e1, Instruction e2) {
+  localFlow(instructionNode(e1), instructionNode(e2))
+}
 
 /**
  * Holds if data can flow from `e1` to `e2` in one or more
@@ -385,7 +372,6 @@ predicate localExprFlow(Expr e1, Expr e2) {
   or
   localExprFlowPlus(e1, e2)
 }
-
 
 /**
  * A description of the way data may be stored inside an object. Examples
