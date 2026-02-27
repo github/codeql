@@ -124,6 +124,7 @@ private module Cached {
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
     (
+      TaintTrackingUtil::forceCachingInSameStage() and
       // Def-use/Use-use flow
       SsaImpl::ssaFlow(nodeFrom, nodeTo)
       or
