@@ -404,7 +404,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
   }
 
   predicate apiSource(DataFlow::Node source) {
-    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1)
+    DataFlowPrivate::nodeHasOperand(source, any(DataFlowNodes::FieldAddress fa), 1)
     or
     source instanceof DataFlow::ParameterNode
   }
@@ -417,7 +417,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
       result = "Argument[" + DataFlow::repeatStars(indirectionIndex) + argumentIndex + "]"
     )
     or
-    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1) and
+    DataFlowPrivate::nodeHasOperand(source, any(DataFlowNodes::FieldAddress fa), 1) and
     result = qualifierString()
   }
 

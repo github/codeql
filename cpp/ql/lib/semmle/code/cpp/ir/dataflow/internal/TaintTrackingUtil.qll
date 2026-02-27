@@ -208,7 +208,7 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut, string
   // Taint flow from a pointer argument to an output, when the model specifies flow from the deref
   // to that output, but the deref is not modeled in the IR for the caller.
   exists(
-    CallInstruction call, DataFlow::SideEffectOperandNode indirectArgument, Function func,
+    CallInstruction call, SideEffectOperandNode indirectArgument, Function func,
     FunctionInput modelIn, FunctionOutput modelOut
   |
     indirectArgument = callInput(call, modelIn) and
