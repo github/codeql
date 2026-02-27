@@ -12,6 +12,7 @@ private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedInitialization
 private import DataFlowPrivate
+private import DataFlowNodes
 import SsaImplCommon
 
 private module SourceVariables {

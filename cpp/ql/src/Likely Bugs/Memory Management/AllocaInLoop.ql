@@ -15,6 +15,7 @@
 import cpp
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes
 
 /** Gets a loop that contains `e`. */
 Loop getAnEnclosingLoopOfExpr(Expr e) { result = getAnEnclosingLoopOfStmt(e.getEnclosingStmt()) }

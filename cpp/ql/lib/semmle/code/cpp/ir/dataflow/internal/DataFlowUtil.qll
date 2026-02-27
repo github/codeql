@@ -11,6 +11,7 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import TaintTrackingUtil as TaintTrackingUtil
 private import DataFlowPrivate
 private import ModelUtil
 private import SsaImpl as SsaImpl

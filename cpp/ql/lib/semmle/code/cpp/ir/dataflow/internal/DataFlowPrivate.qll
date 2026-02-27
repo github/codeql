@@ -1,5 +1,6 @@
 private import cpp as Cpp
 private import DataFlowUtil
+private import DataFlowNodes
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
 private import semmle.code.cpp.ir.internal.IRCppLanguage

@@ -8,6 +8,7 @@ private import semmle.code.cpp.dataflow.ExternalFlow as ExternalFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes as DataFlowNodes
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.cpp.ir.dataflow.internal.TaintTrackingImplSpecific
 private import semmle.code.cpp.dataflow.new.TaintTracking as Tt

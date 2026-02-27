@@ -4,6 +4,7 @@ import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.implementation.raw.internal.SideEffects as SideEffects
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
+private import DataFlowNodes
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
 private import TypeFlow
