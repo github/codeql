@@ -1,4 +1,142 @@
 private import cpp
+private import semmle.code.cpp.ir.ValueNumbering
+private import semmle.code.cpp.ir.IR
+private import semmle.code.cpp.models.interfaces.DataFlow
+private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import DataFlowPrivate
+private import DataFlowUtil
+private import ModelUtil
+private import SsaImpl as SsaImpl
+private import DataFlowImplCommon as DataFlowImplCommon
+private import codeql.util.Unit
+private import Node0ToString
+import ExprNodes
+
+/**
+ * A canonical representation of a field.
+ *
+ * For performance reasons we want a unique `Content` that represents
+ * a given field across any template instantiation of a class.
+ *
+ * This is possible in _almost_ all cases, but there are cases where it is
+ * not possible to map between a field in the uninstantiated template to a
+ * field in the instantiated template. This happens in the case of local class
+ * definitions (because the local class is not the template that constructs
+ * the instantiation - it is the enclosing function). So this abstract class
+ * has two implementations: a non-local case (where we can represent a
+ * canonical field as the field declaration from an uninstantiated class
+ * template or a non-templated class), and a local case (where we simply use
+ * the field from the instantiated class).
+ */
+abstract class CanonicalField extends Field {
+  /** Gets a field represented by this canonical field. */
+  abstract Field getAField();
+
+  /**
+   * Gets a class that declares a field represented by this canonical field.
+   */
+  abstract Class getADeclaringType();
+
+  /**
+   * Gets a type that this canonical field may have. Note that this may
+   * not be a unique type. For example, consider this case:
+   * ```
+   * template<typename T>
+   * struct S { T x; };
+   *
+   * S<int> s1;
+   * S<char> s2;
+   * ```
+   * In this case the canonical field corresponding to `S::x` has two types:
+   * `int` and `char`.
+   */
+  Type getAType() { result = this.getAField().getType() }
+
+  Type getAnUnspecifiedType() { result = this.getAType().getUnspecifiedType() }
+}
+
+private class NonLocalCanonicalField extends CanonicalField {
+  Class declaringType;
+
+  NonLocalCanonicalField() {
+    declaringType = this.getDeclaringType() and
+    not declaringType.isFromTemplateInstantiation(_) and
+    not declaringType.isLocal() // handled in LocalCanonicalField
+  }
+
+  override Field getAField() {
+    exists(Class c | result.getDeclaringType() = c |
+      // Either the declaring class of the field is a template instantiation
+      // that has been constructed from this canonical declaration
+      c.isConstructedFrom(declaringType) and
+      pragma[only_bind_out](result.getName()) = pragma[only_bind_out](this.getName())
+      or
+      // or this canonical declaration is not a template.
+      not c.isConstructedFrom(_) and
+      result = this
+    )
+  }
+
+  override Class getADeclaringType() {
+    result = this.getDeclaringType()
+    or
+    result.isConstructedFrom(this.getDeclaringType())
+  }
+}
+
+private class LocalCanonicalField extends CanonicalField {
+  Class declaringType;
+
+  LocalCanonicalField() {
+    declaringType = this.getDeclaringType() and
+    declaringType.isLocal()
+  }
+
+  override Field getAField() { result = this }
+
+  override Class getADeclaringType() { result = declaringType }
+}
+
+/**
+ * A canonical representation of a `Union`. See `CanonicalField` for the explanation for
+ * why we need a canonical representation.
+ */
+abstract class CanonicalUnion extends Union {
+  /** Gets a union represented by this canonical union. */
+  abstract Union getAUnion();
+
+  /** Gets a canonical field of this canonical union. */
+  CanonicalField getACanonicalField() { result.getDeclaringType() = this }
+}
+
+private class NonLocalCanonicalUnion extends CanonicalUnion {
+  NonLocalCanonicalUnion() { not this.isFromTemplateInstantiation(_) and not this.isLocal() }
+
+  override Union getAUnion() {
+    result = this
+    or
+    result.isConstructedFrom(this)
+  }
+}
+
+private class LocalCanonicalUnion extends CanonicalUnion {
+  LocalCanonicalUnion() { this.isLocal() }
+
+  override Union getAUnion() { result = this }
+}
+
+bindingset[f]
+pragma[inline_late]
+int getFieldSize(CanonicalField f) { result = max(f.getAType().getSize()) }
+
+/**
+ * Gets a field in the union `u` whose size
+ * is `bytes` number of bytes.
+ */
+private CanonicalField getAFieldWithSize(CanonicalUnion u, int bytes) {
+  result = u.getACanonicalField() and
+  bytes = getFieldSize(result)
+}
 
 cached
 private module Cached {
