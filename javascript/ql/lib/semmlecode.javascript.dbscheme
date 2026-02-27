@@ -453,7 +453,7 @@ is_arguments_object (int id: @variable ref);
 
 @lexical_name = @variable | @local_type_name | @local_namespace_name;
 
-@bind_id = @varaccess | @local_var_type_access;
+@bind_id = @varaccess | @local_var_type_access | @this_expr;
 bind (unique int id: @bind_id ref,
       int decl: @variable ref);
 

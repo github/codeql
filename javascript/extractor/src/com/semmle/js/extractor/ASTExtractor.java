@@ -1897,6 +1897,15 @@ public class ASTExtractor {
     }
 
     @Override
+    public Label visit(ThisExpression nd, Context c) {
+      Label key = super.visit(nd, c);
+      if (c.idcontext == IdContext.VAR_BIND || c.idcontext == IdContext.VAR_IN_TYPE_BIND) {
+        addVariableBinding("bind", key, "this");
+      }
+      return key;
+    }
+
+    @Override
     public Label visit(JSXMemberExpression nd, Context c) {
       Label key = super.visit(nd, c);
       visit(nd.getObject(), key, 0);
