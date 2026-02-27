@@ -13,7 +13,9 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.ImportResolution
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.ApiGraphs
 
 /** Whether name is declared in the __all__ list of this module */
 predicate declaredInAll(Module m, StringLiteral name) {
@@ -25,62 +27,42 @@ predicate declaredInAll(Module m, StringLiteral name) {
   )
 }
 
-predicate mutates_globals(ModuleValue m) {
+predicate mutates_globals(Module m) {
   exists(CallNode globals |
-    globals = Value::named("globals").(FunctionValue).getACall() and
-    globals.getScope() = m.getScope()
+    globals = API::builtin("globals").getACall().asCfgNode() and
+    globals.getScope() = m
   |
     exists(AttrNode attr | attr.getObject() = globals)
     or
     exists(SubscriptNode sub | sub.getObject() = globals and sub.isStore())
   )
   or
-  // Enum (added in 3.4) has method `_convert_` that alters globals
-  // This was called `_convert` until 3.8, but that name will be removed in 3.9
-  exists(ClassValue enum_class |
-    enum_class.getASuperType() = Value::named("enum.Enum") and
-    (
-      // In Python < 3.8, Enum._convert can be found with points-to
-      exists(Value enum_convert |
-        enum_convert = enum_class.attr("_convert") and
-        exists(CallNode call | call.getScope() = m.getScope() |
-          enum_convert.getACall() = call or
-          call.getFunction().(ControlFlowNodeWithPointsTo).pointsTo(enum_convert)
-        )
-      )
-      or
-      // In Python 3.8, Enum._convert_ is implemented using a metaclass, and our points-to
-      // analysis doesn't handle that well enough. So we need a special case for this
-      not exists(enum_class.attr("_convert")) and
-      exists(CallNode call | call.getScope() = m.getScope() |
-        call.getFunction()
-            .(AttrNode)
-            .getObject(["_convert", "_convert_"])
-            .(ControlFlowNodeWithPointsTo)
-            .pointsTo() = enum_class
-      )
-    )
+  // Enum._convert_ is a metaclass method that alters the module's globals.
+  // It was called `_convert` until Python 3.8, when it was renamed to `_convert_`.
+  API::moduleImport("enum")
+      .getMember("Enum")
+      .getASubclass*()
+      .getMember(["_convert", "_convert_"])
+      .getACall()
+      .getScope() = m
+}
+
+predicate is_exported_submodule_name(Module m, string exported_name) {
+  m.getShortName() = "__init__" and
+  exists(m.getPackage().getSubModule(exported_name))
+}
+
+predicate contains_unknown_import_star(Module m) {
+  exists(ImportStar imp | imp.getScope() = m |
+    not exists(ImportResolution::getModuleImportedByImportStar(imp))
   )
 }
 
-predicate is_exported_submodule_name(ModuleValue m, string exported_name) {
-  m.getScope().getShortName() = "__init__" and
-  exists(m.getScope().getPackage().getSubModule(exported_name))
-}
-
-predicate contains_unknown_import_star(ModuleValue m) {
-  exists(ImportStarNode imp | imp.getEnclosingModule() = m.getScope() |
-    imp.getModule().(ControlFlowNodeWithPointsTo).pointsTo().isAbsent()
-    or
-    not exists(imp.getModule().(ControlFlowNodeWithPointsTo).pointsTo())
-  )
-}
-
-from ModuleValue m, StringLiteral name, string exported_name
+from Module m, StringLiteral name, string exported_name
 where
-  declaredInAll(m.getScope(), name) and
+  declaredInAll(m, name) and
   exported_name = name.getText() and
-  not m.hasAttribute(exported_name) and
+  not ImportResolution::module_export(m, exported_name, _) and
   not is_exported_submodule_name(m, exported_name) and
   not contains_unknown_import_star(m) and
   not mutates_globals(m)
