@@ -73,139 +73,141 @@ toplevels(#20001,0)
 #20024=@"loc,{#10000},1,1,4,0"
 locations_default(#20024,#10000,1,1,4,0)
 hasLocation(#20001,#20024)
-#20025=*
-stmts(#20025,2,#20001,0,"/[[]]/v;")
-#20026=@"loc,{#10000},1,1,1,8"
-locations_default(#20026,#10000,1,1,1,8)
-hasLocation(#20025,#20026)
-stmt_containers(#20025,#20001)
-#20027=*
-exprs(#20027,5,#20025,0,"/[[]]/v")
-hasLocation(#20027,#20011)
-enclosing_stmt(#20027,#20025)
-expr_containers(#20027,#20001)
-literals("/[[]]/v","/[[]]/v",#20027)
+#20025=@"var;{this};{#20000}"
+variables(#20025,"this",#20000)
+#20026=*
+stmts(#20026,2,#20001,0,"/[[]]/v;")
+#20027=@"loc,{#10000},1,1,1,8"
+locations_default(#20027,#10000,1,1,1,8)
+hasLocation(#20026,#20027)
+stmt_containers(#20026,#20001)
 #20028=*
-regexpterm(#20028,23,#20027,0,"[[]]")
-#20029=@"loc,{#10000},1,2,1,5"
-locations_default(#20029,#10000,1,2,1,5)
-hasLocation(#20028,#20029)
-#20030=*
-regexpterm(#20030,23,#20028,0,"[]")
-#20031=@"loc,{#10000},1,3,1,4"
-locations_default(#20031,#10000,1,3,1,4)
-hasLocation(#20030,#20031)
-#20032=*
-stmts(#20032,2,#20001,1,"/[[a]]/v;")
-hasLocation(#20032,#20007)
-stmt_containers(#20032,#20001)
+exprs(#20028,5,#20026,0,"/[[]]/v")
+hasLocation(#20028,#20011)
+enclosing_stmt(#20028,#20026)
+expr_containers(#20028,#20001)
+literals("/[[]]/v","/[[]]/v",#20028)
+#20029=*
+regexpterm(#20029,23,#20028,0,"[[]]")
+#20030=@"loc,{#10000},1,2,1,5"
+locations_default(#20030,#10000,1,2,1,5)
+hasLocation(#20029,#20030)
+#20031=*
+regexpterm(#20031,23,#20029,0,"[]")
+#20032=@"loc,{#10000},1,3,1,4"
+locations_default(#20032,#10000,1,3,1,4)
+hasLocation(#20031,#20032)
 #20033=*
-exprs(#20033,5,#20032,0,"/[[a]]/v")
-hasLocation(#20033,#20015)
-enclosing_stmt(#20033,#20032)
-expr_containers(#20033,#20001)
-literals("/[[a]]/v","/[[a]]/v",#20033)
+stmts(#20033,2,#20001,1,"/[[a]]/v;")
+hasLocation(#20033,#20007)
+stmt_containers(#20033,#20001)
 #20034=*
-regexpterm(#20034,23,#20033,0,"[[a]]")
-#20035=@"loc,{#10000},2,2,2,6"
-locations_default(#20035,#10000,2,2,2,6)
-hasLocation(#20034,#20035)
-#20036=*
-regexpterm(#20036,23,#20034,0,"[a]")
-#20037=@"loc,{#10000},2,3,2,5"
-locations_default(#20037,#10000,2,3,2,5)
-hasLocation(#20036,#20037)
-#20038=*
-regexpterm(#20038,14,#20036,0,"a")
-#20039=@"loc,{#10000},2,4,2,4"
-locations_default(#20039,#10000,2,4,2,4)
-hasLocation(#20038,#20039)
-regexp_const_value(#20038,"a")
-#20040=*
-stmts(#20040,2,#20001,2,"/[ [] [ [] [] ] ]/v;")
-hasLocation(#20040,#20009)
-stmt_containers(#20040,#20001)
+exprs(#20034,5,#20033,0,"/[[a]]/v")
+hasLocation(#20034,#20015)
+enclosing_stmt(#20034,#20033)
+expr_containers(#20034,#20001)
+literals("/[[a]]/v","/[[a]]/v",#20034)
+#20035=*
+regexpterm(#20035,23,#20034,0,"[[a]]")
+#20036=@"loc,{#10000},2,2,2,6"
+locations_default(#20036,#10000,2,2,2,6)
+hasLocation(#20035,#20036)
+#20037=*
+regexpterm(#20037,23,#20035,0,"[a]")
+#20038=@"loc,{#10000},2,3,2,5"
+locations_default(#20038,#10000,2,3,2,5)
+hasLocation(#20037,#20038)
+#20039=*
+regexpterm(#20039,14,#20037,0,"a")
+#20040=@"loc,{#10000},2,4,2,4"
+locations_default(#20040,#10000,2,4,2,4)
+hasLocation(#20039,#20040)
+regexp_const_value(#20039,"a")
 #20041=*
-exprs(#20041,5,#20040,0,"/[ [] [ [] [] ] ]/v")
-hasLocation(#20041,#20019)
-enclosing_stmt(#20041,#20040)
-expr_containers(#20041,#20001)
-literals("/[ [] [ [] [] ] ]/v","/[ [] [ [] [] ] ]/v",#20041)
+stmts(#20041,2,#20001,2,"/[ [] [ [] [] ] ]/v;")
+hasLocation(#20041,#20009)
+stmt_containers(#20041,#20001)
 #20042=*
-regexpterm(#20042,23,#20041,0,"[ [] [ [] [] ] ]")
-#20043=@"loc,{#10000},3,2,3,17"
-locations_default(#20043,#10000,3,2,3,17)
-hasLocation(#20042,#20043)
-#20044=*
-regexpterm(#20044,14,#20042,0," ")
-#20045=@"loc,{#10000},3,3,3,3"
-locations_default(#20045,#10000,3,3,3,3)
-hasLocation(#20044,#20045)
-regexp_const_value(#20044," ")
-#20046=*
-regexpterm(#20046,23,#20042,1,"[]")
-#20047=@"loc,{#10000},3,4,3,5"
-locations_default(#20047,#10000,3,4,3,5)
-hasLocation(#20046,#20047)
-#20048=*
-regexpterm(#20048,14,#20042,2," ")
-#20049=@"loc,{#10000},3,6,3,6"
-locations_default(#20049,#10000,3,6,3,6)
-hasLocation(#20048,#20049)
-regexp_const_value(#20048," ")
-#20050=*
-regexpterm(#20050,23,#20042,3,"[ [] [] ]")
-#20051=@"loc,{#10000},3,7,3,15"
-locations_default(#20051,#10000,3,7,3,15)
-hasLocation(#20050,#20051)
-#20052=*
-regexpterm(#20052,14,#20050,0," ")
-#20053=@"loc,{#10000},3,8,3,8"
-locations_default(#20053,#10000,3,8,3,8)
-hasLocation(#20052,#20053)
-regexp_const_value(#20052," ")
-#20054=*
-regexpterm(#20054,23,#20050,1,"[]")
-#20055=@"loc,{#10000},3,9,3,10"
-locations_default(#20055,#10000,3,9,3,10)
-hasLocation(#20054,#20055)
-#20056=*
-regexpterm(#20056,14,#20050,2," ")
-#20057=@"loc,{#10000},3,11,3,11"
-locations_default(#20057,#10000,3,11,3,11)
-hasLocation(#20056,#20057)
-regexp_const_value(#20056," ")
-#20058=*
-regexpterm(#20058,23,#20050,3,"[]")
-#20059=@"loc,{#10000},3,12,3,13"
-locations_default(#20059,#10000,3,12,3,13)
-hasLocation(#20058,#20059)
-#20060=*
-regexpterm(#20060,14,#20050,4," ")
-#20061=@"loc,{#10000},3,14,3,14"
-locations_default(#20061,#10000,3,14,3,14)
-hasLocation(#20060,#20061)
-regexp_const_value(#20060," ")
-#20062=*
-regexpterm(#20062,14,#20042,4," ")
-#20063=@"loc,{#10000},3,16,3,16"
-locations_default(#20063,#10000,3,16,3,16)
-hasLocation(#20062,#20063)
-regexp_const_value(#20062," ")
-#20064=*
-entry_cfg_node(#20064,#20001)
-#20065=@"loc,{#10000},1,1,1,0"
-locations_default(#20065,#10000,1,1,1,0)
-hasLocation(#20064,#20065)
-#20066=*
-exit_cfg_node(#20066,#20001)
-hasLocation(#20066,#20023)
-successor(#20040,#20041)
-successor(#20041,#20066)
-successor(#20032,#20033)
-successor(#20033,#20040)
-successor(#20025,#20027)
-successor(#20027,#20032)
-successor(#20064,#20025)
+exprs(#20042,5,#20041,0,"/[ [] [ [] [] ] ]/v")
+hasLocation(#20042,#20019)
+enclosing_stmt(#20042,#20041)
+expr_containers(#20042,#20001)
+literals("/[ [] [ [] [] ] ]/v","/[ [] [ [] [] ] ]/v",#20042)
+#20043=*
+regexpterm(#20043,23,#20042,0,"[ [] [ [] [] ] ]")
+#20044=@"loc,{#10000},3,2,3,17"
+locations_default(#20044,#10000,3,2,3,17)
+hasLocation(#20043,#20044)
+#20045=*
+regexpterm(#20045,14,#20043,0," ")
+#20046=@"loc,{#10000},3,3,3,3"
+locations_default(#20046,#10000,3,3,3,3)
+hasLocation(#20045,#20046)
+regexp_const_value(#20045," ")
+#20047=*
+regexpterm(#20047,23,#20043,1,"[]")
+#20048=@"loc,{#10000},3,4,3,5"
+locations_default(#20048,#10000,3,4,3,5)
+hasLocation(#20047,#20048)
+#20049=*
+regexpterm(#20049,14,#20043,2," ")
+#20050=@"loc,{#10000},3,6,3,6"
+locations_default(#20050,#10000,3,6,3,6)
+hasLocation(#20049,#20050)
+regexp_const_value(#20049," ")
+#20051=*
+regexpterm(#20051,23,#20043,3,"[ [] [] ]")
+#20052=@"loc,{#10000},3,7,3,15"
+locations_default(#20052,#10000,3,7,3,15)
+hasLocation(#20051,#20052)
+#20053=*
+regexpterm(#20053,14,#20051,0," ")
+#20054=@"loc,{#10000},3,8,3,8"
+locations_default(#20054,#10000,3,8,3,8)
+hasLocation(#20053,#20054)
+regexp_const_value(#20053," ")
+#20055=*
+regexpterm(#20055,23,#20051,1,"[]")
+#20056=@"loc,{#10000},3,9,3,10"
+locations_default(#20056,#10000,3,9,3,10)
+hasLocation(#20055,#20056)
+#20057=*
+regexpterm(#20057,14,#20051,2," ")
+#20058=@"loc,{#10000},3,11,3,11"
+locations_default(#20058,#10000,3,11,3,11)
+hasLocation(#20057,#20058)
+regexp_const_value(#20057," ")
+#20059=*
+regexpterm(#20059,23,#20051,3,"[]")
+#20060=@"loc,{#10000},3,12,3,13"
+locations_default(#20060,#10000,3,12,3,13)
+hasLocation(#20059,#20060)
+#20061=*
+regexpterm(#20061,14,#20051,4," ")
+#20062=@"loc,{#10000},3,14,3,14"
+locations_default(#20062,#10000,3,14,3,14)
+hasLocation(#20061,#20062)
+regexp_const_value(#20061," ")
+#20063=*
+regexpterm(#20063,14,#20043,4," ")
+#20064=@"loc,{#10000},3,16,3,16"
+locations_default(#20064,#10000,3,16,3,16)
+hasLocation(#20063,#20064)
+regexp_const_value(#20063," ")
+#20065=*
+entry_cfg_node(#20065,#20001)
+#20066=@"loc,{#10000},1,1,1,0"
+locations_default(#20066,#10000,1,1,1,0)
+hasLocation(#20065,#20066)
+#20067=*
+exit_cfg_node(#20067,#20001)
+hasLocation(#20067,#20023)
+successor(#20041,#20042)
+successor(#20042,#20067)
+successor(#20033,#20034)
+successor(#20034,#20041)
+successor(#20026,#20028)
+successor(#20028,#20033)
+successor(#20065,#20026)
 numlines(#10000,3,3,1)
 filetype(#10000,"javascript")
