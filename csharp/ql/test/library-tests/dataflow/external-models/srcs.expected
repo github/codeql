@@ -11,6 +11,7 @@ invalidModelRow
 | Sources.cs:20:17:20:33 | call to method SrcTwoArg | local |
 | Sources.cs:22:17:22:39 | access to property TaggedSrcPropertyGetter | local |
 | Sources.cs:23:17:23:23 | access to indexer | local |
+| Sources.cs:26:23:26:23 | [post] access to local variable s | local |
 | Sources.cs:30:14:30:20 | this | local |
 | Sources.cs:30:29:30:45 | taggedMethodParam | local |
 | Sources.cs:34:47:34:60 | taggedSrcParam | local |
