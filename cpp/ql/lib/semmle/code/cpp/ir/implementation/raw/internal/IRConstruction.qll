@@ -15,6 +15,7 @@ private import TranslatedCall
 private import TranslatedStmt
 private import TranslatedFunction
 private import TranslatedGlobalVar
+private import TranslatedNonStaticDataMember
 private import TranslatedInitialization
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
@@ -45,6 +46,8 @@ module Raw {
       or
       not var.isFromUninstantiatedTemplate(_) and
       var instanceof StaticInitializedStaticLocalVariable
+      or
+      var instanceof Field
     ) and
     var.hasInitializer() and
     (
@@ -64,6 +67,8 @@ module Raw {
     getTranslatedFunction(decl).hasUserVariable(var, type)
     or
     getTranslatedVarInit(decl).hasUserVariable(var, type)
+    or
+    getTranslatedFieldInit(decl).hasUserVariable(var, type)
   }
 
   cached

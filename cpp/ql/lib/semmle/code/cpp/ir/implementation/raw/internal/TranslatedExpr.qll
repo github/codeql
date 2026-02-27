@@ -14,6 +14,7 @@ private import TranslatedFunction
 private import TranslatedInitialization
 private import TranslatedStmt
 private import TranslatedGlobalVar
+private import TranslatedNonStaticDataMember
 private import IRConstruction
 import TranslatedCall
 
@@ -138,6 +139,8 @@ abstract class TranslatedExpr extends TranslatedElement {
     result = getTranslatedFunction(getEnclosingFunction(expr))
     or
     result = getTranslatedVarInit(getEnclosingVariable(expr))
+    or
+    result = getTranslatedFieldInit(getEnclosingVariable(expr))
   }
 }
 
@@ -153,7 +156,10 @@ Declaration getEnclosingDeclaration0(Expr e) {
     i.getExpr().getFullyConverted() = e and
     v = i.getDeclaration()
   |
-    if v instanceof StaticInitializedStaticLocalVariable or v instanceof GlobalOrNamespaceVariable
+    if
+      v instanceof StaticInitializedStaticLocalVariable or
+      v instanceof GlobalOrNamespaceVariable or
+      v instanceof Field
     then result = v
     else result = e.getEnclosingDeclaration()
   )
@@ -173,7 +179,10 @@ Variable getEnclosingVariable0(Expr e) {
     i.getExpr().getFullyConverted() = e and
     v = i.getDeclaration()
   |
-    if v instanceof StaticInitializedStaticLocalVariable or v instanceof GlobalOrNamespaceVariable
+    if
+      v instanceof StaticInitializedStaticLocalVariable or
+      v instanceof GlobalOrNamespaceVariable or
+      v instanceof Field
     then result = v
     else result = e.getEnclosingVariable()
   )
@@ -824,6 +833,46 @@ class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
   override PostfixCrementOperation expr;
 
   override Instruction getResult() { result = this.getLoadedOperand().getResult() }
+}
+
+class TranslatedParamAccessForType extends TranslatedNonConstantExpr {
+  override ParamAccessForType expr;
+
+  TranslatedParamAccessForType() {
+    // Currently only needed for this parameter accesses.
+    expr.isThisAccess()
+  }
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  final override TranslatedElement getChildInternal(int id) { none() }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::CopyValue and
+    resultType = getTypeForPRValue(expr.getType())
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag instanceof UnaryOperandTag and
+    result =
+      this.getEnclosingFunction().(TranslatedNonStaticDataMemberVarInit).getLoadThisInstruction()
+  }
 }
 
 /**

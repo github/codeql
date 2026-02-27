@@ -918,7 +918,10 @@ newtype TTranslatedElement =
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) } or
+  TTranslatedStaticStorageDurationVarInit(Variable var) {
+    Raw::varHasIRFunc(var) and not var instanceof Field
+  } or
+  TTranslatedNonStaticDataMemberVarInit(Field var) { Raw::varHasIRFunc(var) } or
   TTranslatedAssertionOperand(MacroInvocation mi, int index) { hasAssertionOperand(mi, index) }
 
 /**
@@ -1297,5 +1300,7 @@ abstract class TranslatedRootElement extends TranslatedElement {
     this instanceof TTranslatedFunction
     or
     this instanceof TTranslatedStaticStorageDurationVarInit
+    or
+    this instanceof TTranslatedNonStaticDataMemberVarInit
   }
 }

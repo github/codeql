@@ -148,7 +148,8 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
   final override Declaration getFunction() {
     result = getEnclosingFunction(expr) or
     result = getEnclosingVariable(expr).(GlobalOrNamespaceVariable) or
-    result = getEnclosingVariable(expr).(StaticInitializedStaticLocalVariable)
+    result = getEnclosingVariable(expr).(StaticInitializedStaticLocalVariable) or
+    result = getEnclosingVariable(expr).(Field)
   }
 
   final override Locatable getAst() { result = expr }
@@ -528,7 +529,8 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   final override Declaration getFunction() {
     result = getEnclosingFunction(ast) or
     result = getEnclosingVariable(ast).(GlobalOrNamespaceVariable) or
-    result = getEnclosingVariable(ast).(StaticInitializedStaticLocalVariable)
+    result = getEnclosingVariable(ast).(StaticInitializedStaticLocalVariable) or
+    result = getEnclosingVariable(ast).(Field)
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
@@ -701,6 +703,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = getEnclosingVariable(initList).(GlobalOrNamespaceVariable)
     or
     result = getEnclosingVariable(initList).(StaticInitializedStaticLocalVariable)
+    or
+    result = getEnclosingVariable(initList).(Field)
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
