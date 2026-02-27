@@ -21,7 +21,7 @@ private import Cfg2
 import Public
 
 /** Provides an implementation of the AST signature for Java. */
-module Ast implements AstSig<Location> {
+private module Ast implements AstSig<Location> {
   private import java as J
 
   class AstNode = ExprParent;
@@ -474,7 +474,6 @@ private module Input implements InputSig1, InputSig2 {
     catch.getACaughtType() instanceof TypeThrowable
     or
     exists(TryStmt try, int last |
-      // not Exceptions::expectUncaught(try) and
       catch.getACaughtType() instanceof TypeException and
       try.getCatchClause(last) = catch and
       not exists(try.getCatchClause(last + 1))

@@ -74,9 +74,9 @@ signature module AstSig<LocationSig Location> {
     Expr getExpr();
   }
 
-  /** An if statement. */
+  /** An `if` statement. */
   class IfStmt extends Stmt {
-    /** Gets the condition of this if statement. */
+    /** Gets the condition of this `if` statement. */
     Expr getCondition();
 
     /** Gets the `then` (true) branch of this `if` statement. */
@@ -231,6 +231,8 @@ signature module AstSig<LocationSig Location> {
    * This is most often the same as the AST order, but can be different in some
    * languages if the language allows a default case to appear before other
    * cases.
+   *
+   * The values do not need to be contiguous; only the relative ordering matters.
    */
   default int getCaseControlFlowOrder(Switch s, Case c) { s.getCase(result) = c }
 
@@ -308,7 +310,7 @@ signature module AstSig<LocationSig Location> {
  * completed by subsequent instatiation of `Make1` and `Make2`.
  *
  * A complete instantiation can look as follows:
- * ```
+ * ```ql
  *   private module Input implements InputSig1, InputSig2 { .. }
  *   private module Cfg0 = Make0<Location, Ast>;
  *   private module Cfg1 = Make1<Input>;
@@ -347,6 +349,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     /**
      * Holds if the value of `child` is propagated to `parent`. For example,
      * the right-hand side of short-circuiting expressions.
+     *
+     * This predicate is only relevant for AST constructs that are not already
+     * handled by this library.
      */
     default predicate propagatesValue(AstNode child, AstNode parent) { none() }
 
@@ -354,6 +359,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * Holds if `n` is in a conditional context of kind `kind`. For example,
      * the left-hand side of a short-circuiting `&&` expression is in a
      * boolean conditional context.
+     *
+     * This predicate is only relevant for AST constructs that are not already
+     * handled by this library.
      */
     default predicate inConditionalContext(AstNode n, ConditionKind kind) { none() }
 
@@ -361,6 +369,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * Holds if `e` is executed in pre-order. This is typical for expressions
      * that are pure control-flow constructions without calculation or side
      * effects, such as `ConditionalExpr` and `Switch` expressions.
+     *
+     * This predicate is only relevant for AST constructs that are not already
+     * handled by this library.
      */
     default predicate preOrderExpr(Expr e) { none() }
 
@@ -368,6 +379,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * Holds if `n` is executed in post-order or in-order. This means that an
      * additional node is created to represent `n` in the control flow graph.
      * Otherwise, `n` is represented by the "before" node.
+     *
+     * This predicate is only relevant for AST constructs that are not already
+     * handled by this library.
      */
     default predicate postOrInOrder(AstNode n) { none() }
 
@@ -375,6 +389,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * Holds if an additional node tagged with `tag` should be created for
      * `n`. Edges targeting such nodes are labeled with `t` and therefore `t`
      * should be unique for a given `(n,tag)` pair.
+     *
+     * This predicate is only relevant for AST constructs that are not already
+     * handled by this library.
      */
     default predicate additionalNode(AstNode n, string tag, NormalSuccessor t) { none() }
 
@@ -446,9 +463,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       not postOrInOrder(parent) and
       parent.(BinaryExpr).getRightOperand() = child
       or
-      parent.(ConditionalExpr).getThen() = child
-      or
-      parent.(ConditionalExpr).getElse() = child
+      parent = any(ConditionalExpr ce | child = [ce.getThen(), ce.getElse()])
       or
       parent.(BlockStmt).getLastStmt() = child
       or
@@ -581,15 +596,19 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     cached
     private newtype TNode =
       TBeforeNode(AstNode n) { Input1::cfgCachedStageRef() and exists(getEnclosingCallable(n)) } or
-      TAstNode(AstNode n) { postOrInOrder(n) } or
-      TAfterValueNode(AstNode n, ConditionalSuccessor t) { inConditionalContext(n, t.getKind()) } or
+      TAstNode(AstNode n) { postOrInOrder(n) and exists(getEnclosingCallable(n)) } or
+      TAfterValueNode(AstNode n, ConditionalSuccessor t) {
+        inConditionalContext(n, t.getKind()) and exists(getEnclosingCallable(n))
+      } or
       TAfterNode(AstNode n) {
         exists(getEnclosingCallable(n)) and
         not inConditionalContext(n, _) and
         not cannotTerminateNormally(n) and
         not simpleLeafNode(n)
       } or
-      TAdditionalNode(AstNode n, string tag) { additionalNode(n, tag, _) } or
+      TAdditionalNode(AstNode n, string tag) {
+        additionalNode(n, tag, _) and exists(getEnclosingCallable(n))
+      } or
       TEntryNode(Callable c) { exists(callableGetBody(c)) } or
       TAnnotatedExitNode(Callable c, Boolean normal) { exists(callableGetBody(c)) } or
       TExitNode(Callable c) { exists(callableGetBody(c)) }
@@ -636,6 +655,15 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         this = TAfterValueNode(n, t)
         or
         exists(ConditionalSuccessor t0 | this = TAfterValueNode(n, t0) |
+          // When this predicate is used to identify the end point of a step,
+          // the kinds of `t` and `t0` may not match. For example, in
+          // `(x || y) ?? z`, the `||` may short-circuit with a known boolean
+          // value `t`, but it occurs in a nullness conditional context, which
+          // means that the `t0` has nullness kind. In these cases we check
+          // whether there is an implication that allows translatiion from `t`
+          // to `t0`, and if not `t0` is simply unrestricted. If the kinds did
+          // match, then no translation is needed and we're covered by the
+          // `this = TAfterValueNode(n, t)` case above.
           Input1::successorValueImplies(t, t0)
           or
           not Input1::successorValueImplies(t, _) and
@@ -738,7 +766,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       override string getIdTag() { result = "before" }
 
       override string toString() {
-        if postOrInOrder(n) then result = "Before " + n.toString() else result = n.toString()
+        if postOrInOrder(n) then result = "Before " + n else result = n.toString()
       }
     }
 
@@ -768,7 +796,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         t.getValue() = false and result = "after-false"
       }
 
-      override string toString() { result = "After " + n.toString() + " [" + t.toString() + "]" }
+      override string toString() { result = "After " + n + " [" + t + "]" }
     }
 
     private class AfterNode extends NodeImpl, TAfterNode {
@@ -780,7 +808,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override string getIdTag() { result = "after" }
 
-      override string toString() { result = "After " + n.toString() }
+      override string toString() { result = "After " + n }
     }
 
     private class AdditionalNode extends NodeImpl, TAdditionalNode {
@@ -795,7 +823,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
       override string getIdTag() { result = "add. " + tag }
 
-      override string toString() { result = tag + " " + n.toString() }
+      override string toString() { result = tag + " " + n }
     }
 
     final private class EntryNodeImpl extends NodeImpl, TEntryNode {
@@ -877,7 +905,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         exists(AbruptSuccessor t, Input1::Label l |
           this = TLabeledAbruptCompletion(t, l) and
-          result = t.toString() + " " + l.toString()
+          result = t + " " + l
         )
       }
 
@@ -913,6 +941,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
        * Holds if `ast` may result in an abrupt completion `c` originating at
        * `n`. The boolean `always`  indicates whether the abrupt completion
        * always occurs or whether `n` may also terminate normally.
+       *
+       * This predicate is only relevant for AST constructs that are not already
+       * handled by this library.
        */
       predicate beginAbruptCompletion(
         AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
@@ -921,10 +952,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       /**
        * Holds if an abrupt completion `c` from within `ast` is caught with
        * flow continuing at `n`.
+       *
+       * This predicate is only relevant for AST constructs that are not already
+       * handled by this library.
        */
       predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c);
 
-      /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
+      /**
+       * Holds if there is a local non-abrupt step from `n1` to `n2`.
+       *
+       * This predicate is only relevant for AST constructs that are not already
+       * handled by this library.
+       */
       predicate step(PreControlFlowNode n1, PreControlFlowNode n2);
     }
 
@@ -1596,10 +1635,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           /** Gets an immediate successor of a given type, if any. */
           ControlFlowNode getASuccessor(SuccessorType t) { succ(this, result, t) }
 
-          /** Gets an immediate successor of this node. */
+          /** Gets an immediate successor of this node, if this is not an `ExitNode`. */
           ControlFlowNode getASuccessor() { result = this.getASuccessor(_) }
 
-          /** Gets an immediate predecessor of this node. */
+          /** Gets an immediate predecessor of this node, if this is not an `EntryNode`. */
           ControlFlowNode getAPredecessor() { result.getASuccessor() = this }
 
           /**
@@ -1656,11 +1695,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           }
         }
 
-        import CfgAlias
+        module Cfg = BB::Make<Location, BbInput>;
 
         private module CfgAlias = Cfg;
 
-        module Cfg = BB::Make<Location, BbInput>;
+        import CfgAlias
       }
 
       private module Additional {
@@ -1684,25 +1723,23 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
         import Pp::PrintGraph<Location, PrintGraphInput>
 
-        /*
-         * Consistency checks
-         *
-         * - there should be no dead ends except at ExitNodes
-         * - inConditionalContext(n, kind) kind must be unique for n
-         * - flow must preserve getEnclosingCallable
-         * - additionalNode(AstNode n, string tag, NormalSuccessor t) should have a unique t for (n, tag)
-         * - if "before" is reachable and node is post-or-in-order, then "in" must generally be reachable
-         */
-
         /** Provides a set of consistency queries. */
         module Consistency {
-          /** Holds if `node` is lacking a successor. */
+          /**
+           * Holds if `node` is lacking a successor.
+           *
+           * There should be no dead ends except at `ExitNode`s.
+           */
           query predicate deadEnd(ControlFlowNode node) {
             not node instanceof ControlFlow::ExitNode and
             not exists(node.getASuccessor(_))
           }
 
-          /** Holds if `n` is in a conditional context with multiple condition kinds. */
+          /**
+           * Holds if `n` is in a conditional context with multiple condition kinds.
+           *
+           * For `inConditionalContext(n, kind)`, the `kind` must be unique for a given `n`.
+           */
           query predicate nonUniqueInConditionalContext(AstNode n) {
             1 < strictcount(ConditionKind kind | inConditionalContext(n, kind))
           }
@@ -1710,6 +1747,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           /**
            * Holds if `n1` steps to `n2` with successor type `t` but they belong
            * to different callables.
+           *
+           * Flow must preserve `getEnclosingCallable`.
            */
           query predicate nonLocalStep(ControlFlowNode n1, SuccessorType t, ControlFlowNode n2) {
             n1.getASuccessor(t) = n2 and
@@ -1719,12 +1758,21 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           /**
            * Holds if the additional node for a given AST node and tag has
            * multiple successor types.
+           *
+           * For `additionalNode(AstNode n, string tag, NormalSuccessor t)`,
+           * the `t` must be unique for a given `(n, tag)`.
            */
           query predicate ambiguousAdditionalNode(AstNode n, string tag) {
             1 < strictcount(NormalSuccessor t | additionalNode(n, tag, t))
           }
 
-          /** Holds if the "in" node is unreachable for a post-or-in-order AST node. */
+          /**
+           * Holds if the "in" node is unreachable for a post-or-in-order AST node.
+           *
+           * If the "before" node of a post-or-in-order AST node is reachable,
+           * then the "in" node should generally be reachable as well. If not,
+           * it may indicate missing control flow edges.
+           */
           query predicate missingInNodeForPostOrInOrder(AstNode ast) {
             postOrInOrder(ast) and
             exists(ControlFlowNode before | before.isBefore(ast)) and
@@ -1748,7 +1796,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             )
           }
 
-          /** Holds if `node` has multiple successors of the same type `t`. */
+          /**
+           * Holds if `node` has multiple successors of the same type `t`.
+           *
+           * In most cases, multiple successors are distinguished by their
+           * successor types, for example the true and false successors of a
+           * condition.
+           */
           query predicate multipleSuccessors(
             ControlFlowNode node, SuccessorType t, ControlFlowNode successor
           ) {
@@ -1774,7 +1828,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             not (t instanceof DirectSuccessor and node instanceof ControlFlow::EntryNode)
           }
 
-          /** Holds if `node` has conditional successors of different kinds. */
+          /**
+           * Holds if `node` has conditional successors of different kinds.
+           *
+           * The kind of a conditional successor is determined by the context
+           * of the node. For example, a condition in an `if` statement has
+           * boolean successors.
+           */
           query predicate multipleConditionalSuccessorKinds(
             ControlFlowNode node, ConditionalSuccessor t1, ConditionalSuccessor t2,
             ControlFlowNode succ1, ControlFlowNode succ2
@@ -1784,7 +1844,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             succ2 = node.getASuccessor(t2)
           }
 
-          /** Holds if `node` has both a direct and a conditional successor type. */
+          /**
+           * Holds if `node` has both a direct and a conditional successor type.
+           *
+           * If a node is in a conditional context, it should only have
+           * conditional successors of the appropriate kind, and not other
+           * normal successors.
+           */
           query predicate directAndConditionalSuccessors(
             ControlFlowNode node, ConditionalSuccessor t1, DirectSuccessor t2,
             ControlFlowNode succ1, ControlFlowNode succ2
@@ -1793,7 +1859,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             succ2 = node.getASuccessor(t2)
           }
 
-          /** Holds if `node` has a self-loop with successor type `t`. */
+          /**
+           * Holds if `node` has a self-loop with successor type `t`.
+           *
+           * Self-loops are not expected in control flow graphs.
+           */
           query predicate selfLoop(ControlFlowNode node, SuccessorType t) {
             node.getASuccessor(t) = node
           }
