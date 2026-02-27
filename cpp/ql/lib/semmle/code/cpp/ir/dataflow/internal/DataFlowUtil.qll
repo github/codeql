@@ -20,57 +20,6 @@ private import Node0ToString
 private import DataFlowDispatch as DataFlowDispatch
 import ExprNodes
 
-/**
- * The IR dataflow graph consists of the following nodes:
- * - `Node0`, which injects most instructions and operands directly into the
- *    dataflow graph.
- * - `VariableNode`, which is used to model flow through global variables.
- * - `PostUpdateNodeImpl`, which is used to model the state of an object after
- *    an update after a number of loads.
- * - `SsaSynthNode`, which represents synthesized nodes as computed by the shared SSA
- *    library.
- * - `RawIndirectOperand`, which represents the value of `operand` after
- *    loading the address a number of times.
- * - `RawIndirectInstruction`, which represents the value of `instr` after
- *    loading the address a number of times.
- */
-cached
-private newtype TIRDataFlowNode =
-  TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
-  TGlobalLikeVariableNode(GlobalLikeVariable var, int indirectionIndex) {
-    indirectionIndex =
-      [getMinIndirectionsForType(var.getUnspecifiedType()) .. SsaImpl::getMaxIndirectionsForType(var.getUnspecifiedType())]
-  } or
-  TPostUpdateNodeImpl(Operand operand, int indirectionIndex) {
-    isPostUpdateNodeImpl(operand, indirectionIndex)
-  } or
-  TSsaSynthNode(SsaImpl::SynthNode n) or
-  TSsaIteratorNode(IteratorFlow::IteratorFlowNode n) or
-  TRawIndirectOperand0(Node0Impl node, int indirectionIndex) {
-    SsaImpl::hasRawIndirectOperand(node.asOperand(), indirectionIndex)
-  } or
-  TRawIndirectInstruction0(Node0Impl node, int indirectionIndex) {
-    not exists(node.asOperand()) and
-    SsaImpl::hasRawIndirectInstruction(node.asInstruction(), indirectionIndex)
-  } or
-  TFinalParameterNode(Parameter p, int indirectionIndex) {
-    exists(SsaImpl::FinalParameterUse use |
-      use.getParameter() = p and
-      use.getIndirectionIndex() = indirectionIndex
-    )
-  } or
-  TFinalGlobalValue(SsaImpl::GlobalUse globalUse) or
-  TInitialGlobalValue(SsaImpl::GlobalDef globalUse) or
-  TBodyLessParameterNodeImpl(Parameter p, int indirectionIndex) {
-    // Rule out parameters of catch blocks.
-    not exists(p.getCatchBlock()) and
-    // We subtract one because `getMaxIndirectionsForType` returns the maximum
-    // indirection for a glvalue of a given type, and this doesn't apply to
-    // parameters.
-    indirectionIndex = [0 .. SsaImpl::getMaxIndirectionsForType(p.getUnspecifiedType()) - 1] and
-    not any(InitializeParameterInstruction init).getParameter() = p
-  } or
-  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
 
 /**
  * An operand that is defined by a `FieldAddressInstruction`.
