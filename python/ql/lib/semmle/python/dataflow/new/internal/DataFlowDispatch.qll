@@ -2005,10 +2005,18 @@ module DuckTyping {
    * Holds if `name` is monkey-patched into the builtins module.
    */
   predicate monkeyPatchedBuiltin(string name) {
-    exists(DataFlow::AttrWrite aw |
-      API::moduleImport("builtins").getAValueReachableFromSource().asExpr() =
-        aw.getObject().asExpr() and
-      aw.getAttributeName() = name
+    any(DataFlow::AttrWrite aw)
+        .writes(API::moduleImport("builtins").getAValueReachableFromSource(), name, _)
+    or
+    // B.__dict__["name"] = value
+    exists(SubscriptNode subscr |
+      subscr.isStore() and
+      subscr.getObject() =
+        API::moduleImport("builtins")
+            .getMember("__dict__")
+            .getAValueReachableFromSource()
+            .asCfgNode() and
+      subscr.getIndex().getNode().(StringLiteral).getText() = name
     )
   }
 

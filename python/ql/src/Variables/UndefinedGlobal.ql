@@ -11,9 +11,10 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.ImportResolution
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.ApiGraphs
 private import semmle.python.types.ImportTime
-import Variables.MonkeyPatched
 import Loop
 
 predicate guarded_against_name_error(Name u) {
@@ -32,10 +33,13 @@ predicate guarded_against_name_error(Name u) {
 }
 
 predicate contains_unknown_import_star(Module m) {
-  exists(ImportStar imp | imp.getScope() = m |
-    exists(ModuleValue imported | imported.importedAs(imp.getImportedModuleName()) |
-      not imported.hasCompleteExportInfo()
-    )
+  exists(ImportStar imp, Module imported |
+    imp.getScope() = m and
+    ImportResolution::getModuleImportedByImportStar(imp) = imported
+  |
+    // The imported module dynamically creates attributes, so we can't
+    // enumerate its exports.
+    exists(Function f | f.getName() = "__getattr__" and f.getScope() = imported)
   )
 }
 
@@ -60,9 +64,9 @@ predicate undefined_use_in_function(Name u) {
     )
   ) and
   not u.getEnclosingModule().(ImportTimeScope).definesName(u.getId()) and
-  not exists(ModuleValue m | m.getScope() = u.getEnclosingModule() | m.hasAttribute(u.getId())) and
-  not globallyDefinedName(u.getId()) and
-  not exists(SsaVariableWithPointsTo var | var.getAUse().getNode() = u and not var.maybeUndefined()) and
+  not ImportResolution::module_export(u.getEnclosingModule(), u.getId(), _) and
+  not DuckTyping::globallyDefinedName(u.getId()) and
+  not Reachability::maybeUndefined(u) and
   not guarded_against_name_error(u) and
   not (u.getEnclosingModule().isPackageInit() and u.getId() = "__path__")
 }
@@ -70,20 +74,18 @@ predicate undefined_use_in_function(Name u) {
 predicate undefined_use_in_class_or_module(Name u) {
   exists(GlobalVariable v | u.uses(v)) and
   not u.getScope().getScope*() instanceof Function and
-  exists(SsaVariableWithPointsTo var | var.getAUse().getNode() = u | var.maybeUndefined()) and
+  Reachability::maybeUndefined(u) and
   not guarded_against_name_error(u) and
-  not exists(ModuleValue m | m.getScope() = u.getEnclosingModule() | m.hasAttribute(u.getId())) and
+  not u.getEnclosingModule().(ImportTimeScope).definesName(u.getId()) and
+  not ImportResolution::module_export(u.getEnclosingModule(), u.getId(), _) and
   not (u.getEnclosingModule().isPackageInit() and u.getId() = "__path__") and
-  not globallyDefinedName(u.getId())
+  not DuckTyping::globallyDefinedName(u.getId())
 }
 
 predicate use_of_exec(Module m) {
   exists(Exec exec | exec.getScope() = m)
   or
-  exists(CallNode call, FunctionValue exec | exec.getACall() = call and call.getScope() = m |
-    exec = Value::named("exec") or
-    exec = Value::named("execfile")
-  )
+  API::builtin(["exec", "execfile"]).getACall().getScope() = m
 }
 
 predicate undefined_use(Name u) {
@@ -92,11 +94,10 @@ predicate undefined_use(Name u) {
     or
     undefined_use_in_function(u)
   ) and
-  not monkey_patched_builtin(u.getId()) and
+  not DuckTyping::monkeyPatchedBuiltin(u.getId()) and
   not contains_unknown_import_star(u.getEnclosingModule()) and
   not use_of_exec(u.getEnclosingModule()) and
   not exists(u.getVariable().getAStore()) and
-  not u.(ExprWithPointsTo).pointsTo(_) and
   not probably_defined_in_loop(u)
 }
 
