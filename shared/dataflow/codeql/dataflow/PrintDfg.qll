@@ -1,6 +1,8 @@
 /**
  * Provides a module for implementing the `View DFG` query based on inputs to the data flow library.
  */
+overlay[local?]
+module;
 
 private import codeql.util.Location
 private import codeql.dataflow.DataFlow as DF
