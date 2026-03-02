@@ -1,2 +1,2 @@
-| Partial.cs:41:39:41:51 | PartialEvent1 | true |
-| Partial.cs:59:31:59:35 | Event | false |
+| Partial.cs:45:39:45:51 | PartialEvent1 | true |
+| Partial.cs:64:31:64:35 | Event | false |
