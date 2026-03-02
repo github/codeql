@@ -459,6 +459,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     private predicate propagatesValue(AstNode child, AstNode parent) {
       Input1::propagatesValue(child, parent)
       or
+      // For now, the `not postOrInOrder(parent)` is superfluous, as we don't
+      // have any short-circuiting post-order expressions yet, but this will
+      // change once we add support for e.g. C#'s `??=`.
       shortCircuiting(parent, _) and
       not postOrInOrder(parent) and
       parent.(BinaryExpr).getRightOperand() = child
@@ -660,7 +663,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           // `(x || y) ?? z`, the `||` may short-circuit with a known boolean
           // value `t`, but it occurs in a nullness conditional context, which
           // means that the `t0` has nullness kind. In these cases we check
-          // whether there is an implication that allows translatiion from `t`
+          // whether there is an implication that allows translation from `t`
           // to `t0`, and if not `t0` is simply unrestricted. If the kinds did
           // match, then no translation is needed and we're covered by the
           // `this = TAfterValueNode(n, t)` case above.
