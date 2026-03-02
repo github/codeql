@@ -1,3 +1,18 @@
+## 7.0.0
+
+### Breaking Changes
+
+- The `Metrics` library no longer contains code that depends on the points-to analysis. The removed functionality has instead been moved to the `LegacyPointsTo` module, to classes like `ModuleMetricsWithPointsTo` etc. If you depend on any of these classes, you must now remember to import `LegacyPointsTo`, and use the appropriate types in order to use the points-to-based functionality.
+
+### Major Analysis Improvements
+
+- The CodeQL Python libraries have been updated to be compatible with overlay evaluation. This should result in a significant speedup on analyses for which a base database already exists. Note that it may be necessary to add `overlay[local?] module;` to user-managed libraries that extend classes that are now marked as `overlay[local]`.
+
+### Minor Analysis Improvements
+
+* Added new full SSRF sanitization barrier from the new AntiSSRF library. 
+* When a guard such as `isSafe(x)` is defined, we now also automatically handle `isSafe(x) == true` and `isSafe(x) != false`.
+
 ## 6.1.1
 
 ### Minor Analysis Improvements
@@ -7,7 +22,7 @@
 
 ### Bug Fixes
 
-- Using `=` as a fill character in a format specifier (e.g `f"{x:=^20}"`) now no longer results in a syntax error during parsing.
+- Using `=` as a fill character in a format specifier (e.g. `f"{x:=^20}"`) now no longer results in a syntax error during parsing.
 
 ## 6.1.0
 
