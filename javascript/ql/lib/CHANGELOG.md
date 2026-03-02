@@ -1,3 +1,9 @@
+## 2.6.23
+
+### Minor Analysis Improvements
+
+* Added support for React components wrapped by `observer` from `mobx-react` and `mobx-react-lite`.
+
 ## 2.6.22
 
 No user-facing changes.

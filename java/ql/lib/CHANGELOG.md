@@ -1,3 +1,9 @@
+## 8.1.1
+
+### Minor Analysis Improvements
+
+* Some modelling which previously only worked for Java EE packages beginning with "javax" will now also work for Java EE packages beginning with "jakarta" as well. This may lead to some alert changes.
+
 ## 8.1.0
 
 ### Deprecated APIs

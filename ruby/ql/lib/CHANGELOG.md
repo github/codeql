@@ -1,3 +1,9 @@
+## 5.1.11
+
+### Minor Analysis Improvements
+
+* We now track taint flow through `Shellwords.escape` and `Shellwords.shellescape` for all queries except command injection, for which they are sanitizers.
+
 ## 5.1.10
 
 No user-facing changes.
