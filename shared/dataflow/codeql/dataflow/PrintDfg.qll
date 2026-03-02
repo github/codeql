@@ -8,6 +8,9 @@ private import codeql.util.Location
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
 
+/**
+ * Instantiates the `PrintGraph` module using edges from the data flow graph.
+ */
 module MakePrintDfg<
   LocationSig Location, DF::InputSig<Location> DataFlowLang,
   TT::InputSig<Location, DataFlowLang> TaintTrackingLang>
