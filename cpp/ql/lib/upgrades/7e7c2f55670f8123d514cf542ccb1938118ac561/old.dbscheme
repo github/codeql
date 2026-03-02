@@ -246,50 +246,22 @@ trap_filename(
 );
 
 /**
- * Gives the tag name for `tag`.
- * For debugging only.
- */
-tag_name(
-    int tag: @tag,
-    string name: string ref
-);
-
-@trap_or_tag = @tag | @trap;
-
-/**
- * Gives the name for the source file.
- */
-source_file_name(
-    int sf: @source_file,
-    string name: string ref
-);
-
-/**
  * In `build-mode: none` overlay mode, indicates that `source_file`
  * (`/path/to/foo.c`) uses the TRAP file `trap_file`; i.e. it is the
  * TRAP file corresponding to `foo.c`, something it transitively
  * includes, or a template instantiation it transitively uses.
  */
 source_file_uses_trap(
-    int source_file: @source_file ref,
+    string source_file: string ref,
     int trap_file: @trap ref
 );
 
 /**
- * In `build-mode: none` overlay mode, indicates that the TRAP file
- * `trap_file` uses tag `tag`.
+ * Holds if there is a definition of `element` in TRAP file `trap_file`.
  */
-trap_uses_tag(
-    int trap_file: @trap ref,
-    int tag: @tag ref
-);
-
-/**
- * Holds if there is a definition of `element` in TRAP file or tag `t`.
- */
-in_trap_or_tag(
+in_trap(
     int element: @element ref,
-    int t: @trap_or_tag ref
+    int trap_file: @trap ref
 );
 
 pch_uses(
