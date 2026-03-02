@@ -1,14 +1,17 @@
 /**
- * @name Print CFG
- * @description Produces a representation of a file's Control Flow Graph.
+ * @name Print DFG
+ * @description Produces a representation of a file's Data Flow Graph.
  *              This query is used by the VS Code extension.
  * @id java/print-cfg
  * @kind graph
- * @tags ide-contextual-queries/print-cfg
+ * @tags ide-contextual-queries/print-dfg
  */
 
 import java
-import PrintCfg
+private import semmle.code.java.dataflow.internal.DataFlowImplSpecific as DF
+private import semmle.code.java.dataflow.internal.TaintTrackingImplSpecific as TT
+private import codeql.dataflow.PrintDfg
+private import MakePrintDfg<Location, DF::JavaDataFlow, TT::JavaTaintTracking>
 
 external string selectedSourceFile();
 
@@ -22,7 +25,7 @@ external int selectedSourceColumn();
 
 private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-module ViewCfgQueryInput implements ViewGraphQueryInputSig<File> {
+module ViewDfgQueryInput implements ViewGraphQueryInputSig<File> {
   predicate selectedSourceFile = selectedSourceFileAlias/0;
 
   predicate selectedSourceLine = selectedSourceLineAlias/0;
@@ -30,17 +33,18 @@ module ViewCfgQueryInput implements ViewGraphQueryInputSig<File> {
   predicate selectedSourceColumn = selectedSourceColumnAlias/0;
 
   predicate callableSpan(
-    Callable callable, File file, int startLine, int startColumn, int endLine, int endColumn
+    DF::JavaDataFlow::DataFlowCallable callable, File file, int startLine, int startColumn,
+    int endLine, int endColumn
   ) {
-    file = callable.getFile() and
+    file = callable.asCallable().getFile() and
     callable.getLocation().getStartLine() = startLine and
     callable.getLocation().getStartColumn() = startColumn and
     exists(Location loc |
       loc.getEndLine() = endLine and
       loc.getEndColumn() = endColumn and
-      loc = callable.getBody().getLocation()
+      loc = callable.asCallable().getBody().getLocation()
     )
   }
 }
 
-import ViewGraphQuery<File, ViewCfgQueryInput>
+import ViewGraphQuery<File, ViewDfgQueryInput>

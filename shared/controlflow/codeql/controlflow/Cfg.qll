@@ -1313,15 +1313,20 @@ module MakeWithSplitting<
     }
   }
 
-  private import PrintGraph as Pp
+  private import codeql.util.PrintGraph as Pp
+
+  private class NodeAlias = Node;
 
   private module PrintGraphInput implements Pp::InputSig<Location> {
     class Callable = CfgScope;
 
-    class ControlFlowNode = Node;
+    class Node = NodeAlias;
 
-    ControlFlowNode getASuccessor(ControlFlowNode n, SuccessorType t) {
-      result = n.getASuccessor(t)
+    predicate edge(Node node1, string label, Node node2) {
+      exists(SuccessorType t |
+        node2 = node1.getASuccessor(t) and
+        if t instanceof DirectSuccessor then label = "" else label = t.toString()
+      )
     }
   }
 

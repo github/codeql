@@ -361,6 +361,12 @@ signature module InputSig<LocationSig Location> {
    * visible.
    */
   default predicate isEvaluatingInOverlay() { none() }
+
+  /**
+   * Gets a string to distinguish nodes that have the same location and toString value,
+   * for use when generating graphs with `PrintDfg.qll`.
+   */
+  default string nodeGetOrderDisambiguation(Node node) { result = "" }
 }
 
 module Configs<LocationSig Location, InputSig<Location> Lang> {

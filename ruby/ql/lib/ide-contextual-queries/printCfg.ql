@@ -23,14 +23,14 @@ external int selectedSourceColumn();
 
 private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
+module ViewCfgQueryInput implements ViewGraphQueryInputSig<File> {
   predicate selectedSourceFile = selectedSourceFileAlias/0;
 
   predicate selectedSourceLine = selectedSourceLineAlias/0;
 
   predicate selectedSourceColumn = selectedSourceColumnAlias/0;
 
-  predicate cfgScopeSpan(
+  predicate callableSpan(
     CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
   ) {
     file = scope.getFile() and
@@ -38,4 +38,4 @@ module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
   }
 }
 
-import ViewCfgQuery<File, ViewCfgQueryInput>
+import ViewGraphQuery<File, ViewCfgQueryInput>

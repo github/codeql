@@ -15,6 +15,8 @@ class SourceControlFlowNode extends ControlFlow::Node {
     not this.getLocation().getFile() instanceof StubFile and
     not this.getLocation().getFile().fromLibrary()
   }
+
+  string getOrderDisambiguation() { result = "" }
 }
 
 class SourceBasicBlock extends ControlFlow::BasicBlock {
