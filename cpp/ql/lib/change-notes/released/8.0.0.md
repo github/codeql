@@ -2,7 +2,7 @@
 
 ### Breaking Changes
 
-* CodeQL version 2.24.2 accidentially introduced a syntactical breaking change to `BarrierGuard<...>::getAnIndirectBarrierNode` and `InstructionBarrierGuard<...>::getAnIndirectBarrierNode`. These breaking changes have now been reverted so that the original code compiles again.
+* CodeQL version 2.24.2 accidentally introduced a syntactical breaking change to `BarrierGuard<...>::getAnIndirectBarrierNode` and `InstructionBarrierGuard<...>::getAnIndirectBarrierNode`. These breaking changes have now been reverted so that the original code compiles again.
 * `MustFlow`, the inter-procedural must-flow data flow analysis library, has been re-worked to use parameterized modules. Like in the case of data flow and taint tracking, instead of extending the `MustFlowConfiguration` class, the user should now implement a module with the `MustFlow::ConfigSig` signature, and instantiate the `MustFlow::Global` parameterized module with the implemented module.
 
 ### Minor Analysis Improvements
