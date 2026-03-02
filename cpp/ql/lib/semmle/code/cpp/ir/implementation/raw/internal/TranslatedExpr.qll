@@ -1264,7 +1264,7 @@ class TranslatedFunctionAccess extends TranslatedNonConstantExpr {
     resultType = this.getResultType()
   }
 
-  override Function getInstructionFunction(InstructionTag tag) {
+  override Declaration getInstructionFunction(InstructionTag tag) {
     tag = OnlyInstructionTag() and
     result = expr.getTarget()
   }
@@ -2547,7 +2547,7 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
     any()
   }
 
-  override Function getInstructionFunction(InstructionTag tag) {
+  override Declaration getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getAllocator()
   }
 
@@ -2630,7 +2630,7 @@ class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, Trans
     result = this.getFirstArgumentOrCallInstruction(kind)
   }
 
-  override Function getInstructionFunction(InstructionTag tag) {
+  override Declaration getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getDeallocator()
   }
 

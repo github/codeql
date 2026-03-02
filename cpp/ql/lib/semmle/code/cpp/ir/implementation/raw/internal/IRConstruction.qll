@@ -115,7 +115,7 @@ module Raw {
   }
 
   cached
-  Function getInstructionFunction(Instruction instruction) {
+  Declaration getInstructionFunction(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction)
           .getInstructionFunction(getInstructionTag(instruction))

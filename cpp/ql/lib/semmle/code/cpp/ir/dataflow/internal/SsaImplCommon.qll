@@ -175,7 +175,8 @@ private class PointerWrapperTypeIndirection extends Indirection instanceof Point
   override predicate isAdditionalDereference(Instruction deref, Operand address) {
     exists(CallInstruction call |
       operandForFullyConvertedCall(getAUse(deref), call) and
-      this = call.getStaticCallTarget().getClassAndName(["operator*", "operator->", "get"]) and
+      this =
+        call.getStaticCallTarget().(Function).getClassAndName(["operator*", "operator->", "get"]) and
       address = call.getThisArgumentOperand()
     )
   }
@@ -194,7 +195,7 @@ private module IteratorIndirections {
 
     override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) {
       exists(CallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
-        this = call.getStaticCallTarget().getClassAndName("operator=") and
+        this = call.getStaticCallTarget().(Function).getClassAndName("operator=") and
         address = call.getThisArgumentOperand() and
         certain = false
       )
