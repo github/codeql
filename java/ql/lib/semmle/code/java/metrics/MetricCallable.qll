@@ -71,18 +71,28 @@ class MetricCallable extends Callable {
   }
 }
 
+private predicate fallthroughSwitchCase(SwitchCase sc1, SwitchCase sc2) {
+  exists(SwitchStmt switch, int n | switch.getStmt(n) = sc1 and switch.getStmt(n + 1) = sc2)
+  or
+  exists(SwitchExpr switch, int n | switch.getStmt(n) = sc1 and switch.getStmt(n + 1) = sc2)
+}
+
 // Branching points in the sense of cyclomatic complexity are binary,
 // so there should be a branching point for each non-default switch
 // case (ignoring those that just fall through to the next case).
 private predicate branchingSwitchCase(ConstCase sc) {
-  not sc.getControlFlowNode().getASuccessor().asStmt() instanceof SwitchCase and
-  not defaultFallThrough(sc)
+  if sc.isRule()
+  then any()
+  else (
+    not fallthroughSwitchCase(sc, _) and
+    not defaultFallThrough(sc)
+  )
 }
 
 private predicate defaultFallThrough(ConstCase sc) {
-  exists(DefaultCase default | default.getControlFlowNode().getASuccessor().asStmt() = sc)
+  exists(DefaultCase default | fallthroughSwitchCase(default, sc))
   or
-  defaultFallThrough(sc.getControlFlowNode().getAPredecessor().asStmt())
+  exists(ConstCase mid | defaultFallThrough(mid) and fallthroughSwitchCase(mid, sc))
 }
 
 /** Holds if `stmt` is a branching statement used for the computation of cyclomatic complexity. */
