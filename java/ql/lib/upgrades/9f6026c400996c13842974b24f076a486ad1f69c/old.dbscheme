@@ -815,7 +815,6 @@ when_branch_else(unique int id: @whenbranch ref);
              | @geexpr
              | @eqexpr
              | @neexpr
-             | @assignment
              | @valueeqexpr
              | @valueneexpr;
 
