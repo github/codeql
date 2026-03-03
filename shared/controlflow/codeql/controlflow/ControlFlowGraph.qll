@@ -1412,6 +1412,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           exists(int i |
             n1.isAfterValue(getRankedCaseCfgOrder(switch, i),
               any(MatchingSuccessor t | t.getValue() = false))
+            or
+            n1.isAfterFalse(getRankedCaseCfgOrder(switch, i).getGuard())
           |
             n2.isBefore(getRankedCaseCfgOrder(switch, i + 1))
             or
@@ -1456,9 +1458,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             n1.isAfterTrue(case.getGuard()) and
             n2 = beforeBody
-            or
-            n1.isAfterFalse(case.getGuard()) and
-            n2.isAfterValue(case, any(MatchingSuccessor t | t.getValue() = false))
           )
         )
         or
