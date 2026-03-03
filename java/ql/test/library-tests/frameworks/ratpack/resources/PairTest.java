@@ -5,7 +5,7 @@ import ratpack.func.Pair;
 
 
 public class PairTest {
-    
+
     void sink(Object o) {}
 
     String taint() {
@@ -126,12 +126,12 @@ public class PairTest {
         sink(pair.left()); // no taint flow
         sink(pair.right()); // no taint flow
         Pair<Pair<String, String>, String> nestLeftPair = pair.nestLeft(taint());
-        sink(nestLeftPair.left().left()); // $hasTaintFlow
+        sink(nestLeftPair.left().left()); // $ hasTaintFlow
         sink(nestLeftPair.left().right()); // no taint flow
         sink(nestLeftPair.right()); // no taint flow
         Pair<String, Pair<String, String>> nestRightPair = pair.nestRight(taint());
         sink(nestRightPair.left()); // no taint flow
-        sink(nestRightPair.right().left()); // $hasTaintFlow
+        sink(nestRightPair.right().left()); // $ hasTaintFlow
         sink(nestRightPair.right().right()); // no taint flow
     }
 

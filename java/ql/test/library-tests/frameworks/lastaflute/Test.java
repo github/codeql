@@ -16,12 +16,10 @@ public class Test {
     public String index(TestForm form) throws IOException {
         MultipartFormFile file = form.file;
 
-        sink(file.getFileData()); // $hasTaintFlow
-        sink(file.getInputStream()); // $hasTaintFlow
+        sink(file.getFileData()); // $ hasTaintFlow
+        sink(file.getInputStream()); // $ hasTaintFlow
 
         return "index.jsp";
     }
 
 }
-
-    
