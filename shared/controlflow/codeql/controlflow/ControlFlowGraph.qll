@@ -309,6 +309,33 @@ signature module AstSig<LocationSig Location> {
   /** A logical NOT expression. */
   class LogicalNotExpr extends UnaryExpr;
 
+  /**
+   * An assignment expression, either compound or simple.
+   *
+   * Examples:
+   *
+   * ```
+   * x = y
+   * sum += element
+   * ```
+   */
+  class Assignment extends BinaryExpr;
+
+  /** A simple assignment expression, for example `x = y`. */
+  class AssignExpr extends Assignment;
+
+  /** A compound assignment expression, for example `x += y` or `x ??= y`. */
+  class CompoundAssignment extends Assignment;
+
+  /** A short-circuiting logical AND compound assignment expression. */
+  class AssignLogicalAndExpr extends CompoundAssignment;
+
+  /** A short-circuiting logical OR compound assignment expression. */
+  class AssignLogicalOrExpr extends CompoundAssignment;
+
+  /** A short-circuiting null-coalescing compound assignment expression. */
+  class AssignNullCoalescingExpr extends CompoundAssignment;
+
   /** A boolean literal expression. */
   class BooleanLiteral extends Expr {
     /** Gets the boolean value of this literal. */
@@ -458,11 +485,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * is the value that causes the short-circuit.
      */
     private predicate shortCircuiting(BinaryExpr expr, ConditionalSuccessor shortcircuitValue) {
-      expr instanceof LogicalAndExpr and shortcircuitValue.(BooleanSuccessor).getValue() = false
+      (expr instanceof LogicalAndExpr or expr instanceof AssignLogicalAndExpr) and
+      shortcircuitValue.(BooleanSuccessor).getValue() = false
       or
-      expr instanceof LogicalOrExpr and shortcircuitValue.(BooleanSuccessor).getValue() = true
+      (expr instanceof LogicalOrExpr or expr instanceof AssignLogicalOrExpr) and
+      shortcircuitValue.(BooleanSuccessor).getValue() = true
       or
-      expr instanceof NullCoalescingExpr and shortcircuitValue.(NullnessSuccessor).getValue() = true
+      (expr instanceof NullCoalescingExpr or expr instanceof AssignNullCoalescingExpr) and
+      shortcircuitValue.(NullnessSuccessor).getValue() = false
     }
 
     /**
@@ -472,9 +502,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     private predicate propagatesValue(AstNode child, AstNode parent) {
       Input1::propagatesValue(child, parent)
       or
-      // For now, the `not postOrInOrder(parent)` is superfluous, as we don't
-      // have any short-circuiting post-order expressions yet, but this will
-      // change once we add support for e.g. C#'s `??=`.
+      // Short-circuiting post-order expressions, i.e. short-circuiting
+      // compound assignments, e.g. C#'s `??=`, cannot propagate the value of
+      // the right-hand side to the parent, as the assignment must take place
+      // in-between, so propagating the value would imply splitting.
       shortCircuiting(parent, _) and
       not postOrInOrder(parent) and
       parent.(BinaryExpr).getRightOperand() = child
@@ -1243,7 +1274,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n1.isAfterValue(binexpr.getLeftOperand(), shortcircuitValue) and
           n2.isAfterValue(binexpr, shortcircuitValue)
           or
-          // short-circuiting operations with side-effects (e.g. `x &&= y`, `x?.Prop = y`) are in post-order:
+          // short-circuiting operations with side-effects (e.g. `x &&= y`) are in post-order:
           n1.isAfter(binexpr.getRightOperand()) and
           n2.isIn(binexpr)
           or

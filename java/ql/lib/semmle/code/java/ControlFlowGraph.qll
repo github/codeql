@@ -185,6 +185,24 @@ private module Ast implements AstSig<Location> {
 
   class LogicalNotExpr = LogNotExpr;
 
+  class Assignment = J::Assignment;
+
+  class AssignExpr = J::AssignExpr;
+
+  class CompoundAssignment = J::AssignOp;
+
+  class AssignLogicalAndExpr extends CompoundAssignment {
+    AssignLogicalAndExpr() { none() }
+  }
+
+  class AssignLogicalOrExpr extends CompoundAssignment {
+    AssignLogicalOrExpr() { none() }
+  }
+
+  class AssignNullCoalescingExpr extends CompoundAssignment {
+    AssignNullCoalescingExpr() { none() }
+  }
+
   final private class FinalBooleanLiteral = J::BooleanLiteral;
 
   class BooleanLiteral extends FinalBooleanLiteral {
