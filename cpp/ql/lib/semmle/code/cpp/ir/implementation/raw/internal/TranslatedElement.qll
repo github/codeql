@@ -775,6 +775,16 @@ newtype TTranslatedElement =
       position = -1
     )
   } or
+  // The initialization of a field via a default member initializer.
+  TTranslatedDefaultFieldInitialization(Expr ast, Field field) {
+    exists(ConstructorFieldInit init |
+      not ignoreExpr(init) and
+      ast = init and
+      field = init.getTarget() and
+      not exists(init.getExpr()) and
+      exists(field.getInitializer())
+    )
+  } or
   // The value initialization of a field due to an omitted member of an
   // initializer list.
   TTranslatedFieldValueInitialization(Expr ast, Field field) {
