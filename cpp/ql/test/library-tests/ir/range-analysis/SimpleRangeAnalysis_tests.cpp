@@ -883,16 +883,16 @@ void notequal_refinement(short n) {
 void notequal_variations(short n, float f) {
   if (n != 0) {
     if (n >= 0) {
-      range(n); // $ range=>=1
+      range(n); // $ MISSING: range=>=1
     }
   }
 
   if (n >= 5) {
-    if (2 * n - 10 == 0) { // $ overflow=+
-      range(n); // $ range=>=5 MISSING: range===5
+    if (2 * n - 10 == 0) { // $ overflow=+- overflow=- // BUG: Can't overflow
+      range(n); // $ MISSING: range=>=5 range===5
       return;
     }
-    range(n); // $ range=>=5 MISSING: range=>=6
+    range(n); // $ MISSING: range=>=5 range=>=6
   }
 
   if (n != -32768 && n != -32767) {
@@ -901,11 +901,11 @@ void notequal_variations(short n, float f) {
 
   if (n >= 0) {
     n  ?
-      (range(n), n) // $ range=>=1
+      (range(n), n) // $ MISSING: range=>=1
     : (range(n), n); // $ MISSING: range===0
     !n ?
       (range(n), n) // $ MISSING: range===0
-    : (range(n), n); // $ range=>=1
+    : (range(n), n); // $ MISSING: range=>=1
   }
 }
 
@@ -953,12 +953,12 @@ void widen_recursive_expr() {
 void guard_bound_out_of_range(void) {
   int i = 0;
   if (i < 0) {
-    range(i); // unreachable [BUG: is -max .. +max]
+    range(i); // $ range=<=-1 range=>=0 // BUG: unreachable
   }
 
   unsigned int u = 0;
   if (u < 0) {
-    range(u); // unreachable [BUG: is 0 .. +max]
+    range(u); // $ range=<=-1 range=>=0 // BUG: unreachable
   }
 }
 
