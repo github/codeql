@@ -96,13 +96,13 @@ edges
 | main.rs:130:18:130:38 | MacroExpr | main.rs:130:9:130:16 | ...::_print | provenance | MaD:3 Sink:MaD:3 |
 | main.rs:131:19:131:49 | MacroExpr | main.rs:131:9:131:17 | ...::_eprint | provenance | MaD:2 Sink:MaD:2 |
 | main.rs:140:32:140:59 | ...: Option::<...> | main.rs:141:22:141:27 | o_path | provenance |  |
-| main.rs:141:13:141:18 | m_path | main.rs:143:26:143:31 | m_path | provenance |  |
-| main.rs:141:22:141:27 | o_path | main.rs:141:22:141:38 | o_path.map(...) | provenance | MaD:14 |
+| main.rs:141:13:141:18 | m_path [Some] | main.rs:143:26:143:31 | m_path [Some] | provenance |  |
+| main.rs:141:22:141:27 | o_path | main.rs:141:22:141:38 | o_path.map(...) [Some] | provenance | MaD:14 |
 | main.rs:141:22:141:27 | o_path | main.rs:141:34:141:34 | ... | provenance | MaD:14 |
-| main.rs:141:22:141:38 | o_path.map(...) | main.rs:141:13:141:18 | m_path | provenance |  |
+| main.rs:141:22:141:38 | o_path.map(...) [Some] | main.rs:141:13:141:18 | m_path [Some] | provenance |  |
 | main.rs:141:34:141:34 | ... | main.rs:141:37:141:37 | x | provenance |  |
 | main.rs:143:18:143:40 | MacroExpr | main.rs:143:9:143:16 | ...::_print | provenance | MaD:3 Sink:MaD:3 |
-| main.rs:143:26:143:31 | m_path | main.rs:143:26:143:40 | m_path.unwrap() | provenance | MaD:15 |
+| main.rs:143:26:143:31 | m_path [Some] | main.rs:143:26:143:40 | m_path.unwrap() | provenance | MaD:15 |
 | main.rs:143:26:143:40 | m_path.unwrap() | main.rs:143:18:143:40 | MacroExpr | provenance |  |
 | main.rs:150:28:150:30 | get | main.rs:140:32:140:59 | ...: Option::<...> | provenance | Src:MaD:4  |
 models
@@ -119,7 +119,7 @@ models
 | 11 | Summary: <_ as core::iter::traits::iterator::Iterator>::nth; Argument[self].Reference.Element; ReturnValue.Field[core::option::Option::Some(0)]; value |
 | 12 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
 | 13 | Summary: <alloc::vec::Vec as core::ops::deref::Deref>::deref; Argument[self].Reference.Element; ReturnValue.Reference.Element; value |
-| 14 | Summary: <core::option::Option>::map; Argument[self]; Argument[0].Parameter[0]; taint |
+| 14 | Summary: <core::option::Option>::map; Argument[self].Field[core::option::Option::Some(0)]; Argument[0].Parameter[0]; value |
 | 15 | Summary: <core::option::Option>::unwrap; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 16 | Summary: <core::option::Option>::unwrap_or; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
 | 17 | Summary: <core::option::Option>::unwrap_or_default; Argument[self].Field[core::option::Option::Some(0)]; ReturnValue; value |
@@ -211,15 +211,15 @@ nodes
 | main.rs:131:9:131:17 | ...::_eprint | semmle.label | ...::_eprint |
 | main.rs:131:19:131:49 | MacroExpr | semmle.label | MacroExpr |
 | main.rs:140:32:140:59 | ...: Option::<...> | semmle.label | ...: Option::<...> |
-| main.rs:141:13:141:18 | m_path | semmle.label | m_path |
+| main.rs:141:13:141:18 | m_path [Some] | semmle.label | m_path [Some] |
 | main.rs:141:22:141:27 | o_path | semmle.label | o_path |
-| main.rs:141:22:141:38 | o_path.map(...) | semmle.label | o_path.map(...) |
+| main.rs:141:22:141:38 | o_path.map(...) [Some] | semmle.label | o_path.map(...) [Some] |
 | main.rs:141:34:141:34 | ... | semmle.label | ... |
 | main.rs:141:37:141:37 | x | semmle.label | x |
 | main.rs:143:9:143:16 | ...::_print | semmle.label | ...::_print |
 | main.rs:143:18:143:40 | MacroExpr | semmle.label | MacroExpr |
-| main.rs:143:26:143:31 | m_path | semmle.label | m_path |
+| main.rs:143:26:143:31 | m_path [Some] | semmle.label | m_path [Some] |
 | main.rs:143:26:143:40 | m_path.unwrap() | semmle.label | m_path.unwrap() |
 | main.rs:150:28:150:30 | get | semmle.label | get |
 subpaths
-| main.rs:141:22:141:27 | o_path | main.rs:141:34:141:34 | ... | main.rs:141:37:141:37 | x | main.rs:141:22:141:38 | o_path.map(...) |
+| main.rs:141:22:141:27 | o_path | main.rs:141:34:141:34 | ... | main.rs:141:37:141:37 | x | main.rs:141:22:141:38 | o_path.map(...) [Some] |
