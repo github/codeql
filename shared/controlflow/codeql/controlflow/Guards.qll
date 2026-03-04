@@ -641,6 +641,9 @@ module Make<
     ) {
       exists(GuardValue dv, SsaExplicitWrite inp |
         guardControlsPhiBranch(guard, v, phi, inp) and
+        // The `forall` below implies that there's only one such `inp` guarded by `guard == v`,
+        // but checking this upfront improves performance of the `forall` check.
+        1 = strictcount(SsaDefinition inp0 | guardControlsPhiBranch(guard, v, phi, inp0)) and
         inp.getValue() = input and
         dv = v.getDualValue() and
         forall(SsaDefinition other | phi.hasInputFromBlock(other, _) and other != inp |
