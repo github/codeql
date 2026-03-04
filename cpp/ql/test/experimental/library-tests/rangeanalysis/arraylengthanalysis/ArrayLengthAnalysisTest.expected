@@ -1,4 +1,4 @@
-| test.cpp:15:8:15:11 | Load: aptr | VNLength(InitializeParameter: count) | 0 | ZeroOffset | 0 |
+| test.cpp:15:8:15:11 | Load: aptr | VNLength(Load: count) | 0 | ZeroOffset | 0 |
 | test.cpp:19:8:19:8 | Load: a | VNLength(Load: count) | 0 | ZeroOffset | 0 |
 | test.cpp:21:8:21:8 | Load: a | VNLength(Load: count) | -1 | ZeroOffset | 0 |
 | test.cpp:23:8:23:8 | Load: a | VNLength(Load: count) | 1 | ZeroOffset | 0 |
