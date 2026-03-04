@@ -631,7 +631,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         private newtype TSummaryCtx =
           TSummaryCtxNone() or
-          TSummaryCtxSome(ParamNd p, Typ t, Ap ap, TypOption stored, Boolean mustReturn) {
+          TSummaryCtxSome(ParamNd p, Typ t, Ap ap, TypOption stored, boolean mustReturn) {
             fwdFlowInFlowThrough(p, _, t, ap, stored, mustReturn)
           } or
           TSummaryCtxSource(Boolean mustEscape)
@@ -1019,9 +1019,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private predicate fwdFlowInFlowThrough(
           ParamNd p, CcCall innercc, Typ t, Ap ap, TypOption stored, boolean mustReturn
         ) {
-          exists(SummaryCtx outerSummaryCtx |
-            FwdFlowInThrough::fwdFlowIn(_, _, _, p, _, innercc, outerSummaryCtx, t, ap, stored, _) and
-            outerSummaryCtx.isValidForFlowThrough(mustReturn)
+          exists(SummaryCtx summaryCtx |
+            FwdFlowInThrough::fwdFlowIn(_, _, _, p, _, innercc, summaryCtx, t, ap, stored, _) and
+            summaryCtx.isValidForFlowThrough(mustReturn)
           )
         }
 

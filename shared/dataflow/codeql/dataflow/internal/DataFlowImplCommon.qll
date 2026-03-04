@@ -47,11 +47,12 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    newtype TFlowFeature =
+    private newtype TFlowFeature =
       TFeatureHasSourceCallContext() or
       TFeatureHasSinkCallContext() or
       TFeatureEqualSourceSinkCallContext() or
-      TFeatureEscapesSourceCallContext(Boolean strict)
+      TFeatureEscapesSourceCallContext() or
+      TFeatureEscapesSourceCallContextOrEqualSourceSinkCallContext()
 
     /** A flow configuration feature for use in `Configuration::getAFeature()`. */
     class FlowFeature extends TFlowFeature {
@@ -89,22 +90,16 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      * the sink.
      */
     class FeatureEscapesSourceCallContext extends FlowFeature, TFeatureEscapesSourceCallContext {
-      FeatureEscapesSourceCallContext() { this = TFeatureEscapesSourceCallContext(true) }
-
       override string toString() { result = "FeatureEscapesSourceCallContext" }
     }
 
     /**
-     * A flow configuration feature that is the disjuction of `FeatureEscapesSourceCallContext`
+     * A flow configuration feature that is the disjunction of `FeatureEscapesSourceCallContext`
      * and `FeatureEqualSourceSinkCallContext`.
      */
     class FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext extends FlowFeature,
-      TFeatureEscapesSourceCallContext
+      TFeatureEscapesSourceCallContextOrEqualSourceSinkCallContext
     {
-      FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext() {
-        this = TFeatureEscapesSourceCallContext(false)
-      }
-
       override string toString() {
         result = "FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext"
       }

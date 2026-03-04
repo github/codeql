@@ -64,7 +64,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
     predicate hasSourceCallCtx();
 
-    predicate hasFeatureEscapesSourceCallContext(boolean nonEmpty);
+    predicate hasFeatureEscapesSourceCallContext(boolean strict);
 
     predicate hasSinkCallCtx();
 
@@ -1019,7 +1019,10 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       }
 
       predicate hasFeatureEscapesSourceCallContext(boolean strict) {
-        Config::getAFeature() = TFeatureEscapesSourceCallContext(strict)
+        Config::getAFeature() instanceof FeatureEscapesSourceCallContext and strict = true
+        or
+        Config::getAFeature() instanceof FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext and
+        strict = false
       }
 
       predicate hasSinkCallCtx() {
