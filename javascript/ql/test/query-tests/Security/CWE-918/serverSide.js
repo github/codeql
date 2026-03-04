@@ -59,11 +59,11 @@ var server = http.createServer(async function(req, res) {
 
     var client = await CDP(options);
 	client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
-	
+
 	CDP(options).catch((ignored) => {}).then((client) => {
 		client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
 	})
-	
+
 	CDP(options, (client) => {
 		client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
 	});
@@ -127,15 +127,15 @@ var server2 = http.createServer(function(req, res) {
         url: tainted // $ Sink[js/request-forgery]
     }) // $ Alert[js/request-forgery]
 
-    var myUrl = `${something}/bla/${tainted}`; 
+    var myUrl = `${something}/bla/${tainted}`;
     axios.get(myUrl); // $ Alert[js/request-forgery]
 
-    var myEncodedUrl = `${something}/bla/${encodeURIComponent(tainted)}`; 
+    var myEncodedUrl = `${something}/bla/${encodeURIComponent(tainted)}`;
     axios.get(myEncodedUrl);
 })
 
 var server2 = http.createServer(function(req, res) {
-  const { URL } = require('url'); 
+  const { URL } = require('url');
   const input = req.query.url; // $Source[js/request-forgery]
   const target = new URL(input);
   axios.get(target.toString()); // $Alert[js/request-forgery]
@@ -146,3 +146,6 @@ var server2 = http.createServer(function(req, res) {
   const escapedUrl = escape(input);
   axios.get(escapedUrl); // $Alert[js/request-forgery]
 });
+
+const custom = require('testlib').getServerSource(); // $ Source[js/request-forgery]
+request(custom) // $ Alert[js/request-forgery];
