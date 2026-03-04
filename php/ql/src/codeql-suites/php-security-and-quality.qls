@@ -1,0 +1,4 @@
+- description: Security-and-quality queries for PHP
+- queries: .
+- apply: security-and-frozen-quality-selectors.yml
+  from: codeql/suite-helpers
