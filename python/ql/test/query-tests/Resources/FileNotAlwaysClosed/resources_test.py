@@ -3,10 +3,10 @@
 def not_close1():
     f1 = open("filename") # $ Alert # not closed on exception
     f1.write("Error could occur")
-    f1.close() 
+    f1.close()
 
 def not_close2():
-    f2 = open("filename") # $ Alert 
+    f2 = open("filename") # $ Alert
 
 def closed3():
     f3 = open("filename")
@@ -46,7 +46,7 @@ def closed7():
 def not_closed8():
     f8 = None
     try:
-        f8 = open("filename") # $ MISSING:Alert # not closed on exception 
+        f8 = open("filename") # $ MISSING:Alert # not closed on exception
         f8.write("Error could occur")
     finally:
         if f8 is None: # We don't precisely consider this condition, so this result is MISSING. However, this seems uncommon.
@@ -88,7 +88,7 @@ def doesnt_raise(*args):
     pass
 
 def mostly_closed12():
-    f12 = open("filename") 
+    f12 = open("filename")
     try:
         f12.write("IOError could occur")
         f12.write("IOError could occur")
@@ -105,7 +105,7 @@ def opener_func2(name):
     return t1
 
 def not_closed13(name):
-    f13 = open(name) # $ Alert 
+    f13 = open(name) # $ Alert
     f13.write("Hello")
 
 def may_not_be_closed14(name):
@@ -120,7 +120,7 @@ def closer2(t3):
     closer1(t3)
 
 def closed15():
-    f15 = opener_func2() # $ SPURIOUS:Alert 
+    f15 = opener_func2() # $ SPURIOUS:Alert
     closer2(f15) # We don't detect that this call closes the file, so this result is SPURIOUS.
 
 
@@ -151,11 +151,11 @@ def not_closed17():
 #With statement will close the fp
 def closed18(path):
     try:
-        f18 = open(path) 
+        f18 = open(path)
     except IOError as ex:
         print(ex)
         raise ex
-    with f18: 
+    with f18:
         f18.read()
 
 class Closed19(object):
@@ -245,7 +245,7 @@ def not_closed22(path):
             f22.close()
 
 def not_closed23(path):
-    f23 = open(path, "w") # $ Alert 
+    f23 = open(path, "w") # $ Alert
     wr = FileWrapper(f23)
 
 def closed24(path):
@@ -253,11 +253,11 @@ def closed24(path):
     try:
         f24.write("hi")
     except:
-        pass 
+        pass
     f24.close()
 
 def closed25(path):
-    from django.http import FileResponse 
+    from django.http import FileResponse
     return FileResponse(open(path))
 
 import os
@@ -266,13 +266,13 @@ def closed26(path):
     os.close(fd)
 
 def not_closed27(path):
-    fd = os.open(path, "w") # $Alert # not closed on exception
+    fd = os.open(path, "w") # $ Alert # not closed on exception
     f27 = os.fdopen(fd, "w")
     f27.write("hi")
     f27.close()
 
 def closed28(path):
-    fd = os.open(path, os.O_WRONLY) 
+    fd = os.open(path, os.O_WRONLY)
     f28 = os.fdopen(fd, "w")
     try:
         f28.write("hi")
@@ -282,9 +282,9 @@ def closed28(path):
 def closed29(path):
     # Due to an approximation in CFG reachability for performance, it is not detected that the `write` call that may raise occurs after the file has already been closed.
     # We presume this case to be uncommon.
-    f28 = open(path) # $SPURIOUS:Alert # not closed on exception 
+    f28 = open(path) # $ SPURIOUS:Alert # not closed on exception
     f28.close()
-    f28.write("already closed") 
+    f28.write("already closed")
 
 # False positive in a previous implementation:
 
@@ -294,11 +294,11 @@ class NotWrapper:
         fp.close()
 
     def do_something(self):
-        pass 
+        pass
 
 def closed30(path):
     # Combination of approximations resulted in this FP:
-    # - NotWrapper is treated as a wrapper class as a file handle is passed to it 
+    # - NotWrapper is treated as a wrapper class as a file handle is passed to it
     # - thing.do_something() is treated as a call that can raise an exception while a file is open
     # - this call is treated as occurring after the open but not as being guarded by the with statement, as it is in the same basic block
     # - - this behavior has been changed fixing the FP
@@ -306,11 +306,11 @@ def closed30(path):
     with open(path) as fp: # No longer spurious alert here.
         thing = NotWrapper(fp)
 
-    thing.do_something() 
+    thing.do_something()
 
 
 def closed31(path):
-    with open(path) as fp: 
+    with open(path) as fp:
         data = fp.readline()
         data2 = fp.readline()
 
@@ -328,7 +328,7 @@ class Wrapper():
 def closed32(path):
     with open(path, "rb") as f: # No longer spurious alert here.
         wrap = Wrapper(f)
-        # This resulted in an FP in a previous implementation, 
+        # This resulted in an FP in a previous implementation,
         # due to a check that an operation is lexically contained within a `with` block (with `expr.getParent*()`)
         # not detecting this case.
         return list(wrap.read())

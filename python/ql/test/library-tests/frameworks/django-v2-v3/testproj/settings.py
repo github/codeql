@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-] # $CsrfProtectionSetting=false
+] # $ CsrfProtectionSetting=false
 
 ROOT_URLCONF = 'testproj.urls'
 
