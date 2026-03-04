@@ -9,3 +9,4 @@
 | RemoteFlowSource.cs:40:17:40:23 | access to parameter request | ASP.NET query string |
 | RemoteFlowSource.cs:45:17:45:23 | access to parameter request | ASP.NET query string |
 | RemoteFlowSource.cs:45:17:45:42 | access to property RawUrl | ASP.NET unvalidated request data |
+| RemoteFlowSource.cs:52:55:52:61 | [post] access to local variable segment | external |
