@@ -111,7 +111,7 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
 
 private ControlFlow::Nodes::ExprNode getALastEvalNode(ControlFlow::Nodes::ExprNode cfn) {
   exists(Expr e | any(LocalTaintExprStepConfiguration x).hasExprPath(_, result, e, cfn) |
-    e.(OperatorCall).getTarget() instanceof ImplicitConversionOperator // Should only be implicit operator calls.
+    e.(OperatorCall).getTarget() instanceof ImplicitConversionOperator
   )
 }
 
