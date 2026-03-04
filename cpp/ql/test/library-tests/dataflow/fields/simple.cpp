@@ -64,7 +64,7 @@ void single_field_test()
     A a;
     a.i = user_input();
     A a2 = a;
-    sink(a2.i); //$ ast,ir
+    sink(a2.i); // $ ast,ir
 }
 
 struct C {
@@ -81,7 +81,7 @@ struct C2
 
     void m() {
         f2.f1 = user_input();
-        sink(getf2f1()); //$ ast,ir
+        sink(getf2f1()); // $ ast,ir
     }
 };
 
@@ -91,7 +91,7 @@ void single_field_test_typedef(A_typedef a)
 {
     a.i = user_input();
     A_typedef a2 = a;
-    sink(a2.i); //$ ast,ir
+    sink(a2.i); // $ ast,ir
 }
 
 namespace TestAdditionalCallTargets {
