@@ -106,7 +106,7 @@ def test_list_comprehension():
 
 def test_list_comprehension_flow():
     x = [y for y in [SOURCE]]
-    SINK(x[0]) # $  flow="SOURCE, l:-1 -> x[0]"
+    SINK(x[0]) # $ flow="SOURCE, l:-1 -> x[0]"
 
 
 def test_list_comprehension_inflow():

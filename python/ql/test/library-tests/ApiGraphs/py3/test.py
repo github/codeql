@@ -8,7 +8,7 @@ x2 = m2.blah2 # $ use=moduleImport("a2").getMember("blah2")
 
 import a3.b3 as m3 # $ use=moduleImport("a3").getMember("b3")
 
-x3 = m3.blah3 # $  use=moduleImport("a3").getMember("b3").getMember("blah3")
+x3 = m3.blah3 # $ use=moduleImport("a3").getMember("b3").getMember("blah3")
 
 from a4.b4 import c4 as m4 # $ use=moduleImport("a4").getMember("b4").getMember("c4")
 
