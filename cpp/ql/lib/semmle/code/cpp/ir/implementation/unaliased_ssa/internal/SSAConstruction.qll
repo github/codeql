@@ -78,11 +78,6 @@ private module Cached {
   }
 
   cached
-  predicate hasChiNodeAfterUninitializedGroup(UninitializedGroupInstruction initGroup) {
-    hasChiNodeAfterUninitializedGroup(_, initGroup)
-  }
-
-  cached
   predicate hasUnreachedInstructionCached(IRFunction irFunc) {
     exists(OldIR::Instruction oldInstruction |
       irFunc = oldInstruction.getEnclosingIRFunction() and
@@ -191,13 +186,6 @@ private module Cached {
     exists(Instruction input | instruction = getChi(input) |
       Alias::getResultMemoryLocation(input).getVirtualVariable() instanceof
         Alias::AliasedVirtualVariable
-      or
-      // A chi following an `UninitializedGroupInstruction` only happens when the virtual
-      // variable of the grouped memory location is `{AllAliasedMemory}`.
-      exists(Alias::GroupedMemoryLocation gml |
-        input = uninitializedGroup(gml.getGroup()) and
-        gml.getVirtualVariable() instanceof Alias::AliasedVirtualVariable
-      )
     )
     or
     // Phi instructions track locations, and therefore a phi instruction is
@@ -459,9 +447,7 @@ private module Cached {
       instruction = getInitGroupInstruction(i, func) and
       kind instanceof GotoEdge
     |
-      if hasChiNodeAfterUninitializedGroup(_, instruction)
-      then result = getChi(instruction)
-      else result = getInitGroupInstruction(i + 1, func)
+      result = getInitGroupInstruction(i + 1, func)
     )
     or
     exists(int i, IRFunction func, UninitializedGroupInstruction initGroup |
@@ -657,8 +643,6 @@ private module Cached {
       instr = chiInstruction(primaryInstr) and result = vvar.getType()
     |
       hasChiNode(vvar, primaryInstr)
-      or
-      hasChiNodeAfterUninitializedGroup(vvar, primaryInstr)
     )
     or
     exists(Alias::VariableGroup vg |
@@ -768,16 +752,6 @@ private predicate hasChiNode(Alias::VirtualVariable vvar, OldInstruction def) {
     defLocation.getVirtualVariable() = vvar and
     // If the definition totally (or exactly) overlaps the virtual variable, then there's no need for a `Chi`
     // instruction.
-    Alias::getOverlap(defLocation, vvar) instanceof MayPartiallyOverlap
-  )
-}
-
-private predicate hasChiNodeAfterUninitializedGroup(
-  Alias::AliasedVirtualVariable vvar, UninitializedGroupInstruction initGroup
-) {
-  exists(Alias::GroupedMemoryLocation defLocation |
-    initGroup = uninitializedGroup(defLocation.getGroup()) and
-    defLocation.getVirtualVariable() = vvar and
     Alias::getOverlap(defLocation, vvar) instanceof MayPartiallyOverlap
   )
 }
@@ -996,31 +970,6 @@ module DefUse {
     hasDefinition(_, defLocation, defBlock, defOffset) and
     result = getPhi(defBlock, defLocation) and
     actualDefLocation = defLocation
-    or
-    exists(
-      Alias::VariableGroup vg, int index, UninitializedGroupInstruction initGroup,
-      Alias::GroupedMemoryLocation gml
-    |
-      // Add 3 to account for the function prologue:
-      // v1(void)    = EnterFunction
-      // m1(unknown) = AliasedDefinition
-      // m2(unknown) = InitializeNonLocal
-      index = 3 + vg.getInitializationOrder() and
-      not gml.isMayAccess() and
-      gml.isSome() and
-      gml.getGroup() = vg and
-      vg.getIRFunction().getEntryBlock() = defBlock and
-      initGroup = uninitializedGroup(vg) and
-      (defLocation = gml or defLocation = gml.getVirtualVariable())
-    |
-      result = initGroup and
-      defOffset = 2 * index and
-      actualDefLocation = defLocation
-      or
-      result = getChi(initGroup) and
-      defOffset = 2 * index + 1 and
-      actualDefLocation = defLocation.getVirtualVariable()
-    )
   }
 
   private ChiInstruction remapGetDefinitionOrChiInstruction(Instruction oldResult) {
@@ -1186,18 +1135,6 @@ module DefUse {
       if overlap instanceof MayPartiallyOverlap
       then offset = getChiOffset(index, block) // The use will be connected to the definition on the `Chi` instruction.
       else offset = getNonChiOffset(index, block) // The use will be connected to the definition on the original instruction.
-    )
-    or
-    exists(UninitializedGroupInstruction initGroup, int index, Overlap overlap, VariableGroup vg |
-      initGroup.getEnclosingIRFunction().getEntryBlock() = getNewBlock(block) and
-      vg = defLocation.(Alias::GroupedMemoryLocation).getGroup() and
-      // EnterFunction + AliasedDefinition + InitializeNonLocal + index
-      index = 3 + vg.getInitializationOrder() and
-      initGroup = uninitializedGroup(vg) and
-      overlap = Alias::getOverlap(defLocation, useLocation) and
-      if overlap instanceof MayPartiallyOverlap and hasChiNodeAfterUninitializedGroup(initGroup)
-      then offset = 2 * index + 1 // The use will be connected to the definition on the `Chi` instruction.
-      else offset = 2 * index // The use will be connected to the definition on the original instruction.
     )
   }
 
@@ -1411,8 +1348,6 @@ module Ssa {
   predicate hasPhiInstruction = Cached::hasPhiInstructionCached/2;
 
   predicate hasChiInstruction = Cached::hasChiInstructionCached/1;
-
-  predicate hasChiNodeAfterUninitializedGroup = Cached::hasChiNodeAfterUninitializedGroup/1;
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 

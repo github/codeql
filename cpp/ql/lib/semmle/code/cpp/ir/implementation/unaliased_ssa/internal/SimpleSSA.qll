@@ -91,26 +91,6 @@ abstract class VariableGroup extends Unit {
   abstract int getInitializationOrder();
 }
 
-class GroupedMemoryLocation extends MemoryLocation {
-  VariableGroup vg;
-
-  GroupedMemoryLocation() { none() }
-
-  /** Gets an allocation of this memory location. */
-  Allocation getAnAllocation() { result = vg.getAnAllocation() }
-
-  /** Gets the set of allocations associated with this memory location. */
-  VariableGroup getGroup() { result = vg }
-
-  predicate isMayAccess() { none() }
-
-  /** Holds if this memory location represents all the enclosing allocations. */
-  predicate isAll() { none() }
-
-  /** Holds if this memory location represents one or more of the enclosing allocations. */
-  predicate isSome() { none() }
-}
-
 /**
  * Represents a set of `MemoryLocation`s that cannot overlap with
  * `MemoryLocation`s outside of the set. The `VirtualVariable` will be
