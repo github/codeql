@@ -3,7 +3,7 @@
  * @description A table of summary statistics about a database.
  * @kind metric
  * @id rust/summary/summary-statistics
- * @tags summary
+ * @tags summary telemetry
  */
 
 import rust

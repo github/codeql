@@ -1,4 +1,6 @@
 /** Provides logic related to captured variables. */
+overlay[local]
+module;
 
 private import python
 private import DataFlowPublic
@@ -113,6 +115,12 @@ private Flow::ClosureNode asClosureNode(Node n) {
   exists(Comp comp | n = TSynthCompCapturedVariablesArgumentNode(comp) |
     result.(Flow::ExprNode).getExpr().getNode() = comp
   )
+  or
+  // For captured variable argument nodes (and their post-update variants), we use the closure node
+  // for the underlying node.
+  result = asClosureNode(n.(SynthCapturedVariablesArgumentNode).getUnderlyingNode())
+  or
+  result = asClosureNode(n.(SynthCapturedVariablesArgumentPostUpdateNode).getUnderlyingNode())
   or
   // TODO: Should the `Comp`s above be excluded here?
   result.(Flow::ExprNode).getExpr() = n.(CfgNode).getNode()

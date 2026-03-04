@@ -9,7 +9,7 @@ class XQueryParserCall extends MethodCall {
       this.getMethod() = m and
       m.getDeclaringType()
           .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQConnection") and
+          .hasQualifiedName(javaxOrJakarta() + ".xml.xquery", "XQConnection") and
       m.hasName("prepareExpression")
     )
   }
@@ -29,7 +29,7 @@ class XQueryPreparedExecuteCall extends MethodCall {
       m.hasName("executeQuery") and
       m.getDeclaringType()
           .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQPreparedExpression")
+          .hasQualifiedName(javaxOrJakarta() + ".xml.xquery", "XQPreparedExpression")
     )
   }
 
@@ -45,7 +45,7 @@ class XQueryExecuteCall extends MethodCall {
       m.hasName("executeQuery") and
       m.getDeclaringType()
           .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQExpression")
+          .hasQualifiedName(javaxOrJakarta() + ".xml.xquery", "XQExpression")
     )
   }
 
@@ -61,7 +61,7 @@ class XQueryExecuteCommandCall extends MethodCall {
       m.hasName("executeCommand") and
       m.getDeclaringType()
           .getASourceSupertype*()
-          .hasQualifiedName("javax.xml.xquery", "XQExpression")
+          .hasQualifiedName(javaxOrJakarta() + ".xml.xquery", "XQExpression")
     )
   }
 

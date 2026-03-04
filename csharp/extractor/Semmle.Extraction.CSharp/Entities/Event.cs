@@ -30,10 +30,10 @@ namespace Semmle.Extraction.CSharp.Entities
             var adder = Symbol.AddMethod;
             var remover = Symbol.RemoveMethod;
 
-            if (!(adder is null))
+            if (adder is not null)
                 Method.Create(Context, adder);
 
-            if (!(remover is null))
+            if (remover is not null)
                 Method.Create(Context, remover);
 
             PopulateModifiers(trapFile);
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol.GetBodyDeclaringSymbol());
 
         private class EventFactory : CachedEntityFactory<IEventSymbol, Event>
         {

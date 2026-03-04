@@ -597,6 +597,12 @@ module Make<
   module Logic<LogicInputSig LogicInput> {
     private import LogicInput
 
+    bindingset[bb1, bb2]
+    pragma[inline_late]
+    private predicate strictlyDominatesCheck(BasicBlock bb1, BasicBlock bb2) {
+      bb1.strictlyDominates(bb2)
+    }
+
     /**
      * Holds if `guard` evaluating to `v` directly controls `phi` taking the value
      * `inp`. This means that `guard` evaluating to `v` must control all the input
@@ -614,7 +620,7 @@ module Make<
       exists(BasicBlock bbPhi |
         phi.hasInputFromBlock(inp, _) and
         phi.getBasicBlock() = bbPhi and
-        guard.getBasicBlock().strictlyDominates(bbPhi) and
+        strictlyDominatesCheck(guard.getBasicBlock(), bbPhi) and
         not guard.directlyValueControls(bbPhi, _) and
         forex(BasicBlock bbInput | phi.hasInputFromBlock(inp, bbInput) |
           guard.directlyValueControls(bbInput, v) or

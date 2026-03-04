@@ -295,7 +295,7 @@ module JCAModel {
 
   class CipherGetInstanceCall extends MethodCall {
     CipherGetInstanceCall() {
-      this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "getInstance")
+      this.getCallee().hasQualifiedName(javaxOrJakarta() + ".crypto", "Cipher", "getInstance")
     }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }
@@ -307,7 +307,8 @@ module JCAModel {
   private class CipherOperationCall extends MethodCall {
     CipherOperationCall() {
       this.getMethod()
-          .hasQualifiedName("javax.crypto", "Cipher", ["update", "doFinal", "wrap", "unwrap"])
+          .hasQualifiedName(javaxOrJakarta() + ".crypto", "Cipher",
+            ["update", "doFinal", "wrap", "unwrap"])
     }
 
     predicate isIntermediate() { this.getMethod().getName() = "update" }
@@ -474,7 +475,9 @@ module JCAModel {
    * An access to the `javax.crypto.Cipher` class.
    */
   private class CipherAccess extends TypeAccess {
-    CipherAccess() { this.getType().(Class).hasQualifiedName("javax.crypto", "Cipher") }
+    CipherAccess() {
+      this.getType().(Class).hasQualifiedName(javaxOrJakarta() + ".crypto", "Cipher")
+    }
   }
 
   /**
@@ -708,7 +711,9 @@ module JCAModel {
   // and through setter methods
   class IvParameterSpecInstance extends NonceParameterInstantiation {
     IvParameterSpecInstance() {
-      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "IvParameterSpec")
+      super
+          .getConstructedType()
+          .hasQualifiedName(javaxOrJakarta() + ".crypto.spec", "IvParameterSpec")
     }
 
     override DataFlow::Node getInputNode() { result.asExpr() = super.getArgument(0) }
@@ -717,7 +722,9 @@ module JCAModel {
   // TODO: this also specifies the tag length for GCM
   class GCMParameterSpecInstance extends NonceParameterInstantiation {
     GCMParameterSpecInstance() {
-      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "GCMParameterSpec")
+      super
+          .getConstructedType()
+          .hasQualifiedName(javaxOrJakarta() + ".crypto.spec", "GCMParameterSpec")
     }
 
     override DataFlow::Node getInputNode() { result.asExpr() = super.getArgument(1) }
@@ -725,7 +732,8 @@ module JCAModel {
 
   class IvParameterSpecGetIvCall extends MethodCall {
     IvParameterSpecGetIvCall() {
-      this.getMethod().hasQualifiedName("javax.crypto.spec", "IvParameterSpec", "getIV")
+      this.getMethod()
+          .hasQualifiedName(javaxOrJakarta() + ".crypto.spec", "IvParameterSpec", "getIV")
     }
   }
 
@@ -797,7 +805,9 @@ module JCAModel {
   }
 
   class CipherInitCall extends MethodCall {
-    CipherInitCall() { this.getCallee().hasQualifiedName("javax.crypto", "Cipher", "init") }
+    CipherInitCall() {
+      this.getCallee().hasQualifiedName(javaxOrJakarta() + ".crypto", "Cipher", "init")
+    }
 
     /**
      * Returns the mode argument to the `init` method
@@ -966,7 +976,9 @@ module JCAModel {
 
   class DHGenParameterSpecInstance extends KeyGeneratorParameterSpecClassInstanceExpr {
     DHGenParameterSpecInstance() {
-      super.getConstructedType().hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec")
+      super
+          .getConstructedType()
+          .hasQualifiedName(javaxOrJakarta() + ".crypto.spec", "DHGenParameterSpec")
     }
 
     Expr getPrimeSizeArg() { result = this.getArgument(0) }
@@ -1067,7 +1079,7 @@ module JCAModel {
   //TODO: Link getAlgorithm from KeyPairGenerator to algorithm instances or AVCs? High priority.
   class KeyGeneratorGetInstanceCall extends MethodCall {
     KeyGeneratorGetInstanceCall() {
-      this.getCallee().hasQualifiedName("javax.crypto", "KeyGenerator", "getInstance")
+      this.getCallee().hasQualifiedName(javaxOrJakarta() + ".crypto", "KeyGenerator", "getInstance")
       or
       this.getCallee().hasQualifiedName("java.security", "KeyPairGenerator", "getInstance")
     }
@@ -1082,7 +1094,8 @@ module JCAModel {
       this.getCallee().hasQualifiedName("java.security", "KeyPairGenerator", "initialize") and
       keyType = Crypto::TAsymmetricKeyType()
       or
-      this.getCallee().hasQualifiedName("javax.crypto", "KeyGenerator", ["init", "initialize"]) and
+      this.getCallee()
+          .hasQualifiedName(javaxOrJakarta() + ".crypto", "KeyGenerator", ["init", "initialize"]) and
       keyType = Crypto::TSymmetricKeyType()
     }
 
@@ -1111,7 +1124,7 @@ module JCAModel {
     Crypto::KeyArtifactType type;
 
     KeyGeneratorGenerateCall() {
-      this.getCallee().hasQualifiedName("javax.crypto", "KeyGenerator", "generateKey") and
+      this.getCallee().hasQualifiedName(javaxOrJakarta() + ".crypto", "KeyGenerator", "generateKey") and
       type instanceof Crypto::TSymmetricKeyType
       or
       this.getCallee()
@@ -1176,7 +1189,7 @@ module JCAModel {
   class KeySpecInstantiation extends ClassInstanceExpr {
     KeySpecInstantiation() {
       this.getConstructedType()
-          .hasQualifiedName("javax.crypto.spec",
+          .hasQualifiedName(javaxOrJakarta() + ".crypto.spec",
             ["PBEKeySpec", "SecretKeySpec", "PBEKeySpec", "DESedeKeySpec"])
     }
 
@@ -1227,7 +1240,8 @@ module JCAModel {
 
   class SecretKeyFactoryGetInstanceCall extends MethodCall {
     SecretKeyFactoryGetInstanceCall() {
-      this.getCallee().hasQualifiedName("javax.crypto", "SecretKeyFactory", "getInstance")
+      this.getCallee()
+          .hasQualifiedName(javaxOrJakarta() + ".crypto", "SecretKeyFactory", "getInstance")
     }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }
@@ -1235,7 +1249,8 @@ module JCAModel {
 
   class SecretKeyFactoryGenerateSecretCall extends MethodCall {
     SecretKeyFactoryGenerateSecretCall() {
-      this.getCallee().hasQualifiedName("javax.crypto", "SecretKeyFactory", "generateSecret")
+      this.getCallee()
+          .hasQualifiedName(javaxOrJakarta() + ".crypto", "SecretKeyFactory", "generateSecret")
     }
 
     Expr getKeySpecArg() { result = this.getArgument(0) }
@@ -1430,7 +1445,7 @@ module JCAModel {
 
   class KeyAgreementInitCall extends MethodCall {
     KeyAgreementInitCall() {
-      this.getCallee().hasQualifiedName("javax.crypto", "KeyAgreement", "init")
+      this.getCallee().hasQualifiedName(javaxOrJakarta() + ".crypto", "KeyAgreement", "init")
     }
 
     Expr getServerKeyArg() { result = this.getArgument(0) }
@@ -1438,7 +1453,7 @@ module JCAModel {
 
   class KeyAgreementGetInstanceCall extends MethodCall {
     KeyAgreementGetInstanceCall() {
-      this.getCallee().hasQualifiedName("javax.crypto", "KeyAgreement", "getInstance")
+      this.getCallee().hasQualifiedName(javaxOrJakarta() + ".crypto", "KeyAgreement", "getInstance")
     }
 
     Expr getAlgorithmArg() { result = super.getArgument(0) }
@@ -1482,7 +1497,8 @@ module JCAModel {
   class KeyAgreementCall extends MethodCall {
     KeyAgreementCall() {
       this.getCallee()
-          .hasQualifiedName("javax.crypto", "KeyAgreement", ["generateSecret", "doPhase"])
+          .hasQualifiedName(javaxOrJakarta() + ".crypto", "KeyAgreement",
+            ["generateSecret", "doPhase"])
     }
 
     predicate isIntermediate() { this.getCallee().getName() = "doPhase" }
@@ -1647,7 +1663,9 @@ module JCAModel {
   }
 
   class MacGetInstanceCall extends MethodCall {
-    MacGetInstanceCall() { this.getCallee().hasQualifiedName("javax.crypto", "Mac", "getInstance") }
+    MacGetInstanceCall() {
+      this.getCallee().hasQualifiedName(javaxOrJakarta() + ".crypto", "Mac", "getInstance")
+    }
 
     Expr getAlgorithmArg() { result = this.getArgument(0) }
 
@@ -1663,7 +1681,7 @@ module JCAModel {
   }
 
   class MacInitCall extends MethodCall {
-    MacInitCall() { this.getCallee().hasQualifiedName("javax.crypto", "Mac", "init") }
+    MacInitCall() { this.getCallee().hasQualifiedName(javaxOrJakarta() + ".crypto", "Mac", "init") }
 
     Expr getKeyArg() {
       result = this.getArgument(0) and this.getMethod().getParameterType(0).hasName("Key")
@@ -1691,7 +1709,7 @@ module JCAModel {
     Expr output;
 
     MacOperationCall() {
-      super.getMethod().getDeclaringType().hasQualifiedName("javax.crypto", "Mac") and
+      super.getMethod().getDeclaringType().hasQualifiedName(javaxOrJakarta() + ".crypto", "Mac") and
       (
         super.getMethod().hasStringSignature(["doFinal()", "doFinal(byte[])"]) and this = output
         or

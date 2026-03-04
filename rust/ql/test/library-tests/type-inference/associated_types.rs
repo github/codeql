@@ -7,7 +7,7 @@ impl<A> Wrapper<A> {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Copy)]
 struct S;
 
 #[derive(Debug, Default)]
@@ -260,13 +260,65 @@ mod type_param_access_associated_type {
         )
     }
 
+    // Associated type accessed on a type parameter of an impl block
+    impl<TI> Wrapper<TI>
+    where
+        TI: GetSet,
+    {
+        fn extract(&self) -> TI::Output {
+            self.0.get() // $ fieldof=Wrapper target=GetSet::get
+        }
+    }
+
+    // Associated type accessed on another associated type
+
+    fn tp_nested_assoc_type<T: GetSet>(thing: T) -> <<T as GetSet>::Output as GetSet>::Output
+    where
+        <T as GetSet>::Output: GetSet,
+    {
+        thing.get().get() // $ target=GetSet::get target=GetSet::get
+    }
+
+    pub trait GetSetWrap {
+        type Assoc: GetSet;
+
+        // GetSetWrap::get_wrap
+        fn get_wrap(&self) -> Self::Assoc;
+    }
+
+    impl GetSetWrap for S {
+        type Assoc = S;
+
+        // S::get_wrap
+        fn get_wrap(&self) -> Self::Assoc {
+            S
+        }
+    }
+
+    // Nested associated type accessed on a type parameter of an impl block
+    impl<TI> Wrapper<TI>
+    where
+        TI: GetSetWrap,
+    {
+        fn extract2(&self) -> <<TI as GetSetWrap>::Assoc as GetSet>::Output {
+            self.0.get_wrap().get() // $ fieldof=Wrapper target=GetSetWrap::get_wrap $ MISSING: target=GetSet::get
+        }
+    }
+
     pub fn test() {
-        let _o1 = tp_with_as(S); // $ target=tp_with_as MISSING: type=_o1:S3
-        let _o2 = tp_without_as(S); // $ target=tp_without_as MISSING: type=_o2:S3
+        let _o1 = tp_with_as(S); // $ target=tp_with_as type=_o1:S3
+        let _o2 = tp_without_as(S); // $ target=tp_without_as type=_o2:S3
         let (
             _o3, // $ MISSING: type=_o3:S3
-            _o4, // $ MISSING: type=_o4:bool
+            _o4, // $ type=_o4:bool
         ) = tp_assoc_from_supertrait(S); // $ target=tp_assoc_from_supertrait
+
+        let _o5 = tp_nested_assoc_type(Wrapper(S)); // $ target=tp_nested_assoc_type MISSING: type=_o5:S3
+
+        let w = Wrapper(S);
+        let _extracted = w.extract(); // $ target=extract type=_extracted:S3
+
+        let _extracted2 = w.extract2(); // $ target=extract2 MISSING: type=_extracted2:S3
     }
 }
 

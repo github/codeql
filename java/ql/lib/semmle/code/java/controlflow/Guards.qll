@@ -10,6 +10,7 @@ private import semmle.code.java.controlflow.Dominance
 private import semmle.code.java.controlflow.internal.Preconditions
 private import semmle.code.java.controlflow.internal.SwitchCases
 private import codeql.controlflow.Guards as SharedGuards
+private import codeql.controlflow.SuccessorType
 
 /**
  * A basic block that terminates in a condition, splitting the subsequent control flow.
@@ -73,70 +74,6 @@ class ConditionBlock extends BasicBlock {
       succ.dominates(controlled)
     )
   }
-}
-
-// Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
-bindingset[switch, i]
-pragma[inline_late]
-private predicate isNthCaseOf(SwitchBlock switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
-
-/**
- * Gets a switch case >= pred, up to but not including `pred`'s successor pattern case,
- * where `pred` is declared on `switch`.
- */
-private SwitchCase getACaseUpToNextPattern(PatternCase pred, SwitchBlock switch) {
-  // Note we do include `case null, default` (as well as plain old `default`) here.
-  not result.(ConstCase).getValue(_) instanceof NullLiteral and
-  exists(int maxCaseIndex |
-    switch = pred.getParent() and
-    if exists(getNextPatternCase(pred))
-    then maxCaseIndex = getNextPatternCase(pred).getCaseIndex() - 1
-    else maxCaseIndex = lastCaseIndex(switch)
-  |
-    isNthCaseOf(switch, result, [pred.getCaseIndex() .. maxCaseIndex])
-  )
-}
-
-/**
- * Gets the closest pattern case preceding `case`, including `case` itself, if any.
- */
-private PatternCase getClosestPrecedingPatternCase(SwitchCase case) {
-  case = getACaseUpToNextPattern(result, _)
-}
-
-/**
- * Holds if `pred` is a control-flow predecessor of switch case `sc` that is not a
- * fall-through from a previous case.
- *
- * For classic switches that means flow from the selector expression; for switches
- * involving pattern cases it can also mean flow from a previous pattern case's type
- * test or guard failing and proceeding to then consider subsequent cases.
- */
-private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pred) {
-  pred = sc.getControlFlowNode().getAPredecessor() and
-  (
-    pred.asExpr().getParent*() = sc.getSelectorExpr()
-    or
-    // Ambiguous: in the case of `case String _ when x: case "SomeConstant":`, the guard `x`
-    // passing edge will fall through into the constant case, and the guard failing edge
-    // will test if the selector equals `"SomeConstant"` and if so branch to the same
-    // case statement. Therefore don't label this a non-fall-through predecessor.
-    exists(PatternCase previousPatternCase |
-      previousPatternCase = getClosestPrecedingPatternCase(sc)
-    |
-      pred.asExpr().getParent*() = previousPatternCase.getGuard() and
-      // Check there is any statement in between the previous pattern case and this one,
-      // or the case is a rule, so there is no chance of a fall-through.
-      (
-        previousPatternCase.isRule() or
-        not previousPatternCase.getIndex() = sc.getIndex() - 1
-      )
-    )
-    or
-    // Unambigious: on the test-passing edge there must be at least one intervening
-    // declaration node, including anonymous `_` declarations.
-    pred.asStmt() = getClosestPrecedingPatternCase(sc)
-  )
 }
 
 private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
@@ -231,29 +168,14 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
       )
     }
 
-    private predicate hasPatternCaseMatchEdge(BasicBlock bb1, BasicBlock bb2, boolean isMatch) {
-      exists(ConditionNode patterncase |
-        this instanceof PatternCase and
-        patterncase = super.getControlFlowNode() and
-        bb1.getLastNode() = patterncase and
-        bb2.getFirstNode() = patterncase.getABranchSuccessor(isMatch)
-      )
-    }
-
     predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
-      exists(ControlFlowNode pred |
-        // Pattern cases are handled as ConditionBlocks.
-        not this instanceof PatternCase and
-        bb2.getFirstNode() = super.getControlFlowNode() and
-        isNonFallThroughPredecessor(this, pred) and
-        bb1 = pred.getBasicBlock()
-      )
-      or
-      this.hasPatternCaseMatchEdge(bb1, bb2, true)
+      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = true)) = bb2 and
+      bb1.getLastNode() = super.getControlFlowNode()
     }
 
     predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
-      this.hasPatternCaseMatchEdge(bb1, bb2, false)
+      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = false)) = bb2 and
+      bb1.getLastNode() = super.getControlFlowNode()
     }
   }
 

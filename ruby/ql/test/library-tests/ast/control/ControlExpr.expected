@@ -28,6 +28,12 @@
 | conditionals.rb:58:5:58:25 | ... ? ... : ... | TernaryIfExpr |
 | conditionals.rb:61:1:64:3 | if ... | IfExpr |
 | conditionals.rb:67:1:70:3 | if ... | IfExpr |
+| conditionals.rb:73:1:75:3 | if ... | IfExpr |
+| conditionals.rb:78:1:82:3 | if ... | IfExpr |
+| conditionals.rb:86:1:90:3 | if ... | IfExpr |
+| conditionals.rb:102:1:106:3 | if ... | IfExpr |
+| conditionals.rb:109:1:114:3 | if ... | IfExpr |
+| conditionals.rb:144:1:148:3 | if ... | IfExpr |
 | loops.rb:9:1:12:3 | for ... in ... | ForExpr |
 | loops.rb:9:5:9:5 | if ... | IfExpr |
 | loops.rb:16:1:19:3 | for ... in ... | ForExpr |

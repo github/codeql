@@ -89,3 +89,65 @@ public partial class DPartial
 
     static T Source<T>(object source) => throw null;
 }
+
+public class DFieldProps
+{
+    object FieldProp0
+    {
+        get { return field; }
+        set { field = value; }
+    } = Source<object>(0);
+
+    object FieldProp1
+    {
+        get { return field; }
+        set { field = value; }
+    }
+
+    object FieldProp2
+    {
+        get { return field; }
+        set
+        {
+            var x = value;
+            field = x;
+        }
+    }
+
+    static object StaticFieldProp
+    {
+        get { return field; }
+        set { field = value; }
+    }
+
+    private void M()
+    {
+        var d0 = new DFieldProps();
+        Sink(d0.FieldProp0); // $ hasValueFlow=0
+        Sink(d0.FieldProp1); // no flow
+        Sink(d0.FieldProp2); // no flow
+
+        var d1 = new DFieldProps();
+        var o1 = Source<object>(1);
+        d1.FieldProp1 = o1;
+        Sink(d1.FieldProp0); // $ hasValueFlow=0
+        Sink(d1.FieldProp1); // $ hasValueFlow=1
+        Sink(d1.FieldProp2); // no flow
+
+        var d2 = new DFieldProps();
+        var o2 = Source<object>(2);
+        d2.FieldProp2 = o2;
+        Sink(d2.FieldProp0); // $ hasValueFlow=0
+        Sink(d2.FieldProp1); // no flow
+        Sink(d2.FieldProp2); // $ hasValueFlow=2
+
+        var o3 = Source<object>(3);
+        DFieldProps.StaticFieldProp = o3;
+        Sink(DFieldProps.StaticFieldProp); // $ hasValueFlow=3
+    }
+
+    public static void Sink(object o) { }
+
+    static T Source<T>(object source) => throw null;
+
+}

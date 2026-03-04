@@ -114,4 +114,8 @@ module RequestForgery {
   class UriEncodingSanitizer extends Sanitizer instanceof Xss::Shared::UriEncodingSanitizer {
     UriEncodingSanitizer() { this.encodesPathSeparators() }
   }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "request-forgery") }
+  }
 }

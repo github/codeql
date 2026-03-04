@@ -166,6 +166,8 @@
  *
  *  `c`: [ListElementContent]
  */
+overlay[local]
+module;
 
 private import python
 private import DataFlowPublic

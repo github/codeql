@@ -6,6 +6,7 @@ private import ControlFlowReachability
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
+private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.Conversion
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.ExprOrStmtParent
@@ -16,7 +17,6 @@ private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
-private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.csharp.internal.Location
 private import codeql.util.Unit
@@ -1087,7 +1087,7 @@ predicate exprMayHavePostUpdateNode(Expr e) {
     or
     t = any(TypeParameter tp | not tp.isValueType())
     or
-    t.isRefLikeType()
+    t instanceof Struct
   )
 }
 
@@ -2545,6 +2545,7 @@ private predicate clearsCont(Node n, Content c) {
     a.getType() = s and
     f = s.getAField() and
     c.(FieldContent).getField() = f.getUnboundDeclaration() and
+    not f.getType() instanceof CollectionType and
     not f.isRef()
   )
   or

@@ -82,4 +82,8 @@ module CorsPermissiveConfiguration {
       )
     }
   }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "cors-origin") }
+  }
 }

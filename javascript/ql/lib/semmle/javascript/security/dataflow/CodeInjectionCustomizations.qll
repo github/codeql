@@ -438,4 +438,8 @@ module CodeInjection {
   private class SinkFromModel extends Sink {
     SinkFromModel() { ModelOutput::sinkNode(this, "code-injection") }
   }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "code-injection") }
+  }
 }

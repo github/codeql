@@ -105,6 +105,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         case TypeKind.Pointer: return Kinds.TypeKind.POINTER;
                         case TypeKind.FunctionPointer: return Kinds.TypeKind.FUNCTION_POINTER;
                         case TypeKind.Error: return Kinds.TypeKind.UNKNOWN;
+                        case TypeKind.Extension: return Kinds.TypeKind.EXTENSION;
                         default:
                             cx.ModelError(Symbol, $"Unhandled type kind '{Symbol.TypeKind}'");
                             return Kinds.TypeKind.UNKNOWN;
@@ -366,7 +367,7 @@ namespace Semmle.Extraction.CSharp.Entities
             private DelegateTypeParameter(Context cx, IParameterSymbol init, IEntity parent, Parameter? original)
                 : base(cx, init, parent, original) { }
 
-            public static new DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
+            public static DelegateTypeParameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null) =>
                // We need to use a different cache key than `param` to avoid mixing up
                // `DelegateTypeParameter`s and `Parameter`s
                DelegateTypeParameterFactory.Instance.CreateEntity(cx, (typeof(DelegateTypeParameter), new SymbolEqualityWrapper(param)), (param, parent, original));

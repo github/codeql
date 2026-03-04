@@ -220,6 +220,8 @@ module Sem implements Semantic<Location> {
 
   int getBlockId1(BasicBlock bb) { idOf(bb, result) }
 
+  string getBlockId2(BasicBlock bb) { bb.getFirstNode().getIdTag() = result }
+
   class Guard extends G::Guards_v2::Guard {
     Expr asExpr() { result = this }
   }

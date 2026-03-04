@@ -153,7 +153,10 @@ module ModelValidation {
         not part = "" and
         not (part = "Argument" and pred = "sink") and
         not parseArg(part, _) and
-        not part.getName() = "Field"
+        // If the database does not contain any fields/pointer types then no
+        // FieldContent/PointerContent exists, so we spuriously think that
+        // these spec components are invalid.
+        not part.getName() = ["Field", "Dereference"]
         or
         part = input.getToken(0) and
         parseParam(part, _)
@@ -176,7 +179,10 @@ module ModelValidation {
         invalidSpecComponent(output, part) and
         not part = "" and
         not (part = ["Argument", "Parameter"] and pred = "source") and
-        not part.getName() = "Field"
+        // If the database does not contain any fields/pointer types then no
+        // FieldContent/PointerContent exists, so we spuriously think that
+        // these spec components are invalid.
+        not part.getName() = ["Field", "Dereference"]
         or
         invalidIndexComponent(output, part)
       ) and

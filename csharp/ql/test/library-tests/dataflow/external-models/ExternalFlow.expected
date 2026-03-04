@@ -32,6 +32,14 @@ models
 | 31 | Summary: My.Qltest; Library; false; GetValue; (); ; Argument[this].SyntheticField[X]; ReturnValue; value; dfc-generated |
 | 32 | Summary: My.Qltest; Library; false; MixedFlowArgs; (System.Object,System.Object); ; Argument[1]; ReturnValue; value; manual |
 | 33 | Summary: My.Qltest; Library; false; SetValue; (System.Object); ; Argument[0]; Argument[this].SyntheticField[X]; value; dfc-generated |
+| 34 | Summary: My.Qltest; TestExtensions+extension(System.Object); false; Method1; (System.Object); ; Argument[0]; ReturnValue; value; manual |
+| 35 | Summary: My.Qltest; TestExtensions+extension(System.Object); false; StaticMethod1; (System.Object); ; Argument[0]; ReturnValue; value; manual |
+| 36 | Summary: My.Qltest; TestExtensions+extension(System.Object); false; get_Property1; (System.Object); ; Argument[0].SyntheticField[TestExtensions.Property1]; ReturnValue; value; manual |
+| 37 | Summary: My.Qltest; TestExtensions+extension(System.Object); false; set_Property1; (System.Object,System.Object); ; Argument[1]; Argument[0].SyntheticField[TestExtensions.Property1]; value; manual |
+| 38 | Summary: My.Qltest; TestExtensions+extension(T)<T>; false; GenericMethod1; (T); ; Argument[0]; ReturnValue; value; manual |
+| 39 | Summary: My.Qltest; TestExtensions+extension(T)<T>; false; GenericStaticMethod1; (T); ; Argument[0]; ReturnValue; value; manual |
+| 40 | Summary: My.Qltest; TestExtensions+extension(T)<T>; false; get_GenericProperty1; (T); ; Argument[0].SyntheticField[TestExtensions.GenericProperty1]; ReturnValue; value; manual |
+| 41 | Summary: My.Qltest; TestExtensions+extension(T)<T>; false; set_GenericProperty1; (T,T); ; Argument[1]; Argument[0].SyntheticField[TestExtensions.GenericProperty1]; value; manual |
 edges
 | ExternalFlow.cs:9:20:9:23 | access to local variable arg1 : Object | ExternalFlow.cs:10:29:10:32 | access to local variable arg1 : Object | provenance |  |
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | ExternalFlow.cs:9:20:9:23 | access to local variable arg1 : Object | provenance |  |
@@ -150,6 +158,73 @@ edges
 | ExternalFlow.cs:344:13:344:13 | [post] access to local variable l : Library [synthetic X] : Object | ExternalFlow.cs:345:18:345:18 | access to local variable l : Library [synthetic X] : Object | provenance |  |
 | ExternalFlow.cs:344:24:344:24 | access to local variable o : Object | ExternalFlow.cs:344:13:344:13 | [post] access to local variable l : Library [synthetic X] : Object | provenance | MaD:33 |
 | ExternalFlow.cs:345:18:345:18 | access to local variable l : Library [synthetic X] : Object | ExternalFlow.cs:345:18:345:29 | call to method GetValue | provenance | MaD:31 |
+| ExternalFlow.cs:373:17:373:19 | access to local variable obj : Object | ExternalFlow.cs:374:22:374:24 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:373:17:373:19 | access to local variable obj : Object | ExternalFlow.cs:377:45:377:47 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:373:23:373:34 | object creation of type Object : Object | ExternalFlow.cs:373:17:373:19 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:374:17:374:18 | access to local variable o1 : Object | ExternalFlow.cs:375:18:375:19 | access to local variable o1 | provenance |  |
+| ExternalFlow.cs:374:22:374:24 | access to local variable obj : Object | ExternalFlow.cs:374:22:374:34 | call to method Method1 : Object | provenance | MaD:34 |
+| ExternalFlow.cs:374:22:374:34 | call to method Method1 : Object | ExternalFlow.cs:374:17:374:18 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:377:17:377:18 | access to local variable o2 : Object | ExternalFlow.cs:378:18:378:19 | access to local variable o2 | provenance |  |
+| ExternalFlow.cs:377:22:377:48 | call to method Method1 : Object | ExternalFlow.cs:377:17:377:18 | access to local variable o2 : Object | provenance |  |
+| ExternalFlow.cs:377:45:377:47 | access to local variable obj : Object | ExternalFlow.cs:377:22:377:48 | call to method Method1 : Object | provenance | MaD:34 |
+| ExternalFlow.cs:383:17:383:19 | access to local variable obj : Object | ExternalFlow.cs:384:43:384:45 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:383:17:383:19 | access to local variable obj : Object | ExternalFlow.cs:387:51:387:53 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:383:23:383:34 | object creation of type Object : Object | ExternalFlow.cs:383:17:383:19 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:384:17:384:18 | access to local variable o1 : Object | ExternalFlow.cs:385:18:385:19 | access to local variable o1 | provenance |  |
+| ExternalFlow.cs:384:22:384:46 | call to method StaticMethod1 : Object | ExternalFlow.cs:384:17:384:18 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:384:43:384:45 | access to local variable obj : Object | ExternalFlow.cs:384:22:384:46 | call to method StaticMethod1 : Object | provenance | MaD:35 |
+| ExternalFlow.cs:387:17:387:18 | access to local variable o2 : Object | ExternalFlow.cs:388:18:388:19 | access to local variable o2 | provenance |  |
+| ExternalFlow.cs:387:22:387:54 | call to method StaticMethod1 : Object | ExternalFlow.cs:387:17:387:18 | access to local variable o2 : Object | provenance |  |
+| ExternalFlow.cs:387:51:387:53 | access to local variable obj : Object | ExternalFlow.cs:387:22:387:54 | call to method StaticMethod1 : Object | provenance | MaD:35 |
+| ExternalFlow.cs:393:17:393:19 | access to local variable obj : Object | ExternalFlow.cs:394:27:394:29 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:393:23:393:34 | object creation of type Object : Object | ExternalFlow.cs:393:17:393:19 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:394:13:394:13 | [post] access to parameter o : Object [synthetic TestExtensions.Property1] : Object | ExternalFlow.cs:395:22:395:22 | access to parameter o : Object [synthetic TestExtensions.Property1] : Object | provenance |  |
+| ExternalFlow.cs:394:27:394:29 | access to local variable obj : Object | ExternalFlow.cs:394:13:394:13 | [post] access to parameter o : Object [synthetic TestExtensions.Property1] : Object | provenance | MaD:37 |
+| ExternalFlow.cs:395:17:395:18 | access to local variable o1 : Object | ExternalFlow.cs:396:18:396:19 | access to local variable o1 | provenance |  |
+| ExternalFlow.cs:395:22:395:22 | access to parameter o : Object [synthetic TestExtensions.Property1] : Object | ExternalFlow.cs:395:22:395:32 | access to property Property1 : Object | provenance | MaD:36 |
+| ExternalFlow.cs:395:22:395:32 | access to property Property1 : Object | ExternalFlow.cs:395:17:395:18 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:401:17:401:19 | access to local variable obj : Object | ExternalFlow.cs:402:45:402:47 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:401:23:401:34 | object creation of type Object : Object | ExternalFlow.cs:401:17:401:19 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:402:42:402:42 | [post] access to parameter o : Object [synthetic TestExtensions.Property1] : Object | ExternalFlow.cs:403:51:403:51 | access to parameter o : Object [synthetic TestExtensions.Property1] : Object | provenance |  |
+| ExternalFlow.cs:402:45:402:47 | access to local variable obj : Object | ExternalFlow.cs:402:42:402:42 | [post] access to parameter o : Object [synthetic TestExtensions.Property1] : Object | provenance | MaD:37 |
+| ExternalFlow.cs:403:17:403:18 | access to local variable o1 : Object | ExternalFlow.cs:404:18:404:19 | access to local variable o1 | provenance |  |
+| ExternalFlow.cs:403:22:403:52 | call to extension accessor get_Property1 : Object | ExternalFlow.cs:403:17:403:18 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:403:51:403:51 | access to parameter o : Object [synthetic TestExtensions.Property1] : Object | ExternalFlow.cs:403:22:403:52 | call to extension accessor get_Property1 : Object | provenance | MaD:36 |
+| ExternalFlow.cs:409:17:409:19 | access to local variable obj : Object | ExternalFlow.cs:410:22:410:24 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:409:17:409:19 | access to local variable obj : Object | ExternalFlow.cs:413:52:413:54 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:409:23:409:34 | object creation of type Object : Object | ExternalFlow.cs:409:17:409:19 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:410:17:410:18 | access to local variable o1 : Object | ExternalFlow.cs:411:18:411:19 | access to local variable o1 | provenance |  |
+| ExternalFlow.cs:410:22:410:24 | access to local variable obj : Object | ExternalFlow.cs:410:22:410:41 | call to method GenericMethod1 : Object | provenance | MaD:38 |
+| ExternalFlow.cs:410:22:410:41 | call to method GenericMethod1 : Object | ExternalFlow.cs:410:17:410:18 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:413:17:413:18 | access to local variable o2 : Object | ExternalFlow.cs:414:18:414:19 | access to local variable o2 | provenance |  |
+| ExternalFlow.cs:413:22:413:55 | call to method GenericMethod1 : Object | ExternalFlow.cs:413:17:413:18 | access to local variable o2 : Object | provenance |  |
+| ExternalFlow.cs:413:52:413:54 | access to local variable obj : Object | ExternalFlow.cs:413:22:413:55 | call to method GenericMethod1 : Object | provenance | MaD:38 |
+| ExternalFlow.cs:419:17:419:19 | access to local variable obj : Object | ExternalFlow.cs:420:50:420:52 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:419:17:419:19 | access to local variable obj : Object | ExternalFlow.cs:423:58:423:60 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:419:23:419:34 | object creation of type Object : Object | ExternalFlow.cs:419:17:419:19 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:420:17:420:18 | access to local variable o1 : Object | ExternalFlow.cs:421:18:421:19 | access to local variable o1 | provenance |  |
+| ExternalFlow.cs:420:22:420:53 | call to method GenericStaticMethod1 : Object | ExternalFlow.cs:420:17:420:18 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:420:50:420:52 | access to local variable obj : Object | ExternalFlow.cs:420:22:420:53 | call to method GenericStaticMethod1 : Object | provenance | MaD:39 |
+| ExternalFlow.cs:423:17:423:18 | access to local variable o2 : Object | ExternalFlow.cs:424:18:424:19 | access to local variable o2 | provenance |  |
+| ExternalFlow.cs:423:22:423:61 | call to method GenericStaticMethod1 : Object | ExternalFlow.cs:423:17:423:18 | access to local variable o2 : Object | provenance |  |
+| ExternalFlow.cs:423:58:423:60 | access to local variable obj : Object | ExternalFlow.cs:423:22:423:61 | call to method GenericStaticMethod1 : Object | provenance | MaD:39 |
+| ExternalFlow.cs:429:17:429:19 | access to local variable obj : Object | ExternalFlow.cs:430:34:430:36 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:429:23:429:34 | object creation of type Object : Object | ExternalFlow.cs:429:17:429:19 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:430:13:430:13 | [post] access to parameter o : Object [property GenericProperty1] : Object | ExternalFlow.cs:431:22:431:22 | access to parameter o : Object [property GenericProperty1] : Object | provenance |  |
+| ExternalFlow.cs:430:13:430:13 | [post] access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | ExternalFlow.cs:431:22:431:22 | access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | provenance |  |
+| ExternalFlow.cs:430:34:430:36 | access to local variable obj : Object | ExternalFlow.cs:430:13:430:13 | [post] access to parameter o : Object [property GenericProperty1] : Object | provenance |  |
+| ExternalFlow.cs:430:34:430:36 | access to local variable obj : Object | ExternalFlow.cs:430:13:430:13 | [post] access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | provenance | MaD:41 |
+| ExternalFlow.cs:431:17:431:18 | access to local variable o1 : Object | ExternalFlow.cs:432:18:432:19 | access to local variable o1 | provenance |  |
+| ExternalFlow.cs:431:22:431:22 | access to parameter o : Object [property GenericProperty1] : Object | ExternalFlow.cs:431:22:431:39 | access to property GenericProperty1 : Object | provenance |  |
+| ExternalFlow.cs:431:22:431:22 | access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | ExternalFlow.cs:431:22:431:39 | access to property GenericProperty1 : Object | provenance | MaD:40 |
+| ExternalFlow.cs:431:22:431:39 | access to property GenericProperty1 : Object | ExternalFlow.cs:431:17:431:18 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:437:17:437:19 | access to local variable obj : Object | ExternalFlow.cs:438:52:438:54 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:437:23:437:34 | object creation of type Object : Object | ExternalFlow.cs:437:17:437:19 | access to local variable obj : Object | provenance |  |
+| ExternalFlow.cs:438:49:438:49 | [post] access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | ExternalFlow.cs:439:58:439:58 | access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | provenance |  |
+| ExternalFlow.cs:438:52:438:54 | access to local variable obj : Object | ExternalFlow.cs:438:49:438:49 | [post] access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | provenance | MaD:41 |
+| ExternalFlow.cs:439:17:439:18 | access to local variable o1 : Object | ExternalFlow.cs:440:18:440:19 | access to local variable o1 | provenance |  |
+| ExternalFlow.cs:439:22:439:59 | call to extension accessor get_GenericProperty1 : Object | ExternalFlow.cs:439:17:439:18 | access to local variable o1 : Object | provenance |  |
+| ExternalFlow.cs:439:58:439:58 | access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | ExternalFlow.cs:439:22:439:59 | call to extension accessor get_GenericProperty1 : Object | provenance | MaD:40 |
 nodes
 | ExternalFlow.cs:9:20:9:23 | access to local variable arg1 : Object | semmle.label | access to local variable arg1 : Object |
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
@@ -294,6 +369,80 @@ nodes
 | ExternalFlow.cs:344:24:344:24 | access to local variable o : Object | semmle.label | access to local variable o : Object |
 | ExternalFlow.cs:345:18:345:18 | access to local variable l : Library [synthetic X] : Object | semmle.label | access to local variable l : Library [synthetic X] : Object |
 | ExternalFlow.cs:345:18:345:29 | call to method GetValue | semmle.label | call to method GetValue |
+| ExternalFlow.cs:373:17:373:19 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:373:23:373:34 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:374:17:374:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:374:22:374:24 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:374:22:374:34 | call to method Method1 : Object | semmle.label | call to method Method1 : Object |
+| ExternalFlow.cs:375:18:375:19 | access to local variable o1 | semmle.label | access to local variable o1 |
+| ExternalFlow.cs:377:17:377:18 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| ExternalFlow.cs:377:22:377:48 | call to method Method1 : Object | semmle.label | call to method Method1 : Object |
+| ExternalFlow.cs:377:45:377:47 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:378:18:378:19 | access to local variable o2 | semmle.label | access to local variable o2 |
+| ExternalFlow.cs:383:17:383:19 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:383:23:383:34 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:384:17:384:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:384:22:384:46 | call to method StaticMethod1 : Object | semmle.label | call to method StaticMethod1 : Object |
+| ExternalFlow.cs:384:43:384:45 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:385:18:385:19 | access to local variable o1 | semmle.label | access to local variable o1 |
+| ExternalFlow.cs:387:17:387:18 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| ExternalFlow.cs:387:22:387:54 | call to method StaticMethod1 : Object | semmle.label | call to method StaticMethod1 : Object |
+| ExternalFlow.cs:387:51:387:53 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:388:18:388:19 | access to local variable o2 | semmle.label | access to local variable o2 |
+| ExternalFlow.cs:393:17:393:19 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:393:23:393:34 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:394:13:394:13 | [post] access to parameter o : Object [synthetic TestExtensions.Property1] : Object | semmle.label | [post] access to parameter o : Object [synthetic TestExtensions.Property1] : Object |
+| ExternalFlow.cs:394:27:394:29 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:395:17:395:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:395:22:395:22 | access to parameter o : Object [synthetic TestExtensions.Property1] : Object | semmle.label | access to parameter o : Object [synthetic TestExtensions.Property1] : Object |
+| ExternalFlow.cs:395:22:395:32 | access to property Property1 : Object | semmle.label | access to property Property1 : Object |
+| ExternalFlow.cs:396:18:396:19 | access to local variable o1 | semmle.label | access to local variable o1 |
+| ExternalFlow.cs:401:17:401:19 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:401:23:401:34 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:402:42:402:42 | [post] access to parameter o : Object [synthetic TestExtensions.Property1] : Object | semmle.label | [post] access to parameter o : Object [synthetic TestExtensions.Property1] : Object |
+| ExternalFlow.cs:402:45:402:47 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:403:17:403:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:403:22:403:52 | call to extension accessor get_Property1 : Object | semmle.label | call to extension accessor get_Property1 : Object |
+| ExternalFlow.cs:403:51:403:51 | access to parameter o : Object [synthetic TestExtensions.Property1] : Object | semmle.label | access to parameter o : Object [synthetic TestExtensions.Property1] : Object |
+| ExternalFlow.cs:404:18:404:19 | access to local variable o1 | semmle.label | access to local variable o1 |
+| ExternalFlow.cs:409:17:409:19 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:409:23:409:34 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:410:17:410:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:410:22:410:24 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:410:22:410:41 | call to method GenericMethod1 : Object | semmle.label | call to method GenericMethod1 : Object |
+| ExternalFlow.cs:411:18:411:19 | access to local variable o1 | semmle.label | access to local variable o1 |
+| ExternalFlow.cs:413:17:413:18 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| ExternalFlow.cs:413:22:413:55 | call to method GenericMethod1 : Object | semmle.label | call to method GenericMethod1 : Object |
+| ExternalFlow.cs:413:52:413:54 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:414:18:414:19 | access to local variable o2 | semmle.label | access to local variable o2 |
+| ExternalFlow.cs:419:17:419:19 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:419:23:419:34 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:420:17:420:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:420:22:420:53 | call to method GenericStaticMethod1 : Object | semmle.label | call to method GenericStaticMethod1 : Object |
+| ExternalFlow.cs:420:50:420:52 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:421:18:421:19 | access to local variable o1 | semmle.label | access to local variable o1 |
+| ExternalFlow.cs:423:17:423:18 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| ExternalFlow.cs:423:22:423:61 | call to method GenericStaticMethod1 : Object | semmle.label | call to method GenericStaticMethod1 : Object |
+| ExternalFlow.cs:423:58:423:60 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:424:18:424:19 | access to local variable o2 | semmle.label | access to local variable o2 |
+| ExternalFlow.cs:429:17:429:19 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:429:23:429:34 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:430:13:430:13 | [post] access to parameter o : Object [property GenericProperty1] : Object | semmle.label | [post] access to parameter o : Object [property GenericProperty1] : Object |
+| ExternalFlow.cs:430:13:430:13 | [post] access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | semmle.label | [post] access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object |
+| ExternalFlow.cs:430:34:430:36 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:431:17:431:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:431:22:431:22 | access to parameter o : Object [property GenericProperty1] : Object | semmle.label | access to parameter o : Object [property GenericProperty1] : Object |
+| ExternalFlow.cs:431:22:431:22 | access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | semmle.label | access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object |
+| ExternalFlow.cs:431:22:431:39 | access to property GenericProperty1 : Object | semmle.label | access to property GenericProperty1 : Object |
+| ExternalFlow.cs:432:18:432:19 | access to local variable o1 | semmle.label | access to local variable o1 |
+| ExternalFlow.cs:437:17:437:19 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:437:23:437:34 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
+| ExternalFlow.cs:438:49:438:49 | [post] access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | semmle.label | [post] access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object |
+| ExternalFlow.cs:438:52:438:54 | access to local variable obj : Object | semmle.label | access to local variable obj : Object |
+| ExternalFlow.cs:439:17:439:18 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| ExternalFlow.cs:439:22:439:59 | call to extension accessor get_GenericProperty1 : Object | semmle.label | call to extension accessor get_GenericProperty1 : Object |
+| ExternalFlow.cs:439:58:439:58 | access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object | semmle.label | access to parameter o : Object [synthetic TestExtensions.GenericProperty1] : Object |
+| ExternalFlow.cs:440:18:440:19 | access to local variable o1 | semmle.label | access to local variable o1 |
 subpaths
 | ExternalFlow.cs:84:29:84:32 | access to local variable objs : null [element] : Object | ExternalFlow.cs:84:35:84:35 | o : Object | ExternalFlow.cs:84:40:84:40 | access to parameter o : Object | ExternalFlow.cs:84:25:84:41 | call to method Map<Object,Object> : T[] [element] : Object |
 invalidModelRow
@@ -328,3 +477,15 @@ invalidModelRow
 | ExternalFlow.cs:324:18:324:44 | call to method GetMyNestedSyntheticField | ExternalFlow.cs:322:21:322:32 | object creation of type Object : Object | ExternalFlow.cs:324:18:324:44 | call to method GetMyNestedSyntheticField | $@ | ExternalFlow.cs:322:21:322:32 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:331:18:331:45 | call to method GetMyFieldOnSyntheticField | ExternalFlow.cs:329:21:329:32 | object creation of type Object : Object | ExternalFlow.cs:331:18:331:45 | call to method GetMyFieldOnSyntheticField | $@ | ExternalFlow.cs:329:21:329:32 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:345:18:345:29 | call to method GetValue | ExternalFlow.cs:343:21:343:32 | object creation of type Object : Object | ExternalFlow.cs:345:18:345:29 | call to method GetValue | $@ | ExternalFlow.cs:343:21:343:32 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:375:18:375:19 | access to local variable o1 | ExternalFlow.cs:373:23:373:34 | object creation of type Object : Object | ExternalFlow.cs:375:18:375:19 | access to local variable o1 | $@ | ExternalFlow.cs:373:23:373:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:378:18:378:19 | access to local variable o2 | ExternalFlow.cs:373:23:373:34 | object creation of type Object : Object | ExternalFlow.cs:378:18:378:19 | access to local variable o2 | $@ | ExternalFlow.cs:373:23:373:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:385:18:385:19 | access to local variable o1 | ExternalFlow.cs:383:23:383:34 | object creation of type Object : Object | ExternalFlow.cs:385:18:385:19 | access to local variable o1 | $@ | ExternalFlow.cs:383:23:383:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:388:18:388:19 | access to local variable o2 | ExternalFlow.cs:383:23:383:34 | object creation of type Object : Object | ExternalFlow.cs:388:18:388:19 | access to local variable o2 | $@ | ExternalFlow.cs:383:23:383:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:396:18:396:19 | access to local variable o1 | ExternalFlow.cs:393:23:393:34 | object creation of type Object : Object | ExternalFlow.cs:396:18:396:19 | access to local variable o1 | $@ | ExternalFlow.cs:393:23:393:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:404:18:404:19 | access to local variable o1 | ExternalFlow.cs:401:23:401:34 | object creation of type Object : Object | ExternalFlow.cs:404:18:404:19 | access to local variable o1 | $@ | ExternalFlow.cs:401:23:401:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:411:18:411:19 | access to local variable o1 | ExternalFlow.cs:409:23:409:34 | object creation of type Object : Object | ExternalFlow.cs:411:18:411:19 | access to local variable o1 | $@ | ExternalFlow.cs:409:23:409:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:414:18:414:19 | access to local variable o2 | ExternalFlow.cs:409:23:409:34 | object creation of type Object : Object | ExternalFlow.cs:414:18:414:19 | access to local variable o2 | $@ | ExternalFlow.cs:409:23:409:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:421:18:421:19 | access to local variable o1 | ExternalFlow.cs:419:23:419:34 | object creation of type Object : Object | ExternalFlow.cs:421:18:421:19 | access to local variable o1 | $@ | ExternalFlow.cs:419:23:419:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:424:18:424:19 | access to local variable o2 | ExternalFlow.cs:419:23:419:34 | object creation of type Object : Object | ExternalFlow.cs:424:18:424:19 | access to local variable o2 | $@ | ExternalFlow.cs:419:23:419:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:432:18:432:19 | access to local variable o1 | ExternalFlow.cs:429:23:429:34 | object creation of type Object : Object | ExternalFlow.cs:432:18:432:19 | access to local variable o1 | $@ | ExternalFlow.cs:429:23:429:34 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:440:18:440:19 | access to local variable o1 | ExternalFlow.cs:437:23:437:34 | object creation of type Object : Object | ExternalFlow.cs:440:18:440:19 | access to local variable o1 | $@ | ExternalFlow.cs:437:23:437:34 | object creation of type Object : Object | object creation of type Object : Object |

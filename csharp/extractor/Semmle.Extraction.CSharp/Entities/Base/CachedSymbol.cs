@@ -9,9 +9,14 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal abstract class CachedSymbol<T> : CachedEntity<T> where T : class, ISymbol
     {
+        private readonly Lazy<BlockSyntax?> blockLazy;
+        private readonly Lazy<ExpressionSyntax?> expressionBodyLazy;
+
         protected CachedSymbol(Context cx, T init)
             : base(cx, init)
         {
+            blockLazy = new Lazy<BlockSyntax?>(() => GetBlock(Symbol));
+            expressionBodyLazy = new Lazy<ExpressionSyntax?>(() => GetExpressionBody(Symbol));
         }
 
         public virtual Type? ContainingType => Symbol.ContainingType is not null
@@ -30,32 +35,6 @@ namespace Semmle.Extraction.CSharp.Entities
             // Only extract attributes for source declarations
             if (ReferenceEquals(Symbol, Symbol.OriginalDefinition))
                 Attribute.ExtractAttributes(Context, Symbol, this);
-        }
-
-        protected void PopulateNullability(TextWriter trapFile, AnnotatedTypeSymbol type)
-        {
-            var n = NullabilityEntity.Create(Context, Nullability.Create(type));
-            if (!type.HasObliviousNullability())
-            {
-                trapFile.type_nullability(this, n);
-            }
-        }
-
-        protected void PopulateRefKind(TextWriter trapFile, RefKind kind)
-        {
-            switch (kind)
-            {
-                case RefKind.Out:
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Out);
-                    break;
-                case RefKind.Ref:
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
-                    break;
-                case RefKind.RefReadOnly:
-                case RefKind.RefReadOnlyParameter:
-                    trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
-                    break;
-            }
         }
 
         protected void PopulateScopedKind(TextWriter trapFile, ScopedKind kind)
@@ -113,30 +92,28 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.BindComments(this, FullLocation);
         }
 
-        protected virtual T BodyDeclaringSymbol => Symbol;
-
-        public BlockSyntax? Block
+        private static BlockSyntax? GetBlock(T symbol)
         {
-            get
-            {
-                return BodyDeclaringSymbol.DeclaringSyntaxReferences
+            return symbol.DeclaringSyntaxReferences
                     .SelectMany(r => r.GetSyntax().ChildNodes())
                     .OfType<BlockSyntax>()
                     .FirstOrDefault();
-            }
         }
 
-        public ExpressionSyntax? ExpressionBody
+        private static ExpressionSyntax? GetExpressionBody(T symbol)
         {
-            get
-            {
-                return BodyDeclaringSymbol.DeclaringSyntaxReferences
+            return symbol.DeclaringSyntaxReferences
                     .SelectMany(r => r.GetSyntax().ChildNodes())
                     .OfType<ArrowExpressionClauseSyntax>()
                     .Select(arrow => arrow.Expression)
                     .FirstOrDefault();
-            }
         }
+
+        public BlockSyntax? Block => blockLazy.Value;
+
+        public ExpressionSyntax? ExpressionBody => expressionBodyLazy.Value;
+
+        public bool HasBody => Block is not null || ExpressionBody is not null;
 
         public virtual bool IsSourceDeclaration => Symbol.IsSourceDeclaration();
 

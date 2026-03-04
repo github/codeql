@@ -1,0 +1,111 @@
+extensionMethodCallArgument
+| extensions.cs:57:19:57:24 | call to method M1 | extensions.cs:11:21:11:22 | M1 | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:57:19:57:19 | access to local variable s |
+| extensions.cs:58:19:58:29 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:58:19:58:19 | access to local variable s |
+| extensions.cs:58:19:58:29 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:12:33:12:37 | other | 1 | extensions.cs:58:24:58:28 | "!!!" |
+| extensions.cs:60:19:60:36 | call to method StaticM2 | extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:14:43:14:43 | x | 0 | extensions.cs:60:35:60:35 | access to local variable s |
+| extensions.cs:62:19:62:42 | call to method StaticObjectM2 | extensions.cs:22:27:22:40 | StaticObjectM2 | extensions.cs:22:49:22:49 | s | 0 | extensions.cs:62:41:62:41 | access to local variable s |
+| extensions.cs:68:17:68:22 | call to method M3 | extensions.cs:40:24:40:25 | M3 | extensions.cs:40:39:40:39 | s | 0 | extensions.cs:68:17:68:17 | access to local variable s |
+| extensions.cs:71:9:71:26 | call to method M1 | extensions.cs:11:21:11:22 | M1 | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:71:25:71:25 | access to local variable s |
+| extensions.cs:72:9:72:33 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:72:25:72:25 | access to local variable s |
+| extensions.cs:72:9:72:33 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:12:33:12:37 | other | 1 | extensions.cs:72:28:72:32 | "!!!" |
+| extensions.cs:74:9:74:32 | call to method StaticM2 | extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:14:43:14:43 | x | 0 | extensions.cs:74:31:74:31 | access to local variable s |
+| extensions.cs:76:9:76:38 | call to method StaticObjectM2 | extensions.cs:22:27:22:40 | StaticObjectM2 | extensions.cs:22:49:22:49 | s | 0 | extensions.cs:76:37:76:37 | access to local variable s |
+| extensions.cs:94:9:94:21 | call to method GenericM1 | extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:20:26:20 | t | 0 | extensions.cs:94:9:94:9 | access to local variable o |
+| extensions.cs:95:9:95:21 | call to method GenericM1 | extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:20:26:20 | t | 0 | extensions.cs:95:9:95:9 | access to local variable s |
+| extensions.cs:98:9:98:33 | call to method GenericM1 | extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:20:26:20 | t | 0 | extensions.cs:98:32:98:32 | access to local variable o |
+| extensions.cs:99:9:99:33 | call to method GenericM1 | extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:20:26:20 | t | 0 | extensions.cs:99:32:99:32 | access to local variable s |
+| extensions.cs:101:9:101:23 | call to method GenericM2<Int32> | extensions.cs:31:21:31:32 | GenericM2<Int32> | extensions.cs:26:20:26:20 | t | 0 | extensions.cs:101:9:101:9 | access to local variable o |
+| extensions.cs:101:9:101:23 | call to method GenericM2<Int32> | extensions.cs:31:21:31:32 | GenericM2<Int32> | extensions.cs:31:36:31:40 | other | 1 | extensions.cs:101:21:101:22 | 42 |
+| extensions.cs:102:9:102:37 | call to method GenericM2<Int32> | extensions.cs:31:21:31:32 | GenericM2<Int32> | extensions.cs:26:20:26:20 | t | 0 | extensions.cs:102:32:102:32 | access to local variable o |
+| extensions.cs:102:9:102:37 | call to method GenericM2<Int32> | extensions.cs:31:21:31:32 | GenericM2<Int32> | extensions.cs:31:36:31:40 | other | 1 | extensions.cs:102:35:102:36 | 42 |
+| extensions.cs:104:9:104:47 | call to method StringGenericM1<Int32> | extensions.cs:16:18:16:35 | StringGenericM1<Int32> | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:104:9:104:9 | access to local variable s |
+| extensions.cs:104:9:104:47 | call to method StringGenericM1<Int32> | extensions.cs:16:18:16:35 | StringGenericM1<Int32> | extensions.cs:16:39:16:39 | t | 1 | extensions.cs:104:32:104:32 | 7 |
+| extensions.cs:104:9:104:47 | call to method StringGenericM1<Int32> | extensions.cs:16:18:16:35 | StringGenericM1<Int32> | extensions.cs:16:49:16:49 | o | 2 | extensions.cs:104:35:104:46 | object creation of type Object |
+| extensions.cs:105:9:105:69 | call to method StringGenericM1<String> | extensions.cs:16:18:16:35 | StringGenericM1<String> | extensions.cs:6:22:6:22 | s | 0 | extensions.cs:105:46:105:46 | access to local variable s |
+| extensions.cs:105:9:105:69 | call to method StringGenericM1<String> | extensions.cs:16:18:16:35 | StringGenericM1<String> | extensions.cs:16:39:16:39 | t | 1 | extensions.cs:105:49:105:54 | "test" |
+| extensions.cs:105:9:105:69 | call to method StringGenericM1<String> | extensions.cs:16:18:16:35 | StringGenericM1<String> | extensions.cs:16:49:16:49 | o | 2 | extensions.cs:105:57:105:68 | object creation of type Object |
+extensionMethodCalls
+| extensions.cs:57:19:57:24 | call to method M1 | extensions.cs:11:21:11:22 | M1 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).M1 |
+| extensions.cs:58:19:58:29 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).M2 |
+| extensions.cs:59:19:59:35 | call to method StaticM1 | extensions.cs:13:27:13:34 | StaticM1 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).StaticM1 |
+| extensions.cs:60:19:60:36 | call to method StaticM2 | extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).StaticM2 |
+| extensions.cs:61:19:61:41 | call to method StaticObjectM1 | extensions.cs:21:27:21:40 | StaticObjectM1 | extensions.cs:19:5:24:5 | extension(Object) | MyExtensions+extension(System.Object).StaticObjectM1 |
+| extensions.cs:62:19:62:42 | call to method StaticObjectM2 | extensions.cs:22:27:22:40 | StaticObjectM2 | extensions.cs:19:5:24:5 | extension(Object) | MyExtensions+extension(System.Object).StaticObjectM2 |
+| extensions.cs:68:17:68:22 | call to method M3 | extensions.cs:40:24:40:25 | M3 | extensions.cs:38:21:38:37 | ClassicExtensions | ClassicExtensions.M3 |
+| extensions.cs:71:9:71:26 | call to method M1 | extensions.cs:11:21:11:22 | M1 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).M1 |
+| extensions.cs:72:9:72:33 | call to method M2 | extensions.cs:12:23:12:24 | M2 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).M2 |
+| extensions.cs:73:9:73:31 | call to method StaticM1 | extensions.cs:13:27:13:34 | StaticM1 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).StaticM1 |
+| extensions.cs:74:9:74:32 | call to method StaticM2 | extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).StaticM2 |
+| extensions.cs:75:9:75:37 | call to method StaticObjectM1 | extensions.cs:21:27:21:40 | StaticObjectM1 | extensions.cs:19:5:24:5 | extension(Object) | MyExtensions+extension(System.Object).StaticObjectM1 |
+| extensions.cs:76:9:76:38 | call to method StaticObjectM2 | extensions.cs:22:27:22:40 | StaticObjectM2 | extensions.cs:19:5:24:5 | extension(Object) | MyExtensions+extension(System.Object).StaticObjectM2 |
+| extensions.cs:94:9:94:21 | call to method GenericM1 | extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:5:35:5 | extension(Object)<Object> | MyExtensions+extension(System.Object)<System.Object>.GenericM1 |
+| extensions.cs:95:9:95:21 | call to method GenericM1 | extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:5:35:5 | extension(String)<String> | MyExtensions+extension(System.String)<System.String>.GenericM1 |
+| extensions.cs:98:9:98:33 | call to method GenericM1 | extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:5:35:5 | extension(Object)<Object> | MyExtensions+extension(System.Object)<System.Object>.GenericM1 |
+| extensions.cs:99:9:99:33 | call to method GenericM1 | extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:5:35:5 | extension(String)<String> | MyExtensions+extension(System.String)<System.String>.GenericM1 |
+| extensions.cs:101:9:101:23 | call to method GenericM2<Int32> | extensions.cs:31:21:31:32 | GenericM2<Int32> | extensions.cs:26:5:35:5 | extension(Object)<Object> | MyExtensions+extension(System.Object)<System.Object>.GenericM2<Int32> |
+| extensions.cs:102:9:102:37 | call to method GenericM2<Int32> | extensions.cs:31:21:31:32 | GenericM2<Int32> | extensions.cs:26:5:35:5 | extension(Object)<Object> | MyExtensions+extension(System.Object)<System.Object>.GenericM2<Int32> |
+| extensions.cs:104:9:104:47 | call to method StringGenericM1<Int32> | extensions.cs:16:18:16:35 | StringGenericM1<Int32> | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).StringGenericM1<Int32> |
+| extensions.cs:105:9:105:69 | call to method StringGenericM1<String> | extensions.cs:16:18:16:35 | StringGenericM1<String> | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).StringGenericM1<String> |
+extensionParameter
+| extensions.cs:11:21:11:22 | M1 | extensions.cs:6:22:6:22 | s | 0 | string | extensions.cs:6:22:6:22 | s |
+| extensions.cs:12:23:12:24 | M2 | extensions.cs:6:22:6:22 | s | 0 | string | extensions.cs:6:22:6:22 | s |
+| extensions.cs:12:23:12:24 | M2 | extensions.cs:12:33:12:37 | other | 1 | string | extensions.cs:12:33:12:37 | other |
+| extensions.cs:14:27:14:34 | StaticM2 | extensions.cs:14:43:14:43 | x | 0 | string | extensions.cs:14:43:14:43 | x |
+| extensions.cs:16:18:16:35 | StringGenericM1<Int32> | extensions.cs:6:22:6:22 | s | 0 | string | extensions.cs:6:22:6:22 | s |
+| extensions.cs:16:18:16:35 | StringGenericM1<Int32> | extensions.cs:16:39:16:39 | t | 1 | int | extensions.cs:16:39:16:39 | t |
+| extensions.cs:16:18:16:35 | StringGenericM1<Int32> | extensions.cs:16:49:16:49 | o | 2 | object | extensions.cs:16:49:16:49 | o |
+| extensions.cs:16:18:16:35 | StringGenericM1<String> | extensions.cs:6:22:6:22 | s | 0 | string | extensions.cs:6:22:6:22 | s |
+| extensions.cs:16:18:16:35 | StringGenericM1<String> | extensions.cs:16:39:16:39 | t | 1 | string | extensions.cs:16:39:16:39 | t |
+| extensions.cs:16:18:16:35 | StringGenericM1<String> | extensions.cs:16:49:16:49 | o | 2 | object | extensions.cs:16:49:16:49 | o |
+| extensions.cs:16:18:16:35 | StringGenericM1`1 | extensions.cs:6:22:6:22 | s | 0 | string | extensions.cs:6:22:6:22 | s |
+| extensions.cs:16:18:16:35 | StringGenericM1`1 | extensions.cs:16:39:16:39 | t | 1 | T | extensions.cs:16:39:16:39 | t |
+| extensions.cs:16:18:16:35 | StringGenericM1`1 | extensions.cs:16:49:16:49 | o | 2 | object | extensions.cs:16:49:16:49 | o |
+| extensions.cs:22:27:22:40 | StaticObjectM2 | extensions.cs:22:49:22:49 | s | 0 | string | extensions.cs:22:49:22:49 | s |
+| extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:20:26:20 | t | 0 | T | extensions.cs:26:20:26:20 | t |
+| extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:20:26:20 | t | 0 | object | extensions.cs:26:20:26:20 | t |
+| extensions.cs:30:21:30:29 | GenericM1 | extensions.cs:26:20:26:20 | t | 0 | string | extensions.cs:26:20:26:20 | t |
+| extensions.cs:31:21:31:32 | GenericM2<Int32> | extensions.cs:26:20:26:20 | t | 0 | object | extensions.cs:26:20:26:20 | t |
+| extensions.cs:31:21:31:32 | GenericM2<Int32> | extensions.cs:31:36:31:40 | other | 1 | int | extensions.cs:31:36:31:40 | other |
+| extensions.cs:31:21:31:32 | GenericM2`1 | extensions.cs:26:20:26:20 | t | 0 | T | extensions.cs:26:20:26:20 | t |
+| extensions.cs:31:21:31:32 | GenericM2`1 | extensions.cs:26:20:26:20 | t | 0 | object | extensions.cs:26:20:26:20 | t |
+| extensions.cs:31:21:31:32 | GenericM2`1 | extensions.cs:26:20:26:20 | t | 0 | string | extensions.cs:26:20:26:20 | t |
+| extensions.cs:31:21:31:32 | GenericM2`1 | extensions.cs:31:36:31:40 | other | 1 | S | extensions.cs:31:36:31:40 | other |
+| extensions.cs:31:21:31:32 | GenericM2`1 | extensions.cs:31:36:31:40 | other | 1 | S | extensions.cs:31:36:31:40 | other |
+| extensions.cs:31:21:31:32 | GenericM2`1 | extensions.cs:31:36:31:40 | other | 1 | S | extensions.cs:31:36:31:40 | other |
+| extensions.cs:32:21:32:35 | GenericStaticM1 | extensions.cs:26:20:26:20 | t | 0 | T | extensions.cs:26:20:26:20 | t |
+| extensions.cs:32:21:32:35 | GenericStaticM1 | extensions.cs:26:20:26:20 | t | 0 | object | extensions.cs:26:20:26:20 | t |
+| extensions.cs:32:21:32:35 | GenericStaticM1 | extensions.cs:26:20:26:20 | t | 0 | string | extensions.cs:26:20:26:20 | t |
+| extensions.cs:33:28:33:45 | GenericStaticM2`1 | extensions.cs:33:49:33:53 | other | 0 | S | extensions.cs:33:49:33:53 | other |
+| extensions.cs:33:28:33:45 | GenericStaticM2`1 | extensions.cs:33:49:33:53 | other | 0 | S | extensions.cs:33:49:33:53 | other |
+| extensions.cs:33:28:33:45 | GenericStaticM2`1 | extensions.cs:33:49:33:53 | other | 0 | S | extensions.cs:33:49:33:53 | other |
+| extensions.cs:40:24:40:25 | M3 | extensions.cs:40:39:40:39 | s | 0 | string | extensions.cs:40:39:40:39 | s |
+extensionOperatorCallArgument
+| extensions.cs:15:39:15:39 | * | extensions.cs:65:19:65:23 | call to operator * | extensions.cs:15:45:15:45 | a | 0 | extensions.cs:65:19:65:19 | 3 |
+| extensions.cs:15:39:15:39 | * | extensions.cs:65:19:65:23 | call to operator * | extensions.cs:15:55:15:55 | b | 1 | extensions.cs:65:23:65:23 | access to local variable s |
+| extensions.cs:15:39:15:39 | * | extensions.cs:79:9:79:38 | call to operator * | extensions.cs:15:45:15:45 | a | 0 | extensions.cs:79:34:79:34 | 3 |
+| extensions.cs:15:39:15:39 | * | extensions.cs:79:9:79:38 | call to operator * | extensions.cs:15:55:15:55 | b | 1 | extensions.cs:79:37:79:37 | access to local variable s |
+extensionOperatorCalls
+| extensions.cs:65:19:65:23 | call to operator * | extensions.cs:15:39:15:39 | * | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).op_Multiply |
+| extensions.cs:79:9:79:38 | call to operator * | extensions.cs:15:39:15:39 | * | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).op_Multiply |
+extensionProperty
+| extensions.cs:8:21:8:25 | Prop1 | extensions.cs:6:5:17:5 | extension(String) |
+| extensions.cs:9:21:9:25 | Prop2 | extensions.cs:6:5:17:5 | extension(String) |
+| extensions.cs:10:28:10:38 | StaticProp1 | extensions.cs:6:5:17:5 | extension(String) |
+| extensions.cs:23:28:23:37 | StaticProp | extensions.cs:19:5:24:5 | extension(Object) |
+| extensions.cs:28:21:28:32 | GenericProp1 | extensions.cs:26:5:35:5 | extension(Object)<Object> |
+| extensions.cs:28:21:28:32 | GenericProp1 | extensions.cs:26:5:35:5 | extension(String)<String> |
+| extensions.cs:28:21:28:32 | GenericProp1 | extensions.cs:26:5:35:5 | extension(T)`1 |
+| extensions.cs:29:21:29:32 | GenericProp2 | extensions.cs:26:5:35:5 | extension(Object)<Object> |
+| extensions.cs:29:21:29:32 | GenericProp2 | extensions.cs:26:5:35:5 | extension(String)<String> |
+| extensions.cs:29:21:29:32 | GenericProp2 | extensions.cs:26:5:35:5 | extension(T)`1 |
+extensionPropertyCall
+| extensions.cs:50:19:50:25 | access to property Prop1 | extensions.cs:8:21:8:25 | Prop1 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).Prop1 |
+| extensions.cs:51:19:51:25 | access to property Prop2 | extensions.cs:9:21:9:25 | Prop2 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).Prop2 |
+| extensions.cs:52:9:52:15 | access to property Prop2 | extensions.cs:9:21:9:25 | Prop2 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).Prop2 |
+| extensions.cs:53:19:53:36 | access to property StaticProp1 | extensions.cs:10:28:10:38 | StaticProp1 | extensions.cs:6:5:17:5 | extension(String) | MyExtensions+extension(System.String).StaticProp1 |
+| extensions.cs:54:19:54:35 | access to property StaticProp | extensions.cs:23:28:23:37 | StaticProp | extensions.cs:19:5:24:5 | extension(Object) | MyExtensions+extension(System.Object).StaticProp |
+extensionAccessorCall
+| extensions.cs:82:9:82:33 | call to extension accessor get_Prop1 | extensions.cs:8:30:8:41 | get_Prop1 | extensions.cs:8:21:8:25 | Prop1 | MyExtensions+extension(System.String).get_Prop1 |
+| extensions.cs:83:9:83:33 | call to extension accessor get_Prop2 | extensions.cs:9:29:9:31 | get_Prop2 | extensions.cs:9:21:9:25 | Prop2 | MyExtensions+extension(System.String).get_Prop2 |
+| extensions.cs:84:9:84:40 | call to extension accessor set_Prop2 | extensions.cs:9:50:9:52 | set_Prop2 | extensions.cs:9:21:9:25 | Prop2 | MyExtensions+extension(System.String).set_Prop2 |
+| extensions.cs:85:9:85:37 | call to extension accessor get_StaticProp | extensions.cs:23:42:23:45 | get_StaticProp | extensions.cs:23:28:23:37 | StaticProp | MyExtensions+extension(System.Object).get_StaticProp |

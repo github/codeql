@@ -57,4 +57,8 @@ module PathInjection {
   private class ExternalPathInjectionSink extends Sink {
     ExternalPathInjectionSink() { ModelOutput::sinkNode(this, "path-injection") }
   }
+
+  private class ExternalPathInjectionSanitizer extends Sanitizer {
+    ExternalPathInjectionSanitizer() { ModelOutput::barrierNode(this, "path-injection") }
+  }
 }

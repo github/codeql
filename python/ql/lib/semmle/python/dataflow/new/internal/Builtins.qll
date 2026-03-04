@@ -1,4 +1,6 @@
 /** Provides predicates for reasoning about built-ins in Python. */
+overlay[local]
+module;
 
 private import python
 private import semmle.python.dataflow.new.DataFlow

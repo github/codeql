@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* The Java extractor and QL libraries now support Java 26.

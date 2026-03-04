@@ -7,16 +7,23 @@ using Semmle.Extraction.CSharp.Populators;
 
 namespace Semmle.Extraction.CSharp.Entities
 {
-    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity
+    internal class Parameter : CachedSymbol<IParameterSymbol>, IExpressionParentEntity, IParameter
     {
         protected IEntity? Parent { get; set; }
         protected Parameter Original { get; }
+        private int PositionOffset { get; set; }
 
-        protected Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original)
+        private Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original, int positionOffset)
             : base(cx, init)
         {
             Parent = parent;
             Original = original ?? this;
+            PositionOffset = positionOffset;
+        }
+
+        protected Parameter(Context cx, IParameterSymbol init, IEntity? parent, Parameter? original)
+            : this(cx, init, parent, original, 0)
+        {
         }
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetSymbolLocation();
@@ -32,52 +39,27 @@ namespace Semmle.Extraction.CSharp.Entities
             RefReadOnly = 6
         }
 
-        protected virtual int Ordinal => Symbol.Ordinal;
+        protected virtual int Ordinal => Symbol.Ordinal + PositionOffset;
 
-        private Kind ParamKind
-        {
-            get
-            {
-                switch (Symbol.RefKind)
-                {
-                    case RefKind.Out:
-                        return Kind.Out;
-                    case RefKind.Ref:
-                        return Kind.Ref;
-                    case RefKind.In:
-                        return Kind.In;
-                    case RefKind.RefReadOnlyParameter:
-                        return Kind.RefReadOnly;
-                    default:
-                        if (Symbol.IsParams)
-                            return Kind.Params;
-
-                        if (Ordinal == 0)
-                        {
-                            if (Symbol.ContainingSymbol is IMethodSymbol method && method.IsExtensionMethod)
-                                return Kind.This;
-                        }
-                        return Kind.None;
-                }
-            }
-        }
-
-        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null)
+        public static Parameter Create(Context cx, IParameterSymbol param, IEntity parent, Parameter? original = null, int positionOffset = 0)
         {
             var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
-            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, parent, original));
+            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, parent, original, positionOffset));
         }
 
         public static Parameter Create(Context cx, IParameterSymbol param)
         {
             var cachedSymbol = cx.GetPossiblyCachedParameterSymbol(param);
-            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, null, null));
+            return ParameterFactory.Instance.CreateEntity(cx, cachedSymbol, (cachedSymbol, null, null, 0));
         }
 
         public override void WriteId(EscapingTextWriter trapFile)
         {
             if (Parent is null)
                 Parent = Method.Create(Context, Symbol.ContainingSymbol as IMethodSymbol);
+
+            if (Parent is null && Symbol.ContainingSymbol is INamedTypeSymbol type && type.IsExtension)
+                Parent = Type.Create(Context, type);
 
             if (Parent is null)
                 throw new InternalError(Symbol, "Couldn't get parent of symbol.");
@@ -113,7 +95,8 @@ namespace Semmle.Extraction.CSharp.Entities
                 Context.ModelError(Symbol, "Inconsistent parameter declaration");
 
             var type = Type.Create(Context, Symbol.Type);
-            trapFile.@params(this, Name, type.TypeRef, Ordinal, ParamKind, Parent!, Original);
+            var kind = Symbol.GetParameterKind();
+            trapFile.@params(this, Name, type.TypeRef, Ordinal, kind, Parent!, Original);
 
             if (Context.OnlyScaffold)
             {
@@ -194,11 +177,11 @@ namespace Semmle.Extraction.CSharp.Entities
             return syntax?.Default;
         }
 
-        private class ParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity?, Parameter?), Parameter>
+        private class ParameterFactory : CachedEntityFactory<(IParameterSymbol, IEntity?, Parameter?, int), Parameter>
         {
             public static ParameterFactory Instance { get; } = new ParameterFactory();
 
-            public override Parameter Create(Context cx, (IParameterSymbol, IEntity?, Parameter?) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3);
+            public override Parameter Create(Context cx, (IParameterSymbol, IEntity?, Parameter?, int) init) => new Parameter(cx, init.Item1, init.Item2, init.Item3, init.Item4);
         }
 
         public override TrapStackBehaviour TrapStackBehaviour => TrapStackBehaviour.OptionalLabel;

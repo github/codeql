@@ -145,6 +145,25 @@ public class Constructors
         Sink(r1.Obj2); // $ hasValueFlow=10
     }
 
+    public partial class CPartial
+    {
+        public object Obj { get; }
+
+        public partial CPartial(object o);
+    }
+
+    public partial class CPartial
+    {
+        public partial CPartial(object o) => Obj = o;
+    }
+
+    public void M8()
+    {
+        var o = Source<object>(11);
+        var cPartial = new CPartial(o);
+        Sink(cPartial.Obj); // $ hasValueFlow=11
+    }
+
     public static void Sink(object o) { }
 
     public static T Source<T>(object source) => throw null;

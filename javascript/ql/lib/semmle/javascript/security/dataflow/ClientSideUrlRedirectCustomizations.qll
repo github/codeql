@@ -270,4 +270,8 @@ module ClientSideUrlRedirect {
   private class SinkFromModel extends Sink {
     SinkFromModel() { ModelOutput::sinkNode(this, "url-redirection") }
   }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "url-redirection") }
+  }
 }

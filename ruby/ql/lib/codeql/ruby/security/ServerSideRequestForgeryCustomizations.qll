@@ -46,4 +46,8 @@ module ServerSideRequestForgery {
   private class ExternalRequestForgerySink extends Sink {
     ExternalRequestForgerySink() { ModelOutput::sinkNode(this, "request-forgery") }
   }
+
+  private class ExternalRequestForgerySanitizer extends Sanitizer {
+    ExternalRequestForgerySanitizer() { ModelOutput::barrierNode(this, "request-forgery") }
+  }
 }
