@@ -1,5 +1,5 @@
 def test_basic(x)
-    y = x  #$ Alert
+    y = x  # $ Alert
     y = x + 2
     return y
 end
@@ -27,7 +27,7 @@ class Sup
         print(x + 1)
     end
 end
-  
+
 class Sub < Sup
     def m(y)
         y = 3  # OK - the call to `super` sees the value of `y``
@@ -39,7 +39,7 @@ def do_twice
     yield
     yield
 end
-    
+
 def get_done_twice x
     do_twice do
         print x
@@ -52,7 +52,7 @@ def retry_once
 rescue
     yield
 end
-    
+
 def get_retried x
     retry_once do
         print x
