@@ -229,7 +229,7 @@ private class PpLiteral extends PpAst, Literal {
 }
 
 private class PpBinaryExpr extends PpAst, BinaryExpr {
-  override string getPart(int i) { i = 1 and result = this.getOp() }
+  override string getPart(int i) { i = 1 and result = " " + this.getOp() + " " }
 
   override PpAst getChild(int i) {
     i = 0 and result = this.getLeftOperand()

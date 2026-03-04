@@ -138,7 +138,7 @@ int operatorWS(BinaryExpr expr) {
     endOfBinaryLhs(expr, line, lcol) and
     startOfBinaryRhs(expr, line, rcol) and
     parens = getParensNextToOp(expr) and
-    result = rcol - lcol + 1 - expr.getOp().length() - parens
+    result = rcol - lcol - 1 - expr.getOp().length() - parens
   )
 }
 

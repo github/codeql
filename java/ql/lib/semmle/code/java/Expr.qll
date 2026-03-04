@@ -739,155 +739,155 @@ class BinaryExpr extends Expr, @binaryexpr {
   }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = "..." + this.getOp() + "..." }
+  override string toString() { result = "... " + this.getOp() + " ..." }
 
   /** Gets a string representation of the operator of this binary expression. */
-  /*abstract*/ string getOp() { result = " ?? " }
+  /*abstract*/ string getOp() { result = "??" }
 }
 
 /** A binary expression using the `*` operator. */
 class MulExpr extends BinaryExpr, @mulexpr {
-  override string getOp() { result = " * " }
+  override string getOp() { result = "*" }
 
   override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
 /** A binary expression using the `/` operator. */
 class DivExpr extends BinaryExpr, @divexpr {
-  override string getOp() { result = " / " }
+  override string getOp() { result = "/" }
 
   override string getAPrimaryQlClass() { result = "DivExpr" }
 }
 
 /** A binary expression using the `%` operator. */
 class RemExpr extends BinaryExpr, @remexpr {
-  override string getOp() { result = " % " }
+  override string getOp() { result = "%" }
 
   override string getAPrimaryQlClass() { result = "RemExpr" }
 }
 
 /** A binary expression using the `+` operator. */
 class AddExpr extends BinaryExpr, @addexpr {
-  override string getOp() { result = " + " }
+  override string getOp() { result = "+" }
 
   override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
 /** A binary expression using the `-` operator. */
 class SubExpr extends BinaryExpr, @subexpr {
-  override string getOp() { result = " - " }
+  override string getOp() { result = "-" }
 
   override string getAPrimaryQlClass() { result = "SubExpr" }
 }
 
 /** A binary expression using the `<<` operator. */
 class LeftShiftExpr extends BinaryExpr, @lshiftexpr {
-  override string getOp() { result = " << " }
+  override string getOp() { result = "<<" }
 
   override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
 }
 
 /** A binary expression using the `>>` operator. */
 class RightShiftExpr extends BinaryExpr, @rshiftexpr {
-  override string getOp() { result = " >> " }
+  override string getOp() { result = ">>" }
 
   override string getAPrimaryQlClass() { result = "RightShiftExpr" }
 }
 
 /** A binary expression using the `>>>` operator. */
 class UnsignedRightShiftExpr extends BinaryExpr, @urshiftexpr {
-  override string getOp() { result = " >>> " }
+  override string getOp() { result = ">>>" }
 
   override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
 }
 
 /** A binary expression using the `&` operator. */
 class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
-  override string getOp() { result = " & " }
+  override string getOp() { result = "&" }
 
   override string getAPrimaryQlClass() { result = "AndBitwiseExpr" }
 }
 
 /** A binary expression using the `|` operator. */
 class OrBitwiseExpr extends BinaryExpr, @orbitexpr {
-  override string getOp() { result = " | " }
+  override string getOp() { result = "|" }
 
   override string getAPrimaryQlClass() { result = "OrBitwiseExpr" }
 }
 
 /** A binary expression using the `^` operator. */
 class XorBitwiseExpr extends BinaryExpr, @xorbitexpr {
-  override string getOp() { result = " ^ " }
+  override string getOp() { result = "^" }
 
   override string getAPrimaryQlClass() { result = "XorBitwiseExpr" }
 }
 
 /** A binary expression using the `&&` operator. */
 class AndLogicalExpr extends BinaryExpr, @andlogicalexpr {
-  override string getOp() { result = " && " }
+  override string getOp() { result = "&&" }
 
   override string getAPrimaryQlClass() { result = "AndLogicalExpr" }
 }
 
 /** A binary expression using the `||` operator. */
 class OrLogicalExpr extends BinaryExpr, @orlogicalexpr {
-  override string getOp() { result = " || " }
+  override string getOp() { result = "||" }
 
   override string getAPrimaryQlClass() { result = "OrLogicalExpr" }
 }
 
 /** A binary expression using the `<` operator. */
 class LTExpr extends BinaryExpr, @ltexpr {
-  override string getOp() { result = " < " }
+  override string getOp() { result = "<" }
 
   override string getAPrimaryQlClass() { result = "LTExpr" }
 }
 
 /** A binary expression using the `>` operator. */
 class GTExpr extends BinaryExpr, @gtexpr {
-  override string getOp() { result = " > " }
+  override string getOp() { result = ">" }
 
   override string getAPrimaryQlClass() { result = "GTExpr" }
 }
 
 /** A binary expression using the `<=` operator. */
 class LEExpr extends BinaryExpr, @leexpr {
-  override string getOp() { result = " <= " }
+  override string getOp() { result = "<=" }
 
   override string getAPrimaryQlClass() { result = "LEExpr" }
 }
 
 /** A binary expression using the `>=` operator. */
 class GEExpr extends BinaryExpr, @geexpr {
-  override string getOp() { result = " >= " }
+  override string getOp() { result = ">=" }
 
   override string getAPrimaryQlClass() { result = "GEExpr" }
 }
 
 /** A binary expression using Java's `==` or Kotlin's `===` operator. */
 class EQExpr extends BinaryExpr, @eqexpr {
-  override string getOp() { result = " == " }
+  override string getOp() { result = "==" }
 
   override string getAPrimaryQlClass() { result = "EQExpr" }
 }
 
 /** A binary expression using the Kotlin `==` operator, semantically equivalent to `Objects.equals`. */
 class ValueEQExpr extends BinaryExpr, @valueeqexpr {
-  override string getOp() { result = " (value equals) " }
+  override string getOp() { result = "(value equals)" }
 
   override string getAPrimaryQlClass() { result = "ValueEQExpr" }
 }
 
 /** A binary expression using Java's `!=` or Kotlin's `!==` operator. */
 class NEExpr extends BinaryExpr, @neexpr {
-  override string getOp() { result = " != " }
+  override string getOp() { result = "!=" }
 
   override string getAPrimaryQlClass() { result = "NEExpr" }
 }
 
 /** A binary expression using the Kotlin `!=` operator, semantically equivalent to `Objects.equals`. */
 class ValueNEExpr extends BinaryExpr, @valueneexpr {
-  override string getOp() { result = " (value not-equals) " }
+  override string getOp() { result = "(value not-equals)" }
 
   override string getAPrimaryQlClass() { result = "ValueNEExpr" }
 }
