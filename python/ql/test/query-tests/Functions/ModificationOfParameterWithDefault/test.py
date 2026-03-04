@@ -1,31 +1,31 @@
 # Not OK
 def simple(l = [0]):
-    l[0] = 1  #$ modification=l
+    l[0] = 1  # $ modification=l
     return l
 
 # Not OK
 def slice(l = [0]):
-    l[0:1] = 1  #$ modification=l
+    l[0:1] = 1  # $ modification=l
     return l
 
 # Not OK
 def list_del(l = [0]):
-    del l[0]  #$ modification=l
+    del l[0]  # $ modification=l
     return l
 
 # Not OK
 def append_op(l = []):
-    l += [1, 2, 3]  #$ modification=l
+    l += [1, 2, 3]  # $ modification=l
     return l
 
 # Not OK
 def repeat_op(l = [0]):
-    l *= 3  #$ modification=l
+    l *= 3  # $ modification=l
     return l
 
 # Not OK
 def append(l = []):
-    l.append(1)  #$ modification=l
+    l.append(1)  # $ modification=l
     return l
 
 # OK
@@ -36,7 +36,7 @@ def includes(l = []):
     return x
 
 def extends(l):
-    l.extend([1])  #$ modification=l
+    l.extend([1])  # $ modification=l
     return l
 
 # Not OK
@@ -46,26 +46,26 @@ def deferred(l = []):
 
 # Not OK
 def nonempty(l = [5]):
-    l.append(1)  #$ modification=l
+    l.append(1)  # $ modification=l
     return l
 
 # Not OK
 def dict(d = {}):
-    d['a'] = 1  #$ modification=d
+    d['a'] = 1  # $ modification=d
     return d
 
 # Not OK
 def dict_nonempty(d = {'a': 1}):
-    d['a'] = 2  #$ modification=d
+    d['a'] = 2  # $ modification=d
     return d
 
 # OK
 def dict_nonempty_nochange(d = {'a': 1}):
-    d['a'] = 1  #$ SPURIOUS: modification=d
+    d['a'] = 1  # $ SPURIOUS: modification=d
     return d
 
 def modifies(d):
-    d['a'] = 1  #$ modification=d
+    d['a'] = 1  # $ modification=d
     return d
 
 # Not OK
@@ -75,21 +75,21 @@ def dict_deferred(d = {}):
 
 # Not OK
 def dict_method(d = {}):
-    d.update({'a': 1})  #$ modification=d
+    d.update({'a': 1})  # $ modification=d
     return d
 
 # Not OK
 def dict_method_nonempty(d = {'a': 1}):
-    d.update({'a': 2})  #$ modification=d
+    d.update({'a': 2})  # $ modification=d
     return d
 
 # OK
 def dict_method_nonempty_nochange(d = {'a': 1}):
-    d.update({'a': 1})  #$ SPURIOUS:modification=d
+    d.update({'a': 1})  # $ SPURIOUS:modification=d
     return d
 
 def modifies_method(d):
-    d.update({'a': 1})  #$ modification=d
+    d.update({'a': 1})  # $ modification=d
     return d
 
 # Not OK
@@ -106,55 +106,55 @@ def dict_includes(d = {}):
 
 # Not OK
 def dict_del(d = {'a': 1}):
-    del d['a']  #$ modification=d
+    del d['a']  # $ modification=d
     return d
 
 # Not OK
 def dict_update_op(d = {}):
     x = {'a': 1}
-    d |= x  #$ modification=d
+    d |= x  # $ modification=d
     return d
 
 # OK
 def dict_update_op_nochange(d = {}):
     x = {}
-    d |= x  #$ SPURIOUS: modification=d
+    d |= x  # $ SPURIOUS: modification=d
     return d
 
 def sanitizer(l = []):
     if l:
         l.append(1)
     else:
-        l.append(1)  #$ modification=l
+        l.append(1)  # $ modification=l
     return l
 
 def sanitizer_negated(l = [1]):
     if not l:
         l.append(1)
     else:
-        l.append(1)  #$ modification=l
+        l.append(1)  # $ modification=l
     return l
 
 def sanitizer(l = []):
     if not l:
-        l.append(1)  #$ modification=l
+        l.append(1)  # $ modification=l
     else:
         l.append(1)
     return l
 
 def sanitizer_negated(l = [1]):
     if l:
-        l.append(1)  #$ modification=l
+        l.append(1)  # $ modification=l
     else:
         l.append(1)
     return l
 
 # indirect modification of parameter with default
 def aug_assign_argument(x):
-    x += ['x'] #$ modification=x
+    x += ['x'] # $ modification=x
 
 def mutate_argument(x):
-    x.append('x') #$ modification=x
+    x.append('x') # $ modification=x
 
 def indirect_modification(y = []):
     aug_assign_argument(y)
@@ -182,9 +182,9 @@ def do_stuff_based_on_type(x):
     if isinstance(x, str):
         x = x.split()
     elif isinstance(x, dict):
-        x.setdefault('foo', 'bar') #$ modification=x
+        x.setdefault('foo', 'bar') # $ modification=x
     elif isinstance(x, list):
-        x.append(5) #$ modification=x
+        x.append(5) # $ modification=x
     elif isinstance(x, tuple):
         x = x.unknown_method()
 

@@ -1,12 +1,12 @@
 # Star imports
 
-from unknown import * #$ use=moduleImport("unknown")
+from unknown import * # $ use=moduleImport("unknown")
 
 # This used to be missing, as we did not consider `hello` to be a `LocalSourceNode`,
 # since it has flow going into it from its corresponding `GlobalSsaVariable`.
-hello() #$ use=moduleImport("unknown").getMember("hello").getReturn()
+hello() # $ use=moduleImport("unknown").getMember("hello").getReturn()
 
-print(const_from_unknown) #$ use=moduleImport("unknown").getMember("const_from_unknown")
+print(const_from_unknown) # $ use=moduleImport("unknown").getMember("const_from_unknown")
 
 # We don't want our analysis to think that either `non_module_member` or `outer_bar` can
 # come from `from unknown import *`
@@ -16,23 +16,23 @@ outer_bar = 5
 outer_bar
 
 def foo():
-    world() #$ use=moduleImport("unknown").getMember("world").getReturn()
+    world() # $ use=moduleImport("unknown").getMember("world").getReturn()
     bar = 5
     bar
     non_module_member
-    print(bar) #$ use=moduleImport("builtins").getMember("print").getReturn()
+    print(bar) # $ use=moduleImport("builtins").getMember("print").getReturn()
 
 def quux():
     global non_module_member
     non_module_member = 5
 
 def func1():
-    var() #$ use=moduleImport("unknown").getMember("var").getReturn()
+    var() # $ use=moduleImport("unknown").getMember("var").getReturn()
     def func2():
         var = "FOO"
 
 def func3():
-    var2 = print #$ use=moduleImport("builtins").getMember("print")
+    var2 = print # $ use=moduleImport("builtins").getMember("print")
     def func4():
-        var2() #$ use=moduleImport("builtins").getMember("print").getReturn()
+        var2() # $ use=moduleImport("builtins").getMember("print").getReturn()
     func4()

@@ -14,6 +14,6 @@ else:
 
 src.foo = 42
 
-check("src", src, src, globals()) #$ prints=SOURCE
+check("src", src, src, globals()) # $ prints=SOURCE
 
 exit(__file__)

@@ -107,7 +107,7 @@ def getattr_indirect_read():
     attr = "foo"
     x = SomeClass() # $ tracked=foo
     x.foo = tracked # $ tracked tracked=foo
-    y = getattr(x, attr) #$tracked tracked=foo
+    y = getattr(x, attr) # $ tracked tracked=foo
     do_stuff(y) # $ tracked
 
 # Via `__dict__` -- not currently implemented.
