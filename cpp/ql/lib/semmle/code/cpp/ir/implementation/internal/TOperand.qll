@@ -13,7 +13,7 @@ private module Internal {
   /**
    * An IR operand. `TOperand` is shared across all phases of the IR. There are branches of this
    * type for operands created directly from the AST (`TRegisterOperand` and `TNonSSAMemoryOperand`),
-   * for operands computed by each stage of SSA construction (`T*PhiOperand`), and a placehold branch
+   * for operands computed by each stage of SSA construction (`T*PhiOperand`), and a placeholder branch
    * for operands that do not exist in a given stage of IR construction (`TNoOperand`).
    */
   cached
