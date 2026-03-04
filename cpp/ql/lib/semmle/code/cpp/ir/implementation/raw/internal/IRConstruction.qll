@@ -510,8 +510,6 @@ predicate hasUnreachedInstruction(IRFunction func) {
   )
 }
 
-IRVariable getAnUninitializedGroupVariable(UninitializedGroupInstruction instr) { none() }
-
 import CachedForDebugging
 
 cached

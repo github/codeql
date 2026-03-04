@@ -1251,17 +1251,6 @@ module Opcode {
   }
 
   /**
-   * The `Opcode` for a `UninitializedGroup`.
-   *
-   * See the `UninitializedGroupInstruction` documentation for more details.
-   */
-  class UninitializedGroup extends Opcode, TUninitializedGroup {
-    final override string toString() { result = "UninitializedGroup" }
-
-    override GroupedMemoryAccess getWriteMemoryAccess() { any() }
-  }
-
-  /**
    * The `Opcode` for an `InlineAsmInstruction`.
    *
    * See the `InlineAsmInstruction` documentation for more details.

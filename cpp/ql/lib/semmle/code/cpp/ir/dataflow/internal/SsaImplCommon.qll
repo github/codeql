@@ -546,8 +546,7 @@ private module Cached {
       instr instanceof AliasedDefinitionInstruction or
       instr instanceof AliasedUseInstruction or
       instr instanceof InitializeNonLocalInstruction or
-      instr instanceof ReturnIndirectionInstruction or
-      instr instanceof UninitializedGroupInstruction
+      instr instanceof ReturnIndirectionInstruction
     )
   }
 

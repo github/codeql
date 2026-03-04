@@ -77,20 +77,6 @@ class MemoryLocation0 = MemoryLocation;
 
 predicate canReuseSsaForOldResult(Instruction instr) { none() }
 
-abstract class VariableGroup extends Unit {
-  abstract Allocation getAnAllocation();
-
-  string toString() { result = "{" + strictconcat(this.getAnAllocation().toString(), ", ") + "}" }
-
-  abstract Language::Location getLocation();
-
-  abstract IRFunction getIRFunction();
-
-  abstract Language::LanguageType getType();
-
-  abstract int getInitializationOrder();
-}
-
 /**
  * Represents a set of `MemoryLocation`s that cannot overlap with
  * `MemoryLocation`s outside of the set. The `VirtualVariable` will be

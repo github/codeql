@@ -30,8 +30,7 @@ newtype TInstruction =
   TUnaliasedSsaChiInstruction(TRawInstruction primaryInstruction) { none() } or
   TUnaliasedSsaUnreachedInstruction(IRFunctionBase irFunc) {
     UnaliasedSsa::Ssa::hasUnreachedInstruction(irFunc)
-  } or
-  TUnaliasedSsaUninitializedGroupInstruction(UnaliasedSsa::Ssa::VariableGroup vg)
+  }
 
 /**
  * Provides wrappers for the constructors of each branch of `TInstruction` that is used by the
@@ -52,11 +51,7 @@ module UnaliasedSsaInstructions {
 
   class TChiInstruction = TUnaliasedSsaChiInstruction;
 
-  class TUninitializedGroupInstruction = TUnaliasedSsaUninitializedGroupInstruction;
-
-  class TRawOrUninitializedGroupInstruction = TRawInstruction or TUninitializedGroupInstruction;
-
-  TChiInstruction chiInstruction(TRawOrUninitializedGroupInstruction primaryInstruction) {
+  TChiInstruction chiInstruction(TRawInstruction primaryInstruction) {
     result = TUnaliasedSsaChiInstruction(primaryInstruction)
   }
 
@@ -65,10 +60,4 @@ module UnaliasedSsaInstructions {
   TUnreachedInstruction unreachedInstruction(IRFunctionBase irFunc) {
     result = TUnaliasedSsaUnreachedInstruction(irFunc)
   }
-
-  class VariableGroup = UnaliasedSsa::Ssa::VariableGroup;
-
-  // This really should just be `TUnaliasedSsaUninitializedGroupInstruction`, but that makes the
-  // compiler realize that certain expressions in `SSAConstruction` are unsatisfiable.
-  TRawOrUninitializedGroupInstruction uninitializedGroup(VariableGroup vg) { none() }
 }
