@@ -64,6 +64,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
     predicate hasSourceCallCtx();
 
+    predicate hasFeatureEscapesSourceCallContext(boolean nonEmpty);
+
     predicate hasSinkCallCtx();
 
     predicate jumpStepEx(Nd node1, Nd node2);
@@ -1014,6 +1016,10 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
           feature instanceof FeatureHasSourceCallContext or
           feature instanceof FeatureEqualSourceSinkCallContext
         )
+      }
+
+      predicate hasFeatureEscapesSourceCallContext(boolean strict) {
+        Config::getAFeature() = TFeatureEscapesSourceCallContext(strict)
       }
 
       predicate hasSinkCallCtx() {

@@ -3,6 +3,7 @@ module;
 
 private import codeql.dataflow.DataFlow
 private import codeql.typetracking.TypeTracking as Tt
+private import codeql.util.Boolean
 private import codeql.util.Location
 private import codeql.util.Option
 private import codeql.util.Unit
@@ -46,10 +47,11 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       }
     }
 
-    private newtype TFlowFeature =
+    newtype TFlowFeature =
       TFeatureHasSourceCallContext() or
       TFeatureHasSinkCallContext() or
-      TFeatureEqualSourceSinkCallContext()
+      TFeatureEqualSourceSinkCallContext() or
+      TFeatureEscapesSourceCallContext(Boolean strict)
 
     /** A flow configuration feature for use in `Configuration::getAFeature()`. */
     class FlowFeature extends TFlowFeature {
@@ -78,6 +80,34 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      */
     class FeatureEqualSourceSinkCallContext extends FlowFeature, TFeatureEqualSourceSinkCallContext {
       override string toString() { result = "FeatureEqualSourceSinkCallContext" }
+    }
+
+    /**
+     * A flow configuration feature that implies that the sink must be reached from
+     * the source by escaping the source call context, that is, flow must either
+     * return from the callable containing the source or use a jump-step before reaching
+     * the sink.
+     */
+    class FeatureEscapesSourceCallContext extends FlowFeature, TFeatureEscapesSourceCallContext {
+      FeatureEscapesSourceCallContext() { this = TFeatureEscapesSourceCallContext(true) }
+
+      override string toString() { result = "FeatureEscapesSourceCallContext" }
+    }
+
+    /**
+     * A flow configuration feature that is the disjuction of `FeatureEscapesSourceCallContext`
+     * and `FeatureEqualSourceSinkCallContext`.
+     */
+    class FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext extends FlowFeature,
+      TFeatureEscapesSourceCallContext
+    {
+      FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext() {
+        this = TFeatureEscapesSourceCallContext(false)
+      }
+
+      override string toString() {
+        result = "FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext"
+      }
     }
 
     /**
