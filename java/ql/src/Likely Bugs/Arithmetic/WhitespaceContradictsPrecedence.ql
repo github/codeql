@@ -145,6 +145,7 @@ int operatorWS(BinaryExpr expr) {
 /** Find nested binary expressions where the programmer may have made a precedence mistake. */
 predicate interestingNesting(BinaryExpr inner, BinaryExpr outer) {
   inner = outer.getAChildExpr() and
+  not outer instanceof Assignment and
   not inner instanceof AssocNestedExpr and
   not inner instanceof HarmlessNestedExpr and
   not inner.isParenthesized()

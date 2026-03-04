@@ -392,7 +392,7 @@ class ArrayInit extends Expr, @arrayinit {
  * element assignments since there the assignment destination is not directly
  * the array variable but instead an `ArrayAccess`.
  */
-class Assignment extends Expr, @assignment {
+class Assignment extends BinaryExpr, @assignment {
   /** Gets the destination (left-hand side) of the assignment. */
   Expr getDest() { result.isNthChildOf(this, 0) }
 
@@ -417,6 +417,8 @@ class Assignment extends Expr, @assignment {
  * For example, `x = 23`.
  */
 class AssignExpr extends Assignment, @assignexpr {
+  override string getOp() { result = "=" }
+
   override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
 
@@ -445,7 +447,7 @@ class AssignOp extends Assignment, @assignop {
   override Expr getSource() { result.getParent() = this }
 
   /** Gets a string representation of the assignment operator of this compound assignment. */
-  /*abstract*/ string getOp() { result = "??=" }
+  /*abstract*/ override string getOp() { result = "??=" }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "..." + this.getOp() + "..." }

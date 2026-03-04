@@ -179,13 +179,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
     }
   }
 
-  abstract private class BinExpr extends Expr {
-    Expr getAnOperand() {
-      result = this.(BinaryExpr).getAnOperand() or result = this.(AssignOp).getSource()
-    }
-  }
-
-  class AndExpr extends BinExpr {
+  class AndExpr extends BinaryExpr {
     AndExpr() {
       this instanceof AndBitwiseExpr or
       this instanceof AndLogicalExpr or
@@ -193,7 +187,7 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
     }
   }
 
-  class OrExpr extends BinExpr {
+  class OrExpr extends BinaryExpr {
     OrExpr() {
       this instanceof OrBitwiseExpr or
       this instanceof OrLogicalExpr or
