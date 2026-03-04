@@ -1200,28 +1200,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfterValue(boollit, any(BooleanSuccessor t | t.getValue() = boollit.getValue()))
         )
         or
-        exists(ExprStmt exprstmt |
-          n1.isBefore(exprstmt) and
-          n2.isBefore(exprstmt.getExpr())
-          // the `isAfter(exprstmt.getExpr())` to `isAfter(exprstmt)` case is handled by `propagatesValue` above.
-        )
-        or
-        exists(BlockStmt blockstmt |
-          n1.isBefore(blockstmt) and
-          n2.isBefore(blockstmt.getStmt(0))
-          or
-          not exists(blockstmt.getStmt(_)) and
-          n1.isBefore(blockstmt) and
-          n2.isAfter(blockstmt) and
-          not simpleLeafNode(blockstmt)
-          or
-          exists(int i |
-            n1.isAfter(blockstmt.getStmt(i)) and
-            n2.isBefore(blockstmt.getStmt(i + 1))
-          )
-          // the `isAfter(blockstmt.getLastStmt())` to `isAfter(blockstmt)` case is handled by `propagatesValue` above.
-        )
-        or
         exists(IfStmt ifstmt |
           n1.isBefore(ifstmt) and
           n2.isBefore(ifstmt.getCondition())
@@ -1434,6 +1412,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           exists(int i |
             n1.isAfterValue(getRankedCaseCfgOrder(switch, i),
               any(MatchingSuccessor t | t.getValue() = false))
+            or
+            n1.isAfterFalse(getRankedCaseCfgOrder(switch, i).getGuard())
           |
             n2.isBefore(getRankedCaseCfgOrder(switch, i + 1))
             or
@@ -1478,9 +1458,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             n1.isAfterTrue(case.getGuard()) and
             n2 = beforeBody
-            or
-            n1.isAfterFalse(case.getGuard()) and
-            n2.isAfterValue(case, any(MatchingSuccessor t | t.getValue() = false))
           )
         )
         or
@@ -1525,8 +1502,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           (
             n1.isBefore(ast) and not exists(getRankedChild(ast, _)) and not simpleLeafNode(ast)
             or
-            exists(int i |
-              n1.isAfter(getRankedChild(ast, i)) and not exists(getRankedChild(ast, i + 1))
+            exists(int i, AstNode last |
+              last = getRankedChild(ast, i) and
+              not exists(getRankedChild(ast, i + 1)) and
+              n1.isAfter(last) and
+              not propagatesValue(last, ast)
             )
           ) and
           (if postOrInOrder(ast) then n2.isIn(ast) else n2.isAfter(ast))
