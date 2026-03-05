@@ -1261,10 +1261,10 @@ case @expr.kind of
 @rel_op_expr = @gt_expr | @lt_expr| @ge_expr | @le_expr;
 @comp_expr = @equality_op_expr | @rel_op_expr;
 
-@op_expr = @un_op | @bin_op | @ternary_op;
+@op_expr = @assign_expr | @un_op | @bin_op | @ternary_op;
 
 @ternary_op = @ternary_log_op_expr;
-@bin_op = @assign_expr | @bin_arith_op_expr | @bin_log_op_expr | @bin_bit_op_expr | @comp_expr;
+@bin_op = @bin_arith_op_expr | @bin_log_op_expr | @bin_bit_op_expr | @comp_expr;
 @un_op = @un_arith_op_expr | @un_log_op_expr | @un_bit_op_expr | @sizeof_expr
        | @pointer_indirection_expr | @address_of_expr;
 
