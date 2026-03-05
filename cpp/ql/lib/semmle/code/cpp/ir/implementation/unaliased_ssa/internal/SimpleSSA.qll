@@ -73,8 +73,6 @@ class MemoryLocation extends TMemoryLocation {
   final predicate canReuseSsa() { canReuseSsaForVariable(var) }
 }
 
-class MemoryLocation0 = MemoryLocation;
-
 predicate canReuseSsaForOldResult(Instruction instr) { none() }
 
 /**
