@@ -25,19 +25,27 @@ class NormalReturnKind extends ReturnKind, TNormalReturnKind {
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
 
-newtype TDataFlowCallable = TCallable(Callable c)
+newtype TDataFlowCallable =
+  TCallable(Callable c) or
+  TProgram(Program p)
 
-/** A callable (function, method, closure, arrow function). */
+/** A callable (function, method, closure, arrow function, or file-level program). */
 class DataFlowCallable extends TDataFlowCallable {
-  Callable c;
+  Callable asCallable() { this = TCallable(result) }
 
-  DataFlowCallable() { this = TCallable(c) }
+  Program asProgram() { this = TProgram(result) }
 
-  Callable asCallable() { result = c }
+  string toString() {
+    result = this.asCallable().toString()
+    or
+    result = this.asProgram().toString()
+  }
 
-  string toString() { result = c.toString() }
-
-  Location getLocation() { result = c.getLocation() }
+  Location getLocation() {
+    result = this.asCallable().getLocation()
+    or
+    result = this.asProgram().getLocation()
+  }
 }
 
 newtype TDataFlowCall = TNormalCall(Call call)
@@ -52,6 +60,9 @@ class DataFlowCall extends TDataFlowCall {
 
   DataFlowCallable getEnclosingCallable() {
     result.asCallable() = call.getParent*().(Callable)
+    or
+    not call.getParent*() instanceof Callable and
+    result.asProgram() = call.getParent*().(Program)
   }
 
   string toString() { result = call.toString() }

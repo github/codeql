@@ -51,12 +51,21 @@ class PathSink extends DataFlow::ExprNode {
     exists(FunctionCallExpr call |
       call.getFunctionName() =
         [
-          "fopen", "file_get_contents", "file_put_contents", "readfile", "include", "include_once",
-          "require", "require_once", "file", "fread", "fwrite", "unlink", "rename", "copy",
-          "mkdir", "rmdir", "is_file", "is_dir", "realpath", "glob"
+          "fopen", "file_get_contents", "file_put_contents", "readfile", "file", "fread",
+          "fwrite", "unlink", "rename", "copy", "mkdir", "rmdir", "is_file", "is_dir",
+          "realpath", "glob", "move_uploaded_file"
         ] and
       this.asExpr() = call.getArgument(0)
     )
+    or
+    // include/require are language constructs, not function calls
+    exists(IncludeExpr inc | this.asExpr() = inc.getArgument())
+    or
+    exists(IncludeOnceExpr inc | this.asExpr() = inc.getArgument())
+    or
+    exists(RequireExpr req | this.asExpr() = req.getArgument())
+    or
+    exists(RequireOnceExpr req | this.asExpr() = req.getArgument())
   }
 }
 

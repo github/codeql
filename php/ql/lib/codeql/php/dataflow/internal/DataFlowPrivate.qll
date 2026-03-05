@@ -11,6 +11,10 @@ DataFlowCallable nodeGetEnclosingCallable(Node n) {
   result = TCallable(n.asExpr().getParent*().(Callable))
   or
   result = TCallable(n.asParameter().getParent*().(Callable))
+  or
+  // File-level code: node is inside a Program but not inside any Callable
+  not n.asExpr().getParent*() instanceof Callable and
+  result = TProgram(n.asExpr().getParent*().(Program))
 }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
@@ -74,6 +78,18 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
     exists(AssignExpr assign |
       nodeFrom.asExpr() = assign.getRightOperand() and
       nodeTo.asExpr() = assign.getLeftOperand()
+    )
+    or
+    // Variable def-use: value flows from a variable definition to a read of the
+    // same variable in the same scope. This is a simple approximation without SSA.
+    exists(VariableName def, VariableName use, AssignExpr assign |
+      assign.getLeftOperand() = def and
+      nodeFrom.asExpr() = def and
+      nodeTo.asExpr() = use and
+      use.getValue() = def.getValue() and
+      use != def and
+      not exists(AssignExpr a | a.getLeftOperand() = use) and
+      nodeGetEnclosingCallable(nodeFrom) = nodeGetEnclosingCallable(nodeTo)
     )
     or
     // Parenthesized expression: value flows through

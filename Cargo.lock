@@ -420,6 +420,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "codeql-extractor-php"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "codeql-extractor",
+ "encoding",
+ "lazy_static",
+ "rayon",
+ "regex",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+ "tree-sitter",
+ "tree-sitter-php",
+]
+
+[[package]]
 name = "codeql-extractor-ruby"
 version = "0.1.0"
 dependencies = [
@@ -2890,6 +2907,16 @@ name = "tree-sitter-language"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c4013970217383f67b18aef68f6fb2e8d409bc5755227092d32efb0422ba24b8"
+
+[[package]]
+name = "tree-sitter-php"
+version = "0.23.11"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f066e94e9272cfe4f1dcb07a1c50c66097eca648f2d7233d299c8ae9ed8c130c"
+dependencies = [
+ "cc",
+ "tree-sitter-language",
+]
 
 [[package]]
 name = "tree-sitter-ql"
