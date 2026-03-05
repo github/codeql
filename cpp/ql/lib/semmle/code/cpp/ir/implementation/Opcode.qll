@@ -90,7 +90,6 @@ private newtype TOpcode =
   TSizedBufferMayWriteSideEffect() or
   TInitializeDynamicAllocation() or
   TChi() or
-  TUninitializedGroup() or
   TInlineAsm() or
   TUnreached() or
   TNewObj() or
