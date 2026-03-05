@@ -1,6 +1,6 @@
 def m1
   x = source 1
-  sink(Arel.sql(x)) # $hasTaintFlow=1
+  sink(Arel.sql(x)) # $ hasTaintFlow=1
 end
 
 def m2

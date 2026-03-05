@@ -45,8 +45,8 @@ end
 def m8
     sink(s8 { source "a" }) # $ hasValueFlow=a
     sink(s8 do
-        source "a" 
-    end) # $hasValueFlow=a
+        source "a"
+    end) # $ hasValueFlow=a
 end
 
 def m9
@@ -259,7 +259,7 @@ def m31(h, i)
     h[:bar] = source("b")
     h[1] = source("c")
     h[i] = source("d")
-    
+
     sink s31(h) # $ hasValueFlow=a hasValueFlow=d
 end
 
@@ -269,7 +269,7 @@ def m32(h, i)
     h[:bar] = source("c")
     h[1] = source("d")
     h[i] = source("e")
-    
+
     sink s32(h) # $ hasValueFlow=b $ hasValueFlow=e $ SPURIOUS: hasValueFlow=a
 end
 
@@ -282,7 +282,7 @@ def m33(h, i)
     h[nil] = source("f")
     h[true] = source("g")
     h[false] = source("h")
-    
+
     sink s33(h) # $ hasValueFlow=e hasValueFlow=f hasValueFlow=g hasValueFlow=h
 end
 
@@ -312,7 +312,7 @@ end
 def m38(h, i)
     h["foo"] = source("a")
     h[i] = source("b")
-    
+
     sink s38(h) # $ hasValueFlow=a
 end
 
@@ -364,7 +364,7 @@ def m44(i, h)
     h[i] = source("c")
 
     s44(h)
-    
+
     sink h[0]
     sink h[1] # $ hasValueFlow=b
     sink h[i] # $ hasValueFlow=b
@@ -380,7 +380,7 @@ def m45(i, h)
     sink h[i] # $ hasValueFlow=a hasValueFlow=b hasValueFlow=c
 
     s45(h)
-    
+
     sink h[0] # $ hasValueFlow=c
     sink h[1] # $ hasValueFlow=b hasValueFlow=c
     sink h[i] # $ hasValueFlow=b hasValueFlow=c
@@ -396,7 +396,7 @@ def m46(i, h)
     sink h[i] # $ hasValueFlow=a hasValueFlow=b hasValueFlow=c
 
     x = s46(h)
-    
+
     sink x[0]
     sink x[1] # $ hasValueFlow=b
     sink x[i] # $ hasValueFlow=b
@@ -406,12 +406,12 @@ def m47(i, h)
     h[:foo] = source("a")
     h[:bar] = source("b")
     h[i] = source("c")
-    
+
     sink h[:foo] # $ hasValueFlow=a hasValueFlow=c
     sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
-    
+
     x = s47(h)
-    
+
     sink x[:foo]
     sink x[:bar] # $ hasValueFlow=b
 end
@@ -420,12 +420,12 @@ def m48(i, h)
     h[:foo] = source("a")
     h[:bar] = source("b")
     h[i] = source("c")
-    
+
     sink h[:foo] # $ hasValueFlow=a hasValueFlow=c
     sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
-    
+
     x = s48(h)
-    
+
     sink x[:foo]
     sink x[:bar] # $ hasValueFlow=b
 end
@@ -434,12 +434,12 @@ def m49(i, h)
     h[:foo] = source("a")
     h[:bar] = source("b")
     h[i] = source("c")
-    
+
     sink h[:foo] # $ hasValueFlow=a hasValueFlow=c
     sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
-    
+
     x = s49(h)
-    
+
     sink x[:foo] # $ hasValueFlow=c
     sink x[:bar] # $ hasValueFlow=b hasValueFlow=c
 end
@@ -448,12 +448,12 @@ def m50(i, h)
     h[:foo] = source("a")
     h[:bar] = source("b")
     h[i] = source("c")
-    
+
     sink h[:foo] # $ hasValueFlow=a hasValueFlow=c
     sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
-    
+
     s50(h)
-    
+
     sink h[:foo]
     sink h[:bar] # $ hasValueFlow=b
 end
@@ -462,12 +462,12 @@ def m51(i, h)
     h[:foo] = source("a")
     h[:bar] = source("b")
     h[i] = source("c")
-    
+
     sink h[:foo] # $ hasValueFlow=a hasValueFlow=c
     sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
-    
+
     s51(h)
-    
+
     sink h[:foo] # $ hasValueFlow=c
     sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
 end
@@ -476,12 +476,12 @@ def m52(i, h)
     h[:foo] = source("a")
     h[:bar] = source("b")
     h[i] = source("c")
-    
+
     sink h[:foo] # $ hasValueFlow=a hasValueFlow=c
     sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
-    
+
     h.s52
-    
+
     sink h[:foo]
     sink h[:bar] # $ hasValueFlow=b
 end
@@ -490,12 +490,12 @@ def m53(i, h)
     h[:foo] = source("a")
     h[:bar] = source("b")
     h[i] = source("c")
-    
+
     sink h[:foo] # $ hasValueFlow=a hasValueFlow=c
     sink h[:bar] # $ hasValueFlow=b hasValueFlow=c
-    
+
     x = h.s53()
-    
+
     sink x[:foo]
     sink x[:bar] # $ hasValueFlow=b
 

@@ -7,7 +7,7 @@ class Test {
     }
 
     URLConnection test2() throws Exception {
-        return new URL("https://bad.example.com").openConnection(); // $hasUntrustedResult
+        return new URL("https://bad.example.com").openConnection(); // $ hasUntrustedResult
     }
 
     URLConnection test3() throws Exception {

@@ -1338,7 +1338,7 @@ void indirect_time_conversion_check(WORD year, WORD offset){
 void set_time(WORD year, WORD month, WORD day){
 	SYSTEMTIME tmp;
 
-	tmp.wYear = year; //$ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
+	tmp.wYear = year; // $ Alert[cpp/leap-year/unchecked-after-arithmetic-year-modification]
 	tmp.wMonth = month;
 	tmp.wDay = day;
 }

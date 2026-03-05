@@ -30,6 +30,6 @@ public class UnsafeAndroidBroadcastReceiver extends BroadcastReceiver {
 			}
 		});
 
-		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
+		wv.loadUrl(thisUrl); // $ hasUnsafeAndroidAccess
 	}
 }

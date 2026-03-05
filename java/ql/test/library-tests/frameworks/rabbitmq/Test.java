@@ -11,20 +11,20 @@ public class Test {
 
             @Override
             public void handleDelivery(
-                    String consumerTag, Envelope envelope, AMQP.BasicProperties properties, 
-                    byte[] body) { // $source
+                    String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
+                    byte[] body) { // $ source
 
-                sink(body); // $hasTaintFlow
+                sink(body); // $ hasTaintFlow
             }
         };
     }
 
     public void queueingConsumerTest(QueueingConsumer consumer) {
         while (true) {
-            QueueingConsumer.Delivery delivery = consumer.nextDelivery(); // $source
-            sink(delivery.getBody()); // $hasTaintFlow
-            delivery = consumer.nextDelivery(42); // $source
-            sink(delivery.getBody()); // $hasTaintFlow
+            QueueingConsumer.Delivery delivery = consumer.nextDelivery(); // $ source
+            sink(delivery.getBody()); // $ hasTaintFlow
+            delivery = consumer.nextDelivery(42); // $ source
+            sink(delivery.getBody()); // $ hasTaintFlow
         }
     }
 

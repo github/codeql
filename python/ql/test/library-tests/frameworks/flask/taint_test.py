@@ -1,8 +1,8 @@
 from flask import Flask, request, render_template_string, stream_template_string
 app = Flask(__name__)
 
-@app.route("/test_taint/<name>/<int:number>")  # $routeSetup="/test_taint/<name>/<int:number>"
-def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler routedParameter=name routedParameter=number
+@app.route("/test_taint/<name>/<int:number>")  # $ routeSetup="/test_taint/<name>/<int:number>"
+def test_taint(name = "World!", number="0", foo="foo"):  # $ requestHandler routedParameter=name routedParameter=number
     ensure_tainted(name, number) # $ tainted
     ensure_not_tainted(foo)
 
@@ -245,8 +245,8 @@ def test_taint(name = "World!", number="0", foo="foo"):  # $requestHandler route
         ensure_not_tainted(x)
 
 
-@app.route("/debug/<foo>/<bar>", methods=['GET']) # $routeSetup="/debug/<foo>/<bar>"
-def debug(foo, bar):  # $requestHandler routedParameter=foo routedParameter=bar
+@app.route("/debug/<foo>/<bar>", methods=['GET']) # $ routeSetup="/debug/<foo>/<bar>"
+def debug(foo, bar):  # $ requestHandler routedParameter=foo routedParameter=bar
     print("request.view_args", request.view_args)
 
     print("request.headers {!r}".format(request.headers))
@@ -254,20 +254,20 @@ def debug(foo, bar):  # $requestHandler routedParameter=foo routedParameter=bar
 
     print("request.pragma {!r}".format(request.pragma))
 
-    return 'ok'  # $HttpResponse
+    return 'ok'  # $ HttpResponse
 
-@app.route("/stream", methods=['POST'])  # $routeSetup="/stream"
-def stream():  # $requestHandler
+@app.route("/stream", methods=['POST'])  # $ routeSetup="/stream"
+def stream():  # $ requestHandler
     print(request.path)
     s = request.stream
     print(s)
     # just works :)
     print(s.read())
 
-    return 'ok'  # $HttpResponse
+    return 'ok'  # $ HttpResponse
 
-@app.route("/input_stream", methods=['POST'])  # $routeSetup="/input_stream"
-def input_stream():  # $requestHandler
+@app.route("/input_stream", methods=['POST'])  # $ routeSetup="/input_stream"
+def input_stream():  # $ requestHandler
     print(request.path)
     s = request.input_stream
     print(s)
@@ -275,38 +275,38 @@ def input_stream():  # $requestHandler
     # be handled manually
     print(s.read())
 
-    return 'ok'  # $HttpResponse
+    return 'ok'  # $ HttpResponse
 
-@app.route("/form", methods=['POST'])  # $routeSetup="/form"
-def form():  # $requestHandler
+@app.route("/form", methods=['POST'])  # $ routeSetup="/form"
+def form():  # $ requestHandler
     print(request.path)
     print("request.form", request.form)
 
-    return 'ok'  # $HttpResponse
+    return 'ok'  # $ HttpResponse
 
-@app.route("/cache_control", methods=['POST'])  # $routeSetup="/cache_control"
-def cache_control():  # $requestHandler
+@app.route("/cache_control", methods=['POST'])  # $ routeSetup="/cache_control"
+def cache_control():  # $ requestHandler
     print(request.path)
     print("request.cache_control.max_age", request.cache_control.max_age, type(request.cache_control.max_age))
     print("request.cache_control.max_stale", request.cache_control.max_stale, type(request.cache_control.max_stale))
     print("request.cache_control.min_fresh", request.cache_control.min_fresh, type(request.cache_control.min_fresh))
 
-    return 'ok'  # $HttpResponse
+    return 'ok'  # $ HttpResponse
 
-@app.route("/file_upload", methods=['POST'])  # $routeSetup="/file_upload"
-def file_upload():  # $requestHandler
+@app.route("/file_upload", methods=['POST'])  # $ routeSetup="/file_upload"
+def file_upload():  # $ requestHandler
     print(request.path)
     for k,v in request.files.items():
         print(k, v, v.name, v.filename, v.stream)
 
-    return 'ok'  # $HttpResponse
+    return 'ok'  # $ HttpResponse
 
-@app.route("/args", methods=['GET'])  # $routeSetup="/args"
-def args():  # $requestHandler
+@app.route("/args", methods=['GET'])  # $ routeSetup="/args"
+def args():  # $ requestHandler
     print(request.path)
     print("request.args", request.args)
 
-    return 'ok'  # $HttpResponse
+    return 'ok'  # $ HttpResponse
 
 # curl --header "My-Header: some-value" http://localhost:5000/debug/fooval/barval
 # curl --header "Pragma: foo, bar" --header "Pragma: stuff, foo" http://localhost:5000/debug/fooval/barval
