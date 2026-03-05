@@ -53,8 +53,6 @@ private predicate unboxed(Expr e) {
       assign.getDest().getType() instanceof PrimitiveType and assign.getSource() = e
     )
     or
-    exists(AssignOp assign | assign.getSource() = e and assign.getType() instanceof PrimitiveType)
-    or
     exists(EqualityTest eq |
       eq.getAnOperand() = e and eq.getAnOperand().getType() instanceof PrimitiveType
     )
@@ -62,6 +60,7 @@ private predicate unboxed(Expr e) {
     exists(BinaryExpr bin |
       bin.getAnOperand() = e and
       not bin instanceof EqualityTest and
+      not bin instanceof AssignExpr and
       bin.getType() instanceof PrimitiveType
     )
     or

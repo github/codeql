@@ -19,6 +19,7 @@ where
   lit.getLiteral() = val and
   val.regexpMatch("0[0-7][0-7]+") and
   lit.getParent() instanceof BinaryExpr and
+  not lit.getParent() instanceof Assignment and
   not lit.getParent() instanceof BitwiseExpr and
   not lit.getParent() instanceof ComparisonExpr
 select lit, "Integer literal starts with 0."
