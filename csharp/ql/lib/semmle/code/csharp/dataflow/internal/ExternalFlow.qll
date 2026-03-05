@@ -241,8 +241,10 @@ module ModelValidation {
 
   string getIncorrectConstructorSummaryOutput() {
     exists(string namespace, string type, string name, string output |
+      type = name or
+      type = name + "<" + any(string s)
+    |
       summaryModel(namespace, type, _, name, _, _, _, output, _, _, _) and
-      type = name and
       output.matches("ReturnValue%") and
       result =
         "Constructor model for " + namespace + "." + type +
