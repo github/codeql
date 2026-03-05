@@ -1,9 +1,0 @@
-| Constructor model for java.net.URI should use `Argument[this]` in the output, not `ReturnValue`. |
-| Constructor model for java.util.zip.ZipEntry should use `Argument[this]` in the output, not `ReturnValue`. |
-| Constructor model for org.apache.hc.core5.http.io.entity.BasicHttpEntity should use `Argument[this]` in the output, not `ReturnValue`. |
-| Constructor model for org.apache.hc.core5.http.io.entity.BufferedHttpEntity should use `Argument[this]` in the output, not `ReturnValue`. |
-| Constructor model for org.apache.hc.core5.http.io.entity.HttpEntityWrapper should use `Argument[this]` in the output, not `ReturnValue`. |
-| Constructor model for org.apache.hc.core5.http.io.entity.InputStreamEntity should use `Argument[this]` in the output, not `ReturnValue`. |
-| Constructor model for org.apache.http.entity.BufferedHttpEntity should use `Argument[this]` in the output, not `ReturnValue`. |
-| Constructor model for org.apache.http.entity.HttpEntityWrapper should use `Argument[this]` in the output, not `ReturnValue`. |
-| Constructor model for org.apache.http.entity.InputStreamEntity should use `Argument[this]` in the output, not `ReturnValue`. |
