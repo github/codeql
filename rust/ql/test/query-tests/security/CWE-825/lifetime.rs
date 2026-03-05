@@ -177,7 +177,7 @@ fn access_ptr_2(ptr: *const i64) {
 fn access_ptr_3(ptr: *const i64) {
 	// called from contexts with `ptr` safe and dangling
 	unsafe {
-		let v3 = *ptr; // $ MISSING: Alert
+		let v3 = *ptr; // $ Alert[rust/access-after-lifetime-ended]=local1
 		println!("	v3 = {v3} (!)"); // corrupt in practice (in one context)
 	}
 }
