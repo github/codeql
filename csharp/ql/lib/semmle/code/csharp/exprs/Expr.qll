@@ -233,7 +233,8 @@ class UnaryOperation extends Operation, @un_op {
  * A binary operation. Either a binary arithmetic operation
  * (`BinaryArithmeticOperation`), a binary bitwise operation
  * (`BinaryBitwiseOperation`), a comparison operation (`ComparisonOperation`),
- * or a binary logical operation (`BinaryLogicalOperation`).
+ * a binary logical operation (`BinaryLogicalOperation`), or an
+ * assignment (`Assignment`).
  */
 class BinaryOperation extends Operation, @bin_op {
   /** Gets the left operand of this binary operation. */

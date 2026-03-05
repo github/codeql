@@ -11,7 +11,7 @@ import Expr
  * (`LocalVariableDeclAndInitExpr`), a simple assignment (`AssignExpr`), or
  * an assignment operation (`AssignOperation`).
  */
-class Assignment extends Operation, @assign_expr {
+class Assignment extends BinaryOperation, @assign_expr {
   Assignment() {
     this instanceof LocalVariableDeclExpr
     implies
@@ -19,6 +19,10 @@ class Assignment extends Operation, @assign_expr {
     // negative recursion
     expr_parent(_, 0, this)
   }
+
+  override Expr getLeftOperand() { result = this.getChild(1) }
+
+  override Expr getRightOperand() { result = this.getChild(0) }
 
   /** Gets the left operand of this assignment. */
   Expr getLValue() { result = this.getChild(1) }
