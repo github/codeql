@@ -304,8 +304,6 @@ Instruction getMemoryOperandDefinition(
   none()
 }
 
-predicate hasIncompleteSsa(IRFunction f) { none() }
-
 /**
  * Holds if the operand totally overlaps with its definition and consumes the
  * bit range `[startBitOffset, endBitOffset)`.
