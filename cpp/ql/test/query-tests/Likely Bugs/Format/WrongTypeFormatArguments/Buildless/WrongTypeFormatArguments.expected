@@ -1,1 +1,7 @@
+| include_twice.h:10:18:10:18 | s | This format specifier for type 'int' does not match the argument type 'unsigned long'. |
+| include_twice.h:13:18:13:18 | s | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long'. |
+| include_twice.h:21:18:21:39 | ... - ... | This format specifier for type 'int' does not match the argument type 'long'. |
+| include_twice.h:21:18:21:39 | ... - ... | This format specifier for type 'int' does not match the argument type 'long'. |
+| include_twice.h:24:18:24:39 | ... - ... | This format specifier for type 'unsigned int' does not match the argument type 'long'. |
+| include_twice.h:24:18:24:39 | ... - ... | This format specifier for type 'unsigned int' does not match the argument type 'long'. |
 | tests.c:7:18:7:18 | 1 | This format specifier for type 'char *' does not match the argument type 'int'. |
