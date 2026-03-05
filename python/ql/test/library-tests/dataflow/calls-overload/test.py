@@ -11,8 +11,8 @@ class OverloadedInit:
     def __init__(self, x, y=None):
         pass
 
-OverloadedInit(1) # $ init=OverloadedInit.__init__:11 SPURIOUS: init=OverloadedInit.__init__:6 init=OverloadedInit.__init__:9
-OverloadedInit("a", "b") # $ init=OverloadedInit.__init__:11 SPURIOUS: init=OverloadedInit.__init__:6 init=OverloadedInit.__init__:9
+OverloadedInit(1) # $ init=OverloadedInit.__init__:11
+OverloadedInit("a", "b") # $ init=OverloadedInit.__init__:11
 
 
 from typing import overload
@@ -28,8 +28,8 @@ class OverloadedInitFromImport:
     def __init__(self, x, y=None):
         pass
 
-OverloadedInitFromImport(1) # $ init=OverloadedInitFromImport.__init__:28 SPURIOUS: init=OverloadedInitFromImport.__init__:23 init=OverloadedInitFromImport.__init__:26
-OverloadedInitFromImport("a", "b") # $ init=OverloadedInitFromImport.__init__:28 SPURIOUS: init=OverloadedInitFromImport.__init__:23 init=OverloadedInitFromImport.__init__:26
+OverloadedInitFromImport(1) # $ init=OverloadedInitFromImport.__init__:28
+OverloadedInitFromImport("a", "b") # $ init=OverloadedInitFromImport.__init__:28
 
 
 class NoOverloads:
