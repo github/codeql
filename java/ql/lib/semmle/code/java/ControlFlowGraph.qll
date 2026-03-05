@@ -93,7 +93,7 @@ private module Ast implements AstSig<Location> {
 
   class ReturnStmt = J::ReturnStmt;
 
-  class ThrowStmt = J::ThrowStmt;
+  class Throw = J::ThrowStmt;
 
   final private class FinalTryStmt = J::TryStmt;
 

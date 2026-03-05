@@ -155,11 +155,11 @@ signature module AstSig<LocationSig Location> {
   }
 
   /**
-   * A `throw` statement.
+   * A `throw` statement or expression.
    *
-   * Throw statements complete abruptly and throw an exception.
+   * Throw statements/expressions complete abruptly and throw an exception.
    */
-  class ThrowStmt extends Stmt {
+  class Throw extends AstNode {
     /** Gets the expression being thrown. */
     Expr getExpr();
   }
@@ -426,7 +426,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof ReturnStmt
       or
-      n instanceof ThrowStmt
+      n instanceof Throw
       or
       n instanceof BreakStmt
       or
@@ -563,7 +563,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof ReturnStmt
       or
-      n instanceof ThrowStmt
+      n instanceof Throw
       or
       cannotTerminateNormally(n.(BlockStmt).getLastStmt())
       or
@@ -992,7 +992,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           ast instanceof ReturnStmt and
           c.getSuccessorType() instanceof ReturnSuccessor
           or
-          ast instanceof ThrowStmt and
+          ast instanceof Throw and
           c.getSuccessorType() instanceof ExceptionSuccessor
           or
           ast instanceof BreakStmt and
