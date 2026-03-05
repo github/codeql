@@ -91,6 +91,10 @@ private module Ast implements AstSig<Location> {
 
   class ContinueStmt = J::ContinueStmt;
 
+  class GotoStmt extends Stmt {
+    GotoStmt() { none() }
+  }
+
   class ReturnStmt = J::ReturnStmt;
 
   class Throw = J::ThrowStmt;

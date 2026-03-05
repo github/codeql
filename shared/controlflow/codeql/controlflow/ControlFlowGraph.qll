@@ -144,6 +144,13 @@ signature module AstSig<LocationSig Location> {
   class ContinueStmt extends Stmt;
 
   /**
+   * A `goto` statement.
+   *
+   * Goto statements complete abruptly and jump to a labeled statement.
+   */
+  class GotoStmt extends Stmt;
+
+  /**
    * A `return` statement.
    *
    * Return statements complete abruptly and return control to the caller of
@@ -432,6 +439,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof ContinueStmt
       or
+      n instanceof GotoStmt
+      or
       n instanceof Expr and
       exists(getChild(n, _)) and
       not Input1::preOrderExpr(n) and
@@ -560,6 +569,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof BreakStmt
       or
       n instanceof ContinueStmt
+      or
+      n instanceof GotoStmt
       or
       n instanceof ReturnStmt
       or
@@ -1000,6 +1011,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           ast instanceof ContinueStmt and
           c.getSuccessorType() instanceof ContinueSuccessor
+          or
+          ast instanceof GotoStmt and
+          c.getSuccessorType() instanceof GotoSuccessor
         ) and
         (
           not Input1::hasLabel(ast, _) and not c.hasLabel(_)
@@ -1018,6 +1032,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           c.getSuccessorType() instanceof ExceptionSuccessor and
           always = true
         )
+      }
+
+      private Stmt getAStmtInBlock(AstNode block) {
+        result = block.(BlockStmt).getStmt(_) or
+        result = block.(Switch).getStmt(_)
       }
 
       /**
@@ -1097,6 +1116,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             c.hasLabel(l) and
             Input1::hasLabel(switch, l)
           )
+        )
+        or
+        exists(AstNode block, Input1::Label l, Stmt lblstmt |
+          ast = getAStmtInBlock(block) and
+          lblstmt = getAStmtInBlock(block) and
+          not lblstmt instanceof GotoStmt and
+          Input1::hasLabel(pragma[only_bind_into](lblstmt), l) and
+          n.isBefore(lblstmt) and
+          c.getSuccessorType() instanceof GotoSuccessor and
+          c.hasLabel(l)
         )
       }
 
