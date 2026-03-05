@@ -701,7 +701,7 @@ class PreTypeMention = PreTypeMention::TypeMention;
  * concrete type given by `tm`.
  */
 private predicate pathConcreteTypeAssocType(
-  Path path, PreTypeMention tm, Trait trait, TypeAlias alias
+  Path path, PreTypeMention tm, TraitItemNode trait, PreTypeMention tmTrait, TypeAlias alias
 ) {
   exists(Path qualifier |
     qualifier = path.getQualifier() and
@@ -709,9 +709,8 @@ private predicate pathConcreteTypeAssocType(
   |
     // path of the form `<Type as Trait>::AssocType`
     //                    ^^^ tm          ^^^^^^^^^ name
-    exists(string name, Path traitPath |
-      pathTypeAsTraitAssoc(path, tm, traitPath, name) and
-      trait = resolvePath(traitPath) and
+    exists(string name |
+      pathTypeAsTraitAssoc(path, tm, tmTrait, trait, name) and
       getTraitAssocType(trait, name) = alias
     )
     or
@@ -721,14 +720,15 @@ private predicate pathConcreteTypeAssocType(
       alias = resolvePath(path) and
       qualifier = impl.getASelfPath() and
       tm = impl.(Impl).getSelfTy() and
-      trait.(TraitItemNode).getAnAssocItem() = alias
+      trait.getAnAssocItem() = alias and
+      tmTrait = impl.getTraitPath()
     )
   )
 }
 
 private module PathSatisfiesConstraintInput implements SatisfiesConstraintInputSig<PreTypeMention> {
   predicate relevantConstraint(PreTypeMention tm, Type constraint) {
-    pathConcreteTypeAssocType(_, tm, constraint.(TraitType).getTrait(), _)
+    pathConcreteTypeAssocType(_, tm, constraint.(TraitType).getTrait(), _, _)
   }
 }
 
@@ -740,10 +740,22 @@ private module PathSatisfiesConstraint =
  * on a concrete type.
  */
 private Type getPathConcreteAssocTypeAt(Path path, TypePath typePath) {
-  exists(PreTypeMention tm, TraitItemNode t, TypeAlias alias, TypePath path0 |
-    pathConcreteTypeAssocType(path, tm, t, alias) and
-    PathSatisfiesConstraint::satisfiesConstraintType(tm, TTrait(t), path0, result) and
-    path0.isCons(TAssociatedTypeTypeParameter(t, alias), typePath)
+  exists(
+    PreTypeMention tm, ImplItemNode impl, TraitItemNode trait, TraitType t, PreTypeMention tmTrait,
+    TypeAlias alias, TypePath path0
+  |
+    pathConcreteTypeAssocType(path, tm, trait, tmTrait, alias) and
+    t = TTrait(trait) and
+    PathSatisfiesConstraint::satisfiesConstraintTypeThrough(tm, impl, t, path0, result) and
+    path0.isCons(TAssociatedTypeTypeParameter(trait, alias), typePath)
+  |
+    tmTrait.getTypeAt(TypePath::nil()) != t
+    or
+    not exists(TypePath path1, Type t1 |
+      t1 = impl.getTraitPath().(PreTypeMention).getTypeAt(path1) and
+      not t1 instanceof TypeParameter and
+      t1 != tmTrait.getTypeAt(path1)
+    )
   )
 }
 

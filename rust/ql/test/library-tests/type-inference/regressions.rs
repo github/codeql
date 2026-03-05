@@ -71,6 +71,6 @@ mod regression2 {
     fn foo() {
         let s1 = S1;
         let s2 = S2;
-        let x = s1 - &s2; // $ target=S1SubRefS2 type=x:S2 $ SPURIOUS: type=x:S1
+        let x = s1 - &s2; // $ target=S1SubRefS2 type=x:S2
     }
 }

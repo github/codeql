@@ -105,8 +105,6 @@ inferCertainType
 | associated_types.rs:229:23:229:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:229:23:229:27 | SelfParam | TRef | associated_types.rs:10:1:11:9 | S |
 | associated_types.rs:229:30:229:30 | t |  | associated_types.rs:229:20:229:20 | T |
-| associated_types.rs:232:9:234:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:232:9:234:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:233:24:233:24 | t |  | associated_types.rs:229:20:229:20 | T |
 | associated_types.rs:237:19:241:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:239:28:239:31 | true |  | {EXTERNAL LOCATION} | bool |
@@ -4956,7 +4954,6 @@ inferCertainType
 | regressions.rs:66:16:66:19 | SelfParam |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:66:22:66:26 | other |  | {EXTERNAL LOCATION} | & |
 | regressions.rs:66:22:66:26 | other | TRef | regressions.rs:41:5:42:14 | S2 |
-| regressions.rs:66:61:68:9 | { ... } |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:66:61:68:9 | { ... } |  | regressions.rs:41:5:42:14 | S2 |
 | regressions.rs:67:22:67:25 | self |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:67:29:67:33 | other |  | {EXTERNAL LOCATION} | & |
@@ -5130,25 +5127,13 @@ inferType
 | associated_types.rs:229:23:229:27 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | associated_types.rs:229:23:229:27 | SelfParam | TRef | associated_types.rs:10:1:11:9 | S |
 | associated_types.rs:229:30:229:30 | t |  | associated_types.rs:229:20:229:20 | T |
-| associated_types.rs:232:9:234:9 | { ... } |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:232:9:234:9 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| associated_types.rs:233:13:233:25 | ...::through(...) |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:233:13:233:25 | ...::through(...) |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:233:24:233:24 | t |  | associated_types.rs:229:20:229:20 | T |
 | associated_types.rs:237:19:241:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | associated_types.rs:238:13:238:13 | s |  | associated_types.rs:10:1:11:9 | S |
 | associated_types.rs:238:17:238:17 | S |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:239:13:239:14 | _a |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:239:13:239:14 | _a |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:239:18:239:18 | s |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:239:18:239:32 | s.convert(...) |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:239:18:239:32 | s.convert(...) |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:239:28:239:31 | true |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:240:13:240:14 | _b |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:240:13:240:14 | _b |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:240:18:240:18 | s |  | associated_types.rs:10:1:11:9 | S |
-| associated_types.rs:240:18:240:30 | s.convert(...) |  | {EXTERNAL LOCATION} | bool |
-| associated_types.rs:240:18:240:30 | s.convert(...) |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:240:28:240:29 | 42 |  | {EXTERNAL LOCATION} | i32 |
 | associated_types.rs:248:30:248:34 | thing |  | associated_types.rs:248:19:248:27 | T |
 | associated_types.rs:248:65:250:5 | { ... } |  | associated_types.rs:248:19:248:27 | T::Output[GetSet] |
@@ -14816,9 +14801,7 @@ inferType
 | regressions.rs:66:16:66:19 | SelfParam |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:66:22:66:26 | other |  | {EXTERNAL LOCATION} | & |
 | regressions.rs:66:22:66:26 | other | TRef | regressions.rs:41:5:42:14 | S2 |
-| regressions.rs:66:61:68:9 | { ... } |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:66:61:68:9 | { ... } |  | regressions.rs:41:5:42:14 | S2 |
-| regressions.rs:67:13:67:34 | ...::sub(...) |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:67:13:67:34 | ...::sub(...) |  | regressions.rs:41:5:42:14 | S2 |
 | regressions.rs:67:22:67:25 | self |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:67:28:67:33 | * ... |  | regressions.rs:41:5:42:14 | S2 |
@@ -14829,10 +14812,8 @@ inferType
 | regressions.rs:72:18:72:19 | S1 |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:73:13:73:14 | s2 |  | regressions.rs:41:5:42:14 | S2 |
 | regressions.rs:73:18:73:19 | S2 |  | regressions.rs:41:5:42:14 | S2 |
-| regressions.rs:74:13:74:13 | x |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:74:13:74:13 | x |  | regressions.rs:41:5:42:14 | S2 |
 | regressions.rs:74:17:74:18 | s1 |  | regressions.rs:39:5:40:14 | S1 |
-| regressions.rs:74:17:74:24 | ... - ... |  | regressions.rs:39:5:40:14 | S1 |
 | regressions.rs:74:17:74:24 | ... - ... |  | regressions.rs:41:5:42:14 | S2 |
 | regressions.rs:74:22:74:24 | &s2 |  | {EXTERNAL LOCATION} | & |
 | regressions.rs:74:22:74:24 | &s2 | TRef | regressions.rs:41:5:42:14 | S2 |
