@@ -117,6 +117,10 @@ mod additional_tests {
 
         // BAD: Complex format strings
         info!("User {} did action {} at time {}", user_data, "login", "now"); // $ Alert[rust/log-injection]=commandargs
+
+        // GOOD: non-sinks
+        let _ : Vec<u8> = From::from(user_data.clone());
+        let _ : Box<str> = From::from(user_data);
     }
 
     pub fn test_println_patterns() {
@@ -125,5 +129,24 @@ mod additional_tests {
         // These might not be caught depending on model coverage, but are potential logging sinks
         println!("User: {}", user_data); // $ Alert[rust/log-injection]=environment
         eprintln!("Error for user: {}", user_data); // $ Alert[rust/log-injection]=environment
+    }
+}
+
+mod axum_tests {
+    use axum::extract::Path;
+    use axum::routing::get;
+    use axum::Router;
+
+    async fn my_axum_handler_1(o_path: Option<Path<String>>) -> &'static str {
+        let m_path = o_path.map(|x| x);
+
+        println!("{:?}", m_path.unwrap()); // $ Alert[rust/log-injection]=post_handler
+
+        ""
+    }
+
+    async fn test_axum() {
+        let app = Router::<()>::new()
+            .route("/{a}", get(my_axum_handler_1)); // $ Source=post_handler
     }
 }

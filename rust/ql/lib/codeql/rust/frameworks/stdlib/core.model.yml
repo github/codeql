@@ -102,6 +102,9 @@ extensions:
       - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[self]", "ReturnValue", "taint", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::chain", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["<_ as core::iter::traits::iterator::Iterator>::take", "Argument[self]", "ReturnValue", "taint", "manual"]
+      # Option
+      - ["<core::option::Option>::map", "Argument[self].Field[core::option::Option::Some(0)]", "Argument[0].Parameter[0]", "value", "manual"]
+      - ["<core::option::Option>::map", "Argument[0].ReturnValue", "ReturnValue.Field[core::option::Option::Some(0)]", "value", "manual"]
       # Pin
       - ["<core::pin::Pin>::new", "Argument[0]", "ReturnValue.Field[core::pin::Pin::pointer]", "value", "manual"]
       # This model is not precise, but helps in cases where a `Pin` is implicitly dereferenced.
@@ -157,6 +160,16 @@ extensions:
       - ["core::ptr::write_bytes", "Argument[0]", "pointer-access", "manual"]
       - ["core::ptr::write_unaligned", "Argument[0]", "pointer-access", "manual"]
       - ["core::ptr::write_volatile", "Argument[0]", "pointer-access", "manual"]
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: neutralModel
+    data:
+      - ["<core::option::Option>::map", "sink", "manual"]
+      - ["<alloc::vec::Vec as core::convert::From>::from", "sink", "manual"]
+      - ["<alloc::collections::vec_deque::VecDeque as core::convert::From>::from", "sink", "manual"]
+      - ["<std::io::error::Error as core::convert::From>::from", "sink", "manual"]
+      - ["<alloc::sync::Arc as core::convert::From>::from", "sink", "manual"]
+      - ["<alloc::rc::Rc as core::convert::From>::from", "sink", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: excludeFieldTaintStep
