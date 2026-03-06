@@ -17,7 +17,9 @@ predicate isOverlay() { databaseMetadata("isOverlay", "true") }
  * in the base (isOverlayVariant=false) or overlay (isOverlayVariant=true) variant.
  */
 overlay[local]
-private predicate locallyReachableTrapOrTag(boolean isOverlayVariant, string sourceFile, @trap_or_tag t) {
+private predicate locallyReachableTrapOrTag(
+  boolean isOverlayVariant, string sourceFile, @trap_or_tag t
+) {
   exists(@source_file sf, @trap trap |
     (if isOverlay() then isOverlayVariant = true else isOverlayVariant = false) and
     source_file_uses_trap(sf, trap) and
@@ -57,13 +59,15 @@ private predicate discardElement(@element e) {
   // Finally, we have to make sure that base shouldn't retain it.
   // If it is reachable from a base source file, then that is
   // sufficient unless either the base source file has changed (in
-  // particular, been deleted) or the overlay has redefined the TRAP
-  // file or tag it is in.
+  // particular, been deleted), or the overlay has redefined the TRAP
+  // file or tag it is in, or the overlay runner has re-extracted the same
+  // source file (e.g. because a header it includes has changed).
   forall(@trap_or_tag t, string sourceFile |
     locallyInTrapOrTag(false, e, t) and
     locallyReachableTrapOrTag(false, sourceFile, t)
   |
     overlayChangedFiles(sourceFile) or
-    locallyReachableTrapOrTag(true, _, t)
+    locallyReachableTrapOrTag(true, _, t) or
+    locallyReachableTrapOrTag(true, sourceFile, _)
   )
 }
