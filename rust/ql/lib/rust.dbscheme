@@ -194,6 +194,7 @@ named_crates(
 | @field_list
 | @for_binder
 | @format_args_arg
+| @format_args_arg_name
 | @generic_arg
 | @generic_arg_list
 | @generic_param
@@ -477,15 +478,19 @@ format_args_args(
 );
 
 #keyset[id]
+format_args_arg_arg_names(
+  int id: @format_args_arg ref,
+  int arg_name: @format_args_arg_name ref
+);
+
+#keyset[id]
 format_args_arg_exprs(
   int id: @format_args_arg ref,
   int expr: @expr ref
 );
 
-#keyset[id]
 format_args_arg_names(
-  int id: @format_args_arg ref,
-  int name: @name ref
+  unique int id: @format_args_arg_name
 );
 
 @generic_arg =
@@ -1897,7 +1902,6 @@ infer_type_reprs(
 | @macro_rules
 | @module
 | @trait
-| @trait_alias
 | @type_item
 | @use
 ;
@@ -3094,47 +3098,6 @@ trait_visibilities(
 #keyset[id]
 trait_where_clauses(
   int id: @trait ref,
-  int where_clause: @where_clause ref
-);
-
-trait_aliases(
-  unique int id: @trait_alias
-);
-
-#keyset[id, index]
-trait_alias_attrs(
-  int id: @trait_alias ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-trait_alias_generic_param_lists(
-  int id: @trait_alias ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
-trait_alias_names(
-  int id: @trait_alias ref,
-  int name: @name ref
-);
-
-#keyset[id]
-trait_alias_type_bound_lists(
-  int id: @trait_alias ref,
-  int type_bound_list: @type_bound_list ref
-);
-
-#keyset[id]
-trait_alias_visibilities(
-  int id: @trait_alias ref,
-  int visibility: @visibility ref
-);
-
-#keyset[id]
-trait_alias_where_clauses(
-  int id: @trait_alias ref,
   int where_clause: @where_clause ref
 );
 

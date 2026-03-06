@@ -8,7 +8,7 @@ private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
 import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 import codeql.rust.elements.Expr
-import codeql.rust.elements.Name
+import codeql.rust.elements.FormatArgsArgName
 
 /**
  * INTERNAL: This module contains the fully generated definition of `FormatArgsArg` and should not
@@ -27,6 +27,21 @@ module Generated {
     override string getAPrimaryQlClass() { result = "FormatArgsArg" }
 
     /**
+     * Gets the argument name of this format arguments argument, if it exists.
+     */
+    FormatArgsArgName getArgName() {
+      result =
+        Synth::convertFormatArgsArgNameFromRaw(Synth::convertFormatArgsArgToRaw(this)
+              .(Raw::FormatArgsArg)
+              .getArgName())
+    }
+
+    /**
+     * Holds if `getArgName()` exists.
+     */
+    final predicate hasArgName() { exists(this.getArgName()) }
+
+    /**
      * Gets the expression of this format arguments argument, if it exists.
      */
     Expr getExpr() {
@@ -40,20 +55,5 @@ module Generated {
      * Holds if `getExpr()` exists.
      */
     final predicate hasExpr() { exists(this.getExpr()) }
-
-    /**
-     * Gets the name of this format arguments argument, if it exists.
-     */
-    Name getName() {
-      result =
-        Synth::convertNameFromRaw(Synth::convertFormatArgsArgToRaw(this)
-              .(Raw::FormatArgsArg)
-              .getName())
-    }
-
-    /**
-     * Holds if `getName()` exists.
-     */
-    final predicate hasName() { exists(this.getName()) }
   }
 }

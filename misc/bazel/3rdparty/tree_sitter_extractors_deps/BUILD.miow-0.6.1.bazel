@@ -94,6 +94,6 @@ rust_library(
     }),
     version = "0.6.1",
     deps = [
-        "@vendor_ts__windows-sys-0.61.0//:windows_sys",
+        "@vendor_ts__windows-sys-0.61.2//:windows_sys",
     ],
 )
