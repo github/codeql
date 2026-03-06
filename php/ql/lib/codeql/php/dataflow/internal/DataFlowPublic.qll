@@ -4,6 +4,7 @@
 
 private import codeql.php.AST
 private import DataFlowPrivate
+private import SsaImpl as Ssa
 
 /**
  * An element, viewed as a node in a data flow graph. Either an expression
@@ -22,7 +23,9 @@ class Node extends TNode {
     or
     result = this.asParameter().toString()
     or
-    this instanceof TSsaNode and result = "SSA node"
+    exists(Ssa::Definition def |
+      this = TSsaDefinitionNode(def) and result = "SSA def(" + def.toString() + ")"
+    )
     or
     this instanceof TPostUpdateNode and
     result = "[post] " + this.(PostUpdateNode).getPreUpdateNode().toString()
@@ -36,7 +39,9 @@ class Node extends TNode {
     or
     exists(Expr e | this = TPostUpdateNode(e) | result = e.getLocation())
     or
-    this instanceof TSsaNode and result instanceof EmptyLocation
+    exists(Ssa::Definition def |
+      this = TSsaDefinitionNode(def) and result = def.getLocation()
+    )
   }
 
   /**
@@ -87,6 +92,16 @@ class PostUpdateNode extends Node, TPostUpdateNode {
 
   /** Gets the node before the state change. */
   Node getPreUpdateNode() { result = TExprNode(expr) }
+}
+
+/** A data flow node corresponding to an SSA definition. */
+class SsaDefinitionNode extends Node, TSsaDefinitionNode {
+  Ssa::Definition def;
+
+  SsaDefinitionNode() { this = TSsaDefinitionNode(def) }
+
+  /** Gets the underlying SSA definition. */
+  Ssa::Definition getDefinition() { result = def }
 }
 
 /** Gets the node corresponding to `e`. */

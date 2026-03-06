@@ -5,6 +5,10 @@
 private import codeql.php.AST
 private import DataFlowPublic
 private import DataFlowDispatch
+private import SsaImpl as Ssa
+private import codeql.php.controlflow.ControlFlowGraph as Cfg
+private import codeql.php.controlflow.BasicBlocks as BasicBlocks
+private import codeql.php.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) {
@@ -15,6 +19,17 @@ DataFlowCallable nodeGetEnclosingCallable(Node n) {
   // File-level code: node is inside a Program but not inside any Callable
   not n.asExpr().getParent*() instanceof Callable and
   result = TProgram(n.asExpr().getParent*().(Program))
+  or
+  // SSA definition node: use the scope of the SSA variable
+  exists(Ssa::Definition def, Ssa::SsaSourceVariable v |
+    n = TSsaDefinitionNode(def) and
+    def.definesAt(v, _, _)
+  |
+    result = TCallable(v.getScope().(Callable))
+    or
+    not v.getScope() instanceof Callable and
+    result = TProgram(v.getScope().(Program))
+  )
 }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
@@ -38,7 +53,7 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 newtype TNode =
   TExprNode(Expr e) or
   TParameterNode(Parameter p) or
-  TSsaNode() { none() } or
+  TSsaDefinitionNode(Ssa::Definition def) or
   TPostUpdateNode(Expr e) { isPostUpdateExpr(e) }
 
 private predicate isPostUpdateExpr(Expr e) {
@@ -64,9 +79,9 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
-DataFlowType getNodeType(Node node) { result = "" }
+DataFlowType getNodeType(Node node) { exists(node) and result = "" }
 
-predicate nodeIsHidden(Node node) { node instanceof TSsaNode }
+predicate nodeIsHidden(Node node) { node instanceof SsaDefinitionNode }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local step.
@@ -80,16 +95,28 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
       nodeTo.asExpr() = assign.getLeftOperand()
     )
     or
-    // Variable def-use: value flows from a variable definition to a read of the
-    // same variable in the same scope. This is a simple approximation without SSA.
-    exists(VariableName def, VariableName use, AssignExpr assign |
-      assign.getLeftOperand() = def and
-      nodeFrom.asExpr() = def and
-      nodeTo.asExpr() = use and
-      use.getValue() = def.getValue() and
-      use != def and
-      not exists(AssignExpr a | a.getLeftOperand() = use) and
-      nodeGetEnclosingCallable(nodeFrom) = nodeGetEnclosingCallable(nodeTo)
+    // SSA flow: from a variable write to the SSA definition
+    exists(Ssa::WriteDefinition def, BasicBlocks::BasicBlock bb, int i, VariableName vn |
+      def.definesAt(_, bb, i) and
+      bb.getNode(i).getAstNode() = vn and
+      nodeFrom.asExpr() = vn and
+      nodeTo = TSsaDefinitionNode(def) and
+      exists(AssignExpr assign | assign.getLeftOperand() = vn)
+    )
+    or
+    // SSA flow: from an SSA definition to each read of the same variable
+    exists(Ssa::Definition def, BasicBlocks::BasicBlock bb, int i, VariableName vn |
+      ssaDefReachesRead(def, bb, i) and
+      bb.getNode(i).getAstNode() = vn and
+      nodeFrom = TSsaDefinitionNode(def) and
+      nodeTo.asExpr() = vn
+    )
+    or
+    // SSA flow: phi node from input definitions
+    exists(Ssa::PhiNode phi, Ssa::Definition input |
+      input = Ssa::phiHasInputFromBlock(phi, _) and
+      nodeFrom = TSsaDefinitionNode(input) and
+      nodeTo = TSsaDefinitionNode(phi)
     )
     or
     // Parenthesized expression: value flows through
@@ -106,6 +133,19 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
       ) and
       nodeTo.asExpr() = cond
     )
+  )
+}
+
+/**
+ * Holds if SSA definition `def` reaches a read at position `i` in basic block `bb`.
+ */
+private predicate ssaDefReachesRead(
+  Ssa::Definition def, BasicBlocks::BasicBlock bb, int i
+) {
+  exists(Ssa::SsaSourceVariable v |
+    def.definesAt(v, _, _) and
+    Ssa::SsaInput::variableRead(bb, i, v, _) and
+    Ssa::getARead(def) = bb.getNode(i)
   )
 }
 

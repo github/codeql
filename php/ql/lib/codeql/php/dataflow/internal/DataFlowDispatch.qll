@@ -73,14 +73,133 @@ class DataFlowCall extends TDataFlowCall {
 /**
  * Gets a viable callable for the call `c`.
  *
- * This is currently a simple name-based resolution. A full implementation
- * would require type inference and class hierarchy analysis.
+ * Resolves function calls by name, method calls by class hierarchy analysis,
+ * and static calls by class scope.
  */
 DataFlowCallable viableCallable(DataFlowCall c) {
+  // Function call: resolve by name
   exists(FunctionCallExpr fce, FunctionDef fd |
     fce = c.asCall() and
     fd.getNameString() = fce.getFunctionName() and
     result = TCallable(fd)
+  )
+  or
+  // Method call ($obj->method(...)): resolve by method name across all classes
+  exists(MethodCallExpr mce, MethodDecl md |
+    mce = c.asCall() and
+    md.getNameString() = mce.getMethodNameString() and
+    // If we can determine the class of the receiver, restrict to that class hierarchy
+    (
+      // $this->method(): resolve to methods in the enclosing class and its parents
+      mce.getObject().(VariableName).getValue() = "$this" and
+      exists(ClassDecl cd |
+        mce.getParent*() = cd and
+        md = getMethodInClassHierarchy(cd, mce.getMethodNameString())
+      )
+      or
+      // For other receivers, conservatively resolve by method name
+      not mce.getObject().(VariableName).getValue() = "$this" and
+      md.getNameString() = mce.getMethodNameString()
+    ) and
+    result = TCallable(md)
+  )
+  or
+  // Nullsafe method call ($obj?->method(...)): same as method call
+  exists(NullsafeMethodCallExpr mce, MethodDecl md |
+    mce = c.asCall() and
+    md.getNameString() = mce.getMethodNameString() and
+    result = TCallable(md)
+  )
+  or
+  // Scoped (static) call (ClassName::method(...)): resolve by scope and name
+  exists(ScopedCallExpr sce, MethodDecl md |
+    sce = c.asCall() and
+    md.getNameString() = sce.getMethodNameString() and
+    (
+      // Direct class name resolution
+      exists(ClassDecl cd |
+        resolveClassName(sce.getScope()) = cd.getNameString() and
+        md = getMethodInClassHierarchy(cd, sce.getMethodNameString())
+      )
+      or
+      // self/static/parent - resolve from enclosing class
+      exists(ClassDecl enclosing, string scopeName |
+        sce.getParent*() = enclosing and
+        scopeName = resolveScopeName(sce.getScope()) and
+        (
+          scopeName = ["self", "static"] and
+          md = getMethodInClassHierarchy(enclosing, sce.getMethodNameString())
+          or
+          scopeName = "parent" and
+          exists(ClassDecl parent |
+            getBaseClassName(enclosing) = parent.getNameString() and
+            md = getMethodInClassHierarchy(parent, sce.getMethodNameString())
+          )
+        )
+      )
+      or
+      // Fallback: just match by method name
+      not exists(resolveClassName(sce.getScope())) and
+      not exists(resolveScopeName(sce.getScope())) and
+      md.getNameString() = sce.getMethodNameString()
+    ) and
+    result = TCallable(md)
+  )
+}
+
+/**
+ * Gets the string class name from a scope expression, if it is a simple name.
+ */
+private string resolveClassName(AstNode scope) {
+  result = scope.(Name).getValue() and
+  not result = ["self", "static", "parent"]
+  or
+  result = scope.(QualifiedName).getValue() and
+  not result = ["self", "static", "parent"]
+}
+
+/**
+ * Gets a special scope keyword (self/static/parent) from a scope expression.
+ */
+private string resolveScopeName(AstNode scope) {
+  result = scope.(Name).getValue() and
+  result = ["self", "static", "parent"]
+}
+
+/**
+ * Gets the base class name for `cd` (the class it extends).
+ */
+private string getBaseClassName(ClassDecl cd) {
+  exists(BaseClause bc |
+    bc = cd.getBaseClause() and
+    result = bc.getChild(0).(Name).getValue()
+    or
+    bc = cd.getBaseClause() and
+    result = bc.getChild(0).(QualifiedName).getValue()
+  )
+}
+
+/**
+ * Gets a method named `methodName` that is declared in `cd` or one of its
+ * ancestor classes.
+ */
+private MethodDecl getMethodInClassHierarchy(ClassDecl cd, string methodName) {
+  // Direct declaration
+  exists(DeclarationList body |
+    body = cd.getBody() and
+    result = body.getAMember() and
+    result.getNameString() = methodName
+  )
+  or
+  // Inherited from parent
+  exists(ClassDecl parent |
+    getBaseClassName(cd) = parent.getNameString() and
+    result = getMethodInClassHierarchy(parent, methodName) and
+    // Only inherit if not overridden in cd
+    not exists(MethodDecl override |
+      override = cd.getBody().getAMember() and
+      override.getNameString() = methodName
+    )
   )
 }
 
