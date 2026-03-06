@@ -70,10 +70,10 @@ module KDF {
             .getMember(algName) and
       result = algModule.asSource() and
       // https://github.com/pyca/cryptography/tree/main/src/cryptography/hazmat/primitives/kdf
-      member in ["concatkdf", "hkdf", "kbkdf", "pbkdf2", "scrypt", "x963kdf"] and
+      member in ["argon2", "concatkdf", "hkdf", "kbkdf", "pbkdf2", "scrypt", "x963kdf"] and
       algName in [
-          "ConcatKDFHash", "ConcatKDFHMAC", "HKDF", "HKDFExpand", "KBKDFCMAC", "KBKDFHMAC",
-          "PBKDF2HMAC", "Scrypt", "X963KDF"
+          "Argon2d", "Argon2i", "Argon2id", "ConcatKDFHash", "ConcatKDFHMAC", "HKDF",
+          "HKDFExpand", "KBKDFCMAC", "KBKDFHMAC", "PBKDF2HMAC", "Scrypt", "X963KDF"
         ]
     )
   }
@@ -111,21 +111,31 @@ module KDF {
     }
 
     override predicate requiresSalt() {
-      this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF"]
+      this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF", "SCRYPT", "ARGON2"]
     }
 
-    override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC"] }
+    override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "ARGON2"] }
+
+    override predicate requiresLanes() { this.getAlgorithm().getKDFName() in ["ARGON2"] }
+
+    override predicate requiresMemoryCost() { this.getAlgorithm().getKDFName() in ["ARGON2"] }
 
     override DataFlow::Node getIterationSizeSrc() {
       this.requiresIteration() and
-      // ASSUMPTION: ONLY EVER in arg 3 in PBKDF2HMAC
-      result = Utils::getUltimateSrcFromApiNode(this.getParameter(3, "iterations"))
+      if this.getAlgorithm().getKDFName() = "ARGON2"
+      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("iterations"))
+      else
+        // ASSUMPTION: ONLY EVER in arg 3 in PBKDF2HMAC
+        result = Utils::getUltimateSrcFromApiNode(this.getParameter(3, "iterations"))
     }
 
     override DataFlow::Node getSaltConfigSrc() {
       this.requiresSalt() and
+      // ARGON2 variants have it as a keyword-only parameter
+      if this.getAlgorithm().getKDFName() = "ARGON2"
+      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("salt"))
       // SCRYPT has it in arg 1
-      if this.getAlgorithm().getKDFName() = "SCRYPT"
+      else if this.getAlgorithm().getKDFName() = "SCRYPT"
       then result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "salt"))
       else
         // EVERYTHING ELSE that uses salt is in arg 2
@@ -138,9 +148,23 @@ module KDF {
       result = Utils::getUltimateSrcFromApiNode(this.getParameter(0, "algorithm"))
     }
 
+    override DataFlow::Node getLanesConfigSrc() {
+      this.requiresLanes() and 
+      // ASSUMPTION: ONLY EVER in keyword parameter
+      result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("lanes"))
+    }
+
+    override DataFlow::Node getMemoryCostConfigSrc() {
+      this.requiresMemoryCost() and
+      // ASSUMPTION: ONLY EVER in keyword parameter
+      result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("memory_cost"))
+    }
+
     // TODO: get encryption algorithm for CBC-based KDF?
     override DataFlow::Node getDerivedKeySizeSrc() {
-      if this.getAlgorithm().getKDFName() in ["KBKDFHMAC", "KBKDFCMAC"]
+      if this.getAlgorithm().getKDFName() = "ARGON2"
+      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("length"))
+      else if this.getAlgorithm().getKDFName() in ["KBKDFHMAC", "KBKDFCMAC"]
       then result = Utils::getUltimateSrcFromApiNode(this.getParameter(2, "length"))
       else result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "length"))
     }

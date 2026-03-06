@@ -135,6 +135,10 @@ abstract class KeyDerivationOperation extends CryptographicOperation {
 
   DataFlow::Node getHashConfigSrc() { none() }
 
+  DataFlow::Node getLanesConfigSrc() { none() }
+
+  DataFlow::Node getMemoryCostConfigSrc() { none() }
+
   // TODO: get encryption algorithm for CBC-based KDF?
   DataFlow::Node getDerivedKeySizeSrc() { none() }
 
@@ -146,6 +150,10 @@ abstract class KeyDerivationOperation extends CryptographicOperation {
   abstract predicate requiresSalt();
 
   abstract predicate requiresHash();
+
+  abstract predicate requiresLanes();
+
+  abstract predicate requiresMemoryCost();
 
   //abstract predicate requiresKeySize(); // Going to assume all requires a size
   abstract predicate requiresMode();
