@@ -1,0 +1,481 @@
+extensionTypes.cs:
+#    4| [Class] MyExtensionTypes
+#    6|   4: [ExtensionType] extension(String)
+#-----|     2: (Parameters)
+#    6|       0: [Parameter] s
+#    6|         -1: [TypeMention] string
+#-----|         0: (Attributes)
+#    6|           1: [DefaultAttribute] [NotNull(...)]
+#    6|             0: [TypeMention] NotNullAttribute
+#    8|     4: [ExtensionMethod] M11
+#    8|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#    6|         0: [Parameter] s
+#    6|           -1: [TypeMention] string
+#    8|       4: [BlockStmt] {...}
+#   10|   5: [ExtensionType] extension(Int32)
+#-----|     2: (Parameters)
+#   10|       0: [Parameter] i1
+#   10|         -1: [TypeMention] int
+#   12|     4: [ExtensionMethod] M21
+#   12|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   10|         0: [Parameter] i1
+#   10|           -1: [TypeMention] int
+#   12|       4: [BlockStmt] {...}
+#   14|   6: [ExtensionType] extension(Int32)
+#-----|     2: (Parameters)
+#   14|       0: [Parameter] i2
+#   14|         -1: [TypeMention] int
+#   16|     4: [ExtensionMethod] M31
+#   16|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   14|         0: [Parameter] i2
+#   14|           -1: [TypeMention] int
+#   16|       4: [BlockStmt] {...}
+#   18|   7: [ExtensionType] extension(Int32)
+#-----|     2: (Parameters)
+#   18|       0: [Parameter] i3
+#   18|         -1: [TypeMention] int
+#   20|     4: [ExtensionMethod] M41
+#   20|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   18|         0: [Parameter] i3
+#   18|           -1: [TypeMention] int
+#   20|       4: [BlockStmt] {...}
+#   22|   8: [ExtensionType] extension(String)
+#-----|     2: (Parameters)
+#   22|       0: [Parameter] s
+#   22|         -1: [TypeMention] string
+#   24|     4: [ExtensionMethod] M51
+#   24|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   22|         0: [Parameter] s
+#   22|           -1: [TypeMention] string
+#   24|       4: [BlockStmt] {...}
+#   26|   9: [ExtensionType] extension(T1)`1
+#-----|     1: (Type parameters)
+#   26|       0: [TypeParameter] T1
+#-----|     2: (Parameters)
+#   26|       0: [Parameter] t1
+#   26|         -1: [TypeMention] T1
+#-----|         0: (Attributes)
+#   26|           1: [DefaultAttribute] [NotNullWhen(...)]
+#   26|             -1: [TypeMention] NotNullWhenAttribute
+#   26|             0: [BoolLiteral] true
+#   28|     4: [ExtensionMethod] M61`1
+#   28|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#   28|         0: [TypeParameter] T2
+#-----|       2: (Parameters)
+#   26|         0: [Parameter] t1
+#   26|           -1: [TypeMention] T1
+#   28|         1: [Parameter] o
+#   28|           -1: [TypeMention] object
+#   28|         2: [Parameter] t2
+#   28|           -1: [TypeMention] T2
+#   28|       4: [BlockStmt] {...}
+extensions.cs:
+#    4| [Class] MyExtensions
+#    6|   4: [ExtensionType] extension(String)
+#-----|     2: (Parameters)
+#    6|       0: [Parameter] s
+#    6|         -1: [TypeMention] string
+#    8|     4: [Property] Prop1
+#    8|       -1: [TypeMention] bool
+#    8|       3: [ExtensionCallable,Getter] get_Prop1
+#-----|         2: (Parameters)
+#    6|           0: [Parameter] s
+#    6|             -1: [TypeMention] string
+#    8|         4: [GTExpr] ... > ...
+#    8|           0: [PropertyCall] access to property Length
+#    8|             -1: [SyntheticExtensionParameterAccess] access to extension synthetic parameter s
+#    8|           1: [IntLiteral] 0
+#    9|     5: [Property] Prop2
+#    9|       -1: [TypeMention] bool
+#    9|       3: [ExtensionCallable,Getter] get_Prop2
+#-----|         2: (Parameters)
+#    6|           0: [Parameter] s
+#    6|             -1: [TypeMention] string
+#    9|         4: [BlockStmt] {...}
+#    9|           0: [ReturnStmt] return ...;
+#    9|             0: [BoolLiteral] true
+#    9|       4: [ExtensionCallable,Setter] set_Prop2
+#-----|         2: (Parameters)
+#    6|           0: [Parameter] s
+#    6|             -1: [TypeMention] string
+#    9|           1: [Parameter] value
+#    9|         4: [BlockStmt] {...}
+#   10|     6: [Property] StaticProp1
+#   10|       -1: [TypeMention] bool
+#   10|       3: [ExtensionCallable,Getter] get_StaticProp1
+#   10|         4: [BlockStmt] {...}
+#   10|           0: [ReturnStmt] return ...;
+#   10|             0: [BoolLiteral] false
+#   11|     7: [ExtensionMethod] M1
+#   11|       -1: [TypeMention] bool
+#-----|       2: (Parameters)
+#    6|         0: [Parameter] s
+#    6|           -1: [TypeMention] string
+#   11|       4: [IsExpr] ... is ...
+#   11|         0: [SyntheticExtensionParameterAccess] access to extension synthetic parameter s
+#   11|         1: [NotPatternExpr] not ...
+#   11|           0: [ConstantPatternExpr,NullLiteral] null
+#   12|     8: [ExtensionMethod] M2
+#   12|       -1: [TypeMention] string
+#-----|       2: (Parameters)
+#    6|         0: [Parameter] s
+#    6|           -1: [TypeMention] string
+#   12|         1: [Parameter] other
+#   12|           -1: [TypeMention] string
+#   12|       4: [BlockStmt] {...}
+#   12|         0: [ReturnStmt] return ...;
+#   12|           0: [AddExpr] ... + ...
+#   12|             0: [SyntheticExtensionParameterAccess] access to extension synthetic parameter s
+#   12|             1: [ParameterAccess] access to parameter other
+#   13|     9: [ExtensionMethod] StaticM1
+#   13|       -1: [TypeMention] int
+#   13|       4: [BlockStmt] {...}
+#   13|         0: [ReturnStmt] return ...;
+#   13|           0: [IntLiteral] 0
+#   14|     10: [ExtensionMethod] StaticM2
+#   14|       -1: [TypeMention] int
+#-----|       2: (Parameters)
+#   14|         0: [Parameter] x
+#   14|           -1: [TypeMention] string
+#   14|       4: [BlockStmt] {...}
+#   14|         0: [ReturnStmt] return ...;
+#   14|           0: [PropertyCall] access to property Length
+#   14|             -1: [ParameterAccess] access to parameter x
+#   15|     11: [ExtensionCallable,MulOperator] *
+#   15|       -1: [TypeMention] string
+#-----|       2: (Parameters)
+#   15|         0: [Parameter] a
+#   15|           -1: [TypeMention] int
+#   15|         1: [Parameter] b
+#   15|           -1: [TypeMention] string
+#   15|       4: [BlockStmt] {...}
+#   15|         0: [ReturnStmt] return ...;
+#   15|           0: [StringLiteralUtf16] ""
+#   16|     14: [ExtensionMethod] StringGenericM1`1
+#   16|       -1: [TypeMention] T
+#-----|       1: (Type parameters)
+#   16|         0: [TypeParameter] T
+#-----|       2: (Parameters)
+#    6|         0: [Parameter] s
+#    6|           -1: [TypeMention] string
+#   16|         1: [Parameter] t
+#   16|           -1: [TypeMention] T
+#   16|         2: [Parameter] o
+#   16|           -1: [TypeMention] object
+#   16|       4: [BlockStmt] {...}
+#   16|         0: [ReturnStmt] return ...;
+#   16|           0: [ParameterAccess] access to parameter t
+#   19|   5: [ExtensionType] extension(Object)
+#   21|     4: [ExtensionMethod] StaticObjectM1
+#   21|       -1: [TypeMention] int
+#   21|       4: [BlockStmt] {...}
+#   21|         0: [ReturnStmt] return ...;
+#   21|           0: [IntLiteral] 0
+#   22|     5: [ExtensionMethod] StaticObjectM2
+#   22|       -1: [TypeMention] int
+#-----|       2: (Parameters)
+#   22|         0: [Parameter] s
+#   22|           -1: [TypeMention] string
+#   22|       4: [BlockStmt] {...}
+#   22|         0: [ReturnStmt] return ...;
+#   22|           0: [PropertyCall] access to property Length
+#   22|             -1: [ParameterAccess] access to parameter s
+#   23|     6: [Property] StaticProp
+#   23|       -1: [TypeMention] bool
+#   23|       3: [ExtensionCallable,Getter] get_StaticProp
+#   23|         4: [BoolLiteral] true
+#   26|   8: [ExtensionType] extension(T)`1
+#-----|     1: (Type parameters)
+#   26|       0: [TypeParameter] T
+#-----|     2: (Parameters)
+#   26|       0: [Parameter] t
+#   26|         -1: [TypeMention] T
+#   28|     4: [Property] GenericProp1
+#   28|       -1: [TypeMention] bool
+#   28|       3: [ExtensionCallable,Getter] get_GenericProp1
+#-----|         2: (Parameters)
+#   26|           0: [Parameter] t
+#   26|             -1: [TypeMention] T
+#   28|         4: [IsExpr] ... is ...
+#   28|           0: [SyntheticExtensionParameterAccess] access to extension synthetic parameter t
+#   28|           1: [NotPatternExpr] not ...
+#   28|             0: [ConstantPatternExpr,NullLiteral] null
+#   29|     5: [Property] GenericProp2
+#   29|       -1: [TypeMention] bool
+#   29|       3: [ExtensionCallable,Getter] get_GenericProp2
+#-----|         2: (Parameters)
+#   26|           0: [Parameter] t
+#   26|             -1: [TypeMention] T
+#   29|         4: [BlockStmt] {...}
+#   29|           0: [ReturnStmt] return ...;
+#   29|             0: [BoolLiteral] true
+#   29|       4: [ExtensionCallable,Setter] set_GenericProp2
+#-----|         2: (Parameters)
+#   26|           0: [Parameter] t
+#   26|             -1: [TypeMention] T
+#   29|           1: [Parameter] value
+#   29|         4: [BlockStmt] {...}
+#   30|     6: [ExtensionMethod] GenericM1
+#   30|       -1: [TypeMention] bool
+#-----|       2: (Parameters)
+#   26|         0: [Parameter] t
+#   26|           -1: [TypeMention] T
+#   30|       4: [IsExpr] ... is ...
+#   30|         0: [SyntheticExtensionParameterAccess] access to extension synthetic parameter t
+#   30|         1: [NotPatternExpr] not ...
+#   30|           0: [ConstantPatternExpr,NullLiteral] null
+#   31|     7: [ExtensionMethod] GenericM2`1
+#   31|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#   31|         0: [TypeParameter] S
+#-----|       2: (Parameters)
+#   26|         0: [Parameter] t
+#   26|           -1: [TypeMention] T
+#   31|         1: [Parameter] other
+#   31|           -1: [TypeMention] S
+#   31|       4: [BlockStmt] {...}
+#   32|     8: [ExtensionMethod] GenericStaticM1
+#   32|       -1: [TypeMention] Void
+#-----|       2: (Parameters)
+#   26|         0: [Parameter] t
+#   26|           -1: [TypeMention] T
+#   32|       4: [BlockStmt] {...}
+#   33|     9: [ExtensionMethod] GenericStaticM2`1
+#   33|       -1: [TypeMention] Void
+#-----|       1: (Type parameters)
+#   33|         0: [TypeParameter] S
+#-----|       2: (Parameters)
+#   33|         0: [Parameter] other
+#   33|           -1: [TypeMention] S
+#   33|       4: [BlockStmt] {...}
+#   34|     10: [AddOperator,ExtensionCallable] +
+#   34|       -1: [TypeMention] T
+#-----|       2: (Parameters)
+#   34|         0: [Parameter] a
+#   34|           -1: [TypeMention] T
+#   34|         1: [Parameter] b
+#   34|           -1: [TypeMention] T
+#   34|       4: [BlockStmt] {...}
+#   34|         0: [ReturnStmt] return ...;
+#   34|           0: [NullLiteral] null
+#   38| [Class] ClassicExtensions
+#   40|   4: [ExtensionMethod] M3
+#   40|     -1: [TypeMention] bool
+#-----|     2: (Parameters)
+#   40|       0: [Parameter] s
+#   40|         -1: [TypeMention] string
+#   40|     4: [IsExpr] ... is ...
+#   40|       0: [ParameterAccess] access to parameter s
+#   40|       1: [NotPatternExpr] not ...
+#   40|         0: [ConstantPatternExpr,NullLiteral] null
+#   43| [Class] C
+#   45|   6: [Method] CallingExtensions
+#   45|     -1: [TypeMention] Void
+#   46|     4: [BlockStmt] {...}
+#   47|       0: [LocalVariableDeclStmt] ... ...;
+#   47|         0: [LocalVariableDeclAndInitExpr] String s = ...
+#   47|           -1: [TypeMention] string
+#   47|           0: [LocalVariableAccess] access to local variable s
+#   47|           1: [StringLiteralUtf16] "Hello World."
+#   50|       1: [LocalVariableDeclStmt] ... ...;
+#   50|         0: [LocalVariableDeclAndInitExpr] Boolean x11 = ...
+#   50|           -1: [TypeMention] bool
+#   50|           0: [LocalVariableAccess] access to local variable x11
+#   50|           1: [ExtensionPropertyCall] access to property Prop1
+#   50|             -1: [LocalVariableAccess] access to local variable s
+#   51|       2: [LocalVariableDeclStmt] ... ...;
+#   51|         0: [LocalVariableDeclAndInitExpr] Boolean x12 = ...
+#   51|           -1: [TypeMention] bool
+#   51|           0: [LocalVariableAccess] access to local variable x12
+#   51|           1: [ExtensionPropertyCall] access to property Prop2
+#   51|             -1: [LocalVariableAccess] access to local variable s
+#   52|       3: [ExprStmt] ...;
+#   52|         0: [AssignExpr] ... = ...
+#   52|           0: [ExtensionPropertyCall] access to property Prop2
+#   52|             -1: [LocalVariableAccess] access to local variable s
+#   52|           1: [BoolLiteral] true
+#   53|       4: [LocalVariableDeclStmt] ... ...;
+#   53|         0: [LocalVariableDeclAndInitExpr] Boolean x13 = ...
+#   53|           -1: [TypeMention] bool
+#   53|           0: [LocalVariableAccess] access to local variable x13
+#   53|           1: [ExtensionPropertyCall] access to property StaticProp1
+#   53|             -1: [TypeAccess] access to type String
+#   53|               0: [TypeMention] string
+#   54|       5: [LocalVariableDeclStmt] ... ...;
+#   54|         0: [LocalVariableDeclAndInitExpr] Boolean x14 = ...
+#   54|           -1: [TypeMention] bool
+#   54|           0: [LocalVariableAccess] access to local variable x14
+#   54|           1: [ExtensionPropertyCall] access to property StaticProp
+#   54|             -1: [TypeAccess] access to type Object
+#   54|               0: [TypeMention] object
+#   57|       6: [LocalVariableDeclStmt] ... ...;
+#   57|         0: [LocalVariableDeclAndInitExpr] Boolean x21 = ...
+#   57|           -1: [TypeMention] bool
+#   57|           0: [LocalVariableAccess] access to local variable x21
+#   57|           1: [MethodCall] call to method M1
+#   57|             -1: [LocalVariableAccess] access to local variable s
+#   58|       7: [LocalVariableDeclStmt] ... ...;
+#   58|         0: [LocalVariableDeclAndInitExpr] String x22 = ...
+#   58|           -1: [TypeMention] string
+#   58|           0: [LocalVariableAccess] access to local variable x22
+#   58|           1: [MethodCall] call to method M2
+#   58|             -1: [LocalVariableAccess] access to local variable s
+#   58|             0: [StringLiteralUtf16] "!!!"
+#   59|       8: [LocalVariableDeclStmt] ... ...;
+#   59|         0: [LocalVariableDeclAndInitExpr] Int32 x23 = ...
+#   59|           -1: [TypeMention] int
+#   59|           0: [LocalVariableAccess] access to local variable x23
+#   59|           1: [MethodCall] call to method StaticM1
+#   59|             -1: [TypeAccess] access to type String
+#   59|               0: [TypeMention] string
+#   60|       9: [LocalVariableDeclStmt] ... ...;
+#   60|         0: [LocalVariableDeclAndInitExpr] Int32 x24 = ...
+#   60|           -1: [TypeMention] int
+#   60|           0: [LocalVariableAccess] access to local variable x24
+#   60|           1: [MethodCall] call to method StaticM2
+#   60|             -1: [TypeAccess] access to type String
+#   60|               0: [TypeMention] string
+#   60|             0: [LocalVariableAccess] access to local variable s
+#   61|       10: [LocalVariableDeclStmt] ... ...;
+#   61|         0: [LocalVariableDeclAndInitExpr] Int32 x25 = ...
+#   61|           -1: [TypeMention] int
+#   61|           0: [LocalVariableAccess] access to local variable x25
+#   61|           1: [MethodCall] call to method StaticObjectM1
+#   61|             -1: [TypeAccess] access to type Object
+#   61|               0: [TypeMention] object
+#   62|       11: [LocalVariableDeclStmt] ... ...;
+#   62|         0: [LocalVariableDeclAndInitExpr] Int32 x26 = ...
+#   62|           -1: [TypeMention] int
+#   62|           0: [LocalVariableAccess] access to local variable x26
+#   62|           1: [MethodCall] call to method StaticObjectM2
+#   62|             -1: [TypeAccess] access to type Object
+#   62|               0: [TypeMention] object
+#   62|             0: [LocalVariableAccess] access to local variable s
+#   65|       12: [LocalVariableDeclStmt] ... ...;
+#   65|         0: [LocalVariableDeclAndInitExpr] String x30 = ...
+#   65|           -1: [TypeMention] string
+#   65|           0: [LocalVariableAccess] access to local variable x30
+#   65|           1: [ExtensionOperatorCall] call to operator *
+#   65|             0: [IntLiteral] 3
+#   65|             1: [LocalVariableAccess] access to local variable s
+#   68|       13: [LocalVariableDeclStmt] ... ...;
+#   68|         0: [LocalVariableDeclAndInitExpr] Boolean y = ...
+#   68|           -1: [TypeMention] bool
+#   68|           0: [LocalVariableAccess] access to local variable y
+#   68|           1: [MethodCall] call to method M3
+#   68|             -1: [LocalVariableAccess] access to local variable s
+#   71|       14: [ExprStmt] ...;
+#   71|         0: [MethodCall] call to method M1
+#   71|           -1: [TypeAccess] access to type MyExtensions
+#   71|             0: [TypeMention] MyExtensions
+#   71|           0: [LocalVariableAccess] access to local variable s
+#   72|       15: [ExprStmt] ...;
+#   72|         0: [MethodCall] call to method M2
+#   72|           -1: [TypeAccess] access to type MyExtensions
+#   72|             0: [TypeMention] MyExtensions
+#   72|           0: [LocalVariableAccess] access to local variable s
+#   72|           1: [StringLiteralUtf16] "!!!"
+#   73|       16: [ExprStmt] ...;
+#   73|         0: [MethodCall] call to method StaticM1
+#   73|           -1: [TypeAccess] access to type MyExtensions
+#   73|             0: [TypeMention] MyExtensions
+#   74|       17: [ExprStmt] ...;
+#   74|         0: [MethodCall] call to method StaticM2
+#   74|           -1: [TypeAccess] access to type MyExtensions
+#   74|             0: [TypeMention] MyExtensions
+#   74|           0: [LocalVariableAccess] access to local variable s
+#   75|       18: [ExprStmt] ...;
+#   75|         0: [MethodCall] call to method StaticObjectM1
+#   75|           -1: [TypeAccess] access to type MyExtensions
+#   75|             0: [TypeMention] MyExtensions
+#   76|       19: [ExprStmt] ...;
+#   76|         0: [MethodCall] call to method StaticObjectM2
+#   76|           -1: [TypeAccess] access to type MyExtensions
+#   76|             0: [TypeMention] MyExtensions
+#   76|           0: [LocalVariableAccess] access to local variable s
+#   79|       20: [ExprStmt] ...;
+#   79|         0: [ExtensionOperatorCall] call to operator *
+#   79|           -1: [TypeAccess] access to type MyExtensions
+#   79|             0: [TypeMention] MyExtensions
+#   79|           0: [IntLiteral] 3
+#   79|           1: [LocalVariableAccess] access to local variable s
+#   82|       21: [ExprStmt] ...;
+#   82|         0: [MethodCall] call to extension accessor get_Prop1
+#   82|           -1: [TypeAccess] access to type MyExtensions
+#   82|             0: [TypeMention] MyExtensions
+#   82|           0: [LocalVariableAccess] access to local variable s
+#   83|       22: [ExprStmt] ...;
+#   83|         0: [MethodCall] call to extension accessor get_Prop2
+#   83|           -1: [TypeAccess] access to type MyExtensions
+#   83|             0: [TypeMention] MyExtensions
+#   83|           0: [LocalVariableAccess] access to local variable s
+#   84|       23: [ExprStmt] ...;
+#   84|         0: [MethodCall] call to extension accessor set_Prop2
+#   84|           -1: [TypeAccess] access to type MyExtensions
+#   84|             0: [TypeMention] MyExtensions
+#   84|           0: [LocalVariableAccess] access to local variable s
+#   84|           1: [BoolLiteral] false
+#   85|       24: [ExprStmt] ...;
+#   85|         0: [MethodCall] call to extension accessor get_StaticProp
+#   85|           -1: [TypeAccess] access to type MyExtensions
+#   85|             0: [TypeMention] MyExtensions
+#   88|   7: [Method] CallingGenericExtensions
+#   88|     -1: [TypeMention] Void
+#   89|     4: [BlockStmt] {...}
+#   90|       0: [LocalVariableDeclStmt] ... ...;
+#   90|         0: [LocalVariableDeclAndInitExpr] String s = ...
+#   90|           -1: [TypeMention] string
+#   90|           0: [LocalVariableAccess] access to local variable s
+#   90|           1: [StringLiteralUtf16] "Hello Generic World."
+#   91|       1: [LocalVariableDeclStmt] ... ...;
+#   91|         0: [LocalVariableDeclAndInitExpr] Object o = ...
+#   91|           -1: [TypeMention] object
+#   91|           0: [LocalVariableAccess] access to local variable o
+#   91|           1: [ObjectCreation] object creation of type Object
+#   91|             0: [TypeMention] object
+#   94|       2: [ExprStmt] ...;
+#   94|         0: [MethodCall] call to method GenericM1
+#   94|           -1: [LocalVariableAccess] access to local variable o
+#   95|       3: [ExprStmt] ...;
+#   95|         0: [MethodCall] call to method GenericM1
+#   95|           -1: [LocalVariableAccess] access to local variable s
+#   98|       4: [ExprStmt] ...;
+#   98|         0: [MethodCall] call to method GenericM1
+#   98|           -1: [TypeAccess] access to type MyExtensions
+#   98|             0: [TypeMention] MyExtensions
+#   98|           0: [LocalVariableAccess] access to local variable o
+#   99|       5: [ExprStmt] ...;
+#   99|         0: [MethodCall] call to method GenericM1
+#   99|           -1: [TypeAccess] access to type MyExtensions
+#   99|             0: [TypeMention] MyExtensions
+#   99|           0: [LocalVariableAccess] access to local variable s
+#  101|       6: [ExprStmt] ...;
+#  101|         0: [MethodCall] call to method GenericM2<Int32>
+#  101|           -1: [LocalVariableAccess] access to local variable o
+#  101|           0: [IntLiteral] 42
+#  102|       7: [ExprStmt] ...;
+#  102|         0: [MethodCall] call to method GenericM2<Int32>
+#  102|           -1: [TypeAccess] access to type MyExtensions
+#  102|             0: [TypeMention] MyExtensions
+#  102|           0: [LocalVariableAccess] access to local variable o
+#  102|           1: [IntLiteral] 42
+#  104|       8: [ExprStmt] ...;
+#  104|         0: [MethodCall] call to method StringGenericM1<Int32>
+#  104|           -1: [LocalVariableAccess] access to local variable s
+#  104|           0: [IntLiteral] 7
+#  104|           1: [ObjectCreation] object creation of type Object
+#  104|             0: [TypeMention] object
+#  105|       9: [ExprStmt] ...;
+#  105|         0: [MethodCall] call to method StringGenericM1<String>
+#  105|           -1: [TypeAccess] access to type MyExtensions
+#  105|             0: [TypeMention] MyExtensions
+#  105|           0: [LocalVariableAccess] access to local variable s
+#  105|           1: [StringLiteralUtf16] "test"
+#  105|           2: [ObjectCreation] object creation of type Object
+#  105|             0: [TypeMention] object

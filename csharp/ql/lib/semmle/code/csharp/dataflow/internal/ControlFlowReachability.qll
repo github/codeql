@@ -15,16 +15,47 @@ private class ControlFlowScope extends ControlFlowElement {
   predicate isNonExact() { exactScope = false }
 }
 
-private ControlFlowElement getANonExactScopeChild(ControlFlowScope scope) {
-  scope.isNonExact() and
-  result = scope
-  or
-  result = getANonExactScopeChild(scope).getAChild()
+private newtype TControlFlowElementOrBasicBlock =
+  TControlFlowElement(ControlFlowElement cfe) or
+  TBasicBlock(ControlFlow::BasicBlock bb)
+
+class ControlFlowElementOrBasicBlock extends TControlFlowElementOrBasicBlock {
+  ControlFlowElement asControlFlowElement() { this = TControlFlowElement(result) }
+
+  ControlFlow::BasicBlock asBasicBlock() { this = TBasicBlock(result) }
+
+  string toString() {
+    result = this.asControlFlowElement().toString()
+    or
+    result = this.asBasicBlock().toString()
+  }
+
+  Location getLocation() {
+    result = this.asControlFlowElement().getLocation()
+    or
+    result = this.asBasicBlock().getLocation()
+  }
 }
+
+private predicate isBasicBlock(ControlFlowElementOrBasicBlock c) { c instanceof TBasicBlock }
+
+private predicate isNonExactScope(ControlFlowElementOrBasicBlock c) {
+  c.asControlFlowElement().(ControlFlowScope).isNonExact()
+}
+
+private predicate step(ControlFlowElementOrBasicBlock pred, ControlFlowElementOrBasicBlock succ) {
+  pred.asBasicBlock().getANode().getAstNode() = succ.asControlFlowElement()
+  or
+  pred.asControlFlowElement() = succ.asControlFlowElement().getAChild()
+}
+
+private predicate basicBlockInNonExactScope(
+  ControlFlowElementOrBasicBlock bb, ControlFlowElementOrBasicBlock scope
+) = doublyBoundedFastTC(step/2, isBasicBlock/1, isNonExactScope/1)(bb, scope)
 
 pragma[noinline]
 private ControlFlow::BasicBlock getABasicBlockInScope(ControlFlowScope scope, boolean exactScope) {
-  result.getANode().getAstNode() = getANonExactScopeChild(scope) and
+  basicBlockInNonExactScope(TBasicBlock(result), TControlFlowElement(scope)) and
   exactScope = false
   or
   scope.isExact() and

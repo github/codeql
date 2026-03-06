@@ -6,6 +6,7 @@ private import codeql.rust.frameworks.stdlib.Stdlib
 private import Type
 private import TypeAbstraction
 private import TypeInference
+private import AssociatedType
 
 bindingset[trait, name]
 pragma[inline_late]
@@ -206,12 +207,11 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       exists(TypeParamItemNode tp | this = tp.getABoundPath() and result = tp)
     }
 
+    pragma[nomagic]
     private Type getDefaultPositionalTypeArgument(int i, TypePath path) {
       // If a type argument is not given in the path, then we use the default for
       // the type parameter if one exists for the type.
       not exists(getPathTypeArgument(this, i)) and
-      // Defaults only apply to type mentions in type annotations
-      this = any(PathTypeRepr ptp).getPath().getQualifier*() and
       exists(Type ty, TypePath prefix |
         ty = this.resolveRootType().getTypeParameterDefault(i).(TypeMention).getTypeAt(prefix) and
         if not ty = TSelfTypeParameter(resolved)
@@ -226,10 +226,37 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       )
     }
 
+    private predicate isInTypeAnnotation() {
+      this = any(PathTypeRepr ptp).getPath().getQualifier*()
+    }
+
+    pragma[nomagic]
+    private TypeParameter getPositionalTypeParameter(int i) {
+      result = this.resolveRootType().getPositionalTypeParameter(i)
+    }
+
+    /**
+     * Gets the default type for the type parameter `tp` at `path`, if any.
+     *
+     * This predicate is restricted to mentions that are _not_ part of a type
+     * annotation, such as a qualifier in a call, `Vec::new()`, where the
+     * default type for type parameter `A` of `Vec` is `Global`.
+     *
+     * In these cases, whether or not the default type actually applies may
+     * depend on the types of arguments.
+     */
+    pragma[nomagic]
+    Type getDefaultTypeForTypeParameterInNonAnnotationAt(TypeParameter tp, TypePath path) {
+      not this.isInTypeAnnotation() and
+      exists(int i |
+        result = this.getDefaultPositionalTypeArgument(i, path) and
+        tp = this.getPositionalTypeParameter(i)
+      )
+    }
+
+    pragma[nomagic]
     private Type getPositionalTypeArgument(int i, TypePath path) {
       result = getPathTypeArgument(this, i).getTypeAt(path)
-      or
-      result = this.getDefaultPositionalTypeArgument(i, path)
     }
 
     /**
@@ -237,9 +264,12 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
      * type parameter does not correspond directly to a type mention.
      */
     private Type getTypeForTypeParameterAt(TypeParameter tp, TypePath path) {
-      exists(int i |
-        result = this.getPositionalTypeArgument(pragma[only_bind_into](i), path) and
-        tp = this.resolveRootType().getPositionalTypeParameter(pragma[only_bind_into](i))
+      exists(int i | tp = this.getPositionalTypeParameter(i) |
+        result = this.getPositionalTypeArgument(i, path)
+        or
+        // Defaults only apply to type mentions in type annotations
+        this.isInTypeAnnotation() and
+        result = this.getDefaultPositionalTypeArgument(i, path)
       )
       or
       // Handle the special syntactic sugar for function traits. The syntactic
@@ -290,6 +320,22 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
         tp = TAssociatedTypeTypeParameter(resolved, alias) and
         path.isEmpty()
       )
+      or
+      // If this path is a type parameter bound, then any associated types
+      // accessed on the type parameter, which originate from this bound, should
+      // be instantiated into the bound, as explained in the comment for
+      // `TypeParamAssociatedTypeTypeParameter`.
+      // ```rust
+      // fn foo<T: SomeTrait<Assoc = T_Assoc>, T_Assoc>(arg: T_Assoc) { }
+      //           ^^^^^^^^^ ^^^^^   ^^^^^^^
+      //           this      path    result
+      // ```
+      exists(TypeParam typeParam, Trait trait, AssocType assoc |
+        tpBoundAssociatedType(typeParam, _, this, trait, assoc) and
+        tp = TAssociatedTypeTypeParameter(resolved, assoc) and
+        result = TTypeParamAssociatedTypeTypeParameter(typeParam, assoc) and
+        path.isEmpty()
+      )
     }
 
     bindingset[name]
@@ -299,7 +345,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
 
     /** Gets the type mention in this path for the type parameter `tp`, if any. */
     pragma[nomagic]
-    private TypeMention getTypeMentionImplForTypeParameter(TypeParameter tp) {
+    private TypeMention getTypeMentionForAssociatedTypeTypeParameter(AssociatedTypeTypeParameter tp) {
       exists(TypeAlias alias, string name |
         result = this.getAssocTypeArg(name) and
         tp = TAssociatedTypeTypeParameter(resolved, alias) and
@@ -343,6 +389,8 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       or
       // Handles paths of the form `Self::AssocType` within a trait block
       result = TAssociatedTypeTypeParameter(resolvePath(this.getQualifier()), resolved)
+      or
+      result.(TypeParamAssociatedTypeTypeParameter).getAPath() = this
     }
 
     override Type resolvePathTypeAt(TypePath typePath) {
@@ -352,7 +400,7 @@ private module MkTypeMention<getAdditionalPathTypeAtSig/2 getAdditionalPathTypeA
       exists(TypeParameter tp, TypePath suffix | typePath = TypePath::cons(tp, suffix) |
         result = this.getTypeForTypeParameterAt(tp, suffix)
         or
-        result = this.getTypeMentionImplForTypeParameter(tp).getTypeAt(suffix)
+        result = this.getTypeMentionForAssociatedTypeTypeParameter(tp).getTypeAt(suffix)
       )
       or
       // When the path refers to a trait, then the implicit `Self` type parameter
@@ -653,7 +701,7 @@ class PreTypeMention = PreTypeMention::TypeMention;
  * concrete type given by `tm`.
  */
 private predicate pathConcreteTypeAssocType(
-  Path path, PreTypeMention tm, Trait trait, TypeAlias alias
+  Path path, PreTypeMention tm, TraitItemNode trait, PreTypeMention tmTrait, TypeAlias alias
 ) {
   exists(Path qualifier |
     qualifier = path.getQualifier() and
@@ -662,10 +710,8 @@ private predicate pathConcreteTypeAssocType(
     // path of the form `<Type as Trait>::AssocType`
     //                    ^^^ tm          ^^^^^^^^^ name
     exists(string name |
-      name = path.getText() and
-      trait = resolvePath(qualifier.getSegment().getTraitTypeRepr().getPath()) and
-      getTraitAssocType(trait, name) = alias and
-      tm = qualifier.getSegment().getTypeRepr()
+      pathTypeAsTraitAssoc(path, tm, tmTrait, trait, name) and
+      getTraitAssocType(trait, name) = alias
     )
     or
     // path of the form `Self::AssocType` within an `impl` block
@@ -674,14 +720,15 @@ private predicate pathConcreteTypeAssocType(
       alias = resolvePath(path) and
       qualifier = impl.getASelfPath() and
       tm = impl.(Impl).getSelfTy() and
-      trait.(TraitItemNode).getAnAssocItem() = alias
+      trait.getAnAssocItem() = alias and
+      tmTrait = impl.getTraitPath()
     )
   )
 }
 
 private module PathSatisfiesConstraintInput implements SatisfiesConstraintInputSig<PreTypeMention> {
   predicate relevantConstraint(PreTypeMention tm, Type constraint) {
-    pathConcreteTypeAssocType(_, tm, constraint.(TraitType).getTrait(), _)
+    pathConcreteTypeAssocType(_, tm, constraint.(TraitType).getTrait(), _, _)
   }
 }
 
@@ -693,10 +740,22 @@ private module PathSatisfiesConstraint =
  * on a concrete type.
  */
 private Type getPathConcreteAssocTypeAt(Path path, TypePath typePath) {
-  exists(PreTypeMention tm, TraitItemNode t, TypeAlias alias, TypePath path0 |
-    pathConcreteTypeAssocType(path, tm, t, alias) and
-    PathSatisfiesConstraint::satisfiesConstraintType(tm, TTrait(t), path0, result) and
-    path0.isCons(TAssociatedTypeTypeParameter(t, alias), typePath)
+  exists(
+    PreTypeMention tm, ImplItemNode impl, TraitItemNode trait, TraitType t, PreTypeMention tmTrait,
+    TypeAlias alias, TypePath path0
+  |
+    pathConcreteTypeAssocType(path, tm, trait, tmTrait, alias) and
+    t = TTrait(trait) and
+    PathSatisfiesConstraint::satisfiesConstraintTypeThrough(tm, impl, t, path0, result) and
+    path0.isCons(TAssociatedTypeTypeParameter(trait, alias), typePath)
+  |
+    tmTrait.getTypeAt(TypePath::nil()) != t
+    or
+    not exists(TypePath path1, Type t1 |
+      t1 = impl.getTraitPath().(PreTypeMention).getTypeAt(path1) and
+      not t1 instanceof TypeParameter and
+      t1 != tmTrait.getTypeAt(path1)
+    )
   )
 }
 

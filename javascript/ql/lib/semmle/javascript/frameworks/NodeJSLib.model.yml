@@ -8,9 +8,3 @@ extensions:
       - ['global', 'Member[process].Member[stdin].Member[on,addListener].WithStringArgument[0=data].Argument[1].Parameter[0]', 'stdin']
       - ['readline', 'Member[createInterface].ReturnValue.Member[question].Argument[1].Parameter[0]', 'stdin']
       - ['readline', 'Member[createInterface].ReturnValue.Member[on,addListener].WithStringArgument[0=line].Argument[1].Parameter[0]', 'stdin']
-
-  - addsTo:
-      pack: codeql/javascript-all
-      extensible: barrierModel
-    data:
-      - ['global', 'Member[encodeURIComponent,encodeURI].ReturnValue', 'request-forgery']

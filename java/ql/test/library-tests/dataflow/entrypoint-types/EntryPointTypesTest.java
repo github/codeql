@@ -48,34 +48,34 @@ public class EntryPointTypesTest {
     private static void sink(String sink) {}
 
     public static void test(TestObject source) {
-        sink(source.field1); // $hasTaintFlow
-        sink(source.getField2()); // $hasTaintFlow
-        sink(source.getField3().field4); // $hasTaintFlow
-        sink(source.getField3().getField5()); // $hasTaintFlow
+        sink(source.field1); // $ hasTaintFlow
+        sink(source.getField2()); // $ hasTaintFlow
+        sink(source.getField3().field4); // $ hasTaintFlow
+        sink(source.getField3().getField5()); // $ hasTaintFlow
     }
 
     public static void testParameterized(
             ParameterizedTestObject<TestObject, AnotherTestObject> source) {
-        sink(source.field6); // $hasTaintFlow
-        sink(source.field7.field1); // $hasTaintFlow
-        sink(source.field7.getField2()); // $hasTaintFlow
-        sink(source.getField8().field4); // $hasTaintFlow
-        sink(source.getField8().getField5()); // $hasTaintFlow
+        sink(source.field6); // $ hasTaintFlow
+        sink(source.field7.field1); // $ hasTaintFlow
+        sink(source.field7.getField2()); // $ hasTaintFlow
+        sink(source.getField8().field4); // $ hasTaintFlow
+        sink(source.getField8().getField5()); // $ hasTaintFlow
     }
 
     public static void testSubtype(ParameterizedTestObject<?, ?> source) {
         ChildObject subtypeSource = (ChildObject) source;
-        sink(subtypeSource.field6); // $hasTaintFlow
-        sink(subtypeSource.field7.field1); // $hasTaintFlow
-        sink(subtypeSource.field7.getField2()); // $hasTaintFlow
-        sink((String) subtypeSource.getField8()); // $hasTaintFlow
-        sink((String) subtypeSource.field9); // $hasTaintFlow
+        sink(subtypeSource.field6); // $ hasTaintFlow
+        sink(subtypeSource.field7.field1); // $ hasTaintFlow
+        sink(subtypeSource.field7.getField2()); // $ hasTaintFlow
+        sink((String) subtypeSource.getField8()); // $ hasTaintFlow
+        sink((String) subtypeSource.field9); // $ hasTaintFlow
         // Ensure that we are not tainting every subclass of Object
         UnrelatedObject unrelated = (UnrelatedObject) subtypeSource.getField8();
         sink(unrelated.safeField); // Safe
     }
 
     public static void testArray(ArrayElemObject[] source) {
-        sink(source[0].field); // $hasTaintFlow
+        sink(source[0].field); // $ hasTaintFlow
     }
 }

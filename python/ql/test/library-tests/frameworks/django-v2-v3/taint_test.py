@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from django.views import View
 
 
-def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler routedParameter=foo routedParameter=bar
+def test_taint(request: HttpRequest, foo, bar, baz=None):  # $ requestHandler routedParameter=foo routedParameter=bar
     ensure_tainted(foo, bar) # $ tainted
     ensure_not_tainted(baz)
 

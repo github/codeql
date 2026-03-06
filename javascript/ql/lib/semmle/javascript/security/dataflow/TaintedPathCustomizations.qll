@@ -1124,4 +1124,8 @@ module TaintedPath {
   private class SinkFromModel extends Sink {
     SinkFromModel() { ModelOutput::sinkNode(this, "path-injection") }
   }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "path-injection") }
+  }
 }

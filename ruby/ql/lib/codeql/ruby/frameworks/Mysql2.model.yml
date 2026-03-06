@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: summaryModel
+    data:
+      - ['Mysql2::Client!', 'Method[escape]', 'Argument[0]', 'ReturnValue', 'taint']
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: barrierModel
+    data:
+      - ['Mysql2::Client!', 'Method[escape].ReturnValue', 'sql-injection']

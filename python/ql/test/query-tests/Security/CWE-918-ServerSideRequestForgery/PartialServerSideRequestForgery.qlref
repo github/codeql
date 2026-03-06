@@ -1,1 +1,4 @@
-Security/CWE-918/PartialServerSideRequestForgery.ql
+query: Security/CWE-918/PartialServerSideRequestForgery.ql
+postprocess: 
+- utils/test/InlineExpectationsTestQuery.ql
+- utils/test/PrettyPrintModels.ql

@@ -1,5 +1,5 @@
 /**
- * @name Test that there are no backing fields
+ * @name Test that there are no backing fields except for properties that use the `field` keyword in their getter or setter.
  */
 
 import csharp

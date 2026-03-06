@@ -10,7 +10,6 @@
 
 import python
 import external.VCS
-private import LegacyPointsTo
 
 predicate inRange(Commit first, Commit second) {
   first.getAnAffectedFile() = second.getAnAffectedFile() and

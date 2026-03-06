@@ -14340,6 +14340,10 @@
 | System.Web;HttpUtility;JavaScriptStringEncode;(System.String,System.Boolean);Argument[0];ReturnValue;taint;manual |
 | System.Web;HttpUtility;ParseQueryString;(System.String);Argument[0];ReturnValue;taint;manual |
 | System.Web;HttpUtility;ParseQueryString;(System.String,System.Text.Encoding);Argument[0];ReturnValue;taint;manual |
+| System.Web;HttpUtility;UrlDecode;(System.Byte[],System.Int32,System.Int32,System.Text.Encoding);Argument[0];ReturnValue;taint;manual |
+| System.Web;HttpUtility;UrlDecode;(System.Byte[],System.Text.Encoding);Argument[0];ReturnValue;taint;manual |
+| System.Web;HttpUtility;UrlDecode;(System.String);Argument[0];ReturnValue;taint;manual |
+| System.Web;HttpUtility;UrlDecode;(System.String,System.Text.Encoding);Argument[0];ReturnValue;taint;manual |
 | System.Web;HttpUtility;UrlEncode;(System.Byte[]);Argument[0];ReturnValue;taint;manual |
 | System.Web;HttpUtility;UrlEncode;(System.Byte[],System.Int32,System.Int32);Argument[0];ReturnValue;taint;manual |
 | System.Web;HttpUtility;UrlEncode;(System.String);Argument[0];ReturnValue;taint;manual |

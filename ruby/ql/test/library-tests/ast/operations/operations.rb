@@ -84,6 +84,26 @@ foo **= bar
  bar |= 0x01
  baz ^= qux
 
+# Assignments with operation at start of line
+foo = a
+  && b
+# NOTE: This is not parsed correctly, `|| b` is dropped
+# bar = a
+#   || b
+
+# Return with `&&` at start of line
+def foo(a, b)
+  return a
+    && b
+end
+
+# Return with `||` at start of line
+# NOTE: This is not parsed correctly, `|| b` is dropped
+# def bar(a, b)
+#   return a
+#     || b
+# end
+
 class X
   @x = 1
   @x += 2

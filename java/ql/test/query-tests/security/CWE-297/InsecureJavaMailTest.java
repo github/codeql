@@ -19,7 +19,7 @@ class InsecureJavaMailTest {
 		if (null != authenticator) {
 			properties.put("mail.smtp.auth", "true");
 		}
-		final Session session = Session.getInstance(properties, authenticator); // $hasInsecureJavaMail
+		final Session session = Session.getInstance(properties, authenticator); // $ hasInsecureJavaMail
 	}
 
 	public void testSecureJavaMail() {

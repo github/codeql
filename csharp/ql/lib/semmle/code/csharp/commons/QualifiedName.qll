@@ -67,6 +67,12 @@ module QualifiedName<QualifiedNameInputSig Input> {
       )
   }
 
+  private string getName(ValueOrRefType t) {
+    not t instanceof ExtensionType and result = t.getUndecoratedName()
+    or
+    result = "extension(" + getFullName(t.(ExtensionType).getExtendedType()) + ")"
+  }
+
   /** Holds if declaration `d` has the qualified name `qualifier`.`name`. */
   predicate hasQualifiedName(Declaration d, string qualifier, string name) {
     d =
@@ -86,12 +92,12 @@ module QualifiedName<QualifiedNameInputSig Input> {
             exists(string name0 | name = name0 + Input::getUnboundGenericSuffix(ugt) |
               exists(string enclosing |
                 hasQualifiedName(ugt.getDeclaringType(), qualifier, enclosing) and
-                name0 = enclosing + "+" + ugt.getUndecoratedName()
+                name0 = enclosing + "+" + getName(ugt)
               )
               or
               not exists(ugt.getDeclaringType()) and
               qualifier = ugt.getNamespace().getFullName() and
-              name0 = ugt.getUndecoratedName()
+              name0 = getName(ugt)
             )
           )
         or
@@ -100,12 +106,12 @@ module QualifiedName<QualifiedNameInputSig Input> {
             exists(string name0 | name = name0 + "<" + getTypeArgumentsQualifiedNames(ct) + ">" |
               exists(string enclosing |
                 hasQualifiedName(ct.getDeclaringType(), qualifier, enclosing) and
-                name0 = enclosing + "+" + ct.getUndecoratedName()
+                name0 = enclosing + "+" + getName(ct)
               )
               or
               not exists(ct.getDeclaringType()) and
               qualifier = ct.getNamespace().getFullName() and
-              name0 = ct.getUndecoratedName()
+              name0 = getName(ct)
             )
           )
         or
@@ -116,12 +122,12 @@ module QualifiedName<QualifiedNameInputSig Input> {
         (
           exists(string enclosing |
             hasQualifiedName(vort.getDeclaringType(), qualifier, enclosing) and
-            name = enclosing + "+" + vort.getUndecoratedName()
+            name = enclosing + "+" + getName(vort)
           )
           or
           not exists(vort.getDeclaringType()) and
           qualifier = vort.getNamespace().getFullName() and
-          name = vort.getUndecoratedName()
+          name = getName(vort)
         )
       )
     or

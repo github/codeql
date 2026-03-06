@@ -4,4 +4,4 @@ private boolean hasBody(Method m) { if m.hasBody() then result = true else resul
 
 from Method m
 where m.fromSource() and m.isPartial()
-select m, hasBody(m)
+select m, hasBody(m), count(m.getBody())

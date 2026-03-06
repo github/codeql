@@ -9,16 +9,16 @@ if sys.version_info[0] == 3:
 if sys.version_info[0] == 2:
     import __builtin__ as builtins
 
-exec("print(42)")  # $getCode="print(42)"
-eval("print(42)")  # $getCode="print(42)"
+exec("print(42)")  # $ getCode="print(42)"
+eval("print(42)")  # $ getCode="print(42)"
 
-builtins.eval("print(42)")  # $getCode="print(42)"
+builtins.eval("print(42)")  # $ getCode="print(42)"
 
 cmd = compile("print(42)", "<filename>", "exec")
-exec(cmd)  # $getCode=cmd
+exec(cmd)  # $ getCode=cmd
 
 cmd = builtins.compile("print(42)", "<filename>", "exec")
-exec(cmd)  # $getCode=cmd
+exec(cmd)  # $ getCode=cmd
 
 # ------------------------------------------------------------------------------
 # taint related

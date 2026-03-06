@@ -1,3 +1,4 @@
+load("@rules_cc//cc:defs.bzl", "CcInfo", "cc_binary", "cc_library")
 load("//misc/bazel:os.bzl", "os_select")
 
 # TODO: make a shared library with the internal repos for transitions
@@ -124,7 +125,7 @@ def _wrap_cc(rule, kwargs):
     )
 
 def swift_cc_binary(**kwargs):
-    _wrap_cc(native.cc_binary, kwargs)
+    _wrap_cc(cc_binary, kwargs)
 
 def swift_cc_library(**kwargs):
-    _wrap_cc(native.cc_library, kwargs)
+    _wrap_cc(cc_library, kwargs)

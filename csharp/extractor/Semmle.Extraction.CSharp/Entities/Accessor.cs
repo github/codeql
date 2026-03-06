@@ -70,7 +70,7 @@ namespace Semmle.Extraction.CSharp.Entities
 
             Overrides(trapFile);
 
-            if (Symbol.FromSource() && Block is null)
+            if (Symbol.FromSource() && !HasBody)
             {
                 trapFile.compiler_generated(this);
             }

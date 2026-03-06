@@ -2,13 +2,13 @@ require 'active_job'
 
 class UsersController < ActionController::Base
   def create
-    code = params[:code]
+    code = params[:code] # $ Source
 
     # BAD
-    eval(code)
+    eval(code) # $ Alert
 
     # BAD
-    eval(params)
+    eval(params) # $ Alert
 
     # GOOD - user input is in second argument, which is not evaluated as Ruby code
     send(:sanitize, params[:code])
@@ -17,28 +17,28 @@ class UsersController < ActionController::Base
     Foo.new.bar(code)
 
     # BAD
-    Foo.class_eval(code)
+    Foo.class_eval(code) # $ Alert
 
     # BAD
-    Foo.module_eval(code)
+    Foo.module_eval(code) # $ Alert
 
     # GOOD
     Bar.class_eval(code)
 
     # BAD
-    const_get(code)
+    const_get(code) # $ Alert
 
     # BAD
-    Foo.const_get(code)
+    Foo.const_get(code) # $ Alert
 
     # GOOD
     Bar.const_get(code)
 
     # BAD
-    eval(Regexp.escape(code))
+    eval(Regexp.escape(code)) # $ Alert
 
     # BAD
-    ActiveJob::Serializers.deserialize(code)
+    ActiveJob::Serializers.deserialize(code) # $ Alert
   end
 
   def update
@@ -75,19 +75,25 @@ end
 
 class UsersController < ActionController::Base
   def create
-    code = params[:code]
+    code = params[:code] # $ Source
 
-    obj().send(code, "foo"); # BAD
+    # BAD
+    obj().send(code, "foo"); # $ Alert
 
-    obj().send("prefix_" + code + "_suffix", "foo"); # GOOD
+    # GOOD
+    obj().send("prefix_" + code + "_suffix", "foo");
 
-    obj().send("prefix_#{code}_suffix", "foo"); # GOOD
+    # GOOD
+    obj().send("prefix_#{code}_suffix", "foo");
 
-    eval("prefix_" + code + "_suffix"); # BAD
+    # BAD
+    eval("prefix_" + code + "_suffix"); # $ Alert
 
-    eval("prefix_#{code}_suffix"); # BAD
+    # BAD
+    eval("prefix_#{code}_suffix"); # $ Alert
 
-    eval(code); # BAD
+    # BAD
+    eval(code); # $ Alert
   end
 end
 
@@ -102,13 +108,13 @@ class PostsController < ActionController::Base
   end
 
   def foo
-    @foo = params[:foo]
+    @foo = params[:foo] # $ Source
   end
 
   def bar
   end
 
   def baz
-    eval(@foo)
+    eval(@foo) # $ Alert
   end
 end

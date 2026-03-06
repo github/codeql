@@ -28,35 +28,35 @@ public class Test {
 			ConcurrentModel out = null;
 			Object in = source();
 			out = new ConcurrentModel(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ConcurrentModel;false;ConcurrentModel;(String,Object);;Argument[0];MapKey of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			String in = (String)source();
 			out = new ConcurrentModel(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ConcurrentModel;false;ConcurrentModel;(String,Object);;Argument[1];MapValue of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			Object in = source();
 			out = new ConcurrentModel(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Collection);;Element of Argument[0];MapValue of Argument[this];value;manual"
 			Model out = null;
 			Collection in = List.of(source());
 			out.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Collection);;Element of Argument[0];MapValue of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			Collection in = List.of(source());
 			out.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Collection);;Element of Argument[0];MapValue of ReturnValue;value;manual"
@@ -64,7 +64,7 @@ public class Test {
 			Collection in = List.of(source());
 			Model instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Collection);;Element of Argument[0];MapValue of ReturnValue;value;manual"
@@ -72,21 +72,21 @@ public class Test {
 			Collection in = List.of(source());
 			ConcurrentModel instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Map);;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			Model out = null;
 			Map in = Map.of(source(), null);
 			out.addAllAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Map);;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			Map in = Map.of(source(), null);
 			out.addAllAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value;manual"
@@ -94,7 +94,7 @@ public class Test {
 			Map in = Map.of(source(), null);
 			Model instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value;manual"
@@ -102,21 +102,21 @@ public class Test {
 			Map in = Map.of(source(), null);
 			ConcurrentModel instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Map);;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			Model out = null;
 			Map in = Map.of(null, source());
 			out.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Map);;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			Map in = Map.of(null, source());
 			out.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value;manual"
@@ -124,7 +124,7 @@ public class Test {
 			Map in = Map.of(null, source());
 			Model instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value;manual"
@@ -132,49 +132,49 @@ public class Test {
 			Map in = Map.of(null, source());
 			ConcurrentModel instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;;;Argument[this];ReturnValue;value;manual"
 			Model out = null;
 			Model in = (Model)source();
 			out = in.addAllAttributes((Map)null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;;;Argument[this];ReturnValue;value;manual"
 			Model out = null;
 			Model in = (Model)source();
 			out = in.addAllAttributes((Collection)null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;;;Argument[this];ReturnValue;value;manual"
 			ConcurrentModel out = null;
 			ConcurrentModel in = (ConcurrentModel)source();
 			out = in.addAllAttributes((Map)null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAllAttributes;;;Argument[this];ReturnValue;value;manual"
 			ConcurrentModel out = null;
 			ConcurrentModel in = (ConcurrentModel)source();
 			out = in.addAllAttributes((Collection)null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(Object);;Argument[0];MapValue of Argument[this];value;manual"
 			Model out = null;
 			Object in = source();
 			out.addAttribute(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(Object);;Argument[0];MapValue of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			Object in = source();
 			out.addAttribute(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(Object);;Argument[0];MapValue of ReturnValue;value;manual"
@@ -182,7 +182,7 @@ public class Test {
 			Object in = source();
 			Model instance = null;
 			out = instance.addAttribute(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(Object);;Argument[0];MapValue of ReturnValue;value;manual"
@@ -190,21 +190,21 @@ public class Test {
 			Object in = source();
 			ConcurrentModel instance = null;
 			out = instance.addAttribute(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(String,Object);;Argument[0];MapKey of Argument[this];value;manual"
 			Model out = null;
 			String in = (String)source();
 			out.addAttribute(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(String,Object);;Argument[0];MapKey of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			String in = (String)source();
 			out.addAttribute(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(String,Object);;Argument[0];MapKey of ReturnValue;value;manual"
@@ -212,7 +212,7 @@ public class Test {
 			String in = (String)source();
 			Model instance = null;
 			out = instance.addAttribute(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(String,Object);;Argument[0];MapKey of ReturnValue;value;manual"
@@ -220,21 +220,21 @@ public class Test {
 			String in = (String)source();
 			ConcurrentModel instance = null;
 			out = instance.addAttribute(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(String,Object);;Argument[1];MapValue of Argument[this];value;manual"
 			Model out = null;
 			Object in = source();
 			out.addAttribute(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(String,Object);;Argument[1];MapValue of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			Object in = source();
 			out.addAttribute(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(String,Object);;Argument[1];MapValue of ReturnValue;value;manual"
@@ -242,7 +242,7 @@ public class Test {
 			Object in = source();
 			Model instance = null;
 			out = instance.addAttribute(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;(String,Object);;Argument[1];MapValue of ReturnValue;value;manual"
@@ -250,175 +250,175 @@ public class Test {
 			Object in = source();
 			ConcurrentModel instance = null;
 			out = instance.addAttribute(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;;;Argument[this];ReturnValue;value;manual"
 			Model out = null;
 			Model in = (Model)source();
 			out = in.addAttribute(null, null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;;;Argument[this];ReturnValue;value;manual"
 			Model out = null;
 			Model in = (Model)source();
 			out = in.addAttribute(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;;;Argument[this];ReturnValue;value;manual"
 			ConcurrentModel out = null;
 			ConcurrentModel in = (ConcurrentModel)source();
 			out = in.addAttribute(null, null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;addAttribute;;;Argument[this];ReturnValue;value;manual"
 			ConcurrentModel out = null;
 			ConcurrentModel in = (ConcurrentModel)source();
 			out = in.addAttribute(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;asMap;;;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			Map out = null;
 			Model in = new ConcurrentModel((String)source(), null);
 			out = in.asMap();
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;asMap;;;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			Map out = null;
 			ConcurrentModel in = new ConcurrentModel((String)source(), null);
 			out = in.asMap();
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;asMap;;;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			Map out = null;
 			Model in = (Model)Map.of(null, source());
 			out = in.asMap();
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;asMap;;;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			Map out = null;
 			ConcurrentModel in = new ConcurrentModel(null, source());
 			out = in.asMap();
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;getAttribute;;;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			Model in = (Model)Map.of(null, source());
 			out = in.getAttribute(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;getAttribute;;;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			ConcurrentModel in = new ConcurrentModel(null, source());
 			out = in.getAttribute(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;Argument[this];ReturnValue;value;manual"
 			Model out = null;
 			Model in = (Model)source();
 			out = in.mergeAttributes(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;Argument[this];ReturnValue;value;manual"
 			ConcurrentModel out = null;
 			ConcurrentModel in = (ConcurrentModel)source();
 			out = in.mergeAttributes(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			Model out = null;
 			Model in = new ConcurrentModel((String)source(), null);
 			out = in.mergeAttributes(null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			ConcurrentModel out = null;
 			ConcurrentModel in = new ConcurrentModel((String)source(), null);
 			out = in.mergeAttributes(null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			Model out = null;
 			Map in = Map.of(source(), null);
 			out.mergeAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			Map in = Map.of(source(), null);
 			out.mergeAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			Model out = null;
 			Model in = (Model)Map.of(null, source());
 			out = in.mergeAttributes(null);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			ConcurrentModel out = null;
 			ConcurrentModel in = new ConcurrentModel(null, source());
 			out = in.mergeAttributes(null);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			Model out = null;
 			Map in = Map.of(null, source());
 			out.mergeAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;Model;true;mergeAttributes;;;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			ConcurrentModel out = null;
 			Map in = Map.of(null, source());
 			out.mergeAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;ModelMap;(Object);;Argument[0];MapValue of Argument[this];value;manual"
 			ModelMap out = null;
 			Object in = source();
 			out = new ModelMap(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;ModelMap;(String,Object);;Argument[0];MapKey of Argument[this];value;manual"
 			ModelMap out = null;
 			String in = (String)source();
 			out = new ModelMap(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;ModelMap;(String,Object);;Argument[1];MapValue of Argument[this];value;manual"
 			ModelMap out = null;
 			Object in = source();
 			out = new ModelMap(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAllAttributes;(Collection);;Element of Argument[0];MapValue of Argument[this];value;manual"
 			ModelMap out = null;
 			Collection in = List.of(source());
 			out.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAllAttributes;(Collection);;Element of Argument[0];MapValue of ReturnValue;value;manual"
@@ -426,14 +426,14 @@ public class Test {
 			Collection in = List.of(source());
 			ModelMap instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAllAttributes;(Map);;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			ModelMap out = null;
 			Map in = Map.of(source(), null);
 			out.addAllAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAllAttributes;(Map);;MapKey of Argument[0];MapKey of ReturnValue;value;manual"
@@ -441,14 +441,14 @@ public class Test {
 			Map in = Map.of(source(), null);
 			ModelMap instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAllAttributes;(Map);;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			ModelMap out = null;
 			Map in = Map.of(null, source());
 			out.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAllAttributes;(Map);;MapValue of Argument[0];MapValue of ReturnValue;value;manual"
@@ -456,28 +456,28 @@ public class Test {
 			Map in = Map.of(null, source());
 			ModelMap instance = null;
 			out = instance.addAllAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAllAttributes;;;Argument[this];ReturnValue;value;manual"
 			ModelMap out = null;
 			ModelMap in = (ModelMap)source();
 			out = in.addAllAttributes((Map)null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAllAttributes;;;Argument[this];ReturnValue;value;manual"
 			ModelMap out = null;
 			ModelMap in = (ModelMap)source();
 			out = in.addAllAttributes((Collection)null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAttribute;(Object);;Argument[0];MapValue of Argument[this];value;manual"
 			ModelMap out = null;
 			Object in = source();
 			out.addAttribute(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAttribute;(Object);;Argument[0];MapValue of ReturnValue;value;manual"
@@ -485,14 +485,14 @@ public class Test {
 			Object in = source();
 			ModelMap instance = null;
 			out = instance.addAttribute(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAttribute;(String,Object);;Argument[0];MapKey of Argument[this];value;manual"
 			ModelMap out = null;
 			String in = (String)source();
 			out.addAttribute(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAttribute;(String,Object);;Argument[0];MapKey of ReturnValue;value;manual"
@@ -500,14 +500,14 @@ public class Test {
 			String in = (String)source();
 			ModelMap instance = null;
 			out = instance.addAttribute(in, null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAttribute;(String,Object);;Argument[1];MapValue of Argument[this];value;manual"
 			ModelMap out = null;
 			Object in = source();
 			out.addAttribute(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAttribute;(String,Object);;Argument[1];MapValue of ReturnValue;value;manual"
@@ -515,63 +515,63 @@ public class Test {
 			Object in = source();
 			ModelMap instance = null;
 			out = instance.addAttribute(null, in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAttribute;;;Argument[this];ReturnValue;value;manual"
 			ModelMap out = null;
 			ModelMap in = (ModelMap)source();
 			out = in.addAttribute(null, null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;addAttribute;;;Argument[this];ReturnValue;value;manual"
 			ModelMap out = null;
 			ModelMap in = (ModelMap)source();
 			out = in.addAttribute(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;getAttribute;;;MapValue of Argument[this];ReturnValue;value;manual"
 			Object out = null;
 			ModelMap in = new ModelMap(null, source());
 			out = in.getAttribute(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;mergeAttributes;;;Argument[this];ReturnValue;value;manual"
 			ModelMap out = null;
 			ModelMap in = (ModelMap)source();
 			out = in.mergeAttributes(null);
-			sink(out); // $hasValueFlow
+			sink(out); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;mergeAttributes;;;MapKey of Argument[this];MapKey of ReturnValue;value;manual"
 			ModelMap out = null;
 			ModelMap in = new ModelMap((String)source(), null);
 			out = in.mergeAttributes(null);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;mergeAttributes;;;MapKey of Argument[0];MapKey of Argument[this];value;manual"
 			ModelMap out = null;
 			Map in = Map.of(source(), null);
 			out.mergeAttributes(in);
-			sink(getMapKey(out)); // $hasValueFlow
+			sink(getMapKey(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;mergeAttributes;;;MapValue of Argument[this];MapValue of ReturnValue;value;manual"
 			ModelMap out = null;
 			ModelMap in = new ModelMap(null, source());
 			out = in.mergeAttributes(null);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 		{
 			// "org.springframework.ui;ModelMap;false;mergeAttributes;;;MapValue of Argument[0];MapValue of Argument[this];value;manual"
 			ModelMap out = null;
 			Map in = Map.of(null, source());
 			out.mergeAttributes(in);
-			sink(getMapValue(out)); // $hasValueFlow
+			sink(getMapValue(out)); // $ hasValueFlow
 		}
 
 	}

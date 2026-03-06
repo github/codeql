@@ -53,32 +53,32 @@ class IntegrationTest {
     void test1(Context ctx) {
         bindJson(ctx, Pojo.class)
             .then(pojo ->{
-                sink(pojo); //$hasTaintFlow
-                sink(pojo.value); //$hasTaintFlow
-                sink(pojo.getValue()); //$hasTaintFlow
+                sink(pojo); // $ hasTaintFlow
+                sink(pojo.value); // $ hasTaintFlow
+                sink(pojo.getValue()); // $ hasTaintFlow
             });
     }
 
     void test2(Context ctx) {
         bindForm(ctx, Pojo.class, defaults -> defaults.put("another", "potato"))
             .then(pojo ->{
-                sink(pojo); //$hasTaintFlow
-                sink(pojo.value); //$hasTaintFlow
-                sink(pojo.getValue()); //$hasTaintFlow
+                sink(pojo); // $ hasTaintFlow
+                sink(pojo.value); // $ hasTaintFlow
+                sink(pojo.getValue()); // $ hasTaintFlow
             });
     }
 
     void test3() {
         Object value = extractSingleValueIfPossible(ImmutableList.of("a", taint()));
-        sink(value); //$hasTaintFlow
+        sink(value); // $ hasTaintFlow
         List<Object> values = (List<Object>) value;
-        sink(values.get(1)); //$hasTaintFlow
+        sink(values.get(1)); // $ hasTaintFlow
         Map<String, Object> weirdMap = new HashMap<>();
         weirdMap.put("a", value);
         weirdMap.forEach((key, mapValue) -> {
-            sink(mapValue); //$hasTaintFlow
+            sink(mapValue); // $ hasTaintFlow
             List<Object> values2 = (List<Object>) mapValue;
-            sink(values2.get(0)); //$hasTaintFlow
+            sink(values2.get(0)); // $ hasTaintFlow
         });
     }
 
@@ -89,13 +89,13 @@ class IntegrationTest {
                 filterAndMerge(pojoForm, mergedParams, name -> false);
                 return mergedParams;
             }).then(pojoMap -> {
-                sink(pojoMap.keySet().iterator().next()); //$hasTaintFlow
-                sink(pojoMap.get("value")); //$hasTaintFlow
+                sink(pojoMap.keySet().iterator().next()); // $ hasTaintFlow
+                sink(pojoMap.get("value")); // $ hasTaintFlow
                 pojoMap.forEach((key, value) -> {
-                    sink(key); //$hasTaintFlow
-                    sink(value); //$hasTaintFlow
+                    sink(key); // $ hasTaintFlow
+                    sink(value); // $ hasTaintFlow
                     List<Object> values = (List<Object>) value;
-                    sink(values.get(0)); //$hasTaintFlow
+                    sink(values.get(0)); // $ hasTaintFlow
                 });
             });
     }
@@ -107,13 +107,13 @@ class IntegrationTest {
                 filterAndMerge_2(pojoForm, mergedParams, name -> false);
                 return mergedParams;
             }).then(pojoMap -> {
-                sink(pojoMap.keySet().iterator().next()); //$hasTaintFlow
-                sink(pojoMap.get("value")); //$hasTaintFlow
+                sink(pojoMap.keySet().iterator().next()); // $ hasTaintFlow
+                sink(pojoMap.get("value")); // $ hasTaintFlow
                 pojoMap.forEach((key, value) -> {
-                    sink(key); //$hasTaintFlow
-                    sink(value); //$hasTaintFlow
+                    sink(key); // $ hasTaintFlow
+                    sink(value); // $ hasTaintFlow
                     List<Object> values = (List<Object>) value;
-                    sink(values.get(0)); //$hasTaintFlow
+                    sink(values.get(0)); // $ hasTaintFlow
                 });
             });
     }
@@ -121,8 +121,8 @@ class IntegrationTest {
     void test6(Context ctx) {
         bindQuery(ctx, Pojo.class)
             .then(pojo -> {
-                sink(pojo.getValue()); //$hasTaintFlow
-                sink(pojo.getValues()); //$hasTaintFlow
+                sink(pojo.getValue()); // $ hasTaintFlow
+                sink(pojo.getValues()); // $ hasTaintFlow
             });
     }
 

@@ -38,7 +38,7 @@ def test_while():
     n = 2
     while n > 0:
         if n == 1:
-            SINK(x) #$ flow="SOURCE, l:+1 -> x"
+            SINK(x) # $ flow="SOURCE, l:+1 -> x"
         x = SOURCE
         n -= 1
 
@@ -54,14 +54,14 @@ def test_while_obj():
     n = 2
     while n > 0:
         if n == 1:
-            SINK(myobj.foo) #$ flow="SOURCE, l:+1 -> myobj.foo"
+            SINK(myobj.foo) # $ flow="SOURCE, l:+1 -> myobj.foo"
         setFoo(myobj, SOURCE)
         n -= 1
 
 def setAndTestFoo(obj, x, test):
     if test:
         # This flow is not found, if self-loops are broken at the SSA level.
-        SINK(obj.foo) #$ flow="SOURCE, l:+7 -> obj.foo"
+        SINK(obj.foo) # $ flow="SOURCE, l:+7 -> obj.foo"
     obj.foo = x
 
 def test_while_obj_sink():
@@ -70,4 +70,3 @@ def test_while_obj_sink():
     while n > 0:
         setAndTestFoo(myobj, SOURCE, n == 1)
         n -= 1
-

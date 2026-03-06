@@ -3,6 +3,8 @@
  *
  * Provides helper class for defining additional API graph edges.
  */
+overlay[local]
+module;
 
 private import python
 private import semmle.python.dataflow.new.DataFlow

@@ -10,7 +10,6 @@
  */
 
 import python
-private import LegacyPointsTo
 
 from FunctionMetrics f
 select f, f.getNumberOfLinesOfCode() as n order by n desc

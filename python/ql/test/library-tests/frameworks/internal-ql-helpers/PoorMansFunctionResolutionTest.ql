@@ -17,7 +17,9 @@ module InlinePoorMansFunctionResolutionTest implements TestSig {
       ) and
       // exclude decorator calls (which with our extractor rewrites does reference the
       // function)
-      not ref.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
+      not ref.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall() and
+      // exclude ModuleVariableNodes (which have location 0:0:0:0)
+      not ref instanceof DataFlow::ModuleVariableNode
     |
       value = func.getName() and
       tag = "resolved" and

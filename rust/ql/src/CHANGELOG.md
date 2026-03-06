@@ -1,3 +1,13 @@
+## 0.1.28
+
+### Minor Analysis Improvements
+
+* The macro resolution metric has been removed from `rust/diagnostic/database-quality`. This metric was found to be an unreliable indicator of database quality in many cases, leading to false alarms on the tool status page.
+
+## 0.1.27
+
+No user-facing changes.
+
 ## 0.1.26
 
 No user-facing changes.

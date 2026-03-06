@@ -25,6 +25,7 @@ deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
 class Provenance = Impl::Public::Provenance;
 
 /** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
+overlay[local]
 module SummarizedCallable {
   /** A callable with a flow summary, identified by a unique string. */
   abstract class Range extends LibraryCallable, Impl::Public::SummarizedCallable {

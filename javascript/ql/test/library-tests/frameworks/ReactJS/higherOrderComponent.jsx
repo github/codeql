@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import unknownFunction from 'somewhere';
 import { hot } from 'react-hot-loader';
 import { withState } from 'recompose';
+import { observer as observer1 } from 'mobx-react';
+import { observer as observer2 } from 'mobx-react-lite';
 
 import { MyComponent } from './exportedComponent';
 
@@ -25,4 +27,6 @@ const ConnectedComponent = compose(withConnect, unknownFunction)(StyledComponent
 
 const ConnectedComponent2 = withState('counter', 'setCounter', 0)(ConnectedComponent);
 
-export default hot(module)(memo(forwardRef(ConnectedComponent2)));
+const ConnectedComponent3 = observer1(observer2(ConnectedComponent2));
+
+export default hot(module)(memo(forwardRef(ConnectedComponent3)));

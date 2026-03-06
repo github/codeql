@@ -8,81 +8,143 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 
 /**
- * A configuration of a data flow analysis that performs must-flow analysis. This is different
- * from `DataFlow.qll` which performs may-flow analysis (i.e., it finds paths where the source _may_
- * flow to the sink).
- *
- * Like in `DataFlow.qll`, each use of the `MustFlow.qll` library must define its own unique extension
- * of this abstract class. To create a configuration, extend this class with a subclass whose
- * characteristic predicate is a unique singleton string and override `isSource`, `isSink` (and
- * `isAdditionalFlowStep` if additional steps are required).
+ * Provides an inter-procedural must-flow data flow analysis.
  */
-abstract class MustFlowConfiguration extends string {
-  bindingset[this]
-  MustFlowConfiguration() { any() }
-
+module MustFlow {
   /**
-   * Holds if `source` is a relevant data flow source.
+   * An input configuration of a data flow analysis that performs must-flow analysis. This is different
+   * from `DataFlow.qll` which performs may-flow analysis (i.e., it finds paths where the source _may_
+   * flow to the sink).
    */
-  abstract predicate isSource(Instruction source);
+  signature module ConfigSig {
+    /**
+     * Holds if `source` is a relevant data flow source.
+     */
+    predicate isSource(Instruction source);
 
-  /**
-   * Holds if `sink` is a relevant data flow sink.
-   */
-  abstract predicate isSink(Operand sink);
+    /**
+     * Holds if `sink` is a relevant data flow sink.
+     */
+    predicate isSink(Operand sink);
 
-  /**
-   * Holds if data flow through `instr` is prohibited.
-   */
-  predicate isBarrier(Instruction instr) { none() }
+    /**
+     * Holds if data flow through `instr` is prohibited.
+     */
+    default predicate isBarrier(Instruction instr) { none() }
 
-  /**
-   * Holds if the additional flow step from `node1` to `node2` must be taken
-   * into account in the analysis.
-   */
-  predicate isAdditionalFlowStep(Operand node1, Instruction node2) { none() }
+    /**
+     * Holds if the additional flow step from `node1` to `node2` must be taken
+     * into account in the analysis.
+     */
+    default predicate isAdditionalFlowStep(Operand node1, Instruction node2) { none() }
 
-  /** Holds if this configuration allows flow from arguments to parameters. */
-  predicate allowInterproceduralFlow() { any() }
-
-  /**
-   * Holds if data must flow from `source` to `sink` for this configuration.
-   *
-   * The corresponding paths are generated from the end-points and the graph
-   * included in the module `PathGraph`.
-   */
-  final predicate hasFlowPath(MustFlowPathNode source, MustFlowPathSink sink) {
-    this.isSource(source.getInstruction()) and
-    source.getASuccessor*() = sink
+    /** Holds if this configuration allows flow from arguments to parameters. */
+    default predicate allowInterproceduralFlow() { any() }
   }
-}
 
-/** Holds if `node` flows from a source. */
-pragma[nomagic]
-private predicate flowsFromSource(Instruction node, MustFlowConfiguration config) {
-  not config.isBarrier(node) and
-  (
-    config.isSource(node)
-    or
-    exists(Instruction mid |
-      step(mid, node, config) and
-      flowsFromSource(mid, pragma[only_bind_into](config))
-    )
-  )
-}
+  /**
+   * Constructs a global must-flow computation.
+   */
+  module Global<ConfigSig Config> {
+    import Config
 
-/** Holds if `node` flows to a sink. */
-pragma[nomagic]
-private predicate flowsToSink(Instruction node, MustFlowConfiguration config) {
-  flowsFromSource(node, pragma[only_bind_into](config)) and
-  (
-    config.isSink(node.getAUse())
-    or
-    exists(Instruction mid |
-      step(node, mid, config) and
-      flowsToSink(mid, pragma[only_bind_into](config))
-    )
-  )
+    /**
+     * Holds if data must flow from `source` to `sink`.
+     *
+     * The corresponding paths are generated from the end-points and the graph
+     * included in the module `PathGraph`.
+     */
+    predicate flowPath(PathNode source, PathSink sink) {
+      isSource(source.getInstruction()) and
+      source.getASuccessor*() = sink
+    }
+
+    /** Holds if `node` flows from a source. */
+    pragma[nomagic]
+    private predicate flowsFromSource(Instruction node) {
+      not isBarrier(node) and
+      (
+        isSource(node)
+        or
+        exists(Instruction mid |
+          step(mid, node) and
+          flowsFromSource(mid)
+        )
+      )
+    }
+
+    /** Holds if `node` flows to a sink. */
+    pragma[nomagic]
+    private predicate flowsToSink(Instruction node) {
+      flowsFromSource(node) and
+      (
+        isSink(node.getAUse())
+        or
+        exists(Instruction mid |
+          step(node, mid) and
+          flowsToSink(mid)
+        )
+      )
+    }
+
+    /** Holds if `nodeFrom` flows to `nodeTo`. */
+    private predicate step(Instruction nodeFrom, Instruction nodeTo) {
+      Cached::localStep(nodeFrom, nodeTo)
+      or
+      allowInterproceduralFlow() and
+      Cached::flowThroughCallable(nodeFrom, nodeTo)
+      or
+      isAdditionalFlowStep(nodeFrom.getAUse(), nodeTo)
+    }
+
+    private newtype TLocalPathNode =
+      MkLocalPathNode(Instruction n) {
+        flowsToSink(n) and
+        (
+          isSource(n)
+          or
+          exists(PathNode mid | step(mid.getInstruction(), n))
+        )
+      }
+
+    /** A `Node` that is in a path from a source to a sink. */
+    class PathNode extends TLocalPathNode {
+      Instruction n;
+
+      PathNode() { this = MkLocalPathNode(n) }
+
+      /** Gets the underlying node. */
+      Instruction getInstruction() { result = n }
+
+      /** Gets a textual representation of this node. */
+      string toString() { result = n.getAst().toString() }
+
+      /** Gets the location of this element. */
+      Location getLocation() { result = n.getLocation() }
+
+      /** Gets a successor node, if any. */
+      PathNode getASuccessor() { step(this.getInstruction(), result.getInstruction()) }
+    }
+
+    private class PathSink extends PathNode {
+      PathSink() { isSink(this.getInstruction().getAUse()) }
+    }
+
+    /**
+     * Provides the query predicates needed to include a graph in a path-problem query.
+     */
+    module PathGraph {
+      private predicate reach(PathNode n) { n instanceof PathSink or reach(n.getASuccessor()) }
+
+      /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
+      query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b and reach(b) }
+
+      /** Holds if `n` is a node in the graph of data flow path explanations. */
+      query predicate nodes(PathNode n, string key, string val) {
+        reach(n) and key = "semmle.label" and val = n.toString()
+      }
+    }
+  }
 }
 
 cached
@@ -102,7 +164,7 @@ private module Cached {
     not f.isVirtual() and
     call.getPositionalArgument(n) = instr and
     f = call.getStaticCallTarget() and
-    getEnclosingNonVirtualFunctionInitializeParameter(init, f) and
+    isEnclosingNonVirtualFunctionInitializeParameter(init, f) and
     init.getParameter().getIndex() = pragma[only_bind_into](pragma[only_bind_out](n))
   }
 
@@ -111,7 +173,7 @@ private module Cached {
    * corresponding initialization instruction that receives the value of `instr` in `f`.
    */
   pragma[noinline]
-  private predicate getPositionalArgumentInitParam(
+  private predicate isPositionalArgumentInitParam(
     CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
   ) {
     exists(int n |
@@ -126,18 +188,18 @@ private module Cached {
    * `instr` in `f`.
    */
   pragma[noinline]
-  private predicate getThisArgumentInitParam(
+  private predicate isThisArgumentInitParam(
     CallInstruction call, Instruction instr, InitializeParameterInstruction init, Function f
   ) {
     not f.isVirtual() and
     call.getStaticCallTarget() = f and
-    getEnclosingNonVirtualFunctionInitializeParameter(init, f) and
+    isEnclosingNonVirtualFunctionInitializeParameter(init, f) and
     call.getThisArgument() = instr and
     init.getIRVariable() instanceof IRThisVariable
   }
 
   /** Holds if `f` is the enclosing non-virtual function of `init`. */
-  private predicate getEnclosingNonVirtualFunctionInitializeParameter(
+  private predicate isEnclosingNonVirtualFunctionInitializeParameter(
     InitializeParameterInstruction init, Function f
   ) {
     not f.isVirtual() and
@@ -145,7 +207,7 @@ private module Cached {
   }
 
   /** Holds if `f` is the enclosing non-virtual function of `init`. */
-  private predicate getEnclosingNonVirtualFunctionInitializeIndirection(
+  private predicate isEnclosingNonVirtualFunctionInitializeIndirection(
     InitializeIndirectionInstruction init, Function f
   ) {
     not f.isVirtual() and
@@ -153,15 +215,16 @@ private module Cached {
   }
 
   /**
-   * Holds if `instr` is an argument (or argument indirection) to a call, and
-   * `succ` is the corresponding initialization instruction in the call target.
+   * Holds if `argument` is an argument (or argument indirection) to a call, and
+   * `parameter` is the corresponding initialization instruction in the call target.
    */
-  private predicate flowThroughCallable(Instruction argument, Instruction parameter) {
+  cached
+  predicate flowThroughCallable(Instruction argument, Instruction parameter) {
     // Flow from an argument to a parameter
     exists(CallInstruction call, InitializeParameterInstruction init | init = parameter |
-      getPositionalArgumentInitParam(call, argument, init, call.getStaticCallTarget())
+      isPositionalArgumentInitParam(call, argument, init, call.getStaticCallTarget())
       or
-      getThisArgumentInitParam(call, argument, init, call.getStaticCallTarget())
+      isThisArgumentInitParam(call, argument, init, call.getStaticCallTarget())
     )
     or
     // Flow from argument indirection to parameter indirection
@@ -170,7 +233,7 @@ private module Cached {
     |
       init = parameter and
       read.getPrimaryInstruction() = call and
-      getEnclosingNonVirtualFunctionInitializeIndirection(init, call.getStaticCallTarget())
+      isEnclosingNonVirtualFunctionInitializeIndirection(init, call.getStaticCallTarget())
     |
       exists(int n |
         read.getSideEffectOperand().getAnyDef() = argument and
@@ -205,92 +268,10 @@ private module Cached {
   }
 
   cached
-  predicate step(Instruction nodeFrom, Instruction nodeTo) {
+  predicate localStep(Instruction nodeFrom, Instruction nodeTo) {
     exists(Operand mid |
       instructionToOperandStep(nodeFrom, mid) and
       operandToInstructionStep(mid, nodeTo)
     )
-    or
-    flowThroughCallable(nodeFrom, nodeTo)
-  }
-}
-
-/**
- * Gets the enclosing callable of `n`. Unlike `n.getEnclosingCallable()`, this
- * predicate ensures that joins go from `n` to the result instead of the other
- * way around.
- */
-pragma[inline]
-private IRFunction getEnclosingCallable(Instruction n) {
-  pragma[only_bind_into](result) = pragma[only_bind_out](n).getEnclosingIRFunction()
-}
-
-/** Holds if `nodeFrom` flows to `nodeTo`. */
-private predicate step(Instruction nodeFrom, Instruction nodeTo, MustFlowConfiguration config) {
-  exists(config) and
-  Cached::step(pragma[only_bind_into](nodeFrom), pragma[only_bind_into](nodeTo)) and
-  (
-    config.allowInterproceduralFlow()
-    or
-    getEnclosingCallable(nodeFrom) = getEnclosingCallable(nodeTo)
-  )
-  or
-  config.isAdditionalFlowStep(nodeFrom.getAUse(), nodeTo)
-}
-
-private newtype TLocalPathNode =
-  MkLocalPathNode(Instruction n, MustFlowConfiguration config) {
-    flowsToSink(n, config) and
-    (
-      config.isSource(n)
-      or
-      exists(MustFlowPathNode mid | step(mid.getInstruction(), n, config))
-    )
-  }
-
-/** A `Node` that is in a path from a source to a sink. */
-class MustFlowPathNode extends TLocalPathNode {
-  Instruction n;
-
-  MustFlowPathNode() { this = MkLocalPathNode(n, _) }
-
-  /** Gets the underlying node. */
-  Instruction getInstruction() { result = n }
-
-  /** Gets a textual representation of this node. */
-  string toString() { result = n.getAst().toString() }
-
-  /** Gets the location of this element. */
-  Location getLocation() { result = n.getLocation() }
-
-  /** Gets a successor node, if any. */
-  MustFlowPathNode getASuccessor() {
-    step(this.getInstruction(), result.getInstruction(), this.getConfiguration())
-  }
-
-  /** Gets the associated configuration. */
-  MustFlowConfiguration getConfiguration() { this = MkLocalPathNode(_, result) }
-}
-
-private class MustFlowPathSink extends MustFlowPathNode {
-  MustFlowPathSink() { this.getConfiguration().isSink(this.getInstruction().getAUse()) }
-}
-
-/**
- * Provides the query predicates needed to include a graph in a path-problem query.
- */
-module PathGraph {
-  private predicate reach(MustFlowPathNode n) {
-    n instanceof MustFlowPathSink or reach(n.getASuccessor())
-  }
-
-  /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(MustFlowPathNode a, MustFlowPathNode b) {
-    a.getASuccessor() = b and reach(b)
-  }
-
-  /** Holds if `n` is a node in the graph of data flow path explanations. */
-  query predicate nodes(MustFlowPathNode n, string key, string val) {
-    reach(n) and key = "semmle.label" and val = n.toString()
   }
 }

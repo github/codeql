@@ -1,0 +1,9 @@
+{
+    "integrity": "sha256-yKqAbPYGZnmsI0YyQe6ArWkiZdrQRl9RERy74wuJA1I=",
+    "strip_prefix": "",
+    "url": "https://github.com/bazelbuild/rules_rust/releases/download/0.68.1/rules_rust-0.68.1.tar.gz",
+    "patches": {
+        "include_rmeta_in_stdlib.patch": "sha256-7n8XHpfkLUMEbRG6lKqdhLWydsWlRRG+Ywkxk6LvY9c="
+    },
+    "patch_strip": 1
+}

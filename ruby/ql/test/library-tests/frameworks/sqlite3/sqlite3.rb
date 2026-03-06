@@ -20,12 +20,16 @@ SQLite3::Database.new( "data.db" ) do |db|
 end
 
 
-class MyDatabaseWrapper
-      def initialize(filename)
-      @db = SQLite3::Database.new(filename, results_as_hash: true)
-    end
+class SqliteController < ActionController::Base
+  def sqlite3_handler
+    category = params[:category] # $ Source[rb/sql-injection]
+    db = SQLite3::Database.new "test.db"
 
-    def select_rows(category)
-      @db.execute("select * from table")
-    end
+    # BAD: SQL injection vulnerability
+    db.execute("select * from table where category = '#{category}'") # $ Alert[rb/sql-injection]
+
+    # GOOD: Sanitized by SQLite3::Database.quote
+    sanitized_category = SQLite3::Database.quote(category)
+    db.execute("select * from table where category = '#{sanitized_category}'")
+  end
 end

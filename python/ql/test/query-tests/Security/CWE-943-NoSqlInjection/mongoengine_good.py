@@ -20,8 +20,8 @@ def connect_find():
     json_search = json.loads(unsafe_search)
     safe_search = sanitize(json_search)
 
-    db = me.connect('mydb')  
-    return db.movie.find({'name': safe_search})  #$ result=OK
+    db = me.connect('mydb')
+    return db.movie.find({'name': safe_search})  # $ result=OK
 
 # if __name__ == "__main__":
 #     app.run(debug=True)

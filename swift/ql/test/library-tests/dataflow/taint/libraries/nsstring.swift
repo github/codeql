@@ -203,7 +203,7 @@ func taintThroughInterpolatedStrings() {
 
   sink(arg: try! NSString(contentsOfFile: sourceString(), encoding: 0)) // $ tainted=204
   sink(arg: try! NSString(contentsOfFile: sourceString(), usedEncoding: nil)) // $ tainted=205
-  sink(arg: try! NSString(contentsOf: sourceURL(), encoding: 0)) // $: tainted=206
+  sink(arg: try! NSString(contentsOf: sourceURL(), encoding: 0)) // $ tainted=206
   sink(arg: try! NSString(contentsOf: URL(string: sourceString())!, encoding: 0)) // $ tainted=207
   sink(arg: try! NSString(contentsOf: sourceURL(), usedEncoding: nil)) // $ tainted=208
   sink(arg: try! NSString(contentsOf: URL(string: sourceString())!, usedEncoding: nil)) // $ tainted=209

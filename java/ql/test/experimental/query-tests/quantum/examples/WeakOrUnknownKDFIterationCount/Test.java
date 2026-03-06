@@ -28,8 +28,8 @@ public class Test {
      */
     public void pbkdf2LowIteration(String password) throws Exception {
         byte[] salt = generateSalt(16);
-        int iterationCount = 10; // $Source
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $Alert[java/quantum/examples/weak-kdf-iteration-count]
+        int iterationCount = 10; // $ Source
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $ Alert[java/quantum/examples/weak-kdf-iteration-count]
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         byte[] key = factory.generateSecret(spec).getEncoded();
     }
@@ -40,9 +40,9 @@ public class Test {
      * SAST/CBOM: - Parent: PBKDF2. - Iteration count is only 10, which is far
      * below acceptable security standards. - Flagged as insecure.
      */
-    public void pbkdf2LowIteration(String password, int iterationCount) throws Exception { // $Source
+    public void pbkdf2LowIteration(String password, int iterationCount) throws Exception { // $ Source
         byte[] salt = generateSalt(16);
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $Alert[java/quantum/examples/unknown-kdf-iteration-count]
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); // $ Alert[java/quantum/examples/unknown-kdf-iteration-count]
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         byte[] key = factory.generateSecret(spec).getEncoded();
     }
@@ -55,8 +55,8 @@ public class Test {
      */
     public void pbkdf2HighIteration(String password) throws Exception {
         byte[] salt = generateSalt(16);
-        int iterationCount = 1_000_000; 
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256); 
+        int iterationCount = 1_000_000;
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterationCount, 256);
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         byte[] key = factory.generateSecret(spec).getEncoded();
     }

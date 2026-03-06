@@ -15,6 +15,6 @@
 import python
 private import LegacyPointsTo
 
-from FunctionMetrics func, int complexity
+from FunctionMetricsWithPointsTo func, int complexity
 where complexity = func.getCyclomaticComplexity()
 select func, complexity order by complexity desc

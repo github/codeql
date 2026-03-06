@@ -1,11 +1,11 @@
 const fs = require('fs');
 const zlib = require('zlib');
 
-function foo(){
+function foo() {
     const source = fs.createReadStream('input.txt');
     const gzip = zlib.createGzip();
     const destination = fs.createWriteStream('output.txt.gz');
-    source.pipe(gzip).pipe(destination); // $Alert    
+    source.pipe(gzip).pipe(destination); // $ Alert
     gzip.on('error', e);
 }
 class StreamWrapper {
@@ -34,14 +34,14 @@ function zip1() {
 function zip2() {
     const zipStream = createWriteStream(zipPath);
     let wrapper = new StreamWrapper();
-    let outStream = wrapper.outputStream.pipe(zipStream); // $Alert
+    let outStream = wrapper.outputStream.pipe(zipStream); // $ Alert
     outStream.on('error', e);
 }
 
 function zip3() {
     const zipStream = createWriteStream(zipPath);
     let wrapper = new StreamWrapper();
-    wrapper.outputStream.pipe(zipStream); // $Alert
+    wrapper.outputStream.pipe(zipStream); // $ Alert
     zipStream.on('error', e);
 }
 
@@ -49,14 +49,14 @@ function zip3() {
     const zipStream = createWriteStream(zipPath);
     let wrapper = new StreamWrapper();
     let source = getStream();
-    source.pipe(wrapper.outputStream); // $Alert
+    source.pipe(wrapper.outputStream); // $ Alert
     wrapper.outputStream.on('error', e);
 }
 
 function zip4() {
     const zipStream = createWriteStream(zipPath);
     let stream = getStream();
-    let output = stream.pipe(zipStream); // $Alert
+    let output = stream.pipe(zipStream); // $ Alert
     output.on('error', e);
 }
 
@@ -89,7 +89,7 @@ class StreamWrapper3 {
 function zip5() {
     const zipStream = createWriteStream(zipPath);
     let wrapper = new StreamWrapper3();
-    wrapper.pipeIt(zipStream); // $MISSING:Alert
+    wrapper.pipeIt(zipStream); // $ MISSING:Alert
     zipStream.on('error', e);
 }
 function zip6() {
@@ -108,6 +108,6 @@ function zip7() {
     const zipStream = createWriteStream(zipPath);
     let stream = getStream();
     registerErr(stream, e);
-    stream.pipe(zipStream); // $SPURIOUS:Alert
+    stream.pipe(zipStream); // $ SPURIOUS:Alert
     zipStream.on('error', e);
 }

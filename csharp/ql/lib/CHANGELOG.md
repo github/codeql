@@ -1,3 +1,21 @@
+## 5.4.8
+
+### Minor Analysis Improvements
+
+* C# 14: Added support for partial events.
+* C# 14: Added support for the `field` keyword in properties.
+
+### Bug Fixes
+
+* Fixed an issue where the body of a partial member could be extracted twice. When both a *defining* and an *implementing* declaration exist, only the *implementing* declaration is now extracted.
+
+## 5.4.7
+
+### Minor Analysis Improvements
+
+* The model for `System.Web.HttpUtility` has been modified to better model the flow of tainted URIs.
+* C# 14: Added support for `extension` members in the extractor, QL library, data flow, and Models as Data, covering extension methods, properties, and operators.
+
 ## 5.4.6
 
 ### Minor Analysis Improvements

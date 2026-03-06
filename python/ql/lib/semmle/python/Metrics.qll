@@ -1,5 +1,5 @@
 import python
-private import LegacyPointsTo
+private import semmle.python.SelfAttribute
 
 /** The metrics for a function */
 class FunctionMetrics extends Function {
@@ -17,76 +17,6 @@ class FunctionMetrics extends Function {
 
   /** Gets the number of lines of docstring in the function */
   int getNumberOfLinesOfDocStrings() { py_docstringlines(this, result) }
-
-  /**
-   * Gets the cyclomatic complexity of the function:
-   * The number of linearly independent paths through the source code.
-   * Computed as     E - N + 2P,
-   * where
-   *  E = the number of edges of the graph.
-   *  N = the number of nodes of the graph.
-   *  P = the number of connected components, which for a single function is 1.
-   */
-  int getCyclomaticComplexity() {
-    exists(int e, int n |
-      n = count(BasicBlockWithPointsTo b | b = this.getABasicBlock() and b.likelyReachable()) and
-      e =
-        count(BasicBlockWithPointsTo b1, BasicBlockWithPointsTo b2 |
-          b1 = this.getABasicBlock() and
-          b1.likelyReachable() and
-          b2 = this.getABasicBlock() and
-          b2.likelyReachable() and
-          b2 = b1.getASuccessor() and
-          not b1.unlikelySuccessor(b2)
-        )
-    |
-      result = e - n + 2
-    )
-  }
-
-  private BasicBlock getABasicBlock() {
-    result = this.getEntryNode().getBasicBlock()
-    or
-    exists(BasicBlock mid | mid = this.getABasicBlock() and result = mid.getASuccessor())
-  }
-
-  /**
-   * Dependency of Callables
-   * One callable "this" depends on another callable "result"
-   * if "this" makes some call to a method that may end up being "result".
-   */
-  FunctionMetrics getADependency() {
-    result != this and
-    not non_coupling_method(result) and
-    exists(Call call | call.getScope() = this |
-      exists(FunctionObject callee | callee.getFunction() = result |
-        call.getAFlowNode().getFunction().(ControlFlowNodeWithPointsTo).refersTo(callee)
-      )
-      or
-      exists(Attribute a | call.getFunc() = a |
-        unique_root_method(result, a.getName())
-        or
-        exists(Name n | a.getObject() = n and n.getId() = "self" |
-          result.getScope() = this.getScope() and
-          result.getName() = a.getName()
-        )
-      )
-    )
-  }
-
-  /**
-   * Afferent Coupling
-   * the number of callables that depend on this method.
-   * This is sometimes called the "fan-in" of a method.
-   */
-  int getAfferentCoupling() { result = count(FunctionMetrics m | m.getADependency() = this) }
-
-  /**
-   * Efferent Coupling
-   * the number of methods that this method depends on
-   * This is sometimes called the "fan-out" of a method.
-   */
-  int getEfferentCoupling() { result = count(FunctionMetrics m | this.getADependency() = m) }
 
   int getNumberOfParametersWithoutDefault() {
     result =
@@ -115,36 +45,6 @@ class ClassMetrics extends Class {
 
   /** Gets the number of lines of docstrings in the class */
   int getNumberOfLinesOfDocStrings() { py_docstringlines(this, result) }
-
-  private predicate dependsOn(Class other) {
-    other != this and
-    (
-      exists(FunctionMetrics f1, FunctionMetrics f2 | f1.getADependency() = f2 |
-        f1.getScope() = this and f2.getScope() = other
-      )
-      or
-      exists(Function f, Call c, ClassObject cls | c.getScope() = f and f.getScope() = this |
-        c.getFunc().(ExprWithPointsTo).refersTo(cls) and
-        cls.getPyClass() = other
-      )
-    )
-  }
-
-  /**
-   * Gets the afferent coupling of a class -- the number of classes that
-   * directly depend on it.
-   */
-  int getAfferentCoupling() { result = count(ClassMetrics t | t.dependsOn(this)) }
-
-  /**
-   * Gets the efferent coupling of a class -- the number of classes that
-   * it directly depends on.
-   */
-  int getEfferentCoupling() { result = count(ClassMetrics t | this.dependsOn(t)) }
-
-  int getInheritanceDepth() {
-    exists(ClassObject cls | cls.getPyClass() = this | result = max(classInheritanceDepth(cls)))
-  }
 
   /* -------- CHIDAMBER AND KEMERER LACK OF COHESION IN METHODS ------------ */
   /*
@@ -245,21 +145,6 @@ class ClassMetrics extends Class {
   int getLackOfCohesionHM() { result = count(int line | this.unionSubgraph(_, line)) }
 }
 
-private int classInheritanceDepth(ClassObject cls) {
-  /* Prevent run-away recursion in case of circular inheritance */
-  not cls.getASuperType() = cls and
-  (
-    exists(ClassObject sup | cls.getABaseType() = sup | result = classInheritanceDepth(sup) + 1)
-    or
-    not exists(cls.getABaseType()) and
-    (
-      major_version() = 2 and result = 0
-      or
-      major_version() > 2 and result = 1
-    )
-  )
-}
-
 class ModuleMetrics extends Module {
   /** Gets the total number of lines (including blank lines) in the module */
   int getNumberOfLines() { py_alllines(this, result) }
@@ -272,43 +157,6 @@ class ModuleMetrics extends Module {
 
   /** Gets the number of lines of docstrings in the module */
   int getNumberOfLinesOfDocStrings() { py_docstringlines(this, result) }
-
-  /**
-   * Gets the afferent coupling of a class -- the number of classes that
-   *  directly depend on it.
-   */
-  int getAfferentCoupling() { result = count(ModuleMetrics t | t.dependsOn(this)) }
-
-  /**
-   * Gets the efferent coupling of a class -- the number of classes that
-   *  it directly depends on.
-   */
-  int getEfferentCoupling() { result = count(ModuleMetrics t | this.dependsOn(t)) }
-
-  private predicate dependsOn(Module other) {
-    other != this and
-    (
-      exists(FunctionMetrics f1, FunctionMetrics f2 | f1.getADependency() = f2 |
-        f1.getEnclosingModule() = this and f2.getEnclosingModule() = other
-      )
-      or
-      exists(Function f, Call c, ClassObject cls | c.getScope() = f and f.getScope() = this |
-        c.getFunc().(ExprWithPointsTo).refersTo(cls) and
-        cls.getPyClass().getEnclosingModule() = other
-      )
-    )
-  }
-}
-
-/** Helpers for coupling */
-predicate unique_root_method(Function func, string name) {
-  name = func.getName() and
-  not exists(FunctionObject f, FunctionObject other |
-    f.getFunction() = func and
-    other.getName() = name
-  |
-    not other.overrides(f)
-  )
 }
 
 predicate non_coupling_method(Function f) {

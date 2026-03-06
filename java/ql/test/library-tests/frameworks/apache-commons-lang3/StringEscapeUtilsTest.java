@@ -6,6 +6,6 @@ public class StringEscapeUtilsTest {
   void sink(Object o) {}
 
   void test() throws Exception {
-    sink(StringEscapeUtils.escapeJson(taint())); // $hasTaintFlow
+    sink(StringEscapeUtils.escapeJson(taint())); // $ hasTaintFlow
   }
 }

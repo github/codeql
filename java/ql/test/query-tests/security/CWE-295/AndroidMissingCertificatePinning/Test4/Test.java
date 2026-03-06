@@ -28,6 +28,6 @@ class Test {
 
     void test2() throws Exception {
         URL url = new URL("http://www.example.com/");
-        HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection(); // $hasNoTrustedResult
+        HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection(); // $ hasNoTrustedResult
     }
 }

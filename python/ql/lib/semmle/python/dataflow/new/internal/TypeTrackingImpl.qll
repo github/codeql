@@ -202,9 +202,16 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
    */
   predicate returnStep(Node nodeFrom, LocalSourceNode nodeTo) {
     exists(DataFlowPrivate::ExtractedDataFlowCall call |
-      nodeFrom.(DataFlowPrivate::ReturnNode).getEnclosingCallable() = call.getCallable() and
+      returnNodeEnclosingCallable(nodeFrom) = call.getCallable() and
       nodeTo.(DataFlowPublic::CfgNode).getNode() = call.getNode()
     )
+  }
+
+  pragma[nomagic]
+  private DataFlowDispatch::DataFlowCallable returnNodeEnclosingCallable(
+    DataFlowPrivate::ReturnNode returnNode
+  ) {
+    result = returnNode.getEnclosingCallable()
   }
 
   /**

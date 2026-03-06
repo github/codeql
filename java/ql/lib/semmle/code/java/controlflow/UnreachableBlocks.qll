@@ -1,8 +1,10 @@
 /**
+ * DEPRECATED: This module is no longer maintained, and will be removed in a future release.
+ *
  * Provides classes and predicates for identifying unreachable blocks under a "closed-world" assumption.
  */
 overlay[local?]
-module;
+deprecated module;
 
 import java
 import semmle.code.java.controlflow.Guards

@@ -214,7 +214,7 @@ module ModelValidation {
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
       or
-      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
+      not type.regexpMatch("[a-zA-Z0-9_<>,\\(\\)\\+\\.]+") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
       or
       not name.regexpMatch("[a-zA-Z0-9_<>,\\.]*") and
@@ -239,12 +239,25 @@ module ModelValidation {
     )
   }
 
+  string getIncorrectConstructorSummaryOutput() {
+    exists(string namespace, string type, string name, string output |
+      type = name or
+      type = name + "<" + any(string s)
+    |
+      summaryModel(namespace, type, _, name, _, _, _, output, _, _, _) and
+      output.matches("ReturnValue%") and
+      result =
+        "Constructor model for " + namespace + "." + type +
+          " should use `Argument[this]` in the output, not `ReturnValue`."
+    )
+  }
+
   /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        KindVal::getInvalidModelKind()
+        getIncorrectConstructorSummaryOutput(), KindVal::getInvalidModelKind()
       ]
   }
 }

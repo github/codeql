@@ -1,17 +1,30 @@
+using System;
+
 partial class TwoPartClass
 {
+    // Declaring declaration.
+    public partial TwoPartClass(object obj);
     partial void PartialMethodWithBody1();
+    public partial object PartialMethodWithBody2(object obj);
     partial void PartialMethodWithoutBody1();
     public void Method2() { }
     // Declaring declaration.
     public partial object PartialProperty1 { get; set; }
     // Declaring declaration.
     public partial object this[int index] { get; set; }
+    // Declaring declaration.
+    public partial event EventHandler PartialEvent1;
 }
 
 partial class TwoPartClass
 {
+    // Implementation declaration.
+    public partial TwoPartClass(object obj) { }
     partial void PartialMethodWithBody1() { }
+    public partial object PartialMethodWithBody2(object obj)
+    {
+        return obj;
+    }
     public void Method3() { }
     private object _backingField;
     // Implementation declaration.
@@ -27,6 +40,9 @@ partial class TwoPartClass
         get { return _backingArray[index]; }
         set { _backingArray[index] = value; }
     }
+
+    // Implementation declaration.
+    public partial event EventHandler PartialEvent1 { add { } remove { } }
 }
 
 partial class OnePartPartialClass
@@ -37,6 +53,7 @@ partial class OnePartPartialClass
 
 class NonPartialClass
 {
+    public NonPartialClass(object obj) { }
     public void Method5() { }
     public object Property { get; set; }
     public object this[int index]
@@ -44,4 +61,5 @@ class NonPartialClass
         get { return null; }
         set { }
     }
+    public event EventHandler Event;
 }

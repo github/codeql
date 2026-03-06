@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -12,7 +13,9 @@ namespace Semmle.Extraction.CSharp.Entities
     internal class Constructor : Method
     {
         private readonly List<SyntaxNode> declaringReferenceSyntax;
-
+        private readonly Lazy<ConstructorDeclarationSyntax?> ordinaryConstructorSyntaxLazy;
+        private readonly Lazy<TypeDeclarationSyntax?> primaryConstructorSyntaxLazy;
+        private readonly Lazy<PrimaryConstructorBaseTypeSyntax?> primaryBaseLazy;
         private Constructor(Context cx, IMethodSymbol init)
             : base(cx, init)
         {
@@ -20,7 +23,27 @@ namespace Semmle.Extraction.CSharp.Entities
                 Symbol.DeclaringSyntaxReferences
                     .Select(r => r.GetSyntax())
                     .ToList();
+            ordinaryConstructorSyntaxLazy = new Lazy<ConstructorDeclarationSyntax?>(() =>
+                declaringReferenceSyntax
+                .OfType<ConstructorDeclarationSyntax>()
+                .FirstOrDefault());
+            primaryConstructorSyntaxLazy = new Lazy<TypeDeclarationSyntax?>(() =>
+                declaringReferenceSyntax
+                    .OfType<TypeDeclarationSyntax>()
+                    .FirstOrDefault(t => t is ClassDeclarationSyntax or StructDeclarationSyntax or RecordDeclarationSyntax));
+            primaryBaseLazy = new Lazy<PrimaryConstructorBaseTypeSyntax?>(() =>
+                PrimaryConstructorSyntax?
+                    .BaseList?
+                    .Types
+                    .OfType<PrimaryConstructorBaseTypeSyntax>()
+                    .FirstOrDefault());
         }
+
+        private ConstructorDeclarationSyntax? OrdinaryConstructorSyntax => ordinaryConstructorSyntaxLazy.Value;
+
+        private TypeDeclarationSyntax? PrimaryConstructorSyntax => primaryConstructorSyntaxLazy.Value;
+
+        private PrimaryConstructorBaseTypeSyntax? PrimaryBase => primaryBaseLazy.Value;
 
         public override void Populate(TextWriter trapFile)
         {
@@ -42,7 +65,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 return;
             }
 
-            if (MakeSynthetic)
+            if (MakeSyntheticBody)
             {
                 // Create a synthetic empty body for primary and default constructors.
                 Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
@@ -60,7 +83,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Do not extract initializers for constructed types.
             // Extract initializers for constructors with a body, primary constructors
             // and default constructors for classes and structs declared in source code.
-            if (Block is null && ExpressionBody is null && !MakeSynthetic || Context.OnlyScaffold)
+            if (!HasBody && !MakeSyntheticBody || Context.OnlyScaffold)
             {
                 return;
             }
@@ -176,23 +199,6 @@ namespace Semmle.Extraction.CSharp.Entities
             init.PopulateArguments(trapFile, arguments, 0);
         }
 
-        private ConstructorDeclarationSyntax? OrdinaryConstructorSyntax =>
-            declaringReferenceSyntax
-                .OfType<ConstructorDeclarationSyntax>()
-                .FirstOrDefault();
-
-        private TypeDeclarationSyntax? PrimaryConstructorSyntax =>
-            declaringReferenceSyntax
-                    .OfType<TypeDeclarationSyntax>()
-                    .FirstOrDefault(t => t is ClassDeclarationSyntax or StructDeclarationSyntax or RecordDeclarationSyntax);
-
-        private PrimaryConstructorBaseTypeSyntax? PrimaryBase =>
-            PrimaryConstructorSyntax?
-                .BaseList?
-                .Types
-                .OfType<PrimaryConstructorBaseTypeSyntax>()
-                .FirstOrDefault();
-
         private bool IsPrimary => PrimaryConstructorSyntax is not null;
 
         // This is a default constructor in a class or struct declared in source.
@@ -211,7 +217,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         private bool IsBestSourceLocation => ReportingLocation is not null && Context.IsLocationInContext(ReportingLocation);
 
-        private bool MakeSynthetic => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !Context.OnlyScaffold;
+        private bool MakeSyntheticBody => (IsPrimary || (IsDefault && IsBestSourceLocation)) && !Context.OnlyScaffold;
 
         [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
@@ -223,7 +229,7 @@ namespace Semmle.Extraction.CSharp.Entities
             {
                 case MethodKind.StaticConstructor:
                 case MethodKind.Constructor:
-                    return ConstructorFactory.Instance.CreateEntityFromSymbol(cx, constructor);
+                    return ConstructorFactory.Instance.CreateEntityFromSymbol(cx, constructor.GetBodyDeclaringSymbol());
                 default:
                     throw new InternalError(constructor, "Attempt to create a Constructor from a symbol that isn't a constructor");
             }

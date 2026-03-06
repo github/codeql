@@ -79,7 +79,7 @@ public class TestStartBroadcastReceiverToIntent {
         // test method that receives an Intent as a parameter
         @Override
         public void onReceive(Context context, Intent intent) {
-            sink(intent.getStringExtra("data")); // $  hasValueFlow=send hasValueFlow=send-as-user hasValueFlow=send-with-perm hasValueFlow=send-ordered hasValueFlow=send-ordered-as-user hasValueFlow=send-sticky hasValueFlow=send-sticky-as-user hasValueFlow=send-sticky-ordered hasValueFlow=send-sticky-ordered-as-user hasValueFlow=4-arg
+            sink(intent.getStringExtra("data")); // $ hasValueFlow=send hasValueFlow=send-as-user hasValueFlow=send-with-perm hasValueFlow=send-ordered hasValueFlow=send-ordered-as-user hasValueFlow=send-sticky hasValueFlow=send-sticky-as-user hasValueFlow=send-sticky-ordered hasValueFlow=send-sticky-ordered-as-user hasValueFlow=4-arg
         }
     }
 

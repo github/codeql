@@ -1,3 +1,11 @@
+## 1.2.17
+
+No user-facing changes.
+
+## 1.2.16
+
+No user-facing changes.
+
 ## 1.2.15
 
 No user-facing changes.

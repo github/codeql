@@ -308,3 +308,37 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
 
 module PossibleYearArithmeticOperationCheckFlow =
   TaintTracking::Global<PossibleYearArithmeticOperationCheckConfig>;
+
+/**
+ * A time conversion function where either
+ * 1) an incorrect leap year date would result in an error that can be checked from the return value or
+ * 2) an incorrect leap year date is auto corrected (no checks required)
+ */
+class TimeConversionFunction extends Function {
+  boolean autoLeapYearCorrecting;
+
+  TimeConversionFunction() {
+    autoLeapYearCorrecting = false and
+    (
+      this.getName() =
+        [
+          "FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
+          "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
+          "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
+          "RtlTimeToSecondsSince1970", "_mkgmtime", "SetSystemTime", "VarUdateFromDate", "from_tm"
+        ]
+      or
+      // Matches all forms of GetDateFormat, e.g. GetDateFormatA/W/Ex
+      this.getName().matches("GetDateFormat%")
+    )
+    or
+    autoLeapYearCorrecting = true and
+    this.getName() =
+      ["mktime", "_mktime32", "_mktime64", "SystemTimeToVariantTime", "VariantTimeToSystemTime"]
+  }
+
+  /**
+   * Holds if the function is expected to auto convert a bad leap year date.
+   */
+  predicate isAutoLeapYearCorrecting() { autoLeapYearCorrecting = true }
+}

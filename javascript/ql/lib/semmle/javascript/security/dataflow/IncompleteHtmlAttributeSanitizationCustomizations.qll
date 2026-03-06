@@ -101,7 +101,13 @@ module IncompleteHtmlAttributeSanitization {
     }
   }
 
-  private class SanitizerFromModel extends Sanitizer {
-    SanitizerFromModel() { ModelOutput::barrierNode(this, "request-forgery") }
+  /**
+   * An encoder for potentially malicious characters, as a sanitizer
+   * for incomplete HTML sanitization vulnerabilities.
+   */
+  class EncodingSanitizer extends Sanitizer {
+    EncodingSanitizer() {
+      this = DataFlow::globalVarRef(["encodeURIComponent", "encodeURI"]).getACall()
+    }
   }
 }
