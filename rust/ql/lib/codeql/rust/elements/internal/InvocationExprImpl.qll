@@ -6,7 +6,7 @@ module Impl {
 
   private newtype TArgumentPosition =
     TPositionalArgumentPosition(int i) {
-      i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
+      i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()])]
     } or
     TSelfArgumentPosition() or
     TTypeQualifierArgumentPosition()

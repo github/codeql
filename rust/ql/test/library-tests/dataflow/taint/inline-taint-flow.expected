@@ -100,7 +100,9 @@ edges
 | main.rs:161:10:161:18 | source(...) | main.rs:161:10:161:25 | ... .shr(...) | provenance | MaD:30 |
 | main.rs:162:19:162:27 | source(...) | main.rs:162:10:162:28 | 1i64.shr(...) | provenance | MaD:30 |
 | main.rs:164:10:164:18 | source(...) | main.rs:164:10:164:30 | ... .bitor(...) | provenance | MaD:19 |
+| main.rs:165:10:165:18 | source(...) | main.rs:165:10:165:27 | ... .bitor(...) | provenance | MaD:19 |
 | main.rs:166:21:166:29 | source(...) | main.rs:166:10:166:30 | 1i64.bitor(...) | provenance | MaD:19 |
+| main.rs:167:18:167:26 | source(...) | main.rs:167:10:167:27 | 1.bitor(...) | provenance | MaD:19 |
 | main.rs:170:5:170:5 | [post] a | main.rs:171:5:171:5 | a | provenance |  |
 | main.rs:170:5:170:5 | [post] a | main.rs:172:5:172:5 | a | provenance |  |
 | main.rs:170:5:170:5 | [post] a | main.rs:173:5:173:5 | a | provenance |  |
@@ -351,8 +353,12 @@ nodes
 | main.rs:162:19:162:27 | source(...) | semmle.label | source(...) |
 | main.rs:164:10:164:18 | source(...) | semmle.label | source(...) |
 | main.rs:164:10:164:30 | ... .bitor(...) | semmle.label | ... .bitor(...) |
+| main.rs:165:10:165:18 | source(...) | semmle.label | source(...) |
+| main.rs:165:10:165:27 | ... .bitor(...) | semmle.label | ... .bitor(...) |
 | main.rs:166:10:166:30 | 1i64.bitor(...) | semmle.label | 1i64.bitor(...) |
 | main.rs:166:21:166:29 | source(...) | semmle.label | source(...) |
+| main.rs:167:10:167:27 | 1.bitor(...) | semmle.label | 1.bitor(...) |
+| main.rs:167:18:167:26 | source(...) | semmle.label | source(...) |
 | main.rs:170:5:170:5 | [post] a | semmle.label | [post] a |
 | main.rs:170:18:170:26 | source(...) | semmle.label | source(...) |
 | main.rs:171:5:171:5 | [post] a | semmle.label | [post] a |
@@ -516,7 +522,9 @@ testFailures
 | main.rs:161:10:161:25 | ... .shr(...) | main.rs:161:10:161:18 | source(...) | main.rs:161:10:161:25 | ... .shr(...) | $@ | main.rs:161:10:161:18 | source(...) | source(...) |
 | main.rs:162:10:162:28 | 1i64.shr(...) | main.rs:162:19:162:27 | source(...) | main.rs:162:10:162:28 | 1i64.shr(...) | $@ | main.rs:162:19:162:27 | source(...) | source(...) |
 | main.rs:164:10:164:30 | ... .bitor(...) | main.rs:164:10:164:18 | source(...) | main.rs:164:10:164:30 | ... .bitor(...) | $@ | main.rs:164:10:164:18 | source(...) | source(...) |
+| main.rs:165:10:165:27 | ... .bitor(...) | main.rs:165:10:165:18 | source(...) | main.rs:165:10:165:27 | ... .bitor(...) | $@ | main.rs:165:10:165:18 | source(...) | source(...) |
 | main.rs:166:10:166:30 | 1i64.bitor(...) | main.rs:166:21:166:29 | source(...) | main.rs:166:10:166:30 | 1i64.bitor(...) | $@ | main.rs:166:21:166:29 | source(...) | source(...) |
+| main.rs:167:10:167:27 | 1.bitor(...) | main.rs:167:18:167:26 | source(...) | main.rs:167:10:167:27 | 1.bitor(...) | $@ | main.rs:167:18:167:26 | source(...) | source(...) |
 | main.rs:176:10:176:10 | a | main.rs:170:18:170:26 | source(...) | main.rs:176:10:176:10 | a | $@ | main.rs:170:18:170:26 | source(...) | source(...) |
 | main.rs:176:10:176:10 | a | main.rs:171:18:171:26 | source(...) | main.rs:176:10:176:10 | a | $@ | main.rs:171:18:171:26 | source(...) | source(...) |
 | main.rs:176:10:176:10 | a | main.rs:172:18:172:26 | source(...) | main.rs:176:10:176:10 | a | $@ | main.rs:172:18:172:26 | source(...) | source(...) |

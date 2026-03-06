@@ -4960,6 +4960,17 @@ inferCertainType
 | regressions.rs:67:29:67:33 | other | TRef | regressions.rs:41:5:42:14 | S2 |
 | regressions.rs:71:14:75:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | regressions.rs:74:22:74:24 | &s2 |  | {EXTERNAL LOCATION} | & |
+| regressions.rs:82:20:82:24 | value |  | regressions.rs:81:18:81:18 | T |
+| regressions.rs:86:20:86:20 | s |  | regressions.rs:85:10:85:10 | T |
+| regressions.rs:86:34:88:9 | { ... } |  | regressions.rs:85:10:85:10 | T |
+| regressions.rs:87:13:87:13 | s |  | regressions.rs:85:10:85:10 | T |
+| regressions.rs:92:20:92:22 | val |  | regressions.rs:91:10:91:10 | T |
+| regressions.rs:92:41:94:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:92:41:94:9 | { ... } | T | regressions.rs:91:10:91:10 | T |
+| regressions.rs:93:18:93:20 | val |  | regressions.rs:91:10:91:10 | T |
+| regressions.rs:99:22:99:22 | x |  | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:103:5:107:5 | { ... } |  | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:104:33:104:33 | x |  | regressions.rs:99:18:99:19 | T2 |
 inferType
 | associated_types.rs:5:15:5:18 | SelfParam |  | associated_types.rs:1:1:2:21 | Wrapper |
 | associated_types.rs:5:15:5:18 | SelfParam | A | associated_types.rs:4:6:4:6 | A |
@@ -14818,4 +14829,29 @@ inferType
 | regressions.rs:74:22:74:24 | &s2 |  | {EXTERNAL LOCATION} | & |
 | regressions.rs:74:22:74:24 | &s2 | TRef | regressions.rs:41:5:42:14 | S2 |
 | regressions.rs:74:23:74:24 | s2 |  | regressions.rs:41:5:42:14 | S2 |
+| regressions.rs:82:20:82:24 | value |  | regressions.rs:81:18:81:18 | T |
+| regressions.rs:86:20:86:20 | s |  | regressions.rs:85:10:85:10 | T |
+| regressions.rs:86:34:88:9 | { ... } |  | regressions.rs:85:10:85:10 | T |
+| regressions.rs:87:13:87:13 | s |  | regressions.rs:85:10:85:10 | T |
+| regressions.rs:92:20:92:22 | val |  | regressions.rs:91:10:91:10 | T |
+| regressions.rs:92:41:94:9 | { ... } |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:92:41:94:9 | { ... } | T | regressions.rs:91:10:91:10 | T |
+| regressions.rs:93:13:93:21 | Some(...) |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:93:13:93:21 | Some(...) | T | regressions.rs:91:10:91:10 | T |
+| regressions.rs:93:18:93:20 | val |  | regressions.rs:91:10:91:10 | T |
+| regressions.rs:99:22:99:22 | x |  | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:103:5:107:5 | { ... } |  | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:104:13:104:13 | y |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:104:13:104:13 | y | T | regressions.rs:99:14:99:15 | T1 |
+| regressions.rs:104:13:104:13 | y | T | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:104:17:104:34 | ...::my_from(...) |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:104:17:104:34 | ...::my_from(...) | T | regressions.rs:99:14:99:15 | T1 |
+| regressions.rs:104:17:104:34 | ...::my_from(...) | T | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:104:33:104:33 | x |  | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:105:13:105:13 | z |  | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:105:17:105:34 | ...::my_from(...) |  | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:105:33:105:33 | y |  | {EXTERNAL LOCATION} | Option |
+| regressions.rs:105:33:105:33 | y | T | regressions.rs:99:14:99:15 | T1 |
+| regressions.rs:105:33:105:33 | y | T | regressions.rs:99:18:99:19 | T2 |
+| regressions.rs:106:9:106:9 | z |  | regressions.rs:99:18:99:19 | T2 |
 testFailures
