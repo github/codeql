@@ -30,6 +30,7 @@ namespace Semmle.Extraction.CSharp.Util
             { "op_UnaryNegation", "-" },
             { "op_Subtraction", "-" },
             { "op_Multiply", "*" },
+            { "op_Multiplication", "*" },
             { "op_Division", "/" },
             { "op_Modulus", "%" },
             { "op_GreaterThan", ">" },
