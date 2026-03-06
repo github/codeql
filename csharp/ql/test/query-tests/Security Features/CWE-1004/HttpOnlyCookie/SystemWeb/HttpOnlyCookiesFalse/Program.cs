@@ -13,7 +13,7 @@ class Program
 
     void CookieDefault()
     {
-        var cookie = new System.Web.HttpCookie("sessionID"); // $Alert // BAD: httpOnlyCookies is set to false by default
+        var cookie = new System.Web.HttpCookie("sessionID"); // $ Alert // BAD: httpOnlyCookies is set to false by default
     }
 
     void CookieDefaultForgery()
@@ -29,13 +29,13 @@ class Program
 
     void CookieDirectFalse()
     {
-        var cookie = new System.Web.HttpCookie("sessionID"); // $Alert 
+        var cookie = new System.Web.HttpCookie("sessionID"); // $ Alert
         cookie.HttpOnly = false; // BAD
     }
 
     void CookieDirectFalseInitializer()
     {
-        var cookie = new System.Web.HttpCookie("sessionID") { HttpOnly = false };  // $Alert // BAD
+        var cookie = new System.Web.HttpCookie("sessionID") { HttpOnly = false };  // $ Alert // BAD
     }
 
     void CookieIntermediateTrue()
@@ -53,7 +53,7 @@ class Program
 
     void CookieIntermediateFalse()
     {
-        var cookie = new System.Web.HttpCookie("sessionID"); // MISSING:Alert 
+        var cookie = new System.Web.HttpCookie("sessionID"); // MISSING:Alert
         bool v = false;
         cookie.HttpOnly = v; // BAD
     }
@@ -61,6 +61,6 @@ class Program
     void CookieIntermediateFalseInitializer()
     {
         bool v = false;
-        var cookie = new System.Web.HttpCookie("sessionID") { HttpOnly = v };  // $MISSING:Alert // BAD
+        var cookie = new System.Web.HttpCookie("sessionID") { HttpOnly = v };  // $ MISSING:Alert // BAD
     }
 }

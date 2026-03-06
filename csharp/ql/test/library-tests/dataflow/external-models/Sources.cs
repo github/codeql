@@ -21,6 +21,9 @@ namespace My.Qltest
 
             x = TaggedSrcPropertyGetter;
             x = this[0];
+
+            S s;
+            StructSrc(s);
         }
 
         [SourceAttribute]
@@ -65,7 +68,10 @@ namespace My.Qltest
 
         [SourceAttribute]
         object this[int i] => null;
+
+        void StructSrc(S s) { }
     }
 
+    struct S { }
     class SourceAttribute : System.Attribute { }
 }

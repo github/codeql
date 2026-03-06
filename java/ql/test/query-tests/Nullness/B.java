@@ -534,7 +534,7 @@ public class B {
       s1.hashCode(); // OK
       s2.hashCode(); // NPE
     }
-    s1.hashCode(); // NPE - false negative, Java CFG lacks proper edge label
+    s1.hashCode(); // NPE
   }
 
   public void lenCheck(int[] xs, int n, int t) {
@@ -556,5 +556,24 @@ public class B {
     if (n < 0 || n > 10) s = "A";
     if (n > 100) s.hashCode(); // OK
     if (n == 42) s.hashCode(); // OK
+  }
+
+  public void testFinally2(int[] xs) {
+    String s = null;
+    int i = 0;
+    while (true) {
+      try {
+        int x = xs[i++];
+        if (x == 0) {
+          s = "foo";
+          break;
+        } else if (x == 1) {
+          continue;
+        }
+      } finally {
+      }
+    }
+    s.hashCode(); // Spurious NPE - false positive
+    // CFG reachability does not distinguish abrupt successors
   }
 }

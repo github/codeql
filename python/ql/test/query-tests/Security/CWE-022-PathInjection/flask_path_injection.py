@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory # $Source
+from flask import Flask, request, send_from_directory # $ Source
 app = Flask(__name__)
 
 
@@ -10,7 +10,7 @@ STATIC_DIR = "/server/static/"
 def download_file():
     filename = request.args.get('filename', '')
     # ok since `send_from_directory` ensure this stays within `STATIC_DIR`
-    return send_from_directory(STATIC_DIR, filename) # $result=OK
+    return send_from_directory(STATIC_DIR, filename) # $ result=OK
 
 
 # see https://flask.palletsprojects.com/en/1.1.x/api/#flask.send_from_directory

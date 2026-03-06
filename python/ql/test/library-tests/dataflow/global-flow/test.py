@@ -2,15 +2,15 @@
 
 # Simple assignment
 
-g = [5] # $writes=g
+g = [5] # $ writes=g
 
 # Multiple assignment
 
-g1, g2 = [6], [7] # $writes=g1 writes=g2
+g1, g2 = [6], [7] # $ writes=g1 writes=g2
 
 # Assignment that's only referenced in this scope.
 
-unreferenced_g = [8] # $writes=unreferenced_g
+unreferenced_g = [8] # $ writes=unreferenced_g
 print(unreferenced_g)
 
 # Testing modifications of globals
@@ -24,49 +24,49 @@ g_mod = []
 # but currently our analysis thinks `g_mod` might be used in the `print` call
 g_mod = [10] # $ SPURIOUS: writes=g_mod
 print("foo")
-g_mod = [100] # $writes=g_mod
+g_mod = [100] # $ writes=g_mod
 
 # Modification by mutation
 
-g_ins = [50] # $writes=g_ins
+g_ins = [50] # $ writes=g_ins
 print(g_ins)
 g_ins.append(75)
 
 # A global with multiple potential definitions
 
-import unknown_module # $writes=unknown_module
+import unknown_module # $ writes=unknown_module
 if unknown_module.attr:
-    g_mult = [200] # $writes=g_mult
+    g_mult = [200] # $ writes=g_mult
 else:
-    g_mult = [300] # $writes=g_mult
+    g_mult = [300] # $ writes=g_mult
 
 # A global variable that may be redefined depending on some unknown value
 
-g_redef = [400] # $writes=g_redef
+g_redef = [400] # $ writes=g_redef
 if unknown_module.attr:
-    g_redef = [500] # $writes=g_redef
+    g_redef = [500] # $ writes=g_redef
 
-def global_access(): # $writes=global_access
+def global_access(): # $ writes=global_access
     l = 5
-    print(g) # $reads=g
-    print(g1) # $reads=g1
-    print(g2) # $reads=g2
-    print(g_mod) # $reads=g_mod
-    print(g_ins) # $reads=g_ins
-    print(g_mult) # $reads=g_mult
-    print(g_redef) # $reads=g_redef
+    print(g) # $ reads=g
+    print(g1) # $ reads=g1
+    print(g2) # $ reads=g2
+    print(g_mod) # $ reads=g_mod
+    print(g_ins) # $ reads=g_ins
+    print(g_mult) # $ reads=g_mult
+    print(g_redef) # $ reads=g_redef
 
-def print_g_mod(): # $writes=print_g_mod
-    print(g_mod) # $reads=g_mod
+def print_g_mod(): # $ writes=print_g_mod
+    print(g_mod) # $ reads=g_mod
 
-def global_mod(): # $writes=global_mod
+def global_mod(): # $ writes=global_mod
     global g_mod
-    g_mod += [150] # $reads,writes=g_mod
-    print_g_mod() # $reads=print_g_mod
+    g_mod += [150] # $ reads,writes=g_mod
+    print_g_mod() # $ reads=print_g_mod
 
-def global_inside_local_function(): # $writes=global_inside_local_function
+def global_inside_local_function(): # $ writes=global_inside_local_function
     def local_function():
-        print(g) # $reads=g
+        print(g) # $ reads=g
     local_function()
 
 ## Imports
@@ -74,24 +74,24 @@ def global_inside_local_function(): # $writes=global_inside_local_function
 
 # Direct imports
 
-import foo_module # $writes=foo_module
+import foo_module # $ writes=foo_module
 
-def use_foo(): # $writes=use_foo
-    print(foo_module.attr) # $reads=foo_module
+def use_foo(): # $ writes=use_foo
+    print(foo_module.attr) # $ reads=foo_module
 
 # Partial imports
 
-from bar import baz_attr, quux_attr # $writes=baz_attr writes=quux_attr
+from bar import baz_attr, quux_attr # $ writes=baz_attr writes=quux_attr
 
-def use_partial_import(): # $writes=use_partial_import
-    print(baz_attr, quux_attr) # $reads=baz_attr reads=quux_attr
+def use_partial_import(): # $ writes=use_partial_import
+    print(baz_attr, quux_attr) # $ reads=baz_attr reads=quux_attr
 
 # Aliased imports
 
-from spam_module import ham_attr as eggs_attr # $writes=eggs_attr
+from spam_module import ham_attr as eggs_attr # $ writes=eggs_attr
 
-def use_aliased_import(): # $writes=use_aliased_import
-    print(eggs_attr) # $reads=eggs_attr
+def use_aliased_import(): # $ writes=use_aliased_import
+    print(eggs_attr) # $ reads=eggs_attr
 
 # Import star (unlikely to work unless we happen to extract/model the referenced module)
 
@@ -99,23 +99,23 @@ def use_aliased_import(): # $writes=use_aliased_import
 
 from unknown import *
 
-def secretly_use_unknown(): # $writes=secretly_use_unknown
-    print(unknown_attr) # $reads=unknown_attr
+def secretly_use_unknown(): # $ writes=secretly_use_unknown
+    print(unknown_attr) # $ reads=unknown_attr
 
 # Known modules
 
 from known import *
 
-def secretly_use_known(): # $writes=secretly_use_known
-    print(known_attr) # $reads=known_attr
+def secretly_use_known(): # $ writes=secretly_use_known
+    print(known_attr) # $ reads=known_attr
 
 # Local import in function
 
-def imports_locally(): # $writes=imports_locally
+def imports_locally(): # $ writes=imports_locally
     import mod1
 
 # Global import hidden in function
 
-def imports_stuff(): # $writes=imports_stuff
+def imports_stuff(): # $ writes=imports_stuff
     global mod2
-    import mod2 # $writes=mod2
+    import mod2 # $ writes=mod2

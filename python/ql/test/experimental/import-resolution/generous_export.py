@@ -5,7 +5,7 @@ class SOURCE(object):
     @staticmethod
     def block_flow(): pass
 
-check("SOURCE", SOURCE, SOURCE, globals()) #$ prints=SOURCE
+check("SOURCE", SOURCE, SOURCE, globals()) # $ prints=SOURCE
 
 if eval("False"):
     # With our current import resolution, this value for SOURCE will be considered to be

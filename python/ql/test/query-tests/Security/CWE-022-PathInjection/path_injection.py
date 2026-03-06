@@ -37,7 +37,7 @@ def safe_path_normpath():
     filename = request.args.get('filename', '')
     npath = os.path.normpath(os.path.join(STATIC_DIR, filename))
     if npath.startswith(STATIC_DIR):
-        f = open(npath)  # $result=OK
+        f = open(npath)  # $ result=OK
 
 
 @app.route("/path5")
@@ -54,7 +54,7 @@ def safe_path_realpath():
     filename = request.args.get('filename', '')
     npath = os.path.realpath(os.path.join(STATIC_DIR, filename))
     if npath.startswith(STATIC_DIR):
-        f = open(npath)  # $result=OK
+        f = open(npath)  # $ result=OK
 
 
 @app.route("/path6")
@@ -71,7 +71,7 @@ def safe_path_abspath():
     filename = request.args.get('filename', '')
     npath = os.path.abspath(os.path.join(STATIC_DIR, filename))
     if npath.startswith(STATIC_DIR):
-        f = open(npath)  # $result=OK
+        f = open(npath)  # $ result=OK
 
 
 @app.route("/abspath_tricky")

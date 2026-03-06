@@ -10,7 +10,7 @@ public class InsecureSimpleEmailTest {
             email.setHostName("config.hostName");
             email.setSmtpPort(25);
             email.setAuthenticator(new DefaultAuthenticator("config.username", "config.password"));
-            email.setSSLOnConnect(true); // $hasInsecureJavaMail
+            email.setSSLOnConnect(true); // $ hasInsecureJavaMail
             email.setFrom("fromAddress");
             email.setSubject("subject");
             email.setMsg("body");
@@ -23,7 +23,7 @@ public class InsecureSimpleEmailTest {
             email.setHostName("config.hostName");
             email.setSmtpPort(25);
             email.setAuthenticator(new DefaultAuthenticator("config.username", "config.password"));
-            email.setStartTLSRequired(true); // $hasInsecureJavaMail
+            email.setStartTLSRequired(true); // $ hasInsecureJavaMail
             email.setFrom("fromAddress");
             email.setSubject("subject");
             email.setMsg("body");

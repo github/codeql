@@ -5,28 +5,28 @@ app = Flask(__name__)
 
 
 SOME_ROUTE = "/some/route"
-@app.route(SOME_ROUTE) # $routeSetup="/some/route"
-def some_route():  # $requestHandler
-    return make_response("some_route")  # $HttpResponse
+@app.route(SOME_ROUTE) # $ routeSetup="/some/route"
+def some_route():  # $ requestHandler
+    return make_response("some_route")  # $ HttpResponse
 
 
-def index():  # $requestHandler
-    return make_response("index")  # $HttpResponse
-app.add_url_rule('/index', 'index', index)  # $routeSetup="/index"
+def index():  # $ requestHandler
+    return make_response("index")  # $ HttpResponse
+app.add_url_rule('/index', 'index', index)  # $ routeSetup="/index"
 
 
 # We don't support this yet, and I think that's OK
 def later_set():  # $ MISSING: requestHandler
-    return make_response("later_set")  # $HttpResponse
-app.add_url_rule('/later-set', 'later_set', view_func=None)  # $routeSetup="/later-set"
+    return make_response("later_set")  # $ HttpResponse
+app.add_url_rule('/later-set', 'later_set', view_func=None)  # $ routeSetup="/later-set"
 app.view_functions['later_set'] = later_set
 
 # We don't want to execute this at runtime (since program will crash). Just using
 # `False` makes our analysis skip it, so here's a workaround :D
 if __file__ == "False":
-    @app.route(UNKNOWN_ROUTE) # $routeSetup
-    def unkown_route(foo, bar):  # $requestHandler routedParameter=foo routedParameter=bar
-        return make_response("unkown_route")  # $HttpResponse
+    @app.route(UNKNOWN_ROUTE) # $ routeSetup
+    def unkown_route(foo, bar):  # $ requestHandler routedParameter=foo routedParameter=bar
+        return make_response("unkown_route")  # $ HttpResponse
 
 # View
 #
@@ -40,7 +40,7 @@ class ShowUser(View):
     def dispatch_request(self, user_id):  # $ requestHandler routedParameter=user_id
         return "user_id: {}".format(user_id)  # $ HttpResponse
 
-app.add_url_rule("/basic/user/<int:user_id>", view_func=ShowUser.as_view('show_user'))  # $routeSetup="/basic/user/<int:user_id>"
+app.add_url_rule("/basic/user/<int:user_id>", view_func=ShowUser.as_view('show_user'))  # $ routeSetup="/basic/user/<int:user_id>"
 
 
 class WithoutKnownRoute1(View):
@@ -81,9 +81,9 @@ class UserAPI(MethodView):
 
 
 user_view = UserAPI.as_view("user_api")
-app.add_url_rule("/users/", defaults={"user_id": None}, view_func=user_view, methods=["GET",]) # $routeSetup="/users/"
-app.add_url_rule("/users/", view_func=user_view, methods=["POST",]) # $routeSetup="/users/"
-app.add_url_rule("/users/<int:user_id>", view_func=user_view, methods=["GET", "PUT", "DELETE"]) # $routeSetup="/users/<int:user_id>"
+app.add_url_rule("/users/", defaults={"user_id": None}, view_func=user_view, methods=["GET",]) # $ routeSetup="/users/"
+app.add_url_rule("/users/", view_func=user_view, methods=["POST",]) # $ routeSetup="/users/"
+app.add_url_rule("/users/<int:user_id>", view_func=user_view, methods=["GET", "PUT", "DELETE"]) # $ routeSetup="/users/<int:user_id>"
 
 
 class WithoutKnownRoute2(MethodView):

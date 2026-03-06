@@ -10,6 +10,6 @@ class SensitiveResultReceiver {
         ResultReceiver rec = intent.getParcelableExtra("hi");
         Bundle b = new Bundle();
         b.putCharSequence("pass", password);
-        rec.send(0, b); // $hasSensitiveResultReceiver
+        rec.send(0, b); // $ hasSensitiveResultReceiver
     }
 }

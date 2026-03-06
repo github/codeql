@@ -692,6 +692,7 @@ public class C23
 {
     public partial class Partial1
     {
+        public partial Partial1(object obj);
         public partial object Property { get; set; }
 
         public partial object this[int index] { get; set; }
@@ -700,6 +701,7 @@ public class C23
 
     public partial class Partial1
     {
+        public partial Partial1(object obj) { }
         public partial object Property { get { return null; } set { } }
 
         public partial object this[int index] { get { return null; } set { } }
@@ -727,5 +729,8 @@ public class C23
 
         // Viable callable: Partial1.remove_Event
         p.Event -= (sender, e) => { };
+
+        // Viable callable: Partial1.Partial1(object)
+        var p0 = new Partial1(new object());
     }
 }

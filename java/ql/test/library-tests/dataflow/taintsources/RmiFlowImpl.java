@@ -6,7 +6,7 @@ public class RmiFlowImpl implements RmiFlow {
 
 	public String listDirectory(String path) throws java.io.IOException {
 		String command = "ls " + path;
-		sink(command); // $hasRemoteTaintFlow
+		sink(command); // $ hasRemoteTaintFlow
 		return "pretend there are some results here";
 	}
 

@@ -2,12 +2,12 @@ public class MyController : Microsoft.AspNetCore.Mvc.Controller
 {
     public void CookieDefault()
     {
-        Response.Cookies.Append("name", "value"); // $Alert // BAD: Secure is set to false by default
+        Response.Cookies.Append("name", "value"); // $ Alert // BAD: Secure is set to false by default
     }
 
     public void CookieDefault2()
     {
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions(); // $Alert 
+        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions(); // $ Alert
         Response.Cookies.Append("name", "value", cookieOptions); // BAD: Secure is set to false by default
     }
 
@@ -32,14 +32,14 @@ public class MyController : Microsoft.AspNetCore.Mvc.Controller
 
     void CookieDirectFalse()
     {
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions(); // $Alert 
+        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions(); // $ Alert
         cookieOptions.Secure = false;
         Response.Cookies.Append("auth", "secret", cookieOptions); // BAD
     }
 
     void CookieDirectFalseInitializer()
     {
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions() { Secure = false }; // $Alert 
+        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions() { Secure = false }; // $ Alert
         Response.Cookies.Append("auth", "secret", cookieOptions); // BAD
     }
 
@@ -60,7 +60,7 @@ public class MyController : Microsoft.AspNetCore.Mvc.Controller
 
     void CookieIntermediateFalse()
     {
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions(); // $MISSING:Alert
+        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions(); // $ MISSING:Alert
         bool v = false;
         cookieOptions.Secure = v;
         Response.Cookies.Append("auth", "secret", cookieOptions); // BAD, but not detected
@@ -69,7 +69,7 @@ public class MyController : Microsoft.AspNetCore.Mvc.Controller
     void CookieIntermediateFalseInitializer()
     {
         bool v = false;
-        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions() { Secure = v }; // $MISSING:Alert 
+        var cookieOptions = new Microsoft.AspNetCore.Http.CookieOptions() { Secure = v }; // $ MISSING:Alert
         Response.Cookies.Append("auth", "secret", cookieOptions); // BAD, but not detected
     }
 }

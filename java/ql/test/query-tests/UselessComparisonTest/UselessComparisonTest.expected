@@ -10,7 +10,6 @@
 | A.java:55:9:55:14 | ... <= ... | Test is always false, because of $@. | A.java:48:16:48:21 | ... > ... | this condition |
 | A.java:58:11:58:15 | ... < ... | Test is always false, because of $@. | A.java:57:12:57:20 | ... > ... | this condition |
 | A.java:60:9:60:15 | ... != ... | Test is always false, because of $@. | A.java:57:12:57:20 | ... > ... | this condition |
-| A.java:60:9:60:15 | ... != ... | Test is always false, because of $@. | A.java:58:11:58:15 | ... < ... | this condition |
 | A.java:65:11:65:16 | ... != ... | Test is always false, because of $@. | A.java:64:19:64:23 | ... > ... | this condition |
 | A.java:76:11:76:16 | ... >= ... | Test is always false, because of $@. | A.java:74:13:74:18 | ... >= ... | this condition |
 | A.java:84:21:84:30 | ... < ... | Test is always false, because of $@. | A.java:80:12:80:21 | ... > ... | this condition |

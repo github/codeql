@@ -44,5 +44,13 @@ namespace RemoteFlowSource
         {
             Use(request.Unvalidated.RawUrl);
         }
+
+        public static async void M3(System.Net.WebSockets.WebSocket webSocket)
+        {
+            var buffer = new byte[1024];
+            var segment = new ArraySegment<byte>(buffer);
+            var result = await webSocket.ReceiveAsync(segment, System.Threading.CancellationToken.None);
+            Use(segment);
+        }
     }
 }

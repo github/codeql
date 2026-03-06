@@ -52,7 +52,7 @@ def m7(arg)
     arg += 3
   end
   @m7
-end # $result=BAD
+end # $ result=BAD
 
 # Bad: method has parameter but only one result is memoized.
 def m8(arg)
@@ -60,23 +60,23 @@ def m8(arg)
     long_running_method(arg)
   end
   @m8
-end # $result=BAD
+end # $ result=BAD
 
 # Bad: method has parameter but only one result is memoized.
 def m9(arg)
   @m9 ||= long_running_method(arg)
-end # $result=BAD
+end # $ result=BAD
 
 # Bad: method has parameter but only one result is memoized.
 def m10(arg1, arg2)
   @m10 ||= long_running_method(arg1, arg2)
-end # $result=BAD
+end # $ result=BAD
 
 # Bad: `arg2` not used in key.
 def m11(arg1, arg2)
   @m11 ||= {}
   @m11[arg1] ||= long_running_method(arg1, arg2)
-end # $result=BAD
+end # $ result=BAD
 
 # Bad: `arg2` not used in key.
 def m12(arg1, arg2)
@@ -84,7 +84,7 @@ def m12(arg1, arg2)
     h1[arg1] = result(arg1, arg2)
   end
   @m12[arg1]
-end # $result=BAD
+end # $ result=BAD
 
 # Bad: arg not used in key.
 def m13(id:)
@@ -94,7 +94,7 @@ def m13(id:)
     end
   end
   @m13
-end # $result=BAD
+end # $ result=BAD
 
 # Good (FP): arg is used in key via string interpolation.
 def m14(arg)

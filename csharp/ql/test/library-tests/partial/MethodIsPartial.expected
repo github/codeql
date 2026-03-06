@@ -1,8 +1,8 @@
-| Partial.cs:7:18:7:42 | PartialMethodWithoutBody1 | true |
-| Partial.cs:8:17:8:23 | Method2 | false |
-| Partial.cs:19:18:19:39 | PartialMethodWithBody1 | true |
-| Partial.cs:20:27:20:48 | PartialMethodWithBody2 | true |
-| Partial.cs:24:17:24:23 | Method3 | false |
-| Partial.cs:46:18:46:42 | PartialMethodWithoutBody2 | true |
-| Partial.cs:47:17:47:23 | Method4 | false |
-| Partial.cs:52:17:52:23 | Method5 | false |
+| Partial.cs:9:18:9:42 | PartialMethodWithoutBody1 | true |
+| Partial.cs:10:17:10:23 | Method2 | false |
+| Partial.cs:23:18:23:39 | PartialMethodWithBody1 | true |
+| Partial.cs:24:27:24:48 | PartialMethodWithBody2 | true |
+| Partial.cs:28:17:28:23 | Method3 | false |
+| Partial.cs:50:18:50:42 | PartialMethodWithoutBody2 | true |
+| Partial.cs:51:17:51:23 | Method4 | false |
+| Partial.cs:57:17:57:23 | Method5 | false |

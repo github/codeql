@@ -10,25 +10,25 @@ public class Test {
         byte[] data = "SensitiveData".getBytes();
 
         // Insecure block mode: ECB
-        Cipher cipherECB = Cipher.getInstance("AES/ECB/PKCS5Padding"); // $Alert
+        Cipher cipherECB = Cipher.getInstance("AES/ECB/PKCS5Padding"); // $ Alert
         cipherECB.init(Cipher.ENCRYPT_MODE, key);
         byte[] ecbEncrypted = cipherECB.doFinal(data);
         System.out.println("ECB encrypted: " + bytesToHex(ecbEncrypted));
 
         // Insecure block mode: CFB
-        Cipher cipherCFB = Cipher.getInstance("AES/CFB/PKCS5Padding"); // $Alert
+        Cipher cipherCFB = Cipher.getInstance("AES/CFB/PKCS5Padding"); // $ Alert
         cipherCFB.init(Cipher.ENCRYPT_MODE, key, iv);
         byte[] cfbEncrypted = cipherCFB.doFinal(data);
         System.out.println("CFB encrypted: " + bytesToHex(cfbEncrypted));
 
         // Insecure block mode: OFB
-        Cipher cipherOFB = Cipher.getInstance("AES/OFB/PKCS5Padding"); // $Alert
+        Cipher cipherOFB = Cipher.getInstance("AES/OFB/PKCS5Padding"); // $ Alert
         cipherOFB.init(Cipher.ENCRYPT_MODE, key, iv);
         byte[] ofbEncrypted = cipherOFB.doFinal(data);
         System.out.println("OFB encrypted: " + bytesToHex(ofbEncrypted));
 
         // Insecure block mode: CTR
-        Cipher cipherCTR = Cipher.getInstance("AES/CTR/NoPadding"); // $Alert
+        Cipher cipherCTR = Cipher.getInstance("AES/CTR/NoPadding"); // $ Alert
         cipherCTR.init(Cipher.ENCRYPT_MODE, key, iv);
         byte[] ctrEncrypted = cipherCTR.doFinal(data);
         System.out.println("CTR encrypted: " + bytesToHex(ctrEncrypted));
