@@ -1,3 +1,9 @@
+## 0.2.7
+
+### Minor Analysis Improvements
+
+* Added support for neutral models (`extensible: neutralModel`) to control where generated source, sink and flow summary models apply.
+
 ## 0.2.6
 
 No user-facing changes.
