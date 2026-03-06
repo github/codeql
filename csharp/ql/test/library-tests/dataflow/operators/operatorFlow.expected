@@ -219,6 +219,7 @@ subpaths
 | Operator.cs:77:29:77:29 | access to parameter y : C | Operator.cs:22:51:22:51 | y : C | Operator.cs:22:57:22:57 | access to parameter y : C | Operator.cs:77:25:77:29 | call to operator checked / : C |
 | Operator.cs:77:29:77:29 | access to parameter y : C | Operator.cs:22:51:22:51 | y : C | Operator.cs:22:57:22:57 | access to parameter y : C | Operator.cs:77:25:77:29 | call to operator checked / : C |
 testFailures
+| Operator.cs:120:24:120:42 | // ... | Missing result: hasValueFlow=1 |
 #select
 | Operator.cs:30:14:30:14 | access to local variable z | Operator.cs:27:17:27:28 | call to method Source<C> : C | Operator.cs:30:14:30:14 | access to local variable z | $@ | Operator.cs:27:17:27:28 | call to method Source<C> : C | call to method Source<C> : C |
 | Operator.cs:30:14:30:14 | access to local variable z | Operator.cs:27:17:27:28 | call to method Source<C> : C | Operator.cs:30:14:30:14 | access to local variable z | $@ | Operator.cs:27:17:27:28 | call to method Source<C> : C | call to method Source<C> : C |
