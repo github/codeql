@@ -1,13 +1,9 @@
-| include_twice.h:8:19:8:19 | s | This format specifier for type 'size_t' does not match the argument type '..(*)(..)'. |
-| include_twice.h:9:19:9:19 | s | This format specifier for type 'size_t' does not match the argument type '..(*)(..)'. |
-| include_twice.h:10:18:10:18 | s | This format specifier for type 'int' does not match the argument type '..(*)(..)'. |
-| include_twice.h:10:18:10:18 | s | This format specifier for type 'int' does not match the argument type 'unsigned long'. |
-| include_twice.h:11:19:11:19 | s | This format specifier for type 'long' does not match the argument type '..(*)(..)'. |
-| include_twice.h:12:20:12:20 | s | This format specifier for type 'long long' does not match the argument type '..(*)(..)'. |
-| include_twice.h:13:18:13:18 | s | This format specifier for type 'unsigned int' does not match the argument type '..(*)(..)'. |
-| include_twice.h:13:18:13:18 | s | This format specifier for type 'unsigned int' does not match the argument type 'unsigned long'. |
-| include_twice.h:21:18:21:39 | ... - ... | This format specifier for type 'int' does not match the argument type 'long'. |
-| include_twice.h:21:18:21:39 | ... - ... | This format specifier for type 'int' does not match the argument type 'long'. |
-| include_twice.h:24:18:24:39 | ... - ... | This format specifier for type 'unsigned int' does not match the argument type 'long'. |
-| include_twice.h:24:18:24:39 | ... - ... | This format specifier for type 'unsigned int' does not match the argument type 'long'. |
+| second.cpp:13:19:13:19 | s | This format specifier for type 'size_t' does not match the argument type '..(*)(..)'. |
+| second.cpp:14:19:14:19 | s | This format specifier for type 'size_t' does not match the argument type '..(*)(..)'. |
+| second.cpp:15:18:15:18 | s | This format specifier for type 'int' does not match the argument type '..(*)(..)'. |
+| second.cpp:16:19:16:19 | s | This format specifier for type 'long' does not match the argument type '..(*)(..)'. |
+| second.cpp:17:20:17:20 | s | This format specifier for type 'long long' does not match the argument type '..(*)(..)'. |
+| second.cpp:18:18:18:18 | s | This format specifier for type 'unsigned int' does not match the argument type '..(*)(..)'. |
+| second.cpp:26:18:26:39 | ... - ... | This format specifier for type 'int' does not match the argument type 'long'. |
+| second.cpp:29:18:29:39 | ... - ... | This format specifier for type 'unsigned int' does not match the argument type 'long'. |
 | tests.c:7:18:7:18 | 1 | This format specifier for type 'char *' does not match the argument type 'int'. |
