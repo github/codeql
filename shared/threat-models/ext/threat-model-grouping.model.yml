@@ -18,6 +18,8 @@ extensions:
       - ["stdin", "local"]
       - ["file", "local"]
       - ["windows-registry", "local"]
+      # Client-side threat models for request responses.
+      - ["client-response", "local"]
 
       # Android threat models
       - ["android-external-storage-dir", "android"]
