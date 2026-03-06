@@ -1,0 +1,38 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.micronaut.http", "HttpRequest", True, "getBody", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getHeaders", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getParameters", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getCookies", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getUri", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getPath", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getContentType", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getContentLength", "", "", "ReturnValue", "remote", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "getMethodName", "", "", "ReturnValue", "remote", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.micronaut.http", "HttpHeaders", True, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpHeaders", True, "getAll", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpHeaders", True, "getFirst", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpHeaders", True, "values", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpParameters", True, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpParameters", True, "getAll", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpParameters", True, "getFirst", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "getAll", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookies", True, "findCookie", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getValue", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getName", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getDomain", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.cookie", "Cookie", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.micronaut.http", "MutableHttpResponse", True, "header", "(CharSequence,CharSequence)", "", "Argument[1]", "response-splitting", "manual"]
+      - ["io.micronaut.http", "HttpResponse", True, "redirect", "(URI)", "", "Argument[0]", "url-redirection", "manual"]

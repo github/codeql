@@ -1,4 +1,5 @@
 #select
+| MicronautUrlRedirect.java:14:38:14:55 | create(...) | MicronautUrlRedirect.java:12:39:12:63 | target : String | MicronautUrlRedirect.java:14:38:14:55 | create(...) | Untrusted URL redirection depends on a $@. | MicronautUrlRedirect.java:12:39:12:63 | target | user-provided value |
 | UrlRedirect2.java:27:25:27:54 | getParameter(...) | UrlRedirect2.java:27:25:27:54 | getParameter(...) | UrlRedirect2.java:27:25:27:54 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect2.java:27:25:27:54 | getParameter(...) | user-provided value |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:23:25:23:54 | getParameter(...) | user-provided value |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:32:37:32:66 | getParameter(...) | user-provided value |
@@ -6,17 +7,24 @@
 | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:42:43:42:72 | getParameter(...) | user-provided value |
 | mad/Test.java:14:22:14:38 | (...)... | mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:22:14:38 | (...)... | Untrusted URL redirection depends on a $@. | mad/Test.java:9:16:9:41 | getParameter(...) | user-provided value |
 edges
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:2 MaD:3 |
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:2  |
+| MicronautUrlRedirect.java:12:39:12:63 | target : String | MicronautUrlRedirect.java:14:49:14:54 | target : String | provenance |  |
+| MicronautUrlRedirect.java:14:49:14:54 | target : String | MicronautUrlRedirect.java:14:38:14:55 | create(...) | provenance | MaD:5 Sink:MaD:1 |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance | Src:MaD:3 MaD:4 |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance | Src:MaD:3  |
 | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String | provenance |  |
-| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:3 |
-| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:2  |
-| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance | Sink:MaD:1 |
+| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance | MaD:4 |
+| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance | Src:MaD:3  |
+| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance | Sink:MaD:2 |
 models
-| 1 | Sink: org.kohsuke.stapler; HttpResponses; true; redirectTo; (String); ; Argument[0]; url-redirection; ai-manual |
-| 2 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
-| 3 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
+| 1 | Sink: io.micronaut.http; HttpResponse; true; redirect; (URI); ; Argument[0]; url-redirection; manual |
+| 2 | Sink: org.kohsuke.stapler; HttpResponses; true; redirectTo; (String); ; Argument[0]; url-redirection; ai-manual |
+| 3 | Source: javax.servlet; ServletRequest; false; getParameter; (String); ; ReturnValue; remote; manual |
+| 4 | Summary: java.lang; String; false; replaceAll; ; ; Argument[this]; ReturnValue; taint; manual |
+| 5 | Summary: java.net; URI; false; create; ; ; Argument[0]; ReturnValue; taint; manual |
 nodes
+| MicronautUrlRedirect.java:12:39:12:63 | target : String | semmle.label | target : String |
+| MicronautUrlRedirect.java:14:38:14:55 | create(...) | semmle.label | create(...) |
+| MicronautUrlRedirect.java:14:49:14:54 | target : String | semmle.label | target : String |
 | UrlRedirect2.java:27:25:27:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | semmle.label | weakCleanup(...) |

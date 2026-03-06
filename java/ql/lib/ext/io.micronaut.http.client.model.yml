@@ -1,0 +1,33 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      # HttpClient.toBlocking() returns BlockingHttpClient; retrieve/exchange with String URL are SSRF sinks
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "retrieve", "(String,Class)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["io.micronaut.http.client", "BlockingHttpClient", True, "exchange", "(String,Class)", "", "Argument[0]", "request-forgery", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      # HttpClient.toBlocking() taint propagation
+      - ["io.micronaut.http.client", "HttpClient", True, "toBlocking", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      # HttpRequest.GET/POST/PUT/DELETE/PATCH factory methods propagate URI taint
+      - ["io.micronaut.http", "HttpRequest", True, "GET", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "POST", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "PUT", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "DELETE", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "PATCH", "(String,Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "HEAD", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http", "HttpRequest", True, "OPTIONS", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      # UriBuilder taint propagation
+      - ["io.micronaut.http.uri", "UriBuilder", True, "of", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "of", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "host", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "path", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "queryParam", "(String,Object[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "queryParam", "(String,Object[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "fragment", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["io.micronaut.http.uri", "UriBuilder", True, "build", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
