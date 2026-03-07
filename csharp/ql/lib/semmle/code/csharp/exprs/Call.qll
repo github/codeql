@@ -553,6 +553,28 @@ class MutatorOperatorCall extends OperatorCall {
   predicate isPostfix() { mutator_invocation_mode(this, 2) }
 }
 
+/**
+ * A call to a user-defined compound assignment operator, for example `this += other`
+ * on line 7 in
+ *
+ * ```csharp
+ * class A {
+ *   public void operator+=(A other) {
+ *     ...
+ *   }
+ *
+ *   public A Add(A other) {
+ *     return this += other;
+ *   }
+ * }
+ * ```
+ */
+class CompoundAssignmentOperatorCall extends OperatorCall {
+  CompoundAssignmentOperatorCall() { this.getTarget() instanceof CompoundAssignmentOperator }
+
+  override string getAPrimaryQlClass() { result = "CompoundAssignmentOperatorCall" }
+}
+
 private class DelegateLikeCall_ = @delegate_invocation_expr or @function_pointer_invocation_expr;
 
 /**

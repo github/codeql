@@ -496,7 +496,8 @@ class Destructor extends Callable, Member, Attributable, @destructor {
  * A user-defined operator.
  *
  * Either a unary operator (`UnaryOperator`), a binary operator
- * (`BinaryOperator`), or a conversion operator (`ConversionOperator`).
+ * (`BinaryOperator`), a conversion operator (`ConversionOperator`), or
+ * a (`CompoundAssignmentOperator`).
  */
 class Operator extends Callable, Member, Attributable, Overridable, @operator {
   override string getName() { operators(this, _, result, _, _, _) }
@@ -584,7 +585,8 @@ class ExtensionOperator extends ExtensionCallableImpl, Operator {
 class UnaryOperator extends Operator {
   UnaryOperator() {
     this.getNumberOfParameters() = 1 and
-    not this instanceof ConversionOperator
+    not this instanceof ConversionOperator and
+    not this instanceof CompoundAssignmentOperator
   }
 }
 
@@ -1155,6 +1157,255 @@ class CheckedExplicitConversionOperator extends ConversionOperator {
   CheckedExplicitConversionOperator() { this.getName() = "checked explicit conversion" }
 
   override string getAPrimaryQlClass() { result = "CheckedExplicitConversionOperator" }
+}
+
+/**
+ * A user-defined compound assignment operator.
+ *
+ * Either an addition operator (`AddCompoundAssignmentOperator`), a checked addition operator
+ * (`CheckedAddCompoundAssignmentOperator`) a subtraction operator (`SubCompoundAssignmentOperator`), a checked
+ * subtraction operator (`CheckedSubCompoundAssignmentOperator`), a multiplication operator
+ * (`MulCompoundAssignmentOperator`), a checked multiplication operator (`CheckedMulCompoundAssignmentOperator`),
+ * a division operator (`DivCompoundAssignmentOperator`), a checked division operator
+ * (`CheckedDivCompoundAssignmentOperator`), a remainder operator (`RemCompoundAssignmentOperator`), an and
+ * operator (`AndCompoundAssignmentOperator`), an or operator (`OrCompoundAssignmentOperator`), an xor
+ * operator (`XorCompoundAssignmentOperator`), a left shift operator (`LeftShiftCompoundAssignmentOperator`),
+ * a right shift operator (`RightShiftCompoundAssignmentOperator`), or an unsigned right shift
+ * operator(`UnsignedRightShiftCompoundAssignmentOperator`).
+ */
+class CompoundAssignmentOperator extends Operator {
+  CompoundAssignmentOperator() {
+    this.getNumberOfParameters() = 1 and
+    not this.isStatic() and
+    this.getName().matches("%=")
+  }
+
+  override string getAPrimaryQlClass() { result = "CompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment addition operator (`+=`), for example
+ *
+ * ```csharp
+ * public void operator checked +=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class AddCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  AddCompoundAssignmentOperator() { this.getName() = "+=" }
+
+  override string getAPrimaryQlClass() { result = "AddCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined checked compound assignment addition operator (`checked +=`), for example
+ *
+ * ```csharp
+ * public void operator checked +=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedAddCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  CheckedAddCompoundAssignmentOperator() { this.getName() = "checked +=" }
+
+  override string getAPrimaryQlClass() { result = "CheckedAddCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment subtraction operator (`-=`), for example
+ *
+ * ```csharp
+ * public void operator -=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class SubCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  SubCompoundAssignmentOperator() { this.getName() = "-=" }
+
+  override string getAPrimaryQlClass() { result = "SubCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined checked compound assignment subtraction operator (`checked -=`), for example
+ *
+ * ```csharp
+ * public void operator checked -=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedSubCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  CheckedSubCompoundAssignmentOperator() { this.getName() = "checked -=" }
+
+  override string getAPrimaryQlClass() { result = "CheckedSubCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment multiplication operator (`*=`), for example
+ *
+ * ```csharp
+ * public void operator *=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class MulCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  MulCompoundAssignmentOperator() { this.getName() = "*=" }
+
+  override string getAPrimaryQlClass() { result = "MulCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined checked compound assignment multiplication operator (`checked *=`), for example
+ *
+ * ```csharp
+ * public void operator checked *=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedMulCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  CheckedMulCompoundAssignmentOperator() { this.getName() = "checked *=" }
+
+  override string getAPrimaryQlClass() { result = "CheckedMulCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment division operator (`/=`), for example
+ *
+ * ```csharp
+ * public void operator /=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class DivCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  DivCompoundAssignmentOperator() { this.getName() = "/=" }
+
+  override string getAPrimaryQlClass() { result = "DivCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined checked compound assignment division operator (`checked /=`), for example
+ *
+ * ```csharp
+ * public void operator checked /=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class CheckedDivCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  CheckedDivCompoundAssignmentOperator() { this.getName() = "checked /=" }
+
+  override string getAPrimaryQlClass() { result = "CheckedDivCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment remainder operator (`%=`), for example
+ *
+ * ```csharp
+ * public void operator %=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class RemCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  RemCompoundAssignmentOperator() { this.getName() = "%=" }
+
+  override string getAPrimaryQlClass() { result = "RemCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment and operator (`&=`), for example
+ *
+ * ```csharp
+ * public void operator &=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class AndCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  AndCompoundAssignmentOperator() { this.getName() = "&=" }
+
+  override string getAPrimaryQlClass() { result = "AndCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment or operator (`|=`), for example
+ *
+ * ```csharp
+ * public void operator |=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class OrCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  OrCompoundAssignmentOperator() { this.getName() = "|=" }
+
+  override string getAPrimaryQlClass() { result = "OrCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment xor operator (`^=`), for example
+ *
+ * ```csharp
+ * public void operator ^=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class XorCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  XorCompoundAssignmentOperator() { this.getName() = "^=" }
+
+  override string getAPrimaryQlClass() { result = "XorCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment left shift operator (`<<=`), for example
+ *
+ * ```csharp
+ * public void operator <<=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class LeftShiftCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  LeftShiftCompoundAssignmentOperator() { this.getName() = "<<=" }
+
+  override string getAPrimaryQlClass() { result = "LeftShiftCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment right shift operator (`>>=`), for example
+ *
+ * ```csharp
+ * public void operator >>=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class RightShiftCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  RightShiftCompoundAssignmentOperator() { this.getName() = ">>=" }
+
+  override string getAPrimaryQlClass() { result = "RightShiftCompoundAssignmentOperator" }
+}
+
+/**
+ * A user-defined compound assignment unsigned right shift operator (`>>>=`), for example
+ *
+ * ```csharp
+ * public void operator >>>=(Widget w) {
+ *   ...
+ * }
+ * ```
+ */
+class UnsignedRightShiftCompoundAssignmentOperator extends CompoundAssignmentOperator {
+  UnsignedRightShiftCompoundAssignmentOperator() { this.getName() = ">>>=" }
+
+  override string getAPrimaryQlClass() { result = "UnsignedRightShiftCompoundAssignmentOperator" }
 }
 
 /**

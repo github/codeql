@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Util;
 using Semmle.Extraction.CSharp.Entities;
 
@@ -855,6 +856,35 @@ namespace Semmle.Extraction.CSharp
                     }
                     return Parameter.Kind.None;
             }
+        }
+
+        public static IMethodSymbol? GetTargetSymbol(this ExpressionNodeInfo info, Context cx)
+        {
+            var si = info.SymbolInfo;
+            if (si.Symbol is ISymbol symbol)
+            {
+                var method = symbol as IMethodSymbol;
+                // Case for compiler-generated extension methods.
+                return method?.TryGetExtensionMethod() ?? method;
+            }
+
+            if (si.CandidateReason == CandidateReason.OverloadResolutionFailure && info.Node is InvocationExpressionSyntax syntax)
+            {
+                // This seems to be a bug in Roslyn
+                // For some reason, typeof(X).InvokeMember(...) fails to resolve the correct
+                // InvokeMember() method, even though the number of parameters clearly identifies the correct method
+
+                var candidates = si.CandidateSymbols
+                    .OfType<IMethodSymbol>()
+                    .Where(method => method.Parameters.Length >= syntax.ArgumentList.Arguments.Count)
+                    .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= syntax.ArgumentList.Arguments.Count);
+
+                return cx.ExtractionContext.IsStandalone ?
+                    candidates.FirstOrDefault() :
+                    candidates.SingleOrDefault();
+            }
+
+            return si.Symbol as IMethodSymbol;
         }
     }
 }
