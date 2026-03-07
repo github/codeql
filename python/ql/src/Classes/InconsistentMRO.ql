@@ -12,19 +12,24 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-ClassObject left_base(ClassObject type, ClassObject base) {
-  exists(int i | i > 0 and type.getBaseType(i) = base and result = type.getBaseType(i - 1))
+/**
+ * Gets the `i`th base class of `cls`, if it can be resolved to a user-defined class.
+ */
+Class getBaseType(Class cls, int i) { cls.getBase(i) = classTracker(result).asExpr() }
+
+Class left_base(Class type, Class base) {
+  exists(int i | i > 0 and getBaseType(type, i) = base and result = getBaseType(type, i - 1))
 }
 
-predicate invalid_mro(ClassObject t, ClassObject left, ClassObject right) {
-  t.isNewStyle() and
+predicate invalid_mro(Class t, Class left, Class right) {
+  DuckTyping::isNewStyle(t) and
   left = left_base(t, right) and
-  left = right.getAnImproperSuperType()
+  left = getADirectSuperclass*(right)
 }
 
-from ClassObject t, ClassObject left, ClassObject right
+from Class t, Class left, Class right
 where invalid_mro(t, left, right)
 select t,
   "Construction of class " + t.getName() +
