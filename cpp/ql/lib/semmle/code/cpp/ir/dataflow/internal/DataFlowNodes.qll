@@ -831,7 +831,11 @@ module Public {
 
     /** Gets the parameter through which this value is assigned. */
     Parameter getParameter() {
-      result = this.getCallInstruction().getStaticCallTarget().getParameter(this.getArgumentIndex())
+      result =
+        this.getCallInstruction()
+            .getStaticCallTarget()
+            .(Function)
+            .getParameter(this.getArgumentIndex())
     }
   }
 

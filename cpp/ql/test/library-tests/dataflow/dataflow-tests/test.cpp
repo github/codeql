@@ -1313,3 +1313,19 @@ void crement_test2(bool b, int y) {
   sink(b ? (long)x++ : 0); // $ ir ast
   sink(x); // $ ir ast
 }
+
+struct nsdmi {
+    int i = source();
+
+    nsdmi() {}
+
+    nsdmi(int i) : i(i) {}
+};
+
+void nsdmi_test() {
+  nsdmi x;
+  sink(x.i); // $ MISSING: ir ast
+
+  nsdmi y(source());
+  sink(y.i); // $ ir ast
+}

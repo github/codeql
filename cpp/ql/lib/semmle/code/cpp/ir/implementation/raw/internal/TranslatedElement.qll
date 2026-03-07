@@ -775,6 +775,16 @@ newtype TTranslatedElement =
       position = -1
     )
   } or
+  // The initialization of a field via a default member initializer.
+  TTranslatedDefaultFieldInitialization(Expr ast, Field field) {
+    exists(ConstructorFieldInit init |
+      not ignoreExpr(init) and
+      ast = init and
+      field = init.getTarget() and
+      not exists(init.getExpr()) and
+      exists(field.getInitializer())
+    )
+  } or
   // The value initialization of a field due to an omitted member of an
   // initializer list.
   TTranslatedFieldValueInitialization(Expr ast, Field field) {
@@ -918,7 +928,10 @@ newtype TTranslatedElement =
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) } or
+  TTranslatedStaticStorageDurationVarInit(Variable var) {
+    Raw::varHasIRFunc(var) and not var instanceof Field
+  } or
+  TTranslatedNonStaticDataMemberVarInit(Field var) { Raw::varHasIRFunc(var) } or
   TTranslatedAssertionOperand(MacroInvocation mi, int index) { hasAssertionOperand(mi, index) }
 
 /**
@@ -1179,7 +1192,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * If the instruction specified by `tag` is a `FunctionInstruction`, gets the
    * `Function` for that instruction.
    */
-  Function getInstructionFunction(InstructionTag tag) { none() }
+  Declaration getInstructionFunction(InstructionTag tag) { none() }
 
   /**
    * If the instruction specified by `tag` is a `VariableInstruction`, gets the
@@ -1297,5 +1310,7 @@ abstract class TranslatedRootElement extends TranslatedElement {
     this instanceof TTranslatedFunction
     or
     this instanceof TTranslatedStaticStorageDurationVarInit
+    or
+    this instanceof TTranslatedNonStaticDataMemberVarInit
   }
 }

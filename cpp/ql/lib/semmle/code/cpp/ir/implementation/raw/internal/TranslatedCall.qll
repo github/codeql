@@ -348,7 +348,7 @@ class TranslatedExprCall extends TranslatedCallExpr {
 class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   override FunctionCall expr;
 
-  override Function getInstructionFunction(InstructionTag tag) {
+  override Declaration getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getTarget()
   }
 

@@ -148,7 +148,8 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
   final override Declaration getFunction() {
     result = getEnclosingFunction(expr) or
     result = getEnclosingVariable(expr).(GlobalOrNamespaceVariable) or
-    result = getEnclosingVariable(expr).(StaticInitializedStaticLocalVariable)
+    result = getEnclosingVariable(expr).(StaticInitializedStaticLocalVariable) or
+    result = getEnclosingVariable(expr).(Field)
   }
 
   final override Locatable getAst() { result = expr }
@@ -509,7 +510,7 @@ TranslatedFieldInitialization getTranslatedFieldInitialization(
   result.getAst() = initList and result.getField() = field
 }
 
-TranslatedFieldInitialization getTranslatedConstructorFieldInitialization(ConstructorFieldInit init) {
+TranslatedElement getTranslatedConstructorFieldInitialization(ConstructorFieldInit init) {
   result.getAst() = init
 }
 
@@ -528,7 +529,8 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   final override Declaration getFunction() {
     result = getEnclosingFunction(ast) or
     result = getEnclosingVariable(ast).(GlobalOrNamespaceVariable) or
-    result = getEnclosingVariable(ast).(StaticInitializedStaticLocalVariable)
+    result = getEnclosingVariable(ast).(StaticInitializedStaticLocalVariable) or
+    result = getEnclosingVariable(ast).(Field)
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
@@ -608,6 +610,66 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
   }
 
   override int getPosition() { result = position }
+}
+
+class TranslatedDefaultFieldInitialization extends TranslatedElement,
+  TTranslatedDefaultFieldInitialization
+{
+  Expr ast;
+  Field field;
+
+  TranslatedDefaultFieldInitialization() {
+    this = TTranslatedDefaultFieldInitialization(ast, field)
+  }
+
+  final override string toString() { result = ast.toString() + "." + field.toString() }
+
+  final override Locatable getAst() { result = ast }
+
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(CallTargetTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getALastInstructionInternal() { result = this.getInstruction(CallTag()) }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = CallTargetTag() and
+    result = this.getInstruction(CallTag())
+    or
+    tag = CallTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = CallTargetTag() and
+    opcode instanceof Opcode::FunctionAddress and
+    resultType = getFunctionGLValueType()
+    or
+    tag = CallTag() and
+    opcode instanceof Opcode::Call and
+    resultType = getVoidType()
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = CallTag() and
+    (
+      operandTag instanceof CallTargetOperandTag and
+      result = this.getInstruction(CallTargetTag())
+      or
+      operandTag instanceof ThisArgumentOperandTag and
+      result = getTranslatedFunction(this.getFunction()).getLoadThisInstruction()
+    )
+  }
+
+  override Declaration getInstructionFunction(InstructionTag tag) {
+    tag = CallTargetTag() and
+    result = field
+  }
+
+  override TranslatedElement getChild(int id) { none() }
+
+  final override Declaration getFunction() { result = getEnclosingFunction(ast) }
 }
 
 private string getZeroValue(Type type) {
@@ -701,6 +763,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = getEnclosingVariable(initList).(GlobalOrNamespaceVariable)
     or
     result = getEnclosingVariable(initList).(StaticInitializedStaticLocalVariable)
+    or
+    result = getEnclosingVariable(initList).(Field)
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {

@@ -20,5 +20,7 @@ predicate shouldDumpDeclaration(Declaration decl) {
     decl.(GlobalOrNamespaceVariable).hasInitializer()
     or
     decl.(StaticLocalVariable).hasInitializer()
+    or
+    decl.(Field).hasInitializer()
   )
 }
