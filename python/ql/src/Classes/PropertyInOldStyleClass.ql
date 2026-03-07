@@ -11,10 +11,13 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
-from PropertyObject prop, ClassObject cls
-where cls.declaredAttribute(_) = prop and not cls.failedInference() and not cls.isNewStyle()
+from Function prop, Class cls
+where
+  prop.getScope() = cls and
+  prop.getADecorator().(Name).getId() = "property" and
+  not DuckTyping::isNewStyle(cls)
 select prop,
   "Property " + prop.getName() + " will not work properly, as class " + cls.getName() +
     " is an old-style class."

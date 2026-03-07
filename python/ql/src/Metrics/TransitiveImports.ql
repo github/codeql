@@ -11,8 +11,8 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.ImportResolution
 
-from ModuleValue m, int n
-where n = count(ModuleValue imp | imp = m.getAnImportedModule+() and imp != m)
-select m.getScope(), n
+from Module m, int n
+where n = count(Module imp | ImportResolution::imports+(m, imp) and imp != m)
+select m, n
