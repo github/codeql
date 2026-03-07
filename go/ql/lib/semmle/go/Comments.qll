@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with code comments.
  */
+overlay[local?]
+module;
 
 import go
 

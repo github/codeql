@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with HTTP-related concepts such as requests and responses.
  */
+overlay[local?]
+module;
 
 import go
 

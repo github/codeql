@@ -4,6 +4,8 @@
  * Note, for performance reasons: only import this file if `AllocationSizeOverflow::Configuration`
  * is needed, otherwise `AllocationSizeOverflowCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

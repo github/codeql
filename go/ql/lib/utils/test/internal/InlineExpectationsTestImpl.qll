@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import go as G
 private import codeql.util.test.InlineExpectationsTest
 

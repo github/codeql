@@ -1,6 +1,8 @@
 /**
  * Provides models of commonly used functions in the `github.com/davecgh/go-spew/spew` package.
  */
+overlay[local?]
+module;
 
 import go
 

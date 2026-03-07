@@ -1,6 +1,8 @@
 /**
  * Provides queries to pretty-print a Go AST as a graph.
  */
+overlay[local?]
+module;
 
 import go
 

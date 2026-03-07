@@ -1,6 +1,8 @@
 /**
  * Provides Go-specific definitions for use in the taint-tracking library.
  */
+overlay[local?]
+module;
 
 private import go
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -11,6 +13,7 @@ private import DataFlowPrivate as DataFlowPrivate
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
@@ -18,6 +21,7 @@ predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))

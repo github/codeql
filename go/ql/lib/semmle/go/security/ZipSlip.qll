@@ -4,6 +4,8 @@
  * Note: for performance reasons, only import this file if `ZipSlip::Configuration` is needed,
  * otherwise `ZipSlipCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions and types in the twirp packages. */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.RequestForgeryCustomizations

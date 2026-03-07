@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with concepts relating to the Macaron web framework
  */
+overlay[local?]
+module;
 
 import go
 

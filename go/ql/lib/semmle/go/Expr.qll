@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with expressions.
  */
+overlay[local?]
+module;
 
 import go
 

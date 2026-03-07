@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import go
 private import DataFlowPrivate
 
@@ -119,6 +122,7 @@ class ArgumentPosition extends int {
 }
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
+overlay[caller?]
 pragma[inline]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
@@ -130,6 +134,7 @@ private predicate isInterfaceMethod(Method c) {
  * Holds if `call` is passing `arg` to param `p` in any circumstance except passing
  * a receiver parameter to a concrete method.
  */
+overlay[caller?]
 pragma[inline]
 predicate golangSpecificParamArgFilter(
   DataFlowCall call, DataFlow::ParameterNode p, DataFlow::ArgumentNode arg

@@ -4,6 +4,8 @@
  * Note: for performance reasons, only import this file if `XPathInjection::Configuration` is needed,
  * otherwise `XPathInjectionCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

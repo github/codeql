@@ -2,6 +2,8 @@
  * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/astaxie/beego/orm` subpackage.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.StoredXssCustomizations

@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 import go
 
 /** The constant `math.MaxInt` or the constant `math.MaxUint`. */

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with a CFG-based program representation.
  */
+overlay[local?]
+module;
 
 import go
 private import ControlFlowGraphImpl
@@ -62,6 +64,7 @@ module ControlFlow {
     BasicBlock getBasicBlock() { result.getANode() = this }
 
     /** Holds if this node dominates `dominee` in the control-flow graph. */
+    overlay[caller?]
     pragma[inline]
     predicate dominatesNode(ControlFlow::Node dominee) {
       exists(ReachableBasicBlock thisbb, ReachableBasicBlock dbb, int i, int j |

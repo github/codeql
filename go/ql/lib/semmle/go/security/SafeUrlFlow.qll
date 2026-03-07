@@ -6,6 +6,8 @@
  * `SafeUrlFlow::Configuration` is needed, otherwise
  * `SafeUrlFlowCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

@@ -4,6 +4,8 @@
  * Note: for performance reasons, only import this file if `MissingJwtSignatureCheck::Config` or `MissingJwtSignatureCheck::Flow` are needed,
  * otherwise `MissingJwtSignatureCheckCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

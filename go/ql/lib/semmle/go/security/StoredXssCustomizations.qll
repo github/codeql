@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates used by the Stored XSS query.
  */
+overlay[local?]
+module;
 
 import go
 import Xss

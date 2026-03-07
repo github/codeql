@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with SQL-related concepts such as queries.
  */
+overlay[local?]
+module;
 
 import go
 

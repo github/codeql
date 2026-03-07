@@ -6,6 +6,8 @@
  * and/or `UnsafeUnzipSymlink::SymlinkConfiguration` is needed, otherwise
  * `UnsafeUnzipSymlinkCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 

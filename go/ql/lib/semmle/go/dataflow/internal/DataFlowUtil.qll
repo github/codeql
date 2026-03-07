@@ -1,6 +1,8 @@
 /**
  * Provides Go-specific definitions for use in the data flow library.
  */
+overlay[local?]
+module;
 
 private import go
 private import semmle.go.dataflow.FunctionInputsAndOutputs
@@ -147,6 +149,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 

@@ -6,6 +6,8 @@
  * `OpenUrlRedirect::Configuration` is needed, otherwise
  * `OpenUrlRedirectCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 import UrlConcatenation

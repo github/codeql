@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions and types in the protobuf packages. */
+overlay[local?]
+module;
 
 import go
 

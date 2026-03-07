@@ -2,6 +2,8 @@
  * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/beego/beego` package.
  */
+overlay[local?]
+module;
 
 import go
 import semmle.go.security.Xss

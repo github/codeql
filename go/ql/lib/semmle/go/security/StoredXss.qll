@@ -6,6 +6,8 @@
  * `StoredXss::Configuration` is needed, otherwise
  * `StoredXssCustomizations` should be imported instead.
  */
+overlay[local?]
+module;
 
 import go
 
