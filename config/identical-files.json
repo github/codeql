@@ -25,136 +25,87 @@
   ],
   "IR Instruction": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/Instruction.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/Instruction.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/Instruction.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/Instruction.qll"
   ],
   "IR IRBlock": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IRBlock.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRBlock.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IRBlock.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRBlock.qll"
   ],
   "IR IRVariable": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IRVariable.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRVariable.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IRVariable.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRVariable.qll"
   ],
   "IR IRFunction": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IRFunction.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRFunction.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IRFunction.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRFunction.qll"
   ],
   "IR Operand": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/Operand.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/Operand.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/Operand.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/Operand.qll"
   ],
   "IR IR": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IR.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IR.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IR.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IR.qll"
   ],
   "IR IRConsistency": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/IRConsistency.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRConsistency.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/IRConsistency.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/IRConsistency.qll"
   ],
   "IR PrintIR": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/PrintIR.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/PrintIR.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/PrintIR.qll"
-  ],
-  "IR SSAConsistency": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConsistency.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConsistency.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/PrintIR.qll"
   ],
   "C++ IR InstructionImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/InstructionImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/InstructionImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/InstructionImports.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/InstructionImports.qll"
   ],
   "C++ IR IRImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRImports.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRImports.qll"
   ],
   "C++ IR IRBlockImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRBlockImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRBlockImports.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll"
   ],
   "C++ IR IRConsistencyImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRConsistencyImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRConsistencyImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRConsistencyImports.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRConsistencyImports.qll"
   ],
   "C++ IR IRFunctionImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRFunctionImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRFunctionImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRFunctionImports.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRFunctionImports.qll"
   ],
   "C++ IR IRVariableImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRVariableImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRVariableImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRVariableImports.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRVariableImports.qll"
   ],
   "C++ IR OperandImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/OperandImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/OperandImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/OperandImports.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/OperandImports.qll"
   ],
   "C++ IR PrintIRImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/PrintIRImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintIRImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintIRImports.qll"
-  ],
-  "C++ SSA SSAConstructionImports": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstructionImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstructionImports.qll"
-  ],
-  "SSA AliasAnalysis": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysis.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysis.qll"
-  ],
-  "SSA PrintAliasAnalysis": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintAliasAnalysis.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintAliasAnalysis.qll"
-  ],
-  "C++ SSA AliasAnalysisImports": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/AliasAnalysisImports.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/AliasAnalysisImports.qll"
-  ],
-  "IR SSA SSAConstruction": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/SSAConstruction.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/SSAConstruction.qll"
-  ],
-  "IR SSA PrintSSA": [
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintSSA.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/PrintSSA.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/PrintIRImports.qll"
   ],
   "IR ValueNumberInternal": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/gvn/internal/ValueNumberingInternal.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/internal/ValueNumberingInternal.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/internal/ValueNumberingInternal.qll"
   ],
   "C++ IR ValueNumber": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/gvn/ValueNumbering.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/ValueNumbering.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/ValueNumbering.qll"
   ],
   "C++ IR PrintValueNumbering": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/gvn/PrintValueNumbering.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/gvn/PrintValueNumbering.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/gvn/PrintValueNumbering.qll"
   ],
   "C++ IR ConstantAnalysis": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/constant/ConstantAnalysis.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/ConstantAnalysis.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/constant/ConstantAnalysis.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/ConstantAnalysis.qll"
   ],
   "C++ IR PrintConstantAnalysis": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/constant/PrintConstantAnalysis.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/PrintConstantAnalysis.qll",
-    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/constant/PrintConstantAnalysis.qll"
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/constant/PrintConstantAnalysis.qll"
   ],
   "C++ IR ReachableBlock": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/reachability/ReachableBlock.qll",

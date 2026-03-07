@@ -31,7 +31,7 @@
  */
 
 import cpp
-private import semmle.code.cpp.ir.implementation.aliased_ssa.gvn.internal.ValueNumberingInternal
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.gvn.internal.ValueNumberingInternal
 private import semmle.code.cpp.ir.IR
 
 /**

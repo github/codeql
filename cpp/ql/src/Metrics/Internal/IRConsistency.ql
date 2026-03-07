@@ -7,8 +7,8 @@
  */
 
 import cpp
-import semmle.code.cpp.ir.implementation.aliased_ssa.IR
-import semmle.code.cpp.ir.implementation.aliased_ssa.IRConsistency as IRConsistency
+import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
+import semmle.code.cpp.ir.implementation.unaliased_ssa.IRConsistency as IRConsistency
 
 class PresentIRFunction extends IRConsistency::PresentIRFunction {
   override string toString() {

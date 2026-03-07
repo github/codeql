@@ -1,13 +1,13 @@
 import cpp
-import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasAnalysis
-import semmle.code.cpp.ir.implementation.aliased_ssa.internal.AliasConfiguration
+import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.AliasAnalysis
+import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.AliasConfiguration
 import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
 import semmle.code.cpp.ir.implementation.UseSoundEscapeAnalysis
 
-class InterestingAllocation extends VariableAllocation {
+class InterestingAllocation extends Allocation {
   IRUserVariable userVar;
 
-  InterestingAllocation() { userVar = this.getIRVariable() }
+  InterestingAllocation() { userVar = this }
 
   final predicate shouldEscape() { userVar.getVariable().getName().matches("no_%") }
 }

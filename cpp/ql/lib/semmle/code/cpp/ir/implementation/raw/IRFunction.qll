@@ -58,12 +58,4 @@ class IRFunction extends IRFunctionBase {
    * Gets all blocks in this function.
    */
   final IRBlock getABlock() { result.getEnclosingIRFunction() = this }
-
-  /**
-   * Holds if this function may have incomplete def-use information.
-   *
-   * Def-use information may be omitted for a function when it is too expensive
-   * to compute.
-   */
-  final predicate hasIncompleteSsa() { Construction::hasIncompleteSsa(this) }
 }

@@ -38,6 +38,11 @@ skip:
   return 0;
 }
 
+/*
+The unaliased IR uses the raw IR's dead code elimination and constant
+analysis, so it isn't able to tell that the `return 1`s are dead code,
+and thus doesn't know that this always returns the same value.
+*/
 int UnreachableIf(bool b) {
   int x = 5;
   int y = 10;

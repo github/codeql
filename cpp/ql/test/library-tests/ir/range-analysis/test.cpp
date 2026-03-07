@@ -143,7 +143,7 @@ void read_argument(const X *);
 void nonterminating_without_operands_as_ssa(X *x) {
   read_argument(x);
   while (x->n) {
-    x->n--;
+    x->n--; // $ overflow=-
   }
 }
 

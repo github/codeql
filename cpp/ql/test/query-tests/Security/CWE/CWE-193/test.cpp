@@ -64,7 +64,7 @@ void test5(int size) {
     }
 
     for (char* p = begin; p <= end; ++p) {
-        *p = 0; // $ deref=L53->L62->L67 deref=L53->L66->L67 // BAD
+        *p = 0; // $ deref=L53->L66->L67 // BAD
     }
 
     for (char* p = begin; p < end; ++p) {
@@ -804,7 +804,7 @@ void test6_no_field_flow(int size) {
   }
 
   for (char* p = begin; p <= end; ++p) {
-      *p = 0; // $ deref=L794->L802->L807 deref=L794->L806->L807 // BAD
+      *p = 0; // $ deref=L794->L806->L807 // BAD
   }
 
   for (char* p = begin; p < end; ++p) {

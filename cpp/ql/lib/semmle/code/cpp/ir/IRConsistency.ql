@@ -5,4 +5,4 @@
  * @id cpp/ir-consistency-check
  */
 
-import implementation.aliased_ssa.IRConsistency
+import implementation.unaliased_ssa.IRConsistency

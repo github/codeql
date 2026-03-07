@@ -322,6 +322,7 @@ astGuardsControl
 | test.c:26:11:26:15 | ... > ... | false | 42 | 44 |
 | test.c:26:11:26:15 | ... > ... | false | 45 | 45 |
 | test.c:26:11:26:15 | ... > ... | false | 45 | 47 |
+| test.c:26:11:26:15 | ... > ... | false | 48 | 55 |
 | test.c:26:11:26:15 | ... > ... | false | 51 | 53 |
 | test.c:26:11:26:15 | ... > ... | false | 56 | 58 |
 | test.c:26:11:26:15 | ... > ... | false | 58 | 58 |
@@ -334,6 +335,7 @@ astGuardsControl
 | test.c:34:16:34:21 | ... < ... | false | 42 | 44 |
 | test.c:34:16:34:21 | ... < ... | false | 45 | 45 |
 | test.c:34:16:34:21 | ... < ... | false | 45 | 47 |
+| test.c:34:16:34:21 | ... < ... | false | 48 | 55 |
 | test.c:34:16:34:21 | ... < ... | false | 51 | 53 |
 | test.c:34:16:34:21 | ... < ... | false | 56 | 58 |
 | test.c:34:16:34:21 | ... < ... | false | 58 | 58 |
@@ -344,11 +346,13 @@ astGuardsControl
 | test.c:42:16:42:21 | ... < ... | true | 42 | 44 |
 | test.c:42:16:42:21 | ... < ... | true | 45 | 45 |
 | test.c:42:16:42:21 | ... < ... | true | 45 | 47 |
+| test.c:42:16:42:21 | ... < ... | true | 48 | 55 |
 | test.c:42:16:42:21 | ... < ... | true | 51 | 53 |
-| test.c:44:12:44:16 | ... > ... | false | 42 | 42 |
 | test.c:44:12:44:16 | ... > ... | false | 51 | 53 |
 | test.c:44:12:44:16 | ... > ... | true | 45 | 45 |
 | test.c:44:12:44:16 | ... > ... | true | 45 | 47 |
+| test.c:44:12:44:16 | ... > ... | true | 48 | 55 |
+| test.c:45:16:45:20 | ... > ... | false | 48 | 55 |
 | test.c:45:16:45:20 | ... > ... | true | 45 | 47 |
 | test.c:58:9:58:14 | ... == ... | false | 58 | 58 |
 | test.c:58:9:58:14 | ... == ... | false | 62 | 62 |
@@ -433,6 +437,7 @@ astGuardsEnsure
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:11 | x | < | test.c:26:15:26:15 | 0 | 1 | 42 | 44 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:11 | x | < | test.c:26:15:26:15 | 0 | 1 | 45 | 45 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:11 | x | < | test.c:26:15:26:15 | 0 | 1 | 45 | 47 |
+| test.c:26:11:26:15 | ... > ... | test.c:26:11:26:11 | x | < | test.c:26:15:26:15 | 0 | 1 | 48 | 55 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:11 | x | < | test.c:26:15:26:15 | 0 | 1 | 51 | 53 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:11 | x | < | test.c:26:15:26:15 | 0 | 1 | 56 | 58 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:11 | x | < | test.c:26:15:26:15 | 0 | 1 | 58 | 58 |
@@ -448,6 +453,7 @@ astGuardsEnsure
 | test.c:26:11:26:15 | ... > ... | test.c:26:15:26:15 | 0 | >= | test.c:26:11:26:11 | x | 0 | 42 | 44 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:15:26:15 | 0 | >= | test.c:26:11:26:11 | x | 0 | 45 | 45 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:15:26:15 | 0 | >= | test.c:26:11:26:11 | x | 0 | 45 | 47 |
+| test.c:26:11:26:15 | ... > ... | test.c:26:15:26:15 | 0 | >= | test.c:26:11:26:11 | x | 0 | 48 | 55 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:15:26:15 | 0 | >= | test.c:26:11:26:11 | x | 0 | 51 | 53 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:15:26:15 | 0 | >= | test.c:26:11:26:11 | x | 0 | 56 | 58 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:15:26:15 | 0 | >= | test.c:26:11:26:11 | x | 0 | 58 | 58 |
@@ -460,6 +466,7 @@ astGuardsEnsure
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:16 | j | >= | test.c:34:20:34:21 | 10 | 0 | 42 | 44 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:16 | j | >= | test.c:34:20:34:21 | 10 | 0 | 45 | 45 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:16 | j | >= | test.c:34:20:34:21 | 10 | 0 | 45 | 47 |
+| test.c:34:16:34:21 | ... < ... | test.c:34:16:34:16 | j | >= | test.c:34:20:34:21 | 10 | 0 | 48 | 55 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:16 | j | >= | test.c:34:20:34:21 | 10 | 0 | 51 | 53 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:16 | j | >= | test.c:34:20:34:21 | 10 | 0 | 56 | 58 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:16 | j | >= | test.c:34:20:34:21 | 10 | 0 | 58 | 58 |
@@ -471,6 +478,7 @@ astGuardsEnsure
 | test.c:34:16:34:21 | ... < ... | test.c:34:20:34:21 | 10 | < | test.c:34:16:34:16 | j | 1 | 42 | 44 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:20:34:21 | 10 | < | test.c:34:16:34:16 | j | 1 | 45 | 45 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:20:34:21 | 10 | < | test.c:34:16:34:16 | j | 1 | 45 | 47 |
+| test.c:34:16:34:21 | ... < ... | test.c:34:20:34:21 | 10 | < | test.c:34:16:34:16 | j | 1 | 48 | 55 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:20:34:21 | 10 | < | test.c:34:16:34:16 | j | 1 | 51 | 53 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:20:34:21 | 10 | < | test.c:34:16:34:16 | j | 1 | 56 | 58 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:20:34:21 | 10 | < | test.c:34:16:34:16 | j | 1 | 58 | 58 |
@@ -481,22 +489,26 @@ astGuardsEnsure
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:16 | j | < | test.c:42:20:42:21 | 10 | 0 | 42 | 44 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:16 | j | < | test.c:42:20:42:21 | 10 | 0 | 45 | 45 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:16 | j | < | test.c:42:20:42:21 | 10 | 0 | 45 | 47 |
+| test.c:42:16:42:21 | ... < ... | test.c:42:16:42:16 | j | < | test.c:42:20:42:21 | 10 | 0 | 48 | 55 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:16 | j | < | test.c:42:20:42:21 | 10 | 0 | 51 | 53 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:20:42:21 | 10 | >= | test.c:42:16:42:16 | j | 1 | 42 | 42 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:20:42:21 | 10 | >= | test.c:42:16:42:16 | j | 1 | 42 | 44 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:20:42:21 | 10 | >= | test.c:42:16:42:16 | j | 1 | 45 | 45 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:20:42:21 | 10 | >= | test.c:42:16:42:16 | j | 1 | 45 | 47 |
+| test.c:42:16:42:21 | ... < ... | test.c:42:20:42:21 | 10 | >= | test.c:42:16:42:16 | j | 1 | 48 | 55 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:20:42:21 | 10 | >= | test.c:42:16:42:16 | j | 1 | 51 | 53 |
-| test.c:44:12:44:16 | ... > ... | test.c:44:12:44:12 | z | < | test.c:44:16:44:16 | 0 | 1 | 42 | 42 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:12 | z | < | test.c:44:16:44:16 | 0 | 1 | 51 | 53 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:12 | z | >= | test.c:44:16:44:16 | 0 | 1 | 45 | 45 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:12 | z | >= | test.c:44:16:44:16 | 0 | 1 | 45 | 47 |
+| test.c:44:12:44:16 | ... > ... | test.c:44:12:44:12 | z | >= | test.c:44:16:44:16 | 0 | 1 | 48 | 55 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:16:44:16 | 0 | < | test.c:44:12:44:12 | z | 0 | 45 | 45 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:16:44:16 | 0 | < | test.c:44:12:44:12 | z | 0 | 45 | 47 |
-| test.c:44:12:44:16 | ... > ... | test.c:44:16:44:16 | 0 | >= | test.c:44:12:44:12 | z | 0 | 42 | 42 |
+| test.c:44:12:44:16 | ... > ... | test.c:44:16:44:16 | 0 | < | test.c:44:12:44:12 | z | 0 | 48 | 55 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:16:44:16 | 0 | >= | test.c:44:12:44:12 | z | 0 | 51 | 53 |
+| test.c:45:16:45:20 | ... > ... | test.c:45:16:45:16 | y | < | test.c:45:20:45:20 | 0 | 1 | 48 | 55 |
 | test.c:45:16:45:20 | ... > ... | test.c:45:16:45:16 | y | >= | test.c:45:20:45:20 | 0 | 1 | 45 | 47 |
 | test.c:45:16:45:20 | ... > ... | test.c:45:20:45:20 | 0 | < | test.c:45:16:45:16 | y | 0 | 45 | 47 |
+| test.c:45:16:45:20 | ... > ... | test.c:45:20:45:20 | 0 | >= | test.c:45:16:45:16 | y | 0 | 48 | 55 |
 | test.c:58:9:58:14 | ... == ... | test.c:58:9:58:9 | x | != | test.c:58:14:58:14 | 0 | 0 | 58 | 58 |
 | test.c:58:9:58:14 | ... == ... | test.c:58:9:58:9 | x | != | test.c:58:14:58:14 | 0 | 0 | 62 | 62 |
 | test.c:58:9:58:14 | ... == ... | test.c:58:14:58:14 | 0 | != | test.c:58:9:58:9 | x | 0 | 58 | 58 |
@@ -617,6 +629,7 @@ astGuardsEnsure_const
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | != | 1 | 42 | 44 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | != | 1 | 45 | 45 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | != | 1 | 45 | 47 |
+| test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | != | 1 | 48 | 55 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | != | 1 | 51 | 53 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | != | 1 | 56 | 58 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | != | 1 | 58 | 58 |
@@ -630,6 +643,7 @@ astGuardsEnsure_const
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | == | 0 | 42 | 44 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | == | 0 | 45 | 45 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | == | 0 | 45 | 47 |
+| test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | == | 0 | 48 | 55 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | == | 0 | 51 | 53 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | == | 0 | 56 | 58 |
 | test.c:26:11:26:15 | ... > ... | test.c:26:11:26:15 | ... > ... | == | 0 | 58 | 58 |
@@ -643,6 +657,7 @@ astGuardsEnsure_const
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | != | 1 | 42 | 44 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | != | 1 | 45 | 45 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | != | 1 | 45 | 47 |
+| test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | != | 1 | 48 | 55 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | != | 1 | 51 | 53 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | != | 1 | 56 | 58 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | != | 1 | 58 | 58 |
@@ -654,6 +669,7 @@ astGuardsEnsure_const
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | == | 0 | 42 | 44 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | == | 0 | 45 | 45 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | == | 0 | 45 | 47 |
+| test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | == | 0 | 48 | 55 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | == | 0 | 51 | 53 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | == | 0 | 56 | 58 |
 | test.c:34:16:34:21 | ... < ... | test.c:34:16:34:21 | ... < ... | == | 0 | 58 | 58 |
@@ -664,21 +680,25 @@ astGuardsEnsure_const
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | != | 0 | 42 | 44 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | != | 0 | 45 | 45 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | != | 0 | 45 | 47 |
+| test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | != | 0 | 48 | 55 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | != | 0 | 51 | 53 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | == | 1 | 42 | 42 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | == | 1 | 42 | 44 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | == | 1 | 45 | 45 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | == | 1 | 45 | 47 |
+| test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | == | 1 | 48 | 55 |
 | test.c:42:16:42:21 | ... < ... | test.c:42:16:42:21 | ... < ... | == | 1 | 51 | 53 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | != | 0 | 45 | 45 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | != | 0 | 45 | 47 |
-| test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | != | 1 | 42 | 42 |
+| test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | != | 0 | 48 | 55 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | != | 1 | 51 | 53 |
-| test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | == | 0 | 42 | 42 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | == | 0 | 51 | 53 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | == | 1 | 45 | 45 |
 | test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | == | 1 | 45 | 47 |
+| test.c:44:12:44:16 | ... > ... | test.c:44:12:44:16 | ... > ... | == | 1 | 48 | 55 |
 | test.c:45:16:45:20 | ... > ... | test.c:45:16:45:20 | ... > ... | != | 0 | 45 | 47 |
+| test.c:45:16:45:20 | ... > ... | test.c:45:16:45:20 | ... > ... | != | 1 | 48 | 55 |
+| test.c:45:16:45:20 | ... > ... | test.c:45:16:45:20 | ... > ... | == | 0 | 48 | 55 |
 | test.c:45:16:45:20 | ... > ... | test.c:45:16:45:20 | ... > ... | == | 1 | 45 | 47 |
 | test.c:58:9:58:14 | ... == ... | test.c:58:9:58:9 | x | != | 0 | 58 | 58 |
 | test.c:58:9:58:14 | ... == ... | test.c:58:9:58:9 | x | != | 0 | 62 | 62 |
@@ -1167,6 +1187,7 @@ irGuardsControl
 | test.c:26:11:26:15 | CompareGT: ... > ... | false | 43 | 43 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | false | 45 | 45 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | false | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | false | 49 | 49 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | false | 52 | 52 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | false | 56 | 56 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | false | 58 | 58 |
@@ -1182,6 +1203,7 @@ irGuardsControl
 | test.c:26:11:26:15 | ConditionalBranch: ... > ... | false | 43 | 43 |
 | test.c:26:11:26:15 | ConditionalBranch: ... > ... | false | 45 | 45 |
 | test.c:26:11:26:15 | ConditionalBranch: ... > ... | false | 46 | 46 |
+| test.c:26:11:26:15 | ConditionalBranch: ... > ... | false | 49 | 49 |
 | test.c:26:11:26:15 | ConditionalBranch: ... > ... | false | 52 | 52 |
 | test.c:26:11:26:15 | ConditionalBranch: ... > ... | false | 56 | 56 |
 | test.c:26:11:26:15 | ConditionalBranch: ... > ... | false | 58 | 58 |
@@ -1194,6 +1216,7 @@ irGuardsControl
 | test.c:34:16:34:21 | CompareLT: ... < ... | false | 43 | 43 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | false | 45 | 45 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | false | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | false | 49 | 49 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | false | 52 | 52 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | false | 56 | 56 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | false | 58 | 58 |
@@ -1206,33 +1229,36 @@ irGuardsControl
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 43 | 43 |
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 45 | 45 |
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 46 | 46 |
+| test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 49 | 49 |
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 52 | 52 |
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 56 | 56 |
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 58 | 58 |
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 59 | 59 |
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | false | 62 | 62 |
 | test.c:34:16:34:21 | ConditionalBranch: ... < ... | true | 35 | 35 |
-| test.c:42:16:42:21 | CompareLT: ... < ... | true | 2 | 2 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | true | 42 | 42 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | true | 43 | 43 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | true | 45 | 45 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | true | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | true | 49 | 49 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | true | 52 | 52 |
-| test.c:42:16:42:21 | ConditionalBranch: ... < ... | true | 2 | 2 |
+| test.c:42:16:42:21 | ConditionalBranch: ... < ... | true | 42 | 42 |
 | test.c:42:16:42:21 | ConditionalBranch: ... < ... | true | 43 | 43 |
 | test.c:42:16:42:21 | ConditionalBranch: ... < ... | true | 45 | 45 |
 | test.c:42:16:42:21 | ConditionalBranch: ... < ... | true | 46 | 46 |
+| test.c:42:16:42:21 | ConditionalBranch: ... < ... | true | 49 | 49 |
 | test.c:42:16:42:21 | ConditionalBranch: ... < ... | true | 52 | 52 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | false | 52 | 52 |
-| test.c:44:12:44:16 | CompareGT: ... > ... | true | 2 | 2 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | true | 45 | 45 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | true | 46 | 46 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | true | 49 | 49 |
 | test.c:44:12:44:16 | ConditionalBranch: ... > ... | false | 52 | 52 |
-| test.c:44:12:44:16 | ConditionalBranch: ... > ... | true | 2 | 2 |
 | test.c:44:12:44:16 | ConditionalBranch: ... > ... | true | 45 | 45 |
 | test.c:44:12:44:16 | ConditionalBranch: ... > ... | true | 46 | 46 |
-| test.c:45:16:45:20 | CompareGT: ... > ... | false | 2 | 2 |
+| test.c:44:12:44:16 | ConditionalBranch: ... > ... | true | 49 | 49 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | false | 49 | 49 |
 | test.c:45:16:45:20 | CompareGT: ... > ... | true | 46 | 46 |
-| test.c:45:16:45:20 | ConditionalBranch: ... > ... | false | 2 | 2 |
+| test.c:45:16:45:20 | ConditionalBranch: ... > ... | false | 49 | 49 |
 | test.c:45:16:45:20 | ConditionalBranch: ... > ... | true | 46 | 46 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | false | 58 | 58 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | false | 62 | 62 |
@@ -1362,6 +1388,7 @@ irGuardsEnsure
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 43 | 43 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 45 | 45 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 49 | 49 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 52 | 52 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 56 | 56 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | test.c:26:15:26:15 | Constant: 0 | 1 | 58 | 58 |
@@ -1378,6 +1405,7 @@ irGuardsEnsure
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 43 | 43 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 45 | 45 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 49 | 49 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 52 | 52 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 56 | 56 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:15:26:15 | Constant: 0 | >= | test.c:26:11:26:11 | Load: x | 0 | 58 | 58 |
@@ -1390,6 +1418,7 @@ irGuardsEnsure
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 43 | 43 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 45 | 45 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 49 | 49 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 52 | 52 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 56 | 56 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | test.c:34:20:34:21 | Constant: 10 | 0 | 58 | 58 |
@@ -1401,34 +1430,37 @@ irGuardsEnsure
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 43 | 43 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 45 | 45 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 49 | 49 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 52 | 52 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 56 | 56 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 58 | 58 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 59 | 59 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | < | test.c:34:16:34:16 | Load: j | 1 | 62 | 62 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:20:34:21 | Constant: 10 | >= | test.c:34:16:34:16 | Load: j | 1 | 35 | 35 |
-| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 2 | 2 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 42 | 42 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 43 | 43 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 45 | 45 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 49 | 49 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | test.c:42:20:42:21 | Constant: 10 | 0 | 52 | 52 |
-| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 2 | 2 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 42 | 42 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 43 | 43 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 45 | 45 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 49 | 49 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:20:42:21 | Constant: 10 | >= | test.c:42:16:42:16 | Load: j | 1 | 52 | 52 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | < | test.c:44:16:44:16 | Constant: 0 | 1 | 52 | 52 |
-| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | test.c:44:16:44:16 | Constant: 0 | 1 | 2 | 2 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | test.c:44:16:44:16 | Constant: 0 | 1 | 45 | 45 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | test.c:44:16:44:16 | Constant: 0 | 1 | 46 | 46 |
-| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 2 | 2 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | test.c:44:16:44:16 | Constant: 0 | 1 | 49 | 49 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 45 | 45 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 46 | 46 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | < | test.c:44:12:44:12 | Load: z | 0 | 49 | 49 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:16:44:16 | Constant: 0 | >= | test.c:44:12:44:12 | Load: z | 0 | 52 | 52 |
-| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | < | test.c:45:20:45:20 | Constant: (long)... | 1 | 2 | 2 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | < | test.c:45:20:45:20 | Constant: (long)... | 1 | 49 | 49 |
 | test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | >= | test.c:45:20:45:20 | Constant: (long)... | 1 | 46 | 46 |
 | test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:20:45:20 | Constant: (long)... | < | test.c:45:16:45:16 | Load: y | 0 | 46 | 46 |
-| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:20:45:20 | Constant: (long)... | >= | test.c:45:16:45:16 | Load: y | 0 | 2 | 2 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:20:45:20 | Constant: (long)... | >= | test.c:45:16:45:16 | Load: y | 0 | 49 | 49 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | test.c:58:14:58:14 | Constant: 0 | 0 | 58 | 58 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | test.c:58:14:58:14 | Constant: 0 | 0 | 62 | 62 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:14:58:14 | Constant: 0 | != | test.c:58:9:58:9 | Load: x | 0 | 58 | 58 |
@@ -1574,6 +1606,7 @@ irGuardsEnsure_const
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 43 | 43 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 45 | 45 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 49 | 49 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 52 | 52 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 56 | 56 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:11 | Load: x | < | 1 | 58 | 58 |
@@ -1590,6 +1623,7 @@ irGuardsEnsure_const
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | != | 1 | 43 | 43 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | != | 1 | 45 | 45 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | != | 1 | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | != | 1 | 49 | 49 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | != | 1 | 52 | 52 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | != | 1 | 56 | 56 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | != | 1 | 58 | 58 |
@@ -1604,6 +1638,7 @@ irGuardsEnsure_const
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | == | 0 | 43 | 43 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | == | 0 | 45 | 45 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | == | 0 | 46 | 46 |
+| test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | == | 0 | 49 | 49 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | == | 0 | 52 | 52 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | == | 0 | 56 | 56 |
 | test.c:26:11:26:15 | CompareGT: ... > ... | test.c:26:11:26:15 | CompareGT: ... > ... | == | 0 | 58 | 58 |
@@ -1617,6 +1652,7 @@ irGuardsEnsure_const
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 43 | 43 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 45 | 45 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 49 | 49 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 52 | 52 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 56 | 56 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:16 | Load: j | >= | 10 | 58 | 58 |
@@ -1629,6 +1665,7 @@ irGuardsEnsure_const
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | != | 1 | 43 | 43 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | != | 1 | 45 | 45 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | != | 1 | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | != | 1 | 49 | 49 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | != | 1 | 52 | 52 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | != | 1 | 56 | 56 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | != | 1 | 58 | 58 |
@@ -1640,44 +1677,48 @@ irGuardsEnsure_const
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 43 | 43 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 45 | 45 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 46 | 46 |
+| test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 49 | 49 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 52 | 52 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 56 | 56 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 58 | 58 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 59 | 59 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 0 | 62 | 62 |
 | test.c:34:16:34:21 | CompareLT: ... < ... | test.c:34:16:34:21 | CompareLT: ... < ... | == | 1 | 35 | 35 |
-| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 2 | 2 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 42 | 42 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 43 | 43 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 45 | 45 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 49 | 49 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:16 | Load: j | < | 10 | 52 | 52 |
-| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | != | 0 | 2 | 2 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | != | 0 | 42 | 42 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | != | 0 | 43 | 43 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | != | 0 | 45 | 45 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | != | 0 | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | != | 0 | 49 | 49 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | != | 0 | 52 | 52 |
-| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | == | 1 | 2 | 2 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | == | 1 | 42 | 42 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | == | 1 | 43 | 43 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | == | 1 | 45 | 45 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | == | 1 | 46 | 46 |
+| test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | == | 1 | 49 | 49 |
 | test.c:42:16:42:21 | CompareLT: ... < ... | test.c:42:16:42:21 | CompareLT: ... < ... | == | 1 | 52 | 52 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | < | 1 | 52 | 52 |
-| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | 1 | 2 | 2 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | 1 | 45 | 45 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | 1 | 46 | 46 |
-| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | != | 0 | 2 | 2 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:12 | Load: z | >= | 1 | 49 | 49 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | != | 0 | 45 | 45 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | != | 0 | 46 | 46 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | != | 0 | 49 | 49 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | != | 1 | 52 | 52 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | == | 0 | 52 | 52 |
-| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | == | 1 | 2 | 2 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | == | 1 | 45 | 45 |
 | test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | == | 1 | 46 | 46 |
-| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | < | 1 | 2 | 2 |
+| test.c:44:12:44:16 | CompareGT: ... > ... | test.c:44:12:44:16 | CompareGT: ... > ... | == | 1 | 49 | 49 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | < | 1 | 49 | 49 |
 | test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:16 | Load: y | >= | 1 | 46 | 46 |
 | test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:20 | CompareGT: ... > ... | != | 0 | 46 | 46 |
-| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:20 | CompareGT: ... > ... | != | 1 | 2 | 2 |
-| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:20 | CompareGT: ... > ... | == | 0 | 2 | 2 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:20 | CompareGT: ... > ... | != | 1 | 49 | 49 |
+| test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:20 | CompareGT: ... > ... | == | 0 | 49 | 49 |
 | test.c:45:16:45:20 | CompareGT: ... > ... | test.c:45:16:45:20 | CompareGT: ... > ... | == | 1 | 46 | 46 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | 0 | 58 | 58 |
 | test.c:58:9:58:14 | CompareEQ: ... == ... | test.c:58:9:58:9 | Load: x | != | 0 | 62 | 62 |

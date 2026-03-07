@@ -3,7 +3,7 @@
  */
 
 private import cpp
-private import semmle.code.cpp.ir.implementation.aliased_ssa.PrintIR
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.PrintIR
 private import PrintConfig
 
 private class PrintConfig extends PrintIRConfiguration {

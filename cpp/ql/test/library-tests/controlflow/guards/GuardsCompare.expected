@@ -628,50 +628,22 @@
 | test.cpp:145:23:145:29 | ... != ... | a == 42+0 when ... != ... is false |
 | test.cpp:151:8:151:13 | ... < ... | 10 < a+1 when ... < ... is false |
 | test.cpp:151:8:151:13 | ... < ... | 10 >= a+1 when ... < ... is true |
-| test.cpp:151:8:151:13 | ... < ... | ... < ... != 0 when ... < ... is true |
-| test.cpp:151:8:151:13 | ... < ... | ... < ... != 1 when ... < ... is false |
-| test.cpp:151:8:151:13 | ... < ... | ... < ... == 0 when ... < ... is false |
-| test.cpp:151:8:151:13 | ... < ... | ... < ... == 1 when ... < ... is true |
 | test.cpp:151:8:151:13 | ... < ... | a < 10 when ... < ... is true |
 | test.cpp:151:8:151:13 | ... < ... | a < 10+0 when ... < ... is true |
 | test.cpp:151:8:151:13 | ... < ... | a >= 10 when ... < ... is false |
 | test.cpp:151:8:151:13 | ... < ... | a >= 10+0 when ... < ... is false |
-| test.cpp:151:8:151:13 | ... < ... | b != 0 when ... < ... is true |
-| test.cpp:151:8:151:13 | ... < ... | b != 1 when ... < ... is false |
-| test.cpp:151:8:151:13 | ... < ... | b == 0 when ... < ... is false |
-| test.cpp:151:8:151:13 | ... < ... | b == 1 when ... < ... is true |
-| test.cpp:152:7:152:8 | ! ... | 10 < a+1 when ! ... is true |
-| test.cpp:152:7:152:8 | ! ... | 10 >= a+1 when ! ... is false |
 | test.cpp:152:7:152:8 | ! ... | ! ... != 0 when ! ... is true |
 | test.cpp:152:7:152:8 | ! ... | ! ... != 1 when ! ... is false |
 | test.cpp:152:7:152:8 | ! ... | ! ... == 0 when ! ... is false |
 | test.cpp:152:7:152:8 | ! ... | ! ... == 1 when ! ... is true |
-| test.cpp:152:7:152:8 | ! ... | ... < ... != 0 when ! ... is false |
-| test.cpp:152:7:152:8 | ! ... | ... < ... != 1 when ! ... is true |
-| test.cpp:152:7:152:8 | ! ... | ... < ... == 0 when ! ... is true |
-| test.cpp:152:7:152:8 | ! ... | ... < ... == 1 when ! ... is false |
-| test.cpp:152:7:152:8 | ! ... | a < 10 when ! ... is false |
-| test.cpp:152:7:152:8 | ! ... | a < 10+0 when ! ... is false |
-| test.cpp:152:7:152:8 | ! ... | a >= 10 when ! ... is true |
-| test.cpp:152:7:152:8 | ! ... | a >= 10+0 when ! ... is true |
 | test.cpp:152:7:152:8 | ! ... | b != 0 when ! ... is false |
 | test.cpp:152:7:152:8 | ! ... | b != 1 when ! ... is true |
 | test.cpp:152:7:152:8 | ! ... | b == 0 when ! ... is true |
 | test.cpp:152:7:152:8 | ! ... | b == 1 when ! ... is false |
-| test.cpp:152:8:152:8 | b | 10 < a+1 when b is false |
-| test.cpp:152:8:152:8 | b | 10 >= a+1 when b is true |
 | test.cpp:152:8:152:8 | b | ! ... != 0 when b is false |
 | test.cpp:152:8:152:8 | b | ! ... != 1 when b is true |
 | test.cpp:152:8:152:8 | b | ! ... == 0 when b is true |
 | test.cpp:152:8:152:8 | b | ! ... == 1 when b is false |
-| test.cpp:152:8:152:8 | b | ... < ... != 0 when b is true |
-| test.cpp:152:8:152:8 | b | ... < ... != 1 when b is false |
-| test.cpp:152:8:152:8 | b | ... < ... == 0 when b is false |
-| test.cpp:152:8:152:8 | b | ... < ... == 1 when b is true |
-| test.cpp:152:8:152:8 | b | a < 10 when b is true |
-| test.cpp:152:8:152:8 | b | a < 10+0 when b is true |
-| test.cpp:152:8:152:8 | b | a >= 10 when b is false |
-| test.cpp:152:8:152:8 | b | a >= 10+0 when b is false |
 | test.cpp:152:8:152:8 | b | b != 0 when b is true |
 | test.cpp:152:8:152:8 | b | b != 1 when b is false |
 | test.cpp:152:8:152:8 | b | b == 0 when b is false |

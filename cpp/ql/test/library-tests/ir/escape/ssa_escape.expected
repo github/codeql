@@ -1,0 +1,12 @@
+| escape.cpp:154:9:154:21 | no_ssa_addrOf |
+| escape.cpp:157:9:157:20 | no_ssa_refTo |
+| escape.cpp:160:9:160:32 | no_ssa_refToArrayElement |
+| escape.cpp:163:9:163:25 | no_ssa_refToArray |
+| escape.cpp:172:9:172:24 | no_ssa_passByPtr |
+| escape.cpp:175:9:175:24 | no_ssa_passByRef |
+| escape.cpp:178:9:178:28 | no_ssa_passByPtr_ret |
+| escape.cpp:181:9:181:28 | no_ssa_passByRef_ret |
+| escape.cpp:196:9:196:25 | no_ssa_passByPtr4 |
+| escape.cpp:197:9:197:25 | no_ssa_passByPtr5 |
+| escape.cpp:204:9:204:25 | no_ssa_passByRef7 |
+| escape.cpp:207:7:207:14 | no_ssa_c |

@@ -1,0 +1,33 @@
+test.cpp:
+#    5| void foo(int*)
+#    5|   Block 0
+#    5|     v5_1(void)           = EnterFunction                    : 
+#    5|     mu5_2(unknown)       = AliasedDefinition                : 
+#    5|     mu5_3(unknown)       = InitializeNonLocal               : 
+#    5|     r5_4(glval<int *>)   = VariableAddress[x]               : 
+#    5|     m5_5(int *)          = InitializeParameter[x]           : &:r5_4
+#    5|     r5_6(int *)          = Load[x]                          : &:r5_4, m5_5
+#    5|     mu5_7(unknown)       = InitializeIndirection[x]         : &:r5_6
+#    6|     r6_1(glval<unknown>) = FunctionAddress[operator delete] : 
+#    6|     r6_2(glval<int *>)   = VariableAddress[x]               : 
+#    6|     r6_3(int *)          = Load[x]                          : &:r6_2, m5_5
+#    6|     v6_4(void)           = Call[operator delete]            : func:r6_1, 0:r6_3
+#    6|     mu6_5(unknown)       = ^CallSideEffect                  : ~m?
+#    7|     v7_1(void)           = NoOp                             : 
+#    5|     v5_8(void)           = ReturnIndirection[x]             : &:r5_6, ~m?
+#    5|     v5_9(void)           = ReturnVoid                       : 
+#    5|     v5_10(void)          = AliasedUse                       : ~m?
+#    5|     v5_11(void)          = ExitFunction                     : 
+
+#   11| void jazz()
+#   11|   Block 0
+#   11|     v11_1(void)           = EnterFunction        : 
+#   11|     mu11_2(unknown)       = AliasedDefinition    : 
+#   11|     mu11_3(unknown)       = InitializeNonLocal   : 
+#   12|     r12_1(glval<unknown>) = FunctionAddress[bar] : 
+#   12|     v12_2(void)           = Call[bar]            : func:r12_1
+#   12|     mu12_3(unknown)       = ^CallSideEffect      : ~m?
+#   13|     v13_1(void)           = NoOp                 : 
+#   11|     v11_4(void)           = ReturnVoid           : 
+#   11|     v11_5(void)           = AliasedUse           : ~m?
+#   11|     v11_6(void)           = ExitFunction         : 
