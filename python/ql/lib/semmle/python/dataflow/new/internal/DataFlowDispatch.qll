@@ -1956,3 +1956,489 @@ private module OutNodes {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
+
+/**
+ * Provides predicates for approximating type properties of user-defined classes
+ * based on their structure (method declarations, base classes).
+ *
+ * This module should _not_ be used in the call graph computation itself, as parts of it may depend
+ * on layers that themselves build upon the call graph (e.g. API graphs).
+ */
+module DuckTyping {
+  private import semmle.python.ApiGraphs
+
+  /**
+   * Holds if `cls` or any of its resolved superclasses declares a method with the given `name`.
+   */
+  predicate hasMethod(Class cls, string name) {
+    cls.getAMethod().getName() = name
+    or
+    hasMethod(getADirectSuperclass(cls), name)
+  }
+
+  /**
+   * Holds if `cls` has a base class that cannot be resolved to a user-defined class
+   * and is not just `object`, meaning it may inherit methods from an unknown class.
+   */
+  predicate hasUnresolvedBase(Class cls) {
+    exists(Expr base | base = cls.getABase() |
+      not base = classTracker(_).asExpr() and
+      not base = API::builtin("object").getAValueReachableFromSource().asExpr()
+    )
+  }
+
+  /**
+   * Holds if `cls` supports the container protocol, i.e. it declares
+   * `__contains__`, `__iter__`, or `__getitem__`.
+   */
+  predicate isContainer(Class cls) {
+    hasMethod(cls, "__contains__") or
+    hasMethod(cls, "__iter__") or
+    hasMethod(cls, "__getitem__")
+  }
+
+  /**
+   * Holds if `cls` supports the iterable protocol, i.e. it declares
+   * `__iter__` or `__getitem__`.
+   */
+  predicate isIterable(Class cls) {
+    hasMethod(cls, "__iter__") or
+    hasMethod(cls, "__getitem__")
+  }
+
+  /**
+   * Holds if `cls` supports the iterator protocol, i.e. it declares
+   * both `__iter__` and `__next__`.
+   */
+  predicate isIterator(Class cls) {
+    hasMethod(cls, "__iter__") and
+    hasMethod(cls, "__next__")
+  }
+
+  /**
+   * Holds if `cls` supports the context manager protocol, i.e. it declares
+   * both `__enter__` and `__exit__`.
+   */
+  predicate isContextManager(Class cls) {
+    hasMethod(cls, "__enter__") and
+    hasMethod(cls, "__exit__")
+  }
+
+  /**
+   * Holds if `cls` supports the descriptor protocol, i.e. it declares
+   * `__get__`, `__set__`, or `__delete__`.
+   */
+  predicate isDescriptor(Class cls) {
+    hasMethod(cls, "__get__") or
+    hasMethod(cls, "__set__") or
+    hasMethod(cls, "__delete__")
+  }
+
+  /**
+   * Holds if `cls` directly assigns to an attribute named `name` in its class body.
+   * This covers attribute assignments like `x = value`, but not method definitions.
+   */
+  predicate declaresAttribute(Class cls, string name) { exists(getAnAttributeValue(cls, name)) }
+
+  /**
+   * Gets the value expression assigned to attribute `name` directly in the class body of `cls`.
+   */
+  Expr getAnAttributeValue(Class cls, string name) {
+    exists(Assign a |
+      a.getScope() = cls and
+      a.getATarget().(Name).getId() = name and
+      result = a.getValue()
+    )
+  }
+
+  /**
+   * Holds if `cls` is callable, i.e. it declares `__call__`.
+   */
+  predicate isCallable(Class cls) { hasMethod(cls, "__call__") }
+
+  /**
+   * Holds if `cls` supports the mapping protocol, i.e. it declares
+   * `__getitem__` and `__keys__`, or `__getitem__` and `__iter__`.
+   */
+  predicate isMapping(Class cls) {
+    hasMethod(cls, "__getitem__") and
+    (hasMethod(cls, "keys") or hasMethod(cls, "__iter__"))
+  }
+
+  /**
+   * Holds if `cls` is a new-style class. In Python 3, all classes are new-style.
+   * In Python 2, a class is new-style if it (transitively) inherits from `object`,
+   * or has a declared `__metaclass__`, or has an unresolved base class.
+   */
+  predicate isNewStyle(Class cls) {
+    major_version() = 3
+    or
+    major_version() = 2 and
+    (
+      cls.getABase() = API::builtin("object").getAValueReachableFromSource().asExpr()
+      or
+      isNewStyle(getADirectSuperclass(cls))
+      or
+      hasUnresolvedBase(cls)
+      or
+      exists(cls.getMetaClass())
+      or
+      // Module-level __metaclass__ = type makes all classes in the module new-style
+      exists(Assign a |
+        a.getScope() = cls.getEnclosingModule() and
+        a.getATarget().(Name).getId() = "__metaclass__"
+      )
+    )
+  }
+
+  /**
+   * Gets the `__init__` function that will be invoked when `cls` is constructed,
+   * resolved according to the MRO.
+   */
+  Function getInit(Class cls) { result = invokedFunctionFromClassConstruction(cls, "__init__") }
+
+  /**
+   * Holds if `f` overrides a method in a superclass with the same name.
+   */
+  predicate overridesMethod(Function f) {
+    exists(Class cls | f.getScope() = cls | hasMethod(getADirectSuperclass(cls), f.getName()))
+  }
+
+  /**
+   * Holds if `f` is a property accessor (decorated with `@property`, `@name.setter`,
+   * or `@name.deleter`).
+   */
+  predicate isPropertyAccessor(Function f) {
+    exists(Attribute a | a = f.getADecorator() | a.getName() = "setter" or a.getName() = "deleter")
+    or
+    f.getADecorator().(Name).getId() = "property"
+  }
+
+  /** Gets the name of the builtin class of the immutable literal `lit`. */
+  string getClassName(ImmutableLiteral lit) {
+    lit instanceof IntegerLiteral and result = "int"
+    or
+    lit instanceof FloatLiteral and result = "float"
+    or
+    lit instanceof ImaginaryLiteral and result = "complex"
+    or
+    lit instanceof NegativeIntegerLiteral and result = "int"
+    or
+    lit instanceof StringLiteral and result = "str"
+    or
+    lit instanceof BooleanLiteral and result = "bool"
+    or
+    lit instanceof None and result = "NoneType"
+  }
+}
+
+/**
+ * Provides a class hierarchy for exception types, covering both builtin
+ * exceptions (from typeshed models) and user-defined exception classes.
+ */
+module ExceptionTypes {
+  private import semmle.python.ApiGraphs
+  private import semmle.python.frameworks.data.internal.ApiGraphModels
+
+  /** Holds if `name` is a builtin exception class name. */
+  predicate builtinException(string name) {
+    typeModel("builtins.BaseException~Subclass", "builtins." + name, "")
+  }
+
+  /** Holds if builtin exception `sub` is a direct subclass of builtin exception `base`. */
+  private predicate builtinExceptionSubclass(string base, string sub) {
+    typeModel("builtins." + base + "~Subclass", "builtins." + sub, "")
+  }
+
+  /** An exception type, either a builtin exception or a user-defined exception class. */
+  newtype TExceptType =
+    /** A user-defined exception class. */
+    TUserExceptType(Class c) or
+    /** A builtin exception class, identified by name. */
+    TBuiltinExceptType(string name) { builtinException(name) }
+
+  /** An exception type, either a builtin exception or a user-defined exception class. */
+  class ExceptType extends TExceptType {
+    /** Gets the name of this exception type. */
+    string getName() { none() }
+
+    /** Gets a data-flow node that refers to this exception type. */
+    DataFlow::Node getAUse() { none() }
+
+    /** Gets a direct superclass of this exception type. */
+    ExceptType getADirectSuperclass() { none() }
+
+    /** Gets a string representation of this exception type. */
+    string toString() { result = this.getName() }
+
+    /** Gets a data-flow node that refers to an instance of this exception type. */
+    DataFlow::Node getAnInstance() { none() }
+
+    /** Holds if this is a legal exception type (a subclass of `BaseException`). */
+    predicate isLegalExceptionType() { this.getADirectSuperclass*() instanceof BaseException }
+
+    /**
+     * Holds if this exception type is raised by `r`, either as a class reference
+     * (e.g. `raise ValueError`) or as an instantiation (e.g. `raise ValueError("msg")`).
+     */
+    predicate isRaisedBy(Raise r) {
+      exists(Expr raised | raised = r.getRaised() |
+        this.getAUse().asExpr() in [raised, raised.(Call).getFunc()]
+        or
+        this.getAnInstance().asExpr() = raised
+      )
+    }
+
+    /** Holds if this exception type may be raised at control flow node `r`. */
+    predicate isRaisedAt(ControlFlowNode r) {
+      this.isRaisedBy(r.getNode())
+      or
+      exists(Function callee |
+        resolveCall(r, callee, _) and
+        this.isRaisedIn(callee)
+      )
+    }
+
+    /**
+     * Holds if this exception type may be raised in function `f`, either
+     * directly via `raise` statements or transitively through calls to other functions.
+     */
+    predicate isRaisedIn(Function f) { this.isRaisedAt(any(ControlFlowNode r | r.getScope() = f)) }
+
+    /** Holds if this exception type is handled by the `except` clause at `handler`. */
+    predicate isHandledAt(ExceptFlowNode handler) {
+      exists(ExceptStmt ex, Expr typeExpr | ex = handler.getNode() |
+        (
+          typeExpr = ex.getType()
+          or
+          typeExpr = ex.getType().(Tuple).getAnElt()
+        ) and
+        this.getAUse().asExpr() = typeExpr
+      )
+      or
+      // A bare `except:` handles everything
+      not exists(handler.getNode().(ExceptStmt).getType()) and
+      this instanceof BaseException
+    }
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startColumn` of line `startLine` to
+     * column `endColumn` of line `endLine` in file `filepath`.
+     * For more information, see
+     * [Providing locations in CodeQL queries](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    predicate hasLocationInfo(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn
+    ) {
+      none()
+    }
+  }
+
+  /** A user-defined exception class. */
+  class UserExceptType extends ExceptType, TUserExceptType {
+    Class cls;
+
+    UserExceptType() { this = TUserExceptType(cls) }
+
+    /** Gets the underlying class. */
+    Class asClass() { result = cls }
+
+    override string getName() { result = cls.getName() }
+
+    override DataFlow::Node getAUse() { result = classTracker(cls) }
+
+    override DataFlow::Node getAnInstance() { result = classInstanceTracker(cls) }
+
+    override ExceptType getADirectSuperclass() {
+      result.(UserExceptType).asClass() = getADirectSuperclass(cls)
+      or
+      result.(BuiltinExceptType).getAUse().asExpr() = cls.getABase()
+    }
+
+    override predicate hasLocationInfo(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn
+    ) {
+      cls.getLocation().hasLocationInfo(filePath, startLine, startColumn, endLine, endColumn)
+    }
+  }
+
+  /** A builtin exception class, identified by name. */
+  class BuiltinExceptType extends ExceptType, TBuiltinExceptType {
+    string name;
+
+    BuiltinExceptType() { this = TBuiltinExceptType(name) }
+
+    /** Gets the builtin name. */
+    string asBuiltinName() { result = name }
+
+    override string getName() { result = name }
+
+    override DataFlow::Node getAUse() { result = API::builtin(name).getAValueReachableFromSource() }
+
+    override DataFlow::Node getAnInstance() {
+      result = API::builtin(name).getAnInstance().getAValueReachableFromSource()
+    }
+
+    override ExceptType getADirectSuperclass() {
+      builtinExceptionSubclass(result.(BuiltinExceptType).asBuiltinName(), name) and
+      result != this
+    }
+
+    override predicate hasLocationInfo(
+      string filePath, int startLine, int startColumn, int endLine, int endColumn
+    ) {
+      filePath = "" and
+      startLine = 0 and
+      startColumn = 0 and
+      endLine = 0 and
+      endColumn = 0
+    }
+  }
+
+  /** The builtin `BaseException` type. */
+  class BaseException extends BuiltinExceptType {
+    BaseException() { name = "BaseException" }
+  }
+
+  /**
+   * Holds if the exception edge from `r` to `handler` is unlikely because
+   * none of the exception types that `r` may raise are handled by `handler`.
+   */
+  predicate unlikelyExceptionEdge(ControlFlowNode r, ExceptFlowNode handler) {
+    handler = r.getAnExceptionalSuccessor() and
+    // We can determine at least one raised type
+    exists(ExceptType t | t.isRaisedAt(r)) and
+    // But none of them are handled by this handler
+    not exists(ExceptType raised, ExceptType handled |
+      raised.isRaisedAt(r) and
+      handled.isHandledAt(handler) and
+      raised.getADirectSuperclass*() = handled
+    )
+  }
+}
+
+/**
+ * Provides predicates for reasoning about the reachability of control flow nodes
+ * and basic blocks.
+ */
+module Reachability {
+  private import semmle.python.ApiGraphs
+  import ExceptionTypes
+
+  /**
+   * Holds if `call` is a call to a function that is known to never return normally
+   * (e.g. `sys.exit()`, `os._exit()`, `os.abort()`).
+   */
+  predicate isCallToNeverReturningFunction(CallNode call) {
+    // Known never-returning builtins/stdlib functions via API graphs
+    call = API::builtin("exit").getACall().asCfgNode()
+    or
+    call = API::builtin("quit").getACall().asCfgNode()
+    or
+    call = API::moduleImport("sys").getMember("exit").getACall().asCfgNode()
+    or
+    call = API::moduleImport("os").getMember("_exit").getACall().asCfgNode()
+    or
+    call = API::moduleImport("os").getMember("abort").getACall().asCfgNode()
+    or
+    // User-defined functions that only contain raise statements (no normal returns)
+    exists(Function target |
+      resolveCall(call, target, _) and
+      neverReturns(target)
+    )
+  }
+
+  /**
+   * Holds if function `f` never returns normally, because every normal exit
+   * is dominated by a call to a never-returning function or an unconditional raise.
+   */
+  predicate neverReturns(Function f) {
+    exists(f.getANormalExit()) and
+    forall(BasicBlock exit | exit = f.getANormalExit().getBasicBlock() |
+      exists(BasicBlock raising |
+        raising.dominates(exit) and
+        (
+          isCallToNeverReturningFunction(raising.getLastNode())
+          or
+          raising.getLastNode().getNode() instanceof Raise
+        )
+      )
+    )
+  }
+
+  /**
+   * Holds if `node` is unlikely to raise an exception. This includes entry nodes
+   * and simple name lookups.
+   */
+  private predicate unlikelyToRaise(ControlFlowNode node) {
+    exists(node.getAnExceptionalSuccessor()) and
+    (
+      node.getNode() instanceof Name
+      or
+      exists(Scope s | s.getEntryNode() = node)
+    )
+  }
+
+  /**
+   * Holds if it is highly unlikely for control to flow from `node` to `succ`.
+   */
+  predicate unlikelySuccessor(ControlFlowNode node, ControlFlowNode succ) {
+    // Exceptional edge where the raised type doesn't match the handler
+    unlikelyExceptionEdge(node, succ)
+    or
+    // Normal successor of a never-returning call
+    isCallToNeverReturningFunction(node) and
+    succ = node.getASuccessor() and
+    not succ = node.getAnExceptionalSuccessor() and
+    not succ.getNode() instanceof Yield
+    or
+    // Exception edge from a node that is unlikely to raise
+    unlikelyToRaise(node) and
+    succ = node.getAnExceptionalSuccessor()
+  }
+
+  private predicate startBbLikelyReachable(BasicBlock b) {
+    exists(Scope s | s.getEntryNode() = b.getNode(_))
+    or
+    exists(BasicBlock pred |
+      pred = b.getAPredecessor() and
+      endBbLikelyReachable(pred) and
+      not unlikelySuccessor(pred.getLastNode(), b)
+    )
+  }
+
+  private predicate endBbLikelyReachable(BasicBlock b) {
+    startBbLikelyReachable(b) and
+    not exists(ControlFlowNode p, ControlFlowNode s |
+      unlikelySuccessor(p, s) and
+      p = b.getNode(_) and
+      s = b.getNode(_) and
+      not p = b.getLastNode()
+    )
+  }
+
+  /**
+   * Holds if basic block `b` is likely to be reachable from the entry of its
+   * enclosing scope.
+   */
+  predicate likelyReachable(BasicBlock b) { startBbLikelyReachable(b) }
+
+  /**
+   * Holds if it is unlikely that `node` can be reached during execution.
+   */
+  predicate unlikelyReachable(ControlFlowNode node) {
+    not startBbLikelyReachable(node.getBasicBlock())
+    or
+    exists(BasicBlock b |
+      startBbLikelyReachable(b) and
+      not endBbLikelyReachable(b) and
+      exists(ControlFlowNode p, int i, int j |
+        unlikelySuccessor(p, _) and
+        p = b.getNode(i) and
+        node = b.getNode(j) and
+        i < j
+      )
+    )
+  }
+}

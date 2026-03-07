@@ -12,76 +12,97 @@
  */
 
 import python
-private import LegacyPointsTo
+import semmle.python.dataflow.new.DataFlow
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.ApiGraphs
 
-/*
- * This assumes that any indexing operation where the value is not a sequence or numpy array involves hashing.
- * For sequences, the index must be an int, which are hashable, so we don't need to treat them specially.
- * For numpy arrays, the index may be a list, which are not hashable and needs to be treated specially.
+/**
+ * Holds if `cls` explicitly sets `__hash__` to `None`, making instances unhashable.
  */
-
-predicate numpy_array_type(ClassValue na) {
-  exists(ModuleValue np | np.getName() = "numpy" or np.getName() = "numpy.core" |
-    na.getASuperType() = np.attr("ndarray")
-  )
+predicate setsHashToNone(Class cls) {
+  DuckTyping::getAnAttributeValue(cls, "__hash__") instanceof None
 }
 
-predicate has_custom_getitem(Value v) {
-  v.getClass().lookup("__getitem__") instanceof PythonFunctionValue
+/**
+ * Holds if `cls` is a user-defined class whose instances are unhashable.
+ * A new-style class without `__hash__` is unhashable, as is one that explicitly
+ * sets `__hash__ = None`.
+ */
+predicate isUnhashableUserClass(Class cls) {
+  DuckTyping::isNewStyle(cls) and
+  not DuckTyping::hasMethod(cls, "__hash__") and
+  not DuckTyping::hasUnresolvedBase(getADirectSuperclass*(cls))
   or
-  numpy_array_type(v.getClass())
+  setsHashToNone(cls)
 }
 
-predicate explicitly_hashed(ControlFlowNode f) {
-  exists(CallNode c, GlobalVariable hash |
-    c.getArg(0) = f and c.getFunction().(NameNode).uses(hash) and hash.getId() = "hash"
+/**
+ * Gets the name of a builtin type whose instances are unhashable.
+ */
+string getUnhashableBuiltinName() { result = ["list", "set", "dict", "bytearray"] }
+
+/**
+ * Holds if `origin` is a local source node tracking an unhashable instance that
+ * flows to `node`, with `clsName` describing the class for the alert.
+ */
+predicate isUnhashable(DataFlow::LocalSourceNode origin, DataFlow::Node node, string clsName) {
+  exists(Class c |
+    isUnhashableUserClass(c) and
+    origin = classInstanceTracker(c) and
+    origin.flowsTo(node) and
+    clsName = c.getName()
+  )
+  or
+  clsName = getUnhashableBuiltinName() and
+  origin = API::builtin(clsName).getAnInstance().asSource() and
+  origin.flowsTo(node)
+}
+
+predicate explicitly_hashed(DataFlow::Node node) {
+  node = API::builtin("hash").getACall().getArg(0)
+}
+
+/**
+ * Holds if the subscript object in `sub[...]` is known to use hashing for indexing,
+ * i.e. it does not have a custom `__getitem__` that could accept unhashable indices.
+ */
+predicate subscriptUsesHashing(Subscript sub) {
+  DataFlow::exprNode(sub.getObject()) =
+    API::builtin("dict").getAnInstance().getAValueReachableFromSource()
+  or
+  exists(Class cls |
+    classInstanceTracker(cls)
+        .(DataFlow::LocalSourceNode)
+        .flowsTo(DataFlow::exprNode(sub.getObject())) and
+    not DuckTyping::hasMethod(cls, "__getitem__")
   )
 }
 
-predicate unhashable_subscript(ControlFlowNode f, ClassValue c, ControlFlowNode origin) {
-  is_unhashable(f, c, origin) and
-  exists(SubscriptNode sub | sub.getIndex() = f |
-    exists(Value custom_getitem |
-      sub.getObject().(ControlFlowNodeWithPointsTo).pointsTo(custom_getitem) and
-      not has_custom_getitem(custom_getitem)
-    )
-  )
-}
-
-predicate is_unhashable(ControlFlowNodeWithPointsTo f, ClassValue cls, ControlFlowNode origin) {
-  exists(Value v | f.pointsTo(v, origin) and v.getClass() = cls |
-    not cls.hasAttribute("__hash__") and not cls.failedInference(_) and cls.isNewStyle()
-    or
-    cls.lookup("__hash__") = Value::named("None")
+predicate unhashable_subscript(DataFlow::LocalSourceNode origin, DataFlow::Node node, string clsName) {
+  exists(Subscript sub |
+    node = DataFlow::exprNode(sub.getIndex()) and
+    subscriptUsesHashing(sub)
+  |
+    isUnhashable(origin, node, clsName)
   )
 }
 
 /**
- * Holds if `f` is inside a `try` that catches `TypeError`. For example:
- *
- *    try:
- *       ... f ...
- *    except TypeError:
- *       ...
- *
- * This predicate is used to eliminate false positive results. If `hash`
- * is called on an unhashable object then a `TypeError` will be thrown.
- * But this is not a bug if the code catches the `TypeError` and handles
- * it.
+ * Holds if `e` is inside a `try` that catches `TypeError`.
  */
-predicate typeerror_is_caught(ControlFlowNode f) {
+predicate typeerror_is_caught(Expr e) {
   exists(Try try |
-    try.getBody().contains(f.getNode()) and
-    try.getAHandler().getType().(ExprWithPointsTo).pointsTo(ClassValue::typeError())
+    try.getBody().contains(e) and
+    try.getAHandler().getType() = API::builtin("TypeError").getAValueReachableFromSource().asExpr()
   )
 }
 
-from ControlFlowNode f, ClassValue c, ControlFlowNode origin
+from DataFlow::LocalSourceNode origin, DataFlow::Node node, string clsName
 where
-  not typeerror_is_caught(f) and
+  not typeerror_is_caught(node.asExpr()) and
   (
-    explicitly_hashed(f) and is_unhashable(f, c, origin)
+    explicitly_hashed(node) and isUnhashable(origin, node, clsName)
     or
-    unhashable_subscript(f, c, origin)
+    unhashable_subscript(origin, node, clsName)
   )
-select f.getNode(), "This $@ of $@ is unhashable.", origin, "instance", c, c.getQualifiedName()
+select node, "This $@ of $@ is unhashable.", origin, "instance", origin, clsName

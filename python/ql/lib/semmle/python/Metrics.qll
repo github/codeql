@@ -1,5 +1,6 @@
 import python
 private import semmle.python.SelfAttribute
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 /** The metrics for a function */
 class FunctionMetrics extends Function {
@@ -27,6 +28,32 @@ class FunctionMetrics extends Function {
   int getStatementNestingDepth() { result = max(Stmt s | s.getScope() = this | getNestingDepth(s)) }
 
   int getNumberOfCalls() { result = count(Call c | c.getScope() = this) }
+
+  /**
+   * Gets the cyclomatic complexity of the function:
+   * The number of linearly independent paths through the source code.
+   * Computed as     E - N + 2P,
+   * where
+   *  E = the number of edges of the graph.
+   *  N = the number of nodes of the graph.
+   *  P = the number of connected components, which for a single function is 1.
+   */
+  int getCyclomaticComplexity() {
+    exists(int n, int e |
+      n = count(BasicBlock b | b.getScope() = this and Reachability::likelyReachable(b)) and
+      e =
+        count(BasicBlock b1, BasicBlock b2 |
+          b1.getScope() = this and
+          Reachability::likelyReachable(b1) and
+          b2.getScope() = this and
+          Reachability::likelyReachable(b2) and
+          b2 = b1.getASuccessor() and
+          not Reachability::unlikelySuccessor(b1.getLastNode(), b2.firstNode())
+        )
+    |
+      result = e - n + 2
+    )
+  }
 }
 
 /** The metrics for a class */
