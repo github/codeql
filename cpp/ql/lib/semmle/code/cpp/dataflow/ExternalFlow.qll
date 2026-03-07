@@ -362,7 +362,7 @@ module CsvValidation {
       output.matches("ReturnValue%") and
       result =
         "Constructor model for " + namespace + "." + type +
-          " should use `Argument[-1]` in the output, not `ReturnValue`."
+          " should use `Argument[this]` in the output, not `ReturnValue`."
     )
   }
 
