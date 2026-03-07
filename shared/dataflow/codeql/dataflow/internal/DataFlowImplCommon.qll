@@ -137,7 +137,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     final private class LangContentSet = Lang::ContentSet;
 
     class Content extends LangContentSet {
-      string toString() { result = "Content" }
+      string toString() { result = super.toString() }
     }
 
     class ContentFilter extends Unit {
