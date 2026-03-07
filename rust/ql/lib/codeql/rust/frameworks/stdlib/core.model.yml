@@ -165,11 +165,7 @@ extensions:
       extensible: neutralModel
     data:
       - ["<core::option::Option>::map", "sink", "manual"]
-      - ["<alloc::vec::Vec as core::convert::From>::from", "sink", "manual"]
-      - ["<alloc::collections::vec_deque::VecDeque as core::convert::From>::from", "sink", "manual"]
       - ["<std::io::error::Error as core::convert::From>::from", "sink", "manual"]
-      - ["<alloc::sync::Arc as core::convert::From>::from", "sink", "manual"]
-      - ["<alloc::rc::Rc as core::convert::From>::from", "sink", "manual"]
   - addsTo:
       pack: codeql/rust-all
       extensible: excludeFieldTaintStep
