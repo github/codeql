@@ -724,3 +724,23 @@ func handlerGood5(req *http.Request) {
 	object := req.URL.Query()["username"][0]
 	log.Printf("found object of type %T.\n", object)
 }
+
+// UNSAFE: zap.NewProduction() uses production encoder but is NOT considered a sanitizer by our customization.
+func zapUnsafeExample(req *http.Request) {
+    username := req.URL.Query()["username"][0]
+
+    logger, _ := zap.NewProduction()
+    logger.Info("Login attempt by:", username) // $ hasTaintFlow="username"
+}
+
+// GOOD: zap logger using a JSONEncoder that our customization treats as a sanitizer.
+func zapSafeExample(req *http.Request) {
+    username := req.URL.Query()["username"][0]
+
+    cfg := zap.NewProductionConfig()
+    // Explicitly force JSONEncoder so that your sanitizer will match it.
+    cfg.Encoding = "json"
+
+    logger, _ := cfg.Build()
+    logger.Info("Login attempt", zap.String("username", username)) // NO finding expected
+}
