@@ -775,6 +775,20 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     abstract HashAlgorithmInstance getMgf1HashAlgorithm();
   }
 
+  abstract class PssPaddingAlgorithmInstance extends PaddingAlgorithmInstance {
+    PssPaddingAlgorithmInstance() { this.getPaddingType() instanceof KeyOpAlg::PSS }
+
+    /**
+     * Gets the hash algorithm used for message digesting in this PSS scheme.
+     */
+    abstract HashAlgorithmInstance getHashAlgorithm();
+
+    /**
+     * Gets the hash algorithm used by MGF1 in this PSS scheme.
+     */
+    abstract HashAlgorithmInstance getMgf1HashAlgorithm();
+  }
+
   /**
    * A parent class for signature and MAC operations.
    * Signatures and macs are the asymmetric and symmetric analogs of each other,
@@ -2141,16 +2155,16 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
     override string getRawAlgorithmName() { result = instance.getRawPaddingAlgorithmName() }
   }
 
-  class OAEPPaddingAlgorithmNode extends PaddingAlgorithmNode {
+  class OaepPaddingAlgorithmNode extends PaddingAlgorithmNode {
     override OaepPaddingAlgorithmInstance instance;
 
-    OAEPPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
+    OaepPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
 
-    HashAlgorithmNode getOAEPEncodingHashAlgorithm() {
+    HashAlgorithmNode getOaepEncodingHashAlgorithm() {
       result.asElement() = instance.getOaepEncodingHashAlgorithm()
     }
 
-    HashAlgorithmNode getMGF1HashAlgorithm() {
+    HashAlgorithmNode getMgf1HashAlgorithm() {
       result.asElement() = instance.getMgf1HashAlgorithm()
     }
 
@@ -2159,14 +2173,42 @@ module CryptographyBase<LocationSig Location, InputSig<Location> Input> {
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "MD" and
-      if exists(this.getOAEPEncodingHashAlgorithm())
-      then result = this.getOAEPEncodingHashAlgorithm()
+      if exists(this.getOaepEncodingHashAlgorithm())
+      then result = this.getOaepEncodingHashAlgorithm()
       else result = this
       or
       // [KNOWN_OR_UNKNOWN]
       edgeName = "MGF1Hash" and
-      if exists(this.getMGF1HashAlgorithm())
-      then result = this.getMGF1HashAlgorithm()
+      if exists(this.getMgf1HashAlgorithm())
+      then result = this.getMgf1HashAlgorithm()
+      else result = this
+    }
+  }
+
+  class PssPaddingAlgorithmNode extends PaddingAlgorithmNode {
+    override PssPaddingAlgorithmInstance instance;
+
+    PssPaddingAlgorithmNode() { this = TPaddingAlgorithm(instance) }
+
+    HashAlgorithmNode getPssHashAlgorithm() { result.asElement() = instance.getHashAlgorithm() }
+
+    HashAlgorithmNode getMgf1HashAlgorithm() {
+      result.asElement() = instance.getMgf1HashAlgorithm()
+    }
+
+    override NodeBase getChild(string edgeName) {
+      result = super.getChild(edgeName)
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "MD" and
+      if exists(this.getPssHashAlgorithm())
+      then result = this.getPssHashAlgorithm()
+      else result = this
+      or
+      // [KNOWN_OR_UNKNOWN]
+      edgeName = "MGF1Hash" and
+      if exists(this.getMgf1HashAlgorithm())
+      then result = this.getMgf1HashAlgorithm()
       else result = this
     }
   }
