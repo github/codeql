@@ -1,9 +1,9 @@
---- a/src/main/starlark/core/options/opts.kotlinc.bzl	2000-01-01 01:00:00.000000000 +0100
-+++ b/src/main/starlark/core/options/opts.kotlinc.bzl	2025-11-17 16:51:01.012063056 +0100
+--- a/src/main/starlark/core/options/opts.kotlinc.bzl
++++ b/src/main/starlark/core/options/opts.kotlinc.bzl
 @@ -51,6 +51,11 @@
          return None
      return ["-Xjdk-release=%s" % version]
-
+ 
 +def _map_language_version_to_flag(version):
 +    if not version:
 +        return None
@@ -12,7 +12,7 @@
  _KOPTS_ALL = {
      "include_stdlibs": struct(
          args = dict(
-@@ -495,6 +500,15 @@
+@@ -521,6 +526,15 @@
          value_to_flag = None,
          map_value_to_flag = _map_warning_level,
      ),
@@ -26,5 +26,5 @@
 +        map_value_to_flag = _map_language_version_to_flag,
 +    ),
  }
-
+ 
  def _merge(key, rule_defined):
