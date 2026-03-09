@@ -98,4 +98,4 @@ C/C++
 Java/Kotlin
 """""""""""
 
-*   Kotlin versions up to 2.2.2*x* are now supported.
+*   Kotlin versions up to 2.2.2\ *x* are now supported.

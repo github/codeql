@@ -126,7 +126,7 @@ Golang
 """"""
 
 *   The second argument of the :code:`CreateTemp` function, from the :code:`os` package, is no longer a path-injection sink due to proper sanitization by Go.
-*   The query "Uncontrolled data used in path expression" (:code:`go/path-injection`) now detects sanitizing a path by adding :code:`os.PathSeparator` or :code:`\` to the beginning.
+*   The query "Uncontrolled data used in path expression" (:code:`go/path-injection`) now detects sanitizing a path by adding :code:`os.PathSeparator` or ``\`` to the beginning.
 
 Java/Kotlin
 """""""""""
