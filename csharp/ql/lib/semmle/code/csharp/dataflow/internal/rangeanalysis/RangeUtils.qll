@@ -79,9 +79,7 @@ private module Impl {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
-    predicate controlsBasicBlock(BasicBlock bb, G::GuardValue v) {
-      super.controlsBasicBlock(bb, v)
-    }
+    predicate controlsBasicBlock(BasicBlock bb, G::GuardValue v) { super.controlsBasicBlock(bb, v) }
 
     /**
      * Holds if this guard is an equality test between `e1` and `e2`. If the test is

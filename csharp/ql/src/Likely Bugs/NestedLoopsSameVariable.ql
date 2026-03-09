@@ -81,11 +81,9 @@ class NestedForLoopSameVariable extends ForStmt {
 
   /** Finds elements inside the outer loop that are no longer guarded by the loop invariant. */
   private ControlFlowNode getAnUnguardedNode() {
-    hasChild(this.getOuterForStmt().getBody(),
-      any(ControlFlowElement e | e.getControlFlowNode() = result)) and
+    hasChild(this.getOuterForStmt().getBody(), result.getAstNode()) and
     (
-      result =
-        this.getCondition().(ControlFlowElement).getAControlFlowExitNode().getAFalseSuccessor()
+      result.isAfterFalse(this.getCondition())
       or
       exists(ControlFlowNode mid | mid = this.getAnUnguardedNode() |
         mid.getASuccessor() = result and

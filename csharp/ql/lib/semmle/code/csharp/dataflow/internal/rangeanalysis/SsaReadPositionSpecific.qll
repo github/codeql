@@ -4,7 +4,6 @@
 
 private import csharp as CS
 private import SsaReadPositionCommon
-private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
 class SsaVariable = CS::Ssa::Definition;
 
@@ -21,20 +20,18 @@ private class PhiInputEdgeBlock extends BasicBlock {
   PhiInputEdgeBlock() { this = any(SsaReadPositionPhiInputEdge edge).getOrigBlock() }
 }
 
-private int getId(PhiInputEdgeBlock bb) {
-  exists(CfgImpl::AstNode n | result = n.getId() |
-    n = bb.getFirstNode().getAstNode()
-    or
-    n = bb.(CS::ControlFlow::BasicBlocks::EntryBlock).getEnclosingCallable()
-  )
+private predicate id(CS::ControlFlowElementOrCallable x, CS::ControlFlowElementOrCallable y) {
+  x = y
 }
 
-private string getSplitString(PhiInputEdgeBlock bb) {
-  result = bb.getFirstNode().(CS::ControlFlowNodes::ElementNode).getSplitsString()
-  or
-  not exists(bb.getFirstNode().(CS::ControlFlowNodes::ElementNode).getSplitsString()) and
-  result = ""
-}
+private predicate idOfAst(CS::ControlFlowElementOrCallable x, int y) =
+  equivalenceRelation(id/2)(x, y)
+
+private predicate idOf(PhiInputEdgeBlock x, int y) { idOfAst(x.getFirstNode().getAstNode(), y) }
+
+private int getId1(PhiInputEdgeBlock bb) { idOf(bb, result) }
+
+private string getId2(PhiInputEdgeBlock bb) { bb.getFirstNode().getIdTag() = result }
 
 /**
  * Declarations to be exposed to users of SsaReadPositionCommon.
@@ -50,7 +47,7 @@ module Public {
       rank[r](SsaReadPositionPhiInputEdge e |
         e.phiInput(phi, _)
       |
-        e order by getId(e.getOrigBlock()), getSplitString(e.getOrigBlock())
+        e order by getId1(e.getOrigBlock()), getId2(e.getOrigBlock())
       )
   }
 }

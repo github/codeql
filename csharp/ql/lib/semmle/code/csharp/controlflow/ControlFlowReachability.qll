@@ -4,7 +4,6 @@
 
 import csharp
 private import codeql.controlflow.ControlFlowReachability
-private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.Guards as Guards
 private import semmle.code.csharp.ExprOrStmtParent
 

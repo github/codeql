@@ -7,7 +7,6 @@ private import ControlFlow
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as SC
-private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Linq
@@ -15,9 +14,7 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import codeql.controlflow.Guards as SharedGuards
 
-private module GuardsInput implements
-  SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock>
-{
+private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
   private import csharp as CS
 
   class NormalExitNode = ControlFlow::NormalExitNode;
@@ -96,21 +93,14 @@ private module GuardsInput implements
 
     ConstantExpr asConstantCase() { super.getPattern() = result }
 
-    private predicate hasEdge(BasicBlock bb1, BasicBlock bb2, MatchingCompletion c) {
-      exists(PatternExpr pe |
-        super.getPattern() = pe and
-        c.isValidFor(pe) and
-        bb1.getLastNode() = pe.getAControlFlowNode() and
-        bb1.getASuccessor(c.getAMatchingSuccessorType()) = bb2
-      )
-    }
-
     predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
-      exists(MatchingCompletion c | this.hasEdge(bb1, bb2, c) and c.isMatch())
+      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = true)) = bb2 and
+      bb1.getLastNode() = AstNode.super.getControlFlowNode()
     }
 
     predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
-      exists(MatchingCompletion c | this.hasEdge(bb1, bb2, c) and c.isNonMatch())
+      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = false)) = bb2 and
+      bb1.getLastNode() = AstNode.super.getControlFlowNode()
     }
   }
 
@@ -450,7 +440,8 @@ class DereferenceableExpr extends Expr {
   predicate guardSuggestsMaybeNull(Guards::Guard guard) {
     not nonNullValueImplied(this) and
     (
-      exists(NullnessCompletion c | c.isValidFor(this) and c.isNull() and guard = this)
+      exists(guard.getControlFlowNode().getASuccessor(any(NullnessSuccessor n | n.isNull()))) and
+      guard = this
       or
       LogicInput::additionalNullCheck(guard, _, this, true)
       or

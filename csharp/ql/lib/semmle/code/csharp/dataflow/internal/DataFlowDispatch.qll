@@ -29,7 +29,7 @@ private predicate hasMultipleSourceLocations(Callable c) { strictcount(getASourc
 
 private predicate objectInitEntry(ObjectInitMethod m, ControlFlowElement first) {
   exists(ControlFlow::EntryNode en |
-    en.getEnclosingCallable() = m and first.getControlFlowNode() = en.getASuccessor()
+    en.getEnclosingCallable() = m and first = en.getASuccessor().getAstNode()
   )
 }
 
@@ -210,27 +210,27 @@ class DataFlowCallable extends TDataFlowCallable {
   }
 
   pragma[nomagic]
-  private ControlFlowNodes::ElementNode getAMultiBodyEntryNode(BasicBlock bb, int i) {
+  private ControlFlowNode getAMultiBodyEntryNode(BasicBlock bb, int i) {
     this.isMultiBodied() and
     exists(ControlFlowElement body, Location l |
       body = this.asCallable(l).getBody() or
       objectInitEntry(this.asCallable(l), body)
     |
       NearestLocation<NearestBodyLocationInput>::nearestLocation(body, l, _) and
-      result = body.getAControlFlowEntryNode()
+      result.isBefore(body)
     ) and
     bb.getNode(i) = result
   }
 
   pragma[nomagic]
-  private ControlFlowNodes::ElementNode getAMultiBodyControlFlowNodePred() {
+  private ControlFlowNode getAMultiBodyControlFlowNodePred() {
     result = this.getAMultiBodyEntryNode(_, _).getAPredecessor()
     or
     result = this.getAMultiBodyControlFlowNodePred().getAPredecessor()
   }
 
   pragma[nomagic]
-  private ControlFlowNodes::ElementNode getAMultiBodyControlFlowNodeSuccSameBasicBlock() {
+  private ControlFlowNode getAMultiBodyControlFlowNodeSuccSameBasicBlock() {
     exists(BasicBlock bb, int i, int j |
       exists(this.getAMultiBodyEntryNode(bb, i)) and
       result = bb.getNode(j) and
@@ -246,7 +246,7 @@ class DataFlowCallable extends TDataFlowCallable {
   }
 
   pragma[inline]
-  private ControlFlowNodes::ElementNode getAMultiBodyControlFlowNode() {
+  private ControlFlowNode getAMultiBodyControlFlowNode() {
     result =
       [
         this.getAMultiBodyEntryNode(_, _), this.getAMultiBodyControlFlowNodePred(),

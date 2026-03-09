@@ -4,7 +4,6 @@ module Private {
   private import semmle.code.csharp.dataflow.internal.rangeanalysis.RangeUtils as RU
   private import SsaUtils as SU
   private import SsaReadPositionCommon
-  private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
   class BasicBlock = CS::BasicBlock;
 

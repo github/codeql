@@ -7,7 +7,7 @@
  * @tags ide-contextual-queries/print-cfg
  */
 
-private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
+import csharp
 
 external string selectedSourceFile();
 
@@ -21,7 +21,7 @@ external int selectedSourceColumn();
 
 private predicate selectedSourceColumnAlias = selectedSourceColumn/0;
 
-module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
+module ViewCfgQueryInput implements ControlFlow::ViewCfgQueryInputSig<File> {
   predicate selectedSourceFile = selectedSourceFileAlias/0;
 
   predicate selectedSourceLine = selectedSourceLineAlias/0;
@@ -29,7 +29,7 @@ module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
   predicate selectedSourceColumn = selectedSourceColumnAlias/0;
 
   predicate cfgScopeSpan(
-    CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
+    Callable scope, File file, int startLine, int startColumn, int endLine, int endColumn
   ) {
     file = scope.getFile() and
     scope.getLocation().getStartLine() = startLine and
@@ -40,11 +40,20 @@ module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
     |
       loc = scope.(Callable).getBody().getLocation()
       or
-      loc = scope.(Field).getInitializer().getLocation()
+      loc = any(AssignExpr init | scope.(ObjectInitMethod).initializes(init)).getLocation()
       or
-      loc = scope.(Property).getInitializer().getLocation()
+      exists(AssignableMember a, Constructor ctor |
+        scope = ctor and
+        ctor.isStatic() and
+        a.isStatic() and
+        a.getDeclaringType() = ctor.getDeclaringType()
+      |
+        loc = a.(Field).getInitializer().getLocation()
+        or
+        loc = a.(Property).getInitializer().getLocation()
+      )
     )
   }
 }
 
-import ViewCfgQuery<File, ViewCfgQueryInput>
+import ControlFlow::ViewCfgQuery<File, ViewCfgQueryInput>

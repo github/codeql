@@ -5,7 +5,6 @@ import csharp
  */
 module BaseSsa {
   private import AssignableDefinitions
-  private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
   private import codeql.ssa.Ssa as SsaImplCommon
 
   /**
@@ -25,10 +24,8 @@ module BaseSsa {
     )
   }
 
-  private predicate implicitEntryDef(
-    Callable c, ControlFlow::BasicBlocks::EntryBlock bb, SsaInput::SourceVariable v
-  ) {
-    exists(ControlFlow::BasicBlocks::EntryBlock entry |
+  private predicate implicitEntryDef(Callable c, EntryBasicBlock bb, SsaInput::SourceVariable v) {
+    exists(EntryBasicBlock entry |
       c = entry.getEnclosingCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
       // entry definition. In case `c` doesn't have multiple bodies, the line below
@@ -105,7 +102,7 @@ module BaseSsa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput>;
+  private module SsaImpl = SsaImplCommon::Make<Location, Cfg, SsaInput>;
 
   class Definition extends SsaImpl::Definition {
     final AssignableRead getARead() {

@@ -8,23 +8,6 @@ private import csharp
  */
 module Stages {
   cached
-  module ControlFlowStage {
-    private import semmle.code.csharp.controlflow.internal.Splitting
-
-    cached
-    predicate forceCachingInSameStage() { any() }
-
-    cached
-    private predicate forceCachingInSameStageRev() {
-      exists(Split s)
-      or
-      exists(ControlFlowNode n)
-      or
-      forceCachingInSameStageRev()
-    }
-  }
-
-  cached
   module GuardsStage {
     private import semmle.code.csharp.controlflow.Guards
 

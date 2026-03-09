@@ -4,9 +4,7 @@ import csharp
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Compilation
 private import ControlFlow
-private import ControlFlow::BasicBlocks
 private import semmle.code.csharp.Caching
-private import internal.ControlFlowGraphImpl as Impl
 
 private class TControlFlowElementOrCallable = @callable or @control_flow_element;
 
@@ -36,33 +34,14 @@ class ControlFlowElement extends ControlFlowElementOrCallable, @control_flow_ele
   /**
    * Gets a control flow node for this element. That is, a node in the
    * control flow graph that corresponds to this element.
-   *
-   * Typically, there is exactly one `ControlFlowNode` associated with a
-   * `ControlFlowElement`, but a `ControlFlowElement` may be split into
-   * several `ControlFlowNode`s, for example to represent the continuation
-   * flow in a `try/catch/finally` construction.
    */
-  ControlFlowNodes::ElementNode getAControlFlowNode() { result.getAstNode() = this }
+  ControlFlowNodes::ElementNode getAControlFlowNode() { result = this.getControlFlowNode() }
 
   /** Gets the control flow node for this element. */
-  ControlFlowNode getControlFlowNode() { result.getAstNode() = this }
+  ControlFlowNode getControlFlowNode() { result.injects(this) }
 
   /** Gets the basic block in which this element occurs. */
   BasicBlock getBasicBlock() { result = this.getAControlFlowNode().getBasicBlock() }
-
-  /**
-   * Gets a first control flow node executed within this element.
-   */
-  ControlFlowNodes::ElementNode getAControlFlowEntryNode() {
-    result = Impl::getAControlFlowEntryNode(this).(ControlFlowElement).getAControlFlowNode()
-  }
-
-  /**
-   * Gets a potential last control flow node executed within this element.
-   */
-  ControlFlowNodes::ElementNode getAControlFlowExitNode() {
-    result = Impl::getAControlFlowExitNode(this).(ControlFlowElement).getAControlFlowNode()
-  }
 
   /**
    * Holds if this element is live, that is this element can be reached
@@ -89,23 +68,5 @@ class ControlFlowElement extends ControlFlowElementOrCallable, @control_flow_ele
     // Reachable in different basic blocks
     this.getAControlFlowNode().getBasicBlock().getASuccessor+().getANode() =
       result.getAControlFlowNode()
-  }
-
-  /**
-   * DEPRECATED: Use `Guard` class instead.
-   *
-   * Holds if basic block `controlled` is controlled by this control flow element
-   * with conditional value `s`. That is, `controlled` can only be reached from
-   * the callable entry point by going via the `s` edge out of *some* basic block
-   * ending with this element.
-   *
-   * `cb` records all of the possible condition blocks for this control flow element
-   * that a path from the callable entry point to `controlled` may go through.
-   */
-  deprecated predicate controlsBlock(
-    BasicBlock controlled, ConditionalSuccessor s, ConditionBlock cb
-  ) {
-    cb.getLastNode() = this.getAControlFlowNode() and
-    cb.edgeDominates(controlled, s)
   }
 }

@@ -894,7 +894,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       override string toString() { result = tag + " " + n }
     }
 
-    final private class EntryNodeImpl extends NodeImpl, TEntryNode {
+    final class EntryNodeImpl extends NodeImpl, TEntryNode {
       private Callable c;
 
       EntryNodeImpl() { this = TEntryNode(c) }
@@ -933,7 +933,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** A control flow node indicating normal termination of a callable. */
-    final private class NormalExitNodeImpl extends AnnotatedExitNodeImpl {
+    final class NormalExitNodeImpl extends AnnotatedExitNodeImpl {
       NormalExitNodeImpl() { this = TAnnotatedExitNode(_, true) }
     }
 
@@ -1254,14 +1254,21 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
+      private predicate hasSpecificCallableSteps(Callable c) {
+        exists(EntryNodeImpl entry | entry.getEnclosingCallable() = c and Input2::step(entry, _))
+      }
+
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
       private predicate explicitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
         Input2::step(n1, n2)
         or
         exists(Callable c |
+          // Allow language-specific overrides for the default entry and exit edges.
+          not hasSpecificCallableSteps(c) and
           n1.(EntryNodeImpl).getEnclosingCallable() = c and
           n2.isBefore(callableGetBody(c))
           or
+          not hasSpecificCallableSteps(c) and
           n1.isAfter(callableGetBody(c)) and
           n2.(NormalExitNodeImpl).getEnclosingCallable() = c
           or
@@ -1869,6 +1876,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           /** A control flow node indicating the termination of a callable. */
           final class ExitNode extends ControlFlowNode, ExitNodeImpl { }
 
+          import SuccessorType
           import Additional
         }
 

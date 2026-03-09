@@ -1,25 +1,10 @@
 import csharp
-private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
 private module Input implements InputSig<Location, CsharpDataFlow> {
   private import CsharpDataFlow
-
-  private predicate isStaticAssignable(Assignable a) { a.(Modifiable).isStatic() }
-
-  predicate uniqueEnclosingCallableExclude(Node node) {
-    // TODO: Remove once static initializers are folded into the
-    // static constructors
-    isStaticAssignable(ControlFlowGraphImpl::getNodeCfgScope(node.getControlFlowNode()))
-  }
-
-  predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
-    // TODO: Remove once static initializers are folded into the
-    // static constructors
-    isStaticAssignable(ControlFlowGraphImpl::getNodeCfgScope(call.getControlFlowNode()))
-  }
 
   predicate uniqueNodeLocationExclude(Node n) {
     // Methods with multiple implementations
@@ -69,16 +54,6 @@ private module Input implements InputSig<Location, CsharpDataFlow> {
           init.argumentOf(call, _) and
           init.getInitializer().getNumberOfChildren() > 1
         )
-      or
-      exists(ControlFlowNodes::ElementNode cfn, ControlFlowNodes::Split split |
-        exists(arg.asExprAtNode(cfn))
-      |
-        split = cfn.getASplit() and
-        not split = call.getControlFlowNode().getASplit()
-        or
-        split = call.getControlFlowNode().getASplit() and
-        not split = cfn.getASplit()
-      )
       or
       call.(NonDelegateDataFlowCall).getDispatchCall().isReflection()
     )

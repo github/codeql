@@ -5,7 +5,6 @@
 import csharp
 private import codeql.ssa.Ssa as SsaImplCommon
 private import AssignableDefinitions
-private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 private import semmle.code.csharp.controlflow.Guards as Guards
 private import semmle.code.csharp.dataflow.internal.BaseSSA
 
@@ -41,7 +40,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
   }
 }
 
-import SsaImplCommon::Make<Location, BasicBlocks::Cfg, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -808,7 +807,7 @@ private module Cached {
 
   cached
   predicate implicitEntryDefinition(BasicBlock bb, Ssa::SourceVariable v) {
-    exists(ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
+    exists(EntryBasicBlock entry, Callable c |
       c = entry.getEnclosingCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
       // entry definition. In case `c` doesn't have multiple bodies, the line below
@@ -1006,28 +1005,8 @@ private module Cached {
 
 import Cached
 
-private string getSplitString(Definition def) {
-  exists(BasicBlock bb, int i, ControlFlowNode cfn |
-    def.definesAt(_, bb, i) and
-    result = cfn.(ControlFlowNodes::ElementNode).getSplitsString()
-  |
-    cfn = bb.getNode(i)
-    or
-    not exists(bb.getNode(i)) and
-    cfn = bb.getFirstNode()
-  )
-}
-
-string getToStringPrefix(Definition def) {
-  result = "[" + getSplitString(def) + "] "
-  or
-  not exists(getSplitString(def)) and
-  result = ""
-}
-
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import csharp as Cs
-  private import semmle.code.csharp.controlflow.BasicBlocks
   private import codeql.util.Boolean
 
   class Expr extends ControlFlowNode {

@@ -165,9 +165,7 @@ module Ssa {
   class Definition extends SsaImpl::Definition {
     /** Gets the control flow node of this SSA definition. */
     final ControlFlowNode getControlFlowNode() {
-      exists(BasicBlock bb, int i | this.definesAt(_, bb, i) |
-        result = bb.getNode(0.maximum(i))
-      )
+      exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(0.maximum(i)))
     }
 
     /**
@@ -176,9 +174,7 @@ module Ssa {
      * point it is still live, without crossing another SSA definition of the
      * same source variable.
      */
-    final predicate isLiveAtEndOfBlock(BasicBlock bb) {
-      SsaImpl::isLiveAtEndOfBlock(this, bb)
-    }
+    final predicate isLiveAtEndOfBlock(BasicBlock bb) { SsaImpl::isLiveAtEndOfBlock(this, bb) }
 
     /**
      * Gets a read of the source variable underlying this SSA definition that
@@ -522,9 +518,7 @@ module Ssa {
 
     override Element getElement() { result = ad.getElement() }
 
-    override string toString() {
-      result = SsaImpl::getToStringPrefix(this) + "SSA def(" + this.getSourceVariable() + ")"
-    }
+    override string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
 
     override Location getLocation() { result = ad.getLocation() }
   }
@@ -569,12 +563,8 @@ module Ssa {
 
     override string toString() {
       if this.getSourceVariable().getAssignable() instanceof LocalScopeVariable
-      then
-        result =
-          SsaImpl::getToStringPrefix(this) + "SSA capture def(" + this.getSourceVariable() + ")"
-      else
-        result =
-          SsaImpl::getToStringPrefix(this) + "SSA entry def(" + this.getSourceVariable() + ")"
+      then result = "SSA capture def(" + this.getSourceVariable() + ")"
+      else result = "SSA entry def(" + this.getSourceVariable() + ")"
     }
 
     override Location getLocation() { result = this.getCallable().getLocation() }
@@ -584,7 +574,7 @@ module Ssa {
     class C = ImplicitParameterDefinition;
 
     predicate relevantLocations(ImplicitParameterDefinition def, Location l1, Location l2) {
-      not def.getBasicBlock() instanceof ControlFlow::BasicBlocks::EntryBlock and
+      not def.getBasicBlock() instanceof EntryBasicBlock and
       l1 = def.getParameter().getALocation() and
       l2 = def.getBasicBlock().getLocation()
     }
@@ -615,9 +605,7 @@ module Ssa {
 
     override Element getElement() { result = this.getParameter() }
 
-    override string toString() {
-      result = SsaImpl::getToStringPrefix(this) + "SSA param(" + this.getParameter() + ")"
-    }
+    override string toString() { result = "SSA param(" + this.getParameter() + ")" }
 
     override Location getLocation() {
       not NearestLocation<NearestLocationInput>::nearestLocation(this, _, _) and
@@ -658,9 +646,7 @@ module Ssa {
       )
     }
 
-    override string toString() {
-      result = SsaImpl::getToStringPrefix(this) + "SSA call def(" + this.getSourceVariable() + ")"
-    }
+    override string toString() { result = "SSA call def(" + this.getSourceVariable() + ")" }
 
     override Location getLocation() { result = this.getCall().getLocation() }
   }
@@ -673,9 +659,7 @@ module Ssa {
     private Definition q;
 
     ImplicitQualifierDefinition() {
-      exists(
-        BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v
-      |
+      exists(BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v |
         this.definesAt(v, bb, i)
       |
         SsaImpl::variableWriteQualifier(bb, i, v, _) and
@@ -686,10 +670,7 @@ module Ssa {
     /** Gets the SSA definition for the qualifier. */
     final Definition getQualifierDefinition() { result = q }
 
-    override string toString() {
-      result =
-        SsaImpl::getToStringPrefix(this) + "SSA qualifier def(" + this.getSourceVariable() + ")"
-    }
+    override string toString() { result = "SSA qualifier def(" + this.getSourceVariable() + ")" }
 
     override Location getLocation() { result = this.getQualifierDefinition().getLocation() }
   }
@@ -729,9 +710,7 @@ module Ssa {
       inp = SsaImpl::phiHasInputFromBlock(this, bb)
     }
 
-    override string toString() {
-      result = SsaImpl::getToStringPrefix(this) + "SSA phi(" + this.getSourceVariable() + ")"
-    }
+    override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
 
     /*
      * The location of a phi node is the same as the location of the first node

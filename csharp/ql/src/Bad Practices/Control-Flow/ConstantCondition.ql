@@ -16,7 +16,6 @@
 import csharp
 import semmle.code.csharp.commons.Assertions
 import semmle.code.csharp.commons.Constants
-import semmle.code.csharp.controlflow.BasicBlocks
 import semmle.code.csharp.controlflow.Guards as Guards
 import codeql.controlflow.queries.ConstantCondition as ConstCond
 
@@ -166,10 +165,10 @@ class ConstantNullnessCondition extends ConstantCondition {
   boolean b;
 
   ConstantNullnessCondition() {
-    forex(ControlFlowNode cfn | cfn = this.getAControlFlowNode() |
+    exists(ControlFlowNode cfn | cfn = this.getAControlFlowNode() |
       exists(ControlFlow::NullnessSuccessor t, ControlFlowNode s | s = cfn.getASuccessor(t) |
         b = t.getValue() and
-        not s.isJoin()
+        exists(unique(ControlFlowNode pred | s.getAPredecessor() = pred))
       ) and
       strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessor(t))) = 1
     )
@@ -189,9 +188,7 @@ class ConstantMatchingCondition extends ConstantCondition {
   ConstantMatchingCondition() {
     this instanceof Expr and
     forex(ControlFlowNode cfn | cfn = this.getAControlFlowNode() |
-      exists(ControlFlow::MatchingSuccessor t | exists(cfn.getASuccessor(t)) |
-        b = t.getValue()
-      ) and
+      exists(ControlFlow::MatchingSuccessor t | exists(cfn.getASuccessor(t)) | b = t.getValue()) and
       strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessor(t))) = 1
     )
   }

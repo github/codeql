@@ -5,7 +5,6 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.Guards
-private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.security.dataflow.flowsinks.FlowSinks
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.System

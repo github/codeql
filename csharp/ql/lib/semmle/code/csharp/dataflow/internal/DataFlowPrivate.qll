@@ -83,22 +83,9 @@ abstract class NodeImpl extends Node {
   abstract string toStringImpl();
 }
 
-// TODO: Remove once static initializers are folded into the
-// static constructors
-private DataFlowCallable getEnclosingStaticFieldOrProperty(Expr e) {
-  result.asFieldOrProperty() =
-    any(FieldOrProperty f |
-      f.isStatic() and
-      e = f.getAChild+() and
-      not exists(e.getEnclosingCallable())
-    )
-}
-
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
     result.getAControlFlowNode() = this.getControlFlowNodeImpl()
-    or
-    result = getEnclosingStaticFieldOrProperty(this.asExpr())
   }
 
   override Type getTypeImpl() {
@@ -196,7 +183,7 @@ private module ThisFlow {
       i = ppos - numberOfPrimaryConstructorParameters(bb)
     )
     or
-    exists(DataFlowCallable c, ControlFlow::BasicBlocks::EntryBlock entry |
+    exists(DataFlowCallable c, EntryBasicBlock entry |
       n.(InstanceParameterNode).isParameterOf(c, _) and
       exists(ControlFlowNode succ |
         succ = c.getAControlFlowNode() and
@@ -259,7 +246,6 @@ private module ThisFlow {
 /** Provides logic related to captured variables. */
 module VariableCapture {
   private import codeql.dataflow.VariableCapture as Shared
-  private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 
   private predicate closureFlowStep(ControlFlowNodes::ExprNode e1, ControlFlowNodes::ExprNode e2) {
     e1.getExpr() = LocalFlow::getALastEvalNode(e2.getExpr())
@@ -271,14 +257,12 @@ module VariableCapture {
     )
   }
 
-  private module CaptureInput implements Shared::InputSig<Location, BasicBlocks::BasicBlock> {
+  private module CaptureInput implements Shared::InputSig<Location, BasicBlock> {
     private import csharp as Cs
     private import semmle.code.csharp.controlflow.ControlFlowGraph as Cfg
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
-    Callable basicBlockGetEnclosingCallable(BasicBlocks::BasicBlock bb) {
-      result = bb.getEnclosingCallable()
-    }
+    Callable basicBlockGetEnclosingCallable(BasicBlock bb) { result = bb.getEnclosingCallable() }
 
     private predicate thisAccess(ControlFlowNode cfn, InstanceCallable c) {
       ThisFlow::thisAccessExpr(cfn.asExpr()) and
@@ -346,7 +330,7 @@ module VariableCapture {
     }
 
     class Expr extends ControlFlowNode {
-      predicate hasCfgNode(BasicBlocks::BasicBlock bb, int i) { this = bb.getNode(i) }
+      predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
     }
 
     class VariableWrite extends Expr {
@@ -400,7 +384,7 @@ module VariableCapture {
 
   class ClosureExpr = CaptureInput::ClosureExpr;
 
-  module Flow = Shared::Flow<Location, BasicBlocks::Cfg, CaptureInput>;
+  module Flow = Shared::Flow<Location, Cfg, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
     result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -1518,11 +1502,7 @@ private module ArgumentNodes {
 
     override ControlFlowNode getControlFlowNodeImpl() { result = cfn }
 
-    override DataFlowCallable getEnclosingCallableImpl() {
-      result.getAControlFlowNode() = cfn
-      or
-      result = getEnclosingStaticFieldOrProperty(cfn.asExpr())
-    }
+    override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
 
     override Type getTypeImpl() { result = cfn.asExpr().getType() }
 
@@ -1559,11 +1539,7 @@ private module ArgumentNodes {
       pos.getPosition() = this.getParameter().getPosition()
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() {
-      result.getAControlFlowNode() = callCfn
-      or
-      result = getEnclosingStaticFieldOrProperty(callCfn.asExpr())
-    }
+    override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = callCfn }
 
     override Type getTypeImpl() { result = this.getParameter().getType() }
 
@@ -2586,11 +2562,7 @@ module PostUpdateNodes {
       )
     }
 
-    override DataFlowCallable getEnclosingCallableImpl() {
-      result.getAControlFlowNode() = cfn
-      or
-      result = getEnclosingStaticFieldOrProperty(oc)
-    }
+    override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
 
     override Type getTypeImpl() { result = oc.getType() }
 
@@ -2608,11 +2580,7 @@ module PostUpdateNodes {
 
     override ExprNode getPreUpdateSourceNode() { result = TExprNode(cfn) }
 
-    override DataFlowCallable getEnclosingCallableImpl() {
-      result.getAControlFlowNode() = cfn
-      or
-      result = getEnclosingStaticFieldOrProperty(cfn.asExpr())
-    }
+    override DataFlowCallable getEnclosingCallableImpl() { result.getAControlFlowNode() = cfn }
 
     override Type getTypeImpl() { result = cfn.asExpr().getType() }
 

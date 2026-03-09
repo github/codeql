@@ -52,6 +52,7 @@ class ConditionalAccess
         ca?.Prop?.StringProp = "World";
         ca?.IntField -= 1;
         ca?.StringProp += "!";
+        ca?[1] ??= "Set1";
     }
 }
 
