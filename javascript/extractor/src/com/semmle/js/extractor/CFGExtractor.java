@@ -537,6 +537,11 @@ public class CFGExtractor {
       return nd.getLeft().accept(this, c);
     }
 
+    @Override
+    public Node visit(ParenthesizedExpression nd, Void c) {
+      return nd.getExpression().accept(this, c);
+    }
+
     public static Node of(Node nd) {
       return nd.accept(new First(), null);
     }
@@ -1299,7 +1304,7 @@ public class CFGExtractor {
 
     @Override
     public Void visit(ParenthesizedExpression nd, SuccessorInfo i) {
-      writeSuccessor(nd, First.of(nd.getExpression()));
+      // Bypass parenthesized expression - it has no DB entry, so just delegate to the inner expression
       return nd.getExpression().accept(this, i);
     }
 

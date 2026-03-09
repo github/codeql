@@ -147,11 +147,6 @@ module NameResolution {
       node2 = type
     )
     or
-    exists(ParenthesisExpr expr |
-      node1 = expr.getExpression() and
-      node2 = expr
-    )
-    or
     exists(NonNullAssertion assertion |
       // For the time being we don't use this for nullness analysis, so just
       // propagate through these assertions.

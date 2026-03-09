@@ -17,14 +17,12 @@
 import Clones
 
 /**
- * Holds if `e` is a reference to variable `v`, possibly with parentheses or
+ * Holds if `e` is a reference to variable `v`, possibly with
  * numeric conversions (that is, the unary operators `+` or `-` or a call to `Number`)
  * applied.
  */
 predicate accessWithConversions(Expr e, Variable v) {
   e = v.getAnAccess()
-  or
-  accessWithConversions(e.(ParExpr).getExpression(), v)
   or
   exists(UnaryExpr ue | ue instanceof NegExpr or ue instanceof PlusExpr |
     ue = e and accessWithConversions(ue.getOperand(), v)

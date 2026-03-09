@@ -154,20 +154,6 @@ private class VariableRefinement extends RefinementCandidate, VarUse {
   }
 }
 
-/** A parenthesized refinement expression. */
-private class ParRefinement extends RefinementCandidate, ParExpr {
-  ParRefinement() { this.getExpression() instanceof RefinementCandidate }
-
-  override SsaSourceVariable getARefinedVar() {
-    result = this.getExpression().(RefinementCandidate).getARefinedVar()
-  }
-
-  overlay[global]
-  override RefinementValue eval(RefinementContext ctxt) {
-    result = this.getExpression().(RefinementCandidate).eval(ctxt)
-  }
-}
-
 /** A `typeof` refinement expression. */
 private class TypeofRefinement extends RefinementCandidate, TypeofExpr {
   TypeofRefinement() { this.getOperand() instanceof RefinementCandidate }

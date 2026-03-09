@@ -14,21 +14,11 @@
 
 import javascript
 
-Expr rightChild(Expr e) {
-  result = e.(ParExpr).getExpression() or
-  result = e.(AddExpr).getRightOperand()
-}
+Expr rightChild(Expr e) { result = e.(AddExpr).getRightOperand() }
 
-Expr leftChild(Expr e) {
-  result = e.(ParExpr).getExpression() or
-  result = e.(AddExpr).getLeftOperand()
-}
+Expr leftChild(Expr e) { result = e.(AddExpr).getLeftOperand() }
 
-predicate isInConcat(Expr e) {
-  exists(ParExpr par | isInConcat(par) and par.getExpression() = e)
-  or
-  exists(AddExpr a | a.getAnOperand() = e)
-}
+predicate isInConcat(Expr e) { exists(AddExpr a | a.getAnOperand() = e) }
 
 class ConcatenationLiteral extends Expr {
   ConcatenationLiteral() {

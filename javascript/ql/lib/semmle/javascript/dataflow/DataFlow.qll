@@ -1641,8 +1641,6 @@ module DataFlow {
     exists(Expr predExpr, Expr succExpr |
       pred = TValueNode(predExpr) and succ = TValueNode(succExpr)
     |
-      predExpr = succExpr.(ParExpr).getExpression()
-      or
       predExpr = succExpr.(SeqExpr).getLastOperand()
       or
       predExpr = succExpr.(AssignExpr).getRhs()

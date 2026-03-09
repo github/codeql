@@ -1473,9 +1473,18 @@ public class ASTExtractor {
 
     @Override
     public Label visit(ParenthesizedExpression nd, Context c) {
-      Label key = super.visit(nd, c);
-      visit(nd.getExpression(), key, 0, IdContext.VAR_BIND);
-      return key;
+      // Bypass the parenthesized expression node: visit the inner expression
+      // with the parent's context so it takes the place of the ParExpr in the tree.
+      // Count nested parentheses so that ((x)) results in depth 2.
+      int depth = 1;
+      Expression inner = nd.getExpression();
+      while (inner instanceof ParenthesizedExpression) {
+        depth++;
+        inner = ((ParenthesizedExpression) inner).getExpression();
+      }
+      Label innerLabel = inner.accept(this, c);
+      trapwriter.addTuple("has_parentheses", innerLabel, depth);
+      return innerLabel;
     }
 
     @Override

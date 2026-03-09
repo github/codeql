@@ -202,6 +202,9 @@ array_size (unique int ae: @arraylike ref,
 
 is_delegating (int yield: @yield_expr ref);
 
+has_parentheses (unique int expr: @expr ref,
+       int depth: int ref);
+
 @expr_or_stmt = @expr | @stmt;
 @expr_or_type = @expr | @typeexpr;
 @expr_parent = @expr_or_stmt | @property | @function_typeexpr;
