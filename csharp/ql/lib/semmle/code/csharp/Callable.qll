@@ -22,7 +22,7 @@ private import TypeRef
  * an anonymous function (`AnonymousFunctionExpr`), or a local function
  * (`LocalFunction`).
  */
-class Callable extends Parameterizable, ExprOrStmtParent, @callable {
+class Callable extends Parameterizable, ControlFlowElementOrCallable, @callable {
   /** Gets the return type of this callable. */
   Type getReturnType() { none() }
 

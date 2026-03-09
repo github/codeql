@@ -8,6 +8,10 @@ private import ControlFlow::BasicBlocks
 private import semmle.code.csharp.Caching
 private import internal.ControlFlowGraphImpl as Impl
 
+private class TControlFlowElementOrCallable = @callable or @control_flow_element;
+
+class ControlFlowElementOrCallable extends ExprOrStmtParent, TControlFlowElementOrCallable { }
+
 /**
  * A program element that can possess control flow. That is, either a statement or
  * an expression.
@@ -17,7 +21,7 @@ private import internal.ControlFlowGraphImpl as Impl
  * control flow elements and control flow nodes. This allows control flow
  * splitting, for example modeling the control flow through `finally` blocks.
  */
-class ControlFlowElement extends ExprOrStmtParent, @control_flow_element {
+class ControlFlowElement extends ControlFlowElementOrCallable, @control_flow_element {
   /** Gets the enclosing callable of this element, if any. */
   Callable getEnclosingCallable() { none() }
 
