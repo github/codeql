@@ -23,7 +23,6 @@ nodes
 | tst.html:11:29:11:48 | (Script) | semmle.label | (Script) |
 | tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | semmle.label | [ExprStmt] void(alert('Nope!')) |
 | tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | semmle.label | [UnaryExpr] void(alert('Nope!')) |
-| tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | semmle.label | [ParExpr] (alert('Nope!')) |
 | tst.html:11:34:11:38 | [VarRef] alert | semmle.label | [VarRef] alert |
 | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | semmle.label | [CallExpr] alert('Nope!') |
 | tst.html:11:40:11:46 | [Literal] 'Nope!' | semmle.label | [Literal] 'Nope!' |
@@ -72,10 +71,8 @@ edges
 | tst.html:11:29:11:48 | (Script) | tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | semmle.order | 0 |
 | tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | semmle.label | 1 |
 | tst.html:11:29:11:48 | [ExprStmt] void(alert('Nope!')) | tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | semmle.order | 1 |
-| tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | semmle.label | 1 |
-| tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | semmle.order | 1 |
-| tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | semmle.label | 1 |
-| tst.html:11:33:11:48 | [ParExpr] (alert('Nope!')) | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | semmle.order | 1 |
+| tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | semmle.label | 1 |
+| tst.html:11:29:11:48 | [UnaryExpr] void(alert('Nope!')) | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | semmle.order | 1 |
 | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
 | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
 | tst.html:11:34:11:47 | [CallExpr] alert('Nope!') | tst.html:11:34:11:38 | [VarRef] alert | semmle.label | 0 |

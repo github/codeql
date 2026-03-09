@@ -477,8 +477,6 @@ test_JSDocNonNullableTypeExpr
 | tst.js:358:23:358:29 | !number | tst.js:358:24:358:29 | number | prefix |
 | tst.js:358:34:358:40 | !number | tst.js:358:35:358:40 | number | prefix |
 test_ParExpr_getDocumentation
-| tst.js:117:42:119:10 | ({\\n     ...      }) | tst.js:117:9:117:40 | /** @le ... ype} */ |
-| tst.js:259:40:259:50 | (new Foo()) | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
 test_JSDocRestParameterTypeExpr
 | tst.js:237:32:237:39 | ...[number] | tst.js:237:32:237:39 | [number] |
 | tst.js:238:12:238:20 | ...number | tst.js:238:15:238:20 | number |
@@ -488,7 +486,6 @@ test_Parameter_getDocumentation
 test_ObjectExpr_getDocumentation
 | tst.js:48:25:48:36 | { 'x': 321 } | tst.js:48:12:48:23 | /** @dict */ |
 | tst.js:55:20:59:1 | {\\n  TRU ... BE: 0\\n} | tst.js:51:1:54:3 | /**\\n *  ... er}\\n */ |
-| tst.js:117:43:119:9 | {\\n      ...       } | tst.js:117:9:117:40 | /** @le ... ype} */ |
 | tst.js:192:27:192:36 | { x: 321 } | tst.js:192:12:192:25 | /** @struct */ |
 test_AssignExpr_getDocumentation
 | tst.js:12:1:12:29 | mynames ... 'stout' | tst.js:7:1:11:3 | /**\\n *  ... ng}\\n */ |
@@ -647,8 +644,6 @@ test_OtherExpr_getDocumentation
 | tst.js:104:9:104:16 | SubClass | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
 | tst.js:104:18:104:26 | prototype | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
 | tst.js:104:28:104:35 | toString | tst.js:101:1:103:17 | /**\\n *  ... tDoc */ |
-| tst.js:117:42:119:10 | ({\\n     ...      }) | tst.js:117:9:117:40 | /** @le ... ype} */ |
-| tst.js:117:43:119:9 | {\\n      ...       } | tst.js:117:9:117:40 | /** @le ... ype} */ |
 | tst.js:137:1:137:4 | goog | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
 | tst.js:137:1:137:8 | goog.net | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
 | tst.js:137:1:137:12 | goog.net.xpc | tst.js:131:1:136:3 | /**\\n *  ... age\\n */ |
@@ -728,8 +723,6 @@ test_OtherExpr_getDocumentation
 | tst.js:258:34:258:36 | foo | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
 | tst.js:258:34:258:48 | foo = new Foo() | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
 | tst.js:258:40:258:48 | new Foo() | tst.js:258:1:258:28 | /** @ty ... ng>} */ |
-| tst.js:259:40:259:50 | (new Foo()) | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
-| tst.js:259:41:259:49 | new Foo() | tst.js:259:11:259:38 | /** @ty ... ng>} */ |
 | tst.js:266:1:266:3 | Bar | tst.js:261:1:265:3 | /**\\n *  ... e T\\n */ |
 | tst.js:273:5:273:9 | MyMap | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |
 | tst.js:273:5:273:26 | MyMap = ... n() { } | tst.js:269:1:272:3 | /**\\n *  ... Val\\n */ |

@@ -722,8 +722,7 @@
 | short-circuit | 9 | y | 9 | guard: y is false |
 | short-circuit | 9 | y | 9 | guard: y is true |
 | short-circuit | 11 | z | 13 | (d\\n\|\|\\ne)\\n&&\\nf; |
-| short-circuit | 13 | (d\\n\|\|\\ne) | 13 | d\\n\|\|\\ne |
-| short-circuit | 13 | (d\\n\|\|\\ne)\\n&&\\nf | 13 | (d\\n\|\|\\ne) |
+| short-circuit | 13 | (d\\n\|\|\\ne)\\n&&\\nf | 13 | d\\n\|\|\\ne |
 | short-circuit | 13 | (d\\n\|\|\\ne)\\n&&\\nf; | 13 | (d\\n\|\|\\ne)\\n&&\\nf |
 | short-circuit | 13 | d | 13 | guard: d is false |
 | short-circuit | 13 | d | 13 | guard: d is true |

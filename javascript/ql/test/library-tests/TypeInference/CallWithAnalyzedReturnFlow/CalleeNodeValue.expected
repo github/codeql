@@ -1,10 +1,10 @@
 | tst.js:1:18:1:24 | require | file://:0:0:0:0 | indefinite value (heap) |
 | tst.js:2:16:2:22 | require | file://:0:0:0:0 | indefinite value (heap) |
-| tst.js:4:1:4:14 | (function(){}) | tst.js:4:2:4:13 | anonymous function |
-| tst.js:5:1:5:23 | (functi ... urn; }) | tst.js:5:2:5:22 | anonymous function |
-| tst.js:6:1:6:28 | (functi ... rue; }) | tst.js:6:2:6:27 | anonymous function |
-| tst.js:7:1:7:55 | (functi ... lse; }) | tst.js:7:2:7:54 | anonymous function |
-| tst.js:8:1:8:31 | (functi ... own; }) | tst.js:8:2:8:30 | anonymous function |
+| tst.js:4:2:4:13 | function(){} | tst.js:4:2:4:13 | anonymous function |
+| tst.js:5:2:5:22 | functio ... turn; } | tst.js:5:2:5:22 | anonymous function |
+| tst.js:6:2:6:27 | functio ... true; } | tst.js:6:2:6:27 | anonymous function |
+| tst.js:7:2:7:54 | functio ... alse; } | tst.js:7:2:7:54 | anonymous function |
+| tst.js:8:2:8:30 | functio ... nown; } | tst.js:8:2:8:30 | anonymous function |
 | tst.js:11:5:11:6 | f1 | tst.js:10:5:10:19 | function f1 |
 | tst.js:14:5:14:6 | f2 | tst.js:13:5:13:19 | function f2 |
 | tst.js:15:5:15:6 | f2 | tst.js:13:5:13:19 | function f2 |

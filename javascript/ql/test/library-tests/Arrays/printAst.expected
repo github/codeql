@@ -1,5 +1,4 @@
 nodes
-| arrays.js:1:1:148:2 | [ParExpr] (functi ... } }) | semmle.label | [ParExpr] (functi ... } }) |
 | arrays.js:1:1:148:3 | [ExprStmt] (functi ... } }); | semmle.label | [ExprStmt] (functi ... } }); |
 | arrays.js:1:1:148:3 | [ExprStmt] (functi ... } }); | semmle.order | 1 |
 | arrays.js:1:2:148:1 | [FunctionExpr] functio ... K } } | semmle.label | [FunctionExpr] functio ... K } } |
@@ -730,10 +729,8 @@ nodes
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 | file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
 edges
-| arrays.js:1:1:148:2 | [ParExpr] (functi ... } }) | arrays.js:1:2:148:1 | [FunctionExpr] functio ... K } } | semmle.label | 1 |
-| arrays.js:1:1:148:2 | [ParExpr] (functi ... } }) | arrays.js:1:2:148:1 | [FunctionExpr] functio ... K } } | semmle.order | 1 |
-| arrays.js:1:1:148:3 | [ExprStmt] (functi ... } }); | arrays.js:1:1:148:2 | [ParExpr] (functi ... } }) | semmle.label | 1 |
-| arrays.js:1:1:148:3 | [ExprStmt] (functi ... } }); | arrays.js:1:1:148:2 | [ParExpr] (functi ... } }) | semmle.order | 1 |
+| arrays.js:1:1:148:3 | [ExprStmt] (functi ... } }); | arrays.js:1:2:148:1 | [FunctionExpr] functio ... K } } | semmle.label | 1 |
+| arrays.js:1:1:148:3 | [ExprStmt] (functi ... } }); | arrays.js:1:2:148:1 | [FunctionExpr] functio ... K } } | semmle.order | 1 |
 | arrays.js:1:2:148:1 | [FunctionExpr] functio ... K } } | arrays.js:1:14:148:1 | [BlockStmt] { let ... K } } | semmle.label | 5 |
 | arrays.js:1:2:148:1 | [FunctionExpr] functio ... K } } | arrays.js:1:14:148:1 | [BlockStmt] { let ... K } } | semmle.order | 5 |
 | arrays.js:1:14:148:1 | [BlockStmt] { let ... K } } | arrays.js:2:3:2:24 | [DeclStmt] let source = ... | semmle.label | 1 |
