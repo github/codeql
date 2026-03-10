@@ -1,0 +1,3 @@
+reverseRead
+| array_vs_contents.go:16:25:16:31 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| array_vs_contents.go:33:25:33:31 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

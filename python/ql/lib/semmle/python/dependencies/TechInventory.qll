@@ -1,6 +1,7 @@
 import python
 import semmle.python.dependencies.Dependencies
 import semmle.python.dependencies.DependencyKind
+private import LegacyPointsTo
 
 /**
  * Combine the source-file and package into a single string:

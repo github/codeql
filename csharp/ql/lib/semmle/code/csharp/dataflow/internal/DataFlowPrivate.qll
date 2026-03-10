@@ -6,7 +6,9 @@ private import ControlFlowReachability
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
+private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.Conversion
+private import semmle.code.csharp.exprs.internal.Expr
 private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.Unification
@@ -16,7 +18,6 @@ private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
-private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.csharp.internal.Location
 private import codeql.util.Unit
@@ -178,12 +179,24 @@ private module ThisFlow {
     cfn = n.(InstanceParameterAccessPreNode).getUnderlyingControlFlowNode()
   }
 
+  private predicate primaryConstructorThisAccess(Node n, BasicBlock bb, int ppos) {
+    exists(Parameter p |
+      n.(PrimaryConstructorThisAccessPreNode).getParameter() = p and
+      bb.getCallable() = p.getCallable() and
+      ppos = p.getPosition()
+    )
+  }
+
+  private int numberOfPrimaryConstructorParameters(BasicBlock bb) {
+    result = strictcount(int primaryParamPos | primaryConstructorThisAccess(_, bb, primaryParamPos))
+  }
+
   private predicate thisAccess(Node n, BasicBlock bb, int i) {
     thisAccess(n, bb.getNode(i))
     or
-    exists(Parameter p | n.(PrimaryConstructorThisAccessPreNode).getParameter() = p |
-      bb.getCallable() = p.getCallable() and
-      i = p.getPosition() + 1
+    exists(int ppos |
+      primaryConstructorThisAccess(n, bb, ppos) and
+      i = ppos - numberOfPrimaryConstructorParameters(bb)
     )
     or
     exists(DataFlowCallable c, ControlFlow::BasicBlocks::EntryBlock entry |
@@ -195,8 +208,11 @@ private module ThisFlow {
         // entry definition. In case `c` doesn't have multiple bodies, the line below
         // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`
         // will be in the entry block.
-        bb = succ.getBasicBlock() and
-        i = -1
+        bb = succ.getBasicBlock()
+      |
+        i = -1 - numberOfPrimaryConstructorParameters(bb)
+        or
+        not exists(numberOfPrimaryConstructorParameters(bb)) and i = -1
       )
     )
   }
@@ -833,7 +849,7 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
         FlowSummaryImpl::Private::SummarizedCallableImpl sc,
         FlowSummaryImpl::Private::SummaryComponentStack input, ContentSet readSet
       |
-        sc.propagatesFlow(input, _, _, _) and
+        sc.propagatesFlow(input, _, _, _, _, _) and
         input.contains(FlowSummaryImpl::Private::SummaryComponent::content(readSet)) and
         c.getAStoreContent() = readSet.getAReadContent()
       )
@@ -1006,7 +1022,6 @@ private class InstanceCallable extends Callable {
   private Location l;
 
   InstanceCallable() {
-    this = any(DataFlowCallable dfc).asCallable(l) and
     not this.(Modifiable).isStatic() and
     // local functions and delegate capture `this` and should therefore
     // not have a `this` parameter
@@ -1073,7 +1088,7 @@ predicate exprMayHavePostUpdateNode(Expr e) {
     or
     t = any(TypeParameter tp | not tp.isValueType())
     or
-    t.isRefLikeType()
+    t instanceof Struct
   )
 }
 
@@ -1104,6 +1119,7 @@ private module Cached {
       p = c.asCallable(_).(CallableUsedInSource).getAParameter()
     } or
     TInstanceParameterNode(InstanceCallable c, Location l) {
+      c = any(DataFlowCallable dfc).asCallable(l) and
       c instanceof CallableUsedInSource and
       l = c.getARelevantLocation()
     } or
@@ -2362,6 +2378,16 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   storeStepDelegateCall(node1, c, node2)
 }
 
+pragma[nomagic]
+private predicate isAssignExprLValueDescendant(Expr e) {
+  e = any(AssignExpr ae).getLValue()
+  or
+  exists(Expr parent |
+    isAssignExprLValueDescendant(parent) and
+    e = parent.getAChildExpr()
+  )
+}
+
 private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
   ReadStepConfiguration() { this = "ReadStepConfiguration" }
 
@@ -2417,7 +2443,7 @@ private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration
     scope =
       any(AssignExpr ae |
         ae = defTo.(AssignableDefinitions::TupleAssignmentDefinition).getAssignment() and
-        e = ae.getLValue().getAChildExpr*().(TupleExpr) and
+        isAssignExprLValueDescendant(e.(TupleExpr)) and
         exactScope = false and
         isSuccessor = true
       )
@@ -2473,7 +2499,7 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
       )
       or
       // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
-      te = any(PatternExpr pe).getAChildExpr*() and
+      isPatternExprDescendant(te) and
       exists(AssignableDefinitions::LocalVariableDefinition lvd |
         node2.(AssignableDefinitionNode).getDefinition() = lvd and
         lvd.getDeclaration() = item and
@@ -2530,6 +2556,7 @@ private predicate clearsCont(Node n, Content c) {
     a.getType() = s and
     f = s.getAField() and
     c.(FieldContent).getField() = f.getUnboundDeclaration() and
+    not f.getType() instanceof CollectionType and
     not f.isRef()
   )
   or
@@ -3035,8 +3062,11 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     exists(AssignableDefinition def |
       def.getTargetAccess() = fa and
       nodeFrom.asExpr() = def.getSource() and
-      nodeTo = TFlowInsensitiveFieldNode(f) and
+      nodeTo = TFlowInsensitiveFieldNode(f)
+    |
       nodeFrom.getEnclosingCallable() instanceof Constructor
+      or
+      nodeFrom.getEnclosingCallable() instanceof ObjectInitMethod
     )
     or
     nodeFrom = TFlowInsensitiveFieldNode(f) and
@@ -3070,6 +3100,9 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   or
   VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(DelegateSelfReferenceNode)
         .getCallable())
+  or
+  // Allow field initializers to access Primary Constructor parameters
+  p.getEnclosingCallable() instanceof ObjectInitMethod
 }
 
 /** An approximated `Content`. */

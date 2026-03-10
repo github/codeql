@@ -1,6 +1,7 @@
 /** Helper functions for queries that test redundant comparisons. */
 
 import python
+private import LegacyPointsTo
 
 /** A comparison where the left and right hand sides appear to be identical. */
 class RedundantComparison extends Compare {

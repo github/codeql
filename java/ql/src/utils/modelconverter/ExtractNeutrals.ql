@@ -1,5 +1,5 @@
 /**
- * @name Extract MaD neutral model rows.
+ * @name Extract MaD neutral model rows
  * @description This extracts the Models as data neutral model rows.
  * @id java/utils/modelconverter/generate-data-extensions-neutral
  */

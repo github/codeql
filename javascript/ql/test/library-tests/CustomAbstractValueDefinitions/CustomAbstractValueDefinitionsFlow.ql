@@ -2,6 +2,7 @@ import javascript
 import semmle.javascript.dataflow.InferredTypes
 import semmle.javascript.dataflow.CustomAbstractValueDefinitions
 
+overlay[local]
 class MyCustomAbstractValueDefinition extends CustomAbstractValueDefinition, AST::ValueNode {
   MyCustomAbstractValueDefinition() {
     this.flow() instanceof DataFlow::ObjectLiteralNode and

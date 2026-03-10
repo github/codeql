@@ -13,7 +13,6 @@
 
 import python
 private import LegacyPointsTo
-import semmle.python.pointsto.PointsTo
 
 predicate rhs_in_expr(ControlFlowNode rhs, Compare cmp) {
   exists(Cmpop op, int i | cmp.getOp(i) = op and cmp.getComparator(i) = rhs.getNode() |

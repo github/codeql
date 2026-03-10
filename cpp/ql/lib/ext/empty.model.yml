@@ -11,5 +11,13 @@ extensions:
     data: []
   - addsTo:
       pack: codeql/cpp-all
+      extensible: barrierModel
+    data: []
+  - addsTo:
+      pack: codeql/cpp-all
+      extensible: barrierGuardModel
+    data: []
+  - addsTo:
+      pack: codeql/cpp-all
       extensible: summaryModel
     data: []

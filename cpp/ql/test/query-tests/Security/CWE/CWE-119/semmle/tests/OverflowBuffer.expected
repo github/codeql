@@ -1,6 +1,10 @@
 | overflowdestination.cpp:46:2:46:7 | call to memcpy | This 'memcpy' operation accesses 128 bytes but the $@ is only 64 bytes. | overflowdestination.cpp:40:7:40:10 | dest | destination buffer |
 | tests.cpp:23:2:23:7 | call to memcpy | This 'memcpy' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:19:7:19:17 | smallbuffer | source buffer |
 | tests.cpp:25:2:25:7 | call to memcpy | This 'memcpy' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:19:7:19:17 | smallbuffer | destination buffer |
+| tests.cpp:34:2:34:7 | call to memcpy | This 'memcpy' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:30:30:30:35 | call to malloc | source buffer |
+| tests.cpp:36:2:36:7 | call to memcpy | This 'memcpy' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:30:30:30:35 | call to malloc | destination buffer |
+| tests.cpp:50:2:50:7 | call to memcpy | This 'memcpy' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:46:16:46:27 | new[] | source buffer |
+| tests.cpp:52:2:52:7 | call to memcpy | This 'memcpy' operation accesses 20 bytes but the $@ is only 10 bytes. | tests.cpp:46:16:46:27 | new[] | destination buffer |
 | tests.cpp:172:23:172:31 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:170:17:170:41 | {...} | array |
 | tests.cpp:176:23:176:30 | access to array | This array indexing operation accesses byte offset 31 but the $@ is only 24 bytes. | tests.cpp:170:17:170:41 | {...} | array |
 | tests.cpp:222:3:222:8 | call to memset | This 'memset' operation accesses 33 bytes but the $@ is only 32 bytes. | tests.cpp:214:8:214:14 | buffer1 | destination buffer |

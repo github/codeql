@@ -819,6 +819,7 @@ public class ASTExtractor {
       // add all declared global (or module-scoped) names, both non-lexical and lexical
       scopeManager.addNames(scopeManager.collectDeclaredNames(nd, isStrict, false, DeclKind.none));
       scopeManager.addNames(scopeManager.collectDeclaredNames(nd, isStrict, true, DeclKind.none));
+      scopeManager.addVariables("this");
 
       visitAll(nd.getBody(), toplevelLabel);
 
@@ -1070,6 +1071,9 @@ public class ASTExtractor {
 
       scopeManager.enterScope((Node) nd);
       scopeManager.addNames(locals);
+      if (!(nd instanceof ArrowFunctionExpression)) {
+        scopeManager.addVariables("this");
+      }
 
       // The name of a function expression binds to its own scope.
       if (nd.getId() != null && nd instanceof AFunctionExpression) {
@@ -1541,8 +1545,9 @@ public class ASTExtractor {
       if (!isClassExpression) {
         visit(ac.getId(), key, 0, IdContext.VAR_AND_TYPE_DECL);
       }
+      scopeManager.enterScope(scopeNode);
+      scopeManager.addVariables("this"); // 'this' in static field initialiers refers to the class
       if (ac.hasId() || ac.hasTypeParameters()) {
-        scopeManager.enterScope(scopeNode);
         if (isClassExpression && ac.hasId()) {
           scopeManager.addVariables(ac.getId().getName());
           scopeManager.addTypeName(ac.getId().getName());
@@ -1565,9 +1570,7 @@ public class ASTExtractor {
         addDefaultConstructor(ac);
       }
       visit(ac.getBody(), key, 2);
-      if (ac.hasId() || ac.hasTypeParameters()) {
-        scopeManager.leaveScope();
-      }
+      scopeManager.leaveScope();
       emitNodeSymbol(ac, key);
       return key;
     }
@@ -1891,6 +1894,15 @@ public class ASTExtractor {
     @Override
     public Label visit(JSXThisExpr nd, Context c) {
       return visit((ThisExpression) nd, c);
+    }
+
+    @Override
+    public Label visit(ThisExpression nd, Context c) {
+      Label key = super.visit(nd, c);
+      if (c.idcontext == IdContext.VAR_BIND || c.idcontext == IdContext.VAR_IN_TYPE_BIND) {
+        addVariableBinding("bind", key, "this");
+      }
+      return key;
     }
 
     @Override

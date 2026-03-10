@@ -170,7 +170,8 @@ namespace Semmle.Extraction.CSharp.Standalone
                 fileLogger.LogError($"  Unhandled exception: {ex}");
             }
 
-            logger.Log(Severity.Info, $"Extraction completed in {overallStopwatch.Elapsed}");
+            logger.Log(Severity.Info, $"Extraction completed in {analyzerStopwatch.Elapsed}");
+            logger.Log(Severity.Info, $"Total time: {overallStopwatch.Elapsed}");
 
             return ExitCode.Ok;
         }

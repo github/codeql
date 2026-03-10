@@ -40,3 +40,8 @@ updates:
       - dependency-name: "*"
     reviewers:
       - "github/codeql-go"
+
+  - package-ecosystem: bazel
+    directory: "/"
+    schedule:
+      interval: weekly

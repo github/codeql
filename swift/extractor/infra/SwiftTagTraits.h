@@ -287,6 +287,7 @@ MAP(swift::TypeBase, TypeTag)
     MAP(swift::BuiltinNonDefaultDistributedActorStorageType, void)  // Does not appear in AST/SIL, only used during IRGen
     MAP(swift::BuiltinFixedArrayType, BuiltinFixedArrayTypeTag)
     MAP(swift::BuiltinUnboundGenericType, void)  // Only used during type resolution
+    MAP(swift::BuiltinImplicitActorType, void)  // SIL type
   MAP(swift::TupleType, TupleTypeTag)
   MAP(swift::ReferenceStorageType, ReferenceStorageTypeTag)
   MAP(swift::WeakStorageType, WeakStorageTypeTag)

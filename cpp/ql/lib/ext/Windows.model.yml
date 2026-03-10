@@ -24,6 +24,13 @@ extensions:
       - ["", "", False, "MapViewOfFileNuma2", "", "", "ReturnValue[*]", "local", "manual"]
       # ntifs.h
       - ["", "", False, "NtReadFile", "", "", "Argument[*5]", "local", "manual"]
+      # winhttp.h
+      - ["", "", False, "WinHttpReadData", "", "", "Argument[*1]", "remote", "manual"]
+      - ["", "", False, "WinHttpReadDataEx", "", "", "Argument[*1]", "remote", "manual"]
+      - ["", "", False, "WinHttpQueryHeaders", "", "", "Argument[*3]", "remote", "manual"]
+      - ["", "", False, "WinHttpQueryHeadersEx", "", "", "Argument[*5]", "remote", "manual"]
+      - ["", "", False, "WinHttpQueryHeadersEx", "", "", "Argument[*6]", "remote", "manual"]
+      - ["", "", False, "WinHttpQueryHeadersEx", "", "", "Argument[**8]", "remote", "manual"]
   - addsTo:
       pack: codeql/cpp-all
       extensible: summaryModel
@@ -47,3 +54,5 @@ extensions:
       - ["", "", False, "RtlMoveVolatileMemory", "", "", "Argument[*@1]", "Argument[*@0]", "value", "manual"]
       # winternl.h
       - ["", "", False, "RtlInitUnicodeString", "", "", "Argument[*1]", "Argument[*0].Field[*Buffer]", "value", "manual"]
+      # winhttp.h
+      - ["", "", False, "WinHttpCrackUrl", "", "", "Argument[*0]", "Argument[*3]", "taint", "manual"]

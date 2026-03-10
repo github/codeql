@@ -52,7 +52,7 @@ class IDbCommandConstructionSqlExpr extends SqlExpr, ObjectCreation {
 class DapperCommandDefinitionMethodCallSqlExpr extends SqlExpr, ObjectCreation {
   DapperCommandDefinitionMethodCallSqlExpr() {
     this.getObjectType() instanceof Dapper::CommandDefinitionStruct and
-    DapperCommandDefinitionMethodCallSql::flow(DataFlow::exprNode(this), _)
+    DapperCommandDefinitionMethodCallSql::flowFromExpr(this)
   }
 
   override Expr getSql() { result = this.getArgumentForName("commandText") }

@@ -57,7 +57,7 @@ class SubshellHeredocExecution extends SystemCommandExecution::Range {
   override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
 }
 
-private class SplatSummary extends SummarizedCallable {
+private class SplatSummary extends SummarizedCallable::Range {
   SplatSummary() { this = "*(splat)" }
 
   override SplatExpr getACallSimple() { any() }
@@ -76,7 +76,7 @@ private class SplatSummary extends SummarizedCallable {
   }
 }
 
-private class HashSplatSummary extends SummarizedCallable {
+private class HashSplatSummary extends SummarizedCallable::Range {
   HashSplatSummary() { this = "**(hash-splat)" }
 
   override HashSplatExpr getACallSimple() { any() }

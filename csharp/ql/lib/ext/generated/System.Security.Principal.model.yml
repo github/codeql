@@ -9,8 +9,6 @@ extensions:
       - ["System.Security.Principal", "GenericIdentity", False, "GenericIdentity", "(System.String)", "", "Argument[0]", "Argument[this].SyntheticField[System.Security.Principal.GenericIdentity.m_name]", "value", "dfc-generated"]
       - ["System.Security.Principal", "GenericIdentity", False, "GenericIdentity", "(System.String,System.String)", "", "Argument[0]", "Argument[this].SyntheticField[System.Security.Principal.GenericIdentity.m_name]", "value", "dfc-generated"]
       - ["System.Security.Principal", "GenericIdentity", False, "GenericIdentity", "(System.String,System.String)", "", "Argument[1]", "Argument[this].SyntheticField[System.Security.Principal.GenericIdentity.m_type]", "value", "dfc-generated"]
-      - ["System.Security.Principal", "GenericIdentity", True, "Clone", "()", "", "Argument[this].SyntheticField[System.Security.Principal.GenericIdentity.m_name]", "ReturnValue.SyntheticField[System.Security.Principal.GenericIdentity.m_name]", "value", "dfc-generated"]
-      - ["System.Security.Principal", "GenericIdentity", True, "Clone", "()", "", "Argument[this].SyntheticField[System.Security.Principal.GenericIdentity.m_type]", "ReturnValue.SyntheticField[System.Security.Principal.GenericIdentity.m_type]", "value", "dfc-generated"]
       - ["System.Security.Principal", "GenericIdentity", True, "get_AuthenticationType", "()", "", "Argument[this].SyntheticField[System.Security.Principal.GenericIdentity.m_type]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Security.Principal", "GenericIdentity", True, "get_Claims", "()", "", "Argument[this].Property[System.Security.Claims.ClaimsIdentity.Claims]", "ReturnValue", "value", "dfc-generated"]
       - ["System.Security.Principal", "GenericIdentity", True, "get_Name", "()", "", "Argument[this].SyntheticField[System.Security.Principal.GenericIdentity.m_name]", "ReturnValue", "value", "dfc-generated"]
@@ -21,6 +19,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.Security.Principal", "GenericIdentity", "Clone", "()", "summary", "df-generated"]
       - ["System.Security.Principal", "GenericIdentity", "get_IsAuthenticated", "()", "summary", "df-generated"]
       - ["System.Security.Principal", "GenericPrincipal", "IsInRole", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Principal", "IIdentity", "get_AuthenticationType", "()", "summary", "df-generated"]

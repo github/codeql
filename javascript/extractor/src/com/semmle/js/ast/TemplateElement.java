@@ -10,7 +10,7 @@ public class TemplateElement extends Expression {
     super("TemplateElement", loc);
     this.cooked = cooked;
     this.raw = raw;
-    this.tail = tail == Boolean.TRUE;
+    this.tail = Boolean.TRUE.equals(tail);
   }
 
   @Override

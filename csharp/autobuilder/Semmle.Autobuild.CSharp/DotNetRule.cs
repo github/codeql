@@ -48,7 +48,7 @@ namespace Semmle.Autobuild.CSharp
                 {
                     // When a custom .NET CLI has been installed, `dotnet --info` has already been executed
                     // to verify the installation.
-                    var ret = dotNetPath is null ? GetInfoCommand(builder.Actions, dotNetPath, environment) : BuildScript.Success;
+                    var ret = dotNetPath is null ? DotNet.InfoScript(builder.Actions, DotNetCommand(builder.Actions, dotNetPath), environment, builder.Logger) : BuildScript.Success;
                     foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
                     {
                         var cleanCommand = GetCleanCommand(builder.Actions, dotNetPath, environment);
@@ -84,11 +84,7 @@ namespace Semmle.Autobuild.CSharp
             var temp = FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var shouldCleanUp);
             return DotNet.WithDotNet(builder.Actions, builder.Logger, builder.Paths.Select(x => x.Item1), temp, shouldCleanUp, ensureDotNetAvailable, builder.Options.DotNetVersion, installDir =>
             {
-                var env = new Dictionary<string, string>
-                {
-                    { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
-                    { "MSBUILDDISABLENODEREUSE", "1" }
-                };
+                var env = DotNet.MinimalEnvironment.ToDictionary();
                 if (installDir is not null)
                 {
                     // The installation succeeded, so use the newly installed .NET
@@ -114,14 +110,6 @@ namespace Semmle.Autobuild.CSharp
 
         private static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
             dotNetPath is not null ? actions.PathCombine(dotNetPath, "dotnet") : "dotnet";
-
-        private static BuildScript GetInfoCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
-        {
-            var info = new CommandBuilder(actions, null, environment).
-                RunCommand(DotNetCommand(actions, dotNetPath)).
-                Argument("--info");
-            return info.Script;
-        }
 
         private static CommandBuilder GetCleanCommand(IBuildActions actions, string? dotNetPath, IDictionary<string, string>? environment)
         {

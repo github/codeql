@@ -223,7 +223,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
     predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      super.propagatesFlow(input, output, preservesValue, _)
+      super.propagatesFlow(input, output, preservesValue, _, _, _)
     }
   }
 

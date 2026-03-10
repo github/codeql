@@ -1,6 +1,8 @@
 /**
  * Models imports through the NPM `lazy-cache` package.
  */
+overlay[local?]
+module;
 
 import javascript
 
@@ -43,7 +45,7 @@ module LazyCache {
     pragma[noopt]
     override DataFlow::Node getImportedModuleNode() {
       this instanceof LazyCacheImport and
-      result = this.flow()
+      result = DataFlow::valueNode(this)
       or
       exists(LazyCacheVariable variable, Expr base, PropAccess access, string localName |
         // To avoid recursion, this should not depend on `SourceNode`.
@@ -52,12 +54,13 @@ module LazyCache {
         access.getBase() = base and
         localName = this.getLocalAlias() and
         access.getPropertyName() = localName and
-        result = access.flow()
+        result = DataFlow::valueNode(access)
       )
     }
   }
 
   /** A constant path element appearing in a call to a lazy-cache object. */
+  overlay[global]
   deprecated private class LazyCachePathExpr extends PathExpr, ConstantString {
     LazyCachePathExpr() { this = any(LazyCacheImport rp).getArgument(0) }
 

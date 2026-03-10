@@ -12,10 +12,6 @@ query predicate getAttr(MethodCallExpr x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 
-query predicate getArg(MethodCallExpr x, int index, Expr getArg) {
-  toBeTested(x) and not x.isUnknown() and getArg = x.getArg(index)
-}
-
 query predicate getGenericArgList(MethodCallExpr x, GenericArgList getGenericArgList) {
   toBeTested(x) and not x.isUnknown() and getGenericArgList = x.getGenericArgList()
 }

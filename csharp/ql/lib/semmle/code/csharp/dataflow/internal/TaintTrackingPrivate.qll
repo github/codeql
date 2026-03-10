@@ -25,13 +25,24 @@ predicate defaultTaintSanitizer(DataFlow::Node node) {
 }
 
 /**
+ * Gets the (unbound) property `System.Collections.Generic.KeyValuePair.Value`.
+ */
+private Property keyValuePairValue() {
+  result.hasFullyQualifiedName("System.Collections.Generic", "KeyValuePair`2", "Value")
+}
+
+/**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
   exists(node) and
-  c.isElement()
+  (
+    c.isElement()
+    or
+    c.isProperty(keyValuePairValue())
+  )
 }
 
 private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityConfiguration {
@@ -96,6 +107,16 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
         )
     )
   }
+}
+
+private ControlFlow::Nodes::ExprNode getALastEvalNode(ControlFlow::Nodes::ExprNode cfn) {
+  exists(OperatorCall oc | any(LocalTaintExprStepConfiguration x).hasExprPath(_, result, oc, cfn) |
+    oc.getTarget() instanceof ImplicitConversionOperator
+  )
+}
+
+private ControlFlow::Nodes::ExprNode getPostUpdateReverseStep(ControlFlow::Nodes::ExprNode e) {
+  result = getALastEvalNode(e)
 }
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
@@ -166,6 +187,16 @@ private module Cached {
       readStep(nodeFrom, any(DataFlow::ContentSet c | c.isElement()), nodeTo)
       or
       nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+      or
+      // Allow reverse update flow for implicit conversion operator calls.
+      // This is needed to support flow out of method call arguments, where an implicit conversion is applied
+      // to a call argument.
+      nodeTo.(PostUpdateNode).getPreUpdateNode().(DataFlow::ExprNode).getControlFlowNode() =
+        getPostUpdateReverseStep(nodeFrom
+              .(PostUpdateNode)
+              .getPreUpdateNode()
+              .(DataFlow::ExprNode)
+              .getControlFlowNode())
     ) and
     model = ""
     or

@@ -1,6 +1,8 @@
 /**
  * Contains flow summaries and steps modeling flow through string methods.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.FlowSummary
@@ -8,7 +10,7 @@ private import semmle.javascript.dataflow.FlowSummary
 /**
  * Summary for calls to `.replace` or `.replaceAll` (without a regexp pattern containing a wildcard).
  */
-private class StringReplaceNoWildcard extends SummarizedCallable {
+private class StringReplaceNoWildcard extends SummarizedCallable::Range {
   StringReplaceNoWildcard() {
     this = "String#replace / String#replaceAll (without wildcard pattern)"
   }
@@ -32,7 +34,7 @@ private class StringReplaceNoWildcard extends SummarizedCallable {
  *
  * In this case, the receiver is considered to flow into the callback.
  */
-private class StringReplaceWithWildcard extends SummarizedCallable {
+private class StringReplaceWithWildcard extends SummarizedCallable::Range {
   StringReplaceWithWildcard() {
     this = "String#replace / String#replaceAll (with wildcard pattern)"
   }
@@ -51,7 +53,7 @@ private class StringReplaceWithWildcard extends SummarizedCallable {
   }
 }
 
-class StringSplit extends SummarizedCallable {
+class StringSplit extends SummarizedCallable::Range {
   StringSplit() { this = "String#split" }
 
   override DataFlow::MethodCallNode getACallSimple() {
@@ -76,7 +78,7 @@ class StringSplit extends SummarizedCallable {
  * This summary defaults to the same behavior as the general `.split()` case, but it contains optional steps
  * and barriers named `tainted-url-suffix` that should be activated when tracking a tainted URL suffix.
  */
-class StringSplitHashOrQuestionMark extends SummarizedCallable {
+class StringSplitHashOrQuestionMark extends SummarizedCallable::Range {
   StringSplitHashOrQuestionMark() { this = "String#split with '#' or '?'" }
 
   override DataFlow::MethodCallNode getACallSimple() {
@@ -100,7 +102,7 @@ class StringSplitHashOrQuestionMark extends SummarizedCallable {
   }
 }
 
-class StringFromCharCode extends SummarizedCallable {
+class StringFromCharCode extends SummarizedCallable::Range {
   StringFromCharCode() { this = "String#fromCharCode" }
 
   override DataFlow::CallNode getACall() {

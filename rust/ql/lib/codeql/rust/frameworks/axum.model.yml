@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: sourceModel
+    data:
+      # Get
+      - ["axum::routing::method_routing::get", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      - ["<axum::routing::method_routing::MethodRouter>::get", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      # Post
+      - ["axum::routing::method_routing::post", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      - ["<axum::routing::method_routing::MethodRouter>::post", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      # Put
+      - ["axum::routing::method_routing::put", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      - ["<axum::routing::method_routing::MethodRouter>::put", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      # Delete
+      - ["axum::routing::method_routing::delete", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      - ["<axum::routing::method_routing::MethodRouter>::delete", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      # Patch
+      - ["axum::routing::method_routing::patch", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      - ["<axum::routing::method_routing::MethodRouter>::patch", "Argument[0].Parameter[0..7]", "remote", "manual"]
+      # on
+      - ["axum::routing::method_routing::on", "Argument[1].Parameter[0..7]", "remote", "manual"]
+      - ["<axum::routing::method_routing::MethodRouter>::on", "Argument[1].Parameter[0..7]", "remote", "manual"]

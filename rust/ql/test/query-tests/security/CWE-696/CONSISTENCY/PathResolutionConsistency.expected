@@ -1,2 +1,0 @@
-multipleCallTargets
-| test.rs:117:9:117:21 | ptr.is_null() |

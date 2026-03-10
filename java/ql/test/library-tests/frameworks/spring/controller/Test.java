@@ -127,62 +127,62 @@ public class Test {
     static class ExplicitlyTaintedTest {
         @RequestMapping("/")
         public void get(InputStream src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void get(Reader src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void matrixVariable(@MatrixVariable Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void requestParam(@RequestParam Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void requestHeader(@RequestHeader Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void cookieValue(@CookieValue Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void requestPart(@RequestPart Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void pathVariable(@PathVariable Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void requestBody(@RequestBody Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void get(HttpEntity src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void requestAttribute(@RequestAttribute Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void sessionAttribute(@SessionAttribute Object src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
     }
 
@@ -193,12 +193,12 @@ public class Test {
 
         @RequestMapping("/")
         public void get(String src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
 
         @RequestMapping("/")
         public void get1(Pojo src) { // $ RequestMappingURL="/"
-            sink(src); // $hasValueFlow
+            sink(src); // $ hasValueFlow
         }
     }
 

@@ -8,14 +8,17 @@ import semmle.javascript.security.SensitiveActions
 private import semmle.javascript.dataflow.internal.PreCallGraphStep
 
 module NodeJSLib {
+  overlay[local?]
   private GlobalVariable processVariable() { variables(result, "process", any(GlobalScope sc)) }
 
+  overlay[local?]
   pragma[nomagic]
   private GlobalVarAccess processExprInTopLevel(TopLevel tl) {
     result = processVariable().getAnAccess() and
     tl = result.getTopLevel()
   }
 
+  overlay[local?]
   pragma[nomagic]
   private GlobalVarAccess processExprInNodeModule() {
     result = processExprInTopLevel(any(NodeModule m))
@@ -25,6 +28,7 @@ module NodeJSLib {
    * An access to the global `process` variable in a Node.js module, interpreted as
    * an import of the `process` module.
    */
+  overlay[local?]
   private class ImplicitProcessImport extends DataFlow::ModuleImportNode::Range {
     ImplicitProcessImport() { this = DataFlow::exprNode(processExprInNodeModule()) }
 
@@ -256,6 +260,7 @@ module NodeJSLib {
     DataFlow::Node getRouteHandlerNode() { result = handler }
   }
 
+  overlay[global]
   abstract private class HeaderDefinition extends Http::Servers::StandardHeaderDefinition {
     ResponseNode r;
 

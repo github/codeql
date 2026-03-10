@@ -6,30 +6,30 @@
 
     <EditText
         android:id="@+id/test1_password"
-        android:inputType="text"/> <!-- $hasResult -->
+        android:inputType="text"/> <!-- $ hasResult -->
 
     <EditText
         android:id="@+id/test2_safe"
-        android:inputType="text"/> 
+        android:inputType="text"/>
 
     <EditText
         android:id="@+id/test3_password"
-        android:inputType="textNoSuggestions"/>  
+        android:inputType="textNoSuggestions"/>
 
     <EditText
         android:id="@+id/test4_password"
-        android:inputType="textPassword"/> 
+        android:inputType="textPassword"/>
 
     <EditText
         android:id="@+id/test5_bank_account_name"
-        android:inputType="textMultiLine"/> <!-- $hasResult -->
+        android:inputType="textMultiLine"/> <!-- $ hasResult -->
 
     <EditText
-        android:id="@+id/test6_password"/> <!-- $hasResult -->
+        android:id="@+id/test6_password"/> <!-- $ hasResult -->
 
     <EditText
-        android:id="@+id/test7_password"/>  
+        android:id="@+id/test7_password"/>
 
     <EditText
-        android:id="@+id/test8_password"/>  
+        android:id="@+id/test8_password"/>
 </LinearLayout>

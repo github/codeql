@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ModuleValue m, int n
 where n = count(ModuleValue imp | imp = m.getAnImportedModule())

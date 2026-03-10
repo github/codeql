@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript
 private import semmle.javascript.dataflow.FlowSummary
 private import semmle.javascript.dataflow.InferredTypes
@@ -13,7 +16,7 @@ private class TypedArrayEntryPoint extends API::EntryPoint {
 pragma[nomagic]
 API::Node typedArrayConstructorRef() { result = any(TypedArrayEntryPoint e).getANode() }
 
-class TypedArrayConstructorSummary extends SummarizedCallable {
+class TypedArrayConstructorSummary extends SummarizedCallable::Range {
   TypedArrayConstructorSummary() { this = "TypedArray constructor" }
 
   override DataFlow::InvokeNode getACall() {
@@ -37,7 +40,7 @@ class BufferTypedArray extends DataFlow::AdditionalFlowStep {
   }
 }
 
-class TypedArraySet extends SummarizedCallable {
+class TypedArraySet extends SummarizedCallable::Range {
   TypedArraySet() { this = "TypedArray#set" }
 
   override InstanceCall getACall() {
@@ -51,7 +54,7 @@ class TypedArraySet extends SummarizedCallable {
   }
 }
 
-class TypedArraySubarray extends SummarizedCallable {
+class TypedArraySubarray extends SummarizedCallable::Range {
   TypedArraySubarray() { this = "TypedArray#subarray" }
 
   override InstanceCall getACall() { result.getMethodName() = "subarray" }
@@ -74,7 +77,7 @@ private class ArrayBufferEntryPoint extends API::EntryPoint {
 pragma[nomagic]
 API::Node arrayBufferConstructorRef() { result = any(ArrayBufferEntryPoint a).getANode() }
 
-class TransferLike extends SummarizedCallable {
+class TransferLike extends SummarizedCallable::Range {
   TransferLike() { this = "ArrayBuffer#transfer" }
 
   override InstanceCall getACall() {

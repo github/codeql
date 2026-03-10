@@ -1,16 +1,16 @@
 constructors.cs:
 #    1| [NamespaceDeclaration] namespace ... { ... }
 #    3|   1: [Class] Class
-#    5|     4: [InstanceConstructor] Class
+#    5|     5: [InstanceConstructor] Class
 #    6|       4: [BlockStmt] {...}
-#    8|     5: [InstanceConstructor] Class
+#    8|     6: [InstanceConstructor] Class
 #-----|       2: (Parameters)
 #    8|         0: [Parameter] i
 #    8|           -1: [TypeMention] int
 #    9|       4: [BlockStmt] {...}
-#   11|     6: [StaticConstructor] Class
+#   11|     7: [StaticConstructor] Class
 #   12|       4: [BlockStmt] {...}
-#   14|     7: [Destructor] ~Class
+#   14|     8: [Destructor] ~Class
 #   15|       4: [BlockStmt] {...}
 #   16|         0: [LocalVariableDeclStmt] ... ...;
 #   16|           0: [LocalVariableDeclAndInitExpr] Int32 i = ...
@@ -19,13 +19,13 @@ constructors.cs:
 #   16|             1: [IntLiteral] 0
 #   21| [NamespaceDeclaration] namespace ... { ... }
 #   23|   1: [Class] C1
-#   23|     4: [InstanceConstructor,PrimaryConstructor] C1
+#   23|     5: [InstanceConstructor,PrimaryConstructor] C1
 #-----|       2: (Parameters)
 #   23|         0: [Parameter] o
 #   23|           -1: [TypeMention] object
 #   23|         1: [Parameter] s
 #   23|           -1: [TypeMention] string
-#   25|     5: [InstanceConstructor] C1
+#   25|     6: [InstanceConstructor] C1
 #-----|       2: (Parameters)
 #   25|         0: [Parameter] o
 #   25|           -1: [TypeMention] object
@@ -36,7 +36,7 @@ constructors.cs:
 #   28|   2: [Class] C2
 #-----|     3: (Base types)
 #   28|       0: [TypeMention] C1
-#   28|     4: [InstanceConstructor,PrimaryConstructor] C2
+#   28|     5: [InstanceConstructor,PrimaryConstructor] C2
 #-----|       2: (Parameters)
 #   28|         0: [Parameter] o
 #   28|           -1: [TypeMention] object

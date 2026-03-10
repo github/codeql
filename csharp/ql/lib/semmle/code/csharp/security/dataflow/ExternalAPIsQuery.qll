@@ -85,7 +85,7 @@ module RemoteSourceToExternalApi = TaintTracking::Global<RemoteSourceToExternalA
 
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  UntrustedExternalApiDataNode() { RemoteSourceToExternalApi::flow(_, this) }
+  UntrustedExternalApiDataNode() { RemoteSourceToExternalApi::flowTo(this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
   DataFlow::Node getAnUntrustedSource() { RemoteSourceToExternalApi::flow(result, this) }

@@ -6,6 +6,7 @@ private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 /** Provides classes and predicates modeling aspects of the `d3` library. */
 module D3 {
   /** The global variable `d3` as an entry point for API graphs. */
+  overlay[local?]
   private class D3GlobalEntry extends API::EntryPoint {
     D3GlobalEntry() { this = "D3GlobalEntry" }
 

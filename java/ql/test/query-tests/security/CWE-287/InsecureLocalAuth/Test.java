@@ -16,15 +16,15 @@ class TestA {
     // BAD: result is not used
     class Test2 extends BiometricPrompt.AuthenticationCallback {
         @Override
-        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) { // $insecure-auth
-            
+        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) { // $ insecure-auth
+
         }
     }
 
     // BAD: result is only used in a super call
     class Test3 extends BiometricPrompt.AuthenticationCallback {
         @Override
-        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) { // $insecure-auth
+        public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) { // $ insecure-auth
             super.onAuthenticationSucceeded(result);
         }
     }
@@ -62,15 +62,15 @@ class TestB {
     // BAD: result is not used
     class Test2 extends FingerprintManager.AuthenticationCallback {
         @Override
-        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) { // $insecure-auth
-            
+        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) { // $ insecure-auth
+
         }
     }
 
     // BAD: result is only used in a super call
     class Test3 extends FingerprintManager.AuthenticationCallback {
         @Override
-        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) { // $insecure-auth
+        public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) { // $ insecure-auth
             super.onAuthenticationSucceeded(result);
         }
     }

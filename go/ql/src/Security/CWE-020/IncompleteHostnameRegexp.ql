@@ -45,7 +45,7 @@ predicate writesHttpError(ReachableBasicBlock b) {
 predicate onlyErrors(BasicBlock block) {
   writesHttpError(block)
   or
-  forex(ReachableBasicBlock pred | pred = block.getAPredecessor() | onlyErrors(pred))
+  forex(ReachableBasicBlock pred | pred = block.getAPredecessor(_) | onlyErrors(pred))
 }
 
 /** Gets a node that refers to a handler that is considered to return an HTTP error. */

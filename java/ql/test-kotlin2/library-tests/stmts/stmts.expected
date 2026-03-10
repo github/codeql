@@ -33,7 +33,6 @@
 | stmts.kt:22:27:44:1 | { ... } | BlockStmt |
 | stmts.kt:23:11:27:5 | <Label>: ... | LabeledStmt |
 | stmts.kt:23:11:27:5 | while (...) | WhileStmt |
-| stmts.kt:23:27:27:5 | { ... } | BlockStmt |
 | stmts.kt:24:9:26:25 | do ... while (...) | DoStmt |
 | stmts.kt:24:9:26:25 | { ... } | BlockStmt |
 | stmts.kt:24:13:26:9 | { ... } | BlockStmt |
@@ -49,7 +48,6 @@
 | stmts.kt:32:20:32:24 | break | BreakStmt |
 | stmts.kt:35:13:39:5 | <Label>: ... | LabeledStmt |
 | stmts.kt:35:13:39:5 | for (... : ...) | EnhancedForStmt |
-| stmts.kt:35:29:39:5 | { ... } | BlockStmt |
 | stmts.kt:36:9:38:25 | do ... while (...) | DoStmt |
 | stmts.kt:36:9:38:25 | { ... } | BlockStmt |
 | stmts.kt:36:13:38:9 | { ... } | BlockStmt |
@@ -106,9 +104,8 @@ enclosing
 | stmts.kt:19:5:19:16 | return ... | stmts.kt:2:41:20:1 | { ... } |
 | stmts.kt:23:11:27:5 | <Label>: ... | stmts.kt:22:27:44:1 | { ... } |
 | stmts.kt:23:11:27:5 | while (...) | stmts.kt:23:11:27:5 | <Label>: ... |
-| stmts.kt:23:27:27:5 | { ... } | stmts.kt:23:11:27:5 | while (...) |
 | stmts.kt:24:9:26:25 | do ... while (...) | stmts.kt:24:9:26:25 | { ... } |
-| stmts.kt:24:9:26:25 | { ... } | stmts.kt:23:27:27:5 | { ... } |
+| stmts.kt:24:9:26:25 | { ... } | stmts.kt:23:11:27:5 | while (...) |
 | stmts.kt:24:13:26:9 | { ... } | stmts.kt:24:9:26:25 | do ... while (...) |
 | stmts.kt:25:13:25:33 | <Expr>; | stmts.kt:24:13:26:9 | { ... } |
 | stmts.kt:25:17:25:33 | ... -> ... | stmts.kt:25:13:25:33 | <Expr>; |
@@ -122,9 +119,8 @@ enclosing
 | stmts.kt:32:20:32:24 | break | stmts.kt:32:13:32:24 | ... -> ... |
 | stmts.kt:35:13:39:5 | <Label>: ... | stmts.kt:22:27:44:1 | { ... } |
 | stmts.kt:35:13:39:5 | for (... : ...) | stmts.kt:35:13:39:5 | <Label>: ... |
-| stmts.kt:35:29:39:5 | { ... } | stmts.kt:35:13:39:5 | for (... : ...) |
 | stmts.kt:36:9:38:25 | do ... while (...) | stmts.kt:36:9:38:25 | { ... } |
-| stmts.kt:36:9:38:25 | { ... } | stmts.kt:35:29:39:5 | { ... } |
+| stmts.kt:36:9:38:25 | { ... } | stmts.kt:35:13:39:5 | for (... : ...) |
 | stmts.kt:36:13:38:9 | { ... } | stmts.kt:36:9:38:25 | do ... while (...) |
 | stmts.kt:37:13:37:36 | <Expr>; | stmts.kt:36:13:38:9 | { ... } |
 | stmts.kt:37:17:37:36 | ... -> ... | stmts.kt:37:13:37:36 | <Expr>; |

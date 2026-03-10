@@ -1,6 +1,6 @@
 Assignments.cs:
 #    1| [Class] Assignments
-#    3|   5: [Method] M
+#    3|   6: [Method] M
 #    3|     -1: [TypeMention] Void
 #    4|     4: [BlockStmt] {...}
 #    5|       0: [LocalVariableDeclStmt] ... ...;
@@ -40,7 +40,7 @@ Assignments.cs:
 #   14|               0: [Parameter] sender
 #   14|               1: [Parameter] e
 #   14|             4: [BlockStmt] {...}
-#   17|   6: [AddOperator] +
+#   17|   7: [AddOperator] +
 #   17|     -1: [TypeMention] Assignments
 #-----|     2: (Parameters)
 #   17|       0: [Parameter] x
@@ -50,13 +50,13 @@ Assignments.cs:
 #   18|     4: [BlockStmt] {...}
 #   19|       0: [ReturnStmt] return ...;
 #   19|         0: [ParameterAccess] access to parameter x
-#   22|   7: [DelegateType] EventHandler
+#   22|   8: [DelegateType] EventHandler
 #-----|     2: (Parameters)
 #   22|       0: [Parameter] sender
 #   22|         -1: [TypeMention] object
 #   22|       1: [Parameter] e
 #   22|         -1: [TypeMention] object
-#   23|   8: [Event] Event
+#   23|   9: [Event] Event
 #   23|     -1: [TypeMention] EventHandler
 #   23|     3: [AddEventAccessor] add_Event
 #-----|       2: (Parameters)

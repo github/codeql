@@ -11,13 +11,13 @@ class Literals
 
 class ExpressionBodiedMembers
 {
-    int field = 0;
-    int Foo() => field;
+    int @field = 0;
+    int Foo() => @field;
     int P => 5;
     int Q
     {
         get => Foo();
-        set => field = value;
+        set => @field = value;
     }
     ExpressionBodiedMembers() : this(1) { }
     ExpressionBodiedMembers(int x) => Foo();

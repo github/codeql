@@ -550,4 +550,10 @@ public class CollectionFlow
         ReadOnlySpan<A> span = new ReadOnlySpan<A>(new[] { a });
         Sink(span[0]); // flow
     }
+
+    public void ImplicitMapValueRead(Dictionary<int, A> dict) {
+        var a = new A();
+        dict[0] = a;
+        Sink(dict); // taint flow
+    }
 }

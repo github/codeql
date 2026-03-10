@@ -1,0 +1,15 @@
+reverseRead
+| CorsMisconfiguration.go:52:14:52:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:59:14:59:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:66:17:66:19 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:74:14:74:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:81:14:81:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:88:14:88:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:101:14:101:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:112:14:112:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:126:15:126:17 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:141:14:141:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:156:14:156:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:170:14:170:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:194:17:194:19 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CorsMisconfiguration.go:206:14:206:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

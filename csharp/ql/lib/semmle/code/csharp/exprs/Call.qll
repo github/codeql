@@ -267,9 +267,33 @@ class Call extends Expr, @call {
 class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invocation_expr {
   override Method getTarget() { expr_call(this, result) }
 
+  /**
+   * Gets the accessor that was used to generate this method, if any. For example, the
+   * method call `MyExtensions.get_FirstChar(s)` on line 9 is generated from the property
+   * accessor `get_FirstChar` on line 3 in
+   *
+   * ```csharp
+   * static class MyExtensions {
+   *   extension(string s) {
+   *     public char FirstChar { get { ... } }
+   *   }
+   * }
+   *
+   * class A {
+   *   char M(string s) {
+   *     return MyExtensions.get_FirstChar(s);
+   *   }
+   * }
+   */
+  Accessor getTargetAccessor() { expr_call(this, result) }
+
   override Method getQualifiedDeclaration() { result = this.getTarget() }
 
-  override string toString() { result = "call to method " + concat(this.getTarget().getName()) }
+  override string toString() {
+    if exists(this.getTargetAccessor())
+    then result = "call to extension accessor " + concat(this.getTargetAccessor().getName())
+    else result = "call to method " + concat(this.getTarget().getName())
+  }
 
   override string getAPrimaryQlClass() { result = "MethodCall" }
 
@@ -480,6 +504,30 @@ class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
 }
 
 /**
+ * A call to an extension operator, for example `3 * s` on
+ * line 9 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public static string operator *(int i, string s) { ... }
+ *   }
+ * }
+ *
+ * class A {
+ *   string M(string s) {
+ *     return 3 * s;
+ *   }
+ * }
+ * ```
+ */
+class ExtensionOperatorCall extends OperatorCall {
+  ExtensionOperatorCall() { this.getTarget() instanceof ExtensionOperator }
+
+  override string getAPrimaryQlClass() { result = "ExtensionOperatorCall" }
+}
+
+/**
  * A call to a user-defined mutator operator, for example `a++` on
  * line 7 in
  *
@@ -656,6 +704,44 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
   override string toString() { result = IndexerAccessExpr.super.toString() }
 
   override string getAPrimaryQlClass() { result = "IndexerCall" }
+}
+
+/**
+ * A call to an extension property accessor (via the property), for example
+ * `s.FirstChar` on line 9 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ *
+ * class A {
+ *   char M(string s) {
+ *     return s.FirstChar;
+ *   }
+ * }
+ * ```
+ */
+class ExtensionPropertyCall extends PropertyCall {
+  private ExtensionProperty prop;
+
+  ExtensionPropertyCall() { this.getProperty() = prop }
+
+  override Expr getArgument(int i) {
+    if prop.isStatic()
+    then result = super.getArgument(i)
+    else (
+      // Shift arguments as the qualifier is an explicit argument in the getter/setter.
+      i = 0 and
+      result = this.getQualifier()
+      or
+      result = super.getArgument(i - 1)
+    )
+  }
+
+  override string getAPrimaryQlClass() { result = "ExtensionPropertyCall" }
 }
 
 /**

@@ -12,6 +12,8 @@ import python
 import semmle.python.essa.SsaDefinitions
 private import semmle.python.types.Builtins
 private import semmle.python.internal.CachedStages
+private import semmle.python.types.Object
+private import semmle.python.types.ClassObject
 
 /*
  * The following predicates exist in order to provide
@@ -40,24 +42,6 @@ predicate class_declares_attribute(ClassObject cls, string name) {
 /** Holds if the class defines name */
 private predicate class_defines_name(Class cls, string name) {
   exists(SsaVariable var | name = var.getId() and var.getAUse() = cls.getANormalExit())
-}
-
-/** Hold if `expr` is a test (a branch) and `use` is within that test */
-predicate test_contains(ControlFlowNode expr, ControlFlowNode use) {
-  expr.getNode() instanceof Expr and
-  expr.isBranch() and
-  expr.getAChild*() = use
-}
-
-/** Holds if `f` is an import of the form `from .[...] import ...` and the enclosing scope is an __init__ module */
-predicate import_from_dot_in_init(ImportExprNode f) {
-  f.getScope() = any(Module m).getInitModule() and
-  (
-    f.getNode().getLevel() = 1 and
-    not exists(f.getNode().getName())
-    or
-    f.getNode().getImportedModuleName() = f.getEnclosingModule().getPackage().getName()
-  )
 }
 
 /** Gets the pseudo-object representing the value referred to by an undefined variable */

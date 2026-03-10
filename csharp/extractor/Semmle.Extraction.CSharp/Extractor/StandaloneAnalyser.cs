@@ -13,6 +13,14 @@ namespace Semmle.Extraction.CSharp
         {
         }
 
+        private void LogDiagnostics()
+        {
+            foreach (var error in GetFilteredDiagnostics())
+            {
+                Logger.LogDebug($"  Compilation error: {error}");
+            }
+        }
+
         public void Initialize(string outputPath, IEnumerable<(string, string)> compilationInfos, CSharpCompilation compilationIn, CommonOptions options)
         {
             compilation = compilationIn;
@@ -20,6 +28,7 @@ namespace Semmle.Extraction.CSharp
             this.options = options;
             LogExtractorInfo();
             SetReferencePaths();
+            LogDiagnostics();
         }
     }
 }

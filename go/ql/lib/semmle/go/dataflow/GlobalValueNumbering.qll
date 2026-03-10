@@ -255,8 +255,6 @@ private predicate globalValueNumbers(DataFlow::CallNode ce, int start, GVN head,
  * methods.
  */
 class GVN extends GvnBase {
-  GVN() { this instanceof GvnBase }
-
   /** Gets a data-flow node that has this GVN. */
   DataFlow::Node getANode() { this = globalValueNumber(result) }
 

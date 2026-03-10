@@ -18,6 +18,7 @@ extensions:
       - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunCompileList", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunCompositeBuildInput", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunCompositeBuildReferences", "()", "summary", "df-generated"]
+      - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunCompositeUnrootedBuildInput", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunFilesToPublish", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "PrepareForReadyToRunCompilation", "get_ReadyToRunSymbolsCompileList", "()", "summary", "df-generated"]
       - ["Microsoft.NET.Build.Tasks", "ResolveReadyToRunCompilers", "ExecuteCore", "()", "summary", "df-generated"]

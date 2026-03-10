@@ -20,6 +20,8 @@
  *
  * (Promise is absent in the table above as there currently are no name clashes with Promise methods)
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowNode
@@ -27,7 +29,7 @@ private import semmle.javascript.dataflow.FlowSummary
 private import Arrays
 private import FlowSummaryUtil
 
-class At extends SummarizedCallable {
+class At extends SummarizedCallable::Range {
   At() { this = "Array#at / String#at" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "at" }
@@ -41,7 +43,7 @@ class At extends SummarizedCallable {
   }
 }
 
-class Concat extends SummarizedCallable {
+class Concat extends SummarizedCallable::Range {
   Concat() { this = "Array#concat / String#concat / Buffer.concat" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "concat" }
@@ -60,7 +62,7 @@ class Concat extends SummarizedCallable {
   }
 }
 
-class Slice extends SummarizedCallable {
+class Slice extends SummarizedCallable::Range {
   Slice() { this = "Array#slice / String#slice" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "slice" }
@@ -76,7 +78,7 @@ class Slice extends SummarizedCallable {
   }
 }
 
-class Entries extends SummarizedCallable {
+class Entries extends SummarizedCallable::Range {
   Entries() { this = "Array#entries / Map#entries / Set#entries" }
 
   override InstanceCall getACall() {
@@ -96,7 +98,7 @@ class Entries extends SummarizedCallable {
   }
 }
 
-class ForEach extends SummarizedCallable {
+class ForEach extends SummarizedCallable::Range {
   ForEach() { this = "Array#forEach / Map#forEach / Set#forEach" }
 
   override InstanceCall getACallSimple() { result.getMethodName() = "forEach" }
@@ -124,7 +126,7 @@ class ForEach extends SummarizedCallable {
   }
 }
 
-class Keys extends SummarizedCallable {
+class Keys extends SummarizedCallable::Range {
   Keys() { this = "Array#keys / Map#keys / Set#keys" }
 
   override InstanceCall getACallSimple() {
@@ -139,7 +141,7 @@ class Keys extends SummarizedCallable {
   }
 }
 
-class Values extends SummarizedCallable {
+class Values extends SummarizedCallable::Range {
   Values() { this = "Array#values / Map#values / Set#values" }
 
   override InstanceCall getACallSimple() {
@@ -154,7 +156,7 @@ class Values extends SummarizedCallable {
   }
 }
 
-class ToString extends SummarizedCallable {
+class ToString extends SummarizedCallable::Range {
   ToString() { this = "Object#toString / Array#toString" }
 
   override InstanceCall getACallSimple() {

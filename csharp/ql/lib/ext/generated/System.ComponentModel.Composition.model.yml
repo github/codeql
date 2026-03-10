@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.ComponentModel.Composition", "AttributedModelServices", False, "AddPart", "(System.ComponentModel.Composition.Hosting.CompositionBatch,System.Object)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
       - ["System.ComponentModel.Composition", "AttributedModelServices", False, "AddPart", "(System.ComponentModel.Composition.Hosting.CompositionBatch,System.Object)", "", "Argument[1]", "ReturnValue", "taint", "df-generated"]
       - ["System.ComponentModel.Composition", "AttributedModelServices", False, "CreatePart", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition,System.Object)", "", "Argument[0]", "ReturnValue.SyntheticField[System.ComponentModel.Composition.ReflectionModel.ReflectionComposablePart._definition]", "value", "dfc-generated"]
       - ["System.ComponentModel.Composition", "AttributedModelServices", False, "CreatePart", "(System.ComponentModel.Composition.Primitives.ComposablePartDefinition,System.Object)", "", "Argument[1]", "ReturnValue.SyntheticField[System.ComponentModel.Composition.ReflectionModel.ReflectionComposablePart._cachedInstance]", "value", "dfc-generated"]

@@ -29,7 +29,7 @@ class NoMaybeElement extends MaybeElement {
 }
 
 MaybeElement op(UnaryExpr e) {
-  if exists(e.getExpr()) then result = TElement(e.getExpr()) else result = TNoElement()
+  if exists(e.getOperand()) then result = TElement(e.getOperand()) else result = TNoElement()
 }
 
 from Expr e

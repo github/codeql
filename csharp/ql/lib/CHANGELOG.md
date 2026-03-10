@@ -1,3 +1,81 @@
+## 5.4.8
+
+### Minor Analysis Improvements
+
+* C# 14: Added support for partial events.
+* C# 14: Added support for the `field` keyword in properties.
+
+### Bug Fixes
+
+* Fixed an issue where the body of a partial member could be extracted twice. When both a *defining* and an *implementing* declaration exist, only the *implementing* declaration is now extracted.
+
+## 5.4.7
+
+### Minor Analysis Improvements
+
+* The model for `System.Web.HttpUtility` has been modified to better model the flow of tainted URIs.
+* C# 14: Added support for `extension` members in the extractor, QL library, data flow, and Models as Data, covering extension methods, properties, and operators.
+
+## 5.4.6
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+* C# 14: Support for null-conditional assignments (such as `c?.Prop = p`). Furthermore, the `MaybeNullExpr` class now takes null-conditional access (such as `?.`) into account when modeling potential null values.
+
+## 5.4.5
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the C# extractor's search for `.config`, `.props`, XML and project files.
+* Updated the generated .NET “models as data” runtime models to cover .NET 10.
+* C# 14: Support for *implicit* span conversions in the QL library.
+* Basic extractor support for .NET 10 is now available. Extraction is supported for .NET 10 projects in both traced mode and `build mode: none`. However, code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
+* Added autobuilder and `build-mode: none` support for `.slnx` solution files.
+* In `build mode: none`, .NET 10 is now used by default unless a specific .NET version is specified elsewhere.
+* Added implicit reads of `System.Collections.Generic.KeyValuePair.Value` at taint-tracking sinks and at inputs to additional taint steps. As a result, taint-tracking queries will now produce more results when a container is tainted.
+
+### Bug Fixes
+
+* Fixed two issues affecting build mode `none`:
+  * Corrected version sorting logic when detecting the newest .NET framework to use.
+  * Improved stability for .NET 10 compatibility.
+* Fixed an issue where compiler-generated files were not being extracted. The extractor now runs after compilation completes to ensure all generated files are properly analyzed.
+
+## 5.4.4
+
+No user-facing changes.
+
+## 5.4.3
+
+No user-facing changes.
+
+## 5.4.2
+
+No user-facing changes.
+
+## 5.4.1
+
+### Minor Analysis Improvements
+
+* Improved stability when downloading .NET versions by setting appropriate environment variables for `dotnet` commands. The correct architecture-specific version of .NET is now downloaded on ARM runners.
+* Compilation errors are now included in the debug log when using build-mode none.
+* Added a new extractor option to specify a custom directory for dependency downloads in buildless mode. Use `-O buildless_dependency_dir=<path>` to configure the target directory.
+
+## 5.4.0
+
+### Deprecated APIs
+
+* `ControlFlowElement.controlsBlock` has been deprecated in favor of the Guards library.
+
+### New Features
+
+* Initial support for incremental C# databases via `codeql database create --overlay-base`/`--overlay-changes`.
+
+### Minor Analysis Improvements
+
+* Updated *roslyn* and *binlog* dependencies in the extractor, which may improve database and analysis quality.
+
 ## 5.3.0
 
 ### Deprecated APIs
@@ -143,7 +221,7 @@ No user-facing changes.
 * Added `remote` flow source models for properties of Blazor components annotated with any of the following attributes from `Microsoft.AspNetCore.Components`:
   - `[SupplyParameterFromForm]`
   - `[SupplyParameterFromQuery]`
-* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`.
+* Added the constructor and explicit cast operator of `Microsoft.AspNetCore.Components.MarkupString` as an `html-injection` sink. This will help catch cross-site scripting resulting from using `MarkupString`. 
 * Added flow summaries for the `Microsoft.AspNetCore.Mvc.Controller::View` method.
 * The data flow library has been updated to track types in a slightly different way: The type of the tainted data (which may be stored into fields, etc.) is tracked more precisely, while the types of intermediate containers for nested contents is tracked less precisely. This may have a slight effect on false positives for complex flow paths.
 * The C# extractor now supports *basic* extraction of .NET 9 projects. There might be limited support for extraction of code using the new C# 13 language features.
@@ -163,7 +241,7 @@ No user-facing changes.
   - `System.Web.HttpUtility::ParseQueryString`
   - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseQuery`
   - `Microsoft.AspNetCore.WebUtilities.QueryHelpers::ParseNullableQuery`
-* Added `js-interop` sinks for the `InvokeAsync` and `InvokeVoidAsync` methods of `Microsoft.JSInterop.IJSRuntime`, which can run arbitrary JavaScript.
+* Added `js-interop` sinks for the `InvokeAsync` and `InvokeVoidAsync` methods of `Microsoft.JSInterop.IJSRuntime`, which can run arbitrary JavaScript. 
 
 ## 3.1.1
 
@@ -201,8 +279,8 @@ No user-facing changes.
 
 ### Breaking Changes
 
-* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`.
-* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`.
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
 * Deleted the deprecated `explorationLimit` predicate from `DataFlow::Configuration`, use `FlowExploration<explorationLimit>` instead.
 
 ### Minor Analysis Improvements
@@ -451,7 +529,7 @@ No user-facing changes.
 
 ### New Features
 
-* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`.
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
   Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
 
 ### Minor Analysis Improvements
@@ -586,7 +664,7 @@ No user-facing changes.
 
 * Attributes on methods in CIL are now extracted (Bugfix).
 * Support for `static virtual` and `static abstract` interface members.
-* Support for *operators* in interface definitions.
+* Support for *operators* in interface definitions. 
 * C# 11: Added support for the unsigned right shift `>>>` and unsigned right shift assignment `>>>=` operators.
 * Query id's have been aligned such that they are prefixed with `cs` instead of `csharp`.
 
@@ -626,13 +704,13 @@ No user-facing changes.
 ### Minor Analysis Improvements
 
 * `DateTime` expressions are now considered simple type sanitizers. This affects a wide range of security queries.
-* ASP.NET Core controller definition has been made more precise. The amount of introduced taint sources or eliminated false positives should be low though, since the most common pattern is to derive all user defined ASP.NET Core controllers from the standard Controller class, which is not affected.
+* ASP.NET Core controller definition has been made more precise. The amount of introduced taint sources or eliminated false positives should be low though, since the most common pattern is to derive all user defined ASP.NET Core controllers from the standard Controller class, which is not affected. 
 
 ## 0.4.0
 
 ### Deprecated APIs
 
-* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### Bug Fixes
@@ -645,7 +723,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### Minor Analysis Improvements
@@ -692,7 +770,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide.
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### New Features

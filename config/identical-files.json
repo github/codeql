@@ -276,5 +276,13 @@
   "Python model summaries test extension": [
     "python/ql/test/library-tests/dataflow/model-summaries/InlineTaintTest.ext.yml",
     "python/ql/test/library-tests/dataflow/model-summaries/NormalDataflowTest.ext.yml"
+  ],
+  "XML discard predicates": [
+    "javascript/ql/lib/semmle/javascript/internal/OverlayXml.qll",
+    "java/ql/lib/semmle/code/java/internal/OverlayXml.qll",
+    "go/ql/lib/semmle/go/internal/OverlayXml.qll",
+    "python/ql/lib/semmle/python/internal/OverlayXml.qll",
+    "csharp/ql/lib/semmle/code/csharp/internal/OverlayXml.qll",
+    "cpp/ql/lib/semmle/code/cpp/internal/OverlayXml.qll"
   ]
 }

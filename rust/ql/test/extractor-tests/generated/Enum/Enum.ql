@@ -26,14 +26,14 @@ query predicate getName(Enum x, Name getName) {
   toBeTested(x) and not x.isUnknown() and getName = x.getName()
 }
 
-query predicate getVariantList(Enum x, VariantList getVariantList) {
-  toBeTested(x) and not x.isUnknown() and getVariantList = x.getVariantList()
-}
-
 query predicate getVisibility(Enum x, Visibility getVisibility) {
   toBeTested(x) and not x.isUnknown() and getVisibility = x.getVisibility()
 }
 
 query predicate getWhereClause(Enum x, WhereClause getWhereClause) {
   toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}
+
+query predicate getVariantList(Enum x, VariantList getVariantList) {
+  toBeTested(x) and not x.isUnknown() and getVariantList = x.getVariantList()
 }

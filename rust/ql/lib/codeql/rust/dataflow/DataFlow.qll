@@ -8,8 +8,6 @@ private import codeql.dataflow.DataFlow
 private import internal.DataFlowImpl as DataFlowImpl
 private import internal.Node as Node
 private import internal.Content as Content
-private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-private import codeql.rust.controlflow.CfgNodes as CfgNodes
 
 /**
  * Provides classes for performing local (intra-procedural) and global
@@ -68,7 +66,7 @@ module DataFlow {
    * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
    * the argument `x`.
    */
-  signature predicate guardChecksSig(CfgNodes::AstCfgNode g, Cfg::CfgNode e, boolean branch);
+  signature predicate guardChecksSig(AstNode g, Expr e, boolean branch);
 
   /**
    * Provides a set of barrier nodes for a guard that validates an expression.

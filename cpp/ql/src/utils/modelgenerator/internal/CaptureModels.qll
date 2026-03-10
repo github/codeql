@@ -8,6 +8,7 @@ private import semmle.code.cpp.dataflow.ExternalFlow as ExternalFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes as DataFlowNodes
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.cpp.ir.dataflow.internal.TaintTrackingImplSpecific
 private import semmle.code.cpp.dataflow.new.TaintTracking as Tt
@@ -78,7 +79,7 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
 {
   private module DataFlow = Df::DataFlow;
 
-  class Type = DataFlowPrivate::DataFlowType;
+  class Type = Cpp::Type;
 
   // Note: This also includes `this`
   class Parameter = DataFlow::ParameterNode;
@@ -190,7 +191,7 @@ module ModelGeneratorCommonInput implements ModelGeneratorCommonInputSig<Cpp::Lo
   predicate isRelevantType(Type t) { any() }
 
   Type getUnderlyingContentType(DataFlow::ContentSet c) {
-    result = c.(DataFlow::FieldContent).getField().getUnspecifiedType() or
+    result = c.(DataFlow::NonUnionFieldContent).getField().getUnspecifiedType() or
     result = c.(DataFlow::UnionContent).getUnion().getUnspecifiedType()
   }
 
@@ -310,7 +311,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
   }
 
   private predicate hasManualSummaryModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()) or
+    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.hasManualModel()) or
     api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel())
   }
 
@@ -340,12 +341,7 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
     )
   }
 
-  predicate isField(DataFlow::ContentSet cs) {
-    exists(DataFlow::Content c | cs.isSingleton(c) |
-      c instanceof DataFlow::FieldContent or
-      c instanceof DataFlow::UnionContent
-    )
-  }
+  predicate isField(DataFlow::ContentSet cs) { cs.isSingleton(any(DataFlow::FieldContent fc)) }
 
   predicate isCallback(DataFlow::ContentSet c) { none() }
 
@@ -408,7 +404,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
   }
 
   predicate apiSource(DataFlow::Node source) {
-    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1)
+    DataFlowPrivate::nodeHasOperand(source, any(DataFlowNodes::FieldAddress fa), 1)
     or
     source instanceof DataFlow::ParameterNode
   }
@@ -421,7 +417,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
       result = "Argument[" + DataFlow::repeatStars(indirectionIndex) + argumentIndex + "]"
     )
     or
-    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1) and
+    DataFlowPrivate::nodeHasOperand(source, any(DataFlowNodes::FieldAddress fa), 1) and
     result = qualifierString()
   }
 

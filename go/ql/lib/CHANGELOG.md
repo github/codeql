@@ -1,3 +1,58 @@
+## 7.0.1
+
+No user-facing changes.
+
+## 7.0.0
+
+### Breaking Changes
+
+* The `BasicBlock` class is now defined using the shared basic blocks library. `BasicBlock.getRoot` has been replaced by `BasicBlock.getScope`. `BasicBlock.getAPredecessor` and `BasicBlock.getASuccessor` now take a `SuccessorType` argument. `ReachableJoinBlock.inDominanceFrontierOf` has been removed, so use `BasicBlock.inDominanceFrontier` instead, swapping the receiver and the argument.
+
+### Major Analysis Improvements
+
+* Go 1.26 is now supported.
+
+## 6.0.1
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The query `go/unexpected-frontend-error` has been moved from the `codeql/go-queries` query to the `codeql-go-consistency-queries` query pack.
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the Go extractor's search for `.vue` and HTML files.
+
+## 5.0.6
+
+No user-facing changes.
+
+## 5.0.5
+
+No user-facing changes.
+
+## 5.0.4
+
+No user-facing changes.
+
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+### Bug Fixes
+
+* Some fixes relating to use of path transformers when extracting a database:
+  * Fixed a problem where the path transformer would be ignored when extracting older codebases that predate the use of Go modules.
+  * The environment variable `CODEQL_PATH_TRANSFORMER` is now recognized, in addition to `SEMMLE_PATH_TRANSFORMER`.
+  * Fixed some cases where the extractor emitted paths without applying the path transformer.
+
 ## 5.0.1
 
 No user-facing changes.

@@ -110,16 +110,16 @@ module String {
   }
 
   /** A `String` callable with a flow summary. */
-  abstract class SummarizedCallable extends FlowSummary::SummarizedCallable {
+  abstract class SummarizedCallable extends FlowSummary::SummarizedCallable::Range {
     bindingset[this]
     SummarizedCallable() { any() }
   }
 
-  abstract private class SimpleSummarizedCallable extends SummarizedCallable,
-    FlowSummary::SimpleSummarizedCallable
+  abstract private class SummarizedCallableSimple extends SummarizedCallable,
+    FlowSummary::SummarizedCallable::RangeSimple
   {
     bindingset[this]
-    SimpleSummarizedCallable() { any() }
+    SummarizedCallableSimple() { any() }
   }
 
   private class NewSummary extends SummarizedCallable {
@@ -154,7 +154,7 @@ module String {
   /**
    * A flow summary for the `String#%` method.
    */
-  private class FormatSummary extends SimpleSummarizedCallable {
+  private class FormatSummary extends SummarizedCallableSimple {
     FormatSummary() { this = "%" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -168,7 +168,7 @@ module String {
   /**
    * A flow summary for the `String#b` method.
    */
-  private class BSummary extends SimpleSummarizedCallable {
+  private class BSummary extends SummarizedCallableSimple {
     BSummary() { this = "b" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -179,7 +179,7 @@ module String {
   /**
    * A flow summary for the `String#byteslice` method.
    */
-  private class BytesliceSummary extends SimpleSummarizedCallable {
+  private class BytesliceSummary extends SummarizedCallableSimple {
     BytesliceSummary() { this = "byteslice" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -190,7 +190,7 @@ module String {
   /**
    * A flow summary for `String#capitalize(!)`.
    */
-  private class CapitalizeSummary extends SimpleSummarizedCallable {
+  private class CapitalizeSummary extends SummarizedCallableSimple {
     CapitalizeSummary() { this = ["capitalize", "capitalize!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -203,7 +203,7 @@ module String {
   /**
    * A flow summary for `String#center`, `String#ljust` and `String#rjust`.
    */
-  private class CenterSummary extends SimpleSummarizedCallable {
+  private class CenterSummary extends SummarizedCallableSimple {
     CenterSummary() { this = ["center", "ljust", "rjust"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -218,7 +218,7 @@ module String {
   /**
    * A flow summary for the `String#chomp`, `String#chomp!`, `String#chop` and `String#chop!` methods.
    */
-  private class ChompSummary extends SimpleSummarizedCallable {
+  private class ChompSummary extends SummarizedCallableSimple {
     ChompSummary() { this = ["chomp", "chomp!", "chop", "chop!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -236,7 +236,7 @@ module String {
    * We can't currently write this summary because there is no `DataFlow::Content` node to refer to (unlike with `Array#clear`).
    * We need a `DataFlow::Content` node in order to override `clearsContent`.
    */
-  private class ClearSummary extends SimpleSummarizedCallable {
+  private class ClearSummary extends SummarizedCallableSimple {
     ClearSummary() { none() }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -247,7 +247,7 @@ module String {
   /**
    * A flow summary for `String#concat` and `String#prepend`.
    */
-  private class ConcatSummary extends SimpleSummarizedCallable {
+  private class ConcatSummary extends SummarizedCallableSimple {
     ConcatSummary() {
       // `concat` and `prepend` omitted because they clash with the summaries for
       // `Array#concat` and `Array#prepend`.
@@ -265,7 +265,7 @@ module String {
   /**
    * A flow summary for `String#delete(!)`, `String#delete_prefix(!)` and `String#delete_suffix(!)`.
    */
-  private class DeleteSummary extends SimpleSummarizedCallable {
+  private class DeleteSummary extends SummarizedCallableSimple {
     DeleteSummary() { this = ["delete", "delete_prefix", "delete_suffix"] + ["", "!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -276,7 +276,7 @@ module String {
   /**
    * A flow summary for `String#downcase(!)`, `String#upcase` and `String#swapcase(!)`.
    */
-  private class DowncaseSummary extends SimpleSummarizedCallable {
+  private class DowncaseSummary extends SummarizedCallableSimple {
     DowncaseSummary() { this = ["downcase", "upcase", "swapcase"] + ["", "!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -287,7 +287,7 @@ module String {
   /**
    * A flow summary for `String#dump` and `String#undump`.
    */
-  private class DumpSummary extends SimpleSummarizedCallable {
+  private class DumpSummary extends SummarizedCallableSimple {
     DumpSummary() { this = ["dump", "undump"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -337,7 +337,7 @@ module String {
   /**
    * A flow summary for `String#encode(!)` and `String#unicode_normalize(!)`.
    */
-  private class EncodeSummary extends SimpleSummarizedCallable {
+  private class EncodeSummary extends SummarizedCallableSimple {
     EncodeSummary() { this = ["encode", "unicode_normalize"] + ["", "!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -348,7 +348,7 @@ module String {
   /**
    * A flow summary for `String#force_encoding`.
    */
-  private class ForceEncodingSummary extends SimpleSummarizedCallable {
+  private class ForceEncodingSummary extends SummarizedCallableSimple {
     ForceEncodingSummary() { this = "force_encoding" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -359,7 +359,7 @@ module String {
   /**
    * A flow summary for `String#freeze`.
    */
-  private class FreezeSummary extends SimpleSummarizedCallable {
+  private class FreezeSummary extends SummarizedCallableSimple {
     FreezeSummary() { this = "freeze" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -370,7 +370,7 @@ module String {
   /**
    * A flow summary for `String#gsub(!)` and `String#sub(!)`.
    */
-  private class GsubSummary extends SimpleSummarizedCallable {
+  private class GsubSummary extends SummarizedCallableSimple {
     GsubSummary() { this = ["sub", "gsub"] + ["", "!"] }
 
     // str.gsub(pattern, replacement) -> new_str
@@ -389,7 +389,7 @@ module String {
   /**
    * A flow summary for `String#insert`.
    */
-  private class InsertSummary extends SimpleSummarizedCallable {
+  private class InsertSummary extends SummarizedCallableSimple {
     InsertSummary() {
       this = "insert" and
       // Disabled because it clashes with the summary for Array#insert.
@@ -406,7 +406,7 @@ module String {
   /**
    * A flow summary for `String#inspect`.
    */
-  private class InspectSummary extends SimpleSummarizedCallable {
+  private class InspectSummary extends SummarizedCallableSimple {
     InspectSummary() { this = "inspect" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -417,7 +417,7 @@ module String {
   /**
    * A flow summary for `String#strip(!)`, `String#lstrip(!)` and `String#rstrip(!)`.
    */
-  private class StripSummary extends SimpleSummarizedCallable {
+  private class StripSummary extends SummarizedCallableSimple {
     StripSummary() { this = ["strip", "lstrip", "rstrip"] + ["", "!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -428,7 +428,7 @@ module String {
   /**
    * A flow summary for `String#next(!)` and `String#succ(!)`.
    */
-  private class NextSummary extends SimpleSummarizedCallable {
+  private class NextSummary extends SummarizedCallableSimple {
     NextSummary() { this = ["next", "succ"] + ["", "!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -439,7 +439,7 @@ module String {
   /**
    * A flow summary for `String#partition` and `String#rpartition`.
    */
-  private class PartitionSummary extends SimpleSummarizedCallable {
+  private class PartitionSummary extends SummarizedCallableSimple {
     PartitionSummary() { this = ["partition", "rpartition"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -452,7 +452,7 @@ module String {
   /**
    * A flow summary for `String#replace`.
    */
-  private class ReplaceSummary extends SimpleSummarizedCallable {
+  private class ReplaceSummary extends SummarizedCallableSimple {
     ReplaceSummary() { this = "replace" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -466,7 +466,7 @@ module String {
   /**
    * A flow summary for `String#reverse(!)`.
    */
-  private class ReverseSummary extends SimpleSummarizedCallable {
+  private class ReverseSummary extends SummarizedCallableSimple {
     ReverseSummary() { this = ["reverse", "reverse!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -560,7 +560,7 @@ module String {
   /**
    * A flow summary for `String#shellescape`.
    */
-  private class ShellescapeSummary extends SimpleSummarizedCallable {
+  private class ShellescapeSummary extends SummarizedCallableSimple {
     ShellescapeSummary() { this = "shellescape" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -571,7 +571,7 @@ module String {
   /**
    * A flow summary for `String#shellsplit`.
    */
-  private class ShellSplitSummary extends SimpleSummarizedCallable {
+  private class ShellSplitSummary extends SummarizedCallableSimple {
     ShellSplitSummary() { this = "shellsplit" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -584,7 +584,7 @@ module String {
   /**
    * A flow summary for `String#slice(!)`, `String#split` and `String#[]`.
    */
-  private class SliceSummary extends SimpleSummarizedCallable {
+  private class SliceSummary extends SummarizedCallableSimple {
     SliceSummary() { this = ["slice", "slice!", "split", "[]"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -595,7 +595,7 @@ module String {
   /**
    * A flow summary for `String#squeeze(!)`.
    */
-  private class SqueezeSummary extends SimpleSummarizedCallable {
+  private class SqueezeSummary extends SummarizedCallableSimple {
     SqueezeSummary() { this = ["squeeze", "squeeze!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -606,7 +606,7 @@ module String {
   /**
    * A flow summary for `String#to_s` and `String.to_str`.
    */
-  private class ToStrSummary extends SimpleSummarizedCallable {
+  private class ToStrSummary extends SummarizedCallableSimple {
     ToStrSummary() { this = ["to_str", "to_s"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -617,7 +617,7 @@ module String {
   /**
    * A flow summary for `String#tr`.
    */
-  private class TrSummary extends SimpleSummarizedCallable {
+  private class TrSummary extends SummarizedCallableSimple {
     TrSummary() { this = ["tr", "tr_s"] + ["", "!"] }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {

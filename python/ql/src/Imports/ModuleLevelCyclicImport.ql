@@ -14,6 +14,7 @@
 
 import python
 import Cyclic
+private import LegacyPointsTo
 
 // This is a potentially crashing bug if
 // 1. the imports in the whole cycle are lexically outside a def (and so executed at import time)

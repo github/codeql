@@ -308,3 +308,5 @@ WARNING: module 'DataFlow' has been deprecated and may be removed in future (par
 | simple.cpp:124:5:124:6 | * ... | AST only |
 | simple.cpp:131:14:131:14 | a | IR only |
 | simple.cpp:136:10:136:10 | a | IR only |
+| simple.cpp:167:9:167:9 | x | AST only |
+| simple.cpp:168:8:168:12 | u_int | IR only |

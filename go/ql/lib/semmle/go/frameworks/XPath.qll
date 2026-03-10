@@ -25,9 +25,16 @@ module XPath {
      */
     abstract class Range extends DataFlow::Node { }
 
-    private class DefaultXPathExpressionString extends Range {
-      DefaultXPathExpressionString() { sinkNode(this, "xpath-injection") }
+    private class ExternalXPathExpressionString extends Range {
+      ExternalXPathExpressionString() { sinkNode(this, "xpath-injection") }
     }
+  }
+
+  /** A sanitizer for XPath injection. */
+  abstract class Sanitizer extends DataFlow::Node { }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "xpath-injection") }
   }
 }
 

@@ -35,6 +35,11 @@
 | app/api/routeNextRequest.ts:15:20:15:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:15:20:15:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | app/api/routeNextRequest.ts:27:20:27:23 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:27:20:27:23 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
 | app/api/routeNextRequest.ts:31:27:31:30 | body | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:31:27:31:30 | body | Cross-site scripting vulnerability due to a $@. | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | user-provided value |
+| app/blah/page.jsx:8:13:8:19 | req.url | app/blah/page.jsx:8:13:8:19 | req.url | app/blah/page.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/blah/page.jsx:8:13:8:19 | req.url | user-provided value |
+| app/blah/page.jsx:15:13:15:19 | req.url | app/blah/page.jsx:15:13:15:19 | req.url | app/blah/page.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/blah/page.jsx:15:13:15:19 | req.url | user-provided value |
+| app/blah/route.ts:3:25:3:27 | url | app/blah/route.ts:2:17:2:23 | req.url | app/blah/route.ts:3:25:3:27 | url | Cross-site scripting vulnerability due to a $@. | app/blah/route.ts:2:17:2:23 | req.url | user-provided value |
+| app/pages/Next2.jsx:8:13:8:19 | req.url | app/pages/Next2.jsx:8:13:8:19 | req.url | app/pages/Next2.jsx:8:13:8:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/pages/Next2.jsx:8:13:8:19 | req.url | user-provided value |
+| app/pages/Next2.jsx:15:13:15:19 | req.url | app/pages/Next2.jsx:15:13:15:19 | req.url | app/pages/Next2.jsx:15:13:15:19 | req.url | Cross-site scripting vulnerability due to a $@. | app/pages/Next2.jsx:15:13:15:19 | req.url | user-provided value |
 | etherpad.js:11:12:11:19 | response | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:11:12:11:19 | response | Cross-site scripting vulnerability due to a $@. | etherpad.js:9:16:9:30 | req.query.jsonp | user-provided value |
 | formatting.js:6:14:6:47 | util.fo ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:6:14:6:47 | util.fo ... , evil) | Cross-site scripting vulnerability due to a $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
 | formatting.js:7:14:7:53 | require ... , evil) | formatting.js:4:16:4:29 | req.query.evil | formatting.js:7:14:7:53 | require ... , evil) | Cross-site scripting vulnerability due to a $@. | formatting.js:4:16:4:29 | req.query.evil | user-provided value |
@@ -48,15 +53,10 @@
 | partial.js:28:14:28:18 | x + y | partial.js:31:47:31:53 | req.url | partial.js:28:14:28:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:31:47:31:53 | req.url | user-provided value |
 | partial.js:37:14:37:18 | x + y | partial.js:40:43:40:49 | req.url | partial.js:37:14:37:18 | x + y | Cross-site scripting vulnerability due to a $@. | partial.js:40:43:40:49 | req.url | user-provided value |
 | promises.js:6:25:6:25 | x | promises.js:5:44:5:57 | req.query.data | promises.js:6:25:6:25 | x | Cross-site scripting vulnerability due to a $@. | promises.js:5:44:5:57 | req.query.data | user-provided value |
-| response-object.js:9:18:9:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:9:18:9:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
-| response-object.js:10:18:10:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:10:18:10:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
-| response-object.js:11:18:11:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:11:18:11:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:14:18:14:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:14:18:14:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:17:18:17:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:17:18:17:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:23:18:23:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:23:18:23:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
-| response-object.js:26:18:26:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:26:18:26:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | response-object.js:34:18:34:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:34:18:34:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
-| response-object.js:38:18:38:21 | data | response-object.js:7:18:7:25 | req.body | response-object.js:38:18:38:21 | data | Cross-site scripting vulnerability due to a $@. | response-object.js:7:18:7:25 | req.body | user-provided value |
 | tst2.js:7:12:7:12 | p | tst2.js:6:9:6:9 | p | tst2.js:7:12:7:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:6:9:6:9 | p | user-provided value |
 | tst2.js:8:12:8:12 | r | tst2.js:6:12:6:15 | q: r | tst2.js:8:12:8:12 | r | Cross-site scripting vulnerability due to a $@. | tst2.js:6:12:6:15 | q: r | user-provided value |
 | tst2.js:18:12:18:12 | p | tst2.js:14:9:14:9 | p | tst2.js:18:12:18:12 | p | Cross-site scripting vulnerability due to a $@. | tst2.js:14:9:14:9 | p | user-provided value |
@@ -152,6 +152,8 @@ edges
 | app/api/routeNextRequest.ts:4:9:4:12 | body | app/api/routeNextRequest.ts:31:27:31:30 | body | provenance |  |
 | app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | app/api/routeNextRequest.ts:4:9:4:12 | body | provenance |  |
 | app/api/routeNextRequest.ts:4:22:4:31 | req.json() | app/api/routeNextRequest.ts:4:16:4:31 | await req.json() | provenance |  |
+| app/blah/route.ts:2:11:2:13 | url | app/blah/route.ts:3:25:3:27 | url | provenance |  |
+| app/blah/route.ts:2:17:2:23 | req.url | app/blah/route.ts:2:11:2:13 | url | provenance |  |
 | etherpad.js:9:5:9:12 | response | etherpad.js:11:12:11:19 | response | provenance |  |
 | etherpad.js:9:16:9:30 | req.query.jsonp | etherpad.js:9:5:9:12 | response | provenance |  |
 | formatting.js:4:9:4:12 | evil | formatting.js:6:43:6:46 | evil | provenance |  |
@@ -182,15 +184,10 @@ edges
 | promises.js:5:36:5:42 | [post update] resolve [resolve-value] | promises.js:5:16:5:22 | resolve [Return] [resolve-value] | provenance |  |
 | promises.js:5:44:5:57 | req.query.data | promises.js:5:36:5:42 | [post update] resolve [resolve-value] | provenance |  |
 | promises.js:6:11:6:11 | x | promises.js:6:25:6:25 | x | provenance |  |
-| response-object.js:7:11:7:14 | data | response-object.js:9:18:9:21 | data | provenance |  |
-| response-object.js:7:11:7:14 | data | response-object.js:10:18:10:21 | data | provenance |  |
-| response-object.js:7:11:7:14 | data | response-object.js:11:18:11:21 | data | provenance |  |
 | response-object.js:7:11:7:14 | data | response-object.js:14:18:14:21 | data | provenance |  |
 | response-object.js:7:11:7:14 | data | response-object.js:17:18:17:21 | data | provenance |  |
 | response-object.js:7:11:7:14 | data | response-object.js:23:18:23:21 | data | provenance |  |
-| response-object.js:7:11:7:14 | data | response-object.js:26:18:26:21 | data | provenance |  |
 | response-object.js:7:11:7:14 | data | response-object.js:34:18:34:21 | data | provenance |  |
-| response-object.js:7:11:7:14 | data | response-object.js:38:18:38:21 | data | provenance |  |
 | response-object.js:7:18:7:25 | req.body | response-object.js:7:11:7:14 | data | provenance |  |
 | tst2.js:6:9:6:9 | p | tst2.js:6:9:6:9 | p | provenance |  |
 | tst2.js:6:9:6:9 | p | tst2.js:7:12:7:12 | p | provenance |  |
@@ -365,6 +362,13 @@ nodes
 | app/api/routeNextRequest.ts:15:20:15:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:27:20:27:23 | body | semmle.label | body |
 | app/api/routeNextRequest.ts:31:27:31:30 | body | semmle.label | body |
+| app/blah/page.jsx:8:13:8:19 | req.url | semmle.label | req.url |
+| app/blah/page.jsx:15:13:15:19 | req.url | semmle.label | req.url |
+| app/blah/route.ts:2:11:2:13 | url | semmle.label | url |
+| app/blah/route.ts:2:17:2:23 | req.url | semmle.label | req.url |
+| app/blah/route.ts:3:25:3:27 | url | semmle.label | url |
+| app/pages/Next2.jsx:8:13:8:19 | req.url | semmle.label | req.url |
+| app/pages/Next2.jsx:15:13:15:19 | req.url | semmle.label | req.url |
 | etherpad.js:9:5:9:12 | response | semmle.label | response |
 | etherpad.js:9:16:9:30 | req.query.jsonp | semmle.label | req.query.jsonp |
 | etherpad.js:11:12:11:19 | response | semmle.label | response |
@@ -409,15 +413,10 @@ nodes
 | promises.js:6:25:6:25 | x | semmle.label | x |
 | response-object.js:7:11:7:14 | data | semmle.label | data |
 | response-object.js:7:18:7:25 | req.body | semmle.label | req.body |
-| response-object.js:9:18:9:21 | data | semmle.label | data |
-| response-object.js:10:18:10:21 | data | semmle.label | data |
-| response-object.js:11:18:11:21 | data | semmle.label | data |
 | response-object.js:14:18:14:21 | data | semmle.label | data |
 | response-object.js:17:18:17:21 | data | semmle.label | data |
 | response-object.js:23:18:23:21 | data | semmle.label | data |
-| response-object.js:26:18:26:21 | data | semmle.label | data |
 | response-object.js:34:18:34:21 | data | semmle.label | data |
-| response-object.js:38:18:38:21 | data | semmle.label | data |
 | tst2.js:6:9:6:9 | p | semmle.label | p |
 | tst2.js:6:9:6:9 | p | semmle.label | p |
 | tst2.js:6:12:6:15 | q: r | semmle.label | q: r |

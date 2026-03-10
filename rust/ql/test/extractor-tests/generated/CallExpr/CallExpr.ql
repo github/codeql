@@ -12,10 +12,6 @@ query predicate getAttr(CallExpr x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 
-query predicate getArg(CallExpr x, int index, Expr getArg) {
-  toBeTested(x) and not x.isUnknown() and getArg = x.getArg(index)
-}
-
 query predicate getFunction(CallExpr x, Expr getFunction) {
   toBeTested(x) and not x.isUnknown() and getFunction = x.getFunction()
 }

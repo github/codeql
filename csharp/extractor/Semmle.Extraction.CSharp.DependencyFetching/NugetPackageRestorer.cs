@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using NuGet.Versioning;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -24,12 +25,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDotNet dotnet;
         private readonly DependabotProxy? dependabotProxy;
         private readonly IDiagnosticsWriter diagnosticsWriter;
-        private readonly TemporaryDirectory legacyPackageDirectory;
-        private readonly TemporaryDirectory missingPackageDirectory;
+        private readonly DependencyDirectory legacyPackageDirectory;
+        private readonly DependencyDirectory missingPackageDirectory;
         private readonly ILogger logger;
         private readonly ICompilationInfoContainer compilationInfoContainer;
 
-        public TemporaryDirectory PackageDirectory { get; }
+        public DependencyDirectory PackageDirectory { get; }
 
         public NugetPackageRestorer(
             FileProvider fileProvider,
@@ -48,9 +49,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.logger = logger;
             this.compilationInfoContainer = compilationInfoContainer;
 
-            PackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("packages"), "package", logger);
-            legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("legacypackages"), "legacy package", logger);
-            missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectoryPath("missingpackages"), "missing package", logger);
+            PackageDirectory = new DependencyDirectory("packages", "package", logger);
+            legacyPackageDirectory = new DependencyDirectory("legacypackages", "legacy package", logger);
+            missingPackageDirectory = new DependencyDirectory("missingpackages", "missing package", logger);
         }
 
         public string? TryRestore(string package)
@@ -87,11 +88,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return selectedFrameworkFolder;
         }
 
-        public static DirectoryInfo[] GetOrderedPackageVersionSubDirectories(string packagePath)
+        public DirectoryInfo[] GetOrderedPackageVersionSubDirectories(string packagePath)
         {
+            // Only consider directories with valid NuGet version names.
             return new DirectoryInfo(packagePath)
                 .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
-                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
+                .SelectMany(d =>
+                {
+                    if (NuGetVersion.TryParse(d.Name, out var version))
+                    {
+                        return new[] { new { Directory = d, NuGetVersion = version } };
+                    }
+                    logger.LogInfo($"Ignoring package directory '{d.FullName}' as it does not have a valid NuGet version name.");
+                    return [];
+                })
+                .OrderByDescending(dw => dw.NuGetVersion)
+                .Select(dw => dw.Directory)
                 .ToArray();
         }
 
@@ -802,6 +814,43 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds()
         {
             var nugetConfigs = fileProvider.NugetConfigs;
+
+            // On systems with case-sensitive file systems (for simplicity, we assume that is Linux), the
+            // filenames of NuGet configuration files must be named correctly. For compatibility with projects
+            // that are typically built on Windows or macOS where this doesn't matter, we accept all variants
+            // of `nuget.config` ourselves. However, `dotnet` does not. If we detect that incorrectly-named
+            // files are present, we emit a diagnostic to warn the user.
+            if (SystemBuildActions.Instance.IsLinux())
+            {
+                string[] acceptedNugetConfigNames = ["nuget.config", "NuGet.config", "NuGet.Config"];
+                var invalidNugetConfigs = nugetConfigs
+                    .Where(path => !acceptedNugetConfigNames.Contains(Path.GetFileName(path)));
+
+                if (invalidNugetConfigs.Count() > 0)
+                {
+                    this.logger.LogWarning(string.Format(
+                        "Found incorrectly named NuGet configuration files: {0}",
+                        string.Join(", ", invalidNugetConfigs)
+                    ));
+                    this.diagnosticsWriter.AddEntry(new DiagnosticMessage(
+                        Language.CSharp,
+                        "buildless/case-sensitive-nuget-config",
+                        "Found NuGet configuration files which are not correctly named",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: string.Format(
+                            "On platforms with case-sensitive file systems, NuGet only accepts files with one of the following names: {0}.\n\n" +
+                            "CodeQL found the following files while performing an analysis on a platform with a case-sensitive file system:\n\n" +
+                            "{1}\n\n" +
+                            "To avoid unexpected results, rename these files to match the casing of one of the accepted filenames.",
+                            string.Join(", ", acceptedNugetConfigNames),
+                            string.Join("\n", invalidNugetConfigs.Select(path => string.Format("- `{0}`", path)))
+                        ),
+                        severity: DiagnosticMessage.TspSeverity.Warning
+                    ));
+                }
+            }
+
+            // Find feeds that are explicitly configured in the NuGet configuration files that we found.
             var explicitFeeds = nugetConfigs
                 .SelectMany(config => GetFeeds(() => dotnet.GetNugetFeeds(config)))
                 .ToHashSet();
@@ -837,6 +886,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     .Where(folder => folder != null)
                     .SelectMany(folder => GetFeeds(() => dotnet.GetNugetFeedsFromFolder(folder!)))
                     .ToHashSet();
+
+                // If we have discovered any explicit feeds, then we also expect these to be in the set of all feeds.
+                // Normally, it is a safe assumption to make that `GetNugetFeedsFromFolder` will include the feeds configured
+                // in a NuGet configuration file in the given directory. There is one exception: on a system with case-sensitive
+                // file systems, we may discover a configuration file such as `Nuget.Config` which is not recognised by `dotnet nuget`.
+                // In that case, our call to `GetNugetFeeds` will retrieve the feeds from that file (because it is accepted when
+                // provided explicitly as `--configfile` argument), but the call to `GetNugetFeedsFromFolder` will not.
+                allFeeds.UnionWith(explicitFeeds);
             }
             else
             {

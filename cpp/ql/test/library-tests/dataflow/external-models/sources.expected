@@ -1,7 +1,14 @@
 | asio_streams.cpp:87:34:87:44 | read_until output argument | remote |
+| azure.cpp:253:48:253:60 | *call to GetBodyStream | remote |
+| azure.cpp:273:62:273:64 | call to GetHeaders | remote |
+| azure.cpp:277:45:277:47 | call to GetBody | remote |
+| azure.cpp:281:68:281:84 | *call to ExtractBodyStream | remote |
+| azure.cpp:289:32:289:40 | call to GetHeader | remote |
+| azure.cpp:293:58:293:67 | call to GetHeaders | remote |
 | test.cpp:10:10:10:18 | call to ymlSource | local |
 | test.cpp:56:8:56:16 | call to ymlSource | local |
 | test.cpp:94:10:94:18 | call to ymlSource | local |
+| test.cpp:114:10:114:18 | call to ymlSource | local |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | local |
 | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | local |
 | windows.cpp:39:36:39:38 | GetEnvironmentVariableA output argument | local |
@@ -19,3 +26,9 @@
 | windows.cpp:318:23:318:37 | *call to MapViewOfFileEx | local |
 | windows.cpp:325:23:325:42 | *call to MapViewOfFileFromApp | local |
 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | local |
+| windows.cpp:645:45:645:50 | WinHttpReadData output argument | remote |
+| windows.cpp:652:48:652:53 | WinHttpReadDataEx output argument | remote |
+| windows.cpp:659:47:659:52 | WinHttpQueryHeaders output argument | remote |
+| windows.cpp:669:70:669:79 | WinHttpQueryHeadersEx output argument | remote |
+| windows.cpp:669:82:669:87 | WinHttpQueryHeadersEx output argument | remote |
+| windows.cpp:669:105:669:112 | WinHttpQueryHeadersEx output argument | remote |

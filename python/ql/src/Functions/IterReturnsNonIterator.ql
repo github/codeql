@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassValue iterable, FunctionValue iter, ClassValue iterator
 where

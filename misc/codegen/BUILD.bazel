@@ -5,6 +5,9 @@ py_binary(
     srcs = ["codegen.py"],
     data = [
         "//misc/codegen/templates:cpp",
+        "//misc/codegen/templates:dbscheme",
+        "//misc/codegen/templates:ql",
+        "//misc/codegen/templates:rust",
         "//misc/codegen/templates:trap",
     ],
     visibility = ["//visibility:public"],

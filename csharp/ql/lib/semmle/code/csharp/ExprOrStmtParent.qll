@@ -55,7 +55,8 @@ class TopLevelExprParent extends Element, @top_level_expr_parent {
 /** INTERNAL: Do not use. */
 Expr getExpressionBody(Callable c) {
   result = c.getAChildExpr() and
-  not result = c.(Constructor).getInitializer()
+  not result = c.(Constructor).getInitializer() and
+  not result = c.(Constructor).getObjectInitializerCall()
 }
 
 /** INTERNAL: Do not use. */
@@ -211,6 +212,8 @@ private module Cached {
     enclosingBody(cfe, getBody(c))
     or
     parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
+    or
+    parent*(cfe, c.(Constructor).getObjectInitializerCall())
   }
 
   /** Holds if the enclosing statement of expression `e` is `s`. */

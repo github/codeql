@@ -8,7 +8,7 @@ import codeql.rust.elements.FieldList
 import codeql.rust.elements.TupleField
 
 /**
- * A list of fields in a tuple struct or tuple enum variant.
+ * A list of fields in a tuple struct or tuple variant.
  *
  * For example:
  * ```rust

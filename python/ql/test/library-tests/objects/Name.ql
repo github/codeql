@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from Object o, string name
 where

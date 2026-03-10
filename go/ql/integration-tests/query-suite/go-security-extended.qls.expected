@@ -12,6 +12,7 @@ ql/go/ql/src/Security/CWE-079/HtmlTemplateEscapingBypassXss.ql
 ql/go/ql/src/Security/CWE-079/ReflectedXss.ql
 ql/go/ql/src/Security/CWE-089/SqlInjection.ql
 ql/go/ql/src/Security/CWE-089/StringBreak.ql
+ql/go/ql/src/Security/CWE-1004/CookieWithoutHttpOnly.ql
 ql/go/ql/src/Security/CWE-117/LogInjection.ql
 ql/go/ql/src/Security/CWE-190/AllocationSizeOverflow.ql
 ql/go/ql/src/Security/CWE-209/StackTraceExposure.ql
@@ -19,12 +20,15 @@ ql/go/ql/src/Security/CWE-295/DisabledCertificateCheck.ql
 ql/go/ql/src/Security/CWE-312/CleartextLogging.ql
 ql/go/ql/src/Security/CWE-322/InsecureHostKeyCallback.ql
 ql/go/ql/src/Security/CWE-326/InsufficientKeySize.ql
+ql/go/ql/src/Security/CWE-327/BrokenCryptoAlgorithm.ql
 ql/go/ql/src/Security/CWE-327/InsecureTLS.ql
+ql/go/ql/src/Security/CWE-327/WeakSensitiveDataHashing.ql
 ql/go/ql/src/Security/CWE-338/InsecureRandomness.ql
 ql/go/ql/src/Security/CWE-347/MissingJwtSignatureCheck.ql
 ql/go/ql/src/Security/CWE-352/ConstantOauth2State.ql
 ql/go/ql/src/Security/CWE-601/BadRedirectCheck.ql
 ql/go/ql/src/Security/CWE-601/OpenUrlRedirect.ql
+ql/go/ql/src/Security/CWE-614/CookieWithoutSecure.ql
 ql/go/ql/src/Security/CWE-640/EmailInjection.ql
 ql/go/ql/src/Security/CWE-643/XPathInjection.ql
 ql/go/ql/src/Security/CWE-681/IncorrectIntegerConversionQuery.ql

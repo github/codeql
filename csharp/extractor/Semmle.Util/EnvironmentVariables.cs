@@ -76,5 +76,14 @@ namespace Semmle.Util
         {
             return Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OVERLAY_BASE_METADATA_OUT");
         }
+
+        /// <summary>
+        /// If set, returns the directory where buildless dependencies should be stored.
+        /// This can be used for caching dependencies.
+        /// </summary>
+        public static string? GetBuildlessDependencyDir()
+        {
+            return Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_BUILDLESS_DEPENDENCY_DIR");
+        }
     }
 }

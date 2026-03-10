@@ -11,6 +11,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate uses_of_super_in_old_style_class(Call s) {
   exists(Function f, ClassObject c |

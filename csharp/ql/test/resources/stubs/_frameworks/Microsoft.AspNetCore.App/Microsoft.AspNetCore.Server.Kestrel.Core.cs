@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Server.Kestrel.Core, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Server.Kestrel.Core, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -295,6 +295,7 @@ namespace Microsoft
                         public System.Security.Cryptography.X509Certificates.X509Certificate2Collection ServerCertificateChain { get => throw null; set { } }
                         public System.Func<Microsoft.AspNetCore.Connections.ConnectionContext, string, System.Security.Cryptography.X509Certificates.X509Certificate2> ServerCertificateSelector { get => throw null; set { } }
                         public System.Security.Authentication.SslProtocols SslProtocols { get => throw null; set { } }
+                        public System.Action<Microsoft.AspNetCore.Connections.ConnectionContext, System.Buffers.ReadOnlySequence<byte>> TlsClientHelloBytesCallback { get => throw null; set { } }
                     }
                     public class TlsHandshakeCallbackContext
                     {

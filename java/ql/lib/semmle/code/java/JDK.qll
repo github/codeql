@@ -48,13 +48,19 @@ class StringContainsMethod extends Method {
 }
 
 /** A call to the `java.lang.String.matches` method. */
-class StringMatchesCall extends MethodCall {
+class StringMatchesCall extends MethodCall, RegexMatch::Range {
   StringMatchesCall() {
     exists(Method m | m = this.getMethod() |
       m.getDeclaringType() instanceof TypeString and
       m.hasName("matches")
     )
   }
+
+  override Expr getRegex() { result = this.getArgument(0) }
+
+  override Expr getString() { result = this.getQualifier() }
+
+  override string getName() { result = "String.matches" }
 }
 
 /** A call to the `java.lang.String.replaceAll` method. */
@@ -321,12 +327,7 @@ class WriteObjectMethod extends Method {
 class ReadObjectMethod extends Method {
   ReadObjectMethod() {
     this.getDeclaringType() instanceof TypeObjectInputStream and
-    (
-      this.hasName("readObject") or
-      this.hasName("readObjectOverride") or
-      this.hasName("readUnshared") or
-      this.hasName("resolveObject")
-    )
+    this.hasName(["readObject", "readObjectOverride", "readUnshared", "resolveObject"])
   }
 }
 

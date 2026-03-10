@@ -25,7 +25,7 @@ try:
     from importlib._bootstrap import _ERR_MSG
 except ImportError:
     from importlib._bootstrap import _ERR_MSG_PREFIX
-    _ERR_MSG = _ERR_MSG_PREFIX + '{name!r}'
+    _ERR_MSG = _ERR_MSG_PREFIX + '{!r}'
 
 from importlib import machinery
 from importlib import util

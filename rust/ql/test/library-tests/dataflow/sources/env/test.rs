@@ -13,13 +13,13 @@ fn test_env_vars() {
     sink(var2); // $ hasTaintFlow="PATH"
 
     for (key, value) in std::env::vars() { // $ Alert[rust/summary/taint-sources]
-        sink(key); // $ MISSING: hasTaintFlow
-        sink(value); // $ MISSING: hasTaintFlow
+        sink(key); // $ hasTaintFlow
+        sink(value); // $ hasTaintFlow
     }
 
     for (key, value) in std::env::vars_os() { // $ Alert[rust/summary/taint-sources]
-        sink(key); // $ MISSING: hasTaintFlow
-        sink(value); // $ MISSING: hasTaintFlow
+        sink(key); // $ hasTaintFlow
+        sink(value); // $ hasTaintFlow
     }
 }
 

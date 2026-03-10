@@ -43,6 +43,13 @@ private Expr maybeNullExpr(Expr reason) {
     )
   or
   result.(NullCoalescingExpr).getRightOperand() = maybeNullExpr(reason)
+  or
+  result =
+    any(QualifiableExpr qe |
+      qe.isConditional() and
+      reason = qe.getQualifier() and
+      not qe instanceof AssignableWrite
+    )
 }
 
 /** An expression that may be `null`. */

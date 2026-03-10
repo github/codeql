@@ -89,7 +89,8 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
       nodeFrom = instructionNode(pred) or
       nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
     ) and
-    nodeTo = instructionNode(succ)
+    nodeTo = instructionNode(succ) and
+    nodeTo != nodeFrom
   )
   or
   // GlobalFunctionNode -> use

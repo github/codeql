@@ -88,8 +88,8 @@ anon_class_member_modifiers
 | delegatedProperties.kt:23:29:23:31 | new KProperty0<String>(...) { ... } | delegatedProperties.kt:23:29:23:31 | invoke | override, public |
 | delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:26:13:26:24 | getCurValue | final, public |
 | delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:26:13:26:24 | setCurValue | final, public |
-| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:27:13:27:88 | getValue | override, public |
-| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:28:13:30:13 | setValue | override, public |
+| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:27:22:27:88 | getValue | override, public |
+| delegatedProperties.kt:25:64:31:9 | new ReadWriteProperty<Object,Integer>(...) { ... } | delegatedProperties.kt:28:22:30:13 | setValue | override, public |
 | delegatedProperties.kt:33:30:33:47 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:33:30:33:47 | get | override, public |
 | delegatedProperties.kt:33:30:33:47 | new KProperty0<Integer>(...) { ... } | delegatedProperties.kt:33:30:33:47 | invoke | override, public |
 | delegatedProperties.kt:34:31:34:48 | new KMutableProperty0<Integer>(...) { ... } | delegatedProperties.kt:34:31:34:48 | get | override, public |

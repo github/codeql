@@ -165,14 +165,6 @@ module Beego {
     override string getAContentType() { none() }
   }
 
-  private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
-    HtmlQuoteSanitizer() {
-      exists(DataFlow::CallNode c | c.getTarget().hasQualifiedName(packagePath(), "Htmlquote") |
-        this = c.getArgument(0)
-      )
-    }
-  }
-
   private class UtilsTaintPropagators extends TaintTracking::FunctionModel {
     UtilsTaintPropagators() { this.hasQualifiedName(utilsPackagePath(), "GetDisplayString") }
 

@@ -1,4 +1,6 @@
 /** Provides classes for working with HTML documents. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -283,6 +285,7 @@ module HTML {
   /**
    * A path string arising from the `src` attribute of a `script` tag.
    */
+  overlay[global]
   deprecated private class ScriptSrcPath extends PathString {
     ScriptSrcPath() { scriptSrc(this, _) }
 

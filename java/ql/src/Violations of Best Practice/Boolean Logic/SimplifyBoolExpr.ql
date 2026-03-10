@@ -40,9 +40,9 @@ class BoolCompare extends EqualityTest {
 
 predicate conditionalWithBool(ConditionalExpr c, string pattern, string rewrite) {
   exists(boolean truebranch |
-    c.getTrueExpr().(BooleanLiteral).getBooleanValue() = truebranch and
-    not c.getFalseExpr() instanceof BooleanLiteral and
-    not c.getFalseExpr().getType() instanceof NullType and
+    c.getThen().(BooleanLiteral).getBooleanValue() = truebranch and
+    not c.getElse() instanceof BooleanLiteral and
+    not c.getElse().getType() instanceof NullType and
     (
       truebranch = true and pattern = "A ? true : B" and rewrite = "A || B"
       or
@@ -51,9 +51,9 @@ predicate conditionalWithBool(ConditionalExpr c, string pattern, string rewrite)
   )
   or
   exists(boolean falsebranch |
-    not c.getTrueExpr() instanceof BooleanLiteral and
-    not c.getTrueExpr().getType() instanceof NullType and
-    c.getFalseExpr().(BooleanLiteral).getBooleanValue() = falsebranch and
+    not c.getThen() instanceof BooleanLiteral and
+    not c.getThen().getType() instanceof NullType and
+    c.getElse().(BooleanLiteral).getBooleanValue() = falsebranch and
     (
       falsebranch = true and pattern = "A ? B : true" and rewrite = "!A || B"
       or
@@ -62,8 +62,8 @@ predicate conditionalWithBool(ConditionalExpr c, string pattern, string rewrite)
   )
   or
   exists(boolean truebranch, boolean falsebranch |
-    c.getTrueExpr().(BooleanLiteral).getBooleanValue() = truebranch and
-    c.getFalseExpr().(BooleanLiteral).getBooleanValue() = falsebranch and
+    c.getThen().(BooleanLiteral).getBooleanValue() = truebranch and
+    c.getElse().(BooleanLiteral).getBooleanValue() = falsebranch and
     (
       truebranch = true and falsebranch = false and pattern = "A ? true : false" and rewrite = "A"
       or
@@ -98,9 +98,9 @@ where
     or
     conditionalWithBool(e, pattern, rewrite)
     or
-    e.(LogNotExpr).getExpr().(ComparisonOrEquality).negate(pattern, rewrite)
+    e.(LogNotExpr).getOperand().(ComparisonOrEquality).negate(pattern, rewrite)
     or
-    e.(LogNotExpr).getExpr() instanceof LogNotExpr and
+    e.(LogNotExpr).getOperand() instanceof LogNotExpr and
     pattern = "!!A" and
     rewrite = "A"
   )

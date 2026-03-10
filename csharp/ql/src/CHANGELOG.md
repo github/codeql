@@ -1,3 +1,54 @@
+## 1.6.3
+
+No user-facing changes.
+
+## 1.6.2
+
+### Bug Fixes
+
+* The `cs/web/missing-token-validation` ("Missing cross-site request forgery token validation") query now recognizes antiforgery attributes on base controller classes, fixing false positives when `[ValidateAntiForgeryToken]` or `[AutoValidateAntiforgeryToken]` is applied to a parent class.
+
+## 1.6.1
+
+No user-facing changes.
+
+## 1.6.0
+
+### Query Metadata Changes
+
+* Updated the `name`, `description`, and alert message of `cs/path-combine` to have more details about why it's a problem.
+
+### Minor Analysis Improvements
+
+* Added `NHibernate.ISession.CreateSQLQuery`, `NHibernate.IStatelessSession.CreateSQLQuery` and `NHibernate.Impl.AbstractSessionImpl.CreateSQLQuery` as SQL injection sinks.
+* The `Missing cross-site request forgery token validation` query was extended to support ASP.NET Core.
+
+## 1.5.4
+
+No user-facing changes.
+
+## 1.5.3
+
+No user-facing changes.
+
+## 1.5.2
+
+No user-facing changes.
+
+## 1.5.1
+
+No user-facing changes.
+
+## 1.5.0
+
+### New Queries
+
+* The `cs/web/cookie-secure-not-set` and `cs/web/cookie-httponly-not-set` queries have been promoted from experimental to the main query pack.
+
+### Minor Analysis Improvements
+
+* An improvement to the Guards library for recognizing disjunctions means improved precision for `cs/constant-condition`, `cs/inefficient-containskey`, and `cs/dereferenced-value-may-be-null`. The two former can have additional findings, and the latter will have fewer false positives.
+
 ## 1.4.3
 
 ### Minor Analysis Improvements
@@ -284,7 +335,7 @@ No user-facing changes.
 
 ### Minor Analysis Improvements
 
-* Fixed a Log forging false positive when using `String.Replace` to sanitize the input.
+* Fixed a Log forging false positive when using `String.Replace` to sanitize the input.    
 * Fixed a URL redirection from remote source false positive when guarding a redirect with `HttpRequestBase.IsUrlLocalToHost()`
 
 ## 0.8.5

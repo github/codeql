@@ -6,8 +6,9 @@
 | patterns.cs:7:20:7:41 | (...) ... | patterns.cs:7:16:7:41 | Object o = ... | semmle.label | successor |
 | patterns.cs:7:20:7:41 | object creation of type MyStruct | patterns.cs:7:39:7:39 | 2 | semmle.label | successor |
 | patterns.cs:7:33:7:41 | { ..., ... } | patterns.cs:7:20:7:41 | (...) ... | semmle.label | successor |
+| patterns.cs:7:35:7:35 | access to field X | patterns.cs:7:35:7:39 | ... = ... | semmle.label | successor |
 | patterns.cs:7:35:7:39 | ... = ... | patterns.cs:7:33:7:41 | { ..., ... } | semmle.label | successor |
-| patterns.cs:7:39:7:39 | 2 | patterns.cs:7:35:7:39 | ... = ... | semmle.label | successor |
+| patterns.cs:7:39:7:39 | 2 | patterns.cs:7:35:7:35 | access to field X | semmle.label | successor |
 | patterns.cs:9:9:11:9 | if (...) ... | patterns.cs:9:13:9:13 | access to local variable o | semmle.label | successor |
 | patterns.cs:9:13:9:13 | access to local variable o | patterns.cs:9:18:9:29 | MyStruct ms1 | semmle.label | successor |
 | patterns.cs:9:13:9:29 | [false] ... is ... | patterns.cs:13:9:15:9 | if (...) ... | semmle.label | false |

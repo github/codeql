@@ -1,3 +1,41 @@
+## 1.5.12
+
+No user-facing changes.
+
+## 1.5.11
+
+No user-facing changes.
+
+## 1.5.10
+
+No user-facing changes.
+
+## 1.5.9
+
+### Minor Analysis Improvements
+
+* The `cpp/constant-comparison` query has been updated to not produce false positives for constants that are now represented by their unfolded expression trees.
+
+## 1.5.8
+
+No user-facing changes.
+
+## 1.5.7
+
+No user-facing changes.
+
+## 1.5.6
+
+No user-facing changes.
+
+## 1.5.5
+
+No user-facing changes.
+
+## 1.5.4
+
+No user-facing changes.
+
 ## 1.5.3
 
 No user-facing changes.

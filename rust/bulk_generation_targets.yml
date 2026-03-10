@@ -19,7 +19,8 @@ targets:
 - name: serde
 - name: tokio
 - name: reqwest
-- name: rocket
+# Disabled due to performance issue
+# - name: rocket
 - name: actix-web
 - name: hyper
 - name: clap

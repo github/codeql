@@ -33,21 +33,25 @@ private import semmle.javascript.internal.CachedStages
  * Note: For performance reasons, all subclasses of this class should be part
  * of the standard library. Use `isAdditionalFlowStep` for query-specific flow steps.
  */
+overlay[local?]
 class AdditionalFlowStep extends Unit {
   /**
    * Holds if `pred` &rarr; `succ` should be considered a value-preserving data flow edge.f
    */
+  overlay[global]
   predicate step(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   /**
    * Holds if `pred` &rarr; `succ` should be considered a value-preserving data flow edge that
    * crosses calling contexts.
    */
+  overlay[global]
   predicate jumpStep(DataFlow::Node pred, DataFlow::Node succ) { none() }
 
   /**
    * Holds if `pred` should be stored in the given `content` of the object `succ`.
    */
+  overlay[global]
   predicate storeStep(DataFlow::Node pred, DataFlow::ContentSet contents, DataFlow::Node succ) {
     none()
   }
@@ -55,6 +59,7 @@ class AdditionalFlowStep extends Unit {
   /**
    * Holds if the given `content` of the object in `pred` should be read into `succ`.
    */
+  overlay[global]
   predicate readStep(DataFlow::Node pred, DataFlow::ContentSet contents, DataFlow::Node succ) {
     none()
   }

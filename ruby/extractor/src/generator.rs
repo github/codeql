@@ -28,5 +28,10 @@ pub fn run(options: Options) -> std::io::Result<()> {
         },
     ];
 
-    generate(languages, options.dbscheme, options.library)
+    generate(
+        languages,
+        options.dbscheme,
+        options.library,
+        "run 'make dbscheme' in ql/ruby/",
+    )
 }

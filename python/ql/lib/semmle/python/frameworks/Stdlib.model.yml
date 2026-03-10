@@ -142,6 +142,8 @@ extensions:
       - ["typing", "Member[cast]", "Argument[1,val:]", "ReturnValue", "value"]
       # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs
       - ["urllib", "Member[parse].Member[parse_qs]", "Argument[0,qs:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlparse
+      - ["urllib", "Member[parse].Member[urlparse]", "Argument[0,urlstring:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote
       - ["urllib", "Member[parse].Member[quote]", "Argument[0,string:]", "ReturnValue", "taint"]
       # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote_plus
@@ -181,7 +183,9 @@ extensions:
   - addsTo:
       pack: codeql/python-all
       extensible: typeModel
-    data: []
+    data:
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlparse
+      - ["urllib.parse.ParseResult~Subclass", 'urllib', 'Member[parse].Member[urlparse]']
 
   - addsTo:
       pack: codeql/python-all

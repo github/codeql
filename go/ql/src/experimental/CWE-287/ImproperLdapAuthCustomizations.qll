@@ -29,7 +29,7 @@ module ImproperLdapAuth {
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, LdapSanitizer { }
+  class RegexpCheckAsBarrierGuard extends LdapSanitizer instanceof RegexpCheckBarrier { }
 
   /**
    * An empty string.

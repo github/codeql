@@ -4,12 +4,11 @@ using System.IO;
 using System.Linq;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Exceptions;
-using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Shared
 {
     /// <summary>
-    /// A solution file, extension .sln.
+    /// A solution file, extension .sln or .slnx.
     /// </summary>
     public interface ISolution : IProjectOrSolution
     {

@@ -1,3 +1,49 @@
+## 2.6.23
+
+### Minor Analysis Improvements
+
+* Added support for React components wrapped by `observer` from `mobx-react` and `mobx-react-lite`.
+
+## 2.6.22
+
+No user-facing changes.
+
+## 2.6.21
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
+## 2.6.20
+
+### Minor Analysis Improvements
+
+* Support `use cache` directives for Next.js 16.
+* Added `PreCallGraphStep` flow model for React's `useRef` hook.
+* Added a `DomValueSource` that uses the `current` property off the object returned by React's `useRef` hook.
+
+## 2.6.19
+
+No user-facing changes.
+
+## 2.6.18
+
+No user-facing changes.
+
+## 2.6.17
+
+No user-facing changes.
+
+## 2.6.16
+
+### Minor Analysis Improvements
+
+- JavaScript `DataFlow::globalVarRef` now recognizes `document.defaultView` as an alias of `window`, allowing flows such as `document.defaultView.history.pushState(...)` to be modeled and found by queries relying on `globalVarRef("history")`.
+
+## 2.6.15
+
+No user-facing changes.
+
 ## 2.6.14
 
 No user-facing changes.

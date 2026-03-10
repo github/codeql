@@ -1,4 +1,6 @@
 /** Provides classes for working with statements. */
+overlay[local?]
+module;
 
 import javascript
 
@@ -431,6 +433,21 @@ module Directive {
    */
   class UseClientDirective extends KnownDirective {
     UseClientDirective() { this.getDirectiveText() = "use client" }
+  }
+
+  /**
+   * A `use cache` directive.
+   *
+   * Examples:
+   *
+   * ```
+   * "use cache";
+   * "use cache: remote";
+   * "use cache: private";
+   * ```
+   */
+  class UseCacheDirective extends KnownDirective {
+    UseCacheDirective() { this.getDirectiveText().regexpMatch("use cache(:.*)?") }
   }
 }
 

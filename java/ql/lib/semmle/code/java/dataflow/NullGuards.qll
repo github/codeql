@@ -26,9 +26,9 @@ Expr enumConstEquality(Expr e, boolean polarity, EnumConstant c) {
 }
 
 /** Gets an instanceof expression of `v` with type `type` */
-InstanceOfExpr instanceofExpr(SsaVariable v, RefType type) {
+InstanceOfExpr instanceofExpr(SsaDefinition v, RefType type) {
   result.getCheckedType() = type and
-  result.getExpr() = v.getAUse()
+  result.getExpr() = v.getARead()
 }
 
 /**
@@ -37,8 +37,8 @@ InstanceOfExpr instanceofExpr(SsaVariable v, RefType type) {
  *
  * Note this includes Kotlin's `==` and `!=` operators, which are value-equality tests.
  */
-EqualityTest varEqualityTestExpr(SsaVariable v1, SsaVariable v2, boolean isEqualExpr) {
-  result.hasOperands(v1.getAUse(), v2.getAUse()) and
+EqualityTest varEqualityTestExpr(SsaDefinition v1, SsaDefinition v2, boolean isEqualExpr) {
+  result.hasOperands(v1.getARead(), v2.getARead()) and
   isEqualExpr = result.polarity()
 }
 
@@ -86,42 +86,49 @@ Expr clearlyNotNullExpr(Expr reason) {
   or
   exists(ConditionalExpr c, Expr r1, Expr r2 |
     c = result and
-    c.getTrueExpr() = clearlyNotNullExpr(r1) and
-    c.getFalseExpr() = clearlyNotNullExpr(r2) and
+    c.getThen() = clearlyNotNullExpr(r1) and
+    c.getElse() = clearlyNotNullExpr(r2) and
     (reason = r1 or reason = r2)
   )
   or
-  exists(SsaVariable v, boolean branch, VarRead rval, Guard guard |
+  exists(SsaDefinition v, boolean branch, VarRead rval, Guard guard |
     guard = directNullGuard(v, branch, false) and
     guard.controls(rval.getBasicBlock(), branch) and
     reason = guard and
-    rval = v.getAUse() and
+    rval = v.getARead() and
     result = rval and
     not result = baseNotNullExpr()
   )
   or
-  exists(SsaVariable v |
+  exists(SsaDefinition v |
     clearlyNotNull(v, reason) and
-    result = v.getAUse() and
+    result = v.getARead() and
+    not result = baseNotNullExpr()
+  )
+  or
+  exists(Field f |
+    result = f.getAnAccess() and
+    f.isFinal() and
+    f.getInitializer() = clearlyNotNullExpr(reason) and
     not result = baseNotNullExpr()
   )
 }
 
 /** Holds if `v` is an SSA variable that is provably not `null`. */
-predicate clearlyNotNull(SsaVariable v, Expr reason) {
+predicate clearlyNotNull(SsaDefinition v, Expr reason) {
   exists(Expr src |
-    src = v.(SsaExplicitUpdate).getDefiningExpr().(VariableAssign).getSource() and
+    src = v.(SsaExplicitWrite).getValue() and
     src = clearlyNotNullExpr(reason)
   )
   or
   exists(CatchClause cc, LocalVariableDeclExpr decl |
     decl = cc.getVariable() and
-    decl = v.(SsaExplicitUpdate).getDefiningExpr() and
+    decl = v.(SsaExplicitWrite).getDefiningExpr() and
     reason = decl
   )
   or
-  exists(SsaVariable captured |
-    v.(SsaImplicitInit).captures(captured) and
+  exists(SsaDefinition captured |
+    v.(SsaCapturedDefinition).captures(captured) and
     clearlyNotNull(captured, reason)
   )
   or
@@ -136,7 +143,7 @@ predicate clearlyNotNull(SsaVariable v, Expr reason) {
 Expr clearlyNotNullExpr() { result = clearlyNotNullExpr(_) }
 
 /** Holds if `v` is an SSA variable that is provably not `null`. */
-predicate clearlyNotNull(SsaVariable v) { clearlyNotNull(v, _) }
+predicate clearlyNotNull(SsaDefinition v) { clearlyNotNull(v, _) }
 
 /**
  * Holds if the evaluation of a call to `m` resulting in the value `branch`
@@ -207,7 +214,7 @@ deprecated Expr basicOrCustomNullGuard(Expr e, boolean branch, boolean isnull) {
  * If `result` evaluates to `branch`, then `v` is guaranteed to be null if `isnull`
  * is true, and non-null if `isnull` is false.
  */
-Expr directNullGuard(SsaVariable v, boolean branch, boolean isnull) {
+Expr directNullGuard(SsaDefinition v, boolean branch, boolean isnull) {
   result = basicNullGuard(sameValue(v, _), branch, isnull)
 }
 
@@ -219,7 +226,7 @@ Expr directNullGuard(SsaVariable v, boolean branch, boolean isnull) {
  * If `result` evaluates to `branch`, then `v` is guaranteed to be null if `isnull`
  * is true, and non-null if `isnull` is false.
  */
-deprecated Guard nullGuard(SsaVariable v, boolean branch, boolean isnull) {
+deprecated Guard nullGuard(SsaDefinition v, boolean branch, boolean isnull) {
   result = directNullGuard(v, branch, isnull)
 }
 
@@ -228,7 +235,9 @@ deprecated Guard nullGuard(SsaVariable v, boolean branch, boolean isnull) {
  * from `bb1` to `bb2` implies that `v` is guaranteed to be null if `isnull` is
  * true, and non-null if `isnull` is false.
  */
-predicate nullGuardControlsBranchEdge(SsaVariable v, boolean isnull, BasicBlock bb1, BasicBlock bb2) {
+predicate nullGuardControlsBranchEdge(
+  SsaDefinition v, boolean isnull, BasicBlock bb1, BasicBlock bb2
+) {
   exists(GuardValue gv |
     Guards_v3::ssaControlsBranchEdge(v, bb1, bb2, gv) and
     gv.isNullness(isnull)
@@ -240,7 +249,7 @@ predicate nullGuardControlsBranchEdge(SsaVariable v, boolean isnull, BasicBlock 
  * `bb` `v` is guaranteed to be null if `isnull` is true, and non-null if
  * `isnull` is false.
  */
-predicate nullGuardControls(SsaVariable v, boolean isnull, BasicBlock bb) {
+predicate nullGuardControls(SsaDefinition v, boolean isnull, BasicBlock bb) {
   exists(GuardValue gv |
     Guards_v3::ssaControls(v, bb, gv) and
     gv.isNullness(isnull)
@@ -263,6 +272,6 @@ predicate guardSuggestsExprMaybeNull(Expr guard, Expr e) {
 /**
  * Holds if `guard` is a guard expression that suggests that `v` might be null.
  */
-predicate guardSuggestsVarMaybeNull(Expr guard, SsaVariable v) {
+predicate guardSuggestsVarMaybeNull(Expr guard, SsaDefinition v) {
   guardSuggestsExprMaybeNull(guard, sameValue(v, _))
 }

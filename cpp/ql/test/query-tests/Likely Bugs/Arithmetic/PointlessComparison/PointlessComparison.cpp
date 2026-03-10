@@ -38,8 +38,8 @@ int extreme_values(void)
 	if (x >> 1 >= 0x7FFFFFFFFFFFFFFF) {} // always true [NOT DETECTED]
 	if (x >> 1 >= 0xFFFFFFFFFFFFFFF) {} // always true [NOT DETECTED]
 
-	if (y >> 1 >= 0xFFFFFFFFFFFF) {} // always false [INCORRECT MESSAGE]
-	if (y >> 1 >= 0x800000000000) {} // always false [INCORRECT MESSAGE]
-	if (y >> 1 >= 0x7FFFFFFFFFFF) {} // always true [INCORRECT MESSAGE]
-	if (y >> 1 >= 0xFFFFFFFFFFF) {} // always true [INCORRECT MESSAGE]
+	if (y >> 1 >= 0xFFFFFFFFFFFF) {} // always false
+	if (y >> 1 >= 0x800000000000) {} // always false
+	if (y >> 1 >= 0x7FFFFFFFFFFF) {} // always true
+	if (y >> 1 >= 0xFFFFFFFFFFF) {} // always true
 }

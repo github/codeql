@@ -1,0 +1,24 @@
+#select
+| main.rs:10:10:10:21 | html_content | main.rs:15:51:15:53 | get | main.rs:10:10:10:21 | html_content | Cross-site scripting vulnerability due to a $@. | main.rs:15:51:15:53 | get | user-provided value |
+edges
+| main.rs:8:24:8:59 | ...: Query::<...> | main.rs:9:32:9:63 | MacroExpr | provenance |  |
+| main.rs:9:9:9:20 | html_content | main.rs:10:10:10:21 | html_content | provenance |  |
+| main.rs:9:32:9:63 | ...::format(...) | main.rs:9:32:9:63 | { ... } | provenance |  |
+| main.rs:9:32:9:63 | ...::must_use(...) | main.rs:9:9:9:20 | html_content | provenance |  |
+| main.rs:9:32:9:63 | MacroExpr | main.rs:9:32:9:63 | ...::format(...) | provenance | MaD:2 |
+| main.rs:9:32:9:63 | { ... } | main.rs:9:32:9:63 | ...::must_use(...) | provenance | MaD:3 |
+| main.rs:15:51:15:53 | get | main.rs:8:24:8:59 | ...: Query::<...> | provenance | Src:MaD:1  |
+models
+| 1 | Source: axum::routing::method_routing::get; Argument[0].Parameter[0..7]; remote |
+| 2 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
+| 3 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
+nodes
+| main.rs:8:24:8:59 | ...: Query::<...> | semmle.label | ...: Query::<...> |
+| main.rs:9:9:9:20 | html_content | semmle.label | html_content |
+| main.rs:9:32:9:63 | ...::format(...) | semmle.label | ...::format(...) |
+| main.rs:9:32:9:63 | ...::must_use(...) | semmle.label | ...::must_use(...) |
+| main.rs:9:32:9:63 | MacroExpr | semmle.label | MacroExpr |
+| main.rs:9:32:9:63 | { ... } | semmle.label | { ... } |
+| main.rs:10:10:10:21 | html_content | semmle.label | html_content |
+| main.rs:15:51:15:53 | get | semmle.label | get |
+subpaths

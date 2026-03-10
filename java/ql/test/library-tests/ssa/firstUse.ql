@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.SSA
 
-from SsaVariable ssa, VarRead use
-where use = ssa.getAFirstUse()
+from SsaDefinition ssa, VarRead use
+where use = ssaGetAFirstUse(ssa)
 select ssa, use

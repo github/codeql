@@ -19,7 +19,7 @@ class Adapter extends Class {
     this.getName().matches("%Adapter") and
     (
       this.getPackage().hasName("java.awt.event") or
-      this.getPackage().hasName("javax.swing.event")
+      this.getPackage().hasName(javaxOrJakarta() + ".swing.event")
     )
   }
 }

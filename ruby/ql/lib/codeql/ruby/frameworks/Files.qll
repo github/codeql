@@ -103,7 +103,7 @@ module File {
    * A flow summary for several methods on the `File` class that propagate taint
    * from their first argument to the return value.
    */
-  class FilePathConversionSummary extends SummarizedCallable {
+  class FilePathConversionSummary extends SummarizedCallable::Range {
     string methodName;
 
     FilePathConversionSummary() {
@@ -126,7 +126,7 @@ module File {
    * A flow summary for `File.join`, which propagates taint from every argument to
    * its return value.
    */
-  class FileJoinSummary extends SummarizedCallable {
+  class FileJoinSummary extends SummarizedCallable::Range {
     FileJoinSummary() { this = "File.join" }
 
     override MethodCall getACall() {

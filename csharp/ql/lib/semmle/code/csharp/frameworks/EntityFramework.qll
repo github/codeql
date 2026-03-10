@@ -92,21 +92,16 @@ module EntityFramework {
   abstract class EFSummarizedCallable extends SummarizedCallableImpl {
     bindingset[this]
     EFSummarizedCallable() { any() }
-
-    override predicate hasProvenance(Provenance provenance) { provenance = "manual" }
   }
 
   // see `SummarizedCallableImpl` qldoc
   private class EFSummarizedCallableAdapter extends SummarizedCallable instanceof EFSummarizedCallable
   {
     override predicate propagatesFlow(
-      string input, string output, boolean preservesValue, string model
+      string input, string output, boolean preservesValue, Provenance provenance, boolean isExact,
+      string model
     ) {
       none()
-    }
-
-    override predicate hasProvenance(Provenance provenance) {
-      EFSummarizedCallable.super.hasProvenance(provenance)
     }
   }
 
@@ -177,11 +172,13 @@ module EntityFramework {
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
-      string model
+      Provenance p, boolean isExact, string model
     ) {
       input = SummaryComponentStack::argument(0) and
       output = SummaryComponentStack::return() and
       preservesValue = false and
+      p = "manual" and
+      isExact = true and
       model = "RawSqlStringConstructorSummarizedCallable"
     }
   }
@@ -193,11 +190,13 @@ module EntityFramework {
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
-      string model
+      Provenance p, boolean isExact, string model
     ) {
       input = SummaryComponentStack::argument(0) and
       output = SummaryComponentStack::return() and
       preservesValue = false and
+      p = "manual" and
+      isExact = true and
       model = "RawSqlStringConversionSummarizedCallable"
     }
   }
@@ -459,18 +458,20 @@ module EntityFramework {
   }
 
   private class DbContextClassSetPropertySynthetic extends EFSummarizedCallable {
-    private DbContextClassSetProperty p;
+    private DbContextClassSetProperty prop;
 
-    DbContextClassSetPropertySynthetic() { this = p.getGetter() }
+    DbContextClassSetPropertySynthetic() { this = prop.getGetter() }
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
-      string model
+      Provenance p, boolean isExact, string model
     ) {
       exists(string name, DbContextClass c |
         preservesValue = true and
-        name = c.getSyntheticName(output, _, p) and
+        name = c.getSyntheticName(output, _, prop) and
         input = SummaryComponentStack::syntheticGlobal(name) and
+        p = "manual" and
+        isExact = true and
         model = "DbContextClassSetPropertySynthetic"
       )
     }
@@ -483,13 +484,15 @@ module EntityFramework {
 
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
-      string model
+      Provenance p, boolean isExact, string model
     ) {
       exists(string name, Property mapped |
         preservesValue = true and
         c.input(input, mapped) and
         name = c.getSyntheticNameProj(mapped) and
         output = SummaryComponentStack::syntheticGlobal(name) and
+        p = "manual" and
+        isExact = true and
         model = "DbContextSaveChanges"
       )
     }

@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from Value val, string name
 where

@@ -1,6 +1,6 @@
 private import codeql.ruby.dataflow.FlowSummary
 
-private class ReverseSummary extends SimpleSummarizedCallable {
+private class ReverseSummary extends SummarizedCallable::RangeSimple {
   ReverseSummary() { this = "reverse" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {

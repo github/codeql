@@ -1,0 +1,22 @@
+reverseRead
+| fasthttp.go:75:28:75:35 | lbclient | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:102:7:102:16 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:162:3:162:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:163:3:163:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:164:3:164:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:165:15:165:24 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:166:15:166:24 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:167:15:167:24 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:168:15:168:24 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:170:3:170:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:172:3:172:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:173:3:173:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:174:3:174:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:175:3:175:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:183:3:183:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:184:3:184:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:185:16:185:25 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:194:3:194:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:195:3:195:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:196:3:196:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| fasthttp.go:197:3:197:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

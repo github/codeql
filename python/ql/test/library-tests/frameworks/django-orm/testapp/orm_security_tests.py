@@ -92,12 +92,12 @@ def only_az(value):
 class CommentValidatorNotUsed(models.Model):
     text = models.CharField(max_length=256, validators=[only_az])
 
-def save_comment_validator_not_used(request): # $requestHandler
+def save_comment_validator_not_used(request): # $ requestHandler
     comment = CommentValidatorNotUsed(text=request.POST["text"])
     comment.save()
     return HttpResponse("ok")
 
-def display_comment_validator_not_used(request): # $requestHandler
+def display_comment_validator_not_used(request): # $ requestHandler
     comment = CommentValidatorNotUsed.objects.last()
     return HttpResponse(comment.text)  # NOT OK
 
@@ -111,12 +111,12 @@ http http://127.0.0.1:8000/display_comment_validator_not_used/
 class CommentValidatorUsed(models.Model):
     text = models.CharField(max_length=256, validators=[only_az])
 
-def save_comment_validator_used(request): # $requestHandler
+def save_comment_validator_used(request): # $ requestHandler
     comment = CommentValidatorUsed(text=request.POST["text"])
     comment.full_clean()
     comment.save()
 
-def display_comment_validator_used(request): # $requestHandler
+def display_comment_validator_used(request): # $ requestHandler
     comment = CommentValidatorUsed.objects.last()
     return HttpResponse(comment.text)  # sort of OK
 

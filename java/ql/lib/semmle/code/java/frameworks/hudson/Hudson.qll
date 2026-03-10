@@ -14,14 +14,3 @@ class HudsonWebMethod extends Method {
     this.getDeclaringType().getASourceSupertype*().hasQualifiedName("hudson.model", "Descriptor")
   }
 }
-
-private class HudsonUtilXssSanitizer extends XssSanitizer {
-  HudsonUtilXssSanitizer() {
-    this.asExpr()
-        .(MethodCall)
-        .getMethod()
-        // Not including xmlEscape because it only accounts for >, <, and &.
-        // It does not account for ", or ', which makes it an incomplete XSS sanitizer.
-        .hasQualifiedName("hudson", "Util", "escape")
-  }
-}

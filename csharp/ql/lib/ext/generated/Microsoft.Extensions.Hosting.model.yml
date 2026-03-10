@@ -45,7 +45,6 @@ extensions:
       - ["Microsoft.Extensions.Hosting", "IHostBuilder", True, "UseServiceProviderFactory<TContainerBuilder>", "(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["Microsoft.Extensions.Hosting", "IHostBuilder", True, "UseServiceProviderFactory<TContainerBuilder>", "(System.Func<Microsoft.Extensions.Hosting.HostBuilderContext,Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TContainerBuilder>>)", "", "Argument[this]", "ReturnValue", "value", "dfc-generated"]
       - ["Microsoft.Extensions.Hosting", "IHostLifetime", True, "WaitForStartAsync", "(System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.Hosting", "IHostedService", True, "StartAsync", "(System.Threading.CancellationToken)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Hosting", "SystemdHostBuilderExtensions", False, "AddSystemd", "(Microsoft.Extensions.DependencyInjection.IServiceCollection)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["Microsoft.Extensions.Hosting", "SystemdHostBuilderExtensions", False, "UseSystemd", "(Microsoft.Extensions.Hosting.IHostBuilder)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
       - ["Microsoft.Extensions.Hosting", "WindowsServiceLifetimeHostBuilderExtensions", False, "AddWindowsService", "(Microsoft.Extensions.DependencyInjection.IServiceCollection)", "", "Argument[0]", "ReturnValue", "value", "dfc-generated"]
@@ -58,6 +57,7 @@ extensions:
     data:
       - ["Microsoft.Extensions.Hosting", "BackgroundService", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting", "BackgroundService", "ExecuteAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting", "BackgroundService", "StartAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting", "BackgroundService", "StopAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting", "Host", "CreateApplicationBuilder", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting", "Host", "CreateApplicationBuilder", "(Microsoft.Extensions.Hosting.HostApplicationBuilderSettings)", "summary", "df-generated"]
@@ -105,4 +105,5 @@ extensions:
       - ["Microsoft.Extensions.Hosting", "IHostedLifecycleService", "StartingAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting", "IHostedLifecycleService", "StoppedAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting", "IHostedLifecycleService", "StoppingAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting", "IHostedService", "StartAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Hosting", "IHostedService", "StopAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]

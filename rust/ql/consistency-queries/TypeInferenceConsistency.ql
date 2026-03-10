@@ -5,4 +5,4 @@
  * @id rust/diagnostics/type-inference-consistency
  */
 
-import codeql.rust.internal.TypeInferenceConsistency
+import codeql.rust.internal.typeinference.TypeInferenceConsistency

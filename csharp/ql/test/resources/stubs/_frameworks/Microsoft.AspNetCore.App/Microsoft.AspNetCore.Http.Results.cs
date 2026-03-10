@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Http.Results, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Http.Results, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -173,11 +173,12 @@ namespace Microsoft
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
                 }
-                public sealed class JsonHttpResult<TValue> : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
+                public sealed class JsonHttpResult<TValue> : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<TValue>
                 {
                     public string ContentType { get => throw null; }
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
                     public System.Text.Json.JsonSerializerOptions JsonSerializerOptions { get => throw null; }
+                    static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public int? StatusCode { get => throw null; }
                     public TValue Value { get => throw null; }
                     object Microsoft.AspNetCore.Http.IValueHttpResult.Value { get => throw null; }
@@ -232,10 +233,11 @@ namespace Microsoft
                     public string FileName { get => throw null; }
                     public System.DateTimeOffset? LastModified { get => throw null; }
                 }
-                public sealed class ProblemHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Mvc.ProblemDetails>
+                public sealed class ProblemHttpResult : Microsoft.AspNetCore.Http.IContentTypeHttpResult, Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult, Microsoft.AspNetCore.Http.IValueHttpResult<Microsoft.AspNetCore.Mvc.ProblemDetails>
                 {
                     public string ContentType { get => throw null; }
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                    static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public Microsoft.AspNetCore.Mvc.ProblemDetails ProblemDetails { get => throw null; }
                     public int StatusCode { get => throw null; }
                     int? Microsoft.AspNetCore.Http.IStatusCodeHttpResult.StatusCode { get => throw null; }
@@ -256,6 +258,7 @@ namespace Microsoft
                 {
                     public bool AcceptLocalUrlOnly { get => throw null; }
                     public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                    public static bool IsLocalUrl(string url) => throw null;
                     public bool Permanent { get => throw null; }
                     public bool PreserveMethod { get => throw null; }
                     public string Url { get => throw null; }
@@ -318,6 +321,12 @@ namespace Microsoft
                     public static implicit operator Microsoft.AspNetCore.Http.HttpResults.Results<TResult1, TResult2, TResult3, TResult4, TResult5, TResult6>(TResult6 result) => throw null;
                     static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
                     public Microsoft.AspNetCore.Http.IResult Result { get => throw null; }
+                }
+                public sealed class ServerSentEventsResult<T> : Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider, Microsoft.AspNetCore.Http.IResult, Microsoft.AspNetCore.Http.IStatusCodeHttpResult
+                {
+                    public System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
+                    static void Microsoft.AspNetCore.Http.Metadata.IEndpointMetadataProvider.PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder) => throw null;
+                    public int? StatusCode { get => throw null; }
                 }
                 public sealed class SignInHttpResult : Microsoft.AspNetCore.Http.IResult
                 {
@@ -446,6 +455,9 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.IResult Redirect(string url, bool permanent = default(bool), bool preserveMethod = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult RedirectToRoute(string routeName = default(string), object routeValues = default(object), bool permanent = default(bool), bool preserveMethod = default(bool), string fragment = default(string)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult RedirectToRoute(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, bool permanent = default(bool), bool preserveMethod = default(bool), string fragment = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult ServerSentEvents(System.Collections.Generic.IAsyncEnumerable<string> values, string eventType = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult ServerSentEvents<T>(System.Collections.Generic.IAsyncEnumerable<T> values, string eventType = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Http.IResult ServerSentEvents<T>(System.Collections.Generic.IAsyncEnumerable<System.Net.ServerSentEvents.SseItem<T>> values) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult SignIn(System.Security.Claims.ClaimsPrincipal principal, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), string authenticationScheme = default(string)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult SignOut(Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), System.Collections.Generic.IList<string> authenticationSchemes = default(System.Collections.Generic.IList<string>)) => throw null;
                 public static Microsoft.AspNetCore.Http.IResult StatusCode(int statusCode) => throw null;
@@ -513,6 +525,9 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Http.HttpResults.RedirectHttpResult Redirect(string url, bool permanent = default(bool), bool preserveMethod = default(bool)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.RedirectToRouteHttpResult RedirectToRoute(string routeName = default(string), object routeValues = default(object), bool permanent = default(bool), bool preserveMethod = default(bool), string fragment = default(string)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.RedirectToRouteHttpResult RedirectToRoute(string routeName, Microsoft.AspNetCore.Routing.RouteValueDictionary routeValues, bool permanent = default(bool), bool preserveMethod = default(bool), string fragment = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.ServerSentEventsResult<string> ServerSentEvents(System.Collections.Generic.IAsyncEnumerable<string> values, string eventType = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.ServerSentEventsResult<T> ServerSentEvents<T>(System.Collections.Generic.IAsyncEnumerable<T> values, string eventType = default(string)) => throw null;
+                public static Microsoft.AspNetCore.Http.HttpResults.ServerSentEventsResult<T> ServerSentEvents<T>(System.Collections.Generic.IAsyncEnumerable<System.Net.ServerSentEvents.SseItem<T>> values) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.SignInHttpResult SignIn(System.Security.Claims.ClaimsPrincipal principal, Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), string authenticationScheme = default(string)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.SignOutHttpResult SignOut(Microsoft.AspNetCore.Authentication.AuthenticationProperties properties = default(Microsoft.AspNetCore.Authentication.AuthenticationProperties), System.Collections.Generic.IList<string> authenticationSchemes = default(System.Collections.Generic.IList<string>)) => throw null;
                 public static Microsoft.AspNetCore.Http.HttpResults.StatusCodeHttpResult StatusCode(int statusCode) => throw null;

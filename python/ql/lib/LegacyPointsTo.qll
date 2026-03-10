@@ -20,8 +20,21 @@
  */
 
 private import python
-private import semmle.python.pointsto.PointsTo
-private import semmle.python.objects.Modules
+import semmle.python.pointsto.Base
+import semmle.python.pointsto.Context
+import semmle.python.pointsto.PointsTo
+import semmle.python.pointsto.PointsToContext
+import semmle.python.objects.ObjectAPI
+import semmle.python.objects.ObjectInternal
+import semmle.python.types.Object
+import semmle.python.types.ClassObject
+import semmle.python.types.FunctionObject
+import semmle.python.types.ModuleObject
+import semmle.python.types.Exceptions
+import semmle.python.types.Properties
+import semmle.python.types.Descriptors
+import semmle.python.SelfAttribute
+import semmle.python.Metrics
 
 /**
  * An extension of `ControlFlowNode` that provides points-to predicates.
@@ -93,6 +106,24 @@ class ControlFlowNodeWithPointsTo extends ControlFlowNode {
     // for that variable.
     exists(SsaVariable v | v.getAUse() = this | varHasCompletePointsToSet(v))
   }
+
+  /** Whether it is unlikely that this ControlFlowNode can be reached */
+  predicate unlikelyReachable() {
+    not start_bb_likely_reachable(this.getBasicBlock())
+    or
+    exists(BasicBlock b |
+      start_bb_likely_reachable(b) and
+      not end_bb_likely_reachable(b) and
+      // If there is an unlikely successor edge earlier in the BB
+      // than this node, then this node must be unreachable.
+      exists(ControlFlowNode p, int i, int j |
+        p.(RaisingNode).unlikelySuccessor(_) and
+        p = b.getNode(i) and
+        this = b.getNode(j) and
+        i < j
+      )
+    )
+  }
 }
 
 /**
@@ -119,6 +150,45 @@ private predicate varHasCompletePointsToSet(SsaVariable var) {
       varHasCompletePointsToSet(phiInput)
     )
   )
+}
+
+private predicate start_bb_likely_reachable(BasicBlock b) {
+  exists(Scope s | s.getEntryNode() = b.getNode(_))
+  or
+  exists(BasicBlock pred |
+    pred = b.getAPredecessor() and
+    end_bb_likely_reachable(pred) and
+    not pred.getLastNode().(RaisingNode).unlikelySuccessor(b)
+  )
+}
+
+private predicate end_bb_likely_reachable(BasicBlock b) {
+  start_bb_likely_reachable(b) and
+  not exists(ControlFlowNode p, ControlFlowNode s |
+    p.(RaisingNode).unlikelySuccessor(s) and
+    p = b.getNode(_) and
+    s = b.getNode(_) and
+    not p = b.getLastNode()
+  )
+}
+
+/**
+ * An extension of `BasicBlock` that provides points-to related methods.
+ */
+class BasicBlockWithPointsTo extends BasicBlock {
+  /**
+   * Whether (as inferred by type inference) it is highly unlikely (or impossible) for control to flow from this to succ.
+   */
+  predicate unlikelySuccessor(BasicBlockWithPointsTo succ) {
+    this.getLastNode().(RaisingNode).unlikelySuccessor(succ.firstNode())
+    or
+    not end_bb_likely_reachable(this) and succ = this.getASuccessor()
+  }
+
+  /**
+   * Whether (as inferred by type inference) this basic block is likely to be reachable.
+   */
+  predicate likelyReachable() { start_bb_likely_reachable(this) }
 }
 
 /**
@@ -207,4 +277,332 @@ class ModuleWithPointsTo extends Module {
   }
 
   override string getAQlClass() { none() }
+}
+
+/**
+ * An extension of `Function` that provides points-to related methods.
+ */
+class FunctionWithPointsTo extends Function {
+  /** Gets the FunctionObject corresponding to this function */
+  FunctionObject getFunctionObject() { result.getOrigin() = this.getDefinition() }
+
+  override string getAQlClass() { none() }
+}
+
+/**
+ * An extension of `Class` that provides points-to related methods.
+ */
+class ClassWithPointsTo extends Class {
+  /** Gets the ClassObject corresponding to this class */
+  ClassObject getClassObject() { result.getOrigin() = this.getParent() }
+
+  override string getAQlClass() { none() }
+}
+
+/** Gets the `Object` corresponding to the immutable literal `l`. */
+Object getLiteralObject(ImmutableLiteral l) {
+  l instanceof IntegerLiteral and
+  (
+    py_cobjecttypes(result, theIntType()) and py_cobjectnames(result, l.(Num).getN())
+    or
+    py_cobjecttypes(result, theLongType()) and py_cobjectnames(result, l.(Num).getN())
+  )
+  or
+  l instanceof FloatLiteral and
+  py_cobjecttypes(result, theFloatType()) and
+  py_cobjectnames(result, l.(Num).getN())
+  or
+  l instanceof ImaginaryLiteral and
+  py_cobjecttypes(result, theComplexType()) and
+  py_cobjectnames(result, l.(Num).getN())
+  or
+  l instanceof NegativeIntegerLiteral and
+  (
+    (py_cobjecttypes(result, theIntType()) or py_cobjecttypes(result, theLongType())) and
+    py_cobjectnames(result, "-" + l.(UnaryExpr).getOperand().(IntegerLiteral).getN())
+  )
+  or
+  l instanceof Bytes and
+  py_cobjecttypes(result, theBytesType()) and
+  py_cobjectnames(result, l.(Bytes).quotedString())
+  or
+  l instanceof Unicode and
+  py_cobjecttypes(result, theUnicodeType()) and
+  py_cobjectnames(result, l.(Unicode).quotedString())
+  or
+  l instanceof True and
+  name_consts(l, "True") and
+  result = theTrueObject()
+  or
+  l instanceof False and
+  name_consts(l, "False") and
+  result = theFalseObject()
+  or
+  l instanceof None and
+  name_consts(l, "None") and
+  result = theNoneObject()
+}
+
+private predicate gettext_installed() {
+  // Good enough (and fast) approximation
+  exists(Module m | m.getName() = "gettext")
+}
+
+private predicate builtin_constant(string name) {
+  exists(Object::builtin(name))
+  or
+  name = "WindowsError"
+  or
+  name = "_" and gettext_installed()
+}
+
+/** Whether this name is (almost) always defined, ie. it is a builtin or VM defined name */
+predicate globallyDefinedName(string name) { builtin_constant(name) or auto_name(name) }
+
+private predicate auto_name(string name) {
+  name = "__file__" or name = "__builtins__" or name = "__name__"
+}
+
+/** An extension of `SsaVariable` that provides points-to related methods. */
+class SsaVariableWithPointsTo extends SsaVariable {
+  /** Gets an argument of the phi function defining this variable, pruned of unlikely edges. */
+  SsaVariable getAPrunedPhiInput() {
+    result = this.getAPhiInput() and
+    exists(BasicBlock incoming | incoming = this.getPredecessorBlockForPhiArgument(result) |
+      not incoming.getLastNode().(RaisingNode).unlikelySuccessor(this.getDefinition())
+    )
+  }
+
+  /** Gets the incoming edges for a Phi node, pruned of unlikely edges. */
+  private BasicBlockWithPointsTo getAPrunedPredecessorBlockForPhi() {
+    result = this.getAPredecessorBlockForPhi() and
+    not result.unlikelySuccessor(this.getDefinition().getBasicBlock())
+  }
+
+  private predicate implicitlyDefined() {
+    not exists(this.getDefinition()) and
+    not py_ssa_phi(this, _) and
+    exists(GlobalVariable var | this.getVariable() = var |
+      globallyDefinedName(var.getId())
+      or
+      var.getId() = "__path__" and var.getScope().(Module).isPackageInit()
+    )
+  }
+
+  /** Whether this variable may be undefined */
+  predicate maybeUndefined() {
+    not exists(this.getDefinition()) and not py_ssa_phi(this, _) and not this.implicitlyDefined()
+    or
+    this.getDefinition().isDelete()
+    or
+    exists(SsaVariableWithPointsTo var | var = this.getAPrunedPhiInput() | var.maybeUndefined())
+    or
+    /*
+     * For phi-nodes, there must be a corresponding phi-input for each control-flow
+     * predecessor. Otherwise, the variable will be undefined on that incoming edge.
+     * WARNING: the same phi-input may cover multiple predecessors, so this check
+     *          cannot be done by counting.
+     */
+
+    exists(BasicBlock incoming |
+      reaches_end(incoming) and
+      incoming = this.getAPrunedPredecessorBlockForPhi() and
+      not this.getAPhiInput().getDefinition().getBasicBlock().dominates(incoming)
+    )
+  }
+
+  override string getAQlClass() { none() }
+}
+
+private predicate reaches_end(BasicBlock b) {
+  not exits_early(b) and
+  (
+    /* Entry point */
+    not exists(BasicBlock prev | prev.getASuccessor() = b)
+    or
+    exists(BasicBlock prev | prev.getASuccessor() = b | reaches_end(prev))
+  )
+}
+
+private predicate exits_early(BasicBlock b) {
+  exists(FunctionObject f |
+    f.neverReturns() and
+    f.getACall().getBasicBlock() = b
+  )
+}
+
+/** The metrics for a function that require points-to analysis */
+class FunctionMetricsWithPointsTo extends FunctionMetrics {
+  /**
+   * Gets the cyclomatic complexity of the function:
+   * The number of linearly independent paths through the source code.
+   * Computed as     E - N + 2P,
+   * where
+   *  E = the number of edges of the graph.
+   *  N = the number of nodes of the graph.
+   *  P = the number of connected components, which for a single function is 1.
+   */
+  int getCyclomaticComplexity() {
+    exists(int e, int n |
+      n = count(BasicBlockWithPointsTo b | b = this.getABasicBlock() and b.likelyReachable()) and
+      e =
+        count(BasicBlockWithPointsTo b1, BasicBlockWithPointsTo b2 |
+          b1 = this.getABasicBlock() and
+          b1.likelyReachable() and
+          b2 = this.getABasicBlock() and
+          b2.likelyReachable() and
+          b2 = b1.getASuccessor() and
+          not b1.unlikelySuccessor(b2)
+        )
+    |
+      result = e - n + 2
+    )
+  }
+
+  private BasicBlock getABasicBlock() {
+    result = this.getEntryNode().getBasicBlock()
+    or
+    exists(BasicBlock mid | mid = this.getABasicBlock() and result = mid.getASuccessor())
+  }
+
+  /**
+   * Dependency of Callables
+   * One callable "this" depends on another callable "result"
+   * if "this" makes some call to a method that may end up being "result".
+   */
+  FunctionMetricsWithPointsTo getADependency() {
+    result != this and
+    not non_coupling_method(result) and
+    exists(Call call | call.getScope() = this |
+      exists(FunctionObject callee | callee.getFunction() = result |
+        call.getAFlowNode().getFunction().(ControlFlowNodeWithPointsTo).refersTo(callee)
+      )
+      or
+      exists(Attribute a | call.getFunc() = a |
+        unique_root_method(result, a.getName())
+        or
+        exists(Name n | a.getObject() = n and n.getId() = "self" |
+          result.getScope() = this.getScope() and
+          result.getName() = a.getName()
+        )
+      )
+    )
+  }
+
+  /**
+   * Afferent Coupling
+   * the number of callables that depend on this method.
+   * This is sometimes called the "fan-in" of a method.
+   */
+  int getAfferentCoupling() {
+    result = count(FunctionMetricsWithPointsTo m | m.getADependency() = this)
+  }
+
+  /**
+   * Efferent Coupling
+   * the number of methods that this method depends on
+   * This is sometimes called the "fan-out" of a method.
+   */
+  int getEfferentCoupling() {
+    result = count(FunctionMetricsWithPointsTo m | this.getADependency() = m)
+  }
+
+  override string getAQlClass() { result = "FunctionMetrics" }
+}
+
+/** The metrics for a class that require points-to analysis */
+class ClassMetricsWithPointsTo extends ClassMetrics {
+  private predicate dependsOn(Class other) {
+    other != this and
+    (
+      exists(FunctionMetricsWithPointsTo f1, FunctionMetricsWithPointsTo f2 |
+        f1.getADependency() = f2
+      |
+        f1.getScope() = this and f2.getScope() = other
+      )
+      or
+      exists(Function f, Call c, ClassObject cls | c.getScope() = f and f.getScope() = this |
+        c.getFunc().(ExprWithPointsTo).refersTo(cls) and
+        cls.getPyClass() = other
+      )
+    )
+  }
+
+  /**
+   * Gets the afferent coupling of a class -- the number of classes that
+   * directly depend on it.
+   */
+  int getAfferentCoupling() { result = count(ClassMetricsWithPointsTo t | t.dependsOn(this)) }
+
+  /**
+   * Gets the efferent coupling of a class -- the number of classes that
+   * it directly depends on.
+   */
+  int getEfferentCoupling() { result = count(ClassMetricsWithPointsTo t | this.dependsOn(t)) }
+
+  /** Gets the depth of inheritance of the class. */
+  int getInheritanceDepth() {
+    exists(ClassObject cls | cls.getPyClass() = this | result = max(classInheritanceDepth(cls)))
+  }
+
+  override string getAQlClass() { result = "ClassMetrics" }
+}
+
+private int classInheritanceDepth(ClassObject cls) {
+  /* Prevent run-away recursion in case of circular inheritance */
+  not cls.getASuperType() = cls and
+  (
+    exists(ClassObject sup | cls.getABaseType() = sup | result = classInheritanceDepth(sup) + 1)
+    or
+    not exists(cls.getABaseType()) and
+    (
+      major_version() = 2 and result = 0
+      or
+      major_version() > 2 and result = 1
+    )
+  )
+}
+
+/** The metrics for a module that require points-to analysis */
+class ModuleMetricsWithPointsTo extends ModuleMetrics {
+  /**
+   * Gets the afferent coupling of a module -- the number of modules that
+   *  directly depend on it.
+   */
+  int getAfferentCoupling() { result = count(ModuleMetricsWithPointsTo t | t.dependsOn(this)) }
+
+  /**
+   * Gets the efferent coupling of a module -- the number of modules that
+   *  it directly depends on.
+   */
+  int getEfferentCoupling() { result = count(ModuleMetricsWithPointsTo t | this.dependsOn(t)) }
+
+  private predicate dependsOn(Module other) {
+    other != this and
+    (
+      exists(FunctionMetricsWithPointsTo f1, FunctionMetricsWithPointsTo f2 |
+        f1.getADependency() = f2
+      |
+        f1.getEnclosingModule() = this and f2.getEnclosingModule() = other
+      )
+      or
+      exists(Function f, Call c, ClassObject cls | c.getScope() = f and f.getScope() = this |
+        c.getFunc().(ExprWithPointsTo).refersTo(cls) and
+        cls.getPyClass().getEnclosingModule() = other
+      )
+    )
+  }
+
+  override string getAQlClass() { result = "ModuleMetrics" }
+}
+
+/** Helpers for coupling */
+predicate unique_root_method(Function func, string name) {
+  name = func.getName() and
+  not exists(FunctionObject f, FunctionObject other |
+    f.getFunction() = func and
+    other.getName() = name
+  |
+    not other.overrides(f)
+  )
 }

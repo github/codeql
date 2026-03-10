@@ -9,8 +9,8 @@ import android.app.Activity;
 
 class Test {
     class A extends WebViewClient {
-        public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) { // $hasResult
-            handler.proceed(); 
+        public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) { // $ hasResult
+            handler.proceed();
         }
     }
 
@@ -28,7 +28,7 @@ class Test {
             else {
                 handler.cancel();
             }
-        } 
+        }
     }
 
     class C extends WebViewClient {

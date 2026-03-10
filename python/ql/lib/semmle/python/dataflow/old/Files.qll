@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 import semmle.python.dataflow.TaintTracking
 
 class OpenFile extends TaintKind {

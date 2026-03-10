@@ -24,7 +24,7 @@ module JwtParseWithConstantKeyConfig implements DataFlow::ConfigSig {
       or
       n = fd.(FuncDecl).getFunction().getARead()
     |
-      GolangJwtKeyFunc::flow(n, _) and
+      GolangJwtKeyFunc::flowFrom(n) and
       sink = rn and
       rn.getRoot() = fd and
       rn.getIndex() = 0

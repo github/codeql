@@ -6,13 +6,8 @@
 
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.elements.internal.generated.Raw
-import codeql.rust.elements.internal.AdtImpl::Impl as AdtImpl
-import codeql.rust.elements.Attr
 import codeql.rust.elements.FieldList
-import codeql.rust.elements.GenericParamList
-import codeql.rust.elements.Name
-import codeql.rust.elements.Visibility
-import codeql.rust.elements.WhereClause
+import codeql.rust.elements.internal.TypeItemImpl::Impl as TypeItemImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `Struct` and should not
@@ -30,26 +25,8 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::Struct` class directly.
    * Use the subclass `Struct`, where the following predicates are available.
    */
-  class Struct extends Synth::TStruct, AdtImpl::Adt {
+  class Struct extends Synth::TStruct, TypeItemImpl::TypeItem {
     override string getAPrimaryQlClass() { result = "Struct" }
-
-    /**
-     * Gets the `index`th attr of this struct (0-based).
-     */
-    Attr getAttr(int index) {
-      result =
-        Synth::convertAttrFromRaw(Synth::convertStructToRaw(this).(Raw::Struct).getAttr(index))
-    }
-
-    /**
-     * Gets any of the attrs of this struct.
-     */
-    final Attr getAnAttr() { result = this.getAttr(_) }
-
-    /**
-     * Gets the number of attrs of this struct.
-     */
-    final int getNumberOfAttrs() { result = count(int i | exists(this.getAttr(i))) }
 
     /**
      * Gets the field list of this struct, if it exists.
@@ -63,62 +40,5 @@ module Generated {
      * Holds if `getFieldList()` exists.
      */
     final predicate hasFieldList() { exists(this.getFieldList()) }
-
-    /**
-     * Gets the generic parameter list of this struct, if it exists.
-     */
-    GenericParamList getGenericParamList() {
-      result =
-        Synth::convertGenericParamListFromRaw(Synth::convertStructToRaw(this)
-              .(Raw::Struct)
-              .getGenericParamList())
-    }
-
-    /**
-     * Holds if `getGenericParamList()` exists.
-     */
-    final predicate hasGenericParamList() { exists(this.getGenericParamList()) }
-
-    /**
-     * Gets the name of this struct, if it exists.
-     */
-    Name getName() {
-      result = Synth::convertNameFromRaw(Synth::convertStructToRaw(this).(Raw::Struct).getName())
-    }
-
-    /**
-     * Holds if `getName()` exists.
-     */
-    final predicate hasName() { exists(this.getName()) }
-
-    /**
-     * Gets the visibility of this struct, if it exists.
-     */
-    Visibility getVisibility() {
-      result =
-        Synth::convertVisibilityFromRaw(Synth::convertStructToRaw(this)
-              .(Raw::Struct)
-              .getVisibility())
-    }
-
-    /**
-     * Holds if `getVisibility()` exists.
-     */
-    final predicate hasVisibility() { exists(this.getVisibility()) }
-
-    /**
-     * Gets the where clause of this struct, if it exists.
-     */
-    WhereClause getWhereClause() {
-      result =
-        Synth::convertWhereClauseFromRaw(Synth::convertStructToRaw(this)
-              .(Raw::Struct)
-              .getWhereClause())
-    }
-
-    /**
-     * Holds if `getWhereClause()` exists.
-     */
-    final predicate hasWhereClause() { exists(this.getWhereClause()) }
   }
 }

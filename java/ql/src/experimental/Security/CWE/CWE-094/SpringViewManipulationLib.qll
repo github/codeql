@@ -26,7 +26,7 @@ class PortletRenderRequestMethod extends Method {
   PortletRenderRequestMethod() {
     exists(RefType c, Interface t |
       c.extendsOrImplements*(t) and
-      t.hasQualifiedName("javax.portlet", "RenderState") and
+      t.hasQualifiedName(javaxOrJakarta() + ".portlet", "RenderState") and
       this = c.getAMethod()
     |
       this.hasName([
@@ -125,10 +125,10 @@ private class StringFormatMethod extends StringCombiningMethod {
 class SpringViewManipulationSink extends DataFlow::ExprNode {
   SpringViewManipulationSink() {
     exists(ReturnStmt r, SpringRequestMappingMethod m |
-      r.getResult() = this.asExpr() and
+      r.getExpr() = this.asExpr() and
       m.getBody().getAStmt() = r and
       not m.isResponseBody() and
-      r.getResult().getType() instanceof TypeString
+      r.getExpr().getType() instanceof TypeString
     )
     or
     exists(ConstructorCall c | c.getConstructedType() instanceof ModelAndView |

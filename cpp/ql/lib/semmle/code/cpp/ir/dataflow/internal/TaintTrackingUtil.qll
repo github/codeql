@@ -5,64 +5,81 @@ private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import DataFlowUtil
 private import DataFlowPrivate
+private import DataFlowNodes
 private import SsaImpl as Ssa
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.cpp.ir.dataflow.FlowSteps
 
-/**
- * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
- * (intra-procedural) step. This relation is only used for local taint flow
- * (for example `TaintTracking::localTaint(source, sink)`) so it may contain
- * special cases that should only apply to local taint flow.
- */
-predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  // dataflow step
-  DataFlow::localFlowStep(nodeFrom, nodeTo)
-  or
-  // taint flow step
-  localAdditionalTaintStep(nodeFrom, nodeTo, _)
-  or
-  // models-as-data summarized flow for local data flow (i.e. special case for flow
-  // through calls to modeled functions, without relying on global dataflow to join
-  // the dots).
-  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
+cached
+private module Cached {
+  private import DataFlowImplCommon as DataFlowImplCommon
+
+  /**
+   * This predicate exists to collapse the `cached` predicates in this module with the
+   * `cached` predicates in other C/C++ dataflow files, which is then collapsed
+   * with the `cached` predicates in `DataFlowImplCommon.qll`.
+   */
+  cached
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
+
+  /**
+   * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
+   * (intra-procedural) step. This relation is only used for local taint flow
+   * (for example `TaintTracking::localTaint(source, sink)`) so it may contain
+   * special cases that should only apply to local taint flow.
+   */
+  cached
+  predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // dataflow step
+    DataFlow::localFlowStep(nodeFrom, nodeTo)
+    or
+    // taint flow step
+    localAdditionalTaintStep(nodeFrom, nodeTo, _)
+    or
+    // models-as-data summarized flow for local data flow (i.e. special case for flow
+    // through calls to modeled functions, without relying on global dataflow to join
+    // the dots).
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
+  }
+
+  /**
+   * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
+   * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
+   * different objects.
+   */
+  cached
+  predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
+    operandToInstructionTaintStep(nodeFrom.asOperand(), nodeTo.asInstruction()) and
+    model = ""
+    or
+    modeledTaintStep(nodeFrom, nodeTo, model)
+    or
+    // Flow from (the indirection of) an operand of a pointer arithmetic instruction to the
+    // indirection of the pointer arithmetic instruction. This provides flow from `source`
+    // in `x[source]` to the result of the associated load instruction.
+    exists(PointerArithmeticInstruction pai, int indirectionIndex |
+      nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](indirectionIndex)) and
+      hasInstructionAndIndex(nodeTo, pai, indirectionIndex + 1)
+    ) and
+    model = ""
+    or
+    any(Ssa::Indirection ind).isAdditionalTaintStep(nodeFrom, nodeTo) and
+    model = ""
+    or
+    // models-as-data summarized flow
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
+    or
+    // object->field conflation for content that is a `TaintInheritingContent`.
+    exists(DataFlow::ContentSet f |
+      readStep(nodeFrom, f, nodeTo) and
+      f.getAReadContent() instanceof TaintInheritingContent
+    ) and
+    model = ""
+  }
 }
 
-/**
- * Holds if taint can flow in one local step from `nodeFrom` to `nodeTo` excluding
- * local data flow steps. That is, `nodeFrom` and `nodeTo` are likely to represent
- * different objects.
- */
-cached
-predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, string model) {
-  operandToInstructionTaintStep(nodeFrom.asOperand(), nodeTo.asInstruction()) and
-  model = ""
-  or
-  modeledTaintStep(nodeFrom, nodeTo, model)
-  or
-  // Flow from (the indirection of) an operand of a pointer arithmetic instruction to the
-  // indirection of the pointer arithmetic instruction. This provides flow from `source`
-  // in `x[source]` to the result of the associated load instruction.
-  exists(PointerArithmeticInstruction pai, int indirectionIndex |
-    nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](indirectionIndex)) and
-    hasInstructionAndIndex(nodeTo, pai, indirectionIndex + 1)
-  ) and
-  model = ""
-  or
-  any(Ssa::Indirection ind).isAdditionalTaintStep(nodeFrom, nodeTo) and
-  model = ""
-  or
-  // models-as-data summarized flow
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-    nodeTo.(FlowSummaryNode).getSummaryNode(), false, model)
-  or
-  // object->field conflation for content that is a `TaintInheritingContent`.
-  exists(DataFlow::ContentSet f |
-    readStep(nodeFrom, f, nodeTo) and
-    f.getAReadContent() instanceof TaintInheritingContent
-  ) and
-  model = ""
-}
+import Cached
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -196,7 +213,7 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut, string
   // Taint flow from a pointer argument to an output, when the model specifies flow from the deref
   // to that output, but the deref is not modeled in the IR for the caller.
   exists(
-    CallInstruction call, DataFlow::SideEffectOperandNode indirectArgument, Function func,
+    CallInstruction call, SideEffectOperandNode indirectArgument, Function func,
     FunctionInput modelIn, FunctionOutput modelOut
   |
     indirectArgument = callInput(call, modelIn) and

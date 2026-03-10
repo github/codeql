@@ -14,44 +14,111 @@ models
 | 13 | Source: ; ; false; NtReadFile; ; ; Argument[*5]; local; manual |
 | 14 | Source: ; ; false; ReadFile; ; ; Argument[*1]; local; manual |
 | 15 | Source: ; ; false; ReadFileEx; ; ; Argument[*1]; local; manual |
-| 16 | Source: ; ; false; ymlSource; ; ; ReturnValue; local; manual |
-| 17 | Source: boost::asio; ; false; read_until; ; ; Argument[*1]; remote; manual |
-| 18 | Summary: ; ; false; CommandLineToArgvA; ; ; Argument[*0]; ReturnValue[**]; taint; manual |
-| 19 | Summary: ; ; false; CreateRemoteThread; ; ; Argument[@4]; Argument[3].Parameter[@0]; value; manual |
-| 20 | Summary: ; ; false; CreateRemoteThreadEx; ; ; Argument[@4]; Argument[3].Parameter[@0]; value; manual |
-| 21 | Summary: ; ; false; CreateThread; ; ; Argument[@3]; Argument[2].Parameter[@0]; value; manual |
-| 22 | Summary: ; ; false; ReadFileEx; ; ; Argument[*3].Field[@hEvent]; Argument[4].Parameter[*2].Field[@hEvent]; value; manual |
-| 23 | Summary: ; ; false; RtlCopyDeviceMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
-| 24 | Summary: ; ; false; RtlCopyMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
-| 25 | Summary: ; ; false; RtlCopyMemoryNonTemporal; ; ; Argument[*@1]; Argument[*@0]; value; manual |
-| 26 | Summary: ; ; false; RtlCopyUnicodeString; ; ; Argument[*1].Field[*Buffer]; Argument[*0].Field[*Buffer]; value; manual |
-| 27 | Summary: ; ; false; RtlCopyVolatileMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
-| 28 | Summary: ; ; false; RtlInitUnicodeString; ; ; Argument[*1]; Argument[*0].Field[*Buffer]; value; manual |
-| 29 | Summary: ; ; false; RtlMoveMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
-| 30 | Summary: ; ; false; RtlMoveVolatileMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
-| 31 | Summary: ; ; false; callWithArgument; ; ; Argument[1]; Argument[0].Parameter[0]; value; manual |
-| 32 | Summary: ; ; false; pthread_create; ; ; Argument[@3]; Argument[2].Parameter[@0]; value; manual |
-| 33 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
-| 34 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
-| 35 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
-| 36 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
+| 16 | Source: ; ; false; WinHttpQueryHeaders; ; ; Argument[*3]; remote; manual |
+| 17 | Source: ; ; false; WinHttpQueryHeadersEx; ; ; Argument[**8]; remote; manual |
+| 18 | Source: ; ; false; WinHttpQueryHeadersEx; ; ; Argument[*5]; remote; manual |
+| 19 | Source: ; ; false; WinHttpQueryHeadersEx; ; ; Argument[*6]; remote; manual |
+| 20 | Source: ; ; false; WinHttpReadData; ; ; Argument[*1]; remote; manual |
+| 21 | Source: ; ; false; WinHttpReadDataEx; ; ; Argument[*1]; remote; manual |
+| 22 | Source: ; ; false; ymlSource; ; ; ReturnValue; local; manual |
+| 23 | Source: Azure::Core::Http; RawResponse; true; ExtractBodyStream; ; ; ReturnValue[*]; remote; manual |
+| 24 | Source: Azure::Core::Http; RawResponse; true; GetBody; ; ; ReturnValue[*]; remote; manual |
+| 25 | Source: Azure::Core::Http; RawResponse; true; GetHeaders; ; ; ReturnValue[*]; remote; manual |
+| 26 | Source: Azure::Core::Http; Request; true; GetBodyStream; ; ; ReturnValue[*]; remote; manual |
+| 27 | Source: Azure::Core::Http; Request; true; GetHeader; ; ; ReturnValue; remote; manual |
+| 28 | Source: Azure::Core::Http; Request; true; GetHeaders; ; ; ReturnValue; remote; manual |
+| 29 | Source: boost::asio; ; false; read_until; ; ; Argument[*1]; remote; manual |
+| 30 | Summary: ; ; false; CommandLineToArgvA; ; ; Argument[*0]; ReturnValue[**]; taint; manual |
+| 31 | Summary: ; ; false; CreateRemoteThread; ; ; Argument[@4]; Argument[3].Parameter[@0]; value; manual |
+| 32 | Summary: ; ; false; CreateRemoteThreadEx; ; ; Argument[@4]; Argument[3].Parameter[@0]; value; manual |
+| 33 | Summary: ; ; false; CreateThread; ; ; Argument[@3]; Argument[2].Parameter[@0]; value; manual |
+| 34 | Summary: ; ; false; ReadFileEx; ; ; Argument[*3].Field[@hEvent]; Argument[4].Parameter[*2].Field[@hEvent]; value; manual |
+| 35 | Summary: ; ; false; RtlCopyDeviceMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
+| 36 | Summary: ; ; false; RtlCopyMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
+| 37 | Summary: ; ; false; RtlCopyMemoryNonTemporal; ; ; Argument[*@1]; Argument[*@0]; value; manual |
+| 38 | Summary: ; ; false; RtlCopyUnicodeString; ; ; Argument[*1].Field[*Buffer]; Argument[*0].Field[*Buffer]; value; manual |
+| 39 | Summary: ; ; false; RtlCopyVolatileMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
+| 40 | Summary: ; ; false; RtlInitUnicodeString; ; ; Argument[*1]; Argument[*0].Field[*Buffer]; value; manual |
+| 41 | Summary: ; ; false; RtlMoveMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
+| 42 | Summary: ; ; false; RtlMoveVolatileMemory; ; ; Argument[*@1]; Argument[*@0]; value; manual |
+| 43 | Summary: ; ; false; WinHttpCrackUrl; ; ; Argument[*0]; Argument[*3]; taint; manual |
+| 44 | Summary: ; ; false; callWithArgument; ; ; Argument[1]; Argument[0].Parameter[0]; value; manual |
+| 45 | Summary: ; ; false; callWithNonTypeTemplate<T>; (const T &); ; Argument[*0]; ReturnValue; value; manual |
+| 46 | Summary: ; ; false; pthread_create; ; ; Argument[@3]; Argument[2].Parameter[@0]; value; manual |
+| 47 | Summary: ; ; false; ymlStepGenerated; ; ; Argument[0]; ReturnValue; taint; df-generated |
+| 48 | Summary: ; ; false; ymlStepManual; ; ; Argument[0]; ReturnValue; taint; manual |
+| 49 | Summary: ; ; false; ymlStepManual_with_body; ; ; Argument[0]; ReturnValue; taint; manual |
+| 50 | Summary: Azure::Core::IO; BodyStream; true; Read; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 51 | Summary: Azure::Core::IO; BodyStream; true; ReadToCount; ; ; Argument[-1]; Argument[*0]; taint; manual |
+| 52 | Summary: Azure::Core::IO; BodyStream; true; ReadToEnd; ; ; Argument[-1]; ReturnValue.Element; taint; manual |
+| 53 | Summary: Azure; Nullable; true; Value; ; ; Argument[-1]; ReturnValue[*]; taint; manual |
+| 54 | Summary: boost::asio; ; false; buffer; ; ; Argument[*0]; ReturnValue; taint; manual |
 edges
-| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:36 |
-| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:17  |
-| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | *recv_buffer | provenance | Src:MaD:17 Sink:MaD:2 |
+| asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | provenance | MaD:54 |
+| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:91:7:91:17 | recv_buffer | provenance | Src:MaD:29  |
+| asio_streams.cpp:87:34:87:44 | read_until output argument | asio_streams.cpp:93:29:93:39 | *recv_buffer | provenance | Src:MaD:29 Sink:MaD:2 |
 | asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:98:7:98:14 | send_str | provenance | TaintFunction |
 | asio_streams.cpp:97:37:97:44 | call to source | asio_streams.cpp:100:64:100:71 | *send_str | provenance | TaintFunction |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:100:44:100:62 | call to buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:101:7:101:17 | send_buffer | provenance |  |
 | asio_streams.cpp:100:44:100:62 | call to buffer | asio_streams.cpp:103:29:103:39 | *send_buffer | provenance | Sink:MaD:2 |
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | provenance |  |
-| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:36 |
-| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:34 |
-| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:33 |
-| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:35 |
+| asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:100:44:100:62 | call to buffer | provenance | MaD:54 |
+| azure.cpp:62:10:62:14 | [summary param] this in Value | azure.cpp:62:10:62:14 | [summary] to write: ReturnValue[*] in Value | provenance | MaD:53 |
+| azure.cpp:113:16:113:19 | [summary param] this in Read | azure.cpp:113:16:113:19 | [summary param] *0 in Read [Return] | provenance | MaD:50 |
+| azure.cpp:114:16:114:26 | [summary param] this in ReadToCount | azure.cpp:114:16:114:26 | [summary param] *0 in ReadToCount [Return] | provenance | MaD:51 |
+| azure.cpp:115:30:115:38 | [summary param] this in ReadToEnd | azure.cpp:115:30:115:38 | [summary] to write: ReturnValue.Element in ReadToEnd | provenance | MaD:52 |
+| azure.cpp:115:30:115:38 | [summary] to write: ReturnValue.Element in ReadToEnd | azure.cpp:115:30:115:38 | [summary] to write: ReturnValue in ReadToEnd [element] | provenance |  |
+| azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:253:48:253:60 | *call to GetBodyStream | provenance | Src:MaD:26  |
+| azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:257:5:257:8 | *resp | provenance |  |
+| azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:262:5:262:8 | *resp | provenance |  |
+| azure.cpp:253:48:253:60 | *call to GetBodyStream | azure.cpp:266:38:266:41 | *resp | provenance |  |
+| azure.cpp:257:5:257:8 | *resp | azure.cpp:113:16:113:19 | [summary param] this in Read | provenance |  |
+| azure.cpp:257:5:257:8 | *resp | azure.cpp:257:16:257:21 | Read output argument | provenance | MaD:50 |
+| azure.cpp:257:16:257:21 | Read output argument | azure.cpp:258:10:258:16 | * ... | provenance |  |
+| azure.cpp:262:5:262:8 | *resp | azure.cpp:114:16:114:26 | [summary param] this in ReadToCount | provenance |  |
+| azure.cpp:262:5:262:8 | *resp | azure.cpp:262:23:262:28 | ReadToCount output argument | provenance | MaD:51 |
+| azure.cpp:262:23:262:28 | ReadToCount output argument | azure.cpp:263:10:263:16 | * ... | provenance |  |
+| azure.cpp:266:38:266:41 | *resp | azure.cpp:115:30:115:38 | [summary param] this in ReadToEnd | provenance |  |
+| azure.cpp:266:38:266:41 | *resp | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance | MaD:52 |
+| azure.cpp:266:44:266:52 | call to ReadToEnd [element] | azure.cpp:266:44:266:52 | call to ReadToEnd [element] | provenance |  |
+| azure.cpp:266:44:266:52 | call to ReadToEnd [element] | azure.cpp:267:10:267:12 | vec [element] | provenance |  |
+| azure.cpp:267:10:267:12 | vec [element] | azure.cpp:267:10:267:12 | vec | provenance |  |
+| azure.cpp:273:62:273:64 | call to GetHeaders | azure.cpp:273:62:273:64 | call to GetHeaders | provenance | Src:MaD:25  |
+| azure.cpp:273:62:273:64 | call to GetHeaders | azure.cpp:274:14:274:29 | call to operator[] | provenance | TaintFunction |
+| azure.cpp:273:62:273:64 | call to GetHeaders | azure.cpp:274:14:274:29 | call to operator[] | provenance | TaintFunction |
+| azure.cpp:273:62:273:64 | call to GetHeaders | azure.cpp:274:14:274:29 | call to operator[] | provenance | TaintFunction |
+| azure.cpp:274:14:274:29 | call to operator[] | azure.cpp:274:10:274:29 | call to operator[] | provenance |  |
+| azure.cpp:274:14:274:29 | call to operator[] | azure.cpp:274:14:274:29 | call to operator[] | provenance |  |
+| azure.cpp:277:45:277:47 | call to GetBody | azure.cpp:277:45:277:47 | call to GetBody | provenance | Src:MaD:24  |
+| azure.cpp:277:45:277:47 | call to GetBody | azure.cpp:278:10:278:13 | body | provenance |  |
+| azure.cpp:277:45:277:47 | call to GetBody | azure.cpp:278:10:278:13 | body | provenance |  |
+| azure.cpp:278:10:278:13 | body | azure.cpp:278:10:278:13 | body | provenance |  |
+| azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | provenance | Src:MaD:23  |
+| azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:282:21:282:23 | *call to get | provenance |  |
+| azure.cpp:282:21:282:23 | *call to get | azure.cpp:115:30:115:38 | [summary param] this in ReadToEnd | provenance |  |
+| azure.cpp:282:21:282:23 | *call to get | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance | MaD:52 |
+| azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:10:282:38 | call to ReadToEnd | provenance |  |
+| azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance |  |
+| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:62:10:62:14 | [summary param] this in Value | provenance |  |
+| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:289:63:289:65 | call to Value | provenance | MaD:53 |
+| azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:24:289:56 | call to GetHeader | provenance |  |
+| azure.cpp:289:32:289:40 | call to GetHeader | azure.cpp:289:32:289:40 | call to GetHeader | provenance | Src:MaD:27  |
+| azure.cpp:289:63:289:65 | call to Value | azure.cpp:289:63:289:65 | call to Value | provenance |  |
+| azure.cpp:289:63:289:65 | call to Value | azure.cpp:290:10:290:20 | headerValue | provenance |  |
+| azure.cpp:289:63:289:65 | call to Value | azure.cpp:290:10:290:20 | headerValue | provenance |  |
+| azure.cpp:290:10:290:20 | headerValue | azure.cpp:290:10:290:20 | headerValue | provenance |  |
+| azure.cpp:293:58:293:67 | call to GetHeaders | azure.cpp:293:58:293:67 | call to GetHeaders | provenance | Src:MaD:28  |
+| azure.cpp:293:58:293:67 | call to GetHeaders | azure.cpp:294:38:294:53 | call to operator[] | provenance | TaintFunction |
+| azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
+| azure.cpp:294:38:294:53 | call to operator[] | azure.cpp:295:10:295:20 | contentType | provenance |  |
+| azure.cpp:295:10:295:20 | contentType | azure.cpp:295:10:295:20 | contentType | provenance |  |
+| test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | provenance | MaD:48 |
+| test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | provenance | MaD:47 |
+| test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | provenance | MaD:49 |
 | test.cpp:7:47:7:52 | value2 | test.cpp:7:64:7:69 | value2 | provenance |  |
 | test.cpp:7:64:7:69 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | provenance |  |
-| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:16  |
+| test.cpp:10:10:10:18 | call to ymlSource | test.cpp:10:10:10:18 | call to ymlSource | provenance | Src:MaD:22  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:14:10:14:10 | x | provenance | Sink:MaD:1 |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:17:24:17:24 | x | provenance |  |
 | test.cpp:10:10:10:18 | call to ymlSource | test.cpp:21:27:21:27 | x | provenance |  |
@@ -60,15 +127,15 @@ edges
 | test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual | provenance |  |
 | test.cpp:17:10:17:22 | call to ymlStepManual | test.cpp:18:10:18:10 | y | provenance | Sink:MaD:1 |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | provenance |  |
-| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:34 |
+| test.cpp:17:24:17:24 | x | test.cpp:17:10:17:22 | call to ymlStepManual | provenance | MaD:48 |
 | test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance |  |
 | test.cpp:21:10:21:25 | call to ymlStepGenerated | test.cpp:22:10:22:10 | z | provenance | Sink:MaD:1 |
 | test.cpp:21:27:21:27 | x | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | provenance |  |
-| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:33 |
+| test.cpp:21:27:21:27 | x | test.cpp:21:10:21:25 | call to ymlStepGenerated | provenance | MaD:47 |
 | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance |  |
 | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | test.cpp:26:10:26:11 | y2 | provenance | Sink:MaD:1 |
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | provenance |  |
-| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:35 |
+| test.cpp:25:35:25:35 | x | test.cpp:25:11:25:33 | call to ymlStepManual_with_body | provenance | MaD:49 |
 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | provenance |  |
 | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body | test.cpp:33:10:33:11 | z2 | provenance | Sink:MaD:1 |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | provenance |  |
@@ -76,16 +143,16 @@ edges
 | test.cpp:46:30:46:32 | *arg [x] | test.cpp:47:12:47:19 | *arg [x] | provenance |  |
 | test.cpp:47:12:47:19 | *arg [x] | test.cpp:48:13:48:13 | *s [x] | provenance |  |
 | test.cpp:48:13:48:13 | *s [x] | test.cpp:48:16:48:16 | x | provenance | Sink:MaD:1 |
-| test.cpp:52:5:52:18 | [summary param] *3 in pthread_create [x] | test.cpp:52:5:52:18 | [summary] to write: Argument[2].Parameter[*0] in pthread_create [x] | provenance | MaD:32 |
+| test.cpp:52:5:52:18 | [summary param] *3 in pthread_create [x] | test.cpp:52:5:52:18 | [summary] to write: Argument[2].Parameter[*0] in pthread_create [x] | provenance | MaD:46 |
 | test.cpp:52:5:52:18 | [summary] to write: Argument[2].Parameter[*0] in pthread_create [x] | test.cpp:46:30:46:32 | *arg [x] | provenance |  |
 | test.cpp:56:2:56:2 | *s [post update] [x] | test.cpp:59:55:59:64 | *& ... [x] | provenance |  |
 | test.cpp:56:2:56:18 | ... = ... | test.cpp:56:2:56:2 | *s [post update] [x] | provenance |  |
-| test.cpp:56:8:56:16 | call to ymlSource | test.cpp:56:2:56:18 | ... = ... | provenance | Src:MaD:16  |
+| test.cpp:56:8:56:16 | call to ymlSource | test.cpp:56:2:56:18 | ... = ... | provenance | Src:MaD:22  |
 | test.cpp:59:55:59:64 | *& ... [x] | test.cpp:52:5:52:18 | [summary param] *3 in pthread_create [x] | provenance |  |
-| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:31 |
-| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:31 |
-| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:31 |
-| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:31 |
+| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:44 |
+| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:44 |
+| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:44 |
+| test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | provenance | MaD:44 |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | test.cpp:68:22:68:22 | y | provenance |  |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | test.cpp:74:22:74:22 | y | provenance |  |
 | test.cpp:63:6:63:21 | [summary] to write: Argument[0].Parameter[0] in callWithArgument | test.cpp:82:22:82:22 | y | provenance |  |
@@ -94,7 +161,7 @@ edges
 | test.cpp:74:22:74:22 | y | test.cpp:75:11:75:11 | y | provenance | Sink:MaD:1 |
 | test.cpp:82:22:82:22 | y | test.cpp:83:11:83:11 | y | provenance | Sink:MaD:1 |
 | test.cpp:88:22:88:22 | y | test.cpp:89:11:89:11 | y | provenance | Sink:MaD:1 |
-| test.cpp:94:10:94:18 | call to ymlSource | test.cpp:94:10:94:18 | call to ymlSource | provenance | Src:MaD:16  |
+| test.cpp:94:10:94:18 | call to ymlSource | test.cpp:94:10:94:18 | call to ymlSource | provenance | Src:MaD:22  |
 | test.cpp:94:10:94:18 | call to ymlSource | test.cpp:97:26:97:26 | x | provenance |  |
 | test.cpp:94:10:94:18 | call to ymlSource | test.cpp:101:26:101:26 | x | provenance |  |
 | test.cpp:94:10:94:18 | call to ymlSource | test.cpp:103:63:103:63 | x | provenance |  |
@@ -103,21 +170,28 @@ edges
 | test.cpp:101:26:101:26 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | test.cpp:103:63:103:63 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
 | test.cpp:104:62:104:62 | x | test.cpp:63:6:63:21 | [summary param] 1 in callWithArgument | provenance |  |
-| windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | provenance | MaD:18 |
+| test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | provenance | MaD:45 |
+| test.cpp:114:10:114:18 | call to ymlSource | test.cpp:114:10:114:18 | call to ymlSource | provenance | Src:MaD:22  |
+| test.cpp:114:10:114:18 | call to ymlSource | test.cpp:118:44:118:44 | *x | provenance |  |
+| test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | provenance |  |
+| test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | test.cpp:119:10:119:11 | y2 | provenance | Sink:MaD:1 |
+| test.cpp:118:44:118:44 | *x | test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | provenance |  |
+| test.cpp:118:44:118:44 | *x | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | provenance | MaD:45 |
+| windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | provenance | MaD:30 |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:22:15:22:29 | *call to GetCommandLineA | provenance | Src:MaD:3  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:24:8:24:11 | * ... | provenance |  |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | windows.cpp:27:36:27:38 | *cmd | provenance |  |
 | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | provenance |  |
 | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | windows.cpp:30:8:30:15 | * ... | provenance |  |
 | windows.cpp:27:36:27:38 | *cmd | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | provenance |  |
-| windows.cpp:27:36:27:38 | *cmd | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | provenance | MaD:18 |
+| windows.cpp:27:36:27:38 | *cmd | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA | provenance | MaD:30 |
 | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | provenance | Src:MaD:4  |
 | windows.cpp:34:17:34:38 | *call to GetEnvironmentStringsA | windows.cpp:36:10:36:13 | * ... | provenance |  |
 | windows.cpp:39:36:39:38 | GetEnvironmentVariableA output argument | windows.cpp:41:10:41:13 | * ... | provenance | Src:MaD:5  |
 | windows.cpp:90:6:90:15 | [summary param] *3 in ReadFileEx [*hEvent] | windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | provenance |  |
 | windows.cpp:90:6:90:15 | [summary param] *3 in ReadFileEx [hEvent] | windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | provenance |  |
-| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | provenance | MaD:22 |
-| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[hEvent] in ReadFileEx | provenance | MaD:22 |
+| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | provenance | MaD:34 |
+| windows.cpp:90:6:90:15 | [summary] read: Argument[*3].Field[hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[hEvent] in ReadFileEx | provenance | MaD:34 |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [*hEvent] | windows.cpp:147:16:147:27 | *lpOverlapped [*hEvent] | provenance |  |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [hEvent] | windows.cpp:157:16:157:27 | *lpOverlapped [hEvent] | provenance |  |
 | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2].Field[*hEvent] in ReadFileEx | windows.cpp:90:6:90:15 | [summary] to write: Argument[4].Parameter[*2] in ReadFileEx [*hEvent] | provenance |  |
@@ -165,11 +239,11 @@ edges
 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | provenance | Src:MaD:12  |
 | windows.cpp:332:23:332:40 | *call to MapViewOfFileNuma2 | windows.cpp:333:20:333:52 | *pMapView | provenance |  |
 | windows.cpp:333:20:333:52 | *pMapView | windows.cpp:335:10:335:16 | * ... | provenance |  |
-| windows.cpp:349:8:349:19 | [summary param] *3 in CreateThread [x] | windows.cpp:349:8:349:19 | [summary] to write: Argument[2].Parameter[*0] in CreateThread [x] | provenance | MaD:21 |
+| windows.cpp:349:8:349:19 | [summary param] *3 in CreateThread [x] | windows.cpp:349:8:349:19 | [summary] to write: Argument[2].Parameter[*0] in CreateThread [x] | provenance | MaD:33 |
 | windows.cpp:349:8:349:19 | [summary] to write: Argument[2].Parameter[*0] in CreateThread [x] | windows.cpp:403:26:403:36 | *lpParameter [x] | provenance |  |
-| windows.cpp:357:8:357:25 | [summary param] *4 in CreateRemoteThread [x] | windows.cpp:357:8:357:25 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThread [x] | provenance | MaD:19 |
+| windows.cpp:357:8:357:25 | [summary param] *4 in CreateRemoteThread [x] | windows.cpp:357:8:357:25 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThread [x] | provenance | MaD:31 |
 | windows.cpp:357:8:357:25 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThread [x] | windows.cpp:410:26:410:36 | *lpParameter [x] | provenance |  |
-| windows.cpp:387:8:387:27 | [summary param] *4 in CreateRemoteThreadEx [x] | windows.cpp:387:8:387:27 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThreadEx [x] | provenance | MaD:20 |
+| windows.cpp:387:8:387:27 | [summary param] *4 in CreateRemoteThreadEx [x] | windows.cpp:387:8:387:27 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThreadEx [x] | provenance | MaD:32 |
 | windows.cpp:387:8:387:27 | [summary] to write: Argument[3].Parameter[*0] in CreateRemoteThreadEx [x] | windows.cpp:417:26:417:36 | *lpParameter [x] | provenance |  |
 | windows.cpp:403:26:403:36 | *lpParameter [x] | windows.cpp:405:10:405:25 | *lpParameter [x] | provenance |  |
 | windows.cpp:405:10:405:25 | *lpParameter [x] | windows.cpp:406:8:406:8 | *s [x] | provenance |  |
@@ -188,17 +262,17 @@ edges
 | windows.cpp:439:7:439:8 | *& ... [x] | windows.cpp:349:8:349:19 | [summary param] *3 in CreateThread [x] | provenance |  |
 | windows.cpp:451:7:451:8 | *& ... [x] | windows.cpp:357:8:357:25 | [summary param] *4 in CreateRemoteThread [x] | provenance |  |
 | windows.cpp:464:7:464:8 | *& ... [x] | windows.cpp:387:8:387:27 | [summary param] *4 in CreateRemoteThreadEx [x] | provenance |  |
-| windows.cpp:473:17:473:37 | [summary param] *1 in RtlCopyVolatileMemory | windows.cpp:473:17:473:37 | [summary param] *0 in RtlCopyVolatileMemory [Return] | provenance | MaD:27 |
-| windows.cpp:479:17:479:35 | [summary param] *1 in RtlCopyDeviceMemory | windows.cpp:479:17:479:35 | [summary param] *0 in RtlCopyDeviceMemory [Return] | provenance | MaD:23 |
-| windows.cpp:485:6:485:18 | [summary param] *1 in RtlCopyMemory | windows.cpp:485:6:485:18 | [summary param] *0 in RtlCopyMemory [Return] | provenance | MaD:24 |
-| windows.cpp:493:6:493:29 | [summary param] *1 in RtlCopyMemoryNonTemporal | windows.cpp:493:6:493:29 | [summary param] *0 in RtlCopyMemoryNonTemporal [Return] | provenance | MaD:25 |
+| windows.cpp:473:17:473:37 | [summary param] *1 in RtlCopyVolatileMemory | windows.cpp:473:17:473:37 | [summary param] *0 in RtlCopyVolatileMemory [Return] | provenance | MaD:39 |
+| windows.cpp:479:17:479:35 | [summary param] *1 in RtlCopyDeviceMemory | windows.cpp:479:17:479:35 | [summary param] *0 in RtlCopyDeviceMemory [Return] | provenance | MaD:35 |
+| windows.cpp:485:6:485:18 | [summary param] *1 in RtlCopyMemory | windows.cpp:485:6:485:18 | [summary param] *0 in RtlCopyMemory [Return] | provenance | MaD:36 |
+| windows.cpp:493:6:493:29 | [summary param] *1 in RtlCopyMemoryNonTemporal | windows.cpp:493:6:493:29 | [summary param] *0 in RtlCopyMemoryNonTemporal [Return] | provenance | MaD:37 |
 | windows.cpp:510:6:510:25 | [summary param] *1 in RtlCopyUnicodeString [*Buffer] | windows.cpp:510:6:510:25 | [summary] read: Argument[*1].Field[*Buffer] in RtlCopyUnicodeString | provenance |  |
-| windows.cpp:510:6:510:25 | [summary] read: Argument[*1].Field[*Buffer] in RtlCopyUnicodeString | windows.cpp:510:6:510:25 | [summary] to write: Argument[*0].Field[*Buffer] in RtlCopyUnicodeString | provenance | MaD:26 |
+| windows.cpp:510:6:510:25 | [summary] read: Argument[*1].Field[*Buffer] in RtlCopyUnicodeString | windows.cpp:510:6:510:25 | [summary] to write: Argument[*0].Field[*Buffer] in RtlCopyUnicodeString | provenance | MaD:38 |
 | windows.cpp:510:6:510:25 | [summary] to write: Argument[*0] in RtlCopyUnicodeString [*Buffer] | windows.cpp:510:6:510:25 | [summary param] *0 in RtlCopyUnicodeString [Return] [*Buffer] | provenance |  |
 | windows.cpp:510:6:510:25 | [summary] to write: Argument[*0].Field[*Buffer] in RtlCopyUnicodeString | windows.cpp:510:6:510:25 | [summary] to write: Argument[*0] in RtlCopyUnicodeString [*Buffer] | provenance |  |
-| windows.cpp:515:6:515:18 | [summary param] *1 in RtlMoveMemory | windows.cpp:515:6:515:18 | [summary param] *0 in RtlMoveMemory [Return] | provenance | MaD:29 |
-| windows.cpp:521:17:521:37 | [summary param] *1 in RtlMoveVolatileMemory | windows.cpp:521:17:521:37 | [summary param] *0 in RtlMoveVolatileMemory [Return] | provenance | MaD:30 |
-| windows.cpp:527:6:527:25 | [summary param] *1 in RtlInitUnicodeString | windows.cpp:527:6:527:25 | [summary] to write: Argument[*0].Field[*Buffer] in RtlInitUnicodeString | provenance | MaD:28 |
+| windows.cpp:515:6:515:18 | [summary param] *1 in RtlMoveMemory | windows.cpp:515:6:515:18 | [summary param] *0 in RtlMoveMemory [Return] | provenance | MaD:41 |
+| windows.cpp:521:17:521:37 | [summary param] *1 in RtlMoveVolatileMemory | windows.cpp:521:17:521:37 | [summary param] *0 in RtlMoveVolatileMemory [Return] | provenance | MaD:42 |
+| windows.cpp:527:6:527:25 | [summary param] *1 in RtlInitUnicodeString | windows.cpp:527:6:527:25 | [summary] to write: Argument[*0].Field[*Buffer] in RtlInitUnicodeString | provenance | MaD:40 |
 | windows.cpp:527:6:527:25 | [summary] to write: Argument[*0] in RtlInitUnicodeString [*Buffer] | windows.cpp:527:6:527:25 | [summary param] *0 in RtlInitUnicodeString [Return] [*Buffer] | provenance |  |
 | windows.cpp:527:6:527:25 | [summary] to write: Argument[*0].Field[*Buffer] in RtlInitUnicodeString | windows.cpp:527:6:527:25 | [summary] to write: Argument[*0] in RtlInitUnicodeString [*Buffer] | provenance |  |
 | windows.cpp:533:11:533:16 | call to source | windows.cpp:533:11:533:16 | call to source | provenance |  |
@@ -210,37 +284,51 @@ edges
 | windows.cpp:533:11:533:16 | call to source | windows.cpp:573:40:573:41 | *& ... | provenance |  |
 | windows.cpp:537:27:537:37 | RtlCopyVolatileMemory output argument | windows.cpp:538:10:538:23 | access to array | provenance |  |
 | windows.cpp:537:40:537:41 | *& ... | windows.cpp:473:17:473:37 | [summary param] *1 in RtlCopyVolatileMemory | provenance |  |
-| windows.cpp:537:40:537:41 | *& ... | windows.cpp:537:27:537:37 | RtlCopyVolatileMemory output argument | provenance | MaD:27 |
+| windows.cpp:537:40:537:41 | *& ... | windows.cpp:537:27:537:37 | RtlCopyVolatileMemory output argument | provenance | MaD:39 |
 | windows.cpp:542:25:542:35 | RtlCopyDeviceMemory output argument | windows.cpp:543:10:543:23 | access to array | provenance |  |
 | windows.cpp:542:38:542:39 | *& ... | windows.cpp:479:17:479:35 | [summary param] *1 in RtlCopyDeviceMemory | provenance |  |
-| windows.cpp:542:38:542:39 | *& ... | windows.cpp:542:25:542:35 | RtlCopyDeviceMemory output argument | provenance | MaD:23 |
+| windows.cpp:542:38:542:39 | *& ... | windows.cpp:542:25:542:35 | RtlCopyDeviceMemory output argument | provenance | MaD:35 |
 | windows.cpp:547:19:547:29 | RtlCopyMemory output argument | windows.cpp:548:10:548:23 | access to array | provenance |  |
 | windows.cpp:547:32:547:33 | *& ... | windows.cpp:485:6:485:18 | [summary param] *1 in RtlCopyMemory | provenance |  |
-| windows.cpp:547:32:547:33 | *& ... | windows.cpp:547:19:547:29 | RtlCopyMemory output argument | provenance | MaD:24 |
+| windows.cpp:547:32:547:33 | *& ... | windows.cpp:547:19:547:29 | RtlCopyMemory output argument | provenance | MaD:36 |
 | windows.cpp:552:30:552:40 | RtlCopyMemoryNonTemporal output argument | windows.cpp:553:10:553:23 | access to array | provenance |  |
 | windows.cpp:552:43:552:44 | *& ... | windows.cpp:493:6:493:29 | [summary param] *1 in RtlCopyMemoryNonTemporal | provenance |  |
-| windows.cpp:552:43:552:44 | *& ... | windows.cpp:552:30:552:40 | RtlCopyMemoryNonTemporal output argument | provenance | MaD:25 |
+| windows.cpp:552:43:552:44 | *& ... | windows.cpp:552:30:552:40 | RtlCopyMemoryNonTemporal output argument | provenance | MaD:37 |
 | windows.cpp:559:5:559:24 | ... = ... | windows.cpp:561:39:561:44 | *buffer | provenance |  |
 | windows.cpp:559:17:559:24 | call to source | windows.cpp:559:5:559:24 | ... = ... | provenance |  |
 | windows.cpp:561:26:561:36 | RtlInitUnicodeString output argument [*Buffer] | windows.cpp:562:10:562:19 | *src_string [*Buffer] | provenance |  |
 | windows.cpp:561:26:561:36 | RtlInitUnicodeString output argument [*Buffer] | windows.cpp:563:40:563:50 | *& ... [*Buffer] | provenance |  |
 | windows.cpp:561:39:561:44 | *buffer | windows.cpp:527:6:527:25 | [summary param] *1 in RtlInitUnicodeString | provenance |  |
-| windows.cpp:561:39:561:44 | *buffer | windows.cpp:561:26:561:36 | RtlInitUnicodeString output argument [*Buffer] | provenance | MaD:28 |
+| windows.cpp:561:39:561:44 | *buffer | windows.cpp:561:26:561:36 | RtlInitUnicodeString output argument [*Buffer] | provenance | MaD:40 |
 | windows.cpp:562:10:562:19 | *src_string [*Buffer] | windows.cpp:562:10:562:29 | access to array | provenance |  |
 | windows.cpp:562:10:562:19 | *src_string [*Buffer] | windows.cpp:562:21:562:26 | *Buffer | provenance |  |
 | windows.cpp:562:21:562:26 | *Buffer | windows.cpp:562:10:562:29 | access to array | provenance |  |
 | windows.cpp:563:26:563:37 | RtlCopyUnicodeString output argument [*Buffer] | windows.cpp:564:10:564:20 | *dest_string [*Buffer] | provenance |  |
 | windows.cpp:563:40:563:50 | *& ... [*Buffer] | windows.cpp:510:6:510:25 | [summary param] *1 in RtlCopyUnicodeString [*Buffer] | provenance |  |
-| windows.cpp:563:40:563:50 | *& ... [*Buffer] | windows.cpp:563:26:563:37 | RtlCopyUnicodeString output argument [*Buffer] | provenance | MaD:26 |
+| windows.cpp:563:40:563:50 | *& ... [*Buffer] | windows.cpp:563:26:563:37 | RtlCopyUnicodeString output argument [*Buffer] | provenance | MaD:38 |
 | windows.cpp:564:10:564:20 | *dest_string [*Buffer] | windows.cpp:564:10:564:30 | access to array | provenance |  |
 | windows.cpp:564:10:564:20 | *dest_string [*Buffer] | windows.cpp:564:22:564:27 | *Buffer | provenance |  |
 | windows.cpp:564:22:564:27 | *Buffer | windows.cpp:564:10:564:30 | access to array | provenance |  |
 | windows.cpp:568:19:568:29 | RtlMoveMemory output argument | windows.cpp:569:10:569:23 | access to array | provenance |  |
 | windows.cpp:568:32:568:33 | *& ... | windows.cpp:515:6:515:18 | [summary param] *1 in RtlMoveMemory | provenance |  |
-| windows.cpp:568:32:568:33 | *& ... | windows.cpp:568:19:568:29 | RtlMoveMemory output argument | provenance | MaD:29 |
+| windows.cpp:568:32:568:33 | *& ... | windows.cpp:568:19:568:29 | RtlMoveMemory output argument | provenance | MaD:41 |
 | windows.cpp:573:27:573:37 | RtlMoveVolatileMemory output argument | windows.cpp:574:10:574:23 | access to array | provenance |  |
 | windows.cpp:573:40:573:41 | *& ... | windows.cpp:521:17:521:37 | [summary param] *1 in RtlMoveVolatileMemory | provenance |  |
-| windows.cpp:573:40:573:41 | *& ... | windows.cpp:573:27:573:37 | RtlMoveVolatileMemory output argument | provenance | MaD:30 |
+| windows.cpp:573:40:573:41 | *& ... | windows.cpp:573:27:573:37 | RtlMoveVolatileMemory output argument | provenance | MaD:42 |
+| windows.cpp:645:45:645:50 | WinHttpReadData output argument | windows.cpp:647:10:647:16 | * ... | provenance | Src:MaD:20  |
+| windows.cpp:652:48:652:53 | WinHttpReadDataEx output argument | windows.cpp:654:10:654:16 | * ... | provenance | Src:MaD:21  |
+| windows.cpp:659:47:659:52 | WinHttpQueryHeaders output argument | windows.cpp:661:10:661:16 | * ... | provenance | Src:MaD:16  |
+| windows.cpp:669:70:669:79 | WinHttpQueryHeadersEx output argument | windows.cpp:673:10:673:29 | * ... | provenance | Src:MaD:18  |
+| windows.cpp:669:82:669:87 | WinHttpQueryHeadersEx output argument | windows.cpp:671:10:671:16 | * ... | provenance | Src:MaD:19  |
+| windows.cpp:669:105:669:112 | WinHttpQueryHeadersEx output argument | windows.cpp:675:10:675:27 | * ... | provenance | Src:MaD:17  |
+| windows.cpp:714:6:714:20 | [summary param] *0 in WinHttpCrackUrl | windows.cpp:714:6:714:20 | [summary param] *3 in WinHttpCrackUrl [Return] | provenance | MaD:43 |
+| windows.cpp:728:5:728:28 | ... = ... | windows.cpp:729:35:729:35 | *x | provenance |  |
+| windows.cpp:728:12:728:28 | call to source | windows.cpp:728:5:728:28 | ... = ... | provenance |  |
+| windows.cpp:729:35:729:35 | *x | windows.cpp:714:6:714:20 | [summary param] *0 in WinHttpCrackUrl | provenance |  |
+| windows.cpp:729:35:729:35 | *x | windows.cpp:729:44:729:57 | WinHttpCrackUrl output argument | provenance | MaD:43 |
+| windows.cpp:729:44:729:57 | WinHttpCrackUrl output argument | windows.cpp:731:10:731:36 | * ... | provenance |  |
+| windows.cpp:729:44:729:57 | WinHttpCrackUrl output argument | windows.cpp:733:10:733:35 | * ... | provenance |  |
+| windows.cpp:729:44:729:57 | WinHttpCrackUrl output argument | windows.cpp:735:10:735:37 | * ... | provenance |  |
 nodes
 | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | semmle.label | [summary param] *0 in buffer |
 | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | semmle.label | [summary] to write: ReturnValue in buffer |
@@ -254,6 +342,59 @@ nodes
 | asio_streams.cpp:100:64:100:71 | *send_str | semmle.label | *send_str |
 | asio_streams.cpp:101:7:101:17 | send_buffer | semmle.label | send_buffer |
 | asio_streams.cpp:103:29:103:39 | *send_buffer | semmle.label | *send_buffer |
+| azure.cpp:62:10:62:14 | [summary param] this in Value | semmle.label | [summary param] this in Value |
+| azure.cpp:62:10:62:14 | [summary] to write: ReturnValue[*] in Value | semmle.label | [summary] to write: ReturnValue[*] in Value |
+| azure.cpp:113:16:113:19 | [summary param] *0 in Read [Return] | semmle.label | [summary param] *0 in Read [Return] |
+| azure.cpp:113:16:113:19 | [summary param] this in Read | semmle.label | [summary param] this in Read |
+| azure.cpp:114:16:114:26 | [summary param] *0 in ReadToCount [Return] | semmle.label | [summary param] *0 in ReadToCount [Return] |
+| azure.cpp:114:16:114:26 | [summary param] this in ReadToCount | semmle.label | [summary param] this in ReadToCount |
+| azure.cpp:115:30:115:38 | [summary param] this in ReadToEnd | semmle.label | [summary param] this in ReadToEnd |
+| azure.cpp:115:30:115:38 | [summary] to write: ReturnValue in ReadToEnd [element] | semmle.label | [summary] to write: ReturnValue in ReadToEnd [element] |
+| azure.cpp:115:30:115:38 | [summary] to write: ReturnValue.Element in ReadToEnd | semmle.label | [summary] to write: ReturnValue.Element in ReadToEnd |
+| azure.cpp:253:48:253:60 | *call to GetBodyStream | semmle.label | *call to GetBodyStream |
+| azure.cpp:253:48:253:60 | *call to GetBodyStream | semmle.label | *call to GetBodyStream |
+| azure.cpp:257:5:257:8 | *resp | semmle.label | *resp |
+| azure.cpp:257:16:257:21 | Read output argument | semmle.label | Read output argument |
+| azure.cpp:258:10:258:16 | * ... | semmle.label | * ... |
+| azure.cpp:262:5:262:8 | *resp | semmle.label | *resp |
+| azure.cpp:262:23:262:28 | ReadToCount output argument | semmle.label | ReadToCount output argument |
+| azure.cpp:263:10:263:16 | * ... | semmle.label | * ... |
+| azure.cpp:266:38:266:41 | *resp | semmle.label | *resp |
+| azure.cpp:266:44:266:52 | call to ReadToEnd [element] | semmle.label | call to ReadToEnd [element] |
+| azure.cpp:266:44:266:52 | call to ReadToEnd [element] | semmle.label | call to ReadToEnd [element] |
+| azure.cpp:267:10:267:12 | vec | semmle.label | vec |
+| azure.cpp:267:10:267:12 | vec [element] | semmle.label | vec [element] |
+| azure.cpp:273:62:273:64 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:273:62:273:64 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:274:10:274:29 | call to operator[] | semmle.label | call to operator[] |
+| azure.cpp:274:14:274:29 | call to operator[] | semmle.label | call to operator[] |
+| azure.cpp:274:14:274:29 | call to operator[] | semmle.label | call to operator[] |
+| azure.cpp:274:14:274:29 | call to operator[] | semmle.label | call to operator[] |
+| azure.cpp:277:45:277:47 | call to GetBody | semmle.label | call to GetBody |
+| azure.cpp:277:45:277:47 | call to GetBody | semmle.label | call to GetBody |
+| azure.cpp:278:10:278:13 | body | semmle.label | body |
+| azure.cpp:278:10:278:13 | body | semmle.label | body |
+| azure.cpp:278:10:278:13 | body | semmle.label | body |
+| azure.cpp:281:68:281:84 | *call to ExtractBodyStream | semmle.label | *call to ExtractBodyStream |
+| azure.cpp:281:68:281:84 | *call to ExtractBodyStream | semmle.label | *call to ExtractBodyStream |
+| azure.cpp:282:10:282:38 | call to ReadToEnd | semmle.label | call to ReadToEnd |
+| azure.cpp:282:21:282:23 | *call to get | semmle.label | *call to get |
+| azure.cpp:282:28:282:36 | call to ReadToEnd [element] | semmle.label | call to ReadToEnd [element] |
+| azure.cpp:282:28:282:36 | call to ReadToEnd [element] | semmle.label | call to ReadToEnd [element] |
+| azure.cpp:289:24:289:56 | call to GetHeader | semmle.label | call to GetHeader |
+| azure.cpp:289:32:289:40 | call to GetHeader | semmle.label | call to GetHeader |
+| azure.cpp:289:32:289:40 | call to GetHeader | semmle.label | call to GetHeader |
+| azure.cpp:289:63:289:65 | call to Value | semmle.label | call to Value |
+| azure.cpp:289:63:289:65 | call to Value | semmle.label | call to Value |
+| azure.cpp:290:10:290:20 | headerValue | semmle.label | headerValue |
+| azure.cpp:290:10:290:20 | headerValue | semmle.label | headerValue |
+| azure.cpp:290:10:290:20 | headerValue | semmle.label | headerValue |
+| azure.cpp:293:58:293:67 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:293:58:293:67 | call to GetHeaders | semmle.label | call to GetHeaders |
+| azure.cpp:294:38:294:53 | call to operator[] | semmle.label | call to operator[] |
+| azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
+| azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
+| azure.cpp:295:10:295:20 | contentType | semmle.label | contentType |
 | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | semmle.label | [summary param] 0 in ymlStepManual |
 | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | semmle.label | [summary] to write: ReturnValue in ymlStepManual |
 | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | semmle.label | [summary param] 0 in ymlStepGenerated |
@@ -314,6 +455,14 @@ nodes
 | test.cpp:101:26:101:26 | x | semmle.label | x |
 | test.cpp:103:63:103:63 | x | semmle.label | x |
 | test.cpp:104:62:104:62 | x | semmle.label | x |
+| test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | semmle.label | [summary param] *0 in callWithNonTypeTemplate |
+| test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | semmle.label | [summary] to write: ReturnValue in callWithNonTypeTemplate |
+| test.cpp:114:10:114:18 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:114:10:114:18 | call to ymlSource | semmle.label | call to ymlSource |
+| test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | semmle.label | call to callWithNonTypeTemplate |
+| test.cpp:118:11:118:42 | call to callWithNonTypeTemplate | semmle.label | call to callWithNonTypeTemplate |
+| test.cpp:118:44:118:44 | *x | semmle.label | *x |
+| test.cpp:119:10:119:11 | y2 | semmle.label | y2 |
 | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | semmle.label | [summary param] *0 in CommandLineToArgvA |
 | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | semmle.label | [summary] to write: ReturnValue[**] in CommandLineToArgvA |
 | windows.cpp:22:15:22:29 | *call to GetCommandLineA | semmle.label | *call to GetCommandLineA |
@@ -466,12 +615,39 @@ nodes
 | windows.cpp:573:27:573:37 | RtlMoveVolatileMemory output argument | semmle.label | RtlMoveVolatileMemory output argument |
 | windows.cpp:573:40:573:41 | *& ... | semmle.label | *& ... |
 | windows.cpp:574:10:574:23 | access to array | semmle.label | access to array |
+| windows.cpp:645:45:645:50 | WinHttpReadData output argument | semmle.label | WinHttpReadData output argument |
+| windows.cpp:647:10:647:16 | * ... | semmle.label | * ... |
+| windows.cpp:652:48:652:53 | WinHttpReadDataEx output argument | semmle.label | WinHttpReadDataEx output argument |
+| windows.cpp:654:10:654:16 | * ... | semmle.label | * ... |
+| windows.cpp:659:47:659:52 | WinHttpQueryHeaders output argument | semmle.label | WinHttpQueryHeaders output argument |
+| windows.cpp:661:10:661:16 | * ... | semmle.label | * ... |
+| windows.cpp:669:70:669:79 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
+| windows.cpp:669:82:669:87 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
+| windows.cpp:669:105:669:112 | WinHttpQueryHeadersEx output argument | semmle.label | WinHttpQueryHeadersEx output argument |
+| windows.cpp:671:10:671:16 | * ... | semmle.label | * ... |
+| windows.cpp:673:10:673:29 | * ... | semmle.label | * ... |
+| windows.cpp:675:10:675:27 | * ... | semmle.label | * ... |
+| windows.cpp:714:6:714:20 | [summary param] *0 in WinHttpCrackUrl | semmle.label | [summary param] *0 in WinHttpCrackUrl |
+| windows.cpp:714:6:714:20 | [summary param] *3 in WinHttpCrackUrl [Return] | semmle.label | [summary param] *3 in WinHttpCrackUrl [Return] |
+| windows.cpp:728:5:728:28 | ... = ... | semmle.label | ... = ... |
+| windows.cpp:728:12:728:28 | call to source | semmle.label | call to source |
+| windows.cpp:729:35:729:35 | *x | semmle.label | *x |
+| windows.cpp:729:44:729:57 | WinHttpCrackUrl output argument | semmle.label | WinHttpCrackUrl output argument |
+| windows.cpp:731:10:731:36 | * ... | semmle.label | * ... |
+| windows.cpp:733:10:733:35 | * ... | semmle.label | * ... |
+| windows.cpp:735:10:735:37 | * ... | semmle.label | * ... |
 subpaths
 | asio_streams.cpp:100:64:100:71 | *send_str | asio_streams.cpp:56:18:56:23 | [summary param] *0 in buffer | asio_streams.cpp:56:18:56:23 | [summary] to write: ReturnValue in buffer | asio_streams.cpp:100:44:100:62 | call to buffer |
+| azure.cpp:257:5:257:8 | *resp | azure.cpp:113:16:113:19 | [summary param] this in Read | azure.cpp:113:16:113:19 | [summary param] *0 in Read [Return] | azure.cpp:257:16:257:21 | Read output argument |
+| azure.cpp:262:5:262:8 | *resp | azure.cpp:114:16:114:26 | [summary param] this in ReadToCount | azure.cpp:114:16:114:26 | [summary param] *0 in ReadToCount [Return] | azure.cpp:262:23:262:28 | ReadToCount output argument |
+| azure.cpp:266:38:266:41 | *resp | azure.cpp:115:30:115:38 | [summary param] this in ReadToEnd | azure.cpp:115:30:115:38 | [summary] to write: ReturnValue in ReadToEnd [element] | azure.cpp:266:44:266:52 | call to ReadToEnd [element] |
+| azure.cpp:282:21:282:23 | *call to get | azure.cpp:115:30:115:38 | [summary param] this in ReadToEnd | azure.cpp:115:30:115:38 | [summary] to write: ReturnValue in ReadToEnd [element] | azure.cpp:282:28:282:36 | call to ReadToEnd [element] |
+| azure.cpp:289:24:289:56 | call to GetHeader | azure.cpp:62:10:62:14 | [summary param] this in Value | azure.cpp:62:10:62:14 | [summary] to write: ReturnValue[*] in Value | azure.cpp:289:63:289:65 | call to Value |
 | test.cpp:17:24:17:24 | x | test.cpp:4:5:4:17 | [summary param] 0 in ymlStepManual | test.cpp:4:5:4:17 | [summary] to write: ReturnValue in ymlStepManual | test.cpp:17:10:17:22 | call to ymlStepManual |
 | test.cpp:21:27:21:27 | x | test.cpp:5:5:5:20 | [summary param] 0 in ymlStepGenerated | test.cpp:5:5:5:20 | [summary] to write: ReturnValue in ymlStepGenerated | test.cpp:21:10:21:25 | call to ymlStepGenerated |
 | test.cpp:25:35:25:35 | x | test.cpp:6:5:6:27 | [summary param] 0 in ymlStepManual_with_body | test.cpp:6:5:6:27 | [summary] to write: ReturnValue in ymlStepManual_with_body | test.cpp:25:11:25:33 | call to ymlStepManual_with_body |
 | test.cpp:32:41:32:41 | x | test.cpp:7:47:7:52 | value2 | test.cpp:7:5:7:30 | *ymlStepGenerated_with_body | test.cpp:32:11:32:36 | call to ymlStepGenerated_with_body |
+| test.cpp:118:44:118:44 | *x | test.cpp:111:3:111:25 | [summary param] *0 in callWithNonTypeTemplate | test.cpp:111:3:111:25 | [summary] to write: ReturnValue in callWithNonTypeTemplate | test.cpp:118:11:118:42 | call to callWithNonTypeTemplate |
 | windows.cpp:27:36:27:38 | *cmd | windows.cpp:17:8:17:25 | [summary param] *0 in CommandLineToArgvA | windows.cpp:17:8:17:25 | [summary] to write: ReturnValue[**] in CommandLineToArgvA | windows.cpp:27:17:27:34 | **call to CommandLineToArgvA |
 | windows.cpp:537:40:537:41 | *& ... | windows.cpp:473:17:473:37 | [summary param] *1 in RtlCopyVolatileMemory | windows.cpp:473:17:473:37 | [summary param] *0 in RtlCopyVolatileMemory [Return] | windows.cpp:537:27:537:37 | RtlCopyVolatileMemory output argument |
 | windows.cpp:542:38:542:39 | *& ... | windows.cpp:479:17:479:35 | [summary param] *1 in RtlCopyDeviceMemory | windows.cpp:479:17:479:35 | [summary param] *0 in RtlCopyDeviceMemory [Return] | windows.cpp:542:25:542:35 | RtlCopyDeviceMemory output argument |
@@ -481,4 +657,5 @@ subpaths
 | windows.cpp:563:40:563:50 | *& ... [*Buffer] | windows.cpp:510:6:510:25 | [summary param] *1 in RtlCopyUnicodeString [*Buffer] | windows.cpp:510:6:510:25 | [summary param] *0 in RtlCopyUnicodeString [Return] [*Buffer] | windows.cpp:563:26:563:37 | RtlCopyUnicodeString output argument [*Buffer] |
 | windows.cpp:568:32:568:33 | *& ... | windows.cpp:515:6:515:18 | [summary param] *1 in RtlMoveMemory | windows.cpp:515:6:515:18 | [summary param] *0 in RtlMoveMemory [Return] | windows.cpp:568:19:568:29 | RtlMoveMemory output argument |
 | windows.cpp:573:40:573:41 | *& ... | windows.cpp:521:17:521:37 | [summary param] *1 in RtlMoveVolatileMemory | windows.cpp:521:17:521:37 | [summary param] *0 in RtlMoveVolatileMemory [Return] | windows.cpp:573:27:573:37 | RtlMoveVolatileMemory output argument |
+| windows.cpp:729:35:729:35 | *x | windows.cpp:714:6:714:20 | [summary param] *0 in WinHttpCrackUrl | windows.cpp:714:6:714:20 | [summary param] *3 in WinHttpCrackUrl [Return] | windows.cpp:729:44:729:57 | WinHttpCrackUrl output argument |
 testFailures

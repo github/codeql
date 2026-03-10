@@ -14,7 +14,7 @@ private import codeql.ruby.Concepts
  */
 module Sequel {
   /** Flow Summary for `Sequel`. */
-  private class SqlSummary extends SummarizedCallable {
+  private class SqlSummary extends SummarizedCallable::Range {
     SqlSummary() { this = "Sequel.connect" }
 
     override MethodCall getACall() { result = any(SequelConnection c).asExpr().getExpr() }

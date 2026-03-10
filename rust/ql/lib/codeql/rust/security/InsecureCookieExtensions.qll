@@ -80,18 +80,18 @@ module InsecureCookie {
    * as `false`.
    */
   predicate cookieSetNode(DataFlow::Node node, string attrib, boolean value) {
-    exists(FlowSummaryNode summaryNode, CallExprBase ce, int arg, DataFlow::Node argNode |
+    exists(FlowSummaryNode summaryNode, MethodCall call, int arg, DataFlow::Node argNode |
       // decode the models-as-data `OptionalBarrier`
       cookieOptionalBarrier(summaryNode, attrib, arg) and
       // find a call and arg referenced by this optional barrier
-      ce.getStaticTarget() = summaryNode.getSummarizedCallable() and
-      ce.getArg(arg) = argNode.asExpr().getExpr() and
+      call.getStaticTarget() = summaryNode.getSummarizedCallable() and
+      call.getPositionalArgument(arg) = argNode.asExpr() and
       // check if the argument is always `true`
       (
         if
           forex(DataFlow::Node argSourceNode, BooleanLiteralExpr argSourceValue |
             DataFlow::localFlow(argSourceNode, argNode) and
-            argSourceValue = argSourceNode.asExpr().getExpr()
+            argSourceValue = argSourceNode.asExpr()
           |
             argSourceValue.getTextValue() = "true"
           )
@@ -101,12 +101,12 @@ module InsecureCookie {
       // and find the node where this happens (we can't just use the flow summary node, since its
       // shared across all calls to the modeled function, we need a node specific to this call)
       (
-        node.asExpr().getExpr() = ce.(MethodCallExpr).getReceiver() // e.g. `a` in `a.set_secure(true)`
+        node.asExpr() = call.getReceiver() // e.g. `a` in `a.set_secure(true)`
         or
         exists(BasicBlock bb, int i |
           // associated SSA node
           node.(SsaNode).asDefinition().definesAt(_, bb, i) and
-          ce.(MethodCallExpr).getReceiver() = bb.getNode(i).getAstNode()
+          call.getReceiver() = bb.getNode(i).getAstNode()
         )
       )
     )

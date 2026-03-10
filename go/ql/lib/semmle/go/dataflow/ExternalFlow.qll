@@ -86,7 +86,7 @@
  */
 
 private import go
-import internal.ExternalFlowExtensions as FlowExtensions
+private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
 private import internal.FlowSummaryImpl
@@ -94,201 +94,32 @@ private import internal.FlowSummaryImpl::Public as Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.mad.static.ModelsAsData as SharedMaD
+
+private module MadInput implements SharedMaD::InputSig {
+  string namespaceSegmentSeparator() { result = "/" }
+
+  bindingset[p]
+  string cleanNamespace(string p) {
+    exists(string noPrefix |
+      p = fixedVersionPrefix() + noPrefix
+      or
+      not p = fixedVersionPrefix() + any(string s) and
+      noPrefix = p
+    |
+      result = noPrefix.regexpReplaceAll(majorVersionSuffixRegex(), "")
+    )
+  }
+}
+
+private module MaD = SharedMaD::ModelsAsData<Extensions, MadInput>;
+
+import MaD
+
+module FlowExtensions = Extensions;
 
 /** Gets the prefix for a group of packages. */
 private string groupPrefix() { result = "group:" }
-
-/**
- * Gets a package represented by `packageOrGroup`.
- *
- * If `packageOrGroup` is of the form `group:<groupname>` then `result` is a
- * package in the group `<groupname>`, as determined by `packageGrouping`.
- * Otherwise, `result` is `packageOrGroup`.
- */
-bindingset[packageOrGroup]
-private string getPackage(string packageOrGroup) {
-  not exists(string group | packageOrGroup = groupPrefix() + group) and result = packageOrGroup
-  or
-  exists(string group |
-    FlowExtensions::packageGrouping(group, result) and
-    packageOrGroup = groupPrefix() + group
-  )
-}
-
-/**
- * Holds if a source model exists for the given parameters.
- *
- * Note that `group:` references are expanded into one or more actual packages
- * by this predicate.
- */
-predicate sourceModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  exists(string packageOrGroup |
-    package = getPackage(packageOrGroup) and
-    FlowExtensions::sourceModel(packageOrGroup, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId)
-  )
-}
-
-/**
- * Holds if a sink model exists for the given parameters.
- *
- * Note that `group:` references are expanded into one or more actual packages
- * by this predicate.
- */
-predicate sinkModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
-    FlowExtensions::sinkModel(packageOrGroup, type, subtypes, name, signature, ext, input, kind,
-      provenance, madId)
-  )
-}
-
-/**
- * Holds if a summary model exists for the given parameters.
- *
- * Note that `group:` references are expanded into one or more actual packages
- * by this predicate.
- */
-predicate summaryModel(
-  string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
-) {
-  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
-    FlowExtensions::summaryModel(packageOrGroup, type, subtypes, name, signature, ext, input,
-      output, kind, provenance, madId)
-  )
-}
-
-/**
- * Holds if a neutral model exists for the given parameters.
- *
- * Note that `group:` references are expanded into one or more actual packages
- * by this predicate.
- */
-predicate neutralModel(
-  string package, string type, string name, string signature, string kind, string provenance
-) {
-  exists(string packageOrGroup | package = getPackage(packageOrGroup) |
-    FlowExtensions::neutralModel(packageOrGroup, type, name, signature, kind, provenance)
-  )
-}
-
-/**
- * Holds if the given extension tuple `madId` should pretty-print as `model`.
- *
- * This predicate should only be used in tests.
- */
-predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance
-  |
-    FlowExtensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind,
-      provenance, madId) and
-    model =
-      "Source: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + output + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance
-  |
-    FlowExtensions::sinkModel(package, type, subtypes, name, signature, ext, input, kind,
-      provenance, madId) and
-    model =
-      "Sink: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + kind + "; " + provenance
-  )
-  or
-  exists(
-    string package, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance
-  |
-    FlowExtensions::summaryModel(package, type, subtypes, name, signature, ext, input, output, kind,
-      provenance, madId) and
-    model =
-      "Summary: " + package + "; " + type + "; " + subtypes + "; " + name + "; " + signature + "; " +
-        ext + "; " + input + "; " + output + "; " + kind + "; " + provenance
-  )
-}
-
-bindingset[p]
-private string cleanPackage(string p) {
-  exists(string noPrefix |
-    p = fixedVersionPrefix() + noPrefix
-    or
-    not p = fixedVersionPrefix() + any(string s) and
-    noPrefix = p
-  |
-    result = noPrefix.regexpReplaceAll(majorVersionSuffixRegex(), "")
-  )
-}
-
-private predicate relevantPackage(string package) {
-  exists(string p | package = cleanPackage(p) |
-    sourceModel(p, _, _, _, _, _, _, _, _, _) or
-    sinkModel(p, _, _, _, _, _, _, _, _, _) or
-    summaryModel(p, _, _, _, _, _, _, _, _, _, _)
-  )
-}
-
-private predicate packageLink(string shortpkg, string longpkg) {
-  relevantPackage(shortpkg) and
-  relevantPackage(longpkg) and
-  longpkg.prefix(longpkg.indexOf("/")) = shortpkg
-}
-
-private predicate canonicalPackage(string package) {
-  relevantPackage(package) and not packageLink(_, package)
-}
-
-private predicate canonicalPkgLink(string package, string subpkg) {
-  canonicalPackage(package) and
-  (subpkg = package or packageLink(package, subpkg))
-}
-
-/**
- * Holds if MaD framework coverage of `package` is `n` api endpoints of the
- * kind `(kind, part)`, and `pkgs` is the number of subpackages of `package`
- * which have MaD framework coverage (including `package` itself).
- */
-predicate modelCoverage(string package, int pkgs, string kind, string part, int n) {
-  pkgs = strictcount(string subpkg | canonicalPkgLink(package, subpkg)) and
-  (
-    part = "source" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string output, string provenance, string x |
-        canonicalPkgLink(package, subpkg) and
-        subpkg = cleanPackage(x) and
-        sourceModel(x, type, subtypes, name, signature, ext, output, kind, provenance, _)
-      )
-    or
-    part = "sink" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string provenance, string x |
-        canonicalPkgLink(package, subpkg) and
-        subpkg = cleanPackage(x) and
-        sinkModel(x, type, subtypes, name, signature, ext, input, kind, provenance, _)
-      )
-    or
-    part = "summary" and
-    n =
-      strictcount(string subpkg, string type, boolean subtypes, string name, string signature,
-        string ext, string input, string output, string provenance, string x |
-        canonicalPkgLink(package, subpkg) and
-        subpkg = cleanPackage(x) and
-        summaryModel(x, type, subtypes, name, signature, ext, input, output, kind, provenance, _)
-      )
-  )
-}
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
@@ -298,7 +129,9 @@ module ModelValidation {
     summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
     summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
     sinkModel(_, _, _, _, _, _, path, _, _, _) or
-    sourceModel(_, _, _, _, _, _, path, _, _, _)
+    sourceModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierGuardModel(_, _, _, _, _, _, path, _, _, _, _)
   }
 
   private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
@@ -311,6 +144,8 @@ module ModelValidation {
     exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
       or
+      barrierGuardModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "barrier guard"
+      or
       summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
       (
@@ -318,7 +153,10 @@ module ModelValidation {
         not part = "" and
         not (part = "Argument" and pred = "sink") and
         not parseArg(part, _) and
-        not part.getName() = "Field"
+        // If the database does not contain any fields/pointer types then no
+        // FieldContent/PointerContent exists, so we spuriously think that
+        // these spec components are invalid.
+        not part.getName() = ["Field", "Dereference"]
         or
         part = input.getToken(0) and
         parseParam(part, _)
@@ -333,13 +171,18 @@ module ModelValidation {
     exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
+      barrierModel(_, _, _, _, _, _, output, _, _, _) and pred = "barrier"
+      or
       summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
       (
         invalidSpecComponent(output, part) and
         not part = "" and
         not (part = ["Argument", "Parameter"] and pred = "source") and
-        not part.getName() = "Field"
+        // If the database does not contain any fields/pointer types then no
+        // FieldContent/PointerContent exists, so we spuriously think that
+        // these spec components are invalid.
+        not part.getName() = ["Field", "Dereference"]
         or
         invalidIndexComponent(output, part)
       ) and
@@ -350,7 +193,13 @@ module ModelValidation {
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
     predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
+    predicate sinkKind(string kind) {
+      sinkModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierGuardModel(_, _, _, _, _, _, _, _, kind, _, _)
+    }
 
     predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
 
@@ -367,6 +216,11 @@ module ModelValidation {
       sourceModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "source"
       or
       sinkModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "sink"
+      or
+      barrierModel(package, type, _, name, signature, ext, _, _, provenance, _) and pred = "barrier"
+      or
+      barrierGuardModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
+      pred = "barrier guard"
       or
       summaryModel(package, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
@@ -393,6 +247,14 @@ module ModelValidation {
       invalidProvenance(provenance) and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
+    or
+    exists(string acceptingvalue |
+      barrierGuardModel(_, _, _, _, _, _, _, acceptingvalue, _, _, _) and
+      invalidAcceptingValue(acceptingvalue) and
+      result =
+        "Unrecognized accepting value description \"" + acceptingvalue +
+          "\" in barrier guard model."
+    )
   }
 
   private string getInvalidPackageGroup() {
@@ -400,6 +262,11 @@ module ModelValidation {
       FlowExtensions::sourceModel(package, _, _, _, _, _, _, _, _, _) and pred = "source"
       or
       FlowExtensions::sinkModel(package, _, _, _, _, _, _, _, _, _) and pred = "sink"
+      or
+      FlowExtensions::barrierModel(package, _, _, _, _, _, _, _, _, _) and pred = "barrier"
+      or
+      FlowExtensions::barrierGuardModel(package, _, _, _, _, _, _, _, _, _, _) and
+      pred = "barrier guard"
       or
       FlowExtensions::summaryModel(package, _, _, _, _, _, _, _, _, _, _) and
       pred = "summary"
@@ -430,6 +297,10 @@ private predicate elementSpec(
   sourceModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
   sinkModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierModel(package, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierGuardModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
@@ -566,6 +437,54 @@ private module Cached {
       isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private boolean convertAcceptingValue(Public::AcceptingValue av) {
+    av.isTrue() and result = true
+    or
+    av.isFalse() and result = false
+    // Remaining cases are not supported yet, they depend on the shared Guards library.
+    // or
+    // av.isNoException() and result.getDualValue().isThrowsException()
+    // or
+    // av.isZero() and result.asIntValue() = 0
+    // or
+    // av.isNotZero() and result.getDualValue().asIntValue() = 0
+    // or
+    // av.isNull() and result.isNullValue()
+    // or
+    // av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(DataFlow::Node g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, Public::AcceptingValue acceptingvalue,
+      string kind, string model
+    |
+      isBarrierGuardNode(n, acceptingvalue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingvalue)
+    |
+      g.asExpr().(CallExpr).getAnArgument() = e // TODO: qualifier?
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(DataFlow::Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    DataFlow::ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+  }
 }
 
 import Cached
@@ -582,46 +501,31 @@ predicate sourceNode(DataFlow::Node node, string kind) { sourceNode(node, kind, 
  */
 predicate sinkNode(DataFlow::Node node, string kind) { sinkNode(node, kind, _) }
 
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(DataFlow::Node node, string kind) { barrierNode(node, kind, _) }
+
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends Public::SummarizedCallable {
-  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _, _) }
+  string input_;
+  string output_;
+  string kind;
+  Public::Provenance p_;
+  string model_;
 
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
-    exists(Public::Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model) and
-      provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
-    exists(Public::Provenance provenance |
-      summaryElement(this, input, output, kind, provenance, model) and
-      provenance.isGenerated()
-    ) and
-    not exists(Public::Provenance provenance |
-      neutralElement(this, "summary", provenance) and
-      provenance.isManual()
-    )
-  }
+  SummarizedCallableAdapter() { summaryElement(this, input_, output_, kind, p_, model_) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Public::Provenance p, boolean isExact,
+    string model
   ) {
-    exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
-      or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
-    |
-      if kind = "value" then preservesValue = true else preservesValue = false
-    )
-  }
-
-  override predicate hasProvenance(Public::Provenance provenance) {
-    summaryElement(this, _, _, _, provenance, _)
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = true and
+    model = model_
   }
 }

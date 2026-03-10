@@ -56,9 +56,14 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
-/** URL Redirection sinks defined through Models as Data. */
+/** A URL Redirection sink defined through Models as Data. */
 private class ExternalUrlRedirectExprSink extends Sink {
   ExternalUrlRedirectExprSink() { sinkNode(this, "url-redirection") }
+}
+
+/** A sanitizer for URL redirection defined through Models as Data. */
+private class ExternalUrlRedirectSanitizer extends Sanitizer {
+  ExternalUrlRedirectSanitizer() { barrierNode(this, "url-redirection") }
 }
 
 /**
@@ -161,27 +166,6 @@ class ContainsUrlSanitizer extends Sanitizer {
 }
 
 /**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-private predicate isRelativeUrlSanitizer(Guard guard, Expr e, GuardValue v) {
-  guard =
-    any(PropertyAccess access |
-      access.getProperty().hasFullyQualifiedName("System", "Uri", "IsAbsoluteUri") and
-      e = access.getQualifier() and
-      v.asBooleanValue() = false
-    )
-}
-
-/**
- * A check that the URL is relative, and therefore safe for URL redirects.
- */
-class RelativeUrlSanitizer extends Sanitizer {
-  RelativeUrlSanitizer() {
-    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
-  }
-}
-
-/**
  * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
  * E.g. `url.Host == "example.org"`
  */
@@ -202,16 +186,6 @@ private predicate isHostComparisonSanitizer(Guard guard, Expr e, GuardValue v) {
 class HostComparisonSanitizer extends Sanitizer {
   HostComparisonSanitizer() {
     this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
-  }
-}
-
-/**
- * A call to the getter of the RawUrl property, whose value is considered to be safe for URL
- * redirects.
- */
-class RawUrlSanitizer extends Sanitizer {
-  RawUrlSanitizer() {
-    this.getExpr() = any(SystemWebHttpRequestClass r).getRawUrlProperty().getGetter().getACall()
   }
 }
 

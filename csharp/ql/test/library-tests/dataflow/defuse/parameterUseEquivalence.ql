@@ -1,10 +1,10 @@
 import csharp
-private import semmle.code.csharp.controlflow.internal.PreSsa
+private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 /** "Naive" parameter-use implementation. */
 predicate parameterReaches(Parameter p, ControlFlow::Node cfn) {
   cfn = p.getCallable().getEntryPoint().getASuccessor() and
-  p instanceof PreSsa::SimpleLocalScopeVariable
+  p instanceof BaseSsa::SimpleLocalScopeVariable
   or
   exists(ControlFlow::Node mid | parameterReaches(p, mid) |
     not mid =

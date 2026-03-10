@@ -613,6 +613,25 @@ private class UseStateStep extends PreCallGraphStep {
 }
 
 /**
+ * Step through a `useRef` call.
+ *
+ * It returns an object with a single property (`current`) initialized to the initial value.
+ *
+ * For example:
+ * ```js
+ * const inputRef1 = useRef(initialValue);
+ * ```
+ */
+private class UseRefStep extends PreCallGraphStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(DataFlow::CallNode call | call = react().getAMemberCall("useRef") |
+      pred = call.getArgument(0) and // initial state
+      succ = call.getAPropertyRead("current")
+    )
+  }
+}
+
+/**
  * A step through a React context object.
  *
  * For example:
@@ -785,6 +804,17 @@ private class ReactRouterLocationSource extends DOM::LocationSource::Range {
   }
 }
 
+private class UseRefDomValueSource extends DOM::DomValueSource::Range {
+  UseRefDomValueSource() {
+    this =
+      any(JsxAttribute attrib | attrib.getName() = "ref")
+          .getValue()
+          .flow()
+          .getALocalSource()
+          .getAPropertyRead("current")
+  }
+}
+
 /**
  * Gets a reference to a function which, if called with a React component, returns wrapped
  * version of that component, which we model as a direct reference to the underlying component.
@@ -801,6 +831,8 @@ private DataFlow::SourceNode higherOrderComponentBuilder() {
   result = DataFlow::moduleMember("redux-form", "reduxForm").getACall()
   or
   result = DataFlow::moduleMember("recompose", _).getACall()
+  or
+  result = DataFlow::moduleMember(["mobx-react", "mobx-react-lite"], "observer")
   or
   result = reactRouterDom().getAPropertyRead("withRouter")
   or

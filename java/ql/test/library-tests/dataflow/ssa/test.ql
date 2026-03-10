@@ -10,6 +10,14 @@ private predicate isSafe(Guard g, Expr checked, boolean branch) {
   )
 }
 
+private predicate assertSafe(Guard g, Expr checked, GuardValue gv) {
+  exists(MethodCall mc | g = mc |
+    mc.getMethod().hasName("assertSafe") and
+    checked = mc.getAnArgument() and
+    gv.getDualValue().isThrowsException()
+  )
+}
+
 module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr().(MethodCall).getMethod().hasName("source")
@@ -21,6 +29,8 @@ module TestConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<isSafe/3>::getABarrierNode()
+    or
+    node = DataFlow::BarrierGuardValue<assertSafe/3>::getABarrierNode()
   }
 }
 

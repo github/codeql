@@ -26,7 +26,7 @@ predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
 }
 
 private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
-  cu.getPackage().getName().matches("javax.swing%") or
+  cu.getPackage().getName().matches(javaxOrJakarta() + ".swing%") or
   cu.getPackage().getName().matches("java.awt%")
 }
 
@@ -187,7 +187,7 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
   }
 
   private predicate hasManualSummaryModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() or
+    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.hasManualModel()).asCallable() or
     api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
   }
 
@@ -217,6 +217,8 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
       DataFlowPrivate::readStep(node1, f, node2) and containerContent(f)
     )
   }
+
+  int contentAccessPathLimitInternal() { result = 2 }
 
   predicate isField(DataFlow::ContentSet c) {
     c instanceof DataFlowUtil::FieldContent or
@@ -277,10 +279,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
 
   predicate sinkModelSanitizer(DataFlow::Node node) {
     // exclude variable capture jump steps
-    exists(Ssa::SsaImplicitInit closure |
-      closure.captures(_) and
-      node.asExpr() = closure.getAFirstUse()
-    )
+    exists(Ssa::SsaCapturedDefinition closure | node.asExpr() = Ssa::ssaGetAFirstUse(closure))
   }
 
   predicate apiSource(DataFlow::Node source) {

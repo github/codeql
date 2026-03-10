@@ -566,13 +566,13 @@ fn conversions() {
     let a: i64 = source(50);
 
     sink(a as i64); // $ hasTaintFlow=50
-    sink(a.into()); // $ MISSING: hasValueFlow=50
-    sink(i64::from(a)); // $ MISSING: hasTaintFlow=50 -- we cannot resolve the `impl<T> From<T> for T` implementation
+    sink(a.into()); // $ SPURIOUS: hasTaintFlow=50 $ MISSING: hasValueFlow=50 -- it is not possible to define a value-preserving summary for `into` since it depends on which `from` function is called
+    sink(i64::from(a)); // $ hasValueFlow=50
 
     let b: i32 = source(51) as i32;
 
     sink(b as i64); // $ hasTaintFlow=51
-    sink(b.into()); // $ MISSING: hasTaintFlow=51
+    sink(b.into()); // $ hasTaintFlow=51
     sink(i64::from(b)); // $ hasTaintFlow=51
 }
 

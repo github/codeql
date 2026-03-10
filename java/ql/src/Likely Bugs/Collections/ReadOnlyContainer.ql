@@ -29,7 +29,7 @@ where
     exists(AssignExpr assgn | va = assgn.getDest() | assgn.getSource() instanceof FreshContainer)
     or
     // ...a return (but only if `v` is a local variable)
-    v instanceof LocalVariableDecl and exists(ReturnStmt ret | ret.getResult() = va)
+    v instanceof LocalVariableDecl and exists(ReturnStmt ret | ret.getExpr() = va)
     or
     // ...or a call to a query method on `v`.
     exists(MethodCall ma | va = ma.getQualifier() | ma.getMethod() instanceof ContainerQueryMethod)
