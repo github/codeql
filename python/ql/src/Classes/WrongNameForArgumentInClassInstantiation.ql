@@ -43,6 +43,7 @@ predicate illegally_named_parameter(Call call, Class cls, string name) {
 from Call call, Class cls, string name, Function init
 where
   illegally_named_parameter(call, cls, name) and
+  not DuckTyping::hasUnreliableMro(cls) and
   init = DuckTyping::getInit(cls)
 select call, "Keyword argument '" + name + "' is not a supported parameter name of $@.", init,
   init.getQualifiedName()

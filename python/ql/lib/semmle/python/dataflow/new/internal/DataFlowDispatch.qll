@@ -2119,6 +2119,19 @@ module DuckTyping {
   Function getInit(Class cls) { result = invokedFunctionFromClassConstruction(cls, "__init__") }
 
   /**
+   * Holds if `cls` or any of its superclasses uses multiple inheritance, or
+   * has an unresolved base class. In these cases, our MRO approximation may
+   * resolve to the wrong `__init__`, so we should not flag argument mismatches.
+   */
+  predicate hasUnreliableMro(Class cls) {
+    exists(Class sup | sup = getADirectSuperclass*(cls) |
+      exists(sup.getBase(1))
+      or
+      hasUnresolvedBase(sup)
+    )
+  }
+
+  /**
    * Holds if `f` overrides a method in a superclass with the same name.
    */
   predicate overridesMethod(Function f) {

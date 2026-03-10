@@ -78,6 +78,7 @@ where
     too = "too few arguments" and
     should = "no fewer than "
   ) and
+  not DuckTyping::hasUnreliableMro(cls) and
   init = DuckTyping::getInit(cls)
 select call, "Call to $@ with " + too + "; should be " + should + limit.toString() + ".", init,
   init.getQualifiedName()
