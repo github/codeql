@@ -457,6 +457,7 @@ class FieldBase extends @field, ExprParent {
   /**
    * Gets the expression representing the type of the fields declared in this declaration.
    */
+  pragma[nomagic]
   Expr getTypeExpr() { result = this.getChildExpr(0) }
 
   /**
@@ -489,6 +490,7 @@ class FieldBase extends @field, ExprParent {
 class FieldDecl extends FieldBase, Documentable, ExprParent {
   StructTypeExpr st;
 
+  pragma[nomagic]
   FieldDecl() { this = st.getField(_) }
 
   /**

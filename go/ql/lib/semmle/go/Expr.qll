@@ -234,6 +234,7 @@ class Ellipsis extends @ellipsis, Expr {
  * ```
  */
 class Literal extends Expr {
+  pragma[nomagic]
   Literal() {
     this instanceof @basiclit or this instanceof @funclit or this instanceof @compositelit
   }
@@ -575,10 +576,14 @@ class ParenExpr extends @parenexpr, Expr {
  * ```
  */
 class SelectorExpr extends @selectorexpr, Expr {
+  pragma[nomagic]
+  SelectorExpr() { any() }
+
   /** Gets the base of this selector expression. */
   Expr getBase() { result = this.getChildExpr(0) }
 
   /** Gets the selector of this selector expression. */
+  pragma[inline]
   Ident getSelector() { result = this.getChildExpr(1) }
 
   /** Holds if this selector is a use of `e`. */
@@ -984,6 +989,9 @@ class KeyValueExpr extends @keyvalueexpr, Expr {
  * ```
  */
 class ArrayTypeExpr extends @arraytypeexpr, TypeExpr {
+  pragma[nomagic]
+  ArrayTypeExpr() { any() }
+
   /** Gets the length expression of this array type. */
   Expr getLength() { result = this.getChildExpr(0) }
 
