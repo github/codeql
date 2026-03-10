@@ -1778,6 +1778,10 @@ public class CFGExtractor {
 
     private void postVisitChainable(Chainable chainable, Expression base, boolean optional) {
       if (optional) {
+        // Unwrap parenthesized expressions since they have no DB entry.
+        while (base instanceof ParenthesizedExpression) {
+          base = ((ParenthesizedExpression) base).getExpression();
+        }
         writeSuccessors(base, chainRootSuccessors.get(chainable).getSuccessors(false));
       }
       chainRootSuccessors.remove(chainable);
