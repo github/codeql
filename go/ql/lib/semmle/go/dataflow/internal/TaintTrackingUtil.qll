@@ -418,7 +418,7 @@ predicate functionEnsuresInputIsConstant(
     forex(DataFlow::Node ret, IR::ReturnInstruction ri |
       ret = outp.getEntryNode(fd) and
       ri.getReturnStmt().getAnExpr() = ret.asExpr() and
-      ret.asExpr() = Builtin::nil().getAReference()
+      exprRefersToNil(ret.asExpr())
     |
       DataFlow::localFlow(inp.getExitNode(fd), _) and
       mustPassConstantCaseTestToReach(ri, inp.getExitNode(fd))

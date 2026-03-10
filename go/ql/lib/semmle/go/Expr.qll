@@ -2043,6 +2043,8 @@ class ConstantName extends ValueName {
   override string getAPrimaryQlClass() { result = "ConstantName" }
 }
 
+predicate exprRefersToNil(Expr e) { e.(ConstantName).getTarget() = Builtin::nil() }
+
 /**
  * A name referring to a variable.
  *
@@ -2183,7 +2185,7 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(TypeSwitchStmt s).getACase().getExpr(_) and
   // special case: `nil` is allowed in a type case but isn't a type
-  not e = Builtin::nil().getAReference()
+  not exprRefersToNil(e)
   or
   e = any(SelectorExpr sel | isTypeExprTopDown(sel)).getBase()
   or

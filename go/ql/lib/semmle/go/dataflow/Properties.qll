@@ -22,7 +22,7 @@ class Property extends TProperty {
       isTrue = eq.getPolarity().booleanXor(e.getBoolValue().booleanXor(outcome))
       or
       this = IsNil(isTrue) and
-      e = Builtin::nil().getAReference() and
+      exprRefersToNil(e) and
       isTrue = eq.getPolarity().booleanXor(outcome).booleanNot()
     )
     or
