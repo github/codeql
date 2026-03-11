@@ -2141,11 +2141,12 @@ private predicate isTypeExprBottomUp(Expr e) {
  * Holds if `e` must be a type expression because it either occurs in a syntactic
  * position where a type is expected, or it is part of a larger type expression.
  *
- * This predicate is only needed on snapshots for which type information is
- * incomplete. It is an underapproximation; in cases where it is syntactically ambiguous
- * whether an expression refers to a type or a value, we conservatively assume that
- * it may be the latter and so this predicate does not consider the expression to be
- * a type expression.
+ * This predicate is only needed on databases for which type information is
+ * incomplete - for example, when some dependencies could not be reached during
+ * extraction. It is an underapproximation; in cases where it is syntactically
+ * ambiguous whether an expression refers to a type or a value, we conservatively
+ * assume that it may be the latter and so this predicate does not consider the
+ * expression to be a type expression.
  */
 pragma[nomagic]
 private predicate isTypeExprTopDown(Expr e) {
