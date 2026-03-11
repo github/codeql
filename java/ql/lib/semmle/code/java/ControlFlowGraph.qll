@@ -208,6 +208,14 @@ private module Ast implements AstSig<Location> {
   class BooleanLiteral extends FinalBooleanLiteral {
     boolean getValue() { result = this.getBooleanValue() }
   }
+
+  final private class FinalInstanceOfExpr = J::InstanceOfExpr;
+
+  class PatternMatchExpr extends FinalInstanceOfExpr {
+    PatternMatchExpr() { this.isPattern() }
+
+    AstNode getPattern() { result = super.getPattern() }
+  }
 }
 
 private module Exceptions {
@@ -544,14 +552,8 @@ private module Input implements InputSig1, InputSig2 {
 
   private string assertThrowNodeTag() { result = "[assert-throw]" }
 
-  private string instanceofTrueNodeTag() { result = "[instanceof-true]" }
-
   predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
     n instanceof AssertStmt and tag = assertThrowNodeTag() and t instanceof DirectSuccessor
-    or
-    n.(InstanceOfExpr).isPattern() and
-    tag = instanceofTrueNodeTag() and
-    t.(BooleanSuccessor).getValue() = true
   }
 
   /**
@@ -593,34 +595,6 @@ private module Input implements InputSig1, InputSig2 {
 
   /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
   predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(InstanceOfExpr ioe |
-      // common
-      n1.isBefore(ioe) and
-      n2.isBefore(ioe.getExpr())
-      or
-      n1.isAfter(ioe.getExpr()) and
-      n2.isIn(ioe)
-      or
-      // std postorder:
-      not ioe.isPattern() and
-      n1.isIn(ioe) and
-      n2.isAfter(ioe)
-      or
-      // pattern case:
-      ioe.isPattern() and
-      n1.isIn(ioe) and
-      n2.isAfterValue(ioe, any(BooleanSuccessor s | s.getValue() = false))
-      or
-      n1.isIn(ioe) and
-      n2.isAdditional(ioe, instanceofTrueNodeTag())
-      or
-      n1.isAdditional(ioe, instanceofTrueNodeTag()) and
-      n2.isBefore(ioe.getPattern())
-      or
-      n1.isAfter(ioe.getPattern()) and
-      n2.isAfterValue(ioe, any(BooleanSuccessor s | s.getValue() = true))
-    )
-    or
     exists(AssertStmt assertstmt |
       n1.isBefore(assertstmt) and
       n2.isBefore(assertstmt.getExpr())

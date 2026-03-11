@@ -341,6 +341,19 @@ signature module AstSig<LocationSig Location> {
     /** Gets the boolean value of this literal. */
     boolean getValue();
   }
+
+  /**
+   * A pattern matching expression.
+   *
+   * In Java this is `x instanceof Pattern`, and in C# this is `x is Pattern`.
+   */
+  class PatternMatchExpr extends Expr {
+    /** Gets the expression being matched. */
+    Expr getExpr();
+
+    /** Gets the pattern being matched against. */
+    AstNode getPattern();
+  }
 }
 
 /**
@@ -575,6 +588,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     private string loopHeaderTag() { result = "[LoopHeader]" }
 
+    private string patternMatchTrueTag() { result = "[match-true]" }
+
     /**
      * Holds if an additional node tagged with `tag` should be created for
      * `n`. Edges targeting such nodes are labeled with `t` and therefore `t`
@@ -586,6 +601,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof LoopStmt and
       tag = loopHeaderTag() and
       t instanceof DirectSuccessor
+      or
+      n instanceof PatternMatchExpr and
+      tag = patternMatchTrueTag() and
+      t.(BooleanSuccessor).getValue() = true
     }
 
     /**
@@ -1307,6 +1326,26 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           inConditionalContext(boollit, _) and
           n1.isBefore(boollit) and
           n2.isAfterValue(boollit, any(BooleanSuccessor t | t.getValue() = boollit.getValue()))
+        )
+        or
+        exists(PatternMatchExpr pme |
+          n1.isBefore(pme) and
+          n2.isBefore(pme.getExpr())
+          or
+          n1.isAfter(pme.getExpr()) and
+          n2.isIn(pme)
+          or
+          n1.isIn(pme) and
+          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = false))
+          or
+          n1.isIn(pme) and
+          n2.isAdditional(pme, patternMatchTrueTag())
+          or
+          n1.isAdditional(pme, patternMatchTrueTag()) and
+          n2.isBefore(pme.getPattern())
+          or
+          n1.isAfter(pme.getPattern()) and
+          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = true))
         )
         or
         exists(IfStmt ifstmt |
