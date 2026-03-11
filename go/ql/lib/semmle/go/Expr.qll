@@ -2043,6 +2043,7 @@ class ConstantName extends ValueName {
   override string getAPrimaryQlClass() { result = "ConstantName" }
 }
 
+/** Holds if `e` is an expression that refers to the `nil` constant. */
 predicate exprRefersToNil(Expr e) { e.(ConstantName).getTarget() = Builtin::nil() }
 
 /**
