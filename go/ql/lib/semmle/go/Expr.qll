@@ -2155,19 +2155,11 @@ private predicate isTypeExprTopDown(Expr e) {
   or
   e = any(ArrayTypeExpr ae).getElement()
   or
-  e = any(FieldDecl f).getTypeExpr()
-  or
-  e = any(ParameterDecl pd).getTypeExpr()
+  e = any(FieldBase fb).getTypeExpr()
   or
   e = any(TypeParamDecl tpd).getTypeConstraintExpr()
   or
   e = any(TypeParamDecl tpd).getNameExpr(_)
-  or
-  e = any(ReceiverDecl rd).getTypeExpr()
-  or
-  e = any(ResultVariableDecl rvd).getTypeExpr()
-  or
-  e = any(MethodSpec md).getTypeExpr()
   or
   e = any(MapTypeExpr mt).getKeyTypeExpr()
   or
