@@ -12,7 +12,12 @@ import (
 )
 
 var minGoVersion = util.NewSemVer("1.11")
+
+// This can be increased before a new minor version has been released, based on testing with the release candidates.
 var maxGoVersion = util.NewSemVer("1.26")
+
+// This should be the maximum supported version which has been released.
+var goVersionToInstall = util.NewSemVer("1.26")
 
 type versionInfo struct {
 	goModVersion util.SemVer // The version of Go found in the go directive in the `go.mod` file.
@@ -52,8 +57,8 @@ func getVersionWhenGoModVersionNotFound(v versionInfo) (msg string, version util
 		// was intended to be used to build this project. Go versions are generally backwards
 		// compatible, so we install the maximum supported version.
 		msg = "No version of Go installed and no `go.mod` file found. Requesting the maximum " +
-			"supported version of Go (" + maxGoVersion.String() + ")."
-		version = maxGoVersion
+			"supported version of Go that has been released (" + goVersionToInstall.String() + ")."
+		version = goVersionToInstall
 		diagnostics.EmitNoGoModAndNoGoEnv(msg)
 	} else if outsideSupportedRange(v.goEnvVersion) {
 		// The Go version installed in the environment is not supported. We have no indication
@@ -61,9 +66,9 @@ func getVersionWhenGoModVersionNotFound(v versionInfo) (msg string, version util
 		// backwards compatible, so we install the maximum supported version.
 		msg = "No `go.mod` file found. The version of Go installed in the environment (" +
 			v.goEnvVersion.String() + ") is outside of the supported range (" + minGoVersion.String() + "-" +
-			maxGoVersion.String() + "). Requesting the maximum supported version of Go (" + maxGoVersion.String() +
-			")."
-		version = maxGoVersion
+			maxGoVersion.String() + "). Requesting the maximum supported version of Go that has " +
+			"been released (" + goVersionToInstall.String() + ")."
+		version = goVersionToInstall
 		diagnostics.EmitNoGoModAndGoEnvUnsupported(msg)
 	} else {
 		// The version of Go that is installed is supported. We have no indication which version
@@ -86,9 +91,9 @@ func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg string, version util.
 		// installed. We install the maximum supported version as a best effort.
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion.String() +
 			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
-			"). No version of Go installed. Requesting the maximum supported version of Go (" +
-			maxGoVersion.String() + ")."
-		version = maxGoVersion
+			"). No version of Go installed. Requesting the maximum supported version of Go that has " +
+			"been released (" + goVersionToInstall.String() + ")."
+		version = goVersionToInstall
 		diagnostics.EmitGoModVersionTooHighAndNoGoEnv(msg)
 	} else if aboveSupportedRange(v.goEnvVersion) {
 		// The version in the `go.mod` file is above the supported range. The version of Go that
@@ -108,8 +113,8 @@ func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg string, version util.
 			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
 			"). The version of Go installed in the environment (" + v.goEnvVersion.String() +
 			") is below the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
-			"). Requesting the maximum supported version of Go (" + maxGoVersion.String() + ")."
-		version = maxGoVersion
+			"). Requesting the maximum supported version of Go that has been released (" + goVersionToInstall.String() + ")."
+		version = goVersionToInstall
 		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooLow(msg)
 	} else if maxGoVersion.IsNewerThan(v.goEnvVersion) {
 		// The version in the `go.mod` file is above the supported range. The version of Go that
@@ -119,8 +124,8 @@ func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg string, version util.
 			") is above the supported range (" + minGoVersion.String() + "-" + maxGoVersion.String() +
 			"). The version of Go installed in the environment (" + v.goEnvVersion.String() +
 			") is below the maximum supported version (" + maxGoVersion.String() +
-			"). Requesting the maximum supported version of Go (" + maxGoVersion.String() + ")."
-		version = maxGoVersion
+			"). Requesting the maximum supported version of Go that has been released (" + goVersionToInstall.String() + ")."
+		version = goVersionToInstall
 		diagnostics.EmitGoModVersionTooHighAndEnvVersionBelowMax(msg)
 	} else {
 		// The version in the `go.mod` file is above the supported range. The version of Go that

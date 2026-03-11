@@ -13,18 +13,18 @@ func TestGetVersionToInstall(t *testing.T) {
 	}
 	tests := map[inputVersions]string{
 		// getVersionWhenGoModVersionNotFound()
-		{"", ""}:         maxGoVersion.String(),
-		{"", "1.2.2"}:    maxGoVersion.String(),
-		{"", "9999.0.1"}: maxGoVersion.String(),
+		{"", ""}:         goVersionToInstall.String(),
+		{"", "1.2.2"}:    goVersionToInstall.String(),
+		{"", "9999.0.1"}: goVersionToInstall.String(),
 		{"", "1.11.13"}:  "",
 		{"", "1.20.3"}:   "",
 
 		// getVersionWhenGoModVersionTooHigh()
-		{"9999.0", ""}:                    maxGoVersion.String(),
-		{"9999.0", "9999.0.1"}:            "",
-		{"9999.0", "1.1"}:                 maxGoVersion.String(),
-		{"9999.0", minGoVersion.String()}: maxGoVersion.String(),
-		{"9999.0", maxGoVersion.String()}: "",
+		{"9999.0", ""}:                          goVersionToInstall.String(),
+		{"9999.0", "9999.0.1"}:                  "",
+		{"9999.0", "1.1"}:                       goVersionToInstall.String(),
+		{"9999.0", minGoVersion.String()}:       goVersionToInstall.String(),
+		{"9999.0", goVersionToInstall.String()}: "",
 
 		// getVersionWhenGoModVersionTooLow()
 		{"0.0", ""}:       minGoVersion.String(),
