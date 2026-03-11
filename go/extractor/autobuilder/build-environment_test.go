@@ -54,3 +54,9 @@ func TestGetVersionToInstall(t *testing.T) {
 		}
 	}
 }
+
+func TestMaxGoVersions(t *testing.T) {
+	if goVersionToInstall.IsNewerThan(maxGoVersion) {
+		t.Errorf("goVersionToInstall (%s) should not be newer than maxGoVersion (%s).", goVersionToInstall, maxGoVersion)
+	}
+}
