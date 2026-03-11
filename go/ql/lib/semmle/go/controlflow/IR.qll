@@ -294,7 +294,7 @@ module IR {
   /**
    * An IR instruction that reads the value of a field.
    *
-   * On snapshots with incomplete type information, method expressions may sometimes be
+   * On databases with incomplete type information, method expressions may sometimes be
    * misclassified as field reads.
    */
   class FieldReadInstruction extends ComponentReadInstruction {

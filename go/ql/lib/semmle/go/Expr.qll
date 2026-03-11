@@ -834,7 +834,7 @@ class ConversionExpr extends CallOrConversionExpr {
 /**
  * A function call expression.
  *
- * On snapshots with incomplete type information, type conversions may be misclassified
+ * On databases with incomplete type information, type conversions may be misclassified
  * as function call expressions.
  *
  * Examples:
@@ -2104,7 +2104,7 @@ class LabelName extends Name {
  * Holds if `e` is a type expression, as determined by a bottom-up syntactic
  * analysis starting with `TypeName`s.
  *
- * On a snapshot with full type information, this predicate covers all type
+ * On a database with full type information, this predicate covers all type
  * expressions. However, if type information is missing then not all type names
  * may be identified as such, so not all type expressions can be determined by
  * a bottom-up analysis. In such cases, `isTypeExprTopDown` below is useful.
