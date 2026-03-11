@@ -13,3 +13,4 @@
 | tst.js:61:2:61:20 | o.trivialNonGetter1 | This expression has no effect. |
 | tst.js:77:24:77:24 | o | This expression has no effect. |
 | uselessfn.js:1:2:1:26 | functio ... d.");\\n} | This expression has no effect. |
+| uselessfn.js:6:3:6:25 | functio ... d.");\\n} | This expression has no effect. |

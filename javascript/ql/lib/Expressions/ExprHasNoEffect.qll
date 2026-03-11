@@ -172,7 +172,8 @@ predicate hasNoEffect(Expr e) {
   // from a syntax error we already flag
   not exists(FunctionExpr fe, ExprStmt es | fe = e |
     fe = es.getExpr() and
-    not exists(fe.getName())
+    not exists(fe.getName()) and
+    not fe.isParenthesized()
   ) and
   // exclude block-level flow type annotations. For example: `(name: empty)`.
   not (
