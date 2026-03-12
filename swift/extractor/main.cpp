@@ -81,6 +81,9 @@ static void turnOffSilVerifications(swift::SILOptions& options) {
   options.VerifyExclusivity = false;
   options.VerifyNone = true;
   options.VerifySILOwnership = false;
+  // Stack protection is not needed for extraction and causes a crash on Linux
+  // (https://github.com/swiftlang/swift/issues/69768)
+  options.EnableStackProtection = false;
 }
 
 codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state);
