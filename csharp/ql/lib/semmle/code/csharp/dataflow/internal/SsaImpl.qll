@@ -771,7 +771,7 @@ deprecated private predicate lastRefSkipUncertainReads(
 }
 
 pragma[nomagic]
-deprecated predicate lastReadSameVar(Definition def, ControlFlow::Node cfn) {
+deprecated predicate lastReadSameVar(Definition def, ControlFlowNode cfn) {
   exists(ControlFlow::BasicBlock bb, int i |
     lastRefSkipUncertainReads(def, bb, i) and
     variableReadActual(bb, i, _) and
@@ -894,7 +894,7 @@ private module Cached {
   }
 
   cached
-  AssignableRead getAReadAtNode(Definition def, ControlFlow::Node cfn) {
+  AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
     exists(Ssa::SourceVariable v, ControlFlow::BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
       variableReadActual(bb, i, v) and
@@ -908,7 +908,7 @@ private module Cached {
    * without passing through any other read.
    */
   cached
-  predicate firstReadSameVar(Definition def, ControlFlow::Node cfn) {
+  predicate firstReadSameVar(Definition def, ControlFlowNode cfn) {
     exists(ControlFlow::BasicBlock bb, int i |
       Impl::firstUse(def, bb, i, true) and cfn = bb.getNode(i)
     )
@@ -920,7 +920,7 @@ private module Cached {
    * passing through another read.
    */
   cached
-  predicate adjacentReadPairSameVar(Definition def, ControlFlow::Node cfn1, ControlFlow::Node cfn2) {
+  predicate adjacentReadPairSameVar(Definition def, ControlFlowNode cfn1, ControlFlowNode cfn2) {
     exists(
       ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2,
       Ssa::SourceVariable v
@@ -1023,7 +1023,7 @@ private module Cached {
 import Cached
 
 private string getSplitString(Definition def) {
-  exists(ControlFlow::BasicBlock bb, int i, ControlFlow::Node cfn |
+  exists(ControlFlow::BasicBlock bb, int i, ControlFlowNode cfn |
     def.definesAt(_, bb, i) and
     result = cfn.(ControlFlow::Nodes::ElementNode).getSplitsString()
   |
@@ -1046,7 +1046,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   private import semmle.code.csharp.controlflow.BasicBlocks
   private import codeql.util.Boolean
 
-  class Expr extends ControlFlow::Node {
+  class Expr extends ControlFlowNode {
     predicate hasCfgNode(ControlFlow::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 

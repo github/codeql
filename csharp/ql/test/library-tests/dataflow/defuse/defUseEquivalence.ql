@@ -3,11 +3,11 @@ private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 /** "Naive" def-use implementation. */
 predicate defReaches(
-  AssignableDefinition def, BaseSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
+  AssignableDefinition def, BaseSsa::SimpleLocalScopeVariable v, ControlFlowNode cfn
 ) {
   def.getTarget() = v and cfn = def.getExpr().getAControlFlowNode().getASuccessor()
   or
-  exists(ControlFlow::Node mid | defReaches(def, v, mid) |
+  exists(ControlFlowNode mid | defReaches(def, v, mid) |
     not mid =
       any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
           .getExpr()

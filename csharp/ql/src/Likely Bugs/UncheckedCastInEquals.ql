@@ -19,10 +19,10 @@ private predicate equalsMethodChild(EqualsMethod equals, Element child) {
   equalsMethodChild(equals, child.getParent())
 }
 
-predicate nodeBeforeParameterAccess(ControlFlow::Node node) {
+predicate nodeBeforeParameterAccess(ControlFlowNode node) {
   exists(EqualsMethod equals | equals.getBody() = node.getAstNode())
   or
-  exists(EqualsMethod equals, Parameter param, ControlFlow::Node mid |
+  exists(EqualsMethod equals, Parameter param, ControlFlowNode mid |
     equals.getParameter(0) = param and
     equalsMethodChild(equals, mid.getAstNode()) and
     nodeBeforeParameterAccess(mid) and

@@ -16,7 +16,7 @@ class ControlFlowElementOrCallable extends ExprOrStmtParent, TControlFlowElement
  * A program element that can possess control flow. That is, either a statement or
  * an expression.
  *
- * A control flow element can be mapped to a control flow node (`ControlFlow::Node`)
+ * A control flow element can be mapped to a control flow node (`ControlFlowNode`)
  * via `getAControlFlowNode()`. There is a one-to-many relationship between
  * control flow elements and control flow nodes. This allows control flow
  * splitting, for example modeling the control flow through `finally` blocks.
@@ -37,15 +37,15 @@ class ControlFlowElement extends ControlFlowElementOrCallable, @control_flow_ele
    * Gets a control flow node for this element. That is, a node in the
    * control flow graph that corresponds to this element.
    *
-   * Typically, there is exactly one `ControlFlow::Node` associated with a
+   * Typically, there is exactly one `ControlFlowNode` associated with a
    * `ControlFlowElement`, but a `ControlFlowElement` may be split into
-   * several `ControlFlow::Node`s, for example to represent the continuation
+   * several `ControlFlowNode`s, for example to represent the continuation
    * flow in a `try/catch/finally` construction.
    */
   Nodes::ElementNode getAControlFlowNode() { result.getAstNode() = this }
 
   /** Gets the control flow node for this element. */
-  ControlFlow::Node getControlFlowNode() { result.getAstNode() = this }
+  ControlFlowNode getControlFlowNode() { result.getAstNode() = this }
 
   /** Gets the basic block in which this element occurs. */
   BasicBlock getBasicBlock() { result = this.getAControlFlowNode().getBasicBlock() }

@@ -18,7 +18,7 @@ module Stages {
     private predicate forceCachingInSameStageRev() {
       exists(Split s)
       or
-      exists(ControlFlow::Node n)
+      exists(ControlFlowNode n)
       or
       forceCachingInSameStageRev()
     }

@@ -3,11 +3,11 @@ private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 /** "Naive" use-use implementation. */
 predicate useReaches(
-  LocalScopeVariableRead read, BaseSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
+  LocalScopeVariableRead read, BaseSsa::SimpleLocalScopeVariable v, ControlFlowNode cfn
 ) {
   read.getTarget() = v and cfn = read.getAControlFlowNode().getASuccessor()
   or
-  exists(ControlFlow::Node mid | useReaches(read, v, mid) |
+  exists(ControlFlowNode mid | useReaches(read, v, mid) |
     not mid =
       any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
           .getExpr()
@@ -33,7 +33,7 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
     or
     not exists(read.getANextRead()) and
     exists(
-      Ssa::Definition ssaDef, Ssa::PhiNode phi, ControlFlow::Node cfn, ControlFlow::BasicBlock bb,
+      Ssa::Definition ssaDef, Ssa::PhiNode phi, ControlFlowNode cfn, ControlFlow::BasicBlock bb,
       int i
     |
       ssaDef.getARead() = read

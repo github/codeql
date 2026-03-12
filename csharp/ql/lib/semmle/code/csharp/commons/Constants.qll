@@ -5,7 +5,7 @@ private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as StructuralComparison
 
 pragma[noinline]
-private predicate isConstantCondition0(ControlFlow::Node cfn, boolean b) {
+private predicate isConstantCondition0(ControlFlowNode cfn, boolean b) {
   exists(cfn.getASuccessorByType(any(ControlFlow::BooleanSuccessor t | t.getValue() = b))) and
   strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
 }
@@ -14,7 +14,7 @@ private predicate isConstantCondition0(ControlFlow::Node cfn, boolean b) {
  * Holds if `e` is a condition that always evaluates to Boolean value `b`.
  */
 predicate isConstantCondition(Expr e, boolean b) {
-  forex(ControlFlow::Node cfn | cfn = e.getAControlFlowNode() | isConstantCondition0(cfn, b))
+  forex(ControlFlowNode cfn | cfn = e.getAControlFlowNode() | isConstantCondition0(cfn, b))
 }
 
 /**

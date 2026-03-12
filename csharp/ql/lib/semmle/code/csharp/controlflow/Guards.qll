@@ -16,7 +16,7 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
 private import codeql.controlflow.Guards as SharedGuards
 
 private module GuardsInput implements
-  SharedGuards::InputSig<Location, ControlFlow::Node, ControlFlow::BasicBlock>
+  SharedGuards::InputSig<Location, ControlFlowNode, ControlFlow::BasicBlock>
 {
   private import csharp as CS
 
@@ -605,7 +605,7 @@ class AccessOrCallExpr extends Expr {
    * An expression can have more than one SSA qualifier in the presence
    * of control flow splitting.
    */
-  Ssa::Definition getAnSsaQualifier(ControlFlow::Node cfn) { result = getAnSsaQualifier(this, cfn) }
+  Ssa::Definition getAnSsaQualifier(ControlFlowNode cfn) { result = getAnSsaQualifier(this, cfn) }
 }
 
 private Declaration getDeclarationTarget(Expr e) {
@@ -613,14 +613,14 @@ private Declaration getDeclarationTarget(Expr e) {
   result = e.(Call).getTarget()
 }
 
-private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlow::Node cfn) {
+private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlowNode cfn) {
   e = getATrackedAccess(result, cfn)
   or
   not e = getATrackedAccess(_, _) and
   result = getAnSsaQualifier(e.(QualifiableExpr).getQualifier(), cfn)
 }
 
-private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Node cfn) {
+private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlowNode cfn) {
   result = def.getAReadAtNode(cfn)
   or
   result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
@@ -1114,7 +1114,7 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr0(
-      ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, GuardValue v
     ) {
       Stages::GuardsStage::forceCachingInSameStage() and
@@ -1127,7 +1127,7 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr(
-      ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr0(guardedCfn, guardedBB, guarded, g, sub, v) and
@@ -1136,8 +1136,8 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef0(
-      ControlFlow::Node cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
-      ControlFlow::Node subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, GuardValue v,
+      ControlFlowNode cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, GuardValue v,
       Ssa::Definition def
     ) {
       nodeIsGuardedBySameSubExpr(cfn, guardedBB, guarded, g, sub, v) and
@@ -1147,7 +1147,7 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef(
-      ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlow::Node subCfn,
+      ControlFlowNode guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlowNode subCfn,
       AccessOrCallExpr sub, GuardValue v, Ssa::Definition def
     ) {
       exists(BasicBlock guardedBB, BasicBlock subCfnBB |
@@ -1161,7 +1161,7 @@ module Internal {
     private predicate isGuardedByExpr0(
       AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
-      forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
+      forex(ControlFlowNode cfn | cfn = guarded.getAControlFlowNode() |
         nodeIsGuardedBySameSubExpr(cfn, _, guarded, g, sub, v)
       )
     }
@@ -1169,7 +1169,7 @@ module Internal {
     cached
     predicate isGuardedByExpr(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v) {
       isGuardedByExpr0(guarded, g, sub, v) and
-      forall(ControlFlow::Node subCfn, Ssa::Definition def |
+      forall(ControlFlowNode subCfn, Ssa::Definition def |
         nodeIsGuardedBySameSubExprSsaDef(_, guarded, g, subCfn, sub, v, def)
       |
         def = guarded.getAnSsaQualifier(_)
@@ -1181,7 +1181,7 @@ module Internal {
       ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr(guarded, _, _, g, sub, v) and
-      forall(ControlFlow::Node subCfn, Ssa::Definition def |
+      forall(ControlFlowNode subCfn, Ssa::Definition def |
         nodeIsGuardedBySameSubExprSsaDef(guarded, _, g, subCfn, sub, v, def)
       |
         def =

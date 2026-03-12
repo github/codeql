@@ -1,5 +1,7 @@
 import csharp
 
+class ControlFlowNode = ControlFlow::Node;
+
 /**
  * Provides classes representing the control flow graph within callables.
  */

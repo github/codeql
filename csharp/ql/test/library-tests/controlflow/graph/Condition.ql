@@ -7,12 +7,12 @@ query predicate conditionBlock(
   cb.edgeDominates(controlled, any(ConditionalSuccessor s | testIsTrue = s.getValue()))
 }
 
-ControlFlow::Node successor(ControlFlow::Node node, boolean kind) {
+ControlFlowNode successor(ControlFlowNode node, boolean kind) {
   kind = true and result = node.getATrueSuccessor()
   or
   kind = false and result = node.getAFalseSuccessor()
 }
 
-query predicate conditionFlow(ControlFlow::Node node, ControlFlow::Node successor, boolean kind) {
+query predicate conditionFlow(ControlFlowNode node, ControlFlowNode successor, boolean kind) {
   successor = successor(node, kind)
 }

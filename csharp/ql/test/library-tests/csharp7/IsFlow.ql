@@ -1,6 +1,6 @@
 import csharp
 
-query predicate edges(ControlFlow::Node n1, ControlFlow::Node n2, string attr, string val) {
+query predicate edges(ControlFlowNode n1, ControlFlowNode n2, string attr, string val) {
   exists(SwitchStmt switch, ControlFlow::SuccessorType t |
     switch.getAControlFlowNode().getASuccessor*() = n1
   |

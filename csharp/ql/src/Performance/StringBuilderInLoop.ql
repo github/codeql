@@ -13,7 +13,7 @@
 import csharp
 import semmle.code.csharp.frameworks.system.Text
 
-from ObjectCreation creation, LoopStmt loop, ControlFlow::Node loopEntryNode
+from ObjectCreation creation, LoopStmt loop, ControlFlowNode loopEntryNode
 where
   creation.getType() instanceof SystemTextStringBuilderClass and
   loopEntryNode = loop.getBody().getAControlFlowEntryNode() and

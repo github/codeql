@@ -31,7 +31,7 @@ class Node extends TNode {
    * Gets the definition corresponding to this node, at control flow node `cfn`,
    * if any.
    */
-  AssignableDefinition asDefinitionAtNode(ControlFlow::Node cfn) {
+  AssignableDefinition asDefinitionAtNode(ControlFlowNode cfn) {
     result = this.(AssignableDefinitionNode).getDefinitionAtNode(cfn)
   }
 
@@ -44,7 +44,7 @@ class Node extends TNode {
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
-  final ControlFlow::Node getControlFlowNode() { result = this.(NodeImpl).getControlFlowNodeImpl() }
+  final ControlFlowNode getControlFlowNode() { result = this.(NodeImpl).getControlFlowNodeImpl() }
 
   /** Gets a textual representation of this node. */
   final string toString() { result = this.(NodeImpl).toStringImpl() }
@@ -71,7 +71,7 @@ class Node extends TNode {
  *
  * Note that because of control-flow splitting, one `Expr` may correspond
  * to multiple `ExprNode`s, just like it may correspond to multiple
- * `ControlFlow::Node`s.
+ * `ControlFlowNode`s.
  */
 class ExprNode extends Node, TExprNode {
   /** Gets the expression corresponding to this node. */
@@ -113,7 +113,7 @@ class AssignableDefinitionNode extends Node instanceof AssignableDefinitionNodeI
   AssignableDefinition getDefinition() { result = super.getDefinition() }
 
   /** Gets the underlying definition, at control flow node `cfn`, if any. */
-  AssignableDefinition getDefinitionAtNode(ControlFlow::Node cfn) {
+  AssignableDefinition getDefinitionAtNode(ControlFlowNode cfn) {
     result = super.getDefinitionAtNode(cfn)
   }
 }

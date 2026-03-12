@@ -164,7 +164,7 @@ module Ssa {
    */
   class Definition extends SsaImpl::Definition {
     /** Gets the control flow node of this SSA definition. */
-    final ControlFlow::Node getControlFlowNode() {
+    final ControlFlowNode getControlFlowNode() {
       exists(ControlFlow::BasicBlock bb, int i | this.definesAt(_, bb, i) |
         result = bb.getNode(0.maximum(i))
       )
@@ -236,7 +236,7 @@ module Ssa {
      * - The reads of `this.Field` on lines 10 and 11 can be reached from the phi
      *   node between lines 9 and 10.
      */
-    final AssignableRead getAReadAtNode(ControlFlow::Node cfn) {
+    final AssignableRead getAReadAtNode(ControlFlowNode cfn) {
       result = SsaImpl::getAReadAtNode(this, cfn)
     }
 
@@ -310,7 +310,7 @@ module Ssa {
      * Subsequent reads can be found by following the steps defined by
      * `AssignableRead.getANextRead()`.
      */
-    final AssignableRead getAFirstReadAtNode(ControlFlow::Node cfn) {
+    final AssignableRead getAFirstReadAtNode(ControlFlowNode cfn) {
       SsaImpl::firstReadSameVar(this, cfn) and
       result.getAControlFlowNode() = cfn
     }
@@ -373,7 +373,7 @@ module Ssa {
      * - The read of `this.Field` on line 11 is a last read of the phi node
      *   between lines 9 and 10.
      */
-    deprecated final AssignableRead getALastReadAtNode(ControlFlow::Node cfn) {
+    deprecated final AssignableRead getALastReadAtNode(ControlFlowNode cfn) {
       SsaImpl::lastReadSameVar(this, cfn) and
       result.getAControlFlowNode() = cfn
     }

@@ -257,7 +257,7 @@ class DataFlowCallable extends TDataFlowCallable {
 
   /** Gets a control flow node belonging to this callable. */
   pragma[inline]
-  ControlFlow::Node getAControlFlowNode() {
+  ControlFlowNode getAControlFlowNode() {
     result = this.getAMultiBodyControlFlowNode()
     or
     not this.isMultiBodied() and

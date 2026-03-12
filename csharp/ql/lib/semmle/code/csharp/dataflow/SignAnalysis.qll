@@ -11,26 +11,26 @@ private import semmle.code.csharp.dataflow.internal.rangeanalysis.SignAnalysisCo
 
 /** Holds if `e` can be positive and cannot be negative. */
 predicate positiveExpr(Expr e) {
-  forex(ControlFlow::Node cfn | cfn = e.getAControlFlowNode() |
+  forex(ControlFlowNode cfn | cfn = e.getAControlFlowNode() |
     positive(cfn) or strictlyPositive(cfn)
   )
 }
 
 /** Holds if `e` can be negative and cannot be positive. */
 predicate negativeExpr(Expr e) {
-  forex(ControlFlow::Node cfn | cfn = e.getAControlFlowNode() |
+  forex(ControlFlowNode cfn | cfn = e.getAControlFlowNode() |
     negative(cfn) or strictlyNegative(cfn)
   )
 }
 
 /** Holds if `e` is strictly positive. */
 predicate strictlyPositiveExpr(Expr e) {
-  forex(ControlFlow::Node cfn | cfn = e.getAControlFlowNode() | strictlyPositive(cfn))
+  forex(ControlFlowNode cfn | cfn = e.getAControlFlowNode() | strictlyPositive(cfn))
 }
 
 /** Holds if `e` is strictly negative. */
 predicate strictlyNegativeExpr(Expr e) {
-  forex(ControlFlow::Node cfn | cfn = e.getAControlFlowNode() | strictlyNegative(cfn))
+  forex(ControlFlowNode cfn | cfn = e.getAControlFlowNode() | strictlyNegative(cfn))
 }
 
 /** Holds if `e` can be positive and cannot be negative. */

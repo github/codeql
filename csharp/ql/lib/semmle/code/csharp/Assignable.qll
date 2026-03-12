@@ -83,7 +83,7 @@ class AssignableRead extends AssignableAccess {
   }
 
   pragma[noinline]
-  private ControlFlow::Node getAnAdjacentReadSameVar() {
+  private ControlFlowNode getAnAdjacentReadSameVar() {
     SsaImpl::adjacentReadPairSameVar(_, this.getAControlFlowNode(), result)
   }
 
@@ -113,7 +113,7 @@ class AssignableRead extends AssignableAccess {
    */
   pragma[nomagic]
   AssignableRead getANextRead() {
-    forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
+    forex(ControlFlowNode cfn | cfn = result.getAControlFlowNode() |
       cfn = this.getAnAdjacentReadSameVar()
     )
   }
@@ -402,7 +402,7 @@ class AssignableDefinition extends TAssignableDefinition {
    * the definitions of `x` and `y` in `M(out x, out y)` and `(x, y) = (0, 1)`
    * relate to the same call to `M` and assignment node, respectively.
    */
-  deprecated ControlFlow::Node getAControlFlowNode() {
+  deprecated ControlFlowNode getAControlFlowNode() {
     result = this.getExpr().getAControlFlowNode()
   }
 
@@ -477,7 +477,7 @@ class AssignableDefinition extends TAssignableDefinition {
    */
   pragma[nomagic]
   AssignableRead getAFirstRead() {
-    forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
+    forex(ControlFlowNode cfn | cfn = result.getAControlFlowNode() |
       exists(Ssa::ExplicitDefinition def | result = def.getAFirstReadAtNode(cfn) |
         this = def.getADefinition()
       )
@@ -671,7 +671,7 @@ module AssignableDefinitions {
     /** Gets the underlying parameter. */
     Parameter getParameter() { result = p }
 
-    deprecated override ControlFlow::Node getAControlFlowNode() {
+    deprecated override ControlFlowNode getAControlFlowNode() {
       result = p.getCallable().getEntryPoint()
     }
 

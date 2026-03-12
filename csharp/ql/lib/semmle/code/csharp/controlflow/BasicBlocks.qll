@@ -67,16 +67,16 @@ final class BasicBlock extends BasicBlocksImpl::BasicBlock {
   BasicBlock getASuccessor() { result = super.getASuccessor() }
 
   /** Gets the control flow node at a specific (zero-indexed) position in this basic block. */
-  ControlFlow::Node getNode(int pos) { result = super.getNode(pos) }
+  ControlFlowNode getNode(int pos) { result = super.getNode(pos) }
 
   /** Gets a control flow node in this basic block. */
-  ControlFlow::Node getANode() { result = super.getANode() }
+  ControlFlowNode getANode() { result = super.getANode() }
 
   /** Gets the first control flow node in this basic block. */
-  ControlFlow::Node getFirstNode() { result = super.getFirstNode() }
+  ControlFlowNode getFirstNode() { result = super.getFirstNode() }
 
   /** Gets the last control flow node in this basic block. */
-  ControlFlow::Node getLastNode() { result = super.getLastNode() }
+  ControlFlowNode getLastNode() { result = super.getLastNode() }
 
   /** Gets the callable that this basic block belongs to. */
   final Callable getCallable() { result = this.getFirstNode().getEnclosingCallable() }
@@ -339,12 +339,14 @@ final class ConditionBlock extends BasicBlock, BasicBlocksImpl::ConditionBasicBl
   }
 }
 
+private class ControlFlowNodeAlias = ControlFlowNode;
+
 private class BasicBlockAlias = BasicBlock;
 
 private class EntryBasicBlockAlias = EntryBasicBlock;
 
 module Cfg implements BB::CfgSig<Location> {
-  class ControlFlowNode = ControlFlow::Node;
+  class ControlFlowNode = ControlFlowNodeAlias;
 
   class BasicBlock = BasicBlockAlias;
 

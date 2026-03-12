@@ -26,10 +26,10 @@ predicate correctlySynchronized(CollectionMember c, Expr access) {
   )
 }
 
-ControlFlow::Node unlockedReachable(Callable a) {
+ControlFlowNode unlockedReachable(Callable a) {
   result = a.getEntryPoint()
   or
-  exists(ControlFlow::Node mid | mid = unlockedReachable(a) |
+  exists(ControlFlowNode mid | mid = unlockedReachable(a) |
     not mid.getAstNode() instanceof LockingCall and
     result = mid.getASuccessor()
   )

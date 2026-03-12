@@ -56,13 +56,13 @@ predicate sessionUse(MemberAccess ma) {
 }
 
 /** A control flow step that is not sanitised by a call to clear the session. */
-predicate controlStep(ControlFlow::Node s1, ControlFlow::Node s2) {
+predicate controlStep(ControlFlowNode s1, ControlFlowNode s2) {
   s2 = s1.getASuccessor() and
   not sessionEndMethod(s2.getAstNode().(MethodCall).getTarget())
 }
 
 from
-  ControlFlow::Node loginCall, Method loginMethod, ControlFlow::Node sessionUse,
+  ControlFlowNode loginCall, Method loginMethod, ControlFlowNode sessionUse,
   ControlFlow::SuccessorType fromLoginFlow
 where
   loginMethod = loginCall.getAstNode().(MethodCall).getTarget() and

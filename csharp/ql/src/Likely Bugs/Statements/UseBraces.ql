@@ -15,7 +15,7 @@
 import csharp
 
 // Iterate the control flow until we reach a Stmt
-Stmt findSuccessorStmt(ControlFlow::Node n) {
+Stmt findSuccessorStmt(ControlFlowNode n) {
   result = n.getAstNode()
   or
   not n.getAstNode() instanceof Stmt and result = findSuccessorStmt(n.getASuccessor())
