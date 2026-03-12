@@ -85,6 +85,7 @@ module MakeDualGraph<LocationSig Location, DualGraphInputSig<Location> Input> {
    * Holds if `node1` and `node2` have a common ancestor in the original graph, that is,
    * there exists a node from which both nodes are reachable.
    */
+  overlay[caller?]
   pragma[inline]
   predicate hasCommonAncestor(Node node1, Node node2) {
     // Note: `fastTC` only checks for non-empty paths, but there is no need to special-case
