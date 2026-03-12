@@ -2,6 +2,8 @@
  * Provides an efficient mechanism for checking if two nodes have
  * a common ancestor in a graph.
  */
+overlay[local?]
+module;
 
 private import Location
 
