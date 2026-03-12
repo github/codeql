@@ -35,13 +35,43 @@ module MakeDualGraph<LocationSig Location, DualGraphInputSig<Location> Input> {
     TForward(Node n) or
     TBackward(Node n)
 
+  cached
+  private module Cached {
+    /** Gets the node representing the backward node wrapping `n`. */
+    cached
+    DualNode getBackwardNode(Node n) { result = TBackward(n) }
+
+    /** Gets the node representing the forward node wrapping `n`. */
+    cached
+    DualNode getForwardNode(Node n) { result = TForward(n) }
+
+    /**
+     * Holds if the dual graph contains the edge `node1 -> node2`. See `MakeDualGraph`.
+     */
+    private predicate dualEdge(DualNode node1, DualNode node2) {
+      edge(node1.asForward(), node2.asForward())
+      or
+      edge(node2.asBackward(), node1.asBackward())
+      or
+      node1.asBackward() = node2.asForward()
+    }
+
+    /**
+     * Holds if there is a non-empty path from `node1 -> node2` in the dual graph.
+     */
+    cached
+    predicate dualPath(DualNode node1, DualNode node2) = fastTC(dualEdge/2)(node1, node2)
+  }
+
+  import Cached
+
   /** A forward or backward copy of a node from the original graph. */
   class DualNode extends TDualNode {
     /** Gets the underlying node if this is a forward node. */
-    Node asForward() { this = TForward(result) }
+    Node asForward() { this = getForwardNode(result) }
 
     /** Gets the underlying node if this is a backward node. */
-    Node asBackward() { this = TBackward(result) }
+    Node asBackward() { this = getBackwardNode(result) }
 
     /** Gets a string representation of this node. */
     string toString() {
@@ -57,29 +87,6 @@ module MakeDualGraph<LocationSig Location, DualGraphInputSig<Location> Input> {
       result = this.asBackward().getLocation()
     }
   }
-
-  /** Gets the node representing the backward node wrapping `n`. */
-  DualNode getBackwardNode(Node n) { result.asBackward() = n }
-
-  /** Gets the node representing the forward node wrapping `n`. */
-  DualNode getForwardNode(Node n) { result.asForward() = n }
-
-  /**
-   * Holds if the dual graph contains the edge `node1 -> node2`. See `MakeDualGraph`.
-   */
-  predicate dualEdge(DualNode node1, DualNode node2) {
-    edge(node1.asForward(), node2.asForward())
-    or
-    edge(node2.asBackward(), node1.asBackward())
-    or
-    node1.asBackward() = node2.asForward()
-  }
-
-  /**
-   * Holds if there is a non-empty path from `node1 -> node2` in the dual graph.
-   */
-  cached
-  predicate dualPath(DualNode node1, DualNode node2) = fastTC(dualEdge/2)(node1, node2)
 
   /**
    * Holds if `node1` and `node2` have a common ancestor in the original graph, that is,
