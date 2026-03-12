@@ -36,13 +36,8 @@ module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
     scope.getLocation().getStartColumn() = startColumn and
     exists(Location loc |
       loc.getEndLine() = endLine and
-      loc.getEndColumn() = endColumn
-    |
-      loc = scope.(Callable).getBody().getLocation()
-      or
-      loc = scope.(Field).getInitializer().getLocation()
-      or
-      loc = scope.(Property).getInitializer().getLocation()
+      loc.getEndColumn() = endColumn and
+      loc = scope.getBody().getLocation()
     )
   }
 }

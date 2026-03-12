@@ -66,23 +66,15 @@ private module Initializers {
 }
 
 /** An element that defines a new CFG scope. */
-class CfgScope extends Element, @top_level_exprorstmt_parent {
+class CfgScope extends Callable {
   CfgScope() {
     this.getFile().fromSource() and
     (
-      this =
-        any(Callable c |
-          c.(Constructor).hasInitializer()
-          or
-          Initializers::obinitInitializes(c, _)
-          or
-          c.hasBody()
-        )
+      this.(Constructor).hasInitializer()
       or
-      // For now, static initializer values have their own scope. Eventually, they
-      // should be treated like instance initializers.
-      this.(Assignable).(Modifiable).isStatic() and
-      expr_parent_top_level_adjusted2(_, _, this)
+      Initializers::obinitInitializes(this, _)
+      or
+      this.hasBody()
     )
   }
 }
@@ -189,24 +181,6 @@ CompilationExt getCompilation(File f) {
   result = TBuildless()
 }
 
-/**
- * The `expr_parent_top_level_adjusted()` relation restricted to exclude relations
- * between properties and their getters' expression bodies in properties such as
- * `int P => 0`.
- *
- * This is in order to only associate the expression body with one CFG scope, namely
- * the getter (and not the declaration itself).
- */
-private predicate expr_parent_top_level_adjusted2(
-  Expr child, int i, @top_level_exprorstmt_parent parent
-) {
-  expr_parent_top_level_adjusted(child, i, parent) and
-  not exists(Getter g |
-    g.getDeclaration() = parent and
-    i = 0
-  )
-}
-
 /** Holds if `first` is first executed when entering `scope`. */
 predicate scopeFirst(CfgScope scope, AstNode first) {
   scope =
@@ -220,9 +194,6 @@ predicate scopeFirst(CfgScope scope, AstNode first) {
     )
   or
   first(Initializers::initializedInstanceMemberOrder(scope, _, 0), first)
-  or
-  expr_parent_top_level_adjusted2(any(Expr e | first(e, first)), _, scope) and
-  not scope instanceof Callable
 }
 
 /** Holds if `scope` is exited when `last` finishes with completion `c`. */
@@ -244,9 +215,6 @@ predicate scopeLast(CfgScope scope, AstNode last, Completion c) {
     )
   or
   last(Initializers::lastInitializer(scope, _), last, c)
-  or
-  expr_parent_top_level_adjusted2(any(Expr e | last(e, last, c)), _, scope) and
-  not scope instanceof Callable
 }
 
 private class ObjectInitTree extends ControlFlowTree instanceof ObjectInitMethod {
