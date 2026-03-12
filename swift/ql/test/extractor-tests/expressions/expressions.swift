@@ -187,3 +187,5 @@ func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
 }
 
 let _ = makeTuple("A", 2)
+
+//codeql-extractor-options: -disable-stack-protector

@@ -133,7 +133,6 @@ function RegisterExtractorPack(id)
 
         strip_unsupported_args(compilerArguments.argv)
         replace_resource_dir(compilerPath, compilerArguments.argv)
-        table.insert(compilerArguments.argv, "-disable-stack-protector")
 
         return {
             trace = true,
