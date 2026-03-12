@@ -1856,6 +1856,53 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
         /** Provides a set of consistency queries. */
         module Consistency {
+          /** Holds if the consistency query `query` has `results` results. */
+          query predicate consistencyOverview(string query, int results) {
+            query = "deadEnd" and results = strictcount(ControlFlowNode node | deadEnd(node))
+            or
+            query = "nonUniqueEnclosingCallable" and
+            results =
+              strictcount(AstNode n, int callables | nonUniqueEnclosingCallable(n, callables))
+            or
+            query = "nonUniqueInConditionalContext" and
+            results = strictcount(AstNode n | nonUniqueInConditionalContext(n))
+            or
+            query = "nonLocalStep" and
+            results =
+              strictcount(ControlFlowNode n1, SuccessorType t, ControlFlowNode n2 |
+                nonLocalStep(n1, t, n2)
+              )
+            or
+            query = "ambiguousAdditionalNode" and
+            results = strictcount(AstNode n, string tag | ambiguousAdditionalNode(n, tag))
+            or
+            query = "missingInNodeForPostOrInOrder" and
+            results = strictcount(AstNode ast | missingInNodeForPostOrInOrder(ast))
+            or
+            query = "multipleSuccessors" and
+            results =
+              strictcount(ControlFlowNode node, SuccessorType t, ControlFlowNode successor |
+                multipleSuccessors(node, t, successor)
+              )
+            or
+            query = "multipleConditionalSuccessorKinds" and
+            results =
+              strictcount(ControlFlowNode node, ConditionalSuccessor t1, ConditionalSuccessor t2,
+                ControlFlowNode succ1, ControlFlowNode succ2 |
+                multipleConditionalSuccessorKinds(node, t1, t2, succ1, succ2)
+              )
+            or
+            query = "directAndConditionalSuccessor" and
+            results =
+              strictcount(ControlFlowNode node, ConditionalSuccessor t1, DirectSuccessor t2,
+                ControlFlowNode succ1, ControlFlowNode succ2 |
+                directAndConditionalSuccessors(node, t1, t2, succ1, succ2)
+              )
+            or
+            query = "selfLoop" and
+            results = strictcount(ControlFlowNode node, SuccessorType t | selfLoop(node, t))
+          }
+
           /**
            * Holds if `node` is lacking a successor.
            *
@@ -1864,6 +1911,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           query predicate deadEnd(ControlFlowNode node) {
             not node instanceof ControlFlow::ExitNode and
             not exists(node.getASuccessor(_))
+          }
+
+          /** Holds if `n` does not have a unique enclosing callable. */
+          query predicate nonUniqueEnclosingCallable(AstNode n, int callables) {
+            callables = strictcount(getEnclosingCallable(n)) and callables > 1
           }
 
           /**
@@ -1987,7 +2039,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             ControlFlowNode succ1, ControlFlowNode succ2
           ) {
             succ1 = node.getASuccessor(t1) and
-            succ2 = node.getASuccessor(t2)
+            succ2 = node.getASuccessor(t2) and
+            // allow for the pattern match true edge when a pattern match
+            // expression is not in a conditional context
+            not succ1.isAdditional(_, patternMatchTrueTag())
           }
 
           /**
