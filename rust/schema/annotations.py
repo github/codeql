@@ -1936,18 +1936,6 @@ class _:
     """
 
 
-@annotate(TraitAlias)
-class _:
-    """
-    A trait alias.
-
-    For example:
-    ```rust
-    trait Foo = Bar + Baz;
-    ```
-    """
-
-
 @annotate(TryExpr, cfg=True)
 class _:
     """

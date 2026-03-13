@@ -95,6 +95,6 @@ rust_library(
     version = "1.1.1",
     deps = [
         "@vendor_ts__kqueue-sys-1.0.4//:kqueue_sys",
-        "@vendor_ts__libc-0.2.175//:libc",
+        "@vendor_ts__libc-0.2.178//:libc",
     ],
 )

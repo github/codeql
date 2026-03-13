@@ -223,6 +223,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TFormatArgsArgName(Raw::FormatArgsArgName id) { constructFormatArgsArgName(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TFormatArgsExpr(Raw::FormatArgsExpr id) { constructFormatArgsExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -565,10 +569,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TTraitAlias(Raw::TraitAlias id) { constructTraitAlias(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TTryExpr(Raw::TryExpr id) { constructTryExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -710,15 +710,16 @@ module Synth {
   class TAstNode =
     TAbi or TAddressable or TArgList or TAsmDirSpec or TAsmOperand or TAsmOperandExpr or
         TAsmOption or TAsmPiece or TAsmRegSpec or TAssocItemList or TAttr or TCallable or TExpr or
-        TExternItemList or TFieldList or TForBinder or TFormatArgsArg or TGenericArg or
-        TGenericArgList or TGenericParam or TGenericParamList or TItemList or TLabel or TLetElse or
-        TMacroItems or TMatchArm or TMatchArmList or TMatchGuard or TMeta or TName or TParamBase or
-        TParamList or TParenthesizedArgList or TPat or TPath or TPathAstNode or TPathSegment or
-        TRename or TRetTypeRepr or TReturnTypeSyntax or TSourceFile or TStmt or TStmtList or
-        TStructExprField or TStructExprFieldList or TStructField or TStructPatField or
-        TStructPatFieldList or TToken or TTokenTree or TTupleField or TTypeBound or
-        TTypeBoundList or TTypeRepr or TUseBoundGenericArg or TUseBoundGenericArgs or TUseTree or
-        TUseTreeList or TVariantList or TVisibility or TWhereClause or TWherePred;
+        TExternItemList or TFieldList or TForBinder or TFormatArgsArg or TFormatArgsArgName or
+        TGenericArg or TGenericArgList or TGenericParam or TGenericParamList or TItemList or
+        TLabel or TLetElse or TMacroItems or TMatchArm or TMatchArmList or TMatchGuard or TMeta or
+        TName or TParamBase or TParamList or TParenthesizedArgList or TPat or TPath or
+        TPathAstNode or TPathSegment or TRename or TRetTypeRepr or TReturnTypeSyntax or
+        TSourceFile or TStmt or TStmtList or TStructExprField or TStructExprFieldList or
+        TStructField or TStructPatField or TStructPatFieldList or TToken or TTokenTree or
+        TTupleField or TTypeBound or TTypeBoundList or TTypeRepr or TUseBoundGenericArg or
+        TUseBoundGenericArgs or TUseTree or TUseTreeList or TVariantList or TVisibility or
+        TWhereClause or TWherePred;
 
   /**
    * INTERNAL: Do not use.
@@ -761,7 +762,7 @@ module Synth {
    */
   class TItem =
     TAsmExpr or TAssocItem or TExternBlock or TExternCrate or TExternItem or TImpl or TMacroDef or
-        TMacroRules or TModule or TTrait or TTraitAlias or TTypeItem or TUse;
+        TMacroRules or TModule or TTrait or TTypeItem or TUse;
 
   /**
    * INTERNAL: Do not use.
@@ -1207,6 +1208,15 @@ module Synth {
    * Converts a raw element to a synthesized `TFormatArgsArg`, if possible.
    */
   TFormatArgsArg convertFormatArgsArgFromRaw(Raw::Element e) { result = TFormatArgsArg(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   *
+   * Converts a raw element to a synthesized `TFormatArgsArgName`, if possible.
+   */
+  TFormatArgsArgName convertFormatArgsArgNameFromRaw(Raw::Element e) {
+    result = TFormatArgsArgName(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -1809,13 +1819,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    *
-   * Converts a raw element to a synthesized `TTraitAlias`, if possible.
-   */
-  TTraitAlias convertTraitAliasFromRaw(Raw::Element e) { result = TTraitAlias(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   *
    * Converts a raw element to a synthesized `TTryExpr`, if possible.
    */
   TTryExpr convertTryExprFromRaw(Raw::Element e) { result = TTryExpr(e) }
@@ -2110,6 +2113,8 @@ module Synth {
     or
     result = convertFormatArgsArgFromRaw(e)
     or
+    result = convertFormatArgsArgNameFromRaw(e)
+    or
     result = convertGenericArgFromRaw(e)
     or
     result = convertGenericArgListFromRaw(e)
@@ -2373,8 +2378,6 @@ module Synth {
     result = convertModuleFromRaw(e)
     or
     result = convertTraitFromRaw(e)
-    or
-    result = convertTraitAliasFromRaw(e)
     or
     result = convertTypeItemFromRaw(e)
     or
@@ -2882,6 +2885,14 @@ module Synth {
    * Converts a synthesized `TFormatArgsArg` to a raw DB element, if possible.
    */
   Raw::Element convertFormatArgsArgToRaw(TFormatArgsArg e) { e = TFormatArgsArg(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TFormatArgsArgName` to a raw DB element, if possible.
+   */
+  Raw::Element convertFormatArgsArgNameToRaw(TFormatArgsArgName e) {
+    e = TFormatArgsArgName(result)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -3397,12 +3408,6 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
-   * Converts a synthesized `TTraitAlias` to a raw DB element, if possible.
-   */
-  Raw::Element convertTraitAliasToRaw(TTraitAlias e) { e = TTraitAlias(result) }
-
-  /**
-   * INTERNAL: Do not use.
    * Converts a synthesized `TTryExpr` to a raw DB element, if possible.
    */
   Raw::Element convertTryExprToRaw(TTryExpr e) { e = TTryExpr(result) }
@@ -3670,6 +3675,8 @@ module Synth {
     or
     result = convertFormatArgsArgToRaw(e)
     or
+    result = convertFormatArgsArgNameToRaw(e)
+    or
     result = convertGenericArgToRaw(e)
     or
     result = convertGenericArgListToRaw(e)
@@ -3933,8 +3940,6 @@ module Synth {
     result = convertModuleToRaw(e)
     or
     result = convertTraitToRaw(e)
-    or
-    result = convertTraitAliasToRaw(e)
     or
     result = convertTypeItemToRaw(e)
     or

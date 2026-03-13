@@ -1003,8 +1003,8 @@ impl From<trap::Label<ForBinder>> for trap::Label<Element> {
 #[derive(Debug)]
 pub struct FormatArgsArg {
     pub id: trap::TrapId<FormatArgsArg>,
+    pub arg_name: Option<trap::Label<FormatArgsArgName>>,
     pub expr: Option<trap::Label<Expr>>,
-    pub name: Option<trap::Label<Name>>,
 }
 
 impl trap::TrapEntry for FormatArgsArg {
@@ -1014,11 +1014,11 @@ impl trap::TrapEntry for FormatArgsArg {
 
     fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
         out.add_tuple("format_args_args", vec![id.into()]);
+        if let Some(v) = self.arg_name {
+            out.add_tuple("format_args_arg_arg_names", vec![id.into(), v.into()]);
+        }
         if let Some(v) = self.expr {
             out.add_tuple("format_args_arg_exprs", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.name {
-            out.add_tuple("format_args_arg_names", vec![id.into(), v.into()]);
         }
     }
 }
@@ -1048,6 +1048,52 @@ impl From<trap::Label<FormatArgsArg>> for trap::Label<Locatable> {
 impl From<trap::Label<FormatArgsArg>> for trap::Label<Element> {
     fn from(value: trap::Label<FormatArgsArg>) -> Self {
         // SAFETY: this is safe because in the dbscheme FormatArgsArg is a subclass of Element
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+#[derive(Debug)]
+pub struct FormatArgsArgName {
+    pub id: trap::TrapId<FormatArgsArgName>,
+}
+
+impl trap::TrapEntry for FormatArgsArgName {
+    fn extract_id(&mut self) -> trap::TrapId<Self> {
+        std::mem::replace(&mut self.id, trap::TrapId::Star)
+    }
+
+    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
+        out.add_tuple("format_args_arg_names", vec![id.into()]);
+    }
+}
+
+impl trap::TrapClass for FormatArgsArgName {
+    fn class_name() -> &'static str { "FormatArgsArgName" }
+}
+
+impl From<trap::Label<FormatArgsArgName>> for trap::Label<AstNode> {
+    fn from(value: trap::Label<FormatArgsArgName>) -> Self {
+        // SAFETY: this is safe because in the dbscheme FormatArgsArgName is a subclass of AstNode
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<FormatArgsArgName>> for trap::Label<Locatable> {
+    fn from(value: trap::Label<FormatArgsArgName>) -> Self {
+        // SAFETY: this is safe because in the dbscheme FormatArgsArgName is a subclass of Locatable
+        unsafe {
+            Self::from_untyped(value.as_untyped())
+        }
+    }
+}
+
+impl From<trap::Label<FormatArgsArgName>> for trap::Label<Element> {
+    fn from(value: trap::Label<FormatArgsArgName>) -> Self {
+        // SAFETY: this is safe because in the dbscheme FormatArgsArgName is a subclass of Element
         unsafe {
             Self::from_untyped(value.as_untyped())
         }
@@ -10063,103 +10109,6 @@ impl From<trap::Label<Trait>> for trap::Label<Element> {
 impl From<trap::Label<Trait>> for trap::Label<Addressable> {
     fn from(value: trap::Label<Trait>) -> Self {
         // SAFETY: this is safe because in the dbscheme Trait is a subclass of Addressable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-#[derive(Debug)]
-pub struct TraitAlias {
-    pub id: trap::TrapId<TraitAlias>,
-    pub attrs: Vec<trap::Label<Attr>>,
-    pub generic_param_list: Option<trap::Label<GenericParamList>>,
-    pub name: Option<trap::Label<Name>>,
-    pub type_bound_list: Option<trap::Label<TypeBoundList>>,
-    pub visibility: Option<trap::Label<Visibility>>,
-    pub where_clause: Option<trap::Label<WhereClause>>,
-}
-
-impl trap::TrapEntry for TraitAlias {
-    fn extract_id(&mut self) -> trap::TrapId<Self> {
-        std::mem::replace(&mut self.id, trap::TrapId::Star)
-    }
-
-    fn emit(self, id: trap::Label<Self>, out: &mut trap::Writer) {
-        out.add_tuple("trait_aliases", vec![id.into()]);
-        for (i, v) in self.attrs.into_iter().enumerate() {
-            out.add_tuple("trait_alias_attrs", vec![id.into(), i.into(), v.into()]);
-        }
-        if let Some(v) = self.generic_param_list {
-            out.add_tuple("trait_alias_generic_param_lists", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.name {
-            out.add_tuple("trait_alias_names", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.type_bound_list {
-            out.add_tuple("trait_alias_type_bound_lists", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.visibility {
-            out.add_tuple("trait_alias_visibilities", vec![id.into(), v.into()]);
-        }
-        if let Some(v) = self.where_clause {
-            out.add_tuple("trait_alias_where_clauses", vec![id.into(), v.into()]);
-        }
-    }
-}
-
-impl trap::TrapClass for TraitAlias {
-    fn class_name() -> &'static str { "TraitAlias" }
-}
-
-impl From<trap::Label<TraitAlias>> for trap::Label<Item> {
-    fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Item
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TraitAlias>> for trap::Label<Stmt> {
-    fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Stmt
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TraitAlias>> for trap::Label<AstNode> {
-    fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of AstNode
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TraitAlias>> for trap::Label<Locatable> {
-    fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Locatable
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TraitAlias>> for trap::Label<Element> {
-    fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Element
-        unsafe {
-            Self::from_untyped(value.as_untyped())
-        }
-    }
-}
-
-impl From<trap::Label<TraitAlias>> for trap::Label<Addressable> {
-    fn from(value: trap::Label<TraitAlias>) -> Self {
-        // SAFETY: this is safe because in the dbscheme TraitAlias is a subclass of Addressable
         unsafe {
             Self::from_untyped(value.as_untyped())
         }

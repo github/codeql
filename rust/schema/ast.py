@@ -277,8 +277,11 @@ class ForTypeRepr(TypeRepr, ):
     type_repr: optional["TypeRepr"] | child
 
 class FormatArgsArg(AstNode, ):
+    arg_name: optional["FormatArgsArgName"] | child
     expr: optional["Expr"] | child
-    name: optional["Name"] | child
+
+class FormatArgsArgName(AstNode, ):
+    pass
 
 class FormatArgsExpr(Expr, ):
     args: list["FormatArgsArg"] | child
@@ -640,14 +643,6 @@ class Trait(Item, ):
     generic_param_list: optional["GenericParamList"] | child
     is_auto: predicate
     is_unsafe: predicate
-    name: optional["Name"] | child
-    type_bound_list: optional["TypeBoundList"] | child
-    visibility: optional["Visibility"] | child
-    where_clause: optional["WhereClause"] | child
-
-class TraitAlias(Item, ):
-    attrs: list["Attr"] | child
-    generic_param_list: optional["GenericParamList"] | child
     name: optional["Name"] | child
     type_bound_list: optional["TypeBoundList"] | child
     visibility: optional["Visibility"] | child

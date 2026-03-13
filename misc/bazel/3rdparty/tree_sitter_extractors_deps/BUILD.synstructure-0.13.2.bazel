@@ -98,8 +98,8 @@ rust_library(
     }),
     version = "0.13.2",
     deps = [
-        "@vendor_ts__proc-macro2-1.0.101//:proc_macro2",
-        "@vendor_ts__quote-1.0.41//:quote",
-        "@vendor_ts__syn-2.0.106//:syn",
+        "@vendor_ts__proc-macro2-1.0.106//:proc_macro2",
+        "@vendor_ts__quote-1.0.44//:quote",
+        "@vendor_ts__syn-2.0.114//:syn",
     ],
 )

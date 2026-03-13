@@ -538,30 +538,39 @@ module Raw {
     override string toString() { result = "FormatArgsArg" }
 
     /**
+     * Gets the argument name of this format arguments argument, if it exists.
+     */
+    FormatArgsArgName getArgName() { format_args_arg_arg_names(this, result) }
+
+    /**
      * Gets the expression of this format arguments argument, if it exists.
      */
     Expr getExpr() { format_args_arg_exprs(this, result) }
-
-    /**
-     * Gets the name of this format arguments argument, if it exists.
-     */
-    Name getName() { format_args_arg_names(this, result) }
   }
 
   private Element getImmediateChildOfFormatArgsArg(FormatArgsArg e, int index) {
-    exists(int n, int nExpr, int nName |
+    exists(int n, int nArgName, int nExpr |
       n = 0 and
-      nExpr = n + 1 and
-      nName = nExpr + 1 and
+      nArgName = n + 1 and
+      nExpr = nArgName + 1 and
       (
         none()
         or
-        index = n and result = e.getExpr()
+        index = n and result = e.getArgName()
         or
-        index = nExpr and result = e.getName()
+        index = nArgName and result = e.getExpr()
       )
     )
   }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class FormatArgsArgName extends @format_args_arg_name, AstNode {
+    override string toString() { result = "FormatArgsArgName" }
+  }
+
+  private Element getImmediateChildOfFormatArgsArgName(FormatArgsArgName e, int index) { none() }
 
   /**
    * INTERNAL: Do not use.
@@ -6676,87 +6685,6 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * A trait alias.
-   *
-   * For example:
-   * ```rust
-   * trait Foo = Bar + Baz;
-   * ```
-   */
-  class TraitAlias extends @trait_alias, Item {
-    override string toString() { result = "TraitAlias" }
-
-    /**
-     * Gets the `index`th attr of this trait alias (0-based).
-     */
-    Attr getAttr(int index) { trait_alias_attrs(this, index, result) }
-
-    /**
-     * Gets the number of attrs of this trait alias.
-     */
-    int getNumberOfAttrs() { result = count(int i | trait_alias_attrs(this, i, _)) }
-
-    /**
-     * Gets the generic parameter list of this trait alias, if it exists.
-     */
-    GenericParamList getGenericParamList() { trait_alias_generic_param_lists(this, result) }
-
-    /**
-     * Gets the name of this trait alias, if it exists.
-     */
-    Name getName() { trait_alias_names(this, result) }
-
-    /**
-     * Gets the type bound list of this trait alias, if it exists.
-     */
-    TypeBoundList getTypeBoundList() { trait_alias_type_bound_lists(this, result) }
-
-    /**
-     * Gets the visibility of this trait alias, if it exists.
-     */
-    Visibility getVisibility() { trait_alias_visibilities(this, result) }
-
-    /**
-     * Gets the where clause of this trait alias, if it exists.
-     */
-    WhereClause getWhereClause() { trait_alias_where_clauses(this, result) }
-  }
-
-  private Element getImmediateChildOfTraitAlias(TraitAlias e, int index) {
-    exists(
-      int n, int nAttributeMacroExpansion, int nAttr, int nGenericParamList, int nName,
-      int nTypeBoundList, int nVisibility, int nWhereClause
-    |
-      n = 0 and
-      nAttributeMacroExpansion = n + 1 and
-      nAttr = nAttributeMacroExpansion + e.getNumberOfAttrs() and
-      nGenericParamList = nAttr + 1 and
-      nName = nGenericParamList + 1 and
-      nTypeBoundList = nName + 1 and
-      nVisibility = nTypeBoundList + 1 and
-      nWhereClause = nVisibility + 1 and
-      (
-        none()
-        or
-        index = n and result = e.getAttributeMacroExpansion()
-        or
-        result = e.getAttr(index - nAttributeMacroExpansion)
-        or
-        index = nAttr and result = e.getGenericParamList()
-        or
-        index = nGenericParamList and result = e.getName()
-        or
-        index = nName and result = e.getTypeBoundList()
-        or
-        index = nTypeBoundList and result = e.getVisibility()
-        or
-        index = nVisibility and result = e.getWhereClause()
-      )
-    )
-  }
-
-  /**
-   * INTERNAL: Do not use.
    * An item that defines a type. Either a `Struct`, `Enum`, or `Union`.
    */
   class TypeItem extends @type_item, Item {
@@ -7712,6 +7640,8 @@ module Raw {
     or
     result = getImmediateChildOfFormatArgsArg(e, index)
     or
+    result = getImmediateChildOfFormatArgsArgName(e, index)
+    or
     result = getImmediateChildOfGenericArgList(e, index)
     or
     result = getImmediateChildOfGenericParamList(e, index)
@@ -7971,8 +7901,6 @@ module Raw {
     result = getImmediateChildOfPathExpr(e, index)
     or
     result = getImmediateChildOfTrait(e, index)
-    or
-    result = getImmediateChildOfTraitAlias(e, index)
     or
     result = getImmediateChildOfUse(e, index)
     or

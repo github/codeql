@@ -98,6 +98,6 @@ rust_library(
     }),
     version = "0.9.3",
     deps = [
-        "@vendor_ts__getrandom-0.3.3//:getrandom",
+        "@vendor_ts__getrandom-0.3.4//:getrandom",
     ],
 )

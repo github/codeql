@@ -94,7 +94,7 @@ rust_library(
     }),
     version = "0.4.7",
     deps = [
-        "@vendor_ts__libc-0.2.175//:libc",
+        "@vendor_ts__libc-0.2.178//:libc",
         "@vendor_ts__perf-event-open-sys-1.0.1//:perf_event_open_sys",
     ],
 )

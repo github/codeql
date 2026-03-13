@@ -1018,8 +1018,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
         none()
         or
         child = this.getExpr()
-        or
-        child = this.getName()
       }
     }
 
@@ -1038,6 +1036,16 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
       FormatArgsArg getFormatArgsArg() { result = node }
 
       /**
+       * Gets the argument name of this format arguments argument, if it exists.
+       */
+      FormatArgsArgName getArgName() { result = node.getArgName() }
+
+      /**
+       * Holds if `getArgName()` exists.
+       */
+      predicate hasArgName() { exists(this.getArgName()) }
+
+      /**
        * Gets the expression of this format arguments argument, if it exists.
        */
       ExprCfgNode getExpr() {
@@ -1048,18 +1056,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
        * Holds if `getExpr()` exists.
        */
       predicate hasExpr() { exists(this.getExpr()) }
-
-      /**
-       * Gets the name of this format arguments argument, if it exists.
-       */
-      NameCfgNode getName() {
-        any(ChildMapping mapping).hasCfgChild(node, node.getName(), this, result)
-      }
-
-      /**
-       * Holds if `getName()` exists.
-       */
-      predicate hasName() { exists(this.getName()) }
     }
 
     final private class ParentFormatArgsExpr extends ParentAstNode, FormatArgsExpr {
@@ -3554,18 +3550,6 @@ module MakeCfgNodes<LocationSig Loc, InputSig<Loc> Input> {
           i = -1 and
           hasCfgNode(child) and
           not child = cfgNode.getExpr().getAstNode()
-        |
-          cfgNode
-        )
-      or
-      pred = "getName" and
-      parent =
-        any(Nodes::FormatArgsArgCfgNode cfgNode, FormatArgsArg astNode |
-          astNode = cfgNode.getFormatArgsArg() and
-          child = getDesugared(astNode.getName()) and
-          i = -1 and
-          hasCfgNode(child) and
-          not child = cfgNode.getName().getAstNode()
         |
           cfgNode
         )
