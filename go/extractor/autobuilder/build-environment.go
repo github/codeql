@@ -55,7 +55,7 @@ func getVersionWhenGoModVersionNotFound(v versionInfo) (msg string, version util
 	if v.goEnvVersion == nil {
 		// There is no Go version installed in the environment. We have no indication which version
 		// was intended to be used to build this project. Go versions are generally backwards
-		// compatible, so we install the maximum supported version.
+		// compatible, so we install the maximum supported released version.
 		msg = "No version of Go installed and no `go.mod` file found. Requesting the maximum " +
 			"supported version of Go that has been released (" + goVersionToInstall.String() + ")."
 		version = goVersionToInstall
@@ -63,7 +63,7 @@ func getVersionWhenGoModVersionNotFound(v versionInfo) (msg string, version util
 	} else if outsideSupportedRange(v.goEnvVersion) {
 		// The Go version installed in the environment is not supported. We have no indication
 		// which version was intended to be used to build this project. Go versions are generally
-		// backwards compatible, so we install the maximum supported version.
+		// backwards compatible, so we install the maximum supported released version.
 		msg = "No `go.mod` file found. The version of Go installed in the environment (" +
 			v.goEnvVersion.String() + ") is outside of the supported range (" + minGoVersion.String() + "-" +
 			maxGoVersion.String() + "). Requesting the maximum supported version of Go that has " +
