@@ -13,27 +13,11 @@ class Node extends TNode {
   /** Gets the expression corresponding to this node, if any. */
   Expr asExpr() { result = this.(ExprNode).getExpr() }
 
-  /**
-   * Gets the expression corresponding to this node, at control flow node `cfn`,
-   * if any.
-   */
-  Expr asExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
-    result = this.(ExprNode).getExprAtNode(cfn)
-  }
-
   /** Gets the parameter corresponding to this node, if any. */
   Parameter asParameter() { result = this.(ParameterNode).getParameter() }
 
   /** Gets the definition corresponding to this node, if any. */
-  AssignableDefinition asDefinition() { result = this.asDefinitionAtNode(_) }
-
-  /**
-   * Gets the definition corresponding to this node, at control flow node `cfn`,
-   * if any.
-   */
-  AssignableDefinition asDefinitionAtNode(ControlFlow::Node cfn) {
-    result = this.(AssignableDefinitionNode).getDefinitionAtNode(cfn)
-  }
+  AssignableDefinition asDefinition() { result = this.(AssignableDefinitionNode).getDefinition() }
 
   /** Gets the type of this node. */
   final Type getType() { result = this.(NodeImpl).getTypeImpl() }
@@ -75,16 +59,7 @@ class Node extends TNode {
  */
 class ExprNode extends Node, TExprNode {
   /** Gets the expression corresponding to this node. */
-  Expr getExpr() { result = this.getExprAtNode(_) }
-
-  /**
-   * Gets the expression corresponding to this node, at control flow node `cfn`,
-   * if any.
-   */
-  Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
-    this = TExprNode(cfn) and
-    result = cfn.getAstNode()
-  }
+  Expr getExpr() { this = TExprNode(result) }
 }
 
 pragma[nomagic]
@@ -111,11 +86,6 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 class AssignableDefinitionNode extends Node instanceof AssignableDefinitionNodeImpl {
   /** Gets the underlying definition. */
   AssignableDefinition getDefinition() { result = super.getDefinition() }
-
-  /** Gets the underlying definition, at control flow node `cfn`, if any. */
-  AssignableDefinition getDefinitionAtNode(ControlFlow::Node cfn) {
-    result = super.getDefinitionAtNode(cfn)
-  }
 }
 
 /** Gets a node corresponding to expression `e`. */

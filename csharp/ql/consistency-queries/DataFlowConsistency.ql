@@ -71,7 +71,7 @@ private module Input implements InputSig<Location, CsharpDataFlow> {
         )
       or
       exists(ControlFlow::Nodes::ElementNode cfn, ControlFlow::Nodes::Split split |
-        exists(arg.asExprAtNode(cfn))
+        arg.asExpr().getControlFlowNode() = cfn
       |
         split = cfn.getASplit() and
         not split = call.getControlFlowNode().getASplit()
