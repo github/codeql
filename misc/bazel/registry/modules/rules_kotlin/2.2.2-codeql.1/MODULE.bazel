@@ -14,7 +14,7 @@ bazel_dep(name = "protobuf", version = "29.0", repo_name = "com_google_protobuf"
 bazel_dep(name = "rules_proto", version = "6.0.2", repo_name = "rules_proto")
 bazel_dep(name = "abseil-py", version = "2.1.0", repo_name = "py_absl")
 bazel_dep(name = "rules_cc", version = "0.0.16")
-bazel_dep(name = "bazel_worker_api", version = "0.0.8")
+bazel_dep(name = "bazel_worker_api", version = "0.0.10")
 bazel_dep(name = "bazel_worker_java", version = "0.0.8")
 
 rules_java_toolchains = use_extension("@rules_java//java:extensions.bzl", "toolchains")
