@@ -8,7 +8,7 @@ module(
 
 # Lower-bounds (minimum) versions for direct runtime dependencies
 bazel_dep(name = "bazel_skylib", version = "1.4.1")
-bazel_dep(name = "platforms", version = "0.0.5")
+bazel_dep(name = "platforms", version = "1.0.0")
 
 node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
 
