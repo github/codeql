@@ -174,3 +174,16 @@ def assert_ok(seq):
 # False positive. ODASA-8042. Fixed in PR #2401.
 class false_positive:
     e = (x for x in [])
+
+# isinstance guard should suppress non-iterable warning
+def guarded_iteration(x):
+    ni = NonIterator()
+    if isinstance(ni, (list, tuple)):
+        for item in ni:
+            pass
+
+def guarded_iteration_single(x):
+    ni = NonIterator()
+    if isinstance(ni, list):
+        for item in ni:
+            pass
