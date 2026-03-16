@@ -5,7 +5,7 @@
  * @kind problem
  * @problem.severity error
  * @security-severity 7.5
- * @precision medium
+ * @precision high
  * @id cpp/wrong-type-format-argument
  * @tags reliability
  *       correctness

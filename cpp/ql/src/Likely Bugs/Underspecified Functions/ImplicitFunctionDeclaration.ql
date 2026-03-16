@@ -5,7 +5,7 @@
  * may lead to unpredictable behavior.
  * @kind problem
  * @problem.severity warning
- * @precision medium
+ * @precision high
  * @id cpp/implicit-function-declaration
  * @tags correctness
  *       maintainability
