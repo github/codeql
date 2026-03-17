@@ -2,7 +2,6 @@ private import csharp
 private import DataFlowPublic
 private import DataFlowDispatch
 private import DataFlowImplCommon
-private import ControlFlowReachability
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.FlowSummary as FlowSummary
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
@@ -259,34 +258,16 @@ private module ThisFlow {
   }
 }
 
-/**
- * Holds if there is a control-flow path from `n1` to `n2`. `n2` is either an
- * expression node or an SSA definition node.
- */
-pragma[nomagic]
-predicate hasNodePath(ControlFlowReachabilityConfiguration conf, ExprNode n1, Node n2) {
-  exists(ControlFlow::Node cfn1, ControlFlow::Node cfn2 | conf.hasExprPath(_, cfn1, _, cfn2) |
-    cfn1 = n1.getControlFlowNode() and
-    cfn2 = n2.(ExprNode).getControlFlowNode()
-  )
-  or
-  exists(ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef |
-    conf.hasDefPath(_, cfn, def, cfnDef) and
-    cfn = n1.getControlFlowNode() and
-    n2 = TAssignableDefinitionNode(def, cfnDef)
-  )
-}
-
 /** Provides logic related to captured variables. */
 module VariableCapture {
   private import codeql.dataflow.VariableCapture as Shared
   private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 
   private predicate closureFlowStep(ControlFlow::Nodes::ExprNode e1, ControlFlow::Nodes::ExprNode e2) {
-    e1 = LocalFlow::getALastEvalNode(e2)
+    e1.getExpr() = LocalFlow::getALastEvalNode(e2.getExpr())
     or
     exists(Ssa::Definition def, AssignableDefinition adef |
-      LocalFlow::defAssigns(adef, _, e1) and
+      LocalFlow::defAssigns(adef, _, _, e1) and
       def.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition() = adef and
       exists(def.getAReadAtNode(e2))
     )
@@ -379,7 +360,7 @@ module VariableCapture {
         this = def.getExpr().getAControlFlowNode()
       }
 
-      ControlFlow::Node getRhs() { LocalFlow::defAssigns(def, this, result) }
+      ControlFlow::Node getRhs() { LocalFlow::defAssigns(def, this, _, result) }
 
       CapturedVariable getVariable() { result = v }
     }
@@ -528,127 +509,74 @@ module SsaFlow {
 
 /** Provides predicates related to local data flow. */
 module LocalFlow {
-  class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
-    LocalExprStepConfiguration() { this = "LocalExprStepConfiguration" }
-
-    override predicate candidate(
-      Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-    ) {
-      exactScope = false and
-      (
-        e1 = e2.(ParenthesizedExpr).getExpr() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(NullCoalescingExpr).getAnOperand() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(SuppressNullableWarningExpr).getExpr() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e2 =
-          any(ConditionalExpr ce |
-            e1 = ce.getThen() or
-            e1 = ce.getElse()
-          ) and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(Cast).getExpr() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        // An `=` expression, where the result of the expression is used
-        e2 =
-          any(AssignExpr ae |
-            ae.getParent() = any(ControlFlowElement cfe | not cfe instanceof ExprStmt) and
-            e1 = ae.getRValue()
-          ) and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(ObjectCreation).getInitializer() and
-        scope = e2 and
-        isSuccessor = false
-        or
-        e1 = e2.(ArrayCreation).getInitializer() and
-        scope = e2 and
-        isSuccessor = false
-        or
-        e1 = e2.(SwitchExpr).getACase().getBody() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(CheckedExpr).getExpr() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(UncheckedExpr).getExpr() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(CollectionExpression).getAnElement() and
-        e1 instanceof SpreadElementExpr and
-        scope = e2 and
-        isSuccessor = true
-        or
-        e1 = e2.(SpreadElementExpr).getExpr() and
-        scope = e2 and
-        isSuccessor = true
-        or
-        exists(WithExpr we |
-          scope = we and
-          isSuccessor = true
-        |
-          e1 = we.getExpr() and
-          e2 = we.getInitializer()
-          or
-          e1 = we.getInitializer() and
-          e2 = we
-        )
-        or
-        scope = any(AssignExpr ae | ae.getLValue().(TupleExpr) = e2 and ae.getRValue() = e1) and
-        isSuccessor = false
-        or
-        isSuccessor = true and
-        exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
-          cfe.(IsExpr).getExpr() = e1 and scope = cfe
-          or
-          exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1 and scope = sw)
-        )
+  predicate localExprStep(Expr e1, Expr e2) {
+    e1 = e2.(ParenthesizedExpr).getExpr()
+    or
+    e1 = e2.(NullCoalescingExpr).getAnOperand()
+    or
+    e1 = e2.(SuppressNullableWarningExpr).getExpr()
+    or
+    e2 =
+      any(ConditionalExpr ce |
+        e1 = ce.getThen() or
+        e1 = ce.getElse()
       )
-    }
-
-    override predicate candidateDef(
-      Expr e, AssignableDefinition def, ControlFlowElement scope, boolean exactScope,
-      boolean isSuccessor
-    ) {
-      // Flow from source to definition
-      exactScope = false and
-      def.getSource() = e and
-      (
-        scope = def.getExpr() and
-        isSuccessor = true
-        or
-        scope = def.(AssignableDefinitions::PatternDefinition).getMatch().(IsExpr) and
-        isSuccessor = false
-        or
-        exists(Switch s |
-          s.getACase() = def.(AssignableDefinitions::PatternDefinition).getMatch() and
-          isSuccessor = true
-        |
-          scope = s.getExpr()
-          or
-          scope = s.getACase()
-        )
+    or
+    e1 = e2.(Cast).getExpr()
+    or
+    // An `=` expression, where the result of the expression is used
+    e2 =
+      any(AssignExpr ae |
+        ae.getParent() = any(ControlFlowElement cfe | not cfe instanceof ExprStmt) and
+        e1 = ae.getRValue()
       )
-    }
+    or
+    e1 = e2.(ObjectCreation).getInitializer()
+    or
+    e1 = e2.(ArrayCreation).getInitializer()
+    or
+    e1 = e2.(SwitchExpr).getACase().getBody()
+    or
+    e1 = e2.(CheckedExpr).getExpr()
+    or
+    e1 = e2.(UncheckedExpr).getExpr()
+    or
+    e1 = e2.(CollectionExpression).getAnElement() and
+    e1 instanceof SpreadElementExpr
+    or
+    e1 = e2.(SpreadElementExpr).getExpr()
+    or
+    exists(WithExpr we |
+      e1 = we.getExpr() and
+      e2 = we.getInitializer()
+      or
+      e1 = we.getInitializer() and
+      e2 = we
+    )
+    or
+    exists(AssignExpr ae | ae.getLValue().(TupleExpr) = e2 and ae.getRValue() = e1)
+    or
+    exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
+      cfe.(IsExpr).getExpr() = e1
+      or
+      exists(Switch sw | sw.getACase() = cfe and sw.getExpr() = e1)
+    )
   }
 
-  predicate defAssigns(AssignableDefinition def, ControlFlow::Node cfnDef, ControlFlow::Node value) {
-    any(LocalExprStepConfiguration x).hasDefPath(_, value, def, cfnDef)
+  predicate defAssigns(
+    AssignableDefinition def, ControlFlow::Node cfnDef, Expr value, ControlFlow::Node valueCfn
+  ) {
+    def.getSource() = value and
+    valueCfn = value.getControlFlowNode() and
+    cfnDef = def.getExpr().getAControlFlowNode()
+  }
+
+  private predicate defAssigns(ExprNode value, AssignableDefinitionNode defNode) {
+    exists(ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef |
+      defAssigns(def, cfnDef, value.getExpr(), _) and
+      cfn = value.getControlFlowNode() and
+      defNode = TAssignableDefinitionNode(def, cfnDef)
+    )
   }
 
   /**
@@ -659,7 +587,9 @@ module LocalFlow {
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    hasNodePath(any(LocalExprStepConfiguration x), nodeFrom, nodeTo)
+    localExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
+    or
+    defAssigns(nodeFrom, nodeTo)
     or
     ThisFlow::adjacentThisRefs(nodeFrom, nodeTo) and
     nodeFrom != nodeTo
@@ -685,11 +615,12 @@ module LocalFlow {
   }
 
   /**
-   * Gets a node that may execute last in `n`, and which, when it executes last,
-   * will be the value of `n`.
+   * Gets a node that may execute last in `e`, and which, when it executes last,
+   * will be the value of `e`.
    */
-  ControlFlow::Nodes::ExprNode getALastEvalNode(ControlFlow::Nodes::ExprNode cfn) {
-    exists(Expr e | any(LocalExprStepConfiguration x).hasExprPath(_, result, e, cfn) |
+  Expr getALastEvalNode(Expr e) {
+    localExprStep(result, e) and
+    (
       e instanceof ConditionalExpr or
       e instanceof Cast or
       e instanceof NullCoalescingExpr or
@@ -713,9 +644,7 @@ module LocalFlow {
    * we add a reverse flow step from `[post] b ? x : y` to `[post] x` and to
    * `[post] y`, in order for the side-effect of `m` to reach both `x` and `y`.
    */
-  ControlFlow::Nodes::ExprNode getPostUpdateReverseStep(ControlFlow::Nodes::ExprNode e) {
-    result = getALastEvalNode(e)
-  }
+  Expr getPostUpdateReverseStep(Expr e) { result = getALastEvalNode(e) }
 
   /**
    * Holds if the value of `node2` is given by `node1`.
@@ -729,9 +658,10 @@ module LocalFlow {
       e instanceof ThisAccess or e instanceof BaseAccess
     )
     or
-    hasNodePath(any(LocalExprStepConfiguration x), node1, node2) and
+    defAssigns(node1, node2)
+    or
+    localExprStep(node1.asExpr(), node2.asExpr()) and
     (
-      node2 instanceof AssignableDefinitionNode or
       node2.asExpr() instanceof Cast or
       node2.asExpr() instanceof AssignExpr
     )
@@ -775,12 +705,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
     or
     nodeTo = nodeFrom.(LocalFunctionCreationNode).getAnAccess(true)
     or
-    nodeTo.(PostUpdateNode).getPreUpdateNode().(ExprNode).getControlFlowNode() =
-      LocalFlow::getPostUpdateReverseStep(nodeFrom
-            .(PostUpdateNode)
-            .getPreUpdateNode()
-            .(ExprNode)
-            .getControlFlowNode())
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+      LocalFlow::getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr())
   ) and
   model = ""
   or
@@ -834,11 +760,11 @@ private class Argument extends Expr {
 }
 
 /**
- * Holds if `e` is an assignment of `src` to field or property `c` of `q`.
+ * Holds if there is an assignment of `src` to field or property `c` of `q`.
  *
  * `postUpdate` indicates whether the store targets a post-update node.
  */
-private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, boolean postUpdate) {
+private predicate fieldOrPropertyStore(ContentSet c, Expr src, Expr q, boolean postUpdate) {
   exists(FieldOrProperty f |
     c = f.getContentSet() and
     (
@@ -861,25 +787,20 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
       f = fa.getTarget() and
       src = def.getSource() and
       q = fa.getQualifier() and
-      e = def.getExpr() and
       postUpdate = true
     )
     or
     // `with` expression initializer, `x with { f = src }`
-    e =
-      any(WithExpr we |
-        exists(MemberInitializer mi |
-          q = we and
-          mi = we.getInitializer().getAMemberInitializer() and
-          f = mi.getInitializedMember() and
-          src = mi.getRValue() and
-          postUpdate = false
-        )
-      )
+    exists(WithExpr we, MemberInitializer mi |
+      q = we and
+      mi = we.getInitializer().getAMemberInitializer() and
+      f = mi.getInitializedMember() and
+      src = mi.getRValue() and
+      postUpdate = false
+    )
     or
     // Object initializer, `new C() { f = src }`
     exists(MemberInitializer mi |
-      e = q and
       mi = q.(ObjectInitializer).getAMemberInitializer() and
       q.getParent() instanceof ObjectCreation and
       f = mi.getInitializedMember() and
@@ -888,16 +809,13 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
     )
     or
     // Tuple element, `(..., src, ...)` `f` is `ItemX` of tuple `q`
-    e =
-      any(TupleExpr te |
-        exists(int i |
-          e = q and
-          src = te.getArgument(i) and
-          te.isConstruction() and
-          f = q.getType().(TupleType).getElement(i) and
-          postUpdate = false
-        )
-      )
+    exists(TupleExpr te, int i |
+      te = q and
+      src = te.getArgument(i) and
+      te.isConstruction() and
+      f = q.getType().(TupleType).getElement(i) and
+      postUpdate = false
+    )
   )
   or
   // A write to a dynamic property
@@ -907,7 +825,6 @@ private predicate fieldOrPropertyStore(Expr e, ContentSet c, Expr src, Expr q, b
     c.isDynamicProperty(dp) and
     src = def.getSource() and
     q = dma.getQualifier() and
-    e = def.getExpr() and
     postUpdate = true
   )
 }
@@ -943,22 +860,20 @@ private predicate collectionStore(Expr src, CollectionExpression ce) {
 }
 
 /**
- * Holds if `e` is an expression that adds `src` to array `a`.
+ * Holds if there is an expression that adds `src` to array `a`.
  *
  * `postUpdate` indicates whether the store targets a post-update node.
  */
-private predicate arrayStore(Expr e, Expr src, Expr a, boolean postUpdate) {
+private predicate arrayStore(Expr src, Expr a, boolean postUpdate) {
   // Direct assignment, `a[i] = src`
   exists(AssignableDefinition def |
     a = def.getTargetAccess().(ArrayWrite).getQualifier() and
     src = def.getSource() and
-    e = def.getExpr() and
     postUpdate = true
   )
   or
   // Array initializer, `new [] { src }`
   src = a.(ArrayInitializer).getAnElement() and
-  e = a and
   postUpdate = false
   or
   // Member initializer, `new C { Array = { [i] = src } }`
@@ -966,7 +881,6 @@ private predicate arrayStore(Expr e, Expr src, Expr a, boolean postUpdate) {
     mi = a.(ObjectInitializer).getAMemberInitializer() and
     mi.getLValue() instanceof ArrayAccess and
     mi.getRValue() = src and
-    e = a and
     postUpdate = false
   )
 }
@@ -1141,17 +1055,17 @@ private module Cached {
       (
         cfn.getExpr() instanceof Argument
         or
-        cfn =
-          LocalFlow::getPostUpdateReverseStep(any(ControlFlow::Nodes::ExprNode e |
-              exists(any(SourcePostUpdateNode p).getPreUpdateNode().asExprAtNode(e))
-            ))
+        cfn.getExpr() =
+          LocalFlow::getPostUpdateReverseStep(any(SourcePostUpdateNode p)
+                .getPreUpdateNode()
+                .asExpr())
       ) and
       exprMayHavePostUpdateNode(cfn.getExpr())
       or
       exists(Expr e | e = cfn.getExpr() |
-        fieldOrPropertyStore(_, _, _, e, true)
+        fieldOrPropertyStore(_, _, e, true)
         or
-        arrayStore(_, _, e, true)
+        arrayStore(_, e, true)
         or
         // needed for reverse stores; e.g. `x.f1.f2 = y` induces
         // a store step of `f1` into `x`
@@ -1166,7 +1080,7 @@ private module Cached {
         )
       )
       or
-      lambdaCallExpr(_, cfn)
+      lambdaCallExpr(_, _, cfn)
     } or
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) {
       sn.getSummarizedCallable() instanceof CallableUsedInSource
@@ -1563,35 +1477,15 @@ abstract private class ArgumentNodeImpl extends Node {
 }
 
 private module ArgumentNodes {
-  private class ArgumentConfiguration extends ControlFlowReachabilityConfiguration {
-    ArgumentConfiguration() { this = "ArgumentConfiguration" }
-
-    override predicate candidate(
-      Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-    ) {
-      e1.(Argument).isArgumentOf(e2, _) and
-      exactScope = false and
-      isSuccessor = true and
-      if e2 instanceof PropertyWrite
-      then
-        exists(AssignableDefinition def |
-          def.getTargetAccess() = e2 and
-          scope = def.getExpr()
-        )
-      else scope = e2
-    }
-  }
-
   /** A data-flow node that represents an explicit call argument. */
   class ExplicitArgumentNode extends ArgumentNodeImpl {
     ExplicitArgumentNode() { this.asExpr() instanceof Argument }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      exists(ArgumentConfiguration x, Expr c, Argument arg |
+      exists(Expr c, Argument arg |
         arg = this.asExpr() and
         c = call.getExpr() and
-        arg.isArgumentOf(c, pos) and
-        x.hasExprPath(_, this.getControlFlowNode(), _, call.getControlFlowNode())
+        arg.isArgumentOf(c, pos)
       )
     }
   }
@@ -1600,7 +1494,7 @@ private module ArgumentNodes {
   class DelegateSelfArgumentNode extends ArgumentNodeImpl, ExprNode {
     private DataFlowCall call_;
 
-    DelegateSelfArgumentNode() { lambdaCallExpr(call_, this.getControlFlowNode()) }
+    DelegateSelfArgumentNode() { lambdaCallExpr(call_, this.getExpr(), _) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       call = call_ and
@@ -1853,27 +1747,6 @@ private module OutNodes {
       (
         kind instanceof NormalReturnKind and
         not call.getExpr().getType() instanceof VoidType
-      )
-    }
-  }
-
-  class ObjectOrCollectionInitializerConfiguration extends ControlFlowReachabilityConfiguration {
-    ObjectOrCollectionInitializerConfiguration() {
-      this = "ObjectOrCollectionInitializerConfiguration"
-    }
-
-    override predicate candidate(
-      Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-    ) {
-      exactScope = false and
-      scope = e1 and
-      isSuccessor = true and
-      exists(ObjectOrCollectionInitializer init | init = e1.(ObjectCreation).getInitializer() |
-        // E.g. `new Dictionary<int, string>{ {0, "a"}, {1, "b"} }`
-        e2 = init.(CollectionInitializer).getAnElementInitializer()
-        or
-        // E.g. `new Dictionary<int, string>() { [0] = "a", [1] = "b" }`
-        e2 = init.(ObjectInitializer).getAMemberInitializer().getLValue()
       )
     }
   }
@@ -2236,30 +2109,6 @@ predicate jumpStep(Node pred, Node succ) {
   succ = pred.(LocalFunctionCreationNode).getAnAccess(false)
 }
 
-private class StoreStepConfiguration extends ControlFlowReachabilityConfiguration {
-  StoreStepConfiguration() { this = "StoreStepConfiguration" }
-
-  override predicate candidate(
-    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-  ) {
-    exactScope = false and
-    fieldOrPropertyStore(scope, _, e1, e2, isSuccessor.booleanNot())
-    or
-    exactScope = false and
-    arrayStore(scope, e1, e2, isSuccessor.booleanNot())
-    or
-    exactScope = false and
-    isSuccessor = true and
-    collectionStore(e1, e2) and
-    scope = e2
-    or
-    exactScope = false and
-    isSuccessor = true and
-    isParamsArg(e2, e1, _) and
-    scope = e2
-  }
-}
-
 pragma[nomagic]
 private ContentSet getResultContent() {
   result.isProperty(any(SystemThreadingTasksTaskTClass c_).getResultProperty())
@@ -2282,21 +2131,17 @@ private predicate recordParameter(RecordType t, Parameter p, string name) {
 }
 
 private predicate storeContentStep(Node node1, Content c, Node node2) {
-  exists(StoreStepConfiguration x, ExprNode node, boolean postUpdate |
-    hasNodePath(x, node1, node) and
+  exists(ExprNode node, boolean postUpdate |
     if postUpdate = true then node = node2.(PostUpdateNode).getPreUpdateNode() else node = node2
   |
-    arrayStore(_, node1.asExpr(), node.getExpr(), postUpdate) and c instanceof ElementContent
+    arrayStore(node1.asExpr(), node.getExpr(), postUpdate) and c instanceof ElementContent
   )
   or
-  exists(StoreStepConfiguration x | hasNodePath(x, node1, node2) |
-    collectionStore(node1.asExpr(), node2.asExpr()) and c instanceof ElementContent
-  )
+  collectionStore(node1.asExpr(), node2.asExpr()) and c instanceof ElementContent
   or
-  exists(StoreStepConfiguration x, Expr arg, ControlFlow::Node callCfn |
-    x.hasExprPath(arg, node1.(ExprNode).getControlFlowNode(), _, callCfn) and
-    node2 = TParamsArgumentNode(callCfn) and
-    isParamsArg(_, arg, _) and
+  exists(Call call |
+    node2 = TParamsArgumentNode(call.getControlFlowNode()) and
+    isParamsArg(call, node1.asExpr(), _) and
     c instanceof ElementContent
   )
   or
@@ -2352,11 +2197,10 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(cont)
   )
   or
-  exists(StoreStepConfiguration x, ExprNode node, boolean postUpdate |
-    hasNodePath(x, node1, node) and
+  exists(ExprNode node, boolean postUpdate |
     if postUpdate = true then node = node2.(PostUpdateNode).getPreUpdateNode() else node = node2
   |
-    fieldOrPropertyStore(_, c, node1.asExpr(), node.getExpr(), postUpdate)
+    fieldOrPropertyStore(c, node1.asExpr(), node.getExpr(), postUpdate)
   )
   or
   exists(Expr e |
@@ -2378,133 +2222,51 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   storeStepDelegateCall(node1, c, node2)
 }
 
-pragma[nomagic]
-private predicate isAssignExprLValueDescendant(Expr e) {
-  e = any(AssignExpr ae).getLValue()
-  or
-  exists(Expr parent |
-    isAssignExprLValueDescendant(parent) and
-    e = parent.getAChildExpr()
-  )
-}
-
-private class ReadStepConfiguration extends ControlFlowReachabilityConfiguration {
-  ReadStepConfiguration() { this = "ReadStepConfiguration" }
-
-  override predicate candidate(
-    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-  ) {
-    exactScope = false and
-    isSuccessor = true and
-    fieldOrPropertyRead(e1, _, e2) and
-    scope = e2
-    or
-    exactScope = false and
-    isSuccessor = true and
-    dynamicPropertyRead(e1, _, e2) and
-    scope = e2
-    or
-    exactScope = false and
-    isSuccessor = true and
-    arrayRead(e1, e2) and
-    scope = e2
-    or
-    exactScope = false and
-    e1 = e2.(AwaitExpr).getExpr() and
-    scope = e2 and
-    isSuccessor = true
-    or
-    exactScope = false and
-    e2 = e1.(TupleExpr).getAnArgument() and
-    scope = e1 and
-    isSuccessor = false
-  }
-
-  override predicate candidateDef(
-    Expr e, AssignableDefinition defTo, ControlFlowElement scope, boolean exactScope,
-    boolean isSuccessor
-  ) {
-    exists(ForeachStmt fs |
-      e = fs.getIterableExpr() and
-      defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() =
-        fs.getVariableDeclExpr() and
-      isSuccessor = true
-    |
-      scope = fs and
-      exactScope = true
-      or
-      scope = fs.getIterableExpr() and
-      exactScope = false
-      or
-      scope = fs.getVariableDeclExpr() and
-      exactScope = false
-    )
-    or
-    scope =
-      any(AssignExpr ae |
-        ae = defTo.(AssignableDefinitions::TupleAssignmentDefinition).getAssignment() and
-        isAssignExprLValueDescendant(e.(TupleExpr)) and
-        exactScope = false and
-        isSuccessor = true
-      )
-    or
-    scope =
-      any(TupleExpr te |
-        te.getAnArgument() = defTo.(AssignableDefinitions::LocalVariableDefinition).getDeclaration() and
-        e = te and
-        exactScope = false and
-        isSuccessor = false
-      )
-  }
-}
-
 private predicate readContentStep(Node node1, Content c, Node node2) {
-  exists(ReadStepConfiguration x |
-    hasNodePath(x, node1, node2) and
-    arrayRead(node1.asExpr(), node2.asExpr()) and
+  arrayRead(node1.asExpr(), node2.asExpr()) and
+  c instanceof ElementContent
+  or
+  exists(
+    ForeachStmt fs, Ssa::ExplicitDefinition def,
+    AssignableDefinitions::LocalVariableDefinition defTo
+  |
+    node1.asExpr() = fs.getIterableExpr() and
+    defTo.getDeclaration() = fs.getVariableDeclExpr() and
+    def.getADefinition() = defTo and
+    node2.(SsaDefinitionNode).getDefinition() = def and
     c instanceof ElementContent
+  )
+  or
+  node1 =
+    any(InstanceParameterAccessPreNode n |
+      n.getUnderlyingControlFlowNode() = node2.(ExprNode).getControlFlowNode() and
+      n.getParameter() = c.(PrimaryConstructorParameterContent).getParameter()
+    ) and
+  node2.asExpr() instanceof ParameterRead
+  or
+  // node1 = (..., node2, ...)
+  // node1.ItemX flows to node2
+  exists(TupleExpr te, int i, Expr item |
+    te = node1.asExpr() and
+    not te.isConstruction() and
+    c.(FieldContent).getField() = te.getType().(TupleType).getElement(i).getUnboundDeclaration() and
+    // node1 = (..., item, ...)
+    te.getArgument(i) = item
+  |
+    // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
+    node2.asExpr().(TupleExpr) = item
     or
-    exists(ForeachStmt fs, Ssa::ExplicitDefinition def |
-      x.hasDefPath(fs.getIterableExpr(), node1.getControlFlowNode(), def.getADefinition(),
-        def.getControlFlowNode()) and
-      node2.(SsaDefinitionNode).getDefinition() = def and
-      c instanceof ElementContent
+    // item = variable in node1 = (..., variable, ...)
+    exists(AssignableDefinitions::TupleAssignmentDefinition tad |
+      node2.(AssignableDefinitionNode).getDefinition() = tad and
+      tad.getLeaf() = item
     )
     or
-    node1 =
-      any(InstanceParameterAccessPreNode n |
-        n.getUnderlyingControlFlowNode() = node2.(ExprNode).getControlFlowNode() and
-        n.getParameter() = c.(PrimaryConstructorParameterContent).getParameter()
-      ) and
-    node2.asExpr() instanceof ParameterRead
-    or
-    // node1 = (..., node2, ...)
-    // node1.ItemX flows to node2
-    exists(TupleExpr te, int i, Expr item |
-      te = node1.asExpr() and
-      not te.isConstruction() and
-      c.(FieldContent).getField() = te.getType().(TupleType).getElement(i).getUnboundDeclaration() and
-      // node1 = (..., item, ...)
-      te.getArgument(i) = item
-    |
-      // item = (..., ..., ...) in node1 = (..., (..., ..., ...), ...)
-      node2.asExpr().(TupleExpr) = item and
-      hasNodePath(x, node1, node2)
-      or
-      // item = variable in node1 = (..., variable, ...)
-      exists(AssignableDefinitions::TupleAssignmentDefinition tad |
-        node2.(AssignableDefinitionNode).getDefinition() = tad and
-        tad.getLeaf() = item and
-        hasNodePath(x, node1, node2)
-      )
-      or
-      // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
-      isPatternExprDescendant(te) and
-      exists(AssignableDefinitions::LocalVariableDefinition lvd |
-        node2.(AssignableDefinitionNode).getDefinition() = lvd and
-        lvd.getDeclaration() = item and
-        hasNodePath(x, node1, node2)
-      )
+    // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
+    isPatternExprDescendant(te) and
+    exists(AssignableDefinitions::LocalVariableDefinition lvd |
+      node2.(AssignableDefinitionNode).getDefinition() = lvd and
+      lvd.getDeclaration() = item
     )
   )
   or
@@ -2535,14 +2297,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(cont)
   )
   or
-  exists(ReadStepConfiguration x | hasNodePath(x, node1, node2) |
-    fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
-    or
-    dynamicPropertyRead(node1.asExpr(), c, node2.asExpr())
-    or
-    node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
-    c = getResultContent()
-  )
+  fieldOrPropertyRead(node1.asExpr(), c, node2.asExpr())
+  or
+  dynamicPropertyRead(node1.asExpr(), c, node2.asExpr())
+  or
+  node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
+  c = getResultContent()
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode())
@@ -2576,9 +2336,9 @@ predicate clearsContent(Node n, ContentSet c) {
     c.isSingleton(cont)
   )
   or
-  fieldOrPropertyStore(_, c, _, n.asExpr(), true)
+  fieldOrPropertyStore(c, _, n.asExpr(), true)
   or
-  fieldOrPropertyStore(_, c, _, n.(ObjectInitializerNode).getInitializer(), false)
+  fieldOrPropertyStore(c, _, n.(ObjectInitializerNode).getInitializer(), false)
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
@@ -2817,8 +2577,13 @@ module PostUpdateNodes {
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       pos.isQualifier() and
-      any(ObjectOrCollectionInitializerConfiguration x)
-          .hasExprPath(_, cfn, _, call.getControlFlowNode())
+      exists(ObjectOrCollectionInitializer init | init = oc.getInitializer() |
+        // E.g. `new Dictionary<int, string>{ {0, "a"}, {1, "b"} }`
+        call.getExpr() = init.(CollectionInitializer).getAnElementInitializer()
+        or
+        // E.g. `new Dictionary<int, string>() { [0] = "a", [1] = "b" }`
+        call.getExpr() = init.(ObjectInitializer).getAMemberInitializer().getLValue()
+      )
     }
 
     override DataFlowCallable getEnclosingCallableImpl() {
@@ -2980,45 +2745,26 @@ private predicate isLocalFunctionCallReceiver(
   f = receiver.getTarget().getUnboundDeclaration()
 }
 
-private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
-  LambdaConfiguration() { this = "LambdaConfiguration" }
-
-  override predicate candidate(
-    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-  ) {
-    e1 = e2.(DelegateLikeCall).getExpr() and
-    exactScope = false and
-    scope = e2 and
-    isSuccessor = true
-    or
-    e1 = e2.(DelegateCreation).getArgument() and
-    exactScope = false and
-    scope = e2 and
-    isSuccessor = true
-    or
-    isLocalFunctionCallReceiver(e2, e1, _) and
-    exactScope = false and
-    scope = e2 and
-    isSuccessor = true
-  }
-}
-
-private predicate lambdaCallExpr(DataFlowCall call, ControlFlow::Node receiver) {
-  exists(LambdaConfiguration x, DelegateLikeCall dc |
-    x.hasExprPath(dc.getExpr(), receiver, dc, call.getControlFlowNode())
+private predicate lambdaCallExpr(DataFlowCall call, Expr receiver, ControlFlow::Node receiverCfn) {
+  exists(DelegateLikeCall dc |
+    call.(ExplicitDelegateLikeDataFlowCall).getCall() = dc and
+    receiver = dc.getExpr() and
+    receiverCfn = receiver.getControlFlowNode()
   )
   or
   // In local function calls, `F()`, we use the local function access `F`
   // to represent the receiver. Only needed for flow through captured variables.
-  exists(LambdaConfiguration x, LocalFunctionCall fc |
-    x.hasExprPath(fc.getAChild(), receiver, fc, call.getControlFlowNode())
+  exists(LocalFunctionCall fc |
+    receiver = fc.getAChild() and
+    receiverCfn = receiver.getControlFlowNode() and
+    fc.getControlFlowNode() = call.getControlFlowNode()
   )
 }
 
 /** Holds if `call` is a lambda call where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   (
-    lambdaCallExpr(call, receiver.(ExprNode).getControlFlowNode()) and
+    lambdaCallExpr(call, receiver.asExpr(), _) and
     // local function calls can be resolved directly without a flow analysis
     not call.getControlFlowNode().getAstNode() instanceof LocalFunctionCall
     or
@@ -3028,9 +2774,9 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 }
 
 private predicate delegateCreationStep(Node nodeFrom, Node nodeTo) {
-  exists(LambdaConfiguration x, DelegateCreation dc |
-    x.hasExprPath(dc.getArgument(), nodeFrom.(ExprNode).getControlFlowNode(), dc,
-      nodeTo.(ExprNode).getControlFlowNode())
+  exists(DelegateCreation dc |
+    dc.getArgument() = nodeFrom.asExpr() and
+    dc = nodeTo.asExpr()
   )
 }
 

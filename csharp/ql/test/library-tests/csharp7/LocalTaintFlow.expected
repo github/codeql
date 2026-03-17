@@ -26,6 +26,7 @@
 | CSharp7.cs:31:16:31:16 | access to parameter i | CSharp7.cs:31:16:31:20 | ... > ... |
 | CSharp7.cs:31:16:31:16 | access to parameter i | CSharp7.cs:31:24:31:24 | access to parameter i |
 | CSharp7.cs:31:24:31:24 | access to parameter i | CSharp7.cs:31:16:31:59 | ... ? ... : ... |
+| CSharp7.cs:31:28:31:59 | throw ... | CSharp7.cs:31:16:31:59 | ... ? ... : ... |
 | CSharp7.cs:35:7:35:18 | this | CSharp7.cs:35:7:35:18 | this access |
 | CSharp7.cs:39:9:39:9 | access to parameter x | CSharp7.cs:39:9:39:21 | SSA def(x) |
 | CSharp7.cs:39:13:39:21 | "tainted" | CSharp7.cs:39:9:39:9 | access to parameter x |
@@ -253,6 +254,7 @@
 | CSharp7.cs:233:13:233:13 | access to local variable o | CSharp7.cs:235:13:235:42 | [input] SSA phi read(o) |
 | CSharp7.cs:233:13:233:13 | access to local variable o | CSharp7.cs:237:18:237:18 | access to local variable o |
 | CSharp7.cs:233:13:233:23 | [false] ... is ... | CSharp7.cs:233:13:233:33 | [false] ... && ... |
+| CSharp7.cs:233:13:233:23 | [false] ... is ... | CSharp7.cs:233:13:233:33 | [true] ... && ... |
 | CSharp7.cs:233:13:233:23 | [true] ... is ... | CSharp7.cs:233:13:233:33 | [false] ... && ... |
 | CSharp7.cs:233:13:233:23 | [true] ... is ... | CSharp7.cs:233:13:233:33 | [true] ... && ... |
 | CSharp7.cs:233:18:233:23 | Int32 i1 | CSharp7.cs:233:18:233:23 | SSA def(i1) |
@@ -338,6 +340,8 @@
 | CSharp7.cs:297:35:297:35 | access to local variable x | CSharp7.cs:297:40:297:44 | Int32 y |
 | CSharp7.cs:297:35:297:35 | access to local variable x | CSharp7.cs:297:49:297:49 | access to local variable x |
 | CSharp7.cs:297:35:297:44 | [false] ... is ... | CSharp7.cs:297:25:297:44 | [false] ... && ... |
+| CSharp7.cs:297:35:297:44 | [false] ... is ... | CSharp7.cs:297:25:297:44 | [true] ... && ... |
+| CSharp7.cs:297:35:297:44 | [true] ... is ... | CSharp7.cs:297:25:297:44 | [false] ... && ... |
 | CSharp7.cs:297:35:297:44 | [true] ... is ... | CSharp7.cs:297:25:297:44 | [true] ... && ... |
 | CSharp7.cs:297:40:297:44 | Int32 y | CSharp7.cs:297:40:297:44 | SSA def(y) |
 | CSharp7.cs:297:40:297:44 | SSA def(y) | CSharp7.cs:299:31:299:31 | access to local variable y |

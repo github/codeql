@@ -33,5 +33,11 @@ module Impl {
         result = "impl " + trait + this.getSelfTy().toAbbreviatedString() + " { ... }"
       )
     }
+
+    /**
+     * Holds if this is an inherent `impl` block, that is, one that does not implement a trait.
+     */
+    pragma[nomagic]
+    predicate isInherent() { not this.hasTrait() }
   }
 }

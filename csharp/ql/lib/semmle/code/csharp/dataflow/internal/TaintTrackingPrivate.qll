@@ -4,7 +4,6 @@ private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.Caching
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.commons.ComparisonTest
 // import `TaintedMember` definitions from other files to avoid potential reevaluation
@@ -45,82 +44,58 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) 
   )
 }
 
-private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityConfiguration {
-  LocalTaintExprStepConfiguration() { this = "LocalTaintExprStepConfiguration" }
-
-  override predicate candidate(
-    Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-  ) {
-    exactScope = false and
-    isSuccessor = true and
-    (
-      e1 = e2.(ElementAccess).getQualifier() and
-      scope = e2
-      or
-      e1 = e2.(AddExpr).getAnOperand() and
-      scope = e2
-      or
-      // A comparison expression where taint can flow from one of the
-      // operands if the other operand is a constant value.
-      exists(ComparisonTest ct, Expr other |
-        ct.getExpr() = e2 and
-        e1 = ct.getAnArgument() and
-        other = ct.getAnArgument() and
-        other.stripCasts().hasValue() and
-        e1 != other and
-        scope = e2
-      )
-      or
-      e1 = e2.(UnaryLogicalOperation).getAnOperand() and
-      scope = e2
-      or
-      e1 = e2.(BinaryLogicalOperation).getAnOperand() and
-      scope = e2
-      or
-      e1 = e2.(InterpolatedStringExpr).getAChild() and
-      scope = e2
-      or
-      e1 = e2.(InterpolatedStringInsertExpr).getInsert() and
-      scope = e2
-      or
-      e2 =
-        any(OperatorCall oc |
-          oc.getTarget().(ConversionOperator).fromLibrary() and
-          e1 = oc.getAnArgument() and
-          scope = e2
-        )
-      or
-      e1 = e2.(AwaitExpr).getExpr() and
-      scope = e2
-      or
-      // Taint flows from the operand of a cast to the cast expression if the cast is to an interpolated string handler.
-      e2 =
-        any(CastExpr ce |
-          e1 = ce.getExpr() and
-          scope = ce and
-          ce.getTargetType()
-              .(Attributable)
-              .getAnAttribute()
-              .getType()
-              .hasFullyQualifiedName("System.Runtime.CompilerServices",
-                "InterpolatedStringHandlerAttribute")
-        )
-    )
-  }
-}
-
-private ControlFlow::Nodes::ExprNode getALastEvalNode(ControlFlow::Nodes::ExprNode cfn) {
-  exists(OperatorCall oc | any(LocalTaintExprStepConfiguration x).hasExprPath(_, result, oc, cfn) |
-    oc.getTarget() instanceof ImplicitConversionOperator
+private predicate localTaintExprStep(Expr e1, Expr e2) {
+  e1 = e2.(ElementAccess).getQualifier()
+  or
+  e1 = e2.(AddExpr).getAnOperand()
+  or
+  // A comparison expression where taint can flow from one of the
+  // operands if the other operand is a constant value.
+  exists(ComparisonTest ct, Expr other |
+    ct.getExpr() = e2 and
+    e1 = ct.getAnArgument() and
+    other = ct.getAnArgument() and
+    other.stripCasts().hasValue() and
+    e1 != other
   )
+  or
+  e1 = e2.(UnaryLogicalOperation).getAnOperand()
+  or
+  e1 = e2.(BinaryLogicalOperation).getAnOperand()
+  or
+  e1 = e2.(InterpolatedStringExpr).getAChild()
+  or
+  e1 = e2.(InterpolatedStringInsertExpr).getInsert()
+  or
+  e2 =
+    any(OperatorCall oc |
+      oc.getTarget().(ConversionOperator).fromLibrary() and
+      e1 = oc.getAnArgument()
+    )
+  or
+  e1 = e2.(AwaitExpr).getExpr()
+  or
+  // Taint flows from the operand of a cast to the cast expression if the cast is to an interpolated string handler.
+  e2 =
+    any(CastExpr ce |
+      e1 = ce.getExpr() and
+      ce.getTargetType()
+          .(Attributable)
+          .getAnAttribute()
+          .getType()
+          .hasFullyQualifiedName("System.Runtime.CompilerServices",
+            "InterpolatedStringHandlerAttribute")
+    )
 }
 
-private ControlFlow::Nodes::ExprNode getPostUpdateReverseStep(ControlFlow::Nodes::ExprNode e) {
-  result = getALastEvalNode(e)
+private Expr getALastEvalNode(OperatorCall oc) {
+  localTaintExprStep(result, oc) and oc.getTarget() instanceof ImplicitConversionOperator
 }
+
+private Expr getPostUpdateReverseStep(Expr e) { result = getALastEvalNode(e) }
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  hasNodePath(any(LocalTaintExprStepConfiguration x), nodeFrom, nodeTo)
+  localTaintExprStep(nodeFrom.asExpr(), nodeTo.asExpr())
 }
 
 cached
@@ -191,12 +166,8 @@ private module Cached {
       // Allow reverse update flow for implicit conversion operator calls.
       // This is needed to support flow out of method call arguments, where an implicit conversion is applied
       // to a call argument.
-      nodeTo.(PostUpdateNode).getPreUpdateNode().(DataFlow::ExprNode).getControlFlowNode() =
-        getPostUpdateReverseStep(nodeFrom
-              .(PostUpdateNode)
-              .getPreUpdateNode()
-              .(DataFlow::ExprNode)
-              .getControlFlowNode())
+      nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
+        getPostUpdateReverseStep(nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr())
     ) and
     model = ""
     or

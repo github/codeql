@@ -1,3 +1,5 @@
+| Buildless.c:6:17:6:21 | ... * ... | Multiplication result may overflow 'float' before it is converted to 'double'. |
+| Buildless.c:21:17:21:21 | ... * ... | Multiplication result may overflow 'float' before it is converted to 'double'. |
 | IntMultToLong.c:4:10:4:14 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long long'. |
 | IntMultToLong.c:7:16:7:20 | ... * ... | Multiplication result may overflow 'int' before it is converted to 'long long'. |
 | IntMultToLong.c:18:19:18:23 | ... * ... | Multiplication result may overflow 'float' before it is converted to 'double'. |

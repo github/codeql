@@ -6,7 +6,10 @@ module Impl {
 
   private newtype TArgumentPosition =
     TPositionalArgumentPosition(int i) {
-      i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
+      // For the type `FunctionPosition` used by type inference, we work with function-call syntax
+      // adjusted positions, so a call like `x.m(a, b, c)` needs positions `0` through `3`; for this
+      // reason, there is no `- 1` after `max(...)` below.
+      i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()])]
     } or
     TSelfArgumentPosition() or
     TTypeQualifierArgumentPosition()
