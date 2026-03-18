@@ -1,0 +1,2 @@
+benchmarks/sample_* linguist-generated
+tests/*/corpus/* linguist-generated
