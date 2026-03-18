@@ -28,8 +28,8 @@ newtype TReturnKind =
 private predicate hasMultipleSourceLocations(Callable c) { strictcount(getASourceLocation(c)) > 1 }
 
 private predicate objectInitEntry(ObjectInitMethod m, ControlFlowElement first) {
-  exists(ControlFlow::Nodes::EntryNode en |
-    en.getCallable() = m and first.getControlFlowNode() = en.getASuccessor()
+  exists(ControlFlow::EntryNode en |
+    en.getEnclosingCallable() = m and first.getControlFlowNode() = en.getASuccessor()
   )
 }
 

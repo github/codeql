@@ -234,37 +234,29 @@ module ControlFlow {
     final Callable getEnclosingCallable() { result = Impl::getNodeCfgScope(this) }
   }
 
+  /** A node for a callable entry point. */
+  class EntryNode extends Node instanceof Impl::EntryNode {
+    /** Gets the callable that this entry applies to. */
+    Callable getEnclosingCallable() { result = this.getScope() }
+  }
+
+  /** A node for a callable exit point, annotated with the type of exit. */
+  class AnnotatedExitNode extends Node instanceof Impl::AnnotatedExitNode {
+    /** Gets the callable that this exit applies to. */
+    Callable getEnclosingCallable() { result = this.getScope() }
+  }
+
+  /** A control flow node indicating normal termination of a callable. */
+  class NormalExitNode extends AnnotatedExitNode instanceof Impl::NormalExitNode { }
+
+  /** A node for a callable exit point. */
+  class ExitNode extends Node instanceof Impl::ExitNode {
+    /** Gets the callable that this exit applies to. */
+    Callable getEnclosingCallable() { result = this.getScope() }
+  }
+
   /** Provides different types of control flow nodes. */
   module Nodes {
-    /** A node for a callable entry point. */
-    class EntryNode extends Node instanceof Impl::EntryNode {
-      /** Gets the callable that this entry applies to. */
-      Callable getCallable() { result = this.getScope() }
-
-      override BasicBlocks::EntryBlock getBasicBlock() { result = Node.super.getBasicBlock() }
-    }
-
-    /** A node for a callable exit point, annotated with the type of exit. */
-    class AnnotatedExitNode extends Node instanceof Impl::AnnotatedExitNode {
-      /** Gets the callable that this exit applies to. */
-      Callable getCallable() { result = this.getScope() }
-
-      override BasicBlocks::AnnotatedExitBlock getBasicBlock() {
-        result = Node.super.getBasicBlock()
-      }
-    }
-
-    /** A control flow node indicating normal termination of a callable. */
-    class NormalExitNode extends AnnotatedExitNode instanceof Impl::NormalExitNode { }
-
-    /** A node for a callable exit point. */
-    class ExitNode extends Node instanceof Impl::ExitNode {
-      /** Gets the callable that this exit applies to. */
-      Callable getCallable() { result = this.getScope() }
-
-      override BasicBlocks::ExitBlock getBasicBlock() { result = Node.super.getBasicBlock() }
-    }
-
     /**
      * A node for a control flow element, that is, an expression or a statement.
      *

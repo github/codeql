@@ -157,10 +157,10 @@ class Callable extends Parameterizable, ControlFlowElementOrCallable, @callable 
   final predicate hasExpressionBody() { exists(this.getExpressionBody()) }
 
   /** Gets the entry point in the control graph for this callable. */
-  ControlFlow::Nodes::EntryNode getEntryPoint() { result.getCallable() = this }
+  ControlFlow::EntryNode getEntryPoint() { result.getEnclosingCallable() = this }
 
   /** Gets the exit point in the control graph for this callable. */
-  ControlFlow::Nodes::ExitNode getExitPoint() { result.getCallable() = this }
+  ControlFlow::ExitNode getExitPoint() { result.getEnclosingCallable() = this }
 
   /**
    * Gets the enclosing callable of this callable, if any.

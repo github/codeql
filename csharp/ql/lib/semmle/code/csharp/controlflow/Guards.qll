@@ -20,7 +20,7 @@ private module GuardsInput implements
 {
   private import csharp as CS
 
-  class NormalExitNode = ControlFlow::Nodes::NormalExitNode;
+  class NormalExitNode = ControlFlow::NormalExitNode;
 
   class AstNode = ControlFlowElement;
 

@@ -187,11 +187,11 @@ private module SourceVariableImpl {
    * ```
    */
   predicate outRefExitRead(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
-    exists(ControlFlow::Nodes::NormalExitNode exit |
+    exists(ControlFlow::NormalExitNode exit |
       exists(LocalScopeVariable lsv |
         lsv = v.getAssignable() and
         bb.getNode(i) = exit and
-        exit.getCallable() = lsv.getCallable()
+        exit.getEnclosingCallable() = lsv.getCallable()
       |
         lsv.(Parameter).isOutOrRef()
         or
