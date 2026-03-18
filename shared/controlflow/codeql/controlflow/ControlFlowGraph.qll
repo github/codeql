@@ -1784,6 +1784,72 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           ControlFlowNode getAnExceptionSuccessor() {
             result = this.getASuccessor(any(ExceptionSuccessor t))
           }
+
+          /**
+           * Holds if this node dominates `that` node.
+           *
+           * That is, all paths reaching `that` node from the callable entry
+           * node (`EntryNode`) must go through this node.
+           */
+          bindingset[this, that]
+          pragma[inline_late]
+          predicate dominates(ControlFlowNode that) {
+            this.strictlyDominates(that)
+            or
+            this = that
+          }
+
+          /**
+           * Holds if this node strictly dominates `that` node.
+           *
+           * That is, all paths reaching `that` node from the callable entry
+           * node (`EntryNode`) must go through this node (which must be
+           * different from `that` node).
+           */
+          bindingset[this, that]
+          pragma[inline_late]
+          predicate strictlyDominates(ControlFlowNode that) {
+            this.getBasicBlock().strictlyDominates(that.getBasicBlock())
+            or
+            exists(BasicBlock bb, int i, int j |
+              bb.getNode(i) = this and
+              bb.getNode(j) = that and
+              i < j
+            )
+          }
+
+          /**
+           * Holds if this node post-dominates `that` node.
+           *
+           * That is, all paths reaching the normal callable exit node
+           * (`NormalExitNode`) from `that` node must go through this node.
+           */
+          bindingset[this, that]
+          pragma[inline_late]
+          predicate postDominates(ControlFlowNode that) {
+            this.strictlyPostDominates(that)
+            or
+            this = that
+          }
+
+          /**
+           * Holds if this node strictly post-dominates `that` node.
+           *
+           * That is, all paths reaching the normal callable exit node
+           * (`NormalExitNode`) from `that` node must go through this node
+           * (which must be different from `that` node).
+           */
+          bindingset[this, that]
+          pragma[inline_late]
+          predicate strictlyPostDominates(ControlFlowNode that) {
+            this.getBasicBlock().strictlyPostDominates(that.getBasicBlock())
+            or
+            exists(BasicBlock bb, int i, int j |
+              bb.getNode(i) = this and
+              bb.getNode(j) = that and
+              i > j
+            )
+          }
         }
 
         /** Provides additional classes for interacting with the control flow graph. */
