@@ -322,7 +322,7 @@ class Guard extends Guards::Guard {
    * In case `cfn` or `sub` access an SSA variable in their left-most qualifier, then
    * so must the other (accessing the same SSA variable).
    */
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AccessOrCallExpr sub, GuardValue v) {
+  predicate controlsNode(ControlFlowNodes::ElementNode cfn, AccessOrCallExpr sub, GuardValue v) {
     isGuardedByNode(cfn, this, sub, v)
   }
 
@@ -332,7 +332,7 @@ class Guard extends Guards::Guard {
    * Note: This predicate is inlined.
    */
   pragma[inline]
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, GuardValue v) {
+  predicate controlsNode(ControlFlowNodes::ElementNode cfn, GuardValue v) {
     guardControls(this, cfn.getBasicBlock(), v)
   }
 
@@ -729,7 +729,7 @@ class GuardedExpr extends AccessOrCallExpr {
  * In the example above, the node for `x.ToString()` is null-guarded in the
  * split `b == true`, but not in the split `b == false`.
  */
-class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
+class GuardedControlFlowNode extends ControlFlowNodes::ElementNode {
   private Guard g;
   private AccessOrCallExpr sub0;
   private GuardValue v0;
@@ -785,7 +785,7 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
   private GuardValue v0;
 
   GuardedDataFlowNode() {
-    exists(ControlFlow::Nodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
+    exists(ControlFlowNodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
       g.controlsNode(cfn, sub0, v0)
     )
   }
@@ -1178,7 +1178,7 @@ module Internal {
 
     cached
     predicate isGuardedByNode(
-      ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
+      ControlFlowNodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr(guarded, _, _, g, sub, v) and
       forall(ControlFlowNode subCfn, Ssa::Definition def |

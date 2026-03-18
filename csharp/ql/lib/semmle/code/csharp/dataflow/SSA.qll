@@ -486,7 +486,7 @@ module Ssa {
      * `M2` via the call on line 6.
      */
     deprecated final predicate isCapturedVariableDefinitionFlowIn(
-      ImplicitEntryDefinition def, ControlFlow::Nodes::ElementNode c, boolean additionalCalls
+      ImplicitEntryDefinition def, ControlFlowNodes::ElementNode c, boolean additionalCalls
     ) {
       none()
     }

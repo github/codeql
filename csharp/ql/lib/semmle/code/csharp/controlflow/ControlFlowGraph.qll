@@ -255,42 +255,6 @@ module ControlFlow {
     Callable getEnclosingCallable() { result = this.getScope() }
   }
 
-  /** Provides different types of control flow nodes. */
-  module Nodes {
-    /**
-     * A node for a control flow element, that is, an expression or a statement.
-     *
-     * Each control flow element maps to zero or more `ElementNode`s: zero when
-     * the element is in unreachable (dead) code, and multiple when there are
-     * different splits for the element.
-     */
-    class ElementNode extends Node instanceof Impl::AstCfgNode {
-      /** Gets a comma-separated list of strings for each split in this node, if any. */
-      final string getSplitsString() { result = super.getSplitsString() }
-
-      /** Gets a split for this control flow node, if any. */
-      final Split getASplit() { result = super.getASplit() }
-    }
-
-    /** A control-flow node for an expression. */
-    class ExprNode extends ElementNode {
-      Expr e;
-
-      ExprNode() { e = unique(Expr e_ | e_ = this.asExpr() | e_) }
-
-      /** Gets the expression that this control-flow node belongs to. */
-      Expr getExpr() { result = e }
-
-      /** Gets the value of this expression node, if any. */
-      string getValue() { result = e.getValue() }
-
-      /** Gets the type of this expression node. */
-      Type getType() { result = e.getType() }
-    }
-
-    class Split = Splitting::Split;
-  }
-
   class BasicBlock = BBs::BasicBlock;
 
   /** Provides different types of basic blocks. */
@@ -307,4 +271,43 @@ module ControlFlow {
 
     class ConditionBlock = BBs::ConditionBlock;
   }
+}
+
+/** Provides different types of control flow nodes. */
+module ControlFlowNodes {
+  private import internal.ControlFlowGraphImpl as Impl
+  private import internal.Splitting as Splitting
+
+  /**
+   * A node for a control flow element, that is, an expression or a statement.
+   *
+   * Each control flow element maps to zero or more `ElementNode`s: zero when
+   * the element is in unreachable (dead) code, and multiple when there are
+   * different splits for the element.
+   */
+  class ElementNode extends ControlFlowNode instanceof Impl::AstCfgNode {
+    /** Gets a comma-separated list of strings for each split in this node, if any. */
+    final string getSplitsString() { result = super.getSplitsString() }
+
+    /** Gets a split for this control flow node, if any. */
+    final Split getASplit() { result = super.getASplit() }
+  }
+
+  /** A control-flow node for an expression. */
+  class ExprNode extends ElementNode {
+    Expr e;
+
+    ExprNode() { e = unique(Expr e_ | e_ = this.asExpr() | e_) }
+
+    /** Gets the expression that this control-flow node belongs to. */
+    Expr getExpr() { result = e }
+
+    /** Gets the value of this expression node, if any. */
+    string getValue() { result = e.getValue() }
+
+    /** Gets the type of this expression node. */
+    Type getType() { result = e.getType() }
+  }
+
+  class Split = Splitting::Split;
 }

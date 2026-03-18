@@ -42,7 +42,7 @@ class ControlFlowElement extends ControlFlowElementOrCallable, @control_flow_ele
    * several `ControlFlowNode`s, for example to represent the continuation
    * flow in a `try/catch/finally` construction.
    */
-  Nodes::ElementNode getAControlFlowNode() { result.getAstNode() = this }
+  ControlFlowNodes::ElementNode getAControlFlowNode() { result.getAstNode() = this }
 
   /** Gets the control flow node for this element. */
   ControlFlowNode getControlFlowNode() { result.getAstNode() = this }
@@ -53,14 +53,14 @@ class ControlFlowElement extends ControlFlowElementOrCallable, @control_flow_ele
   /**
    * Gets a first control flow node executed within this element.
    */
-  Nodes::ElementNode getAControlFlowEntryNode() {
+  ControlFlowNodes::ElementNode getAControlFlowEntryNode() {
     result = Impl::getAControlFlowEntryNode(this).(ControlFlowElement).getAControlFlowNode()
   }
 
   /**
    * Gets a potential last control flow node executed within this element.
    */
-  Nodes::ElementNode getAControlFlowExitNode() {
+  ControlFlowNodes::ElementNode getAControlFlowExitNode() {
     result = Impl::getAControlFlowExitNode(this).(ControlFlowElement).getAControlFlowNode()
   }
 

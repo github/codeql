@@ -34,13 +34,13 @@ predicate strictlyNegativeExpr(Expr e) {
 }
 
 /** Holds if `e` can be positive and cannot be negative. */
-predicate positive(ControlFlow::Nodes::ExprNode e) { Common::positive(e) }
+predicate positive(ControlFlowNodes::ExprNode e) { Common::positive(e) }
 
 /** Holds if `e` can be negative and cannot be positive. */
-predicate negative(ControlFlow::Nodes::ExprNode e) { Common::negative(e) }
+predicate negative(ControlFlowNodes::ExprNode e) { Common::negative(e) }
 
 /** Holds if `e` is strictly positive. */
-predicate strictlyPositive(ControlFlow::Nodes::ExprNode e) { Common::strictlyPositive(e) }
+predicate strictlyPositive(ControlFlowNodes::ExprNode e) { Common::strictlyPositive(e) }
 
 /** Holds if `e` is strictly negative. */
-predicate strictlyNegative(ControlFlow::Nodes::ExprNode e) { Common::strictlyNegative(e) }
+predicate strictlyNegative(ControlFlowNodes::ExprNode e) { Common::strictlyNegative(e) }

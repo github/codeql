@@ -17,7 +17,7 @@ class Node extends TNode {
    * Gets the expression corresponding to this node, at control flow node `cfn`,
    * if any.
    */
-  Expr asExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
+  Expr asExprAtNode(ControlFlowNodes::ElementNode cfn) {
     result = this.(ExprNode).getExprAtNode(cfn)
   }
 
@@ -81,7 +81,7 @@ class ExprNode extends Node, TExprNode {
    * Gets the expression corresponding to this node, at control flow node `cfn`,
    * if any.
    */
-  Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
+  Expr getExprAtNode(ControlFlowNodes::ElementNode cfn) {
     this = TExprNode(cfn) and
     result = cfn.asExpr()
   }

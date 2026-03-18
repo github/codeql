@@ -70,7 +70,7 @@ private module Input implements InputSig<Location, CsharpDataFlow> {
           init.getInitializer().getNumberOfChildren() > 1
         )
       or
-      exists(ControlFlow::Nodes::ElementNode cfn, ControlFlow::Nodes::Split split |
+      exists(ControlFlowNodes::ElementNode cfn, ControlFlowNodes::Split split |
         exists(arg.asExprAtNode(cfn))
       |
         split = cfn.getASplit() and

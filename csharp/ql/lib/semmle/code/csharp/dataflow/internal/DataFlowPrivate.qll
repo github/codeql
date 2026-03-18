@@ -106,7 +106,7 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
     result = this.getExpr().getType()
   }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() {
+  override ControlFlowNodes::ElementNode getControlFlowNodeImpl() {
     forceCachingInSameStage() and this = TExprNode(result)
   }
 
@@ -127,7 +127,7 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
  * as if they were lambdas.
  */
 abstract private class LocalFunctionCreationNode extends NodeImpl, TLocalFunctionCreationNode {
-  ControlFlow::Nodes::ElementNode cfn;
+  ControlFlowNodes::ElementNode cfn;
   LocalFunction function;
   boolean isPostUpdate;
 
@@ -151,9 +151,9 @@ abstract private class LocalFunctionCreationNode extends NodeImpl, TLocalFunctio
 
   override DataFlowType getDataFlowType() { result.asDelegate() = function }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { none() }
+  override ControlFlowNodes::ElementNode getControlFlowNodeImpl() { none() }
 
-  ControlFlow::Nodes::ElementNode getUnderlyingControlFlowNode() { result = cfn }
+  ControlFlowNodes::ElementNode getUnderlyingControlFlowNode() { result = cfn }
 
   override Location getLocationImpl() { result = cfn.getLocation() }
 }
@@ -263,7 +263,7 @@ module VariableCapture {
   private import codeql.dataflow.VariableCapture as Shared
   private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 
-  private predicate closureFlowStep(ControlFlow::Nodes::ExprNode e1, ControlFlow::Nodes::ExprNode e2) {
+  private predicate closureFlowStep(ControlFlowNodes::ExprNode e1, ControlFlowNodes::ExprNode e2) {
     e1.getExpr() = LocalFlow::getALastEvalNode(e2.getExpr())
     or
     exists(Ssa::Definition def, AssignableDefinition adef |
@@ -1026,7 +1026,7 @@ private module Cached {
 
   cached
   newtype TNode =
-    TExprNode(ControlFlow::Nodes::ElementNode cfn) { exists(cfn.asExpr()) } or
+    TExprNode(ControlFlowNodes::ElementNode cfn) { exists(cfn.asExpr()) } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TAssignableDefinitionNode(AssignableDefinition def, ControlFlowNode cfn) {
       cfn = def.getExpr().getAControlFlowNode()
@@ -1040,20 +1040,20 @@ private module Cached {
       l = c.getARelevantLocation()
     } or
     TDelegateSelfReferenceNode(Callable c) { lambdaCreationExpr(_, c) } or
-    TLocalFunctionCreationNode(ControlFlow::Nodes::ElementNode cfn, Boolean isPostUpdate) {
+    TLocalFunctionCreationNode(ControlFlowNodes::ElementNode cfn, Boolean isPostUpdate) {
       cfn.asStmt() instanceof LocalFunctionStmt
     } or
-    TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
+    TYieldReturnNode(ControlFlowNodes::ElementNode cfn) {
       any(Callable c).canYieldReturn(cfn.asExpr())
     } or
-    TAsyncReturnNode(ControlFlow::Nodes::ElementNode cfn) {
+    TAsyncReturnNode(ControlFlowNodes::ElementNode cfn) {
       any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.asExpr())
     } or
-    TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.asExpr() instanceof ObjectCreation } or
-    TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
+    TMallocNode(ControlFlowNodes::ElementNode cfn) { cfn.asExpr() instanceof ObjectCreation } or
+    TObjectInitializerNode(ControlFlowNodes::ElementNode cfn) {
       cfn.asExpr().(ObjectCreation).hasInitializer()
     } or
-    TExprPostUpdateNode(ControlFlow::Nodes::ExprNode cfn) {
+    TExprPostUpdateNode(ControlFlowNodes::ExprNode cfn) {
       (
         cfn.getExpr() instanceof Argument
         or
@@ -1509,7 +1509,7 @@ private module ArgumentNodes {
    * the constructor has run.
    */
   class MallocNode extends ArgumentNodeImpl, NodeImpl, TMallocNode {
-    private ControlFlow::Nodes::ElementNode cfn;
+    private ControlFlowNodes::ElementNode cfn;
 
     MallocNode() { this = TMallocNode(cfn) }
 
@@ -1640,7 +1640,7 @@ private module ReturnNodes {
    * to `yield return e [e]`.
    */
   class YieldReturnNode extends ReturnNode, NodeImpl, TYieldReturnNode {
-    private ControlFlow::Nodes::ElementNode cfn;
+    private ControlFlowNodes::ElementNode cfn;
     private YieldReturnStmt yrs;
 
     YieldReturnNode() { this = TYieldReturnNode(cfn) and yrs.getExpr().getAControlFlowNode() = cfn }
@@ -1664,7 +1664,7 @@ private module ReturnNodes {
    * A synthesized `return` node for returned expressions inside `async` methods.
    */
   class AsyncReturnNode extends ReturnNode, NodeImpl, TAsyncReturnNode {
-    private ControlFlow::Nodes::ElementNode cfn;
+    private ControlFlowNodes::ElementNode cfn;
     private Expr expr;
 
     AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.asExpr() }
@@ -1841,7 +1841,7 @@ abstract private class InstanceParameterAccessNode extends NodeImpl, TInstancePa
 
   override Type getTypeImpl() { result = cfn.getEnclosingCallable().getDeclaringType() }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { none() }
+  override ControlFlowNodes::ElementNode getControlFlowNodeImpl() { none() }
 
   override Location getLocationImpl() { result = cfn.getLocation() }
 
@@ -1890,7 +1890,7 @@ abstract private class PrimaryConstructorThisAccessNode extends NodeImpl,
 
   override Type getTypeImpl() { result = p.getCallable().getDeclaringType() }
 
-  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { none() }
+  override ControlFlowNodes::ElementNode getControlFlowNodeImpl() { none() }
 
   override Location getLocationImpl() {
     NearestLocation<NearestLocationInputParamAfterCallable>::nearestLocation(p,
@@ -2545,7 +2545,7 @@ module PostUpdateNodes {
     ObjectCreationNode() { this = TExprNode(oc.getAControlFlowNode()) }
 
     override Node getPreUpdateSourceNode() {
-      exists(ControlFlow::Nodes::ElementNode cfn | this = TExprNode(cfn) |
+      exists(ControlFlowNodes::ElementNode cfn | this = TExprNode(cfn) |
         result = TObjectInitializerNode(cfn)
         or
         not oc.hasInitializer() and
@@ -2565,7 +2565,7 @@ module PostUpdateNodes {
     TObjectInitializerNode
   {
     private ObjectCreation oc;
-    private ControlFlow::Nodes::ElementNode cfn;
+    private ControlFlowNodes::ElementNode cfn;
 
     ObjectInitializerNode() {
       this = TObjectInitializerNode(cfn) and
@@ -2596,7 +2596,7 @@ module PostUpdateNodes {
 
     override Type getTypeImpl() { result = oc.getType() }
 
-    override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { result = cfn }
+    override ControlFlowNodes::ElementNode getControlFlowNodeImpl() { result = cfn }
 
     override Location getLocationImpl() { result = cfn.getLocation() }
 
@@ -2604,7 +2604,7 @@ module PostUpdateNodes {
   }
 
   class ExprPostUpdateNode extends SourcePostUpdateNode, NodeImpl, TExprPostUpdateNode {
-    private ControlFlow::Nodes::ElementNode cfn;
+    private ControlFlowNodes::ElementNode cfn;
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(cfn) }
 

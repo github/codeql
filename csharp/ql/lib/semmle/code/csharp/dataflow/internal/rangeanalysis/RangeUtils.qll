@@ -9,7 +9,7 @@ private module Impl {
   private import SsaReadPositionCommon
   private import semmle.code.csharp.controlflow.Guards as G
 
-  private class ExprNode = ControlFlow::Nodes::ExprNode;
+  private class ExprNode = ControlFlowNodes::ExprNode;
 
   /** Holds if `parent` having child `child` implies `parentNode` having child `childNode`. */
   predicate hasChild(Expr parent, Expr child, ExprNode parentNode, ExprNode childNode) {
@@ -156,7 +156,7 @@ import Impl
 module ExprNode {
   private import csharp as CS
 
-  private class ExprNode = CS::ControlFlow::Nodes::ExprNode;
+  private class ExprNode = CS::ControlFlowNodes::ExprNode;
 
   private import Sign
 

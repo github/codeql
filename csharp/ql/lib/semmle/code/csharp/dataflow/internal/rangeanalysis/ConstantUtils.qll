@@ -7,7 +7,7 @@ private import Ssa
 private import SsaUtils
 private import RangeUtils
 
-private class ExprNode = ControlFlow::Nodes::ExprNode;
+private class ExprNode = ControlFlowNodes::ExprNode;
 
 /**
  * Holds if `pa` is an access to the `Length` property of an array.

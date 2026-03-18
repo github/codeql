@@ -1024,7 +1024,7 @@ import Cached
 private string getSplitString(Definition def) {
   exists(ControlFlow::BasicBlock bb, int i, ControlFlowNode cfn |
     def.definesAt(_, bb, i) and
-    result = cfn.(ControlFlow::Nodes::ElementNode).getSplitsString()
+    result = cfn.(ControlFlowNodes::ElementNode).getSplitsString()
   |
     cfn = bb.getNode(i)
     or

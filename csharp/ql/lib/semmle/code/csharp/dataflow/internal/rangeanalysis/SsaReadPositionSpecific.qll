@@ -30,9 +30,9 @@ private int getId(PhiInputEdgeBlock bb) {
 }
 
 private string getSplitString(PhiInputEdgeBlock bb) {
-  result = bb.getFirstNode().(ControlFlow::Nodes::ElementNode).getSplitsString()
+  result = bb.getFirstNode().(ControlFlowNodes::ElementNode).getSplitsString()
   or
-  not exists(bb.getFirstNode().(ControlFlow::Nodes::ElementNode).getSplitsString()) and
+  not exists(bb.getFirstNode().(ControlFlowNodes::ElementNode).getSplitsString()) and
   result = ""
 }
 

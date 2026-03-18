@@ -12,7 +12,7 @@ module Private {
 
   class SsaPhiNode = CS::Ssa::PhiNode;
 
-  class Expr = CS::ControlFlow::Nodes::ExprNode;
+  class Expr = CS::ControlFlowNodes::ExprNode;
 
   class Guard = RU::Guard;
 
