@@ -25,7 +25,7 @@ private int getId(PhiInputEdgeBlock bb) {
   exists(CfgImpl::AstNode n | result = n.getId() |
     n = bb.getFirstNode().getAstNode()
     or
-    n = bb.(ControlFlow::BasicBlocks::EntryBlock).getCallable()
+    n = bb.(ControlFlow::BasicBlocks::EntryBlock).getEnclosingCallable()
   )
 }
 

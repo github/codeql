@@ -30,7 +30,7 @@ ControlFlowNode unlockedReachable(Callable a) {
   result = a.getEntryPoint()
   or
   exists(ControlFlowNode mid | mid = unlockedReachable(a) |
-    not mid.getAstNode() instanceof LockingCall and
+    not mid.asExpr() instanceof LockingCall and
     result = mid.getASuccessor()
   )
 }

@@ -4,7 +4,7 @@ query predicate edges(ControlFlowNode n1, ControlFlowNode n2, string attr, strin
   exists(SwitchStmt switch, ControlFlow::SuccessorType t |
     switch.getAControlFlowNode().getASuccessor*() = n1
   |
-    n2 = n1.getASuccessorByType(t) and
+    n2 = n1.getASuccessor(t) and
     attr = "semmle.label" and
     val = t.toString()
   )

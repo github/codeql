@@ -14,7 +14,7 @@ query predicate nullableControlFlow(
   ControlFlowNode a, ControlFlowNode b, ControlFlow::SuccessorType t
 ) {
   a.getEnclosingCallable().hasName("TestSuppressNullableWarningExpr") and
-  b = a.getASuccessorByType(t)
+  b = a.getASuccessor(t)
 }
 
 query predicate nonNullExpressions(NonNullExpr e) {

@@ -133,7 +133,7 @@ abstract private class LocalFunctionCreationNode extends NodeImpl, TLocalFunctio
 
   LocalFunctionCreationNode() {
     this = TLocalFunctionCreationNode(cfn, isPostUpdate) and
-    function = cfn.getAstNode().(LocalFunctionStmt).getLocalFunction()
+    function = cfn.asStmt().(LocalFunctionStmt).getLocalFunction()
   }
 
   LocalFunction getFunction() { result = function }
@@ -181,7 +181,7 @@ private module ThisFlow {
   private predicate primaryConstructorThisAccess(Node n, BasicBlock bb, int ppos) {
     exists(Parameter p |
       n.(PrimaryConstructorThisAccessPreNode).getParameter() = p and
-      bb.getCallable() = p.getCallable() and
+      bb.getEnclosingCallable() = p.getCallable() and
       ppos = p.getPosition()
     )
   }
@@ -279,11 +279,11 @@ module VariableCapture {
     private import TaintTrackingPrivate as TaintTrackingPrivate
 
     Callable basicBlockGetEnclosingCallable(BasicBlocks::BasicBlock bb) {
-      result = bb.getCallable()
+      result = bb.getEnclosingCallable()
     }
 
     private predicate thisAccess(ControlFlowNode cfn, InstanceCallable c) {
-      ThisFlow::thisAccessExpr(cfn.getAstNode()) and
+      ThisFlow::thisAccessExpr(cfn.asExpr()) and
       cfn.getEnclosingCallable().getEnclosingCallable*() = c
     }
 
@@ -369,7 +369,7 @@ module VariableCapture {
       CapturedVariable v;
 
       VariableRead() {
-        this.getAstNode().(AssignableRead).getTarget() = v.asLocalScopeVariable()
+        this.asExpr().(AssignableRead).getTarget() = v.asLocalScopeVariable()
         or
         thisAccess(this, v.asThis())
       }
@@ -380,14 +380,16 @@ module VariableCapture {
     class ClosureExpr extends Expr {
       Callable c;
 
-      ClosureExpr() { lambdaCreationExpr(this.getAstNode(), c) }
+      ClosureExpr() {
+        lambdaCreationExpr(any(ControlFlowElement e | e.getControlFlowNode() = this), c)
+      }
 
       predicate hasBody(Callable body) { body = c }
 
       predicate hasAliasedAccess(Expr f) {
         closureFlowStep+(this, f) and not closureFlowStep(f, _)
         or
-        isLocalFunctionCallReceiver(_, f.getAstNode(), c)
+        isLocalFunctionCallReceiver(_, f.asExpr(), c)
       }
     }
 
@@ -1024,7 +1026,7 @@ private module Cached {
 
   cached
   newtype TNode =
-    TExprNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof Expr } or
+    TExprNode(ControlFlow::Nodes::ElementNode cfn) { exists(cfn.asExpr()) } or
     TSsaNode(SsaImpl::DataFlowIntegration::SsaNode node) or
     TAssignableDefinitionNode(AssignableDefinition def, ControlFlowNode cfn) {
       cfn = def.getExpr().getAControlFlowNode()
@@ -1039,17 +1041,17 @@ private module Cached {
     } or
     TDelegateSelfReferenceNode(Callable c) { lambdaCreationExpr(_, c) } or
     TLocalFunctionCreationNode(ControlFlow::Nodes::ElementNode cfn, Boolean isPostUpdate) {
-      cfn.getAstNode() instanceof LocalFunctionStmt
+      cfn.asStmt() instanceof LocalFunctionStmt
     } or
     TYieldReturnNode(ControlFlow::Nodes::ElementNode cfn) {
-      any(Callable c).canYieldReturn(cfn.getAstNode())
+      any(Callable c).canYieldReturn(cfn.asExpr())
     } or
     TAsyncReturnNode(ControlFlow::Nodes::ElementNode cfn) {
-      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.getAstNode())
+      any(Callable c | c.(Modifiable).isAsync()).canReturn(cfn.asExpr())
     } or
-    TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.getAstNode() instanceof ObjectCreation } or
+    TMallocNode(ControlFlow::Nodes::ElementNode cfn) { cfn.asExpr() instanceof ObjectCreation } or
     TObjectInitializerNode(ControlFlow::Nodes::ElementNode cfn) {
-      cfn.getAstNode().(ObjectCreation).hasInitializer()
+      cfn.asExpr().(ObjectCreation).hasInitializer()
     } or
     TExprPostUpdateNode(ControlFlow::Nodes::ExprNode cfn) {
       (
@@ -1521,10 +1523,10 @@ private module ArgumentNodes {
     override DataFlowCallable getEnclosingCallableImpl() {
       result.getAControlFlowNode() = cfn
       or
-      result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
+      result = getEnclosingStaticFieldOrProperty(cfn.asExpr())
     }
 
-    override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.asExpr().getType() }
 
     override Location getLocationImpl() { result = cfn.getLocation() }
 
@@ -1562,7 +1564,7 @@ private module ArgumentNodes {
     override DataFlowCallable getEnclosingCallableImpl() {
       result.getAControlFlowNode() = callCfn
       or
-      result = getEnclosingStaticFieldOrProperty(callCfn.getAstNode())
+      result = getEnclosingStaticFieldOrProperty(callCfn.asExpr())
     }
 
     override Type getTypeImpl() { result = this.getParameter().getType() }
@@ -1665,7 +1667,7 @@ private module ReturnNodes {
     private ControlFlow::Nodes::ElementNode cfn;
     private Expr expr;
 
-    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.getAstNode() }
+    AsyncReturnNode() { this = TAsyncReturnNode(cfn) and expr = cfn.asExpr() }
 
     Expr getExpr() { result = expr }
 
@@ -2421,10 +2423,10 @@ DataFlowType getNodeType(Node n) {
   not lambdaCreation(n, _, _) and
   not isLocalFunctionCallReceiver(_, n.asExpr(), _)
   or
-  [
-    n.asExpr().(ControlFlowElement),
-    n.(LocalFunctionCreationPreNode).getUnderlyingControlFlowNode().getAstNode()
-  ] = result.getADelegateCreation()
+  n.asExpr() = result.getADelegateCreation()
+  or
+  n.(LocalFunctionCreationPreNode).getUnderlyingControlFlowNode() =
+    result.getADelegateCreation().getControlFlowNode()
 }
 
 private class DataFlowNullType extends Gvn::GvnType {
@@ -2611,10 +2613,10 @@ module PostUpdateNodes {
     override DataFlowCallable getEnclosingCallableImpl() {
       result.getAControlFlowNode() = cfn
       or
-      result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
+      result = getEnclosingStaticFieldOrProperty(cfn.asExpr())
     }
 
-    override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
+    override Type getTypeImpl() { result = cfn.asExpr().getType() }
 
     override ControlFlowNode getControlFlowNodeImpl() { none() }
 
@@ -2766,7 +2768,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   (
     lambdaCallExpr(call, receiver.asExpr(), _) and
     // local function calls can be resolved directly without a flow analysis
-    not call.getControlFlowNode().getAstNode() instanceof LocalFunctionCall
+    not call.getControlFlowNode().asExpr() instanceof LocalFunctionCall
     or
     receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver()
   ) and

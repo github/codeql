@@ -222,7 +222,7 @@ private predicate defMaybeNull(Ssa::Definition def, ControlFlowNode node, string
     or
     // If the source of a variable is `null` then the variable may be `null`
     exists(AssignableDefinition adef | adef = def.(Ssa::ExplicitDefinition).getADefinition() |
-      adef.getSource() = maybeNullExpr(node.getAstNode()) and
+      adef.getSource() = maybeNullExpr(node.asExpr()) and
       reason = adef.getExpr() and
       msg = "because of $@ assignment"
     )

@@ -167,11 +167,11 @@ class ConstantNullnessCondition extends ConstantCondition {
 
   ConstantNullnessCondition() {
     forex(ControlFlowNode cfn | cfn = this.getAControlFlowNode() |
-      exists(ControlFlow::NullnessSuccessor t, ControlFlowNode s | s = cfn.getASuccessorByType(t) |
+      exists(ControlFlow::NullnessSuccessor t, ControlFlowNode s | s = cfn.getASuccessor(t) |
         b = t.getValue() and
         not s.isJoin()
       ) and
-      strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
+      strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessor(t))) = 1
     )
   }
 
@@ -189,10 +189,10 @@ class ConstantMatchingCondition extends ConstantCondition {
   ConstantMatchingCondition() {
     this instanceof Expr and
     forex(ControlFlowNode cfn | cfn = this.getAControlFlowNode() |
-      exists(ControlFlow::MatchingSuccessor t | exists(cfn.getASuccessorByType(t)) |
+      exists(ControlFlow::MatchingSuccessor t | exists(cfn.getASuccessor(t)) |
         b = t.getValue()
       ) and
-      strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
+      strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessor(t))) = 1
     )
   }
 

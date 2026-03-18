@@ -426,7 +426,9 @@ module Ssa {
      * This is either an expression, for example `x = 0`, a parameter, or a
      * callable. Phi nodes have no associated syntax element.
      */
-    Element getElement() { result = this.getControlFlowNode().getAstNode() }
+    Element getElement() {
+      result.(ControlFlowElement).getControlFlowNode() = this.getControlFlowNode()
+    }
 
     /** Gets the callable to which this SSA definition belongs. */
     final Callable getEnclosingCallable() {
@@ -561,7 +563,7 @@ module Ssa {
     }
 
     /** Gets the callable that this entry definition belongs to. */
-    final Callable getCallable() { result = this.getBasicBlock().getCallable() }
+    final Callable getCallable() { result = this.getBasicBlock().getEnclosingCallable() }
 
     override Element getElement() { result = this.getCallable() }
 

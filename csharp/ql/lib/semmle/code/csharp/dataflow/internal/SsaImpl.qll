@@ -57,7 +57,7 @@ module Consistency = Impl::Consistency;
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
  */
 private predicate variableReadActual(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
-  v.getAnAccess().(AssignableRead) = bb.getNode(i).getAstNode()
+  v.getAnAccess().(AssignableRead) = bb.getNode(i).asExpr()
 }
 
 private module SourceVariableImpl {
@@ -187,8 +187,7 @@ private module SourceVariableImpl {
    * ```
    */
   predicate outRefExitRead(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
-    exists(ControlFlow::Nodes::AnnotatedExitNode exit |
-      exit.isNormal() and
+    exists(ControlFlow::Nodes::NormalExitNode exit |
       exists(LocalScopeVariable lsv |
         lsv = v.getAssignable() and
         bb.getNode(i) = exit and
@@ -820,7 +819,7 @@ private module Cached {
   cached
   predicate implicitEntryDefinition(ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
     exists(ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
-      c = entry.getCallable() and
+      c = entry.getEnclosingCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
       // entry definition. In case `c` doesn't have multiple bodies, the line below
       // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`

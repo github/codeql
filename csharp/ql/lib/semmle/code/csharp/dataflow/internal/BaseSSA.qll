@@ -29,7 +29,7 @@ module BaseSsa {
     Callable c, ControlFlow::BasicBlocks::EntryBlock bb, SsaInput::SourceVariable v
   ) {
     exists(ControlFlow::BasicBlocks::EntryBlock entry |
-      c = entry.getCallable() and
+      c = entry.getEnclosingCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
       // entry definition. In case `c` doesn't have multiple bodies, the line below
       // is simply the same as `bb = entry`, because `entry.getFirstNode().getASuccessor()`

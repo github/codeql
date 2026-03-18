@@ -83,7 +83,7 @@ class ExprNode extends Node, TExprNode {
    */
   Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
     this = TExprNode(cfn) and
-    result = cfn.getAstNode()
+    result = cfn.asExpr()
   }
 }
 

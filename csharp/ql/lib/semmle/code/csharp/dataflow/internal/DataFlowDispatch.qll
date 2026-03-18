@@ -75,10 +75,10 @@ private module Cached {
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
       DataFlowImplCommon::forceCachingInSameStage() and
-      cfn.getAstNode() = dc.getCall()
+      cfn.asExpr() = dc.getCall()
     } or
     TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
-      cfn.getAstNode() = dc
+      cfn.asExpr() = dc
     } or
     TSummaryCall(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)

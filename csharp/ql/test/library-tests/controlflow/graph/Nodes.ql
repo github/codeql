@@ -6,5 +6,5 @@ import semmle.code.csharp.controlflow.internal.Splitting as Splitting
 import Nodes
 
 query predicate entryPoint(Callable c, SourceControlFlowElement cfn) {
-  c.getEntryPoint().getASuccessor().getAstNode() = cfn
+  c.getEntryPoint().getASuccessor() = cfn.getControlFlowNode()
 }

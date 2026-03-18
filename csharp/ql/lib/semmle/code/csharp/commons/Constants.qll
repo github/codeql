@@ -6,8 +6,8 @@ private import semmle.code.csharp.commons.StructuralComparison as StructuralComp
 
 pragma[noinline]
 private predicate isConstantCondition0(ControlFlowNode cfn, boolean b) {
-  exists(cfn.getASuccessorByType(any(ControlFlow::BooleanSuccessor t | t.getValue() = b))) and
-  strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
+  exists(cfn.getASuccessor(any(ControlFlow::BooleanSuccessor t | t.getValue() = b))) and
+  strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessor(t))) = 1
 }
 
 /**

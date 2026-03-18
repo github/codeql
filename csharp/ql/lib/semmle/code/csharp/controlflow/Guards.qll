@@ -1185,10 +1185,7 @@ module Internal {
         nodeIsGuardedBySameSubExprSsaDef(guarded, _, g, subCfn, sub, v, def)
       |
         def =
-          guarded
-              .getAstNode()
-              .(AccessOrCallExpr)
-              .getAnSsaQualifier(guarded.getBasicBlock().getANode())
+          guarded.asExpr().(AccessOrCallExpr).getAnSsaQualifier(guarded.getBasicBlock().getANode())
       )
     }
   }

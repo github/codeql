@@ -30,6 +30,10 @@ module ControlFlow {
     /** Gets the control flow element that this node corresponds to, if any. */
     final ControlFlowElement getAstNode() { result = super.getAstNode() }
 
+    Expr asExpr() { result = this.getAstNode() }
+
+    Stmt asStmt() { result = this.getAstNode() }
+
     /** Gets the basic block that this control flow node belongs to. */
     BasicBlock getBasicBlock() { result.getANode() = this }
 
@@ -175,13 +179,13 @@ module ControlFlow {
     }
 
     /** Gets a successor node of a given type, if any. */
-    Node getASuccessorByType(SuccessorType t) { result = this.getASuccessor(t) }
+    Node getASuccessor(SuccessorType t) { result = super.getASuccessor(t) }
 
     /** Gets an immediate successor, if any. */
-    Node getASuccessor() { result = this.getASuccessorByType(_) }
+    Node getASuccessor() { result = this.getASuccessor(_) }
 
     /** Gets an immediate predecessor node of a given flow type, if any. */
-    Node getAPredecessorByType(SuccessorType t) { result.getASuccessorByType(t) = this }
+    Node getAPredecessorByType(SuccessorType t) { result.getASuccessor(t) = this }
 
     /** Gets an immediate predecessor, if any. */
     Node getAPredecessor() { result = this.getAPredecessorByType(_) }
@@ -203,7 +207,7 @@ module ControlFlow {
      * on line 1.
      */
     Node getATrueSuccessor() {
-      result = this.getASuccessorByType(any(BooleanSuccessor t | t.getValue() = true))
+      result = this.getASuccessor(any(BooleanSuccessor t | t.getValue() = true))
     }
 
     /**
@@ -223,7 +227,7 @@ module ControlFlow {
      * on line 1.
      */
     Node getAFalseSuccessor() {
-      result = this.getASuccessorByType(any(BooleanSuccessor t | t.getValue() = false))
+      result = this.getASuccessor(any(BooleanSuccessor t | t.getValue() = false))
     }
 
     /** Gets the enclosing callable of this control flow node. */
@@ -242,9 +246,6 @@ module ControlFlow {
 
     /** A node for a callable exit point, annotated with the type of exit. */
     class AnnotatedExitNode extends Node instanceof Impl::AnnotatedExitNode {
-      /** Holds if this node represent a normal exit. */
-      final predicate isNormal() { super.isNormal() }
-
       /** Gets the callable that this exit applies to. */
       Callable getCallable() { result = this.getScope() }
 
@@ -283,7 +284,7 @@ module ControlFlow {
     class ExprNode extends ElementNode {
       Expr e;
 
-      ExprNode() { e = unique(Expr e_ | e_ = this.getAstNode() | e_) }
+      ExprNode() { e = unique(Expr e_ | e_ = this.asExpr() | e_) }
 
       /** Gets the expression that this control-flow node belongs to. */
       Expr getExpr() { result = e }
