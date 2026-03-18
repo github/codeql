@@ -7,7 +7,7 @@ query predicate phiReadNode(RefTest::Ref phi, Ssa::SourceVariable v) {
 }
 
 query predicate phiReadNodeFirstRead(RefTest::Ref phi, Ssa::SourceVariable v, ControlFlowNode read) {
-  exists(RefTest::Ref r, ControlFlow::BasicBlock bb, int i |
+  exists(RefTest::Ref r, BasicBlock bb, int i |
     phi.isPhiRead() and
     RefTest::adjacentRefRead(phi, r) and
     r.accessAt(bb, i, v) and

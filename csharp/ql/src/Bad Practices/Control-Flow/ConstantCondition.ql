@@ -20,7 +20,7 @@ import semmle.code.csharp.controlflow.BasicBlocks
 import semmle.code.csharp.controlflow.Guards as Guards
 import codeql.controlflow.queries.ConstantCondition as ConstCond
 
-module ConstCondInput implements ConstCond::InputSig<ControlFlow::BasicBlock> {
+module ConstCondInput implements ConstCond::InputSig<BasicBlock> {
   class SsaDefinition = Ssa::Definition;
 
   class GuardValue = Guards::GuardValue;

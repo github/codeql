@@ -16,7 +16,7 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
 private import codeql.controlflow.Guards as SharedGuards
 
 private module GuardsInput implements
-  SharedGuards::InputSig<Location, ControlFlowNode, ControlFlow::BasicBlock>
+  SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock>
 {
   private import csharp as CS
 

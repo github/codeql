@@ -2,15 +2,15 @@
  * Provides C#-specific definitions for use in the `SsaReadPosition`.
  */
 
-private import csharp
+private import csharp as CS
 private import SsaReadPositionCommon
 private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
-class SsaVariable = Ssa::Definition;
+class SsaVariable = CS::Ssa::Definition;
 
-class SsaPhiNode = Ssa::PhiNode;
+class SsaPhiNode = CS::Ssa::PhiNode;
 
-class BasicBlock = ControlFlow::BasicBlock;
+class BasicBlock = CS::BasicBlock;
 
 /** Gets a basic block in which SSA variable `v` is read. */
 BasicBlock getAReadBasicBlock(SsaVariable v) {
@@ -25,14 +25,14 @@ private int getId(PhiInputEdgeBlock bb) {
   exists(CfgImpl::AstNode n | result = n.getId() |
     n = bb.getFirstNode().getAstNode()
     or
-    n = bb.(ControlFlow::BasicBlocks::EntryBlock).getEnclosingCallable()
+    n = bb.(CS::ControlFlow::BasicBlocks::EntryBlock).getEnclosingCallable()
   )
 }
 
 private string getSplitString(PhiInputEdgeBlock bb) {
-  result = bb.getFirstNode().(ControlFlowNodes::ElementNode).getSplitsString()
+  result = bb.getFirstNode().(CS::ControlFlowNodes::ElementNode).getSplitsString()
   or
-  not exists(bb.getFirstNode().(ControlFlowNodes::ElementNode).getSplitsString()) and
+  not exists(bb.getFirstNode().(CS::ControlFlowNodes::ElementNode).getSplitsString()) and
   result = ""
 }
 

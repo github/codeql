@@ -32,10 +32,7 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
     result = TLocalScopeVariableRead(read.getANextRead())
     or
     not exists(read.getANextRead()) and
-    exists(
-      Ssa::Definition ssaDef, Ssa::PhiNode phi, ControlFlowNode cfn, ControlFlow::BasicBlock bb,
-      int i
-    |
+    exists(Ssa::Definition ssaDef, Ssa::PhiNode phi, ControlFlowNode cfn, BasicBlock bb, int i |
       ssaDef.getARead() = read
     |
       phi.getAnInput() = ssaDef and

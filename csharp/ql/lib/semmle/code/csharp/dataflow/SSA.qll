@@ -165,7 +165,7 @@ module Ssa {
   class Definition extends SsaImpl::Definition {
     /** Gets the control flow node of this SSA definition. */
     final ControlFlowNode getControlFlowNode() {
-      exists(ControlFlow::BasicBlock bb, int i | this.definesAt(_, bb, i) |
+      exists(BasicBlock bb, int i | this.definesAt(_, bb, i) |
         result = bb.getNode(0.maximum(i))
       )
     }
@@ -176,7 +176,7 @@ module Ssa {
      * point it is still live, without crossing another SSA definition of the
      * same source variable.
      */
-    final predicate isLiveAtEndOfBlock(ControlFlow::BasicBlock bb) {
+    final predicate isLiveAtEndOfBlock(BasicBlock bb) {
       SsaImpl::isLiveAtEndOfBlock(this, bb)
     }
 
@@ -538,7 +538,7 @@ module Ssa {
    */
   class ImplicitDefinition extends Definition, SsaImpl::WriteDefinition {
     ImplicitDefinition() {
-      exists(ControlFlow::BasicBlock bb, SourceVariable v, int i | this.definesAt(v, bb, i) |
+      exists(BasicBlock bb, SourceVariable v, int i | this.definesAt(v, bb, i) |
         SsaImpl::implicitEntryDefinition(bb, v) and
         i = -1
         or
@@ -556,7 +556,7 @@ module Ssa {
    */
   class ImplicitEntryDefinition extends ImplicitDefinition {
     ImplicitEntryDefinition() {
-      exists(ControlFlow::BasicBlock bb, SourceVariable v |
+      exists(BasicBlock bb, SourceVariable v |
         this.definesAt(v, bb, -1) and
         SsaImpl::implicitEntryDefinition(bb, v)
       )
@@ -636,7 +636,7 @@ module Ssa {
     private Call c;
 
     ImplicitCallDefinition() {
-      exists(ControlFlow::BasicBlock bb, SourceVariable v, int i |
+      exists(BasicBlock bb, SourceVariable v, int i |
         this.definesAt(v, bb, i) and
         SsaImpl::updatesNamedFieldOrProp(bb, i, c, v, _)
       )
@@ -674,7 +674,7 @@ module Ssa {
 
     ImplicitQualifierDefinition() {
       exists(
-        ControlFlow::BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v
+        BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v
       |
         this.definesAt(v, bb, i)
       |
@@ -725,7 +725,7 @@ module Ssa {
     final Definition getAnInput() { this.hasInputFromBlock(result, _) }
 
     /** Holds if `inp` is an input to this phi node along the edge originating in `bb`. */
-    predicate hasInputFromBlock(Definition inp, ControlFlow::BasicBlock bb) {
+    predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
       inp = SsaImpl::phiHasInputFromBlock(this, bb)
     }
 

@@ -8,9 +8,7 @@ private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.Guards as Guards
 private import semmle.code.csharp.ExprOrStmtParent
 
-private module ControlFlowInput implements
-  InputSig<Location, ControlFlowNode, ControlFlow::BasicBlock>
-{
+private module ControlFlowInput implements InputSig<Location, ControlFlowNode, BasicBlock> {
   private import csharp as CS
 
   AstNode getEnclosingAstNode(ControlFlowNode node) {

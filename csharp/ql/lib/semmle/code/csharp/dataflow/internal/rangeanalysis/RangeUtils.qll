@@ -79,7 +79,7 @@ private module Impl {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
-    predicate controlsBasicBlock(ControlFlow::BasicBlock bb, G::GuardValue v) {
+    predicate controlsBasicBlock(BasicBlock bb, G::GuardValue v) {
       super.controlsBasicBlock(bb, v)
     }
 

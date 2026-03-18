@@ -17,7 +17,7 @@ class SourceControlFlowNode extends ControlFlowNode {
   }
 }
 
-class SourceBasicBlock extends ControlFlow::BasicBlock {
+class SourceBasicBlock extends BasicBlock {
   SourceBasicBlock() {
     not this.getLocation().getFile() instanceof StubFile and
     not this.getLocation().getFile().fromLibrary()

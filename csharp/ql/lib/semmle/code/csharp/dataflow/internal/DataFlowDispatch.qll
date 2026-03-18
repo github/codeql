@@ -210,7 +210,7 @@ class DataFlowCallable extends TDataFlowCallable {
   }
 
   pragma[nomagic]
-  private ControlFlowNodes::ElementNode getAMultiBodyEntryNode(ControlFlow::BasicBlock bb, int i) {
+  private ControlFlowNodes::ElementNode getAMultiBodyEntryNode(BasicBlock bb, int i) {
     this.isMultiBodied() and
     exists(ControlFlowElement body, Location l |
       body = this.asCallable(l).getBody() or
@@ -231,7 +231,7 @@ class DataFlowCallable extends TDataFlowCallable {
 
   pragma[nomagic]
   private ControlFlowNodes::ElementNode getAMultiBodyControlFlowNodeSuccSameBasicBlock() {
-    exists(ControlFlow::BasicBlock bb, int i, int j |
+    exists(BasicBlock bb, int i, int j |
       exists(this.getAMultiBodyEntryNode(bb, i)) and
       result = bb.getNode(j) and
       j > i
@@ -239,7 +239,7 @@ class DataFlowCallable extends TDataFlowCallable {
   }
 
   pragma[nomagic]
-  private ControlFlow::BasicBlock getAMultiBodyBasicBlockSucc() {
+  private BasicBlock getAMultiBodyBasicBlockSucc() {
     result = this.getAMultiBodyEntryNode(_, _).getBasicBlock().getASuccessor()
     or
     result = this.getAMultiBodyBasicBlockSucc().getASuccessor()

@@ -9,7 +9,7 @@ private import semmle.code.csharp.controlflow.BasicBlocks as BasicBlocks
 private import semmle.code.csharp.controlflow.Guards as Guards
 private import semmle.code.csharp.dataflow.internal.BaseSSA
 
-private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow::BasicBlock> {
+private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = Ssa::SourceVariable;
 
   /**
@@ -18,7 +18,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow
    *
    * This includes implicit writes via calls.
    */
-  predicate variableWrite(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableWrite(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableWriteDirect(bb, i, v, certain)
     or
     variableWriteQualifier(bb, i, v, certain)
@@ -32,7 +32,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow
    *
    * This includes implicit reads via calls.
    */
-  predicate variableRead(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
+  predicate variableRead(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     variableReadActual(bb, i, v) and
     certain = true
     or
@@ -56,7 +56,7 @@ module Consistency = Impl::Consistency;
 /**
  * Holds if the `i`th node of basic block `bb` reads source variable `v`.
  */
-private predicate variableReadActual(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
+private predicate variableReadActual(BasicBlock bb, int i, Ssa::SourceVariable v) {
   v.getAnAccess().(AssignableRead) = bb.getNode(i).asExpr()
 }
 
@@ -125,9 +125,7 @@ private module SourceVariableImpl {
    * Holds if the `i`th node of basic block `bb` is assignable definition `ad`
    * targeting source variable `v`.
    */
-  predicate variableDefinition(
-    ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, AssignableDefinition ad
-  ) {
+  predicate variableDefinition(BasicBlock bb, int i, Ssa::SourceVariable v, AssignableDefinition ad) {
     ad = v.getADefinition() and
     ad.getExpr().getAControlFlowNode() = bb.getNode(i) and
     // In cases like `(x, x) = (0, 1)`, we discard the first (dead) definition of `x`
@@ -159,9 +157,7 @@ private module SourceVariableImpl {
    *
    * This excludes implicit writes via calls.
    */
-  predicate variableWriteDirect(
-    ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain
-  ) {
+  predicate variableWriteDirect(BasicBlock bb, int i, Ssa::SourceVariable v, boolean certain) {
     exists(AssignableDefinition ad | variableDefinition(bb, i, v, ad) |
       if any(AssignableDefinition ad0 | ad0 = ad or ad0 = getASameOutRefDefAfter(v, ad)).isCertain()
       then certain = true
@@ -186,7 +182,7 @@ private module SourceVariableImpl {
    * }
    * ```
    */
-  predicate outRefExitRead(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
+  predicate outRefExitRead(BasicBlock bb, int i, LocalScopeSourceVariable v) {
     exists(ControlFlow::NormalExitNode exit |
       exists(LocalScopeVariable lsv |
         lsv = v.getAssignable() and
@@ -217,7 +213,7 @@ private module SourceVariableImpl {
    * The pseudo read is inserted at the CFG node `i` on the left-hand side of the
    * assignment on line 3.
    */
-  predicate refReadBeforeWrite(ControlFlow::BasicBlock bb, int i, LocalScopeSourceVariable v) {
+  predicate refReadBeforeWrite(BasicBlock bb, int i, LocalScopeSourceVariable v) {
     exists(AssignableDefinitions::AssignmentDefinition def, LocalVariable lv |
       def.getTarget() = lv and
       lv.isRef() and
@@ -619,7 +615,7 @@ private module FieldOrPropsImpl {
   }
 
   pragma[noinline]
-  predicate callAt(ControlFlow::BasicBlock bb, int i, Call call) {
+  predicate callAt(BasicBlock bb, int i, Call call) {
     bb.getNode(i) = call.getAControlFlowNode() and
     getARuntimeTarget(call, _).hasBody()
   }
@@ -629,9 +625,7 @@ private module FieldOrPropsImpl {
    * an update somewhere, and `fp` is likely to be live in `bb` at index
    * `i`.
    */
-  predicate updateCandidate(
-    ControlFlow::BasicBlock bb, int i, FieldOrPropSourceVariable fp, Call call
-  ) {
+  predicate updateCandidate(BasicBlock bb, int i, FieldOrPropSourceVariable fp, Call call) {
     callAt(bb, i, call) and
     call.getEnclosingCallable() = fp.getEnclosingCallable() and
     relevantDefinition(_, fp.getAssignable(), _) and
@@ -713,7 +707,7 @@ private module FieldOrPropsImpl {
   }
 }
 
-private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::SourceVariable v) {
+private predicate variableReadPseudo(BasicBlock bb, int i, Ssa::SourceVariable v) {
   outRefExitRead(bb, i, v)
   or
   refReadBeforeWrite(bb, i, v)
@@ -721,16 +715,14 @@ private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::Sou
 
 pragma[noinline]
 deprecated private predicate adjacentDefRead(
-  Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2,
-  SsaInput::SourceVariable v
+  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SsaInput::SourceVariable v
 ) {
   Impl::adjacentDefRead(def, bb1, i1, bb2, i2) and
   v = def.getSourceVariable()
 }
 
 deprecated private predicate adjacentDefReachesRead(
-  Definition def, SsaInput::SourceVariable v, ControlFlow::BasicBlock bb1, int i1,
-  ControlFlow::BasicBlock bb2, int i2
+  Definition def, SsaInput::SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2
 ) {
   adjacentDefRead(def, bb1, i1, bb2, i2, v) and
   (
@@ -739,7 +731,7 @@ deprecated private predicate adjacentDefReachesRead(
     SsaInput::variableRead(bb1, i1, v, true)
   )
   or
-  exists(ControlFlow::BasicBlock bb3, int i3 |
+  exists(BasicBlock bb3, int i3 |
     adjacentDefReachesRead(def, v, bb1, i1, bb3, i3) and
     SsaInput::variableRead(bb3, i3, _, false) and
     Impl::adjacentDefRead(def, bb3, i3, bb2, i2)
@@ -747,7 +739,7 @@ deprecated private predicate adjacentDefReachesRead(
 }
 
 deprecated private predicate adjacentDefReachesUncertainRead(
-  Definition def, ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2
+  Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
 ) {
   exists(SsaInput::SourceVariable v |
     adjacentDefReachesRead(def, v, bb1, i1, bb2, i2) and
@@ -757,13 +749,11 @@ deprecated private predicate adjacentDefReachesUncertainRead(
 
 /** Same as `lastRefRedef`, but skips uncertain reads. */
 pragma[nomagic]
-deprecated private predicate lastRefSkipUncertainReads(
-  Definition def, ControlFlow::BasicBlock bb, int i
-) {
+deprecated private predicate lastRefSkipUncertainReads(Definition def, BasicBlock bb, int i) {
   Impl::lastRef(def, bb, i) and
   not SsaInput::variableRead(bb, i, def.getSourceVariable(), false)
   or
-  exists(ControlFlow::BasicBlock bb0, int i0 |
+  exists(BasicBlock bb0, int i0 |
     Impl::lastRef(def, bb0, i0) and
     adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
   )
@@ -771,7 +761,7 @@ deprecated private predicate lastRefSkipUncertainReads(
 
 pragma[nomagic]
 deprecated predicate lastReadSameVar(Definition def, ControlFlowNode cfn) {
-  exists(ControlFlow::BasicBlock bb, int i |
+  exists(BasicBlock bb, int i |
     lastRefSkipUncertainReads(def, bb, i) and
     variableReadActual(bb, i, _) and
     cfn = bb.getNode(i)
@@ -817,7 +807,7 @@ private module Cached {
   }
 
   cached
-  predicate implicitEntryDefinition(ControlFlow::BasicBlock bb, Ssa::SourceVariable v) {
+  predicate implicitEntryDefinition(BasicBlock bb, Ssa::SourceVariable v) {
     exists(ControlFlow::BasicBlocks::EntryBlock entry, Callable c |
       c = entry.getEnclosingCallable() and
       // In case `c` has multiple bodies, we want each body to get its own implicit
@@ -855,7 +845,7 @@ private module Cached {
    */
   cached
   predicate updatesNamedFieldOrProp(
-    ControlFlow::BasicBlock bb, int i, Call c, FieldOrPropSourceVariable fp, Callable setter
+    BasicBlock bb, int i, Call c, FieldOrPropSourceVariable fp, Callable setter
   ) {
     FieldOrPropsImpl::updateCandidate(bb, i, fp, c) and
     FieldOrPropsImpl::updatesNamedFieldOrProp(fp, c, setter)
@@ -863,7 +853,7 @@ private module Cached {
 
   cached
   predicate variableWriteQualifier(
-    ControlFlow::BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable v, boolean certain
+    BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable v, boolean certain
   ) {
     SsaInput::variableWrite(bb, i, v.getQualifier(), certain) and
     // Eliminate corner case where a call definition can overlap with a
@@ -876,25 +866,25 @@ private module Cached {
 
   cached
   predicate explicitDefinition(WriteDefinition def, Ssa::SourceVariable v, AssignableDefinition ad) {
-    exists(ControlFlow::BasicBlock bb, int i |
+    exists(BasicBlock bb, int i |
       def.definesAt(v, bb, i) and
       variableDefinition(bb, i, v, ad)
     )
   }
 
   cached
-  predicate isLiveAtEndOfBlock(Definition def, ControlFlow::BasicBlock bb) {
+  predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
     Impl::ssaDefReachesEndOfBlock(bb, def, _)
   }
 
   cached
-  Definition phiHasInputFromBlock(Ssa::PhiNode phi, ControlFlow::BasicBlock bb) {
+  Definition phiHasInputFromBlock(Ssa::PhiNode phi, BasicBlock bb) {
     Impl::phiHasInputFromBlock(phi, result, bb)
   }
 
   cached
   AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
-    exists(Ssa::SourceVariable v, ControlFlow::BasicBlock bb, int i |
+    exists(Ssa::SourceVariable v, BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
       variableReadActual(bb, i, v) and
       cfn = bb.getNode(i) and
@@ -908,9 +898,7 @@ private module Cached {
    */
   cached
   predicate firstReadSameVar(Definition def, ControlFlowNode cfn) {
-    exists(ControlFlow::BasicBlock bb, int i |
-      Impl::firstUse(def, bb, i, true) and cfn = bb.getNode(i)
-    )
+    exists(BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and cfn = bb.getNode(i))
   }
 
   /**
@@ -920,10 +908,7 @@ private module Cached {
    */
   cached
   predicate adjacentReadPairSameVar(Definition def, ControlFlowNode cfn1, ControlFlowNode cfn2) {
-    exists(
-      ControlFlow::BasicBlock bb1, int i1, ControlFlow::BasicBlock bb2, int i2,
-      Ssa::SourceVariable v
-    |
+    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2, Ssa::SourceVariable v |
       Impl::ssaDefReachesRead(v, def, bb1, i1) and
       Impl::adjacentUseUse(bb1, i1, bb2, i2, v, true) and
       cfn1 = bb1.getNode(i1) and
@@ -939,7 +924,7 @@ private module Cached {
   cached
   predicate isLiveOutRefParameterDefinition(Ssa::Definition def, Parameter p) {
     p.isOutOrRef() and
-    exists(Ssa::SourceVariable v, Ssa::Definition def0, ControlFlow::BasicBlock bb, int i |
+    exists(Ssa::SourceVariable v, Ssa::Definition def0, BasicBlock bb, int i |
       v = def.getSourceVariable() and
       p = v.getAssignable() and
       def = def0.getAnUltimateDefinition() and
@@ -1022,7 +1007,7 @@ private module Cached {
 import Cached
 
 private string getSplitString(Definition def) {
-  exists(ControlFlow::BasicBlock bb, int i, ControlFlowNode cfn |
+  exists(BasicBlock bb, int i, ControlFlowNode cfn |
     def.definesAt(_, bb, i) and
     result = cfn.(ControlFlowNodes::ElementNode).getSplitsString()
   |
@@ -1046,7 +1031,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   private import codeql.util.Boolean
 
   class Expr extends ControlFlowNode {
-    predicate hasCfgNode(ControlFlow::BasicBlock bb, int i) { this = bb.getNode(i) }
+    predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   Expr getARead(Definition def) { exists(getAReadAtNode(def, result)) }

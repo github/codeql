@@ -2,6 +2,8 @@ import csharp
 
 class ControlFlowNode = ControlFlow::Node;
 
+class BasicBlock = ControlFlow::BasicBlock;
+
 /**
  * Provides classes representing the control flow graph within callables.
  */

@@ -166,8 +166,6 @@ private class LocalFunctionCreationPreNode extends LocalFunctionCreationNode {
 
 /** Calculation of the relative order in which `this` references are read. */
 private module ThisFlow {
-  private class BasicBlock = ControlFlow::BasicBlock;
-
   /** Holds if `e` is a `this` access. */
   predicate thisAccessExpr(Expr e) { e instanceof ThisAccess or e instanceof BaseAccess }
 
@@ -2362,7 +2360,7 @@ predicate expectsContent(Node n, ContentSet c) {
   n.asExpr() instanceof SpreadElementExpr and c.isElement()
 }
 
-class NodeRegion instanceof ControlFlow::BasicBlock {
+class NodeRegion instanceof BasicBlock {
   string toString() { result = "NodeRegion" }
 
   predicate contains(Node n) { this = n.getControlFlowNode().getBasicBlock() }
