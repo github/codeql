@@ -33,7 +33,7 @@ bazel_dep(name = "googletest", version = "1.17.0.bcr.2")
 bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "zstd", version = "1.5.7.bcr.1")
 
-bazel_dep(name = "buildifier_prebuilt", version = "6.4.0", dev_dependency = True)
+bazel_dep(name = "buildifier_prebuilt", version = "8.5.1", dev_dependency = True)
 
 # Keep edition and version approximately in sync with internal repo.
 # the versions there are canonical, the versions here are used for CI in github/codeql, as well as for the vendoring of dependencies.
