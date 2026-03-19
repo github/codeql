@@ -61,7 +61,7 @@ jobs:
       - uses: ./.github/actions/os-version
         id: os_version
       - name: Cache entire extractor
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: cache-extractor
         with:
           path: |
@@ -69,7 +69,7 @@ jobs:
             target/release/codeql-extractor-ruby.exe
             ruby/extractor/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}-${{ hashFiles('shared/tree-sitter-extractor') }}-${{ hashFiles('ruby/extractor/**/*.rs') }}
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         with:
           path: |
