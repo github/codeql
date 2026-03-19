@@ -1,6 +1,6 @@
 {
-    "integrity": "sha256-yP2isVGAGPJtfKkUzZrbDp8XmdDbfEtRDeZ+1QAGDa4=",
-    "url": "https://github.com/bazelbuild/rules_kotlin/releases/download/v2.3.10/rules_kotlin-v2.3.10.tar.gz",
+    "integrity": "sha256-E9W3Z9aXRzztm1VUehimq2WrP65UQFVd7uikTIhrUKo=",
+    "url": "https://github.com/bazelbuild/rules_kotlin/releases/download/v2.3.20/rules_kotlin-v2.3.20.tar.gz",
     "patches": {
         "codeql_add_language_version_option.patch": "sha256-YXp0SObW7zNjXmd5ONJTCXJeOvgkMGPxmGo9aRS7VZ0=",
         "codeql_do_not_emit_jdeps.patch": "sha256-yoBFnSWJyeF+gyhX+03TMTnRxUQJjup/f/KORdxVsAE="
