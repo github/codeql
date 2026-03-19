@@ -124,7 +124,8 @@ private predicate functionResolutionDependsOnArgumentCand(
     implHasSibling(impl, trait) and
     traitTypeParameterOccurrence(trait, _, functionName, pos, path, traitTp) and
     f = impl.getASuccessor(functionName) and
-    not pos.isSelfOrTypeQualifier()
+    not pos.isTypeQualifier() and
+    not (f instanceof Method and pos.asPosition() = 0)
   )
 }
 

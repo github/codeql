@@ -1,6 +1,8 @@
 /**
  * This module provides extensible predicates for defining MaD models.
  */
+overlay[local?]
+module;
 
 private import codeql.mad.static.ModelsAsData as SharedMaD
 

@@ -1,6 +1,8 @@
 /**
  * Provides Go-specific definitions for use in the data flow library.
  */
+overlay[local?]
+module;
 
 private import go
 private import semmle.go.dataflow.FunctionInputsAndOutputs
@@ -147,6 +149,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
  * Holds if data flows from `source` to `sink` in zero or more local
  * (intra-procedural) steps.
  */
+overlay[caller?]
 pragma[inline]
 predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
 
@@ -560,7 +563,7 @@ private predicate onlyPossibleReturnOfBool(FuncDecl fd, FunctionOutput res, Node
  */
 predicate possiblyReturnsNonNil(FuncDecl fd, FunctionOutput res, Node ret) {
   ret = res.getEntryNode(fd) and
-  not ret.asExpr() = Builtin::nil().getAReference()
+  not exprRefersToNil(ret.asExpr())
 }
 
 /**
@@ -570,7 +573,7 @@ predicate possiblyReturnsNonNil(FuncDecl fd, FunctionOutput res, Node ret) {
 private predicate onlyPossibleReturnOfNonNil(FuncDecl fd, FunctionOutput res, Node ret) {
   possiblyReturnsNonNil(fd, res, ret) and
   forall(Node otherRet | otherRet = res.getEntryNode(fd) and otherRet != ret |
-    otherRet.asExpr() = Builtin::nil().getAReference()
+    exprRefersToNil(otherRet.asExpr())
   )
 }
 
@@ -609,7 +612,7 @@ private predicate isCertainlyNotNil(DataFlow::Node node) {
  */
 private predicate onlyPossibleReturnOfNil(FuncDecl fd, FunctionOutput res, DataFlow::Node ret) {
   ret = res.getEntryNode(fd) and
-  ret.asExpr() = Builtin::nil().getAReference() and
+  exprRefersToNil(ret.asExpr()) and
   forall(DataFlow::Node otherRet | otherRet = res.getEntryNode(fd) and otherRet != ret |
     isCertainlyNotNil(otherRet)
   )

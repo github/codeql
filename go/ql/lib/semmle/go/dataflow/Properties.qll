@@ -1,6 +1,8 @@
 /**
  * Provides a class for representing and reasoning about properties of data-flow nodes.
  */
+overlay[local]
+module;
 
 import go
 
@@ -22,7 +24,7 @@ class Property extends TProperty {
       isTrue = eq.getPolarity().booleanXor(e.getBoolValue().booleanXor(outcome))
       or
       this = IsNil(isTrue) and
-      e = Builtin::nil().getAReference() and
+      exprRefersToNil(e) and
       isTrue = eq.getPolarity().booleanXor(outcome).booleanNot()
     )
     or

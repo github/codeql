@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import go
 private import DataFlowUtil
 private import DataFlowImplCommon
@@ -478,5 +481,6 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
 class ContentApprox = Unit;
 
 /** Gets an approximated value for content `c`. */
+overlay[caller?]
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }

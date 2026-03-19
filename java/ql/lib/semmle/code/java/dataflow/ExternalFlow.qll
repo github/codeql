@@ -367,7 +367,7 @@ module ModelValidation {
     )
   }
 
-  string getIncorrectConstructorSummaryOutput() {
+  private string getIncorrectConstructorSummaryOutput() {
     exists(string namespace, string type, string name, string output |
       summaryModel(namespace, type, _, name, _, _, _, output, _, _, _)
     |

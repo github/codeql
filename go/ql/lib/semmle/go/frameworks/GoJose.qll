@@ -2,6 +2,8 @@
  * Provides classes for working with the `gopkg.in/square/go-jose` and `github.com/go-jose/go-jose`
  * packages.
  */
+overlay[local?]
+module;
 
 import go
 

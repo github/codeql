@@ -132,27 +132,11 @@ private module Ast implements AstSig<Location> {
       result = this.(SwitchStmt).getCase(index) or
       result = this.(SwitchExpr).getCase(index)
     }
-  }
 
-  int getCaseControlFlowOrder(Switch s, Case c) {
-    exists(int pos | s.getCase(pos) = c |
-      // if a default case is not last in the AST, move it last in the CFG order
-      if c instanceof DefaultCase and exists(s.getCase(pos + 1))
-      then result = strictcount(s.getCase(_))
-      else result = pos
-    )
-  }
-
-  private Stmt getSwitchStmt(Switch s, int i) {
-    result = s.(SwitchStmt).getStmt(i) or
-    result = s.(SwitchExpr).getStmt(i)
-  }
-
-  private int numberOfStmts(Switch s) { result = strictcount(getSwitchStmt(s, _)) }
-
-  private predicate caseIndex(Switch s, Case c, int caseIdx, int caseStmtPos) {
-    c = s.getCase(caseIdx) and
-    c = getSwitchStmt(s, caseStmtPos)
+    Stmt getStmt(int index) {
+      result = this.(SwitchStmt).getStmt(index) or
+      result = this.(SwitchExpr).getStmt(index)
+    }
   }
 
   class Case extends AstNode instanceof J::SwitchCase {
@@ -166,32 +150,20 @@ private module Ast implements AstSig<Location> {
     Expr getGuard() { result = this.(PatternCase).getGuard() }
 
     /**
-     * Gets the body element of this case at the specified (zero-based) `index`.
+     * Gets the body of this case, if any.
      *
-     * This is either unique when the case has a single right-hand side, or it
-     * is the sequence of statements between this case and the next case.
+     * A case can either have a body as a single child AST node given by this
+     * predicate, or it can have an implicit body given by the sequence of
+     * statements between this case and the next case.
      */
-    AstNode getBodyElement(int index) {
-      result = this.(J::SwitchCase).getRuleExpression() and index = 0
+    AstNode getBody() {
+      result = this.(J::SwitchCase).getRuleExpression()
       or
-      result = this.(J::SwitchCase).getRuleStatement() and index = 0
-      or
-      not this.(J::SwitchCase).isRule() and
-      exists(Switch s, int caseIdx, int caseStmtPos, int nextCaseStmtPos |
-        caseIndex(pragma[only_bind_into](s), this, caseIdx, caseStmtPos) and
-        (
-          caseIndex(pragma[only_bind_into](s), _, caseIdx + 1, nextCaseStmtPos)
-          or
-          not exists(s.getCase(caseIdx + 1)) and
-          nextCaseStmtPos = numberOfStmts(s)
-        ) and
-        index = [0 .. nextCaseStmtPos - caseStmtPos - 2] and
-        result = getSwitchStmt(pragma[only_bind_into](s), caseStmtPos + 1 + index)
-      )
+      result = this.(J::SwitchCase).getRuleStatement()
     }
   }
 
-  predicate fallsThrough(Case c) { not c.(J::SwitchCase).isRule() }
+  class DefaultCase extends Case instanceof J::DefaultCase { }
 
   class ConditionalExpr = J::ConditionalExpr;
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with Go programs.
  */
+overlay[local?]
+module;
 
 import Customizations
 import semmle.go.Architectures

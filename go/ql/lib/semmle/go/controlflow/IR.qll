@@ -9,6 +9,8 @@
  * Each instruction is also a control-flow node, but there are control-flow nodes that are not
  * instructions (synthetic entry and exit nodes, as well as no-op skip nodes).
  */
+overlay[local]
+module;
 
 import go
 private import semmle.go.controlflow.ControlFlowGraphImpl
@@ -294,7 +296,7 @@ module IR {
   /**
    * An IR instruction that reads the value of a field.
    *
-   * On snapshots with incomplete type information, method expressions may sometimes be
+   * On databases with incomplete type information, method expressions may sometimes be
    * misclassified as field reads.
    */
   class FieldReadInstruction extends ComponentReadInstruction {

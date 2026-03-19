@@ -1,4 +1,6 @@
 /** Provides classes for working with tests. */
+overlay[local?]
+module;
 
 import go
 

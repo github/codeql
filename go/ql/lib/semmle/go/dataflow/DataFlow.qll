@@ -14,6 +14,8 @@
  * (intraprocedural) data flow, invoke `DataFlow::localFlow` or
  * `DataFlow::LocalFlowStep` with arguments of type `DataFlow::Node`.
  */
+overlay[local?]
+module;
 
 import go
 

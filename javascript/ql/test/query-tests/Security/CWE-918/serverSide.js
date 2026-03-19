@@ -146,3 +146,6 @@ var server2 = http.createServer(function (req, res) {
     const escapedUrl = escape(input);
     axios.get(escapedUrl); // $ Alert[js/request-forgery]
 });
+
+const custom = require('testlib').getServerSource(); // $ Source[js/request-forgery]
+request(custom); // $ Alert[js/request-forgery]

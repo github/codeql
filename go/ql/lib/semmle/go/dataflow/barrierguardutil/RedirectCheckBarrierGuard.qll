@@ -1,6 +1,8 @@
 /**
  * Provides an implementation of a commonly used barrier guard for sanitizing untrusted URLs.
  */
+overlay[local?]
+module;
 
 import go
 

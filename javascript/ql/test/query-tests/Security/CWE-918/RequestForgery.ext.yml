@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sourceModel
+    data:
+      - ['testlib', 'Member[getBrowserSource].ReturnValue', 'browser-url-query']
+      - ['testlib', 'Member[getServerSource].ReturnValue', 'remote']

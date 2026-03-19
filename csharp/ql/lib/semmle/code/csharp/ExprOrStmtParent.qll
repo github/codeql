@@ -214,6 +214,8 @@ private module Cached {
     parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
     or
     parent*(cfe, c.(Constructor).getObjectInitializerCall())
+    or
+    parent*(cfe, any(AssignExpr init | c.(ObjectInitMethod).initializes(init)))
   }
 
   /** Holds if the enclosing statement of expression `e` is `s`. */

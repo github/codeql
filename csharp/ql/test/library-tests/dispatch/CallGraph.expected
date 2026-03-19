@@ -24,6 +24,7 @@
 | ExactCallable.cs:15:25:15:35 | Run`2 | ExactCallable.cs:172:21:172:33 | MethodWithOut |
 | ExactCallable.cs:15:25:15:35 | Run`2 | ExactCallable.cs:177:21:177:34 | MethodWithOut2 |
 | ExactCallable.cs:182:21:182:22 | M1 | ExactCallable.cs:187:21:187:22 | M2 |
+| TypeFlow.cs:3:7:3:14 | <object initializer> | TypeFlow.cs:22:20:22:22 | set_Prop |
 | TypeFlow.cs:5:5:5:12 | TypeFlow | TypeFlow.cs:24:10:24:12 | Run |
 | TypeFlow.cs:24:10:24:12 | Run | TypeFlow.cs:12:29:12:34 | Method |
 | TypeFlow.cs:24:10:24:12 | Run | TypeFlow.cs:17:30:17:35 | Method |

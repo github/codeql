@@ -400,3 +400,52 @@ mod from_default {
         x
     }
 }
+
+mod inherent_before_trait {
+    struct S<T>(T);
+
+    trait Trait {
+        fn foo(&self);
+        fn bar(&self);
+    }
+
+    impl S<i32> {
+        // S<i32>::foo
+        fn foo(x: &Self) {}
+
+        // S<i32>::bar
+        fn bar(&self) {}
+    }
+
+    impl Trait for S<i32> {
+        // <S<i32>_as_Trait>::foo
+        fn foo(&self) {
+            S::foo(self); // $ MISSING: target=S<i32>::foo
+            S::<i32>::foo(self); // $ target=S<i32>::foo
+            self.foo() // $ target=<S<i32>_as_Trait>::foo
+        }
+
+        // <S<i32>_as_Trait>::bar
+        fn bar(&self) {
+            S::bar(self); // $ target=S<i32>::bar
+            S::<i32>::bar(self); // $ target=S<i32>::bar
+            self.bar() // $ target=S<i32>::bar
+        }
+    }
+
+    impl Trait for S<i64> {
+        // <S<i64>_as_Trait>::foo
+        fn foo(&self) {
+            // `S::foo(self);` is not valid
+            S::<i64>::foo(self); // $ target=<S<i64>_as_Trait>::foo
+            self.foo() // $ target=<S<i64>_as_Trait>::foo
+        }
+
+        // <S<i64>_as_Trait>::bar
+        fn bar(&self) {
+            // `S::bar(self);` is not valid
+            S::<i64>::bar(self); // $ target=<S<i64>_as_Trait>::bar
+            self.bar() // $ target=<S<i64>_as_Trait>::bar
+        }
+    }
+}
