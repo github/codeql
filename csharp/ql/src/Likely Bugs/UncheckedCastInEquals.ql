@@ -13,18 +13,12 @@
 import csharp
 import semmle.code.csharp.frameworks.System
 
-private predicate equalsMethodChild(EqualsMethod equals, Element child) {
-  child = equals
-  or
-  equalsMethodChild(equals, child.getParent())
-}
-
 predicate nodeBeforeParameterAccess(ControlFlowNode node) {
   exists(EqualsMethod equals | equals.getBody().getControlFlowNode() = node)
   or
   exists(EqualsMethod equals, Parameter param, ControlFlowNode mid |
     equals.getParameter(0) = param and
-    equalsMethodChild(equals, any(ControlFlowElement e | e.getControlFlowNode() = mid)) and
+    equals = mid.getEnclosingCallable() and
     nodeBeforeParameterAccess(mid) and
     not param.getAnAccess().getControlFlowNode() = mid and
     mid.getASuccessor() = node
