@@ -1,3 +1,7 @@
+## 0.1.29
+
+No user-facing changes.
+
 ## 0.1.28
 
 ### Minor Analysis Improvements

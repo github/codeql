@@ -1,3 +1,10 @@
+## 7.0.1
+
+### Minor Analysis Improvements
+
+- The call graph resolution no longer considers methods marked using [`@typing.overload`](https://typing.python.org/en/latest/spec/overload.html#overloads) as valid targets. This ensures that only the method that contains the actual implementation gets resolved as a target.
+* Inline expectations test comments, which are of the form `# $ tag` or `# $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
 ## 7.0.0
 
 ### Breaking Changes
