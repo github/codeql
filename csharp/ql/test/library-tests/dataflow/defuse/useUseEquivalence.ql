@@ -32,17 +32,11 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
     result = TLocalScopeVariableRead(read.getANextRead())
     or
     not exists(read.getANextRead()) and
-    exists(Ssa::Definition ssaDef, Ssa::PhiNode phi, ControlFlowNode cfn, BasicBlock bb, int i |
-      ssaDef.getARead() = read
-    |
+    exists(Ssa::Definition ssaDef, Ssa::PhiNode phi, BasicBlock bb |
+      ssaDef.getARead() = read and
       phi.getAnInput() = ssaDef and
-      phi.definesAt(_, bb, i) and
-      cfn = read.getAReachableElement().getAControlFlowNode() and
-      (
-        cfn = bb.getNode(i)
-        or
-        cfn = bb.getFirstNode() and i < 0
-      ) and
+      phi.definesAt(_, bb, _) and
+      read.getBasicBlock().getASuccessor+() = bb and
       result = TSsaDefinition(phi)
     )
   )
