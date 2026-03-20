@@ -494,6 +494,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         tgts = strictcount(Callable tgt | relevantCallEdgeIn(call, tgt)) and
         ctxtgts < tgts
       )
+      or
+      // If only a single lambda can reach `call`, we still want to check for the call
+      // context, since lambdas outside the codebase may reach as well
+      exists(viableCallableLambda(call, TCallSome(ctx)))
     }
 
     /**
@@ -619,7 +623,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       TSpecificCall(CallSet calls, DispatchSet tgts, UnreachableSetOption unreachable) {
         hasCtx(_, calls, tgts, unreachable)
       } or
-      TSomeCall() or
+      TSomeCall(Boolean isSource) or
       TReturn(Callable c, Call call) { reducedViableImplInReturn(c, call) }
 
     /**
@@ -632,9 +636,10 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
      *    dispatch targets for all of `calls` to the set of dispatch targets in
      *    `tgts`, and/or the specific call prunes unreachable nodes in the
      *    current callable as given by `unreachable`.
-     * - `TSomeCall()` : Flow entered through a parameter. The
+     * - `TSomeCall(boolean isSource)` : Flow entered through a parameter. The
      *    originating call does not improve the set of dispatch targets for any
-     *    method call in the current callable and was therefore not recorded.
+     *    method call in the current callable and was therefore not recorded. `isSource`
+     *    indicates whether the call context is for a flow source when using `FlowFeature`s.
      * - `TReturn(Callable c, Call call)` : Flow reached `call` from `c` and
      *    this dispatch target of `call` implies a reduced set of dispatch origins
      *    to which data may flow if it should reach a `return` statement.
@@ -656,7 +661,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
     }
 
     private class CallContextSomeCall extends CallContextCall, TSomeCall {
-      override string toString() { result = "CcSomeCall" }
+      private boolean isSource;
+
+      CallContextSomeCall() { this = TSomeCall(isSource) }
+
+      override string toString() {
+        if isSource = true then result = "CcSomeCallSource" else result = "CcSomeCall"
+      }
     }
 
     private class CallContextReturn extends CallContextNoCall, TReturn {
@@ -707,7 +718,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       pragma[inline]
       predicate matchesCall(CcCall cc, Call call) {
         cc = Input2::getSpecificCallContextCall(call, _) or
-        cc = ccSomeCall()
+        cc = ccSomeCall(false)
       }
 
       class CcNoCall = CallContextNoCall;
@@ -716,7 +727,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
 
       Cc ccNone() { result instanceof CallContextAny }
 
-      CcCall ccSomeCall() { result instanceof CallContextSomeCall }
+      CcCall ccSomeCall(boolean isSource) { result = TSomeCall(isSource) }
 
       predicate instanceofCc(Cc cc) { any() }
 
@@ -739,7 +750,13 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
       /** Holds if `call` does not have a reduced set of dispatch targets in call context `ctx`. */
       bindingset[call, ctx]
       predicate viableImplNotCallContextReduced(Call call, CallContext ctx) {
-        not Input2::callContextAffectsDispatch(call, ctx)
+        not Input2::callContextAffectsDispatch(call, ctx) and
+        // When sources have call contexts (using `FlowFeature`s), we check that `call` can
+        // dispatch in all possible call contexts
+        not (
+          ctx = TSomeCall(true) and
+          Input2::callContextAffectsDispatch(call, _)
+        )
       }
 
       /**
@@ -822,7 +839,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         CallContextCall getCallContextCall(Call call, Callable c) {
           if recordCallSiteDispatch(call, c)
           then result = Input2::getSpecificCallContextCall(call, c)
-          else result = TSomeCall()
+          else result = TSomeCall(false)
         }
       }
 
@@ -850,7 +867,7 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
         CallContextCall getCallContextCall(Call call, Callable c) {
           if recordCallSite(call, c)
           then result = Input2::getSpecificCallContextCall(call, c)
-          else result = TSomeCall()
+          else result = TSomeCall(false)
         }
       }
     }

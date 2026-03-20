@@ -413,7 +413,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         Cc ccNone();
 
-        CcCall ccSomeCall();
+        CcCall ccSomeCall(boolean isSource);
 
         /*
          * The following `instanceof` predicates are necessary for proper
@@ -566,7 +566,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           Nd node, Cc cc, SummaryCtx summaryCtx, Typ t, Ap ap, ApApprox apa, TypOption stored
         ) {
           sourceNode(node) and
-          (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
+          (if hasSourceCallCtx() then cc = ccSomeCall(true) else cc = ccNone()) and
           summaryCtx.isSourceCtx() and
           t = getNodeTyp(node) and
           ap instanceof ApNil and
@@ -2080,7 +2080,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
             override predicate isSource() {
               sourceNode(node) and
-              (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
+              (if hasSourceCallCtx() then cc = ccSomeCall(true) else cc = ccNone()) and
               summaryCtx.isSourceCtx() and
               t = getNodeTyp(node) and
               ap instanceof ApNil
@@ -2716,7 +2716,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
       Cc ccNone() { result = false }
 
-      CcCall ccSomeCall() { result = true }
+      CcCall ccSomeCall(boolean isSource) { result = true and isSource = [false, true] }
 
       predicate instanceofCc(Cc cc) { any() }
 
