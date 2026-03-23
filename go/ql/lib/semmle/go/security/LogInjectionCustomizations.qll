@@ -84,4 +84,33 @@ module LogInjection {
       )
     }
   }
+
+  /**
+   * Returns true if `t` is a zap encoder type that is considered safe.
+   *
+   * We intentionally whitelist *only* JSONEncoder.
+   * Other encoders may not escape newline characters and therefore
+   * must NOT be treated as sanitizers.
+   */
+  private predicate isSafeZapEncoder(Type t) {
+    exists(Type zapEncoder |
+      // Matches go.uber.org/zap/zapcore.JSONEncoder
+      zapEncoder.hasQualifiedName("go.uber.org/zap/zapcore", "JSONEncoder") and
+      t = zapEncoder
+    )
+  }
+
+  /**
+   * Zap encoder sanitizer class.
+   *
+   * This extends the Sanitizer class used by the go/log-injection query.
+   */
+  class ZapEncoderSanitizer extends Sanitizer {
+    ZapEncoderSanitizer() {
+      exists(Type t |
+        this.getType() = t and
+        isSafeZapEncoder(t)
+      )
+    }
+  }
 }
