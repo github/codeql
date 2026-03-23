@@ -22,6 +22,8 @@ def version_less(lhs, rhs):
 
 def get_language_version(version):
     major, minor, _ = _version_to_tuple(version)
+    if major == 1 and minor < 9:
+        return "1.9"
     return "%s.%s" % (major, minor)
 
 def _basename(path):
