@@ -48,6 +48,17 @@ class BasicBlock = BbImpl::BasicBlock;
 
 class EntryBasicBlock = BbImpl::EntryBasicBlock;
 
+/** Provides a `CfgSig` view of Go's control-flow graph for use with the shared SSA library. */
+module Cfg implements BB::CfgSig<Location> {
+  class ControlFlowNode = BbImpl::ControlFlowNode;
+
+  class BasicBlock = BbImpl::BasicBlock;
+
+  class EntryBasicBlock = BbImpl::EntryBasicBlock;
+
+  predicate dominatingEdge = BbImpl::dominatingEdge/2;
+}
+
 cached
 private predicate reachableBB(BasicBlock bb) {
   bb instanceof EntryBasicBlock
