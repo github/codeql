@@ -97,20 +97,30 @@ private module Internal {
     /**
      * Holds if the `i`th node of basic block `bb` reads source variable `v`.
      *
-     * We also add a synthetic uncertain read at the exit node of the declaring
-     * function for captured variables. This ensures that definitions of captured
-     * variables are included in the SSA graph even when the variable is not
-     * locally read in the declaring function (but may be read by a nested function).
+     * We add a synthetic uncertain read at the exit node of every function
+     * that references a captured variable `v`. This ensures that definitions
+     * of captured variables are included in the SSA graph even when the
+     * variable is not locally read in that function scope (but may be read
+     * by another function sharing the same closure).
      */
     cached
     predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       useAt(bb, i, v) and certain = true
       or
       v.isCaptured() and
-      bb.getScope() = v.getDeclaringFunction() and
-      bb.getLastNode().isExitNode() and
-      i = bb.length() - 1 and
-      certain = false
+      exists(FuncDef f |
+        f = bb.getScope() and
+        bb.getLastNode().isExitNode() and
+        i = bb.length() - 1 and
+        certain = false
+      |
+        // The declaring function: captures may be read after calls to closures
+        f = v.getDeclaringFunction()
+        or
+        // Any function that writes `v`: the write may be observed by the
+        // declaring function or another closure sharing the same variable
+        any(IR::Instruction def | def.writes(v, _)).getRoot() = f
+      )
     }
   }
 }
