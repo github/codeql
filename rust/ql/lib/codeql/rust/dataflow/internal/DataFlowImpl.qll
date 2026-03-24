@@ -1157,6 +1157,64 @@ private module Cached {
   cached
   predicate sinkNode(Node n, string kind) { n.(FlowSummaryNode).isSink(kind, _) }
 
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) {
+      FlowSummaryImpl::Private::barrierGuardSpec(_, _, _, kind, model)
+    }
+
+  private boolean convertAcceptingValue(FlowSummaryImpl::Public::AcceptingValue av) {
+    av.isTrue() and result = true
+    or
+    av.isFalse() and result = false
+    // Remaining cases are not supported yet, they depend on the shared Guards library.
+    // or
+    // av.isNoException() and result.getDualValue().isThrowsException()
+    // or
+    // av.isZero() and result.asIntValue() = 0
+    // or
+    // av.isNotZero() and result.getDualValue().asIntValue() = 0
+    // or
+    // av.isNull() and result.isNullValue()
+    // or
+    // av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(AstNode g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      FlowSummaryImpl::Public::BarrierGuardElement b,
+      FlowSummaryImpl::Private::SummaryComponentStack stack,
+      FlowSummaryImpl::Public::AcceptingValue acceptingvalue, string kind, string model
+    |
+      FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingvalue, kind, model) and
+      e = FlowSummaryImpl::StepsInput::getSinkNode(b, stack.headOfSingleton()).asExpr() and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingvalue) and
+      g = b.getCall()
+    )
+  }
+
+  /** Holds if `n` is a flow barrier of kind `kind` and model `model`. */
+  cached
+  predicate barrierNode(Node n, string kind, string model) {
+    exists(
+      FlowSummaryImpl::Public::BarrierElement b,
+      FlowSummaryImpl::Private::SummaryComponentStack stack
+    |
+      FlowSummaryImpl::Private::barrierSpec(b, stack, kind, model)
+    |
+      n = FlowSummaryImpl::StepsInput::getSourceNode(b, stack, false)
+      or
+      // For barriers like `Argument[0]` we want to target the pre-update node
+      n =
+        FlowSummaryImpl::StepsInput::getSourceNode(b, stack, true)
+            .(PostUpdateNode)
+            .getPreUpdateNode()
+    )
+    or
+    ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = n
+  }
+
   /**
    * A step in a flow summary defined using `OptionalStep[name]`. An `OptionalStep` is "opt-in", which means
    * that by default the step is not present in the flow summary and needs to be explicitly enabled by defining
@@ -1180,3 +1238,34 @@ private module Cached {
 }
 
 import Cached
+
+/** Holds if `n` is a flow barrier of kind `kind`. */
+predicate barrierNode(Node n, string kind) { barrierNode(n, kind, _) }
+
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `gv`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(AstNode g, Expr e, boolean branch, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode(P param) {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::ParameterizedBarrierGuard<P, guardChecks/4>::getABarrierNode(param)
+  }
+}
