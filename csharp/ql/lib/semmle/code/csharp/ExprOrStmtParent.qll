@@ -190,8 +190,8 @@ private module Cached {
   pragma[inline]
   private ControlFlowElement enclosingStart(ControlFlowElement cfe) {
     result = cfe
-    or
-    getAChild(result).(AnonymousFunctionExpr) = cfe
+    // or
+    // getAChild(result).(AnonymousFunctionExpr) = cfe
   }
 
   private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {
