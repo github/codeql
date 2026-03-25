@@ -1,5 +1,5 @@
 name: codeql/go-queries
-version: 1.5.9
+version: 1.5.10-dev
 groups:
   - go
   - queries
