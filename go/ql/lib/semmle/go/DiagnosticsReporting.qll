@@ -21,7 +21,7 @@ private class Diagnostic extends @diagnostic {
   string getMessage() { diagnostics(this, _, _, result, _, _) }
 
   /** Gets the file that this error is associated with, if any. */
-  File getFile() { result = this.getLocation().getFile() }
+  File getFile() { result = pragma[only_bind_into](this).getLocation().getFile() }
 
   /** Gets the location for this error. */
   Location getLocation() { diagnostics(this, _, _, _, _, result) }
