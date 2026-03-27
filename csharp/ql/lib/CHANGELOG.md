@@ -1,3 +1,24 @@
+## 5.4.9
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* Added `System.Net.WebSockets::ReceiveAsync` as a remote flow source.
+* Added reverse taint flow from implicit conversion operator calls to their arguments.
+* Added post-update nodes for struct-type arguments, allowing data flow out of method calls via those arguments.
+* C# 14: Added support for partial constructors.
+
+## 5.4.8
+
+### Minor Analysis Improvements
+
+* C# 14: Added support for partial events.
+* C# 14: Added support for the `field` keyword in properties.
+
+### Bug Fixes
+
+* Fixed an issue where the body of a partial member could be extracted twice. When both a *defining* and an *implementing* declaration exist, only the *implementing* declaration is now extracted.
+
 ## 5.4.7
 
 ### Minor Analysis Improvements

@@ -48,7 +48,7 @@ private predicate maybeUsedInElfHashFunction(Variable v, Operation xor, Operatio
     Expr e1, Expr e2, AssignExpr addAssign, AssignExpr xorAssign, Operation notOp,
     AssignExpr notAssign
   |
-    (add instanceof AddExpr or add instanceof AssignAddExpr) and
+    add instanceof AddOperation and
     e1.getAChild*() = add.getAnOperand() and
     e1 instanceof BinaryBitwiseOperation and
     e2 = e1.(BinaryBitwiseOperation).getLeftOperand() and

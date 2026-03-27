@@ -1,3 +1,32 @@
+## 9.0.0
+
+### Breaking Changes
+
+* The Java control flow graph (CFG) implementation has been completely
+  rewritten. The CFG now includes additional nodes to more accurately represent
+  certain constructs. This also means that any existing code that implicitly
+  relies on very specific details about the CFG may need to be updated.
+  The CFG now only includes the nodes that are reachable from the entry point.
+  Additionally, the following breaking changes have been made:
+  - `ControlFlowNode.asCall` has been removed - use `Call.getControlFlowNode` instead.
+  - `ControlFlowNode.getEnclosingStmt` has been removed.
+  - `ControlFlow::ExprNode` has been removed.
+  - `ControlFlow::StmtNode` has been removed.
+  - `ControlFlow::Node` has been removed - this was merely an alias of
+    `ControlFlowNode`, which is still available.
+  - Previously deprecated predicates on `BasicBlock` have been removed.
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* The class `Assignment` now extends `BinaryExpr`. Uses of `BinaryExpr` may in some cases need slight adjustment.
+
+## 8.1.1
+
+### Minor Analysis Improvements
+
+* Some modelling which previously only worked for Java EE packages beginning with "javax" will now also work for Java EE packages beginning with "jakarta" as well. This may lead to some alert changes.
+
 ## 8.1.0
 
 ### Deprecated APIs

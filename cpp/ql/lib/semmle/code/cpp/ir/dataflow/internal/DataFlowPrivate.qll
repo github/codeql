@@ -1,5 +1,6 @@
 private import cpp as Cpp
 private import DataFlowUtil
+private import DataFlowNodes
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
 private import semmle.code.cpp.ir.internal.IRCppLanguage
@@ -16,27 +17,41 @@ private import semmle.code.cpp.dataflow.ExternalFlow as External
 cached
 private module Cached {
   cached
-  module Nodes0 {
-    cached
-    newtype TIRDataFlowNode0 =
-      TInstructionNode0(Instruction i) {
-        not Ssa::ignoreInstruction(i) and
-        not exists(Operand op |
-          not Ssa::ignoreOperand(op) and i = Ssa::getIRRepresentationOfOperand(op)
-        ) and
-        // We exclude `void`-typed instructions because they cannot contain data.
-        // However, if the instruction is a glvalue, and their type is `void`, then the result
-        // type of the instruction is really `void*`, and thus we still want to have a dataflow
-        // node for it.
-        (not i.getResultType() instanceof VoidType or i.isGLValue())
-      } or
-      TMultipleUseOperandNode0(Operand op) {
-        not Ssa::ignoreOperand(op) and not exists(Ssa::getIRRepresentationOfOperand(op))
-      } or
-      TSingleUseOperandNode0(Operand op) {
-        not Ssa::ignoreOperand(op) and exists(Ssa::getIRRepresentationOfOperand(op))
-      }
+  newtype TIRDataFlowNode0 =
+    TInstructionNode0(Instruction i) {
+      not Ssa::ignoreInstruction(i) and
+      not exists(Operand op |
+        not Ssa::ignoreOperand(op) and i = Ssa::getIRRepresentationOfOperand(op)
+      ) and
+      // We exclude `void`-typed instructions because they cannot contain data.
+      // However, if the instruction is a glvalue, and their type is `void`, then the result
+      // type of the instruction is really `void*`, and thus we still want to have a dataflow
+      // node for it.
+      (not i.getResultType() instanceof VoidType or i.isGLValue())
+    } or
+    TMultipleUseOperandNode0(Operand op) {
+      not Ssa::ignoreOperand(op) and not exists(Ssa::getIRRepresentationOfOperand(op))
+    } or
+    TSingleUseOperandNode0(Operand op) {
+      not Ssa::ignoreOperand(op) and exists(Ssa::getIRRepresentationOfOperand(op))
+    }
+
+  cached
+  string toStringCached(Node n) {
+    result = toExprString(n)
+    or
+    not exists(toExprString(n)) and
+    result = n.toStringImpl()
   }
+
+  cached
+  Location getLocationCached(Node n) { result = n.getLocationImpl() }
+
+  cached
+  newtype TContentApprox =
+    TFieldApproxContent(string s) { fieldHasApproxName(_, s) } or
+    TUnionApproxContent(string s) { unionHasApproxName(_, s) } or
+    TElementApproxContent()
 
   /**
    * Gets an additional term that is added to the `join` and `branch` computations to reflect
@@ -59,38 +74,174 @@ private module Cached {
       result = countNumberOfBranchesUsingParameter(switch, p)
     )
   }
-}
 
-import Cached
-private import Nodes0
+  cached
+  newtype TDataFlowCallable =
+    TSourceCallable(Cpp::Declaration decl) or
+    TSummarizedCallable(FlowSummaryImpl::Public::SummarizedCallable c)
 
-/**
- * A module for calculating the number of stars (i.e., `*`s) needed for various
- * dataflow node `toString` predicates.
- */
-module NodeStars {
-  private int getNumberOfIndirections(Node n) {
-    result = n.(RawIndirectOperand).getIndirectionIndex()
+  cached
+  newtype TDataFlowCall =
+    TNormalCall(CallInstruction call) or
+    TSummaryCall(
+      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+    ) {
+      FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+    }
+
+  /**
+   * Holds if data can flow from `node1` to `node2` in a way that loses the
+   * calling context. For example, this would happen with flow through a
+   * global or static variable.
+   */
+  cached
+  predicate jumpStep(Node n1, Node n2) {
+    exists(GlobalLikeVariable v |
+      exists(Ssa::GlobalUse globalUse |
+        v = globalUse.getVariable() and
+        n1.(FinalGlobalValue).getGlobalUse() = globalUse
+      |
+        globalUse.getIndirection() = getMinIndirectionForGlobalUse(globalUse) and
+        v = n2.asVariable()
+        or
+        v = n2.asIndirectVariable(globalUse.getIndirection())
+      )
+      or
+      exists(Ssa::GlobalDef globalDef |
+        v = globalDef.getVariable() and
+        n2.(InitialGlobalValue).getGlobalDef() = globalDef
+      |
+        globalDef.getIndirection() = getMinIndirectionForGlobalDef(globalDef) and
+        v = n1.asVariable()
+        or
+        v = n1.asIndirectVariable(globalDef.getIndirection())
+      )
+    )
     or
-    result = n.(RawIndirectInstruction).getIndirectionIndex()
-    or
-    result = n.(VariableNode).getIndirectionIndex()
-    or
-    result = n.(PostUpdateNodeImpl).getIndirectionIndex()
-    or
-    result = n.(FinalParameterNode).getIndirectionIndex()
-    or
-    result = n.(BodyLessParameterNodeImpl).getIndirectionIndex()
+    // models-as-data summarized flow
+    FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
+      n2.(FlowSummaryNode).getSummaryNode())
   }
 
   /**
-   * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
-   * output for `n`.
+   * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
+   * Thus, `node2` references an object with a field `f` that contains the
+   * value of `node1`.
+   *
+   * The boolean `certain` is true if the destination address does not involve
+   * any pointer arithmetic, and false otherwise.
    */
-  string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
+  cached
+  predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
+    exists(
+      PostFieldUpdateNode postFieldUpdate, int indirectionIndex1, int numberOfLoads,
+      StoreInstruction store, FieldContent fc
+    |
+      postFieldUpdate = node2 and
+      fc = c and
+      nodeHasInstruction(node1, pragma[only_bind_into](store),
+        pragma[only_bind_into](indirectionIndex1)) and
+      postFieldUpdate.getIndirectionIndex() = 1 and
+      numberOfLoadsFromOperand(postFieldUpdate.getFieldAddress(),
+        store.getDestinationAddressOperand(), numberOfLoads, certain) and
+      fc.getAField() = postFieldUpdate.getUpdatedField() and
+      getIndirectionIndexLate(fc) = 1 + indirectionIndex1 + numberOfLoads
+    )
+    or
+    // models-as-data summarized flow
+    FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+      node2.(FlowSummaryNode).getSummaryNode()) and
+    certain = true
+  }
+
+  /**
+   * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
+   * Thus, `node2` references an object with a field `f` that contains the
+   * value of `node1`.
+   */
+  cached
+  predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1, c, node2, _) }
+
+  /**
+   * Holds if data can flow from `node1` to `node2` via a read of `f`.
+   * Thus, `node1` references an object with a field `f` whose value ends up in
+   * `node2`.
+   */
+  cached
+  predicate readStep(Node node1, ContentSet c, Node node2) {
+    exists(
+      FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2, FieldContent fc
+    |
+      fc = c and
+      nodeHasOperand(node2, operand, indirectionIndex2) and
+      // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
+      // in `storeStep`.
+      nodeHasOperand(node1, fa1.getObjectAddressOperand(), 1) and
+      numberOfLoadsFromOperand(fa1, operand, numberOfLoads, _) and
+      fc.getAField() = fa1.getField() and
+      getIndirectionIndexLate(fc) = indirectionIndex2 + numberOfLoads
+    )
+    or
+    // models-as-data summarized flow
+    FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+      node2.(FlowSummaryNode).getSummaryNode())
+  }
+
+  /**
+   * Holds if values stored inside content `c` are cleared at node `n`.
+   */
+  cached
+  predicate clearsContent(Node n, ContentSet c) {
+    n =
+      any(PostUpdateNode pun, Content d |
+        d.impliesClearOf(c) and storeStepImpl(_, d, pun, true)
+      |
+        pun
+      ).getPreUpdateNode() and
+    (
+      not exists(Operand op, Cpp::Operation p |
+        n.(IndirectOperand).hasOperandAndIndirectionIndex(op, _) and
+        (
+          p instanceof Cpp::AssignPointerAddExpr or
+          p instanceof Cpp::AssignPointerSubExpr or
+          p instanceof Cpp::CrementOperation
+        )
+      |
+        p.getAnOperand() = op.getUse().getAst()
+      )
+      or
+      forex(PostUpdateNode pun, Content d |
+        pragma[only_bind_into](d).impliesClearOf(pragma[only_bind_into](c)) and
+        storeStepImpl(_, d, pun, true) and
+        pun.getPreUpdateNode() = n
+      |
+        c.(Content).getIndirectionIndex() = d.getIndirectionIndex()
+      )
+    )
+  }
 }
 
-import NodeStars
+import Cached
+
+private int getNumberOfIndirections(Node n) {
+  result = n.(RawIndirectOperand).getIndirectionIndex()
+  or
+  result = n.(RawIndirectInstruction).getIndirectionIndex()
+  or
+  result = n.(VariableNode).getIndirectionIndex()
+  or
+  result = n.(PostUpdateNodeImpl).getIndirectionIndex()
+  or
+  result = n.(FinalParameterNode).getIndirectionIndex()
+  or
+  result = n.(BodyLessParameterNodeImpl).getIndirectionIndex()
+}
+
+/**
+ * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
+ * output for `n`.
+ */
+string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
 
 /**
  * A cut-down `DataFlow::Node` class that does not depend on the output of SSA.
@@ -828,85 +979,10 @@ private int getMinIndirectionForGlobalDef(Ssa::GlobalDef def) {
   result = getMinIndirectionsForType(def.getUnspecifiedType())
 }
 
-/**
- * Holds if data can flow from `node1` to `node2` in a way that loses the
- * calling context. For example, this would happen with flow through a
- * global or static variable.
- */
-predicate jumpStep(Node n1, Node n2) {
-  exists(GlobalLikeVariable v |
-    exists(Ssa::GlobalUse globalUse |
-      v = globalUse.getVariable() and
-      n1.(FinalGlobalValue).getGlobalUse() = globalUse
-    |
-      globalUse.getIndirection() = getMinIndirectionForGlobalUse(globalUse) and
-      v = n2.asVariable()
-      or
-      v = n2.asIndirectVariable(globalUse.getIndirection())
-    )
-    or
-    exists(Ssa::GlobalDef globalDef |
-      v = globalDef.getVariable() and
-      n2.(InitialGlobalValue).getGlobalDef() = globalDef
-    |
-      globalDef.getIndirection() = getMinIndirectionForGlobalDef(globalDef) and
-      v = n1.asVariable()
-      or
-      v = n1.asIndirectVariable(globalDef.getIndirection())
-    )
-  )
-  or
-  // models-as-data summarized flow
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
-    n2.(FlowSummaryNode).getSummaryNode())
-}
-
 bindingset[c]
 pragma[inline_late]
 private int getIndirectionIndexLate(Content c) { result = c.getIndirectionIndex() }
 
-/**
- * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
- * Thus, `node2` references an object with a field `f` that contains the
- * value of `node1`.
- *
- * The boolean `certain` is true if the destination address does not involve
- * any pointer arithmetic, and false otherwise. This has to do with whether a
- * store step can be used to clear a field (see `clearsContent`).
- */
-predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
-  exists(
-    PostFieldUpdateNode postFieldUpdate, int indirectionIndex1, int numberOfLoads,
-    StoreInstruction store, FieldContent fc
-  |
-    postFieldUpdate = node2 and
-    fc = c and
-    nodeHasInstruction(node1, pragma[only_bind_into](store),
-      pragma[only_bind_into](indirectionIndex1)) and
-    postFieldUpdate.getIndirectionIndex() = 1 and
-    numberOfLoadsFromOperand(postFieldUpdate.getFieldAddress(),
-      store.getDestinationAddressOperand(), numberOfLoads, certain) and
-    fc.getAField() = postFieldUpdate.getUpdatedField() and
-    getIndirectionIndexLate(fc) = 1 + indirectionIndex1 + numberOfLoads
-  )
-  or
-  // models-as-data summarized flow
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
-    node2.(FlowSummaryNode).getSummaryNode()) and
-  certain = true
-}
-
-/**
- * Holds if data can flow from `node1` to `node2` via an assignment to `f`.
- * Thus, `node2` references an object with a field `f` that contains the
- * value of `node1`.
- */
-predicate storeStep(Node node1, ContentSet c, Node node2) { storeStepImpl(node1, c, node2, _) }
-
-/**
- * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
- * operations and exactly `n` `LoadInstruction` operations.
- */
 private predicate numberOfLoadsFromOperandRec(
   Operand operandFrom, Operand operandTo, int ind, boolean certain
 ) {
@@ -958,63 +1034,6 @@ predicate nodeHasInstruction(Node node, Instruction instr, int indirectionIndex)
 }
 
 /**
- * Holds if data can flow from `node1` to `node2` via a read of `f`.
- * Thus, `node1` references an object with a field `f` whose value ends up in
- * `node2`.
- */
-predicate readStep(Node node1, ContentSet c, Node node2) {
-  exists(
-    FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2, FieldContent fc
-  |
-    fc = c and
-    nodeHasOperand(node2, operand, indirectionIndex2) and
-    // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
-    // in `storeStep`.
-    nodeHasOperand(node1, fa1.getObjectAddressOperand(), 1) and
-    numberOfLoadsFromOperand(fa1, operand, numberOfLoads, _) and
-    fc.getAField() = fa1.getField() and
-    getIndirectionIndexLate(fc) = indirectionIndex2 + numberOfLoads
-  )
-  or
-  // models-as-data summarized flow
-  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
-    node2.(FlowSummaryNode).getSummaryNode())
-}
-
-/**
- * Holds if values stored inside content `c` are cleared at node `n`.
- */
-predicate clearsContent(Node n, ContentSet c) {
-  n =
-    any(PostUpdateNode pun, Content d | d.impliesClearOf(c) and storeStepImpl(_, d, pun, true) | pun)
-        .getPreUpdateNode() and
-  (
-    // The crement operations and pointer addition and subtraction self-assign. We do not
-    // want to clear the contents if it is indirectly pointed at by any of these operations,
-    // as part of the contents might still be accessible afterwards. If there is no such
-    // indirection clearing the contents is safe.
-    not exists(Operand op, Cpp::Operation p |
-      n.(IndirectOperand).hasOperandAndIndirectionIndex(op, _) and
-      (
-        p instanceof Cpp::AssignPointerAddExpr or
-        p instanceof Cpp::AssignPointerSubExpr or
-        p instanceof Cpp::CrementOperation
-      )
-    |
-      p.getAnOperand() = op.getUse().getAst()
-    )
-    or
-    forex(PostUpdateNode pun, Content d |
-      pragma[only_bind_into](d).impliesClearOf(pragma[only_bind_into](c)) and
-      storeStepImpl(_, d, pun, true) and
-      pun.getPreUpdateNode() = n
-    |
-      c.(Content).getIndirectionIndex() = d.getIndirectionIndex()
-    )
-  )
-}
-
-/**
  * Holds if the value that is being tracked is expected to be stored inside content `c`
  * at node `n`.
  */
@@ -1045,11 +1064,6 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
 class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
-
-cached
-private newtype TDataFlowCallable =
-  TSourceCallable(Cpp::Declaration decl) or
-  TSummarizedCallable(FlowSummaryImpl::Public::SummarizedCallable c)
 
 /**
  * A callable, which may be:
@@ -1133,15 +1147,6 @@ final private class TypeFinal = Type;
 class DataFlowType extends TypeFinal {
   string toString() { result = "" }
 }
-
-cached
-private newtype TDataFlowCall =
-  TNormalCall(CallInstruction call) or
-  TSummaryCall(
-    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
-  ) {
-    FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
-  }
 
 private predicate summarizedCallableIsManual(SummarizedCallable sc) {
   sc.asSummarizedCallable().hasManualModel()
@@ -1522,12 +1527,6 @@ private predicate fieldHasApproxName(Field f, string s) {
 }
 
 private predicate unionHasApproxName(Cpp::Union u, string s) { s = u.getName().charAt(0) }
-
-cached
-private newtype TContentApprox =
-  TFieldApproxContent(string s) { fieldHasApproxName(_, s) } or
-  TUnionApproxContent(string s) { unionHasApproxName(_, s) } or
-  TElementApproxContent()
 
 /** An approximated `Content`. */
 class ContentApprox extends TContentApprox {

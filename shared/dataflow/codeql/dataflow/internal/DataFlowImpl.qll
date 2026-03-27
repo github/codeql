@@ -567,7 +567,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         ) {
           sourceNode(node) and
           (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
-          summaryCtx = TSummaryCtxNone() and
+          summaryCtx.isSourceCtx() and
           t = getNodeTyp(node) and
           ap instanceof ApNil and
           apa = getApprox(ap) and
@@ -602,18 +602,19 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           apa = getApprox(ap)
           or
           // flow into a callable without summary context
-          fwdFlowInNoFlowThrough(node, cc, t, ap, stored) and
+          fwdFlowInNoFlowThrough(node, cc, summaryCtx, t, ap, stored) and
           apa = getApprox(ap) and
-          summaryCtx = TSummaryCtxNone() and
           // When the call contexts of source and sink needs to match then there's
           // never any reason to enter a callable except to find a summary. See also
           // the comment in `PathNodeMid::isAtSink`.
           not Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
           or
           // flow into a callable with summary context (non-linear recursion)
-          fwdFlowInFlowThrough(node, cc, t, ap, stored) and
-          apa = getApprox(ap) and
-          summaryCtx = TSummaryCtxSome(node, t, ap, stored)
+          exists(boolean mustReturn |
+            fwdFlowInFlowThrough(node, cc, t, ap, stored, mustReturn) and
+            apa = getApprox(ap) and
+            summaryCtx = TSummaryCtxSome(node, t, ap, stored, mustReturn)
+          )
           or
           // flow out of a callable
           fwdFlowOut(_, _, node, cc, summaryCtx, t, ap, stored) and
@@ -630,9 +631,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         private newtype TSummaryCtx =
           TSummaryCtxNone() or
-          TSummaryCtxSome(ParamNd p, Typ t, Ap ap, TypOption stored) {
-            fwdFlowInFlowThrough(p, _, t, ap, stored)
-          }
+          TSummaryCtxSome(ParamNd p, Typ t, Ap ap, TypOption stored, boolean mustReturn) {
+            fwdFlowInFlowThrough(p, _, t, ap, stored, mustReturn)
+          } or
+          TSummaryCtxSource(Boolean mustEscape)
 
         /**
          * A context for generating flow summaries. This represents flow entry through
@@ -644,6 +646,69 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           abstract string toString();
 
           abstract Location getLocation();
+
+          /**
+           * Holds if this context is the unique context used at flow sources.
+           */
+          predicate isSourceCtx() {
+            exists(boolean strict |
+              Stage1::hasFeatureEscapesSourceCallContext(strict) and
+              this = TSummaryCtxSource(strict)
+            )
+            or
+            not Stage1::hasFeatureEscapesSourceCallContext(_) and
+            this = TSummaryCtxNone()
+          }
+
+          pragma[nomagic]
+          private predicate isSome(boolean mustReturn) {
+            this = TSummaryCtxSome(_, _, _, _, mustReturn)
+          }
+
+          /**
+           * Holds if this context is valid as a flow-in context when no flow-through is possible,
+           * in which case `innerSummaryCtx` is the summary context to be used when entering the
+           * callable.
+           */
+          pragma[nomagic]
+          predicate isValidForFlowInNoThrough(SummaryCtx innerSummaryCtx) {
+            this = TSummaryCtxNone() and
+            innerSummaryCtx = TSummaryCtxNone()
+            or
+            this.isSome(false) and
+            innerSummaryCtx = TSummaryCtxNone()
+            or
+            // Even if we must escape the source call context, we can still allow for flow-in
+            // without flow-through, as long as the inner context is escaped (which must then
+            // necessarily be via a jump-step -- possibly after even more flow-in
+            // without-flow-through steps).
+            this = TSummaryCtxSource(_) and
+            innerSummaryCtx = TSummaryCtxSource(true)
+          }
+
+          /**
+           * Holds if this context is valid as a flow-in context when flow-through is possible.
+           *
+           * The boolean `mustReturn` indicates whether flow must return.
+           */
+          predicate isValidForFlowThrough(boolean mustReturn) {
+            this = TSummaryCtxSource(_) and
+            mustReturn = true
+            or
+            this = TSummaryCtxNone() and
+            mustReturn = false
+            or
+            this.isSome(mustReturn)
+          }
+
+          /** Holds if this context is valid as a sink context. */
+          predicate isASinkCtx() {
+            this = TSummaryCtxNone()
+            or
+            this.isSome(false)
+            or
+            this = TSummaryCtxSource(false)
+          }
         }
 
         /** A summary context from which no flow summary can be generated. */
@@ -659,18 +724,41 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           private Typ t;
           private Ap ap;
           private TypOption stored;
+          private boolean mustReturn;
 
-          SummaryCtxSome() { this = TSummaryCtxSome(p, t, ap, stored) }
+          SummaryCtxSome() { this = TSummaryCtxSome(p, t, ap, stored, mustReturn) }
 
           ParamNd getParamNode() { result = p }
 
           private string ppTyp() { result = t.toString() and result != "" }
 
+          private string ppMustReturn() {
+            if mustReturn = true then result = " <mustReturn>" else result = ""
+          }
+
           override string toString() {
-            result = p + concat(" : " + this.ppTyp()) + " " + ap + ppStored(stored)
+            result =
+              p + concat(" : " + this.ppTyp()) + " " + ap + ppStored(stored) + this.ppMustReturn()
           }
 
           override Location getLocation() { result = p.getLocation() }
+        }
+
+        /**
+         * A special summary context that is used when the flow feature
+         * `FeatureEscapesSourceCallContext(OrEqualSourceSinkCallContext)`
+         * is enabled.
+         */
+        private class SummaryCtxSource extends SummaryCtx, TSummaryCtxSource {
+          private boolean mustEscape;
+
+          SummaryCtxSource() { this = TSummaryCtxSource(mustEscape) }
+
+          override string toString() {
+            if mustEscape = true then result = "<source-must-escape>" else result = "<source>"
+          }
+
+          override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
         }
 
         private predicate fwdFlowJump(Nd node, Typ t, Ap ap, TypOption stored) {
@@ -915,9 +1003,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowInNoFlowThrough(
-          ParamNd p, CcCall innercc, Typ t, Ap ap, TypOption stored
+          ParamNd p, CcCall innercc, SummaryCtx innerSummaryCtx, Typ t, Ap ap, TypOption stored
         ) {
-          FwdFlowInNoThrough::fwdFlowIn(_, _, _, p, _, innercc, _, t, ap, stored, _)
+          exists(SummaryCtx summaryCtx |
+            FwdFlowInNoThrough::fwdFlowIn(_, _, _, p, _, innercc, summaryCtx, t, ap, stored, _) and
+            summaryCtx.isValidForFlowInNoThrough(innerSummaryCtx)
+          )
         }
 
         private predicate top() { any() }
@@ -926,9 +1017,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate fwdFlowInFlowThrough(
-          ParamNd p, CcCall innercc, Typ t, Ap ap, TypOption stored
+          ParamNd p, CcCall innercc, Typ t, Ap ap, TypOption stored, boolean mustReturn
         ) {
-          FwdFlowInThrough::fwdFlowIn(_, _, _, p, _, innercc, _, t, ap, stored, _)
+          exists(SummaryCtx summaryCtx |
+            FwdFlowInThrough::fwdFlowIn(_, _, _, p, _, innercc, summaryCtx, t, ap, stored, _) and
+            summaryCtx.isValidForFlowThrough(mustReturn)
+          )
         }
 
         pragma[nomagic]
@@ -999,7 +1093,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           TypOption stored
         ) {
           exists(RetNd ret, CcNoCall innercc, boolean allowsFieldFlow |
-            fwdFlowIntoRet(ret, innercc, summaryCtx, t, ap, stored) and
+            fwdFlowIntoRet(ret, innercc, _, t, ap, stored) and
+            summaryCtx = TSummaryCtxNone() and
             fwdFlowOutValidEdge(call, ret, innercc, inner, out, outercc, allowsFieldFlow) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
@@ -1090,7 +1185,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             instanceofCcCall(ccc) and
             fwdFlow(pragma[only_bind_into](ret), ccc, summaryCtx, t, ap, stored) and
             summaryCtx =
-              TSummaryCtxSome(pragma[only_bind_into](p), _, pragma[only_bind_into](argAp), _) and
+              TSummaryCtxSome(pragma[only_bind_into](p), _, pragma[only_bind_into](argAp), _, _) and
             kind = ret.getKind() and
             Stage1::parameterFlowThroughAllowed(p, kind) and
             PrevStage::returnMayFlowThrough(ret, kind)
@@ -1116,9 +1211,10 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         pragma[nomagic]
         private predicate fwdFlowIsEntered0(
           Call call, ArgNd arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx, ParamNd p, Typ t,
-          Ap ap, TypOption stored
+          Ap ap, TypOption stored, boolean mustReturn
         ) {
-          FwdFlowInThrough::fwdFlowIn(call, arg, _, p, cc, innerCc, summaryCtx, t, ap, stored, _)
+          FwdFlowInThrough::fwdFlowIn(call, arg, _, p, cc, innerCc, summaryCtx, t, ap, stored, _) and
+          summaryCtx.isValidForFlowThrough(mustReturn)
         }
 
         /**
@@ -1130,9 +1226,9 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           Call call, ArgNd arg, Cc cc, CcCall innerCc, SummaryCtx summaryCtx,
           SummaryCtxSome innerSummaryCtx
         ) {
-          exists(ParamNd p, Typ t, Ap ap, TypOption stored |
-            fwdFlowIsEntered0(call, arg, cc, innerCc, summaryCtx, p, t, ap, stored) and
-            innerSummaryCtx = TSummaryCtxSome(p, t, ap, stored)
+          exists(ParamNd p, Typ t, Ap ap, TypOption stored, boolean mustReturn |
+            fwdFlowIsEntered0(call, arg, cc, innerCc, summaryCtx, p, t, ap, stored, mustReturn) and
+            innerSummaryCtx = TSummaryCtxSome(p, t, ap, stored, mustReturn)
           )
         }
 
@@ -1160,7 +1256,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           TypOption argStored, Ap ap
         ) {
           exists(Call call, boolean allowsFieldFlow |
-            returnFlowsThrough0(call, ccc, ap, ret, TSummaryCtxSome(p, argT, argAp, argStored)) and
+            returnFlowsThrough0(call, ccc, ap, ret, TSummaryCtxSome(p, argT, argAp, argStored, _)) and
             flowThroughOutOfCall(call, ret, _, allowsFieldFlow) and
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
@@ -1216,7 +1312,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         pragma[nomagic]
         private predicate revFlow0(Nd node, ReturnCtx returnCtx, ApOption returnAp, Ap ap) {
-          fwdFlow(node, _, _, _, ap, _) and
+          fwdFlow(node, _, any(SummaryCtx sinkCtx | sinkCtx.isASinkCtx()), _, ap, _) and
           sinkNode(node) and
           (
             if hasSinkCallCtx()
@@ -1490,7 +1586,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           exists(Ap ap0 |
             parameterMayFlowThrough(p, _) and
             revFlow(n, TReturnCtxMaybeFlowThrough(_), _, ap0) and
-            fwdFlow(n, any(CcCall ccc), TSummaryCtxSome(p, _, ap, _), _, ap0, _)
+            fwdFlow(n, any(CcCall ccc), TSummaryCtxSome(p, _, ap, _, _), _, ap0, _)
           )
         }
 
@@ -1962,6 +2058,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             private string ppSummaryCtx() {
               summaryCtx instanceof SummaryCtxNone and result = ""
               or
+              result = " " + summaryCtx.(SummaryCtxSource)
+              or
               summaryCtx instanceof SummaryCtxSome and
               result = " <" + summaryCtx + ">"
             }
@@ -1983,7 +2081,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override predicate isSource() {
               sourceNode(node) and
               (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
-              summaryCtx = TSummaryCtxNone() and
+              summaryCtx.isSourceCtx() and
               t = getNodeTyp(node) and
               ap instanceof ApNil
             }
@@ -1991,6 +2089,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             predicate isAtSink() {
               sinkNode(node) and
               ap instanceof ApNil and
+              summaryCtx.isASinkCtx() and
               // For `FeatureHasSinkCallContext` the condition `cc instanceof CallContextNoCall`
               // is exactly what we need to check.
               // For `FeatureEqualSourceSinkCallContext` the initial call
@@ -2042,10 +2141,12 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             override predicate isSource() { sourceNode(node) }
           }
 
-          bindingset[p, t, ap, stored]
+          bindingset[p, t, ap, stored, mustReturn]
           pragma[inline_late]
-          private SummaryCtxSome mkSummaryCtxSome(ParamNd p, Typ t, Ap ap, TypOption stored) {
-            result = TSummaryCtxSome(p, t, ap, stored)
+          private SummaryCtxSome mkSummaryCtxSome(
+            ParamNd p, Typ t, Ap ap, TypOption stored, boolean mustReturn
+          ) {
+            result = TSummaryCtxSome(p, t, ap, stored, mustReturn)
           }
 
           pragma[nomagic]
@@ -2055,11 +2156,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           ) {
             FwdFlowInNoThrough::fwdFlowIn(_, arg, _, p, outercc, innercc, outerSummaryCtx, t, ap,
               stored, _) and
-            innerSummaryCtx = TSummaryCtxNone()
+            outerSummaryCtx.isValidForFlowInNoThrough(innerSummaryCtx)
             or
-            FwdFlowInThrough::fwdFlowIn(_, arg, _, p, outercc, innercc, outerSummaryCtx, t, ap,
-              stored, _) and
-            innerSummaryCtx = mkSummaryCtxSome(p, t, ap, stored)
+            exists(boolean mustReturn |
+              FwdFlowInThrough::fwdFlowIn(_, arg, _, p, outercc, innercc, outerSummaryCtx, t, ap,
+                stored, _) and
+              outerSummaryCtx.isValidForFlowThrough(mustReturn) and
+              innerSummaryCtx = mkSummaryCtxSome(p, t, ap, stored, mustReturn)
+            )
           }
 
           pragma[nomagic]
@@ -2098,7 +2202,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             |
               fwdFlowThroughStep0(call, arg, cc, ccc, summaryCtx, t, ap, stored, ret,
                 innerSummaryCtx) and
-              innerSummaryCtx = TSummaryCtxSome(p, innerArgT, innerArgAp, innerArgStored) and
+              innerSummaryCtx = TSummaryCtxSome(p, innerArgT, innerArgAp, innerArgStored, _) and
               pn1 = mkPathNode(arg, cc, summaryCtx, innerArgT, innerArgAp, innerArgStored) and
               pn2 =
                 typeStrengthenToPathNode(p, ccc, innerSummaryCtx, innerArgT, innerArgAp,
@@ -2212,11 +2316,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
             )
             or
             // flow out of a callable
-            exists(RetNd ret, CcNoCall innercc, boolean allowsFieldFlow |
-              pn1 = TPathNodeMid(ret, innercc, summaryCtx, t, ap, stored) and
-              fwdFlowIntoRet(ret, innercc, summaryCtx, t, ap, stored) and
+            exists(
+              RetNd ret, CcNoCall innercc, SummaryCtx innerSummaryCtx, boolean allowsFieldFlow
+            |
+              pn1 = TPathNodeMid(ret, innercc, innerSummaryCtx, t, ap, stored) and
+              fwdFlowIntoRet(ret, innercc, innerSummaryCtx, t, ap, stored) and
               fwdFlowOutValidEdge(_, ret, innercc, _, node, cc, allowsFieldFlow) and
               label = "" and
+              summaryCtx = TSummaryCtxNone() and
               if allowsFieldFlow = false then ap instanceof ApNil else any()
             )
           }

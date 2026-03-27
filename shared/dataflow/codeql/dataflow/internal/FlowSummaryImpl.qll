@@ -368,6 +368,34 @@ module Make<
       abstract predicate isSink(string input, string kind, Provenance provenance, string model);
     }
 
+    /** A barrier element. */
+    abstract class BarrierElement extends SourceBaseFinal {
+      bindingset[this]
+      BarrierElement() { any() }
+
+      /**
+       * Holds if this element is a flow barrier of kind `kind`, where data
+       * flows out as described by `output`.
+       */
+      pragma[nomagic]
+      abstract predicate isBarrier(string output, string kind, Provenance provenance, string model);
+    }
+
+    /** A barrier guard element. */
+    abstract class BarrierGuardElement extends SinkBaseFinal {
+      bindingset[this]
+      BarrierGuardElement() { any() }
+
+      /**
+       * Holds if this element is a flow barrier guard of kind `kind`, for data
+       * flowing in as described by `input`, when `this` evaluates to `branch`.
+       */
+      pragma[nomagic]
+      abstract predicate isBarrierGuard(
+        string input, string branch, string kind, Provenance provenance, string model
+      );
+    }
+
     private signature predicate hasKindSig(string kind);
 
     signature class NeutralCallableSig extends SummarizedCallableBaseFinal {
@@ -723,7 +751,32 @@ module Make<
       )
     }
 
-    private predicate summarySpec(string spec) {
+    private predicate isRelevantBarrier(
+      BarrierElement e, string output, string kind, Provenance provenance, string model
+    ) {
+      e.isBarrier(output, kind, provenance, model) and
+      (
+        provenance.isManual()
+        or
+        provenance.isGenerated() and
+        not exists(Provenance p | p.isManual() and e.isBarrier(_, kind, p, _))
+      )
+    }
+
+    private predicate isRelevantBarrierGuard(
+      BarrierGuardElement e, string input, string branch, string kind, Provenance provenance,
+      string model
+    ) {
+      e.isBarrierGuard(input, branch, kind, provenance, model) and
+      (
+        provenance.isManual()
+        or
+        provenance.isGenerated() and
+        not exists(Provenance p | p.isManual() and e.isBarrierGuard(_, _, kind, p, _))
+      )
+    }
+
+    private predicate flowSpec(string spec) {
       exists(SummarizedCallable c |
         c.propagatesFlow(spec, _, _, _, _, _)
         or
@@ -732,10 +785,14 @@ module Make<
       or
       isRelevantSource(_, spec, _, _, _)
       or
+      isRelevantBarrier(_, spec, _, _, _)
+      or
+      isRelevantBarrierGuard(_, spec, _, _, _, _)
+      or
       isRelevantSink(_, spec, _, _, _)
     }
 
-    import AccessPathSyntax::AccessPath<summarySpec/1>
+    import AccessPathSyntax::AccessPath<flowSpec/1>
 
     /** Holds if specification component `token` parses as parameter `pos`. */
     predicate parseParam(AccessPathToken token, ArgumentPosition pos) {
@@ -1512,6 +1569,31 @@ module Make<
         summary(c, inputContents, outputContents, _, _) and
         inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos)) and
         outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos))
+      )
+    }
+
+    /**
+     * Holds if `barrier` is a relevant barrier element with output specification `outSpec`.
+     */
+    predicate barrierSpec(
+      BarrierElement barrier, SummaryComponentStack outSpec, string kind, string model
+    ) {
+      exists(string output |
+        isRelevantBarrier(barrier, output, kind, _, model) and
+        External::interpretSpec(output, outSpec)
+      )
+    }
+
+    /**
+     * Holds if `barrierGuard` is a relevant barrier guard element with input specification `inSpec`.
+     */
+    predicate barrierGuardSpec(
+      BarrierGuardElement barrierGuard, SummaryComponentStack inSpec, string branch, string kind,
+      string model
+    ) {
+      exists(string input |
+        isRelevantBarrierGuard(barrierGuard, input, branch, kind, _, model) and
+        External::interpretSpec(input, inSpec)
       )
     }
 

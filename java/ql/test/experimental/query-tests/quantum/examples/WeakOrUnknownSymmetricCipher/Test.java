@@ -10,51 +10,51 @@ public class Test {
         byte[] data = "Sensitive Data".getBytes();
 
         // BAD: DES (unsafe)
-        KeyGenerator desKeyGen = KeyGenerator.getInstance("DES"); // $Alert
+        KeyGenerator desKeyGen = KeyGenerator.getInstance("DES"); // $ Alert
         SecretKey desKey = desKeyGen.generateKey();
-        Cipher desCipher = Cipher.getInstance("DES"); // $Alert
+        Cipher desCipher = Cipher.getInstance("DES"); // $ Alert
         desCipher.init(Cipher.ENCRYPT_MODE, desKey);
         byte[] desEncrypted = desCipher.doFinal(data);
 
         // BAD: DESede (Triple DES, considered weak)
-        KeyGenerator desedeKeyGen = KeyGenerator.getInstance("DESede"); // $Alert
+        KeyGenerator desedeKeyGen = KeyGenerator.getInstance("DESede"); // $ Alert
         SecretKey desedeKey = desedeKeyGen.generateKey();
-        Cipher desedeCipher = Cipher.getInstance("DESede"); // $Alert
+        Cipher desedeCipher = Cipher.getInstance("DESede"); // $ Alert
         desedeCipher.init(Cipher.ENCRYPT_MODE, desedeKey);
         byte[] desedeEncrypted = desedeCipher.doFinal(data);
 
         // BAD: Blowfish (considered weak)
-        KeyGenerator blowfishKeyGen = KeyGenerator.getInstance("Blowfish"); // $Alert
+        KeyGenerator blowfishKeyGen = KeyGenerator.getInstance("Blowfish"); // $ Alert
         SecretKey blowfishKey = blowfishKeyGen.generateKey();
-        Cipher blowfishCipher = Cipher.getInstance("Blowfish"); // $Alert
+        Cipher blowfishCipher = Cipher.getInstance("Blowfish"); // $ Alert
         blowfishCipher.init(Cipher.ENCRYPT_MODE, blowfishKey);
         byte[] blowfishEncrypted = blowfishCipher.doFinal(data);
 
         // BAD: RC2 (unsafe)
-        KeyGenerator rc2KeyGen = KeyGenerator.getInstance("RC2"); // $Alert
+        KeyGenerator rc2KeyGen = KeyGenerator.getInstance("RC2"); // $ Alert
         SecretKey rc2Key = rc2KeyGen.generateKey();
-        Cipher rc2Cipher = Cipher.getInstance("RC2"); // $Alert
+        Cipher rc2Cipher = Cipher.getInstance("RC2"); // $ Alert
         rc2Cipher.init(Cipher.ENCRYPT_MODE, rc2Key);
         byte[] rc2Encrypted = rc2Cipher.doFinal(data);
 
         // BAD: RC4 (stream cipher, unsafe)
-        KeyGenerator rc4KeyGen = KeyGenerator.getInstance("RC4"); // $Alert
+        KeyGenerator rc4KeyGen = KeyGenerator.getInstance("RC4"); // $ Alert
         SecretKey rc4Key = rc4KeyGen.generateKey();
-        Cipher rc4Cipher = Cipher.getInstance("RC4"); // $Alert
+        Cipher rc4Cipher = Cipher.getInstance("RC4"); // $ Alert
         rc4Cipher.init(Cipher.ENCRYPT_MODE, rc4Key);
         byte[] rc4Encrypted = rc4Cipher.doFinal(data);
 
         // BAD: IDEA (considered weak)
-        KeyGenerator ideaKeyGen = KeyGenerator.getInstance("IDEA"); // $Alert
+        KeyGenerator ideaKeyGen = KeyGenerator.getInstance("IDEA"); // $ Alert
         SecretKey ideaKey = ideaKeyGen.generateKey();
-        Cipher ideaCipher = Cipher.getInstance("IDEA"); // $Alert
+        Cipher ideaCipher = Cipher.getInstance("IDEA"); // $ Alert
         ideaCipher.init(Cipher.ENCRYPT_MODE, ideaKey);
         byte[] ideaEncrypted = ideaCipher.doFinal(data);
 
         // BAD: Skipjack (unsafe)
-        KeyGenerator skipjackKeyGen = KeyGenerator.getInstance("Skipjack"); // $Alert
+        KeyGenerator skipjackKeyGen = KeyGenerator.getInstance("Skipjack"); // $ Alert
         SecretKey skipjackKey = skipjackKeyGen.generateKey();
-        Cipher skipjackCipher = Cipher.getInstance("Skipjack"); // $Alert
+        Cipher skipjackCipher = Cipher.getInstance("Skipjack"); // $ Alert
         skipjackCipher.init(Cipher.ENCRYPT_MODE, skipjackKey);
         byte[] skipjackEncrypted = skipjackCipher.doFinal(data);
 

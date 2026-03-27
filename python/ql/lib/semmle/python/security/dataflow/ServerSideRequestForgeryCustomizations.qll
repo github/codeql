@@ -10,6 +10,7 @@ private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -177,35 +178,7 @@ module ServerSideRequestForgery {
     )
   }
 
-  /** A validation of a URI using the `AntiSSRF` library, considered as a full-ssrf sanitizer. */
-  private class UriValidator extends FullUrlControlSanitizer {
-    UriValidator() { this = DataFlow::BarrierGuard<uri_validator/3>::getABarrierNode() }
-  }
-
-  import semmle.python.dataflow.new.internal.DataFlowPublic
-
-  private predicate uri_validator(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
-    exists(DataFlow::CallCfgNode call, string funcs |
-      funcs in ["in_domain", "in_azure_keyvault_domain", "in_azure_storage_domain"] and
-      call = API::moduleImport("AntiSSRF").getMember("URIValidator").getMember(funcs).getACall() and
-      call.getArg(0).asCfgNode() = node
-    |
-      // validator call directly (e.g., if URIValidator.in_domain(...) )
-      g = call.asCfgNode() and
-      branch = true
-      or
-      // validator used in a comparison
-      exists(Cmpop op, Node n, ControlFlowNode l |
-        n.getALocalSource() = call and g.(CompareNode).operands(n.asCfgNode(), op, l)
-      |
-        // validator == true or validator == false or validator is True or validator is False
-        (op instanceof Eq or op instanceof Is) and
-        branch = l.getNode().(BooleanLiteral).booleanValue()
-        or
-        // validator != false or validator != true or validator is not True or validator is not False
-        (op instanceof NotEq or op instanceof IsNot) and
-        branch = l.getNode().(BooleanLiteral).booleanValue().booleanNot()
-      )
-    )
+  private class ExternalRequestForgerySanitizer extends FullUrlControlSanitizer {
+    ExternalRequestForgerySanitizer() { ModelOutput::barrierNode(this, "request-forgery") }
   }
 }

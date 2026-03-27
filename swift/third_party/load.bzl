@@ -1,6 +1,7 @@
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//misc/bazel:lfs.bzl", "lfs_archive", "lfs_files")
 
 _override = {
@@ -117,7 +118,7 @@ def test_no_override():
         content = test_body,
         is_executable = True,
     )
-    native.sh_test(
+    sh_test(
         name = "test-no-override",
         srcs = [":test-no-override-gen"],
         tags = ["override"],

@@ -6,117 +6,67 @@ private import OverlayXml
 
 /**
  * Holds always for the overlay variant and never for the base variant.
- * This local predicate is used to define local predicates that behave
- * differently for the base and overlay variant.
  */
 overlay[local]
 predicate isOverlay() { databaseMetadata("isOverlay", "true") }
 
-overlay[local]
-private string getLocationFilePath(@location_default loc) {
-  exists(@file file | locations_default(loc, file, _, _, _, _) | files(file, result))
-}
-
 /**
- * Gets the file path for an element with a single location.
+ * Holds if the TRAP file or tag `t` is reachable from source file `sourceFile`
+ * in the base (isOverlayVariant=false) or overlay (isOverlayVariant=true) variant.
  */
 overlay[local]
-private string getSingleLocationFilePath(@element e) {
-  exists(@location_default loc |
-    var_decls(e, _, _, _, loc)
-    or
-    fun_decls(e, _, _, _, loc)
-    or
-    type_decls(e, _, loc)
-    or
-    namespace_decls(e, _, loc, _)
-    or
-    macroinvocations(e, _, loc, _)
-    or
-    preprocdirects(e, _, loc)
-    or
-    diagnostics(e, _, _, _, _, loc)
-    or
-    usings(e, _, loc, _)
-    or
-    static_asserts(e, _, _, loc, _)
-    or
-    derivations(e, _, _, _, loc)
-    or
-    frienddecls(e, _, _, loc)
-    or
-    comments(e, _, loc)
-    or
-    exprs(e, _, loc)
-    or
-    stmts(e, _, loc)
-    or
-    initialisers(e, _, _, loc)
-    or
-    attributes(e, _, _, _, loc)
-    or
-    attribute_args(e, _, _, _, loc)
-    or
-    namequalifiers(e, _, _, loc)
-    or
-    enumconstants(e, _, _, _, _, loc)
-    or
-    type_mentions(e, _, loc, _)
-    or
-    lambda_capture(e, _, _, _, _, _, loc)
-    or
-    concept_templates(e, _, loc)
-  |
-    result = getLocationFilePath(loc)
+private predicate locallyReachableTrapOrTag(
+  boolean isOverlayVariant, string sourceFile, @trap_or_tag t
+) {
+  exists(@source_file sf, @trap trap |
+    (if isOverlay() then isOverlayVariant = true else isOverlayVariant = false) and
+    source_file_uses_trap(sf, trap) and
+    source_file_name(sf, sourceFile) and
+    (t = trap or trap_uses_tag(trap, t))
   )
 }
 
 /**
- * Gets the file path for an element with potentially multiple locations.
+ * Holds if element `e` is in TRAP file or tag `t`
+ * in the base (isOverlayVariant=false) or overlay (isOverlayVariant=true) variant.
  */
 overlay[local]
-private string getMultiLocationFilePath(@element e) {
-  exists(@location_default loc |
-    var_decls(_, e, _, _, loc)
-    or
-    fun_decls(_, e, _, _, loc)
-    or
-    type_decls(_, e, loc)
-    or
-    namespace_decls(_, e, loc, _)
-  |
-    result = getLocationFilePath(loc)
-  )
-}
-
-/**
- * A local helper predicate that holds in the base variant and never in the
- * overlay variant.
- */
-overlay[local]
-private predicate isBase() { not isOverlay() }
-
-/**
- * Holds if `path` was extracted in the overlay database.
- */
-overlay[local]
-private predicate overlayHasFile(string path) {
-  isOverlay() and
-  files(_, path) and
-  path != ""
+private predicate locallyInTrapOrTag(boolean isOverlayVariant, @element e, @trap_or_tag t) {
+  (if isOverlay() then isOverlayVariant = true else isOverlayVariant = false) and
+  in_trap_or_tag(e, t)
 }
 
 /**
  * Discards an element from the base variant if:
- * - It has a single location in a file extracted in the overlay, or
- * - All of its locations are in files extracted in the overlay.
+ * - We have knowledge about what TRAP file or tag it is in (in the base).
+ * - It is not in any overlay TRAP file or tag that is reachable from an overlay source file.
+ * - For every base TRAP file or tag that contains it and is reachable from a base source file,
+ *   either the source file has changed, or the overlay has redefined the TRAP file or tag,
+ *   or the overlay runner has re-extracted the same source file.
  */
 overlay[discard_entity]
 private predicate discardElement(@element e) {
-  isBase() and
-  (
-    overlayHasFile(getSingleLocationFilePath(e))
-    or
-    forex(string path | path = getMultiLocationFilePath(e) | overlayHasFile(path))
+  // If we don't have any knowledge about what TRAP file something
+  // is in, then we don't want to discard it, so we only consider
+  // entities that are known to be in a base TRAP file or tag.
+  locallyInTrapOrTag(false, e, _) and
+  // Anything that is reachable from an overlay source file should
+  // not be discarded.
+  not exists(@trap_or_tag t | locallyInTrapOrTag(true, e, t) |
+    locallyReachableTrapOrTag(true, _, t)
+  ) and
+  // Finally, we have to make sure the base variant does not retain it.
+  // If it is reachable from a base source file, then that is
+  // sufficient unless either the base source file has changed (in
+  // particular, been deleted), or the overlay has redefined the TRAP
+  // file or tag it is in, or the overlay runner has re-extracted the same
+  // source file (e.g. because a header it includes has changed).
+  forall(@trap_or_tag t, string sourceFile |
+    locallyInTrapOrTag(false, e, t) and
+    locallyReachableTrapOrTag(false, sourceFile, t)
+  |
+    overlayChangedFiles(sourceFile) or
+    locallyReachableTrapOrTag(true, _, t) or
+    locallyReachableTrapOrTag(true, sourceFile, _)
   )
 }

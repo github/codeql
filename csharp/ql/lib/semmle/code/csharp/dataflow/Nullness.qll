@@ -42,7 +42,7 @@ private Expr maybeNullExpr(Expr reason) {
       ce.getElse() = maybeNullExpr(reason)
     )
   or
-  result.(NullCoalescingExpr).getRightOperand() = maybeNullExpr(reason)
+  result.(NullCoalescingOperation).getRightOperand() = maybeNullExpr(reason)
   or
   result =
     any(QualifiableExpr qe |

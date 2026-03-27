@@ -597,6 +597,12 @@ module Make<
   module Logic<LogicInputSig LogicInput> {
     private import LogicInput
 
+    bindingset[bb1, bb2]
+    pragma[inline_late]
+    private predicate strictlyDominatesCheck(BasicBlock bb1, BasicBlock bb2) {
+      bb1.strictlyDominates(bb2)
+    }
+
     /**
      * Holds if `guard` evaluating to `v` directly controls `phi` taking the value
      * `inp`. This means that `guard` evaluating to `v` must control all the input
@@ -614,7 +620,7 @@ module Make<
       exists(BasicBlock bbPhi |
         phi.hasInputFromBlock(inp, _) and
         phi.getBasicBlock() = bbPhi and
-        guard.getBasicBlock().strictlyDominates(bbPhi) and
+        strictlyDominatesCheck(guard.getBasicBlock(), bbPhi) and
         not guard.directlyValueControls(bbPhi, _) and
         forex(BasicBlock bbInput | phi.hasInputFromBlock(inp, bbInput) |
           guard.directlyValueControls(bbInput, v) or
@@ -634,7 +640,11 @@ module Make<
       Guard guard, GuardValue v, SsaPhiDefinition phi, Expr input
     ) {
       exists(GuardValue dv, SsaExplicitWrite inp |
-        guardControlsPhiBranch(guard, v, phi, inp) and
+        // The `forall` below implies that there's only one `inp` guarded by
+        // `guard == v`, but checking this upfront using `unique` as opposed to
+        // merely stating `guardControlsPhiBranch(guard, v, phi, inp)` improves
+        // performance of the `forall` check.
+        inp = unique(SsaDefinition inp0 | guardControlsPhiBranch(guard, v, phi, inp0)) and
         inp.getValue() = input and
         dv = v.getDualValue() and
         forall(SsaDefinition other | phi.hasInputFromBlock(other, _) and other != inp |
@@ -735,7 +745,7 @@ module Make<
       possibleValue(v, false, e, k) and
       not possibleValue(v, true, e, k) and
       // there's only one expression with the value `k`
-      1 = strictcount(Expr e0 | possibleValue(v, _, e0, k)) and
+      e = unique(Expr e0 | possibleValue(v, _, e0, k)) and
       // and `v` has at least two possible values
       2 <= strictcount(GuardValue k0 | possibleValue(v, _, _, k0))
     }

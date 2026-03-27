@@ -33,6 +33,8 @@ module DisabledCertificateCheckConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof Sink }
 
+  predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+
   predicate observeDiffInformedIncrementalMode() { any() }
 }
 

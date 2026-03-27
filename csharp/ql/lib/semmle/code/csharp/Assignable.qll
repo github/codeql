@@ -78,6 +78,8 @@ class AssignableRead extends AssignableAccess {
       this.isRefArgument()
       or
       this = any(AssignableDefinitions::AddressOfDefinition def).getTargetAccess()
+      or
+      this = any(AssignableDefinitions::AssignOperationDefinition def).getTargetAccess()
     ) and
     not nameOfChild(_, this)
   }
@@ -271,6 +273,8 @@ module AssignableInternal {
     def = TAddressOfDefinition(result)
     or
     def = TPatternDefinition(result)
+    or
+    def = TAssignOperationDefinition(result)
   }
 
   /** A local variable declaration at the top-level of a pattern. */
@@ -286,7 +290,11 @@ module AssignableInternal {
   private module Cached {
     cached
     newtype TAssignableDefinition =
-      TAssignmentDefinition(Assignment a) { not a.getLValue() instanceof TupleExpr } or
+      TAssignmentDefinition(Assignment a) {
+        not a.getLValue() instanceof TupleExpr and
+        not a instanceof AssignCallOperation and
+        not a instanceof AssignCoalesceExpr
+      } or
       TTupleAssignmentDefinition(AssignExpr ae, Expr leaf) { tupleAssignmentDefinition(ae, leaf) } or
       TOutRefDefinition(AssignableAccess aa) {
         aa.isOutArgument()
@@ -309,7 +317,11 @@ module AssignableInternal {
         )
       } or
       TAddressOfDefinition(AddressOfExpr aoe) or
-      TPatternDefinition(TopLevelPatternDecl tlpd)
+      TPatternDefinition(TopLevelPatternDecl tlpd) or
+      TAssignOperationDefinition(AssignOperation ao) {
+        ao instanceof AssignCallOperation or
+        ao instanceof AssignCoalesceExpr
+      }
 
     /**
      * Gets the source expression assigned in tuple definition `def`, if any.
@@ -355,6 +367,8 @@ module AssignableInternal {
       def = TMutationDefinition(any(MutatorOperation mo | mo.getOperand() = result))
       or
       def = TAddressOfDefinition(any(AddressOfExpr aoe | aoe.getOperand() = result))
+      or
+      def = TAssignOperationDefinition(any(AssignOperation ao | ao.getLeftOperand() = result))
     }
 
     /**
@@ -369,8 +383,10 @@ module AssignableInternal {
       or
       exists(Assignment ass | ac = ass.getLValue() |
         result = ass.getRValue() and
-        not ass.(AssignOperation).hasExpandedAssignment()
+        not ass instanceof AssignOperation
       )
+      or
+      exists(AssignOperation ao | ac = ao.getLeftOperand() | result = ao)
     }
   }
 
@@ -388,8 +404,9 @@ private import AssignableInternal
  * a mutation update (`AssignableDefinitions::MutationDefinition`), a local variable
  * declaration without an initializer (`AssignableDefinitions::LocalVariableDefinition`),
  * an implicit parameter definition (`AssignableDefinitions::ImplicitParameterDefinition`),
- * an address-of definition (`AssignableDefinitions::AddressOfDefinition`), or a pattern
- * definition (`AssignableDefinitions::PatternDefinition`).
+ * an address-of definition (`AssignableDefinitions::AddressOfDefinition`), a pattern
+ * definition (`AssignableDefinitions::PatternDefinition`), or a compound assignment
+ * operation definition (`AssignableDefinitions::AssignOperationDefinition`)
  */
 class AssignableDefinition extends TAssignableDefinition {
   /**
@@ -511,7 +528,7 @@ module AssignableDefinitions {
 
     override Expr getSource() {
       result = a.getRValue() and
-      not a instanceof AssignOperation
+      not a instanceof AddOrRemoveEventExpr
     }
 
     override string toString() { result = a.toString() }
@@ -734,5 +751,18 @@ module AssignableDefinitions {
 
     /** Gets the assignable (field or property) being initialized. */
     Assignable getAssignable() { result = fieldOrProp }
+  }
+
+  /**
+   * A definition by a compound assignment operation, for example `x += y`.
+   */
+  class AssignOperationDefinition extends AssignableDefinition, TAssignOperationDefinition {
+    AssignOperation ao;
+
+    AssignOperationDefinition() { this = TAssignOperationDefinition(ao) }
+
+    override Expr getSource() { result = ao }
+
+    override string toString() { result = ao.toString() }
   }
 }

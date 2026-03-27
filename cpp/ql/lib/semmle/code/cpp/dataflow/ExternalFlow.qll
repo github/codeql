@@ -353,12 +353,26 @@ module CsvValidation {
     )
   }
 
+  private string getIncorrectConstructorSummaryOutput() {
+    exists(string namespace, string type, string name, string output |
+      type = name or
+      type = name + "<" + any(string s)
+    |
+      summaryModel(namespace, type, _, name, _, _, _, output, _, _, _) and
+      output.matches("ReturnValue%") and
+      result =
+        "Constructor model for " + namespace + "." + type +
+          " should use `Argument[this]` in the output, not `ReturnValue`."
+    )
+  }
+
   /** Holds if some row in a CSV-based flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), KindVal::getInvalidModelKind()
+        getInvalidModelSubtype(), getInvalidModelColumnCount(), KindVal::getInvalidModelKind(),
+        getIncorrectConstructorSummaryOutput()
       ]
   }
 }
@@ -555,6 +569,7 @@ private Locatable getSupportedFunctionTemplateArgument(Function templateFunction
  * Normalize the `n`'th parameter of `f` by replacing template names
  * with `func:N` (where `N` is the index of the template).
  */
+pragma[nomagic]
 private string getTypeNameWithoutFunctionTemplates(Function f, int n, int remaining) {
   exists(Function templateFunction |
     templateFunction = getFullyTemplatedFunction(f) and

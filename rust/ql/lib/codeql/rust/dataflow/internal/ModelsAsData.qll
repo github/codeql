@@ -44,6 +44,7 @@
  */
 
 private import rust
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
@@ -90,6 +91,38 @@ extensible predicate summaryModel(
 );
 
 /**
+ * Holds if a neutral model exists for the function with canonical path `path`.  The only
+ * effect of a neutral model is to prevent generated and inherited models of the corresponding
+ * `kind` (`source`, `sink` or `summary`) from being applied to that function.
+ */
+extensible predicate neutralModel(
+  string path, string kind, string provenance, QlBuiltins::ExtensionId madId
+);
+
+/**
+ * Holds if in a call to the function with canonical path `path`, the value referred
+ * to by `output` is a barrier of the given `kind` and `madId` is the data
+ * extension row number.
+ */
+extensible predicate barrierModel(
+  string path, string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+);
+
+/**
+ * Holds if in a call to the function with canonical path `path`, the value referred
+ * to by `input` is a barrier guard of the given `kind` and `madId` is the data
+ * extension row number.
+ *
+ * The value referred to by `input` is assumed to lead to an argument of a call
+ * (possibly `self`), and the call is guarding the argument. `branch` is either `true`
+ * or `false`, indicating which branch of the guard is protecting the argument.
+ */
+extensible predicate barrierGuardModel(
+  string path, string input, string branch, string kind, string provenance,
+  QlBuiltins::ExtensionId madId
+);
+
+/**
  * Holds if the given extension tuple `madId` should pretty-print as `model`.
  *
  * This predicate should only be used in tests.
@@ -109,6 +142,21 @@ predicate interpretModelForTest(QlBuiltins::ExtensionId madId, string model) {
     summaryModel(path, input, output, kind, _, madId) and
     model = "Summary: " + path + "; " + input + "; " + output + "; " + kind
   )
+  or
+  exists(string path, string kind |
+    neutralModel(path, kind, _, madId) and
+    model = "Neutral: " + path + "; " + kind
+  )
+  or
+  exists(string path, string output, string kind |
+    barrierModel(path, output, kind, _, madId) and
+    model = "Barrier: " + path + "; " + output + "; " + kind
+  )
+  or
+  exists(string path, string input, string branch, string kind |
+    barrierGuardModel(path, input, branch, kind, _, madId) and
+    model = "Barrier guard: " + path + "; " + input + "; " + branch + "; " + kind
+  )
 }
 
 private class SummarizedCallableFromModel extends SummarizedCallable::Range {
@@ -124,7 +172,9 @@ private class SummarizedCallableFromModel extends SummarizedCallable::Range {
       summaryModel(path, input_, output_, kind, p, madId) and
       f.getCanonicalPath() = path
     |
-      this = f and isExact_ = true and p_ = p
+      this = f and
+      isExact_ = true and
+      p_ = p
       or
       this.implements(f) and
       isExact_ = false and
@@ -158,6 +208,12 @@ private class FlowSourceFromModel extends FlowSource::Range {
     exists(QlBuiltins::ExtensionId madId |
       sourceModel(path, output, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
+    ) and
+    // Only apply generated models when no neutral model exists
+    // (the shared code only applies neutral models to summaries at present)
+    not (
+      provenance.isGenerated() and
+      neutralModel(path, "source", _, _)
     )
   }
 }
@@ -173,6 +229,46 @@ private class FlowSinkFromModel extends FlowSink::Range {
   override predicate isSink(string input, string kind, Provenance provenance, string model) {
     exists(QlBuiltins::ExtensionId madId |
       sinkModel(path, input, kind, provenance, madId) and
+      model = "MaD:" + madId.toString()
+    ) and
+    // Only apply generated models when no neutral model exists
+    // (the shared code only applies neutral models to summaries at present)
+    not (
+      provenance.isGenerated() and
+      neutralModel(path, "sink", _, _)
+    )
+  }
+}
+
+private class FlowBarrierFromModel extends FlowBarrier::Range {
+  private string path;
+
+  FlowBarrierFromModel() {
+    barrierModel(path, _, _, _, _) and
+    this.callResolvesTo(path)
+  }
+
+  override predicate isBarrier(string output, string kind, Provenance provenance, string model) {
+    exists(QlBuiltins::ExtensionId madId |
+      barrierModel(path, output, kind, provenance, madId) and
+      model = "MaD:" + madId.toString()
+    )
+  }
+}
+
+private class FlowBarrierGuardFromModel extends FlowBarrierGuard::Range {
+  private string path;
+
+  FlowBarrierGuardFromModel() {
+    barrierGuardModel(path, _, _, _, _, _) and
+    this.callResolvesTo(path)
+  }
+
+  override predicate isBarrierGuard(
+    string input, string branch, string kind, Provenance provenance, string model
+  ) {
+    exists(QlBuiltins::ExtensionId madId |
+      barrierGuardModel(path, input, branch, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
     )
   }

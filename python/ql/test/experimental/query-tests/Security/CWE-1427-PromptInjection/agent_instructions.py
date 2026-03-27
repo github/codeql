@@ -6,7 +6,7 @@ app = Flask(__name__)
 def get_input1():
     input = request.args.get("input")
 
-    agent = Agent(name="Assistant", instructions="This prompt is customized for " + input) # $Alert[py/prompt-injection]
+    agent = Agent(name="Assistant", instructions="This prompt is customized for " + input) # $ Alert[py/prompt-injection]
 
     result = Runner.run_sync(agent, "This is a user message.")
     print(result.final_output)
@@ -22,9 +22,9 @@ def get_input2():
         input=[
             {
                 "role": "user",
-                "content": input, # $Alert[py/prompt-injection]
+                "content": input, # $ Alert[py/prompt-injection]
             }
-        ] 
+        ]
     )
 
     result2 = Runner.run_sync(
@@ -32,7 +32,7 @@ def get_input2():
         [
             {
                 "role": "user",
-                "content": input, # $Alert[py/prompt-injection]
+                "content": input, # $ Alert[py/prompt-injection]
             }
-        ] 
+        ]
     )

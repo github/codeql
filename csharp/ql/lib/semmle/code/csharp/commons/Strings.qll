@@ -49,6 +49,11 @@ class ImplicitToStringExpr extends Expr {
       this = add.getOtherOperand(o).stripImplicit()
     )
     or
+    exists(AssignAddExpr add, Expr o | o = add.getLeftOperand() |
+      o.stripImplicit().getType() instanceof StringType and
+      this = add.getRightOperand().stripImplicit()
+    )
+    or
     this = any(InterpolatedStringExpr ise).getAnInsert().stripImplicit()
   }
 }

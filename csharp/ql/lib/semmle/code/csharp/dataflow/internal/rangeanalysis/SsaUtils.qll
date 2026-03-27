@@ -29,7 +29,7 @@ ExprNode getAnExplicitDefinitionRead(ExprNode src) {
 ExprNode ssaRead(Definition v, int delta) {
   exists(v.getAReadAtNode(result)) and delta = 0
   or
-  exists(ExprNode::AddExpr add, int d1, ConstantIntegerExpr c |
+  exists(ExprNode::AddOperation add, int d1, ConstantIntegerExpr c |
     result = add and
     delta = d1 - c.getIntValue()
   |
@@ -38,7 +38,7 @@ ExprNode ssaRead(Definition v, int delta) {
     add.getRightOperand() = ssaRead(v, d1) and add.getLeftOperand() = c
   )
   or
-  exists(ExprNode::SubExpr sub, int d1, ConstantIntegerExpr c |
+  exists(ExprNode::SubOperation sub, int d1, ConstantIntegerExpr c |
     result = sub and
     sub.getLeftOperand() = ssaRead(v, d1) and
     sub.getRightOperand() = c and

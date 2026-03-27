@@ -33,6 +33,11 @@ public class LogForgingHandler : IHttpHandler
         Microsoft.Extensions.Logging.ILogger logger2 = null;
         // BAD: Logged as-is
         logger2.LogError(username); // $ Alert
+
+        // GOOD: uses safe extension method that sanitizes internally
+        logger.WarnSafe(username + " logged in");
+        // BAD: uses unsafe extension method that does not sanitize
+        logger.WarnUnsafe(username + " logged in");
     }
 
     public bool IsReusable
@@ -41,5 +46,18 @@ public class LogForgingHandler : IHttpHandler
         {
             return true;
         }
+    }
+}
+
+static class UserLoggerExtensions
+{
+    public static void WarnSafe(this ILogger logger, string message)
+    {
+        logger.Warn(message.ReplaceLineEndings(""));
+    }
+
+    public static void WarnUnsafe(this ILogger logger, string message)
+    {
+        logger.Warn(message); // $ Alert
     }
 }

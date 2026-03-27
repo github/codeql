@@ -11,11 +11,11 @@ class Test extends Activity {
     void test(String password) {
         EditText test1 = findViewById(R.id.test1);
         // BAD: Exposing sensitive data to text view
-        test1.setText(password); // $sensitive-text
-        test1.setHint(password); // $sensitive-text
-        test1.append(password); // $sensitive-text
+        test1.setText(password); // $ sensitive-text
+        test1.setHint(password); // $ sensitive-text
+        test1.append(password); // $ sensitive-text
         // GOOD: resource constant is not sensitive info
-        test1.setText(R.string.password_prompt); 
+        test1.setText(R.string.password_prompt);
 
         // GOOD: Visibility is dynamically set
         TextView test2 = findViewById(R.id.test2);
@@ -47,7 +47,7 @@ class Test extends Activity {
 
         // BAD: Input type set to textVisiblePassword in XML, which is not hidden
         EditText test9 = findViewById(R.id.test9);
-        test9.setText(password); // $sensitive-text
+        test9.setText(password); // $ sensitive-text
 
         // GOOD: Visibility set to invisible in XML
         EditText test10 = findViewById(R.id.test10);

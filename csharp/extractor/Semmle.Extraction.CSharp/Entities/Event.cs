@@ -11,10 +11,6 @@ namespace Semmle.Extraction.CSharp.Entities
         private Event(Context cx, IEventSymbol init)
             : base(cx, init) { }
 
-        protected override IEventSymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
-
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => BodyDeclaringSymbol.Locations.BestOrDefault();
-
         public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(ContainingType!);
@@ -31,8 +27,8 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type.Create(Context, Symbol.Type);
             trapFile.events(this, Symbol.GetName(), ContainingType!, type.TypeRef, Create(Context, Symbol.OriginalDefinition));
 
-            var adder = BodyDeclaringSymbol.AddMethod;
-            var remover = BodyDeclaringSymbol.RemoveMethod;
+            var adder = Symbol.AddMethod;
+            var remover = Symbol.RemoveMethod;
 
             if (adder is not null)
                 Method.Create(Context, adder);
@@ -76,7 +72,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol);
+        public static Event Create(Context cx, IEventSymbol symbol) => EventFactory.Instance.CreateEntityFromSymbol(cx, symbol.GetBodyDeclaringSymbol());
 
         private class EventFactory : CachedEntityFactory<IEventSymbol, Event>
         {

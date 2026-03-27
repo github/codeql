@@ -47,4 +47,8 @@ module NosqlInjection {
 
   /** An expression interpreted as a NoSql query, viewed as a sink. */
   class NosqlQuerySink extends Sink instanceof NoSql::Query { }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "nosql-injection") }
+  }
 }

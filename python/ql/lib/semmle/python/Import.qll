@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 private import semmle.python.types.Builtins
 private import semmle.python.internal.CachedStages
@@ -14,6 +17,10 @@ private predicate valid_module_name(string name) {
   exists(Module m | m.getName() = name)
   or
   exists(Builtin cmod | cmod.getClass() = Builtin::special("ModuleType") and cmod.getName() = name)
+  or
+  // Namespace packages may not have a corresponding Module entity,
+  // but their names are still valid for the purpose of import resolution.
+  name = moduleNameFromFile(any(Folder f))
 }
 
 /** An artificial expression representing an import */

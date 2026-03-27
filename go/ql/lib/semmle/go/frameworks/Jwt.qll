@@ -2,6 +2,8 @@
  * Provides classes and predicates for working with the `github.com/golang-jwt/jwt` and
  * `github.com/dgrijalva/jwt-go` packages.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.MissingJwtSignatureCheckCustomizations::MissingJwtSignatureCheck

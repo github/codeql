@@ -397,6 +397,12 @@ private predicate neither_class_nor_static_method(Function f) {
   )
 }
 
+/** Join-order helper for `missing_imported_module`. */
+pragma[nomagic]
+private predicate module_has_syntaxerror(Module m) {
+  exists(SyntaxError se | se.getFile() = m.getFile())
+}
+
 predicate missing_imported_module(ControlFlowNode imp, Context ctx, string name) {
   ctx.isImport() and
   imp.(ImportExprNode).getNode().getAnImportedModuleName() = name and
@@ -404,9 +410,9 @@ predicate missing_imported_module(ControlFlowNode imp, Context ctx, string name)
     not exists(Module m | m.getName() = name) and
     not exists(Builtin b | b.isModule() and b.getName() = name)
     or
-    exists(Module m, SyntaxError se |
+    exists(Module m |
       m.getName() = name and
-      se.getFile() = m.getFile()
+      module_has_syntaxerror(m)
     )
   )
   or

@@ -43,7 +43,7 @@ module ConstCondImpl = ConstCond::Make<Location, Cfg, ConstCondInput>;
 predicate nullCheck(Expr e, boolean direct) {
   exists(QualifiableExpr qe | qe.isConditional() and qe.getQualifier() = e and direct = true)
   or
-  exists(NullCoalescingExpr nce | nce.getLeftOperand() = e and direct = true)
+  exists(NullCoalescingOperation nce | nce.getLeftOperand() = e and direct = true)
   or
   exists(ConditionalExpr ce | ce.getThen() = e or ce.getElse() = e |
     nullCheck(ce, _) and direct = false
@@ -114,7 +114,7 @@ class ConstantBooleanCondition extends ConstantCondition {
 
   override predicate isWhiteListed() {
     // E.g. `x ?? false`
-    this.(BoolLiteral) = any(NullCoalescingExpr nce).getRightOperand() or
+    this.(BoolLiteral) = any(NullCoalescingOperation nce).getRightOperand() or
     // No need to flag logical operations when the operands are constant
     isConstantCondition(this.(LogicalNotExpr).getOperand(), _) or
     this =

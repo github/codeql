@@ -404,14 +404,14 @@ edges
 | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | ApacheHttpSSRF.java:58:43:58:45 | uri | provenance | Sink:MaD:226 |
 | ApacheHttpSSRF.java:28:31:28:34 | sink : String | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | provenance | Config |
 | ApacheHttpSSRF.java:28:31:28:34 | sink : String | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | provenance | MaD:285 |
-| ApacheHttpSSRF.java:42:62:42:64 | uri : URI | ApacheHttpSSRF.java:42:62:42:75 | toString(...) : String | provenance | MaD:286 |
-| ApacheHttpSSRF.java:42:62:42:75 | toString(...) : String | ApacheHttpSSRF.java:42:34:42:82 | new BasicRequestLine(...) | provenance | MaD:295 Sink:MaD:231 |
-| ApacheHttpSSRF.java:43:41:43:43 | uri : URI | ApacheHttpSSRF.java:43:41:43:54 | toString(...) | provenance | MaD:286 Sink:MaD:232 |
-| ApacheHttpSSRF.java:44:41:44:43 | uri : URI | ApacheHttpSSRF.java:44:41:44:54 | toString(...) | provenance | MaD:286 Sink:MaD:233 |
-| ApacheHttpSSRF.java:46:77:46:79 | uri : URI | ApacheHttpSSRF.java:46:77:46:90 | toString(...) : String | provenance | MaD:286 |
-| ApacheHttpSSRF.java:46:77:46:90 | toString(...) : String | ApacheHttpSSRF.java:46:49:46:97 | new BasicRequestLine(...) | provenance | MaD:295 Sink:MaD:228 |
-| ApacheHttpSSRF.java:47:56:47:58 | uri : URI | ApacheHttpSSRF.java:47:56:47:69 | toString(...) | provenance | MaD:286 Sink:MaD:229 |
-| ApacheHttpSSRF.java:48:56:48:58 | uri : URI | ApacheHttpSSRF.java:48:56:48:69 | toString(...) | provenance | MaD:286 Sink:MaD:230 |
+| ApacheHttpSSRF.java:42:62:42:64 | uri : URI | ApacheHttpSSRF.java:42:62:42:75 | toString(...) : String | provenance | MaD:287 |
+| ApacheHttpSSRF.java:42:62:42:75 | toString(...) : String | ApacheHttpSSRF.java:42:34:42:82 | new BasicRequestLine(...) | provenance | MaD:296 Sink:MaD:231 |
+| ApacheHttpSSRF.java:43:41:43:43 | uri : URI | ApacheHttpSSRF.java:43:41:43:54 | toString(...) | provenance | MaD:287 Sink:MaD:232 |
+| ApacheHttpSSRF.java:44:41:44:43 | uri : URI | ApacheHttpSSRF.java:44:41:44:54 | toString(...) | provenance | MaD:287 Sink:MaD:233 |
+| ApacheHttpSSRF.java:46:77:46:79 | uri : URI | ApacheHttpSSRF.java:46:77:46:90 | toString(...) : String | provenance | MaD:287 |
+| ApacheHttpSSRF.java:46:77:46:90 | toString(...) : String | ApacheHttpSSRF.java:46:49:46:97 | new BasicRequestLine(...) | provenance | MaD:296 Sink:MaD:228 |
+| ApacheHttpSSRF.java:47:56:47:58 | uri : URI | ApacheHttpSSRF.java:47:56:47:69 | toString(...) | provenance | MaD:287 Sink:MaD:229 |
+| ApacheHttpSSRF.java:48:56:48:58 | uri : URI | ApacheHttpSSRF.java:48:56:48:69 | toString(...) | provenance | MaD:287 Sink:MaD:230 |
 | ApacheHttpSSRFVersion5.java:41:30:41:56 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:42:31:42:37 | uriSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:42:23:42:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:49:54:49:56 | uri : URI | provenance |  |
 | ApacheHttpSSRFVersion5.java:42:23:42:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:50:54:50:56 | uri | provenance | Sink:MaD:40 |
@@ -503,37 +503,37 @@ edges
 | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:132:36:132:39 | host | provenance | Sink:MaD:100 |
 | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:136:38:136:41 | host | provenance | Sink:MaD:103 |
 | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:162:52:162:55 | host | provenance | Sink:MaD:204 |
-| ApacheHttpSSRFVersion5.java:45:42:45:49 | hostSink : String | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | provenance | MaD:294 |
-| ApacheHttpSSRFVersion5.java:49:54:49:56 | uri : URI | ApacheHttpSSRFVersion5.java:49:54:49:67 | toString(...) | provenance | MaD:286 Sink:MaD:39 |
-| ApacheHttpSSRFVersion5.java:51:48:51:50 | uri : URI | ApacheHttpSSRFVersion5.java:51:48:51:61 | toString(...) | provenance | MaD:286 Sink:MaD:41 |
-| ApacheHttpSSRFVersion5.java:55:38:55:40 | uri : URI | ApacheHttpSSRFVersion5.java:55:38:55:51 | toString(...) | provenance | MaD:286 Sink:MaD:44 |
-| ApacheHttpSSRFVersion5.java:59:35:59:37 | uri : URI | ApacheHttpSSRFVersion5.java:59:35:59:48 | toString(...) | provenance | MaD:286 Sink:MaD:47 |
-| ApacheHttpSSRFVersion5.java:63:36:63:38 | uri : URI | ApacheHttpSSRFVersion5.java:63:36:63:49 | toString(...) | provenance | MaD:286 Sink:MaD:50 |
-| ApacheHttpSSRFVersion5.java:67:39:67:41 | uri : URI | ApacheHttpSSRFVersion5.java:67:39:67:52 | toString(...) | provenance | MaD:286 Sink:MaD:53 |
-| ApacheHttpSSRFVersion5.java:71:37:71:39 | uri : URI | ApacheHttpSSRFVersion5.java:71:37:71:50 | toString(...) | provenance | MaD:286 Sink:MaD:56 |
-| ApacheHttpSSRFVersion5.java:75:36:75:38 | uri : URI | ApacheHttpSSRFVersion5.java:75:36:75:49 | toString(...) | provenance | MaD:286 Sink:MaD:59 |
-| ApacheHttpSSRFVersion5.java:79:35:79:37 | uri : URI | ApacheHttpSSRFVersion5.java:79:35:79:48 | toString(...) | provenance | MaD:286 Sink:MaD:62 |
-| ApacheHttpSSRFVersion5.java:83:37:83:39 | uri : URI | ApacheHttpSSRFVersion5.java:83:37:83:50 | toString(...) | provenance | MaD:286 Sink:MaD:65 |
-| ApacheHttpSSRFVersion5.java:98:48:98:50 | uri : URI | ApacheHttpSSRFVersion5.java:98:48:98:61 | toString(...) | provenance | MaD:286 Sink:MaD:75 |
-| ApacheHttpSSRFVersion5.java:103:55:103:57 | uri : URI | ApacheHttpSSRFVersion5.java:103:55:103:68 | toString(...) | provenance | MaD:286 Sink:MaD:78 |
-| ApacheHttpSSRFVersion5.java:105:49:105:51 | uri : URI | ApacheHttpSSRFVersion5.java:105:49:105:62 | toString(...) | provenance | MaD:286 Sink:MaD:80 |
-| ApacheHttpSSRFVersion5.java:109:39:109:41 | uri : URI | ApacheHttpSSRFVersion5.java:109:39:109:52 | toString(...) | provenance | MaD:286 Sink:MaD:83 |
-| ApacheHttpSSRFVersion5.java:113:36:113:38 | uri : URI | ApacheHttpSSRFVersion5.java:113:36:113:49 | toString(...) | provenance | MaD:286 Sink:MaD:86 |
-| ApacheHttpSSRFVersion5.java:117:37:117:39 | uri : URI | ApacheHttpSSRFVersion5.java:117:37:117:50 | toString(...) | provenance | MaD:286 Sink:MaD:89 |
-| ApacheHttpSSRFVersion5.java:121:40:121:42 | uri : URI | ApacheHttpSSRFVersion5.java:121:40:121:53 | toString(...) | provenance | MaD:286 Sink:MaD:92 |
-| ApacheHttpSSRFVersion5.java:125:38:125:40 | uri : URI | ApacheHttpSSRFVersion5.java:125:38:125:51 | toString(...) | provenance | MaD:286 Sink:MaD:95 |
-| ApacheHttpSSRFVersion5.java:129:37:129:39 | uri : URI | ApacheHttpSSRFVersion5.java:129:37:129:50 | toString(...) | provenance | MaD:286 Sink:MaD:98 |
-| ApacheHttpSSRFVersion5.java:133:36:133:38 | uri : URI | ApacheHttpSSRFVersion5.java:133:36:133:49 | toString(...) | provenance | MaD:286 Sink:MaD:101 |
-| ApacheHttpSSRFVersion5.java:137:38:137:40 | uri : URI | ApacheHttpSSRFVersion5.java:137:38:137:51 | toString(...) | provenance | MaD:286 Sink:MaD:104 |
-| ApacheHttpSSRFVersion5.java:141:41:141:43 | uri : URI | ApacheHttpSSRFVersion5.java:141:41:141:54 | toString(...) | provenance | MaD:286 Sink:MaD:106 |
-| ApacheHttpSSRFVersion5.java:144:38:144:40 | uri : URI | ApacheHttpSSRFVersion5.java:144:38:144:51 | toString(...) | provenance | MaD:286 Sink:MaD:108 |
-| ApacheHttpSSRFVersion5.java:147:39:147:41 | uri : URI | ApacheHttpSSRFVersion5.java:147:39:147:52 | toString(...) | provenance | MaD:286 Sink:MaD:110 |
-| ApacheHttpSSRFVersion5.java:150:42:150:44 | uri : URI | ApacheHttpSSRFVersion5.java:150:42:150:55 | toString(...) | provenance | MaD:286 Sink:MaD:112 |
-| ApacheHttpSSRFVersion5.java:153:40:153:42 | uri : URI | ApacheHttpSSRFVersion5.java:153:40:153:53 | toString(...) | provenance | MaD:286 Sink:MaD:114 |
-| ApacheHttpSSRFVersion5.java:156:39:156:41 | uri : URI | ApacheHttpSSRFVersion5.java:156:39:156:52 | toString(...) | provenance | MaD:286 Sink:MaD:116 |
-| ApacheHttpSSRFVersion5.java:159:38:159:40 | uri : URI | ApacheHttpSSRFVersion5.java:159:38:159:51 | toString(...) | provenance | MaD:286 Sink:MaD:118 |
-| ApacheHttpSSRFVersion5.java:164:47:164:49 | uri : URI | ApacheHttpSSRFVersion5.java:164:47:164:60 | toString(...) | provenance | MaD:286 Sink:MaD:205 |
-| ApacheHttpSSRFVersion5.java:167:40:167:42 | uri : URI | ApacheHttpSSRFVersion5.java:167:40:167:53 | toString(...) | provenance | MaD:286 Sink:MaD:120 |
+| ApacheHttpSSRFVersion5.java:45:42:45:49 | hostSink : String | ApacheHttpSSRFVersion5.java:45:29:45:50 | new HttpHost(...) : HttpHost | provenance | MaD:295 |
+| ApacheHttpSSRFVersion5.java:49:54:49:56 | uri : URI | ApacheHttpSSRFVersion5.java:49:54:49:67 | toString(...) | provenance | MaD:287 Sink:MaD:39 |
+| ApacheHttpSSRFVersion5.java:51:48:51:50 | uri : URI | ApacheHttpSSRFVersion5.java:51:48:51:61 | toString(...) | provenance | MaD:287 Sink:MaD:41 |
+| ApacheHttpSSRFVersion5.java:55:38:55:40 | uri : URI | ApacheHttpSSRFVersion5.java:55:38:55:51 | toString(...) | provenance | MaD:287 Sink:MaD:44 |
+| ApacheHttpSSRFVersion5.java:59:35:59:37 | uri : URI | ApacheHttpSSRFVersion5.java:59:35:59:48 | toString(...) | provenance | MaD:287 Sink:MaD:47 |
+| ApacheHttpSSRFVersion5.java:63:36:63:38 | uri : URI | ApacheHttpSSRFVersion5.java:63:36:63:49 | toString(...) | provenance | MaD:287 Sink:MaD:50 |
+| ApacheHttpSSRFVersion5.java:67:39:67:41 | uri : URI | ApacheHttpSSRFVersion5.java:67:39:67:52 | toString(...) | provenance | MaD:287 Sink:MaD:53 |
+| ApacheHttpSSRFVersion5.java:71:37:71:39 | uri : URI | ApacheHttpSSRFVersion5.java:71:37:71:50 | toString(...) | provenance | MaD:287 Sink:MaD:56 |
+| ApacheHttpSSRFVersion5.java:75:36:75:38 | uri : URI | ApacheHttpSSRFVersion5.java:75:36:75:49 | toString(...) | provenance | MaD:287 Sink:MaD:59 |
+| ApacheHttpSSRFVersion5.java:79:35:79:37 | uri : URI | ApacheHttpSSRFVersion5.java:79:35:79:48 | toString(...) | provenance | MaD:287 Sink:MaD:62 |
+| ApacheHttpSSRFVersion5.java:83:37:83:39 | uri : URI | ApacheHttpSSRFVersion5.java:83:37:83:50 | toString(...) | provenance | MaD:287 Sink:MaD:65 |
+| ApacheHttpSSRFVersion5.java:98:48:98:50 | uri : URI | ApacheHttpSSRFVersion5.java:98:48:98:61 | toString(...) | provenance | MaD:287 Sink:MaD:75 |
+| ApacheHttpSSRFVersion5.java:103:55:103:57 | uri : URI | ApacheHttpSSRFVersion5.java:103:55:103:68 | toString(...) | provenance | MaD:287 Sink:MaD:78 |
+| ApacheHttpSSRFVersion5.java:105:49:105:51 | uri : URI | ApacheHttpSSRFVersion5.java:105:49:105:62 | toString(...) | provenance | MaD:287 Sink:MaD:80 |
+| ApacheHttpSSRFVersion5.java:109:39:109:41 | uri : URI | ApacheHttpSSRFVersion5.java:109:39:109:52 | toString(...) | provenance | MaD:287 Sink:MaD:83 |
+| ApacheHttpSSRFVersion5.java:113:36:113:38 | uri : URI | ApacheHttpSSRFVersion5.java:113:36:113:49 | toString(...) | provenance | MaD:287 Sink:MaD:86 |
+| ApacheHttpSSRFVersion5.java:117:37:117:39 | uri : URI | ApacheHttpSSRFVersion5.java:117:37:117:50 | toString(...) | provenance | MaD:287 Sink:MaD:89 |
+| ApacheHttpSSRFVersion5.java:121:40:121:42 | uri : URI | ApacheHttpSSRFVersion5.java:121:40:121:53 | toString(...) | provenance | MaD:287 Sink:MaD:92 |
+| ApacheHttpSSRFVersion5.java:125:38:125:40 | uri : URI | ApacheHttpSSRFVersion5.java:125:38:125:51 | toString(...) | provenance | MaD:287 Sink:MaD:95 |
+| ApacheHttpSSRFVersion5.java:129:37:129:39 | uri : URI | ApacheHttpSSRFVersion5.java:129:37:129:50 | toString(...) | provenance | MaD:287 Sink:MaD:98 |
+| ApacheHttpSSRFVersion5.java:133:36:133:38 | uri : URI | ApacheHttpSSRFVersion5.java:133:36:133:49 | toString(...) | provenance | MaD:287 Sink:MaD:101 |
+| ApacheHttpSSRFVersion5.java:137:38:137:40 | uri : URI | ApacheHttpSSRFVersion5.java:137:38:137:51 | toString(...) | provenance | MaD:287 Sink:MaD:104 |
+| ApacheHttpSSRFVersion5.java:141:41:141:43 | uri : URI | ApacheHttpSSRFVersion5.java:141:41:141:54 | toString(...) | provenance | MaD:287 Sink:MaD:106 |
+| ApacheHttpSSRFVersion5.java:144:38:144:40 | uri : URI | ApacheHttpSSRFVersion5.java:144:38:144:51 | toString(...) | provenance | MaD:287 Sink:MaD:108 |
+| ApacheHttpSSRFVersion5.java:147:39:147:41 | uri : URI | ApacheHttpSSRFVersion5.java:147:39:147:52 | toString(...) | provenance | MaD:287 Sink:MaD:110 |
+| ApacheHttpSSRFVersion5.java:150:42:150:44 | uri : URI | ApacheHttpSSRFVersion5.java:150:42:150:55 | toString(...) | provenance | MaD:287 Sink:MaD:112 |
+| ApacheHttpSSRFVersion5.java:153:40:153:42 | uri : URI | ApacheHttpSSRFVersion5.java:153:40:153:53 | toString(...) | provenance | MaD:287 Sink:MaD:114 |
+| ApacheHttpSSRFVersion5.java:156:39:156:41 | uri : URI | ApacheHttpSSRFVersion5.java:156:39:156:52 | toString(...) | provenance | MaD:287 Sink:MaD:116 |
+| ApacheHttpSSRFVersion5.java:159:38:159:40 | uri : URI | ApacheHttpSSRFVersion5.java:159:38:159:51 | toString(...) | provenance | MaD:287 Sink:MaD:118 |
+| ApacheHttpSSRFVersion5.java:164:47:164:49 | uri : URI | ApacheHttpSSRFVersion5.java:164:47:164:60 | toString(...) | provenance | MaD:287 Sink:MaD:205 |
+| ApacheHttpSSRFVersion5.java:167:40:167:42 | uri : URI | ApacheHttpSSRFVersion5.java:167:40:167:53 | toString(...) | provenance | MaD:287 Sink:MaD:120 |
 | ApacheHttpSSRFVersion5.java:180:30:180:56 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:181:31:181:37 | uriSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:181:23:181:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:184:56:184:58 | uri : URI | provenance |  |
 | ApacheHttpSSRFVersion5.java:181:23:181:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:185:56:185:58 | uri | provenance | Sink:MaD:123 |
@@ -574,24 +574,24 @@ edges
 | ApacheHttpSSRFVersion5.java:181:23:181:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:239:46:239:48 | uri | provenance | Sink:MaD:158 |
 | ApacheHttpSSRFVersion5.java:181:31:181:37 | uriSink : String | ApacheHttpSSRFVersion5.java:181:23:181:38 | new URI(...) : URI | provenance | Config |
 | ApacheHttpSSRFVersion5.java:181:31:181:37 | uriSink : String | ApacheHttpSSRFVersion5.java:181:23:181:38 | new URI(...) : URI | provenance | MaD:285 |
-| ApacheHttpSSRFVersion5.java:184:56:184:58 | uri : URI | ApacheHttpSSRFVersion5.java:184:56:184:69 | toString(...) | provenance | MaD:286 Sink:MaD:122 |
-| ApacheHttpSSRFVersion5.java:186:50:186:52 | uri : URI | ApacheHttpSSRFVersion5.java:186:50:186:63 | toString(...) | provenance | MaD:286 Sink:MaD:124 |
-| ApacheHttpSSRFVersion5.java:189:40:189:42 | uri : URI | ApacheHttpSSRFVersion5.java:189:40:189:53 | toString(...) | provenance | MaD:286 Sink:MaD:126 |
-| ApacheHttpSSRFVersion5.java:192:37:192:39 | uri : URI | ApacheHttpSSRFVersion5.java:192:37:192:50 | toString(...) | provenance | MaD:286 Sink:MaD:128 |
-| ApacheHttpSSRFVersion5.java:195:38:195:40 | uri : URI | ApacheHttpSSRFVersion5.java:195:38:195:51 | toString(...) | provenance | MaD:286 Sink:MaD:130 |
-| ApacheHttpSSRFVersion5.java:198:41:198:43 | uri : URI | ApacheHttpSSRFVersion5.java:198:41:198:54 | toString(...) | provenance | MaD:286 Sink:MaD:132 |
-| ApacheHttpSSRFVersion5.java:201:39:201:41 | uri : URI | ApacheHttpSSRFVersion5.java:201:39:201:52 | toString(...) | provenance | MaD:286 Sink:MaD:134 |
-| ApacheHttpSSRFVersion5.java:204:38:204:40 | uri : URI | ApacheHttpSSRFVersion5.java:204:38:204:51 | toString(...) | provenance | MaD:286 Sink:MaD:136 |
-| ApacheHttpSSRFVersion5.java:207:37:207:39 | uri : URI | ApacheHttpSSRFVersion5.java:207:37:207:50 | toString(...) | provenance | MaD:286 Sink:MaD:138 |
-| ApacheHttpSSRFVersion5.java:210:39:210:41 | uri : URI | ApacheHttpSSRFVersion5.java:210:39:210:52 | toString(...) | provenance | MaD:286 Sink:MaD:140 |
-| ApacheHttpSSRFVersion5.java:214:28:214:30 | uri : URI | ApacheHttpSSRFVersion5.java:214:28:214:41 | toString(...) | provenance | MaD:286 Sink:MaD:142 |
-| ApacheHttpSSRFVersion5.java:217:25:217:27 | uri : URI | ApacheHttpSSRFVersion5.java:217:25:217:38 | toString(...) | provenance | MaD:286 Sink:MaD:144 |
-| ApacheHttpSSRFVersion5.java:220:26:220:28 | uri : URI | ApacheHttpSSRFVersion5.java:220:26:220:39 | toString(...) | provenance | MaD:286 Sink:MaD:146 |
-| ApacheHttpSSRFVersion5.java:223:29:223:31 | uri : URI | ApacheHttpSSRFVersion5.java:223:29:223:42 | toString(...) | provenance | MaD:286 Sink:MaD:148 |
-| ApacheHttpSSRFVersion5.java:226:27:226:29 | uri : URI | ApacheHttpSSRFVersion5.java:226:27:226:40 | toString(...) | provenance | MaD:286 Sink:MaD:150 |
-| ApacheHttpSSRFVersion5.java:229:26:229:28 | uri : URI | ApacheHttpSSRFVersion5.java:229:26:229:39 | toString(...) | provenance | MaD:286 Sink:MaD:152 |
-| ApacheHttpSSRFVersion5.java:232:25:232:27 | uri : URI | ApacheHttpSSRFVersion5.java:232:25:232:38 | toString(...) | provenance | MaD:286 Sink:MaD:154 |
-| ApacheHttpSSRFVersion5.java:235:27:235:29 | uri : URI | ApacheHttpSSRFVersion5.java:235:27:235:40 | toString(...) | provenance | MaD:286 Sink:MaD:156 |
+| ApacheHttpSSRFVersion5.java:184:56:184:58 | uri : URI | ApacheHttpSSRFVersion5.java:184:56:184:69 | toString(...) | provenance | MaD:287 Sink:MaD:122 |
+| ApacheHttpSSRFVersion5.java:186:50:186:52 | uri : URI | ApacheHttpSSRFVersion5.java:186:50:186:63 | toString(...) | provenance | MaD:287 Sink:MaD:124 |
+| ApacheHttpSSRFVersion5.java:189:40:189:42 | uri : URI | ApacheHttpSSRFVersion5.java:189:40:189:53 | toString(...) | provenance | MaD:287 Sink:MaD:126 |
+| ApacheHttpSSRFVersion5.java:192:37:192:39 | uri : URI | ApacheHttpSSRFVersion5.java:192:37:192:50 | toString(...) | provenance | MaD:287 Sink:MaD:128 |
+| ApacheHttpSSRFVersion5.java:195:38:195:40 | uri : URI | ApacheHttpSSRFVersion5.java:195:38:195:51 | toString(...) | provenance | MaD:287 Sink:MaD:130 |
+| ApacheHttpSSRFVersion5.java:198:41:198:43 | uri : URI | ApacheHttpSSRFVersion5.java:198:41:198:54 | toString(...) | provenance | MaD:287 Sink:MaD:132 |
+| ApacheHttpSSRFVersion5.java:201:39:201:41 | uri : URI | ApacheHttpSSRFVersion5.java:201:39:201:52 | toString(...) | provenance | MaD:287 Sink:MaD:134 |
+| ApacheHttpSSRFVersion5.java:204:38:204:40 | uri : URI | ApacheHttpSSRFVersion5.java:204:38:204:51 | toString(...) | provenance | MaD:287 Sink:MaD:136 |
+| ApacheHttpSSRFVersion5.java:207:37:207:39 | uri : URI | ApacheHttpSSRFVersion5.java:207:37:207:50 | toString(...) | provenance | MaD:287 Sink:MaD:138 |
+| ApacheHttpSSRFVersion5.java:210:39:210:41 | uri : URI | ApacheHttpSSRFVersion5.java:210:39:210:52 | toString(...) | provenance | MaD:287 Sink:MaD:140 |
+| ApacheHttpSSRFVersion5.java:214:28:214:30 | uri : URI | ApacheHttpSSRFVersion5.java:214:28:214:41 | toString(...) | provenance | MaD:287 Sink:MaD:142 |
+| ApacheHttpSSRFVersion5.java:217:25:217:27 | uri : URI | ApacheHttpSSRFVersion5.java:217:25:217:38 | toString(...) | provenance | MaD:287 Sink:MaD:144 |
+| ApacheHttpSSRFVersion5.java:220:26:220:28 | uri : URI | ApacheHttpSSRFVersion5.java:220:26:220:39 | toString(...) | provenance | MaD:287 Sink:MaD:146 |
+| ApacheHttpSSRFVersion5.java:223:29:223:31 | uri : URI | ApacheHttpSSRFVersion5.java:223:29:223:42 | toString(...) | provenance | MaD:287 Sink:MaD:148 |
+| ApacheHttpSSRFVersion5.java:226:27:226:29 | uri : URI | ApacheHttpSSRFVersion5.java:226:27:226:40 | toString(...) | provenance | MaD:287 Sink:MaD:150 |
+| ApacheHttpSSRFVersion5.java:229:26:229:28 | uri : URI | ApacheHttpSSRFVersion5.java:229:26:229:39 | toString(...) | provenance | MaD:287 Sink:MaD:152 |
+| ApacheHttpSSRFVersion5.java:232:25:232:27 | uri : URI | ApacheHttpSSRFVersion5.java:232:25:232:38 | toString(...) | provenance | MaD:287 Sink:MaD:154 |
+| ApacheHttpSSRFVersion5.java:235:27:235:29 | uri : URI | ApacheHttpSSRFVersion5.java:235:27:235:40 | toString(...) | provenance | MaD:287 Sink:MaD:156 |
 | ApacheHttpSSRFVersion5.java:251:30:251:56 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:252:31:252:37 | uriSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:252:23:252:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:255:44:255:46 | uri | provenance | Sink:MaD:159 |
 | ApacheHttpSSRFVersion5.java:252:23:252:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:256:38:256:40 | uri : URI | provenance |  |
@@ -614,15 +614,15 @@ edges
 | ApacheHttpSSRFVersion5.java:252:23:252:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:281:27:281:29 | uri | provenance | Sink:MaD:177 |
 | ApacheHttpSSRFVersion5.java:252:31:252:37 | uriSink : String | ApacheHttpSSRFVersion5.java:252:23:252:38 | new URI(...) : URI | provenance | Config |
 | ApacheHttpSSRFVersion5.java:252:31:252:37 | uriSink : String | ApacheHttpSSRFVersion5.java:252:23:252:38 | new URI(...) : URI | provenance | MaD:285 |
-| ApacheHttpSSRFVersion5.java:256:38:256:40 | uri : URI | ApacheHttpSSRFVersion5.java:256:38:256:51 | toString(...) | provenance | MaD:286 Sink:MaD:160 |
-| ApacheHttpSSRFVersion5.java:259:28:259:30 | uri : URI | ApacheHttpSSRFVersion5.java:259:28:259:41 | toString(...) | provenance | MaD:286 Sink:MaD:162 |
-| ApacheHttpSSRFVersion5.java:262:25:262:27 | uri : URI | ApacheHttpSSRFVersion5.java:262:25:262:38 | toString(...) | provenance | MaD:286 Sink:MaD:164 |
-| ApacheHttpSSRFVersion5.java:265:26:265:28 | uri : URI | ApacheHttpSSRFVersion5.java:265:26:265:39 | toString(...) | provenance | MaD:286 Sink:MaD:166 |
-| ApacheHttpSSRFVersion5.java:268:29:268:31 | uri : URI | ApacheHttpSSRFVersion5.java:268:29:268:42 | toString(...) | provenance | MaD:286 Sink:MaD:168 |
-| ApacheHttpSSRFVersion5.java:271:27:271:29 | uri : URI | ApacheHttpSSRFVersion5.java:271:27:271:40 | toString(...) | provenance | MaD:286 Sink:MaD:170 |
-| ApacheHttpSSRFVersion5.java:274:26:274:28 | uri : URI | ApacheHttpSSRFVersion5.java:274:26:274:39 | toString(...) | provenance | MaD:286 Sink:MaD:172 |
-| ApacheHttpSSRFVersion5.java:277:25:277:27 | uri : URI | ApacheHttpSSRFVersion5.java:277:25:277:38 | toString(...) | provenance | MaD:286 Sink:MaD:174 |
-| ApacheHttpSSRFVersion5.java:280:27:280:29 | uri : URI | ApacheHttpSSRFVersion5.java:280:27:280:40 | toString(...) | provenance | MaD:286 Sink:MaD:176 |
+| ApacheHttpSSRFVersion5.java:256:38:256:40 | uri : URI | ApacheHttpSSRFVersion5.java:256:38:256:51 | toString(...) | provenance | MaD:287 Sink:MaD:160 |
+| ApacheHttpSSRFVersion5.java:259:28:259:30 | uri : URI | ApacheHttpSSRFVersion5.java:259:28:259:41 | toString(...) | provenance | MaD:287 Sink:MaD:162 |
+| ApacheHttpSSRFVersion5.java:262:25:262:27 | uri : URI | ApacheHttpSSRFVersion5.java:262:25:262:38 | toString(...) | provenance | MaD:287 Sink:MaD:164 |
+| ApacheHttpSSRFVersion5.java:265:26:265:28 | uri : URI | ApacheHttpSSRFVersion5.java:265:26:265:39 | toString(...) | provenance | MaD:287 Sink:MaD:166 |
+| ApacheHttpSSRFVersion5.java:268:29:268:31 | uri : URI | ApacheHttpSSRFVersion5.java:268:29:268:42 | toString(...) | provenance | MaD:287 Sink:MaD:168 |
+| ApacheHttpSSRFVersion5.java:271:27:271:29 | uri : URI | ApacheHttpSSRFVersion5.java:271:27:271:40 | toString(...) | provenance | MaD:287 Sink:MaD:170 |
+| ApacheHttpSSRFVersion5.java:274:26:274:28 | uri : URI | ApacheHttpSSRFVersion5.java:274:26:274:39 | toString(...) | provenance | MaD:287 Sink:MaD:172 |
+| ApacheHttpSSRFVersion5.java:277:25:277:27 | uri : URI | ApacheHttpSSRFVersion5.java:277:25:277:38 | toString(...) | provenance | MaD:287 Sink:MaD:174 |
+| ApacheHttpSSRFVersion5.java:280:27:280:29 | uri : URI | ApacheHttpSSRFVersion5.java:280:27:280:40 | toString(...) | provenance | MaD:287 Sink:MaD:176 |
 | ApacheHttpSSRFVersion5.java:295:30:295:56 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:296:31:296:37 | uriSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:296:23:296:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:308:60:308:62 | uri : URI | provenance |  |
 | ApacheHttpSSRFVersion5.java:296:23:296:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:309:60:309:62 | uri | provenance | Sink:MaD:209 |
@@ -633,9 +633,9 @@ edges
 | ApacheHttpSSRFVersion5.java:298:31:298:58 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:299:42:299:49 | hostSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:299:29:299:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:303:34:303:37 | host | provenance | Sink:MaD:178 |
 | ApacheHttpSSRFVersion5.java:299:29:299:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:304:34:304:37 | host | provenance | Sink:MaD:179 |
-| ApacheHttpSSRFVersion5.java:299:42:299:49 | hostSink : String | ApacheHttpSSRFVersion5.java:299:29:299:50 | new HttpHost(...) : HttpHost | provenance | MaD:294 |
-| ApacheHttpSSRFVersion5.java:308:60:308:62 | uri : URI | ApacheHttpSSRFVersion5.java:308:60:308:73 | toString(...) | provenance | MaD:286 Sink:MaD:208 |
-| ApacheHttpSSRFVersion5.java:313:53:313:55 | uri : URI | ApacheHttpSSRFVersion5.java:313:53:313:66 | toString(...) | provenance | MaD:286 Sink:MaD:208 |
+| ApacheHttpSSRFVersion5.java:299:42:299:49 | hostSink : String | ApacheHttpSSRFVersion5.java:299:29:299:50 | new HttpHost(...) : HttpHost | provenance | MaD:295 |
+| ApacheHttpSSRFVersion5.java:308:60:308:62 | uri : URI | ApacheHttpSSRFVersion5.java:308:60:308:73 | toString(...) | provenance | MaD:287 Sink:MaD:208 |
+| ApacheHttpSSRFVersion5.java:313:53:313:55 | uri : URI | ApacheHttpSSRFVersion5.java:313:53:313:66 | toString(...) | provenance | MaD:287 Sink:MaD:208 |
 | ApacheHttpSSRFVersion5.java:326:30:326:56 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:327:31:327:37 | uriSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:327:23:327:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:333:42:333:44 | uri : URI | provenance |  |
 | ApacheHttpSSRFVersion5.java:327:23:327:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:334:42:334:44 | uri | provenance | Sink:MaD:181 |
@@ -659,16 +659,16 @@ edges
 | ApacheHttpSSRFVersion5.java:327:31:327:37 | uriSink : String | ApacheHttpSSRFVersion5.java:327:23:327:38 | new URI(...) : URI | provenance | MaD:285 |
 | ApacheHttpSSRFVersion5.java:329:31:329:58 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:330:42:330:49 | hostSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:330:29:330:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:354:53:354:56 | host | provenance | Sink:MaD:204 |
-| ApacheHttpSSRFVersion5.java:330:42:330:49 | hostSink : String | ApacheHttpSSRFVersion5.java:330:29:330:50 | new HttpHost(...) : HttpHost | provenance | MaD:294 |
-| ApacheHttpSSRFVersion5.java:333:42:333:44 | uri : URI | ApacheHttpSSRFVersion5.java:333:42:333:55 | toString(...) | provenance | MaD:286 Sink:MaD:180 |
-| ApacheHttpSSRFVersion5.java:336:39:336:41 | uri : URI | ApacheHttpSSRFVersion5.java:336:39:336:52 | toString(...) | provenance | MaD:286 Sink:MaD:182 |
-| ApacheHttpSSRFVersion5.java:339:40:339:42 | uri : URI | ApacheHttpSSRFVersion5.java:339:40:339:53 | toString(...) | provenance | MaD:286 Sink:MaD:184 |
-| ApacheHttpSSRFVersion5.java:342:43:342:45 | uri : URI | ApacheHttpSSRFVersion5.java:342:43:342:56 | toString(...) | provenance | MaD:286 Sink:MaD:186 |
-| ApacheHttpSSRFVersion5.java:345:41:345:43 | uri : URI | ApacheHttpSSRFVersion5.java:345:41:345:54 | toString(...) | provenance | MaD:286 Sink:MaD:188 |
-| ApacheHttpSSRFVersion5.java:348:40:348:42 | uri : URI | ApacheHttpSSRFVersion5.java:348:40:348:53 | toString(...) | provenance | MaD:286 Sink:MaD:190 |
-| ApacheHttpSSRFVersion5.java:351:39:351:41 | uri : URI | ApacheHttpSSRFVersion5.java:351:39:351:52 | toString(...) | provenance | MaD:286 Sink:MaD:192 |
-| ApacheHttpSSRFVersion5.java:356:48:356:50 | uri : URI | ApacheHttpSSRFVersion5.java:356:48:356:61 | toString(...) | provenance | MaD:286 Sink:MaD:205 |
-| ApacheHttpSSRFVersion5.java:359:41:359:43 | uri : URI | ApacheHttpSSRFVersion5.java:359:41:359:54 | toString(...) | provenance | MaD:286 Sink:MaD:194 |
+| ApacheHttpSSRFVersion5.java:330:42:330:49 | hostSink : String | ApacheHttpSSRFVersion5.java:330:29:330:50 | new HttpHost(...) : HttpHost | provenance | MaD:295 |
+| ApacheHttpSSRFVersion5.java:333:42:333:44 | uri : URI | ApacheHttpSSRFVersion5.java:333:42:333:55 | toString(...) | provenance | MaD:287 Sink:MaD:180 |
+| ApacheHttpSSRFVersion5.java:336:39:336:41 | uri : URI | ApacheHttpSSRFVersion5.java:336:39:336:52 | toString(...) | provenance | MaD:287 Sink:MaD:182 |
+| ApacheHttpSSRFVersion5.java:339:40:339:42 | uri : URI | ApacheHttpSSRFVersion5.java:339:40:339:53 | toString(...) | provenance | MaD:287 Sink:MaD:184 |
+| ApacheHttpSSRFVersion5.java:342:43:342:45 | uri : URI | ApacheHttpSSRFVersion5.java:342:43:342:56 | toString(...) | provenance | MaD:287 Sink:MaD:186 |
+| ApacheHttpSSRFVersion5.java:345:41:345:43 | uri : URI | ApacheHttpSSRFVersion5.java:345:41:345:54 | toString(...) | provenance | MaD:287 Sink:MaD:188 |
+| ApacheHttpSSRFVersion5.java:348:40:348:42 | uri : URI | ApacheHttpSSRFVersion5.java:348:40:348:53 | toString(...) | provenance | MaD:287 Sink:MaD:190 |
+| ApacheHttpSSRFVersion5.java:351:39:351:41 | uri : URI | ApacheHttpSSRFVersion5.java:351:39:351:52 | toString(...) | provenance | MaD:287 Sink:MaD:192 |
+| ApacheHttpSSRFVersion5.java:356:48:356:50 | uri : URI | ApacheHttpSSRFVersion5.java:356:48:356:61 | toString(...) | provenance | MaD:287 Sink:MaD:205 |
+| ApacheHttpSSRFVersion5.java:359:41:359:43 | uri : URI | ApacheHttpSSRFVersion5.java:359:41:359:54 | toString(...) | provenance | MaD:287 Sink:MaD:194 |
 | ApacheHttpSSRFVersion5.java:372:30:372:56 | getParameter(...) : String | ApacheHttpSSRFVersion5.java:373:31:373:37 | uriSink : String | provenance | Src:MaD:277  |
 | ApacheHttpSSRFVersion5.java:373:23:373:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:380:57:380:59 | uri | provenance | Sink:MaD:197 |
 | ApacheHttpSSRFVersion5.java:373:23:373:38 | new URI(...) : URI | ApacheHttpSSRFVersion5.java:382:51:382:53 | uri | provenance | Sink:MaD:199 |
@@ -683,7 +683,7 @@ edges
 | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:381:51:381:54 | host | provenance | Sink:MaD:198 |
 | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:385:50:385:53 | host | provenance | Sink:MaD:200 |
 | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | ApacheHttpSSRFVersion5.java:387:44:387:47 | host | provenance | Sink:MaD:202 |
-| ApacheHttpSSRFVersion5.java:376:42:376:49 | hostSink : String | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | provenance | MaD:294 |
+| ApacheHttpSSRFVersion5.java:376:42:376:49 | hostSink : String | ApacheHttpSSRFVersion5.java:376:29:376:50 | new HttpHost(...) : HttpHost | provenance | MaD:295 |
 | JakartaWsSSRF.java:14:22:14:48 | getParameter(...) : String | JakartaWsSSRF.java:15:23:15:25 | url | provenance | Src:MaD:277 Sink:MaD:3 |
 | JavaNetHttpSSRF.java:25:27:25:53 | getParameter(...) : String | JavaNetHttpSSRF.java:26:31:26:34 | sink : String | provenance | Src:MaD:277  |
 | JavaNetHttpSSRF.java:26:23:26:35 | new URI(...) : URI | JavaNetHttpSSRF.java:39:59:39:61 | uri | provenance | Sink:MaD:6 |
@@ -692,12 +692,13 @@ edges
 | JavaNetHttpSSRF.java:26:31:26:34 | sink : String | JavaNetHttpSSRF.java:27:40:27:43 | sink : String | provenance |  |
 | JavaNetHttpSSRF.java:27:24:27:57 | new URI(...) : URI | JavaNetHttpSSRF.java:38:65:38:68 | uri2 | provenance | Sink:MaD:5 |
 | JavaNetHttpSSRF.java:27:40:27:43 | sink : String | JavaNetHttpSSRF.java:27:24:27:57 | new URI(...) : URI | provenance | Config |
+| JavaNetHttpSSRF.java:27:40:27:43 | sink : String | JavaNetHttpSSRF.java:27:24:27:57 | new URI(...) : URI | provenance | MaD:286 |
 | JavaNetHttpSSRF.java:27:40:27:43 | sink : String | JavaNetHttpSSRF.java:28:32:28:35 | sink : String | provenance |  |
 | JavaNetHttpSSRF.java:28:24:28:36 | new URL(...) : URL | JavaNetHttpSSRF.java:30:32:30:35 | url1 | provenance | Sink:MaD:9 |
 | JavaNetHttpSSRF.java:28:24:28:36 | new URL(...) : URL | JavaNetHttpSSRF.java:33:32:33:35 | url1 | provenance | Sink:MaD:9 |
 | JavaNetHttpSSRF.java:28:24:28:36 | new URL(...) : URL | JavaNetHttpSSRF.java:34:30:34:33 | url1 | provenance | Sink:MaD:10 |
 | JavaNetHttpSSRF.java:28:32:28:35 | sink : String | JavaNetHttpSSRF.java:28:24:28:36 | new URL(...) : URL | provenance | Config |
-| JavaNetHttpSSRF.java:28:32:28:35 | sink : String | JavaNetHttpSSRF.java:28:24:28:36 | new URL(...) : URL | provenance | MaD:288 |
+| JavaNetHttpSSRF.java:28:32:28:35 | sink : String | JavaNetHttpSSRF.java:28:24:28:36 | new URL(...) : URL | provenance | MaD:289 |
 | JaxWsSSRF.java:14:22:14:48 | getParameter(...) : String | JaxWsSSRF.java:15:23:15:25 | url | provenance | Src:MaD:277 Sink:MaD:23 |
 | JdbcUrlSSRF.java:21:26:21:56 | getParameter(...) : String | JdbcUrlSSRF.java:26:28:26:34 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:17 |
 | JdbcUrlSSRF.java:21:26:21:56 | getParameter(...) : String | JdbcUrlSSRF.java:28:41:28:47 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:18 |
@@ -710,7 +711,7 @@ edges
 | JdbcUrlSSRF.java:52:9:52:13 | props : Properties | JdbcUrlSSRF.java:54:49:54:53 | props | provenance | Sink:MaD:1 |
 | JdbcUrlSSRF.java:52:9:52:13 | props [post update] : Properties [<map.value>] : String | JdbcUrlSSRF.java:54:49:54:53 | props | provenance | Sink:MaD:1 |
 | JdbcUrlSSRF.java:52:38:52:44 | jdbcUrl : String | JdbcUrlSSRF.java:52:9:52:13 | props : Properties | provenance | Config |
-| JdbcUrlSSRF.java:52:38:52:44 | jdbcUrl : String | JdbcUrlSSRF.java:52:9:52:13 | props [post update] : Properties [<map.value>] : String | provenance | MaD:293 |
+| JdbcUrlSSRF.java:52:38:52:44 | jdbcUrl : String | JdbcUrlSSRF.java:52:9:52:13 | props [post update] : Properties [<map.value>] : String | provenance | MaD:294 |
 | JdbcUrlSSRF.java:60:26:60:56 | getParameter(...) : String | JdbcUrlSSRF.java:65:27:65:33 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:257 |
 | JdbcUrlSSRF.java:60:26:60:56 | getParameter(...) : String | JdbcUrlSSRF.java:67:75:67:81 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:258 |
 | JdbcUrlSSRF.java:60:26:60:56 | getParameter(...) : String | JdbcUrlSSRF.java:70:75:70:81 | jdbcUrl | provenance | Src:MaD:277 Sink:MaD:260 |
@@ -842,11 +843,11 @@ edges
 | SanitizationTests.java:177:62:177:112 | getFromList(...) : String | SanitizationTests.java:177:54:177:113 | new URI(...) | provenance | MaD:285 Sink:MaD:6 |
 | SanitizationTests.java:177:62:177:112 | getFromList(...) : String | SanitizationTests.java:177:54:177:113 | new URI(...) : URI | provenance | Config |
 | SanitizationTests.java:177:62:177:112 | getFromList(...) : String | SanitizationTests.java:177:54:177:113 | new URI(...) : URI | provenance | MaD:285 |
-| SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | SanitizationTests.java:177:62:177:112 | getFromList(...) : String | provenance | MaD:290 |
+| SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | SanitizationTests.java:177:62:177:112 | getFromList(...) : String | provenance | MaD:291 |
 | SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | SanitizationTests.java:199:31:199:112 | list : List [<element>] : String | provenance |  |
-| SanitizationTests.java:177:82:177:110 | getParameter(...) : String | SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | provenance | Src:MaD:277 MaD:289 |
+| SanitizationTests.java:177:82:177:110 | getParameter(...) : String | SanitizationTests.java:177:74:177:111 | of(...) : List [<element>] : String | provenance | Src:MaD:277 MaD:290 |
 | SanitizationTests.java:199:31:199:112 | list : List [<element>] : String | SanitizationTests.java:200:16:200:19 | list : List [<element>] : String | provenance |  |
-| SanitizationTests.java:200:16:200:19 | list : List [<element>] : String | SanitizationTests.java:200:16:200:26 | get(...) : String | provenance | MaD:290 |
+| SanitizationTests.java:200:16:200:19 | list : List [<element>] : String | SanitizationTests.java:200:16:200:26 | get(...) : String | provenance | MaD:291 |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:32:39:32:59 | ... + ... | provenance | Src:MaD:277 Sink:MaD:264 |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:33:69:33:82 | fooResourceUrl | provenance | Src:MaD:277  |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:34:73:34:86 | fooResourceUrl | provenance | Src:MaD:277  |
@@ -878,16 +879,16 @@ edges
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | provenance | Src:MaD:277  |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | provenance | Src:MaD:277  |
 | SpringSSRF.java:28:33:28:60 | getParameter(...) : String | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | provenance | Src:MaD:277  |
-| SpringSSRF.java:38:83:38:96 | fooResourceUrl : String | SpringSSRF.java:38:69:38:97 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:40:105:40:118 | fooResourceUrl : String | SpringSSRF.java:40:69:40:119 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:49:105:49:118 | fooResourceUrl : String | SpringSSRF.java:49:91:49:119 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:51:127:51:140 | fooResourceUrl : String | SpringSSRF.java:51:91:51:141 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:60:93:60:106 | fooResourceUrl : String | SpringSSRF.java:60:79:60:107 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:62:115:62:128 | fooResourceUrl : String | SpringSSRF.java:62:79:62:129 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:71:83:71:96 | fooResourceUrl : String | SpringSSRF.java:71:69:71:97 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:73:105:73:118 | fooResourceUrl : String | SpringSSRF.java:73:69:73:119 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | SpringSSRF.java:82:93:82:121 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | SpringSSRF.java:84:93:84:143 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:38:83:38:96 | fooResourceUrl : String | SpringSSRF.java:38:69:38:97 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:40:105:40:118 | fooResourceUrl : String | SpringSSRF.java:40:69:40:119 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:49:105:49:118 | fooResourceUrl : String | SpringSSRF.java:49:91:49:119 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:51:127:51:140 | fooResourceUrl : String | SpringSSRF.java:51:91:51:141 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:60:93:60:106 | fooResourceUrl : String | SpringSSRF.java:60:79:60:107 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:62:115:62:128 | fooResourceUrl : String | SpringSSRF.java:62:79:62:129 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:71:83:71:96 | fooResourceUrl : String | SpringSSRF.java:71:69:71:97 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:73:105:73:118 | fooResourceUrl : String | SpringSSRF.java:73:69:73:119 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:82:107:82:120 | fooResourceUrl : String | SpringSSRF.java:82:93:82:121 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:84:129:84:142 | fooResourceUrl : String | SpringSSRF.java:84:93:84:143 | of(...) | provenance | MaD:293 |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:87:40:87:62 | new URI(...) | provenance | Config Sink:MaD:269 |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:87:40:87:62 | new URI(...) | provenance | MaD:285 Sink:MaD:269 |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:88:92:88:105 | fooResourceUrl | provenance |  |
@@ -932,20 +933,20 @@ edges
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | provenance |  |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | provenance |  |
 | SpringSSRF.java:87:48:87:61 | fooResourceUrl : String | SpringSSRF.java:166:35:166:48 | fooResourceUrl : String | provenance |  |
-| SpringSSRF.java:93:106:93:119 | fooResourceUrl : String | SpringSSRF.java:93:92:93:120 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:95:128:95:141 | fooResourceUrl : String | SpringSSRF.java:95:92:95:142 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:104:94:104:107 | fooResourceUrl : String | SpringSSRF.java:104:80:104:108 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:106:116:106:129 | fooResourceUrl : String | SpringSSRF.java:106:80:106:130 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:115:106:115:119 | fooResourceUrl : String | SpringSSRF.java:115:92:115:120 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:117:128:117:141 | fooResourceUrl : String | SpringSSRF.java:117:92:117:142 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:126:82:126:95 | fooResourceUrl : String | SpringSSRF.java:126:68:126:96 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:128:104:128:117 | fooResourceUrl : String | SpringSSRF.java:128:68:128:118 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:137:63:137:76 | fooResourceUrl : String | SpringSSRF.java:137:49:137:77 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:139:85:139:98 | fooResourceUrl : String | SpringSSRF.java:139:49:139:99 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:148:71:148:84 | fooResourceUrl : String | SpringSSRF.java:148:57:148:85 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:150:93:150:106 | fooResourceUrl : String | SpringSSRF.java:150:57:150:107 | of(...) | provenance | MaD:292 |
-| SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | SpringSSRF.java:159:58:159:86 | of(...) | provenance | MaD:291 |
-| SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | SpringSSRF.java:161:58:161:108 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:93:106:93:119 | fooResourceUrl : String | SpringSSRF.java:93:92:93:120 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:95:128:95:141 | fooResourceUrl : String | SpringSSRF.java:95:92:95:142 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:104:94:104:107 | fooResourceUrl : String | SpringSSRF.java:104:80:104:108 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:106:116:106:129 | fooResourceUrl : String | SpringSSRF.java:106:80:106:130 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:115:106:115:119 | fooResourceUrl : String | SpringSSRF.java:115:92:115:120 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:117:128:117:141 | fooResourceUrl : String | SpringSSRF.java:117:92:117:142 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:126:82:126:95 | fooResourceUrl : String | SpringSSRF.java:126:68:126:96 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:128:104:128:117 | fooResourceUrl : String | SpringSSRF.java:128:68:128:118 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:137:63:137:76 | fooResourceUrl : String | SpringSSRF.java:137:49:137:77 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:139:85:139:98 | fooResourceUrl : String | SpringSSRF.java:139:49:139:99 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:148:71:148:84 | fooResourceUrl : String | SpringSSRF.java:148:57:148:85 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:150:93:150:106 | fooResourceUrl : String | SpringSSRF.java:150:57:150:107 | of(...) | provenance | MaD:293 |
+| SpringSSRF.java:159:72:159:85 | fooResourceUrl : String | SpringSSRF.java:159:58:159:86 | of(...) | provenance | MaD:292 |
+| SpringSSRF.java:161:94:161:107 | fooResourceUrl : String | SpringSSRF.java:161:58:161:108 | of(...) | provenance | MaD:293 |
 | SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:168:44:168:46 | uri | provenance | Sink:MaD:255 |
 | SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:170:35:170:37 | uri | provenance | Sink:MaD:250 |
 | SpringSSRF.java:166:27:166:49 | new URI(...) : URI | SpringSSRF.java:171:35:171:37 | uri | provenance | Sink:MaD:256 |
@@ -971,7 +972,7 @@ edges
 | URLClassLoaderSSRF.java:17:31:17:33 | url : String | URLClassLoaderSSRF.java:17:23:17:34 | new URI(...) : URI | provenance | MaD:285 |
 | URLClassLoaderSSRF.java:18:64:18:85 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:18:64:18:85 | new URL[] | provenance | Sink:MaD:13 |
 | URLClassLoaderSSRF.java:18:64:18:85 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:18:64:18:85 | new URL[] | provenance | Sink:MaD:13 |
-| URLClassLoaderSSRF.java:18:74:18:76 | uri : URI | URLClassLoaderSSRF.java:18:74:18:84 | toURL(...) : URL | provenance | MaD:287 |
+| URLClassLoaderSSRF.java:18:74:18:76 | uri : URI | URLClassLoaderSSRF.java:18:74:18:84 | toURL(...) : URL | provenance | MaD:288 |
 | URLClassLoaderSSRF.java:18:74:18:84 | toURL(...) : URL | URLClassLoaderSSRF.java:18:64:18:85 | {...} : URL[] [[]] : URL | provenance |  |
 | URLClassLoaderSSRF.java:28:26:28:52 | getParameter(...) : String | URLClassLoaderSSRF.java:29:31:29:33 | url : String | provenance | Src:MaD:277  |
 | URLClassLoaderSSRF.java:29:23:29:34 | new URI(...) : URI | URLClassLoaderSSRF.java:30:74:30:76 | uri : URI | provenance |  |
@@ -979,7 +980,7 @@ edges
 | URLClassLoaderSSRF.java:29:31:29:33 | url : String | URLClassLoaderSSRF.java:29:23:29:34 | new URI(...) : URI | provenance | MaD:285 |
 | URLClassLoaderSSRF.java:30:64:30:85 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:30:64:30:85 | new URL[] | provenance | Sink:MaD:14 |
 | URLClassLoaderSSRF.java:30:64:30:85 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:30:64:30:85 | new URL[] | provenance | Sink:MaD:14 |
-| URLClassLoaderSSRF.java:30:74:30:76 | uri : URI | URLClassLoaderSSRF.java:30:74:30:84 | toURL(...) : URL | provenance | MaD:287 |
+| URLClassLoaderSSRF.java:30:74:30:76 | uri : URI | URLClassLoaderSSRF.java:30:74:30:84 | toURL(...) : URL | provenance | MaD:288 |
 | URLClassLoaderSSRF.java:30:74:30:84 | toURL(...) : URL | URLClassLoaderSSRF.java:30:64:30:85 | {...} : URL[] [[]] : URL | provenance |  |
 | URLClassLoaderSSRF.java:40:26:40:52 | getParameter(...) : String | URLClassLoaderSSRF.java:41:31:41:33 | url : String | provenance | Src:MaD:277  |
 | URLClassLoaderSSRF.java:41:23:41:34 | new URI(...) : URI | URLClassLoaderSSRF.java:44:74:44:76 | uri : URI | provenance |  |
@@ -987,14 +988,14 @@ edges
 | URLClassLoaderSSRF.java:41:31:41:33 | url : String | URLClassLoaderSSRF.java:41:23:41:34 | new URI(...) : URI | provenance | MaD:285 |
 | URLClassLoaderSSRF.java:44:64:44:85 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:44:64:44:85 | new URL[] | provenance | Sink:MaD:15 |
 | URLClassLoaderSSRF.java:44:64:44:85 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:44:64:44:85 | new URL[] | provenance | Sink:MaD:15 |
-| URLClassLoaderSSRF.java:44:74:44:76 | uri : URI | URLClassLoaderSSRF.java:44:74:44:84 | toURL(...) : URL | provenance | MaD:287 |
+| URLClassLoaderSSRF.java:44:74:44:76 | uri : URI | URLClassLoaderSSRF.java:44:74:44:84 | toURL(...) : URL | provenance | MaD:288 |
 | URLClassLoaderSSRF.java:44:74:44:84 | toURL(...) : URL | URLClassLoaderSSRF.java:44:64:44:85 | {...} : URL[] [[]] : URL | provenance |  |
 | URLClassLoaderSSRF.java:54:26:54:52 | getParameter(...) : String | URLClassLoaderSSRF.java:55:31:55:33 | url : String | provenance | Src:MaD:277  |
 | URLClassLoaderSSRF.java:55:23:55:34 | new URI(...) : URI | URLClassLoaderSSRF.java:56:82:56:84 | uri : URI | provenance |  |
 | URLClassLoaderSSRF.java:55:31:55:33 | url : String | URLClassLoaderSSRF.java:55:23:55:34 | new URI(...) : URI | provenance | Config |
 | URLClassLoaderSSRF.java:55:31:55:33 | url : String | URLClassLoaderSSRF.java:55:23:55:34 | new URI(...) : URI | provenance | MaD:285 |
 | URLClassLoaderSSRF.java:56:72:56:93 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:56:72:56:93 | new URL[] | provenance | Sink:MaD:16 |
-| URLClassLoaderSSRF.java:56:82:56:84 | uri : URI | URLClassLoaderSSRF.java:56:82:56:92 | toURL(...) : URL | provenance | MaD:287 |
+| URLClassLoaderSSRF.java:56:82:56:84 | uri : URI | URLClassLoaderSSRF.java:56:82:56:92 | toURL(...) : URL | provenance | MaD:288 |
 | URLClassLoaderSSRF.java:56:82:56:92 | toURL(...) : URL | URLClassLoaderSSRF.java:56:72:56:93 | {...} : URL[] [[]] : URL | provenance |  |
 | URLClassLoaderSSRF.java:66:26:66:52 | getParameter(...) : String | URLClassLoaderSSRF.java:67:31:67:33 | url : String | provenance | Src:MaD:277  |
 | URLClassLoaderSSRF.java:67:23:67:34 | new URI(...) : URI | URLClassLoaderSSRF.java:70:31:70:33 | uri : URI | provenance |  |
@@ -1002,7 +1003,7 @@ edges
 | URLClassLoaderSSRF.java:67:31:67:33 | url : String | URLClassLoaderSSRF.java:67:23:67:34 | new URI(...) : URI | provenance | MaD:285 |
 | URLClassLoaderSSRF.java:70:21:70:42 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:70:21:70:42 | new URL[] | provenance | Sink:MaD:11 |
 | URLClassLoaderSSRF.java:70:21:70:42 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:70:21:70:42 | new URL[] | provenance | Sink:MaD:11 |
-| URLClassLoaderSSRF.java:70:31:70:33 | uri : URI | URLClassLoaderSSRF.java:70:31:70:41 | toURL(...) : URL | provenance | MaD:287 |
+| URLClassLoaderSSRF.java:70:31:70:33 | uri : URI | URLClassLoaderSSRF.java:70:31:70:41 | toURL(...) : URL | provenance | MaD:288 |
 | URLClassLoaderSSRF.java:70:31:70:41 | toURL(...) : URL | URLClassLoaderSSRF.java:70:21:70:42 | {...} : URL[] [[]] : URL | provenance |  |
 | URLClassLoaderSSRF.java:83:26:83:52 | getParameter(...) : String | URLClassLoaderSSRF.java:84:31:84:33 | url : String | provenance | Src:MaD:277  |
 | URLClassLoaderSSRF.java:84:23:84:34 | new URI(...) : URI | URLClassLoaderSSRF.java:89:31:89:33 | uri : URI | provenance |  |
@@ -1010,7 +1011,7 @@ edges
 | URLClassLoaderSSRF.java:84:31:84:33 | url : String | URLClassLoaderSSRF.java:84:23:84:34 | new URI(...) : URI | provenance | MaD:285 |
 | URLClassLoaderSSRF.java:89:21:89:42 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:89:21:89:42 | new URL[] | provenance | Sink:MaD:12 |
 | URLClassLoaderSSRF.java:89:21:89:42 | {...} : URL[] [[]] : URL | URLClassLoaderSSRF.java:89:21:89:42 | new URL[] | provenance | Sink:MaD:12 |
-| URLClassLoaderSSRF.java:89:31:89:33 | uri : URI | URLClassLoaderSSRF.java:89:31:89:41 | toURL(...) : URL | provenance | MaD:287 |
+| URLClassLoaderSSRF.java:89:31:89:33 | uri : URI | URLClassLoaderSSRF.java:89:31:89:41 | toURL(...) : URL | provenance | MaD:288 |
 | URLClassLoaderSSRF.java:89:31:89:41 | toURL(...) : URL | URLClassLoaderSSRF.java:89:21:89:42 | {...} : URL[] [[]] : URL | provenance |  |
 | mad/Test.java:26:16:26:41 | getParameter(...) : String | mad/Test.java:31:40:31:47 | source(...) : String | provenance | Src:MaD:277  |
 | mad/Test.java:26:16:26:41 | getParameter(...) : String | mad/Test.java:36:16:36:23 | source(...) : String | provenance | Src:MaD:277  |
@@ -1363,16 +1364,17 @@ models
 | 283 | Summary: java.net.http; HttpRequest$Builder; true; build; (); ; Argument[this]; ReturnValue; taint; df-generated |
 | 284 | Summary: java.net.http; HttpRequest; true; newBuilder; (URI); ; Argument[0]; ReturnValue; taint; df-generated |
 | 285 | Summary: java.net; URI; false; URI; (String); ; Argument[0]; Argument[this]; taint; manual |
-| 286 | Summary: java.net; URI; false; toString; ; ; Argument[this]; ReturnValue; taint; manual |
-| 287 | Summary: java.net; URI; false; toURL; ; ; Argument[this]; ReturnValue; taint; manual |
-| 288 | Summary: java.net; URL; false; URL; (String); ; Argument[0]; Argument[this]; taint; manual |
-| 289 | Summary: java.util; List; false; of; (Object); ; Argument[0]; ReturnValue.Element; value; manual |
-| 290 | Summary: java.util; List; true; get; (int); ; Argument[this].Element; ReturnValue; value; manual |
-| 291 | Summary: java.util; Map; false; of; ; ; Argument[1]; ReturnValue.MapValue; value; manual |
-| 292 | Summary: java.util; Map; false; of; ; ; Argument[3]; ReturnValue.MapValue; value; manual |
-| 293 | Summary: java.util; Properties; true; setProperty; (String,String); ; Argument[1]; Argument[this].MapValue; value; manual |
-| 294 | Summary: org.apache.hc.core5.http; HttpHost; true; HttpHost; (String); ; Argument[0]; Argument[this]; taint; hq-manual |
-| 295 | Summary: org.apache.http.message; BasicRequestLine; false; BasicRequestLine; ; ; Argument[1]; Argument[this]; taint; manual |
+| 286 | Summary: java.net; URI; false; URI; (String,String,String); ; Argument[1]; Argument[this]; taint; ai-manual |
+| 287 | Summary: java.net; URI; false; toString; ; ; Argument[this]; ReturnValue; taint; manual |
+| 288 | Summary: java.net; URI; false; toURL; ; ; Argument[this]; ReturnValue; taint; manual |
+| 289 | Summary: java.net; URL; false; URL; (String); ; Argument[0]; Argument[this]; taint; manual |
+| 290 | Summary: java.util; List; false; of; (Object); ; Argument[0]; ReturnValue.Element; value; manual |
+| 291 | Summary: java.util; List; true; get; (int); ; Argument[this].Element; ReturnValue; value; manual |
+| 292 | Summary: java.util; Map; false; of; ; ; Argument[1]; ReturnValue.MapValue; value; manual |
+| 293 | Summary: java.util; Map; false; of; ; ; Argument[3]; ReturnValue.MapValue; value; manual |
+| 294 | Summary: java.util; Properties; true; setProperty; (String,String); ; Argument[1]; Argument[this].MapValue; value; manual |
+| 295 | Summary: org.apache.hc.core5.http; HttpHost; true; HttpHost; (String); ; Argument[0]; Argument[this]; taint; hq-manual |
+| 296 | Summary: org.apache.http.message; BasicRequestLine; false; BasicRequestLine; ; ; Argument[1]; Argument[this]; taint; manual |
 nodes
 | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | semmle.label | new URI(...) : URI |

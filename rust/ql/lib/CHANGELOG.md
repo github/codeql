@@ -1,3 +1,16 @@
+## 0.2.8
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* Added neutral models to inhibit spurious generated sink models for `map` and `from`. This fixes some false positive query results.
+
+## 0.2.7
+
+### Minor Analysis Improvements
+
+* Added support for neutral models (`extensible: neutralModel`) to control where generated source, sink and flow summary models apply.
+
 ## 0.2.6
 
 No user-facing changes.

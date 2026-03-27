@@ -15,7 +15,10 @@ predicate instructionGuardChecks(IRGuardCondition gc, Instruction checked, boole
 module BarrierGuard = DataFlow::InstructionBarrierGuard<instructionGuardChecks/3>;
 
 predicate indirectBarrierGuard(DataFlow::Node node, string s) {
-  node = BarrierGuard::getAnIndirectBarrierNode(_) and
+  // This any(...) could technically be removed, but it helps us verify that we don't
+  // accidentially change the API of this predicate (for instance, by having
+  // the column be a unit parameter).
+  node = BarrierGuard::getAnIndirectBarrierNode(any(int indirectionIndex)) and
   if node.isGLValue()
   then s = "glval<" + node.getType().toString().replaceAll(" ", "") + ">"
   else s = node.getType().toString().replaceAll(" ", "")

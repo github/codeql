@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with basic blocks.
  */
+overlay[local]
+module;
 
 import go
 private import ControlFlowGraphImpl

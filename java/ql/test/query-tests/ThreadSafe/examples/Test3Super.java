@@ -8,10 +8,10 @@ public class Test3Super extends Test2 {  // We might want an alert here for the 
   }
 
   public void y() {
-    super.x = 0;  //$ MISSING: Alert
+    super.x = 0;  // $ MISSING: Alert
   }
 
   public void yLst() {
-    super.lst.add("Hello!");  //$ MISSING: Alert
+    super.lst.add("Hello!");  // $ MISSING: Alert
   }
 }
