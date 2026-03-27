@@ -5,6 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 
@@ -48,6 +49,13 @@ module Xxe {
         hasXxeOption(call.getPositionalArgument(optionsArg))
       )
     }
+  }
+
+  /**
+   * A barrier for XXE vulnerabilities from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "xxe") }
   }
 }
 
