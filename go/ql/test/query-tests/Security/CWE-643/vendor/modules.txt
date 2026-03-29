@@ -1,7 +1,15 @@
 # github.com/ChrisTrenkamp/goxpath v0.0.0-20190607011252-c5096ec8773d
 ## explicit
 github.com/ChrisTrenkamp/goxpath
+github.com/ChrisTrenkamp/goxpath/internal/execxp
+github.com/ChrisTrenkamp/goxpath/internal/execxp/findutil
+github.com/ChrisTrenkamp/goxpath/internal/execxp/intfns
+github.com/ChrisTrenkamp/goxpath/internal/xsort
+github.com/ChrisTrenkamp/goxpath/lexer
+github.com/ChrisTrenkamp/goxpath/parser
+github.com/ChrisTrenkamp/goxpath/parser/pathexpr
 github.com/ChrisTrenkamp/goxpath/tree
+github.com/ChrisTrenkamp/goxpath/xconst
 # github.com/antchfx/htmlquery v1.2.2
 ## explicit
 github.com/antchfx/htmlquery
@@ -11,49 +19,61 @@ github.com/antchfx/jsonquery
 # github.com/antchfx/xmlquery v1.2.3
 ## explicit
 github.com/antchfx/xmlquery
-# github.com/antchfx/xpath v1.1.5
-## explicit
+# github.com/antchfx/xpath v1.3.6
+## explicit; go 1.14
 github.com/antchfx/xpath
 # github.com/go-xmlpath/xmlpath v0.0.0-20150820204837-860cbeca3ebc
 ## explicit
 github.com/go-xmlpath/xmlpath
+# github.com/golang/groupcache v0.0.0-20241129210726-2c02b8208cf8
+## explicit; go 1.20
+github.com/golang/groupcache/lru
 # github.com/jbowtie/gokogiri v0.0.0-20190301021639-37f655d3078f
 ## explicit
+github.com/jbowtie/gokogiri/help
+github.com/jbowtie/gokogiri/util
 github.com/jbowtie/gokogiri/xml
 github.com/jbowtie/gokogiri/xpath
 # github.com/lestrrat-go/libxml2 v0.0.0-20231124114421-99c71026c2f5
-## explicit
+## explicit; go 1.21
+github.com/lestrrat-go/libxml2/clib
+github.com/lestrrat-go/libxml2/dom
+github.com/lestrrat-go/libxml2/internal/debug
+github.com/lestrrat-go/libxml2/internal/option
 github.com/lestrrat-go/libxml2/parser
-# github.com/santhosh-tekuri/xpathparser v1.0.0
-## explicit
-github.com/santhosh-tekuri/xpathparser
-# github.com/davecgh/go-spew v1.1.1
-## explicit
-github.com/davecgh/go-spew
+github.com/lestrrat-go/libxml2/types
+github.com/lestrrat-go/libxml2/xpath
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/pmezard/go-difflib v1.0.0
+# github.com/santhosh-tekuri/xpathparser v1.0.0
 ## explicit
-github.com/pmezard/go-difflib
-# github.com/stretchr/objx v0.5.0
-## explicit
-github.com/stretchr/objx
-# github.com/stretchr/testify v1.8.4
-## explicit
-github.com/stretchr/testify
+github.com/santhosh-tekuri/xpathparser
+# golang.org/x/net v0.52.0
+## explicit; go 1.25.0
+golang.org/x/net/html
+golang.org/x/net/html/atom
+golang.org/x/net/html/charset
+# golang.org/x/text v0.35.0
+## explicit; go 1.25.0
+golang.org/x/text/encoding
+golang.org/x/text/encoding/charmap
+golang.org/x/text/encoding/htmlindex
+golang.org/x/text/encoding/internal
+golang.org/x/text/encoding/internal/identifier
+golang.org/x/text/encoding/japanese
+golang.org/x/text/encoding/korean
+golang.org/x/text/encoding/simplifiedchinese
+golang.org/x/text/encoding/traditionalchinese
+golang.org/x/text/encoding/unicode
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/internal/utf8internal
+golang.org/x/text/language
+golang.org/x/text/runes
+golang.org/x/text/transform
 # gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405
 ## explicit
-gopkg.in/check.v1
-# gopkg.in/xmlpath.v1 v1.0.0-20140413065638-a146725ea6e7
+# gopkg.in/xmlpath.v2 v2.0.0-20150820204837-860cbeca3ebc
 ## explicit
-gopkg.in/xmlpath.v1
-# gopkg.in/yaml.v3 v3.0.1
-## explicit
-gopkg.in/yaml.v3
-# launchpad.net/gocheck v0.0.0-20140225173054-000000000087
-## explicit
-launchpad.net/gocheck
-# launchpad.net/xmlpath v0.0.0-20130614043138-000000000004
-## explicit
-launchpad.net/xmlpath
