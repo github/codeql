@@ -1520,6 +1520,26 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = true))
         )
         or
+        exists(PatternMatchExpr pme |
+          n1.isBefore(pme) and
+          n2.isBefore(pme.getExpr())
+          or
+          n1.isAfter(pme.getExpr()) and
+          n2.isIn(pme)
+          or
+          n1.isIn(pme) and
+          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = false))
+          or
+          n1.isIn(pme) and
+          n2.isAdditional(pme, patternMatchTrueTag())
+          or
+          n1.isAdditional(pme, patternMatchTrueTag()) and
+          n2.isBefore(pme.getPattern())
+          or
+          n1.isAfter(pme.getPattern()) and
+          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = true))
+        )
+        or
         exists(IfStmt ifstmt |
           n1.isBefore(ifstmt) and
           (

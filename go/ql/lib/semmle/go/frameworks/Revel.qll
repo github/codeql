@@ -154,7 +154,7 @@ module Revel {
 
   private IR::EvalInstruction skipImplicitFieldReads(IR::Instruction insn) {
     result = insn or
-    result = skipImplicitFieldReads(insn.(IR::ImplicitFieldReadInstruction).getBase())
+    result = skipImplicitFieldReads(insn.(IR::ImplicitFieldReadInstruction).getBaseInstruction())
   }
 
   /** A call to `Controller.Render`. */
