@@ -1,0 +1,26 @@
+name: unsound-contains-test
+on: push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Positive: contains() with space-separated string (substring match)
+      - run: terraform apply
+        if: contains('refs/heads/main refs/heads/develop', github.ref)
+
+      # Positive: contains() with double-quoted string
+      - run: terraform apply
+        if: contains("refs/heads/main", github.ref)
+
+      # Negative: contains() with fromJSON (proper array membership)
+      - run: terraform apply
+        if: contains(fromJSON('["refs/heads/main", "refs/heads/develop"]'), github.ref)
+
+      # Negative: contains() with context as first arg (array membership on labels)
+      - run: echo "has bug label"
+        if: contains(github.event.issue.labels.*.name, 'bug')
+
+      # Negative: no contains() at all
+      - run: terraform apply
+        if: github.ref == 'refs/heads/main'

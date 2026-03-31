@@ -1,0 +1,42 @@
+name: bot-conditions-test
+on:
+  pull_request_target:
+
+jobs:
+  # Positive: spoofable github.actor check on externally triggerable event
+  spoofable-actor:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - run: gh pr merge --auto --merge "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Positive: spoofable github.triggering_actor check
+  spoofable-triggering:
+    runs-on: ubuntu-latest
+    if: github.triggering_actor == 'renovate[bot]'
+    steps:
+      - run: echo "auto-approve"
+
+  # Positive: reversed operand order
+  spoofable-reversed:
+    runs-on: ubuntu-latest
+    if: ${{ 'dependabot[bot]' == github.actor }}
+    steps:
+      - run: echo "reversed"
+
+  # Negative: non-spoofable context (event-level user)
+  safe-check:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    steps:
+      - run: echo "safe"
+
+  # Negative: non-bot actor check
+  non-bot:
+    runs-on: ubuntu-latest
+    if: github.actor == 'admin-user'
+    steps:
+      - run: echo "admin"
