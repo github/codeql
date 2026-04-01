@@ -23,8 +23,7 @@ private import codeql.actions.ast.internal.Ast
 YamlScalar getAHardcodedPassword(LocalJobImpl job, string context) {
   exists(YamlMapping creds |
     // Job-level container credentials
-    creds =
-      job.getNode().lookup("container").(YamlMapping).lookup("credentials") and
+    creds = job.getNode().lookup("container").(YamlMapping).lookup("credentials") and
     context = "container"
     or
     // Service-level container credentials
