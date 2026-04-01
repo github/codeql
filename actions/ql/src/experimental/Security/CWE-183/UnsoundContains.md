@@ -2,7 +2,7 @@
 
 The GitHub Actions `contains()` function behaves differently depending on the type of its first argument. When the first argument is a string, `contains()` performs a substring match rather than an exact membership check. This can be bypassed by an attacker who crafts a value that happens to be a substring of the target string.
 
-For example, the condition `contains('refs/heads/main refs/heads/develop', github.ref)` would also match a branch named `mai` or `evelop`, because these are substrings of the target string.
+For example, the condition `contains('refs/heads/main refs/heads/develop', github.ref)` would also match `github.ref` values like `refs/heads/mai` or `refs/heads/evelop`, because these are substrings of the target string.
 
 ## Recommendation
 
