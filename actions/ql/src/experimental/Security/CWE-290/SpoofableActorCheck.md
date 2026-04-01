@@ -2,7 +2,7 @@
 
 Many workflows use `github.actor` or `github.triggering_actor` to check if a specific bot (such as Dependabot or Renovate) triggered the workflow, and then bypass security checks or perform privileged actions. However, `github.actor` refers to the last actor to perform an "action" on the triggering context, not necessarily the actor that actually caused the trigger.
 
-An attacker can exploit this by creating a pull request where the HEAD commit has `github.actor == 'dependabot[bot]'` but the rest of the branch history contains attacker-controlled code, bypassing the actor check.
+An attacker can exploit this by creating a pull request where the workflow run's `github.actor` is `'dependabot[bot]'` (for example, because Dependabot was the latest actor on the PR), but the branch contains attacker-controlled code, bypassing the actor check.
 
 ## Recommendation
 

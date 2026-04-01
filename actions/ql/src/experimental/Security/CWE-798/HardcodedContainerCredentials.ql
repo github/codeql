@@ -24,17 +24,17 @@ YamlScalar getAHardcodedPassword(LocalJobImpl job, string context) {
   exists(YamlMapping creds |
     // Job-level container credentials
     creds =
-      job.getNode().lookup("container").(YamlMapping).lookup("credentials").(YamlMapping) and
+      job.getNode().lookup("container").(YamlMapping).lookup("credentials") and
     context = "container"
     or
     // Service-level container credentials
     exists(YamlMapping service |
-      service = job.getNode().lookup("services").(YamlMapping).lookup(_).(YamlMapping) and
-      creds = service.lookup("credentials").(YamlMapping) and
+      service = job.getNode().lookup("services").(YamlMapping).lookup(_) and
+      creds = service.lookup("credentials") and
       context = "service"
     )
   |
-    result = creds.lookup("password").(YamlScalar) and
+    result = creds.lookup("password") and
     // Not a ${{ }} expression reference (e.g. ${{ secrets.PASSWORD }})
     not result.getValue().regexpMatch("\\$\\{\\{.*\\}\\}")
   )
