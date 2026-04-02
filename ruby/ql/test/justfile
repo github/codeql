@@ -1,0 +1,14 @@
+import "../justfile"
+
+base_flags := ""
+
+all_checks := default_db_checks + """\
+    --check-undefined-labels \
+    --check-unused-labels \
+    --check-repeated-labels \
+    --check-redefined-labels \
+    --check-use-before-definition \
+    --consistency-queries=""" + consistency_queries
+
+[no-cd]
+test *ARGS=".": (_codeql_test "ruby" base_flags all_checks ARGS)
