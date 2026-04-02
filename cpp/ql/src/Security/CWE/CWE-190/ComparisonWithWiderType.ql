@@ -73,7 +73,8 @@ where
   not getComparisonSize(large.(RShiftExpr).getLeftOperand().getExplicitlyConverted()) <=
     getComparisonSize(small) and
   // ignore loop-invariant smaller variables
-  loopVariant(small, l)
+  loopVariant(small, l) and
+  none()
 select rel,
   "Comparison between $@ of type " + small.getType().getName() + " and $@ of wider type " +
     large.getType().getName() + ".", friendlyLoc(small), small.toString(), friendlyLoc(large),

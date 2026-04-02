@@ -45,5 +45,6 @@ where
   sameLocation(fdeIm, fc) and
   not mistypedFunctionArguments(fc, _, _) and
   not tooFewArguments(fc, _) and
-  not tooManyArguments(fc, _)
+  not tooManyArguments(fc, _) and
+  none()
 select fc, "Function call implicitly declares '" + fdeIm.getName() + "'."

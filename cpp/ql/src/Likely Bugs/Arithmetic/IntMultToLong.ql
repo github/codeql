@@ -220,7 +220,8 @@ where
   // maximum (resp. minimum) number we can compute.
   overflows(me, t1) and
   // exclude cases where the expression type may not have been extracted accurately
-  not me.getParent().(Call).getTarget().hasAmbiguousReturnType()
+  not me.getParent().(Call).getTarget().hasAmbiguousReturnType() and
+  none()
 select me,
   "Multiplication result may overflow '" + me.getType().toString() + "' before it is converted to '"
     + me.getFullyConverted().getType().toString() + "'."

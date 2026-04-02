@@ -175,7 +175,8 @@ where
   not arg.getType().stripType().(RoutineType).getReturnType() instanceof ErroneousType and
   not arg.(Call).mayBeFromImplicitlyDeclaredFunction() and
   // Make sure that the format function definition is consistent
-  count(ffc.getTarget().getFormatParameterIndex()) = 1
+  count(ffc.getTarget().getFormatParameterIndex()) = 1 and
+  none()
 select arg,
   "This format specifier for type '" + expected.getName() + "' does not match the argument type '" +
     actual.getUnspecifiedType().getName() + "'."

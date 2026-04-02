@@ -29,7 +29,8 @@ where
   // the pointer expression to be `char*` or `void*`. Otherwise it
   // is probably a mistake.
   addWithSizeof(e, sizeofExpr, _) and
-  not isCharSzPtrExpr(e)
+  not isCharSzPtrExpr(e) and
+  none()
 select sizeofExpr,
   "Suspicious sizeof offset in a pointer arithmetic expression. The type of the pointer is $@.",
   e.getFullyConverted().getType() as t, t.toString()
