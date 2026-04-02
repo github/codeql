@@ -1,0 +1,8 @@
+import "../justfile"
+
+base_flags := ""
+
+all_checks := default_db_checks
+
+[no-cd]
+test *ARGS=".": (_codeql_test "actions" base_flags all_checks ARGS)
