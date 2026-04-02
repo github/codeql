@@ -13,7 +13,7 @@ func EncryptMessageWeak(key []byte, message []byte) (dst []byte) {
 }
 
 func EncryptMessageStrong(key []byte, message []byte) (dst []byte) {
-	// GOOD, AES is a weak crypto algorithm
+	// GOOD, AES is a strong crypto algorithm
 	block, _ := aes.NewCipher(key)
 	block.Encrypt(dst, message)
 	return

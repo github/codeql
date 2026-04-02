@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with static single assignment form (SSA).
  */
+overlay[local]
+module;
 
 import go
 private import SsaImpl

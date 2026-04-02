@@ -6,6 +6,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.util.Unit
@@ -53,10 +54,17 @@ module SqlInjection {
   }
 
   /**
-   * A sink for sql-injection from model data.
+   * A sink for SQL injection from model data.
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "sql-injection") }
+  }
+
+  /**
+   * A barrier for SQL injection from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "sql-injection") }
   }
 
   /**

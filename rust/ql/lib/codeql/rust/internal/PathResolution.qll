@@ -1162,21 +1162,39 @@ private Path getWherePredPath(WherePred wp) { result = wp.getTypeRepr().(PathTyp
 final class TypeParamItemNode extends NamedItemNode, TypeItemNode instanceof TypeParam {
   /** Gets a where predicate for this type parameter, if any */
   pragma[nomagic]
-  private WherePred getAWherePred() {
+  private WherePred getAWherePred(ItemNode constrainingItem, boolean isAdditional) {
     exists(ItemNode declaringItem |
+      this = declaringItem.getTypeParam(_) and
       this = resolvePath(getWherePredPath(result)) and
-      result = declaringItem.getADescendant() and
-      this = declaringItem.getADescendant()
+      result = constrainingItem.getADescendant()
+    |
+      constrainingItem = declaringItem and
+      isAdditional = false
+      or
+      constrainingItem = declaringItem.getADescendant() and
+      isAdditional = true
     )
   }
 
   pragma[nomagic]
   TypeBound getTypeBoundAt(int i, int j) {
     exists(TypeBoundList tbl | result = tbl.getBound(j) |
-      tbl = super.getTypeBoundList() and i = 0
+      tbl = super.getTypeBoundList() and
+      i = 0
       or
       exists(WherePred wp |
-        wp = this.getAWherePred() and
+        wp = this.getAWherePred(_, false) and
+        tbl = wp.getTypeBoundList() and
+        wp = any(WhereClause wc).getPredicate(i)
+      )
+    )
+  }
+
+  pragma[nomagic]
+  TypeBound getAdditionalTypeBoundAt(Item constrainingItem, int i, int j) {
+    exists(TypeBoundList tbl | result = tbl.getBound(j) |
+      exists(WherePred wp |
+        wp = this.getAWherePred(constrainingItem, true) and
         tbl = wp.getTypeBoundList() and
         wp = any(WhereClause wc).getPredicate(i)
       )
@@ -1196,6 +1214,15 @@ final class TypeParamItemNode extends NamedItemNode, TypeItemNode instanceof Typ
   }
 
   ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+
+  pragma[nomagic]
+  ItemNode resolveAdditionalBound(ItemNode constrainingItem) {
+    result =
+      resolvePath(this.getAdditionalTypeBoundAt(constrainingItem, _, _)
+            .getTypeRepr()
+            .(PathTypeRepr)
+            .getPath())
+  }
 
   override string getName() { result = TypeParam.super.getName().getText() }
 

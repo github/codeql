@@ -82,12 +82,12 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
     result = this.getSummaryNode().getSinkElement()
   }
 
-  /** Holds is this node is a source node of kind `kind`. */
+  /** Holds if this node is a source node of kind `kind`. */
   predicate isSource(string kind, string model) {
     this.getSummaryNode().(FlowSummaryImpl::Private::SourceOutputNode).isEntry(kind, model)
   }
 
-  /** Holds is this node is a sink node of kind `kind`. */
+  /** Holds if this node is a sink node of kind `kind`. */
   predicate isSink(string kind, string model) {
     this.getSummaryNode().(FlowSummaryImpl::Private::SinkInputNode).isExit(kind, model)
   }

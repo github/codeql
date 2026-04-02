@@ -27,13 +27,13 @@ predicate convertedToFloatOrDecimal(Expr e, Type t) {
     t instanceof DecimalType
   )
   or
-  exists(BinaryArithmeticOperation op |
+  exists(BinaryOperation op |
     op.getAnOperand() = e and
     convertedToFloatOrDecimal(op, t)
   |
-    op instanceof AddExpr or
-    op instanceof SubExpr or
-    op instanceof MulExpr
+    op instanceof AddOperation or
+    op instanceof SubOperation or
+    op instanceof MulOperation
   )
 }
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling security-relevant aspects of the `net/http` package.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.dataflow.internal.DataFlowPrivate

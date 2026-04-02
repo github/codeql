@@ -143,7 +143,7 @@ module Input implements InputSig<Location, RustDataFlow> {
 
 private import Make<Location, RustDataFlow, Input> as Impl
 
-private module StepsInput implements Impl::Private::StepsInputSig {
+module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
 
   /** Gets the argument of `source` described by `sc`, if any. */
@@ -171,18 +171,27 @@ private module StepsInput implements Impl::Private::StepsInputSig {
     result.asCfgScope() = source.getEnclosingCfgScope()
   }
 
-  RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) {
+  additional RustDataFlow::Node getSourceNode(
+    Input::SourceBase source, Impl::Private::SummaryComponentStack s, boolean isArgPostUpdate
+  ) {
     s.head() = Impl::Private::SummaryComponent::return(_) and
-    result.asExpr() = source.getCall()
+    result.asExpr() = source.getCall() and
+    isArgPostUpdate = false
     or
     exists(RustDataFlow::ArgumentPosition pos, Expr arg |
       s.head() = Impl::Private::SummaryComponent::parameter(pos) and
       arg = getSourceNodeArgument(source, s.tail().headOfSingleton()) and
-      result.asParameter() = getCallable(arg).getParam(pos.getPosition())
+      result.asParameter() = getCallable(arg).getParam(pos.getPosition()) and
+      isArgPostUpdate = false
     )
     or
     result.(RustDataFlow::PostUpdateNode).getPreUpdateNode().asExpr() =
-      getSourceNodeArgument(source, s.headOfSingleton())
+      getSourceNodeArgument(source, s.headOfSingleton()) and
+    isArgPostUpdate = true
+  }
+
+  RustDataFlow::Node getSourceNode(Input::SourceBase source, Impl::Private::SummaryComponentStack s) {
+    result = getSourceNode(source, s, _)
   }
 
   RustDataFlow::Node getSinkNode(Input::SinkBase sink, Impl::Private::SummaryComponent sc) {

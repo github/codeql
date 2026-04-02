@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with XPath-related concepts such as XPath expressions.
  */
+overlay[local?]
+module;
 
 import go
 import semmle.go.dataflow.ExternalFlow

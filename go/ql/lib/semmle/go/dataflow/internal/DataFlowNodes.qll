@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 private import go
 private import semmle.go.dataflow.FunctionInputsAndOutputs
 private import semmle.go.dataflow.FlowSummary

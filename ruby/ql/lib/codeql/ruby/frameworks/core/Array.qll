@@ -526,7 +526,7 @@ module Array {
     MethodCall mc;
 
     bindingset[this]
-    DeleteSummary() { mc.getMethodName() = "delete" }
+    DeleteSummary() { pragma[only_bind_into](mc).getMethodName() = "delete" }
 
     final override MethodCall getACallSimple() { result = mc }
 
@@ -790,7 +790,7 @@ module Array {
     MethodCall mc;
 
     bindingset[this]
-    FetchSummary() { mc.getMethodName() = "fetch" }
+    FetchSummary() { pragma[only_bind_into](mc).getMethodName() = "fetch" }
 
     override MethodCall getACallSimple() { result = mc }
   }

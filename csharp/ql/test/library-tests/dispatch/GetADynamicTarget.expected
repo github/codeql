@@ -467,61 +467,61 @@
 | ViableCallable.cs:311:9:311:15 | call to method M<Int32> | C7`1.M<T3>(T1, T3) |
 | ViableCallable.cs:314:9:314:20 | call to method M<Int32> | C7`1.M<T3>(T1, T3) |
 | ViableCallable.cs:317:9:317:20 | call to method M<Int32> | C6<T1,System.Byte>.M<T3>(T1, T3) |
-| ViableCallable.cs:367:9:367:14 | dynamic call to method M | C11.M(dynamic) |
-| ViableCallable.cs:369:9:369:18 | dynamic object creation of type C11 | C11.C11(C11) |
-| ViableCallable.cs:392:9:392:13 | call to method M | C12+C13.M() |
-| ViableCallable.cs:397:9:397:14 | call to method Run<T2> | C12.Run<T2>(T2) |
-| ViableCallable.cs:402:9:402:23 | call to method Run2<C13> | C12.Run2<C13>(C13) |
-| ViableCallable.cs:425:9:425:18 | call to method M<Int32> | C15+A1.M<T1>() |
-| ViableCallable.cs:425:9:425:18 | call to method M<Int32> | C15+A4.M<T1>() |
-| ViableCallable.cs:425:9:425:18 | call to method M<Int32> | C15+A5.M<T1>() |
-| ViableCallable.cs:429:9:429:19 | call to method M<Boolean> | C15+A1.M<T1>() |
-| ViableCallable.cs:433:9:433:21 | call to method M<String> | C15+A4.M<T1>() |
-| ViableCallable.cs:435:13:435:37 | call to method Mock<A4> | ViableCallable.Mock<A4>() |
-| ViableCallable.cs:437:9:437:21 | call to method M<String> | C15+A4.M<T1>() |
-| ViableCallable.cs:437:9:437:21 | call to method M<String> | C15+A5.M<T1>() |
-| ViableCallable.cs:452:9:452:19 | call to method M1 | C16<System.String,System.Int32>.M1(string) |
-| ViableCallable.cs:455:9:455:24 | call to method M2<Int32> | C17.M2<T>(Func<T>) |
-| ViableCallable.cs:463:9:463:21 | call to method M2<String> | C17.M2<T>(Func<T>) |
-| ViableCallable.cs:469:9:469:30 | call to method M2<T> | C16<T,System.Int32>.M2<T>(Func<T>) |
-| ViableCallable.cs:469:9:469:30 | call to method M2<T> | C17.M2<T>(Func<T>) |
-| ViableCallable.cs:475:9:475:30 | call to method M2<T> | C16<T,System.Int32>.M2<T>(Func<T>) |
-| ViableCallable.cs:475:9:475:30 | call to method M2<T> | C17.M2<T>(Func<T>) |
-| ViableCallable.cs:492:9:492:14 | call to method M1 | C18.M1() |
-| ViableCallable.cs:495:9:495:14 | call to method M2 | I2.M2() |
-| ViableCallable.cs:509:18:509:22 | call to operator + | C19.+(C19, C19) |
-| ViableCallable.cs:512:26:512:30 | call to operator checked + | C19.checked +(C19, C19) |
-| ViableCallable.cs:515:18:515:23 | call to operator explicit conversion | C19.explicit conversion(C19) |
-| ViableCallable.cs:518:26:518:31 | call to operator checked explicit conversion | C19.checked explicit conversion(C19) |
-| ViableCallable.cs:559:18:559:22 | call to operator + | C20.+(C20, C20) |
-| ViableCallable.cs:562:26:562:30 | call to operator checked + | C20.checked +(C20, C20) |
-| ViableCallable.cs:565:18:565:22 | call to operator - | C20.-(C20, C20) |
-| ViableCallable.cs:568:26:568:30 | call to operator checked - | I3<T>.checked -(T, T) |
-| ViableCallable.cs:571:18:571:22 | call to operator * | I3<T>.*(T, T) |
-| ViableCallable.cs:574:26:574:30 | call to operator checked * | I3<T>.checked *(T, T) |
-| ViableCallable.cs:577:18:577:22 | call to operator / | C20./(C20, C20) |
-| ViableCallable.cs:577:18:577:22 | call to operator / | I3<T>./(T, T) |
-| ViableCallable.cs:580:26:580:30 | call to operator checked / | C20.checked /(C20, C20) |
-| ViableCallable.cs:580:26:580:30 | call to operator checked / | I3<T>.checked /(T, T) |
-| ViableCallable.cs:583:9:583:15 | call to method M11 | C20.M11() |
-| ViableCallable.cs:586:9:586:15 | call to method M12 | C20.M12() |
-| ViableCallable.cs:586:9:586:15 | call to method M12 | I3<T>.M12() |
-| ViableCallable.cs:589:9:589:15 | call to method M13 | I3<T>.M13() |
-| ViableCallable.cs:613:9:613:13 | call to method M | C21+A1.M() |
-| ViableCallable.cs:619:9:619:13 | call to method M | C21+A1.M() |
-| ViableCallable.cs:619:9:619:13 | call to method M | C21+A2.M() |
-| ViableCallable.cs:661:9:661:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(Int32[]) |
-| ViableCallable.cs:665:9:665:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(List<int>) |
-| ViableCallable.cs:672:9:672:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(ReadOnlySpan<int>) |
-| ViableCallable.cs:676:9:676:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(IEnumerable<int>) |
-| ViableCallable.cs:683:9:683:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(Int32[]) |
-| ViableCallable.cs:683:9:683:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(Int32[]) |
-| ViableCallable.cs:687:9:687:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(List<int>) |
-| ViableCallable.cs:687:9:687:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(List<int>) |
-| ViableCallable.cs:716:9:716:18 | access to property Property | C23+Partial1.set_Property(object) |
-| ViableCallable.cs:719:13:719:22 | access to property Property | C23+Partial1.get_Property() |
-| ViableCallable.cs:722:9:722:12 | access to indexer | C23+Partial1.set_Item(int, object) |
-| ViableCallable.cs:725:13:725:16 | access to indexer | C23+Partial1.get_Item(int) |
-| ViableCallable.cs:728:9:728:15 | access to event Event | C23+Partial1.add_Event(EventHandler) |
-| ViableCallable.cs:731:9:731:15 | access to event Event | C23+Partial1.remove_Event(EventHandler) |
-| ViableCallable.cs:734:18:734:43 | object creation of type Partial1 | C23+Partial1.Partial1(object) |
+| ViableCallable.cs:368:9:368:14 | dynamic call to method M | C11.M(dynamic) |
+| ViableCallable.cs:370:9:370:18 | dynamic object creation of type C11 | C11.C11(C11) |
+| ViableCallable.cs:393:9:393:13 | call to method M | C12+C13.M() |
+| ViableCallable.cs:398:9:398:14 | call to method Run<T2> | C12.Run<T2>(T2) |
+| ViableCallable.cs:403:9:403:23 | call to method Run2<C13> | C12.Run2<C13>(C13) |
+| ViableCallable.cs:426:9:426:18 | call to method M<Int32> | C15+A1.M<T1>() |
+| ViableCallable.cs:426:9:426:18 | call to method M<Int32> | C15+A4.M<T1>() |
+| ViableCallable.cs:426:9:426:18 | call to method M<Int32> | C15+A5.M<T1>() |
+| ViableCallable.cs:430:9:430:19 | call to method M<Boolean> | C15+A1.M<T1>() |
+| ViableCallable.cs:434:9:434:21 | call to method M<String> | C15+A4.M<T1>() |
+| ViableCallable.cs:436:13:436:37 | call to method Mock<A4> | ViableCallable.Mock<A4>() |
+| ViableCallable.cs:438:9:438:21 | call to method M<String> | C15+A4.M<T1>() |
+| ViableCallable.cs:438:9:438:21 | call to method M<String> | C15+A5.M<T1>() |
+| ViableCallable.cs:453:9:453:19 | call to method M1 | C16<System.String,System.Int32>.M1(string) |
+| ViableCallable.cs:456:9:456:24 | call to method M2<Int32> | C17.M2<T>(Func<T>) |
+| ViableCallable.cs:464:9:464:21 | call to method M2<String> | C17.M2<T>(Func<T>) |
+| ViableCallable.cs:470:9:470:30 | call to method M2<T> | C16<T,System.Int32>.M2<T>(Func<T>) |
+| ViableCallable.cs:470:9:470:30 | call to method M2<T> | C17.M2<T>(Func<T>) |
+| ViableCallable.cs:476:9:476:30 | call to method M2<T> | C16<T,System.Int32>.M2<T>(Func<T>) |
+| ViableCallable.cs:476:9:476:30 | call to method M2<T> | C17.M2<T>(Func<T>) |
+| ViableCallable.cs:493:9:493:14 | call to method M1 | C18.M1() |
+| ViableCallable.cs:496:9:496:14 | call to method M2 | I2.M2() |
+| ViableCallable.cs:510:18:510:22 | call to operator + | C19.+(C19, C19) |
+| ViableCallable.cs:513:26:513:30 | call to operator checked + | C19.checked +(C19, C19) |
+| ViableCallable.cs:516:18:516:23 | call to operator explicit conversion | C19.explicit conversion(C19) |
+| ViableCallable.cs:519:26:519:31 | call to operator checked explicit conversion | C19.checked explicit conversion(C19) |
+| ViableCallable.cs:560:18:560:22 | call to operator + | C20.+(C20, C20) |
+| ViableCallable.cs:563:26:563:30 | call to operator checked + | C20.checked +(C20, C20) |
+| ViableCallable.cs:566:18:566:22 | call to operator - | C20.-(C20, C20) |
+| ViableCallable.cs:569:26:569:30 | call to operator checked - | I3<T>.checked -(T, T) |
+| ViableCallable.cs:572:18:572:22 | call to operator * | I3<T>.*(T, T) |
+| ViableCallable.cs:575:26:575:30 | call to operator checked * | I3<T>.checked *(T, T) |
+| ViableCallable.cs:578:18:578:22 | call to operator / | C20./(C20, C20) |
+| ViableCallable.cs:578:18:578:22 | call to operator / | I3<T>./(T, T) |
+| ViableCallable.cs:581:26:581:30 | call to operator checked / | C20.checked /(C20, C20) |
+| ViableCallable.cs:581:26:581:30 | call to operator checked / | I3<T>.checked /(T, T) |
+| ViableCallable.cs:584:9:584:15 | call to method M11 | C20.M11() |
+| ViableCallable.cs:587:9:587:15 | call to method M12 | C20.M12() |
+| ViableCallable.cs:587:9:587:15 | call to method M12 | I3<T>.M12() |
+| ViableCallable.cs:590:9:590:15 | call to method M13 | I3<T>.M13() |
+| ViableCallable.cs:614:9:614:13 | call to method M | C21+A1.M() |
+| ViableCallable.cs:620:9:620:13 | call to method M | C21+A1.M() |
+| ViableCallable.cs:620:9:620:13 | call to method M | C21+A2.M() |
+| ViableCallable.cs:662:9:662:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(Int32[]) |
+| ViableCallable.cs:666:9:666:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(List<int>) |
+| ViableCallable.cs:673:9:673:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(ReadOnlySpan<int>) |
+| ViableCallable.cs:677:9:677:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(IEnumerable<int>) |
+| ViableCallable.cs:684:9:684:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(Int32[]) |
+| ViableCallable.cs:684:9:684:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(Int32[]) |
+| ViableCallable.cs:688:9:688:16 | call to method M | C22+TestOverloadResolution1<System.Int32>.M(List<int>) |
+| ViableCallable.cs:688:9:688:16 | call to method M | C22+TestOverloadResolution2<System.Int32>.M(List<int>) |
+| ViableCallable.cs:717:9:717:18 | access to property Property | C23+Partial1.set_Property(object) |
+| ViableCallable.cs:720:13:720:22 | access to property Property | C23+Partial1.get_Property() |
+| ViableCallable.cs:723:9:723:12 | access to indexer | C23+Partial1.set_Item(int, object) |
+| ViableCallable.cs:726:13:726:16 | access to indexer | C23+Partial1.get_Item(int) |
+| ViableCallable.cs:729:9:729:15 | access to event Event | C23+Partial1.add_Event(EventHandler) |
+| ViableCallable.cs:732:9:732:15 | access to event Event | C23+Partial1.remove_Event(EventHandler) |
+| ViableCallable.cs:735:18:735:43 | object creation of type Partial1 | C23+Partial1.Partial1(object) |

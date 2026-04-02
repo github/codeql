@@ -687,24 +687,28 @@ pragma[nomagic]
 private CfgScope getTargetInstance(DataFlowCall call, string method) {
   exists(boolean exact |
     result = lookupInstanceMethodCall(call, method, exact) and
-    (
-      if result.(Method).isPrivate()
-      then
-        call.asCall().getReceiver().getExpr() instanceof SelfVariableAccess and
-        // For now, we restrict the scope of top-level declarations to their file.
-        // This may remove some plausible targets, but also removes a lot of
-        // implausible targets
-        (
-          isToplevelMethodInFile(result, call.asCall().getFile()) or
-          not isToplevelMethodInFile(result, _)
-        )
-      else any()
-    ) and
-    if result.(Method).isProtected()
-    then
-      result = lookupMethod(call.asCall().getExpr().getEnclosingModule().getModule(), method, exact)
-    else any()
+    (if result.(Method).isPrivate() then result = privateFilter(call) else any()) and
+    if result.(Method).isProtected() then result = protectedFilter(call, method, exact) else any()
   )
+}
+
+bindingset[call, result]
+pragma[inline_late]
+private CfgScope privateFilter(DataFlowCall call) {
+  call.asCall().getReceiver().getExpr() instanceof SelfVariableAccess and
+  // For now, we restrict the scope of top-level declarations to their file.
+  // This may remove some plausible targets, but also removes a lot of
+  // implausible targets
+  (
+    isToplevelMethodInFile(result, call.asCall().getFile()) or
+    not isToplevelMethodInFile(result, _)
+  )
+}
+
+bindingset[call, method, exact, result]
+pragma[inline_late]
+private CfgScope protectedFilter(DataFlowCall call, string method, boolean exact) {
+  result = lookupMethod(call.asCall().getExpr().getEnclosingModule().getModule(), method, exact)
 }
 
 private module TrackBlockInput implements CallGraphConstruction::Simple::InputSig {

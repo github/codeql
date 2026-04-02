@@ -1,3 +1,17 @@
+## 5.1.14
+
+No user-facing changes.
+
+## 5.1.13
+
+No user-facing changes.
+
+## 5.1.12
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `# $ tag` or `# $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
 ## 5.1.11
 
 ### Minor Analysis Improvements

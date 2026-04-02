@@ -52,8 +52,7 @@
 | SignAnalysis.cs:80:13:80:17 | ... = ... | strictlyNegative |
 | SignAnalysis.cs:80:17:80:17 | access to parameter i | strictlyNegative |
 | SignAnalysis.cs:81:13:81:13 | access to local variable x | strictlyNegative |
-| SignAnalysis.cs:81:13:81:18 | ... + ... | strictlyNegative |
-| SignAnalysis.cs:81:13:81:18 | ... = ... | strictlyNegative |
+| SignAnalysis.cs:81:13:81:18 | ... += ... | strictlyNegative |
 | SignAnalysis.cs:81:18:81:18 | access to parameter i | strictlyNegative |
 | SignAnalysis.cs:82:38:82:38 | access to local variable x | strictlyNegative |
 | SignAnalysis.cs:87:21:87:21 | access to parameter i | strictlyNegative |

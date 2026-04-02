@@ -1,1 +1,3 @@
+| second.cpp:26:18:26:39 | ... - ... | This format specifier for type 'int' does not match the argument type 'long'. |
+| second.cpp:29:18:29:39 | ... - ... | This format specifier for type 'unsigned int' does not match the argument type 'long'. |
 | tests.c:7:18:7:18 | 1 | This format specifier for type 'char *' does not match the argument type 'int'. |
