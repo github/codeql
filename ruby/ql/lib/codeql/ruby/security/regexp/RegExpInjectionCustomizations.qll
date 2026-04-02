@@ -10,6 +10,7 @@ private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -69,13 +70,7 @@ module RegExpInjection {
     StringConstArrayInclusionCallBarrier
   { }
 
-  /**
-   * A call to `Regexp.escape` (or its alias, `Regexp.quote`), considered as a
-   * sanitizer.
-   */
-  class RegexpEscapeSanitization extends Sanitizer {
-    RegexpEscapeSanitization() {
-      this = API::getTopLevelMember("Regexp").getAMethodCall(["escape", "quote"])
-    }
+  private class ExternalRegexpInjectionSanitizer extends Sanitizer {
+    ExternalRegexpInjectionSanitizer() { ModelOutput::barrierNode(this, "regexp-injection") }
   }
 }

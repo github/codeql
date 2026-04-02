@@ -24,3 +24,8 @@ try:
     pass
 except *foo as e:
     pass
+
+try:
+    pass
+except* x, y:
+    pass

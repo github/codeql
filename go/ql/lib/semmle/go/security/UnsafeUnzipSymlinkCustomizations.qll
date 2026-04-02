@@ -126,7 +126,7 @@ module UnsafeUnzipSymlink {
    * An argument to a call to `os.Symlink` within a loop that extracts a zip or tar archive,
    * taken as a sink for unsafe unzipping of symlinks.
    */
-  class OsSymlink extends DataFlow::Node, SymlinkSink {
+  class OsSymlink extends SymlinkSink {
     OsSymlink() {
       exists(DataFlow::CallNode n | n.asExpr() = getASymlinkCall() |
         this = n.getArgument([0, 1]) and
@@ -139,7 +139,7 @@ module UnsafeUnzipSymlink {
    * An argument to `path/filepath.EvalSymlinks` or `os.Readlink`, taken as a sink for detecting target
    * paths that are likely safe to extract to.
    */
-  class StdlibSymlinkResolvers extends DataFlow::Node, EvalSymlinksSink {
+  class StdlibSymlinkResolvers extends EvalSymlinksSink {
     StdlibSymlinkResolvers() {
       exists(DataFlow::CallNode n |
         n.getTarget().hasQualifiedName("path/filepath", "EvalSymlinks")

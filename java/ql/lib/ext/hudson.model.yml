@@ -52,6 +52,12 @@ extensions:
       - ["hudson", "Plugin", True, "newInstance", "", "", "Parameter", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
+      extensible: barrierModel
+    data:
+      - ["hudson", "Util", True, "escape", "(String)", "", "ReturnValue", "html-injection", "manual"]
+        # Not including xmlEscape because it only accounts for >, <, and &. It does not account for ", or ', which makes it an incomplete XSS sanitizer.
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["hudson", "FilePath", True, "FilePath", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]

@@ -15,9 +15,9 @@
 import python
 import semmle.python.filters.GeneratedCode
 
-select sum(Module m |
+select sum(ModuleMetrics m |
     exists(m.getFile().getRelativePath()) and
     not m.getFile() instanceof GeneratedFile
   |
-    m.getMetrics().getNumberOfLinesOfCode()
+    m.getNumberOfLinesOfCode()
   )

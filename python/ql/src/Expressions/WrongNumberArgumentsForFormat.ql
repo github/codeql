@@ -15,7 +15,6 @@
 
 import python
 import LegacyPointsTo
-import semmle.python.objects.ObjectInternal
 import semmle.python.strings
 
 predicate string_format(BinaryExpr operation, StringLiteral str, Value args, AstNode origin) {

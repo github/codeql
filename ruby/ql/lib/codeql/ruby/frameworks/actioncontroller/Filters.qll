@@ -46,6 +46,10 @@ module Filters {
     )
   }
 
+  bindingset[m, name]
+  pragma[inline_late]
+  private Method lookupMethodInlineLate(Module m, string name) { result = lookupMethod(m, name) }
+
   /**
    * A call to a class method that adds or removes a filter from the callback chain.
    * This class exists to encapsulate common behavior between calls that
@@ -55,6 +59,7 @@ module Filters {
   private class FilterCall extends MethodCallCfgNode {
     private FilterKind kind;
 
+    pragma[nomagic]
     FilterCall() {
       this.getExpr().getEnclosingModule() = any(ActionControllerClass c).getADeclaration() and
       this.getMethodName() = ["", "prepend_", "append_", "skip_"] + kind + "_action"
@@ -62,21 +67,27 @@ module Filters {
 
     FilterKind getKind() { result = kind }
 
+    pragma[nomagic]
+    private ActionControllerActionMethod getAnActionCand(string name) {
+      result = getADescendentAction(this) and
+      name = result.getName() and
+      // A filter cannot apply to another filter
+      not result = any(Filter f).getFilterCallable() and
+      // Only include routable actions. This can exclude valid actions if we can't parse the `routes.rb` file fully.
+      exists(result.getARoute())
+    }
+
     /**
      * Gets an action which this filter is applied to.
      */
+    pragma[nomagic]
     ActionControllerActionMethod getAnAction() {
-      // A filter cannot apply to another filter
-      result != any(Filter f).getFilterCallable() and
-      // Only include routable actions. This can exclude valid actions if we can't parse the `routes.rb` file fully.
-      exists(result.getARoute()) and
-      (
-        result.getName() = this.getOnlyArgument()
+      exists(string name | result = this.getAnActionCand(name) |
+        name = this.getOnlyArgument()
         or
         not exists(this.getOnlyArgument()) and
-        forall(string except | except = this.getExceptArgument() | result.getName() != except)
-      ) and
-      result = getADescendentAction(this)
+        forall(string except | except = this.getExceptArgument() | name != except)
+      )
     }
 
     private string getOnlyArgument() {
@@ -133,7 +144,8 @@ module Filters {
      */
     Callable getAFilterCallable() {
       result =
-        lookupMethod(this.getExpr().getEnclosingModule().getModule(), this.getFilterArgumentName())
+        lookupMethodInlineLate(this.getExpr().getEnclosingModule().getModule(),
+          this.getFilterArgumentName())
     }
   }
 

@@ -419,6 +419,10 @@ module DomBasedXss {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("html-injection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "html-injection") }
+  }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "html-injection") }
   }
 }

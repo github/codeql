@@ -46,7 +46,7 @@
 | DefUse.cs:89:13:89:14 | x3 | DefUse.cs:89:13:89:18 | Int32 x3 = ... | DefUse.cs:92:15:92:16 | access to local variable x3 |
 | DefUse.cs:89:13:89:14 | x3 | DefUse.cs:92:15:92:16 | access to local variable x3 | DefUse.cs:94:13:94:14 | access to local variable x3 |
 | DefUse.cs:90:13:90:14 | x4 | DefUse.cs:93:15:93:16 | access to local variable x4 | DefUse.cs:95:13:95:14 | access to local variable x4 |
-| DefUse.cs:97:13:97:14 | x5 | DefUse.cs:104:9:104:15 | ... = ... | DefUse.cs:105:13:105:14 | access to local variable x5 |
+| DefUse.cs:97:13:97:14 | x5 | DefUse.cs:104:9:104:15 | ... += ... | DefUse.cs:105:13:105:14 | access to local variable x5 |
 | DefUse.cs:118:45:118:45 | i | DefUse.cs:118:45:118:45 | i | DefUse.cs:118:65:118:65 | access to parameter i |
 | DefUse.cs:120:17:120:21 | Field | DefUse.cs:53:9:53:17 | ... = ... | DefUse.cs:54:13:54:17 | access to field Field |
 | DefUse.cs:122:16:122:21 | Field2 | DefUse.cs:63:9:63:18 | ... = ... | DefUse.cs:64:13:64:18 | access to field Field2 |

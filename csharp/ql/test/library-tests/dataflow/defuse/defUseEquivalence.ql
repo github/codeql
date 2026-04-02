@@ -1,9 +1,9 @@
 import csharp
-private import semmle.code.csharp.controlflow.internal.PreSsa
+private import semmle.code.csharp.dataflow.internal.BaseSSA
 
 /** "Naive" def-use implementation. */
 predicate defReaches(
-  AssignableDefinition def, PreSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
+  AssignableDefinition def, BaseSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
 ) {
   def.getTarget() = v and cfn = def.getExpr().getAControlFlowNode().getASuccessor()
   or

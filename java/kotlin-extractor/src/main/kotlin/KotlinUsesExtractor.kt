@@ -849,9 +849,6 @@ open class KotlinUsesExtractor(
     }
 
     private fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
-        if (s.abbreviation != null) {
-            // TODO: Extract this information
-        }
         // We use this when we don't actually have an IrClass for a class
         // we want to refer to
         // TODO: Eliminate the need for this if possible
@@ -939,7 +936,7 @@ open class KotlinUsesExtractor(
                 return arrayInfo.componentTypeResults
             }
             owner is IrClass -> {
-                val args = if (s.codeQlIsRawType()) null else s.arguments
+                val args = if (s.isRawType()) null else s.arguments
 
                 return useSimpleTypeClass(owner, args, s.isNullableCodeQL())
             }
@@ -1836,6 +1833,7 @@ open class KotlinUsesExtractor(
 
         // Note this function doesn't return a signature because type arguments are never
         // incorporated into function signatures.
+        @Suppress("REDUNDANT_ELSE_IN_WHEN")
         return when (arg) {
             is IrStarProjection -> {
                 val anyTypeLabel =

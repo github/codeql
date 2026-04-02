@@ -9,4 +9,4 @@
 
 import swift
 
-select sum(File f | | f.getNumberOfLinesOfCode())
+select sum(File f | exists(f.getRelativePath()) | f.getNumberOfLinesOfCode())

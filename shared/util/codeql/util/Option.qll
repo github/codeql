@@ -56,6 +56,9 @@ module Option<TypeWithToString T> {
 
   /** Gets the given element wrapped as an `Option`. */
   Some some(T c) { result = TSome(c) }
+
+  /** Gets the `None` value. */
+  None none_() { any() }
 }
 
 /**

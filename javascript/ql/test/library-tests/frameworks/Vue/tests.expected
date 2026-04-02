@@ -182,12 +182,15 @@ remoteFlowSource
 | router.js:9:17:9:26 | from.query |
 | router.js:15:25:15:32 | to.query |
 | router.js:16:25:16:34 | from.query |
-| router.js:23:9:23:16 | to.query |
-| router.js:24:9:24:18 | from.query |
-| router.js:29:5:29:12 | to.query |
-| router.js:30:5:30:14 | from.query |
-| router.js:34:5:34:12 | to.query |
-| router.js:35:5:35:14 | from.query |
+| router.js:21:20:21:30 | route.query |
+| router.js:26:29:26:39 | route.query |
+| router.js:27:29:27:39 | route.query |
+| router.js:32:9:32:16 | to.query |
+| router.js:33:9:33:18 | from.query |
+| router.js:38:5:38:12 | to.query |
+| router.js:39:5:39:14 | from.query |
+| router.js:43:5:43:12 | to.query |
+| router.js:44:5:44:14 | from.query |
 parseErrors
 attribute
 | compont-with-route.vue:2:8:2:21 | v-html=dataA | v-html |
@@ -227,12 +230,15 @@ threatModelSource
 | router.js:9:17:9:26 | from.query | remote |
 | router.js:15:25:15:32 | to.query | remote |
 | router.js:16:25:16:34 | from.query | remote |
-| router.js:23:9:23:16 | to.query | remote |
-| router.js:24:9:24:18 | from.query | remote |
-| router.js:29:5:29:12 | to.query | remote |
-| router.js:30:5:30:14 | from.query | remote |
-| router.js:34:5:34:12 | to.query | remote |
-| router.js:35:5:35:14 | from.query | remote |
+| router.js:21:20:21:30 | route.query | remote |
+| router.js:26:29:26:39 | route.query | remote |
+| router.js:27:29:27:39 | route.query | remote |
+| router.js:32:9:32:16 | to.query | remote |
+| router.js:33:9:33:18 | from.query | remote |
+| router.js:38:5:38:12 | to.query | remote |
+| router.js:39:5:39:14 | from.query | remote |
+| router.js:43:5:43:12 | to.query | remote |
+| router.js:44:5:44:14 | from.query | remote |
 | single-component-file-1.vue:7:45:7:54 | this.input | view-component-input |
 | single-file-component-3-script.js:5:42:5:51 | this.input | view-component-input |
 | single-file-component-4.vue:21:14:21:23 | this.input | view-component-input |

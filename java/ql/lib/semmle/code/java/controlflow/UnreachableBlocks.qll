@@ -1,8 +1,10 @@
 /**
+ * DEPRECATED: This module is no longer maintained, and will be removed in a future release.
+ *
  * Provides classes and predicates for identifying unreachable blocks under a "closed-world" assumption.
  */
 overlay[local?]
-module;
+deprecated module;
 
 import java
 import semmle.code.java.controlflow.Guards
@@ -49,9 +51,7 @@ class ConstantMethod extends Method {
     // Just one return statement
     count(ReturnStmt rs | rs.getEnclosingCallable() = this) = 1 and
     // Which returns a constant expr
-    exists(ReturnStmt rs | rs.getEnclosingCallable() = this |
-      rs.getResult() instanceof ConstantExpr
-    ) and
+    exists(ReturnStmt rs | rs.getEnclosingCallable() = this | rs.getExpr() instanceof ConstantExpr) and
     // And this method is not overridden
     not exists(Method m | m.overrides(this))
   }
@@ -61,7 +61,7 @@ class ConstantMethod extends Method {
    */
   ConstantExpr getConstantValue() {
     exists(ReturnStmt returnStmt | returnStmt.getEnclosingCallable() = this |
-      result = returnStmt.getResult()
+      result = returnStmt.getExpr()
     )
   }
 }

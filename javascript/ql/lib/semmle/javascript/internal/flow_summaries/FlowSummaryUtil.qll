@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript
 private import semmle.javascript.dataflow.FlowSummary
 private import semmle.javascript.dataflow.internal.Contents::Private
@@ -17,7 +20,7 @@ class InstanceCall extends DataFlow::CallNode {
 /**
  * A summary a function that is the default export from an NPM package.
  */
-abstract class FunctionalPackageSummary extends SummarizedCallable {
+abstract class FunctionalPackageSummary extends SummarizedCallable::Range {
   bindingset[this]
   FunctionalPackageSummary() { any() }
 

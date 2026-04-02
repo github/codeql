@@ -4,6 +4,7 @@ module;
 
 import java
 private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.frameworks.kotlin.IO
@@ -288,19 +289,8 @@ private Method getSourceMethod(Method m) {
   result = m
 }
 
-/**
- * A sanitizer that protects against path injection vulnerabilities
- * by extracting the final component of the user provided path.
- *
- * TODO: convert this class to models-as-data if sanitizer support is added
- */
-private class FileGetNameSanitizer extends PathInjectionSanitizer {
-  FileGetNameSanitizer() {
-    exists(MethodCall mc |
-      mc.getMethod().hasQualifiedName("java.io", "File", "getName") and
-      this.asExpr() = mc
-    )
-  }
+private class ExternalPathInjectionSanitizer extends PathInjectionSanitizer {
+  ExternalPathInjectionSanitizer() { barrierNode(this, "path-injection") }
 }
 
 /** Holds if `g` is a guard that checks for `..` components. */
@@ -437,20 +427,15 @@ private class ReplaceDirectoryCharactersSanitizer extends StringReplaceOrReplace
   }
 }
 
-/** Holds if `target` is the first argument of `matchesCall`. */
-private predicate isMatchesTarget(StringMatchesCall matchesCall, CompileTimeConstantExpr target) {
-  target = matchesCall.getArgument(0)
-}
-
 /**
  * Holds if `matchesCall` confirms that `checkedExpr` does not contain any directory characters
  * on the given `branch`.
  */
-private predicate isMatchesCall(StringMatchesCall matchesCall, Expr checkedExpr, boolean branch) {
+private predicate isMatchesCall(RegexMatch regexMatch, Expr checkedExpr, boolean branch) {
   exists(CompileTimeConstantExpr target, string targetValue |
-    isMatchesTarget(matchesCall, target) and
+    target = regexMatch.getRegex() and
     target.getStringValue() = targetValue and
-    checkedExpr = matchesCall.getQualifier()
+    checkedExpr = regexMatch.getString()
   |
     (
       // Allow anything except `.`, '/', '\'

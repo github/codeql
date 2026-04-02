@@ -28,6 +28,9 @@ module JSFlowSummary implements FlowSummaryImpl::InputSig<Location, JSDataFlow> 
   private import semmle.javascript.dataflow.internal.FlowSummaryPrivate as FlowSummaryPrivate
   import FlowSummaryPrivate
 
+  overlay[local]
+  predicate callableFromSource(SummarizedCallableBase c) { none() }
+
   // Explicitly implement signature members that have a default
   predicate callbackSelfParameterPosition = FlowSummaryPrivate::callbackSelfParameterPosition/0;
 

@@ -215,9 +215,9 @@ namespace My.Qltest
             Sink(Library.GeneratedFlowWithManualNeutral(o2)); // no flow because the modelled method has a manual neutral summary model
         }
 
-        object GeneratedFlow(object o) => throw null;
+        object GeneratedFlow(object o) => null;
 
-        object GeneratedFlowArgs(object o1, object o2) => throw null;
+        object GeneratedFlowArgs(object o1, object o2) => null;
 
         static void Sink(object o) { }
     }
@@ -348,4 +348,98 @@ namespace My.Qltest
         static void Sink(object o) { }
     }
 
+    // Test extensions
+    public static class TestExtensions
+    {
+        extension(object o)
+        {
+            public object Method1() => throw null;
+            public static object StaticMethod1(object s) => throw null;
+            public object Property1 { get { throw null; } set { throw null; } }
+        }
+
+        extension<T>(T t) where T : class
+        {
+            public T GenericMethod1() => throw null;
+            public static T GenericStaticMethod1(T t0) => throw null;
+            public T GenericProperty1 { get { throw null; } set { throw null; } }
+        }
+    }
+
+    public class M
+    {
+        public void M1()
+        {
+            var obj = new object();
+            var o1 = obj.Method1();
+            Sink(o1);
+
+            var o2 = TestExtensions.Method1(obj);
+            Sink(o2);
+        }
+
+        public void M2()
+        {
+            var obj = new object();
+            var o1 = object.StaticMethod1(obj);
+            Sink(o1);
+
+            var o2 = TestExtensions.StaticMethod1(obj);
+            Sink(o2);
+        }
+
+        public void M3(object o)
+        {
+            var obj = new object();
+            o.Property1 = obj;
+            var o1 = o.Property1;
+            Sink(o1);
+        }
+
+        public void M4(object o)
+        {
+            var obj = new object();
+            TestExtensions.set_Property1(o, obj);
+            var o1 = TestExtensions.get_Property1(o);
+            Sink(o1);
+        }
+
+        public void M5()
+        {
+            var obj = new object();
+            var o1 = obj.GenericMethod1();
+            Sink(o1);
+
+            var o2 = TestExtensions.GenericMethod1(obj);
+            Sink(o2);
+        }
+
+        public void M6()
+        {
+            var obj = new object();
+            var o1 = object.GenericStaticMethod1(obj);
+            Sink(o1);
+
+            var o2 = TestExtensions.GenericStaticMethod1(obj);
+            Sink(o2);
+        }
+
+        public void M7(object o)
+        {
+            var obj = new object();
+            o.GenericProperty1 = obj;
+            var o1 = o.GenericProperty1;
+            Sink(o1);
+        }
+
+        public void M8(object o)
+        {
+            var obj = new object();
+            TestExtensions.set_GenericProperty1(o, obj);
+            var o1 = TestExtensions.get_GenericProperty1(o);
+            Sink(o1);
+        }
+
+        static void Sink(object o) { }
+    }
 }

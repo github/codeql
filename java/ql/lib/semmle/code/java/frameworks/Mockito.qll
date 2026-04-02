@@ -386,7 +386,7 @@ class MockitoMockedObject extends Expr {
     or
     exists(ReturnStmt ret |
       this.(MethodCall).getMethod() = ret.getEnclosingCallable() and
-      ret.getResult() instanceof MockitoMockedObject
+      ret.getExpr() instanceof MockitoMockedObject
     )
   }
 }

@@ -106,11 +106,23 @@ yaml_locations(unique int locatable: @yaml_locatable ref,
 @yaml_locatable = @yaml_node | @yaml_error;
 
 /*- Database metadata -*/
+
+/**
+ * The CLI will automatically emit applicable tuples for this table,
+ * such as `databaseMetadata("isOverlay", "true")` when building an
+ * overlay database.
+ */
 databaseMetadata(
   string metadataKey: string ref,
   string value: string ref
 );
 
+/*- Overlay support -*/
+
+/**
+ * The CLI will automatically emit tuples for each new/modified/deleted file
+ * when building an overlay database.
+ */
 overlayChangedFiles(
   string path: string ref
 );

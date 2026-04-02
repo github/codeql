@@ -46,10 +46,7 @@ predicate insecureCookieOptionsCreation(ObjectCreation oc) {
   // `Secure` property in `CookieOptions` passed to IResponseCookies.Append(...) wasn't set
   oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
   secureFalseOrNotSet(oc) and
-  exists(DataFlow::Node creation |
-    CookieOptionsTracking::flow(creation, _) and
-    creation.asExpr() = oc
-  )
+  CookieOptionsTracking::flowFromExpr(oc)
 }
 
 predicate insecureCookieAppend(Expr sink) {

@@ -272,6 +272,8 @@
  * Note that the `import` statement as a whole is part of the CFG of the body, while its single
  * import specifier `x as y` forms part of the preamble.
  */
+overlay[local?]
+module;
 
 import javascript
 private import internal.StmtContainers

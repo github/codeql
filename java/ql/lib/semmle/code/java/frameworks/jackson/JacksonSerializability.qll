@@ -110,7 +110,7 @@ private module TypeLiteralToJacksonDatabindFlow =
   DataFlow::Global<TypeLiteralToJacksonDatabindFlowConfig>;
 
 private TypeLiteral getSourceWithFlowToJacksonDatabind() {
-  TypeLiteralToJacksonDatabindFlow::flow(DataFlow::exprNode(result), _)
+  TypeLiteralToJacksonDatabindFlow::flowFromExpr(result)
 }
 
 /** A type whose values are explicitly deserialized in a call to a Jackson method. */

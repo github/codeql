@@ -41,6 +41,7 @@ module Electron {
     BrowserView() { this = DataFlow::moduleMember("electron", "BrowserView").getAnInstantiation() }
   }
 
+  overlay[local?]
   private class ElectronEntryPoint extends API::EntryPoint {
     ElectronEntryPoint() { this = "Electron.Browser" }
 

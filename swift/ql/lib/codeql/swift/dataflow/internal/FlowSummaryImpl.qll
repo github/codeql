@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> 
 
   class SinkBase = Void;
 
+  predicate callableFromSource(SummarizedCallableBase c) { c.hasBody() }
+
   ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
 
   ReturnKind getStandardReturnValueKind() { result instanceof NormalReturnKind }
@@ -157,6 +159,19 @@ module SourceSinkInterpretationInput implements
       model = "" and // TODO: Insert MaD provenance from sinkModel
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )
+  }
+
+  predicate barrierElement(
+    Element n, string output, string kind, Public::Provenance provenance, string model
+  ) {
+    none()
+  }
+
+  predicate barrierGuardElement(
+    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Public::Provenance provenance, string model
+  ) {
+    none()
   }
 
   private newtype TInterpretNode =

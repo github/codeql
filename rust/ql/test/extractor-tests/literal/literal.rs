@@ -21,6 +21,17 @@ fn string_literals() {
     r"R"; // R
     "\\x52";
     r"\x52"; // \x52
+
+    "
+    A normal string literal
+    across many
+    lines
+    ";
+
+    r#"
+    A raw string literal
+    across multiple lines
+    "#;
 }
 
 fn integer_literals() {

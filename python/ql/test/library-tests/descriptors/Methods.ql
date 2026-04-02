@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 int lineof(Object o) { result = o.getOrigin().getLocation().getStartLine() }
 

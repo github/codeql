@@ -10,7 +10,7 @@ import java
  */
 class ExternalContext extends RefType {
   ExternalContext() {
-    this.hasQualifiedName(["javax.faces.context", "jakarta.faces.context"], "ExternalContext")
+    this.hasQualifiedName(javaxOrJakarta() + ".faces.context", "ExternalContext")
   }
 }
 

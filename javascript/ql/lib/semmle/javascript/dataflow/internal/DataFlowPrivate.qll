@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript
 private import semmle.javascript.dataflow.internal.CallGraphs
 private import semmle.javascript.dataflow.internal.DataFlowNode
@@ -310,6 +313,7 @@ private predicate returnNodeImpl(DataFlow::Node node, ReturnKind kind) {
   kind = MkExceptionalReturnKind()
 }
 
+overlay[global]
 private DataFlow::Node getAnOutNodeImpl(DataFlowCall call, ReturnKind kind) {
   kind = MkNormalReturnKind() and result = call.asOrdinaryCall()
   or
@@ -336,10 +340,12 @@ class ReturnNode extends DataFlow::Node {
 }
 
 /** A node that receives an output from a call. */
+overlay[global]
 class OutNode extends DataFlow::Node {
   OutNode() { this = getAnOutNodeImpl(_, _) }
 }
 
+overlay[global]
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { result = getAnOutNodeImpl(call, kind) }
 
 cached
@@ -416,9 +422,11 @@ abstract class LibraryCallable extends string {
   LibraryCallable() { any() }
 
   /** Gets a call to this library callable. */
+  overlay[global]
   DataFlow::InvokeNode getACall() { none() }
 
   /** Same as `getACall()` except this does not depend on the call graph or API graph. */
+  overlay[global]
   DataFlow::InvokeNode getACallSimple() { none() }
 }
 
@@ -432,6 +440,7 @@ abstract class LibraryCallableInternal extends LibraryCallable {
    *
    * Same as `getACall()` but is evaluated later and may depend negatively on `getACall()`.
    */
+  overlay[global]
   DataFlow::InvokeNode getACallStage2() { none() }
 }
 
@@ -467,6 +476,7 @@ predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition
   isParameterNodeImpl(p, c, pos)
 }
 
+overlay[global]
 private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition pos) {
   n = call.asOrdinaryCall().getArgument(pos.asPositional())
   or
@@ -523,6 +533,7 @@ private predicate isArgumentNodeImpl(Node n, DataFlowCall call, ArgumentPosition
   )
 }
 
+overlay[global]
 predicate isArgumentNode(ArgumentNode n, DataFlowCall call, ArgumentPosition pos) {
   isArgumentNodeImpl(n, call, pos)
 }
@@ -545,11 +556,13 @@ DataFlowCallable nodeGetEnclosingCallable(Node node) {
   node instanceof DataFlow::XmlAttributeNode and result.asFileCallable() = node.getFile()
 }
 
+overlay[global]
 newtype TDataFlowType =
   TFunctionType(Function f) or
   TInstanceType(DataFlow::ClassNode cls) or
   TAnyType()
 
+overlay[global]
 class DataFlowType extends TDataFlowType {
   string toDebugString() {
     result =
@@ -575,6 +588,7 @@ class DataFlowType extends TDataFlowType {
 /**
  * Holds if `t1` is strictly stronger than `t2`.
  */
+overlay[global]
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
   // 't1' is a subclass of 't2'
   t1.asInstanceOfClass() = t2.asInstanceOfClass().getADirectSubClass+()
@@ -584,6 +598,7 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
   t2 = TAnyType()
 }
 
+overlay[global]
 private DataFlowType getPreciseType(Node node) {
   exists(Function f |
     (node = TValueNode(f) or node = TFunctionSelfReferenceNode(f)) and
@@ -598,6 +613,7 @@ private DataFlowType getPreciseType(Node node) {
   result = getPreciseType(node.(PostUpdateNode).getPreUpdateNode())
 }
 
+overlay[global]
 DataFlowType getNodeType(Node node) {
   result = getPreciseType(node)
   or
@@ -681,19 +697,23 @@ predicate neverSkipInPathGraph(Node node) {
   node.asExpr() instanceof VarRef
 }
 
+overlay[global]
 string ppReprType(DataFlowType t) { none() }
 
+overlay[global]
 pragma[inline]
 private predicate compatibleTypesWithAny(DataFlowType t1, DataFlowType t2) {
   t1 != TAnyType() and
   t2 = TAnyType()
 }
 
+overlay[global]
 pragma[nomagic]
 private predicate compatibleTypes1(DataFlowType t1, DataFlowType t2) {
   t1.asInstanceOfClass().getADirectSubClass+() = t2.asInstanceOfClass()
 }
 
+overlay[global]
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   t1 = t2
@@ -742,6 +762,7 @@ class ContentApprox extends TContentApprox {
   }
 }
 
+overlay[global]
 pragma[inline]
 ContentApprox getContentApprox(Content c) {
   c instanceof MkPropertyContent and result = TApproxPropertyContent()
@@ -767,6 +788,7 @@ ContentApprox getContentApprox(Content c) {
   c instanceof MkCapturedContent and result = TApproxCapturedContent()
 }
 
+overlay[global]
 cached
 private newtype TDataFlowCall =
   MkOrdinaryCall(DataFlow::InvokeNode node) or
@@ -791,6 +813,7 @@ private newtype TDataFlowCall =
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
 
+overlay[global]
 class DataFlowCall extends TDataFlowCall {
   DataFlowCallable getEnclosingCallable() { none() } // Overridden in subclass
 
@@ -816,6 +839,7 @@ class DataFlowCall extends TDataFlowCall {
   Location getLocation() { none() } // Overridden in subclass
 }
 
+overlay[global]
 private class OrdinaryCall extends DataFlowCall, MkOrdinaryCall {
   private DataFlow::InvokeNode node;
 
@@ -832,6 +856,7 @@ private class OrdinaryCall extends DataFlowCall, MkOrdinaryCall {
   override Location getLocation() { result = node.getLocation() }
 }
 
+overlay[global]
 private class PartialCall extends DataFlowCall, MkPartialCall {
   private DataFlow::PartialInvokeNode node;
   private DataFlow::Node callback;
@@ -851,6 +876,7 @@ private class PartialCall extends DataFlowCall, MkPartialCall {
   override Location getLocation() { result = node.getLocation() }
 }
 
+overlay[global]
 private class BoundCall extends DataFlowCall, MkBoundCall {
   private DataFlow::InvokeNode node;
   private int boundArgs;
@@ -868,6 +894,7 @@ private class BoundCall extends DataFlowCall, MkBoundCall {
   override Location getLocation() { result = node.getLocation() }
 }
 
+overlay[global]
 private class AccessorCall extends DataFlowCall, MkAccessorCall {
   private DataFlow::PropRef ref;
 
@@ -882,6 +909,7 @@ private class AccessorCall extends DataFlowCall, MkAccessorCall {
   override Location getLocation() { result = ref.getLocation() }
 }
 
+overlay[global]
 class SummaryCall extends DataFlowCall, MkSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable enclosingCallable;
   private FlowSummaryImpl::Private::SummaryNode receiver;
@@ -908,6 +936,7 @@ class SummaryCall extends DataFlowCall, MkSummaryCall {
  * This is to help ensure captured variables can flow into the lambda in cases where
  * we can't find its call sites.
  */
+overlay[global]
 private class ImpliedLambdaCall extends DataFlowCall, MkImpliedLambdaCall {
   private Function function;
 
@@ -981,6 +1010,7 @@ class DataFlowExpr = Expr;
 
 Node exprNode(DataFlowExpr expr) { result = DataFlow::exprNode(expr) }
 
+overlay[global]
 pragma[nomagic]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos = apos
@@ -993,6 +1023,7 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   // are only using these in cases where either the call or callee is generated by a flow summary.
 }
 
+overlay[global]
 pragma[inline]
 DataFlowCallable viableCallable(DataFlowCall node) {
   // Note: we never include call edges externs here, as it negatively affects the field-flow branch limit,
@@ -1021,6 +1052,7 @@ DataFlowCallable viableCallable(DataFlowCall node) {
   result.asSourceCallableNotExterns() = node.asImpliedLambdaCall()
 }
 
+overlay[global]
 private DataFlowCall getACallOnThis(DataFlow::ClassNode cls) {
   result.asOrdinaryCall() = cls.getAReceiverNode().getAPropertyRead().getACall()
   or
@@ -1029,6 +1061,7 @@ private DataFlowCall getACallOnThis(DataFlow::ClassNode cls) {
   result.asPartialCall().getACallbackNode() = cls.getAReceiverNode().getAPropertyRead()
 }
 
+overlay[global]
 private predicate downwardCall(DataFlowCall call) {
   exists(DataFlow::ClassNode cls |
     call = getACallOnThis(cls) and
@@ -1041,9 +1074,11 @@ private predicate downwardCall(DataFlowCall call) {
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
+overlay[global]
 predicate mayBenefitFromCallContext(DataFlowCall call) { downwardCall(call) }
 
 /** Gets the type of the receiver of `call`. */
+overlay[global]
 private DataFlowType getThisArgumentType(DataFlowCall call) {
   exists(DataFlow::Node node |
     isArgumentNodeImpl(node, call, MkThisParameter()) and
@@ -1052,6 +1087,7 @@ private DataFlowType getThisArgumentType(DataFlowCall call) {
 }
 
 /** Gets the type of the 'this' parameter of `call`. */
+overlay[global]
 private DataFlowType getThisParameterType(DataFlowCallable callable) {
   exists(DataFlow::Node node |
     isParameterNodeImpl(node, callable, MkThisParameter()) and
@@ -1063,6 +1099,7 @@ private DataFlowType getThisParameterType(DataFlowCallable callable) {
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
+overlay[global]
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
   mayBenefitFromCallContext(call) and
   result = viableCallable(call) and
@@ -1071,16 +1108,19 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
 }
 
 bindingset[node, fun]
+overlay[caller?]
 pragma[inline_late]
 private predicate sameContainerAsEnclosingContainer(Node node, Function fun) {
   node.getContainer() = fun.getEnclosingContainer()
 }
 
+overlay[global]
 abstract private class BarrierGuardAdapter extends DataFlow::Node {
   // Note: avoid depending on DataFlow::FlowLabel here as it will cause these barriers to be re-evaluated
   predicate blocksExpr(boolean outcome, Expr e) { none() }
 }
 
+overlay[global]
 deprecated private class BarrierGuardAdapterSubclass extends BarrierGuardAdapter instanceof DataFlow::AdditionalBarrierGuardNode
 {
   override predicate blocksExpr(boolean outcome, Expr e) { super.blocks(outcome, e) }
@@ -1092,6 +1132,7 @@ deprecated private class BarrierGuardAdapterSubclass extends BarrierGuardAdapter
  *
  * The standard library contains no subclasses of that class; this is for backwards compatibility only.
  */
+overlay[global]
 pragma[nomagic]
 private predicate legacyBarrier(DataFlow::Node node) {
   node = MakeBarrierGuard<BarrierGuardAdapter>::getABarrierNode()
@@ -1100,6 +1141,7 @@ private predicate legacyBarrier(DataFlow::Node node) {
 /**
  * Holds if `node` should be removed from the local data flow graph, for compatibility with legacy code.
  */
+overlay[global]
 pragma[nomagic]
 private predicate isBlockedLegacyNode(Node node) {
   // Ignore captured variable nodes for those variables that are handled by the captured-variable library.
@@ -1155,6 +1197,7 @@ private predicate imprecisePostUpdateStep(DataFlow::PostUpdateNode postUpdate, D
  * Holds if there is a value-preserving steps `node1` -> `node2` that might
  * be cross function boundaries.
  */
+overlay[global]
 private predicate valuePreservingStep(Node node1, Node node2) {
   node1.getASuccessor() = node2 and
   not isBlockedLegacyNode(node1) and
@@ -1223,10 +1266,12 @@ private predicate useUseFlow(Node node1, Node node2) {
   )
 }
 
+overlay[global]
 predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
   simpleLocalFlowStep(node1, node2) and model = ""
 }
 
+overlay[global]
 predicate simpleLocalFlowStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
   nodeGetEnclosingCallable(pragma[only_bind_out](node1)) =
@@ -1314,6 +1359,7 @@ private predicate excludedJumpStep(Node node1, Node node2) {
  * that does not follow a call edge. For example, a step through a global
  * variable.
  */
+overlay[global]
 predicate jumpStep(Node node1, Node node2) {
   valuePreservingStep(node1, node2) and
   node1.getContainer() != node2.getContainer() and
@@ -1330,6 +1376,7 @@ predicate jumpStep(Node node1, Node node2) {
  * `node1` references an object with a content `c.getAReadContent()` whose
  * value ends up in `node2`.
  */
+overlay[global]
 predicate readStep(Node node1, ContentSet c, Node node2) {
   exists(DataFlow::PropRead read |
     node1 = read.getBase() and
@@ -1447,6 +1494,7 @@ private predicate stringifiedNode(Node node) {
 }
 
 /** Gets the post-update node for which `node` is the corresponding pre-update node. */
+pragma[nomagic]
 private Node getPostUpdateForStore(Node base) {
   exists(Expr expr |
     base = TValueNode(expr) and
@@ -1469,6 +1517,7 @@ private Node getPostUpdateForStore(Node base) {
 }
 
 /** Gets node to target with a store to the given `base` object.. */
+overlay[caller?]
 pragma[inline]
 private Node getStoreTarget(DataFlow::Node base) {
   result = getPostUpdateForStore(base)
@@ -1487,6 +1536,7 @@ private int firstSpreadArgumentIndex(InvokeExpr expr) {
  * `node2` references an object with a content `c.getAStoreContent()` that
  * contains the value of `node1`.
  */
+overlay[global]
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(DataFlow::PropWrite write |
     node1 = write.getRhs() and
@@ -1545,6 +1595,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
+overlay[global]
 predicate clearsContent(Node n, ContentSet c) {
   FlowSummaryPrivate::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
@@ -1578,6 +1629,7 @@ predicate clearsContent(Node n, ContentSet c) {
  * Holds if the value that is being tracked is expected to be stored inside content `c`
  * at node `n`.
  */
+overlay[global]
 predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryPrivate::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
@@ -1602,6 +1654,7 @@ abstract class NodeRegion extends Unit {
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
+overlay[global]
 predicate isUnreachableInCall(NodeRegion n, DataFlowCall call) {
   none() // TODO: could be useful, but not currently implemented for JS
 }
@@ -1635,6 +1688,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 }
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
+overlay[global]
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   call.isSummaryCall(_, receiver.(FlowSummaryNode).getSummaryNode()) and exists(kind)
   or
@@ -1646,6 +1700,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
+overlay[global]
 class ArgumentNode extends DataFlow::Node {
   ArgumentNode() { isArgumentNodeImpl(this, _, _) }
 

@@ -1,6 +1,6 @@
 /**
  * @name Classify files
- * @description This query produces a list of all files in a snapshot that are classified as
+ * @description This query produces a list of all files in a database that are classified as
  *              generated code, test code or vendored-in library code.
  * @kind file-classifier
  * @id go/file-classifier

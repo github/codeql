@@ -58,7 +58,7 @@ SINK7 = functools.partial(SINK, expected=arg7)
 def f(a, b):
   return a
 
-SINK(f(SOURCE, 3)) #$ flow="SOURCE -> f(..)"
+SINK(f(SOURCE, 3)) # $ flow="SOURCE -> f(..)"
 
 # Instance methods
 # An instance method object combines a class, a class instance and any callable object (normally a user-defined function).
@@ -236,10 +236,10 @@ class Customized:
 
 # testing __new__ and __init__
 customized = Customized()
-SINK(Customized.a)  #$ MISSING:flow="SOURCE, l:-8 -> customized.a"
+SINK(Customized.a)  # $ MISSING:flow="SOURCE, l:-8 -> customized.a"
 SINK_F(Customized.b)
-SINK(customized.a)  #$ MISSING: flow="SOURCE, l:-10 -> customized.a"
-SINK(customized.b)  #$ flow="SOURCE, l:-7 -> customized.b"
+SINK(customized.a)  # $ MISSING: flow="SOURCE, l:-10 -> customized.a"
+SINK(customized.b)  # $ flow="SOURCE, l:-7 -> customized.b"
 
 
 class Test2:

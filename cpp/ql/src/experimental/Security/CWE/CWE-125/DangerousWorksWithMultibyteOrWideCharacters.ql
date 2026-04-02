@@ -1,5 +1,5 @@
 /**
- * @name Dangerous use convert function.
+ * @name Dangerous use convert function
  * @description Using convert function with an invalid length argument can result in an out-of-bounds access error or unexpected result.
  * @kind problem
  * @id cpp/dangerous-use-convert-function

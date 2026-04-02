@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using Semmle.Util;
 using Semmle.Util.Logging;
 using Newtonsoft.Json;
+using System.Linq;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -37,7 +38,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         internal X509Certificate2? Certificate { get; private set; }
 
-        internal static DependabotProxy? GetDependabotProxy(ILogger logger, TemporaryDirectory tempWorkingDirectory)
+        internal static DependabotProxy? GetDependabotProxy(
+            ILogger logger, IDiagnosticsWriter diagnosticsWriter, TemporaryDirectory tempWorkingDirectory)
         {
             // Setting HTTP(S)_PROXY and SSL_CERT_FILE have no effect on Windows or macOS,
             // but we would still end up using the Dependabot proxy to check for feed reachability.
@@ -110,6 +112,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     logger.LogError($"Unable to parse '{EnvironmentVariableNames.ProxyURLs}': {ex.Message}");
                 }
+            }
+
+            // Emit a diagnostic for the discovered private registries, so that it is easy
+            // for users to see that they were picked up.
+            if (result.RegistryURLs.Count > 0)
+            {
+                diagnosticsWriter.AddEntry(new DiagnosticMessage(
+                    Language.CSharp,
+                    "buildless/analysis-using-private-registries",
+                    severity: DiagnosticMessage.TspSeverity.Note,
+                    visibility: new DiagnosticMessage.TspVisibility(true, true, true),
+                    name: "C# extraction used private package registries",
+                    markdownMessage: string.Format(
+                        "C# was extracted using the following private package registries:\n\n{0}\n",
+                        string.Join("\n", result.RegistryURLs.Select(url => string.Format("- `{0}`", url)))
+                    )
+                ));
             }
 
             return result;

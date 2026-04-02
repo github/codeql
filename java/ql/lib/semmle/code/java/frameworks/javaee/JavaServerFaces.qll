@@ -61,7 +61,7 @@ class FacesAccessibleType extends RefType {
 class FacesComponent extends Class {
   FacesComponent() {
     // Must extend UIComponent for it to be a valid component.
-    this.getAnAncestor().hasQualifiedName("javax.faces.component", "UIComponent") and
+    this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".faces.component", "UIComponent") and
     (
       // Must be registered using either an annotation
       exists(FacesComponentAnnotation componentAnnotation |

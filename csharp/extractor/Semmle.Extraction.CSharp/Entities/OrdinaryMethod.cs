@@ -14,16 +14,18 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public override string Name => Symbol.GetName();
 
-        protected override IMethodSymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
-
         public IMethodSymbol SourceDeclaration => Symbol.OriginalDefinition;
 
         public override Microsoft.CodeAnalysis.Location ReportingLocation =>
             IsCompilerGeneratedDelegate()
                 ? Symbol.ContainingType.GetSymbolLocation()
-                : BodyDeclaringSymbol.GetSymbolLocation();
+                : Symbol.GetSymbolLocation();
 
-        public override bool NeedsPopulation => base.NeedsPopulation || IsCompilerGeneratedDelegate();
+        public override bool NeedsPopulation =>
+            (base.NeedsPopulation || IsCompilerGeneratedDelegate()) &&
+            // Exclude compiler-generated extension methods. A call to such a method
+            // is replaced by a call to the defining extension method.
+            !Symbol.IsCompilerGeneratedExtensionMethod();
 
         public override void Populate(TextWriter trapFile)
         {
@@ -73,7 +75,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 cx.ExtractionContext.Logger.LogWarning("Reduced extension method symbols should not be directly extracted.");
             }
 
-            return OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method);
+            return OrdinaryMethodFactory.Instance.CreateEntityFromSymbol(cx, method.GetBodyDeclaringSymbol());
         }
 
         private class OrdinaryMethodFactory : CachedEntityFactory<IMethodSymbol, OrdinaryMethod>

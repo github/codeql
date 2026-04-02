@@ -1,3 +1,102 @@
+## 7.0.3
+
+No user-facing changes.
+
+## 7.0.2
+
+No user-facing changes.
+
+## 7.0.1
+
+### Minor Analysis Improvements
+
+- The call graph resolution no longer considers methods marked using [`@typing.overload`](https://typing.python.org/en/latest/spec/overload.html#overloads) as valid targets. This ensures that only the method that contains the actual implementation gets resolved as a target.
+* Inline expectations test comments, which are of the form `# $ tag` or `# $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 7.0.0
+
+### Breaking Changes
+
+- The `Metrics` library no longer contains code that depends on the points-to analysis. The removed functionality has instead been moved to the `LegacyPointsTo` module, to classes like `ModuleMetricsWithPointsTo` etc. If you depend on any of these classes, you must now remember to import `LegacyPointsTo`, and use the appropriate types in order to use the points-to-based functionality.
+
+### Major Analysis Improvements
+
+- The CodeQL Python libraries have been updated to be compatible with overlay evaluation. This should result in a significant speedup on analyses for which a base database already exists. Note that it may be necessary to add `overlay[local?] module;` to user-managed libraries that extend classes that are now marked as `overlay[local]`.
+
+### Minor Analysis Improvements
+
+* Added new full SSRF sanitization barrier from the new AntiSSRF library. 
+* When a guard such as `isSafe(x)` is defined, we now also automatically handle `isSafe(x) == true` and `isSafe(x) != false`.
+
+## 6.1.1
+
+### Minor Analysis Improvements
+
+* Added request forgery sink models for the Azure SDK.
+* Made it so that models-as-data sinks with the kind `request-forgery` contribute to the class `Http::Client::Request` which represents HTTP client requests.
+
+### Bug Fixes
+
+- Using `=` as a fill character in a format specifier (e.g. `f"{x:=^20}"`) now no longer results in a syntax error during parsing.
+
+## 6.1.0
+
+### New Features
+
+* It is now possible to refer to list elements in the Python models-as-data language, via the `ListElement` path.
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+* Added experimental query `py/prompt-injection` to detect potential prompt injection vulnerabilities in code using LLMs.
+* Added taint flow model and type model for `agents` and `openai` modules.
+* Remote flow sources for the `websockets` package have been modeled.
+
+## 6.0.0
+
+### Breaking Changes
+
+* All modules that depend on the points-to analysis have now been removed from the top level `python.qll` module. To access the points-to functionality, import the new `LegacyPointsTo` module. This also means that some predicates have been removed from various classes, for instance `Function.getFunctionObject()`. To access these predicates, import the `LegacyPointsTo` module and use the `FunctionWithPointsTo` class instead. Most cases follow this pattern, but there are a few exceptions:
+  * The `getLiteralObject` method on `ImmutableLiteral` subclasses has been replaced with a predicate `getLiteralObject(ImmutableLiteral l)` in the `LegacyPointsTo` module.
+  * The `getMetrics` method on `Function`, `Class`, and `Module` has been removed. To access metrics, import `LegacyPointsTo` and use the classes `FunctionMetrics`, etc. instead.
+
+### New Features
+
+* The extractor now supports the new, relaxed syntax `except A, B, C: ...` (which would previously have to be written as `except (A, B, C): ...`) as defined in [PEP-758](https://peps.python.org/pep-0758/). This may cause changes in results for code that uses Python 2-style exception binding (`except Foo, e: ...`). The more modern format, `except Foo as e: ...` (available since Python 2.6) is unaffected.
+* The Python extractor now supports template strings as defined in [PEP-750](https://peps.python.org/pep-0750/), through the classes `TemplateString` and `JoinedTemplateString`.
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the Python extractor's search for YAML files.
+* The `compression.zstd` library (added in Python 3.14) is now supported by the `py/decompression-bomb` query.
+* Added taint flow model and type model for `urllib.parse`.
+* Remote flow sources for the `python-socketio` package have been modeled.
+* Additional models for remote flow sources for `tornado.websocket.WebSocketHandler` have been added.
+
+## 5.0.4
+
+No user-facing changes.
+
+## 5.0.3
+
+No user-facing changes.
+
+## 5.0.2
+
+No user-facing changes.
+
+## 5.0.1
+
+### Bug Fixes
+
+- Fixed a bug in the Python extractor's import handling where failing to find an import in `find_module` would cause a `KeyError` to be raised. (Contributed by @akoeplinger.)
+
+## 5.0.0
+
+### Breaking Changes
+
+- The classes `ControlFlowNode`, `Expr`, and `Module` no longer expose predicates that invoke the points-to analysis. To access these predicates, import the module `LegacyPointsTo` and follow the instructions given therein.
+
 ## 4.1.0
 
 ### New Features

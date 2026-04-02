@@ -328,3 +328,27 @@ class PreprocessorPragma extends PreprocessorDirective, @ppd_pragma {
 class PreprocessorLine extends PreprocessorDirective, @ppd_line {
   override string toString() { result = "#line " + this.getHead() }
 }
+
+/**
+ * A C23 or C++26 `#embed` preprocessor directive. For example, the following code
+ * contains one `Embed` directive:
+ * ```cpp
+ * char arr[] = {
+ * #embed "bin"
+ * };
+ * ```
+ */
+class Embed extends PreprocessorDirective, @ppd_embed {
+  override string toString() { result = "#embed " + this.getIncludeText() }
+
+  /**
+   * Gets the token which occurs after `#embed`, for example `"filename"`
+   * or `<filename>`.
+   */
+  string getIncludeText() { result = this.getHead() }
+
+  /**
+   * Gets the file directly embedded by this `#embed`.
+   */
+  File getEmbeddedFile() { embeds(underlyingElement(this), unresolveElement(result)) }
+}

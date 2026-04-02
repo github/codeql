@@ -3,7 +3,9 @@ overlay[local?]
 module;
 
 import java
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.frameworks.Regex
 
 /**
  * A node whose type is a simple type unlikely to carry taint, such as primitives and their boxed counterparts,
@@ -27,5 +29,37 @@ class SimpleTypeSanitizer extends DataFlow::Node {
         .getASourceSupertype*()
         .hasQualifiedName("java.time.temporal", "TemporalAccessor") or
     this.getType() instanceof EnumType
+  }
+}
+
+/**
+ * Holds if `guard` holds with branch `branch` if `e` matches a regular expression.
+ *
+ * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
+ *
+ * Use this if you want to define a derived `DataFlow::BarrierGuard` without
+ * make the type recursive. Otherwise use `RegexpCheckBarrier`.
+ */
+predicate regexpMatchGuardChecks(Guard guard, Expr e, boolean branch) {
+  exists(RegexMatch rm | not rm instanceof Annotation |
+    guard = rm and
+    e = rm.getASanitizedExpr() and
+    branch = true
+  )
+}
+
+/**
+ * A check against a regular expression, considered as a barrier guard.
+ *
+ * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
+ */
+class RegexpCheckBarrier extends DataFlow::Node {
+  RegexpCheckBarrier() {
+    this = DataFlow::BarrierGuard<regexpMatchGuardChecks/3>::getABarrierNode()
+    or
+    // Annotations don't fit into the model of barrier guards because the
+    // annotation doesn't dominate the sanitized expression, so we instead
+    // treat them as barriers directly.
+    exists(RegexMatch rm | rm instanceof Annotation | this.asExpr() = rm.getString())
   }
 }

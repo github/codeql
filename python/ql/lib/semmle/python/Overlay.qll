@@ -2,6 +2,8 @@
  * Defines entity discard predicates for Python overlay analysis.
  */
 
+private import internal.OverlayXml
+
 /*- Predicates -*/
 /**
  * Holds always for the overlay variant and never for the base variant.
@@ -301,33 +303,6 @@ final private class DiscardableComment extends Discardable instanceof @py_commen
   override string getPath() {
     exists(DiscardableLocation d | result = d.getPath() | py_comments(this, _, d))
   }
-}
-
-/*- XML -*/
-overlay[local]
-final private class DiscardableXmlLocatable extends Discardable instanceof @xmllocatable {
-  override string getPath() {
-    exists(@location loc | xmllocations(this, loc) | result = getPathForLocation(loc))
-  }
-}
-
-overlay[local]
-private predicate overlayXmlExtracted(string path) {
-  exists(DiscardableXmlLocatable d | not files(d, _) and not xmlNs(d, _, _, _) |
-    d.existsInOverlay() and
-    path = d.getPath()
-  )
-}
-
-overlay[discard_entity]
-private predicate discardXmlLocatable(@xmllocatable el) {
-  exists(DiscardableXmlLocatable d | d = el |
-    // The XML extractor is currently not incremental and may extract more
-    // XML files than those included in `overlayChangedFiles`, so this discard predicate
-    // handles those files alongside the normal `discardStarEntity` logic.
-    overlayXmlExtracted(d.getPath()) and
-    d.existsInBase()
-  )
 }
 
 /*- YAML -*/

@@ -1,0 +1,4 @@
+qltest_use_nightly: true
+qltest_dependencies:
+    - actix-web = { version = "4.12.0" }
+    - html-escape = { version = "0.2.13" }

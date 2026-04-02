@@ -1,4 +1,5 @@
 import python
+private import LegacyPointsTo
 
 from ClassValue cls, string description
 where

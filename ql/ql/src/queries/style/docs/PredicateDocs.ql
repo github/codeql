@@ -1,5 +1,5 @@
 /**
- * @name Predicate QLDoc style.
+ * @name Predicate QLDoc style
  * @description The QLDoc for a predicate should start with "Gets" or "Holds".
  * @kind problem
  * @problem.severity warning

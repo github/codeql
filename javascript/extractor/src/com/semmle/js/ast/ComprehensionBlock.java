@@ -10,7 +10,7 @@ public class ComprehensionBlock extends Expression {
     super("ComprehensionBlock", loc);
     this.left = left;
     this.right = right;
-    this.of = of != Boolean.FALSE;
+    this.of = !Boolean.FALSE.equals(of);
   }
 
   @Override

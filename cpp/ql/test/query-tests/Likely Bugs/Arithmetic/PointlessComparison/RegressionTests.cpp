@@ -124,3 +124,43 @@ void testTempObject() {
   f(&x);
   if (x > 0) {} // GOOD [NO LONGER REPORTED]
 }
+
+void staticAssert() {
+  static const int a = 42;
+  static const int b = 43;
+  static_assert(a < b + 0, ""); // GOOD
+}
+
+constexpr int global_1 = 42;
+constexpr int global_2 = global_1 < 2 * sizeof(int*) ? 43 : 2 * sizeof(int*); // GOOD
+
+static const int global_3 = 42;
+static const int global_4 = global_3 < 2 * sizeof(int*) ? 43 : 2 * sizeof(int*); // GOOD
+
+template<unsigned int p, unsigned int n, bool = ((2u * n) < p)>
+struct templateCompare : public templateCompare<p, 2u * n>  // GOOD
+{ };
+
+template< unsigned int p, unsigned int n>
+struct templateCompare< p, n, false>
+{
+  static const unsigned int v = n;
+};
+
+unsigned int templateCompare_x = templateCompare<42, 42>::v;
+
+template<int n>
+struct someType {
+  typedef someType<((n - 4) < 0 ? 0 : n - 4)> b;  // GOOD
+};
+
+someType<42>::b someType_x;
+
+struct A_Struct {
+  int x;
+  int y;
+};
+
+enum E {
+  E_e = sizeof(A_Struct) * 8 > 50 // GOOD
+};

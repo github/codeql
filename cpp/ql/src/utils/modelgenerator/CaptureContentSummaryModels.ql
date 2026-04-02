@@ -1,5 +1,5 @@
 /**
- * @name Capture content based summary models.
+ * @name Capture content based summary models
  * @description Finds applicable content based summary models to be used by other queries.
  * @kind diagnostic
  * @id cpp/utils/modelgenerator/contentbased-summary-models

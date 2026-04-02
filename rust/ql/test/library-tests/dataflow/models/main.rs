@@ -31,6 +31,20 @@ enum MyPosEnum {
     B(i64),
 }
 
+// has a manual flow model with flow from second argument to the return value
+// and a wrong generated model with flow from first argument to the return value
+fn snd(a: i64, b: i64) -> i64 {
+    0
+}
+
+fn test_snd() {
+    let s1 = source(99);
+    sink(snd(0, s1)); // $ hasValueFlow=99
+
+    let s2 = source(88);
+    sink(snd(s2, 0));
+}
+
 // has a flow model
 fn get_var_pos(e: MyPosEnum) -> i64 {
     0
@@ -391,6 +405,29 @@ fn test_trait_model<T: Ord>(x: T) {
 
     let x6 = source(27) < 1;
     sink(x6); // $ hasTaintFlow=27
+
+    let x7 = (source(28) as i32) < 1;
+    sink(x7);
+}
+
+mod external_file;
+use external_file::*;
+
+fn test_neutrals() {
+    // neutral models should cause corresponding generated models to be ignored.
+    // Thus the `neutral_generated_source`, `neutral_generated_sink` and
+    // `neutral_generated_summary`, which have both a generated and a neutral
+    // model, should not have flow.
+
+    sink(generated_source(1)); // $ hasValueFlow=1
+    sink(neutral_generated_source(2));
+    sink(neutral_manual_source(3)); // $ hasValueFlow=3
+    generated_sink(source(4)); // $ hasValueFlow=4
+    neutral_generated_sink(source(5));
+    neutral_manual_sink(source(6)); // $ hasValueFlow=6
+    sink(generated_summary(source(7))); // $ hasValueFlow=7
+    sink(neutral_generated_summary(source(8)));
+    sink(neutral_manual_summary(source(9))); // $ hasValueFlow=9
 }
 
 #[tokio::main]
@@ -414,5 +451,6 @@ async fn main() {
     test_simple_sink();
     test_get_async_number().await;
     test_arg_source();
+    test_neutrals();
     let dummy = Some(0); // ensure that the the `lang:core` crate is extracted
 }

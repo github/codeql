@@ -73,6 +73,8 @@
  * expression in `k` induces a re-capture of `x` to reflect the fact that `x`
  * is incremented between the two `console.log` calls.
  */
+overlay[local?]
+module;
 
 import javascript
 private import semmle.javascript.dataflow.Refinements

@@ -48,6 +48,7 @@ private predicate legacyPostUpdateStep(DataFlow::Node pred, DataFlow::Node succ)
  * Holds if data can flow in one step from `pred` to `succ`,  taking
  * additional steps from the configuration into account.
  */
+overlay[caller?]
 pragma[inline]
 deprecated predicate localFlowStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::Configuration configuration,
@@ -523,6 +524,7 @@ private module CachedSteps {
   /**
    * Holds if there is a step from `pred` to `succ` through a call to an identity function.
    */
+  overlay[local?]
   cached
   predicate identityFunctionStep(DataFlow::Node pred, DataFlow::CallNode succ) {
     exists(DataFlow::GlobalVarRefNode global |

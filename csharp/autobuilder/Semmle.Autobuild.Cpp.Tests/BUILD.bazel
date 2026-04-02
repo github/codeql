@@ -13,6 +13,5 @@ codeql_xunit_test(
         "//csharp/autobuilder/Semmle.Autobuild.Cpp:bin/Semmle.Autobuild.Cpp",
         "//csharp/autobuilder/Semmle.Autobuild.Shared",
         "@paket.main//microsoft.net.test.sdk",
-        "@paket.main//system.io.filesystem",
     ],
 )

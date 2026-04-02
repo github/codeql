@@ -344,7 +344,7 @@ private class TriedControlFlowElement extends ControlFlowElement {
     result instanceof SystemOutOfMemoryExceptionClass
     or
     this =
-      any(AddExpr ae |
+      any(AddOperation ae |
         ae.getType() instanceof StringType and
         result instanceof SystemOutOfMemoryExceptionClass
         or
@@ -353,24 +353,24 @@ private class TriedControlFlowElement extends ControlFlowElement {
       )
     or
     this =
-      any(SubExpr se |
+      any(SubOperation se |
         se.getType() instanceof IntegralType and
         result instanceof SystemOverflowExceptionClass
       )
     or
     this =
-      any(MulExpr me |
+      any(MulOperation me |
         me.getType() instanceof IntegralType and
         result instanceof SystemOverflowExceptionClass
       )
     or
     this =
-      any(DivExpr de |
+      any(DivOperation de |
         not de.getDenominator().getValue().toFloat() != 0 and
         result instanceof SystemDivideByZeroExceptionClass
       )
     or
-    this instanceof RemExpr and
+    this instanceof RemOperation and
     result instanceof SystemDivideByZeroExceptionClass
     or
     this instanceof DynamicExpr and
@@ -447,7 +447,7 @@ private predicate inBooleanContext(Expr e) {
     e in [ce.getThen(), ce.getElse()]
   )
   or
-  e = any(NullCoalescingExpr nce | inBooleanContext(nce)).getAnOperand()
+  e = any(NullCoalescingOperation nce | inBooleanContext(nce)).getAnOperand()
   or
   e = any(SwitchExpr se | inBooleanContext(se)).getACase()
   or
@@ -467,13 +467,13 @@ private predicate mustHaveNullnessCompletion(Expr e) {
  * that `e` evaluates to determines a `null`/non-`null` branch successor.
  */
 private predicate inNullnessContext(Expr e) {
-  e = any(NullCoalescingExpr nce).getLeftOperand()
+  e = any(NullCoalescingOperation nce).getLeftOperand()
   or
   exists(QualifiableExpr qe | qe.isConditional() | e = qe.getChildExpr(-1))
   or
   exists(ConditionalExpr ce | inNullnessContext(ce) | (e = ce.getThen() or e = ce.getElse()))
   or
-  exists(NullCoalescingExpr nce | inNullnessContext(nce) | e = nce.getRightOperand())
+  exists(NullCoalescingOperation nce | inNullnessContext(nce) | e = nce.getRightOperand())
   or
   e = any(SwitchExpr se | inNullnessContext(se)).getACase()
   or

@@ -36,7 +36,7 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // flow from `a` to `&a`
-    node2.asExpr().getExpr().(RefExpr).getExpr() = node1.asExpr().getExpr()
+    node2.asExpr().(RefExpr).getExpr() = node1.asExpr()
   }
 
   predicate observeDiffInformedIncrementalMode() { any() }

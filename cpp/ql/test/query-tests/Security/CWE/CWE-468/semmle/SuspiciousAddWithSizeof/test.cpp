@@ -93,3 +93,9 @@ private:
   myChar * const myCharsPointer;
   myInt * const myIntsPointer;
 };
+
+typedef unsigned char uint8_t;
+typedef unsigned short uint16_t;
+typedef unsigned int uint32_t;
+
+void test_buildless(const char *p_c, const short *p_short, const int *p_int, const uint8_t *p_8, const uint16_t *p_16, const uint32_t *p_32);

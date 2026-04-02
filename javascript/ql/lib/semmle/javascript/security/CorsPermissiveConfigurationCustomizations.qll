@@ -66,7 +66,7 @@ module CorsPermissiveConfiguration {
    * The value of cors origin when initializing the application.
    */
   class CorsOriginSink extends Sink, DataFlow::ValueNode {
-    CorsOriginSink() { this = ModelOutput::getASinkNode("cors-origin").asSink() }
+    CorsOriginSink() { ModelOutput::sinkNode(this, "cors-origin") }
   }
 
   /**
@@ -81,5 +81,9 @@ module CorsPermissiveConfiguration {
         config.getAPropertyWrite("credentials").getRhs().mayHaveBooleanValue(false)
       )
     }
+  }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "cors-origin") }
   }
 }

@@ -48,7 +48,6 @@ private import implementations.SqLite3
 private import implementations.PostgreSql
 private import implementations.System
 private import implementations.StructuredExceptionHandling
-private import implementations.ZMQ
 private import implementations.Win32CommandExecution
 private import implementations.CA2AEX
 private import implementations.CComBSTR
@@ -57,3 +56,5 @@ private import implementations.CAtlFile
 private import implementations.CAtlFileMapping
 private import implementations.CAtlTemporaryFile
 private import implementations.CRegKey
+private import implementations.WinHttp
+private import implementations.Http

@@ -154,7 +154,7 @@ def all_crate_deps(
         normal (bool, optional): If True, normal dependencies are included in the
             output list.
         normal_dev (bool, optional): If True, normal dev dependencies will be
-            included in the output list..
+            included in the output list.
         proc_macro (bool, optional): If True, proc_macro dependencies are included
             in the output list.
         proc_macro_dev (bool, optional): If True, dev proc_macro dependencies are
@@ -408,6 +408,7 @@ _CONDITIONS = {
     "aarch64-unknown-nto-qnx710": ["@rules_rust//rust/platform:aarch64-unknown-nto-qnx710"],
     "aarch64-unknown-uefi": ["@rules_rust//rust/platform:aarch64-unknown-uefi"],
     "arm-unknown-linux-gnueabi": ["@rules_rust//rust/platform:arm-unknown-linux-gnueabi"],
+    "arm-unknown-linux-musleabi": ["@rules_rust//rust/platform:arm-unknown-linux-musleabi"],
     "armv7-linux-androideabi": ["@rules_rust//rust/platform:armv7-linux-androideabi"],
     "armv7-unknown-linux-gnueabi": ["@rules_rust//rust/platform:armv7-unknown-linux-gnueabi"],
     "cfg(all(any(target_arch = \"x86_64\", target_arch = \"arm64ec\"), target_env = \"msvc\", not(windows_raw_dylib)))": ["@rules_rust//rust/platform:x86_64-pc-windows-msvc"],

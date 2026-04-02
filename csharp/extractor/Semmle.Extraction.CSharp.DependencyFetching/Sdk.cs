@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using NuGet.Versioning;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -27,7 +28,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             cscPath = new Lazy<string?>(GetCscPath);
         }
 
-        [GeneratedRegex(@"^(\d+\.\d+\.\d+)(-([a-z]+)\.(\d+\.\d+\.\d+))?\s\[(.+)\]$")]
+        [GeneratedRegex(@"^(\d+\.\d+\.\d+(-[a-z]+\.\d+\.\d+\.\d+)?)\s\[(.+)\]$")]
         private static partial Regex SdkRegex();
 
         private static HashSet<DotNetVersion> ParseSdks(IList<string> listed)
@@ -37,9 +38,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             listed.ForEach(r =>
             {
                 var match = regex.Match(r);
-                if (match.Success)
+                if (match.Success && NuGetVersion.TryParse(match.Groups[1].Value, out var version))
                 {
-                    sdks.Add(new DotNetVersion(match.Groups[5].Value, match.Groups[1].Value, match.Groups[3].Value, match.Groups[4].Value));
+                    sdks.Add(new DotNetVersion(match.Groups[3].Value, version));
                 }
             });
 

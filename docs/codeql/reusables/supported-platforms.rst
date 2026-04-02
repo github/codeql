@@ -9,12 +9,12 @@
    Ubuntu 24.04","x86-64"
    Windows,"Windows 10 / Windows Server 2019
 
-   Windows 11 / Windows Server 2022","x86-64"
-   macOS,"macOS 13 Ventura
+   Windows 11 / Windows Server 2022/2025","x86-64"
+   macOS,"macOS 14 Sonoma
 
-   macOS 14 Sonoma
+   macOS 15 Sequoia
 
-   macOS 15 Sequoia","x86-64, arm64 (Apple Silicon) [1]_"
+   macOS 26 Tahoe","x86-64, arm64 (Apple Silicon) [1]_"
 
 .. container:: footnote-group
 

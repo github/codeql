@@ -1,6 +1,5 @@
 import rust
 import codeql.rust.frameworks.stdlib.Builtins
-import codeql.rust.internal.Type
 
 string describe(BuiltinType t) {
   t instanceof NumericType and result = "NumericType"

@@ -1,0 +1,5 @@
+reverseRead
+| websocket.go:110:31:110:31 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| websocket.go:120:32:120:32 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| websocket.go:129:54:129:54 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| websocket.go:139:55:139:55 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

@@ -394,6 +394,11 @@ class FunctionAccess extends Access, @routineexpr {
  */
 class ParamAccessForType extends Expr, @param_ref {
   override string toString() { result = "param access" }
+
+  /**
+   * Holds if the accessed parameter is implicit object parameter of the function.
+   */
+  predicate isThisAccess() { param_ref_to_this(underlyingElement(this)) }
 }
 
 /**

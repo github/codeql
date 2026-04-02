@@ -43,4 +43,10 @@ predicate isAllowableUnused(Variable v) {
   or
   // a 'self' variable
   v.getText() = "self"
+  or
+  // a common source of false positives is match arms containing constants
+  // (typically beginning with a capital letter) that are misrecognized as a
+  // variable, having not been correctly resolved.
+  v.getPat().getParentNode() instanceof MatchArm and
+  v.getText().charAt(0).isUppercase()
 }

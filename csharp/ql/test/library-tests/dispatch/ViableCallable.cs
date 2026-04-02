@@ -362,6 +362,7 @@ public class C11
     {
         dynamic d = this;
         int x = 0;
+        // Viable callables: int.+
         x += 42;
         // Viable callables: C11.M()
         d.M(x);
@@ -692,16 +693,20 @@ public class C23
 {
     public partial class Partial1
     {
+        public partial Partial1(object obj);
         public partial object Property { get; set; }
 
         public partial object this[int index] { get; set; }
+        public partial event EventHandler Event;
     }
 
     public partial class Partial1
     {
+        public partial Partial1(object obj) { }
         public partial object Property { get { return null; } set { } }
 
         public partial object this[int index] { get { return null; } set { } }
+        public partial event EventHandler Event { add { } remove { } }
     }
 
     public void Run1(Partial1 p)
@@ -719,5 +724,14 @@ public class C23
 
         // Viable callable: Partial1.get_Item(int)
         o = p[0];
+
+        // Viable callable: Partial1.add_Event
+        p.Event += (sender, e) => { };
+
+        // Viable callable: Partial1.remove_Event
+        p.Event -= (sender, e) => { };
+
+        // Viable callable: Partial1.Partial1(object)
+        var p0 = new Partial1(new object());
     }
 }

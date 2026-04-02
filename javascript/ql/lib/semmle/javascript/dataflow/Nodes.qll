@@ -3,6 +3,8 @@
  * as nodes corresponding to function definitions or nodes corresponding to
  * parameters.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dependencies.Dependencies
@@ -158,6 +160,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * addEventHandler("click", foo.bind(this, "value of x"))
    * ```
    */
+  overlay[global]
   ParameterNode getABoundCallbackParameter(int callback, int param) {
     exists(int boundArgs |
       result =
@@ -178,6 +181,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
   private ObjectLiteralNode getOptionsArgument(int i) { result.flowsTo(this.getArgument(i)) }
 
   /** Gets an abstract value representing possible callees of this call site. */
+  overlay[global]
   final AbstractValue getACalleeValue() {
     exists(DataFlow::Node callee, DataFlow::AnalyzedNode analyzed |
       pragma[only_bind_into](callee) = this.getCalleeNode() and
@@ -192,6 +196,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * To alter the call graph as seen by the interprocedural data flow libraries, override
    * the `getACallee(int imprecision)` predicate instead.
    */
+  overlay[global]
   final Function getACallee() { result = this.getACallee(0) }
 
   /**
@@ -206,6 +211,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * This predicate can be overridden to alter the call graph used by the interprocedural
    * data flow libraries.
    */
+  overlay[global]
   Function getACallee(int imprecision) {
     result = CallGraph::getACallee(this, imprecision).getFunction()
   }
@@ -214,6 +220,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * Holds if the approximation of possible callees for this call site is
    * affected by the given analysis incompleteness `cause`.
    */
+  overlay[global]
   predicate isIndefinite(DataFlow::Incompleteness cause) {
     this.getACalleeValue().isIndefinite(cause)
   }
@@ -229,6 +236,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * independent contexts, so tracking flow through it leads to
    * imprecision.
    */
+  overlay[global]
   predicate isImprecise() {
     this.isIndefinite("global") and
     exists(DefiniteAbstractValue v | v = this.getACalleeValue() | not v instanceof AbstractCallable)
@@ -238,6 +246,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * Holds if our approximation of possible callees for this call site is
    * likely to be incomplete.
    */
+  overlay[global]
   predicate isIncomplete() {
     // the flow analysis identifies a source of incompleteness other than
     // global flow (which usually leads to imprecision rather than incompleteness)
@@ -248,6 +257,7 @@ class InvokeNode extends DataFlow::SourceNode instanceof DataFlow::Impl::InvokeN
    * Holds if our approximation of possible callees for this call site is
    * likely to be imprecise or incomplete.
    */
+  overlay[global]
   predicate isUncertain() { this.isImprecise() or this.isIncomplete() }
 
   /**
@@ -382,6 +392,9 @@ DataFlow::SourceNode globalObjectRef() {
   or
   // DOM
   result = globalVariable("window")
+  or
+  // DOM alias via `document.defaultView`
+  result = globalVariable("document").getAPropertyRead("defaultView")
   or
   // Node.js
   result = globalVariable("global")
@@ -763,7 +776,7 @@ module ModuleImportNode {
 cached
 ModuleImportNode moduleImport(string path) {
   // NB. internal modules may be imported with a "node:" prefix
-  Stages::Imports::ref() and result.getPath() = ["node:" + path, path]
+  result.getPath() = ["node:" + path, path]
 }
 
 /**
@@ -771,6 +784,7 @@ ModuleImportNode moduleImport(string path) {
  * `require("lodash")` in a context where a package.json file includes
  * `"lodash"` as a dependency.
  */
+overlay[global]
 ModuleImportNode dependencyModuleImport(Dependency dep) {
   result = dep.getAUse("import").(Import).getImportedModuleNode()
 }
@@ -861,6 +875,7 @@ module MemberKind {
  *
  * Additional patterns can be recognized as class nodes, by extending `DataFlow::ClassNode::Range`.
  */
+overlay[global]
 class ClassNode extends DataFlow::ValueNode, DataFlow::SourceNode {
   override AST::ValueNode astNode;
   AbstractCallable function;
@@ -1329,6 +1344,7 @@ class ClassNode extends DataFlow::ValueNode, DataFlow::SourceNode {
 /**
  * Helper predicate to get a prototype reference in a file.
  */
+overlay[global]
 private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
   result.getBase() = AccessPath::getAReferenceOrAssignmentTo(name) and
   result.getPropertyName() = "prototype" and
@@ -1338,6 +1354,7 @@ private DataFlow::PropRef getAPrototypeReferenceInFile(string name, File f) {
 /**
  * Helper predicate to get an instantiation in a file.
  */
+overlay[global]
 private DataFlow::NewNode getAnInstantiationInFile(string name, File f) {
   result = AccessPath::getAReferenceTo(name).(DataFlow::LocalSourceNode).getAnInstantiation() and
   result.getFile() = f
@@ -1346,6 +1363,7 @@ private DataFlow::NewNode getAnInstantiationInFile(string name, File f) {
 /**
  * Gets a reference to the function `func`, where there exists a read/write of the "prototype" property on that reference.
  */
+overlay[global]
 pragma[noinline]
 private DataFlow::SourceNode getAFunctionValueWithPrototype(AbstractValue func) {
   exists(result.getAPropertyReference("prototype")) and
@@ -1353,6 +1371,7 @@ private DataFlow::SourceNode getAFunctionValueWithPrototype(AbstractValue func) 
   func instanceof AbstractCallable // the join-order goes bad if `func` has type `AbstractFunction`.
 }
 
+overlay[global]
 module ClassNode {
   /**
    * A dataflow node that should be considered a class node.
@@ -1435,6 +1454,7 @@ module ClassNode {
  * _.partial(fn, x, y, z)
  * ```
  */
+overlay[global]
 class PartialInvokeNode extends DataFlow::Node instanceof PartialInvokeNode::Range {
   /** Gets a node holding a callback invoked by this partial invocation node. */
   DataFlow::Node getACallbackNode() {
@@ -1470,6 +1490,7 @@ class PartialInvokeNode extends DataFlow::Node instanceof PartialInvokeNode::Ran
   }
 }
 
+overlay[global]
 module PartialInvokeNode {
   /**
    * A data flow node that performs a partial function application.
@@ -1717,6 +1738,7 @@ class RegExpCreationNode extends DataFlow::SourceNode {
   predicate maybeGlobal() { RegExp::maybeGlobal(this.tryGetFlags()) }
 
   /** Gets a data flow node referring to this regular expression. */
+  overlay[global]
   private DataFlow::SourceNode getAReference(DataFlow::TypeTracker t) {
     t.start() and
     result = this
@@ -1725,6 +1747,7 @@ class RegExpCreationNode extends DataFlow::SourceNode {
   }
 
   /** Gets a data flow node referring to this regular expression. */
+  overlay[global]
   cached
   DataFlow::SourceNode getAReference() {
     Stages::FlowSteps::ref() and
@@ -1736,6 +1759,7 @@ class RegExpCreationNode extends DataFlow::SourceNode {
  * A guard node for a variable in a negative condition, such as `x` in `if(!x)`.
  * Can be added to a `isBarrier` in a data-flow configuration to block flow through such checks.
  */
+overlay[global]
 class VarAccessBarrier extends DataFlow::Node {
   VarAccessBarrier() {
     exists(ConditionGuardNode guard, SsaRefinementNode refinement |

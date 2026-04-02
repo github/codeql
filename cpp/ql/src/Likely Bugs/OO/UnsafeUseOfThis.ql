@@ -17,15 +17,15 @@
 import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.MustFlow
-import PathGraph
+import UnsafeUseOfThis::PathGraph
 
-class UnsafeUseOfThisConfig extends MustFlowConfiguration {
-  UnsafeUseOfThisConfig() { this = "UnsafeUseOfThisConfig" }
+module UnsafeUseOfThisConfig implements MustFlow::ConfigSig {
+  predicate isSource(Instruction source) { isSource(source, _, _) }
 
-  override predicate isSource(Instruction source) { isSource(source, _, _) }
-
-  override predicate isSink(Operand sink) { isSink(sink, _) }
+  predicate isSink(Operand sink) { isSink(sink, _) }
 }
+
+module UnsafeUseOfThis = MustFlow::Global<UnsafeUseOfThisConfig>;
 
 /** Holds if `sink` is a `this` pointer used by the call instruction `call`. */
 predicate isSink(Operand sink, CallInstruction call) {
@@ -66,19 +66,17 @@ predicate isSource(InitializeParameterInstruction source, string msg, Class c) {
  * - `msg` is a string describing whether `source` is from a constructor or destructor.
  */
 predicate flows(
-  MustFlowPathNode source, string msg, Class sourceClass, MustFlowPathNode sink,
+  UnsafeUseOfThis::PathNode source, string msg, Class sourceClass, UnsafeUseOfThis::PathNode sink,
   CallInstruction call
 ) {
-  exists(UnsafeUseOfThisConfig conf |
-    conf.hasFlowPath(source, sink) and
-    isSource(source.getInstruction(), msg, sourceClass) and
-    isSink(sink.getInstruction().getAUse(), call)
-  )
+  UnsafeUseOfThis::flowPath(source, sink) and
+  isSource(source.getInstruction(), msg, sourceClass) and
+  isSink(sink.getInstruction().getAUse(), call)
 }
 
 from
-  MustFlowPathNode source, MustFlowPathNode sink, CallInstruction call, string msg,
-  Class sourceClass
+  UnsafeUseOfThis::PathNode source, UnsafeUseOfThis::PathNode sink, CallInstruction call,
+  string msg, Class sourceClass
 where
   flows(source, msg, sourceClass, sink, call) and
   // Only raise an alert if there is no override of the pure virtual function in any base class.

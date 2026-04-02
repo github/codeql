@@ -8,7 +8,7 @@ import java
  * The class `javax.mail.Session` or `jakarta.mail.Session`.
  */
 class MailSession extends Class {
-  MailSession() { this.hasQualifiedName(["javax.mail", "jakarta.mail"], "Session") }
+  MailSession() { this.hasQualifiedName(javaxOrJakarta() + ".mail", "Session") }
 }
 
 /**

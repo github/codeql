@@ -28,5 +28,5 @@ private module BasicTaintConfig implements DataFlow::ConfigSig {
 private module BasicTaintFlow = TaintTracking::Global<BasicTaintConfig>;
 
 from DataFlow::Node node
-where BasicTaintFlow::flow(_, node)
+where BasicTaintFlow::flowTo(node)
 select node, "Tainted node"

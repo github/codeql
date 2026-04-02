@@ -59,7 +59,9 @@ predicate ok_to_fail(ImportExpr ie) {
   os_specific_import(ie) != get_os()
 }
 
-class VersionTest extends ControlFlowNode {
+final class FinalControlFlowNode = ControlFlowNode;
+
+class VersionTest extends FinalControlFlowNode {
   VersionTest() {
     exists(string name |
       name.matches("%version%") and
@@ -70,7 +72,7 @@ class VersionTest extends ControlFlowNode {
     )
   }
 
-  override string toString() { result = "VersionTest" }
+  string toString() { result = "VersionTest" }
 }
 
 /** A guard on the version of the Python interpreter */

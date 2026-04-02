@@ -4,6 +4,8 @@
 overlay[local?]
 module;
 
+private import codeql.mad.static.ModelsAsData as SharedMaD
+
 /**
  * Holds if a source model exists for the given parameters.
  */
@@ -18,6 +20,22 @@ extensible predicate sourceModel(
 extensible predicate sinkModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string input, string kind, string provenance, QlBuiltins::ExtensionId madId
+);
+
+/**
+ * Holds if a barrier model exists for the given parameters.
+ */
+extensible predicate barrierModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string output, string kind, string provenance, QlBuiltins::ExtensionId madId
+);
+
+/**
+ * Holds if a barrier guard model exists for the given parameters.
+ */
+extensible predicate barrierGuardModel(
+  string package, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string acceptingvalue, string kind, string provenance, QlBuiltins::ExtensionId madId
 );
 
 /**
@@ -77,3 +95,9 @@ extensible predicate experimentalSummaryModel(
   string input, string output, string kind, string provenance, string filter,
   QlBuiltins::ExtensionId madId
 );
+
+module Extensions implements SharedMaD::ExtensionsSig {
+  import ExternalFlowExtensions
+
+  predicate namespaceGrouping(string group, string namespace) { none() }
+}

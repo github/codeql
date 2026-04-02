@@ -17,6 +17,7 @@
  */
 
 import python
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 predicate needs_docstring(Scope s) {
   s.isPublic() and
@@ -27,16 +28,14 @@ predicate needs_docstring(Scope s) {
   )
 }
 
-predicate function_needs_docstring(Function f) {
-  not exists(FunctionValue fo, FunctionValue base | fo.overrides(base) and fo.getScope() = f |
-    not function_needs_docstring(base.getScope())
+predicate function_needs_docstring(FunctionMetrics f) {
+  not exists(Function base |
+    DuckTyping::overridesMethod(f, _, base) and
+    not function_needs_docstring(base)
   ) and
   f.getName() != "lambda" and
-  (f.getMetrics().getNumberOfLinesOfCode() - count(f.getADecorator())) > 2 and
-  not exists(PythonPropertyObject p |
-    p.getGetter().getFunction() = f or
-    p.getSetter().getFunction() = f
-  )
+  (f.getNumberOfLinesOfCode() - count(f.getADecorator())) > 2 and
+  not DuckTyping::isPropertyAccessor(f)
 }
 
 string scope_type(Scope s) {

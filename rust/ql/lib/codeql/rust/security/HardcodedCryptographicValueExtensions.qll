@@ -5,10 +5,12 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.security.SensitiveData
+private import codeql.rust.dataflow.internal.Node as Node
 
 /**
  * A kind of cryptographic value.
@@ -63,7 +65,7 @@ module HardcodedCryptographicValue {
    * A literal, considered as a flow source.
    */
   private class LiteralSource extends Source {
-    LiteralSource() { this.asExpr().getExpr() instanceof LiteralExpr }
+    LiteralSource() { this.asExpr() instanceof LiteralExpr }
   }
 
   /**
@@ -75,8 +77,8 @@ module HardcodedCryptographicValue {
    */
   private class ArrayListSource extends Source {
     ArrayListSource() {
-      this.asExpr().getExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr or
-      this.asExpr().getExpr().(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr
+      this.asExpr().(ArrayListExpr).getExpr(_) instanceof LiteralExpr or
+      this.asExpr().(ArrayRepeatExpr).getRepeatOperand() instanceof LiteralExpr
     }
   }
 
@@ -99,14 +101,57 @@ module HardcodedCryptographicValue {
   }
 
   /**
+   * A heuristic sink for hard-coded cryptographic value vulnerabilities.
+   */
+  private class HeuristicSinks extends Sink {
+    CryptographicValueKind kind;
+
+    HeuristicSinks() {
+      // any argument going to a parameter whose name matches a credential name
+      exists(Call c, Function f, int argIndex, string argName |
+        c.getPositionalArgument(argIndex) = this.asExpr() and
+        c.getStaticTarget() = f and
+        f.getParam(argIndex).getPat().(IdentPat).getName().getText() = argName and
+        (
+          argName = "password" and kind = "password"
+          or
+          argName = "iv" and kind = "iv"
+          or
+          argName = "nonce" and kind = "nonce"
+          or
+          argName = "salt" and kind = "salt"
+          //
+          // note: matching "key" results in too many false positives
+        ) and
+        // don't duplicate modeled sinks
+        not exists(ModelsAsDataSinks s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = c)
+      )
+    }
+
+    override CryptographicValueKind getKind() { result = kind }
+  }
+
+  /**
+   * An externally modeled barrier for hard-coded cryptographic value vulnerabilities.
+   *
+   * Note that a barrier will block flow to all hard-coded cryptographic value
+   * sinks, regardless of the `kind` that is specified. For example a barrier of
+   * kind `credentials-key` will block flow to a sink of kind `credentials-iv`.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() {
+      exists(CryptographicValueKind kind | barrierNode(this, "credentials-" + kind))
+    }
+  }
+
+  /**
    * A call to `getrandom` that is a barrier.
    */
   private class GetRandomBarrier extends Barrier {
     GetRandomBarrier() {
-      exists(CallExprBase ce |
-        ce.getStaticTarget().(Addressable).getCanonicalPath() =
-          ["getrandom::fill", "getrandom::getrandom"] and
-        this.asExpr().getExpr().getParentNode*() = ce.getArgList().getArg(0)
+      exists(Call call |
+        call.getStaticTarget().getCanonicalPath() = ["getrandom::fill", "getrandom::getrandom"] and
+        this.asExpr().getParentNode*() = call.getPositionalArgument(0)
       )
     }
   }

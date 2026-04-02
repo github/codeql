@@ -15,6 +15,8 @@ private import TranslatedCall
 private import TranslatedStmt
 private import TranslatedFunction
 private import TranslatedGlobalVar
+private import TranslatedNonStaticDataMember
+private import TranslatedInitialization
 
 TranslatedElement getInstructionTranslatedElement(Instruction instruction) {
   instruction = TRawInstruction(result, _)
@@ -44,6 +46,9 @@ module Raw {
       or
       not var.isFromUninstantiatedTemplate(_) and
       var instanceof StaticInitializedStaticLocalVariable
+      or
+      not var.isFromUninstantiatedTemplate(_) and
+      var instanceof Field
     ) and
     var.hasInitializer() and
     (
@@ -63,6 +68,8 @@ module Raw {
     getTranslatedFunction(decl).hasUserVariable(var, type)
     or
     getTranslatedVarInit(decl).hasUserVariable(var, type)
+    or
+    getTranslatedFieldInit(decl).hasUserVariable(var, type)
   }
 
   cached
@@ -109,7 +116,7 @@ module Raw {
   }
 
   cached
-  Function getInstructionFunction(Instruction instruction) {
+  Declaration getInstructionFunction(Instruction instruction) {
     result =
       getInstructionTranslatedElement(instruction)
           .getInstructionFunction(getInstructionTag(instruction))
@@ -193,6 +200,89 @@ module Raw {
   cached
   Expr getInstructionUnconvertedResultExpression(Instruction instruction) {
     result = getInstructionConvertedResultExpression(instruction).getUnconverted()
+  }
+
+  /**
+   * Gets the expression associated with the instruction `instr` that computes
+   * the `Convert` instruction on the extent expression of an allocation.
+   */
+  cached
+  Expr getAllocationExtentConvertExpr(Instruction instr) {
+    exists(TranslatedNonConstantAllocationSize tas |
+      instr = tas.getInstruction(AllocationExtentConvertTag()) and
+      result = tas.getExtent().getExpr()
+    )
+  }
+
+  /**
+   * Gets the `ParenthesisExpr` associated with a transparent conversion
+   * instruction, if any.
+   */
+  cached
+  ParenthesisExpr getTransparentConversionParenthesisExpr(Instruction instr) {
+    exists(TranslatedTransparentConversion ttc |
+      result = ttc.getExpr() and
+      instr = ttc.getResult()
+    )
+  }
+
+  /**
+   * Holds if `instr` belongs to a `TranslatedCoreExpr` that produces an
+   * expression result. This indicates that the instruction represents a
+   * definition whose result should be mapped back to the expression.
+   */
+  cached
+  predicate instructionProducesExprResult(Instruction instr) {
+    exists(TranslatedCoreExpr tco |
+      tco.getInstruction(_) = instr and
+      tco.producesExprResult()
+    )
+  }
+
+  /**
+   * Gets the expression associated with a `StoreInstruction` generated
+   * by an `TranslatedAssignOperation`.
+   */
+  cached
+  Expr getAssignOperationStoreExpr(StoreInstruction store) {
+    exists(TranslatedAssignOperation tao |
+      store = tao.getInstruction(AssignmentStoreTag()) and
+      result = tao.getExpr()
+    )
+  }
+
+  /**
+   * Gets the expression associated with a `StoreInstruction` generated
+   * by an `TranslatedCrementOperation`.
+   */
+  cached
+  Expr getCrementOperationStoreExpr(StoreInstruction store) {
+    exists(TranslatedCrementOperation tco |
+      store = tco.getInstruction(CrementStoreTag()) and
+      result = tco.getExpr()
+    )
+  }
+
+  /**
+   * Holds if `store` is a `StoreInstruction` that defines the temporary
+   * `IRVariable` generated as part of the translation of a ternary expression.
+   */
+  cached
+  predicate isConditionalExprTempStore(StoreInstruction store) {
+    exists(TranslatedConditionalExpr tce |
+      store = tce.getInstruction(ConditionValueFalseStoreTag())
+      or
+      store = tce.getInstruction(ConditionValueTrueStoreTag())
+    )
+  }
+
+  /** Gets the instruction that computes the address used to initialize `v`. */
+  cached
+  Instruction getInitializationTargetAddress(IRVariable v) {
+    exists(TranslatedVariableInitialization init |
+      init.getIRVariable() = v and
+      result = init.getTargetAddress()
+    )
   }
 }
 

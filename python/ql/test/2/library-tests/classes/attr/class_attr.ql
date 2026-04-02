@@ -5,6 +5,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from ClassObject cls, int line, string name, Object obj
 where

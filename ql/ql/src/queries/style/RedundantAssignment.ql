@@ -1,5 +1,5 @@
 /**
- * @name Redundant assignment.
+ * @name Redundant assignment
  * @description Assigning the same value twice is redundant.
  * @kind problem
  * @problem.severity warning

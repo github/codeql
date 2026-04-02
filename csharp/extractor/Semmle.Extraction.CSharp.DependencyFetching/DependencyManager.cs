@@ -106,7 +106,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return BuildScript.Success;
             }).Run(SystemBuildActions.Instance, startCallback, exitCallback);
 
-            dependabotProxy = DependabotProxy.GetDependabotProxy(logger, tempWorkingDirectory);
+            dependabotProxy = DependabotProxy.GetDependabotProxy(logger, diagnosticsWriter, tempWorkingDirectory);
 
             try
             {
@@ -283,7 +283,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 foreach (var fp in frameworkPaths)
                 {
-                    dotnetFrameworkVersionVariantCount += NugetPackageRestorer.GetOrderedPackageVersionSubDirectories(fp.Path!).Length;
+                    dotnetFrameworkVersionVariantCount += nugetPackageRestorer.GetOrderedPackageVersionSubDirectories(fp.Path!).Length;
                 }
 
                 var folder = nugetPackageRestorer.GetNewestNugetPackageVersionFolder(frameworkPath.Path, ".NET Framework");

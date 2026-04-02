@@ -43,6 +43,7 @@ extensions:
       - ["bytes", "", False, "TrimSuffix", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["bytes", "Buffer", True, "Bytes", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
       - ["bytes", "Buffer", True, "Next", "", "", "Argument[receiver]", "ReturnValue", "taint", "manual"]
+      - ["bytes", "Buffer", True, "Peek", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["bytes", "Buffer", True, "ReadBytes", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["bytes", "Buffer", True, "ReadString", "", "", "Argument[receiver]", "ReturnValue[0]", "taint", "manual"]
       - ["bytes", "Reader", True, "Reset", "", "", "Argument[0]", "Argument[receiver]", "taint", "manual"]

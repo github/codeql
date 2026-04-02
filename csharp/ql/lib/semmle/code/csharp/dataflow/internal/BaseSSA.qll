@@ -43,10 +43,47 @@ module BaseSsa {
     )
   }
 
-  private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow::BasicBlock> {
-    private import semmle.code.csharp.controlflow.internal.PreSsa
+  /** Holds if `a` is assigned in callable `c`. */
+  pragma[nomagic]
+  private predicate assignableDefinition(Assignable a, Callable c) {
+    exists(AssignableDefinition def |
+      def.getTarget() = a and
+      c = def.getEnclosingCallable()
+    |
+      not c instanceof Constructor or
+      a instanceof LocalScopeVariable
+    )
+  }
 
-    class SourceVariable = PreSsa::SimpleLocalScopeVariable;
+  pragma[nomagic]
+  private predicate assignableUniqueWriter(Assignable a, Callable c) {
+    c = unique(Callable c0 | assignableDefinition(a, c0) | c0)
+  }
+
+  /** Holds if `a` is accessed in callable `c`. */
+  pragma[nomagic]
+  private predicate assignableAccess(Assignable a, Callable c) {
+    exists(AssignableAccess aa | aa.getTarget() = a | c = aa.getEnclosingCallable())
+  }
+
+  /**
+   * A local scope variable that is amenable to SSA analysis.
+   *
+   * This is either a local variable that is not captured, or one
+   * where all writes happen in the defining callable.
+   */
+  class SimpleLocalScopeVariable extends LocalScopeVariable {
+    SimpleLocalScopeVariable() { assignableUniqueWriter(this, this.getCallable()) }
+
+    /** Holds if this local scope variable is read-only captured by `c`. */
+    predicate isReadonlyCapturedBy(Callable c) {
+      assignableAccess(this, c) and
+      c != this.getCallable()
+    }
+  }
+
+  private module SsaInput implements SsaImplCommon::InputSig<Location, ControlFlow::BasicBlock> {
+    class SourceVariable = SimpleLocalScopeVariable;
 
     predicate variableWrite(ControlFlow::BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignableDefinition def |

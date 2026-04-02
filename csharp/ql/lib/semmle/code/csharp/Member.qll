@@ -102,6 +102,9 @@ class Declaration extends NamedElement, @declaration {
    * implicit constructors or accessors.
    */
   predicate isCompilerGenerated() { compiler_generated(this) }
+
+  /** Holds if this declaration is in an extension type. */
+  predicate isInExtension() { this.getDeclaringType() instanceof ExtensionType }
 }
 
 /** A declaration that can have a modifier. */
@@ -469,7 +472,7 @@ class Virtualizable extends Overridable, Member, @virtualizable {
 
 /**
  * A parameterizable declaration. Either a callable (`Callable`), a delegate
- * type (`DelegateType`), or an indexer (`Indexer`).
+ * type (`DelegateType`), an indexer (`Indexer`), or an extension (`ExtensionType`).
  */
 class Parameterizable extends Declaration, @parameterizable {
   /** Gets raw parameter `i`, including the `this` parameter at index 0. */

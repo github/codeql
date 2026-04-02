@@ -126,3 +126,11 @@ class LocalFileOutputSink extends ExternalLocationSink {
     )
   }
 }
+
+/**
+ * A sanitizer for writing data to locations that are external to the
+ * application, defined through Models as Data.
+ */
+class ExternalLocationSanitizer extends DataFlow::Node {
+  ExternalLocationSanitizer() { barrierNode(this, "file-content-store") }
+}

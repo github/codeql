@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data:
+      - ['OpenAI', 'Member[beta].Member[assistants].Member[create].Argument[instructions:]', 'prompt-injection']
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data:
+      - ['OpenAI', 'openai', 'Member[OpenAI,AsyncOpenAI,AzureOpenAI].ReturnValue']

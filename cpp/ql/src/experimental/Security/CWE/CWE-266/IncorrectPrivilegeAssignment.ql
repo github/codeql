@@ -1,5 +1,5 @@
 /**
- * @name Find the wrong use of the umask function.
+ * @name Find the wrong use of the umask function
  * @description Incorrectly evaluated argument to the umask function may have security implications.
  * @kind problem
  * @id cpp/wrong-use-of-the-umask

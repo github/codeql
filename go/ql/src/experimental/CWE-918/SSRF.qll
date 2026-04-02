@@ -113,7 +113,7 @@ module ServerSideRequestForgery {
    *
    * This is overapproximate: we do not attempt to reason about the correctness of the regexp.
    */
-  class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, Sanitizer { }
+  class RegexpCheckAsBarrierGuard extends Sanitizer instanceof RegexpCheckBarrier { }
 
   private predicate equalityAsSanitizerGuard(DataFlow::Node g, Expr e, boolean outcome) {
     exists(DataFlow::Node url, DataFlow::EqualityTestNode eq |
@@ -156,5 +156,5 @@ module ServerSideRequestForgery {
    * The method Var of package validator is a sanitizer guard only if the check
    * of the error binding exists, and the tag to check is one of "alpha", "alphanum", "alphaunicode", "alphanumunicode", "number", "numeric".
    */
-  class ValidatorAsSanitizer extends Sanitizer, ValidatorVarCheckBarrier { }
+  class ValidatorAsSanitizer extends Sanitizer instanceof ValidatorVarCheckBarrier { }
 }

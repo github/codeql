@@ -64,7 +64,7 @@ class SessionEjb extends EJB {
     result = this.getASupertype() and
     not result.hasQualifiedName("java.io", "Serializable") and
     not result.hasQualifiedName("java.io", "Externalizable") and
-    not result.getPackage().getName() = "javax.ejb"
+    not result.getPackage().getName() = javaxOrJakarta() + ".ejb"
   }
 
   /** Any remote interfaces of this EJB. */
@@ -216,14 +216,14 @@ abstract class BusinessInterfaceAnnotation extends EjbInterfaceAnnotation { }
  * An instance of a `@Remote` annotation.
  */
 class RemoteAnnotation extends BusinessInterfaceAnnotation {
-  RemoteAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Remote") }
+  RemoteAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Remote") }
 }
 
 /**
  * An instance of a `@Local` annotation.
  */
 class LocalAnnotation extends BusinessInterfaceAnnotation {
-  LocalAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Local") }
+  LocalAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Local") }
 }
 
 /**
@@ -330,7 +330,7 @@ class LocalAnnotatedBusinessInterface extends AnnotatedBusinessInterface {
  * A `@javax.ejb.Init` annotation.
  */
 class InitAnnotation extends Annotation {
-  InitAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Init") }
+  InitAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Init") }
 }
 
 /**
@@ -383,14 +383,16 @@ abstract class HomeAnnotation extends EjbInterfaceAnnotation { }
  * An instance of a `@RemoteHome` annotation.
  */
 class RemoteHomeAnnotation extends HomeAnnotation {
-  RemoteHomeAnnotation() { this.getType().hasQualifiedName("javax.ejb", "RemoteHome") }
+  RemoteHomeAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "RemoteHome")
+  }
 }
 
 /**
  * An instance of a `@LocalHome` annotation.
  */
 class LocalHomeAnnotation extends HomeAnnotation {
-  LocalHomeAnnotation() { this.getType().hasQualifiedName("javax.ejb", "LocalHome") }
+  LocalHomeAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "LocalHome") }
 }
 
 /**
@@ -677,7 +679,7 @@ Type inheritsMatchingMethodExceptThrows(SessionEjb ejb, Method m) {
 }
 
 /**
- * Holds if `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `m`.
+ * Holds if `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `icm`.
  * (Ignores `throws` clauses.)
  */
 predicate inheritsMatchingCreateMethodIgnoreThrows(
@@ -704,7 +706,7 @@ predicate inheritsMatchingCreateMethodIgnoreThrows(
 }
 
 /**
- * If `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `m` except for the `throws` clause,
+ * If `ejb` inherits an `ejbCreate` or `@Init` method matching `create` method `icm` except for the `throws` clause,
  * then return any type in the `throws` clause that does not match.
  */
 Type inheritsMatchingCreateMethodExceptThrows(StatefulSessionEjb ejb, EjbInterfaceCreateMethod icm) {
@@ -748,7 +750,9 @@ Type inheritsMatchingCreateMethodExceptThrows(StatefulSessionEjb ejb, EjbInterfa
  * A `@javax.ejb.AccessTimeout` annotation.
  */
 class AccessTimeoutAnnotation extends Annotation {
-  AccessTimeoutAnnotation() { this.getType().hasQualifiedName("javax.ejb", "AccessTimeout") }
+  AccessTimeoutAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "AccessTimeout")
+  }
 }
 
 /**
@@ -756,7 +760,7 @@ class AccessTimeoutAnnotation extends Annotation {
  */
 class ActivationConfigPropertyAnnotation extends Annotation {
   ActivationConfigPropertyAnnotation() {
-    this.getType().hasQualifiedName("javax.ejb", "ActivationConfigProperty")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "ActivationConfigProperty")
   }
 }
 
@@ -764,14 +768,18 @@ class ActivationConfigPropertyAnnotation extends Annotation {
  * A `@javax.ejb.AfterBegin` annotation.
  */
 class AfterBeginAnnotation extends Annotation {
-  AfterBeginAnnotation() { this.getType().hasQualifiedName("javax.ejb", "AfterBegin") }
+  AfterBeginAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "AfterBegin")
+  }
 }
 
 /**
  * A `@javax.ejb.AfterCompletion` annotation.
  */
 class AfterCompletionAnnotation extends Annotation {
-  AfterCompletionAnnotation() { this.getType().hasQualifiedName("javax.ejb", "AfterCompletion") }
+  AfterCompletionAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "AfterCompletion")
+  }
 }
 
 /**
@@ -779,7 +787,7 @@ class AfterCompletionAnnotation extends Annotation {
  */
 class ApplicationExceptionAnnotation extends Annotation {
   ApplicationExceptionAnnotation() {
-    this.getType().hasQualifiedName("javax.ejb", "ApplicationException")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "ApplicationException")
   }
 }
 
@@ -787,14 +795,18 @@ class ApplicationExceptionAnnotation extends Annotation {
  * A `@javax.ejb.Asynchronous` annotation.
  */
 class AsynchronousAnnotation extends Annotation {
-  AsynchronousAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Asynchronous") }
+  AsynchronousAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Asynchronous")
+  }
 }
 
 /**
  * A `@javax.ejb.BeforeCompletion` annotation.
  */
 class BeforeCompletionAnnotation extends Annotation {
-  BeforeCompletionAnnotation() { this.getType().hasQualifiedName("javax.ejb", "BeforeCompletion") }
+  BeforeCompletionAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "BeforeCompletion")
+  }
 }
 
 /**
@@ -802,7 +814,7 @@ class BeforeCompletionAnnotation extends Annotation {
  */
 class ConcurrencyManagementAnnotation extends Annotation {
   ConcurrencyManagementAnnotation() {
-    this.getType().hasQualifiedName("javax.ejb", "ConcurrencyManagement")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "ConcurrencyManagement")
   }
 }
 
@@ -810,119 +822,127 @@ class ConcurrencyManagementAnnotation extends Annotation {
  * A `@javax.ejb.DependsOn` annotation.
  */
 class DependsOnAnnotation extends Annotation {
-  DependsOnAnnotation() { this.getType().hasQualifiedName("javax.ejb", "DependsOn") }
+  DependsOnAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "DependsOn") }
 }
 
 /**
  * A `@javax.ejb.EJB` annotation.
  */
 class EjbAnnotation extends Annotation {
-  EjbAnnotation() { this.getType().hasQualifiedName("javax.ejb", "EJB") }
+  EjbAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "EJB") }
 }
 
 /**
  * A `@javax.ejb.EJBs` annotation.
  */
 class EJBsAnnotation extends Annotation {
-  EJBsAnnotation() { this.getType().hasQualifiedName("javax.ejb", "EJBs") }
+  EJBsAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "EJBs") }
 }
 
 /**
  * A `@javax.ejb.LocalBean` annotation.
  */
 class LocalBeanAnnotation extends Annotation {
-  LocalBeanAnnotation() { this.getType().hasQualifiedName("javax.ejb", "LocalBean") }
+  LocalBeanAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "LocalBean") }
 }
 
 /**
  * A `@javax.ejb.Lock` annotation.
  */
 class LockAnnotation extends Annotation {
-  LockAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Lock") }
+  LockAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Lock") }
 }
 
 /**
  * A `@javax.ejb.MessageDriven` annotation.
  */
 class MessageDrivenAnnotation extends Annotation {
-  MessageDrivenAnnotation() { this.getType().hasQualifiedName("javax.ejb", "MessageDriven") }
+  MessageDrivenAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "MessageDriven")
+  }
 }
 
 /**
  * A `@javax.ejb.PostActivate` annotation.
  */
 class PostActivateAnnotation extends Annotation {
-  PostActivateAnnotation() { this.getType().hasQualifiedName("javax.ejb", "PostActivate") }
+  PostActivateAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "PostActivate")
+  }
 }
 
 /**
  * A `@javax.ejb.PrePassivate` annotation.
  */
 class PrePassivateAnnotation extends Annotation {
-  PrePassivateAnnotation() { this.getType().hasQualifiedName("javax.ejb", "PrePassivate") }
+  PrePassivateAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "PrePassivate")
+  }
 }
 
 /**
  * A `@javax.ejb.Remove` annotation.
  */
 class RemoveAnnotation extends Annotation {
-  RemoveAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Remove") }
+  RemoveAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Remove") }
 }
 
 /**
  * A `@javax.ejb.Schedule` annotation.
  */
 class ScheduleAnnotation extends Annotation {
-  ScheduleAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Schedule") }
+  ScheduleAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Schedule") }
 }
 
 /**
  * A `@javax.ejb.Schedules` annotation.
  */
 class SchedulesAnnotation extends Annotation {
-  SchedulesAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Schedules") }
+  SchedulesAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Schedules") }
 }
 
 /**
  * A `@javax.ejb.Singleton` annotation.
  */
 class SingletonAnnotation extends Annotation {
-  SingletonAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Singleton") }
+  SingletonAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Singleton") }
 }
 
 /**
  * A `@javax.ejb.Startup` annotation.
  */
 class StartupAnnotation extends Annotation {
-  StartupAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Startup") }
+  StartupAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Startup") }
 }
 
 /**
  * A `@javax.ejb.Stateful` annotation.
  */
 class StatefulAnnotation extends Annotation {
-  StatefulAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Stateful") }
+  StatefulAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Stateful") }
 }
 
 /**
  * A `@javax.ejb.StatefulTimeout` annotation.
  */
 class StatefulTimeoutAnnotation extends Annotation {
-  StatefulTimeoutAnnotation() { this.getType().hasQualifiedName("javax.ejb", "StatefulTimeout") }
+  StatefulTimeoutAnnotation() {
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "StatefulTimeout")
+  }
 }
 
 /**
  * A `@javax.ejb.Stateless` annotation.
  */
 class StatelessAnnotation extends Annotation {
-  StatelessAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Stateless") }
+  StatelessAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Stateless") }
 }
 
 /**
  * A `@javax.ejb.Timeout` annotation.
  */
 class TimeoutAnnotation extends Annotation {
-  TimeoutAnnotation() { this.getType().hasQualifiedName("javax.ejb", "Timeout") }
+  TimeoutAnnotation() { this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "Timeout") }
 }
 
 /**
@@ -930,7 +950,7 @@ class TimeoutAnnotation extends Annotation {
  */
 class TransactionAttributeAnnotation extends Annotation {
   TransactionAttributeAnnotation() {
-    this.getType().hasQualifiedName("javax.ejb", "TransactionAttribute")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "TransactionAttribute")
   }
 }
 
@@ -939,7 +959,7 @@ class TransactionAttributeAnnotation extends Annotation {
  */
 class TransactionManagementAnnotation extends Annotation {
   TransactionManagementAnnotation() {
-    this.getType().hasQualifiedName("javax.ejb", "TransactionManagement")
+    this.getType().hasQualifiedName(javaxOrJakarta() + ".ejb", "TransactionManagement")
   }
 }
 
@@ -951,7 +971,10 @@ class RequiredTransactionAttributeAnnotation extends TransactionAttributeAnnotat
   RequiredTransactionAttributeAnnotation() {
     exists(FieldRead fr |
       this.getValue("value") = fr and
-      fr.getField().getType().(RefType).hasQualifiedName("javax.ejb", "TransactionAttributeType") and
+      fr.getField()
+          .getType()
+          .(RefType)
+          .hasQualifiedName(javaxOrJakarta() + ".ejb", "TransactionAttributeType") and
       fr.getField().getName() = "REQUIRED"
     )
   }
@@ -965,7 +988,10 @@ class RequiresNewTransactionAttributeAnnotation extends TransactionAttributeAnno
   RequiresNewTransactionAttributeAnnotation() {
     exists(FieldRead fr |
       this.getValue("value") = fr and
-      fr.getField().getType().(RefType).hasQualifiedName("javax.ejb", "TransactionAttributeType") and
+      fr.getField()
+          .getType()
+          .(RefType)
+          .hasQualifiedName(javaxOrJakarta() + ".ejb", "TransactionAttributeType") and
       fr.getField().getName() = "REQUIRES_NEW"
     )
   }
@@ -999,7 +1025,9 @@ TransactionAttributeAnnotation getInnermostTransactionAttributeAnnotation(Method
  */
 class SetRollbackOnlyMethod extends Method {
   SetRollbackOnlyMethod() {
-    this.getDeclaringType().getAnAncestor().hasQualifiedName("javax.ejb", "EJBContext") and
+    this.getDeclaringType()
+        .getAnAncestor()
+        .hasQualifiedName(javaxOrJakarta() + ".ejb", "EJBContext") and
     this.getName() = "setRollbackOnly" and
     this.hasNoParameters()
   }

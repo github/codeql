@@ -14,6 +14,6 @@ public class Test {
   void testCrudRepository(CrudRepository<Struct, Integer> cr) {
     Struct s = new Struct(source());
     s = cr.save(s);
-    sink(s.field); //$hasValueFlow
+    sink(s.field); // $ hasValueFlow
   }
 }

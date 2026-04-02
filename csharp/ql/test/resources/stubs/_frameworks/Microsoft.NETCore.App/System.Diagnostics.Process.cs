@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.Process, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Diagnostics.Process, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace Win32
@@ -154,6 +154,7 @@ namespace System
         {
             public System.Collections.ObjectModel.Collection<string> ArgumentList { get => throw null; }
             public string Arguments { get => throw null; set { } }
+            public bool CreateNewProcessGroup { get => throw null; set { } }
             public bool CreateNoWindow { get => throw null; set { } }
             public ProcessStartInfo() => throw null;
             public ProcessStartInfo(string fileName) => throw null;

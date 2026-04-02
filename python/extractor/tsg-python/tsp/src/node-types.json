@@ -242,6 +242,10 @@
         "named": true
       },
       {
+        "type": "concatenated_template_string",
+        "named": true
+      },
+      {
         "type": "dictionary",
         "named": true
       },
@@ -303,6 +307,10 @@
       },
       {
         "type": "subscript",
+        "named": true
+      },
+      {
+        "type": "template_string",
         "named": true
       },
       {
@@ -1001,6 +1009,21 @@
     }
   },
   {
+    "type": "concatenated_template_string",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "template_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "conditional_expression",
     "named": true,
     "fields": {},
@@ -1287,6 +1310,10 @@
         "required": false,
         "types": [
           {
+            "type": "exception_list",
+            "named": true
+          },
+          {
             "type": "expression",
             "named": true
           }
@@ -1320,6 +1347,26 @@
       },
       "type": {
         "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "exception_list",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "exception_list",
+    "named": true,
+    "fields": {
+      "element": {
+        "multiple": true,
         "required": true,
         "types": [
           {
@@ -2461,6 +2508,10 @@
           "named": true
         },
         {
+          "type": "concatenated_template_string",
+          "named": true
+        },
+        {
           "type": "false",
           "named": true
         },
@@ -2470,6 +2521,10 @@
         },
         {
           "type": "string",
+          "named": true
+        },
+        {
+          "type": "template_string",
           "named": true
         },
         {
@@ -2715,6 +2770,7 @@
   {
     "type": "module",
     "named": true,
+    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -3252,6 +3308,52 @@
           {
             "type": "primary_expression",
             "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "template_string",
+    "named": true,
+    "fields": {
+      "interpolation": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "interpolation",
+            "named": true
+          }
+        ]
+      },
+      "prefix": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
+          }
+        ]
+      },
+      "string_content": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "string_content",
+            "named": true
+          }
+        ]
+      },
+      "suffix": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "\"",
+            "named": false
           }
         ]
       }
@@ -3844,6 +3946,10 @@
     "named": false
   },
   {
+    "type": ";",
+    "named": false
+  },
+  {
     "type": "<",
     "named": false
   },
@@ -3900,6 +4006,10 @@
     "named": false
   },
   {
+    "type": "\\",
+    "named": false
+  },
+  {
     "type": "]",
     "named": false
   },
@@ -3949,7 +4059,8 @@
   },
   {
     "type": "comment",
-    "named": true
+    "named": true,
+    "extra": true
   },
   {
     "type": "continue",

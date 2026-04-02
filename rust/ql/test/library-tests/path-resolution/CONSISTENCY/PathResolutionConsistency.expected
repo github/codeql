@@ -1,6 +1,2 @@
-multipleCallTargets
+multipleResolvedTargets
 | main.rs:126:9:126:11 | f(...) |
-| main.rs:366:9:368:16 | ...::f(...) |
-| main.rs:369:9:371:16 | ...::f(...) |
-| main.rs:448:9:452:16 | ...::f(...) |
-| main.rs:453:9:457:16 | ...::f(...) |

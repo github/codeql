@@ -1,0 +1,9 @@
+reverseRead
+| main.go:49:2:49:4 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:50:2:50:4 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:58:2:58:5 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| main.go:63:49:63:49 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| server.go:8:6:8:6 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| server.go:9:6:9:6 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| server.go:10:6:10:6 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| server.go:13:6:13:6 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

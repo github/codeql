@@ -330,7 +330,7 @@ private class LocalAssignsHashSyntheticGlobal extends string {
 }
 
 /** A summary for `render` calls linked to some specific ERB file. */
-private class RenderLocalsSummary extends SummarizedCallable {
+private class RenderLocalsSummary extends SummarizedCallable::Range {
   private LocalAssignsHashSyntheticGlobal glob;
 
   RenderLocalsSummary() { this = "rails_render_locals()" + glob.getId() }
@@ -345,7 +345,7 @@ private class RenderLocalsSummary extends SummarizedCallable {
 }
 
 /** A summary for calls to `local_assigns` in a view to access a `render` call `locals` hash. */
-private class AccessLocalsSummary extends SummarizedCallable {
+private class AccessLocalsSummary extends SummarizedCallable::Range {
   private LocalAssignsHashSyntheticGlobal glob;
 
   AccessLocalsSummary() { this = "rails_local_assigns()" + glob.getId() }
@@ -366,7 +366,7 @@ private string getAMethodNameFromErbFile(ErbFile f) {
   result = any(MethodCall c | c.getLocation().getFile() = f).getMethodName()
 }
 
-private class AccessLocalsKeySummary extends SummarizedCallable {
+private class AccessLocalsKeySummary extends SummarizedCallable::Range {
   private LocalAssignsHashSyntheticGlobal glob;
   private string methodName;
 

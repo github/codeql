@@ -13,8 +13,8 @@ class IncludeSummarizedCallable extends SummarizedCallableImplFinal {
   final string getCallableCsv() { result = getSignature(this) }
 
   predicate relevantSummary(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue, Provenance p
   ) {
-    this.propagatesFlow(input, output, preservesValue, _)
+    this.propagatesFlow(input, output, preservesValue, p, _, _)
   }
 }

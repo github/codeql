@@ -13,8 +13,8 @@ import external.VCS
 
 int committedFiles(Commit commit) { result = count(commit.getAnAffectedFile()) }
 
-from Module m
-where exists(m.getMetrics().getNumberOfLinesOfCode())
+from ModuleMetrics m
+where exists(m.getNumberOfLinesOfCode())
 select m,
   avg(Commit commit, int toAvg |
     commit.getAnAffectedFile() = m.getFile() and toAvg = committedFiles(commit) - 1

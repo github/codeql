@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling security-relevant aspects of the `net/http` package.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.dataflow.internal.DataFlowPrivate
@@ -46,7 +48,7 @@ module NetHttp {
     }
   }
 
-  private class MapWrite extends Http::HeaderWrite::Range, DataFlow::Node {
+  private class MapWrite extends Http::HeaderWrite::Range {
     DataFlow::Node index;
     DataFlow::Node rhs;
 
@@ -157,7 +159,7 @@ module NetHttp {
       |
         this = call.getASyntacticArgument() and
         callable = call.getACalleeIncludingExternals() and
-        callable.propagatesFlow(input, output, _, _)
+        callable.propagatesFlow(input, output, _, _, _, _)
       |
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
@@ -292,5 +294,39 @@ module NetHttp {
     }
 
     override DataFlow::Node getAPathArgument() { result = this.getArgument(2) }
+  }
+
+  private class CookieWrite extends Http::CookieWrite::Range, DataFlow::CallNode {
+    CookieWrite() { this.getTarget().hasQualifiedName(package("net/http", ""), "SetCookie") }
+
+    override DataFlow::Node getName() { result = this.getArgument(1) }
+
+    override DataFlow::Node getValue() { result = this.getArgument(1) }
+
+    override DataFlow::Node getSecure() { result = this.getArgument(1) }
+
+    override DataFlow::Node getHttpOnly() { result = this.getArgument(1) }
+  }
+
+  private class CookieFieldWrite extends Http::CookieOptionWrite::Range {
+    DataFlow::Node written;
+    string fieldName;
+
+    CookieFieldWrite() {
+      exists(Write w, Field f |
+        f.hasQualifiedName(package("net/http", ""), "Cookie", fieldName) and
+        w.writesField(this, f, written)
+      )
+    }
+
+    override DataFlow::Node getCookieOutput() { result = this }
+
+    override DataFlow::Node getName() { fieldName = "Name" and result = written }
+
+    override DataFlow::Node getValue() { fieldName = "Value" and result = written }
+
+    override DataFlow::Node getSecure() { fieldName = "Secure" and result = written }
+
+    override DataFlow::Node getHttpOnly() { fieldName = "HttpOnly" and result = written }
   }
 }

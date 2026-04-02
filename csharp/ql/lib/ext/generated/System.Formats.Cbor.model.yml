@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["System.Formats.Cbor", "CborReader", False, "CborReader", "(System.ReadOnlyMemory<System.Byte>,System.Formats.Cbor.CborConformanceMode,System.Boolean)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Cbor", "CborReader", False, "ReadByteString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", False, "ReadTextString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", False, "Reset", "(System.ReadOnlyMemory<System.Byte>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", False, "TryReadByteString", "(System.Span<System.Byte>,System.Int32)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
@@ -22,7 +23,6 @@ extensions:
       - ["System.Formats.Cbor", "CborReader", "PeekTag", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadBigInteger", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadBoolean", "()", "summary", "df-generated"]
-      - ["System.Formats.Cbor", "CborReader", "ReadByteString", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadCborNegativeIntegerRepresentation", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadDateTimeOffset", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "ReadDecimal", "()", "summary", "df-generated"]

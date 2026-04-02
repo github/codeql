@@ -9,8 +9,12 @@ private import codeql.ruby.ast.internal.Scope
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.util.Numbers
 
+bindingset[t]
+pragma[inline_late]
+private string getTokenValue(Ruby::Token t) { result = t.getValue() }
+
 int parseInteger(Ruby::Integer i) {
-  exists(string s | s = i.getValue().toLowerCase().replaceAll("_", "") |
+  exists(string s | s = getTokenValue(i).toLowerCase().replaceAll("_", "") |
     s.charAt(0) != "0" and
     result = s.toInt()
     or
@@ -38,7 +42,7 @@ class IntegerLiteralReal extends IntegerLiteralImpl, TIntegerLiteralReal {
 
   final override int getValue() { result = parseInteger(g) }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 }
 
 class IntegerLiteralSynth extends IntegerLiteralImpl, TIntegerLiteralSynth {
@@ -52,7 +56,7 @@ class IntegerLiteralSynth extends IntegerLiteralImpl, TIntegerLiteralSynth {
 }
 
 // TODO: implement properly
-float parseFloat(Ruby::Float f) { result = f.getValue().toFloat() }
+float parseFloat(Ruby::Float f) { result = getTokenValue(f).toFloat() }
 
 class FloatLiteralImpl extends Expr, TFloatLiteral {
   private Ruby::Float g;
@@ -61,7 +65,7 @@ class FloatLiteralImpl extends Expr, TFloatLiteral {
 
   final float getValue() { result = parseFloat(g) }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 }
 
 predicate isRationalValue(Ruby::Rational r, int numerator, int denominator) {
@@ -71,8 +75,8 @@ predicate isRationalValue(Ruby::Rational r, int numerator, int denominator) {
   exists(Ruby::Float f, string regex, string before, string after |
     f = r.getChild() and
     regex = "([^.]*)\\.(.*)" and
-    before = f.getValue().regexpCapture(regex, 1) and
-    after = f.getValue().regexpCapture(regex, 2) and
+    before = getTokenValue(f).regexpCapture(regex, 1) and
+    after = getTokenValue(f).regexpCapture(regex, 2) and
     numerator = before.toInt() * denominator + after.toInt() and
     denominator = 10.pow(after.length())
   )
@@ -87,14 +91,14 @@ class RationalLiteralImpl extends Expr, TRationalLiteral {
     isRationalValue(g, numerator, denominator)
   }
 
-  final override string toString() { result = g.getChild().(Ruby::Token).getValue() + "r" }
+  final override string toString() { result = getTokenValue(g.getChild()) + "r" }
 }
 
 float getComplexValue(Ruby::Complex c) {
   exists(int n, int d | isRationalValue(c.getChild(), n, d) and result = n.(float) / d.(float))
   or
   exists(string s |
-    s = c.getChild().(Ruby::Token).getValue() and
+    s = getTokenValue(c.getChild()) and
     result = s.prefix(s.length()).toFloat()
   )
 }
@@ -109,8 +113,8 @@ class ComplexLiteralImpl extends Expr, TComplexLiteral {
   }
 
   final override string toString() {
-    result = g.getChild().(Ruby::Token).getValue() + "i" or
-    result = g.getChild().(Ruby::Rational).getChild().(Ruby::Token).getValue() + "ri"
+    result = getTokenValue(g.getChild()) + "i" or
+    result = getTokenValue(g.getChild().(Ruby::Rational).getChild()) + "ri"
   }
 }
 
@@ -137,7 +141,7 @@ class TrueLiteral extends BooleanLiteralImpl, TTrueLiteral {
 
   TrueLiteral() { this = TTrueLiteral(g) }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 
   final override boolean getValue() { result = true }
 }
@@ -147,7 +151,7 @@ class FalseLiteral extends BooleanLiteralImpl, TFalseLiteral {
 
   FalseLiteral() { this = TFalseLiteral(g) }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 
   final override boolean getValue() { result = false }
 }
@@ -290,9 +294,9 @@ class RangeLiteralSynth extends RangeLiteralImpl, TRangeLiteralSynth {
 }
 
 private string getMethodName(MethodName::Token t) {
-  result = t.(Ruby::Token).getValue()
+  result = getTokenValue(t)
   or
-  result = t.(Ruby::Setter).getName().getValue() + "="
+  result = getTokenValue(t.(Ruby::Setter).getName()) + "="
 }
 
 class TokenMethodName extends Expr, TTokenMethodName {
@@ -339,9 +343,9 @@ class StringTextComponentStringOrHeredocContent extends StringTextComponentImpl,
 
   final override string getValue() { result = this.getUnescapedText() }
 
-  final override string getRawTextImpl() { result = g.getValue() }
+  final override string getRawTextImpl() { result = getTokenValue(g) }
 
-  final private string getUnescapedText() { result = unescapeTextComponent(g.getValue()) }
+  final private string getUnescapedText() { result = unescapeTextComponent(getTokenValue(g)) }
 }
 
 private class StringTextComponentSimpleSymbol extends StringTextComponentImpl,
@@ -352,7 +356,7 @@ private class StringTextComponentSimpleSymbol extends StringTextComponentImpl,
   StringTextComponentSimpleSymbol() { this = TStringTextComponentNonRegexpSimpleSymbol(g) }
 
   // Tree-sitter gives us value text including the colon, which we skip.
-  private string getSimpleSymbolValue() { result = g.getValue().suffix(1) }
+  private string getSimpleSymbolValue() { result = getTokenValue(g).suffix(1) }
 
   final override string getValue() { result = this.getSimpleSymbolValue() }
 
@@ -366,9 +370,9 @@ private class StringTextComponentHashKeySymbol extends StringTextComponentImpl,
 
   StringTextComponentHashKeySymbol() { this = TStringTextComponentNonRegexpHashKeySymbol(g) }
 
-  final override string getValue() { result = g.getValue() }
+  final override string getValue() { result = getTokenValue(g) }
 
-  final override string getRawTextImpl() { result = g.getValue() }
+  final override string getRawTextImpl() { result = getTokenValue(g) }
 }
 
 bindingset[escaped]
@@ -438,9 +442,9 @@ class StringEscapeSequenceComponentImpl extends StringComponentImpl,
 
   final override string getValue() { result = this.getUnescapedText() }
 
-  final string getRawTextImpl() { result = g.getValue() }
+  final string getRawTextImpl() { result = getTokenValue(g) }
 
-  final private string getUnescapedText() { result = unescapeEscapeSequence(g.getValue()) }
+  final private string getUnescapedText() { result = unescapeEscapeSequence(getTokenValue(g)) }
 
   final override string toString() { result = this.getRawTextImpl() }
 }
@@ -473,10 +477,10 @@ class RegExpTextComponentImpl extends RegExpComponentImpl, TStringTextComponentR
     // Exclude components that are children of a free-spacing regex.
     // We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
     not this.getParent().(RegExpLiteral).hasFreeSpacingFlag() and
-    result = g.getValue()
+    result = getTokenValue(g)
   }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 }
 
 class RegExpEscapeSequenceComponentImpl extends RegExpComponentImpl,
@@ -490,10 +494,10 @@ class RegExpEscapeSequenceComponentImpl extends RegExpComponentImpl,
     // Exclude components that are children of a free-spacing regex.
     // We do this because `ParseRegExp.qll` cannot handle free-spacing regexes.
     not this.getParent().(RegExpLiteral).hasFreeSpacingFlag() and
-    result = g.getValue()
+    result = getTokenValue(g)
   }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 }
 
 class RegExpInterpolationComponentImpl extends RegExpComponentImpl,
@@ -564,7 +568,7 @@ abstract class StringlikeLiteralImpl extends Expr, TStringlikeLiteral {
         concat(StringComponent c, int i, string s |
           c = this.getComponentImpl(i) and
           (
-            s = toGenerated(c).(Ruby::Token).getValue()
+            s = getTokenValue(toGenerated(c))
             or
             not toGenerated(c) instanceof Ruby::Token and
             s = "#{...}"
@@ -635,7 +639,7 @@ class SimpleSymbolLiteralReal extends SimpleSymbolLiteralImpl, TSimpleSymbolLite
 
   final override StringComponent getComponentImpl(int n) { n = 0 and toGenerated(result) = g }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 }
 
 class SimpleSymbolLiteralSynth extends SimpleSymbolLiteralImpl, TSimpleSymbolLiteralSynth,
@@ -677,7 +681,7 @@ private class HashKeySymbolLiteral extends SymbolLiteralImpl, THashKeySymbolLite
 
   final override StringComponent getComponentImpl(int n) { n = 0 and toGenerated(result) = g }
 
-  final override string toString() { result = ":" + g.getValue() }
+  final override string toString() { result = ":" + getTokenValue(g) }
 }
 
 class RegExpLiteralImpl extends StringlikeLiteralImpl, TRegExpLiteral {
@@ -701,9 +705,9 @@ class CharacterLiteralImpl extends Expr, TCharacterLiteral {
 
   CharacterLiteralImpl() { this = TCharacterLiteral(g) }
 
-  final string getValue() { result = g.getValue() }
+  final string getValue() { result = getTokenValue(g) }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 }
 
 class HereDocImpl extends StringlikeLiteralImpl, THereDoc {
@@ -715,5 +719,5 @@ class HereDocImpl extends StringlikeLiteralImpl, THereDoc {
     toGenerated(result) = getHereDocBody(g).getChild(n)
   }
 
-  final override string toString() { result = g.getValue() }
+  final override string toString() { result = getTokenValue(g) }
 }

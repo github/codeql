@@ -11,7 +11,7 @@ private import codeql.rust.Concepts
 private class PoemHandlerParam extends RemoteSource::Range {
   PoemHandlerParam() {
     exists(TupleStructPat param |
-      this.asPat().getPat() = param.getAField() and
+      this.asPat() = param.getAField() and
       param.getStruct().getCanonicalPath() = ["poem::web::query::Query", "poem::web::path::Path"]
     )
   }

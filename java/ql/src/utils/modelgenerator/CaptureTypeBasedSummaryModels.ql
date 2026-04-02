@@ -1,5 +1,5 @@
 /**
- * @name Capture typed based summary models.
+ * @name Capture typed based summary models
  * @description Finds applicable summary models to be used by other queries.
  * @kind diagnostic
  * @id java/utils/modelgenerator/summary-models-typed-based

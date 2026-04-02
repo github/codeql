@@ -4,6 +4,7 @@
  * INTERNAL: Do not use.
  */
 
+private import rust
 private import codeql.rust.elements.internal.generated.PathExpr
 
 /**
@@ -25,5 +26,11 @@ module Impl {
     override string toStringImpl() { result = this.toAbbreviatedString() }
 
     override string toAbbreviatedString() { result = this.getPath().toStringImpl() }
+
+    override string getAPrimaryQlClass() {
+      if this instanceof VariableAccess
+      then result = "VariableAccess"
+      else result = super.getAPrimaryQlClass()
+    }
   }
 }

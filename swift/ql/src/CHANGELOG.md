@@ -1,3 +1,51 @@
+## 1.2.20
+
+No user-facing changes.
+
+## 1.2.19
+
+No user-facing changes.
+
+## 1.2.18
+
+No user-facing changes.
+
+## 1.2.17
+
+No user-facing changes.
+
+## 1.2.16
+
+No user-facing changes.
+
+## 1.2.15
+
+No user-facing changes.
+
+## 1.2.14
+
+No user-facing changes.
+
+## 1.2.13
+
+No user-facing changes.
+
+## 1.2.12
+
+No user-facing changes.
+
+## 1.2.11
+
+No user-facing changes.
+
+## 1.2.10
+
+No user-facing changes.
+
+## 1.2.9
+
+No user-facing changes.
+
 ## 1.2.8
 
 No user-facing changes.

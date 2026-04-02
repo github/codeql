@@ -6,6 +6,7 @@ import Member
 import Stmt
 import Type
 private import semmle.code.csharp.ExprOrStmtParent
+private import semmle.code.csharp.internal.Callable
 private import TypeRef
 
 /**
@@ -225,7 +226,7 @@ class Property extends DeclarationWithGetSetAccessors, @property {
    * }
    * ```
    */
-  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(0) }
+  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(1) }
 
   /**
    * Holds if this property has an initial value. For example, the initial
@@ -258,6 +259,21 @@ class Property extends DeclarationWithGetSetAccessors, @property {
   override Setter getSetter() { result = DeclarationWithGetSetAccessors.super.getSetter() }
 
   override string getAPrimaryQlClass() { result = "Property" }
+}
+
+/**
+ * An extension property, for example `FirstChar` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionProperty extends Property {
+  ExtensionProperty() { this.isInExtension() }
 }
 
 /**
@@ -411,6 +427,22 @@ class Accessor extends Callable, Modifiable, Attributable, Overridable, @callabl
   override Location getALocation() { accessor_location(this.getUnboundDeclaration(), result) }
 
   override string toString() { result = this.getName() }
+}
+
+/**
+ *  An extension accessor. Either a getter (`Getter`) or a setter (`Setter`) of an
+ *  extension property, for example `get` in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ * ```
+ */
+class ExtensionAccessor extends ExtensionCallableImpl, Accessor {
+  ExtensionAccessor() { this.isInExtension() }
 }
 
 /**

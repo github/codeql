@@ -1,3 +1,108 @@
+## 8.0.3
+
+No user-facing changes.
+
+## 8.0.2
+
+No user-facing changes.
+
+## 8.0.1
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 8.0.0
+
+### Breaking Changes
+
+* CodeQL version 2.24.2 accidentally introduced a syntactical breaking change to `BarrierGuard<...>::getAnIndirectBarrierNode` and `InstructionBarrierGuard<...>::getAnIndirectBarrierNode`. These breaking changes have now been reverted so that the original code compiles again.
+* `MustFlow`, the inter-procedural must-flow data flow analysis library, has been re-worked to use parameterized modules. Like in the case of data flow and taint tracking, instead of extending the `MustFlowConfiguration` class, the user should now implement a module with the `MustFlow::ConfigSig` signature, and instantiate the `MustFlow::Global` parameterized module with the implemented module.
+
+### Minor Analysis Improvements
+
+* Refactored the "Year field changed using an arithmetic operation without checking for leap year" query (`cpp/leap-year/unchecked-after-arithmetic-year-modification`) to address large numbers of false positive results.
+
+### Bug Fixes
+
+* The `allowInterproceduralFlow` predicate of must-flow data flow configurations now correctly handles direct recursion.
+
+## 7.1.1
+
+### Minor Analysis Improvements
+
+* Added remote flow source models for the `winhttp.h` windows header and the Azure SDK core library for C/C++.
+
+## 7.1.0
+
+### New Features
+
+* Added a subclass `Embed` of `PreprocessorDirective` for C23 and C++26 `#embed` preprocessor directives.
+* Added modules `DataFlow::ParameterizedBarrierGuard` and `DataFlow::ParameterizedInstructionBarrierGuard`. These modules provide the same features as `DataFlow::BarrierGuard` and `DataFlow::InstructionBarrierGuard`, but allow for an additional parameter to support properly using them in dataflow configurations that uses flow states.
+
+### Minor Analysis Improvements
+
+* The `Buffer.qll` library will no longer report incorrect buffer sizes on certain malformed databases. As a result, the queries `cpp/static-buffer-overflow`, `cpp/overflow-buffer`, `cpp/badly-bounded-write`, `cpp/overrunning-write`, `cpp/overrunning-write-with-float`, and `cpp/very-likely-overrunning-write` will report fewer false positives on such databases.
+* Added `taint` summary models and `sql-injection` barrier models for the MySQL `mysql_real_escape_string` and `mysql_real_escape_string_quote` escaping functions.
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
+### Bug Fixes
+
+* Fixed a bug in the `GuardCondition` library which sometimes prevented binary logical operators from being recognized as guard conditions. As a result, queries using `GuardCondition` may see improved results.
+* Fixed a bug which caused `Node.asDefinition()` to not have a result for certain assignments.
+
+## 7.0.0
+
+### Breaking Changes
+
+* The `_Decimal32`, `_Decimal64`, and `_Decimal128` types are no longer exposed as builtin types. Support for these gcc-specific types was incomplete, and are generally not used in C/C++ codebases.
+
+### Deprecated APIs
+
+* The `OverloadedArrayExpr::getArrayOffset/0` predicate has been deprecated. Use `OverloadedArrayExpr::getArrayOffset/1` and `OverloadedArrayExpr::getAnArrayOffset` instead.
+
+### New Features
+
+* Added subclasses of `BuiltInOperations` for the `__is_bitwise_cloneable`, `__is_invocable`, and `__is_nothrow_invocable` builtin operations.
+* Added a `isThisAccess` predicate to `ParamAccessForType` that holds when the access is to the implicit object parameter.
+* Predicates `getArrayOffset/1` and `getAnArrayOffset` have been added to the `OverloadedArrayExpr` class to support C++23 multidimensional subscript operators.
+
+### Minor Analysis Improvements
+
+* Some constants will now be represented by their unfolded expression trees. The `isConstant` predicate of `Expr` will no longer yield a result for those constants.
+
+### Bug Fixes
+
+* Fixed a bug in the `DataFlow::BarrierGuard<...>::getABarrierNode` predicate which caused the predicate to return `DataFlow::Node`s with incorrect indirections. If you use `getABarrierNode` to implement barriers in a dataflow/taint-tracking query it may result in more query results. You can use `DataFlow::BarrierGuard<...>::getAnIndirectBarrierNode` to remove those query results.
+
+## 6.1.4
+
+No user-facing changes.
+
+## 6.1.3
+
+No user-facing changes.
+
+## 6.1.2
+
+No user-facing changes.
+
+## 6.1.1
+
+### Minor Analysis Improvements
+
+* The class `DataFlow::FieldContent` now covers both `union` and `struct`/`class` types. A new predicate `FieldContent.getAField` has been added to access the union members associated with the `FieldContent`. The old `FieldContent` has been renamed to `NonUnionFieldContent`.
+
+## 6.1.0
+
+### New Features
+
+* New predicates `getAnExpandedArgument` and `getExpandedArgument` were added to the `Compilation` class, yielding compilation arguments after expansion of response files.
+
+### Bug Fixes
+
+* Improve performance of the range analysis in cases where it would otherwise take an exorbitant amount of time.
+
 ## 6.0.1
 
 No user-facing changes.
@@ -259,8 +364,8 @@ No user-facing changes.
 
 ### Breaking Changes
 
-* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`.
-* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`.
+* Deleted many deprecated taint-tracking configurations based on `TaintTracking::Configuration`. 
+* Deleted many deprecated dataflow configurations based on `DataFlow::Configuration`. 
 * Deleted the deprecated `hasQualifiedName` and `isDefined` predicates from the `Declaration` class, use `hasGlobalName` and `hasDefinition` respectively instead.
 * Deleted the `getFullSignature` predicate from the `Function` class, use `getIdentityString(Declaration)` from `semmle.code.cpp.Print` instead.
 * Deleted the deprecated `freeCall` predicate from `Alloc.qll`. Use `DeallocationExpr` instead.
@@ -294,7 +399,7 @@ No user-facing changes.
 * A `getTemplateClass` predicate was added to the `DeductionGuide` class to get the class template for which the deduction guide is a guide.
 * An `isExplicit` predicate was added to the `Function` class that determines whether the function was declared as explicit.
 * A `getExplicitExpr` predicate was added to the `Function` class that yields the constant boolean expression (if any) that conditionally determines whether the function is explicit.
-* A `isDestroyingDeleteDeallocation` predicate was added to the `NewOrNewArrayExpr` and `DeleteOrDeleteArrayExpr` classes to indicate whether the deallocation function is a destroying delete.
+* A `isDestroyingDeleteDeallocation` predicate was added to the `NewOrNewArrayExpr` and `DeleteOrDeleteArrayExpr` classes to indicate whether the deallocation function is a destroying delete. 
 
 ### Minor Analysis Improvements
 
@@ -372,9 +477,9 @@ No user-facing changes.
 ### New Features
 
 * Added a `TaintInheritingContent` class that can be extended to model taint flowing from a qualifier to a field.
-* Added a predicate `GuardCondition.comparesEq/4` to query whether an expression is compared to a constant.
+* Added a predicate `GuardCondition.comparesEq/4` to query whether an expression is compared to a constant. 
 * Added a predicate `GuardCondition.ensuresEq/4` to query whether a basic block is guarded by an expression being equal to a constant.
-* Added a predicate `GuardCondition.comparesLt/4` to query whether an expression is compared to a constant.
+* Added a predicate `GuardCondition.comparesLt/4` to query whether an expression is compared to a constant. 
 * Added a predicate `GuardCondition.ensuresLt/4` to query whether a basic block is guarded by an expression being less than a constant.
 * Added a predicate `GuardCondition.valueControls` to query whether a basic block is guarded by a particular `case` of a `switch` statement.
 
@@ -490,7 +595,7 @@ No user-facing changes.
 * Functions that do not return due to calling functions that don't return (e.g. `exit`) are now detected as
  non-returning in the IR and dataflow.
 * Treat functions that reach the end of the function as returning in the IR.
-  They used to be treated as unreachable but it is allowed in C.
+  They used to be treated as unreachable but it is allowed in C. 
 * The `DataFlow::asDefiningArgument` predicate now takes its argument from the range starting at `1` instead of `2`. Queries that depend on the single-parameter version of `DataFlow::asDefiningArgument` should have their arguments updated accordingly.
 
 ## 0.9.3
@@ -539,7 +644,7 @@ No user-facing changes.
 
 ### New Features
 
-* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`.
+* The `DataFlow::StateConfigSig` signature module has gained default implementations for `isBarrier/2` and `isAdditionalFlowStep/4`. 
   Hence it is no longer needed to provide `none()` implementations of these predicates if they are not needed.
 
 ### Minor Analysis Improvements
@@ -733,7 +838,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+* Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### New Features
@@ -750,7 +855,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+* Many classes/predicates/modules with upper-case acronyms in their name have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### New Features
@@ -849,7 +954,7 @@ No user-facing changes.
 
 ### Deprecated APIs
 
-* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide.
+* Many classes/predicates/modules that had upper-case acronyms have been renamed to follow our style-guide. 
   The old name still exists as a deprecated alias.
 
 ### New Features

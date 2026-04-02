@@ -119,14 +119,14 @@ private module GuardsInput implements
   class AndExpr extends BinExpr {
     AndExpr() {
       this instanceof LogicalAndExpr or
-      this instanceof BitwiseAndExpr
+      this instanceof BitwiseAndOperation
     }
   }
 
   class OrExpr extends BinExpr {
     OrExpr() {
       this instanceof LogicalOrExpr or
-      this instanceof BitwiseOrExpr
+      this instanceof BitwiseOrOperation
     }
   }
 
@@ -142,6 +142,7 @@ private module GuardsInput implements
     }
   }
 
+  pragma[nomagic]
   predicate equalityTest(Expr eqtest, Expr left, Expr right, boolean polarity) {
     exists(ComparisonTest ct |
       ct.getExpr() = eqtest and
@@ -291,7 +292,7 @@ private module LogicInput implements GuardsImpl::LogicInputSig {
     v1.isNonNullValue() and
     v2 = v1
     or
-    g2 = g1.(NullCoalescingExpr).getAnOperand() and
+    g2 = g1.(NullCoalescingOperation).getAnOperand() and
     v1.isNullValue() and
     v2 = v1
     or
@@ -410,6 +411,22 @@ private predicate typePattern(PatternMatch pm, TypePatternExpr tpe, Type t) {
   t = pm.getExpr().getType()
 }
 
+pragma[nomagic]
+private predicate dereferenceableExpr(Expr e, boolean isNullableType) {
+  exists(Type t | t = e.getType() |
+    t instanceof NullableType and
+    isNullableType = true
+    or
+    t instanceof RefType and
+    isNullableType = false
+  )
+  or
+  exists(Expr parent |
+    dereferenceableExpr(parent, isNullableType) and
+    e = getNullEquivParent(parent)
+  )
+}
+
 /**
  * An expression that evaluates to a value that can be dereferenced. That is,
  * an expression that may evaluate to `null`.
@@ -418,21 +435,12 @@ class DereferenceableExpr extends Expr {
   private boolean isNullableType;
 
   DereferenceableExpr() {
-    exists(Expr e, Type t |
-      // There is currently a bug in the extractor: the type of `x?.Length` is
-      // incorrectly `int`, while it should have been `int?`. We apply
-      // `getNullEquivParent()` as a workaround
-      this = getNullEquivParent*(e) and
-      t = e.getType() and
-      not this instanceof SwitchCaseExpr and
-      not this instanceof PatternExpr
-    |
-      t instanceof NullableType and
-      isNullableType = true
-      or
-      t instanceof RefType and
-      isNullableType = false
-    )
+    // There is currently a bug in the extractor: the type of `x?.Length` is
+    // incorrectly `int`, while it should have been `int?`. We apply
+    // `getNullEquivParent()` as a workaround
+    dereferenceableExpr(this, isNullableType) and
+    not this instanceof SwitchCaseExpr and
+    not this instanceof PatternExpr
   }
 
   /** Holds if this expression has a nullable type `T?`. */
@@ -832,14 +840,48 @@ module Internal {
     or
     e1 = e2.(Cast).getExpr()
     or
-    e2 = e1.(NullCoalescingExpr).getAnOperand()
+    e2 = e1.(NullCoalescingOperation).getAnOperand()
   }
 
   /** Holds if expression `e3` is a `null` value whenever `e1` and `e2` are. */
   predicate nullValueImpliedBinary(Expr e1, Expr e2, Expr e3) {
     e3 = any(ConditionalExpr ce | e1 = ce.getThen() and e2 = ce.getElse())
     or
-    e3 = any(NullCoalescingExpr nce | e1 = nce.getLeftOperand() and e2 = nce.getRightOperand())
+    e3 = any(NullCoalescingOperation no | e1 = no.getLeftOperand() and e2 = no.getRightOperand())
+  }
+
+  predicate nullValueImplied(Expr e) {
+    nullValue(e)
+    or
+    exists(Expr e1 | nullValueImplied(e1) and nullValueImpliedUnary(e1, e))
+    or
+    exists(Expr e1, Expr e2 |
+      nullValueImplied(e1) and nullValueImplied(e2) and nullValueImpliedBinary(e1, e2, e)
+    )
+    or
+    e =
+      any(Ssa::Definition def |
+        forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nullDef(u))
+      ).getARead()
+  }
+
+  private predicate nullDef(Ssa::ExplicitDefinition def) {
+    nullValueImplied(def.getADefinition().getSource())
+  }
+
+  predicate nonNullValueImplied(Expr e) {
+    nonNullValue(e)
+    or
+    exists(Expr e1 | nonNullValueImplied(e1) and nonNullValueImpliedUnary(e1, e))
+    or
+    e =
+      any(Ssa::Definition def |
+        forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
+      ).getARead()
+  }
+
+  private predicate nonNullDef(Ssa::ExplicitDefinition def) {
+    nonNullValueImplied(def.getADefinition().getSource())
   }
 
   /** A callable that always returns a non-`null` value. */
@@ -865,7 +907,7 @@ module Internal {
     or
     // "In string concatenation operations, the C# compiler treats a null string the same as an empty string."
     // (https://docs.microsoft.com/en-us/dotnet/csharp/how-to/concatenate-multiple-strings)
-    e instanceof AddExpr and
+    e instanceof AddOperation and
     e.getType() instanceof StringType
     or
     e.(DefaultValueExpr).getType().isValueType()
@@ -880,11 +922,9 @@ module Internal {
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */
   predicate nonNullValueImpliedUnary(Expr e1, Expr e2) {
-    e1 = e2.(CastExpr).getExpr()
-    or
-    e1 = e2.(AssignExpr).getRValue()
-    or
-    e1 = e2.(NullCoalescingExpr).getAnOperand()
+    e1 = e2.(CastExpr).getExpr() or
+    e1 = e2.(AssignExpr).getRValue() or
+    e1 = e2.(NullCoalescingOperation).getAnOperand()
   }
 
   /**
@@ -911,10 +951,13 @@ module Internal {
       )
     or
     // In C#, `null + 1` has type `int?` with value `null`
-    exists(BinaryArithmeticOperation bao, Expr o |
-      result = bao and
-      bao.getAnOperand() = e and
-      bao.getAnOperand() = o and
+    exists(BinaryOperation bo, Expr o |
+      bo instanceof BinaryArithmeticOperation or
+      bo instanceof AssignArithmeticOperation
+    |
+      result = bo and
+      bo.getAnOperand() = e and
+      bo.getAnOperand() = o and
       // The other operand must be provably non-null in order
       // for `only if` to hold
       nonNullValueImplied(o) and
@@ -930,159 +973,26 @@ module Internal {
       any(QualifiableExpr qe |
         qe.isConditional() and
         result = qe.getQualifier()
-      )
-    or
+      ) or
     // In C#, `null + 1` has type `int?` with value `null`
-    e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand())
+    e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand()) or
+    e = any(AssignArithmeticOperation aao | result = aao.getAnOperand())
   }
 
-  // The predicates in this module should be evaluated in the same stage as the CFG
-  // construction stage. This is to avoid recomputation of pre-basic-blocks and
-  // pre-SSA predicates
-  private module PreCfg {
-    private import semmle.code.csharp.controlflow.internal.PreBasicBlocks as PreBasicBlocks
-    private import semmle.code.csharp.controlflow.internal.PreSsa
-
-    private predicate nullDef(PreSsa::Definition def) {
-      nullValueImplied(def.getDefinition().getSource())
-    }
-
-    private predicate nonNullDef(PreSsa::Definition def) {
-      nonNullValueImplied(def.getDefinition().getSource())
-    }
-
-    private predicate emptyDef(PreSsa::Definition def) {
-      emptyValue(def.getDefinition().getSource())
-    }
-
-    private predicate nonEmptyDef(PreSsa::Definition def) {
-      nonEmptyValue(def.getDefinition().getSource())
-    }
-
-    deprecated predicate isGuard(Expr e, GuardValue val) {
-      (
-        e.getType() instanceof BoolType and
-        not e instanceof BoolLiteral and
-        not e instanceof SwitchCaseExpr and
-        not e instanceof PatternExpr and
-        exists(val.asBooleanValue())
-        or
-        e instanceof DereferenceableExpr and
-        val.isNullness(_)
-      ) and
-      not e = any(ExprStmt es).getExpr() and
-      not e = any(LocalVariableDeclStmt s).getAVariableDeclExpr()
-    }
-
-    cached
-    private module CachedWithCfg {
-      private import semmle.code.csharp.Caching
-
-      private predicate firstReadSameVarUniquePredecessor(
-        PreSsa::Definition def, AssignableRead read
-      ) {
-        read = def.getAFirstRead() and
-        (
-          not PreSsa::adjacentReadPairSameVar(_, read)
-          or
-          read = unique(AssignableRead read0 | PreSsa::adjacentReadPairSameVar(read0, read))
-        )
-      }
-
-      cached
-      predicate nullValueImplied(Expr e) {
-        nullValue(e)
-        or
-        exists(Expr e1 | nullValueImplied(e1) and nullValueImpliedUnary(e1, e))
-        or
-        exists(Expr e1, Expr e2 |
-          nullValueImplied(e1) and nullValueImplied(e2) and nullValueImpliedBinary(e1, e2, e)
-        )
-        or
-        e =
-          any(PreSsa::Definition def |
-            forex(PreSsa::Definition u | u = def.getAnUltimateDefinition() | nullDef(u))
-          ).getARead()
-      }
-
-      cached
-      predicate nonNullValueImplied(Expr e) {
-        nonNullValue(e)
-        or
-        exists(Expr e1 | nonNullValueImplied(e1) and nonNullValueImpliedUnary(e1, e))
-        or
-        e =
-          any(PreSsa::Definition def |
-            forex(PreSsa::Definition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
-          ).getARead()
-      }
-
-      private predicate adjacentReadPairSameVarUniquePredecessor(
-        AssignableRead read1, AssignableRead read2
-      ) {
-        PreSsa::adjacentReadPairSameVar(read1, read2) and
-        (
-          read1 = read2 and
-          read1 = unique(AssignableRead other | PreSsa::adjacentReadPairSameVar(other, read2))
-          or
-          read1 =
-            unique(AssignableRead other |
-              PreSsa::adjacentReadPairSameVar(other, read2) and other != read2
-            )
-        )
-      }
-
-      cached
-      predicate emptyValue(Expr e) {
-        e.(ArrayCreation).getALengthArgument().getValue().toInt() = 0
-        or
-        e.(ArrayInitializer).hasNoElements()
-        or
-        exists(Expr mid | emptyValue(mid) |
-          mid = e.(AssignExpr).getRValue()
-          or
-          mid = e.(Cast).getExpr()
-        )
-        or
-        exists(PreSsa::Definition def | emptyDef(def) | firstReadSameVarUniquePredecessor(def, e))
-        or
-        exists(MethodCall mc |
-          mc.getTarget().getAnUltimateImplementee().getUnboundDeclaration() =
-            any(SystemCollectionsGenericICollectionInterface c).getClearMethod() and
-          adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
-        )
-      }
-
-      cached
-      predicate nonEmptyValue(Expr e) {
-        forex(Expr length | length = e.(ArrayCreation).getALengthArgument() |
-          length.getValue().toInt() != 0
-        )
-        or
-        e.(ArrayInitializer).getNumberOfElements() > 0
-        or
-        exists(Expr mid | nonEmptyValue(mid) |
-          mid = e.(AssignExpr).getRValue()
-          or
-          mid = e.(Cast).getExpr()
-        )
-        or
-        exists(PreSsa::Definition def | nonEmptyDef(def) |
-          firstReadSameVarUniquePredecessor(def, e)
-        )
-        or
-        exists(MethodCall mc |
-          mc.getTarget().getAnUltimateImplementee().getUnboundDeclaration() =
-            any(SystemCollectionsGenericICollectionInterface c).getAddMethod() and
-          adjacentReadPairSameVarUniquePredecessor(mc.getQualifier(), e)
-        )
-      }
-    }
-
-    import CachedWithCfg
+  deprecated predicate isGuard(Expr e, GuardValue val) {
+    (
+      e.getType() instanceof BoolType and
+      not e instanceof BoolLiteral and
+      not e instanceof SwitchCaseExpr and
+      not e instanceof PatternExpr and
+      exists(val.asBooleanValue())
+      or
+      e instanceof DereferenceableExpr and
+      val.isNullness(_)
+    ) and
+    not e = any(ExprStmt es).getExpr() and
+    not e = any(LocalVariableDeclStmt s).getAVariableDeclExpr()
   }
-
-  import PreCfg
 
   private predicate interestingDescendantCandidate(Expr e) {
     guardControls(e, _, _)

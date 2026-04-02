@@ -59,6 +59,6 @@ module SqlInjection {
   private class SqlSanitizationAsSanitizer extends Sanitizer, SqlSanitization { }
 
   private class ExternalSqlInjectionSink extends Sink {
-    ExternalSqlInjectionSink() { this = ModelOutput::getASinkNode("sql-injection").asSink() }
+    ExternalSqlInjectionSink() { ModelOutput::sinkNode(this, "sql-injection") }
   }
 }

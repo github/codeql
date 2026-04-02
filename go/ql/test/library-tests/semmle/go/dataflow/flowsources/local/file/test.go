@@ -16,7 +16,7 @@ func open() {
 }
 
 func openFile() {
-	file, err := os.OpenFile("file.txt", os.O_RDWR, 0) // $source
+	file, err := os.OpenFile("file.txt", os.O_RDWR, 0) // $ source
 	if err != nil {
 		return
 	}
@@ -25,7 +25,7 @@ func openFile() {
 }
 
 func readFile() {
-	data, err := os.ReadFile("file.txt") // $source
+	data, err := os.ReadFile("file.txt") // $ source
 	if err != nil {
 		return
 	}
@@ -33,7 +33,7 @@ func readFile() {
 }
 
 func readFileIoUtil() {
-	data, err := ioutil.ReadFile("file.txt") // $source
+	data, err := ioutil.ReadFile("file.txt") // $ source
 	if err != nil {
 		return
 	}
@@ -45,14 +45,14 @@ func getFileFS() fs.ReadFileFS {
 }
 
 func readFileFs() {
-	data, err := fs.ReadFile(os.DirFS("."), "file.txt") // $source
+	data, err := fs.ReadFile(os.DirFS("."), "file.txt") // $ source
 	if err != nil {
 		return
 	}
 	_ = data
 
 	dir := getFileFS()
-	data, err = dir.ReadFile("file.txt") // $source
+	data, err = dir.ReadFile("file.txt") // $ source
 
 	if err != nil {
 		return
@@ -61,7 +61,7 @@ func readFileFs() {
 }
 
 func fsOpen() {
-	file, err := os.DirFS(".").Open("file.txt") // $source
+	file, err := os.DirFS(".").Open("file.txt") // $ source
 	if err != nil {
 		return
 	}

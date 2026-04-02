@@ -1,5 +1,5 @@
 /**
- * @name Extract MaD summary model rows.
+ * @name Extract MaD summary model rows
  * @description This extracts the Models as data summary model rows.
  * @id java/utils/modelconverter/generate-data-extensions-summary
  */

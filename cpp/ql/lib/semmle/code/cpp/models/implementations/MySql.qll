@@ -16,17 +16,3 @@ private class MySqlExecutionFunction extends SqlExecutionFunction {
 
   override predicate hasSqlArgument(FunctionInput input) { input.isParameterDeref(1) }
 }
-
-/**
- * The `mysql_real_escape_string` family of functions from the MySQL C API.
- */
-private class MySqlBarrierFunction extends SqlBarrierFunction {
-  MySqlBarrierFunction() {
-    this.hasName(["mysql_real_escape_string", "mysql_real_escape_string_quote"])
-  }
-
-  override predicate barrierSqlArgument(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(2) and
-    output.isParameterDeref(1)
-  }
-}

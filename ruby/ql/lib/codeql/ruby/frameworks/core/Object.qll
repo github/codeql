@@ -33,7 +33,7 @@ module Object {
       ]
   }
 
-  private class DupSummary extends SimpleSummarizedCallable {
+  private class DupSummary extends SummarizedCallable::RangeSimple {
     DupSummary() { this = "dup" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
