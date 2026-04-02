@@ -1,0 +1,9 @@
+import "../justfile"
+
+base_flags := _python_env
+
+all_checks := default_db_checks + """\
+    --consistency-queries=""" + consistency_queries
+
+[no-cd]
+test *ARGS=".": (_codeql_test "python" base_flags all_checks ARGS)
