@@ -4,12 +4,11 @@ import 'semmle-code-stub.just'
 set fallback
 set allow-duplicate-recipes
 set allow-duplicate-variables
-set unstable
 
 export PATH_SEP := if os() == "windows" { ";" } else { ":" }
 export JUST_EXECUTABLE := just_executable()
 
-error := style("error") + "error" + NORMAL + ": "
+error := f'{{style("error")}}error{{NORMAL}}: '
 cmd_sep := "\n#--------------------------------------------------------\n"
 export CMD_BEGIN := style("command") + cmd_sep
 export CMD_END := cmd_sep + NORMAL
@@ -25,8 +24,8 @@ default_db_checks := """\
 
 [no-exit-message]
 @_require_semmle_code:
-    {{ if SEMMLE_CODE == "" { '''
-        echo "''' + error + ''' running this recipe requires doing so from an internal repository checkout" >&2
+    {{ if SEMMLE_CODE == "" { f'''
+        echo "{error} running this recipe requires doing so from an internal repository checkout" >&2
         exit 1
     ''' } else { "" } }}
 

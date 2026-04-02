@@ -7,7 +7,7 @@ import "lib.just"
 # copy&paste necessary for each command until proper forwarding of multiple args is implemented
 # see https://github.com/casey/just/issues/1988
 
-_forward := py + ' "' + source_dir() + '/forward_command.py"'
+_forward := f'{{py}} "{{source_dir()}}/forward_command.py"'
 
 alias t := test
 alias b := build

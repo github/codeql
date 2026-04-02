@@ -1,10 +1,11 @@
 import "../justfile"
 
-all_checks := default_db_checks + """\
+all_checks := f"""\
+    {{default_db_checks}}\
     --check-repeated-labels \
     --check-redefined-labels \
     --check-use-before-definition \
-    --consistency-queries=""" + consistency_queries
+    --consistency-queries={{consistency_queries}}"""
 
 
 [no-cd]

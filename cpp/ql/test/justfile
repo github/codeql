@@ -2,10 +2,11 @@ import "../justfile"
 
 base_flags := "--include-location-in-star"
 
-all_checks := default_db_checks + """\
+all_checks := f"""\
+    {{default_db_checks}}\
     --check-undefined-labels \
     --check-unused-labels \
-    --consistency-queries=""" + consistency_queries
+    --consistency-queries={{consistency_queries}}"""
 
 [no-cd]
 test *ARGS=".": (_codeql_test "cpp" base_flags all_checks ARGS)
