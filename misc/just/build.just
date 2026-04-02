@@ -8,7 +8,7 @@ _build_dist LANGUAGE: _require_semmle_code (_maybe_build_dist LANGUAGE)
 # Build the language-specific distribution if we are in an internal repository checkout
 # Otherwise, do nothing
 [no-exit-message]
-_maybe_build_dist LANGUAGE: (_if_in_semmle_code ('cd "$SEMMLE_CODE"; tools/bazel run //language-packs:intree-' + LANGUAGE) '# using codeql from PATH, if any')
+_maybe_build_dist LANGUAGE: (_if_in_semmle_code ('cd "$SEMMLE_CODE"; tools/bazel test //language-packs:intree-' + LANGUAGE + '-as-test --test_output=all') '# using codeql from PATH, if any')
 
 # Call bazel. Uses our official bazel wrapper if we are in an internal repository checkout
 [no-cd, no-exit-message]

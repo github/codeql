@@ -16,7 +16,7 @@ import "format.just"
 
 # Run integration tests. Requires an internal repository checkout
 [no-cd, no-exit-message]
-_integration_test *ARGS: _require_semmle_code (_run "$SEMMLE_CODE/tools/pytest" ARGS)
+_integration_test *ARGS: _require_semmle_code (_run "$SEMMLE_CODE/tools/pytest" "--codeql=build-as-test" ARGS)
 
 # Generic run command recipe that can be used by other recipes, with nice rendering
 [no-cd]
