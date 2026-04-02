@@ -86,23 +86,7 @@ module Sem implements Semantic<Location> {
 
   class ConstantIntegerExpr = RU::ConstantIntegerExpr;
 
-  abstract class BinaryExpr extends Expr {
-    Expr getLeftOperand() {
-      result = this.(J::BinaryExpr).getLeftOperand() or result = this.(J::AssignOp).getDest()
-    }
-
-    Expr getRightOperand() {
-      result = this.(J::BinaryExpr).getRightOperand() or result = this.(J::AssignOp).getRhs()
-    }
-
-    final Expr getAnOperand() { result = this.getLeftOperand() or result = this.getRightOperand() }
-
-    final predicate hasOperands(Expr e1, Expr e2) {
-      this.getLeftOperand() = e1 and this.getRightOperand() = e2
-      or
-      this.getLeftOperand() = e2 and this.getRightOperand() = e1
-    }
-  }
+  class BinaryExpr = J::BinaryExpr;
 
   class AddExpr extends BinaryExpr {
     AddExpr() { this instanceof J::AddExpr or this instanceof J::AssignAddExpr }
@@ -173,23 +157,23 @@ module Sem implements Semantic<Location> {
   }
 
   class NegateExpr extends UnaryExpr instanceof MinusExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = MinusExpr.super.getOperand() }
   }
 
   class PreIncExpr extends UnaryExpr instanceof J::PreIncExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = J::PreIncExpr.super.getOperand() }
   }
 
   class PreDecExpr extends UnaryExpr instanceof J::PreDecExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = J::PreDecExpr.super.getOperand() }
   }
 
   class PostIncExpr extends UnaryExpr instanceof J::PostIncExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = J::PostIncExpr.super.getOperand() }
   }
 
   class PostDecExpr extends UnaryExpr instanceof J::PostDecExpr {
-    override Expr getOperand() { result = super.getExpr() }
+    override Expr getOperand() { result = J::PostDecExpr.super.getOperand() }
   }
 
   class CopyValueExpr extends UnaryExpr {
@@ -200,7 +184,7 @@ module Sem implements Semantic<Location> {
     }
 
     override Expr getOperand() {
-      result = this.(J::PlusExpr).getExpr() or
+      result = this.(J::PlusExpr).getOperand() or
       result = this.(J::AssignExpr).getSource() or
       result = this.(J::LocalVariableDeclExpr).getInit()
     }
@@ -219,6 +203,8 @@ module Sem implements Semantic<Location> {
   private predicate idOf(BasicBlock x, int y) { idOfAst(x.getFirstNode().getAstNode(), y) }
 
   int getBlockId1(BasicBlock bb) { idOf(bb, result) }
+
+  string getBlockId2(BasicBlock bb) { bb.getFirstNode().getIdTag() = result }
 
   class Guard extends G::Guards_v2::Guard {
     Expr asExpr() { result = this }
@@ -242,17 +228,17 @@ module Sem implements Semantic<Location> {
 
   Type getSsaType(SsaVariable var) { result = var.getSourceVariable().getType() }
 
-  final private class FinalSsaVariable = SSA::SsaVariable;
+  final private class FinalSsaVariable = SSA::SsaDefinition;
 
   class SsaVariable extends FinalSsaVariable {
-    Expr getAUse() { result = super.getAUse() }
+    Expr getAUse() { result = super.getARead() }
   }
 
-  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiNode {
+  class SsaPhiNode extends SsaVariable instanceof SSA::SsaPhiDefinition {
     predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb) { super.hasInputFromBlock(inp, bb) }
   }
 
-  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitUpdate {
+  class SsaExplicitUpdate extends SsaVariable instanceof SSA::SsaExplicitWrite {
     Expr getDefiningExpr() { result = super.getDefiningExpr() }
   }
 

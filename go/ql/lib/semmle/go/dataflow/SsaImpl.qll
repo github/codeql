@@ -3,6 +3,8 @@
  *
  * Provides predicates for constructing an SSA representation for functions.
  */
+overlay[local]
+module;
 
 import go
 
@@ -71,7 +73,7 @@ private module Internal {
   private predicate inDefDominanceFrontier(ReachableJoinBlock bb, SsaSourceVariable v) {
     exists(ReachableBasicBlock defbb, SsaDefinition def |
       def.definesAt(defbb, _, v) and
-      bb.inDominanceFrontierOf(defbb)
+      defbb.inDominanceFrontier(bb)
     )
   }
 
@@ -86,7 +88,7 @@ private module Internal {
 
   /** Holds if the `i`th node of `bb` in function `f` is an entry node. */
   private predicate entryNode(FuncDef f, ReachableBasicBlock bb, int i) {
-    f = bb.getRoot() and
+    f = bb.getScope() and
     bb.getNode(i).isEntryNode()
   }
 
@@ -94,7 +96,7 @@ private module Internal {
    * Holds if the `i`th node of `bb` in function `f` is a function call.
    */
   private predicate callNode(FuncDef f, ReachableBasicBlock bb, int i) {
-    f = bb.getRoot() and
+    f = bb.getScope() and
     bb.getNode(i).(IR::EvalInstruction).getExpr() instanceof CallExpr
   }
 
@@ -186,7 +188,7 @@ private module Internal {
    * Holds if `v` is live at the beginning of any successor of basic block `bb`.
    */
   private predicate liveAtSuccEntry(ReachableBasicBlock bb, SsaSourceVariable v) {
-    liveAtEntry(bb.getASuccessor(), v)
+    liveAtEntry(bb.getASuccessor(_), v)
   }
 
   /**
@@ -317,7 +319,7 @@ private module Internal {
       SsaSourceVariable v, ReachableBasicBlock b1, ReachableBasicBlock b2
     ) {
       varOccursInBlock(v, b1) and
-      b2 = b1.getASuccessor()
+      b2 = b1.getASuccessor(_)
     }
 
     /**
@@ -335,7 +337,7 @@ private module Internal {
     ) {
       varBlockReaches(v, b1, mid) and
       not varOccursInBlock(v, mid) and
-      b2 = mid.getASuccessor()
+      b2 = mid.getASuccessor(_)
     }
 
     /**

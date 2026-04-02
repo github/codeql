@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 /**
  * Types inferred by the flow analysis, represented as type tags.
  *

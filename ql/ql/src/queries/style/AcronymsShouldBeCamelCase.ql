@@ -1,5 +1,5 @@
 /**
- * @name Acronyms should be PascalCase/camelCase.
+ * @name Acronyms should be PascalCase/camelCase
  * @description Acronyms should be PascalCase/camelCase instead of upper-casing all the letters.
  * @kind problem
  * @problem.severity warning

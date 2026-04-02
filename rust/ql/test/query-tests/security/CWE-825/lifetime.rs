@@ -177,7 +177,7 @@ fn access_ptr_2(ptr: *const i64) {
 fn access_ptr_3(ptr: *const i64) {
 	// called from contexts with `ptr` safe and dangling
 	unsafe {
-		let v3 = *ptr; // $ MISSING: Alert
+		let v3 = *ptr; // $ Alert[rust/access-after-lifetime-ended]=local1
 		println!("	v3 = {v3} (!)"); // corrupt in practice (in one context)
 	}
 }
@@ -826,4 +826,34 @@ pub fn test_lifetimes_example_good() {
 	dereferenced_ptr = *ptr; // GOOD
 
 	println!("	val = {dereferenced_ptr}");
+}
+
+// --- generic calls ---
+
+trait Processor {
+	fn process(ptr: *const i64) -> i64;
+}
+
+struct MyProcessor {
+}
+
+impl Processor for MyProcessor {
+	fn process(ptr: *const i64) -> i64 {
+		unsafe {
+			return *ptr; // good
+		}
+	}
+}
+
+fn generic_caller<T: Processor>() -> i64
+{
+	let local_value: i64 = 10;
+	let ptr = &local_value as *const i64;
+
+	return T::process(ptr);
+}
+
+pub fn test_generic() {
+	let result = generic_caller::<MyProcessor>();
+	println!("	result = {result}");
 }

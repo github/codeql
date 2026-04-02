@@ -96,7 +96,7 @@ module RequestForgery {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("request-forgery").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "request-forgery") }
 
     override DataFlow::Node getARequest() { result = this }
 
@@ -113,5 +113,9 @@ module RequestForgery {
    */
   class UriEncodingSanitizer extends Sanitizer instanceof Xss::Shared::UriEncodingSanitizer {
     UriEncodingSanitizer() { this.encodesPathSeparators() }
+  }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "request-forgery") }
   }
 }

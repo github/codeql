@@ -21,10 +21,6 @@ namespace Semmle.Extraction.CSharp.Entities
 
         private Type Type => type.Value;
 
-        protected override IPropertySymbol BodyDeclaringSymbol => Symbol.PartialImplementationPart ?? Symbol;
-
-        public override Microsoft.CodeAnalysis.Location? ReportingLocation => BodyDeclaringSymbol.Locations.BestOrDefault();
-
         public override void WriteId(EscapingTextWriter trapFile)
         {
             trapFile.WriteSubId(Type);
@@ -46,8 +42,8 @@ namespace Semmle.Extraction.CSharp.Entities
             var type = Type;
             trapFile.properties(this, Symbol.GetName(), ContainingType!, type.TypeRef, Create(Context, Symbol.OriginalDefinition));
 
-            var getter = BodyDeclaringSymbol.GetMethod;
-            var setter = BodyDeclaringSymbol.SetMethod;
+            var getter = Symbol.GetMethod;
+            var setter = Symbol.SetMethod;
 
             if (getter is not null)
                 Method.Create(Context, getter);
@@ -98,9 +94,9 @@ namespace Semmle.Extraction.CSharp.Entities
                         var loc = Context.CreateLocation(initializer!.GetLocation());
                         var annotatedType = AnnotatedTypeSymbol.CreateNotAnnotated(Symbol.Type);
                         var simpleAssignExpr = new Expression(new ExpressionInfo(Context, annotatedType, loc, ExprKind.SIMPLE_ASSIGN, this, child++, isCompilerGenerated: true, null));
-                        Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 0));
-                        var access = new Expression(new ExpressionInfo(Context, annotatedType, Location, ExprKind.PROPERTY_ACCESS, simpleAssignExpr, 1, isCompilerGenerated: true, null));
+                        var access = new Expression(new ExpressionInfo(Context, annotatedType, Location, ExprKind.PROPERTY_ACCESS, simpleAssignExpr, 0, isCompilerGenerated: true, null));
                         trapFile.expr_access(access, this);
+                        Expression.CreateFromNode(new ExpressionNodeInfo(Context, initializer.Value, simpleAssignExpr, 1));
                         if (!Symbol.IsStatic)
                         {
                             This.CreateImplicit(Context, Symbol.ContainingType, Location, access, -1);
@@ -132,7 +128,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var isIndexer = prop.IsIndexer || prop.Parameters.Any();
 
-            return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop);
+            return isIndexer ? Indexer.Create(cx, prop) : PropertyFactory.Instance.CreateEntityFromSymbol(cx, prop.GetBodyDeclaringSymbol());
         }
 
         private class PropertyFactory : CachedEntityFactory<IPropertySymbol, Property>

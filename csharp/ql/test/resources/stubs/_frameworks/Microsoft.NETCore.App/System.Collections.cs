@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Collections, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Collections, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Collections
@@ -39,6 +39,7 @@ namespace System
             {
                 public static void AddRange<T>(this System.Collections.Generic.List<T> list, params System.ReadOnlySpan<T> source) => throw null;
                 public static System.Collections.ObjectModel.ReadOnlyCollection<T> AsReadOnly<T>(this System.Collections.Generic.IList<T> list) => throw null;
+                public static System.Collections.ObjectModel.ReadOnlySet<T> AsReadOnly<T>(this System.Collections.Generic.ISet<T> set) => throw null;
                 public static System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this System.Collections.Generic.IDictionary<TKey, TValue> dictionary) => throw null;
                 public static void CopyTo<T>(this System.Collections.Generic.List<T> list, System.Span<T> destination) => throw null;
                 public static TValue GetValueOrDefault<TKey, TValue>(this System.Collections.Generic.IReadOnlyDictionary<TKey, TValue> dictionary, TKey key) => throw null;
@@ -503,7 +504,9 @@ namespace System
                 public void TrimExcess() => throw null;
                 public void TrimExcess(int capacity) => throw null;
                 public bool TryAdd(TKey key, TValue value) => throw null;
+                public bool TryAdd(TKey key, TValue value, out int index) => throw null;
                 public bool TryGetValue(TKey key, out TValue value) => throw null;
+                public bool TryGetValue(TKey key, out TValue value, out int index) => throw null;
                 public sealed class ValueCollection : System.Collections.Generic.ICollection<TValue>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<TValue>, System.Collections.IEnumerable, System.Collections.Generic.IList<TValue>, System.Collections.IList, System.Collections.Generic.IReadOnlyCollection<TValue>, System.Collections.Generic.IReadOnlyList<TValue>
                 {
                     void System.Collections.Generic.ICollection<TValue>.Add(TValue item) => throw null;
@@ -550,6 +553,7 @@ namespace System
             }
             public class PriorityQueue<TElement, TPriority>
             {
+                public int Capacity { get => throw null; }
                 public void Clear() => throw null;
                 public System.Collections.Generic.IComparer<TPriority> Comparer { get => throw null; }
                 public int Count { get => throw null; }
@@ -877,38 +881,6 @@ namespace System
                 public void TrimExcess(int capacity) => throw null;
                 public bool TryPeek(out T result) => throw null;
                 public bool TryPop(out T result) => throw null;
-            }
-        }
-        namespace ObjectModel
-        {
-            public class ReadOnlySet<T> : System.Collections.Generic.ICollection<T>, System.Collections.ICollection, System.Collections.Generic.IEnumerable<T>, System.Collections.IEnumerable, System.Collections.Generic.IReadOnlyCollection<T>, System.Collections.Generic.IReadOnlySet<T>, System.Collections.Generic.ISet<T>
-            {
-                void System.Collections.Generic.ICollection<T>.Add(T item) => throw null;
-                bool System.Collections.Generic.ISet<T>.Add(T item) => throw null;
-                void System.Collections.Generic.ICollection<T>.Clear() => throw null;
-                public bool Contains(T item) => throw null;
-                void System.Collections.Generic.ICollection<T>.CopyTo(T[] array, int arrayIndex) => throw null;
-                void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
-                public int Count { get => throw null; }
-                public ReadOnlySet(System.Collections.Generic.ISet<T> set) => throw null;
-                public static System.Collections.ObjectModel.ReadOnlySet<T> Empty { get => throw null; }
-                void System.Collections.Generic.ISet<T>.ExceptWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                public System.Collections.Generic.IEnumerator<T> GetEnumerator() => throw null;
-                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
-                void System.Collections.Generic.ISet<T>.IntersectWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                public bool IsProperSubsetOf(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                public bool IsProperSupersetOf(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                bool System.Collections.Generic.ICollection<T>.IsReadOnly { get => throw null; }
-                public bool IsSubsetOf(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                public bool IsSupersetOf(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                bool System.Collections.ICollection.IsSynchronized { get => throw null; }
-                public bool Overlaps(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                bool System.Collections.Generic.ICollection<T>.Remove(T item) => throw null;
-                protected System.Collections.Generic.ISet<T> Set { get => throw null; }
-                public bool SetEquals(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                void System.Collections.Generic.ISet<T>.SymmetricExceptWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
-                object System.Collections.ICollection.SyncRoot { get => throw null; }
-                void System.Collections.Generic.ISet<T>.UnionWith(System.Collections.Generic.IEnumerable<T> other) => throw null;
             }
         }
         public static class StructuralComparisons

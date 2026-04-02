@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Runtime.InteropServices, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Runtime.InteropServices, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     public sealed class DataMisalignedException : System.SystemException
@@ -154,6 +154,7 @@ namespace System
             }
             public static class CollectionsMarshal
             {
+                public static System.Span<byte> AsBytes(System.Collections.BitArray array) => throw null;
                 public static System.Span<T> AsSpan<T>(System.Collections.Generic.List<T> list) => throw null;
                 public static TValue GetValueRefOrAddDefault<TKey, TValue>(System.Collections.Generic.Dictionary<TKey, TValue> dictionary, TKey key, out bool exists) => throw null;
                 public static TValue GetValueRefOrAddDefault<TKey, TValue, TAlternateKey>(System.Collections.Generic.Dictionary<TKey, TValue>.AlternateLookup<TAlternateKey> dictionary, TAlternateKey key, out bool exists) => throw null;
@@ -880,10 +881,12 @@ namespace System
                 }
                 protected abstract unsafe System.Runtime.InteropServices.ComWrappers.ComInterfaceEntry* ComputeVtables(object obj, System.Runtime.InteropServices.CreateComInterfaceFlags flags, out int count);
                 protected abstract object CreateObject(nint externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags);
+                protected virtual object CreateObject(nint externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags, object userState, out System.Runtime.InteropServices.CreatedWrapperFlags wrapperFlags) => throw null;
                 protected ComWrappers() => throw null;
                 public static void GetIUnknownImpl(out nint fpQueryInterface, out nint fpAddRef, out nint fpRelease) => throw null;
                 public nint GetOrCreateComInterfaceForObject(object instance, System.Runtime.InteropServices.CreateComInterfaceFlags flags) => throw null;
                 public object GetOrCreateObjectForComInstance(nint externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags) => throw null;
+                public object GetOrCreateObjectForComInstance(nint externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags, object userState) => throw null;
                 public object GetOrRegisterObjectForComInstance(nint externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags, object wrapper) => throw null;
                 public object GetOrRegisterObjectForComInstance(nint externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags, object wrapper, nint inner) => throw null;
                 public static void RegisterForMarshalling(System.Runtime.InteropServices.ComWrappers instance) => throw null;
@@ -898,6 +901,13 @@ namespace System
                 None = 0,
                 CallerDefinedIUnknown = 1,
                 TrackerSupport = 2,
+            }
+            [System.Flags]
+            public enum CreatedWrapperFlags
+            {
+                None = 0,
+                TrackerObject = 1,
+                NonWrapping = 2,
             }
             [System.Flags]
             public enum CreateObjectFlags
@@ -1079,6 +1089,33 @@ namespace System
                 public InvalidOleVariantTypeException(string message) => throw null;
                 public InvalidOleVariantTypeException(string message, System.Exception inner) => throw null;
             }
+            namespace Java
+            {
+                public struct ComponentCrossReference
+                {
+                    public nuint DestinationGroupIndex;
+                    public nuint SourceGroupIndex;
+                }
+                public static class JavaMarshal
+                {
+                    public static unsafe System.Runtime.InteropServices.GCHandle CreateReferenceTrackingHandle(object obj, void* context) => throw null;
+                    public static unsafe void FinishCrossReferenceProcessing(System.Runtime.InteropServices.Java.MarkCrossReferencesArgs* crossReferences, System.ReadOnlySpan<System.Runtime.InteropServices.GCHandle> unreachableObjectHandles) => throw null;
+                    public static unsafe void* GetContext(System.Runtime.InteropServices.GCHandle obj) => throw null;
+                    public static unsafe void Initialize(delegate* unmanaged<System.Runtime.InteropServices.Java.MarkCrossReferencesArgs*, void> markCrossReferences) => throw null;
+                }
+                public struct MarkCrossReferencesArgs
+                {
+                    public nuint ComponentCount;
+                    public unsafe System.Runtime.InteropServices.Java.StronglyConnectedComponent* Components;
+                    public nuint CrossReferenceCount;
+                    public unsafe System.Runtime.InteropServices.Java.ComponentCrossReference* CrossReferences;
+                }
+                public struct StronglyConnectedComponent
+                {
+                    public unsafe void** Contexts;
+                    public nuint Count;
+                }
+            }
             [System.AttributeUsage((System.AttributeTargets)64, Inherited = false)]
             public sealed class LCIDConversionAttribute : System.Attribute
             {
@@ -1150,6 +1187,7 @@ namespace System
                 public static int GetExceptionCode() => throw null;
                 public static System.Exception GetExceptionForHR(int errorCode) => throw null;
                 public static System.Exception GetExceptionForHR(int errorCode, nint errorInfo) => throw null;
+                public static System.Exception GetExceptionForHR(int errorCode, in System.Guid iid, nint pUnk) => throw null;
                 public static nint GetExceptionPointers() => throw null;
                 public static nint GetFunctionPointerForDelegate(System.Delegate d) => throw null;
                 public static nint GetFunctionPointerForDelegate<TDelegate>(TDelegate d) => throw null;
@@ -1241,6 +1279,7 @@ namespace System
                 public static readonly int SystemMaxDBCSCharSize;
                 public static void ThrowExceptionForHR(int errorCode) => throw null;
                 public static void ThrowExceptionForHR(int errorCode, nint errorInfo) => throw null;
+                public static void ThrowExceptionForHR(int errorCode, in System.Guid iid, nint pUnk) => throw null;
                 public static nint UnsafeAddrOfPinnedArrayElement(System.Array arr, int index) => throw null;
                 public static nint UnsafeAddrOfPinnedArrayElement<T>(T[] arr, int index) => throw null;
                 public static void WriteByte(nint ptr, byte val) => throw null;
@@ -1415,6 +1454,7 @@ namespace System
                 public class GeneratedComInterfaceAttribute : System.Attribute
                 {
                     public GeneratedComInterfaceAttribute() => throw null;
+                    public System.Type ExceptionToUnmanagedMarshaller { get => throw null; set { } }
                     public System.Runtime.InteropServices.Marshalling.ComInterfaceOptions Options { get => throw null; set { } }
                     public System.Runtime.InteropServices.StringMarshalling StringMarshalling { get => throw null; set { } }
                     public System.Type StringMarshallingCustomType { get => throw null; set { } }
@@ -1512,6 +1552,7 @@ namespace System
                     protected virtual System.Runtime.InteropServices.Marshalling.IIUnknownCacheStrategy CreateCacheStrategy() => throw null;
                     protected static System.Runtime.InteropServices.Marshalling.IIUnknownCacheStrategy CreateDefaultCacheStrategy() => throw null;
                     protected override sealed object CreateObject(nint externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags) => throw null;
+                    protected override sealed object CreateObject(nint externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags, object userState, out System.Runtime.InteropServices.CreatedWrapperFlags wrapperFlags) => throw null;
                     public StrategyBasedComWrappers() => throw null;
                     public static System.Runtime.InteropServices.Marshalling.IIUnknownInterfaceDetailsStrategy DefaultIUnknownInterfaceDetailsStrategy { get => throw null; }
                     public static System.Runtime.InteropServices.Marshalling.IIUnknownStrategy DefaultIUnknownStrategy { get => throw null; }
@@ -1601,6 +1642,7 @@ namespace System
                 static System.Runtime.InteropServices.NFloat System.Numerics.IRootFunctions<System.Runtime.InteropServices.NFloat>.Cbrt(System.Runtime.InteropServices.NFloat x) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.Ceiling(System.Runtime.InteropServices.NFloat x) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.Clamp(System.Runtime.InteropServices.NFloat value, System.Runtime.InteropServices.NFloat min, System.Runtime.InteropServices.NFloat max) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.ClampNative(System.Runtime.InteropServices.NFloat value, System.Runtime.InteropServices.NFloat min, System.Runtime.InteropServices.NFloat max) => throw null;
                 public int CompareTo(object obj) => throw null;
                 public int CompareTo(System.Runtime.InteropServices.NFloat other) => throw null;
                 static TInteger System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.ConvertToInteger<TInteger>(System.Runtime.InteropServices.NFloat value) => throw null;
@@ -1665,11 +1707,13 @@ namespace System
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.Max(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.MaxMagnitude(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.MaxMagnitudeNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.MaxNative(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.MaxNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.IMinMaxValue<System.Runtime.InteropServices.NFloat>.MaxValue { get => throw null; }
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.Min(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.MinMagnitude(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.MinMagnitudeNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.MinNative(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.INumber<System.Runtime.InteropServices.NFloat>.MinNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
                 static System.Runtime.InteropServices.NFloat System.Numerics.IMinMaxValue<System.Runtime.InteropServices.NFloat>.MinValue { get => throw null; }
                 static System.Runtime.InteropServices.NFloat System.Numerics.IMultiplicativeIdentity<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.MultiplicativeIdentity { get => throw null; }
@@ -2019,6 +2063,27 @@ namespace System
                 public TypeLibVersionAttribute(int major, int minor) => throw null;
                 public int MajorVersion { get => throw null; }
                 public int MinorVersion { get => throw null; }
+            }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true)]
+            public sealed class TypeMapAssemblyTargetAttribute<TTypeMapGroup> : System.Attribute
+            {
+                public TypeMapAssemblyTargetAttribute(string assemblyName) => throw null;
+            }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true)]
+            public sealed class TypeMapAssociationAttribute<TTypeMapGroup> : System.Attribute
+            {
+                public TypeMapAssociationAttribute(System.Type source, System.Type proxy) => throw null;
+            }
+            [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true)]
+            public sealed class TypeMapAttribute<TTypeMapGroup> : System.Attribute
+            {
+                public TypeMapAttribute(string value, System.Type target) => throw null;
+                public TypeMapAttribute(string value, System.Type target, System.Type trimTarget) => throw null;
+            }
+            public static class TypeMapping
+            {
+                public static System.Collections.Generic.IReadOnlyDictionary<string, System.Type> GetOrCreateExternalTypeMapping<TTypeMapGroup>() => throw null;
+                public static System.Collections.Generic.IReadOnlyDictionary<System.Type, System.Type> GetOrCreateProxyTypeMapping<TTypeMapGroup>() => throw null;
             }
             public sealed class UnknownWrapper
             {

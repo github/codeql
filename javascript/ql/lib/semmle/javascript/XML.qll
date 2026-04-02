@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for working with XML files and their content.
  */
+overlay[local?]
+module;
 
 import semmle.files.FileSystem
 private import codeql.xml.Xml

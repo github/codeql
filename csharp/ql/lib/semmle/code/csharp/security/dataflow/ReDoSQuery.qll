@@ -91,7 +91,7 @@ class ExponentialRegexSink extends DataFlow::ExprNode, Sink {
   ExponentialRegexSink() {
     exists(RegexOperation regexOperation |
       // Exponential regex flows to the pattern argument
-      ExponentialRegexDataFlow::flow(_, DataFlow::exprNode(regexOperation.getPattern()))
+      ExponentialRegexDataFlow::flowToExpr(regexOperation.getPattern())
     |
       // This is used as an input for this pattern
       this.getExpr() = regexOperation.getInput() and

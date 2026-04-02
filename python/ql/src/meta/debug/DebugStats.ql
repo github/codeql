@@ -1,15 +1,15 @@
 import python
+private import LegacyPointsTo
 
 from string msg, int cnt, int sort
 where
   sort = 0 and
   msg = "Lines of code in DB" and
-  cnt = sum(Module m | | m.getMetrics().getNumberOfLinesOfCode())
+  cnt = sum(ModuleMetrics m | | m.getNumberOfLinesOfCode())
   or
   sort = 1 and
   msg = "Lines of code in repo" and
-  cnt =
-    sum(Module m | exists(m.getFile().getRelativePath()) | m.getMetrics().getNumberOfLinesOfCode())
+  cnt = sum(ModuleMetrics m | exists(m.getFile().getRelativePath()) | m.getNumberOfLinesOfCode())
   or
   sort = 2 and
   msg = "Files" and

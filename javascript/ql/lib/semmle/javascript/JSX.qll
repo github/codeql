@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with JSX code.
  */
+overlay[local?]
+module;
 
 import javascript
 

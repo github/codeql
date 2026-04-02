@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
+overlay[local?]
+module;
 
 import go
 

@@ -53,9 +53,9 @@ mod basic_blanket_impl {
         println!("{x4:?}");
         let x5 = S1::duplicate(&S1); // $ target=Clone1duplicate
         println!("{x5:?}");
-        let x6 = S2.duplicate(); // $ MISSING: target=Clone1duplicate
+        let x6 = S2.duplicate(); // $ target=Clone1duplicate
         println!("{x6:?}");
-        let x7 = (&S2).duplicate(); // $ MISSING: target=Clone1duplicate
+        let x7 = (&S2).duplicate(); // $ target=Clone1duplicate
         println!("{x7:?}");
     }
 }
@@ -236,7 +236,7 @@ mod blanket_like_impl {
     impl MyTrait2 for &&S1 {
         // MyTrait2RefRefS1::m2
         fn m2(self) {
-            self.m1() // $ MISSING: target=S1::m1
+            self.m1() // $ target=S1::m1
         }
     }
 

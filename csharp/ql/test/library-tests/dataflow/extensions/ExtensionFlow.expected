@@ -1,0 +1,502 @@
+models
+edges
+| extensions.cs:5:22:5:24 | obj : B | extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | provenance |  |
+| extensions.cs:5:22:5:24 | obj : B | extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | provenance |  |
+| extensions.cs:5:22:5:24 | obj : B | extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | provenance |  |
+| extensions.cs:5:22:5:24 | obj : B | extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | provenance |  |
+| extensions.cs:5:22:5:24 | obj : B | extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | provenance |  |
+| extensions.cs:5:22:5:24 | obj : B | extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | provenance |  |
+| extensions.cs:11:24:11:37 | call to method Source<B> : B | extensions.cs:108:18:108:26 | access to property Prop1 : B | provenance |  |
+| extensions.cs:11:24:11:37 | call to method Source<B> : B | extensions.cs:108:18:108:26 | access to property Prop1 : B | provenance |  |
+| extensions.cs:11:24:11:37 | call to method Source<B> : B | extensions.cs:111:18:111:44 | call to extension accessor get_Prop1 : B | provenance |  |
+| extensions.cs:11:24:11:37 | call to method Source<B> : B | extensions.cs:111:18:111:44 | call to extension accessor get_Prop1 : B | provenance |  |
+| extensions.cs:13:13:13:15 | value : B | extensions.cs:15:24:15:28 | access to parameter value | provenance |  |
+| extensions.cs:13:13:13:15 | value : B | extensions.cs:15:24:15:28 | access to parameter value | provenance |  |
+| extensions.cs:36:24:36:38 | call to method Source<B> : B | extensions.cs:194:18:194:35 | access to property StaticProp1 : B | provenance |  |
+| extensions.cs:36:24:36:38 | call to method Source<B> : B | extensions.cs:194:18:194:35 | access to property StaticProp1 : B | provenance |  |
+| extensions.cs:36:24:36:38 | call to method Source<B> : B | extensions.cs:197:18:197:47 | call to extension accessor get_StaticProp1 : B | provenance |  |
+| extensions.cs:36:24:36:38 | call to method Source<B> : B | extensions.cs:197:18:197:47 | call to extension accessor get_StaticProp1 : B | provenance |  |
+| extensions.cs:38:13:38:15 | value : B | extensions.cs:40:24:40:28 | access to parameter value | provenance |  |
+| extensions.cs:38:13:38:15 | value : B | extensions.cs:40:24:40:28 | access to parameter value | provenance |  |
+| extensions.cs:46:20:46:33 | call to method Source<B> : B | extensions.cs:127:18:127:25 | call to method M1 : B | provenance |  |
+| extensions.cs:46:20:46:33 | call to method Source<B> : B | extensions.cs:127:18:127:25 | call to method M1 : B | provenance |  |
+| extensions.cs:46:20:46:33 | call to method Source<B> : B | extensions.cs:130:18:130:37 | call to method M1 : B | provenance |  |
+| extensions.cs:46:20:46:33 | call to method Source<B> : B | extensions.cs:130:18:130:37 | call to method M1 : B | provenance |  |
+| extensions.cs:59:48:59:48 | a : B | extensions.cs:61:20:61:20 | access to parameter a | provenance |  |
+| extensions.cs:59:48:59:48 | a : B | extensions.cs:61:20:61:20 | access to parameter a | provenance |  |
+| extensions.cs:67:20:67:33 | call to method Source<B> : B | extensions.cs:185:18:185:24 | call to operator - : B | provenance |  |
+| extensions.cs:67:20:67:33 | call to method Source<B> : B | extensions.cs:185:18:185:24 | call to operator - : B | provenance |  |
+| extensions.cs:67:20:67:33 | call to method Source<B> : B | extensions.cs:188:18:188:52 | call to operator - : B | provenance |  |
+| extensions.cs:67:20:67:33 | call to method Source<B> : B | extensions.cs:188:18:188:52 | call to operator - : B | provenance |  |
+| extensions.cs:76:17:76:17 | b : B | extensions.cs:80:20:80:20 | access to extension synthetic parameter b : B | provenance |  |
+| extensions.cs:76:17:76:17 | b : B | extensions.cs:80:20:80:20 | access to extension synthetic parameter b : B | provenance |  |
+| extensions.cs:76:17:76:17 | b : B | extensions.cs:85:20:85:20 | access to extension synthetic parameter b | provenance |  |
+| extensions.cs:76:17:76:17 | b : B | extensions.cs:85:20:85:20 | access to extension synthetic parameter b | provenance |  |
+| extensions.cs:89:20:89:20 | t : B | extensions.cs:93:20:93:20 | access to extension synthetic parameter t | provenance |  |
+| extensions.cs:89:20:89:20 | t : B | extensions.cs:93:20:93:20 | access to extension synthetic parameter t | provenance |  |
+| extensions.cs:96:33:96:37 | other : B | extensions.cs:98:20:98:24 | access to parameter other : B | provenance |  |
+| extensions.cs:96:33:96:37 | other : B | extensions.cs:98:20:98:24 | access to parameter other : B | provenance |  |
+| extensions.cs:108:13:108:14 | access to local variable b1 : B | extensions.cs:109:14:109:15 | access to local variable b1 | provenance |  |
+| extensions.cs:108:13:108:14 | access to local variable b1 : B | extensions.cs:109:14:109:15 | access to local variable b1 | provenance |  |
+| extensions.cs:108:18:108:26 | access to property Prop1 : B | extensions.cs:108:13:108:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:108:18:108:26 | access to property Prop1 : B | extensions.cs:108:13:108:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:111:13:111:14 | access to local variable b2 : B | extensions.cs:112:14:112:15 | access to local variable b2 | provenance |  |
+| extensions.cs:111:13:111:14 | access to local variable b2 : B | extensions.cs:112:14:112:15 | access to local variable b2 | provenance |  |
+| extensions.cs:111:18:111:44 | call to extension accessor get_Prop1 : B | extensions.cs:111:13:111:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:111:18:111:44 | call to extension accessor get_Prop1 : B | extensions.cs:111:13:111:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:118:21:118:32 | call to method Source<B> : B | extensions.cs:13:13:13:15 | value : B | provenance |  |
+| extensions.cs:118:21:118:32 | call to method Source<B> : B | extensions.cs:13:13:13:15 | value : B | provenance |  |
+| extensions.cs:120:13:120:13 | access to local variable b : B | extensions.cs:121:37:121:37 | access to local variable b : B | provenance |  |
+| extensions.cs:120:13:120:13 | access to local variable b : B | extensions.cs:121:37:121:37 | access to local variable b : B | provenance |  |
+| extensions.cs:120:17:120:30 | call to method Source<B> : B | extensions.cs:120:13:120:13 | access to local variable b : B | provenance |  |
+| extensions.cs:120:17:120:30 | call to method Source<B> : B | extensions.cs:120:13:120:13 | access to local variable b : B | provenance |  |
+| extensions.cs:121:37:121:37 | access to local variable b : B | extensions.cs:13:13:13:15 | value : B | provenance |  |
+| extensions.cs:121:37:121:37 | access to local variable b : B | extensions.cs:13:13:13:15 | value : B | provenance |  |
+| extensions.cs:127:13:127:14 | access to local variable b1 : B | extensions.cs:128:14:128:15 | access to local variable b1 | provenance |  |
+| extensions.cs:127:13:127:14 | access to local variable b1 : B | extensions.cs:128:14:128:15 | access to local variable b1 | provenance |  |
+| extensions.cs:127:18:127:25 | call to method M1 : B | extensions.cs:127:13:127:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:127:18:127:25 | call to method M1 : B | extensions.cs:127:13:127:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:130:13:130:14 | access to local variable b2 : B | extensions.cs:131:14:131:15 | access to local variable b2 | provenance |  |
+| extensions.cs:130:13:130:14 | access to local variable b2 : B | extensions.cs:131:14:131:15 | access to local variable b2 | provenance |  |
+| extensions.cs:130:18:130:37 | call to method M1 : B | extensions.cs:130:13:130:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:130:18:130:37 | call to method M1 : B | extensions.cs:130:13:130:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:136:13:136:14 | access to local variable b1 : B | extensions.cs:137:9:137:10 | access to local variable b1 : B | provenance |  |
+| extensions.cs:136:13:136:14 | access to local variable b1 : B | extensions.cs:137:9:137:10 | access to local variable b1 : B | provenance |  |
+| extensions.cs:136:18:136:29 | call to method Source<B> : B | extensions.cs:136:13:136:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:136:18:136:29 | call to method Source<B> : B | extensions.cs:136:13:136:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:137:9:137:10 | access to local variable b1 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:137:9:137:10 | access to local variable b1 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:139:13:139:14 | access to local variable b2 : B | extensions.cs:140:25:140:26 | access to local variable b2 : B | provenance |  |
+| extensions.cs:139:13:139:14 | access to local variable b2 : B | extensions.cs:140:25:140:26 | access to local variable b2 : B | provenance |  |
+| extensions.cs:139:18:139:31 | call to method Source<B> : B | extensions.cs:139:13:139:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:139:18:139:31 | call to method Source<B> : B | extensions.cs:139:13:139:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:140:25:140:26 | access to local variable b2 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:140:25:140:26 | access to local variable b2 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:145:13:145:14 | access to local variable b1 : B | extensions.cs:146:18:146:19 | access to local variable b1 : B | provenance |  |
+| extensions.cs:145:13:145:14 | access to local variable b1 : B | extensions.cs:146:18:146:19 | access to local variable b1 : B | provenance |  |
+| extensions.cs:145:13:145:14 | access to local variable b1 : B | extensions.cs:149:34:149:35 | access to local variable b1 : B | provenance |  |
+| extensions.cs:145:13:145:14 | access to local variable b1 : B | extensions.cs:149:34:149:35 | access to local variable b1 : B | provenance |  |
+| extensions.cs:145:18:145:29 | call to method Source<B> : B | extensions.cs:145:13:145:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:145:18:145:29 | call to method Source<B> : B | extensions.cs:145:13:145:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:146:13:146:14 | access to local variable b2 : B | extensions.cs:147:14:147:15 | access to local variable b2 | provenance |  |
+| extensions.cs:146:13:146:14 | access to local variable b2 : B | extensions.cs:147:14:147:15 | access to local variable b2 | provenance |  |
+| extensions.cs:146:18:146:19 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | provenance |  |
+| extensions.cs:146:18:146:19 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | provenance |  |
+| extensions.cs:146:18:146:19 | access to local variable b1 : B | extensions.cs:146:18:146:24 | call to method B1 : B | provenance |  |
+| extensions.cs:146:18:146:19 | access to local variable b1 : B | extensions.cs:146:18:146:24 | call to method B1 : B | provenance |  |
+| extensions.cs:146:18:146:24 | call to method B1 : B | extensions.cs:146:13:146:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:146:18:146:24 | call to method B1 : B | extensions.cs:146:13:146:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:149:13:149:14 | access to local variable b3 : B | extensions.cs:150:14:150:15 | access to local variable b3 | provenance |  |
+| extensions.cs:149:13:149:14 | access to local variable b3 : B | extensions.cs:150:14:150:15 | access to local variable b3 | provenance |  |
+| extensions.cs:149:18:149:36 | call to method B1 : B | extensions.cs:149:13:149:14 | access to local variable b3 : B | provenance |  |
+| extensions.cs:149:18:149:36 | call to method B1 : B | extensions.cs:149:13:149:14 | access to local variable b3 : B | provenance |  |
+| extensions.cs:149:34:149:35 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | provenance |  |
+| extensions.cs:149:34:149:35 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | provenance |  |
+| extensions.cs:149:34:149:35 | access to local variable b1 : B | extensions.cs:149:18:149:36 | call to method B1 : B | provenance |  |
+| extensions.cs:149:34:149:35 | access to local variable b1 : B | extensions.cs:149:18:149:36 | call to method B1 : B | provenance |  |
+| extensions.cs:155:13:155:14 | access to local variable b1 : B | extensions.cs:156:18:156:19 | access to local variable b1 : B | provenance |  |
+| extensions.cs:155:13:155:14 | access to local variable b1 : B | extensions.cs:156:18:156:19 | access to local variable b1 : B | provenance |  |
+| extensions.cs:155:18:155:29 | call to method Source<B> : B | extensions.cs:155:13:155:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:155:18:155:29 | call to method Source<B> : B | extensions.cs:155:13:155:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:156:18:156:19 | access to local variable b1 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:156:18:156:19 | access to local variable b1 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:158:13:158:14 | access to local variable b3 : B | extensions.cs:159:41:159:42 | access to local variable b3 : B | provenance |  |
+| extensions.cs:158:13:158:14 | access to local variable b3 : B | extensions.cs:159:41:159:42 | access to local variable b3 : B | provenance |  |
+| extensions.cs:158:18:158:31 | call to method Source<B> : B | extensions.cs:158:13:158:14 | access to local variable b3 : B | provenance |  |
+| extensions.cs:158:18:158:31 | call to method Source<B> : B | extensions.cs:158:13:158:14 | access to local variable b3 : B | provenance |  |
+| extensions.cs:159:41:159:42 | access to local variable b3 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:159:41:159:42 | access to local variable b3 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:164:13:164:14 | access to local variable b1 : B | extensions.cs:165:9:165:10 | access to local variable b1 : B | provenance |  |
+| extensions.cs:164:13:164:14 | access to local variable b1 : B | extensions.cs:165:9:165:10 | access to local variable b1 : B | provenance |  |
+| extensions.cs:164:18:164:29 | call to method Source<B> : B | extensions.cs:164:13:164:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:164:18:164:29 | call to method Source<B> : B | extensions.cs:164:13:164:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:165:9:165:10 | access to local variable b1 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:165:9:165:10 | access to local variable b1 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:167:13:167:14 | access to local variable b2 : B | extensions.cs:168:32:168:33 | access to local variable b2 : B | provenance |  |
+| extensions.cs:167:13:167:14 | access to local variable b2 : B | extensions.cs:168:32:168:33 | access to local variable b2 : B | provenance |  |
+| extensions.cs:167:18:167:31 | call to method Source<B> : B | extensions.cs:167:13:167:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:167:18:167:31 | call to method Source<B> : B | extensions.cs:167:13:167:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:168:32:168:33 | access to local variable b2 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:168:32:168:33 | access to local variable b2 : B | extensions.cs:5:22:5:24 | obj : B | provenance |  |
+| extensions.cs:173:13:173:14 | access to local variable b1 : B | extensions.cs:175:18:175:19 | access to local variable b1 : B | provenance |  |
+| extensions.cs:173:13:173:14 | access to local variable b1 : B | extensions.cs:175:18:175:19 | access to local variable b1 : B | provenance |  |
+| extensions.cs:173:18:173:29 | call to method Source<B> : B | extensions.cs:173:13:173:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:173:18:173:29 | call to method Source<B> : B | extensions.cs:173:13:173:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:175:18:175:19 | access to local variable b1 : B | extensions.cs:59:48:59:48 | a : B | provenance |  |
+| extensions.cs:175:18:175:19 | access to local variable b1 : B | extensions.cs:59:48:59:48 | a : B | provenance |  |
+| extensions.cs:177:13:177:14 | access to local variable b4 : B | extensions.cs:178:43:178:44 | access to local variable b4 : B | provenance |  |
+| extensions.cs:177:13:177:14 | access to local variable b4 : B | extensions.cs:178:43:178:44 | access to local variable b4 : B | provenance |  |
+| extensions.cs:177:18:177:31 | call to method Source<B> : B | extensions.cs:177:13:177:14 | access to local variable b4 : B | provenance |  |
+| extensions.cs:177:18:177:31 | call to method Source<B> : B | extensions.cs:177:13:177:14 | access to local variable b4 : B | provenance |  |
+| extensions.cs:178:43:178:44 | access to local variable b4 : B | extensions.cs:59:48:59:48 | a : B | provenance |  |
+| extensions.cs:178:43:178:44 | access to local variable b4 : B | extensions.cs:59:48:59:48 | a : B | provenance |  |
+| extensions.cs:185:13:185:14 | access to local variable b3 : B | extensions.cs:186:14:186:15 | access to local variable b3 | provenance |  |
+| extensions.cs:185:13:185:14 | access to local variable b3 : B | extensions.cs:186:14:186:15 | access to local variable b3 | provenance |  |
+| extensions.cs:185:18:185:24 | call to operator - : B | extensions.cs:185:13:185:14 | access to local variable b3 : B | provenance |  |
+| extensions.cs:185:18:185:24 | call to operator - : B | extensions.cs:185:13:185:14 | access to local variable b3 : B | provenance |  |
+| extensions.cs:188:13:188:14 | access to local variable b4 : B | extensions.cs:189:14:189:15 | access to local variable b4 | provenance |  |
+| extensions.cs:188:13:188:14 | access to local variable b4 : B | extensions.cs:189:14:189:15 | access to local variable b4 | provenance |  |
+| extensions.cs:188:18:188:52 | call to operator - : B | extensions.cs:188:13:188:14 | access to local variable b4 : B | provenance |  |
+| extensions.cs:188:18:188:52 | call to operator - : B | extensions.cs:188:13:188:14 | access to local variable b4 : B | provenance |  |
+| extensions.cs:194:13:194:14 | access to local variable b1 : B | extensions.cs:195:14:195:15 | access to local variable b1 | provenance |  |
+| extensions.cs:194:13:194:14 | access to local variable b1 : B | extensions.cs:195:14:195:15 | access to local variable b1 | provenance |  |
+| extensions.cs:194:18:194:35 | access to property StaticProp1 : B | extensions.cs:194:13:194:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:194:18:194:35 | access to property StaticProp1 : B | extensions.cs:194:13:194:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:197:13:197:14 | access to local variable b2 : B | extensions.cs:198:14:198:15 | access to local variable b2 | provenance |  |
+| extensions.cs:197:13:197:14 | access to local variable b2 : B | extensions.cs:198:14:198:15 | access to local variable b2 | provenance |  |
+| extensions.cs:197:18:197:47 | call to extension accessor get_StaticProp1 : B | extensions.cs:197:13:197:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:197:18:197:47 | call to extension accessor get_StaticProp1 : B | extensions.cs:197:13:197:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:203:13:203:14 | access to local variable b1 : B | extensions.cs:204:30:204:31 | access to local variable b1 : B | provenance |  |
+| extensions.cs:203:13:203:14 | access to local variable b1 : B | extensions.cs:204:30:204:31 | access to local variable b1 : B | provenance |  |
+| extensions.cs:203:18:203:30 | call to method Source<B> : B | extensions.cs:203:13:203:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:203:18:203:30 | call to method Source<B> : B | extensions.cs:203:13:203:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:204:30:204:31 | access to local variable b1 : B | extensions.cs:38:13:38:15 | value : B | provenance |  |
+| extensions.cs:204:30:204:31 | access to local variable b1 : B | extensions.cs:38:13:38:15 | value : B | provenance |  |
+| extensions.cs:206:13:206:14 | access to local variable b2 : B | extensions.cs:207:38:207:39 | access to local variable b2 : B | provenance |  |
+| extensions.cs:206:13:206:14 | access to local variable b2 : B | extensions.cs:207:38:207:39 | access to local variable b2 : B | provenance |  |
+| extensions.cs:206:18:206:31 | call to method Source<B> : B | extensions.cs:206:13:206:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:206:18:206:31 | call to method Source<B> : B | extensions.cs:206:13:206:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:207:38:207:39 | access to local variable b2 : B | extensions.cs:38:13:38:15 | value : B | provenance |  |
+| extensions.cs:207:38:207:39 | access to local variable b2 : B | extensions.cs:38:13:38:15 | value : B | provenance |  |
+| extensions.cs:212:13:212:14 | access to local variable b1 : B | extensions.cs:213:9:213:10 | access to local variable b1 : B | provenance |  |
+| extensions.cs:212:13:212:14 | access to local variable b1 : B | extensions.cs:213:9:213:10 | access to local variable b1 : B | provenance |  |
+| extensions.cs:212:18:212:30 | call to method Source<B> : B | extensions.cs:212:13:212:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:212:18:212:30 | call to method Source<B> : B | extensions.cs:212:13:212:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:213:9:213:10 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | provenance |  |
+| extensions.cs:213:9:213:10 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | provenance |  |
+| extensions.cs:215:13:215:14 | access to local variable b2 : B | extensions.cs:216:25:216:26 | access to local variable b2 : B | provenance |  |
+| extensions.cs:215:13:215:14 | access to local variable b2 : B | extensions.cs:216:25:216:26 | access to local variable b2 : B | provenance |  |
+| extensions.cs:215:18:215:31 | call to method Source<B> : B | extensions.cs:215:13:215:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:215:18:215:31 | call to method Source<B> : B | extensions.cs:215:13:215:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:216:25:216:26 | access to local variable b2 : B | extensions.cs:76:17:76:17 | b : B | provenance |  |
+| extensions.cs:216:25:216:26 | access to local variable b2 : B | extensions.cs:76:17:76:17 | b : B | provenance |  |
+| extensions.cs:221:13:221:14 | access to local variable b1 : B | extensions.cs:222:9:222:10 | access to local variable b1 : B | provenance |  |
+| extensions.cs:221:13:221:14 | access to local variable b1 : B | extensions.cs:222:9:222:10 | access to local variable b1 : B | provenance |  |
+| extensions.cs:221:18:221:30 | call to method Source<B> : B | extensions.cs:221:13:221:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:221:18:221:30 | call to method Source<B> : B | extensions.cs:221:13:221:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:222:9:222:10 | access to local variable b1 : B | extensions.cs:89:20:89:20 | t : B | provenance |  |
+| extensions.cs:222:9:222:10 | access to local variable b1 : B | extensions.cs:89:20:89:20 | t : B | provenance |  |
+| extensions.cs:224:13:224:14 | access to local variable b2 : B | extensions.cs:225:32:225:33 | access to local variable b2 : B | provenance |  |
+| extensions.cs:224:13:224:14 | access to local variable b2 : B | extensions.cs:225:32:225:33 | access to local variable b2 : B | provenance |  |
+| extensions.cs:224:18:224:31 | call to method Source<B> : B | extensions.cs:224:13:224:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:224:18:224:31 | call to method Source<B> : B | extensions.cs:224:13:224:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:225:32:225:33 | access to local variable b2 : B | extensions.cs:89:20:89:20 | t : B | provenance |  |
+| extensions.cs:225:32:225:33 | access to local variable b2 : B | extensions.cs:89:20:89:20 | t : B | provenance |  |
+| extensions.cs:231:13:231:14 | access to local variable b1 : B | extensions.cs:232:32:232:33 | access to local variable b1 : B | provenance |  |
+| extensions.cs:231:13:231:14 | access to local variable b1 : B | extensions.cs:232:32:232:33 | access to local variable b1 : B | provenance |  |
+| extensions.cs:231:13:231:14 | access to local variable b1 : B | extensions.cs:235:46:235:47 | access to local variable b1 : B | provenance |  |
+| extensions.cs:231:13:231:14 | access to local variable b1 : B | extensions.cs:235:46:235:47 | access to local variable b1 : B | provenance |  |
+| extensions.cs:231:18:231:30 | call to method Source<B> : B | extensions.cs:231:13:231:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:231:18:231:30 | call to method Source<B> : B | extensions.cs:231:13:231:14 | access to local variable b1 : B | provenance |  |
+| extensions.cs:232:13:232:14 | access to local variable b2 : B | extensions.cs:233:14:233:15 | access to local variable b2 | provenance |  |
+| extensions.cs:232:13:232:14 | access to local variable b2 : B | extensions.cs:233:14:233:15 | access to local variable b2 | provenance |  |
+| extensions.cs:232:18:232:34 | call to method GenericM2<B> : B | extensions.cs:232:13:232:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:232:18:232:34 | call to method GenericM2<B> : B | extensions.cs:232:13:232:14 | access to local variable b2 : B | provenance |  |
+| extensions.cs:232:32:232:33 | access to local variable b1 : B | extensions.cs:96:33:96:37 | other : B | provenance |  |
+| extensions.cs:232:32:232:33 | access to local variable b1 : B | extensions.cs:96:33:96:37 | other : B | provenance |  |
+| extensions.cs:232:32:232:33 | access to local variable b1 : B | extensions.cs:232:18:232:34 | call to method GenericM2<B> : B | provenance |  |
+| extensions.cs:232:32:232:33 | access to local variable b1 : B | extensions.cs:232:18:232:34 | call to method GenericM2<B> : B | provenance |  |
+| extensions.cs:235:13:235:14 | access to local variable b3 : B | extensions.cs:236:14:236:15 | access to local variable b3 | provenance |  |
+| extensions.cs:235:13:235:14 | access to local variable b3 : B | extensions.cs:236:14:236:15 | access to local variable b3 | provenance |  |
+| extensions.cs:235:18:235:48 | call to method GenericM2<B> : B | extensions.cs:235:13:235:14 | access to local variable b3 : B | provenance |  |
+| extensions.cs:235:18:235:48 | call to method GenericM2<B> : B | extensions.cs:235:13:235:14 | access to local variable b3 : B | provenance |  |
+| extensions.cs:235:46:235:47 | access to local variable b1 : B | extensions.cs:96:33:96:37 | other : B | provenance |  |
+| extensions.cs:235:46:235:47 | access to local variable b1 : B | extensions.cs:96:33:96:37 | other : B | provenance |  |
+| extensions.cs:235:46:235:47 | access to local variable b1 : B | extensions.cs:235:18:235:48 | call to method GenericM2<B> : B | provenance |  |
+| extensions.cs:235:46:235:47 | access to local variable b1 : B | extensions.cs:235:18:235:48 | call to method GenericM2<B> : B | provenance |  |
+nodes
+| extensions.cs:5:22:5:24 | obj : B | semmle.label | obj : B |
+| extensions.cs:5:22:5:24 | obj : B | semmle.label | obj : B |
+| extensions.cs:5:22:5:24 | obj : B | semmle.label | obj : B |
+| extensions.cs:5:22:5:24 | obj : B | semmle.label | obj : B |
+| extensions.cs:5:22:5:24 | obj : B | semmle.label | obj : B |
+| extensions.cs:5:22:5:24 | obj : B | semmle.label | obj : B |
+| extensions.cs:11:24:11:37 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:11:24:11:37 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:13:13:13:15 | value : B | semmle.label | value : B |
+| extensions.cs:13:13:13:15 | value : B | semmle.label | value : B |
+| extensions.cs:15:24:15:28 | access to parameter value | semmle.label | access to parameter value |
+| extensions.cs:15:24:15:28 | access to parameter value | semmle.label | access to parameter value |
+| extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | semmle.label | access to extension synthetic parameter obj |
+| extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | semmle.label | access to extension synthetic parameter obj |
+| extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | semmle.label | access to extension synthetic parameter obj |
+| extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | semmle.label | access to extension synthetic parameter obj |
+| extensions.cs:36:24:36:38 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:36:24:36:38 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:38:13:38:15 | value : B | semmle.label | value : B |
+| extensions.cs:38:13:38:15 | value : B | semmle.label | value : B |
+| extensions.cs:40:24:40:28 | access to parameter value | semmle.label | access to parameter value |
+| extensions.cs:40:24:40:28 | access to parameter value | semmle.label | access to parameter value |
+| extensions.cs:46:20:46:33 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:46:20:46:33 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | semmle.label | access to extension synthetic parameter obj |
+| extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | semmle.label | access to extension synthetic parameter obj |
+| extensions.cs:59:48:59:48 | a : B | semmle.label | a : B |
+| extensions.cs:59:48:59:48 | a : B | semmle.label | a : B |
+| extensions.cs:61:20:61:20 | access to parameter a | semmle.label | access to parameter a |
+| extensions.cs:61:20:61:20 | access to parameter a | semmle.label | access to parameter a |
+| extensions.cs:67:20:67:33 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:67:20:67:33 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:76:17:76:17 | b : B | semmle.label | b : B |
+| extensions.cs:76:17:76:17 | b : B | semmle.label | b : B |
+| extensions.cs:76:17:76:17 | b : B | semmle.label | b : B |
+| extensions.cs:76:17:76:17 | b : B | semmle.label | b : B |
+| extensions.cs:80:20:80:20 | access to extension synthetic parameter b : B | semmle.label | access to extension synthetic parameter b : B |
+| extensions.cs:80:20:80:20 | access to extension synthetic parameter b : B | semmle.label | access to extension synthetic parameter b : B |
+| extensions.cs:85:20:85:20 | access to extension synthetic parameter b | semmle.label | access to extension synthetic parameter b |
+| extensions.cs:85:20:85:20 | access to extension synthetic parameter b | semmle.label | access to extension synthetic parameter b |
+| extensions.cs:89:20:89:20 | t : B | semmle.label | t : B |
+| extensions.cs:89:20:89:20 | t : B | semmle.label | t : B |
+| extensions.cs:93:20:93:20 | access to extension synthetic parameter t | semmle.label | access to extension synthetic parameter t |
+| extensions.cs:93:20:93:20 | access to extension synthetic parameter t | semmle.label | access to extension synthetic parameter t |
+| extensions.cs:96:33:96:37 | other : B | semmle.label | other : B |
+| extensions.cs:96:33:96:37 | other : B | semmle.label | other : B |
+| extensions.cs:98:20:98:24 | access to parameter other : B | semmle.label | access to parameter other : B |
+| extensions.cs:98:20:98:24 | access to parameter other : B | semmle.label | access to parameter other : B |
+| extensions.cs:108:13:108:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:108:13:108:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:108:18:108:26 | access to property Prop1 : B | semmle.label | access to property Prop1 : B |
+| extensions.cs:108:18:108:26 | access to property Prop1 : B | semmle.label | access to property Prop1 : B |
+| extensions.cs:109:14:109:15 | access to local variable b1 | semmle.label | access to local variable b1 |
+| extensions.cs:109:14:109:15 | access to local variable b1 | semmle.label | access to local variable b1 |
+| extensions.cs:111:13:111:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:111:13:111:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:111:18:111:44 | call to extension accessor get_Prop1 : B | semmle.label | call to extension accessor get_Prop1 : B |
+| extensions.cs:111:18:111:44 | call to extension accessor get_Prop1 : B | semmle.label | call to extension accessor get_Prop1 : B |
+| extensions.cs:112:14:112:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:112:14:112:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:118:21:118:32 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:118:21:118:32 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:120:13:120:13 | access to local variable b : B | semmle.label | access to local variable b : B |
+| extensions.cs:120:13:120:13 | access to local variable b : B | semmle.label | access to local variable b : B |
+| extensions.cs:120:17:120:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:120:17:120:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:121:37:121:37 | access to local variable b : B | semmle.label | access to local variable b : B |
+| extensions.cs:121:37:121:37 | access to local variable b : B | semmle.label | access to local variable b : B |
+| extensions.cs:127:13:127:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:127:13:127:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:127:18:127:25 | call to method M1 : B | semmle.label | call to method M1 : B |
+| extensions.cs:127:18:127:25 | call to method M1 : B | semmle.label | call to method M1 : B |
+| extensions.cs:128:14:128:15 | access to local variable b1 | semmle.label | access to local variable b1 |
+| extensions.cs:128:14:128:15 | access to local variable b1 | semmle.label | access to local variable b1 |
+| extensions.cs:130:13:130:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:130:13:130:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:130:18:130:37 | call to method M1 : B | semmle.label | call to method M1 : B |
+| extensions.cs:130:18:130:37 | call to method M1 : B | semmle.label | call to method M1 : B |
+| extensions.cs:131:14:131:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:131:14:131:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:136:13:136:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:136:13:136:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:136:18:136:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:136:18:136:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:137:9:137:10 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:137:9:137:10 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:139:13:139:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:139:13:139:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:139:18:139:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:139:18:139:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:140:25:140:26 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:140:25:140:26 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:145:13:145:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:145:13:145:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:145:18:145:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:145:18:145:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:146:13:146:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:146:13:146:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:146:18:146:19 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:146:18:146:19 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:146:18:146:24 | call to method B1 : B | semmle.label | call to method B1 : B |
+| extensions.cs:146:18:146:24 | call to method B1 : B | semmle.label | call to method B1 : B |
+| extensions.cs:147:14:147:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:147:14:147:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:149:13:149:14 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:149:13:149:14 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:149:18:149:36 | call to method B1 : B | semmle.label | call to method B1 : B |
+| extensions.cs:149:18:149:36 | call to method B1 : B | semmle.label | call to method B1 : B |
+| extensions.cs:149:34:149:35 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:149:34:149:35 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:150:14:150:15 | access to local variable b3 | semmle.label | access to local variable b3 |
+| extensions.cs:150:14:150:15 | access to local variable b3 | semmle.label | access to local variable b3 |
+| extensions.cs:155:13:155:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:155:13:155:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:155:18:155:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:155:18:155:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:156:18:156:19 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:156:18:156:19 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:158:13:158:14 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:158:13:158:14 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:158:18:158:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:158:18:158:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:159:41:159:42 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:159:41:159:42 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:164:13:164:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:164:13:164:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:164:18:164:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:164:18:164:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:165:9:165:10 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:165:9:165:10 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:167:13:167:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:167:13:167:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:167:18:167:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:167:18:167:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:168:32:168:33 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:168:32:168:33 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:173:13:173:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:173:13:173:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:173:18:173:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:173:18:173:29 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:175:18:175:19 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:175:18:175:19 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:177:13:177:14 | access to local variable b4 : B | semmle.label | access to local variable b4 : B |
+| extensions.cs:177:13:177:14 | access to local variable b4 : B | semmle.label | access to local variable b4 : B |
+| extensions.cs:177:18:177:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:177:18:177:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:178:43:178:44 | access to local variable b4 : B | semmle.label | access to local variable b4 : B |
+| extensions.cs:178:43:178:44 | access to local variable b4 : B | semmle.label | access to local variable b4 : B |
+| extensions.cs:185:13:185:14 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:185:13:185:14 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:185:18:185:24 | call to operator - : B | semmle.label | call to operator - : B |
+| extensions.cs:185:18:185:24 | call to operator - : B | semmle.label | call to operator - : B |
+| extensions.cs:186:14:186:15 | access to local variable b3 | semmle.label | access to local variable b3 |
+| extensions.cs:186:14:186:15 | access to local variable b3 | semmle.label | access to local variable b3 |
+| extensions.cs:188:13:188:14 | access to local variable b4 : B | semmle.label | access to local variable b4 : B |
+| extensions.cs:188:13:188:14 | access to local variable b4 : B | semmle.label | access to local variable b4 : B |
+| extensions.cs:188:18:188:52 | call to operator - : B | semmle.label | call to operator - : B |
+| extensions.cs:188:18:188:52 | call to operator - : B | semmle.label | call to operator - : B |
+| extensions.cs:189:14:189:15 | access to local variable b4 | semmle.label | access to local variable b4 |
+| extensions.cs:189:14:189:15 | access to local variable b4 | semmle.label | access to local variable b4 |
+| extensions.cs:194:13:194:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:194:13:194:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:194:18:194:35 | access to property StaticProp1 : B | semmle.label | access to property StaticProp1 : B |
+| extensions.cs:194:18:194:35 | access to property StaticProp1 : B | semmle.label | access to property StaticProp1 : B |
+| extensions.cs:195:14:195:15 | access to local variable b1 | semmle.label | access to local variable b1 |
+| extensions.cs:195:14:195:15 | access to local variable b1 | semmle.label | access to local variable b1 |
+| extensions.cs:197:13:197:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:197:13:197:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:197:18:197:47 | call to extension accessor get_StaticProp1 : B | semmle.label | call to extension accessor get_StaticProp1 : B |
+| extensions.cs:197:18:197:47 | call to extension accessor get_StaticProp1 : B | semmle.label | call to extension accessor get_StaticProp1 : B |
+| extensions.cs:198:14:198:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:198:14:198:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:203:13:203:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:203:13:203:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:203:18:203:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:203:18:203:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:204:30:204:31 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:204:30:204:31 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:206:13:206:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:206:13:206:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:206:18:206:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:206:18:206:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:207:38:207:39 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:207:38:207:39 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:212:13:212:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:212:13:212:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:212:18:212:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:212:18:212:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:213:9:213:10 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:213:9:213:10 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:215:13:215:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:215:13:215:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:215:18:215:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:215:18:215:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:216:25:216:26 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:216:25:216:26 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:221:13:221:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:221:13:221:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:221:18:221:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:221:18:221:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:222:9:222:10 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:222:9:222:10 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:224:13:224:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:224:13:224:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:224:18:224:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:224:18:224:31 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:225:32:225:33 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:225:32:225:33 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:231:13:231:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:231:13:231:14 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:231:18:231:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:231:18:231:30 | call to method Source<B> : B | semmle.label | call to method Source<B> : B |
+| extensions.cs:232:13:232:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:232:13:232:14 | access to local variable b2 : B | semmle.label | access to local variable b2 : B |
+| extensions.cs:232:18:232:34 | call to method GenericM2<B> : B | semmle.label | call to method GenericM2<B> : B |
+| extensions.cs:232:18:232:34 | call to method GenericM2<B> : B | semmle.label | call to method GenericM2<B> : B |
+| extensions.cs:232:32:232:33 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:232:32:232:33 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:233:14:233:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:233:14:233:15 | access to local variable b2 | semmle.label | access to local variable b2 |
+| extensions.cs:235:13:235:14 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:235:13:235:14 | access to local variable b3 : B | semmle.label | access to local variable b3 : B |
+| extensions.cs:235:18:235:48 | call to method GenericM2<B> : B | semmle.label | call to method GenericM2<B> : B |
+| extensions.cs:235:18:235:48 | call to method GenericM2<B> : B | semmle.label | call to method GenericM2<B> : B |
+| extensions.cs:235:46:235:47 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:235:46:235:47 | access to local variable b1 : B | semmle.label | access to local variable b1 : B |
+| extensions.cs:236:14:236:15 | access to local variable b3 | semmle.label | access to local variable b3 |
+| extensions.cs:236:14:236:15 | access to local variable b3 | semmle.label | access to local variable b3 |
+subpaths
+| extensions.cs:146:18:146:19 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | extensions.cs:80:20:80:20 | access to extension synthetic parameter b : B | extensions.cs:146:18:146:24 | call to method B1 : B |
+| extensions.cs:146:18:146:19 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | extensions.cs:80:20:80:20 | access to extension synthetic parameter b : B | extensions.cs:146:18:146:24 | call to method B1 : B |
+| extensions.cs:149:34:149:35 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | extensions.cs:80:20:80:20 | access to extension synthetic parameter b : B | extensions.cs:149:18:149:36 | call to method B1 : B |
+| extensions.cs:149:34:149:35 | access to local variable b1 : B | extensions.cs:76:17:76:17 | b : B | extensions.cs:80:20:80:20 | access to extension synthetic parameter b : B | extensions.cs:149:18:149:36 | call to method B1 : B |
+| extensions.cs:232:32:232:33 | access to local variable b1 : B | extensions.cs:96:33:96:37 | other : B | extensions.cs:98:20:98:24 | access to parameter other : B | extensions.cs:232:18:232:34 | call to method GenericM2<B> : B |
+| extensions.cs:232:32:232:33 | access to local variable b1 : B | extensions.cs:96:33:96:37 | other : B | extensions.cs:98:20:98:24 | access to parameter other : B | extensions.cs:232:18:232:34 | call to method GenericM2<B> : B |
+| extensions.cs:235:46:235:47 | access to local variable b1 : B | extensions.cs:96:33:96:37 | other : B | extensions.cs:98:20:98:24 | access to parameter other : B | extensions.cs:235:18:235:48 | call to method GenericM2<B> : B |
+| extensions.cs:235:46:235:47 | access to local variable b1 : B | extensions.cs:96:33:96:37 | other : B | extensions.cs:98:20:98:24 | access to parameter other : B | extensions.cs:235:18:235:48 | call to method GenericM2<B> : B |
+testFailures
+#select
+| extensions.cs:15:24:15:28 | access to parameter value | extensions.cs:118:21:118:32 | call to method Source<B> : B | extensions.cs:15:24:15:28 | access to parameter value | $@ | extensions.cs:118:21:118:32 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:15:24:15:28 | access to parameter value | extensions.cs:118:21:118:32 | call to method Source<B> : B | extensions.cs:15:24:15:28 | access to parameter value | $@ | extensions.cs:118:21:118:32 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:15:24:15:28 | access to parameter value | extensions.cs:120:17:120:30 | call to method Source<B> : B | extensions.cs:15:24:15:28 | access to parameter value | $@ | extensions.cs:120:17:120:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:15:24:15:28 | access to parameter value | extensions.cs:120:17:120:30 | call to method Source<B> : B | extensions.cs:15:24:15:28 | access to parameter value | $@ | extensions.cs:120:17:120:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | extensions.cs:155:18:155:29 | call to method Source<B> : B | extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | $@ | extensions.cs:155:18:155:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | extensions.cs:155:18:155:29 | call to method Source<B> : B | extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | $@ | extensions.cs:155:18:155:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | extensions.cs:158:18:158:31 | call to method Source<B> : B | extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | $@ | extensions.cs:158:18:158:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | extensions.cs:158:18:158:31 | call to method Source<B> : B | extensions.cs:23:24:23:26 | access to extension synthetic parameter obj | $@ | extensions.cs:158:18:158:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | extensions.cs:164:18:164:29 | call to method Source<B> : B | extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | $@ | extensions.cs:164:18:164:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | extensions.cs:164:18:164:29 | call to method Source<B> : B | extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | $@ | extensions.cs:164:18:164:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | extensions.cs:167:18:167:31 | call to method Source<B> : B | extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | $@ | extensions.cs:167:18:167:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | extensions.cs:167:18:167:31 | call to method Source<B> : B | extensions.cs:28:24:28:26 | access to extension synthetic parameter obj | $@ | extensions.cs:167:18:167:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:40:24:40:28 | access to parameter value | extensions.cs:203:18:203:30 | call to method Source<B> : B | extensions.cs:40:24:40:28 | access to parameter value | $@ | extensions.cs:203:18:203:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:40:24:40:28 | access to parameter value | extensions.cs:203:18:203:30 | call to method Source<B> : B | extensions.cs:40:24:40:28 | access to parameter value | $@ | extensions.cs:203:18:203:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:40:24:40:28 | access to parameter value | extensions.cs:206:18:206:31 | call to method Source<B> : B | extensions.cs:40:24:40:28 | access to parameter value | $@ | extensions.cs:206:18:206:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:40:24:40:28 | access to parameter value | extensions.cs:206:18:206:31 | call to method Source<B> : B | extensions.cs:40:24:40:28 | access to parameter value | $@ | extensions.cs:206:18:206:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | extensions.cs:136:18:136:29 | call to method Source<B> : B | extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | $@ | extensions.cs:136:18:136:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | extensions.cs:136:18:136:29 | call to method Source<B> : B | extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | $@ | extensions.cs:136:18:136:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | extensions.cs:139:18:139:31 | call to method Source<B> : B | extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | $@ | extensions.cs:139:18:139:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | extensions.cs:139:18:139:31 | call to method Source<B> : B | extensions.cs:51:20:51:22 | access to extension synthetic parameter obj | $@ | extensions.cs:139:18:139:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:61:20:61:20 | access to parameter a | extensions.cs:173:18:173:29 | call to method Source<B> : B | extensions.cs:61:20:61:20 | access to parameter a | $@ | extensions.cs:173:18:173:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:61:20:61:20 | access to parameter a | extensions.cs:173:18:173:29 | call to method Source<B> : B | extensions.cs:61:20:61:20 | access to parameter a | $@ | extensions.cs:173:18:173:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:61:20:61:20 | access to parameter a | extensions.cs:177:18:177:31 | call to method Source<B> : B | extensions.cs:61:20:61:20 | access to parameter a | $@ | extensions.cs:177:18:177:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:61:20:61:20 | access to parameter a | extensions.cs:177:18:177:31 | call to method Source<B> : B | extensions.cs:61:20:61:20 | access to parameter a | $@ | extensions.cs:177:18:177:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:85:20:85:20 | access to extension synthetic parameter b | extensions.cs:212:18:212:30 | call to method Source<B> : B | extensions.cs:85:20:85:20 | access to extension synthetic parameter b | $@ | extensions.cs:212:18:212:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:85:20:85:20 | access to extension synthetic parameter b | extensions.cs:212:18:212:30 | call to method Source<B> : B | extensions.cs:85:20:85:20 | access to extension synthetic parameter b | $@ | extensions.cs:212:18:212:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:85:20:85:20 | access to extension synthetic parameter b | extensions.cs:215:18:215:31 | call to method Source<B> : B | extensions.cs:85:20:85:20 | access to extension synthetic parameter b | $@ | extensions.cs:215:18:215:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:85:20:85:20 | access to extension synthetic parameter b | extensions.cs:215:18:215:31 | call to method Source<B> : B | extensions.cs:85:20:85:20 | access to extension synthetic parameter b | $@ | extensions.cs:215:18:215:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:93:20:93:20 | access to extension synthetic parameter t | extensions.cs:221:18:221:30 | call to method Source<B> : B | extensions.cs:93:20:93:20 | access to extension synthetic parameter t | $@ | extensions.cs:221:18:221:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:93:20:93:20 | access to extension synthetic parameter t | extensions.cs:221:18:221:30 | call to method Source<B> : B | extensions.cs:93:20:93:20 | access to extension synthetic parameter t | $@ | extensions.cs:221:18:221:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:93:20:93:20 | access to extension synthetic parameter t | extensions.cs:224:18:224:31 | call to method Source<B> : B | extensions.cs:93:20:93:20 | access to extension synthetic parameter t | $@ | extensions.cs:224:18:224:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:93:20:93:20 | access to extension synthetic parameter t | extensions.cs:224:18:224:31 | call to method Source<B> : B | extensions.cs:93:20:93:20 | access to extension synthetic parameter t | $@ | extensions.cs:224:18:224:31 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:109:14:109:15 | access to local variable b1 | extensions.cs:11:24:11:37 | call to method Source<B> : B | extensions.cs:109:14:109:15 | access to local variable b1 | $@ | extensions.cs:11:24:11:37 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:109:14:109:15 | access to local variable b1 | extensions.cs:11:24:11:37 | call to method Source<B> : B | extensions.cs:109:14:109:15 | access to local variable b1 | $@ | extensions.cs:11:24:11:37 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:112:14:112:15 | access to local variable b2 | extensions.cs:11:24:11:37 | call to method Source<B> : B | extensions.cs:112:14:112:15 | access to local variable b2 | $@ | extensions.cs:11:24:11:37 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:112:14:112:15 | access to local variable b2 | extensions.cs:11:24:11:37 | call to method Source<B> : B | extensions.cs:112:14:112:15 | access to local variable b2 | $@ | extensions.cs:11:24:11:37 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:128:14:128:15 | access to local variable b1 | extensions.cs:46:20:46:33 | call to method Source<B> : B | extensions.cs:128:14:128:15 | access to local variable b1 | $@ | extensions.cs:46:20:46:33 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:128:14:128:15 | access to local variable b1 | extensions.cs:46:20:46:33 | call to method Source<B> : B | extensions.cs:128:14:128:15 | access to local variable b1 | $@ | extensions.cs:46:20:46:33 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:131:14:131:15 | access to local variable b2 | extensions.cs:46:20:46:33 | call to method Source<B> : B | extensions.cs:131:14:131:15 | access to local variable b2 | $@ | extensions.cs:46:20:46:33 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:131:14:131:15 | access to local variable b2 | extensions.cs:46:20:46:33 | call to method Source<B> : B | extensions.cs:131:14:131:15 | access to local variable b2 | $@ | extensions.cs:46:20:46:33 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:147:14:147:15 | access to local variable b2 | extensions.cs:145:18:145:29 | call to method Source<B> : B | extensions.cs:147:14:147:15 | access to local variable b2 | $@ | extensions.cs:145:18:145:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:147:14:147:15 | access to local variable b2 | extensions.cs:145:18:145:29 | call to method Source<B> : B | extensions.cs:147:14:147:15 | access to local variable b2 | $@ | extensions.cs:145:18:145:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:150:14:150:15 | access to local variable b3 | extensions.cs:145:18:145:29 | call to method Source<B> : B | extensions.cs:150:14:150:15 | access to local variable b3 | $@ | extensions.cs:145:18:145:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:150:14:150:15 | access to local variable b3 | extensions.cs:145:18:145:29 | call to method Source<B> : B | extensions.cs:150:14:150:15 | access to local variable b3 | $@ | extensions.cs:145:18:145:29 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:186:14:186:15 | access to local variable b3 | extensions.cs:67:20:67:33 | call to method Source<B> : B | extensions.cs:186:14:186:15 | access to local variable b3 | $@ | extensions.cs:67:20:67:33 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:186:14:186:15 | access to local variable b3 | extensions.cs:67:20:67:33 | call to method Source<B> : B | extensions.cs:186:14:186:15 | access to local variable b3 | $@ | extensions.cs:67:20:67:33 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:189:14:189:15 | access to local variable b4 | extensions.cs:67:20:67:33 | call to method Source<B> : B | extensions.cs:189:14:189:15 | access to local variable b4 | $@ | extensions.cs:67:20:67:33 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:189:14:189:15 | access to local variable b4 | extensions.cs:67:20:67:33 | call to method Source<B> : B | extensions.cs:189:14:189:15 | access to local variable b4 | $@ | extensions.cs:67:20:67:33 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:195:14:195:15 | access to local variable b1 | extensions.cs:36:24:36:38 | call to method Source<B> : B | extensions.cs:195:14:195:15 | access to local variable b1 | $@ | extensions.cs:36:24:36:38 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:195:14:195:15 | access to local variable b1 | extensions.cs:36:24:36:38 | call to method Source<B> : B | extensions.cs:195:14:195:15 | access to local variable b1 | $@ | extensions.cs:36:24:36:38 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:198:14:198:15 | access to local variable b2 | extensions.cs:36:24:36:38 | call to method Source<B> : B | extensions.cs:198:14:198:15 | access to local variable b2 | $@ | extensions.cs:36:24:36:38 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:198:14:198:15 | access to local variable b2 | extensions.cs:36:24:36:38 | call to method Source<B> : B | extensions.cs:198:14:198:15 | access to local variable b2 | $@ | extensions.cs:36:24:36:38 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:233:14:233:15 | access to local variable b2 | extensions.cs:231:18:231:30 | call to method Source<B> : B | extensions.cs:233:14:233:15 | access to local variable b2 | $@ | extensions.cs:231:18:231:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:233:14:233:15 | access to local variable b2 | extensions.cs:231:18:231:30 | call to method Source<B> : B | extensions.cs:233:14:233:15 | access to local variable b2 | $@ | extensions.cs:231:18:231:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:236:14:236:15 | access to local variable b3 | extensions.cs:231:18:231:30 | call to method Source<B> : B | extensions.cs:236:14:236:15 | access to local variable b3 | $@ | extensions.cs:231:18:231:30 | call to method Source<B> : B | call to method Source<B> : B |
+| extensions.cs:236:14:236:15 | access to local variable b3 | extensions.cs:231:18:231:30 | call to method Source<B> : B | extensions.cs:236:14:236:15 | access to local variable b3 | $@ | extensions.cs:231:18:231:30 | call to method Source<B> : B | call to method Source<B> : B |

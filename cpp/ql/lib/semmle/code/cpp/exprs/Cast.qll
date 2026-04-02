@@ -750,6 +750,16 @@ class SizeofPackTypeOperator extends SizeofPackOperator {
  */
 class SizeofOperator extends Expr, @runtime_sizeof {
   override int getPrecedence() { result = 16 }
+
+  /**
+   * Gets the contained type of this `sizeof`. For example,
+   * the result is `int` in both cases below:
+   * ```
+   * sizeof(int);
+   * sizeof(42);
+   * ```
+   */
+  Type getTypeOperand() { none() } // overridden in subclasses
 }
 
 /**
@@ -765,6 +775,8 @@ class SizeofExprOperator extends SizeofOperator {
 
   /** Gets the contained expression. */
   Expr getExprOperand() { result = this.getChild(0) }
+
+  override Type getTypeOperand() { result = this.getExprOperand().getType() }
 
   override string toString() { result = "sizeof(<expr>)" }
 
@@ -784,8 +796,7 @@ class SizeofTypeOperator extends SizeofOperator {
 
   override string getAPrimaryQlClass() { result = "SizeofTypeOperator" }
 
-  /** Gets the contained type. */
-  Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
+  override Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
 
   override string toString() { result = "sizeof(" + this.getTypeOperand().getName() + ")" }
 
@@ -842,6 +853,16 @@ class AlignofTypeOperator extends AlignofOperator {
  */
 class DatasizeofOperator extends Expr, @datasizeof {
   override int getPrecedence() { result = 16 }
+
+  /**
+   * Gets the contained type of this `__datasizeof`. For example,
+   * the result is `int` in both cases below:
+   * ```
+   * __datasizeof(int);
+   * __datasizeof(42);
+   * ```
+   */
+  Type getTypeOperand() { none() }
 }
 
 /**
@@ -854,6 +875,8 @@ class DatasizeofExprOperator extends DatasizeofOperator {
 
   /** Gets the contained expression. */
   Expr getExprOperand() { result = this.getChild(0) }
+
+  override Type getTypeOperand() { result = this.getExprOperand().getType() }
 
   override string toString() { result = "__datasizeof(<expr>)" }
 
@@ -870,8 +893,7 @@ class DatasizeofTypeOperator extends DatasizeofOperator {
 
   override string getAPrimaryQlClass() { result = "DatasizeofTypeOperator" }
 
-  /** Gets the contained type. */
-  Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
+  override Type getTypeOperand() { sizeof_bind(underlyingElement(this), unresolveElement(result)) }
 
   override string toString() { result = "__datasizeof(" + this.getTypeOperand().getName() + ")" }
 

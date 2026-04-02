@@ -102,7 +102,7 @@ attributes.cs:
 #   45|           0: [TypeMention] AttributeTargets
 #-----|   3: (Base types)
 #   46|     0: [TypeMention] Attribute
-#   49|   5: [Method] foo
+#   49|   6: [Method] foo
 #   49|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   48|       1: [DefaultAttribute] [Conditional(...)]
@@ -110,7 +110,7 @@ attributes.cs:
 #   48|         0: [StringLiteralUtf16] "DEBUG2"
 #   49|     4: [BlockStmt] {...}
 #   52| [Class] Bar
-#   54|   5: [Method] inc
+#   54|   6: [Method] inc
 #   54|     -1: [TypeMention] int
 #-----|     2: (Parameters)
 #   54|       0: [Parameter] x
@@ -123,14 +123,14 @@ attributes.cs:
 #   54|         0: [AddExpr] ... + ...
 #   54|           0: [ParameterAccess] access to parameter x
 #   54|           1: [IntLiteral] 1
-#   57|   6: [Method] M1
+#   57|   7: [Method] M1
 #   57|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   56|       1: [DefaultAttribute] [My(...)]
 #   56|         -1: [TypeMention] MyAttribute
 #   56|         0: [BoolLiteral] false
 #   57|     4: [BlockStmt] {...}
-#   61|   7: [Method] M2
+#   61|   8: [Method] M2
 #   61|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #   59|       1: [DefaultAttribute] [My(...)]
@@ -148,15 +148,15 @@ attributes.cs:
 #   64| [Class] MyAttribute
 #-----|   3: (Base types)
 #   64|     0: [TypeMention] Attribute
-#   66|   4: [Field] x
+#   66|   5: [Field] x
 #   66|     -1: [TypeMention] int
-#   67|   5: [Property] y
+#   67|   6: [Property] y
 #   67|     -1: [TypeMention] string
 #   67|     3: [Getter] get_y
 #   67|     4: [Setter] set_y
 #-----|       2: (Parameters)
 #   67|         0: [Parameter] value
-#   68|   6: [InstanceConstructor] MyAttribute
+#   68|   7: [InstanceConstructor] MyAttribute
 #-----|     2: (Parameters)
 #   68|       0: [Parameter] b
 #   68|         -1: [TypeMention] bool
@@ -167,14 +167,14 @@ attributes.cs:
 #   73| [Class] ArgsAttribute
 #-----|   3: (Base types)
 #   73|     0: [TypeMention] Attribute
-#   75|   4: [Property] Prop
+#   75|   5: [Property] Prop
 #   75|     -1: [TypeMention] Object[]
 #   75|       1: [TypeMention] object
 #   75|     3: [Getter] get_Prop
 #   75|     4: [Setter] set_Prop
 #-----|       2: (Parameters)
 #   75|         0: [Parameter] value
-#   76|   5: [InstanceConstructor] ArgsAttribute
+#   76|   6: [InstanceConstructor] ArgsAttribute
 #-----|     2: (Parameters)
 #   76|       0: [Parameter] i
 #   76|         -1: [TypeMention] int
@@ -216,7 +216,7 @@ attributes.cs:
 #   79|           1: [TypeofExpr] typeof(...)
 #   79|             0: [TypeAccess] access to type Int32
 #   79|               0: [TypeMention] int
-#   84|   5: [Method] SomeMethod
+#   84|   6: [Method] SomeMethod
 #   84|     -1: [TypeMention] int
 #-----|     0: (Attributes)
 #   82|       1: [DefaultAttribute] [Args(...)]
@@ -279,13 +279,13 @@ attributes.cs:
 #   87| [Class] My2Attribute
 #-----|   3: (Base types)
 #   87|     0: [TypeMention] Attribute
-#   89|   4: [Property] X
+#   89|   5: [Property] X
 #   89|     -1: [TypeMention] int
 #   89|     3: [Getter] get_X
 #   89|     4: [Setter] set_X
 #-----|       2: (Parameters)
 #   89|         0: [Parameter] value
-#   90|   5: [InstanceConstructor] My2Attribute
+#   90|   6: [InstanceConstructor] My2Attribute
 #-----|     2: (Parameters)
 #   90|       0: [Parameter] a
 #   90|         -1: [TypeMention] bool
@@ -301,7 +301,7 @@ attributes.cs:
 #   93| [Class] My3Attribute
 #-----|   3: (Base types)
 #   93|     0: [TypeMention] Attribute
-#   95|   4: [InstanceConstructor] My3Attribute
+#   95|   5: [InstanceConstructor] My3Attribute
 #-----|     2: (Parameters)
 #   95|       0: [Parameter] x
 #   95|         -1: [TypeMention] int
@@ -323,7 +323,7 @@ attributes.cs:
 #  104|     0: [Parameter] message
 #  104|       -1: [TypeMention] string
 #  106| [Class] MyAttributeUsage
-#  110|   5: [AddOperator] +
+#  110|   6: [AddOperator] +
 #  110|     -1: [TypeMention] int
 #-----|     0: (Attributes)
 #  108|       1: [DefaultAttribute] [My3(...)]
@@ -338,7 +338,7 @@ attributes.cs:
 #  110|       1: [Parameter] b
 #  110|         -1: [TypeMention] MyAttributeUsage
 #  110|     4: [IntLiteral] 0
-#  113|   6: [Indexer] Item
+#  113|   7: [Indexer] Item
 #  113|     -1: [TypeMention] int
 #-----|     0: (Attributes)
 #  112|       1: [DefaultAttribute] [My3(...)]
@@ -376,9 +376,9 @@ attributes.cs:
 #  120|               0: [IntLiteral] 10
 #  121|       4: [BlockStmt] {...}
 #  121|         0: [ReturnStmt] return ...;
-#  124|   7: [Field] p
+#  124|   8: [Field] p
 #  124|     -1: [TypeMention] int
-#  126|   8: [Property] Prop1
+#  126|   9: [Property] Prop1
 #  126|     -1: [TypeMention] int
 #-----|     0: (Attributes)
 #  125|       1: [DefaultAttribute] [My3(...)]
@@ -412,10 +412,10 @@ attributes.cs:
 #  134|             0: [FieldAccess] access to field p
 #  134|             1: [ParameterAccess] access to parameter value
 #  138| [Class] Class1
-#  140|   5: [Class] ParamsAttribute
+#  140|   6: [Class] ParamsAttribute
 #-----|     3: (Base types)
 #  140|       0: [TypeMention] Attribute
-#  142|     4: [InstanceConstructor] ParamsAttribute
+#  142|     5: [InstanceConstructor] ParamsAttribute
 #-----|       2: (Parameters)
 #  142|         0: [Parameter] s1
 #  142|           -1: [TypeMention] string
@@ -425,7 +425,7 @@ attributes.cs:
 #  142|           -1: [TypeMention] Int32[]
 #  142|             1: [TypeMention] int
 #  142|       4: [BlockStmt] {...}
-#  146|   6: [Method] M1
+#  146|   7: [Method] M1
 #  146|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #  145|       1: [DefaultAttribute] [Params(...)]
@@ -436,7 +436,7 @@ attributes.cs:
 #  145|         3: [IntLiteral] 2
 #  145|         4: [IntLiteral] 3
 #  146|     4: [BlockStmt] {...}
-#  149|   7: [Method] M2
+#  149|   8: [Method] M2
 #  149|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #  148|       1: [DefaultAttribute] [Params(...)]
@@ -447,7 +447,7 @@ attributes.cs:
 #  148|         3: [IntLiteral] 2
 #  148|         4: [IntLiteral] 3
 #  149|     4: [BlockStmt] {...}
-#  152|   8: [Method] M3
+#  152|   9: [Method] M3
 #  152|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #  151|       1: [DefaultAttribute] [Params(...)]
@@ -456,7 +456,7 @@ attributes.cs:
 #  151|         1: [StringLiteralUtf16] "b"
 #  151|         2: [IntLiteral] 1
 #  152|     4: [BlockStmt] {...}
-#  155|   9: [Method] M4
+#  155|   10: [Method] M4
 #  155|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #  154|       1: [DefaultAttribute] [Params(...)]
@@ -472,7 +472,7 @@ attributes.cs:
 #  158|     1: [DefaultAttribute] [Experimental(...)]
 #  158|       -1: [TypeMention] ExperimentalAttribute
 #  158|       0: [StringLiteralUtf16] "MyExperimentalClassId"
-#  162|   5: [Method] MyExperimentalMethod
+#  162|   6: [Method] MyExperimentalMethod
 #  162|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #  161|       1: [DefaultAttribute] [Experimental(...)]
@@ -480,7 +480,7 @@ attributes.cs:
 #  161|         0: [StringLiteralUtf16] "MyExperimentalMethodId"
 #  162|     4: [BlockStmt] {...}
 #  165| [Class] MyOverloadResolutionClass
-#  168|   5: [Method] M
+#  168|   6: [Method] M
 #  168|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #  167|       1: [DefaultAttribute] [OverloadResolutionPriority(...)]
@@ -492,7 +492,7 @@ attributes.cs:
 #  168|         -1: [TypeMention] Int32[]
 #  168|           1: [TypeMention] int
 #  168|     4: [BlockStmt] {...}
-#  171|   6: [Method] M
+#  171|   7: [Method] M
 #  171|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #  170|       1: [DefaultAttribute] [OverloadResolutionPriority(...)]
@@ -503,7 +503,7 @@ attributes.cs:
 #  171|         -1: [TypeMention] IEnumerable<int>
 #  171|           1: [TypeMention] int
 #  171|     4: [BlockStmt] {...}
-#  174|   7: [Method] M
+#  174|   8: [Method] M
 #  174|     -1: [TypeMention] Void
 #-----|     0: (Attributes)
 #  173|       1: [DefaultAttribute] [OverloadResolutionPriority(...)]

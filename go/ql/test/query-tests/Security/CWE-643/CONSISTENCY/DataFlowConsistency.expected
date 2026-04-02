@@ -1,0 +1,13 @@
+reverseRead
+| XPathInjection.go:13:14:13:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:35:14:35:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:46:14:46:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:57:14:57:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:72:14:72:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:83:14:83:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:92:14:92:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:93:14:93:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:106:14:106:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:115:14:115:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:116:14:116:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| tst.go:139:14:139:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

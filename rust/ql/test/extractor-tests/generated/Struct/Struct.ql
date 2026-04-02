@@ -18,10 +18,6 @@ query predicate getAttr(Struct x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 
-query predicate getFieldList(Struct x, FieldList getFieldList) {
-  toBeTested(x) and not x.isUnknown() and getFieldList = x.getFieldList()
-}
-
 query predicate getGenericParamList(Struct x, GenericParamList getGenericParamList) {
   toBeTested(x) and not x.isUnknown() and getGenericParamList = x.getGenericParamList()
 }
@@ -36,4 +32,8 @@ query predicate getVisibility(Struct x, Visibility getVisibility) {
 
 query predicate getWhereClause(Struct x, WhereClause getWhereClause) {
   toBeTested(x) and not x.isUnknown() and getWhereClause = x.getWhereClause()
+}
+
+query predicate getFieldList(Struct x, FieldList getFieldList) {
+  toBeTested(x) and not x.isUnknown() and getFieldList = x.getFieldList()
 }

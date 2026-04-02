@@ -29,7 +29,7 @@ module CredentialsExpr {
 private class CredentialsFromModel extends CredentialsNode {
   string kind;
 
-  CredentialsFromModel() { this = ModelOutput::getASinkNode("credentials-" + kind).asSink() }
+  CredentialsFromModel() { ModelOutput::sinkNode(this, "credentials-" + kind) }
 
   override string getCredentialsKind() { result = CredentialsExpr::normalizeKind(kind) }
 }

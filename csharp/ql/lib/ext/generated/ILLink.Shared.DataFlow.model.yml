@@ -42,6 +42,7 @@ extensions:
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "op_Equality", "(ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>,ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DefaultValueDictionary<TKey,TValue>", "op_Inequality", "(ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>,ILLink.Shared.DataFlow.DefaultValueDictionary<TKey,TValue>)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "DictionaryLattice<TKey,TValue,TValueLattice>", "get_Top", "()", "summary", "df-generated"]
+      - ["ILLink.Shared.DataFlow", "Extensions", "LastIndexOf", "(System.ReadOnlySpan<System.Byte>,System.Char)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ForwardDataFlowAnalysis<TValue,TState,TLattice,TBlock,TRegion,TControlFlowGraph,TTransfer,TConditionValue>", "Fixpoint", "(TControlFlowGraph,TTransfer)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ForwardDataFlowAnalysis<TValue,TState,TLattice,TBlock,TRegion,TControlFlowGraph,TTransfer,TConditionValue>", "TraceBlockInput", "(TValue,System.Nullable<TValue>,System.Nullable<TValue>)", "summary", "df-generated"]
       - ["ILLink.Shared.DataFlow", "ForwardDataFlowAnalysis<TValue,TState,TLattice,TBlock,TRegion,TControlFlowGraph,TTransfer,TConditionValue>", "TraceBlockOutput", "(TValue,System.Nullable<TValue>,System.Nullable<TValue>)", "summary", "df-generated"]

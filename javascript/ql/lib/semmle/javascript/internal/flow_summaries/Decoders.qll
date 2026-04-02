@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import javascript
 private import semmle.javascript.dataflow.FlowSummary
 private import semmle.javascript.dataflow.InferredTypes
@@ -13,7 +16,7 @@ private class TextDecoderEntryPoint extends API::EntryPoint {
 pragma[nomagic]
 API::Node textDecoderConstructorRef() { result = any(TextDecoderEntryPoint e).getANode() }
 
-class Decode extends SummarizedCallable {
+class Decode extends SummarizedCallable::Range {
   Decode() { this = "TextDecoder#decode" }
 
   override InstanceCall getACall() {

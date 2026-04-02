@@ -6,6 +6,7 @@ private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes
 
 private Instruction getInstruction(Node n, string stars) {
   result = [n.asInstruction(), n.(RawIndirectInstruction).getInstruction()] and

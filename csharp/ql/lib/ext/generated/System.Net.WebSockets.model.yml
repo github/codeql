@@ -21,6 +21,7 @@ extensions:
       - ["System.Net.WebSockets", "WebSocketContext", True, "get_WebSocket", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketReceiveResult", False, "WebSocketReceiveResult", "(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.Boolean,System.Nullable<System.Net.WebSockets.WebSocketCloseStatus>,System.String)", "", "Argument[3]", "Argument[this].Property[System.Net.WebSockets.WebSocketReceiveResult.CloseStatus]", "value", "dfc-generated"]
       - ["System.Net.WebSockets", "WebSocketReceiveResult", False, "WebSocketReceiveResult", "(System.Int32,System.Net.WebSockets.WebSocketMessageType,System.Boolean,System.Nullable<System.Net.WebSockets.WebSocketCloseStatus>,System.String)", "", "Argument[4]", "Argument[this].Property[System.Net.WebSockets.WebSocketReceiveResult.CloseStatusDescription]", "value", "dfc-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", False, "Create", "(System.Net.WebSockets.WebSocket,System.Net.WebSockets.WebSocketMessageType,System.TimeSpan)", "", "Argument[2]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -91,3 +92,17 @@ extensions:
       - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_Count", "()", "summary", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_EndOfMessage", "()", "summary", "df-generated"]
       - ["System.Net.WebSockets", "WebSocketReceiveResult", "get_MessageType", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "Create", "(System.Net.WebSockets.WebSocket,System.Net.WebSockets.WebSocketMessageType,System.Boolean)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "CreateReadableMessageStream", "(System.Net.WebSockets.WebSocket)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "CreateWritableMessageStream", "(System.Net.WebSockets.WebSocket,System.Net.WebSockets.WebSocketMessageType)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "EndRead", "(System.IAsyncResult)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "EndWrite", "(System.IAsyncResult)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "Flush", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "Seek", "(System.Int64,System.IO.SeekOrigin)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "SetLength", "(System.Int64)", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "get_CanRead", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "get_CanSeek", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "get_CanWrite", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "get_Length", "()", "summary", "df-generated"]
+      - ["System.Net.WebSockets", "WebSocketStream", "get_WebSocket", "()", "summary", "df-generated"]

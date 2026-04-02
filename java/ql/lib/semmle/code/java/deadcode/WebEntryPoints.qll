@@ -45,7 +45,7 @@ class ServletListenerClass extends ReflectivelyConstructedClass {
  */
 class ServletFilterClass extends ReflectivelyConstructedClass {
   ServletFilterClass() {
-    this.getAnAncestor().hasQualifiedName("javax.servlet", "Filter") and
+    this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".servlet", "Filter") and
     // If we have seen any `web.xml` files, this filter will be considered to be live only if it is
     // referred to as a filter-class in at least one. If no `web.xml` files are found, we assume
     // that XML extraction was not enabled, and therefore consider all filter classes as live.

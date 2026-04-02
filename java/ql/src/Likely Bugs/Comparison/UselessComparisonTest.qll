@@ -27,14 +27,14 @@ class BoundKind extends string {
  */
 predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
   exists(
-    ConditionBlock cb, SsaVariable v, BinaryExpr cond, boolean condIsTrue, int k1, int k2,
+    ConditionBlock cb, SsaDefinition v, BinaryExpr cond, boolean condIsTrue, int k1, int k2,
     CompileTimeConstantExpr c1, CompileTimeConstantExpr c2
   |
     s1.getCondition() = cond and
     cb.getCondition() = cond and
-    cond.hasOperands(v.getAUse(), c1) and
+    cond.hasOperands(v.getARead(), c1) and
     c1.getIntValue() = k1 and
-    test.hasOperands(v.getAUse(), c2) and
+    test.hasOperands(v.getARead(), c2) and
     c2.getIntValue() = k2 and
     v.getSourceVariable().getVariable() instanceof LocalScopeVariable and
     cb.controls(test.getBasicBlock(), condIsTrue) and
@@ -49,7 +49,7 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
       )
       or
       exists(ComparisonExpr comp | comp = cond |
-        comp.getLesserOperand() = v.getAUse() and
+        comp.getLesserOperand() = v.getARead() and
         (
           condIsTrue = true and
           boundKind.isUpper() and
@@ -60,7 +60,7 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
           (if comp.isStrict() then bound = k1 else bound = k1 + 1)
         )
         or
-        comp.getGreaterOperand() = v.getAUse() and
+        comp.getGreaterOperand() = v.getARead() and
         (
           condIsTrue = true and
           boundKind.isLower() and
@@ -88,7 +88,7 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
       )
       or
       exists(ComparisonExpr comp | comp = test |
-        comp.getLesserOperand() = v.getAUse() and
+        comp.getLesserOperand() = v.getARead() and
         (
           boundKind.providesLowerBound() and
           testIsTrue = false and
@@ -107,7 +107,7 @@ predicate uselessTest(ConditionNode s1, BinaryExpr test, boolean testIsTrue) {
           )
         )
         or
-        comp.getGreaterOperand() = v.getAUse() and
+        comp.getGreaterOperand() = v.getARead() and
         (
           boundKind.providesLowerBound() and
           testIsTrue = true and

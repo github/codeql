@@ -1,6 +1,8 @@
 /**
  * Provides JS specific classes and predicates for defining flow summaries.
  */
+overlay[local?]
+module;
 
 private import javascript
 private import semmle.javascript.dataflow.internal.DataFlowPrivate
@@ -140,6 +142,7 @@ string encodeArgumentPosition(ArgumentPosition pos) {
 ReturnKind getStandardReturnValueKind() { result = MkNormalReturnKind() and Stage::ref() }
 
 private module FlowSummaryStepInput implements Private::StepsInputSig {
+  overlay[global]
   DataFlowCall getACall(SummarizedCallable sc) {
     exists(LibraryCallable callable | callable = sc |
       result.asOrdinaryCall() =

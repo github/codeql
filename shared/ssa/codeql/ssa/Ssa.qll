@@ -1617,6 +1617,9 @@ module Make<
 
     /** A static single assignment (SSA) definition. */
     class SsaDefinition extends FinalDefinition {
+      /** Gets a textual representation of this SSA definition. */
+      string toString() { result = super.toString() }
+
       /**
        * Gets the control flow node of this SSA definition.
        *
@@ -1708,6 +1711,8 @@ module Make<
     class SsaParameterInit extends SsaExplicitWrite {
       SsaParameterInit() { parameterInit(this, _) }
 
+      override string toString() { result = "SSA param(" + this.getSourceVariable() + ")" }
+
       /**
        * Gets the parameter that this definition represents. This is equivalent
        * to `getDefinition().isParameterInit(result)`
@@ -1725,6 +1730,8 @@ module Make<
      */
     class SsaImplicitWrite extends SsaWriteDefinition {
       SsaImplicitWrite() { not explicitWrite(this, _) }
+
+      override string toString() { result = "SSA implicit def(" + this.getSourceVariable() + ")" }
     }
 
     /**
@@ -1734,6 +1741,8 @@ module Make<
      */
     class SsaImplicitEntryDefinition extends SsaImplicitWrite {
       SsaImplicitEntryDefinition() { this.definesAt(_, any(EntryBasicBlock bb), -1) }
+
+      override string toString() { result = "SSA entry def(" + this.getSourceVariable() + ")" }
     }
 
     /** An SSA definition that represents an uncertain variable update. */
@@ -1761,7 +1770,7 @@ module Make<
      * ```
      * a phi definition for `x` is inserted just before the call `puts x`.
      */
-    class SsaPhiDefinition extends SsaDefinition {
+    class SsaPhiDefinition extends SsaDefinition instanceof PhiNode {
       /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
         phiHasInputFromBlockCached(this, inp, bb)
@@ -2072,6 +2081,41 @@ module Make<
       )
     }
 
+    pragma[nomagic]
+    private predicate phiInputHasRead(SsaPhiExt phi, BasicBlock input) {
+      exists(DfInput::getARead(getAPhiInputDef(phi, input)))
+    }
+
+    /** Holds if `bb` is the target end of a branch edge of a guard and the guard controls `bb`. */
+    pragma[nomagic]
+    private predicate guardControlledBranchTarget(BasicBlock bb) {
+      exists(BasicBlock guard |
+        any(DfInput::Guard g).hasValueBranchEdge(guard, bb, _) and
+        dominatingEdge(guard, bb)
+      )
+    }
+
+    private BasicBlock getGuardEquivalentImmediateDominator(BasicBlock bb) {
+      result = bb.getImmediateDominator() and
+      not guardControlledBranchTarget(bb)
+    }
+
+    /**
+     * Holds if the immediately preceding reference to the input to `phi` from
+     * the block `input` is guard-equivalent with `input` in the sense that the
+     * set of guards controlling the preceding reference is the same as the set
+     * of guards controlling `input`.
+     *
+     * This is restricted to phi inputs that are actually read.
+     */
+    private predicate phiInputIsGuardEquivalentWithPreviousRef(SsaPhiExt phi, BasicBlock input) {
+      exists(BasicBlock prev |
+        phiInputHasRead(phi, input) and
+        AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(), phi.getSourceVariable()) and
+        prev = getGuardEquivalentImmediateDominator*(input)
+      )
+    }
+
     /**
      * Holds if the input to `phi` from the block `input` might be relevant for
      * barrier guards as a separately synthesized `TSsaInputNode`.
@@ -2086,7 +2130,7 @@ module Make<
       or
       DfInput::supportBarrierGuardsOnPhiEdges() and
       // If the input isn't explicitly read then a guard cannot check it.
-      exists(DfInput::getARead(getAPhiInputDef(phi, input))) and
+      phiInputHasRead(phi, input) and
       (
         // The input node is relevant either if it sits directly on a branch
         // edge for a guard,
@@ -2105,15 +2149,19 @@ module Make<
         // }
         // // phi-read node for `x`
         // ```
-        exists(BasicBlock prev |
-          AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
-            phi.getSourceVariable()) and
-          prev != input and
-          exists(DfInput::Guard g, DfInput::GuardValue val |
-            DfInput::guardDirectlyControlsBlock(g, input, val) and
-            not DfInput::guardDirectlyControlsBlock(g, prev, val)
-          )
-        )
+        not phiInputIsGuardEquivalentWithPreviousRef(phi, input)
+        // An equivalent, but less performant, way to express this is as follows:
+        // ```
+        // exists(BasicBlock prev |
+        //   AdjacentSsaRefs::adjacentRefPhi(prev, _, input, phi.getBasicBlock(),
+        //     phi.getSourceVariable()) and
+        //   prev != input and
+        //   exists(DfInput::Guard g, DfInput::GuardValue val |
+        //     DfInput::guardDirectlyControlsBlock(g, input, val) and
+        //     not DfInput::guardDirectlyControlsBlock(g, prev, val)
+        //   )
+        // )
+        // ```
       )
     }
 

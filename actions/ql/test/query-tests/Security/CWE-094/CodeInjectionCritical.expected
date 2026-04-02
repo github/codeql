@@ -435,6 +435,16 @@ nodes
 | .github/workflows/push.yml:14:19:14:64 | github.event.head_commit.committer.name | semmle.label | github.event.head_commit.committer.name |
 | .github/workflows/push.yml:15:19:15:65 | github.event.commits[11].committer.email | semmle.label | github.event.commits[11].committer.email |
 | .github/workflows/push.yml:16:19:16:64 | github.event.commits[11].committer.name | semmle.label | github.event.commits[11].committer.name |
+| .github/workflows/push_and_workflow_dispatch.yml:9:19:9:57 | github.event.commits[11].message | semmle.label | github.event.commits[11].message |
+| .github/workflows/push_and_workflow_dispatch.yml:10:19:10:62 | github.event.commits[11].author.email | semmle.label | github.event.commits[11].author.email |
+| .github/workflows/push_and_workflow_dispatch.yml:11:19:11:61 | github.event.commits[11].author.name | semmle.label | github.event.commits[11].author.name |
+| .github/workflows/push_and_workflow_dispatch.yml:12:19:12:57 | github.event.head_commit.message | semmle.label | github.event.head_commit.message |
+| .github/workflows/push_and_workflow_dispatch.yml:13:19:13:62 | github.event.head_commit.author.email | semmle.label | github.event.head_commit.author.email |
+| .github/workflows/push_and_workflow_dispatch.yml:14:19:14:61 | github.event.head_commit.author.name | semmle.label | github.event.head_commit.author.name |
+| .github/workflows/push_and_workflow_dispatch.yml:15:19:15:65 | github.event.head_commit.committer.email | semmle.label | github.event.head_commit.committer.email |
+| .github/workflows/push_and_workflow_dispatch.yml:16:19:16:64 | github.event.head_commit.committer.name | semmle.label | github.event.head_commit.committer.name |
+| .github/workflows/push_and_workflow_dispatch.yml:17:19:17:65 | github.event.commits[11].committer.email | semmle.label | github.event.commits[11].committer.email |
+| .github/workflows/push_and_workflow_dispatch.yml:18:19:18:64 | github.event.commits[11].committer.name | semmle.label | github.event.commits[11].committer.name |
 | .github/workflows/reusable-workflow-1.yml:6:7:6:11 | input taint | semmle.label | input taint |
 | .github/workflows/reusable-workflow-1.yml:36:21:36:39 | inputs.taint | semmle.label | inputs.taint |
 | .github/workflows/reusable-workflow-1.yml:44:19:44:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |

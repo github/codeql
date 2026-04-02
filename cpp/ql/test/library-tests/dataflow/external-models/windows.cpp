@@ -574,3 +574,370 @@ void test_copy_and_move_memory() {
     sink(dest_buffer[0]); // $ ir
   }
 }
+
+using HINTERNET = void*;
+using ULONGLONG = unsigned long long;
+using UINT = unsigned int;
+using PDWORD = DWORD*;
+using PCSTR = const char*;
+typedef union _WINHTTP_HEADER_NAME {
+  PCWSTR pwszName;
+  PCSTR  pszName;
+} WINHTTP_HEADER_NAME, *PWINHTTP_HEADER_NAME;
+typedef struct _WINHTTP_EXTENDED_HEADER {
+  union {
+    PCWSTR pwszName;
+    PCSTR  pszName;
+  };
+  union {
+    PCWSTR pwszValue;
+    PCSTR  pszValue;
+  };
+} WINHTTP_EXTENDED_HEADER, *PWINHTTP_EXTENDED_HEADER;
+
+BOOL WinHttpReadData(
+  HINTERNET hRequest,
+  LPVOID    lpBuffer,
+  DWORD     dwNumberOfBytesToRead,
+  LPDWORD   lpdwNumberOfBytesRead
+);
+
+DWORD WinHttpReadDataEx(
+  HINTERNET hRequest,
+  LPVOID    lpBuffer,
+  DWORD     dwNumberOfBytesToRead,
+  LPDWORD   lpdwNumberOfBytesRead,
+  ULONGLONG ullFlags,
+  DWORD     cbProperty,
+  PVOID     pvProperty
+);
+
+using LPCWSTR = const wchar_t*;
+
+BOOL WinHttpQueryHeaders(
+  HINTERNET hRequest,
+  DWORD     dwInfoLevel,
+  LPCWSTR   pwszName,
+  LPVOID    lpBuffer,
+  LPDWORD   lpdwBufferLength,
+  LPDWORD   lpdwIndex
+);
+
+DWORD WinHttpQueryHeadersEx(
+  HINTERNET                hRequest,
+  DWORD                    dwInfoLevel,
+  ULONGLONG                ullFlags,
+  UINT                     uiCodePage,
+  PDWORD                   pdwIndex,
+  PWINHTTP_HEADER_NAME     pHeaderName,
+  PVOID                    pBuffer,
+  PDWORD                   pdwBufferLength,
+  PWINHTTP_EXTENDED_HEADER *ppHeaders,
+  PDWORD                   pdwHeadersCount
+);
+
+void sink(PCSTR);
+
+void test_winhttp(HINTERNET hRequest) {
+  {
+    char buffer[1024];
+    DWORD bytesRead;
+    BOOL result = WinHttpReadData(hRequest, buffer, sizeof(buffer), &bytesRead);
+    sink(buffer);
+    sink(*buffer); // $ ir
+  }
+  {
+    char buffer[1024];
+    DWORD bytesRead;
+    DWORD result = WinHttpReadDataEx(hRequest, buffer, sizeof(buffer), &bytesRead, 0, 0, nullptr);
+    sink(buffer);
+    sink(*buffer); // $ ir
+  }
+  {
+    char buffer[1024];
+    DWORD bufferLength = sizeof(buffer);
+    WinHttpQueryHeaders(hRequest, 0, nullptr, buffer, &bufferLength, nullptr);
+    sink(buffer);
+    sink(*buffer); // $ ir
+  }
+  {
+    char buffer[1024];
+    DWORD bufferLength = sizeof(buffer);
+    PWINHTTP_EXTENDED_HEADER headers;
+    DWORD headersCount;
+    PWINHTTP_HEADER_NAME headerName;
+    DWORD result = WinHttpQueryHeadersEx(hRequest, 0, 0, 0, nullptr, headerName, buffer, &bufferLength, &headers, &headersCount);
+    sink(buffer);
+    sink(*buffer); // $ ir
+    sink(headerName->pszName);
+    sink(*headerName->pszName); // $ ir
+    sink(headers->pszValue);
+    sink(*headers->pszValue); // $ ir
+  }
+}
+
+using LPWSTR = wchar_t*;
+using INTERNET_SCHEME = enum {
+  INTERNET_SCHEME_INVALID = -1,
+  INTERNET_SCHEME_UNKNOWN = 0,
+  INTERNET_SCHEME_HTTP = 1,
+  INTERNET_SCHEME_HTTPS = 2,
+  INTERNET_SCHEME_FTP = 3,
+  INTERNET_SCHEME_FILE = 4,
+  INTERNET_SCHEME_NEWS = 5,
+  INTERNET_SCHEME_MAILTO = 6,
+  INTERNET_SCHEME_SNEWS = 7,
+  INTERNET_SCHEME_SOCKS = 8,
+  INTERNET_SCHEME_WAIS = 9,
+  INTERNET_SCHEME_LAST = 10
+};
+using INTERNET_PORT = unsigned short;
+
+typedef struct _WINHTTP_URL_COMPONENTS {
+  DWORD           dwStructSize;
+  LPWSTR          lpszScheme;
+  DWORD           dwSchemeLength;
+  INTERNET_SCHEME nScheme;
+  LPWSTR          lpszHostName;
+  DWORD           dwHostNameLength;
+  INTERNET_PORT   nPort;
+  LPWSTR          lpszUserName;
+  DWORD           dwUserNameLength;
+  LPWSTR          lpszPassword;
+  DWORD           dwPasswordLength;
+  LPWSTR          lpszUrlPath;
+  DWORD           dwUrlPathLength;
+  LPWSTR          lpszExtraInfo;
+  DWORD           dwExtraInfoLength;
+} URL_COMPONENTS, *LPURL_COMPONENTS;
+
+BOOL WinHttpCrackUrl(
+  LPCWSTR          pwszUrl,
+  DWORD            dwUrlLength,
+  DWORD            dwFlags,
+  LPURL_COMPONENTS lpUrlComponents
+);
+
+void sink(LPWSTR);
+
+void test_winhttp_crack_url() {
+  {
+    URL_COMPONENTS urlComponents;
+    urlComponents.dwStructSize = sizeof(URL_COMPONENTS);
+    wchar_t x[256];
+    x[0] = (wchar_t)source();
+    BOOL result = WinHttpCrackUrl(x, 0, 0, &urlComponents);
+    sink(urlComponents.lpszHostName);
+    sink(*urlComponents.lpszHostName); // $ ir
+    sink(urlComponents.lpszUrlPath);
+    sink(*urlComponents.lpszUrlPath); // $ ir
+    sink(urlComponents.lpszExtraInfo);
+    sink(*urlComponents.lpszExtraInfo); // $ ir
+  }
+}
+
+using HTTP_REQUEST_ID = ULONGLONG;
+using HTTP_CONNECTION_ID = ULONGLONG;
+using HTTP_URL_CONTEXT = ULONGLONG;
+using HTTP_RAW_CONNECTION_ID = ULONGLONG;
+
+typedef struct _HTTP_VERSION {
+  USHORT MajorVersion;
+  USHORT MinorVersion;
+} HTTP_VERSION, *PHTTP_VERSION;
+
+typedef enum _HTTP_VERB {
+  HttpVerbUnparsed = 0
+} HTTP_VERB, *PHTTP_VERB;
+
+typedef struct _HTTP_COOKED_URL {
+  USHORT FullUrlLength;
+  USHORT HostLength;
+  USHORT AbsPathLength;
+  USHORT QueryStringLength;
+  PCWSTR pFullUrl;
+  PCWSTR pHost;
+  PCWSTR pAbsPath;
+  PCWSTR pQueryString;
+} HTTP_COOKED_URL, *PHTTP_COOKED_URL;
+
+typedef struct _HTTP_TRANSPORT_ADDRESS {
+  struct sockaddr* pRemoteAddress;
+  struct sockaddr* pLocalAddress;
+} HTTP_TRANSPORT_ADDRESS, *PHTTP_TRANSPORT_ADDRESS;
+
+typedef struct _HTTP_KNOWN_HEADER {
+  USHORT RawValueLength;
+  PCSTR  pRawValue;
+} HTTP_KNOWN_HEADER, *PHTTP_KNOWN_HEADER;
+
+typedef struct _HTTP_UNKNOWN_HEADER {
+  USHORT NameLength;
+  USHORT RawValueLength;
+  PCSTR  pName;
+  PCSTR  pRawValue;
+} HTTP_UNKNOWN_HEADER, *PHTTP_UNKNOWN_HEADER;
+
+typedef struct _HTTP_REQUEST_HEADERS {
+  USHORT               UnknownHeaderCount;
+  PHTTP_UNKNOWN_HEADER pUnknownHeaders;
+  USHORT               TrailerCount;
+  PHTTP_UNKNOWN_HEADER pTrailers;
+  HTTP_KNOWN_HEADER    KnownHeaders[41];
+} HTTP_REQUEST_HEADERS, *PHTTP_REQUEST_HEADERS;
+
+typedef struct _HTTP_BYTE_RANGE {
+  ULONGLONG StartingOffset;
+  ULONGLONG Length;
+} HTTP_BYTE_RANGE, *PHTTP_BYTE_RANGE;
+
+typedef struct _HTTP_DATA_CHUNK {
+  int DataChunkType;
+  union {
+    struct {
+      PVOID pBuffer;
+      ULONG BufferLength;
+    } FromMemory;
+    struct {
+      HTTP_BYTE_RANGE ByteRange;
+      HANDLE          FileHandle;
+    } FromFileHandle;
+    struct {
+      USHORT FragmentNameLength;
+      PCWSTR pFragmentName;
+    } FromFragmentCache;
+    struct {
+      HTTP_BYTE_RANGE ByteRange;
+      PCWSTR          pFragmentName;
+    } FromFragmentCacheEx;
+    struct {
+      USHORT               TrailerCount;
+      PHTTP_UNKNOWN_HEADER pTrailers;
+    } Trailers;
+  };
+} HTTP_DATA_CHUNK, *PHTTP_DATA_CHUNK;
+
+typedef struct _HTTP_SSL_CLIENT_CERT_INFO {
+  ULONG  CertFlags;
+  ULONG  CertEncodedSize;
+  char*  pCertEncoded;
+  HANDLE Token;
+  BOOL   CertDeniedByMapper;
+} HTTP_SSL_CLIENT_CERT_INFO, *PHTTP_SSL_CLIENT_CERT_INFO;
+
+typedef struct _HTTP_SSL_INFO {
+  USHORT                      ServerCertKeySize;
+  USHORT                      ConnectionKeySize;
+  ULONG                       ServerCertIssuerSize;
+  ULONG                       ServerCertSubjectSize;
+  PCSTR                       pServerCertIssuer;
+  PCSTR                       pServerCertSubject;
+  PHTTP_SSL_CLIENT_CERT_INFO  pClientCertInfo;
+  ULONG                       SslClientCertNegotiated;
+} HTTP_SSL_INFO, *PHTTP_SSL_INFO;
+
+typedef struct _HTTP_REQUEST_V1 {
+  ULONG                    Flags;
+  HTTP_CONNECTION_ID       ConnectionId;
+  HTTP_REQUEST_ID          RequestId;
+  HTTP_URL_CONTEXT         UrlContext;
+  HTTP_VERSION             Version;
+  HTTP_VERB                Verb;
+  USHORT                   UnknownVerbLength;
+  USHORT                   RawUrlLength;
+  PCSTR                    pUnknownVerb;
+  PCSTR                    pRawUrl;
+  HTTP_COOKED_URL          CookedUrl;
+  HTTP_TRANSPORT_ADDRESS   Address;
+  HTTP_REQUEST_HEADERS     Headers;
+  ULONGLONG                BytesReceived;
+  USHORT                   EntityChunkCount;
+  PHTTP_DATA_CHUNK         pEntityChunks;
+  HTTP_RAW_CONNECTION_ID   RawConnectionId;
+  PHTTP_SSL_INFO           pSslInfo;
+} HTTP_REQUEST_V1, *PHTTP_REQUEST_V1;
+
+using HTTP_REQUEST = HTTP_REQUEST_V1;
+using PHTTP_REQUEST = PHTTP_REQUEST_V1;
+
+ULONG HttpReceiveHttpRequest(
+  HANDLE          RequestQueueHandle,
+  HTTP_REQUEST_ID RequestId,
+  ULONG           Flags,
+  PHTTP_REQUEST   RequestBuffer,
+  ULONG           RequestBufferLength,
+  PULONG          BytesReturned,
+  LPOVERLAPPED    Overlapped
+);
+
+ULONG HttpReceiveRequestEntityBody(
+  HANDLE          RequestQueueHandle,
+  HTTP_REQUEST_ID RequestId,
+  ULONG           Flags,
+  PVOID           EntityBuffer,
+  ULONG           EntityBufferLength,
+  PULONG          BytesReturned,
+  LPOVERLAPPED    Overlapped
+);
+
+ULONG HttpReceiveClientCertificate(
+  HANDLE                     RequestQueueHandle,
+  HTTP_CONNECTION_ID         ConnectionId,
+  ULONG                      Flags,
+  PHTTP_SSL_CLIENT_CERT_INFO SslClientCertInfo,
+  ULONG                      SslClientCertInfoSize,
+  PULONG                     BytesReceived,
+  LPOVERLAPPED               Overlapped
+);
+
+void sink(PCWSTR);
+void sink(HANDLE);
+
+void test_http_server_api(HANDLE hRequestQueue) {
+  {
+    HTTP_REQUEST requestBuffer;
+    ULONG bytesReturned;
+    ULONG result = HttpReceiveHttpRequest(hRequestQueue, 0, 0, &requestBuffer, sizeof(requestBuffer), &bytesReturned, nullptr);
+    char* p = reinterpret_cast<char*>(&requestBuffer);
+    sink(p);
+    sink(*p); // $ ir
+    sink(requestBuffer.pRawUrl);
+    sink(*requestBuffer.pRawUrl); // $ ir
+    sink(requestBuffer.CookedUrl.pFullUrl);
+    sink(*requestBuffer.CookedUrl.pFullUrl); // $ ir
+    sink(requestBuffer.Headers.KnownHeaders[0].pRawValue);
+    sink(*requestBuffer.Headers.KnownHeaders[0].pRawValue); // $ ir
+    sink(requestBuffer.Headers.pUnknownHeaders[0].pRawValue);
+    sink(*requestBuffer.Headers.pUnknownHeaders[0].pRawValue); // $ ir
+    sink(requestBuffer.pEntityChunks->FromFileHandle.FileHandle); // $ ir
+    sink(requestBuffer.pEntityChunks->FromFragmentCache.pFragmentName);
+    sink(*requestBuffer.pEntityChunks->FromFragmentCache.pFragmentName); // $ ir
+    sink(requestBuffer.pEntityChunks->FromFragmentCacheEx.pFragmentName);
+    sink(*requestBuffer.pEntityChunks->FromFragmentCacheEx.pFragmentName); // $ ir
+    sink(requestBuffer.pEntityChunks->FromMemory.pBuffer);
+    sink(*(char*)requestBuffer.pEntityChunks->FromMemory.pBuffer); // $ ir
+    sink(requestBuffer.pSslInfo->pServerCertIssuer);
+    sink(*requestBuffer.pSslInfo->pServerCertIssuer); // $ ir
+    sink(requestBuffer.pSslInfo->pServerCertSubject);
+    sink(*requestBuffer.pSslInfo->pServerCertSubject); // $ ir
+    sink(requestBuffer.pSslInfo->pClientCertInfo->pCertEncoded);
+    sink(*requestBuffer.pSslInfo->pClientCertInfo->pCertEncoded); // $ ir
+  }
+  {
+    char buffer[1024];
+    ULONG bytesReturned;
+    ULONG result = HttpReceiveRequestEntityBody(hRequestQueue, 0, 0, buffer, sizeof(buffer), &bytesReturned, nullptr);
+    sink(buffer);
+    sink(*buffer); // $ ir
+  }
+  {
+    HTTP_SSL_CLIENT_CERT_INFO certInfo;
+    ULONG bytesReceived;
+    ULONG result = HttpReceiveClientCertificate(hRequestQueue, 0, 0, &certInfo, sizeof(certInfo), &bytesReceived, nullptr);
+    char* p = reinterpret_cast<char*>(&certInfo);
+    sink(p);
+    sink(*p); // $ ir
+    sink(certInfo.pCertEncoded);
+    sink(*certInfo.pCertEncoded); // $ ir
+  }
+}

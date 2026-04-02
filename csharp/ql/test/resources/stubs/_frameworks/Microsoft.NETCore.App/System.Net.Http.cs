@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Http, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Http, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -640,6 +640,7 @@ namespace System
                 public static System.Net.Http.HttpMethod Patch { get => throw null; }
                 public static System.Net.Http.HttpMethod Post { get => throw null; }
                 public static System.Net.Http.HttpMethod Put { get => throw null; }
+                public static System.Net.Http.HttpMethod Query { get => throw null; }
                 public override string ToString() => throw null;
                 public static System.Net.Http.HttpMethod Trace { get => throw null; }
             }

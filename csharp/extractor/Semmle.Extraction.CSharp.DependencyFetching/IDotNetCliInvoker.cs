@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -10,10 +11,32 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         string Exec { get; }
 
         /// <summary>
+        /// A minimal environment for running the .NET CLI.
+        ///
+        /// DOTNET_CLI_UI_LANGUAGE: The .NET CLI language is set to English to avoid localized output.
+        /// MSBUILDDISABLENODEREUSE: To ensure clean environment for each build.
+        /// DOTNET_SKIP_FIRST_TIME_EXPERIENCE: To skip first time experience messages.
+        /// DOTNET_CLI_TELEMETRY_OPTOUT: To skip any dotnet telemetry: it's unnecessary and can even cause issues.
+        /// </summary>
+        static ReadOnlyDictionary<string, string> MinimalEnvironment { get; } = new(new Dictionary<string, string>
+        {
+            {"DOTNET_CLI_UI_LANGUAGE", "en"},
+            {"MSBUILDDISABLENODEREUSE", "1"},
+            {"DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true"},
+            {"DOTNET_CLI_TELEMETRY_OPTOUT", "1"}
+        });
+
+        /// <summary>
         /// Execute `dotnet <paramref name="args"/>` and return true if the command succeeded, otherwise false.
         /// If `silent` is true the output of the command is logged as `debug` otherwise as `info`.
         /// </summary>
         bool RunCommand(string args, bool silent = true);
+
+        /// <summary>
+        /// Execute `dotnet <paramref name="args"/>` and return the exit code.
+        /// If `silent` is true the output of the command is logged as `debug` otherwise as `info`.
+        /// </summary>
+        int RunCommandExitCode(string args, bool silent = true);
 
         /// <summary>
         /// Execute `dotnet <paramref name="args"/>` and return true if the command succeeded, otherwise false.

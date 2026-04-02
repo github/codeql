@@ -927,6 +927,92 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   }
 }
 
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `branch`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(CfgNodes::AstCfgNode g, CfgNode e, boolean branch, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates a node.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  private import codeql.ruby.controlflow.internal.Guards
+
+  /**
+   * Gets an implicit entry definition for a captured variable that
+   * may be guarded, because a call to the capturing callable is guarded.
+   *
+   * This is restricted to calls where the variable is captured inside a
+   * block.
+   */
+  pragma[nomagic]
+  private Ssa::CapturedEntryDefinition getAMaybeGuardedCapturedDef(P param) {
+    exists(
+      CfgNodes::ExprCfgNode g, boolean branch, CfgNodes::ExprCfgNode testedNode,
+      Ssa::Definition def, CfgNodes::ExprNodes::CallCfgNode call
+    |
+      def.getARead() = testedNode and
+      guardChecks(g, testedNode, branch, param) and
+      guardControlsBlock(g, call.getBasicBlock(), branch) and
+      result.getBasicBlock().getScope() = call.getExpr().(MethodCall).getBlock() and
+      sameSourceVariable(def, result)
+    )
+  }
+
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode(P param) {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::ParameterizedBarrierGuard<P, guardChecks/4>::getABarrierNode(param)
+    or
+    result.asExpr() = getAMaybeGuardedCapturedDef(param).getARead()
+  }
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates a node as described by an external predicate.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ExternalBarrierGuard {
+  private import codeql.ruby.frameworks.data.ModelsAsData
+
+  private predicate guardCheck(CfgNodes::AstCfgNode g, CfgNode e, boolean branch, string kind) {
+    // (GuardNode g, ControlFlowNode node, boolean branch, string kind) {
+    exists(API::Node call, API::Node parameter |
+      parameter.asSink() = call.asCall().getArgument(_) and
+      parameter = ModelOutput::getABarrierGuardNode(kind, branch)
+    |
+      g = call.asCall().asExpr() and
+      e = parameter.asSink().asExpr()
+    )
+  }
+
+  /**
+   * Gets a node that is an external barrier of the given kind.
+   *
+   * This only provides external barrier nodes defined as guards. To get all externally defined barrer nodes,
+   * use `ModelOutput::barrierNode(node, kind)`.
+   *
+   * INTERNAL: Do not use.
+   */
+  ExprNode getAnExternalBarrierNode(string kind) {
+    result = ParameterizedBarrierGuard<string, guardCheck/4>::getABarrierNode(kind)
+  }
+}
+
 /**
  * A representation of a run-time module or class.
  *

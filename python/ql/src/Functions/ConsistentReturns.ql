@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 predicate explicitly_returns_non_none(Function func) {
   exists(Return return |
@@ -21,7 +22,7 @@ predicate explicitly_returns_non_none(Function func) {
 }
 
 predicate has_implicit_return(Function func) {
-  exists(ControlFlowNode fallthru |
+  exists(ControlFlowNodeWithPointsTo fallthru |
     fallthru = func.getFallthroughNode() and not fallthru.unlikelyReachable()
   )
   or

@@ -5,6 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.util.Unit
@@ -45,8 +46,20 @@ module LogInjection {
   }
 
   /**
+   * A barrier for log-injection from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "log-injection") }
+  }
+
+  /**
    * A barrier for log injection vulnerabilities for nodes whose type is a
-   * numeric or boolean type, which is unlikely to expose any vulnerability.
+   * numeric type, which is unlikely to expose any vulnerability.
    */
   private class NumericTypeBarrier extends Barrier instanceof Barriers::NumericTypeBarrier { }
+
+  private class BooleanTypeBarrier extends Barrier instanceof Barriers::BooleanTypeBarrier { }
+
+  private class FieldlessEnumTypeBarrier extends Barrier instanceof Barriers::FieldlessEnumTypeBarrier
+  { }
 }

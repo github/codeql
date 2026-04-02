@@ -1,0 +1,31 @@
+reverseRead
+| CleartextLogging.go:11:11:11:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CleartextLogging.go:12:9:12:9 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CleartextLoggingGood.go:12:11:12:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CleartextLoggingGood.go:13:9:13:9 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| CleartextLoggingGood.go:25:14:25:14 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| klog.go:27:13:27:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| klog.go:28:13:28:20 | selection of Header | Origin of readStep is missing a PostUpdateNode. |
+| klog.go:29:13:29:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:58:9:58:34 | file_query_proto_enumTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:62:10:62:35 | file_query_proto_enumTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:88:10:88:34 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:101:9:101:33 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:156:10:156:34 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:169:9:169:33 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:204:10:204:34 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:217:9:217:33 | file_query_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:318:13:318:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:320:13:320:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:322:13:322:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:330:13:330:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:332:13:332:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:334:13:334:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:342:13:342:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:344:13:344:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| protos/query/query.pb.go:346:13:346:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| server1.go:11:11:11:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| server1.go:13:11:13:11 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| server1.go:14:11:14:14 | vals | Origin of readStep is missing a PostUpdateNode. |
+| server1.go:17:41:17:41 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| server1.go:21:46:21:46 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

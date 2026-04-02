@@ -406,7 +406,7 @@ Adds a new taint source. Most taint-tracking queries will use the new source.
 
 - **type**: Name of a type from which to evaluate **path**.
 - **path**: Access path leading to the source.
-- **kind**: Kind of source to add. Currently only **remote** is used.
+- **kind**: Kind of source to add. See the section on source kinds for a list of supported kinds.
 
 Example:
 
@@ -553,7 +553,16 @@ Kinds
 Source kinds
 ~~~~~~~~~~~~
 
-See documentation below for :ref:`Threat models <threat-models-javascript>`.
+- **remote**: A general source of remote flow.
+- **browser**: A source in the browser environment that does not fit a more specific browser kind.
+- **browser-url-query**: A source derived from the query parameters of the browser URL, such as ``location.search``.
+- **browser-url-fragment**: A source derived from the fragment part of the browser URL, such as ``location.hash``.
+- **browser-url-path**: A source derived from the pathname of the browser URL, such as ``location.pathname``.
+- **browser-url**: A source derived from the browser URL, where the untrusted part is prefixed by trusted data such as the scheme and hostname.
+- **browser-window-name**: A source derived from the window name, such as ``window.name``.
+- **browser-message-event**: A source derived from cross-window message passing, such as ``event`` in ``window.onmessage = event => {...}``.
+
+See also :ref:`Threat models <threat-models-javascript>`.
 
 Sink kinds
 ~~~~~~~~~~

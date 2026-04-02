@@ -36,6 +36,7 @@ Variable flowTarget(Expr arg) {
  */
 predicate unboxed(BoxedExpr e) {
   exists(BinaryExpr bin | e = bin.getAnOperand() |
+    not bin instanceof Assignment and
     if bin instanceof EqualityTest or bin instanceof ComparisonExpr
     then bin.getAnOperand() instanceof PrimitiveExpr
     else bin instanceof PrimitiveExpr
@@ -56,9 +57,7 @@ predicate boxed(PrimitiveExpr e) {
   or
   flowTarget(e).getType() instanceof BoxedType
   or
-  exists(ConditionalExpr cond | cond instanceof BoxedExpr |
-    cond.getTrueExpr() = e or cond.getFalseExpr() = e
-  )
+  exists(ConditionalExpr cond | cond instanceof BoxedExpr | cond.getABranchExpr() = e)
 }
 
 /**

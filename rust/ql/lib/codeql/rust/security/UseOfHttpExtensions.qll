@@ -5,6 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 
@@ -50,7 +51,7 @@ module UseOfHttp {
    * An HTTP string literal as a source.
    */
   private class HttpStringLiteralAsSource extends Source {
-    HttpStringLiteralAsSource() { this.asExpr().getExpr() instanceof HttpStringLiteral }
+    HttpStringLiteralAsSource() { this.asExpr() instanceof HttpStringLiteral }
   }
 
   /**
@@ -58,5 +59,12 @@ module UseOfHttp {
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "request-url") }
+  }
+
+  /**
+   * A barrier for use of HTTP URLs from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "request-url") }
   }
 }

@@ -10,17 +10,17 @@ query predicate definition(Ssa::Definition def, Variable v) {
   toBeTested(v.getEnclosingCfgScope()) and def.getSourceVariable() = v
 }
 
-query predicate read(Ssa::Definition def, Variable v, CfgNode read) {
+query predicate read(Ssa::Definition def, Variable v, Expr read) {
   toBeTested(v.getEnclosingCfgScope()) and def.getSourceVariable() = v and read = def.getARead()
 }
 
-query predicate firstRead(Ssa::Definition def, Variable v, CfgNode read) {
+query predicate firstRead(Ssa::Definition def, Variable v, Expr read) {
   toBeTested(v.getEnclosingCfgScope()) and
   def.getSourceVariable() = v and
   read = def.getAFirstRead()
 }
 
-query predicate adjacentReads(Ssa::Definition def, Variable v, CfgNode read1, CfgNode read2) {
+query predicate adjacentReads(Ssa::Definition def, Variable v, Expr read1, Expr read2) {
   toBeTested(v.getEnclosingCfgScope()) and
   def.getSourceVariable() = v and
   def.hasAdjacentReads(read1, read2)
@@ -54,4 +54,4 @@ query predicate ultimateDef(Ssa::Definition def, Definition ult) {
   ult != def
 }
 
-query predicate assigns(Ssa::WriteDefinition def, CfgNode value) { def.assigns(value) }
+query predicate assigns(Ssa::WriteDefinition def, Expr value) { def.assigns(value) }

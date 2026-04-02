@@ -52,18 +52,31 @@ private class HtmlSanitizer extends Sanitizer {
 }
 
 /**
- * An argument to a call to a method on a logger class.
+ * An argument to a call to a method on a logger class, excluding extension methods
+ * with source code which are analyzed interprocedurally.
  */
-private class LogForgingLogMessageSink extends Sink, LogMessageSink { }
+private class LogForgingLogMessageSink extends Sink, LogMessageSink {
+  LogForgingLogMessageSink() {
+    not exists(ExtensionMethodCall mc |
+      this.getExpr() = mc.getAnArgument() and
+      mc.getTarget().fromSource()
+    )
+  }
+}
 
 /**
  * An argument to a call to a method on a trace class.
  */
 private class LogForgingTraceMessageSink extends Sink, TraceMessageSink { }
 
-/** Log Forging sinks defined through Models as Data. */
+/** A Log Forging sink defined through Models as Data. */
 private class ExternalLoggingExprSink extends Sink {
   ExternalLoggingExprSink() { sinkNode(this, "log-injection") }
+}
+
+/** A sanitizer for log forging defined through Models as Data. */
+private class ExternalLogForgingSanitizer extends Sanitizer {
+  ExternalLogForgingSanitizer() { barrierNode(this, "log-injection") }
 }
 
 /**

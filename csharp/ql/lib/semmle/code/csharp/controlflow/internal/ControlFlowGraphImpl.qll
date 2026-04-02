@@ -6,9 +6,37 @@
 import csharp
 private import codeql.controlflow.Cfg as CfgShared
 private import Completion
-private import Splitting
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.commons.Compilation
+
+private module Initializers {
+  /**
+   * Gets the `i`th member initializer expression for object initializer method `obinit`
+   * in compilation `comp`.
+   */
+  AssignExpr initializedInstanceMemberOrder(ObjectInitMethod obinit, CompilationExt comp, int i) {
+    obinit.initializes(result) and
+    result =
+      rank[i + 1](AssignExpr ae0, Location l |
+        obinit.initializes(ae0) and
+        l = ae0.getLocation() and
+        getCompilation(l.getFile()) = comp
+      |
+        ae0 order by l.getStartLine(), l.getStartColumn(), l.getFile().getAbsolutePath()
+      )
+  }
+
+  /**
+   * Gets the last member initializer expression for object initializer method `obinit`
+   * in compilation `comp`.
+   */
+  AssignExpr lastInitializer(ObjectInitMethod obinit, CompilationExt comp) {
+    exists(int i |
+      result = initializedInstanceMemberOrder(obinit, comp, i) and
+      not exists(initializedInstanceMemberOrder(obinit, comp, i + 1))
+    )
+  }
+}
 
 /** An element that defines a new CFG scope. */
 class CfgScope extends Element, @top_level_exprorstmt_parent {
@@ -19,7 +47,7 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
         any(Callable c |
           c.(Constructor).hasInitializer()
           or
-          InitializerSplitting::constructorInitializes(c, _)
+          c.(ObjectInitMethod).initializes(_)
           or
           c.hasBody()
         )
@@ -34,14 +62,19 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
 
 private class TAstNode = @callable or @control_flow_element;
 
-private Element getAChild(Element p) {
-  result = p.getAChild() or
-  result = p.(AssignOperation).getExpandedAssignment()
+pragma[nomagic]
+private predicate astNode(Element e) {
+  e = any(@top_level_exprorstmt_parent p | not p instanceof Attribute)
+  or
+  exists(Element parent |
+    astNode(parent) and
+    e = parent.getAChild()
+  )
 }
 
 /** An AST node. */
 class AstNode extends Element, TAstNode {
-  AstNode() { this = getAChild*(any(@top_level_exprorstmt_parent p | not p instanceof Attribute)) }
+  AstNode() { astNode(this) }
 
   int getId() { idOf(this, result) }
 }
@@ -146,13 +179,15 @@ private predicate expr_parent_top_level_adjusted2(
 predicate scopeFirst(CfgScope scope, AstNode first) {
   scope =
     any(Callable c |
-      if exists(c.(Constructor).getInitializer())
-      then first(c.(Constructor).getInitializer(), first)
+      if exists(c.(Constructor).getObjectInitializerCall())
+      then first(c.(Constructor).getObjectInitializerCall(), first)
       else
-        if InitializerSplitting::constructorInitializes(c, _)
-        then first(InitializerSplitting::constructorInitializeOrder(c, _, 0), first)
+        if exists(c.(Constructor).getInitializer())
+        then first(c.(Constructor).getInitializer(), first)
         else first(c.getBody(), first)
     )
+  or
+  first(Initializers::initializedInstanceMemberOrder(scope, _, 0), first)
   or
   expr_parent_top_level_adjusted2(any(Expr e | first(e, first)), _, scope) and
   not scope instanceof Callable
@@ -165,12 +200,38 @@ predicate scopeLast(CfgScope scope, AstNode last, Completion c) {
       last(callable.getBody(), last, c) and
       not c instanceof GotoCompletion
       or
-      last(InitializerSplitting::lastConstructorInitializer(scope, _), last, c) and
+      last(callable.(Constructor).getInitializer(), last, c) and
+      not callable.hasBody()
+      or
+      // This is only relevant in the context of compilation errors, since
+      // normally the existence of an object initializer call implies the
+      // existence of an initializer.
+      last(callable.(Constructor).getObjectInitializerCall(), last, c) and
+      not callable.(Constructor).hasInitializer() and
       not callable.hasBody()
     )
   or
+  last(Initializers::lastInitializer(scope, _), last, c)
+  or
   expr_parent_top_level_adjusted2(any(Expr e | last(e, last, c)), _, scope) and
   not scope instanceof Callable
+}
+
+private class ObjectInitTree extends ControlFlowTree instanceof ObjectInitMethod {
+  final override predicate propagatesAbnormal(AstNode child) { none() }
+
+  final override predicate first(AstNode first) { none() }
+
+  final override predicate last(AstNode last, Completion c) { none() }
+
+  final override predicate succ(AstNode pred, AstNode succ, Completion c) {
+    exists(CompilationExt comp, int i |
+      // Flow from one member initializer to the next
+      last(Initializers::initializedInstanceMemberOrder(this, comp, i), pred, c) and
+      c instanceof NormalCompletion and
+      first(Initializers::initializedInstanceMemberOrder(this, comp, i + 1), succ)
+    )
+  }
 }
 
 private class ConstructorTree extends ControlFlowTree instanceof Constructor {
@@ -187,20 +248,119 @@ private class ConstructorTree extends ControlFlowTree instanceof Constructor {
     comp = getCompilation(result.getFile())
   }
 
+  pragma[noinline]
+  private MethodCall getObjectInitializerCall(CompilationExt comp) {
+    result = super.getObjectInitializerCall() and
+    comp = getCompilation(result.getFile())
+  }
+
+  pragma[noinline]
+  private ConstructorInitializer getInitializer(CompilationExt comp) {
+    result = super.getInitializer() and
+    comp = getCompilation(result.getFile())
+  }
+
   final override predicate succ(AstNode pred, AstNode succ, Completion c) {
-    exists(CompilationExt comp, int i, AssignExpr ae |
-      ae = InitializerSplitting::constructorInitializeOrder(this, comp, i) and
-      last(ae, pred, c) and
+    exists(CompilationExt comp |
+      last(this.getObjectInitializerCall(comp), pred, c) and
       c instanceof NormalCompletion
     |
-      // Flow from one member initializer to the next
-      first(InitializerSplitting::constructorInitializeOrder(this, comp, i + 1), succ)
+      first(this.getInitializer(comp), succ)
       or
-      // Flow from last member initializer to constructor body
-      ae = InitializerSplitting::lastConstructorInitializer(this, comp) and
+      // This is only relevant in the context of compilation errors, since
+      // normally the existence of an object initializer call implies the
+      // existence of an initializer.
+      not exists(this.getInitializer(comp)) and
       first(this.getBody(comp), succ)
     )
   }
+}
+
+cached
+private module SwithStmtInternal {
+  // Reorders default to be last if needed
+  cached
+  CaseStmt getCase(SwitchStmt ss, int i) {
+    exists(int index, int rankIndex |
+      caseIndex(ss, result, index) and
+      rankIndex = i + 1 and
+      index = rank[rankIndex](int j, CaseStmt cs | caseIndex(ss, cs, j) | j)
+    )
+  }
+
+  /** Implicitly reorder case statements to put the default case last if needed. */
+  private predicate caseIndex(SwitchStmt ss, CaseStmt case, int index) {
+    exists(int i | case = ss.getChildStmt(i) |
+      if case instanceof DefaultCase
+      then index = max(int j | exists(ss.getChildStmt(j))) + 1
+      else index = i
+    )
+  }
+
+  /**
+   * Gets the `i`th statement in the body of this `switch` statement.
+   *
+   * Example:
+   *
+   * ```csharp
+   * switch (x) {
+   *   case "abc":              // i = 0
+   *     return 0;
+   *   case int i when i > 0:   // i = 1
+   *     return 1;
+   *   case string s:           // i = 2
+   *     Console.WriteLine(s);
+   *     return 2;              // i = 3
+   *   default:                 // i = 4
+   *     return 3;              // i = 5
+   * }
+   * ```
+   *
+   * Note that each non-`default` case is a labeled statement, so the statement
+   * that follows is a child of the labeled statement, and not the `switch` block.
+   */
+  cached
+  Stmt getStmt(SwitchStmt ss, int i) {
+    exists(int index, int rankIndex |
+      result = ss.getChildStmt(index) and
+      rankIndex = i + 1 and
+      index =
+        rank[rankIndex](int j, Stmt s |
+          // `getChild` includes both labeled statements and the targeted
+          // statements of labeled statement as separate children, but we
+          // only want the labeled statement
+          s = getLabeledStmt(ss, j)
+        |
+          j
+        )
+    )
+  }
+
+  private Stmt getLabeledStmt(SwitchStmt ss, int i) {
+    result = ss.getChildStmt(i) and
+    not result = caseStmtGetBody(_)
+  }
+}
+
+private ControlFlowElement caseGetBody(Case c) {
+  result = c.getBody() or result = caseStmtGetBody(c)
+}
+
+private ControlFlowElement caseStmtGetBody(CaseStmt c) {
+  exists(int i, Stmt next |
+    c = c.getParent().getChild(i) and
+    next = c.getParent().getChild(i + 1)
+  |
+    result = next and
+    not result instanceof CaseStmt
+    or
+    result = caseStmtGetBody(next)
+  )
+}
+
+// Reorders default to be last if needed
+private Case switchGetCase(Switch s, int i) {
+  result = s.(SwitchExpr).getCase(i) or result = SwithStmtInternal::getCase(s, i)
 }
 
 abstract private class SwitchTree extends ControlFlowTree instanceof Switch {
@@ -210,27 +370,27 @@ abstract private class SwitchTree extends ControlFlowTree instanceof Switch {
     // Flow from last element of switch expression to first element of first case
     last(super.getExpr(), pred, c) and
     c instanceof NormalCompletion and
-    first(super.getCase(0), succ)
+    first(switchGetCase(this, 0), succ)
     or
     // Flow from last element of case pattern to next case
-    exists(Case case, int i | case = super.getCase(i) |
+    exists(Case case, int i | case = switchGetCase(this, i) |
       last(case.getPattern(), pred, c) and
       c.(MatchingCompletion).isNonMatch() and
-      first(super.getCase(i + 1), succ)
+      first(switchGetCase(this, i + 1), succ)
     )
     or
     // Flow from last element of condition to next case
-    exists(Case case, int i | case = super.getCase(i) |
+    exists(Case case, int i | case = switchGetCase(this, i) |
       last(case.getCondition(), pred, c) and
       c instanceof FalseCompletion and
-      first(super.getCase(i + 1), succ)
+      first(switchGetCase(this, i + 1), succ)
     )
   }
 }
 
 abstract private class CaseTree extends ControlFlowTree instanceof Case {
   final override predicate propagatesAbnormal(AstNode child) {
-    child in [super.getPattern().(ControlFlowElement), super.getCondition(), super.getBody()]
+    child in [super.getPattern().(ControlFlowElement), super.getCondition(), caseGetBody(this)]
   }
 
   override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -243,13 +403,13 @@ abstract private class CaseTree extends ControlFlowTree instanceof Case {
         first(super.getCondition(), succ)
       else
         // Flow from last element of pattern to first element of body
-        first(super.getBody(), succ)
+        first(caseGetBody(this), succ)
     )
     or
     // Flow from last element of condition to first element of body
     last(super.getCondition(), pred, c) and
     c instanceof TrueCompletion and
-    first(super.getBody(), succ)
+    first(caseGetBody(this), succ)
   }
 }
 
@@ -282,7 +442,6 @@ module Expressions {
   private AstNode getExprChild0(Expr e, int i) {
     not e instanceof NameOfExpr and
     not e instanceof QualifiableExpr and
-    not e instanceof Assignment and
     not e instanceof AnonymousFunctionExpr and
     result = e.getChild(i)
     or
@@ -292,14 +451,6 @@ module Expressions {
       any(QualifiableExpr qe |
         not qe instanceof ExtensionMethodCall and
         result = qe.getChild(i)
-      )
-    or
-    e =
-      any(Assignment a |
-        // The left-hand side of an assignment is evaluated before the right-hand side
-        i = 0 and result = a.getLValue()
-        or
-        i = 1 and result = a.getRValue()
       )
   }
 
@@ -326,15 +477,14 @@ module Expressions {
       not this instanceof LogicalNotExpr and
       not this instanceof LogicalAndExpr and
       not this instanceof LogicalOrExpr and
-      not this instanceof NullCoalescingExpr and
+      not this instanceof NullCoalescingOperation and
       not this instanceof ConditionalExpr and
-      not this instanceof AssignOperationWithExpandedAssignment and
       not this instanceof ConditionallyQualifiedExpr and
       not this instanceof ThrowExpr and
       not this instanceof ObjectCreation and
       not this instanceof ArrayCreation and
       not this instanceof QualifiedWriteAccess and
-      not this instanceof AccessorWrite and
+      not this instanceof QualifiedAccessorWrite and
       not this instanceof NoNodeExpr and
       not this instanceof SwitchExpr and
       not this instanceof SwitchCaseExpr and
@@ -351,21 +501,29 @@ module Expressions {
   }
 
   /**
-   * A qualified write access. In a qualified write access, the access itself is
-   * not evaluated, only the qualifier and the indexer arguments (if any).
+   * A qualified write access.
+   *
+   * The successor declaration in `QualifiedAccessorWrite` ensures that the access itself
+   * is evaluated after the qualifier and the indexer arguments (if any)
+   * and the right hand side of the assignment.
+   *
+   * When a qualified write access is used as an `out/ref` argument, the access itself is evaluated immediately.
    */
   private class QualifiedWriteAccess extends ControlFlowTree instanceof WriteAccess, QualifiableExpr
   {
     QualifiedWriteAccess() {
-      this.hasQualifier()
-      or
-      // Member initializers like
-      // ```csharp
-      // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
-      // ```
-      // need special treatment, because the accesses `[0]`, `[1]`, and `[2]`
-      // have no qualifier.
-      this = any(MemberInitializer mi).getLValue()
+      (
+        this.hasQualifier()
+        or
+        // Member initializers like
+        // ```csharp
+        // new Dictionary<int, string>() { [0] = "Zero", [1] = "One", [2] = "Two" }
+        // ```
+        // need special treatment, because the accesses `[0]`, `[1]`, and `[2]`
+        // have no qualifier.
+        this = any(MemberInitializer mi).getLValue()
+      ) and
+      not exists(AssignableDefinitions::OutRefDefinition def | def.getTargetAccess() = this)
     }
 
     final override predicate propagatesAbnormal(AstNode child) { child = getExprChild(this, _) }
@@ -375,25 +533,25 @@ module Expressions {
     final override predicate last(AstNode last, Completion c) {
       // Skip the access in a qualified write access
       last(getLastExprChild(this), last, c)
+      or
+      // Qualifier exits with a null completion
+      super.isConditional() and
+      last(super.getQualifier(), last, c) and
+      c.(NullnessCompletion).isNull()
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
       exists(int i |
         last(getExprChild(this, i), pred, c) and
         c instanceof NormalCompletion and
+        (if i = 0 then not c.(NullnessCompletion).isNull() else any()) and
         first(getExprChild(this, i + 1), succ)
       )
     }
   }
 
-  private class StatOrDynAccessorCall_ =
-    @dynamic_member_access_expr or @dynamic_element_access_expr or @call_access_expr;
-
-  /** A normal or a (potential) dynamic call to an accessor. */
-  private class StatOrDynAccessorCall extends Expr, StatOrDynAccessorCall_ { }
-
   /**
-   * An expression that writes via an accessor call, for example `x.Prop = 0`,
+   * An expression that writes via a qualifiable expression, for example `x.Prop = 0`,
    * where `Prop` is a property.
    *
    * Accessor writes need special attention, because we need to model the fact
@@ -403,24 +561,32 @@ module Expressions {
    * ```csharp
    * x -> 0 -> set_Prop -> x.Prop = 0
    * ```
+   *
+   * For consistency, control flow is implemented the same way for other qualified writes.
+   * For example, `x.Field = 0`, where `Field` is a field, we want a CFG that looks like
+   *
+   * ```csharp
+   * x -> 0 -> x.Field -> x.Field = 0
+   * ```
    */
-  class AccessorWrite extends PostOrderTree instanceof Expr {
+  private class QualifiedAccessorWrite extends PostOrderTree instanceof Expr {
     AssignableDefinition def;
 
-    AccessorWrite() {
+    QualifiedAccessorWrite() {
       def.getExpr() = this and
-      def.getTargetAccess().(WriteAccess) instanceof StatOrDynAccessorCall and
-      not this instanceof AssignOperationWithExpandedAssignment
+      def.getTargetAccess().(WriteAccess) instanceof QualifiableExpr and
+      not def instanceof AssignableDefinitions::OutRefDefinition
     }
 
     /**
      * Gets the `i`th accessor being called in this write. More than one call
      * can happen in tuple assignments.
      */
-    StatOrDynAccessorCall getCall(int i) {
+    QualifiableExpr getAccess(int i) {
       result =
         rank[i + 1](AssignableDefinitions::TupleAssignmentDefinition tdef |
-          tdef.getExpr() = this and tdef.getTargetAccess() instanceof StatOrDynAccessorCall
+          tdef.getExpr() = this and
+          tdef.getTargetAccess() instanceof QualifiableExpr
         |
           tdef order by tdef.getEvaluationOrder()
         ).getTargetAccess()
@@ -433,7 +599,13 @@ module Expressions {
     final override predicate propagatesAbnormal(AstNode child) {
       child = getExprChild(this, _)
       or
-      child = this.getCall(_)
+      child = this.getAccess(_)
+    }
+
+    final override predicate last(AstNode last, Completion c) {
+      PostOrderTree.super.last(last, c)
+      or
+      last(getExprChild(this, 0), last, c) and c.(NullnessCompletion).isNull()
     }
 
     final override predicate first(AstNode first) { first(getExprChild(this, 0), first) }
@@ -443,24 +615,25 @@ module Expressions {
       exists(int i |
         last(getExprChild(this, i), pred, c) and
         c instanceof NormalCompletion and
+        (if i = 0 then not c.(NullnessCompletion).isNull() else any()) and
         first(getExprChild(this, i + 1), succ)
       )
       or
       // Flow from last element of last child to first accessor call
       last(getLastExprChild(this), pred, c) and
-      succ = this.getCall(0) and
+      succ = this.getAccess(0) and
       c instanceof NormalCompletion
       or
       // Flow from one call to the next
-      exists(int i | pred = this.getCall(i) |
-        succ = this.getCall(i + 1) and
+      exists(int i | pred = this.getAccess(i) |
+        succ = this.getAccess(i + 1) and
         c.isValidFor(pred) and
         c instanceof NormalCompletion
       )
       or
       // Post-order: flow from last call to element itself
-      exists(int last | last = max(int i | exists(this.getCall(i))) |
-        pred = this.getCall(last) and
+      exists(int last | last = max(int i | exists(this.getAccess(i))) |
+        pred = this.getAccess(last) and
         succ = this and
         c.isValidFor(pred) and
         c instanceof NormalCompletion
@@ -534,7 +707,8 @@ module Expressions {
     }
   }
 
-  private class NullCoalescingExprTree extends PostOrderTree instanceof NullCoalescingExpr {
+  private class NullCoalescingOperationTree extends PostOrderTree instanceof NullCoalescingOperation
+  {
     final override predicate propagatesAbnormal(AstNode child) {
       child in [super.getLeftOperand(), super.getRightOperand()]
     }
@@ -585,31 +759,13 @@ module Expressions {
     }
   }
 
-  /**
-   * An assignment operation that has an expanded version. We use the expanded
-   * version in the control flow graph in order to get better data flow / taint
-   * tracking.
-   */
-  private class AssignOperationWithExpandedAssignment extends ControlFlowTree instanceof AssignOperation
-  {
-    private Expr expanded;
-
-    AssignOperationWithExpandedAssignment() { expanded = this.getExpandedAssignment() }
-
-    final override predicate first(AstNode first) { first(expanded, first) }
-
-    final override predicate last(AstNode last, Completion c) { last(expanded, last, c) }
-
-    final override predicate propagatesAbnormal(AstNode child) { none() }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
-  }
-
   /** A conditionally qualified expression. */
   private class ConditionallyQualifiedExpr extends PostOrderTree instanceof QualifiableExpr {
     private Expr qualifier;
 
-    ConditionallyQualifiedExpr() { this.isConditional() and qualifier = getExprChild(this, 0) }
+    ConditionallyQualifiedExpr() {
+      this.isConditional() and qualifier = getExprChild(this, 0) and not this instanceof WriteAccess
+    }
 
     final override predicate propagatesAbnormal(AstNode child) { child = qualifier }
 
@@ -837,13 +993,7 @@ module Expressions {
         last(this, pred, c) and
         con = super.getConstructor() and
         comp = getCompilation(this.getFile()) and
-        c instanceof NormalCompletion
-      |
-        // Flow from constructor initializer to first member initializer
-        first(InitializerSplitting::constructorInitializeOrder(con, comp, 0), succ)
-        or
-        // Flow from constructor initializer to first element of constructor body
-        not exists(InitializerSplitting::constructorInitializeOrder(con, comp, _)) and
+        c instanceof NormalCompletion and
         first(con.getBody(comp), succ)
       )
     }
@@ -1101,10 +1251,11 @@ module Statements {
       c instanceof NormalCompletion
       or
       // A statement exits with a `break` completion
-      last(super.getStmt(_), last, c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
+      last(SwithStmtInternal::getStmt(this, _), last,
+        c.(NestedBreakCompletion).getAnInnerCompatibleCompletion())
       or
       // A statement exits abnormally
-      last(super.getStmt(_), last, c) and
+      last(SwithStmtInternal::getStmt(this, _), last, c) and
       not c instanceof BreakCompletion and
       not c instanceof NormalCompletion and
       not any(LabeledStmtTree t |
@@ -1113,8 +1264,8 @@ module Statements {
       or
       // Last case exits with a non-match
       exists(CaseStmt cs, int last_ |
-        last_ = max(int i | exists(super.getCase(i))) and
-        cs = super.getCase(last_)
+        last_ = max(int i | exists(SwithStmtInternal::getCase(this, i))) and
+        cs = SwithStmtInternal::getCase(this, last_)
       |
         last(cs.getPattern(), last, c) and
         not c.(MatchingCompletion).isMatch()
@@ -1133,22 +1284,22 @@ module Statements {
       c instanceof SimpleCompletion
       or
       // Flow from last element of non-`case` statement `i` to first element of statement `i+1`
-      exists(int i | last(super.getStmt(i), pred, c) |
-        not super.getStmt(i) instanceof CaseStmt and
+      exists(int i | last(SwithStmtInternal::getStmt(this, i), pred, c) |
+        not SwithStmtInternal::getStmt(this, i) instanceof CaseStmt and
         c instanceof NormalCompletion and
-        first(super.getStmt(i + 1), succ)
+        first(SwithStmtInternal::getStmt(this, i + 1), succ)
       )
       or
       // Flow from last element of `case` statement `i` to first element of statement `i+1`
       exists(int i, Stmt body |
-        body = super.getStmt(i).(CaseStmt).getBody() and
+        body = caseStmtGetBody(SwithStmtInternal::getStmt(this, i)) and
         // in case of fall-through cases, make sure to not jump from their shared body back
         // to one of the fall-through cases
-        not body = super.getStmt(i + 1).(CaseStmt).getBody() and
+        not body = caseStmtGetBody(SwithStmtInternal::getStmt(this, i + 1)) and
         last(body, pred, c)
       |
         c instanceof NormalCompletion and
-        first(super.getStmt(i + 1), succ)
+        first(SwithStmtInternal::getStmt(this, i + 1), succ)
       )
     }
   }
@@ -1164,7 +1315,7 @@ module Statements {
       not c.(MatchingCompletion).isMatch()
       or
       // Case body exits with any completion
-      last(super.getBody(), last, c)
+      last(caseStmtGetBody(this), last, c)
     }
 
     final override predicate succ(AstNode pred, AstNode succ, Completion c) {
@@ -1365,7 +1516,7 @@ module Statements {
   /** Gets a child of `cfe` that is in CFG scope `scope`. */
   pragma[noinline]
   private ControlFlowElement getAChildInScope(AstNode cfe, Callable scope) {
-    result = getAChild(cfe) and
+    result = cfe.getAChild() and
     scope = result.getEnclosingCallable()
   }
 

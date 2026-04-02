@@ -103,3 +103,18 @@ void test_callWithArgument() {
 	callWithArgument(StructWithOperatorCall_has_constructor_2(), x);
 	callWithArgument(StructWithOperatorCall_no_constructor_2(), x);
 }
+
+template<int N, typename T>
+T callWithNonTypeTemplate(const T&);
+
+template<typename T, int N>
+T callWithNonTypeTemplate(const T&);
+
+void test_callWithNonTypeTemplate() {
+	int x = ymlSource();
+	int y1 = callWithNonTypeTemplate<10, int>(x);
+	ymlSink(y1); // $ MISSING: ir
+
+	int y2 = callWithNonTypeTemplate<int, 10>(x);
+	ymlSink(y2); // $ ir
+}

@@ -120,6 +120,12 @@ namespace Semmle.Util
         bool IsMacOs();
 
         /// <summary>
+        /// Gets a value indicating whether we are running on Linux.
+        /// </summary>
+        /// <returns>True if we are running on Linux.</returns>
+        bool IsLinux();
+
+        /// <summary>
         /// Gets a value indicating whether we are running on Apple Silicon.
         /// </summary>
         /// <returns>True if we are running on Apple Silicon.</returns>
@@ -245,6 +251,8 @@ namespace Semmle.Util
         bool IBuildActions.IsWindows() => Win32.IsWindows();
 
         bool IBuildActions.IsMacOs() => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+        bool IBuildActions.IsLinux() => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
 
         bool IBuildActions.IsRunningOnAppleSilicon()
         {

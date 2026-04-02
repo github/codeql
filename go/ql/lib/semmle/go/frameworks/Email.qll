@@ -1,4 +1,6 @@
 /** Provides classes for working with email-related APIs. */
+overlay[local?]
+module;
 
 import go
 

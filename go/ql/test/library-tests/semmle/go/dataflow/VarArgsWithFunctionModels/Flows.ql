@@ -4,6 +4,7 @@ import ModelValidation
 import utils.test.InlineFlowTest
 import DefaultFlowTest
 
+overlay[local]
 class SummaryModelTest extends DataFlow::FunctionModel {
   FunctionInput inp;
   FunctionOutput outp;

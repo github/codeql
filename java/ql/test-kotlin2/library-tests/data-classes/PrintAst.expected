@@ -93,7 +93,7 @@ dc.kt:
 #    0|                 0: [BooleanLiteral] false
 #    0|         2: [LocalVariableDeclStmt] var ...;
 #    0|           1: [LocalVariableDeclExpr] tmp0_other_with_cast
-#    0|             0: [CastExpr] (...)...
+#    0|             0: [ImplicitCastExpr] <implicit cast>
 #    0|               0: [TypeAccess] ProtoMapValue
 #    0|               1: [VarAccess] other
 #    0|         3: [ExprStmt] <Expr>;

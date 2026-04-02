@@ -22,26 +22,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            var operatorKind = OperatorKind;
-            if (operatorKind.HasValue)
-            {
-                // Convert assignment such as `a += b` into `a = a + b`.
-                var simpleAssignExpr = new Expression(new ExpressionInfo(Context, Type, Location, ExprKind.SIMPLE_ASSIGN, this, 2, isCompilerGenerated: true, null));
-                Create(Context, Syntax.Left, simpleAssignExpr, 1);
-                var opexpr = new Expression(new ExpressionInfo(Context, Type, Location, operatorKind.Value, simpleAssignExpr, 0, isCompilerGenerated: true, null));
-                Create(Context, Syntax.Left, opexpr, 0, isCompilerGenerated: true);
-                Create(Context, Syntax.Right, opexpr, 1);
-                opexpr.OperatorCall(trapFile, Syntax);
-            }
-            else
-            {
-                Create(Context, Syntax.Left, this, 1);
-                Create(Context, Syntax.Right, this, 0);
+            Create(Context, Syntax.Left, this, 0);
+            Create(Context, Syntax.Right, this, 1);
 
-                if (Kind == ExprKind.ADD_EVENT || Kind == ExprKind.REMOVE_EVENT)
-                {
-                    OperatorCall(trapFile, Syntax);
-                }
+            if (Kind != ExprKind.SIMPLE_ASSIGN && Kind != ExprKind.ASSIGN_COALESCE)
+            {
+                OperatorCall(trapFile, Syntax);
             }
         }
 
@@ -108,56 +94,5 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             return kind;
         }
-
-        /// <summary>
-        /// Gets the kind of this assignment operator (<code>null</code> if the
-        /// assignment is not an assignment operator). For example, the operator
-        /// kind of `*=` is `*`.
-        /// </summary>
-        private ExprKind? OperatorKind
-        {
-            get
-            {
-                var kind = Kind;
-                if (kind == ExprKind.REMOVE_EVENT || kind == ExprKind.ADD_EVENT || kind == ExprKind.SIMPLE_ASSIGN)
-                    return null;
-
-                if (CallType.AdjustKind(kind) == ExprKind.OPERATOR_INVOCATION)
-                    return ExprKind.OPERATOR_INVOCATION;
-
-                switch (kind)
-                {
-                    case ExprKind.ASSIGN_ADD:
-                        return ExprKind.ADD;
-                    case ExprKind.ASSIGN_AND:
-                        return ExprKind.BIT_AND;
-                    case ExprKind.ASSIGN_DIV:
-                        return ExprKind.DIV;
-                    case ExprKind.ASSIGN_LSHIFT:
-                        return ExprKind.LSHIFT;
-                    case ExprKind.ASSIGN_MUL:
-                        return ExprKind.MUL;
-                    case ExprKind.ASSIGN_OR:
-                        return ExprKind.BIT_OR;
-                    case ExprKind.ASSIGN_REM:
-                        return ExprKind.REM;
-                    case ExprKind.ASSIGN_RSHIFT:
-                        return ExprKind.RSHIFT;
-                    case ExprKind.ASSIGN_URSHIFT:
-                        return ExprKind.URSHIFT;
-                    case ExprKind.ASSIGN_SUB:
-                        return ExprKind.SUB;
-                    case ExprKind.ASSIGN_XOR:
-                        return ExprKind.BIT_XOR;
-                    case ExprKind.ASSIGN_COALESCE:
-                        return ExprKind.NULL_COALESCING;
-                    default:
-                        Context.ModelError(Syntax, $"Couldn't unfold assignment of type {kind}");
-                        return ExprKind.UNKNOWN;
-                }
-            }
-        }
-
-        public new CallType CallType => GetCallType(Context, Syntax);
     }
 }

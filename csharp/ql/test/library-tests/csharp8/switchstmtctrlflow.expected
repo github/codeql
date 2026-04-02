@@ -5,8 +5,9 @@
 | patterns.cs:34:13:34:38 | MyStruct s = ... | patterns.cs:36:9:44:9 | switch (...) {...} | semmle.label | successor |
 | patterns.cs:34:17:34:38 | object creation of type MyStruct | patterns.cs:34:36:34:36 | 0 | semmle.label | successor |
 | patterns.cs:34:30:34:38 | { ..., ... } | patterns.cs:34:13:34:38 | MyStruct s = ... | semmle.label | successor |
+| patterns.cs:34:32:34:32 | access to field X | patterns.cs:34:32:34:36 | ... = ... | semmle.label | successor |
 | patterns.cs:34:32:34:36 | ... = ... | patterns.cs:34:30:34:38 | { ..., ... } | semmle.label | successor |
-| patterns.cs:34:36:34:36 | 0 | patterns.cs:34:32:34:36 | ... = ... | semmle.label | successor |
+| patterns.cs:34:36:34:36 | 0 | patterns.cs:34:32:34:32 | access to field X | semmle.label | successor |
 | patterns.cs:36:9:44:9 | switch (...) {...} | patterns.cs:36:17:36:17 | access to local variable s | semmle.label | successor |
 | patterns.cs:36:17:36:17 | access to local variable s | patterns.cs:38:13:38:47 | case ...: | semmle.label | successor |
 | patterns.cs:38:13:38:47 | case ...: | patterns.cs:38:18:38:29 | MyStruct ms1 | semmle.label | successor |

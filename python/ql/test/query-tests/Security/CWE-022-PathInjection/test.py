@@ -38,7 +38,7 @@ def normalize_then_check():
     x = source()
     y = normalize(x)
     if y.startswith("subfolder/"):
-        open(y)  # $result=OK
+        open(y)  # $ result=OK
 
 
 @app.route("/path")

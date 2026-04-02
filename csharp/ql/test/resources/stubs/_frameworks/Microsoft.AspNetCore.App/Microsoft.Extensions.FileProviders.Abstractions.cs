@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.FileProviders.Abstractions, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.FileProviders.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -45,7 +45,7 @@ namespace Microsoft
                 public string Name { get => throw null; }
                 public string PhysicalPath { get => throw null; }
             }
-            public class NullChangeToken : Microsoft.Extensions.Primitives.IChangeToken
+            public sealed class NullChangeToken : Microsoft.Extensions.Primitives.IChangeToken
             {
                 public bool ActiveChangeCallbacks { get => throw null; }
                 public bool HasChanged { get => throw null; }

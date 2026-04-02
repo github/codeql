@@ -1,5 +1,7 @@
 expressions
 | A.cs:8:16:8:16 | call to constructor Object |
+| A.cs:8:16:8:16 | call to method <object initializer> |
+| A.cs:8:16:8:16 | this access |
 | A.cs:10:13:10:16 | access to field name |
 | A.cs:10:13:10:16 | this access |
 | A.cs:10:13:10:20 | ... = ... |
@@ -34,7 +36,11 @@ expressions
 | A.cs:58:27:58:30 | this access |
 | A.cs:59:20:59:20 | access to local variable x |
 | A.cs:63:18:63:36 | call to constructor Attribute |
+| A.cs:63:18:63:36 | call to method <object initializer> |
+| A.cs:63:18:63:36 | this access |
 | A.cs:65:18:65:18 | call to constructor Object |
+| A.cs:65:18:65:18 | call to method <object initializer> |
+| A.cs:65:18:65:18 | this access |
 | Program.cs:9:17:9:20 | access to parameter args |
 | Program.cs:9:17:9:27 | access to property Length |
 | Program.cs:9:17:9:32 | ... == ... |
@@ -56,6 +62,8 @@ expressions
 | Program.cs:16:31:16:31 | access to local variable a |
 | Program.cs:16:31:16:42 | call to method ToString |
 | Program.cs:21:16:21:22 | call to constructor Object |
+| Program.cs:21:16:21:22 | call to method <object initializer> |
+| Program.cs:21:16:21:22 | this access |
 | Program.cs:23:13:23:23 | access to field programName |
 | Program.cs:23:13:23:23 | this access |
 | Program.cs:23:13:23:27 | ... = ... |
@@ -77,6 +85,8 @@ expressions
 | Program.cs:51:35:51:59 | "Program handler removed" |
 | Program.cs:57:20:57:20 | access to parameter b |
 | Program.cs:64:18:64:33 | call to constructor Attribute |
+| Program.cs:64:18:64:33 | call to method <object initializer> |
+| Program.cs:64:18:64:33 | this access |
 statements
 | A.cs:9:9:11:9 | {...} |
 | A.cs:10:13:10:21 | ...; |

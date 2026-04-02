@@ -13,7 +13,7 @@ private import semmle.code.java.security.XSS
 /**
  * Gets a name for the root package of JAX-RS.
  */
-string getAJaxRsPackage() { result in ["javax.ws.rs", "jakarta.ws.rs"] }
+string getAJaxRsPackage() { result = javaxOrJakarta() + ".ws.rs" }
 
 /**
  * Gets a name for package `subpackage` within the JAX-RS hierarchy.
@@ -42,7 +42,7 @@ class JaxWsEndpoint extends Class {
     result.isPublic() and
     not result instanceof InitializerMethod and
     not exists(Annotation a | a = result.getAnAnnotation() |
-      a.getType().hasQualifiedName(["javax", "jakarta"] + ".jws", "WebMethod") and
+      a.getType().hasQualifiedName(javaxOrJakarta() + ".jws", "WebMethod") and
       a.getValue("exclude").(BooleanLiteral).getBooleanValue() = true
     ) and
     forex(ParamOrReturn paramOrRet | paramOrRet = result.getAParameter() or paramOrRet = result |
@@ -62,8 +62,7 @@ class JaxWsEndpoint extends Class {
 /** The annotation type `@XmlJavaTypeAdapter`. */
 class XmlJavaTypeAdapter extends AnnotationType {
   XmlJavaTypeAdapter() {
-    this.hasQualifiedName(["javax", "jakarta"] + ".xml.bind.annotation.adapters",
-      "XmlJavaTypeAdapter")
+    this.hasQualifiedName(javaxOrJakarta() + ".xml.bind.annotation.adapters", "XmlJavaTypeAdapter")
   }
 }
 
@@ -292,7 +291,7 @@ class JaxRSAnnotation extends Annotation {
   JaxRSAnnotation() {
     exists(AnnotationType a |
       a = this.getType() and
-      a.getPackage().getName().regexpMatch(["javax\\.ws\\.rs(\\..*)?", "jakarta\\.ws\\.rs(\\..*)?"])
+      a.getPackage().getName().regexpMatch(javaxOrJakarta() + "\\.ws\\.rs(\\..*)?")
     )
   }
 }
@@ -424,7 +423,7 @@ private class JaxRSXssSink extends XssSink {
     exists(JaxRsResourceMethod resourceMethod, ReturnStmt rs |
       resourceMethod = any(JaxRsResourceClass resourceClass).getAResourceMethod() and
       rs.getEnclosingCallable() = resourceMethod and
-      this.asExpr() = rs.getResult()
+      this.asExpr() = rs.getExpr()
     |
       not exists(resourceMethod.getProducesAnnotation())
       or

@@ -1,5 +1,5 @@
 /**
- * @name Class QLDoc style.
+ * @name Class QLDoc style
  * @description The QLDoc for a class should start with "A", "An", or "The".
  * @kind problem
  * @problem.severity warning

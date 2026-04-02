@@ -1,5 +1,5 @@
 /**
- * @name JavaScript code execution.
+ * @name JavaScript code execution
  * @description Passing user supplied arguments to a Javascript to Python translation engine such as Js2Py can lead to remote code execution.
  * @problem.severity error
  * @security-severity 9.3

@@ -96,7 +96,7 @@ predicate probablyNeverEscapes(LocalVariableDecl v) {
   // Not assigned directly to another variable.
   not exists(Assignment a | a.getSource() = v.getAnAccess()) and
   // Not returned.
-  not exists(ReturnStmt r | r.getResult() = v.getAnAccess()) and
+  not exists(ReturnStmt r | r.getExpr() = v.getAnAccess()) and
   // All assignments are to new instances of a class.
   forex(Expr e | e = v.getAnAssignedValue() | e instanceof ClassInstanceExpr)
 }

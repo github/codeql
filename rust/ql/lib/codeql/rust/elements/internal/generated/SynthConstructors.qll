@@ -77,7 +77,6 @@ import codeql.rust.elements.internal.LifetimeParamConstructor
 import codeql.rust.elements.internal.LiteralExprConstructor
 import codeql.rust.elements.internal.LiteralPatConstructor
 import codeql.rust.elements.internal.LoopExprConstructor
-import codeql.rust.elements.internal.MacroBlockExprConstructor
 import codeql.rust.elements.internal.MacroCallConstructor
 import codeql.rust.elements.internal.MacroDefConstructor
 import codeql.rust.elements.internal.MacroExprConstructor

@@ -1,5 +1,5 @@
 /**
- * @name Key points-to fails for expression.
+ * @name Key points-to fails for expression
  * @description Expression does not "point-to" an object which prevents further points-to analysis.
  * @kind problem
  * @problem.severity info

@@ -262,10 +262,10 @@ private predicate reaches(Expr src, Argument arg) {
   any(StartComponentMethodCall ma).getIntentArg() = arg and
   src = arg
   or
-  exists(Expr mid, BaseSsa::BaseSsaVariable ssa, BaseSsa::BaseSsaUpdate upd |
+  exists(Expr mid, BaseSsa::SsaDefinition ssa, BaseSsa::SsaExplicitWrite upd |
     reaches(mid, arg) and
-    mid = ssa.getAUse() and
-    upd = ssa.getAnUltimateLocalDefinition() and
+    mid = ssa.getARead() and
+    upd = ssa.getAnUltimateDefinition() and
     src = upd.getDefiningExpr().(VariableAssign).getSource()
   )
   or
@@ -279,7 +279,7 @@ private predicate reaches(Expr src, Argument arg) {
   or
   exists(StmtExpr e | e.getResultExpr() = src | reaches(e, arg))
   or
-  exists(NotNullExpr e | e.getExpr() = src | reaches(e, arg))
+  exists(NotNullExpr e | e.getOperand() = src | reaches(e, arg))
   or
   exists(WhenExpr e | e.getBranch(_).getAResult() = src | reaches(e, arg))
 }

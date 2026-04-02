@@ -1,15 +1,143 @@
-| test.cpp:314:5:314:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:309:13:309:14 | st | st |
-| test.cpp:327:5:327:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:322:13:322:14 | st | st |
-| test.cpp:338:6:338:10 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:333:62:333:63 | st | st |
-| test.cpp:484:5:484:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:480:13:480:14 | st | st |
-| test.cpp:497:5:497:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:492:13:492:14 | st | st |
-| test.cpp:509:5:509:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:505:13:505:14 | st | st |
-| test.cpp:606:11:606:17 | tm_year | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:56:6:56:12 | tm_year | tm_year | test.cpp:602:12:602:19 | timeinfo | timeinfo |
-| test.cpp:634:11:634:17 | tm_year | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:56:6:56:12 | tm_year | tm_year | test.cpp:628:12:628:19 | timeinfo | timeinfo |
-| test.cpp:636:11:636:17 | tm_year | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:56:6:56:12 | tm_year | tm_year | test.cpp:628:12:628:19 | timeinfo | timeinfo |
-| test.cpp:640:5:640:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:629:13:629:14 | st | st |
-| test.cpp:642:5:642:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:629:13:629:14 | st | st |
-| test.cpp:718:5:718:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:712:13:712:14 | st | st |
-| test.cpp:731:5:731:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:725:13:725:14 | st | st |
-| test.cpp:732:5:732:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:725:13:725:14 | st | st |
-| test.cpp:733:5:733:9 | wYear | Field $@ on variable $@ has been modified, but no appropriate check for LeapYear was found. | test.cpp:12:7:12:11 | wYear | wYear | test.cpp:725:13:725:14 | st | st |
+#select
+| test.cpp:422:2:422:14 | ... += ... | test.cpp:422:2:422:14 | ... += ... | test.cpp:422:2:422:14 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:440:2:440:11 | ... ++ | test.cpp:440:2:440:11 | ... ++ | test.cpp:440:2:440:11 | ... ++ | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:456:2:456:12 | ... ++ | test.cpp:456:2:456:12 | ... ++ | test.cpp:456:2:456:12 | ... ++ | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:681:2:681:23 | ... += ... | test.cpp:681:2:681:23 | ... += ... | test.cpp:681:2:681:23 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:813:2:813:40 | ... = ... | test.cpp:813:21:813:40 | ... + ... | test.cpp:813:2:813:40 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:818:2:818:24 | ... = ... | test.cpp:818:13:818:24 | ... + ... | test.cpp:818:2:818:24 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:951:3:951:25 | ... = ... | test.cpp:951:14:951:25 | ... + ... | test.cpp:951:3:951:25 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:969:3:969:12 | ... ++ | test.cpp:969:3:969:12 | ... ++ | test.cpp:969:3:969:12 | ... ++ | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1031:2:1031:11 | ... ++ | test.cpp:1031:2:1031:11 | ... ++ | test.cpp:1031:2:1031:11 | ... ++ | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1051:16:1051:23 | increment_arg output argument | test.cpp:1039:2:1039:4 | ... ++ | test.cpp:1051:16:1051:23 | increment_arg output argument | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1055:27:1055:35 | increment_arg_by_pointer output argument | test.cpp:1043:2:1043:7 | ... ++ | test.cpp:1055:27:1055:35 | increment_arg_by_pointer output argument | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1109:2:1109:26 | ... = ... | test.cpp:1109:14:1109:26 | ... - ... | test.cpp:1109:2:1109:26 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1160:2:1160:19 | ... = ... | test.cpp:1158:2:1158:15 | ... += ... | test.cpp:1160:2:1160:19 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1199:2:1199:28 | ... = ... | test.cpp:1199:16:1199:28 | ... + ... | test.cpp:1199:2:1199:28 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1214:2:1214:28 | ... = ... | test.cpp:1214:16:1214:28 | ... + ... | test.cpp:1214:2:1214:28 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1228:2:1228:28 | ... = ... | test.cpp:1228:16:1228:28 | ... + ... | test.cpp:1228:2:1228:28 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1242:2:1242:26 | ... = ... | test.cpp:1242:14:1242:26 | ... + ... | test.cpp:1242:2:1242:26 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1256:2:1256:26 | ... = ... | test.cpp:1256:14:1256:26 | ... + ... | test.cpp:1256:2:1256:26 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1262:2:1262:28 | ... = ... | test.cpp:1262:16:1262:28 | ... + ... | test.cpp:1262:2:1262:28 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1274:2:1274:28 | ... = ... | test.cpp:1274:16:1274:28 | ... + ... | test.cpp:1274:2:1274:28 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1287:2:1287:26 | ... = ... | test.cpp:1287:14:1287:26 | ... + ... | test.cpp:1287:2:1287:26 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1299:2:1299:26 | ... = ... | test.cpp:1299:14:1299:26 | ... + ... | test.cpp:1299:2:1299:26 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1341:2:1341:17 | ... = ... | test.cpp:1432:12:1432:17 | ... + ... | test.cpp:1341:2:1341:17 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1341:2:1341:17 | ... = ... | test.cpp:1446:9:1446:16 | ... + ... | test.cpp:1341:2:1341:17 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1341:2:1341:17 | ... = ... | test.cpp:1458:9:1458:16 | ... + ... | test.cpp:1341:2:1341:17 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1515:2:1515:15 | ... = ... | test.cpp:1512:2:1512:10 | ... += ... | test.cpp:1515:2:1515:15 | ... = ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1545:2:1545:22 | ... += ... | test.cpp:1545:2:1545:22 | ... += ... | test.cpp:1545:2:1545:22 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1553:2:1553:22 | ... += ... | test.cpp:1553:2:1553:22 | ... += ... | test.cpp:1553:2:1553:22 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1632:2:1632:22 | ... += ... | test.cpp:1632:2:1632:22 | ... += ... | test.cpp:1632:2:1632:22 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1644:2:1644:22 | ... += ... | test.cpp:1644:2:1644:22 | ... += ... | test.cpp:1644:2:1644:22 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1677:2:1677:22 | ... += ... | test.cpp:1677:2:1677:22 | ... += ... | test.cpp:1677:2:1677:22 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+| test.cpp:1753:2:1753:22 | ... += ... | test.cpp:1753:2:1753:22 | ... += ... | test.cpp:1753:2:1753:22 | ... += ... | Year field has been modified, but no appropriate check for LeapYear was found. |
+edges
+| test.cpp:813:21:813:40 | ... + ... | test.cpp:813:2:813:40 | ... = ... | provenance |  |
+| test.cpp:818:13:818:24 | ... + ... | test.cpp:818:2:818:24 | ... = ... | provenance |  |
+| test.cpp:951:14:951:25 | ... + ... | test.cpp:951:3:951:25 | ... = ... | provenance |  |
+| test.cpp:1038:26:1038:26 | *x | test.cpp:1051:16:1051:23 | increment_arg output argument | provenance |  |
+| test.cpp:1039:2:1039:4 | ... ++ | test.cpp:1038:26:1038:26 | *x | provenance |  |
+| test.cpp:1042:37:1042:37 | *x | test.cpp:1055:27:1055:35 | increment_arg_by_pointer output argument | provenance |  |
+| test.cpp:1043:2:1043:7 | ... ++ | test.cpp:1042:37:1042:37 | *x | provenance |  |
+| test.cpp:1109:14:1109:26 | ... - ... | test.cpp:1109:2:1109:26 | ... = ... | provenance |  |
+| test.cpp:1158:2:1158:15 | ... += ... | test.cpp:1160:2:1160:19 | ... = ... | provenance |  |
+| test.cpp:1199:16:1199:28 | ... + ... | test.cpp:1199:2:1199:28 | ... = ... | provenance |  |
+| test.cpp:1214:16:1214:28 | ... + ... | test.cpp:1214:2:1214:28 | ... = ... | provenance |  |
+| test.cpp:1228:16:1228:28 | ... + ... | test.cpp:1228:2:1228:28 | ... = ... | provenance |  |
+| test.cpp:1242:14:1242:26 | ... + ... | test.cpp:1242:2:1242:26 | ... = ... | provenance |  |
+| test.cpp:1256:14:1256:26 | ... + ... | test.cpp:1256:2:1256:26 | ... = ... | provenance |  |
+| test.cpp:1262:16:1262:28 | ... + ... | test.cpp:1262:2:1262:28 | ... = ... | provenance |  |
+| test.cpp:1274:16:1274:28 | ... + ... | test.cpp:1274:2:1274:28 | ... = ... | provenance |  |
+| test.cpp:1287:14:1287:26 | ... + ... | test.cpp:1287:2:1287:26 | ... = ... | provenance |  |
+| test.cpp:1299:14:1299:26 | ... + ... | test.cpp:1299:2:1299:26 | ... = ... | provenance |  |
+| test.cpp:1338:20:1338:23 | year | test.cpp:1341:2:1341:17 | ... = ... | provenance |  |
+| test.cpp:1351:15:1351:22 | ... + ... | test.cpp:1351:3:1351:22 | ... = ... | provenance |  |
+| test.cpp:1356:12:1356:17 | ... + ... | test.cpp:1338:20:1338:23 | year | provenance |  |
+| test.cpp:1365:15:1365:22 | ... + ... | test.cpp:1365:3:1365:22 | ... = ... | provenance |  |
+| test.cpp:1375:3:1375:20 | ... = ... | test.cpp:1377:12:1377:18 | yeartmp | provenance |  |
+| test.cpp:1375:13:1375:20 | ... + ... | test.cpp:1375:3:1375:20 | ... = ... | provenance |  |
+| test.cpp:1377:12:1377:18 | yeartmp | test.cpp:1338:20:1338:23 | year | provenance |  |
+| test.cpp:1420:15:1420:22 | ... + ... | test.cpp:1420:3:1420:22 | ... = ... | provenance |  |
+| test.cpp:1425:12:1425:17 | ... + ... | test.cpp:1338:20:1338:23 | year | provenance |  |
+| test.cpp:1432:12:1432:17 | ... + ... | test.cpp:1338:20:1338:23 | year | provenance |  |
+| test.cpp:1446:2:1446:16 | ... = ... | test.cpp:1450:3:1450:18 | ... = ... | provenance |  |
+| test.cpp:1446:2:1446:16 | ... = ... | test.cpp:1455:12:1455:15 | year | provenance |  |
+| test.cpp:1446:9:1446:16 | ... + ... | test.cpp:1446:2:1446:16 | ... = ... | provenance |  |
+| test.cpp:1455:12:1455:15 | year | test.cpp:1338:20:1338:23 | year | provenance |  |
+| test.cpp:1458:2:1458:16 | ... = ... | test.cpp:1464:12:1464:15 | year | provenance |  |
+| test.cpp:1458:9:1458:16 | ... + ... | test.cpp:1458:2:1458:16 | ... = ... | provenance |  |
+| test.cpp:1464:12:1464:15 | year | test.cpp:1338:20:1338:23 | year | provenance |  |
+| test.cpp:1512:2:1512:10 | ... += ... | test.cpp:1515:2:1515:15 | ... = ... | provenance |  |
+nodes
+| test.cpp:422:2:422:14 | ... += ... | semmle.label | ... += ... |
+| test.cpp:440:2:440:11 | ... ++ | semmle.label | ... ++ |
+| test.cpp:456:2:456:12 | ... ++ | semmle.label | ... ++ |
+| test.cpp:482:3:482:12 | ... ++ | semmle.label | ... ++ |
+| test.cpp:681:2:681:23 | ... += ... | semmle.label | ... += ... |
+| test.cpp:813:2:813:40 | ... = ... | semmle.label | ... = ... |
+| test.cpp:813:21:813:40 | ... + ... | semmle.label | ... + ... |
+| test.cpp:818:2:818:24 | ... = ... | semmle.label | ... = ... |
+| test.cpp:818:13:818:24 | ... + ... | semmle.label | ... + ... |
+| test.cpp:872:4:872:15 | ... ++ | semmle.label | ... ++ |
+| test.cpp:951:3:951:25 | ... = ... | semmle.label | ... = ... |
+| test.cpp:951:14:951:25 | ... + ... | semmle.label | ... + ... |
+| test.cpp:969:3:969:12 | ... ++ | semmle.label | ... ++ |
+| test.cpp:1031:2:1031:11 | ... ++ | semmle.label | ... ++ |
+| test.cpp:1038:26:1038:26 | *x | semmle.label | *x |
+| test.cpp:1039:2:1039:4 | ... ++ | semmle.label | ... ++ |
+| test.cpp:1042:37:1042:37 | *x | semmle.label | *x |
+| test.cpp:1043:2:1043:7 | ... ++ | semmle.label | ... ++ |
+| test.cpp:1051:16:1051:23 | increment_arg output argument | semmle.label | increment_arg output argument |
+| test.cpp:1055:27:1055:35 | increment_arg_by_pointer output argument | semmle.label | increment_arg_by_pointer output argument |
+| test.cpp:1109:2:1109:26 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1109:14:1109:26 | ... - ... | semmle.label | ... - ... |
+| test.cpp:1158:2:1158:15 | ... += ... | semmle.label | ... += ... |
+| test.cpp:1160:2:1160:19 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1199:2:1199:28 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1199:16:1199:28 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1214:2:1214:28 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1214:16:1214:28 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1228:2:1228:28 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1228:16:1228:28 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1242:2:1242:26 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1242:14:1242:26 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1256:2:1256:26 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1256:14:1256:26 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1262:2:1262:28 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1262:16:1262:28 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1274:2:1274:28 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1274:16:1274:28 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1287:2:1287:26 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1287:14:1287:26 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1299:2:1299:26 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1299:14:1299:26 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1338:20:1338:23 | year | semmle.label | year |
+| test.cpp:1341:2:1341:17 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1351:3:1351:22 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1351:15:1351:22 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1356:12:1356:17 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1365:3:1365:22 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1365:15:1365:22 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1375:3:1375:20 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1375:13:1375:20 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1377:12:1377:18 | yeartmp | semmle.label | yeartmp |
+| test.cpp:1420:3:1420:22 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1420:15:1420:22 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1425:12:1425:17 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1432:12:1432:17 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1446:2:1446:16 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1446:9:1446:16 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1450:3:1450:18 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1455:12:1455:15 | year | semmle.label | year |
+| test.cpp:1458:2:1458:16 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1458:9:1458:16 | ... + ... | semmle.label | ... + ... |
+| test.cpp:1464:12:1464:15 | year | semmle.label | year |
+| test.cpp:1512:2:1512:10 | ... += ... | semmle.label | ... += ... |
+| test.cpp:1515:2:1515:15 | ... = ... | semmle.label | ... = ... |
+| test.cpp:1545:2:1545:22 | ... += ... | semmle.label | ... += ... |
+| test.cpp:1553:2:1553:22 | ... += ... | semmle.label | ... += ... |
+| test.cpp:1632:2:1632:22 | ... += ... | semmle.label | ... += ... |
+| test.cpp:1644:2:1644:22 | ... += ... | semmle.label | ... += ... |
+| test.cpp:1677:2:1677:22 | ... += ... | semmle.label | ... += ... |
+| test.cpp:1753:2:1753:22 | ... += ... | semmle.label | ... += ... |
+subpaths

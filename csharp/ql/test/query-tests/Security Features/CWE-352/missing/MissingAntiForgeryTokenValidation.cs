@@ -29,3 +29,34 @@ public class HomeController : Controller
     {
     }
 }
+
+// GOOD: Base class has ValidateAntiForgeryToken attribute
+[ValidateAntiForgeryToken]
+public abstract class BaseController : Controller
+{
+}
+
+public class DerivedController : BaseController
+{
+    // GOOD: Inherits antiforgery validation from base class
+    [HttpPost]
+    public ActionResult InheritedValidation()
+    {
+        return View();
+    }
+}
+
+// BAD: Base class without antiforgery attribute
+public abstract class UnprotectedBaseController : Controller
+{
+}
+
+public class DerivedUnprotectedController : UnprotectedBaseController
+{
+    // BAD: No antiforgery validation on this or any base class
+    [HttpPost]
+    public ActionResult NoInheritedValidation()
+    {
+        return View();
+    }
+}

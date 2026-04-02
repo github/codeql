@@ -2,6 +2,8 @@
  * Provides classes for working with remote flow sources, sinks and taint propagators
  * from the `github.com/beego/beego` package.
  */
+overlay[local?]
+module;
 
 import go
 import semmle.go.security.Xss
@@ -163,14 +165,6 @@ module Beego {
     // because there are better methods to do this. Assume the Content-Type could
     // be anything.
     override string getAContentType() { none() }
-  }
-
-  private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
-    HtmlQuoteSanitizer() {
-      exists(DataFlow::CallNode c | c.getTarget().hasQualifiedName(packagePath(), "Htmlquote") |
-        this = c.getArgument(0)
-      )
-    }
   }
 
   private class UtilsTaintPropagators extends TaintTracking::FunctionModel {

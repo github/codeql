@@ -1,7 +1,7 @@
 deprecated module;
 
-import experimental.semmle.code.java.security.FileAndFormRemoteSource
 import experimental.semmle.code.java.security.DecompressionBomb::DecompressionBomb
+import semmle.code.java.dataflow.FlowSources
 
 module DecompressionBombsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }

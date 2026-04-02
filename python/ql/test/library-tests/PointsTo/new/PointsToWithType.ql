@@ -1,6 +1,6 @@
 import python
 import Util
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 from ControlFlowNode f, Object o, ClassObject c, ControlFlowNode x
 where PointsTo::points_to(f, _, o, c, x)

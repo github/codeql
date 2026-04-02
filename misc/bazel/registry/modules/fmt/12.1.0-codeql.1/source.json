@@ -1,0 +1,9 @@
+{
+    "url": "https://github.com/fmtlib/fmt/releases/download/12.1.0/fmt-12.1.0.zip",
+    "integrity": "sha256-aV/Rl/pa/4/Ge18rvBEEkKh1zfekFoashRL7SA+orac=",
+    "strip_prefix": "fmt-12.1.0",
+    "overlay": {
+        "BUILD.bazel": "sha256-T6CBBdPY92Iloq9NrMjm9kQeQA3nTZJeym6xG5cclOQ=",
+        "MODULE.bazel": "sha256-Dgke/2OMsffv9jPSDxIwIgJIb4L77VW6lR8TsNHsekg="
+    }
+}

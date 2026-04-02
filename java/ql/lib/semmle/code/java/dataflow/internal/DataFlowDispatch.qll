@@ -12,7 +12,11 @@ private import semmle.code.java.dispatch.internal.Unification
 
 private module DispatchImpl {
   private predicate hasHighConfidenceTarget(Call c) {
-    exists(Impl::Public::SummarizedCallable sc | sc.getACall() = c and not sc.applyGeneratedModel())
+    exists(Impl::Public::SummarizedCallable sc, Impl::Public::Provenance p |
+      sc.getACall() = c and
+      sc.propagatesFlow(_, _, _, p, _, _) and
+      not p.isGenerated()
+    )
     or
     exists(Impl::Public::NeutralSummaryCallable nc | nc.getACall() = c and nc.hasManualModel())
     or
@@ -25,8 +29,10 @@ private module DispatchImpl {
   private predicate hasExactManualModel(Call c, Callable tgt) {
     tgt = c.getCallee().getSourceDeclaration() and
     (
-      exists(Impl::Public::SummarizedCallable sc |
-        sc.getACall() = c and sc.hasExactModel() and sc.hasManualModel()
+      exists(Impl::Public::SummarizedCallable sc, Impl::Public::Provenance p |
+        sc.getACall() = c and
+        sc.propagatesFlow(_, _, _, p, true, _) and
+        p.isManual()
       )
       or
       exists(Impl::Public::NeutralSummaryCallable nc |
@@ -57,16 +63,6 @@ private module DispatchImpl {
     exists(Call call | call = c.asCall() |
       result.asCallable() = sourceDispatch(call)
       or
-      not (
-        // Only use summarized callables with generated summaries in case
-        // the static call target is not in the source code.
-        // Note that if applyGeneratedModel holds it implies that there doesn't
-        // exist a manual model.
-        exists(Callable staticTarget | staticTarget = call.getCallee().getSourceDeclaration() |
-          staticTarget.fromSource() and not staticTarget.isStub()
-        ) and
-        result.asSummarizedCallable().applyGeneratedModel()
-      ) and
       result.asSummarizedCallable().getACall() = call
     )
   }

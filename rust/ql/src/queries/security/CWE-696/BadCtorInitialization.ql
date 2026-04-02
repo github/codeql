@@ -30,10 +30,8 @@ class CtorAttr extends Attr {
 /**
  * A call into the Rust standard library, that is, a sink for this query.
  */
-class StdCall extends Expr {
-  StdCall() {
-    this.(CallExprBase).getStaticTarget().getCanonicalPath().matches(["std::%", "<std::%"])
-  }
+class StdCall extends Call {
+  StdCall() { this.getStaticTarget().getCanonicalPath().matches(["std::%", "<std::%"]) }
 }
 
 class PathElement = AstNode;
@@ -56,11 +54,11 @@ predicate edgesFwd(PathElement pred, PathElement succ) {
   or
   // [forwards reachable] callable -> enclosed call
   edgesFwd(_, pred) and
-  pred = succ.(CallExprBase).getEnclosingCallable()
+  pred = succ.(Call).getEnclosingCallable()
   or
   // [forwards reachable] call -> target callable
   edgesFwd(_, pred) and
-  pred.(CallExprBase).getStaticTarget() = succ
+  pred.(Call).getStaticTarget() = succ
 }
 
 /**

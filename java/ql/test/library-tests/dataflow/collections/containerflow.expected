@@ -877,13 +877,11 @@ edges
 | B.java:404:44:404:51 | source(...) : Object | B.java:28:57:28:61 | obj : Object | provenance |  |
 | B.java:404:44:404:51 | source(...) : Object | B.java:404:18:404:52 | storeElementBlockingDeque(...) : LinkedBlockingDeque [<element>] : Object | provenance | MaD:54 |
 | B.java:404:61:404:62 | in : LinkedBlockingDeque [<element>] : Object | B.java:404:61:404:73 | getFirst(...) : Object | provenance | MaD:113 |
-| B.java:404:61:404:62 | in : LinkedBlockingDeque [<element>] : Object | B.java:404:61:404:73 | getFirst(...) : Object | provenance | MaD:274 |
 | B.java:404:61:404:73 | getFirst(...) : Object | B.java:404:81:404:83 | out | provenance |  |
 | B.java:409:18:409:52 | storeElementBlockingDeque(...) : LinkedBlockingDeque [<element>] : Object | B.java:409:61:409:62 | in : LinkedBlockingDeque [<element>] : Object | provenance |  |
 | B.java:409:44:409:51 | source(...) : Object | B.java:28:57:28:61 | obj : Object | provenance |  |
 | B.java:409:44:409:51 | source(...) : Object | B.java:409:18:409:52 | storeElementBlockingDeque(...) : LinkedBlockingDeque [<element>] : Object | provenance | MaD:54 |
 | B.java:409:61:409:62 | in : LinkedBlockingDeque [<element>] : Object | B.java:409:61:409:72 | getLast(...) : Object | provenance | MaD:114 |
-| B.java:409:61:409:62 | in : LinkedBlockingDeque [<element>] : Object | B.java:409:61:409:72 | getLast(...) : Object | provenance | MaD:275 |
 | B.java:409:61:409:72 | getLast(...) : Object | B.java:409:80:409:82 | out | provenance |  |
 | B.java:414:18:414:52 | storeElementBlockingDeque(...) : LinkedBlockingDeque [<element>] : Object | B.java:414:61:414:62 | in : LinkedBlockingDeque [<element>] : Object | provenance |  |
 | B.java:414:44:414:51 | source(...) : Object | B.java:28:57:28:61 | obj : Object | provenance |  |
@@ -914,13 +912,11 @@ edges
 | B.java:439:44:439:51 | source(...) : Object | B.java:28:57:28:61 | obj : Object | provenance |  |
 | B.java:439:44:439:51 | source(...) : Object | B.java:439:18:439:52 | storeElementBlockingDeque(...) : LinkedBlockingDeque [<element>] : Object | provenance | MaD:54 |
 | B.java:439:61:439:62 | in : LinkedBlockingDeque [<element>] : Object | B.java:439:61:439:76 | removeFirst(...) : Object | provenance | MaD:123 |
-| B.java:439:61:439:62 | in : LinkedBlockingDeque [<element>] : Object | B.java:439:61:439:76 | removeFirst(...) : Object | provenance | MaD:276 |
 | B.java:439:61:439:76 | removeFirst(...) : Object | B.java:439:84:439:86 | out | provenance |  |
 | B.java:444:18:444:52 | storeElementBlockingDeque(...) : LinkedBlockingDeque [<element>] : Object | B.java:444:61:444:62 | in : LinkedBlockingDeque [<element>] : Object | provenance |  |
 | B.java:444:44:444:51 | source(...) : Object | B.java:28:57:28:61 | obj : Object | provenance |  |
 | B.java:444:44:444:51 | source(...) : Object | B.java:444:18:444:52 | storeElementBlockingDeque(...) : LinkedBlockingDeque [<element>] : Object | provenance | MaD:54 |
 | B.java:444:61:444:62 | in : LinkedBlockingDeque [<element>] : Object | B.java:444:61:444:75 | removeLast(...) : Object | provenance | MaD:124 |
-| B.java:444:61:444:62 | in : LinkedBlockingDeque [<element>] : Object | B.java:444:61:444:75 | removeLast(...) : Object | provenance | MaD:277 |
 | B.java:444:61:444:75 | removeLast(...) : Object | B.java:444:83:444:85 | out | provenance |  |
 | B.java:449:19:449:26 | source(...) : Object | B.java:449:38:449:39 | in : Object | provenance |  |
 | B.java:449:29:449:31 | out [post update] : Deque [<element>] : Object | B.java:449:60:449:62 | out : Deque [<element>] : Object | provenance |  |
@@ -940,13 +936,11 @@ edges
 | B.java:464:19:464:26 | source(...) : Object | B.java:464:41:464:42 | in : Object | provenance |  |
 | B.java:464:29:464:31 | out [post update] : Deque [<element>] : Object | B.java:464:63:464:65 | out : Deque [<element>] : Object | provenance |  |
 | B.java:464:41:464:42 | in : Object | B.java:464:29:464:31 | out [post update] : Deque [<element>] : Object | provenance | MaD:111 |
-| B.java:464:41:464:42 | in : Object | B.java:464:29:464:31 | out [post update] : Deque [<element>] : Object | provenance | MaD:273 |
 | B.java:464:63:464:65 | out : Deque [<element>] : Object | B.java:31:28:31:42 | obj : Deque [<element>] : Object | provenance |  |
 | B.java:464:63:464:65 | out : Deque [<element>] : Object | B.java:464:51:464:66 | readElement(...) | provenance | MaD:3 |
 | B.java:469:19:469:26 | source(...) : Object | B.java:469:42:469:43 | in : Object | provenance |  |
 | B.java:469:29:469:31 | out [post update] : Deque [<element>] : Object | B.java:469:64:469:66 | out : Deque [<element>] : Object | provenance |  |
 | B.java:469:42:469:43 | in : Object | B.java:469:29:469:31 | out [post update] : Deque [<element>] : Object | provenance | MaD:110 |
-| B.java:469:42:469:43 | in : Object | B.java:469:29:469:31 | out [post update] : Deque [<element>] : Object | provenance | MaD:272 |
 | B.java:469:64:469:66 | out : Deque [<element>] : Object | B.java:31:28:31:42 | obj : Deque [<element>] : Object | provenance |  |
 | B.java:469:64:469:66 | out : Deque [<element>] : Object | B.java:469:52:469:67 | readElement(...) | provenance | MaD:3 |
 | B.java:474:26:474:60 | storeElementBlockingDeque(...) : LinkedBlockingDeque [<element>] : Object | B.java:474:69:474:70 | in : LinkedBlockingDeque [<element>] : Object | provenance |  |
@@ -1095,7 +1089,6 @@ edges
 | B.java:599:31:599:38 | source(...) : Object | B.java:599:19:599:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | provenance | MaD:214 |
 | B.java:599:48:599:78 | firstEntry(...) : Entry [<map.key>] : Object | B.java:599:97:599:99 | out : Entry [<map.key>] : Object | provenance |  |
 | B.java:599:49:599:64 | (...)... : TreeMap [<map.key>] : Object | B.java:599:48:599:78 | firstEntry(...) : Entry [<map.key>] : Object | provenance | MaD:233 |
-| B.java:599:49:599:64 | (...)... : TreeMap [<map.key>] : Object | B.java:599:48:599:78 | firstEntry(...) : Entry [<map.key>] : Object | provenance | MaD:279 |
 | B.java:599:97:599:99 | out : Entry [<map.key>] : Object | B.java:43:29:43:46 | obj : Entry [<map.key>] : Object | provenance |  |
 | B.java:599:97:599:99 | out : Entry [<map.key>] : Object | B.java:599:86:599:100 | readMapKey(...) | provenance | MaD:174 |
 | B.java:604:19:604:41 | storeMapValue(...) : Map [<map.value>] : Object | B.java:604:51:604:66 | (...)... : NavigableMap [<map.value>] : Object | provenance |  |
@@ -1103,7 +1096,6 @@ edges
 | B.java:604:33:604:40 | source(...) : Object | B.java:604:19:604:41 | storeMapValue(...) : Map [<map.value>] : Object | provenance | MaD:215 |
 | B.java:604:50:604:80 | firstEntry(...) : Entry [<map.value>] : Object | B.java:604:101:604:103 | out : Entry [<map.value>] : Object | provenance |  |
 | B.java:604:51:604:66 | (...)... : NavigableMap [<map.value>] : Object | B.java:604:50:604:80 | firstEntry(...) : Entry [<map.value>] : Object | provenance | MaD:234 |
-| B.java:604:51:604:66 | (...)... : NavigableMap [<map.value>] : Object | B.java:604:50:604:80 | firstEntry(...) : Entry [<map.value>] : Object | provenance | MaD:280 |
 | B.java:604:101:604:103 | out : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | provenance |  |
 | B.java:604:101:604:103 | out : Entry [<map.value>] : Object | B.java:604:88:604:104 | readMapValue(...) | provenance | MaD:175 |
 | B.java:609:19:609:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | B.java:609:49:609:64 | (...)... : TreeMap [<map.key>] : Object | provenance |  |
@@ -1153,7 +1145,6 @@ edges
 | B.java:639:31:639:38 | source(...) : Object | B.java:639:19:639:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | provenance | MaD:214 |
 | B.java:639:48:639:77 | lastEntry(...) : Entry [<map.key>] : Object | B.java:639:96:639:98 | out : Entry [<map.key>] : Object | provenance |  |
 | B.java:639:49:639:64 | (...)... : TreeMap [<map.key>] : Object | B.java:639:48:639:77 | lastEntry(...) : Entry [<map.key>] : Object | provenance | MaD:241 |
-| B.java:639:49:639:64 | (...)... : TreeMap [<map.key>] : Object | B.java:639:48:639:77 | lastEntry(...) : Entry [<map.key>] : Object | provenance | MaD:281 |
 | B.java:639:96:639:98 | out : Entry [<map.key>] : Object | B.java:43:29:43:46 | obj : Entry [<map.key>] : Object | provenance |  |
 | B.java:639:96:639:98 | out : Entry [<map.key>] : Object | B.java:639:85:639:99 | readMapKey(...) | provenance | MaD:174 |
 | B.java:644:19:644:41 | storeMapValue(...) : Map [<map.value>] : Object | B.java:644:51:644:66 | (...)... : NavigableMap [<map.value>] : Object | provenance |  |
@@ -1161,7 +1152,6 @@ edges
 | B.java:644:33:644:40 | source(...) : Object | B.java:644:19:644:41 | storeMapValue(...) : Map [<map.value>] : Object | provenance | MaD:215 |
 | B.java:644:50:644:79 | lastEntry(...) : Entry [<map.value>] : Object | B.java:644:100:644:102 | out : Entry [<map.value>] : Object | provenance |  |
 | B.java:644:51:644:66 | (...)... : NavigableMap [<map.value>] : Object | B.java:644:50:644:79 | lastEntry(...) : Entry [<map.value>] : Object | provenance | MaD:242 |
-| B.java:644:51:644:66 | (...)... : NavigableMap [<map.value>] : Object | B.java:644:50:644:79 | lastEntry(...) : Entry [<map.value>] : Object | provenance | MaD:282 |
 | B.java:644:100:644:102 | out : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | provenance |  |
 | B.java:644:100:644:102 | out : Entry [<map.value>] : Object | B.java:644:87:644:103 | readMapValue(...) | provenance | MaD:175 |
 | B.java:649:19:649:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | B.java:649:49:649:64 | (...)... : TreeMap [<map.key>] : Object | provenance |  |
@@ -1183,7 +1173,6 @@ edges
 | B.java:659:31:659:38 | source(...) : Object | B.java:659:19:659:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | provenance | MaD:214 |
 | B.java:659:48:659:82 | pollFirstEntry(...) : Entry [<map.key>] : Object | B.java:659:101:659:103 | out : Entry [<map.key>] : Object | provenance |  |
 | B.java:659:49:659:64 | (...)... : TreeMap [<map.key>] : Object | B.java:659:48:659:82 | pollFirstEntry(...) : Entry [<map.key>] : Object | provenance | MaD:245 |
-| B.java:659:49:659:64 | (...)... : TreeMap [<map.key>] : Object | B.java:659:48:659:82 | pollFirstEntry(...) : Entry [<map.key>] : Object | provenance | MaD:283 |
 | B.java:659:101:659:103 | out : Entry [<map.key>] : Object | B.java:43:29:43:46 | obj : Entry [<map.key>] : Object | provenance |  |
 | B.java:659:101:659:103 | out : Entry [<map.key>] : Object | B.java:659:90:659:104 | readMapKey(...) | provenance | MaD:174 |
 | B.java:664:19:664:41 | storeMapValue(...) : Map [<map.value>] : Object | B.java:664:51:664:66 | (...)... : NavigableMap [<map.value>] : Object | provenance |  |
@@ -1191,7 +1180,6 @@ edges
 | B.java:664:33:664:40 | source(...) : Object | B.java:664:19:664:41 | storeMapValue(...) : Map [<map.value>] : Object | provenance | MaD:215 |
 | B.java:664:50:664:84 | pollFirstEntry(...) : Entry [<map.value>] : Object | B.java:664:105:664:107 | out : Entry [<map.value>] : Object | provenance |  |
 | B.java:664:51:664:66 | (...)... : NavigableMap [<map.value>] : Object | B.java:664:50:664:84 | pollFirstEntry(...) : Entry [<map.value>] : Object | provenance | MaD:246 |
-| B.java:664:51:664:66 | (...)... : NavigableMap [<map.value>] : Object | B.java:664:50:664:84 | pollFirstEntry(...) : Entry [<map.value>] : Object | provenance | MaD:284 |
 | B.java:664:105:664:107 | out : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | provenance |  |
 | B.java:664:105:664:107 | out : Entry [<map.value>] : Object | B.java:664:92:664:108 | readMapValue(...) | provenance | MaD:175 |
 | B.java:669:19:669:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | B.java:669:49:669:64 | (...)... : TreeMap [<map.key>] : Object | provenance |  |
@@ -1199,7 +1187,6 @@ edges
 | B.java:669:31:669:38 | source(...) : Object | B.java:669:19:669:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | provenance | MaD:214 |
 | B.java:669:48:669:81 | pollLastEntry(...) : Entry [<map.key>] : Object | B.java:669:100:669:102 | out : Entry [<map.key>] : Object | provenance |  |
 | B.java:669:49:669:64 | (...)... : TreeMap [<map.key>] : Object | B.java:669:48:669:81 | pollLastEntry(...) : Entry [<map.key>] : Object | provenance | MaD:247 |
-| B.java:669:49:669:64 | (...)... : TreeMap [<map.key>] : Object | B.java:669:48:669:81 | pollLastEntry(...) : Entry [<map.key>] : Object | provenance | MaD:285 |
 | B.java:669:100:669:102 | out : Entry [<map.key>] : Object | B.java:43:29:43:46 | obj : Entry [<map.key>] : Object | provenance |  |
 | B.java:669:100:669:102 | out : Entry [<map.key>] : Object | B.java:669:89:669:103 | readMapKey(...) | provenance | MaD:174 |
 | B.java:674:19:674:41 | storeMapValue(...) : Map [<map.value>] : Object | B.java:674:51:674:66 | (...)... : NavigableMap [<map.value>] : Object | provenance |  |
@@ -1207,7 +1194,6 @@ edges
 | B.java:674:33:674:40 | source(...) : Object | B.java:674:19:674:41 | storeMapValue(...) : Map [<map.value>] : Object | provenance | MaD:215 |
 | B.java:674:50:674:83 | pollLastEntry(...) : Entry [<map.value>] : Object | B.java:674:104:674:106 | out : Entry [<map.value>] : Object | provenance |  |
 | B.java:674:51:674:66 | (...)... : NavigableMap [<map.value>] : Object | B.java:674:50:674:83 | pollLastEntry(...) : Entry [<map.value>] : Object | provenance | MaD:248 |
-| B.java:674:51:674:66 | (...)... : NavigableMap [<map.value>] : Object | B.java:674:50:674:83 | pollLastEntry(...) : Entry [<map.value>] : Object | provenance | MaD:286 |
 | B.java:674:104:674:106 | out : Entry [<map.value>] : Object | B.java:47:31:47:48 | obj : Entry [<map.value>] : Object | provenance |  |
 | B.java:674:104:674:106 | out : Entry [<map.value>] : Object | B.java:674:91:674:107 | readMapValue(...) | provenance | MaD:175 |
 | B.java:679:19:679:39 | storeMapKey(...) : TreeMap [<map.key>] : Object | B.java:679:49:679:64 | (...)... : TreeMap [<map.key>] : Object | provenance |  |
@@ -2746,7 +2732,6 @@ edges
 | B.java:2015:25:2015:52 | storeElementNavSet(...) : TreeSet [<element>] : Object | B.java:2015:61:2015:62 | in : TreeSet [<element>] : Object | provenance |  |
 | B.java:2015:44:2015:51 | source(...) : Object | B.java:26:49:26:53 | obj : Object | provenance |  |
 | B.java:2015:44:2015:51 | source(...) : Object | B.java:2015:25:2015:52 | storeElementNavSet(...) : TreeSet [<element>] : Object | provenance | MaD:54 |
-| B.java:2015:61:2015:62 | in : TreeSet [<element>] : Object | B.java:2015:61:2015:73 | reversed(...) : SequencedSet [<element>] : Object | provenance | MaD:278 |
 | B.java:2015:61:2015:62 | in : TreeSet [<element>] : Object | B.java:2015:61:2015:73 | reversed(...) : SequencedSet [<element>] : Object | provenance | MaD:299 |
 | B.java:2015:61:2015:73 | reversed(...) : SequencedSet [<element>] : Object | B.java:2015:93:2015:95 | out : SequencedSet [<element>] : Object | provenance |  |
 | B.java:2015:93:2015:95 | out : SequencedSet [<element>] : Object | B.java:31:28:31:42 | obj : SequencedSet [<element>] : Object | provenance |  |

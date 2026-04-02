@@ -1,0 +1,5 @@
+reverseRead
+| Gin.go:26:18:26:18 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Gin.go:26:28:26:28 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Gin.go:158:10:158:12 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| Gin.go:162:13:162:15 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

@@ -14,7 +14,7 @@ public class UnaryExpression extends Expression {
     super("UnaryExpression", loc);
     this.operator = operator;
     this.argument = argument;
-    this.prefix = prefix == Boolean.TRUE;
+    this.prefix = Boolean.TRUE.equals(prefix);
   }
 
   @Override

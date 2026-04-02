@@ -19,22 +19,22 @@ import semmle.python.Constants
 import semmle.python.Scope
 import semmle.python.Comment
 import semmle.python.GuardedControlFlow
-import semmle.python.types.ImportTime
-import semmle.python.types.Object
-import semmle.python.types.ClassObject
-import semmle.python.types.FunctionObject
-import semmle.python.types.ModuleObject
-import semmle.python.types.Version
-import semmle.python.types.Descriptors
+private import semmle.python.types.ImportTime
+private import semmle.python.types.Object
+private import semmle.python.types.ClassObject
+private import semmle.python.types.FunctionObject
+private import semmle.python.types.ModuleObject
+private import semmle.python.types.Version
+private import semmle.python.types.Descriptors
 import semmle.python.SSA
-import semmle.python.SelfAttribute
-import semmle.python.types.Properties
+private import semmle.python.SelfAttribute
+private import semmle.python.types.Properties
 import semmle.python.xml.XML
 import semmle.python.essa.Essa
-import semmle.python.pointsto.Base
-import semmle.python.pointsto.Context
-import semmle.python.pointsto.CallGraph
-import semmle.python.objects.ObjectAPI
+private import semmle.python.pointsto.Base
+private import semmle.python.pointsto.Context
+private import semmle.python.pointsto.CallGraph
+private import semmle.python.objects.ObjectAPI
 import semmle.python.Unit
 import site
 private import semmle.python.Overlay

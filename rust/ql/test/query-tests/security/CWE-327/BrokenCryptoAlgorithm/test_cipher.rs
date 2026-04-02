@@ -133,15 +133,45 @@ fn test_cbc(
     _ = aes_cipher1.encrypt_padded_mut::<aes::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 
     // des (broken)
-    let des_cipher1 = cbc::Encryptor::<des::Des>::new(key.into(), iv.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher1 = cbc::Encryptor::<des::Des>::new(key.into(), iv.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     _ = des_cipher1.encrypt_padded_mut::<des::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 
-    let des_cipher2 = MyDesEncryptor::new(key.into(), iv.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher2 = MyDesEncryptor::new(key.into(), iv.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     _ = des_cipher2.encrypt_padded_mut::<des::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 
-    let des_cipher3 = cbc::Encryptor::<des::Des>::new_from_slices(&key, &iv).unwrap(); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher3 = cbc::Encryptor::<des::Des>::new_from_slices(&key, &iv).unwrap(); // $ Alert[rust/weak-cryptographic-algorithm]
     _ = des_cipher3.encrypt_padded_mut::<des::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 
-    let des_cipher4 = cbc::Encryptor::<des::Des>::new(key.into(), iv.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    let des_cipher4 = cbc::Encryptor::<des::Des>::new(key.into(), iv.into()); // $ Alert[rust/weak-cryptographic-algorithm]
     _ = des_cipher4.encrypt_padded_b2b_mut::<des::cipher::block_padding::Pkcs7>(input, data).unwrap();
+}
+
+type MyAesEcbEncryptor = ecb::Encryptor<aes::Aes128>;
+
+fn test_ecb(
+    key: &[u8], key128: &[u8;16],
+    input: &[u8], data: &mut [u8]
+) {
+    let data_len = data.len();
+
+    // aes with ECB (weak block mode)
+    let aes_cipher1 = ecb::Encryptor::<aes::Aes128>::new(key128.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    _ = aes_cipher1.encrypt_padded_mut::<aes::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
+
+    let aes_cipher2 = MyAesEcbEncryptor::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    _ = aes_cipher2.encrypt_padded_mut::<aes::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
+
+    let aes_cipher3 = ecb::Encryptor::<aes::Aes128>::new_from_slice(&key).unwrap(); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    _ = aes_cipher3.encrypt_padded_mut::<aes::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
+
+    let aes_cipher4 = ecb::Encryptor::<aes::Aes128>::new(key.into()); // $ MISSING: Alert[rust/weak-cryptographic-algorithm]
+    _ = aes_cipher4.encrypt_padded_b2b_mut::<aes::cipher::block_padding::Pkcs7>(input, data).unwrap();
+
+    // des with ECB (broken cipher + weak block mode)
+    let des_cipher1 = ecb::Encryptor::<des::Des>::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    _ = des_cipher1.encrypt_padded_mut::<des::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
+
+    // rc2 with ECB (broken cipher + weak block mode)
+    let rc2_cipher1 = ecb::Encryptor::<rc2::Rc2>::new(key.into()); // $ Alert[rust/weak-cryptographic-algorithm]
+    _ = rc2_cipher1.encrypt_padded_mut::<rc2::cipher::block_padding::Pkcs7>(data, data_len).unwrap();
 }

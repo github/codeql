@@ -126,6 +126,11 @@ fn main() {
     println!("test_ptr_invalid:");
     test_ptr_invalid(mode);
 
+    println!("test_ptr_invalid_conditions:");
+    unsafe {
+        test_ptr_invalid_conditions(mode);
+    }
+
     println!("test_drop:");
     test_drop();
 
@@ -137,6 +142,9 @@ fn main() {
 
     println!("test_vec_reserve:");
     test_vec_reserve();
+
+    println!("test_pointer_converted_to_reference:");
+    test_pointer_converted_to_reference();
 
     // ---
 
@@ -204,4 +212,7 @@ fn main() {
 
     println!("test_lifetimes_example_good:");
     test_lifetimes_example_good();
+
+    println!("test_generic:");
+    test_generic();
 }

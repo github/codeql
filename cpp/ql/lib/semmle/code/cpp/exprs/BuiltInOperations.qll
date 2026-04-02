@@ -1941,3 +1941,61 @@ class BuiltInOperationIsTriviallyRelocatable extends BuiltInOperation, @istrivia
 
   override string getAPrimaryQlClass() { result = "BuiltInOperationIsTriviallyRelocatable" }
 }
+
+/**
+ * A C++ `__is_bitwise_cloneable` built-in operation.
+ *
+ * Returns `true` if an object of type `_Tp` is bitwise cloneable.
+ *
+ * ```
+ * template<typename _Tp>
+ *   struct is_bitwise_cloneable
+ *   : public integral_constant<bool, __is_bitwise_cloneable(_Tp)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationIsBitwiseCloneable extends BuiltInOperation, @isbitwisecloneable {
+  override string toString() { result = "__is_bitwise_cloneable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsBitwiseCloneable" }
+}
+
+/**
+ * A C++ `__is_invocable` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a function of type `_FTpn` can be invoked with arguments of
+ * type `_Tps`.
+ *
+ * ```
+ * template<typename _FTpn, typename... _Tps>
+ *   struct is_invocable
+ *   : public integral_constant<bool, __is_invocable(_FTpn, _Tps...)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationIsInvocable extends BuiltInOperation, @isinvocable {
+  override string toString() { result = "__is_invocable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsInvocable" }
+}
+
+/**
+ * A C++ `__is_nothrow_invocable` built-in operation (used by some implementations
+ * of the `<type_traits>` header).
+ *
+ * Returns `true` if a function of non-throwing type `_FTpn` can be invoked
+ * with arguments of type `_Tps`.
+ *
+ * ```
+ * template<typename _FTpn, typename... _Tps>
+ *   struct is_nothrow_invocable
+ *   : public integral_constant<bool, __is_nothrow_invocable(_FTpn, _Tps...)>
+ *   {};
+ * ```
+ */
+class BuiltInOperationIsNothrowInvocable extends BuiltInOperation, @isnothrowinvocable {
+  override string toString() { result = "__is_nothrow_invocable" }
+
+  override string getAPrimaryQlClass() { result = "BuiltInOperationIsNothrowInvocable" }
+}

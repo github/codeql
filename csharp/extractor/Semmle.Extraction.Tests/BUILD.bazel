@@ -16,6 +16,5 @@ codeql_xunit_test(
         "//csharp/extractor/Semmle.Extraction.CSharp.StubGenerator",
         "//csharp/extractor/Semmle.Util",
         "@paket.main//microsoft.net.test.sdk",
-        "@paket.main//system.io.filesystem",
     ],
 )

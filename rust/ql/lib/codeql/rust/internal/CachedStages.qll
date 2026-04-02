@@ -115,13 +115,11 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(resolvePath(_))
+      exists(resolvePathIgnoreVariableShadowing(_))
       or
       exists(any(ItemNode i).getASuccessor(_, _, _))
       or
       exists(any(ImplOrTraitItemNode i).getASelfPath())
-      or
-      any(TypeParamItemNode i).hasTraitBound()
     }
   }
 
@@ -130,8 +128,8 @@ module Stages {
    */
   cached
   module TypeInferenceStage {
-    private import codeql.rust.internal.Type
-    private import codeql.rust.internal.TypeInference
+    private import codeql.rust.internal.typeinference.Type
+    private import codeql.rust.internal.typeinference.TypeInference
 
     /**
      * Always holds.

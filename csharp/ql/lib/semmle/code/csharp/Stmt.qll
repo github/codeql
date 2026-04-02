@@ -183,9 +183,10 @@ class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
    *     return 3;
    * }
    * ```
-   * Note that this reorders the `default` case to always be at the end.
    */
-  override CaseStmt getCase(int i) { result = SwithStmtInternal::getCase(this, i) }
+  override CaseStmt getCase(int i) {
+    result = rank[i + 1](CaseStmt cs, int idx | cs = this.getChildStmt(idx) | cs order by idx)
+  }
 
   /** Gets a case of this `switch` statement. */
   override CaseStmt getACase() { result = this.getCase(_) }
@@ -208,67 +209,21 @@ class SwitchStmt extends SelectionStmt, Switch, @switch_stmt {
    * ```csharp
    * switch (x) {
    *   case "abc":              // i = 0
-   *     return 0;
-   *   case int i when i > 0:   // i = 1
-   *     return 1;
-   *   case string s:           // i = 2
-   *     Console.WriteLine(s);
-   *     return 2;              // i = 3
-   *   default:                 // i = 4
-   *     return 3;              // i = 5
+   *     return 0;              // i = 1
+   *   case int i when i > 0:   // i = 2
+   *     return 1;              // i = 3
+   *   case string s:           // i = 4
+   *     Console.WriteLine(s);  // i = 5
+   *     return 2;              // i = 6
+   *   default:                 // i = 7
+   *     return 3;              // i = 8
    * }
    * ```
-   *
-   * Note that each non-`default` case is a labeled statement, so the statement
-   * that follows is a child of the labeled statement, and not the `switch` block.
    */
-  Stmt getStmt(int i) { result = SwithStmtInternal::getStmt(this, i) }
+  Stmt getStmt(int i) { result = this.getChildStmt(i) }
 
   /** Gets a statement in the body of this `switch` statement. */
   Stmt getAStmt() { result = this.getStmt(_) }
-}
-
-cached
-private module SwithStmtInternal {
-  cached
-  CaseStmt getCase(SwitchStmt ss, int i) {
-    exists(int index, int rankIndex |
-      caseIndex(ss, result, index) and
-      rankIndex = i + 1 and
-      index = rank[rankIndex](int j, CaseStmt cs | caseIndex(ss, cs, j) | j)
-    )
-  }
-
-  /** Implicitly reorder case statements to put the default case last if needed. */
-  private predicate caseIndex(SwitchStmt ss, CaseStmt case, int index) {
-    exists(int i | case = ss.getChildStmt(i) |
-      if case instanceof DefaultCase
-      then index = max(int j | exists(ss.getChildStmt(j))) + 1
-      else index = i
-    )
-  }
-
-  cached
-  Stmt getStmt(SwitchStmt ss, int i) {
-    exists(int index, int rankIndex |
-      result = ss.getChildStmt(index) and
-      rankIndex = i + 1 and
-      index =
-        rank[rankIndex](int j, Stmt s |
-          // `getChild` includes both labeled statements and the targeted
-          // statements of labeled statement as separate children, but we
-          // only want the labeled statement
-          s = getLabeledStmt(ss, j)
-        |
-          j
-        )
-    )
-  }
-
-  private Stmt getLabeledStmt(SwitchStmt ss, int i) {
-    result = ss.getChildStmt(i) and
-    not result = any(CaseStmt cs).getBody()
-  }
 }
 
 /** A `case` statement. */
@@ -276,18 +231,6 @@ class CaseStmt extends Case, @case_stmt {
   override Expr getExpr() { result = any(SwitchStmt ss | ss.getACase() = this).getExpr() }
 
   override PatternExpr getPattern() { result = this.getChild(0) }
-
-  override Stmt getBody() {
-    exists(int i, Stmt next |
-      this = this.getParent().getChild(i) and
-      next = this.getParent().getChild(i + 1)
-    |
-      result = next and
-      not result instanceof CaseStmt
-      or
-      result = next.(CaseStmt).getBody()
-    )
-  }
 
   /**
    * Gets the condition on this case, if any. For example, the type case on line 3

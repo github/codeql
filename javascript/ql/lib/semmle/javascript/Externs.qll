@@ -36,6 +36,8 @@
  * Array.prototype.length;
  * </pre>
  */
+overlay[local?]
+module;
 
 import javascript
 

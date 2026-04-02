@@ -1,0 +1,14 @@
+reverseRead
+| proto/Hello.pb.go:34:10:34:40 | file_proto_Hello_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:47:9:47:39 | file_proto_Hello_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:81:10:81:40 | file_proto_Hello_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:94:9:94:39 | file_proto_Hello_proto_msgTypes | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:169:13:169:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:171:13:171:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:173:13:173:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:181:13:181:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:183:13:183:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.go:185:13:185:13 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.micro.go:55:9:55:9 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.micro.go:57:9:57:9 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |
+| proto/Hello.pb.micro.go:86:9:86:9 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

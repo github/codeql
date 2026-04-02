@@ -1,0 +1,6 @@
+| NameOf.cs:8:21:8:29 | nameof(...) | NameOf.cs:8:28:8:28 | access to parameter x |
+| NameOf.cs:9:21:9:29 | nameof(...) | NameOf.cs:9:28:9:28 | access to method M |
+| NameOf.cs:10:21:10:35 | nameof(...) | NameOf.cs:10:28:10:34 | access to type Program |
+| NameOf.cs:11:21:11:34 | nameof(...) | NameOf.cs:11:28:11:33 | access to type String |
+| NameOf.cs:12:21:12:37 | nameof(...) | NameOf.cs:12:28:12:36 | access to type List<Int32> |
+| NameOf.cs:13:21:13:34 | nameof(...) | NameOf.cs:13:28:13:33 | access to type List`1 |

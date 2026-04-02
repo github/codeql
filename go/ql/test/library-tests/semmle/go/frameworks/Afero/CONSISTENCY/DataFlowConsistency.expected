@@ -1,0 +1,2 @@
+reverseRead
+| test.go:19:14:19:20 | implicit dereference | Origin of readStep is missing a PostUpdateNode. |

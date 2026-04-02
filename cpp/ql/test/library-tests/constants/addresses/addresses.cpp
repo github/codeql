@@ -26,9 +26,7 @@ void constantAddresses(int param) {
     constexpr int *array2d = &int_arr_arr[1][1] + 1;
     constexpr int *const_ints = &int_arr_arr[int_const][extern_int_const];
 
-    // Commented out because clang and EDG disagree on whether this is
-    // constant.
-    //constexpr int *stmtexpr_int = &int_arr[ ({ 1; }) ];
+    constexpr int *stmtexpr_int = &int_arr[ ({ 1; }) ];
 
     constexpr int *comma_int = &int_arr[ ((void)0, 1) ];
     constexpr int *comma_addr = ((void)0, &int_var);

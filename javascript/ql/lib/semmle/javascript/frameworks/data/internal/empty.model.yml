@@ -18,6 +18,16 @@ extensions:
 
   - addsTo:
       pack: codeql/javascript-all
+      extensible: barrierModel
+    data: []
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: barrierGuardModel
+    data: []
+
+  - addsTo:
+      pack: codeql/javascript-all
       extensible: neutralModel
     data: []
 

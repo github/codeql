@@ -171,12 +171,14 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * Gets the nth parameter of this function. There is no result for the
    * implicit `this` parameter, and there is no `...` varargs pseudo-parameter.
    */
+  pragma[nomagic]
   Parameter getParameter(int n) { params(unresolveElement(result), underlyingElement(this), n, _) }
 
   /**
    * Gets a parameter of this function. There is no result for the implicit
    * `this` parameter, and there is no `...` varargs pseudo-parameter.
    */
+  pragma[nomagic]
   Parameter getAParameter() { params(unresolveElement(result), underlyingElement(this), _, _) }
 
   /**
@@ -522,6 +524,12 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
       not exists(NewOrNewArrayExpr new | e = new.getAllocatorCall().getArgument(0))
     )
   }
+
+  /**
+   * Holds if this function has an ambiguous return type, meaning that zero or multiple return
+   * types for this function are present in the database (this can occur in `build-mode: none`).
+   */
+  predicate hasAmbiguousReturnType() { count(this.getType()) != 1 }
 }
 
 pragma[noinline]

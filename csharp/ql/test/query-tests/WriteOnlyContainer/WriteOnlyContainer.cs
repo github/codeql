@@ -307,4 +307,10 @@ public class ContainerTest
     {
         Out(out var strings); // BAD: but allow for now (only C# 7 allows discards)
     }
+
+    IList<int> TestNullcoalescingInitializations()
+    {
+        var l = new List<int> { 1, 2, 3 }; // GOOD: returned
+        return l ??= new List<int>();
+    }
 }

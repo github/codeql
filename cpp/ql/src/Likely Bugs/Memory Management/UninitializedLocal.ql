@@ -15,7 +15,7 @@
 import cpp
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.MustFlow
-import PathGraph
+import UninitializedLocal::PathGraph
 
 /**
  * Auxiliary predicate: Types that don't require initialization
@@ -70,25 +70,26 @@ predicate isSinkImpl(Instruction sink, VariableAccess va) {
   )
 }
 
-class MustFlow extends MustFlowConfiguration {
-  MustFlow() { this = "MustFlow" }
-
-  override predicate isSource(Instruction source) {
+module UninitializedLocalConfig implements MustFlow::ConfigSig {
+  predicate isSource(Instruction source) {
     source instanceof UninitializedInstruction and
     exists(Type t | t = source.getResultType() | not allocatedType(t))
   }
 
-  override predicate isSink(Operand sink) { isSinkImpl(sink.getDef(), _) }
+  predicate isSink(Operand sink) { isSinkImpl(sink.getDef(), _) }
 
-  override predicate allowInterproceduralFlow() { none() }
+  predicate allowInterproceduralFlow() { none() }
 
-  override predicate isBarrier(Instruction instr) { instr instanceof ChiInstruction }
+  predicate isBarrier(Instruction instr) { instr instanceof ChiInstruction }
 }
 
+module UninitializedLocal = MustFlow::Global<UninitializedLocalConfig>;
+
 from
-  VariableAccess va, LocalVariable v, MustFlow conf, MustFlowPathNode source, MustFlowPathNode sink
+  VariableAccess va, LocalVariable v, UninitializedLocal::PathNode source,
+  UninitializedLocal::PathNode sink
 where
-  conf.hasFlowPath(source, sink) and
+  UninitializedLocal::flowPath(source, sink) and
   isSinkImpl(sink.getInstruction(), va) and
   v = va.getTarget()
 select va, source, sink, "The variable $@ may not be initialized at this access.", v, v.getName()

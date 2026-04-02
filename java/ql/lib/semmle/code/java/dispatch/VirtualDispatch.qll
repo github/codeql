@@ -7,7 +7,7 @@ import java
 import semmle.code.java.dataflow.TypeFlow
 private import DispatchFlow as DispatchFlow
 private import ObjFlow as ObjFlow
-private import semmle.code.java.dataflow.internal.BaseSSA
+private import semmle.code.java.dataflow.internal.BaseSSA as Base
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dispatch.internal.Unification
 
@@ -194,10 +194,10 @@ private module Dispatch {
    */
   private predicate impossibleDispatchTarget(MethodCall source, Method tgt) {
     tgt = viableImpl_v1_cand(source) and
-    exists(Guard typeTest, BaseSsaVariable v, Expr q, RefType t |
+    exists(Guard typeTest, Base::SsaDefinition v, Expr q, RefType t |
       source.getQualifier() = q and
-      v.getAUse() = q and
-      typeTest.appliesTypeTest(v.getAUse(), t, false) and
+      v.getARead() = q and
+      typeTest.appliesTypeTest(v.getARead(), t, false) and
       guardControls_v1(typeTest, q.getBasicBlock(), false) and
       tgt.getDeclaringType().getSourceDeclaration().getASourceSupertype*() = t.getErasure()
     )

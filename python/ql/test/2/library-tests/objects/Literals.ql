@@ -1,5 +1,6 @@
 /* Test that there are no literals that do not have a corresponding object. */
 import python
+private import LegacyPointsTo
 
 string repr(Expr e) {
   result = e.(Num).getN() or
@@ -8,5 +9,5 @@ string repr(Expr e) {
 }
 
 from ImmutableLiteral l
-where not exists(l.getLiteralObject())
+where not exists(getLiteralObject(l))
 select l.getLocation().getStartLine(), repr(l)

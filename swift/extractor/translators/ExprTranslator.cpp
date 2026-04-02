@@ -538,7 +538,7 @@ void ExprTranslator::fillSelfApplyExpr(const swift::SelfApplyExpr& expr,
 
 void ExprTranslator::fillLookupExpr(const swift::LookupExpr& expr, codeql::LookupExpr& entry) {
   entry.base = dispatcher.fetchLabel(expr.getBase());
-  if (expr.hasDecl()) {
+  if (expr.hasDecl() && !expr.getDecl().getDecl()->isUnavailable()) {
     entry.member = dispatcher.fetchLabel(expr.getDecl().getDecl());
   }
 }

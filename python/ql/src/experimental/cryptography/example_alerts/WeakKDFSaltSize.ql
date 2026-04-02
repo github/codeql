@@ -1,5 +1,5 @@
 /**
- * @name Small KDF salt length.
+ * @name Small KDF salt length
  * @description KDF salts should be a minimum of 128 bits (16 bytes).
  *
  * This alerts if a constant traces to to a salt length sink less than 128-bits or

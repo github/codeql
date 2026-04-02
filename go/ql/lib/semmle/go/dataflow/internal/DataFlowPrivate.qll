@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import go
 private import DataFlowUtil
 private import DataFlowImplCommon
@@ -89,7 +92,8 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
       nodeFrom = instructionNode(pred) or
       nodeFrom.(PostUpdateNode).getPreUpdateNode() = instructionNode(pred)
     ) and
-    nodeTo = instructionNode(succ)
+    nodeTo = instructionNode(succ) and
+    nodeTo != nodeFrom
   )
   or
   // GlobalFunctionNode -> use
@@ -477,5 +481,6 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
 class ContentApprox = Unit;
 
 /** Gets an approximated value for content `c`. */
+overlay[caller?]
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }

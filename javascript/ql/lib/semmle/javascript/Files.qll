@@ -1,4 +1,6 @@
 /** Provides classes for working with files and folders. */
+overlay[local?]
+module;
 
 import javascript
 private import NodeModuleResolutionImpl
@@ -33,12 +35,14 @@ module Folder = Impl::Folder;
 /** A folder. */
 class Folder extends Container, Impl::Folder {
   /** Gets the file or subfolder in this folder that has the given `name`, if any. */
+  overlay[global]
   Container getChildContainer(string name) {
     result = this.getAChildContainer() and
     result.getBaseName() = name
   }
 
   /** Gets the file in this folder that has the given `stem` and `extension`, if any. */
+  overlay[global]
   File getFile(string stem, string extension) {
     result = this.getAChildContainer() and
     result.getStem() = stem and
@@ -46,6 +50,7 @@ class Folder extends Container, Impl::Folder {
   }
 
   /** Like `getFile` except `d.ts` is treated as a single extension. */
+  overlay[global]
   private File getFileLongExtension(string stem, string extension) {
     not (stem.matches("%.d") and extension = "ts") and
     result = this.getFile(stem, extension)
@@ -65,6 +70,7 @@ class Folder extends Container, Impl::Folder {
    *
    * HTML files will not be found by this method.
    */
+  overlay[global]
   File getJavaScriptFile(string stem) {
     result =
       min(int p, string ext |
@@ -78,6 +84,7 @@ class Folder extends Container, Impl::Folder {
    * Gets an implementation file and/or a typings file from this folder that has the given `stem`.
    * This could be a single `.ts` file or a pair of `.js` and `.d.ts` files.
    */
+  overlay[global]
   File getJavaScriptFileOrTypings(string stem) {
     exists(File jsFile | jsFile = this.getJavaScriptFile(stem) |
       result = jsFile
@@ -88,6 +95,7 @@ class Folder extends Container, Impl::Folder {
   }
 
   /** Gets a subfolder contained in this folder. */
+  overlay[global]
   Folder getASubFolder() { result = this.getAChildContainer() }
 }
 

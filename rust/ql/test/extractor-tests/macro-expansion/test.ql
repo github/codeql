@@ -5,7 +5,7 @@ query predicate attribute_macros(Item i, int index, Item expanded) {
   i.fromSource() and expanded = i.getAttributeMacroExpansion().getItem(index)
 }
 
-query predicate derive_macros(Adt i, int index, int subIndex, Item expanded) {
+query predicate derive_macros(TypeItem i, int index, int subIndex, Item expanded) {
   i.fromSource() and expanded = i.getDeriveMacroExpansion(index).getItem(subIndex)
 }
 

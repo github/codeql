@@ -1,0 +1,3 @@
+reverseRead
+| globalVariable.go:17:7:17:17 | globalArray | Origin of readStep is missing a PostUpdateNode. |
+| globalVariable.go:18:7:18:17 | globalSlice | Origin of readStep is missing a PostUpdateNode. |

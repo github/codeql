@@ -11,7 +11,7 @@
 import python
 import external.VCS
 
-from Module m, int n
+from ModuleMetrics m, int n
 where
   n =
     sum(Commit entry, int churn |
@@ -19,5 +19,5 @@ where
     |
       churn
     ) and
-  exists(m.getMetrics().getNumberOfLinesOfCode())
+  exists(m.getNumberOfLinesOfCode())
 select m, n order by n desc

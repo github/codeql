@@ -6,10 +6,15 @@
 <overview>
 <p>
 When a thread acquires a lock it must make sure to unlock it again;
-failing to do so can lead to deadlocks.  If a lock allows a thread to acquire
+failing to do so can lead to deadlocks. If a lock allows a thread to acquire
 it multiple times, for example <code>java.util.concurrent.locks.ReentrantLock</code>,
 then the number of locks must match the number of unlocks in order to fully
 release the lock.
+</p>
+<p>
+Any class that has both <code>lock</code> and <code>unlock</code> methods is
+considered a lock type. However, classes with names ending in "Pool" are excluded,
+as they typically manage a collection of resources.
 </p>
 </overview>
 
@@ -17,7 +22,7 @@ release the lock.
 <p>
 It is recommended practice always to immediately follow a call to <code>lock</code>
 with a <code>try</code> block and place the call to <code>unlock</code> inside the
-<code>finally</code> block.  Beware of calls inside the <code>finally</code> block
+<code>finally</code> block. Beware of calls inside the <code>finally</code> block
 that could cause exceptions, as this may result in skipping the call to <code>unlock</code>.
 </p>
 </recommendation>

@@ -1,0 +1,4 @@
+reverseRead
+| test.go:90:10:90:15 | taint8 | Origin of readStep is missing a PostUpdateNode. |
+| test.go:104:12:104:18 | taint10 | Origin of readStep is missing a PostUpdateNode. |
+| test.go:150:10:150:14 | slice | Origin of readStep is missing a PostUpdateNode. |

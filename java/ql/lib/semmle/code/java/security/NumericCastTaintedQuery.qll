@@ -31,10 +31,7 @@ class RightShiftOp extends Expr {
     this instanceof AssignUnsignedRightShiftExpr
   }
 
-  private Expr getLhs() {
-    this.(BinaryExpr).getLeftOperand() = result or
-    this.(Assignment).getDest() = result
-  }
+  private Expr getLhs() { this.(BinaryExpr).getLeftOperand() = result }
 
   /**
    * Gets the variable that is shifted.
@@ -46,14 +43,14 @@ class RightShiftOp extends Expr {
 }
 
 private predicate boundedRead(VarRead read) {
-  exists(SsaVariable v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
-    read = v.getAUse() and
+  exists(SsaDefinition v, ConditionBlock cb, ComparisonExpr comp, boolean testIsTrue |
+    read = v.getARead() and
     cb.controls(read.getBasicBlock(), testIsTrue) and
     cb.getCondition() = comp
   |
-    comp.getLesserOperand() = v.getAUse() and testIsTrue = true
+    comp.getLesserOperand() = v.getARead() and testIsTrue = true
     or
-    comp.getGreaterOperand() = v.getAUse() and testIsTrue = false
+    comp.getGreaterOperand() = v.getARead() and testIsTrue = false
   )
 }
 

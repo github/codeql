@@ -115,6 +115,9 @@ signature module ModelGeneratorCommonInputSig<LocationSig Location, InputSig<Loc
    */
   predicate containerContent(Lang::ContentSet c);
 
+  /** Holds if read steps should heuristically be applied as taint steps. */
+  default predicate applyReadStepsAsTaintSteps() { any() }
+
   /**
    * Gets the parameter position of the return kind, if any.
    */
@@ -276,6 +279,16 @@ module MakeModelGeneratorFactory<
      * Holds if there is a taint step from `node1` to `node2` in content flow.
      */
     predicate isAdditionalContentFlowStep(Lang::Node nodeFrom, Lang::Node nodeTo);
+
+    /**
+     * Gets the access path limit for content flow analysis.
+     */
+    default int contentAccessPathLimit() { result = 2 }
+
+    /**
+     * Gets the internal access path limit for content flow analysis.
+     */
+    default int contentAccessPathLimitInternal() { result = Lang::accessPathLimit() }
 
     /**
      * Holds if the content set `c` is field like.
@@ -650,7 +663,10 @@ module MakeModelGeneratorFactory<
           exists(Type t | t = n.(NodeExtended).getType() and not isRelevantType(t))
         }
 
-        int accessPathLimit() { result = 2 }
+        predicate accessPathLimit = SummaryModelGeneratorInput::contentAccessPathLimit/0;
+
+        predicate accessPathLimitInternal =
+          SummaryModelGeneratorInput::contentAccessPathLimitInternal/0;
 
         predicate isRelevantContent(DataFlow::ContentSet s) { isRelevantContent0(s) }
 
@@ -703,14 +719,17 @@ module MakeModelGeneratorFactory<
       }
 
       /**
-       * Holds if the access path `ap` is not a parameter or returnvalue of a callback
-       * stored in a field.
+       * Holds if `ap` is valid for generating summary models.
        *
-       * That is, we currently don't include summaries that rely on parameters or return values
-       * of callbacks stored in fields.
+       * We currently don't include summaries that rely on parameters or return values
+       * of callbacks stored in fields, as those are not supported by the data flow
+       * library.
+       *
+       * We also exclude access paths with contents not supported by `printContent`.
        */
       private predicate validateAccessPath(PropagateContentFlow::AccessPath ap) {
-        not (mentionsField(ap) and mentionsCallback(ap))
+        not (mentionsField(ap) and mentionsCallback(ap)) and
+        forall(int i | i in [0 .. ap.length() - 1] | exists(getContent(ap, i)))
       }
 
       private predicate apiFlow(
@@ -720,7 +739,9 @@ module MakeModelGeneratorFactory<
       ) {
         PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
         getEnclosingCallable(returnNodeExt) = api and
-        getEnclosingCallable(p) = api
+        getEnclosingCallable(p) = api and
+        validateAccessPath(reads) and
+        validateAccessPath(stores)
       }
 
       /**
@@ -763,9 +784,7 @@ module MakeModelGeneratorFactory<
         PropagateContentFlow::AccessPath reads, ReturnNodeExt returnNodeExt,
         PropagateContentFlow::AccessPath stores, boolean preservesValue
       ) {
-        PropagateContentFlow::flow(p, reads, returnNodeExt, stores, preservesValue) and
-        getEnclosingCallable(returnNodeExt) = api and
-        getEnclosingCallable(p) = api and
+        apiFlow(api, p, reads, returnNodeExt, stores, preservesValue) and
         p = api.getARelevantParameterNode()
       }
 
@@ -956,8 +975,6 @@ module MakeModelGeneratorFactory<
           input = parameterNodeAsExactInput(p) + printReadAccessPath(reads) and
           output = getExactOutput(returnNodeExt) + printStoreAccessPath(stores) and
           input != output and
-          validateAccessPath(reads) and
-          validateAccessPath(stores) and
           (
             if mentionsField(reads) or mentionsField(stores)
             then lift = false and api.isRelevant()
@@ -1047,6 +1064,7 @@ module MakeModelGeneratorFactory<
   private predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::ContentSet f |
       DataFlow::readStep(node1, f, node2) and
+      applyReadStepsAsTaintSteps() and
       // Partially restrict the content types used for intermediate steps.
       (not exists(getUnderlyingContentType(f)) or isRelevantTypeInContent(f))
     )

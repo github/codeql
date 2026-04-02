@@ -1,5 +1,5 @@
 import python
-import semmle.python.pointsto.PointsTo
+private import LegacyPointsTo
 
 from ClassValue cls, string reason
 where Types::failedInference(cls, reason)

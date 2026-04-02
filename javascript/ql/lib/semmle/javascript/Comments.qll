@@ -1,4 +1,6 @@
 /** Provides classes for working with JavaScript comments. */
+overlay[local?]
+module;
 
 import javascript
 

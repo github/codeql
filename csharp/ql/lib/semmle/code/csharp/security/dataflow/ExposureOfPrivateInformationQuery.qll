@@ -46,3 +46,5 @@ private class PrivateDataSource extends Source {
 }
 
 private class ExternalLocation extends Sink instanceof ExternalLocationSink { }
+
+private class ExternalSanitizer extends Sanitizer instanceof ExternalLocationSanitizer { }

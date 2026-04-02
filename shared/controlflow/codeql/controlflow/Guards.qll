@@ -597,6 +597,12 @@ module Make<
   module Logic<LogicInputSig LogicInput> {
     private import LogicInput
 
+    bindingset[bb1, bb2]
+    pragma[inline_late]
+    private predicate strictlyDominatesCheck(BasicBlock bb1, BasicBlock bb2) {
+      bb1.strictlyDominates(bb2)
+    }
+
     /**
      * Holds if `guard` evaluating to `v` directly controls `phi` taking the value
      * `inp`. This means that `guard` evaluating to `v` must control all the input
@@ -614,7 +620,7 @@ module Make<
       exists(BasicBlock bbPhi |
         phi.hasInputFromBlock(inp, _) and
         phi.getBasicBlock() = bbPhi and
-        guard.getBasicBlock().strictlyDominates(bbPhi) and
+        strictlyDominatesCheck(guard.getBasicBlock(), bbPhi) and
         not guard.directlyValueControls(bbPhi, _) and
         forex(BasicBlock bbInput | phi.hasInputFromBlock(inp, bbInput) |
           guard.directlyValueControls(bbInput, v) or
@@ -634,7 +640,11 @@ module Make<
       Guard guard, GuardValue v, SsaPhiDefinition phi, Expr input
     ) {
       exists(GuardValue dv, SsaExplicitWrite inp |
-        guardControlsPhiBranch(guard, v, phi, inp) and
+        // The `forall` below implies that there's only one `inp` guarded by
+        // `guard == v`, but checking this upfront using `unique` as opposed to
+        // merely stating `guardControlsPhiBranch(guard, v, phi, inp)` improves
+        // performance of the `forall` check.
+        inp = unique(SsaDefinition inp0 | guardControlsPhiBranch(guard, v, phi, inp0)) and
         inp.getValue() = input and
         dv = v.getDualValue() and
         forall(SsaDefinition other | phi.hasInputFromBlock(other, _) and other != inp |
@@ -735,7 +745,7 @@ module Make<
       possibleValue(v, false, e, k) and
       not possibleValue(v, true, e, k) and
       // there's only one expression with the value `k`
-      1 = strictcount(Expr e0 | possibleValue(v, _, e0, k)) and
+      e = unique(Expr e0 | possibleValue(v, _, e0, k)) and
       // and `v` has at least two possible values
       2 <= strictcount(GuardValue k0 | possibleValue(v, _, _, k0))
     }
@@ -926,6 +936,9 @@ module Make<
             guardControls(g0, v0, tgtGuard, tgtVal) and
             additionalImpliesStep(g0, v0, guard, v)
           )
+          or
+          baseGuardValue(tgtGuard, tgtVal) and
+          disjunctiveGuardControls(guard, v, tgtGuard, tgtVal)
         }
 
         /**
@@ -1003,6 +1016,104 @@ module Make<
       )
     }
 
+    private import DisjunctiveGuard
+
+    private module DisjunctiveGuard {
+      /**
+       * Holds if `disjunction` evaluating to `val` means that either
+       * `disjunct1` or `disjunct2` is `val`.
+       */
+      private predicate disjunction(
+        Guard disjunction, GuardValue val, Guard disjunct1, Guard disjunct2
+      ) {
+        2 =
+          strictcount(Guard op |
+            disjunction.(OrExpr).getAnOperand() = op or disjunction.(AndExpr).getAnOperand() = op
+          ) and
+        disjunct1 != disjunct2 and
+        (
+          exists(OrExpr d | d = disjunction |
+            d.getAnOperand() = disjunct1 and
+            d.getAnOperand() = disjunct2 and
+            val.asBooleanValue() = true
+          )
+          or
+          exists(AndExpr d | d = disjunction |
+            d.getAnOperand() = disjunct1 and
+            d.getAnOperand() = disjunct2 and
+            val.asBooleanValue() = false
+          )
+        )
+      }
+
+      private predicate disjunct(Guard guard, GuardValue val) { disjunction(_, val, guard, _) }
+
+      module DisjunctImplies = ImpliesTC<disjunct/2>;
+
+      /**
+       * Holds if one of the disjuncts in `disjunction` evaluating to `dv` implies that `def`
+       * evaluates to `v`. The other disjunct is `otherDisjunct`.
+       */
+      pragma[nomagic]
+      private predicate ssaControlsDisjunct(
+        SsaDefinition def, GuardValue v, Guard disjunction, Guard otherDisjunct, GuardValue dv
+      ) {
+        exists(Guard disjunct |
+          disjunction(disjunction, dv, disjunct, otherDisjunct) and
+          DisjunctImplies::ssaControls(def, v, disjunct, dv)
+        )
+      }
+
+      /**
+       * Holds if the disjunction of `def` evaluating to `v` and
+       * `otherDisjunct` evaluating to `dv` controls `bb`.
+       */
+      pragma[nomagic]
+      private predicate ssaDisjunctionControls(
+        SsaDefinition def, GuardValue v, Guard otherDisjunct, GuardValue dv, BasicBlock bb
+      ) {
+        exists(Guard disjunction |
+          ssaControlsDisjunct(def, v, disjunction, otherDisjunct, dv) and
+          disjunction.valueControls(bb, dv)
+        )
+      }
+
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `def`
+       * evaluates to `v`. The basic block of `tgtGuard` is `bb`.
+       */
+      pragma[nomagic]
+      private predicate ssaControlsGuard(
+        SsaDefinition def, GuardValue v, Guard tgtGuard, GuardValue tgtVal, BasicBlock bb
+      ) {
+        (
+          BranchImplies::ssaControls(def, v, tgtGuard, tgtVal) or
+          WrapperGuard::ReturnImplies::ssaControls(def, v, tgtGuard, tgtVal)
+        ) and
+        tgtGuard.getBasicBlock() = bb
+      }
+
+      /**
+       * Holds if `tgtGuard` evaluating to `tgtVal` implies that `guard`
+       * evaluates to `v`.
+       */
+      pragma[nomagic]
+      predicate disjunctiveGuardControls(
+        Guard guard, GuardValue v, Guard tgtGuard, GuardValue tgtVal
+      ) {
+        exists(SsaDefinition def, GuardValue v1, GuardValue v2, BasicBlock bb |
+          // If `def==v1 || guard==v` controls `bb`,
+          ssaDisjunctionControls(def, v1, guard, v, bb) and
+          // and `tgtGuard==tgtVal` in `bb` implies `def==v2`,
+          ssaControlsGuard(def, v2, tgtGuard, tgtVal, bb) and
+          // and `v1` and `v2` are disjoint,
+          disjointValues(v1, v2)
+          // then assuming `tgtGuard==tgtVal` it follows that `def` cannot be `v1`
+          // and therefore we must have `guard==v`.
+        )
+      }
+    }
+
     /**
      * Provides an implementation of guard implication logic for guard
      * wrappers.
@@ -1042,7 +1153,8 @@ module Make<
 
       private predicate relevantCallValue(NonOverridableMethodCall call, GuardValue val) {
         BranchImplies::guardControls(call, val, _, _) or
-        ReturnImplies::guardControls(call, val, _, _)
+        ReturnImplies::guardControls(call, val, _, _) or
+        DisjunctImplies::guardControls(call, val, _, _)
       }
 
       /**
@@ -1178,39 +1290,38 @@ module Make<
       }
     }
 
-    signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
+    signature predicate guardChecksSig(Guard g, Expr e, GuardValue gv);
 
     bindingset[this]
-    signature class StateSig;
+    signature class ParamSig;
 
-    private module WithState<StateSig State> {
-      signature predicate guardChecksSig(Guard g, Expr e, boolean branch, State state);
+    private module WithParam<ParamSig P> {
+      signature predicate guardChecksSig(Guard g, Expr e, GuardValue gv, P par);
     }
 
     /**
      * Extends a `BarrierGuard` input predicate with wrapped invocations.
      */
     module ValidationWrapper<guardChecksSig/3 guardChecks0> {
-      private predicate guardChecksWithState(Guard g, Expr e, boolean branch, Unit state) {
-        guardChecks0(g, e, branch) and exists(state)
+      private predicate guardChecksWithParam(Guard g, Expr e, GuardValue gv, Unit par) {
+        guardChecks0(g, e, gv) and exists(par)
       }
 
-      private module StatefulWrapper = ValidationWrapperWithState<Unit, guardChecksWithState/4>;
+      private module ParameterizedWrapper =
+        ParameterizedValidationWrapper<Unit, guardChecksWithParam/4>;
 
       /**
        * Holds if the guard `g` validates the SSA definition `def` upon evaluating to `val`.
        */
       predicate guardChecksDef(Guard g, SsaDefinition def, GuardValue val) {
-        StatefulWrapper::guardChecksDef(g, def, val, _)
+        ParameterizedWrapper::guardChecksDef(g, def, val, _)
       }
     }
 
     /**
      * Extends a `BarrierGuard` input predicate with wrapped invocations.
      */
-    module ValidationWrapperWithState<
-      StateSig State, WithState<State>::guardChecksSig/4 guardChecks0>
-    {
+    module ParameterizedValidationWrapper<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks0> {
       private import WrapperGuard
 
       /**
@@ -1219,12 +1330,12 @@ module Make<
        * parameter has been validated by the given guard.
        */
       private predicate validReturnInValidationWrapper(
-        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, State state
+        ReturnExpr ret, ParameterPosition ppos, GuardValue retval, P par
       ) {
         exists(NonOverridableMethod m, SsaParameterInit param, Guard guard, GuardValue val |
           m.getAReturnExpr() = ret and
           param.getParameter() = m.getParameter(ppos) and
-          guardChecksDef(guard, param, val, state)
+          guardChecksDef(guard, param, val, par)
         |
           guard.valueControls(ret.getBasicBlock(), val) and
           relevantReturnExprValue(m, ret, retval)
@@ -1239,7 +1350,7 @@ module Make<
        * that the argument has been validated by the given guard.
        */
       private NonOverridableMethod validationWrapper(
-        ParameterPosition ppos, GuardValue retval, State state
+        ParameterPosition ppos, GuardValue retval, P par
       ) {
         forex(ReturnExpr ret |
           result.getAReturnExpr() = ret and
@@ -1248,12 +1359,12 @@ module Make<
             disjointValues(notRetval, retval)
           )
         |
-          validReturnInValidationWrapper(ret, ppos, retval, state)
+          validReturnInValidationWrapper(ret, ppos, retval, par)
         )
         or
         exists(SsaParameterInit param, BasicBlock bb, Guard guard, GuardValue val |
           param.getParameter() = result.getParameter(ppos) and
-          guardChecksDef(guard, param, val, state) and
+          guardChecksDef(guard, param, val, par) and
           guard.valueControls(bb, val) and
           normalExitBlock(bb) and
           retval = TException(false)
@@ -1263,12 +1374,12 @@ module Make<
       /**
        * Holds if the guard `g` validates the expression `e` upon evaluating to `val`.
        */
-      private predicate guardChecks(Guard g, Expr e, GuardValue val, State state) {
-        guardChecks0(g, e, val.asBooleanValue(), state)
+      predicate guardChecks(Guard g, Expr e, GuardValue val, P par) {
+        guardChecks0(g, e, val, par)
         or
         exists(NonOverridableMethodCall call, ParameterPosition ppos, ArgumentPosition apos |
           g = call and
-          call.getMethod() = validationWrapper(ppos, val, state) and
+          call.getMethod() = validationWrapper(ppos, val, par) and
           call.getArgument(apos) = e and
           parameterMatch(pragma[only_bind_out](ppos), pragma[only_bind_out](apos))
         )
@@ -1277,9 +1388,9 @@ module Make<
       /**
        * Holds if the guard `g` validates the SSA definition `def` upon evaluating to `val`.
        */
-      predicate guardChecksDef(Guard g, SsaDefinition def, GuardValue val, State state) {
+      predicate guardChecksDef(Guard g, SsaDefinition def, GuardValue val, P par) {
         exists(Expr e |
-          guardChecks(g, e, val, state) and
+          guardChecks(g, e, val, par) and
           guardReadsSsaVar(e, def)
         )
       }

@@ -1,5 +1,6 @@
 import python
+private import LegacyPointsTo
 
-from SsaVariable var
+from SsaVariableWithPointsTo var
 where var.maybeUndefined()
 select var.getDefinition().getLocation().getStartLine(), var.toString()

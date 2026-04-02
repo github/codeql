@@ -81,5 +81,5 @@ module Config implements DataFlow::ConfigSig {
 module Flow = DataFlow::Global<Config>;
 
 from DataFlow::Node source, string msg
-where Flow::flow(source, _) and Config::isSourceString(source, msg)
+where Flow::flowFrom(source) and Config::isSourceString(source, msg)
 select source, msg

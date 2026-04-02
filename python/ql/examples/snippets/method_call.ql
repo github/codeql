@@ -7,6 +7,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from AstNode call, PythonFunctionValue method
 where

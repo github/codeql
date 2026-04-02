@@ -943,6 +943,7 @@ module Routing {
    * Note: All-uppercase words like `CONSTANT` are not handled correctly.
    */
   bindingset[base]
+  pragma[inline_late]
   string underscore(string base) {
     base = "" and result = ""
     or

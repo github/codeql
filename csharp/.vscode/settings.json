@@ -10,5 +10,5 @@
     "omnisharp.enableRoslynAnalyzers": true,
     "csharpFormatUsings.splitGroups": false,
     "csharpFormatUsings.sortOrder": "Xunit System Microsoft Semmle.Util Semmle",
-    "dotnet.defaultSolution": "CSharp.sln"
+    "dotnet.defaultSolution": "CSharp.slnx"
 }

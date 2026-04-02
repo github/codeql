@@ -1,3 +1,53 @@
+## 2.1.2
+
+No user-facing changes.
+
+## 2.1.1
+
+No user-facing changes.
+
+## 2.1.0
+
+### New Features
+
+* Two new flow features `FeatureEscapesSourceCallContext` and `FeatureEscapesSourceCallContextOrEqualSourceSinkCallContext` have been added. The former implies that the sink must be reached from the source by escaping the source call context, that is, flow must either return from the callable containing the source or use a jump-step before reaching the sink. The latter is the disjunction of the former and the existing `FeatureEqualSourceSinkCallContext` flow feature.
+
+## 2.0.27
+
+No user-facing changes.
+
+## 2.0.26
+
+No user-facing changes.
+
+## 2.0.25
+
+No user-facing changes.
+
+## 2.0.24
+
+No user-facing changes.
+
+## 2.0.23
+
+No user-facing changes.
+
+## 2.0.22
+
+No user-facing changes.
+
+## 2.0.21
+
+No user-facing changes.
+
+## 2.0.20
+
+No user-facing changes.
+
+## 2.0.19
+
+No user-facing changes.
+
 ## 2.0.18
 
 No user-facing changes.

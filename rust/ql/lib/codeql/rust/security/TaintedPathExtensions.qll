@@ -8,7 +8,6 @@ private import codeql.rust.dataflow.TaintTracking
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
-private import codeql.rust.controlflow.CfgNodes as CfgNodes
 
 /**
  * Provides default sources, sinks and barriers for detecting path injection
@@ -48,18 +47,23 @@ module TaintedPath {
   private class ModelsAsDataSinks extends Sink {
     ModelsAsDataSinks() { sinkNode(this, "path-injection") }
   }
+
+  /** A barrier for path-injection from model data. */
+  private class ModelsAsDataBarriers extends Barrier {
+    ModelsAsDataBarriers() { barrierNode(this, "path-injection") }
+  }
 }
 
-private predicate sanitizerGuard(CfgNodes::AstCfgNode g, Cfg::CfgNode node, boolean branch) {
-  g.(SanitizerGuard::Range).checks(node, branch)
+private predicate sanitizerGuard(AstNode g, Expr e, boolean branch) {
+  g.(SanitizerGuard::Range).checks(e, branch)
 }
 
 /** Provides a class for modeling new path safety checks. */
 module SanitizerGuard {
   /** A data-flow node that checks that a path is safe to access. */
-  abstract class Range extends CfgNodes::AstCfgNode {
-    /** Holds if this guard validates `node` upon evaluating to `branch`. */
-    abstract predicate checks(Cfg::CfgNode node, boolean branch);
+  abstract class Range extends AstNode {
+    /** Holds if this guard validates `e` upon evaluating to `branch`. */
+    abstract predicate checks(Expr e, boolean branch);
   }
 }
 
@@ -67,15 +71,14 @@ module SanitizerGuard {
  * A check of the form `!strings.Contains(nd, "..")`, considered as a sanitizer guard for
  * path traversal.
  */
-private class DotDotCheck extends SanitizerGuard::Range, CfgNodes::MethodCallExprCfgNode {
+private class DotDotCheck extends SanitizerGuard::Range, MethodCall {
   DotDotCheck() {
-    this.getAstNode().(CallExprBase).getStaticTarget().(Addressable).getCanonicalPath() =
+    this.getStaticTarget().getCanonicalPath() =
       ["<alloc::string::String>::contains", "<core::str>::contains"] and
-    this.getArgument(0).getAstNode().(LiteralExpr).getTextValue() =
-      ["\"..\"", "\"../\"", "\"..\\\""]
+    this.getPositionalArgument(0).(LiteralExpr).getTextValue() = ["\"..\"", "\"../\"", "\"..\\\""]
   }
 
-  override predicate checks(Cfg::CfgNode e, boolean branch) {
+  override predicate checks(Expr e, boolean branch) {
     e = this.getReceiver() and
     branch = false
   }

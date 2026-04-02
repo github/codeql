@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Standalone/bin/Debug/net9.0/Semmle.Extraction.CSharp.Standalone.dll",
+            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Standalone/bin/Debug/net10.0/Semmle.Extraction.CSharp.Standalone.dll",
             "args": [],
             // Set the path to the folder that should be extracted:
             "cwd": "${workspaceFolder}/ql/test/library-tests/standalone/standalonemode",
@@ -35,7 +35,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/autobuilder/Semmle.Autobuild.CSharp/bin/Debug/net9.0/Semmle.Autobuild.CSharp.dll",
+            "program": "${workspaceFolder}/autobuilder/Semmle.Autobuild.CSharp/bin/Debug/net10.0/Semmle.Autobuild.CSharp.dll",
             // Set the path to the folder that should be extracted:
             "cwd": "${workspaceFolder}/ql/integration-tests/all-platforms/autobuild",
             "stopAtEntry": true,
@@ -53,7 +53,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Driver/bin/Debug/net9.0/Semmle.Extraction.CSharp.Driver.dll",
+            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Driver/bin/Debug/net10.0/Semmle.Extraction.CSharp.Driver.dll",
             "stopAtEntry": true,
             "args": [
                 "--binlog",
@@ -66,7 +66,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Driver/bin/Debug/net9.0/Semmle.Extraction.CSharp.Driver.dll",
+            "program": "${workspaceFolder}/extractor/Semmle.Extraction.CSharp.Driver/bin/Debug/net10.0/Semmle.Extraction.CSharp.Driver.dll",
             // Set the path to the folder that should be extracted:
             "cwd": "${workspaceFolder}/ql/test/library-tests/dataflow/local",
             "args": [

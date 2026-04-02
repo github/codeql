@@ -1,5 +1,5 @@
 /**
- * @name Capture neutral models.
+ * @name Capture neutral models
  * @description Finds neutral models to be used by other queries.
  * @kind diagnostic
  * @id cpp/utils/modelgenerator/neutral-models

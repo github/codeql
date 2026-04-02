@@ -41,4 +41,5 @@ MaybeElement rhs(BinaryExpr e) {
 }
 
 from Expr e
+where not e instanceof Assignment
 select e, lhs(e), rhs(e)
