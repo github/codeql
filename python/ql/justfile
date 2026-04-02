@@ -5,7 +5,7 @@ format *ARGS=".": (_format_ql ARGS)
 
 consistency_queries := source_dir() / "consistency-queries"
 
-python_version := "3"
+python_version := env("python_version", "3")
 
 _v2_env := "CODEQL_EXTRACTOR_PYTHON_ANALYSIS_VERSION=2 CODEQL_PYTHON_LEGACY_TEST_EXTRACTION_VERSION=2"
 _v3_env := "CODEQL_PYTHON_LEGACY_TEST_EXTRACTION_VERSION=3"
