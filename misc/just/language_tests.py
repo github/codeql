@@ -29,10 +29,20 @@ def main():
     ]
 
     just = os.environ.get("JUST_EXECUTABLE", "just")
+
+    # Find the nearest justfile at or above the first root
+    justfile_dir = Path(roots[0])
+    while not (justfile_dir / "justfile").exists():
+        parent = justfile_dir.parent
+        if parent == justfile_dir:
+            print(f"No justfile found above {roots[0]}", file=sys.stderr)
+            return 1
+        justfile_dir = parent
+
     invocation = [
         just,
         "--justfile",
-        str(Path(roots[0]) / "justfile"),
+        str(justfile_dir / "justfile"),
         "test",
         "--all-checks",
         "--codeql=built",
