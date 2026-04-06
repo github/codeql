@@ -100,12 +100,38 @@ predicate criticalSeverityCodeInjection(
 }
 
 /**
+ * Holds if the source is an input expression inside a reusable workflow (workflow_call).
+ */
+private predicate isWorkflowCallInput(DataFlow::Node source) {
+  exists(InputsExpression e |
+    source.asExpr() = e and
+    e.getEnclosingWorkflow() instanceof ReusableWorkflow
+  )
+}
+
+/**
  * Holds if there is a code injection flow from `source` to `sink` with medium severity.
  */
 predicate mediumSeverityCodeInjection(
   CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
 ) {
   CodeInjectionFlow::flowPath(source, sink) and
+  not criticalSeverityCodeInjection(source, sink, _) and
+  not isWorkflowCallInput(source.getNode()) and
+  not isGithubScriptUsingToJson(sink.getNode().asExpr())
+}
+
+/**
+ * Holds if there is a code injection flow from `source` to `sink` with low severity.
+ * This covers workflow_call inputs, which are lower risk since only users with
+ * write access control the callers, but the inputs may still originate from
+ * untrusted user input in the calling workflow.
+ */
+predicate lowSeverityCodeInjection(
+  CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+) {
+  CodeInjectionFlow::flowPath(source, sink) and
+  source.getNode() instanceof WorkflowCallInputSource and
   not criticalSeverityCodeInjection(source, sink, _) and
   not isGithubScriptUsingToJson(sink.getNode().asExpr())
 }

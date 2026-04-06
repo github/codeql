@@ -2,6 +2,8 @@ private import codeql.actions.security.ArtifactPoisoningQuery
 private import codeql.actions.security.UntrustedCheckoutQuery
 private import codeql.actions.config.Config
 private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.ast.internal.Ast
+private import codeql.actions.ast.internal.Yaml
 
 /**
  * A data flow source.
@@ -362,4 +364,69 @@ class OctokitRequestActionSource extends RemoteFlowSource {
   override string getSourceType() { result = "text" }
 
   override string getEventName() { result = this.asExpr().getATriggerEvent().getName() }
+}
+
+/**
+ * A workflow_dispatch input of type string used in an expression.
+ * Inputs with type string (or no explicit type, which defaults to string)
+ * are considered untrusted since they can be controlled by any user
+ * who can trigger the workflow (write access to the repository)
+ */
+class WorkflowDispatchInputSource extends RemoteFlowSource {
+  WorkflowDispatchInputSource() {
+    exists(InputsExpression e, Event event, string inputName |
+      this.asExpr() = e and
+      inputName = e.getFieldName() and
+      event = e.getATriggerEvent() and
+      event.getName() = "workflow_dispatch" and
+      exists(YamlMapping eventMapping, YamlMapping inputsMapping |
+        eventMapping = event.(EventImpl).getValueNode() and
+        inputsMapping = eventMapping.lookup("inputs") and
+        exists(YamlMapping inputMapping |
+          inputMapping = inputsMapping.lookup(inputName) and
+          (
+            // explicit type: string
+            inputMapping.lookup("type").(YamlScalar).getValue().toLowerCase() = "string"
+            or
+            // no explicit type (defaults to string in GitHub Actions)
+            not exists(inputMapping.lookup("type"))
+          )
+        )
+      )
+    )
+  }
+
+  override string getSourceType() { result = "text" }
+
+  override string getEventName() { result = "workflow_dispatch" }
+}
+
+/**
+ * A workflow_call input of type string used in an expression.
+ * Only string-typed inputs are considered vulnerable to code injection.
+ * This is lower risk since only workflow authors control the callers,
+ * but the inputs may still originate from untrusted user input in the
+ * calling workflow.
+ */
+class WorkflowCallInputSource extends RemoteFlowSource {
+  WorkflowCallInputSource() {
+    exists(InputsExpression e, ReusableWorkflowImpl w, string inputName |
+      this.asExpr() = e and
+      inputName = e.getFieldName() and
+      w = e.getEnclosingWorkflow() and
+      exists(YamlMapping inputsMapping, YamlMapping inputMapping |
+        inputsMapping = w.getInputs().getNode() and
+        inputMapping = inputsMapping.lookup(inputName) and
+        inputMapping.lookup("type").(YamlScalar).getValue().toLowerCase() = "string"
+      )
+    )
+  }
+
+  override string getSourceType() { result = "text" }
+
+  override string getEventName() {
+    result = this.asExpr().getATriggerEvent().getName()
+    or
+    not exists(this.asExpr().getATriggerEvent()) and result = "workflow_call"
+  }
 }

@@ -1,0 +1,47 @@
+name: Code Injection via workflow_call
+
+on:
+  workflow_call:
+    inputs:
+      title:
+        description: "Title string input"
+        required: true
+        type: string
+      count:
+        description: "A number input"
+        required: false
+        type: number
+      flag:
+        description: "A boolean input"
+        required: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Vulnerable: string input used directly in run script
+      - name: vulnerable string input
+        run: |
+          echo "${{ inputs.title }}"
+
+      # Not vulnerable: number input (not a string type)
+      - name: safe number input
+        run: |
+          echo "${{ inputs.count }}"
+
+      # Not vulnerable: boolean input (not a string type)
+      - name: safe boolean input
+        run: |
+          echo "${{ inputs.flag }}"
+
+      # Not vulnerable: input passed safely through env var
+      - name: safe string input via env
+        run: |
+          echo "$title"
+        env:
+          title: ${{ inputs.title }}
