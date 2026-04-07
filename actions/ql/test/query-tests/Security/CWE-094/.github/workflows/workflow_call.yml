@@ -29,12 +29,12 @@ jobs:
         run: |
           echo "${{ inputs.title }}"
 
-      # Not vulnerable: number input (not a string type)
+      # Not vulnerable: number input constrained by GitHub to numeric values
       - name: safe number input
         run: |
           echo "${{ inputs.count }}"
 
-      # Not vulnerable: boolean input (not a string type)
+      # Not vulnerable: boolean input constrained by GitHub to true/false values
       - name: safe boolean input
         run: |
           echo "${{ inputs.flag }}"
