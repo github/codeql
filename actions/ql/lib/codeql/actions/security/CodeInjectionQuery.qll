@@ -124,7 +124,7 @@ predicate mediumSeverityCodeInjection(
 /**
  * Holds if there is a code injection flow from `source` to `sink` with low severity.
  * This covers workflow_call inputs, which are lower risk since only users with
- * write access control the callers, but the inputs may still originate from
+ * write access controls the callers, but the inputs may still originate from
  * untrusted user input in the calling workflow.
  */
 predicate lowSeverityCodeInjection(
