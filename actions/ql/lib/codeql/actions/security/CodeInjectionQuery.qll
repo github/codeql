@@ -110,6 +110,13 @@ private predicate isWorkflowCallInput(DataFlow::Node source) {
 }
 
 /**
+ * Holds if the source is an input expression that can be supplied via workflow_dispatch.
+ */
+private predicate isWorkflowDispatchInput(DataFlow::Node source) {
+  source instanceof WorkflowDispatchInputSource
+}
+
+/**
  * Holds if there is a code injection flow from `source` to `sink` with medium severity.
  */
 predicate mediumSeverityCodeInjection(
@@ -117,7 +124,7 @@ predicate mediumSeverityCodeInjection(
 ) {
   CodeInjectionFlow::flowPath(source, sink) and
   not criticalSeverityCodeInjection(source, sink, _) and
-  not isWorkflowCallInput(source.getNode()) and
+  not (isWorkflowCallInput(source.getNode()) and not isWorkflowDispatchInput(source.getNode())) and
   not isGithubScriptUsingToJson(sink.getNode().asExpr())
 }
 

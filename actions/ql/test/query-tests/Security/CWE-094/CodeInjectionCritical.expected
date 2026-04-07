@@ -685,6 +685,8 @@ nodes
 | .github/workflows/workflow_call.yml:30:18:30:36 | inputs.title | semmle.label | inputs.title |
 | .github/workflows/workflow_call.yml:35:18:35:36 | inputs.count | semmle.label | inputs.count |
 | .github/workflows/workflow_call.yml:40:18:40:35 | inputs.flag | semmle.label | inputs.flag |
+| .github/workflows/workflow_call_and_dispatch.yml:34:18:34:36 | inputs.title | semmle.label | inputs.title |
+| .github/workflows/workflow_call_and_dispatch.yml:38:18:38:35 | inputs.body | semmle.label | inputs.body |
 | .github/workflows/workflow_dispatch.yml:36:18:36:36 | inputs.title | semmle.label | inputs.title |
 | .github/workflows/workflow_dispatch.yml:41:18:41:35 | inputs.body | semmle.label | inputs.body |
 | .github/workflows/workflow_run.yml:9:19:9:64 | github.event.workflow_run.display_title | semmle.label | github.event.workflow_run.display_title |
