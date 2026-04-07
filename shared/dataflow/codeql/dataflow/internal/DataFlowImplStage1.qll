@@ -86,14 +86,12 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     bindingset[p, kind]
     predicate parameterFlowThroughAllowed(ParamNd p, ReturnKindExt kind);
 
+    predicate fwdFlow(Nd node);
+
     // begin StageSig
     class Ap;
 
     class ApNil extends Ap;
-
-    predicate fwdFlow(Nd node);
-
-    predicate fwdFlow(Nd node, Ap ap);
 
     predicate revFlow(Nd node);
 
@@ -1297,11 +1295,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
 
       predicate fwdFlow(Nd node) { Stage1::fwdFlow(node) }
 
-      predicate fwdFlow(Nd node, Ap ap) {
-        Stage1::fwdFlow(node) and
-        exists(ap)
-      }
-
       predicate revFlow(NodeEx node, Ap ap) { Stage1::revFlow(node) and exists(ap) }
 
       predicate toNormalSinkNode = toNormalSinkNodeEx/1;
@@ -1407,8 +1400,6 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       import Stage1Common
 
       predicate fwdFlow(Nd node) { Stage1::fwdFlow(node.getNodeEx()) }
-
-      predicate fwdFlow(Nd node, Ap ap) { Stage1::fwdFlow(node.getNodeEx()) and exists(ap) }
 
       predicate revFlow(Nd node) { Stage1::revFlow(node.getNodeEx()) }
 
