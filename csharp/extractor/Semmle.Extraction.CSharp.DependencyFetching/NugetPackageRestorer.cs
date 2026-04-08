@@ -280,14 +280,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // `nuget.config` files instead of the command-line arguments.
             string? extraArgs = null;
 
-            if (this.dependabotProxy is not null)
+            if (dependabotProxy is not null)
             {
                 // If the Dependabot proxy is configured, then our main goal is to make `dotnet` aware
                 // of the private registry feeds. However, since providing them as command-line arguments
                 // to `dotnet` ignores other feeds that may be configured, we also need to add the feeds
                 // we have discovered from analysing `nuget.config` files.
                 var sources = configuredSources ?? new();
-                this.dependabotProxy.RegistryURLs.ForEach(url => sources.Add(url));
+                dependabotProxy.RegistryURLs.ForEach(url =>
+                {
+                    logger.LogDebug($"Adding feed from Dependabot proxy configuration: {url}");
+                    sources.Add(url);
+                });
 
                 // Add package sources. If any are present, they override all sources specified in
                 // the configuration file(s).
@@ -628,6 +632,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return await httpClient.GetAsync(address, cancellationToken);
         }
 
+        private HashSet<HttpStatusCode> UnacceptableStatusCodesForFeedReachabilityCheck { get; } = new() { HttpStatusCode.Unauthorized, HttpStatusCode.Forbidden };
+
         private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount, bool allowExceptions = true)
         {
             logger.LogInfo($"Checking if NuGet feed '{feed}' is reachable...");
@@ -682,15 +688,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         timeoutMilliSeconds *= 2;
                         continue;
                     }
-                    if (exc is HttpRequestException hre &&
-                        hre.StatusCode == HttpStatusCode.Unauthorized)
-                    {
 
-                        logger.LogInfo($"Received 401 Unauthorized error from NuGet feed '{feed}'.");
+                    if (exc is HttpRequestException hre &&
+                        hre.StatusCode is HttpStatusCode statusCode &&
+                        UnacceptableStatusCodesForFeedReachabilityCheck.Contains(statusCode))
+                    {
+                        logger.LogInfo($"Querying NuGet feed '{feed}' failed due to a critical issue. Not considering the feed for use. The reason for the failure: {exc.Message}");
                         return false;
                     }
 
-                    // We're only interested in timeouts.
+                    // We might allow certain exceptions for feed reachability checks.
                     var start = allowExceptions ? "Considering" : "Not considering";
                     logger.LogInfo($"Querying NuGet feed '{feed}' failed in a timely manner. {start} the feed for use. The reason for the failure: {exc.Message}");
                     return allowExceptions;
@@ -734,9 +741,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             // If private package registries are configured for C#, then check those
             // in addition to the ones that are configured in `nuget.config` files.
-            this.dependabotProxy?.RegistryURLs.ForEach(url => feedsToCheck.Add(url));
+            dependabotProxy?.RegistryURLs.ForEach(url => feedsToCheck.Add(url));
 
-            var allFeedsReachable = this.CheckSpecifiedFeeds(feedsToCheck);
+            var allFeedsReachable = CheckSpecifiedFeeds(feedsToCheck);
 
             var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
             if (inheritedFeeds.Count > 0)
