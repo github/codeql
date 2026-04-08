@@ -1,0 +1,19 @@
+name: Safe AI with Author Association Check
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  respond:
+    if: >-
+      contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: AI response
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Respond to this comment:
+            ${{ github.event.comment.body }}
