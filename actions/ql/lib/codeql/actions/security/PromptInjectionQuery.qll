@@ -78,21 +78,30 @@ predicate criticalSeverityPromptInjection(
 }
 
 /**
- * Gets the relevant event for a sink in any externally triggerable context,
- * excluding sinks protected by control checks for the prompt-injection category.
- * This is broader than `getRelevantEventForSink` — it includes non-privileged
- * events like `pull_request` where an attacker can still control event properties
- * (PR title, body, branch name) that flow into AI prompts.
+ * Gets the relevant event for a sink on any externally triggerable event
+ * that is NOT already covered by the critical-severity predicate.
+ * This captures flows on non-privileged events (e.g. `pull_request`),
+ * read-only privileged events (e.g. `pull_request_target` with read permissions),
+ * and any other externally triggerable context that Critical excludes.
+ *
+ * Only actor/association control checks suppress Medium findings because
+ * repository checks do not prevent prompt injection — any user who can
+ * open an issue/PR on the target repo can inject into the prompt content.
  */
 Event getRelevantEventForMediumSeverity(DataFlow::Node sink) {
   exists(LocalJob job |
     job = sink.asExpr().getEnclosingJob() and
     job.getATriggerEvent() = result and
     result.isExternallyTriggerable() and
-    not inPrivilegedContext(sink.asExpr(), result) and
     not result.getName() = "repository_dispatch" and
-    not exists(ControlCheck check | check.protects(sink.asExpr(), result, "prompt-injection"))
-  )
+    // Only actor/association checks suppress medium findings
+    not exists(ControlCheck check |
+      check.protects(sink.asExpr(), result, "prompt-injection") and
+      (check instanceof ActorCheck or check instanceof AssociationCheck)
+    )
+  ) and
+  // Exclude events already reported at critical severity
+  not result = getRelevantEventForPromptInjection(sink)
 }
 
 /**
@@ -123,6 +132,8 @@ private module PromptInjectionConfig implements DataFlow::ConfigSig {
     result = sink.getLocation()
     or
     result = getRelevantEventForPromptInjection(sink).getLocation()
+    or
+    result = getRelevantEventForMediumSeverity(sink).getLocation()
   }
 }
 
