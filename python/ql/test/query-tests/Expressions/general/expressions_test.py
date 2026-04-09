@@ -317,3 +317,24 @@ def test_dynamic_methods():
     # OK: __contains__ is added dynamically via setattr.
     if "name" in proxy:
         pass
+
+# isinstance guard should suppress non-container warning
+def guarded_contains(x):
+    obj = XIter()
+    if isinstance(obj, dict):
+        if x in obj:  # OK: guarded by isinstance
+            pass
+
+def guarded_contains_tuple(x):
+    obj = XIter()
+    if isinstance(obj, (list, dict, set)):
+        if x in obj:  # OK: guarded by isinstance with tuple of types
+            pass
+
+# Negated isinstance guard: early return when NOT a container
+def guarded_contains_negated(x):
+    obj = XIter()
+    if not isinstance(obj, dict):
+        return
+    if x in obj:  # OK: guarded by negated isinstance + early return
+        pass

@@ -14,6 +14,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.ApiGraphs
 
 predicate rhs_in_expr(Expr rhs, Compare cmp) {
   exists(Cmpop op, int i | cmp.getOp(i) = op and cmp.getComparator(i) = rhs |
@@ -42,6 +43,35 @@ predicate hasDynamicMethods(Class cls) {
   )
 }
 
+/**
+ * Holds if `cls_arg` references a known container builtin type, either directly
+ * or as an element of a tuple.
+ */
+private predicate isContainerTypeArg(DataFlow::Node cls_arg) {
+  cls_arg =
+    API::builtin(["list", "tuple", "set", "frozenset", "dict", "str", "bytes", "bytearray"])
+        .getAValueReachableFromSource()
+  or
+  isContainerTypeArg(DataFlow::exprNode(cls_arg.asExpr().(Tuple).getAnElt()))
+}
+
+/**
+ * Holds if `rhs` is guarded by an `isinstance` check that tests for
+ * a container type.
+ */
+predicate guardedByIsinstanceContainer(DataFlow::Node rhs) {
+  exists(
+    DataFlow::GuardNode guard, DataFlow::CallCfgNode isinstance_call, DataFlow::LocalSourceNode src
+  |
+    isinstance_call = API::builtin("isinstance").getACall() and
+    src.flowsTo(isinstance_call.getArg(0)) and
+    src.flowsTo(rhs) and
+    isContainerTypeArg(isinstance_call.getArg(1)) and
+    guard = isinstance_call.asCfgNode() and
+    guard.controlsBlock(rhs.asCfgNode().getBasicBlock(), true)
+  )
+}
+
 from Compare cmp, DataFlow::LocalSourceNode origin, DataFlow::Node rhs, Class cls
 where
   origin = classInstanceTracker(cls) and
@@ -50,6 +80,7 @@ where
   not DuckTyping::hasUnresolvedBase(getADirectSuperclass*(cls)) and
   not isDecoratorApplication(origin) and
   not hasDynamicMethods(cls) and
+  not guardedByIsinstanceContainer(rhs) and
   rhs_in_expr(rhs.asExpr(), cmp)
 select cmp, "This test may raise an Exception as the $@ may be of non-container class $@.", origin,
   "target", cls, cls.getName()
