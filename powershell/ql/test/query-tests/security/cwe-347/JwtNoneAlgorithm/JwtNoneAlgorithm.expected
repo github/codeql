@@ -1,0 +1,1 @@
+| test.ps1:6:29:6:34 | none | JWT token created with 'none' algorithm, disabling signature verification. |
