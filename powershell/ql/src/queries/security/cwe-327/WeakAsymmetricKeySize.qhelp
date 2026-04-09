@@ -24,14 +24,6 @@
     </p>
   </recommendation>
 
-  <example>
-    <p>
-      The following example shows the creation of an RSA key with only 1024 bits, which is
-      considered weak:
-    </p>
-    <sample src="test.ps1" />
-  </example>
-
   <references>
     <li>NIST, SP 800-131A: <a href="https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
     <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA cryptosystem</a>.</li>
