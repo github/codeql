@@ -24,16 +24,56 @@ predicate setsHashToNone(Class cls) {
 }
 
 /**
+ * Holds if `cls` has a `@dataclass` decorator with `frozen=True` or `unsafe_hash=True`,
+ * which generates a `__hash__` method at runtime.
+ */
+predicate hasDataclassHash(Class cls) {
+  exists(DataFlow::CallCfgNode decorator |
+    decorator = API::moduleImport("dataclasses").getMember("dataclass").getACall() and
+    decorator.asExpr() = cls.getADecorator() and
+    decorator.getArgByName(["frozen", "unsafe_hash"]).asExpr().(ImmutableLiteral).booleanValue() =
+      true
+  )
+}
+
+/**
+ * Holds if `cls` defines `__eq__` directly (not inherited from `object`),
+ * or has a `@dataclass` decorator that generates `__eq__` (the default).
+ */
+predicate definesEq(Class cls) {
+  DuckTyping::hasMethod(cls, "__eq__")
+  or
+  // @dataclass(...) call generates __eq__ unless eq=False
+  exists(DataFlow::CallCfgNode decorator |
+    decorator = API::moduleImport("dataclasses").getMember("dataclass").getACall() and
+    decorator.asExpr() = cls.getADecorator() and
+    not decorator.getArgByName("eq").asExpr().(ImmutableLiteral).booleanValue() = false
+  )
+  or
+  // bare @dataclass without arguments also generates __eq__
+  cls.getADecorator() =
+    API::moduleImport("dataclasses").getMember("dataclass").getAValueReachableFromSource().asExpr()
+}
+
+/**
  * Holds if `cls` is a user-defined class whose instances are unhashable.
- * A new-style class without `__hash__` is unhashable, as is one that explicitly
- * sets `__hash__ = None`.
+ *
+ * In Python, a class is unhashable if:
+ * - It explicitly sets `__hash__ = None`, or
+ * - It defines `__eq__` (directly or via decorator like `@dataclass`) without
+ *   defining `__hash__`, and doesn't have a decorator that generates `__hash__`.
  */
 predicate isUnhashableUserClass(Class cls) {
-  DuckTyping::isNewStyle(cls) and
-  not DuckTyping::hasMethod(cls, "__hash__") and
-  not DuckTyping::hasUnresolvedBase(getADirectSuperclass*(cls))
-  or
   setsHashToNone(cls)
+  or
+  // In Python 3, defining __eq__ without __hash__ makes a class unhashable.
+  // This rule does not apply in Python 2.
+  major_version() = 3 and
+  DuckTyping::isNewStyle(cls) and
+  definesEq(cls) and
+  not DuckTyping::hasMethod(cls, "__hash__") and
+  not hasDataclassHash(cls) and
+  not DuckTyping::hasUnresolvedBase(getADirectSuperclass*(cls))
 }
 
 /**
