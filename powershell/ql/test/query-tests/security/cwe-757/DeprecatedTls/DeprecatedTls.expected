@@ -1,0 +1,4 @@
+| test.ps1:6:47:6:78 | ssl3 | Use of deprecated protocol SSL 3.0. Use TLS 1.2 or TLS 1.3 instead. |
+| test.ps1:9:47:9:77 | tls | Use of deprecated protocol TLS 1.0. Use TLS 1.2 or TLS 1.3 instead. |
+| test.ps1:12:47:12:79 | tls11 | Use of deprecated protocol TLS 1.1. Use TLS 1.2 or TLS 1.3 instead. |
+| test.ps1:15:54:15:91 | tls | Use of deprecated protocol TLS 1.0. Use TLS 1.2 or TLS 1.3 instead. |
