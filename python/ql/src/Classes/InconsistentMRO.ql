@@ -17,7 +17,10 @@ private import semmle.python.dataflow.new.internal.DataFlowDispatch
 /**
  * Gets the `i`th base class of `cls`, if it can be resolved to a user-defined class.
  */
-Class getBaseType(Class cls, int i) { cls.getBase(i) = classTracker(result).asExpr() }
+Class getBaseType(Class cls, int i) {
+  cls.getBase(i) = classTracker(result).asExpr() and
+  result != cls
+}
 
 Class left_base(Class type, Class base) {
   exists(int i | i > 0 and getBaseType(type, i) = base and result = getBaseType(type, i - 1))
