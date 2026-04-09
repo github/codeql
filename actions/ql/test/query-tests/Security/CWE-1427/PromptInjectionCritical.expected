@@ -18,6 +18,8 @@ nodes
 | .github/workflows/vulnerable9.yml:17:20:17:57 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/vulnerable9.yml:18:19:18:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
 | .github/workflows/vulnerable10.yml:16:13:16:43 | github.event.issue.title | semmle.label | github.event.issue.title |
+| .github/workflows/vulnerable11.yml:18:20:18:57 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/vulnerable11.yml:19:19:19:55 | github.event.pull_request.body | semmle.label | github.event.pull_request.body |
 subpaths
 #select
 | .github/workflows/vulnerable1.yml:19:20:19:50 | github.event.issue.title | .github/workflows/vulnerable1.yml:19:20:19:50 | github.event.issue.title | .github/workflows/vulnerable1.yml:19:20:19:50 | github.event.issue.title | Potential prompt injection in $@, which may be controlled by an external user ($@). | .github/workflows/vulnerable1.yml:19:20:19:50 | github.event.issue.title | ${{ github.event.issue.title }} | .github/workflows/vulnerable1.yml:3:3:3:8 | issues | issues |
