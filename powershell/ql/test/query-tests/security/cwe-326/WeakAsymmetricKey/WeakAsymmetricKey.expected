@@ -1,0 +1,3 @@
+| test.ps1:6:8:6:55 | Call to create | RSA key size 1024 bits is below the minimum of 2048 bits. |
+| test.ps1:9:8:9:54 | Call to create | RSA key size 512 bits is below the minimum of 2048 bits. |
+| test.ps1:12:8:12:73 | Call to new | RSA key size 1024 bits is below the minimum of 2048 bits. |
