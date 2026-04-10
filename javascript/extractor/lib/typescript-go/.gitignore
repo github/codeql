@@ -1,0 +1,10 @@
+# Build outputs
+bin/
+/typescript-parser-wrapper
+
+# Validation output (generated during test comparison)
+validation-output/
+
+# Go build cache
+*.test
+*.out
