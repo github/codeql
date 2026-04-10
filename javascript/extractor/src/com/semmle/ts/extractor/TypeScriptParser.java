@@ -56,6 +56,11 @@ import ch.qos.logback.classic.Level;
  * $SEMMLE_DIST/tools/typescript-parser-wrapper/main.js}; non-standard locations can be configured
  * using the property {@value #PARSER_WRAPPER_PATH_ENV_VAR}.
  *
+ * <p>Alternatively, a Go-based parser wrapper can be used by setting the environment variable
+ * {@value #USE_GO_PARSER_VAR} to {@code true}. This uses the TypeScript 7 (Go-based) compiler
+ * and does not require Node.js. The Go binary location can be configured using {@value
+ * #GO_PARSER_WRAPPER_PATH_ENV_VAR}.
+ *
  * <p>The script launches the Node.js wrapper in the Node.js runtime, looking for {@code node} on
  * the {@code PATH} by default. Non-standard locations can be configured using the property {@value
  * #TYPESCRIPT_NODE_RUNTIME_VAR}, and additional arguments can be configured using the property
@@ -125,6 +130,23 @@ public class TypeScriptParser {
   public static final String TYPESCRIPT_NODE_FLAGS = "SEMMLE_TYPESCRIPT_NODE_FLAGS";
 
   /**
+   * An environment variable that, when set to {@code true}, causes the extractor to use a Go-based
+   * TypeScript parser wrapper (using TypeScript 7) instead of the Node.js wrapper.
+   *
+   * <p>This is experimental and does not require Node.js to be installed.
+   */
+  public static final String USE_GO_PARSER_VAR = "SEMMLE_TYPESCRIPT_USE_GO_PARSER";
+
+  /**
+   * An environment variable that can be set to indicate the location of the Go TypeScript parser
+   * wrapper binary.
+   *
+   * <p>Only used when {@value #USE_GO_PARSER_VAR} is set to {@code true}.
+   * Defaults to {@code $SEMMLE_DIST/tools/typescript-parser-wrapper-go} if not set.
+   */
+  public static final String GO_PARSER_WRAPPER_PATH_ENV_VAR = "SEMMLE_TYPESCRIPT_GO_PARSER_WRAPPER";
+
+  /**
    * Exit code for Node.js in case of a fatal error from V8. This exit code sometimes occurs
    * when the process runs out of memory.
    */
@@ -140,6 +162,9 @@ public class TypeScriptParser {
   private Process parserWrapperProcess;
 
   private String parserWrapperCommand;
+
+  /** Whether we are using the Go-based TypeScript parser instead of Node.js. */
+  private boolean useGoParser = "true".equalsIgnoreCase(Env.systemEnv().get(USE_GO_PARSER_VAR));
 
   /** Streams for communicating with the Node.js parser wrapper process. */
   private BufferedWriter toParserWrapper;
@@ -171,10 +196,19 @@ public class TypeScriptParser {
   /**
    * Verifies that Node.js and TypeScript are installed and throws an exception otherwise.
    *
+   * <p>When the Go parser is enabled, this only verifies the Go binary exists.
+   *
    * @param verbose if true, log the Node.js executable path, version strings, and any additional
    *     arguments.
    */
   public void verifyInstallation(boolean verbose) {
+    if (useGoParser) {
+      File goWrapper = getGoParserWrapper();
+      if (verbose) {
+        System.out.println("Using Go TypeScript parser wrapper: " + goWrapper.getAbsolutePath());
+      }
+      return;
+    }
     verifyNodeInstallation();
     if (verbose) {
       System.out.println("Found Node.js at: " + nodeJsRuntime);
@@ -273,8 +307,69 @@ public class TypeScriptParser {
     return result;
   }
 
-  /** Start the Node.js parser wrapper process. */
+  /** Start the parser wrapper process (Node.js or Go). */
   private void setupParserWrapper() {
+    if (useGoParser) {
+      setupGoParserWrapper();
+    } else {
+      setupNodeParserWrapper();
+    }
+  }
+
+  /** Start the Go-based parser wrapper process. */
+  private void setupGoParserWrapper() {
+    File goWrapper = getGoParserWrapper();
+
+    List<String> cmd = new ArrayList<>();
+    cmd.add(goWrapper.getAbsolutePath());
+
+    ProcessBuilder pb = new ProcessBuilder(cmd);
+    parserWrapperCommand = StringUtil.glue(" ", cmd);
+
+    // Pass the tsgo binary location if configured
+    String tsgoBinary = Env.systemEnv().get("SEMMLE_TYPESCRIPT_TSGO_BINARY");
+    if (tsgoBinary != null) {
+      pb.environment().put("SEMMLE_TYPESCRIPT_TSGO_BINARY", tsgoBinary);
+    }
+
+    try {
+      pb.redirectError(Redirect.INHERIT);
+      parserWrapperProcess = pb.start();
+      OutputStream os = parserWrapperProcess.getOutputStream();
+      OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8");
+      toParserWrapper = new BufferedWriter(osw);
+      InputStream is = parserWrapperProcess.getInputStream();
+      InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+      fromParserWrapper = new BufferedReader(isr);
+      this.loadMetadata();
+    } catch (IOException e) {
+      throw new CatastrophicError(
+          "Could not start Go TypeScript parser wrapper "
+              + "(command: " + parserWrapperCommand + ")",
+          e);
+    }
+  }
+
+  /** Get the location of the Go parser wrapper binary. */
+  private File getGoParserWrapper() {
+    String explicitPath = Env.systemEnv().get(GO_PARSER_WRAPPER_PATH_ENV_VAR);
+    File goWrapper;
+    if (explicitPath != null) {
+      goWrapper = new File(explicitPath);
+    } else {
+      goWrapper =
+          new File(EnvironmentVariables.getExtractorRoot(), "tools/typescript-parser-wrapper-go");
+    }
+    if (!goWrapper.isFile()) {
+      throw new ResourceError(
+          "Could not find Go TypeScript parser wrapper: " + goWrapper + " does not exist.\n"
+              + "Set " + GO_PARSER_WRAPPER_PATH_ENV_VAR + " to the path of the Go wrapper binary.");
+    }
+    return goWrapper;
+  }
+
+  /** Start the Node.js parser wrapper process. */
+  private void setupNodeParserWrapper() {
     verifyNodeInstallation();
 
     int mainMemoryMb =
@@ -344,7 +439,7 @@ public class TypeScriptParser {
   }
 
   /**
-   * Send a {@code request} to the Node.js parser wrapper process, and return the response it
+   * Send a {@code request} to the parser wrapper process, and return the response it
    * replies with.
    */
   private JsonObject talkToParserWrapper(JsonObject request) {
@@ -512,7 +607,7 @@ public class TypeScriptParser {
   }
 
   /**
-   * Forcibly closes the Node.js process.
+   * Forcibly closes the parser wrapper process (Node.js or Go).
    *
    * <p>A new process will be started the next time a request is made.
    */
