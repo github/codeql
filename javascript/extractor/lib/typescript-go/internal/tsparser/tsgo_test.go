@@ -193,7 +193,7 @@ func TestTsgoGetMetadata(t *testing.T) {
 }
 
 func TestStaticMetadata(t *testing.T) {
-	meta := getStaticTS7Metadata()
+	meta := GetStaticTS7Metadata()
 
 	required := []string{"SourceFile", "Identifier", "Block", "VariableStatement",
 		"FunctionDeclaration", "ClassDeclaration", "InterfaceDeclaration"}
@@ -234,4 +234,69 @@ func min(a, b int) int {
 		return a
 	}
 	return b
+}
+
+func TestTsgoParse(t *testing.T) {
+	if _, err := exec.LookPath("tsgo"); err != nil {
+		t.Skip("tsgo not found on PATH")
+	}
+
+	sampleFile := findTestFile(t)
+	parser := NewTsgoParser(Config{Stderr: os.Stderr})
+	defer parser.Close()
+
+	result, err := parser.Parse(sampleFile)
+	if err != nil {
+		t.Fatalf("Parse failed: %v", err)
+	}
+
+	ast, ok := result.AST.(map[string]interface{})
+	if !ok {
+		t.Fatalf("Expected AST to be map[string]interface{}, got %T", result.AST)
+	}
+
+	// Verify the root is a SourceFile
+	kindVal, ok := ast["kind"]
+	if !ok {
+		t.Fatal("Missing 'kind' property on root node")
+	}
+	kindNum, ok := kindVal.(int)
+	if !ok {
+		t.Fatalf("Expected 'kind' to be int, got %T", kindVal)
+	}
+	if kindNum != 307 { // SourceFile = 307 in TS7
+		t.Errorf("Expected root kind=307 (SourceFile), got %d", kindNum)
+	}
+
+	// Verify $pos and $end
+	if _, ok := ast["$pos"]; !ok {
+		t.Error("Missing '$pos' property")
+	}
+	if _, ok := ast["$end"]; !ok {
+		t.Error("Missing '$end' property")
+	}
+
+	// Verify statements array
+	stmts, ok := ast["statements"]
+	if !ok {
+		t.Fatal("Missing 'statements' property")
+	}
+	stmtsArr, ok := stmts.([]interface{})
+	if !ok {
+		t.Fatalf("Expected statements to be array, got %T", stmts)
+	}
+	if len(stmtsArr) == 0 {
+		t.Error("Expected non-empty statements array")
+	}
+
+	// Print a nicely indented snippet for debug
+	jsonBytes, err := json.MarshalIndent(ast, "", "  ")
+	if err != nil {
+		t.Fatalf("Failed to marshal AST: %v", err)
+	}
+	snippet := string(jsonBytes)
+	if len(snippet) > 2000 {
+		snippet = snippet[:2000] + "\n... (truncated)"
+	}
+	t.Logf("Parsed AST (first 2000 chars):\n%s", snippet)
 }

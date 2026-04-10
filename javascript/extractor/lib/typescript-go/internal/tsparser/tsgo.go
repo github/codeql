@@ -11,6 +11,8 @@ import (
 	"path/filepath"
 	"strconv"
 	"sync"
+
+	"github.com/github/codeql/javascript/extractor/lib/typescript-go/internal/astconv"
 )
 
 // TsgoParser implements the Parser interface by running the tsgo binary
@@ -186,26 +188,36 @@ func (p *TsgoParser) sendRequest(method string, params interface{}) (json.RawMes
 		return nil, fmt.Errorf("failed to marshal request: %w", err)
 	}
 
+	fmt.Fprintf(os.Stderr, "[tsgo] >>> %s id=%d\n", method, id)
+
 	if err := p.writeMessage(data); err != nil {
 		return nil, fmt.Errorf("failed to write request: %w", err)
 	}
 
-	// Read the response
-	respData, err := p.readMessage()
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response: %w", err)
-	}
+	// Read responses, skipping notifications (messages without a matching id).
+	// In --async mode, tsgo may send diagnostic notifications between responses.
+	for {
+		respData, err := p.readMessage()
+		if err != nil {
+			return nil, fmt.Errorf("failed to read response: %w", err)
+		}
 
-	var resp jsonRPCResponse
-	if err := json.Unmarshal(respData, &resp); err != nil {
-		return nil, fmt.Errorf("failed to parse response: %w", err)
-	}
+		var resp jsonRPCResponse
+		if err := json.Unmarshal(respData, &resp); err != nil {
+			return nil, fmt.Errorf("failed to parse response: %w", err)
+		}
 
-	if resp.Error != nil {
-		return nil, fmt.Errorf("tsgo API error %d: %s", resp.Error.Code, resp.Error.Message)
-	}
+		// Skip notifications (id=0 means no id field was present in JSON)
+		if resp.ID != id {
+			continue
+		}
 
-	return resp.Result, nil
+		if resp.Error != nil {
+			return nil, fmt.Errorf("tsgo API error %d: %s", resp.Error.Code, resp.Error.Message)
+		}
+
+		return resp.Result, nil
+	}
 }
 
 // call sends a request with proper locking and initialization.
@@ -229,30 +241,48 @@ type updateSnapshotResponse struct {
 	} `json:"projects"`
 }
 
-// ensureProjectOpen opens a project for the given file's directory using
-// a temporary tsconfig, or uses the existing snapshot if already open.
+// ensureProjectOpen opens a project for the given file.
+// The tsgo API requires a tsconfig for project opening, so if none exists
+// in the file's directory, we create a temporary one.
 func (p *TsgoParser) ensureProjectOpen(filename string) error {
 	if p.snapshotHandle != "" && p.projectHandle != "" {
 		return nil
 	}
 
-	// Create a snapshot by opening a project.
-	// For single-file parsing without a tsconfig, we ask tsgo to open
-	// the file's directory as a project. The tsgo API requires a
-	// tsconfig path for OpenProject.
 	dir := filepath.Dir(filename)
+	base := filepath.Base(filename)
 	tsconfigPath := filepath.Join(dir, "tsconfig.json")
 
-	// First try: updateSnapshot with the file's directory tsconfig
+	// If no tsconfig exists, create a temporary one
+	createdTsconfig := false
+	if _, err := os.Stat(tsconfigPath); os.IsNotExist(err) {
+		tsconfig := fmt.Sprintf(`{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "noEmit": true,
+    "strict": false,
+    "allowJs": true
+  },
+  "files": [%q]
+}`, base)
+		if err := os.WriteFile(tsconfigPath, []byte(tsconfig), 0644); err != nil {
+			return fmt.Errorf("failed to create temporary tsconfig: %w", err)
+		}
+		createdTsconfig = true
+	}
+
 	result, err := p.sendRequest("updateSnapshot", map[string]interface{}{
 		"openProject": tsconfigPath,
 	})
+
+	// Clean up temporary tsconfig
+	if createdTsconfig {
+		os.Remove(tsconfigPath)
+	}
+
 	if err != nil {
-		// If no tsconfig exists, try without a project
-		result, err = p.sendRequest("updateSnapshot", map[string]interface{}{})
-		if err != nil {
-			return fmt.Errorf("failed to create snapshot: %w", err)
-		}
+		return fmt.Errorf("failed to open project: %w", err)
 	}
 
 	var resp updateSnapshotResponse
@@ -303,18 +333,37 @@ func (p *TsgoParser) Parse(filename string) (*ParseResult, error) {
 		return nil, fmt.Errorf("parse %s: %w", filename, err)
 	}
 
-	// The result is the binary-encoded source file data (base64 when
-	// using JSON protocol). For now, store the raw response.
-	// TODO: Decode the binary format into a JSON AST.
+	// The result is {"data":"<base64>"} containing a binary-encoded AST.
+	var dataResp struct {
+		Data string `json:"data"`
+	}
+	if err := json.Unmarshal(result, &dataResp); err != nil {
+		return nil, fmt.Errorf("parse %s: failed to parse getSourceFile response: %w", filename, err)
+	}
+
+	binaryAST, err := astconv.DecodeBinaryASTFromBase64(dataResp.Data)
+	if err != nil {
+		return nil, fmt.Errorf("parse %s: failed to decode binary AST: %w", filename, err)
+	}
+
+	kindToName := BuildKindToNameMap()
+	converter := astconv.NewConverter(binaryAST, kindToName)
+	astObj, err := converter.Convert()
+	if err != nil {
+		return nil, fmt.Errorf("parse %s: failed to convert AST: %w", filename, err)
+	}
+
+	filtered := astconv.FilterWhitelist(astObj)
+
 	return &ParseResult{
-		AST:     result,
-		RawData: []byte(result),
+		AST:     filtered,
+		RawData: []byte(dataResp.Data),
 	}, nil
 }
 
 // GetMetadata returns the syntax kinds and node flags.
 func (p *TsgoParser) GetMetadata() (*Metadata, error) {
-	return getStaticTS7Metadata(), nil
+	return GetStaticTS7Metadata(), nil
 }
 
 // Reset resets the parser state, killing and restarting the subprocess.

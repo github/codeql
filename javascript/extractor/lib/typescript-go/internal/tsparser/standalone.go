@@ -100,7 +100,7 @@ func (p *StandaloneParser) Parse(filename string) (*ParseResult, error) {
 
 // GetMetadata returns static TS7 metadata.
 func (p *StandaloneParser) GetMetadata() (*Metadata, error) {
-	return getStaticTS7Metadata(), nil
+	return GetStaticTS7Metadata(), nil
 }
 
 // Reset is a no-op for the standalone parser.
