@@ -31,15 +31,26 @@ private predicate isPinnedContainer(string version) {
 bindingset[nwo]
 private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
 
-from UsesStep uses, string nwo, string version, Workflow workflow, string name
+private predicate getStepContainerName(UsesStep uses, string name) {
+  exists(Workflow workflow |
+    uses.getEnclosingWorkflow() = workflow and
+    (
+      workflow.getName() = name
+      or
+      not exists(workflow.getName()) and workflow.getLocation().getFile().getBaseName() = name
+    )
+  )
+  or
+  exists(CompositeAction action |
+    uses.getEnclosingCompositeAction() = action and
+    name = action.getLocation().getFile().getBaseName()
+  )
+}
+
+from UsesStep uses, string nwo, string version, string name
 where
   uses.getCallee() = nwo and
-  uses.getEnclosingWorkflow() = workflow and
-  (
-    workflow.getName() = name
-    or
-    not exists(workflow.getName()) and workflow.getLocation().getFile().getBaseName() = name
-  ) and
+  getStepContainerName(uses, name) and
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
   not (if isContainerImage(nwo) then isPinnedContainer(version) else isPinnedCommit(version)) and
