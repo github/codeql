@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Modern encryption relies on it being computationally infeasible to break the cipher and
+      decode a message without the key. As computational power increases, the ability to break
+      ciphers grows and keys need to become larger.
+    </p>
+    <p>
+      RSA keys smaller than 2048 bits are considered weak and can potentially be broken using
+      modern hardware. Using such keys compromises the confidentiality and integrity of
+      encrypted data.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Use an RSA key size of at least 2048 bits. For long-term security, consider using
+      4096-bit keys.
+    </p>
+    <p>
+      When calling <code>[System.Security.Cryptography.RSA]::Create()</code> or creating an
+      <code>RSACryptoServiceProvider</code>, always specify a key size of 2048 or greater.
+    </p>
+  </recommendation>
+
+  <references>
+    <li>NIST, SP 800-131A: <a href="https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+    <li>Wikipedia: <a href="https://en.wikipedia.org/wiki/RSA_(cryptosystem)">RSA cryptosystem</a>.</li>
+    <li>CWE-327: <a href="https://cwe.mitre.org/data/definitions/327.html">Use of a Broken or Risky Cryptographic Algorithm</a>.</li>
+  </references>
+</qhelp>
