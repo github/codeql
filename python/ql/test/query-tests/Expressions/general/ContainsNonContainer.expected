@@ -1,2 +1,22 @@
-| expressions_test.py:89:8:89:15 | Compare | This test may raise an Exception as the $@ may be of non-container class $@. | expressions_test.py:88:11:88:17 | ControlFlowNode for XIter() | target | expressions_test.py:77:1:77:20 | Class XIter | XIter |
-| expressions_test.py:91:8:91:19 | Compare | This test may raise an Exception as the $@ may be of non-container class $@. | expressions_test.py:88:11:88:17 | ControlFlowNode for XIter() | target | expressions_test.py:77:1:77:20 | Class XIter | XIter |
+edges
+| expressions_test.py:77:1:77:20 | ControlFlowNode for ClassExpr | expressions_test.py:77:7:77:11 | ControlFlowNode for XIter | provenance |  |
+| expressions_test.py:77:7:77:11 | ControlFlowNode for XIter | expressions_test.py:88:11:88:15 | ControlFlowNode for XIter | provenance |  |
+| expressions_test.py:88:5:88:7 | ControlFlowNode for seq | expressions_test.py:89:13:89:15 | ControlFlowNode for seq | provenance |  |
+| expressions_test.py:88:5:88:7 | ControlFlowNode for seq | expressions_test.py:91:17:91:19 | ControlFlowNode for seq | provenance |  |
+| expressions_test.py:88:5:88:7 | ControlFlowNode for seq | expressions_test.py:91:17:91:19 | ControlFlowNode for seq | provenance |  |
+| expressions_test.py:88:11:88:15 | ControlFlowNode for XIter | expressions_test.py:88:11:88:17 | ControlFlowNode for XIter() | provenance | Config |
+| expressions_test.py:88:11:88:17 | ControlFlowNode for XIter() | expressions_test.py:88:5:88:7 | ControlFlowNode for seq | provenance |  |
+nodes
+| expressions_test.py:77:1:77:20 | ControlFlowNode for ClassExpr | semmle.label | ControlFlowNode for ClassExpr |
+| expressions_test.py:77:7:77:11 | ControlFlowNode for XIter | semmle.label | ControlFlowNode for XIter |
+| expressions_test.py:88:5:88:7 | ControlFlowNode for seq | semmle.label | ControlFlowNode for seq |
+| expressions_test.py:88:11:88:15 | ControlFlowNode for XIter | semmle.label | ControlFlowNode for XIter |
+| expressions_test.py:88:11:88:17 | ControlFlowNode for XIter() | semmle.label | ControlFlowNode for XIter() |
+| expressions_test.py:89:13:89:15 | ControlFlowNode for seq | semmle.label | ControlFlowNode for seq |
+| expressions_test.py:91:17:91:19 | ControlFlowNode for seq | semmle.label | ControlFlowNode for seq |
+| expressions_test.py:91:17:91:19 | ControlFlowNode for seq | semmle.label | ControlFlowNode for seq |
+subpaths
+#select
+| expressions_test.py:89:13:89:15 | ControlFlowNode for seq | expressions_test.py:77:1:77:20 | ControlFlowNode for ClassExpr | expressions_test.py:89:13:89:15 | ControlFlowNode for seq | This test may raise an Exception as the $@ may be of non-container class $@. | expressions_test.py:77:1:77:20 | ControlFlowNode for ClassExpr | target | expressions_test.py:77:1:77:20 | Class XIter | XIter |
+| expressions_test.py:91:17:91:19 | ControlFlowNode for seq | expressions_test.py:77:1:77:20 | ControlFlowNode for ClassExpr | expressions_test.py:91:17:91:19 | ControlFlowNode for seq | This test may raise an Exception as the $@ may be of non-container class $@. | expressions_test.py:77:1:77:20 | ControlFlowNode for ClassExpr | target | expressions_test.py:77:1:77:20 | Class XIter | XIter |
+| expressions_test.py:91:17:91:19 | ControlFlowNode for seq | expressions_test.py:77:1:77:20 | ControlFlowNode for ClassExpr | expressions_test.py:91:17:91:19 | ControlFlowNode for seq | This test may raise an Exception as the $@ may be of non-container class $@. | expressions_test.py:77:1:77:20 | ControlFlowNode for ClassExpr | target | expressions_test.py:77:1:77:20 | Class XIter | XIter |
