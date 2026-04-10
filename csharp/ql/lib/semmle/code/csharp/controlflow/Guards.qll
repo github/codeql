@@ -136,7 +136,7 @@ private module GuardsInput implements
     IdExpr() { this instanceof AssignExpr or this instanceof CastExpr }
 
     Expr getEqualChildExpr() {
-      result = this.(AssignExpr).getRValue()
+      result = this.(AssignExpr).getRightOperand()
       or
       result = this.(CastExpr).getExpr()
     }
@@ -836,7 +836,7 @@ module Internal {
 
   /** Holds if expression `e2` is a `null` value whenever `e1` is. */
   predicate nullValueImpliedUnary(Expr e1, Expr e2) {
-    e1 = e2.(AssignExpr).getRValue()
+    e1 = e2.(AssignExpr).getRightOperand()
     or
     e1 = e2.(Cast).getExpr()
     or
@@ -923,7 +923,7 @@ module Internal {
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */
   predicate nonNullValueImpliedUnary(Expr e1, Expr e2) {
     e1 = e2.(CastExpr).getExpr() or
-    e1 = e2.(AssignExpr).getRValue() or
+    e1 = e2.(AssignExpr).getRightOperand() or
     e1 = e2.(NullCoalescingOperation).getAnOperand()
   }
 

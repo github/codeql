@@ -134,7 +134,7 @@ module SatisfiesBlanketConstraint<
     exists(ArgumentTypeAndBlanketOffset ato, Trait traitBound |
       ato = MkArgumentTypeAndBlanketOffset(at, _) and
       SatisfiesBlanketConstraintInput::relevantConstraint(ato, impl, traitBound) and
-      SatisfiesBlanketConstraint::satisfiesConstraintType(ato, TTrait(traitBound), _, _)
+      SatisfiesBlanketConstraint::satisfiesConstraint(ato, TTrait(traitBound), _, _)
     )
     or
     exists(TypeParam blanketTypeParam |

@@ -86,6 +86,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
     bindingset[p, kind]
     predicate parameterFlowThroughAllowed(ParamNd p, ReturnKindExt kind);
 
+    predicate fwdFlow(Nd node);
+
     // begin StageSig
     class Ap;
 
@@ -634,7 +636,7 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
         )
       }
 
-      private predicate fwdFlow(NodeEx node) { fwdFlow(node, _) }
+      predicate fwdFlow(NodeEx node) { fwdFlow(node, _) }
 
       pragma[nomagic]
       private predicate fwdFlowReadSet(ContentSet c, NodeEx node, Cc cc) {
@@ -1291,6 +1293,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       import Stage1
       import Stage1Common
 
+      predicate fwdFlow(Nd node) { Stage1::fwdFlow(node) }
+
       predicate revFlow(NodeEx node, Ap ap) { Stage1::revFlow(node) and exists(ap) }
 
       predicate toNormalSinkNode = toNormalSinkNodeEx/1;
@@ -1394,6 +1398,8 @@ module MakeImplStage1<LocationSig Location, InputSig<Location> Lang> {
       }
 
       import Stage1Common
+
+      predicate fwdFlow(Nd node) { Stage1::fwdFlow(node.getNodeEx()) }
 
       predicate revFlow(Nd node) { Stage1::revFlow(node.getNodeEx()) }
 

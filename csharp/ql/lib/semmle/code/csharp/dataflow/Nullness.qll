@@ -31,7 +31,7 @@ private Expr maybeNullExpr(Expr reason) {
   or
   result instanceof AsExpr and reason = result
   or
-  result.(AssignExpr).getRValue() = maybeNullExpr(reason)
+  result.(AssignExpr).getRightOperand() = maybeNullExpr(reason)
   or
   result.(CastExpr).getExpr() = maybeNullExpr(reason)
   or

@@ -337,7 +337,7 @@ private module CallGraph {
       pred = succ.(DelegateCreation).getArgument()
       or
       exists(AddEventExpr ae | succ.(EventAccess).getTarget() = ae.getTarget() |
-        pred = ae.getRValue()
+        pred = ae.getRightOperand()
       )
     }
 

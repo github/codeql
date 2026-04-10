@@ -35,8 +35,8 @@ module InsecureSqlConnectionConfig implements DataFlow::ConfigSig {
       ) and
       not exists(MemberInitializer mi |
         mi = oc.getInitializer().(ObjectInitializer).getAMemberInitializer() and
-        mi.getLValue().(PropertyAccess).getTarget().getName() = "Encrypt" and
-        mi.getRValue().(BoolLiteral).getValue() = "true"
+        mi.getLeftOperand().(PropertyAccess).getTarget().getName() = "Encrypt" and
+        mi.getRightOperand().(BoolLiteral).getValue() = "true"
       )
     )
   }

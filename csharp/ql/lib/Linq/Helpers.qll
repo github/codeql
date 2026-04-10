@@ -77,7 +77,7 @@ predicate missedAllOpportunity(ForeachStmtGenericEnumerable fes) {
     // The then case of the if assigns false to something and breaks out of the loop.
     exists(Assignment a, BoolLiteral bl |
       a = is.getThen().getAChild*() and
-      bl = a.getRValue() and
+      bl = a.getRightOperand() and
       bl.toString() = "false"
     ) and
     is.getThen().getAChild*() instanceof BreakStmt

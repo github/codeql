@@ -89,10 +89,10 @@ module Random {
         e = any(SensitiveLibraryParameter v).getAnAssignedArgument()
         or
         // Assignment operation, e.g. += or similar
-        exists(AssignOperation ao | ao.getRValue() = e |
-          ao.getLValue() = any(SensitiveVariable v).getAnAccess() or
-          ao.getLValue() = any(SensitiveProperty v).getAnAccess() or
-          ao.getLValue() = any(SensitiveLibraryParameter v).getAnAccess()
+        exists(AssignOperation ao | ao.getRightOperand() = e |
+          ao.getLeftOperand() = any(SensitiveVariable v).getAnAccess() or
+          ao.getLeftOperand() = any(SensitiveProperty v).getAnAccess() or
+          ao.getLeftOperand() = any(SensitiveLibraryParameter v).getAnAccess()
         )
       )
     }

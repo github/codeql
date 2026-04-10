@@ -21,7 +21,7 @@ private module Impl {
   /** Holds if SSA definition `def` equals `e + delta`. */
   predicate ssaUpdateStep(ExplicitDefinition def, ExprNode e, int delta) {
     exists(ControlFlow::Node cfn | cfn = def.getControlFlowNode() |
-      e = cfn.(ExprNode::Assignment).getRValue() and
+      e = cfn.(ExprNode::Assignment).getRightOperand() and
       delta = 0 and
       not cfn instanceof ExprNode::AssignOperation
       or
@@ -39,7 +39,7 @@ private module Impl {
 
   /** Holds if `e1 + delta` equals `e2`. */
   predicate valueFlowStep(ExprNode e2, ExprNode e1, int delta) {
-    e2.(ExprNode::AssignExpr).getRValue() = e1 and delta = 0
+    e2.(ExprNode::AssignExpr).getRightOperand() = e1 and delta = 0
     or
     e2.(ExprNode::UnaryPlusExpr).getOperand() = e1 and delta = 0
     or
@@ -207,13 +207,13 @@ module ExprNode {
     override CS::Assignment e;
 
     /** Gets the left operand of this assignment. */
-    ExprNode getLValue() {
-      result = unique(ExprNode res | hasChild(e, e.getLValue(), this, res) | res)
+    ExprNode getLeftOperand() {
+      result = unique(ExprNode res | hasChild(e, e.getLeftOperand(), this, res) | res)
     }
 
     /** Gets the right operand of this assignment. */
-    ExprNode getRValue() {
-      result = unique(ExprNode res | hasChild(e, e.getRValue(), this, res) | res)
+    ExprNode getRightOperand() {
+      result = unique(ExprNode res | hasChild(e, e.getRightOperand(), this, res) | res)
     }
   }
 
@@ -225,6 +225,10 @@ module ExprNode {
   /** A compound assignment operation. */
   class AssignOperation extends Assignment, BinaryOperation {
     override CS::AssignOperation e;
+
+    override ExprNode getLeftOperand() { result = Assignment.super.getLeftOperand() }
+
+    override ExprNode getRightOperand() { result = Assignment.super.getRightOperand() }
   }
 
   /** A unary operation. */

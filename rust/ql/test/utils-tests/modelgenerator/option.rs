@@ -149,6 +149,8 @@ impl<T> MyOption<T> {
 
     // summary=<test::option::MyOption>::map;Argument[0].ReturnValue;ReturnValue.Field[test::option::MyOption::MySome(0)];value;dfc-generated
     // summary=<test::option::MyOption>::map;Argument[self].Field[test::option::MyOption::MySome(0)];Argument[0].Parameter[0];value;dfc-generated
+    // The spurious model below happens because `f` incorrectly resolves to the closure passed in from `as_deref`
+    // SPURIOUS-summary=<test::option::MyOption>::map;Argument[self].Field[test::option::MyOption::MySome(0)].Reference;ReturnValue.Field[test::option::MyOption::MySome(0)].Reference;taint;dfc-generated
     pub fn map<U, F>(self, f: F) -> MyOption<U>
     where
         F: FnOnce(T) -> U,
@@ -217,7 +219,7 @@ impl<T> MyOption<T> {
         }
     }
 
-    // MISSING: `Deref` trait
+    // summary=<test::option::MyOption>::as_deref;Argument[self].Reference.Field[test::option::MyOption::MySome(0)];ReturnValue.Field[test::option::MyOption::MySome(0)].Reference;taint;dfc-generated
     pub fn as_deref(&self) -> MyOption<&T::Target>
     where
         T: Deref,

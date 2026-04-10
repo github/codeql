@@ -773,7 +773,7 @@ class EventCall extends AccessorCall, EventAccessExpr {
   override EventAccessor getTarget() {
     exists(Event e, AddOrRemoveEventExpr aoree |
       e = this.getEvent() and
-      aoree.getLValue() = this
+      aoree.getLeftOperand() = this
     |
       aoree instanceof AddEventExpr and result = e.getAddEventAccessor()
       or
@@ -784,8 +784,8 @@ class EventCall extends AccessorCall, EventAccessExpr {
   override Expr getArgument(int i) {
     i = 0 and
     exists(AddOrRemoveEventExpr aoree |
-      aoree.getLValue() = this and
-      result = aoree.getRValue()
+      aoree.getLeftOperand() = this and
+      result = aoree.getRightOperand()
     )
   }
 

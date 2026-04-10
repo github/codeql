@@ -15,9 +15,9 @@ where
   cc.hasName("Point") and
   i = e.getInitializer() and
   a = i.getMemberInitializer(0) and
-  a.getLValue().(PropertyAccess).getTarget().hasName("X") and
-  a.getRValue().getValue() = "0" and
+  a.getLeftOperand().(PropertyAccess).getTarget().hasName("X") and
+  a.getRightOperand().getValue() = "0" and
   b = i.getMemberInitializer(1) and
-  b.getLValue().(PropertyAccess).getTarget().hasName("Y") and
-  b.getRValue().getValue() = "1"
+  b.getLeftOperand().(PropertyAccess).getTarget().hasName("Y") and
+  b.getRightOperand().getValue() = "1"
 select e, i, a, b

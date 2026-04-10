@@ -467,6 +467,41 @@ private predicate isPanicMacroCall(MacroExpr me) {
   me.getMacroCall().resolveMacro().(MacroRules).getName().getText() = "panic"
 }
 
+// Due to "binding modes" the type of the pattern is not necessarily the
+// same as the type of the initializer. However, when the pattern is an
+// identifier pattern, its type is guaranteed to be the same as the type of the
+// initializer.
+private predicate identLetStmt(LetStmt let, IdentPat lhs, Expr rhs) {
+  let.getPat() = lhs and
+  let.getInitializer() = rhs
+}
+
+/**
+ * Gets the root type of a closure.
+ *
+ * We model closures as `dyn Fn` trait object types. A closure might implement
+ * only `Fn`, `FnMut`, or `FnOnce`. But since `Fn` is a subtrait of the others,
+ * giving closures the type `dyn Fn` works well in practice -- even if not
+ * entirely accurate.
+ */
+private DynTraitType closureRootType() {
+  result = TDynTraitType(any(FnTrait t)) // always exists because of the mention in `builtins/mentions.rs`
+}
+
+/** Gets the path to a closure's return type. */
+private TypePath closureReturnPath() {
+  result =
+    TypePath::singleton(TDynTraitTypeParameter(any(FnTrait t), any(FnOnceTrait t).getOutputType()))
+}
+
+/** Gets the path to a closure's `index`th parameter type, where the arity is `arity`. */
+pragma[nomagic]
+private TypePath closureParameterPath(int arity, int index) {
+  result =
+    TypePath::cons(TDynTraitTypeParameter(_, any(FnTrait t).getTypeParam()),
+      TypePath::singleton(getTupleTypeParameter(arity, index)))
+}
+
 /** Module for inferring certain type information. */
 module CertainTypeInference {
   pragma[nomagic]
@@ -544,11 +579,7 @@ module CertainTypeInference {
       // is not a certain type equality.
       exists(LetStmt let |
         not let.hasTypeRepr() and
-        // Due to "binding modes" the type of the pattern is not necessarily the
-        // same as the type of the initializer. The pattern being an identifier
-        // pattern is sufficient to ensure that this is not the case.
-        let.getPat().(IdentPat) = n1 and
-        let.getInitializer() = n2
+        identLetStmt(let, n1, n2)
       )
       or
       exists(LetExpr let |
@@ -572,6 +603,21 @@ module CertainTypeInference {
           )
         else prefix2.isEmpty()
       )
+    or
+    exists(CallExprImpl::DynamicCallExpr dce, TupleType tt, int i |
+      n1 = dce.getArgList() and
+      tt.getArity() = dce.getNumberOfSyntacticArguments() and
+      n2 = dce.getSyntacticPositionalArgument(i) and
+      prefix1 = TypePath::singleton(tt.getPositionalTypeParameter(i)) and
+      prefix2.isEmpty()
+    )
+    or
+    exists(ClosureExpr ce, int index |
+      n1 = ce and
+      n2 = ce.getParam(index).getPat() and
+      prefix1 = closureParameterPath(ce.getNumberOfParams(), index) and
+      prefix2.isEmpty()
+    )
   }
 
   pragma[nomagic]
@@ -635,6 +681,10 @@ module CertainTypeInference {
     isPanicMacroCall(n) and
     path.isEmpty() and
     result instanceof NeverType
+    or
+    n instanceof ClosureExpr and
+    path.isEmpty() and
+    result = closureRootType()
     or
     infersCertainTypeAt(n, path, result.getATypeParameter())
   }
@@ -835,17 +885,6 @@ private predicate typeEquality(AstNode n1, TypePath prefix1, AstNode n2, TypePat
   n1.(ArrayRepeatExpr).getRepeatOperand() = n2 and
   prefix1 = TypePath::singleton(getArrayTypeParameter()) and
   prefix2.isEmpty()
-  or
-  exists(ClosureExpr ce, int index |
-    n1 = ce and
-    n2 = ce.getParam(index).getPat() and
-    prefix1 = closureParameterPath(ce.getNumberOfParams(), index) and
-    prefix2.isEmpty()
-  )
-  or
-  n1.(ClosureExpr).getClosureBody() = n2 and
-  prefix1 = closureReturnPath() and
-  prefix2.isEmpty()
 }
 
 /**
@@ -881,10 +920,26 @@ private predicate lubCoercion(AstNode parent, AstNode child, TypePath prefix) {
   strictcount(Expr e | bodyReturns(parent, e)) > 1 and
   prefix.isEmpty()
   or
+  parent = any(ClosureExpr ce | not ce.hasRetType() and ce.getClosureBody() = child) and
+  prefix = closureReturnPath()
+  or
   exists(Struct s |
     child = [parent.(RangeExpr).getStart(), parent.(RangeExpr).getEnd()] and
     prefix = TypePath::singleton(TTypeParamTypeParameter(s.getGenericParamList().getATypeParam())) and
     s = getRangeType(parent)
+  )
+}
+
+private Type inferUnknownTypeFromAnnotation(AstNode n, TypePath path) {
+  inferType(n, path) = TUnknownType() and
+  // Normally, these are coercion sites, but in case a type is unknown we
+  // allow for type information to flow from the type annotation.
+  exists(TypeMention tm | result = tm.getTypeAt(path) |
+    tm = any(LetStmt let | identLetStmt(let, _, n)).getTypeRepr()
+    or
+    tm = any(ClosureExpr ce | n = ce.getBody()).getRetType().getTypeRepr()
+    or
+    tm = getReturnTypeMention(any(Function f | n = f.getBody()))
   )
 }
 
@@ -1545,12 +1600,14 @@ private module AssocFunctionResolution {
    *
    * This is either:
    *
-   * 1. `AssocFunctionCallMethodCallExpr`: a method call, `x.m()`;
-   * 2. `AssocFunctionCallIndexExpr`: an index expression, `x[i]`, which is [syntactic sugar][1]
+   * 1. `MethodCallExprAssocFunctionCall`: a method call, `x.m()`;
+   * 2. `IndexExprAssocFunctionCall`: an index expression, `x[i]`, which is [syntactic sugar][1]
    *    for `*x.index(i)`;
-   * 3. `AssocFunctionCallCallExpr`: a qualified function call, `Q::f(x)`; or
-   * 4. `AssocFunctionCallOperation`: an operation expression, `x + y`, which is syntactic sugar
+   * 3. `CallExprAssocFunctionCall`: a qualified function call, `Q::f(x)`; or
+   * 4. `OperationAssocFunctionCall`: an operation expression, `x + y`, which is syntactic sugar
    *    for `Add::add(x, y)`.
+   * 5. `DynamicAssocFunctionCall`: a call to a closure, `c(x)`, which is syntactic sugar for
+   *    `c.call_once(x)`, `c.call_mut(x)`, or `c.call(x)`.
    *
    * Note that only in case 1 and 2 is auto-dereferencing and borrowing allowed.
    *
@@ -1567,7 +1624,7 @@ private module AssocFunctionResolution {
     pragma[nomagic]
     abstract predicate hasNameAndArity(string name, int arity);
 
-    abstract Expr getNonReturnNodeAt(FunctionPosition pos);
+    abstract AstNode getNonReturnNodeAt(FunctionPosition pos);
 
     AstNode getNodeAt(FunctionPosition pos) {
       result = this.getNonReturnNodeAt(pos)
@@ -2101,7 +2158,7 @@ private module AssocFunctionResolution {
     }
   }
 
-  private class AssocFunctionCallMethodCallExpr extends AssocFunctionCall instanceof MethodCallExpr {
+  private class MethodCallExprAssocFunctionCall extends AssocFunctionCall instanceof MethodCallExpr {
     override predicate hasNameAndArity(string name, int arity) {
       name = super.getIdentifier().getText() and
       arity = super.getNumberOfSyntacticArguments()
@@ -2121,7 +2178,7 @@ private module AssocFunctionResolution {
     override Trait getTrait() { none() }
   }
 
-  private class AssocFunctionCallIndexExpr extends AssocFunctionCall, IndexExpr {
+  private class IndexExprAssocFunctionCall extends AssocFunctionCall, IndexExpr {
     private predicate isInMutableContext() {
       // todo: does not handle all cases yet
       VariableImpl::assignmentOperationDescendant(_, this)
@@ -2151,8 +2208,8 @@ private module AssocFunctionResolution {
     }
   }
 
-  private class AssocFunctionCallCallExpr extends AssocFunctionCall, CallExpr {
-    AssocFunctionCallCallExpr() {
+  private class CallExprAssocFunctionCall extends AssocFunctionCall, CallExpr {
+    CallExprAssocFunctionCall() {
       exists(getCallExprPathQualifier(this)) and
       // even if a target cannot be resolved by path resolution, it may still
       // be possible to resolve a blanket implementation (so not `forex`)
@@ -2184,7 +2241,7 @@ private module AssocFunctionResolution {
     override Trait getTrait() { result = getCallExprTraitQualifier(this) }
   }
 
-  final class AssocFunctionCallOperation extends AssocFunctionCall, Operation {
+  final class OperationAssocFunctionCall extends AssocFunctionCall, Operation {
     override predicate hasNameAndArity(string name, int arity) {
       this.isOverloaded(_, name, _) and
       arity = this.getNumberOfOperands()
@@ -2240,6 +2297,29 @@ private module AssocFunctionResolution {
     override predicate supportsAutoDerefAndBorrow() { none() }
 
     override Trait getTrait() { this.isOverloaded(result, _, _) }
+  }
+
+  private class DynamicAssocFunctionCall extends AssocFunctionCall instanceof CallExprImpl::DynamicCallExpr
+  {
+    pragma[nomagic]
+    override predicate hasNameAndArity(string name, int arity) {
+      name = "call_once" and // todo: handle call_mut and call
+      arity = 2 // args are passed in a tuple
+    }
+
+    override predicate hasReceiver() { any() }
+
+    override AstNode getNonReturnNodeAt(FunctionPosition pos) {
+      pos.asPosition() = 0 and
+      result = super.getFunction()
+      or
+      pos.asPosition() = 1 and
+      result = super.getArgList()
+    }
+
+    override predicate supportsAutoDerefAndBorrow() { any() }
+
+    override Trait getTrait() { result instanceof AnyFnTrait }
   }
 
   pragma[nomagic]
@@ -2445,7 +2525,7 @@ private module AssocFunctionResolution {
     ) {
       exists(CallDerefCand cdc, TypePath exprPath |
         cdc = MkCallDerefCand(afc, selfPos, derefChain) and
-        CallSatisfiesDerefConstraint::satisfiesConstraintTypeThrough(cdc, impl, _, exprPath, result) and
+        CallSatisfiesDerefConstraint::satisfiesConstraintThrough(cdc, impl, _, exprPath, result) and
         exprPath.isCons(getDerefTargetTypeParameter(), path)
       )
     }
@@ -3198,7 +3278,7 @@ private module OperationMatchingInput implements MatchingInputSig {
     }
   }
 
-  class Access extends AssocFunctionResolution::AssocFunctionCallOperation {
+  class Access extends AssocFunctionResolution::OperationAssocFunctionCall {
     Type getTypeArgument(TypeArgumentPosition apos, TypePath path) { none() }
 
     pragma[nomagic]
@@ -3566,7 +3646,7 @@ private module AwaitSatisfiesType = SatisfiesType<AwaitTarget, AwaitSatisfiesTyp
 pragma[nomagic]
 private Type inferAwaitExprType(AstNode n, TypePath path) {
   exists(TypePath exprPath |
-    AwaitSatisfiesType::satisfiesConstraintType(n.(AwaitExpr).getExpr(), _, exprPath, result) and
+    AwaitSatisfiesType::satisfiesConstraint(n.(AwaitExpr).getExpr(), _, exprPath, result) and
     exprPath.isCons(getFutureOutputTypeParameter(), path)
   )
 }
@@ -3733,7 +3813,7 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
   // type of iterable -> type of pattern (loop variable)
   exists(ForExpr fe, TypePath exprPath, AssociatedTypeTypeParameter tp |
     n = fe.getPat() and
-    ForIterableSatisfiesType::satisfiesConstraintType(fe.getIterable(), _, exprPath, result) and
+    ForIterableSatisfiesType::satisfiesConstraint(fe.getIterable(), _, exprPath, result) and
     exprPath.isCons(tp, path)
   |
     tp = getIntoIteratorItemTypeParameter()
@@ -3744,130 +3824,36 @@ private Type inferForLoopExprType(AstNode n, TypePath path) {
   )
 }
 
-/**
- * An invoked expression, the target of a call that is either a local variable
- * or a non-path expression. This means that the expression denotes a
- * first-class function.
- */
-final private class InvokedClosureExpr extends Expr {
-  private CallExprImpl::DynamicCallExpr call;
-
-  InvokedClosureExpr() { call.getFunction() = this }
-
-  Type getTypeAt(TypePath path) { result = inferType(this, path) }
-
-  CallExpr getCall() { result = call }
-}
-
-private module InvokedClosureSatisfiesTypeInput implements SatisfiesTypeInputSig<InvokedClosureExpr>
-{
-  predicate relevantConstraint(InvokedClosureExpr term, Type constraint) {
-    exists(term) and
-    constraint.(TraitType).getTrait() instanceof FnOnceTrait
-  }
-}
-
-private module InvokedClosureSatisfiesType =
-  SatisfiesType<InvokedClosureExpr, InvokedClosureSatisfiesTypeInput>;
-
-/** Gets the type of `ce` when viewed as an implementation of `FnOnce`. */
-private Type invokedClosureFnTypeAt(InvokedClosureExpr ce, TypePath path) {
-  InvokedClosureSatisfiesType::satisfiesConstraintType(ce, _, path, result)
-}
-
-/**
- * Gets the root type of a closure.
- *
- * We model closures as `dyn Fn` trait object types. A closure might implement
- * only `Fn`, `FnMut`, or `FnOnce`. But since `Fn` is a subtrait of the others,
- * giving closures the type `dyn Fn` works well in practice -- even if not
- * entirely accurate.
- */
-private DynTraitType closureRootType() {
-  result = TDynTraitType(any(FnTrait t)) // always exists because of the mention in `builtins/mentions.rs`
-}
-
-/** Gets the path to a closure's return type. */
-private TypePath closureReturnPath() {
-  result =
-    TypePath::singleton(TDynTraitTypeParameter(any(FnTrait t), any(FnOnceTrait t).getOutputType()))
-}
-
-/** Gets the path to a closure with arity `arity`'s `index`th parameter type. */
 pragma[nomagic]
-private TypePath closureParameterPath(int arity, int index) {
-  result =
-    TypePath::cons(TDynTraitTypeParameter(_, any(FnTrait t).getTypeParam()),
-      TypePath::singleton(getTupleTypeParameter(arity, index)))
-}
-
-/** Gets the path to the return type of the `FnOnce` trait. */
-private TypePath fnReturnPath() {
-  result = TypePath::singleton(getAssociatedTypeTypeParameter(any(FnOnceTrait t).getOutputType()))
-}
-
-/**
- * Gets the path to the parameter type of the `FnOnce` trait with arity `arity`
- * and index `index`.
- */
-pragma[nomagic]
-private TypePath fnParameterPath(int arity, int index) {
-  result =
-    TypePath::cons(TTypeParamTypeParameter(any(FnOnceTrait t).getTypeParam()),
-      TypePath::singleton(getTupleTypeParameter(arity, index)))
-}
-
-pragma[nomagic]
-private Type inferDynamicCallExprType(Expr n, TypePath path) {
-  exists(InvokedClosureExpr ce |
-    // Propagate the function's return type to the call expression
-    exists(TypePath path0 | result = invokedClosureFnTypeAt(ce, path0) |
-      n = ce.getCall() and
-      path = path0.stripPrefix(fnReturnPath())
+private Type inferClosureExprType(AstNode n, TypePath path) {
+  exists(ClosureExpr ce |
+    n = ce and
+    (
+      path = TypePath::singleton(TDynTraitTypeParameter(_, any(FnTrait t).getTypeParam())) and
+      result.(TupleType).getArity() = ce.getNumberOfParams()
       or
-      // Propagate the function's parameter type to the arguments
-      exists(int index |
-        n = ce.getCall().getSyntacticPositionalArgument(index) and
-        path =
-          path0.stripPrefix(fnParameterPath(ce.getCall().getArgList().getNumberOfArgs(), index))
+      exists(TypePath path0 |
+        result = ce.getRetType().getTypeRepr().(TypeMention).getTypeAt(path0) and
+        path = closureReturnPath().append(path0)
       )
     )
     or
-    // _If_ the invoked expression has the type of a closure, then we propagate
-    // the surrounding types into the closure.
-    exists(int arity, TypePath path0 | ce.getTypeAt(TypePath::nil()) = closureRootType() |
-      // Propagate the type of arguments to the parameter types of closure
-      exists(int index, ArgList args |
-        n = ce and
-        args = ce.getCall().getArgList() and
-        arity = args.getNumberOfArgs() and
-        result = inferType(args.getArg(index), path0) and
-        path = closureParameterPath(arity, index).append(path0)
-      )
-      or
-      // Propagate the type of the call expression to the return type of the closure
-      n = ce and
-      arity = ce.getCall().getArgList().getNumberOfArgs() and
-      result = inferType(ce.getCall(), path0) and
-      path = closureReturnPath().append(path0)
+    exists(Param p |
+      p = ce.getAParam() and
+      not p.hasTypeRepr() and
+      n = p.getPat() and
+      result = TUnknownType() and
+      path.isEmpty()
     )
   )
 }
 
 pragma[nomagic]
-private Type inferClosureExprType(AstNode n, TypePath path) {
-  exists(ClosureExpr ce |
-    n = ce and
-    path.isEmpty() and
-    result = closureRootType()
-    or
-    n = ce and
-    path = TypePath::singleton(TDynTraitTypeParameter(_, any(FnTrait t).getTypeParam())) and
-    result.(TupleType).getArity() = ce.getNumberOfParams()
-    or
-    // Propagate return type annotation to body
-    n = ce.getClosureBody() and
-    result = ce.getRetType().getTypeRepr().(TypeMention).getTypeAt(path)
+private TupleType inferArgList(ArgList args, TypePath path) {
+  exists(CallExprImpl::DynamicCallExpr dce |
+    args = dce.getArgList() and
+    result.getArity() = dce.getNumberOfSyntacticArguments() and
+    path.isEmpty()
   )
 }
 
@@ -3915,7 +3901,8 @@ private module Cached {
       or
       i instanceof ImplItemNode and dispatch = false
     |
-      result = call.(AssocFunctionResolution::AssocFunctionCall).resolveCallTarget(i, _, _, _)
+      result = call.(AssocFunctionResolution::AssocFunctionCall).resolveCallTarget(i, _, _, _) and
+      not call instanceof CallExprImpl::DynamicCallExpr
     )
   }
 
@@ -4023,11 +4010,13 @@ private module Cached {
       or
       result = inferForLoopExprType(n, path)
       or
-      result = inferDynamicCallExprType(n, path)
-      or
       result = inferClosureExprType(n, path)
       or
+      result = inferArgList(n, path)
+      or
       result = inferDeconstructionPatType(n, path)
+      or
+      result = inferUnknownTypeFromAnnotation(n, path)
     )
   }
 }

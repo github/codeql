@@ -1099,7 +1099,7 @@ class QualifiableExpr extends Expr, @qualifiable_expr {
 }
 
 private Expr getAnAssignOrForeachChild() {
-  result = any(AssignExpr e).getLValue()
+  result = any(AssignExpr e).getLeftOperand()
   or
   result = any(ForeachStmt fs).getVariableDeclTuple()
   or

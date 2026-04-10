@@ -2259,7 +2259,7 @@ mod loops {
         // for loops with arrays
 
         for i in [1, 2, 3] {} // $ type=i:i32
-        for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map MISSING: type=i:i32
+        for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map target=add type=i:i32
         for i in [1, 2, 3].into_iter() {} // $ target=into_iter type=i:i32
 
         let vals1 = [1u8, 2, 3]; // $ type=vals1:TArray.u8
@@ -2758,6 +2758,30 @@ mod closure;
 mod dereference;
 mod dyn_type;
 mod regressions;
+
+mod arg_trait_bounds {
+    struct Gen<T>(T);
+
+    trait Container<T> {
+        fn get_input(&self) -> T;
+    }
+
+    fn my_get<T: Container<i64>>(c: &T) -> bool {
+        c.get_input() == 42 // $ target=get_input target=eq
+    }
+
+    impl<GT: Copy> Container<GT> for Gen<GT> {
+        fn get_input(&self) -> GT {
+            self.0 // $ fieldof=Gen
+        }
+    }
+
+    fn test() {
+        let v = Default::default(); // $ type=v:i64 target=default
+        let g = Gen(v);
+        let _ = my_get(&g); // $ target=my_get
+    }
+}
 
 fn main() {
     field_access::f(); // $ target=f

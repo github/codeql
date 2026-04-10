@@ -20,7 +20,7 @@ predicate incorrectUseOfRC2(Assignment e, string msg) {
         .getDeclaringType()
         .hasFullyQualifiedName("System.Security.Cryptography", "RC2CryptoServiceProvider")
   ) and
-  e.getRValue().getValue().toInt() < 128 and
+  e.getRightOperand().getValue().toInt() < 128 and
   msg = "Key size should be at least 128 bits for RC2 encryption."
 }
 

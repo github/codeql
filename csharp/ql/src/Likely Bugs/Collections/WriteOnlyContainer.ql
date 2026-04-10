@@ -23,9 +23,10 @@ where
   ) and
   forex(Access a | a = v.getAnAccess() |
     a = any(ModifierMethodCall m).getQualifier() or
-    a = any(AssignExpr ass | ass.getRValue() instanceof ObjectCreation).getLValue() or
+    a = any(AssignExpr ass | ass.getRightOperand() instanceof ObjectCreation).getLeftOperand() or
     a =
-      any(LocalVariableDeclAndInitExpr ass | ass.getRValue() instanceof ObjectCreation).getLValue()
+      any(LocalVariableDeclAndInitExpr ass | ass.getRightOperand() instanceof ObjectCreation)
+          .getLeftOperand()
   ) and
   not v = any(ForeachStmt fs).getVariable() and
   not v = any(BindingPatternExpr vpe).getVariableDeclExpr().getVariable() and

@@ -528,7 +528,7 @@ module LocalFlow {
     e2 =
       any(AssignExpr ae |
         ae.getParent() = any(ControlFlowElement cfe | not cfe instanceof ExprStmt) and
-        e1 = ae.getRValue()
+        e1 = ae.getRightOperand()
       )
     or
     e1 = e2.(ObjectCreation).getInitializer()
@@ -554,7 +554,7 @@ module LocalFlow {
       e2 = we
     )
     or
-    exists(AssignExpr ae | ae.getLValue().(TupleExpr) = e2 and ae.getRValue() = e1)
+    exists(AssignExpr ae | ae.getLeftOperand().(TupleExpr) = e2 and ae.getRightOperand() = e1)
     or
     exists(ControlFlowElement cfe | cfe = e2.(TupleExpr).(PatternExpr).getPatternMatch() |
       cfe.(IsExpr).getExpr() = e1
@@ -795,7 +795,7 @@ private predicate fieldOrPropertyStore(ContentSet c, Expr src, Expr q, boolean p
       q = we and
       mi = we.getInitializer().getAMemberInitializer() and
       f = mi.getInitializedMember() and
-      src = mi.getRValue() and
+      src = mi.getRightOperand() and
       postUpdate = false
     )
     or
@@ -804,7 +804,7 @@ private predicate fieldOrPropertyStore(ContentSet c, Expr src, Expr q, boolean p
       mi = q.(ObjectInitializer).getAMemberInitializer() and
       q.getParent() instanceof ObjectCreation and
       f = mi.getInitializedMember() and
-      src = mi.getRValue() and
+      src = mi.getRightOperand() and
       postUpdate = false
     )
     or
@@ -879,8 +879,8 @@ private predicate arrayStore(Expr src, Expr a, boolean postUpdate) {
   // Member initializer, `new C { Array = { [i] = src } }`
   exists(MemberInitializer mi |
     mi = a.(ObjectInitializer).getAMemberInitializer() and
-    mi.getLValue() instanceof ArrayAccess and
-    mi.getRValue() = src and
+    mi.getLeftOperand() instanceof ArrayAccess and
+    mi.getRightOperand() = src and
     postUpdate = false
   )
 }
@@ -1179,7 +1179,8 @@ private module Cached {
   cached
   newtype TDataFlowType =
     TGvnDataFlowType(Gvn::GvnType t) or
-    TDelegateDataFlowType(Callable lambda) { lambdaCreationExpr(_, lambda) }
+    TDelegateDataFlowType(Callable lambda) { lambdaCreationExpr(_, lambda) } or
+    TSourceContextParameterType()
 }
 
 import Cached
@@ -2394,6 +2395,8 @@ class DataFlowType extends TDataFlowType {
 
   Callable asDelegate() { this = TDelegateDataFlowType(result) }
 
+  predicate isSourceContextParameterType() { this = TSourceContextParameterType() }
+
   /**
    * Gets an expression that creates a delegate of this type.
    *
@@ -2412,6 +2415,9 @@ class DataFlowType extends TDataFlowType {
     result = this.asGvnType().toString()
     or
     result = this.asDelegate().toString()
+    or
+    this.isSourceContextParameterType() and
+    result = "<source context parameter type>"
   }
 }
 
@@ -2469,6 +2475,11 @@ private predicate compatibleTypesDelegateLeft(DataFlowType dt1, DataFlowType dt2
   )
 }
 
+pragma[nomagic]
+private predicate compatibleTypesSourceContextParameterTypeLeft(DataFlowType dt1, DataFlowType dt2) {
+  dt1.isSourceContextParameterType() and not exists(dt2.asDelegate())
+}
+
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
@@ -2499,6 +2510,10 @@ predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
   compatibleTypesDelegateLeft(dt2, dt1)
   or
   dt1.asDelegate() = dt2.asDelegate()
+  or
+  compatibleTypesSourceContextParameterTypeLeft(dt1, dt2)
+  or
+  compatibleTypesSourceContextParameterTypeLeft(dt2, dt1)
 }
 
 pragma[nomagic]
@@ -2511,6 +2526,8 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
   uselessTypebound(t2)
   or
   compatibleTypesDelegateLeft(t1, t2)
+  or
+  compatibleTypesSourceContextParameterTypeLeft(t1, t2)
 }
 
 /**
@@ -2582,7 +2599,7 @@ module PostUpdateNodes {
         call.getExpr() = init.(CollectionInitializer).getAnElementInitializer()
         or
         // E.g. `new Dictionary<int, string>() { [0] = "a", [1] = "b" }`
-        call.getExpr() = init.(ObjectInitializer).getAMemberInitializer().getLValue()
+        call.getExpr() = init.(ObjectInitializer).getAMemberInitializer().getLeftOperand()
       )
     }
 
@@ -2795,7 +2812,7 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
   preservesValue = true
   or
   exists(AddEventExpr aee |
-    nodeFrom.asExpr() = aee.getRValue() and
+    nodeFrom.asExpr() = aee.getRightOperand() and
     nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
     preservesValue = false
   )

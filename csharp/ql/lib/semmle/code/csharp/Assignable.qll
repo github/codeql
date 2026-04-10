@@ -235,7 +235,7 @@ private class RefArg extends AssignableAccess {
 module AssignableInternal {
   private predicate tupleAssignmentDefinition(AssignExpr ae, Expr leaf) {
     exists(TupleExpr te |
-      ae.getLValue() = te and
+      ae.getLeftOperand() = te and
       te.getAnArgument+() = leaf and
       // `leaf` is either an assignable access or a local variable declaration
       not leaf instanceof TupleExpr
@@ -249,8 +249,8 @@ module AssignableInternal {
    */
   private predicate tupleAssignmentPair(AssignExpr ae, Expr left, Expr right) {
     tupleAssignmentDefinition(ae, _) and
-    left = ae.getLValue() and
-    right = ae.getRValue()
+    left = ae.getLeftOperand() and
+    right = ae.getRightOperand()
     or
     exists(TupleExpr l, TupleExpr r, int i | tupleAssignmentPair(ae, l, r) |
       left = l.getArgument(i) and
@@ -291,7 +291,7 @@ module AssignableInternal {
     cached
     newtype TAssignableDefinition =
       TAssignmentDefinition(Assignment a) {
-        not a.getLValue() instanceof TupleExpr and
+        not a.getLeftOperand() instanceof TupleExpr and
         not a instanceof AssignCallOperation and
         not a instanceof AssignCoalesceExpr
       } or
@@ -358,7 +358,7 @@ module AssignableInternal {
     // Not defined by dispatch in order to avoid too conservative negative recursion error
     cached
     AssignableAccess getTargetAccess(AssignableDefinition def) {
-      def = TAssignmentDefinition(any(Assignment a | a.getLValue() = result))
+      def = TAssignmentDefinition(any(Assignment a | a.getLeftOperand() = result))
       or
       def = TTupleAssignmentDefinition(_, result)
       or
@@ -381,8 +381,8 @@ module AssignableInternal {
         tupleAssignmentPair(ae, ac, result)
       )
       or
-      exists(Assignment ass | ac = ass.getLValue() |
-        result = ass.getRValue() and
+      exists(Assignment ass | ac = ass.getLeftOperand() |
+        result = ass.getRightOperand() and
         not ass instanceof AssignOperation
       )
       or
@@ -527,7 +527,7 @@ module AssignableDefinitions {
     Assignment getAssignment() { result = a }
 
     override Expr getSource() {
-      result = a.getRValue() and
+      result = a.getRightOperand() and
       not a instanceof AddOrRemoveEventExpr
     }
 

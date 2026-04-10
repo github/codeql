@@ -521,7 +521,7 @@ module Expressions {
         // ```
         // need special treatment, because the accesses `[0]`, `[1]`, and `[2]`
         // have no qualifier.
-        this = any(MemberInitializer mi).getLValue()
+        this = any(MemberInitializer mi).getLeftOperand()
       ) and
       not exists(AssignableDefinitions::OutRefDefinition def | def.getTargetAccess() = this)
     }

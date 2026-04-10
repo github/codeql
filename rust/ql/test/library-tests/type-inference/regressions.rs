@@ -130,3 +130,52 @@ mod regression4 {
         }
     }
 }
+
+mod regression5 {
+    struct S1;
+    struct S2<T2>(T2);
+
+    impl From<&S1> for S2<S1> {
+        fn from(_: &S1) -> Self {
+            S2(S1)
+        }
+    }
+
+    impl<T> From<T> for S2<T> {
+        fn from(t: T) -> Self {
+            S2(t)
+        }
+    }
+
+    fn foo() -> S2<S1> {
+        let x = S1.into(); // $ target=into
+        x // $ SPURIOUS: type=x:T2.TRef.S1 -- happens because we currently do not consider the two `impl` blocks to be siblings
+    }
+}
+
+mod regression6 {
+    use std::ops::Add;
+    struct S<T>(T);
+
+    impl<T> Add for S<T> {
+        type Output = Self;
+
+        // add1
+        fn add(self, _rhs: Self) -> Self::Output {
+            self
+        }
+    }
+
+    impl<T> Add<T> for S<T> {
+        type Output = Self;
+
+        // add2
+        fn add(self, _rhs: T) -> Self::Output {
+            self
+        }
+    }
+
+    fn foo() {
+        let x = S(0) + S(1); // $ target=add1 $ SPURIOUS: target=add2 type=x:T.T.i32
+    }
+}

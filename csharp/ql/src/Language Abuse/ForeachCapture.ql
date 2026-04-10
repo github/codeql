@@ -60,16 +60,16 @@ module LambdaDataFlow {
 }
 
 Element getAssignmentTarget(Expr e) {
-  exists(Assignment a | a.getRValue() = e |
-    result = a.getLValue().(PropertyAccess).getTarget() or
-    result = a.getLValue().(FieldAccess).getTarget() or
-    result = a.getLValue().(LocalVariableAccess).getTarget() or
-    result = a.getLValue().(EventAccess).getTarget()
+  exists(Assignment a | a.getRightOperand() = e |
+    result = a.getLeftOperand().(PropertyAccess).getTarget() or
+    result = a.getLeftOperand().(FieldAccess).getTarget() or
+    result = a.getLeftOperand().(LocalVariableAccess).getTarget() or
+    result = a.getLeftOperand().(EventAccess).getTarget()
   )
   or
   exists(AddEventExpr aee |
-    e = aee.getRValue() and
-    result = aee.getLValue().getTarget()
+    e = aee.getRightOperand() and
+    result = aee.getLeftOperand().getTarget()
   )
   or
   result = getCollectionAssignmentTarget(e)
@@ -97,8 +97,8 @@ Element getCollectionAssignmentTarget(Expr e) {
   // Store values using indexer
   exists(IndexerAccess ia, AssignExpr ae |
     ia.getQualifier() = result.(Variable).getAnAccess() and
-    ia = ae.getLValue() and
-    e = ae.getRValue()
+    ia = ae.getLeftOperand() and
+    e = ae.getRightOperand()
   )
 }
 

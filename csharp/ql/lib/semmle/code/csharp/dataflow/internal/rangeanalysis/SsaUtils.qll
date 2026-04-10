@@ -55,5 +55,5 @@ ExprNode ssaRead(Definition v, int delta) {
   or
   v.(ExplicitDefinition).getControlFlowNode().(ExprNode::Assignment) = result and delta = 0
   or
-  result.(ExprNode::AssignExpr).getRValue() = ssaRead(v, delta)
+  result.(ExprNode::AssignExpr).getRightOperand() = ssaRead(v, delta)
 }

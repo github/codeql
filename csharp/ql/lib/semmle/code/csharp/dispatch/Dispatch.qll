@@ -1348,7 +1348,7 @@ private module Internal {
         any(DynamicMemberAccess dma | this = TDispatchDynamicEventAccess(_, dma, _)).getQualifier()
     }
 
-    override Expr getArgument(int i) { i = 0 and result = this.getCall().getRValue() }
+    override Expr getArgument(int i) { i = 0 and result = this.getCall().getRightOperand() }
   }
 
   /** A call to a constructor using dynamic types. */
