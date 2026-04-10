@@ -180,6 +180,7 @@ var singleNodeListProp = map[string]string{
 	"ArrayBindingPattern":    "elements",
 	"ObjectBindingPattern":   "elements",
 	"HeritageClause":         "types",
+	"ImportAttributes":       "elements",
 	"JSDocTypeLiteral":       "jsDocPropertyTags",
 }
 

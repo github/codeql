@@ -167,6 +167,9 @@ def count_structural(a, b, path='root'):
     if isinstance(a, dict) and isinstance(b, dict):
         keys = set(a) | set(b)
         for k in keys:
+            # parseDiagnostics: Go always returns [], Node.js may have actual diagnostics
+            if k == 'parseDiagnostics':
+                continue
             if k not in a or k not in b:
                 count += 1
             else:

@@ -405,7 +405,11 @@ func (s *Scanner) scan() Token {
 		return Token{Kind: KindLessThanToken, TokenPos: tokenPos, Text: "<"}
 
 	case '>':
-		return s.scanGreater(tokenPos)
+		// TypeScript scanner always produces single > tokens.
+		// Multi-character operators (>>, >>>, >>=, etc.) are produced
+		// only via reScanGreaterToken when the parser requests it.
+		s.advance()
+		return Token{Kind: KindGreaterThanToken, TokenPos: tokenPos, Text: ">"}
 
 	case '&':
 		if s.peekAt(1) == '&' {
@@ -709,7 +713,7 @@ func (s *Scanner) scanIdentifierOrKeyword(start int) Token {
 			s.pos++
 		} else if ch >= 0x80 {
 			r, size := utf8.DecodeRuneInString(s.text[s.pos:])
-			if r != utf8.RuneError && (unicode.IsLetter(r) || unicode.IsDigit(r) || r == '\u200C' || r == '\u200D') {
+			if r != utf8.RuneError && isIdentContinueRune(r) {
 				s.pos += size
 			} else {
 				break
@@ -742,7 +746,21 @@ func isIdentStart(ch byte) bool {
 }
 
 func isIdentStartRune(r rune) bool {
-	return unicode.IsLetter(r) || r == '_' || r == '$'
+	// JavaScript ID_Start: Lu, Ll, Lt, Lm, Lo, Nl, plus _ and $
+	return unicode.IsLetter(r) || unicode.Is(unicode.Nl, r) || r == '_' || r == '$'
+}
+
+// isIdentContinueRune returns true if the rune is valid in a JS identifier (not first position).
+// JavaScript ID_Continue: ID_Start + Mn, Mc, Nd, Pc, plus ZWNJ/ZWJ.
+func isIdentContinueRune(r rune) bool {
+	return unicode.IsLetter(r) ||
+		unicode.IsDigit(r) ||
+		unicode.Is(unicode.Nl, r) ||
+		unicode.Is(unicode.Mn, r) ||
+		unicode.Is(unicode.Mc, r) ||
+		unicode.Is(unicode.Pc, r) ||
+		r == '_' || r == '$' ||
+		r == '\u200C' || r == '\u200D'
 }
 
 func isIdentChar(ch byte) bool {

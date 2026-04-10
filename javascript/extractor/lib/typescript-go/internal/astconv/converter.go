@@ -9,18 +9,24 @@ import (
 // Converter transforms a BinaryAST into the JSON format expected by the
 // Java extractor.
 type Converter struct {
-	ast        *BinaryAST
-	kindNames  map[uint32]string // numeric kind → string name
-	sourceText string            // source file text for $lineStarts / $pos augmentation
+	ast          *BinaryAST
+	kindNames    map[uint32]string // numeric kind → string name
+	sourceText   string            // source file text for $lineStarts / $pos augmentation
+	utf16Offsets []int             // maps byte offset → UTF-16 code unit offset
+	byteOffsets  []int             // maps UTF-16 code unit offset → byte offset
 }
 
 // NewConverter creates a Converter for the given binary AST.
 // kindToName maps numeric SyntaxKind values to their string names.
 func NewConverter(ast *BinaryAST, kindToName map[uint32]string) *Converter {
+	text := ast.SourceText()
+	utf16Table, byteTable := buildOffsetTables(text)
 	return &Converter{
-		ast:        ast,
-		kindNames:  kindToName,
-		sourceText: ast.SourceText(),
+		ast:          ast,
+		kindNames:    kindToName,
+		sourceText:   text,
+		utf16Offsets: utf16Table,
+		byteOffsets:  byteTable,
 	}
 }
 
@@ -122,7 +128,7 @@ func (c *Converter) handleSourceFile(i int, extOff uint32, node map[string]inter
 	// Add source text
 	if c.sourceText != "" {
 		node["text"] = c.sourceText
-		node["$lineStarts"] = computeLineStarts(c.sourceText)
+		node["$lineStarts"] = computeLineStarts(c.sourceText, c.utf16Offsets)
 	}
 
 	// Add empty parseDiagnostics array (expected by Java extractor)
@@ -130,6 +136,7 @@ func (c *Converter) handleSourceFile(i int, extOff uint32, node map[string]inter
 
 	// Add children (statements + EndOfFile)
 	children := c.ast.Children(i)
+	statementsFound := false
 	for _, ci := range children {
 		if c.ast.IsNodeList(ci) {
 			arr, err := c.convertNodeList(ci)
@@ -137,8 +144,12 @@ func (c *Converter) handleSourceFile(i int, extOff uint32, node map[string]inter
 				return err
 			}
 			node["statements"] = arr
+			statementsFound = true
 		}
 		// Skip EndOfFile token — the Java extractor doesn't use it
+	}
+	if !statementsFound {
+		node["statements"] = []interface{}{}
 	}
 
 	// Generate $tokens by scanning the source text.
@@ -150,7 +161,7 @@ func (c *Converter) handleSourceFile(i int, extOff uint32, node map[string]inter
 		for ti, tok := range rawTokens {
 			tokenArr[ti] = map[string]interface{}{
 				"kind":     tok.Kind,
-				"tokenPos": c.augmentPos(tok.TokenPos, false),
+				"tokenPos": byteToUTF16(tok.TokenPos, c.utf16Offsets),
 				"text":     tok.Text,
 			}
 		}
@@ -241,9 +252,9 @@ func (c *Converter) handleChildrenNode(i int, kindName string, node map[string]i
 	// TypeOperator: operator keyword kind inferred from source text + type child
 	if kindName == "TypeOperator" {
 		// Operator (keyof/unique/readonly) is not in the binary encoding.
-		pos := int(c.ast.Pos(i))
-		if c.sourceText != "" && pos < len(c.sourceText) {
-			text := c.sourceText[pos:]
+		bytePos := utf16ToByte(int(c.ast.Pos(i)), c.byteOffsets)
+		if c.sourceText != "" && bytePos < len(c.sourceText) {
+			text := c.sourceText[bytePos:]
 			// Skip leading trivia
 			for len(text) > 0 && (text[0] == ' ' || text[0] == '\t' || text[0] == '\n' || text[0] == '\r') {
 				text = text[1:]
@@ -328,11 +339,12 @@ func (c *Converter) assignChildProperties(nodeIdx int, kindName string, props []
 			continue
 		}
 		// If mask is 0 (single-child or no disambiguation needed), consume sequentially
-		if mask == 0 && bit > 0 && childIdx >= len(children) {
-			break
-		}
 		if childIdx >= len(children) {
-			break
+			// No more children — emit empty arrays for remaining array properties
+			if isArrayProperty(prop) {
+				node[prop] = []interface{}{}
+			}
+			continue
 		}
 
 		ci := children[childIdx]
@@ -342,6 +354,25 @@ func (c *Converter) assignChildProperties(nodeIdx int, kindName string, props []
 			arr, err := c.convertNodeList(ci)
 			if err != nil {
 				return err
+			}
+			// Filter out zero-width synthetic modifiers (TS7 adds these for
+			// nested namespace bodies, but TS5/Node.js doesn't emit them).
+			if prop == "modifiers" {
+				filtered := make([]interface{}, 0, len(arr))
+				for _, elem := range arr {
+					if m, ok := elem.(map[string]interface{}); ok {
+						pos, _ := m["$pos"].(int)
+						end, _ := m["$end"].(int)
+						if pos == end {
+							continue // zero-width synthetic node
+						}
+					}
+					filtered = append(filtered, elem)
+				}
+				if len(filtered) == 0 {
+					continue // drop entirely
+				}
+				arr = filtered
 			}
 			node[prop] = arr
 		} else {
@@ -373,10 +404,12 @@ func isArrayProperty(prop string) bool {
 }
 
 var arrayProperties = map[string]bool{
-	"arguments":  true,
-	"elements":   true,
-	"properties": true,
-	"members":    true,
+	"arguments":    true,
+	"declarations": true,
+	"elements":     true,
+	"members":      true,
+	"parameters":   true,
+	"properties":   true,
 }
 
 // convertNodeList converts a NodeList into a JSON array.
@@ -409,6 +442,8 @@ func (c *Converter) addDefinedBitProperties(i int, kindName string, node map[str
 	case "ImportType":
 		if definedBits&1 != 0 {
 			node["isTypeOf"] = true
+		} else {
+			node["isTypeOf"] = false
 		}
 	case "ExportAssignment", "JSExportAssignment":
 		if definedBits&1 != 0 {
@@ -432,9 +467,9 @@ func (c *Converter) addDefinedBitProperties(i int, kindName string, node map[str
 	case "HeritageClause":
 		// Token (extends/implements) is not in the binary encoding.
 		// Infer from source text, skipping leading trivia.
-		pos := int(c.ast.Pos(i))
-		if c.sourceText != "" && pos < len(c.sourceText) {
-			text := c.sourceText[pos:]
+		bytePos := utf16ToByte(int(c.ast.Pos(i)), c.byteOffsets)
+		if c.sourceText != "" && bytePos < len(c.sourceText) {
+			text := c.sourceText[bytePos:]
 			// Skip whitespace/newlines
 			for len(text) > 0 && (text[0] == ' ' || text[0] == '\t' || text[0] == '\n' || text[0] == '\r') {
 				text = text[1:]
@@ -457,12 +492,22 @@ func (c *Converter) addDefinedBitProperties(i int, kindName string, node map[str
 
 // augmentPos replicates the Node.js wrapper's $pos augmentation:
 // if skipTrivia is true, advances past leading whitespace and comments.
+// Input pos is a UTF-16 code unit offset; returns a UTF-16 code unit offset.
 func (c *Converter) augmentPos(pos int, skipTrivia bool) int {
-	if !skipTrivia || c.sourceText == "" || pos >= len(c.sourceText) {
+	if !skipTrivia || c.sourceText == "" {
 		return pos
 	}
-	// Skip whitespace and comments (matching the regex /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g)
-	i := pos
+	return byteToUTF16(c.skipTrivia(utf16ToByte(pos, c.byteOffsets)), c.utf16Offsets)
+}
+
+// augmentBytePos converts a UTF-16 offset to byte offset then skips trivia,
+// returning the result as a byte offset. Used for scanner rescan events.
+func (c *Converter) augmentBytePos(utf16Pos int) int {
+	return c.skipTrivia(utf16ToByte(utf16Pos, c.byteOffsets))
+}
+
+// skipTrivia advances past whitespace and comments starting at byte offset i.
+func (c *Converter) skipTrivia(i int) int {
 	n := len(c.sourceText)
 	for i < n {
 		ch := c.sourceText[i]
@@ -498,21 +543,114 @@ func (c *Converter) augmentPos(pos int, skipTrivia bool) int {
 	return i
 }
 
-// computeLineStarts returns an array of byte offsets where each line starts.
-func computeLineStarts(text string) []int {
+// computeLineStarts returns an array of UTF-16 code unit offsets where each line starts.
+func computeLineStarts(text string, utf16Offsets []int) []int {
 	starts := []int{0}
 	for i := 0; i < len(text); i++ {
 		ch := text[i]
 		if ch == '\n' {
-			starts = append(starts, i+1)
+			starts = append(starts, byteToUTF16(i+1, utf16Offsets))
 		} else if ch == '\r' {
 			if i+1 < len(text) && text[i+1] == '\n' {
 				i++
 			}
-			starts = append(starts, i+1)
+			starts = append(starts, byteToUTF16(i+1, utf16Offsets))
 		}
 	}
 	return starts
+}
+
+// buildOffsetTables builds bidirectional mapping tables between byte offsets
+// and UTF-16 code unit offsets.
+func buildOffsetTables(text string) (byteToUTF16Table []int, utf16ToByteTable []int) {
+	byteToUTF16Table = make([]int, len(text)+1)
+	// First pass: compute total UTF-16 length and byte→UTF-16 mapping
+	utf16Pos := 0
+	i := 0
+	for i < len(text) {
+		byteToUTF16Table[i] = utf16Pos
+		b := text[i]
+		if b < 0x80 {
+			i++
+			utf16Pos++
+		} else if b < 0xE0 {
+			if i+1 < len(byteToUTF16Table) {
+				byteToUTF16Table[i+1] = utf16Pos
+			}
+			i += 2
+			utf16Pos++
+		} else if b < 0xF0 {
+			if i+1 < len(byteToUTF16Table) {
+				byteToUTF16Table[i+1] = utf16Pos
+			}
+			if i+2 < len(byteToUTF16Table) {
+				byteToUTF16Table[i+2] = utf16Pos
+			}
+			i += 3
+			utf16Pos++
+		} else {
+			// 4-byte UTF-8 = 2 UTF-16 code units (surrogate pair)
+			for j := 1; j < 4 && i+j < len(byteToUTF16Table); j++ {
+				byteToUTF16Table[i+j] = utf16Pos
+			}
+			i += 4
+			utf16Pos += 2
+		}
+	}
+	byteToUTF16Table[len(text)] = utf16Pos
+
+	// Second pass: build UTF-16→byte mapping
+	utf16ToByteTable = make([]int, utf16Pos+1)
+	i = 0
+	utf16Pos = 0
+	for i < len(text) {
+		utf16ToByteTable[utf16Pos] = i
+		b := text[i]
+		if b < 0x80 {
+			i++
+			utf16Pos++
+		} else if b < 0xE0 {
+			i += 2
+			utf16Pos++
+		} else if b < 0xF0 {
+			i += 3
+			utf16Pos++
+		} else {
+			utf16ToByteTable[utf16Pos+1] = i
+			i += 4
+			utf16Pos += 2
+		}
+	}
+	utf16ToByteTable[utf16Pos] = i
+	return
+}
+
+// byteToUTF16 converts a byte offset to a UTF-16 code unit offset.
+func byteToUTF16(byteOff int, table []int) int {
+	if len(table) == 0 {
+		return byteOff
+	}
+	if byteOff >= len(table) {
+		return table[len(table)-1]
+	}
+	if byteOff < 0 {
+		return 0
+	}
+	return table[byteOff]
+}
+
+// utf16ToByte converts a UTF-16 code unit offset to a byte offset.
+func utf16ToByte(utf16Off int, table []int) int {
+	if len(table) == 0 {
+		return utf16Off
+	}
+	if utf16Off >= len(table) {
+		return table[len(table)-1]
+	}
+	if utf16Off < 0 {
+		return 0
+	}
+	return table[utf16Off]
 }
 
 // kindForName returns the numeric kind for a given string name.
@@ -552,13 +690,13 @@ func (c *Converter) walkForRescan(i int, events *[]RescanEvent) {
 
 	// RegularExpressionLiteral needs rescan (scanner sees / as SlashToken)
 	if kindName == "RegularExpressionLiteral" {
-		pos := c.augmentPos(int(c.ast.Pos(i)), true)
+		pos := c.augmentBytePos(int(c.ast.Pos(i)))
 		*events = append(*events, RescanEvent{Pos: pos, Kind: "regex"})
 	}
 
 	// TemplateMiddle and TemplateTail need rescan (scanner sees } as CloseBraceToken)
 	if kindName == "TemplateMiddle" || kindName == "TemplateTail" {
-		pos := c.augmentPos(int(c.ast.Pos(i)), true)
+		pos := c.augmentBytePos(int(c.ast.Pos(i)))
 		*events = append(*events, RescanEvent{Pos: pos, Kind: "template"})
 	}
 
@@ -572,7 +710,7 @@ func (c *Converter) walkForRescan(i int, events *[]RescanEvent) {
 			case "GreaterThanEqualsToken", "GreaterThanGreaterThanEqualsToken",
 				"GreaterThanGreaterThanGreaterThanEqualsToken",
 				"GreaterThanGreaterThanGreaterThanToken", "GreaterThanGreaterThanToken":
-				pos := c.augmentPos(int(c.ast.Pos(children[1])), true)
+				pos := c.augmentBytePos(int(c.ast.Pos(children[1])))
 				*events = append(*events, RescanEvent{Pos: pos, Kind: "greater"})
 			}
 		}
