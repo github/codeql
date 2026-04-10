@@ -6957,7 +6957,7 @@ open class KotlinFileExtractor(
                     tw.writeExprs_stringliteral(id, type.javaResult.id, parent, idx)
                     tw.writeExprsKotlinType(id, type.kotlinResult.id)
                     extractExprContext(id, locId, enclosingCallable, enclosingStmt)
-                    tw.writeNamestrings(toQuotedLiteral(v.toString()), v.toString(), id)
+                    tw.writeNamestrings(toQuotedLiteral(v), v, id)
                 }
             }
             v == null -> {

@@ -4,7 +4,7 @@ allows us to not have to specify that option (and therefore pull in `rules_kotli
 internal repo.
 --- a/kotlin/settings/BUILD.bazel
 +++ b/kotlin/settings/BUILD.bazel
-@@ -16,6 +16,6 @@ release_archive(
+@@ -16,7 +16,7 @@
  # Flag that controls the emission of jdeps files during kotlin jvm compilation.
  bool_flag(
      name = "jvm_emit_jdeps",
@@ -12,4 +12,4 @@ internal repo.
 +    build_setting_default = False,
      visibility = ["//visibility:public"],
  )
-
+ 
