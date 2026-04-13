@@ -97,6 +97,22 @@ module ClassInstanceFlow<ClassInstanceFlowSig Sig> {
       node = DataFlow::BarrierGuard<isinstanceGuard/3>::getABarrierNode()
     }
 
+    /**
+     * Holds if `call` is inside a branch that is guarded by a condition
+     * depending on a parameter of the enclosing function. In such cases,
+     * the instantiation is contextual — it only happens for certain argument
+     * values — and we cannot determine from the call site whether it will
+     * actually execute.
+     */
+    private predicate parameterGuardedCall(CallNode call) {
+      exists(ConditionBlock guard, DataFlow::ParameterNode param, DataFlow::Node guardSubExpr |
+        guard.controls(call.getBasicBlock(), _) and
+        param.getScope() = call.getScope() and
+        guardSubExpr.asCfgNode() = guard.getLastNode().getAChild*() and
+        DataFlow::localFlow(param, guardSubExpr)
+      )
+    }
+
     predicate isAdditionalFlowStep(
       DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
     ) {
@@ -109,7 +125,11 @@ module ClassInstanceFlow<ClassInstanceFlowSig Sig> {
         nodeTo.asCfgNode() = call and
         // Exclude decorator applications, where the result is a proxy
         // rather than a typical instance.
-        not call.getNode() = any(FunctionExpr fe).getADecoratorCall()
+        not call.getNode() = any(FunctionExpr fe).getADecoratorCall() and
+        // Exclude instantiations guarded by parameter-dependent conditions,
+        // since we cannot determine from the call site whether the guard
+        // will be satisfied.
+        not parameterGuardedCall(call)
       )
     }
   }
