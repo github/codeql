@@ -14,6 +14,9 @@ function may behave unpredictably.</p>
 <p>This may indicate a misspelled function name, or that the required header containing
 the function declaration has not been included.</p>
 
+<p>Note: This query is not compatible with <code>build mode: none</code> databases, and produces
+no results on those databases.</p>
+
 </overview>
 <recommendation>
 <p>Provide an explicit declaration of the function before invoking it.</p>
