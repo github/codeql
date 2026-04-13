@@ -82,15 +82,28 @@ func (c *Converter) convertNode(i int) (map[string]interface{}, error) {
 	// Add defined-bits-based properties
 	c.addDefinedBitProperties(i, kindName, node)
 
-	// TS7 doesn't set the NestedNamespace flag in the binary AST, but the Java
-	// extractor needs it to wrap inner namespace declarations in ExportNamedDeclaration.
-	// Detect nested namespaces (ModuleDeclaration whose body is another ModuleDeclaration)
-	// and add the flag to the inner declaration.
 	if kindName == "ModuleDeclaration" {
+		// TS7 doesn't set the NestedNamespace flag in the binary AST, but the Java
+		// extractor needs it to wrap inner namespace declarations in ExportNamedDeclaration.
+		// Detect nested namespaces (ModuleDeclaration whose body is another ModuleDeclaration)
+		// and add the flag to the inner declaration.
 		if body, ok := node["body"].(map[string]interface{}); ok {
 			if bodyKind, ok := body["kind"].(int); ok && bodyKind == 268 { // 268 = ModuleDeclaration
 				if flags, ok := body["flags"].(int); ok {
 					body["flags"] = flags | 8 // NestedNamespace = 8
+				}
+			}
+		}
+
+		// TS7 binary AST doesn't have a GlobalAugmentation flag. Detect `declare global {}`
+		// by checking if the name is "global" (Identifier), and set a synthetic flag bit
+		// so the Java extractor can distinguish it from regular namespace declarations.
+		if name, ok := node["name"].(map[string]interface{}); ok {
+			if nameKind, ok := name["kind"].(int); ok && nameKind == 79 { // 79 = Identifier
+				if text, _ := name["escapedText"].(string); text == "global" {
+					if flags, ok := node["flags"].(int); ok {
+						node["flags"] = flags | (1 << 30) // synthetic GlobalAugmentation
+					}
 				}
 			}
 		}

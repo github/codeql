@@ -372,34 +372,40 @@ var syntaxKinds = map[string]int{
 	"JSDocImportTag":                344,
 }
 
-// nodeFlags maps NodeFlags names to their numeric values in TypeScript 7.
-// TS7 removed the Synthesized flag, shifting all subsequent flags down by one bit
-// compared to TS5. The Java extractor only checks Using, NestedNamespace, and
-// GlobalAugmentation, but we include all flags for completeness.
+// nodeFlags maps NodeFlags names to their numeric values sent to the Java extractor.
+// The Java extractor only checks Using, NestedNamespace, and GlobalAugmentation.
+//
+// TS7 binary AST flag layout (differs from TS5):
+//   bit 0: Let, bit 1: Const, bit 2: Using, bit 3: NestedNamespace (not set in binary),
+//   bit 4: Namespace, bit 5: OptionalChain, bit 6: ExportContext (was GlobalAugmentation
+//   in TS5 at bit 11), bit 7: ContainsThis, ...
+//
+// GlobalAugmentation is NOT a flag in the TS7 binary format. We use a synthetic bit (30)
+// that the converter sets on `declare global {}` nodes so the Java extractor can detect them.
 var nodeFlags = map[string]int{
 	"None":               0,
 	"Let":                1,
 	"Const":              2,
 	"Using":              4,    // Let | Const
 	"AwaitUsing":         6,    // Using | Const
-	"NestedNamespace":    8,    // bit 3 (TS7 binary AST doesn't set this)
-	"Namespace":          16,   // bit 4 (was 32 in TS5)
-	"OptionalChain":      32,   // bit 5 (was 64 in TS5)
-	"GlobalAugmentation": 64,   // bit 6 — on `declare global { }` (was 2048 in TS5)
-	"ExportContext":       128,  // bit 7
-	"ContainsThis":       256,  // bit 8
-	"HasImplicitReturn":  512,  // bit 9
-	"HasExplicitReturn":  1024, // bit 10
-	"HasAsyncFunctions":  2048, // bit 11
-	"DisallowInContext":  4096, // bit 12
-	"YieldContext":       8192, // bit 13
-	"DecoratorContext":   16384, // bit 14
-	"AwaitContext":       32768, // bit 15
-	"DisallowConditionalTypesContext": 65536, // bit 16
-	"ThisNodeHasError":   131072, // bit 17
-	"JavaScriptFile":     262144, // bit 18
-	"ThisNodeOrAnySubNodesHasError": 524288, // bit 19
-	"HasAggregatedChildData":        1048576, // bit 20
+	"NestedNamespace":    8,    // bit 3 — synthetic, set by converter
+	"Namespace":          16,   // bit 4
+	"OptionalChain":      32,   // bit 5
+	"ExportContext":       64,   // bit 6
+	"GlobalAugmentation": 1 << 30, // synthetic — set by converter for `declare global {}`
+	"ContainsThis":       128,  // bit 7
+	"HasImplicitReturn":  256,  // bit 8
+	"HasExplicitReturn":  512,  // bit 9
+	"HasAsyncFunctions":  1024, // bit 10
+	"DisallowInContext":  2048, // bit 11
+	"YieldContext":       4096, // bit 12
+	"DecoratorContext":   8192, // bit 13
+	"AwaitContext":       16384, // bit 14
+	"DisallowConditionalTypesContext": 32768, // bit 15
+	"ThisNodeHasError":   65536, // bit 16
+	"JavaScriptFile":     131072, // bit 17
+	"ThisNodeOrAnySubNodesHasError": 262144, // bit 18
+	"HasAggregatedChildData":        524288, // bit 19
 	"JSDoc":              8388608, // bit 23
 	"JsonFile":           67108864, // bit 26
 }
