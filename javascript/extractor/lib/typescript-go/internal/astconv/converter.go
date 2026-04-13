@@ -9,11 +9,19 @@ import (
 // Converter transforms a BinaryAST into the JSON format expected by the
 // Java extractor.
 type Converter struct {
-	ast          *BinaryAST
-	kindNames    map[uint32]string // numeric kind → string name
-	sourceText   string            // source file text for $lineStarts / $pos augmentation
-	utf16Offsets []int             // maps byte offset → UTF-16 code unit offset
-	byteOffsets  []int             // maps UTF-16 code unit offset → byte offset
+	ast              *BinaryAST
+	kindNames        map[uint32]string // numeric kind → string name
+	sourceText       string            // source file text for $lineStarts / $pos augmentation
+	utf16Offsets     []int             // maps byte offset → UTF-16 code unit offset
+	byteOffsets      []int             // maps UTF-16 code unit offset → byte offset
+	parseDiagnostics []ParseDiagnostic // syntactic diagnostics from the compiler
+}
+
+// ParseDiagnostic represents a syntactic error reported by the TypeScript compiler.
+type ParseDiagnostic struct {
+	Pos         int    // UTF-16 offset of error start
+	End         int    // UTF-16 offset of error end
+	MessageText string // human-readable error message
 }
 
 // NewConverter creates a Converter for the given binary AST.
@@ -28,6 +36,11 @@ func NewConverter(ast *BinaryAST, kindToName map[uint32]string) *Converter {
 		utf16Offsets: utf16Table,
 		byteOffsets:  byteTable,
 	}
+}
+
+// SetParseDiagnostics sets the syntactic diagnostics to include in the output.
+func (c *Converter) SetParseDiagnostics(diags []ParseDiagnostic) {
+	c.parseDiagnostics = diags
 }
 
 // Convert transforms the binary AST into a JSON-serializable map.
@@ -158,8 +171,16 @@ func (c *Converter) handleSourceFile(i int, extOff uint32, node map[string]inter
 		node["$lineStarts"] = computeLineStarts(c.sourceText, c.utf16Offsets)
 	}
 
-	// Add empty parseDiagnostics array (expected by Java extractor)
-	node["parseDiagnostics"] = []interface{}{}
+	// Add parseDiagnostics (expected by Java extractor).
+	// The Java extractor uses these to report syntax errors and skip full extraction.
+	diagArray := make([]interface{}, 0, len(c.parseDiagnostics))
+	for _, d := range c.parseDiagnostics {
+		diagArray = append(diagArray, map[string]interface{}{
+			"$pos":        d.Pos,
+			"messageText": d.MessageText,
+		})
+	}
+	node["parseDiagnostics"] = diagArray
 
 	// Add children (statements + EndOfFile)
 	children := c.ast.Children(i)

@@ -373,8 +373,12 @@ func (p *TsgoParser) Parse(filename string) (*ParseResult, error) {
 		return nil, fmt.Errorf("parse %s: failed to decode binary AST: %w", filename, err)
 	}
 
+	// Fetch syntactic diagnostics (parse errors) from the compiler.
+	diags := p.getSyntacticDiagnostics(filename)
+
 	kindToName := BuildKindToNameMap()
 	converter := astconv.NewConverter(binaryAST, kindToName)
+	converter.SetParseDiagnostics(diags)
 	astObj, err := converter.Convert()
 	if err != nil {
 		return nil, fmt.Errorf("parse %s: failed to convert AST: %w", filename, err)
@@ -386,6 +390,54 @@ func (p *TsgoParser) Parse(filename string) (*ParseResult, error) {
 		AST:     filtered,
 		RawData: []byte(dataResp.Data),
 	}, nil
+}
+
+// getSyntacticDiagnostics fetches parse errors from the tsgo API.
+// Only includes true parse errors (diagnostic code < 2000), not semantic-level
+// diagnostics like deprecation warnings that TS7 added (e.g., code 2880 for
+// import assertions). Returns an empty slice on error (best-effort).
+func (p *TsgoParser) getSyntacticDiagnostics(filename string) []astconv.ParseDiagnostic {
+	params := map[string]interface{}{
+		"file": filename,
+	}
+	if p.snapshotHandle != "" {
+		params["snapshot"] = p.snapshotHandle
+	}
+	if p.projectHandle != "" {
+		params["project"] = p.projectHandle
+	}
+
+	result, err := p.sendRequest("getSyntacticDiagnostics", params)
+	if err != nil {
+		return nil
+	}
+
+	var rawDiags []struct {
+		Pos      int    `json:"pos"`
+		End      int    `json:"end"`
+		Code     int    `json:"code"`
+		Category int    `json:"category"`
+		Text     string `json:"text"`
+	}
+	if err := json.Unmarshal(result, &rawDiags); err != nil {
+		return nil
+	}
+
+	diags := make([]astconv.ParseDiagnostic, 0, len(rawDiags))
+	for _, d := range rawDiags {
+		// Only include genuine parse errors (codes 1000-1999).
+		// Higher codes are semantic diagnostics that TS7 reports as "syntactic"
+		// but which don't indicate actual parse failures.
+		if d.Code < 1000 || d.Code >= 2000 {
+			continue
+		}
+		diags = append(diags, astconv.ParseDiagnostic{
+			Pos:         d.Pos,
+			End:         d.End,
+			MessageText: d.Text,
+		})
+	}
+	return diags
 }
 
 // GetMetadata returns the syntax kinds and node flags.
