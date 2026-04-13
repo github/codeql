@@ -1,0 +1,24 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      HMAC (Hash-based Message Authentication Code) algorithms are used to verify both the
+      integrity and authenticity of messages. Using weak HMAC algorithms such as HMACMD5,
+      HMACSHA1, or HMACRIPEMD160 can compromise message authentication, as the underlying
+      hash functions have known cryptographic weaknesses.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Use a strong HMAC algorithm such as HMACSHA256, HMACSHA384, or HMACSHA512. These are
+      based on the SHA-2 family of hash functions and provide adequate security for message
+      authentication.
+    </p>
+  </recommendation>
+
+  <references>
+    <li>NIST, SP 800-131A: <a href="https://csrc.nist.gov/publications/detail/sp/800-131a/rev-2/final">Transitioning the Use of Cryptographic Algorithms and Key Lengths</a>.</li>
+    <li>CWE-327: <a href="https://cwe.mitre.org/data/definitions/327.html">Use of a Broken or Risky Cryptographic Algorithm</a>.</li>
+    <li>CWE-328: <a href="https://cwe.mitre.org/data/definitions/328.html">Use of Weak Hash</a>.</li>
+  </references>
+</qhelp>

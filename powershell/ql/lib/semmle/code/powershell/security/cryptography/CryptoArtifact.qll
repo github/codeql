@@ -29,6 +29,14 @@ abstract class SymmetricAlgorithm extends CryptographicAlgorithm {
   }
 }
 
+abstract class HmacAlgorithm extends CryptographicAlgorithm {
+  final string getHmacName() {
+    if exists(string n | n = this.getName() and isHmacAlgorithm(n))
+    then result = this.getName()
+    else result = unknownAlgorithm()
+  }
+}
+
 abstract class BlockMode extends CryptographicAlgorithm {
   final string getBlockModeName() {
     if exists(string n | n = this.getName() and isCipherBlockModeAlgorithm(n))
