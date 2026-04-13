@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 7.5
  * @precision high
- * @id powershell/microsoft/security/deprecated-tls
+ * @id powershell/deprecated-tls
  * @tags security
  *       external/cwe/cwe-327
  *       external/cwe/cwe-757
@@ -14,13 +14,6 @@
 import powershell
 import semmle.code.powershell.ApiGraphs
 import semmle.code.powershell.dataflow.DataFlow
-
-/**
- * Holds if `protocolName` is a deprecated TLS/SSL protocol (lowercase).
- */
-predicate isDeprecatedProtocol(string protocolName) {
-  protocolName = ["ssl3", "tls", "tls11"]
-}
 
 /**
  * Gets the human-readable name for a deprecated protocol.
@@ -34,11 +27,15 @@ string getProtocolDisplayName(string protocolName) {
   protocolName = "tls11" and result = "TLS 1.1"
 }
 
+abstract class SecurityProtocol extends Expr {
+  abstract string getProtocolName();
+}
+
 /**
  * A reference to a deprecated SecurityProtocolType enum value, e.g.
  * [Net.SecurityProtocolType]::Ssl3
  */
-class DeprecatedSecurityProtocolType extends DataFlow::Node {
+class DeprecatedSecurityProtocolType extends SecurityProtocol {
   string protocolName;
 
   DeprecatedSecurityProtocolType() {
@@ -55,19 +52,18 @@ class DeprecatedSecurityProtocolType extends DataFlow::Node {
               .getMember("securityprotocoltype")
               .getMember(protocolName)
       ) and
-      this = node.asSource() and
-      isDeprecatedProtocol(protocolName)
+      this = node.asSource().asExpr().getExpr()
     )
   }
 
-  string getProtocolName() { result = protocolName }
+  override string getProtocolName() { result = protocolName }
 }
 
 /**
  * A reference to a deprecated SslProtocols enum value, e.g.
  * [System.Security.Authentication.SslProtocols]::Tls
  */
-class DeprecatedSslProtocols extends DataFlow::Node {
+class DeprecatedSslProtocols extends SecurityProtocol {
   string protocolName;
 
   DeprecatedSslProtocols() {
@@ -78,21 +74,17 @@ class DeprecatedSslProtocols extends DataFlow::Node {
             .getMember("authentication")
             .getMember("sslprotocols")
             .getMember(protocolName) and
-      this = node.asSource() and
-      isDeprecatedProtocol(protocolName)
+      this = node.asSource().asExpr().getExpr()
     )
   }
 
-  string getProtocolName() { result = protocolName }
+  override string getProtocolName() { result = protocolName }
 }
 
-from DataFlow::Node node, string protocolName
+from SecurityProtocol sp, string protocolName
 where
-  exists(DeprecatedSecurityProtocolType d |
-    node = d and protocolName = d.getProtocolName()
-  )
-  or
-  exists(DeprecatedSslProtocols d | node = d and protocolName = d.getProtocolName())
-select node,
+  protocolName = sp.getProtocolName() and 
+  protocolName = ["ssl3", "tls", "tls11"]
+select sp,
   "Use of deprecated protocol " + getProtocolDisplayName(protocolName) +
     ". Use TLS 1.2 or TLS 1.3 instead."
