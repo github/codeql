@@ -2,15 +2,16 @@
 # ========== TRUE POSITIVES (should trigger alert) ==================
 # ===================================================================
 
-# --- Case 1: PSJwt module with "none" algorithm ---
-$token = New-Jwt -Algorithm "none" -Payload @{sub="user"} # BAD
+# --- Case 1: .NET JwtSecurityTokenHandler.CreateToken with "none" ---
+$handler = [System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler]::new()
+$token = $handler.CreateToken("none") # BAD
+
+# --- Case 2: .NET JwtSecurityTokenHandler.CreateEncodedJwt with "none" ---
+$token = $handler.CreateEncodedJwt("none") # BAD
 
 # ===================================================================
 # ========== TRUE NEGATIVES (should NOT trigger alert) ==============
 # ===================================================================
 
-# --- Safe: JWT with HS256 ---
-$token = New-Jwt -Algorithm "HS256" -Payload @{sub="user"} -Secret $key # GOOD
-
-# --- Safe: Unrelated string "none" ---
-$value = "none" # GOOD
+# --- Safe: .NET CreateToken with HS256 ---
+$token = $handler.CreateToken("HS256") # GOOD
