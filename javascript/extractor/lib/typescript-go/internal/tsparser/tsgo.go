@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"sync"
 
@@ -55,9 +56,35 @@ func (p *TsgoParser) findBinary() (string, error) {
 	// Look for tsgo on PATH (installed via: npm install -g @typescript/native-preview)
 	path, err := exec.LookPath("tsgo")
 	if err == nil {
+		// The npm-installed tsgo is a Node.js wrapper script that invokes the native binary.
+		// Try to resolve the native binary directly so we don't need Node.js at runtime.
+		if native := resolveNativeTsgo(path); native != "" {
+			return native, nil
+		}
 		return path, nil
 	}
 	return "", fmt.Errorf("tsgo binary not found on PATH; install with: npm install -g @typescript/native-preview")
+}
+
+// resolveNativeTsgo attempts to find the native tsgo binary inside an npm installation.
+// The npm package @typescript/native-preview installs a Node.js wrapper at bin/tsgo
+// which delegates to a platform-specific native binary at:
+//   node_modules/@typescript/native-preview-<platform>-<arch>/lib/tsgo
+func resolveNativeTsgo(wrapperPath string) string {
+	// Follow symlinks to find the real wrapper location
+	resolved, err := filepath.EvalSymlinks(wrapperPath)
+	if err != nil {
+		return ""
+	}
+	// The wrapper is at <prefix>/bin/tsgo.js or <prefix>/bin/tsgo
+	// The native binary is at <prefix>/node_modules/@typescript/native-preview-<os>-<arch>/lib/tsgo
+	pkgDir := filepath.Dir(filepath.Dir(resolved))
+	platformPkg := fmt.Sprintf("@typescript/native-preview-%s-%s", runtime.GOOS, runtime.GOARCH)
+	native := filepath.Join(pkgDir, "node_modules", platformPkg, "lib", "tsgo")
+	if info, err := os.Stat(native); err == nil && !info.IsDir() {
+		return native
+	}
+	return ""
 }
 
 // startProcess starts the tsgo subprocess without sending any API requests.

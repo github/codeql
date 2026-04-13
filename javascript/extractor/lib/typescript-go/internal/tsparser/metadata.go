@@ -36,7 +36,13 @@ func BuildKindToNameMap() map[uint32]string {
 // Generated from microsoft/typescript-go/internal/ast/kind.go (iota enum).
 var syntaxKinds = map[string]int{
 	"Unknown":                       0,
-	"EndOfFile":                     1,
+	"EndOfFileToken":                1,
+	"SingleLineCommentTrivia":       2,
+	"MultiLineCommentTrivia":        3,
+	"NewLineTrivia":                 4,
+	"WhitespaceTrivia":              5,
+	"ShebangTrivia":                 6,
+	"ConflictMarkerTrivia":          7,
 	"NumericLiteral":                8,
 	"BigIntLiteral":                 9,
 	"StringLiteral":                 10,
@@ -59,20 +65,54 @@ var syntaxKinds = map[string]int{
 	"CommaToken":                    27,
 	"QuestionDotToken":              28,
 	"LessThanToken":                 29,
+	"LessThanSlashToken":            30,
 	"GreaterThanToken":              31,
+	"LessThanEqualsToken":           32,
+	"GreaterThanEqualsToken":        33,
+	"EqualsEqualsToken":             34,
+	"ExclamationEqualsToken":        35,
+	"EqualsEqualsEqualsToken":       36,
+	"ExclamationEqualsEqualsToken":  37,
 	"EqualsGreaterThanToken":        38,
 	"PlusToken":                     39,
 	"MinusToken":                    40,
 	"AsteriskToken":                 41,
+	"AsteriskAsteriskToken":         42,
 	"SlashToken":                    43,
+	"PercentToken":                  44,
 	"PlusPlusToken":                 45,
 	"MinusMinusToken":               46,
+	"LessThanLessThanToken":         47,
+	"GreaterThanGreaterThanToken":   48,
+	"GreaterThanGreaterThanGreaterThanToken": 49,
+	"AmpersandToken":               50,
+	"BarToken":                      51,
+	"CaretToken":                    52,
 	"ExclamationToken":              53,
 	"TildeToken":                    54,
+	"AmpersandAmpersandToken":       55,
+	"BarBarToken":                    56,
 	"QuestionToken":                 57,
 	"ColonToken":                    58,
 	"AtToken":                       59,
+	"QuestionQuestionToken":          60,
+	"HashToken":                      62,
 	"EqualsToken":                   63,
+	"PlusEqualsToken":                64,
+	"MinusEqualsToken":               65,
+	"AsteriskEqualsToken":            66,
+	"AsteriskAsteriskEqualsToken":    67,
+	"SlashEqualsToken":               68,
+	"PercentEqualsToken":             69,
+	"LessThanLessThanEqualsToken":    70,
+	"GreaterThanGreaterThanEqualsToken":      71,
+	"GreaterThanGreaterThanGreaterThanEqualsToken": 72,
+	"AmpersandEqualsToken":           73,
+	"BarEqualsToken":                 74,
+	"BarBarEqualsToken":              75,
+	"AmpersandAmpersandEqualsToken":  76,
+	"QuestionQuestionEqualsToken":    77,
+	"CaretEqualsToken":               78,
 	"Identifier":                    79,
 	"PrivateIdentifier":             80,
 	"BreakKeyword":                  82,
@@ -332,29 +372,34 @@ var syntaxKinds = map[string]int{
 	"JSDocImportTag":                344,
 }
 
-// nodeFlags maps NodeFlags names to their numeric values.
+// nodeFlags maps NodeFlags names to their numeric values in TypeScript 7.
+// TS7 removed the Synthesized flag, shifting all subsequent flags down by one bit
+// compared to TS5. The Java extractor only checks Using, NestedNamespace, and
+// GlobalAugmentation, but we include all flags for completeness.
 var nodeFlags = map[string]int{
 	"None":               0,
 	"Let":                1,
 	"Const":              2,
-	"NestedNamespace":    4,
-	"Synthesized":        8,
-	"Namespace":          16,
-	"OptionalChain":      32,
-	"ExportContext":       64,
-	"ContainsThis":       128,
-	"HasImplicitReturn":  256,
-	"HasExplicitReturn":  512,
-	"HasAsyncFunctions":  1024,
-	"DisallowInContext":  2048,
-	"YieldContext":       4096,
-	"DecoratorContext":   8192,
-	"AwaitContext":       16384,
-	"DisallowConditionalTypesContext": 32768,
-	"ThisNodeHasError":   65536,
-	"JavaScriptFile":     131072,
-	"ThisNodeOrAnySubNodesHasError": 262144,
-	"HasAggregatedChildData":        524288,
-	"JSDoc":              4194304,
-	"JsonFile":           33554432,
+	"Using":              4,    // Let | Const
+	"AwaitUsing":         6,    // Using | Const
+	"NestedNamespace":    8,    // bit 3 (TS7 binary AST doesn't set this)
+	"Namespace":          16,   // bit 4 (was 32 in TS5)
+	"OptionalChain":      32,   // bit 5 (was 64 in TS5)
+	"GlobalAugmentation": 64,   // bit 6 — on `declare global { }` (was 2048 in TS5)
+	"ExportContext":       128,  // bit 7
+	"ContainsThis":       256,  // bit 8
+	"HasImplicitReturn":  512,  // bit 9
+	"HasExplicitReturn":  1024, // bit 10
+	"HasAsyncFunctions":  2048, // bit 11
+	"DisallowInContext":  4096, // bit 12
+	"YieldContext":       8192, // bit 13
+	"DecoratorContext":   16384, // bit 14
+	"AwaitContext":       32768, // bit 15
+	"DisallowConditionalTypesContext": 65536, // bit 16
+	"ThisNodeHasError":   131072, // bit 17
+	"JavaScriptFile":     262144, // bit 18
+	"ThisNodeOrAnySubNodesHasError": 524288, // bit 19
+	"HasAggregatedChildData":        1048576, // bit 20
+	"JSDoc":              8388608, // bit 23
+	"JsonFile":           67108864, // bit 26
 }

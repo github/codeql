@@ -13,7 +13,8 @@ const (
 	KindMultiLineCommentTrivia                     = 3
 	KindNewLineTrivia                              = 4
 	KindWhitespaceTrivia                           = 5
-	KindConflictMarkerTrivia                       = 6
+	KindShebangTrivia                              = 6
+	KindConflictMarkerTrivia                       = 7
 	KindNumericLiteral                             = 8
 	KindBigIntLiteral                              = 9
 	KindStringLiteral                              = 10
@@ -120,7 +121,8 @@ func NewScanner(text string, rescanEvents []RescanEvent) *Scanner {
 	}
 }
 
-// ScanAll produces all tokens from the source text.
+// ScanAll produces all tokens from the source text, including trivia
+// (whitespace, newlines, comments), matching the Node.js wrapper behavior.
 func (s *Scanner) ScanAll() []Token {
 	var tokens []Token
 	for {
@@ -206,15 +208,24 @@ func (s *Scanner) scan() Token {
 		return Token{Kind: KindNewLineTrivia, TokenPos: tokenPos, Text: s.text[tokenPos:s.pos]}
 	}
 
-	// Check for rescan event at this position
+	// Check for rescan event at this position.
+	// TS5's scanner loop captures the token kind BEFORE the rescan event fires,
+	// then uses the rescanned text. So regex tokens get kind=SlashToken with
+	// text="/pattern/flags", and template continuation tokens get kind=CloseBraceToken
+	// with the template text. We replicate this by scanning the full content but
+	// using the pre-rescan kind.
 	if tokenPos == s.nextRescanPos() {
 		kind := s.nextRescanKind()
 		s.consumeRescan()
 		switch kind {
 		case "regex":
-			return s.scanRegExp(tokenPos)
+			tok := s.scanRegExp(tokenPos)
+			tok.Kind = KindSlashToken
+			return tok
 		case "template":
-			return s.scanTemplatePart(tokenPos, true)
+			tok := s.scanTemplatePart(tokenPos, true)
+			tok.Kind = KindCloseBraceToken
+			return tok
 		case "greater":
 			return s.scanGreater(tokenPos)
 		}
@@ -454,8 +465,13 @@ func (s *Scanner) scan() Token {
 	case '#':
 		// Could be private identifier
 		if s.peekAt(1) == '!' && tokenPos == 0 {
-			// Shebang — scan to end of line
-			return s.scanSingleLineComment(tokenPos)
+			// Shebang — scan to end of line, emit as ShebangTrivia
+			start := s.pos
+			for s.pos < len(s.text) && s.text[s.pos] != '\n' && s.text[s.pos] != '\r' {
+				s.pos++
+			}
+			text := s.text[start:s.pos]
+			return Token{Kind: KindShebangTrivia, TokenPos: tokenPos, Text: text}
 		}
 		if isIdentStart(s.peekAt(1)) {
 			return s.scanPrivateIdentifier(tokenPos)

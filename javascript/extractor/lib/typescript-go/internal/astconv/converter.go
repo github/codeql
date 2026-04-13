@@ -82,6 +82,20 @@ func (c *Converter) convertNode(i int) (map[string]interface{}, error) {
 	// Add defined-bits-based properties
 	c.addDefinedBitProperties(i, kindName, node)
 
+	// TS7 doesn't set the NestedNamespace flag in the binary AST, but the Java
+	// extractor needs it to wrap inner namespace declarations in ExportNamedDeclaration.
+	// Detect nested namespaces (ModuleDeclaration whose body is another ModuleDeclaration)
+	// and add the flag to the inner declaration.
+	if kindName == "ModuleDeclaration" {
+		if body, ok := node["body"].(map[string]interface{}); ok {
+			if bodyKind, ok := body["kind"].(int); ok && bodyKind == 268 { // 268 = ModuleDeclaration
+				if flags, ok := body["flags"].(int); ok {
+					body["flags"] = flags | 8 // NestedNamespace = 8
+				}
+			}
+		}
+	}
+
 	return node, nil
 }
 
@@ -491,10 +505,13 @@ func (c *Converter) addDefinedBitProperties(i int, kindName string, node map[str
 }
 
 // augmentPos replicates the Node.js wrapper's $pos augmentation:
-// if skipTrivia is true, advances past leading whitespace and comments.
+// if skip is true, advances past leading whitespace, single-line comments (//),
+// and multi-line comments (/* */). This matches the TS5 Node.js wrapper regex:
+//   /(?:\s|\/\/.*|\/\*[^]*?\*\/)*/g
+// Note: shebangs (#!) are NOT skipped — the TS5 regex does not match them.
 // Input pos is a UTF-16 code unit offset; returns a UTF-16 code unit offset.
-func (c *Converter) augmentPos(pos int, skipTrivia bool) int {
-	if !skipTrivia || c.sourceText == "" {
+func (c *Converter) augmentPos(pos int, skip bool) int {
+	if !skip || c.sourceText == "" {
 		return pos
 	}
 	return byteToUTF16(c.skipTrivia(utf16ToByte(pos, c.byteOffsets)), c.utf16Offsets)
@@ -506,7 +523,8 @@ func (c *Converter) augmentBytePos(utf16Pos int) int {
 	return c.skipTrivia(utf16ToByte(utf16Pos, c.byteOffsets))
 }
 
-// skipTrivia advances past whitespace and comments starting at byte offset i.
+// skipTrivia advances past whitespace, single-line comments (//), and
+// multi-line comments (/* */), starting at byte offset i.
 func (c *Converter) skipTrivia(i int) int {
 	n := len(c.sourceText)
 	for i < n {
