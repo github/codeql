@@ -38,7 +38,7 @@ ENV_RE = re.compile(r"^[A-Z_][A-Z_0-9]*=.*$")
 
 def parse_args(args, argv_str):
     """Parse a space-separated argument string into categorized arguments."""
-    for arg in shlex.split(argv_str):
+    for arg in shlex.split(argv_str, posix=sys.platform != "win32"):
         if arg.startswith("--codeql="):
             args["codeql"] = arg.split("=", 1)[1]
         elif arg in ("+", "--all-checks"):
@@ -104,24 +104,23 @@ def main():
     # Resolve codeql executable
     if args["codeql"] in ("built", "build"):
         codeql = Path(SEMMLE_CODE, "target", "intree", f"codeql-{language}", "codeql")
-        if not codeql.exists():
-            error(f"CodeQL executable not found: {codeql}")
-            return 1
     elif args["codeql"] == "host":
         codeql = Path("codeql")
     else:
         codeql = Path(args["codeql"])
-        if not codeql.exists():
-            error(f"CodeQL executable not found: {codeql}")
-            return 1
 
     if codeql.is_dir():
         codeql = codeql / "codeql"
-        if sys.platform == "win32":
-            codeql = codeql.with_suffix(".exe")
-        if not codeql.exists():
-            error(f"CodeQL executable not found: {codeql}")
-            return 1
+
+    # On Windows, prefer codeql.exe over the Unix shell wrapper
+    if sys.platform == "win32" and codeql.suffix != ".exe":
+        exe = codeql.with_suffix(".exe")
+        if exe.exists():
+            codeql = exe
+
+    if args["codeql"] != "host" and not codeql.exists():
+        error(f"CodeQL executable not found: {codeql}")
+        return 1
 
     return invoke(
         [str(codeql), "test", "run", *args["flags"], "--", *args["tests"]],
