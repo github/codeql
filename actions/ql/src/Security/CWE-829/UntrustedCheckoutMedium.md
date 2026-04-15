@@ -1,6 +1,6 @@
 ## Overview
 
-GitHub workflows can be triggered through various repository events, including incoming pull requests (PRs) or comments on Issues/PRs. A potentially dangerous misuse of the triggers such as `pull_request_target` or `issue_comment` followed by an explicit checkout of untrusted code (Pull Request HEAD) may lead to repository compromise if untrusted code gets executed (e.g., due to a modified build script) in a privileged job.
+GitHub workflows can be triggered through various repository events, including incoming pull requests (PRs) or comments on Issues/PRs. A dangerous misuse of event triggers such as `pull_request_target` or `issue_comment` followed by an explicit checkout of untrusted input from the PR may lead to repository compromise if untrusted code gets executed in a privileged job. Untrusted code may get executed due to a modified build script, workflow injection, or registry hijacking. **Carefully review** whether least privileges is used and whether input is taken from untrusted sources.
 
 ## Recommendation
 
@@ -133,3 +133,4 @@ jobs:
 ## References
 
 - GitHub Security Lab Research: [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/).
+- Living Off the Pipeline: [LOTP](https://boostsecurityio.github.io/lotp/).

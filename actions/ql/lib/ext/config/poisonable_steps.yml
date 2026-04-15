@@ -70,7 +70,7 @@ extensions:
       - ["(source|sh|bash|zsh|fish)\\s+([^\\s]+)\\b", 2]
       - ["(node)\\s+([^\\s]+)(\\.js|\\.ts)\\b", 2]
       - ["(python[\\d\\.]*)\\s+([^\\s]+)\\.py\\b", 2]
+      - ["(python[\\d\\.]*)\\s+([\\-m]+)\\s+(\\w+)\\b", 2] # eg: pythonX -m anything(dir or file)
       - ["(ruby)\\s+([^\\s]+)\\.rb\\b", 2]
-      - ["(go)\\s+(generate|run)\\s+([^\\s]+)\\.go\\b", 3]
+      - ["(go)\\s+(generate|run)\\s+([^\\s]+)", 3]
       - ["(dotnet)\\s+([^\\s]+)\\.csproj\\b", 2]
-
