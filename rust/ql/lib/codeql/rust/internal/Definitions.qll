@@ -8,6 +8,7 @@ private import codeql.rust.elements.Variable
 private import codeql.rust.elements.Locatable
 private import codeql.rust.elements.FormatArgsExpr
 private import codeql.rust.elements.FormatArgsArg
+private import codeql.rust.elements.FormatArgsArgName
 private import codeql.rust.elements.Format
 private import codeql.rust.elements.MacroCall
 private import codeql.rust.elements.NamedFormatArgument
@@ -33,7 +34,7 @@ private module Cached {
   cached
   newtype TDef =
     TVariable(Variable v) or
-    TFormatArgsArgName(Name name) { name = any(FormatArgsArg a).getName() } or
+    TFormatArgsArgDef(FormatArgsArgName name) { name = any(FormatArgsArg a).getArgName() } or
     TFormatArgsArgIndex(Expr e) { e = any(FormatArgsArg a).getExpr() } or
     TItemNode(ItemNode i)
 
@@ -58,7 +59,7 @@ class Definition extends Cached::TDef {
   /** Gets the location of this variable. */
   Location getLocation() {
     result = this.asVariable().getLocation() or
-    result = this.asName().getLocation() or
+    result = this.asFormatArgsArgName().getLocation() or
     result = this.asExpr().getLocation() or
     result = this.asItemNode().getLocation()
   }
@@ -66,8 +67,8 @@ class Definition extends Cached::TDef {
   /** Gets this definition as a `Variable` */
   Variable asVariable() { this = Cached::TVariable(result) }
 
-  /** Gets this definition as a `Name` */
-  Name asName() { this = Cached::TFormatArgsArgName(result) }
+  /** Gets this definition as a format argument name */
+  FormatArgsArgName asFormatArgsArgName() { this = Cached::TFormatArgsArgDef(result) }
 
   /** Gets this definition as an `Expr` */
   Expr asExpr() { this = Cached::TFormatArgsArgIndex(result) }
@@ -79,7 +80,7 @@ class Definition extends Cached::TDef {
   string toString() {
     result = this.asExpr().toString() or
     result = this.asVariable().toString() or
-    result = this.asName().getText() or
+    result = this.asFormatArgsArgName().toString() or
     result = this.asItemNode().toString()
   }
 }
@@ -95,17 +96,16 @@ private class LocalVariableUse extends Use instanceof VariableAccess {
 }
 
 private class NamedFormatArgumentUse extends Use instanceof NamedFormatArgument {
-  private Name def;
+  private FormatArgsArgName def;
 
   NamedFormatArgumentUse() {
     exists(FormatArgsExpr parent |
       parent = this.getParent().getParent() and
-      parent.getAnArg().getName() = def and
-      this.getName() = def.getText()
+      parent.getAnArg().getArgName() = def
     )
   }
 
-  override Definition getDefinition() { result.asName() = def }
+  override Definition getDefinition() { result.asFormatArgsArgName() = def }
 
   override string getUseType() { result = "format argument" }
 }

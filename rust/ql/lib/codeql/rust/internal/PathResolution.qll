@@ -49,6 +49,20 @@ private import codeql.rust.internal.CachedStages
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 private import codeql.util.Option
 
+/** Gets the path of a `Meta` node, regardless of its concrete subtype. */
+pragma[nomagic]
+private Path getMetaPath(Meta m) {
+  result = m.(PathMeta).getPath()
+  or
+  result = m.(KeyValueMeta).getPath()
+  or
+  result = m.(TokenTreeMeta).getPath()
+}
+
+/** Gets the expression of a `Meta` node, regardless of its concrete subtype. */
+pragma[nomagic]
+private Expr getMetaExpr(Meta m) { result = m.(KeyValueMeta).getExpr() }
+
 private newtype TNamespace =
   TTypeNamespace() or
   TValueNamespace() or
@@ -263,7 +277,7 @@ abstract class ItemNode extends Locatable {
   pragma[nomagic]
   final Attr getAttr(string name) {
     result = this.getAnAttr() and
-    result.getMeta().getPath().(PathExt).isUnqualified(name)
+    getMetaPath(result.getMeta()).(PathExt).isUnqualified(name)
   }
 
   final predicate hasAttr(string name) { exists(this.getAttr(name)) }
@@ -1348,7 +1362,7 @@ private predicate fileModuleInlineLate(SourceFile f, string name, Folder folder)
  */
 private Meta getPathAttrMeta(Module m) {
   result = m.getAnAttr().getMeta() and
-  result.getPath().getText() = "path"
+  getMetaPath(result).getText() = "path"
 }
 
 /**
@@ -1412,7 +1426,7 @@ private predicate pathAttrImport(Folder f, Module m, string relativePath) {
   exists(Meta meta |
     f = m.getFile().getParentContainer() and
     meta = getPathAttrMeta(m) and
-    relativePath = meta.getExpr().(LiteralExpr).getTextValue().regexpCapture("\"(.+)\"", 1)
+    relativePath = getMetaExpr(meta).(LiteralExpr).getTextValue().regexpCapture("\"(.+)\"", 1)
   )
 }
 
@@ -1793,7 +1807,7 @@ private module DollarCrateResolution {
     or
     exists(ItemNode type |
       expansion = type.(TypeItem).getDeriveMacroExpansion(_) and
-      macroDefPath = type.getAttr("derive").getMeta().getPath()
+      macroDefPath = getMetaPath(type.getAttr("derive").getMeta())
     )
   }
 
@@ -1952,7 +1966,7 @@ private predicate pathUsesNamespace(PathExt p, Namespace n) {
   (
     p = any(MacroCall mc).getPath()
     or
-    p = any(Meta m).getPath()
+    p = getMetaPath(any(Meta m))
   )
 }
 
