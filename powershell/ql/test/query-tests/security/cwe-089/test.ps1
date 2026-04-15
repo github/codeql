@@ -139,3 +139,12 @@ $QueryConn3 = @{
 Invoke-Sqlcmd @QueryConn3 # GOOD
 
 &sqlcmd -e -S $userinput -U "Login" -P "MyPassword" -d "MyDBName" -i "input_file.sql" # GOOD
+
+function WithGuid {
+    PARAM([Parameter(Mandatory = $true)] [guid] $r)
+
+    $query = "SELECT * FROM MyTable WHERE MyColumn = '$r'"
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -q $query # GOOD [FALSE POSITIVE]
+}
+
+WithGuid $userinput
