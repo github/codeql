@@ -39,7 +39,7 @@ edges
 | test.rs:107:22:107:25 | path | test.rs:107:22:107:38 | path.into_inner() | provenance | MaD:11 |
 | test.rs:107:22:107:38 | path.into_inner() | test.rs:107:13:107:18 | TuplePat | provenance |  |
 | test.rs:115:33:115:65 | ...: ...::Query::<...> | test.rs:116:14:116:14 | a | provenance |  |
-| test.rs:121:5:121:20 | to | test.rs:122:33:122:55 | ...: ...::Path::<...> | provenance | Src:MaD:4  |
+| test.rs:121:7:121:19 | to | test.rs:122:33:122:55 | ...: ...::Path::<...> | provenance | Src:MaD:4  |
 | test.rs:122:33:122:55 | ...: ...::Path::<...> | test.rs:123:17:123:20 | path | provenance |  |
 | test.rs:123:13:123:13 | a | test.rs:124:14:124:14 | a | provenance |  |
 | test.rs:123:17:123:20 | path | test.rs:123:17:123:33 | path.into_inner() | provenance | MaD:11 |
@@ -108,7 +108,7 @@ nodes
 | test.rs:110:14:110:14 | b | semmle.label | b |
 | test.rs:115:33:115:65 | ...: ...::Query::<...> | semmle.label | ...: ...::Query::<...> |
 | test.rs:116:14:116:14 | a | semmle.label | a |
-| test.rs:121:5:121:20 | to | semmle.label | to |
+| test.rs:121:7:121:19 | to | semmle.label | to |
 | test.rs:122:33:122:55 | ...: ...::Path::<...> | semmle.label | ...: ...::Path::<...> |
 | test.rs:123:13:123:13 | a | semmle.label | a |
 | test.rs:123:17:123:20 | path | semmle.label | path |
@@ -172,7 +172,7 @@ testFailures
 | test.rs:109:14:109:14 | a | test.rs:132:45:132:46 | to | test.rs:109:14:109:14 | a | $@ | test.rs:132:45:132:46 | to | to |
 | test.rs:110:14:110:14 | b | test.rs:132:45:132:46 | to | test.rs:110:14:110:14 | b | $@ | test.rs:132:45:132:46 | to | to |
 | test.rs:116:14:116:14 | a | test.rs:133:41:133:42 | to | test.rs:116:14:116:14 | a | $@ | test.rs:133:41:133:42 | to | to |
-| test.rs:124:14:124:14 | a | test.rs:121:5:121:20 | to | test.rs:124:14:124:14 | a | $@ | test.rs:121:5:121:20 | to | to |
+| test.rs:124:14:124:14 | a | test.rs:121:7:121:19 | to | test.rs:124:14:124:14 | a | $@ | test.rs:121:7:121:19 | to | to |
 | test.rs:148:14:148:23 | a.as_str() | test.rs:200:30:200:32 | get | test.rs:148:14:148:23 | a.as_str() | $@ | test.rs:200:30:200:32 | get | get |
 | test.rs:149:14:149:25 | a.as_bytes() | test.rs:200:30:200:32 | get | test.rs:149:14:149:25 | a.as_bytes() | $@ | test.rs:200:30:200:32 | get | get |
 | test.rs:150:14:150:14 | a | test.rs:200:30:200:32 | get | test.rs:150:14:150:14 | a | $@ | test.rs:200:30:200:32 | get | get |

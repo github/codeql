@@ -15,23 +15,20 @@ attribute_macros
 | macro_expansion.rs:31:5:34:5 | (item with attribute macro expansion) | 1 | macro_expansion.rs:32:5:34:5 | fn bzz_1 |
 | macro_expansion.rs:31:5:34:5 | (item with attribute macro expansion) | 2 | macro_expansion.rs:32:5:34:5 | fn bzz_2 |
 derive_macros
-| macro_expansion.rs:83:1:86:1 | struct MyDerive | 0 | 0 | macro_expansion.rs:84:8:85:9 | impl ...::Debug for MyDerive::<...> { ... } |
-| macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 0 | 0 | macro_expansion.rs:89:6:91:12 | impl ...::PartialEq for MyDeriveEnum::<...> { ... } |
-| macro_expansion.rs:88:1:92:1 | enum MyDeriveEnum | 1 | 0 | macro_expansion.rs:89:6:89:17 | impl ...::Eq for MyDeriveEnum::<...> { ... } |
 | macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 0 | macro_expansion.rs:99:7:99:19 | Const |
 | macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 1 | macro_expansion.rs:99:7:99:19 | impl MyTrait for MyDeriveUnion { ... } |
 macro_calls
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |
-| macro_expansion.rs:31:5:31:16 | ...::format_args_nl!... | macro_expansion.rs:31:5:31:16 | FormatArgsExpr |
-| macro_expansion.rs:31:5:31:16 | ...::format_args_nl!... | macro_expansion.rs:31:5:31:16 | FormatArgsExpr |
-| macro_expansion.rs:31:5:31:16 | ...::format_args_nl!... | macro_expansion.rs:31:5:31:16 | FormatArgsExpr |
-| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | { ... } |
-| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | { ... } |
-| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | { ... } |
-| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | { ... } |
-| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | { ... } |
-| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | { ... } |
+| macro_expansion.rs:31:7:31:15 | ...::format_args_nl!... | macro_expansion.rs:31:7:31:15 | FormatArgsExpr |
+| macro_expansion.rs:31:7:31:15 | ...::format_args_nl!... | macro_expansion.rs:31:7:31:15 | FormatArgsExpr |
+| macro_expansion.rs:31:7:31:15 | ...::format_args_nl!... | macro_expansion.rs:31:7:31:15 | FormatArgsExpr |
+| macro_expansion.rs:31:7:31:15 | println!... | macro_expansion.rs:31:7:31:15 | { ... } |
+| macro_expansion.rs:31:7:31:15 | println!... | macro_expansion.rs:31:7:31:15 | { ... } |
+| macro_expansion.rs:31:7:31:15 | println!... | macro_expansion.rs:31:7:31:15 | { ... } |
+| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:7:31:15 | { ... } |
+| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:7:31:15 | { ... } |
+| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:7:31:15 | { ... } |
 | macro_expansion.rs:44:5:44:13 | def_x!... | macro_expansion.rs:44:5:44:10 | MacroItems |
 | macro_expansion.rs:53:9:53:25 | concat!... | macro_expansion.rs:53:17:53:24 | "xy" |
 | macro_expansion.rs:55:9:58:5 | my_macro!... | macro_expansion.rs:56:9:57:13 | MacroExpr |
