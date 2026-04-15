@@ -36,6 +36,11 @@
 /lib/codeql/rust/elements/CallExpr.qll linguist-generated
 /lib/codeql/rust/elements/Callable.qll linguist-generated
 /lib/codeql/rust/elements/CastExpr.qll linguist-generated
+/lib/codeql/rust/elements/CfgAtom.qll linguist-generated
+/lib/codeql/rust/elements/CfgAttrMeta.qll linguist-generated
+/lib/codeql/rust/elements/CfgComposite.qll linguist-generated
+/lib/codeql/rust/elements/CfgMeta.qll linguist-generated
+/lib/codeql/rust/elements/CfgPredicate.qll linguist-generated
 /lib/codeql/rust/elements/ClosureExpr.qll linguist-generated
 /lib/codeql/rust/elements/Comment.qll linguist-generated
 /lib/codeql/rust/elements/Const.qll linguist-generated
@@ -61,6 +66,7 @@
 /lib/codeql/rust/elements/ForTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/Format.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgsArg.qll linguist-generated
+/lib/codeql/rust/elements/FormatArgsArgName.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgsExpr.qll linguist-generated
 /lib/codeql/rust/elements/FormatArgument.qll linguist-generated
 /lib/codeql/rust/elements/FormatTemplateVariableAccess.qll linguist-generated
@@ -77,6 +83,7 @@
 /lib/codeql/rust/elements/InferTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/Item.qll linguist-generated
 /lib/codeql/rust/elements/ItemList.qll linguist-generated
+/lib/codeql/rust/elements/KeyValueMeta.qll linguist-generated
 /lib/codeql/rust/elements/Label.qll linguist-generated
 /lib/codeql/rust/elements/LabelableExpr.qll linguist-generated
 /lib/codeql/rust/elements/LetElse.qll linguist-generated
@@ -122,6 +129,7 @@
 /lib/codeql/rust/elements/PathAstNode.qll linguist-generated
 /lib/codeql/rust/elements/PathExpr.qll linguist-generated
 /lib/codeql/rust/elements/PathExprBase.qll linguist-generated
+/lib/codeql/rust/elements/PathMeta.qll linguist-generated
 /lib/codeql/rust/elements/PathPat.qll linguist-generated
 /lib/codeql/rust/elements/PathSegment.qll linguist-generated
 /lib/codeql/rust/elements/PathTypeRepr.qll linguist-generated
@@ -155,8 +163,9 @@
 /lib/codeql/rust/elements/StructPatFieldList.qll linguist-generated
 /lib/codeql/rust/elements/Token.qll linguist-generated
 /lib/codeql/rust/elements/TokenTree.qll linguist-generated
+/lib/codeql/rust/elements/TokenTreeMeta.qll linguist-generated
 /lib/codeql/rust/elements/Trait.qll linguist-generated
-/lib/codeql/rust/elements/TraitAlias.qll linguist-generated
+/lib/codeql/rust/elements/TryBlockModifier.qll linguist-generated
 /lib/codeql/rust/elements/TryExpr.qll linguist-generated
 /lib/codeql/rust/elements/TupleExpr.qll linguist-generated
 /lib/codeql/rust/elements/TupleField.qll linguist-generated
@@ -175,6 +184,7 @@
 /lib/codeql/rust/elements/Unextracted.qll linguist-generated
 /lib/codeql/rust/elements/Unimplemented.qll linguist-generated
 /lib/codeql/rust/elements/Union.qll linguist-generated
+/lib/codeql/rust/elements/UnsafeMeta.qll linguist-generated
 /lib/codeql/rust/elements/Use.qll linguist-generated
 /lib/codeql/rust/elements/UseBoundGenericArg.qll linguist-generated
 /lib/codeql/rust/elements/UseBoundGenericArgs.qll linguist-generated
@@ -238,6 +248,15 @@
 /lib/codeql/rust/elements/internal/BreakExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CastExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgAtomConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgAtomImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgAttrMetaConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgAttrMetaImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgCompositeConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgCompositeImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgMetaConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgMetaImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/CfgPredicateImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/ClosureExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/CommentConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ConstArgConstructor.qll linguist-generated
@@ -273,6 +292,8 @@
 /lib/codeql/rust/elements/internal/ForTypeReprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsArgConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsArgImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/FormatArgsArgNameConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/FormatArgsArgNameImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/FormatArgsExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/FunctionConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/GenericArgImpl.qll linguist-generated
@@ -287,6 +308,8 @@
 /lib/codeql/rust/elements/internal/InferTypeReprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ItemListConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/ItemListImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/KeyValueMetaConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/KeyValueMetaImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/LabelConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LetElseConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/LetExprConstructor.qll linguist-generated
@@ -319,7 +342,6 @@
 /lib/codeql/rust/elements/internal/MatchExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchGuardConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchGuardImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/MetaConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MetaImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MethodCallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MissingConstructor.qll linguist-generated
@@ -346,6 +368,8 @@
 /lib/codeql/rust/elements/internal/PathConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathExprBaseImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathExprConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/PathMetaConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/PathMetaImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathPatConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathSegmentConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/PathTypeReprConstructor.qll linguist-generated
@@ -394,9 +418,11 @@
 /lib/codeql/rust/elements/internal/TokenImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenTreeConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TokenTreeImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/TraitAliasConstructor.qll linguist-generated
-/lib/codeql/rust/elements/internal/TraitAliasImpl.qll linguist-generated
+/lib/codeql/rust/elements/internal/TokenTreeMetaConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/TokenTreeMetaImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TraitConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/TryBlockModifierConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/TryBlockModifierImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TryExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/TryExprImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/TupleExprConstructor.qll linguist-generated
@@ -421,6 +447,8 @@
 /lib/codeql/rust/elements/internal/UnimplementedConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnimplementedImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UnionConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/UnsafeMetaConstructor.qll linguist-generated
+/lib/codeql/rust/elements/internal/UnsafeMetaImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseBoundGenericArgImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseBoundGenericArgsConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/UseBoundGenericArgsImpl.qll linguist-generated
@@ -478,6 +506,11 @@
 /lib/codeql/rust/elements/internal/generated/CallExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Callable.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/CastExpr.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/CfgAtom.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/CfgAttrMeta.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/CfgComposite.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/CfgMeta.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/CfgPredicate.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ClosureExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Comment.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Const.qll linguist-generated
@@ -504,6 +537,7 @@
 /lib/codeql/rust/elements/internal/generated/ForTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Format.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgsArg.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/FormatArgsArgName.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgsExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatArgument.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/FormatTemplateVariableAccess.qll linguist-generated
@@ -520,6 +554,7 @@
 /lib/codeql/rust/elements/internal/generated/InferTypeRepr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Item.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/ItemList.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/KeyValueMeta.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Label.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/LabelableExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/LetElse.qll linguist-generated
@@ -567,6 +602,7 @@
 /lib/codeql/rust/elements/internal/generated/PathAstNode.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/PathExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/PathExprBase.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/PathMeta.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/PathPat.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/PathSegment.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/PathTypeRepr.qll linguist-generated
@@ -604,8 +640,9 @@
 /lib/codeql/rust/elements/internal/generated/SynthConstructors.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Token.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TokenTree.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/TokenTreeMeta.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Trait.qll linguist-generated
-/lib/codeql/rust/elements/internal/generated/TraitAlias.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/TryBlockModifier.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TryExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TupleExpr.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/TupleField.qll linguist-generated
@@ -624,6 +661,7 @@
 /lib/codeql/rust/elements/internal/generated/Unextracted.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Unimplemented.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Union.qll linguist-generated
+/lib/codeql/rust/elements/internal/generated/UnsafeMeta.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/Use.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/UseBoundGenericArg.qll linguist-generated
 /lib/codeql/rust/elements/internal/generated/UseBoundGenericArgs.qll linguist-generated
@@ -666,6 +704,10 @@
 /test/extractor-tests/generated/BreakExpr/BreakExpr.ql linguist-generated
 /test/extractor-tests/generated/CallExpr/CallExpr.ql linguist-generated
 /test/extractor-tests/generated/CastExpr/CastExpr.ql linguist-generated
+/test/extractor-tests/generated/CfgAtom/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/CfgAttrMeta/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/CfgComposite/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/CfgMeta/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/ClosureExpr/ClosureExpr.ql linguist-generated
 /test/extractor-tests/generated/Comment/Comment.ql linguist-generated
 /test/extractor-tests/generated/Const/Const.ql linguist-generated
@@ -685,6 +727,7 @@
 /test/extractor-tests/generated/ForBinder/ForBinder.ql linguist-generated
 /test/extractor-tests/generated/ForExpr/ForExpr.ql linguist-generated
 /test/extractor-tests/generated/ForTypeRepr/ForTypeRepr.ql linguist-generated
+/test/extractor-tests/generated/FormatArgsArgName/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/Format.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgsArg.ql linguist-generated
 /test/extractor-tests/generated/FormatArgsExpr/FormatArgsExpr.ql linguist-generated
@@ -700,6 +743,7 @@
 /test/extractor-tests/generated/IndexExpr/IndexExpr.ql linguist-generated
 /test/extractor-tests/generated/InferTypeRepr/InferTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/ItemList/ItemList.ql linguist-generated
+/test/extractor-tests/generated/KeyValueMeta/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Label/Label.ql linguist-generated
 /test/extractor-tests/generated/LetElse/LetElse.ql linguist-generated
 /test/extractor-tests/generated/LetExpr/LetExpr.ql linguist-generated
@@ -721,7 +765,6 @@
 /test/extractor-tests/generated/MatchArmList/MatchArmList.ql linguist-generated
 /test/extractor-tests/generated/MatchExpr/MatchExpr.ql linguist-generated
 /test/extractor-tests/generated/MatchGuard/MatchGuard.ql linguist-generated
-/test/extractor-tests/generated/Meta/Meta.ql linguist-generated
 /test/extractor-tests/generated/MethodCallExpr/MethodCallExpr.ql linguist-generated
 /test/extractor-tests/generated/Module/Module.ql linguist-generated
 /test/extractor-tests/generated/Name/Name.ql linguist-generated
@@ -740,6 +783,7 @@
 /test/extractor-tests/generated/Path/PathPat.ql linguist-generated
 /test/extractor-tests/generated/Path/PathSegment.ql linguist-generated
 /test/extractor-tests/generated/Path/PathTypeRepr.ql linguist-generated
+/test/extractor-tests/generated/PathMeta/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/PrefixExpr/PrefixExpr.ql linguist-generated
 /test/extractor-tests/generated/PtrTypeRepr/PtrTypeRepr.ql linguist-generated
 /test/extractor-tests/generated/RangeExpr/RangeExpr.ql linguist-generated
@@ -768,9 +812,10 @@
 /test/extractor-tests/generated/StructPatField/StructPatField.ql linguist-generated
 /test/extractor-tests/generated/StructPatFieldList/StructPatFieldList.ql linguist-generated
 /test/extractor-tests/generated/TokenTree/TokenTree.ql linguist-generated
+/test/extractor-tests/generated/TokenTreeMeta/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Trait/AssocItemList.ql linguist-generated
 /test/extractor-tests/generated/Trait/Trait.ql linguist-generated
-/test/extractor-tests/generated/TraitAlias/TraitAlias.ql linguist-generated
+/test/extractor-tests/generated/TryBlockModifier/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/TryExpr/TryExpr.ql linguist-generated
 /test/extractor-tests/generated/TupleExpr/TupleExpr.ql linguist-generated
 /test/extractor-tests/generated/TupleField/TupleField.ql linguist-generated
@@ -785,6 +830,7 @@
 /test/extractor-tests/generated/TypeParam/TypeParam.ql linguist-generated
 /test/extractor-tests/generated/UnderscoreExpr/UnderscoreExpr.ql linguist-generated
 /test/extractor-tests/generated/Union/Union.ql linguist-generated
+/test/extractor-tests/generated/UnsafeMeta/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/Use/Use.ql linguist-generated
 /test/extractor-tests/generated/UseBoundGenericArgs/UseBoundGenericArgs.ql linguist-generated
 /test/extractor-tests/generated/UseTree/UseTree.ql linguist-generated

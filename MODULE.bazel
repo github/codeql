@@ -159,12 +159,12 @@ use_repo(
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # rust-analyzer sources needed by the rust ast-generator (see `rust/ast-generator/README.md`)
-RUST_ANALYZER_SRC_TAG = "2025-01-07"
+RUST_ANALYZER_SRC_TAG = "2026-04-13"
 
 http_archive(
     name = "rust-analyzer-src",
     build_file = "//rust/ast-generator:BUILD.rust-analyzer-src.bazel",
-    integrity = "sha256-eo8mIaUafZL8LOM65bDIIIXw1rNQ/P/x5RK/XUtgo5g=",
+    integrity = "sha256-UB/+EVx/6j4VGvnb7jfRqPaoc7Uwci3rEt6il+2J1Ds=",
     patch_args = ["-p1"],
     patches = [
         "//rust/ast-generator:patches/rust-analyzer.patch",

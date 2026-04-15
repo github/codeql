@@ -189,11 +189,13 @@ named_crates(
 | @assoc_item_list
 | @attr
 | @callable
+| @cfg_predicate
 | @expr
 | @extern_item_list
 | @field_list
 | @for_binder
 | @format_args_arg
+| @format_args_arg_name
 | @generic_arg
 | @generic_arg_list
 | @generic_param
@@ -227,6 +229,7 @@ named_crates(
 | @struct_pat_field_list
 | @token
 | @token_tree
+| @try_block_modifier
 | @tuple_field
 | @type_bound
 | @type_bound_list
@@ -403,6 +406,11 @@ callable_attrs(
   int attr: @attr ref
 );
 
+@cfg_predicate =
+  @cfg_atom
+| @cfg_composite
+;
+
 @expr =
   @array_expr_internal
 | @asm_expr
@@ -477,15 +485,19 @@ format_args_args(
 );
 
 #keyset[id]
+format_args_arg_arg_names(
+  int id: @format_args_arg ref,
+  int arg_name: @format_args_arg_name ref
+);
+
+#keyset[id]
 format_args_arg_exprs(
   int id: @format_args_arg ref,
   int expr: @expr ref
 );
 
-#keyset[id]
 format_args_arg_names(
-  int id: @format_args_arg ref,
-  int name: @name ref
+  unique int id: @format_args_arg_name
 );
 
 @generic_arg =
@@ -629,32 +641,14 @@ match_guard_conditions(
   int condition: @expr ref
 );
 
-meta(
-  unique int id: @meta
-);
-
-#keyset[id]
-meta_exprs(
-  int id: @meta ref,
-  int expr: @expr ref
-);
-
-#keyset[id]
-meta_is_unsafe(
-  int id: @meta ref
-);
-
-#keyset[id]
-meta_paths(
-  int id: @meta ref,
-  int path: @path ref
-);
-
-#keyset[id]
-meta_token_trees(
-  int id: @meta ref,
-  int token_tree: @token_tree ref
-);
+@meta =
+  @cfg_attr_meta
+| @cfg_meta
+| @key_value_meta
+| @path_meta
+| @token_tree_meta
+| @unsafe_meta
+;
 
 names(
   unique int id: @name
@@ -938,9 +932,9 @@ struct_field_attrs(
 );
 
 #keyset[id]
-struct_field_defaults(
+struct_field_default_vals(
   int id: @struct_field ref,
-  int default: @expr ref
+  int default_val: @const_arg ref
 );
 
 #keyset[id]
@@ -1012,6 +1006,21 @@ struct_pat_field_list_rest_pats(
 
 token_trees(
   unique int id: @token_tree
+);
+
+try_block_modifiers(
+  unique int id: @try_block_modifier
+);
+
+#keyset[id]
+try_block_modifier_is_try(
+  int id: @try_block_modifier ref
+);
+
+#keyset[id]
+try_block_modifier_type_reprs(
+  int id: @try_block_modifier ref,
+  int type_repr: @type_repr ref
 );
 
 tuple_fields(
@@ -1538,6 +1547,48 @@ cast_expr_type_reprs(
   int type_repr: @type_repr ref
 );
 
+cfg_atoms(
+  unique int id: @cfg_atom
+);
+
+cfg_attr_meta(
+  unique int id: @cfg_attr_meta
+);
+
+#keyset[id]
+cfg_attr_meta_cfg_predicates(
+  int id: @cfg_attr_meta ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
+#keyset[id, index]
+cfg_attr_meta_metas(
+  int id: @cfg_attr_meta ref,
+  int index: int ref,
+  int meta: @meta ref
+);
+
+cfg_composites(
+  unique int id: @cfg_composite
+);
+
+#keyset[id, index]
+cfg_composite_cfg_predicates(
+  int id: @cfg_composite ref,
+  int index: int ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
+cfg_meta(
+  unique int id: @cfg_meta
+);
+
+#keyset[id]
+cfg_meta_cfg_predicates(
+  int id: @cfg_meta ref,
+  int cfg_predicate: @cfg_predicate ref
+);
+
 closure_exprs(
   unique int id: @closure_expr
 );
@@ -1897,7 +1948,6 @@ infer_type_reprs(
 | @macro_rules
 | @module
 | @trait
-| @trait_alias
 | @type_item
 | @use
 ;
@@ -1906,6 +1956,22 @@ infer_type_reprs(
 item_attribute_macro_expansions(
   int id: @item ref,
   int attribute_macro_expansion: @macro_items ref
+);
+
+key_value_meta(
+  unique int id: @key_value_meta
+);
+
+#keyset[id]
+key_value_meta_exprs(
+  int id: @key_value_meta ref,
+  int expr: @expr ref
+);
+
+#keyset[id]
+key_value_meta_paths(
+  int id: @key_value_meta ref,
+  int path: @path ref
 );
 
 @labelable_expr =
@@ -2235,6 +2301,16 @@ paren_type_repr_type_reprs(
   @path_expr
 ;
 
+path_meta(
+  unique int id: @path_meta
+);
+
+#keyset[id]
+path_meta_paths(
+  int id: @path_meta ref,
+  int path: @path ref
+);
+
 path_pats(
   unique int id: @path_pat
 );
@@ -2517,6 +2593,22 @@ struct_pat_struct_pat_field_lists(
   int struct_pat_field_list: @struct_pat_field_list ref
 );
 
+token_tree_meta(
+  unique int id: @token_tree_meta
+);
+
+#keyset[id]
+token_tree_meta_paths(
+  int id: @token_tree_meta ref,
+  int path: @path ref
+);
+
+#keyset[id]
+token_tree_meta_token_trees(
+  int id: @token_tree_meta ref,
+  int token_tree: @token_tree ref
+);
+
 try_exprs(
   unique int id: @try_expr
 );
@@ -2646,6 +2738,21 @@ underscore_expr_attrs(
   int attr: @attr ref
 );
 
+unsafe_meta(
+  unique int id: @unsafe_meta
+);
+
+#keyset[id]
+unsafe_meta_is_unsafe(
+  int id: @unsafe_meta ref
+);
+
+#keyset[id]
+unsafe_meta_meta(
+  int id: @unsafe_meta ref,
+  int meta: @meta ref
+);
+
 variants(
   unique int id: @variant
 );
@@ -2658,9 +2765,9 @@ variant_attrs(
 );
 
 #keyset[id]
-variant_discriminants(
+variant_const_args(
   int id: @variant ref,
-  int discriminant: @expr ref
+  int const_arg: @const_arg ref
 );
 
 #keyset[id]
@@ -2783,11 +2890,6 @@ block_expr_is_move(
 );
 
 #keyset[id]
-block_expr_is_try(
-  int id: @block_expr ref
-);
-
-#keyset[id]
 block_expr_is_unsafe(
   int id: @block_expr ref
 );
@@ -2796,6 +2898,12 @@ block_expr_is_unsafe(
 block_expr_stmt_lists(
   int id: @block_expr ref,
   int stmt_list: @stmt_list ref
+);
+
+#keyset[id]
+block_expr_try_block_modifiers(
+  int id: @block_expr ref,
+  int try_block_modifier: @try_block_modifier ref
 );
 
 extern_blocks(
@@ -3094,47 +3202,6 @@ trait_visibilities(
 #keyset[id]
 trait_where_clauses(
   int id: @trait ref,
-  int where_clause: @where_clause ref
-);
-
-trait_aliases(
-  unique int id: @trait_alias
-);
-
-#keyset[id, index]
-trait_alias_attrs(
-  int id: @trait_alias ref,
-  int index: int ref,
-  int attr: @attr ref
-);
-
-#keyset[id]
-trait_alias_generic_param_lists(
-  int id: @trait_alias ref,
-  int generic_param_list: @generic_param_list ref
-);
-
-#keyset[id]
-trait_alias_names(
-  int id: @trait_alias ref,
-  int name: @name ref
-);
-
-#keyset[id]
-trait_alias_type_bound_lists(
-  int id: @trait_alias ref,
-  int type_bound_list: @type_bound_list ref
-);
-
-#keyset[id]
-trait_alias_visibilities(
-  int id: @trait_alias ref,
-  int visibility: @visibility ref
-);
-
-#keyset[id]
-trait_alias_where_clauses(
-  int id: @trait_alias ref,
   int where_clause: @where_clause ref
 );
 

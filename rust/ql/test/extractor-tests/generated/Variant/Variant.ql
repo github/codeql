@@ -8,8 +8,8 @@ query predicate getAttr(Variant x, int index, Attr getAttr) {
   toBeTested(x) and not x.isUnknown() and getAttr = x.getAttr(index)
 }
 
-query predicate getDiscriminant(Variant x, Expr getDiscriminant) {
-  toBeTested(x) and not x.isUnknown() and getDiscriminant = x.getDiscriminant()
+query predicate getConstArg(Variant x, ConstArg getConstArg) {
+  toBeTested(x) and not x.isUnknown() and getConstArg = x.getConstArg()
 }
 
 query predicate getFieldList(Variant x, FieldList getFieldList) {
