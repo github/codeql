@@ -197,8 +197,8 @@ impl Config {
                 load_out_dirs_from_check: true,
                 with_proc_macro_server: self.proc_macro_server_choice(dir),
                 prefill_caches: false,
-                num_worker_threads: 0,
-                proc_macro_processes: 0,
+                num_worker_threads: 1,
+                proc_macro_processes: 1,
             },
         )
     }
