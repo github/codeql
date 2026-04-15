@@ -13,5 +13,5 @@ format ARGS=".": (_format_cpp ARGS)
 [group('test')]
 language-tests *EXTRA_ARGS: (_language_tests EXTRA_ARGS source_dir() 'ql/test')
 
-[group('test'), parallel]
+[group('test')]
 extra-tests: (_sembuild "target/test/check-queries-swift") (_sembuild "target/test/check-db-upgrades-swift") (_sembuild "target/test/check-db-downgrades-swift")
