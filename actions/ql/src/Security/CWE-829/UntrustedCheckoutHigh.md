@@ -133,4 +133,4 @@ jobs:
 ## References
 
 - GitHub Security Lab Research: [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/).
-- Living Off the Pipeline: [LOTP](https://boostsecurityio.github.io/lotp/). 
+- Living Off the Pipeline: [LOTP](https://boostsecurityio.github.io/lotp/).
