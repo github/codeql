@@ -342,7 +342,6 @@
 /lib/codeql/rust/elements/internal/MatchExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchGuardConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MatchGuardImpl.qll linguist-generated
-/lib/codeql/rust/elements/internal/MetaImpl.qll linguist-generated
 /lib/codeql/rust/elements/internal/MethodCallExprConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MissingConstructor.qll linguist-generated
 /lib/codeql/rust/elements/internal/MissingImpl.qll linguist-generated

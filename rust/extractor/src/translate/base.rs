@@ -216,12 +216,13 @@ impl<'a> Translator<'a> {
         let parent_range = parent.syntax().text_range();
         let token_range = token.text_range();
         if let Some(clipped_range) = token_range.intersect(parent_range)
-            && let Some(parent_range2) = self.text_range_for_node(parent) {
-                let token_range = clipped_range + parent_range2.start() - parent_range.start();
-                if let Some((start, end)) = self.location(token_range) {
-                    self.trap.emit_location(self.label, label, start, end)
-                }
+            && let Some(parent_range2) = self.text_range_for_node(parent)
+        {
+            let token_range = clipped_range + parent_range2.start() - parent_range.start();
+            if let Some((start, end)) = self.location(token_range) {
+                self.trap.emit_location(self.label, label, start, end)
             }
+        }
     }
     pub fn emit_diagnostic(
         &mut self,
@@ -332,14 +333,15 @@ impl<'a> Translator<'a> {
     ) {
         for child in children {
             if let NodeOrToken::Token(token) = child
-                && token.kind() == SyntaxKind::COMMENT {
-                    let label = self.trap.emit(generated::Comment {
-                        id: TrapId::Star,
-                        parent: parent_label,
-                        text: token.text().to_owned(),
-                    });
-                    self.emit_location_token(label.into(), parent_node, &token);
-                }
+                && token.kind() == SyntaxKind::COMMENT
+            {
+                let label = self.trap.emit(generated::Comment {
+                    id: TrapId::Star,
+                    parent: parent_label,
+                    text: token.text().to_owned(),
+                });
+                self.emit_location_token(label.into(), parent_node, &token);
+            }
         }
     }
     fn emit_macro_expansion_parse_errors(

@@ -309,12 +309,13 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
     for field in &node.fields {
         if let Field::Token { token, .. } = field
-            && should_predicate_be_extracted(token) {
-                result.push(FieldInfo {
-                    name: format!("is_{token}"),
-                    ty: FieldType::Predicate,
-                });
-            }
+            && should_predicate_be_extracted(token)
+        {
+            result.push(FieldInfo {
+                name: format!("is_{token}"),
+                ty: FieldType::Predicate,
+            });
+        }
     }
 
     result.extend(get_additional_fields(&node.name));
