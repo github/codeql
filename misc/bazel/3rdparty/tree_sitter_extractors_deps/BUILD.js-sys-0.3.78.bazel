@@ -99,7 +99,7 @@ rust_library(
     }),
     version = "0.3.78",
     deps = [
-        "@vendor_ts__once_cell-1.21.3//:once_cell",
+        "@vendor_ts__once_cell-1.21.4//:once_cell",
         "@vendor_ts__wasm-bindgen-0.2.101//:wasm_bindgen",
     ],
 )

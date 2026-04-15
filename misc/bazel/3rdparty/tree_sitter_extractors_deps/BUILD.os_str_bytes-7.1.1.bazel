@@ -100,6 +100,6 @@ rust_library(
     }),
     version = "7.1.1",
     deps = [
-        "@vendor_ts__memchr-2.7.5//:memchr",
+        "@vendor_ts__memchr-2.8.0//:memchr",
     ],
 )
