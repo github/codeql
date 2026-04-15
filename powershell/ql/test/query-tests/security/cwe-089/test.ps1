@@ -144,7 +144,7 @@ function WithGuid {
     PARAM([Parameter(Mandatory = $true)] [guid] $r)
 
     $query = "SELECT * FROM MyTable WHERE MyColumn = '$r'"
-    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -q $query # GOOD [FALSE POSITIVE]
+    Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -q $query # GOOD
 }
 
 WithGuid $userinput
