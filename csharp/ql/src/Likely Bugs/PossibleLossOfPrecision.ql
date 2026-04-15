@@ -40,8 +40,8 @@ predicate convertedToFloatOrDecimal(Expr e, Type t) {
 /** Holds if `div` is an exact integer division. */
 predicate exactDivision(DivExpr div) {
   exists(int numerator, int denominator |
-    numerator = div.getNumerator().stripCasts().getValue().toInt() and
-    denominator = div.getDenominator().stripCasts().getValue().toInt() and
+    numerator = div.getNumerator().stripCasts().getIntValue() and
+    denominator = div.getDenominator().stripCasts().getIntValue() and
     numerator % denominator = 0
   )
 }

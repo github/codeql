@@ -32,13 +32,13 @@ private module ConstantComparisonOperation {
 
   private int maxValue(Expr expr) {
     if convertedType(expr) instanceof IntegralType and exists(expr.getValue())
-    then result = expr.getValue().toInt()
+    then result = expr.getIntValue()
     else result = convertedType(expr).maxValue()
   }
 
   private int minValue(Expr expr) {
     if convertedType(expr) instanceof IntegralType and exists(expr.getValue())
-    then result = expr.getValue().toInt()
+    then result = expr.getIntValue()
     else result = convertedType(expr).minValue()
   }
 

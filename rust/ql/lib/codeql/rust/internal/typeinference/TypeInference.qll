@@ -1708,6 +1708,15 @@ private module AssocFunctionResolution {
 
     predicate hasReceiverAtPos(FunctionPosition pos) { this.hasReceiver() and pos.asPosition() = 0 }
 
+    pragma[nomagic]
+    private predicate hasIncompatibleArgsTarget(
+      ImplOrTraitItemNode i, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
+      AssocFunctionType selfType
+    ) {
+      SelfArgIsInstantiationOf::argIsInstantiationOf(this, i, selfPos, derefChain, borrow, selfType) and
+      OverloadedCallArgsAreInstantiationsOf::argsAreNotInstantiationsOf(this, i)
+    }
+
     /**
      * Holds if the function inside `i` with matching name and arity can be ruled
      * out as a target of this call, because the candidate receiver type represented
@@ -1722,16 +1731,11 @@ private module AssocFunctionResolution {
       ImplOrTraitItemNode i, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
       Type root
     ) {
-      exists(TypePath path |
-        SelfArgIsInstantiationOf::argIsNotInstantiationOf(this, i, selfPos, derefChain, borrow, path) and
-        path.isCons(root.getATypeParameter(), _)
-      )
-      or
-      exists(AssocFunctionType selfType |
-        SelfArgIsInstantiationOf::argIsInstantiationOf(this, i, selfPos, derefChain, borrow,
-          selfType) and
-        OverloadedCallArgsAreInstantiationsOf::argsAreNotInstantiationsOf(this, i) and
-        root = selfType.getTypeAt(TypePath::nil())
+      exists(AssocFunctionType selfType | root = selfType.getTypeAt(TypePath::nil()) |
+        this.hasIncompatibleArgsTarget(i, selfPos, derefChain, borrow, selfType)
+        or
+        SelfArgIsInstantiationOf::argIsNotInstantiationOf(this, i, selfPos, derefChain, borrow,
+          selfType)
       )
     }
 
@@ -2608,9 +2612,13 @@ private module AssocFunctionResolution {
     pragma[nomagic]
     predicate argIsNotInstantiationOf(
       AssocFunctionCall afc, ImplOrTraitItemNode i, FunctionPosition selfPos, DerefChain derefChain,
-      BorrowKind borrow, TypePath path
+      BorrowKind borrow, AssocFunctionType selfType
     ) {
-      argIsNotInstantiationOf(MkAssocFunctionCallCand(afc, selfPos, derefChain, borrow), i, _, path)
+      exists(TypePath path |
+        argIsNotInstantiationOf(MkAssocFunctionCallCand(afc, selfPos, derefChain, borrow), i,
+          selfType, path) and
+        not path.isEmpty()
+      )
     }
 
     pragma[nomagic]

@@ -43,6 +43,7 @@ ql/cpp/ql/src/Security/CWE/CWE-367/TOCTOUFilesystemRace.ql
 ql/cpp/ql/src/Security/CWE/CWE-416/IteratorToExpiredContainer.ql
 ql/cpp/ql/src/Security/CWE/CWE-416/UseOfStringAfterLifetimeEnds.ql
 ql/cpp/ql/src/Security/CWE/CWE-416/UseOfUniquePointerAfterLifetimeEnds.ql
+ql/cpp/ql/src/Security/CWE/CWE-468/SuspiciousAddWithSizeof.ql
 ql/cpp/ql/src/Security/CWE/CWE-497/ExposedSystemData.ql
 ql/cpp/ql/src/Security/CWE/CWE-611/XXE.ql
 ql/cpp/ql/src/Security/CWE/CWE-676/DangerousFunctionOverflow.ql

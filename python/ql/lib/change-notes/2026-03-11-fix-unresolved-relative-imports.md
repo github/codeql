@@ -1,5 +1,0 @@
----
-category: fix
----
-
-- Fixed the resolution of relative imports such as `from . import helper` inside namespace packages (directories without an `__init__.py` file), which previously did not work correctly, leading to missing flow.

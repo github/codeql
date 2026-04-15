@@ -23,7 +23,7 @@ predicate systemArrayLengthAccess(PropertyAccess pa) {
  * - a read of the `Length` of an array with `val` lengths.
  */
 private predicate constantIntegerExpr(ExprNode e, int val) {
-  e.getValue().toInt() = val
+  e.getExpr().getIntValue() = val
   or
   exists(ExprNode src |
     e = getAnExplicitDefinitionRead(src) and

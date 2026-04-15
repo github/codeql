@@ -1183,12 +1183,12 @@ private module Cached {
     exists(
       FlowSummaryImpl::Public::BarrierGuardElement b,
       FlowSummaryImpl::Private::SummaryComponentStack stack,
-      FlowSummaryImpl::Public::AcceptingValue acceptingvalue, string kind, string model
+      FlowSummaryImpl::Public::AcceptingValue acceptingValue, string kind, string model
     |
-      FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingvalue, kind, model) and
+      FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingValue, kind, model) and
       e = FlowSummaryImpl::StepsInput::getSinkNode(b, stack.headOfSingleton()).asExpr() and
       kmp = TMkPair(kind, model) and
-      gv = convertAcceptingValue(acceptingvalue) and
+      gv = convertAcceptingValue(acceptingValue) and
       g = b.getCall()
     )
   }
