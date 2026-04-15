@@ -5,6 +5,6 @@
 # reflected by `MODULE.bazel` in this repository).
 
 [toolchain]
-channel = "1.88"
+channel = "1.91"
 profile = "minimal"
 components = [ "clippy", "rustfmt" ]

@@ -14,7 +14,9 @@ use ra_ap_ide_db::FxHashMap;
 use ra_ap_intern::Symbol;
 use ra_ap_load_cargo::{LoadCargoConfig, ProcMacroServerChoice};
 use ra_ap_paths::{AbsPath, AbsPathBuf, Utf8PathBuf};
-use ra_ap_project_model::{CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot, TargetDirectoryConfig};
+use ra_ap_project_model::{
+    CargoConfig, CargoFeatures, CfgOverrides, RustLibSource, Sysroot, TargetDirectoryConfig,
+};
 use rust_extractor_macros::extractor_cli_config;
 use serde::{Deserialize, Serialize};
 use std::collections::HashSet;
@@ -176,7 +178,10 @@ impl Config {
                         .clone()
                         .unwrap_or_else(|| self.scratch_dir.join("target")),
                 )
-                .map_or(TargetDirectoryConfig::None, TargetDirectoryConfig::Directory),
+                .map_or(
+                    TargetDirectoryConfig::None,
+                    TargetDirectoryConfig::Directory,
+                ),
                 features: self.cargo_features(),
                 target: self.cargo_target.clone(),
                 cfg_overrides: to_cfg_overrides(&self.cargo_cfg_overrides),
