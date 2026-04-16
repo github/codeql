@@ -169,8 +169,11 @@ module TarSlip {
             .getMember(["run", "call", "check_call", "check_output", "Popen"])
             .getACall() and
       cmdList = call.getArg(0).asCfgNode() and
-      // Command must be "tar" or a full path ending in "/tar" (e.g. "/usr/bin/tar")
-      cmdList.getElement(0).getNode().(StringLiteral).getText().regexpMatch("(.*/)?tar") and
+      // Command must be "tar" exactly or a path ending in "/tar" (e.g. "/usr/bin/tar")
+      exists(string cmd |
+        cmd = cmdList.getElement(0).getNode().(StringLiteral).getText() and
+        (cmd = "tar" or cmd.matches("%/tar"))
+      ) and
       // At least one extraction-related flag must be present:
       // single-dash flags containing 'x' (like -x, -xf, -xvf) or the long option --extract
       exists(string flag |
