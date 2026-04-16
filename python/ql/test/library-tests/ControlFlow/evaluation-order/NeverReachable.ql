@@ -4,13 +4,23 @@
  * entry (including within the same basic block).
  */
 
-import OldCfgImpl
+import python
+import TimerUtils
 
-private module Utils = EvalOrderCfgUtils<OldCfg>;
-
-private import Utils::CfgTests
-
-from TimerAnnotation ann
-where neverReachable(ann)
+from NeverTimerAnnotation ann
+where
+  exists(ControlFlowNode n, Scope s |
+    n.getNode() = ann.getExpr() and
+    s = n.getScope() and
+    (
+      // Reachable via inter-block path (includes same block)
+      s.getEntryNode().getBasicBlock().reaches(n.getBasicBlock())
+      or
+      // In same block as entry but at a later index
+      exists(BasicBlock bb, int i, int j |
+        bb.getNode(i) = s.getEntryNode() and bb.getNode(j) = n and i < j
+      )
+    )
+  )
 select ann, "Node annotated with t.never is reachable in $@", ann.getTestFunction(),
   ann.getTestFunction().getName()
