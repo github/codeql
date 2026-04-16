@@ -3,14 +3,14 @@
  * increasing minimum-timestamp order.
  */
 
-import OldCfgImpl
-
-private module Utils = EvalOrderCfgUtils<OldCfg>;
-
-private import Utils
-private import Utils::CfgTests
+import python
+import TimerUtils
 
 from TimerCfgNode a, TimerCfgNode b, int minA, int minB
-where basicBlockOrdering(a, b, minA, minB)
+where
+  exists(BasicBlock bb, int i, int j | a = bb.getNode(i) and b = bb.getNode(j) and i < j) and
+  minA = min(a.getATimestamp()) and
+  minB = min(b.getATimestamp()) and
+  minA >= minB
 select a, "Basic block ordering: $@ appears before $@", a.getTimestampExpr(minA),
   "timestamp " + minA, b.getTimestampExpr(minB), "timestamp " + minB
