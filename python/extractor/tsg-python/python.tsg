@@ -1777,6 +1777,13 @@
 
     attr (@importfrom.importexpr) level = level
 }
+; Set is_lazy for lazy import statements (PEP 810)
+[
+    (import_statement is_lazy: _)
+    (import_from_statement is_lazy: _)
+] @lazy_import
+{ attr (@lazy_import.node) is_lazy = #true }
+
 ;;;;;; End of Import (`from ... import ...`)
 
 ;;;;;; Raise (`raise ...`)

@@ -60,25 +60,16 @@ private module GuardsInput implements
     override boolean asBooleanValue() { boolConst(this, result) }
   }
 
-  private predicate intConst(Expr e, int i) {
-    e.getValue().toInt() = i and
-    (
-      e.getType() instanceof Enum
-      or
-      e.getType() instanceof IntegralType
-    )
-  }
-
   private class IntegerConstant extends ConstantExpr {
-    IntegerConstant() { intConst(this, _) }
+    IntegerConstant() { exists(this.getIntValue()) }
 
-    override int asIntegerValue() { intConst(this, result) }
+    override int asIntegerValue() { result = this.getIntValue() }
   }
 
   private class EnumConst extends ConstantExpr {
     EnumConst() { this.getType() instanceof Enum and this.hasValue() }
 
-    override int asIntegerValue() { result = this.getValue().toInt() }
+    override int asIntegerValue() { result = this.getIntValue() }
   }
 
   private class StringConstant extends ConstantExpr instanceof StringLiteral {
@@ -517,35 +508,35 @@ class EnumerableCollectionExpr extends Expr {
           |
             // x.Length == 0
             ct.getComparisonKind().isEquality() and
-            ct.getAnArgument().getValue().toInt() = 0 and
+            ct.getAnArgument().getIntValue() = 0 and
             branch = isEmpty
             or
             // x.Length == k, k > 0
             ct.getComparisonKind().isEquality() and
-            ct.getAnArgument().getValue().toInt() > 0 and
+            ct.getAnArgument().getIntValue() > 0 and
             branch = true and
             isEmpty = false
             or
             // x.Length != 0
             ct.getComparisonKind().isInequality() and
-            ct.getAnArgument().getValue().toInt() = 0 and
+            ct.getAnArgument().getIntValue() = 0 and
             branch = isEmpty.booleanNot()
             or
             // x.Length != k, k != 0
             ct.getComparisonKind().isInequality() and
-            ct.getAnArgument().getValue().toInt() != 0 and
+            ct.getAnArgument().getIntValue() != 0 and
             branch = false and
             isEmpty = false
             or
             // x.Length > k, k >= 0
             ct.getComparisonKind().isLessThan() and
-            ct.getFirstArgument().getValue().toInt() >= 0 and
+            ct.getFirstArgument().getIntValue() >= 0 and
             branch = true and
             isEmpty = false
             or
             // x.Length >= k, k > 0
             ct.getComparisonKind().isLessThanEquals() and
-            ct.getFirstArgument().getValue().toInt() > 0 and
+            ct.getFirstArgument().getIntValue() > 0 and
             branch = true and
             isEmpty = false
           )

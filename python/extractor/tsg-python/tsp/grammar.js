@@ -109,6 +109,7 @@ module.exports = grammar({
     ),
 
     import_statement: $ => seq(
+      optional(field('is_lazy', 'lazy')),
       'import',
       $._import_list
     ),
@@ -131,6 +132,7 @@ module.exports = grammar({
     ),
 
     import_from_statement: $ => seq(
+      optional(field('is_lazy', 'lazy')),
       'from',
       field('module_name', choice(
         $.relative_import,
@@ -1228,6 +1230,7 @@ module.exports = grammar({
         'await',
         'match',
         'type',
+        'lazy',
       ),
       $.identifier
     )),

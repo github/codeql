@@ -4,6 +4,7 @@
 | Builtin.FPIEEE64 | BuiltinFloatType |
 | Builtin.FixedArray<\u03c4_0_0, \u03c4_0_1> | BuiltinFixedArrayType |
 | Builtin.FixedArray<count, Element> | BuiltinFixedArrayType |
+| Builtin.FixedArray<count, Element> | BuiltinFixedArrayType |
 | Builtin.Int1 | BuiltinIntegerType |
 | Builtin.Int8 | BuiltinIntegerType |
 | Builtin.Int16 | BuiltinIntegerType |

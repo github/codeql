@@ -1,5 +1,0 @@
----
-category: queryMetadata
----
-* The `@security-severity` metadata of `rust/log-injection` has been increased from 2.6 (low) to 6.1 (medium).
-* The `@security-severity` metadata of `rust/xss` has been increased from 6.1 (medium) to 7.8 (high).

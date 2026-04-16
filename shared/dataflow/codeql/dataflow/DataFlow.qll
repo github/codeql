@@ -63,6 +63,35 @@ signature module InputSig<LocationSig Location> {
 
   DataFlowType getNodeType(Node node);
 
+  /**
+   * Gets a special type to use for parameter node `p` belonging to callables with a
+   * source node where a source call context `FlowFeature` is used, if any.
+   *
+   * This can be used to prevent lambdas from being resolved, when a concrete call
+   * context is needed. Example:
+   *
+   * ```csharp
+   * void Foo(Action<string> a)
+   * {
+   *     var x = Source();
+   *     a(x);              // (1)
+   *     a = s => Sink(s);  // (2)
+   *     a(x);              // (3)
+   * }
+   *
+   * void Bar()
+   * {
+   *     Foo(s => Sink(s)); // (4)
+   * }
+   * ```
+   *
+   * If a source call context flow feature is used, `a` can be assigned a special
+   * type that is incompatible with the type of _any_ lambda expression, which will
+   * prevent the call edge from (1) to (4). Note that the call edge from (3) to (2)
+   * will still be valid.
+   */
+  default DataFlowType getSourceContextParameterNodeType(Node p) { none() }
+
   predicate nodeIsHidden(Node node);
 
   class DataFlowExpr;

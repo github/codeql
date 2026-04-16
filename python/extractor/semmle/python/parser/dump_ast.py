@@ -72,8 +72,8 @@ class AstDumper(object):
             # just not print it in that case.
             if field == "parenthesised" and value is None:
                 continue
-            # Likewise, the default value for `is_async` is `False`, so we don't need to print it.
-            if field == "is_async" and value is False:
+            # Likewise, the default value for `is_async` and `is_lazy` is `False`, so we don't need to print it.
+            if field in ("is_async", "is_lazy") and value is False:
                 continue
             output.write("{}  {}:".format(indent,field))
             if isinstance(value, list):

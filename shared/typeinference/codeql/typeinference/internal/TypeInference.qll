@@ -566,15 +566,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      pragma[nomagic]
       private predicate typeParametersEqual(
-        App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp
+        App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
-        satisfiesConcreteTypes(app, abs, constraint) and
-        tp = getNthTypeParameter(abs, _) and
-        (
+        exists(TypeParameter tp |
+          satisfiesConcreteTypes(app, abs, constraint) and
+          tp = getNthTypeParameter(abs, i)
+        |
           not exists(getNthTypeParameterPath(constraint, tp, _))
           or
-          exists(int n | n = max(int i | exists(getNthTypeParameterPath(constraint, tp, i))) |
+          exists(int n | n = max(int j | exists(getNthTypeParameterPath(constraint, tp, j))) |
             // If the largest index is 0, then there are no equalities to check as
             // the type parameter only occurs once.
             if n = 0 then any() else typeParametersEqualToIndex(app, abs, constraint, tp, _, n)
@@ -585,12 +587,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate typeParametersHaveEqualInstantiationToIndex(
         App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
-        exists(TypeParameter tp | tp = getNthTypeParameter(abs, i) |
-          typeParametersEqual(app, abs, constraint, tp) and
-          if i = 0
-          then any()
-          else typeParametersHaveEqualInstantiationToIndex(app, abs, constraint, i - 1)
-        )
+        typeParametersEqual(app, abs, constraint, i) and
+        if i = 0
+        then any()
+        else typeParametersHaveEqualInstantiationToIndex(app, abs, constraint, i - 1)
       }
 
       /**
