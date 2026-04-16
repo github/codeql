@@ -8,6 +8,9 @@ private import PathResolution
 /** Holds if `p` may resolve to multiple items including `i`. */
 query predicate multiplePathResolutions(Path p, ItemNode i) {
   p.fromSource() and
+  not p.(AstNode).isInMacroExpansion() and
+  // exclude paths inside attributes (e.g. `#[tokio::main]`)
+  not p.getParentNode*() instanceof Attr and
   i = resolvePath(p) and
   // `panic` is defined in both `std` and `core`; both are included in the prelude
   not p.getText() = "panic" and
@@ -26,6 +29,7 @@ query predicate multiplePathResolutions(Path p, ItemNode i) {
 
 /** Holds if `ie` has multiple resolved targets including `target`. */
 query predicate multipleResolvedTargets(InvocationExpr ie, Addressable target) {
+  not ie.(AstNode).isInMacroExpansion() and
   target = ie.getResolvedTarget() and
   strictcount(ie.getResolvedTarget()) > 1
 }

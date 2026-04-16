@@ -1,0 +1,12 @@
+multipleResolvedTargets
+| main.rs:20:18:20:39 | ...::new(...) |
+| main.rs:21:5:21:20 | client.post(...) |
+| main.rs:21:5:21:33 | ... .body(...) |
+| main.rs:21:5:21:40 | ... .send() |
+| main.rs:34:18:34:39 | ...::new(...) |
+| main.rs:35:5:35:36 | client.request(...) |
+| main.rs:35:5:35:49 | ... .body(...) |
+| main.rs:35:5:35:56 | ... .send() |
+multiplePathResolutions
+| main.rs:20:18:20:32 | ...::Client |
+| main.rs:34:18:34:32 | ...::Client |

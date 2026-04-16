@@ -3669,7 +3669,6 @@ inferCertainType
 | main.rs:2405:18:2405:42 | ...::method(...) |  | main.rs:2369:5:2369:20 | S1 |
 | main.rs:2405:18:2405:42 | ...::method(...) | T | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2405:29:2405:41 | ...::default(...) |  | main.rs:2369:5:2369:20 | S1 |
-| main.rs:2409:21:2409:33 | ...::default(...) |  | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2410:13:2410:15 | x10 |  | main.rs:2392:5:2394:5 | S5 |
 | main.rs:2410:13:2410:15 | x10 | T5 | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2410:19:2413:9 | S5::<...> {...} |  | main.rs:2392:5:2394:5 | S5 |
@@ -3680,7 +3679,6 @@ inferCertainType
 | main.rs:2415:19:2415:33 | S5 {...} |  | main.rs:2392:5:2394:5 | S5 |
 | main.rs:2416:13:2416:15 | x13 |  | main.rs:2392:5:2394:5 | S5 |
 | main.rs:2416:19:2419:9 | S5 {...} |  | main.rs:2392:5:2394:5 | S5 |
-| main.rs:2418:20:2418:32 | ...::default(...) |  | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2420:13:2420:15 | x14 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2420:19:2420:48 | foo::<...>(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2421:13:2421:15 | x15 |  | main.rs:2369:5:2369:20 | S1 |
@@ -12269,10 +12267,7 @@ inferType
 | main.rs:2408:18:2408:22 | S4(...) | T4 | {EXTERNAL LOCATION} | i32 |
 | main.rs:2408:21:2408:21 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2409:13:2409:14 | x9 |  | main.rs:2390:5:2390:27 | S4 |
-| main.rs:2409:13:2409:14 | x9 | T4 | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2409:18:2409:34 | S4(...) |  | main.rs:2390:5:2390:27 | S4 |
-| main.rs:2409:18:2409:34 | S4(...) | T4 | main.rs:2371:5:2372:14 | S2 |
-| main.rs:2409:21:2409:33 | ...::default(...) |  | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2410:13:2410:15 | x10 |  | main.rs:2392:5:2394:5 | S5 |
 | main.rs:2410:13:2410:15 | x10 | T5 | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2410:19:2413:9 | S5::<...> {...} |  | main.rs:2392:5:2394:5 | S5 |
@@ -12289,10 +12284,7 @@ inferType
 | main.rs:2415:19:2415:33 | S5 {...} | T5 | {EXTERNAL LOCATION} | i32 |
 | main.rs:2415:31:2415:31 | 0 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2416:13:2416:15 | x13 |  | main.rs:2392:5:2394:5 | S5 |
-| main.rs:2416:13:2416:15 | x13 | T5 | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2416:19:2419:9 | S5 {...} |  | main.rs:2392:5:2394:5 | S5 |
-| main.rs:2416:19:2419:9 | S5 {...} | T5 | main.rs:2371:5:2372:14 | S2 |
-| main.rs:2418:20:2418:32 | ...::default(...) |  | main.rs:2371:5:2372:14 | S2 |
 | main.rs:2420:13:2420:15 | x14 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2420:19:2420:48 | foo::<...>(...) |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2420:30:2420:47 | ...::default(...) |  | {EXTERNAL LOCATION} | i32 |
@@ -15861,3 +15853,18 @@ inferType
 | regressions.rs:179:24:179:27 | S(...) | T | {EXTERNAL LOCATION} | i32 |
 | regressions.rs:179:26:179:26 | 1 |  | {EXTERNAL LOCATION} | i32 |
 testFailures
+| main.rs:1308:44:1308:62 | //... | Missing result: target=default |
+| main.rs:2406:48:2406:80 | //... | Missing result: target=default |
+| main.rs:2409:37:2409:69 | //... | Missing result: target=default |
+| main.rs:2409:37:2409:69 | //... | Missing result: type=x9:T4.S2 |
+| main.rs:2412:40:2412:58 | //... | Missing result: target=default |
+| main.rs:2416:22:2416:40 | //... | Missing result: type=x13:T5.S2 |
+| main.rs:2418:35:2418:53 | //... | Missing result: target=default |
+| main.rs:2574:41:2574:59 | //... | Missing result: target=default |
+| main.rs:2698:37:2698:64 | //... | Missing result: target=default |
+| overloading.rs:58:67:58:125 | //... | Missing result: target=default |
+| overloading.rs:60:68:60:132 | //... | Missing result: target=default |
+| overloading.rs:64:68:64:126 | //... | Missing result: target=default |
+| overloading.rs:66:69:66:133 | //... | Missing result: target=default |
+| overloading.rs:368:37:368:64 | //... | Missing result: target=default |
+| overloading.rs:398:57:398:84 | //... | Missing result: target=default |

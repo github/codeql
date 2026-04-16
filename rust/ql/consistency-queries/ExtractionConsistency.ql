@@ -12,5 +12,7 @@ query predicate extractionError(ExtractionError ee) {
 }
 
 query predicate extractionWarning(ExtractionWarning ew) {
-  not exists(ew.getLocation()) or ew.getLocation().fromSource()
+  (not exists(ew.getLocation()) or ew.getLocation().fromSource()) and
+  // macro expansion failures are expected for macros like compile_error! and panic!
+  not ew.getMessage().matches("macro expansion failed for%")
 }
