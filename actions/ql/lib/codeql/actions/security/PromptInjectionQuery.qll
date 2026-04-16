@@ -85,7 +85,7 @@ predicate criticalSeverityPromptInjection(
  * and any other externally triggerable context that Critical excludes.
  *
  * Only actor/association control checks suppress Medium findings because
- * repository checks do not prevent prompt injection — any user who can
+ * repository checks do not prevent prompt injection -- any user who can
  * open an issue/PR on the target repo can inject into the prompt content.
  */
 Event getRelevantEventForMediumSeverity(DataFlow::Node sink) {
