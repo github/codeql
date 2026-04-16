@@ -41,7 +41,7 @@ class AiInferenceOutputSource extends DataFlow::Node {
  */
 class ImproperAiOutputSink extends DataFlow::Node {
   ImproperAiOutputSink() {
-    // Code injection sinks (run steps) — LOTP gadgets
+    // Code injection sinks (run steps) -- LOTP gadgets
     exists(Run e | e.getAnScriptExpr() = this.asExpr())
     or
     // MaD-defined code injection sinks

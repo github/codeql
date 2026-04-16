@@ -15,3 +15,4 @@ ql/actions/ql/src/experimental/Security/CWE-284/CodeExecutionOnSelfHostedRunner.
 ql/actions/ql/src/experimental/Security/CWE-829/ArtifactPoisoningPathTraversal.ql
 ql/actions/ql/src/experimental/Security/CWE-829/UnversionedImmutableAction.ql
 ql/actions/ql/src/experimental/Security/CWE-918/RequestForgery.ql
+ql/actions/ql/src/experimental/Security/CWE-1426/ImproperValidationOfAiOutputCritical.ql
