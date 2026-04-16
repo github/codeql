@@ -133,76 +133,49 @@ module TarSlip {
   }
 
   /**
-   * A call to `shutil.unpack_archive`, considered as a flow source.
-   *
-   * The archive filename is not hardcoded, so it may come from user input.
-   */
-  class ShutilUnpackArchiveSource extends Source {
-    ShutilUnpackArchiveSource() {
-      this = API::moduleImport("shutil").getMember("unpack_archive").getACall() and
-      not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StringLiteral
-    }
-  }
-
-  /**
    * A call to `shutil.unpack_archive`, considered as a flow sink.
    *
-   * The archive filename is not hardcoded, so it may come from user input.
+   * The first argument (the archive filename) is the sink.
    */
   class ShutilUnpackArchiveSink extends Sink {
     ShutilUnpackArchiveSink() {
-      this = API::moduleImport("shutil").getMember("unpack_archive").getACall() and
-      not this.(DataFlow::CallCfgNode).getArg(0).getALocalSource().asExpr() instanceof StringLiteral
+      this = API::moduleImport("shutil").getMember("unpack_archive").getACall().getArg(0)
     }
-  }
-
-  /**
-   * Holds if `call` is a subprocess call that invokes `tar` for archive extraction
-   * with at least one non-literal argument (the archive filename).
-   *
-   * Detects patterns like `subprocess.run(["tar", "-xf", untrusted_filename])`.
-   */
-  private predicate isSubprocessTarExtraction(DataFlow::CallCfgNode call) {
-    exists(SequenceNode cmdList |
-      call =
-        API::moduleImport("subprocess")
-            .getMember(["run", "call", "check_call", "check_output", "Popen"])
-            .getACall() and
-      cmdList = call.getArg(0).asCfgNode() and
-      // Command must be "tar" exactly or a path ending in "/tar" (e.g. "/usr/bin/tar")
-      exists(string cmd |
-        cmd = cmdList.getElement(0).getNode().(StringLiteral).getText() and
-        (cmd = "tar" or cmd.matches("%/tar"))
-      ) and
-      // At least one extraction-related flag must be present:
-      // single-dash flags containing 'x' (like -x, -xf, -xvf) or the long option --extract
-      exists(string flag |
-        flag = cmdList.getElement(_).getNode().(StringLiteral).getText() and
-        (flag.regexpMatch("-[a-zA-Z]*x[a-zA-Z]*") or flag = "--extract")
-      ) and
-      // At least one non-literal argument (the archive filename)
-      exists(int i |
-        i > 0 and
-        exists(cmdList.getElement(i)) and
-        not cmdList.getElement(i).getNode() instanceof StringLiteral
-      )
-    )
-  }
-
-  /**
-   * A call to `subprocess` functions that invokes `tar` for archive extraction,
-   * considered as a flow source.
-   */
-  class SubprocessTarExtractionSource extends Source {
-    SubprocessTarExtractionSource() { isSubprocessTarExtraction(this) }
   }
 
   /**
    * A call to `subprocess` functions that invokes `tar` for archive extraction,
    * considered as a flow sink.
+   *
+   * The sink is the non-literal element in the command list that corresponds
+   * to the archive filename (e.g. the `unsafe_filename` in
+   * `subprocess.run(["tar", "-xf", unsafe_filename])`).
    */
   class SubprocessTarExtractionSink extends Sink {
-    SubprocessTarExtractionSink() { isSubprocessTarExtraction(this) }
+    SubprocessTarExtractionSink() {
+      exists(SequenceNode cmdList, DataFlow::CallCfgNode call, int i |
+        call =
+          API::moduleImport("subprocess")
+              .getMember(["run", "call", "check_call", "check_output", "Popen"])
+              .getACall() and
+        cmdList = call.getArg(0).asCfgNode() and
+        // Command must be "tar" exactly or a path ending in "/tar" (e.g. "/usr/bin/tar")
+        exists(string cmd |
+          cmd = cmdList.getElement(0).getNode().(StringLiteral).getText() and
+          (cmd = "tar" or cmd.matches("%/tar"))
+        ) and
+        // At least one extraction-related flag must be present:
+        // single-dash flags containing 'x' (like -x, -xf, -xvf) or the long option --extract
+        exists(string flag |
+          flag = cmdList.getElement(_).getNode().(StringLiteral).getText() and
+          (flag.regexpMatch("-[a-zA-Z]*x[a-zA-Z]*") or flag = "--extract")
+        ) and
+        // The sink is the specific non-literal argument (the archive filename)
+        i > 0 and
+        not cmdList.getElement(i).getNode() instanceof StringLiteral and
+        this.asCfgNode() = cmdList.getElement(i)
+      )
+    }
   }
 
   /**
