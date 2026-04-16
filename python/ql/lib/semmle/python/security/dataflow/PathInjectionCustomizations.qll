@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.ApiGraphs
 
 /**
  * Provides default sources, and sinks for detecting
@@ -104,5 +105,26 @@ module PathInjection {
    */
   class SanitizerFromModel extends Sanitizer {
     SanitizerFromModel() { ModelOutput::barrierNode(this, "path-injection") }
+  }
+
+  /**
+   * A call to `os.path.basename`, considered as a sanitizer for path injection.
+   *
+   * `os.path.basename` returns the final component of a path, stripping any
+   * leading directory components. This prevents path traversal attacks since
+   * the result cannot contain directory separators or relative path components.
+   * See https://docs.python.org/3/library/os.path.html#os.path.basename
+   */
+  private class OsPathBasenameCall extends Sanitizer, DataFlow::CallCfgNode {
+    OsPathBasenameCall() {
+      exists(API::Node osPathModule |
+        (
+          osPathModule = API::moduleImport("os").getMember("path")
+          or
+          osPathModule = API::moduleImport(["posixpath", "ntpath", "genericpath"])
+        ) and
+        this = osPathModule.getMember("basename").getACall()
+      )
+    }
   }
 }

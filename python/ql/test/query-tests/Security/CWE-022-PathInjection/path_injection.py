@@ -150,3 +150,20 @@ def safe_set_of_files():
     if filename in SAFE_FILES:
         path = os.path.join(STATIC_DIR, filename)
         f = open(path) # $ SPURIOUS: Alert
+
+
+@app.route("/basename-sanitizer")
+def basename_sanitizer():
+    filename = request.args.get('filename', '')
+    # Secure mitigation pattern: os.path.basename strips all directory components,
+    # preventing path traversal attacks.
+    path = os.path.join(STATIC_DIR, os.path.basename(filename))
+    f = open(path)  # $ result=OK
+
+
+@app.route("/basename-no-join")
+def basename_no_join():
+    filename = request.args.get('filename', '')
+    # basename alone also prevents directory traversal
+    path = os.path.basename(filename)
+    f = open(path)  # $ result=OK
