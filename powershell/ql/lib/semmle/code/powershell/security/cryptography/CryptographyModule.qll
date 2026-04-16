@@ -180,10 +180,7 @@ class HmacAlgorithmObjectCreation extends HmacAlgorithm, CryptoAlgorithmObjectCr
   string algName;
 
   HmacAlgorithmObjectCreation() {
-    (
-      objectName = "system.security.cryptography." + algName or
-      objectName = algName
-    ) and
+    objectName = ["", "system.security.cryptography."] + algName and
     isHmacAlgorithm(algName)
   }
 

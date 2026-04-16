@@ -5,7 +5,7 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @precision high
- * @id powershell/microsoft/security/weak-hmac
+ * @id powershell/weak-hmac
  * @tags security
  *       external/cwe/cwe-327
  *       external/cwe/cwe-328
