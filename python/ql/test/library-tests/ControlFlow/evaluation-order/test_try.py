@@ -1,6 +1,6 @@
 """Exception handling control flow: try/except/else/finally evaluation order."""
 
-from timer import test, dead, never
+from timer import test
 
 
 # 1. try/except — no exception raised (except block skipped)
@@ -10,7 +10,7 @@ def test_try_no_exception(t):
         x = 1 @ t[0]
         y = 2 @ t[1]
     except ValueError:
-        z = 3 @ t[dead(2)]
+        z = 3 @ t.dead[2]
     after = 0 @ t[2]
 
 
@@ -20,7 +20,7 @@ def test_try_with_exception(t):
     try:
         x = 1 @ t[0]
         raise ((ValueError @ t[1])() @ t[2])
-        y = 2 @ t[never]
+        y = 2 @ t.never
     except ValueError:
         z = 3 @ t[3]
     after = 0 @ t[4]
@@ -32,7 +32,7 @@ def test_try_except_else_no_exception(t):
     try:
         x = 1 @ t[0]
     except ValueError:
-        y = 2 @ t[dead(1)]
+        y = 2 @ t.dead[1]
     else:
         z = 3 @ t[1]
     after = 0 @ t[2]
@@ -47,7 +47,7 @@ def test_try_except_else_with_exception(t):
     except ValueError:
         y = 2 @ t[3]
     else:
-        z = 3 @ t[dead(3)]
+        z = 3 @ t.dead[3]
     after = 0 @ t[4]
 
 
@@ -81,7 +81,7 @@ def test_try_except_finally_no_exception(t):
     try:
         x = 1 @ t[0]
     except ValueError:
-        y = 2 @ t[dead(1)]
+        y = 2 @ t.dead[1]
     finally:
         z = 3 @ t[1]
     after = 0 @ t[2]
@@ -109,7 +109,7 @@ def test_multiple_except_first(t):
     except ValueError:
         y = 2 @ t[3]
     except TypeError:
-        z = 3 @ t[dead(3)]
+        z = 3 @ t.dead[3]
     after = 0 @ t[4]
 
 
@@ -120,7 +120,7 @@ def test_multiple_except_second(t):
         x = 1 @ t[0]
         raise ((TypeError @ t[1])() @ t[2])
     except ValueError:
-        y = 2 @ t[dead(3)]
+        y = 2 @ t.dead[3]
     except TypeError:
         z = 3 @ t[3]
     after = 0 @ t[4]
@@ -149,7 +149,7 @@ def test_nested_try_except(t):
             z = 3 @ t[4]
         w = 4 @ t[5]
     except TypeError:
-        v = 5 @ t[dead(6)]
+        v = 5 @ t.dead[6]
     after = 0 @ t[6]
 
 
