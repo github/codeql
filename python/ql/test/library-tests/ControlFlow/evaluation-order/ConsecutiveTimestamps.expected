@@ -1,0 +1,1 @@
+| test_if.py:51:9:51:16 | BinaryExpr | $@ in $@ has no consecutive successor (expected 6) | test_if.py:51:15:51:15 | IntegerLiteral | Timestamp 5 | test_if.py:43:1:43:31 | Function test_if_elif_else_first | test_if_elif_else_first |
