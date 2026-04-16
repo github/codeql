@@ -118,11 +118,10 @@ module PathInjection {
   private class OsPathBasenameCall extends Sanitizer, DataFlow::CallCfgNode {
     OsPathBasenameCall() {
       exists(API::Node osPathModule |
-        (
-          osPathModule = API::moduleImport("os").getMember("path")
-          or
-          osPathModule = API::moduleImport(["posixpath", "ntpath", "genericpath"])
-        ) and
+        osPathModule = API::moduleImport("os").getMember("path")
+        or
+        osPathModule = API::moduleImport(["posixpath", "ntpath", "genericpath"])
+      |
         this = osPathModule.getMember("basename").getACall()
       )
     }
