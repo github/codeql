@@ -114,3 +114,16 @@ tar.extractall(members=tar, filter=extraction_filter) # unsafe
 
 tar = tarfile.open(unsafe_filename_tar)
 tar.extractall(members=safemembers(tar), filter=extraction_filter) # safe -- we assume `safemembers` makes up for the unsafe filter
+
+import shutil
+import subprocess
+
+# shutil.unpack_archive
+shutil.unpack_archive(unsafe_filename_tar, "out") # unsafe
+shutil.unpack_archive("safe.tar", "out") # safe
+
+# subprocess tar extraction
+subprocess.run(["tar", "-xf", unsafe_filename_tar]) # unsafe
+subprocess.check_call(["tar", "-xf", unsafe_filename_tar]) # unsafe
+subprocess.run(["tar", "-xf", "safe.tar"]) # safe
+subprocess.run(["echo", unsafe_filename_tar]) # safe - not a tar extraction

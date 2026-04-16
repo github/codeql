@@ -53,6 +53,9 @@ nodes
 | tarslip.py:112:1:112:3 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
 | tarslip.py:112:7:112:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | tarslip.py:113:24:113:26 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
+| tarslip.py:122:1:122:49 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tarslip.py:126:1:126:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| tarslip.py:127:1:127:58 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 subpaths
 #select
 | tarslip.py:15:1:15:3 | ControlFlowNode for tar | tarslip.py:14:7:14:39 | ControlFlowNode for Attribute() | tarslip.py:15:1:15:3 | ControlFlowNode for tar | This file extraction depends on a $@. | tarslip.py:14:7:14:39 | ControlFlowNode for Attribute() | potentially untrusted source |
@@ -64,3 +67,6 @@ subpaths
 | tarslip.py:96:17:96:21 | ControlFlowNode for entry | tarslip.py:94:7:94:39 | ControlFlowNode for Attribute() | tarslip.py:96:17:96:21 | ControlFlowNode for entry | This file extraction depends on a $@. | tarslip.py:94:7:94:39 | ControlFlowNode for Attribute() | potentially untrusted source |
 | tarslip.py:110:1:110:3 | ControlFlowNode for tar | tarslip.py:109:7:109:39 | ControlFlowNode for Attribute() | tarslip.py:110:1:110:3 | ControlFlowNode for tar | This file extraction depends on a $@. | tarslip.py:109:7:109:39 | ControlFlowNode for Attribute() | potentially untrusted source |
 | tarslip.py:113:24:113:26 | ControlFlowNode for tar | tarslip.py:112:7:112:39 | ControlFlowNode for Attribute() | tarslip.py:113:24:113:26 | ControlFlowNode for tar | This file extraction depends on a $@. | tarslip.py:112:7:112:39 | ControlFlowNode for Attribute() | potentially untrusted source |
+| tarslip.py:122:1:122:49 | ControlFlowNode for Attribute() | tarslip.py:122:1:122:49 | ControlFlowNode for Attribute() | tarslip.py:122:1:122:49 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarslip.py:122:1:122:49 | ControlFlowNode for Attribute() | potentially untrusted source |
+| tarslip.py:126:1:126:51 | ControlFlowNode for Attribute() | tarslip.py:126:1:126:51 | ControlFlowNode for Attribute() | tarslip.py:126:1:126:51 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarslip.py:126:1:126:51 | ControlFlowNode for Attribute() | potentially untrusted source |
+| tarslip.py:127:1:127:58 | ControlFlowNode for Attribute() | tarslip.py:127:1:127:58 | ControlFlowNode for Attribute() | tarslip.py:127:1:127:58 | ControlFlowNode for Attribute() | This file extraction depends on a $@. | tarslip.py:127:1:127:58 | ControlFlowNode for Attribute() | potentially untrusted source |
