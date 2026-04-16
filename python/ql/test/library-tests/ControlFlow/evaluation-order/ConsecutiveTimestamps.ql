@@ -11,14 +11,36 @@
  * lambdas that have annotations in nested scopes).
  */
 
-import OldCfgImpl
+import python
+import TimerUtils
 
-private module Utils = EvalOrderCfgUtils<OldCfg>;
-
-private import Utils
-private import Utils::CfgTests
+/**
+ * Holds if function `f` has an annotation in a nested scope
+ * (generator, async function, comprehension, lambda).
+ */
+private predicate hasNestedScopeAnnotation(TestFunction f) {
+  exists(TimerAnnotation a |
+    a.getTestFunction() = f and
+    a.getExpr().getScope() != f
+  )
+}
 
 from TimerAnnotation ann, int a
-where consecutiveTimestamps(ann, a)
+where
+  not hasNestedScopeAnnotation(ann.getTestFunction()) and
+  not ann.isDead() and
+  a = ann.getATimestamp() and
+  not exists(TimerCfgNode x, TimerCfgNode y |
+    ann.getExpr() = x.getNode() and
+    nextTimerAnnotation(x, y) and
+    (a + 1) = y.getATimestamp()
+  ) and
+  // Exclude the maximum timestamp in the function (it has no successor)
+  not a =
+    max(TimerAnnotation other |
+      other.getTestFunction() = ann.getTestFunction()
+    |
+      other.getATimestamp()
+    )
 select ann, "$@ in $@ has no consecutive successor (expected " + (a + 1) + ")",
   ann.getTimestampExpr(a), "Timestamp " + a, ann.getTestFunction(), ann.getTestFunction().getName()
