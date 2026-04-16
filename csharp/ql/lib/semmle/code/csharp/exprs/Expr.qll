@@ -57,6 +57,13 @@ class Expr extends ControlFlowElement, @expr {
   /** Gets the value of this expression, if any */
   string getValue() { expr_value(this, result) }
 
+  /** Gets the integer value of this expression, if any. */
+  cached
+  int getIntValue() {
+    result = this.getValue().toInt() and
+    (this.getType() instanceof IntegralType or this.getType() instanceof Enum)
+  }
+
   /** Holds if this expression has a value. */
   final predicate hasValue() { exists(this.getValue()) }
 

@@ -1708,6 +1708,15 @@ private module AssocFunctionResolution {
 
     predicate hasReceiverAtPos(FunctionPosition pos) { this.hasReceiver() and pos.asPosition() = 0 }
 
+    pragma[nomagic]
+    private predicate hasIncompatibleArgsTarget(
+      ImplOrTraitItemNode i, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
+      AssocFunctionType selfType
+    ) {
+      SelfArgIsInstantiationOf::argIsInstantiationOf(this, i, selfPos, derefChain, borrow, selfType) and
+      OverloadedCallArgsAreInstantiationsOf::argsAreNotInstantiationsOf(this, i)
+    }
+
     /**
      * Holds if the function inside `i` with matching name and arity can be ruled
      * out as a target of this call, because the candidate receiver type represented
@@ -1718,20 +1727,15 @@ private module AssocFunctionResolution {
      * inside `root`.
      */
     pragma[nomagic]
-    private predicate hasIncompatibleTarget(
+    predicate hasIncompatibleTarget(
       ImplOrTraitItemNode i, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
       Type root
     ) {
-      exists(TypePath path |
-        SelfArgIsInstantiationOf::argIsNotInstantiationOf(this, i, selfPos, derefChain, borrow, path) and
-        path.isCons(root.getATypeParameter(), _)
-      )
-      or
-      exists(AssocFunctionType selfType |
-        SelfArgIsInstantiationOf::argIsInstantiationOf(this, i, selfPos, derefChain, borrow,
-          selfType) and
-        OverloadedCallArgsAreInstantiationsOf::argsAreNotInstantiationsOf(this, i) and
-        root = selfType.getTypeAt(TypePath::nil())
+      exists(AssocFunctionType selfType | root = selfType.getTypeAt(TypePath::nil()) |
+        this.hasIncompatibleArgsTarget(i, selfPos, derefChain, borrow, selfType)
+        or
+        SelfArgIsInstantiationOf::argIsNotInstantiationOf(this, i, selfPos, derefChain, borrow,
+          selfType)
       )
     }
 
@@ -1743,7 +1747,7 @@ private module AssocFunctionResolution {
      * is not satisfied.
      */
     pragma[nomagic]
-    private predicate hasIncompatibleBlanketLikeTarget(
+    predicate hasIncompatibleBlanketLikeTarget(
       ImplItemNode impl, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow
     ) {
       SelfArgIsNotInstantiationOfBlanketLike::argIsNotInstantiationOf(MkAssocFunctionCallCand(this,
@@ -1795,7 +1799,7 @@ private module AssocFunctionResolution {
     }
 
     pragma[nomagic]
-    private Type getComplexStrippedSelfType(
+    Type getComplexStrippedSelfType(
       FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow, TypePath strippedTypePath
     ) {
       result = this.getANonPseudoSelfTypeAt(selfPos, derefChain, borrow, strippedTypePath) and
@@ -1806,258 +1810,25 @@ private module AssocFunctionResolution {
       )
     }
 
-    bindingset[derefChain, borrow, strippedTypePath, strippedType]
-    private predicate hasNoCompatibleNonBlanketLikeTargetCheck(
-      FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow, TypePath strippedTypePath,
-      Type strippedType
+    /**
+     * Holds if the candidate receiver type represented by `derefChain` and `borrow`
+     * does not have a matching call target at function-call adjusted position `selfPos`.
+     */
+    predicate hasNoCompatibleTarget(
+      FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow
     ) {
-      forall(ImplOrTraitItemNode i |
-        nonBlanketLikeCandidate(this, _, selfPos, i, _, strippedTypePath, strippedType)
-      |
-        this.hasIncompatibleTarget(i, selfPos, derefChain, borrow, strippedType)
-      )
-    }
-
-    bindingset[derefChain, borrow, strippedTypePath, strippedType]
-    private predicate hasNoCompatibleTargetCheck(
-      FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow, TypePath strippedTypePath,
-      Type strippedType
-    ) {
-      this.hasNoCompatibleNonBlanketLikeTargetCheck(selfPos, derefChain, borrow, strippedTypePath,
-        strippedType) and
-      forall(ImplItemNode i | blanketLikeCandidate(this, _, selfPos, i, _, _, _) |
-        this.hasIncompatibleBlanketLikeTarget(i, selfPos, derefChain, borrow)
-      )
-    }
-
-    bindingset[derefChain, borrow, strippedTypePath, strippedType]
-    private predicate hasNoCompatibleNonBlanketTargetCheck(
-      FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow, TypePath strippedTypePath,
-      Type strippedType
-    ) {
-      this.hasNoCompatibleNonBlanketLikeTargetCheck(selfPos, derefChain, borrow, strippedTypePath,
-        strippedType) and
-      forall(ImplItemNode i |
-        blanketLikeCandidate(this, _, selfPos, i, _, _, _) and
-        not i.isBlanketImplementation()
-      |
-        this.hasIncompatibleBlanketLikeTarget(i, selfPos, derefChain, borrow)
-      )
-    }
-
-    // forex using recursion
-    pragma[nomagic]
-    private predicate hasNoCompatibleTargetNoBorrowToIndex(
-      FunctionPosition selfPos, DerefChain derefChain, TypePath strippedTypePath, Type strippedType,
-      int n
-    ) {
-      this.supportsAutoDerefAndBorrow() and
-      this.hasReceiverAtPos(selfPos) and
-      strippedType =
-        this.getComplexStrippedSelfType(selfPos, derefChain, TNoBorrowKind(), strippedTypePath) and
-      n = -1
-      or
-      this.hasNoCompatibleTargetNoBorrowToIndex(selfPos, derefChain, strippedTypePath, strippedType,
-        n - 1) and
-      exists(Type t |
-        t = getNthLookupType(this, strippedType, n) and
-        this.hasNoCompatibleTargetCheck(selfPos, derefChain, TNoBorrowKind(), strippedTypePath, t)
-      )
+      NoCompatibleTarget::hasNoCompatibleTarget(this, selfPos, derefChain, borrow)
     }
 
     /**
-     * Holds if the candidate receiver type represented by `derefChain` does not
-     * have a matching call target at function-call adjusted position `selfPos`.
+     * Holds if the candidate receiver type represented by `derefChain` and `borrow`
+     * does not have a matching non-blanket call target at function-call adjusted
+     * position `selfPos`.
      */
-    pragma[nomagic]
-    predicate hasNoCompatibleTargetNoBorrow(FunctionPosition selfPos, DerefChain derefChain) {
-      exists(Type strippedType |
-        this.hasNoCompatibleTargetNoBorrowToIndex(selfPos, derefChain, _, strippedType,
-          getLastLookupTypeIndex(this, strippedType))
-      )
-    }
-
-    // forex using recursion
-    pragma[nomagic]
-    private predicate hasNoCompatibleNonBlanketTargetNoBorrowToIndex(
-      FunctionPosition selfPos, DerefChain derefChain, TypePath strippedTypePath, Type strippedType,
-      int n
+    predicate hasNoCompatibleNonBlanketTarget(
+      FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow
     ) {
-      (
-        this.supportsAutoDerefAndBorrow() and
-        this.hasReceiverAtPos(selfPos)
-        or
-        // needed for the `hasNoCompatibleNonBlanketTarget` check in
-        // `ArgSatisfiesBlanketLikeConstraintInput::hasBlanketCandidate`
-        exists(ImplItemNode i |
-          derefChain.isEmpty() and
-          blanketLikeCandidate(this, _, selfPos, i, _, _, _) and
-          i.isBlanketImplementation()
-        )
-      ) and
-      strippedType =
-        this.getComplexStrippedSelfType(selfPos, derefChain, TNoBorrowKind(), strippedTypePath) and
-      n = -1
-      or
-      this.hasNoCompatibleNonBlanketTargetNoBorrowToIndex(selfPos, derefChain, strippedTypePath,
-        strippedType, n - 1) and
-      exists(Type t |
-        t = getNthLookupType(this, strippedType, n) and
-        this.hasNoCompatibleNonBlanketTargetCheck(selfPos, derefChain, TNoBorrowKind(),
-          strippedTypePath, t)
-      )
-    }
-
-    /**
-     * Holds if the candidate receiver type represented by `derefChain` does not have
-     * a matching non-blanket call target at function-call adjusted position `selfPos`.
-     */
-    pragma[nomagic]
-    predicate hasNoCompatibleNonBlanketTargetNoBorrow(
-      FunctionPosition selfPos, DerefChain derefChain
-    ) {
-      exists(Type strippedType |
-        this.hasNoCompatibleNonBlanketTargetNoBorrowToIndex(selfPos, derefChain, _, strippedType,
-          getLastLookupTypeIndex(this, strippedType))
-      )
-    }
-
-    // forex using recursion
-    pragma[nomagic]
-    private predicate hasNoCompatibleTargetSharedBorrowToIndex(
-      FunctionPosition selfPos, DerefChain derefChain, TypePath strippedTypePath, Type strippedType,
-      int n
-    ) {
-      this.hasNoCompatibleTargetNoBorrow(selfPos, derefChain) and
-      strippedType =
-        this.getComplexStrippedSelfType(selfPos, derefChain, TSomeBorrowKind(false),
-          strippedTypePath) and
-      n = -1
-      or
-      this.hasNoCompatibleTargetSharedBorrowToIndex(selfPos, derefChain, strippedTypePath,
-        strippedType, n - 1) and
-      exists(Type t |
-        t = getNthLookupType(this, strippedType, n) and
-        this.hasNoCompatibleNonBlanketLikeTargetCheck(selfPos, derefChain, TSomeBorrowKind(false),
-          strippedTypePath, t)
-      )
-    }
-
-    /**
-     * Holds if the candidate receiver type represented by `derefChain`, followed
-     * by a shared borrow, does not have a matching call target at function-call
-     * adjusted position `selfPos`.
-     */
-    pragma[nomagic]
-    predicate hasNoCompatibleTargetSharedBorrow(FunctionPosition selfPos, DerefChain derefChain) {
-      exists(Type strippedType |
-        this.hasNoCompatibleTargetSharedBorrowToIndex(selfPos, derefChain, _, strippedType,
-          getLastLookupTypeIndex(this, strippedType))
-      )
-    }
-
-    // forex using recursion
-    pragma[nomagic]
-    private predicate hasNoCompatibleTargetMutBorrowToIndex(
-      FunctionPosition selfPos, DerefChain derefChain, TypePath strippedTypePath, Type strippedType,
-      int n
-    ) {
-      this.hasNoCompatibleTargetSharedBorrow(selfPos, derefChain) and
-      strippedType =
-        this.getComplexStrippedSelfType(selfPos, derefChain, TSomeBorrowKind(true), strippedTypePath) and
-      n = -1
-      or
-      this.hasNoCompatibleTargetMutBorrowToIndex(selfPos, derefChain, strippedTypePath,
-        strippedType, n - 1) and
-      exists(Type t |
-        t = getNthLookupType(this, strippedType, n) and
-        this.hasNoCompatibleNonBlanketLikeTargetCheck(selfPos, derefChain, TSomeBorrowKind(true),
-          strippedTypePath, t)
-      )
-    }
-
-    /**
-     * Holds if the candidate receiver type represented by `derefChain`, followed
-     * by a `mut` borrow, does not have a matching call target at function-call
-     * adjusted position `selfPos`.
-     */
-    pragma[nomagic]
-    predicate hasNoCompatibleTargetMutBorrow(FunctionPosition selfPos, DerefChain derefChain) {
-      exists(Type strippedType |
-        this.hasNoCompatibleTargetMutBorrowToIndex(selfPos, derefChain, _, strippedType,
-          getLastLookupTypeIndex(this, strippedType))
-      )
-    }
-
-    // forex using recursion
-    pragma[nomagic]
-    private predicate hasNoCompatibleNonBlanketTargetSharedBorrowToIndex(
-      FunctionPosition selfPos, DerefChain derefChain, TypePath strippedTypePath, Type strippedType,
-      int n
-    ) {
-      this.hasNoCompatibleTargetNoBorrow(selfPos, derefChain) and
-      strippedType =
-        this.getComplexStrippedSelfType(selfPos, derefChain, TSomeBorrowKind(false),
-          strippedTypePath) and
-      n = -1
-      or
-      this.hasNoCompatibleNonBlanketTargetSharedBorrowToIndex(selfPos, derefChain, strippedTypePath,
-        strippedType, n - 1) and
-      exists(Type t |
-        t = getNthLookupType(this, strippedType, n) and
-        this.hasNoCompatibleNonBlanketTargetCheck(selfPos, derefChain, TSomeBorrowKind(false),
-          strippedTypePath, t)
-      )
-    }
-
-    /**
-     * Holds if the candidate receiver type represented by `derefChain`, followed
-     * by a shared borrow, does not have a matching non-blanket call target at
-     * function-call adjusted position `selfPos`.
-     */
-    pragma[nomagic]
-    predicate hasNoCompatibleNonBlanketTargetSharedBorrow(
-      FunctionPosition selfPos, DerefChain derefChain
-    ) {
-      exists(Type strippedType |
-        this.hasNoCompatibleNonBlanketTargetSharedBorrowToIndex(selfPos, derefChain, _,
-          strippedType, getLastLookupTypeIndex(this, strippedType))
-      )
-    }
-
-    // forex using recursion
-    pragma[nomagic]
-    private predicate hasNoCompatibleNonBlanketTargetMutBorrowToIndex(
-      FunctionPosition selfPos, DerefChain derefChain, TypePath strippedTypePath, Type strippedType,
-      int n
-    ) {
-      this.hasNoCompatibleNonBlanketTargetSharedBorrow(selfPos, derefChain) and
-      strippedType =
-        this.getComplexStrippedSelfType(selfPos, derefChain, TSomeBorrowKind(true), strippedTypePath) and
-      n = -1
-      or
-      this.hasNoCompatibleNonBlanketTargetMutBorrowToIndex(selfPos, derefChain, strippedTypePath,
-        strippedType, n - 1) and
-      exists(Type t |
-        t = getNthLookupType(this, strippedType, n) and
-        this.hasNoCompatibleNonBlanketTargetCheck(selfPos, derefChain, TSomeBorrowKind(true),
-          strippedTypePath, t)
-      )
-    }
-
-    /**
-     * Holds if the candidate receiver type represented by `derefChain`, followed
-     * by a `mut` borrow, does not have a matching non-blanket call target at
-     * function-call adjusted position `selfPos`.
-     */
-    pragma[nomagic]
-    predicate hasNoCompatibleNonBlanketTargetMutBorrow(
-      FunctionPosition selfPos, DerefChain derefChain
-    ) {
-      exists(Type strippedType |
-        this.hasNoCompatibleNonBlanketTargetMutBorrowToIndex(selfPos, derefChain, _, strippedType,
-          getLastLookupTypeIndex(this, strippedType))
-      )
+      NoCompatibleTarget::hasNoCompatibleNonBlanketTarget(this, selfPos, derefChain, borrow)
     }
 
     /**
@@ -2079,6 +1850,25 @@ private module AssocFunctionResolution {
         result =
           ImplicitDeref::getDereferencedCandidateReceiverType(this, selfPos, impl, suffix, path) and
         derefChain = DerefChain::cons(impl, suffix)
+      )
+    }
+
+    /**
+     * Holds if this call may have an implicit borrow of kind `borrow` at
+     * function-call adjusted position `selfPos` with the given `derefChain`.
+     */
+    pragma[nomagic]
+    predicate hasImplicitBorrowCand(
+      FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow
+    ) {
+      exists(BorrowKind prev | this.hasNoCompatibleTarget(selfPos, derefChain, prev) |
+        // first try shared borrow
+        prev.isNoBorrow() and
+        borrow.isSharedBorrow()
+        or
+        // then try mutable borrow
+        prev.isSharedBorrow() and
+        borrow.isMutableBorrow()
       )
     }
 
@@ -2107,23 +1897,15 @@ private module AssocFunctionResolution {
       borrow.isNoBorrow()
       or
       exists(RefType rt |
-        // first try shared borrow
-        this.hasNoCompatibleTargetNoBorrow(selfPos, derefChain) and
-        borrow.isSharedBorrow()
-        or
-        // then try mutable borrow
-        this.hasNoCompatibleTargetSharedBorrow(selfPos, derefChain) and
-        borrow.isMutableBorrow()
+        this.hasImplicitBorrowCand(selfPos, derefChain, borrow) and
+        rt = borrow.getRefType()
       |
-        rt = borrow.getRefType() and
-        (
-          path.isEmpty() and
-          result = rt
-          or
-          exists(TypePath suffix |
-            result = this.getSelfTypeAtNoBorrow(selfPos, derefChain, suffix) and
-            path = TypePath::cons(rt.getPositionalTypeParameter(0), suffix)
-          )
+        path.isEmpty() and
+        result = rt
+        or
+        exists(TypePath suffix |
+          result = this.getSelfTypeAtNoBorrow(selfPos, derefChain, suffix) and
+          path = TypePath::cons(rt.getPositionalTypeParameter(0), suffix)
         )
       )
     }
@@ -2322,6 +2104,177 @@ private module AssocFunctionResolution {
     override Trait getTrait() { result instanceof AnyFnTrait }
   }
 
+  /**
+   * Provides logic for efficiently checking that there are no compatible call
+   * targets for a given candidate receiver type.
+   *
+   * For calls with non-blanket target candidates, we need to check:
+   *
+   * ```text
+   * forall types `t` where `t` is a lookup type for the given candidate receiver type:
+   *   forall non-blanket candidates `c` matching `t`:
+   *     check that `c` is not a compatible target
+   * ```
+   *
+   * Instead of implementing the above using `forall`, we apply the standard trick
+   * of using ranked recursion.
+   */
+  private module NoCompatibleTarget {
+    private import codeql.rust.elements.internal.generated.Raw
+    private import codeql.rust.elements.internal.generated.Synth
+
+    private class RawImplOrTrait = @impl or @trait;
+
+    private predicate id(RawImplOrTrait x, RawImplOrTrait y) { x = y }
+
+    private predicate idOfRaw(RawImplOrTrait x, int y) = equivalenceRelation(id/2)(x, y)
+
+    private int idOfImplOrTraitItemNode(ImplOrTraitItemNode i) {
+      idOfRaw(Synth::convertAstNodeToRaw(i), result)
+    }
+
+    /**
+     * Holds if `t` is the `n`th lookup type for the candidate receiver type
+     * represented by `derefChain` and `borrow` at function-call adjusted position
+     * `selfPos` of `afc`.
+     *
+     * There are no compatible non-blanket-like candidates for lookup types `0` to `n - 1`.
+     */
+    pragma[nomagic]
+    private predicate noCompatibleNonBlanketLikeTargetCandNthLookupType(
+      AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
+      TypePath strippedTypePath, Type strippedType, int n, Type t
+    ) {
+      (
+        (
+          (
+            afc.supportsAutoDerefAndBorrow() and
+            afc.hasReceiverAtPos(selfPos)
+            or
+            // needed for the `hasNoCompatibleNonBlanketTarget` check in
+            // `ArgSatisfiesBlanketLikeConstraintInput::hasBlanketCandidate`
+            exists(ImplItemNode i |
+              derefChain.isEmpty() and
+              blanketLikeCandidate(afc, _, selfPos, i, _, _, _) and
+              i.isBlanketImplementation()
+            )
+          ) and
+          borrow.isNoBorrow()
+          or
+          afc.hasImplicitBorrowCand(selfPos, derefChain, borrow)
+        ) and
+        strippedType = afc.getComplexStrippedSelfType(selfPos, derefChain, borrow, strippedTypePath) and
+        n = 0
+        or
+        hasNoCompatibleNonBlanketLikeTargetForNthLookupType(afc, selfPos, derefChain, borrow,
+          strippedTypePath, strippedType, n - 1)
+      ) and
+      t = getNthLookupType(afc, strippedType, n)
+    }
+
+    pragma[nomagic]
+    private ImplOrTraitItemNode getKthNonBlanketLikeCandidateForNthLookupType(
+      AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
+      TypePath strippedTypePath, Type strippedType, int n, Type t, int k
+    ) {
+      noCompatibleNonBlanketLikeTargetCandNthLookupType(afc, selfPos, derefChain, borrow,
+        strippedTypePath, strippedType, n, t) and
+      result =
+        rank[k + 1](ImplOrTraitItemNode i, int id |
+          nonBlanketLikeCandidate(afc, _, selfPos, i, _, strippedTypePath, t) and
+          id = idOfImplOrTraitItemNode(i)
+        |
+          i order by id
+        )
+    }
+
+    pragma[nomagic]
+    private int getLastNonBlanketLikeCandidateForNthLookupType(
+      AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
+      TypePath strippedTypePath, Type strippedType, int n
+    ) {
+      exists(Type t |
+        noCompatibleNonBlanketLikeTargetCandNthLookupType(afc, selfPos, derefChain, borrow,
+          strippedTypePath, strippedType, n, t) and
+        result =
+          count(ImplOrTraitItemNode i |
+              nonBlanketLikeCandidate(afc, _, selfPos, i, _, strippedTypePath, t)
+            ) - 1
+      )
+    }
+
+    pragma[nomagic]
+    private predicate hasNoCompatibleNonBlanketLikeTargetForNthLookupTypeToIndex(
+      AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
+      TypePath strippedTypePath, Type strippedType, int n, int k
+    ) {
+      exists(Type t |
+        noCompatibleNonBlanketLikeTargetCandNthLookupType(afc, selfPos, derefChain, borrow,
+          strippedTypePath, strippedType, n, t)
+      |
+        k = -1
+        or
+        hasNoCompatibleNonBlanketLikeTargetForNthLookupTypeToIndex(afc, selfPos, derefChain, borrow,
+          strippedTypePath, strippedType, n, k - 1) and
+        exists(ImplOrTraitItemNode i |
+          i =
+            getKthNonBlanketLikeCandidateForNthLookupType(afc, selfPos, derefChain, borrow,
+              strippedTypePath, strippedType, n, t, k) and
+          afc.hasIncompatibleTarget(i, selfPos, derefChain, borrow, t)
+        )
+      )
+    }
+
+    pragma[nomagic]
+    private predicate hasNoCompatibleNonBlanketLikeTargetForNthLookupType(
+      AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow,
+      TypePath strippedTypePath, Type strippedType, int n
+    ) {
+      exists(int last |
+        last =
+          getLastNonBlanketLikeCandidateForNthLookupType(afc, selfPos, derefChain, borrow,
+            strippedTypePath, strippedType, n) and
+        hasNoCompatibleNonBlanketLikeTargetForNthLookupTypeToIndex(afc, selfPos, derefChain, borrow,
+          strippedTypePath, strippedType, n, last)
+      )
+    }
+
+    pragma[nomagic]
+    private predicate hasNoCompatibleNonBlanketLikeTarget(
+      AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow
+    ) {
+      exists(Type strippedType |
+        hasNoCompatibleNonBlanketLikeTargetForNthLookupType(afc, selfPos, derefChain, borrow, _,
+          strippedType, getLastLookupTypeIndex(afc, strippedType))
+      )
+    }
+
+    pragma[nomagic]
+    predicate hasNoCompatibleTarget(
+      AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow
+    ) {
+      hasNoCompatibleNonBlanketLikeTarget(afc, selfPos, derefChain, borrow) and
+      // todo: replace with ranked recursion if needed
+      forall(ImplItemNode i | blanketLikeCandidate(afc, _, selfPos, i, _, _, _) |
+        afc.hasIncompatibleBlanketLikeTarget(i, selfPos, derefChain, borrow)
+      )
+    }
+
+    pragma[nomagic]
+    predicate hasNoCompatibleNonBlanketTarget(
+      AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain, BorrowKind borrow
+    ) {
+      hasNoCompatibleNonBlanketLikeTarget(afc, selfPos, derefChain, borrow) and
+      // todo: replace with ranked recursion if needed
+      forall(ImplItemNode i |
+        blanketLikeCandidate(afc, _, selfPos, i, _, _, _) and
+        not i.isBlanketImplementation()
+      |
+        afc.hasIncompatibleBlanketLikeTarget(i, selfPos, derefChain, borrow)
+      )
+    }
+  }
+
   pragma[nomagic]
   private AssocFunctionDeclaration getAssocFunctionSuccessor(
     ImplOrTraitItemNode i, string name, int arity
@@ -2358,14 +2311,7 @@ private module AssocFunctionResolution {
 
     pragma[nomagic]
     predicate hasNoCompatibleNonBlanketTarget() {
-      afc_.hasNoCompatibleNonBlanketTargetSharedBorrow(selfPos_, derefChain) and
-      borrow.isSharedBorrow()
-      or
-      afc_.hasNoCompatibleNonBlanketTargetMutBorrow(selfPos_, derefChain) and
-      borrow.isMutableBorrow()
-      or
-      afc_.hasNoCompatibleNonBlanketTargetNoBorrow(selfPos_, derefChain) and
-      borrow.isNoBorrow()
+      afc_.hasNoCompatibleNonBlanketTarget(selfPos_, derefChain, borrow)
     }
 
     pragma[nomagic]
@@ -2474,7 +2420,7 @@ private module AssocFunctionResolution {
       MkCallDerefCand(AssocFunctionCall afc, FunctionPosition selfPos, DerefChain derefChain) {
         afc.supportsAutoDerefAndBorrow() and
         afc.hasReceiverAtPos(selfPos) and
-        afc.hasNoCompatibleTargetMutBorrow(selfPos, derefChain) and
+        afc.hasNoCompatibleTarget(selfPos, derefChain, TSomeBorrowKind(true)) and
         exists(afc.getSelfTypeAtNoBorrow(selfPos, derefChain, TypePath::nil()))
       }
 
@@ -2547,10 +2493,6 @@ private module AssocFunctionResolution {
         // (https://rust-lang.github.io/rfcs/1210-impl-specialization.html), as well as
         // cases where our blanket implementation filtering is not precise enough.
         if impl.isBlanketImplementation() then afcc.hasNoCompatibleNonBlanketTarget() else any()
-      |
-        borrow.isNoBorrow()
-        or
-        blanketPath.getHead() = borrow.getRefType().getPositionalTypeParameter(0)
       )
     }
   }
@@ -2608,9 +2550,13 @@ private module AssocFunctionResolution {
     pragma[nomagic]
     predicate argIsNotInstantiationOf(
       AssocFunctionCall afc, ImplOrTraitItemNode i, FunctionPosition selfPos, DerefChain derefChain,
-      BorrowKind borrow, TypePath path
+      BorrowKind borrow, AssocFunctionType selfType
     ) {
-      argIsNotInstantiationOf(MkAssocFunctionCallCand(afc, selfPos, derefChain, borrow), i, _, path)
+      exists(TypePath path |
+        argIsNotInstantiationOf(MkAssocFunctionCallCand(afc, selfPos, derefChain, borrow), i,
+          selfType, path) and
+        not path.isEmpty()
+      )
     }
 
     pragma[nomagic]
@@ -3663,43 +3609,6 @@ private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result instanceof
 pragma[nomagic]
 private Type inferRangeExprType(RangeExpr re) { result = TDataType(getRangeType(re)) }
 
-/**
- * According to [the Rust reference][1]: _"array and slice-typed expressions
- * can be indexed with a `usize` index ... For other types an index expression
- * `a[b]` is equivalent to *std::ops::Index::index(&a, b)"_.
- *
- * The logic below handles array and slice indexing, but for other types it is
- * currently limited to `Vec`.
- *
- * [1]: https://doc.rust-lang.org/reference/expressions/array-expr.html#r-expr.array.index
- */
-pragma[nomagic]
-private Type inferIndexExprType(IndexExpr ie, TypePath path) {
-  // TODO: Method resolution to the `std::ops::Index` trait can handle the
-  // `Index` instances for slices and arrays.
-  exists(TypePath exprPath, Builtins::BuiltinType t |
-    TDataType(t) = inferType(ie.getIndex()) and
-    (
-      // also allow `i32`, since that is currently the type that we infer for
-      // integer literals like `0`
-      t instanceof Builtins::I32
-      or
-      t instanceof Builtins::Usize
-    ) and
-    result = inferType(ie.getBase(), exprPath)
-  |
-    // todo: remove?
-    exprPath.isCons(TTypeParamTypeParameter(any(Vec v).getElementTypeParam()), path)
-    or
-    exprPath.isCons(getArrayTypeParameter(), path)
-    or
-    exists(TypePath path0 |
-      exprPath.isCons(getRefTypeParameter(_), path0) and
-      path0.isCons(getSliceTypeParameter(), path)
-    )
-  )
-}
-
 pragma[nomagic]
 private Type getInferredDerefType(DerefExpr de, TypePath path) { result = inferType(de, path) }
 
@@ -3902,7 +3811,8 @@ private module Cached {
       i instanceof ImplItemNode and dispatch = false
     |
       result = call.(AssocFunctionResolution::AssocFunctionCall).resolveCallTarget(i, _, _, _) and
-      not call instanceof CallExprImpl::DynamicCallExpr
+      not call instanceof CallExprImpl::DynamicCallExpr and
+      not i instanceof Builtins::BuiltinImpl
     )
   }
 
@@ -4003,8 +3913,6 @@ private module Cached {
       result = inferLiteralType(n, path, false)
       or
       result = inferAwaitExprType(n, path)
-      or
-      result = inferIndexExprType(n, path)
       or
       result = inferDereferencedExprPtrType(n, path)
       or

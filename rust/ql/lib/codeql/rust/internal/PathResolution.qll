@@ -1202,18 +1202,21 @@ final class TypeParamItemNode extends NamedItemNode, TypeItemNode instanceof Typ
   }
 
   pragma[nomagic]
-  Path getABoundPath() { result = this.getTypeBoundAt(_, _).getTypeRepr().(PathTypeRepr).getPath() }
-
-  pragma[nomagic]
-  ItemNode resolveBound(int index) {
+  Path getBoundPath(int index) {
     result =
       rank[index + 1](int i, int j |
         |
-        resolvePath(this.getTypeBoundAt(i, j).getTypeRepr().(PathTypeRepr).getPath()) order by i, j
+        this.getTypeBoundAt(i, j).getTypeRepr().(PathTypeRepr).getPath() order by i, j
       )
   }
 
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  pragma[nomagic]
+  Path getABoundPath() { result = this.getBoundPath(_) }
+
+  pragma[nomagic]
+  ItemNode resolveBound(int index) { result = resolvePath(this.getBoundPath(index)) }
+
+  ItemNode resolveABound() { result = this.resolveBound(_) }
 
   pragma[nomagic]
   ItemNode resolveAdditionalBound(ItemNode constrainingItem) {

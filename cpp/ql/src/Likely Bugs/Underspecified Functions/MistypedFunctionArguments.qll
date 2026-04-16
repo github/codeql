@@ -79,9 +79,7 @@ private predicate hasZeroParamDecl(Function f) {
 
 // True if this file (or header) was compiled as a C file
 private predicate isCompiledAsC(File f) {
-  f.compiledAsC()
-  or
-  exists(File src | isCompiledAsC(src) | src.getAnIncludedFile() = f)
+  exists(File src | src.compiledAsC() | src.getAnIncludedFile*() = f)
 }
 
 predicate mistypedFunctionArguments(FunctionCall fc, Function f, Parameter p) {

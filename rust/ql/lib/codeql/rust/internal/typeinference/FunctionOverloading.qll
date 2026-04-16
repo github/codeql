@@ -6,6 +6,8 @@
  */
 
 private import rust
+private import codeql.rust.frameworks.stdlib.Builtins as Builtins
+private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.internal.PathResolution
 private import Type
 private import TypeAbstraction
@@ -94,6 +96,14 @@ private module MkSiblingImpls<resolveTypeMentionAtSig/2 resolveTypeMentionAt> {
       not t1 instanceof TypeParameter or
       not t2 instanceof TypeParameter
     )
+    or
+    // todo: handle blanket/non-blanket siblings in `implSiblings`
+    trait =
+      any(IndexTrait it |
+        implSiblingCandidate(impl, it, _, _) and
+        impl instanceof Builtins::BuiltinImpl and
+        path = TypePath::singleton(TAssociatedTypeTypeParameter(trait, it.getOutputType()))
+      )
   }
 }
 

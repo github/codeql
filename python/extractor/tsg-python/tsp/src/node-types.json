@@ -1811,6 +1811,16 @@
     "type": "import_from_statement",
     "named": true,
     "fields": {
+      "is_lazy": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "lazy",
+            "named": false
+          }
+        ]
+      },
       "module_name": {
         "multiple": false,
         "required": true,
@@ -1860,6 +1870,16 @@
     "type": "import_statement",
     "named": true,
     "fields": {
+      "is_lazy": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "lazy",
+            "named": false
+          }
+        ]
+      },
       "name": {
         "multiple": true,
         "required": true,
@@ -4152,6 +4172,10 @@
   },
   {
     "type": "lambda",
+    "named": false
+  },
+  {
+    "type": "lazy",
     "named": false
   },
   {

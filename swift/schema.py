@@ -1480,7 +1480,14 @@ class TypeValueExpr(Expr):
 class IntegerType(Type):
     value: string
 
-class BuiltinFixedArrayType(BuiltinType):
+class BuiltinGenericType(BuiltinType):
+    """
+    A builtin generic type.
+    """
+    pass
+
+
+class BuiltinFixedArrayType(BuiltinGenericType):
     """
     A builtin type representing N values stored contiguously.
     """

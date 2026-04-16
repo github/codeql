@@ -1179,7 +1179,8 @@ private module Cached {
   cached
   newtype TDataFlowType =
     TGvnDataFlowType(Gvn::GvnType t) or
-    TDelegateDataFlowType(Callable lambda) { lambdaCreationExpr(_, lambda) }
+    TDelegateDataFlowType(Callable lambda) { lambdaCreationExpr(_, lambda) } or
+    TSourceContextParameterType()
 }
 
 import Cached
@@ -2394,6 +2395,8 @@ class DataFlowType extends TDataFlowType {
 
   Callable asDelegate() { this = TDelegateDataFlowType(result) }
 
+  predicate isSourceContextParameterType() { this = TSourceContextParameterType() }
+
   /**
    * Gets an expression that creates a delegate of this type.
    *
@@ -2412,6 +2415,9 @@ class DataFlowType extends TDataFlowType {
     result = this.asGvnType().toString()
     or
     result = this.asDelegate().toString()
+    or
+    this.isSourceContextParameterType() and
+    result = "<source context parameter type>"
   }
 }
 
@@ -2469,6 +2475,11 @@ private predicate compatibleTypesDelegateLeft(DataFlowType dt1, DataFlowType dt2
   )
 }
 
+pragma[nomagic]
+private predicate compatibleTypesSourceContextParameterTypeLeft(DataFlowType dt1, DataFlowType dt2) {
+  dt1.isSourceContextParameterType() and not exists(dt2.asDelegate())
+}
+
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
@@ -2499,6 +2510,10 @@ predicate compatibleTypes(DataFlowType dt1, DataFlowType dt2) {
   compatibleTypesDelegateLeft(dt2, dt1)
   or
   dt1.asDelegate() = dt2.asDelegate()
+  or
+  compatibleTypesSourceContextParameterTypeLeft(dt1, dt2)
+  or
+  compatibleTypesSourceContextParameterTypeLeft(dt2, dt1)
 }
 
 pragma[nomagic]
@@ -2511,6 +2526,8 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
   uselessTypebound(t2)
   or
   compatibleTypesDelegateLeft(t1, t2)
+  or
+  compatibleTypesSourceContextParameterTypeLeft(t1, t2)
 }
 
 /**

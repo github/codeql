@@ -6,7 +6,7 @@
 
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
-import codeql.swift.elements.type.internal.BuiltinTypeImpl::Impl as BuiltinTypeImpl
+import codeql.swift.elements.type.internal.BuiltinGenericTypeImpl::Impl as BuiltinGenericTypeImpl
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BuiltinFixedArrayType` and should not
@@ -18,7 +18,9 @@ module Generated {
    * INTERNAL: Do not reference the `Generated::BuiltinFixedArrayType` class directly.
    * Use the subclass `BuiltinFixedArrayType`, where the following predicates are available.
    */
-  class BuiltinFixedArrayType extends Synth::TBuiltinFixedArrayType, BuiltinTypeImpl::BuiltinType {
+  class BuiltinFixedArrayType extends Synth::TBuiltinFixedArrayType,
+    BuiltinGenericTypeImpl::BuiltinGenericType
+  {
     override string getAPrimaryQlClass() { result = "BuiltinFixedArrayType" }
   }
 }

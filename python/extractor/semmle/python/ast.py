@@ -845,17 +845,19 @@ class If(stmt):
 
 
 class Import(stmt):
-    __slots__ = "names",
+    __slots__ = "is_lazy", "names",
 
-    def __init__(self, names):
+    def __init__(self, names, is_lazy=False):
         self.names = names
+        self.is_lazy = is_lazy
 
 
 class ImportFrom(stmt):
-    __slots__ = "module",
+    __slots__ = "is_lazy", "module",
 
-    def __init__(self, module):
+    def __init__(self, module, is_lazy=False):
         self.module = module
+        self.is_lazy = is_lazy
 
 
 class Nonlocal(stmt):

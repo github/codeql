@@ -1103,6 +1103,16 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         private module FwdTypeFlowInput implements TypeFlowInput {
           predicate enableTypeFlow = Param::enableTypeFlow/0;
 
+          pragma[nomagic]
+          predicate isParameterNodeInSourceCallContext(ParamNode p) {
+            hasSourceCallCtx() and
+            exists(Node source, DataFlowCallable c |
+              Config::isSource(pragma[only_bind_into](source), _) and
+              nodeEnclosingCallable(source, c) and
+              nodeEnclosingCallable(p, c)
+            )
+          }
+
           predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
 
           predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
@@ -1409,6 +1419,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
 
         private module RevTypeFlowInput implements TypeFlowInput {
           predicate enableTypeFlow = Param::enableTypeFlow/0;
+
+          predicate isParameterNodeInSourceCallContext(ParamNode p) { none() }
 
           predicate relevantCallEdgeIn(Call call, Callable c) {
             flowOutOfCallAp(call, c, _, _, _, _, _)

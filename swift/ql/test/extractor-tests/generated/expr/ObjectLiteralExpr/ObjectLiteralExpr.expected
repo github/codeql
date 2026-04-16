@@ -3,9 +3,9 @@ instances
 | object_literals.swift:6:5:6:61 | #colorLiteral(...) | getKind: | 2 |
 | object_literals.swift:7:5:7:44 | #imageLiteral(...) | getKind: | 1 |
 getType
-| object_literals.swift:5:5:5:42 | #fileLiteral(...) | <<error type>> |
-| object_literals.swift:6:5:6:61 | #colorLiteral(...) | <<error type>> |
-| object_literals.swift:7:5:7:44 | #imageLiteral(...) | <<error type>> |
+| object_literals.swift:5:5:5:42 | #fileLiteral(...) | _ |
+| object_literals.swift:6:5:6:61 | #colorLiteral(...) | _ |
+| object_literals.swift:7:5:7:44 | #imageLiteral(...) | _ |
 getArgument
 | object_literals.swift:5:5:5:42 | #fileLiteral(...) | 0 | object_literals.swift:5:18:5:32 | resourceName: file.txt |
 | object_literals.swift:6:5:6:61 | #colorLiteral(...) | 0 | object_literals.swift:6:19:6:24 | red: 255 |

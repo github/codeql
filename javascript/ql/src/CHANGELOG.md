@@ -1,3 +1,7 @@
+## 2.3.7
+
+No user-facing changes.
+
 ## 2.3.6
 
 No user-facing changes.

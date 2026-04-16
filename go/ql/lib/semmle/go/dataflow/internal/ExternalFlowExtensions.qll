@@ -35,7 +35,7 @@ extensible predicate barrierModel(
  */
 extensible predicate barrierGuardModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
-  string input, string acceptingvalue, string kind, string provenance, QlBuiltins::ExtensionId madId
+  string input, string acceptingValue, string kind, string provenance, QlBuiltins::ExtensionId madId
 );
 
 /**

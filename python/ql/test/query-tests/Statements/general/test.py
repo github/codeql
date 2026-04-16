@@ -174,3 +174,9 @@ def assert_ok(seq):
 # False positive. ODASA-8042. Fixed in PR #2401.
 class false_positive:
     e = (x for x in [])
+
+# In class-level scope `locals()` reflects the class namespace,
+# so modifications do take effect.
+class MyClass:
+    locals()['x'] = 43  # OK
+    y = x

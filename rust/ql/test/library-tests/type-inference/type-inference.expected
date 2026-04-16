@@ -873,7 +873,7 @@ inferCertainType
 | closure.rs:218:13:218:22 | &... |  | {EXTERNAL LOCATION} | & |
 | closure.rs:218:14:218:22 | \|...\| false |  | {EXTERNAL LOCATION} | dyn Fn |
 | closure.rs:218:18:218:22 | false |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:222:19:240:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:222:19:248:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | closure.rs:223:13:223:13 | x |  | {EXTERNAL LOCATION} | i64 |
 | closure.rs:223:17:223:20 | 0i64 |  | {EXTERNAL LOCATION} | i64 |
 | closure.rs:226:21:226:23 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
@@ -881,20 +881,23 @@ inferCertainType
 | closure.rs:226:22:226:22 | x |  | {EXTERNAL LOCATION} | i64 |
 | closure.rs:228:13:228:13 | x |  | {EXTERNAL LOCATION} | i32 |
 | closure.rs:228:17:228:20 | 0i32 |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:231:13:231:17 | s_ref |  | {EXTERNAL LOCATION} | & |
-| closure.rs:231:21:231:22 | &s |  | {EXTERNAL LOCATION} | & |
-| closure.rs:232:20:232:24 | s_ref |  | {EXTERNAL LOCATION} | & |
-| closure.rs:232:25:232:27 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:232:25:232:27 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:232:26:232:26 | x |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:238:13:238:13 | c |  | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:238:17:238:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:239:9:239:12 | (...) |  | {EXTERNAL LOCATION} | & |
-| closure.rs:239:10:239:11 | &c |  | {EXTERNAL LOCATION} | & |
-| closure.rs:239:11:239:11 | c |  | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:239:13:239:15 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:239:13:239:15 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:14:239:14 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:231:21:231:23 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:231:21:231:23 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:231:22:231:22 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:232:13:232:17 | s_ref |  | {EXTERNAL LOCATION} | & |
+| closure.rs:232:21:232:22 | &s |  | {EXTERNAL LOCATION} | & |
+| closure.rs:240:20:240:24 | s_ref |  | {EXTERNAL LOCATION} | & |
+| closure.rs:240:25:240:27 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:240:25:240:27 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:240:26:240:26 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:246:13:246:13 | c |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:246:17:246:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:247:9:247:12 | (...) |  | {EXTERNAL LOCATION} | & |
+| closure.rs:247:10:247:11 | &c |  | {EXTERNAL LOCATION} | & |
+| closure.rs:247:11:247:11 | c |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:247:13:247:15 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:247:13:247:15 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:14:247:14 | x |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:13:14:13:18 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:13:14:13:18 | SelfParam | TRef | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:13:29:15:5 | { ... } |  | {EXTERNAL LOCATION} | & |
@@ -6894,7 +6897,7 @@ inferType
 | closure.rs:218:14:218:22 | \|...\| false | dyn(Output) | {EXTERNAL LOCATION} | bool |
 | closure.rs:218:15:218:15 | _ |  | closure.rs:214:10:214:10 | T |
 | closure.rs:218:18:218:22 | false |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:222:19:240:5 | { ... } |  | {EXTERNAL LOCATION} | () |
+| closure.rs:222:19:248:5 | { ... } |  | {EXTERNAL LOCATION} | () |
 | closure.rs:223:13:223:13 | x |  | {EXTERNAL LOCATION} | i64 |
 | closure.rs:223:17:223:20 | 0i64 |  | {EXTERNAL LOCATION} | i64 |
 | closure.rs:224:13:224:13 | v |  | {EXTERNAL LOCATION} | i64 |
@@ -6920,50 +6923,55 @@ inferType
 | closure.rs:230:17:230:20 | S(...) |  | closure.rs:212:5:212:19 | S |
 | closure.rs:230:17:230:20 | S(...) | T | {EXTERNAL LOCATION} | i32 |
 | closure.rs:230:19:230:19 | v |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:231:13:231:17 | s_ref |  | {EXTERNAL LOCATION} | & |
-| closure.rs:231:13:231:17 | s_ref | TRef | closure.rs:212:5:212:19 | S |
-| closure.rs:231:13:231:17 | s_ref | TRef.T | {EXTERNAL LOCATION} | i32 |
-| closure.rs:231:21:231:22 | &s |  | {EXTERNAL LOCATION} | & |
-| closure.rs:231:21:231:22 | &s | TRef | closure.rs:212:5:212:19 | S |
-| closure.rs:231:21:231:22 | &s | TRef.T | {EXTERNAL LOCATION} | i32 |
-| closure.rs:231:22:231:22 | s |  | closure.rs:212:5:212:19 | S |
-| closure.rs:231:22:231:22 | s | T | {EXTERNAL LOCATION} | i32 |
-| closure.rs:232:13:232:16 | _ret |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:232:20:232:24 | s_ref |  | {EXTERNAL LOCATION} | & |
-| closure.rs:232:20:232:24 | s_ref | TRef | closure.rs:212:5:212:19 | S |
-| closure.rs:232:20:232:24 | s_ref | TRef.T | {EXTERNAL LOCATION} | i32 |
-| closure.rs:232:20:232:27 | s_ref(...) |  | {EXTERNAL LOCATION} | bool |
-| closure.rs:232:25:232:27 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:232:25:232:27 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:232:26:232:26 | x |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:238:13:238:13 | c |  | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:238:13:238:13 | c | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:238:13:238:13 | c | dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:238:13:238:13 | c | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| closure.rs:238:17:238:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:238:17:238:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:238:17:238:21 | \|...\| x | dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:238:17:238:21 | \|...\| x | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| closure.rs:238:18:238:18 | x |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:238:21:238:21 | x |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:9:239:12 | (...) |  | {EXTERNAL LOCATION} | & |
-| closure.rs:239:9:239:12 | (...) | TRef | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:239:9:239:12 | (...) | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:239:9:239:12 | (...) | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:9:239:12 | (...) | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:9:239:15 | ...(...) |  | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:10:239:11 | &c |  | {EXTERNAL LOCATION} | & |
-| closure.rs:239:10:239:11 | &c | TRef | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:239:10:239:11 | &c | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:239:10:239:11 | &c | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:10:239:11 | &c | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:11:239:11 | c |  | {EXTERNAL LOCATION} | dyn Fn |
-| closure.rs:239:11:239:11 | c | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:239:11:239:11 | c | dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:11:239:11 | c | dyn(Output) | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:13:239:15 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
-| closure.rs:239:13:239:15 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
-| closure.rs:239:14:239:14 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:231:13:231:16 | _ret |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:231:20:231:20 | s |  | closure.rs:212:5:212:19 | S |
+| closure.rs:231:20:231:20 | s | T | {EXTERNAL LOCATION} | i32 |
+| closure.rs:231:20:231:23 | s(...) |  | {EXTERNAL LOCATION} | bool |
+| closure.rs:231:21:231:23 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:231:21:231:23 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:231:22:231:22 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:232:13:232:17 | s_ref |  | {EXTERNAL LOCATION} | & |
+| closure.rs:232:13:232:17 | s_ref | TRef | closure.rs:212:5:212:19 | S |
+| closure.rs:232:13:232:17 | s_ref | TRef.T | {EXTERNAL LOCATION} | i32 |
+| closure.rs:232:21:232:22 | &s |  | {EXTERNAL LOCATION} | & |
+| closure.rs:232:21:232:22 | &s | TRef | closure.rs:212:5:212:19 | S |
+| closure.rs:232:21:232:22 | &s | TRef.T | {EXTERNAL LOCATION} | i32 |
+| closure.rs:232:22:232:22 | s |  | closure.rs:212:5:212:19 | S |
+| closure.rs:232:22:232:22 | s | T | {EXTERNAL LOCATION} | i32 |
+| closure.rs:240:20:240:24 | s_ref |  | {EXTERNAL LOCATION} | & |
+| closure.rs:240:20:240:24 | s_ref | TRef | closure.rs:212:5:212:19 | S |
+| closure.rs:240:20:240:24 | s_ref | TRef.T | {EXTERNAL LOCATION} | i32 |
+| closure.rs:240:25:240:27 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:240:25:240:27 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:240:26:240:26 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:246:13:246:13 | c |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:246:13:246:13 | c | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:246:13:246:13 | c | dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:246:13:246:13 | c | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| closure.rs:246:17:246:21 | \|...\| x |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:246:17:246:21 | \|...\| x | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:246:17:246:21 | \|...\| x | dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:246:17:246:21 | \|...\| x | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| closure.rs:246:18:246:18 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:246:21:246:21 | x |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:9:247:12 | (...) |  | {EXTERNAL LOCATION} | & |
+| closure.rs:247:9:247:12 | (...) | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:247:9:247:12 | (...) | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:247:9:247:12 | (...) | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:9:247:12 | (...) | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:9:247:15 | ...(...) |  | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:10:247:11 | &c |  | {EXTERNAL LOCATION} | & |
+| closure.rs:247:10:247:11 | &c | TRef | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:247:10:247:11 | &c | TRef.dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:247:10:247:11 | &c | TRef.dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:10:247:11 | &c | TRef.dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:11:247:11 | c |  | {EXTERNAL LOCATION} | dyn Fn |
+| closure.rs:247:11:247:11 | c | dyn(Args) | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:247:11:247:11 | c | dyn(Args).T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:11:247:11 | c | dyn(Output) | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:13:247:15 | ArgList |  | {EXTERNAL LOCATION} | (T_1) |
+| closure.rs:247:13:247:15 | ArgList | T0 | {EXTERNAL LOCATION} | i32 |
+| closure.rs:247:14:247:14 | x |  | {EXTERNAL LOCATION} | i32 |
 | dereference.rs:13:14:13:18 | SelfParam |  | {EXTERNAL LOCATION} | & |
 | dereference.rs:13:14:13:18 | SelfParam | TRef | dereference.rs:5:1:7:1 | MyIntPointer |
 | dereference.rs:13:29:15:5 | { ... } |  | {EXTERNAL LOCATION} | & |

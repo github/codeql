@@ -228,8 +228,16 @@ mod implicit_deref {
         let x = 0i32;
         let v = Default::default(); // $ type=v:i32 target=default
         let s = S(v);
+        let _ret = s(x); // $ type=_ret:bool
         let s_ref = &s;
-        let _ret = s_ref(x); // $ type=_ret:bool
+        // The call below incorrectly resolves to
+        // `impl<A, F> FnOnce<A> for &F` from
+        // https://doc.rust-lang.org/std/ops/trait.FnOnce.html#impl-FnOnce%3CA%3E-for-%26F
+        // because `s_ref` gets an implicit borrow `&&S`, and then we incorrectly
+        // conclude that `&S` satisfies the blanket constraint `Fn<A>` because of the
+        // `impl<A, F> FnOnce<A> for &F` implementation (we do not currently identify that
+        // `&S` does not satisfy `Fn<A>`)
+        let _ret = s_ref(x); // $ MISSING: type=_ret:bool
 
         // The call below is not an implicit deref, instead it will target
         // `impl<A, F> FnOnce<A> for &F` from

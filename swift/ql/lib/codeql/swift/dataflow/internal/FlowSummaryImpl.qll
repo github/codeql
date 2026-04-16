@@ -168,7 +168,7 @@ module SourceSinkInterpretationInput implements
   }
 
   predicate barrierGuardElement(
-    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Element n, string input, Public::AcceptingValue acceptingValue, string kind,
     Public::Provenance provenance, string model
   ) {
     none()
