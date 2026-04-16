@@ -4,14 +4,16 @@
  * exist timestamps a in A and b in B with a < b.
  */
 
-import OldCfgImpl
-
-private module Utils = EvalOrderCfgUtils<OldCfg>;
-
-private import Utils
-private import Utils::CfgTests
+import python
+import TimerUtils
 
 from TimerCfgNode a, TimerCfgNode b, int minA, int maxB
-where noBackwardFlow(a, b, minA, maxB)
+where
+  nextTimerAnnotation(a, b) and
+  not a.isDead() and
+  not b.isDead() and
+  minA = min(a.getATimestamp()) and
+  maxB = max(b.getATimestamp()) and
+  minA >= maxB
 select a, "Backward flow: $@ flows to $@ (max timestamp $@)", a.getTimestampExpr(minA),
   minA.toString(), b, b.getNode().toString(), b.getTimestampExpr(maxB), maxB.toString()

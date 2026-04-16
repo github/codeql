@@ -5,13 +5,13 @@
  * have separate CFGs and are excluded from this check.
  */
 
-import OldCfgImpl
-
-private module Utils = EvalOrderCfgUtils<OldCfg>;
-
-private import Utils
-private import Utils::CfgTests
+import python
+import TimerUtils
 
 from TimerCfgNode a, TestFunction f
-where allLiveReachable(a, f)
+where
+  not a.isDead() and
+  f = a.getTestFunction() and
+  a.getScope() = f and
+  not f.getEntryNode().getBasicBlock().reaches(a.getBasicBlock())
 select a, "Unreachable live annotation; entry of $@ does not reach this node", f, f.getName()

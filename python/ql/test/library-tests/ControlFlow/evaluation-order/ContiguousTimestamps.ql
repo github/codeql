@@ -4,6 +4,7 @@
  * in at least one annotation (live or dead).
  */
 
+import python
 import TimerUtils
 
 from TestFunction f, int missing, int maxTs, TimerAnnotation maxAnn
