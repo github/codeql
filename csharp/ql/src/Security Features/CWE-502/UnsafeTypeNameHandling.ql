@@ -1,6 +1,6 @@
 /**
- * @name Unsafe TypeNameHandling used with an insecure binder implementation
- * @description Checks for when JsonSerializer that also uses an unsafe TypeNameHandling setting is used to deserialize user input
+ * @name Unsafe TypeNameHandling value
+ * @description Checks for when JsonSerializer that also uses an unsafe TypeNameHandling setting
  * @id cs/unsafe-type-name-handling
  * @kind problem
  * @problem.severity warning
