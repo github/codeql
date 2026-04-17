@@ -59,10 +59,6 @@ The CodeQL library for Rust analysis exposes the following extensible predicates
 
 The extensible predicates are populated using the models defined in data extension files.
 
-.. note::
-
-  Unlike some other CodeQL languages (such as Python, Ruby, and JavaScript), Rust does not use a ``typeModel`` extensible predicate. Rust models identify callables directly by their canonical path.
-
 Canonical paths
 ~~~~~~~~~~~~~~~
 
