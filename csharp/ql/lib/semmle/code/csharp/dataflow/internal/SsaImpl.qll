@@ -9,7 +9,7 @@ private import semmle.code.csharp.controlflow.Guards as Guards
 private import semmle.code.csharp.dataflow.internal.BaseSSA
 private import semmle.code.csharp.internal.Location
 
-private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
+private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBlock> {
   class SourceVariable = Ssa::SourceVariable;
 
   /**
@@ -41,7 +41,7 @@ private module SsaInput implements SsaImplCommon::InputSig<Location, BasicBlock>
   }
 }
 
-import SsaImplCommon::Make<Location, Cfg, SsaInput> as Impl
+import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -815,7 +815,7 @@ private module Cached {
   predicate variableWriteQualifier(
     BasicBlock bb, int i, QualifiedFieldOrPropSourceVariable v, boolean certain
   ) {
-    SsaInput::variableWrite(bb, i, v.getQualifier(), certain) and
+    SsaImplInput::variableWrite(bb, i, v.getQualifier(), certain) and
     // Eliminate corner case where a call definition can overlap with a
     // qualifier definition: if method `M` updates field `F`, then a call
     // to `M` is both an update of `x.M` and `x.M.M`, so the former call
