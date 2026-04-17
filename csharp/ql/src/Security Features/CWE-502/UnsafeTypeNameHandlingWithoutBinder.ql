@@ -91,6 +91,8 @@ module TypeNameFlowConfig implements DataFlow::ConfigSig {
 
 module TypeNameFlow = DataFlow::Global<TypeNameFlowConfig>;
 
+import UserInputToDeserializeObjectCallFlow::PathGraph
+
 from 
 UserInputToDeserializeObjectCallFlow::PathNode userInput, UserInputToDeserializeObjectCallFlow::PathNode deserializeArg,
 DataFlow::Node badTypeNameHandling, DataFlow::Node typeNameHandlingSettingArg, 

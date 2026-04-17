@@ -1,0 +1,40 @@
+#select
+| Test.cs:118:75:118:83 | access to local variable userInput | Test.cs:116:32:116:39 | access to property Body : Stream | Test.cs:118:75:118:83 | access to local variable userInput | Use of $@ constant to deserialize user-controlled input is unsafe | Test.cs:35:45:35:64 | access to constant All | this Json.net TypeNameHandling |
+| Test.cs:119:75:119:83 | access to local variable userInput | Test.cs:116:32:116:39 | access to property Body : Stream | Test.cs:119:75:119:83 | access to local variable userInput | Use of $@ constant to deserialize user-controlled input is unsafe | Test.cs:40:36:40:55 | access to constant All | this Json.net TypeNameHandling |
+| Test.cs:120:75:120:83 | access to local variable userInput | Test.cs:116:32:116:39 | access to property Body : Stream | Test.cs:120:75:120:83 | access to local variable userInput | Use of $@ constant to deserialize user-controlled input is unsafe | Test.cs:100:28:100:51 | access to constant Objects | this Json.net TypeNameHandling |
+edges
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:118:75:118:83 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:119:75:119:83 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:120:75:120:83 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:122:76:122:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:123:76:123:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:124:76:124:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:125:76:125:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:126:76:126:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:127:76:127:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:128:76:128:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:129:76:129:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:130:76:130:84 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:131:77:131:85 | access to local variable userInput | provenance |  |
+| Test.cs:116:20:116:28 | access to local variable userInput : String | Test.cs:132:77:132:85 | access to local variable userInput | provenance |  |
+| Test.cs:116:32:116:39 | access to property Body : Stream | Test.cs:116:32:116:50 | call to method ToString : String | provenance | Config |
+| Test.cs:116:32:116:50 | call to method ToString : String | Test.cs:116:20:116:28 | access to local variable userInput : String | provenance |  |
+nodes
+| Test.cs:116:20:116:28 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
+| Test.cs:116:32:116:39 | access to property Body : Stream | semmle.label | access to property Body : Stream |
+| Test.cs:116:32:116:50 | call to method ToString : String | semmle.label | call to method ToString : String |
+| Test.cs:118:75:118:83 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:119:75:119:83 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:120:75:120:83 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:122:76:122:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:123:76:123:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:124:76:124:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:125:76:125:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:126:76:126:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:127:76:127:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:128:76:128:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:129:76:129:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:130:76:130:84 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:131:77:131:85 | access to local variable userInput | semmle.label | access to local variable userInput |
+| Test.cs:132:77:132:85 | access to local variable userInput | semmle.label | access to local variable userInput |
+subpaths
