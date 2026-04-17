@@ -1,2 +1,2 @@
-function MyFunction[1] # $ Alert Alert
-{...}
+function MyFunction[1]
+{...} # $ Alert Alert
