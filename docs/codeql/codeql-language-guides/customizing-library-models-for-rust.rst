@@ -54,6 +54,8 @@ The CodeQL library for Rust analysis exposes the following extensible predicates
 - ``sinkModel(path, input, kind, provenance)``. This is used to model sinks where tainted data may be used in a way that makes the code vulnerable.
 - ``summaryModel(path, input, output, kind, provenance)``. This is used to model flow through elements.
 - ``neutralModel(path, kind, provenance)``. This is similar to a summary model but used to indicate that a callable has no flow for a given category. Manual neutral models (those with a provenance such as ``manual``) can be used to override generated summary, source, or sink models (those with a provenance such as ``df-generated``), so that the generated model will be ignored.
+- ``barrierModel(path, output, kind, provenance)``. This is used to model barriers, which are elements that stop the flow of taint.
+- ``barrierGuardModel(path, input, acceptingValue, kind, provenance)``. This is used to model barrier guards, which are elements that can stop the flow of taint depending on a conditional check.
 
 The extensible predicates are populated using the models defined in data extension files.
 
@@ -319,6 +321,75 @@ Since we are adding a neutral model, we need to add a tuple to the ``neutralMode
 - The second value ``sink`` is the category of model to suppress. This means that any generated sink model for ``Option::map`` will be ignored. The category can be ``source``, ``sink``, or ``summary``.
 - The third value ``manual`` is the provenance of the neutral model.
 
+Example: Add a barrier for SQL injection
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This example shows how to model a barrier that stops the flow of taint. A barrier model is used to define that the flow of taint stops at the modeled element for the specified kind of query.
+
+Consider a hypothetical function ``my_crate::sanitize::escape_sql`` which escapes a SQL string, making it safe to use in a SQL query.
+
+.. code-block:: rust
+
+  fn run_query(pool: &sqlx::PgPool, user_input: &str) {
+      let safe_input = my_crate::sanitize::escape_sql(user_input); // The return value is safe to use in SQL.
+      let query = format!("SELECT * FROM users WHERE name = '{}'", safe_input);
+      // ...
+  }
+
+We need to add a tuple to the ``barrierModel``\(path, output, kind, provenance) extensible predicate by updating a data extension file.
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/rust-all
+        extensible: barrierModel
+      data:
+        - ["my_crate::sanitize::escape_sql", "ReturnValue", "sql-injection", "manual"]
+
+Since we are adding a barrier, we need to add a tuple to the ``barrierModel`` extensible predicate.
+
+- The first value ``my_crate::sanitize::escape_sql`` is the canonical path of the function.
+- The second value ``ReturnValue`` is the access path to the output of the barrier, which means that the return value is considered sanitized.
+- The third value ``sql-injection`` is the kind of the barrier. The barrier kind must match the kind used in the query where the barrier should take effect. In this case, it matches the ``sql-injection`` sink kind used by SQL injection queries.
+- The fourth value ``manual`` is the provenance of the barrier.
+
+Example: Add a barrier guard
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This example shows how to model a barrier guard that stops the flow of taint when a conditional check is performed on data.
+A barrier guard model is used when a function returns a boolean that indicates whether the data is safe to use.
+
+Consider a hypothetical function ``my_crate::validate::is_safe_path`` which returns ``true`` when the given path is safe to use in a file system access.
+
+.. code-block:: rust
+
+  fn read_file(user_path: &str) {
+      if my_crate::validate::is_safe_path(user_path) { // The check guards the use, so the input is safe.
+          let contents = std::fs::read_to_string(user_path).unwrap();
+          // ...
+      }
+  }
+
+We need to add a tuple to the ``barrierGuardModel``\(path, input, acceptingValue, kind, provenance) extensible predicate by updating a data extension file.
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/rust-all
+        extensible: barrierGuardModel
+      data:
+        - ["my_crate::validate::is_safe_path", "Argument[0]", "true", "path-injection", "manual"]
+
+Since we are adding a barrier guard, we need to add a tuple to the ``barrierGuardModel`` extensible predicate.
+
+- The first value ``my_crate::validate::is_safe_path`` is the canonical path of the function.
+- The second value ``Argument[0]`` is the access path to the input whose flow is blocked. In this case, the first argument to the function (``user_path`` in the example).
+- The third value ``true`` is the accepting value of the barrier guard. This is the value that the conditional check must return for the barrier to apply. In this case, when ``is_safe_path`` returns ``true``, the input is considered safe.
+- The fourth value ``path-injection`` is the kind of the barrier guard. The barrier guard kind must match the kind used in the query where the barrier guard should take effect. In this case, it matches the ``path-injection`` sink kind used by tainted path queries.
+- The fifth value ``manual`` is the provenance of the barrier guard.
+
 .. _threat-models-rust:
 
 Threat models
@@ -417,6 +488,49 @@ Example:
         extensible: neutralModel
       data:
         - ["<core::option::Option>::map", "sink", "manual"]
+
+barrierModel(path, output, kind, provenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Adds a new barrier that stops the flow of taint at the specified element.
+
+- **path**: Canonical path of the function or method.
+- **output**: Access path leading to the output of the barrier (the value that is considered sanitized).
+- **kind**: Kind of barrier to add. The barrier kind must match the kind used in the query where the barrier should take effect.
+- **provenance**: Origin of the model. Use ``manual`` for custom models.
+
+Example:
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/rust-all
+        extensible: barrierModel
+      data:
+        - ["my_crate::sanitize::escape_sql", "ReturnValue", "sql-injection", "manual"]
+
+barrierGuardModel(path, input, acceptingValue, kind, provenance)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Adds a new barrier guard that stops the flow of taint when a conditional check is performed on data.
+
+- **path**: Canonical path of the function or method.
+- **input**: Access path to the input whose flow is blocked.
+- **acceptingValue**: The value that the conditional check must return for the barrier to apply. Usually ``"true"`` or ``"false"``.
+- **kind**: Kind of barrier guard to add. The barrier guard kind must match the kind used in the query where the barrier guard should take effect.
+- **provenance**: Origin of the model. Use ``manual`` for custom models.
+
+Example:
+
+.. code-block:: yaml
+
+  extensions:
+    - addsTo:
+        pack: codeql/rust-all
+        extensible: barrierGuardModel
+      data:
+        - ["my_crate::validate::is_safe_path", "Argument[0]", "true", "path-injection", "manual"]
 
 Access paths
 ------------
