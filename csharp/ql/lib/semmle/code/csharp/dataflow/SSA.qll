@@ -3,12 +3,14 @@
  */
 
 import csharp
+private import internal.SsaImpl as SsaImpl
+import SsaImpl::Ssa_
 
 /**
  * Provides classes for working with static single assignment (SSA) form.
  */
 module Ssa {
-  private import internal.SsaImpl as SsaImpl
+  import SsaImpl::Ssa_
 
   pragma[nomagic]
   private predicate assignableDefinitionLocalScopeVariable(

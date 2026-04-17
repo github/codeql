@@ -43,6 +43,39 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Location, BasicBl
 
 import SsaImplCommon::Make<Location, Cfg, SsaImplInput> as Impl
 
+private module SsaInput implements Impl::SsaInputSig {
+  private import csharp as CS
+
+  class Expr = CS::Expr;
+
+  class Parameter = CS::Parameter;
+
+  class VariableWrite extends AssignableDefinition {
+    Expr asExpr() { result = this.getExpr() }
+
+    Expr getValue() { result = this.getSource() }
+
+    predicate isParameterInit(Parameter p) { this.(ImplicitParameterDefinition).getParameter() = p }
+  }
+
+  predicate explicitWrite(VariableWrite w, BasicBlock bb, int i, SsaImplInput::SourceVariable v) {
+    exists(AssignableDefinition ad | variableDefinition(bb, i, v, ad) |
+      w = ad or
+      w = getASameOutRefDefAfter(v, ad)
+    )
+    or
+    exists(Parameter p |
+      implicitEntryDefinition(bb, v) and
+      i = -1 and
+      p = v.getAssignable() and
+      pragma[only_bind_out](p.getCallable()) = pragma[only_bind_out](v.getEnclosingCallable()) and
+      w.isParameterInit(p)
+    )
+  }
+}
+
+module Ssa_ = Impl::MakeSsa<SsaInput>;
+
 class Definition = Impl::Definition;
 
 class WriteDefinition = Impl::WriteDefinition;
