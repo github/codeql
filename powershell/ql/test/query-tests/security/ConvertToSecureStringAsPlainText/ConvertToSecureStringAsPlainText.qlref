@@ -1,1 +1,2 @@
-experimental/ConvertToSecureStringAsPlainText.ql
+query: experimental/ConvertToSecureStringAsPlainText.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

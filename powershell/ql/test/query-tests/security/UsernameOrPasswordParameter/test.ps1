@@ -4,8 +4,8 @@ function Test-Script
     Param
     (
         [String]
-        $Username,
+        $Username, # $ Alert
         [SecureString]
-        $Password
+        $Password # $ Alert
     )
 }

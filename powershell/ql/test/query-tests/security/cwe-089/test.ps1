@@ -1,12 +1,12 @@
-$userinput = Read-Host "Please enter a value"
+$userinput = Read-Host "Please enter a value" # $ Source
 
 # Example using Invoke-Sqlcmd with string interpolation
 $query = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'"
-Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query # BAD
+Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query # $ Alert
 
 # Example using Invoke-Sqlcmd with string concatenation
 $query = "SELECT * FROM MyTable WHERE " + $userinput
-Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query # BAD
+Invoke-Sqlcmd -ServerInstance "MyServer" -Database "MyDatabase" -Query $query # $ Alert
 
 #Example using System.Data.SqlClient
 $connection = New-Object System.Data.SqlClient.SqlConnection
@@ -14,7 +14,7 @@ $connection.ConnectionString = "Server=MyServer;Database=MyDatabase;"
 $connection.Open()
 
 $command = $connection.CreateCommand()
-$command.CommandText = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'" # BAD
+$command.CommandText = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'" # $ Alert
 $reader = $command.ExecuteReader()
 $reader.Close()
 $connection.Close()
@@ -25,7 +25,7 @@ $connection.ConnectionString = "Provider=SQLOLEDB;Data Source=MyServer;Initial C
 $connection.Open()
 
 $command = $connection.CreateCommand()
-$command.CommandText = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'" # BAD
+$command.CommandText = "SELECT * FROM MyTable WHERE MyColumn = '$userinput'" # $ Alert
 $reader = $command.ExecuteReader()
 $reader.Close()
 $connection.Close()
@@ -78,7 +78,7 @@ $QueryConn2 = @{
     Query = "SELECT * FROM Customers WHERE id = $userinput"
 }
 
-Invoke-Sqlcmd @QueryConn2 # BAD
+Invoke-Sqlcmd @QueryConn2 # $ Alert
 
 function TakesTypedParameters([int]$i, [long]$l, [float]$f, [double]$d, [decimal]$dec, [char]$c, [bool]$b, [datetime]$dt) {
     $query1 = "SELECT * FROM MyTable WHERE MyColumn = '$i'"
@@ -122,7 +122,7 @@ function With-Validation() {
     )
 
     Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q $validated # GOOD
-    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q "SELECT * FROM Customers where id = $($unvalidated)" # BAD
+    Invoke-Sqlcmd -unknown $userinput -ServerInstance "MyServer" -Database "MyDatabase" -q "SELECT * FROM Customers where id = $($unvalidated)" # $ Alert
 }
 
 With-Validation $userinput $userinput

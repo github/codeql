@@ -1,1 +1,2 @@
-queries/security/cwe-327/WeakSymmetricAlgorithm.ql
+query: queries/security/cwe-327/WeakSymmetricAlgorithm.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

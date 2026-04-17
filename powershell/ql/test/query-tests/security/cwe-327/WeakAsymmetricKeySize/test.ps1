@@ -3,13 +3,13 @@
 # ===================================================================
 
 # --- Case 1: RSA.Create with 1024-bit key ---
-$rsa = [System.Security.Cryptography.RSA]::Create(1024) # BAD
+$rsa = [System.Security.Cryptography.RSA]::Create(1024) # $ Alert
 
 # --- Case 2: RSA.Create with 512-bit key ---
-$rsa = [System.Security.Cryptography.RSA]::Create(512) # BAD
+$rsa = [System.Security.Cryptography.RSA]::Create(512) # $ Alert
 
 # --- Case 3: RSACryptoServiceProvider with 1024-bit key via ::new() ---
-$rsa = [System.Security.Cryptography.RSACryptoServiceProvider]::new(1024) # BAD
+$rsa = [System.Security.Cryptography.RSACryptoServiceProvider]::new(1024) # $ Alert
 
 # ===================================================================
 # ========== TRUE NEGATIVES (should NOT trigger alert) ==============

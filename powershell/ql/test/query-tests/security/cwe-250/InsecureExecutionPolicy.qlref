@@ -1,1 +1,2 @@
-queries/security/cwe-250/InsecureExecutionPolicy.ql
+query: queries/security/cwe-250/InsecureExecutionPolicy.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

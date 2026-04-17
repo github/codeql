@@ -24,7 +24,7 @@ function Test-PasswordDeriveBytesCryptDeriveKey {
     $pdb = New-Object System.Security.Cryptography.PasswordDeriveBytes($password, $salt)
 
     try {
-        $key = $pdb.CryptDeriveKey("TripleDES", "SHA1", 192, $iv)
+        $key = $pdb.CryptDeriveKey("TripleDES", "SHA1", 192, $iv) # $ Alert
         return $key
     }
     catch {
@@ -53,7 +53,7 @@ function Test-Rfc2898DeriveBytes {
     $kdf = New-Object System.Security.Cryptography.Rfc2898DeriveBytes($password, $salt)
     
     try {
-        $key = $kdf.CryptDeriveKey("TripleDES", "SHA1", 192, $iv)
+        $key = $kdf.CryptDeriveKey("TripleDES", "SHA1", 192, $iv) # $ Alert
         return $key
     }
     catch {

@@ -2,19 +2,19 @@
 
 #Bad Examples
 
-Set-SmbServerConfiguration -Smb2DialectMin None
+Set-SmbServerConfiguration -Smb2DialectMin None # $ Alert
 
-Set-SmbClientConfiguration -Smb2DialectMin SMB210
+Set-SmbClientConfiguration -Smb2DialectMin SMB210 # $ Alert
 
-Set-SmbServerConfiguration -encryptdata $false -rejectunencryptedaccess $false
+Set-SmbServerConfiguration -encryptdata $false -rejectunencryptedaccess $false # $ Alert Alert
 
-Set-SmbClientConfiguration -RequireEncryption $false
+Set-SmbClientConfiguration -RequireEncryption $false # $ Alert
 
-Set-SMbClientConfiguration -BlockNTLM $false 
+Set-SMbClientConfiguration -BlockNTLM $false # $ Alert
 
-Set-SMbClientConfiguration -BlockNTLM $false -RequireEncryption $false -Smb2DialectMin SMB210 
+Set-SMbClientConfiguration -BlockNTLM $false -RequireEncryption $false -Smb2DialectMin SMB210 # $ Alert Alert Alert
 
-Set-SmbServerConfiguration -Smb2DialectMin None -encryptdata $false -rejectunencryptedaccess $false
+Set-SmbServerConfiguration -Smb2DialectMin None -encryptdata $false -rejectunencryptedaccess $false # $ Alert Alert Alert
 
 #Good Examples
 

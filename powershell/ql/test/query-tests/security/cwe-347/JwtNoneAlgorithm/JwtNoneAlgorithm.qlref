@@ -1,1 +1,2 @@
-queries/security/cwe-347/JwtNoneAlgorithm.ql
+query: queries/security/cwe-347/JwtNoneAlgorithm.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
