@@ -173,44 +173,251 @@ class NeverTimerAnnotation extends TNeverAnnotation, TimerAnnotation {
 }
 
 /**
- * A CFG node corresponding to a timer annotation.
+ * Signature module defining the CFG interface needed by evaluation-order tests.
+ * This allows the test utilities to be instantiated with different CFG implementations.
  */
-class TimerCfgNode extends ControlFlowNode {
-  private TimerAnnotation annot;
+signature module EvalOrderCfgSig {
+  /** A control flow node. */
+  class CfgNode {
+    /** Gets a textual representation of this node. */
+    string toString();
 
-  TimerCfgNode() { annot.getExpr() = this.getNode() }
+    /** Gets the location of this node. */
+    Location getLocation();
 
-  /** Gets a timestamp value from this annotation. */
-  int getATimestamp() { result = annot.getATimestamp() }
+    /** Gets the AST node corresponding to this CFG node, if any. */
+    AstNode getNode();
 
-  /** Gets the source expression for timestamp value `ts`. */
-  IntegerLiteral getTimestampExpr(int ts) { result = annot.getTimestampExpr(ts) }
+    /** Gets a successor of this CFG node (including exceptional). */
+    CfgNode getASuccessor();
 
-  /** Gets the test function this annotation belongs to. */
-  TestFunction getTestFunction() { result = annot.getTestFunction() }
+    /** Gets an exceptional successor of this CFG node. */
+    CfgNode getAnExceptionalSuccessor();
 
-  /** Holds if this is a dead-code annotation. */
-  predicate isDead() { annot.isDead() }
+    /** Gets the scope containing this CFG node. */
+    Scope getScope();
 
-  /** Holds if this is a never-evaluated annotation. */
-  predicate isNever() { annot.isNever() }
+    /** Gets the basic block containing this CFG node. */
+    BasicBlock getBasicBlock();
+  }
+
+  /** A basic block in the control flow graph. */
+  class BasicBlock {
+    /** Gets the CFG node at position `n` in this basic block. */
+    CfgNode getNode(int n);
+
+    /** Holds if this basic block reaches `bb` (reflexive). */
+    predicate reaches(BasicBlock bb);
+
+    /** Holds if this basic block strictly reaches `bb` (non-reflexive). */
+    predicate strictlyReaches(BasicBlock bb);
+
+    /** Holds if this basic block strictly dominates `bb`. */
+    predicate strictlyDominates(BasicBlock bb);
+  }
+
+  /** Gets the entry CFG node for scope `s`. */
+  CfgNode scopeGetEntryNode(Scope s);
 }
 
 /**
- * Holds if `next` is the next timer annotation reachable from `n` via
- * CFG successors (both normal and exceptional), skipping non-annotated
- * intermediaries within the same scope.
+ * Parameterised module providing CFG-dependent utilities for evaluation-order tests.
+ * Instantiate with a specific CFG implementation to get `TimerCfgNode` and related predicates.
  */
-predicate nextTimerAnnotation(ControlFlowNode n, TimerCfgNode next) {
-  next = n.getASuccessor() and
-  next.getScope() = n.getScope()
-  or
-  exists(ControlFlowNode mid |
-    mid = n.getASuccessor() and
-    not mid instanceof TimerCfgNode and
-    mid.getScope() = n.getScope() and
-    nextTimerAnnotation(mid, next)
-  )
+module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
+  /** The CFG node type from the underlying implementation. */
+  final class CfgNode = Input::CfgNode;
+
+  /** The basic block type from the underlying implementation (named to avoid clash with `python::BasicBlock`). */
+  final class CfgBasicBlock = Input::BasicBlock;
+
+  /** Gets the entry CFG node for scope `s`. */
+  CfgNode scopeGetEntryNode(Scope s) { result = Input::scopeGetEntryNode(s) }
+
+  /**
+   * A CFG node corresponding to a timer annotation.
+   */
+  class TimerCfgNode extends CfgNode {
+    private TimerAnnotation annot;
+
+    TimerCfgNode() { annot.getExpr() = this.getNode() }
+
+    /** Gets a timestamp value from this annotation. */
+    int getATimestamp() { result = annot.getATimestamp() }
+
+    /** Gets the source expression for timestamp value `ts`. */
+    IntegerLiteral getTimestampExpr(int ts) { result = annot.getTimestampExpr(ts) }
+
+    /** Gets the test function this annotation belongs to. */
+    TestFunction getTestFunction() { result = annot.getTestFunction() }
+
+    /** Holds if this is a dead-code annotation. */
+    predicate isDead() { annot.isDead() }
+
+    /** Holds if this is a never-evaluated annotation. */
+    predicate isNever() { annot.isNever() }
+  }
+
+  /**
+   * Holds if `next` is the next timer annotation reachable from `n` via
+   * CFG successors (both normal and exceptional), skipping non-annotated
+   * intermediaries within the same scope.
+   */
+  predicate nextTimerAnnotation(CfgNode n, TimerCfgNode next) {
+    next = n.getASuccessor() and
+    next.getScope() = n.getScope()
+    or
+    exists(CfgNode mid |
+      mid = n.getASuccessor() and
+      not mid instanceof TimerCfgNode and
+      mid.getScope() = n.getScope() and
+      nextTimerAnnotation(mid, next)
+    )
+  }
+
+  /** CFG-dependent test predicates, one per evaluation-order query. */
+  module CfgTests {
+    /**
+     * Holds if live annotation `a` in function `f` is unreachable from
+     * the function entry in the CFG.
+     */
+    predicate allLiveReachable(TimerCfgNode a, TestFunction f) {
+      not a.isDead() and
+      f = a.getTestFunction() and
+      a.getScope() = f and
+      not scopeGetEntryNode(f).getBasicBlock().reaches(a.getBasicBlock())
+    }
+
+    /**
+     * Holds if annotated node `a` is followed by unannotated `succ` in the
+     * same basic block.
+     */
+    predicate basicBlockAnnotationGap(TimerCfgNode a, CfgNode succ) {
+      exists(CfgBasicBlock bb, int i |
+        a = bb.getNode(i) and
+        succ = bb.getNode(i + 1)
+      ) and
+      not succ instanceof TimerCfgNode and
+      not isUnannotatable(succ.getNode()) and
+      not isTimerMechanism(succ.getNode(), a.getTestFunction()) and
+      not exists(a.getAnExceptionalSuccessor()) and
+      succ.getNode() instanceof Expr
+    }
+
+    /**
+     * Holds if annotations `a` and `b` appear in the same basic block with
+     * `a` before `b`, but `a`'s minimum timestamp is not less than `b`'s.
+     */
+    predicate basicBlockOrdering(TimerCfgNode a, TimerCfgNode b, int minA, int minB) {
+      exists(CfgBasicBlock bb, int i, int j | a = bb.getNode(i) and b = bb.getNode(j) and i < j) and
+      minA = min(a.getATimestamp()) and
+      minB = min(b.getATimestamp()) and
+      minA >= minB
+    }
+
+    /**
+     * Holds if function `f` has an annotation in a nested scope
+     * (generator, async function, comprehension, lambda).
+     */
+    private predicate hasNestedScopeAnnotation(TestFunction f) {
+      exists(TimerAnnotation a |
+        a.getTestFunction() = f and
+        a.getExpr().getScope() != f
+      )
+    }
+
+    /**
+     * Holds if annotation `ann` with timestamp `a` has no consecutive
+     * successor (expected `a + 1`) in the CFG.
+     */
+    predicate consecutiveTimestamps(TimerAnnotation ann, int a) {
+      not hasNestedScopeAnnotation(ann.getTestFunction()) and
+      not ann.isDead() and
+      a = ann.getATimestamp() and
+      not exists(TimerCfgNode x, TimerCfgNode y |
+        ann.getExpr() = x.getNode() and
+        nextTimerAnnotation(x, y) and
+        (a + 1) = y.getATimestamp()
+      ) and
+      // Exclude the maximum timestamp in the function (it has no successor)
+      not a =
+        max(TimerAnnotation other |
+          other.getTestFunction() = ann.getTestFunction()
+        |
+          other.getATimestamp()
+        )
+    }
+
+    /**
+     * Holds if the expression annotated with `t.never` is reachable from
+     * its scope's entry.
+     */
+    predicate neverReachable(NeverTimerAnnotation ann) {
+      exists(CfgNode n, Scope s |
+        n.getNode() = ann.getExpr() and
+        s = n.getScope() and
+        (
+          // Reachable via inter-block path (includes same block)
+          scopeGetEntryNode(s).getBasicBlock().reaches(n.getBasicBlock())
+          or
+          // In same block as entry but at a later index
+          exists(CfgBasicBlock bb, int i, int j |
+            bb.getNode(i) = scopeGetEntryNode(s) and bb.getNode(j) = n and i < j
+          )
+        )
+      )
+    }
+
+    /**
+     * Holds if consecutive annotated nodes `a` -> `b` have backward time
+     * flow (`minA >= maxB`).
+     */
+    predicate noBackwardFlow(TimerCfgNode a, TimerCfgNode b, int minA, int maxB) {
+      nextTimerAnnotation(a, b) and
+      not a.isDead() and
+      not b.isDead() and
+      minA = min(a.getATimestamp()) and
+      maxB = max(b.getATimestamp()) and
+      minA >= maxB
+    }
+
+    /**
+     * Holds if annotations `a` and `b` share timestamp `ts` but `a`
+     * can reach `b` in the CFG.
+     */
+    predicate noSharedReachable(TimerCfgNode a, TimerCfgNode b, int ts) {
+      a != b and
+      not a.isDead() and
+      not b.isDead() and
+      a.getTestFunction() = b.getTestFunction() and
+      ts = a.getATimestamp() and
+      ts = b.getATimestamp() and
+      (
+        a.getBasicBlock().strictlyReaches(b.getBasicBlock())
+        or
+        exists(CfgBasicBlock bb, int i, int j | a = bb.getNode(i) and b = bb.getNode(j) and i < j)
+      )
+    }
+
+    /**
+     * Holds if consecutive single-timestamp annotations `a` -> `b` on a
+     * forward edge have `maxA >= minB`.
+     */
+    predicate strictForward(TimerCfgNode a, TimerCfgNode b, int maxA, int minB) {
+      nextTimerAnnotation(a, b) and
+      not a.isDead() and
+      not b.isDead() and
+      // Only apply to non-loop code (single timestamps on both sides)
+      strictcount(a.getATimestamp()) = 1 and
+      strictcount(b.getATimestamp()) = 1 and
+      // Forward edge: B does not strictly dominate A (excludes loop back-edges
+      // but still checks same-basic-block pairs)
+      not b.getBasicBlock().strictlyDominates(a.getBasicBlock()) and
+      maxA = max(a.getATimestamp()) and
+      minB = min(b.getATimestamp()) and
+      maxA >= minB
+    }
+  }
 }
 
 /**

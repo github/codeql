@@ -7,11 +7,13 @@
 
 import python
 import TimerUtils
+import OldCfgImpl
+
+private module Utils = EvalOrderCfgUtils<OldCfg>;
+
+private import Utils
+private import Utils::CfgTests
 
 from TimerCfgNode a, TestFunction f
-where
-  not a.isDead() and
-  f = a.getTestFunction() and
-  a.getScope() = f and
-  not f.getEntryNode().getBasicBlock().reaches(a.getBasicBlock())
+where allLiveReachable(a, f)
 select a, "Unreachable live annotation; entry of $@ does not reach this node", f, f.getName()
