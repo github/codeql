@@ -6,21 +6,13 @@
 
 import python
 import TimerUtils
+import OldCfgImpl
+
+private module Utils = EvalOrderCfgUtils<OldCfg>;
+
+private import Utils::CfgTests
 
 from NeverTimerAnnotation ann
-where
-  exists(ControlFlowNode n, Scope s |
-    n.getNode() = ann.getExpr() and
-    s = n.getScope() and
-    (
-      // Reachable via inter-block path (includes same block)
-      s.getEntryNode().getBasicBlock().reaches(n.getBasicBlock())
-      or
-      // In same block as entry but at a later index
-      exists(BasicBlock bb, int i, int j |
-        bb.getNode(i) = s.getEntryNode() and bb.getNode(j) = n and i < j
-      )
-    )
-  )
+where neverReachable(ann)
 select ann, "Node annotated with t.never is reachable in $@", ann.getTestFunction(),
   ann.getTestFunction().getName()

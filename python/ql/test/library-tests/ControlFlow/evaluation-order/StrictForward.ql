@@ -6,20 +6,14 @@
 
 import python
 import TimerUtils
+import OldCfgImpl
+
+private module Utils = EvalOrderCfgUtils<OldCfg>;
+
+private import Utils
+private import Utils::CfgTests
 
 from TimerCfgNode a, TimerCfgNode b, int maxA, int minB
-where
-  nextTimerAnnotation(a, b) and
-  not a.isDead() and
-  not b.isDead() and
-  // Only apply to non-loop code (single timestamps on both sides)
-  strictcount(a.getATimestamp()) = 1 and
-  strictcount(b.getATimestamp()) = 1 and
-  // Forward edge: B does not strictly dominate A (excludes loop back-edges
-  // but still checks same-basic-block pairs)
-  not b.getBasicBlock().strictlyDominates(a.getBasicBlock()) and
-  maxA = max(a.getATimestamp()) and
-  minB = min(b.getATimestamp()) and
-  maxA >= minB
+where strictForward(a, b, maxA, minB)
 select a, "Strict forward violation: $@ flows to $@", a.getTimestampExpr(maxA), "timestamp " + maxA,
   b.getTimestampExpr(minB), "timestamp " + minB
