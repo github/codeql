@@ -1,5 +1,5 @@
 /**
- * @name Unpinned tag for a non-immutable Action in workflow
+ * @name Unpinned tag for a non-immutable Action in workflow or composite action
  * @description Using a tag for a non-immutable Action that is not pinned to a commit can lead to executing an untrusted Action through a supply chain attack.
  * @kind problem
  * @security-severity 5.0
