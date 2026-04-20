@@ -33,64 +33,80 @@ private module Ast {
   }
 
   class StmtNode extends Node, TStmtNode {
+    private Py::Stmt stmt;
+
+    StmtNode() { this = TStmtNode(stmt) }
+
     /** Gets the underlying Python statement. */
-    Py::Stmt asStmt() { this = TStmtNode(result) }
+    Py::Stmt asStmt() { result = stmt }
 
-    override string toString() { result = this.asStmt().toString() }
+    override string toString() { result = stmt.toString() }
 
-    override Py::Location getLocation() { result = this.asStmt().getLocation() }
+    override Py::Location getLocation() { result = stmt.getLocation() }
 
     /** Gets the enclosing scope of this statement. */
-    override ScopeNode getEnclosingScope() { result.asScope() = this.asStmt().getScope() }
+    override ScopeNode getEnclosingScope() { result.asScope() = stmt.getScope() }
   }
 
   class ExprNode extends Node, TExprNode {
+    private Py::Expr expr;
+
+    ExprNode() { this = TExprNode(expr) }
+
     /** Gets the underlying Python expression. */
-    Py::Expr asExpr() { this = TExprNode(result) }
+    Py::Expr asExpr() { result = expr }
 
-    override string toString() { result = this.asExpr().toString() }
+    override string toString() { result = expr.toString() }
 
-    override Py::Location getLocation() { result = this.asExpr().getLocation() }
+    override Py::Location getLocation() { result = expr.getLocation() }
 
     /** Gets the enclosing scope of this expression. */
-    override ScopeNode getEnclosingScope() { result.asScope() = this.asExpr().getScope() }
+    override ScopeNode getEnclosingScope() { result.asScope() = expr.getScope() }
   }
 
   class ScopeNode extends Node, TScopeNode {
+    private Py::Scope scope;
+
+    ScopeNode() { this = TScopeNode(scope) }
+
     /** Gets the underlying Python scope. */
-    Py::Scope asScope() { this = TScopeNode(result) }
+    Py::Scope asScope() { result = scope }
 
-    override string toString() { result = this.asScope().toString() }
+    override string toString() { result = scope.toString() }
 
-    override Py::Location getLocation() { result = this.asScope().getLocation() }
+    override Py::Location getLocation() { result = scope.getLocation() }
 
     /** Gets the body of this scope. */
-    StmtListNode getBody() { result.asStmtList() = this.asScope().getBody() }
+    StmtListNode getBody() { result.asStmtList() = scope.getBody() }
 
     /** Gets the enclosing scope of this scope, if any. */
-    override ScopeNode getEnclosingScope() { result.asScope() = this.asScope().getEnclosingScope() }
+    override ScopeNode getEnclosingScope() { result.asScope() = scope.getEnclosingScope() }
   }
 
   class StmtListNode extends Node, TStmtListNode {
-    /** Gets the underlying Python statement list. */
-    Py::StmtList asStmtList() { this = TStmtListNode(result) }
+    private Py::StmtList stmtList;
 
-    override string toString() { result = this.asStmtList().toString() }
+    StmtListNode() { this = TStmtListNode(stmtList) }
+
+    /** Gets the underlying Python statement list. */
+    Py::StmtList asStmtList() { result = stmtList }
+
+    override string toString() { result = stmtList.toString() }
 
     // StmtList has no native location; approximate with first item's location.
-    override Py::Location getLocation() { result = this.asStmtList().getItem(0).getLocation() }
+    override Py::Location getLocation() { result = stmtList.getItem(0).getLocation() }
 
     /** Gets the `n`th (zero-based) statement in this block. */
-    StmtNode getItem(int n) { result.asStmt() = this.asStmtList().getItem(n) }
+    StmtNode getItem(int n) { result.asStmt() = stmtList.getItem(n) }
 
     /** Gets the last statement in this block. */
-    StmtNode getLastItem() { result.asStmt() = this.asStmtList().getLastItem() }
+    StmtNode getLastItem() { result.asStmt() = stmtList.getLastItem() }
 
     /** Gets the enclosing scope of this statement list. */
     override ScopeNode getEnclosingScope() {
-      result.asScope() = this.asStmtList().getParent().(Py::Scope)
+      result.asScope() = stmtList.getParent().(Py::Scope)
       or
-      result.asScope() = this.asStmtList().getParent().(Py::Stmt).getScope()
+      result.asScope() = stmtList.getParent().(Py::Stmt).getScope()
     }
   }
 
