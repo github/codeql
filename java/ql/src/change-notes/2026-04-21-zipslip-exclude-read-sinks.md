@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* The `java/zipslip` query no longer reports archive entry names that flow only to read-only path sinks such as `ClassLoader.getResource`, `FileInputStream`, and `FileReader`. The query now restricts its sinks to the `path-injection` kind and deliberately excludes the new `path-injection[read]` sub-kind, matching the Zip Slip threat model of unsafe archive extraction.

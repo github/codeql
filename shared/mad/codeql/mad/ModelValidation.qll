@@ -54,6 +54,11 @@ module KindValidation<KindValidationConfigSig Config> {
       this.matches([
           // shared
           "credentials-%", "encryption-%", "qltest%", "test-%", "regex-use%",
+          // shared: path-injection[read] identifies sinks that only read from a path
+          // (e.g. ClassLoader.getResource, FileInputStream, File.exists). Queries such
+          // as java/zipslip that only care about write/extraction deliberately exclude
+          // this sub-kind.
+          "path-injection[%]",
           // Swift-only currently, but may be shared in the future
           "%string-%length", "weak-hash-input-%",
           // Go-only currently, but may be shared in the future

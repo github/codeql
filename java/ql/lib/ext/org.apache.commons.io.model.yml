@@ -36,7 +36,7 @@ extensions:
       - ["org.apache.commons.io", "FileUtils", True, "copyInputStreamToFile", "(InputStream,File)", "", "Argument[1]", "path-injection", "manual"]
       - ["org.apache.commons.io", "FileUtils", True, "copyToFile", "(InputStream,File)", "", "Argument[0]", "file-content-store", "ai-manual"]
       - ["org.apache.commons.io", "FileUtils", True, "copyToFile", "(InputStream,File)", "", "Argument[1]", "path-injection", "manual"]
-      - ["org.apache.commons.io", "FileUtils", True, "openInputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["org.apache.commons.io", "FileUtils", True, "openInputStream", "(File)", "", "Argument[0]", "path-injection[read]", "ai-manual"]
       - ["org.apache.commons.io", "FileUtils", True, "delete", "(File)", "", "Argument[0]", "path-injection", "manual"]
       - ["org.apache.commons.io", "FileUtils", True, "deleteDirectory", "(File)", "", "Argument[0]", "path-injection", "manual"]
       - ["org.apache.commons.io", "FileUtils", True, "deleteQuietly", "(File)", "", "Argument[0]", "path-injection", "manual"]

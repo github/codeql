@@ -60,4 +60,16 @@ public class ZipTest {
       throw new Exception();
     OutputStream os = Files.newOutputStream(target); // OK
   }
+
+  // Regression for https://github.com/github/codeql/issues/21606: archive entry
+  // names flowing into read-only classpath/resource lookups are outside the
+  // Zip Slip threat model.
+  public void m7(ZipEntry entry) throws Exception {
+    String name = entry.getName();
+    ClassLoader.getSystemResources(name); // OK - read-only resource lookup
+    getClass().getResource(name); // OK - read-only resource lookup
+    getClass().getResourceAsStream(name); // OK - read-only resource lookup
+    new FileInputStream(name); // OK - read-only file open
+    new FileReader(name); // OK - read-only file open
+  }
 }
