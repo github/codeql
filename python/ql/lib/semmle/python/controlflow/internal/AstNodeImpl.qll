@@ -390,3 +390,40 @@ module AstSigImpl implements AstSig<Py::Location> {
     boolean getValue() { none() }
   }
 }
+
+private module Cfg0 = Make0<Py::Location, AstSigImpl>;
+
+private import Cfg0
+
+private module Cfg1 = Make1<Input>;
+
+private import Cfg1
+
+private module Cfg2 = Make2<Input>;
+
+private import Cfg2
+
+private module Input implements InputSig1, InputSig2 {
+  predicate cfgCachedStageRef() { CfgCachedStage::ref() }
+
+  private newtype TLabel = TNone()
+
+  class Label extends TLabel {
+    string toString() { result = "label" }
+  }
+
+  predicate beginAbruptCompletion(
+    AstSigImpl::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
+  ) {
+    none()
+  }
+
+  predicate endAbruptCompletion(AstSigImpl::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
+    none()
+  }
+
+  predicate step(PreControlFlowNode n1, PreControlFlowNode n2) { none() }
+}
+
+import CfgCachedStage
+import Public
