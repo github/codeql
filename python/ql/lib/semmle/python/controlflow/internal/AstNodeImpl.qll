@@ -762,6 +762,20 @@ module AstSigImpl implements AstSig<Py::Location> {
       result = t.getHandler(index - 1) and index >= 1
     )
     or
+    // MatchStmt: subject (0), cases (1..n)
+    exists(Ast::MatchStmtNode m | m = n |
+      index = 0 and result = m.getSubject()
+      or
+      result = m.getCase(index - 1) and index >= 1
+    )
+    or
+    // Case: guard (0), body (1)
+    exists(Ast::CaseNode c | c = n |
+      index = 0 and result = c.getGuard()
+      or
+      index = 1 and result = c.getBody()
+    )
+    or
     // CatchClause (except handler): type (0), name (1), body (2)
     exists(Ast::ExceptionHandlerNode h | h = n |
       index = 0 and result = h.getType()
