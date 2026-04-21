@@ -532,7 +532,7 @@ The following tokens are commonly used:
 - **Parameter[**\ ``n``\ **]** selects the ``n``-th parameter of a callback. May be a range of the form ``x..y`` (inclusive) and/or a comma-separated list.
 - **ReturnValue** selects the return value of a function call.
 - **Element** selects an element in a collection (such as a ``Vec``, ``HashMap``, or iterator).
-- **Field[**\ ``type::field``\ **]** selects a named field of a struct or enum variant. For example, ``Field[core::option::Option::Some(0)]`` selects the first positional field of the ``Some`` variant.
+- **Field[**\ ``type::field``\ **]** selects a named field of a struct or enum variant. For example, ``Field[ihex::Record::Data::value]`` selects the field ``value`` of the ``ihex::Record::Data`` variant.
 - **Field[**\ ``type(i)``\ **]** selects the ``i``-th positional field of a tuple struct or tuple enum variant. For example, ``Field[core::result::Result::Ok(0)]`` selects the value inside ``Ok``.
 - **Field[**\ ``i``\ **]** selects the ``i``-th element of a tuple.
 - **Reference** follows through a reference (``&T`` or ``&mut T``) to reach the referenced value.
