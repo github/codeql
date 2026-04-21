@@ -271,6 +271,25 @@ private module Ast {
     ExprNode getRight() { result.asExpr() = binExpr.getRight() }
   }
 
+  /** A call expression (`func(args...)`). */
+  class CallNode extends ExprNode {
+    private Py::Call call;
+
+    CallNode() { call = this.asExpr() }
+
+    ExprNode getFunc() { result.asExpr() = call.getFunc() }
+
+    ExprNode getPositionalArg(int n) { result.asExpr() = call.getPositionalArg(n) }
+
+    int getNumberOfPositionalArgs() { result = count(call.getAPositionalArg()) }
+
+    ExprNode getKeywordValue(int n) {
+      result.asExpr() = call.getNamedArg(n).(Py::Keyword).getValue()
+    }
+
+    int getNumberOfNamedArgs() { result = count(call.getANamedArg()) }
+  }
+
   /** A subscript expression (`obj[index]`). */
   class SubscriptNode extends ExprNode {
     private Py::Subscript sub;
@@ -510,6 +529,16 @@ module AstSigImpl implements AstSig<Py::Location> {
       index = 1 and result = ie.getBody()
       or
       index = 2 and result = ie.getOrelse()
+    )
+    or
+    // Call: func (0), positional args (1..n), keyword values (n+1..n+k)
+    exists(Ast::CallNode call | call = n |
+      index = 0 and result = call.getFunc()
+      or
+      result = call.getPositionalArg(index - 1) and index >= 1
+      or
+      result = call.getKeywordValue(index - 1 - call.getNumberOfPositionalArgs()) and
+      index >= 1 + call.getNumberOfPositionalArgs()
     )
     or
     // Python BinaryExpr (arithmetic, bitwise, matmul, etc.): left (0), right (1)
