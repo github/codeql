@@ -249,6 +249,15 @@ private module Ast {
     ExprNode getMsg() { result.asExpr() = assertStmt.getMsg() }
   }
 
+  /** A `delete` statement. */
+  class DeleteNode extends StmtNode {
+    private Py::Delete del;
+
+    DeleteNode() { del = this.asStmt() }
+
+    ExprNode getTarget(int n) { result.asExpr() = del.getTarget(n) }
+  }
+
   /** A `try` statement. */
   class TryNode extends StmtNode {
     private Py::Try tryStmt;
@@ -394,6 +403,86 @@ private module Ast {
     ArithmeticUnaryNode() { unaryExpr = this.asExpr() and not unaryExpr.getOp() instanceof Py::Not }
 
     ExprNode getOperand() { result.asExpr() = unaryExpr.getOperand() }
+  }
+
+  /** A comparison expression (`a < b`, `a < b < c`, etc.). */
+  class CompareNode extends ExprNode {
+    private Py::Compare cmp;
+
+    CompareNode() { cmp = this.asExpr() }
+
+    ExprNode getLeft() { result.asExpr() = cmp.getLeft() }
+
+    ExprNode getComparator(int n) { result.asExpr() = cmp.getComparator(n) }
+  }
+
+  /** A slice expression (`start:stop:step`). */
+  class SliceNode extends ExprNode {
+    private Py::Slice slice;
+
+    SliceNode() { slice = this.asExpr() }
+
+    ExprNode getStart() { result.asExpr() = slice.getStart() }
+
+    ExprNode getStop() { result.asExpr() = slice.getStop() }
+
+    ExprNode getStep() { result.asExpr() = slice.getStep() }
+  }
+
+  /** A starred expression (`*x`). */
+  class StarredNode extends ExprNode {
+    private Py::Starred starred;
+
+    StarredNode() { starred = this.asExpr() }
+
+    ExprNode getValue() { result.asExpr() = starred.getValue() }
+  }
+
+  /** A formatted string literal (`f"...{expr}..."`). */
+  class FstringNode extends ExprNode {
+    private Py::Fstring fstring;
+
+    FstringNode() { fstring = this.asExpr() }
+
+    ExprNode getValue(int n) { result.asExpr() = fstring.getValue(n) }
+  }
+
+  /** A formatted value inside an f-string (`{expr}` or `{expr:spec}`). */
+  class FormattedValueNode extends ExprNode {
+    private Py::FormattedValue fv;
+
+    FormattedValueNode() { fv = this.asExpr() }
+
+    ExprNode getValue() { result.asExpr() = fv.getValue() }
+
+    ExprNode getFormatSpec() { result.asExpr() = fv.getFormatSpec() }
+  }
+
+  /** A `yield` expression. */
+  class YieldNode extends ExprNode {
+    private Py::Yield yield;
+
+    YieldNode() { yield = this.asExpr() }
+
+    ExprNode getValue() { result.asExpr() = yield.getValue() }
+  }
+
+  /** A `yield from` expression. */
+  class YieldFromNode extends ExprNode {
+    private Py::YieldFrom yieldFrom;
+
+    YieldFromNode() { yieldFrom = this.asExpr() }
+
+    ExprNode getValue() { result.asExpr() = yieldFrom.getValue() }
+  }
+
+  /** An `await` expression. */
+  class AwaitNode extends ExprNode {
+    private Py::Await await;
+
+    AwaitNode() { await = this.asExpr() }
+
+    ExprNode getValue() { result.asExpr() = await.getValue() }
   }
 
   /**
@@ -558,6 +647,9 @@ module AstSigImpl implements AstSig<Py::Location> {
       index = 1 and result = a.getMsg()
     )
     or
+    // Delete: targets left to right
+    result = n.(Ast::DeleteNode).getTarget(index)
+    or
     // ThrowStmt (raise): the exception (0), the cause (1)
     exists(Ast::RaiseNode r | r = n |
       index = 0 and result = r.getException()
@@ -633,6 +725,44 @@ module AstSigImpl implements AstSig<Py::Location> {
     or
     // Arithmetic unary (-x, +x, ~x): operand (0)
     index = 0 and result = n.(Ast::ArithmeticUnaryNode).getOperand()
+    or
+    // Compare (a < b < c): left (0), comparators (1..n)
+    exists(Ast::CompareNode cmp | cmp = n |
+      index = 0 and result = cmp.getLeft()
+      or
+      result = cmp.getComparator(index - 1) and index >= 1
+    )
+    or
+    // Slice (start:stop:step): start (0), stop (1), step (2)
+    exists(Ast::SliceNode sl | sl = n |
+      index = 0 and result = sl.getStart()
+      or
+      index = 1 and result = sl.getStop()
+      or
+      index = 2 and result = sl.getStep()
+    )
+    or
+    // Starred (*x): value (0)
+    index = 0 and result = n.(Ast::StarredNode).getValue()
+    or
+    // Fstring: values left to right
+    result = n.(Ast::FstringNode).getValue(index)
+    or
+    // FormattedValue ({expr} or {expr:spec}): value (0), format spec (1)
+    exists(Ast::FormattedValueNode fv | fv = n |
+      index = 0 and result = fv.getValue()
+      or
+      index = 1 and result = fv.getFormatSpec()
+    )
+    or
+    // Yield: value (0)
+    index = 0 and result = n.(Ast::YieldNode).getValue()
+    or
+    // YieldFrom: value (0)
+    index = 0 and result = n.(Ast::YieldFromNode).getValue()
+    or
+    // Await: value (0)
+    index = 0 and result = n.(Ast::AwaitNode).getValue()
     or
     // LogicalNotExpr: operand (0)
     index = 0 and result = n.(Ast::NotExprNode).getOperand()
