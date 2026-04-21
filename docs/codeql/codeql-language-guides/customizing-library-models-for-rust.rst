@@ -568,7 +568,7 @@ Commonly used sink kinds for Rust include:
 
 - **sql-injection**: A sink for SQL injection, such as an argument to ``sqlx::query``.
 - **path-injection**: A sink for path injection in a file system access, such as an argument to ``std::fs::read``.
-- **log-injection**: A sink for log injection, such as an argument to a logging macro.
+- **log-injection**: A sink for log injection, such as an argument to a logging function.
 - **html-injection**: A sink for HTML injection (cross-site scripting), such as a response body.
 - **command-injection**: A sink for command injection, such as an argument to ``std::process::Command``.
 - **request-url**: A sink for server-side request forgery, such as a URL passed to an HTTP client.
