@@ -14,9 +14,12 @@ private class NewBasicBlock = CfgImpl::BasicBlock;
 /** New (shared) CFG implementation of the evaluation-order signature. */
 module NewCfg implements EvalOrderCfgSig {
   class CfgNode instanceof NewControlFlowNode {
-    // Only include the unique representative node for each AST node,
-    // filtering out synthetic before/after/entry/exit/additional nodes.
-    CfgNode() { NewControlFlowNode.super.injects(_) }
+    // Use the post-order representative for each AST node: the "after" node.
+    // For simple leaf nodes this is the merged before/after node. For
+    // post-order expressions this is the TAstNode. For pre-order expressions
+    // (and/or/not/ternary) this uses an AfterValueNode, which places the
+    // expression after its operands — matching the timer test expectations.
+    CfgNode() { NewControlFlowNode.super.isAfter(_) }
 
     string toString() { result = NewControlFlowNode.super.toString() }
 
