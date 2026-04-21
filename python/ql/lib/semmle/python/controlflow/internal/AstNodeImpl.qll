@@ -271,6 +271,30 @@ private module Ast {
     ExprNode getTarget(int n) { result.asExpr() = del.getTarget(n) }
   }
 
+  /** A `match` statement. */
+  class MatchStmtNode extends StmtNode {
+    private Py::MatchStmt matchStmt;
+
+    MatchStmtNode() { matchStmt = this.asStmt() }
+
+    ExprNode getSubject() { result.asExpr() = matchStmt.getSubject() }
+
+    CaseNode getCase(int n) { result.asStmt() = matchStmt.getCase(n) }
+  }
+
+  /** A `case` clause in a match statement. */
+  class CaseNode extends StmtNode {
+    private Py::Case caseStmt;
+
+    CaseNode() { caseStmt = this.asStmt() }
+
+    ExprNode getGuard() { result.asExpr() = caseStmt.getGuard().(Py::Guard).getTest() }
+
+    StmtListNode getBody() { result.asStmtList() = caseStmt.getBody() }
+
+    predicate isWildcard() { caseStmt.getPattern() instanceof Py::MatchWildcardPattern }
+  }
+
   /** A `try` statement. */
   class TryNode extends StmtNode {
     private Py::Try tryStmt;
@@ -1035,31 +1059,33 @@ module AstSigImpl implements AstSig<Py::Location> {
     Stmt getBody() { result = this.(Ast::ExceptionHandlerNode).getBody() }
   }
 
-  // ===== Switch/match — stubs for now =====
-  /** A switch/match statement. Not yet implemented for Python. */
-  class Switch extends AstNode {
-    Switch() { none() }
+  // ===== Switch/match =====
+  /** A `match` statement, mapped to the shared CFG's `Switch`. */
+  class Switch extends Stmt {
+    Switch() { this instanceof Ast::MatchStmtNode }
 
-    Expr getExpr() { none() }
+    Expr getExpr() { result = this.(Ast::MatchStmtNode).getSubject() }
 
-    Case getCase(int index) { none() }
+    Case getCase(int index) { result = this.(Ast::MatchStmtNode).getCase(index) }
 
     Stmt getStmt(int index) { none() }
   }
 
-  /** A case in a switch/match. Not yet implemented for Python. */
-  class Case extends AstNode {
-    Case() { none() }
+  /** A `case` clause in a match statement. */
+  class Case extends Stmt {
+    Case() { this instanceof Ast::CaseNode }
 
     AstNode getAPattern() { none() }
 
-    Expr getGuard() { none() }
+    Expr getGuard() { result = this.(Ast::CaseNode).getGuard() }
 
-    AstNode getBody() { none() }
+    AstNode getBody() { result = this.(Ast::CaseNode).getBody() }
   }
 
-  /** A default case. Not yet implemented for Python. */
-  class DefaultCase extends Case { }
+  /** A wildcard case (`case _:`). */
+  class DefaultCase extends Case {
+    DefaultCase() { this.(Ast::CaseNode).isWildcard() }
+  }
 
   // ===== Expression types =====
   /** A conditional expression (`x if cond else y`). */
