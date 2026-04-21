@@ -228,6 +228,19 @@ private module Ast {
     ExprNode getCause() { result.asExpr() = raise.getCause() }
   }
 
+  /** A `with` statement. */
+  class WithNode extends StmtNode {
+    private Py::With withStmt;
+
+    WithNode() { withStmt = this.asStmt() }
+
+    ExprNode getContextExpr() { result.asExpr() = withStmt.getContextExpr() }
+
+    ExprNode getOptionalVars() { result.asExpr() = withStmt.getOptionalVars() }
+
+    StmtListNode getBody() { result.asStmtList() = withStmt.getBody() }
+  }
+
   /** A `break` statement. */
   class BreakNode extends StmtNode {
     BreakNode() { this.asStmt() instanceof Py::Break }
@@ -649,6 +662,15 @@ module AstSigImpl implements AstSig<Py::Location> {
     or
     // Delete: targets left to right
     result = n.(Ast::DeleteNode).getTarget(index)
+    or
+    // With: context expr (0), optional vars (1), body (2)
+    exists(Ast::WithNode w | w = n |
+      index = 0 and result = w.getContextExpr()
+      or
+      index = 1 and result = w.getOptionalVars()
+      or
+      index = 2 and result = w.getBody()
+    )
     or
     // ThrowStmt (raise): the exception (0), the cause (1)
     exists(Ast::RaiseNode r | r = n |
