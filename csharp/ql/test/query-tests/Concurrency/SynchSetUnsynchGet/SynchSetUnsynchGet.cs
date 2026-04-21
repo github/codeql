@@ -89,4 +89,25 @@ class C1
             lock (mutex) GoodProperty3 = value;
         }
     }
+
+    // GOOD: both getter and setter are locked.
+    int? property2;
+    int? GoodProperty5
+    {
+        get
+        {
+            lock (mutex)
+            {
+                property2 ??= 0;
+                return property2;
+            }
+        }
+        set
+        {
+            lock (mutex)
+            {
+                property2 = value;
+            }
+        }
+    }
 }

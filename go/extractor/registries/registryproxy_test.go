@@ -75,3 +75,59 @@ func TestParseRegistryConfigsMultiple(t *testing.T) {
 		t.Fatalf("Expected `URL` to be `https://proxy.example.com/mod`, but got `%s`", second.URL)
 	}
 }
+
+func TestParseRegistryConfigsMultipleGitSources(t *testing.T) {
+	multiple := parseRegistryConfigsSuccess(t, "[{ \"type\": \"git_source\", \"url\": \"https://github.com/github\" }, { \"type\": \"git_source\", \"url\": \"https://go.googlesource.com/go\" }]")
+
+	if len(multiple) != 2 {
+		t.Fatalf("Expected `parseRegistryConfigs` to return two configurations, but got %d.", len(multiple))
+	}
+
+	first := multiple[0]
+
+	if first.Type != "git_source" {
+		t.Fatalf("Expected `Type` to be `git_source`, but got `%s`", first.Type)
+	}
+
+	if first.URL != "https://github.com/github" {
+		t.Fatalf("Expected `URL` to be `https://github.com/github`, but got `%s`", first.URL)
+	}
+
+	second := multiple[1]
+
+	if second.Type != "git_source" {
+		t.Fatalf("Expected `Type` to be `git_source`, but got `%s`", second.Type)
+	}
+
+	if second.URL != "https://go.googlesource.com/go" {
+		t.Fatalf("Expected `URL` to be `https://go.googlesource.com/go`, but got `%s`", second.URL)
+	}
+}
+
+func TestParseRegistryConfigsMultipleGoProxyServers(t *testing.T) {
+	multiple := parseRegistryConfigsSuccess(t, "[{ \"type\": \"goproxy_server\", \"url\": \"https://proxy.example.com/mod\" }, { \"type\": \"goproxy_server\", \"url\": \"https://goproxy.io\" }]")
+
+	if len(multiple) != 2 {
+		t.Fatalf("Expected `parseRegistryConfigs` to return two configurations, but got %d.", len(multiple))
+	}
+
+	first := multiple[0]
+
+	if first.Type != "goproxy_server" {
+		t.Fatalf("Expected `Type` to be `goproxy_server`, but got `%s`", first.Type)
+	}
+
+	if first.URL != "https://proxy.example.com/mod" {
+		t.Fatalf("Expected `URL` to be `https://proxy.example.com/mod`, but got `%s`", first.URL)
+	}
+
+	second := multiple[1]
+
+	if second.Type != "goproxy_server" {
+		t.Fatalf("Expected `Type` to be `goproxy_server`, but got `%s`", second.Type)
+	}
+
+	if second.URL != "https://goproxy.io" {
+		t.Fatalf("Expected `URL` to be `https://goproxy.io`, but got `%s`", second.URL)
+	}
+}

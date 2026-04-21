@@ -23,7 +23,6 @@ class NonShortCircuit extends BinaryBitwiseOperation {
       or
       this instanceof BitwiseOrExpr
     ) and
-    not exists(AssignBitwiseOperation abo | abo.getExpandedAssignment().getRValue() = this) and
     this.getLeftOperand().getType() instanceof BoolType and
     this.getRightOperand().getType() instanceof BoolType
   }

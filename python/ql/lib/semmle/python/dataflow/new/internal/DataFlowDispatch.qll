@@ -1977,3 +1977,185 @@ private module OutNodes {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
+
+/**
+ * Provides predicates for approximating type properties of user-defined classes
+ * based on their structure (method declarations, base classes).
+ *
+ * This module should _not_ be used in the call graph computation itself, as parts of it may depend
+ * on layers that themselves build upon the call graph (e.g. API graphs).
+ */
+module DuckTyping {
+  private import semmle.python.ApiGraphs
+
+  /**
+   * Holds if `cls` or any of its resolved superclasses declares a method with the given `name`.
+   */
+  predicate hasMethod(Class cls, string name) {
+    cls.getAMethod().getName() = name
+    or
+    hasMethod(getADirectSuperclass(cls), name)
+  }
+
+  /**
+   * Holds if `cls` has a base class that cannot be resolved to a user-defined class
+   * and is not just `object`, meaning it may inherit methods from an unknown class.
+   */
+  predicate hasUnresolvedBase(Class cls) {
+    exists(Expr base | base = cls.getABase() |
+      not base = classTracker(_).asExpr() and
+      not base = API::builtin("object").getAValueReachableFromSource().asExpr()
+    )
+  }
+
+  /**
+   * Holds if `cls` supports the container protocol, i.e. it declares
+   * `__contains__`, `__iter__`, or `__getitem__`.
+   */
+  predicate isContainer(Class cls) {
+    hasMethod(cls, "__contains__") or
+    hasMethod(cls, "__iter__") or
+    hasMethod(cls, "__getitem__")
+  }
+
+  /**
+   * Holds if `cls` supports the iterable protocol, i.e. it declares
+   * `__iter__` or `__getitem__`.
+   */
+  predicate isIterable(Class cls) {
+    hasMethod(cls, "__iter__") or
+    hasMethod(cls, "__getitem__")
+  }
+
+  /**
+   * Holds if `cls` supports the iterator protocol, i.e. it declares
+   * both `__iter__` and `__next__`.
+   */
+  predicate isIterator(Class cls) {
+    hasMethod(cls, "__iter__") and
+    hasMethod(cls, "__next__")
+  }
+
+  /**
+   * Holds if `cls` supports the context manager protocol, i.e. it declares
+   * both `__enter__` and `__exit__`.
+   */
+  predicate isContextManager(Class cls) {
+    hasMethod(cls, "__enter__") and
+    hasMethod(cls, "__exit__")
+  }
+
+  /**
+   * Holds if `cls` supports the descriptor protocol, i.e. it declares
+   * `__get__`, `__set__`, or `__delete__`.
+   */
+  predicate isDescriptor(Class cls) {
+    hasMethod(cls, "__get__") or
+    hasMethod(cls, "__set__") or
+    hasMethod(cls, "__delete__")
+  }
+
+  /**
+   * Holds if `cls` directly assigns to an attribute named `name` in its class body.
+   * This covers attribute assignments like `x = value`, but not method definitions.
+   */
+  predicate declaresAttribute(Class cls, string name) { exists(getAnAttributeValue(cls, name)) }
+
+  /**
+   * Gets the value expression assigned to attribute `name` directly in the class body of `cls`.
+   */
+  Expr getAnAttributeValue(Class cls, string name) {
+    exists(Assign a |
+      a.getScope() = cls and
+      a.getATarget().(Name).getId() = name and
+      result = a.getValue()
+    )
+  }
+
+  /**
+   * Holds if `cls` is callable, i.e. it declares `__call__`.
+   */
+  predicate isCallable(Class cls) { hasMethod(cls, "__call__") }
+
+  /**
+   * Holds if `cls` supports the mapping protocol, i.e. it declares
+   * `__getitem__` and `keys`, or `__getitem__` and `__iter__`.
+   */
+  predicate isMapping(Class cls) {
+    hasMethod(cls, "__getitem__") and
+    (hasMethod(cls, "keys") or hasMethod(cls, "__iter__"))
+  }
+
+  /**
+   * Holds if `cls` is a new-style class. In Python 3, all classes are new-style.
+   * In Python 2, a class is new-style if it (transitively) inherits from `object`,
+   * or has a declared `__metaclass__`, or is in a module with a module-level
+   * `__metaclass__` declaration, or has an unresolved base class.
+   */
+  predicate isNewStyle(Class cls) {
+    major_version() = 3
+    or
+    major_version() = 2 and
+    (
+      cls.getABase() = API::builtin("object").getAValueReachableFromSource().asExpr()
+      or
+      isNewStyle(getADirectSuperclass(cls))
+      or
+      hasUnresolvedBase(cls)
+      or
+      exists(cls.getMetaClass())
+      or
+      // Module-level __metaclass__ = type makes all classes in the module new-style
+      exists(Assign a |
+        a.getScope() = cls.getEnclosingModule() and
+        a.getATarget().(Name).getId() = "__metaclass__" and
+        a.getValue() = API::builtin("type").getAValueReachableFromSource().asExpr()
+      )
+    )
+  }
+
+  /**
+   * Gets the `__init__` function that will be invoked when `cls` is constructed,
+   * resolved according to the MRO.
+   */
+  Function getInit(Class cls) { result = invokedFunctionFromClassConstruction(cls, "__init__") }
+
+  /**
+   * Holds if `cls` or any of its superclasses uses multiple inheritance, or
+   * has an unresolved base class. In these cases, our MRO approximation may
+   * resolve to the wrong `__init__`, so we should not flag argument mismatches.
+   */
+  predicate hasUnreliableMro(Class cls) {
+    exists(Class sup | sup = getADirectSuperclass*(cls) |
+      exists(sup.getBase(1))
+      or
+      hasUnresolvedBase(sup)
+    )
+  }
+
+  /**
+   * Holds if `f` overrides a method in a superclass with the same name.
+   */
+  predicate overridesMethod(Function f) { overridesMethod(f, _, _) }
+
+  /**
+   * Holds if `f` overrides `overridden` declared in `superclass`.
+   */
+  predicate overridesMethod(Function f, Class superclass, Function overridden) {
+    exists(Class cls |
+      f.getScope() = cls and
+      superclass = getADirectSuperclass+(cls) and
+      overridden = superclass.getMethod(f.getName())
+    )
+  }
+
+  /**
+   * Holds if `f` is a property accessor (decorated with `@property`, `@name.setter`,
+   * or `@name.deleter`).
+   */
+  predicate isPropertyAccessor(Function f) {
+    exists(Attribute a | a = f.getADecorator() | a.getName() = "setter" or a.getName() = "deleter")
+    or
+    f.getADecorator().(Name).getId() = "property"
+  }
+}

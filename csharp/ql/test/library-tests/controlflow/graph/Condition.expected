@@ -100,14 +100,8 @@ conditionBlock
 | ConditionalAccess.cs:52:9:52:16 | access to property Prop | ConditionalAccess.cs:52:32:52:38 | "World" | false |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:16 | access to property Prop | false |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:32:52:38 | "World" | false |
-| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:20 | access to field IntField | false |
-| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca | false |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:20 | access to field IntField | false |
-| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:25:53:25 | 1 | false |
-| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | false |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca | false |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | false |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:27:54:29 | "!" | false |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | false |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:6:13:6:16 | ...; | true |
 | Conditions.cs:7:9:8:16 | if (...) ... | Conditions.cs:7:13:7:16 | [false] !... | true |
 | Conditions.cs:7:9:8:16 | if (...) ... | Conditions.cs:7:13:7:16 | [true] !... | false |

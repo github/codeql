@@ -416,7 +416,7 @@ impl<T> MyOption<&T> {
         }
     }
 
-    // MISSING: summary=<test::option::MyOption>::cloned;Argument[self].Field[test::option::MyOption::MySome(0)].Reference;ReturnValue.Field[test::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=<test::option::MyOption>::cloned;Argument[self].Field[test::option::MyOption::MySome(0)].Reference;ReturnValue.Field[test::option::MyOption::MySome(0)];value;dfc-generated
     pub fn cloned(self) -> MyOption<T>
     where
         T: Clone,
@@ -440,7 +440,7 @@ impl<T> MyOption<&mut T> {
         }
     }
 
-    // MISSING: summary=<test::option::MyOption>::cloned;Argument[self].Field[test::option::MyOption::MySome(0)].Reference;ReturnValue.Field[test::option::MyOption::MySome(0)];value;dfc-generated
+    // summary=<test::option::MyOption>::cloned;Argument[self].Field[test::option::MyOption::MySome(0)].Reference;ReturnValue.Field[test::option::MyOption::MySome(0)];value;dfc-generated
     pub fn cloned(self) -> MyOption<T>
     where
         T: Clone,

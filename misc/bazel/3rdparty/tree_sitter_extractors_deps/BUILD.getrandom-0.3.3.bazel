@@ -68,6 +68,7 @@ rust_library(
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [],
         "@rules_rust//rust/platform:aarch64-unknown-uefi": [],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [],
+        "@rules_rust//rust/platform:arm-unknown-linux-musleabi": [],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [],
         "@rules_rust//rust/platform:i686-apple-darwin": [],
@@ -126,6 +127,9 @@ rust_library(
             "@vendor_ts__libc-0.2.175//:libc",  # cfg(any(target_os = "haiku", target_os = "redox", target_os = "nto", target_os = "aix"))
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
+            "@vendor_ts__libc-0.2.175//:libc",  # cfg(all(any(target_os = "linux", target_os = "android"), not(any(all(target_os = "linux", target_env = ""), getrandom_backend = "custom", getrandom_backend = "linux_raw", getrandom_backend = "rdrand", getrandom_backend = "rndr"))))
+        ],
+        "@rules_rust//rust/platform:arm-unknown-linux-musleabi": [
             "@vendor_ts__libc-0.2.175//:libc",  # cfg(all(any(target_os = "linux", target_os = "android"), not(any(all(target_os = "linux", target_env = ""), getrandom_backend = "custom", getrandom_backend = "linux_raw", getrandom_backend = "rdrand", getrandom_backend = "rndr"))))
         ],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [

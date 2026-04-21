@@ -1,3 +1,7 @@
+## 0.6.25
+
+No user-facing changes.
+
 ## 0.6.24
 
 No user-facing changes.

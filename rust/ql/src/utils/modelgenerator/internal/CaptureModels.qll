@@ -138,7 +138,10 @@ private module SummaryModelGeneratorInput implements SummaryModelGeneratorInputS
 
   Parameter asParameter(NodeExtended node) { result = node.asParameter() }
 
-  predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) { none() }
+  predicate isAdditionalContentFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    RustTaintTracking::defaultAdditionalTaintStep(nodeFrom, nodeTo, _) and
+    not RustDataFlow::readStep(nodeFrom, _, nodeTo)
+  }
 
   predicate isField(DataFlow::ContentSet c) {
     c.(SingletonContentSet).getContent() instanceof FieldContent

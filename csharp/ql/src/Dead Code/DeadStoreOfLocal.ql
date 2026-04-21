@@ -84,6 +84,8 @@ class RelevantDefinition extends AssignableDefinition {
       )
     or
     this instanceof AssignableDefinitions::PatternDefinition
+    or
+    this instanceof AssignableDefinitions::AssignOperationDefinition
   }
 
   /** Holds if this assignment may be live. */

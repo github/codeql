@@ -11,7 +11,7 @@ namespace ConstantIfCondition
             if (ZERO == 1 - 1) // $ Alert
             {
             }
-            if (false) // $ Alert
+            if (false) // GOOD
             {
             }
             if (" " == " ") // $ Alert
@@ -28,6 +28,11 @@ namespace ConstantIfCondition
         public int Bar()
         {
             return ZERO;
+        }
+
+        public void UnsignedCheck(byte n)
+        {
+            while (n >= 0) { n--; } // $ Alert
         }
 
     }

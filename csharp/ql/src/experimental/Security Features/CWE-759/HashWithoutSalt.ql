@@ -174,7 +174,7 @@ module HashWithoutSaltConfig implements DataFlow::ConfigSig {
       mc.getAnArgument() = node.asExpr()
     )
     or
-    exists(AddExpr e | node.asExpr() = e.getAnOperand()) // password+salt
+    exists(AddOperation e | node.asExpr() = e.getAnOperand()) // password+salt
     or
     exists(InterpolatedStringExpr e | node.asExpr() = e.getAnInsert())
     or

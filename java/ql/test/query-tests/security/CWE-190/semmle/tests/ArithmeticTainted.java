@@ -119,6 +119,8 @@ public class ArithmeticTainted {
 			test2(data);
 			test3(data);
 			test4(data);
+			boundsCheckGood(null, data, 5);
+			boundsCheckGood2(null, data, 5);
 		}
 	}
 
@@ -137,5 +139,19 @@ public class ArithmeticTainted {
 	public static void test4(int data) {
 		// BAD: may underflow if input data is very small
 		--data;
+	}
+
+	public static void boundsCheckGood(byte[] bs, int off, int len) {
+		// GOOD: arithmetic used directly in a bounds check, not as a computation
+		if (off + len > bs.length) {
+			throw new IndexOutOfBoundsException();
+		}
+	}
+
+	public static void boundsCheckGood2(int[] arr, int offset, int count) {
+		// GOOD: subtraction used directly in a bounds check
+		if (offset - count < 0) {
+			throw new IndexOutOfBoundsException();
+		}
 	}
 }
