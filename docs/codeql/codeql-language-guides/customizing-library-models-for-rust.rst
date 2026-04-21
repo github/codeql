@@ -533,7 +533,7 @@ The following tokens are commonly used:
 - **ReturnValue** selects the return value of a function call.
 - **Element** selects an element in a collection (such as a ``Vec``, ``HashMap``, or iterator).
 - **Field[**\ ``type::field``\ **]** selects a named field of a struct or enum variant. For example, ``Field[ihex::Record::Data::value]`` selects the field ``value`` of the ``ihex::Record::Data`` variant.
-- **Field[**\ ``type(i)``\ **]** selects the ``i``-th positional field of a tuple struct or tuple enum variant. For example, ``Field[core::result::Result::Ok(0)]`` selects the value inside ``Ok``.
+- **Field[**\ ``type(i)``\ **]** selects the ``i``-th positional field of a tuple struct or tuple enum variant. For example, ``Field[core::result::Result::Ok(0)]`` selects the first positional value inside ``Ok``.
 - **Field[**\ ``i``\ **]** selects the ``i``-th element of a tuple.
 - **Reference** follows through a reference (``&T`` or ``&mut T``) to reach the referenced value.
 - **Future** follows through a ``Future`` to reach the value that will be available after ``.await``.
