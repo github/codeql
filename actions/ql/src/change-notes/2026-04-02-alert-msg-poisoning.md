@@ -1,4 +1,0 @@
----
-category: majorAnalysis
----
-* Fixed alert messages in `actions/artifact-poisoning/critical` and `actions/artifact-poisoning/medium` as they previously included a redundant placeholder in the alert message that would on occasion contain a long block of yml that makes the alert difficult to understand. Also clarify the wording to make it clear that it is not the artifact that is being poisoned, but instead a potentially untrusted artifact that is consumed. Also change the alert location to be the source, to align more with other queries reporting an artifact (e.g. zipslip) which is more useful.

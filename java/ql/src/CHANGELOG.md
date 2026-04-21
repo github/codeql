@@ -1,3 +1,7 @@
+## 1.11.1
+
+No user-facing changes.
+
 ## 1.11.0
 
 ### Query Metadata Changes

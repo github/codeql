@@ -1,3 +1,9 @@
+## 6.4.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.
+
 ## 6.3.3
 
 No user-facing changes.

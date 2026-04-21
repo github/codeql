@@ -1,3 +1,14 @@
+## 10.0.0
+
+### Breaking Changes
+
+* The deprecated `NonThrowingFunction` class has been removed, use `NonCppThrowingFunction` instead.
+* The deprecated `ThrowingFunction` class has been removed, use `AlwaysSehThrowingFunction` instead.
+
+### New Features
+
+* Added a subclass `AutoconfConfigureTestFile` of `ConfigurationTestFile` that represents files created by GNU autoconf configure scripts to test the build configuration.
+
 ## 9.0.0
 
 ### Breaking Changes
