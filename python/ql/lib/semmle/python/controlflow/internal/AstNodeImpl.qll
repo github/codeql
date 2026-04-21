@@ -364,6 +364,8 @@ private module Ast {
 
     ExprNode getKeywordValue(int n) {
       result.asExpr() = call.getNamedArg(n).(Py::Keyword).getValue()
+      or
+      result.asExpr() = call.getNamedArg(n).(Py::DictUnpacking).getValue()
     }
 
     int getNumberOfNamedArgs() { result = count(call.getANamedArg()) }
