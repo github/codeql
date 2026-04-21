@@ -551,14 +551,6 @@ Source kinds
 
 See ":ref:`Threat models <threat-models-rust>`" for available source kinds.
 
-Commonly used source kinds for Rust include:
-
-- **remote**: A source of data from a remote network request. Most taint-tracking queries use this source kind.
-- **commandargs**: A source of data from command-line arguments.
-- **environment**: A source of data from environment variables.
-- **file**: A source of data from local files.
-- **database**: A source of data from a database read.
-
 Sink kinds
 ~~~~~~~~~~
 
