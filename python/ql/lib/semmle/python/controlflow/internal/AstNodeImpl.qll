@@ -301,6 +301,15 @@ private module Ast {
     ExprNode getIndex() { result.asExpr() = sub.getIndex() }
   }
 
+  /** An attribute access (`obj.name`). */
+  class AttributeNode extends ExprNode {
+    private Py::Attribute attr;
+
+    AttributeNode() { attr = this.asExpr() }
+
+    ExprNode getObject() { result.asExpr() = attr.getObject() }
+  }
+
   /** A tuple literal. */
   class TupleNode extends ExprNode {
     private Py::Tuple tuple;
@@ -554,6 +563,9 @@ module AstSigImpl implements AstSig<Py::Location> {
       or
       index = 1 and result = sub.getIndex()
     )
+    or
+    // Attribute (obj.name): object (0)
+    index = 0 and result = n.(Ast::AttributeNode).getObject()
     or
     // Tuple, List, Set: elements left to right
     result = n.(Ast::TupleNode).getElt(index)
