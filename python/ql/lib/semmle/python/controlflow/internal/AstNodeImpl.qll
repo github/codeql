@@ -418,6 +418,27 @@ private module Ast {
     ExprNode getOperand() { result.asExpr() = unaryExpr.getOperand() }
   }
 
+  /**
+   * A comprehension or generator expression.
+   * The iterable is evaluated in the enclosing scope; the body runs in a
+   * nested synthetic function scope handled by its own CFG.
+   */
+  class ComprehensionNode extends ExprNode {
+    private Py::Expr iterable;
+
+    ComprehensionNode() {
+      iterable = this.asExpr().(Py::ListComp).getIterable()
+      or
+      iterable = this.asExpr().(Py::SetComp).getIterable()
+      or
+      iterable = this.asExpr().(Py::DictComp).getIterable()
+      or
+      iterable = this.asExpr().(Py::GeneratorExp).getIterable()
+    }
+
+    ExprNode getIterable() { result.asExpr() = iterable }
+  }
+
   /** A comparison expression (`a < b`, `a < b < c`, etc.). */
   class CompareNode extends ExprNode {
     private Py::Compare cmp;
@@ -730,6 +751,9 @@ module AstSigImpl implements AstSig<Py::Location> {
     or
     // Attribute (obj.name): object (0)
     index = 0 and result = n.(Ast::AttributeNode).getObject()
+    or
+    // Comprehension/generator: iterable (0)
+    index = 0 and result = n.(Ast::ComprehensionNode).getIterable()
     or
     // Tuple, List, Set: elements left to right
     result = n.(Ast::TupleNode).getElt(index)
