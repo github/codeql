@@ -10,6 +10,7 @@
 
 private import python as Py
 private import codeql.controlflow.ControlFlowGraph
+private import codeql.controlflow.SuccessorType
 
 private module Ast {
   /** The newtype representing AST nodes for the shared CFG library. */
@@ -202,6 +203,17 @@ private module Ast {
   /** A `continue` statement. */
   class ContinueNode extends StmtNode {
     ContinueNode() { this.asStmt() instanceof Py::Continue }
+  }
+
+  /** An `assert` statement. */
+  class AssertNode extends StmtNode {
+    private Py::Assert assertStmt;
+
+    AssertNode() { assertStmt = this.asStmt() }
+
+    ExprNode getTest() { result.asExpr() = assertStmt.getTest() }
+
+    ExprNode getMsg() { result.asExpr() = assertStmt.getMsg() }
   }
 
   /** A `try` statement. */
@@ -460,6 +472,13 @@ module AstSigImpl implements AstSig<Py::Location> {
     or
     // ReturnStmt: the value (0)
     index = 0 and result = n.(Ast::ReturnNode).getValue()
+    or
+    // Assert: test (0), message (1)
+    exists(Ast::AssertNode a | a = n |
+      index = 0 and result = a.getTest()
+      or
+      index = 1 and result = a.getMsg()
+    )
     or
     // ThrowStmt (raise): the exception (0), the cause (1)
     exists(Ast::RaiseNode r | r = n |
@@ -827,17 +846,50 @@ private module Input implements InputSig1, InputSig2 {
     string toString() { result = "label" }
   }
 
+  predicate inConditionalContext(AstSigImpl::AstNode n, ConditionKind kind) {
+    kind.isBoolean() and
+    n = any(Ast::AssertNode a).getTest()
+  }
+
+  private string assertThrowTag() { result = "[assert-throw]" }
+
+  predicate additionalNode(AstSigImpl::AstNode n, string tag, NormalSuccessor t) {
+    n instanceof Ast::AssertNode and tag = assertThrowTag() and t instanceof DirectSuccessor
+  }
+
   predicate beginAbruptCompletion(
     AstSigImpl::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always
   ) {
-    none()
+    ast instanceof Ast::AssertNode and
+    n.isAdditional(ast, assertThrowTag()) and
+    c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+    always = true
   }
 
   predicate endAbruptCompletion(AstSigImpl::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
     none()
   }
 
-  predicate step(PreControlFlowNode n1, PreControlFlowNode n2) { none() }
+  predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
+    exists(Ast::AssertNode assertStmt |
+      n1.isBefore(assertStmt) and
+      n2.isBefore(assertStmt.getTest())
+      or
+      n1.isAfterTrue(assertStmt.getTest()) and
+      n2.isAfter(assertStmt)
+      or
+      n1.isAfterFalse(assertStmt.getTest()) and
+      (
+        n2.isBefore(assertStmt.getMsg())
+        or
+        not exists(assertStmt.getMsg()) and
+        n2.isAdditional(assertStmt, assertThrowTag())
+      )
+      or
+      n1.isAfter(assertStmt.getMsg()) and
+      n2.isAdditional(assertStmt, assertThrowTag())
+    )
+  }
 }
 
 import CfgCachedStage
