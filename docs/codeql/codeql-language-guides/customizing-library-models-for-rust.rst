@@ -247,19 +247,6 @@ Since we are adding flow through a method, we need to add tuples to the ``summar
 - The fourth value ``taint`` is the kind of flow. Since ``join`` combines the path and the argument, the output is derived from the inputs but is not identical to either one.
 - The fifth value ``manual`` is the provenance of the summary.
 
-It would also be possible to merge the two rows into one by using a comma-separated list in the second value:
-
-.. code-block:: yaml
-
-  extensions:
-    - addsTo:
-        pack: codeql/rust-all
-        extensible: summaryModel
-      data:
-        - ["<std::path::Path>::join", "Argument[self,0]", "ReturnValue", "taint", "manual"]
-
-This row defines flow from both the receiver and the first argument to the return value. The second value ``Argument[self,0]`` is shorthand for specifying an access path to both ``Argument[self]`` and ``Argument[0]``.
-
 .. note::
 
   When using ``Argument[self]`` to refer to the receiver, the ``Reference`` token may need to be appended to follow through the ``&self`` or ``&mut self`` reference to the underlying value. This depends on whether the data you want to track is on the reference itself or on the value behind the reference.
