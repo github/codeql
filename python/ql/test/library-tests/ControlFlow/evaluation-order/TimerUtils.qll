@@ -92,7 +92,7 @@ class TimerAnnotation extends TTimerAnnotation {
   abstract Expr getAnnotatedExpr();
 
   /** Gets the enclosing annotation expression (the `BinaryExpr` or `Call`). */
-  abstract Expr getExpr();
+  abstract Expr getTimerExpr();
 
   /** Holds if this is a dead-code annotation (`t.dead[n]`). */
   predicate isDead() { this instanceof DeadTimerAnnotation }
@@ -100,9 +100,9 @@ class TimerAnnotation extends TTimerAnnotation {
   /** Holds if this is a never-evaluated annotation (`t.never`). */
   predicate isNever() { this instanceof NeverTimerAnnotation }
 
-  string toString() { result = this.getExpr().toString() }
+  string toString() { result = this.getAnnotatedExpr().toString() }
 
-  Location getLocation() { result = this.getExpr().getLocation() }
+  Location getLocation() { result = this.getAnnotatedExpr().getLocation() }
 }
 
 /** A matmul-based timer annotation: `expr @ t[n]`. */
@@ -119,7 +119,7 @@ class MatmulTimerAnnotation extends TMatmulAnnotation, TimerAnnotation {
 
   override Expr getAnnotatedExpr() { result = annotated }
 
-  override BinaryExpr getExpr() { result.getLeft() = annotated }
+  override BinaryExpr getTimerExpr() { result.getLeft() = annotated }
 }
 
 /** A call-based timer annotation: `t(expr, n)`. */
@@ -136,7 +136,7 @@ class CallTimerAnnotation extends TCallAnnotation, TimerAnnotation {
 
   override Expr getAnnotatedExpr() { result = annotated }
 
-  override Call getExpr() { result.getArg(0) = annotated }
+  override Call getTimerExpr() { result.getArg(0) = annotated }
 }
 
 /** A dead-code timer annotation: `expr @ t.dead[n]`. */
@@ -153,7 +153,7 @@ class DeadTimerAnnotation extends TDeadAnnotation, TimerAnnotation {
 
   override Expr getAnnotatedExpr() { result = annotated }
 
-  override BinaryExpr getExpr() { result.getLeft() = annotated }
+  override BinaryExpr getTimerExpr() { result.getLeft() = annotated }
 }
 
 /** A never-evaluated annotation: `expr @ t.never`. */
@@ -169,7 +169,7 @@ class NeverTimerAnnotation extends TNeverAnnotation, TimerAnnotation {
 
   override Expr getAnnotatedExpr() { result = annotated }
 
-  override BinaryExpr getExpr() { result.getLeft() = annotated }
+  override BinaryExpr getTimerExpr() { result.getLeft() = annotated }
 }
 
 /**
@@ -240,7 +240,7 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
   class TimerCfgNode extends CfgNode {
     private TimerAnnotation annot;
 
-    TimerCfgNode() { annot.getExpr() = this.getNode() }
+    TimerCfgNode() { annot.getAnnotatedExpr() = this.getNode() }
 
     /** Gets a timestamp value from this annotation. */
     int getATimestamp() { result = annot.getATimestamp() }
@@ -322,7 +322,7 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
     private predicate hasNestedScopeAnnotation(TestFunction f) {
       exists(TimerAnnotation a |
         a.getTestFunction() = f and
-        a.getExpr().getScope() != f
+        a.getAnnotatedExpr().getScope() != f
       )
     }
 
@@ -335,7 +335,7 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
       not ann.isDead() and
       a = ann.getATimestamp() and
       not exists(TimerCfgNode x, TimerCfgNode y |
-        ann.getExpr() = x.getNode() and
+        ann.getAnnotatedExpr() = x.getNode() and
         nextTimerAnnotation(x, y) and
         (a + 1) = y.getATimestamp()
       ) and
@@ -354,7 +354,7 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
      */
     predicate neverReachable(NeverTimerAnnotation ann) {
       exists(CfgNode n, Scope s |
-        n.getNode() = ann.getExpr() and
+        n.getNode() = ann.getAnnotatedExpr() and
         s = n.getScope() and
         (
           // Reachable via inter-block path (includes same block)
@@ -417,6 +417,27 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
       minB = min(b.getATimestamp()) and
       maxA >= minB
     }
+
+    /**
+     * Holds if CFG node `n` in test function `f` does not belong to any basic block.
+     */
+    predicate noBasicBlock(CfgNode n, TestFunction f) {
+      n.getScope() = f and
+      not exists(n.getBasicBlock())
+    }
+
+    /**
+     * Holds if non-dead annotation `ann` has no corresponding CFG node.
+     */
+    predicate annotationWithoutCfgNode(TimerAnnotation ann) {
+      not ann.isDead() and
+      not ann.isNever() and
+      not exists(CfgNode n | n.getNode() = ann.getAnnotatedExpr())
+    }
+
+    predicate annotationWithCfgNode(TimerAnnotation ann) {
+      exists(CfgNode n | n.getNode() = ann.getAnnotatedExpr())
+    }
   }
 }
 
@@ -427,7 +448,7 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
 predicate isTimerMechanism(Expr e, TestFunction f) {
   exists(TimerAnnotation a |
     a.getTestFunction() = f and
-    e = a.getExpr().getASubExpression*()
+    e = a.getTimerExpr().getASubExpression*()
   )
 }
 

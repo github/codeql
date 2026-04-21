@@ -1,12 +1,14 @@
 /**
+ * New-CFG version of NoBasicBlock.
+ *
  * Checks that every annotated CFG node belongs to a basic block.
  */
 
 import python
 import TimerUtils
-import OldCfgImpl
+import NewCfgImpl
 
-private module Utils = EvalOrderCfgUtils<OldCfg>;
+private module Utils = EvalOrderCfgUtils<NewCfg>;
 
 private import Utils
 private import Utils::CfgTests
