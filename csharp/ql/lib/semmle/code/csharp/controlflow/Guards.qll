@@ -775,11 +775,7 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
   private AccessOrCallExpr sub0;
   private GuardValue v0;
 
-  GuardedDataFlowNode() {
-    exists(ControlFlow::Nodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
-      g.controlsNode(cfn, sub0, v0)
-    )
-  }
+  GuardedDataFlowNode() { g.controlsNode(this.getExpr().getControlFlowNode(), sub0, v0) }
 
   /**
    * Gets an expression that guards this data flow node. That is, this data flow
