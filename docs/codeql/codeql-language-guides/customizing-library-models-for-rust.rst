@@ -562,7 +562,7 @@ Commonly used source kinds for Rust include:
 Sink kinds
 ~~~~~~~~~~
 
-Unlike sources, sinks tend to be highly query-specific, rarely affecting more than one or two queries. Not every query supports customizable sinks. If the following sinks are not suitable for your use case, you should add a new query.
+Unlike sources, sinks tend to be highly query-specific, rarely affecting more than one or two queries. Not every query supports customizable sinks.
 
 Commonly used sink kinds for Rust include:
 
