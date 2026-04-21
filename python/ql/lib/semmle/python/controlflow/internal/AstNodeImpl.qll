@@ -270,6 +270,59 @@ private module Ast {
     ExprNode getIndex() { result.asExpr() = sub.getIndex() }
   }
 
+  /** A tuple literal. */
+  class TupleNode extends ExprNode {
+    private Py::Tuple tuple;
+
+    TupleNode() { tuple = this.asExpr() }
+
+    ExprNode getElt(int n) { result.asExpr() = tuple.getElt(n) }
+  }
+
+  /** A list literal. */
+  class ListNode extends ExprNode {
+    private Py::List list;
+
+    ListNode() { list = this.asExpr() }
+
+    ExprNode getElt(int n) { result.asExpr() = list.getElt(n) }
+  }
+
+  /** A set literal. */
+  class SetNode extends ExprNode {
+    private Py::Set set;
+
+    SetNode() { set = this.asExpr() }
+
+    ExprNode getElt(int n) { result.asExpr() = set.getElt(n) }
+  }
+
+  /** A dict literal. */
+  class DictNode extends ExprNode {
+    private Py::Dict dict;
+
+    DictNode() { dict = this.asExpr() }
+
+    /**
+     * Gets the key of the `n`th item (at child index `2*n`), and the
+     * value at child index `2*n + 1`.
+     */
+    ExprNode getKey(int n) { result.asExpr() = dict.getItem(n).(Py::KeyValuePair).getKey() }
+
+    ExprNode getValue(int n) { result.asExpr() = dict.getItem(n).(Py::KeyValuePair).getValue() }
+
+    int getNumberOfItems() { result = count(dict.getAnItem()) }
+  }
+
+  /** A unary expression other than `not` (e.g., `-x`, `+x`, `~x`). */
+  class ArithmeticUnaryNode extends ExprNode {
+    private Py::UnaryExpr unaryExpr;
+
+    ArithmeticUnaryNode() { unaryExpr = this.asExpr() and not unaryExpr.getOp() instanceof Py::Not }
+
+    ExprNode getOperand() { result.asExpr() = unaryExpr.getOperand() }
+  }
+
   /**
    * A `not` expression. This is a `UnaryExpr` whose operator is `Not`.
    */
@@ -453,6 +506,23 @@ module AstSigImpl implements AstSig<Py::Location> {
       or
       index = 1 and result = sub.getIndex()
     )
+    or
+    // Tuple, List, Set: elements left to right
+    result = n.(Ast::TupleNode).getElt(index)
+    or
+    result = n.(Ast::ListNode).getElt(index)
+    or
+    result = n.(Ast::SetNode).getElt(index)
+    or
+    // Dict: key(0), value(0), key(1), value(1), ...
+    exists(Ast::DictNode d, int item | d = n |
+      index = 2 * item and result = d.getKey(item)
+      or
+      index = 2 * item + 1 and result = d.getValue(item)
+    )
+    or
+    // Arithmetic unary (-x, +x, ~x): operand (0)
+    index = 0 and result = n.(Ast::ArithmeticUnaryNode).getOperand()
     or
     // LogicalNotExpr: operand (0)
     index = 0 and result = n.(Ast::NotExprNode).getOperand()
