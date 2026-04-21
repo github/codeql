@@ -519,6 +519,37 @@ private module Ast {
     ExprNode getValue() { result.asExpr() = await.getValue() }
   }
 
+  /** A class definition expression (has base classes evaluated at definition time). */
+  class ClassExprNode extends ExprNode {
+    private Py::ClassExpr classExpr;
+
+    ClassExprNode() { classExpr = this.asExpr() }
+
+    ExprNode getBase(int n) { result.asExpr() = classExpr.getBase(n) }
+  }
+
+  /** A function definition expression (has default args evaluated at definition time). */
+  class FunctionExprNode extends ExprNode {
+    private Py::FunctionExpr funcExpr;
+
+    FunctionExprNode() { funcExpr = this.asExpr() }
+
+    ExprNode getDefault(int n) { result.asExpr() = funcExpr.getArgs().getDefault(n) }
+
+    ExprNode getKwDefault(int n) { result.asExpr() = funcExpr.getArgs().getKwDefault(n) }
+  }
+
+  /** A lambda expression (has default args evaluated at definition time). */
+  class LambdaNode extends ExprNode {
+    private Py::Lambda lambda;
+
+    LambdaNode() { lambda = this.asExpr() }
+
+    ExprNode getDefault(int n) { result.asExpr() = lambda.getArgs().getDefault(n) }
+
+    ExprNode getKwDefault(int n) { result.asExpr() = lambda.getArgs().getKwDefault(n) }
+  }
+
   /**
    * A `not` expression. This is a `UnaryExpr` whose operator is `Not`.
    */
@@ -809,6 +840,27 @@ module AstSigImpl implements AstSig<Py::Location> {
     or
     // Await: value (0)
     index = 0 and result = n.(Ast::AwaitNode).getValue()
+    or
+    // ClassExpr: base classes left to right
+    result = n.(Ast::ClassExprNode).getBase(index)
+    or
+    // FunctionExpr: defaults left to right, then kw defaults
+    exists(Ast::FunctionExprNode fe | fe = n |
+      result = fe.getDefault(index)
+      or
+      result =
+        fe.getKwDefault(index -
+            count(Py::Expr d | d = fe.asExpr().(Py::FunctionExpr).getArgs().getADefault()))
+    )
+    or
+    // Lambda: defaults left to right, then kw defaults
+    exists(Ast::LambdaNode lam | lam = n |
+      result = lam.getDefault(index)
+      or
+      result =
+        lam.getKwDefault(index -
+            count(Py::Expr d | d = lam.asExpr().(Py::Lambda).getArgs().getADefault()))
+    )
     or
     // LogicalNotExpr: operand (0)
     index = 0 and result = n.(Ast::NotExprNode).getOperand()
@@ -1155,6 +1207,29 @@ private module Input implements InputSig1, InputSig2 {
       or
       n1.isAfter(assertStmt.getMsg()) and
       n2.isAdditional(assertStmt, assertThrowTag())
+    )
+    or
+    // While/else: when the condition is false, flow to the else block
+    // (if present) before the after-while node.
+    exists(Ast::WhileNode w, Ast::StmtListNode orelse | orelse = w.getOrelse() |
+      n1.isAfterFalse(w.getTest()) and
+      n2.isBefore(orelse)
+      or
+      n1.isAfter(orelse) and
+      n2.isAfter(w)
+    )
+    or
+    // For/else: when the collection is empty or the loop completes normally,
+    // flow through the else block before the after-for node.
+    exists(Ast::ForNode f, Ast::StmtListNode orelse | orelse = f.getOrelse() |
+      n1.isAfterValue(f.getIter(), any(EmptinessSuccessor t | t.getValue() = true)) and
+      n2.isBefore(orelse)
+      or
+      n1.isAfter(f.getBody()) and
+      n2.isBefore(orelse)
+      or
+      n1.isAfter(orelse) and
+      n2.isAfter(f)
     )
   }
 }
