@@ -147,6 +147,39 @@ private module Ast {
     ExprNode getValue() { result.asExpr() = exprStmt.getValue() }
   }
 
+  /** An assignment statement (`x = y = expr`). */
+  class AssignNode extends StmtNode {
+    private Py::Assign assign;
+
+    AssignNode() { assign = this.asStmt() }
+
+    ExprNode getValue() { result.asExpr() = assign.getValue() }
+
+    ExprNode getTarget(int n) { result.asExpr() = assign.getTarget(n) }
+
+    int getNumberOfTargets() { result = count(assign.getATarget()) }
+  }
+
+  /** An augmented assignment statement (`x += expr`). */
+  class AugAssignNode extends StmtNode {
+    private Py::AugAssign augAssign;
+
+    AugAssignNode() { augAssign = this.asStmt() }
+
+    ExprNode getOperation() { result.asExpr() = augAssign.getOperation() }
+  }
+
+  /** An assignment expression / walrus operator (`x := expr`). */
+  class AssignExprNode extends ExprNode {
+    private Py::AssignExpr assignExpr;
+
+    AssignExprNode() { assignExpr = this.asExpr() }
+
+    ExprNode getValue() { result.asExpr() = assignExpr.getValue() }
+
+    ExprNode getTarget() { result.asExpr() = assignExpr.getTarget() }
+  }
+
   /** A `while` statement. */
   class WhileNode extends StmtNode {
     private Py::While whileStmt;
@@ -480,6 +513,23 @@ module AstSigImpl implements AstSig<Py::Location> {
     or
     // ExprStmt: the expression (0)
     index = 0 and result = n.(Ast::ExprStmtNode).getValue()
+    or
+    // Assign: value (0), targets (1..n)
+    exists(Ast::AssignNode a | a = n |
+      index = 0 and result = a.getValue()
+      or
+      result = a.getTarget(index - 1) and index >= 1
+    )
+    or
+    // AugAssign: the operation (0)
+    index = 0 and result = n.(Ast::AugAssignNode).getOperation()
+    or
+    // AssignExpr (walrus :=): value (0), target (1)
+    exists(Ast::AssignExprNode ae | ae = n |
+      index = 0 and result = ae.getValue()
+      or
+      index = 1 and result = ae.getTarget()
+    )
     or
     // WhileStmt: condition (0), body (1)
     // Note: Python while/else is not directly supported by the shared library.
