@@ -760,6 +760,8 @@ module AstSigImpl implements AstSig<Py::Location> {
       index = 0 and result = t.getBody()
       or
       result = t.getHandler(index - 1) and index >= 1
+      or
+      index = -1 and result = t.getFinalbody()
     )
     or
     // MatchStmt: subject (0), cases (1..n)
