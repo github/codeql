@@ -1,8 +1,5 @@
 import python
 private import LegacyPointsTo
-private import semmle.python.types.Object
-private import semmle.python.types.ClassObject
-private import semmle.python.types.FunctionObject
 
 predicate string_attribute_all(ControlFlowNodeWithPointsTo n, string attr) {
   (n.getNode() instanceof Unicode or n.getNode() instanceof Bytes) and

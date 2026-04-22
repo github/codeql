@@ -270,7 +270,10 @@
 | ViableCallable.cs:679:17:679:20 | Run3 | ViableCallable.cs:637:21:637:21 | M |
 | ViableCallable.cs:679:17:679:20 | Run3 | ViableCallable.cs:646:21:646:21 | M |
 | ViableCallable.cs:679:17:679:20 | Run3 | ViableCallable.cs:648:21:648:21 | M |
-| ViableCallable.cs:707:17:707:20 | Run1 | ViableCallable.cs:702:42:702:44 | get_Property |
-| ViableCallable.cs:707:17:707:20 | Run1 | ViableCallable.cs:702:63:702:65 | set_Property |
-| ViableCallable.cs:707:17:707:20 | Run1 | ViableCallable.cs:704:49:704:51 | get_Item |
-| ViableCallable.cs:707:17:707:20 | Run1 | ViableCallable.cs:704:70:704:72 | set_Item |
+| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:704:24:704:31 | Partial1 |
+| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:705:42:705:44 | get_Property |
+| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:705:63:705:65 | set_Property |
+| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:707:49:707:51 | get_Item |
+| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:707:70:707:72 | set_Item |
+| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:708:51:708:53 | add_Event |
+| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:708:59:708:64 | remove_Event |

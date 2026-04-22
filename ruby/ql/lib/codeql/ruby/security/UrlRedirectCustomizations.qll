@@ -75,7 +75,7 @@ module UrlRedirect {
   }
 
   private class ExternalUrlRedirectSink extends Sink {
-    ExternalUrlRedirectSink() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
+    ExternalUrlRedirectSink() { ModelOutput::sinkNode(this, "url-redirection") }
   }
 
   /**
@@ -124,6 +124,10 @@ module UrlRedirect {
    * We currently don't catch these cases.
    */
   class StringInterpolationAsSanitizer extends PrefixedStringInterpolation, Sanitizer { }
+
+  private class ExternalUrlRedirectSanitizer extends Sanitizer {
+    ExternalUrlRedirectSanitizer() { ModelOutput::barrierNode(this, "url-redirection") }
+  }
 
   /**
    * These methods return a new `ActionController::Parameters` or a `Hash` containing a subset of

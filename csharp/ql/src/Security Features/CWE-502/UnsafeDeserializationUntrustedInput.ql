@@ -53,7 +53,7 @@ where
   // JsonConvert static method call, but with additional unsafe typename tracking
   exists(DataFlow::Node settingsCallArg |
     JsonConvertTracking::flowPath(userInput.asPathNode3(), deserializeCallArg.asPathNode3()) and
-    TypeNameTracking::flow(_, settingsCallArg) and
+    TypeNameTracking::flowTo(settingsCallArg) and
     sameParent(deserializeCallArg.getNode(), settingsCallArg)
   )
 select deserializeCallArg, userInput, deserializeCallArg, "$@ flows to unsafe deserializer.",

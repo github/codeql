@@ -1,19 +1,19 @@
 comments1.cs:
 #    9| [Class] C
 #   34| [Class] Foo
-#   39|   5: [Field] x
+#   39|   6: [Field] x
 #   39|     -1: [TypeMention] int
-#   42|   6: [Field] y
+#   42|   7: [Field] y
 #   42|     -1: [TypeMention] int
-#   43|   7: [Field] z
+#   43|   8: [Field] z
 #   43|     -1: [TypeMention] int
 comments2.cs:
 #   11| [Class] C2
-#   13|   4: [Field] field1
+#   13|   5: [Field] field1
 #   13|     -1: [TypeMention] int
-#   14|   5: [Field] field2
+#   14|   6: [Field] field2
 #   14|     -1: [TypeMention] int
-#   19|   6: [Method] f
+#   19|   7: [Method] f
 #   19|     -1: [TypeMention] Void
 #   20|     4: [BlockStmt] {...}
 #   23|       0: [ExprStmt] ...;
@@ -21,7 +21,7 @@ comments2.cs:
 #   26|       1: [ExprStmt] ...;
 #   26|         0: [MethodCall] call to method g
 #   26|           0: [IntLiteral] 2
-#   29|   7: [Method] g
+#   29|   8: [Method] g
 #   29|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   29|       0: [Parameter] x
@@ -37,8 +37,8 @@ comments2.cs:
 #   34|           -1: [TypeMention] int
 #   34|           0: [LocalVariableAccess] access to local variable z
 #   34|           1: [IntLiteral] 0
-#   40|   8: [Class] C3
-#   48|   9: [Property] S1
+#   40|   9: [Class] C3
+#   48|   10: [Property] S1
 #   48|     -1: [TypeMention] string
 #   52|     3: [Getter] get_S1
 #   52|       4: [BlockStmt] {...}
@@ -48,15 +48,15 @@ comments2.cs:
 #-----|       2: (Parameters)
 #   53|         0: [Parameter] value
 #   54|       4: [BlockStmt] {...}
-#   61|   10: [Enum] Values
+#   61|   11: [Enum] Values
 #   66|     5: [Field] First
 #   67|     6: [Field] Second
 #   73|     7: [Field] Third
-#   79|   11: [InstanceConstructor] C2
+#   79|   12: [InstanceConstructor] C2
 #   80|     4: [BlockStmt] {...}
-#   85|   12: [Destructor] ~C2
+#   85|   13: [Destructor] ~C2
 #   86|     4: [BlockStmt] {...}
-#   90|   13: [AddOperator] +
+#   90|   14: [AddOperator] +
 #   90|     -1: [TypeMention] int
 #-----|     2: (Parameters)
 #   90|       0: [Parameter] x
@@ -66,7 +66,7 @@ comments2.cs:
 #   91|     4: [BlockStmt] {...}
 #   92|       0: [ReturnStmt] return ...;
 #   92|         0: [IntLiteral] 2
-#   95|   14: [Method] f
+#   95|   15: [Method] f
 #   95|     -1: [TypeMention] Void
 #-----|     2: (Parameters)
 #   96|       0: [Parameter] x
@@ -74,8 +74,8 @@ comments2.cs:
 #   97|       1: [Parameter] y
 #   97|         -1: [TypeMention] int
 #   99|     4: [BlockStmt] {...}
-#  103|   15: [DelegateType] D
-#  107|   16: [Event] E
+#  103|   16: [DelegateType] D
+#  107|   17: [Event] E
 #  107|     -1: [TypeMention] D
 #  107|     3: [AddEventAccessor] add_E
 #-----|       2: (Parameters)
@@ -83,7 +83,7 @@ comments2.cs:
 #  107|     4: [RemoveEventAccessor] remove_E
 #-----|       2: (Parameters)
 #  107|         0: [Parameter] value
-#  110|   17: [Method] gen
+#  110|   18: [Method] gen
 #  110|     -1: [TypeMention] Void
 #  111|     4: [BlockStmt] {...}
 #  112|       0: [LocalVariableDeclStmt] ... ...;
@@ -110,12 +110,12 @@ comments2.cs:
 #  115|           -1: [TypeMention] int
 #  115|           0: [LocalVariableAccess] access to local variable t4
 #  115|           1: [MethodCall] call to method GenericFn<Double>
-#  119|   20: [Class] GenericClass`1
+#  119|   21: [Class] GenericClass`1
 #-----|     1: (Type parameters)
 #  119|       0: [TypeParameter] T
-#  121|     5: [Field] f
+#  121|     6: [Field] f
 #  121|       -1: [TypeMention] int
-#  125|   23: [Method] GenericFn`1
+#  125|   24: [Method] GenericFn`1
 #  125|     -1: [TypeMention] int
 #-----|     1: (Type parameters)
 #  125|       0: [TypeParameter] T
@@ -129,7 +129,7 @@ comments2.cs:
 #  128|         0: [IntLiteral] 0
 trivia.cs:
 #   14| [Class] Tr1
-#   16|   5: [Method] M1
+#   16|   6: [Method] M1
 #   16|     -1: [TypeMention] Void
 #   17|     4: [BlockStmt] {...}
 comments1.cs:
@@ -155,7 +155,7 @@ trivia.cs:
 #   28|         0: [LocalVariableDeclExpr] Double d
 #   28|           0: [TypeMention] double
 #   32| [Class] Tr2
-#   34|   5: [Method] M1
+#   34|   6: [Method] M1
 #   34|     -1: [TypeMention] Void
 #   35|     4: [BlockStmt] {...}
 #   37|       0: [LocalVariableDeclStmt] ... ...;
@@ -165,11 +165,11 @@ trivia.cs:
 #   39|         0: [LocalVariableDeclExpr] Int32 j
 #   39|           0: [TypeMention] int
 #   45| [Class] Tr3
-#   47|   5: [Method] M1
+#   47|   6: [Method] M1
 #   47|     -1: [TypeMention] Void
 #   48|     4: [BlockStmt] {...}
 #   61| [Class] Tr4
-#   63|   5: [Method] M1
+#   63|   6: [Method] M1
 #   63|     -1: [TypeMention] Void
 #   64|     4: [BlockStmt] {...}
 #   73|       0: [LocalVariableDeclStmt] ... ...;
@@ -178,25 +178,25 @@ trivia.cs:
 #   73|           0: [LocalVariableAccess] access to local variable i
 #   73|           1: [IntLiteral] 1
 #   80| [Class] Tr5
-#   83|   5: [Method] M1
+#   83|   6: [Method] M1
 #   83|     -1: [TypeMention] Void
 #   84|     4: [BlockStmt] {...}
-#   88|   6: [Method] M2
+#   88|   7: [Method] M2
 #   88|     -1: [TypeMention] Void
 #   89|     4: [BlockStmt] {...}
-#   92|   7: [Field] F1
+#   92|   8: [Field] F1
 #   92|     -1: [TypeMention] int
 #   94|     1: [IntLiteral] 10
-#   98|   8: [Field] F2
+#   98|   9: [Field] F2
 #   98|     -1: [TypeMention] int
 #   98|     1: [IntLiteral] 0
-#  100|   9: [Property] P1
+#  100|   10: [Property] P1
 #  100|     -1: [TypeMention] int
 #  102|     3: [Getter] get_P1
 #  104|     4: [Setter] set_P1
 #-----|       2: (Parameters)
 #  104|         0: [Parameter] value
-#  108|   10: [Property] P2
+#  108|   11: [Property] P2
 #  108|     -1: [TypeMention] int
 #  108|     3: [Getter] get_P2
 #  108|     4: [Setter] set_P2

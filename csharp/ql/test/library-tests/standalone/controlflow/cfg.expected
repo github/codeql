@@ -1,6 +1,8 @@
 | ControlFlow.cs:3:7:3:9 | call to constructor Object | ControlFlow.cs:3:7:3:9 | {...} |
-| ControlFlow.cs:3:7:3:9 | enter Cfg | ControlFlow.cs:3:7:3:9 | call to constructor Object |
+| ControlFlow.cs:3:7:3:9 | call to method <object initializer> | ControlFlow.cs:3:7:3:9 | call to constructor Object |
+| ControlFlow.cs:3:7:3:9 | enter Cfg | ControlFlow.cs:3:7:3:9 | this access |
 | ControlFlow.cs:3:7:3:9 | exit Cfg (normal) | ControlFlow.cs:3:7:3:9 | exit Cfg |
+| ControlFlow.cs:3:7:3:9 | this access | ControlFlow.cs:3:7:3:9 | call to method <object initializer> |
 | ControlFlow.cs:3:7:3:9 | {...} | ControlFlow.cs:3:7:3:9 | exit Cfg (normal) |
 | ControlFlow.cs:5:10:5:10 | enter F | ControlFlow.cs:6:5:11:5 | {...} |
 | ControlFlow.cs:5:10:5:10 | exit F (normal) | ControlFlow.cs:5:10:5:10 | exit F |
@@ -29,10 +31,12 @@
 | ControlFlow.cs:10:9:10:87 | ...; | ControlFlow.cs:10:9:10:86 | Call (unknown target) |
 | ControlFlow.cs:10:9:10:87 | ...; | ControlFlow.cs:10:9:10:86 | object creation of type <unknown type> |
 | ControlFlow.cs:10:35:10:86 | { ..., ... } | ControlFlow.cs:5:10:5:10 | exit F (normal) |
+| ControlFlow.cs:10:37:10:47 | access to array element | ControlFlow.cs:10:37:10:62 | ... = ... |
 | ControlFlow.cs:10:37:10:62 | ... = ... | ControlFlow.cs:10:79:10:79 | access to local variable v |
-| ControlFlow.cs:10:51:10:62 | access to field Empty | ControlFlow.cs:10:37:10:62 | ... = ... |
+| ControlFlow.cs:10:51:10:62 | access to field Empty | ControlFlow.cs:10:37:10:47 | access to array element |
+| ControlFlow.cs:10:65:10:75 | access to array element | ControlFlow.cs:10:65:10:84 | ... = ... |
 | ControlFlow.cs:10:65:10:84 | ... = ... | ControlFlow.cs:10:35:10:86 | { ..., ... } |
 | ControlFlow.cs:10:79:10:79 | access to local variable v | ControlFlow.cs:10:79:10:84 | Call (unknown target) |
 | ControlFlow.cs:10:79:10:79 | access to local variable v | ControlFlow.cs:10:79:10:84 | access to property (unknown) |
-| ControlFlow.cs:10:79:10:84 | Call (unknown target) | ControlFlow.cs:10:65:10:84 | ... = ... |
-| ControlFlow.cs:10:79:10:84 | access to property (unknown) | ControlFlow.cs:10:65:10:84 | ... = ... |
+| ControlFlow.cs:10:79:10:84 | Call (unknown target) | ControlFlow.cs:10:65:10:75 | access to array element |
+| ControlFlow.cs:10:79:10:84 | access to property (unknown) | ControlFlow.cs:10:65:10:75 | access to array element |

@@ -1,5 +1,5 @@
 name: codeql/cpp-all
-version: 6.1.4
+version: 8.0.3
 groups: cpp
 dbscheme: semmlecode.cpp.dbscheme
 extractor: cpp
@@ -15,7 +15,6 @@ dependencies:
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
   codeql/xml: ${workspace}
-  codeql/global-controlflow: ${workspace}
 dataExtensions:
   - ext/*.model.yml
   - ext/generated/**/*.model.yml

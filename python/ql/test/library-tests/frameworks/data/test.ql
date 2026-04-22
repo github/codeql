@@ -6,11 +6,9 @@ import semmle.python.dataflow.new.DataFlow
 private import semmle.python.ApiGraphs
 
 module BasicTaintTrackingConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source = ModelOutput::getASourceNode("test-source").asSource()
-  }
+  predicate isSource(DataFlow::Node source) { ModelOutput::sourceNode(source, "test-source") }
 
-  predicate isSink(DataFlow::Node sink) { sink = ModelOutput::getASinkNode("test-sink").asSink() }
+  predicate isSink(DataFlow::Node sink) { ModelOutput::sinkNode(sink, "test-sink") }
 }
 
 module TestTaintTrackingFlow = TaintTracking::Global<BasicTaintTrackingConfig>;
@@ -19,13 +17,9 @@ query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
   TestTaintTrackingFlow::flow(source, sink)
 }
 
-query predicate isSink(DataFlow::Node node, string kind) {
-  node = ModelOutput::getASinkNode(kind).asSink()
-}
+query predicate isSink(DataFlow::Node node, string kind) { ModelOutput::sinkNode(node, kind) }
 
-query predicate isSource(DataFlow::Node node, string kind) {
-  node = ModelOutput::getASourceNode(kind).asSource()
-}
+query predicate isSource(DataFlow::Node node, string kind) { ModelOutput::sourceNode(node, kind) }
 
 query predicate syntaxErrors(ApiGraphModels::AccessPath path) { path.hasSyntaxError() }
 

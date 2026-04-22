@@ -18,7 +18,7 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
 
 query predicate warning = ModelOutput::getAWarning/0;
 
-private class SummarizedCallableIdentity extends SummarizedCallable {
+private class SummarizedCallableIdentity extends SummarizedCallable::Range {
   SummarizedCallableIdentity() { this = "identity" }
 
   override MethodCall getACall() { result.getMethodName() = this }
@@ -30,7 +30,7 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableApplyBlock extends SummarizedCallable {
+private class SummarizedCallableApplyBlock extends SummarizedCallable::Range {
   SummarizedCallableApplyBlock() { this = "apply_block" }
 
   override MethodCall getACall() { result.getMethodName() = this }
@@ -46,7 +46,7 @@ private class SummarizedCallableApplyBlock extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableApplyLambda extends SummarizedCallable {
+private class SummarizedCallableApplyLambda extends SummarizedCallable::Range {
   SummarizedCallableApplyLambda() { this = "apply_lambda" }
 
   override MethodCall getACall() { result.getMethodName() = this }
@@ -80,7 +80,7 @@ module CustomConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     DefaultFlowConfig::isSink(sink)
     or
-    sink = ModelOutput::getASinkNode("test-sink").asSink()
+    ModelOutput::sinkNode(sink, "test-sink")
   }
 }
 

@@ -18,3 +18,7 @@ extensions:
       - ["System.Net.Mime", "ContentDisposition", "get_Parameters", "()", "summary", "df-generated"]
       - ["System.Net.Mime", "ContentType", "Equals", "(System.Object)", "summary", "df-generated"]
       - ["System.Net.Mime", "ContentType", "GetHashCode", "()", "summary", "df-generated"]
+      - ["System.Net.Mime", "MediaTypeMap", "GetExtension", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
+      - ["System.Net.Mime", "MediaTypeMap", "GetExtension", "(System.String)", "summary", "df-generated"]
+      - ["System.Net.Mime", "MediaTypeMap", "GetMediaType", "(System.ReadOnlySpan<System.Char>)", "summary", "df-generated"]
+      - ["System.Net.Mime", "MediaTypeMap", "GetMediaType", "(System.String)", "summary", "df-generated"]

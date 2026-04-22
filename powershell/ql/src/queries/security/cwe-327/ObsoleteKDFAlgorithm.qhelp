@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Key Derivation Functions (KDFs) are used to derive cryptographic keys from passwords or 
+      other secret values. Using obsolete or weak KDF algorithms can compromise password security.
+    </p>
+    <p>
+      The <code>PasswordDeriveBytes</code> class implements the PBKDF1 algorithm, which is 
+      considered obsolete and insecure. PBKDF1 has known weaknesses and is limited to producing
+      keys that are at most 160 bits in length.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Use the <code>Rfc2898DeriveBytes</code> class which implements the PBKDF2 algorithm with
+      a SHA-2 hash function (such as SHA-256 or SHA-512). Additionally, use a high iteration
+      count (at least 100,000) to increase resistance against brute-force attacks.
+    </p>
+    
+  </recommendation>
+  <references>
+    <li>NIST, SP 800-132: <a href="https://csrc.nist.gov/publications/detail/sp/800-132/final">Recommendation for Password-Based Key Derivation</a>.</li>
+    <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet</a>.</li>
+    <li>CWE-327: <a href="https://cwe.mitre.org/data/definitions/327.html">Use of a Broken or Risky Cryptographic Algorithm</a>.</li>
+    <li>CWE-328: <a href="https://cwe.mitre.org/data/definitions/328.html">Use of Weak Hash</a>.</li>
+  </references>
+</qhelp>

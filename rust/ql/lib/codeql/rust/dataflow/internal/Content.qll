@@ -5,6 +5,7 @@
 private import rust
 private import codeql.rust.frameworks.stdlib.Builtins
 private import DataFlowImpl
+private import codeql.rust.elements.internal.CallExprImpl::Impl as CallExprImpl
 
 /**
  * A path to a value contained in an object. For example a field name of a struct.
@@ -30,9 +31,12 @@ class TupleFieldContent extends FieldContent, TTupleFieldContent {
 
   TupleFieldContent() {
     this = TTupleFieldContent(field) and
-    // tuples are handled using the special `TupleContent` type
+    // tuples are handled using the special `TuplePositionContent` type
     not field = any(TupleType tt).getATupleField()
   }
+
+  /** Gets the tuple field. */
+  TupleField getField() { result = field }
 
   /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, int pos) { field.isVariantField(v, pos) }
@@ -66,6 +70,9 @@ class StructFieldContent extends FieldContent, TStructFieldContent {
   private StructField field;
 
   StructFieldContent() { this = TStructFieldContent(field) }
+
+  /** Gets the struct field. */
+  StructField getField() { result = field }
 
   /** Holds if this field belongs to an enum variant. */
   predicate isVariantField(Variant v, string name) { field.isVariantField(v, name) }
@@ -152,10 +159,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
   /** Gets the index of this tuple position. */
   int getPosition() { result = pos }
 
-  override FieldExpr getAnAccess() {
-    // TODO: limit to tuple types
-    result.getIdentifier().getText().toInt() = pos
-  }
+  override FieldExpr getAnAccess() { result.getTupleField() = any(TupleType tt).getTupleField(pos) }
 
   override string toString() { result = "tuple." + pos.toString() }
 
@@ -163,7 +167,7 @@ final class TuplePositionContent extends FieldContent, TTuplePositionContent {
 }
 
 /**
- * A content for the index of an argument to at function call.
+ * A content for the index of an argument to at closure call.
  *
  * Used by the model generator to create flow summaries for higher-order
  * functions.
@@ -255,10 +259,32 @@ final class OptionalBarrier extends ContentSet, TOptionalBarrier {
 
 private import codeql.rust.internal.CachedStages
 
+string tupleFieldApprox(TupleField field) {
+  exists(Name name |
+    name = any(Variant v | field.isVariantField(v, _)).getName()
+    or
+    name = any(Struct s | field.isStructField(s, _)).getName()
+  |
+    result = name.getText().charAt(0)
+  )
+}
+
+string structFieldApprox(StructField field) {
+  exists(string name |
+    field.isVariantField(_, name) or
+    field.isStructField(_, name)
+  |
+    result = name.charAt(0)
+  )
+}
+
 cached
 newtype TContent =
-  TTupleFieldContent(TupleField field) { Stages::DataFlowStage::ref() } or
-  TStructFieldContent(StructField field) or
+  TTupleFieldContent(TupleField field) {
+    Stages::DataFlowStage::ref() and
+    exists(tupleFieldApprox(field))
+  } or
+  TStructFieldContent(StructField field) { exists(structFieldApprox(field)) } or
   TElementContent() or
   TFutureContent() or
   TTuplePositionContent(int pos) {
@@ -270,7 +296,45 @@ newtype TContent =
   } or
   TFunctionCallReturnContent() or
   TFunctionCallArgumentContent(int pos) {
-    pos in [0 .. any(CallExpr c).getArgList().getNumberOfArgs() - 1]
+    pos in [0 .. any(CallExprImpl::DynamicCallExpr c).getNumberOfPositionalArguments()]
   } or
   TCapturedVariableContent(VariableCapture::CapturedVariable v) or
   TReferenceContent()
+
+cached
+newtype TContentApprox =
+  TTupleFieldContentApprox(string s) { Stages::DataFlowStage::ref() and s = tupleFieldApprox(_) } or
+  TStructFieldContentApprox(string s) { s = structFieldApprox(_) } or
+  TElementContentApprox() or
+  TFutureContentApprox() or
+  TTuplePositionContentApprox() or
+  TFunctionCallReturnContentApprox() or
+  TFunctionCallArgumentContentApprox() or
+  TCapturedVariableContentApprox() or
+  TReferenceContentApprox()
+
+final class ContentApprox extends TContentApprox {
+  /** Gets a textual representation of this element. */
+  string toString() {
+    exists(string s |
+      this = TTupleFieldContentApprox(s) or
+      this = TStructFieldContentApprox(s)
+    |
+      result = s
+    )
+    or
+    this = TElementContentApprox() and result = "element"
+    or
+    this = TFutureContentApprox() and result = "future"
+    or
+    this = TTuplePositionContentApprox() and result = "tuple.position"
+    or
+    this = TFunctionCallReturnContentApprox() and result = "function.return"
+    or
+    this = TFunctionCallArgumentContentApprox() and result = "function.argument"
+    or
+    this = TCapturedVariableContentApprox() and result = "captured.variable"
+    or
+    this = TReferenceContentApprox() and result = "&ref"
+  }
+}

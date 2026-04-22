@@ -8,7 +8,7 @@ CodeQL has classes for identifying code that calls other code, and code that can
 Call graph classes
 ------------------
 
-The CodeQL library for Java/Kotlin provides two abstract classes for representing a program's call graph: ``Callable`` and ``Call``. The former is simply the common superclass of ``Method`` and ``Constructor``, the latter is a common superclass of ``MethodAccess``, ``ClassInstanceExpression``, ``ThisConstructorInvocationStmt`` and ``SuperConstructorInvocationStmt``. Simply put, a ``Callable`` is something that can be invoked, and a ``Call`` is something that invokes a ``Callable``.
+The CodeQL library for Java/Kotlin provides two abstract classes for representing a program's call graph: ``Callable`` and ``Call``. The former is simply the common superclass of ``Method`` and ``Constructor``, the latter is a common superclass of ``MethodCall``, ``ClassInstanceExpression``, ``ThisConstructorInvocationStmt`` and ``SuperConstructorInvocationStmt``. Simply put, a ``Callable`` is something that can be invoked, and a ``Call`` is something that invokes a ``Callable``.
 
 For example, in the following program all callables and calls have been annotated with comments:
 

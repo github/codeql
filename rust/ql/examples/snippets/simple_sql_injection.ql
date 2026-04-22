@@ -23,9 +23,9 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     // `node` is the first argument of a call to `sqlx_core::query::query`
-    exists(CallExpr call |
+    exists(Call call |
       call.getStaticTarget().getCanonicalPath() = "sqlx_core::query::query" and
-      call.getArg(0) = node.asExpr()
+      call.getPositionalArgument(0) = node.asExpr()
     )
   }
 }

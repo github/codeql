@@ -136,7 +136,7 @@ class AttributeBaseCfgNode extends AstCfgNode {
 
 private class AttributeChildMapping extends AttributeBaseChildMapping, Attribute {
   override predicate relevantChild(Ast child) {
-    this.relevantChild(child)
+    super.relevantChild(child)
     or
     child = this.getANamedArgument()
     or
@@ -576,7 +576,10 @@ module ExprNodes {
   }
 
   private class ObjectCreationChildMapping extends CallExprChildMapping instanceof ObjectCreation {
-    override predicate relevantChild(Ast child) { child = super.getConstructedTypeExpr() }
+    override predicate relevantChild(Ast child) {
+      super.relevantChild(child) or
+      child = super.getConstructedTypeExpr()
+    }
   }
 
   class ObjectCreationCfgNode extends CallExprCfgNode {

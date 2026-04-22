@@ -5,7 +5,6 @@ private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.frameworks.owasp.Esapi
 private import semmle.code.java.security.Sanitizers
 
 /**
@@ -28,25 +27,8 @@ class TrustBoundaryViolationSink extends DataFlow::Node {
  */
 abstract class TrustBoundaryValidationSanitizer extends DataFlow::Node { }
 
-/**
- * A node validated by an OWASP ESAPI validation method.
- */
-private class EsapiValidatedInputSanitizer extends TrustBoundaryValidationSanitizer {
-  EsapiValidatedInputSanitizer() {
-    this = DataFlow::BarrierGuard<esapiIsValidData/3>::getABarrierNode() or
-    this.asExpr().(MethodCall).getMethod() instanceof EsapiGetValidMethod
-  }
-}
-
-/**
- * Holds if `g` is a guard that checks that `e` is valid data according to an OWASP ESAPI validation method.
- */
-private predicate esapiIsValidData(Guard g, Expr e, boolean branch) {
-  branch = true and
-  exists(MethodCall ma | ma.getMethod() instanceof EsapiIsValidMethod |
-    g = ma and
-    e = ma.getArgument(1)
-  )
+private class ExternalTrustBoundaryValidationSanitizer extends TrustBoundaryValidationSanitizer {
+  ExternalTrustBoundaryValidationSanitizer() { barrierNode(this, "trust-boundary-violation") }
 }
 
 /**

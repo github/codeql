@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.ComponentModel.Annotations, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.ComponentModel.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace ComponentModel
@@ -381,6 +381,7 @@ namespace System
                 public ValidationContext(object instance) => throw null;
                 public ValidationContext(object instance, System.Collections.Generic.IDictionary<object, object> items) => throw null;
                 public ValidationContext(object instance, System.IServiceProvider serviceProvider, System.Collections.Generic.IDictionary<object, object> items) => throw null;
+                public ValidationContext(object instance, string displayName, System.IServiceProvider serviceProvider, System.Collections.Generic.IDictionary<object, object> items) => throw null;
                 public string DisplayName { get => throw null; set { } }
                 public object GetService(System.Type serviceType) => throw null;
                 public void InitializeServiceProvider(System.Func<System.Type, object> serviceProvider) => throw null;

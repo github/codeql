@@ -35,7 +35,7 @@ fn string_add() {
     let s4 = s1 + s3;
     let s5 = s2 + s3;
 
-    sink(s4); // $ SPURIOUS: hasValueFlow=83 MISSING: hasTaintFlow=83
+    sink(s4); // $ hasTaintFlow=83
     sink(s5);
 }
 
@@ -61,7 +61,7 @@ fn string_to_string() {
 
 fn as_str() {
     let s = source(67);
-    sink_slice(s.as_str()); // $ hasValueFlow=67
+    sink_slice(s.as_str()); // $ hasTaintFlow=67 -- `s.as_str()` has type `&str`, so an implicit deref is needed at the sink
 }
 
 fn format_args_built_in() {

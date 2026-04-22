@@ -950,7 +950,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
-    result = getTranslatedFunction(this.getFunction()).getInitializeThisInstruction()
+    result = getTranslatedFunction(this.getFunction()).getLoadThisInstruction()
   }
 
   final override predicate getInstructionInheritance(
@@ -1000,7 +1000,7 @@ class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromC
   }
 
   final override Instruction getReceiver() {
-    result = getTranslatedFunction(this.getFunction()).getInitializeThisInstruction()
+    result = getTranslatedFunction(this.getFunction()).getLoadThisInstruction()
   }
 }
 

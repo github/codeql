@@ -12,6 +12,7 @@ private import TranslatedFunction
 private import TranslatedStmt
 private import TranslatedExpr
 private import IRConstruction
+private import TranslatedAssertion
 private import semmle.code.cpp.models.interfaces.SideEffect
 private import SideEffects
 
@@ -138,6 +139,14 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // conditionally constructed (until we have a mechanism for calling these only when the
   // temporary's constructor was run)
   isConditionalTemporaryDestructorCall(expr)
+  or
+  // An assertion in a release build is often defined as `#define assert(x) ((void)0)`.
+  // We generate a synthetic assertion in release builds, and when we do that the
+  // expression `((void)0)` should not be translated.
+  exists(MacroInvocation mi |
+    assertion(mi, _) and
+    expr = mi.getExpr().getFullyConverted()
+  )
 }
 
 /**
@@ -909,7 +918,8 @@ newtype TTranslatedElement =
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) }
+  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) } or
+  TTranslatedAssertionOperand(MacroInvocation mi, int index) { hasAssertionOperand(mi, index) }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`

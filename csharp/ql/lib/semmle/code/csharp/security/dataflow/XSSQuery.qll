@@ -7,6 +7,7 @@ import csharp
 private import XSSSinks
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * Holds if there is tainted flow from `source` to `sink` that may lead to a
@@ -168,6 +169,11 @@ private class ThreatModelSource extends Source instanceof ActiveThreatModelSourc
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
 private class GuidSanitizer extends Sanitizer, GuidSanitizedExpr { }
+
+/** A sanitizer for XSS defined through Models as Data. */
+private class ExternalXssSanitizer extends Sanitizer {
+  ExternalXssSanitizer() { barrierNode(this, ["html-injection", "js-injection"]) }
+}
 
 /** A call to an HTML encoder. */
 private class HtmlEncodeSanitizer extends Sanitizer {

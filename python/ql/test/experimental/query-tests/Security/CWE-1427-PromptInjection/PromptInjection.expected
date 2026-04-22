@@ -1,0 +1,97 @@
+#select
+| agent_instructions.py:9:50:9:89 | ControlFlowNode for BinaryExpr | agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_instructions.py:9:50:9:89 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| agent_instructions.py:25:28:25:32 | ControlFlowNode for input | agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_instructions.py:25:28:25:32 | ControlFlowNode for input | This prompt construction depends on a $@. | agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| agent_instructions.py:35:28:35:32 | ControlFlowNode for input | agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_instructions.py:35:28:35:32 | ControlFlowNode for input | This prompt construction depends on a $@. | agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:18:15:18:19 | ControlFlowNode for query | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:18:15:18:19 | ControlFlowNode for query | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:33:33:33:37 | ControlFlowNode for query | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:33:33:33:37 | ControlFlowNode for query | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:41:22:41:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:41:22:41:46 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:42:15:42:19 | ControlFlowNode for query | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:42:15:42:19 | ControlFlowNode for query | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:53:33:53:37 | ControlFlowNode for query | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:53:33:53:37 | ControlFlowNode for query | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:63:28:63:51 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:63:28:63:51 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:67:28:67:32 | ControlFlowNode for query | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:67:28:67:32 | ControlFlowNode for query | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:71:28:71:32 | ControlFlowNode for query | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:71:28:71:32 | ControlFlowNode for query | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:80:28:80:51 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:80:28:80:51 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:84:28:84:32 | ControlFlowNode for query | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:84:28:84:32 | ControlFlowNode for query | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| openai_test.py:92:22:92:46 | ControlFlowNode for BinaryExpr | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:92:22:92:46 | ControlFlowNode for BinaryExpr | This prompt construction depends on a $@. | openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+edges
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | agent_instructions.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for request | agent_instructions.py:7:13:7:19 | ControlFlowNode for request | provenance |  |
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for request | agent_instructions.py:17:13:17:19 | ControlFlowNode for request | provenance |  |
+| agent_instructions.py:7:5:7:9 | ControlFlowNode for input | agent_instructions.py:9:50:9:89 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:2 |
+| agent_instructions.py:7:13:7:19 | ControlFlowNode for request | agent_instructions.py:7:13:7:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| agent_instructions.py:7:13:7:24 | ControlFlowNode for Attribute | agent_instructions.py:7:13:7:37 | ControlFlowNode for Attribute() | provenance | dict.get |
+| agent_instructions.py:7:13:7:37 | ControlFlowNode for Attribute() | agent_instructions.py:7:5:7:9 | ControlFlowNode for input | provenance |  |
+| agent_instructions.py:17:5:17:9 | ControlFlowNode for input | agent_instructions.py:25:28:25:32 | ControlFlowNode for input | provenance |  |
+| agent_instructions.py:17:5:17:9 | ControlFlowNode for input | agent_instructions.py:35:28:35:32 | ControlFlowNode for input | provenance |  |
+| agent_instructions.py:17:13:17:19 | ControlFlowNode for request | agent_instructions.py:17:13:17:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| agent_instructions.py:17:13:17:24 | ControlFlowNode for Attribute | agent_instructions.py:17:13:17:37 | ControlFlowNode for Attribute() | provenance | dict.get |
+| agent_instructions.py:17:13:17:37 | ControlFlowNode for Attribute() | agent_instructions.py:17:5:17:9 | ControlFlowNode for input | provenance |  |
+| openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | openai_test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
+| openai_test.py:2:26:2:32 | ControlFlowNode for request | openai_test.py:12:15:12:21 | ControlFlowNode for request | provenance |  |
+| openai_test.py:2:26:2:32 | ControlFlowNode for request | openai_test.py:13:13:13:19 | ControlFlowNode for request | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:41:22:41:46 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:63:28:63:51 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:80:28:80:51 | ControlFlowNode for BinaryExpr | provenance |  |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | openai_test.py:92:22:92:46 | ControlFlowNode for BinaryExpr | provenance | Sink:MaD:1 |
+| openai_test.py:12:15:12:21 | ControlFlowNode for request | openai_test.py:12:15:12:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| openai_test.py:12:15:12:21 | ControlFlowNode for request | openai_test.py:13:13:13:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| openai_test.py:12:15:12:26 | ControlFlowNode for Attribute | openai_test.py:12:15:12:41 | ControlFlowNode for Attribute() | provenance | dict.get |
+| openai_test.py:12:15:12:41 | ControlFlowNode for Attribute() | openai_test.py:12:5:12:11 | ControlFlowNode for persona | provenance |  |
+| openai_test.py:13:5:13:9 | ControlFlowNode for query | openai_test.py:18:15:18:19 | ControlFlowNode for query | provenance |  |
+| openai_test.py:13:5:13:9 | ControlFlowNode for query | openai_test.py:33:33:33:37 | ControlFlowNode for query | provenance |  |
+| openai_test.py:13:5:13:9 | ControlFlowNode for query | openai_test.py:42:15:42:19 | ControlFlowNode for query | provenance |  |
+| openai_test.py:13:5:13:9 | ControlFlowNode for query | openai_test.py:53:33:53:37 | ControlFlowNode for query | provenance |  |
+| openai_test.py:13:5:13:9 | ControlFlowNode for query | openai_test.py:67:28:67:32 | ControlFlowNode for query | provenance |  |
+| openai_test.py:13:5:13:9 | ControlFlowNode for query | openai_test.py:71:28:71:32 | ControlFlowNode for query | provenance |  |
+| openai_test.py:13:5:13:9 | ControlFlowNode for query | openai_test.py:84:28:84:32 | ControlFlowNode for query | provenance |  |
+| openai_test.py:13:13:13:19 | ControlFlowNode for request | openai_test.py:13:13:13:24 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
+| openai_test.py:13:13:13:24 | ControlFlowNode for Attribute | openai_test.py:13:13:13:37 | ControlFlowNode for Attribute() | provenance | dict.get |
+| openai_test.py:13:13:13:37 | ControlFlowNode for Attribute() | openai_test.py:13:5:13:9 | ControlFlowNode for query | provenance |  |
+models
+| 1 | Sink: OpenAI; Member[beta].Member[assistants].Member[create].Argument[instructions:]; prompt-injection |
+| 2 | Sink: agents; Member[Agent].Argument[instructions:]; prompt-injection |
+nodes
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| agent_instructions.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_instructions.py:7:5:7:9 | ControlFlowNode for input | semmle.label | ControlFlowNode for input |
+| agent_instructions.py:7:13:7:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_instructions.py:7:13:7:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| agent_instructions.py:7:13:7:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| agent_instructions.py:9:50:9:89 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| agent_instructions.py:17:5:17:9 | ControlFlowNode for input | semmle.label | ControlFlowNode for input |
+| agent_instructions.py:17:13:17:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| agent_instructions.py:17:13:17:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| agent_instructions.py:17:13:17:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| agent_instructions.py:25:28:25:32 | ControlFlowNode for input | semmle.label | ControlFlowNode for input |
+| agent_instructions.py:35:28:35:32 | ControlFlowNode for input | semmle.label | ControlFlowNode for input |
+| openai_test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| openai_test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| openai_test.py:12:5:12:11 | ControlFlowNode for persona | semmle.label | ControlFlowNode for persona |
+| openai_test.py:12:15:12:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| openai_test.py:12:15:12:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| openai_test.py:12:15:12:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| openai_test.py:13:5:13:9 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| openai_test.py:13:13:13:19 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| openai_test.py:13:13:13:24 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| openai_test.py:13:13:13:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| openai_test.py:17:22:17:46 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:18:15:18:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| openai_test.py:22:22:22:46 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:26:28:26:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:33:33:33:37 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| openai_test.py:41:22:41:46 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:42:15:42:19 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| openai_test.py:53:33:53:37 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| openai_test.py:63:28:63:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:67:28:67:32 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| openai_test.py:71:28:71:32 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| openai_test.py:80:28:80:51 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| openai_test.py:84:28:84:32 | ControlFlowNode for query | semmle.label | ControlFlowNode for query |
+| openai_test.py:92:22:92:46 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+subpaths

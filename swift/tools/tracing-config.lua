@@ -53,6 +53,13 @@ function RegisterExtractorPack(id)
         strip_unsupported_arg(args, '-stack-check', 0)
         strip_unsupported_arg(args, '-experimental-skip-non-inlinable-function-bodies-without-types', 0)
         strip_unsupported_clang_arg(args, '-ivfsstatcache', 1)
+        strip_unsupported_clang_arg(args, '-fno-odr-hash-protocols', 0)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation', 0)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+enableAggressiveVLAFolding', 0)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+revert09abecef7bbf', 0)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+thisNoAlignAttr', 0)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+thisNoNullAttr', 0)
+        strip_unsupported_clang_arg(args, '-clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError', 0)
         -- The four args below are removed to workaround version mismatches due to recent versions
         -- of Xcode defaulting to explicit modules:
         strip_unsupported_arg(args, '-disable-implicit-swift-modules', 0)
@@ -118,6 +125,9 @@ function RegisterExtractorPack(id)
             return nil
         end
         if compilerArguments.argv[1] == '-emit-supported-features' then
+            return nil
+        end
+        if compilerArguments.argv[1] == '-scan-dependencies' then
             return nil
         end
 

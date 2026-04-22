@@ -240,7 +240,9 @@ class NormalCall extends DataFlowCall, TNormalCall {
 module ViewComponentRenderModeling {
   private import codeql.ruby.frameworks.ViewComponent
 
-  private class RenderMethod extends SummarizedCallable, LibraryCallableToIncludeInTypeTracking {
+  private class RenderMethod extends SummarizedCallable::Range,
+    LibraryCallableToIncludeInTypeTracking
+  {
     RenderMethod() { this = "render view component" }
 
     override MethodCall getACallSimple() { result.getMethodName() = "render" }

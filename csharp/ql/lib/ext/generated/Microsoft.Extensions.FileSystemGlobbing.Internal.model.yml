@@ -4,6 +4,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", True, "PushDirectory", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "MatcherContext", False, "MatcherContext", "(System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.Internal.IPattern>,System.Collections.Generic.IEnumerable<Microsoft.Extensions.FileSystemGlobbing.Internal.IPattern>,Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase,System.StringComparison)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "PatternTestResult", False, "Success", "(System.String)", "", "Argument[0]", "ReturnValue.Property[Microsoft.Extensions.FileSystemGlobbing.Internal.PatternTestResult.Stem]", "value", "dfc-generated"]
   - addsTo:
@@ -17,7 +18,6 @@ extensions:
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPattern", "CreatePatternContextForInclude", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "Declare", "(System.Action<Microsoft.Extensions.FileSystemGlobbing.Internal.IPathSegment,System.Boolean>)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "PopDirectory", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "PushDirectory", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.DirectoryInfoBase)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IPatternContext", "Test", "(Microsoft.Extensions.FileSystemGlobbing.Abstractions.FileInfoBase)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileSystemGlobbing.Internal", "IRaggedPattern", "get_Contains", "()", "summary", "df-generated"]

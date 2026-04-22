@@ -1,4 +1,6 @@
 /** Contains predicates for dealing with container flow. */
+overlay[local?]
+module;
 
 import go
 private import DataFlowNodes

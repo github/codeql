@@ -10,6 +10,7 @@ private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
 private import TranslatedInitialization
+private import TranslatedAssertion
 
 TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAst() = stmt }
 
@@ -324,8 +325,16 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
 
 class TranslatedEmptyStmt extends TranslatedStmt {
   TranslatedEmptyStmt() {
-    stmt instanceof EmptyStmt or
-    stmt instanceof LabelStmt or
+    // An assertion macro invocation can expand to
+    // an empty statement in release builds. In that case
+    // we synthesize the check that would have occurred.
+    // This is handled by `TranslatedAssertion.qll` and so
+    // we exclude these statements here.
+    not assertion(_, stmt) and
+    stmt instanceof EmptyStmt
+    or
+    stmt instanceof LabelStmt
+    or
     stmt instanceof SwitchCase
   }
 
@@ -381,7 +390,7 @@ class TranslatedDeclStmt extends TranslatedStmt {
 
   override TranslatedElement getLastChild() { result = this.getChild(this.getChildCount() - 1) }
 
-  private int getChildCount() { result = count(this.getDeclarationEntry(_)) }
+  private int getChildCount() { result = count(int i | exists(this.getDeclarationEntry(i))) }
 
   IRDeclarationEntry getIRDeclarationEntry(int index) {
     result.hasIndex(index) and
@@ -419,6 +428,15 @@ class TranslatedDeclStmt extends TranslatedStmt {
 
 class TranslatedExprStmt extends TranslatedStmt {
   override ExprStmt stmt;
+
+  TranslatedExprStmt() {
+    // An assertion macro invocation typically expand to the
+    // expression `((void)0)` in release builds. In that case
+    // we synthesize the check that would have occurred.
+    // This is handled by `TranslatedAssertion.qll` and so
+    // we exclude these statements here.
+    not assertion(_, stmt)
+  }
 
   TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr().getFullyConverted()) }
 

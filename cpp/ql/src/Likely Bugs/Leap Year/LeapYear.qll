@@ -41,7 +41,6 @@ class CheckForLeapYearOperation extends Expr {
   }
 }
 
-bindingset[modVal]
 Expr moduloCheckEQ_0(EQExpr eq, int modVal) {
   exists(RemExpr rem | rem = eq.getLeftOperand() |
     result = rem.getLeftOperand() and
@@ -50,55 +49,12 @@ Expr moduloCheckEQ_0(EQExpr eq, int modVal) {
   eq.getRightOperand().getValue().toInt() = 0
 }
 
-bindingset[modVal]
 Expr moduloCheckNEQ_0(NEExpr neq, int modVal) {
   exists(RemExpr rem | rem = neq.getLeftOperand() |
     result = rem.getLeftOperand() and
     rem.getRightOperand().getValue().toInt() = modVal
   ) and
   neq.getRightOperand().getValue().toInt() = 0
-}
-
-/**
- * Returns if the two expressions resolve to the same value, albeit it is a fuzzy attempt.
- * SSA is not fit for purpose here as calls break SSA equivalence.
- */
-predicate exprEq_propertyPermissive(Expr e1, Expr e2) {
-  not e1 = e2 and
-  (
-    DataFlow::localFlow(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
-    or
-    if e1 instanceof ThisExpr and e2 instanceof ThisExpr
-    then any()
-    else
-      /* If it's a direct Access, check that the target is the same. */
-      if e1 instanceof Access
-      then e1.(Access).getTarget() = e2.(Access).getTarget()
-      else
-        /* If it's a Call, compare qualifiers and only permit no-argument Calls. */
-        if e1 instanceof Call
-        then
-          e1.(Call).getTarget() = e2.(Call).getTarget() and
-          e1.(Call).getNumberOfArguments() = 0 and
-          e2.(Call).getNumberOfArguments() = 0 and
-          if e1.(Call).hasQualifier()
-          then exprEq_propertyPermissive(e1.(Call).getQualifier(), e2.(Call).getQualifier())
-          else any()
-        else
-          /* If it's a binaryOperation, compare op and recruse */
-          if e1 instanceof BinaryOperation
-          then
-            e1.(BinaryOperation).getOperator() = e2.(BinaryOperation).getOperator() and
-            exprEq_propertyPermissive(e1.(BinaryOperation).getLeftOperand(),
-              e2.(BinaryOperation).getLeftOperand()) and
-            exprEq_propertyPermissive(e1.(BinaryOperation).getRightOperand(),
-              e2.(BinaryOperation).getRightOperand())
-          else
-            // Otherwise fail (and permit the raising of a finding)
-            if e1 instanceof Literal
-            then e1.(Literal).getValue() = e2.(Literal).getValue()
-            else none()
-  )
 }
 
 /**
@@ -224,11 +180,8 @@ final class ExprCheckCenturyComponentDiv400Inverted extends ExprCheckCenturyComp
  */
 class ExprCheckCenturyComponent extends LogicalOrExpr {
   ExprCheckCenturyComponent() {
-    exists(ExprCheckCenturyComponentDiv400 exprDiv400, ExprCheckCenturyComponentDiv100 exprDiv100 |
-      this.getAnOperand() = exprDiv100 and
-      this.getAnOperand() = exprDiv400 and
-      exprEq_propertyPermissive(exprDiv100.getYearExpr(), exprDiv400.getYearExpr())
-    )
+    this.getAnOperand() instanceof ExprCheckCenturyComponentDiv100 and
+    this.getAnOperand() instanceof ExprCheckCenturyComponentDiv400
   }
 
   Expr getYearExpr() {
@@ -250,10 +203,9 @@ abstract class ExprCheckLeapYear extends Expr { }
  */
 final class ExprCheckLeapYearFormA extends ExprCheckLeapYear, LogicalAndExpr {
   ExprCheckLeapYearFormA() {
-    exists(Expr e, ExprCheckCenturyComponent centuryCheck |
-      e = moduloCheckEQ_0(this.getLeftOperand(), 4) and
-      centuryCheck = this.getAnOperand().getAChild*() and
-      exprEq_propertyPermissive(e, centuryCheck.getYearExpr())
+    exists(ExprCheckCenturyComponent centuryCheck |
+      exists(moduloCheckEQ_0(this.getLeftOperand(), 4)) and
+      centuryCheck = this.getAnOperand().getAChild*()
     )
   }
 }
@@ -265,15 +217,11 @@ final class ExprCheckLeapYearFormA extends ExprCheckLeapYear, LogicalAndExpr {
  */
 final class ExprCheckLeapYearFormB extends ExprCheckLeapYear, LogicalOrExpr {
   ExprCheckLeapYearFormB() {
-    exists(VariableAccess va1, VariableAccess va2, VariableAccess va3 |
-      va1 = moduloCheckEQ_0(this.getAnOperand(), 400) and
-      va2 = moduloCheckNEQ_0(this.getAnOperand().(LogicalAndExpr).getAnOperand(), 100) and
-      va3 = moduloCheckEQ_0(this.getAnOperand().(LogicalAndExpr).getAnOperand(), 4) and
-      // The 400-leap year check may be offset by [1900,1970,2000].
-      exists(Expr va1_subExpr | va1_subExpr = va1.getAChild*() |
-        exprEq_propertyPermissive(va1_subExpr, va2) and
-        exprEq_propertyPermissive(va2, va3)
-      )
+    exists(LogicalAndExpr land |
+      exists(moduloCheckEQ_0(this.getAnOperand(), 400)) and
+      land = this.getAnOperand() and
+      exists(moduloCheckNEQ_0(land.getAnOperand(), 100)) and
+      exists(moduloCheckEQ_0(land.getAnOperand(), 4))
     )
   }
 }
@@ -411,6 +359,42 @@ class StructTmLeapYearFieldAccess extends LeapYearFieldAccess {
 }
 
 /**
+ * `stDate.wMonth == 2`
+ */
+private class DateCheckMonthFebruary extends EQExpr {
+  MonthFieldAccess mfa;
+  
+  DateCheckMonthFebruary() {
+    this.hasOperands(mfa, any(Literal lit | lit.getValue() = "2"))
+  }
+
+  Expr getDateQualifier() { result = mfa.getQualifier() }
+}
+
+/**
+ * `stDate.wDay == 29`
+ */
+class DateCheckDay29 extends EQExpr {
+  DayFieldAccess dfa;
+
+  DateCheckDay29() { this.hasOperands(dfa, any(Literal lit | lit.getValue() = "29")) }
+
+  Expr getDateQualifier() { result = dfa.getQualifier() }
+}
+
+/**
+ * The combination of a February and Day 29 verification
+ * `stDate.wMonth == 2 && stDate.wDay == 29`
+ */
+class DateFebruary29Check extends LogicalAndExpr {
+  DateCheckMonthFebruary checkFeb;
+
+  DateFebruary29Check() { this.hasOperands(checkFeb, any(DateCheckDay29 check29)) }
+
+  Expr getDateQualifier() { result = checkFeb.getDateQualifier() }
+}
+
+/**
  * `Function` that includes an operation that is checking for leap year.
  */
 class ChecksForLeapYearFunction extends Function {
@@ -425,7 +409,7 @@ class ChecksForLeapYearFunctionCall extends FunctionCall {
 }
 
 /**
- * A `DataFlow` configuraiton for finding a variable access that would flow into
+ * A `DataFlow` configuration for finding a variable access that would flow into
  * a function call that includes an operation to check for leap year.
  */
 private module LeapYearCheckFlowConfig implements DataFlow::ConfigSig {
@@ -533,15 +517,35 @@ class SafeTimeGatheringFunction extends Function {
 
 /**
  * This list of APIs should check for the return value to detect problems during the conversion.
+ * A time conversion function where either
+ * 1) an incorrect leap year date would result in an error that can be checked from the return value or
+ * 2) an incorrect leap year date is auto corrected (no checks required)
  */
 class TimeConversionFunction extends Function {
+  boolean autoLeapYearCorrecting;
+
   TimeConversionFunction() {
-    this.getQualifiedName() =
-      [
-        "FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
-        "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
-        "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
-        "RtlTimeToSecondsSince1970", "_mkgmtime"
-      ]
+    autoLeapYearCorrecting = false and
+    (
+      this.getName() =
+        [
+          "FileTimeToSystemTime", "SystemTimeToFileTime", "SystemTimeToTzSpecificLocalTime",
+          "SystemTimeToTzSpecificLocalTimeEx", "TzSpecificLocalTimeToSystemTime",
+          "TzSpecificLocalTimeToSystemTimeEx", "RtlLocalTimeToSystemTime",
+          "RtlTimeToSecondsSince1970", "_mkgmtime", "SetSystemTime", "VarUdateFromDate", "from_tm"
+        ]
+      or
+      // Matches all forms of GetDateFormat, e.g. GetDateFormatA/W/Ex
+      this.getName().matches("GetDateFormat%")
+    )
+    or
+    autoLeapYearCorrecting = true and
+    this.getName() =
+      ["mktime", "_mktime32", "_mktime64", "SystemTimeToVariantTime", "VariantTimeToSystemTime"]
   }
+
+  /**
+   * Holds if the function is expected to auto convert a bad leap year date.
+   */
+  predicate isAutoLeapYearCorrecting() { autoLeapYearCorrecting = true }
 }

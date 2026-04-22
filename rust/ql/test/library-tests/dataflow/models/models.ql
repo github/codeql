@@ -13,8 +13,12 @@ import codeql.rust.dataflow.FlowSink
 import PathGraph
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
-  (sc.propagatesFlow(s, _, _) or sc.propagatesFlow(_, s, _)) and
-  Private::External::invalidSpecComponent(s, c)
+  exists(Provenance p |
+    Private::External::invalidSpecComponent(s, c) and
+    p.isManual()
+  |
+    sc.propagatesFlow(s, _, _, p, _, _) or sc.propagatesFlow(_, s, _, p, _, _)
+  )
 }
 
 // not defined in `models.ext.yml`, in order to test that we can also define
@@ -22,13 +26,10 @@ query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) 
 private class SummarizedCallableIdentity extends SummarizedCallable::Range {
   SummarizedCallableIdentity() { this.getName().getText() = "identity" }
 
-  override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string provenance
-  ) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "ReturnValue" and
-    preservesValue = true and
-    provenance = "QL"
+    preservesValue = true
   }
 }
 

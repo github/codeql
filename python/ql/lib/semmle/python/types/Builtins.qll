@@ -1,4 +1,8 @@
+overlay[local?]
+module;
+
 import python
+private import LegacyPointsTo
 
 class Builtin extends @py_cobject {
   Builtin() {

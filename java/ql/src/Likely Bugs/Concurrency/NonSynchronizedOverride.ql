@@ -42,7 +42,7 @@ predicate delegatingOverride(Method sub, Method sup) {
       delegatingSuperCall(stmt.(ExprStmt).getExpr(), sup)
       or
       // ...or a `return` statement containing such a call.
-      delegatingSuperCall(stmt.(ReturnStmt).getResult(), sup)
+      delegatingSuperCall(stmt.(ReturnStmt).getExpr(), sup)
     )
   )
 }

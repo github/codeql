@@ -1,3 +1,46 @@
+## 0.2.10
+
+No user-facing changes.
+
+## 0.2.9
+
+No user-facing changes.
+
+## 0.2.8
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* Added neutral models to inhibit spurious generated sink models for `map` and `from`. This fixes some false positive query results.
+
+## 0.2.7
+
+### Minor Analysis Improvements
+
+* Added support for neutral models (`extensible: neutralModel`) to control where generated source, sink and flow summary models apply.
+
+## 0.2.6
+
+No user-facing changes.
+
+## 0.2.5
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+* Added type inference support for the `FnMut(..) -> ..` and `Fn(..) -> ..` traits. They now work in type parameter bounds and are implemented by closures.
+
+## 0.2.4
+
+### Minor Analysis Improvements
+
+* The `Deref` trait is now considered during method resolution. This means that method calls on receivers implementing the `Deref` trait will correctly resolve to methods defined on the target type. This may result in additional query results, especially for data flow queries.
+* Renamed the `Adt` class to `TypeItem` and moved common predicates from `Struct`, `Enum`, and `Union` to `TypeItem`.
+* Added models for the Axum web application framework.
+* Reading content of a value now carries taint if the value itself is tainted. For instance, if `s` is tainted then `s.field` is also tainted. This generally improves taint flow.
+* The call graph is now more precise for calls that target a trait function with a default implementation. This reduces the number of false positives for data flow queries.
+* Improved type inference for raw pointers (`*const` and `*mut`). This includes type inference for the raw borrow operators (`&raw const` and `&raw mut`) and dereferencing of raw pointers.
+
 ## 0.2.3
 
 No user-facing changes.

@@ -7,3 +7,7 @@ query predicate forEach(ForEachStmtCfgNode forEach, ExprCfgNode va, ExprCfgNode 
   iterable = forEach.getIterableExpr() and
   body = forEach.getBody()
 }
+
+query predicate objectCreation(ObjectCreationCfgNode oc, int i, ExprCfgNode argument) {
+  argument = oc.getArgument(i)
+}

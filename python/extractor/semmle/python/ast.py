@@ -56,6 +56,15 @@ class StringPart(AstBase):
         self.text = text
         self.s = s
 
+class TemplateStringPart(AstBase):
+    '''A string constituent of a template string literal'''
+
+    __slots__ = "text", "s",
+
+    def __init__(self, text, s):
+        self.text = text
+        self.s = s
+
 class alias(AstBase):
     __slots__ = "value", "asname",
 
@@ -355,6 +364,19 @@ class JoinedStr(expr):
 
     def __init__(self, values):
         self.values = values
+
+class TemplateString(expr):
+    __slots__ = "prefix", "values",
+
+    def __init__(self, prefix, values):
+        self.prefix = prefix
+        self.values = values
+
+class JoinedTemplateString(expr):
+    __slots__ = "strings",
+
+    def __init__(self, strings):
+        self.strings = strings
 
 
 class Lambda(expr):

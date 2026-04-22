@@ -122,6 +122,7 @@ module API {
    * Although one may think of API graphs as a tool to find certain program elements in the codebase,
    * it can lead to some situations where intuition does not match what works best in practice.
    */
+  overlay[local?]
   class Node extends Impl::TApiNode {
     /**
      * Get a data-flow node where this value may flow after entering the current codebase.
@@ -131,7 +132,7 @@ module API {
      */
     pragma[inline]
     DataFlow::Node getAValueReachableFromSource() {
-      Impl::trackUseNode(this.asSource()).flowsTo(result)
+      Impl::trackUseNode(this.asSource(), result.getALocalSource())
     }
 
     /**
@@ -170,7 +171,7 @@ module API {
     CallNode getMaybePromisifiedCall() {
       result = this.getACall()
       or
-      result = Impl::getAPromisifiedInvocation(this, _, _)
+      Impl::getAPromisifiedInvocation(this, _, _, result)
     }
 
     /**
@@ -209,7 +210,7 @@ module API {
      * This is similar to `asSink()` but additionally includes nodes that transitively reach a sink by data flow.
      * See `asSink()` for examples.
      */
-    DataFlow::Node getAValueReachingSink() { result = Impl::trackDefNode(this.asSink()) }
+    DataFlow::Node getAValueReachingSink() { Impl::trackDefNode(this.asSink(), result) }
 
     /**
      * Gets a node representing member `m` of this API component.
@@ -545,7 +546,7 @@ module API {
       this = Impl::MkClassInstance(result) or
       this = Impl::MkUse(result) or
       this = Impl::MkDef(result) or
-      this = Impl::MkSyntheticCallbackArg(_, _, result)
+      this = Impl::MkSyntheticCallbackArg(result)
     }
 
     /**
@@ -579,7 +580,31 @@ module API {
      * Gets a textual representation of this node.
      */
     string toString() {
-      none() // defined in subclasses
+      this = Impl::MkRoot() and result = "root"
+      or
+      exists(string m | this = Impl::MkModuleDef(m) | result = "module def " + m)
+      or
+      exists(string m | this = Impl::MkModuleUse(m) | result = "module use " + m)
+      or
+      exists(string m | this = Impl::MkModuleExport(m) | result = "module export " + m)
+      or
+      exists(string m | this = Impl::MkModuleImport(m) | result = "module import " + m)
+      or
+      exists(string m, string e | this = Impl::MkTypeUse(m, e) |
+        result = "type use " + m + "::" + e
+      )
+      or
+      exists(DataFlow::SourceNode cls | this = Impl::MkClassInstance(cls) |
+        result = "instance of " + cls.toString()
+      )
+      or
+      exists(DataFlow::Node nd | this = Impl::MkDef(nd) | result = "def " + nd.toString())
+      or
+      exists(DataFlow::Node nd | this = Impl::MkUse(nd) | result = "use " + nd.toString())
+      or
+      exists(DataFlow::InvokeNode nd | this = Impl::MkSyntheticCallbackArg(nd) |
+        result = "callback arg " + nd.toString()
+      )
     }
 
     /**
@@ -607,19 +632,13 @@ module API {
   }
 
   /** The root node of an API graph. */
-  class Root extends Node, Impl::MkRoot {
-    override string toString() { result = "root" }
-  }
+  class Root extends Node, Impl::MkRoot { }
 
   /** A node corresponding to a definition of an API component. */
-  class Definition extends Node, Impl::TDef {
-    override string toString() { result = "def " + this.getPath() }
-  }
+  class Definition extends Node, Impl::TDef { }
 
   /** A node corresponding to the use of an API component. */
-  class Use extends Node, Impl::TUse {
-    override string toString() { result = "use " + this.getPath() }
-  }
+  class Use extends Node, Impl::TUse { }
 
   /** Gets the root node. */
   Root root() { any() }
@@ -676,17 +695,21 @@ module API {
    * Imports and exports are considered entry points by default, but additional entry points may
    * be added by extending this class. Typical examples include global variables.
    */
+  overlay[local]
   abstract class EntryPoint extends string {
     bindingset[this]
     EntryPoint() { any() }
 
     /** Gets a data-flow node where a value enters the current codebase through this entry-point. */
+    overlay[global]
     DataFlow::SourceNode getASource() { none() }
 
     /** Gets a data-flow node where a value leaves the current codebase through this entry-point. */
+    overlay[global]
     DataFlow::Node getASink() { none() }
 
     /** Gets an API-node for this entry point. */
+    overlay[global]
     API::Node getANode() { result = root().getASuccessor(Label::entryPoint(this)) }
   }
 
@@ -731,49 +754,54 @@ module API {
    */
   cached
   private module Impl {
+    private predicate hasTypeUse(string moduleName, string exportName) {
+      any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
+    }
+
+    overlay[local]
+    private predicate hasTypeUseLocal(string moduleName, string exportName) =
+      forceLocal(hasTypeUse/2)(moduleName, exportName)
+
+    overlay[local]
     cached
     newtype TApiNode =
       MkRoot() or
       MkModuleDef(string m) { exists(MkModuleExport(m)) } or
       MkModuleUse(string m) { exists(MkModuleImport(m)) } or
-      MkModuleExport(string m) {
-        exists(Module mod | mod = importableModule(m) |
-          // exclude modules that don't actually export anything
-          exports(m, _)
-          or
-          exports(m, _, _)
-          or
-          exists(NodeModule nm | nm = mod |
-            exists(Ssa::implicitInit([nm.getModuleVariable(), nm.getExportsVariable()]))
-          )
-        )
-      } or
-      MkModuleImport(string m) {
-        imports(_, m)
+      MkModuleExport(string m) { isDeclaredPackageName(m) } or
+      MkModuleImport(string m) { isImportedPackageName(m) } or
+      MkClassInstance(DataFlow::SourceNode cls) {
+        cls = any(Function f).flow()
         or
-        any(TypeAnnotation n).hasUnderlyingType(m, _)
+        cls = any(ClassDefinition c).flow()
       } or
-      MkClassInstance(DataFlow::ClassNode cls) { needsDefNode(cls) } or
-      MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
-      MkUse(DataFlow::Node nd) { use(_, _, nd) } or
+      MkDef(DataFlow::Node nd) {
+        nd = any(DataFlow::PropWrite w).getRhs()
+        or
+        nd = any(DataFlow::FunctionNode fn).getReturnNode()
+        or
+        nd = any(DataFlow::FunctionNode fn).getAReturn()
+        or
+        nd = any(DataFlow::FunctionNode fn).getExceptionalReturn()
+        or
+        nd = any(DataFlow::CallNode c).getReceiver()
+        or
+        nd = any(DataFlow::InvokeNode i).getAnArgument()
+        or
+        nd = any(DataFlow::InvokeNode i).getASpreadArgument()
+        or
+        nd = any(ThrowStmt stmt).getExpr().flow()
+        or
+        nd = any(ExportDeclaration decl).getDirectSourceNode(_)
+        or
+        nd = any(MemberDeclaration m).getInit().flow()
+        or
+        nd = any(ClassDefinition cls | exists(cls.getADecorator())).flow()
+      } or
+      MkUse(DataFlow::Node nd) { nd instanceof DataFlow::SourceNode } or
       /** A use of a TypeScript type. */
-      MkTypeUse(string moduleName, string exportName) {
-        any(TypeAnnotation n).hasUnderlyingType(moduleName, exportName)
-      } or
-      MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
-        trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
-      }
-
-    private predicate needsDefNode(DataFlow::ClassNode cls) {
-      hasSemantics(cls) and
-      (
-        cls = trackDefNode(_)
-        or
-        cls.getAnInstanceReference() = trackDefNode(_)
-        or
-        needsDefNode(cls.getADirectSubClass())
-      )
-    }
+      MkTypeUse(string moduleName, string exportName) { hasTypeUseLocal(moduleName, exportName) } or
+      MkSyntheticCallbackArg(DataFlow::InvokeNode nd)
 
     class TDef = MkModuleDef or TNonModuleDef;
 
@@ -783,698 +811,998 @@ module API {
 
     private predicate hasSemantics(DataFlow::Node nd) { not nd.getTopLevel().isExterns() }
 
-    /** Holds if `imp` is an import of module `m`. */
-    private predicate imports(DataFlow::Node imp, string m) {
-      imp = DataFlow::moduleImport(m) and
-      // path must not start with a dot or a slash
-      m.regexpMatch("[^./].*") and
-      hasSemantics(imp)
+    bindingset[nd]
+    pragma[inline_late]
+    private predicate hasSemanticsLate(DataFlow::Node nd) { hasSemantics(nd) }
+
+    private signature module StageInputSig {
+      /** Holds if `node` should be seen as a use-node root, in addition to module imports (which are the usual roots). */
+      predicate isAdditionalUseRoot(Node node);
+
+      /** Holds if `node` should be seen as a def-node root, in addition to module exports (which are the usual roots). */
+      predicate isAdditionalDefRoot(Node node);
+
+      /**
+       * Holds if `node` is in a file that is considered "active" in this stage, meaning that we allow outgoing labelled edges
+       * to be materialised from here, and continue API graph construction from the successors' edges.
+       *
+       * Note that the "additional roots" contributed by the stage inputs may be in an inactive file but can be tracked to a node in an
+       * active file.
+       * This predicate should thus not be used to block the tracking of use/def nodes, but only block the creation of new labelled edges.
+       */
+      bindingset[node]
+      predicate inActiveFile(DataFlow::Node node);
     }
 
-    /**
-     * Holds if `rhs` is the right-hand side of a definition of a node that should have an
-     * incoming edge from `base` labeled `lbl` in the API graph.
-     */
-    cached
-    predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
-      hasSemantics(rhs) and
-      (
-        base = MkRoot() and
-        exists(EntryPoint e |
-          lbl = Label::entryPoint(e) and
-          rhs = e.getASink()
-        )
-        or
-        exists(string m, string prop |
-          base = MkModuleExport(m) and
-          lbl = Label::member(prop) and
-          exports(m, prop, rhs)
-        )
-        or
-        exists(DataFlow::Node def, DataFlow::SourceNode pred |
-          rhs(base, def) and pred = trackDefNode(def)
-        |
-          // from `x` to a definition of `x.prop`
-          exists(DataFlow::PropWrite pw | pw = pred.getAPropertyWrite() |
-            lbl = Label::memberFromRef(pw) and
-            rhs = pw.getRhs()
+    private module Stage<StageInputSig S> {
+      /**
+       * Holds if `rhs` is the right-hand side of a definition of a node that should have an
+       * incoming edge from `base` labeled `lbl` in the API graph.
+       */
+      predicate rhs(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
+        hasSemantics(rhs) and
+        (
+          base = MkRoot() and
+          exists(EntryPoint e |
+            lbl = Label::entryPoint(e) and
+            rhs = e.getASink()
           )
           or
-          // special case: from `require('m')` to an export of `prop` in `m`
-          exists(Import imp, Module m, string prop |
-            pred = imp.getImportedModuleNodeStrict() and
-            m = imp.getImportedModule() and
+          exists(string m, string prop |
+            base = MkModuleExport(m) and
             lbl = Label::member(prop) and
-            rhs = m.getAnExportedValue(prop)
+            exports(m, prop, rhs)
           )
           or
-          // In general, turn store steps into member steps for def-nodes
-          exists(string prop |
-            PreCallGraphStep::storeStep(rhs, pred, prop) and
-            lbl = Label::member(prop) and
-            not DataFlow::PseudoProperties::isPseudoProperty(prop)
-          )
-          or
-          exists(DataFlow::ContentSet contents |
-            SummaryTypeTracker::basicStoreStep(rhs, pred.getALocalUse(), contents) and
-            lbl = Label::content(contents.getAStoreContent())
-          )
-          or
-          exists(DataFlow::FunctionNode fn |
-            fn = pred and
-            lbl = Label::return()
+          exists(DataFlow::Node def, DataFlow::SourceNode pred |
+            rhs(base, def) and trackDefNode(def, pred)
           |
-            if fn.getFunction().isAsync() then rhs = fn.getReturnNode() else rhs = fn.getAReturn()
-          )
-          or
-          lbl = Label::promised() and
-          SharedTypeTrackingStep::storeStep(rhs, pred, Promises::valueProp())
-          or
-          lbl = Label::promisedError() and
-          SharedTypeTrackingStep::storeStep(rhs, pred, Promises::errorProp())
-          or
-          // The return-value of a getter G counts as a definition of property G
-          // (Ordinary methods and properties are handled as PropWrite nodes)
-          exists(string name | lbl = Label::member(name) |
-            rhs = pred.(DataFlow::ObjectLiteralNode).getPropertyGetter(name).getAReturn()
+            // from `x` to a definition of `x.prop`
+            exists(DataFlow::PropWrite pw | pw = pred.getAPropertyWrite() |
+              lbl = Label::memberFromRef(pw) and
+              rhs = pw.getRhs()
+            )
             or
-            rhs =
-              pred.(DataFlow::ClassNode)
-                  .getStaticMember(name, DataFlow::MemberKind::getter())
-                  .getAReturn()
+            // special case: from `require('m')` to an export of `prop` in `m`
+            exists(Import imp, Module m, string prop |
+              pred = imp.getImportedModuleNodeStrict() and
+              m = imp.getImportedModule() and
+              lbl = Label::member(prop) and
+              rhs = m.getAnExportedValue(prop)
+            )
+            or
+            // In general, turn store steps into member steps for def-nodes
+            exists(string prop |
+              PreCallGraphStep::storeStep(rhs, pred, prop) and
+              lbl = Label::member(prop) and
+              not DataFlow::PseudoProperties::isPseudoProperty(prop)
+            )
+            or
+            exists(DataFlow::ContentSet contents |
+              SummaryTypeTracker::basicStoreStep(rhs, pred.getALocalUse(), contents) and
+              lbl = Label::content(contents.getAStoreContent())
+            )
+            or
+            exists(DataFlow::FunctionNode fn |
+              fn = pred and
+              lbl = Label::return()
+            |
+              if fn.getFunction().isAsync() then rhs = fn.getReturnNode() else rhs = fn.getAReturn()
+            )
+            or
+            lbl = Label::promised() and
+            SharedTypeTrackingStep::storeStep(rhs, pred, Promises::valueProp())
+            or
+            lbl = Label::promisedError() and
+            SharedTypeTrackingStep::storeStep(rhs, pred, Promises::errorProp())
+            or
+            // The return-value of a getter G counts as a definition of property G
+            // (Ordinary methods and properties are handled as PropWrite nodes)
+            exists(string name | lbl = Label::member(name) |
+              rhs = pred.(DataFlow::ObjectLiteralNode).getPropertyGetter(name).getAReturn()
+              or
+              rhs =
+                pred.(DataFlow::ClassNode)
+                    .getStaticMember(name, DataFlow::MemberKind::getter())
+                    .getAReturn()
+            )
+            or
+            // Handle rest parameters escaping into external code. For example:
+            //
+            //   function foo(...rest) {
+            //     externalFunc(rest);
+            //   }
+            //
+            // Here, 'rest' reaches a def-node at the call to externalFunc, so we need to ensure
+            // the arguments passed to 'foo' are stored in the 'rest' array.
+            exists(Function fun, DataFlow::InvokeNode invoke, int argIndex, Parameter rest |
+              fun.getRestParameter() = rest and
+              rest.flow() = pred and
+              invoke.getACallee() = fun and
+              invoke.getArgument(argIndex) = rhs and
+              argIndex >= rest.getIndex() and
+              lbl = Label::member((argIndex - rest.getIndex()).toString())
+            )
           )
           or
-          // Handle rest parameters escaping into external code. For example:
-          //
-          //   function foo(...rest) {
-          //     externalFunc(rest);
-          //   }
-          //
-          // Here, 'rest' reaches a def-node at the call to externalFunc, so we need to ensure
-          // the arguments passed to 'foo' are stored in the 'rest' array.
-          exists(Function fun, DataFlow::InvokeNode invoke, int argIndex, Parameter rest |
-            fun.getRestParameter() = rest and
-            rest.flow() = pred and
-            invoke.getACallee() = fun and
-            invoke.getArgument(argIndex) = rhs and
-            argIndex >= rest.getIndex() and
-            lbl = Label::member((argIndex - rest.getIndex()).toString())
+          exists(DataFlow::ClassNode cls, string name |
+            base = MkClassInstance(cls) and
+            lbl = Label::member(name)
+          |
+            rhs = cls.getInstanceMethod(name)
+            or
+            rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
+          )
+          or
+          exists(DataFlow::FunctionNode f |
+            f.getFunction().isAsync() and
+            base = MkDef(f.getReturnNode())
+          |
+            lbl = Label::promised() and
+            rhs = f.getAReturn()
+            or
+            lbl = Label::promisedError() and
+            rhs = f.getExceptionalReturn()
+          )
+          or
+          exists(int i | argumentPassing(base, i, rhs) |
+            lbl = Label::parameter(i)
+            or
+            i = -1 and lbl = Label::receiver()
+          )
+          or
+          exists(int i |
+            spreadArgumentPassing(base, i, rhs) and
+            lbl = Label::spreadArgument(i)
+          )
+          or
+          exists(DataFlow::SourceNode src, DataFlow::SourceNode mid, DataFlow::PropWrite pw |
+            use(base, src) and
+            trackUseNode(src, mid) and
+            pw = mid.getAPropertyWrite() and
+            rhs = pw.getRhs()
+          |
+            lbl = Label::memberFromRef(pw)
           )
         )
         or
-        exists(DataFlow::ClassNode cls, string name |
-          base = MkClassInstance(cls) and
-          lbl = Label::member(name)
-        |
-          rhs = cls.getInstanceMethod(name)
-          or
-          rhs = cls.getInstanceMember(name, DataFlow::MemberKind::getter()).getAReturn()
-        )
+        decoratorDualEdge(base, lbl, rhs)
         or
-        exists(DataFlow::FunctionNode f |
-          f.getFunction().isAsync() and
-          base = MkDef(f.getReturnNode())
-        |
-          lbl = Label::promised() and
-          rhs = f.getAReturn()
-          or
-          lbl = Label::promisedError() and
-          rhs = f.getExceptionalReturn()
-        )
+        decoratorRhsEdge(base, lbl, rhs)
         or
-        exists(int i | argumentPassing(base, i, rhs) |
-          lbl = Label::parameter(i)
-          or
-          i = -1 and lbl = Label::receiver()
+        exists(DataFlow::PropWrite write |
+          decoratorPropEdge(base, lbl, write) and
+          rhs = write.getRhs()
         )
-        or
-        exists(int i |
-          spreadArgumentPassing(base, i, rhs) and
-          lbl = Label::spreadArgument(i)
-        )
-        or
-        exists(DataFlow::SourceNode src, DataFlow::PropWrite pw |
-          use(base, src) and pw = trackUseNode(src).getAPropertyWrite() and rhs = pw.getRhs()
-        |
-          lbl = Label::memberFromRef(pw)
-        )
-      )
-      or
-      decoratorDualEdge(base, lbl, rhs)
-      or
-      decoratorRhsEdge(base, lbl, rhs)
-      or
-      exists(DataFlow::PropWrite write |
-        decoratorPropEdge(base, lbl, write) and
-        rhs = write.getRhs()
-      )
-    }
+      }
 
-    /**
-     * Holds if `arg` is passed as the `i`th argument to a use of `base`, either by means of a
-     * full invocation, or in a partial function application.
-     *
-     * The receiver is considered to be argument -1.
-     */
-    private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
-      exists(DataFlow::Node use, DataFlow::SourceNode pred, int bound |
-        use(base, use) and pred = trackUseNode(use, _, bound, "")
-      |
-        arg = pred.getAnInvocation().getArgument(i - bound)
-        or
-        arg = pred.getACall().getReceiver() and
-        bound = 0 and
-        i = -1
-        or
-        exists(DataFlow::PartialInvokeNode pin, DataFlow::Node callback | pred.flowsTo(callback) |
-          pin.isPartialArgument(callback, arg, i - bound)
+      /**
+       * Holds if `arg` is passed as the `i`th argument to a use of `base`, either by means of a
+       * full invocation, or in a partial function application.
+       *
+       * The receiver is considered to be argument -1.
+       */
+      private predicate argumentPassing(TApiNode base, int i, DataFlow::Node arg) {
+        exists(DataFlow::Node use, DataFlow::SourceNode pred, int bound |
+          use(base, use) and pred = trackUseNode(use, _, bound, "")
+        |
+          arg = pred.getAnInvocation().getArgument(i - bound)
           or
-          arg = pin.getBoundReceiver(callback) and
+          arg = pred.getACall().getReceiver() and
           bound = 0 and
           i = -1
+          or
+          exists(DataFlow::PartialInvokeNode pin, DataFlow::Node callback | pred.flowsTo(callback) |
+            pin.isPartialArgument(callback, arg, i - bound)
+            or
+            arg = pin.getBoundReceiver(callback) and
+            bound = 0 and
+            i = -1
+          )
         )
-      )
-    }
+      }
 
-    pragma[nomagic]
-    private int firstSpreadIndex(InvokeExpr expr) {
-      result = min(int i | expr.getArgument(i) instanceof SpreadElement)
-    }
+      pragma[nomagic]
+      private int firstSpreadIndex(InvokeExpr expr) {
+        result = min(int i | expr.getArgument(i) instanceof SpreadElement)
+      }
 
-    pragma[nomagic]
-    private InvokeExpr getAnInvocationWithSpread(DataFlow::SourceNode node, int i) {
-      result = node.getAnInvocation().asExpr() and
-      i = firstSpreadIndex(result)
-    }
+      pragma[nomagic]
+      private InvokeExpr getAnInvocationWithSpread(DataFlow::SourceNode node, int i) {
+        result = node.getAnInvocation().asExpr() and
+        i = firstSpreadIndex(result)
+      }
 
-    private predicate spreadArgumentPassing(TApiNode base, int i, DataFlow::Node spreadArray) {
-      exists(
-        DataFlow::Node use, DataFlow::SourceNode pred, int bound, InvokeExpr invoke, int spreadPos
-      |
-        use(base, use) and
-        pred = trackUseNode(use, _, bound, "") and
-        invoke = getAnInvocationWithSpread(pred, spreadPos) and
-        spreadArray = invoke.getArgument(spreadPos).(SpreadElement).getOperand().flow() and
-        i = bound + spreadPos
-      )
-    }
-
-    /**
-     * Holds if `rhs` is the right-hand side of a definition of node `nd`.
-     */
-    cached
-    predicate rhs(TApiNode nd, DataFlow::Node rhs) {
-      exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
-      or
-      nd = MkDef(rhs)
-    }
-
-    /**
-     * Holds if `ref` is a read of a property described by `lbl` on `pred`, and
-     * `propDesc` is compatible with that property, meaning it is either the
-     * name of the property itself or the empty string.
-     */
-    pragma[noinline]
-    private predicate propertyRead(
-      DataFlow::SourceNode pred, string propDesc, Label::ApiLabel lbl, DataFlow::Node ref
-    ) {
-      ref = pred.getAPropertyRead() and
-      lbl = Label::memberFromRef(ref) and
-      (
-        lbl = Label::member(propDesc)
-        or
-        propDesc = ""
-      )
-      or
-      SharedTypeTrackingStep::loadStep(pred.getALocalUse(), ref, Promises::valueProp()) and
-      lbl = Label::promised() and
-      (propDesc = Promises::valueProp() or propDesc = "")
-      or
-      SharedTypeTrackingStep::loadStep(pred.getALocalUse(), ref, Promises::errorProp()) and
-      lbl = Label::promisedError() and
-      (propDesc = Promises::errorProp() or propDesc = "")
-    }
-
-    pragma[nomagic]
-    private DataFlow::ClassNode getALocalSubclass(DataFlow::SourceNode node) {
-      result.getASuperClassNode().getALocalSource() = node
-    }
-
-    bindingset[node]
-    pragma[inline_late]
-    private DataFlow::ClassNode getALocalSubclassFwd(DataFlow::SourceNode node) {
-      result = getALocalSubclass(node)
-    }
-
-    /**
-     * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
-     * `lbl` in the API graph.
-     */
-    cached
-    predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
-      hasSemantics(ref) and
-      (
-        base = MkRoot() and
-        exists(EntryPoint e |
-          lbl = Label::entryPoint(e) and
-          ref = e.getASource()
-        )
-        or
-        // property reads
-        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc |
-          use(base, src) and
-          pred = trackUseNode(src, false, 0, propDesc) and
-          propertyRead(pred, propDesc, lbl, ref) and
-          // `module.exports` is special: it is a use of a def-node, not a use-node,
-          // so we want to exclude it here
-          (base instanceof TNonModuleDef or base instanceof TUse)
-        )
-        or
-        exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
-          use(base, src) and pred = trackUseNode(src)
+      private predicate spreadArgumentPassing(TApiNode base, int i, DataFlow::Node spreadArray) {
+        exists(
+          DataFlow::Node use, DataFlow::SourceNode pred, int bound, InvokeExpr invoke, int spreadPos
         |
-          lbl = Label::instance() and
-          ref = pred.getAnInstantiation()
+          use(base, use) and
+          pred = trackUseNode(use, _, bound, "") and
+          invoke = getAnInvocationWithSpread(pred, spreadPos) and
+          spreadArray = invoke.getArgument(spreadPos).(SpreadElement).getOperand().flow() and
+          i = bound + spreadPos
+        )
+      }
+
+      /**
+       * Holds if `rhs` is the right-hand side of a definition of node `nd`.
+       */
+      predicate rhs(TApiNode nd, DataFlow::Node rhs) {
+        (S::inActiveFile(rhs) or S::isAdditionalDefRoot(nd)) and
+        exists(string m | nd = MkModuleExport(m) | exports(m, rhs))
+        or
+        rhs(_, _, rhs) and
+        S::inActiveFile(rhs) and
+        nd = MkDef(rhs)
+        or
+        S::isAdditionalDefRoot(nd) and
+        nd = mkDefLate(rhs)
+      }
+
+      /**
+       * Holds if `ref` is a read of a property described by `lbl` on `pred`, and
+       * `propDesc` is compatible with that property, meaning it is either the
+       * name of the property itself or the empty string.
+       */
+      pragma[noinline]
+      private predicate propertyRead(
+        DataFlow::SourceNode pred, string propDesc, Label::ApiLabel lbl, DataFlow::Node ref
+      ) {
+        ref = pred.getAPropertyRead() and
+        lbl = Label::memberFromRef(ref) and
+        (
+          lbl = Label::member(propDesc)
           or
-          lbl = Label::return() and
-          ref = pred.getAnInvocation()
+          propDesc = ""
+        )
+        or
+        SharedTypeTrackingStep::loadStep(pred.getALocalUse(), ref, Promises::valueProp()) and
+        lbl = Label::promised() and
+        (propDesc = Promises::valueProp() or propDesc = "")
+        or
+        SharedTypeTrackingStep::loadStep(pred.getALocalUse(), ref, Promises::errorProp()) and
+        lbl = Label::promisedError() and
+        (propDesc = Promises::errorProp() or propDesc = "")
+      }
+
+      pragma[nomagic]
+      private DataFlow::ClassNode getALocalSubclass(DataFlow::SourceNode node) {
+        result.getASuperClassNode().getALocalSource() = node
+      }
+
+      bindingset[node]
+      pragma[inline_late]
+      private DataFlow::ClassNode getALocalSubclassFwd(DataFlow::SourceNode node) {
+        result = getALocalSubclass(node)
+      }
+
+      /**
+       * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
+       * `lbl` in the API graph.
+       */
+      predicate use(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
+        hasSemantics(ref) and
+        (
+          base = MkRoot() and
+          exists(EntryPoint e |
+            lbl = Label::entryPoint(e) and
+            ref = e.getASource() and
+            S::inActiveFile(ref)
+          )
           or
-          lbl = Label::forwardingFunction() and
-          DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
+          // property reads
+          exists(DataFlow::SourceNode src, DataFlow::SourceNode pred, string propDesc |
+            use(base, src) and
+            pred = trackUseNode(src, false, 0, propDesc) and
+            propertyRead(pred, propDesc, lbl, ref) and
+            // `module.exports` is special: it is a use of a def-node, not a use-node,
+            // so we want to exclude it here
+            (base instanceof TNonModuleDef or base instanceof TUse)
+          )
+          or
+          exists(DataFlow::SourceNode src, DataFlow::SourceNode pred |
+            use(base, src) and trackUseNode(src, pred)
+          |
+            lbl = Label::instance() and
+            ref = pred.getAnInstantiation()
+            or
+            lbl = Label::return() and
+            ref = pred.getAnInvocation()
+            or
+            lbl = Label::forwardingFunction() and
+            DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
+            or
+            exists(DataFlow::ClassNode cls |
+              lbl = Label::instance() and
+              cls = getALocalSubclassFwd(pred).getADirectSubClass*()
+            |
+              ref = cls.getAReceiverNode()
+              or
+              ref = cls.getAClassReference().getAnInstantiation()
+            )
+            or
+            exists(string prop |
+              PreCallGraphStep::loadStep(pred.getALocalUse(), ref, prop) and
+              lbl = Label::member(prop) and
+              // avoid generating member edges like "$arrayElement$"
+              not DataFlow::PseudoProperties::isPseudoProperty(prop)
+            )
+            or
+            exists(DataFlow::ContentSet contents |
+              SummaryTypeTracker::basicLoadStep(pred.getALocalUse(), ref, contents) and
+              lbl = Label::content(contents.getAStoreContent())
+            )
+          )
+          or
+          exists(DataFlow::Node def, DataFlow::FunctionNode fn |
+            rhs(base, def) and trackDefNode(def, fn)
+          |
+            exists(int i |
+              lbl = Label::parameter(i) and
+              ref = fn.getParameter(i)
+            )
+            or
+            lbl = Label::receiver() and
+            ref = fn.getReceiver()
+          )
+          or
+          exists(DataFlow::Node def, DataFlow::ClassNode cls, int i |
+            rhs(base, def) and trackDefNode(def, cls)
+          |
+            lbl = Label::parameter(i) and
+            ref = cls.getConstructor().getParameter(i)
+          )
+          or
+          exists(string moduleName, string exportName |
+            base = MkTypeUse(moduleName, exportName) and
+            lbl = Label::instance() and
+            ref.(DataFlow::SourceNode).hasUnderlyingType(moduleName, exportName)
+          )
+          or
+          exists(DataFlow::InvokeNode call |
+            base = MkSyntheticCallbackArg(call) and
+            lbl = Label::parameter(1) and
+            ref = awaited(call)
+          )
+          or
+          // Handle promisified object member access: promisify(obj).member should be treated as obj.member (promisified)
+          exists(
+            Promisify::PromisifyAllCall promisifiedObj, DataFlow::SourceNode originalObj,
+            string member
+          |
+            originalObj.flowsTo(promisifiedObj.getArgument(0)) and
+            use(base, originalObj) and
+            lbl = Label::member(member) and
+            ref = promisifiedObj.getAPropertyRead(member)
+          )
+          or
+          decoratorDualEdge(base, lbl, ref)
+          or
+          decoratorUseEdge(base, lbl, ref)
+          or
+          // for fields and accessors, mark the reads as use-nodes
+          decoratorPropEdge(base, lbl, ref.(DataFlow::PropRead))
+        )
+      }
+
+      /** Holds if `base` is a use-node that flows to the decorator expression of the given decorator. */
+      pragma[nomagic]
+      private predicate useNodeFlowsToDecorator(TApiNode base, Decorator decorator) {
+        exists(DataFlow::SourceNode decoratorSrc |
+          use(base, decoratorSrc) and
+          trackUseNode(decoratorSrc, decorator.getExpression().flow().getALocalSource())
+        )
+      }
+
+      /**
+       * Holds if `ref` corresponds to both a use and def-node that should have an incoming edge from `base` labelled `lbl`.
+       *
+       * This happens because the decorated value escapes into the decorator function, and is then replaced
+       * by the function's return value. In the JS analysis we generally assume decorators return their input,
+       * but library models may want to find the return value.
+       */
+      private predicate decoratorDualEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
+        exists(ClassDefinition cls |
+          useNodeFlowsToDecorator(base, cls.getADecorator()) and
+          lbl = Label::decoratedClass() and
+          ref = DataFlow::valueNode(cls)
+        )
+        or
+        exists(MethodDefinition method |
+          useNodeFlowsToDecorator(base, method.getADecorator()) and
+          not method instanceof AccessorMethodDefinition and
+          lbl = Label::decoratedMember() and
+          ref = DataFlow::valueNode(method.getBody())
+        )
+      }
+
+      /** Holds if `ref` is a use that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
+      private predicate decoratorUseEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
+        exists(SetterMethodDefinition accessor |
+          useNodeFlowsToDecorator(base,
+            [accessor.getADecorator(), accessor.getCorrespondingGetter().getADecorator()]) and
+          lbl = Label::decoratedMember() and
+          ref = DataFlow::parameterNode(accessor.getBody().getParameter(0))
+        )
+        or
+        exists(Parameter param |
+          useNodeFlowsToDecorator(base, param.getADecorator()) and
+          lbl = Label::decoratedParameter() and
+          ref = DataFlow::parameterNode(param)
+        )
+      }
+
+      /** Holds if `rhs` is a def node that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
+      private predicate decoratorRhsEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
+        exists(GetterMethodDefinition accessor |
+          useNodeFlowsToDecorator(base,
+            [accessor.getADecorator(), accessor.getCorrespondingSetter().getADecorator()]) and
+          lbl = Label::decoratedMember() and
+          rhs = DataFlow::valueNode(accessor.getBody().getAReturnedExpr())
+        )
+      }
+
+      /**
+       * Holds if `ref` is a reference to a field/accessor that should have an incoming edge from base labelled `lbl`.
+       *
+       * Since fields do not have their own data-flow nodes, we generate a node for each read or write.
+       * For property writes, the right-hand side becomes a def-node and property reads become use-nodes.
+       *
+       * For accessors this predicate computes each use of the accessor.
+       * The return value inside the accessor is computed by the `decoratorRhsEdge` predicate.
+       */
+      private predicate decoratorPropEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::PropRef ref) {
+        exists(MemberDefinition fieldLike, DataFlow::ClassNode cls |
+          fieldLike instanceof FieldDefinition
+          or
+          fieldLike instanceof AccessorMethodDefinition
+        |
+          useNodeFlowsToDecorator(base, fieldLike.getADecorator()) and
+          lbl = Label::decoratedMember() and
+          cls = fieldLike.getDeclaringClass().flow() and
+          (
+            fieldLike.isStatic() and
+            ref = cls.getAClassReference().getAPropertyReference(fieldLike.getName())
+            or
+            not fieldLike.isStatic() and
+            ref = cls.getAnInstanceReference().getAPropertyReference(fieldLike.getName())
+          )
+        )
+      }
+
+      private predicate needsDefNode(DataFlow::ClassNode cls) {
+        hasSemantics(cls) and
+        (
+          trackDefNode(_, cls)
+          or
+          trackDefNode(_, cls.getAnInstanceReference())
+          or
+          needsDefNode(cls.getADirectSubClass())
+          or
+          S::isAdditionalDefRoot(MkClassInstance(cls))
+          or
+          S::isAdditionalUseRoot(MkClassInstance(cls)) // These are also tracked as use-nodes
+        )
+      }
+
+      /**
+       * Holds if `ref` is a use of node `nd`.
+       */
+      predicate use(TApiNode nd, DataFlow::Node ref) {
+        (S::inActiveFile(ref) or S::isAdditionalUseRoot(nd)) and
+        (
+          exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
+            ref = DataFlow::moduleVarNode(mod)
+          )
+          or
+          exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
+            ref = DataFlow::exportsVarNode(mod)
+            or
+            exists(DataFlow::Node base, DataFlow::SourceNode mid | use(MkModuleDef(m), base) |
+              trackUseNode(base, mid) and ref = mid.getAPropertyRead("exports")
+            )
+          )
+          or
+          exists(string m |
+            nd = MkModuleImport(m) and
+            ref = DataFlow::moduleImport(m)
+          )
+        )
+        or
+        exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) and needsDefNode(cls) |
+          ref = cls.getAReceiverNode()
+          or
+          ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
+        )
+        or
+        use(_, _, ref) and
+        S::inActiveFile(ref) and
+        nd = MkUse(ref)
+        or
+        S::isAdditionalUseRoot(nd) and
+        nd = mkUseLate(ref)
+      }
+
+      bindingset[node]
+      pragma[inline_late]
+      private TApiNode mkUseLate(DataFlow::Node node) { result = MkUse(node) }
+
+      bindingset[node]
+      pragma[inline_late]
+      private TApiNode mkDefLate(DataFlow::Node node) { result = MkDef(node) }
+
+      private import semmle.javascript.dataflow.TypeTracking
+
+      /**
+       * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
+       *
+       * The flow from `nd` to that node may be inter-procedural, and is further described by three
+       * flags:
+       *
+       *   - `promisified`: if `true`, the flow goes through a promisification;
+       *   - `boundArgs`: for function values, tracks how many arguments have been bound throughout
+       *     the flow. To ensure termination, we somewhat arbitrarily constrain the number of bound
+       *     arguments to be at most ten.
+       *   - `prop`: if non-empty, the flow is only guaranteed to preserve the value of this property,
+       *     and not necessarily the entire object.
+       */
+      private DataFlow::SourceNode trackUseNode(
+        DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop,
+        DataFlow::TypeTracker t
+      ) {
+        t.start() and
+        use(_, nd) and
+        result = nd and
+        promisified = false and
+        boundArgs = 0 and
+        prop = ""
+        or
+        exists(Promisify::PromisifyCall promisify |
+          trackUseNode(nd, false, boundArgs, prop, t.continue()).flowsTo(promisify.getArgument(0)) and
+          promisified = true and
+          prop = "" and
+          result = promisify
+        )
+        or
+        exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
+          trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()).flowsTo(pred) and
+          prop = "" and
+          result = pin.getBoundFunction(pred, boundArgs - predBoundArgs) and
+          boundArgs in [0 .. 10]
+        )
+        or
+        exists(DataFlow::SourceNode mid |
+          mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
+          AdditionalUseStep::step(pragma[only_bind_out](mid), result)
+        )
+        or
+        exists(DataFlow::Node pred, string preprop |
+          trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
+          promisified = false and
+          boundArgs = 0 and
+          SharedTypeTrackingStep::loadStoreStep(pred, result, prop)
+        |
+          prop = preprop
+          or
+          preprop = ""
+        )
+        or
+        t = useStep(nd, promisified, boundArgs, prop, result)
+      }
+
+      /**
+       * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
+       * inter-procedural steps to some intermediate node, and then from that intermediate node to
+       * `res` in one step. The entire flow is described by the resulting `TypeTracker`.
+       *
+       * This predicate exists solely to enforce a better join order in `trackUseNode` above.
+       */
+      pragma[noopt]
+      private DataFlow::TypeTracker useStep(
+        DataFlow::Node nd, boolean promisified, int boundArgs, string prop, DataFlow::Node res
+      ) {
+        exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
+          prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
+          StepSummary::step(prev, res, summary) and
+          result = t.append(summary) and
+          // Block argument-passing into 'this' when it determines the call target
+          not summary = CallReceiverStep()
+        )
+      }
+
+      private DataFlow::SourceNode trackUseNode(
+        DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop
+      ) {
+        result = trackUseNode(nd, promisified, boundArgs, prop, DataFlow::TypeTracker::end())
+      }
+
+      /**
+       * Holds if `target` is inter-procedurally reachable from `nd`, which is a use of some node.
+       */
+      predicate trackUseNode(DataFlow::SourceNode nd, DataFlow::SourceNode target) {
+        target = trackUseNode(nd, false, 0, "")
+      }
+
+      /**
+       * Gets a node whose forward tracking reaches `nd` in some state (e.g. possibly inside a content at this point).
+       */
+      predicate trackUseNodeAnyState(DataFlow::SourceNode nd, DataFlow::SourceNode target) {
+        target = trackUseNode(nd, _, _, _, _)
+      }
+
+      private predicate trackDefNode(
+        DataFlow::Node nd, DataFlow::TypeBackTracker t, DataFlow::SourceNode target
+      ) {
+        t.start() and
+        rhs(_, nd) and
+        target = nd.getALocalSource()
+        or
+        // additional backwards step from `require('m')` to `exports` or `module.exports` in m
+        exists(Import imp | trackDefNode(nd, t.continue(), imp.getImportedModuleNodeStrict()) |
+          target = DataFlow::exportsVarNode(imp.getImportedModule())
+          or
+          target = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
+        )
+        or
+        exists(ObjectExpr obj |
+          trackDefNode(nd, t.continue(), obj.flow()) and
+          target =
+            obj.getAProperty()
+                .(SpreadProperty)
+                .getInit()
+                .(SpreadElement)
+                .getOperand()
+                .flow()
+                .getALocalSource()
+        )
+        or
+        t = defStep(nd, target)
+      }
+
+      /**
+       * Holds if `nd`, which is a def of an API-graph node, can be reached in zero or more potentially
+       * inter-procedural steps from some intermediate node, and `prev` flows into that intermediate node
+       * in one step. The entire flow is described by the resulting `TypeTracker`.
+       *
+       * This predicate exists solely to enforce a better join order in `trackDefNode` above.
+       */
+      pragma[noopt]
+      private DataFlow::TypeBackTracker defStep(DataFlow::Node nd, DataFlow::SourceNode prev) {
+        exists(DataFlow::TypeBackTracker t, StepSummary summary, DataFlow::Node next |
+          trackDefNode(nd, t, next) and
+          StepSummary::step(prev, next, summary) and
+          result = t.prepend(summary) and
+          // Block argument-passing into 'this' when it determines the call target
+          not summary = CallReceiverStep()
+        )
+      }
+
+      /**
+       * Holds if `target` inter-procedurally flows into `nd`, which is a definition of some node.
+       */
+      predicate trackDefNode(DataFlow::Node nd, DataFlow::SourceNode target) {
+        trackDefNode(nd, DataFlow::TypeBackTracker::end(), target)
+      }
+
+      /**
+       * Gets a node reached by the backwards tracking of `nd` in some state (e.g. possibly inside a content at this point).
+       */
+      predicate trackDefNodeAnyState(DataFlow::Node nd, DataFlow::SourceNode target) {
+        trackDefNode(nd, _, target)
+      }
+
+      private DataFlow::SourceNode awaited(DataFlow::InvokeNode call, DataFlow::TypeTracker t) {
+        t.startInPromise() and
+        trackUseNode(_, true, _, "").flowsTo(call.getCalleeNode()) and
+        result = call
+        or
+        exists(DataFlow::TypeTracker t2 | result = awaited(call, t2).track(t2, t))
+      }
+
+      /**
+       * Gets a node holding the resolved value of promise `call`.
+       */
+      private DataFlow::Node awaited(DataFlow::InvokeNode call) {
+        result = awaited(call, DataFlow::TypeTracker::end())
+      }
+
+      /**
+       * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
+       */
+      predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
+        Stages::ApiStage::ref() and
+        exists(string m |
+          pred = MkRoot() and
+          lbl = Label::moduleLabel(m)
+        |
+          succ = MkModuleDef(m)
+          or
+          succ = MkModuleUse(m)
+        )
+        or
+        exists(string m |
+          pred = MkModuleDef(m) and
+          lbl = Label::member("exports") and
+          succ = MkModuleExport(m)
+          or
+          pred = MkModuleUse(m) and
+          lbl = Label::member("exports") and
+          succ = MkModuleImport(m)
+        )
+        or
+        exists(DataFlow::SourceNode ref |
+          use(pred, lbl, ref) and
+          succ = MkUse(ref)
+        )
+        or
+        exists(DataFlow::Node rhs | rhs(pred, lbl, rhs) |
+          succ = MkDef(rhs)
           or
           exists(DataFlow::ClassNode cls |
-            lbl = Label::instance() and
-            cls = getALocalSubclassFwd(pred).getADirectSubClass*()
-          |
-            ref = cls.getAReceiverNode()
-            or
-            ref = cls.getAClassReference().getAnInstantiation()
-          )
-          or
-          exists(string prop |
-            PreCallGraphStep::loadStep(pred.getALocalUse(), ref, prop) and
-            lbl = Label::member(prop) and
-            // avoid generating member edges like "$arrayElement$"
-            not DataFlow::PseudoProperties::isPseudoProperty(prop)
-          )
-          or
-          exists(DataFlow::ContentSet contents |
-            SummaryTypeTracker::basicLoadStep(pred.getALocalUse(), ref, contents) and
-            lbl = Label::content(contents.getAStoreContent())
+            needsDefNode(cls) and
+            cls.getAnInstanceReference().flowsTo(rhs) and
+            succ = MkClassInstance(cls)
           )
         )
         or
-        exists(DataFlow::Node def, DataFlow::FunctionNode fn |
-          rhs(base, def) and fn = trackDefNode(def)
-        |
-          exists(int i |
-            lbl = Label::parameter(i) and
-            ref = fn.getParameter(i)
-          )
-          or
-          lbl = Label::receiver() and
-          ref = fn.getReceiver()
-        )
-        or
-        exists(DataFlow::Node def, DataFlow::ClassNode cls, int i |
-          rhs(base, def) and cls = trackDefNode(def)
-        |
-          lbl = Label::parameter(i) and
-          ref = cls.getConstructor().getParameter(i)
+        exists(DataFlow::Node def, DataFlow::Node mid |
+          rhs(pred, def) and
+          lbl = Label::instance() and
+          trackDefNode(def, mid) and
+          succ = MkClassInstance(mid)
         )
         or
         exists(string moduleName, string exportName |
-          base = MkTypeUse(moduleName, exportName) and
-          lbl = Label::instance() and
-          ref.(DataFlow::SourceNode).hasUnderlyingType(moduleName, exportName)
+          pred = MkModuleImport(moduleName) and
+          lbl = Label::member(exportName) and
+          succ = MkTypeUse(moduleName, exportName)
         )
         or
-        exists(DataFlow::InvokeNode call |
-          base = MkSyntheticCallbackArg(_, _, call) and
-          lbl = Label::parameter(1) and
-          ref = awaited(call)
+        exists(DataFlow::Node nd, DataFlow::FunctionNode f |
+          f.getFunction().isAsync() and
+          pred = MkDef(nd) and
+          trackDefNode(nd, f) and
+          lbl = Label::return() and
+          succ = MkDef(f.getReturnNode())
         )
         or
-        // Handle promisified object member access: promisify(obj).member should be treated as obj.member (promisified)
-        exists(
-          Promisify::PromisifyAllCall promisifiedObj, DataFlow::SourceNode originalObj,
-          string member
-        |
-          originalObj.flowsTo(promisifiedObj.getArgument(0)) and
-          use(base, originalObj) and
-          lbl = Label::member(member) and
-          ref = promisifiedObj.getAPropertyRead(member)
+        exists(int bound, DataFlow::InvokeNode call |
+          lbl = Label::parameter(bound + call.getNumArgument()) and
+          getAPromisifiedInvocation(pred, bound, succ, call)
         )
-        or
-        decoratorDualEdge(base, lbl, ref)
-        or
-        decoratorUseEdge(base, lbl, ref)
-        or
-        // for fields and accessors, mark the reads as use-nodes
-        decoratorPropEdge(base, lbl, ref.(DataFlow::PropRead))
-      )
-    }
+      }
 
-    /** Holds if `base` is a use-node that flows to the decorator expression of the given decorator. */
-    pragma[nomagic]
-    private predicate useNodeFlowsToDecorator(TApiNode base, Decorator decorator) {
-      exists(DataFlow::SourceNode decoratorSrc |
-        use(base, decoratorSrc) and
-        trackUseNode(decoratorSrc).flowsToExpr(decorator.getExpression())
-      )
-    }
-
-    /**
-     * Holds if `ref` corresponds to both a use and def-node that should have an incoming edge from `base` labelled `lbl`.
-     *
-     * This happens because the decorated value escapes into the decorator function, and is then replaced
-     * by the function's return value. In the JS analysis we generally assume decorators return their input,
-     * but library models may want to find the return value.
-     */
-    private predicate decoratorDualEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
-      exists(ClassDefinition cls |
-        useNodeFlowsToDecorator(base, cls.getADecorator()) and
-        lbl = Label::decoratedClass() and
-        ref = DataFlow::valueNode(cls)
-      )
-      or
-      exists(MethodDefinition method |
-        useNodeFlowsToDecorator(base, method.getADecorator()) and
-        not method instanceof AccessorMethodDefinition and
-        lbl = Label::decoratedMember() and
-        ref = DataFlow::valueNode(method.getBody())
-      )
-    }
-
-    /** Holds if `ref` is a use that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
-    private predicate decoratorUseEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node ref) {
-      exists(SetterMethodDefinition accessor |
-        useNodeFlowsToDecorator(base,
-          [accessor.getADecorator(), accessor.getCorrespondingGetter().getADecorator()]) and
-        lbl = Label::decoratedMember() and
-        ref = DataFlow::parameterNode(accessor.getBody().getParameter(0))
-      )
-      or
-      exists(Parameter param |
-        useNodeFlowsToDecorator(base, param.getADecorator()) and
-        lbl = Label::decoratedParameter() and
-        ref = DataFlow::parameterNode(param)
-      )
-    }
-
-    /** Holds if `rhs` is a def node that should have an incoming edge from `base` labelled `lbl`, induced by a decorator. */
-    private predicate decoratorRhsEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::Node rhs) {
-      exists(GetterMethodDefinition accessor |
-        useNodeFlowsToDecorator(base,
-          [accessor.getADecorator(), accessor.getCorrespondingSetter().getADecorator()]) and
-        lbl = Label::decoratedMember() and
-        rhs = DataFlow::valueNode(accessor.getBody().getAReturnedExpr())
-      )
-    }
-
-    /**
-     * Holds if `ref` is a reference to a field/accessor that should have en incoming edge from base labelled `lbl`.
-     *
-     * Since fields do not have their own data-flow nodes, we generate a node for each read or write.
-     * For property writes, the right-hand side becomes a def-node and property reads become use-nodes.
-     *
-     * For accessors this predicate computes each use of the accessor.
-     * The return value inside the accessor is computed by the `decoratorRhsEdge` predicate.
-     */
-    private predicate decoratorPropEdge(TApiNode base, Label::ApiLabel lbl, DataFlow::PropRef ref) {
-      exists(MemberDefinition fieldLike, DataFlow::ClassNode cls |
-        fieldLike instanceof FieldDefinition
-        or
-        fieldLike instanceof AccessorMethodDefinition
-      |
-        useNodeFlowsToDecorator(base, fieldLike.getADecorator()) and
-        lbl = Label::decoratedMember() and
-        cls = fieldLike.getDeclaringClass().flow() and
-        (
-          fieldLike.isStatic() and
-          ref = cls.getAClassReference().getAPropertyReference(fieldLike.getName())
-          or
-          not fieldLike.isStatic() and
-          ref = cls.getAnInstanceReference().getAPropertyReference(fieldLike.getName())
+      /**
+       * Gets a call to a promisified function represented by `callee` where
+       * `bound` arguments have been bound.
+       */
+      predicate getAPromisifiedInvocation(
+        TApiNode callee, int bound, TApiNode succ, DataFlow::InvokeNode invoke
+      ) {
+        exists(DataFlow::SourceNode src |
+          use(callee, src) and
+          trackUseNode(src, true, bound, "").flowsTo(invoke.getCalleeNode()) and
+          succ = Impl::MkSyntheticCallbackArg(invoke)
         )
-      )
+      }
     }
 
-    /**
-     * Holds if `ref` is a use of node `nd`.
-     */
+    private module Stage1Input implements StageInputSig {
+      overlay[caller]
+      pragma[inline]
+      predicate isAdditionalUseRoot(Node node) { none() }
+
+      overlay[caller]
+      pragma[inline]
+      predicate isAdditionalDefRoot(Node node) { none() }
+
+      overlay[local]
+      private predicate isOverlay() { databaseMetadata("isOverlay", "true") }
+
+      bindingset[node]
+      predicate inActiveFile(DataFlow::Node node) {
+        // In the base database, compute everything in stage 1.
+        // In an overlay database, do nothing in stage 1.
+        not isOverlay() and exists(node)
+      }
+    }
+
+    private module Stage1 = Stage<Stage1Input>;
+
+    overlay[local]
+    private module Stage1Local {
+      predicate use(TApiNode node, DataFlow::Node ref) = forceLocal(Stage1::use/2)(node, ref)
+
+      predicate rhs(TApiNode node, DataFlow::Node def) = forceLocal(Stage1::rhs/2)(node, def)
+
+      predicate trackUseNode(DataFlow::SourceNode nd, DataFlow::SourceNode target) =
+        forceLocal(Stage1::trackUseNode/2)(nd, target)
+
+      predicate trackUseNodeAnyState(DataFlow::SourceNode nd, DataFlow::SourceNode target) =
+        forceLocal(Stage1::trackUseNodeAnyState/2)(nd, target)
+
+      predicate trackDefNode(DataFlow::Node nd, DataFlow::SourceNode target) =
+        forceLocal(Stage1::trackDefNode/2)(nd, target)
+
+      predicate trackDefNodeAnyState(DataFlow::Node nd, DataFlow::SourceNode target) =
+        forceLocal(Stage1::trackDefNodeAnyState/2)(nd, target)
+
+      predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) =
+        forceLocal(Stage1::edge/3)(pred, lbl, succ)
+
+      predicate getAPromisifiedInvocation(
+        TApiNode callee, int bound, TApiNode succ, DataFlow::InvokeNode invoke
+      ) = forceLocal(Stage1::getAPromisifiedInvocation/4)(callee, bound, succ, invoke)
+    }
+
+    private module Stage2Input implements StageInputSig {
+      overlay[global]
+      pragma[nomagic]
+      private predicate isInOverlayChangedFile(DataFlow::Node node) {
+        overlayChangedFiles(node.getFile().getAbsolutePath())
+      }
+
+      bindingset[node]
+      overlay[global]
+      pragma[inline_late]
+      private predicate isInOverlayChangedFileLate(DataFlow::Node node) {
+        isInOverlayChangedFile(node)
+      }
+
+      pragma[nomagic]
+      private predicate step(DataFlow::SourceNode node1, DataFlow::SourceNode node2) {
+        StepSummary::step(node1, node2, _)
+        or
+        AdditionalUseStep::step(node1, node2)
+      }
+
+      /** Holds if there is a step `node1 -> node2` from an unchanged file into a changed file. */
+      pragma[nomagic]
+      private predicate stepIntoOverlay(DataFlow::Node node1, DataFlow::Node node2) {
+        step(node1, node2) and
+        isInOverlayChangedFile(node2) and
+        not isInOverlayChangedFileLate(node1) and
+        hasSemanticsLate(node1)
+      }
+
+      /** Holds if use-node tracking starting at `nd` can reach a node in the overlay. */
+      pragma[nomagic]
+      private predicate shouldTrackIntoOverlay(DataFlow::SourceNode nd) {
+        exists(DataFlow::Node mid |
+          Stage1Local::trackUseNodeAnyState(nd, mid) and
+          stepIntoOverlay(mid, _)
+        )
+      }
+
+      /** Holds if `node` should be tracked as a use-node in stage 2. */
+      pragma[nomagic]
+      predicate isAdditionalUseRoot(Node node) {
+        exists(DataFlow::Node ref |
+          shouldTrackIntoOverlay(ref) and
+          Stage1Local::use(node, ref)
+        )
+      }
+
+      /** Holds if there is a step `node1 -> node2` from a changed file into an unchanged file. */
+      pragma[nomagic]
+      private predicate stepOutOfOverlay(DataFlow::Node node1, DataFlow::Node node2) {
+        step(node1, node2) and
+        isInOverlayChangedFile(node1) and
+        not isInOverlayChangedFileLate(node2) and
+        hasSemanticsLate(node2)
+      }
+
+      /** Holds if def-node tracking starting at `nd` can reach a node in the overlay. */
+      pragma[nomagic]
+      private predicate shouldBacktrackIntoOverlay(DataFlow::Node nd) {
+        exists(DataFlow::Node mid |
+          Stage1Local::trackDefNodeAnyState(nd, mid) and
+          stepOutOfOverlay(_, mid)
+        )
+      }
+
+      /** Holds if `node` should be tracked as a def-node in stage 2. */
+      pragma[nomagic]
+      predicate isAdditionalDefRoot(Node node) {
+        exists(DataFlow::Node def |
+          shouldBacktrackIntoOverlay(def) and
+          Stage1Local::rhs(node, def)
+        )
+      }
+
+      bindingset[node]
+      predicate inActiveFile(DataFlow::Node node) { isInOverlayChangedFile(node) }
+    }
+
+    private module Stage2 = Stage<Stage2Input>;
+
     cached
-    predicate use(TApiNode nd, DataFlow::Node ref) {
-      exists(string m, Module mod | nd = MkModuleDef(m) and mod = importableModule(m) |
-        ref = DataFlow::moduleVarNode(mod)
-      )
-      or
-      exists(string m, Module mod | nd = MkModuleExport(m) and mod = importableModule(m) |
-        ref = DataFlow::exportsVarNode(mod)
+    private module Cached {
+      cached
+      predicate rhs(TApiNode nd, DataFlow::Node rhs) {
+        Stage1Local::rhs(nd, rhs)
         or
-        exists(DataFlow::Node base | use(MkModuleDef(m), base) |
-          ref = trackUseNode(base).getAPropertyRead("exports")
-        )
-      )
-      or
-      exists(string m |
-        nd = MkModuleImport(m) and
-        ref = DataFlow::moduleImport(m)
-      )
-      or
-      exists(DataFlow::ClassNode cls | nd = MkClassInstance(cls) |
-        ref = cls.getAReceiverNode()
+        Stage2::rhs(nd, rhs)
+      }
+
+      cached
+      predicate use(TApiNode nd, DataFlow::Node ref) {
+        Stage1Local::use(nd, ref)
         or
-        ref = cls.(DataFlow::ClassNode).getAPrototypeReference()
-      )
-      or
-      nd = MkUse(ref)
-    }
+        Stage2::use(nd, ref)
+      }
 
-    private import semmle.javascript.dataflow.TypeTracking
-
-    /**
-     * Gets a data-flow node to which `nd`, which is a use of an API-graph node, flows.
-     *
-     * The flow from `nd` to that node may be inter-procedural, and is further described by three
-     * flags:
-     *
-     *   - `promisified`: if true `true`, the flow goes through a promisification;
-     *   - `boundArgs`: for function values, tracks how many arguments have been bound throughout
-     *     the flow. To ensure termination, we somewhat arbitrarily constrain the number of bound
-     *     arguments to be at most ten.
-     *   - `prop`: if non-empty, the flow is only guaranteed to preserve the value of this property,
-     *     and not necessarily the entire object.
-     */
-    private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop,
-      DataFlow::TypeTracker t
-    ) {
-      t.start() and
-      use(_, nd) and
-      result = nd and
-      promisified = false and
-      boundArgs = 0 and
-      prop = ""
-      or
-      exists(Promisify::PromisifyCall promisify |
-        trackUseNode(nd, false, boundArgs, prop, t.continue()).flowsTo(promisify.getArgument(0)) and
-        promisified = true and
-        prop = "" and
-        result = promisify
-      )
-      or
-      exists(DataFlow::PartialInvokeNode pin, DataFlow::Node pred, int predBoundArgs |
-        trackUseNode(nd, promisified, predBoundArgs, prop, t.continue()).flowsTo(pred) and
-        prop = "" and
-        result = pin.getBoundFunction(pred, boundArgs - predBoundArgs) and
-        boundArgs in [0 .. 10]
-      )
-      or
-      exists(DataFlow::SourceNode mid |
-        mid = trackUseNode(nd, promisified, boundArgs, prop, t) and
-        AdditionalUseStep::step(pragma[only_bind_out](mid), result)
-      )
-      or
-      exists(DataFlow::Node pred, string preprop |
-        trackUseNode(nd, promisified, boundArgs, preprop, t.continue()).flowsTo(pred) and
-        promisified = false and
-        boundArgs = 0 and
-        SharedTypeTrackingStep::loadStoreStep(pred, result, prop)
-      |
-        prop = preprop
+      cached
+      predicate trackUseNode(DataFlow::SourceNode nd, DataFlow::SourceNode target) {
+        Stage1Local::trackUseNode(nd, target)
         or
-        preprop = ""
-      )
-      or
-      t = useStep(nd, promisified, boundArgs, prop, result)
-    }
+        Stage2::trackUseNode(nd, target)
+      }
 
-    /**
-     * Holds if `nd`, which is a use of an API-graph node, flows in zero or more potentially
-     * inter-procedural steps to some intermediate node, and then from that intermediate node to
-     * `res` in one step. The entire flow is described by the resulting `TypeTracker`.
-     *
-     * This predicate exists solely to enforce a better join order in `trackUseNode` above.
-     */
-    pragma[noopt]
-    private DataFlow::TypeTracker useStep(
-      DataFlow::Node nd, boolean promisified, int boundArgs, string prop, DataFlow::Node res
-    ) {
-      exists(DataFlow::TypeTracker t, StepSummary summary, DataFlow::SourceNode prev |
-        prev = trackUseNode(nd, promisified, boundArgs, prop, t) and
-        StepSummary::step(prev, res, summary) and
-        result = t.append(summary) and
-        // Block argument-passing into 'this' when it determines the call target
-        not summary = CallReceiverStep()
-      )
-    }
-
-    private DataFlow::SourceNode trackUseNode(
-      DataFlow::SourceNode nd, boolean promisified, int boundArgs, string prop
-    ) {
-      result = trackUseNode(nd, promisified, boundArgs, prop, DataFlow::TypeTracker::end())
-    }
-
-    /**
-     * Gets a node that is inter-procedurally reachable from `nd`, which is a use of some node.
-     */
-    cached
-    DataFlow::SourceNode trackUseNode(DataFlow::SourceNode nd) {
-      result = trackUseNode(nd, false, 0, "")
-    }
-
-    private DataFlow::SourceNode trackDefNode(DataFlow::Node nd, DataFlow::TypeBackTracker t) {
-      t.start() and
-      rhs(_, nd) and
-      result = nd.getALocalSource()
-      or
-      // additional backwards step from `require('m')` to `exports` or `module.exports` in m
-      exists(Import imp | imp.getImportedModuleNodeStrict() = trackDefNode(nd, t.continue()) |
-        result = DataFlow::exportsVarNode(imp.getImportedModule())
+      cached
+      predicate trackDefNode(DataFlow::Node nd, DataFlow::SourceNode target) {
+        Stage1Local::trackDefNode(nd, target)
         or
-        result = DataFlow::moduleVarNode(imp.getImportedModule()).getAPropertyRead("exports")
-      )
-      or
-      exists(ObjectExpr obj |
-        obj = trackDefNode(nd, t.continue()).asExpr() and
-        result =
-          obj.getAProperty()
-              .(SpreadProperty)
-              .getInit()
-              .(SpreadElement)
-              .getOperand()
-              .flow()
-              .getALocalSource()
-      )
-      or
-      t = defStep(nd, result)
-    }
+        Stage2::trackDefNode(nd, target)
+      }
 
-    /**
-     * Holds if `nd`, which is a def of an API-graph node, can be reached in zero or more potentially
-     * inter-procedural steps from some intermediate node, and `prev` flows into that intermediate node
-     * in one step. The entire flow is described by the resulting `TypeTracker`.
-     *
-     * This predicate exists solely to enforce a better join order in `trackDefNode` above.
-     */
-    pragma[noopt]
-    private DataFlow::TypeBackTracker defStep(DataFlow::Node nd, DataFlow::SourceNode prev) {
-      exists(DataFlow::TypeBackTracker t, StepSummary summary, DataFlow::Node next |
-        next = trackDefNode(nd, t) and
-        StepSummary::step(prev, next, summary) and
-        result = t.prepend(summary) and
-        // Block argument-passing steps from 'this' back to a receiver when it determines the call target
-        not summary = CallReceiverStep()
-      )
-    }
-
-    /**
-     * Gets a node that inter-procedurally flows into `nd`, which is a definition of some node.
-     */
-    cached
-    DataFlow::SourceNode trackDefNode(DataFlow::Node nd) {
-      result = trackDefNode(nd, DataFlow::TypeBackTracker::end())
-    }
-
-    private DataFlow::SourceNode awaited(DataFlow::InvokeNode call, DataFlow::TypeTracker t) {
-      t.startInPromise() and
-      exists(MkSyntheticCallbackArg(_, _, call)) and
-      result = call
-      or
-      exists(DataFlow::TypeTracker t2 | result = awaited(call, t2).track(t2, t))
-    }
-
-    /**
-     * Gets a node holding the resolved value of promise `call`.
-     */
-    private DataFlow::Node awaited(DataFlow::InvokeNode call) {
-      result = awaited(call, DataFlow::TypeTracker::end())
-    }
-
-    /**
-     * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
-     */
-    cached
-    predicate edge(TApiNode pred, Label::ApiLabel lbl, TApiNode succ) {
-      Stages::ApiStage::ref() and
-      exists(string m |
-        pred = MkRoot() and
-        lbl = Label::moduleLabel(m)
-      |
-        succ = MkModuleDef(m)
+      cached
+      predicate edge(Node pred, Label::ApiLabel lbl, Node succ) {
+        Stage1Local::edge(pred, lbl, succ)
         or
-        succ = MkModuleUse(m)
-      )
-      or
-      exists(string m |
-        pred = MkModuleDef(m) and
-        lbl = Label::member("exports") and
-        succ = MkModuleExport(m)
+        Stage2::edge(pred, lbl, succ)
+      }
+
+      cached
+      predicate getAPromisifiedInvocation(
+        TApiNode callee, int bound, TApiNode succ, DataFlow::InvokeNode invoke
+      ) {
+        Stage1Local::getAPromisifiedInvocation(callee, bound, succ, invoke)
         or
-        pred = MkModuleUse(m) and
-        lbl = Label::member("exports") and
-        succ = MkModuleImport(m)
-      )
-      or
-      exists(DataFlow::SourceNode ref |
-        use(pred, lbl, ref) and
-        succ = MkUse(ref)
-      )
-      or
-      exists(DataFlow::Node rhs | rhs(pred, lbl, rhs) |
-        succ = MkDef(rhs)
-        or
-        exists(DataFlow::ClassNode cls |
-          cls.getAnInstanceReference().flowsTo(rhs) and
-          succ = MkClassInstance(cls)
-        )
-      )
-      or
-      exists(DataFlow::Node def |
-        rhs(pred, def) and
-        lbl = Label::instance() and
-        succ = MkClassInstance(trackDefNode(def))
-      )
-      or
-      exists(string moduleName, string exportName |
-        pred = MkModuleImport(moduleName) and
-        lbl = Label::member(exportName) and
-        succ = MkTypeUse(moduleName, exportName)
-      )
-      or
-      exists(DataFlow::Node nd, DataFlow::FunctionNode f |
-        f.getFunction().isAsync() and
-        pred = MkDef(nd) and
-        f = trackDefNode(nd) and
-        lbl = Label::return() and
-        succ = MkDef(f.getReturnNode())
-      )
-      or
-      exists(int bound, DataFlow::InvokeNode call |
-        lbl = Label::parameter(bound + call.getNumArgument()) and
-        call = getAPromisifiedInvocation(pred, bound, succ)
-      )
+        Stage2::getAPromisifiedInvocation(callee, bound, succ, invoke)
+      }
+    }
+
+    import Cached
+
+    private module Debug {
+      private module FullInput implements StageInputSig {
+        overlay[caller]
+        pragma[inline]
+        predicate isAdditionalUseRoot(Node node) { none() }
+
+        overlay[caller]
+        pragma[inline]
+        predicate isAdditionalDefRoot(Node node) { none() }
+
+        bindingset[node]
+        predicate inActiveFile(DataFlow::Node node) { any() }
+      }
+
+      private module Full = Stage<FullInput>;
+
+      query predicate missingDefNode(DataFlow::Node node) {
+        Full::rhs(_, _, node) and
+        not exists(MkDef(node))
+      }
+
+      query predicate missingUseNode(DataFlow::Node node) {
+        Full::use(_, _, node) and
+        not exists(MkUse(node))
+      }
+
+      query predicate lostEdge(Node pred, Label::ApiLabel lbl, Node succ) {
+        Full::edge(pred, lbl, succ) and
+        not Cached::edge(pred, lbl, succ)
+      }
+
+      query predicate counts(int numEdges, int numOverlayEdges, float ratio) {
+        numEdges = count(Node pred, Label::ApiLabel lbl, Node succ | Full::edge(pred, lbl, succ)) and
+        numOverlayEdges =
+          count(Node pred, Label::ApiLabel lbl, Node succ | Stage2::edge(pred, lbl, succ)) and
+        ratio = numOverlayEdges / numEdges.(float)
+      }
     }
 
     /**
@@ -1485,18 +1813,6 @@ module API {
     /** Gets the shortest distance from the root to `nd` in the API graph. */
     cached
     int distanceFromRoot(TApiNode nd) = shortestDistances(MkRoot/0, edge/2)(_, nd, result)
-
-    /**
-     * Gets a call to a promisified function represented by `callee` where
-     * `bound` arguments have been bound.
-     */
-    cached
-    DataFlow::InvokeNode getAPromisifiedInvocation(TApiNode callee, int bound, TApiNode succ) {
-      exists(DataFlow::SourceNode src |
-        Impl::use(callee, src) and
-        succ = Impl::MkSyntheticCallbackArg(src, bound, result)
-      )
-    }
   }
 
   /**
@@ -1514,7 +1830,7 @@ module API {
     InvokeNode() {
       this = callee.getReturn().asSource() or
       this = callee.getInstance().asSource() or
-      this = Impl::getAPromisifiedInvocation(callee, _, _)
+      Impl::getAPromisifiedInvocation(callee, _, _, this)
     }
 
     /** Gets the API node for the `i`th parameter of this invocation. */
@@ -1556,6 +1872,7 @@ module API {
   class NewNode extends InvokeNode, DataFlow::NewNode { }
 
   /** Provides classes modeling the various edges (labels) in the API graph. */
+  overlay[local]
   module Label {
     /** A label in the API-graph */
     class ApiLabel extends TLabel {
@@ -1594,6 +1911,7 @@ module API {
      * This is to support code patterns where the property name is actually constant,
      * but the property name has been factored into a library.
      */
+    overlay[global]
     private string getAnIndirectPropName(DataFlow::PropRef ref) {
       exists(DataFlow::Node pred |
         FlowSteps::propertyFlowStep(pred, ref.getPropertyNameExpr().flow()) and
@@ -1604,16 +1922,19 @@ module API {
     /**
      * Gets unique result of `getAnIndirectPropName` if there is one.
      */
+    overlay[global]
     private string getIndirectPropName(DataFlow::PropRef ref) {
       result = unique(string s | s = getAnIndirectPropName(ref))
     }
 
+    overlay[global]
     pragma[nomagic]
     private predicate isEnumeratedPropName(DataFlow::Node node) {
       node.getAPredecessor*() instanceof EnumeratedPropName
     }
 
     /** Gets the `member` edge label for the given property reference. */
+    overlay[global]
     ApiLabel memberFromRef(DataFlow::PropRef pr) {
       exists(string pn | pn = pr.getPropertyName() or pn = getIndirectPropName(pr) |
         result = member(pn) and
@@ -1680,9 +2001,17 @@ module API {
         MkLabelInstance() or
         MkLabelContent(DataFlow::Content content) or
         MkLabelMember(string name) {
-          name instanceof PropertyName
+          name instanceof ContentPrivate::PropertyName
           or
-          exists(Impl::MkTypeUse(_, name))
+          name = any(DataFlow::PropRef pr).getPropertyName()
+          or
+          exists(AccessPath::getAnAssignmentTo(_, name))
+          or
+          name = DataFlow::PseudoProperties::arrayLikeElement()
+          or
+          name = any(TypeAccess t).getIdentifier().getName()
+          or
+          name = any(Expr s).getStringValue()
         } or
         MkLabelParameter(int i) {
           i =
@@ -1884,4 +2213,19 @@ private Module importableModule(string m) {
     not result.isExterns() and
     m = pkg.getPackageName()
   )
+}
+
+overlay[local]
+private predicate isDeclaredPackageName(string m) {
+  m = any(PackageJson pkg).getDeclaredPackageName()
+}
+
+overlay[local]
+private predicate isImportedPackageName(string m) {
+  (
+    m = any(Import imprt).getImportedPathString()
+    or
+    m = any(DataFlow::ModuleImportNode im).getPath()
+  ) and
+  m.regexpMatch("[^./].*")
 }

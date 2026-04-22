@@ -31,6 +31,7 @@ test14
 test15
 | generics.cs:7:23:7:40 | GenericDelegate<String> |
 test16
+| generics.cs:135:11:135:16 | Subtle | generics.cs:135:11:135:16 | <object initializer> |
 | generics.cs:135:11:135:16 | Subtle | generics.cs:138:21:138:25 | fs`1 |
 | generics.cs:135:11:135:16 | Subtle | generics.cs:140:21:140:25 | fs`1 |
 | generics.cs:135:11:135:16 | Subtle | generics.cs:142:21:142:22 | fs |

@@ -89,7 +89,7 @@ private class TaintPropagatingCall extends Call {
 }
 
 private class JakartaType extends RefType {
-  JakartaType() { this.getPackage().hasName(["javax.el", "jakarta.el"]) }
+  JakartaType() { this.getPackage().hasName(javaxOrJakarta() + ".el") }
 }
 
 private class ELProcessor extends JakartaType {

@@ -1,3 +1,35 @@
+## 0.4.32
+
+No user-facing changes.
+
+## 0.4.31
+
+No user-facing changes.
+
+## 0.4.30
+
+No user-facing changes.
+
+## 0.4.29
+
+No user-facing changes.
+
+## 0.4.28
+
+No user-facing changes.
+
+## 0.4.27
+
+### Bug Fixes
+
+* Fixed a crash when analysing a `${{ ... }}` expression over around 300 characters in length.
+
+## 0.4.26
+
+### Major Analysis Improvements
+
+* The query `actions/code-injection/medium` has been updated to include results which were incorrectly excluded while filtering out results that are reported by `actions/code-injection/critical`.
+
 ## 0.4.25
 
 No user-facing changes.

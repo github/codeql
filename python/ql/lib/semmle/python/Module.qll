@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 private import semmle.python.internal.CachedStages
 
@@ -85,9 +88,6 @@ class Module extends Module_, Scope, AstNode {
     this.getName().matches("%.%") and
     result = this.getName().regexpReplaceAll("\\.[^.]*$", "")
   }
-
-  /** Gets the metrics for this module */
-  ModuleMetrics getMetrics() { result = this }
 
   string getAnImportedModuleName() {
     exists(Import i | i.getEnclosingModule() = this | result = i.getAnImportedModuleName())

@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
 private import semmle.python.dataflow.new.TypeTracking
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
+private import semmle.python.essa.SsaDefinitions
 
 /**
  * Python modules and the way imports are resolved are... complicated. Here's a crash course in how

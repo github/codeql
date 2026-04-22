@@ -29,7 +29,7 @@ private predicate isCallback(DataFlow::SourceNode node) {
  * See also `FlowSummaryDefaultExceptionalReturn`, which handles calls that have a summary target,
  * but where the summary does not mention `ReturnValue[exception]`.
  */
-private class ExceptionFlowSummary extends SummarizedCallable, LibraryCallableInternal {
+private class ExceptionFlowSummary extends SummarizedCallable::Range, LibraryCallableInternal {
   ExceptionFlowSummary() { this = "Exception propagator" }
 
   override DataFlow::CallNode getACallStage2() {

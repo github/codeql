@@ -269,7 +269,7 @@ pub fn identifier_patterns() {
     let mut ref_mut_val = 5i32;
     match &mut ref_mut_val {
         ref mut x => {
-            let ref_mut_bound = x; // $ type=ref_mut_bound:TRef.TRef.i32
+            let ref_mut_bound = x; // $ type=ref_mut_bound:TRefMut.TRefMut.i32
             **ref_mut_bound += 1; // $ target=deref target=add_assign
             println!("Ref mut pattern");
         }

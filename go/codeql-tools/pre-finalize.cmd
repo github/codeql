@@ -9,6 +9,7 @@ if NOT "%CODEQL_EXTRACTOR_GO_EXTRACT_HTML%"=="no" (
                         --include-extension=.xhtm ^
                         --include-extension=.xhtml ^
                         --include-extension=.vue ^
+                        --also-match-lgtm-index-filters ^
                         --size-limit 10m ^
                         --language html ^
                         -- ^

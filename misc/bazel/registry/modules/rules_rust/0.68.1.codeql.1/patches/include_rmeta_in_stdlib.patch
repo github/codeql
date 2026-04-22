@@ -1,0 +1,12 @@
+diff --git a/rust/private/repository_utils.bzl b/rust/private/repository_utils.bzl
+index 05b741947..f88074af6 100644
+--- a/rust/private/repository_utils.bzl
++++ b/rust/private/repository_utils.bzl
+@@ -280,6 +280,7 @@ rust_stdlib_filegroup(
+     srcs = glob(
+         [
+             "lib/rustlib/{target_triple}/lib/*.rlib",
++            "lib/rustlib/{target_triple}/lib/*.rmeta",
+             "lib/rustlib/{target_triple}/lib/*{dylib_ext}*",
+             "lib/rustlib/{target_triple}/lib/*{staticlib_ext}",
+             "lib/rustlib/{target_triple}/lib/self-contained/**",

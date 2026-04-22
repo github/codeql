@@ -403,3 +403,29 @@ pub fn test_vec_reserve() {
 		println!("	v4 = {}", v4); // corrupt in practice
 	}
 }
+
+// --- pointer to reference ---
+
+pub fn test_pointer_converted_to_reference() {
+	let layout = std::alloc::Layout::new::<u128>();
+	let m3;
+
+	// allocate
+	unsafe {
+		let m1 = std::alloc::alloc(layout); // *mut u8
+		let m2 = m1 as *mut u128; // *mut u128
+		m3 = &mut *m2; // &u128
+	}
+
+	*m3 = 1; // GOOD
+	println!("	v1 = {}", *m3); // GOOD
+
+	// free
+	unsafe {
+		std::alloc::dealloc((&raw mut *m3) as *mut u8, layout); // $ MISSING: Source[rust/access-invalid-pointer]=dealloc
+	}
+	// (m1, m2, m3 are now dangling)
+
+	// (this is corrupt in practice)
+	println!("	v2 = {} (!)", *m3); // $ MISSING: Alert[rust/access-invalid-pointer]=dealloc
+}

@@ -21,6 +21,26 @@ extensible predicate sourceModel(
 extensible predicate sinkModel(string type, string path, string kind, QlBuiltins::ExtensionId madId);
 
 /**
+ * Holds if the value at `(type, path)` should be seen as a barrier
+ * of the given `kind` and `madId` is the data extension row number.
+ */
+extensible predicate barrierModel(
+  string type, string path, string kind, QlBuiltins::ExtensionId madId
+);
+
+/**
+ * Holds if the value at `(type, path)` should be seen as a barrier guard
+ * of the given `kind` and `madId` is the data extension row number.
+ * `path` is assumed to lead to a parameter of a call (possibly `self`), and
+ * the call is guarding the parameter.
+ * `branch` is either `true` or `false`, indicating which branch of the guard
+ * is protecting the parameter.
+ */
+extensible predicate barrierGuardModel(
+  string type, string path, string branch, string kind, QlBuiltins::ExtensionId madId
+);
+
+/**
  * Holds if in calls to `(type, path)`, the value referred to by `input`
  * can flow to the value referred to by `output` and `madId` is the data
  * extension row number.

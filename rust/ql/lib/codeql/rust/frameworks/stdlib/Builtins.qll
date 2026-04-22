@@ -27,8 +27,19 @@ private class BuiltinsTypesFile extends File {
 class BuiltinType extends Struct {
   BuiltinType() { this.getFile() instanceof BuiltinsTypesFile }
 
-  /** Gets the name of this type. */
+  /**
+   * Gets the name of this type.
+   *
+   * This is the name used internally to represent the type, for example `Ref`.
+   */
   string getName() { result = super.getName().getText() }
+
+  /**
+   * Gets a display name for this type.
+   *
+   * This is the name used in code, for example `&`.
+   */
+  string getDisplayName() { result = this.getName() }
 }
 
 /**
@@ -140,21 +151,53 @@ class F64 extends FloatingPointTypeImpl {
 /** The builtin slice type `[T]`. */
 class SliceType extends BuiltinType {
   SliceType() { this.getName() = "Slice" }
+
+  override string getDisplayName() { result = "[]" }
 }
 
 /** The builtin array type `[T; N]`. */
 class ArrayType extends BuiltinType {
   ArrayType() { this.getName() = "Array" }
+
+  override string getDisplayName() { result = "[;]" }
 }
 
-/** The builtin reference type `&T` or `&mut T`. */
-class RefType extends BuiltinType {
-  RefType() { this.getName() = "Ref" }
+/** A builtin reference type `&T` or `&mut T`. */
+abstract private class RefTypeImpl extends BuiltinType { }
+
+final class RefType = RefTypeImpl;
+
+/** The builtin shared reference type `&T`. */
+class RefSharedType extends RefTypeImpl {
+  RefSharedType() { this.getName() = "Ref" }
+
+  override string getDisplayName() { result = "&" }
 }
 
-/** The builtin pointer type `*const T` or `*mut T`. */
-class PtrType extends BuiltinType {
-  PtrType() { this.getName() = "Ptr" }
+/** The builtin mutable reference type `&mut T`. */
+class RefMutType extends RefTypeImpl {
+  RefMutType() { this.getName() = "RefMut" }
+
+  override string getDisplayName() { result = "&mut" }
+}
+
+/** A builtin raw pointer type `*const T` or `*mut T`. */
+abstract private class PtrTypeImpl extends BuiltinType { }
+
+final class PtrType = PtrTypeImpl;
+
+/** The builtin raw pointer type `*const T`. */
+class PtrConstType extends PtrTypeImpl {
+  PtrConstType() { this.getName() = "PtrConst" }
+
+  override string getDisplayName() { result = "*const" }
+}
+
+/** The builtin raw pointer type `*mut T`. */
+class PtrMutType extends PtrTypeImpl {
+  PtrMutType() { this.getName() = "PtrMut" }
+
+  override string getDisplayName() { result = "*mut" }
 }
 
 /** A builtin tuple type `(T1, T2, ...)`. */
@@ -167,5 +210,14 @@ class TupleType extends BuiltinType {
     result = 0
     or
     result = this.getGenericParamList().getNumberOfGenericParams()
+  }
+
+  override string getDisplayName() {
+    // Note: This produces "(,,)" for a 2-tuple, "(,,,)" for a 3-tuple, etc.
+    // This is in order to distinguish the unit type `()` from the 1-tuple `(,)`.
+    exists(string commas |
+      commas = concat(int i | i = [0 .. this.getArity() - 1] | ",") and
+      result = "(" + commas + ")"
+    )
   }
 }

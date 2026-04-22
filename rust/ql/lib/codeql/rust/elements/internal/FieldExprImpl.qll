@@ -12,7 +12,7 @@ private import codeql.rust.elements.internal.generated.FieldExpr
  */
 module Impl {
   private import rust
-  private import codeql.rust.internal.TypeInference as TypeInference
+  private import codeql.rust.internal.typeinference.TypeInference as TypeInference
 
   // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
@@ -23,10 +23,10 @@ module Impl {
    */
   class FieldExpr extends Generated::FieldExpr {
     /** Gets the record field that this access references, if any. */
-    StructField getStructField() { result = TypeInference::resolveStructFieldExpr(this) }
+    StructField getStructField() { result = TypeInference::resolveStructFieldExpr(this, _) }
 
     /** Gets the tuple field that this access references, if any. */
-    TupleField getTupleField() { result = TypeInference::resolveTupleFieldExpr(this) }
+    TupleField getTupleField() { result = TypeInference::resolveTupleFieldExpr(this, _) }
 
     override string toStringImpl() {
       exists(string abbr, string name |

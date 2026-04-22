@@ -1,6 +1,8 @@
 /**
  * Provides classes representing Python classes.
  */
+overlay[local]
+module;
 
 import python
 
@@ -141,17 +143,11 @@ class Class extends Class_, Scope, AstNode {
   /** Gets the metaclass expression */
   Expr getMetaClass() { result = this.getParent().getMetaClass() }
 
-  /** Gets the ClassObject corresponding to this class */
-  ClassObject getClassObject() { result.getOrigin() = this.getParent() }
-
   /** Gets the nth base of this class definition. */
   Expr getBase(int index) { result = this.getParent().getBase(index) }
 
   /** Gets a base of this class definition. */
   Expr getABase() { result = this.getParent().getABase() }
-
-  /** Gets the metrics for this class */
-  ClassMetrics getMetrics() { result = this }
 
   /**
    * Gets the qualified name for this class.

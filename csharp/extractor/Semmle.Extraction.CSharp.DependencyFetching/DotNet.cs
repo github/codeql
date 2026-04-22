@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Newtonsoft.Json.Linq;
 
 using Semmle.Util;
@@ -36,12 +37,29 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public static IDotNet Make(ILogger logger, string? dotNetPath, TemporaryDirectory tempWorkingDirectory, DependabotProxy? dependabotProxy) => new DotNet(logger, dotNetPath, tempWorkingDirectory, dependabotProxy);
 
+        private static void HandleRetryExitCode143(string dotnet, int attempt, ILogger logger)
+        {
+            logger.LogWarning($"Running '{dotnet} --info' failed with exit code 143. Retrying...");
+            var sleep = Math.Pow(2, attempt) * 1000;
+            Thread.Sleep((int)sleep);
+        }
+
         private void Info()
         {
-            var res = dotnetCliInvoker.RunCommand("--info", silent: false);
-            if (!res)
+            // Allow up to four attempts (with up to three retries) to run `dotnet --info`, to mitigate transient issues
+            for (int attempt = 0; attempt < 4; attempt++)
             {
-                throw new Exception($"{dotnetCliInvoker.Exec} --info failed.");
+                var exitCode = dotnetCliInvoker.RunCommandExitCode("--info", silent: false);
+                switch (exitCode)
+                {
+                    case 0:
+                        return;
+                    case 143 when attempt < 3:
+                        HandleRetryExitCode143(dotnetCliInvoker.Exec, attempt, logger);
+                        continue;
+                    default:
+                        throw new Exception($"{dotnetCliInvoker.Exec} --info failed with exit code {exitCode}.");
+                }
             }
         }
 
@@ -59,7 +77,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     Directory.CreateDirectory(path);
                 }
 
-                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\"";
+                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\" /p:AllowMissingPrunePackageData=true";
             }
 
             if (restoreSettings.PathToNugetConfig != null)
@@ -139,7 +157,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
-        public const string LatestDotNetSdkVersion = "9.0.300";
+        public const string LatestDotNetSdkVersion = "10.0.100";
 
         public static ReadOnlyDictionary<string, string> MinimalEnvironment => IDotNetCliInvoker.MinimalEnvironment;
 
@@ -191,6 +209,35 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             return BuildScript.Failure;
+        }
+
+        /// <summary>
+        /// Returns a script for running `dotnet --info`, with retries on exit code 143.
+        /// </summary>
+        public static BuildScript InfoScript(IBuildActions actions, string dotnet, IDictionary<string, string>? environment, ILogger logger)
+        {
+            var info = new CommandBuilder(actions, null, environment).
+                RunCommand(dotnet).
+                Argument("--info");
+            var script = info.Script;
+            for (var attempt = 0; attempt < 4; attempt++)
+            {
+                var attemptCopy = attempt; // Capture in local variable
+                script = BuildScript.Bind(script, ret =>
+                    {
+                        switch (ret)
+                        {
+                            case 0:
+                                return BuildScript.Success;
+                            case 143 when attemptCopy < 3:
+                                HandleRetryExitCode143(dotnet, attemptCopy, logger);
+                                return info.Script;
+                            default:
+                                return BuildScript.Failure;
+                        }
+                    });
+            }
+            return script;
         }
 
         /// <summary>
@@ -292,9 +339,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     };
                 }
 
-                var dotnetInfo = new CommandBuilder(actions, environment: MinimalEnvironment).
-                    RunCommand(actions.PathCombine(path, "dotnet")).
-                    Argument("--info").Script;
+                var dotnetInfo = InfoScript(actions, actions.PathCombine(path, "dotnet"), MinimalEnvironment.ToDictionary(), logger);
 
                 Func<string, BuildScript> getInstallAndVerify = version =>
                     // run `dotnet --info` after install, to check that it executes successfully

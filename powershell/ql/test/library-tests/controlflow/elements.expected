@@ -1,2 +1,6 @@
+forEach
 | graph/functions.ps1:29:5:32:5 | forach(... in ...) | graph/functions.ps1:29:14:29:20 | number | graph/functions.ps1:29:25:29:32 | numbers | graph/functions.ps1:29:35:32:5 | {...} |
 | graph/loops.ps1:52:5:55:5 | forach(... in ...) | graph/loops.ps1:52:14:52:20 | letter | graph/loops.ps1:52:25:52:36 | letterArray | graph/loops.ps1:53:5:55:5 | {...} |
+objectCreation
+| graph/exprs.ps1:2:10:2:91 | Call to new-object | 0 | graph/exprs.ps1:2:21:2:71 | Microsoft.Data.SqlClient.SqlConnectionStringBuilder |
+| graph/exprs.ps1:2:10:2:91 | Call to new-object | 1 | graph/exprs.ps1:2:87:2:91 | arg |

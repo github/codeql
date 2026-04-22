@@ -18,6 +18,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PowershellDataF
 
   class SinkBase = Void;
 
+  predicate callableFromSource(SummarizedCallableBase c) { none() }
+
   ArgumentPosition callbackSelfParameterPosition() { none() }
 
   ReturnKind getStandardReturnValueKind() { result instanceof NormalReturnKind }

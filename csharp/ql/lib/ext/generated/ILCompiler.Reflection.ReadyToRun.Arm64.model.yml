@@ -8,4 +8,4 @@ extensions:
       - ["ILCompiler.Reflection.ReadyToRun.Arm64", "Epilog", "ToString", "()", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Arm64", "UnwindCode", "UnwindCode", "(System.Int32)", "summary", "df-generated"]
       - ["ILCompiler.Reflection.ReadyToRun.Arm64", "UnwindInfo", "ToString", "()", "summary", "df-generated"]
-      - ["ILCompiler.Reflection.ReadyToRun.Arm64", "UnwindInfo", "UnwindInfo", "(System.Byte[],System.Int32)", "summary", "df-generated"]
+      - ["ILCompiler.Reflection.ReadyToRun.Arm64", "UnwindInfo", "UnwindInfo", "(ILCompiler.Reflection.ReadyToRun.NativeReader,System.Int32)", "summary", "df-generated"]

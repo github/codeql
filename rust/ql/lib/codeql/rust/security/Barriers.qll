@@ -5,8 +5,8 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
-private import codeql.rust.internal.TypeInference as TypeInference
-private import codeql.rust.internal.Type
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.Type
 private import codeql.rust.controlflow.ControlFlowGraph as Cfg
 private import codeql.rust.controlflow.CfgNodes as CfgNodes
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
@@ -14,7 +14,7 @@ private import codeql.rust.frameworks.stdlib.Builtins as Builtins
 /** A node whose type is a numeric type. */
 class NumericTypeBarrier extends DataFlow::Node {
   NumericTypeBarrier() {
-    TypeInference::inferType(this.asExpr()).(StructType).getStruct() instanceof
+    TypeInference::inferType(this.asExpr()).(StructType).getTypeItem() instanceof
       Builtins::NumericType
   }
 }
@@ -22,14 +22,14 @@ class NumericTypeBarrier extends DataFlow::Node {
 /** A node whose type is `bool`. */
 class BooleanTypeBarrier extends DataFlow::Node {
   BooleanTypeBarrier() {
-    TypeInference::inferType(this.asExpr()).(StructType).getStruct() instanceof Builtins::Bool
+    TypeInference::inferType(this.asExpr()).(StructType).getTypeItem() instanceof Builtins::Bool
   }
 }
 
 /** A node whose type is an integral (integer). */
 class IntegralTypeBarrier extends DataFlow::Node {
   IntegralTypeBarrier() {
-    TypeInference::inferType(this.asExpr()).(StructType).getStruct() instanceof
+    TypeInference::inferType(this.asExpr()).(StructType).getTypeItem() instanceof
       Builtins::IntegralType
   }
 }
@@ -37,7 +37,7 @@ class IntegralTypeBarrier extends DataFlow::Node {
 /** A node whose type is a fieldless enum. */
 class FieldlessEnumTypeBarrier extends DataFlow::Node {
   FieldlessEnumTypeBarrier() {
-    TypeInference::inferType(this.asExpr()).(EnumType).getEnum().isFieldless()
+    TypeInference::inferType(this.asExpr()).(EnumType).getTypeItem().isFieldless()
   }
 }
 

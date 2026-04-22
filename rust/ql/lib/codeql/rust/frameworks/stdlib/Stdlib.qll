@@ -1,21 +1,54 @@
 /**
- * Provides classes modeling security-relevant aspects of the standard libraries.
+ * Provides classes modeling relevant aspects of the standard libraries.
  */
 
 private import rust
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowSummary
 private import codeql.rust.internal.PathResolution
+private import codeql.rust.internal.typeinference.Type
+private import codeql.rust.internal.typeinference.TypeMention
 
 /**
  * A call to the `starts_with` method on a `Path`.
  */
-private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCallExpr {
+private class StartswithCall extends Path::SafeAccessCheck::Range, MethodCall {
   StartswithCall() { this.getStaticTarget().getCanonicalPath() = "<std::path::Path>::starts_with" }
 
   override predicate checks(Expr e, boolean branch) {
     e = this.getReceiver() and
     branch = true
+  }
+}
+
+/**
+ * A flow summary for the [reflexive implementation of the `From` trait][1].
+ *
+ * Blanket implementations currently don't have a canonical path, so we cannot
+ * use models-as-data for this model.
+ *
+ * [1]: https://doc.rust-lang.org/std/convert/trait.From.html#impl-From%3CT%3E-for-T
+ */
+private class ReflexiveFrom extends SummarizedCallable::Range {
+  ReflexiveFrom() {
+    exists(ImplItemNode impl |
+      impl.resolveTraitTy().(Trait).getCanonicalPath() = "core::convert::From" and
+      this = impl.getAssocItem("from") and
+      resolvePath(this.getParam(0).getTypeRepr().(PathTypeRepr).getPath()) =
+        impl.getBlanketImplementationTypeParam()
+    )
+  }
+
+  override predicate propagatesFlow(
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
+  ) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = true and
+    p = "manual" and
+    isExact = true and
+    model = "ReflexiveFrom"
   }
 }
 
@@ -140,30 +173,49 @@ class FutureTrait extends Trait {
 
   /** Gets the `Output` associated type. */
   pragma[nomagic]
-  TypeAlias getOutputType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Output"
-  }
+  TypeAlias getOutputType() { result = this.(TraitItemNode).getAssocItem("Output") }
 }
+
+/** A function trait `FnOnce`, `FnMut`, or `Fn`. */
+abstract private class AnyFnTraitImpl extends Trait {
+  /** Gets the `Args` type parameter of this trait. */
+  TypeParam getTypeParam() { result = this.getGenericParamList().getGenericParam(0) }
+}
+
+final class AnyFnTrait = AnyFnTraitImpl;
 
 /**
  * The [`FnOnce` trait][1].
  *
  * [1]: https://doc.rust-lang.org/std/ops/trait.FnOnce.html
  */
-class FnOnceTrait extends Trait {
+class FnOnceTrait extends AnyFnTraitImpl {
   pragma[nomagic]
   FnOnceTrait() { this.getCanonicalPath() = "core::ops::function::FnOnce" }
 
-  /** Gets the type parameter of this trait. */
-  TypeParam getTypeParam() { result = this.getGenericParamList().getGenericParam(0) }
-
   /** Gets the `Output` associated type. */
   pragma[nomagic]
-  TypeAlias getOutputType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Output"
-  }
+  TypeAlias getOutputType() { result = this.(TraitItemNode).getAssocItem("Output") }
+}
+
+/**
+ * The [`FnMut` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.FnMut.html
+ */
+class FnMutTrait extends AnyFnTraitImpl {
+  pragma[nomagic]
+  FnMutTrait() { this.getCanonicalPath() = "core::ops::function::FnMut" }
+}
+
+/**
+ * The [`Fn` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.Fn.html
+ */
+class FnTrait extends AnyFnTraitImpl {
+  pragma[nomagic]
+  FnTrait() { this.getCanonicalPath() = "core::ops::function::Fn" }
 }
 
 /**
@@ -177,10 +229,7 @@ class IteratorTrait extends Trait {
 
   /** Gets the `Item` associated type. */
   pragma[nomagic]
-  TypeAlias getItemType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Item"
-  }
+  TypeAlias getItemType() { result = this.(TraitItemNode).getAssocItem("Item") }
 }
 
 /**
@@ -194,10 +243,7 @@ class IntoIteratorTrait extends Trait {
 
   /** Gets the `Item` associated type. */
   pragma[nomagic]
-  TypeAlias getItemType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Item"
-  }
+  TypeAlias getItemType() { result = this.(TraitItemNode).getAssocItem("Item") }
 }
 
 /**
@@ -224,10 +270,7 @@ class DerefTrait extends Trait {
 
   /** Gets the `Target` associated type. */
   pragma[nomagic]
-  TypeAlias getTargetType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Target"
-  }
+  TypeAlias getTargetType() { result = this.(TraitItemNode).getAssocItem("Target") }
 }
 
 /**
@@ -244,10 +287,20 @@ class IndexTrait extends Trait {
 
   /** Gets the `Output` associated type. */
   pragma[nomagic]
-  TypeAlias getOutputType() {
-    result = this.getAssocItemList().getAnAssocItem() and
-    result.getName().getText() = "Output"
-  }
+  TypeAlias getOutputType() { result = this.(TraitItemNode).getAssocItem("Output") }
+}
+
+/**
+ * The [`IndexMut` trait][1].
+ *
+ * [1]: https://doc.rust-lang.org/std/ops/trait.IndexMut.html
+ */
+class IndexMutTrait extends Trait {
+  pragma[nomagic]
+  IndexMutTrait() { this.getCanonicalPath() = "core::ops::index::IndexMut" }
+
+  /** Gets the `index_mut` function. */
+  Function getIndexMutFunction() { result = this.(TraitItemNode).getAssocItem("index_mut") }
 }
 
 /**

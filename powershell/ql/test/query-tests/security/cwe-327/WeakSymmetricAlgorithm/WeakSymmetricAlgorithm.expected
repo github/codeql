@@ -1,0 +1,6 @@
+| WeakSymmetricAlgorithm.ps1:8:11:8:54 | Call to create | Use of weak symmetric cryptographic algorithm: rc2. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:11:11:11:74 | Call to create | Use of weak symmetric cryptographic algorithm: rc2. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:14:11:14:59 | Call to create | Use of weak symmetric cryptographic algorithm: rc2. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:17:11:17:103 | Call to create | Use of weak symmetric cryptographic algorithm: rc2. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:20:11:20:74 | Call to new-object | Use of weak symmetric cryptographic algorithm: rc2. Consider using AES instead. |
+| WeakSymmetricAlgorithm.ps1:23:11:23:76 | Call to createfromname | Use of weak symmetric cryptographic algorithm: rc2. Consider using AES instead. |

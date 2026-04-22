@@ -9,6 +9,8 @@ extensions:
       - ["System.Diagnostics.CodeAnalysis", "MemberNotNullWhenAttribute", False, "MemberNotNullWhenAttribute", "(System.Boolean,System.String)", "", "Argument[1]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute.Members].Element", "value", "dfc-generated"]
       - ["System.Diagnostics.CodeAnalysis", "MemberNotNullWhenAttribute", False, "MemberNotNullWhenAttribute", "(System.Boolean,System.String[])", "", "Argument[1]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute.Members]", "value", "dfc-generated"]
       - ["System.Diagnostics.CodeAnalysis", "NotNullIfNotNullAttribute", False, "NotNullIfNotNullAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.NotNullIfNotNullAttribute.ParameterName]", "value", "dfc-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "RequiresDynamicCodeAttribute", False, "RequiresDynamicCodeAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute.Message]", "value", "dfc-generated"]
+      - ["System.Diagnostics.CodeAnalysis", "RequiresUnreferencedCodeAttribute", False, "RequiresUnreferencedCodeAttribute", "(System.String)", "", "Argument[0]", "Argument[this].Property[System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute.Message]", "value", "dfc-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -43,9 +45,7 @@ extensions:
       - ["System.Diagnostics.CodeAnalysis", "NotNullWhenAttribute", "get_ReturnValue", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresAssemblyFilesAttribute", "RequiresAssemblyFilesAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresAssemblyFilesAttribute", "get_Message", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "RequiresDynamicCodeAttribute", "RequiresDynamicCodeAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresDynamicCodeAttribute", "get_Message", "()", "summary", "df-generated"]
-      - ["System.Diagnostics.CodeAnalysis", "RequiresUnreferencedCodeAttribute", "RequiresUnreferencedCodeAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "RequiresUnreferencedCodeAttribute", "get_Message", "()", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "StringSyntaxAttribute", "StringSyntaxAttribute", "(System.String)", "summary", "df-generated"]
       - ["System.Diagnostics.CodeAnalysis", "StringSyntaxAttribute", "StringSyntaxAttribute", "(System.String,System.Object[])", "summary", "df-generated"]

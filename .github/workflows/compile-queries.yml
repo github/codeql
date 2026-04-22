@@ -17,9 +17,41 @@ permissions:
   contents: read
 
 jobs:
-  compile-queries:
+  detect-changes:
     if: github.repository_owner == 'github'
+    runs-on: ubuntu-latest
+    outputs:
+      languages: ${{ steps.detect.outputs.languages }}
+    steps:
+      - uses: actions/checkout@v5
+      - name: Detect changed languages
+        id: detect
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            # For PRs, detect which languages have changes
+            changed_files=$(gh pr view ${{ github.event.pull_request.number }} --json files --jq '.files.[].path')
+            languages=()
+            for lang in actions cpp csharp go java javascript python ql ruby rust swift; do
+              if echo "$changed_files" | grep -qE "^($lang/|shared/)" ; then
+                languages+=("$lang")
+              fi
+            done
+            echo "languages=$(jq -c -n '$ARGS.positional' --args "${languages[@]}")" >> $GITHUB_OUTPUT
+          else
+            # For pushes to main/rc branches, run all languages
+            echo 'languages=["actions","cpp","csharp","go","java","javascript","python","ql","ruby","rust","swift"]' >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  compile-queries:
+    needs: detect-changes
+    if: github.repository_owner == 'github' && needs.detect-changes.outputs.languages != '[]'
     runs-on: ubuntu-latest-xl
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ${{ fromJson(needs.detect-changes.outputs.languages) }}
 
     steps:
       - uses: actions/checkout@v5
@@ -31,16 +63,16 @@ jobs:
         id: query-cache
         uses: ./.github/actions/cache-query-compilation
         with: 
-          key: all-queries
+          key: ${{ matrix.language }}-queries
       - name: check formatting
-        run: find shared */ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 -n 3000 -P 10 codeql query format -q --check-only
+        run: find shared ${{ matrix.language }}/ql -type f \( -name "*.qll" -o -name "*.ql" \) -print0 | xargs -0 -n 3000 -P 10 codeql query format -q --check-only
       - name: compile queries - check-only
         # run with --check-only if running in a PR (github.sha != main)
         if : ${{ github.event_name == 'pull_request' }}
         shell: bash
-        run: codeql query compile -q -j0 */ql/{src,examples} --keep-going --warnings=error --check-only --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" --compilation-cache-size=500 --ram=56000
+        run: codeql query compile -q -j0 ${{ matrix.language }}/ql/{src,examples} --keep-going --warnings=error --check-only --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" --compilation-cache-size=500 --ram=56000
       - name: compile queries - full
         # do full compile if running on main - this populates the cache
         if : ${{ github.event_name != 'pull_request' }}
         shell: bash
-        run: codeql query compile -q -j0 */ql/{src,examples} --keep-going --warnings=error --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" --compilation-cache-size=500 --ram=56000
+        run: codeql query compile -q -j0 ${{ matrix.language }}/ql/{src,examples} --keep-going --warnings=error --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" --compilation-cache-size=500 --ram=56000

@@ -11,8 +11,8 @@
 import python
 import external.VCS
 
-from Module m
-where exists(m.getMetrics().getNumberOfLinesOfCode())
+from ModuleMetrics m
+where exists(m.getNumberOfLinesOfCode())
 select m,
   count(Author author |
     exists(Commit e |

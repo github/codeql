@@ -66,11 +66,11 @@ module SanitizerGuard {
  * A check of the form `!strings.Contains(nd, "..")`, considered as a sanitizer guard for
  * path traversal.
  */
-private class DotDotCheck extends SanitizerGuard::Range, MethodCallExpr {
+private class DotDotCheck extends SanitizerGuard::Range, MethodCall {
   DotDotCheck() {
-    this.getStaticTarget().(Addressable).getCanonicalPath() =
+    this.getStaticTarget().getCanonicalPath() =
       ["<alloc::string::String>::contains", "<core::str>::contains"] and
-    this.getArg(0).(LiteralExpr).getTextValue() = ["\"..\"", "\"../\"", "\"..\\\""]
+    this.getPositionalArgument(0).(LiteralExpr).getTextValue() = ["\"..\"", "\"../\"", "\"..\\\""]
   }
 
   override predicate checks(Expr e, boolean branch) {

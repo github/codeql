@@ -37,6 +37,10 @@ private class DefaultCommandInjectionSink extends CommandInjectionSink {
   DefaultCommandInjectionSink() { sinkNode(this, "command-injection") }
 }
 
+private class ExternalCommandInjectionSanitizer extends CommandInjectionSanitizer {
+  ExternalCommandInjectionSanitizer() { barrierNode(this, "command-injection") }
+}
+
 private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer {
   DefaultCommandInjectionSanitizer() {
     this instanceof SimpleTypeSanitizer

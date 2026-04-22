@@ -358,9 +358,9 @@ public class LocalDataFlow
 
     public static implicit operator LocalDataFlow(string[] args) => null;
 
-    public void ConversionFlow(string[] args)
+    public void ConversionFlow(string[] args, DateTime dt)
     {
-        Span<object> span = args; // flow (library operator)
+        DateTimeOffset dto = dt; // flow (library operator)
         LocalDataFlow x = args; // no flow (source code operator)
     }
 

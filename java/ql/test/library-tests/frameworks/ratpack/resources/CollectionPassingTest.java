@@ -29,11 +29,11 @@ public class CollectionPassingTest {
                 Map<String, Object> pojoMap = new HashMap<>();
                 merge(form.asMultimap().asMap(), pojoMap);
                 // Then
-                sink(pojoMap.get("value")); //$hasTaintFlow
+                sink(pojoMap.get("value")); // $ hasTaintFlow
                 pojoMap.forEach((key, value) -> {
-                    sink(value); //$hasTaintFlow
+                    sink(value); // $ hasTaintFlow
                     List<Object> values = (List<Object>) value;
-                    sink(values.get(0)); //$hasTaintFlow
+                    sink(values.get(0)); // $ hasTaintFlow
                 });
             });
     }
@@ -46,11 +46,11 @@ public class CollectionPassingTest {
         // When
         merge(taintedMap, pojoMap);
         // Then
-        sink(pojoMap.get("value")); //$hasTaintFlow
+        sink(pojoMap.get("value")); // $ hasTaintFlow
         pojoMap.forEach((key, value) -> {
-            sink(value); //$hasTaintFlow
+            sink(value); // $ hasTaintFlow
             List<Object> values = (List<Object>) value;
-            sink(values.get(0)); //$hasTaintFlow
+            sink(values.get(0)); // $ hasTaintFlow
         });
     }
 
@@ -66,5 +66,5 @@ public class CollectionPassingTest {
     private static Object extractSingleValueIfPossible(Collection<String> values) {
         return values.size() == 1 ? values.iterator().next() : ImmutableList.copyOf(values);
     }
-    
+
 }

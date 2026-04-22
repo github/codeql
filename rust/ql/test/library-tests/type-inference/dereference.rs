@@ -1,5 +1,6 @@
 /// This file contains tests for dereferencing with through the `Deref` trait.
 use std::ops::Deref;
+use std::ops::DerefMut;
 
 struct MyIntPointer {
     value: i64,
@@ -24,6 +25,13 @@ impl<T> Deref for MySmartPointer<T> {
     // MySmartPointer::deref
     fn deref(&self) -> &T {
         &self.value // $ fieldof=MySmartPointer
+    }
+}
+
+impl<T> DerefMut for MySmartPointer<T> {
+    // MySmartPointer::deref_mut
+    fn deref_mut(&mut self) -> &mut T {
+        &mut self.value // $ fieldof=MySmartPointer
     }
 }
 
@@ -94,14 +102,18 @@ fn explicit_box_dereference() {
 fn implicit_dereference() {
     // Call method on implicitly dereferenced value
     let x = MyIntPointer { value: 34i64 };
-    let _y = x.is_positive(); // $ MISSING: target=is_positive type=_y:bool
+    let _y = x.is_positive(); // $ target=is_positive type=_y:bool
 
     // Call method on implicitly dereferenced value
     let x = MySmartPointer { value: 34i64 };
-    let _y = x.is_positive(); // $ MISSING: target=is_positive type=_y:bool
+    let _y = x.is_positive(); // $ target=is_positive type=_y:bool
 
     let z = MySmartPointer { value: S(0i64) };
-    let z_ = z.foo(); // $ MISSING: target=foo type=z_:TRef.i64
+    let z_ = z.foo(); // $ target=foo type=z_:TRef.i64
+
+    let v = Vec::new(); // $ target=new type=v:T.i32
+    let mut x = MySmartPointer { value: v };
+    x.push(0); // $ target=push
 }
 
 mod implicit_deref_coercion_cycle {
@@ -179,12 +191,12 @@ mod ref_vs_mut_ref {
     }
 
     pub fn test() {
-        let x = (&S).foo(); // $ target=MyTrait1::foo1 type=x:S $ SPURIOUS: target=MyTrait1::foo2
-        let y = S.foo(); // $ target=MyTrait1::foo1 type=y:S $ SPURIOUS: target=MyTrait1::foo2
-        let z = (&mut S).foo(); // $ target=MyTrait1::foo2 type=z:i64 $ SPURIOUS: target=MyTrait1::foo1
+        let x = (&S).foo(); // $ target=MyTrait1::foo1 type=x:S
+        let y = S.foo(); // $ target=MyTrait1::foo1 type=y:S
+        let z = (&mut S).foo(); // $ target=MyTrait1::foo2 type=z:i64
 
-        let x = S.bar(&S); // $ target=MyTrait2::bar1 type=x:S $ SPURIOUS: target=MyTrait2::bar2
-        let y = S.bar(&mut S); // $ target=MyTrait2::bar2 type=y:i64 $ SPURIOUS: target=MyTrait2::bar1
+        let x = S.bar(&S); // $ target=MyTrait2::bar1 type=x:S
+        let y = S.bar(&mut S); // $ target=MyTrait2::bar2 type=y:i64
     }
 }
 
@@ -212,7 +224,7 @@ mod rust_reference_example {
 
     pub fn main() {
         let mut f = Foo {};
-        f.bar(); // $ SPURIOUS: target=bar1 $ MISSING: target=bar2
+        f.bar(); // $ target=bar2
     }
 }
 

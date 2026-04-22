@@ -12,6 +12,7 @@
 
 import python
 import ClassAttributes
+private import LegacyPointsTo
 
 predicate undefined_class_attribute(SelfAttributeRead a, CheckClass c, int line, string name) {
   name = a.getName() and

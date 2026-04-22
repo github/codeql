@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling cryptographic libraries.
  */
+overlay[local?]
+module;
 
 import go
 import semmle.go.Concepts::Cryptography

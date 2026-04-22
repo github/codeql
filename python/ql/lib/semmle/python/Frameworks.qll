@@ -78,6 +78,7 @@ private import semmle.python.frameworks.Sanic
 private import semmle.python.frameworks.ServerLess
 private import semmle.python.frameworks.Setuptools
 private import semmle.python.frameworks.Simplejson
+private import semmle.python.frameworks.Socketio
 private import semmle.python.frameworks.SqlAlchemy
 private import semmle.python.frameworks.Starlette
 private import semmle.python.frameworks.Stdlib
@@ -89,6 +90,7 @@ private import semmle.python.frameworks.TRender
 private import semmle.python.frameworks.Twisted
 private import semmle.python.frameworks.Ujson
 private import semmle.python.frameworks.Urllib3
+private import semmle.python.frameworks.Websockets
 private import semmle.python.frameworks.Xmltodict
 private import semmle.python.frameworks.Yaml
 private import semmle.python.frameworks.Yarl

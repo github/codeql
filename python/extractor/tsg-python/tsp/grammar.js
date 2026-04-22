@@ -55,6 +55,7 @@ module.exports = grammar({
     $._string_start,
     $._string_content,
     $._string_end,
+    $._template_string_start,
   ],
 
   inline: $ => [
@@ -296,12 +297,21 @@ module.exports = grammar({
       )
     ),
 
+    exception_list: $ => seq(
+      field('element', $.expression),
+      repeat1(
+        seq(
+          ',',
+          field('element', $.expression))
+        )
+      ),
+
     except_clause: $ => seq(
       'except',
       optional(seq(
-        field('type', $.expression),
+        field('type', choice($.expression, $.exception_list)),
         optional(seq(
-          choice('as', ','),
+          'as',
           field('alias', $.expression)
         ))
       )),
@@ -313,7 +323,7 @@ module.exports = grammar({
       'except',
       '*',
       seq(
-        field('type', $.expression),
+        field('type', choice($.expression, $.exception_list)),
         optional(seq(
           'as',
           field('alias', $.expression)
@@ -423,6 +433,8 @@ module.exports = grammar({
       ),
       $.string,
       $.concatenated_string,
+      $.template_string,
+      $.concatenated_template_string,
       $.none,
       $.true,
       $.false
@@ -765,6 +777,8 @@ module.exports = grammar({
       $.keyword_identifier,
       $.string,
       $.concatenated_string,
+      $.template_string,
+      $.concatenated_template_string,
       $.integer,
       $.float,
       $.true,
@@ -1099,6 +1113,20 @@ module.exports = grammar({
       field('suffix', alias($._string_end, '"'))
     ),
 
+    concatenated_template_string: $ => seq(
+      $.template_string,
+      repeat1($.template_string)
+    ),
+
+    template_string: $ => seq(
+      field('prefix', alias($._template_string_start, '"')),
+      repeat(choice(
+        field('interpolation', $.interpolation),
+        field('string_content', $.string_content)
+      )),
+      field('suffix', alias($._string_end, '"'))
+    ),
+
     string_content: $ => prec.right(0, repeat1(
       choice(
         $._escape_interpolation,
@@ -1140,7 +1168,7 @@ module.exports = grammar({
     _not_escape_sequence: $ => token.immediate('\\'),
 
     format_specifier: $ => seq(
-      ':',
+      token(prec(1,':')),
       repeat(choice(
         token(prec(1, /[^{}\n]+/)),
         alias($.interpolation, $.format_expression)

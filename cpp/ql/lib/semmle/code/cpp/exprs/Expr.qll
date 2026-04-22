@@ -23,7 +23,7 @@ class Expr extends StmtParent, @expr {
   predicate hasChild(Expr e, int n) { e = this.getChild(n) }
 
   /** Gets the enclosing function of this expression, if any. */
-  Function getEnclosingFunction() { result = exprEnclosingElement(this) }
+  override Function getEnclosingFunction() { result = exprEnclosingElement(this) }
 
   /** Gets the nearest enclosing set of curly braces around this expression in the source, if any. */
   BlockStmt getEnclosingBlock() { result = this.getEnclosingStmt().getEnclosingBlock() }

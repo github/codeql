@@ -218,6 +218,22 @@
 | conditionals.ps1:124:5:124:6 | a | conditionals.ps1:123:33:129:1 | exit {...} (normal) |  |
 | conditionals.ps1:124:5:128:5 | ...=... | conditionals.ps1:124:5:124:6 | a |  |
 | conditionals.ps1:124:5:128:5 | {...} | conditionals.ps1:124:5:128:5 | ...=... |  |
+| exprs.ps1:1:1:3:1 | def of objectCreation | exprs.ps1:1:1:3:1 | exit {...} (normal) |  |
+| exprs.ps1:1:1:3:1 | enter {...} | exprs.ps1:1:1:3:1 | {...} |  |
+| exprs.ps1:1:1:3:1 | exit {...} (normal) | exprs.ps1:1:1:3:1 | exit {...} |  |
+| exprs.ps1:1:1:3:1 | {...} | exprs.ps1:1:1:3:1 | def of objectCreation |  |
+| exprs.ps1:1:1:3:1 | {...} | exprs.ps1:1:1:3:1 | {...} |  |
+| exprs.ps1:1:25:3:1 | [synth] pipeline | exprs.ps1:2:5:2:91 | {...} |  |
+| exprs.ps1:1:25:3:1 | enter {...} | exprs.ps1:1:25:3:1 | {...} |  |
+| exprs.ps1:1:25:3:1 | exit {...} (normal) | exprs.ps1:1:25:3:1 | exit {...} |  |
+| exprs.ps1:1:25:3:1 | {...} | exprs.ps1:1:25:3:1 | [synth] pipeline |  |
+| exprs.ps1:2:5:2:6 | x | exprs.ps1:2:10:2:19 | New-Object |  |
+| exprs.ps1:2:5:2:91 | ...=... | exprs.ps1:2:5:2:6 | x |  |
+| exprs.ps1:2:5:2:91 | {...} | exprs.ps1:2:5:2:91 | ...=... |  |
+| exprs.ps1:2:10:2:19 | New-Object | exprs.ps1:2:21:2:71 | Microsoft.Data.SqlClient.SqlConnectionStringBuilder |  |
+| exprs.ps1:2:10:2:91 | Call to new-object | exprs.ps1:1:25:3:1 | exit {...} (normal) |  |
+| exprs.ps1:2:21:2:71 | Microsoft.Data.SqlClient.SqlConnectionStringBuilder | exprs.ps1:2:87:2:91 | arg |  |
+| exprs.ps1:2:87:2:91 | arg | exprs.ps1:2:10:2:91 | Call to new-object |  |
 | functions.ps1:1:1:9:1 | def of Add-Numbers-Arguments | functions.ps1:11:1:11:28 | def of foo |  |
 | functions.ps1:1:1:52:1 | {...} | functions.ps1:1:1:9:1 | def of Add-Numbers-Arguments |  |
 | functions.ps1:1:1:54:0 | enter {...} | functions.ps1:1:1:54:0 | {...} |  |

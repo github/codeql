@@ -56,6 +56,10 @@ module CommandInjection {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("command-injection").asSink() }
+    SinkFromModel() { ModelOutput::sinkNode(this, "command-injection") }
+  }
+
+  private class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "command-injection") }
   }
 }

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with remote flow sources from the `github.com/revel/revel` package.
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.OpenUrlRedirectCustomizations
@@ -140,7 +142,7 @@ module Revel {
   /**
    * A render of a template.
    */
-  abstract class TemplateRender extends DataFlow::Node, TemplateInstantiation::Range {
+  abstract class TemplateRender extends TemplateInstantiation::Range {
     /** Gets the name of the file that is rendered. */
     abstract File getRenderedFile();
 

@@ -387,10 +387,23 @@ class OverloadedArrayExpr extends FunctionCall {
 
   /**
    * Gets the expression giving the index.
+   *
+   * DEPRECATED: Use getArrayOffset/1 instead.
    */
-  Expr getArrayOffset() {
-    if exists(this.getQualifier()) then result = this.getChild(0) else result = this.getChild(1)
+  deprecated Expr getArrayOffset() { result = this.getArrayOffset(0) }
+
+  /**
+   * Gets the expression giving the nth index.
+   */
+  Expr getArrayOffset(int n) {
+    n >= 0 and
+    if exists(this.getQualifier()) then result = this.getChild(n) else result = this.getChild(n + 1)
   }
+
+  /**
+   * Gets an expression giving an index.
+   */
+  Expr getAnArrayOffset() { result = this.getArrayOffset(_) }
 }
 
 /**

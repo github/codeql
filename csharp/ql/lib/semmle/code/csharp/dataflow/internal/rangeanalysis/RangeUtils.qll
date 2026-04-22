@@ -8,26 +8,14 @@ private module Impl {
   private import ConstantUtils
   private import SsaReadPositionCommon
   private import semmle.code.csharp.controlflow.Guards as G
-  private import ControlFlowReachability
 
   private class ExprNode = ControlFlow::Nodes::ExprNode;
 
-  private class ExprChildReachability extends ControlFlowReachabilityConfiguration {
-    ExprChildReachability() { this = "ExprChildReachability" }
-
-    override predicate candidate(
-      Expr e1, Expr e2, ControlFlowElement scope, boolean exactScope, boolean isSuccessor
-    ) {
-      e2 = e1.getAChild() and
-      scope = e1 and
-      exactScope = false and
-      isSuccessor in [false, true]
-    }
-  }
-
   /** Holds if `parent` having child `child` implies `parentNode` having child `childNode`. */
   predicate hasChild(Expr parent, Expr child, ExprNode parentNode, ExprNode childNode) {
-    any(ExprChildReachability x).hasExprPath(parent, parentNode, child, childNode)
+    parent.getAChild() = child and
+    parentNode = parent.getControlFlowNode() and
+    childNode = child.getControlFlowNode()
   }
 
   /** Holds if SSA definition `def` equals `e + delta`. */

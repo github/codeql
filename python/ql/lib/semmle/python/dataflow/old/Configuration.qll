@@ -1,6 +1,6 @@
 import python
 import semmle.python.dataflow.TaintTracking
-private import semmle.python.objects.ObjectInternal
+private import LegacyPointsTo
 private import semmle.python.dataflow.Implementation
 
 module TaintTracking {

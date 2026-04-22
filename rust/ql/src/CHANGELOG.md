@@ -1,3 +1,38 @@
+## 0.1.31
+
+No user-facing changes.
+
+## 0.1.30
+
+No user-facing changes.
+
+## 0.1.29
+
+No user-facing changes.
+
+## 0.1.28
+
+### Minor Analysis Improvements
+
+* The macro resolution metric has been removed from `rust/diagnostic/database-quality`. This metric was found to be an unreliable indicator of database quality in many cases, leading to false alarms on the tool status page.
+
+## 0.1.27
+
+No user-facing changes.
+
+## 0.1.26
+
+No user-facing changes.
+
+## 0.1.25
+
+### Minor Analysis Improvements
+
+* Fixed common false positives for the `rust/unused-variable` and `rust/unused-value` queries.
+* Fixed false positives from the `rust/access-invalid-pointer` query, by only considering dereferences of raw pointers as sinks.
+* Fixed false positives from the `rust/access-after-lifetime-ended` query, involving calls to trait methods.
+* The `rust/hard-coded-cryptographic-value` query has been extended with new heuristic sinks identifying passwords, initialization vectors, nonces and salts.
+
 ## 0.1.24
 
 No user-facing changes.

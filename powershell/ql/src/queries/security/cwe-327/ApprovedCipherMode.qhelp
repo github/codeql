@@ -1,0 +1,28 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Cipher modes determine how block ciphers process data during encryption. Some cipher modes
+      such as Electronic Codebook (ECB) and Output Feedback (OFB) are considered weak and should
+      not be used for encryption.
+    </p>
+    <p>
+      ECB mode encrypts identical plaintext blocks into identical ciphertext blocks, which can 
+      reveal patterns in the encrypted data and leak information about the plaintext. OFB mode
+      has weaknesses that can lead to security issues when the same initialization vector (IV)
+      is reused.
+    </p>
+  </overview>
+  <recommendation>
+    <p>
+      Use a secure cipher mode such as Cipher Block Chaining (CBC) with a random initialization
+      vector (IV), or an authenticated encryption mode like Galois/Counter Mode (GCM). GCM is 
+      preferred as it provides both confidentiality and integrity.
+    </p>
+  </recommendation>
+  <references>
+    <li>NIST, SP 800-38A: <a href="https://csrc.nist.gov/publications/detail/sp/800-38a/final">Recommendation for Block Cipher Modes of Operation</a>.</li>
+    <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html">Cryptographic Storage Cheat Sheet</a>.</li>
+    <li>CWE-327: <a href="https://cwe.mitre.org/data/definitions/327.html">Use of a Broken or Risky Cryptographic Algorithm</a>.</li>
+  </references>
+</qhelp>

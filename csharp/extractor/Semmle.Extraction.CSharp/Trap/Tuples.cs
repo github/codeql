@@ -175,7 +175,7 @@ namespace Semmle.Extraction.CSharp
         internal static void expr_argument_name(this TextWriter trapFile, Expression expr, string name) =>
             trapFile.WriteTuple("expr_argument_name", expr, name);
 
-        internal static void expr_call(this TextWriter trapFile, Expression expr, Method target) =>
+        internal static void expr_call(this TextWriter trapFile, Expression expr, IMethodEntity target) =>
             trapFile.WriteTuple("expr_call", expr, target);
 
         internal static void expr_flowstate(this TextWriter trapFile, Expression expr, int flowState) =>
@@ -201,6 +201,9 @@ namespace Semmle.Extraction.CSharp
 
         internal static void extend(this TextWriter trapFile, Type type, Type super) =>
             trapFile.WriteTuple("extend", type, super);
+
+        internal static void extension_receiver_type(this TextWriter trapFile, Type @extension, Type receiverType) =>
+            trapFile.WriteTuple("extension_receiver_type", extension, receiverType);
 
         internal static void anonymous_types(this TextWriter trapFile, Type type) =>
             trapFile.WriteTuple("anonymous_types", type);
@@ -247,10 +250,10 @@ namespace Semmle.Extraction.CSharp
         internal static void localvars(this TextWriter trapFile, LocalVariable key, VariableKind kind, string name, int @var, Type type, Expression expr) =>
             trapFile.WriteTuple("localvars", key, (int)kind, name, @var, type, expr);
 
-        internal static void method_location(this TextWriter trapFile, Method method, Location location) =>
+        internal static void method_location(this TextWriter trapFile, IMethodEntity method, Location location) =>
             trapFile.WriteTuple("method_location", method, location);
 
-        internal static void methods(this TextWriter trapFile, Method method, string name, Type declType, Type retType, Method originalDefinition) =>
+        internal static void methods(this TextWriter trapFile, IMethodEntity method, string name, Type declType, Type retType, IMethodEntity originalDefinition) =>
             trapFile.WriteTuple("methods", method, name, declType, retType, originalDefinition);
 
         internal static void modifiers(this TextWriter trapFile, Label entity, string modifier) =>
@@ -292,10 +295,10 @@ namespace Semmle.Extraction.CSharp
         internal static void overrides(this TextWriter trapFile, Method overriding, Method overridden) =>
             trapFile.WriteTuple("overrides", overriding, overridden);
 
-        internal static void param_location(this TextWriter trapFile, Parameter param, Location location) =>
+        internal static void param_location(this TextWriter trapFile, IParameter param, Location location) =>
             trapFile.WriteTuple("param_location", param, location);
 
-        internal static void @params(this TextWriter trapFile, Parameter param, string name, Type type, int child, Parameter.Kind mode, IEntity method, Parameter originalDefinition) =>
+        internal static void @params(this TextWriter trapFile, IParameter param, string name, Type type, int child, Parameter.Kind mode, IEntity method, IParameter originalDefinition) =>
             trapFile.WriteTuple("params", param, name, type, child, (int)mode, method, originalDefinition);
 
         internal static void parent_namespace(this TextWriter trapFile, IEntity type, Namespace parent) =>

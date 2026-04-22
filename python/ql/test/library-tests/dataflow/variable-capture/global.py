@@ -42,7 +42,7 @@ def out():
         global sinkO1
         sinkO1 = SOURCE
     captureOut1()
-    SINK(sinkO1) #$ captured
+    SINK(sinkO1) # $ captured
 
     def captureOut2():
         def m():
@@ -50,12 +50,12 @@ def out():
             sinkO2 = SOURCE
         m()
     captureOut2()
-    SINK(sinkO2) #$ captured
+    SINK(sinkO2) # $ captured
 
     def captureOut1NotCalled():
         global nonSink1
         nonSink1 = SOURCE
-    SINK_F(nonSink1) #$ SPURIOUS: captured
+    SINK_F(nonSink1) # $ SPURIOUS: captured
 
     def captureOut2NotCalled():
         # notice that `m` is not called
@@ -63,7 +63,7 @@ def out():
             global nonSink2
             nonSink2 = SOURCE
     captureOut2NotCalled()
-    SINK_F(nonSink2) #$ SPURIOUS: captured
+    SINK_F(nonSink2) # $ SPURIOUS: captured
 
 @expects(4)
 def test_out():
@@ -78,7 +78,7 @@ def through(tainted):
         global sinkT1
         sinkT1 = tainted
     captureOut1()
-    SINK(sinkT1) #$ captured
+    SINK(sinkT1) # $ captured
 
     def captureOut2():
         def m():
@@ -86,7 +86,7 @@ def through(tainted):
             sinkT2 = tainted
         m()
     captureOut2()
-    SINK(sinkT2) #$ captured
+    SINK(sinkT2) # $ captured
 
     def captureOut1NotCalled():
         global nonSinkT1

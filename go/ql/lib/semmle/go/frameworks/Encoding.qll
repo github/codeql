@@ -1,6 +1,8 @@
 /**
  * Provides classes modeling taint propagation through marshalling and encoding functions.
  */
+overlay[local?]
+module;
 
 import go
 

@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with SQL-related concepts such as queries.
  */
+overlay[local?]
+module;
 
 import go
 
@@ -67,8 +69,8 @@ module SQL {
      */
     abstract class Range extends DataFlow::Node { }
 
-    private class DefaultQueryString extends Range {
-      DefaultQueryString() {
+    private class ExternalQueryString extends Range {
+      ExternalQueryString() {
         exists(DataFlow::ArgumentNode arg | sinkNode(arg, "sql-injection") |
           not arg instanceof DataFlow::ImplicitVarargsSlice and
           this = arg

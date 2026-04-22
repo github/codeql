@@ -1,4 +1,6 @@
 /** Provides models of commonly used functions and types in the gqlgen packages. */
+overlay[local?]
+module;
 
 import go
 

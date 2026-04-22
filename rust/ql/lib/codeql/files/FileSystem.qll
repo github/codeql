@@ -36,6 +36,13 @@ class Folder = Impl::Folder;
 
 module Folder = Impl::Folder;
 
+/**
+ * Holds if the file identified by `relativePath` should be treated as though it is external
+ * to the target project, even though it is within the source code directory. This is used for
+ * testing.
+ */
+extensible predicate additionalExternalFile(string relativePath);
+
 /** A file. */
 class File extends Container, Impl::File {
   /**
@@ -43,7 +50,8 @@ class File extends Container, Impl::File {
    * (rather than another location such as inside a dependency).
    */
   predicate fromSource() {
-    exists(ExtractorStep s | s.getAction() = "Extract" and s.getFile() = this)
+    exists(ExtractorStep s | s.getAction() = "Extract" and s.getFile() = this) and
+    not additionalExternalFile(this.getRelativePath())
   }
 
   /**

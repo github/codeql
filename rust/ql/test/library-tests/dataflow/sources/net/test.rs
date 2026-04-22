@@ -73,11 +73,11 @@ async fn test_hyper_http(case: i64) -> Result<(), Box<dyn std::error::Error>> {
 
     match case {
         1 => {
-            sink(response.body()); // $ MISSING: hasTaintFlow
-            sink(response.body_mut()); // $ MISSING: hasTaintFlow
+            sink(response.body()); // $ hasTaintFlow=request
+            sink(response.body_mut()); // $ hasTaintFlow=request
 
             let body = response.into_body();
-            sink(&body); // $ MISSING: hasTaintFlow
+            sink(&body); // $ hasTaintFlow=request
 
             println!("awaiting response...");
             let data = body.collect().await?;
@@ -204,7 +204,7 @@ async fn test_std_tcpstream(case: i64) -> std::io::Result<()> {
                 for line in reader.lines() { // $ MISSING: Alert[rust/summary/taint-sources]
                     if let Ok(string) = line {
                         println!("line = {}", string);
-                        sink(string); // $ MISSING: hasTaintFlow
+                        sink(string); // $ hasTaintFlow=&sock_addr
                     }
                 }
             }
@@ -330,25 +330,25 @@ fn test_rustls() -> std::io::Result<()> {
     let server_name = rustls::pki_types::ServerName::try_from("www.example.com").unwrap();
     let config_arc = std::sync::Arc::new(config);
     let mut client = rustls::ClientConnection::new(config_arc, server_name).unwrap(); // $ Alert[rust/summary/taint-sources]
-    let mut reader = client.reader(); // We cannot resolve the `reader` call because it comes from `Deref`: https://docs.rs/rustls/latest/rustls/client/struct.ClientConnection.html#deref-methods-ConnectionCommon%3CClientConnectionData%3E
-    sink(&reader); // $ MISSING: hasTaintFlow=config_arc
+    let mut reader = client.reader();
+    sink(&reader); // $ hasTaintFlow=config_arc
 
     {
         let mut buffer = [0u8; 100];
         let _bytes = reader.read(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     {
         let mut buffer = Vec::<u8>::new();
         let _bytes = reader.read_to_end(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     {
         let mut buffer = String::new();
         let _bytes = reader.read_to_string(&mut buffer)?;
-        sink(&buffer); // $ MISSING: hasTaintFlow=config_arc
+        sink(&buffer); // $ hasTaintFlow=config_arc
     }
 
     Ok(())

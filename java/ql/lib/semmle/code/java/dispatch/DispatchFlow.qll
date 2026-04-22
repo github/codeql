@@ -354,7 +354,7 @@ private module TrackLambda<methodDispatchSig/1 lambdaDispatch0> {
     predicate returnStep(Node n1, LocalSourceNode n2) {
       exists(ReturnStmt ret, Method m |
         ret.getEnclosingCallable() = m and
-        ret.getResult() = n1.asExpr() and
+        ret.getExpr() = n1.asExpr() and
         m = dispatch(n2.asExpr())
       )
     }

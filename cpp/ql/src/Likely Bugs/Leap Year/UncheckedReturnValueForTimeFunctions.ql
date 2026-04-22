@@ -159,6 +159,7 @@ module ModifiedMonthFieldAccessToTimeConversion =
 
 from FunctionCall fcall, TimeConversionFunction trf, Variable var
 where
+  not trf.isAutoLeapYearCorrecting() and
   isUnpackedTimeTypeVar(var, fcall, trf) and
   exists(VariableAccess modifiedVarAccess |
     isModifiedFieldAccessToTimeConversionSource(modifiedVarAccess, var) and

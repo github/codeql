@@ -1,0 +1,39 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>This query checks for flow from a user input source to a Newtonsoft.Json DeserializeObject call that uses an unsafe TypeNameHandling setting and has no SerializationBinder set.</p>
+
+
+<p> The <a href="https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_TypeNameHandling.htm"> Newtonsoft.Json.TypeNameHandling </a> enumeration value of <code>Auto</code> or <code>All</code> is vulnerable when deserializing untrusted data. 
+    An attacker could modify the serialized data to include unexpected types to inject objects with malicious side effects. 
+    An attack against an insecure deserializer could, for example, execute commands on the underlying operating system, communicate over the network, or delete files.</p>
+</overview>
+
+<recommendation>
+<p>Use the <a href="https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_TypeNameHandling.htm">TypeNameHandling</a> value of <code>None</code>, or use a custom ISerializationBinder.</p>
+</recommendation>
+
+<example>
+
+<p>Violation:</p>
+
+<sample src="examples/UnsafeTypeNameHandlingBad.cs" />
+
+<p>Solution using TypeNameHandling.None:</p>
+
+<sample src="examples/UnsafeTypeNameHandlingGood.cs" />
+
+<p>Solution using custom ISerializationBinder: </p>
+
+<sample src="examples/UnsafeTypeNameHandlingWithBinderGood.cs" />
+
+</example>
+
+<references>
+<li>Microsoft: <a href="https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2326">Do Not Use TypeNameHandling Values Other Than None</a>.</li>
+</references>
+
+</qhelp>

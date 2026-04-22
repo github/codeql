@@ -15,7 +15,7 @@
 import java
 import DeadLocals
 
-predicate minusOne(MinusExpr e) { e.getExpr().(Literal).getValue() = "1" }
+predicate minusOne(MinusExpr e) { e.getOperand().(Literal).getValue() = "1" }
 
 predicate flowStep(Expr decl, Expr init) {
   decl = init

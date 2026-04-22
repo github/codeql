@@ -1,209 +1,109 @@
 private import rust
-private import codeql.rust.internal.PathResolution
-private import codeql.rust.internal.TypeInference as TypeInference
-private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
-private import codeql.rust.elements.Operation
 
 module Impl {
-  newtype TArgumentPosition =
-    TPositionalArgumentPosition(int i) {
-      i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
-    } or
-    TSelfArgumentPosition()
-
-  /** An argument position in a call. */
-  class ArgumentPosition extends TArgumentPosition {
-    /** Gets the index of the argument in the call, if this is a positional argument. */
-    int asPosition() { this = TPositionalArgumentPosition(result) }
-
-    /** Holds if this call position is a self argument. */
-    predicate isSelf() { this instanceof TSelfArgumentPosition }
-
-    /** Gets a string representation of this argument position. */
-    string toString() {
-      result = this.asPosition().toString()
-      or
-      this.isSelf() and result = "self"
-    }
-  }
+  private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+  private import codeql.rust.elements.internal.ExprImpl::Impl as ExprImpl
+  private import codeql.rust.elements.internal.InvocationExprImpl::Impl as InvocationExprImpl
 
   /**
-   * An expression that calls a function.
+   * A call.
    *
-   * This class abstracts over the different ways in which a function can be
-   * called in Rust.
+   * Either
+   *
+   * - a `CallExpr` that is _not_ an instantiation of a tuple struct or a tuple variant,
+   * - a `MethodCallExpr`,
+   * - an `Operation` that targets an overloadable operator, or
+   * - an `IndexExpr`.
    */
-  abstract class Call extends ExprImpl::Expr {
-    /** Holds if the receiver of this call is implicitly borrowed. */
-    predicate receiverImplicitlyBorrowed() { this.implicitBorrowAt(TSelfArgumentPosition(), _) }
+  abstract class Call extends InvocationExprImpl::InvocationExpr {
+    /**
+     * Gets the argument at position `pos` of this call.
+     *
+     * Examples:
+     * ```rust
+     * foo(42, "bar");    // `42` is argument 0 and `"bar"` is argument 1
+     * foo.bar(42);       // `foo` is receiver and `42` is argument 0
+     * Foo::bar(foo, 42); // `foo` is receiver and `42` is argument 0
+     * x + y;             // `x` is receiver and `y` is argument 0
+     * -x;                // `x` is receiver
+     * x[y];              // `x` is receiver and `y` is argument 0
+     * ```
+     */
+    final Expr getArgument(ArgumentPosition pos) {
+      result = this.getPositionalArgument(pos.asPosition())
+      or
+      pos.isSelf() and
+      result = this.(MethodCall).getReceiver()
+    }
 
-    /** Gets the trait targeted by this call, if any. */
-    abstract Trait getTrait();
+    /** Gets an argument of this call. */
+    Expr getAnArgument() { result = this.getArgument(_) }
 
-    /** Holds if this call targets a trait. */
-    predicate hasTrait() { exists(this.getTrait()) }
+    /**
+     * Gets the `i`th positional argument of this call.
+     *
+     * Examples:
+     * ```rust
+     * foo(42, "bar");    // `42` is argument 0 and `"bar"` is argument 1
+     * foo.bar(42);       // `42` is argument 0
+     * Foo::bar(foo, 42); // `42` is argument 0
+     * x + y;             // `y` is argument 0
+     * -x;                // no positional arguments
+     * x[y];              // `y` is argument 0
+     * ```
+     */
+    Expr getPositionalArgument(int i) { none() }
 
-    /** Gets the name of the method called if this call is a method call. */
-    abstract string getMethodName();
+    /** Gets a positional argument of this expression. */
+    Expr getAPositionalArgument() { result = this.getPositionalArgument(_) }
 
-    /** Gets the argument at the given position, if any. */
-    abstract Expr getArgument(ArgumentPosition pos);
+    /** Gets the number of positional arguments of this expression. */
+    int getNumberOfPositionalArguments() {
+      result = count(Expr arg | arg = this.getPositionalArgument(_))
+    }
 
-    /** Holds if the argument at `pos` might be implicitly borrowed. */
-    abstract predicate implicitBorrowAt(ArgumentPosition pos, boolean certain);
+    /** Gets the resolved target of this call, if any. */
+    Function getStaticTarget() { result = TypeInference::resolveCallTarget(this, _) }
 
-    /** Gets the number of arguments _excluding_ any `self` argument. */
-    int getNumberOfArguments() { result = count(this.getArgument(TPositionalArgumentPosition(_))) }
-
-    /** Gets the `i`th argument of this call, if any. */
-    Expr getPositionalArgument(int i) { result = this.getArgument(TPositionalArgumentPosition(i)) }
-
-    /** Gets the receiver of this call if it is a method call. */
-    Expr getReceiver() { result = this.getArgument(TSelfArgumentPosition()) }
-
-    /** Gets the static target of this call, if any. */
-    Function getStaticTarget() { result = TypeInference::resolveCallTarget(this) }
+    /** Gets the name of the function called, if any. */
+    string getTargetName() { result = this.getStaticTarget().getName().getText() }
 
     /** Gets a runtime target of this call, if any. */
     pragma[nomagic]
     Function getARuntimeTarget() {
       result.hasImplementation() and
       (
-        result = this.getStaticTarget()
+        result = TypeInference::resolveCallTarget(this, _)
         or
-        result.implements(this.getStaticTarget())
+        result.implements(TypeInference::resolveCallTarget(this, true))
       )
     }
   }
 
-  private predicate callHasQualifier(CallExpr call, Path path, Path qualifier) {
-    path = call.getFunction().(PathExpr).getPath() and
-    qualifier = path.getQualifier()
-  }
-
-  private predicate callHasTraitQualifier(CallExpr call, Trait qualifier) {
-    exists(PathExt qualifierPath |
-      callHasQualifier(call, _, qualifierPath) and
-      qualifier = resolvePath(qualifierPath) and
-      // When the qualifier is `Self` and resolves to a trait, it's inside a
-      // trait method's default implementation. This is not a dispatch whose
-      // target is inferred from the type of the receiver, but should always
-      // resolve to the function in the trait block as path resolution does.
-      not qualifierPath.isUnqualified("Self")
-    )
-  }
-
-  /** Holds if the call expression dispatches to a method. */
-  private predicate callIsMethodCall(
-    CallExpr call, Path qualifier, string methodName, boolean selfIsRef
-  ) {
-    exists(Path path, Function f |
-      callHasQualifier(call, path, qualifier) and
-      f = resolvePath(path) and
-      path.getSegment().getIdentifier().getText() = methodName and
-      exists(SelfParam self |
-        self = f.getSelfParam() and
-        if self.isRef() then selfIsRef = true else selfIsRef = false
-      )
-    )
-  }
-
-  class CallExprCall extends Call instanceof CallExpr {
-    CallExprCall() { not callIsMethodCall(this, _, _, _) }
-
-    override string getMethodName() { none() }
-
-    override Trait getTrait() { callHasTraitQualifier(this, result) }
-
-    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) { none() }
-
-    override Expr getArgument(ArgumentPosition pos) {
-      result = super.getArgList().getArg(pos.asPosition())
-    }
-  }
-
-  class CallExprMethodCall extends Call instanceof CallExpr {
-    string methodName;
-    boolean selfIsRef;
-
-    CallExprMethodCall() { callIsMethodCall(this, _, methodName, selfIsRef) }
-
+  /**
+   * A method call.
+   *
+   * Either
+   *
+   * - a `CallExpr` where we can resolve the target as a method,
+   * - a `MethodCallExpr`,
+   * - an `Operation` that targets an overloadable operator, or
+   * - an `IndexExpr`.
+   */
+  abstract class MethodCall extends Call {
     /**
-     * Holds if this call must have an explicit borrow for the `self` argument,
-     * because the corresponding parameter is `&self`. Explicit borrows are not
-     * needed when using method call syntax.
+     * Gets the receiver of this method call.
+     *
+     * Examples:
+     * ```rust
+     * foo(42, "bar");    // no receiver
+     * foo.bar(42);       // `foo` is receiver
+     * Foo::bar(foo, 42); // `foo` is receiver
+     * x + y;             // `x` is receiver
+     * -x;                // `x` is receiver
+     * x[y];              // `x` is receiver
+     * ```
      */
-    predicate hasExplicitSelfBorrow() { selfIsRef = true }
-
-    override string getMethodName() { result = methodName }
-
-    override Trait getTrait() { callHasTraitQualifier(this, result) }
-
-    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) { none() }
-
-    override Expr getArgument(ArgumentPosition pos) {
-      pos.isSelf() and result = super.getArgList().getArg(0)
-      or
-      result = super.getArgList().getArg(pos.asPosition() + 1)
-    }
-  }
-
-  private class MethodCallExprCall extends Call instanceof MethodCallExpr {
-    override string getMethodName() { result = super.getIdentifier().getText() }
-
-    override Trait getTrait() { none() }
-
-    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
-      pos.isSelf() and certain = false
-    }
-
-    override Expr getArgument(ArgumentPosition pos) {
-      pos.isSelf() and result = this.(MethodCallExpr).getReceiver()
-      or
-      result = super.getArgList().getArg(pos.asPosition())
-    }
-  }
-
-  private class OperatorCall extends Call instanceof Operation {
-    Trait trait;
-    string methodName;
-    int borrows;
-
-    OperatorCall() { super.isOverloaded(trait, methodName, borrows) }
-
-    override string getMethodName() { result = methodName }
-
-    override Trait getTrait() { result = trait }
-
-    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
-      (
-        pos.isSelf() and borrows >= 1
-        or
-        pos.asPosition() = 0 and borrows = 2
-      ) and
-      certain = true
-    }
-
-    override Expr getArgument(ArgumentPosition pos) {
-      pos.isSelf() and result = super.getOperand(0)
-      or
-      pos.asPosition() = 0 and result = super.getOperand(1)
-    }
-  }
-
-  private class IndexCall extends Call instanceof IndexExpr {
-    override string getMethodName() { result = "index" }
-
-    override Trait getTrait() { result.getCanonicalPath() = "core::ops::index::Index" }
-
-    override predicate implicitBorrowAt(ArgumentPosition pos, boolean certain) {
-      pos.isSelf() and certain = true
-    }
-
-    override Expr getArgument(ArgumentPosition pos) {
-      pos.isSelf() and result = super.getBase()
-      or
-      pos.asPosition() = 0 and result = super.getIndex()
-    }
+    Expr getReceiver() { none() }
   }
 }

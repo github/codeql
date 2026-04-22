@@ -17,9 +17,13 @@ module SummarizedCallable {
     Range() { any() }
 
     override predicate propagatesFlow(
-      string input, string output, boolean preservesValue, string model
+      string input, string output, boolean preservesValue, Provenance p, boolean isExact,
+      string model
     ) {
-      this.propagatesFlow(input, output, preservesValue) and model = ""
+      this.propagatesFlow(input, output, preservesValue) and
+      p = "manual" and
+      isExact = true and
+      model = "QL"
     }
 
     /**
@@ -31,6 +35,6 @@ module SummarizedCallable {
   }
 }
 
-final class SummarizedCallable = SummarizedCallable::Range;
+class SummarizedCallable = Impl::Public::RelevantSummarizedCallable;
 
 final class Provenance = Impl::Public::Provenance;

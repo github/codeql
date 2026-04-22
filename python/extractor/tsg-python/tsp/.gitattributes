@@ -1,0 +1,4 @@
+# Mark tree-sitter generated files
+src/grammar.json linguist-generated
+src/node-types.json linguist-generated
+src/parser.c linguist-generated

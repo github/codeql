@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+
+<p>Using the <code>"none"</code> algorithm when creating a JWT token with
+<code>JwtSecurityTokenHandler</code> disables signature verification. This allows attackers to
+forge arbitrary tokens that will be accepted as valid, potentially leading to authentication
+bypass and privilege escalation.</p>
+
+</overview>
+<recommendation>
+
+<p>Always use a secure signing algorithm such as <code>HS256</code>, <code>RS256</code>, or
+<code>ES256</code> when creating JWT tokens. Ensure that tokens are signed with a strong secret
+or key pair.</p>
+
+</recommendation>
+<example>
+
+<p>In this example, a JWT token is created using the <code>"none"</code> algorithm, which produces
+an unsigned token:</p>
+
+<sample src="examples/JwtNoneAlgorithmBad.ps1" />
+
+<p>The fix is to use a secure algorithm instead:</p>
+
+<sample src="examples/JwtNoneAlgorithmGood.ps1" />
+
+</example>
+<references>
+
+<li>
+RFC 7518:
+<a href="https://datatracker.ietf.org/doc/html/rfc7518#section-3.6">JSON Web Algorithms - Unsecured JWS</a>.
+</li>
+
+<li>
+CWE-347:
+<a href="https://cwe.mitre.org/data/definitions/347.html">Improper Verification of Cryptographic Signature</a>.
+</li>
+
+</references>
+</qhelp>

@@ -4,7 +4,7 @@
 
 import python
 private import LegacyPointsTo
-import semmle.python.pointsto.PointsTo
+private import semmle.python.types.ImportTime
 import IDEContextual
 
 private newtype TDefinition =
@@ -471,11 +471,10 @@ Definition getUniqueDefinition(Expr use) {
   not result = TLocalDefinition(use)
 }
 
-/** A helper class to get suitable locations for attributes */
-class NiceLocationExpr extends Expr {
-  /** Gets a textual representation of this element. */
-  override string toString() { result = this.(Expr).toString() }
+final class FinalExpr = Expr;
 
+/** A helper class to get suitable locations for attributes */
+class NiceLocationExpr extends FinalExpr {
   /**
    * Holds if this element is at the specified location.
    * The location spans column `bc` of line `bl` to

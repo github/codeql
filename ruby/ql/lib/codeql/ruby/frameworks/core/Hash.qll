@@ -26,7 +26,7 @@ module Hash {
     resolveConstantReadAccess(result.getReceiver()) = TResolved("Hash")
   }
 
-  private class HashLiteralSummary extends SummarizedCallable {
+  private class HashLiteralSummary extends SummarizedCallable::Range {
     HashLiteralSummary() { this = "Hash.[]" }
 
     final override MethodCall getACallSimple() { result = getAStaticHashCall("[]") }
@@ -54,7 +54,7 @@ module Hash {
    * Hash[ [ [:foo, 0], [:bar, 1] ] ] # => {:foo=>0, :bar=>1}
    * ```
    */
-  private class HashNewSummary extends SummarizedCallable {
+  private class HashNewSummary extends SummarizedCallable::Range {
     HashNewSummary() { this = "Hash[]" }
 
     final override MethodCall getACallSimple() {
@@ -83,7 +83,7 @@ module Hash {
    * Hash[:foo, 0, :bar, 1] # => {:foo=>0, :bar=>1}
    * ```
    */
-  private class HashNewSuccessivePairsSummary extends SummarizedCallable {
+  private class HashNewSuccessivePairsSummary extends SummarizedCallable::Range {
     private int i;
     private ConstantValue key;
 
@@ -110,7 +110,7 @@ module Hash {
     }
   }
 
-  private class TryConvertSummary extends SummarizedCallable {
+  private class TryConvertSummary extends SummarizedCallable::Range {
     TryConvertSummary() { this = "Hash.try_convert" }
 
     override MethodCall getACallSimple() { result = getAStaticHashCall("try_convert") }
@@ -122,7 +122,7 @@ module Hash {
     }
   }
 
-  abstract private class StoreSummary extends SummarizedCallable {
+  abstract private class StoreSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -173,7 +173,7 @@ module Hash {
     }
   }
 
-  abstract private class AssocSummary extends SummarizedCallable {
+  abstract private class AssocSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     bindingset[this]
@@ -199,7 +199,7 @@ module Hash {
     }
   }
 
-  private class AssocUnknownSummary extends SummarizedCallable {
+  private class AssocUnknownSummary extends SummarizedCallable::Range {
     AssocUnknownSummary() { this = "assoc-unknown-arg" }
 
     override MethodCall getACallSimple() {
@@ -215,7 +215,7 @@ module Hash {
     }
   }
 
-  private class EachPairSummary extends SimpleSummarizedCallable {
+  private class EachPairSummary extends SummarizedCallable::RangeSimple {
     EachPairSummary() { this = "each_pair" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -230,7 +230,7 @@ module Hash {
     }
   }
 
-  private class EachValueSummary extends SimpleSummarizedCallable {
+  private class EachValueSummary extends SummarizedCallable::RangeSimple {
     EachValueSummary() { this = "each_value" }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -250,7 +250,7 @@ module Hash {
     result = DataFlow::Content::getKnownElementIndex(mc.getArgument(i)).serialize()
   }
 
-  private class ExceptSummary extends SummarizedCallable {
+  private class ExceptSummary extends SummarizedCallable::Range {
     MethodCall mc;
 
     ExceptSummary() {
@@ -282,7 +282,7 @@ module Hash {
   }
 }
 
-abstract private class FetchValuesSummary extends SummarizedCallable {
+abstract private class FetchValuesSummary extends SummarizedCallable::Range {
   MethodCall mc;
 
   bindingset[this]
@@ -338,7 +338,7 @@ private class FetchValuesUnknownSummary extends FetchValuesSummary {
   }
 }
 
-private class MergeSummary extends SimpleSummarizedCallable {
+private class MergeSummary extends SummarizedCallable::RangeSimple {
   MergeSummary() {
     // deep_merge is an ActiveSupport extension
     // https://api.rubyonrails.org/classes/Hash.html#method-i-deep_merge
@@ -357,7 +357,7 @@ private class MergeSummary extends SimpleSummarizedCallable {
   }
 }
 
-private class MergeBangSummary extends SimpleSummarizedCallable {
+private class MergeBangSummary extends SummarizedCallable::RangeSimple {
   MergeBangSummary() {
     // deep_merge! is an ActiveSupport extension
     // https://api.rubyonrails.org/classes/Hash.html#method-i-deep_merge-21
@@ -376,7 +376,7 @@ private class MergeBangSummary extends SimpleSummarizedCallable {
   }
 }
 
-private class RassocSummary extends SimpleSummarizedCallable {
+private class RassocSummary extends SummarizedCallable::RangeSimple {
   RassocSummary() { this = "rassoc" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -386,7 +386,7 @@ private class RassocSummary extends SimpleSummarizedCallable {
   }
 }
 
-abstract private class SliceSummary extends SummarizedCallable {
+abstract private class SliceSummary extends SummarizedCallable::Range {
   MethodCall mc;
 
   bindingset[this]
@@ -424,7 +424,7 @@ private class SliceUnknownSummary extends SliceSummary {
   }
 }
 
-private class ToASummary extends SimpleSummarizedCallable {
+private class ToASummary extends SummarizedCallable::RangeSimple {
   ToASummary() { this = "to_a" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -434,7 +434,7 @@ private class ToASummary extends SimpleSummarizedCallable {
   }
 }
 
-private class ToHWithoutBlockSummary extends SimpleSummarizedCallable {
+private class ToHWithoutBlockSummary extends SummarizedCallable::RangeSimple {
   ToHWithoutBlockSummary() { this = ["to_h", "to_hash"] and not exists(mc.getBlock()) }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -444,7 +444,7 @@ private class ToHWithoutBlockSummary extends SimpleSummarizedCallable {
   }
 }
 
-private class ToHWithBlockSummary extends SimpleSummarizedCallable {
+private class ToHWithBlockSummary extends SummarizedCallable::RangeSimple {
   ToHWithBlockSummary() { this = "to_h" and exists(mc.getBlock()) }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -459,7 +459,7 @@ private class ToHWithBlockSummary extends SimpleSummarizedCallable {
   }
 }
 
-private class TransformKeysSummary extends SimpleSummarizedCallable {
+private class TransformKeysSummary extends SummarizedCallable::RangeSimple {
   TransformKeysSummary() { this = "transform_keys" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -469,7 +469,7 @@ private class TransformKeysSummary extends SimpleSummarizedCallable {
   }
 }
 
-private class TransformKeysBangSummary extends SimpleSummarizedCallable {
+private class TransformKeysBangSummary extends SummarizedCallable::RangeSimple {
   TransformKeysBangSummary() { this = "transform_keys!" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -481,7 +481,7 @@ private class TransformKeysBangSummary extends SimpleSummarizedCallable {
   }
 }
 
-private class TransformValuesSummary extends SimpleSummarizedCallable {
+private class TransformValuesSummary extends SummarizedCallable::RangeSimple {
   TransformValuesSummary() { this = "transform_values" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -496,7 +496,7 @@ private class TransformValuesSummary extends SimpleSummarizedCallable {
   }
 }
 
-private class TransformValuesBangSummary extends SimpleSummarizedCallable {
+private class TransformValuesBangSummary extends SummarizedCallable::RangeSimple {
   TransformValuesBangSummary() { this = "transform_values!" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -514,7 +514,7 @@ private class TransformValuesBangSummary extends SimpleSummarizedCallable {
   }
 }
 
-private class ValuesSummary extends SimpleSummarizedCallable {
+private class ValuesSummary extends SummarizedCallable::RangeSimple {
   ValuesSummary() { this = "values" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {
@@ -526,7 +526,7 @@ private class ValuesSummary extends SimpleSummarizedCallable {
 
 // We don't (yet) track data flow through hash keys, but this is still useful in cases where a
 // whole hash(like) object is tainted, such as `ActionController#params`.
-private class KeysSummary extends SimpleSummarizedCallable {
+private class KeysSummary extends SummarizedCallable::RangeSimple {
   KeysSummary() { this = "keys" }
 
   override predicate propagatesFlow(string input, string output, boolean preservesValue) {

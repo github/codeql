@@ -4,6 +4,10 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "Add", "(System.Uri,System.Byte[])", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "Add", "(System.Uri,System.Byte[],System.Int32,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "Add", "(System.Uri,System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "Add", "(System.Uri,System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "XmlPreloadedResolver", "(System.Xml.XmlResolver,System.Xml.Resolvers.XmlKnownDtds,System.Collections.Generic.IEqualityComparer<System.Uri>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", False, "get_PreloadedUris", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", True, "GetEntity", "(System.Uri,System.String,System.Type)", "", "Argument[0].Property[System.Uri.LocalPath]", "ReturnValue", "taint", "dfc-generated"]
@@ -13,10 +17,6 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
-      - ["System.Xml.Resolvers", "XmlPreloadedResolver", "Add", "(System.Uri,System.Byte[])", "summary", "df-generated"]
-      - ["System.Xml.Resolvers", "XmlPreloadedResolver", "Add", "(System.Uri,System.Byte[],System.Int32,System.Int32)", "summary", "df-generated"]
-      - ["System.Xml.Resolvers", "XmlPreloadedResolver", "Add", "(System.Uri,System.IO.Stream)", "summary", "df-generated"]
-      - ["System.Xml.Resolvers", "XmlPreloadedResolver", "Add", "(System.Uri,System.String)", "summary", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", "Remove", "(System.Uri)", "summary", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", "SupportsType", "(System.Uri,System.Type)", "summary", "df-generated"]
       - ["System.Xml.Resolvers", "XmlPreloadedResolver", "XmlPreloadedResolver", "(System.Xml.Resolvers.XmlKnownDtds)", "summary", "df-generated"]

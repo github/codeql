@@ -1,6 +1,6 @@
 csharp71.cs:
 #    1| [Class] DefaultLiterals
-#    3|   5: [Method] f
+#    3|   6: [Method] f
 #    3|     -1: [TypeMention] Void
 #    4|     4: [BlockStmt] {...}
 #    5|       0: [LocalVariableDeclStmt] ... ...;
@@ -50,7 +50,7 @@ csharp71.cs:
 #   15|           1: [CastExpr] (...) ...
 #   15|             1: [DefaultValueExpr] default
 #   19| [Class] IsConstants
-#   21|   5: [Method] f
+#   21|   6: [Method] f
 #   21|     -1: [TypeMention] Void
 #   22|     4: [BlockStmt] {...}
 #   23|       0: [LocalVariableDeclStmt] ... ...;

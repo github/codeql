@@ -260,6 +260,7 @@ module NodeJSLib {
     DataFlow::Node getRouteHandlerNode() { result = handler }
   }
 
+  overlay[global]
   abstract private class HeaderDefinition extends Http::Servers::StandardHeaderDefinition {
     ResponseNode r;
 

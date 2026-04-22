@@ -12,6 +12,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 class InitCallStmt extends ExprStmt {
   InitCallStmt() {

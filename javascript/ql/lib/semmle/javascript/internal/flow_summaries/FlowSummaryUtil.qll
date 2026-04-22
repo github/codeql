@@ -20,7 +20,7 @@ class InstanceCall extends DataFlow::CallNode {
 /**
  * A summary a function that is the default export from an NPM package.
  */
-abstract class FunctionalPackageSummary extends SummarizedCallable {
+abstract class FunctionalPackageSummary extends SummarizedCallable::Range {
   bindingset[this]
   FunctionalPackageSummary() { any() }
 

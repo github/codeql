@@ -30,84 +30,84 @@ public class Test {
 			byte[] out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getBytes();
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartFile;true;getInputStream;;;Argument[this];ReturnValue;taint;manual"
 			InputStream out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getInputStream();
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartFile;true;getName;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getName();
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartFile;true;getOriginalFilename;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getOriginalFilename();
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartFile;true;getResource;;;Argument[this];ReturnValue;taint;manual"
 			Resource out = null;
 			MultipartFile in = (MultipartFile)source();
 			out = in.getResource();
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartHttpServletRequest;true;getMultipartHeaders;;;Argument[this];ReturnValue;taint;manual"
 			HttpHeaders out = null;
 			MultipartHttpServletRequest in = (MultipartHttpServletRequest)source();
 			out = in.getMultipartHeaders(null);
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartHttpServletRequest;true;getRequestHeaders;;;Argument[this];ReturnValue;taint;manual"
 			HttpHeaders out = null;
 			MultipartHttpServletRequest in = (MultipartHttpServletRequest)source();
 			out = in.getRequestHeaders();
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartRequest;true;getFile;;;Argument[this];ReturnValue;taint;manual"
 			MultipartFile out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getFile(null);
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartRequest;true;getFileMap;;;Argument[this];MapValue of ReturnValue;taint;manual"
 			Map out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getFileMap();
-			sink(getMapValue(out)); // $hasTaintFlow
+			sink(getMapValue(out)); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartRequest;true;getFileNames;;;Argument[this];Element of ReturnValue;taint;manual"
 			Iterator out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getFileNames();
-			sink(getElement(out)); // $hasTaintFlow
+			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartRequest;true;getFiles;;;Argument[this];Element of ReturnValue;taint;manual"
 			List out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getFiles(null);
-			sink(getElement(out)); // $hasTaintFlow
+			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartRequest;true;getMultiFileMap;;;Argument[this];MapValue of ReturnValue;taint;manual"
 			MultiValueMap out = null;
 			MultipartRequest in = (MultipartRequest)source();
 			out = in.getMultiFileMap();
-			sink(getMapValue(out)); // $hasTaintFlow
+			sink(getMapValue(out)); // $ hasTaintFlow
 		}
 		{
 			// "org.springframework.web.multipart;MultipartResolver;true;resolveMultipart;;;Argument[0];ReturnValue;taint;manual"
@@ -115,7 +115,7 @@ public class Test {
 			HttpServletRequest in = (HttpServletRequest)source();
 			MultipartResolver instance = null;
 			out = instance.resolveMultipart(in);
-			sink(out); // $hasTaintFlow
+			sink(out); // $ hasTaintFlow
 		}
 
 	}

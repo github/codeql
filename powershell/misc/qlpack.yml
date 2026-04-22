@@ -1,0 +1,6 @@
+name: microsoft-sdl/powershell-typegen
+version: 0.0.1
+extractor: csharp
+dependencies:
+  codeql/csharp-all: "*"
+warnOnImplicitThis: true

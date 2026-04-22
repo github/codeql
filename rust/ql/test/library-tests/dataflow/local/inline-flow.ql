@@ -5,8 +5,8 @@
 import rust
 import utils.test.InlineFlowTest
 import DefaultFlowTest
-import ValueFlow::PathGraph
+import TaintFlow::PathGraph
 
-from ValueFlow::PathNode source, ValueFlow::PathNode sink
-where ValueFlow::flowPath(source, sink)
+from TaintFlow::PathNode source, TaintFlow::PathNode sink
+where TaintFlow::flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

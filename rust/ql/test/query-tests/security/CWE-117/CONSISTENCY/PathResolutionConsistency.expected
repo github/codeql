@@ -1,2 +1,2 @@
-multipleCallTargets
-| main.rs:9:43:9:63 | ...::from(...) |
+multipleResolvedTargets
+| main.rs:123:28:123:48 | ...::from(...) |

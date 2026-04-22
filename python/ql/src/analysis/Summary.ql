@@ -3,6 +3,7 @@
  */
 
 import python
+private import LegacyPointsTo
 
 from string key, string value
 where
