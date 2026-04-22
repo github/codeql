@@ -44,3 +44,9 @@ abstract class BlockMode extends CryptographicAlgorithm {
     else result = unknownAlgorithm()
   }
 }
+
+abstract class AsymmetricKeyCreation extends CryptographicArtifact {
+  abstract string getAlgorithmName();
+
+  abstract int getKeySize();
+}

@@ -234,3 +234,45 @@ class CipherBlockModeEnum extends BlockMode {
 
   override string getName() { result = modeName }
 }
+
+class RsaCreateKeyCreation extends AsymmetricKeyCreation, DataFlow::CallNode {
+  int keySize;
+
+  RsaCreateKeyCreation() {
+    exists(string method |
+      method = ["create", "new"] and
+      this =
+        API::getTopLevelMember("system")
+            .getMember("security")
+            .getMember("cryptography")
+            .getMember(["rsa", "rsacryptoserviceprovider"])
+            .getMember(method)
+            .asCall()
+    ) and
+    keySize = this.getAnArgument().asExpr().getExpr().(ConstExpr).getValueString().toInt()
+  }
+
+  override string getAlgorithmName() { result = "rsa" }
+
+  override int getKeySize() { result = keySize }
+}
+
+class RsaCspObjectKeyCreation extends AsymmetricKeyCreation, CryptoAlgorithmObjectCreation {
+  int keySize;
+
+  RsaCspObjectKeyCreation() {
+    objectName =
+      [
+        "system.security.cryptography.rsacryptoserviceprovider",
+        "rsacryptoserviceprovider"
+      ] and
+    exists(DataFlow::Node arg |
+      arg = this.getAnArgument() and
+      keySize = arg.asExpr().getExpr().(ConstExpr).getValueString().toInt()
+    )
+  }
+
+  override string getAlgorithmName() { result = "rsa" }
+
+  override int getKeySize() { result = keySize }
+}

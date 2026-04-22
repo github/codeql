@@ -1,0 +1,2 @@
+| Test.cs:15:63:15:99 | access to constant Auto | Use of this TypeNameHandling constant in Startup.cs is unsafe |
+| Test.cs:20:64:20:87 | access to constant Objects | Use of this TypeNameHandling constant in Startup.cs is unsafe |
