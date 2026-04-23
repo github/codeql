@@ -132,62 +132,75 @@ private predicate sideEffectCfg(ControlFlow::Node src, ControlFlow::Node dst) {
 private predicate iDomEffect(ControlFlow::Node dominator, ControlFlow::Node node) =
   idominance(entryNode/1, sideEffectCfg/2)(_, dominator, node)
 
-/**
- * Gets the most recent side effect. To be more precise, `result` is a
- * dominator of `node` and no side-effects can occur between `result` and
- * `node`.
- *
- * `sideEffectCFG` has an edge from the function entry to every node with a
- * side-effect. This means that every node with a side-effect has the
- * function entry as its immediate dominator. So if node `x` dominates node
- * `y` then there can be no side effects between `x` and `y` unless `x` is
- * the function entry. So the optimal choice for `result` has the function
- * entry as its immediate dominator.
- *
- * Example:
- *
- * ```
- * 000:  int f(int a, int b, int *p) {
- * 001:    int r = 0;
- * 002:    if (a) {
- * 003:      if (b) {
- * 004:        sideEffect1();
- * 005:      }
- * 006:    } else {
- * 007:      sideEffect2();
- * 008:    }
- * 009:    if (a) {
- * 010:      r++; // Not a side-effect, because r is an SSA variable.
- * 011:    }
- * 012:    if (b) {
- * 013:      r++; // Not a side-effect, because r is an SSA variable.
- * 014:    }
- * 015:    return *p;
- * 016:  }
- * ```
- *
- * Suppose we want to find the most recent side-effect for the dereference
- * of `p` on line 015. The `sideEffectCFG` has an edge from the function
- * entry (line 000) to the side effects at lines 004 and 007. Therefore,
- * the immediate dominator tree looks like this:
- *
- * 000 - 001 - 002 - 003
- *     - 004
- *     - 007
- *     - 009 - 010
- *           - 012 - 013
- *                 - 015
- *
- * The immediate dominator path to line 015 is 000 - 009 - 012 - 015.
- * Therefore, the most recent side effect for line 015 is line 009.
- */
-cached
-private ControlFlow::Node mostRecentSideEffect(ControlFlow::Node node) {
-  exists(ControlFlow::Node entry |
-    entryNode(entry) and
-    iDomEffect(entry, result) and
-    iDomEffect*(result, node)
-  )
+private signature predicate relevantNodeSig(ControlFlow::Node n);
+
+private module MostRecentSideEffect<relevantNodeSig/1 relevantNode> {
+  private predicate iDomEntry(ControlFlow::Node node) {
+    exists(ControlFlow::Node entry |
+      entryNode(entry) and
+      iDomEffect(entry, node)
+    )
+  }
+
+  private predicate iDomEffectPlus(ControlFlow::Node n1, ControlFlow::Node n2) =
+    doublyBoundedFastTC(iDomEffect/2, iDomEntry/1, relevantNode/1)(n1, n2)
+
+  /**
+   * Gets the most recent side effect. To be more precise, `result` is a
+   * dominator of `node` and no side-effects can occur between `result` and
+   * `node`.
+   *
+   * `sideEffectCFG` has an edge from the function entry to every node with a
+   * side-effect. This means that every node with a side-effect has the
+   * function entry as its immediate dominator. So if node `x` dominates node
+   * `y` then there can be no side effects between `x` and `y` unless `x` is
+   * the function entry. So the optimal choice for `result` has the function
+   * entry as its immediate dominator.
+   *
+   * Example:
+   *
+   * ```
+   * 000:  int f(int a, int b, int *p) {
+   * 001:    int r = 0;
+   * 002:    if (a) {
+   * 003:      if (b) {
+   * 004:        sideEffect1();
+   * 005:      }
+   * 006:    } else {
+   * 007:      sideEffect2();
+   * 008:    }
+   * 009:    if (a) {
+   * 010:      r++; // Not a side-effect, because r is an SSA variable.
+   * 011:    }
+   * 012:    if (b) {
+   * 013:      r++; // Not a side-effect, because r is an SSA variable.
+   * 014:    }
+   * 015:    return *p;
+   * 016:  }
+   * ```
+   *
+   * Suppose we want to find the most recent side-effect for the dereference
+   * of `p` on line 015. The `sideEffectCFG` has an edge from the function
+   * entry (line 000) to the side effects at lines 004 and 007. Therefore,
+   * the immediate dominator tree looks like this:
+   *
+   * 000 - 001 - 002 - 003
+   *     - 004
+   *     - 007
+   *     - 009 - 010
+   *           - 012 - 013
+   *                 - 015
+   *
+   * The immediate dominator path to line 015 is 000 - 009 - 012 - 015.
+   * Therefore, the most recent side effect for line 015 is line 009.
+   */
+  ControlFlow::Node mostRecentSideEffect(ControlFlow::Node node) {
+    iDomEntry(node) and
+    result = node and
+    relevantNode(node)
+    or
+    iDomEffectPlus(result, node)
+  }
 }
 
 /** Used to represent the "global value number" of an expression. */
@@ -369,10 +382,12 @@ private predicate mkMethodAccess(DataFlow::Node access, GVN qualifier, Method m)
   )
 }
 
+private predicate isReadInstruction(ControlFlow::Node node) { node instanceof IR::ReadInstruction }
+
 private predicate analyzableFieldRead(Read fread, DataFlow::Node base, Field f) {
   exists(IR::ReadInstruction r | r = fread.asInstruction() |
     r.readsField(base.asInstruction(), f) and
-    strictcount(mostRecentSideEffect(r)) = 1 and
+    strictcount(MostRecentSideEffect<isReadInstruction/1>::mostRecentSideEffect(r)) = 1 and
     not r.isConst()
   )
 }
@@ -383,7 +398,8 @@ private predicate mkFieldRead(
   exists(DataFlow::Node base |
     analyzableFieldRead(fread, base, v) and
     qualifier = globalValueNumber(base) and
-    dominator = mostRecentSideEffect(fread.asInstruction())
+    dominator =
+      MostRecentSideEffect<isReadInstruction/1>::mostRecentSideEffect(fread.asInstruction())
   )
 }
 
@@ -418,20 +434,23 @@ private predicate incompleteSsa(ValueEntity v) {
   )
 }
 
+private predicate instructionReads(ControlFlow::Node node) { node.(IR::Instruction).reads(_) }
+
 /**
  * Holds if `access` is an access to a variable `target` for which SSA information is incomplete.
  */
 private predicate analyzableOtherVariable(DataFlow::Node access, ValueEntity target) {
   access.asInstruction().reads(target) and
   incompleteSsa(target) and
-  strictcount(mostRecentSideEffect(access.asInstruction())) = 1 and
+  strictcount(MostRecentSideEffect<instructionReads/1>::mostRecentSideEffect(access.asInstruction())) =
+    1 and
   not access.isConst() and
   not target instanceof Function
 }
 
 private predicate mkOtherVariable(DataFlow::Node access, ValueEntity x, ControlFlow::Node dominator) {
   analyzableOtherVariable(access, x) and
-  dominator = mostRecentSideEffect(access.asInstruction())
+  dominator = MostRecentSideEffect<instructionReads/1>::mostRecentSideEffect(access.asInstruction())
 }
 
 private predicate analyzableBinaryOp(
@@ -463,8 +482,12 @@ private predicate mkUnaryOp(DataFlow::UnaryOperationNode op, GVN child, string o
   opname = op.getOperator()
 }
 
+private predicate isElementRead(ControlFlow::Node node) {
+  node instanceof IR::ElementReadInstruction
+}
+
 private predicate analyzableIndexExpr(DataFlow::ElementReadNode ae) {
-  strictcount(mostRecentSideEffect(ae.asInstruction())) = 1 and
+  strictcount(MostRecentSideEffect<isElementRead/1>::mostRecentSideEffect(ae.asInstruction())) = 1 and
   not ae.isConst()
 }
 
@@ -474,18 +497,25 @@ private predicate mkIndex(
   analyzableIndexExpr(ae) and
   base = globalValueNumber(ae.getBase()) and
   offset = globalValueNumber(ae.getIndex()) and
-  dominator = mostRecentSideEffect(ae.asInstruction())
+  dominator = MostRecentSideEffect<isElementRead/1>::mostRecentSideEffect(ae.asInstruction())
+}
+
+private predicate isPointerDereference(ControlFlow::Node node) {
+  node instanceof IR::EvalImplicitDerefInstruction
 }
 
 private predicate analyzablePointerDereferenceExpr(DataFlow::PointerDereferenceNode deref) {
-  strictcount(mostRecentSideEffect(deref.asInstruction())) = 1 and
+  strictcount(MostRecentSideEffect<isPointerDereference/1>::mostRecentSideEffect(deref
+            .asInstruction())
+  ) = 1 and
   not deref.isConst()
 }
 
 private predicate mkDeref(DataFlow::PointerDereferenceNode deref, GVN p, ControlFlow::Node dominator) {
   analyzablePointerDereferenceExpr(deref) and
   p = globalValueNumber(deref.getOperand()) and
-  dominator = mostRecentSideEffect(deref.asInstruction())
+  dominator =
+    MostRecentSideEffect<isPointerDereference/1>::mostRecentSideEffect(deref.asInstruction())
 }
 
 private predicate ssaInit(SsaExplicitDefinition ssa, DataFlow::Node rhs) {
