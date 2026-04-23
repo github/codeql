@@ -570,7 +570,7 @@ class AccessOrCallExpr extends Expr {
    * An expression can have more than one SSA qualifier in the presence
    * of control flow splitting.
    */
-  Ssa::Definition getAnSsaQualifier(ControlFlowNode cfn) { result = getAnSsaQualifier(this, cfn) }
+  SsaDefinition getAnSsaQualifier(ControlFlowNode cfn) { result = getAnSsaQualifier(this, cfn) }
 }
 
 private Declaration getDeclarationTarget(Expr e) {
@@ -578,14 +578,14 @@ private Declaration getDeclarationTarget(Expr e) {
   result = e.(Call).getTarget()
 }
 
-private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlowNode cfn) {
+private SsaDefinition getAnSsaQualifier(Expr e, ControlFlowNode cfn) {
   e = getATrackedAccess(result, cfn)
   or
   not e = getATrackedAccess(_, _) and
   result = getAnSsaQualifier(e.(QualifiableExpr).getQualifier(), cfn)
 }
 
-private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlowNode cfn) {
+private AssignableAccess getATrackedAccess(SsaDefinition def, ControlFlowNode cfn) {
   result = def.getARead() and cfn = result.getControlFlowNode()
   or
   result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
@@ -593,7 +593,7 @@ private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlowNode 
 }
 
 private predicate ssaMustHaveValue(Expr e, GuardValue v) {
-  exists(Ssa::Definition def, BasicBlock bb |
+  exists(SsaDefinition def, BasicBlock bb |
     e = def.getARead() and
     e.getBasicBlock() = bb and
     Guards::ssaControls(def, bb, v)
@@ -825,8 +825,8 @@ module Internal {
     )
     or
     e =
-      any(Ssa::Definition def |
-        forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nullDef(u))
+      any(SsaDefinition def |
+        forex(SsaDefinition u | u = def.getAnUltimateDefinition() | nullDef(u))
       ).getARead()
   }
 
@@ -840,8 +840,8 @@ module Internal {
     exists(Expr e1 | nonNullValueImplied(e1) and nonNullValueImpliedUnary(e1, e))
     or
     e =
-      any(Ssa::Definition def |
-        forex(Ssa::Definition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
+      any(SsaDefinition def |
+        forex(SsaDefinition u | u = def.getAnUltimateDefinition() | nonNullDef(u))
       ).getARead()
   }
 
@@ -1104,7 +1104,7 @@ module Internal {
     private predicate nodeIsGuardedBySameSubExprSsaDef0(
       ControlFlowNode cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       ControlFlowNode subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, GuardValue v,
-      Ssa::Definition def
+      SsaDefinition def
     ) {
       nodeIsGuardedBySameSubExpr(cfn, guardedBB, guarded, g, sub, v) and
       def = sub.getAnSsaQualifier(subCfn) and
@@ -1114,7 +1114,7 @@ module Internal {
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef(
       ControlFlowNode guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlowNode subCfn,
-      AccessOrCallExpr sub, GuardValue v, Ssa::Definition def
+      AccessOrCallExpr sub, GuardValue v, SsaDefinition def
     ) {
       exists(BasicBlock guardedBB, BasicBlock subCfnBB |
         nodeIsGuardedBySameSubExprSsaDef0(guardedCfn, guardedBB, guarded, g, subCfn, subCfnBB, sub,
@@ -1133,7 +1133,7 @@ module Internal {
     cached
     predicate isGuardedByExpr(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v) {
       isGuardedByExpr0(guarded, g, sub, v) and
-      forall(ControlFlowNode subCfn, Ssa::Definition def |
+      forall(ControlFlowNode subCfn, SsaDefinition def |
         nodeIsGuardedBySameSubExprSsaDef(_, guarded, g, subCfn, sub, v, def)
       |
         def = guarded.getAnSsaQualifier(_)
@@ -1145,7 +1145,7 @@ module Internal {
       ControlFlowNodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr(guarded, _, _, g, sub, v) and
-      forall(ControlFlowNode subCfn, Ssa::Definition def |
+      forall(ControlFlowNode subCfn, SsaDefinition def |
         nodeIsGuardedBySameSubExprSsaDef(guarded, _, g, subCfn, sub, v, def)
       |
         def =

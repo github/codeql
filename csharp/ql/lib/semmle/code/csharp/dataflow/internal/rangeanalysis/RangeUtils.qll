@@ -106,7 +106,7 @@ private module Impl {
    * - `isEq = true`  : `def == e + delta`
    * - `isEq = false` : `def != e + delta`
    */
-  Guard eqFlowCond(Definition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
+  Guard eqFlowCond(SsaDefinition def, ExprNode e, int delta, boolean isEq, boolean testIsTrue) {
     exists(boolean eqpolarity |
       result.isEquality(ssaRead(def, delta), e, eqpolarity) and
       testIsTrue = [false, true] and

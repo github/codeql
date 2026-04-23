@@ -270,7 +270,7 @@ module VariableCapture {
   private predicate closureFlowStep(ControlFlowNodes::ExprNode e1, ControlFlowNodes::ExprNode e2) {
     e1.getExpr() = LocalFlow::getALastEvalNode(e2.getExpr())
     or
-    exists(Ssa::Definition def, AssignableDefinition adef |
+    exists(SsaDefinition def, AssignableDefinition adef |
       LocalFlow::defAssigns(adef, _, _, e1) and
       def.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition() = adef and
       def.getARead().getControlFlowNode() = e2
@@ -2016,7 +2016,7 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
    * SSA updates.
    */
   predicate hasNonlocalValue() {
-    exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
+    exists(SsaDefinition def, Ssa::ImplicitDefinition idef |
       def.getARead() = this and
       idef = def.getAnUltimateDefinition()
     |

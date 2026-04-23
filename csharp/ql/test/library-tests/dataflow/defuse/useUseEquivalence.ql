@@ -25,14 +25,14 @@ predicate useUsePair(LocalScopeVariableRead read1, LocalScopeVariableRead read2)
 
 private newtype TLocalScopeVariableReadOrSsaDef =
   TLocalScopeVariableRead(LocalScopeVariableRead read) or
-  TSsaDefinition(Ssa::Definition ssaDef)
+  TSsaDefinition(SsaDefinition ssaDef)
 
 private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableReadOrSsaDef prev) {
   exists(LocalScopeVariableRead read | prev = TLocalScopeVariableRead(read) |
     result = TLocalScopeVariableRead(read.getANextRead())
     or
     not exists(read.getANextRead()) and
-    exists(Ssa::Definition ssaDef, Ssa::PhiNode phi, BasicBlock bb |
+    exists(SsaDefinition ssaDef, Ssa::PhiNode phi, BasicBlock bb |
       ssaDef.getARead() = read and
       phi.getAnInput() = ssaDef and
       phi.definesAt(_, bb, _) and
@@ -41,7 +41,7 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
     )
   )
   or
-  exists(Ssa::Definition ssaDef | prev = TSsaDefinition(ssaDef) |
+  exists(SsaDefinition ssaDef | prev = TSsaDefinition(ssaDef) |
     result = TLocalScopeVariableRead(Ssa::ssaGetAFirstUse(ssaDef))
     or
     not exists(Ssa::ssaGetAFirstUse(ssaDef)) and

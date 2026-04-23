@@ -10,7 +10,7 @@ private import ConstantUtils
 private class ExprNode = ControlFlowNodes::ExprNode;
 
 /** An SSA variable. */
-class SsaVariable extends Definition {
+class SsaVariable extends SsaDefinition {
   /** Gets a read of this SSA variable. */
   ExprNode getAUse() { this.getARead().getControlFlowNode() = result }
 }
@@ -26,7 +26,7 @@ ExprNode getAnExplicitDefinitionRead(ExprNode src) {
 /**
  * Gets an expression that equals `v - delta`.
  */
-ExprNode ssaRead(Definition v, int delta) {
+ExprNode ssaRead(SsaDefinition v, int delta) {
   v.getARead().getControlFlowNode() = result and delta = 0
   or
   exists(ExprNode::AddOperation add, int d1, ConstantIntegerExpr c |

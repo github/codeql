@@ -13,7 +13,7 @@ module Private {
 
   class ConstantIntegerExpr = CU::ConstantIntegerExpr;
 
-  class SsaVariable = CS::Ssa::Definition;
+  class SsaVariable = CS::SsaDefinition;
 
   class SsaPhiNode = CS::Ssa::PhiNode;
 
@@ -245,7 +245,7 @@ private module Impl {
     )
   }
 
-  ExprNode getARead(Ssa::Definition v) { v.getARead().getControlFlowNode() = result }
+  ExprNode getARead(SsaDefinition v) { v.getARead().getControlFlowNode() = result }
 
   Field getField(ExprNode fa) { result = fa.getExpr().(FieldAccess).getTarget() }
 

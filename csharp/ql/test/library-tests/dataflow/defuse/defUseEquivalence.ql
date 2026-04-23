@@ -29,7 +29,7 @@ predicate defUsePair(AssignableDefinition def, AssignableRead read) {
 }
 
 private LocalScopeVariableRead getAReachableUncertainRead(AssignableDefinition def) {
-  exists(Ssa::Definition ssaDef |
+  exists(SsaDefinition ssaDef |
     def = ssaDef.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition()
   |
     result = ssaDef.getARead()

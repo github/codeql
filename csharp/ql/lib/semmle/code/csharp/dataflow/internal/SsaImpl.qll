@@ -915,9 +915,9 @@ private module Cached {
   }
 
   cached
-  predicate isLiveOutRefParameterDefinition(Ssa::Definition def, Parameter p) {
+  predicate isLiveOutRefParameterDefinition(SsaDefinition def, Parameter p) {
     p.isOutOrRef() and
-    exists(Ssa::SourceVariable v, Ssa::Definition def0, BasicBlock bb, int i |
+    exists(Ssa::SourceVariable v, SsaDefinition def0, BasicBlock bb, int i |
       v = def.getSourceVariable() and
       p = v.getAssignable() and
       def = def0.getAnUltimateDefinition() and

@@ -5,7 +5,7 @@
 private import csharp as CS
 private import SsaReadPositionCommon
 
-class SsaVariable = CS::Ssa::Definition;
+class SsaVariable = CS::SsaDefinition;
 
 class SsaPhiNode = CS::Ssa::PhiNode;
 

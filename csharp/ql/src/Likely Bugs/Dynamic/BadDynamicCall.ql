@@ -36,7 +36,7 @@ abstract class BadDynamicCall extends DynamicExpr {
   }
 
   private Type possibleTypeForRelevantSource(Variable v, int i, Expr source) {
-    exists(AssignableRead read, Ssa::Definition ssaDef, Ssa::ExplicitDefinition ultimateSsaDef |
+    exists(AssignableRead read, SsaDefinition ssaDef, Ssa::ExplicitDefinition ultimateSsaDef |
       read = this.getARelevantVariableAccess(i) and
       v = read.getTarget() and
       result = source.getType() and
