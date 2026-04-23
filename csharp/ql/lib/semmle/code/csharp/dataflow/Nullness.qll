@@ -124,11 +124,9 @@ private predicate nonNullDef(Ssa::ExplicitDefinition def) {
 }
 
 /**
- * Holds if `node` is a dereference `d` of SSA definition `def`.
+ * Holds if `d` is a dereference of SSA definition `def`.
  */
-private predicate dereferenceAt(ControlFlowNode node, Ssa::Definition def, Dereference d) {
-  d = def.getAReadAtNode(node)
-}
+private predicate dereferenceAt(Ssa::Definition def, Dereference d) { d = def.getARead() }
 
 private predicate isMaybeNullArgument(Ssa::ParameterDefinition def, MaybeNullExpr arg) {
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
@@ -214,7 +212,7 @@ private predicate defMaybeNull(Ssa::Definition def, ControlFlowNode node, string
     )
     or
     // A variable of nullable type may be null
-    exists(Dereference d | dereferenceAt(_, def, d) |
+    exists(Dereference d | dereferenceAt(def, d) |
       node = def.getControlFlowNode() and
       d.hasNullableType() and
       not def instanceof Ssa::PhiNode and
@@ -254,7 +252,8 @@ private module NullnessConfig implements ControlFlowReachability::ConfigSig {
 
   predicate sink(ControlFlowNode node, SsaDefinition def) {
     exists(Dereference d |
-      dereferenceAt(node, def, d) and
+      dereferenceAt(def, d) and
+      node = d.getControlFlowNode() and
       not d instanceof NonNullExpr
     )
   }
@@ -271,7 +270,8 @@ predicate maybeNullDeref(Dereference d, Ssa::SourceVariable v, string msg, Eleme
     defMaybeNull(origin, src, msg, reason) and
     NullnessFlow::flow(src, origin, sink, ssa) and
     ssa.getSourceVariable() = v and
-    dereferenceAt(sink, ssa, d) and
+    dereferenceAt(ssa, d) and
+    sink = d.getControlFlowNode() and
     not d.isAlwaysNull(v)
   )
 }

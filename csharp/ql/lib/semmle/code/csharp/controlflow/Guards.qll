@@ -586,7 +586,7 @@ private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlowNode cfn) {
 }
 
 private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlowNode cfn) {
-  result = def.getAReadAtNode(cfn)
+  result = def.getARead() and cfn = result.getControlFlowNode()
   or
   result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
   cfn = def.getControlFlowNode()

@@ -236,9 +236,11 @@ module Ssa {
      * - The reads of `this.Field` on lines 10 and 11 can be reached from the phi
      *   node between lines 9 and 10.
      */
-    final AssignableRead getARead() { result = this.getAReadAtNode(_) }
+    final AssignableRead getARead() { result = SsaImpl::getAReadAtNode(this, _) }
 
     /**
+     * DEPRECATED: Use `getARead()` instead.
+     *
      * Gets a read of the source variable underlying this SSA definition at
      * control flow node `cfn` that can be reached from this SSA definition
      * without passing through any other SSA definitions. Example:
@@ -265,7 +267,7 @@ module Ssa {
      * - The reads of `this.Field` on lines 10 and 11 can be reached from the phi
      *   node between lines 9 and 10.
      */
-    final AssignableRead getAReadAtNode(ControlFlowNode cfn) {
+    deprecated final AssignableRead getAReadAtNode(ControlFlowNode cfn) {
       result = SsaImpl::getAReadAtNode(this, cfn)
     }
 

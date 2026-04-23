@@ -245,7 +245,7 @@ private module Impl {
     )
   }
 
-  ExprNode getARead(Ssa::Definition v) { exists(v.getAReadAtNode(result)) }
+  ExprNode getARead(Ssa::Definition v) { v.getARead().getControlFlowNode() = result }
 
   Field getField(ExprNode fa) { result = fa.getExpr().(FieldAccess).getTarget() }
 

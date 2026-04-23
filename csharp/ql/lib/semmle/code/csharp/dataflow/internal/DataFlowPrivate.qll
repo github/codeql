@@ -273,7 +273,7 @@ module VariableCapture {
     exists(Ssa::Definition def, AssignableDefinition adef |
       LocalFlow::defAssigns(adef, _, _, e1) and
       def.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition() = adef and
-      exists(def.getAReadAtNode(e2))
+      def.getARead().getControlFlowNode() = e2
     )
   }
 

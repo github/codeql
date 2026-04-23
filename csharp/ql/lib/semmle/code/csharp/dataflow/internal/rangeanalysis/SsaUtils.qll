@@ -12,13 +12,13 @@ private class ExprNode = ControlFlowNodes::ExprNode;
 /** An SSA variable. */
 class SsaVariable extends Definition {
   /** Gets a read of this SSA variable. */
-  ExprNode getAUse() { exists(this.getAReadAtNode(result)) }
+  ExprNode getAUse() { this.getARead().getControlFlowNode() = result }
 }
 
 /** Gets a node that reads `src` via an SSA explicit definition. */
 ExprNode getAnExplicitDefinitionRead(ExprNode src) {
   exists(ExplicitDefinition def |
-    exists(def.getAReadAtNode(result)) and
+    def.getARead().getControlFlowNode() = result and
     hasChild(def.getElement(), def.getADefinition().getSource(), def.getControlFlowNode(), src)
   )
 }
@@ -27,7 +27,7 @@ ExprNode getAnExplicitDefinitionRead(ExprNode src) {
  * Gets an expression that equals `v - delta`.
  */
 ExprNode ssaRead(Definition v, int delta) {
-  exists(v.getAReadAtNode(result)) and delta = 0
+  v.getARead().getControlFlowNode() = result and delta = 0
   or
   exists(ExprNode::AddOperation add, int d1, ConstantIntegerExpr c |
     result = add and
