@@ -150,6 +150,47 @@ module Ssa {
   }
 
   /**
+   * Gets a read of the source variable underlying the SSA definition `def`
+   * that can be reached from `def` without passing through any
+   * other SSA definition or read. Example:
+   *
+   * ```csharp
+   * int Field;
+   *
+   * void SetField(int i) {
+   *   this.Field = i;
+   *   Use(this.Field);
+   *   if (i > 0)
+   *     this.Field = i - 1;
+   *   else if (i < 0)
+   *     SetField(1);
+   *   Use(this.Field);
+   *   Use(this.Field);
+   * }
+   * ```
+   *
+   * - The read of `i` on line 4 can be reached from the explicit SSA
+   *   definition (wrapping an implicit entry definition) on line 3.
+   * - The reads of `i` on lines 6 and 7 are not the first reads of any SSA
+   *   definition.
+   * - The read of `this.Field` on line 5 can be reached from the explicit SSA
+   *   definition on line 4.
+   * - The read of `this.Field` on line 10 can be reached from the phi node
+   *   between lines 9 and 10.
+   * - The read of `this.Field` on line 11 is not the first read of any SSA
+   *   definition.
+   *
+   * Subsequent reads can be found by following the steps defined by
+   * `AssignableRead.getANextRead()`.
+   */
+  AssignableRead ssaGetAFirstUse(SsaDefinition def) {
+    exists(ControlFlowNode cfn |
+      SsaImpl::firstReadSameVar(def, cfn) and
+      result.getControlFlowNode() = cfn
+    )
+  }
+
+  /**
    * A static single assignment (SSA) definition. Either an explicit variable
    * definition (`ExplicitDefinition`), an implicit variable definition
    * (`ImplicitDefinition`), or a phi node (`PhiNode`).
@@ -229,6 +270,8 @@ module Ssa {
     }
 
     /**
+     * DEPRECATED: Use `ssaGetAFirstUse` instead.
+     *
      * Gets a read of the source variable underlying this SSA definition that
      * can be reached from this SSA definition without passing through any
      * other SSA definition or read. Example:
@@ -262,9 +305,11 @@ module Ssa {
      * Subsequent reads can be found by following the steps defined by
      * `AssignableRead.getANextRead()`.
      */
-    final AssignableRead getAFirstRead() { result = this.getAFirstReadAtNode(_) }
+    deprecated final AssignableRead getAFirstRead() { result = this.getAFirstReadAtNode(_) }
 
     /**
+     * DEPRECATED: Use `ssaGetAFirstUse` instead.
+     *
      * Gets a read of the source variable underlying this SSA definition at
      * control flow node `cfn` that can be reached from this SSA definition
      * without passing through any other SSA definition or read. Example:
@@ -298,7 +343,7 @@ module Ssa {
      * Subsequent reads can be found by following the steps defined by
      * `AssignableRead.getANextRead()`.
      */
-    final AssignableRead getAFirstReadAtNode(ControlFlowNode cfn) {
+    deprecated final AssignableRead getAFirstReadAtNode(ControlFlowNode cfn) {
       SsaImpl::firstReadSameVar(this, cfn) and
       result.getControlFlowNode() = cfn
     }

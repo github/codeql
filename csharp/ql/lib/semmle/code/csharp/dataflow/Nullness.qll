@@ -241,7 +241,7 @@ private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
  * exception.
  */
 private predicate defReaches(Ssa::Definition def, ControlFlowNode cfn) {
-  def.getAFirstRead().getControlFlowNode() = cfn
+  Ssa::ssaGetAFirstUse(def).getControlFlowNode() = cfn
   or
   exists(ControlFlowNode mid | defReaches(def, mid) |
     SsaImpl::adjacentReadPairSameVar(_, mid, cfn) and

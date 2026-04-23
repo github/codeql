@@ -42,9 +42,9 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
   )
   or
   exists(Ssa::Definition ssaDef | prev = TSsaDefinition(ssaDef) |
-    result = TLocalScopeVariableRead(ssaDef.getAFirstRead())
+    result = TLocalScopeVariableRead(Ssa::ssaGetAFirstUse(ssaDef))
     or
-    not exists(ssaDef.getAFirstRead()) and
+    not exists(Ssa::ssaGetAFirstUse(ssaDef)) and
     exists(Ssa::PhiNode phi |
       phi.getAnInput() = ssaDef and
       result = TSsaDefinition(phi)
