@@ -7,7 +7,7 @@ interface MyInterface {
   constructor(): string; // $ Alert - This a called "constructor"
   new(): Date; // OK - This a constructor signature.
 
-  myNumber: 123; 
+  myNumber: 123;
 }
 
 var a : MyFunction = null as any;
@@ -25,7 +25,7 @@ class Foo {
 
   }
   myString = "foobar"
-  
+
   myMethod(): boolean {
     return Math.random() > 0.5;
   }
@@ -71,17 +71,17 @@ class StaticMethods {
 }
 
 interface Overloaded {
-  function(x: string): string; // $Alert
-  function(x: number): number; // $Alert
-  function(x: any): any; // $Alert
+  function(x: string): string; // $ Alert
+  function(x: number): number; // $ Alert
+  function(x: any): any; // $ Alert
 }
 
 abstract class AbstractFoo {
-  abstract new(): void; // $Alert
+  abstract new(): void; // $ Alert
 }
 
 abstract class AbstractFooFunction {
-  abstract function(): number; // $Alert
+  abstract function(): number; // $ Alert
 }
 
 abstract class AbstractFooConstructor {
@@ -90,12 +90,12 @@ abstract class AbstractFooConstructor {
 
 declare module "some-module" {
   interface ModuleInterface {
-    function(): void;  // $Alert
+    function(): void;  // $ Alert
   }
 }
 
 type Intersection = {
-  function(): number; // $Alert
+  function(): number; // $ Alert
 } & {
   other(): string;
 };
@@ -107,13 +107,13 @@ type Union = {
 };
 
 type Union2 = {
-  constructor(): number; // $Alert
+  constructor(): number; // $ Alert
 } | {
   valid(): string;
 };
 
 type Intersection2 = {
-  constructor(): number; // $Alert
+  constructor(): number; // $ Alert
 } & {
   other(): string;
 };

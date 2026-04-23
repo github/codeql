@@ -11339,44 +11339,89 @@ ir.cpp:
 
 # 1533| void StructuredBindingDataMemberMemberStruct::StructuredBindingDataMemberMemberStruct()
 # 1533|   Block 0
-# 1533|     v1533_1(void)                                            = EnterFunction                : 
-# 1533|     mu1533_2(unknown)                                        = AliasedDefinition            : 
-# 1533|     mu1533_3(unknown)                                        = InitializeNonLocal           : 
-# 1533|     r1533_4(glval<unknown>)                                  = VariableAddress[#this]       : 
-# 1533|     mu1533_5(glval<StructuredBindingDataMemberMemberStruct>) = InitializeParameter[#this]   : &:r1533_4
-# 1533|     r1533_6(glval<StructuredBindingDataMemberMemberStruct>)  = Load[#this]                  : &:r1533_4, ~m?
-# 1533|     mu1533_7(StructuredBindingDataMemberMemberStruct)        = InitializeIndirection[#this] : &:r1533_6
-# 1533|     v1533_8(void)                                            = NoOp                         : 
-# 1533|     v1533_9(void)                                            = ReturnIndirection[#this]     : &:r1533_6, ~m?
-# 1533|     v1533_10(void)                                           = ReturnVoid                   : 
-# 1533|     v1533_11(void)                                           = AliasedUse                   : ~m?
-# 1533|     v1533_12(void)                                           = ExitFunction                 : 
+# 1533|     v1533_1(void)                                            = EnterFunction                   : 
+# 1533|     mu1533_2(unknown)                                        = AliasedDefinition               : 
+# 1533|     mu1533_3(unknown)                                        = InitializeNonLocal              : 
+# 1533|     r1533_4(glval<unknown>)                                  = VariableAddress[#this]          : 
+# 1533|     mu1533_5(glval<StructuredBindingDataMemberMemberStruct>) = InitializeParameter[#this]      : &:r1533_4
+# 1533|     r1533_6(glval<StructuredBindingDataMemberMemberStruct>)  = Load[#this]                     : &:r1533_4, ~m?
+# 1533|     mu1533_7(StructuredBindingDataMemberMemberStruct)        = InitializeIndirection[#this]    : &:r1533_6
+# 1533|     r1533_8(glval<unknown>)                                  = FunctionAddress[x]              : 
+# 1533|     v1533_9(void)                                            = Call[x]                         : func:r1533_8, this:r1533_6
+# 1533|     mu1533_10(unknown)                                       = ^CallSideEffect                 : ~m?
+# 1533|     v1533_11(void)                                           = ^IndirectReadSideEffect[-1]     : &:r1533_6, ~m?
+# 1533|     mu1533_12(StructuredBindingDataMemberMemberStruct)       = ^IndirectMayWriteSideEffect[-1] : &:r1533_6
+# 1533|     v1533_13(void)                                           = NoOp                            : 
+# 1533|     v1533_14(void)                                           = ReturnIndirection[#this]        : &:r1533_6, ~m?
+# 1533|     v1533_15(void)                                           = ReturnVoid                      : 
+# 1533|     v1533_16(void)                                           = AliasedUse                      : ~m?
+# 1533|     v1533_17(void)                                           = ExitFunction                    : 
+
+# 1534| int StructuredBindingDataMemberMemberStruct::x
+# 1534|   Block 0
+# 1534|     v1534_1(void)                                            = EnterFunction                : 
+# 1534|     mu1534_2(unknown)                                        = AliasedDefinition            : 
+# 1534|     mu1534_3(unknown)                                        = InitializeNonLocal           : 
+# 1534|     r1534_4(glval<unknown>)                                  = VariableAddress[#this]       : 
+# 1534|     mu1534_5(glval<StructuredBindingDataMemberMemberStruct>) = InitializeParameter[#this]   : &:r1534_4
+# 1534|     r1534_6(glval<StructuredBindingDataMemberMemberStruct>)  = Load[#this]                  : &:r1534_4, ~m?
+# 1534|     mu1534_7(StructuredBindingDataMemberMemberStruct)        = InitializeIndirection[#this] : &:r1534_6
+# 1534|     r1534_8(glval<int>)                                      = FieldAddress[x]              : r1534_6
+# 1534|     r1534_9(int)                                             = Constant[5]                  : 
+# 1534|     mu1534_10(int)                                           = Store[?]                     : &:r1534_8, r1534_9
+# 1534|     v1534_11(void)                                           = ReturnVoid                   : 
+# 1534|     v1534_12(void)                                           = AliasedUse                   : ~m?
+# 1534|     v1534_13(void)                                           = ExitFunction                 : 
 
 # 1537| void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct()
 # 1537|   Block 0
-# 1537|     v1537_1(void)                                      = EnterFunction                : 
-# 1537|     mu1537_2(unknown)                                  = AliasedDefinition            : 
-# 1537|     mu1537_3(unknown)                                  = InitializeNonLocal           : 
-# 1537|     r1537_4(glval<unknown>)                            = VariableAddress[#this]       : 
-# 1537|     mu1537_5(glval<StructuredBindingDataMemberStruct>) = InitializeParameter[#this]   : &:r1537_4
-# 1537|     r1537_6(glval<StructuredBindingDataMemberStruct>)  = Load[#this]                  : &:r1537_4, ~m?
-# 1537|     mu1537_7(StructuredBindingDataMemberStruct)        = InitializeIndirection[#this] : &:r1537_6
-#-----|   Goto -> Block 2
-
-# 1537|   Block 1
-# 1537|     r1537_8(glval<StructuredBindingDataMemberMemberStruct>) = FieldAddress[m]                                          : r1537_6
-# 1537|     r1537_9(glval<unknown>)                                 = FunctionAddress[StructuredBindingDataMemberMemberStruct] : 
-# 1537|     v1537_10(void)                                          = Call[StructuredBindingDataMemberMemberStruct]            : func:r1537_9, this:r1537_8
-# 1537|     mu1537_11(unknown)                                      = ^CallSideEffect                                          : ~m?
-# 1537|     mu1537_12(StructuredBindingDataMemberMemberStruct)      = ^IndirectMayWriteSideEffect[-1]                          : &:r1537_8
-#-----|   Goto -> Block 2
-
-# 1537|   Block 2
-# 1537|     v1537_13(void) = NoOp                     : 
-# 1537|     v1537_14(void) = ReturnIndirection[#this] : &:r1537_6, ~m?
-# 1537|     v1537_15(void) = ReturnVoid               : 
-# 1537|     v1537_16(void) = AliasedUse               : ~m?
-# 1537|     v1537_17(void) = ExitFunction             : 
+# 1537|     v1537_1(void)                                            = EnterFunction                                            : 
+# 1537|     mu1537_2(unknown)                                        = AliasedDefinition                                        : 
+# 1537|     mu1537_3(unknown)                                        = InitializeNonLocal                                       : 
+# 1537|     r1537_4(glval<unknown>)                                  = VariableAddress[#this]                                   : 
+# 1537|     mu1537_5(glval<StructuredBindingDataMemberStruct>)       = InitializeParameter[#this]                               : &:r1537_4
+# 1537|     r1537_6(glval<StructuredBindingDataMemberStruct>)        = Load[#this]                                              : &:r1537_4, ~m?
+# 1537|     mu1537_7(StructuredBindingDataMemberStruct)              = InitializeIndirection[#this]                             : &:r1537_6
+# 1537|     r1537_8(glval<unknown>)                                  = FunctionAddress[i]                                       : 
+# 1537|     v1537_9(void)                                            = Call[i]                                                  : func:r1537_8, this:r1537_6
+# 1537|     mu1537_10(unknown)                                       = ^CallSideEffect                                          : ~m?
+# 1537|     v1537_11(void)                                           = ^IndirectReadSideEffect[-1]                              : &:r1537_6, ~m?
+# 1537|     mu1537_12(StructuredBindingDataMemberStruct)             = ^IndirectMayWriteSideEffect[-1]                          : &:r1537_6
+# 1537|     r1537_13(glval<unknown>)                                 = FunctionAddress[d]                                       : 
+# 1537|     v1537_14(void)                                           = Call[d]                                                  : func:r1537_13, this:r1537_6
+# 1537|     mu1537_15(unknown)                                       = ^CallSideEffect                                          : ~m?
+# 1537|     v1537_16(void)                                           = ^IndirectReadSideEffect[-1]                              : &:r1537_6, ~m?
+# 1537|     mu1537_17(StructuredBindingDataMemberStruct)             = ^IndirectMayWriteSideEffect[-1]                          : &:r1537_6
+# 1537|     r1537_18(glval<unknown>)                                 = FunctionAddress[r]                                       : 
+# 1537|     v1537_19(void)                                           = Call[r]                                                  : func:r1537_18, this:r1537_6
+# 1537|     mu1537_20(unknown)                                       = ^CallSideEffect                                          : ~m?
+# 1537|     v1537_21(void)                                           = ^IndirectReadSideEffect[-1]                              : &:r1537_6, ~m?
+# 1537|     mu1537_22(StructuredBindingDataMemberStruct)             = ^IndirectMayWriteSideEffect[-1]                          : &:r1537_6
+# 1537|     r1537_23(glval<unknown>)                                 = FunctionAddress[p]                                       : 
+# 1537|     v1537_24(void)                                           = Call[p]                                                  : func:r1537_23, this:r1537_6
+# 1537|     mu1537_25(unknown)                                       = ^CallSideEffect                                          : ~m?
+# 1537|     v1537_26(void)                                           = ^IndirectReadSideEffect[-1]                              : &:r1537_6, ~m?
+# 1537|     mu1537_27(StructuredBindingDataMemberStruct)             = ^IndirectMayWriteSideEffect[-1]                          : &:r1537_6
+# 1537|     r1537_28(glval<unknown>)                                 = FunctionAddress[xs]                                      : 
+# 1537|     v1537_29(void)                                           = Call[xs]                                                 : func:r1537_28, this:r1537_6
+# 1537|     mu1537_30(unknown)                                       = ^CallSideEffect                                          : ~m?
+# 1537|     v1537_31(void)                                           = ^IndirectReadSideEffect[-1]                              : &:r1537_6, ~m?
+# 1537|     mu1537_32(StructuredBindingDataMemberStruct)             = ^IndirectMayWriteSideEffect[-1]                          : &:r1537_6
+# 1537|     r1537_33(glval<unknown>)                                 = FunctionAddress[r_alt]                                   : 
+# 1537|     v1537_34(void)                                           = Call[r_alt]                                              : func:r1537_33, this:r1537_6
+# 1537|     mu1537_35(unknown)                                       = ^CallSideEffect                                          : ~m?
+# 1537|     v1537_36(void)                                           = ^IndirectReadSideEffect[-1]                              : &:r1537_6, ~m?
+# 1537|     mu1537_37(StructuredBindingDataMemberStruct)             = ^IndirectMayWriteSideEffect[-1]                          : &:r1537_6
+# 1537|     r1537_38(glval<StructuredBindingDataMemberMemberStruct>) = FieldAddress[m]                                          : r1537_6
+# 1537|     r1537_39(glval<unknown>)                                 = FunctionAddress[StructuredBindingDataMemberMemberStruct] : 
+# 1537|     v1537_40(void)                                           = Call[StructuredBindingDataMemberMemberStruct]            : func:r1537_39, this:r1537_38
+# 1537|     mu1537_41(unknown)                                       = ^CallSideEffect                                          : ~m?
+# 1537|     mu1537_42(StructuredBindingDataMemberMemberStruct)       = ^IndirectMayWriteSideEffect[-1]                          : &:r1537_38
+# 1537|     v1537_43(void)                                           = NoOp                                                     : 
+# 1537|     v1537_44(void)                                           = ReturnIndirection[#this]                                 : &:r1537_6, ~m?
+# 1537|     v1537_45(void)                                           = ReturnVoid                                               : 
+# 1537|     v1537_46(void)                                           = AliasedUse                                               : ~m?
+# 1537|     v1537_47(void)                                           = ExitFunction                                             : 
 
 # 1537| void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct(StructuredBindingDataMemberStruct const&)
 # 1537|   Block 0
@@ -11453,6 +11498,114 @@ ir.cpp:
 # 1537|     v1537_66(void)                                           = ReturnVoid                                   : 
 # 1537|     v1537_67(void)                                           = AliasedUse                                   : ~m?
 # 1537|     v1537_68(void)                                           = ExitFunction                                 : 
+
+# 1540| int StructuredBindingDataMemberStruct::i
+# 1540|   Block 0
+# 1540|     v1540_1(void)                                      = EnterFunction                : 
+# 1540|     mu1540_2(unknown)                                  = AliasedDefinition            : 
+# 1540|     mu1540_3(unknown)                                  = InitializeNonLocal           : 
+# 1540|     r1540_4(glval<unknown>)                            = VariableAddress[#this]       : 
+# 1540|     mu1540_5(glval<StructuredBindingDataMemberStruct>) = InitializeParameter[#this]   : &:r1540_4
+# 1540|     r1540_6(glval<StructuredBindingDataMemberStruct>)  = Load[#this]                  : &:r1540_4, ~m?
+# 1540|     mu1540_7(StructuredBindingDataMemberStruct)        = InitializeIndirection[#this] : &:r1540_6
+# 1540|     r1540_8(glval<int>)                                = FieldAddress[i]              : r1540_6
+# 1540|     r1540_9(int)                                       = Constant[1]                  : 
+# 1540|     mu1540_10(int)                                     = Store[?]                     : &:r1540_8, r1540_9
+# 1540|     v1540_11(void)                                     = ReturnVoid                   : 
+# 1540|     v1540_12(void)                                     = AliasedUse                   : ~m?
+# 1540|     v1540_13(void)                                     = ExitFunction                 : 
+
+# 1541| double StructuredBindingDataMemberStruct::d
+# 1541|   Block 0
+# 1541|     v1541_1(void)                                      = EnterFunction                : 
+# 1541|     mu1541_2(unknown)                                  = AliasedDefinition            : 
+# 1541|     mu1541_3(unknown)                                  = InitializeNonLocal           : 
+# 1541|     r1541_4(glval<unknown>)                            = VariableAddress[#this]       : 
+# 1541|     mu1541_5(glval<StructuredBindingDataMemberStruct>) = InitializeParameter[#this]   : &:r1541_4
+# 1541|     r1541_6(glval<StructuredBindingDataMemberStruct>)  = Load[#this]                  : &:r1541_4, ~m?
+# 1541|     mu1541_7(StructuredBindingDataMemberStruct)        = InitializeIndirection[#this] : &:r1541_6
+# 1541|     r1541_8(glval<double>)                             = FieldAddress[d]              : r1541_6
+# 1541|     r1541_9(double)                                    = Constant[2.0]                : 
+# 1541|     mu1541_10(double)                                  = Store[?]                     : &:r1541_8, r1541_9
+# 1541|     v1541_11(void)                                     = ReturnVoid                   : 
+# 1541|     v1541_12(void)                                     = AliasedUse                   : ~m?
+# 1541|     v1541_13(void)                                     = ExitFunction                 : 
+
+# 1543| int& StructuredBindingDataMemberStruct::r
+# 1543|   Block 0
+# 1543|     v1543_1(void)                                      = EnterFunction                : 
+# 1543|     mu1543_2(unknown)                                  = AliasedDefinition            : 
+# 1543|     mu1543_3(unknown)                                  = InitializeNonLocal           : 
+# 1543|     r1543_4(glval<unknown>)                            = VariableAddress[#this]       : 
+# 1543|     mu1543_5(glval<StructuredBindingDataMemberStruct>) = InitializeParameter[#this]   : &:r1543_4
+# 1543|     r1543_6(glval<StructuredBindingDataMemberStruct>)  = Load[#this]                  : &:r1543_4, ~m?
+# 1543|     mu1543_7(StructuredBindingDataMemberStruct)        = InitializeIndirection[#this] : &:r1543_6
+# 1543|     r1543_8(glval<int &>)                              = FieldAddress[r]              : r1543_6
+# 1543|     r1543_9(StructuredBindingDataMemberStruct *)       = CopyValue                    : r1543_6
+# 1543|     r1543_10(glval<int>)                               = FieldAddress[i]              : r1543_9
+#-----|     r0_1(int &)                                        = CopyValue                    : r1543_10
+#-----|     mu0_2(int &)                                       = Store[?]                     : &:r1543_8, r0_1
+# 1543|     v1543_11(void)                                     = ReturnVoid                   : 
+# 1543|     v1543_12(void)                                     = AliasedUse                   : ~m?
+# 1543|     v1543_13(void)                                     = ExitFunction                 : 
+
+# 1544| int* StructuredBindingDataMemberStruct::p
+# 1544|   Block 0
+# 1544|     v1544_1(void)                                      = EnterFunction                : 
+# 1544|     mu1544_2(unknown)                                  = AliasedDefinition            : 
+# 1544|     mu1544_3(unknown)                                  = InitializeNonLocal           : 
+# 1544|     r1544_4(glval<unknown>)                            = VariableAddress[#this]       : 
+# 1544|     mu1544_5(glval<StructuredBindingDataMemberStruct>) = InitializeParameter[#this]   : &:r1544_4
+# 1544|     r1544_6(glval<StructuredBindingDataMemberStruct>)  = Load[#this]                  : &:r1544_4, ~m?
+# 1544|     mu1544_7(StructuredBindingDataMemberStruct)        = InitializeIndirection[#this] : &:r1544_6
+# 1544|     r1544_8(glval<int *>)                              = FieldAddress[p]              : r1544_6
+# 1544|     r1544_9(StructuredBindingDataMemberStruct *)       = CopyValue                    : r1544_6
+# 1544|     r1544_10(glval<int>)                               = FieldAddress[i]              : r1544_9
+# 1544|     r1544_11(int *)                                    = CopyValue                    : r1544_10
+# 1544|     mu1544_12(int *)                                   = Store[?]                     : &:r1544_8, r1544_11
+# 1544|     v1544_13(void)                                     = ReturnVoid                   : 
+# 1544|     v1544_14(void)                                     = AliasedUse                   : ~m?
+# 1544|     v1544_15(void)                                     = ExitFunction                 : 
+
+# 1545| StructuredBindingDataMemberStruct::ArrayType StructuredBindingDataMemberStruct::xs
+# 1545|   Block 0
+# 1545|     v1545_1(void)                                      = EnterFunction                : 
+# 1545|     mu1545_2(unknown)                                  = AliasedDefinition            : 
+# 1545|     mu1545_3(unknown)                                  = InitializeNonLocal           : 
+# 1545|     r1545_4(glval<unknown>)                            = VariableAddress[#this]       : 
+# 1545|     mu1545_5(glval<StructuredBindingDataMemberStruct>) = InitializeParameter[#this]   : &:r1545_4
+# 1545|     r1545_6(glval<StructuredBindingDataMemberStruct>)  = Load[#this]                  : &:r1545_4, ~m?
+# 1545|     mu1545_7(StructuredBindingDataMemberStruct)        = InitializeIndirection[#this] : &:r1545_6
+# 1545|     r1545_8(glval<int[2]>)                             = FieldAddress[xs]             : r1545_6
+# 1545|     r1545_9(int)                                       = Constant[0]                  : 
+# 1545|     r1545_10(glval<int>)                               = PointerAdd[4]                : r1545_8, r1545_9
+# 1545|     r1545_11(int)                                      = Constant[1]                  : 
+# 1545|     mu1545_12(int)                                     = Store[?]                     : &:r1545_10, r1545_11
+# 1545|     r1545_13(int)                                      = Constant[1]                  : 
+# 1545|     r1545_14(glval<int>)                               = PointerAdd[4]                : r1545_8, r1545_13
+# 1545|     r1545_15(int)                                      = Constant[2]                  : 
+# 1545|     mu1545_16(int)                                     = Store[?]                     : &:r1545_14, r1545_15
+# 1545|     v1545_17(void)                                     = ReturnVoid                   : 
+# 1545|     v1545_18(void)                                     = AliasedUse                   : ~m?
+# 1545|     v1545_19(void)                                     = ExitFunction                 : 
+
+# 1546| StructuredBindingDataMemberStruct::RefType StructuredBindingDataMemberStruct::r_alt
+# 1546|   Block 0
+# 1546|     v1546_1(void)                                      = EnterFunction                : 
+# 1546|     mu1546_2(unknown)                                  = AliasedDefinition            : 
+# 1546|     mu1546_3(unknown)                                  = InitializeNonLocal           : 
+# 1546|     r1546_4(glval<unknown>)                            = VariableAddress[#this]       : 
+# 1546|     mu1546_5(glval<StructuredBindingDataMemberStruct>) = InitializeParameter[#this]   : &:r1546_4
+# 1546|     r1546_6(glval<StructuredBindingDataMemberStruct>)  = Load[#this]                  : &:r1546_4, ~m?
+# 1546|     mu1546_7(StructuredBindingDataMemberStruct)        = InitializeIndirection[#this] : &:r1546_6
+# 1546|     r1546_8(glval<int &>)                              = FieldAddress[r_alt]          : r1546_6
+# 1546|     r1546_9(StructuredBindingDataMemberStruct *)       = CopyValue                    : r1546_6
+# 1546|     r1546_10(glval<int>)                               = FieldAddress[i]              : r1546_9
+#-----|     r0_1(int &)                                        = CopyValue                    : r1546_10
+#-----|     mu0_2(int &)                                       = Store[?]                     : &:r1546_8, r0_1
+# 1546|     v1546_11(void)                                     = ReturnVoid                   : 
+# 1546|     v1546_12(void)                                     = AliasedUse                   : ~m?
+# 1546|     v1546_13(void)                                     = ExitFunction                 : 
 
 # 1550| void data_member_structured_binding()
 # 1550|   Block 0
@@ -11621,18 +11774,33 @@ ir.cpp:
 
 # 1590| void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet()
 # 1590|   Block 0
-# 1590|     v1590_1(void)                                 = EnterFunction                : 
-# 1590|     mu1590_2(unknown)                             = AliasedDefinition            : 
-# 1590|     mu1590_3(unknown)                             = InitializeNonLocal           : 
-# 1590|     r1590_4(glval<unknown>)                       = VariableAddress[#this]       : 
-# 1590|     mu1590_5(glval<StructuredBindingTupleRefGet>) = InitializeParameter[#this]   : &:r1590_4
-# 1590|     r1590_6(glval<StructuredBindingTupleRefGet>)  = Load[#this]                  : &:r1590_4, ~m?
-# 1590|     mu1590_7(StructuredBindingTupleRefGet)        = InitializeIndirection[#this] : &:r1590_6
-# 1590|     v1590_8(void)                                 = NoOp                         : 
-# 1590|     v1590_9(void)                                 = ReturnIndirection[#this]     : &:r1590_6, ~m?
-# 1590|     v1590_10(void)                                = ReturnVoid                   : 
-# 1590|     v1590_11(void)                                = AliasedUse                   : ~m?
-# 1590|     v1590_12(void)                                = ExitFunction                 : 
+# 1590|     v1590_1(void)                                 = EnterFunction                   : 
+# 1590|     mu1590_2(unknown)                             = AliasedDefinition               : 
+# 1590|     mu1590_3(unknown)                             = InitializeNonLocal              : 
+# 1590|     r1590_4(glval<unknown>)                       = VariableAddress[#this]          : 
+# 1590|     mu1590_5(glval<StructuredBindingTupleRefGet>) = InitializeParameter[#this]      : &:r1590_4
+# 1590|     r1590_6(glval<StructuredBindingTupleRefGet>)  = Load[#this]                     : &:r1590_4, ~m?
+# 1590|     mu1590_7(StructuredBindingTupleRefGet)        = InitializeIndirection[#this]    : &:r1590_6
+# 1590|     r1590_8(glval<unknown>)                       = FunctionAddress[i]              : 
+# 1590|     v1590_9(void)                                 = Call[i]                         : func:r1590_8, this:r1590_6
+# 1590|     mu1590_10(unknown)                            = ^CallSideEffect                 : ~m?
+# 1590|     v1590_11(void)                                = ^IndirectReadSideEffect[-1]     : &:r1590_6, ~m?
+# 1590|     mu1590_12(StructuredBindingTupleRefGet)       = ^IndirectMayWriteSideEffect[-1] : &:r1590_6
+# 1590|     r1590_13(glval<unknown>)                      = FunctionAddress[d]              : 
+# 1590|     v1590_14(void)                                = Call[d]                         : func:r1590_13, this:r1590_6
+# 1590|     mu1590_15(unknown)                            = ^CallSideEffect                 : ~m?
+# 1590|     v1590_16(void)                                = ^IndirectReadSideEffect[-1]     : &:r1590_6, ~m?
+# 1590|     mu1590_17(StructuredBindingTupleRefGet)       = ^IndirectMayWriteSideEffect[-1] : &:r1590_6
+# 1590|     r1590_18(glval<unknown>)                      = FunctionAddress[r]              : 
+# 1590|     v1590_19(void)                                = Call[r]                         : func:r1590_18, this:r1590_6
+# 1590|     mu1590_20(unknown)                            = ^CallSideEffect                 : ~m?
+# 1590|     v1590_21(void)                                = ^IndirectReadSideEffect[-1]     : &:r1590_6, ~m?
+# 1590|     mu1590_22(StructuredBindingTupleRefGet)       = ^IndirectMayWriteSideEffect[-1] : &:r1590_6
+# 1590|     v1590_23(void)                                = NoOp                            : 
+# 1590|     v1590_24(void)                                = ReturnIndirection[#this]        : &:r1590_6, ~m?
+# 1590|     v1590_25(void)                                = ReturnVoid                      : 
+# 1590|     v1590_26(void)                                = AliasedUse                      : ~m?
+# 1590|     v1590_27(void)                                = ExitFunction                    : 
 
 # 1590| void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet(StructuredBindingTupleRefGet const&)
 # 1590|   Block 0
@@ -11674,6 +11842,56 @@ ir.cpp:
 # 1590|     v1590_31(void)                                  = ReturnVoid                                   : 
 # 1590|     v1590_32(void)                                  = AliasedUse                                   : ~m?
 # 1590|     v1590_33(void)                                  = ExitFunction                                 : 
+
+# 1591| int StructuredBindingTupleRefGet::i
+# 1591|   Block 0
+# 1591|     v1591_1(void)                                 = EnterFunction                : 
+# 1591|     mu1591_2(unknown)                             = AliasedDefinition            : 
+# 1591|     mu1591_3(unknown)                             = InitializeNonLocal           : 
+# 1591|     r1591_4(glval<unknown>)                       = VariableAddress[#this]       : 
+# 1591|     mu1591_5(glval<StructuredBindingTupleRefGet>) = InitializeParameter[#this]   : &:r1591_4
+# 1591|     r1591_6(glval<StructuredBindingTupleRefGet>)  = Load[#this]                  : &:r1591_4, ~m?
+# 1591|     mu1591_7(StructuredBindingTupleRefGet)        = InitializeIndirection[#this] : &:r1591_6
+# 1591|     r1591_8(glval<int>)                           = FieldAddress[i]              : r1591_6
+# 1591|     r1591_9(int)                                  = Constant[1]                  : 
+# 1591|     mu1591_10(int)                                = Store[?]                     : &:r1591_8, r1591_9
+# 1591|     v1591_11(void)                                = ReturnVoid                   : 
+# 1591|     v1591_12(void)                                = AliasedUse                   : ~m?
+# 1591|     v1591_13(void)                                = ExitFunction                 : 
+
+# 1592| double StructuredBindingTupleRefGet::d
+# 1592|   Block 0
+# 1592|     v1592_1(void)                                 = EnterFunction                  : 
+# 1592|     mu1592_2(unknown)                             = AliasedDefinition              : 
+# 1592|     mu1592_3(unknown)                             = InitializeNonLocal             : 
+# 1592|     r1592_4(glval<unknown>)                       = VariableAddress[#this]         : 
+# 1592|     mu1592_5(glval<StructuredBindingTupleRefGet>) = InitializeParameter[#this]     : &:r1592_4
+# 1592|     r1592_6(glval<StructuredBindingTupleRefGet>)  = Load[#this]                    : &:r1592_4, ~m?
+# 1592|     mu1592_7(StructuredBindingTupleRefGet)        = InitializeIndirection[#this]   : &:r1592_6
+# 1592|     r1592_8(glval<double>)                        = FieldAddress[d]                : r1592_6
+# 1592|     r1592_9(double)                               = Constant[2.200000000000000178] : 
+# 1592|     mu1592_10(double)                             = Store[?]                       : &:r1592_8, r1592_9
+# 1592|     v1592_11(void)                                = ReturnVoid                     : 
+# 1592|     v1592_12(void)                                = AliasedUse                     : ~m?
+# 1592|     v1592_13(void)                                = ExitFunction                   : 
+
+# 1593| int& StructuredBindingTupleRefGet::r
+# 1593|   Block 0
+# 1593|     v1593_1(void)                                 = EnterFunction                : 
+# 1593|     mu1593_2(unknown)                             = AliasedDefinition            : 
+# 1593|     mu1593_3(unknown)                             = InitializeNonLocal           : 
+# 1593|     r1593_4(glval<unknown>)                       = VariableAddress[#this]       : 
+# 1593|     mu1593_5(glval<StructuredBindingTupleRefGet>) = InitializeParameter[#this]   : &:r1593_4
+# 1593|     r1593_6(glval<StructuredBindingTupleRefGet>)  = Load[#this]                  : &:r1593_4, ~m?
+# 1593|     mu1593_7(StructuredBindingTupleRefGet)        = InitializeIndirection[#this] : &:r1593_6
+# 1593|     r1593_8(glval<int &>)                         = FieldAddress[r]              : r1593_6
+# 1593|     r1593_9(StructuredBindingTupleRefGet *)       = CopyValue                    : r1593_6
+# 1593|     r1593_10(glval<int>)                          = FieldAddress[i]              : r1593_9
+#-----|     r0_1(int &)                                   = CopyValue                    : r1593_10
+#-----|     mu0_2(int &)                                  = Store[?]                     : &:r1593_8, r0_1
+# 1593|     v1593_11(void)                                = ReturnVoid                   : 
+# 1593|     v1593_12(void)                                = AliasedUse                   : ~m?
+# 1593|     v1593_13(void)                                = ExitFunction                 : 
 
 # 1618| std::tuple_element<int 0, StructuredBindingTupleRefGet>::type& StructuredBindingTupleRefGet::get<int 0>()
 # 1618|   Block 0
@@ -11890,18 +12108,62 @@ ir.cpp:
 
 # 1657| void StructuredBindingTupleNoRefGet::StructuredBindingTupleNoRefGet()
 # 1657|   Block 0
-# 1657|     v1657_1(void)                                   = EnterFunction                : 
-# 1657|     mu1657_2(unknown)                               = AliasedDefinition            : 
-# 1657|     mu1657_3(unknown)                               = InitializeNonLocal           : 
-# 1657|     r1657_4(glval<unknown>)                         = VariableAddress[#this]       : 
-# 1657|     mu1657_5(glval<StructuredBindingTupleNoRefGet>) = InitializeParameter[#this]   : &:r1657_4
-# 1657|     r1657_6(glval<StructuredBindingTupleNoRefGet>)  = Load[#this]                  : &:r1657_4, ~m?
-# 1657|     mu1657_7(StructuredBindingTupleNoRefGet)        = InitializeIndirection[#this] : &:r1657_6
-# 1657|     v1657_8(void)                                   = NoOp                         : 
-# 1657|     v1657_9(void)                                   = ReturnIndirection[#this]     : &:r1657_6, ~m?
-# 1657|     v1657_10(void)                                  = ReturnVoid                   : 
-# 1657|     v1657_11(void)                                  = AliasedUse                   : ~m?
-# 1657|     v1657_12(void)                                  = ExitFunction                 : 
+# 1657|     v1657_1(void)                                   = EnterFunction                   : 
+# 1657|     mu1657_2(unknown)                               = AliasedDefinition               : 
+# 1657|     mu1657_3(unknown)                               = InitializeNonLocal              : 
+# 1657|     r1657_4(glval<unknown>)                         = VariableAddress[#this]          : 
+# 1657|     mu1657_5(glval<StructuredBindingTupleNoRefGet>) = InitializeParameter[#this]      : &:r1657_4
+# 1657|     r1657_6(glval<StructuredBindingTupleNoRefGet>)  = Load[#this]                     : &:r1657_4, ~m?
+# 1657|     mu1657_7(StructuredBindingTupleNoRefGet)        = InitializeIndirection[#this]    : &:r1657_6
+# 1657|     r1657_8(glval<unknown>)                         = FunctionAddress[i]              : 
+# 1657|     v1657_9(void)                                   = Call[i]                         : func:r1657_8, this:r1657_6
+# 1657|     mu1657_10(unknown)                              = ^CallSideEffect                 : ~m?
+# 1657|     v1657_11(void)                                  = ^IndirectReadSideEffect[-1]     : &:r1657_6, ~m?
+# 1657|     mu1657_12(StructuredBindingTupleNoRefGet)       = ^IndirectMayWriteSideEffect[-1] : &:r1657_6
+# 1657|     r1657_13(glval<unknown>)                        = FunctionAddress[r]              : 
+# 1657|     v1657_14(void)                                  = Call[r]                         : func:r1657_13, this:r1657_6
+# 1657|     mu1657_15(unknown)                              = ^CallSideEffect                 : ~m?
+# 1657|     v1657_16(void)                                  = ^IndirectReadSideEffect[-1]     : &:r1657_6, ~m?
+# 1657|     mu1657_17(StructuredBindingTupleNoRefGet)       = ^IndirectMayWriteSideEffect[-1] : &:r1657_6
+# 1657|     v1657_18(void)                                  = NoOp                            : 
+# 1657|     v1657_19(void)                                  = ReturnIndirection[#this]        : &:r1657_6, ~m?
+# 1657|     v1657_20(void)                                  = ReturnVoid                      : 
+# 1657|     v1657_21(void)                                  = AliasedUse                      : ~m?
+# 1657|     v1657_22(void)                                  = ExitFunction                    : 
+
+# 1658| int StructuredBindingTupleNoRefGet::i
+# 1658|   Block 0
+# 1658|     v1658_1(void)                                   = EnterFunction                : 
+# 1658|     mu1658_2(unknown)                               = AliasedDefinition            : 
+# 1658|     mu1658_3(unknown)                               = InitializeNonLocal           : 
+# 1658|     r1658_4(glval<unknown>)                         = VariableAddress[#this]       : 
+# 1658|     mu1658_5(glval<StructuredBindingTupleNoRefGet>) = InitializeParameter[#this]   : &:r1658_4
+# 1658|     r1658_6(glval<StructuredBindingTupleNoRefGet>)  = Load[#this]                  : &:r1658_4, ~m?
+# 1658|     mu1658_7(StructuredBindingTupleNoRefGet)        = InitializeIndirection[#this] : &:r1658_6
+# 1658|     r1658_8(glval<int>)                             = FieldAddress[i]              : r1658_6
+# 1658|     r1658_9(int)                                    = Constant[1]                  : 
+# 1658|     mu1658_10(int)                                  = Store[?]                     : &:r1658_8, r1658_9
+# 1658|     v1658_11(void)                                  = ReturnVoid                   : 
+# 1658|     v1658_12(void)                                  = AliasedUse                   : ~m?
+# 1658|     v1658_13(void)                                  = ExitFunction                 : 
+
+# 1659| int& StructuredBindingTupleNoRefGet::r
+# 1659|   Block 0
+# 1659|     v1659_1(void)                                   = EnterFunction                : 
+# 1659|     mu1659_2(unknown)                               = AliasedDefinition            : 
+# 1659|     mu1659_3(unknown)                               = InitializeNonLocal           : 
+# 1659|     r1659_4(glval<unknown>)                         = VariableAddress[#this]       : 
+# 1659|     mu1659_5(glval<StructuredBindingTupleNoRefGet>) = InitializeParameter[#this]   : &:r1659_4
+# 1659|     r1659_6(glval<StructuredBindingTupleNoRefGet>)  = Load[#this]                  : &:r1659_4, ~m?
+# 1659|     mu1659_7(StructuredBindingTupleNoRefGet)        = InitializeIndirection[#this] : &:r1659_6
+# 1659|     r1659_8(glval<int &>)                           = FieldAddress[r]              : r1659_6
+# 1659|     r1659_9(StructuredBindingTupleNoRefGet *)       = CopyValue                    : r1659_6
+# 1659|     r1659_10(glval<int>)                            = FieldAddress[i]              : r1659_9
+#-----|     r0_1(int &)                                     = CopyValue                    : r1659_10
+#-----|     mu0_2(int &)                                    = Store[?]                     : &:r1659_8, r0_1
+# 1659|     v1659_11(void)                                  = ReturnVoid                   : 
+# 1659|     v1659_12(void)                                  = AliasedUse                   : ~m?
+# 1659|     v1659_13(void)                                  = ExitFunction                 : 
 
 # 1684| std::tuple_element<int 0, StructuredBindingTupleNoRefGet>::type StructuredBindingTupleNoRefGet::get<int 0>()
 # 1684|   Block 0
@@ -19199,6 +19461,321 @@ ir.cpp:
 # 2886|     v2886_1(void)       = NoOp                          : 
 # 2867|     v2867_13(void)      = ReturnVoid                    : 
 #-----|   Goto -> Block 1
+
+# 2890| int StructInit::i
+# 2890|   Block 0
+# 2890|     v2890_1(void)               = EnterFunction                : 
+# 2890|     mu2890_2(unknown)           = AliasedDefinition            : 
+# 2890|     mu2890_3(unknown)           = InitializeNonLocal           : 
+# 2890|     r2890_4(glval<unknown>)     = VariableAddress[#this]       : 
+# 2890|     mu2890_5(glval<StructInit>) = InitializeParameter[#this]   : &:r2890_4
+# 2890|     r2890_6(glval<StructInit>)  = Load[#this]                  : &:r2890_4, ~m?
+# 2890|     mu2890_7(StructInit)        = InitializeIndirection[#this] : &:r2890_6
+# 2890|     r2890_8(glval<int>)         = FieldAddress[i]              : r2890_6
+# 2890|     r2890_9(int)                = Constant[42]                 : 
+# 2890|     mu2890_10(int)              = Store[?]                     : &:r2890_8, r2890_9
+# 2890|     v2890_11(void)              = ReturnVoid                   : 
+# 2890|     v2890_12(void)              = AliasedUse                   : ~m?
+# 2890|     v2890_13(void)              = ExitFunction                 : 
+
+# 2891| int StructInit::j
+# 2891|   Block 0
+# 2891|     v2891_1(void)               = EnterFunction                : 
+# 2891|     mu2891_2(unknown)           = AliasedDefinition            : 
+# 2891|     mu2891_3(unknown)           = InitializeNonLocal           : 
+# 2891|     r2891_4(glval<unknown>)     = VariableAddress[#this]       : 
+# 2891|     mu2891_5(glval<StructInit>) = InitializeParameter[#this]   : &:r2891_4
+# 2891|     r2891_6(glval<StructInit>)  = Load[#this]                  : &:r2891_4, ~m?
+# 2891|     mu2891_7(StructInit)        = InitializeIndirection[#this] : &:r2891_6
+# 2891|     r2891_8(glval<int>)         = FieldAddress[j]              : r2891_6
+# 2891|     r2891_9(int)                = Constant[42]                 : 
+# 2891|     mu2891_10(int)              = Store[?]                     : &:r2891_8, r2891_9
+# 2891|     v2891_11(void)              = ReturnVoid                   : 
+# 2891|     v2891_12(void)              = AliasedUse                   : ~m?
+# 2891|     v2891_13(void)              = ExitFunction                 : 
+
+# 2892| int StructInit::k
+# 2892|   Block 0
+# 2892|     v2892_1(void)               = EnterFunction                : 
+# 2892|     mu2892_2(unknown)           = AliasedDefinition            : 
+# 2892|     mu2892_3(unknown)           = InitializeNonLocal           : 
+# 2892|     r2892_4(glval<unknown>)     = VariableAddress[#this]       : 
+# 2892|     mu2892_5(glval<StructInit>) = InitializeParameter[#this]   : &:r2892_4
+# 2892|     r2892_6(glval<StructInit>)  = Load[#this]                  : &:r2892_4, ~m?
+# 2892|     mu2892_7(StructInit)        = InitializeIndirection[#this] : &:r2892_6
+# 2892|     r2892_8(glval<int>)         = FieldAddress[k]              : r2892_6
+# 2892|     r2892_9(int)                = Constant[42]                 : 
+# 2892|     mu2892_10(int)              = Store[?]                     : &:r2892_8, r2892_9
+# 2892|     v2892_11(void)              = ReturnVoid                   : 
+# 2892|     v2892_12(void)              = AliasedUse                   : ~m?
+# 2892|     v2892_13(void)              = ExitFunction                 : 
+
+# 2893| int StructInit::l
+# 2893|   Block 0
+# 2893|     v2893_1(void)               = EnterFunction                : 
+# 2893|     mu2893_2(unknown)           = AliasedDefinition            : 
+# 2893|     mu2893_3(unknown)           = InitializeNonLocal           : 
+# 2893|     r2893_4(glval<unknown>)     = VariableAddress[#this]       : 
+# 2893|     mu2893_5(glval<StructInit>) = InitializeParameter[#this]   : &:r2893_4
+# 2893|     r2893_6(glval<StructInit>)  = Load[#this]                  : &:r2893_4, ~m?
+# 2893|     mu2893_7(StructInit)        = InitializeIndirection[#this] : &:r2893_6
+# 2893|     r2893_8(glval<int>)         = FieldAddress[l]              : r2893_6
+# 2893|     r2893_9(StructInit *)       = CopyValue                    : r2893_6
+# 2893|     r2893_10(glval<int>)        = FieldAddress[k]              : r2893_9
+# 2893|     r2893_11(int)               = Load[?]                      : &:r2893_10, ~m?
+# 2893|     mu2893_12(int)              = Store[?]                     : &:r2893_8, r2893_11
+# 2893|     v2893_13(void)              = ReturnVoid                   : 
+# 2893|     v2893_14(void)              = AliasedUse                   : ~m?
+# 2893|     v2893_15(void)              = ExitFunction                 : 
+
+# 2894| int StructInit::m
+# 2894|   Block 0
+# 2894|     v2894_1(void)               = EnterFunction                   : 
+# 2894|     mu2894_2(unknown)           = AliasedDefinition               : 
+# 2894|     mu2894_3(unknown)           = InitializeNonLocal              : 
+# 2894|     r2894_4(glval<unknown>)     = VariableAddress[#this]          : 
+# 2894|     mu2894_5(glval<StructInit>) = InitializeParameter[#this]      : &:r2894_4
+# 2894|     r2894_6(glval<StructInit>)  = Load[#this]                     : &:r2894_4, ~m?
+# 2894|     mu2894_7(StructInit)        = InitializeIndirection[#this]    : &:r2894_6
+# 2894|     r2894_8(glval<int>)         = FieldAddress[m]                 : r2894_6
+# 2894|     r2894_9(StructInit *)       = CopyValue                       : r2894_6
+# 2894|     r2894_10(glval<unknown>)    = FunctionAddress[get_val]        : 
+# 2894|     r2894_11(int)               = Call[get_val]                   : func:r2894_10, this:r2894_9
+# 2894|     mu2894_12(unknown)          = ^CallSideEffect                 : ~m?
+# 2894|     v2894_13(void)              = ^IndirectReadSideEffect[-1]     : &:r2894_9, ~m?
+# 2894|     mu2894_14(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2894_9
+# 2894|     mu2894_15(int)              = Store[?]                        : &:r2894_8, r2894_11
+# 2894|     v2894_16(void)              = ReturnVoid                      : 
+# 2894|     v2894_17(void)              = AliasedUse                      : ~m?
+# 2894|     v2894_18(void)              = ExitFunction                    : 
+
+# 2895| int StructInit::n
+# 2895|   Block 0
+# 2895|     v2895_1(void)               = EnterFunction                : 
+# 2895|     mu2895_2(unknown)           = AliasedDefinition            : 
+# 2895|     mu2895_3(unknown)           = InitializeNonLocal           : 
+# 2895|     r2895_4(glval<unknown>)     = VariableAddress[#this]       : 
+# 2895|     mu2895_5(glval<StructInit>) = InitializeParameter[#this]   : &:r2895_4
+# 2895|     r2895_6(glval<StructInit>)  = Load[#this]                  : &:r2895_4, ~m?
+# 2895|     mu2895_7(StructInit)        = InitializeIndirection[#this] : &:r2895_6
+# 2895|     r2895_8(glval<int>)         = FieldAddress[n]              : r2895_6
+# 2895|     r2895_9(int)                = Constant[42]                 : 
+# 2895|     mu2895_10(int)              = Store[?]                     : &:r2895_8, r2895_9
+# 2895|     v2895_11(void)              = ReturnVoid                   : 
+# 2895|     v2895_12(void)              = AliasedUse                   : ~m?
+# 2895|     v2895_13(void)              = ExitFunction                 : 
+
+# 2897| void StructInit::StructInit(int)
+# 2897|   Block 0
+# 2897|     v2897_1(void)               = EnterFunction                   : 
+# 2897|     mu2897_2(unknown)           = AliasedDefinition               : 
+# 2897|     mu2897_3(unknown)           = InitializeNonLocal              : 
+# 2897|     r2897_4(glval<unknown>)     = VariableAddress[#this]          : 
+# 2897|     mu2897_5(glval<StructInit>) = InitializeParameter[#this]      : &:r2897_4
+# 2897|     r2897_6(glval<StructInit>)  = Load[#this]                     : &:r2897_4, ~m?
+# 2897|     mu2897_7(StructInit)        = InitializeIndirection[#this]    : &:r2897_6
+# 2897|     r2897_8(glval<int>)         = VariableAddress[j]              : 
+# 2897|     mu2897_9(int)               = InitializeParameter[j]          : &:r2897_8
+# 2897|     r2897_10(glval<unknown>)    = FunctionAddress[i]              : 
+# 2897|     v2897_11(void)              = Call[i]                         : func:r2897_10, this:r2897_6
+# 2897|     mu2897_12(unknown)          = ^CallSideEffect                 : ~m?
+# 2897|     v2897_13(void)              = ^IndirectReadSideEffect[-1]     : &:r2897_6, ~m?
+# 2897|     mu2897_14(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2897_6
+# 2897|     r2897_15(glval<int>)        = FieldAddress[j]                 : r2897_6
+# 2897|     r2897_16(glval<int>)        = VariableAddress[j]              : 
+# 2897|     r2897_17(int)               = Load[j]                         : &:r2897_16, ~m?
+# 2897|     mu2897_18(int)              = Store[?]                        : &:r2897_15, r2897_17
+# 2897|     r2897_19(glval<unknown>)    = FunctionAddress[k]              : 
+# 2897|     v2897_20(void)              = Call[k]                         : func:r2897_19, this:r2897_6
+# 2897|     mu2897_21(unknown)          = ^CallSideEffect                 : ~m?
+# 2897|     v2897_22(void)              = ^IndirectReadSideEffect[-1]     : &:r2897_6, ~m?
+# 2897|     mu2897_23(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2897_6
+# 2897|     r2897_24(glval<unknown>)    = FunctionAddress[l]              : 
+# 2897|     v2897_25(void)              = Call[l]                         : func:r2897_24, this:r2897_6
+# 2897|     mu2897_26(unknown)          = ^CallSideEffect                 : ~m?
+# 2897|     v2897_27(void)              = ^IndirectReadSideEffect[-1]     : &:r2897_6, ~m?
+# 2897|     mu2897_28(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2897_6
+# 2897|     r2897_29(glval<unknown>)    = FunctionAddress[m]              : 
+# 2897|     v2897_30(void)              = Call[m]                         : func:r2897_29, this:r2897_6
+# 2897|     mu2897_31(unknown)          = ^CallSideEffect                 : ~m?
+# 2897|     v2897_32(void)              = ^IndirectReadSideEffect[-1]     : &:r2897_6, ~m?
+# 2897|     mu2897_33(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2897_6
+# 2897|     r2897_34(glval<int>)        = FieldAddress[n]                 : r2897_6
+# 2897|     r2897_35(glval<unknown>)    = VariableAddress[#this]          : 
+# 2897|     r2897_36(StructInit *)      = Load[#this]                     : &:r2897_35, ~m?
+# 2897|     r2897_37(glval<unknown>)    = FunctionAddress[get_val]        : 
+# 2897|     r2897_38(int)               = Call[get_val]                   : func:r2897_37, this:r2897_36
+# 2897|     mu2897_39(unknown)          = ^CallSideEffect                 : ~m?
+# 2897|     v2897_40(void)              = ^IndirectReadSideEffect[-1]     : &:r2897_36, ~m?
+# 2897|     mu2897_41(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2897_36
+# 2897|     mu2897_42(int)              = Store[?]                        : &:r2897_34, r2897_38
+# 2897|     v2897_43(void)              = NoOp                            : 
+# 2897|     v2897_44(void)              = ReturnIndirection[#this]        : &:r2897_6, ~m?
+# 2897|     v2897_45(void)              = ReturnVoid                      : 
+# 2897|     v2897_46(void)              = AliasedUse                      : ~m?
+# 2897|     v2897_47(void)              = ExitFunction                    : 
+
+# 2899| void StructInit::StructInit()
+# 2899|   Block 0
+# 2899|     v2899_1(void)               = EnterFunction                   : 
+# 2899|     mu2899_2(unknown)           = AliasedDefinition               : 
+# 2899|     mu2899_3(unknown)           = InitializeNonLocal              : 
+# 2899|     r2899_4(glval<unknown>)     = VariableAddress[#this]          : 
+# 2899|     mu2899_5(glval<StructInit>) = InitializeParameter[#this]      : &:r2899_4
+# 2899|     r2899_6(glval<StructInit>)  = Load[#this]                     : &:r2899_4, ~m?
+# 2899|     mu2899_7(StructInit)        = InitializeIndirection[#this]    : &:r2899_6
+# 2899|     r2899_8(glval<int>)         = FieldAddress[i]                 : r2899_6
+# 2899|     r2899_9(int)                = Constant[41]                    : 
+# 2899|     mu2899_10(int)              = Store[?]                        : &:r2899_8, r2899_9
+# 2899|     r2899_11(glval<unknown>)    = FunctionAddress[j]              : 
+# 2899|     v2899_12(void)              = Call[j]                         : func:r2899_11, this:r2899_6
+# 2899|     mu2899_13(unknown)          = ^CallSideEffect                 : ~m?
+# 2899|     v2899_14(void)              = ^IndirectReadSideEffect[-1]     : &:r2899_6, ~m?
+# 2899|     mu2899_15(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2899_6
+# 2899|     r2899_16(glval<int>)        = FieldAddress[k]                 : r2899_6
+# 2899|     r2899_17(int)               = Constant[41]                    : 
+# 2899|     mu2899_18(int)              = Store[?]                        : &:r2899_16, r2899_17
+# 2899|     r2899_19(glval<unknown>)    = FunctionAddress[l]              : 
+# 2899|     v2899_20(void)              = Call[l]                         : func:r2899_19, this:r2899_6
+# 2899|     mu2899_21(unknown)          = ^CallSideEffect                 : ~m?
+# 2899|     v2899_22(void)              = ^IndirectReadSideEffect[-1]     : &:r2899_6, ~m?
+# 2899|     mu2899_23(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2899_6
+# 2899|     r2899_24(glval<unknown>)    = FunctionAddress[m]              : 
+# 2899|     v2899_25(void)              = Call[m]                         : func:r2899_24, this:r2899_6
+# 2899|     mu2899_26(unknown)          = ^CallSideEffect                 : ~m?
+# 2899|     v2899_27(void)              = ^IndirectReadSideEffect[-1]     : &:r2899_6, ~m?
+# 2899|     mu2899_28(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2899_6
+# 2899|     r2899_29(glval<unknown>)    = FunctionAddress[n]              : 
+# 2899|     v2899_30(void)              = Call[n]                         : func:r2899_29, this:r2899_6
+# 2899|     mu2899_31(unknown)          = ^CallSideEffect                 : ~m?
+# 2899|     v2899_32(void)              = ^IndirectReadSideEffect[-1]     : &:r2899_6, ~m?
+# 2899|     mu2899_33(StructInit)       = ^IndirectMayWriteSideEffect[-1] : &:r2899_6
+# 2899|     v2899_34(void)              = NoOp                            : 
+# 2899|     v2899_35(void)              = ReturnIndirection[#this]        : &:r2899_6, ~m?
+# 2899|     v2899_36(void)              = ReturnVoid                      : 
+# 2899|     v2899_37(void)              = AliasedUse                      : ~m?
+# 2899|     v2899_38(void)              = ExitFunction                    : 
+
+# 2901| int StructInit::get_val()
+# 2901|   Block 0
+# 2901|     v2901_1(void)               = EnterFunction                : 
+# 2901|     mu2901_2(unknown)           = AliasedDefinition            : 
+# 2901|     mu2901_3(unknown)           = InitializeNonLocal           : 
+# 2901|     r2901_4(glval<unknown>)     = VariableAddress[#this]       : 
+# 2901|     mu2901_5(glval<StructInit>) = InitializeParameter[#this]   : &:r2901_4
+# 2901|     r2901_6(glval<StructInit>)  = Load[#this]                  : &:r2901_4, ~m?
+# 2901|     mu2901_7(StructInit)        = InitializeIndirection[#this] : &:r2901_6
+# 2901|     r2901_8(glval<int>)         = VariableAddress[#return]     : 
+# 2901|     r2901_9(glval<unknown>)     = VariableAddress[#this]       : 
+# 2901|     r2901_10(StructInit *)      = Load[#this]                  : &:r2901_9, ~m?
+# 2901|     r2901_11(glval<int>)        = FieldAddress[k]              : r2901_10
+# 2901|     r2901_12(int)               = Load[?]                      : &:r2901_11, ~m?
+# 2901|     mu2901_13(int)              = Store[#return]               : &:r2901_8, r2901_12
+# 2901|     v2901_14(void)              = ReturnIndirection[#this]     : &:r2901_6, ~m?
+# 2901|     r2901_15(glval<int>)        = VariableAddress[#return]     : 
+# 2901|     v2901_16(void)              = ReturnValue                  : &:r2901_15, ~m?
+# 2901|     v2901_17(void)              = AliasedUse                   : ~m?
+# 2901|     v2901_18(void)              = ExitFunction                 : 
+
+# 2905| void StructInitFromTemplate<int>::StructInitFromTemplate()
+# 2905|   Block 0
+# 2905|     v2905_1(void)                                = EnterFunction                   : 
+# 2905|     mu2905_2(unknown)                            = AliasedDefinition               : 
+# 2905|     mu2905_3(unknown)                            = InitializeNonLocal              : 
+# 2905|     r2905_4(glval<unknown>)                      = VariableAddress[#this]          : 
+# 2905|     mu2905_5(glval<StructInitFromTemplate<int>>) = InitializeParameter[#this]      : &:r2905_4
+# 2905|     r2905_6(glval<StructInitFromTemplate<int>>)  = Load[#this]                     : &:r2905_4, ~m?
+# 2905|     mu2905_7(StructInitFromTemplate<int>)        = InitializeIndirection[#this]    : &:r2905_6
+# 2905|     r2905_8(glval<unknown>)                      = FunctionAddress[t]              : 
+# 2905|     v2905_9(void)                                = Call[t]                         : func:r2905_8, this:r2905_6
+# 2905|     mu2905_10(unknown)                           = ^CallSideEffect                 : ~m?
+# 2905|     v2905_11(void)                               = ^IndirectReadSideEffect[-1]     : &:r2905_6, ~m?
+# 2905|     mu2905_12(StructInitFromTemplate<int>)       = ^IndirectMayWriteSideEffect[-1] : &:r2905_6
+# 2905|     v2905_13(void)                               = NoOp                            : 
+# 2905|     v2905_14(void)                               = ReturnIndirection[#this]        : &:r2905_6, ~m?
+# 2905|     v2905_15(void)                               = ReturnVoid                      : 
+# 2905|     v2905_16(void)                               = AliasedUse                      : ~m?
+# 2905|     v2905_17(void)                               = ExitFunction                    : 
+
+# 2906| int StructInitFromTemplate<int>::t
+# 2906|   Block 0
+# 2906|     v2906_1(void)                                = EnterFunction                 : 
+# 2906|     mu2906_2(unknown)                            = AliasedDefinition             : 
+# 2906|     mu2906_3(unknown)                            = InitializeNonLocal            : 
+# 2906|     r2906_4(glval<unknown>)                      = VariableAddress[#this]        : 
+# 2906|     mu2906_5(glval<StructInitFromTemplate<int>>) = InitializeParameter[#this]    : &:r2906_4
+# 2906|     r2906_6(glval<StructInitFromTemplate<int>>)  = Load[#this]                   : &:r2906_4, ~m?
+# 2906|     mu2906_7(StructInitFromTemplate<int>)        = InitializeIndirection[#this]  : &:r2906_6
+# 2906|     r2906_8(glval<int>)                          = FieldAddress[t]               : r2906_6
+# 2906|     r2906_9(glval<int>)                          = VariableAddress[#temp2906:11] : 
+# 2906|     r2906_10(int)                                = Constant[0]                   : 
+# 2906|     mu2906_11(int)                               = Store[#temp2906:11]           : &:r2906_9, r2906_10
+# 2906|     r2906_12(int)                                = Load[#temp2906:11]            : &:r2906_9, ~m?
+# 2906|     mu2906_13(int)                               = Store[?]                      : &:r2906_8, r2906_12
+# 2906|     v2906_14(void)                               = ReturnVoid                    : 
+# 2906|     v2906_15(void)                               = AliasedUse                    : ~m?
+# 2906|     v2906_16(void)                               = ExitFunction                  : 
+
+# 2909| StructInitFromTemplate<int> StructInitFromTemplateVar
+# 2909|   Block 0
+# 2909|     v2909_1(void)                               = EnterFunction                              : 
+# 2909|     mu2909_2(unknown)                           = AliasedDefinition                          : 
+# 2909|     r2909_3(glval<StructInitFromTemplate<int>>) = VariableAddress[StructInitFromTemplateVar] : 
+#-----|     r0_1(glval<StructInitFromTemplate<int>>)    = VariableAddress[#temp0:0]                  : 
+#-----|     mu0_2(StructInitFromTemplate<int>)          = Uninitialized[#temp0:0]                    : &:r0_1
+#-----|     r0_3(glval<unknown>)                        = FunctionAddress[StructInitFromTemplate]    : 
+#-----|     v0_4(void)                                  = Call[StructInitFromTemplate]               : func:r0_3, this:r0_1
+#-----|     mu0_5(unknown)                              = ^CallSideEffect                            : ~m?
+#-----|     mu0_6(StructInitFromTemplate<int>)          = ^IndirectMayWriteSideEffect[-1]            : &:r0_1
+#-----|     r0_7(StructInitFromTemplate<int>)           = Load[#temp0:0]                             : &:r0_1, ~m?
+#-----|     mu0_8(StructInitFromTemplate<int>)          = Store[StructInitFromTemplateVar]           : &:r2909_3, r0_7
+# 2909|     v2909_4(void)                               = ReturnVoid                                 : 
+# 2909|     v2909_5(void)                               = AliasedUse                                 : ~m?
+# 2909|     v2909_6(void)                               = ExitFunction                               : 
+
+# 2912| double VariableTemplate<double>
+# 2912|   Block 0
+# 2912|     v2912_1(void)          = EnterFunction                     : 
+# 2912|     mu2912_2(unknown)      = AliasedDefinition                 : 
+# 2912|     r2912_3(glval<double>) = VariableAddress[VariableTemplate] : 
+# 2912|     r2912_4(double)        = Constant[42.0]                    : 
+# 2912|     mu2912_5(double)       = Store[VariableTemplate]           : &:r2912_3, r2912_4
+# 2912|     v2912_6(void)          = ReturnVoid                        : 
+# 2912|     v2912_7(void)          = AliasedUse                        : ~m?
+# 2912|     v2912_8(void)          = ExitFunction                      : 
+
+# 2915| double VariableTemplateFunc<double>(double)
+# 2915|   Block 0
+# 2915|     v2915_1(void)          = EnterFunction            : 
+# 2915|     mu2915_2(unknown)      = AliasedDefinition        : 
+# 2915|     mu2915_3(unknown)      = InitializeNonLocal       : 
+# 2915|     r2915_4(glval<double>) = VariableAddress[x]       : 
+# 2915|     mu2915_5(double)       = InitializeParameter[x]   : &:r2915_4
+# 2916|     r2916_1(glval<double>) = VariableAddress[#return] : 
+# 2916|     r2916_2(double)        = Constant[42.0]           : 
+# 2916|     r2916_3(glval<double>) = VariableAddress[x]       : 
+# 2916|     r2916_4(double)        = Load[x]                  : &:r2916_3, ~m?
+# 2916|     r2916_5(double)        = Add                      : r2916_2, r2916_4
+# 2916|     mu2916_6(double)       = Store[#return]           : &:r2916_1, r2916_5
+# 2915|     r2915_6(glval<double>) = VariableAddress[#return] : 
+# 2915|     v2915_7(void)          = ReturnValue              : &:r2915_6, ~m?
+# 2915|     v2915_8(void)          = AliasedUse               : ~m?
+# 2915|     v2915_9(void)          = ExitFunction             : 
+
+# 2919| int VariableTemplateFuncUse
+# 2919|   Block 0
+# 2919|     v2919_1(void)           = EnterFunction                            : 
+# 2919|     mu2919_2(unknown)       = AliasedDefinition                        : 
+# 2919|     r2919_3(glval<int>)     = VariableAddress[VariableTemplateFuncUse] : 
+# 2919|     r2919_4(glval<unknown>) = FunctionAddress[VariableTemplateFunc]    : 
+# 2919|     r2919_5(double)         = Constant[2.299999999999999822]           : 
+# 2919|     r2919_6(double)         = Call[VariableTemplateFunc]               : func:r2919_4, 0:r2919_5
+# 2919|     mu2919_7(unknown)       = ^CallSideEffect                          : ~m?
+# 2919|     r2919_8(int)            = Convert                                  : r2919_6
+# 2919|     mu2919_9(int)           = Store[VariableTemplateFuncUse]           : &:r2919_3, r2919_8
+# 2919|     v2919_10(void)          = ReturnVoid                               : 
+# 2919|     v2919_11(void)          = AliasedUse                               : ~m?
+# 2919|     v2919_12(void)          = ExitFunction                             : 
 
 ir23.cpp:
 #    1| bool consteval_1()

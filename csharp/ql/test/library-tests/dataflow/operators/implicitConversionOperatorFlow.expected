@@ -1,0 +1,8 @@
+edges
+| ImplicitConversionOperator.cs:11:23:11:27 | [post] call to operator implicit conversion : ArraySegment<Byte> | ImplicitConversionOperator.cs:12:14:12:18 | access to local variable bytes | provenance |  |
+nodes
+| ImplicitConversionOperator.cs:11:23:11:27 | [post] call to operator implicit conversion : ArraySegment<Byte> | semmle.label | [post] call to operator implicit conversion : ArraySegment<Byte> |
+| ImplicitConversionOperator.cs:12:14:12:18 | access to local variable bytes | semmle.label | access to local variable bytes |
+subpaths
+#select
+| ImplicitConversionOperator.cs:12:14:12:18 | access to local variable bytes | ImplicitConversionOperator.cs:11:23:11:27 | [post] call to operator implicit conversion : ArraySegment<Byte> | ImplicitConversionOperator.cs:12:14:12:18 | access to local variable bytes | $@ | ImplicitConversionOperator.cs:11:23:11:27 | [post] call to operator implicit conversion : ArraySegment<Byte> | [post] call to operator implicit conversion : ArraySegment<Byte> |

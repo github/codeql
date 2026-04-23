@@ -277,7 +277,7 @@ bad_asts.cpp:
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Point &
 #   19|   <initializations>: 
-#   19|     getInitializer(0): [ConstructorFieldInit] constructor init of field x
+#   19|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field x
 #   19|         Type = [IntType] int
 #   19|         ValueCategory = prvalue
 #   19|       getExpr(): [ReferenceFieldAccess] x
@@ -289,7 +289,7 @@ bad_asts.cpp:
 #   19|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #   19|             Type = [SpecifiedType] const Point
 #   19|             ValueCategory = lvalue
-#   19|     getInitializer(1): [ConstructorFieldInit] constructor init of field y
+#   19|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field y
 #   19|         Type = [IntType] int
 #   19|         ValueCategory = prvalue
 #   19|       getExpr(): [ReferenceFieldAccess] y
@@ -8986,20 +8986,20 @@ ir.cpp:
 #  658| [Constructor] void C::C()
 #  658|   <params>: 
 #  658|   <initializations>: 
-#  659|     getInitializer(0): [ConstructorFieldInit] constructor init of field m_a
+#  659|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field m_a
 #  659|         Type = [IntType] int
 #  659|         ValueCategory = prvalue
 #  659|       getExpr(): [Literal] 1
 #  659|           Type = [IntType] int
 #  659|           Value = [Literal] 1
 #  659|           ValueCategory = prvalue
-#  663|     getInitializer(1): [ConstructorFieldInit] constructor init of field m_b
+#  663|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field m_b
 #  663|         Type = [Struct] String
 #  663|         ValueCategory = prvalue
 #  663|       getExpr(): [ConstructorCall] call to String
 #  663|           Type = [VoidType] void
 #  663|           ValueCategory = prvalue
-#  660|     getInitializer(2): [ConstructorFieldInit] constructor init of field m_c
+#  660|     getInitializer(2): [ConstructorDirectFieldInit] constructor init of field m_c
 #  660|         Type = [PlainCharType] char
 #  660|         ValueCategory = prvalue
 #  660|       getExpr(): [Literal] 3
@@ -9011,14 +9011,14 @@ ir.cpp:
 #  660|           Type = [PlainCharType] char
 #  660|           Value = [CStyleCast] 3
 #  660|           ValueCategory = prvalue
-#  661|     getInitializer(3): [ConstructorFieldInit] constructor init of field m_e
+#  661|     getInitializer(3): [ConstructorDirectFieldInit] constructor init of field m_e
 #  661|         Type = [VoidPointerType] void *
 #  661|         ValueCategory = prvalue
 #  661|       getExpr(): [Literal] 0
 #  661|           Type = [VoidPointerType] void *
 #  661|           Value = [Literal] 0
 #  661|           ValueCategory = prvalue
-#  662|     getInitializer(4): [ConstructorFieldInit] constructor init of field m_f
+#  662|     getInitializer(4): [ConstructorDirectFieldInit] constructor init of field m_f
 #  662|         Type = [Struct] String
 #  662|         ValueCategory = prvalue
 #  662|       getExpr(): [ConstructorCall] call to String
@@ -9474,7 +9474,7 @@ ir.cpp:
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const Base &
 #  745|   <initializations>: 
-#  745|     getInitializer(0): [ConstructorFieldInit] constructor init of field base_s
+#  745|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field base_s
 #  745|         Type = [Struct] String
 #  745|         ValueCategory = prvalue
 #  745|       getExpr(): [ConstructorCall] call to String
@@ -9485,7 +9485,7 @@ ir.cpp:
 #  748| [Constructor] void Base::Base()
 #  748|   <params>: 
 #  748|   <initializations>: 
-#  748|     getInitializer(0): [ConstructorFieldInit] constructor init of field base_s
+#  748|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field base_s
 #  748|         Type = [Struct] String
 #  748|         ValueCategory = prvalue
 #  748|       getExpr(): [ConstructorCall] call to String
@@ -9593,7 +9593,7 @@ ir.cpp:
 #  757|     getInitializer(0): [ConstructorDirectInit] call to Base
 #  757|         Type = [VoidType] void
 #  757|         ValueCategory = prvalue
-#  757|     getInitializer(1): [ConstructorFieldInit] constructor init of field middle_s
+#  757|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field middle_s
 #  757|         Type = [Struct] String
 #  757|         ValueCategory = prvalue
 #  757|       getExpr(): [ConstructorCall] call to String
@@ -9704,7 +9704,7 @@ ir.cpp:
 #  766|     getInitializer(0): [ConstructorDirectInit] call to Middle
 #  766|         Type = [VoidType] void
 #  766|         ValueCategory = prvalue
-#  766|     getInitializer(1): [ConstructorFieldInit] constructor init of field derived_s
+#  766|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field derived_s
 #  766|         Type = [Struct] String
 #  766|         ValueCategory = prvalue
 #  766|       getExpr(): [ConstructorCall] call to String
@@ -9743,7 +9743,7 @@ ir.cpp:
 #  775|     getInitializer(0): [ConstructorVirtualInit] call to Base
 #  775|         Type = [VoidType] void
 #  775|         ValueCategory = prvalue
-#  775|     getInitializer(1): [ConstructorFieldInit] constructor init of field middlevb1_s
+#  775|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field middlevb1_s
 #  775|         Type = [Struct] String
 #  775|         ValueCategory = prvalue
 #  775|       getExpr(): [ConstructorCall] call to String
@@ -9782,7 +9782,7 @@ ir.cpp:
 #  784|     getInitializer(0): [ConstructorVirtualInit] call to Base
 #  784|         Type = [VoidType] void
 #  784|         ValueCategory = prvalue
-#  784|     getInitializer(1): [ConstructorFieldInit] constructor init of field middlevb2_s
+#  784|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field middlevb2_s
 #  784|         Type = [Struct] String
 #  784|         ValueCategory = prvalue
 #  784|       getExpr(): [ConstructorCall] call to String
@@ -9827,7 +9827,7 @@ ir.cpp:
 #  793|     getInitializer(2): [ConstructorDirectInit] call to MiddleVB2
 #  793|         Type = [VoidType] void
 #  793|         ValueCategory = prvalue
-#  793|     getInitializer(3): [ConstructorFieldInit] constructor init of field derivedvb_s
+#  793|     getInitializer(3): [ConstructorDirectFieldInit] constructor init of field derivedvb_s
 #  793|         Type = [Struct] String
 #  793|         ValueCategory = prvalue
 #  793|       getExpr(): [ConstructorCall] call to String
@@ -15190,7 +15190,7 @@ ir.cpp:
 # 1508|     getInitializer(0): [ConstructorInit] constructor init
 # 1508|         Type = [Struct] Inheritance_Test_B
 # 1508|         ValueCategory = prvalue
-# 1508|     getInitializer(1): [ConstructorFieldInit] constructor init of field x
+# 1508|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field x
 # 1508|         Type = [IntType] int
 # 1508|         ValueCategory = prvalue
 # 1508|       getExpr(): [Literal] 42
@@ -15414,7 +15414,7 @@ ir.cpp:
 # 1533| [Constructor] void StructuredBindingDataMemberMemberStruct::StructuredBindingDataMemberMemberStruct()
 # 1533|   <params>: 
 # 1533|   <initializations>: 
-# 1533|     getInitializer(0): [ConstructorFieldInit] constructor init of field x
+# 1533|     getInitializer(0): [ConstructorDefaultFieldInit] constructor init of field x
 # 1533|         Type = [IntType] int
 # 1533|         ValueCategory = prvalue
 # 1533|   getEntryPoint(): [BlockStmt] { ... }
@@ -15434,25 +15434,25 @@ ir.cpp:
 # 1537| [Constructor] void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct()
 # 1537|   <params>: 
 # 1537|   <initializations>: 
-# 1537|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1537|     getInitializer(0): [ConstructorDefaultFieldInit] constructor init of field i
 # 1537|         Type = [IntType] int
 # 1537|         ValueCategory = prvalue
-# 1537|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
+# 1537|     getInitializer(1): [ConstructorDefaultFieldInit] constructor init of field d
 # 1537|         Type = [DoubleType] double
 # 1537|         ValueCategory = prvalue
-# 1537|     getInitializer(2): [ConstructorFieldInit] constructor init of field r
+# 1537|     getInitializer(2): [ConstructorDefaultFieldInit] constructor init of field r
 # 1537|         Type = [LValueReferenceType] int &
 # 1537|         ValueCategory = prvalue
-# 1537|     getInitializer(3): [ConstructorFieldInit] constructor init of field p
+# 1537|     getInitializer(3): [ConstructorDefaultFieldInit] constructor init of field p
 # 1537|         Type = [IntPointerType] int *
 # 1537|         ValueCategory = prvalue
-# 1537|     getInitializer(4): [ConstructorFieldInit] constructor init of field xs
+# 1537|     getInitializer(4): [ConstructorDefaultFieldInit] constructor init of field xs
 # 1537|         Type = [CTypedefType,NestedTypedefType] ArrayType
 # 1537|         ValueCategory = prvalue
-# 1537|     getInitializer(5): [ConstructorFieldInit] constructor init of field r_alt
+# 1537|     getInitializer(5): [ConstructorDefaultFieldInit] constructor init of field r_alt
 # 1537|         Type = [CTypedefType,NestedTypedefType] RefType
 # 1537|         ValueCategory = prvalue
-# 1537|     getInitializer(6): [ConstructorFieldInit] constructor init of field m
+# 1537|     getInitializer(6): [ConstructorDirectFieldInit] constructor init of field m
 # 1537|         Type = [Struct] StructuredBindingDataMemberMemberStruct
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ConstructorCall] call to StructuredBindingDataMemberMemberStruct
@@ -15465,7 +15465,7 @@ ir.cpp:
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const StructuredBindingDataMemberStruct &
 # 1537|   <initializations>: 
-# 1537|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1537|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field i
 # 1537|         Type = [IntType] int
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ReferenceFieldAccess] i
@@ -15477,7 +15477,7 @@ ir.cpp:
 # 1537|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1537|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
 # 1537|             ValueCategory = lvalue
-# 1537|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
+# 1537|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field d
 # 1537|         Type = [DoubleType] double
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ReferenceFieldAccess] d
@@ -15489,7 +15489,7 @@ ir.cpp:
 # 1537|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1537|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
 # 1537|             ValueCategory = lvalue
-# 1537|     getInitializer(2): [ConstructorFieldInit] constructor init of field b
+# 1537|     getInitializer(2): [ConstructorDirectFieldInit] constructor init of field b
 # 1537|         Type = [IntType] unsigned int
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ReferenceFieldAccess] b
@@ -15501,7 +15501,7 @@ ir.cpp:
 # 1537|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1537|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
 # 1537|             ValueCategory = lvalue
-# 1537|     getInitializer(3): [ConstructorFieldInit] constructor init of field r
+# 1537|     getInitializer(3): [ConstructorDirectFieldInit] constructor init of field r
 # 1537|         Type = [LValueReferenceType] int &
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ReferenceFieldAccess] r
@@ -15513,7 +15513,7 @@ ir.cpp:
 # 1537|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1537|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
 # 1537|             ValueCategory = lvalue
-# 1537|     getInitializer(4): [ConstructorFieldInit] constructor init of field p
+# 1537|     getInitializer(4): [ConstructorDirectFieldInit] constructor init of field p
 # 1537|         Type = [IntPointerType] int *
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ReferenceFieldAccess] p
@@ -15525,7 +15525,7 @@ ir.cpp:
 # 1537|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1537|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
 # 1537|             ValueCategory = lvalue
-# 1537|     getInitializer(5): [ConstructorFieldInit] constructor init of field xs
+# 1537|     getInitializer(5): [ConstructorDirectFieldInit] constructor init of field xs
 # 1537|         Type = [CTypedefType,NestedTypedefType] ArrayType
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ReferenceFieldAccess] xs
@@ -15537,7 +15537,7 @@ ir.cpp:
 # 1537|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1537|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
 # 1537|             ValueCategory = lvalue
-# 1537|     getInitializer(6): [ConstructorFieldInit] constructor init of field r_alt
+# 1537|     getInitializer(6): [ConstructorDirectFieldInit] constructor init of field r_alt
 # 1537|         Type = [CTypedefType,NestedTypedefType] RefType
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ReferenceFieldAccess] r_alt
@@ -15549,7 +15549,7 @@ ir.cpp:
 # 1537|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1537|             Type = [SpecifiedType] const StructuredBindingDataMemberStruct
 # 1537|             ValueCategory = lvalue
-# 1537|     getInitializer(7): [ConstructorFieldInit] constructor init of field m
+# 1537|     getInitializer(7): [ConstructorDirectFieldInit] constructor init of field m
 # 1537|         Type = [Struct] StructuredBindingDataMemberMemberStruct
 # 1537|         ValueCategory = prvalue
 # 1537|       getExpr(): [ReferenceFieldAccess] m
@@ -15918,13 +15918,13 @@ ir.cpp:
 # 1590| [Constructor] void StructuredBindingTupleRefGet::StructuredBindingTupleRefGet()
 # 1590|   <params>: 
 # 1590|   <initializations>: 
-# 1590|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1590|     getInitializer(0): [ConstructorDefaultFieldInit] constructor init of field i
 # 1590|         Type = [IntType] int
 # 1590|         ValueCategory = prvalue
-# 1590|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
+# 1590|     getInitializer(1): [ConstructorDefaultFieldInit] constructor init of field d
 # 1590|         Type = [DoubleType] double
 # 1590|         ValueCategory = prvalue
-# 1590|     getInitializer(2): [ConstructorFieldInit] constructor init of field r
+# 1590|     getInitializer(2): [ConstructorDefaultFieldInit] constructor init of field r
 # 1590|         Type = [LValueReferenceType] int &
 # 1590|         ValueCategory = prvalue
 # 1590|   getEntryPoint(): [BlockStmt] { ... }
@@ -15934,7 +15934,7 @@ ir.cpp:
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const StructuredBindingTupleRefGet &
 # 1590|   <initializations>: 
-# 1590|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1590|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field i
 # 1590|         Type = [IntType] int
 # 1590|         ValueCategory = prvalue
 # 1590|       getExpr(): [ReferenceFieldAccess] i
@@ -15946,7 +15946,7 @@ ir.cpp:
 # 1590|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1590|             Type = [SpecifiedType] const StructuredBindingTupleRefGet
 # 1590|             ValueCategory = lvalue
-# 1590|     getInitializer(1): [ConstructorFieldInit] constructor init of field d
+# 1590|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field d
 # 1590|         Type = [DoubleType] double
 # 1590|         ValueCategory = prvalue
 # 1590|       getExpr(): [ReferenceFieldAccess] d
@@ -15958,7 +15958,7 @@ ir.cpp:
 # 1590|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1590|             Type = [SpecifiedType] const StructuredBindingTupleRefGet
 # 1590|             ValueCategory = lvalue
-# 1590|     getInitializer(2): [ConstructorFieldInit] constructor init of field r
+# 1590|     getInitializer(2): [ConstructorDirectFieldInit] constructor init of field r
 # 1590|         Type = [LValueReferenceType] int &
 # 1590|         ValueCategory = prvalue
 # 1590|       getExpr(): [ReferenceFieldAccess] r
@@ -16327,10 +16327,10 @@ ir.cpp:
 # 1657| [Constructor] void StructuredBindingTupleNoRefGet::StructuredBindingTupleNoRefGet()
 # 1657|   <params>: 
 # 1657|   <initializations>: 
-# 1657|     getInitializer(0): [ConstructorFieldInit] constructor init of field i
+# 1657|     getInitializer(0): [ConstructorDefaultFieldInit] constructor init of field i
 # 1657|         Type = [IntType] int
 # 1657|         ValueCategory = prvalue
-# 1657|     getInitializer(1): [ConstructorFieldInit] constructor init of field r
+# 1657|     getInitializer(1): [ConstructorDefaultFieldInit] constructor init of field r
 # 1657|         Type = [LValueReferenceType] int &
 # 1657|         ValueCategory = prvalue
 # 1657|   getEntryPoint(): [BlockStmt] { ... }
@@ -19817,7 +19817,7 @@ ir.cpp:
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const ClassWithDestructor &
 # 2188|   <initializations>: 
-# 2188|     getInitializer(0): [ConstructorFieldInit] constructor init of field x
+# 2188|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field x
 # 2188|         Type = [CharPointerType] char *
 # 2188|         ValueCategory = prvalue
 # 2188|       getExpr(): [ReferenceFieldAccess] x
@@ -25642,6 +25642,168 @@ ir.cpp:
 # 2884|                   Type = [VoidType] void
 # 2884|                   ValueCategory = prvalue
 # 2886|     getStmt(6): [ReturnStmt] return ...
+# 2889| [CopyAssignmentOperator] StructInit& StructInit::operator=(StructInit const&)
+# 2889|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructInit &
+# 2889| [MoveAssignmentOperator] StructInit& StructInit::operator=(StructInit&&)
+# 2889|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] StructInit &&
+# 2889| [CopyConstructor] void StructInit::StructInit(StructInit const&)
+# 2889|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const StructInit &
+# 2889| [MoveConstructor] void StructInit::StructInit(StructInit&&)
+# 2889|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] StructInit &&
+# 2897| [Constructor] void StructInit::StructInit(int)
+# 2897|   <params>: 
+# 2897|     getParameter(0): [Parameter] j
+# 2897|         Type = [IntType] int
+# 2897|   <initializations>: 
+# 2897|     getInitializer(0): [ConstructorDefaultFieldInit] constructor init of field i
+# 2897|         Type = [IntType] int
+# 2897|         ValueCategory = prvalue
+# 2897|     getInitializer(1): [ConstructorDirectFieldInit] constructor init of field j
+# 2897|         Type = [IntType] int
+# 2897|         ValueCategory = prvalue
+# 2897|       getExpr(): [VariableAccess] j
+# 2897|           Type = [IntType] int
+# 2897|           ValueCategory = prvalue(load)
+# 2897|     getInitializer(2): [ConstructorDefaultFieldInit] constructor init of field k
+# 2897|         Type = [IntType] int
+# 2897|         ValueCategory = prvalue
+# 2897|     getInitializer(3): [ConstructorDefaultFieldInit] constructor init of field l
+# 2897|         Type = [IntType] int
+# 2897|         ValueCategory = prvalue
+# 2897|     getInitializer(4): [ConstructorDefaultFieldInit] constructor init of field m
+# 2897|         Type = [IntType] int
+# 2897|         ValueCategory = prvalue
+# 2897|     getInitializer(5): [ConstructorDirectFieldInit] constructor init of field n
+# 2897|         Type = [IntType] int
+# 2897|         ValueCategory = prvalue
+# 2897|       getExpr(): [FunctionCall] call to get_val
+# 2897|           Type = [IntType] int
+# 2897|           ValueCategory = prvalue
+# 2897|         getQualifier(): [ThisExpr] this
+# 2897|             Type = [PointerType] StructInit *
+# 2897|             ValueCategory = prvalue(load)
+# 2897|   getEntryPoint(): [BlockStmt] { ... }
+# 2897|     getStmt(0): [ReturnStmt] return ...
+# 2899| [Constructor] void StructInit::StructInit()
+# 2899|   <params>: 
+# 2899|   <initializations>: 
+# 2899|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field i
+# 2899|         Type = [IntType] int
+# 2899|         ValueCategory = prvalue
+# 2899|       getExpr(): [Literal] 41
+# 2899|           Type = [IntType] int
+# 2899|           Value = [Literal] 41
+# 2899|           ValueCategory = prvalue
+# 2899|     getInitializer(1): [ConstructorDefaultFieldInit] constructor init of field j
+# 2899|         Type = [IntType] int
+# 2899|         ValueCategory = prvalue
+# 2899|     getInitializer(2): [ConstructorDirectFieldInit] constructor init of field k
+# 2899|         Type = [IntType] int
+# 2899|         ValueCategory = prvalue
+# 2899|       getExpr(): [Literal] 41
+# 2899|           Type = [IntType] int
+# 2899|           Value = [Literal] 41
+# 2899|           ValueCategory = prvalue
+# 2899|     getInitializer(3): [ConstructorDefaultFieldInit] constructor init of field l
+# 2899|         Type = [IntType] int
+# 2899|         ValueCategory = prvalue
+# 2899|     getInitializer(4): [ConstructorDefaultFieldInit] constructor init of field m
+# 2899|         Type = [IntType] int
+# 2899|         ValueCategory = prvalue
+# 2899|     getInitializer(5): [ConstructorDefaultFieldInit] constructor init of field n
+# 2899|         Type = [IntType] int
+# 2899|         ValueCategory = prvalue
+# 2899|   getEntryPoint(): [BlockStmt] { ... }
+# 2899|     getStmt(0): [ReturnStmt] return ...
+# 2901| [MemberFunction] int StructInit::get_val()
+# 2901|   <params>: 
+# 2901|   getEntryPoint(): [BlockStmt] { ... }
+# 2901|     getStmt(0): [ReturnStmt] return ...
+# 2901|       getExpr(): [ImplicitThisFieldAccess,PointerFieldAccess] k
+# 2901|           Type = [IntType] int
+# 2901|           ValueCategory = prvalue(load)
+# 2901|         getQualifier(): [ThisExpr] this
+# 2901|             Type = [PointerType] StructInit *
+# 2901|             ValueCategory = prvalue(load)
+# 2905| [Constructor] void StructInitFromTemplate<int>::StructInitFromTemplate()
+# 2905|   <params>: 
+# 2905|   <initializations>: 
+# 2905|     getInitializer(0): [ConstructorDefaultFieldInit] constructor init of field t
+# 2905|         Type = [IntType] int
+# 2905|         ValueCategory = prvalue
+# 2905|   getEntryPoint(): [BlockStmt] { ... }
+# 2905|     getStmt(0): [ReturnStmt] return ...
+# 2909| [GlobalVariable] StructInitFromTemplate<int> StructInitFromTemplateVar
+#-----|   getInitializer(): [Initializer] initializer for StructInitFromTemplateVar
+#-----|     getExpr(): [ConstructorCall] call to StructInitFromTemplate
+#-----|         Type = [VoidType] void
+#-----|         ValueCategory = prvalue
+#-----|     getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|         Type = [ClassTemplateInstantiation,Struct] StructInitFromTemplate<int>
+#-----|         ValueCategory = prvalue(load)
+# 2912| [GlobalVariable,VariableTemplateInstantiation] double VariableTemplate<double>
+# 2912|   getInitializer(): [Initializer] initializer for VariableTemplate
+# 2912|     getExpr(): [Literal] 42
+# 2912|         Type = [IntType] int
+# 2912|         Value = [Literal] 42
+# 2912|         ValueCategory = prvalue
+# 2912|     getExpr().getFullyConverted(): [CStyleCast] (double)...
+# 2912|         Conversion = [IntegralToFloatingPointConversion] integral to floating point conversion
+# 2912|         Type = [DoubleType] double
+# 2912|         Value = [CStyleCast] 42.0
+# 2912|         ValueCategory = prvalue
+# 2915| [TemplateFunction,TopLevelFunction] T VariableTemplateFunc<T>(T)
+# 2915|   <params>: 
+# 2915|     getParameter(0): [Parameter] x
+# 2915|         Type = [TypeTemplateParameter] T
+# 2915|   getEntryPoint(): [BlockStmt] { ... }
+# 2916|     getStmt(0): [ReturnStmt] return ...
+# 2916|       getExpr(): [AddExpr] ... + ...
+# 2916|           Type = [UnknownType] unknown
+# 2916|           ValueCategory = prvalue
+# 2916|         getLeftOperand(): [VariableAccess] VariableTemplate
+# 2916|             Type = [UnknownType] unknown
+# 2916|             ValueCategory = lvalue
+# 2916|         getRightOperand(): [VariableAccess] x
+# 2916|             Type = [TypeTemplateParameter] T
+# 2916|             ValueCategory = lvalue
+# 2915| [FunctionTemplateInstantiation,TopLevelFunction] double VariableTemplateFunc<double>(double)
+# 2915|   <params>: 
+# 2915|     getParameter(0): [Parameter] x
+# 2915|         Type = [DoubleType] double
+# 2915|   getEntryPoint(): [BlockStmt] { ... }
+# 2916|     getStmt(0): [ReturnStmt] return ...
+# 2916|       getExpr(): [AddExpr] ... + ...
+# 2916|           Type = [DoubleType] double
+# 2916|           ValueCategory = prvalue
+# 2916|         getLeftOperand(): [VariableAccess] VariableTemplate
+# 2916|             Type = [DoubleType] double
+# 2916|             Value = [VariableAccess] 42.0
+# 2916|             ValueCategory = prvalue(load)
+# 2916|         getRightOperand(): [VariableAccess] x
+# 2916|             Type = [DoubleType] double
+# 2916|             ValueCategory = prvalue(load)
+# 2919| [GlobalVariable] int VariableTemplateFuncUse
+# 2919|   getInitializer(): [Initializer] initializer for VariableTemplateFuncUse
+# 2919|     getExpr(): [FunctionCall] call to VariableTemplateFunc
+# 2919|         Type = [DoubleType] double
+# 2919|         ValueCategory = prvalue
+# 2919|       getArgument(0): [Literal] 2.299999999999999822
+# 2919|           Type = [DoubleType] double
+# 2919|           Value = [Literal] 2.299999999999999822
+# 2919|           ValueCategory = prvalue
+# 2919|     getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2919|         Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion
+# 2919|         Type = [IntType] int
+# 2919|         ValueCategory = prvalue
 ir23.cpp:
 #    1| [TopLevelFunction] bool consteval_1()
 #    1|   <params>: 
@@ -50386,7 +50548,7 @@ perf-regression.cpp:
 #    6| [Constructor] void Big::Big()
 #    6|   <params>: 
 #    6|   <initializations>: 
-#    6|     getInitializer(0): [ConstructorFieldInit] constructor init of field buffer
+#    6|     getInitializer(0): [ConstructorDirectFieldInit] constructor init of field buffer
 #    6|         Type = [ArrayType] char[1073741824]
 #    6|         ValueCategory = prvalue
 #    6|       getExpr(): [ArrayAggregateLiteral] {...}

@@ -8,6 +8,7 @@ private import semmle.code.cpp.dataflow.ExternalFlow as ExternalFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowNodes as DataFlowNodes
 private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.cpp.ir.dataflow.internal.TaintTrackingImplSpecific
 private import semmle.code.cpp.dataflow.new.TaintTracking as Tt
@@ -403,7 +404,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
   }
 
   predicate apiSource(DataFlow::Node source) {
-    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1)
+    DataFlowPrivate::nodeHasOperand(source, any(DataFlowNodes::FieldAddress fa), 1)
     or
     source instanceof DataFlow::ParameterNode
   }
@@ -416,7 +417,7 @@ private module SinkModelGeneratorInput implements SinkModelGeneratorInputSig {
       result = "Argument[" + DataFlow::repeatStars(indirectionIndex) + argumentIndex + "]"
     )
     or
-    DataFlowPrivate::nodeHasOperand(source, any(DataFlow::FieldAddress fa), 1) and
+    DataFlowPrivate::nodeHasOperand(source, any(DataFlowNodes::FieldAddress fa), 1) and
     result = qualifierString()
   }
 

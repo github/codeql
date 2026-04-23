@@ -1,3 +1,34 @@
+## 1.6.1
+
+No user-facing changes.
+
+## 1.6.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `rb/log-injection` has been reduced from 7.8 (high) to 6.1 (medium).
+* The `@security-severity` metadata of `rb/reflected-xss`, `rb/stored-xss` and `rb/html-constructed-from-input` has been increased from 6.1 (medium) to 7.8 (high).
+
+## 1.5.11
+
+No user-facing changes.
+
+## 1.5.10
+
+No user-facing changes.
+
+## 1.5.9
+
+No user-facing changes.
+
+## 1.5.8
+
+No user-facing changes.
+
+## 1.5.7
+
+No user-facing changes.
+
 ## 1.5.6
 
 No user-facing changes.

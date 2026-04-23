@@ -326,20 +326,45 @@ private module Input implements TypeFlowInput<Location> {
     )
   }
 
-  /**
-   * Holds if `ioe` checks `v`, its true-successor is `bb`, and `bb` has multiple
-   * predecessors.
-   */
-  private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, Base::SsaDefinition v) {
+  /** Holds if `ioe` checks `v` and its true-successor is `bb`. */
+  private predicate instanceofTrueSuccessor(InstanceOfExpr ioe, BasicBlock bb, Base::SsaDefinition v) {
     ioe.getExpr() = v.getARead() and
-    strictcount(bb.getAPredecessor()) > 1 and
     exists(ConditionBlock cb | cb.getCondition() = ioe and cb.getTestSuccessor(true) = bb)
   }
 
-  /** Holds if `bb` is disjunctively guarded by multiple `instanceof` tests on `v`. */
-  private predicate instanceofDisjunction(BasicBlock bb, Base::SsaDefinition v) {
-    strictcount(InstanceOfExpr ioe | instanceofDisjunct(ioe, bb, v)) =
-      strictcount(bb.getAPredecessor())
+  /**
+   * Holds if `bb` is disjunctively guarded by one (`trivial = true`) or more
+   * (`trivial = false`) `instanceof` tests on `v`.
+   */
+  private predicate instanceofDisjunction(BasicBlock bb, Base::SsaDefinition v, boolean trivial) {
+    exists(int preds |
+      strictcount(bb.getAPredecessor()) = preds and
+      strictcount(InstanceOfExpr ioe | instanceofTrueSuccessor(ioe, bb, v)) = preds and
+      if preds > 1 then trivial = false else trivial = true
+    )
+    or
+    strictcount(bb.getAPredecessor()) = 2 and
+    exists(BasicBlock pred1, BasicBlock pred2 |
+      pred1 != pred2 and
+      pred1 = bb.getAPredecessor() and
+      pred2 = bb.getAPredecessor() and
+      instanceofDisjunction(pred1, v, _) and
+      instanceofDisjunction(pred2, v, _) and
+      trivial = false
+    )
+  }
+
+  /**
+   * Holds if `bb` is disjunctively guarded by one or more `instanceof` tests
+   * on `v`, and `ioe` is one of those tests.
+   */
+  private predicate instanceofDisjunct(InstanceOfExpr ioe, BasicBlock bb, Base::SsaDefinition v) {
+    instanceofDisjunction(bb, v, _) and
+    (
+      instanceofTrueSuccessor(ioe, bb, v)
+      or
+      exists(BasicBlock pred | pred = bb.getAPredecessor() and instanceofDisjunct(ioe, pred, v))
+    )
   }
 
   /**
@@ -348,7 +373,7 @@ private module Input implements TypeFlowInput<Location> {
    */
   predicate instanceofDisjunctionGuarded(TypeFlowNode n, RefType t) {
     exists(BasicBlock bb, InstanceOfExpr ioe, Base::SsaDefinition v, VarAccess va |
-      instanceofDisjunction(bb, v) and
+      instanceofDisjunction(bb, v, false) and
       bb.dominates(va.getBasicBlock()) and
       va = v.getARead() and
       instanceofDisjunct(ioe, bb, v) and

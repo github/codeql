@@ -23,9 +23,8 @@ class StringCat extends AddExpr {
  * where `v` is a simple variable (and not, for example, a property).
  */
 predicate isSelfConcatAssignExpr(AssignExpr e, Variable v) {
-  not e = any(AssignAddExpr a).getExpandedAssignment() and
   exists(VariableAccess use |
-    stringCatContains(e.getRValue(), use) and
+    stringCatContains(e.getRightOperand(), use) and
     use.getTarget() = e.getTargetVariable() and
     v = use.getTarget()
   )
@@ -42,7 +41,7 @@ predicate stringCatContains(StringCat expr, Expr child) {
  * where `v` is a simple variable (and not, for example, a property).
  */
 predicate isConcatExpr(AssignAddExpr e, Variable v) {
-  e.getLValue().getType() instanceof StringType and
+  e.getLeftOperand().getType() instanceof StringType and
   v = e.getTargetVariable()
 }
 

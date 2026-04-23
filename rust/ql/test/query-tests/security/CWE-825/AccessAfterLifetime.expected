@@ -9,6 +9,7 @@
 | lifetime.rs:76:4:76:5 | p2 | lifetime.rs:27:9:27:22 | &mut my_local2 | lifetime.rs:76:4:76:5 | p2 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:25:10:25:18 | my_local2 | my_local2 |
 | lifetime.rs:77:4:77:5 | p4 | lifetime.rs:39:9:39:26 | &raw mut my_local4 | lifetime.rs:77:4:77:5 | p4 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:37:10:37:18 | my_local4 | my_local4 |
 | lifetime.rs:172:13:172:15 | ptr | lifetime.rs:187:12:187:21 | &my_local1 | lifetime.rs:172:13:172:15 | ptr | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:186:6:186:14 | my_local1 | my_local1 |
+| lifetime.rs:180:13:180:15 | ptr | lifetime.rs:187:12:187:21 | &my_local1 | lifetime.rs:180:13:180:15 | ptr | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:186:6:186:14 | my_local1 | my_local1 |
 | lifetime.rs:255:14:255:17 | prev | lifetime.rs:251:10:251:19 | &my_local2 | lifetime.rs:255:14:255:17 | prev | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:242:7:242:15 | my_local2 | my_local2 |
 | lifetime.rs:310:31:310:32 | e1 | lifetime.rs:272:30:272:32 | &e1 | lifetime.rs:310:31:310:32 | e1 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:271:6:271:7 | e1 | e1 |
 | lifetime.rs:314:23:314:24 | p2 | lifetime.rs:279:28:279:30 | &v2 | lifetime.rs:314:23:314:24 | p2 | Access of a pointer to $@ after its lifetime has ended. | lifetime.rs:278:6:278:7 | v2 | v2 |
@@ -55,39 +56,23 @@ edges
 | lifetime.rs:59:11:59:36 | get_local_field_dangling(...) | lifetime.rs:59:6:59:7 | p6 | provenance |  |
 | lifetime.rs:63:3:63:4 | p7 | lifetime.rs:75:13:75:14 | p7 | provenance |  |
 | lifetime.rs:63:8:63:27 | &raw const my_local7 | lifetime.rs:63:3:63:4 | p7 | provenance |  |
-| lifetime.rs:91:17:91:30 | ...: ... | lifetime.rs:101:14:101:15 | p1 | provenance |  |
-| lifetime.rs:91:33:91:44 | ...: ... | lifetime.rs:102:14:102:15 | p2 | provenance |  |
-| lifetime.rs:91:33:91:44 | ...: ... | lifetime.rs:110:5:110:6 | p2 | provenance |  |
 | lifetime.rs:94:2:94:3 | p3 | lifetime.rs:103:14:103:15 | p3 | provenance |  |
 | lifetime.rs:94:7:94:16 | &my_local1 | lifetime.rs:94:2:94:3 | p3 | provenance |  |
-| lifetime.rs:119:15:119:24 | &my_local3 | lifetime.rs:91:17:91:30 | ...: ... | provenance |  |
-| lifetime.rs:119:27:119:44 | &mut my_local_mut4 | lifetime.rs:91:33:91:44 | ...: ... | provenance |  |
-| lifetime.rs:161:17:161:31 | ...: ... | lifetime.rs:164:13:164:15 | ptr | provenance |  |
 | lifetime.rs:169:17:169:31 | ...: ... | lifetime.rs:172:13:172:15 | ptr | provenance |  |
 | lifetime.rs:177:17:177:31 | ...: ... | lifetime.rs:180:13:180:15 | ptr | provenance |  |
-| lifetime.rs:187:6:187:8 | ptr | lifetime.rs:189:15:189:17 | ptr | provenance |  |
-| lifetime.rs:187:6:187:8 | ptr | lifetime.rs:190:15:190:17 | ptr | provenance |  |
 | lifetime.rs:187:6:187:8 | ptr | lifetime.rs:192:2:192:11 | return ptr | provenance |  |
 | lifetime.rs:187:12:187:21 | &my_local1 | lifetime.rs:187:6:187:8 | ptr | provenance |  |
-| lifetime.rs:189:15:189:17 | ptr | lifetime.rs:161:17:161:31 | ...: ... | provenance |  |
-| lifetime.rs:190:15:190:17 | ptr | lifetime.rs:177:17:177:31 | ...: ... | provenance |  |
 | lifetime.rs:192:2:192:11 | return ptr | lifetime.rs:196:12:196:36 | access_and_get_dangling(...) | provenance |  |
 | lifetime.rs:196:6:196:8 | ptr | lifetime.rs:200:15:200:17 | ptr | provenance |  |
 | lifetime.rs:196:6:196:8 | ptr | lifetime.rs:201:15:201:17 | ptr | provenance |  |
 | lifetime.rs:196:12:196:36 | access_and_get_dangling(...) | lifetime.rs:196:6:196:8 | ptr | provenance |  |
 | lifetime.rs:200:15:200:17 | ptr | lifetime.rs:169:17:169:31 | ...: ... | provenance |  |
 | lifetime.rs:201:15:201:17 | ptr | lifetime.rs:177:17:177:31 | ...: ... | provenance |  |
-| lifetime.rs:206:19:206:36 | ...: ... | lifetime.rs:216:16:216:21 | ptr_up | provenance |  |
-| lifetime.rs:208:6:208:13 | ptr_ours | lifetime.rs:211:33:211:40 | ptr_ours | provenance |  |
 | lifetime.rs:208:6:208:13 | ptr_ours | lifetime.rs:225:2:225:16 | return ptr_ours | provenance |  |
 | lifetime.rs:208:17:208:29 | &my_local_rec | lifetime.rs:208:6:208:13 | ptr_ours | provenance |  |
 | lifetime.rs:211:7:211:14 | ptr_down | lifetime.rs:218:18:218:25 | ptr_down | provenance |  |
 | lifetime.rs:211:18:211:52 | access_ptr_rec(...) | lifetime.rs:211:7:211:14 | ptr_down | provenance |  |
-| lifetime.rs:211:33:211:40 | ptr_ours | lifetime.rs:206:19:206:36 | ...: ... | provenance |  |
 | lifetime.rs:225:2:225:16 | return ptr_ours | lifetime.rs:211:18:211:52 | access_ptr_rec(...) | provenance |  |
-| lifetime.rs:230:6:230:14 | ptr_start | lifetime.rs:232:21:232:29 | ptr_start | provenance |  |
-| lifetime.rs:230:18:230:31 | &my_local_rec2 | lifetime.rs:230:6:230:14 | ptr_start | provenance |  |
-| lifetime.rs:232:21:232:29 | ptr_start | lifetime.rs:206:19:206:36 | ...: ... | provenance |  |
 | lifetime.rs:239:6:239:13 | mut prev | lifetime.rs:247:15:247:18 | prev | provenance |  |
 | lifetime.rs:239:6:239:13 | mut prev | lifetime.rs:255:14:255:17 | prev | provenance |  |
 | lifetime.rs:239:34:239:43 | &my_local1 | lifetime.rs:239:6:239:13 | mut prev | provenance |  |
@@ -215,43 +200,26 @@ nodes
 | lifetime.rs:75:13:75:14 | p7 | semmle.label | p7 |
 | lifetime.rs:76:4:76:5 | p2 | semmle.label | p2 |
 | lifetime.rs:77:4:77:5 | p4 | semmle.label | p4 |
-| lifetime.rs:91:17:91:30 | ...: ... | semmle.label | ...: ... |
-| lifetime.rs:91:33:91:44 | ...: ... | semmle.label | ...: ... |
 | lifetime.rs:94:2:94:3 | p3 | semmle.label | p3 |
 | lifetime.rs:94:7:94:16 | &my_local1 | semmle.label | &my_local1 |
-| lifetime.rs:101:14:101:15 | p1 | semmle.label | p1 |
-| lifetime.rs:102:14:102:15 | p2 | semmle.label | p2 |
 | lifetime.rs:103:14:103:15 | p3 | semmle.label | p3 |
-| lifetime.rs:110:5:110:6 | p2 | semmle.label | p2 |
-| lifetime.rs:119:15:119:24 | &my_local3 | semmle.label | &my_local3 |
-| lifetime.rs:119:27:119:44 | &mut my_local_mut4 | semmle.label | &mut my_local_mut4 |
-| lifetime.rs:161:17:161:31 | ...: ... | semmle.label | ...: ... |
-| lifetime.rs:164:13:164:15 | ptr | semmle.label | ptr |
 | lifetime.rs:169:17:169:31 | ...: ... | semmle.label | ...: ... |
 | lifetime.rs:172:13:172:15 | ptr | semmle.label | ptr |
 | lifetime.rs:177:17:177:31 | ...: ... | semmle.label | ...: ... |
 | lifetime.rs:180:13:180:15 | ptr | semmle.label | ptr |
 | lifetime.rs:187:6:187:8 | ptr | semmle.label | ptr |
 | lifetime.rs:187:12:187:21 | &my_local1 | semmle.label | &my_local1 |
-| lifetime.rs:189:15:189:17 | ptr | semmle.label | ptr |
-| lifetime.rs:190:15:190:17 | ptr | semmle.label | ptr |
 | lifetime.rs:192:2:192:11 | return ptr | semmle.label | return ptr |
 | lifetime.rs:196:6:196:8 | ptr | semmle.label | ptr |
 | lifetime.rs:196:12:196:36 | access_and_get_dangling(...) | semmle.label | access_and_get_dangling(...) |
 | lifetime.rs:200:15:200:17 | ptr | semmle.label | ptr |
 | lifetime.rs:201:15:201:17 | ptr | semmle.label | ptr |
-| lifetime.rs:206:19:206:36 | ...: ... | semmle.label | ...: ... |
 | lifetime.rs:208:6:208:13 | ptr_ours | semmle.label | ptr_ours |
 | lifetime.rs:208:17:208:29 | &my_local_rec | semmle.label | &my_local_rec |
 | lifetime.rs:211:7:211:14 | ptr_down | semmle.label | ptr_down |
 | lifetime.rs:211:18:211:52 | access_ptr_rec(...) | semmle.label | access_ptr_rec(...) |
-| lifetime.rs:211:33:211:40 | ptr_ours | semmle.label | ptr_ours |
-| lifetime.rs:216:16:216:21 | ptr_up | semmle.label | ptr_up |
 | lifetime.rs:218:18:218:25 | ptr_down | semmle.label | ptr_down |
 | lifetime.rs:225:2:225:16 | return ptr_ours | semmle.label | return ptr_ours |
-| lifetime.rs:230:6:230:14 | ptr_start | semmle.label | ptr_start |
-| lifetime.rs:230:18:230:31 | &my_local_rec2 | semmle.label | &my_local_rec2 |
-| lifetime.rs:232:21:232:29 | ptr_start | semmle.label | ptr_start |
 | lifetime.rs:239:6:239:13 | mut prev | semmle.label | mut prev |
 | lifetime.rs:239:34:239:43 | &my_local1 | semmle.label | &my_local1 |
 | lifetime.rs:247:15:247:18 | prev | semmle.label | prev |

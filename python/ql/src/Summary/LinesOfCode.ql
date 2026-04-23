@@ -10,6 +10,5 @@
  */
 
 import python
-private import LegacyPointsTo
 
 select sum(ModuleMetrics m | | m.getNumberOfLinesOfCode())

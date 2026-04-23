@@ -26,7 +26,7 @@ class PortletRenderRequestMethod extends Method {
   PortletRenderRequestMethod() {
     exists(RefType c, Interface t |
       c.extendsOrImplements*(t) and
-      t.hasQualifiedName("javax.portlet", "RenderState") and
+      t.hasQualifiedName(javaxOrJakarta() + ".portlet", "RenderState") and
       this = c.getAMethod()
     |
       this.hasName([

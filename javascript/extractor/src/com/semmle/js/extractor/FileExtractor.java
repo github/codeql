@@ -28,13 +28,13 @@ import com.semmle.util.trap.TrapWriter.Label;
  */
 public class FileExtractor {
   /**
-   * Pattern to use on the shebang line of a script to identify whether it is a Node.js script.
+   * Pattern to use on the shebang line of a script to identify whether it is a JavaScript script.
    *
-   * <p>There are many different ways of invoking the Node.js interpreter (directly, through {@code
+   * <p>There are many different ways of invoking a JavaScript interpreter (directly, through {@code
    * env}, with or without flags, with or without modified environment, etc.), so we simply look for
-   * the word {@code "node"} or {@code "nodejs"}.
+   * the word {@code "node"}, {@code "nodejs"}, {@code "bun"}, or {@code "tsx"}.
    */
-  private static final Pattern NODE_INVOCATION = Pattern.compile("\\bnode(js)?\\b");
+  private static final Pattern JS_INVOCATION = Pattern.compile("\\b(node(js)?|bun|tsx)\\b");
 
   /** A pattern that matches strings starting with `{ "...":`, suggesting JSON data. */
   public static final Pattern JSON_OBJECT_START =
@@ -157,7 +157,7 @@ public class FileExtractor {
             // do a cheap check first
             if (firstLine != null && firstLine.startsWith("#!")) {
               // now do the slightly more expensive one
-              return NODE_INVOCATION.matcher(firstLine).find();
+              return JS_INVOCATION.matcher(firstLine).find();
             }
           } catch (IOException e) {
             Exceptions.ignore(e, "We simply skip this file.");
@@ -302,7 +302,7 @@ public class FileExtractor {
         int lengthOfText = endOfLine - startOfText;
         String text = new String(bytes, startOfText, lengthOfText, StandardCharsets.UTF_8);
         // Check if the shebang is a recognized JavaScript intepreter.
-        return !NODE_INVOCATION.matcher(text).find();
+        return !JS_INVOCATION.matcher(text).find();
       }
 
       @Override

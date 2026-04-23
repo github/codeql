@@ -5,6 +5,8 @@
  * Note that unlike `TypeTracker.qll`, this library only performs
  * local tracking within a function.
  */
+overlay[local]
+module;
 
 private import python
 import DataFlowPublic
@@ -77,6 +79,7 @@ class LocalSourceNode extends Node {
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
+  overlay[caller]
   pragma[inline]
   predicate flowsTo(Node nodeTo) { Cached::hasLocalSource(nodeTo, this) }
 
@@ -149,6 +152,7 @@ class LocalSourceNode extends Node {
    *
    * See `TypeTracker` for more details about how to use this.
    */
+  overlay[global]
   pragma[inline]
   LocalSourceNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 
@@ -157,6 +161,7 @@ class LocalSourceNode extends Node {
    *
    * See `TypeBackTracker` for more details about how to use this.
    */
+  overlay[global]
   pragma[inline]
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t = t2.step(result, this) }
 }
@@ -210,6 +215,7 @@ private module FutureWork {
      *
      * See `TypeTracker` for more details about how to use this.
      */
+    overlay[global]
     pragma[inline]
     TypeTrackingNode track(TypeTracker t2, TypeTracker t) { t = t2.step(this, result) }
 
@@ -218,6 +224,7 @@ private module FutureWork {
      *
      * See `TypeBackTracker` for more details about how to use this.
      */
+    overlay[global]
     pragma[inline]
     TypeTrackingNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
   }

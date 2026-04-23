@@ -232,14 +232,9 @@ private module Identity {
    */
   pragma[nomagic]
   private predicate convTypeArguments(Type fromTypeArgument, Type toTypeArgument, int i) {
-    exists(int j |
-      fromTypeArgument = getTypeArgumentRanked(_, _, i) and
-      toTypeArgument = getTypeArgumentRanked(_, _, j) and
-      i <= j and
-      j <= i
-    |
-      convIdentity(fromTypeArgument, toTypeArgument)
-    )
+    fromTypeArgument = getTypeArgumentRanked(_, _, pragma[only_bind_into](i)) and
+    toTypeArgument = getTypeArgumentRanked(_, _, pragma[only_bind_into](i)) and
+    convIdentity(fromTypeArgument, toTypeArgument)
   }
 
   pragma[nomagic]
@@ -718,7 +713,7 @@ private class SignedIntegralConstantExpr extends Expr {
 }
 
 private predicate convConstantIntExpr(SignedIntegralConstantExpr e, SimpleType toType) {
-  exists(int n | n = e.getValue().toInt() |
+  exists(int n | n = e.getIntValue() |
     toType = any(SByteType t | n in [t.minValue() .. t.maxValue()])
     or
     toType = any(ByteType t | n in [t.minValue() .. t.maxValue()])
@@ -735,7 +730,7 @@ private predicate convConstantIntExpr(SignedIntegralConstantExpr e, SimpleType t
 
 private predicate convConstantLongExpr(SignedIntegralConstantExpr e) {
   e.getType() instanceof LongType and
-  e.getValue().toInt() >= 0
+  e.getIntValue() >= 0
 }
 
 /** 6.1.10: Implicit reference conversions involving type parameters. */
@@ -929,19 +924,16 @@ private module Variance {
   private predicate convTypeArguments(
     TypeArgument fromTypeArgument, TypeArgument toTypeArgument, int i, TVariance v
   ) {
-    exists(int j |
-      fromTypeArgument = getTypeArgumentRanked(_, _, i, _) and
-      toTypeArgument = getTypeArgumentRanked(_, _, j, _) and
-      i <= j and
-      j <= i
-    |
+    fromTypeArgument = getTypeArgumentRanked(_, _, pragma[only_bind_into](i), _) and
+    toTypeArgument = getTypeArgumentRanked(_, _, pragma[only_bind_into](i), _) and
+    (
       convIdentity(fromTypeArgument, toTypeArgument) and
       v = TNone()
       or
-      convRefTypeTypeArgumentOut(fromTypeArgument, toTypeArgument, j) and
+      convRefTypeTypeArgumentOut(fromTypeArgument, toTypeArgument, i) and
       v = TOut()
       or
-      convRefTypeTypeArgumentIn(toTypeArgument, fromTypeArgument, j) and
+      convRefTypeTypeArgumentIn(toTypeArgument, fromTypeArgument, i) and
       v = TIn()
     )
   }

@@ -1,7 +1,8 @@
-| CloseReaderTest.java:8:14:8:28 | Exceptional Exit | CloseReaderTest.java:8:14:8:28 | Exit |
+| CloseReaderTest.java:8:14:8:28 | Entry | CloseReaderTest.java:8:14:8:28 | { ... } |
 | CloseReaderTest.java:8:14:8:28 | Normal Exit | CloseReaderTest.java:8:14:8:28 | Exit |
 | CloseReaderTest.java:8:14:8:28 | super(...) | CloseReaderTest.java:8:14:8:28 | Normal Exit |
 | CloseReaderTest.java:8:14:8:28 | { ... } | CloseReaderTest.java:8:14:8:28 | super(...) |
+| CloseReaderTest.java:9:23:9:34 | Entry | CloseReaderTest.java:10:2:24:2 | { ... } |
 | CloseReaderTest.java:9:23:9:34 | Exceptional Exit | CloseReaderTest.java:9:23:9:34 | Exit |
 | CloseReaderTest.java:9:23:9:34 | Normal Exit | CloseReaderTest.java:9:23:9:34 | Exit |
 | CloseReaderTest.java:10:2:24:2 | { ... } | CloseReaderTest.java:12:3:13:42 | <Expr>; |
@@ -27,6 +28,7 @@
 | CloseReaderTest.java:19:11:19:15 | stdin | CloseReaderTest.java:19:11:19:26 | readLine(...) |
 | CloseReaderTest.java:19:11:19:26 | readLine(...) | CloseReaderTest.java:19:4:19:27 | return ... |
 | CloseReaderTest.java:19:11:19:26 | readLine(...) | CloseReaderTest.java:20:5:20:26 | catch (...) |
+| CloseReaderTest.java:20:5:20:26 | catch (...) | CloseReaderTest.java:9:23:9:34 | Exceptional Exit |
 | CloseReaderTest.java:20:5:20:26 | catch (...) | CloseReaderTest.java:20:24:20:25 | ex |
 | CloseReaderTest.java:20:24:20:25 | ex | CloseReaderTest.java:21:3:23:3 | { ... } |
 | CloseReaderTest.java:21:3:23:3 | { ... } | CloseReaderTest.java:22:11:22:14 | null |

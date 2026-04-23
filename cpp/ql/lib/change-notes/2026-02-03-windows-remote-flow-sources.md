@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Added remote flow source models for the `winhttp.h` windows header and the Azure SDK core library for C/C++.

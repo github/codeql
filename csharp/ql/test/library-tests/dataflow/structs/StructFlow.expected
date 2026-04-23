@@ -1,0 +1,92 @@
+models
+edges
+| structs.cs:10:27:10:30 | args : Object[] [element] : Object | structs.cs:12:25:12:28 | access to parameter args : Object[] [element] : Object | provenance |  |
+| structs.cs:10:27:10:30 | args : Object[] [element] : Object | structs.cs:12:25:12:28 | access to parameter args : Object[] [element] : Object | provenance |  |
+| structs.cs:12:13:12:16 | [post] this access : S [field args, element] : Object | structs.cs:10:16:10:16 | this [Return] : S [field args, element] : Object | provenance |  |
+| structs.cs:12:13:12:16 | [post] this access : S [field args, element] : Object | structs.cs:10:16:10:16 | this [Return] : S [field args, element] : Object | provenance |  |
+| structs.cs:12:25:12:28 | access to parameter args : Object[] [element] : Object | structs.cs:12:13:12:16 | [post] this access : S [field args, element] : Object | provenance |  |
+| structs.cs:12:25:12:28 | access to parameter args : Object[] [element] : Object | structs.cs:12:13:12:16 | [post] this access : S [field args, element] : Object | provenance |  |
+| structs.cs:16:30:16:30 | s [Return] : S [field args, element] : Object | structs.cs:32:20:32:20 | [post] access to local variable s : S [field args, element] : Object | provenance |  |
+| structs.cs:16:30:16:30 | s [Return] : S [field args, element] : Object | structs.cs:32:20:32:20 | [post] access to local variable s : S [field args, element] : Object | provenance |  |
+| structs.cs:18:9:18:9 | [post] access to parameter s : S [field args, element] : Object | structs.cs:16:30:16:30 | s [Return] : S [field args, element] : Object | provenance |  |
+| structs.cs:18:9:18:9 | [post] access to parameter s : S [field args, element] : Object | structs.cs:16:30:16:30 | s [Return] : S [field args, element] : Object | provenance |  |
+| structs.cs:18:9:18:14 | [post] access to field args : Object[] [element] : Object | structs.cs:18:9:18:9 | [post] access to parameter s : S [field args, element] : Object | provenance |  |
+| structs.cs:18:9:18:14 | [post] access to field args : Object[] [element] : Object | structs.cs:18:9:18:9 | [post] access to parameter s : S [field args, element] : Object | provenance |  |
+| structs.cs:18:21:18:37 | call to method Source<Object> : Object | structs.cs:18:9:18:14 | [post] access to field args : Object[] [element] : Object | provenance |  |
+| structs.cs:18:21:18:37 | call to method Source<Object> : Object | structs.cs:18:9:18:14 | [post] access to field args : Object[] [element] : Object | provenance |  |
+| structs.cs:24:13:24:13 | access to local variable o : Object | structs.cs:25:24:25:24 | access to local variable o : Object | provenance |  |
+| structs.cs:24:13:24:13 | access to local variable o : Object | structs.cs:25:24:25:24 | access to local variable o : Object | provenance |  |
+| structs.cs:24:17:24:33 | call to method Source<Object> : Object | structs.cs:24:13:24:13 | access to local variable o : Object | provenance |  |
+| structs.cs:24:17:24:33 | call to method Source<Object> : Object | structs.cs:24:13:24:13 | access to local variable o : Object | provenance |  |
+| structs.cs:25:13:25:13 | access to local variable s : S [field args, element] : Object | structs.cs:26:14:26:14 | access to local variable s : S [field args, element] : Object | provenance |  |
+| structs.cs:25:13:25:13 | access to local variable s : S [field args, element] : Object | structs.cs:26:14:26:14 | access to local variable s : S [field args, element] : Object | provenance |  |
+| structs.cs:25:17:25:26 | object creation of type S : S [field args, element] : Object | structs.cs:25:13:25:13 | access to local variable s : S [field args, element] : Object | provenance |  |
+| structs.cs:25:17:25:26 | object creation of type S : S [field args, element] : Object | structs.cs:25:13:25:13 | access to local variable s : S [field args, element] : Object | provenance |  |
+| structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | structs.cs:10:27:10:30 | args : Object[] [element] : Object | provenance |  |
+| structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | structs.cs:10:27:10:30 | args : Object[] [element] : Object | provenance |  |
+| structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | structs.cs:25:17:25:26 | object creation of type S : S [field args, element] : Object | provenance |  |
+| structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | structs.cs:25:17:25:26 | object creation of type S : S [field args, element] : Object | provenance |  |
+| structs.cs:25:24:25:24 | access to local variable o : Object | structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | provenance |  |
+| structs.cs:25:24:25:24 | access to local variable o : Object | structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | provenance |  |
+| structs.cs:26:14:26:14 | access to local variable s : S [field args, element] : Object | structs.cs:26:14:26:19 | access to field args : Object[] [element] : Object | provenance |  |
+| structs.cs:26:14:26:14 | access to local variable s : S [field args, element] : Object | structs.cs:26:14:26:19 | access to field args : Object[] [element] : Object | provenance |  |
+| structs.cs:26:14:26:19 | access to field args : Object[] [element] : Object | structs.cs:26:14:26:22 | access to array element | provenance |  |
+| structs.cs:26:14:26:19 | access to field args : Object[] [element] : Object | structs.cs:26:14:26:22 | access to array element | provenance |  |
+| structs.cs:32:20:32:20 | [post] access to local variable s : S [field args, element] : Object | structs.cs:33:14:33:14 | access to local variable s : S [field args, element] : Object | provenance |  |
+| structs.cs:32:20:32:20 | [post] access to local variable s : S [field args, element] : Object | structs.cs:33:14:33:14 | access to local variable s : S [field args, element] : Object | provenance |  |
+| structs.cs:33:14:33:14 | access to local variable s : S [field args, element] : Object | structs.cs:33:14:33:19 | access to field args : Object[] [element] : Object | provenance |  |
+| structs.cs:33:14:33:14 | access to local variable s : S [field args, element] : Object | structs.cs:33:14:33:19 | access to field args : Object[] [element] : Object | provenance |  |
+| structs.cs:33:14:33:19 | access to field args : Object[] [element] : Object | structs.cs:33:14:33:22 | access to array element | provenance |  |
+| structs.cs:33:14:33:19 | access to field args : Object[] [element] : Object | structs.cs:33:14:33:22 | access to array element | provenance |  |
+nodes
+| structs.cs:10:16:10:16 | this [Return] : S [field args, element] : Object | semmle.label | this [Return] : S [field args, element] : Object |
+| structs.cs:10:16:10:16 | this [Return] : S [field args, element] : Object | semmle.label | this [Return] : S [field args, element] : Object |
+| structs.cs:10:27:10:30 | args : Object[] [element] : Object | semmle.label | args : Object[] [element] : Object |
+| structs.cs:10:27:10:30 | args : Object[] [element] : Object | semmle.label | args : Object[] [element] : Object |
+| structs.cs:12:13:12:16 | [post] this access : S [field args, element] : Object | semmle.label | [post] this access : S [field args, element] : Object |
+| structs.cs:12:13:12:16 | [post] this access : S [field args, element] : Object | semmle.label | [post] this access : S [field args, element] : Object |
+| structs.cs:12:25:12:28 | access to parameter args : Object[] [element] : Object | semmle.label | access to parameter args : Object[] [element] : Object |
+| structs.cs:12:25:12:28 | access to parameter args : Object[] [element] : Object | semmle.label | access to parameter args : Object[] [element] : Object |
+| structs.cs:16:30:16:30 | s [Return] : S [field args, element] : Object | semmle.label | s [Return] : S [field args, element] : Object |
+| structs.cs:16:30:16:30 | s [Return] : S [field args, element] : Object | semmle.label | s [Return] : S [field args, element] : Object |
+| structs.cs:18:9:18:9 | [post] access to parameter s : S [field args, element] : Object | semmle.label | [post] access to parameter s : S [field args, element] : Object |
+| structs.cs:18:9:18:9 | [post] access to parameter s : S [field args, element] : Object | semmle.label | [post] access to parameter s : S [field args, element] : Object |
+| structs.cs:18:9:18:14 | [post] access to field args : Object[] [element] : Object | semmle.label | [post] access to field args : Object[] [element] : Object |
+| structs.cs:18:9:18:14 | [post] access to field args : Object[] [element] : Object | semmle.label | [post] access to field args : Object[] [element] : Object |
+| structs.cs:18:21:18:37 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| structs.cs:18:21:18:37 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| structs.cs:24:13:24:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| structs.cs:24:13:24:13 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| structs.cs:24:17:24:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| structs.cs:24:17:24:33 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| structs.cs:25:13:25:13 | access to local variable s : S [field args, element] : Object | semmle.label | access to local variable s : S [field args, element] : Object |
+| structs.cs:25:13:25:13 | access to local variable s : S [field args, element] : Object | semmle.label | access to local variable s : S [field args, element] : Object |
+| structs.cs:25:17:25:26 | object creation of type S : S [field args, element] : Object | semmle.label | object creation of type S : S [field args, element] : Object |
+| structs.cs:25:17:25:26 | object creation of type S : S [field args, element] : Object | semmle.label | object creation of type S : S [field args, element] : Object |
+| structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | semmle.label | [...] : Object[] [element] : Object |
+| structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | semmle.label | [...] : Object[] [element] : Object |
+| structs.cs:25:24:25:24 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| structs.cs:25:24:25:24 | access to local variable o : Object | semmle.label | access to local variable o : Object |
+| structs.cs:26:14:26:14 | access to local variable s : S [field args, element] : Object | semmle.label | access to local variable s : S [field args, element] : Object |
+| structs.cs:26:14:26:14 | access to local variable s : S [field args, element] : Object | semmle.label | access to local variable s : S [field args, element] : Object |
+| structs.cs:26:14:26:19 | access to field args : Object[] [element] : Object | semmle.label | access to field args : Object[] [element] : Object |
+| structs.cs:26:14:26:19 | access to field args : Object[] [element] : Object | semmle.label | access to field args : Object[] [element] : Object |
+| structs.cs:26:14:26:22 | access to array element | semmle.label | access to array element |
+| structs.cs:26:14:26:22 | access to array element | semmle.label | access to array element |
+| structs.cs:32:20:32:20 | [post] access to local variable s : S [field args, element] : Object | semmle.label | [post] access to local variable s : S [field args, element] : Object |
+| structs.cs:32:20:32:20 | [post] access to local variable s : S [field args, element] : Object | semmle.label | [post] access to local variable s : S [field args, element] : Object |
+| structs.cs:33:14:33:14 | access to local variable s : S [field args, element] : Object | semmle.label | access to local variable s : S [field args, element] : Object |
+| structs.cs:33:14:33:14 | access to local variable s : S [field args, element] : Object | semmle.label | access to local variable s : S [field args, element] : Object |
+| structs.cs:33:14:33:19 | access to field args : Object[] [element] : Object | semmle.label | access to field args : Object[] [element] : Object |
+| structs.cs:33:14:33:19 | access to field args : Object[] [element] : Object | semmle.label | access to field args : Object[] [element] : Object |
+| structs.cs:33:14:33:22 | access to array element | semmle.label | access to array element |
+| structs.cs:33:14:33:22 | access to array element | semmle.label | access to array element |
+subpaths
+| structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | structs.cs:10:27:10:30 | args : Object[] [element] : Object | structs.cs:10:16:10:16 | this [Return] : S [field args, element] : Object | structs.cs:25:17:25:26 | object creation of type S : S [field args, element] : Object |
+| structs.cs:25:23:25:25 | [...] : Object[] [element] : Object | structs.cs:10:27:10:30 | args : Object[] [element] : Object | structs.cs:10:16:10:16 | this [Return] : S [field args, element] : Object | structs.cs:25:17:25:26 | object creation of type S : S [field args, element] : Object |
+testFailures
+#select
+| structs.cs:26:14:26:22 | access to array element | structs.cs:24:17:24:33 | call to method Source<Object> : Object | structs.cs:26:14:26:22 | access to array element | $@ | structs.cs:24:17:24:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| structs.cs:26:14:26:22 | access to array element | structs.cs:24:17:24:33 | call to method Source<Object> : Object | structs.cs:26:14:26:22 | access to array element | $@ | structs.cs:24:17:24:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| structs.cs:33:14:33:22 | access to array element | structs.cs:18:21:18:37 | call to method Source<Object> : Object | structs.cs:33:14:33:22 | access to array element | $@ | structs.cs:18:21:18:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| structs.cs:33:14:33:22 | access to array element | structs.cs:18:21:18:37 | call to method Source<Object> : Object | structs.cs:33:14:33:22 | access to array element | $@ | structs.cs:18:21:18:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |

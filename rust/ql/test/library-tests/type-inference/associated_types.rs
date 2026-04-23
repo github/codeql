@@ -236,8 +236,8 @@ mod concrete_type_as_generic_access_associated_type {
 
     pub fn test() {
         let s = S;
-        let _a = s.convert(true); // $ target=S::convert type=_a:i32 SPURIOUS: bool
-        let _b = s.convert(42); // $ target=S::convert type=_b:bool SPURIOUS: i32
+        let _a = s.convert(true); // $ target=S::convert $ MISSING: type=_a:i32
+        let _b = s.convert(42); // $ target=S::convert $ MISSING: type=_b:bool
     }
 }
 

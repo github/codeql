@@ -474,7 +474,7 @@ module Make<
 
   private class TDefinition = TWriteDef or TPhiNode;
 
-  private module SsaDefReachesNew {
+  private module SsaDefReaches {
     /**
      * Holds if the `i`th node of basic block `bb` is a reference to `v`,
      * either a read (when `k` is `Read()`) or an SSA definition (when
@@ -737,352 +737,12 @@ module Make<
     )
   }
 
-  private module SsaDefReaches {
-    deprecated newtype TSsaRefKind =
-      SsaActualRead() or
-      SsaPhiRead() or
-      SsaDef()
-
-    deprecated class SsaRead = SsaActualRead or SsaPhiRead;
-
-    deprecated class SsaDefExt = SsaDef or SsaPhiRead;
-
-    deprecated SsaDefExt ssaDefExt() { any() }
-
-    /**
-     * A classification of SSA variable references into reads and definitions.
-     */
-    deprecated class SsaRefKind extends TSsaRefKind {
-      string toString() {
-        this = SsaActualRead() and
-        result = "SsaActualRead"
-        or
-        this = SsaPhiRead() and
-        result = "SsaPhiRead"
-        or
-        this = SsaDef() and
-        result = "SsaDef"
-      }
-
-      int getOrder() {
-        this instanceof SsaRead and
-        result = 0
-        or
-        this = SsaDef() and
-        result = 1
-      }
-    }
-
-    /**
-     * Holds if the `i`th node of basic block `bb` is a reference to `v`,
-     * either a read (when `k` is `SsaActualRead()`), an SSA definition (when `k`
-     * is `SsaDef()`), or a phi-read (when `k` is `SsaPhiRead()`).
-     *
-     * Unlike `Liveness::varRef`, this includes `phi` (read) nodes.
-     */
-    pragma[nomagic]
-    deprecated predicate ssaRef(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
-      variableRead(bb, i, v, _) and
-      k = SsaActualRead()
-      or
-      any(Definition def).definesAt(v, bb, i) and
-      k = SsaDef()
-      or
-      synthPhiRead(bb, v) and i = -1 and k = SsaPhiRead()
-    }
-
-    /**
-     * Holds if the `i`th node of basic block `bb` is a reference to `v`, and
-     * this reference is not a phi-read.
-     */
-    deprecated predicate ssaRefNonPhiRead(BasicBlock bb, int i, SourceVariable v) {
-      ssaRef(bb, i, v, [SsaActualRead().(TSsaRefKind), SsaDef()])
-    }
-
-    deprecated private newtype OrderedSsaRefIndex =
-      deprecated MkOrderedSsaRefIndex(int i, SsaRefKind k) { ssaRef(_, i, _, k) }
-
-    deprecated private OrderedSsaRefIndex ssaRefOrd(
-      BasicBlock bb, int i, SourceVariable v, SsaRefKind k, int ord
-    ) {
-      ssaRef(bb, i, v, k) and
-      result = MkOrderedSsaRefIndex(i, k) and
-      ord = k.getOrder()
-    }
-
-    /**
-     * Gets the (1-based) rank of the reference to `v` at the `i`th node of basic
-     * block `bb`, which has the given reference kind `k`.
-     *
-     * For example, if `bb` is a basic block with a phi node for `v` (considered
-     * to be at index -1), reads `v` at node 2, and defines it at node 5, we have:
-     *
-     * ```ql
-     * ssaRefRank(bb, -1, v, SsaDef()) = 1    // phi node
-     * ssaRefRank(bb,  2, v, Read())   = 2    // read at node 2
-     * ssaRefRank(bb,  5, v, SsaDef()) = 3    // definition at node 5
-     * ```
-     *
-     * Reads are considered before writes when they happen at the same index.
-     */
-    deprecated int ssaRefRank(BasicBlock bb, int i, SourceVariable v, SsaRefKind k) {
-      ssaRefOrd(bb, i, v, k, _) =
-        rank[result](int j, int ord, OrderedSsaRefIndex res |
-          res = ssaRefOrd(bb, j, v, _, ord)
-        |
-          res order by j, ord
-        )
-    }
-
-    deprecated int maxSsaRefRank(BasicBlock bb, SourceVariable v) {
-      result = ssaRefRank(bb, _, v, _) and
-      not result + 1 = ssaRefRank(bb, _, v, _)
-    }
-
-    /**
-     * Holds if the SSA definition `def` reaches rank index `rnk` in its own
-     * basic block `bb`.
-     */
-    deprecated predicate ssaDefReachesRank(
-      BasicBlock bb, DefinitionExt def, int rnk, SourceVariable v
-    ) {
-      exists(int i |
-        rnk = ssaRefRank(bb, i, v, ssaDefExt()) and
-        def.definesAt(v, bb, i, _)
-      )
-      or
-      ssaDefReachesRank(bb, def, rnk - 1, v) and
-      rnk = ssaRefRank(bb, _, v, SsaActualRead())
-    }
-
-    /**
-     * Holds if the SSA definition of `v` at `def` reaches index `i` in the same
-     * basic block `bb`, without crossing another SSA definition of `v`.
-     */
-    deprecated predicate ssaDefReachesReadWithinBlock(
-      SourceVariable v, DefinitionExt def, BasicBlock bb, int i
-    ) {
-      exists(int rnk |
-        ssaDefReachesRank(bb, def, rnk, v) and
-        rnk = ssaRefRank(bb, i, v, SsaActualRead())
-      )
-    }
-
-    /**
-     * Same as `ssaRefRank()`, but restricted to a particular SSA definition `def`.
-     */
-    deprecated int ssaDefRank(
-      DefinitionExt def, SourceVariable v, BasicBlock bb, int i, SsaRefKind k
-    ) {
-      result = ssaRefRank(bb, i, v, k) and
-      (
-        ssaDefReachesReadExt(v, def, bb, i)
-        or
-        def.definesAt(v, bb, i, k)
-      )
-    }
-
-    /**
-     * Holds if the reference to `def` at index `i` in basic block `bb` is the
-     * last reference to `v` inside `bb`.
-     */
-    pragma[noinline]
-    deprecated predicate lastSsaRefExt(DefinitionExt def, SourceVariable v, BasicBlock bb, int i) {
-      ssaDefRank(def, v, bb, i, _) = maxSsaRefRank(bb, v)
-    }
-
-    /** Gets a phi-read node into which `inp` is an input, if any. */
-    pragma[nomagic]
-    deprecated private DefinitionExt getAPhiReadOutput(DefinitionExt inp) {
-      phiHasInputFromBlockExt(result.(PhiReadNode), inp, _)
-    }
-
-    pragma[nomagic]
-    deprecated DefinitionExt getAnUltimateOutput(Definition def) {
-      result = getAPhiReadOutput*(def)
-    }
-
-    /**
-     * Same as `lastSsaRefExt`, but ignores phi-reads.
-     */
-    pragma[noinline]
-    deprecated predicate lastSsaRef(Definition def, SourceVariable v, BasicBlock bb, int i) {
-      lastSsaRefExt(getAnUltimateOutput(def), v, bb, i) and
-      ssaRefNonPhiRead(bb, i, v)
-    }
-
-    deprecated predicate defOccursInBlock(
-      DefinitionExt def, BasicBlock bb, SourceVariable v, SsaRefKind k
-    ) {
-      exists(ssaDefRank(def, v, bb, _, k))
-    }
-
-    pragma[noinline]
-    deprecated predicate ssaDefReachesThroughBlock(DefinitionExt def, BasicBlock bb) {
-      exists(SourceVariable v |
-        ssaDefReachesEndOfBlockExt0(bb, def, v) and
-        not defOccursInBlock(_, bb, v, _)
-      )
-    }
-
-    /**
-     * Holds if `def` is accessed in basic block `bb1` (either a read or a write),
-     * `bb2` is a transitive successor of `bb1`, `def` is live at the end of _some_
-     * predecessor of `bb2`, and the underlying variable for `def` is neither read
-     * nor written in any block on the path between `bb1` and `bb2`.
-     */
-    pragma[nomagic]
-    deprecated predicate varBlockReachesExt(
-      DefinitionExt def, SourceVariable v, BasicBlock bb1, BasicBlock bb2
-    ) {
-      defOccursInBlock(def, bb1, v, _) and
-      bb2 = bb1.getASuccessor()
-      or
-      exists(BasicBlock mid |
-        varBlockReachesExt(def, v, bb1, mid) and
-        ssaDefReachesThroughBlock(def, mid) and
-        bb2 = mid.getASuccessor()
-      )
-    }
-
-    pragma[nomagic]
-    deprecated private predicate phiReadStep(
-      DefinitionExt def, PhiReadNode phi, BasicBlock bb1, BasicBlock bb2
-    ) {
-      exists(SourceVariable v |
-        varBlockReachesExt(pragma[only_bind_into](def), v, bb1, pragma[only_bind_into](bb2)) and
-        phi.definesAt(v, bb2, _, _) and
-        not varRef(bb2, _, v, _)
-      )
-    }
-
-    pragma[nomagic]
-    deprecated private predicate varBlockReachesExclPhiRead(
-      DefinitionExt def, SourceVariable v, BasicBlock bb1, BasicBlock bb2
-    ) {
-      varBlockReachesExt(def, v, bb1, bb2) and
-      ssaRefNonPhiRead(bb2, _, v)
-      or
-      exists(PhiReadNode phi, BasicBlock mid |
-        varBlockReachesExclPhiRead(phi, v, mid, bb2) and
-        phiReadStep(def, phi, bb1, mid)
-      )
-    }
-
-    /**
-     * Same as `varBlockReachesExt`, but ignores phi-reads, and furthermore
-     * `bb2` is restricted to blocks in which the underlying variable `v` of
-     * `def` is referenced (either a read or a write).
-     */
-    pragma[nomagic]
-    deprecated predicate varBlockReachesRef(
-      Definition def, SourceVariable v, BasicBlock bb1, BasicBlock bb2
-    ) {
-      varBlockReachesExclPhiRead(getAnUltimateOutput(def), v, bb1, bb2) and
-      ssaRefNonPhiRead(bb1, _, v)
-    }
-
-    pragma[nomagic]
-    deprecated predicate defAdjacentReadExt(
-      DefinitionExt def, BasicBlock bb1, BasicBlock bb2, int i2
-    ) {
-      exists(SourceVariable v |
-        varBlockReachesExt(def, v, bb1, bb2) and
-        ssaRefRank(bb2, i2, v, SsaActualRead()) = 1
-      )
-    }
-
-    pragma[nomagic]
-    deprecated predicate defAdjacentRead(Definition def, BasicBlock bb1, BasicBlock bb2, int i2) {
-      exists(SourceVariable v | varBlockReachesRef(def, v, bb1, bb2) |
-        ssaRefRank(bb2, i2, v, SsaActualRead()) = 1
-        or
-        ssaRefRank(bb2, _, v, SsaPhiRead()) = 1 and
-        ssaRefRank(bb2, i2, v, SsaActualRead()) = 2
-      )
-    }
-
-    /**
-     * Holds if `def` is accessed in basic block `bb` (either a read or a write),
-     * `bb` can reach a transitive successor `bb2` where `def` is no longer live,
-     * and `v` is neither read nor written in any block on the path between `bb`
-     * and `bb2`.
-     */
-    pragma[nomagic]
-    deprecated predicate varBlockReachesExitExt(DefinitionExt def, BasicBlock bb) {
-      exists(BasicBlock bb2 | varBlockReachesExt(def, _, bb, bb2) |
-        not defOccursInBlock(def, bb2, _, _) and
-        not ssaDefReachesEndOfBlockExt0(bb2, def, _)
-      )
-    }
-
-    pragma[nomagic]
-    deprecated private predicate varBlockReachesExitExclPhiRead(DefinitionExt def, BasicBlock bb) {
-      exists(BasicBlock bb2, SourceVariable v |
-        varBlockReachesExt(def, v, bb, bb2) and
-        not defOccursInBlock(def, bb2, _, _) and
-        not ssaDefReachesEndOfBlockExt0(bb2, def, _) and
-        not any(PhiReadNode phi).definesAt(v, bb2, _, _)
-      )
-      or
-      exists(PhiReadNode phi, BasicBlock bb2 |
-        varBlockReachesExitExclPhiRead(phi, bb2) and
-        phiReadStep(def, phi, bb, bb2)
-      )
-    }
-
-    /**
-     * Same as `varBlockReachesExitExt`, but ignores phi-reads.
-     */
-    pragma[nomagic]
-    deprecated predicate varBlockReachesExit(Definition def, BasicBlock bb) {
-      varBlockReachesExitExclPhiRead(getAnUltimateOutput(def), bb)
-    }
-  }
-
-  private import SsaDefReaches
-
-  pragma[nomagic]
-  deprecated private predicate liveThroughExt(BasicBlock bb, SourceVariable v) {
-    liveAtExit(bb, v) and
-    not ssaRef(bb, _, v, ssaDefExt())
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Holds if the SSA definition of `v` at `def` reaches the end of basic
-   * block `bb`, at which point it is still live, without crossing another
-   * SSA definition of `v`.
-   */
-  pragma[nomagic]
-  deprecated private predicate ssaDefReachesEndOfBlockExt0(
-    BasicBlock bb, DefinitionExt def, SourceVariable v
-  ) {
-    exists(int last |
-      last = maxSsaRefRank(pragma[only_bind_into](bb), pragma[only_bind_into](v)) and
-      ssaDefReachesRank(bb, def, last, v) and
-      liveAtExit(bb, v)
-    )
-    or
-    // The construction of SSA form ensures that each read of a variable is
-    // dominated by its definition. An SSA definition therefore reaches a
-    // control flow node if it is the _closest_ SSA definition that dominates
-    // the node. If two definitions dominate a node then one must dominate the
-    // other, so therefore the definition of _closest_ is given by the dominator
-    // tree. Thus, reaching definitions can be calculated in terms of dominance.
-    ssaDefReachesEndOfBlockExt0(bb.getImmediateDominator(), def, pragma[only_bind_into](v)) and
-    liveThroughExt(bb, pragma[only_bind_into](v))
-  }
-
-  deprecated predicate ssaDefReachesEndOfBlockExt = ssaDefReachesEndOfBlockExt0/3;
-
   /**
    * NB: If this predicate is exposed, it should be cached.
    *
    * Same as `ssaDefReachesEndOfBlockExt`, but ignores phi-reads.
    */
-  predicate ssaDefReachesEndOfBlock = SsaDefReachesNew::ssaDefReachesEndOfBlock/3;
+  predicate ssaDefReachesEndOfBlock = SsaDefReaches::ssaDefReachesEndOfBlock/3;
 
   /**
    * NB: If this predicate is exposed, it should be cached.
@@ -1101,171 +761,11 @@ module Make<
   /**
    * NB: If this predicate is exposed, it should be cached.
    *
-   * Holds if `inp` is an input to the phi (read) node `phi` along the edge originating in `bb`.
-   */
-  pragma[nomagic]
-  deprecated predicate phiHasInputFromBlockExt(DefinitionExt phi, DefinitionExt inp, BasicBlock bb) {
-    exists(SourceVariable v, BasicBlock bbDef |
-      phi.definesAt(v, bbDef, _, _) and
-      getABasicBlockPredecessor(bbDef) = bb and
-      ssaDefReachesEndOfBlockExt0(bb, inp, v)
-    |
-      phi instanceof PhiNode or
-      phi instanceof PhiReadNode
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Holds if the SSA definition of `v` at `def` reaches a read at index `i` in
-   * basic block `bb`, without crossing another SSA definition of `v`.
-   */
-  pragma[nomagic]
-  deprecated predicate ssaDefReachesReadExt(
-    SourceVariable v, DefinitionExt def, BasicBlock bb, int i
-  ) {
-    ssaDefReachesReadWithinBlock(v, def, bb, i)
-    or
-    ssaRef(bb, i, v, SsaActualRead()) and
-    ssaDefReachesEndOfBlockExt0(getABasicBlockPredecessor(bb), def, v) and
-    not ssaDefReachesReadWithinBlock(v, _, bb, i)
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
    * Same as `ssaDefReachesReadExt`, but ignores phi-reads.
    */
   predicate ssaDefReachesRead(SourceVariable v, Definition def, BasicBlock bb, int i) {
-    SsaDefReachesNew::ssaDefReachesRead(v, def, bb, i) and
+    SsaDefReaches::ssaDefReachesRead(v, def, bb, i) and
     variableRead(bb, i, v, _)
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Holds if `def` is accessed at index `i1` in basic block `bb1` (either a read
-   * or a write), `def` is read at index `i2` in basic block `bb2`, and there is a
-   * path between them without any read of `def`.
-   */
-  pragma[nomagic]
-  deprecated predicate adjacentDefReadExt(
-    DefinitionExt def, SourceVariable v, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-  ) {
-    exists(int rnk |
-      rnk = ssaDefRank(def, v, bb1, i1, _) and
-      rnk + 1 = ssaDefRank(def, v, bb1, i2, SsaActualRead()) and
-      variableRead(bb1, i2, v, _) and
-      bb2 = bb1
-    )
-    or
-    lastSsaRefExt(def, v, bb1, i1) and
-    defAdjacentReadExt(def, bb1, bb2, i2)
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `adjacentDefReadExt`, but ignores phi-reads.
-   */
-  pragma[nomagic]
-  deprecated predicate adjacentDefRead(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-  ) {
-    exists(SourceVariable v |
-      adjacentDefReadExt(getAnUltimateOutput(def), v, bb1, i1, bb2, i2) and
-      ssaRefNonPhiRead(bb1, i1, v)
-    )
-    or
-    lastSsaRef(def, _, bb1, i1) and
-    defAdjacentRead(def, bb1, bb2, i2)
-  }
-
-  deprecated private predicate lastRefRedefExtSameBlock(
-    DefinitionExt def, SourceVariable v, BasicBlock bb, int i, DefinitionExt next
-  ) {
-    exists(int rnk, int j |
-      rnk = ssaDefRank(def, v, bb, i, _) and
-      next.definesAt(v, bb, j, _) and
-      rnk + 1 = ssaRefRank(bb, j, v, ssaDefExt())
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
-   * `def`. The reference is last because it can reach another write `next`,
-   * without passing through another read or write.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRefRedefExt(
-    DefinitionExt def, SourceVariable v, BasicBlock bb, int i, DefinitionExt next
-  ) {
-    // Next reference to `v` inside `bb` is a write
-    lastRefRedefExtSameBlock(def, v, bb, i, next)
-    or
-    // Can reach a write using one or more steps
-    lastSsaRefExt(def, v, bb, i) and
-    exists(BasicBlock bb2 |
-      varBlockReachesExt(def, v, bb, bb2) and
-      1 = ssaDefRank(next, v, bb2, _, ssaDefExt())
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Holds if the node at index `i` in `bb` is a last reference to SSA definition
-   * `def`. The reference is last because it can reach another write `next`,
-   * without passing through another read or write.
-   *
-   * The path from node `i` in `bb` to `next` goes via basic block `input`, which is
-   * either a predecessor of the basic block of `next`, or `input = bb` in case `next`
-   * occurs in basic block `bb`.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRefRedefExt(
-    DefinitionExt def, SourceVariable v, BasicBlock bb, int i, BasicBlock input, DefinitionExt next
-  ) {
-    // Next reference to `v` inside `bb` is a write
-    lastRefRedefExtSameBlock(def, v, bb, i, next) and
-    input = bb
-    or
-    // Can reach a write using one or more steps
-    lastSsaRefExt(def, v, bb, i) and
-    exists(BasicBlock bb2 |
-      input = getABasicBlockPredecessor(bb2) and
-      1 = ssaDefRank(next, v, bb2, _, ssaDefExt())
-    |
-      input = bb
-      or
-      varBlockReachesExt(def, v, bb, input) and
-      ssaDefReachesThroughBlock(def, pragma[only_bind_into](input))
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `lastRefRedefExt`, but ignores phi-reads.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRefRedef(Definition def, BasicBlock bb, int i, Definition next) {
-    exists(SourceVariable v |
-      lastRefRedefExt(getAnUltimateOutput(def), v, bb, i, next) and
-      ssaRefNonPhiRead(bb, i, v)
-    )
-    or
-    // Can reach a write using one or more steps
-    exists(SourceVariable v |
-      lastSsaRef(def, v, bb, i) and
-      exists(BasicBlock bb2 |
-        varBlockReachesRef(def, v, bb, bb2) and
-        1 = ssaDefRank(next, v, bb2, _, SsaDef())
-      )
-    )
   }
 
   /**
@@ -1275,55 +775,7 @@ module Make<
    * `def`. Since `def` is uncertain, the value from the preceding definition might
    * still be valid.
    */
-  predicate uncertainWriteDefinitionInput = SsaDefReachesNew::uncertainWriteDefinitionInput/2;
-
-  /** Holds if `bb` is a control-flow exit point. */
-  private predicate exitBlock(BasicBlock bb) { not exists(bb.getASuccessor()) }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Holds if the node at index `i` in `bb` is a last reference to SSA
-   * definition `def`.
-   *
-   * That is, the node can reach the end of the enclosing callable, or another
-   * SSA definition for the underlying source variable, without passing through
-   * another read.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRefExt(DefinitionExt def, BasicBlock bb, int i) {
-    // Can reach another definition
-    lastRefRedefExt(def, _, bb, i, _)
-    or
-    lastSsaRefExt(def, _, bb, i) and
-    (
-      // Can reach exit directly
-      exitBlock(bb)
-      or
-      // Can reach a block using one or more steps, where `def` is no longer live
-      varBlockReachesExitExt(def, bb)
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `lastRefExt`, but ignores phi-reads.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRef(Definition def, BasicBlock bb, int i) {
-    // Can reach another definition
-    lastRefRedef(def, bb, i, _)
-    or
-    lastSsaRef(def, _, bb, i) and
-    (
-      // Can reach exit directly
-      exitBlock(bb)
-      or
-      // Can reach a block using one or more steps, where `def` is no longer live
-      varBlockReachesExit(def, bb)
-    )
-  }
+  predicate uncertainWriteDefinitionInput = SsaDefReaches::uncertainWriteDefinitionInput/2;
 
   /** A static single assignment (SSA) definition. */
   class Definition extends TDefinition {
@@ -1382,29 +834,15 @@ module Make<
     }
   }
 
-  deprecated class DefinitionExt = DefinitionExt_;
-
   /**
    * An extended static single assignment (SSA) definition.
    *
    * This is either a normal SSA definition (`Definition`) or a
    * phi-read node (`PhiReadNode`).
    */
-  private class DefinitionExt_ extends TDefinitionExt {
+  private class DefinitionExt extends TDefinitionExt {
     /** Gets the source variable underlying this SSA definition. */
     SourceVariable getSourceVariable() { this.definesAt(result, _, _) }
-
-    /**
-     * Holds if this SSA definition defines `v` at index `i` in basic block `bb`.
-     * Phi nodes are considered to be at index `-1`, while normal variable writes
-     * are at the index of the control flow node they wrap.
-     */
-    deprecated final predicate definesAt(SourceVariable v, BasicBlock bb, int i, SsaRefKind kind) {
-      this.(Definition).definesAt(v, bb, i) and
-      kind = SsaDef()
-      or
-      this = TPhiReadNode(v, bb) and i = -1 and kind = SsaPhiRead()
-    }
 
     /**
      * Holds if this SSA definition defines `v` at index `i` in basic block `bb`.
@@ -1426,8 +864,6 @@ module Make<
     /** Gets the location of this SSA definition. */
     Location getLocation() { result = this.(Definition).getLocation() }
   }
-
-  deprecated class PhiReadNode = PhiReadNode_;
 
   /**
    * A phi-read node.
@@ -1510,7 +946,7 @@ module Make<
    * to `phi-read` goes through a dominance-frontier block, and hence a phi node,
    * which contradicts reachability.
    */
-  private class PhiReadNode_ extends DefinitionExt_, TPhiReadNode {
+  private class PhiReadNode extends DefinitionExt, TPhiReadNode {
     override string toString() { result = "SSA phi read(" + this.getSourceVariable() + ")" }
 
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
@@ -1823,11 +1259,11 @@ module Make<
     /** Holds if a read is not dominated by a definition. */
     query predicate notDominatedByDef(Definition def, SourceVariable v, BasicBlock bb, int i) {
       exists(BasicBlock bbDef, int iDef | def.definesAt(v, bbDef, iDef) |
-        SsaDefReachesNew::ssaDefReachesReadWithinBlock(v, def, bb, i) and
+        SsaDefReaches::ssaDefReachesReadWithinBlock(v, def, bb, i) and
         (bb != bbDef or i < iDef)
         or
         ssaDefReachesRead(v, def, bb, i) and
-        not SsaDefReachesNew::ssaDefReachesReadWithinBlock(v, def, bb, i) and
+        not SsaDefReaches::ssaDefReachesReadWithinBlock(v, def, bb, i) and
         not def.definesAt(v, bb.getImmediateDominator*(), _)
       )
     }
@@ -2048,14 +1484,14 @@ module Make<
   module DataFlowIntegration<DataFlowIntegrationInputSig DfInput> {
     private import codeql.util.Boolean
 
-    final private class DefinitionExtFinal = DefinitionExt_;
+    final private class DefinitionExtFinal = DefinitionExt;
 
     /** An SSA definition which is either a phi node or a phi read node. */
     private class SsaPhiExt extends DefinitionExtFinal {
       SsaPhiExt() {
         this instanceof PhiNode
         or
-        this instanceof PhiReadNode_
+        this instanceof PhiReadNode
       }
     }
 
@@ -2222,13 +1658,13 @@ module Make<
     private newtype TNode =
       TWriteDefSource(WriteDefinition def) { DfInput::ssaDefHasSource(def) } or
       TExprNode(DfInput::Expr e, Boolean isPost) { e = DfInput::getARead(_) } or
-      TSsaDefinitionNode(DefinitionExt_ def) {
+      TSsaDefinitionNode(DefinitionExt def) {
         not phiHasUniqNextNode(def) and
         if DfInput::includeWriteDefsInFlowStep()
         then any()
         else (
           def instanceof PhiNode or
-          def instanceof PhiReadNode_ or
+          def instanceof PhiReadNode or
           DfInput::allowFlowIntoUncertainDef(def)
         )
       } or
@@ -2330,9 +1766,6 @@ module Make<
 
     /** A synthesized SSA data flow node. */
     abstract private class SsaNodeImpl extends NodeImpl {
-      /** Gets the underlying SSA definition. */
-      abstract deprecated DefinitionExt getDefinitionExt();
-
       /** Gets the SSA definition this node corresponds to, if any. */
       Definition asDefinition() { this = TSsaDefinitionNode(result) }
 
@@ -2354,14 +1787,12 @@ module Make<
 
     /** An SSA definition, viewed as a node in a data flow graph. */
     private class SsaDefinitionExtNodeImpl extends SsaNodeImpl, TSsaDefinitionNode {
-      private DefinitionExt_ def;
+      private DefinitionExt def;
 
       SsaDefinitionExtNodeImpl() { this = TSsaDefinitionNode(def) }
 
       /** Gets the corresponding `DefinitionExt`. */
-      DefinitionExt_ getDefExt() { result = def }
-
-      deprecated override DefinitionExt getDefinitionExt() { result = def }
+      DefinitionExt getDefExt() { result = def }
 
       override BasicBlock getBasicBlock() { result = def.getBasicBlock() }
 
@@ -2373,8 +1804,6 @@ module Make<
 
       override string toString() { result = def.toString() }
     }
-
-    deprecated final class SsaDefinitionExtNode = SsaDefinitionExtNodeImpl;
 
     /** An SSA definition, viewed as a node in a data flow graph. */
     private class SsaDefinitionNodeImpl extends SsaDefinitionExtNodeImpl {
@@ -2391,7 +1820,7 @@ module Make<
     /** A node that represents a synthetic read of a source variable. */
     final class SsaSynthReadNode extends SsaNode {
       SsaSynthReadNode() {
-        this.(SsaDefinitionExtNodeImpl).getDefExt() instanceof PhiReadNode_ or
+        this.(SsaDefinitionExtNodeImpl).getDefExt() instanceof PhiReadNode or
         this instanceof SsaInputNodeImpl
       }
     }
@@ -2438,14 +1867,12 @@ module Make<
       SsaInputNodeImpl() { this = TSsaInputNode(def_, input_) }
 
       /** Holds if this node represents input into SSA definition `def` via basic block `input`. */
-      predicate isInputInto(DefinitionExt_ def, BasicBlock input) {
+      predicate isInputInto(DefinitionExt def, BasicBlock input) {
         def = def_ and
         input = input_
       }
 
       SsaPhiExt getPhi() { result = def_ }
-
-      deprecated override SsaPhiExt getDefinitionExt() { result = def_ }
 
       override BasicBlock getBasicBlock() { result = input_ }
 
@@ -2458,8 +1885,6 @@ module Make<
       override string toString() { result = "[input] " + def_.toString() }
     }
 
-    deprecated final class SsaInputNode = SsaInputNodeImpl;
-
     /**
      * Holds if `nodeFrom` corresponds to the reference to `v` at index `i` in
      * `bb`. The boolean `isUseStep` indicates whether `nodeFrom` is an actual
@@ -2469,7 +1894,7 @@ module Make<
     private predicate flowOutOf(
       Node nodeFrom, SourceVariable v, BasicBlock bb, int i, boolean isUseStep
     ) {
-      exists(DefinitionExt_ def |
+      exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
         def.definesAt(v, bb, i) and
         isUseStep = false
@@ -2497,7 +1922,7 @@ module Make<
       )
       or
       // Flow from definition/read to phi input
-      exists(BasicBlock input, BasicBlock bbPhi, DefinitionExt_ phi |
+      exists(BasicBlock input, BasicBlock bbPhi, DefinitionExt phi |
         AdjacentSsaRefs::adjacentRefPhi(bb1, i1, input, bbPhi, v) and
         phi.definesAt(v, bbPhi, -1)
       |
@@ -2507,9 +1932,7 @@ module Make<
       )
     }
 
-    private predicate flowIntoPhi(
-      DefinitionExt_ phi, SourceVariable v, BasicBlock bbPhi, Node nodeTo
-    ) {
+    private predicate flowIntoPhi(DefinitionExt phi, SourceVariable v, BasicBlock bbPhi, Node nodeTo) {
       phi.definesAt(v, bbPhi, -1) and
       if phiHasUniqNextNode(phi)
       then flowFromRefToNode(v, bbPhi, -1, nodeTo)
@@ -2545,7 +1968,7 @@ module Make<
       )
       or
       // Flow from input node to def
-      exists(DefinitionExt_ phi |
+      exists(DefinitionExt phi |
         phi = nodeFrom.(SsaInputNodeImpl).getPhi() and
         isUseStep = false and
         nodeFrom != nodeTo and
@@ -2565,7 +1988,7 @@ module Make<
       )
       or
       // Flow from SSA definition to read
-      exists(DefinitionExt_ def |
+      exists(DefinitionExt def |
         nodeFrom.(SsaDefinitionExtNodeImpl).getDefExt() = def and
         nodeTo.(ExprNode).getExpr() = DfInput::getARead(def) and
         v = def.getSourceVariable()

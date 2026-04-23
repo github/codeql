@@ -23,7 +23,7 @@ void test_sockets1()
 	int sockfd;
 	sockaddr addr_remote;
 	char *msg = "Hello, world!";
-	char *path = getenv("PATH");
+	char *path = getenv("PATH"); // $ Source
 
 	// create socket
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -36,11 +36,11 @@ void test_sockets1()
 
 	// send something using 'send'
 	if (send(sockfd, msg, strlen(msg) + 1, 0) < 0) return; // GOOD
-	if (send(sockfd, path, strlen(path) + 1, 0) < 0) return; // BAD
-	
+	if (send(sockfd, path, strlen(path) + 1, 0) < 0) return; // $ Alert
+
 	// send something using 'write'
 	if (write(sockfd, msg, strlen(msg) + 1) < 0) return; // GOOD
-	if (write(sockfd, path, strlen(path) + 1) < 0) return; // BAD
+	if (write(sockfd, path, strlen(path) + 1) < 0) return; // $ Alert
 
 	// clean up
 	// ...
@@ -49,9 +49,9 @@ void test_sockets1()
 int mksocket()
 {
 	int fd;
-	
+
 	fd = socket(AF_INET, SOCK_STREAM, 0);
-	
+
 	return fd;
 }
 
@@ -60,7 +60,7 @@ void test_sockets2()
 	int sockfd;
 	sockaddr addr_remote;
 	char *msg = "Hello, world!";
-	char *path = getenv("PATH");
+	char *path = getenv("PATH"); // $ Source
 
 	// create socket
 	sockfd = mksocket();
@@ -73,11 +73,11 @@ void test_sockets2()
 
 	// send something using 'send'
 	if (send(sockfd, msg, strlen(msg) + 1, 0) < 0) return; // GOOD
-	if (send(sockfd, path, strlen(path) + 1, 0) < 0) return; // BAD
-	
+	if (send(sockfd, path, strlen(path) + 1, 0) < 0) return; // $ Alert
+
 	// send something using 'write'
 	if (write(sockfd, msg, strlen(msg) + 1) < 0) return; // GOOD
-	if (write(sockfd, path, strlen(path) + 1) < 0) return; // BAD
+	if (write(sockfd, path, strlen(path) + 1) < 0) return; // $ Alert
 
 	// clean up
 	// ...

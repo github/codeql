@@ -1,3 +1,76 @@
+## 9.0.4
+
+### Minor Analysis Improvements
+
+* The queries "Resolving XML external entity in user-controlled data" (`java/xxe`) and "Resolving XML external entity in user-controlled data from local source" (`java/xxe-local`) now recognize sinks in the Woodstox StAX library when `com.ctc.wstx.stax.WstxInputFactory` or `org.codehaus.stax2.XMLInputFactory2` are used directly.
+
+## 9.0.3
+
+### Minor Analysis Improvements
+
+* The `java/tainted-arithmetic` query no longer flags arithmetic expressions that are used directly as an operand of a comparison in `if`-condition bounds-checking patterns. For example, `if (off + len > array.length)` is now recognized as a bounds check rather than a potentially vulnerable computation, reducing false positives.
+* The `java/potentially-weak-cryptographic-algorithm` query no longer flags Elliptic Curve algorithms (`EC`, `ECDSA`, `ECDH`, `EdDSA`, `Ed25519`, `Ed448`, `XDH`, `X25519`, `X448`), HMAC-based algorithms (`HMACSHA1`, `HMACSHA256`, `HMACSHA384`, `HMACSHA512`), or PBKDF2 key derivation as potentially insecure. These are modern, secure algorithms recommended by NIST and other standards bodies. This will reduce the number of false positives for this query.
+* The first argument of the method `getInstance` of `java.security.Signature` is now modeled as a sink for `java/potentially-weak-cryptographic-algorithm`, `java/weak-cryptographic-algorithm` and `java/rsa-without-oaep`. This will increase the number of alerts for these queries.
+* Kotlin versions up to 2.3.20 are now supported.
+
+## 9.0.2
+
+No user-facing changes.
+
+## 9.0.1
+
+No user-facing changes.
+
+## 9.0.0
+
+### Breaking Changes
+
+* The Java control flow graph (CFG) implementation has been completely
+  rewritten. The CFG now includes additional nodes to more accurately represent
+  certain constructs. This also means that any existing code that implicitly
+  relies on very specific details about the CFG may need to be updated.
+  The CFG now only includes the nodes that are reachable from the entry point.
+  Additionally, the following breaking changes have been made:
+  - `ControlFlowNode.asCall` has been removed - use `Call.getControlFlowNode` instead.
+  - `ControlFlowNode.getEnclosingStmt` has been removed.
+  - `ControlFlow::ExprNode` has been removed.
+  - `ControlFlow::StmtNode` has been removed.
+  - `ControlFlow::Node` has been removed - this was merely an alias of
+    `ControlFlowNode`, which is still available.
+  - Previously deprecated predicates on `BasicBlock` have been removed.
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* The class `Assignment` now extends `BinaryExpr`. Uses of `BinaryExpr` may in some cases need slight adjustment.
+
+## 8.1.1
+
+### Minor Analysis Improvements
+
+* Some modelling which previously only worked for Java EE packages beginning with "javax" will now also work for Java EE packages beginning with "jakarta" as well. This may lead to some alert changes.
+
+## 8.1.0
+
+### Deprecated APIs
+
+* The `UnreachableBlocks.qll` library has been deprecated.
+* Renamed the following predicates to increase uniformity across languages. The `getBody` predicate already existed on `LoopStmt`, but is now properly inherited.
+  - `UnaryExpr.getExpr` to `getOperand`.
+  - `ConditionalExpr.getTrueExpr` to `getThen`.
+  - `ConditionalExpr.getFalseExpr` to `getElse`.
+  - `ReturnStmt.getResult` to `getExpr`.
+  - `WhileStmt.getStmt` to `getBody`.
+  - `DoStmt.getStmt` to `getBody`.
+  - `ForStmt.getStmt` to `getBody`.
+  - `EnhancedForStmt.getStmt` to `getBody`.
+
+### Minor Analysis Improvements
+
+* Using a regular expression to check that a string doesn't contain any line breaks is already a sanitizer for `java/log-injection`. Additional ways of doing the regular expression check are now recognised, including annotation with `@javax.validation.constraints.Pattern`.
+* More ways of checking that a string matches a regular expression are now considered as sanitizers for various queries, including `java/ssrf` and `java/path-injection`. In particular, being annotated with `@javax.validation.constraints.Pattern` is now recognised as a sanitizer for those queries.
+* Kotlin versions up to 2.3.10 are now supported.
+
 ## 8.0.0
 
 ### Breaking Changes
@@ -6,7 +79,7 @@
 
 ### New Features
 
-* Kotlin versions up to 2.3.0*x* are now supported.
+* Kotlin versions up to 2.3.0 are now supported.
 
 ### Minor Analysis Improvements
 

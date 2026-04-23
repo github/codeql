@@ -1,41 +1,15 @@
 import java
 
-private Stmt getASwitchChild(SwitchStmt s) {
-  result = s.getAChild()
-  or
-  exists(Stmt mid |
-    mid = getASwitchChild(s) and not mid instanceof SwitchStmt and result = mid.getAChild()
-  )
-}
-
-private predicate blockInSwitch(SwitchStmt s, BasicBlock b) {
-  b.getFirstNode().getEnclosingStmt() = getASwitchChild(s)
-}
-
-private predicate switchCaseControlFlow(SwitchStmt switch, BasicBlock b1, BasicBlock b2) {
-  blockInSwitch(switch, b1) and
-  b1.getASuccessor() = b2 and
-  blockInSwitch(switch, b2)
-}
-
-predicate switchCaseControlFlowPlus(SwitchStmt switch, BasicBlock b1, BasicBlock b2) {
-  switchCaseControlFlow(switch, b1, b2)
-  or
-  exists(BasicBlock mid |
-    switchCaseControlFlowPlus(switch, mid, b2) and
-    switchCaseControlFlow(switch, b1, mid) and
-    not mid.getFirstNode().asStmt() = switch.getACase()
-  )
-}
-
 predicate mayDropThroughWithoutComment(SwitchStmt switch, Stmt switchCase) {
-  switchCase = switch.getACase() and
-  exists(Stmt other, BasicBlock b1, BasicBlock b2 |
-    b1.getFirstNode().asStmt() = switchCase and
-    b2.getFirstNode().asStmt() = other and
-    switchCaseControlFlowPlus(switch, b1, b2) and
-    other = switch.getACase() and
-    not fallThroughCommented(other)
+  exists(int caseIx, SwitchCase next, int nextCaseStmtIx, Stmt lastInCase, ControlFlowNode node |
+    switch.getCase(caseIx) = switchCase and
+    switch.getCase(caseIx + 1) = next and
+    switch.getStmt(nextCaseStmtIx) = next and
+    switch.getStmt(nextCaseStmtIx - 1) = lastInCase and
+    lastInCase != switchCase and
+    node.isAfter(lastInCase) and
+    node.getANormalSuccessor().asStmt() = switch.getAStmt() and
+    not fallThroughCommented(next)
   )
 }
 

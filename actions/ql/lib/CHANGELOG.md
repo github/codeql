@@ -1,3 +1,33 @@
+## 0.4.34
+
+### Minor Analysis Improvements
+
+* Removed false positive injection sink models for the `context` input of `docker/build-push-action` and the `allowed-endpoints` input of `step-security/harden-runner`.
+
+## 0.4.33
+
+No user-facing changes.
+
+## 0.4.32
+
+No user-facing changes.
+
+## 0.4.31
+
+No user-facing changes.
+
+## 0.4.30
+
+No user-facing changes.
+
+## 0.4.29
+
+No user-facing changes.
+
+## 0.4.28
+
+No user-facing changes.
+
 ## 0.4.27
 
 ### Bug Fixes

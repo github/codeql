@@ -430,3 +430,179 @@ private predicate exits_early(BasicBlock b) {
     f.getACall().getBasicBlock() = b
   )
 }
+
+/** The metrics for a function that require points-to analysis */
+class FunctionMetricsWithPointsTo extends FunctionMetrics {
+  /**
+   * Gets the cyclomatic complexity of the function:
+   * The number of linearly independent paths through the source code.
+   * Computed as     E - N + 2P,
+   * where
+   *  E = the number of edges of the graph.
+   *  N = the number of nodes of the graph.
+   *  P = the number of connected components, which for a single function is 1.
+   */
+  int getCyclomaticComplexity() {
+    exists(int e, int n |
+      n = count(BasicBlockWithPointsTo b | b = this.getABasicBlock() and b.likelyReachable()) and
+      e =
+        count(BasicBlockWithPointsTo b1, BasicBlockWithPointsTo b2 |
+          b1 = this.getABasicBlock() and
+          b1.likelyReachable() and
+          b2 = this.getABasicBlock() and
+          b2.likelyReachable() and
+          b2 = b1.getASuccessor() and
+          not b1.unlikelySuccessor(b2)
+        )
+    |
+      result = e - n + 2
+    )
+  }
+
+  private BasicBlock getABasicBlock() {
+    result = this.getEntryNode().getBasicBlock()
+    or
+    exists(BasicBlock mid | mid = this.getABasicBlock() and result = mid.getASuccessor())
+  }
+
+  /**
+   * Dependency of Callables
+   * One callable "this" depends on another callable "result"
+   * if "this" makes some call to a method that may end up being "result".
+   */
+  FunctionMetricsWithPointsTo getADependency() {
+    result != this and
+    not non_coupling_method(result) and
+    exists(Call call | call.getScope() = this |
+      exists(FunctionObject callee | callee.getFunction() = result |
+        call.getAFlowNode().getFunction().(ControlFlowNodeWithPointsTo).refersTo(callee)
+      )
+      or
+      exists(Attribute a | call.getFunc() = a |
+        unique_root_method(result, a.getName())
+        or
+        exists(Name n | a.getObject() = n and n.getId() = "self" |
+          result.getScope() = this.getScope() and
+          result.getName() = a.getName()
+        )
+      )
+    )
+  }
+
+  /**
+   * Afferent Coupling
+   * the number of callables that depend on this method.
+   * This is sometimes called the "fan-in" of a method.
+   */
+  int getAfferentCoupling() {
+    result = count(FunctionMetricsWithPointsTo m | m.getADependency() = this)
+  }
+
+  /**
+   * Efferent Coupling
+   * the number of methods that this method depends on
+   * This is sometimes called the "fan-out" of a method.
+   */
+  int getEfferentCoupling() {
+    result = count(FunctionMetricsWithPointsTo m | this.getADependency() = m)
+  }
+
+  override string getAQlClass() { result = "FunctionMetrics" }
+}
+
+/** The metrics for a class that require points-to analysis */
+class ClassMetricsWithPointsTo extends ClassMetrics {
+  private predicate dependsOn(Class other) {
+    other != this and
+    (
+      exists(FunctionMetricsWithPointsTo f1, FunctionMetricsWithPointsTo f2 |
+        f1.getADependency() = f2
+      |
+        f1.getScope() = this and f2.getScope() = other
+      )
+      or
+      exists(Function f, Call c, ClassObject cls | c.getScope() = f and f.getScope() = this |
+        c.getFunc().(ExprWithPointsTo).refersTo(cls) and
+        cls.getPyClass() = other
+      )
+    )
+  }
+
+  /**
+   * Gets the afferent coupling of a class -- the number of classes that
+   * directly depend on it.
+   */
+  int getAfferentCoupling() { result = count(ClassMetricsWithPointsTo t | t.dependsOn(this)) }
+
+  /**
+   * Gets the efferent coupling of a class -- the number of classes that
+   * it directly depends on.
+   */
+  int getEfferentCoupling() { result = count(ClassMetricsWithPointsTo t | this.dependsOn(t)) }
+
+  /** Gets the depth of inheritance of the class. */
+  int getInheritanceDepth() {
+    exists(ClassObject cls | cls.getPyClass() = this | result = max(classInheritanceDepth(cls)))
+  }
+
+  override string getAQlClass() { result = "ClassMetrics" }
+}
+
+private int classInheritanceDepth(ClassObject cls) {
+  /* Prevent run-away recursion in case of circular inheritance */
+  not cls.getASuperType() = cls and
+  (
+    exists(ClassObject sup | cls.getABaseType() = sup | result = classInheritanceDepth(sup) + 1)
+    or
+    not exists(cls.getABaseType()) and
+    (
+      major_version() = 2 and result = 0
+      or
+      major_version() > 2 and result = 1
+    )
+  )
+}
+
+/** The metrics for a module that require points-to analysis */
+class ModuleMetricsWithPointsTo extends ModuleMetrics {
+  /**
+   * Gets the afferent coupling of a module -- the number of modules that
+   *  directly depend on it.
+   */
+  int getAfferentCoupling() { result = count(ModuleMetricsWithPointsTo t | t.dependsOn(this)) }
+
+  /**
+   * Gets the efferent coupling of a module -- the number of modules that
+   *  it directly depends on.
+   */
+  int getEfferentCoupling() { result = count(ModuleMetricsWithPointsTo t | this.dependsOn(t)) }
+
+  private predicate dependsOn(Module other) {
+    other != this and
+    (
+      exists(FunctionMetricsWithPointsTo f1, FunctionMetricsWithPointsTo f2 |
+        f1.getADependency() = f2
+      |
+        f1.getEnclosingModule() = this and f2.getEnclosingModule() = other
+      )
+      or
+      exists(Function f, Call c, ClassObject cls | c.getScope() = f and f.getScope() = this |
+        c.getFunc().(ExprWithPointsTo).refersTo(cls) and
+        cls.getPyClass().getEnclosingModule() = other
+      )
+    )
+  }
+
+  override string getAQlClass() { result = "ModuleMetrics" }
+}
+
+/** Helpers for coupling */
+predicate unique_root_method(Function func, string name) {
+  name = func.getName() and
+  not exists(FunctionObject f, FunctionObject other |
+    f.getFunction() = func and
+    other.getName() = name
+  |
+    not other.overrides(f)
+  )
+}

@@ -316,7 +316,7 @@ class FacesComponentReflectivelyConstructedClass extends ReflectivelyConstructed
  * Entry point for EJB home interfaces.
  */
 class EjbHome extends Interface, EntryPoint {
-  EjbHome() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBHome") }
+  EjbHome() { this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".ejb", "EJBHome") }
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
@@ -325,7 +325,7 @@ class EjbHome extends Interface, EntryPoint {
  * Entry point for EJB object interfaces.
  */
 class EjbObject extends Interface, EntryPoint {
-  EjbObject() { this.getAnAncestor().hasQualifiedName("javax.ejb", "EJBObject") }
+  EjbObject() { this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".ejb", "EJBObject") }
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
@@ -341,7 +341,9 @@ class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
 class JaxbDeserializationEntryPoint extends ReflectivelyConstructedClass {
   JaxbDeserializationEntryPoint() {
     // A class can be deserialized by JAXB if it's an `XmlRootElement`...
-    this.getAnAnnotation().getType().hasQualifiedName("javax.xml.bind.annotation", "XmlRootElement")
+    this.getAnAnnotation()
+        .getType()
+        .hasQualifiedName(javaxOrJakarta() + ".xml.bind.annotation", "XmlRootElement")
     or
     // ... or the type of an `XmlElement` field.
     exists(Field elementField |

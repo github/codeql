@@ -107,7 +107,7 @@ class SuccessorKind extends TSuccessorKind {
 }
 
 pragma[nomagic]
-private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind kind) {
+private ItemNode getAChildSuccessor0(ItemNode item, string name, SuccessorKind kind) {
   item = result.getImmediateParent() and
   name = result.getName() and
   // Associated items in `impl` and `trait` blocks are handled elsewhere
@@ -116,7 +116,7 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
   if result instanceof TypeParam
   then kind.isInternal()
   else
-    if result.isPublic()
+    if result.isPublic() or item instanceof SourceFile
     then kind.isBoth()
     else kind.isInternal()
   or
@@ -128,6 +128,41 @@ private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind ki
   name = "Self" and
   kind.isInternal() and
   result = item
+}
+
+pragma[nomagic]
+private NamedItemNode getANamedNonModuleChildSuccessor(
+  ItemNode item, string name, Namespace ns, int startline, int startcolumn, int endline,
+  int endcolumn
+) {
+  result.getLocation().hasLocationInfo(_, startline, startcolumn, endline, endcolumn) and
+  result = getAChildSuccessor0(item, name, _) and
+  ns = result.getNamespace() and
+  not result instanceof ModuleItemNode
+}
+
+pragma[nomagic]
+private ItemNode getAChildSuccessor(ItemNode item, string name, SuccessorKind kind) {
+  result = getAChildSuccessor0(item, name, kind) and
+  // In valid Rust code, there cannot be multiple children with the same name and namespace,
+  // but to safeguard against combinatorial explosions in invalid code, we always pick the
+  // last child, except for modules, where we take the union.
+  (
+    not result instanceof NamedItemNode
+    or
+    result instanceof ModuleItemNode
+    or
+    exists(Namespace ns |
+      result =
+        max(NamedItemNode i, int startline, int startcolumn, int endline, int endcolumn |
+          i =
+            getANamedNonModuleChildSuccessor(item, name, ns, startline, startcolumn, endline,
+              endcolumn)
+        |
+          i order by startline, startcolumn, endline, endcolumn
+        )
+    )
+  )
 }
 
 private module UseOption = Option<Use>;
@@ -288,10 +323,6 @@ abstract class ItemNode extends Locatable {
   cached
   ItemNode getASuccessor(string name, SuccessorKind kind, UseOption useOpt) {
     Stages::PathResolutionStage::ref() and
-    sourceFileEdge(this, name, result) and
-    kind.isBoth() and
-    useOpt.isNone()
-    or
     result = getAChildSuccessor(this, name, kind) and
     useOpt.isNone()
     or
@@ -471,6 +502,8 @@ abstract class ItemNode extends Locatable {
   Location getLocation() { result = super.getLocation() }
 }
 
+abstract class NamedItemNode extends ItemNode { }
+
 abstract class TypeItemNode extends ItemNode { }
 
 /** A module or a source file. */
@@ -509,7 +542,7 @@ private class SourceFileItemNode extends ModuleLikeNode instanceof SourceFile {
   override string getCanonicalPath(Crate c) { none() }
 }
 
-class CrateItemNode extends ItemNode instanceof Crate {
+class CrateItemNode extends NamedItemNode instanceof Crate {
   /**
    * Gets the source file that defines this crate.
    */
@@ -565,7 +598,7 @@ class CrateItemNode extends ItemNode instanceof Crate {
   override string getCanonicalPath(Crate c) { c = this and result = Crate.super.getName() }
 }
 
-class ExternCrateItemNode extends ItemNode instanceof ExternCrate {
+class ExternCrateItemNode extends NamedItemNode instanceof ExternCrate {
   override string getName() {
     result = super.getRename().getName().getText()
     or
@@ -573,7 +606,7 @@ class ExternCrateItemNode extends ItemNode instanceof ExternCrate {
     result = super.getIdentifier().getText()
   }
 
-  override Namespace getNamespace() { none() }
+  override Namespace getNamespace() { result.isType() }
 
   override Visibility getVisibility() { result = ExternCrate.super.getVisibility() }
 
@@ -587,7 +620,7 @@ class ExternCrateItemNode extends ItemNode instanceof ExternCrate {
 }
 
 /** An item that can occur in a trait or an `impl` block. */
-abstract private class AssocItemNode extends ItemNode instanceof AssocItem {
+abstract private class AssocItemNode extends NamedItemNode instanceof AssocItem {
   /** Holds if this associated item has an implementation. */
   abstract predicate hasImplementation();
 
@@ -626,7 +659,7 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
   override TypeParam getTypeParam(int i) { none() }
 }
 
-private class TypeItemTypeItemNode extends TypeItemNode instanceof TypeItem {
+private class TypeItemTypeItemNode extends NamedItemNode, TypeItemNode instanceof TypeItem {
   override string getName() { result = TypeItem.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
@@ -659,7 +692,7 @@ private class TypeItemTypeItemNode extends TypeItemNode instanceof TypeItem {
 }
 
 /** An item that can be referenced with arguments. */
-abstract class ParameterizableItemNode extends ItemNode {
+abstract class ParameterizableItemNode extends NamedItemNode {
   /** Gets the arity this item. */
   abstract int getArity();
 }
@@ -911,7 +944,7 @@ private class ImplTraitTypeReprItemNodeImpl extends ImplTraitTypeReprItemNode {
   ItemNode resolveABoundCand() { result = resolvePathCand(this.getABoundPath()) }
 }
 
-private class ModuleItemNode extends ModuleLikeNode instanceof Module {
+private class ModuleItemNode extends NamedItemNode, ModuleLikeNode instanceof Module {
   override string getName() { result = Module.super.getName().getText() }
 
   override Namespace getNamespace() { result.isType() }
@@ -929,7 +962,7 @@ private class ModuleItemNode extends ModuleLikeNode instanceof Module {
     (
       exists(SourceFile f |
         fileImport(this, f) and
-        sourceFileEdge(f, _, child)
+        child = getAChildSuccessor(f, _, _)
       )
       or
       this = child.getImmediateParent()
@@ -1001,7 +1034,7 @@ private class StructItemNode extends TypeItemTypeItemNode, ParameterizableItemNo
   }
 }
 
-final class TraitItemNode extends ImplOrTraitItemNode, TypeItemNode instanceof Trait {
+final class TraitItemNode extends ImplOrTraitItemNode, NamedItemNode, TypeItemNode instanceof Trait {
   pragma[nomagic]
   Path getABoundPath() { result = super.getATypeBound().getTypeRepr().(PathTypeRepr).getPath() }
 
@@ -1126,24 +1159,31 @@ private class BlockExprItemNode extends ItemNode instanceof BlockExpr {
 pragma[nomagic]
 private Path getWherePredPath(WherePred wp) { result = wp.getTypeRepr().(PathTypeRepr).getPath() }
 
-final class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
+final class TypeParamItemNode extends NamedItemNode, TypeItemNode instanceof TypeParam {
   /** Gets a where predicate for this type parameter, if any */
   pragma[nomagic]
-  private WherePred getAWherePred() {
+  private WherePred getAWherePred(ItemNode constrainingItem, boolean isAdditional) {
     exists(ItemNode declaringItem |
+      this = declaringItem.getTypeParam(_) and
       this = resolvePath(getWherePredPath(result)) and
-      result = declaringItem.getADescendant() and
-      this = declaringItem.getADescendant()
+      result = constrainingItem.getADescendant()
+    |
+      constrainingItem = declaringItem and
+      isAdditional = false
+      or
+      constrainingItem = declaringItem.getADescendant() and
+      isAdditional = true
     )
   }
 
   pragma[nomagic]
   TypeBound getTypeBoundAt(int i, int j) {
     exists(TypeBoundList tbl | result = tbl.getBound(j) |
-      tbl = super.getTypeBoundList() and i = 0
+      tbl = super.getTypeBoundList() and
+      i = 0
       or
       exists(WherePred wp |
-        wp = this.getAWherePred() and
+        wp = this.getAWherePred(_, false) and
         tbl = wp.getTypeBoundList() and
         wp = any(WhereClause wc).getPredicate(i)
       )
@@ -1151,18 +1191,41 @@ final class TypeParamItemNode extends TypeItemNode instanceof TypeParam {
   }
 
   pragma[nomagic]
-  Path getABoundPath() { result = this.getTypeBoundAt(_, _).getTypeRepr().(PathTypeRepr).getPath() }
+  TypeBound getAdditionalTypeBoundAt(Item constrainingItem, int i, int j) {
+    exists(TypeBoundList tbl | result = tbl.getBound(j) |
+      exists(WherePred wp |
+        wp = this.getAWherePred(constrainingItem, true) and
+        tbl = wp.getTypeBoundList() and
+        wp = any(WhereClause wc).getPredicate(i)
+      )
+    )
+  }
 
   pragma[nomagic]
-  ItemNode resolveBound(int index) {
+  Path getBoundPath(int index) {
     result =
       rank[index + 1](int i, int j |
         |
-        resolvePath(this.getTypeBoundAt(i, j).getTypeRepr().(PathTypeRepr).getPath()) order by i, j
+        this.getTypeBoundAt(i, j).getTypeRepr().(PathTypeRepr).getPath() order by i, j
       )
   }
 
-  ItemNode resolveABound() { result = resolvePath(this.getABoundPath()) }
+  pragma[nomagic]
+  Path getABoundPath() { result = this.getBoundPath(_) }
+
+  pragma[nomagic]
+  ItemNode resolveBound(int index) { result = resolvePath(this.getBoundPath(index)) }
+
+  ItemNode resolveABound() { result = this.resolveBound(_) }
+
+  pragma[nomagic]
+  ItemNode resolveAdditionalBound(ItemNode constrainingItem) {
+    result =
+      resolvePath(this.getAdditionalTypeBoundAt(constrainingItem, _, _)
+            .getTypeRepr()
+            .(PathTypeRepr)
+            .getPath())
+  }
 
   override string getName() { result = TypeParam.super.getName().getText() }
 
@@ -1214,7 +1277,7 @@ final private class TypeParamItemNodeImpl extends TypeParamItemNode instanceof T
   ItemNode resolveABoundCand() { result = resolvePathCand(this.getABoundPathCand()) }
 }
 
-abstract private class MacroItemNode extends ItemNode {
+abstract private class MacroItemNode extends NamedItemNode {
   override Namespace getNamespace() { result.isMacro() }
 
   override TypeParam getTypeParam(int i) { none() }
@@ -1254,12 +1317,6 @@ private class MacroDefItemNode extends MacroItemNode instanceof MacroDef {
   override Visibility getVisibility() { result = MacroDef.super.getVisibility() }
 
   override Attr getAnAttr() { result = MacroDef.super.getAnAttr() }
-}
-
-/** Holds if `item` has the name `name` and is a top-level item inside `f`. */
-private predicate sourceFileEdge(SourceFile f, string name, ItemNode item) {
-  item = f.(ItemNode).getADescendant() and
-  name = item.getName()
 }
 
 /** Holds if `f` is available as `mod name;` inside `folder`. */

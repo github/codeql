@@ -1,6 +1,8 @@
 /**
  * Provides classes for modeling go.mod dependencies.
  */
+overlay[local?]
+module;
 
 import go
 

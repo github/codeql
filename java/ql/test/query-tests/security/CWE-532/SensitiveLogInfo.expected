@@ -3,6 +3,14 @@
 | Test.java:12:22:12:52 | ... + ... | Test.java:12:44:12:52 | authToken : String | Test.java:12:22:12:52 | ... + ... | This $@ is written to a log file. | Test.java:12:44:12:52 | authToken | potentially sensitive information |
 | Test.java:21:22:21:75 | ... + ... | Test.java:21:44:21:52 | authToken : String | Test.java:21:22:21:75 | ... + ... | This $@ is written to a log file. | Test.java:21:44:21:52 | authToken | potentially sensitive information |
 | Test.java:22:22:22:75 | ... + ... | Test.java:22:44:22:52 | authToken : String | Test.java:22:22:22:75 | ... + ... | This $@ is written to a log file. | Test.java:22:44:22:52 | authToken | potentially sensitive information |
+| Test.java:66:21:66:43 | ... + ... | Test.java:66:33:66:43 | accessToken : String | Test.java:66:21:66:43 | ... + ... | This $@ is written to a log file. | Test.java:66:33:66:43 | accessToken | potentially sensitive information |
+| Test.java:67:21:67:45 | ... + ... | Test.java:67:34:67:45 | clientSecret : String | Test.java:67:21:67:45 | ... + ... | This $@ is written to a log file. | Test.java:67:34:67:45 | clientSecret | potentially sensitive information |
+| Test.java:68:21:68:42 | ... + ... | Test.java:68:34:68:42 | apiSecret : String | Test.java:68:21:68:42 | ... + ... | This $@ is written to a log file. | Test.java:68:34:68:42 | apiSecret | potentially sensitive information |
+| Test.java:69:21:69:44 | ... + ... | Test.java:69:33:69:44 | sessionToken : String | Test.java:69:21:69:44 | ... + ... | This $@ is written to a log file. | Test.java:69:33:69:44 | sessionToken | potentially sensitive information |
+| Test.java:70:21:70:43 | ... + ... | Test.java:70:33:70:43 | bearerToken : String | Test.java:70:21:70:43 | ... + ... | This $@ is written to a log file. | Test.java:70:33:70:43 | bearerToken | potentially sensitive information |
+| Test.java:71:21:71:39 | ... + ... | Test.java:71:31:71:39 | secretKey : String | Test.java:71:21:71:39 | ... + ... | This $@ is written to a log file. | Test.java:71:31:71:39 | secretKey | potentially sensitive information |
+| Test.java:72:21:72:44 | ... + ... | Test.java:72:33:72:44 | refreshToken : String | Test.java:72:21:72:44 | ... + ... | This $@ is written to a log file. | Test.java:72:33:72:44 | refreshToken | potentially sensitive information |
+| Test.java:73:21:73:43 | ... + ... | Test.java:73:33:73:43 | secretValue : String | Test.java:73:21:73:43 | ... + ... | This $@ is written to a log file. | Test.java:73:33:73:43 | secretValue | potentially sensitive information |
 edges
 | Test.java:11:46:11:53 | password : String | Test.java:11:21:11:53 | ... + ... | provenance | Sink:MaD:2 |
 | Test.java:12:44:12:52 | authToken : String | Test.java:12:22:12:52 | ... + ... | provenance | Sink:MaD:1 |
@@ -10,6 +18,14 @@ edges
 | Test.java:21:44:21:67 | substring(...) : String | Test.java:21:22:21:75 | ... + ... | provenance | Sink:MaD:1 |
 | Test.java:22:44:22:52 | authToken : String | Test.java:22:44:22:67 | substring(...) : String | provenance | MaD:3 |
 | Test.java:22:44:22:67 | substring(...) : String | Test.java:22:22:22:75 | ... + ... | provenance | Sink:MaD:1 |
+| Test.java:66:33:66:43 | accessToken : String | Test.java:66:21:66:43 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:67:34:67:45 | clientSecret : String | Test.java:67:21:67:45 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:68:34:68:42 | apiSecret : String | Test.java:68:21:68:42 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:69:33:69:44 | sessionToken : String | Test.java:69:21:69:44 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:70:33:70:43 | bearerToken : String | Test.java:70:21:70:43 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:71:31:71:39 | secretKey : String | Test.java:71:21:71:39 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:72:33:72:44 | refreshToken : String | Test.java:72:21:72:44 | ... + ... | provenance | Sink:MaD:2 |
+| Test.java:73:33:73:43 | secretValue : String | Test.java:73:21:73:43 | ... + ... | provenance | Sink:MaD:2 |
 models
 | 1 | Sink: org.apache.logging.log4j; Logger; true; error; (String); ; Argument[0]; log-injection; manual |
 | 2 | Sink: org.apache.logging.log4j; Logger; true; info; (String); ; Argument[0]; log-injection; manual |
@@ -25,4 +41,20 @@ nodes
 | Test.java:22:22:22:75 | ... + ... | semmle.label | ... + ... |
 | Test.java:22:44:22:52 | authToken : String | semmle.label | authToken : String |
 | Test.java:22:44:22:67 | substring(...) : String | semmle.label | substring(...) : String |
+| Test.java:66:21:66:43 | ... + ... | semmle.label | ... + ... |
+| Test.java:66:33:66:43 | accessToken : String | semmle.label | accessToken : String |
+| Test.java:67:21:67:45 | ... + ... | semmle.label | ... + ... |
+| Test.java:67:34:67:45 | clientSecret : String | semmle.label | clientSecret : String |
+| Test.java:68:21:68:42 | ... + ... | semmle.label | ... + ... |
+| Test.java:68:34:68:42 | apiSecret : String | semmle.label | apiSecret : String |
+| Test.java:69:21:69:44 | ... + ... | semmle.label | ... + ... |
+| Test.java:69:33:69:44 | sessionToken : String | semmle.label | sessionToken : String |
+| Test.java:70:21:70:43 | ... + ... | semmle.label | ... + ... |
+| Test.java:70:33:70:43 | bearerToken : String | semmle.label | bearerToken : String |
+| Test.java:71:21:71:39 | ... + ... | semmle.label | ... + ... |
+| Test.java:71:31:71:39 | secretKey : String | semmle.label | secretKey : String |
+| Test.java:72:21:72:44 | ... + ... | semmle.label | ... + ... |
+| Test.java:72:33:72:44 | refreshToken : String | semmle.label | refreshToken : String |
+| Test.java:73:21:73:43 | ... + ... | semmle.label | ... + ... |
+| Test.java:73:33:73:43 | secretValue : String | semmle.label | secretValue : String |
 subpaths

@@ -1,7 +1,7 @@
-x = tracked # $tracked
+x = tracked # $ tracked
 
 def func():
-    return tracked # $tracked
+    return tracked # $ tracked
 
-z = tracked # $tracked
-some_func(z) # $tracked
+z = tracked # $ tracked
+some_func(z) # $ tracked

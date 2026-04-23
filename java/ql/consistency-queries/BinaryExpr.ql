@@ -10,5 +10,5 @@ where
     e.isNthChildOf(be, i) and i != 0 and i != 1 and reason = "Unexpected operand " + i.toString()
   )
   or
-  be.getOp() = " ?? " and reason = "No operator name"
+  be.getOp() = "??" and reason = "No operator name"
 select be, reason

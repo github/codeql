@@ -4,16 +4,16 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .models import MyModel
 
-def foo(request: HttpRequest):  # $requestHandler
-    return HttpResponse("foo")  # $HttpResponse
+def foo(request: HttpRequest):  # $ requestHandler
+    return HttpResponse("foo")  # $ HttpResponse
 
 
-def bar_baz(request: HttpRequest):  # $requestHandler
-    return HttpResponse("bar_baz")  # $HttpResponse
+def bar_baz(request: HttpRequest):  # $ requestHandler
+    return HttpResponse("bar_baz")  # $ HttpResponse
 
 
-def deprecated(request: HttpRequest):  # $requestHandler
-    return HttpResponse("deprecated")  # $HttpResponse
+def deprecated(request: HttpRequest):  # $ requestHandler
+    return HttpResponse("deprecated")  # $ HttpResponse
 
 
 class MyBasicViewHandler(View):

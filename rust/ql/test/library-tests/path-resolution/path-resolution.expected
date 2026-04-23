@@ -51,6 +51,7 @@ mod
 | my/nested.rs:1:1:17:1 | mod nested1 |
 | my/nested.rs:2:5:11:5 | mod nested2 |
 resolvePath
+| invalid/main.rs:6:9:6:9 | A | invalid/main.rs:3:11:4:9 | struct A |
 | main.rs:4:8:4:9 | my | main.rs:1:1:1:7 | mod my |
 | main.rs:4:14:4:17 | self | main.rs:1:1:1:7 | mod my |
 | main.rs:6:5:6:6 | my | main.rs:1:1:1:7 | mod my |

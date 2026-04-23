@@ -48,7 +48,7 @@ module KindValidation<KindValidationConfigSig Config> {
           // CPP-only currently
           "remote-sink",
           // Python-only currently, but may be shared in the future
-          "prompt-injection"
+          "bind-socket-all-interfaces", "prompt-injection"
         ]
       or
       this.matches([

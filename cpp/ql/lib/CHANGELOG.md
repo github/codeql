@@ -1,3 +1,69 @@
+## 10.0.0
+
+### Breaking Changes
+
+* The deprecated `NonThrowingFunction` class has been removed, use `NonCppThrowingFunction` instead.
+* The deprecated `ThrowingFunction` class has been removed, use `AlwaysSehThrowingFunction` instead.
+
+### New Features
+
+* Added a subclass `AutoconfConfigureTestFile` of `ConfigurationTestFile` that represents files created by GNU autoconf configure scripts to test the build configuration.
+
+## 9.0.0
+
+### Breaking Changes
+
+* The `SourceModelCsv`, `SinkModelCsv`, and `SummaryModelCsv` classes and the associated CSV parsing infrastructure have been removed from `ExternalFlow.qll`. New models should be added as `.model.yml` files in the `ext/` directory.
+
+### New Features
+
+* Added a subclass `MesonPrivateTestFile` of `ConfigurationTestFile` that represents files created by Meson to test the build configuration.
+* Added a class `ConstructorDirectFieldInit` to represent field initializations that occur in member initializer lists.
+* Added a class `ConstructorDefaultFieldInit` to represent default field initializations.
+* Added a class `DataFlow::IndirectParameterNode` to represent the indirection of a parameter as a dataflow node.
+* Added a predicate `Node::asIndirectInstruction` which returns the `Instruction` that defines the indirect dataflow node, if any.
+* Added a class `IndirectUninitializedNode` to represent the indirection of an uninitialized local variable as a dataflow node.
+
+### Minor Analysis Improvements
+
+* Added `HttpReceiveHttpRequest`, `HttpReceiveRequestEntityBody`, and `HttpReceiveClientCertificate` from Win32's `http.h` as remote flow sources.
+* Added dataflow through members initialized via non-static data member initialization (NSDMI).
+
+## 8.0.3
+
+No user-facing changes.
+
+## 8.0.2
+
+No user-facing changes.
+
+## 8.0.1
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 8.0.0
+
+### Breaking Changes
+
+* CodeQL version 2.24.2 accidentally introduced a syntactical breaking change to `BarrierGuard<...>::getAnIndirectBarrierNode` and `InstructionBarrierGuard<...>::getAnIndirectBarrierNode`. These breaking changes have now been reverted so that the original code compiles again.
+* `MustFlow`, the inter-procedural must-flow data flow analysis library, has been re-worked to use parameterized modules. Like in the case of data flow and taint tracking, instead of extending the `MustFlowConfiguration` class, the user should now implement a module with the `MustFlow::ConfigSig` signature, and instantiate the `MustFlow::Global` parameterized module with the implemented module.
+
+### Minor Analysis Improvements
+
+* Refactored the "Year field changed using an arithmetic operation without checking for leap year" query (`cpp/leap-year/unchecked-after-arithmetic-year-modification`) to address large numbers of false positive results.
+
+### Bug Fixes
+
+* The `allowInterproceduralFlow` predicate of must-flow data flow configurations now correctly handles direct recursion.
+
+## 7.1.1
+
+### Minor Analysis Improvements
+
+* Added remote flow source models for the `winhttp.h` windows header and the Azure SDK core library for C/C++.
+
 ## 7.1.0
 
 ### New Features

@@ -1,6 +1,8 @@
 /**
  * Provides models of commonly used functions in the `go.uber.org/zap` package.
  */
+overlay[local?]
+module;
 
 import go
 

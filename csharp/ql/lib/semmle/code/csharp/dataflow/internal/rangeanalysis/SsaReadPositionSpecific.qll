@@ -2,39 +2,34 @@
  * Provides C#-specific definitions for use in the `SsaReadPosition`.
  */
 
-private import csharp
+private import csharp as CS
 private import SsaReadPositionCommon
-private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
-class SsaVariable = Ssa::Definition;
+class SsaVariable = CS::Ssa::Definition;
 
-class SsaPhiNode = Ssa::PhiNode;
+class SsaPhiNode = CS::Ssa::PhiNode;
 
-class BasicBlock = ControlFlow::BasicBlock;
+class BasicBlock = CS::BasicBlock;
 
 /** Gets a basic block in which SSA variable `v` is read. */
-BasicBlock getAReadBasicBlock(SsaVariable v) {
-  result = v.getARead().getAControlFlowNode().getBasicBlock()
-}
+BasicBlock getAReadBasicBlock(SsaVariable v) { result = v.getARead().getBasicBlock() }
 
 private class PhiInputEdgeBlock extends BasicBlock {
   PhiInputEdgeBlock() { this = any(SsaReadPositionPhiInputEdge edge).getOrigBlock() }
 }
 
-private int getId(PhiInputEdgeBlock bb) {
-  exists(CfgImpl::AstNode n | result = n.getId() |
-    n = bb.getFirstNode().getAstNode()
-    or
-    n = bb.(ControlFlow::BasicBlocks::EntryBlock).getCallable()
-  )
+private predicate id(CS::ControlFlowElementOrCallable x, CS::ControlFlowElementOrCallable y) {
+  x = y
 }
 
-private string getSplitString(PhiInputEdgeBlock bb) {
-  result = bb.getFirstNode().(ControlFlow::Nodes::ElementNode).getSplitsString()
-  or
-  not exists(bb.getFirstNode().(ControlFlow::Nodes::ElementNode).getSplitsString()) and
-  result = ""
-}
+private predicate idOfAst(CS::ControlFlowElementOrCallable x, int y) =
+  equivalenceRelation(id/2)(x, y)
+
+private predicate idOf(PhiInputEdgeBlock x, int y) { idOfAst(x.getFirstNode().getAstNode(), y) }
+
+private int getId1(PhiInputEdgeBlock bb) { idOf(bb, result) }
+
+private string getId2(PhiInputEdgeBlock bb) { bb.getFirstNode().getIdTag() = result }
 
 /**
  * Declarations to be exposed to users of SsaReadPositionCommon.
@@ -50,7 +45,7 @@ module Public {
       rank[r](SsaReadPositionPhiInputEdge e |
         e.phiInput(phi, _)
       |
-        e order by getId(e.getOrigBlock()), getSplitString(e.getOrigBlock())
+        e order by getId1(e.getOrigBlock()), getId2(e.getOrigBlock())
       )
   }
 }

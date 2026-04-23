@@ -71,6 +71,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitModuleType(const swift::ModuleType* type);
   SwiftMangledName visitTupleType(const swift::TupleType* type);
   SwiftMangledName visitBuiltinType(const swift::BuiltinType* type);
+  SwiftMangledName visitBuiltinFixedArrayType(const swift::BuiltinFixedArrayType* type);
   SwiftMangledName visitAnyGenericType(const swift::AnyGenericType* type);
 
   // shouldn't be required, but they forgot to link `NominalType` to its direct superclass
@@ -106,26 +107,29 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitPackExpansionType(const swift::PackExpansionType* type);
 
  private:
-  enum class ExtensionKind : bool {
+  enum class ExtensionOrFilePrivateValueKind : bool {
     swift,
     clang,
   };
 
-  struct ExtensionIndex {
-    const ExtensionKind kind : 1;
+  struct ExtensionOrFilePrivateValueIndex {
+    const ExtensionOrFilePrivateValueKind kind : 1;
     const uint32_t index : 31;
   };
 
-  static std::unordered_map<const swift::Decl*, ExtensionIndex> preloadedExtensionIndexes;
+  static std::unordered_map<const swift::Decl*, ExtensionOrFilePrivateValueIndex>
+      preloadedExtensionOrFilePrivateValueIndexes;
 
   virtual SwiftMangledName fetch(const swift::Decl* decl) = 0;
   virtual SwiftMangledName fetch(const swift::TypeBase* type) = 0;
   SwiftMangledName fetch(swift::Type type) { return fetch(type.getPointer()); }
 
-  void indexExtensions(llvm::ArrayRef<swift::Decl*> siblings);
-  void indexClangExtensions(const clang::Module* clangModule,
-                            swift::ClangModuleLoader* moduleLoader);
-  ExtensionIndex getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
+  bool isExtensionOrFilePrivateValue(const swift::Decl* decl);
+  void indexExtensionsAndFilePrivateValues(llvm::ArrayRef<swift::Decl*> siblings);
+  void indexClangExtensionsAndFilePrivateValues(const clang::Module* clangModule,
+                                                swift::ClangModuleLoader* moduleLoader);
+  ExtensionOrFilePrivateValueIndex getExtensionOrFilePrivateValueIndex(const swift::Decl* decl,
+                                                                       const swift::Decl* parent);
   static SwiftMangledName initMangled(const swift::TypeBase* type);
   SwiftMangledName initMangled(const swift::Decl* decl);
   SwiftMangledName visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl);

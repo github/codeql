@@ -4,75 +4,25 @@ import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.implementation.raw.internal.SideEffects as SideEffects
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
+private import DataFlowNodes
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
 private import TypeFlow
 private import semmle.code.cpp.ir.ValueNumbering
 
 /**
- * Holds if `operand` is an operand that is not used by the dataflow library.
- * Ignored operands are not recognized as uses by SSA, and they don't have a
- * corresponding `(Indirect)OperandNode`.
- */
-predicate ignoreOperand(Operand operand) {
-  operand = any(Instruction instr | ignoreInstruction(instr)).getAnOperand() or
-  operand = any(Instruction instr | ignoreInstruction(instr)).getAUse() or
-  operand instanceof MemoryOperand
-}
-
-/**
- * Holds if `instr` is an instruction that is not used by the dataflow library.
- * Ignored instructions are not recognized as reads/writes by SSA, and they
- * don't have a corresponding `(Indirect)InstructionNode`.
- */
-predicate ignoreInstruction(Instruction instr) {
-  DataFlowImplCommon::forceCachingInSameStage() and
-  (
-    instr instanceof CallSideEffectInstruction or
-    instr instanceof CallReadSideEffectInstruction or
-    instr instanceof ExitFunctionInstruction or
-    instr instanceof EnterFunctionInstruction or
-    instr instanceof WriteSideEffectInstruction or
-    instr instanceof PhiInstruction or
-    instr instanceof ReadSideEffectInstruction or
-    instr instanceof ChiInstruction or
-    instr instanceof InitializeIndirectionInstruction or
-    instr instanceof AliasedDefinitionInstruction or
-    instr instanceof AliasedUseInstruction or
-    instr instanceof InitializeNonLocalInstruction or
-    instr instanceof ReturnIndirectionInstruction or
-    instr instanceof UninitializedGroupInstruction
-  )
-}
-
-/**
- * Gets the C++ type of `this` in the member function `f`.
+ * Gets the C++ type of `this` in an `IRFunction` generated from `f`.
  * The result is a glvalue if `isGLValue` is true, and
  * a prvalue if `isGLValue` is false.
  */
 bindingset[isGLValue]
-private CppType getThisType(Cpp::MemberFunction f, boolean isGLValue) {
-  result.hasType(f.getTypeOfThis(), isGLValue)
-}
-
-/**
- * Gets the C++ type of the instruction `i`.
- *
- * This is equivalent to `i.getResultLanguageType()` with the exception
- * of instructions that directly references a `this` IRVariable. In this
- * case, `i.getResultLanguageType()` gives an unknown type, whereas the
- * predicate gives the expected type (i.e., a potentially cv-qualified
- * type `A*` where `A` is the declaring type of the member function that
- * contains `i`).
- */
-cached
-CppType getResultLanguageType(Instruction i) {
-  if i.(VariableAddressInstruction).getIRVariable() instanceof IRThisVariable
-  then
-    if i.isGLValue()
-    then result = getThisType(i.getEnclosingFunction(), true)
-    else result = getThisType(i.getEnclosingFunction(), false)
-  else result = i.getResultLanguageType()
+private CppType getThisType(Cpp::Declaration f, boolean isGLValue) {
+  result.hasType(f.(Cpp::MemberFunction).getTypeOfThis(), isGLValue)
+  or
+  exists(Cpp::PointerType pt |
+    pt.getBaseType() = f.(Cpp::Field).getDeclaringType() and
+    result.hasType(pt, isGLValue)
+  )
 }
 
 /**
@@ -230,7 +180,8 @@ private class PointerWrapperTypeIndirection extends Indirection instanceof Point
   override predicate isAdditionalDereference(Instruction deref, Operand address) {
     exists(CallInstruction call |
       operandForFullyConvertedCall(getAUse(deref), call) and
-      this = call.getStaticCallTarget().getClassAndName(["operator*", "operator->", "get"]) and
+      this =
+        call.getStaticCallTarget().(Function).getClassAndName(["operator*", "operator->", "get"]) and
       address = call.getThisArgumentOperand()
     )
   }
@@ -249,7 +200,7 @@ private module IteratorIndirections {
 
     override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) {
       exists(CallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
-        this = call.getStaticCallTarget().getClassAndName("operator=") and
+        this = call.getStaticCallTarget().(Function).getClassAndName("operator=") and
         address = call.getThisArgumentOperand() and
         certain = false
       )
@@ -345,10 +296,6 @@ predicate isWrite(Node0Impl value, Operand address, boolean certain) {
       address = uninitialized.getAnOperand()
     )
   )
-}
-
-predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
-  any(Indirection ind).isAdditionalConversionFlow(opFrom, instrTo)
 }
 
 newtype TBaseSourceVariable =
@@ -572,6 +519,69 @@ private class BaseCallInstruction extends BaseSourceVariableInstruction, CallIns
 
 cached
 private module Cached {
+  /**
+   * Holds if `operand` is an operand that is not used by the dataflow library.
+   * Ignored operands are not recognized as uses by SSA, and they don't have a
+   * corresponding `(Indirect)OperandNode`.
+   */
+  cached
+  predicate ignoreOperand(Operand operand) {
+    operand = any(Instruction instr | ignoreInstruction(instr)).getAnOperand() or
+    operand = any(Instruction instr | ignoreInstruction(instr)).getAUse() or
+    operand instanceof MemoryOperand
+  }
+
+  /**
+   * Holds if `instr` is an instruction that is not used by the dataflow library.
+   * Ignored instructions are not recognized as reads/writes by SSA, and they
+   * don't have a corresponding `(Indirect)InstructionNode`.
+   */
+  cached
+  predicate ignoreInstruction(Instruction instr) {
+    DataFlowImplCommon::forceCachingInSameStage() and
+    (
+      instr instanceof CallSideEffectInstruction or
+      instr instanceof CallReadSideEffectInstruction or
+      instr instanceof ExitFunctionInstruction or
+      instr instanceof EnterFunctionInstruction or
+      instr instanceof WriteSideEffectInstruction or
+      instr instanceof PhiInstruction or
+      instr instanceof ReadSideEffectInstruction or
+      instr instanceof ChiInstruction or
+      instr instanceof InitializeIndirectionInstruction or
+      instr instanceof AliasedDefinitionInstruction or
+      instr instanceof AliasedUseInstruction or
+      instr instanceof InitializeNonLocalInstruction or
+      instr instanceof ReturnIndirectionInstruction or
+      instr instanceof UninitializedGroupInstruction
+    )
+  }
+
+  cached
+  predicate isAdditionalConversionFlow(Operand opFrom, Instruction instrTo) {
+    any(Indirection ind).isAdditionalConversionFlow(opFrom, instrTo)
+  }
+
+  /**
+   * Gets the C++ type of the instruction `i`.
+   *
+   * This is equivalent to `i.getResultLanguageType()` with the exception
+   * of instructions that directly references a `this` IRVariable. In this
+   * case, `i.getResultLanguageType()` gives an unknown type, whereas the
+   * predicate gives the expected type (i.e., a potentially cv-qualified
+   * type `A*` where `A` is the declaring type of the member function that
+   * contains `i`).
+   */
+  cached
+  CppType getResultLanguageType(Instruction i) {
+    if i.(VariableAddressInstruction).getIRVariable() instanceof IRThisVariable
+    then
+      if i.isGLValue()
+      then result = getThisType(i.getEnclosingFunction(), true)
+      else result = getThisType(i.getEnclosingFunction(), false)
+    else result = i.getResultLanguageType()
+  }
+
   /** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
   private predicate isConversion(Operand op) {
     exists(Instruction def, Operand use |

@@ -2259,7 +2259,7 @@ mod loops {
         // for loops with arrays
 
         for i in [1, 2, 3] {} // $ type=i:i32
-        for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map MISSING: type=i:i32
+        for i in [1, 2, 3].map(|x| x + 1) {} // $ target=map target=add type=i:i32
         for i in [1, 2, 3].into_iter() {} // $ target=into_iter type=i:i32
 
         let vals1 = [1u8, 2, 3]; // $ type=vals1:TArray.u8
@@ -2636,6 +2636,17 @@ mod block_types {
 }
 
 mod context_typed {
+    #[derive(Default)]
+    struct S;
+
+    impl S {
+        fn f(self) {}
+    }
+
+    fn free_function<T: Default>() -> T {
+        Default::default() // $ target=default
+    }
+
     pub fn f() {
         let x = None; // $ type=x:T.i32
         let x: Option<i32> = x;
@@ -2683,6 +2694,12 @@ mod context_typed {
 
         let y = Default::default(); // $ type=y:i32 target=default
         x.push(y); // $ target=push
+
+        let s = Default::default(); // $ target=default type=s:S
+        S::f(s); // $ target=f
+
+        let z = free_function(); // $ target=free_function type=z:i32
+        x.push(z); // $ target=push
     }
 }
 
@@ -2740,6 +2757,31 @@ mod blanket_impl;
 mod closure;
 mod dereference;
 mod dyn_type;
+mod regressions;
+
+mod arg_trait_bounds {
+    struct Gen<T>(T);
+
+    trait Container<T> {
+        fn get_input(&self) -> T;
+    }
+
+    fn my_get<T: Container<i64>>(c: &T) -> bool {
+        c.get_input() == 42 // $ target=get_input target=eq
+    }
+
+    impl<GT: Copy> Container<GT> for Gen<GT> {
+        fn get_input(&self) -> GT {
+            self.0 // $ fieldof=Gen
+        }
+    }
+
+    fn test() {
+        let v = Default::default(); // $ type=v:i64 target=default
+        let g = Gen(v);
+        let _ = my_get(&g); // $ target=my_get
+    }
+}
 
 fn main() {
     field_access::f(); // $ target=f

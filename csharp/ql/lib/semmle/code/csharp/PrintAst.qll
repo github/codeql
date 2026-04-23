@@ -343,10 +343,10 @@ final class AssignmentNode extends ControlFlowElementNode {
     result.(TypeMentionNode).getTarget() = controlFlowElement
     or
     childIndex = 0 and
-    result.(ElementNode).getElement() = assignment.getLValue()
+    result.(ElementNode).getElement() = assignment.getLeftOperand()
     or
     childIndex = 1 and
-    result.(ElementNode).getElement() = assignment.getRValue()
+    result.(ElementNode).getElement() = assignment.getRightOperand()
   }
 }
 

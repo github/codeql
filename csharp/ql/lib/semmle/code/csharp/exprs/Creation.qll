@@ -95,7 +95,7 @@ class MemberInitializer extends AssignExpr {
   MemberInitializer() { this.getParent() instanceof ObjectInitializer }
 
   /** Gets the initialized member. */
-  Member getInitializedMember() { result.getAnAccess() = this.getLValue() }
+  Member getInitializedMember() { result.getAnAccess() = this.getLeftOperand() }
 
   override string getAPrimaryQlClass() { result = "MemberInitializer" }
 }

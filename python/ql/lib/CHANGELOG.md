@@ -1,3 +1,56 @@
+## 7.0.5
+
+### Minor Analysis Improvements
+
+- The Python extractor now supports the new `lazy import ...` and `lazy from ... import ...` (as defined in [PEP-810](https://peps.python.org/pep-0810/)) that will be part of Python 3.15.
+
+## 7.0.4
+
+### Bug Fixes
+
+- Fixed the resolution of relative imports such as `from . import helper` inside namespace packages (directories without an `__init__.py` file), which previously did not work correctly, leading to missing flow.
+
+## 7.0.3
+
+No user-facing changes.
+
+## 7.0.2
+
+No user-facing changes.
+
+## 7.0.1
+
+### Minor Analysis Improvements
+
+- The call graph resolution no longer considers methods marked using [`@typing.overload`](https://typing.python.org/en/latest/spec/overload.html#overloads) as valid targets. This ensures that only the method that contains the actual implementation gets resolved as a target.
+* Inline expectations test comments, which are of the form `# $ tag` or `# $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 7.0.0
+
+### Breaking Changes
+
+- The `Metrics` library no longer contains code that depends on the points-to analysis. The removed functionality has instead been moved to the `LegacyPointsTo` module, to classes like `ModuleMetricsWithPointsTo` etc. If you depend on any of these classes, you must now remember to import `LegacyPointsTo`, and use the appropriate types in order to use the points-to-based functionality.
+
+### Major Analysis Improvements
+
+- The CodeQL Python libraries have been updated to be compatible with overlay evaluation. This should result in a significant speedup on analyses for which a base database already exists. Note that it may be necessary to add `overlay[local?] module;` to user-managed libraries that extend classes that are now marked as `overlay[local]`.
+
+### Minor Analysis Improvements
+
+* Added new full SSRF sanitization barrier from the new AntiSSRF library. 
+* When a guard such as `isSafe(x)` is defined, we now also automatically handle `isSafe(x) == true` and `isSafe(x) != false`.
+
+## 6.1.1
+
+### Minor Analysis Improvements
+
+* Added request forgery sink models for the Azure SDK.
+* Made it so that models-as-data sinks with the kind `request-forgery` contribute to the class `Http::Client::Request` which represents HTTP client requests.
+
+### Bug Fixes
+
+- Using `=` as a fill character in a format specifier (e.g. `f"{x:=^20}"`) now no longer results in a syntax error during parsing.
+
 ## 6.1.0
 
 ### New Features

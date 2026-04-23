@@ -118,11 +118,11 @@ getParentInitializer
 | var_decls.swift:57:36:57:36 | _w4 | var_decls.swift:57:4:57:41 | call to WrapperWithProjectedAndInit.init(wrappedValue:) |
 | var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:4:57:41 | call to WrapperWithProjectedAndInit.init(wrappedValue:) |
 getPropertyWrapperBackingVarBinding
-| var_decls.swift:24:15:24:15 | wrapped | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:54:10:54:10 | w1 | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:55:24:55:24 | w2 | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:56:29:56:29 | w3 | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:57:36:57:36 | w4 | file://:0:0:0:0 | var ... = ... |
+| var_decls.swift:24:15:24:15 | wrapped | var_decls.swift:24:15:24:15 | var ... = ... |
+| var_decls.swift:54:10:54:10 | w1 | var_decls.swift:54:10:54:10 | var ... = ... |
+| var_decls.swift:55:24:55:24 | w2 | var_decls.swift:55:24:55:24 | var ... = ... |
+| var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:29:56:29 | var ... = ... |
+| var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | var ... = ... |
 getPropertyWrapperBackingVar
 | var_decls.swift:24:15:24:15 | wrapped | var_decls.swift:24:15:24:15 | _wrapped |
 | var_decls.swift:54:10:54:10 | w1 | var_decls.swift:54:10:54:10 | _w1 |
@@ -130,8 +130,8 @@ getPropertyWrapperBackingVar
 | var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:29:56:29 | _w3 |
 | var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | _w4 |
 getPropertyWrapperProjectionVarBinding
-| var_decls.swift:56:29:56:29 | w3 | file://:0:0:0:0 | var ... = ... |
-| var_decls.swift:57:36:57:36 | w4 | file://:0:0:0:0 | var ... = ... |
+| var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:29:56:29 | var ... = ... |
+| var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | var ... = ... |
 getPropertyWrapperProjectionVar
 | var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:29:56:29 | $w3 |
 | var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | $w4 |

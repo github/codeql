@@ -33,7 +33,7 @@ module Private {
 
   class Type = CS::Type;
 
-  class Expr = CS::ControlFlow::Nodes::ExprNode;
+  class Expr = CS::ControlFlowNodes::ExprNode;
 
   class VariableUpdate = CS::Ssa::ExplicitDefinition;
 
@@ -41,7 +41,7 @@ module Private {
 
   class RealLiteral = RU::ExprNode::RealLiteral;
 
-  class DivExpr = RU::ExprNode::DivExpr;
+  class DivExpr = RU::ExprNode::DivOperation;
 
   class UnaryOperation = RU::ExprNode::UnaryOperation;
 
@@ -63,7 +63,7 @@ private module Impl {
   private import SsaReadPositionCommon
   private import semmle.code.csharp.commons.ComparisonTest
 
-  private class ExprNode = ControlFlow::Nodes::ExprNode;
+  private class ExprNode = ControlFlowNodes::ExprNode;
 
   /** Gets the character value of expression `e`. */
   string getCharValue(ExprNode e) { result = e.getValue() and e.getType() instanceof CharType }
@@ -130,6 +130,11 @@ private module Impl {
       adef = def.getADefinition() and
       hasChild(adef.getExpr(), adef.getSource(), def.getControlFlowNode(), result)
     )
+    or
+    exists(AssignableDefinitions::AssignOperationDefinition adef |
+      adef = def.getADefinition() and
+      result.getExpr() = adef.getSource()
+    )
   }
 
   /** Holds if `def` can have any sign. */
@@ -163,7 +168,7 @@ private module Impl {
   /** Returned an expression that is assigned to `f`. */
   ExprNode getAssignedValueToField(Field f) {
     result.getExpr() in [
-        f.getAnAssignedValue(), any(AssignOperation a | a.getLValue() = f.getAnAccess())
+        f.getAnAssignedValue(), any(AssignOperation a | a.getLeftOperand() = f.getAnAccess())
       ]
   }
 
@@ -226,7 +231,7 @@ private module Impl {
   /** Returns a sub expression of `e` for expression types where the sign depends on the child. */
   ExprNode getASubExprWithSameSign(ExprNode e) {
     exists(Expr e_, Expr child | hasChild(e_, child, e, result) |
-      child = e_.(AssignExpr).getRValue() or
+      child = e_.(AssignExpr).getRightOperand() or
       child = e_.(UnaryPlusExpr).getOperand() or
       child = e_.(PostIncrExpr).getOperand() or
       child = e_.(PostDecrExpr).getOperand() or
@@ -249,7 +254,7 @@ private module Impl {
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce.getExpr() }
 
   private newtype TComparisonExpr =
-    MkComparisonExpr(ComparisonTest ct, ExprNode e) { e = ct.getExpr().getAControlFlowNode() }
+    MkComparisonExpr(ComparisonTest ct, ExprNode e) { e = ct.getExpr().getControlFlowNode() }
 
   /** A relational comparison */
   class ComparisonExpr extends MkComparisonExpr {

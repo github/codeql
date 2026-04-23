@@ -32,3 +32,6 @@
 | windows.cpp:669:70:669:79 | WinHttpQueryHeadersEx output argument | remote |
 | windows.cpp:669:82:669:87 | WinHttpQueryHeadersEx output argument | remote |
 | windows.cpp:669:105:669:112 | WinHttpQueryHeadersEx output argument | remote |
+| windows.cpp:900:64:900:77 | HttpReceiveHttpRequest output argument | remote |
+| windows.cpp:929:70:929:75 | HttpReceiveRequestEntityBody output argument | remote |
+| windows.cpp:936:70:936:78 | HttpReceiveClientCertificate output argument | remote |

@@ -88,3 +88,25 @@ const fastifyApp = require('fastify')();
 fastifyApp.get('/foo', expensiveHandler1); // $ Alert
 fastifyApp.register(require('fastify-rate-limit'));
 fastifyApp.get('/bar', expensiveHandler1);
+
+// Fastify per-route rate limiting via config.rateLimit
+const fastifyApp2 = require('fastify')();
+fastifyApp2.register(require('@fastify/rate-limit'));
+
+fastifyApp2.post('/login', {
+  config: {
+    rateLimit: {
+      max: 3,
+      timeWindow: '1 minute'
+    }
+  }
+}, expensiveHandler1); // OK - has per-route rateLimit config
+
+fastifyApp2.post('/signup', {
+  rateLimit: {
+    max: 5,
+    timeWindow: '1 minute'
+  }
+}, expensiveHandler1); // OK - has per-route rateLimit directly in options
+
+fastifyApp2.post('/other', expensiveHandler1); // $ Alert - no rate limiting

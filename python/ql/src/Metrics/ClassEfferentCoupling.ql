@@ -13,5 +13,5 @@
 import python
 private import LegacyPointsTo
 
-from ClassMetrics cls
+from ClassMetricsWithPointsTo cls
 select cls, cls.getEfferentCoupling() as n order by n desc

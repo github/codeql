@@ -46,6 +46,10 @@ module Filters {
     )
   }
 
+  bindingset[m, name]
+  pragma[inline_late]
+  private Method lookupMethodInlineLate(Module m, string name) { result = lookupMethod(m, name) }
+
   /**
    * A call to a class method that adds or removes a filter from the callback chain.
    * This class exists to encapsulate common behavior between calls that
@@ -140,7 +144,8 @@ module Filters {
      */
     Callable getAFilterCallable() {
       result =
-        lookupMethod(this.getExpr().getEnclosingModule().getModule(), this.getFilterArgumentName())
+        lookupMethodInlineLate(this.getExpr().getEnclosingModule().getModule(),
+          this.getFilterArgumentName())
     }
   }
 

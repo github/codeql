@@ -307,7 +307,6 @@ class ModuleDecl(TypeDecl):
 class SubscriptDecl(AbstractStorageDecl, GenericContext):
     params: list[ParamDecl] | child
     element_type: Type
-    element_type: Type
 
 @group("decl")
 class Accessor(AccessorOrNamedFunction):
@@ -1480,8 +1479,16 @@ class TypeValueExpr(Expr):
 class IntegerType(Type):
     value: string
 
-class BuiltinFixedArrayType(BuiltinType):
+class BuiltinGenericType(BuiltinType):
+    """
+    A builtin generic type.
+    """
+    pass
+
+@qltest.uncollapse_hierarchy
+class BuiltinFixedArrayType(BuiltinGenericType):
     """
     A builtin type representing N values stored contiguously.
     """
-    pass
+    size: Type
+    element_type: Type

@@ -18,7 +18,7 @@ add_salary = ("INSERT INTO salaries "
 data_employee = ('Geert', 'Vanderkelen', tomorrow, 'M', date(1977, 6, 14))
 
 # Insert new employee
-cursor.execute(add_employee, data_employee)  # $getSql=add_employee
+cursor.execute(add_employee, data_employee)  # $ getSql=add_employee
 emp_no = cursor.lastrowid
 
 # Insert salary information
@@ -28,7 +28,7 @@ data_salary = {
   'from_date': tomorrow,
   'to_date': date(9999, 1, 1),
 }
-cursor.execute(add_salary, data_salary)  # $getSql=add_salary
+cursor.execute(add_salary, data_salary)  # $ getSql=add_salary
 
 # Make sure data is committed to the database
 cnx.commit()

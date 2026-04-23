@@ -1,3 +1,55 @@
+## 5.5.0
+
+### Deprecated APIs
+
+* The predicates `get[L|R]Value` in the class `Assignment` have been deprecated. Use `get[Left|Right]Operand` instead.
+
+## 5.4.12
+
+### Minor Analysis Improvements
+
+* The extractor no longer synthesizes expanded forms of compound assignments. This may have a small impact on the results of queries that explicitly or implicitly rely on the expanded form of compound assignments.
+* The `cs/log-forging` query no longer treats arguments to extension methods with
+  source code on `ILogger` types as sinks. Instead, taint is tracked interprocedurally
+  through extension method bodies, reducing false positives when extension methods
+  sanitize input internally.
+
+## 5.4.11
+
+No user-facing changes.
+
+## 5.4.10
+
+No user-facing changes.
+
+## 5.4.9
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* Added `System.Net.WebSockets::ReceiveAsync` as a remote flow source.
+* Added reverse taint flow from implicit conversion operator calls to their arguments.
+* Added post-update nodes for struct-type arguments, allowing data flow out of method calls via those arguments.
+* C# 14: Added support for partial constructors.
+
+## 5.4.8
+
+### Minor Analysis Improvements
+
+* C# 14: Added support for partial events.
+* C# 14: Added support for the `field` keyword in properties.
+
+### Bug Fixes
+
+* Fixed an issue where the body of a partial member could be extracted twice. When both a *defining* and an *implementing* declaration exist, only the *implementing* declaration is now extracted.
+
+## 5.4.7
+
+### Minor Analysis Improvements
+
+* The model for `System.Web.HttpUtility` has been modified to better model the flow of tainted URIs.
+* C# 14: Added support for `extension` members in the extractor, QL library, data flow, and Models as Data, covering extension methods, properties, and operators.
+
 ## 5.4.6
 
 ### Minor Analysis Improvements

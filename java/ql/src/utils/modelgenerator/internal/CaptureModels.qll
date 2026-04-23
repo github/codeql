@@ -26,7 +26,7 @@ predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
 }
 
 private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
-  cu.getPackage().getName().matches("javax.swing%") or
+  cu.getPackage().getName().matches(javaxOrJakarta() + ".swing%") or
   cu.getPackage().getName().matches("java.awt%")
 }
 

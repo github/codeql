@@ -1,4 +1,4 @@
-from flask import request
+from flask import request # $ Source
 
 import requests
 import re
@@ -7,20 +7,24 @@ def full_ssrf():
     user_input = request.args['untrusted_input']
     query_val = request.args['query_val']
 
-    requests.get(user_input) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(user_input) # $ Alert[py/full-ssrf]
 
     url = "https://" + user_input
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf] 
 
     # although the path `/foo` is added here, this can be circumvented such that the
     # final URL is `https://evil.com/#/foo" -- since the fragment (#) is not sent to the
     # server.
     url = "https://" + user_input + "/foo"
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf] 
 
     # this might seem like a dummy test, but it serves to check how our sanitizers work.
     url = "https://" + user_input + "/foo?key=" + query_val
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
 # taint-steps are added as `fromNode -> toNode`, but when adding a sanitizer it's
 # currently only possible to so on either `fromNode` or `toNode` (either all edges in
@@ -39,19 +43,24 @@ def full_ssrf_format():
 
     # using .format
     url = "https://{}".format(user_input)
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
     url = "https://{}/foo".format(user_input)
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
     url = "https://{}/foo?key={}".format(user_input, query_val)
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
     url = "https://{x}".format(x=user_input)
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
     url = "https://{1}".format(0, user_input)
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
 def full_ssrf_percent_format():
     user_input = request.args['untrusted_input']
@@ -59,13 +68,16 @@ def full_ssrf_percent_format():
 
     # using %-formatting
     url = "https://%s" % user_input
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
     url = "https://%s/foo" % user_input
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
     url = "https://%s/foo/key=%s" % (user_input, query_val)
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full and partial control
+    requests.get(url) # $ Alert[py/partial-ssrf] $ MISSING: Alert[py/full-ssrf] 
 
 def full_ssrf_f_strings():
     user_input = request.args['untrusted_input']
@@ -73,38 +85,45 @@ def full_ssrf_f_strings():
 
     # using f-strings
     url = f"https://{user_input}"
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
     url = f"https://{user_input}/foo"
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
     url = f"https://{user_input}/foo?key={query_val}"
-    requests.get(url) # NOT OK -- user has full control
+    # NOT OK -- user has full control
+    requests.get(url) # $ Alert[py/full-ssrf]
 
 
 def partial_ssrf_1():
     user_input = request.args['untrusted_input']
 
     url = "https://example.com/foo?" + user_input
-    requests.get(url) # NOT OK -- user controls query parameters
+    # NOT OK -- user controls query parameters
+    requests.get(url) # $ Alert[py/partial-ssrf]
 
 def partial_ssrf_2():
     user_input = request.args['untrusted_input']
 
     url = "https://example.com/" + user_input
-    requests.get(url) # NOT OK -- user controls path
+    # NOT OK -- user controls path
+    requests.get(url) # $ Alert[py/partial-ssrf]
 
 def partial_ssrf_3():
     user_input = request.args['untrusted_input']
 
     url = "https://example.com/" + user_input
-    requests.get(url) # NOT OK -- user controls path
+    # NOT OK -- user controls path
+    requests.get(url) # $ Alert[py/partial-ssrf]
 
 def partial_ssrf_4():
     user_input = request.args['untrusted_input']
 
     url = "https://example.com/foo#{}".format(user_input)
-    requests.get(url) # NOT OK -- user contollred fragment
+    # NOT OK -- user controlled fragment
+    requests.get(url)  # $ Alert[py/partial-ssrf]
 
 def partial_ssrf_5():
     user_input = request.args['untrusted_input']
@@ -113,20 +132,22 @@ def partial_ssrf_5():
     # controlled
 
     url = "https://example.com/foo#%s" % user_input
-    requests.get(url) # NOT OK -- user contollred fragment
+    # NOT OK -- user controlled fragment
+    requests.get(url)  # $ Alert[py/partial-ssrf]
 
 def partial_ssrf_6():
     user_input = request.args['untrusted_input']
 
     url = f"https://example.com/foo#{user_input}"
-    requests.get(url) # NOT OK -- user only controlled fragment
+    # NOT OK -- user only controlled fragment
+    requests.get(url) # $ Alert[py/partial-ssrf]
 
 def partial_ssrf_7():
     user_input = request.args['untrusted_input']
 
     if user_input.isalnum():
         url = f"https://example.com/foo#{user_input}"
-        requests.get(url) # OK - user input can only contain alphanumerical characters 
+        requests.get(url)  # OK - user input can only contain alphanumerical characters 
 
     if user_input.isalpha():
         url = f"https://example.com/foo#{user_input}"
@@ -154,7 +175,8 @@ def partial_ssrf_7():
 
     if re.fullmatch(r'.*[a-zA-Z0-9]+.*', user_input):
         url = f"https://example.com/foo#{user_input}"
-        requests.get(url) # NOT OK, but NOT FOUND - user input can contain arbitrary characters 
+        # NOT OK, but NOT FOUND - user input can contain arbitrary characters 
+        requests.get(url) # $ MISSING: Alert[py/partial-ssrf] 
 
     
     if re.match(r'^[a-zA-Z0-9]+$', user_input):
@@ -163,7 +185,8 @@ def partial_ssrf_7():
 
     if re.match(r'[a-zA-Z0-9]+', user_input):
         url = f"https://example.com/foo#{user_input}"
-        requests.get(url) # NOT OK, but NOT FOUND - user input can contain arbitrary character as a suffix.
+        # NOT OK, but NOT FOUND - user input can contain arbitrary character as a suffix.
+        requests.get(url) # $ MISSING: Alert[py/partial-ssrf] 
 
     reg = re.compile(r'^[a-zA-Z0-9]+$')
 

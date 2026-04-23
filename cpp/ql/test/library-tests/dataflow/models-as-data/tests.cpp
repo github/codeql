@@ -75,7 +75,7 @@ void test_sources() {
 	int e = localMadSource();
 	sink(e); // $ ir
 
-	sink(MyNamespace::namespaceLocalMadSource()); // $: ir
+	sink(MyNamespace::namespaceLocalMadSource()); // $ ir
 	sink(MyNamespace::namespaceLocalMadSourceVar); // $ ir
 	sink(MyNamespace::MyNamespace2::namespace2LocalMadSource()); // $ ir
 	sink(MyNamespace::localMadSource()); // $ (the MyNamespace version of this function is not a source)

@@ -20,7 +20,7 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
 
   /** Gets the `i`th child expression of this element (zero-based). */
   final Expr getChildExpr(int i) {
-    expr_parent_adjusted(result, i, this) or
+    expr_parent(result, i, this) or
     expr_parent_top_level_adjusted(result, i, this)
   }
 
@@ -118,80 +118,15 @@ private module Cached {
     i = 0
   }
 
-  /**
-   * The `expr_parent()` relation adjusted for expandable assignments. For example,
-   * the assignment `x += y` is extracted as
-   *
-   * ```
-   *          +=
-   *           |
-   *           2
-   *           |
-   *           =
-   *          / \
-   *         1   0
-   *        /     \
-   *       x       +
-   *              / \
-   *             1   0
-   *            /     \
-   *           x       y
-   * ```
-   *
-   * in order to be able to retrieve the expanded assignment `x = x + y` as the 2nd
-   * child. This predicate changes the diagram above into
-   *
-   * ```
-   *          +=
-   *         /  \
-   *        1    0
-   *       /      \
-   *      x        y
-   * ```
-   */
-  cached
-  predicate expr_parent_adjusted(Expr child, int i, ControlFlowElement parent) {
-    if parent instanceof AssignOperation
-    then
-      parent =
-        any(AssignOperation ao |
-          exists(AssignExpr ae | ae = ao.getExpandedAssignment() |
-            i = 0 and
-            exists(Expr right |
-              // right = `x + y`
-              expr_parent(right, 0, ae)
-            |
-              expr_parent(child, 1, right)
-            )
-            or
-            i = 1 and
-            expr_parent(child, 1, ae)
-          )
-          or
-          not ao.hasExpandedAssignment() and
-          expr_parent(child, i, parent)
-        )
-    else expr_parent(child, i, parent)
-  }
-
   private Expr getAChildExpr(ExprOrStmtParent parent) {
     result = parent.getAChildExpr() and
     not result = parent.(DeclarationWithGetSetAccessors).getExpressionBody()
-    or
-    result = parent.(AssignOperation).getExpandedAssignment()
   }
 
   private ControlFlowElement getAChild(ExprOrStmtParent parent) {
     result = getAChildExpr(parent)
     or
     result = parent.getAChildStmt()
-  }
-
-  pragma[inline]
-  private ControlFlowElement enclosingStart(ControlFlowElement cfe) {
-    result = cfe
-    or
-    getAChild(result).(AnonymousFunctionExpr) = cfe
   }
 
   private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {
@@ -203,7 +138,7 @@ private module Cached {
   cached
   predicate enclosingBody(ControlFlowElement cfe, ControlFlowElement body) {
     body = getBody(_) and
-    parent*(enclosingStart(cfe), body)
+    parent*(cfe, body)
   }
 
   /** Holds if the enclosing callable of `cfe` is `c`. */
@@ -211,9 +146,11 @@ private module Cached {
   predicate enclosingCallable(ControlFlowElement cfe, Callable c) {
     enclosingBody(cfe, getBody(c))
     or
-    parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
+    parent*(cfe, c.(Constructor).getInitializer())
     or
     parent*(cfe, c.(Constructor).getObjectInitializerCall())
+    or
+    parent*(cfe, any(AssignExpr init | c.(ObjectInitMethod).initializes(init)))
   }
 
   /** Holds if the enclosing statement of expression `e` is `s`. */

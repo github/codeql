@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import python
 private import DataFlowPublic
 private import semmle.python.essa.SsaCompute
@@ -39,6 +42,7 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 //--------
 // Nodes
 //--------
+overlay[local]
 predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
 
 // =============================================================================
@@ -111,6 +115,7 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
  * func = foo if <cond> else bar
  * func(1, 2, 3)
  */
+overlay[local]
 class SynthStarArgsElementParameterNode extends ParameterNodeImpl,
   TSynthStarArgsElementParameterNode
 {
@@ -241,6 +246,7 @@ private predicate dictSplatParameterNodeClearStep(ParameterNode n, DictionaryEle
  *  (c) since the synthesized nodes are hidden, the reported data-flow paths will be
  *      collapsed anyway.
  */
+overlay[local]
 class SynthDictSplatParameterNode extends ParameterNodeImpl, TSynthDictSplatParameterNode {
   DataFlowCallable callable;
 

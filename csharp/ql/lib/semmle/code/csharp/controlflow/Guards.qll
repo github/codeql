@@ -7,20 +7,16 @@ private import ControlFlow
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as SC
-private import semmle.code.csharp.controlflow.BasicBlocks
-private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Linq
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import codeql.controlflow.Guards as SharedGuards
 
-private module GuardsInput implements
-  SharedGuards::InputSig<Location, ControlFlow::Node, ControlFlow::BasicBlock>
-{
+private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
   private import csharp as CS
 
-  class NormalExitNode = ControlFlow::Nodes::NormalExitNode;
+  class NormalExitNode = ControlFlow::NormalExitNode;
 
   class AstNode = ControlFlowElement;
 
@@ -60,25 +56,16 @@ private module GuardsInput implements
     override boolean asBooleanValue() { boolConst(this, result) }
   }
 
-  private predicate intConst(Expr e, int i) {
-    e.getValue().toInt() = i and
-    (
-      e.getType() instanceof Enum
-      or
-      e.getType() instanceof IntegralType
-    )
-  }
-
   private class IntegerConstant extends ConstantExpr {
-    IntegerConstant() { intConst(this, _) }
+    IntegerConstant() { exists(this.getIntValue()) }
 
-    override int asIntegerValue() { intConst(this, result) }
+    override int asIntegerValue() { result = this.getIntValue() }
   }
 
   private class EnumConst extends ConstantExpr {
     EnumConst() { this.getType() instanceof Enum and this.hasValue() }
 
-    override int asIntegerValue() { result = this.getValue().toInt() }
+    override int asIntegerValue() { result = this.getIntValue() }
   }
 
   private class StringConstant extends ConstantExpr instanceof StringLiteral {
@@ -96,21 +83,14 @@ private module GuardsInput implements
 
     ConstantExpr asConstantCase() { super.getPattern() = result }
 
-    private predicate hasEdge(BasicBlock bb1, BasicBlock bb2, MatchingCompletion c) {
-      exists(PatternExpr pe |
-        super.getPattern() = pe and
-        c.isValidFor(pe) and
-        bb1.getLastNode() = pe.getAControlFlowNode() and
-        bb1.getASuccessor(c.getAMatchingSuccessorType()) = bb2
-      )
-    }
-
     predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
-      exists(MatchingCompletion c | this.hasEdge(bb1, bb2, c) and c.isMatch())
+      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = true)) = bb2 and
+      bb1.getLastNode() = AstNode.super.getControlFlowNode()
     }
 
     predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
-      exists(MatchingCompletion c | this.hasEdge(bb1, bb2, c) and c.isNonMatch())
+      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = false)) = bb2 and
+      bb1.getLastNode() = AstNode.super.getControlFlowNode()
     }
   }
 
@@ -119,14 +99,14 @@ private module GuardsInput implements
   class AndExpr extends BinExpr {
     AndExpr() {
       this instanceof LogicalAndExpr or
-      this instanceof BitwiseAndExpr
+      this instanceof BitwiseAndOperation
     }
   }
 
   class OrExpr extends BinExpr {
     OrExpr() {
       this instanceof LogicalOrExpr or
-      this instanceof BitwiseOrExpr
+      this instanceof BitwiseOrOperation
     }
   }
 
@@ -136,12 +116,13 @@ private module GuardsInput implements
     IdExpr() { this instanceof AssignExpr or this instanceof CastExpr }
 
     Expr getEqualChildExpr() {
-      result = this.(AssignExpr).getRValue()
+      result = this.(AssignExpr).getRightOperand()
       or
       result = this.(CastExpr).getExpr()
     }
   }
 
+  pragma[nomagic]
   predicate equalityTest(Expr eqtest, Expr left, Expr right, boolean polarity) {
     exists(ComparisonTest ct |
       ct.getExpr() = eqtest and
@@ -291,7 +272,7 @@ private module LogicInput implements GuardsImpl::LogicInputSig {
     v1.isNonNullValue() and
     v2 = v1
     or
-    g2 = g1.(NullCoalescingExpr).getAnOperand() and
+    g2 = g1.(NullCoalescingOperation).getAnOperand() and
     v1.isNullValue() and
     v2 = v1
     or
@@ -321,7 +302,7 @@ class Guard extends Guards::Guard {
    * In case `cfn` or `sub` access an SSA variable in their left-most qualifier, then
    * so must the other (accessing the same SSA variable).
    */
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AccessOrCallExpr sub, GuardValue v) {
+  predicate controlsNode(ControlFlowNodes::ElementNode cfn, AccessOrCallExpr sub, GuardValue v) {
     isGuardedByNode(cfn, this, sub, v)
   }
 
@@ -331,7 +312,7 @@ class Guard extends Guards::Guard {
    * Note: This predicate is inlined.
    */
   pragma[inline]
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, GuardValue v) {
+  predicate controlsNode(ControlFlowNodes::ElementNode cfn, GuardValue v) {
     guardControls(this, cfn.getBasicBlock(), v)
   }
 
@@ -410,6 +391,22 @@ private predicate typePattern(PatternMatch pm, TypePatternExpr tpe, Type t) {
   t = pm.getExpr().getType()
 }
 
+pragma[nomagic]
+private predicate dereferenceableExpr(Expr e, boolean isNullableType) {
+  exists(Type t | t = e.getType() |
+    t instanceof NullableType and
+    isNullableType = true
+    or
+    t instanceof RefType and
+    isNullableType = false
+  )
+  or
+  exists(Expr parent |
+    dereferenceableExpr(parent, isNullableType) and
+    e = getNullEquivParent(parent)
+  )
+}
+
 /**
  * An expression that evaluates to a value that can be dereferenced. That is,
  * an expression that may evaluate to `null`.
@@ -418,21 +415,12 @@ class DereferenceableExpr extends Expr {
   private boolean isNullableType;
 
   DereferenceableExpr() {
-    exists(Expr e, Type t |
-      // There is currently a bug in the extractor: the type of `x?.Length` is
-      // incorrectly `int`, while it should have been `int?`. We apply
-      // `getNullEquivParent()` as a workaround
-      this = getNullEquivParent*(e) and
-      t = e.getType() and
-      not this instanceof SwitchCaseExpr and
-      not this instanceof PatternExpr
-    |
-      t instanceof NullableType and
-      isNullableType = true
-      or
-      t instanceof RefType and
-      isNullableType = false
-    )
+    // There is currently a bug in the extractor: the type of `x?.Length` is
+    // incorrectly `int`, while it should have been `int?`. We apply
+    // `getNullEquivParent()` as a workaround
+    dereferenceableExpr(this, isNullableType) and
+    not this instanceof SwitchCaseExpr and
+    not this instanceof PatternExpr
   }
 
   /** Holds if this expression has a nullable type `T?`. */
@@ -442,7 +430,8 @@ class DereferenceableExpr extends Expr {
   predicate guardSuggestsMaybeNull(Guards::Guard guard) {
     not nonNullValueImplied(this) and
     (
-      exists(NullnessCompletion c | c.isValidFor(this) and c.isNull() and guard = this)
+      exists(guard.getControlFlowNode().getASuccessor(any(NullnessSuccessor n | n.isNull()))) and
+      guard = this
       or
       LogicInput::additionalNullCheck(guard, _, this, true)
       or
@@ -509,35 +498,35 @@ class EnumerableCollectionExpr extends Expr {
           |
             // x.Length == 0
             ct.getComparisonKind().isEquality() and
-            ct.getAnArgument().getValue().toInt() = 0 and
+            ct.getAnArgument().getIntValue() = 0 and
             branch = isEmpty
             or
             // x.Length == k, k > 0
             ct.getComparisonKind().isEquality() and
-            ct.getAnArgument().getValue().toInt() > 0 and
+            ct.getAnArgument().getIntValue() > 0 and
             branch = true and
             isEmpty = false
             or
             // x.Length != 0
             ct.getComparisonKind().isInequality() and
-            ct.getAnArgument().getValue().toInt() = 0 and
+            ct.getAnArgument().getIntValue() = 0 and
             branch = isEmpty.booleanNot()
             or
             // x.Length != k, k != 0
             ct.getComparisonKind().isInequality() and
-            ct.getAnArgument().getValue().toInt() != 0 and
+            ct.getAnArgument().getIntValue() != 0 and
             branch = false and
             isEmpty = false
             or
             // x.Length > k, k >= 0
             ct.getComparisonKind().isLessThan() and
-            ct.getFirstArgument().getValue().toInt() >= 0 and
+            ct.getFirstArgument().getIntValue() >= 0 and
             branch = true and
             isEmpty = false
             or
             // x.Length >= k, k > 0
             ct.getComparisonKind().isLessThanEquals() and
-            ct.getFirstArgument().getValue().toInt() > 0 and
+            ct.getFirstArgument().getIntValue() > 0 and
             branch = true and
             isEmpty = false
           )
@@ -597,7 +586,7 @@ class AccessOrCallExpr extends Expr {
    * An expression can have more than one SSA qualifier in the presence
    * of control flow splitting.
    */
-  Ssa::Definition getAnSsaQualifier(ControlFlow::Node cfn) { result = getAnSsaQualifier(this, cfn) }
+  Ssa::Definition getAnSsaQualifier(ControlFlowNode cfn) { result = getAnSsaQualifier(this, cfn) }
 }
 
 private Declaration getDeclarationTarget(Expr e) {
@@ -605,14 +594,14 @@ private Declaration getDeclarationTarget(Expr e) {
   result = e.(Call).getTarget()
 }
 
-private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlow::Node cfn) {
+private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlowNode cfn) {
   e = getATrackedAccess(result, cfn)
   or
   not e = getATrackedAccess(_, _) and
   result = getAnSsaQualifier(e.(QualifiableExpr).getQualifier(), cfn)
 }
 
-private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Node cfn) {
+private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlowNode cfn) {
   result = def.getAReadAtNode(cfn)
   or
   result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
@@ -721,7 +710,7 @@ class GuardedExpr extends AccessOrCallExpr {
  * In the example above, the node for `x.ToString()` is null-guarded in the
  * split `b == true`, but not in the split `b == false`.
  */
-class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
+class GuardedControlFlowNode extends ControlFlowNodes::ElementNode {
   private Guard g;
   private AccessOrCallExpr sub0;
   private GuardValue v0;
@@ -777,7 +766,7 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
   private GuardValue v0;
 
   GuardedDataFlowNode() {
-    exists(ControlFlow::Nodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
+    exists(ControlFlowNodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
       g.controlsNode(cfn, sub0, v0)
     )
   }
@@ -828,18 +817,18 @@ module Internal {
 
   /** Holds if expression `e2` is a `null` value whenever `e1` is. */
   predicate nullValueImpliedUnary(Expr e1, Expr e2) {
-    e1 = e2.(AssignExpr).getRValue()
+    e1 = e2.(AssignExpr).getRightOperand()
     or
     e1 = e2.(Cast).getExpr()
     or
-    e2 = e1.(NullCoalescingExpr).getAnOperand()
+    e2 = e1.(NullCoalescingOperation).getAnOperand()
   }
 
   /** Holds if expression `e3` is a `null` value whenever `e1` and `e2` are. */
   predicate nullValueImpliedBinary(Expr e1, Expr e2, Expr e3) {
     e3 = any(ConditionalExpr ce | e1 = ce.getThen() and e2 = ce.getElse())
     or
-    e3 = any(NullCoalescingExpr nce | e1 = nce.getLeftOperand() and e2 = nce.getRightOperand())
+    e3 = any(NullCoalescingOperation no | e1 = no.getLeftOperand() and e2 = no.getRightOperand())
   }
 
   predicate nullValueImplied(Expr e) {
@@ -899,7 +888,7 @@ module Internal {
     or
     // "In string concatenation operations, the C# compiler treats a null string the same as an empty string."
     // (https://docs.microsoft.com/en-us/dotnet/csharp/how-to/concatenate-multiple-strings)
-    e instanceof AddExpr and
+    e instanceof AddOperation and
     e.getType() instanceof StringType
     or
     e.(DefaultValueExpr).getType().isValueType()
@@ -914,11 +903,9 @@ module Internal {
 
   /** Holds if expression `e2` is a non-`null` value whenever `e1` is. */
   predicate nonNullValueImpliedUnary(Expr e1, Expr e2) {
-    e1 = e2.(CastExpr).getExpr()
-    or
-    e1 = e2.(AssignExpr).getRValue()
-    or
-    e1 = e2.(NullCoalescingExpr).getAnOperand()
+    e1 = e2.(CastExpr).getExpr() or
+    e1 = e2.(AssignExpr).getRightOperand() or
+    e1 = e2.(NullCoalescingOperation).getAnOperand()
   }
 
   /**
@@ -945,10 +932,13 @@ module Internal {
       )
     or
     // In C#, `null + 1` has type `int?` with value `null`
-    exists(BinaryArithmeticOperation bao, Expr o |
-      result = bao and
-      bao.getAnOperand() = e and
-      bao.getAnOperand() = o and
+    exists(BinaryOperation bo, Expr o |
+      bo instanceof BinaryArithmeticOperation or
+      bo instanceof AssignArithmeticOperation
+    |
+      result = bo and
+      bo.getAnOperand() = e and
+      bo.getAnOperand() = o and
       // The other operand must be provably non-null in order
       // for `only if` to hold
       nonNullValueImplied(o) and
@@ -964,10 +954,10 @@ module Internal {
       any(QualifiableExpr qe |
         qe.isConditional() and
         result = qe.getQualifier()
-      )
-    or
+      ) or
     // In C#, `null + 1` has type `int?` with value `null`
-    e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand())
+    e = any(BinaryArithmeticOperation bao | result = bao.getAnOperand()) or
+    e = any(AssignArithmeticOperation aao | result = aao.getAnOperand())
   }
 
   deprecated predicate isGuard(Expr e, GuardValue val) {
@@ -1074,7 +1064,7 @@ module Internal {
       candidateAux(x, d, bb) and
       y =
         any(AccessOrCallExpr e |
-          e.getAControlFlowNode().getBasicBlock() = bb and
+          e.getControlFlowNode().getBasicBlock() = bb and
           e.getTarget() = d
         )
     )
@@ -1106,11 +1096,11 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr0(
-      ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, GuardValue v
     ) {
       Stages::GuardsStage::forceCachingInSameStage() and
-      guardedCfn = guarded.getAControlFlowNode() and
+      guardedCfn = guarded.getControlFlowNode() and
       guardedBB = guardedCfn.getBasicBlock() and
       guardControls(g, guardedBB, v) and
       guardControlsSubSame(g, guardedBB, sub) and
@@ -1119,7 +1109,7 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr(
-      ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr0(guardedCfn, guardedBB, guarded, g, sub, v) and
@@ -1128,8 +1118,8 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef0(
-      ControlFlow::Node cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
-      ControlFlow::Node subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, GuardValue v,
+      ControlFlowNode cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, GuardValue v,
       Ssa::Definition def
     ) {
       nodeIsGuardedBySameSubExpr(cfn, guardedBB, guarded, g, sub, v) and
@@ -1139,7 +1129,7 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef(
-      ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlow::Node subCfn,
+      ControlFlowNode guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlowNode subCfn,
       AccessOrCallExpr sub, GuardValue v, Ssa::Definition def
     ) {
       exists(BasicBlock guardedBB, BasicBlock subCfnBB |
@@ -1153,15 +1143,13 @@ module Internal {
     private predicate isGuardedByExpr0(
       AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
-      forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
-        nodeIsGuardedBySameSubExpr(cfn, _, guarded, g, sub, v)
-      )
+      nodeIsGuardedBySameSubExpr(guarded.getControlFlowNode(), _, guarded, g, sub, v)
     }
 
     cached
     predicate isGuardedByExpr(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v) {
       isGuardedByExpr0(guarded, g, sub, v) and
-      forall(ControlFlow::Node subCfn, Ssa::Definition def |
+      forall(ControlFlowNode subCfn, Ssa::Definition def |
         nodeIsGuardedBySameSubExprSsaDef(_, guarded, g, subCfn, sub, v, def)
       |
         def = guarded.getAnSsaQualifier(_)
@@ -1170,17 +1158,14 @@ module Internal {
 
     cached
     predicate isGuardedByNode(
-      ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
+      ControlFlowNodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr(guarded, _, _, g, sub, v) and
-      forall(ControlFlow::Node subCfn, Ssa::Definition def |
+      forall(ControlFlowNode subCfn, Ssa::Definition def |
         nodeIsGuardedBySameSubExprSsaDef(guarded, _, g, subCfn, sub, v, def)
       |
         def =
-          guarded
-              .getAstNode()
-              .(AccessOrCallExpr)
-              .getAnSsaQualifier(guarded.getBasicBlock().getANode())
+          guarded.asExpr().(AccessOrCallExpr).getAnSsaQualifier(guarded.getBasicBlock().getANode())
       )
     }
   }

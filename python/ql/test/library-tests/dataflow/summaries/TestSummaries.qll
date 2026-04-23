@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import python
 private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.ApiGraphs

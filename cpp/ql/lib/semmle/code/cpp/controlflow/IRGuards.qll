@@ -1663,7 +1663,7 @@ private module Cached {
   private predicate compares_ge(
     ValueNumber test, Operand left, Operand right, int k, boolean isGe, GuardValue value
   ) {
-    exists(int onemk | k = 1 - onemk | compares_lt(test, right, left, onemk, isGe, value))
+    compares_lt(test, right, left, 1 - k, isGe, value)
   }
 
   /** Rearrange various simple comparisons into `left < right + k` form. */

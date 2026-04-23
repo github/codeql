@@ -24,11 +24,14 @@ AssocType getTraitAssocType(Trait trait) { result.getTrait() = trait.getSupertra
 
 /** Holds if `path` is of the form `<type as trait>::name` */
 pragma[nomagic]
-predicate pathTypeAsTraitAssoc(Path path, TypeRepr typeRepr, Path traitPath, string name) {
+predicate pathTypeAsTraitAssoc(
+  Path path, TypeRepr typeRepr, PathTypeRepr traitRepr, Trait trait, string name
+) {
   exists(PathSegment segment |
     segment = path.getQualifier().getSegment() and
     typeRepr = segment.getTypeRepr() and
-    traitPath = segment.getTraitTypeRepr().getPath() and
+    traitRepr = segment.getTraitTypeRepr() and
+    trait = resolvePath(traitRepr.getPath()) and
     name = path.getText()
   )
 }
@@ -36,17 +39,17 @@ predicate pathTypeAsTraitAssoc(Path path, TypeRepr typeRepr, Path traitPath, str
 /**
  * Holds if `assoc` is accessed on `tp` in `path`.
  *
- * That is, this is the case when `path` is of the form `<tp as
- * Trait>::AssocType` or `tp::AssocType`; and `AssocType` resolves to `assoc`.
+ * That is, this is the case when `path` is of the form `<tp as Trait>::AssocType`
+ * or `tp::AssocType`; and `AssocType` resolves to `assoc`.
  */
 predicate tpAssociatedType(TypeParam tp, AssocType assoc, Path path) {
   resolvePath(path.getQualifier()) = tp and
   resolvePath(path) = assoc
   or
-  exists(PathTypeRepr typeRepr, Path traitPath, string name |
-    pathTypeAsTraitAssoc(path, typeRepr, traitPath, name) and
+  exists(PathTypeRepr typeRepr, TraitItemNode trait, string name |
+    pathTypeAsTraitAssoc(path, typeRepr, _, trait, name) and
     tp = resolvePath(typeRepr.getPath()) and
-    assoc = resolvePath(traitPath).(TraitItemNode).getAssocItem(name)
+    assoc = trait.getAssocItem(name)
   )
 }
 
