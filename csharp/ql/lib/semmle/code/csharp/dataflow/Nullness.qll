@@ -250,9 +250,9 @@ private predicate defReaches(Ssa::Definition def, ControlFlowNode cfn) {
 }
 
 private module NullnessConfig implements ControlFlowReachability::ConfigSig {
-  predicate source(ControlFlowNode node, Ssa::Definition def) { defMaybeNull(def, node, _, _) }
+  predicate source(ControlFlowNode node, SsaDefinition def) { defMaybeNull(def, node, _, _) }
 
-  predicate sink(ControlFlowNode node, Ssa::Definition def) {
+  predicate sink(ControlFlowNode node, SsaDefinition def) {
     exists(Dereference d |
       dereferenceAt(node, def, d) and
       not d instanceof NonNullExpr

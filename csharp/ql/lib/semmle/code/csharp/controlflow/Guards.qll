@@ -191,23 +191,7 @@ private module GuardsImpl = SharedGuards::Make<Location, Cfg, GuardsInput>;
 class GuardValue = GuardsImpl::GuardValue;
 
 private module LogicInput implements GuardsImpl::LogicInputSig {
-  class SsaDefinition extends Ssa::Definition {
-    Expr getARead() { super.getARead() = result }
-  }
-
-  class SsaExplicitWrite extends SsaDefinition instanceof Ssa::ExplicitDefinition {
-    Expr getValue() { result = super.getADefinition().getSource() }
-  }
-
-  class SsaPhiDefinition extends SsaDefinition instanceof Ssa::PhiNode {
-    predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
-      super.hasInputFromBlock(inp, bb)
-    }
-  }
-
-  class SsaParameterInit extends SsaDefinition instanceof Ssa::ParameterDefinition {
-    Parameter getParameter() { result = super.getParameter() }
-  }
+  import Ssa
 
   predicate additionalNullCheck(GuardsImpl::PreGuard guard, GuardValue val, Expr e, boolean isNull) {
     // Comparison with a non-`null` value, for example `x?.Length > 0`
