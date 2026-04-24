@@ -5,7 +5,7 @@ private predicate outRefDef(DataFlow::ExprNode ne, int outRef) {
   exists(Ssa::ExplicitDefinition def, Parameter outRefParameter |
     outRefParameter.isOutOrRef() and
     ne.getExpr() = def.getADefinition().getSource() and
-    def.isLiveOutRefParameterDefinition(outRefParameter) and
+    Ssa::isLiveOutRefParameterDefinition(def, outRefParameter) and
     outRef = outRefParameter.getPosition()
   )
 }

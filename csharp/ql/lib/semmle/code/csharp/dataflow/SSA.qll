@@ -190,6 +190,8 @@ module Ssa {
     )
   }
 
+  predicate isLiveOutRefParameterDefinition = SsaImpl::isLiveOutRefParameterDefinition/2;
+
   /**
    * A static single assignment (SSA) definition. Either an explicit variable
    * definition (`ExplicitDefinition`), an implicit variable definition
@@ -408,10 +410,12 @@ module Ssa {
     }
 
     /**
+     * DEPRECATED: Use `isLiveOutRefParameterDefinition(SsaDefinition, Parameter)` instead.
+     *
      * Holds if this SSA definition assigns to `out`/`ref` parameter `p`, and the
      * parameter may remain unchanged throughout the rest of the enclosing callable.
      */
-    final predicate isLiveOutRefParameterDefinition(Parameter p) {
+    deprecated final predicate isLiveOutRefParameterDefinition(Parameter p) {
       SsaImpl::isLiveOutRefParameterDefinition(this, p)
     }
 

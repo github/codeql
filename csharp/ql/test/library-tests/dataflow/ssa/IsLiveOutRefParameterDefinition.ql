@@ -1,7 +1,7 @@
 import csharp
 
-from Ssa::SourceVariable v, Ssa::Definition def
+from Ssa::SourceVariable v, SsaDefinition def
 where
   v = def.getSourceVariable() and
-  def.isLiveOutRefParameterDefinition(_)
+  Ssa::isLiveOutRefParameterDefinition(def, _)
 select v, def

@@ -914,6 +914,10 @@ private module Cached {
     Impl::uncertainWriteDefinitionInput(def, result)
   }
 
+  /**
+   * Holds if the SSA definition `def` assigns to `out`/`ref` parameter `p`, and the
+   * parameter may remain unchanged throughout the rest of the enclosing callable.
+   */
   cached
   predicate isLiveOutRefParameterDefinition(SsaDefinition def, Parameter p) {
     p.isOutOrRef() and
