@@ -36,17 +36,16 @@ abstract class BadDynamicCall extends DynamicExpr {
   }
 
   private Type possibleTypeForRelevantSource(Variable v, int i, Expr source) {
-    exists(AssignableRead read, SsaDefinition ssaDef, Ssa::ExplicitDefinition ultimateSsaDef |
+    exists(AssignableRead read, SsaDefinition ssaDef, SsaExplicitWrite ultimateSsaDef |
       read = this.getARelevantVariableAccess(i) and
       v = read.getTarget() and
       result = source.getType() and
       read = ssaDef.getARead() and
       ultimateSsaDef = ssaDef.getAnUltimateDefinition()
     |
-      ultimateSsaDef.getADefinition() =
-        any(AssignableDefinition def | source = def.getSource().stripImplicit())
+      ultimateSsaDef.getValue().stripImplicit() = source
       or
-      ultimateSsaDef.getADefinition() =
+      ultimateSsaDef.getDefinition() =
         any(AssignableDefinitions::ImplicitParameterDefinition p |
           source = p.getParameter().getAnAssignedValue().stripImplicit()
         )

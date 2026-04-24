@@ -825,7 +825,7 @@ private module Cached {
   }
 
   cached
-  AssignableDefinition getADefinition(Ssa::ExplicitDefinition def) {
+  deprecated AssignableDefinition getADefinition(Ssa::ExplicitDefinition def) {
     exists(Ssa::SourceVariable v, AssignableDefinition ad | explicitDefinition(def, v, ad) |
       result = ad or
       result = getASameOutRefDefAfter(v, ad)
@@ -858,7 +858,9 @@ private module Cached {
   }
 
   cached
-  predicate explicitDefinition(WriteDefinition def, Ssa::SourceVariable v, AssignableDefinition ad) {
+  deprecated predicate explicitDefinition(
+    WriteDefinition def, Ssa::SourceVariable v, AssignableDefinition ad
+  ) {
     exists(BasicBlock bb, int i |
       def.definesAt(v, bb, i) and
       variableDefinition(bb, i, v, ad)
@@ -1023,7 +1025,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
    * as we, conservatively, consider such definitions to be certain.
    */
   predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
-    def instanceof Ssa::ExplicitDefinition
+    def instanceof SsaExplicitWrite
     or
     def =
       any(Ssa::ImplicitQualifierDefinition qdef |

@@ -588,7 +588,7 @@ private SsaDefinition getAnSsaQualifier(Expr e, ControlFlowNode cfn) {
 private AssignableAccess getATrackedAccess(SsaDefinition def, ControlFlowNode cfn) {
   result = def.getARead() and cfn = result.getControlFlowNode()
   or
-  result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
+  result = def.(SsaExplicitWrite).getDefinition().getTargetAccess() and
   cfn = def.getControlFlowNode()
 }
 
@@ -830,9 +830,7 @@ module Internal {
       ).getARead()
   }
 
-  private predicate nullDef(Ssa::ExplicitDefinition def) {
-    nullValueImplied(def.getADefinition().getSource())
-  }
+  private predicate nullDef(SsaExplicitWrite def) { nullValueImplied(def.getValue()) }
 
   predicate nonNullValueImplied(Expr e) {
     nonNullValue(e)
@@ -845,9 +843,7 @@ module Internal {
       ).getARead()
   }
 
-  private predicate nonNullDef(Ssa::ExplicitDefinition def) {
-    nonNullValueImplied(def.getADefinition().getSource())
-  }
+  private predicate nonNullDef(SsaExplicitWrite def) { nonNullValueImplied(def.getValue()) }
 
   /** A callable that always returns a non-`null` value. */
   private class NonNullCallable extends Callable {

@@ -17,9 +17,9 @@ class SsaVariable extends SsaDefinition {
 
 /** Gets a node that reads `src` via an SSA explicit definition. */
 ExprNode getAnExplicitDefinitionRead(ExprNode src) {
-  exists(ExplicitDefinition def |
+  exists(SsaExplicitWrite def |
     def.getARead().getControlFlowNode() = result and
-    hasChild(def.getElement(), def.getADefinition().getSource(), def.getControlFlowNode(), src)
+    hasChild(def.getDefiningExpr(), def.getValue(), def.getControlFlowNode(), src)
   )
 }
 
@@ -45,15 +45,15 @@ ExprNode ssaRead(SsaDefinition v, int delta) {
     delta = d1 + c.getIntValue()
   )
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PreIncrExpr) = result and delta = 0
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::PreIncrExpr) = result and delta = 0
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PreDecrExpr) = result and delta = 0
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::PreDecrExpr) = result and delta = 0
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PostIncrExpr) = result and delta = 1 // x++ === ++x - 1
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::PostIncrExpr) = result and delta = 1 // x++ === ++x - 1
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::PostDecrExpr) = result and delta = -1 // x-- === --x + 1
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::PostDecrExpr) = result and delta = -1 // x-- === --x + 1
   or
-  v.(ExplicitDefinition).getControlFlowNode().(ExprNode::Assignment) = result and delta = 0
+  v.(SsaExplicitWrite).getControlFlowNode().(ExprNode::Assignment) = result and delta = 0
   or
   result.(ExprNode::AssignExpr).getRightOperand() = ssaRead(v, delta)
 }

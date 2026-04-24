@@ -35,7 +35,7 @@ module Private {
 
   class Expr = CS::ControlFlowNodes::ExprNode;
 
-  class VariableUpdate = CS::Ssa::ExplicitDefinition;
+  class VariableUpdate = CS::SsaExplicitWrite;
 
   class Field = CS::Field;
 
@@ -122,37 +122,25 @@ private module Impl {
   }
 
   /** Returns the underlying variable update of the explicit SSA variable `v`. */
-  Ssa::ExplicitDefinition getExplicitSsaAssignment(Ssa::ExplicitDefinition v) { result = v }
+  SsaExplicitWrite getExplicitSsaAssignment(SsaExplicitWrite v) { result = v }
 
   /** Returns the assignment of the variable update `def`. */
-  ExprNode getExprFromSsaAssignment(Ssa::ExplicitDefinition def) {
-    exists(AssignableDefinition adef |
-      adef = def.getADefinition() and
-      hasChild(adef.getExpr(), adef.getSource(), def.getControlFlowNode(), result)
-    )
-    or
-    exists(AssignableDefinitions::AssignOperationDefinition adef |
-      adef = def.getADefinition() and
-      result.getExpr() = adef.getSource()
-    )
-  }
+  ExprNode getExprFromSsaAssignment(SsaExplicitWrite def) { result.getExpr() = def.getValue() }
 
   /** Holds if `def` can have any sign. */
-  predicate explicitSsaDefWithAnySign(Ssa::ExplicitDefinition def) {
-    not exists(def.getADefinition().getSource()) and
-    not def.getElement() instanceof MutatorOperation
+  predicate explicitSsaDefWithAnySign(SsaExplicitWrite def) {
+    not exists(def.getValue()) and
+    not def.getDefiningExpr() instanceof MutatorOperation
   }
 
   /** Returns the operand of the operation if `def` is a decrement. */
-  ExprNode getDecrementOperand(Ssa::ExplicitDefinition def) {
-    hasChild(def.getElement(), def.getElement().(DecrementOperation).getOperand(),
-      def.getControlFlowNode(), result)
+  ExprNode getDecrementOperand(SsaExplicitWrite def) {
+    result.getExpr() = def.getDefiningExpr().(DecrementOperation).getOperand()
   }
 
   /** Returns the operand of the operation if `def` is an increment. */
-  ExprNode getIncrementOperand(Ssa::ExplicitDefinition def) {
-    hasChild(def.getElement(), def.getElement().(IncrementOperation).getOperand(),
-      def.getControlFlowNode(), result)
+  ExprNode getIncrementOperand(SsaExplicitWrite def) {
+    result.getExpr() = def.getDefiningExpr().(IncrementOperation).getOperand()
   }
 
   /** Gets the variable underlying the implicit SSA variable `def`. */

@@ -272,7 +272,7 @@ module VariableCapture {
     or
     exists(SsaDefinition def, AssignableDefinition adef |
       LocalFlow::defAssigns(adef, _, _, e1) and
-      def.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition() = adef and
+      def.getAnUltimateDefinition().(SsaExplicitWrite).getDefinition() = adef and
       def.getARead().getControlFlowNode() = e2
     )
   }
@@ -600,8 +600,8 @@ module LocalFlow {
     or
     ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
-    exists(AssignableDefinition def, ControlFlowNode cfn, Ssa::ExplicitDefinition ssaDef |
-      ssaDef.getADefinition() = def and
+    exists(AssignableDefinition def, ControlFlowNode cfn, SsaExplicitWrite ssaDef |
+      ssaDef.getDefinition() = def and
       ssaDef.getControlFlowNode() = cfn and
       nodeFrom = TAssignableDefinitionNode(def, cfn) and
       nodeTo.(SsaDefinitionNode).getDefinition() = ssaDef
@@ -2220,12 +2220,11 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
   c instanceof ElementContent
   or
   exists(
-    ForeachStmt fs, Ssa::ExplicitDefinition def,
-    AssignableDefinitions::LocalVariableDefinition defTo
+    ForeachStmt fs, SsaExplicitWrite def, AssignableDefinitions::LocalVariableDefinition defTo
   |
     node1.asExpr() = fs.getIterableExpr() and
     defTo.getDeclaration() = fs.getVariableDeclExpr() and
-    def.getADefinition() = defTo and
+    def.getDefinition() = defTo and
     node2.(SsaDefinitionNode).getDefinition() = def and
     c instanceof ElementContent
   )

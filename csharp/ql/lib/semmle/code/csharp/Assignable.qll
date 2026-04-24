@@ -500,9 +500,7 @@ class AssignableDefinition extends TAssignableDefinition {
    */
   pragma[nomagic]
   AssignableRead getAFirstRead() {
-    exists(Ssa::ExplicitDefinition def | result = Ssa::ssaGetAFirstUse(def) |
-      this = def.getADefinition()
-    )
+    exists(SsaExplicitWrite def | result = Ssa::ssaGetAFirstUse(def) | this = def.getDefinition())
   }
 
   /** Gets a textual representation of this assignable definition. */

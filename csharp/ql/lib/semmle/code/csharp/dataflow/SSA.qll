@@ -428,19 +428,25 @@ module Ssa {
   }
 
   /**
+   * DEPRECATED: Use `SsaExplicitWrite` instead.
+   *
    * An SSA definition that corresponds to an explicit assignable definition.
    */
-  class ExplicitDefinition extends Definition, SsaImpl::WriteDefinition {
+  deprecated class ExplicitDefinition extends Definition, SsaImpl::WriteDefinition {
     AssignableDefinition ad;
 
     ExplicitDefinition() { SsaImpl::explicitDefinition(this, _, ad) }
 
     /**
+     * DEPRECATED: Use `SsaExplicitWrite.getDefinition()` instead.
+     *
      * Gets an underlying assignable definition. The result is always unique,
      * except for pathological `out`/`ref` assignments like `M(out x, out x)`,
      * where there may be more than one underlying definition.
      */
-    final AssignableDefinition getADefinition() { result = SsaImpl::getADefinition(this) }
+    deprecated final AssignableDefinition getADefinition() {
+      result = SsaImpl::getADefinition(this)
+    }
 
     /**
      * DEPRECATED.

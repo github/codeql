@@ -80,9 +80,7 @@ class AlwaysNullExpr extends Expr {
 }
 
 /** Holds if SSA definition `def` is always `null`. */
-private predicate nullDef(Ssa::ExplicitDefinition def) {
-  def.getADefinition().getSource() instanceof AlwaysNullExpr
-}
+private predicate nullDef(SsaExplicitWrite def) { def.getValue() instanceof AlwaysNullExpr }
 
 /** An expression that is never `null`. */
 class NonNullExpr extends Expr {
@@ -108,10 +106,10 @@ class NonNullExpr extends Expr {
 }
 
 /** Holds if SSA definition `def` is never `null`. */
-private predicate nonNullDef(Ssa::ExplicitDefinition def) {
-  def.getADefinition().getSource() instanceof NonNullExpr
+private predicate nonNullDef(SsaExplicitWrite def) {
+  def.getValue() instanceof NonNullExpr
   or
-  exists(AssignableDefinition ad | ad = def.getADefinition() |
+  exists(AssignableDefinition ad | ad = def.getDefinition() |
     ad instanceof AssignableDefinitions::PatternDefinition
     or
     ad =
@@ -191,7 +189,7 @@ private predicate defMaybeNull(SsaDefinition def, ControlFlowNode node, string m
       not de = any(Ssa::PhiNode phi).getARead() and
       // Don't use a check as reason if there is a `null` assignment
       // or argument
-      not def.(Ssa::ExplicitDefinition).getADefinition().getSource() instanceof MaybeNullExpr and
+      not def.(SsaExplicitWrite).getValue() instanceof MaybeNullExpr and
       not isMaybeNullArgument(def, _)
     )
     or
@@ -205,7 +203,7 @@ private predicate defMaybeNull(SsaDefinition def, ControlFlowNode node, string m
     )
     or
     // If the source of a variable is `null` then the variable may be `null`
-    exists(AssignableDefinition adef | adef = def.(Ssa::ExplicitDefinition).getADefinition() |
+    exists(AssignableDefinition adef | adef = def.(SsaExplicitWrite).getDefinition() |
       adef.getSource() = maybeNullExpr(node.asExpr()) and
       reason = adef.getExpr() and
       msg = "because of $@ assignment"
@@ -336,7 +334,7 @@ class Dereference extends G::DereferenceableExpr {
 
   private predicate isAlwaysNull0(SsaDefinition def) {
     forall(SsaDefinition input | input = getAnUltimateDefinition(def) |
-      input.(Ssa::ExplicitDefinition).getADefinition().getSource() instanceof AlwaysNullExpr
+      input.(SsaExplicitWrite).getValue() instanceof AlwaysNullExpr
     ) and
     not nonNullDef(def) and
     this = def.getARead() and
