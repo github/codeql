@@ -41,9 +41,11 @@ module ConstCondInput implements ConstCond::InputSig<ControlFlow::BasicBlock> {
 module ConstCondImpl = ConstCond::Make<Location, Cfg, ConstCondInput>;
 
 predicate nullCheck(Expr e, boolean direct) {
-  exists(QualifiableExpr qe | qe.isConditional() and qe.getQualifier() = e and direct = true)
+  exists(QualifiableExpr qe | qe.isConditional() and direct = true |
+    qe.getQualifier() = e or qe.(ExtensionMethodCall).getArgument(0) = e
+  )
   or
-  exists(NullCoalescingExpr nce | nce.getLeftOperand() = e and direct = true)
+  exists(NullCoalescingOperation nce | nce.getLeftOperand() = e and direct = true)
   or
   exists(ConditionalExpr ce | ce.getThen() = e or ce.getElse() = e |
     nullCheck(ce, _) and direct = false
@@ -108,57 +110,14 @@ class ConstantGuard extends ConstantCondition {
 class ConstantBooleanCondition extends ConstantCondition {
   boolean b;
 
-  ConstantBooleanCondition() { isConstantCondition(this, b) }
+  ConstantBooleanCondition() { isConstantComparison(this, b) }
 
   override string getMessage() { result = "Condition always evaluates to '" + b + "'." }
-
-  override predicate isWhiteListed() {
-    // E.g. `x ?? false`
-    this.(BoolLiteral) = any(NullCoalescingExpr nce).getRightOperand() or
-    // No need to flag logical operations when the operands are constant
-    isConstantCondition(this.(LogicalNotExpr).getOperand(), _) or
-    this =
-      any(LogicalAndExpr lae |
-        isConstantCondition(lae.getAnOperand(), false)
-        or
-        isConstantCondition(lae.getLeftOperand(), true) and
-        isConstantCondition(lae.getRightOperand(), true)
-      ) or
-    this =
-      any(LogicalOrExpr loe |
-        isConstantCondition(loe.getAnOperand(), true)
-        or
-        isConstantCondition(loe.getLeftOperand(), false) and
-        isConstantCondition(loe.getRightOperand(), false)
-      )
-  }
 }
 
-/** A constant condition in an `if` statement or a conditional expression. */
-class ConstantIfCondition extends ConstantBooleanCondition {
-  ConstantIfCondition() {
-    this = any(IfStmt is).getCondition().getAChildExpr*() or
-    this = any(ConditionalExpr ce).getCondition().getAChildExpr*()
-  }
-
-  override predicate isWhiteListed() {
-    ConstantBooleanCondition.super.isWhiteListed()
-    or
-    // It is a common pattern to use a local constant/constant field to control
-    // whether code parts must be executed or not
-    this instanceof AssignableRead and
-    not this instanceof ParameterRead
-  }
-}
-
-/** A constant loop condition. */
-class ConstantLoopCondition extends ConstantBooleanCondition {
-  ConstantLoopCondition() { this = any(LoopStmt ls).getCondition() }
-
-  override predicate isWhiteListed() {
-    // Clearly intentional infinite loops are allowed
-    this.(BoolLiteral).getBoolValue() = true
-  }
+private Expr getQualifier(QualifiableExpr e) {
+  // `e.getQualifier()` does not work for calls to extension methods
+  result = e.getChildExpr(-1)
 }
 
 /** A constant nullness condition. */
@@ -166,14 +125,23 @@ class ConstantNullnessCondition extends ConstantCondition {
   boolean b;
 
   ConstantNullnessCondition() {
-    forex(ControlFlow::Node cfn | cfn = this.getAControlFlowNode() |
-      exists(ControlFlow::NullnessSuccessor t, ControlFlow::Node s |
-        s = cfn.getASuccessorByType(t)
-      |
-        b = t.getValue() and
-        not s.isJoin()
-      ) and
-      strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
+    nullCheck(this, true) and
+    exists(Expr stripped | stripped = this.(Expr).stripCasts() |
+      stripped.getType() =
+        any(ValueType t |
+          not t instanceof NullableType and
+          // Extractor bug: the type of `x?.Length` is reported as `int`, but it should
+          // be `int?`
+          not getQualifier*(stripped).(QualifiableExpr).isConditional()
+        ) and
+      b = false
+      or
+      stripped instanceof NullLiteral and
+      b = true
+      or
+      stripped.hasValue() and
+      not stripped instanceof NullLiteral and
+      b = false
     )
   }
 
@@ -181,39 +149,6 @@ class ConstantNullnessCondition extends ConstantCondition {
     if b = true
     then result = "Expression is always 'null'."
     else result = "Expression is never 'null'."
-  }
-}
-
-/** A constant matching condition. */
-class ConstantMatchingCondition extends ConstantCondition {
-  boolean b;
-
-  ConstantMatchingCondition() {
-    this instanceof Expr and
-    forex(ControlFlow::Node cfn | cfn = this.getAControlFlowNode() |
-      exists(ControlFlow::MatchingSuccessor t | exists(cfn.getASuccessorByType(t)) |
-        b = t.getValue()
-      ) and
-      strictcount(ControlFlow::SuccessorType t | exists(cfn.getASuccessorByType(t))) = 1
-    )
-  }
-
-  override predicate isWhiteListed() {
-    exists(Switch se, Case c, int i |
-      c = se.getCase(i) and
-      c.getPattern() = this.(DiscardExpr)
-    |
-      i > 0
-      or
-      i = 0 and
-      exists(Expr cond | c.getCondition() = cond and not isConstantCondition(cond, true))
-    )
-    or
-    this = any(PositionalPatternExpr ppe).getPattern(_)
-  }
-
-  override string getMessage() {
-    if b = true then result = "Pattern always matches." else result = "Pattern never matches."
   }
 }
 

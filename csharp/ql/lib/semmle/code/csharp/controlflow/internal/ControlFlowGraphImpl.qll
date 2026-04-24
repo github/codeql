@@ -11,41 +11,14 @@ private import semmle.code.csharp.commons.Compilation
 
 private module Initializers {
   /**
-   * A non-static member with an initializer, for example a field `int Field = 0`.
-   */
-  class InitializedInstanceMember extends Member {
-    private AssignExpr ae;
-
-    InitializedInstanceMember() {
-      not this.isStatic() and
-      expr_parent_top_level(ae, _, this) and
-      not ae = any(Callable c).getExpressionBody()
-    }
-
-    /** Gets the initializer expression. */
-    AssignExpr getInitializer() { result = ae }
-  }
-
-  /**
-   * Holds if `obinit` is an object initializer method that performs the initialization
-   * of a member via assignment `init`.
-   */
-  predicate obinitInitializes(ObjectInitMethod obinit, AssignExpr init) {
-    exists(InitializedInstanceMember m |
-      obinit.getDeclaringType().getAMember() = m and
-      init = m.getInitializer()
-    )
-  }
-
-  /**
    * Gets the `i`th member initializer expression for object initializer method `obinit`
    * in compilation `comp`.
    */
   AssignExpr initializedInstanceMemberOrder(ObjectInitMethod obinit, CompilationExt comp, int i) {
-    obinitInitializes(obinit, result) and
+    obinit.initializes(result) and
     result =
       rank[i + 1](AssignExpr ae0, Location l |
-        obinitInitializes(obinit, ae0) and
+        obinit.initializes(ae0) and
         l = ae0.getLocation() and
         getCompilation(l.getFile()) = comp
       |
@@ -74,7 +47,7 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
         any(Callable c |
           c.(Constructor).hasInitializer()
           or
-          Initializers::obinitInitializes(c, _)
+          c.(ObjectInitMethod).initializes(_)
           or
           c.hasBody()
         )
@@ -89,18 +62,13 @@ class CfgScope extends Element, @top_level_exprorstmt_parent {
 
 private class TAstNode = @callable or @control_flow_element;
 
-private Element getAChild(Element p) {
-  result = p.getAChild() or
-  result = p.(AssignOperation).getExpandedAssignment()
-}
-
 pragma[nomagic]
 private predicate astNode(Element e) {
   e = any(@top_level_exprorstmt_parent p | not p instanceof Attribute)
   or
   exists(Element parent |
     astNode(parent) and
-    e = getAChild(parent)
+    e = parent.getAChild()
   )
 }
 
@@ -474,7 +442,6 @@ module Expressions {
   private AstNode getExprChild0(Expr e, int i) {
     not e instanceof NameOfExpr and
     not e instanceof QualifiableExpr and
-    not e instanceof Assignment and
     not e instanceof AnonymousFunctionExpr and
     result = e.getChild(i)
     or
@@ -484,14 +451,6 @@ module Expressions {
       any(QualifiableExpr qe |
         not qe instanceof ExtensionMethodCall and
         result = qe.getChild(i)
-      )
-    or
-    e =
-      any(Assignment a |
-        // The left-hand side of an assignment is evaluated before the right-hand side
-        i = 0 and result = a.getLValue()
-        or
-        i = 1 and result = a.getRValue()
       )
   }
 
@@ -518,9 +477,8 @@ module Expressions {
       not this instanceof LogicalNotExpr and
       not this instanceof LogicalAndExpr and
       not this instanceof LogicalOrExpr and
-      not this instanceof NullCoalescingExpr and
+      not this instanceof NullCoalescingOperation and
       not this instanceof ConditionalExpr and
-      not this instanceof AssignOperationWithExpandedAssignment and
       not this instanceof ConditionallyQualifiedExpr and
       not this instanceof ThrowExpr and
       not this instanceof ObjectCreation and
@@ -617,8 +575,7 @@ module Expressions {
     QualifiedAccessorWrite() {
       def.getExpr() = this and
       def.getTargetAccess().(WriteAccess) instanceof QualifiableExpr and
-      not def instanceof AssignableDefinitions::OutRefDefinition and
-      not this instanceof AssignOperationWithExpandedAssignment
+      not def instanceof AssignableDefinitions::OutRefDefinition
     }
 
     /**
@@ -750,7 +707,8 @@ module Expressions {
     }
   }
 
-  private class NullCoalescingExprTree extends PostOrderTree instanceof NullCoalescingExpr {
+  private class NullCoalescingOperationTree extends PostOrderTree instanceof NullCoalescingOperation
+  {
     final override predicate propagatesAbnormal(AstNode child) {
       child in [super.getLeftOperand(), super.getRightOperand()]
     }
@@ -799,26 +757,6 @@ module Expressions {
       c instanceof NormalCompletion and
       succ = this
     }
-  }
-
-  /**
-   * An assignment operation that has an expanded version. We use the expanded
-   * version in the control flow graph in order to get better data flow / taint
-   * tracking.
-   */
-  private class AssignOperationWithExpandedAssignment extends ControlFlowTree instanceof AssignOperation
-  {
-    private Expr expanded;
-
-    AssignOperationWithExpandedAssignment() { expanded = this.getExpandedAssignment() }
-
-    final override predicate first(AstNode first) { first(expanded, first) }
-
-    final override predicate last(AstNode last, Completion c) { last(expanded, last, c) }
-
-    final override predicate propagatesAbnormal(AstNode child) { none() }
-
-    final override predicate succ(AstNode pred, AstNode succ, Completion c) { none() }
   }
 
   /** A conditionally qualified expression. */
@@ -1578,7 +1516,7 @@ module Statements {
   /** Gets a child of `cfe` that is in CFG scope `scope`. */
   pragma[noinline]
   private ControlFlowElement getAChildInScope(AstNode cfe, Callable scope) {
-    result = getAChild(cfe) and
+    result = cfe.getAChild() and
     scope = result.getEnclosingCallable()
   }
 

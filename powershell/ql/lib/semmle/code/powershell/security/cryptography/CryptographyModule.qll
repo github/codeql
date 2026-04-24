@@ -176,6 +176,46 @@ class CipherBlockStringConstExpr extends BlockMode {
   override string getName() { result = modeName }
 }
 
+class HmacAlgorithmObjectCreation extends HmacAlgorithm, CryptoAlgorithmObjectCreation {
+  string algName;
+
+  HmacAlgorithmObjectCreation() {
+    objectName = ["", "system.security.cryptography."] + algName and
+    isHmacAlgorithm(algName)
+  }
+
+  override string getName() { result = algName }
+}
+
+class HmacAlgorithmCreateCall extends HmacAlgorithm, DataFlow::CallNode {
+  string algName;
+
+  HmacAlgorithmCreateCall() {
+    isHmacAlgorithm(algName) and
+    this =
+      API::getTopLevelMember("system")
+          .getMember("security")
+          .getMember("cryptography")
+          .getMember(algName)
+          .getMember(["create", "new"])
+          .asCall()
+    
+  }
+
+  override string getName() { result = algName }
+}
+
+class HmacAlgorithmCreateFromNameCall extends HmacAlgorithm, CryptoAlgorithmCreateFromNameCall {
+  string algName;
+
+  HmacAlgorithmCreateFromNameCall() {
+    objectName = ["", "system.security.cryptography."] + algName and
+    isHmacAlgorithm(algName)
+  }
+
+  override string getName() { result = algName }
+}
+
 class CipherBlockModeEnum extends BlockMode {
   string modeName;
 

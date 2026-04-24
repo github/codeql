@@ -10,6 +10,7 @@ private import SideEffects
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
+private import TranslatedInitialization
 private import DefaultOptions as DefaultOptions
 
 /**
@@ -348,7 +349,7 @@ class TranslatedExprCall extends TranslatedCallExpr {
 class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   override FunctionCall expr;
 
-  override Function getInstructionFunction(InstructionTag tag) {
+  override Declaration getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getTarget()
   }
 
@@ -429,6 +430,9 @@ class TranslatedCallSideEffects extends TranslatedSideEffects, TTranslatedCallSi
     or
     expr instanceof DeleteOrDeleteArrayExpr and
     result = getTranslatedDeleteOrDeleteArray(expr).getInstruction(CallTag())
+    or
+    expr instanceof ConstructorDefaultFieldInit and
+    result = getTranslatedConstructorFieldInitialization(expr).getInstruction(CallTag())
   }
 }
 
@@ -504,11 +508,25 @@ abstract class TranslatedSideEffect extends TranslatedElement {
   abstract predicate sideEffectInstruction(Opcode opcode, CppType type);
 }
 
+private class CallOrDefaultFieldInit extends Expr {
+  CallOrDefaultFieldInit() {
+    this instanceof Call
+    or
+    this instanceof ConstructorDefaultFieldInit
+  }
+
+  Declaration getTarget() {
+    result = this.(Call).getTarget()
+    or
+    result = this.(ConstructorDefaultFieldInit).getTarget()
+  }
+}
+
 /**
  * The IR translation of a single argument side effect for a call.
  */
 abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
-  Call call;
+  CallOrDefaultFieldInit callOrInit;
   int index;
   SideEffectOpcode sideEffectOpcode;
 
@@ -524,7 +542,7 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
     result = "(read side effect for " + this.getArgString() + ")"
   }
 
-  override Call getPrimaryExpr() { result = call }
+  override Expr getPrimaryExpr() { result = callOrInit }
 
   override predicate sortOrder(int group, int indexInGroup) {
     indexInGroup = index and
@@ -586,9 +604,10 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
     tag instanceof OnlyInstructionTag and
     operandTag instanceof BufferSizeOperandTag and
     result =
-      getTranslatedExpr(call.getArgument(call.getTarget()
-              .(SideEffectFunction)
-              .getParameterSizeIndex(index)).getFullyConverted()).getResult()
+      getTranslatedExpr(callOrInit
+            .(Call)
+            .getArgument(callOrInit.getTarget().(SideEffectFunction).getParameterSizeIndex(index))
+            .getFullyConverted()).getResult()
   }
 
   /** Holds if this side effect is a write side effect, rather than a read side effect. */
@@ -616,7 +635,7 @@ class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
   Expr arg;
 
   TranslatedArgumentExprSideEffect() {
-    this = TTranslatedArgumentExprSideEffect(call, arg, index, sideEffectOpcode)
+    this = TTranslatedArgumentExprSideEffect(callOrInit, arg, index, sideEffectOpcode)
   }
 
   final override Locatable getAst() { result = arg }
@@ -640,28 +659,31 @@ class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
  * The IR translation of an argument side effect for `*this` on a call, where there is no `Expr`
  * object that represents the `this` argument.
  *
- * The applies only to constructor calls, as the AST has exploit qualifier `Expr`s for all other
- * calls to non-static member functions.
+ * This applies to constructor calls and default field initializations, as the AST has explicit
+ * qualifier `Expr`s for all other calls to non-static member functions.
  */
-class TranslatedStructorQualifierSideEffect extends TranslatedArgumentSideEffect,
-  TTranslatedStructorQualifierSideEffect
+class TranslatedImplicitThisQualifierSideEffect extends TranslatedArgumentSideEffect,
+  TTranslatedImplicitThisQualifierSideEffect
 {
-  TranslatedStructorQualifierSideEffect() {
-    this = TTranslatedStructorQualifierSideEffect(call, sideEffectOpcode) and
+  TranslatedImplicitThisQualifierSideEffect() {
+    this = TTranslatedImplicitThisQualifierSideEffect(callOrInit, sideEffectOpcode) and
     index = -1
   }
 
-  final override Locatable getAst() { result = call }
+  final override Locatable getAst() { result = callOrInit }
 
-  final override Type getIndirectionType() { result = call.getTarget().getDeclaringType() }
+  final override Type getIndirectionType() { result = callOrInit.getTarget().getDeclaringType() }
 
   final override string getArgString() { result = "this" }
 
   final override Instruction getArgInstruction() {
     exists(TranslatedStructorCall structorCall |
-      structorCall.getExpr() = call and
+      structorCall.getExpr() = callOrInit and
       result = structorCall.getQualifierResult()
     )
+    or
+    callOrInit instanceof ConstructorDefaultFieldInit and
+    result = getTranslatedFunction(callOrInit.getEnclosingFunction()).getLoadThisInstruction()
   }
 }
 

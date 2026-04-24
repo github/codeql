@@ -76,7 +76,7 @@
 | DefUse.cs:97:13:97:18 | SSA def(x5) | DefUse.cs:97:13:97:18 | Int32 x5 = ... |
 | DefUse.cs:98:16:98:17 | SSA phi(x5) | DefUse.cs:98:16:98:17 | access to local variable x5 |
 | DefUse.cs:101:13:101:23 | SSA def(x5) | DefUse.cs:101:13:101:23 | ... = ... |
-| DefUse.cs:104:9:104:15 | SSA def(x5) | DefUse.cs:104:9:104:15 | ... = ... |
+| DefUse.cs:104:9:104:15 | SSA def(x5) | DefUse.cs:104:9:104:15 | ... += ... |
 | DefUse.cs:114:47:114:52 | SSA def(i) | DefUse.cs:114:47:114:52 | ... = ... |
 | DefUse.cs:116:47:116:51 | SSA def(i) | DefUse.cs:116:47:116:51 | ... = ... |
 | DefUse.cs:118:45:118:45 | SSA param(i) | DefUse.cs:118:45:118:45 | i |
@@ -245,7 +245,7 @@
 | Test.cs:14:17:14:19 | SSA def(x) | Test.cs:14:17:14:19 | ++... |
 | Test.cs:15:13:15:17 | SSA def(z) | Test.cs:15:13:15:17 | ... = ... |
 | Test.cs:19:13:19:17 | SSA def(y) | Test.cs:19:13:19:17 | ... = ... |
-| Test.cs:20:13:20:18 | SSA def(y) | Test.cs:20:13:20:18 | ... = ... |
+| Test.cs:20:13:20:18 | SSA def(y) | Test.cs:20:13:20:18 | ... += ... |
 | Test.cs:21:13:21:22 | SSA def(this.field) | Test.cs:21:13:21:22 | ... = ... |
 | Test.cs:22:13:22:17 | SSA def(z) | Test.cs:22:13:22:17 | ... = ... |
 | Test.cs:24:9:24:15 | SSA phi(this.field) | Test.cs:24:9:24:15 | ...; |
@@ -255,16 +255,16 @@
 | Test.cs:25:16:25:16 | SSA phi(param1) | Test.cs:25:16:25:16 | access to local variable x |
 | Test.cs:25:16:25:16 | SSA phi(y) | Test.cs:25:16:25:16 | access to local variable x |
 | Test.cs:27:17:27:24 | SSA def(param1) | Test.cs:27:17:27:24 | ...++ |
-| Test.cs:31:13:31:18 | SSA def(y) | Test.cs:31:13:31:18 | ... = ... |
+| Test.cs:31:13:31:18 | SSA def(y) | Test.cs:31:13:31:18 | ... -= ... |
 | Test.cs:33:9:33:19 | SSA phi(param1) | Test.cs:33:9:33:19 | ...; |
 | Test.cs:34:18:34:22 | SSA def(i) | Test.cs:34:18:34:22 | Int32 i = ... |
 | Test.cs:34:25:34:25 | SSA phi(i) | Test.cs:34:25:34:25 | access to local variable i |
 | Test.cs:34:25:34:25 | SSA phi(x) | Test.cs:34:25:34:25 | access to local variable i |
 | Test.cs:34:33:34:35 | SSA def(i) | Test.cs:34:33:34:35 | ...++ |
-| Test.cs:36:13:36:18 | SSA def(x) | Test.cs:36:13:36:18 | ... = ... |
+| Test.cs:36:13:36:18 | SSA def(x) | Test.cs:36:13:36:18 | ... += ... |
 | Test.cs:39:9:42:9 | SSA phi(param1) | Test.cs:39:9:42:9 | foreach (... ... in ...) ... |
 | Test.cs:39:22:39:22 | SSA def(w) | Test.cs:39:22:39:22 | Int32 w |
-| Test.cs:41:13:41:23 | SSA def(param1) | Test.cs:41:13:41:23 | ... = ... |
+| Test.cs:41:13:41:23 | SSA def(param1) | Test.cs:41:13:41:23 | ... += ... |
 | Test.cs:46:10:46:10 | SSA entry def(this.field) | Test.cs:46:10:46:10 | g |
 | Test.cs:46:16:46:18 | SSA param(in) | Test.cs:46:16:46:18 | in |
 | Test.cs:50:13:50:20 | SSA def(out) | Test.cs:50:13:50:20 | ... = ... |

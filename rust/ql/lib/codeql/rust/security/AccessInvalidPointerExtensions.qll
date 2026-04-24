@@ -5,6 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
@@ -67,6 +68,13 @@ module AccessInvalidPointer {
   /** A pointer access from model data. */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "pointer-access") }
+  }
+
+  /**
+   * A barrier for invalid pointer access from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "pointer-access") }
   }
 
   /**

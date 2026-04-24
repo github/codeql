@@ -163,12 +163,23 @@ predicate primitiveVariadicFormatter(
   )
 }
 
+/**
+ * Gets a function call whose target is a variadic formatter with the given
+ * `type`, `format` parameter index and `output` parameter index.
+ *
+ * Join-order helper for `callsVariadicFormatter`.
+ */
+pragma[nomagic]
+private predicate callsVariadicFormatterCall(FunctionCall fc, string type, int format, int output) {
+  variadicFormatter(fc.getTarget(), type, format, output)
+}
+
 private predicate callsVariadicFormatter(
   Function f, string type, int formatParamIndex, int outputParamIndex
 ) {
   // calls a variadic formatter with `formatParamIndex`, `outputParamIndex` linked
   exists(FunctionCall fc, int format, int output |
-    variadicFormatter(pragma[only_bind_into](fc.getTarget()), type, format, output) and
+    callsVariadicFormatterCall(fc, type, format, output) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     fc.getArgument(output) = f.getParameter(outputParamIndex).getAnAccess()
@@ -176,7 +187,7 @@ private predicate callsVariadicFormatter(
   or
   // calls a variadic formatter with only `formatParamIndex` linked
   exists(FunctionCall fc, string calledType, int format, int output |
-    variadicFormatter(pragma[only_bind_into](fc.getTarget()), calledType, format, output) and
+    callsVariadicFormatterCall(fc, calledType, format, output) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     not fc.getArgument(output) = f.getParameter(_).getAnAccess() and

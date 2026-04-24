@@ -10,16 +10,17 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 predicate slice_method_name(string name) {
   name = "__getslice__" or name = "__setslice__" or name = "__delslice__"
 }
 
-from PythonFunctionValue f, string meth
+from Function f, string meth
 where
-  f.getScope().isMethod() and
-  not f.isOverridingMethod() and
+  f.isMethod() and
   slice_method_name(meth) and
-  f.getName() = meth
+  f.getName() = meth and
+  not DuckTyping::overridesMethod(f) and
+  not DuckTyping::hasUnresolvedBase(getADirectSuperclass*(f.getScope()))
 select f, meth + " method has been deprecated since Python 2.0."

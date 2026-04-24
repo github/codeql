@@ -585,12 +585,15 @@ class ConstructorDelegationInit extends ConstructorBaseInit, @ctordelegatinginit
 
 /**
  * An initialization of a member variable performed as part of a
- * constructor's explicit initializer list or implicit actions.
+ * constructor's initializer list or by default initialization.
+ *
  * In the example below, member variable `b` is being initialized by
- * constructor parameter `a`:
+ * constructor parameter `a`, and `c` is initialized by default
+ * initialization:
  * ```
  * struct S {
  *   int b;
+ *   int c = 3;
  *   S(int a): b(a) {}
  * } s(2);
  * ```
@@ -614,6 +617,28 @@ class ConstructorFieldInit extends ConstructorInit, @ctorfieldinit {
   override predicate mayBeImpure() { this.getExpr().mayBeImpure() }
 
   override predicate mayBeGloballyImpure() { this.getExpr().mayBeGloballyImpure() }
+}
+
+/**
+ * An initialization of a member variable performed as part of a
+ * constructor's explicit initializer list.
+ */
+class ConstructorDirectFieldInit extends ConstructorFieldInit {
+  ConstructorDirectFieldInit() { exists(this.getChild(0)) }
+
+  override string getAPrimaryQlClass() { result = "ConstructorDirectFieldInit" }
+}
+
+/**
+ * An initialization of a member variable performed by default
+ * initialization.
+ */
+class ConstructorDefaultFieldInit extends ConstructorFieldInit {
+  ConstructorDefaultFieldInit() {
+    not exists(this.getChild(0)) and exists(this.getTarget().getInitializer())
+  }
+
+  override string getAPrimaryQlClass() { result = "ConstructorDefaultFieldInit" }
 }
 
 /**

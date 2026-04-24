@@ -47,7 +47,7 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) 
 private predicate localTaintExprStep(Expr e1, Expr e2) {
   e1 = e2.(ElementAccess).getQualifier()
   or
-  e1 = e2.(AddExpr).getAnOperand()
+  e1 = e2.(AddOperation).getAnOperand()
   or
   // A comparison expression where taint can flow from one of the
   // operands if the other operand is a constant value.

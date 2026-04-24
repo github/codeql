@@ -47,6 +47,11 @@ module TaintedPath {
   private class ModelsAsDataSinks extends Sink {
     ModelsAsDataSinks() { sinkNode(this, "path-injection") }
   }
+
+  /** A barrier for path-injection from model data. */
+  private class ModelsAsDataBarriers extends Barrier {
+    ModelsAsDataBarriers() { barrierNode(this, "path-injection") }
+  }
 }
 
 private predicate sanitizerGuard(AstNode g, Expr e, boolean branch) {
