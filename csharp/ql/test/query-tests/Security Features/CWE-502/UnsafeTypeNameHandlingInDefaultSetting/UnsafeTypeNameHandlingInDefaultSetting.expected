@@ -1,0 +1,2 @@
+| Test.cs:15:28:18:13 | object creation of type JsonSerializerSettings | Assignment of this TypeNameHandling constant to JsonConvert.DefaultSettings is unsafe |
+| Test.cs:25:49:28:13 | object creation of type JsonSerializerSettings | Assignment of this TypeNameHandling constant to JsonConvert.DefaultSettings is unsafe |

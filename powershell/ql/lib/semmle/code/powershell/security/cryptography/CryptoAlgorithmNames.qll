@@ -22,6 +22,14 @@ predicate isSymmetricAlgorithm(string name) {
     ]
 }
 
+predicate isHmacAlgorithm(string name) {
+  name =
+    [
+      "hmacmd5", "hmacsha1", "hmacripemd160", "hmacsha256", "hmacsha384", "hmacsha512",
+      "hmacsha3256", "hmacsha3384", "hmacsha3512"
+    ]
+}
+
 predicate isCipherBlockModeAlgorithm(string name) {
   name = ["cbc", "gcm", "ccm", "cfb", "ofb", "cfb8", "ctr", "openpgp", "xts", "eax", "siv", "ecb"]
 }

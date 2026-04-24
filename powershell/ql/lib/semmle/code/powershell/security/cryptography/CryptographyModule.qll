@@ -176,6 +176,46 @@ class CipherBlockStringConstExpr extends BlockMode {
   override string getName() { result = modeName }
 }
 
+class HmacAlgorithmObjectCreation extends HmacAlgorithm, CryptoAlgorithmObjectCreation {
+  string algName;
+
+  HmacAlgorithmObjectCreation() {
+    objectName = ["", "system.security.cryptography."] + algName and
+    isHmacAlgorithm(algName)
+  }
+
+  override string getName() { result = algName }
+}
+
+class HmacAlgorithmCreateCall extends HmacAlgorithm, DataFlow::CallNode {
+  string algName;
+
+  HmacAlgorithmCreateCall() {
+    isHmacAlgorithm(algName) and
+    this =
+      API::getTopLevelMember("system")
+          .getMember("security")
+          .getMember("cryptography")
+          .getMember(algName)
+          .getMember(["create", "new"])
+          .asCall()
+    
+  }
+
+  override string getName() { result = algName }
+}
+
+class HmacAlgorithmCreateFromNameCall extends HmacAlgorithm, CryptoAlgorithmCreateFromNameCall {
+  string algName;
+
+  HmacAlgorithmCreateFromNameCall() {
+    objectName = ["", "system.security.cryptography."] + algName and
+    isHmacAlgorithm(algName)
+  }
+
+  override string getName() { result = algName }
+}
+
 class CipherBlockModeEnum extends BlockMode {
   string modeName;
 
@@ -193,4 +233,46 @@ class CipherBlockModeEnum extends BlockMode {
   }
 
   override string getName() { result = modeName }
+}
+
+class RsaCreateKeyCreation extends AsymmetricKeyCreation, DataFlow::CallNode {
+  int keySize;
+
+  RsaCreateKeyCreation() {
+    exists(string method |
+      method = ["create", "new"] and
+      this =
+        API::getTopLevelMember("system")
+            .getMember("security")
+            .getMember("cryptography")
+            .getMember(["rsa", "rsacryptoserviceprovider"])
+            .getMember(method)
+            .asCall()
+    ) and
+    keySize = this.getAnArgument().asExpr().getExpr().(ConstExpr).getValueString().toInt()
+  }
+
+  override string getAlgorithmName() { result = "rsa" }
+
+  override int getKeySize() { result = keySize }
+}
+
+class RsaCspObjectKeyCreation extends AsymmetricKeyCreation, CryptoAlgorithmObjectCreation {
+  int keySize;
+
+  RsaCspObjectKeyCreation() {
+    objectName =
+      [
+        "system.security.cryptography.rsacryptoserviceprovider",
+        "rsacryptoserviceprovider"
+      ] and
+    exists(DataFlow::Node arg |
+      arg = this.getAnArgument() and
+      keySize = arg.asExpr().getExpr().(ConstExpr).getValueString().toInt()
+    )
+  }
+
+  override string getAlgorithmName() { result = "rsa" }
+
+  override int getKeySize() { result = keySize }
 }
