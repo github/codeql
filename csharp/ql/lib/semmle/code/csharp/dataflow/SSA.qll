@@ -404,8 +404,12 @@ module Ssa {
       result.(ControlFlowElement).getControlFlowNode() = this.getControlFlowNode()
     }
 
-    /** Gets the callable to which this SSA definition belongs. */
-    final Callable getEnclosingCallable() {
+    /**
+     * DEPRECATED: Use `getSourceVariable().getEnclosingCallable()` instead.
+     *
+     * Gets the callable to which this SSA definition belongs.
+     */
+    deprecated final Callable getEnclosingCallable() {
       result = this.getSourceVariable().getEnclosingCallable()
     }
 
