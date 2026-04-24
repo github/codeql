@@ -89,11 +89,7 @@ module Random {
         e = any(SensitiveLibraryParameter v).getAnAssignedArgument()
         or
         // Assignment operation, e.g. += or similar
-        exists(AssignOperation ao |
-          ao.getRValue() = e and
-          // "expanded" assignments will be covered by simple assignment
-          not ao.hasExpandedAssignment()
-        |
+        exists(AssignOperation ao | ao.getRValue() = e |
           ao.getLValue() = any(SensitiveVariable v).getAnAccess() or
           ao.getLValue() = any(SensitiveProperty v).getAnAccess() or
           ao.getLValue() = any(SensitiveLibraryParameter v).getAnAccess()

@@ -1,3 +1,9 @@
+## 1.3.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `swift/unsafe-webview-fetch` has been increased from 6.1 (medium) to 7.8 (high).
+
 ## 1.2.20
 
 No user-facing changes.

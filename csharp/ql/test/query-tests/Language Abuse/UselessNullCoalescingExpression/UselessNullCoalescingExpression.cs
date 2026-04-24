@@ -12,6 +12,8 @@ class Tests
         a = param ?? param;      // BAD
         a = a ?? use(a);         // BAD
         a = Field ?? this.Field; // BAD
+        a ??= a;                 // BAD
+        a ??= b = a;             // BAD
 
         a = a ?? cache(ref a);   // GOOD
         a = a ?? store(out a);   // GOOD
@@ -23,6 +25,7 @@ class Tests
               ?? a;              // GOOD
         a = a ?? store(out a)
               ?? a;              // GOOD
+        a ??= param;             // GOOD
     }
 
     int? cache(ref int? a)

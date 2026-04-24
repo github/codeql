@@ -15,3 +15,13 @@ extensions:
       pack: codeql/rust-all
       extensible: summaryModel
     data: []
+
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: barrierModel
+    data: []
+
+  - addsTo:
+      pack: codeql/rust-all
+      extensible: barrierGuardModel
+    data: []

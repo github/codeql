@@ -11,13 +11,18 @@ private import TypeFlow
 private import semmle.code.cpp.ir.ValueNumbering
 
 /**
- * Gets the C++ type of `this` in the member function `f`.
+ * Gets the C++ type of `this` in an `IRFunction` generated from `f`.
  * The result is a glvalue if `isGLValue` is true, and
  * a prvalue if `isGLValue` is false.
  */
 bindingset[isGLValue]
-private CppType getThisType(Cpp::MemberFunction f, boolean isGLValue) {
-  result.hasType(f.getTypeOfThis(), isGLValue)
+private CppType getThisType(Cpp::Declaration f, boolean isGLValue) {
+  result.hasType(f.(Cpp::MemberFunction).getTypeOfThis(), isGLValue)
+  or
+  exists(Cpp::PointerType pt |
+    pt.getBaseType() = f.(Cpp::Field).getDeclaringType() and
+    result.hasType(pt, isGLValue)
+  )
 }
 
 /**
@@ -175,7 +180,8 @@ private class PointerWrapperTypeIndirection extends Indirection instanceof Point
   override predicate isAdditionalDereference(Instruction deref, Operand address) {
     exists(CallInstruction call |
       operandForFullyConvertedCall(getAUse(deref), call) and
-      this = call.getStaticCallTarget().getClassAndName(["operator*", "operator->", "get"]) and
+      this =
+        call.getStaticCallTarget().(Function).getClassAndName(["operator*", "operator->", "get"]) and
       address = call.getThisArgumentOperand()
     )
   }
@@ -194,7 +200,7 @@ private module IteratorIndirections {
 
     override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) {
       exists(CallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
-        this = call.getStaticCallTarget().getClassAndName("operator=") and
+        this = call.getStaticCallTarget().(Function).getClassAndName("operator=") and
         address = call.getThisArgumentOperand() and
         certain = false
       )
