@@ -108,7 +108,6 @@ We need to add a tuple to the ``sinkModel(path, input, kind, provenance)`` exten
       data:
         - ["sqlx_core::query::query", "Argument[0]", "sql-injection", "manual"]
 
-Since we want to add a new sink, we need to add a tuple to the ``sinkModel`` extensible predicate.
 
 - The first value ``sqlx_core::query::query`` is the canonical path of the function to model. Note that this is the internal module path (``sqlx_core::query::query``), not the public re-export path (``sqlx::query``).
 - The second value ``Argument[0]`` is the access path to the first argument of the function call, which is the SQL query string. This is the location of the sink.
@@ -138,7 +137,6 @@ We need to add a tuple to the ``sourceModel(path, output, kind, provenance)`` ex
       data:
         - ["reqwest::get", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "remote", "manual"]
 
-Since we are adding a new source, we need to add a tuple to the ``sourceModel`` extensible predicate.
 
 - The first value ``reqwest::get`` is the canonical path of the function.
 - The second value ``ReturnValue.Future.Field[core::result::Result::Ok(0)]`` is the access path to the output. This compound path is read left to right:
@@ -201,7 +199,6 @@ We need to add a tuple to the ``summaryModel(path, input, output, kind, provenan
       data:
         - ["<reqwest::response::Response>::text", "Argument[self]", "ReturnValue.Future.Field[core::result::Result::Ok(0)]", "taint", "manual"]
 
-Since we are adding flow through a method, we need to add a tuple to the ``summaryModel`` extensible predicate.
 
 - The first value ``<reqwest::response::Response>::text`` is the canonical path. Note the format ``<Type>::method`` used for inherent methods. Also note that the canonical path uses the internal module path ``reqwest::response::Response``, not just ``reqwest::Response``.
 - The second value ``Argument[self]`` is the access path to the input. ``Argument[self]`` refers to the receiver of the method call (``response`` in the example).
@@ -275,7 +272,6 @@ We need to add tuples to the ``summaryModel(path, input, output, kind, provenanc
       data:
         - ["<_ as core::iter::traits::iterator::Iterator>::map", "Argument[self].Element", "Argument[0].Parameter[0]", "value", "manual"]
 
-Since we are adding flow through a trait method, we need to add a tuple to the ``summaryModel`` extensible predicate.
 
 - The first value ``<_ as core::iter::traits::iterator::Iterator>::map`` is the canonical path. The ``<_ as Trait>::method`` form uses a wildcard type (``_``) to match any type that implements the ``Iterator`` trait.
 - The second value ``Argument[self].Element`` is the access path to the input — the elements of the iterator (the receiver).
@@ -324,7 +320,7 @@ Consider a hypothetical function ``my_crate::sanitize::escape_sql`` which escape
       // ...
   }
 
-We need to add a tuple to the ``barrierModel``\(path, output, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``barrierModel(path, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
@@ -335,7 +331,6 @@ We need to add a tuple to the ``barrierModel``\(path, output, kind, provenance) 
       data:
         - ["my_crate::sanitize::escape_sql", "ReturnValue", "sql-injection", "manual"]
 
-Since we are adding a barrier, we need to add a tuple to the ``barrierModel`` extensible predicate.
 
 - The first value ``my_crate::sanitize::escape_sql`` is the canonical path of the function.
 - The second value ``ReturnValue`` is the access path to the output of the barrier, which means that the return value is considered sanitized.
@@ -359,7 +354,7 @@ Consider a hypothetical function ``my_crate::validate::is_safe_path`` which retu
       }
   }
 
-We need to add a tuple to the ``barrierGuardModel``\(path, input, acceptingValue, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``barrierGuardModel(path, input, acceptingValue, kind, provenance)`` extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
@@ -370,7 +365,6 @@ We need to add a tuple to the ``barrierGuardModel``\(path, input, acceptingValue
       data:
         - ["my_crate::validate::is_safe_path", "Argument[0]", "true", "path-injection", "manual"]
 
-Since we are adding a barrier guard, we need to add a tuple to the ``barrierGuardModel`` extensible predicate.
 
 - The first value ``my_crate::validate::is_safe_path`` is the canonical path of the function.
 - The second value ``Argument[0]`` is the access path to the input whose flow is blocked. In this case, the first argument to the function (``user_path`` in the example).
