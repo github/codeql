@@ -422,9 +422,6 @@ module Ssa {
     deprecated final predicate isLiveOutRefParameterDefinition(Parameter p) {
       SsaImpl::isLiveOutRefParameterDefinition(this, p)
     }
-
-    /** Gets the location of this SSA definition. */
-    override Location getLocation() { none() }
   }
 
   /**
@@ -509,8 +506,6 @@ module Ssa {
     override Element getElement() { result = ad.getElement() }
 
     override string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
-
-    override Location getLocation() { result = ad.getLocation() }
   }
 
   /**
@@ -556,8 +551,6 @@ module Ssa {
       then result = "SSA capture def(" + this.getSourceVariable() + ")"
       else result = "SSA entry def(" + this.getSourceVariable() + ")"
     }
-
-    override Location getLocation() { result = this.getCallable().getLocation() }
   }
 
   deprecated class ImplicitParameterDefinition = ParameterDefinition;
@@ -625,8 +618,6 @@ module Ssa {
     }
 
     override string toString() { result = "SSA call def(" + this.getSourceVariable() + ")" }
-
-    override Location getLocation() { result = this.getCall().getLocation() }
   }
 
   /**
@@ -649,8 +640,6 @@ module Ssa {
     final Definition getQualifierDefinition() { result = q }
 
     override string toString() { result = "SSA qualifier def(" + this.getSourceVariable() + ")" }
-
-    override Location getLocation() { result = this.getQualifierDefinition().getLocation() }
   }
 
   /**
@@ -689,16 +678,6 @@ module Ssa {
     }
 
     override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
-
-    /*
-     * The location of a phi node is the same as the location of the first node
-     * in the basic block in which it is defined.
-     *
-     * Strictly speaking, the node is *before* the first node, but such a location
-     * does not exist in the source program.
-     */
-
-    override Location getLocation() { result = this.getBasicBlock().getFirstNode().getLocation() }
   }
 
   /**
