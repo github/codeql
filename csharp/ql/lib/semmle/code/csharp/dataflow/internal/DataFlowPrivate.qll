@@ -1302,12 +1302,6 @@ private module NearestLocationInputParamAfterCallable implements NearestLocation
 }
 
 private module ParameterNodes {
-  pragma[nomagic]
-  private predicate ssaParamDef(Ssa::ParameterDefinition ssaDef, Parameter p, Location l) {
-    p = ssaDef.getParameter() and
-    l = ssaDef.getLocation()
-  }
-
   private module NearestLocationInputParamBeforeCallable implements NearestLocationInputSig {
     class C = Parameter;
 
@@ -1358,11 +1352,9 @@ private module ParameterNodes {
     }
 
     /** Gets the SSA definition corresponding to this parameter, if any. */
-    Ssa::ParameterDefinition getSsaDefinition() {
-      exists(Parameter p, Location l |
-        l = this.getParameterLocation(p) and
-        ssaParamDef(result, p, l)
-      )
+    SsaParameterInit getSsaDefinition() {
+      result.getParameter() = parameter and
+      result.getBasicBlock() = callable.getABasicBlock()
     }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {

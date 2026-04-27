@@ -1017,7 +1017,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   predicate ssaDefHasSource(WriteDefinition def) {
     // exclude flow directly from RHS to SSA definition, as we instead want to
     // go from RHS to matching assignable definition, and from there to SSA definition
-    def instanceof Ssa::ParameterDefinition
+    def instanceof SsaParameterInit
   }
 
   /**

@@ -126,7 +126,7 @@ private predicate nonNullDef(SsaExplicitWrite def) {
  */
 private predicate dereferenceAt(SsaDefinition def, Dereference d) { d = def.getARead() }
 
-private predicate isMaybeNullArgument(Ssa::ParameterDefinition def, MaybeNullExpr arg) {
+private predicate isMaybeNullArgument(SsaParameterInit def, MaybeNullExpr arg) {
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
     p = def.getParameter()
   |
@@ -320,9 +320,7 @@ class Dereference extends G::DereferenceableExpr {
         not p.getAnnotatedType().isNullableRefType()
         or
         p.fromSource() and
-        exists(
-          Ssa::ParameterDefinition def, AssignableDefinitions::ImplicitParameterDefinition pdef
-        |
+        exists(SsaParameterInit def, AssignableDefinitions::ImplicitParameterDefinition pdef |
           p = def.getParameter()
         |
           p.getUnboundDeclaration() = pdef.getParameter() and
