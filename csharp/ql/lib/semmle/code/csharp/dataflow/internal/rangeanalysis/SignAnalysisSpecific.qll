@@ -15,7 +15,7 @@ module Private {
 
   class SsaVariable = CS::SsaDefinition;
 
-  class SsaPhiNode = CS::Ssa::PhiNode;
+  class SsaPhiNode = CS::SsaPhiDefinition;
 
   class VarAccess = RU::ExprNode::AssignableAccess;
 

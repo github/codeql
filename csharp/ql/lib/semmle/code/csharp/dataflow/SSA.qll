@@ -357,7 +357,7 @@ module Ssa {
      * includes inputs to phi nodes and the prior definitions of uncertain writes.
      */
     private Definition getAPhiInputOrPriorDefinition() {
-      result = this.(PhiNode).getAnInput() or
+      result = this.(SsaPhiDefinition).getAnInput() or
       result = this.(UncertainDefinition).getPriorDefinition()
     }
 
@@ -392,7 +392,7 @@ module Ssa {
      */
     final Definition getAnUltimateDefinition() {
       result = this.getAPhiInputOrPriorDefinition*() and
-      not result instanceof PhiNode
+      not result instanceof SsaPhiDefinition
     }
 
     /**
@@ -646,11 +646,13 @@ module Ssa {
   }
 
   /**
+   * DEPRECATED: Use `SsaPhiDefinition` instead.
+   *
    * An SSA phi node, that is, a pseudo definition for a variable at a point
    * in the flow graph where otherwise two or more definitions for the variable
    * would be visible.
    */
-  class PhiNode extends Definition, SsaImpl::PhiNode {
+  deprecated class PhiNode extends Definition, SsaImpl::PhiNode {
     /**
      * Gets an input of this phi node. Example:
      *

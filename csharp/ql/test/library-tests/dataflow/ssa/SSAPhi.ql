@@ -1,6 +1,6 @@
 import csharp
 
-from Ssa::SourceVariable v, Ssa::PhiNode phi, SsaDefinition input
+from Ssa::SourceVariable v, SsaPhiDefinition phi, SsaDefinition input
 where
   phi.getAnInput() = input and
   v = phi.getSourceVariable()

@@ -7,7 +7,7 @@ private import SsaReadPositionCommon
 
 class SsaVariable = CS::SsaDefinition;
 
-class SsaPhiNode = CS::Ssa::PhiNode;
+class SsaPhiNode = CS::SsaPhiDefinition;
 
 class BasicBlock = CS::BasicBlock;
 

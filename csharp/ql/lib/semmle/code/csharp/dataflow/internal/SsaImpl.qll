@@ -873,7 +873,7 @@ private module Cached {
   }
 
   cached
-  Definition phiHasInputFromBlock(Ssa::PhiNode phi, BasicBlock bb) {
+  deprecated Definition phiHasInputFromBlock(Ssa::PhiNode phi, BasicBlock bb) {
     Impl::phiHasInputFromBlock(phi, result, bb)
   }
 

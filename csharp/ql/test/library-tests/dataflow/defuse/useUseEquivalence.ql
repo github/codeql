@@ -32,7 +32,7 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
     result = TLocalScopeVariableRead(read.getANextRead())
     or
     not exists(read.getANextRead()) and
-    exists(SsaDefinition ssaDef, Ssa::PhiNode phi, BasicBlock bb |
+    exists(SsaDefinition ssaDef, SsaPhiDefinition phi, BasicBlock bb |
       ssaDef.getARead() = read and
       phi.getAnInput() = ssaDef and
       phi.definesAt(_, bb, _) and
@@ -45,7 +45,7 @@ private TLocalScopeVariableReadOrSsaDef getANextReadOrDef(TLocalScopeVariableRea
     result = TLocalScopeVariableRead(Ssa::ssaGetAFirstUse(ssaDef))
     or
     not exists(Ssa::ssaGetAFirstUse(ssaDef)) and
-    exists(Ssa::PhiNode phi |
+    exists(SsaPhiDefinition phi |
       phi.getAnInput() = ssaDef and
       result = TSsaDefinition(phi)
     )

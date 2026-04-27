@@ -186,7 +186,7 @@ private predicate defMaybeNull(SsaDefinition def, ControlFlowNode node, string m
       de.guardSuggestsMaybeNull(reason) and
       msg = "as suggested by $@ null check" and
       node = def.getControlFlowNode() and
-      not de = any(Ssa::PhiNode phi).getARead() and
+      not de = any(SsaPhiDefinition phi).getARead() and
       // Don't use a check as reason if there is a `null` assignment
       // or argument
       not def.(SsaExplicitWrite).getValue() instanceof MaybeNullExpr and
@@ -213,7 +213,7 @@ private predicate defMaybeNull(SsaDefinition def, ControlFlowNode node, string m
     exists(Dereference d | dereferenceAt(def, d) |
       node = def.getControlFlowNode() and
       d.hasNullableType() and
-      not def instanceof Ssa::PhiNode and
+      not def instanceof SsaPhiDefinition and
       reason = def.getSourceVariable().getAssignable() and
       msg = "because it has a nullable type"
     )
@@ -221,14 +221,14 @@ private predicate defMaybeNull(SsaDefinition def, ControlFlowNode node, string m
 }
 
 private SsaDefinition getAPseudoInput(SsaDefinition def) {
-  result = def.(Ssa::PhiNode).getAnInput()
+  result = def.(SsaPhiDefinition).getAnInput()
 }
 
 // `def.getAnUltimateDefinition()` includes inputs into uncertain
 // definitions, but we only want inputs into pseudo nodes
 private SsaDefinition getAnUltimateDefinition(SsaDefinition def) {
   result = getAPseudoInput*(def) and
-  not result instanceof Ssa::PhiNode
+  not result instanceof SsaPhiDefinition
 }
 
 /**
