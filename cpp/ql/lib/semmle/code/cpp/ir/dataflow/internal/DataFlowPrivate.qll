@@ -1170,7 +1170,7 @@ class DataFlowCall extends TDataFlowCall {
   /**
    * Gets the `Function` that the call targets, if this is statically known.
    */
-  Function getStaticCallSourceTarget() { none() }
+  Declaration getStaticCallSourceTarget() { none() }
 
   /**
    * Gets the target of this call. We use the following strategy for deciding
@@ -1182,7 +1182,7 @@ class DataFlowCall extends TDataFlowCall {
    * whether is it manual or generated.
    */
   final DataFlowCallable getStaticCallTarget() {
-    exists(Function target | target = this.getStaticCallSourceTarget() |
+    exists(Declaration target | target = this.getStaticCallSourceTarget() |
       // Don't use the source callable if there is a manual model for the
       // target
       not exists(SummarizedCallable sc |
@@ -1242,7 +1242,7 @@ private class NormalCall extends DataFlowCall, TNormalCall {
 
   override CallTargetOperand getCallTargetOperand() { result = call.getCallTargetOperand() }
 
-  override Function getStaticCallSourceTarget() { result = call.getStaticCallTarget() }
+  override Declaration getStaticCallSourceTarget() { result = call.getStaticCallTarget() }
 
   override ArgumentOperand getArgumentOperand(int index) { result = call.getArgumentOperand(index) }
 

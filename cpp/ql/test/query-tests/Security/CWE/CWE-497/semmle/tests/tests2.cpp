@@ -47,7 +47,7 @@ int val();
 
 // --- test cases ---
 
-const char *global1 = mysql_get_client_info();
+const char *global1 = mysql_get_client_info(); // $ Source
 const char *global2 = "abc";
 
 void test7()
@@ -55,15 +55,15 @@ void test7()
 	int sock = socket(val(), val(), val());
 
 	// tests for a strict implementation of CWE-497
-	std::cout << getenv("HOME"); // BAD: outputs HOME environment variable [NOT DETECTED]
-	std::cout << "PATH = " << getenv("PATH") << "."; // BAD: outputs PATH environment variable [NOT DETECTED]
+	std::cout << getenv("HOME");  // $ MISSING: Alert // outputs HOME environment variable
+	std::cout << "PATH = " << getenv("PATH") << "."; // $ MISSING: Alert // outputs PATH environment variable
 	std::cout << "PATHPATHPATH"; // GOOD: not system data
 
 	// tests for a more pragmatic implementation of CWE-497
-	send(sock, getenv("HOME"), val(), val()); // BAD
-	send(sock, getenv("PATH"), val(), val()); // BAD
-	send(sock, getenv("USERNAME"), val(), val()); // BAD
-	send(sock, getenv("APP_PASSWORD"), val(), val()); // BAD
+	send(sock, getenv("HOME"), val(), val()); // $ Alert
+	send(sock, getenv("PATH"), val(), val()); // $ Alert
+	send(sock, getenv("USERNAME"), val(), val()); // $ Alert
+	send(sock, getenv("APP_PASSWORD"), val(), val()); // $ Alert
 	send(sock, getenv("HARMLESS"), val(), val()); // GOOD: harmless information
 	send(sock, "HOME", val(), val()); // GOOD: not system data
 	send(sock, "PATH", val(), val()); // GOOD: not system data
@@ -75,11 +75,11 @@ void test7()
 	{
 		char buffer[256];
 
-		strcpy(buffer, mysql_get_client_info());
+		strcpy(buffer, mysql_get_client_info()); // $ Source
 
-		send(sock, mysql_get_client_info(), val(), val()); // BAD
-		send(sock, buffer, val(), val()); // BAD
-		send(sock, global1, val(), val()); // BAD
+		send(sock, mysql_get_client_info(), val(), val()); // $ Alert
+		send(sock, buffer, val(), val()); // $ Alert
+		send(sock, global1, val(), val()); // $ Alert
 		send(sock, global2, val(), val()); // GOOD: not system data
 	}
 
@@ -88,9 +88,9 @@ void test7()
 		const char *str1 = "123456";
 		const char *str2 = "abcdef";
 
-		mysql_real_connect(sock, val(), val(), str1, val(), val(), val(), val());
+		mysql_real_connect(sock, val(), val(), str1, val(), val(), val(), val()); // $ Source
 
-		send(sock, str1, val(), val()); // BAD
+		send(sock, str1, val(), val()); // $ Alert
 		send(sock, str2, val(), val()); // GOOD: not system data
 	}
 
@@ -98,17 +98,17 @@ void test7()
 	{
 		passwd *pw;
 
-		pw = getpwuid(val());
-		send(sock, pw->pw_passwd, val(), val()); // BAD
+		pw = getpwuid(val()); // $ Source
+		send(sock, pw->pw_passwd, val(), val()); // $ Alert
 	}
 
 	// tests for containers
 	{
 		container c1, c2;
 
-		c1.ptr = getenv("MY_SECRET_TOKEN");
+		c1.ptr = getenv("MY_SECRET_TOKEN"); // $ Source
 		c2.ptr = "";
-		send(sock, c1.ptr, val(), val()); // BAD
+		send(sock, c1.ptr, val(), val()); // $ Alert
 		send(sock, c2.ptr, val(), val()); // GOOD: not system data
 	}
 }
@@ -131,20 +131,20 @@ void test_zmq(void *remoteSocket)
 	size_t message_len;
 
 	// prepare data
-	message_data = getenv("HOME");
+	message_data = getenv("HOME"); // $ Source
 	message_len = strlen(message_data) + 1;
 
 	// send as data
-	if (zmq_send(socket, message_data, message_len, 0) >= 0) { // BAD: outputs HOME environment variable
+	if (zmq_send(socket, message_data, message_len, 0) >= 0) { // $ Alert: outputs HOME environment variable
 		// ...
 	}
 
 	// send as message
 	if (zmq_msg_init_data(&message, message_data, message_len, 0, 0)) {
-		if (zmq_sendmsg(remoteSocket, &message, message_len)) { // BAD: outputs HOME environment variable
+		if (zmq_sendmsg(remoteSocket, &message, message_len)) { // $ Alert: outputs HOME environment variable
 			// ...
 		}
-		if (zmq_msg_send(&message, remoteSocket, message_len)) { // BAD: outputs HOME environment variable
+		if (zmq_msg_send(&message, remoteSocket, message_len)) { // $ Alert: outputs HOME environment variable
 			// ...
 		}
 	}
@@ -152,10 +152,10 @@ void test_zmq(void *remoteSocket)
 	// send as message (alternative path)
 	if (zmq_msg_init_size(&message, message_len) == 0) {
 		memcpy(zmq_msg_data(&message), message_data, message_len);
-		if (zmq_sendmsg(remoteSocket,&message, message_len)) { // BAD: outputs HOME environment variable
+		if (zmq_sendmsg(remoteSocket,&message, message_len)) { // $ Alert: outputs HOME environment variable
 			// ...
 		}
-		if (zmq_msg_send(&message, remoteSocket, message_len)) { // BAD: outputs HOME environment variable
+		if (zmq_msg_send(&message, remoteSocket, message_len)) { // $ Alert: outputs HOME environment variable
 			// ...
 		}
 	}

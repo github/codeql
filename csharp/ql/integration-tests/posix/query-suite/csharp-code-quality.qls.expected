@@ -38,7 +38,6 @@ ql/csharp/ql/src/Likely Bugs/Collections/ContainerLengthCmpOffByOne.ql
 ql/csharp/ql/src/Likely Bugs/Collections/ContainerSizeCmpZero.ql
 ql/csharp/ql/src/Likely Bugs/Collections/ReadOnlyContainer.ql
 ql/csharp/ql/src/Likely Bugs/Collections/WriteOnlyContainer.ql
-ql/csharp/ql/src/Likely Bugs/ConstantComparison.ql
 ql/csharp/ql/src/Likely Bugs/DangerousNonShortCircuitLogic.ql
 ql/csharp/ql/src/Likely Bugs/EqualityCheckOnFloats.ql
 ql/csharp/ql/src/Likely Bugs/EqualsArray.ql

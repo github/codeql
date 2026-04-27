@@ -1042,7 +1042,6 @@ string getToStringPrefix(Definition def) {
 }
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
-  private import csharp as Cs
   private import semmle.code.csharp.controlflow.BasicBlocks
   private import codeql.util.Boolean
 

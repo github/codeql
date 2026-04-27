@@ -129,77 +129,54 @@ dominance
 | AccessorCalls.cs:42:10:42:11 | enter M5 | AccessorCalls.cs:43:5:47:5 | {...} |
 | AccessorCalls.cs:42:10:42:11 | exit M5 (normal) | AccessorCalls.cs:42:10:42:11 | exit M5 |
 | AccessorCalls.cs:43:5:47:5 | {...} | AccessorCalls.cs:44:9:44:33 | ...; |
-| AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:12 | this access |
 | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field |
-| AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:32 | ... = ... |
 | AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:23:44:26 | this access |
-| AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:9:44:18 | access to field Field |
-| AccessorCalls.cs:44:9:44:32 | ... = ... | AccessorCalls.cs:45:9:45:31 | ...; |
+| AccessorCalls.cs:44:9:44:32 | ... += ... | AccessorCalls.cs:45:9:45:31 | ...; |
 | AccessorCalls.cs:44:9:44:33 | ...; | AccessorCalls.cs:44:9:44:12 | this access |
 | AccessorCalls.cs:44:23:44:26 | this access | AccessorCalls.cs:44:23:44:32 | access to field Field |
-| AccessorCalls.cs:44:23:44:32 | access to field Field | AccessorCalls.cs:44:9:44:32 | ... + ... |
-| AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:12 | this access |
+| AccessorCalls.cs:44:23:44:32 | access to field Field | AccessorCalls.cs:44:9:44:32 | ... += ... |
 | AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:17 | access to property Prop |
-| AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:30 | ... = ... |
 | AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:22:45:25 | this access |
-| AccessorCalls.cs:45:9:45:30 | ... + ... | AccessorCalls.cs:45:9:45:17 | access to property Prop |
-| AccessorCalls.cs:45:9:45:30 | ... = ... | AccessorCalls.cs:46:9:46:27 | ...; |
+| AccessorCalls.cs:45:9:45:30 | ... += ... | AccessorCalls.cs:46:9:46:27 | ...; |
 | AccessorCalls.cs:45:9:45:31 | ...; | AccessorCalls.cs:45:9:45:12 | this access |
 | AccessorCalls.cs:45:22:45:25 | this access | AccessorCalls.cs:45:22:45:30 | access to property Prop |
-| AccessorCalls.cs:45:22:45:30 | access to property Prop | AccessorCalls.cs:45:9:45:30 | ... + ... |
+| AccessorCalls.cs:45:22:45:30 | access to property Prop | AccessorCalls.cs:45:9:45:30 | ... += ... |
 | AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:14:46:14 | 0 |
-| AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:14:46:14 | 0 |
-| AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:9:46:26 | ... = ... |
 | AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:20:46:23 | this access |
-| AccessorCalls.cs:46:9:46:26 | ... + ... | AccessorCalls.cs:46:9:46:15 | access to indexer |
-| AccessorCalls.cs:46:9:46:26 | ... = ... | AccessorCalls.cs:42:10:42:11 | exit M5 (normal) |
+| AccessorCalls.cs:46:9:46:26 | ... += ... | AccessorCalls.cs:42:10:42:11 | exit M5 (normal) |
 | AccessorCalls.cs:46:9:46:27 | ...; | AccessorCalls.cs:46:9:46:12 | this access |
-| AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:12 | this access |
 | AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:15 | access to indexer |
 | AccessorCalls.cs:46:20:46:23 | this access | AccessorCalls.cs:46:25:46:25 | 0 |
-| AccessorCalls.cs:46:20:46:26 | access to indexer | AccessorCalls.cs:46:9:46:26 | ... + ... |
+| AccessorCalls.cs:46:20:46:26 | access to indexer | AccessorCalls.cs:46:9:46:26 | ... += ... |
 | AccessorCalls.cs:46:25:46:25 | 0 | AccessorCalls.cs:46:20:46:26 | access to indexer |
 | AccessorCalls.cs:49:10:49:11 | enter M6 | AccessorCalls.cs:50:5:54:5 | {...} |
 | AccessorCalls.cs:49:10:49:11 | exit M6 (normal) | AccessorCalls.cs:49:10:49:11 | exit M6 |
 | AccessorCalls.cs:50:5:54:5 | {...} | AccessorCalls.cs:51:9:51:37 | ...; |
 | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:14 | access to field x |
-| AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:14 | access to field x |
-| AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access |
 | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:20 | access to field Field |
-| AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:36 | ... = ... |
 | AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:25:51:28 | this access |
-| AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:9:51:20 | access to field Field |
-| AccessorCalls.cs:51:9:51:36 | ... = ... | AccessorCalls.cs:52:9:52:35 | ...; |
+| AccessorCalls.cs:51:9:51:36 | ... += ... | AccessorCalls.cs:52:9:52:35 | ...; |
 | AccessorCalls.cs:51:9:51:37 | ...; | AccessorCalls.cs:51:9:51:12 | this access |
 | AccessorCalls.cs:51:25:51:28 | this access | AccessorCalls.cs:51:25:51:30 | access to field x |
 | AccessorCalls.cs:51:25:51:30 | access to field x | AccessorCalls.cs:51:25:51:36 | access to field Field |
-| AccessorCalls.cs:51:25:51:36 | access to field Field | AccessorCalls.cs:51:9:51:36 | ... + ... |
+| AccessorCalls.cs:51:25:51:36 | access to field Field | AccessorCalls.cs:51:9:51:36 | ... += ... |
 | AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:14 | access to field x |
-| AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:14 | access to field x |
-| AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:12 | this access |
 | AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:19 | access to property Prop |
-| AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:34 | ... = ... |
 | AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:24:52:27 | this access |
-| AccessorCalls.cs:52:9:52:34 | ... + ... | AccessorCalls.cs:52:9:52:19 | access to property Prop |
-| AccessorCalls.cs:52:9:52:34 | ... = ... | AccessorCalls.cs:53:9:53:31 | ...; |
+| AccessorCalls.cs:52:9:52:34 | ... += ... | AccessorCalls.cs:53:9:53:31 | ...; |
 | AccessorCalls.cs:52:9:52:35 | ...; | AccessorCalls.cs:52:9:52:12 | this access |
 | AccessorCalls.cs:52:24:52:27 | this access | AccessorCalls.cs:52:24:52:29 | access to field x |
 | AccessorCalls.cs:52:24:52:29 | access to field x | AccessorCalls.cs:52:24:52:34 | access to property Prop |
-| AccessorCalls.cs:52:24:52:34 | access to property Prop | AccessorCalls.cs:52:9:52:34 | ... + ... |
-| AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:14 | access to field x |
+| AccessorCalls.cs:52:24:52:34 | access to property Prop | AccessorCalls.cs:52:9:52:34 | ... += ... |
 | AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:14 | access to field x |
 | AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:16:53:16 | 0 |
-| AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:16:53:16 | 0 |
-| AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:9:53:30 | ... = ... |
 | AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:22:53:25 | this access |
-| AccessorCalls.cs:53:9:53:30 | ... + ... | AccessorCalls.cs:53:9:53:17 | access to indexer |
-| AccessorCalls.cs:53:9:53:30 | ... = ... | AccessorCalls.cs:49:10:49:11 | exit M6 (normal) |
+| AccessorCalls.cs:53:9:53:30 | ... += ... | AccessorCalls.cs:49:10:49:11 | exit M6 (normal) |
 | AccessorCalls.cs:53:9:53:31 | ...; | AccessorCalls.cs:53:9:53:12 | this access |
-| AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:12 | this access |
 | AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:17 | access to indexer |
 | AccessorCalls.cs:53:22:53:25 | this access | AccessorCalls.cs:53:22:53:27 | access to field x |
 | AccessorCalls.cs:53:22:53:27 | access to field x | AccessorCalls.cs:53:29:53:29 | 0 |
-| AccessorCalls.cs:53:22:53:30 | access to indexer | AccessorCalls.cs:53:9:53:30 | ... + ... |
+| AccessorCalls.cs:53:22:53:30 | access to indexer | AccessorCalls.cs:53:9:53:30 | ... += ... |
 | AccessorCalls.cs:53:29:53:29 | 0 | AccessorCalls.cs:53:22:53:30 | access to indexer |
 | AccessorCalls.cs:56:10:56:11 | enter M7 | AccessorCalls.cs:57:5:59:5 | {...} |
 | AccessorCalls.cs:56:10:56:11 | exit M7 (normal) | AccessorCalls.cs:56:10:56:11 | exit M7 |
@@ -271,25 +248,18 @@ dominance
 | AccessorCalls.cs:70:9:70:19 | dynamic access to member MaybeProp | AccessorCalls.cs:70:9:70:21 | dynamic call to operator ++ |
 | AccessorCalls.cs:70:9:70:21 | dynamic call to operator ++ | AccessorCalls.cs:71:9:71:26 | ...; |
 | AccessorCalls.cs:70:9:70:22 | ...; | AccessorCalls.cs:70:9:70:9 | access to local variable d |
-| AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:9 | access to local variable d |
 | AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent |
-| AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:9:71:25 | ... = ... |
 | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:25:71:25 | access to parameter e |
-| AccessorCalls.cs:71:9:71:25 | ... = ... | AccessorCalls.cs:72:9:72:21 | ...; |
-| AccessorCalls.cs:71:9:71:25 | dynamic call to operator + | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent |
+| AccessorCalls.cs:71:9:71:25 | ... += ... | AccessorCalls.cs:72:9:72:21 | ...; |
 | AccessorCalls.cs:71:9:71:26 | ...; | AccessorCalls.cs:71:9:71:9 | access to local variable d |
-| AccessorCalls.cs:71:25:71:25 | access to parameter e | AccessorCalls.cs:71:9:71:25 | dynamic call to operator + |
+| AccessorCalls.cs:71:25:71:25 | access to parameter e | AccessorCalls.cs:71:9:71:25 | ... += ... |
 | AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:11:72:11 | 0 |
-| AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:11:72:11 | 0 |
-| AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:9:72:20 | ... = ... |
 | AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:17:72:17 | access to local variable d |
-| AccessorCalls.cs:72:9:72:20 | ... = ... | AccessorCalls.cs:73:9:73:84 | ...; |
-| AccessorCalls.cs:72:9:72:20 | dynamic call to operator + | AccessorCalls.cs:72:9:72:12 | dynamic access to element |
+| AccessorCalls.cs:72:9:72:20 | ... += ... | AccessorCalls.cs:73:9:73:84 | ...; |
 | AccessorCalls.cs:72:9:72:21 | ...; | AccessorCalls.cs:72:9:72:9 | access to local variable d |
-| AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:9:72:9 | access to local variable d |
 | AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:9:72:12 | dynamic access to element |
 | AccessorCalls.cs:72:17:72:17 | access to local variable d | AccessorCalls.cs:72:19:72:19 | 1 |
-| AccessorCalls.cs:72:17:72:20 | dynamic access to element | AccessorCalls.cs:72:9:72:20 | dynamic call to operator + |
+| AccessorCalls.cs:72:17:72:20 | dynamic access to element | AccessorCalls.cs:72:9:72:20 | ... += ... |
 | AccessorCalls.cs:72:19:72:19 | 1 | AccessorCalls.cs:72:17:72:20 | dynamic access to element |
 | AccessorCalls.cs:73:9:73:44 | (..., ...) | AccessorCalls.cs:73:49:73:49 | access to local variable d |
 | AccessorCalls.cs:73:9:73:83 | ... = ... | AccessorCalls.cs:66:10:66:11 | exit M9 (normal) |
@@ -732,27 +702,24 @@ dominance
 | Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:6:9:6:15 | ...; |
 | Assignments.cs:5:17:5:17 | 0 | Assignments.cs:5:13:5:17 | Int32 x = ... |
 | Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:14:6:14 | 1 |
-| Assignments.cs:6:9:6:14 | ... + ... | Assignments.cs:6:9:6:14 | ... = ... |
-| Assignments.cs:6:9:6:14 | ... = ... | Assignments.cs:8:9:8:22 | ... ...; |
+| Assignments.cs:6:9:6:14 | ... += ... | Assignments.cs:8:9:8:22 | ... ...; |
 | Assignments.cs:6:9:6:15 | ...; | Assignments.cs:6:9:6:9 | access to local variable x |
-| Assignments.cs:6:14:6:14 | 1 | Assignments.cs:6:9:6:14 | ... + ... |
+| Assignments.cs:6:14:6:14 | 1 | Assignments.cs:6:9:6:14 | ... += ... |
 | Assignments.cs:8:9:8:22 | ... ...; | Assignments.cs:8:21:8:21 | 0 |
 | Assignments.cs:8:17:8:21 | dynamic d = ... | Assignments.cs:9:9:9:15 | ...; |
 | Assignments.cs:8:21:8:21 | 0 | Assignments.cs:8:21:8:21 | (...) ... |
 | Assignments.cs:8:21:8:21 | (...) ... | Assignments.cs:8:17:8:21 | dynamic d = ... |
 | Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:14:9:14 | 2 |
-| Assignments.cs:9:9:9:14 | ... = ... | Assignments.cs:11:9:11:34 | ... ...; |
-| Assignments.cs:9:9:9:14 | dynamic call to operator - | Assignments.cs:9:9:9:14 | ... = ... |
+| Assignments.cs:9:9:9:14 | ... -= ... | Assignments.cs:11:9:11:34 | ... ...; |
 | Assignments.cs:9:9:9:15 | ...; | Assignments.cs:9:9:9:9 | access to local variable d |
-| Assignments.cs:9:14:9:14 | 2 | Assignments.cs:9:9:9:14 | dynamic call to operator - |
+| Assignments.cs:9:14:9:14 | 2 | Assignments.cs:9:9:9:14 | ... -= ... |
 | Assignments.cs:11:9:11:34 | ... ...; | Assignments.cs:11:17:11:33 | object creation of type Assignments |
 | Assignments.cs:11:13:11:33 | Assignments a = ... | Assignments.cs:12:9:12:18 | ...; |
 | Assignments.cs:11:17:11:33 | object creation of type Assignments | Assignments.cs:11:13:11:33 | Assignments a = ... |
 | Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:14:12:17 | this access |
-| Assignments.cs:12:9:12:17 | ... = ... | Assignments.cs:14:9:14:36 | ...; |
-| Assignments.cs:12:9:12:17 | call to operator + | Assignments.cs:12:9:12:17 | ... = ... |
+| Assignments.cs:12:9:12:17 | ... += ... | Assignments.cs:14:9:14:36 | ...; |
 | Assignments.cs:12:9:12:18 | ...; | Assignments.cs:12:9:12:9 | access to local variable a |
-| Assignments.cs:12:14:12:17 | this access | Assignments.cs:12:9:12:17 | call to operator + |
+| Assignments.cs:12:14:12:17 | this access | Assignments.cs:12:9:12:17 | ... += ... |
 | Assignments.cs:14:9:14:13 | access to event Event | Assignments.cs:14:9:14:35 | ... += ... |
 | Assignments.cs:14:9:14:13 | this access | Assignments.cs:14:18:14:35 | (...) => ... |
 | Assignments.cs:14:9:14:35 | ... += ... | Assignments.cs:3:10:3:10 | exit M (normal) |
@@ -1058,22 +1025,16 @@ dominance
 | ConditionalAccess.cs:52:9:52:28 | access to property StringProp | ConditionalAccess.cs:52:18:52:38 | ... = ... |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:10 | access to parameter ca |
 | ConditionalAccess.cs:52:32:52:38 | "World" | ConditionalAccess.cs:52:9:52:28 | access to property StringProp |
-| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:30 | ...; |
-| ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:12:53:25 | ... = ... |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
-| ConditionalAccess.cs:53:12:53:25 | ... - ... | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
-| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:12:53:25 | ... - ... |
-| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
-| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:53:12:53:25 | ... -= ... | ConditionalAccess.cs:54:9:54:30 | ...; |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:12:53:25 | ... -= ... |
 | ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
 | ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:27:54:29 | "!" |
-| ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:12:54:29 | ... = ... |
 | ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
-| ConditionalAccess.cs:54:12:54:29 | ... + ... | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:12:54:29 | ... + ... |
+| ConditionalAccess.cs:54:12:54:29 | ... += ... | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:12:54:29 | ... += ... |
 | ConditionalAccess.cs:60:26:60:38 | enter CommaJoinWith | ConditionalAccess.cs:60:70:60:71 | access to parameter s1 |
 | ConditionalAccess.cs:60:26:60:38 | exit CommaJoinWith (normal) | ConditionalAccess.cs:60:26:60:38 | exit CommaJoinWith |
 | ConditionalAccess.cs:60:70:60:71 | access to parameter s1 | ConditionalAccess.cs:60:75:60:78 | ", " |
@@ -1295,9 +1256,8 @@ dominance
 | Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:106:13:106:20 | ...; |
 | Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:107:9:109:24 | if (...) ... |
 | Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:18:106:19 | "" |
-| Conditions.cs:106:13:106:19 | ... + ... | Conditions.cs:106:13:106:19 | ... = ... |
 | Conditions.cs:106:13:106:20 | ...; | Conditions.cs:106:13:106:13 | access to local variable x |
-| Conditions.cs:106:18:106:19 | "" | Conditions.cs:106:13:106:19 | ... + ... |
+| Conditions.cs:106:18:106:19 | "" | Conditions.cs:106:13:106:19 | ... += ... |
 | Conditions.cs:107:9:109:24 | if (...) ... | Conditions.cs:107:13:107:13 | access to local variable x |
 | Conditions.cs:107:13:107:13 | access to local variable x | Conditions.cs:107:13:107:20 | access to property Length |
 | Conditions.cs:107:13:107:20 | access to property Length | Conditions.cs:107:24:107:24 | 0 |
@@ -1309,9 +1269,8 @@ dominance
 | Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:108:17:108:18 | [false] !... |
 | Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:108:17:108:18 | [true] !... |
 | Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:22:109:23 | "" |
-| Conditions.cs:109:17:109:23 | ... + ... | Conditions.cs:109:17:109:23 | ... = ... |
 | Conditions.cs:109:17:109:24 | ...; | Conditions.cs:109:17:109:17 | access to local variable x |
-| Conditions.cs:109:22:109:23 | "" | Conditions.cs:109:17:109:23 | ... + ... |
+| Conditions.cs:109:22:109:23 | "" | Conditions.cs:109:17:109:23 | ... += ... |
 | Conditions.cs:110:9:110:17 | return ...; | Conditions.cs:102:12:102:13 | exit M8 (normal) |
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:110:9:110:17 | return ...; |
 | Conditions.cs:113:10:113:11 | enter M9 | Conditions.cs:114:5:124:5 | {...} |
@@ -1939,11 +1898,10 @@ dominance
 | Finally.cs:271:13:271:35 | ...; | Finally.cs:271:31:271:33 | "3" |
 | Finally.cs:271:31:271:33 | "3" | Finally.cs:271:13:271:34 | call to method WriteLine |
 | Finally.cs:272:13:272:13 | access to parameter i | Finally.cs:272:18:272:18 | 3 |
-| Finally.cs:272:13:272:18 | ... + ... | Finally.cs:272:13:272:18 | ... = ... |
-| Finally.cs:272:13:272:18 | ... = ... | Finally.cs:263:10:263:12 | exit M13 (abnormal) |
-| Finally.cs:272:13:272:18 | ... = ... | Finally.cs:263:10:263:12 | exit M13 (normal) |
+| Finally.cs:272:13:272:18 | ... += ... | Finally.cs:263:10:263:12 | exit M13 (abnormal) |
+| Finally.cs:272:13:272:18 | ... += ... | Finally.cs:263:10:263:12 | exit M13 (normal) |
 | Finally.cs:272:13:272:19 | ...; | Finally.cs:272:13:272:13 | access to parameter i |
-| Finally.cs:272:18:272:18 | 3 | Finally.cs:272:13:272:18 | ... + ... |
+| Finally.cs:272:18:272:18 | 3 | Finally.cs:272:13:272:18 | ... += ... |
 | Foreach.cs:4:7:4:13 | call to constructor Object | Foreach.cs:4:7:4:13 | {...} |
 | Foreach.cs:4:7:4:13 | call to method <object initializer> | Foreach.cs:4:7:4:13 | call to constructor Object |
 | Foreach.cs:4:7:4:13 | enter Foreach | Foreach.cs:4:7:4:13 | this access |
@@ -3819,14 +3777,11 @@ dominance
 | cflow.cs:209:5:222:5 | {...} | cflow.cs:210:9:221:36 | do ... while (...); |
 | cflow.cs:210:9:221:36 | do ... while (...); | cflow.cs:211:9:221:9 | {...} |
 | cflow.cs:211:9:221:9 | {...} | cflow.cs:212:13:212:25 | ...; |
-| cflow.cs:212:13:212:17 | access to field Field | cflow.cs:212:13:212:24 | ... = ... |
 | cflow.cs:212:13:212:17 | access to field Field | cflow.cs:212:22:212:24 | "a" |
 | cflow.cs:212:13:212:17 | this access | cflow.cs:212:13:212:17 | access to field Field |
-| cflow.cs:212:13:212:17 | this access | cflow.cs:212:13:212:17 | this access |
-| cflow.cs:212:13:212:24 | ... + ... | cflow.cs:212:13:212:17 | access to field Field |
-| cflow.cs:212:13:212:24 | ... = ... | cflow.cs:213:13:216:13 | if (...) ... |
+| cflow.cs:212:13:212:24 | ... += ... | cflow.cs:213:13:216:13 | if (...) ... |
 | cflow.cs:212:13:212:25 | ...; | cflow.cs:212:13:212:17 | this access |
-| cflow.cs:212:22:212:24 | "a" | cflow.cs:212:13:212:24 | ... + ... |
+| cflow.cs:212:22:212:24 | "a" | cflow.cs:212:13:212:24 | ... += ... |
 | cflow.cs:213:13:216:13 | if (...) ... | cflow.cs:213:17:213:21 | this access |
 | cflow.cs:213:17:213:21 | access to field Field | cflow.cs:213:17:213:28 | access to property Length |
 | cflow.cs:213:17:213:21 | this access | cflow.cs:213:17:213:21 | access to field Field |
@@ -3856,14 +3811,11 @@ dominance
 | cflow.cs:226:57:226:59 | "a" | cflow.cs:226:62:226:63 | 10 |
 | cflow.cs:226:62:226:63 | 10 | cflow.cs:226:27:226:64 | call to method Repeat<String> |
 | cflow.cs:227:9:237:9 | {...} | cflow.cs:228:13:228:23 | ...; |
-| cflow.cs:228:13:228:17 | access to field Field | cflow.cs:228:13:228:22 | ... = ... |
 | cflow.cs:228:13:228:17 | access to field Field | cflow.cs:228:22:228:22 | access to local variable x |
 | cflow.cs:228:13:228:17 | this access | cflow.cs:228:13:228:17 | access to field Field |
-| cflow.cs:228:13:228:17 | this access | cflow.cs:228:13:228:17 | this access |
-| cflow.cs:228:13:228:22 | ... + ... | cflow.cs:228:13:228:17 | access to field Field |
-| cflow.cs:228:13:228:22 | ... = ... | cflow.cs:229:13:232:13 | if (...) ... |
+| cflow.cs:228:13:228:22 | ... += ... | cflow.cs:229:13:232:13 | if (...) ... |
 | cflow.cs:228:13:228:23 | ...; | cflow.cs:228:13:228:17 | this access |
-| cflow.cs:228:22:228:22 | access to local variable x | cflow.cs:228:13:228:22 | ... + ... |
+| cflow.cs:228:22:228:22 | access to local variable x | cflow.cs:228:13:228:22 | ... += ... |
 | cflow.cs:229:13:232:13 | if (...) ... | cflow.cs:229:17:229:21 | this access |
 | cflow.cs:229:17:229:21 | access to field Field | cflow.cs:229:17:229:28 | access to property Length |
 | cflow.cs:229:17:229:21 | this access | cflow.cs:229:17:229:21 | access to field Field |
@@ -4138,75 +4090,52 @@ postDominance
 | AccessorCalls.cs:39:9:39:20 | ...; | AccessorCalls.cs:38:9:38:21 | ...++ |
 | AccessorCalls.cs:39:16:39:16 | 0 | AccessorCalls.cs:39:9:39:14 | access to field x |
 | AccessorCalls.cs:42:10:42:11 | exit M5 | AccessorCalls.cs:42:10:42:11 | exit M5 (normal) |
-| AccessorCalls.cs:42:10:42:11 | exit M5 (normal) | AccessorCalls.cs:46:9:46:26 | ... = ... |
+| AccessorCalls.cs:42:10:42:11 | exit M5 (normal) | AccessorCalls.cs:46:9:46:26 | ... += ... |
 | AccessorCalls.cs:43:5:47:5 | {...} | AccessorCalls.cs:42:10:42:11 | enter M5 |
-| AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:12 | this access |
 | AccessorCalls.cs:44:9:44:12 | this access | AccessorCalls.cs:44:9:44:33 | ...; |
 | AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:12 | this access |
-| AccessorCalls.cs:44:9:44:18 | access to field Field | AccessorCalls.cs:44:9:44:32 | ... + ... |
-| AccessorCalls.cs:44:9:44:32 | ... + ... | AccessorCalls.cs:44:23:44:32 | access to field Field |
-| AccessorCalls.cs:44:9:44:32 | ... = ... | AccessorCalls.cs:44:9:44:18 | access to field Field |
+| AccessorCalls.cs:44:9:44:32 | ... += ... | AccessorCalls.cs:44:23:44:32 | access to field Field |
 | AccessorCalls.cs:44:9:44:33 | ...; | AccessorCalls.cs:43:5:47:5 | {...} |
 | AccessorCalls.cs:44:23:44:26 | this access | AccessorCalls.cs:44:9:44:18 | access to field Field |
 | AccessorCalls.cs:44:23:44:32 | access to field Field | AccessorCalls.cs:44:23:44:26 | this access |
-| AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:12 | this access |
 | AccessorCalls.cs:45:9:45:12 | this access | AccessorCalls.cs:45:9:45:31 | ...; |
 | AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:12 | this access |
-| AccessorCalls.cs:45:9:45:17 | access to property Prop | AccessorCalls.cs:45:9:45:30 | ... + ... |
-| AccessorCalls.cs:45:9:45:30 | ... + ... | AccessorCalls.cs:45:22:45:30 | access to property Prop |
-| AccessorCalls.cs:45:9:45:30 | ... = ... | AccessorCalls.cs:45:9:45:17 | access to property Prop |
-| AccessorCalls.cs:45:9:45:31 | ...; | AccessorCalls.cs:44:9:44:32 | ... = ... |
+| AccessorCalls.cs:45:9:45:30 | ... += ... | AccessorCalls.cs:45:22:45:30 | access to property Prop |
+| AccessorCalls.cs:45:9:45:31 | ...; | AccessorCalls.cs:44:9:44:32 | ... += ... |
 | AccessorCalls.cs:45:22:45:25 | this access | AccessorCalls.cs:45:9:45:17 | access to property Prop |
 | AccessorCalls.cs:45:22:45:30 | access to property Prop | AccessorCalls.cs:45:22:45:25 | this access |
 | AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:9:46:27 | ...; |
-| AccessorCalls.cs:46:9:46:12 | this access | AccessorCalls.cs:46:14:46:14 | 0 |
-| AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:9:46:26 | ... + ... |
 | AccessorCalls.cs:46:9:46:15 | access to indexer | AccessorCalls.cs:46:14:46:14 | 0 |
-| AccessorCalls.cs:46:9:46:26 | ... + ... | AccessorCalls.cs:46:20:46:26 | access to indexer |
-| AccessorCalls.cs:46:9:46:26 | ... = ... | AccessorCalls.cs:46:9:46:15 | access to indexer |
-| AccessorCalls.cs:46:9:46:27 | ...; | AccessorCalls.cs:45:9:45:30 | ... = ... |
-| AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:12 | this access |
+| AccessorCalls.cs:46:9:46:26 | ... += ... | AccessorCalls.cs:46:20:46:26 | access to indexer |
+| AccessorCalls.cs:46:9:46:27 | ...; | AccessorCalls.cs:45:9:45:30 | ... += ... |
 | AccessorCalls.cs:46:14:46:14 | 0 | AccessorCalls.cs:46:9:46:12 | this access |
 | AccessorCalls.cs:46:20:46:23 | this access | AccessorCalls.cs:46:9:46:15 | access to indexer |
 | AccessorCalls.cs:46:20:46:26 | access to indexer | AccessorCalls.cs:46:25:46:25 | 0 |
 | AccessorCalls.cs:46:25:46:25 | 0 | AccessorCalls.cs:46:20:46:23 | this access |
 | AccessorCalls.cs:49:10:49:11 | exit M6 | AccessorCalls.cs:49:10:49:11 | exit M6 (normal) |
-| AccessorCalls.cs:49:10:49:11 | exit M6 (normal) | AccessorCalls.cs:53:9:53:30 | ... = ... |
+| AccessorCalls.cs:49:10:49:11 | exit M6 (normal) | AccessorCalls.cs:53:9:53:30 | ... += ... |
 | AccessorCalls.cs:50:5:54:5 | {...} | AccessorCalls.cs:49:10:49:11 | enter M6 |
-| AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:14 | access to field x |
 | AccessorCalls.cs:51:9:51:12 | this access | AccessorCalls.cs:51:9:51:37 | ...; |
 | AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access |
-| AccessorCalls.cs:51:9:51:14 | access to field x | AccessorCalls.cs:51:9:51:12 | this access |
 | AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:14 | access to field x |
-| AccessorCalls.cs:51:9:51:20 | access to field Field | AccessorCalls.cs:51:9:51:36 | ... + ... |
-| AccessorCalls.cs:51:9:51:36 | ... + ... | AccessorCalls.cs:51:25:51:36 | access to field Field |
-| AccessorCalls.cs:51:9:51:36 | ... = ... | AccessorCalls.cs:51:9:51:20 | access to field Field |
+| AccessorCalls.cs:51:9:51:36 | ... += ... | AccessorCalls.cs:51:25:51:36 | access to field Field |
 | AccessorCalls.cs:51:9:51:37 | ...; | AccessorCalls.cs:50:5:54:5 | {...} |
 | AccessorCalls.cs:51:25:51:28 | this access | AccessorCalls.cs:51:9:51:20 | access to field Field |
 | AccessorCalls.cs:51:25:51:30 | access to field x | AccessorCalls.cs:51:25:51:28 | this access |
 | AccessorCalls.cs:51:25:51:36 | access to field Field | AccessorCalls.cs:51:25:51:30 | access to field x |
-| AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:14 | access to field x |
 | AccessorCalls.cs:52:9:52:12 | this access | AccessorCalls.cs:52:9:52:35 | ...; |
 | AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:12 | this access |
-| AccessorCalls.cs:52:9:52:14 | access to field x | AccessorCalls.cs:52:9:52:12 | this access |
 | AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:14 | access to field x |
-| AccessorCalls.cs:52:9:52:19 | access to property Prop | AccessorCalls.cs:52:9:52:34 | ... + ... |
-| AccessorCalls.cs:52:9:52:34 | ... + ... | AccessorCalls.cs:52:24:52:34 | access to property Prop |
-| AccessorCalls.cs:52:9:52:34 | ... = ... | AccessorCalls.cs:52:9:52:19 | access to property Prop |
-| AccessorCalls.cs:52:9:52:35 | ...; | AccessorCalls.cs:51:9:51:36 | ... = ... |
+| AccessorCalls.cs:52:9:52:34 | ... += ... | AccessorCalls.cs:52:24:52:34 | access to property Prop |
+| AccessorCalls.cs:52:9:52:35 | ...; | AccessorCalls.cs:51:9:51:36 | ... += ... |
 | AccessorCalls.cs:52:24:52:27 | this access | AccessorCalls.cs:52:9:52:19 | access to property Prop |
 | AccessorCalls.cs:52:24:52:29 | access to field x | AccessorCalls.cs:52:24:52:27 | this access |
 | AccessorCalls.cs:52:24:52:34 | access to property Prop | AccessorCalls.cs:52:24:52:29 | access to field x |
 | AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:9:53:31 | ...; |
-| AccessorCalls.cs:53:9:53:12 | this access | AccessorCalls.cs:53:16:53:16 | 0 |
 | AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:9:53:12 | this access |
-| AccessorCalls.cs:53:9:53:14 | access to field x | AccessorCalls.cs:53:9:53:12 | this access |
-| AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:9:53:30 | ... + ... |
 | AccessorCalls.cs:53:9:53:17 | access to indexer | AccessorCalls.cs:53:16:53:16 | 0 |
-| AccessorCalls.cs:53:9:53:30 | ... + ... | AccessorCalls.cs:53:22:53:30 | access to indexer |
-| AccessorCalls.cs:53:9:53:30 | ... = ... | AccessorCalls.cs:53:9:53:17 | access to indexer |
-| AccessorCalls.cs:53:9:53:31 | ...; | AccessorCalls.cs:52:9:52:34 | ... = ... |
-| AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:14 | access to field x |
+| AccessorCalls.cs:53:9:53:30 | ... += ... | AccessorCalls.cs:53:22:53:30 | access to indexer |
+| AccessorCalls.cs:53:9:53:31 | ...; | AccessorCalls.cs:52:9:52:34 | ... += ... |
 | AccessorCalls.cs:53:16:53:16 | 0 | AccessorCalls.cs:53:9:53:14 | access to field x |
 | AccessorCalls.cs:53:22:53:25 | this access | AccessorCalls.cs:53:9:53:17 | access to indexer |
 | AccessorCalls.cs:53:22:53:27 | access to field x | AccessorCalls.cs:53:22:53:25 | this access |
@@ -4282,29 +4211,22 @@ postDominance
 | AccessorCalls.cs:70:9:70:19 | dynamic access to member MaybeProp | AccessorCalls.cs:70:9:70:9 | access to local variable d |
 | AccessorCalls.cs:70:9:70:21 | dynamic call to operator ++ | AccessorCalls.cs:70:9:70:19 | dynamic access to member MaybeProp |
 | AccessorCalls.cs:70:9:70:22 | ...; | AccessorCalls.cs:69:9:69:35 | ... = ... |
-| AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:9 | access to local variable d |
 | AccessorCalls.cs:71:9:71:9 | access to local variable d | AccessorCalls.cs:71:9:71:26 | ...; |
 | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:9:71:9 | access to local variable d |
-| AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent | AccessorCalls.cs:71:9:71:25 | dynamic call to operator + |
-| AccessorCalls.cs:71:9:71:25 | ... = ... | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent |
-| AccessorCalls.cs:71:9:71:25 | dynamic call to operator + | AccessorCalls.cs:71:25:71:25 | access to parameter e |
+| AccessorCalls.cs:71:9:71:25 | ... += ... | AccessorCalls.cs:71:25:71:25 | access to parameter e |
 | AccessorCalls.cs:71:9:71:26 | ...; | AccessorCalls.cs:70:9:70:21 | dynamic call to operator ++ |
 | AccessorCalls.cs:71:25:71:25 | access to parameter e | AccessorCalls.cs:71:9:71:20 | dynamic access to member MaybeEvent |
 | AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:9:72:21 | ...; |
-| AccessorCalls.cs:72:9:72:9 | access to local variable d | AccessorCalls.cs:72:11:72:11 | 0 |
-| AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:9:72:20 | dynamic call to operator + |
 | AccessorCalls.cs:72:9:72:12 | dynamic access to element | AccessorCalls.cs:72:11:72:11 | 0 |
-| AccessorCalls.cs:72:9:72:20 | ... = ... | AccessorCalls.cs:72:9:72:12 | dynamic access to element |
-| AccessorCalls.cs:72:9:72:20 | dynamic call to operator + | AccessorCalls.cs:72:17:72:20 | dynamic access to element |
-| AccessorCalls.cs:72:9:72:21 | ...; | AccessorCalls.cs:71:9:71:25 | ... = ... |
-| AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:9:72:9 | access to local variable d |
+| AccessorCalls.cs:72:9:72:20 | ... += ... | AccessorCalls.cs:72:17:72:20 | dynamic access to element |
+| AccessorCalls.cs:72:9:72:21 | ...; | AccessorCalls.cs:71:9:71:25 | ... += ... |
 | AccessorCalls.cs:72:11:72:11 | 0 | AccessorCalls.cs:72:9:72:9 | access to local variable d |
 | AccessorCalls.cs:72:17:72:17 | access to local variable d | AccessorCalls.cs:72:9:72:12 | dynamic access to element |
 | AccessorCalls.cs:72:17:72:20 | dynamic access to element | AccessorCalls.cs:72:19:72:19 | 1 |
 | AccessorCalls.cs:72:19:72:19 | 1 | AccessorCalls.cs:72:17:72:17 | access to local variable d |
 | AccessorCalls.cs:73:9:73:44 | (..., ...) | AccessorCalls.cs:73:35:73:43 | (..., ...) |
 | AccessorCalls.cs:73:9:73:83 | ... = ... | AccessorCalls.cs:73:39:73:42 | dynamic access to element |
-| AccessorCalls.cs:73:9:73:84 | ...; | AccessorCalls.cs:72:9:72:20 | ... = ... |
+| AccessorCalls.cs:73:9:73:84 | ...; | AccessorCalls.cs:72:9:72:20 | ... += ... |
 | AccessorCalls.cs:73:10:73:10 | access to local variable d | AccessorCalls.cs:73:9:73:84 | ...; |
 | AccessorCalls.cs:73:10:73:21 | dynamic access to member MaybeProp1 | AccessorCalls.cs:73:48:73:83 | (..., ...) |
 | AccessorCalls.cs:73:24:73:27 | this access | AccessorCalls.cs:73:10:73:10 | access to local variable d |
@@ -4730,31 +4652,28 @@ postDominance
 | Assignments.cs:5:13:5:17 | Int32 x = ... | Assignments.cs:5:17:5:17 | 0 |
 | Assignments.cs:5:17:5:17 | 0 | Assignments.cs:5:9:5:18 | ... ...; |
 | Assignments.cs:6:9:6:9 | access to local variable x | Assignments.cs:6:9:6:15 | ...; |
-| Assignments.cs:6:9:6:14 | ... + ... | Assignments.cs:6:14:6:14 | 1 |
-| Assignments.cs:6:9:6:14 | ... = ... | Assignments.cs:6:9:6:14 | ... + ... |
+| Assignments.cs:6:9:6:14 | ... += ... | Assignments.cs:6:14:6:14 | 1 |
 | Assignments.cs:6:9:6:15 | ...; | Assignments.cs:5:13:5:17 | Int32 x = ... |
 | Assignments.cs:6:14:6:14 | 1 | Assignments.cs:6:9:6:9 | access to local variable x |
-| Assignments.cs:8:9:8:22 | ... ...; | Assignments.cs:6:9:6:14 | ... = ... |
+| Assignments.cs:8:9:8:22 | ... ...; | Assignments.cs:6:9:6:14 | ... += ... |
 | Assignments.cs:8:17:8:21 | dynamic d = ... | Assignments.cs:8:21:8:21 | (...) ... |
 | Assignments.cs:8:21:8:21 | 0 | Assignments.cs:8:9:8:22 | ... ...; |
 | Assignments.cs:8:21:8:21 | (...) ... | Assignments.cs:8:21:8:21 | 0 |
 | Assignments.cs:9:9:9:9 | access to local variable d | Assignments.cs:9:9:9:15 | ...; |
-| Assignments.cs:9:9:9:14 | ... = ... | Assignments.cs:9:9:9:14 | dynamic call to operator - |
-| Assignments.cs:9:9:9:14 | dynamic call to operator - | Assignments.cs:9:14:9:14 | 2 |
+| Assignments.cs:9:9:9:14 | ... -= ... | Assignments.cs:9:14:9:14 | 2 |
 | Assignments.cs:9:9:9:15 | ...; | Assignments.cs:8:17:8:21 | dynamic d = ... |
 | Assignments.cs:9:14:9:14 | 2 | Assignments.cs:9:9:9:9 | access to local variable d |
-| Assignments.cs:11:9:11:34 | ... ...; | Assignments.cs:9:9:9:14 | ... = ... |
+| Assignments.cs:11:9:11:34 | ... ...; | Assignments.cs:9:9:9:14 | ... -= ... |
 | Assignments.cs:11:13:11:33 | Assignments a = ... | Assignments.cs:11:17:11:33 | object creation of type Assignments |
 | Assignments.cs:11:17:11:33 | object creation of type Assignments | Assignments.cs:11:9:11:34 | ... ...; |
 | Assignments.cs:12:9:12:9 | access to local variable a | Assignments.cs:12:9:12:18 | ...; |
-| Assignments.cs:12:9:12:17 | ... = ... | Assignments.cs:12:9:12:17 | call to operator + |
-| Assignments.cs:12:9:12:17 | call to operator + | Assignments.cs:12:14:12:17 | this access |
+| Assignments.cs:12:9:12:17 | ... += ... | Assignments.cs:12:14:12:17 | this access |
 | Assignments.cs:12:9:12:18 | ...; | Assignments.cs:11:13:11:33 | Assignments a = ... |
 | Assignments.cs:12:14:12:17 | this access | Assignments.cs:12:9:12:9 | access to local variable a |
 | Assignments.cs:14:9:14:13 | access to event Event | Assignments.cs:14:18:14:35 | (...) => ... |
 | Assignments.cs:14:9:14:13 | this access | Assignments.cs:14:9:14:36 | ...; |
 | Assignments.cs:14:9:14:35 | ... += ... | Assignments.cs:14:9:14:13 | access to event Event |
-| Assignments.cs:14:9:14:36 | ...; | Assignments.cs:12:9:12:17 | ... = ... |
+| Assignments.cs:14:9:14:36 | ...; | Assignments.cs:12:9:12:17 | ... += ... |
 | Assignments.cs:14:18:14:35 | (...) => ... | Assignments.cs:14:9:14:13 | this access |
 | Assignments.cs:14:18:14:35 | exit (...) => ... | Assignments.cs:14:18:14:35 | exit (...) => ... (normal) |
 | Assignments.cs:14:18:14:35 | exit (...) => ... (normal) | Assignments.cs:14:33:14:35 | {...} |
@@ -5022,8 +4941,7 @@ postDominance
 | ConditionalAccess.cs:43:9:43:11 | exit set_Item (normal) | ConditionalAccess.cs:43:13:43:15 | {...} |
 | ConditionalAccess.cs:43:13:43:15 | {...} | ConditionalAccess.cs:43:9:43:11 | enter set_Item |
 | ConditionalAccess.cs:46:10:46:11 | exit M9 | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:54:12:54:29 | ... = ... |
+| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:54:12:54:29 | ... += ... |
 | ConditionalAccess.cs:47:5:55:5 | {...} | ConditionalAccess.cs:46:10:46:11 | enter M9 |
 | ConditionalAccess.cs:48:9:48:10 | access to parameter ca | ConditionalAccess.cs:48:9:48:26 | ...; |
 | ConditionalAccess.cs:48:9:48:20 | access to field IntField | ConditionalAccess.cs:48:24:48:25 | 42 |
@@ -5052,20 +4970,15 @@ postDominance
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:51:18:51:31 | ... = ... |
 | ConditionalAccess.cs:52:18:52:38 | ... = ... | ConditionalAccess.cs:52:9:52:28 | access to property StringProp |
 | ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:26 | ...; |
-| ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:12:53:25 | ... - ... |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:52:9:52:10 | access to parameter ca |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:52:18:52:38 | ... = ... |
-| ConditionalAccess.cs:53:12:53:25 | ... - ... | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:53:12:53:25 | ... = ... | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
+| ConditionalAccess.cs:53:12:53:25 | ... -= ... | ConditionalAccess.cs:53:25:53:25 | 1 |
 | ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:30 | ...; |
-| ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:12:54:29 | ... + ... |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:53:12:53:25 | ... = ... |
-| ConditionalAccess.cs:54:12:54:29 | ... + ... | ConditionalAccess.cs:54:27:54:29 | "!" |
-| ConditionalAccess.cs:54:12:54:29 | ... = ... | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
+| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:53:12:53:25 | ... -= ... |
+| ConditionalAccess.cs:54:12:54:29 | ... += ... | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
 | ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
 | ConditionalAccess.cs:60:26:60:38 | exit CommaJoinWith | ConditionalAccess.cs:60:26:60:38 | exit CommaJoinWith (normal) |
@@ -5287,25 +5200,23 @@ postDominance
 | Conditions.cs:105:9:106:20 | if (...) ... | Conditions.cs:104:13:104:28 | String x = ... |
 | Conditions.cs:105:13:105:13 | access to parameter b | Conditions.cs:105:9:106:20 | if (...) ... |
 | Conditions.cs:106:13:106:13 | access to local variable x | Conditions.cs:106:13:106:20 | ...; |
-| Conditions.cs:106:13:106:19 | ... + ... | Conditions.cs:106:18:106:19 | "" |
-| Conditions.cs:106:13:106:19 | ... = ... | Conditions.cs:106:13:106:19 | ... + ... |
+| Conditions.cs:106:13:106:19 | ... += ... | Conditions.cs:106:18:106:19 | "" |
 | Conditions.cs:106:18:106:19 | "" | Conditions.cs:106:13:106:13 | access to local variable x |
 | Conditions.cs:107:9:109:24 | if (...) ... | Conditions.cs:105:13:105:13 | access to parameter b |
-| Conditions.cs:107:9:109:24 | if (...) ... | Conditions.cs:106:13:106:19 | ... = ... |
+| Conditions.cs:107:9:109:24 | if (...) ... | Conditions.cs:106:13:106:19 | ... += ... |
 | Conditions.cs:107:13:107:13 | access to local variable x | Conditions.cs:107:9:109:24 | if (...) ... |
 | Conditions.cs:107:13:107:20 | access to property Length | Conditions.cs:107:13:107:13 | access to local variable x |
 | Conditions.cs:107:13:107:24 | ... > ... | Conditions.cs:107:24:107:24 | 0 |
 | Conditions.cs:107:24:107:24 | 0 | Conditions.cs:107:13:107:20 | access to property Length |
 | Conditions.cs:108:18:108:18 | access to parameter b | Conditions.cs:108:13:109:24 | if (...) ... |
 | Conditions.cs:109:17:109:17 | access to local variable x | Conditions.cs:109:17:109:24 | ...; |
-| Conditions.cs:109:17:109:23 | ... + ... | Conditions.cs:109:22:109:23 | "" |
-| Conditions.cs:109:17:109:23 | ... = ... | Conditions.cs:109:17:109:23 | ... + ... |
+| Conditions.cs:109:17:109:23 | ... += ... | Conditions.cs:109:22:109:23 | "" |
 | Conditions.cs:109:17:109:24 | ...; | Conditions.cs:108:17:108:18 | [true] !... |
 | Conditions.cs:109:22:109:23 | "" | Conditions.cs:109:17:109:17 | access to local variable x |
 | Conditions.cs:110:9:110:17 | return ...; | Conditions.cs:110:16:110:16 | access to local variable x |
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:107:13:107:24 | ... > ... |
 | Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:108:17:108:18 | [false] !... |
-| Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:109:17:109:23 | ... = ... |
+| Conditions.cs:110:16:110:16 | access to local variable x | Conditions.cs:109:17:109:23 | ... += ... |
 | Conditions.cs:113:10:113:11 | exit M9 | Conditions.cs:113:10:113:11 | exit M9 (normal) |
 | Conditions.cs:113:10:113:11 | exit M9 (normal) | Conditions.cs:116:25:116:39 | ... < ... |
 | Conditions.cs:114:5:124:5 | {...} | Conditions.cs:113:10:113:11 | enter M9 |
@@ -5890,7 +5801,7 @@ postDominance
 | Finally.cs:260:9:260:33 | call to method WriteLine | Finally.cs:260:27:260:32 | "Done" |
 | Finally.cs:260:9:260:34 | ...; | Finally.cs:258:13:258:46 | call to method WriteLine |
 | Finally.cs:260:27:260:32 | "Done" | Finally.cs:260:9:260:34 | ...; |
-| Finally.cs:263:10:263:12 | exit M13 (normal) | Finally.cs:272:13:272:18 | ... = ... |
+| Finally.cs:263:10:263:12 | exit M13 (normal) | Finally.cs:272:13:272:18 | ... += ... |
 | Finally.cs:264:5:274:5 | {...} | Finally.cs:263:10:263:12 | enter M13 |
 | Finally.cs:265:9:273:9 | try {...} ... | Finally.cs:264:5:274:5 | {...} |
 | Finally.cs:266:9:268:9 | {...} | Finally.cs:265:9:273:9 | try {...} ... |
@@ -5902,8 +5813,7 @@ postDominance
 | Finally.cs:271:13:271:35 | ...; | Finally.cs:270:9:273:9 | {...} |
 | Finally.cs:271:31:271:33 | "3" | Finally.cs:271:13:271:35 | ...; |
 | Finally.cs:272:13:272:13 | access to parameter i | Finally.cs:272:13:272:19 | ...; |
-| Finally.cs:272:13:272:18 | ... + ... | Finally.cs:272:18:272:18 | 3 |
-| Finally.cs:272:13:272:18 | ... = ... | Finally.cs:272:13:272:18 | ... + ... |
+| Finally.cs:272:13:272:18 | ... += ... | Finally.cs:272:18:272:18 | 3 |
 | Finally.cs:272:13:272:19 | ...; | Finally.cs:271:13:271:34 | call to method WriteLine |
 | Finally.cs:272:18:272:18 | 3 | Finally.cs:272:13:272:13 | access to parameter i |
 | Foreach.cs:4:7:4:13 | call to constructor Object | Foreach.cs:4:7:4:13 | call to method <object initializer> |
@@ -7720,14 +7630,11 @@ postDominance
 | cflow.cs:210:9:221:36 | do ... while (...); | cflow.cs:209:5:222:5 | {...} |
 | cflow.cs:211:9:221:9 | {...} | cflow.cs:210:9:221:36 | do ... while (...); |
 | cflow.cs:212:13:212:17 | access to field Field | cflow.cs:212:13:212:17 | this access |
-| cflow.cs:212:13:212:17 | access to field Field | cflow.cs:212:13:212:24 | ... + ... |
-| cflow.cs:212:13:212:17 | this access | cflow.cs:212:13:212:17 | this access |
 | cflow.cs:212:13:212:17 | this access | cflow.cs:212:13:212:25 | ...; |
-| cflow.cs:212:13:212:24 | ... + ... | cflow.cs:212:22:212:24 | "a" |
-| cflow.cs:212:13:212:24 | ... = ... | cflow.cs:212:13:212:17 | access to field Field |
+| cflow.cs:212:13:212:24 | ... += ... | cflow.cs:212:22:212:24 | "a" |
 | cflow.cs:212:13:212:25 | ...; | cflow.cs:211:9:221:9 | {...} |
 | cflow.cs:212:22:212:24 | "a" | cflow.cs:212:13:212:17 | access to field Field |
-| cflow.cs:213:13:216:13 | if (...) ... | cflow.cs:212:13:212:24 | ... = ... |
+| cflow.cs:213:13:216:13 | if (...) ... | cflow.cs:212:13:212:24 | ... += ... |
 | cflow.cs:213:17:213:21 | access to field Field | cflow.cs:213:17:213:21 | this access |
 | cflow.cs:213:17:213:21 | this access | cflow.cs:213:13:216:13 | if (...) ... |
 | cflow.cs:213:17:213:28 | access to property Length | cflow.cs:213:17:213:21 | access to field Field |
@@ -7756,14 +7663,11 @@ postDominance
 | cflow.cs:226:62:226:63 | 10 | cflow.cs:226:57:226:59 | "a" |
 | cflow.cs:227:9:237:9 | {...} | cflow.cs:226:22:226:22 | String x |
 | cflow.cs:228:13:228:17 | access to field Field | cflow.cs:228:13:228:17 | this access |
-| cflow.cs:228:13:228:17 | access to field Field | cflow.cs:228:13:228:22 | ... + ... |
-| cflow.cs:228:13:228:17 | this access | cflow.cs:228:13:228:17 | this access |
 | cflow.cs:228:13:228:17 | this access | cflow.cs:228:13:228:23 | ...; |
-| cflow.cs:228:13:228:22 | ... + ... | cflow.cs:228:22:228:22 | access to local variable x |
-| cflow.cs:228:13:228:22 | ... = ... | cflow.cs:228:13:228:17 | access to field Field |
+| cflow.cs:228:13:228:22 | ... += ... | cflow.cs:228:22:228:22 | access to local variable x |
 | cflow.cs:228:13:228:23 | ...; | cflow.cs:227:9:237:9 | {...} |
 | cflow.cs:228:22:228:22 | access to local variable x | cflow.cs:228:13:228:17 | access to field Field |
-| cflow.cs:229:13:232:13 | if (...) ... | cflow.cs:228:13:228:22 | ... = ... |
+| cflow.cs:229:13:232:13 | if (...) ... | cflow.cs:228:13:228:22 | ... += ... |
 | cflow.cs:229:17:229:21 | access to field Field | cflow.cs:229:17:229:21 | this access |
 | cflow.cs:229:17:229:21 | this access | cflow.cs:229:13:232:13 | if (...) ... |
 | cflow.cs:229:17:229:28 | access to property Length | cflow.cs:229:17:229:21 | access to field Field |
@@ -9077,7 +8981,6 @@ blockDominance
 | ConditionalAccess.cs:42:9:42:11 | enter get_Item | ConditionalAccess.cs:42:9:42:11 | enter get_Item |
 | ConditionalAccess.cs:43:9:43:11 | enter set_Item | ConditionalAccess.cs:43:9:43:11 | enter set_Item |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:46:10:46:11 | enter M9 |
-| ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:48:24:48:25 | 42 |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:49:9:49:33 | ...; |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:49:26:49:32 | "Hello" |
@@ -9089,17 +8992,12 @@ blockDominance
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:52:9:52:39 | ...; |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:53:9:53:26 | ...; |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:54:9:54:30 | ...; |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:54:27:54:29 | "!" |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
 | ConditionalAccess.cs:48:24:48:25 | 42 | ConditionalAccess.cs:48:24:48:25 | 42 |
-| ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:49:9:49:33 | ...; |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:49:26:49:32 | "Hello" |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:50:9:50:24 | ...; |
@@ -9110,16 +9008,12 @@ blockDominance
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:52:9:52:39 | ...; |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:53:9:53:26 | ...; |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:54:9:54:30 | ...; |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:49:26:49:32 | "Hello" | ConditionalAccess.cs:49:26:49:32 | "Hello" |
-| ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:50:9:50:24 | ...; |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:50:13:50:13 | 0 |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:51:9:51:16 | access to property Prop |
@@ -9128,71 +9022,47 @@ blockDominance
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:52:9:52:39 | ...; |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:53:9:53:26 | ...; |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:54:9:54:30 | ...; |
 | ConditionalAccess.cs:50:9:50:24 | ...; | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:50:13:50:13 | 0 | ConditionalAccess.cs:50:13:50:13 | 0 |
 | ConditionalAccess.cs:51:9:51:16 | access to property Prop | ConditionalAccess.cs:51:9:51:16 | access to property Prop |
 | ConditionalAccess.cs:51:9:51:16 | access to property Prop | ConditionalAccess.cs:51:30:51:31 | 84 |
-| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:51:9:51:16 | access to property Prop |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:51:9:51:32 | ...; |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:51:30:51:31 | 84 |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:52:9:52:39 | ...; |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:53:9:53:26 | ...; |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:54:9:54:30 | ...; |
 | ConditionalAccess.cs:51:9:51:32 | ...; | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:51:30:51:31 | 84 | ConditionalAccess.cs:51:30:51:31 | 84 |
 | ConditionalAccess.cs:52:9:52:16 | access to property Prop | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
 | ConditionalAccess.cs:52:9:52:16 | access to property Prop | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:39 | ...; |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:53:9:53:26 | ...; |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:54:9:54:30 | ...; |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:52:32:52:38 | "World" | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
-| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
-| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:25:53:25 | 1 |
 | ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
-| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
-| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:26 | ...; |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:54:9:54:30 | ...; |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
-| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:27:54:29 | "!" |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:30 | ...; |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:60:26:60:38 | enter CommaJoinWith | ConditionalAccess.cs:60:26:60:38 | enter CommaJoinWith |
 | Conditions.cs:1:7:1:16 | enter Conditions | Conditions.cs:1:7:1:16 | enter Conditions |
@@ -13005,27 +12875,6 @@ postBlockDominance
 | ConditionalAccess.cs:42:9:42:11 | enter get_Item | ConditionalAccess.cs:42:9:42:11 | enter get_Item |
 | ConditionalAccess.cs:43:9:43:11 | enter set_Item | ConditionalAccess.cs:43:9:43:11 | enter set_Item |
 | ConditionalAccess.cs:46:10:46:11 | enter M9 | ConditionalAccess.cs:46:10:46:11 | enter M9 |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:46:10:46:11 | enter M9 |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:48:24:48:25 | 42 |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:49:9:49:33 | ...; |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:49:26:49:32 | "Hello" |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:50:9:50:24 | ...; |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:50:13:50:13 | 0 |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:51:9:51:16 | access to property Prop |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:51:9:51:32 | ...; |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:51:30:51:31 | 84 |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:52:9:52:39 | ...; |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:53:9:53:26 | ...; |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:54:9:54:30 | ...; |
-| ConditionalAccess.cs:46:10:46:11 | exit M9 (normal) | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:48:24:48:25 | 42 | ConditionalAccess.cs:48:24:48:25 | 42 |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:46:10:46:11 | enter M9 |
 | ConditionalAccess.cs:49:9:49:33 | ...; | ConditionalAccess.cs:48:24:48:25 | 42 |
@@ -13058,7 +12907,6 @@ postBlockDominance
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:51:30:51:31 | 84 |
 | ConditionalAccess.cs:52:9:52:39 | ...; | ConditionalAccess.cs:52:9:52:39 | ...; |
 | ConditionalAccess.cs:52:32:52:38 | "World" | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:53:9:53:10 | access to parameter ca | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
 | ConditionalAccess.cs:53:9:53:20 | access to field IntField | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:46:10:46:11 | enter M9 |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:48:24:48:25 | 42 |
@@ -13073,29 +12921,37 @@ postBlockDominance
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:52:9:52:39 | ...; |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:52:32:52:38 | "World" |
 | ConditionalAccess.cs:53:9:53:26 | ...; | ConditionalAccess.cs:53:9:53:26 | ...; |
-| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:46:10:46:11 | enter M9 |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:48:24:48:25 | 42 |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:49:9:49:33 | ...; |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:49:26:49:32 | "Hello" |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:50:9:50:24 | ...; |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:50:13:50:13 | 0 |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:51:9:51:16 | access to property Prop |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:51:9:51:32 | ...; |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:51:30:51:31 | 84 |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:52:9:52:39 | ...; |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:52:32:52:38 | "World" |
 | ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
+| ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:9:53:26 | ...; |
 | ConditionalAccess.cs:53:25:53:25 | 1 | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:54:9:54:10 | access to parameter ca | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
 | ConditionalAccess.cs:54:9:54:22 | access to property StringProp | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:46:10:46:11 | enter M9 |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:48:24:48:25 | 42 |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:49:9:49:33 | ...; |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:49:26:49:32 | "Hello" |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:50:9:50:24 | ...; |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:50:13:50:13 | 0 |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:51:9:51:16 | access to property Prop |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:51:9:51:32 | ...; |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:51:30:51:31 | 84 |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:52:9:52:39 | ...; |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:52:32:52:38 | "World" |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:53:9:53:10 | access to parameter ca |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:53:9:53:26 | ...; |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:53:25:53:25 | 1 |
-| ConditionalAccess.cs:54:9:54:30 | ...; | ConditionalAccess.cs:54:9:54:30 | ...; |
-| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:9:54:10 | access to parameter ca |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:46:10:46:11 | enter M9 |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:48:24:48:25 | 42 |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:49:9:49:33 | ...; |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:49:26:49:32 | "Hello" |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:50:9:50:24 | ...; |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:50:13:50:13 | 0 |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:51:9:51:16 | access to property Prop |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:51:9:51:32 | ...; |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:51:30:51:31 | 84 |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:52:9:52:16 | access to property Prop |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:52:9:52:39 | ...; |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:52:32:52:38 | "World" |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:53:9:53:20 | access to field IntField |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:53:9:53:26 | ...; |
+| ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:53:25:53:25 | 1 |
 | ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:9:54:22 | access to property StringProp |
 | ConditionalAccess.cs:54:27:54:29 | "!" | ConditionalAccess.cs:54:27:54:29 | "!" |
 | ConditionalAccess.cs:60:26:60:38 | enter CommaJoinWith | ConditionalAccess.cs:60:26:60:38 | enter CommaJoinWith |

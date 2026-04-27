@@ -26,3 +26,19 @@ class CmakeTryCompileFile extends ConfigurationTestFile {
     )
   }
 }
+
+/**
+ * A file created by Meson to test the system configuration.
+ */
+class MesonPrivateTestFile extends ConfigurationTestFile {
+  MesonPrivateTestFile() {
+    this.getBaseName() = "testfile.c" and
+    exists(Folder folder, Folder parent |
+      folder = this.getParentContainer() and
+      parent = folder.getParentContainer()
+    |
+      folder.getBaseName().matches("tmp%") and
+      parent.getBaseName() = "meson-private"
+    )
+  }
+}

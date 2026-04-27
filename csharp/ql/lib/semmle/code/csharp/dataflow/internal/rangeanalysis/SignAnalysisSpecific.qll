@@ -41,7 +41,7 @@ module Private {
 
   class RealLiteral = RU::ExprNode::RealLiteral;
 
-  class DivExpr = RU::ExprNode::DivExpr;
+  class DivExpr = RU::ExprNode::DivOperation;
 
   class UnaryOperation = RU::ExprNode::UnaryOperation;
 
@@ -129,6 +129,11 @@ private module Impl {
     exists(AssignableDefinition adef |
       adef = def.getADefinition() and
       hasChild(adef.getExpr(), adef.getSource(), def.getControlFlowNode(), result)
+    )
+    or
+    exists(AssignableDefinitions::AssignOperationDefinition adef |
+      adef = def.getADefinition() and
+      result.getExpr() = adef.getSource()
     )
   }
 

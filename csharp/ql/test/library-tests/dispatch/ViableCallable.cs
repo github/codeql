@@ -362,6 +362,7 @@ public class C11
     {
         dynamic d = this;
         int x = 0;
+        // Viable callables: int.+
         x += 42;
         // Viable callables: C11.M()
         d.M(x);

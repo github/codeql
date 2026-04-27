@@ -59,9 +59,9 @@ class ConstantMatching
     {
         switch (1 + 2)
         {
-            case 2: // $ Alert
+            case 2: // Intentionally missing Alert
                 break;
-            case 3: // $ Alert
+            case 3: // Intentionally missing Alert
                 break;
             case int _: // GOOD
                 break;
@@ -72,7 +72,7 @@ class ConstantMatching
     {
         switch ((object)s)
         {
-            case int _: // $ Alert
+            case int _: // Intentionally missing Alert
                 break;
             case "": // GOOD
                 break;
@@ -92,7 +92,7 @@ class ConstantMatching
     {
         return o switch
         {
-            _ => o.ToString() // $ Alert
+            _ => o.ToString() // GOOD, catch-all pattern is fine
         };
     }
 
@@ -138,7 +138,7 @@ class ConstantMatching
     {
         switch (i)
         {
-            case var _: // $ Alert
+            case var _: // GOOD, catch-all pattern is fine
                 return "even";
         }
     }

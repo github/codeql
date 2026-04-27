@@ -2643,6 +2643,10 @@ mod context_typed {
         fn f(self) {}
     }
 
+    fn free_function<T: Default>() -> T {
+        Default::default() // $ target=default
+    }
+
     pub fn f() {
         let x = None; // $ type=x:T.i32
         let x: Option<i32> = x;
@@ -2693,6 +2697,9 @@ mod context_typed {
 
         let s = Default::default(); // $ target=default type=s:S
         S::f(s); // $ target=f
+
+        let z = free_function(); // $ target=free_function type=z:i32
+        x.push(z); // $ target=push
     }
 }
 

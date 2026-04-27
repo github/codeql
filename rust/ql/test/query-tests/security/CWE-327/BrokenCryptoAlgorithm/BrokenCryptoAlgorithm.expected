@@ -21,3 +21,9 @@
 | test_cipher.rs:109:23:109:56 | ...::new_with_eff_key_len(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:109:23:109:56 | ...::new_with_eff_key_len(...) | The cryptographic algorithm RC2 |
 | test_cipher.rs:114:23:114:50 | ...::new(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:114:23:114:50 | ...::new(...) | The cryptographic algorithm RC5 |
 | test_cipher.rs:118:23:118:55 | ...::new_from_slice(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:118:23:118:55 | ...::new_from_slice(...) | The cryptographic algorithm RC5 |
+| test_cipher.rs:136:23:136:76 | ...::new(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:136:23:136:76 | ...::new(...) | The cryptographic algorithm DES |
+| test_cipher.rs:139:23:139:64 | ...::new(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:139:23:139:64 | ...::new(...) | The cryptographic algorithm DES |
+| test_cipher.rs:142:23:142:76 | ...::new_from_slices(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:142:23:142:76 | ...::new_from_slices(...) | The cryptographic algorithm DES |
+| test_cipher.rs:145:23:145:76 | ...::new(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:145:23:145:76 | ...::new(...) | The cryptographic algorithm DES |
+| test_cipher.rs:171:23:171:65 | ...::new(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:171:23:171:65 | ...::new(...) | The cryptographic algorithm DES |
+| test_cipher.rs:175:23:175:65 | ...::new(...) | $@ is broken or weak, and should not be used. | test_cipher.rs:175:23:175:65 | ...::new(...) | The cryptographic algorithm RC2 |

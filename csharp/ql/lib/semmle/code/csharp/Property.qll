@@ -226,7 +226,7 @@ class Property extends DeclarationWithGetSetAccessors, @property {
    * }
    * ```
    */
-  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(0) }
+  Expr getInitializer() { result = this.getChildExpr(1).getChildExpr(1) }
 
   /**
    * Holds if this property has an initial value. For example, the initial

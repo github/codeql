@@ -337,6 +337,22 @@ class ExtensionTypeExtensionMethod extends ExtensionMethodImpl {
 }
 
 /**
+ * A non-static member with an initializer, for example a field `int Field = 0`.
+ */
+private class InitializedInstanceMember extends Member {
+  private AssignExpr ae;
+
+  InitializedInstanceMember() {
+    not this.isStatic() and
+    expr_parent_top_level(ae, _, this) and
+    not ae = getExpressionBody(_)
+  }
+
+  /** Gets the initializer expression. */
+  AssignExpr getInitializer() { result = ae }
+}
+
+/**
  * An object initializer method.
  *
  * This is an extractor-synthesized method that executes the field
@@ -347,6 +363,17 @@ class ExtensionTypeExtensionMethod extends ExtensionMethodImpl {
  */
 class ObjectInitMethod extends Method {
   ObjectInitMethod() { this.getName() = "<object initializer>" }
+
+  /**
+   * Holds if this object initializer method performs the initialization
+   * of a member via assignment `init`.
+   */
+  predicate initializes(AssignExpr init) {
+    exists(InitializedInstanceMember m |
+      this.getDeclaringType().getAMember() = m and
+      init = m.getInitializer()
+    )
+  }
 }
 
 /**

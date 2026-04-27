@@ -10,11 +10,13 @@ uniqueEnclosingCallable
 | test.cpp:1158:18:1158:42 | ... , ... | Node should have one enclosing callable but has 0. |
 | test.cpp:1158:23:1158:31 | recursion | Node should have one enclosing callable but has 0. |
 | test.cpp:1158:35:1158:40 | call to source | Node should have one enclosing callable but has 0. |
+| test.cpp:1318:13:1318:18 | call to source | Node should have one enclosing callable but has 0. |
 uniqueCallEnclosingCallable
 | test.cpp:864:47:864:54 | call to source | Call should have one enclosing callable but has 0. |
 | test.cpp:872:46:872:51 | call to source | Call should have one enclosing callable but has 0. |
 | test.cpp:1158:18:1158:21 | call to sink | Call should have one enclosing callable but has 0. |
 | test.cpp:1158:35:1158:40 | call to source | Call should have one enclosing callable but has 0. |
+| test.cpp:1318:13:1318:18 | call to source | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation

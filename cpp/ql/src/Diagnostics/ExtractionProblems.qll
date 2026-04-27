@@ -50,7 +50,7 @@ private newtype TExtractionProblem =
 /**
  * Superclass for the extraction problem hierarchy.
  */
-class ExtractionProblem extends TExtractionProblem {
+abstract class ExtractionProblem extends TExtractionProblem {
   /** Gets the string representation of the problem. */
   string toString() { none() }
 
@@ -65,6 +65,9 @@ class ExtractionProblem extends TExtractionProblem {
 
   /** Gets the SARIF severity of this problem. */
   int getSeverity() { none() }
+
+  /** Gets the `Compilation` the problem is associated with. */
+  abstract Compilation getCompilation();
 }
 
 /**
@@ -96,6 +99,8 @@ class ExtractionUnrecoverableError extends ExtractionProblem, TCompilationFailed
     // [errors](https://docs.oasis-open.org/sarif/sarif/v2.1.0/csprd01/sarif-v2.1.0-csprd01.html#_Toc10541338).
     result = 2
   }
+
+  override Compilation getCompilation() { result = c }
 }
 
 /**
@@ -122,6 +127,8 @@ class ExtractionRecoverableWarning extends ExtractionProblem, TReportableWarning
     // [warnings](https://docs.oasis-open.org/sarif/sarif/v2.1.0/csprd01/sarif-v2.1.0-csprd01.html#_Toc10541338).
     result = 1
   }
+
+  override Compilation getCompilation() { result = err.getCompilation() }
 }
 
 /**
@@ -148,4 +155,6 @@ class ExtractionUnknownProblem extends ExtractionProblem, TUnknownProblem {
     // [warnings](https://docs.oasis-open.org/sarif/sarif/v2.1.0/csprd01/sarif-v2.1.0-csprd01.html#_Toc10541338).
     result = 1
   }
+
+  override Compilation getCompilation() { result = err.getCompilation() }
 }

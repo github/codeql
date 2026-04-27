@@ -215,9 +215,9 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 module SourceSinkInterpretationInput implements
   Impl::Private::External::SourceSinkInterpretationInputSig
 {
-  private import csharp as Cs
+  private import csharp as CS
 
-  class Element = Cs::Element;
+  class Element = CS::Element;
 
   predicate sourceElement(
     Element e, string output, string kind, Public::Provenance provenance, string model

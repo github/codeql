@@ -27,7 +27,7 @@ public:
   void func()
   {
     sink(s1); // $ ast,ir
-    sink(s2); // $ MISSING: ast,ir
+    sink(s2); // $ ir MISSING: ast
     sink(s3); // $ ast,ir
     sink(s4); // $ MISSING: ast,ir
   }

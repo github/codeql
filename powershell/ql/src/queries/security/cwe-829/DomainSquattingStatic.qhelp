@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+
+<qhelp>
+
+  <overview>
+    <p> Do not use domains like <code>*.outlook.us</code> and <code>*.office.us</code>, as these are domains that are not owned by Microsoft. Also avoid using deprecated domains like <code>goo.gl</code>. 
+    These domains are subject to domain squatting, which can introduce a security risk to services that trust them. </p>
+
+    <p>In addition to the above, <code>ajax.microsoft.com</code> and <code>ajax.aspnetcdn.com</code> host old JavaScript or old CSS in a non-production CDN. This CDN has no SLA, and could disappear at any time. We recommend that you move your assets local or serve them from a fully supported production CDN, such as the <a href="https://eng.ms/docs/experiences-devices/global-experiences-platform/es365/idc-fundamentals-1js/1js-monorepo/1js-repo-docs/team-documentation/midgard/engineering-system/cdn">M365 Shared CDN (1CDN)</a>.</p>
+  </overview>
+
+  <recommendation>
+    <p>Please remove any references to any obsolete domains</p>
+  </recommendation>
+
+  <references>
+  <li>Google: <a href="https://developers.googleblog.com/en/google-url-shortener-links-will-no-longer-be-available/">Google URL Shortener links will no longer be available</a>.</li>
+  <li>AJAX CDN: <a href="https://learn.microsoft.com/en-us/aspnet/ajax/cdn/overview">AJAX CDN Overview</a></li>
+  </references>
+</qhelp>

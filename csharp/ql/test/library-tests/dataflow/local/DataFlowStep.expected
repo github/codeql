@@ -32,13 +32,14 @@
 | LocalDataFlow.cs:59:13:59:25 | SSA def(sink1) | LocalDataFlow.cs:60:9:60:13 | access to local variable sink1 |
 | LocalDataFlow.cs:59:21:59:25 | "abc" | LocalDataFlow.cs:59:13:59:17 | access to local variable sink1 |
 | LocalDataFlow.cs:60:9:60:13 | access to local variable sink1 | LocalDataFlow.cs:60:9:60:22 | SSA def(sink1) |
-| LocalDataFlow.cs:60:9:60:22 | ... + ... | LocalDataFlow.cs:60:9:60:13 | access to local variable sink1 |
+| LocalDataFlow.cs:60:9:60:22 | ... += ... | LocalDataFlow.cs:60:9:60:13 | access to local variable sink1 |
 | LocalDataFlow.cs:60:9:60:22 | SSA def(sink1) | LocalDataFlow.cs:61:15:61:19 | access to local variable sink1 |
+| LocalDataFlow.cs:60:18:60:22 | [post] access to local variable sink0 | LocalDataFlow.cs:168:20:168:24 | access to local variable sink0 |
 | LocalDataFlow.cs:60:18:60:22 | access to local variable sink0 | LocalDataFlow.cs:168:20:168:24 | access to local variable sink0 |
 | LocalDataFlow.cs:61:15:61:19 | [post] access to local variable sink1 | LocalDataFlow.cs:68:21:68:25 | access to local variable sink1 |
 | LocalDataFlow.cs:61:15:61:19 | access to local variable sink1 | LocalDataFlow.cs:68:21:68:25 | access to local variable sink1 |
 | LocalDataFlow.cs:64:9:64:16 | access to local variable nonSink0 | LocalDataFlow.cs:64:9:64:25 | SSA def(nonSink0) |
-| LocalDataFlow.cs:64:9:64:25 | ... + ... | LocalDataFlow.cs:64:9:64:16 | access to local variable nonSink0 |
+| LocalDataFlow.cs:64:9:64:25 | ... += ... | LocalDataFlow.cs:64:9:64:16 | access to local variable nonSink0 |
 | LocalDataFlow.cs:64:9:64:25 | SSA def(nonSink0) | LocalDataFlow.cs:65:15:65:22 | access to local variable nonSink0 |
 | LocalDataFlow.cs:65:15:65:22 | [post] access to local variable nonSink0 | LocalDataFlow.cs:72:20:72:27 | access to local variable nonSink0 |
 | LocalDataFlow.cs:65:15:65:22 | access to local variable nonSink0 | LocalDataFlow.cs:72:20:72:27 | access to local variable nonSink0 |

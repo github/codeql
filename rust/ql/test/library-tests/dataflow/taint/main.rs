@@ -162,9 +162,9 @@ fn std_ops() {
     sink(1i64.shr(source(2))); // $ hasTaintFlow=2
 
     sink(source(1).bitor(2i64)); // $ hasTaintFlow=1
-    sink(source(1).bitor(2)); // $ MISSING: hasTaintFlow=1
+    sink(source(1).bitor(2)); // $ hasTaintFlow=1
     sink(1i64.bitor(source(2))); // $ hasTaintFlow=2
-    sink(1.bitor(source(2))); // $ MISSING: hasTaintFlow=2
+    sink(1.bitor(source(2))); // $ hasTaintFlow=2
 
     let mut a: i64 = 1;
     a.add_assign(source(2));
