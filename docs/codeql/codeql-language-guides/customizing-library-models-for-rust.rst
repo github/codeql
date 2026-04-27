@@ -127,7 +127,7 @@ This example shows how the Rust query pack models the return value of the ``reqw
       Ok(response)
   }
 
-We need to add a tuple to the ``sourceModel``\(path, output, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``sourceModel(path, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
