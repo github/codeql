@@ -223,7 +223,7 @@ This example shows how the Rust query pack models taint flow through the ``join`
       // ...
   }
 
-We need to add tuples to the ``summaryModel``\(path, input, output, kind, provenance) extensible predicate by updating a data extension file:
+We need to add tuples to the ``summaryModel(path, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
 .. code-block:: yaml
 
