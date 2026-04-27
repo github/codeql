@@ -97,7 +97,7 @@ This example shows how the Rust query pack models the first argument of the ``sq
           .unwrap();
   }
 
-We need to add a tuple to the ``sinkModel``\(path, input, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``sinkModel(path, input, kind, provenance)`` extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
