@@ -912,7 +912,7 @@ private module Cached {
   }
 
   cached
-  Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
+  deprecated Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
     Impl::uncertainWriteDefinitionInput(def, result)
   }
 

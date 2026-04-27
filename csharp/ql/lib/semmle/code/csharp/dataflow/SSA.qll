@@ -358,7 +358,7 @@ module Ssa {
      */
     private Definition getAPhiInputOrPriorDefinition() {
       result = this.(SsaPhiDefinition).getAnInput() or
-      result = this.(UncertainDefinition).getPriorDefinition()
+      result = this.(SsaUncertainWrite).getPriorDefinition()
     }
 
     /**
@@ -686,12 +686,14 @@ module Ssa {
   }
 
   /**
+   * DEPRECATED: Use `SsaUncertainWrite` instead.
+   *
    * An SSA definition that represents an uncertain update of the underlying
    * assignable. Either an explicit update that is uncertain (`ref` assignments
    * need not be certain), an implicit non-local update via a call, or an
    * uncertain update of the qualifier.
    */
-  class UncertainDefinition extends Definition, SsaImpl::UncertainWriteDefinition {
+  deprecated class UncertainDefinition extends Definition, SsaImpl::UncertainWriteDefinition {
     /**
      * Gets the immediately preceding definition. Since this update is uncertain,
      * the value from the preceding definition might still be valid.
