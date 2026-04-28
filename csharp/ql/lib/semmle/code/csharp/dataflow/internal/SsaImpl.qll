@@ -828,14 +828,6 @@ private module Cached {
     )
   }
 
-  cached
-  deprecated AssignableDefinition getADefinition(Ssa::ExplicitDefinition def) {
-    exists(Ssa::SourceVariable v, AssignableDefinition ad | explicitDefinition(def, v, ad) |
-      result = ad or
-      result = getASameOutRefDefAfter(v, ad)
-    )
-  }
-
   /**
    * Holds if `call` may change the value of field or property `fp`. The actual
    * update occurs in `setter`.
@@ -861,36 +853,6 @@ private module Cached {
     not updatesNamedFieldOrProp(bb, i, _, v, _)
   }
 
-  cached
-  deprecated predicate explicitDefinition(
-    WriteDefinition def, Ssa::SourceVariable v, AssignableDefinition ad
-  ) {
-    exists(BasicBlock bb, int i |
-      def.definesAt(v, bb, i) and
-      variableDefinition(bb, i, v, ad)
-    )
-  }
-
-  cached
-  deprecated predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
-    Impl::ssaDefReachesEndOfBlock(bb, def, _)
-  }
-
-  cached
-  deprecated Definition phiHasInputFromBlock(Ssa::PhiNode phi, BasicBlock bb) {
-    Impl::phiHasInputFromBlock(phi, result, bb)
-  }
-
-  cached
-  deprecated AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
-    exists(Ssa::SourceVariable v, BasicBlock bb, int i |
-      Impl::ssaDefReachesRead(v, def, bb, i) and
-      variableReadActual(bb, i, v) and
-      cfn = bb.getNode(i) and
-      result.getControlFlowNode() = cfn
-    )
-  }
-
   /**
    * Holds if the value defined at SSA definition `def` can reach a read at `cfn`,
    * without passing through any other read.
@@ -913,11 +875,6 @@ private module Cached {
       cfn1 = bb1.getNode(i1) and
       cfn2 = bb2.getNode(i2)
     )
-  }
-
-  cached
-  deprecated Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
-    Impl::uncertainWriteDefinitionInput(def, result)
   }
 
   /**
@@ -1008,6 +965,43 @@ private module Cached {
 }
 
 import Cached
+
+deprecated AssignableDefinition getADefinition(Ssa::ExplicitDefinition def) {
+  exists(Ssa::SourceVariable v, AssignableDefinition ad | explicitDefinition(def, v, ad) |
+    result = ad or
+    result = getASameOutRefDefAfter(v, ad)
+  )
+}
+
+deprecated predicate explicitDefinition(
+  WriteDefinition def, Ssa::SourceVariable v, AssignableDefinition ad
+) {
+  exists(BasicBlock bb, int i |
+    def.definesAt(v, bb, i) and
+    variableDefinition(bb, i, v, ad)
+  )
+}
+
+deprecated predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
+  Impl::ssaDefReachesEndOfBlock(bb, def, _)
+}
+
+deprecated Definition phiHasInputFromBlock(Ssa::PhiNode phi, BasicBlock bb) {
+  Impl::phiHasInputFromBlock(phi, result, bb)
+}
+
+deprecated AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
+  exists(Ssa::SourceVariable v, BasicBlock bb, int i |
+    Impl::ssaDefReachesRead(v, def, bb, i) and
+    variableReadActual(bb, i, v) and
+    cfn = bb.getNode(i) and
+    result.getControlFlowNode() = cfn
+  )
+}
+
+deprecated Definition uncertainWriteDefinitionInput(UncertainWriteDefinition def) {
+  Impl::uncertainWriteDefinitionInput(def, result)
+}
 
 private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInputSig {
   private import codeql.util.Boolean
