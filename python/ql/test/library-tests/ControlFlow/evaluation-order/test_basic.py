@@ -8,7 +8,7 @@ Every evaluated expression has a timestamp annotation, except the
 timer mechanism itself (t[n], t.dead[n]).
 """
 
-from timer import test
+from timer import test, never
 
 
 @test
@@ -178,7 +178,7 @@ def test_unreachable_after_return(t):
     def f():
         x = 1 @ t[1]
         return x @ t[2]
-        y = 2 @ t.never
+        y = 2 @ t[never]
     result = (f @ t[0])() @ t[3]
 
 

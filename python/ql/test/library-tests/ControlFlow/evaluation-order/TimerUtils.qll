@@ -29,9 +29,40 @@ private IntegerLiteral timestampLiteral(Expr timestamps) {
   result = timestamps.(Tuple).getAnElt()
 }
 
+/**
+ * Gets an element from a timestamp subscript index. Each element is either
+ * an `IntegerLiteral` (live), a `Call` to `dead` (dead), a `Name("never")`
+ * (never), or a tuple containing any mix of these.
+ */
+private Expr timestampElement(Expr timestamps) {
+  result = timestamps and not timestamps instanceof Tuple
+  or
+  result = timestamps.(Tuple).getAnElt()
+}
+
+/** Gets a live timestamp value from a subscript index expression. */
+private IntegerLiteral liveTimestampLiteral(Expr timestamps) {
+  result = timestampElement(timestamps) and
+  not result = any(Call c).getAnArg()
+}
+
+/** Gets a dead timestamp value from a subscript index expression. */
+private IntegerLiteral deadTimestampLiteral(Expr timestamps) {
+  exists(Call c |
+    c = timestampElement(timestamps) and
+    c.getFunc().(Name).getId() = "dead" and
+    result = c.getArg(0)
+  )
+}
+
+/** Holds if the subscript index contains `never`. */
+private predicate hasNever(Expr timestamps) {
+  timestampElement(timestamps).(Name).getId() = "never"
+}
+
 /** A timer annotation in the AST. */
 private newtype TTimerAnnotation =
-  /** `expr @ t[n]` or `expr @ t[n, m, ...]` */
+  /** `expr @ t[n]` or `expr @ t[n, m, ...]` or `expr @ t[dead(n), m, never]` */
   TMatmulAnnotation(TestFunction func, Expr annotated, Expr timestamps) {
     exists(BinaryExpr be |
       be.getOp() instanceof MatMult and
@@ -49,40 +80,29 @@ private newtype TTimerAnnotation =
       annotated = call.getArg(0) and
       timestamps = call.getArg(1)
     )
-  } or
-  /** `expr @ t.dead[n]` — dead-code annotation */
-  TDeadAnnotation(TestFunction func, Expr annotated, Expr timestamps) {
-    exists(BinaryExpr be |
-      be.getOp() instanceof MatMult and
-      be.getRight().(Subscript).getObject().(Attribute).getObject("dead").(Name).getId() =
-        func.getTimerParamName() and
-      be.getScope().getEnclosingScope*() = func and
-      annotated = be.getLeft() and
-      timestamps = be.getRight().(Subscript).getIndex()
-    )
-  } or
-  /** `expr @ t.never` — annotation for code that should never be evaluated */
-  TNeverAnnotation(TestFunction func, Expr annotated) {
-    exists(BinaryExpr be |
-      be.getOp() instanceof MatMult and
-      be.getRight().(Attribute).getObject("never").(Name).getId() = func.getTimerParamName() and
-      be.getScope().getEnclosingScope*() = func and
-      annotated = be.getLeft()
-    )
   }
 
 /** A timer annotation (wrapping the newtype for a clean API). */
 class TimerAnnotation extends TTimerAnnotation {
-  /** Gets a timestamp value from this annotation. */
+  /** Gets a live timestamp value from this annotation. */
   int getATimestamp() { exists(this.getTimestampExpr(result)) }
 
-  /** Gets the source expression for timestamp value `ts`. */
+  /** Gets the source expression for live timestamp value `ts`. */
   IntegerLiteral getTimestampExpr(int ts) {
-    result = timestampLiteral(this.getTimestampsExpr()) and
+    result = liveTimestampLiteral(this.getTimestampsExpr()) and
     result.getValue() = ts
   }
 
-  /** Gets the raw timestamp expression (single int or tuple). */
+  /** Gets a dead timestamp value from this annotation. */
+  int getADeadTimestamp() { exists(this.getDeadTimestampExpr(result)) }
+
+  /** Gets the source expression for dead timestamp value `ts`. */
+  IntegerLiteral getDeadTimestampExpr(int ts) {
+    result = deadTimestampLiteral(this.getTimestampsExpr()) and
+    result.getValue() = ts
+  }
+
+  /** Gets the raw timestamp expression (single element or tuple). */
   abstract Expr getTimestampsExpr();
 
   /** Gets the test function this annotation belongs to. */
@@ -94,18 +114,25 @@ class TimerAnnotation extends TTimerAnnotation {
   /** Gets the enclosing annotation expression (the `BinaryExpr` or `Call`). */
   abstract Expr getTimerExpr();
 
-  /** Holds if this is a dead-code annotation (`t.dead[n]`). */
-  predicate isDead() { this instanceof DeadTimerAnnotation }
+  /** Holds if timestamp `ts` is marked as dead in this annotation. */
+  predicate isDeadTimestamp(int ts) { ts = this.getADeadTimestamp() }
 
-  /** Holds if this is a never-evaluated annotation (`t.never`). */
-  predicate isNever() { this instanceof NeverTimerAnnotation }
+  /** Holds if all timestamps in this annotation are dead (no live timestamps). */
+  predicate isDead() {
+    not exists(this.getATimestamp()) and
+    not this.isNever() and
+    exists(this.getADeadTimestamp())
+  }
+
+  /** Holds if this is a never-evaluated annotation (contains `never`). */
+  predicate isNever() { hasNever(this.getTimestampsExpr()) }
 
   string toString() { result = this.getAnnotatedExpr().toString() }
 
   Location getLocation() { result = this.getAnnotatedExpr().getLocation() }
 }
 
-/** A matmul-based timer annotation: `expr @ t[n]`. */
+/** A matmul-based timer annotation: `expr @ t[...]`. */
 class MatmulTimerAnnotation extends TMatmulAnnotation, TimerAnnotation {
   TestFunction func;
   Expr annotated;
@@ -139,39 +166,6 @@ class CallTimerAnnotation extends TCallAnnotation, TimerAnnotation {
   override Call getTimerExpr() { result.getArg(0) = annotated }
 }
 
-/** A dead-code timer annotation: `expr @ t.dead[n]`. */
-class DeadTimerAnnotation extends TDeadAnnotation, TimerAnnotation {
-  TestFunction func;
-  Expr annotated;
-  Expr timestamps;
-
-  DeadTimerAnnotation() { this = TDeadAnnotation(func, annotated, timestamps) }
-
-  override Expr getTimestampsExpr() { result = timestamps }
-
-  override TestFunction getTestFunction() { result = func }
-
-  override Expr getAnnotatedExpr() { result = annotated }
-
-  override BinaryExpr getTimerExpr() { result.getLeft() = annotated }
-}
-
-/** A never-evaluated annotation: `expr @ t.never`. */
-class NeverTimerAnnotation extends TNeverAnnotation, TimerAnnotation {
-  TestFunction func;
-  Expr annotated;
-
-  NeverTimerAnnotation() { this = TNeverAnnotation(func, annotated) }
-
-  override Expr getTimestampsExpr() { none() }
-
-  override TestFunction getTestFunction() { result = func }
-
-  override Expr getAnnotatedExpr() { result = annotated }
-
-  override BinaryExpr getTimerExpr() { result.getLeft() = annotated }
-}
-
 /**
  * Signature module defining the CFG interface needed by evaluation-order tests.
  * This allows the test utilities to be instantiated with different CFG implementations.
@@ -190,6 +184,12 @@ signature module EvalOrderCfgSig {
 
     /** Gets a successor of this CFG node (including exceptional). */
     CfgNode getASuccessor();
+
+    /** Gets a true-branch successor of this CFG node, if any. */
+    CfgNode getATrueSuccessor();
+
+    /** Gets a false-branch successor of this CFG node, if any. */
+    CfgNode getAFalseSuccessor();
 
     /** Gets an exceptional successor of this CFG node. */
     CfgNode getAnExceptionalSuccessor();
@@ -251,7 +251,10 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
     /** Gets the test function this annotation belongs to. */
     TestFunction getTestFunction() { result = annot.getTestFunction() }
 
-    /** Holds if this is a dead-code annotation. */
+    /** Holds if timestamp `ts` is marked as dead. */
+    predicate isDeadTimestamp(int ts) { annot.isDeadTimestamp(ts) }
+
+    /** Holds if all timestamps in this annotation are dead. */
     predicate isDead() { annot.isDead() }
 
     /** Holds if this is a never-evaluated annotation. */
@@ -272,6 +275,42 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
       not mid instanceof TimerCfgNode and
       mid.getScope() = n.getScope() and
       nextTimerAnnotation(mid, next)
+    )
+  }
+
+  /**
+   * Holds if `next` is the next timer annotation reachable from `n` via
+   * the true branch, skipping non-annotated intermediaries and after-value
+   * nodes for the same AST node.
+   */
+  predicate nextTimerAnnotationFromTrue(CfgNode n, TimerCfgNode next) {
+    exists(CfgNode trueSucc |
+      trueSucc = n.getATrueSuccessor() and
+      trueSucc.getScope() = n.getScope()
+    |
+      // If the true successor is a different annotated node, use it
+      next = trueSucc and next.getNode() != n.getNode()
+      or
+      // Otherwise skip through it (it's an after-value node for the same expr)
+      nextTimerAnnotation(trueSucc, next)
+    )
+  }
+
+  /**
+   * Holds if `next` is the next timer annotation reachable from `n` via
+   * the false branch, skipping non-annotated intermediaries and after-value
+   * nodes for the same AST node.
+   */
+  predicate nextTimerAnnotationFromFalse(CfgNode n, TimerCfgNode next) {
+    exists(CfgNode falseSucc |
+      falseSucc = n.getAFalseSuccessor() and
+      falseSucc.getScope() = n.getScope()
+    |
+      // If the false successor is a different annotated node, use it
+      next = falseSucc and next.getNode() != n.getNode()
+      or
+      // Otherwise skip through it (it's an after-value node for the same expr)
+      nextTimerAnnotation(falseSucc, next)
     )
   }
 
@@ -352,7 +391,8 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
      * Holds if the expression annotated with `t.never` is reachable from
      * its scope's entry.
      */
-    predicate neverReachable(NeverTimerAnnotation ann) {
+    predicate neverReachable(TimerAnnotation ann) {
+      ann.isNever() and
       exists(CfgNode n, Scope s |
         n.getNode() = ann.getAnnotatedExpr() and
         s = n.getScope() and
@@ -437,6 +477,61 @@ module EvalOrderCfgUtils<EvalOrderCfgSig Input> {
 
     predicate annotationWithCfgNode(TimerAnnotation ann) {
       exists(CfgNode n | n.getNode() = ann.getAnnotatedExpr())
+    }
+
+    /**
+     * Holds if annotation `ann` with timestamp `a` has no consecutive
+     * predecessor (expected `a - 1`) in the CFG.
+     */
+    predicate consecutivePredecessorTimestamps(TimerAnnotation ann, int a) {
+      not hasNestedScopeAnnotation(ann.getTestFunction()) and
+      not ann.isDead() and
+      a = ann.getATimestamp() and
+      not exists(TimerCfgNode x, TimerCfgNode y |
+        ann.getAnnotatedExpr() = y.getNode() and
+        nextTimerAnnotation(x, y) and
+        (a - 1) = x.getATimestamp()
+      ) and
+      // Exclude the minimum timestamp in the function (it has no predecessor)
+      not a =
+        min(TimerAnnotation other |
+          other.getTestFunction() = ann.getTestFunction() and
+          not other.isDead()
+        |
+          other.getATimestamp()
+        )
+    }
+
+    /**
+     * Holds if `node` has both a true and false successor, but the true
+     * successor's timestamp `ts` is not marked as dead on the false
+     * successor (or vice versa).
+     *
+     * This checks that boolean branches are properly annotated: when a
+     * condition splits into true/false paths, the next annotated node
+     * on each side should account for the other side's timestamps as dead.
+     */
+    predicate missingBranchTimestamp(TimerCfgNode node, int ts, string branch) {
+      not hasNestedScopeAnnotation(node.getTestFunction()) and
+      exists(TimerCfgNode trueNext, TimerCfgNode falseNext |
+        nextTimerAnnotationFromTrue(node, trueNext) and
+        nextTimerAnnotationFromFalse(node, falseNext) and
+        trueNext != falseNext
+      |
+        // True successor has live timestamp ts, but false successor
+        // doesn't have it as dead
+        ts = trueNext.getATimestamp() and
+        not falseNext.isDeadTimestamp(ts) and
+        not ts = falseNext.getATimestamp() and
+        branch = "false"
+        or
+        // False successor has live timestamp ts, but true successor
+        // doesn't have it as dead
+        ts = falseNext.getATimestamp() and
+        not trueNext.isDeadTimestamp(ts) and
+        not ts = trueNext.getATimestamp() and
+        branch = "true"
+      )
     }
   }
 }

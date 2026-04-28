@@ -7,7 +7,7 @@ if sys.version_info < (3, 10):
     print("0/0 tests passed")
     sys.exit(0)
 
-from timer import test
+from timer import test, dead, never
 
 
 @test
@@ -17,7 +17,7 @@ def test_match_literal(t):
         case 1:
             y = "one" @ t[2]
         case 2:
-            y = "two" @ t.dead[2]
+            y = "two" @ t[dead(2)]
     z = y @ t[3]
 
 
@@ -26,9 +26,9 @@ def test_match_literal_fallthrough(t):
     x = 3 @ t[0]
     match x @ t[1]:
         case 1:
-            y = "one" @ t.dead[2]
+            y = "one" @ t[dead(2)]
         case 2:
-            y = "two" @ t.dead[2]
+            y = "two" @ t[dead(2)]
         case 3:
             y = "three" @ t[2]
     z = y @ t[3]
@@ -39,7 +39,7 @@ def test_match_wildcard(t):
     x = 42 @ t[0]
     match x @ t[1]:
         case 1:
-            y = "one" @ t.dead[2]
+            y = "one" @ t[dead(2)]
         case _:
             y = "other" @ t[2]
     z = y @ t[3]
@@ -61,7 +61,7 @@ def test_match_or_pattern(t):
         case 1 | 2:
             y = "low" @ t[2]
         case _:
-            y = "other" @ t.dead[2]
+            y = "other" @ t[dead(2)]
     z = y @ t[3]
 
 
@@ -72,7 +72,7 @@ def test_match_guard(t):
         case n if (n @ t[2] > 3 @ t[3]) @ t[4]:
             y = n @ t[5]
         case _:
-            y = 0 @ t.dead[5]
+            y = 0 @ t[dead(5)]
     z = y @ t[6]
 
 
@@ -83,7 +83,7 @@ def test_match_class_pattern(t):
         case int():
             y = "integer" @ t[2]
         case str():
-            y = "string" @ t.dead[2]
+            y = "string" @ t[dead(2)]
     z = y @ t[3]
 
 
@@ -94,7 +94,7 @@ def test_match_sequence(t):
         case [a, b]:
             y = (a @ t[4] + b @ t[5]) @ t[6]
         case _:
-            y = 0 @ t.dead[6]
+            y = 0 @ t[dead(6)]
     z = y @ t[7]
 
 
@@ -105,7 +105,7 @@ def test_match_mapping(t):
         case {"key": value}:
             y = value @ t[4]
         case _:
-            y = 0 @ t.dead[4]
+            y = 0 @ t[dead(4)]
     z = y @ t[5]
 
 
@@ -116,7 +116,7 @@ def test_match_nested(t):
         case {"users": [{"name": name}]}:
             y = name @ t[7]
         case _:
-            y = "unknown" @ t.dead[7]
+            y = "unknown" @ t[dead(7)]
     z = y @ t[8]
 
 
@@ -129,7 +129,7 @@ def test_match_or_pattern_with_as(t):
             result = ((uses @ t[2]).partition @ t[3])("@" @ t[4]) @ t[5]
             x = (result @ t[6])[0 @ t[7]] @ t[8]
         case _:
-            raise ((ValueError @ t.dead[2])(clause @ t.dead[3]) @ t.dead[4])
+            raise ((ValueError @ t[dead(2)])(clause @ t[dead(3)]) @ t[dead(4)])
     y = x @ t[9]
 
 
@@ -140,7 +140,7 @@ def test_match_wildcard_raise(t):
     try:
         match clause @ t[1]:
             case (str() as uses) | {"uses": uses}:
-                result = uses @ t.dead[2]
+                result = uses @ t[dead(2)]
             case _:
                 raise ((ValueError @ t[2])(f"Invalid: {clause @ t[3]}" @ t[4]) @ t[5])
     except ValueError:
@@ -155,8 +155,8 @@ def test_match_exhaustive_return_first(t):
             case 1:
                 return "one" @ t[3]
             case _:
-                return "other" @ t.dead[3]
-        y = 0 @ t.never
+                return "other" @ t[dead(3)]
+        y = 0 @ t[never]
     result = (f @ t[0])(1 @ t[1]) @ t[4]
 
 
@@ -166,8 +166,8 @@ def test_match_exhaustive_return_wildcard(t):
     def f(x):
         match x @ t[2]:
             case 1:
-                return "one" @ t.dead[3]
+                return "one" @ t[dead(3)]
             case _:
                 return "other" @ t[3]
-        y = 0 @ t.never
+        y = 0 @ t[never]
     result = (f @ t[0])(99 @ t[1]) @ t[4]

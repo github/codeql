@@ -12,7 +12,7 @@ private module Utils = EvalOrderCfgUtils<OldCfg>;
 
 private import Utils::CfgTests
 
-from NeverTimerAnnotation ann
+from TimerAnnotation ann
 where neverReachable(ann)
 select ann, "Node annotated with t.never is reachable in $@", ann.getTestFunction(),
   ann.getTestFunction().getName()

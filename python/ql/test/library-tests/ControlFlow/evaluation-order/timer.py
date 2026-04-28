@@ -5,7 +5,7 @@ that verify the order in which Python evaluates expressions.
 
 Usage with @test decorator (preferred):
 
-    from timer import test
+    from timer import test, dead, never
 
     @test
     def test_sequential(t):
@@ -13,18 +13,14 @@ Usage with @test decorator (preferred):
         y = 2 @ t[1]
         z = (x + y) @ t[2]
 
-Usage with context manager (manual):
-
-    from timer import Timer
-
-    with Timer("my_test") as t:
-        x = 1 @ t[0]
-
-Timer API:
-    t[n]          - assert current timestamp is n, return marker
-    t[n, m, ...]  - assert current timestamp is one of {n, m, ...}
-    t["label"]    - record current timestamp under label (development aid)
-    t(value, n)   - equivalent to: value @ t[n]
+Annotation forms:
+    t[n]              - assert current timestamp is n, return marker
+    t[n, m, ...]      - assert current timestamp is one of {n, m, ...}
+    t[dead(n)]        - mark timestamp n as dead (fails if evaluated)
+    t[dead(n), m]     - dead at n, live at m
+    t[never]          - mark as never evaluated (fails if evaluated)
+    t["label"]        - record current timestamp under label (development aid)
+    t(value, n)       - equivalent to: value @ t[n]
 
 Run a test file directly to self-validate: python test_file.py
 """
@@ -36,19 +32,41 @@ _results = []
 
 
 class _Check:
-    """Marker returned by t[n] — asserts the current timestamp."""
+    """Marker returned by t[n] — asserts the current timestamp.
 
-    __slots__ = ("_timer", "_expected")
+    Receives the raw subscript elements: plain ints are live timestamps,
+    dead(n) markers are dead timestamps, and `never` means any evaluation
+    is an error.
+    """
 
-    def __init__(self, timer, expected):
+    __slots__ = ("_timer", "_live", "_dead", "_never")
+
+    def __init__(self, timer, elements):
         self._timer = timer
-        self._expected = expected
+        self._live = set()
+        self._dead = set()
+        self._never = False
+        for e in elements:
+            if isinstance(e, int):
+                self._live.add(e)
+            elif isinstance(e, _DeadMarker):
+                self._dead.add(e.timestamp)
+            elif isinstance(e, _NeverSentinel):
+                self._never = True
 
     def __rmatmul__(self, value):
         ts = self._timer._tick()
-        if ts not in self._expected:
+        if self._never:
             self._timer._error(
-                f"expected {sorted(self._expected)}, got {ts}"
+                f"expression annotated with t[never] was evaluated (timestamp {ts})"
+            )
+        elif ts in self._dead:
+            self._timer._error(
+                f"timestamp {ts} is marked dead but was evaluated"
+            )
+        elif ts not in self._live:
+            self._timer._error(
+                f"expected {sorted(self._live)}, got {ts}"
             )
         return value
 
@@ -68,36 +86,24 @@ class _Label:
         return value
 
 
-class _NeverCheck:
-    """Marker returned by t.never — fails if the expression is ever evaluated."""
+class _DeadMarker:
+    """Marker returned by dead(n) — used inside t[...] to mark a timestamp as dead."""
 
-    def __init__(self, timer):
-        self._timer = timer
-
-    def __rmatmul__(self, value):
-        self._timer._error("expression annotated with t.never was evaluated")
-        return value
+    def __init__(self, timestamp):
+        self.timestamp = timestamp
 
 
-class _DeadCheck:
-    """Marker returned by t.dead[n] — fails if the expression is ever evaluated."""
-
-    def __init__(self, timer):
-        self._timer = timer
-
-    def __rmatmul__(self, value):
-        self._timer._error("expression annotated with t.dead was evaluated")
-        return value
+def dead(n):
+    """Mark timestamp `n` as dead code inside a timer subscript: t[dead(1), 2]."""
+    return _DeadMarker(n)
 
 
-class _DeadSubscript:
-    """Subscriptable returned by t.dead — produces _DeadCheck markers."""
+class _NeverSentinel:
+    """Sentinel for never-evaluated annotations: t[never]."""
+    pass
 
-    def __init__(self, timer):
-        self._timer = timer
 
-    def __getitem__(self, key):
-        return _DeadCheck(self._timer)
+never = _NeverSentinel()
 
 
 class Timer:
@@ -113,8 +119,6 @@ class Timer:
         self._counter = 0
         self._errors = []
         self._labels = {}
-        self.dead = _DeadSubscript(self)
-        self.never = _NeverCheck(self)
 
     def __enter__(self):
         return self
@@ -144,7 +148,7 @@ class Timer:
         if isinstance(key, str):
             return _Label(self, key)
         elif isinstance(key, tuple):
-            return _Check(self, list(key))
+            return _Check(self, key)
         else:
             return _Check(self, [key])
 

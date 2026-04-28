@@ -1,6 +1,6 @@
 """Assert and raise statement evaluation order."""
 
-from timer import test
+from timer import test, dead
 
 
 @test
@@ -13,7 +13,7 @@ def test_assert_true(t):
 @test
 def test_assert_true_with_message(t):
     x = True @ t[0]
-    assert x @ t[1], "msg" @ t.dead[2]
+    assert x @ t[1], "msg" @ t[dead(2)]
     y = 1 @ t[2]
 
 

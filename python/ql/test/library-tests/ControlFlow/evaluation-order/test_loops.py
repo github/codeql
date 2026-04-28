@@ -1,6 +1,6 @@
 """Loop control flow evaluation order tests."""
 
-from timer import test
+from timer import test, dead
 
 
 # 1. Simple while loop (fixed iterations)
@@ -55,7 +55,7 @@ def test_while_else_break(t):
             break
         i = (i @ t[7] + 1 @ t[8]) @ t[9]
     else:
-        never = True @ t.dead[16]
+        never = True @ t[dead(16)]
     after = True @ t[16]
 
 
@@ -113,7 +113,7 @@ def test_for_else_break(t):
             break
         x @ t[7]
     else:
-        never = True @ t.dead[11]
+        never = True @ t[dead(11)]
     after = True @ t[11]
 
 
@@ -122,8 +122,8 @@ def test_for_else_break(t):
 def test_nested_loops(t):
     for i in [1 @ t[0], 2 @ t[1]] @ t[2]:
         for j in [10 @ t[3, 12], 20 @ t[4, 13]] @ t[5, 14]:
-            (i @ t[6, 9, 15, 18] + j @ t[7, 10, 16, 19]) @ t[8, 11, 17, 20]
-    done = True @ t[21]
+            (i @ t[6, 9, 15, 18, dead(21)] + j @ t[7, 10, 16, 19]) @ t[8, 11, 17, 20]
+    done = True @ t[dead(3), dead(6), dead(9), dead(12), dead(15), dead(18), 21]
 
 
 # 13. While True with conditional break

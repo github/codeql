@@ -6,6 +6,7 @@
 private import python as Py
 import TimerUtils
 private import semmle.python.controlflow.internal.AstNodeImpl as CfgImpl
+private import codeql.controlflow.SuccessorType
 
 private class NewControlFlowNode = CfgImpl::ControlFlowNode;
 
@@ -30,6 +31,20 @@ module NewCfg implements EvalOrderCfgSig {
     }
 
     CfgNode getASuccessor() { nextCfgNode(this, result) }
+
+    CfgNode getATrueSuccessor() {
+      NewControlFlowNode.super.isAfterTrue(_) and
+      // Only where there's also a false branch (true boolean split)
+      exists(NewControlFlowNode other | other.isAfterFalse(NewControlFlowNode.super.getAstNode())) and
+      nextCfgNodeFrom(this, result)
+    }
+
+    CfgNode getAFalseSuccessor() {
+      NewControlFlowNode.super.isAfterFalse(_) and
+      // Only where there's also a true branch (true boolean split)
+      exists(NewControlFlowNode other | other.isAfterTrue(NewControlFlowNode.super.getAstNode())) and
+      nextCfgNodeFrom(this, result)
+    }
 
     CfgNode getAnExceptionalSuccessor() {
       exists(NewControlFlowNode mid |
