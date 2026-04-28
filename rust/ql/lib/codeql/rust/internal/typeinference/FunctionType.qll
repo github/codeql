@@ -6,17 +6,23 @@ private import TypeMention
 private import TypeInference
 
 private newtype TFunctionPosition =
-  TArgumentFunctionPosition(ArgumentPosition pos) or
+  TArgumentFunctionPosition(ArgumentPosition pos) { not pos.isSelf() } or
   TReturnFunctionPosition()
 
 /**
- * A position of a type related to a function.
+ * A function-call adjusted position of a type related to a function.
  *
- * Either `self`, `return`, or a positional parameter index.
+ * Either `return` or a positional parameter index, where `self` is translated
+ * to position `0` and subsequent positional parameters at index `i` are
+ * translated to position `i + 1`.
+ *
+ * Function-call adjusted positions are needed when resolving calls of the
+ * form `Foo::f(x_1, ..., x_n)`, where we do not know up front whether `f` is a
+ * method or a non-method, and hence we need to be able to match `x_1` against
+ * both a potential `self` parameter and a potential first positional parameter
+ * (and `x_2, ... x_n` against all subsequent positional parameters).
  */
 class FunctionPosition extends TFunctionPosition {
-  predicate isSelf() { this.asArgumentPosition().isSelf() }
-
   int asPosition() { result = this.asArgumentPosition().asPosition() }
 
   predicate isPosition() { exists(this.asPosition()) }
@@ -25,29 +31,18 @@ class FunctionPosition extends TFunctionPosition {
 
   predicate isTypeQualifier() { this.asArgumentPosition().isTypeQualifier() }
 
-  predicate isSelfOrTypeQualifier() { this.isSelf() or this.isTypeQualifier() }
-
   predicate isReturn() { this = TReturnFunctionPosition() }
 
-  /** Gets the corresponding position when `f` is invoked via a function call. */
-  bindingset[f]
-  FunctionPosition getFunctionCallAdjusted(Function f) {
-    this.isReturn() and
-    result = this
-    or
-    if f.hasSelfParam()
-    then
-      this.isSelf() and result.asPosition() = 0
-      or
-      result.asPosition() = this.asPosition() + 1
-    else result = this
-  }
-
   TypeMention getTypeMention(Function f) {
-    this.isSelf() and
-    result = getSelfParamTypeMention(f.getSelfParam())
-    or
-    result = f.getParam(this.asPosition()).getTypeRepr()
+    (
+      if f instanceof Method
+      then
+        result = f.getParam(this.asPosition() - 1).getTypeRepr()
+        or
+        result = getSelfParamTypeMention(f.getSelfParam()) and
+        this.asPosition() = 0
+      else result = f.getParam(this.asPosition()).getTypeRepr()
+    )
     or
     this.isReturn() and
     result = getReturnTypeMention(f)
@@ -92,6 +87,7 @@ private newtype TAssocFunctionType =
   }
 
 bindingset[abs, constraint, tp]
+pragma[inline_late]
 private Type getTraitConstraintTypeAt(
   TypeAbstraction abs, TypeMention constraint, TypeParameter tp, TypePath path
 ) {
@@ -197,8 +193,7 @@ class AssocFunctionType extends MkAssocFunctionType {
     exists(Function f, ImplOrTraitItemNode i, FunctionPosition pos | this.appliesTo(f, i, pos) |
       result = pos.getTypeMention(f)
       or
-      pos.isSelf() and
-      not f.hasSelfParam() and
+      pos.isTypeQualifier() and
       result = [i.(Impl).getSelfTy().(AstNode), i.(Trait).getName()]
     )
   }
@@ -219,23 +214,47 @@ private Trait getALookupTrait(Type t) {
   result = t.(DynTraitType).getTrait()
 }
 
-/**
- * Gets the type obtained by substituting in relevant traits in which to do function
- * lookup, or `t` itself when no such trait exist.
- */
 pragma[nomagic]
-Type substituteLookupTraits(Type t) {
+private Trait getAdditionalLookupTrait(ItemNode i, Type t) {
+  result =
+    t.(TypeParamTypeParameter)
+        .getTypeParam()
+        .(TypeParamItemNode)
+        .resolveAdditionalBound(i.getImmediateParent*())
+}
+
+bindingset[n, t]
+pragma[inline_late]
+Trait getALookupTrait(AstNode n, Type t) {
+  result = getALookupTrait(t)
+  or
+  result = getAdditionalLookupTrait(any(ItemNode i | n = i.getADescendant()), t)
+}
+
+bindingset[i, t]
+pragma[inline_late]
+private Type substituteLookupTraits0(ItemNode i, Type t) {
   not exists(getALookupTrait(t)) and
+  not exists(getAdditionalLookupTrait(i, t)) and
   result = t
   or
   result = TTrait(getALookupTrait(t))
+  or
+  result = TTrait(getAdditionalLookupTrait(i, t))
 }
 
 /**
- * Gets the `n`th `substituteLookupTraits` type for `t`, per some arbitrary order.
+ * Gets the type obtained by substituting in relevant traits in which to do function
+ * lookup, or `t` itself when no such trait exists, in the context of AST node `n`.
  */
+bindingset[n, t]
+pragma[inline_late]
+Type substituteLookupTraits(AstNode n, Type t) {
+  result = substituteLookupTraits0(any(ItemNode i | n = i.getADescendant()), t)
+}
+
 pragma[nomagic]
-Type getNthLookupType(Type t, int n) {
+private Type getNthLookupType(Type t, int n) {
   not exists(getALookupTrait(t)) and
   result = t and
   n = 0
@@ -250,24 +269,66 @@ Type getNthLookupType(Type t, int n) {
 }
 
 /**
- * Gets the index of the last `substituteLookupTraits` type for `t`.
+ * Gets the `n`th `substituteLookupTraits` type for `t`, per some arbitrary order,
+ * in the context of AST node `node`.
  */
+bindingset[node, t]
+pragma[inline_late]
+Type getNthLookupType(AstNode node, Type t, int n) {
+  exists(ItemNode i | node = i.getADescendant() |
+    if exists(getAdditionalLookupTrait(i, t))
+    then
+      result =
+        TTrait(rank[n + 1](Trait trait, int j |
+            trait = [getALookupTrait(t), getAdditionalLookupTrait(i, t)] and
+            j = idOfTypeParameterAstNode(trait)
+          |
+            trait order by j
+          ))
+    else result = getNthLookupType(t, n)
+  )
+}
+
 pragma[nomagic]
-int getLastLookupTypeIndex(Type t) { result = max(int n | exists(getNthLookupType(t, n))) }
+private int getLastLookupTypeIndex(Type t) { result = max(int n | exists(getNthLookupType(t, n))) }
+
+/**
+ * Gets the index of the last `substituteLookupTraits` type for `t`,
+ * in the context of AST node `node`.
+ */
+bindingset[node, t]
+pragma[inline_late]
+int getLastLookupTypeIndex(AstNode node, Type t) {
+  if exists(getAdditionalLookupTrait(node, t))
+  then result = max(int n | exists(getNthLookupType(node, t, n)))
+  else result = getLastLookupTypeIndex(t)
+}
+
+signature class ArgSig {
+  /** Gets the type of this argument at `path`. */
+  Type getTypeAt(TypePath path);
+
+  /** Gets the enclosing item node of this argument. */
+  ItemNode getEnclosingItemNode();
+
+  /** Gets a textual representation of this argument. */
+  string toString();
+
+  /** Gets the location of this argument. */
+  Location getLocation();
+}
 
 /**
  * A wrapper around `IsInstantiationOf` which ensures to substitute in lookup
  * traits when checking whether argument types are instantiations of function
  * types.
  */
-module ArgIsInstantiationOf<
-  HasTypeTreeSig Arg, IsInstantiationOfInputSig<Arg, AssocFunctionType> Input>
-{
+module ArgIsInstantiationOf<ArgSig Arg, IsInstantiationOfInputSig<Arg, AssocFunctionType> Input> {
   final private class ArgFinal = Arg;
 
   private class ArgSubst extends ArgFinal {
     Type getTypeAt(TypePath path) {
-      result = substituteLookupTraits(super.getTypeAt(path)) and
+      result = substituteLookupTraits0(this.getEnclosingItemNode(), super.getTypeAt(path)) and
       not result = TNeverType() and
       not result = TUnknownType()
     }
@@ -310,10 +371,11 @@ signature module ArgsAreInstantiationsOfInputSig {
    * Holds if `f` inside `i` needs to have the type corresponding to type parameter
    * `tp` checked.
    *
-   * If `i` is an inherent implementation, `tp` is a type parameter of the type being
-   * implemented, otherwise `tp` is a type parameter of the trait (being implemented).
+   * `tp` is a type parameter of the trait being implemented by `f` or the trait to which
+   * `f` belongs.
    *
-   * `pos` is one of the positions in `f` in which the relevant type occours.
+   * `pos` is one of the function-call adjusted positions in `f` in which the relevant
+   * type occurs.
    */
   predicate toCheck(ImplOrTraitItemNode i, Function f, TypeParameter tp, FunctionPosition pos);
 
@@ -322,6 +384,8 @@ signature module ArgsAreInstantiationsOfInputSig {
     string toString();
 
     Location getLocation();
+
+    ItemNode getEnclosingItemNode();
 
     Type getArgType(FunctionPosition pos, TypePath path);
 
@@ -360,7 +424,7 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
   private newtype TCallAndPos =
     MkCallAndPos(Input::Call call, FunctionPosition pos) { exists(call.getArgType(pos, _)) }
 
-  /** A call tagged with a position. */
+  /** A call tagged with a function-call adjusted position. */
   private class CallAndPos extends MkCallAndPos {
     Input::Call call;
     FunctionPosition pos;
@@ -370,6 +434,8 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
     Input::Call getCall() { result = call }
 
     FunctionPosition getPos() { result = pos }
+
+    ItemNode getEnclosingItemNode() { result = call.getEnclosingItemNode() }
 
     Location getLocation() { result = call.getLocation() }
 
@@ -413,20 +479,21 @@ module ArgsAreInstantiationsOf<ArgsAreInstantiationsOfInputSig Input> {
 
   pragma[nomagic]
   private predicate argIsInstantiationOf(
-    Input::Call call, FunctionPosition pos, ImplOrTraitItemNode i, Function f, int rnk
+    Input::Call call, ImplOrTraitItemNode i, Function f, int rnk
   ) {
-    ArgIsInstantiationOfToIndex::argIsInstantiationOf(MkCallAndPos(call, pos), i, _) and
-    toCheckRanked(i, f, _, pos, rnk)
+    exists(FunctionPosition pos |
+      ArgIsInstantiationOfToIndex::argIsInstantiationOf(MkCallAndPos(call, pos), i, _) and
+      toCheckRanked(i, f, _, pos, rnk)
+    )
   }
 
   pragma[nomagic]
   private predicate argsAreInstantiationsOfToIndex(
     Input::Call call, ImplOrTraitItemNode i, Function f, int rnk
   ) {
-    exists(FunctionPosition pos |
-      argIsInstantiationOf(call, pos, i, f, rnk) and
-      call.hasTargetCand(i, f)
-    |
+    argIsInstantiationOf(call, i, f, rnk) and
+    call.hasTargetCand(i, f) and
+    (
       rnk = 0
       or
       argsAreInstantiationsOfToIndex(call, i, f, rnk - 1)

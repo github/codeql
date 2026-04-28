@@ -4,7 +4,7 @@
  *              a stored cross-site scripting vulnerability.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 6.1
+ * @security-severity 7.8
  * @precision high
  * @id rb/stored-xss
  * @tags security

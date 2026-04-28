@@ -322,6 +322,12 @@ module Public {
     Operand asIndirectOperand(int index) { hasOperandAndIndex(this, result, index) }
 
     /**
+     * Gets the instruction that is indirectly tracked by this node behind
+     * `index` number of indirections.
+     */
+    Instruction asIndirectInstruction(int index) { hasInstructionAndIndex(this, result, index) }
+
+    /**
      * Holds if this node is at index `i` in basic block `block`.
      *
      * Note: Phi nodes are considered to be at index `-1`.
@@ -618,6 +624,25 @@ module Public {
     LocalVariable asUninitialized() { result = this.(UninitializedNode).getLocalVariable() }
 
     /**
+     * Gets the uninitialized local variable corresponding to this node behind
+     * `index` number of indirections, if any.
+     */
+    LocalVariable asIndirectUninitialized(int index) {
+      exists(IndirectUninitializedNode indirectUninitializedNode |
+        this = indirectUninitializedNode and
+        indirectUninitializedNode.getIndirectionIndex() = index
+      |
+        result = indirectUninitializedNode.getLocalVariable()
+      )
+    }
+
+    /**
+     * Gets the uninitialized local variable corresponding to this node behind
+     * a number indirections, if any.
+     */
+    LocalVariable asIndirectUninitialized() { result = this.asIndirectUninitialized(_) }
+
+    /**
      * Gets the positional parameter corresponding to the node that represents
      * the value of the parameter after `index` number of loads, if any. For
      * example, in:
@@ -761,16 +786,13 @@ module Public {
     final override Type getType() { result = this.getPreUpdateNode().getType() }
   }
 
-  /**
-   * The value of an uninitialized local variable, viewed as a node in a data
-   * flow graph.
-   */
-  class UninitializedNode extends Node {
+  abstract private class AbstractUninitializedNode extends Node {
     LocalVariable v;
+    int indirectionIndex;
 
-    UninitializedNode() {
+    AbstractUninitializedNode() {
       exists(SsaImpl::Definition def, SsaImpl::SourceVariable sv |
-        def.getIndirectionIndex() = 0 and
+        def.getIndirectionIndex() = indirectionIndex and
         def.getValue().asInstruction() instanceof UninitializedInstruction and
         SsaImpl::defToNode(this, def, sv) and
         v = sv.getBaseVariable().(SsaImpl::BaseIRVariable).getIRVariable().getAst()
@@ -779,6 +801,25 @@ module Public {
 
     /** Gets the uninitialized local variable corresponding to this node. */
     LocalVariable getLocalVariable() { result = v }
+  }
+
+  /**
+   * The value of an uninitialized local variable, viewed as a node in a data
+   * flow graph.
+   */
+  class UninitializedNode extends AbstractUninitializedNode {
+    UninitializedNode() { indirectionIndex = 0 }
+  }
+
+  /**
+   * The value of an uninitialized local variable behind one or more levels of
+   * indirection, viewed as a node in a data flow graph.
+   */
+  class IndirectUninitializedNode extends AbstractUninitializedNode {
+    IndirectUninitializedNode() { indirectionIndex > 0 }
+
+    /** Gets the indirection index of this node. */
+    int getIndirectionIndex() { result = indirectionIndex }
   }
 
   /**
@@ -795,6 +836,12 @@ module Public {
   /** An explicit positional parameter, including `this`, but not `...`. */
   final class DirectParameterNode = AbstractDirectParameterNode;
 
+  /**
+   * A node representing an indirection of a positional parameter,
+   * including `*this`, but not `*...`.
+   */
+  final class IndirectParameterNode = AbstractIndirectParameterNode;
+
   final class ExplicitParameterNode = AbstractExplicitParameterNode;
 
   /** An implicit `this` parameter. */
@@ -802,11 +849,6 @@ module Public {
     InstructionDirectParameterNode
   {
     ThisParameterInstructionNode() { instr.getIRVariable() instanceof IRThisVariable }
-
-    override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
-      pos.(DirectPosition).getArgumentIndex() = -1 and
-      instr.getEnclosingFunction() = f
-    }
 
     override string toStringImpl() { result = "this" }
   }
@@ -831,7 +873,11 @@ module Public {
 
     /** Gets the parameter through which this value is assigned. */
     Parameter getParameter() {
-      result = this.getCallInstruction().getStaticCallTarget().getParameter(this.getArgumentIndex())
+      result =
+        this.getCallInstruction()
+            .getStaticCallTarget()
+            .(Function)
+            .getParameter(this.getArgumentIndex())
     }
   }
 
@@ -953,11 +999,6 @@ module Public {
 }
 
 private import Public
-
-/**
- * A node representing an indirection of a parameter.
- */
-final class IndirectParameterNode = AbstractIndirectParameterNode;
 
 /**
  * A class that lifts pre-SSA dataflow nodes to regular dataflow nodes.
@@ -1083,7 +1124,7 @@ class IndirectArgumentOutNode extends PostUpdateNodeImpl {
   /**
    * Gets the `Function` that the call targets, if this is statically known.
    */
-  Function getStaticCallTarget() { result = this.getCallInstruction().getStaticCallTarget() }
+  Declaration getStaticCallTarget() { result = this.getCallInstruction().getStaticCallTarget() }
 
   override string toStringImpl() {
     exists(string prefix | if indirectionIndex > 0 then prefix = "" else prefix = "pointer to " |
@@ -1587,7 +1628,7 @@ abstract private class AbstractParameterNode extends Node {
    * implicit `this` parameter is considered to have position `-1`, and
    * pointer-indirection parameters are at further negative positions.
    */
-  predicate isSourceParameterOf(Function f, ParameterPosition pos) { none() }
+  predicate isSourceParameterOf(Declaration f, ParameterPosition pos) { none() }
 
   /**
    * Holds if this node is the parameter of `sc` at the specified position. The
@@ -1613,6 +1654,11 @@ abstract private class AbstractParameterNode extends Node {
 
   /** Gets the `Parameter` associated with this node, if it exists. */
   Parameter getParameter() { none() } // overridden by subclasses
+
+  /**
+   * Holds if this node represents an implicit `this` parameter, if it exists.
+   */
+  predicate isThis() { none() } // overridden by subclasses
 }
 
 abstract private class AbstractIndirectParameterNode extends AbstractParameterNode {
@@ -1641,7 +1687,9 @@ private class IndirectInstructionParameterNode extends AbstractIndirectParameter
   InitializeParameterInstruction init;
 
   IndirectInstructionParameterNode() {
-    IndirectInstruction.super.hasInstructionAndIndirectionIndex(init, _)
+    IndirectInstruction.super.hasInstructionAndIndirectionIndex(init, _) and
+    // We don't model catch parameters as parameter nodes
+    not exists(init.getParameter().getCatchBlock())
   }
 
   int getArgumentIndex() { init.hasIndex(result) }
@@ -1655,8 +1703,9 @@ private class IndirectInstructionParameterNode extends AbstractIndirectParameter
     )
   }
 
-  /** Gets the parameter whose indirection is initialized. */
   override Parameter getParameter() { result = init.getParameter() }
+
+  override predicate isThis() { init.hasIndex(-1) }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = this.getFunction()
@@ -1664,7 +1713,7 @@ private class IndirectInstructionParameterNode extends AbstractIndirectParameter
 
   override Declaration getFunction() { result = init.getEnclosingFunction() }
 
-  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+  override predicate isSourceParameterOf(Declaration f, ParameterPosition pos) {
     this.getFunction() = f and
     exists(int argumentIndex, int indirectionIndex |
       indirectPositionHasArgumentIndexAndIndex(pos, argumentIndex, indirectionIndex) and
@@ -1692,6 +1741,18 @@ abstract class InstructionDirectParameterNode extends InstructionNode, AbstractD
    * Gets the `IRVariable` that this parameter references.
    */
   final IRVariable getIRVariable() { result = instr.getIRVariable() }
+
+  override predicate isThis() { instr.hasIndex(-1) }
+
+  override Parameter getParameter() { result = instr.getParameter() }
+
+  override predicate isSourceParameterOf(Declaration f, ParameterPosition pos) {
+    this.getFunction() = f and
+    exists(int argumentIndex |
+      pos.(DirectPosition).getArgumentIndex() = argumentIndex and
+      instr.hasIndex(argumentIndex)
+    )
+  }
 }
 
 abstract private class AbstractExplicitParameterNode extends AbstractDirectParameterNode { }
@@ -1700,15 +1761,12 @@ abstract private class AbstractExplicitParameterNode extends AbstractDirectParam
 private class ExplicitParameterInstructionNode extends AbstractExplicitParameterNode,
   InstructionDirectParameterNode
 {
-  ExplicitParameterInstructionNode() { exists(instr.getParameter()) }
-
-  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
-    f.getParameter(pos.(DirectPosition).getArgumentIndex()) = instr.getParameter()
+  ExplicitParameterInstructionNode() {
+    // We don't model catch parameters as parameter nodes.
+    exists(instr.getParameter().getFunction())
   }
 
   override string toStringImpl() { result = instr.getParameter().toString() }
-
-  override Parameter getParameter() { result = instr.getParameter() }
 }
 
 /**
@@ -1736,9 +1794,9 @@ private class DirectBodyLessParameterNode extends AbstractExplicitParameterNode,
 {
   DirectBodyLessParameterNode() { indirectionIndex = 0 }
 
-  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+  override predicate isSourceParameterOf(Declaration f, ParameterPosition pos) {
     this.getFunction() = f and
-    f.getParameter(pos.(DirectPosition).getArgumentIndex()) = p
+    f.(Function).getParameter(pos.(DirectPosition).getArgumentIndex()) = p
   }
 
   override Parameter getParameter() { result = p }
@@ -1749,10 +1807,10 @@ private class IndirectBodyLessParameterNode extends AbstractIndirectParameterNod
 {
   IndirectBodyLessParameterNode() { not this instanceof DirectBodyLessParameterNode }
 
-  override predicate isSourceParameterOf(Function f, ParameterPosition pos) {
+  override predicate isSourceParameterOf(Declaration f, ParameterPosition pos) {
     exists(int argumentPosition |
       this.getFunction() = f and
-      f.getParameter(argumentPosition) = p and
+      f.(Function).getParameter(argumentPosition) = p and
       indirectPositionHasArgumentIndexAndIndex(pos, argumentPosition, indirectionIndex)
     )
   }

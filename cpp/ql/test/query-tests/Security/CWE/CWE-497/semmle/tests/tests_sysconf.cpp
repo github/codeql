@@ -21,7 +21,7 @@ void test_sc_1()
 	int value = sysconf(_SC_CHILD_MAX);
 
 	printf("_SC_CHILD_MAX = %i\n", _SC_CHILD_MAX); // GOOD
-	printf("_SC_CHILD_MAX = %i\n", value); // BAD [NOT DETECTED]
+	printf("_SC_CHILD_MAX = %i\n", value); // $ MISSING: Alert
 }
 
 void test_sc_2()
@@ -33,9 +33,9 @@ void test_sc_2()
 	pathbuf = (char *)malloc(n);
 	if (pathbuf != NULL)
 	{
-		confstr(_CS_PATH, pathbuf, n);
+		confstr(_CS_PATH, pathbuf, n); // $ Source
 
-		printf("path: %s", pathbuf); // BAD [NOT DETECTED]
-		write(get_fd(), pathbuf, strlen(pathbuf)); // BAD
+		printf("path: %s", pathbuf); // $ MISSING: Alert
+		write(get_fd(), pathbuf, strlen(pathbuf)); // $ Alert
 	}
 }

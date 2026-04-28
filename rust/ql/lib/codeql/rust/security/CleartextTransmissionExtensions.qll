@@ -6,6 +6,7 @@
 private import codeql.util.Unit
 private import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.security.SensitiveData
 private import codeql.rust.Concepts
@@ -54,5 +55,12 @@ module CleartextTransmission {
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, ["transmission", "request-url"]) }
+  }
+
+  /**
+   * A barrier defined through MaD.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, ["transmission", "request-url"]) }
   }
 }

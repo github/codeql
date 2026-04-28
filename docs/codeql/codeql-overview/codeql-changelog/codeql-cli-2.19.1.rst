@@ -129,7 +129,7 @@ Java/Kotlin
 """""""""""
 
 *   The Java extractor and QL libraries now support Java 23.
-*   Kotlin versions up to 2.1.0\ *x* are now supported.
+*   Kotlin versions up to 2.1.0*x* are now supported.
 
 Python
 """"""

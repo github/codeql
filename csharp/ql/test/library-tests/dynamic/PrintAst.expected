@@ -105,12 +105,12 @@ dynamic.cs:
 #   35|       15: [ExprStmt] ...;
 #   35|         0: [AssignExpr] ... = ...
 #   35|           0: [LocalVariableAccess] access to local variable d
-#   35|           1: [DynamicOperatorCall] dynamic call to operator -
+#   35|           1: [OperatorCall] dynamic call to operator -
 #   35|             0: [LocalVariableAccess] access to local variable d
 #   36|       16: [ExprStmt] ...;
 #   36|         0: [AssignExpr] ... = ...
 #   36|           0: [LocalVariableAccess] access to local variable d
-#   36|           1: [DynamicOperatorCall] dynamic call to operator +
+#   36|           1: [OperatorCall] dynamic call to operator +
 #   36|             0: [LocalVariableAccess] access to local variable d
 #   36|             1: [LocalVariableAccess] access to local variable d
 #   37|       17: [ExprStmt] ...;
@@ -141,7 +141,7 @@ dynamic.cs:
 #   44|         0: [PostIncrExpr] ...++
 #   44|           0: [LocalVariableAccess] access to local variable i
 #   47|       23: [ExprStmt] ...;
-#   47|         0: [DynamicOperatorCall] dynamic call to operator ++
+#   47|         0: [OperatorCall] dynamic call to operator ++
 #   47|           0: [LocalVariableAccess] access to local variable d
 #   50|       24: [ExprStmt] ...;
 #   50|         0: [PostIncrExpr] ...++

@@ -1,0 +1,4 @@
+| test.ps1:6:9:6:55 | Call to new-object | Use of weak HMAC algorithm: hmacmd5. Use HMACSHA256 or stronger. |
+| test.ps1:9:9:9:56 | Call to new-object | Use of weak HMAC algorithm: hmacsha1. Use HMACSHA256 or stronger. |
+| test.ps1:12:9:12:56 | Call to create | Use of weak HMAC algorithm: hmacmd5. Use HMACSHA256 or stronger. |
+| test.ps1:15:9:15:54 | Call to new | Use of weak HMAC algorithm: hmacsha1. Use HMACSHA256 or stronger. |

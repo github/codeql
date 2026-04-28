@@ -45,3 +45,5 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
+    exclude-paths:
+      - "misc/bazel/registry/**"

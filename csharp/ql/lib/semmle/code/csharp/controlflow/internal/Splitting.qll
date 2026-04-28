@@ -95,7 +95,7 @@ module ConditionalCompletionSplitting {
         child = parent.(SwitchCaseExpr).getBody()
         or
         parent =
-          any(NullCoalescingExpr nce |
+          any(NullCoalescingOperation nce |
             if childCompletion instanceof NullnessCompletion
             then child = nce.getRightOperand()
             else child = nce.getAnOperand()

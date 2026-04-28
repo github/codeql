@@ -62,6 +62,9 @@ class StmtCfgNode extends AstCfgNode {
   Stmt getStmt() { result = s }
 }
 
+pragma[nomagic]
+private BasicBlock getARelevantBasicBlock(Ast a) { result.getANode().getAstNode() = a }
+
 /**
  * A class for mapping parent-child AST nodes to parent-child CFG nodes.
  */
@@ -86,7 +89,7 @@ abstract private class ChildMapping extends Ast {
     or
     exists(BasicBlock mid |
       this.reachesBasicBlock(child, cfn, mid) and
-      not mid.getANode().getAstNode() = child
+      not mid = getARelevantBasicBlock(child)
     |
       if this.precedesParent(child) then bb = mid.getAPredecessor() else bb = mid.getASuccessor()
     )

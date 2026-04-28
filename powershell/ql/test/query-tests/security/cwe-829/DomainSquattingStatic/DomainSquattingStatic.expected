@@ -1,0 +1,5 @@
+| test.ps1:2:15:2:46 | https://mail.outlook.us/api/v1 | use of obsolete domain %.outlook.us% |
+| test.ps1:5:14:5:45 | https://portal.office.us/admin | use of obsolete domain %.office.us% |
+| test.ps1:8:13:8:35 | https://goo.gl/abc123 | use of obsolete domain %goo.gl% |
+| test.ps1:11:11:11:70 | https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js | use of obsolete domain %ajax.aspnetcdn.com% |
+| test.ps1:14:14:14:68 | http://ajax.microsoft.com/ajax/4.0/1/MicrosoftAjax.js | use of obsolete domain %ajax.microsoft.com% |

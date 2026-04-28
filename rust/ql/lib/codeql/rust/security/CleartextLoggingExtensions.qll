@@ -5,6 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.security.SensitiveData
 private import codeql.rust.Concepts
@@ -42,6 +43,13 @@ module CleartextLogging {
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "log-injection") }
+  }
+
+  /**
+   * A barrier for logging from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "log-injection") }
   }
 
   private class BooleanTypeBarrier extends Barrier instanceof Barriers::BooleanTypeBarrier { }

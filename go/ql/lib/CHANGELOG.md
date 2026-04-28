@@ -1,3 +1,7 @@
+## 7.0.5
+
+No user-facing changes.
+
 ## 7.0.4
 
 No user-facing changes.

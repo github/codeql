@@ -1,9 +1,10 @@
 /**
  * INTERNAL use only. This is an experimental API subject to change without notice.
  *
- * Provides classes and predicates for dealing with flow models specified in CSV format.
+ * Provides classes and predicates for dealing with flow models specified
+ * in data extension files.
  *
- * The CSV specification has the following columns:
+ * The extensible relations have the following columns:
  * - Sources:
  *   `namespace; type; subtypes; name; signature; ext; output; kind`
  * - Sinks:
@@ -104,117 +105,9 @@ private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
 private import internal.ExternalFlowExtensions::Extensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
-private import codeql.util.Unit
 private import codeql.mad.static.ModelsAsData as SharedMaD
 
-/**
- * A unit class for adding additional source model rows.
- *
- * Extend this class to add additional source definitions.
- */
-class SourceModelCsv extends Unit {
-  /** Holds if `row` specifies a source definition. */
-  abstract predicate row(string row);
-}
-
-/**
- * A unit class for adding additional sink model rows.
- *
- * Extend this class to add additional sink definitions.
- */
-class SinkModelCsv extends Unit {
-  /** Holds if `row` specifies a sink definition. */
-  abstract predicate row(string row);
-}
-
-/**
- * A unit class for adding additional summary model rows.
- *
- * Extend this class to add additional flow summary definitions.
- */
-class SummaryModelCsv extends Unit {
-  /** Holds if `row` specifies a summary definition. */
-  abstract predicate row(string row);
-}
-
-/** Holds if `row` is a source model. */
-predicate sourceModel(string row) { any(SourceModelCsv s).row(row) }
-
-/** Holds if `row` is a sink model. */
-predicate sinkModel(string row) { any(SinkModelCsv s).row(row) }
-
-/** Holds if `row` is a summary model. */
-predicate summaryModel(string row) { any(SummaryModelCsv s).row(row) }
-
 private module MadInput implements SharedMaD::InputSig {
-  /** Holds if a source model exists for the given parameters. */
-  predicate additionalSourceModel(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string output, string kind, string provenance, string model
-  ) {
-    exists(string row |
-      sourceModel(row) and
-      row.splitAt(";", 0) = namespace and
-      row.splitAt(";", 1) = type and
-      row.splitAt(";", 2) = subtypes.toString() and
-      subtypes = [true, false] and
-      row.splitAt(";", 3) = name and
-      row.splitAt(";", 4) = signature and
-      row.splitAt(";", 5) = ext and
-      row.splitAt(";", 6) = output and
-      row.splitAt(";", 7) = kind
-    ) and
-    provenance = "manual" and
-    model = ""
-  }
-
-  /** Holds if a sink model exists for the given parameters. */
-  predicate additionalSinkModel(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string kind, string provenance, string model
-  ) {
-    exists(string row |
-      sinkModel(row) and
-      row.splitAt(";", 0) = namespace and
-      row.splitAt(";", 1) = type and
-      row.splitAt(";", 2) = subtypes.toString() and
-      subtypes = [true, false] and
-      row.splitAt(";", 3) = name and
-      row.splitAt(";", 4) = signature and
-      row.splitAt(";", 5) = ext and
-      row.splitAt(";", 6) = input and
-      row.splitAt(";", 7) = kind
-    ) and
-    provenance = "manual" and
-    model = ""
-  }
-
-  /**
-   * Holds if a summary model exists for the given parameters.
-   *
-   * This predicate does not expand `@` to `*`s.
-   */
-  predicate additionalSummaryModel(
-    string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string output, string kind, string provenance, string model
-  ) {
-    exists(string row |
-      summaryModel(row) and
-      row.splitAt(";", 0) = namespace and
-      row.splitAt(";", 1) = type and
-      row.splitAt(";", 2) = subtypes.toString() and
-      subtypes = [true, false] and
-      row.splitAt(";", 3) = name and
-      row.splitAt(";", 4) = signature and
-      row.splitAt(";", 5) = ext and
-      row.splitAt(";", 6) = input and
-      row.splitAt(";", 7) = output and
-      row.splitAt(";", 8) = kind
-    ) and
-    provenance = "manual" and
-    model = ""
-  }
-
   string namespaceSegmentSeparator() { result = "::" }
 }
 
@@ -250,8 +143,8 @@ predicate summaryModel(
   )
 }
 
-/** Provides a query predicate to check the CSV data for validation errors. */
-module CsvValidation {
+/** Provides a query predicate to check the data for validation errors. */
+module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, string part |
       sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
@@ -294,40 +187,6 @@ module CsvValidation {
 
   private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
-  private string getInvalidModelSubtype() {
-    exists(string pred, string row |
-      sourceModel(row) and pred = "source"
-      or
-      sinkModel(row) and pred = "sink"
-      or
-      summaryModel(row) and pred = "summary"
-    |
-      exists(string b |
-        b = row.splitAt(";", 2) and
-        not b = ["true", "false"] and
-        result = "Invalid boolean \"" + b + "\" in " + pred + " model."
-      )
-    )
-  }
-
-  private string getInvalidModelColumnCount() {
-    exists(string pred, string row, int expect |
-      sourceModel(row) and expect = 8 and pred = "source"
-      or
-      sinkModel(row) and expect = 8 and pred = "sink"
-      or
-      summaryModel(row) and expect = 9 and pred = "summary"
-    |
-      exists(int cols |
-        cols = 1 + max(int n | exists(row.splitAt(";", n))) and
-        cols != expect and
-        result =
-          "Wrong number of columns in " + pred + " model row, expected " + expect + ", got " + cols +
-            "."
-      )
-    )
-  }
-
   private string getInvalidModelSignature() {
     exists(string pred, string namespace, string type, string name, string signature, string ext |
       sourceModel(namespace, type, _, name, signature, ext, _, _, _, _) and pred = "source"
@@ -366,13 +225,12 @@ module CsvValidation {
     )
   }
 
-  /** Holds if some row in a CSV-based flow model appears to contain typos. */
+  /** Holds if some row in a MaD flow model appears to contain typos. */
   query predicate invalidModelRow(string msg) {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), KindVal::getInvalidModelKind(),
-        getIncorrectConstructorSummaryOutput()
+        KindVal::getInvalidModelKind(), getIncorrectConstructorSummaryOutput()
       ]
   }
 }
@@ -1026,7 +884,7 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` is specified as a source with the given kind in a CSV flow
+   * Holds if `node` is specified as a source with the given kind in a MaD flow
    * model.
    */
   cached
@@ -1037,7 +895,7 @@ private module Cached {
   }
 
   /**
-   * Holds if `node` is specified as a sink with the given kind in a CSV flow
+   * Holds if `node` is specified as a sink with the given kind in a MaD flow
    * model.
    */
   cached

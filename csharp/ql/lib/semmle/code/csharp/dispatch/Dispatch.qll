@@ -202,11 +202,9 @@ private module Internal {
   private predicate isPotentialEventCall(
     AssignArithmeticOperation aao, DynamicMemberAccess dma, string name
   ) {
-    exists(DynamicOperatorCall doc, AssignExpr ae |
-      ae = aao.getExpandedAssignment() and
-      dma = ae.getLValue() and
-      doc = ae.getRValue()
-    |
+    aao instanceof DynamicOperatorCall and
+    dma = aao.getLeftOperand() and
+    (
       aao instanceof AssignAddExpr and
       name = "add_" + dma.getLateBoundTargetName()
       or

@@ -24,6 +24,7 @@
 | ExactCallable.cs:15:25:15:35 | Run`2 | ExactCallable.cs:172:21:172:33 | MethodWithOut |
 | ExactCallable.cs:15:25:15:35 | Run`2 | ExactCallable.cs:177:21:177:34 | MethodWithOut2 |
 | ExactCallable.cs:182:21:182:22 | M1 | ExactCallable.cs:187:21:187:22 | M2 |
+| TypeFlow.cs:3:7:3:14 | <object initializer> | TypeFlow.cs:22:20:22:22 | set_Prop |
 | TypeFlow.cs:5:5:5:12 | TypeFlow | TypeFlow.cs:24:10:24:12 | Run |
 | TypeFlow.cs:24:10:24:12 | Run | TypeFlow.cs:12:29:12:34 | Method |
 | TypeFlow.cs:24:10:24:12 | Run | TypeFlow.cs:17:30:17:35 | Method |
@@ -218,62 +219,62 @@
 | ViableCallable.cs:308:17:308:19 | Run | ViableCallable.cs:286:24:286:28 | M`1 |
 | ViableCallable.cs:308:17:308:19 | Run | ViableCallable.cs:303:26:303:30 | M`1 |
 | ViableCallable.cs:361:17:361:19 | Run | ViableCallable.cs:359:10:359:10 | M |
-| ViableCallable.cs:361:17:361:19 | Run | ViableCallable.cs:375:5:375:7 | C11 |
-| ViableCallable.cs:389:10:389:16 | Run`1 | ViableCallable.cs:385:33:385:33 | M |
-| ViableCallable.cs:395:10:395:17 | Run2`1 | ViableCallable.cs:389:10:389:16 | Run<T2> |
-| ViableCallable.cs:400:10:400:13 | Run3 | ViableCallable.cs:395:10:395:17 | Run2<C13> |
-| ViableCallable.cs:422:10:422:12 | Run | ViableCallable.cs:213:21:213:27 | Mock<A4> |
-| ViableCallable.cs:422:10:422:12 | Run | ViableCallable.cs:410:36:410:40 | M`1 |
-| ViableCallable.cs:422:10:422:12 | Run | ViableCallable.cs:416:53:416:57 | M`1 |
-| ViableCallable.cs:422:10:422:12 | Run | ViableCallable.cs:418:42:418:46 | M`1 |
-| ViableCallable.cs:444:22:444:26 | M2`1 | ViableCallable.cs:469:14:469:29 | (...) => ... |
-| ViableCallable.cs:444:22:444:26 | M2`1 | ViableCallable.cs:475:14:475:29 | (...) => ... |
-| ViableCallable.cs:449:10:449:11 | M1 | ViableCallable.cs:443:23:443:24 | M1 |
-| ViableCallable.cs:449:10:449:11 | M1 | ViableCallable.cs:458:23:458:27 | M2`1 |
-| ViableCallable.cs:458:23:458:27 | M2`1 | ViableCallable.cs:455:17:455:23 | (...) => ... |
-| ViableCallable.cs:458:23:458:27 | M2`1 | ViableCallable.cs:463:14:463:20 | (...) => ... |
-| ViableCallable.cs:458:23:458:27 | M2`1 | ViableCallable.cs:469:14:469:29 | (...) => ... |
-| ViableCallable.cs:458:23:458:27 | M2`1 | ViableCallable.cs:475:14:475:29 | (...) => ... |
-| ViableCallable.cs:460:10:460:14 | M3`1 | ViableCallable.cs:458:23:458:27 | M2`1 |
-| ViableCallable.cs:466:10:466:14 | M4`1 | ViableCallable.cs:444:22:444:26 | M2`1 |
-| ViableCallable.cs:466:10:466:14 | M4`1 | ViableCallable.cs:458:23:458:27 | M2`1 |
-| ViableCallable.cs:472:10:472:14 | M5`1 | ViableCallable.cs:444:22:444:26 | M2`1 |
-| ViableCallable.cs:472:10:472:14 | M5`1 | ViableCallable.cs:458:23:458:27 | M2`1 |
-| ViableCallable.cs:489:10:489:12 | Run | ViableCallable.cs:482:10:482:11 | M2 |
-| ViableCallable.cs:489:10:489:12 | Run | ViableCallable.cs:487:17:487:18 | M1 |
-| ViableCallable.cs:506:10:506:12 | Run | ViableCallable.cs:501:32:501:32 | + |
-| ViableCallable.cs:506:10:506:12 | Run | ViableCallable.cs:502:40:502:40 | checked + |
-| ViableCallable.cs:506:10:506:12 | Run | ViableCallable.cs:503:28:503:35 | explicit conversion |
-| ViableCallable.cs:506:10:506:12 | Run | ViableCallable.cs:504:28:504:35 | checked explicit conversion |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:528:39:528:39 | checked - |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:530:31:530:31 | * |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:531:39:531:39 | checked * |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:533:31:533:31 | / |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:534:39:534:39 | checked / |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:538:18:538:20 | M12 |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:540:18:540:20 | M13 |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:545:32:545:32 | + |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:546:40:546:40 | checked + |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:548:32:548:32 | - |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:550:32:550:32 | / |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:551:40:551:40 | checked / |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:553:17:553:19 | M11 |
-| ViableCallable.cs:556:10:556:15 | Run`1 | ViableCallable.cs:554:17:554:19 | M12 |
-| ViableCallable.cs:610:17:610:23 | Run1`1 | ViableCallable.cs:602:21:602:21 | M |
-| ViableCallable.cs:616:17:616:23 | Run2`1 | ViableCallable.cs:602:21:602:21 | M |
-| ViableCallable.cs:616:17:616:23 | Run2`1 | ViableCallable.cs:607:21:607:21 | M |
-| ViableCallable.cs:657:17:657:20 | Run1 | ViableCallable.cs:635:21:635:21 | M |
-| ViableCallable.cs:657:17:657:20 | Run1 | ViableCallable.cs:637:21:637:21 | M |
-| ViableCallable.cs:668:17:668:20 | Run2 | ViableCallable.cs:651:21:651:21 | M |
-| ViableCallable.cs:668:17:668:20 | Run2 | ViableCallable.cs:654:21:654:21 | M |
-| ViableCallable.cs:679:17:679:20 | Run3 | ViableCallable.cs:635:21:635:21 | M |
-| ViableCallable.cs:679:17:679:20 | Run3 | ViableCallable.cs:637:21:637:21 | M |
-| ViableCallable.cs:679:17:679:20 | Run3 | ViableCallable.cs:646:21:646:21 | M |
-| ViableCallable.cs:679:17:679:20 | Run3 | ViableCallable.cs:648:21:648:21 | M |
-| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:704:24:704:31 | Partial1 |
-| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:705:42:705:44 | get_Property |
-| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:705:63:705:65 | set_Property |
-| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:707:49:707:51 | get_Item |
-| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:707:70:707:72 | set_Item |
-| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:708:51:708:53 | add_Event |
-| ViableCallable.cs:711:17:711:20 | Run1 | ViableCallable.cs:708:59:708:64 | remove_Event |
+| ViableCallable.cs:361:17:361:19 | Run | ViableCallable.cs:376:5:376:7 | C11 |
+| ViableCallable.cs:390:10:390:16 | Run`1 | ViableCallable.cs:386:33:386:33 | M |
+| ViableCallable.cs:396:10:396:17 | Run2`1 | ViableCallable.cs:390:10:390:16 | Run<T2> |
+| ViableCallable.cs:401:10:401:13 | Run3 | ViableCallable.cs:396:10:396:17 | Run2<C13> |
+| ViableCallable.cs:423:10:423:12 | Run | ViableCallable.cs:213:21:213:27 | Mock<A4> |
+| ViableCallable.cs:423:10:423:12 | Run | ViableCallable.cs:411:36:411:40 | M`1 |
+| ViableCallable.cs:423:10:423:12 | Run | ViableCallable.cs:417:53:417:57 | M`1 |
+| ViableCallable.cs:423:10:423:12 | Run | ViableCallable.cs:419:42:419:46 | M`1 |
+| ViableCallable.cs:445:22:445:26 | M2`1 | ViableCallable.cs:470:14:470:29 | (...) => ... |
+| ViableCallable.cs:445:22:445:26 | M2`1 | ViableCallable.cs:476:14:476:29 | (...) => ... |
+| ViableCallable.cs:450:10:450:11 | M1 | ViableCallable.cs:444:23:444:24 | M1 |
+| ViableCallable.cs:450:10:450:11 | M1 | ViableCallable.cs:459:23:459:27 | M2`1 |
+| ViableCallable.cs:459:23:459:27 | M2`1 | ViableCallable.cs:456:17:456:23 | (...) => ... |
+| ViableCallable.cs:459:23:459:27 | M2`1 | ViableCallable.cs:464:14:464:20 | (...) => ... |
+| ViableCallable.cs:459:23:459:27 | M2`1 | ViableCallable.cs:470:14:470:29 | (...) => ... |
+| ViableCallable.cs:459:23:459:27 | M2`1 | ViableCallable.cs:476:14:476:29 | (...) => ... |
+| ViableCallable.cs:461:10:461:14 | M3`1 | ViableCallable.cs:459:23:459:27 | M2`1 |
+| ViableCallable.cs:467:10:467:14 | M4`1 | ViableCallable.cs:445:22:445:26 | M2`1 |
+| ViableCallable.cs:467:10:467:14 | M4`1 | ViableCallable.cs:459:23:459:27 | M2`1 |
+| ViableCallable.cs:473:10:473:14 | M5`1 | ViableCallable.cs:445:22:445:26 | M2`1 |
+| ViableCallable.cs:473:10:473:14 | M5`1 | ViableCallable.cs:459:23:459:27 | M2`1 |
+| ViableCallable.cs:490:10:490:12 | Run | ViableCallable.cs:483:10:483:11 | M2 |
+| ViableCallable.cs:490:10:490:12 | Run | ViableCallable.cs:488:17:488:18 | M1 |
+| ViableCallable.cs:507:10:507:12 | Run | ViableCallable.cs:502:32:502:32 | + |
+| ViableCallable.cs:507:10:507:12 | Run | ViableCallable.cs:503:40:503:40 | checked + |
+| ViableCallable.cs:507:10:507:12 | Run | ViableCallable.cs:504:28:504:35 | explicit conversion |
+| ViableCallable.cs:507:10:507:12 | Run | ViableCallable.cs:505:28:505:35 | checked explicit conversion |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:529:39:529:39 | checked - |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:531:31:531:31 | * |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:532:39:532:39 | checked * |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:534:31:534:31 | / |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:535:39:535:39 | checked / |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:539:18:539:20 | M12 |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:541:18:541:20 | M13 |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:546:32:546:32 | + |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:547:40:547:40 | checked + |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:549:32:549:32 | - |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:551:32:551:32 | / |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:552:40:552:40 | checked / |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:554:17:554:19 | M11 |
+| ViableCallable.cs:557:10:557:15 | Run`1 | ViableCallable.cs:555:17:555:19 | M12 |
+| ViableCallable.cs:611:17:611:23 | Run1`1 | ViableCallable.cs:603:21:603:21 | M |
+| ViableCallable.cs:617:17:617:23 | Run2`1 | ViableCallable.cs:603:21:603:21 | M |
+| ViableCallable.cs:617:17:617:23 | Run2`1 | ViableCallable.cs:608:21:608:21 | M |
+| ViableCallable.cs:658:17:658:20 | Run1 | ViableCallable.cs:636:21:636:21 | M |
+| ViableCallable.cs:658:17:658:20 | Run1 | ViableCallable.cs:638:21:638:21 | M |
+| ViableCallable.cs:669:17:669:20 | Run2 | ViableCallable.cs:652:21:652:21 | M |
+| ViableCallable.cs:669:17:669:20 | Run2 | ViableCallable.cs:655:21:655:21 | M |
+| ViableCallable.cs:680:17:680:20 | Run3 | ViableCallable.cs:636:21:636:21 | M |
+| ViableCallable.cs:680:17:680:20 | Run3 | ViableCallable.cs:638:21:638:21 | M |
+| ViableCallable.cs:680:17:680:20 | Run3 | ViableCallable.cs:647:21:647:21 | M |
+| ViableCallable.cs:680:17:680:20 | Run3 | ViableCallable.cs:649:21:649:21 | M |
+| ViableCallable.cs:712:17:712:20 | Run1 | ViableCallable.cs:705:24:705:31 | Partial1 |
+| ViableCallable.cs:712:17:712:20 | Run1 | ViableCallable.cs:706:42:706:44 | get_Property |
+| ViableCallable.cs:712:17:712:20 | Run1 | ViableCallable.cs:706:63:706:65 | set_Property |
+| ViableCallable.cs:712:17:712:20 | Run1 | ViableCallable.cs:708:49:708:51 | get_Item |
+| ViableCallable.cs:712:17:712:20 | Run1 | ViableCallable.cs:708:70:708:72 | set_Item |
+| ViableCallable.cs:712:17:712:20 | Run1 | ViableCallable.cs:709:51:709:53 | add_Event |
+| ViableCallable.cs:712:17:712:20 | Run1 | ViableCallable.cs:709:59:709:64 | remove_Event |

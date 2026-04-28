@@ -33,12 +33,12 @@
 | arguments.cs:59:16:59:25 | access to indexer | arguments.cs:59:21:59:21 | 3 | arguments.cs:53:18:53:18 | a |
 | arguments.cs:59:16:59:25 | access to indexer | arguments.cs:59:24:59:24 | 4 | arguments.cs:53:25:53:25 | b |
 | arguments.cs:59:16:59:25 | access to indexer | arguments.cs:59:34:59:34 | 6 | arguments.cs:53:44:53:46 | value |
-| arguments.cs:61:9:61:12 | access to property Prop | arguments.cs:61:9:61:17 | ... + ... | arguments.cs:51:21:51:23 | value |
+| arguments.cs:61:9:61:12 | access to property Prop | arguments.cs:61:9:61:17 | ... += ... | arguments.cs:51:21:51:23 | value |
 | arguments.cs:62:9:62:18 | access to indexer | arguments.cs:62:14:62:14 | 8 | arguments.cs:53:18:53:18 | a |
 | arguments.cs:62:9:62:18 | access to indexer | arguments.cs:62:14:62:14 | 8 | arguments.cs:53:18:53:18 | a |
 | arguments.cs:62:9:62:18 | access to indexer | arguments.cs:62:17:62:17 | 9 | arguments.cs:53:25:53:25 | b |
 | arguments.cs:62:9:62:18 | access to indexer | arguments.cs:62:17:62:17 | 9 | arguments.cs:53:25:53:25 | b |
-| arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:9:63:26 | ... + ... | arguments.cs:53:44:53:46 | value |
+| arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:9:63:26 | ... += ... | arguments.cs:53:44:53:46 | value |
 | arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:14:63:15 | 10 | arguments.cs:53:18:53:18 | a |
 | arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:14:63:15 | 10 | arguments.cs:53:18:53:18 | a |
 | arguments.cs:63:9:63:20 | access to indexer | arguments.cs:63:18:63:19 | 11 | arguments.cs:53:25:53:25 | b |
