@@ -144,12 +144,12 @@ private module Impl {
   }
 
   /** Gets the variable underlying the implicit SSA variable `def`. */
-  Declaration getImplicitSsaDeclaration(Ssa::ImplicitDefinition def) {
+  Declaration getImplicitSsaDeclaration(SsaImplicitWrite def) {
     result = def.getSourceVariable().getAssignable()
   }
 
   /** Holds if the variable underlying the implicit SSA variable `def` is not a field. */
-  predicate nonFieldImplicitSsaDefinition(Ssa::ImplicitDefinition def) {
+  predicate nonFieldImplicitSsaDefinition(SsaImplicitWrite def) {
     not getImplicitSsaDeclaration(def) instanceof Field
   }
 

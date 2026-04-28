@@ -509,13 +509,15 @@ module Ssa {
   }
 
   /**
+   * DEPRECATED: Use `SsaParameterInit` or `SsaImplicitWrite` instead.
+   *
    * An SSA definition that does not correspond to an explicit variable definition.
    * Either an implicit initialization of a variable at the beginning of a callable
    * (`ImplicitEntryDefinition`), an implicit definition via a call
    * (`ImplicitCallDefinition`), or an implicit definition where the qualifier is
    * updated (`ImplicitQualifierDefinition`).
    */
-  class ImplicitDefinition extends Definition, SsaImpl::WriteDefinition {
+  deprecated class ImplicitDefinition extends Definition, SsaImpl::WriteDefinition {
     ImplicitDefinition() {
       exists(BasicBlock bb, SourceVariable v, int i | this.definesAt(v, bb, i) |
         SsaImpl::implicitEntryDefinition(bb, v) and
@@ -596,7 +598,7 @@ module Ssa {
    * An SSA definition representing the potential definition of a variable
    * via a call.
    */
-  class ImplicitCallDefinition extends ImplicitDefinition {
+  class ImplicitCallDefinition extends SsaImplicitWrite {
     private Call c;
 
     ImplicitCallDefinition() {
@@ -629,7 +631,7 @@ module Ssa {
    * An SSA definition representing the potential definition of a variable
    * via an SSA definition for the qualifier.
    */
-  class ImplicitQualifierDefinition extends ImplicitDefinition, SsaImpl::WriteDefinition {
+  class ImplicitQualifierDefinition extends SsaImplicitWrite {
     private Definition q;
 
     ImplicitQualifierDefinition() {

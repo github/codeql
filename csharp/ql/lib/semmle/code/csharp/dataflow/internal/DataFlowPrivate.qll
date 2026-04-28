@@ -2008,9 +2008,9 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
    * SSA updates.
    */
   predicate hasNonlocalValue() {
-    exists(SsaDefinition def, Ssa::ImplicitDefinition idef |
+    exists(SsaDefinition def |
       def.getARead() = this and
-      idef = def.getAnUltimateDefinition()
+      def.getAnUltimateDefinition() instanceof SsaImplicitWrite
     )
   }
 }
