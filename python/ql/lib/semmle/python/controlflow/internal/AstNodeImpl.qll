@@ -11,6 +11,7 @@
 private import python as Py
 private import codeql.controlflow.ControlFlowGraph
 private import codeql.controlflow.SuccessorType
+private import codeql.util.Void
 
 private module Ast {
   /** The newtype representing AST nodes for the shared CFG library. */
@@ -717,6 +718,8 @@ module AstSigImpl implements AstSig<Py::Location> {
       index = 0 and result = w.getTest()
       or
       index = 1 and result = w.getBody()
+      or
+      index = 2 and result = w.getOrelse()
     )
     or
     // ForStmt (mapped as ForeachStmt): collection (0), variable (1), body (2)
@@ -1046,10 +1049,15 @@ module AstSigImpl implements AstSig<Py::Location> {
     Expr getExpr() { result = this.getValue() }
   }
 
-  /** A `raise` statement (mapped to `ThrowStmt`). */
-  class ThrowStmt extends Stmt, Ast::RaiseNode {
+  /** A `raise` statement (mapped to `Throw`). */
+  class Throw extends Stmt, Ast::RaiseNode {
     /** Gets the expression being raised. */
     Expr getExpr() { result = this.getException() }
+  }
+
+  /** A `goto` statement. Python has no goto. */
+  class GotoStmt extends Stmt {
+    GotoStmt() { none() }
   }
 
   // ===== Try/except =====
@@ -1171,6 +1179,26 @@ module AstSigImpl implements AstSig<Py::Location> {
     NullCoalescingExpr() { none() }
   }
 
+  /** An assignment expression. Python has no assignment expressions in the BinaryExpr sense. */
+  class Assignment extends BinaryExpr {
+    Assignment() { none() }
+  }
+
+  /** A simple assignment expression. */
+  class AssignExpr extends Assignment { }
+
+  /** A compound assignment expression. */
+  class CompoundAssignment extends Assignment { }
+
+  /** A short-circuiting logical AND compound assignment. Python has no `&&=` operator. */
+  class AssignLogicalAndExpr extends CompoundAssignment { }
+
+  /** A short-circuiting logical OR compound assignment. Python has no `||=` operator. */
+  class AssignLogicalOrExpr extends CompoundAssignment { }
+
+  /** A short-circuiting null-coalescing compound assignment. Python has no `??=` operator. */
+  class AssignNullCoalescingExpr extends CompoundAssignment { }
+
   /** A unary expression. Exists for the `not` subclass. */
   class UnaryExpr extends Expr {
     UnaryExpr() { this instanceof Ast::NotExprNode }
@@ -1185,6 +1213,15 @@ module AstSigImpl implements AstSig<Py::Location> {
   class BooleanLiteral extends Expr, Ast::BoolLiteralNode {
     /** Gets the boolean value of this literal. */
     boolean getValue() { result = this.getBoolValue() }
+  }
+
+  /** A pattern match expression. Python has no `instanceof`-style pattern match expr. */
+  class PatternMatchExpr extends Expr {
+    PatternMatchExpr() { none() }
+
+    Expr getExpr() { none() }
+
+    AstNode getPattern() { none() }
   }
 }
 
@@ -1208,6 +1245,8 @@ private module Input implements InputSig1, InputSig2 {
   class Label extends TLabel {
     string toString() { result = "label" }
   }
+
+  class CallableBodyPartContext = Void;
 
   predicate inConditionalContext(AstSigImpl::AstNode n, ConditionKind kind) {
     kind.isBoolean() and
