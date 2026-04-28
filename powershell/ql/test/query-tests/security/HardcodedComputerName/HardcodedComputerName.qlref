@@ -1,1 +1,2 @@
-experimental/HardcodedComputerName.ql
+query: experimental/HardcodedComputerName.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

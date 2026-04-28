@@ -4,10 +4,10 @@
 
 # --- Case 1: .NET JwtSecurityTokenHandler.CreateToken with "none" ---
 $handler = [System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler]::new()
-$token = $handler.CreateToken("none") # BAD
+$token = $handler.CreateToken("none") # $ Alert
 
 # --- Case 2: .NET JwtSecurityTokenHandler.CreateEncodedJwt with "none" ---
-$token = $handler.CreateEncodedJwt("none") # BAD
+$token = $handler.CreateEncodedJwt("none") # $ Alert
 
 # ===================================================================
 # ========== TRUE NEGATIVES (should NOT trigger alert) ==============

@@ -1,43 +1,43 @@
 function Invoke-InvokeExpressionInjection1
 {
     param($UserInput)
-    Invoke-Expression "Get-Process -Name $UserInput" # BAD
+    Invoke-Expression "Get-Process -Name $UserInput" # $ Alert
 }
 
 function Invoke-InvokeExpressionInjection2
 {
     param($UserInput)
-    iex "Get-Process -Name $UserInput" # BAD
+    iex "Get-Process -Name $UserInput" # $ Alert
 }
 
 function Invoke-InvokeExpressionInjection3
 {
     param($UserInput)
-    $executionContext.InvokeCommand.InvokeScript("Get-Process -Name $UserInput") # BAD
+    $executionContext.InvokeCommand.InvokeScript("Get-Process -Name $UserInput") # $ Alert
 }
 
 function Invoke-InvokeExpressionInjection4
 {
     param($UserInput)
-    $host.Runspace.CreateNestedPipeline("Get-Process -Name $UserInput", $false).Invoke() # BAD
+    $host.Runspace.CreateNestedPipeline("Get-Process -Name $UserInput", $false).Invoke() # $ Alert
 }
 
 function Invoke-InvokeExpressionInjection5
 {
     param($UserInput)
-    [PowerShell]::Create().AddScript("Get-Process -Name $UserInput").Invoke() # BAD
+    [PowerShell]::Create().AddScript("Get-Process -Name $UserInput").Invoke() # $ Alert
 }
 
 function Invoke-InvokeExpressionInjection6
 {
     param($UserInput)
-    Add-Type "public class Foo { $UserInput }" # BAD
+    Add-Type "public class Foo { $UserInput }" # $ Alert
 }
 
 function Invoke-InvokeExpressionInjection7
 {
     param($UserInput)
-    Add-Type -TypeDefinition "public class Foo { $UserInput }" # BAD
+    Add-Type -TypeDefinition "public class Foo { $UserInput }" # $ Alert
 }
 
 function Invoke-InvokeExpressionInjection8
@@ -45,7 +45,7 @@ function Invoke-InvokeExpressionInjection8
     param($UserInput)
 
     $code = "public class Foo { $UserInput }"
-    Add-Type -TypeDefinition $code # BAD
+    Add-Type -TypeDefinition $code # $ Alert
 }
 
 function Invoke-InvokeExpressionInjectionFP
@@ -72,21 +72,21 @@ function Invoke-ExploitableCommandInjection1
 {
     param($UserInput)
 
-    powershell -command "Get-Process -Name $UserInput" # BAD
+    powershell -command "Get-Process -Name $UserInput" # $ Alert
 }
 
 function Invoke-ExploitableCommandInjection2
 {
     param($UserInput)
 
-    powershell "Get-Process -Name $UserInput" # BAD
+    powershell "Get-Process -Name $UserInput" # $ Alert
 }
 
 function Invoke-ExploitableCommandInjection3
 {
     param($UserInput)
 
-    cmd /c "ping $UserInput" # BAD
+    cmd /c "ping $UserInput" # $ Alert
 }
 
 function Invoke-ScriptBlockInjection1
@@ -95,7 +95,7 @@ function Invoke-ScriptBlockInjection1
 
     ## Often used when making remote connections
 
-    $sb = [ScriptBlock]::Create("Get-Process -Name $UserInput") # BAD
+    $sb = [ScriptBlock]::Create("Get-Process -Name $UserInput") # $ Alert
     Invoke-Command RemoteServer $sb
 }
 
@@ -105,7 +105,7 @@ function Invoke-ScriptBlockInjection2
 
     ## Often used when making remote connections
 
-    $sb = $executionContext.InvokeCommand.NewScriptBlock("Get-Process -Name $UserInput") # BAD
+    $sb = $executionContext.InvokeCommand.NewScriptBlock("Get-Process -Name $UserInput") # $ Alert
     Invoke-Command RemoteServer $sb
 }
 
@@ -113,14 +113,14 @@ function Invoke-MethodInjection1
 {
     param($UserInput)
 
-    Get-Process | Foreach-Object $UserInput # BAD
+    Get-Process | Foreach-Object $UserInput # $ Alert
 }
 
 function Invoke-MethodInjection2
 {
     param($UserInput)
 
-    (Get-Process -Id $pid).$UserInput() # BAD
+    (Get-Process -Id $pid).$UserInput() # $ Alert
 }
 
 
@@ -128,7 +128,7 @@ function Invoke-MethodInjection3
 {
     param($UserInput)
 
-    (Get-Process -Id $pid).$UserInput.Invoke() # BAD
+    (Get-Process -Id $pid).$UserInput.Invoke() # $ Alert
 }
 
 function Invoke-ExpandStringInjection1
@@ -136,7 +136,7 @@ function Invoke-ExpandStringInjection1
     param($UserInput)
 
     ## Used to attempt a variable resolution
-    $executionContext.InvokeCommand.ExpandString($UserInput) # BAD
+    $executionContext.InvokeCommand.ExpandString($UserInput) # $ Alert
 }
 
 function Invoke-ExpandStringInjection2
@@ -144,24 +144,24 @@ function Invoke-ExpandStringInjection2
     param($UserInput)
 
     ## Used to attempt a variable resolution
-    $executionContext.SessionState.InvokeCommand.ExpandString($UserInput) # BAD
+    $executionContext.SessionState.InvokeCommand.ExpandString($UserInput) # $ Alert
 }
 
 function Invoke-InvokeExpressionInjectionCmdletBinding
 {
     [CmdletBinding()]
     param($UserInput)
-    Invoke-Expression "Get-Process -Name $UserInput" # BAD
+    Invoke-Expression "Get-Process -Name $UserInput" # $ Alert
 }
 
 function Invoke-StartProcessInjection
 {
     param($UserInput)
-    Start-Process -FilePath $UserInput # BAD
+    Start-Process -FilePath $UserInput # $ Alert
 }
 
 
-$input = Read-Host "enter input"
+$input = Read-Host "enter input" # $ Source
 
 Invoke-InvokeExpressionInjection1 -UserInput $input  
 Invoke-InvokeExpressionInjection2 -UserInput $input  
@@ -251,10 +251,10 @@ Invoke-InvokeExpressionInjectionSafe5 -UserInput $input
 
 function false-positive-in-call-operator($d)
 {
-    $o = Read-Host "enter input"
+    $o = Read-Host "enter input" # $ Source
     & unzip -o "$o" -d $d # GOOD
 
-    . "$o" # BAD
+    . "$o" # $ Alert
 }
 
 function flow-through-env-var() {
@@ -262,9 +262,9 @@ function flow-through-env-var() {
 
     . "$x" # GOOD # we don't consider environment vars flow sources
 
-    $input = Read-Host "enter input"
+    $input = Read-Host "enter input" # $ Source
     $env:bar = $input
 
     $y = $env:bar
-    . "$y" # BAD # but we have flow through them
+    . "$y" # $ Alert # but we have flow through them
 }

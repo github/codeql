@@ -5,22 +5,22 @@ function Test-CreateRC2 {
     param()
     
     # BAD: RC2 created
-    $r1 = [System.Security.Cryptography.RC2]::Create()
+    $r1 = [System.Security.Cryptography.RC2]::Create() # $ Alert
     
     # BAD: RC2 created via SymmetricAlgorithm
-    $r2 = [System.Security.Cryptography.SymmetricAlgorithm]::Create("RC2")
+    $r2 = [System.Security.Cryptography.SymmetricAlgorithm]::Create("RC2") # $ Alert
     
     # BAD: RC2 created with explicit name
-    $r3 = [System.Security.Cryptography.RC2]::Create("RC2")
+    $r3 = [System.Security.Cryptography.RC2]::Create("RC2") # $ Alert
     
     # BAD: RC2 created with full type name
-    $r4 = [System.Security.Cryptography.SymmetricAlgorithm]::Create("System.Security.Cryptography.RC2")
+    $r4 = [System.Security.Cryptography.SymmetricAlgorithm]::Create("System.Security.Cryptography.RC2") # $ Alert
     
     # BAD: RC2CryptoServiceProvider created
-    $r5 = New-Object System.Security.Cryptography.RC2CryptoServiceProvider
+    $r5 = New-Object System.Security.Cryptography.RC2CryptoServiceProvider # $ Alert
     
     # BAD: RC2 created using CryptoConfig.CreateFromName
-    $r6 = [System.Security.Cryptography.CryptoConfig]::CreateFromName("RC2")
+    $r6 = [System.Security.Cryptography.CryptoConfig]::CreateFromName("RC2") # $ Alert
     
     return $r5
 }

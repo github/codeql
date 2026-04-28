@@ -1,1 +1,2 @@
-queries/security/cwe-327/ObsoleteKDFAlgorithm.ql
+query: queries/security/cwe-327/ObsoleteKDFAlgorithm.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

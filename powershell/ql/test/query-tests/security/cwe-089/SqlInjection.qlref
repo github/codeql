@@ -1,1 +1,2 @@
-queries/security/cwe-089/SqlInjection.ql
+query: queries/security/cwe-089/SqlInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

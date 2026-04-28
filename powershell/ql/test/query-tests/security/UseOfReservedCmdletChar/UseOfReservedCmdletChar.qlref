@@ -1,1 +1,2 @@
-experimental/UseOfReservedCmdletChar.ql
+query: experimental/UseOfReservedCmdletChar.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,3 +1,21 @@
+#select
+| test.ps1:5:31:5:37 | stream | test.ps1:2:20:2:47 | Call to read-host | test.ps1:5:31:5:37 | stream | This unsafe deserializer deserializes  on a $@. | test.ps1:2:20:2:47 | Call to read-host | read from stdin |
+| test.ps1:11:39:11:46 | stream2 | test.ps1:8:11:8:32 | Call to read-host | test.ps1:11:39:11:46 | stream2 | This unsafe deserializer deserializes  on a $@. | test.ps1:8:11:8:32 | Call to read-host | read from stdin |
+| test.ps1:17:36:17:43 | stream3 | test.ps1:14:11:14:37 | Call to read-host | test.ps1:17:36:17:43 | stream3 | This unsafe deserializer deserializes  on a $@. | test.ps1:14:11:14:37 | Call to read-host | read from stdin |
+| test.ps1:22:26:22:32 | input4 | test.ps1:20:11:20:38 | Call to read-host | test.ps1:22:26:22:32 | input4 | This unsafe deserializer deserializes  on a $@. | test.ps1:20:11:20:38 | Call to read-host | read from stdin |
+| test.ps1:28:27:28:34 | stream5 | test.ps1:25:11:25:43 | Call to read-host | test.ps1:28:27:28:34 | stream5 | This unsafe deserializer deserializes  on a $@. | test.ps1:25:11:25:43 | Call to read-host | read from stdin |
+| test.ps1:34:27:34:34 | stream6 | test.ps1:31:11:31:39 | Call to read-host | test.ps1:34:27:34:34 | stream6 | This unsafe deserializer deserializes  on a $@. | test.ps1:31:11:31:39 | Call to read-host | read from stdin |
+| test.ps1:39:35:39:41 | input7 | test.ps1:37:11:37:36 | Call to read-host | test.ps1:39:35:39:41 | input7 | This unsafe deserializer deserializes  on a $@. | test.ps1:37:11:37:36 | Call to read-host | read from stdin |
+| test.ps1:43:51:43:57 | input8 | test.ps1:42:11:42:32 | Call to read-host | test.ps1:43:51:43:57 | input8 | This unsafe deserializer deserializes  on a $@. | test.ps1:42:11:42:32 | Call to read-host | read from stdin |
+| test.ps1:48:50:48:57 | stream9 | test.ps1:46:11:46:44 | Call to read-host | test.ps1:48:50:48:57 | stream9 | This unsafe deserializer deserializes  on a $@. | test.ps1:46:11:46:44 | Call to read-host | read from stdin |
+| test.ps1:53:19:53:57 | Call to new | test.ps1:51:12:51:40 | Call to read-host | test.ps1:53:19:53:57 | Call to new | This unsafe deserializer deserializes  on a $@. | test.ps1:51:12:51:40 | Call to read-host | read from stdin |
+| test.ps1:58:13:58:51 | Call to new | test.ps1:56:12:56:39 | Call to read-host | test.ps1:58:13:58:51 | Call to new | This unsafe deserializer deserializes  on a $@. | test.ps1:56:12:56:39 | Call to read-host | read from stdin |
+| test.ps1:63:20:63:58 | Call to new | test.ps1:61:12:61:41 | Call to read-host | test.ps1:63:20:63:58 | Call to new | This unsafe deserializer deserializes  on a $@. | test.ps1:61:12:61:41 | Call to read-host | read from stdin |
+| test.ps1:67:68:67:75 | input13 | test.ps1:66:12:66:42 | Call to read-host | test.ps1:67:68:67:75 | input13 | This unsafe deserializer deserializes  on a $@. | test.ps1:66:12:66:42 | Call to read-host | read from stdin |
+| test.ps1:71:58:71:65 | input14 | test.ps1:70:12:70:38 | Call to read-host | test.ps1:71:58:71:65 | input14 | This unsafe deserializer deserializes  on a $@. | test.ps1:70:12:70:38 | Call to read-host | read from stdin |
+| test.ps1:76:49:76:57 | stream15 | test.ps1:74:12:74:42 | Call to read-host | test.ps1:76:49:76:57 | stream15 | This unsafe deserializer deserializes  on a $@. | test.ps1:74:12:74:42 | Call to read-host | read from stdin |
+| test.ps1:81:40:81:47 | input16 | test.ps1:79:12:79:33 | Call to read-host | test.ps1:81:40:81:47 | input16 | This unsafe deserializer deserializes  on a $@. | test.ps1:79:12:79:33 | Call to read-host | read from stdin |
+| test.ps1:86:48:86:55 | bytes17 | test.ps1:84:12:84:40 | Call to read-host | test.ps1:86:48:86:55 | bytes17 | This unsafe deserializer deserializes  on a $@. | test.ps1:84:12:84:40 | Call to read-host | read from stdin |
 edges
 | test.ps1:2:1:2:16 | untrustedBase64 | test.ps1:4:69:4:84 | untrustedBase64 | provenance |  |
 | test.ps1:2:20:2:47 | Call to read-host | test.ps1:2:1:2:16 | untrustedBase64 | provenance | Src:MaD:0  |
@@ -154,21 +172,3 @@ nodes
 | test.ps1:85:40:85:47 | input17 | semmle.label | input17 |
 | test.ps1:86:48:86:55 | bytes17 | semmle.label | bytes17 |
 subpaths
-#select
-| test.ps1:5:31:5:37 | stream | test.ps1:2:20:2:47 | Call to read-host | test.ps1:5:31:5:37 | stream | This unsafe deserializer deserializes  on a $@. | test.ps1:2:20:2:47 | Call to read-host | read from stdin |
-| test.ps1:11:39:11:46 | stream2 | test.ps1:8:11:8:32 | Call to read-host | test.ps1:11:39:11:46 | stream2 | This unsafe deserializer deserializes  on a $@. | test.ps1:8:11:8:32 | Call to read-host | read from stdin |
-| test.ps1:17:36:17:43 | stream3 | test.ps1:14:11:14:37 | Call to read-host | test.ps1:17:36:17:43 | stream3 | This unsafe deserializer deserializes  on a $@. | test.ps1:14:11:14:37 | Call to read-host | read from stdin |
-| test.ps1:22:26:22:32 | input4 | test.ps1:20:11:20:38 | Call to read-host | test.ps1:22:26:22:32 | input4 | This unsafe deserializer deserializes  on a $@. | test.ps1:20:11:20:38 | Call to read-host | read from stdin |
-| test.ps1:28:27:28:34 | stream5 | test.ps1:25:11:25:43 | Call to read-host | test.ps1:28:27:28:34 | stream5 | This unsafe deserializer deserializes  on a $@. | test.ps1:25:11:25:43 | Call to read-host | read from stdin |
-| test.ps1:34:27:34:34 | stream6 | test.ps1:31:11:31:39 | Call to read-host | test.ps1:34:27:34:34 | stream6 | This unsafe deserializer deserializes  on a $@. | test.ps1:31:11:31:39 | Call to read-host | read from stdin |
-| test.ps1:39:35:39:41 | input7 | test.ps1:37:11:37:36 | Call to read-host | test.ps1:39:35:39:41 | input7 | This unsafe deserializer deserializes  on a $@. | test.ps1:37:11:37:36 | Call to read-host | read from stdin |
-| test.ps1:43:51:43:57 | input8 | test.ps1:42:11:42:32 | Call to read-host | test.ps1:43:51:43:57 | input8 | This unsafe deserializer deserializes  on a $@. | test.ps1:42:11:42:32 | Call to read-host | read from stdin |
-| test.ps1:48:50:48:57 | stream9 | test.ps1:46:11:46:44 | Call to read-host | test.ps1:48:50:48:57 | stream9 | This unsafe deserializer deserializes  on a $@. | test.ps1:46:11:46:44 | Call to read-host | read from stdin |
-| test.ps1:53:19:53:57 | Call to new | test.ps1:51:12:51:40 | Call to read-host | test.ps1:53:19:53:57 | Call to new | This unsafe deserializer deserializes  on a $@. | test.ps1:51:12:51:40 | Call to read-host | read from stdin |
-| test.ps1:58:13:58:51 | Call to new | test.ps1:56:12:56:39 | Call to read-host | test.ps1:58:13:58:51 | Call to new | This unsafe deserializer deserializes  on a $@. | test.ps1:56:12:56:39 | Call to read-host | read from stdin |
-| test.ps1:63:20:63:58 | Call to new | test.ps1:61:12:61:41 | Call to read-host | test.ps1:63:20:63:58 | Call to new | This unsafe deserializer deserializes  on a $@. | test.ps1:61:12:61:41 | Call to read-host | read from stdin |
-| test.ps1:67:68:67:75 | input13 | test.ps1:66:12:66:42 | Call to read-host | test.ps1:67:68:67:75 | input13 | This unsafe deserializer deserializes  on a $@. | test.ps1:66:12:66:42 | Call to read-host | read from stdin |
-| test.ps1:71:58:71:65 | input14 | test.ps1:70:12:70:38 | Call to read-host | test.ps1:71:58:71:65 | input14 | This unsafe deserializer deserializes  on a $@. | test.ps1:70:12:70:38 | Call to read-host | read from stdin |
-| test.ps1:76:49:76:57 | stream15 | test.ps1:74:12:74:42 | Call to read-host | test.ps1:76:49:76:57 | stream15 | This unsafe deserializer deserializes  on a $@. | test.ps1:74:12:74:42 | Call to read-host | read from stdin |
-| test.ps1:81:40:81:47 | input16 | test.ps1:79:12:79:33 | Call to read-host | test.ps1:81:40:81:47 | input16 | This unsafe deserializer deserializes  on a $@. | test.ps1:79:12:79:33 | Call to read-host | read from stdin |
-| test.ps1:86:48:86:55 | bytes17 | test.ps1:84:12:84:40 | Call to read-host | test.ps1:86:48:86:55 | bytes17 | This unsafe deserializer deserializes  on a $@. | test.ps1:84:12:84:40 | Call to read-host | read from stdin |

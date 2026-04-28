@@ -1,31 +1,31 @@
 # BAD: Using MD5 - cryptographically broken
-$md5 = [System.Security.Cryptography.MD5]::Create()
+$md5 = [System.Security.Cryptography.MD5]::Create() # $ Alert
 $md5Hash = $md5.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("password123"))
 
 # BAD: Using MD5CryptoServiceProvider
-$md5Provider = New-Object System.Security.Cryptography.MD5CryptoServiceProvider
+$md5Provider = New-Object System.Security.Cryptography.MD5CryptoServiceProvider # $ Alert
 $md5ProviderHash = $md5Provider.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("secret"))
 
 # BAD: Using SHA1 - cryptographically weak
-$sha1 = [System.Security.Cryptography.SHA1]::Create()
+$sha1 = [System.Security.Cryptography.SHA1]::Create() # $ Alert
 $sha1Hash = $sha1.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("password123"))
 
 # BAD: Using SHA1CryptoServiceProvider
-$sha1Provider = New-Object System.Security.Cryptography.SHA1CryptoServiceProvider
+$sha1Provider = New-Object System.Security.Cryptography.SHA1CryptoServiceProvider # $ Alert
 $sha1ProviderHash = $sha1Provider.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("secret"))
 
 # BAD: Creating weak hash algorithms from name
-$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("MD5")
-$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("System.Security.Cryptography.MD5")
-$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("SHA1")
-$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("System.Security.Cryptography.SHA1")
+$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("MD5") # $ Alert
+$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("System.Security.Cryptography.MD5") # $ Alert
+$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("SHA1") # $ Alert
+$o = [System.Security.Cryptography.CryptoConfig]::CreateFromName("System.Security.Cryptography.SHA1") # $ Alert
 
 
 # BAD: Using Get-FileHash with MD5
-Get-FileHash -Path "C:\file.txt" -Algorithm MD5
+Get-FileHash -Path "C:\file.txt" -Algorithm MD5 # $ Alert
 
 # BAD: Using Get-FileHash with SHA1
-Get-FileHash -Path "C:\file.txt" -Algorithm SHA1
+Get-FileHash -Path "C:\file.txt" -Algorithm SHA1 # $ Alert
 
 # ---------------------------------------------------------
 # GOOD: Safe usage of cryptographically secure algorithms
