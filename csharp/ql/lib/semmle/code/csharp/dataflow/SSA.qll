@@ -529,11 +529,13 @@ module Ssa {
   }
 
   /**
+   * DEPRECATED: Use `SsaParameterInit` or `SsaImplicitEntryDefinition` instead.
+   *
    * An SSA definition representing the implicit initialization of a variable
    * at the beginning of a callable. Either a local scope variable captured by
    * the callable or a field or property accessed inside the callable.
    */
-  class ImplicitEntryDefinition extends ImplicitDefinition {
+  deprecated class ImplicitEntryDefinition extends ImplicitDefinition {
     ImplicitEntryDefinition() {
       exists(BasicBlock bb, SourceVariable v |
         this.definesAt(v, bb, -1) and

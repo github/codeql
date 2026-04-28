@@ -1430,7 +1430,7 @@ private module ParameterNodes {
   }
 
   /** An implicit entry definition for a captured variable. */
-  class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
+  deprecated class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
     private LocalScopeVariable v;
 
     SsaCapturedEntryDefinition() { this.getSourceVariable().getAssignable() = v }
@@ -2011,9 +2011,6 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
     exists(SsaDefinition def, Ssa::ImplicitDefinition idef |
       def.getARead() = this and
       idef = def.getAnUltimateDefinition()
-    |
-      idef instanceof Ssa::ImplicitEntryDefinition or
-      idef instanceof Ssa::ImplicitCallDefinition
     )
   }
 }
