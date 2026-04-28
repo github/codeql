@@ -1,0 +1,2 @@
+| .github/workflows/npm-publish-no-provenance.yml:15:9:16:2 | Run Step | npm publish command does not include '--provenance'. Add '--provenance' to cryptographically link the package to this source commit and workflow run. |
+| .github/workflows/npm-publish-no-provenance.yml:20:9:20:41 | Run Step | npm publish command does not include '--provenance'. Add '--provenance' to cryptographically link the package to this source commit and workflow run. |

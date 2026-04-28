@@ -1,0 +1,34 @@
+name: npm-publish-with-token
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish --provenance
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+  publish-yarn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: yarn publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: JS-DevTools/npm-publish@v3
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

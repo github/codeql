@@ -1,0 +1,25 @@
+name: npm-publish-safe
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  publish-oidc:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm publish --provenance
+  publish-no-secret:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm publish
+        env:
+          SOME_OTHER_VAR: "hello"
