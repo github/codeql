@@ -78,11 +78,11 @@ module Ssa_ = Impl::MakeSsa<SsaInput>;
 
 class Definition = Impl::Definition;
 
-class WriteDefinition = Impl::WriteDefinition;
+deprecated class WriteDefinition = Impl::WriteDefinition;
 
-class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
+deprecated class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
 
-class PhiNode = Impl::PhiNode;
+deprecated class PhiNode = Impl::PhiNode;
 
 module Consistency = Impl::Consistency;
 
@@ -868,7 +868,7 @@ private module Cached {
   }
 
   cached
-  predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
+  deprecated predicate isLiveAtEndOfBlock(Definition def, BasicBlock bb) {
     Impl::ssaDefReachesEndOfBlock(bb, def, _)
   }
 
@@ -878,7 +878,7 @@ private module Cached {
   }
 
   cached
-  AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
+  deprecated AssignableRead getAReadAtNode(Definition def, ControlFlowNode cfn) {
     exists(Ssa::SourceVariable v, BasicBlock bb, int i |
       Impl::ssaDefReachesRead(v, def, bb, i) and
       variableReadActual(bb, i, v) and
@@ -1012,9 +1012,9 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
     predicate hasCfgNode(BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
-  Expr getARead(Definition def) { exists(getAReadAtNode(def, result)) }
+  Expr getARead(Definition def) { def.(SsaDefinition).getARead().getControlFlowNode() = result }
 
-  predicate ssaDefHasSource(WriteDefinition def) {
+  predicate ssaDefHasSource(Impl::WriteDefinition def) {
     // exclude flow directly from RHS to SSA definition, as we instead want to
     // go from RHS to matching assignable definition, and from there to SSA definition
     def instanceof SsaParameterInit
@@ -1024,7 +1024,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
    * Allows for flow into uncertain defintions that are not call definitions,
    * as we, conservatively, consider such definitions to be certain.
    */
-  predicate allowFlowIntoUncertainDef(UncertainWriteDefinition def) {
+  predicate allowFlowIntoUncertainDef(Impl::UncertainWriteDefinition def) {
     def instanceof SsaExplicitWrite
     or
     def =
