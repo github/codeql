@@ -280,14 +280,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // `nuget.config` files instead of the command-line arguments.
             string? extraArgs = null;
 
-            if (this.dependabotProxy is not null)
+            if (dependabotProxy is not null)
             {
                 // If the Dependabot proxy is configured, then our main goal is to make `dotnet` aware
                 // of the private registry feeds. However, since providing them as command-line arguments
                 // to `dotnet` ignores other feeds that may be configured, we also need to add the feeds
                 // we have discovered from analysing `nuget.config` files.
                 var sources = configuredSources ?? new();
-                this.dependabotProxy.RegistryURLs.ForEach(url => sources.Add(url));
+                dependabotProxy.RegistryURLs.ForEach(url =>
+                {
+                    logger.LogDebug($"Adding feed from Dependabot proxy configuration: {url}");
+                    sources.Add(url);
+                });
 
                 // Add package sources. If any are present, they override all sources specified in
                 // the configuration file(s).
@@ -623,16 +627,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private static async Task ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
+        private static async Task<HttpResponseMessage> ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
         {
-            using var stream = await httpClient.GetStreamAsync(address, cancellationToken);
-            var buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                // do nothing
-            }
+            return await httpClient.GetAsync(address, cancellationToken);
         }
+
+        private HashSet<HttpStatusCode> UnacceptableStatusCodesForFeedReachabilityCheck { get; } = new() { HttpStatusCode.Unauthorized, HttpStatusCode.Forbidden };
 
         private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount, bool allowExceptions = true)
         {
@@ -673,7 +673,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 cts.CancelAfter(timeoutMilliSeconds);
                 try
                 {
-                    ExecuteGetRequest(feed, client, cts.Token).GetAwaiter().GetResult();
+                    var response = ExecuteGetRequest(feed, client, cts.Token).GetAwaiter().GetResult();
+                    response.EnsureSuccessStatusCode();
                     logger.LogInfo($"Querying NuGet feed '{feed}' succeeded.");
                     return true;
                 }
@@ -688,7 +689,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         continue;
                     }
 
-                    // We're only interested in timeouts.
+                    if (exc is HttpRequestException hre &&
+                        hre.StatusCode is HttpStatusCode statusCode &&
+                        UnacceptableStatusCodesForFeedReachabilityCheck.Contains(statusCode))
+                    {
+                        logger.LogInfo($"Querying NuGet feed '{feed}' failed due to a critical issue. Not considering the feed for use. The reason for the failure: {exc.Message}");
+                        return false;
+                    }
+
+                    // We might allow certain exceptions for feed reachability checks.
                     var start = allowExceptions ? "Considering" : "Not considering";
                     logger.LogInfo($"Querying NuGet feed '{feed}' failed in a timely manner. {start} the feed for use. The reason for the failure: {exc.Message}");
                     return allowExceptions;
@@ -732,9 +741,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             // If private package registries are configured for C#, then check those
             // in addition to the ones that are configured in `nuget.config` files.
-            this.dependabotProxy?.RegistryURLs.ForEach(url => feedsToCheck.Add(url));
+            dependabotProxy?.RegistryURLs.ForEach(url => feedsToCheck.Add(url));
 
-            var allFeedsReachable = this.CheckSpecifiedFeeds(feedsToCheck);
+            var allFeedsReachable = CheckSpecifiedFeeds(feedsToCheck);
 
             var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
             if (inheritedFeeds.Count > 0)
