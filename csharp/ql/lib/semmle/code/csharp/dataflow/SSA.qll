@@ -625,6 +625,7 @@ module Ssa {
     private SsaDefinition q;
 
     ImplicitQualifierDefinition() {
+      not this instanceof SsaImplicitEntryDefinition and
       exists(BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v |
         this.definesAt(v, bb, i)
       |
