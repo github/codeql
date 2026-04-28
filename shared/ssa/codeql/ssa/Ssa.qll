@@ -1054,7 +1054,7 @@ module Make<
     /** A static single assignment (SSA) definition. */
     class SsaDefinition extends FinalDefinition {
       /** Gets a textual representation of this SSA definition. */
-      string toString() { result = super.toString() }
+      string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
 
       /**
        * Gets the control flow node of this SSA definition.
@@ -1207,6 +1207,8 @@ module Make<
      * a phi definition for `x` is inserted just before the call `puts x`.
      */
     class SsaPhiDefinition extends SsaDefinition instanceof PhiNode {
+      override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
+
       /** Holds if `inp` is an input to this phi definition along the edge originating in `bb`. */
       predicate hasInputFromBlock(SsaDefinition inp, BasicBlock bb) {
         phiHasInputFromBlockCached(this, inp, bb)

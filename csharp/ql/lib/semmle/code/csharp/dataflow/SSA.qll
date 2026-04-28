@@ -506,8 +506,6 @@ module Ssa {
     }
 
     override Element getElement() { result = ad.getElement() }
-
-    override string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
   }
 
   /**
@@ -551,12 +549,6 @@ module Ssa {
     final Callable getCallable() { result = this.getBasicBlock().getEnclosingCallable() }
 
     override Element getElement() { result = this.getCallable() }
-
-    override string toString() {
-      if this.getSourceVariable().getAssignable() instanceof LocalScopeVariable
-      then result = "SSA capture def(" + this.getSourceVariable() + ")"
-      else result = "SSA entry def(" + this.getSourceVariable() + ")"
-    }
   }
 
   /**
@@ -590,10 +582,6 @@ module Ssa {
 
     /** Gets the parameter that this entry definition represents. */
     Parameter getParameter() { result = p }
-
-    override string toString() {
-      result = "SSA param_default(" + pragma[only_bind_out](this.getParameter()) + ")"
-    }
   }
 
   /**
@@ -687,8 +675,6 @@ module Ssa {
     predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
       inp = SsaImpl::phiHasInputFromBlock(this, bb)
     }
-
-    override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
   }
 
   /**

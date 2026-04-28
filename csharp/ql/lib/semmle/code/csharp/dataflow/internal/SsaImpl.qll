@@ -78,6 +78,10 @@ module Ssa_ = Impl::MakeSsa<SsaInput>;
 
 class Definition = Impl::Definition;
 
+private class SsaDefinitionToStringProxy extends Definition {
+  override string toString() { result = this.(SsaDefinition).toString() }
+}
+
 deprecated class WriteDefinition = Impl::WriteDefinition;
 
 deprecated class UncertainWriteDefinition = Impl::UncertainWriteDefinition;
