@@ -1,2 +1,2 @@
-| test_match.py:159:13:159:23 | BinaryExpr | Node annotated with t.never is reachable in $@ | test_match.py:151:1:151:42 | Function test_match_exhaustive_return_first | test_match_exhaustive_return_first |
-| test_match.py:172:13:172:23 | BinaryExpr | Node annotated with t.never is reachable in $@ | test_match.py:164:1:164:45 | Function test_match_exhaustive_return_wildcard | test_match_exhaustive_return_wildcard |
+| test_match.py:159:13:159:13 | IntegerLiteral | Node annotated with t.never is reachable in $@ | test_match.py:151:1:151:42 | Function test_match_exhaustive_return_first | test_match_exhaustive_return_first |
+| test_match.py:172:13:172:13 | IntegerLiteral | Node annotated with t.never is reachable in $@ | test_match.py:164:1:164:45 | Function test_match_exhaustive_return_wildcard | test_match_exhaustive_return_wildcard |
