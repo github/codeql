@@ -74,7 +74,7 @@ module Ssa {
      * Gets an SSA definition that has this variable as its underlying
      * source variable.
      */
-    Definition getAnSsaDefinition() { result.getSourceVariable() = this }
+    SsaDefinition getAnSsaDefinition() { result.getSourceVariable() = this }
   }
 
   /** Provides different types of `SourceVariable`s. */
@@ -193,11 +193,13 @@ module Ssa {
   predicate isLiveOutRefParameterDefinition = SsaImpl::isLiveOutRefParameterDefinition/2;
 
   /**
+   * DEPRECATED: Use `SsaDefinition` instead.
+   *
    * A static single assignment (SSA) definition. Either an explicit variable
    * definition (`ExplicitDefinition`), an implicit variable definition
    * (`ImplicitDefinition`), or a phi node (`PhiNode`).
    */
-  class Definition extends SsaImpl::Definition {
+  deprecated class Definition extends SsaImpl::Definition {
     /** Gets the control flow node of this SSA definition. */
     final ControlFlowNode getControlFlowNode() {
       exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(0.maximum(i)))
@@ -632,7 +634,7 @@ module Ssa {
    * via an SSA definition for the qualifier.
    */
   class ImplicitQualifierDefinition extends SsaImplicitWrite {
-    private Definition q;
+    private SsaDefinition q;
 
     ImplicitQualifierDefinition() {
       exists(BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v |
@@ -644,7 +646,7 @@ module Ssa {
     }
 
     /** Gets the SSA definition for the qualifier. */
-    final Definition getQualifierDefinition() { result = q }
+    final SsaDefinition getQualifierDefinition() { result = q }
 
     override string toString() { result = "SSA qualifier def(" + this.getSourceVariable() + ")" }
   }
