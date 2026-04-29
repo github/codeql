@@ -146,9 +146,18 @@ module Make<InlineExpectationsTestSig Impl> {
     bindingset[expectedTag, actualTag]
     default predicate tagMatches(string expectedTag, string actualTag) { expectedTag = actualTag }
 
-    /** Holds if expectations marked with `expectedTag` are optional. */
+    /**
+     * Holds if expectations marked with `expectedTag` are optional.
+     *
+     * Results with an optional tag will not cause a failure if there is no matching expectation,
+     * but any expectation with an optional tag must have a matching result.
+     */
     bindingset[expectedTag]
     default predicate tagIsOptional(string expectedTag) { none() }
+
+    /** Holds if expectations marked with `expectedTag` should be ignored. */
+    bindingset[expectedTag]
+    default predicate ignoreTag(string expectedTag) { none() }
 
     /**
      * Holds if expected value `expectedValue` matches actual value `actualValue`.
@@ -223,8 +232,7 @@ module Make<InlineExpectationsTestSig Impl> {
       exists(ValidTestExpectation expectation |
         not exists(ActualTestResult actualResult | expectation.matchesActualResult(actualResult)) and
         expectation.getTag() = TestImpl::getARelevantTag() and
-        element = expectation and
-        not expectation.isOptional()
+        element = expectation
       |
         expectation instanceof GoodTestExpectation and
         message = "Missing result: " + expectation.getExpectationText()
@@ -253,7 +261,8 @@ module Make<InlineExpectationsTestSig Impl> {
         exists(TColumn column, string tags |
           getAnExpectation(comment, column, _, tags, value) and
           tag = tags.splitAt(",") and
-          knownFailure = getColumnString(column)
+          knownFailure = getColumnString(column) and
+          not TestImpl::ignoreTag(tag)
         )
       } or
       TInvalidExpectation(Impl::ExpectationComment comment, string expectation) {
@@ -870,7 +879,7 @@ module TestPostProcessing {
       }
 
       bindingset[expectedTag]
-      predicate tagIsOptional(string expectedTag) {
+      predicate ignoreTag(string expectedTag) {
         exists(getQueryKind()) and
         (
           // ignore irrelevant tags
