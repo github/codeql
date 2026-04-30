@@ -67,7 +67,7 @@ module TypeTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) { none() }
 
   predicate hasOptionalResult(Location location, string element, string tag, string value) {
-    exists(AstNode n, TypePath path, Type t |
+    exists(AstNode n, TypePath path, Type t, string at |
       t = TypeInference::inferType(n, path) and
       (
         tag = "type"
@@ -76,11 +76,8 @@ module TypeTest implements TestSig {
         tag = "certainType"
       ) and
       location = n.getLocation() and
-      (
-        if path.isEmpty()
-        then value = element + ":" + t
-        else value = element + ":" + path.toString() + "." + t.toString()
-      ) and
+      (if path.isEmpty() then at = "" else at = "@" + TypePath::printTypePathVerbose(path)) and
+      value = element + at + ":" + t.toString() and
       element = [n.toString(), n.(IdentPat).getName().getText()]
     )
   }

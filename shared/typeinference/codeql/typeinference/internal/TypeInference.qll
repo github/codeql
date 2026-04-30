@@ -275,7 +275,34 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   class TypePath = UnboundList;
 
   /** Provides predicates for constructing `TypePath`s. */
-  module TypePath = UnboundList;
+  module TypePath {
+    import UnboundList
+
+    private string printTypeParameterVerbose(TypeParameter tp) {
+      exists(Type t |
+        t.getATypeParameter() = tp and
+        result = t.toString() + "<" + tp.toString() + ">"
+      )
+    }
+
+    /**
+     * Gets a verbose textual representation of `path`, which includes the names
+     * of the types that the type parameters belong to.
+     *
+     * For example, the verbose textual representation of the path `"T1.T2"` is
+     * `"S1<T1>.S2<T2>"`, provided that `T1` is a type parameter of `S1` and `T2`
+     * is a type parameter of `S2`.
+     */
+    bindingset[path]
+    string printTypePathVerbose(TypePath path) {
+      result =
+        concat(int i, TypeParameter e |
+          e = path.getElement(i)
+        |
+          printTypeParameterVerbose(e), "." order by i
+        )
+    }
+  }
 
   /**
    * A class that has a type tree associated with it.
