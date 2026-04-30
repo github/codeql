@@ -15818,18 +15818,12 @@ inferType
 | regressions.rs:150:24:153:5 | { ... } |  | regressions.rs:136:5:136:22 | S2 |
 | regressions.rs:150:24:153:5 | { ... } | T2 | regressions.rs:135:5:135:14 | S1 |
 | regressions.rs:151:13:151:13 | x |  | regressions.rs:136:5:136:22 | S2 |
-| regressions.rs:151:13:151:13 | x | T2 | {EXTERNAL LOCATION} | & |
 | regressions.rs:151:13:151:13 | x | T2 | regressions.rs:135:5:135:14 | S1 |
-| regressions.rs:151:13:151:13 | x | T2.TRef | regressions.rs:135:5:135:14 | S1 |
 | regressions.rs:151:17:151:18 | S1 |  | regressions.rs:135:5:135:14 | S1 |
 | regressions.rs:151:17:151:25 | S1.into() |  | regressions.rs:136:5:136:22 | S2 |
-| regressions.rs:151:17:151:25 | S1.into() | T2 | {EXTERNAL LOCATION} | & |
 | regressions.rs:151:17:151:25 | S1.into() | T2 | regressions.rs:135:5:135:14 | S1 |
-| regressions.rs:151:17:151:25 | S1.into() | T2.TRef | regressions.rs:135:5:135:14 | S1 |
 | regressions.rs:152:9:152:9 | x |  | regressions.rs:136:5:136:22 | S2 |
-| regressions.rs:152:9:152:9 | x | T2 | {EXTERNAL LOCATION} | & |
 | regressions.rs:152:9:152:9 | x | T2 | regressions.rs:135:5:135:14 | S1 |
-| regressions.rs:152:9:152:9 | x | T2.TRef | regressions.rs:135:5:135:14 | S1 |
 | regressions.rs:164:16:164:19 | SelfParam |  | regressions.rs:158:5:158:19 | S |
 | regressions.rs:164:16:164:19 | SelfParam | T | regressions.rs:160:10:160:10 | T |
 | regressions.rs:164:22:164:25 | _rhs |  | regressions.rs:158:5:158:19 | S |

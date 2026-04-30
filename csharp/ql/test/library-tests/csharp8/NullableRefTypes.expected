@@ -19,27 +19,54 @@ nullableDataFlow
 | NullableRefTypes.cs:88:13:88:13 | access to local variable x | NullableRefTypes.cs:88:13:88:14 | ...! |
 | NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:9:88:9 | access to local variable y |
 nullableControlFlow
-| NullableRefTypes.cs:82:10:82:40 | enter TestSuppressNullableWarningExpr | NullableRefTypes.cs:83:5:89:5 | {...} | successor |
-| NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr (normal) | NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr | successor |
+| NullableRefTypes.cs:82:10:82:40 | Entry | NullableRefTypes.cs:83:5:89:5 | {...} | successor |
+| NullableRefTypes.cs:82:10:82:40 | Normal Exit | NullableRefTypes.cs:82:10:82:40 | Exit | successor |
+| NullableRefTypes.cs:83:5:89:5 | After {...} | NullableRefTypes.cs:82:10:82:40 | Normal Exit | successor |
 | NullableRefTypes.cs:83:5:89:5 | {...} | NullableRefTypes.cs:84:9:84:29 | ... ...; | successor |
-| NullableRefTypes.cs:84:9:84:29 | ... ...; | NullableRefTypes.cs:84:21:84:28 | "source" | successor |
-| NullableRefTypes.cs:84:17:84:28 | String x = ... | NullableRefTypes.cs:85:9:85:22 | ... ...; | successor |
+| NullableRefTypes.cs:84:9:84:29 | ... ...; | NullableRefTypes.cs:84:17:84:28 | Before String x = ... | successor |
+| NullableRefTypes.cs:84:9:84:29 | After ... ...; | NullableRefTypes.cs:85:9:85:22 | ... ...; | successor |
+| NullableRefTypes.cs:84:17:84:17 | access to local variable x | NullableRefTypes.cs:84:21:84:28 | "source" | successor |
+| NullableRefTypes.cs:84:17:84:28 | After String x = ... | NullableRefTypes.cs:84:9:84:29 | After ... ...; | successor |
+| NullableRefTypes.cs:84:17:84:28 | Before String x = ... | NullableRefTypes.cs:84:17:84:17 | access to local variable x | successor |
+| NullableRefTypes.cs:84:17:84:28 | String x = ... | NullableRefTypes.cs:84:17:84:28 | After String x = ... | successor |
 | NullableRefTypes.cs:84:21:84:28 | "source" | NullableRefTypes.cs:84:17:84:28 | String x = ... | successor |
-| NullableRefTypes.cs:85:9:85:22 | ... ...; | NullableRefTypes.cs:85:20:85:20 | access to local variable x | successor |
-| NullableRefTypes.cs:85:16:85:21 | String y = ... | NullableRefTypes.cs:86:9:86:15 | ...; | successor |
+| NullableRefTypes.cs:85:9:85:22 | ... ...; | NullableRefTypes.cs:85:16:85:21 | Before String y = ... | successor |
+| NullableRefTypes.cs:85:9:85:22 | After ... ...; | NullableRefTypes.cs:86:9:86:15 | ...; | successor |
+| NullableRefTypes.cs:85:16:85:16 | access to local variable y | NullableRefTypes.cs:85:20:85:21 | Before ...! | successor |
+| NullableRefTypes.cs:85:16:85:21 | After String y = ... | NullableRefTypes.cs:85:9:85:22 | After ... ...; | successor |
+| NullableRefTypes.cs:85:16:85:21 | Before String y = ... | NullableRefTypes.cs:85:16:85:16 | access to local variable y | successor |
+| NullableRefTypes.cs:85:16:85:21 | String y = ... | NullableRefTypes.cs:85:16:85:21 | After String y = ... | successor |
 | NullableRefTypes.cs:85:20:85:20 | access to local variable x | NullableRefTypes.cs:85:20:85:21 | ...! | successor |
-| NullableRefTypes.cs:85:20:85:21 | ...! | NullableRefTypes.cs:85:16:85:21 | String y = ... | successor |
-| NullableRefTypes.cs:86:9:86:14 | ... = ... | NullableRefTypes.cs:87:9:87:17 | ...; | successor |
-| NullableRefTypes.cs:86:9:86:15 | ...; | NullableRefTypes.cs:86:13:86:13 | access to local variable x | successor |
+| NullableRefTypes.cs:85:20:85:21 | ...! | NullableRefTypes.cs:85:20:85:21 | After ...! | successor |
+| NullableRefTypes.cs:85:20:85:21 | After ...! | NullableRefTypes.cs:85:16:85:21 | String y = ... | successor |
+| NullableRefTypes.cs:85:20:85:21 | Before ...! | NullableRefTypes.cs:85:20:85:20 | access to local variable x | successor |
+| NullableRefTypes.cs:86:9:86:9 | access to local variable y | NullableRefTypes.cs:86:13:86:14 | Before ...! | successor |
+| NullableRefTypes.cs:86:9:86:14 | ... = ... | NullableRefTypes.cs:86:9:86:14 | After ... = ... | successor |
+| NullableRefTypes.cs:86:9:86:14 | After ... = ... | NullableRefTypes.cs:86:9:86:15 | After ...; | successor |
+| NullableRefTypes.cs:86:9:86:14 | Before ... = ... | NullableRefTypes.cs:86:9:86:9 | access to local variable y | successor |
+| NullableRefTypes.cs:86:9:86:15 | ...; | NullableRefTypes.cs:86:9:86:14 | Before ... = ... | successor |
+| NullableRefTypes.cs:86:9:86:15 | After ...; | NullableRefTypes.cs:87:9:87:17 | ...; | successor |
 | NullableRefTypes.cs:86:13:86:13 | access to local variable x | NullableRefTypes.cs:86:13:86:14 | ...! | successor |
-| NullableRefTypes.cs:86:13:86:14 | ...! | NullableRefTypes.cs:86:9:86:14 | ... = ... | successor |
-| NullableRefTypes.cs:87:9:87:16 | ... = ... | NullableRefTypes.cs:88:9:88:15 | ...; | successor |
-| NullableRefTypes.cs:87:9:87:17 | ...; | NullableRefTypes.cs:87:13:87:16 | null | successor |
+| NullableRefTypes.cs:86:13:86:14 | ...! | NullableRefTypes.cs:86:13:86:14 | After ...! | successor |
+| NullableRefTypes.cs:86:13:86:14 | After ...! | NullableRefTypes.cs:86:9:86:14 | ... = ... | successor |
+| NullableRefTypes.cs:86:13:86:14 | Before ...! | NullableRefTypes.cs:86:13:86:13 | access to local variable x | successor |
+| NullableRefTypes.cs:87:9:87:9 | access to local variable x | NullableRefTypes.cs:87:13:87:16 | null | successor |
+| NullableRefTypes.cs:87:9:87:16 | ... = ... | NullableRefTypes.cs:87:9:87:16 | After ... = ... | successor |
+| NullableRefTypes.cs:87:9:87:16 | After ... = ... | NullableRefTypes.cs:87:9:87:17 | After ...; | successor |
+| NullableRefTypes.cs:87:9:87:16 | Before ... = ... | NullableRefTypes.cs:87:9:87:9 | access to local variable x | successor |
+| NullableRefTypes.cs:87:9:87:17 | ...; | NullableRefTypes.cs:87:9:87:16 | Before ... = ... | successor |
+| NullableRefTypes.cs:87:9:87:17 | After ...; | NullableRefTypes.cs:88:9:88:15 | ...; | successor |
 | NullableRefTypes.cs:87:13:87:16 | null | NullableRefTypes.cs:87:9:87:16 | ... = ... | successor |
-| NullableRefTypes.cs:88:9:88:14 | ... = ... | NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr (normal) | successor |
-| NullableRefTypes.cs:88:9:88:15 | ...; | NullableRefTypes.cs:88:13:88:13 | access to local variable x | successor |
+| NullableRefTypes.cs:88:9:88:9 | access to local variable y | NullableRefTypes.cs:88:13:88:14 | Before ...! | successor |
+| NullableRefTypes.cs:88:9:88:14 | ... = ... | NullableRefTypes.cs:88:9:88:14 | After ... = ... | successor |
+| NullableRefTypes.cs:88:9:88:14 | After ... = ... | NullableRefTypes.cs:88:9:88:15 | After ...; | successor |
+| NullableRefTypes.cs:88:9:88:14 | Before ... = ... | NullableRefTypes.cs:88:9:88:9 | access to local variable y | successor |
+| NullableRefTypes.cs:88:9:88:15 | ...; | NullableRefTypes.cs:88:9:88:14 | Before ... = ... | successor |
+| NullableRefTypes.cs:88:9:88:15 | After ...; | NullableRefTypes.cs:83:5:89:5 | After {...} | successor |
 | NullableRefTypes.cs:88:13:88:13 | access to local variable x | NullableRefTypes.cs:88:13:88:14 | ...! | successor |
-| NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:9:88:14 | ... = ... | successor |
+| NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:13:88:14 | After ...! | successor |
+| NullableRefTypes.cs:88:13:88:14 | After ...! | NullableRefTypes.cs:88:9:88:14 | ... = ... | successor |
+| NullableRefTypes.cs:88:13:88:14 | Before ...! | NullableRefTypes.cs:88:13:88:13 | access to local variable x | successor |
 nonNullExpressions
 | NullableRefTypes.cs:84:21:84:28 | "source" |
 | NullableRefTypes.cs:85:20:85:20 | access to local variable x |

@@ -6,7 +6,7 @@ where
   (
     ult.(Ssa::ExplicitDefinition).getADefinition() = def
     or
-    ult.(Ssa::ImplicitParameterDefinition).getParameter() =
+    ult.(Ssa::ParameterDefinition).getParameter() =
       def.(AssignableDefinitions::ImplicitParameterDefinition).getParameter()
   ) and
   read = ssaDef.getARead()

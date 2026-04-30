@@ -56,7 +56,7 @@ We need to add a tuple to the ``sinkModel(type, path, kind)`` extensible predica
 
 
 - The first column, ``"TTY::Command"``, identifies a set of values from which to begin the search for the sink.
-  The string ``"TTY::Command""`` means we start at the places where the codebase constructs instances of the class ``TTY::Command``.
+  The string ``"TTY::Command"`` means we start at the places where the codebase constructs instances of the class ``TTY::Command``.
 - The second column is an access path that is evaluated from left to right, starting at the values that were identified by the first column.
 
   - ``Method[run]`` selects calls to the ``run`` method of the ``TTY::Command`` class.

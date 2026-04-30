@@ -57,6 +57,15 @@ private module Ast implements AstSig<Location> {
 
   AstNode callableGetBody(Callable c) { result = c.getBody() }
 
+  // TODO: Implement in order to include parameters in the CFG
+  class Parameter extends AstNode {
+    Parameter() { none() }
+
+    Expr getDefaultValue() { none() }
+  }
+
+  Parameter callableGetParameter(Callable c, int i) { result = c.getParameter(i) }
+
   class Stmt = J::Stmt;
 
   class Expr = J::Expr;
@@ -91,9 +100,13 @@ private module Ast implements AstSig<Location> {
 
   class ContinueStmt = J::ContinueStmt;
 
+  class GotoStmt extends Stmt {
+    GotoStmt() { none() }
+  }
+
   class ReturnStmt = J::ReturnStmt;
 
-  class ThrowStmt = J::ThrowStmt;
+  class Throw = J::ThrowStmt;
 
   final private class FinalTryStmt = J::TryStmt;
 
@@ -181,10 +194,36 @@ private module Ast implements AstSig<Location> {
 
   class LogicalNotExpr = LogNotExpr;
 
+  class Assignment = J::Assignment;
+
+  class AssignExpr = J::AssignExpr;
+
+  class CompoundAssignment = J::AssignOp;
+
+  class AssignLogicalAndExpr extends CompoundAssignment {
+    AssignLogicalAndExpr() { none() }
+  }
+
+  class AssignLogicalOrExpr extends CompoundAssignment {
+    AssignLogicalOrExpr() { none() }
+  }
+
+  class AssignNullCoalescingExpr extends CompoundAssignment {
+    AssignNullCoalescingExpr() { none() }
+  }
+
   final private class FinalBooleanLiteral = J::BooleanLiteral;
 
   class BooleanLiteral extends FinalBooleanLiteral {
     boolean getValue() { result = this.getBooleanValue() }
+  }
+
+  final private class FinalInstanceOfExpr = J::InstanceOfExpr;
+
+  class PatternMatchExpr extends FinalInstanceOfExpr {
+    PatternMatchExpr() { this.isPattern() }
+
+    AstNode getPattern() { result = super.getPattern() }
   }
 }
 
@@ -438,6 +477,7 @@ private module NonReturningCalls {
 
 private module Input implements InputSig1, InputSig2 {
   private import java as J
+  private import codeql.util.Void
 
   predicate cfgCachedStageRef() { CfgCachedStage::ref() }
 
@@ -503,6 +543,8 @@ private module Input implements InputSig1, InputSig2 {
     l = TYield() and n instanceof SwitchExpr
   }
 
+  class CallableContext = Void;
+
   predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
     kind.isBoolean() and
     (
@@ -522,14 +564,8 @@ private module Input implements InputSig1, InputSig2 {
 
   private string assertThrowNodeTag() { result = "[assert-throw]" }
 
-  private string instanceofTrueNodeTag() { result = "[instanceof-true]" }
-
   predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
     n instanceof AssertStmt and tag = assertThrowNodeTag() and t instanceof DirectSuccessor
-    or
-    n.(InstanceOfExpr).isPattern() and
-    tag = instanceofTrueNodeTag() and
-    t.(BooleanSuccessor).getValue() = true
   }
 
   /**
@@ -571,34 +607,6 @@ private module Input implements InputSig1, InputSig2 {
 
   /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
   predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
-    exists(InstanceOfExpr ioe |
-      // common
-      n1.isBefore(ioe) and
-      n2.isBefore(ioe.getExpr())
-      or
-      n1.isAfter(ioe.getExpr()) and
-      n2.isIn(ioe)
-      or
-      // std postorder:
-      not ioe.isPattern() and
-      n1.isIn(ioe) and
-      n2.isAfter(ioe)
-      or
-      // pattern case:
-      ioe.isPattern() and
-      n1.isIn(ioe) and
-      n2.isAfterValue(ioe, any(BooleanSuccessor s | s.getValue() = false))
-      or
-      n1.isIn(ioe) and
-      n2.isAdditional(ioe, instanceofTrueNodeTag())
-      or
-      n1.isAdditional(ioe, instanceofTrueNodeTag()) and
-      n2.isBefore(ioe.getPattern())
-      or
-      n1.isAfter(ioe.getPattern()) and
-      n2.isAfterValue(ioe, any(BooleanSuccessor s | s.getValue() = true))
-    )
-    or
     exists(AssertStmt assertstmt |
       n1.isBefore(assertstmt) and
       n2.isBefore(assertstmt.getExpr())

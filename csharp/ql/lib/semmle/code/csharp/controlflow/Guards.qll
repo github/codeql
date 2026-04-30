@@ -7,20 +7,16 @@ private import ControlFlow
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
 private import semmle.code.csharp.commons.StructuralComparison as SC
-private import semmle.code.csharp.controlflow.BasicBlocks
-private import semmle.code.csharp.controlflow.internal.Completion
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Linq
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import codeql.controlflow.Guards as SharedGuards
 
-private module GuardsInput implements
-  SharedGuards::InputSig<Location, ControlFlow::Node, ControlFlow::BasicBlock>
-{
+private module GuardsInput implements SharedGuards::InputSig<Location, ControlFlowNode, BasicBlock> {
   private import csharp as CS
 
-  class NormalExitNode = ControlFlow::Nodes::NormalExitNode;
+  class NormalExitNode = ControlFlow::NormalExitNode;
 
   class AstNode = ControlFlowElement;
 
@@ -87,21 +83,14 @@ private module GuardsInput implements
 
     ConstantExpr asConstantCase() { super.getPattern() = result }
 
-    private predicate hasEdge(BasicBlock bb1, BasicBlock bb2, MatchingCompletion c) {
-      exists(PatternExpr pe |
-        super.getPattern() = pe and
-        c.isValidFor(pe) and
-        bb1.getLastNode() = pe.getAControlFlowNode() and
-        bb1.getASuccessor(c.getAMatchingSuccessorType()) = bb2
-      )
-    }
-
     predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
-      exists(MatchingCompletion c | this.hasEdge(bb1, bb2, c) and c.isMatch())
+      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = true)) = bb2 and
+      bb1.getLastNode() = AstNode.super.getControlFlowNode()
     }
 
     predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
-      exists(MatchingCompletion c | this.hasEdge(bb1, bb2, c) and c.isNonMatch())
+      bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = false)) = bb2 and
+      bb1.getLastNode() = AstNode.super.getControlFlowNode()
     }
   }
 
@@ -216,7 +205,7 @@ private module LogicInput implements GuardsImpl::LogicInputSig {
     }
   }
 
-  class SsaParameterInit extends SsaDefinition instanceof Ssa::ImplicitParameterDefinition {
+  class SsaParameterInit extends SsaDefinition instanceof Ssa::ParameterDefinition {
     Parameter getParameter() { result = super.getParameter() }
   }
 
@@ -313,7 +302,7 @@ class Guard extends Guards::Guard {
    * In case `cfn` or `sub` access an SSA variable in their left-most qualifier, then
    * so must the other (accessing the same SSA variable).
    */
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, AccessOrCallExpr sub, GuardValue v) {
+  predicate controlsNode(ControlFlowNodes::ElementNode cfn, AccessOrCallExpr sub, GuardValue v) {
     isGuardedByNode(cfn, this, sub, v)
   }
 
@@ -323,7 +312,7 @@ class Guard extends Guards::Guard {
    * Note: This predicate is inlined.
    */
   pragma[inline]
-  predicate controlsNode(ControlFlow::Nodes::ElementNode cfn, GuardValue v) {
+  predicate controlsNode(ControlFlowNodes::ElementNode cfn, GuardValue v) {
     guardControls(this, cfn.getBasicBlock(), v)
   }
 
@@ -441,7 +430,8 @@ class DereferenceableExpr extends Expr {
   predicate guardSuggestsMaybeNull(Guards::Guard guard) {
     not nonNullValueImplied(this) and
     (
-      exists(NullnessCompletion c | c.isValidFor(this) and c.isNull() and guard = this)
+      exists(guard.getControlFlowNode().getASuccessor(any(NullnessSuccessor n | n.isNull()))) and
+      guard = this
       or
       LogicInput::additionalNullCheck(guard, _, this, true)
       or
@@ -596,7 +586,7 @@ class AccessOrCallExpr extends Expr {
    * An expression can have more than one SSA qualifier in the presence
    * of control flow splitting.
    */
-  Ssa::Definition getAnSsaQualifier(ControlFlow::Node cfn) { result = getAnSsaQualifier(this, cfn) }
+  Ssa::Definition getAnSsaQualifier(ControlFlowNode cfn) { result = getAnSsaQualifier(this, cfn) }
 }
 
 private Declaration getDeclarationTarget(Expr e) {
@@ -604,14 +594,14 @@ private Declaration getDeclarationTarget(Expr e) {
   result = e.(Call).getTarget()
 }
 
-private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlow::Node cfn) {
+private Ssa::Definition getAnSsaQualifier(Expr e, ControlFlowNode cfn) {
   e = getATrackedAccess(result, cfn)
   or
   not e = getATrackedAccess(_, _) and
   result = getAnSsaQualifier(e.(QualifiableExpr).getQualifier(), cfn)
 }
 
-private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlow::Node cfn) {
+private AssignableAccess getATrackedAccess(Ssa::Definition def, ControlFlowNode cfn) {
   result = def.getAReadAtNode(cfn)
   or
   result = def.(Ssa::ExplicitDefinition).getADefinition().getTargetAccess() and
@@ -720,7 +710,7 @@ class GuardedExpr extends AccessOrCallExpr {
  * In the example above, the node for `x.ToString()` is null-guarded in the
  * split `b == true`, but not in the split `b == false`.
  */
-class GuardedControlFlowNode extends ControlFlow::Nodes::ElementNode {
+class GuardedControlFlowNode extends ControlFlowNodes::ElementNode {
   private Guard g;
   private AccessOrCallExpr sub0;
   private GuardValue v0;
@@ -776,7 +766,7 @@ class GuardedDataFlowNode extends DataFlow::ExprNode {
   private GuardValue v0;
 
   GuardedDataFlowNode() {
-    exists(ControlFlow::Nodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
+    exists(ControlFlowNodes::ElementNode cfn | exists(this.getExprAtNode(cfn)) |
       g.controlsNode(cfn, sub0, v0)
     )
   }
@@ -1074,7 +1064,7 @@ module Internal {
       candidateAux(x, d, bb) and
       y =
         any(AccessOrCallExpr e |
-          e.getAControlFlowNode().getBasicBlock() = bb and
+          e.getControlFlowNode().getBasicBlock() = bb and
           e.getTarget() = d
         )
     )
@@ -1106,11 +1096,11 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr0(
-      ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, GuardValue v
     ) {
       Stages::GuardsStage::forceCachingInSameStage() and
-      guardedCfn = guarded.getAControlFlowNode() and
+      guardedCfn = guarded.getControlFlowNode() and
       guardedBB = guardedCfn.getBasicBlock() and
       guardControls(g, guardedBB, v) and
       guardControlsSubSame(g, guardedBB, sub) and
@@ -1119,7 +1109,7 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExpr(
-      ControlFlow::Node guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode guardedCfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
       AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr0(guardedCfn, guardedBB, guarded, g, sub, v) and
@@ -1128,8 +1118,8 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef0(
-      ControlFlow::Node cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
-      ControlFlow::Node subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, GuardValue v,
+      ControlFlowNode cfn, BasicBlock guardedBB, AccessOrCallExpr guarded, Guard g,
+      ControlFlowNode subCfn, BasicBlock subCfnBB, AccessOrCallExpr sub, GuardValue v,
       Ssa::Definition def
     ) {
       nodeIsGuardedBySameSubExpr(cfn, guardedBB, guarded, g, sub, v) and
@@ -1139,7 +1129,7 @@ module Internal {
 
     pragma[nomagic]
     private predicate nodeIsGuardedBySameSubExprSsaDef(
-      ControlFlow::Node guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlow::Node subCfn,
+      ControlFlowNode guardedCfn, AccessOrCallExpr guarded, Guard g, ControlFlowNode subCfn,
       AccessOrCallExpr sub, GuardValue v, Ssa::Definition def
     ) {
       exists(BasicBlock guardedBB, BasicBlock subCfnBB |
@@ -1153,15 +1143,13 @@ module Internal {
     private predicate isGuardedByExpr0(
       AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
-      forex(ControlFlow::Node cfn | cfn = guarded.getAControlFlowNode() |
-        nodeIsGuardedBySameSubExpr(cfn, _, guarded, g, sub, v)
-      )
+      nodeIsGuardedBySameSubExpr(guarded.getControlFlowNode(), _, guarded, g, sub, v)
     }
 
     cached
     predicate isGuardedByExpr(AccessOrCallExpr guarded, Guard g, AccessOrCallExpr sub, GuardValue v) {
       isGuardedByExpr0(guarded, g, sub, v) and
-      forall(ControlFlow::Node subCfn, Ssa::Definition def |
+      forall(ControlFlowNode subCfn, Ssa::Definition def |
         nodeIsGuardedBySameSubExprSsaDef(_, guarded, g, subCfn, sub, v, def)
       |
         def = guarded.getAnSsaQualifier(_)
@@ -1170,17 +1158,14 @@ module Internal {
 
     cached
     predicate isGuardedByNode(
-      ControlFlow::Nodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
+      ControlFlowNodes::ElementNode guarded, Guard g, AccessOrCallExpr sub, GuardValue v
     ) {
       nodeIsGuardedBySameSubExpr(guarded, _, _, g, sub, v) and
-      forall(ControlFlow::Node subCfn, Ssa::Definition def |
+      forall(ControlFlowNode subCfn, Ssa::Definition def |
         nodeIsGuardedBySameSubExprSsaDef(guarded, _, g, subCfn, sub, v, def)
       |
         def =
-          guarded
-              .getAstNode()
-              .(AccessOrCallExpr)
-              .getAnSsaQualifier(guarded.getBasicBlock().getANode())
+          guarded.asExpr().(AccessOrCallExpr).getAnSsaQualifier(guarded.getBasicBlock().getANode())
       )
     }
   }

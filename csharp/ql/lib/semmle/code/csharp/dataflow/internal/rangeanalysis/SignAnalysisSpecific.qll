@@ -33,7 +33,7 @@ module Private {
 
   class Type = CS::Type;
 
-  class Expr = CS::ControlFlow::Nodes::ExprNode;
+  class Expr = CS::ControlFlowNodes::ExprNode;
 
   class VariableUpdate = CS::Ssa::ExplicitDefinition;
 
@@ -63,7 +63,7 @@ private module Impl {
   private import SsaReadPositionCommon
   private import semmle.code.csharp.commons.ComparisonTest
 
-  private class ExprNode = ControlFlow::Nodes::ExprNode;
+  private class ExprNode = ControlFlowNodes::ExprNode;
 
   /** Gets the character value of expression `e`. */
   string getCharValue(ExprNode e) { result = e.getValue() and e.getType() instanceof CharType }
@@ -254,7 +254,7 @@ private module Impl {
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce.getExpr() }
 
   private newtype TComparisonExpr =
-    MkComparisonExpr(ComparisonTest ct, ExprNode e) { e = ct.getExpr().getAControlFlowNode() }
+    MkComparisonExpr(ComparisonTest ct, ExprNode e) { e = ct.getExpr().getControlFlowNode() }
 
   /** A relational comparison */
   class ComparisonExpr extends MkComparisonExpr {

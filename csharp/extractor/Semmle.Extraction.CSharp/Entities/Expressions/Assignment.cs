@@ -24,10 +24,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             Create(Context, Syntax.Left, this, 0);
             Create(Context, Syntax.Right, this, 1);
-
             if (Kind != ExprKind.SIMPLE_ASSIGN && Kind != ExprKind.ASSIGN_COALESCE)
             {
-                OperatorCall(trapFile, Syntax);
+                AddOperatorCall(trapFile, Syntax);
             }
         }
 

@@ -454,3 +454,8 @@ namespace System.Web.Script.Serialization
         public SimpleTypeResolver() => throw null;
     }
 }
+
+namespace System.Web.Services
+{
+    public class WebMethodAttribute : Attribute { }
+}

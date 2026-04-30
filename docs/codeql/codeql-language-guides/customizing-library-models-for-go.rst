@@ -223,7 +223,7 @@ The first five values identify the function to be modeled as a summary.
 - The first value ``slices`` is the package name.
 - The second value ``""`` is left blank, since the function is not a method of a type.
 - The third value ``False`` is a flag that indicates whether or not the model also applies to subtypes. This has no effect for non-method functions.
-- The fourth value ``Max`` is the function name.
+- The fourth value ``Concat`` is the function name.
 - The fifth value ``""`` is the input type signature. For Go it should always be an empty string. It is needed for other languages where multiple functions may have the same name and they need to be distinguished by the number and types of the arguments.
 
 The sixth value should be left empty and is out of scope for this documentation.

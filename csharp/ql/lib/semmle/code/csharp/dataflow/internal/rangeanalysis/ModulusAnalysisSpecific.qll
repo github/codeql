@@ -4,15 +4,14 @@ module Private {
   private import semmle.code.csharp.dataflow.internal.rangeanalysis.RangeUtils as RU
   private import SsaUtils as SU
   private import SsaReadPositionCommon
-  private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 
-  class BasicBlock = CS::ControlFlow::BasicBlock;
+  class BasicBlock = CS::BasicBlock;
 
   class SsaVariable = SU::SsaVariable;
 
   class SsaPhiNode = CS::Ssa::PhiNode;
 
-  class Expr = CS::ControlFlow::Nodes::ExprNode;
+  class Expr = CS::ControlFlowNodes::ExprNode;
 
   class Guard = RU::Guard;
 

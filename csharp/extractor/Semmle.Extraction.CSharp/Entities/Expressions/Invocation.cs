@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var child = -1;
             string? memberName = null;
-            var target = TargetSymbol;
+            var target = GetTargetSymbol(Syntax);
             switch (Syntax.Expression)
             {
                 case MemberAccessExpressionSyntax memberAccess when IsValidMemberAccessKind():
@@ -127,39 +127,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             return info.SymbolInfo.Symbol is IMethodSymbol method &&
                 method.TryGetExtensionMethod()?.MethodKind == MethodKind.UserDefinedOperator;
-        }
-
-        public IMethodSymbol? TargetSymbol
-        {
-            get
-            {
-                var si = SymbolInfo;
-
-                if (si.Symbol is ISymbol symbol)
-                {
-                    var method = symbol as IMethodSymbol;
-                    // Case for compiler-generated extension methods.
-                    return method?.TryGetExtensionMethod() ?? method;
-                }
-
-                if (si.CandidateReason == CandidateReason.OverloadResolutionFailure)
-                {
-                    // This seems to be a bug in Roslyn
-                    // For some reason, typeof(X).InvokeMember(...) fails to resolve the correct
-                    // InvokeMember() method, even though the number of parameters clearly identifies the correct method
-
-                    var candidates = si.CandidateSymbols
-                        .OfType<IMethodSymbol>()
-                        .Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count)
-                        .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
-
-                    return Context.ExtractionContext.IsStandalone ?
-                        candidates.FirstOrDefault() :
-                        candidates.SingleOrDefault();
-                }
-
-                return si.Symbol as IMethodSymbol;
-            }
         }
 
         private static bool IsDelegateLikeCall(ExpressionNodeInfo info)

@@ -9,7 +9,7 @@ private module Impl {
   private import SsaReadPositionCommon
   private import semmle.code.csharp.controlflow.Guards as G
 
-  private class ExprNode = ControlFlow::Nodes::ExprNode;
+  private class ExprNode = ControlFlowNodes::ExprNode;
 
   /** Holds if `parent` having child `child` implies `parentNode` having child `childNode`. */
   predicate hasChild(Expr parent, Expr child, ExprNode parentNode, ExprNode childNode) {
@@ -20,7 +20,7 @@ private module Impl {
 
   /** Holds if SSA definition `def` equals `e + delta`. */
   predicate ssaUpdateStep(ExplicitDefinition def, ExprNode e, int delta) {
-    exists(ControlFlow::Node cfn | cfn = def.getControlFlowNode() |
+    exists(ControlFlowNode cfn | cfn = def.getControlFlowNode() |
       e = cfn.(ExprNode::Assignment).getRightOperand() and
       delta = 0 and
       not cfn instanceof ExprNode::AssignOperation
@@ -83,9 +83,7 @@ private module Impl {
     /**
      * Holds if basic block `bb` is guarded by this guard having value `v`.
      */
-    predicate controlsBasicBlock(ControlFlow::BasicBlock bb, G::GuardValue v) {
-      super.controlsBasicBlock(bb, v)
-    }
+    predicate controlsBasicBlock(BasicBlock bb, G::GuardValue v) { super.controlsBasicBlock(bb, v) }
 
     /**
      * Holds if this guard is an equality test between `e1` and `e2`. If the test is
@@ -160,7 +158,7 @@ import Impl
 module ExprNode {
   private import csharp as CS
 
-  private class ExprNode = CS::ControlFlow::Nodes::ExprNode;
+  private class ExprNode = CS::ControlFlowNodes::ExprNode;
 
   private import Sign
 

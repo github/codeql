@@ -126,11 +126,11 @@ private predicate nonNullDef(Ssa::ExplicitDefinition def) {
 /**
  * Holds if `node` is a dereference `d` of SSA definition `def`.
  */
-private predicate dereferenceAt(ControlFlow::Node node, Ssa::Definition def, Dereference d) {
+private predicate dereferenceAt(ControlFlowNode node, Ssa::Definition def, Dereference d) {
   d = def.getAReadAtNode(node)
 }
 
-private predicate isMaybeNullArgument(Ssa::ImplicitParameterDefinition def, MaybeNullExpr arg) {
+private predicate isMaybeNullArgument(Ssa::ParameterDefinition def, MaybeNullExpr arg) {
   exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
     p = def.getParameter()
   |
@@ -181,20 +181,8 @@ private predicate hasMultipleParamsArguments(Call c) {
   )
 }
 
-private predicate isNullDefaultArgument(Ssa::ImplicitParameterDefinition def, AlwaysNullExpr arg) {
-  exists(AssignableDefinitions::ImplicitParameterDefinition pdef, Parameter p |
-    p = def.getParameter()
-  |
-    p = pdef.getParameter().getUnboundDeclaration() and
-    arg = p.getDefaultValue() and
-    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
-  )
-}
-
 /** Holds if `def` is an SSA definition that may be `null`. */
-private predicate defMaybeNull(
-  Ssa::Definition def, ControlFlow::Node node, string msg, Element reason
-) {
+private predicate defMaybeNull(Ssa::Definition def, ControlFlowNode node, string msg, Element reason) {
   not nonNullDef(def) and
   (
     // A variable compared to `null` might be `null`
@@ -218,13 +206,9 @@ private predicate defMaybeNull(
       else msg = "because of $@ potential null argument"
     )
     or
-    isNullDefaultArgument(def, reason) and
-    node = def.getControlFlowNode() and
-    msg = "because the parameter has a null default value"
-    or
     // If the source of a variable is `null` then the variable may be `null`
     exists(AssignableDefinition adef | adef = def.(Ssa::ExplicitDefinition).getADefinition() |
-      adef.getSource() = maybeNullExpr(node.getAstNode()) and
+      adef.getSource() = maybeNullExpr(node.asExpr()) and
       reason = adef.getExpr() and
       msg = "because of $@ assignment"
     )
@@ -256,19 +240,19 @@ private Ssa::Definition getAnUltimateDefinition(Ssa::Definition def) {
  * through an intermediate dereference that always throws a null reference
  * exception.
  */
-private predicate defReaches(Ssa::Definition def, ControlFlow::Node cfn) {
+private predicate defReaches(Ssa::Definition def, ControlFlowNode cfn) {
   exists(def.getAFirstReadAtNode(cfn))
   or
-  exists(ControlFlow::Node mid | defReaches(def, mid) |
+  exists(ControlFlowNode mid | defReaches(def, mid) |
     SsaImpl::adjacentReadPairSameVar(_, mid, cfn) and
-    not mid = any(Dereference d | d.isAlwaysNull(def.getSourceVariable())).getAControlFlowNode()
+    not mid = any(Dereference d | d.isAlwaysNull(def.getSourceVariable())).getControlFlowNode()
   )
 }
 
 private module NullnessConfig implements ControlFlowReachability::ConfigSig {
-  predicate source(ControlFlow::Node node, Ssa::Definition def) { defMaybeNull(def, node, _, _) }
+  predicate source(ControlFlowNode node, Ssa::Definition def) { defMaybeNull(def, node, _, _) }
 
-  predicate sink(ControlFlow::Node node, Ssa::Definition def) {
+  predicate sink(ControlFlowNode node, Ssa::Definition def) {
     exists(Dereference d |
       dereferenceAt(node, def, d) and
       not d instanceof NonNullExpr
@@ -283,9 +267,7 @@ private module NullnessConfig implements ControlFlowReachability::ConfigSig {
 private module NullnessFlow = ControlFlowReachability::Flow<NullnessConfig>;
 
 predicate maybeNullDeref(Dereference d, Ssa::SourceVariable v, string msg, Element reason) {
-  exists(
-    Ssa::Definition origin, Ssa::Definition ssa, ControlFlow::Node src, ControlFlow::Node sink
-  |
+  exists(Ssa::Definition origin, Ssa::Definition ssa, ControlFlowNode src, ControlFlowNode sink |
     defMaybeNull(origin, src, msg, reason) and
     NullnessFlow::flow(src, origin, sink, ssa) and
     ssa.getSourceVariable() = v and
@@ -341,8 +323,7 @@ class Dereference extends G::DereferenceableExpr {
         or
         p.fromSource() and
         exists(
-          Ssa::ImplicitParameterDefinition def,
-          AssignableDefinitions::ImplicitParameterDefinition pdef
+          Ssa::ParameterDefinition def, AssignableDefinitions::ImplicitParameterDefinition pdef
         |
           p = def.getParameter()
         |
@@ -388,6 +369,6 @@ class Dereference extends G::DereferenceableExpr {
    */
   predicate isFirstAlwaysNull(Ssa::SourceVariable v) {
     this.isAlwaysNull(v) and
-    defReaches(v.getAnSsaDefinition(), this.getAControlFlowNode())
+    defReaches(v.getAnSsaDefinition(), this.getControlFlowNode())
   }
 }

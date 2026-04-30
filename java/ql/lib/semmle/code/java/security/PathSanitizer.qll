@@ -243,7 +243,7 @@ private class PathNormalizeSanitizer extends MethodCall {
   PathNormalizeSanitizer() {
     exists(RefType t | this.getMethod().getDeclaringType() = t |
       (t instanceof TypePath or t instanceof FilesKt) and
-      this.getMethod().hasName("normalize")
+      this.getMethod().hasName(["normalize", "toRealPath"])
       or
       t instanceof TypeFile and
       this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])

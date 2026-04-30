@@ -25796,9 +25796,9 @@ ir.cpp:
 # 2919|     getExpr(): [FunctionCall] call to VariableTemplateFunc
 # 2919|         Type = [DoubleType] double
 # 2919|         ValueCategory = prvalue
-# 2919|       getArgument(0): [Literal] 2.299999999999999822
+# 2919|       getArgument(0): [Literal] 2.3
 # 2919|           Type = [DoubleType] double
-# 2919|           Value = [Literal] 2.299999999999999822
+# 2919|           Value = [Literal] 2.3
 # 2919|           ValueCategory = prvalue
 # 2919|     getExpr().getFullyConverted(): [CStyleCast] (int)...
 # 2919|         Conversion = [FloatingPointToIntegralConversion] floating point to integral conversion

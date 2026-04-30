@@ -9,7 +9,6 @@ import csharp
  */
 module Ssa {
   private import internal.SsaImpl as SsaImpl
-  private import semmle.code.csharp.internal.Location
 
   pragma[nomagic]
   private predicate assignableDefinitionLocalScopeVariable(
@@ -17,15 +16,6 @@ module Ssa {
   ) {
     ad.getTarget() = v and
     ad.getEnclosingCallable() = c
-  }
-
-  pragma[nomagic]
-  private predicate localScopeSourceVariable(
-    SourceVariables::LocalScopeSourceVariable sv, LocalScopeVariable v, Callable c1, Callable c2
-  ) {
-    sv.getAssignable() = v and
-    sv.getEnclosingCallable() = c1 and
-    v.getCallable() = c2
   }
 
   /**
@@ -54,7 +44,7 @@ module Ssa {
       not exists(result.getTargetAccess()) and
       exists(LocalScopeVariable v, Callable c |
         assignableDefinitionLocalScopeVariable(result, v, c) and
-        localScopeSourceVariable(this, v, c, _)
+        SsaImpl::localScopeSourceVariable(this, v, c, _)
       )
     }
 
@@ -164,10 +154,8 @@ module Ssa {
    */
   class Definition extends SsaImpl::Definition {
     /** Gets the control flow node of this SSA definition. */
-    final ControlFlow::Node getControlFlowNode() {
-      exists(ControlFlow::BasicBlock bb, int i | this.definesAt(_, bb, i) |
-        result = bb.getNode(0.maximum(i))
-      )
+    final ControlFlowNode getControlFlowNode() {
+      exists(BasicBlock bb, int i | this.definesAt(_, bb, i) | result = bb.getNode(0.maximum(i)))
     }
 
     /**
@@ -176,9 +164,7 @@ module Ssa {
      * point it is still live, without crossing another SSA definition of the
      * same source variable.
      */
-    final predicate isLiveAtEndOfBlock(ControlFlow::BasicBlock bb) {
-      SsaImpl::isLiveAtEndOfBlock(this, bb)
-    }
+    final predicate isLiveAtEndOfBlock(BasicBlock bb) { SsaImpl::isLiveAtEndOfBlock(this, bb) }
 
     /**
      * Gets a read of the source variable underlying this SSA definition that
@@ -236,7 +222,7 @@ module Ssa {
      * - The reads of `this.Field` on lines 10 and 11 can be reached from the phi
      *   node between lines 9 and 10.
      */
-    final AssignableRead getAReadAtNode(ControlFlow::Node cfn) {
+    final AssignableRead getAReadAtNode(ControlFlowNode cfn) {
       result = SsaImpl::getAReadAtNode(this, cfn)
     }
 
@@ -310,72 +296,9 @@ module Ssa {
      * Subsequent reads can be found by following the steps defined by
      * `AssignableRead.getANextRead()`.
      */
-    final AssignableRead getAFirstReadAtNode(ControlFlow::Node cfn) {
+    final AssignableRead getAFirstReadAtNode(ControlFlowNode cfn) {
       SsaImpl::firstReadSameVar(this, cfn) and
-      result.getAControlFlowNode() = cfn
-    }
-
-    /**
-     * Gets a last read of the source variable underlying this SSA definition.
-     * That is, a read that can reach the end of the enclosing callable, or
-     * another SSA definition for the source variable, without passing through
-     * any other read. Example:
-     *
-     * ```csharp
-     * int Field;
-     *
-     * void SetField(int i) {
-     *   this.Field = i;
-     *   Use(this.Field);
-     *   if (i > 0)
-     *     this.Field = i - 1;
-     *   else if (i < 0)
-     *     SetField(1);
-     *   Use(this.Field);
-     *   Use(this.Field);
-     * }
-     * ```
-     *
-     * - The reads of `i` on lines 7 and 8 are the last reads for the implicit
-     *   parameter definition on line 3.
-     * - The read of `this.Field` on line 5 is a last read of the definition on
-     *   line 4.
-     * - The read of `this.Field` on line 11 is a last read of the phi node
-     *   between lines 9 and 10.
-     */
-    deprecated final AssignableRead getALastRead() { result = this.getALastReadAtNode(_) }
-
-    /**
-     * Gets a last read of the source variable underlying this SSA definition at
-     * control flow node `cfn`. That is, a read that can reach the end of the
-     * enclosing callable, or another SSA definition for the source variable,
-     * without passing through any other read. Example:
-     *
-     * ```csharp
-     * int Field;
-     *
-     * void SetField(int i) {
-     *   this.Field = i;
-     *   Use(this.Field);
-     *   if (i > 0)
-     *     this.Field = i - 1;
-     *   else if (i < 0)
-     *     SetField(1);
-     *   Use(this.Field);
-     *   Use(this.Field);
-     * }
-     * ```
-     *
-     * - The reads of `i` on lines 7 and 8 are the last reads for the implicit
-     *   parameter definition on line 3.
-     * - The read of `this.Field` on line 5 is a last read of the definition on
-     *   line 4.
-     * - The read of `this.Field` on line 11 is a last read of the phi node
-     *   between lines 9 and 10.
-     */
-    deprecated final AssignableRead getALastReadAtNode(ControlFlow::Node cfn) {
-      SsaImpl::lastReadSameVar(this, cfn) and
-      result.getAControlFlowNode() = cfn
+      result.getControlFlowNode() = cfn
     }
 
     /**
@@ -426,7 +349,9 @@ module Ssa {
      * This is either an expression, for example `x = 0`, a parameter, or a
      * callable. Phi nodes have no associated syntax element.
      */
-    Element getElement() { result = this.getControlFlowNode().getAstNode() }
+    Element getElement() {
+      result.(ControlFlowElement).getControlFlowNode() = this.getControlFlowNode()
+    }
 
     /** Gets the callable to which this SSA definition belongs. */
     final Callable getEnclosingCallable() {
@@ -484,7 +409,7 @@ module Ssa {
      * `M2` via the call on line 6.
      */
     deprecated final predicate isCapturedVariableDefinitionFlowIn(
-      ImplicitEntryDefinition def, ControlFlow::Nodes::ElementNode c, boolean additionalCalls
+      ImplicitEntryDefinition def, ControlFlowNodes::ElementNode c, boolean additionalCalls
     ) {
       none()
     }
@@ -520,9 +445,7 @@ module Ssa {
 
     override Element getElement() { result = ad.getElement() }
 
-    override string toString() {
-      result = SsaImpl::getToStringPrefix(this) + "SSA def(" + this.getSourceVariable() + ")"
-    }
+    override string toString() { result = "SSA def(" + this.getSourceVariable() + ")" }
 
     override Location getLocation() { result = ad.getLocation() }
   }
@@ -536,7 +459,7 @@ module Ssa {
    */
   class ImplicitDefinition extends Definition, SsaImpl::WriteDefinition {
     ImplicitDefinition() {
-      exists(ControlFlow::BasicBlock bb, SourceVariable v, int i | this.definesAt(v, bb, i) |
+      exists(BasicBlock bb, SourceVariable v, int i | this.definesAt(v, bb, i) |
         SsaImpl::implicitEntryDefinition(bb, v) and
         i = -1
         or
@@ -549,80 +472,62 @@ module Ssa {
 
   /**
    * An SSA definition representing the implicit initialization of a variable
-   * at the beginning of a callable. Either a parameter, a local scope variable
-   * captured by the callable, or a field or property accessed inside the callable.
+   * at the beginning of a callable. Either a local scope variable captured by
+   * the callable or a field or property accessed inside the callable.
    */
   class ImplicitEntryDefinition extends ImplicitDefinition {
     ImplicitEntryDefinition() {
-      exists(ControlFlow::BasicBlock bb, SourceVariable v |
+      exists(BasicBlock bb, SourceVariable v |
         this.definesAt(v, bb, -1) and
         SsaImpl::implicitEntryDefinition(bb, v)
       )
     }
 
     /** Gets the callable that this entry definition belongs to. */
-    final Callable getCallable() { result = this.getBasicBlock().getCallable() }
+    final Callable getCallable() { result = this.getBasicBlock().getEnclosingCallable() }
 
     override Element getElement() { result = this.getCallable() }
 
     override string toString() {
       if this.getSourceVariable().getAssignable() instanceof LocalScopeVariable
-      then
-        result =
-          SsaImpl::getToStringPrefix(this) + "SSA capture def(" + this.getSourceVariable() + ")"
-      else
-        result =
-          SsaImpl::getToStringPrefix(this) + "SSA entry def(" + this.getSourceVariable() + ")"
+      then result = "SSA capture def(" + this.getSourceVariable() + ")"
+      else result = "SSA entry def(" + this.getSourceVariable() + ")"
     }
 
     override Location getLocation() { result = this.getCallable().getLocation() }
   }
 
-  private module NearestLocationInput implements NearestLocationInputSig {
-    class C = ImplicitParameterDefinition;
+  deprecated class ImplicitParameterDefinition = ParameterDefinition;
 
-    predicate relevantLocations(ImplicitParameterDefinition def, Location l1, Location l2) {
-      not def.getBasicBlock() instanceof ControlFlow::BasicBlocks::EntryBlock and
-      l1 = def.getParameter().getALocation() and
-      l2 = def.getBasicBlock().getLocation()
-    }
-  }
+  final class ParameterDefinition = SsaImpl::ParameterDefinitionImpl;
 
-  pragma[nomagic]
-  private predicate implicitEntryDef(ImplicitEntryDefinition def, SourceVariable v, Callable c) {
-    v = def.getSourceVariable() and
-    c = def.getCallable()
+  private class ExplicitParameterDefinition extends ExplicitDefinition,
+    SsaImpl::ParameterDefinitionImpl
+  {
+    private Parameter p;
+    override AssignableDefinitions::ImplicitParameterDefinition ad;
+
+    ExplicitParameterDefinition() { p = ad.getParameter() }
+
+    override Parameter getParameter() { result = p }
+
+    override string toString() { result = SsaImpl::ParameterDefinitionImpl.super.toString() }
   }
 
   /**
-   * An SSA definition representing the implicit initialization of a parameter
-   * at the beginning of a callable.
+   * An SSA definition representing the default value of a parameter.
    */
-  class ImplicitParameterDefinition extends ImplicitEntryDefinition {
+  class ParameterDefaultDefinition extends ExplicitDefinition {
     private Parameter p;
+    override AssignableDefinitions::ParameterDefaultDefinition ad;
 
-    ImplicitParameterDefinition() {
-      exists(SourceVariable sv, Callable c |
-        implicitEntryDef(this, sv, c) and
-        localScopeSourceVariable(sv, p, _, c)
-      )
-    }
+    ParameterDefaultDefinition() { p = ad.getParameter() }
 
     /** Gets the parameter that this entry definition represents. */
     Parameter getParameter() { result = p }
 
-    override Element getElement() { result = this.getParameter() }
-
     override string toString() {
-      result = SsaImpl::getToStringPrefix(this) + "SSA param(" + this.getParameter() + ")"
-    }
-
-    override Location getLocation() {
-      not NearestLocation<NearestLocationInput>::nearestLocation(this, _, _) and
-      result = p.getLocation()
-      or
-      // multi-bodied method: use matching parameter location
-      NearestLocation<NearestLocationInput>::nearestLocation(this, result, _)
+      result = "SSA param_default(" + pragma[only_bind_out](this.getParameter()) + ")"
     }
   }
 
@@ -634,7 +539,7 @@ module Ssa {
     private Call c;
 
     ImplicitCallDefinition() {
-      exists(ControlFlow::BasicBlock bb, SourceVariable v, int i |
+      exists(BasicBlock bb, SourceVariable v, int i |
         this.definesAt(v, bb, i) and
         SsaImpl::updatesNamedFieldOrProp(bb, i, c, v, _)
       )
@@ -656,9 +561,7 @@ module Ssa {
       )
     }
 
-    override string toString() {
-      result = SsaImpl::getToStringPrefix(this) + "SSA call def(" + this.getSourceVariable() + ")"
-    }
+    override string toString() { result = "SSA call def(" + this.getSourceVariable() + ")" }
 
     override Location getLocation() { result = this.getCall().getLocation() }
   }
@@ -671,9 +574,7 @@ module Ssa {
     private Definition q;
 
     ImplicitQualifierDefinition() {
-      exists(
-        ControlFlow::BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v
-      |
+      exists(BasicBlock bb, int i, SourceVariables::QualifiedFieldOrPropSourceVariable v |
         this.definesAt(v, bb, i)
       |
         SsaImpl::variableWriteQualifier(bb, i, v, _) and
@@ -684,10 +585,7 @@ module Ssa {
     /** Gets the SSA definition for the qualifier. */
     final Definition getQualifierDefinition() { result = q }
 
-    override string toString() {
-      result =
-        SsaImpl::getToStringPrefix(this) + "SSA qualifier def(" + this.getSourceVariable() + ")"
-    }
+    override string toString() { result = "SSA qualifier def(" + this.getSourceVariable() + ")" }
 
     override Location getLocation() { result = this.getQualifierDefinition().getLocation() }
   }
@@ -723,13 +621,11 @@ module Ssa {
     final Definition getAnInput() { this.hasInputFromBlock(result, _) }
 
     /** Holds if `inp` is an input to this phi node along the edge originating in `bb`. */
-    predicate hasInputFromBlock(Definition inp, ControlFlow::BasicBlock bb) {
+    predicate hasInputFromBlock(Definition inp, BasicBlock bb) {
       inp = SsaImpl::phiHasInputFromBlock(this, bb)
     }
 
-    override string toString() {
-      result = SsaImpl::getToStringPrefix(this) + "SSA phi(" + this.getSourceVariable() + ")"
-    }
+    override string toString() { result = "SSA phi(" + this.getSourceVariable() + ")" }
 
     /*
      * The location of a phi node is the same as the location of the first node

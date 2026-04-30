@@ -381,7 +381,7 @@ We need to add a tuple to the ``sourceModel(type, path, kind)`` extensible predi
 - The first column, ``"@example/middleware"``, begins the search at imports of the hypothetical NPM package ``@example/middleware``.
 - ``Member[injectData]`` selects accesses to the ``injectData`` member.
 - ``ReturnValue`` selects the return value of the call to ``injectData``.
-- ``GuardedRouteHandler`` interprets the current value as a middleware function and selects all route handlers guarded by that middleware. Since the current value is passd to ``app.use()``, the callback subsequently passed to ``app.get()`` is seen as a guarded route handler.
+- ``GuardedRouteHandler`` interprets the current value as a middleware function and selects all route handlers guarded by that middleware. Since the current value is passed to ``app.use()``, the callback subsequently passed to ``app.get()`` is seen as a guarded route handler.
 - ``Parameter[0]`` selects the first parameter of the callback (the parameter named ``req``).
 - ``Member[data]`` selects accesses to the ``data`` property of the ``req`` object.
 - Finally, the kind ``remote`` indicates that this is considered a source of remote flow.

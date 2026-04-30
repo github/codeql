@@ -54,3 +54,59 @@ namespace RemoteFlowSource
         }
     }
 }
+
+namespace AspRemoteFlowSource
+{
+    using System.Web.Services;
+    using System.Collections.Generic;
+
+    public class MySubData
+    {
+        public string SubDataProp { get; set; }
+    }
+
+    public class ArrayElementData
+    {
+        public string ArrayElementDataProp { get; set; }
+    }
+
+    public class ListElementData
+    {
+        public string ListElementDataProp { get; set; }
+    }
+
+    public class MyData
+    {
+        public string DataField;
+        public string DataProp { get; set; }
+        public MySubData SubData { get; set; }
+        public ArrayElementData[] Elements { get; set; }
+        public List<ListElementData> List;
+    }
+
+    public class MyDataElement
+    {
+        public string Prop { get; set; }
+    }
+
+
+    public class MyService
+    {
+        [WebMethod]
+        public void MyMethod(MyData data)
+        {
+            Use(data.DataProp);
+            Use(data.SubData.SubDataProp);
+            Use(data.Elements[0].ArrayElementDataProp);
+            Use(data.List[0].ListElementDataProp);
+        }
+
+        [WebMethod]
+        public void MyMethod2(MyDataElement[] data)
+        {
+            Use(data[0].Prop);
+        }
+
+        public static void Use(object o) { }
+    }
+}

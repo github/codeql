@@ -37,6 +37,11 @@ private module Input1 implements InputSig1<Location> {
 
   class Type = T::Type;
 
+  predicate isPseudoType(Type t) {
+    t instanceof UnknownType or
+    t instanceof NeverType
+  }
+
   class TypeParameter = T::TypeParameter;
 
   class TypeAbstraction = TA::TypeAbstraction;

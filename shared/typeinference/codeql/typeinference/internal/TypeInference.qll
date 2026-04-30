@@ -145,6 +145,12 @@ signature module InputSig1<LocationSig Location> {
     Location getLocation();
   }
 
+  /**
+   * Holds if `t` is a pseudo type. Pseudo types are skipped when checking for
+   * non-instantiations in `isNotInstantiationOf`.
+   */
+  predicate isPseudoType(Type t);
+
   /** A type parameter. */
   class TypeParameter extends Type;
 
@@ -624,6 +630,26 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      pragma[nomagic]
+      private predicate hasTypeParameterAt(
+        App app, TypeAbstraction abs, Constraint constraint, TypePath path, TypeParameter tp
+      ) {
+        tp = getTypeAt(app, abs, constraint, path) and
+        tp = abs.getATypeParameter()
+      }
+
+      private Type getNonPseudoTypeAt(App app, TypePath path) {
+        result = app.getTypeAt(path) and not isPseudoType(result)
+      }
+
+      pragma[nomagic]
+      private Type getNonPseudoTypeAtTypeParameter(
+        App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp, TypePath path
+      ) {
+        hasTypeParameterAt(app, abs, constraint, path, tp) and
+        result = getNonPseudoTypeAt(app, path)
+      }
+
       /**
        * Holds if `app` is _not_ a possible instantiation of `constraint`, because `app`
        * and `constraint` differ on concrete types at `path`.
@@ -643,12 +669,21 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate isNotInstantiationOf(
         App app, TypeAbstraction abs, Constraint constraint, TypePath path
       ) {
-        // `app` and `constraint` differ on a concrete type
+        // `app` and `constraint` differ on a non-pseudo concrete type
         exists(Type t, Type t2 |
           t = getTypeAt(app, abs, constraint, path) and
           not t = abs.getATypeParameter() and
-          app.getTypeAt(path) = t2 and
+          t2 = getNonPseudoTypeAt(app, path) and
           t2 != t
+        )
+        or
+        // `app` has different instantiations of a type parameter mentioned at two
+        // different paths
+        exists(TypeParameter tp, TypePath path2, Type t, Type t2 |
+          t = getNonPseudoTypeAtTypeParameter(app, abs, constraint, tp, path) and
+          t2 = getNonPseudoTypeAtTypeParameter(app, abs, constraint, tp, path2) and
+          t != t2 and
+          path != path2
         )
       }
     }

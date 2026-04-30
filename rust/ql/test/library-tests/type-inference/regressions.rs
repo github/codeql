@@ -149,7 +149,7 @@ mod regression5 {
 
     fn foo() -> S2<S1> {
         let x = S1.into(); // $ target=into
-        x // $ SPURIOUS: type=x:T2.TRef.S1 -- happens because we currently do not consider the two `impl` blocks to be siblings
+        x // $ type=x:T2.S1
     }
 }
 

@@ -115,3 +115,19 @@ void test_zmc(void *socket) {
     // ...
   }
 }
+
+long StringCchGetsA(char *, size_t);
+long StringCchGetsExA(char *, size_t, char **, size_t *, unsigned long);
+
+void test_strsafe_gets() {
+	{
+		char dest[256] = {0};
+		StringCchGetsA(dest, sizeof(dest)); // $ local_source
+	}
+	{
+		char dest[256] = {0};
+		char *end;
+		size_t remaining;
+		StringCchGetsExA(dest, sizeof(dest), &end, &remaining, 0); // $ local_source
+	}
+}
