@@ -2339,7 +2339,7 @@ mod loops {
         vals7.push(1u8); // $ target=push
         for u in vals7 {} // $ type=u:u8
 
-        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ type=matrix1:Vec $ MISSING: type=matrix1@T:Vec type=matrix1@Vec<T>.Vec<T>:i32
+        let matrix1 = vec![vec![1, 2], vec![3, 4]]; // $ type=matrix1:Vec $ MISSING: type=matrix1@Vec<T>:Vec type=matrix1@Vec<T>.Vec<T>:i32
         #[rustfmt::skip]
         let _ = for row in matrix1 { // $ MISSING: type=row:Vec type=row@Vec<T>:i32
             for cell in row { // $ MISSING: type=cell:i32
