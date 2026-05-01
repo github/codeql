@@ -48,18 +48,6 @@ class MethodLdapNameAddAll extends Method {
   }
 }
 
-/**
- * DEPRECATED: No longer needed as clone steps are handled uniformly.
- *
- * A method with the name `clone` declared in `javax.naming.ldap.LdapName`.
- */
-deprecated class MethodLdapNameClone extends Method {
-  MethodLdapNameClone() {
-    this.getDeclaringType() instanceof TypeLdapName and
-    this.hasName("clone")
-  }
-}
-
 /** A method with the name `getAll` declared in `javax.naming.ldap.LdapName`. */
 class MethodLdapNameGetAll extends Method {
   MethodLdapNameGetAll() {
