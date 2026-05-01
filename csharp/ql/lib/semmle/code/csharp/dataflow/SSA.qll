@@ -554,11 +554,9 @@ module Ssa {
   /**
    * DEPRECATED: Use `SsaParameterInit` instead.
    */
-  deprecated class ImplicitParameterDefinition = ParameterDefinition;
+  deprecated final class ImplicitParameterDefinition = SsaImpl::ParameterDefinitionImpl;
 
-  final class ParameterDefinition = SsaImpl::ParameterDefinitionImpl;
-
-  private class ExplicitParameterDefinition extends ExplicitDefinition,
+  deprecated private class ExplicitParameterDefinition extends ExplicitDefinition,
     SsaImpl::ParameterDefinitionImpl
   {
     private Parameter p;

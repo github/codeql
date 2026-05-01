@@ -1048,7 +1048,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
 
 private module DataFlowIntegrationImpl = Impl::DataFlowIntegration<DataFlowIntegrationInput>;
 
-private module MultiBodyNearestLocationInput implements NearestLocationInputSig {
+deprecated private module MultiBodyNearestLocationInput implements NearestLocationInputSig {
   class C = MultiBodyParameterDefinition;
 
   predicate relevantLocations(MultiBodyParameterDefinition def, Location l1, Location l2) {
@@ -1062,7 +1062,7 @@ private module MultiBodyNearestLocationInput implements NearestLocationInputSig 
 }
 
 pragma[nomagic]
-private predicate implicitEntryDef(
+deprecated private predicate implicitEntryDef(
   Ssa::ImplicitEntryDefinition def, Ssa::SourceVariable v, Callable c
 ) {
   v = def.getSourceVariable() and
@@ -1073,7 +1073,7 @@ private predicate implicitEntryDef(
  * An SSA definition representing the implicit initialization of a parameter
  * at the beginning of a callable.
  */
-abstract class ParameterDefinitionImpl extends Ssa::Definition {
+abstract deprecated class ParameterDefinitionImpl extends Ssa::Definition {
   /** Gets the parameter that this definition represents. */
   abstract Parameter getParameter();
 
@@ -1082,7 +1082,9 @@ abstract class ParameterDefinitionImpl extends Ssa::Definition {
   }
 }
 
-class MultiBodyParameterDefinition extends ParameterDefinitionImpl, Ssa::ImplicitEntryDefinition {
+deprecated class MultiBodyParameterDefinition extends ParameterDefinitionImpl,
+  Ssa::ImplicitEntryDefinition
+{
   private Parameter p;
 
   MultiBodyParameterDefinition() {
