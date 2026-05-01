@@ -570,19 +570,6 @@ module Ssa {
   }
 
   /**
-   * An SSA definition representing the default value of a parameter.
-   */
-  class ParameterDefaultDefinition extends ExplicitDefinition {
-    private Parameter p;
-    override AssignableDefinitions::ParameterDefaultDefinition ad;
-
-    ParameterDefaultDefinition() { p = ad.getParameter() }
-
-    /** Gets the parameter that this entry definition represents. */
-    Parameter getParameter() { result = p }
-  }
-
-  /**
    * An SSA definition representing the potential definition of a variable
    * via a call.
    */
