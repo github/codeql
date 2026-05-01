@@ -569,6 +569,15 @@ module Ssa {
     override string toString() { result = SsaImpl::ParameterDefinitionImpl.super.toString() }
   }
 
+  /** An SSA definition in a closure that captures a variable. */
+  class SsaCapturedDefinition extends SsaImplicitEntryDefinition {
+    SsaCapturedDefinition() {
+      this.getSourceVariable().getAssignable() instanceof LocalScopeVariable
+    }
+
+    override string toString() { result = "SSA capture def(" + this.getSourceVariable() + ")" }
+  }
+
   /**
    * An SSA definition representing the potential definition of a variable
    * via a call.
