@@ -36,7 +36,7 @@
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) |
-| Consistency.cs:26:13:26:19 | c.Field | Consistency.cs:25:29:25:29 | SSA qualifier def(c.Field) |
+| Consistency.cs:26:13:26:19 | c.Field | Consistency.cs:25:9:25:30 | SSA qualifier def(c.Field) |
 | Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) |
 | Consistency.cs:44:11:44:11 | s | Consistency.cs:44:11:44:11 | SSA def(s) |
 | Consistency.cs:49:30:49:30 | a | Consistency.cs:49:30:49:30 | SSA param(a) |
@@ -95,10 +95,10 @@
 | DefUse.cs:188:13:188:18 | this.Field5 | DefUse.cs:188:13:188:22 | SSA def(this.Field5) |
 | DefaultParam.cs:3:20:3:20 | b | DefaultParam.cs:3:20:3:20 | SSA param(b) |
 | DefaultParam.cs:3:30:3:30 | s | DefaultParam.cs:3:30:3:30 | SSA param(s) |
-| DefaultParam.cs:3:30:3:30 | s | DefaultParam.cs:3:34:3:35 | SSA param_default(s) |
+| DefaultParam.cs:3:30:3:30 | s | DefaultParam.cs:3:34:3:35 | SSA def(s) |
 | DefaultParam.cs:3:30:3:30 | s | DefaultParam.cs:3:42:3:42 | SSA phi(s) |
 | DefaultParam.cs:3:42:3:42 | i | DefaultParam.cs:3:42:3:42 | SSA param(i) |
-| DefaultParam.cs:3:42:3:42 | i | DefaultParam.cs:3:46:3:46 | SSA param_default(i) |
+| DefaultParam.cs:3:42:3:42 | i | DefaultParam.cs:3:46:3:46 | SSA def(i) |
 | DefaultParam.cs:3:42:3:42 | i | DefaultParam.cs:4:5:6:5 | SSA phi(i) |
 | Example.cs:6:23:6:23 | i | Example.cs:6:23:6:23 | SSA param(i) |
 | Example.cs:8:9:8:18 | this.Field | Example.cs:8:9:8:22 | SSA def(this.Field) |
@@ -162,9 +162,9 @@
 | Fields.cs:107:33:107:33 | f | Fields.cs:107:33:107:33 | SSA param(f) |
 | Fields.cs:115:20:115:29 | this.Field | Fields.cs:109:10:109:10 | SSA entry def(this.Field) |
 | Fields.cs:115:20:115:29 | this.Field | Fields.cs:114:9:114:22 | SSA call def(this.Field) |
-| Fields.cs:115:20:115:35 | this.Field.Field | Fields.cs:109:10:109:10 | SSA qualifier def(this.Field.Field) |
+| Fields.cs:115:20:115:35 | this.Field.Field | Fields.cs:109:10:109:10 | SSA entry def(this.Field.Field) |
 | Fields.cs:115:20:115:35 | this.Field.Field | Fields.cs:114:9:114:22 | SSA call def(this.Field.Field) |
-| Fields.cs:116:21:116:39 | this.Field.Field.xs | Fields.cs:109:10:109:10 | SSA qualifier def(this.Field.Field.xs) |
+| Fields.cs:116:21:116:39 | this.Field.Field.xs | Fields.cs:109:10:109:10 | SSA entry def(this.Field.Field.xs) |
 | Fields.cs:116:21:116:39 | this.Field.Field.xs | Fields.cs:114:9:114:22 | SSA qualifier def(this.Field.Field.xs) |
 | MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationA.cs:5:22:5:22 | SSA param(x) |
 | MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationB.cs:3:22:3:22 | SSA param(x) |
@@ -245,9 +245,9 @@
 | Properties.cs:106:37:106:37 | p | Properties.cs:106:37:106:37 | SSA param(p) |
 | Properties.cs:114:20:114:29 | this.Props | Properties.cs:108:10:108:10 | SSA entry def(this.Props) |
 | Properties.cs:114:20:114:29 | this.Props | Properties.cs:113:9:113:22 | SSA call def(this.Props) |
-| Properties.cs:114:20:114:35 | this.Props.Props | Properties.cs:108:10:108:10 | SSA qualifier def(this.Props.Props) |
+| Properties.cs:114:20:114:35 | this.Props.Props | Properties.cs:108:10:108:10 | SSA entry def(this.Props.Props) |
 | Properties.cs:114:20:114:35 | this.Props.Props | Properties.cs:113:9:113:22 | SSA call def(this.Props.Props) |
-| Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:108:10:108:10 | SSA qualifier def(this.Props.Props.xs) |
+| Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:108:10:108:10 | SSA entry def(this.Props.Props.xs) |
 | Properties.cs:115:21:115:39 | this.Props.Props.xs | Properties.cs:113:9:113:22 | SSA qualifier def(this.Props.Props.xs) |
 | Test.cs:5:15:5:20 | param1 | Test.cs:5:15:5:20 | SSA param(param1) |
 | Test.cs:5:15:5:20 | param1 | Test.cs:25:9:32:9 | SSA phi(param1) |
