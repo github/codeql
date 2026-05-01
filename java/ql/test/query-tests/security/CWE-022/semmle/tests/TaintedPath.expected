@@ -235,17 +235,17 @@ edges
 | Test.java:199:26:199:33 | source(...) : String | Test.java:199:19:199:33 | (...)... | provenance | Sink:MaD:59 |
 | Test.java:204:29:204:36 | source(...) : String | Test.java:204:20:204:36 | (...)... | provenance | Sink:MaD:68 |
 models
-| 1 | Sink: java.io; File; true; canExecute; (); ; Argument[this]; path-injection; manual |
-| 2 | Sink: java.io; File; true; canRead; (); ; Argument[this]; path-injection; manual |
-| 3 | Sink: java.io; File; true; canWrite; (); ; Argument[this]; path-injection; manual |
+| 1 | Sink: java.io; File; true; canExecute; (); ; Argument[this]; path-injection[read]; manual |
+| 2 | Sink: java.io; File; true; canRead; (); ; Argument[this]; path-injection[read]; manual |
+| 3 | Sink: java.io; File; true; canWrite; (); ; Argument[this]; path-injection[read]; manual |
 | 4 | Sink: java.io; File; true; createNewFile; (); ; Argument[this]; path-injection; ai-manual |
 | 5 | Sink: java.io; File; true; createTempFile; (String,String,File); ; Argument[2]; path-injection; ai-manual |
 | 6 | Sink: java.io; File; true; delete; (); ; Argument[this]; path-injection; manual |
 | 7 | Sink: java.io; File; true; deleteOnExit; (); ; Argument[this]; path-injection; manual |
-| 8 | Sink: java.io; File; true; exists; (); ; Argument[this]; path-injection; manual |
-| 9 | Sink: java.io; File; true; isDirectory; (); ; Argument[this]; path-injection; manual |
-| 10 | Sink: java.io; File; true; isFile; (); ; Argument[this]; path-injection; manual |
-| 11 | Sink: java.io; File; true; isHidden; (); ; Argument[this]; path-injection; manual |
+| 8 | Sink: java.io; File; true; exists; (); ; Argument[this]; path-injection[read]; manual |
+| 9 | Sink: java.io; File; true; isDirectory; (); ; Argument[this]; path-injection[read]; manual |
+| 10 | Sink: java.io; File; true; isFile; (); ; Argument[this]; path-injection[read]; manual |
+| 11 | Sink: java.io; File; true; isHidden; (); ; Argument[this]; path-injection[read]; manual |
 | 12 | Sink: java.io; File; true; mkdir; (); ; Argument[this]; path-injection; manual |
 | 13 | Sink: java.io; File; true; mkdirs; (); ; Argument[this]; path-injection; manual |
 | 14 | Sink: java.io; File; true; renameTo; (File); ; Argument[0]; path-injection; ai-manual |
