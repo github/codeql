@@ -162,7 +162,8 @@ module UrlRedirect {
   deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
 
   /**
-   * A sanitizer defined via models-as-data with kind "url-redirection".
+   * A sanitizer which sanitizes all flow states, defined via models-as-data
+   * with kind "url-redirection".
    */
   class SanitizerFromModel extends Sanitizer {
     SanitizerFromModel() { ModelOutput::barrierNode(this, "url-redirection") }

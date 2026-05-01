@@ -1,6 +1,8 @@
 /**
  * Provides classes representing Python classes.
  */
+overlay[local]
+module;
 
 import python
 

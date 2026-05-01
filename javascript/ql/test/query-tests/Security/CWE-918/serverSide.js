@@ -10,7 +10,7 @@ import url from 'url';
 let XhrIo = goog.require('goog.net.XhrIo');
 let Uri = goog.require('goog.Uri');
 
-var server = http.createServer(function(req, res) {
+var server = http.createServer(function (req, res) {
     var tainted = url.parse(req.url, true).query.url; // $ Source[js/request-forgery]
 
     request("example.com");
@@ -31,7 +31,7 @@ var server = http.createServer(function(req, res) {
 
     request("http://example.com/?" + tainted);
 
-    http.get(relativeUrl, {host: tainted}); // $ Alert[js/request-forgery]
+    http.get(relativeUrl, { host: tainted }); // $ Alert[js/request-forgery]
 
     XhrIo.send(new Uri(tainted)); // $ Alert[js/request-forgery]
     new XhrIo().send(new Uri(tainted)); // $ Alert[js/request-forgery]
@@ -54,23 +54,23 @@ var server = http.createServer(function(req, res) {
 })
 
 var CDP = require("chrome-remote-interface");
-var server = http.createServer(async function(req, res) {
+var server = http.createServer(async function (req, res) {
     var tainted = url.parse(req.url, true).query.url; // $ Source[js/request-forgery]
 
     var client = await CDP(options);
-	client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
-	
-	CDP(options).catch((ignored) => {}).then((client) => {
-		client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
-	})
-	
-	CDP(options, (client) => {
-		client.Page.navigate({url: tainted}); // $ Alert[js/request-forgery]
-	});
+    client.Page.navigate({ url: tainted }); // $ Alert[js/request-forgery]
+
+    CDP(options).catch((ignored) => { }).then((client) => {
+        client.Page.navigate({ url: tainted }); // $ Alert[js/request-forgery]
+    })
+
+    CDP(options, (client) => {
+        client.Page.navigate({ url: tainted }); // $ Alert[js/request-forgery]
+    });
 })
 
-import {JSDOM} from "jsdom";
-var server = http.createServer(async function(req, res) {
+import { JSDOM } from "jsdom";
+var server = http.createServer(async function (req, res) {
     var tainted = url.parse(req.url, true).query.url; // $ Source[js/request-forgery]
 
     JSDOM.fromURL(tainted); // $ Alert[js/request-forgery]
@@ -93,8 +93,8 @@ router.get('/', async (ctx, next) => {
 });
 app.use(router.routes());
 
-import {JSDOM} from "jsdom";
-var server = http.createServer(async function(req, res) {
+import { JSDOM } from "jsdom";
+var server = http.createServer(async function (req, res) {
     var tainted = url.parse(req.url, true).query.url; // $ Source[js/request-forgery]
 
     new WebSocket(tainted); // $ Alert[js/request-forgery]
@@ -103,23 +103,23 @@ var server = http.createServer(async function(req, res) {
 
 import * as ws from 'ws';
 
-new ws.Server({ port: 8080 }).on('connection', function(socket, request) {
-  socket.on('message', function(message) {
-    const url = request.url; // $ Source[js/request-forgery]
-    const socket = new ws(url); // $ Alert[js/request-forgery]
-  });
+new ws.Server({ port: 8080 }).on('connection', function (socket, request) {
+    socket.on('message', function (message) {
+        const url = request.url; // $ Source[js/request-forgery]
+        const socket = new ws(url); // $ Alert[js/request-forgery]
+    });
 });
 
 new ws.Server({ port: 8080 }).on('connection', function (socket, request) {
-  socket.on('message', function (message) {
-    const url = new URL(request.url, base); // $ Source[js/request-forgery]
-    const target = new URL(url.pathname, base);
-    const socket = new ws(url); // $ Alert[js/request-forgery]
-  });
+    socket.on('message', function (message) {
+        const url = new URL(request.url, base); // $ Source[js/request-forgery]
+        const target = new URL(url.pathname, base);
+        const socket = new ws(url); // $ Alert[js/request-forgery]
+    });
 });
 
 
-var server2 = http.createServer(function(req, res) {
+var server2 = http.createServer(function (req, res) {
     var tainted = url.parse(req.url, true).query.url; // $ Source[js/request-forgery]
 
     axios({
@@ -127,22 +127,25 @@ var server2 = http.createServer(function(req, res) {
         url: tainted // $ Sink[js/request-forgery]
     }) // $ Alert[js/request-forgery]
 
-    var myUrl = `${something}/bla/${tainted}`; 
+    var myUrl = `${something}/bla/${tainted}`;
     axios.get(myUrl); // $ Alert[js/request-forgery]
 
-    var myEncodedUrl = `${something}/bla/${encodeURIComponent(tainted)}`; 
+    var myEncodedUrl = `${something}/bla/${encodeURIComponent(tainted)}`;
     axios.get(myEncodedUrl);
 })
 
-var server2 = http.createServer(function(req, res) {
-  const { URL } = require('url'); 
-  const input = req.query.url; // $Source[js/request-forgery]
-  const target = new URL(input);
-  axios.get(target.toString()); // $Alert[js/request-forgery]
-  axios.get(target); // $Alert[js/request-forgery]
-  axios.get(target.href); // $Alert[js/request-forgery]
-  const encodedUrl = encodeURI(input);
-  axios.get(encodedUrl); // $Alert[js/request-forgery]
-  const escapedUrl = escape(input);
-  axios.get(escapedUrl); // $Alert[js/request-forgery]
+var server2 = http.createServer(function (req, res) {
+    const { URL } = require('url');
+    const input = req.query.url; // $ Source[js/request-forgery]
+    const target = new URL(input);
+    axios.get(target.toString()); // $ Alert[js/request-forgery]
+    axios.get(target); // $ Alert[js/request-forgery]
+    axios.get(target.href); // $ Alert[js/request-forgery]
+    const encodedUrl = encodeURI(input);
+    axios.get(encodedUrl); // $ Alert[js/request-forgery]
+    const escapedUrl = escape(input);
+    axios.get(escapedUrl); // $ Alert[js/request-forgery]
 });
+
+const custom = require('testlib').getServerSource(); // $ Source[js/request-forgery]
+request(custom); // $ Alert[js/request-forgery]

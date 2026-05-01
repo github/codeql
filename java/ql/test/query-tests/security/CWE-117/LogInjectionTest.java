@@ -19,6 +19,14 @@ import org.jboss.logging.BasicLogger;
 import org.slf4j.spi.LoggingEventBuilder;
 
 public class LogInjectionTest {
+    @javax.validation.constraints.Pattern(regexp = "^[a-zA-Z0-9]*$")
+    public String validatedInputField;
+
+    @javax.validation.constraints.Pattern(regexp = "[^\n\r]*")
+    public String validatedInput() {
+        return (String) source();
+    }
+
     public Object source() {
         return null;
     }
@@ -187,6 +195,8 @@ public class LogInjectionTest {
             logger.debug(source); // $ MISSING: $ Alert
         }
 
+        logger.debug(validatedInputField);
+        logger.debug(validatedInput());
     }
 
     public void test() {

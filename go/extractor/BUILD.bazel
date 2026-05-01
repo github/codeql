@@ -1,4 +1,5 @@
 load("@rules_go//go:def.bzl", "go_library")
+load("@rules_java//java:defs.bzl", "java_library")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 
 # gazelle:prefix github.com/github/codeql-go/extractor

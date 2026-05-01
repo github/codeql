@@ -9,7 +9,7 @@ module CallGraphConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     node instanceof DataFlowPrivate::ReturnNode
     or
-    node instanceof DataFlow::ArgumentNode
+    DataFlowPrivate::isArgumentNode(node, _, _)
   }
 
   predicate isSink(DataFlow::Node node) {

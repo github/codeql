@@ -77,7 +77,9 @@ module MatchesHttpOnlyToRawHeaderFlow = TaintTracking::Global<MatchesHttpOnlyToR
 
 /** A class descended from `javax.servlet.http.Cookie`. */
 class CookieClass extends RefType {
-  CookieClass() { this.getAnAncestor().hasQualifiedName("javax.servlet.http", "Cookie") }
+  CookieClass() {
+    this.getAnAncestor().hasQualifiedName(javaxOrJakarta() + ".servlet.http", "Cookie")
+  }
 }
 
 /** Holds if `expr` is any boolean-typed expression other than literal `false`. */
@@ -143,7 +145,7 @@ class CookieResponseWithoutHttpOnlySink extends DataFlow::ExprNode {
 
 /** Holds if `cie` is an invocation of a JAX-RS `NewCookie` constructor that sets `HttpOnly` to true. */
 predicate setsHttpOnlyInNewCookie(ClassInstanceExpr cie) {
-  cie.getConstructedType().hasQualifiedName(["javax.ws.rs.core", "jakarta.ws.rs.core"], "NewCookie") and
+  cie.getConstructedType().hasQualifiedName(javaxOrJakarta() + ".ws.rs.core", "NewCookie") and
   (
     cie.getNumArgument() = 6 and
     mayBeBooleanTrue(cie.getArgument(5)) // NewCookie(Cookie cookie, String comment, int maxAge, Date expiry, boolean secure, boolean httpOnly)

@@ -24,6 +24,18 @@ private import semmle.python.frameworks.data.ModelsAsData
  * - https://requests.readthedocs.io/en/latest/
  */
 module Requests {
+  /** Join-order helper for `OutgoingRequestCall`. */
+  pragma[nomagic]
+  private API::Node sessionInstance() {
+    exists(API::Node moduleExporting |
+      moduleExporting in [
+          API::moduleImport("requests"), //
+          API::moduleImport("requests").getMember("sessions")
+        ] and
+      result = moduleExporting.getMember(["Session", "session"]).getReturn()
+    )
+  }
+
   /**
    * An outgoing HTTP request, from the `requests` library.
    *
@@ -37,15 +49,7 @@ module Requests {
       (
         this = API::moduleImport("requests").getMember(methodName).getACall()
         or
-        exists(API::Node moduleExporting, API::Node sessionInstance |
-          moduleExporting in [
-              API::moduleImport("requests"), //
-              API::moduleImport("requests").getMember("sessions")
-            ] and
-          sessionInstance = moduleExporting.getMember(["Session", "session"]).getReturn()
-        |
-          this = sessionInstance.getMember(methodName).getACall()
-        )
+        this = sessionInstance().getMember(methodName).getACall()
       )
     }
 

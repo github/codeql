@@ -106,4 +106,11 @@ module LogInjection {
       this.getArg(0).asExpr().(StringLiteral).getText() in ["\r\n", "\n"]
     }
   }
+
+  /**
+   * A sanitizer defined via models-as-data with kind "log-injection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "log-injection") }
+  }
 }

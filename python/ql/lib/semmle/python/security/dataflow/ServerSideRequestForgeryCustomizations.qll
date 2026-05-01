@@ -10,6 +10,7 @@ private import semmle.python.Concepts
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -175,5 +176,9 @@ module ServerSideRequestForgery {
             .getACall() and
       strNode = [call.getArg(0), call.getArgByName("string")]
     )
+  }
+
+  private class ExternalRequestForgerySanitizer extends FullUrlControlSanitizer {
+    ExternalRequestForgerySanitizer() { ModelOutput::barrierNode(this, "request-forgery") }
   }
 }

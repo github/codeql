@@ -13,8 +13,8 @@ public class Test {
 	public void test() {
 		StaticMessageSource sms = new StaticMessageSource();
 		sms.addMessage(code, locale, "hello {0}");
-		sink(sms.getMessage(code, new String[]{ taint() }, locale)); // $hasTaintFlow
-		sink(sms.getMessage(code, new String[]{ taint() }, "", locale)); // $hasTaintFlow
-		sink(sms.getMessage(code, null, taint(), locale)); // $hasTaintFlow
+		sink(sms.getMessage(code, new String[]{ taint() }, locale)); // $ hasTaintFlow
+		sink(sms.getMessage(code, new String[]{ taint() }, "", locale)); // $ hasTaintFlow
+		sink(sms.getMessage(code, null, taint(), locale)); // $ hasTaintFlow
 	}
 }

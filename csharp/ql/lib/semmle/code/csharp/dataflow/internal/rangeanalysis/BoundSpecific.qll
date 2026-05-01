@@ -10,7 +10,7 @@ private import semmle.code.csharp.dataflow.internal.rangeanalysis.SsaUtils as SU
 
 class SsaVariable = SU::SsaVariable;
 
-class Expr = CS::ControlFlow::Nodes::ExprNode;
+class Expr = CS::ControlFlowNodes::ExprNode;
 
 class Location = CS::Location;
 

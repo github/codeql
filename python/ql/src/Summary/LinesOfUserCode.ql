@@ -14,7 +14,6 @@
 
 import python
 import semmle.python.filters.GeneratedCode
-private import LegacyPointsTo
 
 select sum(ModuleMetrics m |
     exists(m.getFile().getRelativePath()) and

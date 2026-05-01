@@ -18,6 +18,6 @@ from FunctionValue method
 where
   exists(ClassValue c |
     c.declaredAttribute("__del__") = method and
-    method.getScope().(FunctionMetrics).getCyclomaticComplexity() > 3
+    method.getScope().(FunctionMetricsWithPointsTo).getCyclomaticComplexity() > 3
   )
 select method, "Overly complex '__del__' method."

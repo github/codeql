@@ -2,7 +2,7 @@ class Program
 {
     void CookieDefault()
     {
-        var cookie = new System.Web.HttpCookie("cookieName"); // $Alert // BAD: requireSSL is set to false by default
+        var cookie = new System.Web.HttpCookie("cookieName"); // $ Alert // BAD: requireSSL is set to false by default
     }
 
     void CookieDirectTrue()
@@ -31,18 +31,18 @@ class Program
 
     void CookieDirectFalse()
     {
-        var cookie = new System.Web.HttpCookie("cookieName"); // $Alert 
+        var cookie = new System.Web.HttpCookie("cookieName"); // $ Alert
         cookie.Secure = false; // BAD
     }
 
     void CookieDirectFalseInitializer()
     {
-        var cookie = new System.Web.HttpCookie("cookieName") { Secure = false }; // $Alert // BAD
+        var cookie = new System.Web.HttpCookie("cookieName") { Secure = false }; // $ Alert // BAD
     }
 
         void CookieIntermediateFalse()
     {
-        var cookie = new System.Web.HttpCookie("cookieName"); // $MISSING:Alert
+        var cookie = new System.Web.HttpCookie("cookieName"); // $ MISSING:Alert
         bool v = false;
         cookie.Secure = v; // BAD, but not detected
     }
@@ -50,6 +50,6 @@ class Program
     void CookieIntermediateFalseInitializer()
     {
         bool v = false;
-        var cookie = new System.Web.HttpCookie("cookieName") { Secure = v }; // $MISSING:Alert // BAD, but not detected
+        var cookie = new System.Web.HttpCookie("cookieName") { Secure = v }; // $ MISSING:Alert // BAD, but not detected
     }
 }

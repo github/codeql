@@ -1412,9 +1412,9 @@ private int indexOfSwitchCaseRank(BlockStmt b, int rnk) {
  * switch (i)
  * {
  * case 5:
- *   ...
+ *     ...
  * default:
- *   ...
+ *     ...
  * }
  * ```
  */
@@ -1516,8 +1516,10 @@ class SwitchCase extends Stmt, @stmt_switch_case {
    * which has result `default:`, which has no result.
    */
   SwitchCase getNextSwitchCase() {
-    result.getSwitchStmt() = this.getSwitchStmt() and
-    result.getChildNum() = this.getChildNum() + 1
+    exists(SwitchStmt s, int n |
+      this = s.getSwitchCase(n) and
+      result = s.getSwitchCase(n + 1)
+    )
   }
 
   /**
@@ -1707,9 +1709,9 @@ class SwitchCase extends Stmt, @stmt_switch_case {
  * switch (i)
  * {
  * case 5:
- *   ...
+ *     ...
  * default:
- *   ...
+ *     ...
  * }
  * ```
  */
@@ -1731,9 +1733,9 @@ class DefaultCase extends SwitchCase {
  * switch (i)
  * {
  * case 5:
- *   ...
+ *     ...
  * default:
- *   ...
+ *     ...
  * }
  * ```
  */
@@ -1768,10 +1770,10 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
    * For example, for
    * ```
    * switch(i) {
-   *     case 1:
-   *     case 2:
+   * case 1:
+   * case 2:
    *     break;
-   *     default:
+   * default:
    *     break;
    * }
    * ```
@@ -1790,20 +1792,20 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
    * For example, for
    * ```
    * switch(i) {
-   *     case 1:
-   *     case 2:
+   * case 1:
+   * case 2:
    *     break;
-   *     default:
+   * default:
    *     break;
    * }
    * ```
    * the result is
    * ```
    * {
-   *     case 1:
-   *     case 2:
+   * case 1:
+   * case 2:
    *     break;
-   *     default:
+   * default:
    *     break;
    * }
    * ```
@@ -1816,10 +1818,10 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
    * For example, for
    * ```
    * switch(i) {
-   *     case 1:
-   *     case 2:
+   * case 1:
+   * case 2:
    *     break;
-   *     default:
+   * default:
    *     break;
    * }
    * ```
@@ -1828,24 +1830,41 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
   SwitchCase getASwitchCase() { switch_case(underlyingElement(this), _, unresolveElement(result)) }
 
   /**
+   * Gets the `n`th 'switch case' statement of this 'switch' statement, where
+   * `n` is 0-based.
+   *
+   * For example, for
+   * ```
+   * switch(i) {
+   * case 5:
+   * case 6:
+   * default:
+   * }   * ```
+   * 0 yields `case 5:`, 1 yields `case 6:`, and 2 yields `default:`.
+   */
+  SwitchCase getSwitchCase(int n) {
+    switch_case(underlyingElement(this), n, unresolveElement(result))
+  }
+
+  /**
    * Gets the 'default case' statement of this 'switch' statement,
    * if any.
    *
    * For example, for
    * ```
    * switch(i) {
-   *     case 1:
-   *     case 2:
+   * case 1:
+   * case 2:
    *     break;
-   *     default:
+   * default:
    *     break;
    * }
    * ```
    * the result is `default:`, but there is no result for
    * ```
    * switch(i) {
-   *     case 1:
-   *     case 2:
+   * case 1:
+   * case 2:
    *     break;
    * }
    * ```
@@ -1858,18 +1877,18 @@ class SwitchStmt extends ConditionalStmt, @stmt_switch {
    * For example, this holds for
    * ```
    * switch(i) {
-   *     case 1:
-   *     case 2:
+   * case 1:
+   * case 2:
    *     break;
-   *     default:
+   * default:
    *     break;
    * }
    * ```
    * but not for
    * ```
    * switch(i) {
-   *     case 1:
-   *     case 2:
+   * case 1:
+   * case 2:
    *     break;
    * }
    * ```

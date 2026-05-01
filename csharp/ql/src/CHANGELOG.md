@@ -1,3 +1,49 @@
+## 1.7.1
+
+### Minor Analysis Improvements
+
+* The query `cs/useless-tostring-call` has been updated to avoid false
+  positive results in calls to `StringBuilder.AppendLine` and calls of
+  the form `base.ToString()`. Moreover, the alert message has been
+  made more precise.
+
+## 1.7.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `cs/log-forging` has been reduced from 7.8 (high) to 6.1 (medium).
+* The `@security-severity` metadata of `cs/web/xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+### Major Analysis Improvements
+
+* The `cs/constant-condition` query has been simplified. The query no longer reports trivially constant conditions as they were found to generally be intentional. As a result, it should now produce fewer false positives. Additionally, the simplification means that it now reports all the results that `cs/constant-comparison` used to report, and as consequence, that query has been deleted.
+
+## 1.6.6
+
+No user-facing changes.
+
+## 1.6.5
+
+No user-facing changes.
+
+## 1.6.4
+
+No user-facing changes.
+
+## 1.6.3
+
+No user-facing changes.
+
+## 1.6.2
+
+### Bug Fixes
+
+* The `cs/web/missing-token-validation` ("Missing cross-site request forgery token validation") query now recognizes antiforgery attributes on base controller classes, fixing false positives when `[ValidateAntiForgeryToken]` or `[AutoValidateAntiforgeryToken]` is applied to a parent class.
+
+## 1.6.1
+
+No user-facing changes.
+
 ## 1.6.0
 
 ### Query Metadata Changes

@@ -1,3 +1,45 @@
+## 6.4.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.
+
+## 6.3.3
+
+No user-facing changes.
+
+## 6.3.2
+
+No user-facing changes.
+
+## 6.3.1
+
+No user-facing changes.
+
+## 6.3.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.2.4.
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 6.2.3
+
+No user-facing changes.
+
+## 6.2.2
+
+No user-facing changes.
+
+## 6.2.1
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
 ## 6.2.0
 
 ### Major Analysis Improvements

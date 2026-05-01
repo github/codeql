@@ -42,7 +42,7 @@ private DataFlow::Node getGeneratingWrapperSet(Crypto::NonceArtifactNode a) {
 }
 
 private predicate ancestorOfArtifact(
-  Crypto::ArtifactNode a, Callable enclosingCallable, ControlFlow::Node midOrTarget
+  Crypto::ArtifactNode a, Callable enclosingCallable, ControlFlowNode midOrTarget
 ) {
   a.asElement().(Expr).getEnclosingCallable() = enclosingCallable and
   (
@@ -87,7 +87,7 @@ predicate isArtifactReuse(Crypto::ArtifactNode a, Crypto::ArtifactNode b) {
       ancestorOfArtifact(b, commonParent, _)
     )
     implies
-    exists(Callable commonParent, ControlFlow::Node aMid, ControlFlow::Node bMid |
+    exists(Callable commonParent, ControlFlowNode aMid, ControlFlowNode bMid |
       ancestorOfArtifact(a, commonParent, aMid) and
       ancestorOfArtifact(b, commonParent, bMid) and
       a instanceof Crypto::NonceArtifactNode and

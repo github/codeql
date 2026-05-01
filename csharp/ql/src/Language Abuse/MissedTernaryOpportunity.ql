@@ -15,7 +15,7 @@ import csharp
 import semmle.code.csharp.commons.StructuralComparison
 
 private Expr getAssignedExpr(Stmt stmt) {
-  result = stmt.stripSingletonBlocks().(ExprStmt).getExpr().(AssignExpr).getLValue()
+  result = stmt.stripSingletonBlocks().(ExprStmt).getExpr().(AssignExpr).getLeftOperand()
 }
 
 from IfStmt is, string what

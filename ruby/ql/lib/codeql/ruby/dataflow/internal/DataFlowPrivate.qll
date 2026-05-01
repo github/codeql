@@ -28,7 +28,13 @@ abstract class NodeImpl extends Node {
   DataFlowCallable getEnclosingCallable() { result = TCfgScope(this.getCfgScope()) }
 
   /** Do not call: use `getEnclosingCallable()` instead. */
-  abstract CfgScope getCfgScope();
+  abstract CfgScope getCfgScopeImpl();
+
+  /** Do not call: use `getEnclosingCallable()` instead. */
+  pragma[inline]
+  final CfgScope getCfgScope() {
+    pragma[only_bind_into](result) = pragma[only_bind_out](this).getCfgScopeImpl()
+  }
 
   /** Do not call: use `getLocation()` instead. */
   abstract Location getLocationImpl();
@@ -38,7 +44,7 @@ abstract class NodeImpl extends Node {
 }
 
 private class ExprNodeImpl extends ExprNode, NodeImpl {
-  override CfgScope getCfgScope() { result = this.getExprNode().getExpr().getCfgScope() }
+  override CfgScope getCfgScopeImpl() { result = this.getExprNode().getExpr().getCfgScope() }
 
   override Location getLocationImpl() { result = this.getExprNode().getLocation() }
 
@@ -780,7 +786,7 @@ class SsaNode extends NodeImpl, TSsaNode {
   /** Holds if this node should be hidden from path explanations. */
   predicate isHidden() { any() }
 
-  override CfgScope getCfgScope() { result = node.getBasicBlock().getScope() }
+  override CfgScope getCfgScopeImpl() { result = node.getBasicBlock().getScope() }
 
   override Location getLocationImpl() { result = node.getLocation() }
 
@@ -827,7 +833,7 @@ class CapturedVariableNode extends NodeImpl, TCapturedVariableNode {
   /** Gets the captured variable represented by this node. */
   VariableCapture::CapturedVariable getVariable() { result = variable }
 
-  override CfgScope getCfgScope() { result = variable.getCallable() }
+  override CfgScope getCfgScopeImpl() { result = variable.getCallable() }
 
   override Location getLocationImpl() { result = variable.getLocation() }
 
@@ -849,7 +855,7 @@ class ReturningStatementNode extends NodeImpl, TReturningNode {
   /** Gets the expression corresponding to this node. */
   CfgNodes::ReturningCfgNode getReturningNode() { result = n }
 
-  override CfgScope getCfgScope() { result = n.getScope() }
+  override CfgScope getCfgScopeImpl() { result = n.getScope() }
 
   override Location getLocationImpl() { result = n.getLocation() }
 
@@ -867,7 +873,7 @@ class CaptureNode extends NodeImpl, TCaptureNode {
 
   VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
 
-  override CfgScope getCfgScope() { result = cn.getEnclosingCallable() }
+  override CfgScope getCfgScopeImpl() { result = cn.getEnclosingCallable() }
 
   override Location getLocationImpl() { result = cn.getLocation() }
 
@@ -935,7 +941,7 @@ private module ParameterNodes {
       )
     }
 
-    override CfgScope getCfgScope() { result = parameter.getCallable() }
+    override CfgScope getCfgScopeImpl() { result = parameter.getCallable() }
 
     override Location getLocationImpl() { result = parameter.getLocation() }
 
@@ -979,7 +985,7 @@ private module ParameterNodes {
 
     final override SelfVariable getSelfVariable() { result.getDeclaringScope() = method }
 
-    override CfgScope getCfgScope() { result = method }
+    override CfgScope getCfgScopeImpl() { result = method }
 
     override Location getLocationImpl() { result = method.getLocation() }
   }
@@ -1001,7 +1007,7 @@ private module ParameterNodes {
 
     final override SelfVariable getSelfVariable() { result.getDeclaringScope() = t }
 
-    override CfgScope getCfgScope() { result = t }
+    override CfgScope getCfgScopeImpl() { result = t }
 
     override Location getLocationImpl() { result = t.getLocation() }
   }
@@ -1028,7 +1034,7 @@ private module ParameterNodes {
       callable = c.asCfgScope() and pos.isLambdaSelf()
     }
 
-    override CfgScope getCfgScope() { result = callable }
+    override CfgScope getCfgScopeImpl() { result = callable }
 
     override Location getLocationImpl() { result = callable.getLocation() }
 
@@ -1071,7 +1077,7 @@ private module ParameterNodes {
       c.asCfgScope() = method and pos.isBlock()
     }
 
-    override CfgScope getCfgScope() { result = method }
+    override CfgScope getCfgScopeImpl() { result = method }
 
     override Location getLocationImpl() {
       result = this.getParameter().getLocation()
@@ -1130,7 +1136,7 @@ private module ParameterNodes {
       c = callable and pos.isSynthHashSplat()
     }
 
-    final override CfgScope getCfgScope() { result = callable.asCfgScope() }
+    final override CfgScope getCfgScopeImpl() { result = callable.asCfgScope() }
 
     final override DataFlowCallable getEnclosingCallable() { result = callable }
 
@@ -1193,7 +1199,7 @@ private module ParameterNodes {
       )
     }
 
-    final override CfgScope getCfgScope() { result = callable.asCfgScope() }
+    final override CfgScope getCfgScopeImpl() { result = callable.asCfgScope() }
 
     final override DataFlowCallable getEnclosingCallable() { result = callable }
 
@@ -1240,7 +1246,7 @@ private module ParameterNodes {
       cs = getArrayContent(pos)
     }
 
-    final override CfgScope getCfgScope() { result = callable.asCfgScope() }
+    final override CfgScope getCfgScopeImpl() { result = callable.asCfgScope() }
 
     final override DataFlowCallable getEnclosingCallable() { result = callable }
 
@@ -1278,7 +1284,7 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
     result = this.getSummaryNode().getSummarizedCallable()
   }
 
-  override CfgScope getCfgScope() { none() }
+  override CfgScope getCfgScopeImpl() { none() }
 
   override DataFlowCallable getEnclosingCallable() {
     result.asLibraryCallable() = this.getSummarizedCallable()
@@ -1349,7 +1355,7 @@ module ArgumentNodes {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    override CfgScope getCfgScope() { result = yield.getScope() }
+    override CfgScope getCfgScopeImpl() { result = yield.getScope() }
 
     override Location getLocationImpl() { result = yield.getLocation() }
   }
@@ -1379,7 +1385,7 @@ module ArgumentNodes {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    override CfgScope getCfgScope() { result = sup.getScope() }
+    override CfgScope getCfgScopeImpl() { result = sup.getScope() }
 
     override Location getLocationImpl() { result = sup.getLocation() }
   }
@@ -1415,7 +1421,7 @@ module ArgumentNodes {
       this.sourceArgumentOf(call.asCall(), pos)
     }
 
-    final override CfgScope getCfgScope() { result = call_.getExpr().getCfgScope() }
+    final override CfgScope getCfgScopeImpl() { result = call_.getExpr().getCfgScope() }
 
     final override Location getLocationImpl() { result = call_.getLocation() }
   }
@@ -1563,7 +1569,7 @@ module ArgumentNodes {
       )
     }
 
-    override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
+    override CfgScope getCfgScopeImpl() { result = c.getExpr().getCfgScope() }
 
     override Location getLocationImpl() { result = c.getLocation() }
 
@@ -2037,13 +2043,18 @@ private predicate compatibleTypesNonSymRefl(DataFlowType t1, DataFlowType t2) {
 }
 
 pragma[nomagic]
-private predicate compatibleModuleTypes(TModuleDataFlowType t1, TModuleDataFlowType t2) {
-  exists(Module m1, Module m2, Module m3 |
-    t1 = TModuleDataFlowType(m1) and
-    t2 = TModuleDataFlowType(m2)
-  |
+private predicate compatibleModules(Module m1, Module m2) {
+  exists(Module m3 |
     m3.getAnAncestor() = m1 and
     m3.getAnAncestor() = m2
+  )
+}
+
+private predicate compatibleModuleTypes(TModuleDataFlowType t1, TModuleDataFlowType t2) {
+  exists(Module m1, Module m2 |
+    compatibleModules(m1, m2) and
+    t1 = TModuleDataFlowType(m1) and
+    t2 = TModuleDataFlowType(m2)
   )
 }
 
@@ -2074,7 +2085,7 @@ private module PostUpdateNodes {
 
     override ExprNode getPreUpdateNode() { e = result.getExprNode() }
 
-    override CfgScope getCfgScope() { result = e.getExpr().getCfgScope() }
+    override CfgScope getCfgScopeImpl() { result = e.getExpr().getCfgScope() }
 
     override Location getLocationImpl() { result = e.getLocation() }
 

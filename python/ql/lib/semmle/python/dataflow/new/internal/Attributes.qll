@@ -1,4 +1,6 @@
 /** This module provides an API for attribute reads and writes. */
+overlay[local]
+module;
 
 private import python
 import DataFlowUtil

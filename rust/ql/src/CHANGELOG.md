@@ -1,3 +1,40 @@
+## 0.1.33
+
+No user-facing changes.
+
+## 0.1.32
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `rust/log-injection` has been increased from 2.6 (low) to 6.1 (medium).
+* The `@security-severity` metadata of `rust/xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+## 0.1.31
+
+No user-facing changes.
+
+## 0.1.30
+
+No user-facing changes.
+
+## 0.1.29
+
+No user-facing changes.
+
+## 0.1.28
+
+### Minor Analysis Improvements
+
+* The macro resolution metric has been removed from `rust/diagnostic/database-quality`. This metric was found to be an unreliable indicator of database quality in many cases, leading to false alarms on the tool status page.
+
+## 0.1.27
+
+No user-facing changes.
+
+## 0.1.26
+
+No user-facing changes.
+
 ## 0.1.25
 
 ### Minor Analysis Improvements

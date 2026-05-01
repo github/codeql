@@ -31,7 +31,7 @@ signature module ExtensionsSig {
    */
   predicate barrierGuardModel(
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string acceptingvalue, string kind, string provenance,
+    string input, string acceptingValue, string kind, string provenance,
     QlBuiltins::ExtensionId madId
   );
 
@@ -142,14 +142,14 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
     or
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
-      string input, string acceptingvalue, string kind, string provenance
+      string input, string acceptingValue, string kind, string provenance
     |
       Extensions::barrierGuardModel(namespace, type, subtypes, name, signature, ext, input,
-        acceptingvalue, kind, provenance, madId)
+        acceptingValue, kind, provenance, madId)
     |
       model =
         "Barrier Guard: " + namespace + "; " + type + "; " + subtypes + "; " + name + "; " +
-          signature + "; " + ext + "; " + input + "; " + acceptingvalue + "; " + kind + "; " +
+          signature + "; " + ext + "; " + input + "; " + acceptingValue + "; " + kind + "; " +
           provenance
     )
     or
@@ -241,12 +241,12 @@ module ModelsAsData<ExtensionsSig Extensions, InputSig Input> {
   /** Holds if a barrier guard model exists for the given parameters. */
   predicate barrierGuardModel(
     string namespace, string type, boolean subtypes, string name, string signature, string ext,
-    string input, string acceptingvalue, string kind, string provenance, string model
+    string input, string acceptingValue, string kind, string provenance, string model
   ) {
     exists(string namespaceOrGroup, QlBuiltins::ExtensionId madId |
       namespace = getNamespace(namespaceOrGroup) and
       Extensions::barrierGuardModel(namespaceOrGroup, type, subtypes, name, signature, ext, input,
-        acceptingvalue, kind, provenance, madId) and
+        acceptingValue, kind, provenance, madId) and
       model = "MaD:" + madId.toString()
     )
   }

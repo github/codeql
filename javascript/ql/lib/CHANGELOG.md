@@ -1,3 +1,42 @@
+## 2.6.28
+
+No user-facing changes.
+
+## 2.6.27
+
+No user-facing changes.
+
+## 2.6.26
+
+No user-facing changes.
+
+## 2.6.25
+
+No user-facing changes.
+
+## 2.6.24
+
+### Minor Analysis Improvements
+
+* Added support for browser-specific source kinds (`browser`, `browser-url-query`, `browser-url-fragment`, `browser-url-path`, `browser-url`, `browser-window-name`, `browser-message-event`) that can be used in data extensions to model sources in browser environments.
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 2.6.23
+
+### Minor Analysis Improvements
+
+* Added support for React components wrapped by `observer` from `mobx-react` and `mobx-react-lite`.
+
+## 2.6.22
+
+No user-facing changes.
+
+## 2.6.21
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
 ## 2.6.20
 
 ### Minor Analysis Improvements

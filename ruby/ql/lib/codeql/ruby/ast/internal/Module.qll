@@ -639,7 +639,7 @@ private TMethodOrExpr lookupMethodOrConst(Module m, string name) {
   // For now, we restrict the scope of top-level declarations to their file.
   // This may remove some plausible targets, but also removes a lot of
   // implausible targets
-  if getNode(result).getEnclosingModule() instanceof Toplevel
-  then getNode(result).getFile() = m.getADeclaration().getFile()
-  else any()
+  forall(File file | file = getNode(result).getEnclosingModule().(Toplevel).getFile() |
+    file = m.getADeclaration().getFile()
+  )
 }

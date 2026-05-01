@@ -41,7 +41,7 @@ class BinaryBitwiseOperation extends BitwiseOperation, BinaryOperation, @bin_bit
 /**
  * A left-shift operation, for example `x << y`.
  */
-class LeftShiftExpr extends BinaryBitwiseOperation, @lshift_expr {
+class LeftShiftExpr extends BinaryBitwiseOperation, LeftShiftOperation, @lshift_expr {
   override string getOperator() { result = "<<" }
 
   override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
@@ -50,7 +50,7 @@ class LeftShiftExpr extends BinaryBitwiseOperation, @lshift_expr {
 /**
  * A right-shift operation, for example `x >> y`.
  */
-class RightShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
+class RightShiftExpr extends BinaryBitwiseOperation, RightShiftOperation, @rshift_expr {
   override string getOperator() { result = ">>" }
 
   override string getAPrimaryQlClass() { result = "RightShiftExpr" }
@@ -59,7 +59,9 @@ class RightShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
 /**
  * An unsigned right-shift operation, for example `x >>> y`.
  */
-class UnsignedRightShiftExpr extends BinaryBitwiseOperation, @urshift_expr {
+class UnsignedRightShiftExpr extends BinaryBitwiseOperation, UnsignedRightShiftOperation,
+  @urshift_expr
+{
   override string getOperator() { result = ">>>" }
 
   override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
@@ -68,7 +70,7 @@ class UnsignedRightShiftExpr extends BinaryBitwiseOperation, @urshift_expr {
 /**
  * A bitwise-and operation, for example `x & y`.
  */
-class BitwiseAndExpr extends BinaryBitwiseOperation, @bit_and_expr {
+class BitwiseAndExpr extends BinaryBitwiseOperation, BitwiseAndOperation, @bit_and_expr {
   override string getOperator() { result = "&" }
 
   override string getAPrimaryQlClass() { result = "BitwiseAndExpr" }
@@ -77,7 +79,7 @@ class BitwiseAndExpr extends BinaryBitwiseOperation, @bit_and_expr {
 /**
  * A bitwise-or operation, for example `x | y`.
  */
-class BitwiseOrExpr extends BinaryBitwiseOperation, @bit_or_expr {
+class BitwiseOrExpr extends BinaryBitwiseOperation, BitwiseOrOperation, @bit_or_expr {
   override string getOperator() { result = "|" }
 
   override string getAPrimaryQlClass() { result = "BitwiseOrExpr" }
@@ -86,7 +88,7 @@ class BitwiseOrExpr extends BinaryBitwiseOperation, @bit_or_expr {
 /**
  * A bitwise exclusive-or operation, for example `x ^ y`.
  */
-class BitwiseXorExpr extends BinaryBitwiseOperation, @bit_xor_expr {
+class BitwiseXorExpr extends BinaryBitwiseOperation, BitwiseXorOperation, @bit_xor_expr {
   override string getOperator() { result = "^" }
 
   override string getAPrimaryQlClass() { result = "BitwiseXorExpr" }

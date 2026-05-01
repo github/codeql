@@ -8,6 +8,8 @@
  * The package name refers to the top-level module the import comes from, and not a PyPI package.
  * So for `from foo.bar import baz`, the package will be `foo`.
  */
+overlay[local?]
+module;
 
 private import python
 private import internal.ApiGraphModels as Shared

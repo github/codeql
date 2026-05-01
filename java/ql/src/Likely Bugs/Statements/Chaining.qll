@@ -31,13 +31,13 @@ private predicate nonChaining(Method m) {
 
 private predicate nonChainingReturn(Method m, ReturnStmt ret) {
   // The wrong `this` is returned.
-  ret.getResult() instanceof ThisAccess and
-  ret.getResult().getType() != m.getDeclaringType()
+  ret.getExpr() instanceof ThisAccess and
+  ret.getExpr().getType() != m.getDeclaringType()
   or
   // A method call to the wrong method is returned.
-  ret.getResult() instanceof MethodCall and
+  ret.getExpr() instanceof MethodCall and
   exists(MethodCall delegateCall, Method delegate |
-    delegateCall = ret.getResult() and
+    delegateCall = ret.getExpr() and
     delegate = delegateCall.getMethod()
   |
     delegate.getDeclaringType() != m.getDeclaringType()
@@ -54,7 +54,7 @@ private predicate nonChainingReturn(Method m, ReturnStmt ret) {
   or
   // Something else is returned.
   not (
-    ret.getResult() instanceof ThisAccess or
-    ret.getResult() instanceof MethodCall
+    ret.getExpr() instanceof ThisAccess or
+    ret.getExpr() instanceof MethodCall
   )
 }

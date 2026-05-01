@@ -112,7 +112,7 @@ class BaseAccess extends Access, @base_access_expr {
 class MemberAccess extends Access, QualifiableExpr, @member_access_expr {
   override predicate hasImplicitThisQualifier() {
     QualifiableExpr.super.hasImplicitThisQualifier() and
-    not exists(MemberInitializer mi | mi.getLValue() = this)
+    not exists(MemberInitializer mi | mi.getLeftOperand() = this)
   }
 
   override Member getQualifiedDeclaration() { result = this.getTarget() }
@@ -221,6 +221,40 @@ class ParameterAccess extends LocalScopeVariableAccess, @parameter_access_expr {
   override string toString() { result = "access to parameter " + this.getTarget().getName() }
 
   override string getAPrimaryQlClass() { result = "ParameterAccess" }
+}
+
+/**
+ * An access to a synthetic parameter for an extension method, for example the
+ * access to `s` on line 3 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public bool IsEmpty() { return s == string.Empty; }
+ *   }
+ * }
+ * ```
+ */
+class SyntheticExtensionParameterAccess extends ParameterAccess {
+  SyntheticExtensionParameterAccess() {
+    exists(ExtensionType et, Parameter p |
+      p = et.getReceiverParameter() and
+      expr_access(this, p)
+    )
+  }
+
+  override Parameter getTarget() {
+    exists(ExtensionCallable c |
+      this.getEnclosingCallable+() = c and
+      result = c.getParameter(0)
+    )
+  }
+
+  override string toString() {
+    result = "access to extension synthetic parameter " + this.getTarget().getName()
+  }
+
+  override string getAPrimaryQlClass() { result = "SyntheticExtensionParameterAccess" }
 }
 
 /**

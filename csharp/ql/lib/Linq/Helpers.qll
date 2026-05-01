@@ -77,7 +77,7 @@ predicate missedAllOpportunity(ForeachStmtGenericEnumerable fes) {
     // The then case of the if assigns false to something and breaks out of the loop.
     exists(Assignment a, BoolLiteral bl |
       a = is.getThen().getAChild*() and
-      bl = a.getRValue() and
+      bl = a.getRightOperand() and
       bl.toString() = "false"
     ) and
     is.getThen().getAChild*() instanceof BreakStmt
@@ -121,15 +121,17 @@ predicate missedOfTypeOpportunity(ForeachStmtEnumerable fes, LocalVariableDeclSt
 /**
  * Holds if `foreach` statement `fes` can be converted to a `.Select()` call.
  * That is, the loop variable is accessed only in the first statement of the
- * block, the access is not a cast, and the first statement is a
- * local variable declaration statement `s`.
+ * block, the access is not a cast, the first statement is a
+ * local variable declaration statement `s`, and the initializer does not
+ * contain an `await` expression (since `Select` does not support async lambdas).
  */
 predicate missedSelectOpportunity(ForeachStmtGenericEnumerable fes, LocalVariableDeclStmt s) {
   s = firstStmt(fes) and
   forex(VariableAccess va | va = fes.getVariable().getAnAccess() |
     va = s.getAVariableDeclExpr().getAChildExpr*()
   ) and
-  not s.getAVariableDeclExpr().getInitializer() instanceof Cast
+  not s.getAVariableDeclExpr().getInitializer() instanceof Cast and
+  not s.getAVariableDeclExpr().getInitializer().getAChildExpr*() instanceof AwaitExpr
 }
 
 /**

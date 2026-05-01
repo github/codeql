@@ -46,7 +46,7 @@
 | DefUse.cs:89:13:89:14 | x3 | DefUse.cs:89:13:89:18 | Int32 x3 = ... | DefUse.cs:92:15:92:16 | access to local variable x3 |
 | DefUse.cs:89:13:89:14 | x3 | DefUse.cs:92:15:92:16 | access to local variable x3 | DefUse.cs:94:13:94:14 | access to local variable x3 |
 | DefUse.cs:90:13:90:14 | x4 | DefUse.cs:93:15:93:16 | access to local variable x4 | DefUse.cs:95:13:95:14 | access to local variable x4 |
-| DefUse.cs:97:13:97:14 | x5 | DefUse.cs:104:9:104:15 | ... = ... | DefUse.cs:105:13:105:14 | access to local variable x5 |
+| DefUse.cs:97:13:97:14 | x5 | DefUse.cs:104:9:104:15 | ... += ... | DefUse.cs:105:13:105:14 | access to local variable x5 |
 | DefUse.cs:118:45:118:45 | i | DefUse.cs:118:45:118:45 | i | DefUse.cs:118:65:118:65 | access to parameter i |
 | DefUse.cs:120:17:120:21 | Field | DefUse.cs:53:9:53:17 | ... = ... | DefUse.cs:54:13:54:17 | access to field Field |
 | DefUse.cs:122:16:122:21 | Field2 | DefUse.cs:63:9:63:18 | ... = ... | DefUse.cs:64:13:64:18 | access to field Field2 |
@@ -61,6 +61,7 @@
 | DefUse.cs:166:9:166:14 | Field5 | DefUse.cs:188:13:188:22 | ... = ... | DefUse.cs:189:17:189:22 | access to field Field5 |
 | DefUse.cs:171:23:171:23 | a | DefUse.cs:171:23:180:9 | Action a = ... | DefUse.cs:181:9:181:9 | access to local variable a |
 | DefUse.cs:171:23:171:23 | a | DefUse.cs:186:9:190:9 | ... = ... | DefUse.cs:191:9:191:9 | access to local variable a |
+| DefaultParam.cs:3:20:3:20 | b | DefaultParam.cs:3:20:3:20 | b | DefaultParam.cs:5:16:5:16 | access to parameter b |
 | Example.cs:4:9:4:13 | Field | Example.cs:8:9:8:22 | ... = ... | Example.cs:9:13:9:22 | access to field Field |
 | Example.cs:6:23:6:23 | i | Example.cs:6:23:6:23 | i | Example.cs:8:22:8:22 | access to parameter i |
 | Example.cs:18:16:18:16 | p | Example.cs:18:16:18:16 | p | Example.cs:22:17:22:17 | access to parameter p |
@@ -82,8 +83,6 @@
 | Fields.cs:93:19:93:23 | Field | Fields.cs:102:9:102:28 | ... = ... | Fields.cs:104:16:104:25 | access to field Field |
 | Fields.cs:95:19:95:19 | f | Fields.cs:95:19:95:19 | f | Fields.cs:97:9:97:9 | access to parameter f |
 | Fields.cs:107:33:107:33 | f | Fields.cs:107:33:107:33 | f | Fields.cs:107:38:107:38 | access to parameter f |
-| MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationA.cs:5:28:5:28 | access to parameter x |
-| MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationB.cs:3:28:3:28 | access to parameter x |
 | OutRef.cs:5:9:5:13 | Field | OutRef.cs:13:28:13:32 | access to field Field | OutRef.cs:15:13:15:17 | access to field Field |
 | OutRef.cs:5:9:5:13 | Field | OutRef.cs:16:21:16:25 | access to field Field | OutRef.cs:17:13:17:17 | access to field Field |
 | OutRef.cs:5:9:5:13 | Field | OutRef.cs:16:32:16:36 | access to field Field | OutRef.cs:17:13:17:17 | access to field Field |

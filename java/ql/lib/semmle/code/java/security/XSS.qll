@@ -127,7 +127,7 @@ class XssVulnerableWriterSource extends MethodCall {
     )
     or
     exists(Method m | m = this.getMethod() |
-      m.hasQualifiedName("javax.servlet.jsp", "JspContext", "getOut")
+      m.hasQualifiedName(javaxOrJakarta() + ".servlet.jsp", "JspContext", "getOut")
     )
     or
     this.getMethod() instanceof FacesGetResponseWriterMethod

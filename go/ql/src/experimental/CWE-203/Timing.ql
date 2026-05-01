@@ -36,7 +36,7 @@ private class SensitiveStringCompareSink extends Sink {
       not op1 = nonSensitiveOperand and
       not (
         // Comparisons with `nil` should be excluded.
-        nonSensitiveOperand = Builtin::nil().getAReference()
+        exprRefersToNil(nonSensitiveOperand)
         or
         // Comparisons with empty string should also be excluded.
         nonSensitiveOperand.getStringValue().length() = 0
@@ -60,7 +60,7 @@ private class SensitiveCompareSink extends Sink {
       not op1 = op2 and
       not (
         // Comparisons with `nil` should be excluded.
-        op2 = Builtin::nil().getAReference()
+        exprRefersToNil(op2)
         or
         // Comparisons with empty string should also be excluded.
         op2.getStringValue().length() = 0
@@ -85,7 +85,7 @@ private class SensitiveStringSink extends Sink {
       not op1 = op2 and
       not (
         // Comparisons with `nil` should be excluded.
-        op2 = Builtin::nil().getAReference()
+        exprRefersToNil(op2)
         or
         // Comparisons with empty string should also be excluded.
         op2.getStringValue().length() = 0

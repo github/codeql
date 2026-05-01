@@ -35,7 +35,7 @@ predicate notDeliberatelyBoxed(LocalBoxedVar v) {
     )
     or
     exists(ReturnStmt ret |
-      ret.getResult() = a and
+      ret.getExpr() = a and
       ret.getEnclosingCallable().getReturnType() instanceof RefType
     )
   )

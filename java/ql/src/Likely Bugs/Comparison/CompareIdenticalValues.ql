@@ -58,6 +58,7 @@ predicate equal(Expr left, Expr right) {
     sameVariable(left, right, _)
     or
     exists(BinaryExpr bLeft, BinaryExpr bRight | bLeft = left and bRight = right |
+      not bLeft instanceof Assignment and
       bLeft.getKind() = bRight.getKind() and
       equal(bLeft.getLeftOperand(), bRight.getLeftOperand()) and
       equal(bLeft.getRightOperand(), bRight.getRightOperand())

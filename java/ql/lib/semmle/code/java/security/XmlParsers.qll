@@ -62,12 +62,14 @@ abstract class ParserConfig extends MethodCall {
 
 /** The class `javax.xml.parsers.DocumentBuilderFactory`. */
 class DocumentBuilderFactory extends RefType {
-  DocumentBuilderFactory() { this.hasQualifiedName("javax.xml.parsers", "DocumentBuilderFactory") }
+  DocumentBuilderFactory() {
+    this.hasQualifiedName(javaxOrJakarta() + ".xml.parsers", "DocumentBuilderFactory")
+  }
 }
 
 /** The class `javax.xml.parsers.DocumentBuilder`. */
 class DocumentBuilder extends RefType {
-  DocumentBuilder() { this.hasQualifiedName("javax.xml.parsers", "DocumentBuilder") }
+  DocumentBuilder() { this.hasQualifiedName(javaxOrJakarta() + ".xml.parsers", "DocumentBuilder") }
 }
 
 /** A call to `DocumentBuilder.parse`. */
@@ -174,15 +176,32 @@ class SafeDocumentBuilder extends DocumentBuilderConstruction {
 
 /** The class `javax.xml.stream.XMLInputFactory`. */
 class XmlInputFactory extends RefType {
-  XmlInputFactory() { this.hasQualifiedName("javax.xml.stream", "XMLInputFactory") }
+  XmlInputFactory() { this.hasQualifiedName(javaxOrJakarta() + ".xml.stream", "XMLInputFactory") }
 }
 
-/** A call to `XMLInputFactory.createXMLStreamReader`. */
+/**
+ * The class `com.ctc.wstx.stax.WstxInputFactory` or its abstract supertype
+ * `org.codehaus.stax2.XMLInputFactory2` from the Woodstox StAX library.
+ */
+class WstxInputFactory extends RefType {
+  WstxInputFactory() {
+    this.hasQualifiedName("com.ctc.wstx.stax", "WstxInputFactory") or
+    this.hasQualifiedName("org.codehaus.stax2", "XMLInputFactory2")
+  }
+}
+
+/**
+ * A call to `XMLInputFactory.createXMLStreamReader` or the equivalent method on the
+ * Woodstox `WstxInputFactory`.
+ */
 class XmlInputFactoryStreamReader extends XmlParserCall {
   XmlInputFactoryStreamReader() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType() instanceof XmlInputFactory and
+      (
+        m.getDeclaringType() instanceof XmlInputFactory or
+        m.getDeclaringType() instanceof WstxInputFactory
+      ) and
       m.hasName("createXMLStreamReader")
     )
   }
@@ -210,7 +229,10 @@ class XmlInputFactoryEventReader extends XmlParserCall {
   XmlInputFactoryEventReader() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType() instanceof XmlInputFactory and
+      (
+        m.getDeclaringType() instanceof XmlInputFactory or
+        m.getDeclaringType() instanceof WstxInputFactory
+      ) and
       m.hasName("createXMLEventReader")
     )
   }
@@ -233,7 +255,10 @@ class XmlInputFactoryConfig extends ParserConfig {
   XmlInputFactoryConfig() {
     exists(Method m |
       m = this.getMethod() and
-      m.getDeclaringType() instanceof XmlInputFactory and
+      (
+        m.getDeclaringType() instanceof XmlInputFactory or
+        m.getDeclaringType() instanceof WstxInputFactory
+      ) and
       m.hasName("setProperty")
     )
   }
@@ -243,7 +268,8 @@ class XmlInputFactoryConfig extends ParserConfig {
  * An `XmlInputFactory` specific expression that indicates whether parsing external entities is supported.
  */
 Expr configOptionIsSupportingExternalEntities() {
-  result.(ConstantStringExpr).getStringValue() = "javax.xml.stream.isSupportingExternalEntities"
+  result.(ConstantStringExpr).getStringValue() =
+    javaxOrJakarta() + ".xml.stream.isSupportingExternalEntities"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -256,7 +282,7 @@ Expr configOptionIsSupportingExternalEntities() {
  * An `XmlInputFactory` specific expression that indicates whether DTD is supported.
  */
 Expr configOptionSupportDtd() {
-  result.(ConstantStringExpr).getStringValue() = "javax.xml.stream.supportDTD"
+  result.(ConstantStringExpr).getStringValue() = javaxOrJakarta() + ".xml.stream.supportDTD"
   or
   exists(Field f |
     result = f.getAnAccess() and
@@ -357,12 +383,14 @@ class SafeSaxBuilder extends VarAccess {
  * The class `javax.xml.parsers.SAXParser`.
  */
 class SaxParser extends RefType {
-  SaxParser() { this.hasQualifiedName("javax.xml.parsers", "SAXParser") }
+  SaxParser() { this.hasQualifiedName(javaxOrJakarta() + ".xml.parsers", "SAXParser") }
 }
 
 /** The class `javax.xml.parsers.SAXParserFactory`. */
 class SaxParserFactory extends RefType {
-  SaxParserFactory() { this.hasQualifiedName("javax.xml.parsers", "SAXParserFactory") }
+  SaxParserFactory() {
+    this.hasQualifiedName(javaxOrJakarta() + ".xml.parsers", "SAXParserFactory")
+  }
 }
 
 /** A call to `SAXParser.parse`. */
@@ -635,7 +663,7 @@ class CreatedSafeXmlReader extends Call {
 
 /** The class `javax.xml.transform.sax.SAXSource` */
 class SaxSource extends RefType {
-  SaxSource() { this.hasQualifiedName("javax.xml.transform.sax", "SAXSource") }
+  SaxSource() { this.hasQualifiedName(javaxOrJakarta() + ".xml.transform.sax", "SAXSource") }
 }
 
 /** A call to the constructor of `SAXSource` with `XmlReader` and `InputSource`. */
@@ -697,7 +725,7 @@ abstract class TransformerConfig extends MethodCall {
 
 /** The class `javax.xml.XMLConstants`. */
 class XmlConstants extends RefType {
-  XmlConstants() { this.hasQualifiedName("javax.xml", "XMLConstants") }
+  XmlConstants() { this.hasQualifiedName(javaxOrJakarta() + ".xml", "XMLConstants") }
 }
 
 /** A configuration specific for transformers and schema. */
@@ -739,14 +767,14 @@ Expr configAccessExternalSchema() {
 /** The class `javax.xml.transform.TransformerFactory` or `javax.xml.transform.sax.SAXTransformerFactory`. */
 class TransformerFactory extends RefType {
   TransformerFactory() {
-    this.hasQualifiedName("javax.xml.transform", "TransformerFactory") or
-    this.hasQualifiedName("javax.xml.transform.sax", "SAXTransformerFactory")
+    this.hasQualifiedName(javaxOrJakarta() + ".xml.transform", "TransformerFactory") or
+    this.hasQualifiedName(javaxOrJakarta() + ".xml.transform.sax", "SAXTransformerFactory")
   }
 }
 
 /** The class `javax.xml.transform.Transformer`. */
 class Transformer extends RefType {
-  Transformer() { this.hasQualifiedName("javax.xml.transform", "Transformer") }
+  Transformer() { this.hasQualifiedName(javaxOrJakarta() + ".xml.transform", "Transformer") }
 }
 
 /** A call to `Transformer.transform`. */
@@ -843,7 +871,8 @@ class SaxTransformerFactoryNewXmlFilter extends XmlParserCall {
   SaxTransformerFactoryNewXmlFilter() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType().hasQualifiedName("javax.xml.transform.sax", "SAXTransformerFactory") and
+      m.getDeclaringType()
+          .hasQualifiedName(javaxOrJakarta() + ".xml.transform.sax", "SAXTransformerFactory") and
       m.hasName("newXMLFilter")
     )
   }
@@ -858,7 +887,7 @@ class SaxTransformerFactoryNewXmlFilter extends XmlParserCall {
 /* Schema: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#schemafactory */
 /** The class `javax.xml.validation.SchemaFactory`. */
 class SchemaFactory extends RefType {
-  SchemaFactory() { this.hasQualifiedName("javax.xml.validation", "SchemaFactory") }
+  SchemaFactory() { this.hasQualifiedName(javaxOrJakarta() + ".xml.validation", "SchemaFactory") }
 }
 
 /** A `ParserConfig` specific to `SchemaFactory`. */
@@ -913,7 +942,7 @@ class SafeSchemaFactory extends VarAccess {
 /* Unmarshaller: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#jaxb-unmarshaller */
 /** The class `javax.xml.bind.Unmarshaller`. */
 class XmlUnmarshaller extends RefType {
-  XmlUnmarshaller() { this.hasQualifiedName("javax.xml.bind", "Unmarshaller") }
+  XmlUnmarshaller() { this.hasQualifiedName(javaxOrJakarta() + ".xml.bind", "Unmarshaller") }
 }
 
 /** A call to `Unmarshaller.unmarshal`. */
@@ -934,12 +963,12 @@ class XmlUnmarshal extends XmlParserCall {
 /* XPathExpression: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#xpathexpression */
 /** The interface `javax.xml.xpath.XPathExpression`. */
 class XPathExpression extends Interface {
-  XPathExpression() { this.hasQualifiedName("javax.xml.xpath", "XPathExpression") }
+  XPathExpression() { this.hasQualifiedName(javaxOrJakarta() + ".xml.xpath", "XPathExpression") }
 }
 
 /** The interface `java.xml.xpath.XPath`. */
 class XPath extends Interface {
-  XPath() { this.hasQualifiedName("javax.xml.xpath", "XPath") }
+  XPath() { this.hasQualifiedName(javaxOrJakarta() + ".xml.xpath", "XPath") }
 }
 
 /** A call to the method `evaluate` of the classes `XPathExpression` or `XPath`. */

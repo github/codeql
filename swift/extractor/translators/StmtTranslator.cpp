@@ -137,7 +137,7 @@ codeql::CaseStmt StmtTranslator::translateCaseStmt(const swift::CaseStmt& stmt) 
   auto entry = dispatcher.createEntry(stmt);
   entry.body = dispatcher.fetchLabel(stmt.getBody());
   entry.labels = dispatcher.fetchRepeatedLabels(stmt.getCaseLabelItems());
-  entry.variables = dispatcher.fetchRepeatedLabels(stmt.getCaseBodyVariablesOrEmptyArray());
+  entry.variables = dispatcher.fetchRepeatedLabels(stmt.getCaseBodyVariables());
   return entry;
 }
 

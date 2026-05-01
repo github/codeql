@@ -54,12 +54,12 @@ predicate hasGlobalAntiForgeryFilter() {
 predicate isUnvalidatedPostMethod(Class c, Method m) {
   c.(Controller).getAPostActionMethod() = m and
   not m.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute and
-  not c.getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute
+  not c.getABaseType*().getAnAttribute() instanceof ValidateAntiForgeryTokenAttribute
   or
   c.(AspNetCore::MicrosoftAspNetCoreMvcController).getAnActionMethod() = m and
   m.getAnAttribute() instanceof AspNetCore::MicrosoftAspNetCoreMvcHttpPostAttribute and
   not m.getAnAttribute() instanceof AspNetCore::ValidateAntiForgeryAttribute and
-  not c.getAnAttribute() instanceof AspNetCore::ValidateAntiForgeryAttribute
+  not c.getABaseType*().getAnAttribute() instanceof AspNetCore::ValidateAntiForgeryAttribute
 }
 
 Element getAValidatedElement() {

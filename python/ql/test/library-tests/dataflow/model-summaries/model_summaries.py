@@ -182,7 +182,7 @@ SINK(instance.instance_method(SOURCE)[1])  # $ flow="SOURCE -> instance.instance
 returned_class = get_class()
 SINK(returned_class(SOURCE).config)  # $ flow="SOURCE -> returned_class(..).config"
 
-SINK(returned_class().instance_method(SOURCE)[1])  # $flow="SOURCE -> returned_class().instance_method(..)[1]"
+SINK(returned_class().instance_method(SOURCE)[1])  # $ flow="SOURCE -> returned_class().instance_method(..)[1]"
 
 fatory_instance = MS_Factory.get_instance()
 SINK(fatory_instance.instance_method(SOURCE)[1])  # $ flow="SOURCE -> fatory_instance.instance_method(..)[1]"

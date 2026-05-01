@@ -60,4 +60,11 @@ module CodeInjection {
 
   /** DEPRECATED: Use ConstCompareAsSanitizerGuard instead. */
   deprecated class StringConstCompareAsSanitizerGuard = ConstCompareAsSanitizerGuard;
+
+  /**
+   * A sanitizer defined via models-as-data with kind "code-injection".
+   */
+  class SanitizerFromModel extends Sanitizer {
+    SanitizerFromModel() { ModelOutput::barrierNode(this, "code-injection") }
+  }
 }

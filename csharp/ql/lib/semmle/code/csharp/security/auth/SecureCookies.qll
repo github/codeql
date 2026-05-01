@@ -100,20 +100,20 @@ Expr getAValueForCookiePolicyProp(string prop) {
 Expr getAValueForProp(ObjectCreation create, Assignment a, string prop) {
   // values set in object init
   exists(MemberInitializer init, Expr src, PropertyAccess pa |
-    a.getLValue() = pa and
+    a.getLeftOperand() = pa and
     pa.getTarget().hasName(prop) and
     init = create.getInitializer().(ObjectInitializer).getAMemberInitializer() and
-    init.getLValue() = pa and
-    DataFlow::localExprFlow(src, init.getRValue()) and
+    init.getLeftOperand() = pa and
+    DataFlow::localExprFlow(src, init.getRightOperand()) and
     result = src
   )
   or
   // values set on var that create is assigned to
   exists(Expr src, PropertyAccess pa |
-    a.getLValue() = pa and
+    a.getLeftOperand() = pa and
     pa.getTarget().hasName(prop) and
     DataFlow::localExprFlow(create, pa.getQualifier()) and
-    DataFlow::localExprFlow(src, a.getRValue()) and
+    DataFlow::localExprFlow(src, a.getRightOperand()) and
     result = src
   )
 }
@@ -138,15 +138,15 @@ private module OnAppendCookieTrackingConfig<propertyName/0 getPropertyName> impl
     exists(PropertyWrite pw, Assignment delegateAssign, Callable c |
       pw.getProperty().getName() = "OnAppendCookie" and
       pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreBuilderCookiePolicyOptions and
-      delegateAssign.getLValue() = pw and
+      delegateAssign.getLeftOperand() = pw and
       (
         exists(LambdaExpr lambda |
-          delegateAssign.getRValue() = lambda and
+          delegateAssign.getRightOperand() = lambda and
           lambda = c
         )
         or
         exists(DelegateCreation delegate |
-          delegateAssign.getRValue() = delegate and
+          delegateAssign.getRightOperand() = delegate and
           delegate.getArgument().(CallableAccess).getTarget() = c
         )
       ) and
@@ -159,9 +159,9 @@ private module OnAppendCookieTrackingConfig<propertyName/0 getPropertyName> impl
     exists(PropertyWrite pw, Assignment a |
       pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
       pw.getProperty().getName() = getPropertyName() and
-      a.getLValue() = pw and
+      a.getLeftOperand() = pw and
       exists(Expr val |
-        DataFlow::localExprFlow(val, a.getRValue()) and
+        DataFlow::localExprFlow(val, a.getRightOperand()) and
         val.getValue() = "true"
       ) and
       sink.asExpr() = pw.getQualifier()

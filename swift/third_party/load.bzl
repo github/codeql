@@ -1,6 +1,7 @@
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 load("//misc/bazel:lfs.bzl", "lfs_archive", "lfs_files")
 
 _override = {
@@ -80,12 +81,13 @@ def load_dependencies(module_ctx):
         _load_prebuilt(plat)
         _load_resource_dir(plat)
 
-    _github_archive(
+    # Vendored from okdshin/PicoSHA2 (personal account).
+    # To update (from the internal repo): resources/third_party/vendor.sh -o ql/swift/third_party/resources okdshin/PicoSHA2 <new_commit>
+    lfs_archive(
         name = "picosha2",
+        src = "//swift/third_party/resources:PicoSHA2-27fcf6979298949e8a462e16d09a0351c18fcaf2.tar.zst",
+        strip_prefix = "PicoSHA2-27fcf6979298949e8a462e16d09a0351c18fcaf2",
         build_file = _build % "picosha2",
-        repository = "okdshin/PicoSHA2",
-        commit = "27fcf6979298949e8a462e16d09a0351c18fcaf2",
-        sha256 = "d6647ca45a8b7bdaf027ecb68d041b22a899a0218b7206dee755c558a2725abb",
     )
 
     _github_archive(
@@ -117,7 +119,7 @@ def test_no_override():
         content = test_body,
         is_executable = True,
     )
-    native.sh_test(
+    sh_test(
         name = "test-no-override",
         srcs = [":test-no-override-gen"],
         tags = ["override"],

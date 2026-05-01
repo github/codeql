@@ -96,6 +96,40 @@ edges
 | Operator.cs:84:17:84:29 | call to method Source<C> : C | Operator.cs:84:13:84:13 | access to local variable y : C | provenance |  |
 | Operator.cs:85:18:85:18 | access to local variable y : C | Operator.cs:75:33:75:33 | y : C | provenance |  |
 | Operator.cs:85:18:85:18 | access to local variable y : C | Operator.cs:75:33:75:33 | y : C | provenance |  |
+| Operator.cs:103:25:103:25 | o : Object | Operator.cs:105:21:105:21 | access to parameter o : Object | provenance |  |
+| Operator.cs:103:25:103:25 | o : Object | Operator.cs:105:21:105:21 | access to parameter o : Object | provenance |  |
+| Operator.cs:105:13:105:17 | [post] this access : C [property Field] : Object | Operator.cs:103:16:103:16 | this [Return] : C [property Field] : Object | provenance |  |
+| Operator.cs:105:13:105:17 | [post] this access : C [property Field] : Object | Operator.cs:103:16:103:16 | this [Return] : C [property Field] : Object | provenance |  |
+| Operator.cs:105:21:105:21 | access to parameter o : Object | Operator.cs:105:13:105:17 | [post] this access : C [property Field] : Object | provenance |  |
+| Operator.cs:105:21:105:21 | access to parameter o : Object | Operator.cs:105:13:105:17 | [post] this access : C [property Field] : Object | provenance |  |
+| Operator.cs:108:35:108:35 | x : C [property Field] : Object | Operator.cs:110:21:110:21 | access to parameter x : C [property Field] : Object | provenance |  |
+| Operator.cs:108:35:108:35 | x : C [property Field] : Object | Operator.cs:110:21:110:21 | access to parameter x : C [property Field] : Object | provenance |  |
+| Operator.cs:110:13:110:17 | [post] this access : C [property Field] : Object | Operator.cs:108:30:108:31 | this [Return] : C [property Field] : Object | provenance |  |
+| Operator.cs:110:13:110:17 | [post] this access : C [property Field] : Object | Operator.cs:108:30:108:31 | this [Return] : C [property Field] : Object | provenance |  |
+| Operator.cs:110:21:110:21 | access to parameter x : C [property Field] : Object | Operator.cs:110:21:110:27 | access to property Field : Object | provenance |  |
+| Operator.cs:110:21:110:21 | access to parameter x : C [property Field] : Object | Operator.cs:110:21:110:27 | access to property Field : Object | provenance |  |
+| Operator.cs:110:21:110:27 | access to property Field : Object | Operator.cs:110:13:110:17 | [post] this access : C [property Field] : Object | provenance |  |
+| Operator.cs:110:21:110:27 | access to property Field : Object | Operator.cs:110:13:110:17 | [post] this access : C [property Field] : Object | provenance |  |
+| Operator.cs:116:13:116:19 | access to local variable tainted : Object | Operator.cs:118:23:118:29 | access to local variable tainted : Object | provenance |  |
+| Operator.cs:116:13:116:19 | access to local variable tainted : Object | Operator.cs:118:23:118:29 | access to local variable tainted : Object | provenance |  |
+| Operator.cs:116:23:116:39 | call to method Source<Object> : Object | Operator.cs:116:13:116:19 | access to local variable tainted : Object | provenance |  |
+| Operator.cs:116:23:116:39 | call to method Source<Object> : Object | Operator.cs:116:13:116:19 | access to local variable tainted : Object | provenance |  |
+| Operator.cs:118:13:118:13 | access to local variable y : C [property Field] : Object | Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | provenance |  |
+| Operator.cs:118:13:118:13 | access to local variable y : C [property Field] : Object | Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | provenance |  |
+| Operator.cs:118:17:118:30 | object creation of type C : C [property Field] : Object | Operator.cs:118:13:118:13 | access to local variable y : C [property Field] : Object | provenance |  |
+| Operator.cs:118:17:118:30 | object creation of type C : C [property Field] : Object | Operator.cs:118:13:118:13 | access to local variable y : C [property Field] : Object | provenance |  |
+| Operator.cs:118:23:118:29 | access to local variable tainted : Object | Operator.cs:103:25:103:25 | o : Object | provenance |  |
+| Operator.cs:118:23:118:29 | access to local variable tainted : Object | Operator.cs:103:25:103:25 | o : Object | provenance |  |
+| Operator.cs:118:23:118:29 | access to local variable tainted : Object | Operator.cs:118:17:118:30 | object creation of type C : C [property Field] : Object | provenance |  |
+| Operator.cs:118:23:118:29 | access to local variable tainted : Object | Operator.cs:118:17:118:30 | object creation of type C : C [property Field] : Object | provenance |  |
+| Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object | Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | provenance |  |
+| Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object | Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | provenance |  |
+| Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | Operator.cs:108:35:108:35 | x : C [property Field] : Object | provenance |  |
+| Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | Operator.cs:108:35:108:35 | x : C [property Field] : Object | provenance |  |
+| Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object | provenance |  |
+| Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object | provenance |  |
+| Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | Operator.cs:120:14:120:20 | access to property Field | provenance |  |
+| Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | Operator.cs:120:14:120:20 | access to property Field | provenance |  |
 nodes
 | Operator.cs:9:39:9:39 | x : C | semmle.label | x : C |
 | Operator.cs:9:39:9:39 | x : C | semmle.label | x : C |
@@ -205,6 +239,42 @@ nodes
 | Operator.cs:84:17:84:29 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
 | Operator.cs:85:18:85:18 | access to local variable y : C | semmle.label | access to local variable y : C |
 | Operator.cs:85:18:85:18 | access to local variable y : C | semmle.label | access to local variable y : C |
+| Operator.cs:103:16:103:16 | this [Return] : C [property Field] : Object | semmle.label | this [Return] : C [property Field] : Object |
+| Operator.cs:103:16:103:16 | this [Return] : C [property Field] : Object | semmle.label | this [Return] : C [property Field] : Object |
+| Operator.cs:103:25:103:25 | o : Object | semmle.label | o : Object |
+| Operator.cs:103:25:103:25 | o : Object | semmle.label | o : Object |
+| Operator.cs:105:13:105:17 | [post] this access : C [property Field] : Object | semmle.label | [post] this access : C [property Field] : Object |
+| Operator.cs:105:13:105:17 | [post] this access : C [property Field] : Object | semmle.label | [post] this access : C [property Field] : Object |
+| Operator.cs:105:21:105:21 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| Operator.cs:105:21:105:21 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| Operator.cs:108:30:108:31 | this [Return] : C [property Field] : Object | semmle.label | this [Return] : C [property Field] : Object |
+| Operator.cs:108:30:108:31 | this [Return] : C [property Field] : Object | semmle.label | this [Return] : C [property Field] : Object |
+| Operator.cs:108:35:108:35 | x : C [property Field] : Object | semmle.label | x : C [property Field] : Object |
+| Operator.cs:108:35:108:35 | x : C [property Field] : Object | semmle.label | x : C [property Field] : Object |
+| Operator.cs:110:13:110:17 | [post] this access : C [property Field] : Object | semmle.label | [post] this access : C [property Field] : Object |
+| Operator.cs:110:13:110:17 | [post] this access : C [property Field] : Object | semmle.label | [post] this access : C [property Field] : Object |
+| Operator.cs:110:21:110:21 | access to parameter x : C [property Field] : Object | semmle.label | access to parameter x : C [property Field] : Object |
+| Operator.cs:110:21:110:21 | access to parameter x : C [property Field] : Object | semmle.label | access to parameter x : C [property Field] : Object |
+| Operator.cs:110:21:110:27 | access to property Field : Object | semmle.label | access to property Field : Object |
+| Operator.cs:110:21:110:27 | access to property Field : Object | semmle.label | access to property Field : Object |
+| Operator.cs:116:13:116:19 | access to local variable tainted : Object | semmle.label | access to local variable tainted : Object |
+| Operator.cs:116:13:116:19 | access to local variable tainted : Object | semmle.label | access to local variable tainted : Object |
+| Operator.cs:116:23:116:39 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Operator.cs:116:23:116:39 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Operator.cs:118:13:118:13 | access to local variable y : C [property Field] : Object | semmle.label | access to local variable y : C [property Field] : Object |
+| Operator.cs:118:13:118:13 | access to local variable y : C [property Field] : Object | semmle.label | access to local variable y : C [property Field] : Object |
+| Operator.cs:118:17:118:30 | object creation of type C : C [property Field] : Object | semmle.label | object creation of type C : C [property Field] : Object |
+| Operator.cs:118:17:118:30 | object creation of type C : C [property Field] : Object | semmle.label | object creation of type C : C [property Field] : Object |
+| Operator.cs:118:23:118:29 | access to local variable tainted : Object | semmle.label | access to local variable tainted : Object |
+| Operator.cs:118:23:118:29 | access to local variable tainted : Object | semmle.label | access to local variable tainted : Object |
+| Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object | semmle.label | [post] access to local variable x : C [property Field] : Object |
+| Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object | semmle.label | [post] access to local variable x : C [property Field] : Object |
+| Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | semmle.label | access to local variable y : C [property Field] : Object |
+| Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | semmle.label | access to local variable y : C [property Field] : Object |
+| Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | semmle.label | access to local variable x : C [property Field] : Object |
+| Operator.cs:120:14:120:14 | access to local variable x : C [property Field] : Object | semmle.label | access to local variable x : C [property Field] : Object |
+| Operator.cs:120:14:120:20 | access to property Field | semmle.label | access to property Field |
+| Operator.cs:120:14:120:20 | access to property Field | semmle.label | access to property Field |
 subpaths
 | Operator.cs:29:17:29:17 | access to local variable x : C | Operator.cs:16:38:16:38 | x : C | Operator.cs:16:49:16:49 | access to parameter x : C | Operator.cs:29:17:29:21 | call to operator + : C |
 | Operator.cs:29:17:29:17 | access to local variable x : C | Operator.cs:16:38:16:38 | x : C | Operator.cs:16:49:16:49 | access to parameter x : C | Operator.cs:29:17:29:21 | call to operator + : C |
@@ -218,6 +288,10 @@ subpaths
 | Operator.cs:64:21:64:21 | access to parameter y : C | Operator.cs:21:43:21:43 | y : C | Operator.cs:21:49:21:49 | access to parameter y : C | Operator.cs:64:17:64:21 | call to operator / : C |
 | Operator.cs:77:29:77:29 | access to parameter y : C | Operator.cs:22:51:22:51 | y : C | Operator.cs:22:57:22:57 | access to parameter y : C | Operator.cs:77:25:77:29 | call to operator checked / : C |
 | Operator.cs:77:29:77:29 | access to parameter y : C | Operator.cs:22:51:22:51 | y : C | Operator.cs:22:57:22:57 | access to parameter y : C | Operator.cs:77:25:77:29 | call to operator checked / : C |
+| Operator.cs:118:23:118:29 | access to local variable tainted : Object | Operator.cs:103:25:103:25 | o : Object | Operator.cs:103:16:103:16 | this [Return] : C [property Field] : Object | Operator.cs:118:17:118:30 | object creation of type C : C [property Field] : Object |
+| Operator.cs:118:23:118:29 | access to local variable tainted : Object | Operator.cs:103:25:103:25 | o : Object | Operator.cs:103:16:103:16 | this [Return] : C [property Field] : Object | Operator.cs:118:17:118:30 | object creation of type C : C [property Field] : Object |
+| Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | Operator.cs:108:35:108:35 | x : C [property Field] : Object | Operator.cs:108:30:108:31 | this [Return] : C [property Field] : Object | Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object |
+| Operator.cs:119:14:119:14 | access to local variable y : C [property Field] : Object | Operator.cs:108:35:108:35 | x : C [property Field] : Object | Operator.cs:108:30:108:31 | this [Return] : C [property Field] : Object | Operator.cs:119:9:119:9 | [post] access to local variable x : C [property Field] : Object |
 testFailures
 #select
 | Operator.cs:30:14:30:14 | access to local variable z | Operator.cs:27:17:27:28 | call to method Source<C> : C | Operator.cs:30:14:30:14 | access to local variable z | $@ | Operator.cs:27:17:27:28 | call to method Source<C> : C | call to method Source<C> : C |
@@ -232,3 +306,5 @@ testFailures
 | Operator.cs:65:14:65:14 | (...) ... | Operator.cs:71:17:71:29 | call to method Source<C> : C | Operator.cs:65:14:65:14 | (...) ... | $@ | Operator.cs:71:17:71:29 | call to method Source<C> : C | call to method Source<C> : C |
 | Operator.cs:78:14:78:14 | (...) ... | Operator.cs:84:17:84:29 | call to method Source<C> : C | Operator.cs:78:14:78:14 | (...) ... | $@ | Operator.cs:84:17:84:29 | call to method Source<C> : C | call to method Source<C> : C |
 | Operator.cs:78:14:78:14 | (...) ... | Operator.cs:84:17:84:29 | call to method Source<C> : C | Operator.cs:78:14:78:14 | (...) ... | $@ | Operator.cs:84:17:84:29 | call to method Source<C> : C | call to method Source<C> : C |
+| Operator.cs:120:14:120:20 | access to property Field | Operator.cs:116:23:116:39 | call to method Source<Object> : Object | Operator.cs:120:14:120:20 | access to property Field | $@ | Operator.cs:116:23:116:39 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Operator.cs:120:14:120:20 | access to property Field | Operator.cs:116:23:116:39 | call to method Source<Object> : Object | Operator.cs:120:14:120:20 | access to property Field | $@ | Operator.cs:116:23:116:39 | call to method Source<Object> : Object | call to method Source<Object> : Object |

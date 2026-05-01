@@ -66,7 +66,7 @@ where
   fr.getField() = f and
   not f.getDeclaringType() instanceof EnumType and
   forall(Assignment ae | ae.getDest() = f.getAnAccess() | ae.getSource() instanceof NullLiteral) and
-  not exists(UnaryAssignExpr ua | ua.getExpr() = f.getAnAccess()) and
+  not exists(UnaryAssignExpr ua | ua.getOperand() = f.getAnAccess()) and
   not f.isFinal() and
   // Exclude fields that may be accessed reflectively.
   not reflectivelyWritten(f) and

@@ -22,13 +22,13 @@ Annot1j.java:
 def.kt:
 #    0| [CompilationUnit] def
 #    0|   1: [Class] DefKt
-#   45|     2: [Method] fn
+#   46|     2: [Method] fn
 #-----|       1: (Annotations)
 #   45|         1: [Annotation] Annot0k
 #   21|           1: [IntegerLiteral] 0
 #-----|       2: (Generic Parameters)
 #   46|         0: [TypeVariable] T
-#   45|       3: [TypeAccess] Unit
+#   46|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
 #   46|         0: [Parameter] a
 #-----|           -1: (Annotations)
@@ -41,38 +41,38 @@ def.kt:
 #   47|             -1: [TypeAccess] ConsoleKt
 #   47|             0: [MethodCall] a(...)
 #   47|               -1: [VarAccess] a
-#   49|         1: [LocalVariableDeclStmt] var ...;
-#   49|           1: [LocalVariableDeclExpr] x
+#   50|         1: [LocalVariableDeclStmt] var ...;
+#   50|           1: [LocalVariableDeclExpr] x
 #   50|             0: [IntegerLiteral] 10
-#   53|     3: [Method] getP
+#   57|     3: [Method] getP
 #-----|       1: (Annotations)
 #   54|         1: [Annotation] Annot0k
 #   21|           1: [IntegerLiteral] 0
-#   53|       3: [TypeAccess] int
-#   53|       5: [BlockStmt] { ... }
-#   53|         0: [ReturnStmt] return ...
-#   53|           0: [VarAccess] DefKt.p
-#   53|             -1: [TypeAccess] DefKt
-#   53|     4: [FieldDeclaration] int p;
+#   57|       3: [TypeAccess] int
+#   57|       5: [BlockStmt] { ... }
+#   57|         0: [ReturnStmt] return ...
+#   57|           0: [VarAccess] DefKt.p
+#   57|             -1: [TypeAccess] DefKt
+#   57|     4: [FieldDeclaration] int p;
 #-----|       -2: (Annotations)
 #   56|         1: [Annotation] Annot0k
 #   21|           1: [IntegerLiteral] 0
-#   53|       -1: [TypeAccess] int
+#   57|       -1: [TypeAccess] int
 #   57|       0: [IntegerLiteral] 5
-#   53|     5: [Method] setP
+#   57|     5: [Method] setP
 #-----|       1: (Annotations)
 #   55|         1: [Annotation] Annot0k
 #   21|           1: [IntegerLiteral] 0
-#   53|       3: [TypeAccess] Unit
+#   57|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
-#   53|         0: [Parameter] <set-?>
-#   53|           0: [TypeAccess] int
-#   53|       5: [BlockStmt] { ... }
-#   53|         0: [ExprStmt] <Expr>;
-#   53|           0: [AssignExpr] ...=...
-#   53|             0: [VarAccess] DefKt.p
-#   53|               -1: [TypeAccess] DefKt
-#   53|             1: [VarAccess] <set-?>
+#   57|         0: [Parameter] <set-?>
+#   57|           0: [TypeAccess] int
+#   57|       5: [BlockStmt] { ... }
+#   57|         0: [ExprStmt] <Expr>;
+#   57|           0: [AssignExpr] ...=...
+#   57|             0: [VarAccess] DefKt.p
+#   57|               -1: [TypeAccess] DefKt
+#   57|             1: [VarAccess] <set-?>
 #   59|     6: [ExtensionMethod] myExtension
 #   59|       3: [TypeAccess] Unit
 #-----|       4: (Parameters)
@@ -219,13 +219,13 @@ def.kt:
 #   39|             -1: [TypeAccess] Y
 #   39|           2: [VarAccess] Y.A
 #   39|             -1: [TypeAccess] Y
-#   41|     1: [Constructor] Z
+#   42|     1: [Constructor] Z
 #-----|       1: (Annotations)
 #   41|         1: [Annotation] Annot0k
 #   21|           1: [IntegerLiteral] 0
-#   41|       5: [BlockStmt] { ... }
+#   42|       5: [BlockStmt] { ... }
 #   42|         0: [SuperConstructorInvocationStmt] super(...)
-#   41|         1: [BlockStmt] { ... }
+#   42|         1: [BlockStmt] { ... }
 use.java:
 #    0| [CompilationUnit] use
 #    1|   1: [Class] use

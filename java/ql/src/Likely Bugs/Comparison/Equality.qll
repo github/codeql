@@ -22,7 +22,7 @@ class RefiningEquals extends EqualsMethod {
         // ... on the (only) parameter of this method ...
         sup.getArgument(0).(VarAccess).getVariable() = this.getAParameter() and
         // ... and its result is implied by the result of `ret`.
-        exprImplies(ret.getResult(), true, sup, true)
+        exprImplies(ret.getExpr(), true, sup, true)
       )
     )
   }

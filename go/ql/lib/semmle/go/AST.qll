@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with AST nodes.
  */
+overlay[local]
+module;
 
 import go
 
@@ -83,6 +85,16 @@ class AstNode extends @node, Locatable {
   /** Gets the innermost function definition to which this AST node belongs, if any. */
   pragma[nomagic]
   FuncDef getEnclosingFunction() { result = this.getParent().parentInSameFunction*() }
+
+  /** Gets the innermost block statement to which this AST node belongs, if any. */
+  BlockStmt getEnclosingBlock() {
+    exists(AstNode p | p = this.getParent() |
+      result = p
+      or
+      not p instanceof BlockStmt and
+      result = p.getEnclosingBlock()
+    )
+  }
 
   /**
    * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.

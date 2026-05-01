@@ -10,5 +10,5 @@
 import java
 
 from ReturnStmt r
-where r.getResult() instanceof NullLiteral
+where r.getExpr() instanceof NullLiteral
 select r

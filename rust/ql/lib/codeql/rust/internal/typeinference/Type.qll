@@ -8,11 +8,7 @@ private import codeql.rust.elements.internal.generated.Raw
 private import codeql.rust.elements.internal.generated.Synth
 private import codeql.rust.frameworks.stdlib.Stdlib
 private import codeql.rust.frameworks.stdlib.Builtins as Builtins
-
-/** Gets a type alias of `trait` or of a supertrait of `trait`. */
-private TypeAlias getTraitTypeAlias(Trait trait) {
-  result = trait.getSupertrait*().getAssocItemList().getAnAssocItem()
-}
+private import AssociatedType
 
 /**
  * Holds if a dyn trait type for the trait `trait` should have a type parameter
@@ -31,7 +27,7 @@ private TypeAlias getTraitTypeAlias(Trait trait) {
  */
 private predicate dynTraitTypeParameter(Trait trait, AstNode n) {
   trait = any(DynTraitTypeRepr dt).getTrait() and
-  n = [trait.getGenericParamList().getATypeParam().(AstNode), getTraitTypeAlias(trait)]
+  n = [trait.getGenericParamList().getATypeParam().(AstNode), getTraitAssocType(trait)]
 }
 
 cached
@@ -43,8 +39,11 @@ newtype TType =
   TNeverType() or
   TUnknownType() or
   TTypeParamTypeParameter(TypeParam t) or
-  TAssociatedTypeTypeParameter(Trait trait, TypeAlias typeAlias) {
-    getTraitTypeAlias(trait) = typeAlias
+  TAssociatedTypeTypeParameter(Trait trait, AssocType typeAlias) {
+    getTraitAssocType(trait) = typeAlias
+  } or
+  TTypeParamAssociatedTypeTypeParameter(TypeParam tp, AssocType assoc) {
+    tpAssociatedType(tp, assoc, _)
   } or
   TDynTraitTypeParameter(Trait trait, AstNode n) { dynTraitTypeParameter(trait, n) } or
   TImplTraitTypeParameter(ImplTraitTypeRepr implTrait, TypeParam tp) {
@@ -75,7 +74,7 @@ abstract class Type extends TType {
   abstract TypeParameter getPositionalTypeParameter(int i);
 
   /** Gets the default type for the `i`th type parameter, if any. */
-  TypeMention getTypeParameterDefault(int i) { none() }
+  TypeRepr getTypeParameterDefault(int i) { none() }
 
   /**
    * Gets a type parameter of this type.
@@ -129,7 +128,7 @@ class DataType extends Type, TDataType {
     result = TTypeParamTypeParameter(typeItem.getGenericParamList().getTypeParam(i))
   }
 
-  override TypeMention getTypeParameterDefault(int i) {
+  override TypeRepr getTypeParameterDefault(int i) {
     result = typeItem.getGenericParamList().getTypeParam(i).getDefaultType()
   }
 
@@ -189,7 +188,7 @@ class TraitType extends Type, TTrait {
     result.(SelfTypeParameter).getTrait() = trait
   }
 
-  override TypeMention getTypeParameterDefault(int i) {
+  override TypeRepr getTypeParameterDefault(int i) {
     result = trait.getGenericParamList().getTypeParam(i).getDefaultType()
   }
 
@@ -440,11 +439,11 @@ class TypeParamTypeParameter extends TypeParameter, TTypeParamTypeParameter {
  */
 class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypeParameter {
   private Trait trait;
-  private TypeAlias typeAlias;
+  private AssocType typeAlias;
 
   AssociatedTypeTypeParameter() { this = TAssociatedTypeTypeParameter(trait, typeAlias) }
 
-  TypeAlias getTypeAlias() { result = typeAlias }
+  AssocType getTypeAlias() { result = typeAlias }
 
   /** Gets the trait that contains this associated type declaration. */
   TraitItemNode getTrait() { result = trait }
@@ -458,10 +457,62 @@ class AssociatedTypeTypeParameter extends TypeParameter, TAssociatedTypeTypePara
   override ItemNode getDeclaringItem() { result = trait }
 
   override string toString() {
-    result = typeAlias.getName().getText() + "[" + trait.getName().toString() + "]"
+    exists(string fromString, TraitItemNode trait2 |
+      result = typeAlias.getName().getText() + "[" + trait.getName() + fromString + "]" and
+      trait2 = typeAlias.getTrait() and
+      if trait = trait2
+      then fromString = ""
+      else fromString = " (inherited from " + trait2.getName() + ")"
+    )
   }
 
   override Location getLocation() { result = typeAlias.getLocation() }
+}
+
+/**
+ * A type parameter corresponding to an associated type accessed on a type
+ * parameter, for example `T::AssociatedType` where `T` is a type parameter.
+ *
+ * These type parameters are created when a function signature accesses an
+ * associated type on a type parameter. For example, in
+ * ```rust
+ * fn foo<T: SomeTrait>(arg: T::Assoc) { }
+ * ```
+ * we create a `TypeParamAssociatedTypeTypeParameter` for `Assoc` on `T` and the
+ * mention `T::Assoc` resolves to this type parameter. If denoting the type
+ * parameter by `T_Assoc` then the above function is treated as if it was
+ * ```rust
+ * fn foo<T: SomeTrait<Assoc = T_Assoc>, T_Assoc>(arg: T_Assoc) { }
+ * ```
+ */
+class TypeParamAssociatedTypeTypeParameter extends TypeParameter,
+  TTypeParamAssociatedTypeTypeParameter
+{
+  private TypeParam typeParam;
+  private AssocType assoc;
+
+  TypeParamAssociatedTypeTypeParameter() {
+    this = TTypeParamAssociatedTypeTypeParameter(typeParam, assoc)
+  }
+
+  /** Gets the type parameter that this associated type is accessed on. */
+  TypeParam getTypeParam() { result = typeParam }
+
+  /** Gets the associated type alias. */
+  AssocType getTypeAlias() { result = assoc }
+
+  /** Gets a path that accesses this type parameter. */
+  Path getAPath() { tpAssociatedType(typeParam, assoc, result) }
+
+  override ItemNode getDeclaringItem() { result.getTypeParam(_) = typeParam }
+
+  override string toString() {
+    result =
+      typeParam.toString() + "::" + assoc.getName().getText() + "[" +
+        assoc.getTrait().getName().getText() + "]"
+  }
+
+  override Location getLocation() { result = typeParam.getLocation() }
 }
 
 /** Gets the associated type type-parameter corresponding directly to `typeAlias`. */

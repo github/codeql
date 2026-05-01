@@ -84,6 +84,8 @@ class RelevantDefinition extends AssignableDefinition {
       )
     or
     this instanceof AssignableDefinitions::PatternDefinition
+    or
+    this instanceof AssignableDefinitions::AssignOperationDefinition
   }
 
   /** Holds if this assignment may be live. */
@@ -129,7 +131,7 @@ class RelevantDefinition extends AssignableDefinition {
   /** Holds if this definition is dead and we want to report it. */
   predicate isDead() {
     // Ensure that the definition is not in dead code
-    exists(this.getExpr().getAControlFlowNode()) and
+    exists(this.getExpr().getControlFlowNode()) and
     not this.isMaybeLive() and
     // Allow dead initializer assignments, such as `string s = string.Empty`, but only
     // if the initializer expression assigns a default-like value, and there exists another

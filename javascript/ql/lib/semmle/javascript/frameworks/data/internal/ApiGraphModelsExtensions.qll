@@ -33,11 +33,11 @@ extensible predicate barrierModel(
  * of the given `kind` and `madId` is the data extension row number.
  * `path` is assumed to lead to a parameter of a call (possibly `self`), and
  * the call is guarding the parameter.
- * `branch` is either `true` or `false`, indicating which branch of the guard
- * is protecting the parameter.
+ * `acceptingValue` is either `true` or `false`, indicating which branch of
+ * the guard is protecting the parameter.
  */
 extensible predicate barrierGuardModel(
-  string type, string path, string branch, string kind, QlBuiltins::ExtensionId madId
+  string type, string path, string acceptingValue, string kind, QlBuiltins::ExtensionId madId
 );
 
 /**

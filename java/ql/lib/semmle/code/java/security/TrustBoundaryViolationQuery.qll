@@ -31,17 +31,26 @@ private class ExternalTrustBoundaryValidationSanitizer extends TrustBoundaryVali
   ExternalTrustBoundaryValidationSanitizer() { barrierNode(this, "trust-boundary-violation") }
 }
 
+private class SimpleTypeTrustBoundaryValidationSanitizer extends TrustBoundaryValidationSanitizer instanceof SimpleTypeSanitizer
+{ }
+
+private class RegexpCheckTrustBoundaryValidationSanitizer extends TrustBoundaryValidationSanitizer instanceof RegexpCheckBarrier
+{ }
+
+private class HttpServletSessionTypeTrustBoundaryValidationSanitizer extends TrustBoundaryValidationSanitizer
+{
+  HttpServletSessionTypeTrustBoundaryValidationSanitizer() {
+    this.getType() instanceof HttpServletSession
+  }
+}
+
 /**
  * Taint tracking for data that crosses a trust boundary.
  */
 module TrustBoundaryConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof TrustBoundaryViolationSource }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node instanceof TrustBoundaryValidationSanitizer or
-    node.getType() instanceof HttpServletSession or
-    node instanceof SimpleTypeSanitizer
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof TrustBoundaryValidationSanitizer }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TrustBoundaryViolationSink }
 

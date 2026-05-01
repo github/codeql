@@ -2,6 +2,8 @@
  * Provides classes modeling security-relevant aspects of the standard libraries.
  * Note: some modeling is done internally in the dataflow/taint tracking implementation.
  */
+overlay[local?]
+module;
 
 private import python
 private import semmle.python.dataflow.new.DataFlow

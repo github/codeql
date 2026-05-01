@@ -5,6 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.util.Unit
@@ -42,6 +43,13 @@ module Xss {
    */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "html-injection") }
+  }
+
+  /**
+   * A barrier for XSS from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "html-injection") }
   }
 
   /**

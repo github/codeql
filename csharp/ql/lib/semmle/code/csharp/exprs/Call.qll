@@ -267,9 +267,33 @@ class Call extends Expr, @call {
 class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invocation_expr {
   override Method getTarget() { expr_call(this, result) }
 
+  /**
+   * Gets the accessor that was used to generate this method, if any. For example, the
+   * method call `MyExtensions.get_FirstChar(s)` on line 9 is generated from the property
+   * accessor `get_FirstChar` on line 3 in
+   *
+   * ```csharp
+   * static class MyExtensions {
+   *   extension(string s) {
+   *     public char FirstChar { get { ... } }
+   *   }
+   * }
+   *
+   * class A {
+   *   char M(string s) {
+   *     return MyExtensions.get_FirstChar(s);
+   *   }
+   * }
+   */
+  Accessor getTargetAccessor() { expr_call(this, result) }
+
   override Method getQualifiedDeclaration() { result = this.getTarget() }
 
-  override string toString() { result = "call to method " + concat(this.getTarget().getName()) }
+  override string toString() {
+    if exists(this.getTargetAccessor())
+    then result = "call to extension accessor " + concat(this.getTargetAccessor().getName())
+    else result = "call to method " + concat(this.getTarget().getName())
+  }
 
   override string getAPrimaryQlClass() { result = "MethodCall" }
 
@@ -454,7 +478,7 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
 }
 
 /**
- * A call to a user-defined operator, for example `this + other`
+ * A call to an operator, for example `this + other`
  * on line 7 in
  *
  * ```csharp
@@ -469,14 +493,55 @@ class ConstructorInitializer extends Call, @constructor_init_expr {
  * }
  * ```
  */
-class OperatorCall extends Call, LateBindableExpr, @operator_invocation_expr {
+class OperatorCall extends Call, LateBindableExpr, @op_invoke_expr {
   override Operator getTarget() { expr_call(this, result) }
 
   override Operator getARuntimeTarget() { result = Call.super.getARuntimeTarget() }
 
-  override string toString() { result = "call to operator " + this.getTarget().getName() }
+  override string toString() {
+    if this instanceof DynamicOperatorCall
+    then result = "dynamic call to operator " + this.getLateBoundTargetName()
+    else result = "call to operator " + this.getTarget().getName()
+  }
 
   override string getAPrimaryQlClass() { result = "OperatorCall" }
+}
+
+/**
+ * A call to an extension operator, for example `3 * s` on
+ * line 9 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public static string operator *(int i, string s) { ... }
+ *   }
+ * }
+ *
+ * class A {
+ *   string M(string s) {
+ *     return 3 * s;
+ *   }
+ * }
+ * ```
+ */
+class ExtensionOperatorCall extends OperatorCall {
+  ExtensionOperatorCall() { this.getTarget() instanceof ExtensionOperator }
+
+  override string getAPrimaryQlClass() { result = "ExtensionOperatorCall" }
+
+  private predicate isOrdinaryStaticCall() {
+    not exists(Expr e | e = this.getChildExpr(-1) | not e instanceof TypeAccess)
+  }
+
+  override Expr getArgument(int i) {
+    exists(int j | result = this.getChildExpr(j) |
+      i >= 0 and
+      if this.isOrdinaryStaticCall() or this.getTarget() instanceof CompoundAssignmentOperator
+      then j = i
+      else j = i - 1
+    )
+  }
 }
 
 /**
@@ -503,6 +568,58 @@ class MutatorOperatorCall extends OperatorCall {
 
   /** Holds if the operator is in postfix position. */
   predicate isPostfix() { mutator_invocation_mode(this, 2) }
+}
+
+/**
+ * A call to a compound assignment operator, for example `this += other`
+ * on line 7 in
+ *
+ * ```csharp
+ * class A {
+ *   public void operator +=(A other) {
+ *     ...
+ *   }
+ *
+ *   public void Add(A other) {
+ *     this += other;
+ *   }
+ * }
+ * ```
+ */
+class CompoundAssignmentOperatorCall extends AssignCallOperation {
+  CompoundAssignmentOperatorCall() { this.getTarget() instanceof CompoundAssignmentOperator }
+
+  override Expr getArgument(int i) { result = this.getChildExpr(i + 1) and i >= 0 }
+
+  /** Gets the qualifier of this compound assignment operator call. */
+  override Expr getQualifier() { result = this.getChildExpr(0) }
+}
+
+/**
+ * A call to a compound assignment extension operator, for example `s1 *= s2` on
+ * line 9 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public void operator *=(string other) { ... }
+ *   }
+ * }
+ *
+ * class A {
+ *   void M(string s1, string s2) {
+ *     s1 *= s2;
+ *   }
+ * }
+ */
+class ExtensionCompoundAssignmentOperatorCall extends CompoundAssignmentOperatorCall,
+  ExtensionOperatorCall
+{
+  override Expr getArgument(int i) { result = ExtensionOperatorCall.super.getArgument(i) }
+
+  override Expr getQualifier() { none() }
+
+  override string getAPrimaryQlClass() { result = "ExtensionCompoundAssignmentOperatorCall" }
 }
 
 private class DelegateLikeCall_ = @delegate_invocation_expr or @function_pointer_invocation_expr;
@@ -581,7 +698,25 @@ class FunctionPointerCall extends DelegateLikeCall, @function_pointer_invocation
  * (`EventCall`).
  */
 class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
-  override Accessor getTarget() { none() }
+  override Accessor getTarget() { result = this.getReadTarget() or result = this.getWriteTarget() }
+
+  /**
+   * Gets the static (compile-time) target of this call, assuming that this is
+   * an `AssignableRead`.
+   *
+   * Note that left-hand sides of compound assignments are both
+   * `AssignableRead`s and `AssignableWrite`s.
+   */
+  Accessor getReadTarget() { none() }
+
+  /**
+   * Gets the static (compile-time) target of this call, assuming that this is
+   * an `AssignableWrite`.
+   *
+   * Note that left-hand sides of compound assignments are both
+   * `AssignableRead`s and `AssignableWrite`s.
+   */
+  Accessor getWriteTarget() { none() }
 
   override Expr getArgument(int i) { none() }
 
@@ -603,12 +738,12 @@ class AccessorCall extends Call, QualifiableExpr, @call_access_expr {
  * ```
  */
 class PropertyCall extends AccessorCall, PropertyAccessExpr {
-  override Accessor getTarget() {
-    exists(PropertyAccess pa, Property p | pa = this and p = this.getProperty() |
-      pa instanceof AssignableRead and result = p.getGetter()
-      or
-      pa instanceof AssignableWrite and result = p.getSetter()
-    )
+  override Accessor getReadTarget() {
+    this instanceof AssignableRead and result = this.getProperty().getGetter()
+  }
+
+  override Accessor getWriteTarget() {
+    this instanceof AssignableWrite and result = this.getProperty().getSetter()
   }
 
   override Expr getArgument(int i) {
@@ -638,12 +773,12 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
  * ```
  */
 class IndexerCall extends AccessorCall, IndexerAccessExpr {
-  override Accessor getTarget() {
-    exists(IndexerAccess ia, Indexer i | ia = this and i = this.getIndexer() |
-      ia instanceof AssignableRead and result = i.getGetter()
-      or
-      ia instanceof AssignableWrite and result = i.getSetter()
-    )
+  override Accessor getReadTarget() {
+    this instanceof AssignableRead and result = this.getIndexer().getGetter()
+  }
+
+  override Accessor getWriteTarget() {
+    this instanceof AssignableWrite and result = this.getIndexer().getSetter()
   }
 
   override Expr getArgument(int i) {
@@ -656,6 +791,44 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
   override string toString() { result = IndexerAccessExpr.super.toString() }
 
   override string getAPrimaryQlClass() { result = "IndexerCall" }
+}
+
+/**
+ * A call to an extension property accessor (via the property), for example
+ * `s.FirstChar` on line 9 in
+ *
+ * ```csharp
+ * static class MyExtensions {
+ *   extension(string s) {
+ *     public char FirstChar { get { ... } }
+ *   }
+ * }
+ *
+ * class A {
+ *   char M(string s) {
+ *     return s.FirstChar;
+ *   }
+ * }
+ * ```
+ */
+class ExtensionPropertyCall extends PropertyCall {
+  private ExtensionProperty prop;
+
+  ExtensionPropertyCall() { this.getProperty() = prop }
+
+  override Expr getArgument(int i) {
+    if prop.isStatic()
+    then result = super.getArgument(i)
+    else (
+      // Shift arguments as the qualifier is an explicit argument in the getter/setter.
+      i = 0 and
+      result = this.getQualifier()
+      or
+      result = super.getArgument(i - 1)
+    )
+  }
+
+  override string getAPrimaryQlClass() { result = "ExtensionPropertyCall" }
 }
 
 /**
@@ -680,10 +853,10 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
  * ```
  */
 class EventCall extends AccessorCall, EventAccessExpr {
-  override EventAccessor getTarget() {
+  override EventAccessor getWriteTarget() {
     exists(Event e, AddOrRemoveEventExpr aoree |
       e = this.getEvent() and
-      aoree.getLValue() = this
+      aoree.getLeftOperand() = this
     |
       aoree instanceof AddEventExpr and result = e.getAddEventAccessor()
       or
@@ -694,8 +867,8 @@ class EventCall extends AccessorCall, EventAccessExpr {
   override Expr getArgument(int i) {
     i = 0 and
     exists(AddOrRemoveEventExpr aoree |
-      aoree.getLValue() = this and
-      result = aoree.getRValue()
+      aoree.getLeftOperand() = this and
+      result = aoree.getRightOperand()
     )
   }
 

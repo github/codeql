@@ -1,6 +1,8 @@
 /**
  * Wrapping generated AST classes: `Pattern_` and subclasses.
  */
+overlay[local]
+module;
 
 import python
 

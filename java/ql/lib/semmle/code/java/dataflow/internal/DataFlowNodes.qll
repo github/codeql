@@ -510,7 +510,7 @@ module Private {
   /** A data flow node that occurs as the result of a `ReturnStmt`. */
   class ReturnNode extends Node {
     ReturnNode() {
-      exists(ReturnStmt ret | this.asExpr() = ret.getResult()) or
+      exists(ReturnStmt ret | this.asExpr() = ret.getExpr()) or
       this.(FlowSummaryNode).isReturn()
     }
 

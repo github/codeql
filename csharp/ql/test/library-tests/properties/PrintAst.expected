@@ -230,3 +230,19 @@ properties.cs:
 #-----|         2: (Parameters)
 #  124|           0: [Parameter] value
 #  124|         4: [BlockStmt] {...}
+#  128|   10: [Class] UseFieldKeyword
+#  130|     6: [Property] Prop
+#  130|       -1: [TypeMention] object
+#  132|       3: [Getter] get_Prop
+#  132|         4: [BlockStmt] {...}
+#  132|           0: [ReturnStmt] return ...;
+#  132|             0: [FieldAccess] access to field Prop.field
+#  133|       4: [Setter] set_Prop
+#-----|         2: (Parameters)
+#  133|           0: [Parameter] value
+#  133|         4: [BlockStmt] {...}
+#  133|           0: [ExprStmt] ...;
+#  133|             0: [AssignExpr] ... = ...
+#  133|               0: [FieldAccess] access to field Prop.field
+#  133|               1: [ParameterAccess] access to parameter value
+#  130|     7: [Field] Prop.field
