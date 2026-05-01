@@ -21,14 +21,14 @@ module Hashes {
    */
   // Copying use of nomagic from similar predicate in codeql/main
   pragma[nomagic]
-  DataFlow::Node cryptographyMemberHashAlgorithm(string hashName) {
-    result =
+  DataFlow::Node cryptographyMemberHashAlgorithm(API::Node algModule, string hashName) {
+    algModule =
       API::moduleImport("cryptography")
           .getMember("hazmat")
           .getMember("primitives")
           .getMember("hashes")
-          .getMember(hashName)
-          .asSource() and
+          .getMember(hashName) and
+    result = algModule.asSource() and
     // Don't matches known non-hash members
     //   https://github.com/pyca/cryptography/blob/main/src/cryptography/hazmat/primitives/hashes.py#L69-L111
     not hashName in [
@@ -45,21 +45,66 @@ module Hashes {
    *    https://cryptography.io/en/latest/hazmat/primitives/cryptographic-hashes/#cryptography.hazmat.primitives.hashes.Hash
    */
   class CryptographyGenericHashAlgorithm extends HashAlgorithm {
-    CryptographyGenericHashAlgorithm() { this = cryptographyMemberHashAlgorithm(_) }
+    CryptographyGenericHashAlgorithm() { this = cryptographyMemberHashAlgorithm(_, _) }
 
     override string getName() {
-      exists(string rawName | this = cryptographyMemberHashAlgorithm(rawName) |
+      exists(string rawName | this = cryptographyMemberHashAlgorithm(_, rawName) |
         result = super.normalizeName(rawName)
       )
     }
+
+    API::Node getModule() { this = cryptographyMemberHashAlgorithm(result, _) }
   }
   // NOTE: no need to model hashes used for PBKDF2HMAC (and other similar KDF HMAC), the API requires the specified algorithm
   //       is an instance of `HashAlgorithm` handled by `CryptographyGenericHashArtifact`
+
+  API::CallNode getCryptographyHashInitialisation(CryptographyGenericHashAlgorithm hash) {
+    result = API::moduleImport("cryptography")
+      .getMember("hazmat")
+      .getMember("primitives")
+      .getMember("hashes")
+      .getMember("Hash")
+      .getACall() and
+    hash.getModule().getACall().flowsTo(result.getParameter(0).asSink())
+  }
+
+  API::CallNode getCryptographyHashOneShot(CryptographyGenericHashAlgorithm hash) {
+    result = API::moduleImport("cryptography")
+      .getMember("hazmat")
+      .getMember("primitives")
+      .getMember("hashes")
+      .getMember("Hash")
+      .getMember("hash")
+      .getACall() and
+    hash.getModule().getACall().flowsTo(result.getParameter(0, "algorithm").asSink())
+  }
+
+  API::CallNode getCryptographyHashOperation(CryptographyGenericHashAlgorithm hash, API::CallNode initialisation) {
+    (initialisation = getCryptographyHashInitialisation(hash) and result = initialisation.getAMethodCall("update"))
+    or
+    (initialisation = getCryptographyHashOneShot(hash) and result = initialisation)
+  }
+
+  class CryptographyHashDigestOperation extends CryptographicOperation {
+    API::CallNode initialisation;
+
+    CryptographyHashDigestOperation() { this = getCryptographyHashOperation(_, initialisation) }
+
+    override DataFlow::Node getInitialisation() { result = initialisation }
+
+    override DataFlow::Node getAnInput() {
+      (initialisation = getCryptographyHashInitialisation(_) and (result = this.getArg(0) or result = this.getArgByName("data")))
+      or
+      (initialisation = getCryptographyHashOneShot(_) and (result = this.getArg(1) or result = this.getArgByName("data")))
+    }
+
+    override CryptographyGenericHashAlgorithm getAlgorithm() { this = getCryptographyHashOperation(result, _) }
+  }
 }
 
 // https://cryptography.io/en/latest/hazmat/primitives/key-derivation-functions/#module-cryptography.hazmat.primitives.kdf
 module KDF {
-  DataFlow::Node genericKDFArtifact(API::Node algModule, string algName) {
+  DataFlow::Node genericKDFModule(API::Node algModule, string algName) {
     exists(string member |
       algModule =
         API::moduleImport("cryptography")
@@ -70,11 +115,21 @@ module KDF {
             .getMember(algName) and
       result = algModule.asSource() and
       // https://github.com/pyca/cryptography/tree/main/src/cryptography/hazmat/primitives/kdf
-      member in ["argon2", "concatkdf", "hkdf", "kbkdf", "pbkdf2", "scrypt", "x963kdf"] and
-      algName in [
-          "Argon2d", "Argon2i", "Argon2id", "ConcatKDFHash", "ConcatKDFHMAC", "HKDF",
-          "HKDFExpand", "KBKDFCMAC", "KBKDFHMAC", "PBKDF2HMAC", "Scrypt", "X963KDF"
-        ]
+      (
+        member = "argon2" and algName in ["Argon2d", "Argon2i", "Argon2id"]
+        or
+        member = "concatkdf" and algName in ["ConcatKDFHash", "ConcatKDFHMAC"]
+        or
+        member = "hkdf" and algName in ["HKDF", "HKDFExpand"]
+        or
+        member = "kbkdf" and algName in ["KBKDFCMAC", "KBKDFHMAC"]
+        or
+        member = "pbkdf2" and algName in ["PBKDF2HMAC"]
+        or
+        member = "scrypt" and algName in ["Scrypt"]
+        or
+        member = "x963kdf" and algName in ["X963KDF"]
+      )
     )
   }
 
@@ -83,96 +138,120 @@ module KDF {
    *  https://cryptography.io/en/latest/hazmat/primitives/key-derivation-functions/#module-cryptography.hazmat.primitives.kdf
    */
   class CryptographyKDFAlgorithm extends KeyDerivationAlgorithm {
-    CryptographyKDFAlgorithm() { this = genericKDFArtifact(_, _) }
+    CryptographyKDFAlgorithm() { this = genericKDFModule(_, _) }
 
     override string getName() {
-      exists(string rawName | this = genericKDFArtifact(_, rawName) |
+      exists(string rawName | this = genericKDFModule(_, rawName) |
         // TODO: is HKDFExpand ok to categorize as HKDF?
         result = super.normalizeName(rawName)
       )
     }
 
-    API::Node getModule() { this = genericKDFArtifact(result, _) }
+    API::Node getModule() { this = genericKDFModule(result, _) }
   }
 
-  API::CallNode getCryptographyKDFOperation(CryptographyKDFAlgorithm kdf) {
+  API::CallNode getCryptographyKDFInitialisation(CryptographyKDFAlgorithm kdf) {
     result = kdf.getModule().getACall()
   }
 
+  API::CallNode getCryptographyKDFOperation(CryptographyKDFAlgorithm kdf, API::CallNode instance) {
+    instance = getCryptographyKDFInitialisation(kdf) and
+    result = instance.getAMethodCall(["derive", "derive_into", "verify"])
+  }
+
   class CryptographyKDFOperation extends KeyDerivationOperation {
-    CryptographyKDFOperation() { this = getCryptographyKDFOperation(_) }
+    API::CallNode instance;
 
-    override KeyDerivationAlgorithm getAlgorithm() { this = getCryptographyKDFOperation(result) }
+    CryptographyKDFOperation() { this = getCryptographyKDFOperation(_, instance) }
 
-    override predicate requiresHash() { this.getAlgorithm().getKDFName() != "KBKDFCMAC" }
+    override KeyDerivationAlgorithm getAlgorithm() { this = getCryptographyKDFOperation(result, instance) }
+
+    override DataFlow::Node getInitialisation() { result = instance }
+    override DataFlow::Node getAnInput() { result = this.getArg(0) or result = this.getArgByName("key_material")  }
+
+    override predicate requiresHash() { not this.getAlgorithm().getKDFName() in ["KBKDFCMAC", "ARGON2D", "ARGON2I", "ARGON2ID"] }
 
     override predicate requiresMode() {
       this.getAlgorithm().getKDFName() in ["KBKDFCMAC", "KBKDFHMAC"]
     }
 
     override predicate requiresSalt() {
-      this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF", "SCRYPT", "ARGON2"]
+      this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "CONCATKDFHMAC", "HKDF", "SCRYPT", "ARGON2D", "ARGON2I", "ARGON2ID"]
     }
 
-    override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "ARGON2"] }
+    override predicate requiresIteration() { this.getAlgorithm().getKDFName() in ["PBKDF2HMAC", "ARGON2D", "ARGON2I", "ARGON2ID"] }
 
-    override predicate requiresLanes() { this.getAlgorithm().getKDFName() in ["ARGON2"] }
+    override predicate requiresLanes() { this.getAlgorithm().getKDFName() in ["ARGON2D", "ARGON2I", "ARGON2ID"] }
 
-    override predicate requiresMemoryCost() { this.getAlgorithm().getKDFName() in ["ARGON2"] }
+    override predicate requiresMemoryCost() { this.getAlgorithm().getKDFName() in ["ARGON2D", "ARGON2I", "ARGON2ID"] }
 
     override DataFlow::Node getIterationSizeSrc() {
       this.requiresIteration() and
-      if this.getAlgorithm().getKDFName() = "ARGON2"
-      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("iterations"))
+      if this.getAlgorithm().getKDFName() in ["ARGON2D", "ARGON2I", "ARGON2ID"]
+      then result = Utils::getUltimateSrcFromApiNode(instance.getKeywordParameter("iterations"))
       else
         // ASSUMPTION: ONLY EVER in arg 3 in PBKDF2HMAC
-        result = Utils::getUltimateSrcFromApiNode(this.getParameter(3, "iterations"))
+        result = Utils::getUltimateSrcFromApiNode(instance.getParameter(3, "iterations"))
+    }
+
+
+    override DataFlow::Node getSaltConfigSink() {
+      result = this.getSaltConfigSink(_)
+    }
+
+    private DataFlow::Node getSaltConfigSink(API::Node apiNode) {
+      this.requiresSalt() and result = apiNode.asSink() and
+      // ARGON2 variants have it as a keyword-only parameter
+      if this.getAlgorithm().getKDFName() in ["ARGON2D", "ARGON2I", "ARGON2ID"]
+      then apiNode = instance.getKeywordParameter("salt")
+      // SCRYPT has it in arg 1
+      else if this.getAlgorithm().getKDFName() = "SCRYPT"
+      then apiNode = instance.getParameter(1, "salt")
+      else
+        // EVERYTHING ELSE that uses salt is in arg 2
+        apiNode = instance.getParameter(2, "salt")
     }
 
     override DataFlow::Node getSaltConfigSrc() {
-      this.requiresSalt() and
-      // ARGON2 variants have it as a keyword-only parameter
-      if this.getAlgorithm().getKDFName() = "ARGON2"
-      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("salt"))
-      // SCRYPT has it in arg 1
-      else if this.getAlgorithm().getKDFName() = "SCRYPT"
-      then result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "salt"))
-      else
-        // EVERYTHING ELSE that uses salt is in arg 2
-        result = Utils::getUltimateSrcFromApiNode(this.getParameter(2, "salt"))
+      result = this.getSaltConfigSrc(_)
+    }
+
+    private DataFlow::Node getSaltConfigSrc(API::Node apiNode) {
+      exists(getSaltConfigSink(apiNode)) and
+      result = Utils::getUltimateSrcFromApiNode(apiNode)
     }
 
     override DataFlow::Node getHashConfigSrc() {
       this.requiresHash() and
       // ASSUMPTION: ONLY EVER in arg 0
-      result = Utils::getUltimateSrcFromApiNode(this.getParameter(0, "algorithm"))
+      result = Utils::getUltimateSrcFromApiNode(instance.getParameter(0, "algorithm"))
     }
 
     override DataFlow::Node getLanesConfigSrc() {
-      this.requiresLanes() and 
+      this.requiresLanes() and
       // ASSUMPTION: ONLY EVER in keyword parameter
-      result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("lanes"))
+      result = Utils::getUltimateSrcFromApiNode(instance.getKeywordParameter("lanes"))
     }
 
     override DataFlow::Node getMemoryCostConfigSrc() {
       this.requiresMemoryCost() and
       // ASSUMPTION: ONLY EVER in keyword parameter
-      result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("memory_cost"))
+      result = Utils::getUltimateSrcFromApiNode(instance.getKeywordParameter("memory_cost"))
     }
 
     // TODO: get encryption algorithm for CBC-based KDF?
     override DataFlow::Node getDerivedKeySizeSrc() {
-      if this.getAlgorithm().getKDFName() = "ARGON2"
-      then result = Utils::getUltimateSrcFromApiNode(this.getKeywordParameter("length"))
+      if this.getAlgorithm().getKDFName() in ["ARGON2D", "ARGON2I", "ARGON2ID"]
+      then result = Utils::getUltimateSrcFromApiNode(instance.getKeywordParameter("length"))
       else if this.getAlgorithm().getKDFName() in ["KBKDFHMAC", "KBKDFCMAC"]
-      then result = Utils::getUltimateSrcFromApiNode(this.getParameter(2, "length"))
-      else result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "length"))
+      then result = Utils::getUltimateSrcFromApiNode(instance.getParameter(2, "length"))
+      else result = Utils::getUltimateSrcFromApiNode(instance.getParameter(1, "length"))
     }
 
     override DataFlow::Node getModeSrc() {
       this.requiresMode() and
       // ASSUMPTION: ONLY EVER in arg 1
-      result = Utils::getUltimateSrcFromApiNode(this.getParameter(1, "mode"))
+      result = Utils::getUltimateSrcFromApiNode(instance.getParameter(1, "mode"))
     }
   }
 }
@@ -203,10 +282,14 @@ module Encryption {
         )
       }
 
-      class CryptographyKeyWrap extends KeyWrapOperation, SymmetricEncryptionAlgorithm, BlockMode,
+      class CryptographyKeyWrap extends KeyWrapOperation, SymmetricEncryptionAlgorithm, BlockModeInstance,
         SymmetricCipher
       {
         CryptographyKeyWrap() { this = genericKeyWrapArtifact() }
+
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
 
         override string getName() {
           //Cryptography Key Wrap Artifact's use ECB block mode by default:
@@ -222,11 +305,13 @@ module Encryption {
         /**
          * ECB mode is effectively no block mode and no IV is associated with this mode.
          */
-        override DataFlow::Node getIVorNonce() { none() }
+        override DataFlow::Node getIVOrNonceSrc() { none() }
+
+        override DataFlow::Node getIVOrNonceSink() { none() }
 
         override SymmetricEncryptionAlgorithm getEncryptionAlgorithm() { result = this }
 
-        override BlockMode getBlockMode() { result = this }
+        override BlockModeInstance getBlockMode() { result = this }
 
         override CryptographicAlgorithm getAlgorithm() { result = this }
       }
@@ -253,7 +338,7 @@ module Encryption {
         result = algModule.asSource()
       }
 
-      class CryptographyAEAD extends BlockMode, AuthenticatedEncryptionAlgorithm, SymmetricCipher {
+      class CryptographyAEAD extends AuthenticatedEncryptionAlgorithm {
         CryptographyAEAD() { this = genericAEADArtifact(_, _) }
 
         API::Node getMember(string memberName) { result = this.getModule().getMember(memberName) }
@@ -261,8 +346,17 @@ module Encryption {
         API::Node getModule() { this = genericAEADArtifact(result, _) }
 
         override string getName() {
+          this = genericAEADArtifact(_, result)
+        }
+
+        string getBlockModeName() {
           exists(string rawName | genericAEADArtifact(_, rawName) = this |
-            result = this.normalizedBlockNames(rawName) or
+            result = this.normalizedBlockNames(rawName)
+          )
+        }
+
+        string getEncryptionName() {
+          exists(string rawName | genericAEADArtifact(_, rawName) = this |
             result = this.normalizedEncryptionName(rawName)
           )
         }
@@ -290,19 +384,6 @@ module Encryption {
           then result = super.normalizeName("AES")
           else result = super.normalizeName(rawName)
         }
-
-        /**
-         * Since the IV/Nonce is dependent on the API, we could attempt a dataflow to derive
-         * what it is internal to the library, but instead we take the stance that
-         * the IV/Nonce is non-existent/unknown to simplify analyses and to be
-         * safe in case of API changes. Uses of this API must therefore be
-         * individually assessed for correct IV use.
-         */
-        override DataFlow::Node getIVorNonce() { none() }
-
-        override SymmetricEncryptionAlgorithm getEncryptionAlgorithm() { result = this }
-
-        override BlockMode getBlockMode() { result = this }
       }
 
       DataFlow::Node genericAEADKeyGen(CryptographyAEAD aead) {
@@ -314,8 +395,12 @@ module Encryption {
 
         override CryptographyAEAD getAlgorithm() { this = genericAEADKeyGen(result) }
 
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
+
         override int getKeySizeInBits(DataFlow::Node configSrc) {
-          if this.getAlgorithm().getAuthticatedEncryptionName() = "ChaCha20Poly1305 "
+          if this.getAlgorithm().getAuthenticatedEncryptionName() = "ChaCha20Poly1305 "
           then result = 32 * 8
           else (
             result = configSrc.asExpr().(IntegerLiteral).getValue() and
@@ -334,6 +419,87 @@ module Encryption {
           not exists(this.keyBitLengthSrc()) and result = this
         }
       }
+
+      API::CallNode getCryptographyAEADInstance(CryptographyAEAD aead) {
+        result = aead.getModule().getACall()
+      }
+
+      Expr getLastElt(List list) {
+        exists(int size | size = count(list.getAnElt()) and size > 0 and result = list.getElt(size - 1))
+      }
+
+      class CryptographyAEADEncrypt extends AuthenticatedEncryptionOperation {
+        API::CallNode aeadInstance;
+        string methodName;
+
+        CryptographyAEADEncrypt() {
+          aeadInstance = getCryptographyAEADInstance(_) and
+          this = aeadInstance.getAMethodCall(methodName)
+          and methodName in ["encrypt", "encrypt_into"]
+        }
+
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
+
+        override DataFlow::Node getIVOrNonceSrc() {
+          result = Utils::getUltimateSrcFromApiNode(this.getIVOrNonceSinkCore())
+        }
+
+        override DataFlow::Node getIVOrNonceSink() {
+          result = this.getIVOrNonceSinkCore().asSink()
+        }
+
+        private API::Node getIVOrNonceSinkCore() {
+          if this.getAlgorithmName() = "AESSIV"
+          then result = any(API::Node candidate, List aad |
+            aad = this.getParameterSource(1, "associated_data").asExpr() and
+            candidate.asSink().asExpr() = getLastElt(aad) |
+            candidate
+          )
+          else result = this.getParameter(0, "nonce")
+        }
+
+        DataFlow::CallCfgNode getAeadInstance() { result = aeadInstance }
+
+        override CryptographyAEAD getAlgorithm() { aeadInstance = getCryptographyAEADInstance(result) }
+      }
+
+      class CryptographyAEADDecrypt extends AuthenticatedEncryptionOperation {
+        CryptographyAEAD aeadInstance;
+        string methodName;
+
+        CryptographyAEADDecrypt() {
+          this = getCryptographyAEADInstance(aeadInstance).getAMethodCall(methodName)
+          and methodName in ["decrypt", "decrypt_into"]
+        }
+
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
+
+        override DataFlow::Node getIVOrNonceSrc() {
+          result = Utils::getUltimateSrcFromApiNode(this.getIVOrNonceSinkCore())
+        }
+
+        override DataFlow::Node getIVOrNonceSink() {
+          result = this.getIVOrNonceSinkCore().asSink()
+        }
+
+        private API::Node getIVOrNonceSinkCore() {
+          if this.getAlgorithmName() = "AESSIV"
+          then result = any(API::Node candidate, List aad |
+            aad = this.getParameterSource(1, "associated_data").asExpr() and
+            candidate.asSink().asExpr() = getLastElt(aad) |
+            candidate
+          )
+          else result = this.getParameter(0, "nonce")
+        }
+
+        DataFlow::CallCfgNode getAeadInstance() { result = aeadInstance }
+
+        override CryptographyAEAD getAlgorithm() { aeadInstance = getCryptographyAEADInstance(result) }
+      }
     }
 
     /**
@@ -347,7 +513,7 @@ module Encryption {
         )
       }
 
-      class CryptographyFernet extends SymmetricPadding, BlockMode, SymmetricEncryptionAlgorithm,
+      class CryptographyFernet extends SymmetricPadding, BlockModeInstance, SymmetricEncryptionAlgorithm,
         SymmetricCipher
       {
         CryptographyFernet() { this = fernetConstructor() }
@@ -368,11 +534,13 @@ module Encryption {
          * The current API shows the IV is set via os.urandom:
          *    https://github.com/pyca/cryptography/blob/main/src/cryptography/fernet.py
          */
-        override DataFlow::Node getIVorNonce() { none() }
+        override DataFlow::Node getIVOrNonceSrc() { none() }
+
+        override DataFlow::Node getIVOrNonceSink() { none() }
 
         override SymmetricEncryptionAlgorithm getEncryptionAlgorithm() { result = this }
 
-        override BlockMode getBlockMode() { result = this }
+        override BlockModeInstance getBlockMode() { result = this }
       }
 
       API::CallNode fernetKeyGen(CryptographyFernet fernetCall) {
@@ -384,6 +552,10 @@ module Encryption {
        */
       class FernetKeyGen extends SymmetricKeyGen {
         FernetKeyGen() { this = fernetKeyGen(_) }
+
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
 
         override DataFlow::Node getKeyConfigSrc() { result = this }
 
@@ -417,8 +589,8 @@ module Encryption {
       }
 
       // https://cryptography.io/en/latest/hazmat/primitives/symmetric-encryption/#module-cryptography.hazmat.primitives.ciphers.modes
-      class CryptographyGenericBlockMode extends BlockMode {
-        CryptographyGenericBlockMode() { this = genericBlockMode(_) }
+      class CryptographyGenericBlockModeInstance extends BlockModeInstance {
+        CryptographyGenericBlockModeInstance() { this = genericBlockMode(_) }
 
         override string getName() {
           exists(string rawName | this = genericBlockMode(rawName) |
@@ -426,10 +598,17 @@ module Encryption {
           )
         }
 
-        override DataFlow::Node getIVorNonce() {
-          exists(string paramName | paramName = ["initialization_vector", "nonce"] |
-            result =
-              Utils::getUltimateSrcFromApiNode(this.(API::CallNode).getParameter(0, paramName))
+        override DataFlow::Node getIVOrNonceSrc() {
+            result = Utils::getUltimateSrcFromApiNode(this.getIVOrNonceSinkCore())
+        }
+
+        override DataFlow::Node getIVOrNonceSink() {
+          result = this.getIVOrNonceSinkCore().asSink()
+        }
+
+        private API::Node getIVOrNonceSinkCore() {
+          exists(string paramName | paramName in ["initialization_vector", "nonce"] |
+            result = this.(API::CallNode).getParameter(0, paramName)
           )
         }
       }
@@ -487,7 +666,6 @@ module Encryption {
           API::moduleImport("cryptography")
               .getMember("hazmat")
               .getMember("primitives")
-              .getMember("ciphers")
               .getMember("padding")
               .getMember(name)
               .getACall() and
@@ -508,8 +686,8 @@ module Encryption {
       /**
        * https://cryptography.io/en/latest/hazmat/primitives/symmetric-encryption/#cryptography.hazmat.primitives.ciphers.Cipher
        */
-      class CyrptographyGenericCipher extends SymmetricCipher {
-        CyrptographyGenericCipher() {
+      class CryptographyGenericCipher extends SymmetricCipher {
+        CryptographyGenericCipher() {
           this =
             API::moduleImport("cryptography")
                 .getMember("hazmat")
@@ -524,7 +702,7 @@ module Encryption {
             Utils::getUltimateSrcFromApiNode(this.(API::CallNode).getParameter(0, "algorithm"))
         }
 
-        override BlockMode getBlockMode() {
+        override BlockModeInstance getBlockMode() {
           result = Utils::getUltimateSrcFromApiNode(this.(API::CallNode).getParameter(1, "mode"))
         }
       }
@@ -663,6 +841,10 @@ module Encryption {
       class CryptographyRSAKeyGen extends AsymmetricKeyGen, AsymmetricEncryptionAlgorithm {
         CryptographyRSAKeyGen() { this = getRSAKeyGenCall() }
 
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
+
         override DataFlow::Node getKeyConfigSrc() {
           result =
             Utils::getUltimateSrcFromApiNode(this.(API::CallNode).getParameter(1, "key_size"))
@@ -776,6 +958,10 @@ module Encryption {
       class CryptographyEllipticCurveKeyGen extends AsymmetricKeyGen {
         CryptographyEllipticCurveKeyGen() { this = getEllipticCurveKeyGenCall() }
 
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
+
         override DataFlow::Node getKeyConfigSrc() {
           result = Utils::getUltimateSrcFromApiNode(this.(API::CallNode).getParameter(0, "curve"))
         }
@@ -867,6 +1053,10 @@ module Encryption {
                 .getACall()
         }
 
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
+
         override string getName() { result = super.normalizeName("DiffieHellman") }
 
         override DataFlow::Node getKeyConfigSrc() {
@@ -895,6 +1085,10 @@ module Encryption {
                 .getAMember*()
                 .asSource()
         }
+
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
 
         override string getName() {
           result = super.normalizeName("DiffieHellman")
@@ -931,6 +1125,10 @@ module Encryption {
                 .asSource()
         }
 
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
+
         override string getName() {
           result = super.normalizeName("DiffieHellman")
           or
@@ -962,6 +1160,10 @@ module Encryption {
                   .getACall()
           )
         }
+
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
 
         override DataFlow::Node getKeyConfigSrc() {
           result =
@@ -997,6 +1199,10 @@ module Encryption {
                 .asSource()
         }
 
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
+
         override string getName() {
           result = super.normalizeName("EDDSA")
           or
@@ -1031,6 +1237,10 @@ module Encryption {
                 .getAMember*()
                 .asSource()
         }
+
+        override DataFlow::Node getInitialisation() { result = this }
+
+        override DataFlow::Node getAnInput() { none() /* not implemented */ }
 
         override string getName() {
           result = super.normalizeName("EDDSA")
