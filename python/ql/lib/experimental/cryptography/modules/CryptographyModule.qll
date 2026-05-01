@@ -217,7 +217,7 @@ module KDF {
     }
 
     private DataFlow::Node getSaltConfigSrc(API::Node apiNode) {
-      exists(getSaltConfigSink(apiNode)) and
+      exists(this.getSaltConfigSink(apiNode)) and
       result = Utils::getUltimateSrcFromApiNode(apiNode)
     }
 
