@@ -9,7 +9,7 @@ private import experimental.cryptography.utils.Utils as Utils
  * Provides models for the `argon2-cffi` PyPI package.
  * See https://argon2-cffi.readthedocs.io/en/stable/.
  */
-private module Argon2Cffi {
+module Argon2Cffi {
     API::CallNode getAPasswordHasher() {
         result = API::moduleImport("argon2")
             .getMember("PasswordHasher")
