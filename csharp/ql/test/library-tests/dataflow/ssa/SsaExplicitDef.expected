@@ -24,7 +24,7 @@
 | Capture.cs:248:36:248:36 | j | Capture.cs:251:13:251:17 | SSA def(j) | Capture.cs:251:13:251:17 | ... = ... |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:7:25:7:25 | b |
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
-| Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:25:29:25:29 | Consistency c |
+| Consistency.cs:25:29:25:29 | c | Consistency.cs:25:9:25:30 | SSA def(c) | Consistency.cs:25:29:25:29 | Consistency c |
 | Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) | Consistency.cs:32:9:32:29 | ... = ... |
 | Consistency.cs:44:11:44:11 | s | Consistency.cs:44:11:44:11 | SSA def(s) | Consistency.cs:44:11:44:11 | S s |
 | Consistency.cs:49:30:49:30 | a | Consistency.cs:49:30:49:30 | SSA param(a) | Consistency.cs:49:30:49:30 | a |
@@ -43,21 +43,21 @@
 | DefUse.cs:6:14:6:14 | y | DefUse.cs:28:13:28:18 | SSA def(y) | DefUse.cs:28:13:28:18 | ... = ... |
 | DefUse.cs:6:14:6:14 | y | DefUse.cs:39:13:39:18 | SSA def(y) | DefUse.cs:39:13:39:18 | ... = ... |
 | DefUse.cs:44:13:44:13 | z | DefUse.cs:44:13:44:17 | SSA def(z) | DefUse.cs:44:13:44:17 | Int32 z = ... |
-| DefUse.cs:44:13:44:13 | z | DefUse.cs:47:23:47:23 | SSA def(z) | DefUse.cs:47:23:47:23 | access to local variable z |
-| DefUse.cs:44:13:44:13 | z | DefUse.cs:50:23:50:23 | SSA def(z) | DefUse.cs:50:23:50:23 | access to local variable z |
+| DefUse.cs:44:13:44:13 | z | DefUse.cs:47:9:47:24 | SSA def(z) | DefUse.cs:47:23:47:23 | access to local variable z |
+| DefUse.cs:44:13:44:13 | z | DefUse.cs:50:9:50:24 | SSA def(z) | DefUse.cs:50:23:50:23 | access to local variable z |
 | DefUse.cs:53:9:53:13 | this.Field | DefUse.cs:53:9:53:17 | SSA def(this.Field) | DefUse.cs:53:9:53:17 | ... = ... |
 | DefUse.cs:56:9:56:12 | this.Prop | DefUse.cs:56:9:56:16 | SSA def(this.Prop) | DefUse.cs:56:9:56:16 | ... = ... |
 | DefUse.cs:63:9:63:14 | this.Field2 | DefUse.cs:63:9:63:18 | SSA def(this.Field2) | DefUse.cs:63:9:63:18 | ... = ... |
 | DefUse.cs:66:9:66:14 | this.Field3 | DefUse.cs:66:9:66:18 | SSA def(this.Field3) | DefUse.cs:66:9:66:18 | ... = ... |
 | DefUse.cs:67:19:67:20 | tc | DefUse.cs:67:19:67:27 | SSA def(tc) | DefUse.cs:67:19:67:27 | TestClass tc = ... |
 | DefUse.cs:79:13:79:14 | x1 | DefUse.cs:79:13:79:18 | SSA def(x1) | DefUse.cs:79:13:79:18 | Int32 x1 = ... |
-| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:30:80:31 | SSA def(x1) | DefUse.cs:80:30:80:31 | access to local variable x1 |
+| DefUse.cs:79:13:79:14 | x1 | DefUse.cs:80:16:80:32 | SSA def(x1) | DefUse.cs:80:30:80:31 | access to local variable x1 |
 | DefUse.cs:83:13:83:14 | x2 | DefUse.cs:83:13:83:18 | SSA def(x2) | DefUse.cs:83:13:83:18 | Int32 x2 = ... |
-| DefUse.cs:83:13:83:14 | x2 | DefUse.cs:85:15:85:16 | SSA def(x2) | DefUse.cs:85:15:85:16 | access to local variable x2 |
-| DefUse.cs:83:13:83:14 | x2 | DefUse.cs:85:15:85:16 | SSA def(x2) | DefUse.cs:86:15:86:16 | access to local variable x2 |
+| DefUse.cs:83:13:83:14 | x2 | DefUse.cs:84:9:86:17 | SSA def(x2) | DefUse.cs:85:15:85:16 | access to local variable x2 |
+| DefUse.cs:83:13:83:14 | x2 | DefUse.cs:84:9:86:17 | SSA def(x2) | DefUse.cs:86:15:86:16 | access to local variable x2 |
 | DefUse.cs:89:13:89:14 | x3 | DefUse.cs:89:13:89:18 | SSA def(x3) | DefUse.cs:89:13:89:18 | Int32 x3 = ... |
-| DefUse.cs:89:13:89:14 | x3 | DefUse.cs:92:15:92:16 | SSA def(x3) | DefUse.cs:92:15:92:16 | access to local variable x3 |
-| DefUse.cs:90:13:90:14 | x4 | DefUse.cs:93:15:93:16 | SSA def(x4) | DefUse.cs:93:15:93:16 | access to local variable x4 |
+| DefUse.cs:89:13:89:14 | x3 | DefUse.cs:91:9:93:17 | SSA def(x3) | DefUse.cs:92:15:92:16 | access to local variable x3 |
+| DefUse.cs:90:13:90:14 | x4 | DefUse.cs:91:9:93:17 | SSA def(x4) | DefUse.cs:93:15:93:16 | access to local variable x4 |
 | DefUse.cs:97:13:97:14 | x5 | DefUse.cs:97:13:97:18 | SSA def(x5) | DefUse.cs:97:13:97:18 | Int32 x5 = ... |
 | DefUse.cs:97:13:97:14 | x5 | DefUse.cs:101:13:101:23 | SSA def(x5) | DefUse.cs:101:13:101:23 | ... = ... |
 | DefUse.cs:97:13:97:14 | x5 | DefUse.cs:104:9:104:15 | SSA def(x5) | DefUse.cs:104:9:104:15 | ... += ... |
@@ -108,17 +108,17 @@
 | MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationA.cs:5:22:5:22 | SSA param(x) | MultiImplementationA.cs:5:22:5:22 | x |
 | MultiImplementationA.cs:5:22:5:22 | x | MultiImplementationB.cs:3:22:3:22 | SSA param(x) | MultiImplementationA.cs:5:22:5:22 | x |
 | OutRef.cs:9:13:9:13 | j | OutRef.cs:9:13:9:17 | SSA def(j) | OutRef.cs:9:13:9:17 | Int32 j = ... |
-| OutRef.cs:9:13:9:13 | j | OutRef.cs:10:32:10:32 | SSA def(j) | OutRef.cs:10:32:10:32 | access to local variable j |
-| OutRef.cs:9:13:9:13 | j | OutRef.cs:22:22:22:22 | SSA def(j) | OutRef.cs:22:22:22:22 | access to local variable j |
-| OutRef.cs:9:13:9:13 | j | OutRef.cs:24:29:24:29 | SSA def(j) | OutRef.cs:24:29:24:29 | access to local variable j |
-| OutRef.cs:10:25:10:25 | i | OutRef.cs:10:25:10:25 | SSA def(i) | OutRef.cs:10:25:10:25 | Int32 i |
-| OutRef.cs:10:25:10:25 | i | OutRef.cs:13:21:13:21 | SSA def(i) | OutRef.cs:13:21:13:21 | access to local variable i |
-| OutRef.cs:13:28:13:32 | this.Field | OutRef.cs:13:28:13:32 | SSA def(this.Field) | OutRef.cs:13:28:13:32 | access to field Field |
-| OutRef.cs:13:28:13:32 | this.Field | OutRef.cs:16:21:16:25 | SSA def(this.Field) | OutRef.cs:16:21:16:25 | access to field Field |
-| OutRef.cs:13:28:13:32 | this.Field | OutRef.cs:16:21:16:25 | SSA def(this.Field) | OutRef.cs:16:32:16:36 | access to field Field |
-| OutRef.cs:13:28:13:32 | this.Field | OutRef.cs:19:21:19:25 | SSA def(this.Field) | OutRef.cs:19:21:19:25 | access to field Field |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:10:9:10:33 | SSA def(j) | OutRef.cs:10:32:10:32 | access to local variable j |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:22:9:22:30 | SSA def(j) | OutRef.cs:22:22:22:22 | access to local variable j |
+| OutRef.cs:9:13:9:13 | j | OutRef.cs:24:9:24:30 | SSA def(j) | OutRef.cs:24:29:24:29 | access to local variable j |
+| OutRef.cs:10:25:10:25 | i | OutRef.cs:10:9:10:33 | SSA def(i) | OutRef.cs:10:25:10:25 | Int32 i |
+| OutRef.cs:10:25:10:25 | i | OutRef.cs:13:9:13:33 | SSA def(i) | OutRef.cs:13:21:13:21 | access to local variable i |
+| OutRef.cs:13:28:13:32 | this.Field | OutRef.cs:13:9:13:33 | SSA def(this.Field) | OutRef.cs:13:28:13:32 | access to field Field |
+| OutRef.cs:13:28:13:32 | this.Field | OutRef.cs:16:9:16:37 | SSA def(this.Field) | OutRef.cs:16:21:16:25 | access to field Field |
+| OutRef.cs:13:28:13:32 | this.Field | OutRef.cs:16:9:16:37 | SSA def(this.Field) | OutRef.cs:16:32:16:36 | access to field Field |
+| OutRef.cs:13:28:13:32 | this.Field | OutRef.cs:19:9:19:39 | SSA def(this.Field) | OutRef.cs:19:21:19:25 | access to field Field |
 | OutRef.cs:18:13:18:13 | t | OutRef.cs:18:13:18:28 | SSA def(t) | OutRef.cs:18:13:18:28 | OutRef t = ... |
-| OutRef.cs:19:32:19:38 | t.Field | OutRef.cs:19:32:19:38 | SSA def(t.Field) | OutRef.cs:19:32:19:38 | access to field Field |
+| OutRef.cs:19:32:19:38 | t.Field | OutRef.cs:19:9:19:39 | SSA def(t.Field) | OutRef.cs:19:32:19:38 | access to field Field |
 | OutRef.cs:28:26:28:26 | i | OutRef.cs:30:9:30:13 | SSA def(i) | OutRef.cs:30:9:30:13 | ... = ... |
 | OutRef.cs:28:37:28:37 | j | OutRef.cs:28:37:28:37 | SSA param(j) | OutRef.cs:28:37:28:37 | j |
 | OutRef.cs:28:37:28:37 | j | OutRef.cs:31:9:31:13 | SSA def(j) | OutRef.cs:31:9:31:13 | ... = ... |
