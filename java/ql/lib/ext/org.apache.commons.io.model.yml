@@ -44,4 +44,4 @@ extensions:
       - ["org.apache.commons.io", "FileUtils", True, "forceDelete", "(File)", "", "Argument[0]", "path-injection", "manual"]
       - ["org.apache.commons.io", "FileUtils", True, "forceDeleteOnExit", "(File)", "", "Argument[0]", "path-injection", "manual"]
       - ["org.apache.commons.io", "FileUtils", True, "forceMkdirParent", "(File)", "", "Argument[0]", "path-injection", "manual"]
-      - ["org.apache.commons.io", "IOUtils", False, "resourceToString", "(String,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["org.apache.commons.io", "IOUtils", False, "resourceToString", "", "", "Argument[0]", "path-injection[read]", "ai-manual"]
