@@ -1605,7 +1605,7 @@ private module ReturnNodes {
 
     OutRefReturnNode() {
       exists(Parameter p |
-        Ssa::isLiveOutRefParameterDefinition(this.getDefinition(), p) and
+        SsaImpl::isLiveOutRefParameterDefinition(this.getDefinition(), p) and
         kind.getPosition() = p.getPosition()
       |
         p.isOut() and kind instanceof OutReturnKind

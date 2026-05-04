@@ -183,14 +183,7 @@ module Ssa {
    * Subsequent reads can be found by following the steps defined by
    * `AssignableRead.getANextRead()`.
    */
-  AssignableRead ssaGetAFirstUse(SsaDefinition def) {
-    exists(ControlFlowNode cfn |
-      SsaImpl::firstReadSameVar(def, cfn) and
-      result.getControlFlowNode() = cfn
-    )
-  }
-
-  predicate isLiveOutRefParameterDefinition = SsaImpl::isLiveOutRefParameterDefinition/2;
+  AssignableRead ssaGetAFirstUse(SsaDefinition def) { SsaImpl::firstReadSameVar(def, result) }
 
   /**
    * DEPRECATED: Use `SsaDefinition` instead.
@@ -350,7 +343,7 @@ module Ssa {
      * `AssignableRead.getANextRead()`.
      */
     deprecated final AssignableRead getAFirstReadAtNode(ControlFlowNode cfn) {
-      SsaImpl::firstReadSameVar(this, cfn) and
+      SsaImpl::firstReadSameVar(this, result) and
       result.getControlFlowNode() = cfn
     }
 
@@ -416,7 +409,7 @@ module Ssa {
     }
 
     /**
-     * DEPRECATED: Use `isLiveOutRefParameterDefinition(SsaDefinition, Parameter)` instead.
+     * DEPRECATED.
      *
      * Holds if this SSA definition assigns to `out`/`ref` parameter `p`, and the
      * parameter may remain unchanged throughout the rest of the enclosing callable.

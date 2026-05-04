@@ -854,12 +854,14 @@ private module Cached {
   }
 
   /**
-   * Holds if the value defined at SSA definition `def` can reach a read at `cfn`,
+   * Holds if the value defined at SSA definition `def` can reach a read `read`,
    * without passing through any other read.
    */
   cached
-  predicate firstReadSameVar(Definition def, ControlFlowNode cfn) {
-    exists(BasicBlock bb, int i | Impl::firstUse(def, bb, i, true) and cfn = bb.getNode(i))
+  predicate firstReadSameVar(Definition def, AssignableRead read) {
+    exists(BasicBlock bb, int i |
+      Impl::firstUse(def, bb, i, true) and read.getControlFlowNode() = bb.getNode(i)
+    )
   }
 
   /**

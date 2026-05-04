@@ -1,11 +1,12 @@
 import csharp
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.dataflow.internal.SsaImpl as SsaImpl
 
 private predicate outRefDef(DataFlow::ExprNode ne, int outRef) {
   exists(SsaExplicitWrite def, Parameter outRefParameter |
     outRefParameter.isOutOrRef() and
     ne.getExpr() = def.getValue() and
-    Ssa::isLiveOutRefParameterDefinition(def, outRefParameter) and
+    SsaImpl::isLiveOutRefParameterDefinition(def, outRefParameter) and
     outRef = outRefParameter.getPosition()
   )
 }
