@@ -322,19 +322,29 @@ module Encryption {
      * https://cryptography.io/en/latest/hazmat/primitives/aead/#module-cryptography.hazmat.primitives.ciphers.aead
      */
     module AuthenticatedEncryption {
-      API::Node genericAEADAPINode(string algName) {
+      API::Node genericAEADAPINode(string memberName, string algName) {
         result =
           API::moduleImport("cryptography")
               .getMember("hazmat")
               .getMember("primitives")
               .getMember("ciphers")
               .getMember("aead")
-              .getMember(algName) and
-        algName in ["AESGCM", "AESCCM", "AESOCB3", "AESSIV", "ChaCha20Poly1305"]
+              .getMember(memberName) and
+        (
+          (memberName = "AESGCM" and algName = "AES-GCM")
+          or
+          (memberName = "AESCCM" and algName = "AES-CCM")
+          or
+          (memberName = "AESOCB3" and algName = "AES-OCB3")
+          or
+          (memberName = "AESSIV" and algName = "AESSIV")
+          or
+          (memberName = "ChaCha20Poly1305" and algName = "ChaCha20-Poly1305")
+        )
       }
 
       DataFlow::Node genericAEADArtifact(API::Node algModule, string algName) {
-        algModule = genericAEADAPINode(algName) and
+        algModule = genericAEADAPINode(_, algName) and
         result = algModule.asSource()
       }
 
@@ -364,16 +374,16 @@ module Encryption {
         bindingset[rawName]
         string normalizedBlockNames(string rawName) {
           // https://cryptography.io/en/latest/hazmat/primitives/aead/#module-cryptography.hazmat.primitives.ciphers.aead
-          if rawName = "AESGCM"
+          if rawName = "AES-GCM"
           then result = super.normalizeName("GCM")
           else
-            if rawName = "AESCCM"
+            if rawName = "AES-CCM"
             then result = super.normalizeName("CCM")
             else
-              if rawName = "AESOCB3"
+              if rawName = "AES-OCB3"
               then result = super.normalizeName("OCB")
               else
-                if rawName = "AESSIV"
+                if rawName = "AES-SIV"
                 then result = super.normalizeName("SIV")
                 else result = super.normalizeName(rawName)
         }
