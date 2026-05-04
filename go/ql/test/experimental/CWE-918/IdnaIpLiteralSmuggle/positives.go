@@ -160,23 +160,24 @@ func smuggleCircledZero(req *http.Request) {
 	http.Get("https://" + ace + "/") // $ Alert
 }
 
-// --- Class 8: Devanagari digits (U+0966..U+096F) ---
-// UTS-46 NFKC folds Devanagari digits to ASCII equivalents.
-// "१.0.0.0" (U+0967 DEVANAGARI ONE) -> "1.0.0.0"
-func smuggleDevanagariDigit(req *http.Request) {
-	host := req.Header.Get("X-HOST-DEVANAGARI") // $ Source
-	ace, _ := idna.Lookup.ToASCII(host)
-	http.Get("https://" + ace + "/") // $ Alert
+// --- ToUnicode positive: idna.Lookup.ToUnicode runs the same UTS-46
+// digit-fold pipeline as ToASCII (validateAndMap executes before the
+// encode-vs-decode branch), so a Latin-1 superscript input emerges as
+// ASCII via ToUnicode too. Empirically verified against
+// golang.org/x/net/idna v0.53.0: Lookup.ToUnicode("0.¹.0.0")
+// returns "0.1.0.0".
+func smuggleViaToUnicode(req *http.Request) {
+	host := req.Header.Get("X-HOST-TO-UNICODE") // $ Source
+	out, _ := idna.Lookup.ToUnicode(host)
+	http.Get("https://" + out + "/") // $ Alert
 }
 
-// --- Class 8 second positive: Devanagari digit U+0969 -> "3",
-// (*net.Resolver).LookupIPAddr sink ---
-// "१.0.0.३" -> "1.0.0.3"
-func smuggleDevanagariResolverLookupIPAddr(req *http.Request) {
-	host := req.Header.Get("X-HOST-DEVANAGARI-TWO") // $ Source
-	ace, _ := idna.Lookup.ToASCII(host)
-	r := &net.Resolver{}
-	r.LookupIPAddr(context.Background(), ace) // $ Alert
+// --- ToUnicode positive on Display profile, net.LookupHost sink. ---
+// "10.⁹.0.1" -> "10.9.0.1"
+func smuggleDisplayToUnicodeLookupHost(req *http.Request) {
+	host := req.Header.Get("X-HOST-DISPLAY-TO-UNICODE") // $ Source
+	out, _ := idna.Display.ToUnicode(host)
+	net.LookupHost(out) // $ Alert
 }
 
 // --- Trailing-dot variant: "0.¹.0.0." -> "0.1.0.0." ---
