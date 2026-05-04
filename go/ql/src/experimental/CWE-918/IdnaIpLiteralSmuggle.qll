@@ -5,18 +5,19 @@
  * Background
  * ----------
  * `golang.org/x/net/idna` applies UTS-46 NFKC mapping inside
- * `(*Profile).ToASCII`, which folds 100 non-ASCII Unicode digit codepoints
- * to their ASCII equivalents. The 100 codepoints span 8 families: Latin-1
- * superscripts, mathematical superscripts and subscripts, circled digits,
- * fullwidth digits, mathematical bold and sans-serif and double-struck
- * and monospace digits, and segmented digits. A caller that runs
- * `net.ParseIP` BEFORE `idna.ToASCII` will reject non-ASCII inputs as
- * non-IP, pass them to the IDNA library, and then receive a valid ASCII
- * IPv4 literal back as the "domain name" output. The post-IDNA result
- * silently bypasses any downstream IP-literal guard because the caller
- * never re-checks. Scope is IPv4 only. IPv6 colons are rejected by IDNA
- * rune-validation before UTS-46 mapping runs, so no IPv6 smuggle path
- * exists.
+ * `(*Profile).ToASCII` and `(*Profile).ToUnicode`, which fold 100
+ * non-ASCII Unicode digit codepoints to their ASCII equivalents. The
+ * 100 codepoints span Latin-1 superscripts, mathematical superscripts
+ * and subscripts, circled digits, fullwidth digits, the Mathematical
+ * Alphanumeric Symbols block (bold, double-struck, sans-serif,
+ * sans-serif-bold, and monospace digit styles), and segmented digits.
+ * Devanagari digits are not in scope; they pass through Punycode rather
+ * than fold to ASCII. A caller that omits a post-IDNA IP-literal
+ * recheck (or that only checks BEFORE the IDNA call) will accept a
+ * smuggled IPv4 literal back as the "domain name" output and pass it
+ * to a downstream allowlist, SSRF guard, or routing decision unguarded.
+ * Scope is IPv4 only. IPv6 colons are rejected by IDNA rune-validation
+ * before UTS-46 mapping runs, so no IPv6 smuggle path exists.
  *
  * Modeling
  * --------
@@ -28,10 +29,15 @@
  *   - `TPreIdna`  : untrusted hostname before IDNA mapping
  *   - `TPostIdna` : mapped output flowing toward a security-relevant sink
  *
- * `(*idna.Profile).ToASCII` (and the package-level `idna.ToASCII`,
- * `Lookup.ToASCII`, `MapForLookup().ToASCII`) is modeled as a
- * state-transition additional flow step that flips
- * `TPreIdna -> TPostIdna`.
+ * `(*idna.Profile).ToASCII` and `(*idna.Profile).ToUnicode` on the
+ * digit-folding profiles (`Lookup`, `Display`, `Registration`, and any
+ * profile constructed via `idna.New(idna.MapForLookup(), ...)`) are
+ * modeled as state-transition additional flow steps that flip
+ * `TPreIdna -> TPostIdna`. The package-level `idna.ToASCII` helper is
+ * intentionally NOT modeled because it dispatches to
+ * `Punycode.process(...)`, which has a nil UTS-46 mapping and so
+ * cannot produce the digit-fold smuggle. The `Punycode` profile is
+ * excluded for the same reason.
  *
  * The barrier is `net.ParseIP`, `net.ParseCIDR`, `netip.ParseAddr`, or
  * `netip.ParsePrefix` consumed in `TPostIdna`. The safe pattern requires

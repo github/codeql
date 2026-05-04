@@ -6,10 +6,12 @@
 <overview>
 <p>
 The Go module <code>golang.org/x/net/idna</code> implements UTS-46 IDNA
-processing. During the <code>Lookup</code> and <code>MapForLookup</code>
-profiles, <code>(*Profile).ToASCII</code> applies an NFKC-based character map
-that folds <strong>100 distinct non-ASCII Unicode digit codepoints</strong>
-across 8 families to their ASCII equivalents. The 8 families are:
+processing. On the <code>Lookup</code> and <code>Display</code> profiles
+(and any profile constructed via <code>idna.New(idna.MapForLookup(), ...)</code>),
+both <code>(*Profile).ToASCII</code> and <code>(*Profile).ToUnicode</code>
+apply an NFKC-based character map that folds <strong>100 distinct
+non-ASCII Unicode digit codepoints</strong> to their ASCII equivalents.
+The 100 codepoints partition into the following Unicode-block ranges:
 </p>
 <ul>
   <li>Latin-1 superscripts (U+00B2, U+00B3, U+00B9): 3 codepoints</li>
@@ -17,10 +19,20 @@ across 8 families to their ASCII equivalents. The 8 families are:
   <li>Mathematical subscripts (U+2080..U+2089): 10 codepoints</li>
   <li>Circled digits (U+2460..U+2468, U+24EA): 10 codepoints</li>
   <li>Fullwidth digits (U+FF10..U+FF19): 10 codepoints</li>
-  <li>Mathematical bold, sans-serif, double-struck, and monospace digits
+  <li>Mathematical Alphanumeric Symbols digits, spanning bold,
+      double-struck, sans-serif, sans-serif-bold, and monospace styles
       (U+1D7CE..U+1D7FF): 50 codepoints</li>
   <li>Segmented digits (U+1FBF0..U+1FBF9): 10 codepoints</li>
 </ul>
+<p>
+Devanagari digits (U+0966..U+096F) are <strong>not</strong> in scope:
+empirical testing against <code>golang.org/x/net/idna v0.53.0</code>
+confirms they do not fold to ASCII via UTS-46. The
+<code>Registration</code> profile is structurally covered by the rule
+but disallows every fold codepoint at the rune-validation stage, so a
+caller that respects the returned <code>error</code> never sees a
+smuggled literal from that profile in practice.
+</p>
 <p>
 The library contains no IP-literal detection. A caller that applies UTS-46
 mapping to an attacker-controlled host string and consumes the result in a
@@ -57,48 +69,59 @@ Use a strict IDNA profile option that returns an error if the mapped
 output parses as an IP literal, if your IDNA library exposes one.
 </li>
 <li>
-Apply the explicit safe pattern: after <code>idna.ToASCII</code>, trim a
-single trailing dot and call <code>net.ParseIP</code> (or
-<code>netip.ParseAddr</code>) on the result, then reject on non-nil. The
-trailing-dot trim is required because <code>"0.¹.0.0."</code> maps to
-<code>"0.1.0.0."</code>, which <code>net.ParseIP</code> rejects on its
-own yet is still an IP literal for routing purposes.
+Apply the explicit safe pattern: after the IDNA mapping call, strip
+trailing dots from the result and parse it. Reject if
+<code>net.ParseIP</code> returns a non-<code>nil</code> address, or if
+<code>netip.ParseAddr</code> returns no error (note the inverted
+convention: <code>netip.ParseAddr</code> reports a successfully parsed
+address via <code>err == nil</code>, not via a non-zero return). The
+trailing-dot strip is required because <code>"0.¹.0.0."</code> maps to
+<code>"0.1.0.0."</code>, which a bare <code>net.ParseIP</code> rejects
+on its own yet is still an IP literal for routing purposes; the strip
+exposes the literal so the parser sees it.
 </li>
 </ol>
 </recommendation>
 
 <example>
 <p>
-Vulnerable pattern. <code>net.ParseIP</code> is called only before
-<code>idna.ToASCII</code>, so the smuggled literal slips through:
+Vulnerable pattern. The host string is mapped through the IDNA profile
+and reaches a network sink with no post-IDNA IP-literal recheck:
 </p>
 
 <sample src="IdnaIpLiteralSmuggleBad.go"/>
 
 <p>
-Safe pattern. Post-IDNA trailing-dot trim followed by
+Safe pattern. Post-IDNA trailing-dot strip followed by
 <code>net.ParseIP</code> recheck:
 </p>
 
 <sample src="IdnaIpLiteralSmuggleGood.go"/>
 
 <p>
-The safe pattern accepts three equivalent trailing-dot trim forms:
+The safe pattern accepts three trailing-dot strip forms. They are
+<strong>not</strong> equivalent in coverage:
 </p>
 <ul>
-  <li><code>strings.TrimRight(ace, ".")</code>: multi-dot form. Handles
-      the fullwidth and ideographic dot variants that produce multiple
-      trailing ASCII dots after UTS-46 mapping.</li>
-  <li><code>strings.TrimSuffix(ace, ".")</code>: single-dot form.
-      Sufficient for most inputs but incomplete for the multi-dot
-      variant.</li>
+  <li><code>strings.TrimRight(ace, ".")</code>: strict form. Strips
+      all trailing dots, so the multi-dot residue produced when UTS-46
+      maps the fullwidth dot U+FF0E or the ideographic dot U+3002 next
+      to ASCII dots is fully removed.</li>
+  <li><code>strings.TrimSuffix(ace, ".")</code>: lenient form. Strips
+      only one trailing dot. Sufficient for the canonical
+      <code>"0.1.0.0."</code> shape but leaves residue if multiple
+      trailing dots were produced by mapping.</li>
   <li><code>if strings.HasSuffix(ace, ".") { ace = ace[:len(ace)-1] }</code>:
-      manual slice form. Equivalent to <code>TrimSuffix</code> in
-      effect.</li>
+      manual single-dot slice. Behaves identically to
+      <code>TrimSuffix</code> in coverage and inherits the same
+      multi-dot-residue limitation.</li>
 </ul>
 <p>
-After trimming, call <code>netip.ParseAddr</code> (preferred) or
-<code>net.ParseIP</code> on the result and reject if it parses as an IP literal.
+Callers whose threat model includes the multi-trailing-dot variant
+should prefer <code>strings.TrimRight</code>. After the strip, parse
+with <code>netip.ParseAddr</code> (preferred) or <code>net.ParseIP</code>
+and reject if the value parses as an IP literal (<code>err == nil</code>
+for the former, non-<code>nil</code> return for the latter).
 </p>
 </example>
 
