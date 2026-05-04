@@ -62,8 +62,6 @@ module ResolveTest implements TestSig {
 module TypeTest implements TestSig {
   string getARelevantTag() { result = ["type", "certainType"] }
 
-  predicate tagIsOptional(string expectedTag) { expectedTag = "type" }
-
   predicate hasActualResult(Location location, string element, string tag, string value) { none() }
 
   predicate hasOptionalResult(Location location, string element, string tag, string value) {
