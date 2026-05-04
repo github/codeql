@@ -48,6 +48,16 @@ func purePunycode(req *http.Request) {
 	http.Get("https://" + ace + "/") // OK: no digit-fold profile
 }
 
+// True-negative: package-level idna.ToASCII is intentionally excluded
+// from the model (it dispatches to Punycode.process and so cannot
+// produce the digit-fold smuggle). Pinning the documented exclusion
+// against future broadening of the call matcher.
+func packageLevelToASCII(req *http.Request) {
+	host := req.Header.Get("X-HOST-PKG-TOASCII")
+	ace, _ := idna.ToASCII(host)
+	http.Get("https://" + ace + "/") // OK: package-level helper excluded
+}
+
 // True-negative: caller uses idna.Display for human rendering only; the
 // output never reaches a network sink in this function.
 func displayOnly(req *http.Request) {
@@ -164,6 +174,37 @@ func compliantManualSliceParseIP(req *http.Request) {
 		out = out[:len(out)-1]
 	}
 	if ip := net.ParseIP(out); ip != nil {
+		return
+	}
+	net.JoinHostPort(ace, "443") // OK: post-IDNA recheck barrier
+}
+
+// Compliant: post-IDNA TrimRight + net.ParseCIDR recheck. Pins the
+// ParseCIDR branch of ipLiteralRecheckInput against regressions that
+// would only break for callers using the CIDR parser.
+func compliantTrimRightParseCIDR(req *http.Request) {
+	host := req.Header.Get("X-HOST-PARSECIDR-OK")
+	ace, err := idna.Lookup.ToASCII(host)
+	if err != nil {
+		return
+	}
+	candidate := strings.TrimRight(ace, ".")
+	if _, _, parseErr := net.ParseCIDR(candidate); parseErr == nil {
+		return
+	}
+	http.Get("https://" + ace + "/") // OK: post-IDNA recheck barrier
+}
+
+// Compliant: post-IDNA TrimSuffix + netip.ParsePrefix recheck. Pins the
+// ParsePrefix branch of ipLiteralRecheckInput.
+func compliantTrimSuffixNetipParsePrefix(req *http.Request) {
+	host := req.Header.Get("X-HOST-PARSEPREFIX-OK")
+	ace, err := idna.Lookup.ToASCII(host)
+	if err != nil {
+		return
+	}
+	candidate := strings.TrimSuffix(ace, ".")
+	if _, parseErr := netip.ParsePrefix(candidate); parseErr == nil {
 		return
 	}
 	net.JoinHostPort(ace, "443") // OK: post-IDNA recheck barrier
