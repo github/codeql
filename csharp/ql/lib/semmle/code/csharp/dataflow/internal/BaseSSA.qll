@@ -1,9 +1,20 @@
-import csharp
+private import csharp as CS
 
 /**
  * Provides a simple SSA implementation for local scope variables.
  */
 module BaseSsa {
+  private import BaseSsaImpl
+
+  class SimpleLocalScopeVariable = BaseSsaImpl::SimpleLocalScopeVariable;
+
+  module Ssa = SsaImpl::MakeSsa<SsaInput>;
+
+  import Ssa
+}
+
+private module BaseSsaImpl {
+  private import CS
   private import AssignableDefinitions
   private import codeql.ssa.Ssa as SsaImplCommon
 
@@ -13,7 +24,7 @@ module BaseSsa {
     predicate ref() { any() }
 
     cached
-    predicate backref() { (exists(any(SsaDefinition def).getARead()) implies any()) }
+    predicate backref() { (exists(any(BaseSsa::SsaDefinition def).getARead()) implies any()) }
   }
 
   /**
@@ -112,11 +123,9 @@ module BaseSsa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;
+  module SsaImpl = SsaImplCommon::Make<Location, Cfg, SsaImplInput>;
 
-  private module SsaInput implements SsaImpl::SsaInputSig {
-    private import csharp as CS
-
+  module SsaInput implements SsaImpl::SsaInputSig {
     class Expr = CS::Expr;
 
     class Parameter = CS::Parameter;
@@ -139,8 +148,4 @@ module BaseSsa {
       w.isParameterInit(v)
     }
   }
-
-  module Ssa = SsaImpl::MakeSsa<SsaInput>;
-
-  import Ssa
 }

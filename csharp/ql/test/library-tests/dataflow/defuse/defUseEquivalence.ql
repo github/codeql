@@ -12,6 +12,10 @@ predicate defReaches(
       def.(AssignableDefinitions::ImplicitParameterDefinition).getParameter().getControlFlowNode()
     ].getASuccessor()
   or
+  def.getTarget() = v and
+  cfn =
+    def.(AssignableDefinitions::ImplicitParameterDefinition).getEnclosingCallable().getEntryPoint()
+  or
   exists(ControlFlowNode mid | defReaches(def, v, mid) |
     not mid =
       any(AssignableDefinition ad | ad.getTarget() = v and ad.isCertain())
@@ -29,8 +33,8 @@ predicate defUsePair(AssignableDefinition def, AssignableRead read) {
 }
 
 private LocalScopeVariableRead getAReachableUncertainRead(AssignableDefinition def) {
-  exists(Ssa::Definition ssaDef |
-    def = ssaDef.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition()
+  exists(SsaDefinition ssaDef |
+    def = ssaDef.getAnUltimateDefinition().(SsaExplicitWrite).getDefinition()
   |
     result = ssaDef.getARead()
   )
