@@ -25,11 +25,6 @@ module ArithmeticOverflowConfig implements DataFlow::ConfigSig {
   }
 }
 
-/**
- * DEPRECATED: Use `ArithmeticOverflowConfig` instead.
- */
-deprecated module RemoteUserInputOverflowConfig = ArithmeticOverflowConfig;
-
 /** A taint-tracking configuration to reason about underflow from unvalidated input. */
 module ArithmeticUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ActiveThreatModelSource }
@@ -51,23 +46,8 @@ module ArithmeticUnderflowConfig implements DataFlow::ConfigSig {
   }
 }
 
-/**
- * DEPRECATED: Use `ArithmeticUnderflowConfig` instead.
- */
-deprecated module RemoteUserInputUnderflowConfig = ArithmeticUnderflowConfig;
-
 /** Taint-tracking flow for overflow from unvalidated input. */
 module ArithmeticOverflow = TaintTracking::Global<ArithmeticOverflowConfig>;
 
-/**
- * DEPRECATED: Use `ArithmeticOverflow` instead.
- */
-deprecated module RemoteUserInputOverflow = ArithmeticOverflow;
-
 /** Taint-tracking flow for underflow from unvalidated input. */
 module ArithmeticUnderflow = TaintTracking::Global<ArithmeticUnderflowConfig>;
-
-/**
- * DEPRECATED: Use `ArithmeticUnderflow` instead.
- */
-deprecated module RemoteUserInputUnderflow = ArithmeticUnderflow;
