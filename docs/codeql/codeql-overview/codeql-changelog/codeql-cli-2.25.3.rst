@@ -47,7 +47,7 @@ C/C++
 *   The "Multiplication result converted to larger type" (:code:`cpp/integer-multiplication-cast-to-long`) query has been upgraded to :code:`high` precision. This query will now run in the default code scanning suite.
 *   The "Suspicious add with sizeof" (:code:`cpp/suspicious-add-sizeof`) query has been upgraded to :code:`high` precision. This query will now run in the default code scanning suite.
 *   The "Wrong type of arguments to formatting function" (:code:`cpp/wrong-type-format-argument`) query has been upgraded to :code:`high` precision. This query will now run in the default code scanning suite.
-*   The "Implicit function declaration" (:code:`cpp/implicit-function-declaration`) query has been upgraded to :code:`high` precision. However, for :code:`build mode: none` databases, it no longer produces any results. The results in this mode were found to be very noisy and fundamentally imprecise.
+*   The "Implicit function declaration" (:code:`cpp/implicit-function-declaration`) query has been upgraded to :code:`high` precision. However, for :code:`build-mode: none` databases, it no longer produces any results. The results in this mode were found to be very noisy and fundamentally imprecise.
 
 C#
 ""
