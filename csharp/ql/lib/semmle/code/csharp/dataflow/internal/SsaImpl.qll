@@ -1019,7 +1019,7 @@ private module DataFlowIntegrationInput implements Impl::DataFlowIntegrationInpu
   }
 
   /**
-   * Allows for flow into uncertain defintions that are not call definitions,
+   * Allows for flow into uncertain definitions that are not call definitions,
    * as we, conservatively, consider such definitions to be certain.
    */
   predicate allowFlowIntoUncertainDef(Impl::UncertainWriteDefinition def) {
