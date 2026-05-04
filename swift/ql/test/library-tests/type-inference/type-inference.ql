@@ -62,9 +62,7 @@ private Type getTypeAt(Type t, string path) {
 }
 
 module TypeTest implements TestSig {
-  string getARelevantTag() { result = ["type", "certainType"] }
-
-  predicate tagIsOptional(string expectedTag) { expectedTag = "type" }
+  string getARelevantTag() { result = "type" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) { none() }
 
