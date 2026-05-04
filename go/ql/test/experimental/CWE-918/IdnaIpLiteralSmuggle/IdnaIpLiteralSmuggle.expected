@@ -1,0 +1,253 @@
+#select
+| negatives.go:202:26:202:28 | ace | negatives.go:187:10:187:19 | selection of Header | negatives.go:202:26:202:28 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | negatives.go:187:10:187:19 | selection of Header | this user-controlled value |
+| positives.go:27:11:27:32 | ...+... | positives.go:25:10:25:19 | selection of Header | positives.go:27:11:27:32 | ...+... | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:25:10:25:19 | selection of Header | this user-controlled value |
+| positives.go:36:25:36:28 | addr | positives.go:33:10:33:19 | selection of Header | positives.go:36:25:36:28 | addr | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:33:10:33:19 | selection of Header | this user-controlled value |
+| positives.go:44:19:44:21 | ace | positives.go:42:10:42:19 | selection of Header | positives.go:44:19:44:21 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:42:10:42:19 | selection of Header | this user-controlled value |
+| positives.go:54:11:54:13 | ace | positives.go:51:10:51:19 | selection of Header | positives.go:54:11:54:13 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:51:10:51:19 | selection of Header | this user-controlled value |
+| positives.go:64:19:64:21 | ace | positives.go:61:10:61:19 | selection of Header | positives.go:64:19:64:21 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:61:10:61:19 | selection of Header | this user-controlled value |
+| positives.go:73:17:73:19 | ace | positives.go:71:10:71:19 | selection of Header | positives.go:73:17:73:19 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:71:10:71:19 | selection of Header | this user-controlled value |
+| positives.go:81:18:81:44 | call to JoinHostPort | positives.go:79:10:79:19 | selection of Header | positives.go:81:18:81:44 | call to JoinHostPort | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:79:10:79:19 | selection of Header | this user-controlled value |
+| positives.go:81:35:81:37 | ace | positives.go:79:10:79:19 | selection of Header | positives.go:81:35:81:37 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:79:10:79:19 | selection of Header | this user-controlled value |
+| positives.go:92:45:92:48 | addr | positives.go:88:10:88:19 | selection of Header | positives.go:92:45:92:48 | addr | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:88:10:88:19 | selection of Header | this user-controlled value |
+| positives.go:101:13:101:15 | ace | positives.go:98:10:98:19 | selection of Header | positives.go:101:13:101:15 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:98:10:98:19 | selection of Header | this user-controlled value |
+| positives.go:112:15:112:17 | ace | positives.go:109:10:109:19 | selection of Header | positives.go:112:15:112:17 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:109:10:109:19 | selection of Header | this user-controlled value |
+| positives.go:121:11:121:13 | ace | positives.go:118:10:118:19 | selection of Header | positives.go:121:11:121:13 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:118:10:118:19 | selection of Header | this user-controlled value |
+| positives.go:132:37:132:39 | ace | positives.go:129:10:129:19 | selection of Header | positives.go:132:37:132:39 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:129:10:129:19 | selection of Header | this user-controlled value |
+| positives.go:140:11:140:32 | ...+... | positives.go:138:10:138:19 | selection of Header | positives.go:140:11:140:32 | ...+... | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:138:10:138:19 | selection of Header | this user-controlled value |
+| positives.go:151:16:151:19 | addr | positives.go:147:10:147:19 | selection of Header | positives.go:151:16:151:19 | addr | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:147:10:147:19 | selection of Header | this user-controlled value |
+| positives.go:160:11:160:32 | ...+... | positives.go:158:10:158:19 | selection of Header | positives.go:160:11:160:32 | ...+... | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:158:10:158:19 | selection of Header | this user-controlled value |
+| positives.go:169:11:169:32 | ...+... | positives.go:167:10:167:19 | selection of Header | positives.go:169:11:169:32 | ...+... | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:167:10:167:19 | selection of Header | this user-controlled value |
+| positives.go:179:39:179:41 | ace | positives.go:176:10:176:19 | selection of Header | positives.go:179:39:179:41 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:176:10:176:19 | selection of Header | this user-controlled value |
+| positives.go:192:11:192:32 | ...+... | positives.go:187:10:187:19 | selection of Header | positives.go:192:11:192:32 | ...+... | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:187:10:187:19 | selection of Header | this user-controlled value |
+| positives.go:203:17:203:19 | ace | positives.go:201:10:201:19 | selection of Header | positives.go:203:17:203:19 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:201:10:201:19 | selection of Header | this user-controlled value |
+| positives.go:210:15:210:17 | ace | positives.go:208:10:208:19 | selection of Header | positives.go:210:15:210:17 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:208:10:208:19 | selection of Header | this user-controlled value |
+| positives.go:218:37:218:39 | ace | positives.go:215:10:215:19 | selection of Header | positives.go:218:37:218:39 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:215:10:215:19 | selection of Header | this user-controlled value |
+| positives.go:226:39:226:41 | ace | positives.go:223:10:223:19 | selection of Header | positives.go:226:39:226:41 | ace | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:223:10:223:19 | selection of Header | this user-controlled value |
+| positives.go:240:19:240:22 | addr | positives.go:232:10:232:19 | selection of Header | positives.go:240:19:240:22 | addr | Untrusted hostname from $@ flows through `idna.ToASCII` (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` recheck (after a trailing-dot trim). | positives.go:232:10:232:19 | selection of Header | this user-controlled value |
+edges
+| negatives.go:187:10:187:19 | selection of Header | negatives.go:187:10:187:45 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| negatives.go:187:10:187:45 | call to Get | negatives.go:198:34:198:37 | host | provenance |  |
+| negatives.go:198:2:198:38 | ... := ...[0] | negatives.go:202:26:202:28 | ace | provenance |  |
+| negatives.go:198:34:198:37 | host | negatives.go:198:2:198:38 | ... := ...[0] | provenance | Config |
+| positives.go:25:10:25:19 | selection of Header | positives.go:25:10:25:40 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:25:10:25:40 | call to Get | positives.go:26:32:26:35 | host | provenance |  |
+| positives.go:26:2:26:36 | ... := ...[0] | positives.go:27:11:27:32 | ...+... | provenance |  |
+| positives.go:26:32:26:35 | host | positives.go:26:2:26:36 | ... := ...[0] | provenance | Config |
+| positives.go:33:10:33:19 | selection of Header | positives.go:33:10:33:44 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:33:10:33:44 | call to Get | positives.go:34:32:34:35 | host | provenance |  |
+| positives.go:34:2:34:36 | ... := ...[0] | positives.go:36:25:36:28 | addr | provenance |  |
+| positives.go:34:32:34:35 | host | positives.go:34:2:34:36 | ... := ...[0] | provenance | Config |
+| positives.go:42:10:42:19 | selection of Header | positives.go:42:10:42:41 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:42:10:42:41 | call to Get | positives.go:43:32:43:35 | host | provenance |  |
+| positives.go:43:2:43:36 | ... := ...[0] | positives.go:44:19:44:21 | ace | provenance |  |
+| positives.go:43:32:43:35 | host | positives.go:43:2:43:36 | ... := ...[0] | provenance | Config |
+| positives.go:51:10:51:19 | selection of Header | positives.go:51:10:51:41 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:51:10:51:41 | call to Get | positives.go:52:33:52:36 | host | provenance |  |
+| positives.go:52:2:52:37 | ... := ...[0] | positives.go:54:11:54:13 | ace | provenance |  |
+| positives.go:52:33:52:36 | host | positives.go:52:2:52:37 | ... := ...[0] | provenance | Config |
+| positives.go:61:10:61:19 | selection of Header | positives.go:61:10:61:43 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:61:10:61:43 | call to Get | positives.go:62:32:62:35 | host | provenance |  |
+| positives.go:62:2:62:36 | ... := ...[0] | positives.go:64:19:64:21 | ace | provenance |  |
+| positives.go:62:32:62:35 | host | positives.go:62:2:62:36 | ... := ...[0] | provenance | Config |
+| positives.go:71:10:71:19 | selection of Header | positives.go:71:10:71:47 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:71:10:71:47 | call to Get | positives.go:72:32:72:35 | host | provenance |  |
+| positives.go:72:2:72:36 | ... := ...[0] | positives.go:73:17:73:19 | ace | provenance |  |
+| positives.go:72:32:72:35 | host | positives.go:72:2:72:36 | ... := ...[0] | provenance | Config |
+| positives.go:79:10:79:19 | selection of Header | positives.go:79:10:79:41 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:79:10:79:41 | call to Get | positives.go:80:32:80:35 | host | provenance |  |
+| positives.go:80:2:80:36 | ... := ...[0] | positives.go:81:35:81:37 | ace | provenance |  |
+| positives.go:80:2:80:36 | ... := ...[0] | positives.go:81:35:81:37 | ace | provenance |  |
+| positives.go:80:32:80:35 | host | positives.go:80:2:80:36 | ... := ...[0] | provenance | Config |
+| positives.go:81:35:81:37 | ace | positives.go:81:18:81:44 | call to JoinHostPort | provenance | MaD:3 |
+| positives.go:88:10:88:19 | selection of Header | positives.go:88:10:88:45 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:88:10:88:45 | call to Get | positives.go:89:38:89:41 | host | provenance |  |
+| positives.go:89:2:89:42 | ... := ...[0] | positives.go:92:45:92:48 | addr | provenance |  |
+| positives.go:89:38:89:41 | host | positives.go:89:2:89:42 | ... := ...[0] | provenance | Config |
+| positives.go:98:10:98:19 | selection of Header | positives.go:98:10:98:43 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:98:10:98:43 | call to Get | positives.go:99:32:99:35 | host | provenance |  |
+| positives.go:99:2:99:36 | ... := ...[0] | positives.go:101:13:101:15 | ace | provenance |  |
+| positives.go:99:32:99:35 | host | positives.go:99:2:99:36 | ... := ...[0] | provenance | Config |
+| positives.go:109:10:109:19 | selection of Header | positives.go:109:10:109:47 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:109:10:109:47 | call to Get | positives.go:111:28:111:31 | host | provenance |  |
+| positives.go:111:2:111:32 | ... := ...[0] | positives.go:112:15:112:17 | ace | provenance |  |
+| positives.go:111:28:111:31 | host | positives.go:111:2:111:32 | ... := ...[0] | provenance | Config |
+| positives.go:118:10:118:19 | selection of Header | positives.go:118:10:118:42 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:118:10:118:42 | call to Get | positives.go:119:32:119:35 | host | provenance |  |
+| positives.go:119:2:119:36 | ... := ...[0] | positives.go:121:11:121:13 | ace | provenance |  |
+| positives.go:119:32:119:35 | host | positives.go:119:2:119:36 | ... := ...[0] | provenance | Config |
+| positives.go:129:10:129:19 | selection of Header | positives.go:129:10:129:42 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:129:10:129:42 | call to Get | positives.go:130:32:130:35 | host | provenance |  |
+| positives.go:130:2:130:36 | ... := ...[0] | positives.go:132:37:132:39 | ace | provenance |  |
+| positives.go:130:32:130:35 | host | positives.go:130:2:130:36 | ... := ...[0] | provenance | Config |
+| positives.go:138:10:138:19 | selection of Header | positives.go:138:10:138:43 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:138:10:138:43 | call to Get | positives.go:139:32:139:35 | host | provenance |  |
+| positives.go:139:2:139:36 | ... := ...[0] | positives.go:140:11:140:32 | ...+... | provenance |  |
+| positives.go:139:32:139:35 | host | positives.go:139:2:139:36 | ... := ...[0] | provenance | Config |
+| positives.go:147:10:147:19 | selection of Header | positives.go:147:10:147:47 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:147:10:147:47 | call to Get | positives.go:148:32:148:35 | host | provenance |  |
+| positives.go:148:2:148:36 | ... := ...[0] | positives.go:151:16:151:19 | addr | provenance |  |
+| positives.go:148:32:148:35 | host | positives.go:148:2:148:36 | ... := ...[0] | provenance | Config |
+| positives.go:158:10:158:19 | selection of Header | positives.go:158:10:158:46 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:158:10:158:46 | call to Get | positives.go:159:32:159:35 | host | provenance |  |
+| positives.go:159:2:159:36 | ... := ...[0] | positives.go:160:11:160:32 | ...+... | provenance |  |
+| positives.go:159:32:159:35 | host | positives.go:159:2:159:36 | ... := ...[0] | provenance | Config |
+| positives.go:167:10:167:19 | selection of Header | positives.go:167:10:167:44 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:167:10:167:44 | call to Get | positives.go:168:32:168:35 | host | provenance |  |
+| positives.go:168:2:168:36 | ... := ...[0] | positives.go:169:11:169:32 | ...+... | provenance |  |
+| positives.go:168:32:168:35 | host | positives.go:168:2:168:36 | ... := ...[0] | provenance | Config |
+| positives.go:176:10:176:19 | selection of Header | positives.go:176:10:176:48 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:176:10:176:48 | call to Get | positives.go:177:32:177:35 | host | provenance |  |
+| positives.go:177:2:177:36 | ... := ...[0] | positives.go:179:39:179:41 | ace | provenance |  |
+| positives.go:177:32:177:35 | host | positives.go:177:2:177:36 | ... := ...[0] | provenance | Config |
+| positives.go:187:10:187:19 | selection of Header | positives.go:187:10:187:46 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:187:10:187:46 | call to Get | positives.go:188:32:188:35 | host | provenance |  |
+| positives.go:188:2:188:36 | ... := ...[0] | positives.go:192:11:192:32 | ...+... | provenance |  |
+| positives.go:188:32:188:35 | host | positives.go:188:2:188:36 | ... := ...[0] | provenance | Config |
+| positives.go:201:10:201:19 | selection of Header | positives.go:201:10:201:40 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:201:10:201:40 | call to Get | positives.go:202:32:202:35 | host | provenance |  |
+| positives.go:202:2:202:36 | ... := ...[0] | positives.go:203:17:203:19 | ace | provenance |  |
+| positives.go:202:32:202:35 | host | positives.go:202:2:202:36 | ... := ...[0] | provenance | Config |
+| positives.go:208:10:208:19 | selection of Header | positives.go:208:10:208:43 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:208:10:208:43 | call to Get | positives.go:209:32:209:35 | host | provenance |  |
+| positives.go:209:2:209:36 | ... := ...[0] | positives.go:210:15:210:17 | ace | provenance |  |
+| positives.go:209:32:209:35 | host | positives.go:209:2:209:36 | ... := ...[0] | provenance | Config |
+| positives.go:215:10:215:19 | selection of Header | positives.go:215:10:215:49 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:215:10:215:49 | call to Get | positives.go:216:32:216:35 | host | provenance |  |
+| positives.go:216:2:216:36 | ... := ...[0] | positives.go:218:37:218:39 | ace | provenance |  |
+| positives.go:216:32:216:35 | host | positives.go:216:2:216:36 | ... := ...[0] | provenance | Config |
+| positives.go:223:10:223:19 | selection of Header | positives.go:223:10:223:49 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:223:10:223:49 | call to Get | positives.go:224:32:224:35 | host | provenance |  |
+| positives.go:224:2:224:36 | ... := ...[0] | positives.go:226:39:226:41 | ace | provenance |  |
+| positives.go:224:32:224:35 | host | positives.go:224:2:224:36 | ... := ...[0] | provenance | Config |
+| positives.go:232:10:232:19 | selection of Header | positives.go:232:10:232:43 | call to Get | provenance | Src:MaD:1 MaD:2 |
+| positives.go:232:10:232:43 | call to Get | positives.go:237:35:237:38 | addr | provenance |  |
+| positives.go:237:5:237:39 | ... := ...[0] | positives.go:240:19:240:22 | addr | provenance |  |
+| positives.go:237:35:237:38 | addr | positives.go:237:5:237:39 | ... := ...[0] | provenance | Config |
+models
+| 1 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
+| 2 | Summary: net/http; Header; true; Get; ; ; Argument[receiver]; ReturnValue; taint; manual |
+| 3 | Summary: net; ; false; JoinHostPort; ; ; Argument[0..1]; ReturnValue; taint; manual |
+nodes
+| negatives.go:187:10:187:19 | selection of Header | semmle.label | selection of Header |
+| negatives.go:187:10:187:45 | call to Get | semmle.label | call to Get |
+| negatives.go:198:2:198:38 | ... := ...[0] | semmle.label | ... := ...[0] |
+| negatives.go:198:34:198:37 | host | semmle.label | host |
+| negatives.go:202:26:202:28 | ace | semmle.label | ace |
+| positives.go:25:10:25:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:25:10:25:40 | call to Get | semmle.label | call to Get |
+| positives.go:26:2:26:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:26:32:26:35 | host | semmle.label | host |
+| positives.go:27:11:27:32 | ...+... | semmle.label | ...+... |
+| positives.go:33:10:33:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:33:10:33:44 | call to Get | semmle.label | call to Get |
+| positives.go:34:2:34:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:34:32:34:35 | host | semmle.label | host |
+| positives.go:36:25:36:28 | addr | semmle.label | addr |
+| positives.go:42:10:42:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:42:10:42:41 | call to Get | semmle.label | call to Get |
+| positives.go:43:2:43:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:43:32:43:35 | host | semmle.label | host |
+| positives.go:44:19:44:21 | ace | semmle.label | ace |
+| positives.go:51:10:51:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:51:10:51:41 | call to Get | semmle.label | call to Get |
+| positives.go:52:2:52:37 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:52:33:52:36 | host | semmle.label | host |
+| positives.go:54:11:54:13 | ace | semmle.label | ace |
+| positives.go:61:10:61:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:61:10:61:43 | call to Get | semmle.label | call to Get |
+| positives.go:62:2:62:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:62:32:62:35 | host | semmle.label | host |
+| positives.go:64:19:64:21 | ace | semmle.label | ace |
+| positives.go:71:10:71:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:71:10:71:47 | call to Get | semmle.label | call to Get |
+| positives.go:72:2:72:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:72:32:72:35 | host | semmle.label | host |
+| positives.go:73:17:73:19 | ace | semmle.label | ace |
+| positives.go:79:10:79:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:79:10:79:41 | call to Get | semmle.label | call to Get |
+| positives.go:80:2:80:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:80:32:80:35 | host | semmle.label | host |
+| positives.go:81:18:81:44 | call to JoinHostPort | semmle.label | call to JoinHostPort |
+| positives.go:81:35:81:37 | ace | semmle.label | ace |
+| positives.go:81:35:81:37 | ace | semmle.label | ace |
+| positives.go:88:10:88:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:88:10:88:45 | call to Get | semmle.label | call to Get |
+| positives.go:89:2:89:42 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:89:38:89:41 | host | semmle.label | host |
+| positives.go:92:45:92:48 | addr | semmle.label | addr |
+| positives.go:98:10:98:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:98:10:98:43 | call to Get | semmle.label | call to Get |
+| positives.go:99:2:99:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:99:32:99:35 | host | semmle.label | host |
+| positives.go:101:13:101:15 | ace | semmle.label | ace |
+| positives.go:109:10:109:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:109:10:109:47 | call to Get | semmle.label | call to Get |
+| positives.go:111:2:111:32 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:111:28:111:31 | host | semmle.label | host |
+| positives.go:112:15:112:17 | ace | semmle.label | ace |
+| positives.go:118:10:118:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:118:10:118:42 | call to Get | semmle.label | call to Get |
+| positives.go:119:2:119:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:119:32:119:35 | host | semmle.label | host |
+| positives.go:121:11:121:13 | ace | semmle.label | ace |
+| positives.go:129:10:129:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:129:10:129:42 | call to Get | semmle.label | call to Get |
+| positives.go:130:2:130:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:130:32:130:35 | host | semmle.label | host |
+| positives.go:132:37:132:39 | ace | semmle.label | ace |
+| positives.go:138:10:138:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:138:10:138:43 | call to Get | semmle.label | call to Get |
+| positives.go:139:2:139:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:139:32:139:35 | host | semmle.label | host |
+| positives.go:140:11:140:32 | ...+... | semmle.label | ...+... |
+| positives.go:147:10:147:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:147:10:147:47 | call to Get | semmle.label | call to Get |
+| positives.go:148:2:148:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:148:32:148:35 | host | semmle.label | host |
+| positives.go:151:16:151:19 | addr | semmle.label | addr |
+| positives.go:158:10:158:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:158:10:158:46 | call to Get | semmle.label | call to Get |
+| positives.go:159:2:159:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:159:32:159:35 | host | semmle.label | host |
+| positives.go:160:11:160:32 | ...+... | semmle.label | ...+... |
+| positives.go:167:10:167:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:167:10:167:44 | call to Get | semmle.label | call to Get |
+| positives.go:168:2:168:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:168:32:168:35 | host | semmle.label | host |
+| positives.go:169:11:169:32 | ...+... | semmle.label | ...+... |
+| positives.go:176:10:176:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:176:10:176:48 | call to Get | semmle.label | call to Get |
+| positives.go:177:2:177:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:177:32:177:35 | host | semmle.label | host |
+| positives.go:179:39:179:41 | ace | semmle.label | ace |
+| positives.go:187:10:187:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:187:10:187:46 | call to Get | semmle.label | call to Get |
+| positives.go:188:2:188:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:188:32:188:35 | host | semmle.label | host |
+| positives.go:192:11:192:32 | ...+... | semmle.label | ...+... |
+| positives.go:201:10:201:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:201:10:201:40 | call to Get | semmle.label | call to Get |
+| positives.go:202:2:202:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:202:32:202:35 | host | semmle.label | host |
+| positives.go:203:17:203:19 | ace | semmle.label | ace |
+| positives.go:208:10:208:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:208:10:208:43 | call to Get | semmle.label | call to Get |
+| positives.go:209:2:209:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:209:32:209:35 | host | semmle.label | host |
+| positives.go:210:15:210:17 | ace | semmle.label | ace |
+| positives.go:215:10:215:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:215:10:215:49 | call to Get | semmle.label | call to Get |
+| positives.go:216:2:216:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:216:32:216:35 | host | semmle.label | host |
+| positives.go:218:37:218:39 | ace | semmle.label | ace |
+| positives.go:223:10:223:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:223:10:223:49 | call to Get | semmle.label | call to Get |
+| positives.go:224:2:224:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:224:32:224:35 | host | semmle.label | host |
+| positives.go:226:39:226:41 | ace | semmle.label | ace |
+| positives.go:232:10:232:19 | selection of Header | semmle.label | selection of Header |
+| positives.go:232:10:232:43 | call to Get | semmle.label | call to Get |
+| positives.go:237:5:237:39 | ... := ...[0] | semmle.label | ... := ...[0] |
+| positives.go:237:35:237:38 | addr | semmle.label | addr |
+| positives.go:240:19:240:22 | addr | semmle.label | addr |
+subpaths
