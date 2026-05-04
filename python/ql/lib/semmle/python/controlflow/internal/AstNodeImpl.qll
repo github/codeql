@@ -29,7 +29,8 @@ private module Ast {
      * Only created for inner pairs (index >= 1); the outermost pair (index 0)
      * is represented by the original `BoolExpr` node via `TExprNode`.
      */
-    TBoolExprPair(Py::BoolExpr be, int index) { index = [1 .. count(be.getAValue()) - 2] }
+    TBoolExprPair(Py::BoolExpr be, int index) { index = [1 .. count(be.getAValue()) - 2] } or
+    TPatternNode(Py::Pattern p)
 
   /**
    * An AST node for the shared CFG. Each branch of the newtype gets a
@@ -120,6 +121,21 @@ private module Ast {
       or
       result.asScope() = stmtList.getParent().(Py::Stmt).getScope()
     }
+  }
+
+  class PatternNode extends Node, TPatternNode {
+    private Py::Pattern pattern;
+
+    PatternNode() { this = TPatternNode(pattern) }
+
+    /** Gets the underlying Python pattern. */
+    Py::Pattern asPattern() { result = pattern }
+
+    override string toString() { result = pattern.toString() }
+
+    override Py::Location getLocation() { result = pattern.getLocation() }
+
+    override ScopeNode getEnclosingScope() { result.asScope() = pattern.getScope() }
   }
 
   /** An `if` statement. */
@@ -288,6 +304,8 @@ private module Ast {
     private Py::Case caseStmt;
 
     CaseNode() { caseStmt = this.asStmt() }
+
+    PatternNode getPattern() { result.asPattern() = caseStmt.getPattern() }
 
     ExprNode getGuard() { result.asExpr() = caseStmt.getGuard().(Py::Guard).getTest() }
 
@@ -778,9 +796,11 @@ module AstSigImpl implements AstSig<Py::Location> {
     or
     // Case: guard (0), body (1)
     exists(Ast::CaseNode c | c = n |
-      index = 0 and result = c.getGuard()
+      index = 0 and result = c.getPattern()
       or
-      index = 1 and result = c.getBody()
+      index = 1 and result = c.getGuard()
+      or
+      index = 2 and result = c.getBody()
     )
     or
     // CatchClause (except handler): type (0), name (1), body (2)
@@ -1101,7 +1121,7 @@ module AstSigImpl implements AstSig<Py::Location> {
   class Case extends Stmt {
     Case() { this instanceof Ast::CaseNode }
 
-    AstNode getAPattern() { none() }
+    AstNode getAPattern() { result = this.(Ast::CaseNode).getPattern() }
 
     Expr getGuard() { result = this.(Ast::CaseNode).getGuard() }
 
