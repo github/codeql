@@ -31,7 +31,7 @@ module ViewCfgQueryInput implements ControlFlow::ViewCfgQueryInputSig<Py::File> 
   predicate selectedSourceColumn = selectedSourceColumnAlias/0;
 
   predicate cfgScopeSpan(
-    AstSigImpl::Callable callable, Py::File file, int startLine, int startColumn, int endLine,
+    Ast::Callable callable, Py::File file, int startLine, int startColumn, int endLine,
     int endColumn
   ) {
     exists(Py::Scope scope |
