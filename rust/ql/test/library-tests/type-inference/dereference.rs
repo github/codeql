@@ -141,7 +141,7 @@ mod implicit_deref_coercion_cycle {
 
     #[rustfmt::skip]
     pub fn test() {
-        let mut key_to_key = HashMap::<&Key, &Key>::new(); // $ target=new
+        let mut key_to_key = HashMap::<_, &Key>::new(); // $ target=new
         let mut key = &Key {}; // Initialize key2 to a reference
         if let Some(ref_key) = key_to_key.get(key) { // $ target=get
             // Below `ref_key` is implicitly dereferenced from `&&Key` to `&Key`

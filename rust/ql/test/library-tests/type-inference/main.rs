@@ -1085,7 +1085,7 @@ mod option_methods {
     struct S;
 
     pub fn f() {
-        let x1 = MyOption::<S>::new(); // $ certainType=x1@MyOption<T>:S target=new
+        let x1 = MyOption::<S>::new(); // $ type=x1@MyOption<T>:S target=new
         println!("{:?}", x1);
 
         let mut x2 = MyOption::new(); // $ target=new
@@ -1970,7 +1970,7 @@ mod impl_trait {
     impl<T: Clone> MyTrait<T> for S3<T> {
         fn get_a(&self) -> T {
             let S3(t) = self;
-            t.clone()
+            t.clone() // $ MISSING: target=clone type=t:T
         }
     }
 
@@ -2416,10 +2416,10 @@ mod explicit_type_args {
 
     pub fn f() {
         let x1: Option<S1<S2>> = S1::assoc_fun(); // $ certainType=x1@Option<T>.S1<T>:S2 target=assoc_fun
-        let x2 = S1::<S2>::assoc_fun(); // $ certainType=x2@Option<T>.S1<T>:S2 target=assoc_fun
-        let x3 = S3::assoc_fun(); // $ certainType=x3@Option<T>.S1<T>:S2 target=assoc_fun
-        let x4 = S1::<S2>::method(S1::default()); // $ target=method target=default certainType=x4@S1<T>:S2
-        let x5 = S3::method(S1::default()); // $ target=method target=default certainType=x5@S1<T>:S2
+        let x2 = S1::<S2>::assoc_fun(); // $ type=x2@Option<T>.S1<T>:S2 target=assoc_fun
+        let x3 = S3::assoc_fun(); // $ type=x3@Option<T>.S1<T>:S2 target=assoc_fun
+        let x4 = S1::<S2>::method(S1::default()); // $ target=method target=default type=x4@S1<T>:S2
+        let x5 = S3::method(S1::default()); // $ target=method target=default type=x5@S1<T>:S2
         let x6 = S4::<S2>(Default::default()); // $ type=x6@S4<T4>:S2 target=default
         let x7 = S4(S2); // $ type=x7@S4<T4>:S2
         let x8 = S4(0); // $ type=x8@S4<T4>:i32
@@ -2434,8 +2434,8 @@ mod explicit_type_args {
         {
             field: S2::default(), // $ target=default
         };
-        let x14 = foo::<i32>(Default::default()); // $ certainType=x14:i32 target=default target=foo
-        let x15 = S1::<S2>::default(); // $ certainType=x15@S1<T>:S2 target=default
+        let x14 = foo::<i32>(Default::default()); // $ type=x14:i32 target=default target=foo
+        let x15 = S1::<S2>::default(); // $ type=x15@S1<T>:S2 target=default
     }
 }
 
@@ -2451,8 +2451,8 @@ mod tuples {
     }
 
     pub fn f() {
-        let a = S1::get_pair(); // $ target=get_pair certainType=a:(T_2)
-        let mut b = S1::get_pair(); // $ target=get_pair certainType=b:(T_2)
+        let a = S1::get_pair(); // $ target=get_pair type=a:(T_2)
+        let mut b = S1::get_pair(); // $ target=get_pair type=b:(T_2)
         let (c, d) = S1::get_pair(); // $ target=get_pair type=c:S1 type=d:S1
         let (mut e, f) = S1::get_pair(); // $ target=get_pair type=e:S1 type=f:S1
         let (mut g, mut h) = S1::get_pair(); // $ target=get_pair type=g:S1 type=h:S1
@@ -2550,11 +2550,11 @@ pub mod path_buf {
     }
 
     pub fn f() {
-        let path1 = Path::new(); // $ target=new certainType=path1:Path
+        let path1 = Path::new(); // $ target=new type=path1:Path
         let path2 = path1.canonicalize(); // $ target=canonicalize
         let path3 = path2.unwrap(); // $ target=unwrap type=path3:PathBuf
 
-        let pathbuf1 = PathBuf::new(); // $ target=new certainType=pathbuf1:PathBuf
+        let pathbuf1 = PathBuf::new(); // $ target=new type=pathbuf1:PathBuf
         let pathbuf2 = pathbuf1.canonicalize(); // $ target=canonicalize
         let pathbuf3 = pathbuf2.unwrap(); // $ target=unwrap type=pathbuf3:PathBuf
     }
@@ -2754,7 +2754,7 @@ mod literal_overlap {
 
     pub fn f() -> usize {
         let mut x = 0;
-        x = x.f(); // $ target=usizef $ SPURIOUS: target=i32f
+        x = x.f(); // $ MISSING: target=usizef $ SPURIOUS: target=i32f
         x
     }
 

@@ -147,9 +147,9 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(Type t)
+      (exists(Type t) implies any())
       or
-      exists(inferType(_))
+      (exists(inferType(_)) implies any())
     }
   }
 
