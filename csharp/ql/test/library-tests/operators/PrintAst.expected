@@ -182,16 +182,16 @@ operators.cs:
 #   48|           -1: [TypeMention] IntVector
 #   48|       4: [BlockStmt] {...}
 #   51|   2: [Class] C
-#   54|     6: [???] checked ++=
+#   54|     6: [CheckedIncrementOperator] checked ++
 #   54|       -1: [TypeMention] Void
 #   54|       4: [BlockStmt] {...}
-#   55|     7: [???] ++=
+#   55|     7: [IncrementOperator] ++
 #   55|       -1: [TypeMention] Void
 #   55|       4: [BlockStmt] {...}
-#   56|     8: [???] checked --=
+#   56|     8: [CheckedDecrementOperator] checked --
 #   56|       -1: [TypeMention] Void
 #   56|       4: [BlockStmt] {...}
-#   57|     9: [???] --=
+#   57|     9: [DecrementOperator] --
 #   57|       -1: [TypeMention] Void
 #   57|       4: [BlockStmt] {...}
 #   60|   3: [Class] TestOperator
@@ -294,30 +294,30 @@ operators.cs:
 #   92|             1: [ObjectCreation] object creation of type C
 #   92|               0: [TypeMention] C
 #   93|         18: [ExprStmt] ...;
-#   93|           0: [OperatorCall] call to operator ++=
+#   93|           0: [OperatorCall] call to operator ++
 #   93|             0: [LocalVariableAccess] access to local variable c
 #   94|         19: [ExprStmt] ...;
-#   94|           0: [OperatorCall] call to operator ++=
+#   94|           0: [OperatorCall] call to operator ++
 #   94|             0: [LocalVariableAccess] access to local variable c
 #   95|         20: [ExprStmt] ...;
-#   95|           0: [OperatorCall] call to operator --=
+#   95|           0: [OperatorCall] call to operator --
 #   95|             0: [LocalVariableAccess] access to local variable c
 #   96|         21: [ExprStmt] ...;
-#   96|           0: [OperatorCall] call to operator --=
+#   96|           0: [OperatorCall] call to operator --
 #   96|             0: [LocalVariableAccess] access to local variable c
 #   98|         22: [CheckedStmt] checked {...}
 #   99|           0: [BlockStmt] {...}
 #  100|             0: [ExprStmt] ...;
-#  100|               0: [OperatorCall] call to operator checked ++=
+#  100|               0: [OperatorCall] call to operator checked ++
 #  100|                 0: [LocalVariableAccess] access to local variable c
 #  101|             1: [ExprStmt] ...;
-#  101|               0: [OperatorCall] call to operator checked ++=
+#  101|               0: [OperatorCall] call to operator checked ++
 #  101|                 0: [LocalVariableAccess] access to local variable c
 #  102|             2: [ExprStmt] ...;
-#  102|               0: [OperatorCall] call to operator checked --=
+#  102|               0: [OperatorCall] call to operator checked --
 #  102|                 0: [LocalVariableAccess] access to local variable c
 #  103|             3: [ExprStmt] ...;
-#  103|               0: [OperatorCall] call to operator checked --=
+#  103|               0: [OperatorCall] call to operator checked --
 #  103|                 0: [LocalVariableAccess] access to local variable c
 #  107|     7: [Struct] Digit
 #  109|       6: [Field] value
