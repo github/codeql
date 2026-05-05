@@ -969,13 +969,15 @@ module Ast implements AstSig<Py::Location> {
       index = 1 and result = r.getCause()
     )
     or
-    // TryStmt: body (0), handlers (1..n), finally (-1)
+    // TryStmt: body (0), handlers (1..n), else (-2), finally (-1)
     exists(TryStmt t | t = n |
       index = 0 and result = t.getBody()
       or
       result = t.getCatch(index - 1) and index >= 1
       or
       index = -1 and result = t.getFinally()
+      or
+      index = -2 and result = t.getElse()
     )
     or
     // Switch (match): subject (0), cases (1..n)
