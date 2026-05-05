@@ -165,6 +165,20 @@ module Ast implements AstSig<Py::Location> {
   /** Gets the body of callable `c`. */
   AstNode callableGetBody(Callable c) { result = TBlockStmt(c.asScope(), "body") }
 
+  /**
+   * A parameter of a callable.
+   *
+   * TODO: Implement in order to include parameters in the CFG.
+   */
+  class Parameter extends AstNode {
+    Parameter() { none() }
+
+    Expr getDefaultValue() { none() }
+  }
+
+  /** Gets the `index`th parameter of callable `c`. */
+  Parameter callableGetParameter(Callable c, int index) { none() }
+
   /** A statement. */
   class Stmt extends AstNode {
     Stmt() { this instanceof TStmt or this instanceof TBlockStmt }
@@ -1119,7 +1133,7 @@ private module Input implements InputSig1, InputSig2 {
     string toString() { result = "label" }
   }
 
-  class CallableBodyPartContext = Void;
+  class CallableContext = Void;
 
   predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
     kind.isBoolean() and
