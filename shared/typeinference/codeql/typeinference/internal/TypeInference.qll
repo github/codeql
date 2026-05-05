@@ -146,17 +146,25 @@ signature module InputSig1<LocationSig Location> {
   }
 
   /**
-   * Holds if `t` is a pseudo type. Pseudo types are skipped when checking for
-   * non-instantiations in `isNotInstantiationOf`.
+   * A special pseudo type used to represent cases where the actual type needs
+   * to be inferred from the context in a top-down manner. For example, in
+   *
+   * ```rust
+   * let x = Vec::new();
+   * x.push(42);
+   * ```
+   *
+   * the element type of `x` is assigned an unknown type, which allows for type
+   * information to flow into `x` from the call to `push`.
    */
-  predicate isPseudoType(Type t);
+  class UnknownType extends Type;
 
   /** A type parameter. */
   class TypeParameter extends Type;
 
   /**
-   * A type abstraction. I.e., a place in the program where type variables are
-   * introduced.
+   * A type abstraction. I.e., a place in the program where type variables may
+   * be introduced.
    *
    * Example in C#:
    * ```csharp
@@ -171,7 +179,7 @@ signature module InputSig1<LocationSig Location> {
    * ```
    */
   class TypeAbstraction {
-    /** Gets a type parameter introduced by this abstraction. */
+    /** Gets a type parameter introduced by this abstraction, if any. */
     TypeParameter getATypeParameter();
 
     /** Gets a textual representation of this type abstraction. */
@@ -332,6 +340,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
    * code. For example, in
    *
    * ```csharp
+   * class Base<B> { }
+   *
    * class C<T> : Base<T>, Interface { }
    * ```
    *
@@ -341,7 +351,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
    * `TypePath` | `Type`
    * ---------- | -------
    * `""`       | ``Base`1``
-   * `"0"`      | `T`
+   * `"B"`      | `T`
    */
   signature module InputSig2<HasTypeTreeSig TypeMention> {
     /**
@@ -666,7 +676,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       private Type getNonPseudoTypeAt(App app, TypePath path) {
-        result = app.getTypeAt(path) and not isPseudoType(result)
+        result = app.getTypeAt(path) and
+        not result instanceof UnknownType
       }
 
       pragma[nomagic]
@@ -2125,6 +2136,699 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       query predicate illFormedTypeMention(TypeMention tm) {
         not exists(tm.getTypeAt(TypePath::nil())) and exists(tm.getLocation())
+      }
+    }
+
+    /**
+     * Provides the input to `Make3`.
+     *
+     * TODO: Eventually align the AST signature with that of the shared CFG library.
+     */
+    signature module InputSig3 {
+      /**
+       * A predicate used to reference cached predicates that should be included to the
+       * cached stage of type inference. Such predicates should themselves reference
+       * `CachedStage::ref`.
+       */
+      default predicate cachedStageRevRef() { none() }
+
+      /**
+       * Point this predicate to the `inferType` predicate from the output of this module.
+       *
+       * Needed to be able to refer to `inferType` in default signature implementations.
+       */
+      Type inferType(AstNode n, TypePath path);
+
+      /** A boolean type. */
+      class BoolType extends Type;
+
+      /** An AST node. */
+      class AstNode {
+        /** Gets a textual representation of this AST node. */
+        string toString();
+
+        /** Gets the location of this AST node. */
+        Location getLocation();
+      }
+
+      /** Gets the type annotation that applies to `n`, if any. */
+      TypeMention getTypeAnnotation(AstNode n);
+
+      /** An expression. */
+      class Expr extends AstNode;
+
+      /**
+       * A switch.
+       */
+      class Switch extends AstNode {
+        /**
+         * Gets the expression being switched on.
+         */
+        Expr getExpr();
+
+        /** Gets the case at the specified (zero-based) `index`. */
+        Case getCase(int index);
+      }
+
+      /** A case in a switch. */
+      class Case extends AstNode {
+        /** Gets a pattern being matched by this case. */
+        AstNode getAPattern();
+
+        /** Gets the body of this case. */
+        AstNode getBody();
+      }
+
+      /** A ternary conditional expression. */
+      class ConditionalExpr extends Expr {
+        /** Gets the condition of this expression. */
+        Expr getCondition();
+
+        /** Gets the true branch of this expression. */
+        Expr getThen();
+
+        /** Gets the false branch of this expression. */
+        Expr getElse();
+      }
+
+      /** A binary expression. */
+      class BinaryExpr extends Expr {
+        /** Gets the left operand of this binary expression. */
+        Expr getLeftOperand();
+
+        /** Gets the right operand of this binary expression. */
+        Expr getRightOperand();
+      }
+
+      /** A short-circuiting logical AND expression. */
+      class LogicalAndExpr extends BinaryExpr;
+
+      /** A short-circuiting logical OR expression. */
+      class LogicalOrExpr extends BinaryExpr;
+
+      /**
+       * An assignment expression, either compound or simple.
+       *
+       * Examples:
+       *
+       * ```
+       * x = y
+       * sum += element
+       * ```
+       */
+      class Assignment extends BinaryExpr;
+
+      /** A simple assignment expression, for example `x = y`. */
+      class AssignExpr extends Assignment;
+
+      /** A parenthesized expression. */
+      class ParenExpr extends Expr {
+        Expr getExpr();
+      }
+
+      /** A variable, for example a local variable or a field. */
+      class Variable {
+        /** Gets the AST node that defines this variable. */
+        AstNode getDefiningNode();
+
+        /** Gets an access to this variable. */
+        Expr getAnAccess();
+
+        /** Gets a textual representation of this element. */
+        string toString();
+
+        /** Gets the location of this element. */
+        Location getLocation();
+      }
+
+      /**
+       * A `let` declaration, for example a local variable declaration.
+       */
+      class LetDeclaration extends AstNode {
+        /**
+         * Holds if this declaration is a coercion site, meaning that the type of the right
+         * operand may have to be coerced to the type of the left operand.
+         */
+        predicate isCoercionSite();
+
+        /** Gets the left operand of this declaration. */
+        AstNode getLeftOperand();
+
+        /** Gets the right operand of this declaration. */
+        AstNode getRightOperand();
+      }
+
+      /**
+       * A position where a callable can have a declared type and a call can have
+       * an inferred type.
+       */
+      class TypePosition {
+        /** Holds if this position represents the return type of a callable. */
+        predicate isReturn();
+
+        /** Gets a textual representation of this position. */
+        string toString();
+      }
+
+      /**
+       * A context needed to resolve calls.
+       *
+       * For example, in Rust, we need an additional context to represent the
+       * candidate receiver type when resolving method calls.
+       *
+       * When not used, simply instantiate this class with `Unit`.
+       */
+      bindingset[this]
+      class CallResolutionContext {
+        /** Gets a textual representation of this context. */
+        bindingset[this]
+        string toString();
+      }
+
+      /** A callable. */
+      class Callable {
+        /** Gets the type parameter at position `ppos` of this callable, if any. */
+        TypeParameter getTypeParameter(TypeParameterPosition ppos);
+
+        /**
+         * Gets an additional type parameter constraint for the given type parameter,
+         * which applies to this callable. For example, in Rust, a function can apply
+         * additional constraints on type parameters belonging to the `impl` block
+         * that the function is defined in.
+         */
+        TypeMention getAdditionalTypeParameterConstraint(TypeParameter tp);
+
+        /** Gets the declared type of this callable at `path` for position `pos`. */
+        Type getDeclaredType(TypePosition pos, TypePath path);
+
+        /** Gets a textual representation of this callable. */
+        string toString();
+
+        /** Gets the location of this callable. */
+        Location getLocation();
+      }
+
+      /** A call expression. */
+      class Call extends Expr {
+        /** Gets the explicit type argument at position `apos` and `path` for this call, if any. */
+        Type getTypeArgument(TypeArgumentPosition apos, TypePath path);
+
+        /** Gets the AST node corresponding to the position `pos` of this call. */
+        AstNode getNodeAt(TypePosition pos);
+
+        /**
+         * Gets the target of this call, to be used when inferring certain types.
+         */
+        Callable getTargetCertain();
+
+        /** Gets the target of this call in the given context. */
+        Callable getTarget(CallResolutionContext ctx);
+      }
+
+      /**
+       * Gets the inferred type of `call` at `path` and position `pos` in context `ctx`.
+       *
+       * By default, this is the inferred type of the node at the given position, but
+       * in for example Rust, the inferred type of the receiver of a method call needs
+       * to take the call context into account, in order to use the correct candidate
+       * receiver type.
+       *
+       * The type information provided by this predicate is used to derive type information
+       * about the call via the call target, such as the return type.
+       */
+      bindingset[ctx]
+      default Type inferCallTypeBottomUp(
+        Call call, CallResolutionContext ctx, TypePosition pos, TypePath path
+      ) {
+        result = inferType(call.getNodeAt(pos), path) and
+        exists(ctx)
+      }
+
+      /**
+       * Gets the inferred return type of `call` at `path`.
+       *
+       * When no post-processing is needed, simply implement this predicate as
+       * `result = inferCallReturnType(_, _, n, path)`.
+       */
+      Type inferCallReturnType(AstNode n, TypePath path);
+
+      /**
+       * Gets the top-down inferred type of `call` at `path` and argument position
+       * `pos`.
+       *
+       * This predicate is used to propagate type information from the call target
+       * into call arguments, for example when an implicitly typed lambda is passed
+       * as an argument.
+       *
+       * Type information is only propagated into arguments with an explicitly unknown
+       * type.
+       *
+       * When no call-context based post-processing is needed, simply implement this
+       * predicate as `result = inferCallArgumentTypeTopDown(_, _, _, n, path)`.
+       */
+      Type inferCallArgumentTypeTopDown(AstNode n, TypePath path);
+
+      /**
+       * Holds if `n1` having certain type `t` at `path1` implies that `n2` has
+       * certain type `t` at `path2`, but not necessarily the other way around.
+       */
+      default predicate inferStepCertain(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+        none()
+      }
+
+      /**
+       * Holds if `n1` having certain type `t` at `path1` implies that `n2` has
+       * certain type `t` at `path2`, and vice versa.
+       */
+      default predicate inferStepSymmetricCertain(
+        AstNode n1, TypePath path1, AstNode n2, TypePath path2
+      ) {
+        none()
+      }
+
+      /**
+       * Gets the inferred certain type of `n` at `path`.
+       *
+       * This predicate will be included directly in the exposed `inferTypeCertain` predicate.
+       */
+      default Type inferTypeCertainSpecific(AstNode n, TypePath path) { none() }
+
+      /**
+       * Holds if `n1` having type `t` at `path1` implies that `n2` has type `t` at `path2`,
+       * but not necessarily the other way around.
+       */
+      predicate inferStep(AstNode n1, TypePath path1, AstNode n2, TypePath path2);
+
+      /**
+       * Holds if `n1` having type `t` at `path1` implies that `n2` has type `t` at `path2`,
+       * and vice versa.
+       */
+      predicate inferStepSymmetric(AstNode n1, TypePath path1, AstNode n2, TypePath path2);
+
+      /**
+       * Holds if `n1` having type `t` at `path1` implies that `n2` has a type `lub` at
+       * `path2`, where `lub` is a least-upper-bound of the types of all the nodes that
+       * have lub steps into `n2`.
+       *
+       * For example, for a ternary conditional expression, there are lub steps from each
+       * of the branches into the conditional expression itself.
+       *
+       * We don't actually model the least-upper-bound computation, instead we interpret
+       * `inferLubStep(n1, path1, n2, path2)` as
+       *
+       * - `inferStep(n1, path1, n2, path2)`, that is type information flows directly into
+       *   the lub, and
+       * - `inferStep(n2, path2, n1, path1)`, provided that `n1` is unique, that is, type
+       *   type information flows from the lub back into the unique input `n1`, and
+       * - type information is allowed to flow from the lub into any of its inputs, provided
+       *   that they have an explicitly unknown type.
+       */
+      default predicate inferLubStep(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+        none()
+      }
+
+      /**
+       * Gets the top-down inferred type of `n` at `path`.
+       *
+       * Type information is only propagated into nodes with an explicitly unknown
+       * type.
+       */
+      default Type inferTypeTopDown(AstNode n, TypePath path) { none() }
+
+      /**
+       * Gets the inferred type of `n` at `path`.
+       *
+       * This predicate will be included directly in the exposed `inferType` predicate.
+       */
+      Type inferTypeSpecific(AstNode n, TypePath path);
+    }
+
+    module Make3<InputSig3 Input3> {
+      private import Input3
+
+      /** Provides logic for inferring certain type information. */
+      private module Certain {
+        /** Gets the type of `n`, which has an explicit type annotation. */
+        pragma[nomagic]
+        Type inferAnnotatedType(AstNode n, TypePath path) {
+          result = getTypeAnnotation(n).getTypeAt(path)
+        }
+
+        private predicate stepSymmetricCertain(
+          AstNode n1, TypePath path1, AstNode n2, TypePath path2
+        ) {
+          path1.isEmpty() and
+          path2.isEmpty() and
+          (
+            exists(Variable v | n1 = v.getAnAccess() and n2 = v.getDefiningNode())
+            or
+            exists(LetDeclaration let |
+              not let.isCoercionSite() and
+              n1 = let.getLeftOperand() and
+              n2 = let.getRightOperand()
+            )
+            or
+            n1 = n2.(ParenExpr).getExpr()
+          )
+          or
+          inferStepSymmetricCertain(n1, path1, n2, path2)
+        }
+
+        predicate stepCertain(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+          stepSymmetricCertain(n1, path1, n2, path2)
+          or
+          stepSymmetricCertain(n2, path2, n1, path1)
+          or
+          inferStepCertain(n1, path1, n2, path2)
+        }
+
+        pragma[nomagic]
+        private Type inferTypeFromStepCertain(AstNode n, TypePath path) {
+          exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+            result = inferTypeCertain(n2, prefix2.appendInverse(suffix)) and
+            path = prefix1.append(suffix) and
+            stepCertain(n2, prefix2, n, prefix1)
+          )
+        }
+
+        private Type inferLogicalOperationType(AstNode n, TypePath path) {
+          (
+            exists(LogicalAndExpr lae | n = [lae, lae.getLeftOperand(), lae.getRightOperand()]) or
+            exists(LogicalOrExpr loe | n = [loe, loe.getLeftOperand(), loe.getRightOperand()])
+          ) and
+          result instanceof BoolType and
+          path.isEmpty()
+        }
+
+        pragma[nomagic]
+        private Type getCertainCallExprReturnType(Call call, TypePath path) {
+          exists(TypePosition ret |
+            ret.isReturn() and
+            forex(Callable target | target = call.getTargetCertain() |
+              result = target.getDeclaredType(ret, path)
+            )
+          )
+        }
+
+        pragma[nomagic]
+        private Type inferCertainCallExprReturnType(Call call, TypePath path) {
+          exists(Type ty, TypePath prefix | ty = getCertainCallExprReturnType(call, prefix) |
+            exists(
+              Callable target, TypePath suffix, TypeParameterPosition tppos,
+              TypeArgumentPosition tapos
+            |
+              ty = target.getTypeParameter(tppos) and
+              path = prefix.append(suffix) and
+              result = call.getTypeArgument(tapos, suffix) and
+              typeArgumentParameterPositionMatch(tapos, tppos)
+            )
+            or
+            not ty instanceof TypeParameter and
+            result = ty and
+            path = prefix
+          )
+        }
+
+        /** Gets the inferred certain type of `n` at `path`. */
+        cached
+        Type inferTypeCertain(AstNode n, TypePath path) {
+          CachedStage::ref() and
+          result = inferAnnotatedType(n, path)
+          or
+          result = inferTypeFromStepCertain(n, path)
+          or
+          result = inferTypeCertainSpecific(n, path)
+          or
+          result = inferLogicalOperationType(n, path)
+          or
+          result = inferCertainCallExprReturnType(n, path)
+          or
+          infersCertainTypeAt(n, path, result.getATypeParameter())
+        }
+
+        /**
+         * Holds if `n` has complete and certain type information at the type path
+         * `prefix.tp`. This entails that the type at `prefix` must be the type
+         * that declares `tp`.
+         */
+        pragma[nomagic]
+        private predicate infersCertainTypeAt(AstNode n, TypePath prefix, TypeParameter tp) {
+          exists(TypePath path |
+            exists(inferTypeCertain(n, path)) and
+            path.isSnoc(prefix, tp)
+          )
+        }
+
+        /**
+         * Holds if `n` has complete and certain type information at `path`.
+         */
+        pragma[nomagic]
+        predicate hasInferredCertainType(AstNode n, TypePath path) {
+          exists(inferTypeCertain(n, path))
+        }
+
+        /**
+         * Holds if `n` having type `t` at `path` conflicts with certain type information
+         * at `prefix`.
+         */
+        bindingset[n, prefix, path, t]
+        pragma[inline_late]
+        predicate certainTypeConflict(AstNode n, TypePath prefix, TypePath path, Type t) {
+          inferTypeCertain(n, path) != t
+          or
+          // If we infer that `n` has _some_ type at `T1.T2....Tn`, and we also
+          // know that `n` certainly has type `certainType` at `T1.T2...Ti`, `0 <= i < n`,
+          // then it must be the case that `T(i+1)` is a type parameter of `certainType`,
+          // otherwise there is a conflict.
+          //
+          // Below, `prefix` is `T1.T2...Ti` and `tp` is `T(i+1)`.
+          exists(TypePath suffix, TypeParameter tp, Type certainType |
+            path = prefix.appendInverse(suffix) and
+            tp = suffix.getHead() and
+            inferTypeCertain(n, prefix) = certainType and
+            not certainType.getATypeParameter() = tp
+          )
+        }
+      }
+
+      predicate inferTypeCertain = Certain::inferTypeCertain/2;
+
+      private predicate lubStep(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+        path1.isEmpty() and
+        path2.isEmpty() and
+        (
+          n1 = n2.(Switch).getCase(_).getBody()
+          or
+          n2 = any(ConditionalExpr ce | n1 = [ce.getThen(), ce.getElse()])
+        )
+        or
+        inferLubStep(n1, path1, n2, path2)
+      }
+
+      private predicate stepSymmetric(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+        path1.isEmpty() and
+        path2.isEmpty() and
+        (
+          exists(AssignExpr ae |
+            ae.getLeftOperand() = n1 and
+            ae.getRightOperand() = n2
+          )
+          or
+          exists(LetDeclaration let |
+            let.getLeftOperand() = n1 and
+            let.getRightOperand() = n2
+          )
+          or
+          exists(Switch switch |
+            n1 = switch.getExpr() and
+            n2 = switch.getCase(_).getAPattern()
+          )
+        )
+        or
+        inferStepSymmetric(n1, path1, n2, path2)
+      }
+
+      private predicate step(AstNode n1, TypePath path1, AstNode n2, TypePath path2) {
+        inferStep(n1, path1, n2, path2)
+        or
+        stepSymmetric(n1, path1, n2, path2)
+        or
+        stepSymmetric(n2, path2, n1, path1)
+        or
+        Certain::stepCertain(n1, path1, n2, path2)
+        or
+        lubStep(n1, path1, n2, path2)
+        or
+        n2 = unique(AstNode n | lubStep(n, _, n1, _) | n) and
+        lubStep(n2, path2, n1, path1)
+      }
+
+      pragma[nomagic]
+      private Type inferTypeFromStep(AstNode n, TypePath path) {
+        exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+          result = inferType(n2, prefix2.appendInverse(suffix)) and
+          path = prefix1.append(suffix) and
+          step(n2, prefix2, n, prefix1)
+        )
+      }
+
+      pragma[nomagic]
+      private Type inferTypeFromLubStepTopDown(AstNode n, TypePath path) {
+        exists(TypePath prefix1, AstNode n2, TypePath prefix2, TypePath suffix |
+          result = inferType(n2, prefix2.appendInverse(suffix)) and
+          path = prefix1.append(suffix) and
+          lubStep(n, prefix1, n2, prefix2)
+        )
+      }
+
+      /**
+       * Gets the inferred type of `n` at `path`.
+       */
+      cached
+      Type inferType(AstNode n, TypePath path) {
+        CachedStage::ref() and
+        result = inferTypeCertain(n, path)
+        or
+        // Don't propagate type information into a node which conflicts with certain
+        // type information.
+        forall(TypePath prefix |
+          Certain::hasInferredCertainType(n, prefix) and
+          prefix.isPrefixOf(path)
+        |
+          not Certain::certainTypeConflict(n, prefix, path, result)
+        ) and
+        (
+          result = inferTypeFromStep(n, path)
+          or
+          result = TopDownTyping<inferTypeFromLubStepTopDown/2>::inferType(n, path)
+          or
+          result = inferCallReturnType(n, path)
+          or
+          result = TopDownTyping<inferCallArgumentTypeTopDown/2>::inferType(n, path)
+          or
+          result = TopDownTyping<inferTypeTopDown/2>::inferType(n, path)
+          or
+          result = inferTypeSpecific(n, path)
+        )
+      }
+
+      private module TypePositionMatchingInput {
+        class DeclarationPosition = TypePosition;
+
+        class AccessPosition = DeclarationPosition;
+
+        predicate accessDeclarationPositionMatch(AccessPosition apos, DeclarationPosition dpos) {
+          apos = dpos
+        }
+      }
+
+      /**
+       * A matching configuration for resolving types of calls.
+       */
+      private module CallMatchingInput implements MatchingWithEnvironmentInputSig {
+        import TypePositionMatchingInput
+
+        class Declaration = Callable;
+
+        bindingset[decl]
+        TypeMention getATypeParameterConstraint(TypeParameter tp, Declaration decl) {
+          result = Input2::getATypeParameterConstraint(tp) and
+          exists(decl)
+          or
+          result = decl.getAdditionalTypeParameterConstraint(tp)
+        }
+
+        class AccessEnvironment = CallResolutionContext;
+
+        final private class CallFinal = Call;
+
+        class Access extends CallFinal {
+          bindingset[e]
+          Type getInferredType(AccessEnvironment e, AccessPosition apos, TypePath path) {
+            result = inferCallTypeBottomUp(this, e, apos, path)
+          }
+        }
+      }
+
+      private module CallMatching = MatchingWithEnvironment<CallMatchingInput>;
+
+      private Type inferCallType(
+        Call call, CallResolutionContext ctx, TypePosition pos, AstNode n, TypePath path
+      ) {
+        n = call.getNodeAt(pos) and
+        result = CallMatching::inferAccessType(call, ctx, pos, path)
+      }
+
+      Type inferCallReturnType(Call call, CallResolutionContext ctx, AstNode n, TypePath path) {
+        exists(TypePosition pos |
+          result = inferCallType(call, ctx, pos, n, path) and
+          pos.isReturn()
+        )
+      }
+
+      Type inferCallArgumentTypeTopDown(
+        Call call, CallResolutionContext ctx, TypePosition pos, AstNode n, TypePath path
+      ) {
+        result = inferCallType(call, ctx, pos, n, path) and
+        not pos.isReturn() and
+        hasUnknownType(n)
+      }
+
+      pragma[nomagic]
+      private predicate hasUnknownTypeAt(AstNode n, TypePath path) {
+        inferType(n, path) instanceof UnknownType
+      }
+
+      pragma[nomagic]
+      private predicate hasUnknownType(AstNode n) { hasUnknownTypeAt(n, _) }
+
+      private signature Type inferTypeTopDownSig(AstNode n, TypePath path);
+
+      /**
+       * Given a predicate `infer` for inferring the type of an AST node `n`
+       * top-down from a context, this module exposes the predicate `inferType`, which
+       * restricts type information to only flow top-down into `n` when `n` has an
+       * explicit unknown type.
+       */
+      private module TopDownTyping<inferTypeTopDownSig/2 infer> {
+        pragma[nomagic]
+        private Type inferTypeTopDown(AstNode n, TypePath prefix, TypePath path) {
+          result = infer(n, path) and
+          hasUnknownType(n) and
+          prefix = path.getAPrefix()
+        }
+
+        pragma[nomagic]
+        Type inferType(AstNode n, TypePath path) {
+          exists(TypePath prefix |
+            result = inferTypeTopDown(n, prefix, path) and
+            hasUnknownTypeAt(n, prefix)
+          )
+        }
+      }
+
+      /**
+       * Gets the inferred root type of `n`, if any.
+       */
+      Type inferType(AstNode n) { result = inferType(n, TypePath::nil()) }
+
+      // todo: consistency checks
+      /** The cached stage of type inference. */
+      cached
+      module CachedStage {
+        /** Reference to the cached stage of type inference. */
+        cached
+        predicate ref() { any() }
+
+        /** Reverse references to the predicates that reference `ref()`. */
+        cached
+        predicate revRef() {
+          (exists(inferTypeCertain(_, _)) implies any())
+          or
+          (exists(inferType(_, _)) implies any())
+          or
+          cachedStageRevRef()
+        }
       }
     }
   }

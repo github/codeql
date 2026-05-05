@@ -8961,10 +8961,8 @@ inferType
 | main.rs:826:16:826:16 | 3 |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:826:16:826:20 | ... > ... |  | {EXTERNAL LOCATION} | bool |
 | main.rs:826:20:826:20 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:826:22:828:13 | { ... } |  | main.rs:820:20:820:22 | Tr2 |
 | main.rs:827:17:827:20 | self |  | {EXTERNAL LOCATION} | & |
 | main.rs:827:17:827:20 | self | TRef | main.rs:820:5:832:5 | Self [trait MyTrait2] |
-| main.rs:827:17:827:25 | self.m1() |  | main.rs:820:20:820:22 | Tr2 |
 | main.rs:828:20:830:13 | { ... } |  | main.rs:820:20:820:22 | Tr2 |
 | main.rs:829:17:829:31 | ...::m1(...) |  | main.rs:820:20:820:22 | Tr2 |
 | main.rs:829:26:829:30 | * ... |  | main.rs:820:5:832:5 | Self [trait MyTrait2] |
@@ -11481,13 +11479,9 @@ inferType
 | main.rs:2099:13:2103:13 | if value {...} else {...} |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2099:16:2099:20 | value |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2099:22:2101:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2099:22:2101:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2100:17:2100:17 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2100:17:2100:17 | 1 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2101:20:2103:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2101:20:2103:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2102:17:2102:17 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2102:17:2102:17 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2113:19:2113:22 | SelfParam |  | main.rs:2107:5:2107:19 | S |
 | main.rs:2113:19:2113:22 | SelfParam | T | main.rs:2109:10:2109:17 | T |
 | main.rs:2113:25:2113:29 | other |  | main.rs:2107:5:2107:19 | S |
@@ -11542,13 +11536,9 @@ inferType
 | main.rs:2154:13:2158:13 | if value {...} else {...} |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2154:16:2154:20 | value |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2154:22:2156:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2154:22:2156:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2155:17:2155:17 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2155:17:2155:17 | 1 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2156:20:2158:13 | { ... } |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2156:20:2158:13 | { ... } |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2157:17:2157:17 | 0 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2157:17:2157:17 | 0 |  | {EXTERNAL LOCATION} | i64 |
 | main.rs:2164:21:2164:25 | value |  | main.rs:2162:19:2162:19 | T |
 | main.rs:2164:31:2164:31 | x |  | main.rs:2162:5:2165:5 | Self [trait MyFrom2] |
 | main.rs:2169:21:2169:25 | value |  | {EXTERNAL LOCATION} | i64 |
@@ -11710,9 +11700,7 @@ inferType
 | main.rs:2265:21:2265:31 | [...] | TArray | {EXTERNAL LOCATION} | u8 |
 | main.rs:2265:22:2265:24 | 1u8 |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:2265:27:2265:27 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2265:27:2265:27 | 2 |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:2265:30:2265:30 | 3 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2265:30:2265:30 | 3 |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:2266:9:2266:25 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2266:13:2266:13 | u |  | {EXTERNAL LOCATION} | i32 |
 | main.rs:2266:13:2266:13 | u |  | {EXTERNAL LOCATION} | u8 |
@@ -11738,11 +11726,8 @@ inferType
 | main.rs:2271:31:2271:39 | [...] | TArray | {EXTERNAL LOCATION} | i32 |
 | main.rs:2271:31:2271:39 | [...] | TArray | {EXTERNAL LOCATION} | u32 |
 | main.rs:2271:32:2271:32 | 1 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2271:32:2271:32 | 1 |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2271:35:2271:35 | 2 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2271:35:2271:35 | 2 |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2271:38:2271:38 | 3 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2271:38:2271:38 | 3 |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2272:9:2272:25 | for ... in ... { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2272:13:2272:13 | u |  | {EXTERNAL LOCATION} | u32 |
 | main.rs:2272:18:2272:22 | vals3 |  | {EXTERNAL LOCATION} | [;] |
@@ -11883,7 +11868,6 @@ inferType
 | main.rs:2308:19:2308:25 | 0u8..10 | Idx | {EXTERNAL LOCATION} | i32 |
 | main.rs:2308:19:2308:25 | 0u8..10 | Idx | {EXTERNAL LOCATION} | u8 |
 | main.rs:2308:24:2308:25 | 10 |  | {EXTERNAL LOCATION} | i32 |
-| main.rs:2308:24:2308:25 | 10 |  | {EXTERNAL LOCATION} | u8 |
 | main.rs:2308:28:2308:29 | { ... } |  | {EXTERNAL LOCATION} | () |
 | main.rs:2309:13:2309:17 | range |  | {EXTERNAL LOCATION} | Range |
 | main.rs:2309:13:2309:17 | range | Idx | {EXTERNAL LOCATION} | i32 |
@@ -12636,11 +12620,9 @@ inferType
 | main.rs:2583:12:2583:12 | b |  | {EXTERNAL LOCATION} | bool |
 | main.rs:2583:14:2586:9 | { ... } |  | {EXTERNAL LOCATION} | Box |
 | main.rs:2583:14:2586:9 | { ... } | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2583:14:2586:9 | { ... } | T | main.rs:2547:5:2549:5 | dyn MyTrait |
 | main.rs:2583:14:2586:9 | { ... } | T | main.rs:2551:5:2552:19 | S |
 | main.rs:2583:14:2586:9 | { ... } | T.T | main.rs:2551:5:2552:19 | S |
 | main.rs:2583:14:2586:9 | { ... } | T.T.T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2583:14:2586:9 | { ... } | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
 | main.rs:2584:17:2584:17 | x |  | main.rs:2551:5:2552:19 | S |
 | main.rs:2584:17:2584:17 | x | T | main.rs:2551:5:2552:19 | S |
 | main.rs:2584:17:2584:17 | x | T.T | {EXTERNAL LOCATION} | i32 |
@@ -12651,26 +12633,20 @@ inferType
 | main.rs:2584:21:2584:26 | x.m2() | T.T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2585:13:2585:23 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
 | main.rs:2585:13:2585:23 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2585:13:2585:23 | ...::new(...) | T | main.rs:2547:5:2549:5 | dyn MyTrait |
 | main.rs:2585:13:2585:23 | ...::new(...) | T | main.rs:2551:5:2552:19 | S |
 | main.rs:2585:13:2585:23 | ...::new(...) | T.T | main.rs:2551:5:2552:19 | S |
 | main.rs:2585:13:2585:23 | ...::new(...) | T.T.T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2585:13:2585:23 | ...::new(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
 | main.rs:2585:22:2585:22 | x |  | main.rs:2551:5:2552:19 | S |
 | main.rs:2585:22:2585:22 | x | T | main.rs:2551:5:2552:19 | S |
 | main.rs:2585:22:2585:22 | x | T.T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2586:16:2588:9 | { ... } |  | {EXTERNAL LOCATION} | Box |
 | main.rs:2586:16:2588:9 | { ... } | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2586:16:2588:9 | { ... } | T | main.rs:2547:5:2549:5 | dyn MyTrait |
 | main.rs:2586:16:2588:9 | { ... } | T | main.rs:2551:5:2552:19 | S |
 | main.rs:2586:16:2588:9 | { ... } | T.T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2586:16:2588:9 | { ... } | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
 | main.rs:2587:13:2587:23 | ...::new(...) |  | {EXTERNAL LOCATION} | Box |
 | main.rs:2587:13:2587:23 | ...::new(...) | A | {EXTERNAL LOCATION} | Global |
-| main.rs:2587:13:2587:23 | ...::new(...) | T | main.rs:2547:5:2549:5 | dyn MyTrait |
 | main.rs:2587:13:2587:23 | ...::new(...) | T | main.rs:2551:5:2552:19 | S |
 | main.rs:2587:13:2587:23 | ...::new(...) | T.T | {EXTERNAL LOCATION} | i32 |
-| main.rs:2587:13:2587:23 | ...::new(...) | T.dyn(T) | {EXTERNAL LOCATION} | i32 |
 | main.rs:2587:22:2587:22 | x |  | main.rs:2551:5:2552:19 | S |
 | main.rs:2587:22:2587:22 | x | T | {EXTERNAL LOCATION} | i32 |
 | main.rs:2593:22:2597:5 | { ... } |  | {EXTERNAL LOCATION} | () |
