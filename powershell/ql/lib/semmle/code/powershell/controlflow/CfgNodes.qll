@@ -63,12 +63,20 @@ class StmtCfgNode extends AstCfgNode {
 }
 
 pragma[nomagic]
-private BasicBlock getARelevantBasicBlock(Ast a) { result.getANode().getAstNode() = a }
+private BasicBlock getBasicBlock(Ast a) { result.getANode().getAstNode() = a }
 
 /**
  * A class for mapping parent-child AST nodes to parent-child CFG nodes.
  */
 abstract private class ChildMapping extends Ast {
+  /** Holds if `child` is evaluated before its parent in the CFG. */
+  abstract predicate precedesParent(Ast child);
+
+  private CfgNode getRelevantChildCfgNode(Ast child) {
+    this.relevantChild(child) and
+    result.getAstNode() = child
+  }
+
   /**
    * Holds if `child` is a (possibly nested) child of this expression
    * for which we would like to find a matching CFG child.
@@ -76,22 +84,61 @@ abstract private class ChildMapping extends Ast {
   abstract predicate relevantChild(Ast child);
 
   /**
-   * Holds if `child` appears before its parent in the control-flow graph.
-   * This always holds for expressions, and _almost_ never for statements.
+   * Gets a basic block that contains a CFG node for this AST node or
+   * any relevant child of this AST node.
    */
-  abstract predicate precedesParent(Ast child);
-
   pragma[nomagic]
-  final predicate reachesBasicBlock(Ast child, CfgNode cfn, BasicBlock bb) {
-    this.relevantChild(child) and
-    cfn.getAstNode() = this and
-    bb.getANode() = cfn
+  private BasicBlock getARelevantBasicBlock() {
+    getBasicBlock(this) = result
+    or
+    exists(Ast child |
+      this.relevantChild(child) and
+      getBasicBlock(child) = result
+    )
+  }
+
+  /**
+   * Holds if CFG node `cfnChild` can reach basic block `bb`, without going
+   * through an intermediate block that contains a CFG node for this AST node
+   * or any other relevant child of this AST node.
+   */
+  pragma[nomagic]
+  private predicate childNodeReachesBasicBlock(Ast child, CfgNode cfnChild, BasicBlock bb) {
+    exists(BasicBlock bb0 |
+      cfnChild = this.getRelevantChildCfgNode(child) and
+      bb0.getANode() = cfnChild
+    |
+      bb = bb0
+      or
+      not getBasicBlock(this) = bb0 and
+      if this.precedesParent(child) then bb = bb0.getASuccessor() else bb = bb0.getAPredecessor()
+    )
     or
     exists(BasicBlock mid |
-      this.reachesBasicBlock(child, cfn, mid) and
-      not mid = getARelevantBasicBlock(child)
-    |
-      if this.precedesParent(child) then bb = mid.getAPredecessor() else bb = mid.getASuccessor()
+      this.childNodeReachesBasicBlock(child, cfnChild, mid) and
+      not mid = this.getARelevantBasicBlock() and
+      if this.precedesParent(child) then bb = mid.getASuccessor() else bb = mid.getAPredecessor()
+    )
+  }
+
+  /**
+   * Holds if CFG node `cfnChild` can reach CFG node `cfnParent`, without going
+   * through an intermediate block that contains a CFG node for this AST node.
+   */
+  pragma[nomagic]
+  private predicate childNodeReachesParentNode(CfgNode cfnParent, Ast child, CfgNode cfnChild) {
+    exists(BasicBlock bb | this.childNodeReachesBasicBlock(child, cfnChild, bb) |
+      cfnParent.getAstNode() = this and
+      (
+        cfnParent = bb.getANode()
+        or
+        if this.precedesParent(child)
+        then cfnParent = bb.getASuccessor().getANode()
+        else cfnParent = bb.getAPredecessor().getANode()
+      )
+      or
+      // `cfnChild` can reach `cfnParent` by going via another relevant child
+      this.childNodeReachesParentNode(cfnParent, _, bb.getANode())
     )
   }
 
@@ -104,8 +151,7 @@ abstract private class ChildMapping extends Ast {
    */
   cached
   predicate hasCfgChild(Ast child, CfgNode cfn, CfgNode cfnChild) {
-    this.reachesBasicBlock(child, cfn, cfnChild.getBasicBlock()) and
-    cfnChild.getAstNode() = child
+    this.childNodeReachesParentNode(cfn, child, cfnChild)
   }
 }
 
