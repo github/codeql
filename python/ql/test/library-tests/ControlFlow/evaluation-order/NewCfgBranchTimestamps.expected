@@ -54,8 +54,6 @@
 | test_loops.py:53:12:53:38 | After Compare | Timestamp 4 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:51:1:51:29 | Function test_while_else_break | test_while_else_break |
 | test_loops.py:53:12:53:38 | After Compare | Timestamp 13 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:51:1:51:29 | Function test_while_else_break | test_while_else_break |
 | test_loops.py:53:12:53:38 | After Compare | Timestamp 13 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:51:1:51:29 | Function test_while_else_break | test_while_else_break |
-| test_loops.py:53:12:53:38 | After Compare | Timestamp 16 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:51:1:51:29 | Function test_while_else_break | test_while_else_break |
-| test_loops.py:53:12:53:38 | After Compare | Timestamp 16 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:51:1:51:29 | Function test_while_else_break | test_while_else_break |
 | test_loops.py:54:13:54:40 | After Compare | Timestamp 7 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:51:1:51:29 | Function test_while_else_break | test_while_else_break |
 | test_loops.py:54:13:54:40 | After Compare | Timestamp 7 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:51:1:51:29 | Function test_while_else_break | test_while_else_break |
 | test_loops.py:54:13:54:40 | After Compare | Timestamp 16 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:51:1:51:29 | Function test_while_else_break | test_while_else_break |
@@ -158,8 +156,6 @@
 | test_loops.py:111:14:111:43 | After List | Timestamp 4 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
 | test_loops.py:111:14:111:43 | After List | Timestamp 8 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
 | test_loops.py:111:14:111:43 | After List | Timestamp 8 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
-| test_loops.py:111:14:111:43 | After List | Timestamp 11 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
-| test_loops.py:111:14:111:43 | After List | Timestamp 11 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
 | test_loops.py:112:13:112:38 | After Compare | Timestamp 7 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
 | test_loops.py:112:13:112:38 | After Compare | Timestamp 7 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
 | test_loops.py:112:13:112:38 | After Compare | Timestamp 11 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
@@ -168,8 +164,6 @@
 | test_loops.py:114:9:114:9 | x | Timestamp 4 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
 | test_loops.py:114:9:114:9 | x | Timestamp 8 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
 | test_loops.py:114:9:114:9 | x | Timestamp 8 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
-| test_loops.py:114:9:114:9 | x | Timestamp 11 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
-| test_loops.py:114:9:114:9 | x | Timestamp 11 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:110:1:110:27 | Function test_for_else_break | test_for_else_break |
 | test_loops.py:123:14:123:33 | After List | Timestamp 21 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:122:1:122:25 | Function test_nested_loops | test_nested_loops |
 | test_loops.py:123:14:123:33 | After List | Timestamp 21 on true/false branch is missing a dead() annotation on the true successor in $@ | test_loops.py:122:1:122:25 | Function test_nested_loops | test_nested_loops |
 | test_loops.py:124:18:124:47 | After List | Timestamp 3 on true/false branch is missing a dead() annotation on the false successor in $@ | test_loops.py:122:1:122:25 | Function test_nested_loops | test_nested_loops |
