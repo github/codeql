@@ -1,3 +1,7 @@
+## 0.6.27
+
+No user-facing changes.
+
 ## 0.6.26
 
 ### Major Analysis Improvements
@@ -173,7 +177,7 @@ No user-facing changes.
   * `actions/if-expression-always-true/critical`
   * `actions/if-expression-always-true/high`
   * `actions/unnecessary-use-of-advanced-config`
-
+  
 * The following query has been moved from the `code-scanning` suite to the `security-extended`
   suite. Any existing alerts for this query will be closed automatically unless the analysis is
   configured to use the `security-extended` suite.
