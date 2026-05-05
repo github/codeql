@@ -81,7 +81,7 @@ func urlParseOnly(req *http.Request) {
 // reaches a sink.
 func idnaDiscard(req *http.Request) {
 	host := req.Header.Get("X-HOST-DISCARD")
-	_, _ = idna.Lookup.ToASCII(host)  // OK: result discarded
+	_, _ = idna.Lookup.ToASCII(host) // OK: result discarded
 }
 
 // Compliant: post-IDNA TrimSuffix + net.ParseIP recheck before net.LookupHost.
