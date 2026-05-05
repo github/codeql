@@ -411,6 +411,16 @@ module Ast implements AstSig<Py::Location> {
    */
   AstNode getTryElse(TryStmt try) { result = try.getElse() }
 
+  /**
+   * Gets the `else` branch of `while` loop `loop`, if any.
+   */
+  AstNode getWhileElse(WhileStmt loop) { result = loop.getElse() }
+
+  /**
+   * Gets the `else` branch of `for` loop `loop`, if any.
+   */
+  AstNode getForeachElse(ForeachStmt loop) { result = loop.getElse() }
+
   /** An exception handler (`except` or `except*`). */
   class CatchClause extends Stmt {
     private Py::ExceptionHandler handler;
@@ -1181,29 +1191,6 @@ private module Input implements InputSig1, InputSig2 {
       or
       n1.isAfter(assertStmt.getMsg()) and
       n2.isAdditional(assertStmt, assertThrowTag())
-    )
-    or
-    // While/else: when the condition is false, flow to the else block
-    // (if present) before the after-while node.
-    exists(Ast::WhileStmt w, Ast::BlockStmt orelse | orelse = w.getElse() |
-      n1.isAfterFalse(w.getCondition()) and
-      n2.isBefore(orelse)
-      or
-      n1.isAfter(orelse) and
-      n2.isAfter(w)
-    )
-    or
-    // For/else: when the collection is empty or the loop completes
-    // normally, flow through the else block before the after-for node.
-    exists(Ast::ForeachStmt f, Ast::BlockStmt orelse | orelse = f.getElse() |
-      n1.isAfterValue(f.getCollection(), any(EmptinessSuccessor t | t.getValue() = true)) and
-      n2.isBefore(orelse)
-      or
-      n1.isAfter(f.getBody()) and
-      n2.isBefore(orelse)
-      or
-      n1.isAfter(orelse) and
-      n2.isAfter(f)
     )
   }
 }
