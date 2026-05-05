@@ -835,9 +835,22 @@ module Ast implements AstSig<Py::Location> {
 
     FunctionDefExpr() { funcExpr = this.asExpr() }
 
-    Expr getDefault(int n) { result = TExpr(funcExpr.getArgs().getDefault(n)) }
+    /**
+     * Gets the `n`th default for a positional argument, in evaluation
+     * order. Note that `Args.getDefault(int)` is indexed by argument
+     * position (with gaps for arguments without defaults), so we must
+     * renumber here to obtain contiguous indices.
+     */
+    Expr getDefault(int n) {
+      result =
+        TExpr(rank[n + 1](Py::Expr d, int i | d = funcExpr.getArgs().getDefault(i) | d order by i))
+    }
 
-    Expr getKwDefault(int n) { result = TExpr(funcExpr.getArgs().getKwDefault(n)) }
+    /** Gets the `n`th default for a keyword-only argument, in evaluation order. */
+    Expr getKwDefault(int n) {
+      result =
+        TExpr(rank[n + 1](Py::Expr d, int i | d = funcExpr.getArgs().getKwDefault(i) | d order by i))
+    }
 
     int getNumberOfDefaults() { result = count(funcExpr.getArgs().getADefault()) }
   }
@@ -848,9 +861,17 @@ module Ast implements AstSig<Py::Location> {
 
     LambdaExpr() { lambda = this.asExpr() }
 
-    Expr getDefault(int n) { result = TExpr(lambda.getArgs().getDefault(n)) }
+    /** Gets the `n`th default for a positional argument, in evaluation order. */
+    Expr getDefault(int n) {
+      result =
+        TExpr(rank[n + 1](Py::Expr d, int i | d = lambda.getArgs().getDefault(i) | d order by i))
+    }
 
-    Expr getKwDefault(int n) { result = TExpr(lambda.getArgs().getKwDefault(n)) }
+    /** Gets the `n`th default for a keyword-only argument, in evaluation order. */
+    Expr getKwDefault(int n) {
+      result =
+        TExpr(rank[n + 1](Py::Expr d, int i | d = lambda.getArgs().getKwDefault(i) | d order by i))
+    }
 
     int getNumberOfDefaults() { result = count(lambda.getArgs().getADefault()) }
   }
