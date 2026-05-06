@@ -235,6 +235,15 @@ class UnaryOperation extends Operation, @un_op {
 }
 
 /**
+ * A unary operator call. Either a unary arithmetic operator call (`UnaryArithmeticOperatorCall`),
+ * a unary bitwise operator call (`UnaryBitwiseOperatorCall`), or a
+ * unary logical operator call (`UnaryLogicalOperatorCall`).
+ */
+class UnaryCallOperation extends OperatorCall, UnaryOperation, @un_op_call_expr {
+  override string toString() { result = UnaryOperation.super.toString() }
+}
+
+/**
  * A binary operation. Either a binary arithmetic operation
  * (`BinaryArithmeticOperation`), a binary bitwise operation
  * (`BinaryBitwiseOperation`), a comparison operation (`ComparisonOperation`),

@@ -20,7 +20,8 @@ class ArithmeticOperation extends Operation, @arith_op_expr {
  * (`UnaryMinusExpr`), a unary plus operation (`UnaryPlusExpr`),
  * or a mutator operation (`MutatorOperation`).
  */
-class UnaryArithmeticOperation extends ArithmeticOperation, UnaryOperation, @un_arith_op_expr { }
+class UnaryArithmeticOperation extends ArithmeticOperation, UnaryCallOperation, @un_arith_op_expr {
+}
 
 /**
  * A unary minus operation, for example `-x`.
@@ -44,7 +45,7 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, @plus_expr {
  * A mutator operation. Either an increment operation (`IncrementOperation`)
  * or a decrement operation (`DecrementOperation`).
  */
-class MutatorOperation extends UnaryArithmeticOperation, @mut_op_expr { }
+class MutatorOperation extends UnaryArithmeticOperation, QualifiableExpr, @mut_op_expr { }
 
 /**
  * An increment operation. Either a postfix increment operation
