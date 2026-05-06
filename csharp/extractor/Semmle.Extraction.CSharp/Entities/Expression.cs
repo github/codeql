@@ -234,9 +234,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// </summary>
         /// <param name="node">The expression syntax node.</param>
         /// <returns>Returns the target method symbol, or null if it cannot be resolved.</returns>
-        protected IMethodSymbol? GetTargetSymbol(ExpressionSyntax node)
+        protected static IMethodSymbol? GetTargetSymbol(Context cx, ExpressionSyntax node)
         {
-            var si = Context.GetSymbolInfo(node);
+            var si = cx.GetSymbolInfo(node);
             if (si.Symbol is ISymbol symbol)
             {
                 var method = symbol as IMethodSymbol;
@@ -255,7 +255,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     .Where(method => method.Parameters.Length >= syntax.ArgumentList.Arguments.Count)
                     .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= syntax.ArgumentList.Arguments.Count);
 
-                return Context.ExtractionContext.IsStandalone ?
+                return cx.ExtractionContext.IsStandalone ?
                     candidates.FirstOrDefault() :
                     candidates.SingleOrDefault();
             }
@@ -281,7 +281,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="node">The expression.</param>
         public void AddOperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
-            var @operator = GetTargetSymbol(node);
+            var @operator = GetTargetSymbol(Context, node);
             if (@operator is IMethodSymbol method)
             {
                 var callType = GetCallType(Context, node);
@@ -312,9 +312,9 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <returns>The call type.</returns>
         public static CallType GetCallType(Context cx, ExpressionSyntax node)
         {
-            var @operator = cx.GetSymbolInfo(node);
+            var @operator = GetTargetSymbol(cx, node);
 
-            if (@operator.Symbol is IMethodSymbol method)
+            if (@operator is IMethodSymbol method)
             {
                 if (method.ContainingSymbol is ITypeSymbol containingSymbol && containingSymbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Dynamic)
                 {
