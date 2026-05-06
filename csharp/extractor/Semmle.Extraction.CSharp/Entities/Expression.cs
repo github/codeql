@@ -264,16 +264,6 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// Adapt the operator kind depending on whether it's a dynamic call or a user-operator call.
-        /// </summary>
-        /// <param name="cx"></param>
-        /// <param name="node"></param>
-        /// <param name="originalKind"></param>
-        /// <returns></returns>
-        public static ExprKind UnaryOperatorKind(Context cx, ExprKind originalKind, ExpressionSyntax node) =>
-            GetCallType(cx, node).AdjustKind(originalKind);
-
-        /// <summary>
         /// If the expression calls an operator, add an expr_call()
         /// to show the target of the call. Also note the dynamic method
         /// name if available.
