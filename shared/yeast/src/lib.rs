@@ -635,16 +635,46 @@ fn apply_rules_inner(
     Ok(vec![ast.nodes.len() - 1])
 }
 
-/// Configuration for a desugaring pass: a set of rules and an optional
-/// output node-types schema (in YAML format).
+/// One phase of a desugaring pass: a named bundle of rules that runs to
+/// completion (a full traversal applying its rules) before the next phase
+/// starts. Rules within a phase compete for matches as usual; rules in
+/// different phases never compete because they don't see each other's input.
+pub struct Phase {
+    /// Name used in error messages.
+    pub name: String,
+    pub rules: Vec<Rule>,
+}
+
+impl Phase {
+    pub fn new(name: impl Into<String>, rules: Vec<Rule>) -> Self {
+        Self {
+            name: name.into(),
+            rules,
+        }
+    }
+}
+
+/// Configuration for a desugaring pass: an ordered list of [`Phase`]s and
+/// an optional output node-types schema (in YAML format).
 ///
 /// When attached to a `LanguageSpec` (in the shared tree-sitter extractor),
 /// enables yeast-based AST rewriting before TRAP extraction. The same YAML
 /// is used both to validate TRAP output (via JSON conversion) and to
 /// resolve output-only node kinds and fields at runtime.
+///
+/// Construct with `DesugaringConfig::new()` and add phases via
+/// `add_phase`:
+///
+/// ```ignore
+/// let config = yeast::DesugaringConfig::new()
+///     .add_phase("cleanup", cleanup_rules)
+///     .add_phase("desugar", desugar_rules)
+///     .with_output_node_types_yaml(yaml);
+/// ```
+#[derive(Default)]
 pub struct DesugaringConfig {
-    /// Rules to apply during desugaring.
-    pub rules: Vec<Rule>,
+    /// Phases of rule application, applied in order.
+    pub phases: Vec<Phase>,
     /// Output node-types in YAML format. If `None`, the input grammar's
     /// node types are used (i.e. the desugared AST has the same node types
     /// as the tree-sitter grammar).
@@ -652,11 +682,16 @@ pub struct DesugaringConfig {
 }
 
 impl DesugaringConfig {
-    pub fn new(rules: Vec<Rule>) -> Self {
-        Self {
-            rules,
-            output_node_types_yaml: None,
-        }
+    /// Create an empty configuration. Add phases via [`add_phase`] and an
+    /// optional output schema via [`with_output_node_types_yaml`].
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Append a new phase with the given name and rules.
+    pub fn add_phase(mut self, name: impl Into<String>, rules: Vec<Rule>) -> Self {
+        self.phases.push(Phase::new(name, rules));
+        self
     }
 
     pub fn with_output_node_types_yaml(mut self, yaml: &'static str) -> Self {
@@ -678,17 +713,17 @@ impl DesugaringConfig {
 pub struct Runner<'a> {
     language: tree_sitter::Language,
     schema: schema::Schema,
-    rules: &'a [Rule],
+    phases: &'a [Phase],
 }
 
 impl<'a> Runner<'a> {
     /// Create a runner using the input grammar's schema for output.
-    pub fn new(language: tree_sitter::Language, rules: &'a [Rule]) -> Self {
+    pub fn new(language: tree_sitter::Language, phases: &'a [Phase]) -> Self {
         let schema = schema::Schema::from_language(&language);
         Self {
             language,
             schema,
-            rules,
+            phases,
         }
     }
 
@@ -696,12 +731,12 @@ impl<'a> Runner<'a> {
     pub fn with_schema(
         language: tree_sitter::Language,
         schema: &schema::Schema,
-        rules: &'a [Rule],
+        phases: &'a [Phase],
     ) -> Self {
         Self {
             language,
             schema: schema.clone(),
-            rules,
+            phases,
         }
     }
 
@@ -714,27 +749,17 @@ impl<'a> Runner<'a> {
         Ok(Self {
             language,
             schema,
-            rules: &config.rules,
+            phases: &config.phases,
         })
     }
 
     pub fn run_from_tree(&self, tree: &tree_sitter::Tree) -> Result<Ast, String> {
-        let fresh = tree_builder::FreshScope::new();
         let mut ast = Ast::from_tree_with_schema(self.schema.clone(), tree, &self.language);
-        let root = ast.get_root();
-        let res = apply_rules(self.rules, &mut ast, root, &fresh)?;
-        if res.len() != 1 {
-            return Err(format!(
-                "Expected exactly one result node, got {}",
-                res.len()
-            ));
-        }
-        ast.set_root(res[0]);
+        self.run_phases(&mut ast)?;
         Ok(ast)
     }
 
     pub fn run(&self, input: &str) -> Result<Ast, String> {
-        let fresh = tree_builder::FreshScope::new();
         let mut parser = tree_sitter::Parser::new();
         parser
             .set_language(&self.language)
@@ -743,15 +768,29 @@ impl<'a> Runner<'a> {
             .parse(input, None)
             .ok_or_else(|| "Failed to parse input".to_string())?;
         let mut ast = Ast::from_tree_with_schema(self.schema.clone(), &tree, &self.language);
-        let root = ast.get_root();
-        let res = apply_rules(self.rules, &mut ast, root, &fresh)?;
-        if res.len() != 1 {
-            return Err(format!(
-                "Expected exactly one result node, got {}",
-                res.len()
-            ));
-        }
-        ast.set_root(res[0]);
+        self.run_phases(&mut ast)?;
         Ok(ast)
+    }
+
+    /// Apply each phase in turn to the AST, threading the root through.
+    /// A single `FreshScope` is shared across phases so that fresh
+    /// identifiers generated in different phases don't collide.
+    fn run_phases(&self, ast: &mut Ast) -> Result<(), String> {
+        let fresh = tree_builder::FreshScope::new();
+        let mut root = ast.get_root();
+        for phase in self.phases {
+            let res = apply_rules(&phase.rules, ast, root, &fresh)
+                .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
+            if res.len() != 1 {
+                return Err(format!(
+                    "Phase `{}`: expected exactly one result node, got {}",
+                    phase.name,
+                    res.len()
+                ));
+            }
+            root = res[0];
+        }
+        ast.set_root(root);
+        Ok(())
     }
 }

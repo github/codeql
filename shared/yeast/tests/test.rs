@@ -12,12 +12,19 @@ fn parse_and_dump(input: &str) -> String {
     dump_ast(&ast, ast.get_root(), input)
 }
 
-/// Helper: parse Ruby source with a custom output schema and rules, return dump.
+/// Helper: parse Ruby source with a custom output schema and a single
+/// phase of rules, return dump.
 fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
+    run_phased_and_dump(input, vec![Phase::new("test", rules)])
+}
+
+/// Helper: parse Ruby source with a custom output schema and multiple
+/// rule phases, return dump.
+fn run_phased_and_dump(input: &str, phases: Vec<Phase>) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let runner = Runner::with_schema(lang, &schema, &rules);
+    let runner = Runner::with_schema(lang, &schema, &phases);
     let ast = runner.run(input).unwrap();
     dump_ast(&ast, ast.get_root(), input)
 }
@@ -28,7 +35,8 @@ fn run_and_get_error(input: &str, rules: Vec<Rule>) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let runner = Runner::with_schema(lang, &schema, &rules);
+    let phases = vec![Phase::new("test", rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
     runner
         .run(input)
         .expect_err("expected runner to return an error")
@@ -436,6 +444,68 @@ fn test_default_rule_fires_at_most_once_per_node() {
             left: integer "1"
             right: identifier "x"
     "#,
+    );
+}
+
+// ---- Phase tests ----
+
+#[test]
+fn test_phased_desugaring() {
+    // Two phases that could equally have been a single one with chained
+    // rules. Splitting them makes the intent (cleanup, then desugar)
+    // explicit and provides per-phase error messages.
+    let cleanup = vec![yeast::rule!(
+        (assignment
+            left: (_) @left
+            right: (_) @right
+        )
+        => first_node
+    )];
+    let desugar = vec![yeast::rule!(
+        (first_node
+            left: (_) @left
+            right: (_) @right
+        )
+        => second_node
+    )];
+
+    let dump = run_phased_and_dump(
+        "x = 1",
+        vec![
+            Phase::new("cleanup", cleanup),
+            Phase::new("desugar", desugar),
+        ],
+    );
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          second_node
+            left: identifier "x"
+            right: integer "1"
+    "#,
+    );
+}
+
+#[test]
+fn test_phase_error_includes_phase_name() {
+    // A repeated rule that loops; the error message should identify the
+    // phase that tripped the depth limit.
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![Phase::new("buggy", vec![swap_assignment_rule().repeated()])];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+    let err = runner
+        .run("x = 1")
+        .expect_err("expected runner to return an error");
+    assert!(
+        err.contains("Phase `buggy`"),
+        "error should mention the failing phase, got: {err}"
+    );
+    assert!(
+        err.contains("exceeded maximum rewrite depth"),
+        "error should mention the depth limit, got: {err}"
     );
 }
 

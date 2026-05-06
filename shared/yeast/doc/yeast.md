@@ -319,11 +319,16 @@ capture name to a field of the same name on the output node.
 ## Integration with the extractor
 
 A YEAST desugaring pass is configured with a [`DesugaringConfig`], which
-carries the rules and an optional output node-types schema (in YAML
-format). Attach it to a language spec to enable rewriting:
+carries one or more named [`Phase`]s of rules and an optional output
+node-types schema (in YAML format). Each phase is a complete traversal
+that runs to completion before the next phase starts; rules in different
+phases never compete for matches. Attach the config to a language spec
+to enable rewriting:
 
 ```rust
-let desugar = yeast::DesugaringConfig::new(my_rules)
+let desugar = yeast::DesugaringConfig::new()
+    .add_phase("cleanup", cleanup_rules())
+    .add_phase("desugar", desugar_rules())
     .with_output_node_types_yaml(include_str!("output-node-types.yml"));
 
 let lang = simple::LanguageSpec {
@@ -334,6 +339,9 @@ let lang = simple::LanguageSpec {
     file_globs: vec!["*.rb".into()],
 };
 ```
+
+A single-phase config is just `.add_phase(...)` called once. Phase names
+appear in error messages so you can tell which phase failed.
 
 The same YAML node-types is used for both the runtime yeast `Schema` (so
 rules can refer to output-only kinds and fields) and TRAP validation (it
