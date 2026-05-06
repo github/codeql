@@ -78,7 +78,7 @@ fn test_passwords(
 	sink(encoded_password);
 	sink(password_hash);
 	sink(passwordFile);
-	sink(coauthor); // $ SPURIOUS: sensitive=password
+	sink(coauthor);
 
 	sink(ms.harmless.as_str());
 	sink(ms.password_file_path.as_str());

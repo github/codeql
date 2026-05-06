@@ -146,12 +146,12 @@ module HeuristicNames {
    *
    * We also filter out common words like `certain` and `concert`, since otherwise these could
    * be matched by the certificate regular expressions. Same for `accountable` (account),
-   * `secretarial` (secret), `wildcard` (card).
+   * `secretarial` (secret), `wildcard` (card), `coauthor` (oauth).
    */
   string notSensitiveRegexp() {
     result =
       "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|(?<!pass)code)|"
-        + "certain|concert|secretar|wildcard|account(ant|ab|ing|ed)|(?<!pro)file|path|([_-]|\\b)url).*"
+        + "certain|concert|secretar|wildcard|coauthor|account(ant|ab|ing|ed)|(?<!pro)file|path|([_-]|\\b)url).*"
   }
 
   /**
