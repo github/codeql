@@ -58,7 +58,7 @@ fn test_passwords(
 	sink(oauth); // $ sensitive=password
 	sink(one_time_code); // $ MISSING: sensitive=password
 	sink(api_token); // $ sensitive=password
-	sink(api_tok); // $ MISSING: sensitive=password
+	sink(api_tok); // $ sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
 	sink(ms.password.as_str()); // $ sensitive=password

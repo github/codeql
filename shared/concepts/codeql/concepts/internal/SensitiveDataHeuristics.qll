@@ -76,7 +76,7 @@ module HeuristicNames {
   string maybePassword() {
     result =
       "(?is).*(pass(wd|word|code|.?phrase)(?!.*question)|(auth(entication|ori[sz]ation)?).?key|oauth|"
-        + "api.?(key|token)|([_-]|\\b)mfa([_-]|\\b)).*"
+        + "api.?(key|tok)|([_-]|\\b)mfa([_-]|\\b)).*"
   }
 
   /**
