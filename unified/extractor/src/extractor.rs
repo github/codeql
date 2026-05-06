@@ -3,6 +3,7 @@ use std::path::PathBuf;
 
 use codeql_extractor::extractor::simple;
 use codeql_extractor::trap;
+use yeast::{rule, DesugaringConfig};
 
 #[derive(Args)]
 pub struct Options {
@@ -19,8 +20,20 @@ pub struct Options {
     file_list: PathBuf,
 }
 
+fn swift_desugaring_rules() -> Vec<yeast::Rule> {
+    vec![
+        rule!(
+            (additive_expression)
+            =>
+            (simple_identifier "blah")
+        ),
+    ]
+}
+
 pub fn run(options: Options) -> std::io::Result<()> {
     codeql_extractor::extractor::set_tracing_level("ql");
+
+    let swift_desugar = DesugaringConfig::new(swift_desugaring_rules());
 
     let extractor = simple::Extractor {
         prefix: "unified".to_string(),
@@ -30,7 +43,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 ts_language: tree_sitter_swift::LANGUAGE.into(),
                 node_types: tree_sitter_swift::NODE_TYPES,
                 file_globs: vec!["*.swift".into(), "*.swiftinterface".into()],
-                desugar: None,
+                desugar: Some(swift_desugar),
             },
         ],
         trap_dir: options.output_dir,

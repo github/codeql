@@ -454,6 +454,7 @@ dependencies = [
  "tree-sitter",
  "tree-sitter-embedded-template",
  "tree-sitter-swift",
+ "yeast",
 ]
 
 [[package]]

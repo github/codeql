@@ -75,9 +75,9 @@ identifier
 | test.swift:73:23:73:29 | Element | Element |
 | test.swift:74:10:74:17 | isSorted | isSorted |
 | test.swift:75:13:75:13 | i | i |
-| test.swift:75:23:75:27 | count | count |
+| test.swift:75:23:75:31 | blah | blah |
 | test.swift:76:21:76:21 | i | i |
-| test.swift:76:31:76:31 | i | i |
+| test.swift:76:31:76:35 | blah | blah |
 | test.swift:85:6:85:12 | combine | combine |
 | test.swift:85:17:85:17 | _ | _ |
 | test.swift:85:19:85:24 | values | values |
@@ -98,3 +98,4 @@ func
 | test.swift:62:5:69:5 | FunctionDeclaration |
 | test.swift:74:5:81:5 | FunctionDeclaration |
 | test.swift:85:1:88:1 | FunctionDeclaration |
+add

@@ -15,5 +15,6 @@ codeql_rust_binary(
         normal = True,
     ) + [
         "//shared/tree-sitter-extractor",
+        "//shared/yeast",
     ],
 )
