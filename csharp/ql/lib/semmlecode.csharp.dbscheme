@@ -1198,6 +1198,7 @@ case @expr.kind of
 | 136 = @collection_expr
 | 137 = @spread_element_expr
 | 138 = @interpolated_string_insert_expr
+| 139 = @not_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
@@ -1216,7 +1217,7 @@ case @expr.kind of
               | @string_literal_expr | @null_literal_expr;
 
 @assign_expr = @simple_assign_expr | @assign_op_expr | @local_var_decl_expr;
-@assign_op_call_expr = @assign_arith_expr | @assign_bitwise_expr
+@assign_op_call_expr = @assign_arith_expr | @assign_bitwise_expr;
 @assign_op_expr =  @assign_op_call_expr | @assign_event_expr | @assign_coalesce_expr;
 @assign_event_expr = @add_event_expr | @remove_event_expr;
 
@@ -1263,6 +1264,7 @@ case @expr.kind of
 
 @ternary_log_op_expr = @conditional_expr;
 @bin_log_op_expr = @log_and_expr | @log_or_expr | @null_coalescing_expr;
+@un_not_op_expr = @log_not_expr | @not_expr;
 @un_log_op_expr = @log_not_expr;
 @log_expr = @un_log_op_expr | @bin_log_op_expr | @ternary_log_op_expr;
 
@@ -1279,12 +1281,13 @@ case @expr.kind of
 
 @ternary_op = @ternary_log_op_expr;
 @bin_op = @assign_expr | @bin_arith_op_expr | @bin_log_op_expr | @bin_bit_op_expr | @comp_expr;
-@un_op = @un_arith_op_expr | @un_log_op_expr | @un_bit_op_expr | @sizeof_expr
+@un_op_call_expr = @un_arith_op_expr | @un_not_op_expr | @un_bit_op_expr;
+@un_op = @un_op_call_expr | @sizeof_expr
        | @pointer_indirection_expr | @address_of_expr;
 
 @anonymous_function_expr = @lambda_expr | @anonymous_method_expr;
 
-@op_invoke_expr = @operator_invocation_expr | @assign_op_call_expr
+@op_invoke_expr = @operator_invocation_expr | @assign_op_call_expr | @un_op_call_expr;
 @call = @method_invocation_expr | @constructor_init_expr | @op_invoke_expr
       | @delegate_invocation_expr | @object_creation_expr | @call_access_expr
       | @local_function_invocation_expr | @function_pointer_invocation_expr;
@@ -1311,7 +1314,7 @@ implicitly_typed_object_creation(
   unique int id: @implicitly_typeable_object_creation_expr ref);
 
 mutator_invocation_mode(
-  unique int id: @operator_invocation_expr ref,
+  unique int id: @mut_op_expr ref,
   int mode: int ref /* prefix = 1, postfix = 2*/);
 
 expr_value(
