@@ -368,7 +368,7 @@ fn test_private_info(
 	sink(info.financials.accounting);
 	sink(info.financials.unaccounted);
 	sink(info.financials.multiband);
-	sink(info.financials.wildcard_not_matched); // $ SPURIOUS: sensitive=private
+	sink(info.financials.wildcard_not_matched);
 
 	sink(ContactDetails::FavouriteColor("blue".to_string()));
 }

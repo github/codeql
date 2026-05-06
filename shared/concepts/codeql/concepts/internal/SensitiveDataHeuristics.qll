@@ -145,13 +145,13 @@ module HeuristicNames {
    * suggesting nouns within the string do not represent the meaning of the whole string (e.g. a URL or a SQL query).
    *
    * We also filter out common words like `certain` and `concert`, since otherwise these could
-   * be matched by the certificate regular expressions. Same for `accountable` (account), or
-   * `secretarial` (secret).
+   * be matched by the certificate regular expressions. Same for `accountable` (account),
+   * `secretarial` (secret), `wildcard` (card).
    */
   string notSensitiveRegexp() {
     result =
       "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|(?<!pass)code)|"
-        + "certain|concert|secretar|account(ant|ab|ing|ed)|file|path|([_-]|\\b)url).*"
+        + "certain|concert|secretar|wildcard|account(ant|ab|ing|ed)|file|path|([_-]|\\b)url).*"
   }
 
   /**
