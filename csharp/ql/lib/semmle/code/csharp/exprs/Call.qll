@@ -545,7 +545,7 @@ class ExtensionOperatorCall extends OperatorCall {
 }
 
 /**
- * A call to a user-defined mutator operator, for example `a++` on
+ * A call to a mutator operator, for example `a++` on
  * line 7 in
  *
  * ```csharp
@@ -560,7 +560,7 @@ class ExtensionOperatorCall extends OperatorCall {
  * }
  * ```
  */
-class MutatorOperatorCall extends OperatorCall {
+class MutatorOperatorCall extends MutatorOperation {
   MutatorOperatorCall() { mutator_invocation_mode(this, _) }
 
   /** Holds if the operator is in prefix position. */
