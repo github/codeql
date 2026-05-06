@@ -58,10 +58,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return Invocation.Create(info);
 
                     case SyntaxKind.PostIncrementExpression:
-                        return PostfixUnary.Create(info.SetKind(ExprKind.POST_INCR), ((PostfixUnaryExpressionSyntax)info.Node).Operand);
+                        return PostfixUnary.Create(info.SetKind(ExprKind.POST_INCR));
 
                     case SyntaxKind.PostDecrementExpression:
-                        return PostfixUnary.Create(info.SetKind(ExprKind.POST_DECR), ((PostfixUnaryExpressionSyntax)info.Node).Operand);
+                        return PostfixUnary.Create(info.SetKind(ExprKind.POST_DECR));
 
                     case SyntaxKind.AwaitExpression:
                         return Await.Create(info);
@@ -254,7 +254,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return Switch.Create(info);
 
                     case SyntaxKind.SuppressNullableWarningExpression:
-                        return PostfixUnary.Create(info.SetKind(ExprKind.SUPPRESS_NULLABLE_WARNING), ((PostfixUnaryExpressionSyntax)info.Node).Operand);
+                        return PostfixUnary.Create(info.SetKind(ExprKind.SUPPRESS_NULLABLE_WARNING));
 
                     case SyntaxKind.WithExpression:
                         return WithExpression.Create(info);

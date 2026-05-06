@@ -6,28 +6,20 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
     internal class Unary : Expression<PrefixUnaryExpressionSyntax>
     {
-        private Unary(ExpressionNodeInfo info, ExprKind kind)
-            : base(info.SetKind(UnaryOperatorKind(info.Context, info.Kind, info.Node)))
+        private Unary(ExpressionNodeInfo info)
+            : base(info)
         {
-            operatorKind = kind;
         }
 
-        private readonly ExprKind operatorKind;
 
-        public static Unary Create(ExpressionNodeInfo info)
-        {
-            var ret = new Unary(info, info.Kind);
-            ret.TryPopulate();
-            return ret;
-        }
+        public static Expression Create(ExpressionNodeInfo info) => new Unary(info).TryPopulate();
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(Context, Syntax.Operand, this, 0);
             AddOperatorCall(trapFile, Syntax);
 
-            if ((operatorKind == ExprKind.PRE_INCR || operatorKind == ExprKind.PRE_DECR) &&
-                Kind == ExprKind.OPERATOR_INVOCATION)
+            if (Kind == ExprKind.PRE_INCR || Kind == ExprKind.PRE_DECR)
             {
                 trapFile.mutator_invocation_mode(this, 1);
             }
