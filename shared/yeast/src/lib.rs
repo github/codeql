@@ -471,11 +471,29 @@ pub type Transform = Box<
 pub struct Rule {
     query: QueryNode,
     transform: Transform,
+    /// If true, after this rule fires on a node the engine will try to
+    /// re-apply this same rule on the result root. Defaults to false:
+    /// each rule fires at most once on a given node, which prevents
+    /// accidental loops where a rule's output matches its own query.
+    repeated: bool,
 }
 
 impl Rule {
     pub fn new(query: QueryNode, transform: Transform) -> Self {
-        Self { query, transform }
+        Self {
+            query,
+            transform,
+            repeated: false,
+        }
+    }
+
+    /// Mark this rule as allowed to fire multiple times on the same node.
+    /// Use when the rule is intentionally iterative (its output may match
+    /// its own query). Without this, a rule fires at most once per node;
+    /// other rules can still fire on the result.
+    pub fn repeated(mut self) -> Self {
+        self.repeated = true;
+        self
     }
 
     fn try_rule(
@@ -537,7 +555,7 @@ fn apply_rules(
     fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_rules_inner(&index, ast, id, fresh, 0)
+    apply_rules_inner(&index, ast, id, fresh, 0, None)
 }
 
 fn apply_rules_inner(
@@ -546,6 +564,7 @@ fn apply_rules_inner(
     id: Id,
     fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
+    skip_rule: Option<*const Rule>,
 ) -> Result<Vec<Id>, String> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
@@ -556,7 +575,16 @@ fn apply_rules_inner(
 
     let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
     for rule in index.rules_for_kind(node_kind) {
+        let rule_ptr = *rule as *const Rule;
+        if Some(rule_ptr) == skip_rule {
+            continue;
+        }
         if let Some(result_node) = rule.try_rule(ast, id, fresh)? {
+            // For non-repeated rules, suppress further application of *this*
+            // rule on the result root, so a rule whose output matches its own
+            // query doesn't loop. Other rules and child traversal are
+            // unaffected.
+            let next_skip = if rule.repeated { None } else { Some(rule_ptr) };
             let mut results = Vec::new();
             for node in result_node {
                 results.extend(apply_rules_inner(
@@ -565,6 +593,7 @@ fn apply_rules_inner(
                     node,
                     fresh,
                     rewrite_depth + 1,
+                    next_skip,
                 )?);
             }
             return Ok(results);
@@ -579,13 +608,14 @@ fn apply_rules_inner(
         .collect();
 
     // recursively descend into all the fields
-    // Child traversal does not increment rewrite depth
+    // Child traversal does not increment rewrite depth and starts fresh
+    // (no rule is skipped on child subtrees).
     let mut changed = false;
     let mut new_fields = BTreeMap::new();
     for (field_id, children) in field_entries {
         let mut new_children = Vec::new();
         for child_id in children {
-            let result = apply_rules_inner(index, ast, child_id, fresh, rewrite_depth)?;
+            let result = apply_rules_inner(index, ast, child_id, fresh, rewrite_depth, None)?;
             if result.len() != 1 || result[0] != child_id {
                 changed = true;
             }

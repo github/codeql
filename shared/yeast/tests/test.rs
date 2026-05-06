@@ -22,6 +22,18 @@ fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
     dump_ast(&ast, ast.get_root(), input)
 }
 
+/// Helper: like `run_and_dump`, but returns the runner error (if any)
+/// instead of unwrapping.
+fn run_and_get_error(input: &str, rules: Vec<Rule>) -> String {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let runner = Runner::with_schema(lang, &schema, &rules);
+    runner
+        .run(input)
+        .expect_err("expected runner to return an error")
+}
+
 /// Assert that a dump equals the expected string, treating the expected
 /// string as an indented multiline literal: leading/trailing blank lines
 /// are stripped, and the common leading indentation is removed from every
@@ -378,6 +390,51 @@ fn test_chained_rules_output_only_kind() {
           second_node
             left: identifier "x"
             right: integer "1"
+    "#,
+    );
+}
+
+// A rule that swaps `assignment.left` and `assignment.right`. Each
+// application produces another `assignment` whose query the rule
+// matches again, so without the once-per-node default it would loop.
+fn swap_assignment_rule() -> Rule {
+    yeast::rule!(
+        (assignment
+            left: (_) @left
+            right: (_) @right
+        )
+        =>
+        (assignment
+            left: {right}
+            right: {left}
+        )
+    )
+}
+
+#[test]
+fn test_repeated_rule_hits_depth_limit() {
+    // With `.repeated()` the rule is allowed to fire on its own output,
+    // which cycles forever and trips the rewrite-depth safety net.
+    let err = run_and_get_error("x = 1", vec![swap_assignment_rule().repeated()]);
+    assert!(
+        err.contains("exceeded maximum rewrite depth"),
+        "expected depth-limit error, got: {err}"
+    );
+}
+
+#[test]
+fn test_default_rule_fires_at_most_once_per_node() {
+    // Without `.repeated()` (the default), a rule fires at most once on a
+    // given node. The swap therefore happens exactly once and the desugaring
+    // terminates cleanly.
+    let dump = run_and_dump("x = 1", vec![swap_assignment_rule()]);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          assignment
+            left: integer "1"
+            right: identifier "x"
     "#,
     );
 }

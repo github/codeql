@@ -61,6 +61,22 @@ rule matches, the node is kept and its children are processed recursively.
 A rule can replace one node with zero nodes (deletion), one node (rewriting),
 or multiple nodes (expansion).
 
+By default a rule fires **at most once on a given node**: after firing, the
+engine will not re-try that same rule on the result root. Other rules may
+still fire on the result, and the rule may still fire on different nodes
+(including the result's children). To opt into iterative behaviour — when a
+rule's output is intentionally re-matched by the same rule — call
+`.repeated()` on the constructed `Rule`:
+
+```rust
+let r = yeast::rule!((foo ...) => (foo ...)).repeated();
+```
+
+Without `.repeated()`, a rule whose output happens to match its own query
+simply fires once and stops. With `.repeated()`, the rule is allowed to
+re-match indefinitely; the runner still enforces a global rewrite-depth
+limit (currently 100) as a safety net against accidental cycles.
+
 ## Query language
 
 Queries use a syntax inspired by
