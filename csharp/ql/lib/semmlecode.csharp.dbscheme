@@ -1216,7 +1216,7 @@ case @expr.kind of
               | @string_literal_expr | @null_literal_expr;
 
 @assign_expr = @simple_assign_expr | @assign_op_expr | @local_var_decl_expr;
-@assign_op_call_expr = @assign_arith_expr | @assign_bitwise_expr
+@assign_op_call_expr = @assign_arith_expr | @assign_bitwise_expr;
 @assign_op_expr =  @assign_op_call_expr | @assign_event_expr | @assign_coalesce_expr;
 @assign_event_expr = @add_event_expr | @remove_event_expr;
 
@@ -1284,7 +1284,7 @@ case @expr.kind of
 
 @anonymous_function_expr = @lambda_expr | @anonymous_method_expr;
 
-@op_invoke_expr = @operator_invocation_expr | @assign_op_call_expr
+@op_invoke_expr = @operator_invocation_expr | @assign_op_call_expr | @mut_op_expr;
 @call = @method_invocation_expr | @constructor_init_expr | @op_invoke_expr
       | @delegate_invocation_expr | @object_creation_expr | @call_access_expr
       | @local_function_invocation_expr | @function_pointer_invocation_expr;
@@ -1339,7 +1339,8 @@ dynamic_member_name(
 @qualifiable_expr = @member_access_expr
                   | @method_invocation_expr
                   | @element_access_expr
-                  | @assign_op_call_expr;
+                  | @assign_op_call_expr
+                  | @mut_op_expr;
 
 conditional_access(
   unique int id: @qualifiable_expr ref);
