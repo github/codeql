@@ -4,7 +4,7 @@
 
 named:
   program:
-    stmt*: [assignment, call, identifier, for]
+    stmt*: [assignment, call, identifier, for, first_node, second_node]
 
   assignment:
     left: [identifier, left_assignment_list]
@@ -49,6 +49,16 @@ named:
 
   identifier:
   integer:
+
+  # Output-only kinds, used by tests of chained desugaring rules.
+  # Neither exists in the input tree-sitter-ruby grammar.
+  first_node:
+    left: [identifier, integer]
+    right: [identifier, integer]
+
+  second_node:
+    left: [identifier, integer]
+    right: [identifier, integer]
 
 unnamed:
   - "="

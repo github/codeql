@@ -347,6 +347,41 @@ fn test_shorthand_rule() {
     );
 }
 
+#[test]
+fn test_chained_rules_output_only_kind() {
+    // Exercise rule chaining where an intermediate kind exists only in the
+    // output schema (not in the input tree-sitter grammar):
+    //   assignment        → first_node          (input → output-only)
+    //   first_node        → second_node         (output-only → output-only)
+    // The matcher must look up `first_node` against the schema, which only
+    // knows about it via the YAML node-types file.
+    let assignment_to_first = yeast::rule!(
+        (assignment
+            left: (_) @left
+            right: (_) @right
+        )
+        => first_node
+    );
+    let first_to_second = yeast::rule!(
+        (first_node
+            left: (_) @left
+            right: (_) @right
+        )
+        => second_node
+    );
+
+    let dump = run_and_dump("x = 1", vec![assignment_to_first, first_to_second]);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          second_node
+            left: identifier "x"
+            right: integer "1"
+    "#,
+    );
+}
+
 // ---- Cursor tests ----
 
 #[test]
