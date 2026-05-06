@@ -313,8 +313,8 @@ fn test_private_info(
 
 	sink(info.financials.my_bank_account_number.as_str()); // $ sensitive=private SPURIOUS: sensitive=id
 	sink(info.financials.credit_card_no.as_str()); // $ sensitive=private
-	sink(info.financials.card_no.as_str()); // $ MISSING: sensitive=private
-	sink(info.financials.cardNumber.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.card_no.as_str()); // $ sensitive=private
+	sink(info.financials.cardNumber.as_str()); // $ sensitive=private
 	sink(info.financials.card_security_code.as_str()); // $ MISSING: sensitive=private
 	sink(info.financials.credit_rating); // $ sensitive=private
 	sink(info.financials.user_ccn.as_str()); // $ sensitive=private
@@ -368,7 +368,7 @@ fn test_private_info(
 	sink(info.financials.accounting);
 	sink(info.financials.unaccounted);
 	sink(info.financials.multiband);
-	sink(info.financials.wildcard_not_matched);
+	sink(info.financials.wildcard_not_matched); // $ SPURIOUS: sensitive=private
 
 	sink(ContactDetails::FavouriteColor("blue".to_string()));
 }

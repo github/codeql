@@ -104,7 +104,7 @@ module HeuristicNames {
         // Geographic location - where the user is (or was)
         "latitude|longitude|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "(credit|debit|bank|visa).?(card|num|no|acc(ou)?nt)|acc(ou)?nt.?(no|num|credit)|routing.?num|"
+        "(credit|debit|bank|visa).?(card|num|no|acc(ou)?nt)|(card|acc(ou)?nt).?(no|num|credit)|routing.?num|"
         + "salary|billing|beneficiary|credit.?(rating|score)|([_-]|\\b)(ccn|cvv|iban)([_-]|\\b)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
         // "e(mail|_mail)|" + // this seems too noisy
