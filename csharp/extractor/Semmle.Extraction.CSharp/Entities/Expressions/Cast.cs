@@ -10,7 +10,17 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private const int ExpressionIndex = 0;
         private const int TypeAccessIndex = 1;
 
-        private Cast(ExpressionNodeInfo info) : base(info.SetKind(UnaryOperatorKind(info.Context, ExprKind.CAST, info.Node))) { }
+        private Cast(ExpressionNodeInfo info) : base(info.SetKind(GetKind(info.Context, ExprKind.CAST, info.Node))) { }
+
+        /// <summary>
+        /// Adapt the operator kind depending on whether it's a dynamic call or a user-operator call.
+        /// </summary>
+        /// <param name="cx"></param>
+        /// <param name="node"></param>
+        /// <param name="originalKind"></param>
+        /// <returns></returns>
+        public static ExprKind GetKind(Context cx, ExprKind originalKind, ExpressionSyntax node) =>
+            GetCallType(cx, node).AdjustKind(originalKind);
 
         public static Expression Create(ExpressionNodeInfo info) => new Cast(info).TryPopulate();
 
