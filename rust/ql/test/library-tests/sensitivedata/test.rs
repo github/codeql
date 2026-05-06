@@ -41,7 +41,7 @@ fn test_passwords(
 	sink(my_password); // $ sensitive=password
 	sink(password_str); // $ sensitive=password
 	sink(password_confirmation); // $ sensitive=password
-	sink(profile_password); // $ MISSING: sensitive=password
+	sink(profile_password); // $ sensitive=password
 	sink(unencrypted_password); // $ MISSING: sensitive=password
 	sink(unencoded_password); // $ MISSING: sensitive=password
 	sink(pass_phrase); // $ sensitive=password
