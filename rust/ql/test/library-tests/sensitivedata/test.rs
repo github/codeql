@@ -315,7 +315,7 @@ fn test_private_info(
 	sink(info.financials.credit_card_no.as_str()); // $ sensitive=private
 	sink(info.financials.card_no.as_str()); // $ sensitive=private
 	sink(info.financials.cardNumber.as_str()); // $ sensitive=private
-	sink(info.financials.card_security_code.as_str()); // $ MISSING: sensitive=private
+	sink(info.financials.card_security_code.as_str()); // $ sensitive=private
 	sink(info.financials.credit_rating); // $ sensitive=private
 	sink(info.financials.user_ccn.as_str()); // $ sensitive=private
 	sink(info.financials.cvv.as_str()); // $ sensitive=private
