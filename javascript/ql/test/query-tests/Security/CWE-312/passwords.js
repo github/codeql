@@ -38,13 +38,13 @@
     console.log(login.wrappedJSObject.encryptedPassword);
     console.log(HTML5QQ.encodedPassword);
 
-    console.log({password: crypt(pw)});
+    console.log({password: crypt(pw)}); // $ SPURIOUS: Alert[js/clear-text-logging]
     var actually_secure_password = crypt(password);
-    console.log(actually_secure_password);
+    console.log(actually_secure_password); // $ SPURIOUS: Alert[js/clear-text-logging]
 
     var user1 = {};
-    user1.crypted_password = x();
-    console.log(user1);
+    user1.crypted_password = x(); // $ SPURIOUS: Source[js/clear-text-logging]
+    console.log(user1); // $ SPURIOUS: Alert[js/clear-text-logging]
 
     var user2 = {};
     user2.password = hash();
