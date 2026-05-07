@@ -1,6 +1,6 @@
 #![cfg(test)]
 
-use yeast::dump::dump_ast;
+use yeast::dump::{dump_ast, dump_ast_with_type_errors};
 use yeast::*;
 
 const OUTPUT_SCHEMA_YAML: &str = include_str!("node-types.yml");
@@ -40,6 +40,35 @@ fn run_and_get_error(input: &str, rules: Vec<Rule>) -> String {
     runner
         .run(input)
         .expect_err("expected runner to return an error")
+}
+
+/// Helper: parse Ruby source with no rules and dump with schema type errors.
+fn parse_and_dump_typed(input: &str, schema_yaml: &str) -> String {
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run(input).unwrap();
+    let schema = yeast::node_types_yaml::schema_from_yaml(schema_yaml).unwrap();
+    dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
+}
+
+/// Helper: parse Ruby source with no rules and dump with schema type errors,
+/// building schema with language IDs so field checks align with parser fields.
+fn parse_and_dump_typed_with_language(input: &str, schema_yaml: &str) -> String {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let runner = Runner::new(lang.clone(), &[]);
+    let ast = runner.run(input).unwrap();
+    let schema = yeast::node_types_yaml::schema_from_yaml_with_language(schema_yaml, &lang)
+        .unwrap();
+    dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
+}
+
+/// Helper: parse Ruby source with custom rules and dump with schema type errors.
+fn run_and_dump_typed(input: &str, rules: Vec<Rule>, schema_yaml: &str) -> String {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema = yeast::node_types_yaml::schema_from_yaml(schema_yaml).unwrap();
+    let phases = vec![Phase::new("test", rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+    let ast = runner.run(input).unwrap();
+    dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
 }
 
 /// Assert that a dump equals the expected string, treating the expected
@@ -123,6 +152,85 @@ fn test_parse_for_loop() {
                 identifier "list"
     "#,
     );
+}
+
+#[test]
+fn test_dump_highlights_type_errors_inline() {
+        let schema_yaml = r#"
+named:
+    program:
+        $children*: assignment
+    assignment:
+        left: identifier
+        right: identifier
+    identifier:
+"#;
+
+        let dump = parse_and_dump_typed("x = 1", schema_yaml);
+        assert!(dump.contains("integer \"1\" <-- ERROR:"));
+}
+
+#[test]
+fn test_dump_reports_preserved_unknown_kind_after_transformation() {
+        let schema_yaml = r#"
+named:
+    program:
+        $children*: assignment
+    assignment:
+        left: identifier
+        right: identifier
+    identifier:
+"#;
+
+        // This rewrite runs and preserves the RHS node kind via capture.
+        // With schema above, preserving `integer` should be reported inline.
+        let rules = vec![yeast::rule!(
+                (assignment left: (_) @left right: (_) @right)
+                =>
+                (assignment
+                        left: {left}
+                        right: {right}
+                )
+        )];
+
+        let dump = run_and_dump_typed("x = 1", rules, schema_yaml);
+        assert!(dump.contains("integer \"1\" <-- ERROR:"));
+        assert!(dump.contains("node kind 'integer' not in schema"));
+}
+
+#[test]
+fn test_dump_reports_undeclared_field_on_node() {
+        let schema_yaml = r#"
+named:
+    program:
+        $children*: assignment
+    assignment:
+        left: identifier
+    identifier:
+"#;
+
+        let dump = parse_and_dump_typed_with_language("x = y", schema_yaml);
+        assert!(dump.contains("right: identifier \"y\" <-- ERROR:"));
+        assert!(dump.contains("the node 'assignment' has no field 'right'"));
+}
+
+#[test]
+fn test_dump_reports_disallowed_kind_in_field_type() {
+        let schema_yaml = r#"
+named:
+    program:
+        $children*: assignment
+    assignment:
+        left: identifier
+        right: identifier
+    identifier:
+    integer:
+"#;
+
+        let dump = parse_and_dump_typed_with_language("x = 1", schema_yaml);
+        assert!(dump.contains("right: integer \"1\" <-- ERROR:"));
+        assert!(dump.contains("should contain"));
+        assert!(dump.contains("but got integer"));
 }
 
 // ---- Query tests ----
