@@ -229,7 +229,7 @@ module Ast implements AstSig<Location> {
   final private class FinalCase = CS::Case;
 
   class Case extends FinalCase {
-    AstNode getAPattern() { result = this.getPattern() }
+    AstNode getPattern(int index) { result = this.getPattern() and index = 0 }
 
     Expr getGuard() { result = this.getCondition() }
 

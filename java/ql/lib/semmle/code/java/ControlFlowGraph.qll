@@ -153,10 +153,10 @@ private module Ast implements AstSig<Location> {
   }
 
   class Case extends AstNode instanceof J::SwitchCase {
-    /** Gets a pattern being matched by this case. */
-    AstNode getAPattern() {
-      result = this.(PatternCase).getAPattern() or
-      result = this.(ConstCase).getValue(_)
+    /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
+    AstNode getPattern(int index) {
+      result = this.(PatternCase).getPattern(index) or
+      result = this.(ConstCase).getValue(index)
     }
 
     /** Gets the guard expression of this case, if any. */
