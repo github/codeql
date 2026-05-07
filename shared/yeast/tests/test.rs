@@ -170,6 +170,135 @@ fn test_query_repeated_capture() {
     assert_eq!(captures.get_all("names").len(), 3);
 }
 
+#[test]
+fn test_capture_unnamed_node_parenthesized() {
+    // `("=") @op` captures the unnamed `=` token between left and right.
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("x = 1").unwrap();
+
+    let query = yeast::query!(
+        (assignment
+            left: (_) @lhs
+            ("=") @op
+            right: (_) @rhs
+        )
+    );
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let assignment_id = cursor.node().id();
+
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
+    assert!(matched);
+    let op_id = captures.get_var("op").unwrap();
+    let op_node = ast.get_node(op_id).unwrap();
+    assert_eq!(op_node.kind(), "=");
+    assert!(!op_node.is_named());
+}
+
+#[test]
+fn test_capture_unnamed_node_bare_literal() {
+    // `"=" @op` (without surrounding parens) is the same as `("=") @op`.
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("x = 1").unwrap();
+
+    let query = yeast::query!(
+        (assignment
+            left: (_) @lhs
+            "=" @op
+            right: (_) @rhs
+        )
+    );
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let assignment_id = cursor.node().id();
+
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
+    assert!(matched);
+    let op_id = captures.get_var("op").unwrap();
+    let op_node = ast.get_node(op_id).unwrap();
+    assert_eq!(op_node.kind(), "=");
+    assert!(!op_node.is_named());
+}
+
+#[test]
+fn test_bare_underscore_matches_unnamed() {
+    // Bare `_` matches any node, including unnamed tokens, while `(_)`
+    // matches only named nodes. Demonstrate by matching the unnamed `=`
+    // token in the implicit `child` field of an `assignment`.
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("x = 1").unwrap();
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let assignment_id = cursor.node().id();
+
+    // `(_)` skips unnamed children, so a query containing a single `(_)`
+    // bare pattern fails to match the assignment (whose only unfielded
+    // child is the unnamed `=`).
+    let query_named = yeast::query!((assignment (_) @any));
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query_named
+        .do_match(&ast, assignment_id, &mut captures)
+        .unwrap();
+    assert!(
+        !matched,
+        "(_) should skip the unnamed `=` and fail to match"
+    );
+
+    // Bare `_` accepts the next child whatever it is, so it matches the
+    // unnamed `=` token.
+    let query_any = yeast::query!((assignment _ @any));
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query_any
+        .do_match(&ast, assignment_id, &mut captures)
+        .unwrap();
+    assert!(matched, "_ should match the unnamed `=`");
+    let any_node = ast.get_node(captures.get_var("any").unwrap()).unwrap();
+    assert_eq!(any_node.kind(), "=");
+    assert!(!any_node.is_named());
+}
+
+#[test]
+fn test_bare_forms_in_field_position() {
+    // The bare `_` and bare-literal forms should be accepted as a
+    // field's value, not just in the bare-children position. This is
+    // syntactic sugar for `(_)` / `("…")` and goes through the same
+    // code paths.
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("x = 1").unwrap();
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let assignment_id = cursor.node().id();
+
+    // Bare `_` in field position. Captures the named `identifier "x"`
+    // child of the `left` field — bare `_` admits unnamed too, but the
+    // first child of `left` happens to be named.
+    let query = yeast::query!((assignment left: _ @lhs));
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
+    assert!(matched);
+    assert_eq!(
+        ast.get_node(captures.get_var("lhs").unwrap())
+            .unwrap()
+            .kind(),
+        "identifier"
+    );
+
+    // Bare literal in field position. Equivalent to `("=") @op`.
+    let query = yeast::query!((assignment child: "=" @op));
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
+    assert!(matched);
+    let op = ast.get_node(captures.get_var("op").unwrap()).unwrap();
+    assert_eq!(op.kind(), "=");
+    assert!(!op.is_named());
+}
+
 // ---- Tree builder tests ----
 
 #[test]

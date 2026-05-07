@@ -9,14 +9,21 @@ mod parse;
 ///
 /// ```text
 /// (_)                          - match any named node (skips unnamed tokens)
+/// _                            - match any node, named or unnamed
 /// (kind)                       - match a named node of the given kind
 /// ("literal")                  - match an unnamed token by its text
+/// "literal"                    - shorthand for `("literal")`
 /// (kind field: (pattern))      - match with named field
-/// (kind (pat) (pat)...)        - match unnamed children (after all fields)
+/// (kind field: _)              - bare `_` and bare literals work in field position too
+/// (kind (pat) (pat)...)        - match unnamed children
 /// (pattern) @capture           - capture the matched node
+/// "literal" @capture           - capture an unnamed token
+/// _ @capture                   - capture any node
 /// (pattern)* @capture          - capture each repeated match
 /// (pattern)?                   - zero or one
 /// ```
+///
+/// Named fields and bare child patterns may be intermixed in any order.
 #[proc_macro]
 pub fn query(input: TokenStream) -> TokenStream {
     let input2: TokenStream2 = input.into();

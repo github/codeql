@@ -38,7 +38,8 @@ fn parse_query_node(tokens: &mut Tokens) -> Result<TokenStream> {
     }
 }
 
-/// Parse a query atom: `(kind fields...)` or `(kind fields... bare_children...)`.
+/// Parse a query atom: a parenthesized node, a bare `_` (any node), or a
+/// bare string literal (unnamed token).
 /// Does not handle `@capture` — that's handled by the caller as a postfix.
 fn parse_query_atom(tokens: &mut Tokens) -> Result<TokenStream> {
     match tokens.peek() {
@@ -58,9 +59,17 @@ fn parse_query_atom(tokens: &mut Tokens) -> Result<TokenStream> {
             }
             Ok(result)
         }
+        Some(TokenTree::Ident(id)) if *id == "_" => {
+            tokens.next();
+            Ok(quote! { yeast::query::QueryNode::Any { match_unnamed: true } })
+        }
+        Some(TokenTree::Literal(_)) => {
+            let lit = expect_literal(tokens)?;
+            Ok(quote! { yeast::query::QueryNode::UnnamedNode { kind: #lit } })
+        }
         Some(tok) => Err(syn::Error::new_spanned(
             tok.clone(),
-            "expected `(` in query; use `(_) @name` to capture a wildcard",
+            "expected `(`, `_`, or string literal in query",
         )),
     }
 }
@@ -74,7 +83,7 @@ fn parse_query_node_inner(tokens: &mut Tokens) -> Result<TokenStream> {
         )),
         Some(TokenTree::Ident(id)) if *id == "_" => {
             tokens.next();
-            Ok(quote! { yeast::query::QueryNode::Any() })
+            Ok(quote! { yeast::query::QueryNode::Any { match_unnamed: false } })
         }
         Some(TokenTree::Literal(_)) => {
             let lit = expect_literal(tokens)?;
@@ -98,11 +107,14 @@ fn parse_query_node_inner(tokens: &mut Tokens) -> Result<TokenStream> {
     }
 }
 
-/// Parse zero or more field specifications and trailing bare patterns.
-/// Named fields: `name: pattern` or `name*: (list...)`.
-/// Bare patterns (no field name) become implicit `child` field entries.
+/// Parse zero or more field specifications and bare patterns.
+/// Named fields: `name: pattern`. Bare patterns (no field name) become
+/// implicit `child` field entries. Named fields and bare patterns may
+/// appear in any order; bare patterns are accumulated and emitted as a
+/// single `("child", ...)` entry.
 fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
     let mut fields = Vec::new();
+    let mut bare_children: Vec<TokenStream> = Vec::new();
     while tokens.peek().is_some() {
         if peek_is_field(tokens) {
             let field_name = expect_ident(tokens, "expected field name")?;
@@ -115,15 +127,20 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                 (#field_str, vec![yeast::query::QueryListElem::SingleNode(#child)])
             });
         } else {
-            // Bare patterns — collect as implicit `child` field
+            // Bare patterns — accumulate into the implicit `child` field.
+            // We don't break here, so we can interleave with named fields.
             let elems = parse_query_list(tokens)?;
-            if !elems.is_empty() {
-                fields.push(quote! {
-                    ("child", vec![#(#elems),*])
-                });
+            if elems.is_empty() {
+                // Nothing more we can parse at this level.
+                break;
             }
-            break;
+            bare_children.extend(elems);
         }
+    }
+    if !bare_children.is_empty() {
+        fields.push(quote! {
+            ("child", vec![#(#bare_children),*])
+        });
     }
     Ok(fields)
 }
@@ -178,10 +195,11 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
             continue;
         }
 
-        // Check for string literal (unnamed node)
+        // Check for string literal (unnamed node), optionally followed by @capture
         if peek_is_literal(tokens) {
             let lit = expect_literal(tokens)?;
             let node = quote! { yeast::query::QueryNode::UnnamedNode { kind: #lit } };
+            let node = maybe_wrap_capture(tokens, node)?;
             let elem = maybe_wrap_repetition(
                 tokens,
                 quote! {
@@ -192,10 +210,12 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
             continue;
         }
 
-        // Check for bare _ (wildcard), possibly followed by @capture
+        // Check for bare `_` (any node, named or unnamed), possibly followed by @capture.
+        // Distinct from `(_)` which only matches named nodes — this matches
+        // tree-sitter query semantics.
         if peek_is_underscore(tokens) {
             tokens.next();
-            let node = quote! { yeast::query::QueryNode::Any() };
+            let node = quote! { yeast::query::QueryNode::Any { match_unnamed: true } };
             let node = maybe_wrap_capture(tokens, node)?;
             let elem = maybe_wrap_repetition(
                 tokens,

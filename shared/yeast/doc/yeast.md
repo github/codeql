@@ -103,19 +103,30 @@ Captures bind matched nodes to names for use in the transform. A capture
 (identifier) @name          // capture an identifier node
 (_) @value                  // capture any named node
 (identifier)* @items        // capture each repeated match
+("=") @op                   // capture an unnamed token by its text
+"=" @op                     // shorthand for the line above
+_ @anything                 // capture any node, named or unnamed
 ```
 
-### Unnamed children
+### Named vs unnamed children
 
-Patterns that appear after all named fields match unnamed (positional)
-children. Named node patterns like `(_)` automatically skip unnamed tokens
-(keywords, operators, punctuation), matching tree-sitter semantics:
+The two wildcard forms `(_)` and bare `_` differ:
+
+- `(_)` matches only **named** nodes. When used as a positional pattern,
+  unnamed children (keywords, operators, punctuation) are skipped over to
+  find the next named child.
+- Bare `_` matches **any** node, named or unnamed, taking whatever is next
+  in the child list.
+
+Similarly, named-kind patterns like `(call ...)` skip unnamed children;
+unnamed-kind patterns like `("end")` or `"end"` consume the next child
+unconditionally:
 
 ```rust
 (for
-    pattern: (_) @pat             // named field
-    value: (in (_) @val)          // "in" token is skipped automatically
-    body: (do (_)* @body)         // "do" and "end" tokens skipped
+    pattern: (_) @pat             // named field, captures any named node
+    value: (in (_) @val)          // "in" wrapper is a named node here
+    body: (do (_)* @body)         // "do" and "end" tokens skipped by (_)
 )
 ```
 
