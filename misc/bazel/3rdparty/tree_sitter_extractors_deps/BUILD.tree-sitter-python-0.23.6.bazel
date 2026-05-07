@@ -21,7 +21,7 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "tree_sitter_json",
+    name = "tree_sitter_python",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -48,7 +48,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter-json",
+        "crate-name=tree-sitter-python",
         "manual",
         "noclippy",
         "norustfmt",
@@ -97,10 +97,10 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.24.8",
+    version = "0.23.6",
     deps = [
-        "@vendor_ts__tree-sitter-json-0.24.8//:build_script_build",
         "@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language",
+        "@vendor_ts__tree-sitter-python-0.23.6//:build_script_build",
     ],
 )
 
@@ -138,7 +138,7 @@ cargo_build_script(
         ],
     ),
     edition = "2021",
-    pkg_name = "tree-sitter-json",
+    pkg_name = "tree-sitter-python",
     rustc_env_files = [
         ":cargo_toml_env_vars",
     ],
@@ -147,12 +147,12 @@ cargo_build_script(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=tree-sitter-json",
+        "crate-name=tree-sitter-python",
         "manual",
         "noclippy",
         "norustfmt",
     ],
-    version = "0.24.8",
+    version = "0.23.6",
     visibility = ["//visibility:private"],
     deps = [
         "@vendor_ts__cc-1.2.61//:cc",

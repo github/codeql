@@ -530,6 +530,18 @@ alias(
 )
 
 alias(
+    name = "serde_yaml-0.9.34+deprecated",
+    actual = "@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml",
+    tags = ["manual"],
+)
+
+alias(
+    name = "serde_yaml",
+    actual = "@vendor_ts__serde_yaml-0.9.34-deprecated//:serde_yaml",
+    tags = ["manual"],
+)
+
+alias(
     name = "syn-2.0.106",
     actual = "@vendor_ts__syn-2.0.106//:syn",
     tags = ["manual"],
@@ -590,14 +602,14 @@ alias(
 )
 
 alias(
-    name = "tree-sitter-0.25.9",
-    actual = "@vendor_ts__tree-sitter-0.25.9//:tree_sitter",
+    name = "tree-sitter-0.26.8",
+    actual = "@vendor_ts__tree-sitter-0.26.8//:tree_sitter",
     tags = ["manual"],
 )
 
 alias(
     name = "tree-sitter",
-    actual = "@vendor_ts__tree-sitter-0.25.9//:tree_sitter",
+    actual = "@vendor_ts__tree-sitter-0.26.8//:tree_sitter",
     tags = ["manual"],
 )
 
@@ -622,6 +634,18 @@ alias(
 alias(
     name = "tree-sitter-json",
     actual = "@vendor_ts__tree-sitter-json-0.24.8//:tree_sitter_json",
+    tags = ["manual"],
+)
+
+alias(
+    name = "tree-sitter-python-0.23.6",
+    actual = "@vendor_ts__tree-sitter-python-0.23.6//:tree_sitter_python",
+    tags = ["manual"],
+)
+
+alias(
+    name = "tree-sitter-python",
+    actual = "@vendor_ts__tree-sitter-python-0.23.6//:tree_sitter_python",
     tags = ["manual"],
 )
 
