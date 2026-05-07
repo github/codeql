@@ -27,45 +27,55 @@
 | goto.cs:10:9:18:9 | After switch (...) {...} | goto.cs:19:9:19:10 | s9: | semmle.label | successor |
 | goto.cs:10:9:18:9 | switch (...) {...} | goto.cs:10:17:10:17 | access to local variable s | semmle.label | successor |
 | goto.cs:10:17:10:17 | access to local variable s | goto.cs:12:13:12:22 | case ...: | semmle.label | successor |
-| goto.cs:12:13:12:22 | After case ...: [match] | goto.cs:12:18:12:21 | null | semmle.label | successor |
+| goto.cs:12:13:12:22 | After case ...: [match] | goto.cs:12:24:12:25 | s3: | semmle.label | successor |
 | goto.cs:12:13:12:22 | After case ...: [no-match] | goto.cs:13:13:13:21 | case ...: | semmle.label | successor |
-| goto.cs:12:13:12:22 | case ...: | goto.cs:12:13:12:22 | After case ...: [match] | semmle.label | match |
-| goto.cs:12:13:12:22 | case ...: | goto.cs:12:13:12:22 | After case ...: [no-match] | semmle.label | no-match |
-| goto.cs:12:18:12:21 | null | goto.cs:12:24:12:25 | s3: | semmle.label | successor |
+| goto.cs:12:13:12:22 | case ...: | goto.cs:12:18:12:21 | null | semmle.label | successor |
+| goto.cs:12:18:12:21 | After null [match] | goto.cs:12:13:12:22 | After case ...: [match] | semmle.label | match |
+| goto.cs:12:18:12:21 | After null [no-match] | goto.cs:12:13:12:22 | After case ...: [no-match] | semmle.label | no-match |
+| goto.cs:12:18:12:21 | null | goto.cs:12:18:12:21 | After null [match] | semmle.label | match |
+| goto.cs:12:18:12:21 | null | goto.cs:12:18:12:21 | After null [no-match] | semmle.label | no-match |
 | goto.cs:12:24:12:25 | s3: | goto.cs:12:28:12:41 | Before goto case ...; | semmle.label | successor |
 | goto.cs:12:28:12:41 | Before goto case ...; | goto.cs:12:38:12:40 | "1" | semmle.label | successor |
 | goto.cs:12:28:12:41 | goto case ...; | goto.cs:13:13:13:21 | After case ...: [match] | semmle.label | goto |
 | goto.cs:12:38:12:40 | "1" | goto.cs:12:28:12:41 | goto case ...; | semmle.label | successor |
-| goto.cs:13:13:13:21 | After case ...: [match] | goto.cs:13:18:13:20 | "1" | semmle.label | successor |
+| goto.cs:13:13:13:21 | After case ...: [match] | goto.cs:13:23:13:24 | s4: | semmle.label | successor |
 | goto.cs:13:13:13:21 | After case ...: [no-match] | goto.cs:14:13:14:21 | case ...: | semmle.label | successor |
-| goto.cs:13:13:13:21 | case ...: | goto.cs:13:13:13:21 | After case ...: [match] | semmle.label | match |
-| goto.cs:13:13:13:21 | case ...: | goto.cs:13:13:13:21 | After case ...: [no-match] | semmle.label | no-match |
-| goto.cs:13:18:13:20 | "1" | goto.cs:13:23:13:24 | s4: | semmle.label | successor |
+| goto.cs:13:13:13:21 | case ...: | goto.cs:13:18:13:20 | "1" | semmle.label | successor |
+| goto.cs:13:18:13:20 | "1" | goto.cs:13:18:13:20 | After "1" [match] | semmle.label | match |
+| goto.cs:13:18:13:20 | "1" | goto.cs:13:18:13:20 | After "1" [no-match] | semmle.label | no-match |
+| goto.cs:13:18:13:20 | After "1" [match] | goto.cs:13:13:13:21 | After case ...: [match] | semmle.label | match |
+| goto.cs:13:18:13:20 | After "1" [no-match] | goto.cs:13:13:13:21 | After case ...: [no-match] | semmle.label | no-match |
 | goto.cs:13:23:13:24 | s4: | goto.cs:13:27:13:40 | Before goto case ...; | semmle.label | successor |
 | goto.cs:13:27:13:40 | Before goto case ...; | goto.cs:13:37:13:39 | "2" | semmle.label | successor |
 | goto.cs:13:27:13:40 | goto case ...; | goto.cs:14:13:14:21 | After case ...: [match] | semmle.label | goto |
 | goto.cs:13:37:13:39 | "2" | goto.cs:13:27:13:40 | goto case ...; | semmle.label | successor |
-| goto.cs:14:13:14:21 | After case ...: [match] | goto.cs:14:18:14:20 | "2" | semmle.label | successor |
+| goto.cs:14:13:14:21 | After case ...: [match] | goto.cs:14:23:14:24 | s5: | semmle.label | successor |
 | goto.cs:14:13:14:21 | After case ...: [no-match] | goto.cs:15:13:15:21 | case ...: | semmle.label | successor |
-| goto.cs:14:13:14:21 | case ...: | goto.cs:14:13:14:21 | After case ...: [match] | semmle.label | match |
-| goto.cs:14:13:14:21 | case ...: | goto.cs:14:13:14:21 | After case ...: [no-match] | semmle.label | no-match |
-| goto.cs:14:18:14:20 | "2" | goto.cs:14:23:14:24 | s5: | semmle.label | successor |
+| goto.cs:14:13:14:21 | case ...: | goto.cs:14:18:14:20 | "2" | semmle.label | successor |
+| goto.cs:14:18:14:20 | "2" | goto.cs:14:18:14:20 | After "2" [match] | semmle.label | match |
+| goto.cs:14:18:14:20 | "2" | goto.cs:14:18:14:20 | After "2" [no-match] | semmle.label | no-match |
+| goto.cs:14:18:14:20 | After "2" [match] | goto.cs:14:13:14:21 | After case ...: [match] | semmle.label | match |
+| goto.cs:14:18:14:20 | After "2" [no-match] | goto.cs:14:13:14:21 | After case ...: [no-match] | semmle.label | no-match |
 | goto.cs:14:23:14:24 | s5: | goto.cs:14:27:14:34 | Before goto ...; | semmle.label | successor |
 | goto.cs:14:27:14:34 | Before goto ...; | goto.cs:14:27:14:34 | goto ...; | semmle.label | successor |
 | goto.cs:14:27:14:34 | goto ...; | goto.cs:9:9:9:10 | s2: | semmle.label | goto |
-| goto.cs:15:13:15:21 | After case ...: [match] | goto.cs:15:18:15:20 | "3" | semmle.label | successor |
+| goto.cs:15:13:15:21 | After case ...: [match] | goto.cs:15:23:15:24 | s6: | semmle.label | successor |
 | goto.cs:15:13:15:21 | After case ...: [no-match] | goto.cs:16:13:16:21 | case ...: | semmle.label | successor |
-| goto.cs:15:13:15:21 | case ...: | goto.cs:15:13:15:21 | After case ...: [match] | semmle.label | match |
-| goto.cs:15:13:15:21 | case ...: | goto.cs:15:13:15:21 | After case ...: [no-match] | semmle.label | no-match |
-| goto.cs:15:18:15:20 | "3" | goto.cs:15:23:15:24 | s6: | semmle.label | successor |
+| goto.cs:15:13:15:21 | case ...: | goto.cs:15:18:15:20 | "3" | semmle.label | successor |
+| goto.cs:15:18:15:20 | "3" | goto.cs:15:18:15:20 | After "3" [match] | semmle.label | match |
+| goto.cs:15:18:15:20 | "3" | goto.cs:15:18:15:20 | After "3" [no-match] | semmle.label | no-match |
+| goto.cs:15:18:15:20 | After "3" [match] | goto.cs:15:13:15:21 | After case ...: [match] | semmle.label | match |
+| goto.cs:15:18:15:20 | After "3" [no-match] | goto.cs:15:13:15:21 | After case ...: [no-match] | semmle.label | no-match |
 | goto.cs:15:23:15:24 | s6: | goto.cs:15:27:15:39 | Before goto default; | semmle.label | successor |
 | goto.cs:15:27:15:39 | Before goto default; | goto.cs:15:27:15:39 | goto default; | semmle.label | successor |
 | goto.cs:15:27:15:39 | goto default; | goto.cs:17:13:17:20 | After default: [match] | semmle.label | goto |
-| goto.cs:16:13:16:21 | After case ...: [match] | goto.cs:16:18:16:20 | "4" | semmle.label | successor |
+| goto.cs:16:13:16:21 | After case ...: [match] | goto.cs:16:23:16:24 | s7: | semmle.label | successor |
 | goto.cs:16:13:16:21 | After case ...: [no-match] | goto.cs:17:13:17:20 | default: | semmle.label | successor |
-| goto.cs:16:13:16:21 | case ...: | goto.cs:16:13:16:21 | After case ...: [match] | semmle.label | match |
-| goto.cs:16:13:16:21 | case ...: | goto.cs:16:13:16:21 | After case ...: [no-match] | semmle.label | no-match |
-| goto.cs:16:18:16:20 | "4" | goto.cs:16:23:16:24 | s7: | semmle.label | successor |
+| goto.cs:16:13:16:21 | case ...: | goto.cs:16:18:16:20 | "4" | semmle.label | successor |
+| goto.cs:16:18:16:20 | "4" | goto.cs:16:18:16:20 | After "4" [match] | semmle.label | match |
+| goto.cs:16:18:16:20 | "4" | goto.cs:16:18:16:20 | After "4" [no-match] | semmle.label | no-match |
+| goto.cs:16:18:16:20 | After "4" [match] | goto.cs:16:13:16:21 | After case ...: [match] | semmle.label | match |
+| goto.cs:16:18:16:20 | After "4" [no-match] | goto.cs:16:13:16:21 | After case ...: [no-match] | semmle.label | no-match |
 | goto.cs:16:23:16:24 | s7: | goto.cs:16:27:16:32 | Before break; | semmle.label | successor |
 | goto.cs:16:27:16:32 | Before break; | goto.cs:16:27:16:32 | break; | semmle.label | successor |
 | goto.cs:16:27:16:32 | break; | goto.cs:10:9:18:9 | After switch (...) {...} | semmle.label | break |
