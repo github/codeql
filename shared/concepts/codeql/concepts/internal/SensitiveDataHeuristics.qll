@@ -151,7 +151,8 @@ module HeuristicNames {
    */
   string notSensitiveRegexp() {
     result =
-      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|(?<!un)en(crypt|code)|" +
+      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|(?<!unen)crypt|(?<!un)encode|"
+        +
         "certain|concert|secretar|wildcard|coauthor|account(ant|ab|ing|ed)|(?<!pro)file|path|([_-]|\\b)url).*"
   }
 
