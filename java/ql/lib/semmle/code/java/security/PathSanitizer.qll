@@ -290,9 +290,7 @@ private Method getSourceMethod(Method m) {
 }
 
 private class ExternalPathInjectionSanitizer extends PathInjectionSanitizer {
-  ExternalPathInjectionSanitizer() {
-    barrierNode(this, ["path-injection", "path-injection[read]"])
-  }
+  ExternalPathInjectionSanitizer() { barrierNode(this, ["path-injection", "path-injection[read]"]) }
 }
 
 /** Holds if `g` is a guard that checks for `..` components. */
