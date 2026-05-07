@@ -5,7 +5,7 @@ on:
     paths:
       - "misc/bazel/**"
       - "misc/codegen/**"
-      - "misc/scripts/models-as-data/bulk_generate_mad.py"
+      - "misc/scripts/models-as-data/*.py"
       - "*.bazel*"
       - .github/workflows/codegen.yml
       - .pre-commit-config.yaml

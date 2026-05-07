@@ -1,6 +1,35 @@
 ## Overview
 
-GitHub workflows can be triggered through various repository events, including incoming pull requests (PRs) or comments on Issues/PRs. A potentially dangerous misuse of the triggers such as `pull_request_target` or `issue_comment` followed by an explicit checkout of untrusted code (Pull Request HEAD) may lead to repository compromise if untrusted code gets executed (e.g., due to a modified build script) in a privileged job.
+GitHub workflows can be triggered through various repository events, including incoming pull requests (PRs) or comments on Issues/PRs. Under certain conditions described below, attackers can take over a repository by opening malicious PRs from forks. The attacks can result in malicious code execution causing unauthorized changes to the repository or exfiltration of repository secrets and a compromise of connected systems.
+
+## Workflow Security Model
+
+In GitHub Actions, there is a distinction between unprivileged and privileged workflows. For example, a workflow with a `pull_request` trigger is unprivileged while a workflow with `pull_request_target` is privileged.
+
+This is relevant especially for PRs from forks. Normal PRs can only be submitted by people who have write access to a repository, while PRs from forks can be submitted by anyone.
+
+On a PR from a fork, an unprivileged `pull_request` workflow has only limited capabilities but a privileged `pull_request_target` workflow is much more dangerous. A privileged workflow:
+
+  * Runs in the context of the base repository
+  * Has access to organization and repository secrets (e.g., API keys, deployment tokens)
+  * Has a read/write `GITHUB_TOKEN` by default
+  * Can access private resources
+
+Certain triggers automatically grant a workflow elevated privileges:
+
+  * `pull_request_target` as described above
+  * `workflow_run`: Triggered when another workflow completes.
+  * `issue_comment`: Triggered when a comment is made on an issue or PR.
+
+## Attack Details
+
+  * A repository has a privileged workflow
+  * An attacker forks the repository and adds malicious code (e.g., in the build script)
+  * The attacker opens a PR from the fork, and, if needed, comments on the PR
+  * The workflow in the base repository checks out the forked code
+  * The workflow runs, (e.g. the build script etc.), which contains the malicious code
+
+Please note that not only build scripts can be malicious code vectors. There is a large number of other possibilities. Some of them are listed in the [LOTP](https://boostsecurityio.github.io/lotp/) catalog.
 
 ## Recommendation
 
@@ -133,3 +162,5 @@ jobs:
 ## References
 
 - GitHub Security Lab Research: [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/).
+- Mitigating risks of untrusted checkout: [GitHub Docs](https://docs.github.com/en/enterprise-cloud@latest/actions/reference/security/secure-use#mitigating-the-risks-of-untrusted-code-checkout).
+- Living Off the Pipeline: [LOTP](https://boostsecurityio.github.io/lotp/).
