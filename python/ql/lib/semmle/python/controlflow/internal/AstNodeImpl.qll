@@ -77,60 +77,13 @@ module Ast implements AstSig<Py::Location> {
   /** An AST node visible to the shared CFG. */
   class AstNode extends TAstNode {
     /** Gets a textual representation of this AST node. */
-    string toString() {
-      exists(Py::Stmt s | this = TStmt(s) and result = s.toString())
-      or
-      exists(Py::Expr e | this = TExpr(e) and result = e.toString())
-      or
-      exists(Py::Scope sc | this = TScope(sc) and result = sc.toString())
-      or
-      exists(Py::Pattern p | this = TPattern(p) and result = p.toString())
-      or
-      exists(Py::BoolExpr be | this = TBoolExprPair(be, _) and result = be.getOperator())
-      or
-      exists(string slot | this = TBlockStmt(_, slot) and result = "block:" + slot)
-    }
+    string toString() { none() }
 
     /** Gets the location of this AST node. */
-    Py::Location getLocation() {
-      exists(Py::Stmt s | this = TStmt(s) and result = s.getLocation())
-      or
-      exists(Py::Expr e | this = TExpr(e) and result = e.getLocation())
-      or
-      exists(Py::Scope sc | this = TScope(sc) and result = sc.getLocation())
-      or
-      exists(Py::Pattern p | this = TPattern(p) and result = p.getLocation())
-      or
-      exists(Py::BoolExpr be, int index |
-        this = TBoolExprPair(be, index) and result = be.getValue(index).getLocation()
-      )
-      or
-      // BlockStmt has no native location; approximate with the first
-      // item's location.
-      exists(Py::AstNode parent, string slot |
-        this = TBlockStmt(parent, slot) and
-        result = getBodyStmtList(parent, slot).getItem(0).getLocation()
-      )
-    }
+    Py::Location getLocation() { none() }
 
     /** Gets the enclosing callable that contains this node, if any. */
-    Callable getEnclosingCallable() {
-      exists(Py::Stmt s | this = TStmt(s) and result.asScope() = s.getScope())
-      or
-      exists(Py::Expr e | this = TExpr(e) and result.asScope() = e.getScope())
-      or
-      exists(Py::Scope sc | this = TScope(sc) and result.asScope() = sc.getEnclosingScope())
-      or
-      exists(Py::Pattern p | this = TPattern(p) and result.asScope() = p.getScope())
-      or
-      exists(Py::BoolExpr be | this = TBoolExprPair(be, _) and result.asScope() = be.getScope())
-      or
-      exists(Py::AstNode parent | this = TBlockStmt(parent, _) |
-        result.asScope() = parent.(Py::Scope)
-        or
-        result.asScope() = parent.(Py::Stmt).getScope()
-      )
-    }
+    Callable getEnclosingCallable() { none() }
 
     /** Gets the underlying Python `Stmt`, if this node wraps one. */
     Py::Stmt asStmt() { this = TStmt(result) }
@@ -150,6 +103,94 @@ module Ast implements AstSig<Py::Location> {
      * this method.
      */
     AstNode getChild(int index) { none() }
+  }
+
+  /** Implementation of `AstNode` predicates for `TStmt` nodes. */
+  private class TStmtAstNode extends AstNode, TStmt {
+    private Py::Stmt s;
+
+    TStmtAstNode() { this = TStmt(s) }
+
+    override string toString() { result = s.toString() }
+
+    override Py::Location getLocation() { result = s.getLocation() }
+
+    override Callable getEnclosingCallable() { result.asScope() = s.getScope() }
+  }
+
+  /** Implementation of `AstNode` predicates for `TExpr` nodes. */
+  private class TExprAstNode extends AstNode, TExpr {
+    private Py::Expr e;
+
+    TExprAstNode() { this = TExpr(e) }
+
+    override string toString() { result = e.toString() }
+
+    override Py::Location getLocation() { result = e.getLocation() }
+
+    override Callable getEnclosingCallable() { result.asScope() = e.getScope() }
+  }
+
+  /** Implementation of `AstNode` predicates for `TScope` nodes. */
+  private class TScopeAstNode extends AstNode, TScope {
+    private Py::Scope sc;
+
+    TScopeAstNode() { this = TScope(sc) }
+
+    override string toString() { result = sc.toString() }
+
+    override Py::Location getLocation() { result = sc.getLocation() }
+
+    override Callable getEnclosingCallable() { result.asScope() = sc.getEnclosingScope() }
+  }
+
+  /** Implementation of `AstNode` predicates for `TPattern` nodes. */
+  private class TPatternAstNode extends AstNode, TPattern {
+    private Py::Pattern p;
+
+    TPatternAstNode() { this = TPattern(p) }
+
+    override string toString() { result = p.toString() }
+
+    override Py::Location getLocation() { result = p.getLocation() }
+
+    override Callable getEnclosingCallable() { result.asScope() = p.getScope() }
+  }
+
+  /** Implementation of `AstNode` predicates for synthetic `TBoolExprPair` nodes. */
+  private class TBoolExprPairAstNode extends AstNode, TBoolExprPair {
+    private Py::BoolExpr be;
+    private int index;
+
+    TBoolExprPairAstNode() { this = TBoolExprPair(be, index) }
+
+    override string toString() { result = be.getOperator() }
+
+    override Py::Location getLocation() { result = be.getValue(index).getLocation() }
+
+    override Callable getEnclosingCallable() { result.asScope() = be.getScope() }
+  }
+
+  /** Implementation of `AstNode` predicates for synthetic `TBlockStmt` nodes. */
+  private class TBlockStmtAstNode extends AstNode, TBlockStmt {
+    private Py::AstNode parent;
+    private string slot;
+
+    TBlockStmtAstNode() { this = TBlockStmt(parent, slot) }
+
+    override string toString() { result = "block:" + slot }
+
+    // BlockStmt has no native location; approximate with the first
+    // item's location.
+    override Py::Location getLocation() {
+      result = getBodyStmtList(parent, slot).getItem(0).getLocation()
+    }
+
+    override Callable getEnclosingCallable() {
+      result.asScope() = parent.(Py::Scope)
+      or
+      result.asScope() = parent.(Py::Stmt).getScope()
+    }
   }
 
   /** Gets the immediately enclosing callable that contains `node`. */
