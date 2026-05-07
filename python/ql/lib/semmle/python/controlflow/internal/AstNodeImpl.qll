@@ -19,7 +19,7 @@ private import codeql.util.Void
 module Ast implements AstSig<Py::Location> {
   private newtype TAstNode =
     TPyStmt(Py::Stmt s) or
-    TExpr(Py::Expr e) { not e instanceof Py::BoolExpr } or
+    TPyExpr(Py::Expr e) { not e instanceof Py::BoolExpr } or
     TScope(Py::Scope sc) or
     TPattern(Py::Pattern p) or
     /**
@@ -54,6 +54,14 @@ module Ast implements AstSig<Py::Location> {
   private class TStmt = TPyStmt or TBlockStmt;
 
   /**
+   * The union of `TPyExpr` (wrapping non-boolean `Py::Expr`) and
+   * `TBoolExprPair` (synthetic operand pairs of `and`/`or` expressions).
+   * Both represent the kinds of node that can appear in an `Expr`
+   * position in the CFG.
+   */
+  private class TExpr = TPyExpr or TBoolExprPair;
+
+  /**
    * An AST node visible to the shared CFG.
    *
    * This is the abstract implementation class. It enforces that each
@@ -82,7 +90,7 @@ module Ast implements AstSig<Py::Location> {
      * representation.
      */
     Py::Expr asExpr() {
-      this = TExpr(result)
+      this = TPyExpr(result)
       or
       this = TBoolExprPair(result, 0)
     }
@@ -159,10 +167,8 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** An expression. */
-  class Expr extends AstNodeImpl {
-    Expr() { this instanceof TExpr or this instanceof TBoolExprPair }
-
-    // For `TExpr` instances, delegate to the wrapped Python expression.
+  class Expr extends AstNodeImpl, TExpr {
+    // For `TPyExpr` instances, delegate to the wrapped Python expression.
     // `BinaryExpr` (the only `TBoolExprPair` subclass) provides its own overrides.
     override string toString() { result = this.asExpr().toString() }
 
