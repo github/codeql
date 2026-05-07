@@ -519,13 +519,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof GotoStmt
       or
+      n instanceof LogicalNotExpr
+      or
       n instanceof Expr and
       exists(getChild(n, _)) and
       not Input1::preOrderExpr(n) and
       not n instanceof LogicalAndExpr and
       not n instanceof LogicalOrExpr and
       not n instanceof NullCoalescingExpr and
-      not n instanceof LogicalNotExpr and
       not n instanceof ConditionalExpr and
       not n instanceof Switch and
       not n instanceof Case
@@ -1454,8 +1455,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n1.isBefore(notexpr) and
           n2.isBefore(notexpr.getOperand())
           or
-          exists(BooleanSuccessor t |
-            n1.isAfterValue(notexpr.getOperand(), t) and
+          exists(BooleanSuccessor t, PreControlFlowNode operand |
+            operand.isAfterValue(notexpr.getOperand(), t)
+          |
+            n1 = operand and
+            n2.isIn(notexpr)
+            or
+            n1.isIn(notexpr) and
             n2.isAfterValue(notexpr, t.getDual())
           )
         )
