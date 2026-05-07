@@ -13,12 +13,14 @@ fn multiple_language_extractor() {
         prefix: "ql",
         ts_language: tree_sitter_ql::LANGUAGE.into(),
         node_types: tree_sitter_ql::NODE_TYPES,
+        desugar: None,
         file_globs: vec!["*.qll".into()],
     };
     let lang_json = simple::LanguageSpec {
         prefix: "json",
         ts_language: tree_sitter_json::LANGUAGE.into(),
         node_types: tree_sitter_json::NODE_TYPES,
+        desugar: None,
         file_globs: vec!["*.json".into(), "*Jsonfile".into()],
     };
 

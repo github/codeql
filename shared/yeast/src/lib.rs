@@ -1,0 +1,727 @@
+use std::collections::BTreeMap;
+
+extern crate self as yeast;
+
+use serde::Serialize;
+use serde_json::{json, Value};
+
+pub mod build;
+pub mod captures;
+pub mod cursor;
+pub mod dump;
+pub mod node_types_yaml;
+pub mod query;
+mod range;
+pub mod schema;
+pub mod tree_builder;
+mod visitor;
+
+pub use yeast_macros::{query, rule, tree, trees};
+
+use captures::Captures;
+pub use cursor::Cursor;
+use query::QueryNode;
+
+/// Node ids are indexes into the arena
+type Id = usize;
+
+/// Field and Kind ids are provided by tree-sitter
+type FieldId = u16;
+type KindId = u16;
+
+pub const CHILD_FIELD: u16 = u16::MAX;
+
+#[derive(Debug)]
+pub struct AstCursor<'a> {
+    ast: &'a Ast,
+    /// A stack of parents, along with iterators for their children
+    parents: Vec<(&'a Node, ChildrenIter<'a>)>,
+    node: &'a Node,
+}
+
+impl<'a> AstCursor<'a> {
+    pub fn new(ast: &'a Ast) -> Self {
+        // TODO: handle non-zero root
+        let node = ast.get_node(ast.root).unwrap();
+        Self {
+            ast,
+            parents: vec![],
+            node,
+        }
+    }
+
+    fn goto_next_sibling_opt(&mut self) -> Option<()> {
+        self.node = self.parents.last_mut()?.1.next()?;
+        Some(())
+    }
+
+    fn goto_first_child_opt(&mut self) -> Option<()> {
+        let parent = self.node;
+        let mut children = ChildrenIter::new(self.ast, parent);
+        let first_child = children.next()?;
+        self.node = first_child;
+        self.parents.push((parent, children));
+        Some(())
+    }
+
+    fn goto_parent_opt(&mut self) -> Option<()> {
+        self.node = self.parents.pop()?.0;
+        Some(())
+    }
+}
+impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
+    fn node(&self) -> &'a Node {
+        self.node
+    }
+
+    fn field_id(&self) -> Option<FieldId> {
+        let (_, children) = self.parents.last()?;
+        children.current_field()
+    }
+
+    fn field_name(&self) -> Option<&'static str> {
+        if self.field_id() == Some(CHILD_FIELD) {
+            None
+        } else {
+            self.field_id()
+                .and_then(|id| self.ast.field_name_for_id(id))
+        }
+    }
+
+    fn goto_first_child(&mut self) -> bool {
+        self.goto_first_child_opt().is_some()
+    }
+
+    fn goto_next_sibling(&mut self) -> bool {
+        self.goto_next_sibling_opt().is_some()
+    }
+
+    fn goto_parent(&mut self) -> bool {
+        self.goto_parent_opt().is_some()
+    }
+}
+
+/// An iterator over all the child nodes of a node.
+#[derive(Debug)]
+struct ChildrenIter<'a> {
+    ast: &'a Ast,
+    current_field: Option<FieldId>,
+    fields: std::collections::btree_map::Iter<'a, FieldId, Vec<Id>>,
+    field_children: Option<std::slice::Iter<'a, Id>>,
+}
+
+impl<'a> ChildrenIter<'a> {
+    fn new(ast: &'a Ast, node: &'a Node) -> Self {
+        Self {
+            ast,
+            current_field: None,
+            fields: node.fields.iter(),
+            field_children: None,
+        }
+    }
+
+    fn get_node(&self, id: Id) -> &'a Node {
+        self.ast.get_node(id).unwrap()
+    }
+
+    fn current_field(&self) -> Option<FieldId> {
+        self.current_field
+    }
+}
+
+impl<'a> Iterator for ChildrenIter<'a> {
+    type Item = &'a Node;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.field_children.as_mut() {
+            None => match self.fields.next() {
+                Some((field, children)) => {
+                    self.current_field = Some(*field);
+                    self.field_children = Some(children.iter());
+                    self.next()
+                }
+                None => None,
+            },
+            Some(children) => match children.next() {
+                None => match self.fields.next() {
+                    None => None,
+                    Some((field, children)) => {
+                        self.current_field = Some(*field);
+                        self.field_children = Some(children.iter());
+                        self.next()
+                    }
+                },
+                Some(child_id) => Some(self.get_node(*child_id)),
+            },
+        }
+    }
+}
+
+/// Our AST
+pub struct Ast {
+    root: Id,
+    nodes: Vec<Node>,
+    schema: schema::Schema,
+}
+
+impl std::fmt::Debug for Ast {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Ast")
+            .field("root", &self.root)
+            .field("nodes", &self.nodes.len())
+            .finish()
+    }
+}
+
+impl Ast {
+    /// Construct an AST from a TS tree
+    pub fn from_tree(language: tree_sitter::Language, tree: &tree_sitter::Tree) -> Self {
+        let schema = schema::Schema::from_language(&language);
+        Self::from_tree_with_schema(schema, tree, &language)
+    }
+
+    pub fn from_tree_with_schema(
+        schema: schema::Schema,
+        tree: &tree_sitter::Tree,
+        language: &tree_sitter::Language,
+    ) -> Self {
+        let mut visitor = visitor::Visitor::new(language.clone());
+        visitor.visit(tree);
+
+        visitor.build_with_schema(schema)
+    }
+
+    pub fn walk(&self) -> AstCursor {
+        AstCursor::new(self)
+    }
+
+    pub fn nodes(&self) -> &[Node] {
+        &self.nodes
+    }
+
+    pub fn get_root(&self) -> Id {
+        self.root
+    }
+
+    pub fn set_root(&mut self, root: Id) {
+        self.root = root;
+    }
+
+    pub fn get_node(&self, id: Id) -> Option<&Node> {
+        self.nodes.get(id)
+    }
+
+    pub fn print(&self, source: &str, root_id: Id) -> Value {
+        let root = &self.nodes()[root_id];
+        self.print_node(root, source)
+    }
+
+    pub fn create_node(
+        &mut self,
+        kind: KindId,
+        content: NodeContent,
+        fields: BTreeMap<FieldId, Vec<Id>>,
+        is_named: bool,
+    ) -> Id {
+        self.create_node_with_range(kind, content, fields, is_named, None)
+    }
+
+    pub fn create_node_with_range(
+        &mut self,
+        kind: KindId,
+        content: NodeContent,
+        fields: BTreeMap<FieldId, Vec<Id>>,
+        is_named: bool,
+        source_range: Option<tree_sitter::Range>,
+    ) -> Id {
+        let id = self.nodes.len();
+        self.nodes.push(Node {
+            id,
+            kind,
+            kind_name: self.schema.node_kind_for_id(kind).unwrap(),
+            fields,
+            content,
+            is_missing: false,
+            is_error: false,
+            is_extra: false,
+            is_named,
+            source_range,
+        });
+        id
+    }
+
+    pub fn create_named_token(&mut self, kind: &'static str, content: String) -> Id {
+        self.create_named_token_with_range(kind, content, None)
+    }
+
+    pub fn create_named_token_with_range(
+        &mut self,
+        kind: &'static str,
+        content: String,
+        source_range: Option<tree_sitter::Range>,
+    ) -> Id {
+        let kind_id = self.schema.id_for_node_kind(kind).unwrap_or_else(|| {
+            panic!("create_named_token: node kind '{kind}' not found in schema")
+        });
+        let id = self.nodes.len();
+        self.nodes.push(Node {
+            id,
+            kind: kind_id,
+            kind_name: kind,
+            is_named: true,
+            is_missing: false,
+            is_error: false,
+            source_range,
+            is_extra: false,
+            fields: BTreeMap::new(),
+            content: NodeContent::DynamicString(content),
+        });
+        id
+    }
+
+    pub fn field_name_for_id(&self, id: FieldId) -> Option<&'static str> {
+        self.schema.field_name_for_id(id)
+    }
+
+    pub fn field_id_for_name(&self, name: &str) -> Option<FieldId> {
+        self.schema.field_id_for_name(name)
+    }
+
+    /// Print a node for debugging
+    fn print_node(&self, node: &Node, source: &str) -> Value {
+        let fields: BTreeMap<&'static str, Vec<Value>> = node
+            .fields
+            .iter()
+            .map(|(field_id, nodes)| {
+                let field_name = if field_id == &CHILD_FIELD {
+                    "rest"
+                } else {
+                    self.field_name_for_id(*field_id).unwrap()
+                };
+                let nodes: Vec<Value> = nodes
+                    .iter()
+                    .map(|id| self.print_node(self.get_node(*id).unwrap(), source))
+                    .collect();
+                (field_name, nodes)
+            })
+            .collect();
+        let mut value = BTreeMap::new();
+        let kind = self.schema.node_kind_for_id(node.kind).unwrap();
+        let content = match &node.content {
+            NodeContent::Range(range) => source[range.start_byte..range.end_byte].to_string(),
+            NodeContent::String(s) => s.to_string(),
+            NodeContent::DynamicString(s) => s.clone(),
+        };
+        if fields.is_empty() {
+            value.insert(kind, json!(content));
+        } else {
+            let mut fields: BTreeMap<_, _> =
+                fields.into_iter().map(|(k, v)| (k, json!(v))).collect();
+            fields.insert("content", json!(content));
+            value.insert(kind, json!(fields));
+        }
+        json!(value)
+    }
+
+    pub fn id_for_node_kind(&self, kind: &str) -> Option<KindId> {
+        let id = self.schema.id_for_node_kind(kind).unwrap_or(0);
+        if id == 0 {
+            None
+        } else {
+            Some(id)
+        }
+    }
+
+    fn id_for_unnamed_node_kind(&self, kind: &str) -> Option<KindId> {
+        let id = self.schema.id_for_unnamed_node_kind(kind).unwrap_or(0);
+        if id == 0 {
+            None
+        } else {
+            Some(id)
+        }
+    }
+}
+
+/// A node in our AST
+#[derive(PartialEq, Eq, Debug, Clone, Serialize)]
+pub struct Node {
+    id: Id,
+    kind: KindId,
+    kind_name: &'static str,
+    pub(crate) fields: BTreeMap<FieldId, Vec<Id>>,
+    pub(crate) content: NodeContent,
+    /// For synthetic nodes, the source range of the original node they
+    /// were desugared from. Used for location information in TRAP output.
+    #[serde(skip)]
+    source_range: Option<tree_sitter::Range>,
+    is_named: bool,
+    is_missing: bool,
+    is_extra: bool,
+    is_error: bool,
+}
+
+impl Node {
+    pub fn id(&self) -> Id {
+        self.id
+    }
+
+    pub fn kind(&self) -> &'static str {
+        self.kind_name
+    }
+
+    pub fn kind_name(&self) -> &'static str {
+        self.kind_name
+    }
+
+    pub fn is_named(&self) -> bool {
+        self.is_named
+    }
+
+    pub fn is_missing(&self) -> bool {
+        self.is_missing
+    }
+
+    pub fn is_extra(&self) -> bool {
+        self.is_extra
+    }
+
+    pub fn is_error(&self) -> bool {
+        self.is_error
+    }
+
+    fn fake_point(&self) -> tree_sitter::Point {
+        tree_sitter::Point { row: 0, column: 0 }
+    }
+
+    pub fn start_position(&self) -> tree_sitter::Point {
+        match self.content {
+            NodeContent::Range(range) => range.start_point,
+            _ => self
+                .source_range
+                .map_or_else(|| self.fake_point(), |r| r.start_point),
+        }
+    }
+
+    pub fn end_position(&self) -> tree_sitter::Point {
+        match self.content {
+            NodeContent::Range(range) => range.end_point,
+            _ => self
+                .source_range
+                .map_or_else(|| self.fake_point(), |r| r.end_point),
+        }
+    }
+
+    pub fn start_byte(&self) -> usize {
+        match self.content {
+            NodeContent::Range(range) => range.start_byte,
+            _ => self.source_range.map_or(0, |r| r.start_byte),
+        }
+    }
+
+    pub fn end_byte(&self) -> usize {
+        match self.content {
+            NodeContent::Range(range) => range.end_byte,
+            _ => self.source_range.map_or(0, |r| r.end_byte),
+        }
+    }
+
+    pub fn byte_range(&self) -> std::ops::Range<usize> {
+        self.start_byte()..self.end_byte()
+    }
+
+    pub fn opt_string_content(&self) -> Option<String> {
+        match &self.content {
+            NodeContent::Range(_range) => None,
+            NodeContent::String(s) => Some(s.to_string()),
+            NodeContent::DynamicString(s) => Some(s.to_string()),
+        }
+    }
+}
+
+/// The contents of a node is either a range in the original source file,
+/// or a new string if the node is synthesized.
+#[derive(PartialEq, Eq, Debug, Clone, Serialize)]
+pub enum NodeContent {
+    Range(#[serde(with = "range::Range")] tree_sitter::Range),
+    String(&'static str),
+    DynamicString(String),
+}
+
+impl From<&'static str> for NodeContent {
+    fn from(value: &'static str) -> Self {
+        NodeContent::String(value)
+    }
+}
+
+impl From<tree_sitter::Range> for NodeContent {
+    fn from(value: tree_sitter::Range) -> Self {
+        NodeContent::Range(value)
+    }
+}
+
+/// The transform function for a rule: takes the AST, captured variables, a
+/// fresh-name scope, and the source range of the matched node, and returns
+/// the IDs of the replacement nodes.
+pub type Transform = Box<
+    dyn Fn(&mut Ast, Captures, &tree_builder::FreshScope, Option<tree_sitter::Range>) -> Vec<Id>
+        + Send
+        + Sync,
+>;
+
+pub struct Rule {
+    query: QueryNode,
+    transform: Transform,
+}
+
+impl Rule {
+    pub fn new(query: QueryNode, transform: Transform) -> Self {
+        Self { query, transform }
+    }
+
+    fn try_rule(
+        &self,
+        ast: &mut Ast,
+        node: Id,
+        fresh: &tree_builder::FreshScope,
+    ) -> Result<Option<Vec<Id>>, String> {
+        let mut captures = Captures::new();
+        if self.query.do_match(ast, node, &mut captures)? {
+            fresh.next_scope();
+            let source_range = ast.get_node(node).and_then(|n| match n.content {
+                NodeContent::Range(r) => Some(r),
+                _ => n.source_range,
+            });
+            Ok(Some((self.transform)(ast, captures, fresh, source_range)))
+        } else {
+            Ok(None)
+        }
+    }
+}
+
+const MAX_REWRITE_DEPTH: usize = 100;
+
+/// Index of rules by their root query kind for fast lookup.
+struct RuleIndex<'a> {
+    /// Rules indexed by root node kind name.
+    by_kind: BTreeMap<&'static str, Vec<&'a Rule>>,
+    /// Rules with wildcard queries (Any) that apply to all nodes.
+    wildcard: Vec<&'a Rule>,
+}
+
+impl<'a> RuleIndex<'a> {
+    fn new(rules: &'a [Rule]) -> Self {
+        let mut by_kind: BTreeMap<&'static str, Vec<&'a Rule>> = BTreeMap::new();
+        let mut wildcard = Vec::new();
+        for rule in rules {
+            match rule.query.root_kind() {
+                Some(kind) => by_kind.entry(kind).or_default().push(rule),
+                None => wildcard.push(rule),
+            }
+        }
+        Self { by_kind, wildcard }
+    }
+
+    fn rules_for_kind(&self, kind: &str) -> impl Iterator<Item = &&'a Rule> {
+        self.by_kind
+            .get(kind)
+            .into_iter()
+            .flat_map(|v| v.iter())
+            .chain(self.wildcard.iter())
+    }
+}
+
+fn apply_rules(
+    rules: &[Rule],
+    ast: &mut Ast,
+    id: Id,
+    fresh: &tree_builder::FreshScope,
+) -> Result<Vec<Id>, String> {
+    let index = RuleIndex::new(rules);
+    apply_rules_inner(&index, ast, id, fresh, 0)
+}
+
+fn apply_rules_inner(
+    index: &RuleIndex,
+    ast: &mut Ast,
+    id: Id,
+    fresh: &tree_builder::FreshScope,
+    rewrite_depth: usize,
+) -> Result<Vec<Id>, String> {
+    if rewrite_depth > MAX_REWRITE_DEPTH {
+        return Err(format!(
+            "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
+             This likely indicates a non-terminating rule cycle."
+        ));
+    }
+
+    let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
+    for rule in index.rules_for_kind(node_kind) {
+        if let Some(result_node) = rule.try_rule(ast, id, fresh)? {
+            let mut results = Vec::new();
+            for node in result_node {
+                results.extend(apply_rules_inner(
+                    index,
+                    ast,
+                    node,
+                    fresh,
+                    rewrite_depth + 1,
+                )?);
+            }
+            return Ok(results);
+        }
+    }
+
+    // Collect fields before recursing (avoids borrowing ast immutably during mutation)
+    let field_entries: Vec<(FieldId, Vec<Id>)> = ast.nodes[id]
+        .fields
+        .iter()
+        .map(|(&fid, children)| (fid, children.clone()))
+        .collect();
+
+    // recursively descend into all the fields
+    // Child traversal does not increment rewrite depth
+    let mut changed = false;
+    let mut new_fields = BTreeMap::new();
+    for (field_id, children) in field_entries {
+        let mut new_children = Vec::new();
+        for child_id in children {
+            let result = apply_rules_inner(index, ast, child_id, fresh, rewrite_depth)?;
+            if result.len() != 1 || result[0] != child_id {
+                changed = true;
+            }
+            new_children.extend(result);
+        }
+        new_fields.insert(field_id, new_children);
+    }
+
+    if !changed {
+        return Ok(vec![id]);
+    }
+
+    let mut node = ast.nodes[id].clone();
+    node.fields = new_fields;
+    node.id = ast.nodes.len();
+    ast.nodes.push(node);
+    Ok(vec![ast.nodes.len() - 1])
+}
+
+/// Configuration for a desugaring pass: a set of rules and an optional
+/// output node-types schema (in YAML format).
+///
+/// When attached to a `LanguageSpec` (in the shared tree-sitter extractor),
+/// enables yeast-based AST rewriting before TRAP extraction. The same YAML
+/// is used both to validate TRAP output (via JSON conversion) and to
+/// resolve output-only node kinds and fields at runtime.
+pub struct DesugaringConfig {
+    /// Rules to apply during desugaring.
+    pub rules: Vec<Rule>,
+    /// Output node-types in YAML format. If `None`, the input grammar's
+    /// node types are used (i.e. the desugared AST has the same node types
+    /// as the tree-sitter grammar).
+    pub output_node_types_yaml: Option<&'static str>,
+}
+
+impl DesugaringConfig {
+    pub fn new(rules: Vec<Rule>) -> Self {
+        Self {
+            rules,
+            output_node_types_yaml: None,
+        }
+    }
+
+    pub fn with_output_node_types_yaml(mut self, yaml: &'static str) -> Self {
+        self.output_node_types_yaml = Some(yaml);
+        self
+    }
+
+    /// Build the yeast `Schema` for this config, given the input language.
+    /// If `output_node_types_yaml` is `None`, returns the schema derived from
+    /// the input grammar.
+    pub fn build_schema(&self, language: &tree_sitter::Language) -> Result<schema::Schema, String> {
+        match self.output_node_types_yaml {
+            Some(yaml) => node_types_yaml::schema_from_yaml_with_language(yaml, language),
+            None => Ok(schema::Schema::from_language(language)),
+        }
+    }
+}
+
+pub struct Runner<'a> {
+    language: tree_sitter::Language,
+    schema: schema::Schema,
+    rules: &'a [Rule],
+}
+
+impl<'a> Runner<'a> {
+    /// Create a runner using the input grammar's schema for output.
+    pub fn new(language: tree_sitter::Language, rules: &'a [Rule]) -> Self {
+        let schema = schema::Schema::from_language(&language);
+        Self {
+            language,
+            schema,
+            rules,
+        }
+    }
+
+    /// Create a runner with separate input language and output schema.
+    pub fn with_schema(
+        language: tree_sitter::Language,
+        schema: &schema::Schema,
+        rules: &'a [Rule],
+    ) -> Self {
+        Self {
+            language,
+            schema: schema.clone(),
+            rules,
+        }
+    }
+
+    /// Create a runner from a [`DesugaringConfig`].
+    pub fn from_config(
+        language: tree_sitter::Language,
+        config: &'a DesugaringConfig,
+    ) -> Result<Self, String> {
+        let schema = config.build_schema(&language)?;
+        Ok(Self {
+            language,
+            schema,
+            rules: &config.rules,
+        })
+    }
+
+    pub fn run_from_tree(&self, tree: &tree_sitter::Tree) -> Result<Ast, String> {
+        let fresh = tree_builder::FreshScope::new();
+        let mut ast = Ast::from_tree_with_schema(self.schema.clone(), tree, &self.language);
+        let root = ast.get_root();
+        let res = apply_rules(self.rules, &mut ast, root, &fresh)?;
+        if res.len() != 1 {
+            return Err(format!(
+                "Expected exactly one result node, got {}",
+                res.len()
+            ));
+        }
+        ast.set_root(res[0]);
+        Ok(ast)
+    }
+
+    pub fn run(&self, input: &str) -> Result<Ast, String> {
+        let fresh = tree_builder::FreshScope::new();
+        let mut parser = tree_sitter::Parser::new();
+        parser
+            .set_language(&self.language)
+            .map_err(|e| format!("Failed to set language: {e}"))?;
+        let tree = parser
+            .parse(input, None)
+            .ok_or_else(|| "Failed to parse input".to_string())?;
+        let mut ast = Ast::from_tree_with_schema(self.schema.clone(), &tree, &self.language);
+        let root = ast.get_root();
+        let res = apply_rules(self.rules, &mut ast, root, &fresh)?;
+        if res.len() != 1 {
+            return Err(format!(
+                "Expected exactly one result node, got {}",
+                res.len()
+            ));
+        }
+        ast.set_root(res[0]);
+        Ok(ast)
+    }
+}

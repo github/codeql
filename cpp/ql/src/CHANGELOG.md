@@ -1,3 +1,7 @@
+## 1.6.2
+
+No user-facing changes.
+
 ## 1.6.1
 
 ### Minor Analysis Improvements
@@ -366,7 +370,7 @@ No user-facing changes.
 ### Minor Analysis Improvements
 
 * The "non-constant format string" query (`cpp/non-constant-format`) has been updated to produce fewer false positives.
-* Added dataflow models for the `gettext` function variants.
+* Added dataflow models for the `gettext` function variants. 
 
 ## 0.9.4
 
