@@ -1,0 +1,23 @@
+===
+Additive expression is desugared
+===
+
+1 + 2
+
+---
+
+source_file
+  simple_identifier "blah"
+
+
+===
+Another additive expression is desugared
+===
+
+foo + bar
+
+---
+
+source_file
+  simple_identifier "blah"
+
