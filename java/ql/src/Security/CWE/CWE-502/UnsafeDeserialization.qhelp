@@ -21,10 +21,11 @@ Jackson, Jabsorb, Jodd JSON, Flexjson, Gson, JMS, and Java IO serialization thro
 <p>
 Note that a deserialization method is only dangerous if it can instantiate
 arbitrary classes. Serialization frameworks that use a schema to instantiate
-only expected, predefined types are generally safe and are not tracked by this
-query. For example, Apache Avro's deserialization methods follow a schema and
-therefore cannot instantiate arbitrary classes, making them safe to use even
-with untrusted data.
+only expected, predefined types are generally not tracked by this query. For
+example, Apache Avro's deserialization methods follow a schema and are
+therefore generally safe with respect to arbitrary-class-instantiation and
+gadget-chain attacks when the schema is trusted and does not permit
+user-controlled type resolution.
 </p>
 </overview>
 
