@@ -18,7 +18,7 @@ private import codeql.util.Void
 /** Provides the Python implementation of the shared CFG `AstSig`. */
 module Ast implements AstSig<Py::Location> {
   private newtype TAstNode =
-    TStmt(Py::Stmt s) or
+    TPyStmt(Py::Stmt s) or
     TExpr(Py::Expr e) { not e instanceof Py::BoolExpr } or
     TScope(Py::Scope sc) or
     TPattern(Py::Pattern p) or
@@ -70,6 +70,13 @@ module Ast implements AstSig<Py::Location> {
     }
 
   /**
+   * The union of `TPyStmt` (wrapping `Py::Stmt`) and `TBlockStmt` (wrapping
+   * `Py::StmtList`). Both represent the kinds of node that can appear in
+   * a `Stmt` position in the CFG.
+   */
+  private class TStmt = TPyStmt or TBlockStmt;
+
+  /**
    * An AST node visible to the shared CFG.
    *
    * This is the abstract implementation class. It enforces that each
@@ -89,7 +96,7 @@ module Ast implements AstSig<Py::Location> {
     abstract Callable getEnclosingCallable();
 
     /** Gets the underlying Python `Stmt`, if this node wraps one. */
-    Py::Stmt asStmt() { this = TStmt(result) }
+    Py::Stmt asStmt() { this = TPyStmt(result) }
 
     /**
      * Gets the underlying Python `Expr`, if this node wraps one. Boolean
@@ -164,10 +171,8 @@ module Ast implements AstSig<Py::Location> {
   Parameter callableGetParameter(Callable c, int index) { none() }
 
   /** A statement. */
-  class Stmt extends AstNodeImpl {
-    Stmt() { this instanceof TStmt or this instanceof TBlockStmt }
-
-    // For `TStmt` instances, delegate to the wrapped Python statement.
+  class Stmt extends AstNodeImpl, TStmt {
+    // For `TPyStmt` instances, delegate to the wrapped Python statement.
     // `BlockStmt` (the only `TBlockStmt` subclass) provides its own overrides.
     override string toString() { result = this.asStmt().toString() }
 
@@ -513,7 +518,7 @@ module Ast implements AstSig<Py::Location> {
 
     Stmt getFinally() { result = TBlockStmt(tryStmt.getFinalbody()) }
 
-    CatchClause getCatch(int index) { result = TStmt(tryStmt.getHandler(index)) }
+    CatchClause getCatch(int index) { result = TPyStmt(tryStmt.getHandler(index)) }
 
     override AstNode getChild(int index) {
       index = 0 and result = this.getBody()
@@ -580,7 +585,7 @@ module Ast implements AstSig<Py::Location> {
 
     Expr getExpr() { result.asExpr() = matchStmt.getSubject() }
 
-    Case getCase(int index) { result = TStmt(matchStmt.getCase(index)) }
+    Case getCase(int index) { result = TPyStmt(matchStmt.getCase(index)) }
 
     Stmt getStmt(int index) { none() }
 
