@@ -4,6 +4,7 @@ extern crate self as yeast;
 
 use serde::Serialize;
 use serde_json::{json, Value};
+pub use smallvec::{smallvec, SmallVec};
 
 pub mod build;
 pub mod captures;
@@ -28,6 +29,10 @@ type Id = usize;
 /// Field and Kind ids are provided by tree-sitter
 type FieldId = u16;
 type KindId = u16;
+
+/// The output of one rule firing: a small list of replacement node Ids,
+/// inline for the common "single replacement" case.
+pub type RuleOutput = SmallVec<[Id; 1]>;
 
 pub const CHILD_FIELD: u16 = u16::MAX;
 
@@ -452,9 +457,10 @@ impl From<tree_sitter::Range> for NodeContent {
 
 /// The transform function for a rule: takes the AST, captured variables, a
 /// fresh-name scope, and the source range of the matched node, and returns
-/// the IDs of the replacement nodes.
+/// the IDs of the replacement nodes (typically a single Id; uses
+/// `SmallVec` to keep the common case inline).
 pub type Transform = Box<
-    dyn Fn(&mut Ast, Captures, &tree_builder::FreshScope, Option<tree_sitter::Range>) -> Vec<Id>
+    dyn Fn(&mut Ast, Captures, &tree_builder::FreshScope, Option<tree_sitter::Range>) -> RuleOutput
         + Send
         + Sync,
 >;
@@ -492,7 +498,7 @@ impl Rule {
         ast: &mut Ast,
         node: Id,
         fresh: &tree_builder::FreshScope,
-    ) -> Result<Option<Vec<Id>>, String> {
+    ) -> Result<Option<RuleOutput>, String> {
         let mut captures = Captures::new();
         if self.query.do_match(ast, node, &mut captures)? {
             fresh.next_scope();
@@ -544,7 +550,7 @@ fn apply_rules(
     ast: &mut Ast,
     id: Id,
     fresh: &tree_builder::FreshScope,
-) -> Result<Vec<Id>, String> {
+) -> Result<RuleOutput, String> {
     let index = RuleIndex::new(rules);
     apply_rules_inner(&index, ast, id, fresh, 0, None)
 }
@@ -556,7 +562,7 @@ fn apply_rules_inner(
     fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
     skip_rule: Option<*const Rule>,
-) -> Result<Vec<Id>, String> {
+) -> Result<RuleOutput, String> {
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
             "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
@@ -576,7 +582,7 @@ fn apply_rules_inner(
             // query doesn't loop. Other rules and child traversal are
             // unaffected.
             let next_skip = if rule.repeated { None } else { Some(rule_ptr) };
-            let mut results = Vec::new();
+            let mut results = RuleOutput::new();
             for node in result_node {
                 results.extend(apply_rules_inner(
                     index,
@@ -625,7 +631,7 @@ fn apply_rules_inner(
         }
     }
     ast.nodes[id].fields = fields;
-    Ok(vec![id])
+    Ok(smallvec![id])
 }
 
 /// One phase of a desugaring pass: a named bundle of rules that runs to

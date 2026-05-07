@@ -643,7 +643,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                 true,
                 __source_range,
             );
-            vec![__id]
+            yeast::smallvec![__id]
         }
     } else {
         // Full template form
@@ -657,7 +657,7 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
         }
 
         quote! {
-            let mut __nodes: Vec<usize> = Vec::new();
+            let mut __nodes: yeast::RuleOutput = yeast::SmallVec::new();
             #(#transform_items)*
             __nodes
         }

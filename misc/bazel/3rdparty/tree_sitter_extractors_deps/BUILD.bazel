@@ -542,6 +542,18 @@ alias(
 )
 
 alias(
+    name = "smallvec-1.15.1",
+    actual = "@vendor_ts__smallvec-1.15.1//:smallvec",
+    tags = ["manual"],
+)
+
+alias(
+    name = "smallvec",
+    actual = "@vendor_ts__smallvec-1.15.1//:smallvec",
+    tags = ["manual"],
+)
+
+alias(
     name = "syn-2.0.106",
     actual = "@vendor_ts__syn-2.0.106//:syn",
     tags = ["manual"],
