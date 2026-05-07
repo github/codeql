@@ -224,7 +224,7 @@ module Ast implements AstSig<Py::Location> {
   class ExprStmt extends Stmt {
     private Py::ExprStmt exprStmt;
 
-    ExprStmt() { exprStmt = this.asStmt() }
+    ExprStmt() { this = TPyStmt(exprStmt) }
 
     /** Gets the expression in this expression statement. */
     Expr getExpr() { result.asExpr() = exprStmt.getValue() }
@@ -236,7 +236,7 @@ module Ast implements AstSig<Py::Location> {
   additional class AssignStmt extends Stmt {
     private Py::Assign assign;
 
-    AssignStmt() { assign = this.asStmt() }
+    AssignStmt() { this = TPyStmt(assign) }
 
     Expr getValue() { result.asExpr() = assign.getValue() }
 
@@ -255,7 +255,7 @@ module Ast implements AstSig<Py::Location> {
   additional class AugAssignStmt extends Stmt {
     private Py::AugAssign augAssign;
 
-    AugAssignStmt() { augAssign = this.asStmt() }
+    AugAssignStmt() { this = TPyStmt(augAssign) }
 
     Expr getOperation() { result.asExpr() = augAssign.getOperation() }
 
@@ -266,7 +266,7 @@ module Ast implements AstSig<Py::Location> {
   additional class NamedExpr extends Expr {
     private Py::AssignExpr assignExpr;
 
-    NamedExpr() { assignExpr = this.asExpr() }
+    NamedExpr() { this = TPyExpr(assignExpr) }
 
     Expr getValue() { result.asExpr() = assignExpr.getValue() }
 
@@ -291,7 +291,7 @@ module Ast implements AstSig<Py::Location> {
   class IfStmt extends Stmt {
     private Py::If ifStmt;
 
-    IfStmt() { ifStmt = this.asStmt() }
+    IfStmt() { this = TPyStmt(ifStmt) }
 
     /** Gets the underlying Python `If` statement. */
     Py::If asIf() { result = ifStmt }
@@ -316,7 +316,11 @@ module Ast implements AstSig<Py::Location> {
 
   /** A loop statement. */
   class LoopStmt extends Stmt {
-    LoopStmt() { this.asStmt() instanceof Py::While or this.asStmt() instanceof Py::For }
+    LoopStmt() {
+      this = TPyStmt(any(Py::While w))
+      or
+      this = TPyStmt(any(Py::For f))
+    }
 
     /** Gets the body of this loop statement. */
     Stmt getBody() { none() }
@@ -326,7 +330,7 @@ module Ast implements AstSig<Py::Location> {
   class WhileStmt extends LoopStmt {
     private Py::While whileStmt;
 
-    WhileStmt() { whileStmt = this.asStmt() }
+    WhileStmt() { this = TPyStmt(whileStmt) }
 
     /** Gets the boolean condition of this `while` loop. */
     Expr getCondition() { result.asExpr() = whileStmt.getTest() }
@@ -369,7 +373,7 @@ module Ast implements AstSig<Py::Location> {
   class ForeachStmt extends LoopStmt {
     private Py::For forStmt;
 
-    ForeachStmt() { forStmt = this.asStmt() }
+    ForeachStmt() { this = TPyStmt(forStmt) }
 
     /** Gets the loop variable. */
     Expr getVariable() { result.asExpr() = forStmt.getTarget() }
@@ -395,12 +399,12 @@ module Ast implements AstSig<Py::Location> {
 
   /** A `break` statement. */
   class BreakStmt extends Stmt {
-    BreakStmt() { this.asStmt() instanceof Py::Break }
+    BreakStmt() { this = TPyStmt(any(Py::Break b)) }
   }
 
   /** A `continue` statement. */
   class ContinueStmt extends Stmt {
-    ContinueStmt() { this.asStmt() instanceof Py::Continue }
+    ContinueStmt() { this = TPyStmt(any(Py::Continue c)) }
   }
 
   /** A `goto` statement. Python has no goto. */
@@ -412,7 +416,7 @@ module Ast implements AstSig<Py::Location> {
   class ReturnStmt extends Stmt {
     private Py::Return ret;
 
-    ReturnStmt() { ret = this.asStmt() }
+    ReturnStmt() { this = TPyStmt(ret) }
 
     /** Gets the expression being returned, if any. */
     Expr getExpr() { result.asExpr() = ret.getValue() }
@@ -424,7 +428,7 @@ module Ast implements AstSig<Py::Location> {
   class Throw extends Stmt {
     private Py::Raise raise;
 
-    Throw() { raise = this.asStmt() }
+    Throw() { this = TPyStmt(raise) }
 
     /** Gets the expression being raised. */
     Expr getExpr() { result.asExpr() = raise.getException() }
@@ -443,7 +447,7 @@ module Ast implements AstSig<Py::Location> {
   additional class WithStmt extends Stmt {
     private Py::With withStmt;
 
-    WithStmt() { withStmt = this.asStmt() }
+    WithStmt() { this = TPyStmt(withStmt) }
 
     Expr getContextExpr() { result.asExpr() = withStmt.getContextExpr() }
 
@@ -464,7 +468,7 @@ module Ast implements AstSig<Py::Location> {
   additional class AssertStmt extends Stmt {
     private Py::Assert assertStmt;
 
-    AssertStmt() { assertStmt = this.asStmt() }
+    AssertStmt() { this = TPyStmt(assertStmt) }
 
     Expr getTest() { result.asExpr() = assertStmt.getTest() }
 
@@ -481,7 +485,7 @@ module Ast implements AstSig<Py::Location> {
   additional class DeleteStmt extends Stmt {
     private Py::Delete del;
 
-    DeleteStmt() { del = this.asStmt() }
+    DeleteStmt() { this = TPyStmt(del) }
 
     Expr getTarget(int n) { result.asExpr() = del.getTarget(n) }
 
@@ -492,7 +496,7 @@ module Ast implements AstSig<Py::Location> {
   class TryStmt extends Stmt {
     private Py::Try tryStmt;
 
-    TryStmt() { tryStmt = this.asStmt() }
+    TryStmt() { this = TPyStmt(tryStmt) }
 
     Stmt getBody() { result = TBlockStmt(tryStmt.getBody()) }
 
@@ -533,7 +537,7 @@ module Ast implements AstSig<Py::Location> {
   class CatchClause extends Stmt {
     private Py::ExceptionHandler handler;
 
-    CatchClause() { handler = this.asStmt() }
+    CatchClause() { this = TPyStmt(handler) }
 
     /** Gets the type expression of this exception handler. */
     Expr getType() { result.asExpr() = handler.getType() }
@@ -564,7 +568,7 @@ module Ast implements AstSig<Py::Location> {
   class Switch extends Stmt {
     private Py::MatchStmt matchStmt;
 
-    Switch() { matchStmt = this.asStmt() }
+    Switch() { this = TPyStmt(matchStmt) }
 
     Expr getExpr() { result.asExpr() = matchStmt.getSubject() }
 
@@ -583,7 +587,7 @@ module Ast implements AstSig<Py::Location> {
   class Case extends Stmt {
     private Py::Case caseStmt;
 
-    Case() { caseStmt = this.asStmt() }
+    Case() { this = TPyStmt(caseStmt) }
 
     AstNode getAPattern() { result = TPattern(caseStmt.getPattern()) }
 
@@ -612,7 +616,7 @@ module Ast implements AstSig<Py::Location> {
   class ConditionalExpr extends Expr {
     private Py::IfExp ifExp;
 
-    ConditionalExpr() { ifExp = this.asExpr() }
+    ConditionalExpr() { this = TPyExpr(ifExp) }
 
     /** Gets the condition of this expression. */
     Expr getCondition() { result.asExpr() = ifExp.getTest() }
@@ -689,7 +693,7 @@ module Ast implements AstSig<Py::Location> {
    * A unary expression. Currently only used for the `not` subclass.
    */
   class UnaryExpr extends Expr {
-    UnaryExpr() { this.asExpr().(Py::UnaryExpr).getOp() instanceof Py::Not }
+    UnaryExpr() { exists(Py::UnaryExpr u | this = TPyExpr(u) and u.getOp() instanceof Py::Not) }
 
     /** Gets the operand of this unary expression. */
     Expr getOperand() { result.asExpr() = this.asExpr().(Py::UnaryExpr).getOperand() }
@@ -739,7 +743,7 @@ module Ast implements AstSig<Py::Location> {
 
   /** A boolean literal expression (`True` or `False`). */
   class BooleanLiteral extends Expr {
-    BooleanLiteral() { this.asExpr() instanceof Py::True or this.asExpr() instanceof Py::False }
+    BooleanLiteral() { this = TPyExpr(any(Py::True t)) or this = TPyExpr(any(Py::False f)) }
 
     /** Gets the boolean value of this literal. */
     boolean getValue() {
@@ -763,7 +767,7 @@ module Ast implements AstSig<Py::Location> {
   additional class ArithBinaryExpr extends Expr {
     private Py::BinaryExpr binExpr;
 
-    ArithBinaryExpr() { binExpr = this.asExpr() }
+    ArithBinaryExpr() { this = TPyExpr(binExpr) }
 
     Expr getLeft() { result.asExpr() = binExpr.getLeft() }
 
@@ -780,7 +784,7 @@ module Ast implements AstSig<Py::Location> {
   additional class CallExpr extends Expr {
     private Py::Call call;
 
-    CallExpr() { call = this.asExpr() }
+    CallExpr() { this = TPyExpr(call) }
 
     Expr getFunc() { result.asExpr() = call.getFunc() }
 
@@ -810,7 +814,7 @@ module Ast implements AstSig<Py::Location> {
   additional class SubscriptExpr extends Expr {
     private Py::Subscript sub;
 
-    SubscriptExpr() { sub = this.asExpr() }
+    SubscriptExpr() { this = TPyExpr(sub) }
 
     Expr getObject() { result.asExpr() = sub.getObject() }
 
@@ -827,7 +831,7 @@ module Ast implements AstSig<Py::Location> {
   additional class AttributeExpr extends Expr {
     private Py::Attribute attr;
 
-    AttributeExpr() { attr = this.asExpr() }
+    AttributeExpr() { this = TPyExpr(attr) }
 
     Expr getObject() { result.asExpr() = attr.getObject() }
 
@@ -838,7 +842,7 @@ module Ast implements AstSig<Py::Location> {
   additional class TupleExpr extends Expr {
     private Py::Tuple tuple;
 
-    TupleExpr() { tuple = this.asExpr() }
+    TupleExpr() { this = TPyExpr(tuple) }
 
     Expr getElt(int n) { result.asExpr() = tuple.getElt(n) }
 
@@ -849,7 +853,7 @@ module Ast implements AstSig<Py::Location> {
   additional class ListExpr extends Expr {
     private Py::List list;
 
-    ListExpr() { list = this.asExpr() }
+    ListExpr() { this = TPyExpr(list) }
 
     Expr getElt(int n) { result.asExpr() = list.getElt(n) }
 
@@ -860,7 +864,7 @@ module Ast implements AstSig<Py::Location> {
   additional class SetExpr extends Expr {
     private Py::Set set;
 
-    SetExpr() { set = this.asExpr() }
+    SetExpr() { this = TPyExpr(set) }
 
     Expr getElt(int n) { result.asExpr() = set.getElt(n) }
 
@@ -871,7 +875,7 @@ module Ast implements AstSig<Py::Location> {
   additional class DictExpr extends Expr {
     private Py::Dict dict;
 
-    DictExpr() { dict = this.asExpr() }
+    DictExpr() { this = TPyExpr(dict) }
 
     /**
      * Gets the key of the `n`th item (at child index `2*n`); the value is
@@ -896,7 +900,7 @@ module Ast implements AstSig<Py::Location> {
   additional class ArithUnaryExpr extends Expr {
     private Py::UnaryExpr unaryExpr;
 
-    ArithUnaryExpr() { unaryExpr = this.asExpr() and not unaryExpr.getOp() instanceof Py::Not }
+    ArithUnaryExpr() { this = TPyExpr(unaryExpr) and not unaryExpr.getOp() instanceof Py::Not }
 
     Expr getOperand() { result.asExpr() = unaryExpr.getOperand() }
 
@@ -912,13 +916,15 @@ module Ast implements AstSig<Py::Location> {
     private Py::Expr iterable;
 
     Comprehension() {
-      iterable = this.asExpr().(Py::ListComp).getIterable()
-      or
-      iterable = this.asExpr().(Py::SetComp).getIterable()
-      or
-      iterable = this.asExpr().(Py::DictComp).getIterable()
-      or
-      iterable = this.asExpr().(Py::GeneratorExp).getIterable()
+      exists(Py::Expr c | this = TPyExpr(c) |
+        iterable = c.(Py::ListComp).getIterable()
+        or
+        iterable = c.(Py::SetComp).getIterable()
+        or
+        iterable = c.(Py::DictComp).getIterable()
+        or
+        iterable = c.(Py::GeneratorExp).getIterable()
+      )
     }
 
     Expr getIterable() { result.asExpr() = iterable }
@@ -930,7 +936,7 @@ module Ast implements AstSig<Py::Location> {
   additional class CompareExpr extends Expr {
     private Py::Compare cmp;
 
-    CompareExpr() { cmp = this.asExpr() }
+    CompareExpr() { this = TPyExpr(cmp) }
 
     Expr getLeft() { result.asExpr() = cmp.getLeft() }
 
@@ -947,7 +953,7 @@ module Ast implements AstSig<Py::Location> {
   additional class SliceExpr extends Expr {
     private Py::Slice slice;
 
-    SliceExpr() { slice = this.asExpr() }
+    SliceExpr() { this = TPyExpr(slice) }
 
     Expr getStart() { result.asExpr() = slice.getStart() }
 
@@ -968,7 +974,7 @@ module Ast implements AstSig<Py::Location> {
   additional class StarredExpr extends Expr {
     private Py::Starred starred;
 
-    StarredExpr() { starred = this.asExpr() }
+    StarredExpr() { this = TPyExpr(starred) }
 
     Expr getValue() { result.asExpr() = starred.getValue() }
 
@@ -979,7 +985,7 @@ module Ast implements AstSig<Py::Location> {
   additional class FstringExpr extends Expr {
     private Py::Fstring fstring;
 
-    FstringExpr() { fstring = this.asExpr() }
+    FstringExpr() { this = TPyExpr(fstring) }
 
     Expr getValue(int n) { result.asExpr() = fstring.getValue(n) }
 
@@ -990,7 +996,7 @@ module Ast implements AstSig<Py::Location> {
   additional class FormattedValueExpr extends Expr {
     private Py::FormattedValue fv;
 
-    FormattedValueExpr() { fv = this.asExpr() }
+    FormattedValueExpr() { this = TPyExpr(fv) }
 
     Expr getValue() { result.asExpr() = fv.getValue() }
 
@@ -1007,7 +1013,7 @@ module Ast implements AstSig<Py::Location> {
   additional class YieldExpr extends Expr {
     private Py::Yield yield;
 
-    YieldExpr() { yield = this.asExpr() }
+    YieldExpr() { this = TPyExpr(yield) }
 
     Expr getValue() { result.asExpr() = yield.getValue() }
 
@@ -1018,7 +1024,7 @@ module Ast implements AstSig<Py::Location> {
   additional class YieldFromExpr extends Expr {
     private Py::YieldFrom yieldFrom;
 
-    YieldFromExpr() { yieldFrom = this.asExpr() }
+    YieldFromExpr() { this = TPyExpr(yieldFrom) }
 
     Expr getValue() { result.asExpr() = yieldFrom.getValue() }
 
@@ -1029,7 +1035,7 @@ module Ast implements AstSig<Py::Location> {
   additional class AwaitExpr extends Expr {
     private Py::Await await;
 
-    AwaitExpr() { await = this.asExpr() }
+    AwaitExpr() { this = TPyExpr(await) }
 
     Expr getValue() { result.asExpr() = await.getValue() }
 
@@ -1040,7 +1046,7 @@ module Ast implements AstSig<Py::Location> {
   additional class ClassDefExpr extends Expr {
     private Py::ClassExpr classExpr;
 
-    ClassDefExpr() { classExpr = this.asExpr() }
+    ClassDefExpr() { this = TPyExpr(classExpr) }
 
     Expr getBase(int n) { result.asExpr() = classExpr.getBase(n) }
 
@@ -1051,7 +1057,7 @@ module Ast implements AstSig<Py::Location> {
   additional class FunctionDefExpr extends Expr {
     private Py::FunctionExpr funcExpr;
 
-    FunctionDefExpr() { funcExpr = this.asExpr() }
+    FunctionDefExpr() { this = TPyExpr(funcExpr) }
 
     /**
      * Gets the `n`th default for a positional argument, in evaluation
@@ -1083,7 +1089,7 @@ module Ast implements AstSig<Py::Location> {
   additional class LambdaExpr extends Expr {
     private Py::Lambda lambda;
 
-    LambdaExpr() { lambda = this.asExpr() }
+    LambdaExpr() { this = TPyExpr(lambda) }
 
     /** Gets the `n`th default for a positional argument, in evaluation order. */
     Expr getDefault(int n) {
