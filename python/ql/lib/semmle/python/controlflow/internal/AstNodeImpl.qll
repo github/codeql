@@ -35,38 +35,15 @@ module Ast implements AstSig<Py::Location> {
      * A synthetic block statement, wrapping a `Py::StmtList`. Each list of
      * statements that represents an imperative block (a function/class/module
      * body, an `if`/`while`/`for` branch, a `try`/`except`/`finally` body,
-     * etc.) becomes one `BlockStmt` node in the CFG. Lists used in other
-     * roles (e.g. `Try.getHandlers()`, which is iterated as catch clauses)
-     * are excluded.
+     * etc.) becomes one `BlockStmt` node in the CFG. `Py::StmtList`s used
+     * in other roles - `Try.getHandlers()` (iterated via `getCatch`) and
+     * `MatchStmt.getCases()` (iterated via `getCase`) - are excluded, as
+     * the shared library's `Try`/`Switch` logic walks their items
+     * individually.
      */
     TBlockStmt(Py::StmtList sl) {
-      sl = any(Py::Scope p).getBody()
-      or
-      sl = any(Py::If p).getBody()
-      or
-      sl = any(Py::If p).getOrelse()
-      or
-      sl = any(Py::While p).getBody()
-      or
-      sl = any(Py::While p).getOrelse()
-      or
-      sl = any(Py::For p).getBody()
-      or
-      sl = any(Py::For p).getOrelse()
-      or
-      sl = any(Py::With p).getBody()
-      or
-      sl = any(Py::Try p).getBody()
-      or
-      sl = any(Py::Try p).getOrelse()
-      or
-      sl = any(Py::Try p).getFinalbody()
-      or
-      sl = any(Py::Case p).getBody()
-      or
-      sl = any(Py::ExceptStmt p).getBody()
-      or
-      sl = any(Py::ExceptGroupStmt p).getBody()
+      not sl = any(Py::Try t).getHandlers() and
+      not sl = any(Py::MatchStmt m).getCases()
     }
 
   /**
