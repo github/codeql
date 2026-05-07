@@ -321,8 +321,9 @@ capture name to a field of the same name on the output node.
 A YEAST desugaring pass is configured with a [`DesugaringConfig`], which
 carries one or more named [`Phase`]s of rules and an optional output
 node-types schema (in YAML format). Each phase is a complete traversal
-that runs to completion before the next phase starts; rules in different
-phases never compete for matches. Attach the config to a language spec
+that runs to completion before the next phase starts; only the current
+phase's rules are considered during that traversal. Attach the config to
+a language spec
 to enable rewriting:
 
 ```rust
@@ -349,5 +350,5 @@ is converted to JSON internally).
 
 For the dbscheme/QL code generator, set `Language::desugar` to a
 `DesugaringConfig` carrying the same YAML; the generator converts it to
-JSON for downstream code generation. The `rules` field of the config is
+JSON for downstream code generation. The `phases` field of the config is
 unused at code-generation time.

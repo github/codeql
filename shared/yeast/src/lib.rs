@@ -638,7 +638,8 @@ fn apply_rules_inner(
 /// One phase of a desugaring pass: a named bundle of rules that runs to
 /// completion (a full traversal applying its rules) before the next phase
 /// starts. Rules within a phase compete for matches as usual; rules in
-/// different phases never compete because they don't see each other's input.
+/// different phases never compete because each traversal only considers the
+/// current phase's rules.
 pub struct Phase {
     /// Name used in error messages.
     pub name: String,
