@@ -113,14 +113,24 @@ _ @anything                 // capture any node, named or unnamed
 The two wildcard forms `(_)` and bare `_` differ:
 
 - `(_)` matches only **named** nodes. When used as a positional pattern,
-  unnamed children (keywords, operators, punctuation) are skipped over to
-  find the next named child.
+  unnamed children (keywords, operators, punctuation) are skipped over.
 - Bare `_` matches **any** node, named or unnamed, taking whatever is next
   in the child list.
 
-Similarly, named-kind patterns like `(call ...)` skip unnamed children;
-unnamed-kind patterns like `("end")` or `"end"` consume the next child
-unconditionally:
+Bare child patterns are matched **forward-scan**: each pattern advances
+through the iterator until it finds a child that matches, skipping
+non-matching children along the way. So `(foo ("baz"))` against a `foo`
+whose children are `[bar, baz]` succeeds — the matcher scans past `bar`
+and matches `baz`. The iterator advances as it goes, so subsequent
+patterns can never match children that appear earlier in source order
+than already-matched ones.
+
+For named-only patterns (`(_)`, `(some_kind ...)`), the scan additionally
+skips past unnamed tokens without trying to match them, since they can
+never match anyway.
+
+Anchors (`.`) for forcing immediate adjacency, like in tree-sitter
+queries, are not supported.
 
 ```rust
 (for

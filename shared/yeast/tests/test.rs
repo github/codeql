@@ -299,6 +299,58 @@ fn test_bare_forms_in_field_position() {
     assert!(!op.is_named());
 }
 
+#[test]
+fn test_forward_scan_finds_unnamed_token_late() {
+    // The `do` named-wrapper node has three children in its implicit
+    // `child` field, in source order: `do` (unnamed kw), the body
+    // identifier, and `end` (unnamed kw). Forward-scan semantics let a
+    // query for `("end")` skip past the first two and match the third.
+    // Without forward-scan, the matcher took the first child unconditionally
+    // and failed.
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("for x in list do\n  y\nend").unwrap();
+
+    // Navigate: program > for > do (the body wrapper).
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child(); // for
+    cursor.goto_first_child(); // do (the body)
+    while cursor.node().kind() != "do" || !cursor.node().is_named() {
+        assert!(cursor.goto_next_sibling(), "expected to find named `do`");
+    }
+    let do_id = cursor.node().id();
+
+    let query = yeast::query!((do ("end") @kw));
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, do_id, &mut captures).unwrap();
+    assert!(matched, "forward-scan should find the `end` keyword");
+    let kw = ast.get_node(captures.get_var("kw").unwrap()).unwrap();
+    assert_eq!(kw.kind(), "end");
+    assert!(!kw.is_named());
+}
+
+#[test]
+fn test_forward_scan_preserves_order() {
+    // Bare patterns are scanned left-to-right and consume positions in
+    // order. A query for ("end") then ("do") should fail because `do`
+    // appears before `end` in the source order; once forward-scan has
+    // consumed `end`, the iterator is exhausted.
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("for x in list do\n  y\nend").unwrap();
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    cursor.goto_first_child();
+    while cursor.node().kind() != "do" || !cursor.node().is_named() {
+        assert!(cursor.goto_next_sibling(), "expected to find named `do`");
+    }
+    let do_id = cursor.node().id();
+
+    let query = yeast::query!((do ("end") @first ("do") @second));
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, do_id, &mut captures).unwrap();
+    assert!(!matched, "scan must not go backwards");
+}
+
 // ---- Tree builder tests ----
 
 #[test]

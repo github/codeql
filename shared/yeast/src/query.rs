@@ -167,25 +167,28 @@ impl QueryListElem {
                 }
             }
             QueryListElem::SingleNode(sub_query) => {
-                if sub_query.matches_named_only() {
-                    // Skip unnamed children, matching tree-sitter semantics
-                    // where (_) only matches named nodes.
-                    loop {
-                        match remaining_children.next() {
-                            Some(child) => {
-                                let node = ast.get_node(child).unwrap();
-                                if node.is_named() {
-                                    return sub_query.do_match(ast, child, matches);
-                                }
-                                // Skip unnamed child, continue to next
-                            }
-                            None => return Ok(false),
+                // Forward-scan semantics: advance through the iterator until
+                // we find a child that matches `sub_query`. Skip ahead past
+                // unnamed children when the sub-query is named-only (so they
+                // can never match anyway). On a match attempt that fails,
+                // restore the captures so partial captures from a complex
+                // sub-query don't leak.
+                let skip_unnamed = sub_query.matches_named_only();
+                loop {
+                    let Some(child) = remaining_children.next() else {
+                        return Ok(false);
+                    };
+                    if skip_unnamed {
+                        let node = ast.get_node(child).unwrap();
+                        if !node.is_named() {
+                            continue;
                         }
                     }
-                } else if let Some(child) = remaining_children.next() {
-                    sub_query.do_match(ast, child, matches)
-                } else {
-                    Ok(false)
+                    let snapshot = matches.clone();
+                    if sub_query.do_match(ast, child, matches)? {
+                        return Ok(true);
+                    }
+                    *matches = snapshot;
                 }
             }
         }
