@@ -69,16 +69,24 @@ module Ast implements AstSig<Py::Location> {
       sl = any(Py::ExceptGroupStmt p).getBody()
     }
 
-  /** An AST node visible to the shared CFG. */
-  class AstNode extends TAstNode {
+  /**
+   * An AST node visible to the shared CFG.
+   *
+   * This is the abstract implementation class. It enforces that each
+   * concrete subclass provides `toString`, `getLocation`, and
+   * `getEnclosingCallable` (one subclass per `TAstNode` newtype branch).
+   * The public alias `AstNode` is what users (and the `AstSig` signature)
+   * see; subclasses inside this module extend `AstNodeImpl` directly.
+   */
+  abstract private class AstNodeImpl extends TAstNode {
     /** Gets a textual representation of this AST node. */
-    string toString() { none() }
+    abstract string toString();
 
     /** Gets the location of this AST node. */
-    Py::Location getLocation() { none() }
+    abstract Py::Location getLocation();
 
     /** Gets the enclosing callable that contains this node, if any. */
-    Callable getEnclosingCallable() { none() }
+    abstract Callable getEnclosingCallable();
 
     /** Gets the underlying Python `Stmt`, if this node wraps one. */
     Py::Stmt asStmt() { this = TStmt(result) }
@@ -109,6 +117,9 @@ module Ast implements AstSig<Py::Location> {
     AstNode getChild(int index) { none() }
   }
 
+  /** An AST node visible to the shared CFG. */
+  final class AstNode = AstNodeImpl;
+
   /** Gets the immediately enclosing callable that contains `node`. */
   Callable getEnclosingCallable(AstNode node) { result = node.getEnclosingCallable() }
 
@@ -117,7 +128,7 @@ module Ast implements AstSig<Py::Location> {
    *
    * In Python, all three are executable scopes with statement bodies.
    */
-  class Callable extends AstNode, TScope {
+  class Callable extends AstNodeImpl, TScope {
     private Py::Scope sc;
 
     Callable() { this = TScope(sc) }
@@ -137,8 +148,14 @@ module Ast implements AstSig<Py::Location> {
    *
    * TODO: Implement in order to include parameters in the CFG.
    */
-  class Parameter extends AstNode {
+  class Parameter extends AstNodeImpl {
     Parameter() { none() }
+
+    override string toString() { none() }
+
+    override Py::Location getLocation() { none() }
+
+    override Callable getEnclosingCallable() { none() }
 
     Expr getDefaultValue() { none() }
   }
@@ -147,7 +164,7 @@ module Ast implements AstSig<Py::Location> {
   Parameter callableGetParameter(Callable c, int index) { none() }
 
   /** A statement. */
-  class Stmt extends AstNode {
+  class Stmt extends AstNodeImpl {
     Stmt() { this instanceof TStmt or this instanceof TBlockStmt }
 
     // For `TStmt` instances, delegate to the wrapped Python statement.
@@ -160,7 +177,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** An expression. */
-  class Expr extends AstNode {
+  class Expr extends AstNodeImpl {
     Expr() { this instanceof TExpr or this instanceof TBoolExprPair }
 
     // For `TExpr` instances, delegate to the wrapped Python expression.
@@ -173,7 +190,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** A pattern in a `match` statement. */
-  additional class Pattern extends AstNode, TPattern {
+  additional class Pattern extends AstNodeImpl, TPattern {
     private Py::Pattern p;
 
     Pattern() { this = TPattern(p) }
