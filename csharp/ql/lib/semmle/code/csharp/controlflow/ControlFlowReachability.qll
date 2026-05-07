@@ -26,17 +26,7 @@ private module ControlFlowInput implements InputSig<Location, ControlFlowNode, B
 
   class Expr = CS::Expr;
 
-  class SourceVariable = Ssa::SourceVariable;
-
-  class SsaDefinition = Ssa::Definition;
-
-  class SsaExplicitWrite extends SsaDefinition instanceof Ssa::ExplicitDefinition {
-    Expr getValue() { result = super.getADefinition().getSource() }
-  }
-
-  class SsaPhiDefinition = Ssa::PhiNode;
-
-  class SsaUncertainWrite = Ssa::UncertainDefinition;
+  import Ssa
 
   class GuardValue = Guards::GuardValue;
 

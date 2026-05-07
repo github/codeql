@@ -270,10 +270,10 @@ module VariableCapture {
   private predicate closureFlowStep(ControlFlowNodes::ExprNode e1, ControlFlowNodes::ExprNode e2) {
     e1.getExpr() = LocalFlow::getALastEvalNode(e2.getExpr())
     or
-    exists(Ssa::Definition def, AssignableDefinition adef |
+    exists(SsaDefinition def, AssignableDefinition adef |
       LocalFlow::defAssigns(adef, _, _, e1) and
-      def.getAnUltimateDefinition().(Ssa::ExplicitDefinition).getADefinition() = adef and
-      exists(def.getAReadAtNode(e2))
+      def.getAnUltimateDefinition().(SsaExplicitWrite).getDefinition() = adef and
+      def.getARead().getControlFlowNode() = e2
     )
   }
 
@@ -600,8 +600,8 @@ module LocalFlow {
     or
     ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
-    exists(AssignableDefinition def, ControlFlowNode cfn, Ssa::ExplicitDefinition ssaDef |
-      ssaDef.getADefinition() = def and
+    exists(AssignableDefinition def, ControlFlowNode cfn, SsaExplicitWrite ssaDef |
+      ssaDef.getDefinition() = def and
       ssaDef.getControlFlowNode() = cfn and
       nodeFrom = TAssignableDefinitionNode(def, cfn) and
       nodeTo.(SsaDefinitionNode).getDefinition() = ssaDef
@@ -1244,7 +1244,7 @@ class SsaNode extends NodeImpl, TSsaNode {
 class SsaDefinitionNode extends SsaNode {
   override SsaImpl::DataFlowIntegration::SsaDefinitionNode node;
 
-  Ssa::Definition getDefinition() { result = node.getDefinition() }
+  SsaDefinition getDefinition() { result = node.getDefinition() }
 
   override ControlFlowNode getControlFlowNodeImpl() {
     result = this.getDefinition().getControlFlowNode()
@@ -1302,12 +1302,6 @@ private module NearestLocationInputParamAfterCallable implements NearestLocation
 }
 
 private module ParameterNodes {
-  pragma[nomagic]
-  private predicate ssaParamDef(Ssa::ParameterDefinition ssaDef, Parameter p, Location l) {
-    p = ssaDef.getParameter() and
-    l = ssaDef.getLocation()
-  }
-
   private module NearestLocationInputParamBeforeCallable implements NearestLocationInputSig {
     class C = Parameter;
 
@@ -1358,11 +1352,9 @@ private module ParameterNodes {
     }
 
     /** Gets the SSA definition corresponding to this parameter, if any. */
-    Ssa::ParameterDefinition getSsaDefinition() {
-      exists(Parameter p, Location l |
-        l = this.getParameterLocation(p) and
-        ssaParamDef(result, p, l)
-      )
+    SsaParameterInit getSsaDefinition() {
+      result.getParameter() = parameter and
+      result.getBasicBlock() = callable.getABasicBlock()
     }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
@@ -1438,7 +1430,7 @@ private module ParameterNodes {
   }
 
   /** An implicit entry definition for a captured variable. */
-  class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
+  deprecated class SsaCapturedEntryDefinition extends Ssa::ImplicitEntryDefinition {
     private LocalScopeVariable v;
 
     SsaCapturedEntryDefinition() { this.getSourceVariable().getAssignable() = v }
@@ -1613,7 +1605,7 @@ private module ReturnNodes {
 
     OutRefReturnNode() {
       exists(Parameter p |
-        this.getDefinition().isLiveOutRefParameterDefinition(p) and
+        SsaImpl::isLiveOutRefParameterDefinition(this.getDefinition(), p) and
         kind.getPosition() = p.getPosition()
       |
         p.isOut() and kind instanceof OutReturnKind
@@ -2016,12 +2008,9 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
    * SSA updates.
    */
   predicate hasNonlocalValue() {
-    exists(Ssa::Definition def, Ssa::ImplicitDefinition idef |
+    exists(SsaDefinition def |
       def.getARead() = this and
-      idef = def.getAnUltimateDefinition()
-    |
-      idef instanceof Ssa::ImplicitEntryDefinition or
-      idef instanceof Ssa::ImplicitCallDefinition
+      def.getAnUltimateDefinition() instanceof SsaImplicitWrite
     )
   }
 }
@@ -2220,12 +2209,11 @@ private predicate readContentStep(Node node1, Content c, Node node2) {
   c instanceof ElementContent
   or
   exists(
-    ForeachStmt fs, Ssa::ExplicitDefinition def,
-    AssignableDefinitions::LocalVariableDefinition defTo
+    ForeachStmt fs, SsaExplicitWrite def, AssignableDefinitions::LocalVariableDefinition defTo
   |
     node1.asExpr() = fs.getIterableExpr() and
     defTo.getDeclaration() = fs.getVariableDeclExpr() and
-    def.getADefinition() = defTo and
+    def.getDefinition() = defTo and
     node2.(SsaDefinitionNode).getDefinition() = def and
     c instanceof ElementContent
   )
