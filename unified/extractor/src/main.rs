@@ -3,6 +3,7 @@ use clap::Parser;
 mod autobuilder;
 mod extractor;
 mod generator;
+mod languages;
 
 #[derive(Parser)]
 #[command(author, version, about)]
