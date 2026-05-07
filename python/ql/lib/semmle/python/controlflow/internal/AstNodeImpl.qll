@@ -695,19 +695,41 @@ module Ast implements AstSig<Py::Location> {
   /** A logical `not` expression. */
   class LogicalNotExpr extends UnaryExpr { }
 
-  /** An assignment expression. Python's walrus is modelled separately. */
+  /**
+   * An assignment expression.
+   *
+   * Empty in Python: `x = y` and `x += y` are statements (`AssignStmt` and
+   * `AugAssignStmt`), not expressions, and the walrus `x := y` is modeled
+   * separately as `NamedExpr`. The shared library's `Assignment` extends
+   * `BinaryExpr`, so it cannot share instances with our `Stmt`-based
+   * assignment forms.
+   */
   class Assignment extends BinaryExpr {
     Assignment() { none() }
   }
 
+  /** A simple assignment expression. Empty in Python (see `Assignment`). */
   class AssignExpr extends Assignment { }
 
+  /** A compound assignment expression. Empty in Python (see `Assignment`). */
   class CompoundAssignment extends Assignment { }
 
+  /**
+   * A short-circuiting logical AND compound assignment expression (`&&=`).
+   * Python has no such operator.
+   */
   class AssignLogicalAndExpr extends CompoundAssignment { }
 
+  /**
+   * A short-circuiting logical OR compound assignment expression (`||=`).
+   * Python has no such operator.
+   */
   class AssignLogicalOrExpr extends CompoundAssignment { }
 
+  /**
+   * A short-circuiting null-coalescing compound assignment expression
+   * (`??=`). Python has no such operator.
+   */
   class AssignNullCoalescingExpr extends CompoundAssignment { }
 
   /** A boolean literal expression (`True` or `False`). */
