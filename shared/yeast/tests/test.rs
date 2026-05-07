@@ -167,6 +167,28 @@ fn test_query_no_match() {
 }
 
 #[test]
+fn test_reachable_nodes_excludes_orphaned_rewrite_nodes() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema = yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang)
+        .unwrap();
+    let rules = vec![yeast::rule!((integer) => (identifier "replaced"))];
+    let runner = Runner::with_schema(lang, &schema, &rules);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let reachable_ids = ast.reachable_node_ids();
+
+    assert!(
+        ast.nodes().len() > reachable_ids.len(),
+        "expected rewrite to leave orphaned arena nodes"
+    );
+
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert!(dump.contains("identifier \"replaced\""));
+    assert!(!dump.contains("integer \"1\""));
+}
+
+#[test]
 fn test_query_repeated_capture() {
     let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
     let ast = runner.run("x, y, z = 1").unwrap();

@@ -193,8 +193,41 @@ impl Ast {
         AstCursor::new(self)
     }
 
+    /// Return all nodes currently allocated in the AST arena.
+    ///
+    /// This includes nodes that are no longer reachable from `get_root()`
+    /// after desugaring rewrites. Use `reachable_node_ids()` for output-level
+    /// validation/traversal semantics.
     pub fn nodes(&self) -> &[Node] {
         &self.nodes
+    }
+
+    /// Return node ids reachable from `get_root()` by following child edges.
+    ///
+    /// This reflects the effective AST after desugaring and excludes orphaned
+    /// arena nodes left behind by rewrite operations.
+    pub fn reachable_node_ids(&self) -> Vec<usize> {
+        let mut reachable = Vec::new();
+        let mut stack = vec![self.root];
+        let mut seen = vec![false; self.nodes.len()];
+
+        while let Some(id) = stack.pop() {
+            if id >= self.nodes.len() || seen[id] {
+                continue;
+            }
+            seen[id] = true;
+            reachable.push(id);
+
+            if let Some(node) = self.get_node(id) {
+                for children in node.fields.values() {
+                    for &child in children {
+                        stack.push(child);
+                    }
+                }
+            }
+        }
+
+        reachable
     }
 
     pub fn get_root(&self) -> Id {
