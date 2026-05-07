@@ -61,6 +61,22 @@ rule matches, the node is kept and its children are processed recursively.
 A rule can replace one node with zero nodes (deletion), one node (rewriting),
 or multiple nodes (expansion).
 
+By default a rule fires **at most once on a given node**: after firing, the
+engine will not re-try that same rule on the result root. Other rules may
+still fire on the result, and the rule may still fire on different nodes
+(including the result's children). To opt into iterative behaviour — when a
+rule's output is intentionally re-matched by the same rule — call
+`.repeated()` on the constructed `Rule`:
+
+```rust
+let r = yeast::rule!((foo ...) => (foo ...)).repeated();
+```
+
+Without `.repeated()`, a rule whose output happens to match its own query
+simply fires once and stops. With `.repeated()`, the rule is allowed to
+re-match indefinitely; the runner still enforces a global rewrite-depth
+limit (currently 100) as a safety net against accidental cycles.
+
 ## Query language
 
 Queries use a syntax inspired by
@@ -303,11 +319,17 @@ capture name to a field of the same name on the output node.
 ## Integration with the extractor
 
 A YEAST desugaring pass is configured with a [`DesugaringConfig`], which
-carries the rules and an optional output node-types schema (in YAML
-format). Attach it to a language spec to enable rewriting:
+carries one or more named [`Phase`]s of rules and an optional output
+node-types schema (in YAML format). Each phase is a complete traversal
+that runs to completion before the next phase starts; only the current
+phase's rules are considered during that traversal. Attach the config to
+a language spec
+to enable rewriting:
 
 ```rust
-let desugar = yeast::DesugaringConfig::new(my_rules)
+let desugar = yeast::DesugaringConfig::new()
+    .add_phase("cleanup", cleanup_rules())
+    .add_phase("desugar", desugar_rules())
     .with_output_node_types_yaml(include_str!("output-node-types.yml"));
 
 let lang = simple::LanguageSpec {
@@ -319,11 +341,14 @@ let lang = simple::LanguageSpec {
 };
 ```
 
+A single-phase config is just `.add_phase(...)` called once. Phase names
+appear in error messages so you can tell which phase failed.
+
 The same YAML node-types is used for both the runtime yeast `Schema` (so
 rules can refer to output-only kinds and fields) and TRAP validation (it
 is converted to JSON internally).
 
 For the dbscheme/QL code generator, set `Language::desugar` to a
 `DesugaringConfig` carrying the same YAML; the generator converts it to
-JSON for downstream code generation. The `rules` field of the config is
+JSON for downstream code generation. The `phases` field of the config is
 unused at code-generation time.
