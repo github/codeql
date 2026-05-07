@@ -18,6 +18,14 @@ supports Kryo, XmlDecoder, XStream, SnakeYaml, JYaml, JsonIO, YAMLBeans, Hessian
 Jackson, Jabsorb, Jodd JSON, Flexjson, Gson, JMS, and Java IO serialization through
 <code>ObjectInputStream</code>/<code>ObjectOutputStream</code>.
 </p>
+<p>
+Note that a deserialization method is only dangerous if it can instantiate
+arbitrary classes. Serialization frameworks that use a schema to instantiate
+only expected, predefined types are generally safe and are not tracked by this
+query. For example, Apache Avro's deserialization methods follow a schema and
+therefore cannot instantiate arbitrary classes, making them safe to use even
+with untrusted data.
+</p>
 </overview>
 
 <recommendation>
