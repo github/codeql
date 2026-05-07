@@ -101,6 +101,9 @@ module Ast implements AstSig<Py::Location> {
     /** Gets the underlying Python `Pattern`, if this node wraps one. */
     Py::Pattern asPattern() { this = TPattern(result) }
 
+    /** Gets the underlying Python `StmtList`, if this node is a `BlockStmt`. */
+    Py::StmtList asStmtList() { this = TBlockStmt(result) }
+
     /**
      * Gets the child of this AST node at the specified (zero-based)
      * index, in evaluation order. Subclasses with children override
@@ -133,7 +136,7 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /** Gets the body of callable `c`. */
-  AstNode callableGetBody(Callable c) { result = TBlockStmt(c.asScope().getBody()) }
+  AstNode callableGetBody(Callable c) { result.asStmtList() = c.asScope().getBody() }
 
   /**
    * A parameter of a callable.
@@ -300,10 +303,10 @@ module Ast implements AstSig<Py::Location> {
     Expr getCondition() { result.asExpr() = ifStmt.getTest() }
 
     /** Gets the `then` (true) branch of this `if` statement. */
-    Stmt getThen() { result = TBlockStmt(ifStmt.getBody()) }
+    Stmt getThen() { result.asStmtList() = ifStmt.getBody() }
 
     /** Gets the `else` (false) branch, if any. */
-    Stmt getElse() { result = TBlockStmt(ifStmt.getOrelse()) }
+    Stmt getElse() { result.asStmtList() = ifStmt.getOrelse() }
 
     override AstNode getChild(int index) {
       index = 0 and result = this.getCondition()
@@ -335,10 +338,10 @@ module Ast implements AstSig<Py::Location> {
     /** Gets the boolean condition of this `while` loop. */
     Expr getCondition() { result.asExpr() = whileStmt.getTest() }
 
-    override Stmt getBody() { result = TBlockStmt(whileStmt.getBody()) }
+    override Stmt getBody() { result.asStmtList() = whileStmt.getBody() }
 
     /** Gets the `else` branch of this `while` loop, if any. */
-    Stmt getElse() { result = TBlockStmt(whileStmt.getOrelse()) }
+    Stmt getElse() { result.asStmtList() = whileStmt.getOrelse() }
 
     override AstNode getChild(int index) {
       index = 0 and result = this.getCondition()
@@ -381,10 +384,10 @@ module Ast implements AstSig<Py::Location> {
     /** Gets the collection being iterated. */
     Expr getCollection() { result.asExpr() = forStmt.getIter() }
 
-    override Stmt getBody() { result = TBlockStmt(forStmt.getBody()) }
+    override Stmt getBody() { result.asStmtList() = forStmt.getBody() }
 
     /** Gets the `else` branch of this `for` loop, if any. */
-    Stmt getElse() { result = TBlockStmt(forStmt.getOrelse()) }
+    Stmt getElse() { result.asStmtList() = forStmt.getOrelse() }
 
     override AstNode getChild(int index) {
       index = 0 and result = this.getCollection()
@@ -453,7 +456,7 @@ module Ast implements AstSig<Py::Location> {
 
     Expr getOptionalVars() { result.asExpr() = withStmt.getOptionalVars() }
 
-    Stmt getBody() { result = TBlockStmt(withStmt.getBody()) }
+    Stmt getBody() { result.asStmtList() = withStmt.getBody() }
 
     override AstNode getChild(int index) {
       index = 0 and result = this.getContextExpr()
@@ -498,14 +501,14 @@ module Ast implements AstSig<Py::Location> {
 
     TryStmt() { this = TPyStmt(tryStmt) }
 
-    Stmt getBody() { result = TBlockStmt(tryStmt.getBody()) }
+    Stmt getBody() { result.asStmtList() = tryStmt.getBody() }
 
     /** Gets the `else` branch of this `try` statement, if any. */
-    Stmt getElse() { result = TBlockStmt(tryStmt.getOrelse()) }
+    Stmt getElse() { result.asStmtList() = tryStmt.getOrelse() }
 
-    Stmt getFinally() { result = TBlockStmt(tryStmt.getFinalbody()) }
+    Stmt getFinally() { result.asStmtList() = tryStmt.getFinalbody() }
 
-    CatchClause getCatch(int index) { result = TPyStmt(tryStmt.getHandler(index)) }
+    CatchClause getCatch(int index) { result.asStmt() = tryStmt.getHandler(index) }
 
     override AstNode getChild(int index) {
       index = 0 and result = this.getBody()
@@ -550,9 +553,9 @@ module Ast implements AstSig<Py::Location> {
 
     /** Gets the body of this exception handler. */
     Stmt getBody() {
-      result = TBlockStmt(handler.(Py::ExceptStmt).getBody())
+      result.asStmtList() = handler.(Py::ExceptStmt).getBody()
       or
-      result = TBlockStmt(handler.(Py::ExceptGroupStmt).getBody())
+      result.asStmtList() = handler.(Py::ExceptGroupStmt).getBody()
     }
 
     override AstNode getChild(int index) {
@@ -572,7 +575,7 @@ module Ast implements AstSig<Py::Location> {
 
     Expr getExpr() { result.asExpr() = matchStmt.getSubject() }
 
-    Case getCase(int index) { result = TPyStmt(matchStmt.getCase(index)) }
+    Case getCase(int index) { result.asStmt() = matchStmt.getCase(index) }
 
     Stmt getStmt(int index) { none() }
 
@@ -589,11 +592,11 @@ module Ast implements AstSig<Py::Location> {
 
     Case() { this = TPyStmt(caseStmt) }
 
-    AstNode getAPattern() { result = TPattern(caseStmt.getPattern()) }
+    AstNode getAPattern() { result.asPattern() = caseStmt.getPattern() }
 
     Expr getGuard() { result.asExpr() = caseStmt.getGuard().(Py::Guard).getTest() }
 
-    AstNode getBody() { result = TBlockStmt(caseStmt.getBody()) }
+    AstNode getBody() { result.asStmtList() = caseStmt.getBody() }
 
     /** Holds if this case is a wildcard pattern (`case _:`). */
     predicate isWildcard() { caseStmt.getPattern() instanceof Py::MatchWildcardPattern }
@@ -649,6 +652,9 @@ module Ast implements AstSig<Py::Location> {
     /** Gets the underlying Python `BoolExpr`. */
     Py::BoolExpr getBoolExpr() { result = be }
 
+    /** Gets the (zero-based) index of this pair within its `BoolExpr`. */
+    int getIndex() { result = index }
+
     override string toString() { result = be.getOperator() }
 
     override Py::Location getLocation() { result = be.getValue(index).getLocation() }
@@ -664,7 +670,10 @@ module Ast implements AstSig<Py::Location> {
       index = count(be.getAValue()) - 2 and result.asExpr() = be.getValue(index + 1)
       or
       // Non-last pair: right operand is the next synthetic pair.
-      index < count(be.getAValue()) - 2 and result = TBoolExprPair(be, index + 1)
+      index < count(be.getAValue()) - 2 and
+      exists(BinaryExpr next |
+        next.getBoolExpr() = be and next.getIndex() = index + 1 and result = next
+      )
     }
 
     override AstNode getChild(int childIndex) {
