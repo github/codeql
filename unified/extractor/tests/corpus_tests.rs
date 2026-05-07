@@ -1,0 +1,182 @@
+use std::fs;
+use std::path::Path;
+
+use codeql_extractor::extractor::simple;
+use yeast::{dump::dump_ast, Runner};
+
+#[path = "../src/languages/mod.rs"]
+mod languages;
+
+#[derive(Debug)]
+struct CorpusCase {
+    name: String,
+    input: String,
+    expected: String,
+}
+
+fn update_mode_enabled() -> bool {
+    std::env::var("YEAST_UPDATE_CORPUS")
+        .map(|v| matches!(v.to_ascii_lowercase().as_str(), "1" | "true" | "yes" | "on"))
+        .unwrap_or(false)
+}
+
+fn is_header_rule(line: &str) -> bool {
+    let trimmed = line.trim();
+    trimmed.len() >= 3 && trimmed.chars().all(|c| c == '=')
+}
+
+fn parse_corpus(content: &str) -> Vec<CorpusCase> {
+    let lines: Vec<&str> = content.lines().collect();
+    let mut i = 0;
+    let mut cases = Vec::new();
+
+    while i < lines.len() {
+        while i < lines.len() && lines[i].trim().is_empty() {
+            i += 1;
+        }
+        if i >= lines.len() {
+            break;
+        }
+
+        assert!(
+            is_header_rule(lines[i]),
+            "Expected header delimiter at line {}",
+            i + 1
+        );
+        i += 1;
+
+        assert!(i < lines.len(), "Missing test name at line {}", i + 1);
+        let name = lines[i].trim().to_string();
+        i += 1;
+
+        assert!(
+            i < lines.len() && is_header_rule(lines[i]),
+            "Missing closing header delimiter for case {name}"
+        );
+        i += 1;
+
+        let input_start = i;
+        while i < lines.len() && lines[i].trim() != "---" {
+            i += 1;
+        }
+        assert!(i < lines.len(), "Missing --- separator for case {name}");
+        let input = lines[input_start..i].join("\n").trim_end().to_string();
+        i += 1;
+
+        let expected_start = i;
+        while i < lines.len() {
+            if is_header_rule(lines[i])
+                && i + 2 < lines.len()
+                && !lines[i + 1].trim().is_empty()
+                && is_header_rule(lines[i + 2])
+            {
+                break;
+            }
+            i += 1;
+        }
+        let expected = lines[expected_start..i].join("\n").trim().to_string();
+
+        cases.push(CorpusCase {
+            name,
+            input,
+            expected,
+        });
+    }
+
+    cases
+}
+
+fn render_corpus(cases: &[CorpusCase]) -> String {
+    let mut out = String::new();
+
+    for (idx, case) in cases.iter().enumerate() {
+        if idx > 0 {
+            out.push('\n');
+        }
+        out.push_str("===\n");
+        out.push_str(case.name.trim());
+        out.push_str("\n===\n");
+        out.push('\n');
+        out.push_str(case.input.trim());
+        out.push_str("\n\n---\n");
+        out.push('\n');
+        out.push_str(case.expected.trim());
+        out.push_str("\n\n");
+    }
+
+    out
+}
+
+fn run_desugaring(lang: &simple::LanguageSpec, input: &str) -> String {
+    let runner = match lang.desugar.as_ref() {
+        Some(config) => Runner::from_config(lang.ts_language.clone(), config)
+            .expect("Failed to create yeast runner from desugaring config"),
+        None => Runner::new(lang.ts_language.clone(), &[]),
+    };
+    let ast = runner
+        .run(input)
+        .unwrap_or_else(|e| panic!("Failed to parse corpus input: {e}"));
+    dump_ast(&ast, ast.get_root(), input)
+}
+
+#[test]
+fn test_corpus() {
+    let update_mode = update_mode_enabled();
+    let all_languages = languages::all_language_specs();
+    let corpus_dir = Path::new("tests/corpus");
+
+    for lang in all_languages {
+        let lang_corpus_dir = corpus_dir.join(&lang.prefix);
+        if !lang_corpus_dir.exists() {
+            continue;
+        }
+
+        let mut corpus_files: Vec<_> = fs::read_dir(&lang_corpus_dir)
+            .unwrap_or_else(|e| {
+                panic!(
+                    "Failed to read corpus directory {}: {e}",
+                    lang_corpus_dir.display()
+                )
+            })
+            .map(|entry| entry.expect("Failed to read corpus entry").path())
+            .filter(|path| path.extension().is_some_and(|ext| ext == "txt"))
+            .collect();
+        corpus_files.sort();
+
+        for corpus_path in corpus_files {
+            let content = fs::read_to_string(&corpus_path)
+                .unwrap_or_else(|e| panic!("Failed to read {}: {e}", corpus_path.display()));
+            let mut cases = parse_corpus(&content);
+            assert!(
+                !cases.is_empty(),
+                "No corpus cases found in {}",
+                corpus_path.display()
+            );
+
+            for case in &mut cases {
+                let actual = run_desugaring(&lang, &case.input);
+                if update_mode {
+                    case.expected = actual.trim().to_string();
+                } else {
+                    assert_eq!(
+                        case.expected.trim(),
+                        actual.trim(),
+                        "Corpus case failed in {}: {}",
+                        corpus_path.display(),
+                        case.name
+                    );
+                }
+            }
+
+            if update_mode {
+                let updated = render_corpus(&cases);
+                fs::write(&corpus_path, updated).unwrap_or_else(|e| {
+                    panic!(
+                        "Failed to update corpus file {}: {e}",
+                        corpus_path.display()
+                    )
+                });
+            }
+        }
+    }
+}

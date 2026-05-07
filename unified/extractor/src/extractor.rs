@@ -3,9 +3,7 @@ use std::path::PathBuf;
 
 use codeql_extractor::extractor::simple;
 use codeql_extractor::trap;
-
-#[path = "languages/swift/swift.rs"]
-mod swift;
+use crate::languages;
 
 #[derive(Args)]
 pub struct Options {
@@ -27,9 +25,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
 
     let extractor = simple::Extractor {
         prefix: "unified".to_string(),
-        languages: vec![
-            swift::language_spec(),
-        ],
+        languages: languages::all_language_specs(),
         trap_dir: options.output_dir,
         trap_compression: trap::Compression::from_env("CODEQL_EXTRACTOR_UNIFIED_OPTION_TRAP_COMPRESSION"),
         source_archive_dir: options.source_archive_dir,
