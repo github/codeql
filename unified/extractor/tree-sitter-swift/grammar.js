@@ -521,9 +521,11 @@ module.exports = grammar({
           $.assignment,
           $.value_parameter_pack,
           $.value_pack_expansion,
-          seq($._expression, alias($._immediate_quest, "?"))
+          $.optional_chain_marker
         )
       ),
+    optional_chain_marker: ($) =>
+      seq($._expression, alias($._immediate_quest, "?")),
     // Unary expressions
     _unary_expression: ($) =>
       choice(
