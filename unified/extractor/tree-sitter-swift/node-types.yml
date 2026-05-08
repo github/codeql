@@ -203,7 +203,7 @@ named:
     name*: unannotated_type
   equality_constraint:
     $children*: attribute
-    constrained_type+: [".", identifier, simple_identifier, unannotated_type]
+    constrained_type: [identifier, nested_type_identifier]
     must_equal+: [type_modifiers, unannotated_type]
     name: unannotated_type
   equality_expression:
@@ -259,7 +259,7 @@ named:
     rhs: expression
   inheritance_constraint:
     $children*: attribute
-    constrained_type+: [".", identifier, simple_identifier, unannotated_type]
+    constrained_type: [identifier, nested_type_identifier]
     inherits_from+: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
     name?: unannotated_type
   inheritance_modifier:
@@ -330,6 +330,8 @@ named:
     target+: ["(", ")", array_type, dictionary_type, existential_type, expression, opaque_type, user_type]
   navigation_suffix:
     suffix: [integer_literal, simple_identifier]
+  nested_type_identifier:
+    $children+: [simple_identifier, unannotated_type]
   nil_coalescing_expression:
     if_nil: expression
     value: expression

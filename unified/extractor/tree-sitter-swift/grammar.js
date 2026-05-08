@@ -1592,13 +1592,11 @@ module.exports = grammar({
         choice($._equal_sign, $._eq_eq),
         field("must_equal", $._type)
       ),
-    _constrained_type: ($) =>
-      choice(
-        $.identifier,
-        seq(
-          $.unannotated_type,
-          optional(seq(".", sep1($.simple_identifier, ".")))
-        )
+    _constrained_type: ($) => choice($.identifier, $.nested_type_identifier),
+    nested_type_identifier: ($) =>
+      seq(
+        $.unannotated_type,
+        optional(seq(".", sep1($.simple_identifier, ".")))
       ),
     _class_member_separator: ($) => choice($._semi, $.multiline_comment),
     _class_member_declarations: ($) =>
