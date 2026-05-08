@@ -486,7 +486,7 @@ impl<'a> Visitor<'a> {
         let table = self
             .schema
             .get(&type_name)
-            .unwrap_or_else(|| panic!("missing extractor schema entry for {:?}", type_name));
+            .unwrap_or_else(|| panic!("missing extractor schema entry for {type_name:?}"));
         let mut valid = true;
         let parent_info = match self.stack.last_mut() {
             Some(p) if !node.is_extra() => {
