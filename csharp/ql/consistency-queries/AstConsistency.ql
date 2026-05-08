@@ -1,4 +1,5 @@
 import csharp
+import ControlFlow::AstConsistency
 
 query predicate missingLocation(Element e) {
   (

@@ -2070,6 +2070,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
          */
 
         private import PrintGraph as Pp
+        private import codeql.controlflow.AstConsistency
 
         private class ControlFlowNodeAlias = ControlFlowNode;
 
@@ -2084,6 +2085,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         }
 
         import Pp::PrintGraph<Location, PrintGraphInput>
+
+        /** Provides AST consistency queries. */
+        module AstConsistency = MakeAstConsistency<Location, Ast>::Consistency;
 
         /** Provides a set of consistency queries. */
         module Consistency {
