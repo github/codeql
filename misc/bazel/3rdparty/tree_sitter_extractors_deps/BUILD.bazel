@@ -674,6 +674,18 @@ alias(
 )
 
 alias(
+    name = "tree-sitter-swift-0.7.2",
+    actual = "@vendor_ts__tree-sitter-swift-0.7.2//:tree_sitter_swift",
+    tags = ["manual"],
+)
+
+alias(
+    name = "tree-sitter-swift",
+    actual = "@vendor_ts__tree-sitter-swift-0.7.2//:tree_sitter_swift",
+    tags = ["manual"],
+)
+
+alias(
     name = "triomphe-0.1.14",
     actual = "@vendor_ts__triomphe-0.1.14//:triomphe",
     tags = ["manual"],

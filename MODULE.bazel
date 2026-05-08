@@ -153,6 +153,7 @@ use_repo(
     "vendor_ts__tree-sitter-python-0.23.6",
     "vendor_ts__tree-sitter-ql-0.23.1",
     "vendor_ts__tree-sitter-ruby-0.23.1",
+    "vendor_ts__tree-sitter-swift-0.7.2",
     "vendor_ts__triomphe-0.1.14",
     "vendor_ts__ungrammar-1.16.1",
     "vendor_ts__zstd-0.13.3",

@@ -439,6 +439,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "codeql-extractor-unified"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "codeql-extractor",
+ "encoding",
+ "lazy_static",
+ "rayon",
+ "regex",
+ "serde_json",
+ "tracing",
+ "tracing-subscriber",
+ "tree-sitter",
+ "tree-sitter-embedded-template",
+ "tree-sitter-swift",
+ "yeast",
+]
+
+[[package]]
 name = "codeql-rust"
 version = "0.1.0"
 dependencies = [
@@ -2917,6 +2936,16 @@ name = "tree-sitter-ruby"
 version = "0.23.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be0484ea4ef6bb9c575b4fdabde7e31340a8d2dbc7d52b321ac83da703249f95"
+dependencies = [
+ "cc",
+ "tree-sitter-language",
+]
+
+[[package]]
+name = "tree-sitter-swift"
+version = "0.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f3b98fb6bc8e6a6a10023f401aa6a1858115e849dfaf7de57dd8b8ea0f257bd9"
 dependencies = [
  "cc",
  "tree-sitter-language",
