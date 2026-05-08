@@ -9,7 +9,7 @@ mod swift;
 
 #[derive(Args)]
 pub struct Options {
-    /// Sets a custom source achive folder
+    /// Sets a custom source archive folder
     #[arg(long)]
     source_archive_dir: PathBuf,
 
@@ -23,7 +23,7 @@ pub struct Options {
 }
 
 pub fn run(options: Options) -> std::io::Result<()> {
-    codeql_extractor::extractor::set_tracing_level("ql");
+    codeql_extractor::extractor::set_tracing_level("unified");
 
     let extractor = simple::Extractor {
         prefix: "unified".to_string(),
@@ -31,7 +31,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
             swift::language_spec(),
         ],
         trap_dir: options.output_dir,
-        trap_compression: trap::Compression::from_env("CODEQL_QL_TRAP_COMPRESSION"),
+        trap_compression: trap::Compression::from_env("CODEQL_EXTRACTOR_UNIFIED_OPTION_TRAP_COMPRESSION"),
         source_archive_dir: options.source_archive_dir,
         file_lists: vec![options.file_list],
     };

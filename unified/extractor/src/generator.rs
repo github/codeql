@@ -15,7 +15,7 @@ pub struct Options {
 }
 
 pub fn run(options: Options) -> std::io::Result<()> {
-    codeql_extractor::extractor::set_tracing_level("ql");
+    codeql_extractor::extractor::set_tracing_level("unified");
 
     let languages = vec![Language {
         name: "Swift".to_owned(),
@@ -23,5 +23,5 @@ pub fn run(options: Options) -> std::io::Result<()> {
         desugar: None,
     }];
 
-    generate(languages, options.dbscheme, options.library, "run ql/unified/scripts/create-extractor-pack.sh")
+    generate(languages, options.dbscheme, options.library, "run unified/scripts/create-extractor-pack.sh")
 }

@@ -1,6 +1,6 @@
 // CodeQL database schema for Swift
 // Automatically generated from the tree-sitter grammar; do not edit
-// To regenerate, run ql/unified/scripts/create-extractor-pack.sh
+// To regenerate, run unified/scripts/create-extractor-pack.sh
 
 /*- Files and folders -*/
 
