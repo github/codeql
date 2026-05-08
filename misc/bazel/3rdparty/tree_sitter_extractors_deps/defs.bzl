@@ -415,7 +415,11 @@ _NORMAL_DEPENDENCIES = {
             "tracing-subscriber": Label("@vendor_ts__tracing-subscriber-0.3.20//:tracing_subscriber"),
             "tree-sitter": Label("@vendor_ts__tree-sitter-0.26.8//:tree_sitter"),
             "tree-sitter-embedded-template": Label("@vendor_ts__tree-sitter-embedded-template-0.25.0//:tree_sitter_embedded_template"),
-            "tree-sitter-swift": Label("@vendor_ts__tree-sitter-swift-0.7.2//:tree_sitter_swift"),
+        },
+    },
+    "unified/extractor/tree-sitter-swift": {
+        _COMMON_CONDITION: {
+            "tree-sitter-language": Label("@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language"),
         },
     },
 }
@@ -456,6 +460,10 @@ _NORMAL_ALIASES = {
         _COMMON_CONDITION: {
         },
     },
+    "unified/extractor/tree-sitter-swift": {
+        _COMMON_CONDITION: {
+        },
+    },
 }
 
 _NORMAL_DEV_DEPENDENCIES = {
@@ -482,6 +490,8 @@ _NORMAL_DEV_DEPENDENCIES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor/tree-sitter-swift": {
+    },
 }
 
 _NORMAL_DEV_ALIASES = {
@@ -505,6 +515,8 @@ _NORMAL_DEV_ALIASES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor/tree-sitter-swift": {
+    },
 }
 
 _PROC_MACRO_DEPENDENCIES = {
@@ -525,6 +537,8 @@ _PROC_MACRO_DEPENDENCIES = {
     "shared/yeast-macros": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor/tree-sitter-swift": {
     },
 }
 
@@ -547,6 +561,8 @@ _PROC_MACRO_ALIASES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor/tree-sitter-swift": {
+    },
 }
 
 _PROC_MACRO_DEV_DEPENDENCIES = {
@@ -567,6 +583,8 @@ _PROC_MACRO_DEV_DEPENDENCIES = {
     "shared/yeast-macros": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor/tree-sitter-swift": {
     },
 }
 
@@ -591,6 +609,8 @@ _PROC_MACRO_DEV_ALIASES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor/tree-sitter-swift": {
+    },
 }
 
 _BUILD_DEPENDENCIES = {
@@ -611,6 +631,11 @@ _BUILD_DEPENDENCIES = {
     "shared/yeast-macros": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor/tree-sitter-swift": {
+        _COMMON_CONDITION: {
+            "cc": Label("@vendor_ts__cc-1.2.61//:cc"),
+        },
     },
 }
 
@@ -633,6 +658,10 @@ _BUILD_ALIASES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor/tree-sitter-swift": {
+        _COMMON_CONDITION: {
+        },
+    },
 }
 
 _BUILD_PROC_MACRO_DEPENDENCIES = {
@@ -654,6 +683,8 @@ _BUILD_PROC_MACRO_DEPENDENCIES = {
     },
     "unified/extractor": {
     },
+    "unified/extractor/tree-sitter-swift": {
+    },
 }
 
 _BUILD_PROC_MACRO_ALIASES = {
@@ -674,6 +705,8 @@ _BUILD_PROC_MACRO_ALIASES = {
     "shared/yeast-macros": {
     },
     "unified/extractor": {
+    },
+    "unified/extractor/tree-sitter-swift": {
     },
 }
 
@@ -3538,16 +3571,6 @@ def crate_repositories():
 
     maybe(
         http_archive,
-        name = "vendor_ts__tree-sitter-swift-0.7.2",
-        sha256 = "f3b98fb6bc8e6a6a10023f401aa6a1858115e849dfaf7de57dd8b8ea0f257bd9",
-        type = "tar.gz",
-        urls = ["https://static.crates.io/crates/tree-sitter-swift/0.7.2/download"],
-        strip_prefix = "tree-sitter-swift-0.7.2",
-        build_file = Label("//misc/bazel/3rdparty/tree_sitter_extractors_deps:BUILD.tree-sitter-swift-0.7.2.bazel"),
-    )
-
-    maybe(
-        http_archive,
         name = "vendor_ts__triomphe-0.1.14",
         sha256 = "ef8f7726da4807b58ea5c96fdc122f80702030edc33b35aff9190a51148ccc85",
         type = "tar.gz",
@@ -4239,6 +4262,7 @@ def crate_repositories():
     return [
         struct(repo = "vendor_ts__anyhow-1.0.100", is_dev_dep = False),
         struct(repo = "vendor_ts__argfile-0.2.1", is_dev_dep = False),
+        struct(repo = "vendor_ts__cc-1.2.61", is_dev_dep = False),
         struct(repo = "vendor_ts__chalk-ir-0.104.0", is_dev_dep = False),
         struct(repo = "vendor_ts__chrono-0.4.42", is_dev_dep = False),
         struct(repo = "vendor_ts__clap-4.5.48", is_dev_dep = False),
@@ -4285,9 +4309,9 @@ def crate_repositories():
         struct(repo = "vendor_ts__tracing-subscriber-0.3.20", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-0.26.8", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-embedded-template-0.25.0", is_dev_dep = False),
+        struct(repo = "vendor_ts__tree-sitter-language-0.1.5", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-python-0.23.6", is_dev_dep = False),
         struct(repo = "vendor_ts__tree-sitter-ruby-0.23.1", is_dev_dep = False),
-        struct(repo = "vendor_ts__tree-sitter-swift-0.7.2", is_dev_dep = False),
         struct(repo = "vendor_ts__triomphe-0.1.14", is_dev_dep = False),
         struct(repo = "vendor_ts__ungrammar-1.16.1", is_dev_dep = False),
         struct(repo = "vendor_ts__zstd-0.13.3", is_dev_dep = False),
