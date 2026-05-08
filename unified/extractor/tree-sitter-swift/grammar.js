@@ -84,7 +84,7 @@ if (tree_sitter_version_supports_emoji()) {
 
 module.exports = grammar({
   name: "swift",
-  supertypes: ($) => [$.expression],
+  supertypes: ($) => [$.expression, $.unannotated_type],
   conflicts: ($) => [
     // @Type(... could either be an annotation constructor invocation or an annotated expression
     [$.attribute],
@@ -405,9 +405,9 @@ module.exports = grammar({
     _type: ($) =>
       prec.right(
         PRECS.ty,
-        seq(optional($.type_modifiers), field("name", $._unannotated_type))
+        seq(optional($.type_modifiers), field("name", $.unannotated_type))
       ),
-    _unannotated_type: ($) =>
+    unannotated_type: ($) =>
       prec.right(
         PRECS.ty,
         choice(
@@ -465,7 +465,7 @@ module.exports = grammar({
       ),
     function_type: ($) =>
       seq(
-        field("params", choice($.tuple_type, $._unannotated_type)),
+        field("params", choice($.tuple_type, $.unannotated_type)),
         optional($._async_keyword),
         optional(choice($.throws_clause, $.throws)),
         $._arrow_operator,
@@ -484,18 +484,18 @@ module.exports = grammar({
           repeat1(alias($._immediate_quest, "?"))
         )
       ),
-    metatype: ($) => seq($._unannotated_type, ".", choice("Type", "Protocol")),
+    metatype: ($) => seq($.unannotated_type, ".", choice("Type", "Protocol")),
     _quest: ($) => "?",
     _immediate_quest: ($) => token.immediate("?"),
-    opaque_type: ($) => prec.right(seq("some", $._unannotated_type)),
-    existential_type: ($) => prec.right(seq("any", $._unannotated_type)),
-    type_parameter_pack: ($) => prec.left(seq("each", $._unannotated_type)),
-    type_pack_expansion: ($) => prec.left(seq("repeat", $._unannotated_type)),
+    opaque_type: ($) => prec.right(seq("some", $.unannotated_type)),
+    existential_type: ($) => prec.right(seq("any", $.unannotated_type)),
+    type_parameter_pack: ($) => prec.left(seq("each", $.unannotated_type)),
+    type_pack_expansion: ($) => prec.left(seq("repeat", $.unannotated_type)),
     protocol_composition_type: ($) =>
       prec.left(
         seq(
-          $._unannotated_type,
-          repeat1(seq("&", prec.right($._unannotated_type)))
+          $.unannotated_type,
+          repeat1(seq("&", prec.right($.unannotated_type)))
         )
       ),
     suppressed_constraint: ($) =>
@@ -1498,7 +1498,7 @@ module.exports = grammar({
     _macro_signature: ($) =>
       seq(
         $._function_value_parameters,
-        optional(seq($._arrow_operator, $._unannotated_type))
+        optional(seq($._arrow_operator, $.unannotated_type))
       ),
     macro_definition: ($) =>
       seq(
@@ -1524,7 +1524,7 @@ module.exports = grammar({
           ),
           seq(
             field("declaration_kind", "extension"),
-            field("name", $._unannotated_type),
+            field("name", $.unannotated_type),
             optional($.type_parameters),
             optional(seq(":", $._inheritance_specifiers)),
             optional($.type_constraints),
@@ -1594,7 +1594,7 @@ module.exports = grammar({
       choice(
         $.identifier,
         seq(
-          $._unannotated_type,
+          $.unannotated_type,
           optional(seq(".", sep1($.simple_identifier, ".")))
         )
       ),
@@ -1667,7 +1667,7 @@ module.exports = grammar({
     _async_modifier: ($) => token("async"),
     throws: ($) => choice($._throws_keyword, $._rethrows_keyword),
     throws_clause: ($) =>
-      seq($._throws_keyword, "(", field("type", $._unannotated_type), ")"),
+      seq($._throws_keyword, "(", field("type", $.unannotated_type), ")"),
     enum_class_body: ($) =>
       seq("{", repeat(choice($.enum_entry, $._type_level_declaration)), "}"),
     enum_entry: ($) =>

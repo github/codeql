@@ -56,6 +56,20 @@ supertypes:
     - tuple_expression
     - value_pack_expansion
     - value_parameter_pack
+  unannotated_type:
+    - array_type
+    - dictionary_type
+    - existential_type
+    - function_type
+    - metatype
+    - opaque_type
+    - optional_type
+    - protocol_composition_type
+    - suppressed_constraint
+    - tuple_type
+    - type_pack_expansion
+    - type_parameter_pack
+    - user_type
 
 named:
   additive_expression:
@@ -65,13 +79,13 @@ named:
   array_literal:
     element*: expression
   array_type:
-    element+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
-    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    element+: [type_modifiers, unannotated_type]
+    name: unannotated_type
   as_expression:
     $children: as_operator
     expr: expression
-    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    type+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name: unannotated_type
+    type+: [type_modifiers, unannotated_type]
   as_operator:
   assignment:
     operator: ["%=", "*=", "+=", "-=", "/=", "="]
@@ -79,9 +93,9 @@ named:
     target: directly_assignable_expression
   associatedtype_declaration:
     $children*: [modifiers, type_constraints]
-    default_value*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
-    must_inherit*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
-    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_identifier, type_pack_expansion, type_parameter_pack, user_type]
+    default_value*: [type_modifiers, unannotated_type]
+    must_inherit*: [type_modifiers, unannotated_type]
+    name+: [type_identifier, unannotated_type]
   attribute:
     $children+: [expression, user_type]
   availability_condition:
@@ -112,17 +126,17 @@ named:
     error?: pattern
   catch_keyword:
   check_expression:
-    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    name: unannotated_type
     op: "is"
     target: expression
-    type+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    type+: [type_modifiers, unannotated_type]
   class_body:
     $children*: [associatedtype_declaration, class_declaration, deinit_declaration, function_declaration, import_declaration, init_declaration, multiline_comment, operator_declaration, precedence_group_declaration, property_declaration, protocol_declaration, subscript_declaration, typealias_declaration]
   class_declaration:
     $children*: [attribute, inheritance_modifier, inheritance_specifier, modifiers, ownership_modifier, property_behavior_modifier, type_constraints, type_parameters]
     body: [class_body, enum_class_body]
     declaration_kind: ["actor", "class", "enum", "extension", "struct"]
-    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_identifier, type_pack_expansion, type_parameter_pack, user_type]
+    name: [type_identifier, unannotated_type]
   comment:
   comparison_expression:
     lhs: expression
@@ -161,9 +175,9 @@ named:
     key*: expression
     value*: expression
   dictionary_type:
-    key+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
-    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    value+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    key+: [type_modifiers, unannotated_type]
+    name+: unannotated_type
+    value+: [type_modifiers, unannotated_type]
   didset_clause:
     $children*: [modifiers, simple_identifier, statements]
   directive:
@@ -186,18 +200,18 @@ named:
     raw_value*: expression
   enum_type_parameters:
     $children*: [expression, type_modifiers, wildcard_pattern]
-    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    name*: unannotated_type
   equality_constraint:
     $children*: attribute
-    constrained_type+: [".", array_type, dictionary_type, existential_type, function_type, identifier, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    must_equal+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
-    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    constrained_type+: [".", identifier, simple_identifier, unannotated_type]
+    must_equal+: [type_modifiers, unannotated_type]
+    name: unannotated_type
   equality_expression:
     lhs: expression
     op: ["!=", "!==", "==", "==="]
     rhs: expression
   existential_type:
-    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    $children: unannotated_type
   external_macro_definition:
     $children: value_arguments
   for_statement:
@@ -211,14 +225,14 @@ named:
     $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, parameter, property_behavior_modifier, throws, throws_clause, type_constraints, type_parameters]
     body: function_body
     default_value*: expression
-    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, referenceable_operator, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    return_type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name+: [referenceable_operator, simple_identifier, unannotated_type]
+    return_type*: ["!", type_modifiers, unannotated_type]
   function_modifier:
   function_type:
     $children?: [throws, throws_clause]
-    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    params: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    return_type+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name: unannotated_type
+    params: unannotated_type
+    return_type+: [type_modifiers, unannotated_type]
   getter_specifier:
     $children*: [mutation_modifier, throws, throws_clause]
   guard_statement:
@@ -230,7 +244,7 @@ named:
   if_condition:
     $children*: [availability_condition, expression, pattern, type_annotation, type_modifiers, user_type, value_binding_pattern, where_clause, wildcard_pattern]
     bound_identifier?: simple_identifier
-    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    name?: unannotated_type
   if_statement:
     $children*: [else, if_statement, statements]
     condition+: if_condition
@@ -242,9 +256,9 @@ named:
     rhs: expression
   inheritance_constraint:
     $children*: attribute
-    constrained_type+: [".", array_type, dictionary_type, existential_type, function_type, identifier, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    inherits_from+: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
-    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    constrained_type+: [".", identifier, simple_identifier, unannotated_type]
+    inherits_from+: ["!", type_modifiers, unannotated_type]
+    name: unannotated_type
   inheritance_modifier:
   inheritance_specifier:
     inherits_from: [function_type, suppressed_constraint, user_type]
@@ -265,8 +279,8 @@ named:
     $children: expression
   lambda_function_type:
     $children*: [lambda_function_type_parameters, throws, throws_clause]
-    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    return_type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name?: unannotated_type
+    return_type*: ["!", type_modifiers, unannotated_type]
   lambda_function_type_parameters:
     $children+: lambda_parameter
   lambda_literal:
@@ -276,14 +290,14 @@ named:
   lambda_parameter:
     $children?: [parameter_modifiers, self_expression]
     external_name?: simple_identifier
-    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name*: [simple_identifier, unannotated_type]
+    type*: ["!", type_modifiers, unannotated_type]
   line_str_text:
   line_string_literal:
     interpolation*: interpolated_expression
     text*: [line_str_text, str_escaped_char]
   macro_declaration:
-    $children+: [array_type, attribute, dictionary_type, existential_type, function_type, metatype, modifiers, opaque_type, optional_type, parameter, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_constraints, type_pack_expansion, type_parameter_pack, type_parameters, user_type]
+    $children+: [attribute, modifiers, parameter, simple_identifier, type_constraints, type_parameters, unannotated_type]
     default_value*: expression
     definition?: macro_definition
   macro_definition:
@@ -292,7 +306,7 @@ named:
     $children+: [call_suffix, simple_identifier, type_parameters]
   member_modifier:
   metatype:
-    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    $children: unannotated_type
   modifiers:
     $children+: [attribute, function_modifier, inheritance_modifier, member_modifier, mutation_modifier, ownership_modifier, parameter_modifier, property_behavior_modifier, property_modifier, visibility_modifier]
   modify_specifier:
@@ -318,7 +332,7 @@ named:
     value: expression
   oct_literal:
   opaque_type:
-    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    $children: unannotated_type
   open_end_range_expression:
     start: expression
   open_start_range_expression:
@@ -333,15 +347,15 @@ named:
   parameter:
     $children?: parameter_modifiers
     external_name?: simple_identifier
-    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    type+: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name+: [simple_identifier, unannotated_type]
+    type+: ["!", type_modifiers, unannotated_type]
   parameter_modifier:
   parameter_modifiers:
     $children+: parameter_modifier
   pattern:
     $children*: [expression, pattern, type_modifiers, user_type, value_binding_pattern, wildcard_pattern]
     bound_identifier?: simple_identifier
-    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    name?: unannotated_type
   playground_literal:
     $children+: expression
   postfix_expression:
@@ -367,7 +381,7 @@ named:
     $children*: [associatedtype_declaration, deinit_declaration, init_declaration, protocol_function_declaration, protocol_property_declaration, subscript_declaration, typealias_declaration]
     body*: protocol_function_declaration
   protocol_composition_type:
-    $children+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    $children+: unannotated_type
   protocol_declaration:
     $children*: [attribute, inheritance_specifier, modifiers, type_constraints, type_parameters]
     body: protocol_body
@@ -376,8 +390,8 @@ named:
   protocol_function_declaration:
     $children*: [attribute, modifiers, parameter, statements, throws, throws_clause, type_constraints, type_parameters]
     default_value*: expression
-    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, referenceable_operator, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    return_type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name*: [referenceable_operator, simple_identifier, unannotated_type]
+    return_type*: ["!", type_modifiers, unannotated_type]
   protocol_property_declaration:
     $children+: [modifiers, protocol_property_requirements, type_annotation, type_constraints]
     name: pattern
@@ -422,8 +436,8 @@ named:
   subscript_declaration:
     $children+: [attribute, computed_property, modifiers, parameter, type_constraints, type_parameters]
     default_value*: expression
-    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    return_type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name?: unannotated_type
+    return_type*: ["!", type_modifiers, unannotated_type]
   super_expression:
   suppressed_constraint:
     suppressed: type_identifier
@@ -441,7 +455,7 @@ named:
   throw_keyword:
   throws:
   throws_clause:
-    type: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    type: unannotated_type
   try_expression:
     $children: try_operator
     expr: expression
@@ -455,14 +469,14 @@ named:
   tuple_type_item:
     $children*: [parameter_modifiers, wildcard_pattern]
     element?: [dictionary_type, existential_type, opaque_type]
-    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    type*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name*: [simple_identifier, unannotated_type]
+    type*: [type_modifiers, unannotated_type]
   type_annotation:
-    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
-    type+: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name: unannotated_type
+    type+: ["!", type_modifiers, unannotated_type]
   type_arguments:
     $children*: type_modifiers
-    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    name+: unannotated_type
   type_constraint:
     $children: [equality_constraint, inheritance_constraint]
   type_constraints:
@@ -471,20 +485,20 @@ named:
   type_modifiers:
     $children+: attribute
   type_pack_expansion:
-    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    $children: unannotated_type
   type_parameter:
     $children+: [type_identifier, type_modifiers, type_parameter_modifiers, type_parameter_pack]
-    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    name?: unannotated_type
   type_parameter_modifiers:
     $children+: attribute
   type_parameter_pack:
-    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    $children: unannotated_type
   type_parameters:
     $children+: [type_constraints, type_parameter]
   typealias_declaration:
     $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier, type_parameters]
-    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_identifier, type_pack_expansion, type_parameter_pack, user_type]
-    value+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name+: [type_identifier, unannotated_type]
+    value+: [type_modifiers, unannotated_type]
   user_type:
     $children+: [type_arguments, type_identifier]
   value_argument:
