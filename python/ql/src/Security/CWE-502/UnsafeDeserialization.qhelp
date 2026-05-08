@@ -22,7 +22,9 @@ arbitrary classes. Serialization frameworks that use a schema to instantiate
 only expected, predefined types are generally not tracked by this query. Such
 frameworks are generally safe with respect to arbitrary-class-instantiation and
 gadget-chain attacks when the schema is trusted and does not permit
-user-controlled type resolution.
+user-controlled type resolution. However, care must be taken to ensure the schema
+strictly limits the allowed types. Permitting common standard library classes
+can still leave the application vulnerable to gadget-chain attacks.
 </p>
 </overview>
 
