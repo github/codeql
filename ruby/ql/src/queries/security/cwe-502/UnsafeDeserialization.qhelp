@@ -7,6 +7,14 @@ Deserializing untrusted data using any method that allows the construction of
 arbitrary objects is easily exploitable and, in many cases, allows an attacker
 to execute arbitrary code.
 </p>
+<p>
+Note that a deserialization method is only dangerous if it can instantiate
+arbitrary classes or objects. Serialization frameworks that use a schema to instantiate
+only expected, predefined types are generally not tracked by this query. Such
+frameworks are generally safe with respect to arbitrary-class-instantiation and
+gadget-chain attacks when the schema is trusted and does not permit
+user-controlled type resolution.
+</p>
 </overview>
 
 <recommendation>
@@ -31,7 +39,7 @@ safely be used.
 If deserializing an untrusted XML document using the <code>ox</code> gem,
 do not use <code>parse_obj</code> and <code>load</code> using the non-default :object mode.
 Instead use the <code>load</code> method in the default mode or better explicitly set a safe
-mode such as :hash. 
+mode such as :hash.
 </p>
 
 <p>
