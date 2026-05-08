@@ -61,9 +61,10 @@ impl Schema {
             }
         }
         // Import all node kind names, preserving tree-sitter's IDs.
-        // Track named and unnamed variants separately.
-        // For named kinds, use the canonical ID from id_for_node_kind(name, true)
-        // since some languages have multiple IDs for the same named kind.
+        // Track named and unnamed variants separately. For both named and
+        // unnamed kinds, use the canonical ID from id_for_node_kind, since
+        // some languages have multiple IDs for the same name (e.g., the
+        // reserved error token at ID 0 may share a name with a real token).
         for id in 0..language.node_kind_count() as u16 {
             if let Some(name) = language.node_kind_for_id(id) {
                 if !name.is_empty() {
@@ -75,12 +76,13 @@ impl Schema {
                             schema.kind_names.insert(canonical_id, name);
                         }
                     } else {
-                        // For unnamed kinds, only insert if we don't already have one
-                        // (some languages have multiple unnamed IDs for the same text)
-                        schema
-                            .unnamed_kind_ids
-                            .entry(name.to_string())
-                            .or_insert(id);
+                        let canonical_id = language.id_for_node_kind(name, false);
+                        if canonical_id != 0 && !schema.unnamed_kind_ids.contains_key(name) {
+                            schema
+                                .unnamed_kind_ids
+                                .insert(name.to_string(), canonical_id);
+                            schema.kind_names.insert(canonical_id, name);
+                        }
                     }
                     // Always track the name for any ID we encounter
                     schema.kind_names.entry(id).or_insert(name);

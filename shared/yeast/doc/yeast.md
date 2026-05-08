@@ -119,19 +119,40 @@ Captures bind matched nodes to names for use in the transform. A capture
 (identifier) @name          // capture an identifier node
 (_) @value                  // capture any named node
 (identifier)* @items        // capture each repeated match
+("=") @op                   // capture an unnamed token by its text
+"=" @op                     // shorthand for the line above
+_ @anything                 // capture any node, named or unnamed
 ```
 
-### Unnamed children
+### Named vs unnamed children
 
-Patterns that appear after all named fields match unnamed (positional)
-children. Named node patterns like `(_)` automatically skip unnamed tokens
-(keywords, operators, punctuation), matching tree-sitter semantics:
+The two wildcard forms `(_)` and bare `_` differ:
+
+- `(_)` matches only **named** nodes. When used as a positional pattern,
+  unnamed children (keywords, operators, punctuation) are skipped over.
+- Bare `_` matches **any** node, named or unnamed, taking whatever is next
+  in the child list.
+
+Bare child patterns are matched **forward-scan**: each pattern advances
+through the iterator until it finds a child that matches, skipping
+non-matching children along the way. So `(foo ("baz"))` against a `foo`
+whose children are `[bar, baz]` succeeds — the matcher scans past `bar`
+and matches `baz`. The iterator advances as it goes, so subsequent
+patterns can never match children that appear earlier in source order
+than already-matched ones.
+
+For named-only patterns (`(_)`, `(some_kind ...)`), the scan additionally
+skips past unnamed tokens without trying to match them, since they can
+never match anyway.
+
+Anchors (`.`) for forcing immediate adjacency, like in tree-sitter
+queries, are not supported.
 
 ```rust
 (for
-    pattern: (_) @pat             // named field
-    value: (in (_) @val)          // "in" token is skipped automatically
-    body: (do (_)* @body)         // "do" and "end" tokens skipped
+    pattern: (_) @pat             // named field, captures any named node
+    value: (in (_) @val)          // "in" wrapper is a named node here
+    body: (do (_)* @body)         // "do" and "end" tokens skipped by (_)
 )
 ```
 
