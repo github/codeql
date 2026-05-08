@@ -56,6 +56,44 @@ supertypes:
     - tuple_expression
     - value_pack_expansion
     - value_parameter_pack
+  global_declaration:
+    - associatedtype_declaration
+    - class_declaration
+    - function_declaration
+    - import_declaration
+    - init_declaration
+    - macro_declaration
+    - operator_declaration
+    - precedence_group_declaration
+    - property_declaration
+    - protocol_declaration
+    - typealias_declaration
+  local_declaration:
+    - class_declaration
+    - function_declaration
+    - property_declaration
+    - typealias_declaration
+  protocol_member_declaration:
+    - associatedtype_declaration
+    - deinit_declaration
+    - init_declaration
+    - protocol_function_declaration
+    - protocol_property_declaration
+    - subscript_declaration
+    - typealias_declaration
+  type_level_declaration:
+    - associatedtype_declaration
+    - class_declaration
+    - deinit_declaration
+    - function_declaration
+    - import_declaration
+    - init_declaration
+    - operator_declaration
+    - precedence_group_declaration
+    - property_declaration
+    - protocol_declaration
+    - subscript_declaration
+    - typealias_declaration
   unannotated_type:
     - array_type
     - dictionary_type
@@ -128,7 +166,7 @@ named:
     target: expression
     type: type
   class_body:
-    $children*: [associatedtype_declaration, class_declaration, deinit_declaration, function_declaration, import_declaration, init_declaration, multiline_comment, operator_declaration, precedence_group_declaration, property_declaration, protocol_declaration, subscript_declaration, typealias_declaration]
+    $children*: [multiline_comment, type_level_declaration]
   class_declaration:
     $children*: [attribute, inheritance_modifier, inheritance_specifier, modifiers, ownership_modifier, property_behavior_modifier, type_constraints, type_parameters]
     body: [class_body, enum_class_body]
@@ -188,7 +226,7 @@ named:
     $children*: [catch_block, statements]
   else:
   enum_class_body:
-    $children*: [associatedtype_declaration, class_declaration, deinit_declaration, enum_entry, function_declaration, import_declaration, init_declaration, operator_declaration, precedence_group_declaration, property_declaration, protocol_declaration, subscript_declaration, typealias_declaration]
+    $children*: [enum_entry, type_level_declaration]
   enum_entry:
     $children?: modifiers
     data_contents*: enum_type_parameters
@@ -372,8 +410,7 @@ named:
     value*: expression
   property_modifier:
   protocol_body:
-    $children*: [associatedtype_declaration, deinit_declaration, init_declaration, protocol_function_declaration, protocol_property_declaration, subscript_declaration, typealias_declaration]
-    body*: protocol_function_declaration
+    $children*: protocol_member_declaration
   protocol_composition_type:
     $children+: unannotated_type
   protocol_declaration:
@@ -382,9 +419,10 @@ named:
     declaration_kind: "protocol"
     name: type_identifier
   protocol_function_declaration:
-    $children*: [attribute, modifiers, parameter, statements, throws, throws_clause, type_constraints, type_parameters]
+    $children*: [attribute, modifiers, parameter, throws, throws_clause, type_constraints, type_parameters]
+    body?: function_body
     default_value*: expression
-    name?: [referenceable_operator, simple_identifier]
+    name: [referenceable_operator, simple_identifier]
     return_type?: [implicitly_unwrapped_type, type]
   protocol_property_declaration:
     $children+: [modifiers, protocol_property_requirements, type_annotation, type_constraints]
@@ -421,11 +459,11 @@ named:
   shebang_line:
   simple_identifier:
   source_file:
-    $children*: [associatedtype_declaration, class_declaration, do_statement, expression, for_statement, function_declaration, guard_statement, import_declaration, init_declaration, macro_declaration, operator_declaration, precedence_group_declaration, property_declaration, protocol_declaration, repeat_while_statement, shebang_line, statement_label, throw_keyword, typealias_declaration, while_statement]
+    $children*: [do_statement, expression, for_statement, global_declaration, guard_statement, repeat_while_statement, shebang_line, statement_label, throw_keyword, while_statement]
   special_literal:
   statement_label:
   statements:
-    $children+: [class_declaration, control_transfer_statement, do_statement, expression, for_statement, function_declaration, guard_statement, property_declaration, repeat_while_statement, statement_label, typealias_declaration, while_statement]
+    $children+: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
   str_escaped_char:
   subscript_declaration:
     $children+: [attribute, computed_property, modifiers, parameter, type_constraints, type_parameters]

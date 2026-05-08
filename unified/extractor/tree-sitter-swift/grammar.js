@@ -84,7 +84,14 @@ if (tree_sitter_version_supports_emoji()) {
 
 module.exports = grammar({
   name: "swift",
-  supertypes: ($) => [$.expression, $.unannotated_type],
+  supertypes: ($) => [
+    $.expression,
+    $.unannotated_type,
+    $.global_declaration,
+    $.type_level_declaration,
+    $.local_declaration,
+    $.protocol_member_declaration,
+  ],
   conflicts: ($) => [
     // @Type(... could either be an annotation constructor invocation or an annotated expression
     [$.attribute],
@@ -1183,14 +1190,14 @@ module.exports = grammar({
     _local_statement: ($) =>
       choice(
         $.expression,
-        $._local_declaration,
+        $.local_declaration,
         $._labeled_statement,
         $.control_transfer_statement
       ),
     _top_level_statement: ($) =>
       choice(
         $.expression,
-        $._global_declaration,
+        $.global_declaration,
         $._labeled_statement,
         $._throw_statement
       ),
@@ -1298,7 +1305,7 @@ module.exports = grammar({
     ////////////////////////////////
     // Declarations - https://docs.swift.org/swift-book/ReferenceManual/Declarations.html
     ////////////////////////////////
-    _global_declaration: ($) =>
+    global_declaration: ($) =>
       choice(
         $.import_declaration,
         $.property_declaration,
@@ -1312,7 +1319,7 @@ module.exports = grammar({
         $.associatedtype_declaration,
         $.macro_declaration
       ),
-    _type_level_declaration: ($) =>
+    type_level_declaration: ($) =>
       choice(
         $.import_declaration,
         $.property_declaration,
@@ -1327,7 +1334,7 @@ module.exports = grammar({
         $.precedence_group_declaration,
         $.associatedtype_declaration
       ),
-    _local_declaration: ($) =>
+    local_declaration: ($) =>
       choice(
         alias($._local_property_declaration, $.property_declaration),
         alias($._local_typealias_declaration, $.typealias_declaration),
@@ -1598,7 +1605,7 @@ module.exports = grammar({
     _class_member_separator: ($) => choice($._semi, $.multiline_comment),
     _class_member_declarations: ($) =>
       seq(
-        sep1($._type_level_declaration, $._class_member_separator),
+        sep1($.type_level_declaration, $._class_member_separator),
         optional($._class_member_separator)
       ),
     _function_value_parameters: ($) =>
@@ -1666,7 +1673,7 @@ module.exports = grammar({
     throws_clause: ($) =>
       seq($._throws_keyword, "(", field("type", $.unannotated_type), ")"),
     enum_class_body: ($) =>
-      seq("{", repeat(choice($.enum_entry, $._type_level_declaration)), "}"),
+      seq("{", repeat(choice($.enum_entry, $.type_level_declaration)), "}"),
     enum_entry: ($) =>
       seq(
         optional($.modifiers),
@@ -1718,22 +1725,21 @@ module.exports = grammar({
     protocol_body: ($) =>
       seq("{", optional($._protocol_member_declarations), "}"),
     _protocol_member_declarations: ($) =>
-      seq(sep1($._protocol_member_declaration, $._semi), optional($._semi)),
-    _protocol_member_declaration: ($) =>
+      seq(sep1($.protocol_member_declaration, $._semi), optional($._semi)),
+    protocol_member_declaration: ($) =>
       choice(
-        alias(
-          seq(
-            $._bodyless_function_declaration,
-            optional(field("body", $.function_body))
-          ),
-          $.protocol_function_declaration
-        ),
+        $.protocol_function_declaration,
         $.init_declaration,
         $.deinit_declaration,
         $.protocol_property_declaration,
         $.typealias_declaration,
         $.associatedtype_declaration,
         $.subscript_declaration
+      ),
+    protocol_function_declaration: ($) =>
+      seq(
+        $._bodyless_function_declaration,
+        optional(field("body", $.function_body))
       ),
     init_declaration: ($) =>
       prec.right(
