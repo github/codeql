@@ -135,7 +135,7 @@ module Swift {
     final AstNode getElement(int i) { swift_array_type_element(this, i, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_array_type_def(this, result) }
+    final UnannotatedType getName() { swift_array_type_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
@@ -152,7 +152,7 @@ module Swift {
     final Expression getExpr() { swift_as_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_as_expression_def(this, _, result, _) }
+    final UnannotatedType getName() { swift_as_expression_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `type`. */
     final AstNode getType(int i) { swift_as_expression_type(this, i, result) }
@@ -425,7 +425,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "CheckExpression" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_check_expression_def(this, result, _, _) }
+    final UnannotatedType getName() { swift_check_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
@@ -741,7 +741,7 @@ module Swift {
     final AstNode getKey(int i) { swift_dictionary_type_key(this, i, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_dictionary_type_name(this, i, result) }
+    final UnannotatedType getName(int i) { swift_dictionary_type_name(this, i, result) }
 
     /** Gets the node corresponding to the field `value`. */
     final AstNode getValue(int i) { swift_dictionary_type_value(this, i, result) }
@@ -881,7 +881,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "EnumTypeParameters" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_enum_type_parameters_name(this, i, result) }
+    final UnannotatedType getName(int i) { swift_enum_type_parameters_name(this, i, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_enum_type_parameters_child(this, i, result) }
@@ -907,7 +907,7 @@ module Swift {
     final AstNode getMustEqual(int i) { swift_equality_constraint_must_equal(this, i, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_equality_constraint_def(this, result) }
+    final UnannotatedType getName() { swift_equality_constraint_def(this, result) }
 
     /** Gets the `i`th child of this node. */
     final Attribute getChild(int i) { swift_equality_constraint_child(this, i, result) }
@@ -958,7 +958,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ExistentialType" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_existential_type_def(this, result) }
+    final UnannotatedType getChild() { swift_existential_type_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_existential_type_def(this, result) }
@@ -1062,10 +1062,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "FunctionType" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_function_type_def(this, result, _) }
+    final UnannotatedType getName() { swift_function_type_def(this, result, _) }
 
     /** Gets the node corresponding to the field `params`. */
-    final AstNode getParams() { swift_function_type_def(this, _, result) }
+    final UnannotatedType getParams() { swift_function_type_def(this, _, result) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final AstNode getReturnType(int i) { swift_function_type_return_type(this, i, result) }
@@ -1141,7 +1141,7 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_if_condition_name(this, result) }
+    final UnannotatedType getName() { swift_if_condition_name(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_if_condition_child(this, i, result) }
@@ -1221,7 +1221,7 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_inheritance_constraint_def(this, result) }
+    final UnannotatedType getName() { swift_inheritance_constraint_def(this, result) }
 
     /** Gets the `i`th child of this node. */
     final Attribute getChild(int i) { swift_inheritance_constraint_child(this, i, result) }
@@ -1346,7 +1346,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "LambdaFunctionType" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_lambda_function_type_name(this, result) }
+    final UnannotatedType getName() { swift_lambda_function_type_name(this, result) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final AstNode getReturnType(int i) { swift_lambda_function_type_return_type(this, i, result) }
@@ -1512,7 +1512,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "Metatype" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_metatype_def(this, result) }
+    final UnannotatedType getChild() { swift_metatype_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_metatype_def(this, result) }
@@ -1673,7 +1673,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "OpaqueType" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_opaque_type_def(this, result) }
+    final UnannotatedType getChild() { swift_opaque_type_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_opaque_type_def(this, result) }
@@ -1800,7 +1800,7 @@ module Swift {
     final SimpleIdentifier getBoundIdentifier() { swift_pattern_bound_identifier(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_pattern_name(this, result) }
+    final UnannotatedType getName() { swift_pattern_name(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_pattern_child(this, i, result) }
@@ -1966,7 +1966,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ProtocolCompositionType" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_protocol_composition_type_child(this, i, result) }
+    final UnannotatedType getChild(int i) { swift_protocol_composition_type_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
@@ -2301,7 +2301,7 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_subscript_declaration_name(this, result) }
+    final UnannotatedType getName() { swift_subscript_declaration_name(this, result) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final AstNode getReturnType(int i) { swift_subscript_declaration_return_type(this, i, result) }
@@ -2417,7 +2417,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ThrowsClause" }
 
     /** Gets the node corresponding to the field `type`. */
-    final AstNode getType() { swift_throws_clause_def(this, result) }
+    final UnannotatedType getType() { swift_throws_clause_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_throws_clause_def(this, result) }
@@ -2512,7 +2512,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypeAnnotation" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_type_annotation_def(this, result) }
+    final UnannotatedType getName() { swift_type_annotation_def(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
     final AstNode getType(int i) { swift_type_annotation_type(this, i, result) }
@@ -2529,7 +2529,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypeArguments" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_type_arguments_name(this, i, result) }
+    final UnannotatedType getName(int i) { swift_type_arguments_name(this, i, result) }
 
     /** Gets the `i`th child of this node. */
     final TypeModifiers getChild(int i) { swift_type_arguments_child(this, i, result) }
@@ -2588,7 +2588,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypePackExpansion" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_type_pack_expansion_def(this, result) }
+    final UnannotatedType getChild() { swift_type_pack_expansion_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_type_pack_expansion_def(this, result) }
@@ -2600,7 +2600,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypeParameter" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_type_parameter_name(this, result) }
+    final UnannotatedType getName() { swift_type_parameter_name(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_type_parameter_child(this, i, result) }
@@ -2631,7 +2631,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypeParameterPack" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_type_parameter_pack_def(this, result) }
+    final UnannotatedType getChild() { swift_type_parameter_pack_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_type_parameter_pack_def(this, result) }
@@ -2670,6 +2670,8 @@ module Swift {
       swift_typealias_declaration_child(this, _, result)
     }
   }
+
+  class UnannotatedType extends @swift_unannotated_type, AstNode { }
 
   /** A class representing `user_type` nodes. */
   class UserType extends @swift_user_type, AstNode {
