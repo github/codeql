@@ -401,13 +401,13 @@ module.exports = grammar({
     type_annotation: ($) =>
       seq(":", field("type", $._possibly_implicitly_unwrapped_type)),
     _possibly_implicitly_unwrapped_type: ($) =>
-      choice($._type, $.implicitly_unwrapped_type),
+      choice($.type, $.implicitly_unwrapped_type),
     implicitly_unwrapped_type: ($) =>
-      seq($._type, token.immediate("!")),
-    _type: ($) =>
+      seq($.type, token.immediate("!")),
+    type: ($) =>
       prec.right(
         PRECS.ty,
-        seq(optional($.type_modifiers), field("name", $.unannotated_type))
+        seq(field("modifiers", optional($.type_modifiers)), field("name", $.unannotated_type))
       ),
     unannotated_type: ($) =>
       prec.right(
@@ -453,7 +453,7 @@ module.exports = grammar({
         seq(
           optional($._tuple_type_item_identifier),
           optional($.parameter_modifiers),
-          field("type", $._type)
+          field("type", $.type)
         )
       ),
     _tuple_type_item_identifier: ($) =>
@@ -471,11 +471,11 @@ module.exports = grammar({
         optional($._async_keyword),
         optional(choice($.throws_clause, $.throws)),
         $._arrow_operator,
-        field("return_type", $._type)
+        field("return_type", $.type)
       ),
-    array_type: ($) => seq("[", field("element", $._type), "]"),
+    array_type: ($) => seq("[", field("element", $.type), "]"),
     dictionary_type: ($) =>
-      seq("[", field("key", $._type), ":", field("value", $._type), "]"),
+      seq("[", field("key", $.type), ":", field("value", $.type), "]"),
     optional_type: ($) =>
       prec.left(
         seq(
@@ -622,7 +622,7 @@ module.exports = grammar({
     as_expression: ($) =>
       prec.left(
         PRECS.as,
-        seq(field("expr", $.expression), $.as_operator, field("type", $._type))
+        seq(field("expr", $.expression), $.as_operator, field("type", $.type))
       ),
     selector_expression: ($) =>
       seq(
@@ -699,7 +699,7 @@ module.exports = grammar({
         seq(
           field("target", $.expression),
           field("op", $._is_operator),
-          field("type", $._type)
+          field("type", $.type)
         )
       ),
     comparison_expression: ($) =>
@@ -777,7 +777,7 @@ module.exports = grammar({
       seq("(", optional(sep1Opt($.value_argument, ",")), ")"),
     _fn_call_lambda_arguments: ($) =>
       sep1($.lambda_literal, seq(field("name", $.simple_identifier), ":")),
-    type_arguments: ($) => prec.left(seq("<", sep1Opt($._type, ","), ">")),
+    type_arguments: ($) => prec.left(seq("<", sep1Opt($.type, ","), ">")),
     value_arguments: ($) =>
       seq(
         choice(
@@ -1450,7 +1450,7 @@ module.exports = grammar({
         field("name", alias($.simple_identifier, $.type_identifier)),
         optional($.type_parameters),
         $._equal_sign,
-        field("value", $._type)
+        field("value", $.type)
       ),
     function_declaration: ($) =>
       prec.right(
@@ -1566,7 +1566,7 @@ module.exports = grammar({
       seq(
         optional($.type_parameter_modifiers),
         $._type_parameter_possibly_packed,
-        optional(seq(":", $._type))
+        optional(seq(":", $.type))
       ),
     _type_parameter_possibly_packed: ($) =>
       choice(
@@ -1590,7 +1590,7 @@ module.exports = grammar({
         repeat($.attribute),
         field("constrained_type", $._constrained_type),
         choice($._equal_sign, $._eq_eq),
-        field("must_equal", $._type)
+        field("must_equal", $.type)
       ),
     _constrained_type: ($) => choice($.identifier, $.nested_type_identifier),
     nested_type_identifier: ($) =>
@@ -1698,7 +1698,7 @@ module.exports = grammar({
               optional(
                 seq(optional($.wildcard_pattern), $.simple_identifier, ":")
               ),
-              $._type,
+              $.type,
               optional(seq($._equal_sign, $.expression))
             ),
             ","
@@ -1833,9 +1833,9 @@ module.exports = grammar({
         optional($.modifiers),
         "associatedtype",
         field("name", alias($.simple_identifier, $.type_identifier)),
-        optional(seq(":", field("must_inherit", $._type))),
+        optional(seq(":", field("must_inherit", $.type))),
         optional($.type_constraints),
-        optional(seq($._equal_sign, field("default_value", $._type)))
+        optional(seq($._equal_sign, field("default_value", $.type)))
       ),
     ////////////////////////////////
     // Attributes - https://docs.swift.org/swift-book/ReferenceManual/Attributes.html
@@ -1934,8 +1934,8 @@ module.exports = grammar({
       ),
     _type_casting_pattern: ($) =>
       choice(
-        seq("is", $._type),
-        seq(alias($._binding_pattern_no_expr, $.pattern), $._as, $._type)
+        seq("is", $.type),
+        seq(alias($._binding_pattern_no_expr, $.pattern), $._as, $.type)
       ),
     _binding_pattern: ($) =>
       seq(

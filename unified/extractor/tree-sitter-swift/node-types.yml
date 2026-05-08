@@ -79,13 +79,11 @@ named:
   array_literal:
     element*: expression
   array_type:
-    element+: [type_modifiers, unannotated_type]
-    name: unannotated_type
+    element: type
   as_expression:
     $children: as_operator
     expr: expression
-    name: unannotated_type
-    type+: [type_modifiers, unannotated_type]
+    type: type
   as_operator:
   assignment:
     operator: ["%=", "*=", "+=", "-=", "/=", "="]
@@ -93,9 +91,9 @@ named:
     target: directly_assignable_expression
   associatedtype_declaration:
     $children*: [modifiers, type_constraints]
-    default_value*: [type_modifiers, unannotated_type]
-    must_inherit*: [type_modifiers, unannotated_type]
-    name+: [type_identifier, unannotated_type]
+    default_value?: type
+    must_inherit?: type
+    name: type_identifier
   attribute:
     $children+: [expression, user_type]
   availability_condition:
@@ -126,10 +124,9 @@ named:
     error?: pattern
   catch_keyword:
   check_expression:
-    name: unannotated_type
     op: "is"
     target: expression
-    type+: [type_modifiers, unannotated_type]
+    type: type
   class_body:
     $children*: [associatedtype_declaration, class_declaration, deinit_declaration, function_declaration, import_declaration, init_declaration, multiline_comment, operator_declaration, precedence_group_declaration, property_declaration, protocol_declaration, subscript_declaration, typealias_declaration]
   class_declaration:
@@ -175,9 +172,8 @@ named:
     key*: expression
     value*: expression
   dictionary_type:
-    key+: [type_modifiers, unannotated_type]
-    name+: unannotated_type
-    value+: [type_modifiers, unannotated_type]
+    key: type
+    value: type
   didset_clause:
     $children*: [modifiers, simple_identifier, statements]
   directive:
@@ -199,13 +195,11 @@ named:
     name+: simple_identifier
     raw_value*: expression
   enum_type_parameters:
-    $children*: [expression, type_modifiers, wildcard_pattern]
-    name*: unannotated_type
+    $children*: [expression, type, wildcard_pattern]
   equality_constraint:
     $children*: attribute
     constrained_type: [identifier, nested_type_identifier]
-    must_equal+: [type_modifiers, unannotated_type]
-    name: unannotated_type
+    must_equal: type
   equality_expression:
     lhs: expression
     op: ["!=", "!==", "==", "==="]
@@ -225,14 +219,13 @@ named:
     $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, parameter, property_behavior_modifier, throws, throws_clause, type_constraints, type_parameters]
     body: function_body
     default_value*: expression
-    name+: [referenceable_operator, simple_identifier, unannotated_type]
-    return_type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
+    name: [referenceable_operator, simple_identifier]
+    return_type?: [implicitly_unwrapped_type, type]
   function_modifier:
   function_type:
     $children?: [throws, throws_clause]
-    name: unannotated_type
     params: unannotated_type
-    return_type+: [type_modifiers, unannotated_type]
+    return_type: type
   getter_specifier:
     $children*: [mutation_modifier, throws, throws_clause]
   guard_statement:
@@ -242,15 +235,13 @@ named:
   identifier:
     $children+: simple_identifier
   if_condition:
-    $children*: [availability_condition, expression, pattern, type_annotation, type_modifiers, user_type, value_binding_pattern, where_clause, wildcard_pattern]
+    $children*: [availability_condition, expression, pattern, type, type_annotation, user_type, value_binding_pattern, where_clause, wildcard_pattern]
     bound_identifier?: simple_identifier
-    name?: unannotated_type
   if_statement:
     $children*: [else, if_statement, statements]
     condition+: if_condition
   implicitly_unwrapped_type:
-    $children?: type_modifiers
-    name: unannotated_type
+    $children: type
   import_declaration:
     $children+: [identifier, modifiers]
   infix_expression:
@@ -260,8 +251,7 @@ named:
   inheritance_constraint:
     $children*: attribute
     constrained_type: [identifier, nested_type_identifier]
-    inherits_from+: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
-    name?: unannotated_type
+    inherits_from: [implicitly_unwrapped_type, type]
   inheritance_modifier:
   inheritance_specifier:
     inherits_from: [function_type, suppressed_constraint, user_type]
@@ -282,8 +272,7 @@ named:
     $children: expression
   lambda_function_type:
     $children*: [lambda_function_type_parameters, throws, throws_clause]
-    name?: unannotated_type
-    return_type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
+    return_type?: [implicitly_unwrapped_type, type]
   lambda_function_type_parameters:
     $children+: lambda_parameter
   lambda_literal:
@@ -293,8 +282,8 @@ named:
   lambda_parameter:
     $children?: [parameter_modifiers, self_expression]
     external_name?: simple_identifier
-    name*: [simple_identifier, unannotated_type]
-    type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
+    name?: simple_identifier
+    type?: [implicitly_unwrapped_type, type]
   line_str_text:
   line_string_literal:
     interpolation*: interpolated_expression
@@ -352,15 +341,14 @@ named:
   parameter:
     $children?: parameter_modifiers
     external_name?: simple_identifier
-    name+: [simple_identifier, unannotated_type]
-    type+: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
+    name: simple_identifier
+    type: [implicitly_unwrapped_type, type]
   parameter_modifier:
   parameter_modifiers:
     $children+: parameter_modifier
   pattern:
-    $children*: [expression, pattern, type_modifiers, user_type, value_binding_pattern, wildcard_pattern]
+    $children*: [expression, pattern, type, user_type, value_binding_pattern, wildcard_pattern]
     bound_identifier?: simple_identifier
-    name?: unannotated_type
   playground_literal:
     $children+: expression
   postfix_expression:
@@ -395,8 +383,8 @@ named:
   protocol_function_declaration:
     $children*: [attribute, modifiers, parameter, statements, throws, throws_clause, type_constraints, type_parameters]
     default_value*: expression
-    name*: [referenceable_operator, simple_identifier, unannotated_type]
-    return_type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
+    name?: [referenceable_operator, simple_identifier]
+    return_type?: [implicitly_unwrapped_type, type]
   protocol_property_declaration:
     $children+: [modifiers, protocol_property_requirements, type_annotation, type_constraints]
     name: pattern
@@ -441,8 +429,7 @@ named:
   subscript_declaration:
     $children+: [attribute, computed_property, modifiers, parameter, type_constraints, type_parameters]
     default_value*: expression
-    name?: unannotated_type
-    return_type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
+    return_type?: [implicitly_unwrapped_type, type]
   super_expression:
   suppressed_constraint:
     suppressed: type_identifier
@@ -474,14 +461,15 @@ named:
   tuple_type_item:
     $children*: [parameter_modifiers, wildcard_pattern]
     element?: [dictionary_type, existential_type, opaque_type]
-    name*: [simple_identifier, unannotated_type]
-    type*: [type_modifiers, unannotated_type]
+    name?: simple_identifier
+    type?: type
+  type:
+    modifiers?: type_modifiers
+    name: unannotated_type
   type_annotation:
-    name?: unannotated_type
-    type+: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
+    type: [implicitly_unwrapped_type, type]
   type_arguments:
-    $children*: type_modifiers
-    name+: unannotated_type
+    $children+: type
   type_constraint:
     $children: [equality_constraint, inheritance_constraint]
   type_constraints:
@@ -492,8 +480,7 @@ named:
   type_pack_expansion:
     $children: unannotated_type
   type_parameter:
-    $children+: [type_identifier, type_modifiers, type_parameter_modifiers, type_parameter_pack]
-    name?: unannotated_type
+    $children+: [type, type_identifier, type_parameter_modifiers, type_parameter_pack]
   type_parameter_modifiers:
     $children+: attribute
   type_parameter_pack:
@@ -502,8 +489,8 @@ named:
     $children+: [type_constraints, type_parameter]
   typealias_declaration:
     $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier, type_parameters]
-    name+: [type_identifier, unannotated_type]
-    value+: [type_modifiers, unannotated_type]
+    name: type_identifier
+    value: type
   user_type:
     $children+: [type_arguments, type_identifier]
   value_argument:
