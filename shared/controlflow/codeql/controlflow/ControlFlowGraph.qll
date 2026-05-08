@@ -490,11 +490,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      */
     default Parameter callableGetParameter(Callable c, CallableContext ctx, int index) { none() }
 
-    /** Holds if this catch clause catches all exceptions. */
+    /** Holds if catch clause `catch` catches all exceptions. */
     default predicate catchAll(CatchClause catch) { none() }
 
     /**
-     * Holds if this case matches all possible values, for example, if it is a
+     * Holds if case `c` matches all possible values, for example, if it is a
      * `default` case or a match-all pattern like `Object o` or if it is the
      * final case in a switch that is known to be exhaustive.
      *
