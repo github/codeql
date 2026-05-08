@@ -1097,17 +1097,30 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfCondition" }
 
+    /** Gets the child of this node. */
+    final AstNode getChild() { swift_if_condition_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { swift_if_condition_def(this, result) }
+  }
+
+  /** A class representing `if_let_binding` nodes. */
+  class IfLetBinding extends @swift_if_let_binding, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "IfLetBinding" }
+
     /** Gets the node corresponding to the field `bound_identifier`. */
     final SimpleIdentifier getBoundIdentifier() {
-      swift_if_condition_bound_identifier(this, result)
+      swift_if_let_binding_bound_identifier(this, result)
     }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_if_condition_child(this, i, result) }
+    final AstNode getChild(int i) { swift_if_let_binding_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_if_condition_bound_identifier(this, result) or swift_if_condition_child(this, _, result)
+      swift_if_let_binding_bound_identifier(this, result) or
+      swift_if_let_binding_child(this, _, result)
     }
   }
 
