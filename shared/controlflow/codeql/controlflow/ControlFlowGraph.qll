@@ -634,6 +634,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
     private string patternMatchTrueTag() { result = "[MatchTrue]" }
 
+    private string logicalNotTag(Boolean value) {
+      if value = true then result = "[LogicalNotTrue]" else result = "[LogicalNotFalse]"
+    }
+
     /**
      * Holds if an additional node tagged with `tag` should be created for
      * `n`. Edges targeting such nodes are labeled with `t` and therefore `t`
@@ -649,6 +653,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof PatternMatchExpr and
       tag = patternMatchTrueTag() and
       t.(BooleanSuccessor).getValue() = true
+      or
+      n instanceof LogicalNotExpr and
+      exists(Boolean b |
+        tag = logicalNotTag(b) and
+        t.(BooleanSuccessor).getValue() = b
+      )
     }
 
     /**
@@ -1455,13 +1465,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n1.isBefore(notexpr) and
           n2.isBefore(notexpr.getOperand())
           or
-          exists(BooleanSuccessor t, PreControlFlowNode operand |
-            operand.isAfterValue(notexpr.getOperand(), t)
-          |
-            n1 = operand and
-            n2.isIn(notexpr)
+          exists(BooleanSuccessor t |
+            n1.isAfterValue(notexpr.getOperand(), t) and
+            n2.isAdditional(notexpr, logicalNotTag(t.getValue()))
             or
-            n1.isIn(notexpr) and
+            n1.isAdditional(notexpr, logicalNotTag(t.getValue())) and
             n2.isAfterValue(notexpr, t.getDual())
           )
         )
