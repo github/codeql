@@ -11,7 +11,6 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
         }
 
-
         public static Expression Create(ExpressionNodeInfo info) => new PrefixUnary(info).TryPopulate();
 
         protected override void PopulateExpression(TextWriter trapFile)

@@ -146,7 +146,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return Name.Create(info);
 
                     case SyntaxKind.LogicalNotExpression:
-                        return PrefixUnary.Create(info.SetKind(ExprKind.LOG_NOT));
+                        return Not.Create(info);
 
                     case SyntaxKind.BitwiseNotExpression:
                         return PrefixUnary.Create(info.SetKind(ExprKind.BIT_NOT));
