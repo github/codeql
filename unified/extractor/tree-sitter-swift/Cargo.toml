@@ -1,0 +1,21 @@
+[package]
+name = "tree-sitter-swift"
+description = "Swift grammar for the tree-sitter parsing library (vendored copy for the unified extractor)"
+version = "0.7.2"
+keywords = ["incremental", "parsing", "swift"]
+categories = ["parsing", "text-editors"]
+repository = "https://github.com/alex-pinkus/tree-sitter-swift"
+edition = "2024"
+license = "MIT"
+
+build = "bindings/rust/build.rs"
+
+[lib]
+path = "bindings/rust/lib.rs"
+
+# When updating these dependencies, run `misc/bazel/3rdparty/update_cargo_deps.sh`
+[dependencies]
+tree-sitter-language = "0.1"
+
+[build-dependencies]
+cc = "1.2"
