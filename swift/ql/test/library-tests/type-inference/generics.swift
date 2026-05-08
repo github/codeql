@@ -141,3 +141,101 @@ func testConstrainedGeneric() {
   let v = w.get() // $ type=v:Int target=Wrapper.get
   let z = w.callFoo() // $ type=z:Int target=Wrapper.callFoo
 }
+
+// --- Generics and inheritance ---
+
+class Base<T1, T2> {
+  var value1 : T1
+  var value2 : T2
+
+  // Base.init
+  init(_ v1: T1, _ v2: T2) {
+    self.value1 = v1 // $ type=.value1:T1
+    self.value2 = v2 // $ type=.value2:T2
+  }
+
+  // Base.getValue1
+  func getValue1() -> T1 {
+    return value1 // $ type=.value1:T1
+  }
+
+  // Base.getValue2
+  func getValue2() -> T2 {
+    return value2 // $ type=.value2:T2
+  }
+}
+
+class Derived<T1, T2> : Base<T2, T1> {
+  // Derived.init
+  init(_ v1: T1, _ v2: T2) {
+    super.init(v2, v1) // $ type=v2:T2 type=v1:T1 target=Base.init
+  }
+}
+
+class DerivedDerived<D> : Derived<D, Bool> {
+  // DerivedDerived.init
+  init(_ v: D) {
+    super.init(v, true) // $ type=v:D target=Derived.init
+  }
+}
+
+func testDerived() {
+  let d = Derived(1, "x") // $ type=d@Derived<T1>:Int type=d@Derived<T2>:String target=Derived.init
+  let v1 = d.getValue1() // $ type=v1:String target=Base.getValue1
+  let v2 = d.getValue2() // $ type=v2:Int target=Base.getValue2
+
+  let dd = DerivedDerived("hello") // $ type=dd@DerivedDerived<D>:String target=DerivedDerived.init
+  let vv1 = dd.getValue1() // $ type=vv1:Bool target=Base.getValue1
+  let vv2 = dd.getValue2() // $ type=vv2:String target=Base.getValue2
+}
+
+// --- Generics and protocols ---
+
+protocol MyProtocol2 {
+  associatedtype MyType
+
+  // MyProtocol2.baz
+  func baz() -> MyType
+}
+
+extension MyProtocol2 {
+  // MyProtocol2.foo
+  func foo() -> Self {
+    return self // $ type=self:Self
+  }
+}
+
+class MyClass<T> {
+  var value : T
+
+  // MyClass.init
+  init(_ value: T) {
+    self.value = value // $ type=value:T
+  }
+}
+
+extension MyClass : MyProtocol2 {
+  typealias MyType = T
+
+  // MyClass.baz
+  func baz() -> T {
+    return value // $ type=.value:T
+  }
+}
+
+// callFoo
+func callFoo<T : MyProtocol2>(_ c: T) -> T {
+  return c.foo() // $ target=MyProtocol2.foo
+}
+
+// callBaz
+func callBaz<T : MyProtocol2>(_ c: T) -> T.MyType {
+  return c.baz() // $ target=MyProtocol2.baz
+}
+
+func testProtocolExtension() {
+  let c = MyClass(42) // $ type=c@MyClass<T>:Int target=MyClass.init
+  let s = c.foo() // $ type=s@MyClass<T>:Int target=MyProtocol2.foo
+  let v = c.baz() // $ type=v:Int target=MyClass.baz
+  let v2 = callBaz(c) // $ type=v2:Int target=callBaz
+}

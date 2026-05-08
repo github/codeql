@@ -357,7 +357,7 @@ class PtrConstType extends PtrType {
 
 /**
  * A special pseudo type used to indicate that the actual type may have to be
- * inferred by propagating type information back into call arguments.
+ * inferred by propagating type information top-down.
  *
  * For example, in
  *
@@ -374,8 +374,8 @@ class PtrConstType extends PtrType {
  * parameter of `Vec`.
  *
  * Unknown types are used to restrict when type information is allowed to flow
- * into call arguments (including method call receivers), in order to avoid
- * combinatorial explosions.
+ * top-down (including method call receivers), in order to avoid combinatorial
+ * explosions.
  */
 class UnknownType extends Type, TUnknownType {
   override TypeParameter getPositionalTypeParameter(int i) { none() }
