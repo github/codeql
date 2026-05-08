@@ -1571,9 +1571,6 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "NavigationExpression" }
 
-    /** Gets the node corresponding to the field `element`. */
-    final AstNode getElement() { swift_navigation_expression_element(this, result) }
-
     /** Gets the node corresponding to the field `suffix`. */
     final NavigationSuffix getSuffix() { swift_navigation_expression_def(this, result) }
 
@@ -1582,7 +1579,6 @@ module Swift {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_navigation_expression_element(this, result) or
       swift_navigation_expression_def(this, result) or
       swift_navigation_expression_target(this, _, result)
     }
@@ -2445,9 +2441,6 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TupleTypeItem" }
 
-    /** Gets the node corresponding to the field `element`. */
-    final AstNode getElement() { swift_tuple_type_item_element(this, result) }
-
     /** Gets the node corresponding to the field `name`. */
     final SimpleIdentifier getName() { swift_tuple_type_item_name(this, result) }
 
@@ -2459,7 +2452,6 @@ module Swift {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_tuple_type_item_element(this, result) or
       swift_tuple_type_item_name(this, result) or
       swift_tuple_type_item_type(this, result) or
       swift_tuple_type_item_child(this, _, result)

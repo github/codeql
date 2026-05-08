@@ -1206,13 +1206,6 @@ swift_multiplicative_expression_def(
   int rhs: @swift_expression ref
 );
 
-@swift_navigation_expression_element_type = @swift_dictionary_type | @swift_existential_type | @swift_opaque_type
-
-swift_navigation_expression_element(
-  unique int swift_navigation_expression: @swift_navigation_expression ref,
-  unique int element: @swift_navigation_expression_element_type ref
-);
-
 @swift_navigation_expression_target_type = @swift_array_type | @swift_dictionary_type | @swift_existential_type | @swift_expression | @swift_opaque_type | @swift_reserved_word | @swift_user_type
 
 #keyset[swift_navigation_expression, index]
@@ -1784,13 +1777,6 @@ swift_tuple_type_def(
   unique int id: @swift_tuple_type
 );
 
-@swift_tuple_type_item_element_type = @swift_dictionary_type | @swift_existential_type | @swift_opaque_type
-
-swift_tuple_type_item_element(
-  unique int swift_tuple_type_item: @swift_tuple_type_item ref,
-  unique int element: @swift_tuple_type_item_element_type ref
-);
-
 swift_tuple_type_item_name(
   unique int swift_tuple_type_item: @swift_tuple_type_item ref,
   unique int name: @swift_token_simple_identifier ref
@@ -1801,7 +1787,7 @@ swift_tuple_type_item_type(
   unique int type__: @swift_type__ ref
 );
 
-@swift_tuple_type_item_child_type = @swift_parameter_modifiers | @swift_token_wildcard_pattern
+@swift_tuple_type_item_child_type = @swift_dictionary_type | @swift_existential_type | @swift_opaque_type | @swift_parameter_modifiers | @swift_token_wildcard_pattern
 
 #keyset[swift_tuple_type_item, index]
 swift_tuple_type_item_child(
