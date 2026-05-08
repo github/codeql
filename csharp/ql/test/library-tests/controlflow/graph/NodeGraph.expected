@@ -5714,18 +5714,22 @@
 | Patterns.cs:20:9:38:9 | After switch (...) {...} | Patterns.cs:40:9:42:9 | switch (...) {...} |  |
 | Patterns.cs:20:9:38:9 | switch (...) {...} | Patterns.cs:20:17:20:17 | access to local variable o |  |
 | Patterns.cs:20:17:20:17 | access to local variable o | Patterns.cs:22:13:22:23 | case ...: |  |
-| Patterns.cs:22:13:22:23 | After case ...: [match] | Patterns.cs:22:18:22:22 | "xyz" |  |
+| Patterns.cs:22:13:22:23 | After case ...: [match] | Patterns.cs:23:17:23:22 | Before break; |  |
 | Patterns.cs:22:13:22:23 | After case ...: [no-match] | Patterns.cs:24:13:24:36 | case ...: |  |
-| Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:22:13:22:23 | After case ...: [match] | match |
-| Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:22:13:22:23 | After case ...: [no-match] | no-match |
-| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:23:17:23:22 | Before break; |  |
+| Patterns.cs:22:13:22:23 | case ...: | Patterns.cs:22:18:22:22 | "xyz" |  |
+| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:22:18:22:22 | After "xyz" [match] | match |
+| Patterns.cs:22:18:22:22 | "xyz" | Patterns.cs:22:18:22:22 | After "xyz" [no-match] | no-match |
+| Patterns.cs:22:18:22:22 | After "xyz" [match] | Patterns.cs:22:13:22:23 | After case ...: [match] | match |
+| Patterns.cs:22:18:22:22 | After "xyz" [no-match] | Patterns.cs:22:13:22:23 | After case ...: [no-match] | no-match |
 | Patterns.cs:23:17:23:22 | Before break; | Patterns.cs:23:17:23:22 | break; |  |
 | Patterns.cs:23:17:23:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
-| Patterns.cs:24:13:24:36 | After case ...: [match] | Patterns.cs:24:18:24:23 | Int32 i2 |  |
+| Patterns.cs:24:13:24:36 | After case ...: [match] | Patterns.cs:24:30:24:35 | Before ... > ... |  |
 | Patterns.cs:24:13:24:36 | After case ...: [no-match] | Patterns.cs:27:13:27:24 | case ...: |  |
-| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:13:24:36 | After case ...: [match] | match |
-| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:13:24:36 | After case ...: [no-match] | no-match |
-| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:30:24:35 | Before ... > ... |  |
+| Patterns.cs:24:13:24:36 | case ...: | Patterns.cs:24:18:24:23 | Int32 i2 |  |
+| Patterns.cs:24:18:24:23 | After Int32 i2 [match] | Patterns.cs:24:13:24:36 | After case ...: [match] | match |
+| Patterns.cs:24:18:24:23 | After Int32 i2 [no-match] | Patterns.cs:24:13:24:36 | After case ...: [no-match] | no-match |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | After Int32 i2 [match] | match |
+| Patterns.cs:24:18:24:23 | Int32 i2 | Patterns.cs:24:18:24:23 | After Int32 i2 [no-match] | no-match |
 | Patterns.cs:24:30:24:31 | access to local variable i2 | Patterns.cs:24:35:24:35 | 0 |  |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:35 | After ... > ... [false] | false |
 | Patterns.cs:24:30:24:35 | ... > ... | Patterns.cs:24:30:24:35 | After ... > ... [true] | true |
@@ -5748,11 +5752,13 @@
 | Patterns.cs:25:47:25:48 | access to local variable i2 | Patterns.cs:25:46:25:49 | {...} |  |
 | Patterns.cs:26:17:26:22 | Before break; | Patterns.cs:26:17:26:22 | break; |  |
 | Patterns.cs:26:17:26:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
-| Patterns.cs:27:13:27:24 | After case ...: [match] | Patterns.cs:27:18:27:23 | Int32 i3 |  |
+| Patterns.cs:27:13:27:24 | After case ...: [match] | Patterns.cs:28:17:28:47 | ...; |  |
 | Patterns.cs:27:13:27:24 | After case ...: [no-match] | Patterns.cs:30:13:30:27 | case ...: |  |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | After case ...: [match] | match |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | After case ...: [no-match] | no-match |
-| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:28:17:28:47 | ...; |  |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | Int32 i3 |  |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [match] | Patterns.cs:27:13:27:24 | After case ...: [match] | match |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | Patterns.cs:27:13:27:24 | After case ...: [no-match] | no-match |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | After Int32 i3 [match] | match |
+| Patterns.cs:27:18:27:23 | Int32 i3 | Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | no-match |
 | Patterns.cs:28:17:28:46 | After call to method WriteLine | Patterns.cs:28:17:28:47 | After ...; |  |
 | Patterns.cs:28:17:28:46 | Before call to method WriteLine | Patterns.cs:28:35:28:45 | Before $"..." |  |
 | Patterns.cs:28:17:28:46 | call to method WriteLine | Patterns.cs:28:17:28:46 | After call to method WriteLine |  |
@@ -5768,11 +5774,13 @@
 | Patterns.cs:28:42:28:43 | access to local variable i3 | Patterns.cs:28:41:28:44 | {...} |  |
 | Patterns.cs:29:17:29:22 | Before break; | Patterns.cs:29:17:29:22 | break; |  |
 | Patterns.cs:29:17:29:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
-| Patterns.cs:30:13:30:27 | After case ...: [match] | Patterns.cs:30:18:30:26 | String s2 |  |
+| Patterns.cs:30:13:30:27 | After case ...: [match] | Patterns.cs:31:17:31:50 | ...; |  |
 | Patterns.cs:30:13:30:27 | After case ...: [no-match] | Patterns.cs:33:13:33:24 | case ...: |  |
-| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:13:30:27 | After case ...: [match] | match |
-| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:13:30:27 | After case ...: [no-match] | no-match |
-| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:31:17:31:50 | ...; |  |
+| Patterns.cs:30:13:30:27 | case ...: | Patterns.cs:30:18:30:26 | String s2 |  |
+| Patterns.cs:30:18:30:26 | After String s2 [match] | Patterns.cs:30:13:30:27 | After case ...: [match] | match |
+| Patterns.cs:30:18:30:26 | After String s2 [no-match] | Patterns.cs:30:13:30:27 | After case ...: [no-match] | no-match |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | After String s2 [match] | match |
+| Patterns.cs:30:18:30:26 | String s2 | Patterns.cs:30:18:30:26 | After String s2 [no-match] | no-match |
 | Patterns.cs:31:17:31:49 | After call to method WriteLine | Patterns.cs:31:17:31:50 | After ...; |  |
 | Patterns.cs:31:17:31:49 | Before call to method WriteLine | Patterns.cs:31:35:31:48 | Before $"..." |  |
 | Patterns.cs:31:17:31:49 | call to method WriteLine | Patterns.cs:31:17:31:49 | After call to method WriteLine |  |
@@ -5788,11 +5796,13 @@
 | Patterns.cs:31:45:31:46 | access to local variable s2 | Patterns.cs:31:44:31:47 | {...} |  |
 | Patterns.cs:32:17:32:22 | Before break; | Patterns.cs:32:17:32:22 | break; |  |
 | Patterns.cs:32:17:32:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
-| Patterns.cs:33:13:33:24 | After case ...: [match] | Patterns.cs:33:18:33:23 | Object v2 |  |
+| Patterns.cs:33:13:33:24 | After case ...: [match] | Patterns.cs:34:17:34:22 | Before break; |  |
 | Patterns.cs:33:13:33:24 | After case ...: [no-match] | Patterns.cs:35:13:35:20 | default: |  |
-| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:13:33:24 | After case ...: [match] | match |
-| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:13:33:24 | After case ...: [no-match] | no-match |
-| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:34:17:34:22 | Before break; |  |
+| Patterns.cs:33:13:33:24 | case ...: | Patterns.cs:33:18:33:23 | Object v2 |  |
+| Patterns.cs:33:18:33:23 | After Object v2 [match] | Patterns.cs:33:13:33:24 | After case ...: [match] | match |
+| Patterns.cs:33:18:33:23 | After Object v2 [no-match] | Patterns.cs:33:13:33:24 | After case ...: [no-match] | no-match |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | After Object v2 [match] | match |
+| Patterns.cs:33:18:33:23 | Object v2 | Patterns.cs:33:18:33:23 | After Object v2 [no-match] | no-match |
 | Patterns.cs:34:17:34:22 | Before break; | Patterns.cs:34:17:34:22 | break; |  |
 | Patterns.cs:34:17:34:22 | break; | Patterns.cs:20:9:38:9 | After switch (...) {...} | break |
 | Patterns.cs:35:13:35:20 | After default: [match] | Patterns.cs:36:17:36:52 | ...; |  |
@@ -5881,18 +5891,20 @@
 | Patterns.cs:58:16:58:16 | access to parameter i | Patterns.cs:60:13:60:28 | ... => ... |  |
 | Patterns.cs:58:16:62:9 | ... switch { ... } | Patterns.cs:58:16:58:16 | access to parameter i |  |
 | Patterns.cs:58:16:62:9 | After ... switch { ... } | Patterns.cs:58:9:62:10 | return ...; |  |
-| Patterns.cs:60:13:60:17 | After not ... | Patterns.cs:60:22:60:28 | "not 1" |  |
+| Patterns.cs:60:13:60:17 | After not ... [match] | Patterns.cs:60:13:60:28 | After ... => ... [match] | match |
+| Patterns.cs:60:13:60:17 | After not ... [no-match] | Patterns.cs:60:13:60:28 | After ... => ... [no-match] | no-match |
 | Patterns.cs:60:13:60:17 | Before not ... | Patterns.cs:60:17:60:17 | 1 |  |
-| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:13:60:17 | After not ... |  |
-| Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:60:13:60:28 | After ... => ... [match] | match |
-| Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:60:13:60:28 | After ... => ... [no-match] | no-match |
-| Patterns.cs:60:13:60:28 | After ... => ... [match] | Patterns.cs:60:13:60:17 | Before not ... |  |
+| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:13:60:17 | After not ... [match] | match |
+| Patterns.cs:60:13:60:17 | not ... | Patterns.cs:60:13:60:17 | After not ... [no-match] | no-match |
+| Patterns.cs:60:13:60:28 | ... => ... | Patterns.cs:60:13:60:17 | Before not ... |  |
+| Patterns.cs:60:13:60:28 | After ... => ... [match] | Patterns.cs:60:22:60:28 | "not 1" |  |
 | Patterns.cs:60:13:60:28 | After ... => ... [no-match] | Patterns.cs:61:13:61:24 | ... => ... |  |
 | Patterns.cs:60:17:60:17 | 1 | Patterns.cs:60:13:60:17 | not ... |  |
 | Patterns.cs:60:22:60:28 | "not 1" | Patterns.cs:58:16:62:9 | After ... switch { ... } |  |
-| Patterns.cs:61:13:61:13 | _ | Patterns.cs:61:18:61:24 | "other" |  |
-| Patterns.cs:61:13:61:24 | ... => ... | Patterns.cs:61:13:61:24 | After ... => ... [match] | match |
-| Patterns.cs:61:13:61:24 | After ... => ... [match] | Patterns.cs:61:13:61:13 | _ |  |
+| Patterns.cs:61:13:61:13 | After _ [match] | Patterns.cs:61:13:61:24 | After ... => ... [match] | match |
+| Patterns.cs:61:13:61:13 | _ | Patterns.cs:61:13:61:13 | After _ [match] | match |
+| Patterns.cs:61:13:61:24 | ... => ... | Patterns.cs:61:13:61:13 | _ |  |
+| Patterns.cs:61:13:61:24 | After ... => ... [match] | Patterns.cs:61:18:61:24 | "other" |  |
 | Patterns.cs:61:18:61:24 | "other" | Patterns.cs:58:16:62:9 | After ... switch { ... } |  |
 | Patterns.cs:65:26:65:27 | Entry | Patterns.cs:66:5:72:5 | {...} |  |
 | Patterns.cs:65:26:65:27 | Normal Exit | Patterns.cs:65:26:65:27 | Exit |  |
@@ -5902,19 +5914,22 @@
 | Patterns.cs:67:16:67:16 | 2 | Patterns.cs:69:13:69:33 | ... => ... |  |
 | Patterns.cs:67:16:71:9 | ... switch { ... } | Patterns.cs:67:16:67:16 | 2 |  |
 | Patterns.cs:67:16:71:9 | After ... switch { ... } | Patterns.cs:67:9:71:10 | return ...; |  |
-| Patterns.cs:69:13:69:17 | After not ... | Patterns.cs:69:22:69:33 | "impossible" |  |
+| Patterns.cs:69:13:69:17 | After not ... [match] | Patterns.cs:69:13:69:33 | After ... => ... [match] | match |
+| Patterns.cs:69:13:69:17 | After not ... [no-match] | Patterns.cs:69:13:69:33 | After ... => ... [no-match] | no-match |
 | Patterns.cs:69:13:69:17 | Before not ... | Patterns.cs:69:17:69:17 | 2 |  |
-| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:13:69:17 | After not ... |  |
-| Patterns.cs:69:13:69:33 | ... => ... | Patterns.cs:69:13:69:33 | After ... => ... [match] | match |
-| Patterns.cs:69:13:69:33 | ... => ... | Patterns.cs:69:13:69:33 | After ... => ... [no-match] | no-match |
-| Patterns.cs:69:13:69:33 | After ... => ... [match] | Patterns.cs:69:13:69:17 | Before not ... |  |
+| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:13:69:17 | After not ... [match] | match |
+| Patterns.cs:69:13:69:17 | not ... | Patterns.cs:69:13:69:17 | After not ... [no-match] | no-match |
+| Patterns.cs:69:13:69:33 | ... => ... | Patterns.cs:69:13:69:17 | Before not ... |  |
+| Patterns.cs:69:13:69:33 | After ... => ... [match] | Patterns.cs:69:22:69:33 | "impossible" |  |
 | Patterns.cs:69:13:69:33 | After ... => ... [no-match] | Patterns.cs:70:13:70:27 | ... => ... |  |
 | Patterns.cs:69:17:69:17 | 2 | Patterns.cs:69:13:69:17 | not ... |  |
 | Patterns.cs:69:22:69:33 | "impossible" | Patterns.cs:67:16:71:9 | After ... switch { ... } |  |
-| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:18:70:27 | "possible" |  |
-| Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:70:13:70:27 | After ... => ... [match] | match |
-| Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:70:13:70:27 | After ... => ... [no-match] | no-match |
-| Patterns.cs:70:13:70:27 | After ... => ... [match] | Patterns.cs:70:13:70:13 | 2 |  |
+| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | After 2 [match] | match |
+| Patterns.cs:70:13:70:13 | 2 | Patterns.cs:70:13:70:13 | After 2 [no-match] | no-match |
+| Patterns.cs:70:13:70:13 | After 2 [match] | Patterns.cs:70:13:70:27 | After ... => ... [match] | match |
+| Patterns.cs:70:13:70:13 | After 2 [no-match] | Patterns.cs:70:13:70:27 | After ... => ... [no-match] | no-match |
+| Patterns.cs:70:13:70:27 | ... => ... | Patterns.cs:70:13:70:13 | 2 |  |
+| Patterns.cs:70:13:70:27 | After ... => ... [match] | Patterns.cs:70:18:70:27 | "possible" |  |
 | Patterns.cs:70:13:70:27 | After ... => ... [no-match] | Patterns.cs:67:16:71:9 | After ... switch { ... } |  |
 | Patterns.cs:70:18:70:27 | "possible" | Patterns.cs:67:16:71:9 | After ... switch { ... } |  |
 | Patterns.cs:74:26:74:27 | Entry | Patterns.cs:74:33:74:33 | i |  |
@@ -5926,33 +5941,38 @@
 | Patterns.cs:76:16:76:16 | access to parameter i | Patterns.cs:78:13:78:24 | ... => ... |  |
 | Patterns.cs:76:16:82:9 | ... switch { ... } | Patterns.cs:76:16:76:16 | access to parameter i |  |
 | Patterns.cs:76:16:82:9 | After ... switch { ... } | Patterns.cs:76:9:82:10 | return ...; |  |
-| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:13:78:15 | After > ... |  |
-| Patterns.cs:78:13:78:15 | After > ... | Patterns.cs:78:20:78:24 | "> 1" |  |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:13:78:15 | After > ... [match] | match |
+| Patterns.cs:78:13:78:15 | > ... | Patterns.cs:78:13:78:15 | After > ... [no-match] | no-match |
+| Patterns.cs:78:13:78:15 | After > ... [match] | Patterns.cs:78:13:78:24 | After ... => ... [match] | match |
+| Patterns.cs:78:13:78:15 | After > ... [no-match] | Patterns.cs:78:13:78:24 | After ... => ... [no-match] | no-match |
 | Patterns.cs:78:13:78:15 | Before > ... | Patterns.cs:78:15:78:15 | 1 |  |
-| Patterns.cs:78:13:78:24 | ... => ... | Patterns.cs:78:13:78:24 | After ... => ... [match] | match |
-| Patterns.cs:78:13:78:24 | ... => ... | Patterns.cs:78:13:78:24 | After ... => ... [no-match] | no-match |
-| Patterns.cs:78:13:78:24 | After ... => ... [match] | Patterns.cs:78:13:78:15 | Before > ... |  |
+| Patterns.cs:78:13:78:24 | ... => ... | Patterns.cs:78:13:78:15 | Before > ... |  |
+| Patterns.cs:78:13:78:24 | After ... => ... [match] | Patterns.cs:78:20:78:24 | "> 1" |  |
 | Patterns.cs:78:13:78:24 | After ... => ... [no-match] | Patterns.cs:79:13:79:24 | ... => ... |  |
 | Patterns.cs:78:15:78:15 | 1 | Patterns.cs:78:13:78:15 | > ... |  |
 | Patterns.cs:78:20:78:24 | "> 1" | Patterns.cs:76:16:82:9 | After ... switch { ... } |  |
-| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:13:79:15 | After < ... |  |
-| Patterns.cs:79:13:79:15 | After < ... | Patterns.cs:79:20:79:24 | "< 0" |  |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:13:79:15 | After < ... [match] | match |
+| Patterns.cs:79:13:79:15 | < ... | Patterns.cs:79:13:79:15 | After < ... [no-match] | no-match |
+| Patterns.cs:79:13:79:15 | After < ... [match] | Patterns.cs:79:13:79:24 | After ... => ... [match] | match |
+| Patterns.cs:79:13:79:15 | After < ... [no-match] | Patterns.cs:79:13:79:24 | After ... => ... [no-match] | no-match |
 | Patterns.cs:79:13:79:15 | Before < ... | Patterns.cs:79:15:79:15 | 0 |  |
-| Patterns.cs:79:13:79:24 | ... => ... | Patterns.cs:79:13:79:24 | After ... => ... [match] | match |
-| Patterns.cs:79:13:79:24 | ... => ... | Patterns.cs:79:13:79:24 | After ... => ... [no-match] | no-match |
-| Patterns.cs:79:13:79:24 | After ... => ... [match] | Patterns.cs:79:13:79:15 | Before < ... |  |
+| Patterns.cs:79:13:79:24 | ... => ... | Patterns.cs:79:13:79:15 | Before < ... |  |
+| Patterns.cs:79:13:79:24 | After ... => ... [match] | Patterns.cs:79:20:79:24 | "< 0" |  |
 | Patterns.cs:79:13:79:24 | After ... => ... [no-match] | Patterns.cs:80:13:80:20 | ... => ... |  |
 | Patterns.cs:79:15:79:15 | 0 | Patterns.cs:79:13:79:15 | < ... |  |
 | Patterns.cs:79:20:79:24 | "< 0" | Patterns.cs:76:16:82:9 | After ... switch { ... } |  |
-| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:18:80:20 | "1" |  |
-| Patterns.cs:80:13:80:20 | ... => ... | Patterns.cs:80:13:80:20 | After ... => ... [match] | match |
-| Patterns.cs:80:13:80:20 | ... => ... | Patterns.cs:80:13:80:20 | After ... => ... [no-match] | no-match |
-| Patterns.cs:80:13:80:20 | After ... => ... [match] | Patterns.cs:80:13:80:13 | 1 |  |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:13:80:13 | After 1 [match] | match |
+| Patterns.cs:80:13:80:13 | 1 | Patterns.cs:80:13:80:13 | After 1 [no-match] | no-match |
+| Patterns.cs:80:13:80:13 | After 1 [match] | Patterns.cs:80:13:80:20 | After ... => ... [match] | match |
+| Patterns.cs:80:13:80:13 | After 1 [no-match] | Patterns.cs:80:13:80:20 | After ... => ... [no-match] | no-match |
+| Patterns.cs:80:13:80:20 | ... => ... | Patterns.cs:80:13:80:13 | 1 |  |
+| Patterns.cs:80:13:80:20 | After ... => ... [match] | Patterns.cs:80:18:80:20 | "1" |  |
 | Patterns.cs:80:13:80:20 | After ... => ... [no-match] | Patterns.cs:81:13:81:20 | ... => ... |  |
 | Patterns.cs:80:18:80:20 | "1" | Patterns.cs:76:16:82:9 | After ... switch { ... } |  |
-| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:18:81:20 | "0" |  |
-| Patterns.cs:81:13:81:20 | ... => ... | Patterns.cs:81:13:81:20 | After ... => ... [match] | match |
-| Patterns.cs:81:13:81:20 | After ... => ... [match] | Patterns.cs:81:13:81:13 | _ |  |
+| Patterns.cs:81:13:81:13 | After _ [match] | Patterns.cs:81:13:81:20 | After ... => ... [match] | match |
+| Patterns.cs:81:13:81:13 | _ | Patterns.cs:81:13:81:13 | After _ [match] | match |
+| Patterns.cs:81:13:81:20 | ... => ... | Patterns.cs:81:13:81:13 | _ |  |
+| Patterns.cs:81:13:81:20 | After ... => ... [match] | Patterns.cs:81:18:81:20 | "0" |  |
 | Patterns.cs:81:18:81:20 | "0" | Patterns.cs:76:16:82:9 | After ... switch { ... } |  |
 | Patterns.cs:85:26:85:27 | Entry | Patterns.cs:85:33:85:33 | i |  |
 | Patterns.cs:85:26:85:27 | Normal Exit | Patterns.cs:85:26:85:27 | Exit |  |
@@ -6291,35 +6311,43 @@
 | Switch.cs:11:5:33:5 | {...} | Switch.cs:12:9:32:9 | switch (...) {...} |  |
 | Switch.cs:12:9:32:9 | switch (...) {...} | Switch.cs:12:17:12:17 | access to parameter o |  |
 | Switch.cs:12:17:12:17 | access to parameter o | Switch.cs:14:13:14:21 | case ...: |  |
-| Switch.cs:14:13:14:21 | After case ...: [match] | Switch.cs:14:18:14:20 | "a" |  |
+| Switch.cs:14:13:14:21 | After case ...: [match] | Switch.cs:15:17:15:23 | Before return ...; |  |
 | Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:16:13:16:19 | case ...: |  |
-| Switch.cs:14:13:14:21 | case ...: | Switch.cs:14:13:14:21 | After case ...: [match] | match |
-| Switch.cs:14:13:14:21 | case ...: | Switch.cs:14:13:14:21 | After case ...: [no-match] | no-match |
-| Switch.cs:14:18:14:20 | "a" | Switch.cs:15:17:15:23 | Before return ...; |  |
+| Switch.cs:14:13:14:21 | case ...: | Switch.cs:14:18:14:20 | "a" |  |
+| Switch.cs:14:18:14:20 | "a" | Switch.cs:14:18:14:20 | After "a" [match] | match |
+| Switch.cs:14:18:14:20 | "a" | Switch.cs:14:18:14:20 | After "a" [no-match] | no-match |
+| Switch.cs:14:18:14:20 | After "a" [match] | Switch.cs:14:13:14:21 | After case ...: [match] | match |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:14:13:14:21 | After case ...: [no-match] | no-match |
 | Switch.cs:15:17:15:23 | Before return ...; | Switch.cs:15:17:15:23 | return ...; |  |
 | Switch.cs:15:17:15:23 | return ...; | Switch.cs:10:10:10:11 | Normal Exit | return |
-| Switch.cs:16:13:16:19 | After case ...: [match] | Switch.cs:16:18:16:18 | 0 |  |
+| Switch.cs:16:13:16:19 | After case ...: [match] | Switch.cs:17:17:17:38 | Before throw ...; |  |
 | Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:18:13:18:22 | case ...: |  |
-| Switch.cs:16:13:16:19 | case ...: | Switch.cs:16:13:16:19 | After case ...: [match] | match |
-| Switch.cs:16:13:16:19 | case ...: | Switch.cs:16:13:16:19 | After case ...: [no-match] | no-match |
-| Switch.cs:16:18:16:18 | 0 | Switch.cs:17:17:17:38 | Before throw ...; |  |
+| Switch.cs:16:13:16:19 | case ...: | Switch.cs:16:18:16:18 | 0 |  |
+| Switch.cs:16:18:16:18 | 0 | Switch.cs:16:18:16:18 | After 0 [match] | match |
+| Switch.cs:16:18:16:18 | 0 | Switch.cs:16:18:16:18 | After 0 [no-match] | no-match |
+| Switch.cs:16:18:16:18 | After 0 [match] | Switch.cs:16:13:16:19 | After case ...: [match] | match |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:16:13:16:19 | After case ...: [no-match] | no-match |
 | Switch.cs:17:17:17:38 | Before throw ...; | Switch.cs:17:23:17:37 | Before object creation of type Exception |  |
 | Switch.cs:17:17:17:38 | throw ...; | Switch.cs:10:10:10:11 | Exceptional Exit | exception |
 | Switch.cs:17:23:17:37 | After object creation of type Exception | Switch.cs:17:17:17:38 | throw ...; |  |
 | Switch.cs:17:23:17:37 | Before object creation of type Exception | Switch.cs:17:23:17:37 | object creation of type Exception |  |
 | Switch.cs:17:23:17:37 | object creation of type Exception | Switch.cs:17:23:17:37 | After object creation of type Exception |  |
-| Switch.cs:18:13:18:22 | After case ...: [match] | Switch.cs:18:18:18:21 | null |  |
+| Switch.cs:18:13:18:22 | After case ...: [match] | Switch.cs:19:17:19:29 | Before goto default; |  |
 | Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:20:13:20:23 | case ...: |  |
-| Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:13:18:22 | After case ...: [match] | match |
-| Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:13:18:22 | After case ...: [no-match] | no-match |
-| Switch.cs:18:18:18:21 | null | Switch.cs:19:17:19:29 | Before goto default; |  |
+| Switch.cs:18:13:18:22 | case ...: | Switch.cs:18:18:18:21 | null |  |
+| Switch.cs:18:18:18:21 | After null [match] | Switch.cs:18:13:18:22 | After case ...: [match] | match |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:18:13:18:22 | After case ...: [no-match] | no-match |
+| Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | After null [match] | match |
+| Switch.cs:18:18:18:21 | null | Switch.cs:18:18:18:21 | After null [no-match] | no-match |
 | Switch.cs:19:17:19:29 | Before goto default; | Switch.cs:19:17:19:29 | goto default; |  |
 | Switch.cs:19:17:19:29 | goto default; | Switch.cs:30:13:30:20 | After default: [match] | goto |
-| Switch.cs:20:13:20:23 | After case ...: [match] | Switch.cs:20:18:20:22 | Int32 i |  |
+| Switch.cs:20:13:20:23 | After case ...: [match] | Switch.cs:21:17:22:27 | if (...) ... |  |
 | Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:13:24:56 | case ...: |  |
-| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | After case ...: [match] | match |
-| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:13:20:23 | After case ...: [no-match] | no-match |
-| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:21:17:22:27 | if (...) ... |  |
+| Switch.cs:20:13:20:23 | case ...: | Switch.cs:20:18:20:22 | Int32 i |  |
+| Switch.cs:20:18:20:22 | After Int32 i [match] | Switch.cs:20:13:20:23 | After case ...: [match] | match |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:20:13:20:23 | After case ...: [no-match] | no-match |
+| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | After Int32 i [match] | match |
+| Switch.cs:20:18:20:22 | Int32 i | Switch.cs:20:18:20:22 | After Int32 i [no-match] | no-match |
 | Switch.cs:21:17:22:27 | After if (...) ... | Switch.cs:23:17:23:28 | Before goto case ...; |  |
 | Switch.cs:21:17:22:27 | if (...) ... | Switch.cs:21:21:21:29 | Before ... == ... |  |
 | Switch.cs:21:21:21:21 | access to parameter o | Switch.cs:21:26:21:29 | null |  |
@@ -6334,11 +6362,13 @@
 | Switch.cs:23:17:23:28 | Before goto case ...; | Switch.cs:23:27:23:27 | 0 |  |
 | Switch.cs:23:17:23:28 | goto case ...; | Switch.cs:16:13:16:19 | After case ...: [match] | goto |
 | Switch.cs:23:27:23:27 | 0 | Switch.cs:23:17:23:28 | goto case ...; |  |
-| Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:24:18:24:25 | String s |  |
+| Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:24:32:24:55 | ... && ... |  |
 | Switch.cs:24:13:24:56 | After case ...: [no-match] | Switch.cs:27:13:27:39 | case ...: |  |
-| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:13:24:56 | After case ...: [match] | match |
-| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:13:24:56 | After case ...: [no-match] | no-match |
-| Switch.cs:24:18:24:25 | String s | Switch.cs:24:32:24:55 | ... && ... |  |
+| Switch.cs:24:13:24:56 | case ...: | Switch.cs:24:18:24:25 | String s |  |
+| Switch.cs:24:18:24:25 | After String s [match] | Switch.cs:24:13:24:56 | After case ...: [match] | match |
+| Switch.cs:24:18:24:25 | After String s [no-match] | Switch.cs:24:13:24:56 | After case ...: [no-match] | no-match |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | After String s [match] | match |
+| Switch.cs:24:18:24:25 | String s | Switch.cs:24:18:24:25 | After String s [no-match] | no-match |
 | Switch.cs:24:32:24:32 | access to local variable s | Switch.cs:24:32:24:39 | access to property Length |  |
 | Switch.cs:24:32:24:39 | After access to property Length | Switch.cs:24:43:24:43 | 0 |  |
 | Switch.cs:24:32:24:39 | Before access to property Length | Switch.cs:24:32:24:32 | access to local variable s |  |
@@ -6367,11 +6397,13 @@
 | Switch.cs:25:35:25:35 | access to local variable s | Switch.cs:25:17:25:36 | call to method WriteLine |  |
 | Switch.cs:26:17:26:23 | Before return ...; | Switch.cs:26:17:26:23 | return ...; |  |
 | Switch.cs:26:17:26:23 | return ...; | Switch.cs:10:10:10:11 | Normal Exit | return |
-| Switch.cs:27:13:27:39 | After case ...: [match] | Switch.cs:27:18:27:25 | Double d |  |
+| Switch.cs:27:13:27:39 | After case ...: [match] | Switch.cs:27:32:27:38 | Before call to method Throw |  |
 | Switch.cs:27:13:27:39 | After case ...: [no-match] | Switch.cs:30:13:30:20 | default: |  |
-| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | After case ...: [match] | match |
-| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | After case ...: [no-match] | no-match |
-| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:32:27:38 | Before call to method Throw |  |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | Double d |  |
+| Switch.cs:27:18:27:25 | After Double d [match] | Switch.cs:27:13:27:39 | After case ...: [match] | match |
+| Switch.cs:27:18:27:25 | After Double d [no-match] | Switch.cs:27:13:27:39 | After case ...: [no-match] | no-match |
+| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | After Double d [match] | match |
+| Switch.cs:27:18:27:25 | Double d | Switch.cs:27:18:27:25 | After Double d [no-match] | no-match |
 | Switch.cs:27:32:27:38 | Before call to method Throw | Switch.cs:27:32:27:38 | call to method Throw |  |
 | Switch.cs:27:32:27:38 | call to method Throw | Switch.cs:10:10:10:11 | Exceptional Exit | exception |
 | Switch.cs:28:13:28:17 | Label: | Switch.cs:29:17:29:23 | Before return ...; |  |
@@ -6395,18 +6427,22 @@
 | Switch.cs:46:9:52:9 | After switch (...) {...} | Switch.cs:45:5:53:5 | After {...} |  |
 | Switch.cs:46:9:52:9 | switch (...) {...} | Switch.cs:46:17:46:17 | access to parameter o |  |
 | Switch.cs:46:17:46:17 | access to parameter o | Switch.cs:48:13:48:23 | case ...: |  |
-| Switch.cs:48:13:48:23 | After case ...: [match] | Switch.cs:48:18:48:20 | access to type Int32 |  |
+| Switch.cs:48:13:48:23 | After case ...: [match] | Switch.cs:49:17:49:22 | Before break; |  |
 | Switch.cs:48:13:48:23 | After case ...: [no-match] | Switch.cs:50:13:50:39 | case ...: |  |
-| Switch.cs:48:13:48:23 | case ...: | Switch.cs:48:13:48:23 | After case ...: [match] | match |
-| Switch.cs:48:13:48:23 | case ...: | Switch.cs:48:13:48:23 | After case ...: [no-match] | no-match |
-| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:49:17:49:22 | Before break; |  |
+| Switch.cs:48:13:48:23 | case ...: | Switch.cs:48:18:48:20 | access to type Int32 |  |
+| Switch.cs:48:18:48:20 | After access to type Int32 [match] | Switch.cs:48:13:48:23 | After case ...: [match] | match |
+| Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | Switch.cs:48:13:48:23 | After case ...: [no-match] | no-match |
+| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:48:18:48:20 | After access to type Int32 [match] | match |
+| Switch.cs:48:18:48:20 | access to type Int32 | Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | no-match |
 | Switch.cs:49:17:49:22 | Before break; | Switch.cs:49:17:49:22 | break; |  |
 | Switch.cs:49:17:49:22 | break; | Switch.cs:46:9:52:9 | After switch (...) {...} | break |
-| Switch.cs:50:13:50:39 | After case ...: [match] | Switch.cs:50:18:50:21 | access to type Boolean |  |
+| Switch.cs:50:13:50:39 | After case ...: [match] | Switch.cs:50:30:50:38 | Before ... != ... |  |
 | Switch.cs:50:13:50:39 | After case ...: [no-match] | Switch.cs:46:9:52:9 | After switch (...) {...} |  |
-| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:13:50:39 | After case ...: [match] | match |
-| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:13:50:39 | After case ...: [no-match] | no-match |
-| Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:50:30:50:38 | Before ... != ... |  |
+| Switch.cs:50:13:50:39 | case ...: | Switch.cs:50:18:50:21 | access to type Boolean |  |
+| Switch.cs:50:18:50:21 | After access to type Boolean [match] | Switch.cs:50:13:50:39 | After case ...: [match] | match |
+| Switch.cs:50:18:50:21 | After access to type Boolean [no-match] | Switch.cs:50:13:50:39 | After case ...: [no-match] | no-match |
+| Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:50:18:50:21 | After access to type Boolean [match] | match |
+| Switch.cs:50:18:50:21 | access to type Boolean | Switch.cs:50:18:50:21 | After access to type Boolean [no-match] | no-match |
 | Switch.cs:50:30:50:30 | access to parameter o | Switch.cs:50:35:50:38 | null |  |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:38 | After ... != ... [false] | false |
 | Switch.cs:50:30:50:38 | ... != ... | Switch.cs:50:30:50:38 | After ... != ... [true] | true |
@@ -6427,18 +6463,22 @@
 | Switch.cs:57:17:57:21 | After ... + ... | Switch.cs:59:13:59:19 | case ...: |  |
 | Switch.cs:57:17:57:21 | Before ... + ... | Switch.cs:57:17:57:17 | 1 |  |
 | Switch.cs:57:21:57:21 | 2 | Switch.cs:57:17:57:21 | ... + ... |  |
-| Switch.cs:59:13:59:19 | After case ...: [match] | Switch.cs:59:18:59:18 | 2 |  |
+| Switch.cs:59:13:59:19 | After case ...: [match] | Switch.cs:60:17:60:22 | Before break; |  |
 | Switch.cs:59:13:59:19 | After case ...: [no-match] | Switch.cs:61:13:61:19 | case ...: |  |
-| Switch.cs:59:13:59:19 | case ...: | Switch.cs:59:13:59:19 | After case ...: [match] | match |
-| Switch.cs:59:13:59:19 | case ...: | Switch.cs:59:13:59:19 | After case ...: [no-match] | no-match |
-| Switch.cs:59:18:59:18 | 2 | Switch.cs:60:17:60:22 | Before break; |  |
+| Switch.cs:59:13:59:19 | case ...: | Switch.cs:59:18:59:18 | 2 |  |
+| Switch.cs:59:18:59:18 | 2 | Switch.cs:59:18:59:18 | After 2 [match] | match |
+| Switch.cs:59:18:59:18 | 2 | Switch.cs:59:18:59:18 | After 2 [no-match] | no-match |
+| Switch.cs:59:18:59:18 | After 2 [match] | Switch.cs:59:13:59:19 | After case ...: [match] | match |
+| Switch.cs:59:18:59:18 | After 2 [no-match] | Switch.cs:59:13:59:19 | After case ...: [no-match] | no-match |
 | Switch.cs:60:17:60:22 | Before break; | Switch.cs:60:17:60:22 | break; |  |
 | Switch.cs:60:17:60:22 | break; | Switch.cs:57:9:63:9 | After switch (...) {...} | break |
-| Switch.cs:61:13:61:19 | After case ...: [match] | Switch.cs:61:18:61:18 | 3 |  |
+| Switch.cs:61:13:61:19 | After case ...: [match] | Switch.cs:62:17:62:22 | Before break; |  |
 | Switch.cs:61:13:61:19 | After case ...: [no-match] | Switch.cs:57:9:63:9 | After switch (...) {...} |  |
-| Switch.cs:61:13:61:19 | case ...: | Switch.cs:61:13:61:19 | After case ...: [match] | match |
-| Switch.cs:61:13:61:19 | case ...: | Switch.cs:61:13:61:19 | After case ...: [no-match] | no-match |
-| Switch.cs:61:18:61:18 | 3 | Switch.cs:62:17:62:22 | Before break; |  |
+| Switch.cs:61:13:61:19 | case ...: | Switch.cs:61:18:61:18 | 3 |  |
+| Switch.cs:61:18:61:18 | 3 | Switch.cs:61:18:61:18 | After 3 [match] | match |
+| Switch.cs:61:18:61:18 | 3 | Switch.cs:61:18:61:18 | After 3 [no-match] | no-match |
+| Switch.cs:61:18:61:18 | After 3 [match] | Switch.cs:61:13:61:19 | After case ...: [match] | match |
+| Switch.cs:61:18:61:18 | After 3 [no-match] | Switch.cs:61:13:61:19 | After case ...: [no-match] | no-match |
 | Switch.cs:62:17:62:22 | Before break; | Switch.cs:62:17:62:22 | break; |  |
 | Switch.cs:62:17:62:22 | break; | Switch.cs:57:9:63:9 | After switch (...) {...} | break |
 | Switch.cs:66:10:66:11 | Entry | Switch.cs:66:20:66:20 | s |  |
@@ -6452,18 +6492,22 @@
 | Switch.cs:68:17:68:25 | After (...) ... | Switch.cs:70:13:70:23 | case ...: |  |
 | Switch.cs:68:17:68:25 | Before (...) ... | Switch.cs:68:25:68:25 | access to parameter s |  |
 | Switch.cs:68:25:68:25 | access to parameter s | Switch.cs:68:17:68:25 | (...) ... |  |
-| Switch.cs:70:13:70:23 | After case ...: [match] | Switch.cs:70:18:70:20 | access to type Int32 |  |
+| Switch.cs:70:13:70:23 | After case ...: [match] | Switch.cs:71:17:71:22 | Before break; |  |
 | Switch.cs:70:13:70:23 | After case ...: [no-match] | Switch.cs:72:13:72:20 | case ...: |  |
-| Switch.cs:70:13:70:23 | case ...: | Switch.cs:70:13:70:23 | After case ...: [match] | match |
-| Switch.cs:70:13:70:23 | case ...: | Switch.cs:70:13:70:23 | After case ...: [no-match] | no-match |
-| Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:71:17:71:22 | Before break; |  |
+| Switch.cs:70:13:70:23 | case ...: | Switch.cs:70:18:70:20 | access to type Int32 |  |
+| Switch.cs:70:18:70:20 | After access to type Int32 [match] | Switch.cs:70:13:70:23 | After case ...: [match] | match |
+| Switch.cs:70:18:70:20 | After access to type Int32 [no-match] | Switch.cs:70:13:70:23 | After case ...: [no-match] | no-match |
+| Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:70:18:70:20 | After access to type Int32 [match] | match |
+| Switch.cs:70:18:70:20 | access to type Int32 | Switch.cs:70:18:70:20 | After access to type Int32 [no-match] | no-match |
 | Switch.cs:71:17:71:22 | Before break; | Switch.cs:71:17:71:22 | break; |  |
 | Switch.cs:71:17:71:22 | break; | Switch.cs:68:9:74:9 | After switch (...) {...} | break |
-| Switch.cs:72:13:72:20 | After case ...: [match] | Switch.cs:72:18:72:19 | "" |  |
+| Switch.cs:72:13:72:20 | After case ...: [match] | Switch.cs:73:17:73:22 | Before break; |  |
 | Switch.cs:72:13:72:20 | After case ...: [no-match] | Switch.cs:68:9:74:9 | After switch (...) {...} |  |
-| Switch.cs:72:13:72:20 | case ...: | Switch.cs:72:13:72:20 | After case ...: [match] | match |
-| Switch.cs:72:13:72:20 | case ...: | Switch.cs:72:13:72:20 | After case ...: [no-match] | no-match |
-| Switch.cs:72:18:72:19 | "" | Switch.cs:73:17:73:22 | Before break; |  |
+| Switch.cs:72:13:72:20 | case ...: | Switch.cs:72:18:72:19 | "" |  |
+| Switch.cs:72:18:72:19 | "" | Switch.cs:72:18:72:19 | After "" [match] | match |
+| Switch.cs:72:18:72:19 | "" | Switch.cs:72:18:72:19 | After "" [no-match] | no-match |
+| Switch.cs:72:18:72:19 | After "" [match] | Switch.cs:72:13:72:20 | After case ...: [match] | match |
+| Switch.cs:72:18:72:19 | After "" [no-match] | Switch.cs:72:13:72:20 | After case ...: [no-match] | no-match |
 | Switch.cs:73:17:73:22 | Before break; | Switch.cs:73:17:73:22 | break; |  |
 | Switch.cs:73:17:73:22 | break; | Switch.cs:68:9:74:9 | After switch (...) {...} | break |
 | Switch.cs:77:10:77:11 | Entry | Switch.cs:77:17:77:17 | i |  |
@@ -6474,19 +6518,23 @@
 | Switch.cs:79:9:87:9 | After switch (...) {...} | Switch.cs:88:9:88:21 | Before return ...; |  |
 | Switch.cs:79:9:87:9 | switch (...) {...} | Switch.cs:79:17:79:17 | access to parameter i |  |
 | Switch.cs:79:17:79:17 | access to parameter i | Switch.cs:81:13:81:19 | case ...: |  |
-| Switch.cs:81:13:81:19 | After case ...: [match] | Switch.cs:81:18:81:18 | 1 |  |
+| Switch.cs:81:13:81:19 | After case ...: [match] | Switch.cs:82:17:82:28 | Before return ...; |  |
 | Switch.cs:81:13:81:19 | After case ...: [no-match] | Switch.cs:83:13:83:19 | case ...: |  |
-| Switch.cs:81:13:81:19 | case ...: | Switch.cs:81:13:81:19 | After case ...: [match] | match |
-| Switch.cs:81:13:81:19 | case ...: | Switch.cs:81:13:81:19 | After case ...: [no-match] | no-match |
-| Switch.cs:81:18:81:18 | 1 | Switch.cs:82:17:82:28 | Before return ...; |  |
+| Switch.cs:81:13:81:19 | case ...: | Switch.cs:81:18:81:18 | 1 |  |
+| Switch.cs:81:18:81:18 | 1 | Switch.cs:81:18:81:18 | After 1 [match] | match |
+| Switch.cs:81:18:81:18 | 1 | Switch.cs:81:18:81:18 | After 1 [no-match] | no-match |
+| Switch.cs:81:18:81:18 | After 1 [match] | Switch.cs:81:13:81:19 | After case ...: [match] | match |
+| Switch.cs:81:18:81:18 | After 1 [no-match] | Switch.cs:81:13:81:19 | After case ...: [no-match] | no-match |
 | Switch.cs:82:17:82:28 | Before return ...; | Switch.cs:82:24:82:27 | true |  |
 | Switch.cs:82:17:82:28 | return ...; | Switch.cs:77:10:77:11 | Normal Exit | return |
 | Switch.cs:82:24:82:27 | true | Switch.cs:82:17:82:28 | return ...; |  |
-| Switch.cs:83:13:83:19 | After case ...: [match] | Switch.cs:83:18:83:18 | 2 |  |
+| Switch.cs:83:13:83:19 | After case ...: [match] | Switch.cs:84:17:85:26 | if (...) ... |  |
 | Switch.cs:83:13:83:19 | After case ...: [no-match] | Switch.cs:79:9:87:9 | After switch (...) {...} |  |
-| Switch.cs:83:13:83:19 | case ...: | Switch.cs:83:13:83:19 | After case ...: [match] | match |
-| Switch.cs:83:13:83:19 | case ...: | Switch.cs:83:13:83:19 | After case ...: [no-match] | no-match |
-| Switch.cs:83:18:83:18 | 2 | Switch.cs:84:17:85:26 | if (...) ... |  |
+| Switch.cs:83:13:83:19 | case ...: | Switch.cs:83:18:83:18 | 2 |  |
+| Switch.cs:83:18:83:18 | 2 | Switch.cs:83:18:83:18 | After 2 [match] | match |
+| Switch.cs:83:18:83:18 | 2 | Switch.cs:83:18:83:18 | After 2 [no-match] | no-match |
+| Switch.cs:83:18:83:18 | After 2 [match] | Switch.cs:83:13:83:19 | After case ...: [match] | match |
+| Switch.cs:83:18:83:18 | After 2 [no-match] | Switch.cs:83:13:83:19 | After case ...: [no-match] | no-match |
 | Switch.cs:84:17:85:26 | After if (...) ... | Switch.cs:86:17:86:28 | Before return ...; |  |
 | Switch.cs:84:17:85:26 | if (...) ... | Switch.cs:84:21:84:25 | Before ... > ... |  |
 | Switch.cs:84:21:84:21 | access to parameter j | Switch.cs:84:25:84:25 | 2 |  |
@@ -6511,11 +6559,13 @@
 | Switch.cs:93:9:97:9 | After switch (...) {...} | Switch.cs:98:9:98:21 | Before return ...; |  |
 | Switch.cs:93:9:97:9 | switch (...) {...} | Switch.cs:93:17:93:17 | access to parameter o |  |
 | Switch.cs:93:17:93:17 | access to parameter o | Switch.cs:95:13:95:23 | case ...: |  |
-| Switch.cs:95:13:95:23 | After case ...: [match] | Switch.cs:95:18:95:20 | access to type Int32 |  |
+| Switch.cs:95:13:95:23 | After case ...: [match] | Switch.cs:96:17:96:28 | Before return ...; |  |
 | Switch.cs:95:13:95:23 | After case ...: [no-match] | Switch.cs:93:9:97:9 | After switch (...) {...} |  |
-| Switch.cs:95:13:95:23 | case ...: | Switch.cs:95:13:95:23 | After case ...: [match] | match |
-| Switch.cs:95:13:95:23 | case ...: | Switch.cs:95:13:95:23 | After case ...: [no-match] | no-match |
-| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:96:17:96:28 | Before return ...; |  |
+| Switch.cs:95:13:95:23 | case ...: | Switch.cs:95:18:95:20 | access to type Int32 |  |
+| Switch.cs:95:18:95:20 | After access to type Int32 [match] | Switch.cs:95:13:95:23 | After case ...: [match] | match |
+| Switch.cs:95:18:95:20 | After access to type Int32 [no-match] | Switch.cs:95:13:95:23 | After case ...: [no-match] | no-match |
+| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:95:18:95:20 | After access to type Int32 [match] | match |
+| Switch.cs:95:18:95:20 | access to type Int32 | Switch.cs:95:18:95:20 | After access to type Int32 [no-match] | no-match |
 | Switch.cs:96:17:96:28 | Before return ...; | Switch.cs:96:24:96:27 | true |  |
 | Switch.cs:96:17:96:28 | return ...; | Switch.cs:91:10:91:11 | Normal Exit | return |
 | Switch.cs:96:24:96:27 | true | Switch.cs:96:17:96:28 | return ...; |  |
@@ -6535,19 +6585,23 @@
 | Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:105:13:105:19 | case ...: |  |
 | Switch.cs:103:17:103:25 | Before access to property Length | Switch.cs:103:17:103:17 | access to parameter s |  |
 | Switch.cs:103:17:103:25 | access to property Length | Switch.cs:103:17:103:25 | After access to property Length |  |
-| Switch.cs:105:13:105:19 | After case ...: [match] | Switch.cs:105:18:105:18 | 0 |  |
+| Switch.cs:105:13:105:19 | After case ...: [match] | Switch.cs:105:21:105:29 | Before return ...; |  |
 | Switch.cs:105:13:105:19 | After case ...: [no-match] | Switch.cs:106:13:106:19 | case ...: |  |
-| Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:13:105:19 | After case ...: [match] | match |
-| Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:13:105:19 | After case ...: [no-match] | no-match |
-| Switch.cs:105:18:105:18 | 0 | Switch.cs:105:21:105:29 | Before return ...; |  |
+| Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:18:105:18 | 0 |  |
+| Switch.cs:105:18:105:18 | 0 | Switch.cs:105:18:105:18 | After 0 [match] | match |
+| Switch.cs:105:18:105:18 | 0 | Switch.cs:105:18:105:18 | After 0 [no-match] | no-match |
+| Switch.cs:105:18:105:18 | After 0 [match] | Switch.cs:105:13:105:19 | After case ...: [match] | match |
+| Switch.cs:105:18:105:18 | After 0 [no-match] | Switch.cs:105:13:105:19 | After case ...: [no-match] | no-match |
 | Switch.cs:105:21:105:29 | Before return ...; | Switch.cs:105:28:105:28 | 0 |  |
 | Switch.cs:105:21:105:29 | return ...; | Switch.cs:101:9:101:10 | Normal Exit | return |
 | Switch.cs:105:28:105:28 | 0 | Switch.cs:105:21:105:29 | return ...; |  |
-| Switch.cs:106:13:106:19 | After case ...: [match] | Switch.cs:106:18:106:18 | 1 |  |
+| Switch.cs:106:13:106:19 | After case ...: [match] | Switch.cs:106:21:106:29 | Before return ...; |  |
 | Switch.cs:106:13:106:19 | After case ...: [no-match] | Switch.cs:103:9:107:9 | After switch (...) {...} |  |
-| Switch.cs:106:13:106:19 | case ...: | Switch.cs:106:13:106:19 | After case ...: [match] | match |
-| Switch.cs:106:13:106:19 | case ...: | Switch.cs:106:13:106:19 | After case ...: [no-match] | no-match |
-| Switch.cs:106:18:106:18 | 1 | Switch.cs:106:21:106:29 | Before return ...; |  |
+| Switch.cs:106:13:106:19 | case ...: | Switch.cs:106:18:106:18 | 1 |  |
+| Switch.cs:106:18:106:18 | 1 | Switch.cs:106:18:106:18 | After 1 [match] | match |
+| Switch.cs:106:18:106:18 | 1 | Switch.cs:106:18:106:18 | After 1 [no-match] | no-match |
+| Switch.cs:106:18:106:18 | After 1 [match] | Switch.cs:106:13:106:19 | After case ...: [match] | match |
+| Switch.cs:106:18:106:18 | After 1 [no-match] | Switch.cs:106:13:106:19 | After case ...: [no-match] | no-match |
 | Switch.cs:106:21:106:29 | Before return ...; | Switch.cs:106:28:106:28 | 1 |  |
 | Switch.cs:106:21:106:29 | return ...; | Switch.cs:101:9:101:10 | Normal Exit | return |
 | Switch.cs:106:28:106:28 | 1 | Switch.cs:106:21:106:29 | return ...; |  |
@@ -6574,11 +6628,13 @@
 | Switch.cs:115:17:115:24 | After access to property Length | Switch.cs:117:13:117:35 | case ...: |  |
 | Switch.cs:115:17:115:24 | Before access to property Length | Switch.cs:115:17:115:17 | access to parameter s |  |
 | Switch.cs:115:17:115:24 | access to property Length | Switch.cs:115:17:115:24 | After access to property Length |  |
-| Switch.cs:117:13:117:35 | After case ...: [match] | Switch.cs:117:18:117:18 | 3 |  |
+| Switch.cs:117:13:117:35 | After case ...: [match] | Switch.cs:117:25:117:34 | Before ... == ... |  |
 | Switch.cs:117:13:117:35 | After case ...: [no-match] | Switch.cs:118:13:118:34 | case ...: |  |
-| Switch.cs:117:13:117:35 | case ...: | Switch.cs:117:13:117:35 | After case ...: [match] | match |
-| Switch.cs:117:13:117:35 | case ...: | Switch.cs:117:13:117:35 | After case ...: [no-match] | no-match |
-| Switch.cs:117:18:117:18 | 3 | Switch.cs:117:25:117:34 | Before ... == ... |  |
+| Switch.cs:117:13:117:35 | case ...: | Switch.cs:117:18:117:18 | 3 |  |
+| Switch.cs:117:18:117:18 | 3 | Switch.cs:117:18:117:18 | After 3 [match] | match |
+| Switch.cs:117:18:117:18 | 3 | Switch.cs:117:18:117:18 | After 3 [no-match] | no-match |
+| Switch.cs:117:18:117:18 | After 3 [match] | Switch.cs:117:13:117:35 | After case ...: [match] | match |
+| Switch.cs:117:18:117:18 | After 3 [no-match] | Switch.cs:117:13:117:35 | After case ...: [no-match] | no-match |
 | Switch.cs:117:25:117:25 | access to parameter s | Switch.cs:117:30:117:34 | "foo" |  |
 | Switch.cs:117:25:117:34 | ... == ... | Switch.cs:117:25:117:34 | After ... == ... [false] | false |
 | Switch.cs:117:25:117:34 | ... == ... | Switch.cs:117:25:117:34 | After ... == ... [true] | true |
@@ -6589,11 +6645,13 @@
 | Switch.cs:117:37:117:45 | Before return ...; | Switch.cs:117:44:117:44 | 1 |  |
 | Switch.cs:117:37:117:45 | return ...; | Switch.cs:113:9:113:11 | Normal Exit | return |
 | Switch.cs:117:44:117:44 | 1 | Switch.cs:117:37:117:45 | return ...; |  |
-| Switch.cs:118:13:118:34 | After case ...: [match] | Switch.cs:118:18:118:18 | 2 |  |
+| Switch.cs:118:13:118:34 | After case ...: [match] | Switch.cs:118:25:118:33 | Before ... == ... |  |
 | Switch.cs:118:13:118:34 | After case ...: [no-match] | Switch.cs:115:9:119:9 | After switch (...) {...} |  |
-| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:13:118:34 | After case ...: [match] | match |
-| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:13:118:34 | After case ...: [no-match] | no-match |
-| Switch.cs:118:18:118:18 | 2 | Switch.cs:118:25:118:33 | Before ... == ... |  |
+| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:18:118:18 | 2 |  |
+| Switch.cs:118:18:118:18 | 2 | Switch.cs:118:18:118:18 | After 2 [match] | match |
+| Switch.cs:118:18:118:18 | 2 | Switch.cs:118:18:118:18 | After 2 [no-match] | no-match |
+| Switch.cs:118:18:118:18 | After 2 [match] | Switch.cs:118:13:118:34 | After case ...: [match] | match |
+| Switch.cs:118:18:118:18 | After 2 [no-match] | Switch.cs:118:13:118:34 | After case ...: [no-match] | no-match |
 | Switch.cs:118:25:118:25 | access to parameter s | Switch.cs:118:30:118:33 | "fu" |  |
 | Switch.cs:118:25:118:33 | ... == ... | Switch.cs:118:25:118:33 | After ... == ... [false] | false |
 | Switch.cs:118:25:118:33 | ... == ... | Switch.cs:118:25:118:33 | After ... == ... [true] | true |
@@ -6621,16 +6679,19 @@
 | Switch.cs:125:13:125:48 | ... switch { ... } | Switch.cs:125:13:125:13 | access to parameter o |  |
 | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | Switch.cs:125:9:126:19 | After if (...) ... |  |
 | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | Switch.cs:126:13:126:19 | Before return ...; |  |
-| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:34:125:34 | access to local variable b |  |
-| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:34 | After ... => ... [match] | match |
-| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:34 | After ... => ... [no-match] | no-match |
-| Switch.cs:125:24:125:34 | After ... => ... [match] | Switch.cs:125:24:125:29 | Boolean b |  |
+| Switch.cs:125:24:125:29 | After Boolean b [match] | Switch.cs:125:24:125:34 | After ... => ... [match] | match |
+| Switch.cs:125:24:125:29 | After Boolean b [no-match] | Switch.cs:125:24:125:34 | After ... => ... [no-match] | no-match |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | After Boolean b [match] | match |
+| Switch.cs:125:24:125:29 | Boolean b | Switch.cs:125:24:125:29 | After Boolean b [no-match] | no-match |
+| Switch.cs:125:24:125:34 | ... => ... | Switch.cs:125:24:125:29 | Boolean b |  |
+| Switch.cs:125:24:125:34 | After ... => ... [match] | Switch.cs:125:34:125:34 | access to local variable b |  |
 | Switch.cs:125:24:125:34 | After ... => ... [no-match] | Switch.cs:125:37:125:46 | ... => ... |  |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | false |
 | Switch.cs:125:34:125:34 | access to local variable b | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | true |
-| Switch.cs:125:37:125:37 | _ | Switch.cs:125:42:125:46 | false |  |
-| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:46 | After ... => ... [match] | match |
-| Switch.cs:125:37:125:46 | After ... => ... [match] | Switch.cs:125:37:125:37 | _ |  |
+| Switch.cs:125:37:125:37 | After _ [match] | Switch.cs:125:37:125:46 | After ... => ... [match] | match |
+| Switch.cs:125:37:125:37 | _ | Switch.cs:125:37:125:37 | After _ [match] | match |
+| Switch.cs:125:37:125:46 | ... => ... | Switch.cs:125:37:125:37 | _ |  |
+| Switch.cs:125:37:125:46 | After ... => ... [match] | Switch.cs:125:42:125:46 | false |  |
 | Switch.cs:125:42:125:46 | false | Switch.cs:125:13:125:48 | After ... switch { ... } [false] | false |
 | Switch.cs:125:42:125:46 | false | Switch.cs:125:13:125:48 | After ... switch { ... } [true] | true |
 | Switch.cs:126:13:126:19 | Before return ...; | Switch.cs:126:13:126:19 | return ...; |  |
@@ -6648,16 +6709,19 @@
 | Switch.cs:131:17:131:53 | ... switch { ... } | Switch.cs:131:17:131:17 | access to parameter o |  |
 | Switch.cs:131:17:131:53 | After ... switch { ... } [non-null] | Switch.cs:131:16:131:66 | call to method ToString |  |
 | Switch.cs:131:17:131:53 | After ... switch { ... } [null] | Switch.cs:131:16:131:66 | After call to method ToString |  |
-| Switch.cs:131:28:131:35 | String s | Switch.cs:131:40:131:40 | access to local variable s |  |
-| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:40 | After ... => ... [match] | match |
-| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:40 | After ... => ... [no-match] | no-match |
-| Switch.cs:131:28:131:40 | After ... => ... [match] | Switch.cs:131:28:131:35 | String s |  |
+| Switch.cs:131:28:131:35 | After String s [match] | Switch.cs:131:28:131:40 | After ... => ... [match] | match |
+| Switch.cs:131:28:131:35 | After String s [no-match] | Switch.cs:131:28:131:40 | After ... => ... [no-match] | no-match |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | After String s [match] | match |
+| Switch.cs:131:28:131:35 | String s | Switch.cs:131:28:131:35 | After String s [no-match] | no-match |
+| Switch.cs:131:28:131:40 | ... => ... | Switch.cs:131:28:131:35 | String s |  |
+| Switch.cs:131:28:131:40 | After ... => ... [match] | Switch.cs:131:40:131:40 | access to local variable s |  |
 | Switch.cs:131:28:131:40 | After ... => ... [no-match] | Switch.cs:131:43:131:51 | ... => ... |  |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:17:131:53 | After ... switch { ... } [non-null] | non-null |
 | Switch.cs:131:40:131:40 | access to local variable s | Switch.cs:131:17:131:53 | After ... switch { ... } [null] | null |
-| Switch.cs:131:43:131:43 | _ | Switch.cs:131:48:131:51 | null |  |
-| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:51 | After ... => ... [match] | match |
-| Switch.cs:131:43:131:51 | After ... => ... [match] | Switch.cs:131:43:131:43 | _ |  |
+| Switch.cs:131:43:131:43 | After _ [match] | Switch.cs:131:43:131:51 | After ... => ... [match] | match |
+| Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:43 | After _ [match] | match |
+| Switch.cs:131:43:131:51 | ... => ... | Switch.cs:131:43:131:43 | _ |  |
+| Switch.cs:131:43:131:51 | After ... => ... [match] | Switch.cs:131:48:131:51 | null |  |
 | Switch.cs:131:48:131:51 | null | Switch.cs:131:17:131:53 | After ... switch { ... } [non-null] | non-null |
 | Switch.cs:131:48:131:51 | null | Switch.cs:131:17:131:53 | After ... switch { ... } [null] | null |
 | Switch.cs:134:9:134:11 | Entry | Switch.cs:134:17:134:17 | i |  |
@@ -6674,19 +6738,23 @@
 | Switch.cs:138:29:138:30 | After -... | Switch.cs:138:22:138:31 | return ...; |  |
 | Switch.cs:138:29:138:30 | Before -... | Switch.cs:138:30:138:30 | 1 |  |
 | Switch.cs:138:30:138:30 | 1 | Switch.cs:138:29:138:30 | -... |  |
-| Switch.cs:139:13:139:19 | After case ...: [match] | Switch.cs:139:18:139:18 | 1 |  |
+| Switch.cs:139:13:139:19 | After case ...: [match] | Switch.cs:139:21:139:29 | Before return ...; |  |
 | Switch.cs:139:13:139:19 | After case ...: [no-match] | Switch.cs:140:13:140:19 | case ...: |  |
-| Switch.cs:139:13:139:19 | case ...: | Switch.cs:139:13:139:19 | After case ...: [match] | match |
-| Switch.cs:139:13:139:19 | case ...: | Switch.cs:139:13:139:19 | After case ...: [no-match] | no-match |
-| Switch.cs:139:18:139:18 | 1 | Switch.cs:139:21:139:29 | Before return ...; |  |
+| Switch.cs:139:13:139:19 | case ...: | Switch.cs:139:18:139:18 | 1 |  |
+| Switch.cs:139:18:139:18 | 1 | Switch.cs:139:18:139:18 | After 1 [match] | match |
+| Switch.cs:139:18:139:18 | 1 | Switch.cs:139:18:139:18 | After 1 [no-match] | no-match |
+| Switch.cs:139:18:139:18 | After 1 [match] | Switch.cs:139:13:139:19 | After case ...: [match] | match |
+| Switch.cs:139:18:139:18 | After 1 [no-match] | Switch.cs:139:13:139:19 | After case ...: [no-match] | no-match |
 | Switch.cs:139:21:139:29 | Before return ...; | Switch.cs:139:28:139:28 | 1 |  |
 | Switch.cs:139:21:139:29 | return ...; | Switch.cs:134:9:134:11 | Normal Exit | return |
 | Switch.cs:139:28:139:28 | 1 | Switch.cs:139:21:139:29 | return ...; |  |
-| Switch.cs:140:13:140:19 | After case ...: [match] | Switch.cs:140:18:140:18 | 2 |  |
+| Switch.cs:140:13:140:19 | After case ...: [match] | Switch.cs:140:21:140:29 | Before return ...; |  |
 | Switch.cs:140:13:140:19 | After case ...: [no-match] | Switch.cs:138:13:138:20 | default: |  |
-| Switch.cs:140:13:140:19 | case ...: | Switch.cs:140:13:140:19 | After case ...: [match] | match |
-| Switch.cs:140:13:140:19 | case ...: | Switch.cs:140:13:140:19 | After case ...: [no-match] | no-match |
-| Switch.cs:140:18:140:18 | 2 | Switch.cs:140:21:140:29 | Before return ...; |  |
+| Switch.cs:140:13:140:19 | case ...: | Switch.cs:140:18:140:18 | 2 |  |
+| Switch.cs:140:18:140:18 | 2 | Switch.cs:140:18:140:18 | After 2 [match] | match |
+| Switch.cs:140:18:140:18 | 2 | Switch.cs:140:18:140:18 | After 2 [no-match] | no-match |
+| Switch.cs:140:18:140:18 | After 2 [match] | Switch.cs:140:13:140:19 | After case ...: [match] | match |
+| Switch.cs:140:18:140:18 | After 2 [no-match] | Switch.cs:140:13:140:19 | After case ...: [no-match] | no-match |
 | Switch.cs:140:21:140:29 | Before return ...; | Switch.cs:140:28:140:28 | 2 |  |
 | Switch.cs:140:21:140:29 | return ...; | Switch.cs:134:9:134:11 | Normal Exit | return |
 | Switch.cs:140:28:140:28 | 2 | Switch.cs:140:21:140:29 | return ...; |  |
@@ -6696,11 +6764,13 @@
 | Switch.cs:145:5:152:5 | {...} | Switch.cs:146:9:151:9 | switch (...) {...} |  |
 | Switch.cs:146:9:151:9 | switch (...) {...} | Switch.cs:146:17:146:17 | access to parameter i |  |
 | Switch.cs:146:17:146:17 | access to parameter i | Switch.cs:148:13:148:19 | case ...: |  |
-| Switch.cs:148:13:148:19 | After case ...: [match] | Switch.cs:148:18:148:18 | 1 |  |
+| Switch.cs:148:13:148:19 | After case ...: [match] | Switch.cs:148:21:148:29 | Before return ...; |  |
 | Switch.cs:148:13:148:19 | After case ...: [no-match] | Switch.cs:150:13:150:19 | case ...: |  |
-| Switch.cs:148:13:148:19 | case ...: | Switch.cs:148:13:148:19 | After case ...: [match] | match |
-| Switch.cs:148:13:148:19 | case ...: | Switch.cs:148:13:148:19 | After case ...: [no-match] | no-match |
-| Switch.cs:148:18:148:18 | 1 | Switch.cs:148:21:148:29 | Before return ...; |  |
+| Switch.cs:148:13:148:19 | case ...: | Switch.cs:148:18:148:18 | 1 |  |
+| Switch.cs:148:18:148:18 | 1 | Switch.cs:148:18:148:18 | After 1 [match] | match |
+| Switch.cs:148:18:148:18 | 1 | Switch.cs:148:18:148:18 | After 1 [no-match] | no-match |
+| Switch.cs:148:18:148:18 | After 1 [match] | Switch.cs:148:13:148:19 | After case ...: [match] | match |
+| Switch.cs:148:18:148:18 | After 1 [no-match] | Switch.cs:148:13:148:19 | After case ...: [no-match] | no-match |
 | Switch.cs:148:21:148:29 | Before return ...; | Switch.cs:148:28:148:28 | 1 |  |
 | Switch.cs:148:21:148:29 | return ...; | Switch.cs:144:9:144:11 | Normal Exit | return |
 | Switch.cs:148:28:148:28 | 1 | Switch.cs:148:21:148:29 | return ...; |  |
@@ -6712,11 +6782,13 @@
 | Switch.cs:149:29:149:30 | After -... | Switch.cs:149:22:149:31 | return ...; |  |
 | Switch.cs:149:29:149:30 | Before -... | Switch.cs:149:30:149:30 | 1 |  |
 | Switch.cs:149:30:149:30 | 1 | Switch.cs:149:29:149:30 | -... |  |
-| Switch.cs:150:13:150:19 | After case ...: [match] | Switch.cs:150:18:150:18 | 2 |  |
+| Switch.cs:150:13:150:19 | After case ...: [match] | Switch.cs:150:21:150:29 | Before return ...; |  |
 | Switch.cs:150:13:150:19 | After case ...: [no-match] | Switch.cs:149:13:149:20 | default: |  |
-| Switch.cs:150:13:150:19 | case ...: | Switch.cs:150:13:150:19 | After case ...: [match] | match |
-| Switch.cs:150:13:150:19 | case ...: | Switch.cs:150:13:150:19 | After case ...: [no-match] | no-match |
-| Switch.cs:150:18:150:18 | 2 | Switch.cs:150:21:150:29 | Before return ...; |  |
+| Switch.cs:150:13:150:19 | case ...: | Switch.cs:150:18:150:18 | 2 |  |
+| Switch.cs:150:18:150:18 | 2 | Switch.cs:150:18:150:18 | After 2 [match] | match |
+| Switch.cs:150:18:150:18 | 2 | Switch.cs:150:18:150:18 | After 2 [no-match] | no-match |
+| Switch.cs:150:18:150:18 | After 2 [match] | Switch.cs:150:13:150:19 | After case ...: [match] | match |
+| Switch.cs:150:18:150:18 | After 2 [no-match] | Switch.cs:150:13:150:19 | After case ...: [no-match] | no-match |
 | Switch.cs:150:21:150:29 | Before return ...; | Switch.cs:150:28:150:28 | 2 |  |
 | Switch.cs:150:21:150:29 | return ...; | Switch.cs:144:9:144:11 | Normal Exit | return |
 | Switch.cs:150:28:150:28 | 2 | Switch.cs:150:21:150:29 | return ...; |  |
@@ -6734,16 +6806,20 @@
 | Switch.cs:156:17:156:17 | access to parameter b | Switch.cs:156:28:156:38 | ... => ... |  |
 | Switch.cs:156:17:156:54 | ... switch { ... } | Switch.cs:156:17:156:17 | access to parameter b |  |
 | Switch.cs:156:17:156:54 | After ... switch { ... } | Switch.cs:156:13:156:54 | String s = ... |  |
-| Switch.cs:156:28:156:31 | true | Switch.cs:156:36:156:38 | "a" |  |
-| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:28:156:38 | After ... => ... [match] | match |
-| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:28:156:38 | After ... => ... [no-match] | no-match |
-| Switch.cs:156:28:156:38 | After ... => ... [match] | Switch.cs:156:28:156:31 | true |  |
+| Switch.cs:156:28:156:31 | After true [match] | Switch.cs:156:28:156:38 | After ... => ... [match] | match |
+| Switch.cs:156:28:156:31 | After true [no-match] | Switch.cs:156:28:156:38 | After ... => ... [no-match] | no-match |
+| Switch.cs:156:28:156:31 | true | Switch.cs:156:28:156:31 | After true [match] | match |
+| Switch.cs:156:28:156:31 | true | Switch.cs:156:28:156:31 | After true [no-match] | no-match |
+| Switch.cs:156:28:156:38 | ... => ... | Switch.cs:156:28:156:31 | true |  |
+| Switch.cs:156:28:156:38 | After ... => ... [match] | Switch.cs:156:36:156:38 | "a" |  |
 | Switch.cs:156:28:156:38 | After ... => ... [no-match] | Switch.cs:156:41:156:52 | ... => ... |  |
 | Switch.cs:156:36:156:38 | "a" | Switch.cs:156:17:156:54 | After ... switch { ... } |  |
-| Switch.cs:156:41:156:45 | false | Switch.cs:156:50:156:52 | "b" |  |
-| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:52 | After ... => ... [match] | match |
-| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:52 | After ... => ... [no-match] | no-match |
-| Switch.cs:156:41:156:52 | After ... => ... [match] | Switch.cs:156:41:156:45 | false |  |
+| Switch.cs:156:41:156:45 | After false [match] | Switch.cs:156:41:156:52 | After ... => ... [match] | match |
+| Switch.cs:156:41:156:45 | After false [no-match] | Switch.cs:156:41:156:52 | After ... => ... [no-match] | no-match |
+| Switch.cs:156:41:156:45 | false | Switch.cs:156:41:156:45 | After false [match] | match |
+| Switch.cs:156:41:156:45 | false | Switch.cs:156:41:156:45 | After false [no-match] | no-match |
+| Switch.cs:156:41:156:52 | ... => ... | Switch.cs:156:41:156:45 | false |  |
+| Switch.cs:156:41:156:52 | After ... => ... [match] | Switch.cs:156:50:156:52 | "b" |  |
 | Switch.cs:156:41:156:52 | After ... => ... [no-match] | Switch.cs:156:17:156:54 | After ... switch { ... } |  |
 | Switch.cs:156:50:156:52 | "b" | Switch.cs:156:17:156:54 | After ... switch { ... } |  |
 | Switch.cs:157:9:160:49 | After if (...) ... | Switch.cs:155:5:161:5 | After {...} |  |
@@ -6786,16 +6862,20 @@
 | Switch.cs:165:9:177:9 | After switch (...) {...} | Switch.cs:164:5:178:5 | After {...} |  |
 | Switch.cs:165:9:177:9 | switch (...) {...} | Switch.cs:165:17:165:17 | access to parameter i |  |
 | Switch.cs:165:17:165:17 | access to parameter i | Switch.cs:167:13:167:19 | case ...: |  |
-| Switch.cs:167:13:167:19 | After case ...: [match] | Switch.cs:167:18:167:18 | 1 |  |
+| Switch.cs:167:13:167:19 | After case ...: [match] | Switch.cs:169:17:169:51 | ...; |  |
 | Switch.cs:167:13:167:19 | After case ...: [no-match] | Switch.cs:168:13:168:19 | case ...: |  |
-| Switch.cs:167:13:167:19 | case ...: | Switch.cs:167:13:167:19 | After case ...: [match] | match |
-| Switch.cs:167:13:167:19 | case ...: | Switch.cs:167:13:167:19 | After case ...: [no-match] | no-match |
-| Switch.cs:167:18:167:18 | 1 | Switch.cs:169:17:169:51 | ...; |  |
-| Switch.cs:168:13:168:19 | After case ...: [match] | Switch.cs:168:18:168:18 | 2 |  |
+| Switch.cs:167:13:167:19 | case ...: | Switch.cs:167:18:167:18 | 1 |  |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:167:18:167:18 | After 1 [match] | match |
+| Switch.cs:167:18:167:18 | 1 | Switch.cs:167:18:167:18 | After 1 [no-match] | no-match |
+| Switch.cs:167:18:167:18 | After 1 [match] | Switch.cs:167:13:167:19 | After case ...: [match] | match |
+| Switch.cs:167:18:167:18 | After 1 [no-match] | Switch.cs:167:13:167:19 | After case ...: [no-match] | no-match |
+| Switch.cs:168:13:168:19 | After case ...: [match] | Switch.cs:169:17:169:51 | ...; |  |
 | Switch.cs:168:13:168:19 | After case ...: [no-match] | Switch.cs:171:13:171:19 | case ...: |  |
-| Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:13:168:19 | After case ...: [match] | match |
-| Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:13:168:19 | After case ...: [no-match] | no-match |
-| Switch.cs:168:18:168:18 | 2 | Switch.cs:169:17:169:51 | ...; |  |
+| Switch.cs:168:13:168:19 | case ...: | Switch.cs:168:18:168:18 | 2 |  |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:168:18:168:18 | After 2 [match] | match |
+| Switch.cs:168:18:168:18 | 2 | Switch.cs:168:18:168:18 | After 2 [no-match] | no-match |
+| Switch.cs:168:18:168:18 | After 2 [match] | Switch.cs:168:13:168:19 | After case ...: [match] | match |
+| Switch.cs:168:18:168:18 | After 2 [no-match] | Switch.cs:168:13:168:19 | After case ...: [no-match] | no-match |
 | Switch.cs:169:17:169:50 | After call to method WriteLine | Switch.cs:169:17:169:51 | After ...; |  |
 | Switch.cs:169:17:169:50 | Before call to method WriteLine | Switch.cs:169:42:169:49 | "1 or 2" |  |
 | Switch.cs:169:17:169:50 | call to method WriteLine | Switch.cs:169:17:169:50 | After call to method WriteLine |  |
@@ -6804,11 +6884,13 @@
 | Switch.cs:169:42:169:49 | "1 or 2" | Switch.cs:169:17:169:50 | call to method WriteLine |  |
 | Switch.cs:170:17:170:22 | Before break; | Switch.cs:170:17:170:22 | break; |  |
 | Switch.cs:170:17:170:22 | break; | Switch.cs:165:9:177:9 | After switch (...) {...} | break |
-| Switch.cs:171:13:171:19 | After case ...: [match] | Switch.cs:171:18:171:18 | 3 |  |
+| Switch.cs:171:13:171:19 | After case ...: [match] | Switch.cs:172:17:172:46 | ...; |  |
 | Switch.cs:171:13:171:19 | After case ...: [no-match] | Switch.cs:174:13:174:20 | default: |  |
-| Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:13:171:19 | After case ...: [match] | match |
-| Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:13:171:19 | After case ...: [no-match] | no-match |
-| Switch.cs:171:18:171:18 | 3 | Switch.cs:172:17:172:46 | ...; |  |
+| Switch.cs:171:13:171:19 | case ...: | Switch.cs:171:18:171:18 | 3 |  |
+| Switch.cs:171:18:171:18 | 3 | Switch.cs:171:18:171:18 | After 3 [match] | match |
+| Switch.cs:171:18:171:18 | 3 | Switch.cs:171:18:171:18 | After 3 [no-match] | no-match |
+| Switch.cs:171:18:171:18 | After 3 [match] | Switch.cs:171:13:171:19 | After case ...: [match] | match |
+| Switch.cs:171:18:171:18 | After 3 [no-match] | Switch.cs:171:13:171:19 | After case ...: [no-match] | no-match |
 | Switch.cs:172:17:172:45 | After call to method WriteLine | Switch.cs:172:17:172:46 | After ...; |  |
 | Switch.cs:172:17:172:45 | Before call to method WriteLine | Switch.cs:172:42:172:44 | "3" |  |
 | Switch.cs:172:17:172:45 | call to method WriteLine | Switch.cs:172:17:172:45 | After call to method WriteLine |  |
@@ -7195,11 +7277,13 @@
 | cflow.cs:39:9:50:9 | After switch (...) {...} | cflow.cs:51:9:59:9 | switch (...) {...} |  |
 | cflow.cs:39:9:50:9 | switch (...) {...} | cflow.cs:39:17:39:17 | access to parameter a |  |
 | cflow.cs:39:17:39:17 | access to parameter a | cflow.cs:41:13:41:19 | case ...: |  |
-| cflow.cs:41:13:41:19 | After case ...: [match] | cflow.cs:41:18:41:18 | 1 |  |
+| cflow.cs:41:13:41:19 | After case ...: [match] | cflow.cs:42:17:42:39 | ...; |  |
 | cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:44:13:44:19 | case ...: |  |
-| cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:13:41:19 | After case ...: [match] | match |
-| cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:13:41:19 | After case ...: [no-match] | no-match |
-| cflow.cs:41:18:41:18 | 1 | cflow.cs:42:17:42:39 | ...; |  |
+| cflow.cs:41:13:41:19 | case ...: | cflow.cs:41:18:41:18 | 1 |  |
+| cflow.cs:41:18:41:18 | 1 | cflow.cs:41:18:41:18 | After 1 [match] | match |
+| cflow.cs:41:18:41:18 | 1 | cflow.cs:41:18:41:18 | After 1 [no-match] | no-match |
+| cflow.cs:41:18:41:18 | After 1 [match] | cflow.cs:41:13:41:19 | After case ...: [match] | match |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:41:13:41:19 | After case ...: [no-match] | no-match |
 | cflow.cs:42:17:42:38 | After call to method WriteLine | cflow.cs:42:17:42:39 | After ...; |  |
 | cflow.cs:42:17:42:38 | Before call to method WriteLine | cflow.cs:42:35:42:37 | "1" |  |
 | cflow.cs:42:17:42:38 | call to method WriteLine | cflow.cs:42:17:42:38 | After call to method WriteLine |  |
@@ -7209,11 +7293,13 @@
 | cflow.cs:43:17:43:28 | Before goto case ...; | cflow.cs:43:27:43:27 | 2 |  |
 | cflow.cs:43:17:43:28 | goto case ...; | cflow.cs:44:13:44:19 | After case ...: [match] | goto |
 | cflow.cs:43:27:43:27 | 2 | cflow.cs:43:17:43:28 | goto case ...; |  |
-| cflow.cs:44:13:44:19 | After case ...: [match] | cflow.cs:44:18:44:18 | 2 |  |
+| cflow.cs:44:13:44:19 | After case ...: [match] | cflow.cs:45:17:45:39 | ...; |  |
 | cflow.cs:44:13:44:19 | After case ...: [no-match] | cflow.cs:47:13:47:19 | case ...: |  |
-| cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:13:44:19 | After case ...: [match] | match |
-| cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:13:44:19 | After case ...: [no-match] | no-match |
-| cflow.cs:44:18:44:18 | 2 | cflow.cs:45:17:45:39 | ...; |  |
+| cflow.cs:44:13:44:19 | case ...: | cflow.cs:44:18:44:18 | 2 |  |
+| cflow.cs:44:18:44:18 | 2 | cflow.cs:44:18:44:18 | After 2 [match] | match |
+| cflow.cs:44:18:44:18 | 2 | cflow.cs:44:18:44:18 | After 2 [no-match] | no-match |
+| cflow.cs:44:18:44:18 | After 2 [match] | cflow.cs:44:13:44:19 | After case ...: [match] | match |
+| cflow.cs:44:18:44:18 | After 2 [no-match] | cflow.cs:44:13:44:19 | After case ...: [no-match] | no-match |
 | cflow.cs:45:17:45:38 | After call to method WriteLine | cflow.cs:45:17:45:39 | After ...; |  |
 | cflow.cs:45:17:45:38 | Before call to method WriteLine | cflow.cs:45:35:45:37 | "2" |  |
 | cflow.cs:45:17:45:38 | call to method WriteLine | cflow.cs:45:17:45:38 | After call to method WriteLine |  |
@@ -7223,11 +7309,13 @@
 | cflow.cs:46:17:46:28 | Before goto case ...; | cflow.cs:46:27:46:27 | 1 |  |
 | cflow.cs:46:17:46:28 | goto case ...; | cflow.cs:41:13:41:19 | After case ...: [match] | goto |
 | cflow.cs:46:27:46:27 | 1 | cflow.cs:46:17:46:28 | goto case ...; |  |
-| cflow.cs:47:13:47:19 | After case ...: [match] | cflow.cs:47:18:47:18 | 3 |  |
+| cflow.cs:47:13:47:19 | After case ...: [match] | cflow.cs:48:17:48:39 | ...; |  |
 | cflow.cs:47:13:47:19 | After case ...: [no-match] | cflow.cs:39:9:50:9 | After switch (...) {...} |  |
-| cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:13:47:19 | After case ...: [match] | match |
-| cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:13:47:19 | After case ...: [no-match] | no-match |
-| cflow.cs:47:18:47:18 | 3 | cflow.cs:48:17:48:39 | ...; |  |
+| cflow.cs:47:13:47:19 | case ...: | cflow.cs:47:18:47:18 | 3 |  |
+| cflow.cs:47:18:47:18 | 3 | cflow.cs:47:18:47:18 | After 3 [match] | match |
+| cflow.cs:47:18:47:18 | 3 | cflow.cs:47:18:47:18 | After 3 [no-match] | no-match |
+| cflow.cs:47:18:47:18 | After 3 [match] | cflow.cs:47:13:47:19 | After case ...: [match] | match |
+| cflow.cs:47:18:47:18 | After 3 [no-match] | cflow.cs:47:13:47:19 | After case ...: [no-match] | no-match |
 | cflow.cs:48:17:48:38 | After call to method WriteLine | cflow.cs:48:17:48:39 | After ...; |  |
 | cflow.cs:48:17:48:38 | Before call to method WriteLine | cflow.cs:48:35:48:37 | "3" |  |
 | cflow.cs:48:17:48:38 | call to method WriteLine | cflow.cs:48:17:48:38 | After call to method WriteLine |  |
@@ -7239,11 +7327,13 @@
 | cflow.cs:51:9:59:9 | After switch (...) {...} | cflow.cs:60:9:66:9 | switch (...) {...} |  |
 | cflow.cs:51:9:59:9 | switch (...) {...} | cflow.cs:51:17:51:17 | access to parameter a |  |
 | cflow.cs:51:17:51:17 | access to parameter a | cflow.cs:53:13:53:20 | case ...: |  |
-| cflow.cs:53:13:53:20 | After case ...: [match] | cflow.cs:53:18:53:19 | 42 |  |
+| cflow.cs:53:13:53:20 | After case ...: [match] | cflow.cs:54:17:54:48 | ...; |  |
 | cflow.cs:53:13:53:20 | After case ...: [no-match] | cflow.cs:56:13:56:20 | default: |  |
-| cflow.cs:53:13:53:20 | case ...: | cflow.cs:53:13:53:20 | After case ...: [match] | match |
-| cflow.cs:53:13:53:20 | case ...: | cflow.cs:53:13:53:20 | After case ...: [no-match] | no-match |
-| cflow.cs:53:18:53:19 | 42 | cflow.cs:54:17:54:48 | ...; |  |
+| cflow.cs:53:13:53:20 | case ...: | cflow.cs:53:18:53:19 | 42 |  |
+| cflow.cs:53:18:53:19 | 42 | cflow.cs:53:18:53:19 | After 42 [match] | match |
+| cflow.cs:53:18:53:19 | 42 | cflow.cs:53:18:53:19 | After 42 [no-match] | no-match |
+| cflow.cs:53:18:53:19 | After 42 [match] | cflow.cs:53:13:53:20 | After case ...: [match] | match |
+| cflow.cs:53:18:53:19 | After 42 [no-match] | cflow.cs:53:13:53:20 | After case ...: [no-match] | no-match |
 | cflow.cs:54:17:54:47 | After call to method WriteLine | cflow.cs:54:17:54:48 | After ...; |  |
 | cflow.cs:54:17:54:47 | Before call to method WriteLine | cflow.cs:54:35:54:46 | "The answer" |  |
 | cflow.cs:54:17:54:47 | call to method WriteLine | cflow.cs:54:17:54:47 | After call to method WriteLine |  |
@@ -7271,11 +7361,13 @@
 | cflow.cs:60:27:60:31 | Before access to field Field | cflow.cs:60:27:60:31 | this access |  |
 | cflow.cs:60:27:60:31 | access to field Field | cflow.cs:60:27:60:31 | After access to field Field |  |
 | cflow.cs:60:27:60:31 | this access | cflow.cs:60:27:60:31 | access to field Field |  |
-| cflow.cs:62:13:62:19 | After case ...: [match] | cflow.cs:62:18:62:18 | 0 |  |
+| cflow.cs:62:13:62:19 | After case ...: [match] | cflow.cs:63:17:64:55 | if (...) ... |  |
 | cflow.cs:62:13:62:19 | After case ...: [no-match] | cflow.cs:60:9:66:9 | After switch (...) {...} |  |
-| cflow.cs:62:13:62:19 | case ...: | cflow.cs:62:13:62:19 | After case ...: [match] | match |
-| cflow.cs:62:13:62:19 | case ...: | cflow.cs:62:13:62:19 | After case ...: [no-match] | no-match |
-| cflow.cs:62:18:62:18 | 0 | cflow.cs:63:17:64:55 | if (...) ... |  |
+| cflow.cs:62:13:62:19 | case ...: | cflow.cs:62:18:62:18 | 0 |  |
+| cflow.cs:62:18:62:18 | 0 | cflow.cs:62:18:62:18 | After 0 [match] | match |
+| cflow.cs:62:18:62:18 | 0 | cflow.cs:62:18:62:18 | After 0 [no-match] | no-match |
+| cflow.cs:62:18:62:18 | After 0 [match] | cflow.cs:62:13:62:19 | After case ...: [match] | match |
+| cflow.cs:62:18:62:18 | After 0 [no-match] | cflow.cs:62:13:62:19 | After case ...: [no-match] | no-match |
 | cflow.cs:63:17:64:55 | After if (...) ... | cflow.cs:65:17:65:22 | Before break; |  |
 | cflow.cs:63:17:64:55 | if (...) ... | cflow.cs:63:21:63:34 | !... |  |
 | cflow.cs:63:21:63:34 | !... | cflow.cs:63:23:63:33 | Before ... == ... |  |
@@ -8221,18 +8313,22 @@
 | cflow.cs:246:17:246:32 | After ... + ... | cflow.cs:248:13:248:19 | case ...: |  |
 | cflow.cs:246:17:246:32 | Before ... + ... | cflow.cs:246:17:246:28 | Before access to property Length |  |
 | cflow.cs:246:32:246:32 | 3 | cflow.cs:246:17:246:32 | ... + ... |  |
-| cflow.cs:248:13:248:19 | After case ...: [match] | cflow.cs:248:18:248:18 | 0 |  |
+| cflow.cs:248:13:248:19 | After case ...: [match] | cflow.cs:249:17:249:29 | Before goto default; |  |
 | cflow.cs:248:13:248:19 | After case ...: [no-match] | cflow.cs:250:13:250:19 | case ...: |  |
-| cflow.cs:248:13:248:19 | case ...: | cflow.cs:248:13:248:19 | After case ...: [match] | match |
-| cflow.cs:248:13:248:19 | case ...: | cflow.cs:248:13:248:19 | After case ...: [no-match] | no-match |
-| cflow.cs:248:18:248:18 | 0 | cflow.cs:249:17:249:29 | Before goto default; |  |
+| cflow.cs:248:13:248:19 | case ...: | cflow.cs:248:18:248:18 | 0 |  |
+| cflow.cs:248:18:248:18 | 0 | cflow.cs:248:18:248:18 | After 0 [match] | match |
+| cflow.cs:248:18:248:18 | 0 | cflow.cs:248:18:248:18 | After 0 [no-match] | no-match |
+| cflow.cs:248:18:248:18 | After 0 [match] | cflow.cs:248:13:248:19 | After case ...: [match] | match |
+| cflow.cs:248:18:248:18 | After 0 [no-match] | cflow.cs:248:13:248:19 | After case ...: [no-match] | no-match |
 | cflow.cs:249:17:249:29 | Before goto default; | cflow.cs:249:17:249:29 | goto default; |  |
 | cflow.cs:249:17:249:29 | goto default; | cflow.cs:255:13:255:20 | After default: [match] | goto |
-| cflow.cs:250:13:250:19 | After case ...: [match] | cflow.cs:250:18:250:18 | 1 |  |
+| cflow.cs:250:13:250:19 | After case ...: [match] | cflow.cs:251:17:251:37 | ...; |  |
 | cflow.cs:250:13:250:19 | After case ...: [no-match] | cflow.cs:253:13:253:19 | case ...: |  |
-| cflow.cs:250:13:250:19 | case ...: | cflow.cs:250:13:250:19 | After case ...: [match] | match |
-| cflow.cs:250:13:250:19 | case ...: | cflow.cs:250:13:250:19 | After case ...: [no-match] | no-match |
-| cflow.cs:250:18:250:18 | 1 | cflow.cs:251:17:251:37 | ...; |  |
+| cflow.cs:250:13:250:19 | case ...: | cflow.cs:250:18:250:18 | 1 |  |
+| cflow.cs:250:18:250:18 | 1 | cflow.cs:250:18:250:18 | After 1 [match] | match |
+| cflow.cs:250:18:250:18 | 1 | cflow.cs:250:18:250:18 | After 1 [no-match] | no-match |
+| cflow.cs:250:18:250:18 | After 1 [match] | cflow.cs:250:13:250:19 | After case ...: [match] | match |
+| cflow.cs:250:18:250:18 | After 1 [no-match] | cflow.cs:250:13:250:19 | After case ...: [no-match] | no-match |
 | cflow.cs:251:17:251:36 | After call to method WriteLine | cflow.cs:251:17:251:37 | After ...; |  |
 | cflow.cs:251:17:251:36 | Before call to method WriteLine | cflow.cs:251:35:251:35 | 1 |  |
 | cflow.cs:251:17:251:36 | call to method WriteLine | cflow.cs:251:17:251:36 | After call to method WriteLine |  |
@@ -8241,11 +8337,13 @@
 | cflow.cs:251:35:251:35 | 1 | cflow.cs:251:17:251:36 | call to method WriteLine |  |
 | cflow.cs:252:17:252:22 | Before break; | cflow.cs:252:17:252:22 | break; |  |
 | cflow.cs:252:17:252:22 | break; | cflow.cs:246:9:258:9 | After switch (...) {...} | break |
-| cflow.cs:253:13:253:19 | After case ...: [match] | cflow.cs:253:18:253:18 | 2 |  |
+| cflow.cs:253:13:253:19 | After case ...: [match] | cflow.cs:254:17:254:27 | Before goto ...; |  |
 | cflow.cs:253:13:253:19 | After case ...: [no-match] | cflow.cs:255:13:255:20 | default: |  |
-| cflow.cs:253:13:253:19 | case ...: | cflow.cs:253:13:253:19 | After case ...: [match] | match |
-| cflow.cs:253:13:253:19 | case ...: | cflow.cs:253:13:253:19 | After case ...: [no-match] | no-match |
-| cflow.cs:253:18:253:18 | 2 | cflow.cs:254:17:254:27 | Before goto ...; |  |
+| cflow.cs:253:13:253:19 | case ...: | cflow.cs:253:18:253:18 | 2 |  |
+| cflow.cs:253:18:253:18 | 2 | cflow.cs:253:18:253:18 | After 2 [match] | match |
+| cflow.cs:253:18:253:18 | 2 | cflow.cs:253:18:253:18 | After 2 [no-match] | no-match |
+| cflow.cs:253:18:253:18 | After 2 [match] | cflow.cs:253:13:253:19 | After case ...: [match] | match |
+| cflow.cs:253:18:253:18 | After 2 [no-match] | cflow.cs:253:13:253:19 | After case ...: [no-match] | no-match |
 | cflow.cs:254:17:254:27 | Before goto ...; | cflow.cs:254:17:254:27 | goto ...; |  |
 | cflow.cs:254:17:254:27 | goto ...; | cflow.cs:242:5:242:9 | Label: | goto |
 | cflow.cs:255:13:255:20 | After default: [match] | cflow.cs:256:17:256:37 | ...; |  |
