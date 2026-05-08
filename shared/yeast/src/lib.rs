@@ -526,17 +526,38 @@ impl Rule {
         node: Id,
         fresh: &tree_builder::FreshScope,
     ) -> Result<Option<Vec<Id>>, String> {
+        match self.try_match(ast, node)? {
+            Some(captures) => Ok(Some(self.run_transform(ast, captures, node, fresh))),
+            None => Ok(None),
+        }
+    }
+
+    /// Attempt to match this rule's query against `node`, returning the
+    /// resulting captures on success. Does not invoke the transform.
+    fn try_match(&self, ast: &Ast, node: Id) -> Result<Option<Captures>, String> {
         let mut captures = Captures::new();
         if self.query.do_match(ast, node, &mut captures)? {
-            fresh.next_scope();
-            let source_range = ast.get_node(node).and_then(|n| match n.content {
-                NodeContent::Range(r) => Some(r),
-                _ => n.source_range,
-            });
-            Ok(Some((self.transform)(ast, captures, fresh, source_range)))
+            Ok(Some(captures))
         } else {
             Ok(None)
         }
+    }
+
+    /// Run this rule's transform with the given captures, using `node`'s
+    /// source range as the source range of the produced nodes.
+    fn run_transform(
+        &self,
+        ast: &mut Ast,
+        captures: Captures,
+        node: Id,
+        fresh: &tree_builder::FreshScope,
+    ) -> Vec<Id> {
+        fresh.next_scope();
+        let source_range = ast.get_node(node).and_then(|n| match n.content {
+            NodeContent::Range(r) => Some(r),
+            _ => n.source_range,
+        });
+        (self.transform)(ast, captures, fresh, source_range)
     }
 }
 
@@ -572,17 +593,17 @@ impl<'a> RuleIndex<'a> {
     }
 }
 
-fn apply_rules(
+fn apply_repeating_rules(
     rules: &[Rule],
     ast: &mut Ast,
     id: Id,
     fresh: &tree_builder::FreshScope,
 ) -> Result<Vec<Id>, String> {
     let index = RuleIndex::new(rules);
-    apply_rules_inner(&index, ast, id, fresh, 0, None)
+    apply_repeating_rules_inner(&index, ast, id, fresh, 0, None)
 }
 
-fn apply_rules_inner(
+fn apply_repeating_rules_inner(
     index: &RuleIndex,
     ast: &mut Ast,
     id: Id,
@@ -611,7 +632,7 @@ fn apply_rules_inner(
             let next_skip = if rule.repeated { None } else { Some(rule_ptr) };
             let mut results = Vec::new();
             for node in result_node {
-                results.extend(apply_rules_inner(
+                results.extend(apply_repeating_rules_inner(
                     index,
                     ast,
                     node,
@@ -636,7 +657,7 @@ fn apply_rules_inner(
     for children in fields.values_mut() {
         let mut new_children: Option<Vec<Id>> = None;
         for (i, &child_id) in children.iter().enumerate() {
-            let result = apply_rules_inner(index, ast, child_id, fresh, rewrite_depth, None)?;
+            let result = apply_repeating_rules_inner(index, ast, child_id, fresh, rewrite_depth, None)?;
             let unchanged = result.len() == 1 && result[0] == child_id;
             match (&mut new_children, unchanged) {
                 (None, true) => {} // unchanged so far, no allocation needed
@@ -661,6 +682,75 @@ fn apply_rules_inner(
     Ok(vec![id])
 }
 
+/// Apply rules using `OneShot` semantics: the first matching rule fires on
+/// each visited node, recursion proceeds only through captured nodes (not
+/// through the input node's children directly), and an error is returned if
+/// no rule matches a visited node.
+fn apply_one_shot_rules(
+    rules: &[Rule],
+    ast: &mut Ast,
+    id: Id,
+    fresh: &tree_builder::FreshScope,
+) -> Result<Vec<Id>, String> {
+    let index = RuleIndex::new(rules);
+    apply_one_shot_rules_inner(&index, ast, id, fresh, 0)
+}
+
+fn apply_one_shot_rules_inner(
+    index: &RuleIndex,
+    ast: &mut Ast,
+    id: Id,
+    fresh: &tree_builder::FreshScope,
+    rewrite_depth: usize,
+) -> Result<Vec<Id>, String> {
+    if rewrite_depth > MAX_REWRITE_DEPTH {
+        return Err(format!(
+            "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
+             This likely indicates a non-terminating rule cycle."
+        ));
+    }
+
+    let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
+    for rule in index.rules_for_kind(node_kind) {
+        if let Some(mut captures) = rule.try_match(ast, id)? {
+            // Recursively translate every captured node before invoking the
+            // transform. The transform's output uses output-schema kinds, so
+            // we must translate captured input-schema nodes to their
+            // output-schema equivalents first.
+            captures.try_map_all_captures(|captured_id| {
+                let result =
+                    apply_one_shot_rules_inner(index, ast, captured_id, fresh, rewrite_depth + 1)?;
+                if result.len() != 1 {
+                    return Err(format!(
+                        "OneShot: recursion on captured node produced {} results, expected exactly 1",
+                        result.len()
+                    ));
+                }
+                Ok(result[0])
+            })?;
+            return Ok(rule.run_transform(ast, captures, id, fresh));
+        }
+    }
+
+    Err(format!(
+        "OneShot: no rule matched node of kind '{node_kind}'"
+    ))
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PhaseKind {
+    /// A node is re-processed until none of the rules in the phase matches,
+    /// albeit a single rule cannot be applied twice in a row unless that rule is also marked as repeating.
+    /// When a node no longer matches any rules, its children are recursively processed (top down).
+    Repeating,
+
+    /// A node is processed by the first matching rule, and the rewrite fails if no rule matches.
+    /// Rules are then recursively applied to every captured node.
+    /// In practice this is used when translating from one AST schema to another, where every node must be rewritten,
+    /// and it would be a type error to match the rule patterns (based on the input schema) against the output nodes (which conform to the output schema).
+    OneShot,
+}
+
 /// One phase of a desugaring pass: a named bundle of rules that runs to
 /// completion (a full traversal applying its rules) before the next phase
 /// starts. Rules within a phase compete for matches as usual; rules in
@@ -670,13 +760,15 @@ pub struct Phase {
     /// Name used in error messages.
     pub name: String,
     pub rules: Vec<Rule>,
+    pub kind: PhaseKind,
 }
 
 impl Phase {
-    pub fn new(name: impl Into<String>, rules: Vec<Rule>) -> Self {
+    pub fn new(name: impl Into<String>, kind: PhaseKind, rules: Vec<Rule>) -> Self {
         Self {
             name: name.into(),
             rules,
+            kind,
         }
     }
 }
@@ -694,8 +786,8 @@ impl Phase {
 ///
 /// ```ignore
 /// let config = yeast::DesugaringConfig::new()
-///     .add_phase("cleanup", cleanup_rules)
-///     .add_phase("desugar", desugar_rules)
+///     .add_phase("cleanup", PhaseKind::Repeating, cleanup_rules)
+///     .add_phase("desugar", PhaseKind::Repeating, desugar_rules)
 ///     .with_output_node_types_yaml(yaml);
 /// ```
 #[derive(Default)]
@@ -715,9 +807,14 @@ impl DesugaringConfig {
         Self::default()
     }
 
-    /// Append a new phase with the given name and rules.
-    pub fn add_phase(mut self, name: impl Into<String>, rules: Vec<Rule>) -> Self {
-        self.phases.push(Phase::new(name, rules));
+    /// Append a new phase with the given name, kind, and rules.
+    pub fn add_phase(
+        mut self,
+        name: impl Into<String>,
+        kind: PhaseKind,
+        rules: Vec<Rule>,
+    ) -> Self {
+        self.phases.push(Phase::new(name, kind, rules));
         self
     }
 
@@ -806,8 +903,11 @@ impl<'a> Runner<'a> {
         let fresh = tree_builder::FreshScope::new();
         let mut root = ast.get_root();
         for phase in self.phases {
-            let res = apply_rules(&phase.rules, ast, root, &fresh)
-                .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
+            let res = match phase.kind {
+                PhaseKind::Repeating => apply_repeating_rules(&phase.rules, ast, root, &fresh),
+                PhaseKind::OneShot => apply_one_shot_rules(&phase.rules, ast, root, &fresh),
+            }
+            .map_err(|e| format!("Phase `{}`: {e}", phase.name))?;
             if res.len() != 1 {
                 return Err(format!(
                     "Phase `{}`: expected exactly one result node, got {}",
