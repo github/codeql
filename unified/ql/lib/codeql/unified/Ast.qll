@@ -1103,25 +1103,15 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "GuardStatement" }
 
-    /** Gets the node corresponding to the field `bound_identifier`. */
-    final SimpleIdentifier getBoundIdentifier(int i) {
-      swift_guard_statement_bound_identifier(this, i, result)
-    }
-
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_guard_statement_condition(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_guard_statement_name(this, i, result) }
+    final IfCondition getCondition(int i) { swift_guard_statement_condition(this, i, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_guard_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_guard_statement_bound_identifier(this, _, result) or
       swift_guard_statement_condition(this, _, result) or
-      swift_guard_statement_name(this, _, result) or
       swift_guard_statement_child(this, _, result)
     }
   }
@@ -1144,31 +1134,44 @@ module Swift {
     final override AstNode getAFieldOrChild() { swift_identifier_child(this, _, result) }
   }
 
+  /** A class representing `if_condition` nodes. */
+  class IfCondition extends @swift_if_condition, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "IfCondition" }
+
+    /** Gets the node corresponding to the field `bound_identifier`. */
+    final SimpleIdentifier getBoundIdentifier() {
+      swift_if_condition_bound_identifier(this, result)
+    }
+
+    /** Gets the node corresponding to the field `name`. */
+    final AstNode getName() { swift_if_condition_name(this, result) }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { swift_if_condition_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      swift_if_condition_bound_identifier(this, result) or
+      swift_if_condition_name(this, result) or
+      swift_if_condition_child(this, _, result)
+    }
+  }
+
   /** A class representing `if_statement` nodes. */
   class IfStatement extends @swift_if_statement, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfStatement" }
 
-    /** Gets the node corresponding to the field `bound_identifier`. */
-    final SimpleIdentifier getBoundIdentifier(int i) {
-      swift_if_statement_bound_identifier(this, i, result)
-    }
-
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_if_statement_condition(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_if_statement_name(this, i, result) }
+    final IfCondition getCondition(int i) { swift_if_statement_condition(this, i, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_if_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_if_statement_bound_identifier(this, _, result) or
-      swift_if_statement_condition(this, _, result) or
-      swift_if_statement_name(this, _, result) or
-      swift_if_statement_child(this, _, result)
+      swift_if_statement_condition(this, _, result) or swift_if_statement_child(this, _, result)
     }
   }
 
@@ -2190,25 +2193,17 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "RepeatWhileStatement" }
 
-    /** Gets the node corresponding to the field `bound_identifier`. */
-    final SimpleIdentifier getBoundIdentifier(int i) {
-      swift_repeat_while_statement_bound_identifier(this, i, result)
-    }
-
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_repeat_while_statement_condition(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_repeat_while_statement_name(this, i, result) }
+    final IfCondition getCondition(int i) {
+      swift_repeat_while_statement_condition(this, i, result)
+    }
 
     /** Gets the child of this node. */
     final Statements getChild() { swift_repeat_while_statement_child(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_repeat_while_statement_bound_identifier(this, _, result) or
       swift_repeat_while_statement_condition(this, _, result) or
-      swift_repeat_while_statement_name(this, _, result) or
       swift_repeat_while_statement_child(this, result)
     }
   }
@@ -2813,26 +2808,15 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "WhileStatement" }
 
-    /** Gets the node corresponding to the field `bound_identifier`. */
-    final SimpleIdentifier getBoundIdentifier(int i) {
-      swift_while_statement_bound_identifier(this, i, result)
-    }
-
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_while_statement_condition(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_while_statement_name(this, i, result) }
+    final IfCondition getCondition(int i) { swift_while_statement_condition(this, i, result) }
 
     /** Gets the child of this node. */
     final Statements getChild() { swift_while_statement_child(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_while_statement_bound_identifier(this, _, result) or
-      swift_while_statement_condition(this, _, result) or
-      swift_while_statement_name(this, _, result) or
-      swift_while_statement_child(this, result)
+      swift_while_statement_condition(this, _, result) or swift_while_statement_child(this, result)
     }
   }
 
