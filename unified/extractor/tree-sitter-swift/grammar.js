@@ -567,10 +567,7 @@ module.exports = grammar({
     _parenthesized_type: ($) =>
       seq(
         "(",
-        field(
-          "element",
-          choice($.opaque_type, $.existential_type, $.dictionary_type)
-        ),
+        choice($.opaque_type, $.existential_type, $.dictionary_type),
         ")"
       ),
     navigation_expression: ($) =>

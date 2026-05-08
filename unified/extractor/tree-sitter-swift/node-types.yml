@@ -314,7 +314,6 @@ named:
     rhs: expression
   mutation_modifier:
   navigation_expression:
-    element?: [dictionary_type, existential_type, opaque_type]
     suffix: navigation_suffix
     target+: ["(", ")", array_type, dictionary_type, existential_type, expression, opaque_type, user_type]
   navigation_suffix:
@@ -459,8 +458,7 @@ named:
     $children?: tuple_type_item
     element*: tuple_type_item
   tuple_type_item:
-    $children*: [parameter_modifiers, wildcard_pattern]
-    element?: [dictionary_type, existential_type, opaque_type]
+    $children*: [dictionary_type, existential_type, opaque_type, parameter_modifiers, wildcard_pattern]
     name?: simple_identifier
     type?: type
   type:
