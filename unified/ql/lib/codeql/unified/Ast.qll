@@ -899,24 +899,22 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "EqualityConstraint" }
 
     /** Gets the node corresponding to the field `constrained_type`. */
-    final AstNode getConstrainedType(int i) {
-      swift_equality_constraint_constrained_type(this, i, result)
-    }
+    final AstNode getConstrainedType() { swift_equality_constraint_def(this, result, _) }
 
     /** Gets the node corresponding to the field `must_equal`. */
     final AstNode getMustEqual(int i) { swift_equality_constraint_must_equal(this, i, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final UnannotatedType getName() { swift_equality_constraint_def(this, result) }
+    final UnannotatedType getName() { swift_equality_constraint_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
     final Attribute getChild(int i) { swift_equality_constraint_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_equality_constraint_constrained_type(this, _, result) or
+      swift_equality_constraint_def(this, result, _) or
       swift_equality_constraint_must_equal(this, _, result) or
-      swift_equality_constraint_def(this, result) or
+      swift_equality_constraint_def(this, _, result) or
       swift_equality_constraint_child(this, _, result)
     }
   }
@@ -1229,9 +1227,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "InheritanceConstraint" }
 
     /** Gets the node corresponding to the field `constrained_type`. */
-    final AstNode getConstrainedType(int i) {
-      swift_inheritance_constraint_constrained_type(this, i, result)
-    }
+    final AstNode getConstrainedType() { swift_inheritance_constraint_def(this, result) }
 
     /** Gets the node corresponding to the field `inherits_from`. */
     final AstNode getInheritsFrom(int i) {
@@ -1246,7 +1242,7 @@ module Swift {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_inheritance_constraint_constrained_type(this, _, result) or
+      swift_inheritance_constraint_def(this, result) or
       swift_inheritance_constraint_inherits_from(this, _, result) or
       swift_inheritance_constraint_name(this, result) or
       swift_inheritance_constraint_child(this, _, result)
@@ -1659,6 +1655,20 @@ module Swift {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_navigation_suffix_def(this, result) }
+  }
+
+  /** A class representing `nested_type_identifier` nodes. */
+  class NestedTypeIdentifier extends @swift_nested_type_identifier, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "NestedTypeIdentifier" }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { swift_nested_type_identifier_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      swift_nested_type_identifier_child(this, _, result)
+    }
   }
 
   /** A class representing `nil_coalescing_expression` nodes. */
