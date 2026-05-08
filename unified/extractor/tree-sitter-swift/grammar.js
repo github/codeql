@@ -401,7 +401,9 @@ module.exports = grammar({
     type_annotation: ($) =>
       seq(":", field("type", $._possibly_implicitly_unwrapped_type)),
     _possibly_implicitly_unwrapped_type: ($) =>
-      seq($._type, optional(token.immediate("!"))),
+      choice($._type, $.implicitly_unwrapped_type),
+    implicitly_unwrapped_type: ($) =>
+      seq($._type, token.immediate("!")),
     _type: ($) =>
       prec.right(
         PRECS.ty,

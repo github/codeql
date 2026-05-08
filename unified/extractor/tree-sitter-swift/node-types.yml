@@ -226,7 +226,7 @@ named:
     body: function_body
     default_value*: expression
     name+: [referenceable_operator, simple_identifier, unannotated_type]
-    return_type*: ["!", type_modifiers, unannotated_type]
+    return_type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
   function_modifier:
   function_type:
     $children?: [throws, throws_clause]
@@ -248,6 +248,9 @@ named:
   if_statement:
     $children*: [else, if_statement, statements]
     condition+: if_condition
+  implicitly_unwrapped_type:
+    $children?: type_modifiers
+    name: unannotated_type
   import_declaration:
     $children+: [identifier, modifiers]
   infix_expression:
@@ -257,8 +260,8 @@ named:
   inheritance_constraint:
     $children*: attribute
     constrained_type+: [".", identifier, simple_identifier, unannotated_type]
-    inherits_from+: ["!", type_modifiers, unannotated_type]
-    name: unannotated_type
+    inherits_from+: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
+    name?: unannotated_type
   inheritance_modifier:
   inheritance_specifier:
     inherits_from: [function_type, suppressed_constraint, user_type]
@@ -280,7 +283,7 @@ named:
   lambda_function_type:
     $children*: [lambda_function_type_parameters, throws, throws_clause]
     name?: unannotated_type
-    return_type*: ["!", type_modifiers, unannotated_type]
+    return_type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
   lambda_function_type_parameters:
     $children+: lambda_parameter
   lambda_literal:
@@ -291,7 +294,7 @@ named:
     $children?: [parameter_modifiers, self_expression]
     external_name?: simple_identifier
     name*: [simple_identifier, unannotated_type]
-    type*: ["!", type_modifiers, unannotated_type]
+    type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
   line_str_text:
   line_string_literal:
     interpolation*: interpolated_expression
@@ -348,7 +351,7 @@ named:
     $children?: parameter_modifiers
     external_name?: simple_identifier
     name+: [simple_identifier, unannotated_type]
-    type+: ["!", type_modifiers, unannotated_type]
+    type+: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
   parameter_modifier:
   parameter_modifiers:
     $children+: parameter_modifier
@@ -391,7 +394,7 @@ named:
     $children*: [attribute, modifiers, parameter, statements, throws, throws_clause, type_constraints, type_parameters]
     default_value*: expression
     name*: [referenceable_operator, simple_identifier, unannotated_type]
-    return_type*: ["!", type_modifiers, unannotated_type]
+    return_type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
   protocol_property_declaration:
     $children+: [modifiers, protocol_property_requirements, type_annotation, type_constraints]
     name: pattern
@@ -437,7 +440,7 @@ named:
     $children+: [attribute, computed_property, modifiers, parameter, type_constraints, type_parameters]
     default_value*: expression
     name?: unannotated_type
-    return_type*: ["!", type_modifiers, unannotated_type]
+    return_type*: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
   super_expression:
   suppressed_constraint:
     suppressed: type_identifier
@@ -472,8 +475,8 @@ named:
     name*: [simple_identifier, unannotated_type]
     type*: [type_modifiers, unannotated_type]
   type_annotation:
-    name: unannotated_type
-    type+: ["!", type_modifiers, unannotated_type]
+    name?: unannotated_type
+    type+: [implicitly_unwrapped_type, type_modifiers, unannotated_type]
   type_arguments:
     $children*: type_modifiers
     name+: unannotated_type
