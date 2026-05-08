@@ -166,7 +166,8 @@ named:
     target: expression
     type: type
   class_body:
-    $children*: [multiline_comment, type_level_declaration]
+    $children*: multiline_comment
+    member*: type_level_declaration
   class_declaration:
     $children*: [attribute, inheritance_modifier, inheritance_specifier, modifiers, ownership_modifier, property_behavior_modifier, type_constraints, type_parameters]
     body: [class_body, enum_class_body]
@@ -226,7 +227,7 @@ named:
     $children*: [catch_block, statements]
   else:
   enum_class_body:
-    $children*: [enum_entry, type_level_declaration]
+    member*: [enum_entry, type_level_declaration]
   enum_entry:
     $children?: modifiers
     data_contents*: enum_type_parameters
@@ -410,7 +411,7 @@ named:
     value*: expression
   property_modifier:
   protocol_body:
-    $children*: protocol_member_declaration
+    member*: protocol_member_declaration
   protocol_composition_type:
     $children+: unannotated_type
   protocol_declaration:
@@ -459,11 +460,12 @@ named:
   shebang_line:
   simple_identifier:
   source_file:
-    $children*: [do_statement, expression, for_statement, global_declaration, guard_statement, repeat_while_statement, shebang_line, statement_label, throw_keyword, while_statement]
+    shebang?: shebang_line
+    statement*: [do_statement, expression, for_statement, global_declaration, guard_statement, repeat_while_statement, statement_label, throw_keyword, while_statement]
   special_literal:
   statement_label:
   statements:
-    $children+: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
+    statement+: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
   str_escaped_char:
   subscript_declaration:
     $children+: [attribute, computed_property, modifiers, parameter, type_constraints, type_parameters]

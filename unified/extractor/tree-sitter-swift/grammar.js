@@ -255,11 +255,11 @@ module.exports = grammar({
     ////////////////////////////////
     source_file: ($) =>
       seq(
-        optional($.shebang_line),
+        optional(field("shebang", $.shebang_line)),
         optional(
           seq(
-            $._top_level_statement,
-            repeat(seq($._semi, $._top_level_statement)),
+            field("statement", $._top_level_statement),
+            repeat(seq($._semi, field("statement", $._top_level_statement))),
             optional($._semi)
           )
         )
@@ -1182,8 +1182,8 @@ module.exports = grammar({
       prec.left(
         // Left precedence is required in switch statements
         seq(
-          $._local_statement,
-          repeat(seq($._semi, $._local_statement)),
+          field("statement", $._local_statement),
+          repeat(seq($._semi, field("statement", $._local_statement))),
           optional($._semi)
         )
       ),
@@ -1605,7 +1605,7 @@ module.exports = grammar({
     _class_member_separator: ($) => choice($._semi, $.multiline_comment),
     _class_member_declarations: ($) =>
       seq(
-        sep1($.type_level_declaration, $._class_member_separator),
+        sep1(field("member", $.type_level_declaration), $._class_member_separator),
         optional($._class_member_separator)
       ),
     _function_value_parameters: ($) =>
@@ -1673,7 +1673,7 @@ module.exports = grammar({
     throws_clause: ($) =>
       seq($._throws_keyword, "(", field("type", $.unannotated_type), ")"),
     enum_class_body: ($) =>
-      seq("{", repeat(choice($.enum_entry, $.type_level_declaration)), "}"),
+      seq("{", repeat(field("member", choice($.enum_entry, $.type_level_declaration))), "}"),
     enum_entry: ($) =>
       seq(
         optional($.modifiers),
@@ -1725,7 +1725,7 @@ module.exports = grammar({
     protocol_body: ($) =>
       seq("{", optional($._protocol_member_declarations), "}"),
     _protocol_member_declarations: ($) =>
-      seq(sep1($.protocol_member_declaration, $._semi), optional($._semi)),
+      seq(sep1(field("member", $.protocol_member_declaration), $._semi), optional($._semi)),
     protocol_member_declaration: ($) =>
       choice(
         $.protocol_function_declaration,
