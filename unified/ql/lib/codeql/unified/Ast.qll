@@ -1171,6 +1171,24 @@ module Swift {
     }
   }
 
+  /** A class representing `implicitly_unwrapped_type` nodes. */
+  class ImplicitlyUnwrappedType extends @swift_implicitly_unwrapped_type, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ImplicitlyUnwrappedType" }
+
+    /** Gets the node corresponding to the field `name`. */
+    final UnannotatedType getName() { swift_implicitly_unwrapped_type_def(this, result) }
+
+    /** Gets the child of this node. */
+    final TypeModifiers getChild() { swift_implicitly_unwrapped_type_child(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      swift_implicitly_unwrapped_type_def(this, result) or
+      swift_implicitly_unwrapped_type_child(this, result)
+    }
+  }
+
   /** A class representing `import_declaration` nodes. */
   class ImportDeclaration extends @swift_import_declaration, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -1221,7 +1239,7 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `name`. */
-    final UnannotatedType getName() { swift_inheritance_constraint_def(this, result) }
+    final UnannotatedType getName() { swift_inheritance_constraint_name(this, result) }
 
     /** Gets the `i`th child of this node. */
     final Attribute getChild(int i) { swift_inheritance_constraint_child(this, i, result) }
@@ -1230,7 +1248,7 @@ module Swift {
     final override AstNode getAFieldOrChild() {
       swift_inheritance_constraint_constrained_type(this, _, result) or
       swift_inheritance_constraint_inherits_from(this, _, result) or
-      swift_inheritance_constraint_def(this, result) or
+      swift_inheritance_constraint_name(this, result) or
       swift_inheritance_constraint_child(this, _, result)
     }
   }
@@ -2512,14 +2530,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypeAnnotation" }
 
     /** Gets the node corresponding to the field `name`. */
-    final UnannotatedType getName() { swift_type_annotation_def(this, result) }
+    final UnannotatedType getName() { swift_type_annotation_name(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
     final AstNode getType(int i) { swift_type_annotation_type(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_type_annotation_def(this, result) or swift_type_annotation_type(this, _, result)
+      swift_type_annotation_name(this, result) or swift_type_annotation_type(this, _, result)
     }
   }
 
