@@ -105,7 +105,7 @@ module.exports = grammar({
     // `+(...)` is ambigously either "call the function produced by a reference to the operator `+`" or "use the unary
     // operator `+` on the result of the parenthetical expression."
     [$._additive_operator, $._prefix_unary_operator],
-    [$._referenceable_operator, $._prefix_unary_operator],
+    [$.referenceable_operator, $._prefix_unary_operator],
     // `{ [self, b, c] ...` could be a capture list or an array literal depending on what else happens.
     [$.capture_list_item, $._expression],
     [$.capture_list_item, $._expression, $._simple_user_type],
@@ -906,7 +906,7 @@ module.exports = grammar({
         $.super_expression,
         $.try_expression,
         $.await_expression,
-        $._referenceable_operator,
+        $.referenceable_operator,
         $.key_path_expression,
         $.key_path_string_expression,
         prec.right(
@@ -1625,16 +1625,15 @@ module.exports = grammar({
     _non_constructor_function_decl: ($) =>
       seq(
         "func",
-        field("name", choice($.simple_identifier, $._referenceable_operator))
+        field("name", choice($.simple_identifier, $.referenceable_operator))
       ),
-    _referenceable_operator: ($) =>
+    referenceable_operator: ($) =>
       choice(
         $.custom_operator,
         $._comparison_operator,
         $._additive_operator,
         $._multiplicative_operator,
         $._equality_operator,
-        $._comparison_operator,
         $._assignment_and_operator,
         "++",
         "--",
@@ -1806,7 +1805,7 @@ module.exports = grammar({
       seq(
         choice("prefix", "infix", "postfix"),
         "operator",
-        $._referenceable_operator,
+        $.referenceable_operator,
         optional(seq(":", $.simple_identifier)),
         optional($.deprecated_operator_declaration_body)
       ),
