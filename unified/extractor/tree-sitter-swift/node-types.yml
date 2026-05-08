@@ -1,0 +1,633 @@
+named:
+  _expression:
+  additive_expression:
+    lhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: ["+", "-"]
+    rhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  array_literal:
+    element*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  array_type:
+    element+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  as_expression:
+    $children: as_operator
+    expr+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    type+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  as_operator:
+  assignment:
+    operator: ["%=", "*=", "+=", "-=", "/=", "="]
+    result+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    target: directly_assignable_expression
+  associatedtype_declaration:
+    $children*: [modifiers, type_constraints]
+    default_value*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    must_inherit*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_identifier, type_pack_expansion, type_parameter_pack, user_type]
+  attribute:
+    $children+: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, user_type, value_pack_expansion, value_parameter_pack]
+  availability_condition:
+    $children*: [identifier, integer_literal]
+  await_expression:
+    $children?: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+    expr*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  bang:
+  bin_literal:
+  bitwise_operation:
+    lhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: ["&", "<<", ">>", "^", "|"]
+    rhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  boolean_literal:
+  call_expression:
+    $children+: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, call_suffix, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+  call_suffix:
+    $children+: [lambda_literal, value_arguments]
+    name*: simple_identifier
+  capture_list:
+    $children+: capture_list_item
+  capture_list_item:
+    $children?: ownership_modifier
+    name: [self_expression, simple_identifier]
+    value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  catch_block:
+    $children+: [catch_keyword, statements, where_clause]
+    error?: pattern
+  catch_keyword:
+  check_expression:
+    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    op: "is"
+    target+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    type+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  class_body:
+    $children*: [associatedtype_declaration, class_declaration, deinit_declaration, function_declaration, import_declaration, init_declaration, multiline_comment, operator_declaration, precedence_group_declaration, property_declaration, protocol_declaration, subscript_declaration, typealias_declaration]
+  class_declaration:
+    $children*: [attribute, inheritance_modifier, inheritance_specifier, modifiers, ownership_modifier, property_behavior_modifier, type_constraints, type_parameters]
+    body: [class_body, enum_class_body]
+    declaration_kind: ["actor", "class", "enum", "extension", "struct"]
+    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_identifier, type_pack_expansion, type_parameter_pack, user_type]
+  comment:
+  comparison_expression:
+    lhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: ["<", "<=", ">", ">="]
+    rhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  computed_getter:
+    $children+: [attribute, getter_specifier, statements]
+  computed_modify:
+    $children+: [attribute, modify_specifier, statements]
+  computed_property:
+    $children*: [computed_getter, computed_modify, computed_setter, statements]
+  computed_setter:
+    $children+: [attribute, setter_specifier, simple_identifier, statements]
+  conjunction_expression:
+    lhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: "&&"
+    rhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  constructor_expression:
+    $children: constructor_suffix
+    constructed_type: [array_type, dictionary_type, user_type]
+  constructor_suffix:
+    $children+: [lambda_literal, value_arguments]
+    name*: simple_identifier
+  control_transfer_statement:
+    $children*: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, throw_keyword, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+    result*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  custom_operator:
+  default_keyword:
+  deinit_declaration:
+    $children?: modifiers
+    body: function_body
+  deprecated_operator_declaration_body:
+    $children*: [bin_literal, boolean_literal, hex_literal, integer_literal, line_string_literal, multi_line_string_literal, oct_literal, raw_string_literal, real_literal, regex_literal, simple_identifier]
+  diagnostic:
+  dictionary_literal:
+    key*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  dictionary_type:
+    key+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    value+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  didset_clause:
+    $children*: [modifiers, simple_identifier, statements]
+  directive:
+    $children*: [boolean_literal, integer_literal, simple_identifier]
+  directly_assignable_expression:
+    $children?: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+  disjunction_expression:
+    lhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: "||"
+    rhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  do_statement:
+    $children*: [catch_block, statements]
+  else:
+  enum_class_body:
+    $children*: [associatedtype_declaration, class_declaration, deinit_declaration, enum_entry, function_declaration, import_declaration, init_declaration, operator_declaration, precedence_group_declaration, property_declaration, protocol_declaration, subscript_declaration, typealias_declaration]
+  enum_entry:
+    $children?: modifiers
+    data_contents*: enum_type_parameters
+    name+: simple_identifier
+    raw_value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  enum_type_parameters:
+    $children*: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, type_modifiers, value_pack_expansion, value_parameter_pack, wildcard_pattern]
+    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  equality_constraint:
+    $children*: attribute
+    constrained_type+: [".", array_type, dictionary_type, existential_type, function_type, identifier, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    must_equal+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  equality_expression:
+    lhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: ["!=", "!==", "==", "==="]
+    rhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  existential_type:
+    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  external_macro_definition:
+    $children: value_arguments
+  for_statement:
+    $children*: [statements, try_operator, type_annotation, where_clause]
+    collection+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    item: pattern
+  fully_open_range:
+  function_body:
+    $children?: statements
+  function_declaration:
+    $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, parameter, property_behavior_modifier, throws, throws_clause, type_constraints, type_parameters]
+    body: function_body
+    default_value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    name+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "^", array_type, bang, custom_operator, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type, "|", "~"]
+    return_type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  function_modifier:
+  function_type:
+    $children?: [throws, throws_clause]
+    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    params: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    return_type+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  getter_specifier:
+    $children*: [mutation_modifier, throws, throws_clause]
+  guard_statement:
+    $children+: [else, statements]
+    bound_identifier*: simple_identifier
+    condition+: ["!=", "!==", "%", "%=", "&", "(", ")", "*", "*=", "+", "++", "+=", ",", "-", "--", "-=", ".", "/", "/=", ":", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, array_type, "as", as_expression, assignment, "async", availability_condition, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, "case", check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, dictionary_type, directive, disjunction_expression, equality_expression, existential_type, fully_open_range, function_type, hex_literal, if_statement, infix_expression, integer_literal, "is", key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, metatype, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, opaque_type, open_end_range_expression, open_start_range_expression, optional_type, pattern, playground_literal, postfix_expression, prefix_expression, protocol_composition_type, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, suppressed_constraint, switch_statement, ternary_expression, try_expression, tuple_expression, tuple_type, type_annotation, type_modifiers, type_pack_expansion, type_parameter_pack, user_type, value_binding_pattern, value_pack_expansion, value_parameter_pack, where_clause, wildcard_pattern, "|", "~"]
+    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  hex_literal:
+  identifier:
+    $children+: simple_identifier
+  if_statement:
+    $children*: [else, if_statement, statements]
+    bound_identifier*: simple_identifier
+    condition+: ["!=", "!==", "%", "%=", "&", "(", ")", "*", "*=", "+", "++", "+=", ",", "-", "--", "-=", ".", "/", "/=", ":", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, array_type, "as", as_expression, assignment, "async", availability_condition, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, "case", check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, dictionary_type, directive, disjunction_expression, equality_expression, existential_type, fully_open_range, function_type, hex_literal, if_statement, infix_expression, integer_literal, "is", key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, metatype, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, opaque_type, open_end_range_expression, open_start_range_expression, optional_type, pattern, playground_literal, postfix_expression, prefix_expression, protocol_composition_type, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, suppressed_constraint, switch_statement, ternary_expression, try_expression, tuple_expression, tuple_type, type_annotation, type_modifiers, type_pack_expansion, type_parameter_pack, user_type, value_binding_pattern, value_pack_expansion, value_parameter_pack, where_clause, wildcard_pattern, "|", "~"]
+    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  import_declaration:
+    $children+: [identifier, modifiers]
+  infix_expression:
+    lhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: custom_operator
+    rhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  inheritance_constraint:
+    $children*: attribute
+    constrained_type+: [".", array_type, dictionary_type, existential_type, function_type, identifier, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    inherits_from+: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  inheritance_modifier:
+  inheritance_specifier:
+    inherits_from: [function_type, suppressed_constraint, user_type]
+  init_declaration:
+    $children*: [attribute, bang, modifiers, parameter, throws, throws_clause, type_constraints, type_parameters]
+    body?: function_body
+    default_value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    name: "init"
+  integer_literal:
+  interpolated_expression:
+    $children?: type_modifiers
+    name?: value_argument_label
+    reference_specifier*: value_argument_label
+    value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  key_path_expression:
+    $children*: [array_type, bang, dictionary_type, simple_identifier, type_arguments, type_identifier, value_argument]
+  key_path_string_expression:
+    $children?: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+  lambda_function_type:
+    $children*: [lambda_function_type_parameters, throws, throws_clause]
+    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    return_type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  lambda_function_type_parameters:
+    $children+: lambda_parameter
+  lambda_literal:
+    $children*: [attribute, statements]
+    captures?: capture_list
+    type?: lambda_function_type
+  lambda_parameter:
+    $children?: [parameter_modifiers, self_expression]
+    external_name?: simple_identifier
+    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  line_str_text:
+  line_string_literal:
+    interpolation*: interpolated_expression
+    text*: [line_str_text, str_escaped_char]
+  macro_declaration:
+    $children+: [array_type, attribute, dictionary_type, existential_type, function_type, metatype, modifiers, opaque_type, optional_type, parameter, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_constraints, type_pack_expansion, type_parameter_pack, type_parameters, user_type]
+    default_value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    definition?: macro_definition
+  macro_definition:
+    body+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, external_macro_definition, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  macro_invocation:
+    $children+: [call_suffix, simple_identifier, type_parameters]
+  member_modifier:
+  metatype:
+    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  modifiers:
+    $children+: [attribute, function_modifier, inheritance_modifier, member_modifier, mutation_modifier, ownership_modifier, parameter_modifier, property_behavior_modifier, property_modifier, visibility_modifier]
+  modify_specifier:
+    $children?: mutation_modifier
+  multi_line_str_text:
+  multi_line_string_literal:
+    interpolation*: interpolated_expression
+    text*: ["\"", multi_line_str_text, str_escaped_char]
+  multiline_comment:
+  multiplicative_expression:
+    lhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: ["%", "*", "/"]
+    rhs+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  mutation_modifier:
+  navigation_expression:
+    element?: [dictionary_type, existential_type, opaque_type]
+    suffix: navigation_suffix
+    target+: ["!=", "!==", "%", "%=", "&", "(", ")", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, array_type, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, dictionary_type, directive, disjunction_expression, equality_expression, existential_type, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, opaque_type, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, user_type, value_pack_expansion, value_parameter_pack, "|", "~"]
+  navigation_suffix:
+    suffix: [integer_literal, simple_identifier]
+  nil_coalescing_expression:
+    if_nil+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    value+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  oct_literal:
+  opaque_type:
+    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  open_end_range_expression:
+    start+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  open_start_range_expression:
+    end+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  operator_declaration:
+    $children*: [bang, custom_operator, deprecated_operator_declaration_body, simple_identifier]
+  optional_type:
+    wrapped: [array_type, dictionary_type, tuple_type, user_type]
+  ownership_modifier:
+  parameter:
+    $children?: parameter_modifiers
+    external_name?: simple_identifier
+    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    type+: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  parameter_modifier:
+  parameter_modifiers:
+    $children+: parameter_modifier
+  pattern:
+    $children*: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, pattern, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, type_modifiers, user_type, value_binding_pattern, value_pack_expansion, value_parameter_pack, wildcard_pattern]
+    bound_identifier?: simple_identifier
+    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  playground_literal:
+    $children+: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+  postfix_expression:
+    operation: ["++", "--", bang]
+    target+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  precedence_group_attribute:
+    $children+: [boolean_literal, simple_identifier]
+  precedence_group_attributes:
+    $children+: precedence_group_attribute
+  precedence_group_declaration:
+    $children+: [precedence_group_attributes, simple_identifier]
+  prefix_expression:
+    operation: ["&", "+", "++", "-", "--", ".", bang, custom_operator, "~"]
+    target+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", _expression, additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  property_behavior_modifier:
+  property_declaration:
+    $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier, type_annotation, type_constraints, value_binding_pattern, willset_didset_block]
+    computed_value*: computed_property
+    name+: pattern
+    value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  property_modifier:
+  protocol_body:
+    $children*: [associatedtype_declaration, deinit_declaration, init_declaration, protocol_function_declaration, protocol_property_declaration, subscript_declaration, typealias_declaration]
+    body*: protocol_function_declaration
+  protocol_composition_type:
+    $children+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  protocol_declaration:
+    $children*: [attribute, inheritance_specifier, modifiers, type_constraints, type_parameters]
+    body: protocol_body
+    declaration_kind: "protocol"
+    name: type_identifier
+  protocol_function_declaration:
+    $children*: [attribute, modifiers, parameter, statements, throws, throws_clause, type_constraints, type_parameters]
+    default_value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    name*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "^", array_type, bang, custom_operator, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type, "|", "~"]
+    return_type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  protocol_property_declaration:
+    $children+: [modifiers, protocol_property_requirements, type_annotation, type_constraints]
+    name: pattern
+  protocol_property_requirements:
+    $children*: [getter_specifier, setter_specifier]
+  range_expression:
+    end+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    op: ["...", "..<"]
+    start+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  raw_str_continuing_indicator:
+  raw_str_end_part:
+  raw_str_interpolation:
+    $children: raw_str_interpolation_start
+    interpolation+: interpolated_expression
+  raw_str_interpolation_start:
+  raw_str_part:
+  raw_string_literal:
+    $children*: raw_str_continuing_indicator
+    interpolation*: raw_str_interpolation
+    text+: [raw_str_end_part, raw_str_part]
+  real_literal:
+  regex_literal:
+  repeat_while_statement:
+    $children?: statements
+    bound_identifier*: simple_identifier
+    condition+: ["!=", "!==", "%", "%=", "&", "(", ")", "*", "*=", "+", "++", "+=", ",", "-", "--", "-=", ".", "/", "/=", ":", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, array_type, "as", as_expression, assignment, "async", availability_condition, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, "case", check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, dictionary_type, directive, disjunction_expression, equality_expression, existential_type, fully_open_range, function_type, hex_literal, if_statement, infix_expression, integer_literal, "is", key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, metatype, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, opaque_type, open_end_range_expression, open_start_range_expression, optional_type, pattern, playground_literal, postfix_expression, prefix_expression, protocol_composition_type, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, suppressed_constraint, switch_statement, ternary_expression, try_expression, tuple_expression, tuple_type, type_annotation, type_modifiers, type_pack_expansion, type_parameter_pack, user_type, value_binding_pattern, value_pack_expansion, value_parameter_pack, where_clause, wildcard_pattern, "|", "~"]
+    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  selector_expression:
+    $children?: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+  self_expression:
+  setter_specifier:
+    $children?: mutation_modifier
+  shebang_line:
+  simple_identifier:
+  source_file:
+    $children*: [additive_expression, array_literal, as_expression, assignment, associatedtype_declaration, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, class_declaration, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, do_statement, equality_expression, for_statement, fully_open_range, function_declaration, guard_statement, hex_literal, if_statement, import_declaration, infix_expression, init_declaration, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_declaration, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, operator_declaration, playground_literal, postfix_expression, precedence_group_declaration, prefix_expression, property_declaration, protocol_declaration, range_expression, raw_string_literal, real_literal, regex_literal, repeat_while_statement, selector_expression, self_expression, shebang_line, simple_identifier, special_literal, statement_label, super_expression, switch_statement, ternary_expression, throw_keyword, try_expression, tuple_expression, typealias_declaration, value_pack_expansion, value_parameter_pack, while_statement]
+  special_literal:
+  statement_label:
+  statements:
+    $children*: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, class_declaration, comparison_expression, conjunction_expression, constructor_expression, control_transfer_statement, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, do_statement, equality_expression, for_statement, fully_open_range, function_declaration, guard_statement, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, property_declaration, range_expression, raw_string_literal, real_literal, regex_literal, repeat_while_statement, selector_expression, self_expression, simple_identifier, special_literal, statement_label, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, typealias_declaration, value_pack_expansion, value_parameter_pack, while_statement]
+  str_escaped_char:
+  subscript_declaration:
+    $children+: [attribute, computed_property, modifiers, parameter, type_constraints, type_parameters]
+    default_value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    return_type*: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  super_expression:
+  suppressed_constraint:
+    suppressed: type_identifier
+  switch_entry:
+    $children+: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, default_keyword, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, modifiers, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, statements, super_expression, switch_pattern, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, where_keyword]
+  switch_pattern:
+    $children: pattern
+  switch_statement:
+    $children*: switch_entry
+    expr+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  ternary_expression:
+    condition+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    if_false+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+    if_true+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  throw_keyword:
+  throws:
+  throws_clause:
+    type: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  try_expression:
+    $children: try_operator
+    expr+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  try_operator:
+  tuple_expression:
+    name*: simple_identifier
+    value+: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  tuple_type:
+    $children?: tuple_type_item
+    element*: tuple_type_item
+  tuple_type_item:
+    $children*: [parameter_modifiers, wildcard_pattern]
+    element?: [dictionary_type, existential_type, opaque_type]
+    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, simple_identifier, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    type*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  type_annotation:
+    name: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+    type+: ["!", array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  type_arguments:
+    $children*: type_modifiers
+    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  type_constraint:
+    $children: [equality_constraint, inheritance_constraint]
+  type_constraints:
+    $children+: [type_constraint, where_keyword]
+  type_identifier:
+  type_modifiers:
+    $children+: attribute
+  type_pack_expansion:
+    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  type_parameter:
+    $children+: [type_identifier, type_modifiers, type_parameter_modifiers, type_parameter_pack]
+    name?: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  type_parameter_modifiers:
+    $children+: attribute
+  type_parameter_pack:
+    $children: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  type_parameters:
+    $children+: [type_constraints, type_parameter]
+  typealias_declaration:
+    $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier, type_parameters]
+    name+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_identifier, type_pack_expansion, type_parameter_pack, user_type]
+    value+: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_modifiers, type_pack_expansion, type_parameter_pack, user_type]
+  user_type:
+    $children+: [type_arguments, type_identifier]
+  value_argument:
+    $children?: type_modifiers
+    name?: value_argument_label
+    reference_specifier*: value_argument_label
+    value*: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, "|", "~"]
+  value_argument_label:
+    $children: simple_identifier
+  value_arguments:
+    $children*: value_argument
+  value_binding_pattern:
+    mutability: ["let", "var"]
+  value_pack_expansion:
+    $children?: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+  value_parameter_pack:
+    $children?: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack]
+  visibility_modifier:
+  where_clause:
+    $children+: [additive_expression, array_literal, as_expression, assignment, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, directive, disjunction_expression, equality_expression, fully_open_range, hex_literal, if_statement, infix_expression, integer_literal, key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, multi_line_string_literal, multiplicative_expression, navigation_expression, nil_coalescing_expression, oct_literal, open_end_range_expression, open_start_range_expression, playground_literal, postfix_expression, prefix_expression, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, switch_statement, ternary_expression, try_expression, tuple_expression, value_pack_expansion, value_parameter_pack, where_keyword]
+  where_keyword:
+  while_statement:
+    $children?: statements
+    bound_identifier*: simple_identifier
+    condition+: ["!=", "!==", "%", "%=", "&", "(", ")", "*", "*=", "+", "++", "+=", ",", "-", "--", "-=", ".", "/", "/=", ":", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "?", "^", additive_expression, array_literal, array_type, "as", as_expression, assignment, "async", availability_condition, await_expression, bang, bin_literal, bitwise_operation, boolean_literal, call_expression, "case", check_expression, comparison_expression, conjunction_expression, constructor_expression, custom_operator, diagnostic, dictionary_literal, dictionary_type, directive, disjunction_expression, equality_expression, existential_type, fully_open_range, function_type, hex_literal, if_statement, infix_expression, integer_literal, "is", key_path_expression, key_path_string_expression, lambda_literal, line_string_literal, macro_invocation, metatype, multi_line_string_literal, multiplicative_expression, navigation_expression, "nil", nil_coalescing_expression, oct_literal, opaque_type, open_end_range_expression, open_start_range_expression, optional_type, pattern, playground_literal, postfix_expression, prefix_expression, protocol_composition_type, range_expression, raw_string_literal, real_literal, regex_literal, selector_expression, self_expression, simple_identifier, special_literal, super_expression, suppressed_constraint, switch_statement, ternary_expression, try_expression, tuple_expression, tuple_type, type_annotation, type_modifiers, type_pack_expansion, type_parameter_pack, user_type, value_binding_pattern, value_pack_expansion, value_parameter_pack, where_clause, wildcard_pattern, "|", "~"]
+    name*: [array_type, dictionary_type, existential_type, function_type, metatype, opaque_type, optional_type, protocol_composition_type, suppressed_constraint, tuple_type, type_pack_expansion, type_parameter_pack, user_type]
+  wildcard_pattern:
+  willset_clause:
+    $children*: [modifiers, simple_identifier, statements]
+  willset_didset_block:
+    $children+: [didset_clause, willset_clause]
+
+unnamed:
+  - "?"
+  - "!"
+  - "!="
+  - "!=="
+  - "\""
+  - "\"\"\""
+  - "#"
+  - "#else"
+  - "#elseif"
+  - "#endif"
+  - "#if"
+  - "%"
+  - "%="
+  - "&"
+  - "&&"
+  - "("
+  - ")"
+  - "*"
+  - "*="
+  - "+"
+  - "++"
+  - "+="
+  - ","
+  - "-"
+  - "--"
+  - "-="
+  - "->"
+  - "."
+  - "..."
+  - "..<"
+  - "/"
+  - "/="
+  - ":"
+  - ";"
+  - "<"
+  - "<<"
+  - "<="
+  - "="
+  - "=="
+  - "==="
+  - ">"
+  - ">="
+  - ">>"
+  - "?"
+  - "??"
+  - "@"
+  - "@autoclosure"
+  - "@escaping"
+  - "Protocol"
+  - "Type"
+  - "["
+  - "\\"
+  - "\\("
+  - "]"
+  - "^"
+  - "^{"
+  - "_modify"
+  - "actor"
+  - "any"
+  - "arch"
+  - "as"
+  - "as!"
+  - "as?"
+  - "associatedtype"
+  - "async"
+  - "available"
+  - "await"
+  - "borrowing"
+  - "break"
+  - "canImport"
+  - "case"
+  - "class"
+  - "colorLiteral"
+  - "column"
+  - "compiler"
+  - "consuming"
+  - "continue"
+  - "convenience"
+  - "deinit"
+  - "delegate"
+  - "didSet"
+  - "distributed"
+  - "do"
+  - "dsohandle"
+  - "dynamic"
+  - "each"
+  - "enum"
+  - "extension"
+  - "externalMacro"
+  - "fallthrough"
+  - "false"
+  - "file"
+  - "fileID"
+  - "fileLiteral"
+  - "filePath"
+  - "fileprivate"
+  - "final"
+  - "for"
+  - "func"
+  - "function"
+  - "get"
+  - "getter:"
+  - "guard"
+  - "if"
+  - "imageLiteral"
+  - "import"
+  - "in"
+  - "indirect"
+  - "infix"
+  - "init"
+  - "inout"
+  - "internal"
+  - "is"
+  - "keyPath"
+  - "lazy"
+  - "let"
+  - "line"
+  - "macro"
+  - "mutating"
+  - "nil"
+  - "nonisolated"
+  - "nonmutating"
+  - "open"
+  - "operator"
+  - "optional"
+  - "os"
+  - "override"
+  - "package"
+  - "param"
+  - "postfix"
+  - "precedencegroup"
+  - "prefix"
+  - "private"
+  - "property"
+  - "protocol"
+  - "public"
+  - "receiver"
+  - "repeat"
+  - "required"
+  - "return"
+  - "selector"
+  - "self"
+  - "set"
+  - "setparam"
+  - "setter:"
+  - "some"
+  - "static"
+  - "struct"
+  - "subscript"
+  - "super"
+  - "swift"
+  - "switch"
+  - "targetEnvironment"
+  - "true"
+  - "try"
+  - "try!"
+  - "try?"
+  - "typealias"
+  - "u"
+  - "unavailable"
+  - "unowned"
+  - "unowned(safe)"
+  - "unowned(unsafe)"
+  - "var"
+  - "weak"
+  - "while"
+  - "willSet"
+  - "yield"
+  - "{"
+  - "|"
+  - "||"
+  - "}"
+  - "~"
