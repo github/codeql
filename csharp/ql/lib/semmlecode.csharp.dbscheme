@@ -1198,6 +1198,7 @@ case @expr.kind of
 | 136 = @collection_expr
 | 137 = @spread_element_expr
 | 138 = @interpolated_string_insert_expr
+| 139 = @not_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
@@ -1263,6 +1264,7 @@ case @expr.kind of
 
 @ternary_log_op_expr = @conditional_expr;
 @bin_log_op_expr = @log_and_expr | @log_or_expr | @null_coalescing_expr;
+@un_not_op_expr = @log_not_expr | @not_expr;
 @un_log_op_expr = @log_not_expr;
 @log_expr = @un_log_op_expr | @bin_log_op_expr | @ternary_log_op_expr;
 
@@ -1279,7 +1281,7 @@ case @expr.kind of
 
 @ternary_op = @ternary_log_op_expr;
 @bin_op = @assign_expr | @bin_arith_op_expr | @bin_log_op_expr | @bin_bit_op_expr | @comp_expr;
-@un_op_call_expr = @un_arith_op_expr | @un_log_op_expr | @un_bit_op_expr;
+@un_op_call_expr = @un_arith_op_expr | @un_not_op_expr | @un_bit_op_expr;
 @un_op = @un_op_call_expr | @sizeof_expr
        | @pointer_indirection_expr | @address_of_expr;
 
