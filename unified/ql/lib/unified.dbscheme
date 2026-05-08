@@ -156,33 +156,15 @@ swift_array_literal_def(
   unique int id: @swift_array_literal
 );
 
-@swift_array_type_element_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_array_type, index]
-swift_array_type_element(
-  int swift_array_type: @swift_array_type ref,
-  int index: int ref,
-  unique int element: @swift_array_type_element_type ref
-);
-
 swift_array_type_def(
   unique int id: @swift_array_type,
-  int name: @swift_unannotated_type ref
-);
-
-@swift_as_expression_type_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_as_expression, index]
-swift_as_expression_type(
-  int swift_as_expression: @swift_as_expression ref,
-  int index: int ref,
-  unique int type__: @swift_as_expression_type_type ref
+  int element: @swift_type__ ref
 );
 
 swift_as_expression_def(
   unique int id: @swift_as_expression,
   int expr: @swift_expression ref,
-  int name: @swift_unannotated_type ref,
+  int type__: @swift_type__ ref,
   int child: @swift_token_as_operator ref
 );
 
@@ -203,31 +185,14 @@ swift_assignment_def(
   int target: @swift_directly_assignable_expression ref
 );
 
-@swift_associatedtype_declaration_default_value_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_associatedtype_declaration, index]
 swift_associatedtype_declaration_default_value(
-  int swift_associatedtype_declaration: @swift_associatedtype_declaration ref,
-  int index: int ref,
-  unique int default_value: @swift_associatedtype_declaration_default_value_type ref
+  unique int swift_associatedtype_declaration: @swift_associatedtype_declaration ref,
+  unique int default_value: @swift_type__ ref
 );
 
-@swift_associatedtype_declaration_must_inherit_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_associatedtype_declaration, index]
 swift_associatedtype_declaration_must_inherit(
-  int swift_associatedtype_declaration: @swift_associatedtype_declaration ref,
-  int index: int ref,
-  unique int must_inherit: @swift_associatedtype_declaration_must_inherit_type ref
-);
-
-@swift_associatedtype_declaration_name_type = @swift_token_type_identifier | @swift_unannotated_type
-
-#keyset[swift_associatedtype_declaration, index]
-swift_associatedtype_declaration_name(
-  int swift_associatedtype_declaration: @swift_associatedtype_declaration ref,
-  int index: int ref,
-  unique int name: @swift_associatedtype_declaration_name_type ref
+  unique int swift_associatedtype_declaration: @swift_associatedtype_declaration ref,
+  unique int must_inherit: @swift_type__ ref
 );
 
 @swift_associatedtype_declaration_child_type = @swift_modifiers | @swift_type_constraints
@@ -240,7 +205,8 @@ swift_associatedtype_declaration_child(
 );
 
 swift_associatedtype_declaration_def(
-  unique int id: @swift_associatedtype_declaration
+  unique int id: @swift_associatedtype_declaration,
+  int name: @swift_token_type_identifier ref
 );
 
 @swift_attribute_child_type = @swift_expression | @swift_user_type
@@ -383,20 +349,11 @@ case @swift_check_expression.op of
 ;
 
 
-@swift_check_expression_type_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_check_expression, index]
-swift_check_expression_type(
-  int swift_check_expression: @swift_check_expression ref,
-  int index: int ref,
-  unique int type__: @swift_check_expression_type_type ref
-);
-
 swift_check_expression_def(
   unique int id: @swift_check_expression,
-  int name: @swift_unannotated_type ref,
   int op: int ref,
-  int target: @swift_expression ref
+  int target: @swift_expression ref,
+  int type__: @swift_type__ ref
 );
 
 @swift_class_body_child_type = @swift_associatedtype_declaration | @swift_class_declaration | @swift_deinit_declaration | @swift_function_declaration | @swift_import_declaration | @swift_init_declaration | @swift_operator_declaration | @swift_precedence_group_declaration | @swift_property_declaration | @swift_protocol_declaration | @swift_subscript_declaration | @swift_token_multiline_comment | @swift_typealias_declaration
@@ -607,33 +564,10 @@ swift_dictionary_literal_def(
   unique int id: @swift_dictionary_literal
 );
 
-@swift_dictionary_type_key_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_dictionary_type, index]
-swift_dictionary_type_key(
-  int swift_dictionary_type: @swift_dictionary_type ref,
-  int index: int ref,
-  unique int key__: @swift_dictionary_type_key_type ref
-);
-
-#keyset[swift_dictionary_type, index]
-swift_dictionary_type_name(
-  int swift_dictionary_type: @swift_dictionary_type ref,
-  int index: int ref,
-  unique int name: @swift_unannotated_type ref
-);
-
-@swift_dictionary_type_value_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_dictionary_type, index]
-swift_dictionary_type_value(
-  int swift_dictionary_type: @swift_dictionary_type ref,
-  int index: int ref,
-  unique int value: @swift_dictionary_type_value_type ref
-);
-
 swift_dictionary_type_def(
-  unique int id: @swift_dictionary_type
+  unique int id: @swift_dictionary_type,
+  int key__: @swift_type__ ref,
+  int value: @swift_type__ ref
 );
 
 @swift_didset_clause_child_type = @swift_modifiers | @swift_statements | @swift_token_simple_identifier
@@ -735,14 +669,7 @@ swift_enum_entry_def(
   unique int id: @swift_enum_entry
 );
 
-#keyset[swift_enum_type_parameters, index]
-swift_enum_type_parameters_name(
-  int swift_enum_type_parameters: @swift_enum_type_parameters ref,
-  int index: int ref,
-  unique int name: @swift_unannotated_type ref
-);
-
-@swift_enum_type_parameters_child_type = @swift_expression | @swift_token_wildcard_pattern | @swift_type_modifiers
+@swift_enum_type_parameters_child_type = @swift_expression | @swift_token_wildcard_pattern | @swift_type__
 
 #keyset[swift_enum_type_parameters, index]
 swift_enum_type_parameters_child(
@@ -757,15 +684,6 @@ swift_enum_type_parameters_def(
 
 @swift_equality_constraint_constrained_type_type = @swift_identifier | @swift_nested_type_identifier
 
-@swift_equality_constraint_must_equal_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_equality_constraint, index]
-swift_equality_constraint_must_equal(
-  int swift_equality_constraint: @swift_equality_constraint ref,
-  int index: int ref,
-  unique int must_equal: @swift_equality_constraint_must_equal_type ref
-);
-
 #keyset[swift_equality_constraint, index]
 swift_equality_constraint_child(
   int swift_equality_constraint: @swift_equality_constraint ref,
@@ -776,7 +694,7 @@ swift_equality_constraint_child(
 swift_equality_constraint_def(
   unique int id: @swift_equality_constraint,
   int constrained_type: @swift_equality_constraint_constrained_type_type ref,
-  int name: @swift_unannotated_type ref
+  int must_equal: @swift_type__ ref
 );
 
 case @swift_equality_expression.op of
@@ -837,21 +755,12 @@ swift_function_declaration_default_value(
   unique int default_value: @swift_expression ref
 );
 
-@swift_function_declaration_name_type = @swift_referenceable_operator | @swift_token_simple_identifier | @swift_unannotated_type
+@swift_function_declaration_name_type = @swift_referenceable_operator | @swift_token_simple_identifier
 
-#keyset[swift_function_declaration, index]
-swift_function_declaration_name(
-  int swift_function_declaration: @swift_function_declaration ref,
-  int index: int ref,
-  unique int name: @swift_function_declaration_name_type ref
-);
+@swift_function_declaration_return_type_type = @swift_implicitly_unwrapped_type | @swift_type__
 
-@swift_function_declaration_return_type_type = @swift_implicitly_unwrapped_type | @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_function_declaration, index]
 swift_function_declaration_return_type(
-  int swift_function_declaration: @swift_function_declaration ref,
-  int index: int ref,
+  unique int swift_function_declaration: @swift_function_declaration ref,
   unique int return_type: @swift_function_declaration_return_type_type ref
 );
 
@@ -866,16 +775,8 @@ swift_function_declaration_child(
 
 swift_function_declaration_def(
   unique int id: @swift_function_declaration,
-  int body: @swift_function_body ref
-);
-
-@swift_function_type_return_type_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_function_type, index]
-swift_function_type_return_type(
-  int swift_function_type: @swift_function_type ref,
-  int index: int ref,
-  unique int return_type: @swift_function_type_return_type_type ref
+  int body: @swift_function_body ref,
+  int name: @swift_function_declaration_name_type ref
 );
 
 @swift_function_type_child_type = @swift_throws_clause | @swift_token_throws
@@ -887,8 +788,8 @@ swift_function_type_child(
 
 swift_function_type_def(
   unique int id: @swift_function_type,
-  int name: @swift_unannotated_type ref,
-  int params: @swift_unannotated_type ref
+  int params: @swift_unannotated_type ref,
+  int return_type: @swift_type__ ref
 );
 
 @swift_getter_specifier_child_type = @swift_throws_clause | @swift_token_mutation_modifier | @swift_token_throws
@@ -940,12 +841,7 @@ swift_if_condition_bound_identifier(
   unique int bound_identifier: @swift_token_simple_identifier ref
 );
 
-swift_if_condition_name(
-  unique int swift_if_condition: @swift_if_condition ref,
-  unique int name: @swift_unannotated_type ref
-);
-
-@swift_if_condition_child_type = @swift_availability_condition | @swift_expression | @swift_pattern | @swift_token_wildcard_pattern | @swift_type_annotation | @swift_type_modifiers | @swift_user_type | @swift_value_binding_pattern | @swift_where_clause
+@swift_if_condition_child_type = @swift_availability_condition | @swift_expression | @swift_pattern | @swift_token_wildcard_pattern | @swift_type__ | @swift_type_annotation | @swift_user_type | @swift_value_binding_pattern | @swift_where_clause
 
 #keyset[swift_if_condition, index]
 swift_if_condition_child(
@@ -978,14 +874,9 @@ swift_if_statement_def(
   unique int id: @swift_if_statement
 );
 
-swift_implicitly_unwrapped_type_child(
-  unique int swift_implicitly_unwrapped_type: @swift_implicitly_unwrapped_type ref,
-  unique int child: @swift_type_modifiers ref
-);
-
 swift_implicitly_unwrapped_type_def(
   unique int id: @swift_implicitly_unwrapped_type,
-  int name: @swift_unannotated_type ref
+  int child: @swift_type__ ref
 );
 
 @swift_import_declaration_child_type = @swift_identifier | @swift_modifiers
@@ -1010,19 +901,7 @@ swift_infix_expression_def(
 
 @swift_inheritance_constraint_constrained_type_type = @swift_identifier | @swift_nested_type_identifier
 
-@swift_inheritance_constraint_inherits_from_type = @swift_implicitly_unwrapped_type | @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_inheritance_constraint, index]
-swift_inheritance_constraint_inherits_from(
-  int swift_inheritance_constraint: @swift_inheritance_constraint ref,
-  int index: int ref,
-  unique int inherits_from: @swift_inheritance_constraint_inherits_from_type ref
-);
-
-swift_inheritance_constraint_name(
-  unique int swift_inheritance_constraint: @swift_inheritance_constraint ref,
-  unique int name: @swift_unannotated_type ref
-);
+@swift_inheritance_constraint_inherits_from_type = @swift_implicitly_unwrapped_type | @swift_type__
 
 #keyset[swift_inheritance_constraint, index]
 swift_inheritance_constraint_child(
@@ -1033,7 +912,8 @@ swift_inheritance_constraint_child(
 
 swift_inheritance_constraint_def(
   unique int id: @swift_inheritance_constraint,
-  int constrained_type: @swift_inheritance_constraint_constrained_type_type ref
+  int constrained_type: @swift_inheritance_constraint_constrained_type_type ref,
+  int inherits_from: @swift_inheritance_constraint_inherits_from_type ref
 );
 
 @swift_inheritance_specifier_inherits_from_type = @swift_function_type | @swift_suppressed_constraint | @swift_user_type
@@ -1118,17 +998,10 @@ swift_key_path_string_expression_def(
   int child: @swift_expression ref
 );
 
-swift_lambda_function_type_name(
-  unique int swift_lambda_function_type: @swift_lambda_function_type ref,
-  unique int name: @swift_unannotated_type ref
-);
+@swift_lambda_function_type_return_type_type = @swift_implicitly_unwrapped_type | @swift_type__
 
-@swift_lambda_function_type_return_type_type = @swift_implicitly_unwrapped_type | @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_lambda_function_type, index]
 swift_lambda_function_type_return_type(
-  int swift_lambda_function_type: @swift_lambda_function_type ref,
-  int index: int ref,
+  unique int swift_lambda_function_type: @swift_lambda_function_type ref,
   unique int return_type: @swift_lambda_function_type_return_type_type ref
 );
 
@@ -1184,21 +1057,15 @@ swift_lambda_parameter_external_name(
   unique int external_name: @swift_token_simple_identifier ref
 );
 
-@swift_lambda_parameter_name_type = @swift_token_simple_identifier | @swift_unannotated_type
-
-#keyset[swift_lambda_parameter, index]
 swift_lambda_parameter_name(
-  int swift_lambda_parameter: @swift_lambda_parameter ref,
-  int index: int ref,
-  unique int name: @swift_lambda_parameter_name_type ref
+  unique int swift_lambda_parameter: @swift_lambda_parameter ref,
+  unique int name: @swift_token_simple_identifier ref
 );
 
-@swift_lambda_parameter_type_type = @swift_implicitly_unwrapped_type | @swift_type_modifiers | @swift_unannotated_type
+@swift_lambda_parameter_type_type = @swift_implicitly_unwrapped_type | @swift_type__
 
-#keyset[swift_lambda_parameter, index]
 swift_lambda_parameter_type(
-  int swift_lambda_parameter: @swift_lambda_parameter ref,
-  int index: int ref,
+  unique int swift_lambda_parameter: @swift_lambda_parameter ref,
   unique int type__: @swift_lambda_parameter_type_type ref
 );
 
@@ -1431,23 +1298,7 @@ swift_parameter_external_name(
   unique int external_name: @swift_token_simple_identifier ref
 );
 
-@swift_parameter_name_type = @swift_token_simple_identifier | @swift_unannotated_type
-
-#keyset[swift_parameter, index]
-swift_parameter_name(
-  int swift_parameter: @swift_parameter ref,
-  int index: int ref,
-  unique int name: @swift_parameter_name_type ref
-);
-
-@swift_parameter_type_type = @swift_implicitly_unwrapped_type | @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_parameter, index]
-swift_parameter_type(
-  int swift_parameter: @swift_parameter ref,
-  int index: int ref,
-  unique int type__: @swift_parameter_type_type ref
-);
+@swift_parameter_type_type = @swift_implicitly_unwrapped_type | @swift_type__
 
 swift_parameter_child(
   unique int swift_parameter: @swift_parameter ref,
@@ -1455,7 +1306,9 @@ swift_parameter_child(
 );
 
 swift_parameter_def(
-  unique int id: @swift_parameter
+  unique int id: @swift_parameter,
+  int name: @swift_token_simple_identifier ref,
+  int type__: @swift_parameter_type_type ref
 );
 
 #keyset[swift_parameter_modifiers, index]
@@ -1474,12 +1327,7 @@ swift_pattern_bound_identifier(
   unique int bound_identifier: @swift_token_simple_identifier ref
 );
 
-swift_pattern_name(
-  unique int swift_pattern: @swift_pattern ref,
-  unique int name: @swift_unannotated_type ref
-);
-
-@swift_pattern_child_type = @swift_expression | @swift_pattern | @swift_token_wildcard_pattern | @swift_type_modifiers | @swift_user_type | @swift_value_binding_pattern
+@swift_pattern_child_type = @swift_expression | @swift_pattern | @swift_token_wildcard_pattern | @swift_type__ | @swift_user_type | @swift_value_binding_pattern
 
 #keyset[swift_pattern, index]
 swift_pattern_child(
@@ -1649,21 +1497,17 @@ swift_protocol_function_declaration_default_value(
   unique int default_value: @swift_expression ref
 );
 
-@swift_protocol_function_declaration_name_type = @swift_referenceable_operator | @swift_token_simple_identifier | @swift_unannotated_type
+@swift_protocol_function_declaration_name_type = @swift_referenceable_operator | @swift_token_simple_identifier
 
-#keyset[swift_protocol_function_declaration, index]
 swift_protocol_function_declaration_name(
-  int swift_protocol_function_declaration: @swift_protocol_function_declaration ref,
-  int index: int ref,
+  unique int swift_protocol_function_declaration: @swift_protocol_function_declaration ref,
   unique int name: @swift_protocol_function_declaration_name_type ref
 );
 
-@swift_protocol_function_declaration_return_type_type = @swift_implicitly_unwrapped_type | @swift_type_modifiers | @swift_unannotated_type
+@swift_protocol_function_declaration_return_type_type = @swift_implicitly_unwrapped_type | @swift_type__
 
-#keyset[swift_protocol_function_declaration, index]
 swift_protocol_function_declaration_return_type(
-  int swift_protocol_function_declaration: @swift_protocol_function_declaration ref,
-  int index: int ref,
+  unique int swift_protocol_function_declaration: @swift_protocol_function_declaration ref,
   unique int return_type: @swift_protocol_function_declaration_return_type_type ref
 );
 
@@ -1833,17 +1677,10 @@ swift_subscript_declaration_default_value(
   unique int default_value: @swift_expression ref
 );
 
-swift_subscript_declaration_name(
-  unique int swift_subscript_declaration: @swift_subscript_declaration ref,
-  unique int name: @swift_unannotated_type ref
-);
+@swift_subscript_declaration_return_type_type = @swift_implicitly_unwrapped_type | @swift_type__
 
-@swift_subscript_declaration_return_type_type = @swift_implicitly_unwrapped_type | @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_subscript_declaration, index]
 swift_subscript_declaration_return_type(
-  int swift_subscript_declaration: @swift_subscript_declaration ref,
-  int index: int ref,
+  unique int swift_subscript_declaration: @swift_subscript_declaration ref,
   unique int return_type: @swift_subscript_declaration_return_type_type ref
 );
 
@@ -1954,22 +1791,14 @@ swift_tuple_type_item_element(
   unique int element: @swift_tuple_type_item_element_type ref
 );
 
-@swift_tuple_type_item_name_type = @swift_token_simple_identifier | @swift_unannotated_type
-
-#keyset[swift_tuple_type_item, index]
 swift_tuple_type_item_name(
-  int swift_tuple_type_item: @swift_tuple_type_item ref,
-  int index: int ref,
-  unique int name: @swift_tuple_type_item_name_type ref
+  unique int swift_tuple_type_item: @swift_tuple_type_item ref,
+  unique int name: @swift_token_simple_identifier ref
 );
 
-@swift_tuple_type_item_type_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_tuple_type_item, index]
 swift_tuple_type_item_type(
-  int swift_tuple_type_item: @swift_tuple_type_item ref,
-  int index: int ref,
-  unique int type__: @swift_tuple_type_item_type_type ref
+  unique int swift_tuple_type_item: @swift_tuple_type_item ref,
+  unique int type__: @swift_type__ ref
 );
 
 @swift_tuple_type_item_child_type = @swift_parameter_modifiers | @swift_token_wildcard_pattern
@@ -1985,36 +1814,28 @@ swift_tuple_type_item_def(
   unique int id: @swift_tuple_type_item
 );
 
-swift_type_annotation_name(
-  unique int swift_type_annotation: @swift_type_annotation ref,
-  unique int name: @swift_unannotated_type ref
+swift_type_modifiers(
+  unique int swift_type__: @swift_type__ ref,
+  unique int modifiers: @swift_type_modifiers ref
 );
 
-@swift_type_annotation_type_type = @swift_implicitly_unwrapped_type | @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_type_annotation, index]
-swift_type_annotation_type(
-  int swift_type_annotation: @swift_type_annotation ref,
-  int index: int ref,
-  unique int type__: @swift_type_annotation_type_type ref
+swift_type_def(
+  unique int id: @swift_type__,
+  int name: @swift_unannotated_type ref
 );
+
+@swift_type_annotation_type_type = @swift_implicitly_unwrapped_type | @swift_type__
 
 swift_type_annotation_def(
-  unique int id: @swift_type_annotation
-);
-
-#keyset[swift_type_arguments, index]
-swift_type_arguments_name(
-  int swift_type_arguments: @swift_type_arguments ref,
-  int index: int ref,
-  unique int name: @swift_unannotated_type ref
+  unique int id: @swift_type_annotation,
+  int type__: @swift_type_annotation_type_type ref
 );
 
 #keyset[swift_type_arguments, index]
 swift_type_arguments_child(
   int swift_type_arguments: @swift_type_arguments ref,
   int index: int ref,
-  unique int child: @swift_type_modifiers ref
+  unique int child: @swift_type__ ref
 );
 
 swift_type_arguments_def(
@@ -2057,12 +1878,7 @@ swift_type_pack_expansion_def(
   int child: @swift_unannotated_type ref
 );
 
-swift_type_parameter_name(
-  unique int swift_type_parameter: @swift_type_parameter ref,
-  unique int name: @swift_unannotated_type ref
-);
-
-@swift_type_parameter_child_type = @swift_token_type_identifier | @swift_type_modifiers | @swift_type_parameter_modifiers | @swift_type_parameter_pack
+@swift_type_parameter_child_type = @swift_token_type_identifier | @swift_type__ | @swift_type_parameter_modifiers | @swift_type_parameter_pack
 
 #keyset[swift_type_parameter, index]
 swift_type_parameter_child(
@@ -2104,24 +1920,6 @@ swift_type_parameters_def(
   unique int id: @swift_type_parameters
 );
 
-@swift_typealias_declaration_name_type = @swift_token_type_identifier | @swift_unannotated_type
-
-#keyset[swift_typealias_declaration, index]
-swift_typealias_declaration_name(
-  int swift_typealias_declaration: @swift_typealias_declaration ref,
-  int index: int ref,
-  unique int name: @swift_typealias_declaration_name_type ref
-);
-
-@swift_typealias_declaration_value_type = @swift_type_modifiers | @swift_unannotated_type
-
-#keyset[swift_typealias_declaration, index]
-swift_typealias_declaration_value(
-  int swift_typealias_declaration: @swift_typealias_declaration ref,
-  int index: int ref,
-  unique int value: @swift_typealias_declaration_value_type ref
-);
-
 @swift_typealias_declaration_child_type = @swift_attribute | @swift_modifiers | @swift_token_inheritance_modifier | @swift_token_ownership_modifier | @swift_token_property_behavior_modifier | @swift_type_parameters
 
 #keyset[swift_typealias_declaration, index]
@@ -2132,7 +1930,9 @@ swift_typealias_declaration_child(
 );
 
 swift_typealias_declaration_def(
-  unique int id: @swift_typealias_declaration
+  unique int id: @swift_typealias_declaration,
+  int name: @swift_token_type_identifier ref,
+  int value: @swift_type__ ref
 );
 
 @swift_unannotated_type = @swift_array_type | @swift_dictionary_type | @swift_existential_type | @swift_function_type | @swift_metatype | @swift_opaque_type | @swift_optional_type | @swift_protocol_composition_type | @swift_suppressed_constraint | @swift_tuple_type | @swift_type_pack_expansion | @swift_type_parameter_pack | @swift_user_type
@@ -2324,7 +2124,7 @@ case @swift_token.kind of
 ;
 
 
-@swift_ast_node = @swift_additive_expression | @swift_array_literal | @swift_array_type | @swift_as_expression | @swift_assignment | @swift_associatedtype_declaration | @swift_attribute | @swift_availability_condition | @swift_await_expression | @swift_bitwise_operation | @swift_call_expression | @swift_call_suffix | @swift_capture_list | @swift_capture_list_item | @swift_catch_block | @swift_check_expression | @swift_class_body | @swift_class_declaration | @swift_comparison_expression | @swift_computed_getter | @swift_computed_modify | @swift_computed_property | @swift_computed_setter | @swift_conjunction_expression | @swift_constructor_expression | @swift_constructor_suffix | @swift_control_transfer_statement | @swift_deinit_declaration | @swift_deprecated_operator_declaration_body | @swift_dictionary_literal | @swift_dictionary_type | @swift_didset_clause | @swift_directive | @swift_directly_assignable_expression | @swift_disjunction_expression | @swift_do_statement | @swift_enum_class_body | @swift_enum_entry | @swift_enum_type_parameters | @swift_equality_constraint | @swift_equality_expression | @swift_existential_type | @swift_external_macro_definition | @swift_for_statement | @swift_function_body | @swift_function_declaration | @swift_function_type | @swift_getter_specifier | @swift_guard_statement | @swift_identifier | @swift_if_condition | @swift_if_statement | @swift_implicitly_unwrapped_type | @swift_import_declaration | @swift_infix_expression | @swift_inheritance_constraint | @swift_inheritance_specifier | @swift_init_declaration | @swift_interpolated_expression | @swift_key_path_expression | @swift_key_path_string_expression | @swift_lambda_function_type | @swift_lambda_function_type_parameters | @swift_lambda_literal | @swift_lambda_parameter | @swift_line_string_literal | @swift_macro_declaration | @swift_macro_definition | @swift_macro_invocation | @swift_metatype | @swift_modifiers | @swift_modify_specifier | @swift_multi_line_string_literal | @swift_multiplicative_expression | @swift_navigation_expression | @swift_navigation_suffix | @swift_nested_type_identifier | @swift_nil_coalescing_expression | @swift_opaque_type | @swift_open_end_range_expression | @swift_open_start_range_expression | @swift_operator_declaration | @swift_optional_chain_marker | @swift_optional_type | @swift_parameter | @swift_parameter_modifiers | @swift_pattern | @swift_playground_literal | @swift_postfix_expression | @swift_precedence_group_attribute | @swift_precedence_group_attributes | @swift_precedence_group_declaration | @swift_prefix_expression | @swift_property_declaration | @swift_protocol_body | @swift_protocol_composition_type | @swift_protocol_declaration | @swift_protocol_function_declaration | @swift_protocol_property_declaration | @swift_protocol_property_requirements | @swift_range_expression | @swift_raw_str_interpolation | @swift_raw_string_literal | @swift_referenceable_operator | @swift_repeat_while_statement | @swift_selector_expression | @swift_setter_specifier | @swift_source_file | @swift_statements | @swift_subscript_declaration | @swift_suppressed_constraint | @swift_switch_entry | @swift_switch_pattern | @swift_switch_statement | @swift_ternary_expression | @swift_throws_clause | @swift_token | @swift_try_expression | @swift_tuple_expression | @swift_tuple_type | @swift_tuple_type_item | @swift_type_annotation | @swift_type_arguments | @swift_type_constraint | @swift_type_constraints | @swift_type_modifiers | @swift_type_pack_expansion | @swift_type_parameter | @swift_type_parameter_modifiers | @swift_type_parameter_pack | @swift_type_parameters | @swift_typealias_declaration | @swift_user_type | @swift_value_argument | @swift_value_argument_label | @swift_value_arguments | @swift_value_binding_pattern | @swift_value_pack_expansion | @swift_value_parameter_pack | @swift_where_clause | @swift_while_statement | @swift_willset_clause | @swift_willset_didset_block
+@swift_ast_node = @swift_additive_expression | @swift_array_literal | @swift_array_type | @swift_as_expression | @swift_assignment | @swift_associatedtype_declaration | @swift_attribute | @swift_availability_condition | @swift_await_expression | @swift_bitwise_operation | @swift_call_expression | @swift_call_suffix | @swift_capture_list | @swift_capture_list_item | @swift_catch_block | @swift_check_expression | @swift_class_body | @swift_class_declaration | @swift_comparison_expression | @swift_computed_getter | @swift_computed_modify | @swift_computed_property | @swift_computed_setter | @swift_conjunction_expression | @swift_constructor_expression | @swift_constructor_suffix | @swift_control_transfer_statement | @swift_deinit_declaration | @swift_deprecated_operator_declaration_body | @swift_dictionary_literal | @swift_dictionary_type | @swift_didset_clause | @swift_directive | @swift_directly_assignable_expression | @swift_disjunction_expression | @swift_do_statement | @swift_enum_class_body | @swift_enum_entry | @swift_enum_type_parameters | @swift_equality_constraint | @swift_equality_expression | @swift_existential_type | @swift_external_macro_definition | @swift_for_statement | @swift_function_body | @swift_function_declaration | @swift_function_type | @swift_getter_specifier | @swift_guard_statement | @swift_identifier | @swift_if_condition | @swift_if_statement | @swift_implicitly_unwrapped_type | @swift_import_declaration | @swift_infix_expression | @swift_inheritance_constraint | @swift_inheritance_specifier | @swift_init_declaration | @swift_interpolated_expression | @swift_key_path_expression | @swift_key_path_string_expression | @swift_lambda_function_type | @swift_lambda_function_type_parameters | @swift_lambda_literal | @swift_lambda_parameter | @swift_line_string_literal | @swift_macro_declaration | @swift_macro_definition | @swift_macro_invocation | @swift_metatype | @swift_modifiers | @swift_modify_specifier | @swift_multi_line_string_literal | @swift_multiplicative_expression | @swift_navigation_expression | @swift_navigation_suffix | @swift_nested_type_identifier | @swift_nil_coalescing_expression | @swift_opaque_type | @swift_open_end_range_expression | @swift_open_start_range_expression | @swift_operator_declaration | @swift_optional_chain_marker | @swift_optional_type | @swift_parameter | @swift_parameter_modifiers | @swift_pattern | @swift_playground_literal | @swift_postfix_expression | @swift_precedence_group_attribute | @swift_precedence_group_attributes | @swift_precedence_group_declaration | @swift_prefix_expression | @swift_property_declaration | @swift_protocol_body | @swift_protocol_composition_type | @swift_protocol_declaration | @swift_protocol_function_declaration | @swift_protocol_property_declaration | @swift_protocol_property_requirements | @swift_range_expression | @swift_raw_str_interpolation | @swift_raw_string_literal | @swift_referenceable_operator | @swift_repeat_while_statement | @swift_selector_expression | @swift_setter_specifier | @swift_source_file | @swift_statements | @swift_subscript_declaration | @swift_suppressed_constraint | @swift_switch_entry | @swift_switch_pattern | @swift_switch_statement | @swift_ternary_expression | @swift_throws_clause | @swift_token | @swift_try_expression | @swift_tuple_expression | @swift_tuple_type | @swift_tuple_type_item | @swift_type__ | @swift_type_annotation | @swift_type_arguments | @swift_type_constraint | @swift_type_constraints | @swift_type_modifiers | @swift_type_pack_expansion | @swift_type_parameter | @swift_type_parameter_modifiers | @swift_type_parameter_pack | @swift_type_parameters | @swift_typealias_declaration | @swift_user_type | @swift_value_argument | @swift_value_argument_label | @swift_value_arguments | @swift_value_binding_pattern | @swift_value_pack_expansion | @swift_value_parameter_pack | @swift_where_clause | @swift_while_statement | @swift_willset_clause | @swift_willset_didset_block
 
 swift_ast_node_location(
   unique int node: @swift_ast_node ref,
