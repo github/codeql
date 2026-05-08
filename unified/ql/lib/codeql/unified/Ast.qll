@@ -436,11 +436,16 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ClassBody" }
 
+    /** Gets the node corresponding to the field `member`. */
+    final TypeLevelDeclaration getMember(int i) { swift_class_body_member(this, i, result) }
+
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_class_body_child(this, i, result) }
+    final MultilineComment getChild(int i) { swift_class_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_class_body_child(this, _, result) }
+    final override AstNode getAFieldOrChild() {
+      swift_class_body_member(this, _, result) or swift_class_body_child(this, _, result)
+    }
   }
 
   /** A class representing `class_declaration` nodes. */
@@ -818,11 +823,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "EnumClassBody" }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_enum_class_body_child(this, i, result) }
+    /** Gets the node corresponding to the field `member`. */
+    final AstNode getMember(int i) { swift_enum_class_body_member(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_enum_class_body_child(this, _, result) }
+    final override AstNode getAFieldOrChild() { swift_enum_class_body_member(this, _, result) }
   }
 
   /** A class representing `enum_entry` nodes. */
@@ -1927,11 +1932,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ProtocolBody" }
 
-    /** Gets the `i`th child of this node. */
-    final ProtocolMemberDeclaration getChild(int i) { swift_protocol_body_child(this, i, result) }
+    /** Gets the node corresponding to the field `member`. */
+    final ProtocolMemberDeclaration getMember(int i) { swift_protocol_body_member(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_protocol_body_child(this, _, result) }
+    final override AstNode getAFieldOrChild() { swift_protocol_body_member(this, _, result) }
   }
 
   /** A class representing `protocol_composition_type` nodes. */
@@ -2231,11 +2236,16 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "SourceFile" }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_source_file_child(this, i, result) }
+    /** Gets the node corresponding to the field `shebang`. */
+    final ShebangLine getShebang() { swift_source_file_shebang(this, result) }
+
+    /** Gets the node corresponding to the field `statement`. */
+    final AstNode getStatement(int i) { swift_source_file_statement(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_source_file_child(this, _, result) }
+    final override AstNode getAFieldOrChild() {
+      swift_source_file_shebang(this, result) or swift_source_file_statement(this, _, result)
+    }
   }
 
   /** A class representing `special_literal` tokens. */
@@ -2255,11 +2265,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Statements" }
 
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_statements_child(this, i, result) }
+    /** Gets the node corresponding to the field `statement`. */
+    final AstNode getStatement(int i) { swift_statements_statement(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_statements_child(this, _, result) }
+    final override AstNode getAFieldOrChild() { swift_statements_statement(this, _, result) }
   }
 
   /** A class representing `str_escaped_char` tokens. */

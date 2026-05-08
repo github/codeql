@@ -356,13 +356,18 @@ swift_check_expression_def(
   int type__: @swift_type__ ref
 );
 
-@swift_class_body_child_type = @swift_token_multiline_comment | @swift_type_level_declaration
+#keyset[swift_class_body, index]
+swift_class_body_member(
+  int swift_class_body: @swift_class_body ref,
+  int index: int ref,
+  unique int member: @swift_type_level_declaration ref
+);
 
 #keyset[swift_class_body, index]
 swift_class_body_child(
   int swift_class_body: @swift_class_body ref,
   int index: int ref,
-  unique int child: @swift_class_body_child_type ref
+  unique int child: @swift_token_multiline_comment ref
 );
 
 swift_class_body_def(
@@ -626,13 +631,13 @@ swift_do_statement_def(
   unique int id: @swift_do_statement
 );
 
-@swift_enum_class_body_child_type = @swift_enum_entry | @swift_type_level_declaration
+@swift_enum_class_body_member_type = @swift_enum_entry | @swift_type_level_declaration
 
 #keyset[swift_enum_class_body, index]
-swift_enum_class_body_child(
+swift_enum_class_body_member(
   int swift_enum_class_body: @swift_enum_class_body ref,
   int index: int ref,
-  unique int child: @swift_enum_class_body_child_type ref
+  unique int member: @swift_enum_class_body_member_type ref
 );
 
 swift_enum_class_body_def(
@@ -1443,10 +1448,10 @@ swift_property_declaration_def(
 );
 
 #keyset[swift_protocol_body, index]
-swift_protocol_body_child(
+swift_protocol_body_member(
   int swift_protocol_body: @swift_protocol_body ref,
   int index: int ref,
-  unique int child: @swift_protocol_member_declaration ref
+  unique int member: @swift_protocol_member_declaration ref
 );
 
 swift_protocol_body_def(
@@ -1642,26 +1647,31 @@ swift_setter_specifier_def(
   unique int id: @swift_setter_specifier
 );
 
-@swift_source_file_child_type = @swift_do_statement | @swift_expression | @swift_for_statement | @swift_global_declaration | @swift_guard_statement | @swift_repeat_while_statement | @swift_token_shebang_line | @swift_token_statement_label | @swift_token_throw_keyword | @swift_while_statement
+swift_source_file_shebang(
+  unique int swift_source_file: @swift_source_file ref,
+  unique int shebang: @swift_token_shebang_line ref
+);
+
+@swift_source_file_statement_type = @swift_do_statement | @swift_expression | @swift_for_statement | @swift_global_declaration | @swift_guard_statement | @swift_repeat_while_statement | @swift_token_statement_label | @swift_token_throw_keyword | @swift_while_statement
 
 #keyset[swift_source_file, index]
-swift_source_file_child(
+swift_source_file_statement(
   int swift_source_file: @swift_source_file ref,
   int index: int ref,
-  unique int child: @swift_source_file_child_type ref
+  unique int statement: @swift_source_file_statement_type ref
 );
 
 swift_source_file_def(
   unique int id: @swift_source_file
 );
 
-@swift_statements_child_type = @swift_control_transfer_statement | @swift_do_statement | @swift_expression | @swift_for_statement | @swift_guard_statement | @swift_local_declaration | @swift_repeat_while_statement | @swift_token_statement_label | @swift_while_statement
+@swift_statements_statement_type = @swift_control_transfer_statement | @swift_do_statement | @swift_expression | @swift_for_statement | @swift_guard_statement | @swift_local_declaration | @swift_repeat_while_statement | @swift_token_statement_label | @swift_while_statement
 
 #keyset[swift_statements, index]
-swift_statements_child(
+swift_statements_statement(
   int swift_statements: @swift_statements ref,
   int index: int ref,
-  unique int child: @swift_statements_child_type ref
+  unique int statement: @swift_statements_statement_type ref
 );
 
 swift_statements_def(
