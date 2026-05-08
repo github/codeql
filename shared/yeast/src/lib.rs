@@ -591,35 +591,40 @@ fn apply_rules_inner(
         }
     }
 
-    // Collect fields before recursing (avoids borrowing ast immutably during mutation)
-    let field_entries: Vec<(FieldId, Vec<Id>)> = ast.nodes[id]
-        .fields
-        .iter()
-        .map(|(&fid, children)| (fid, children.clone()))
-        .collect();
-
-    // recursively descend into all the fields
+    // Take the parent's fields by ownership: the recursion will rewrite
+    // each child Id, and we'll write the (possibly mutated) field map back
+    // when we're done. Avoids cloning the whole BTreeMap and its child
+    // Vecs on entry. Each child Vec is only re-allocated if a rewrite
+    // actually changes its contents.
+    //
     // Child traversal does not increment rewrite depth and starts fresh
     // (no rule is skipped on child subtrees).
-    let mut changed = false;
-    let mut new_fields = BTreeMap::new();
-    for (field_id, children) in field_entries {
-        let mut new_children = Vec::new();
-        for child_id in children {
+    let mut fields = std::mem::take(&mut ast.nodes[id].fields);
+    for children in fields.values_mut() {
+        let mut new_children: Option<Vec<Id>> = None;
+        for (i, &child_id) in children.iter().enumerate() {
             let result = apply_rules_inner(index, ast, child_id, fresh, rewrite_depth, None)?;
-            if result.len() != 1 || result[0] != child_id {
-                changed = true;
+            let unchanged = result.len() == 1 && result[0] == child_id;
+            match (&mut new_children, unchanged) {
+                (None, true) => {} // unchanged so far, no allocation needed
+                (None, false) => {
+                    // First divergence — copy already-processed Ids and
+                    // start collecting the rewritten sequence.
+                    let mut new = Vec::with_capacity(children.len());
+                    new.extend_from_slice(&children[..i]);
+                    new.extend(result);
+                    new_children = Some(new);
+                }
+                (Some(new), _) => {
+                    new.extend(result);
+                }
             }
-            new_children.extend(result);
         }
-        new_fields.insert(field_id, new_children);
+        if let Some(new) = new_children {
+            *children = new;
+        }
     }
-
-    if !changed {
-        return Ok(vec![id]);
-    }
-
-    ast.nodes[id].fields = new_fields;
+    ast.nodes[id].fields = fields;
     Ok(vec![id])
 }
 
