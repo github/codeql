@@ -1035,12 +1035,12 @@ module.exports = grammar({
         PRECS["if"],
         seq(
           "if",
-          sep1(field("condition", $._if_condition_sequence_item), ","),
+          sep1(field("condition", $.if_condition), ","),
           $._block,
           optional(seq($["else"], $._else_options))
         )
       ),
-    _if_condition_sequence_item: ($) =>
+    if_condition: ($) =>
       choice($._if_let_binding, $._expression, $.availability_condition),
     _if_let_binding: ($) =>
       seq(
@@ -1053,7 +1053,7 @@ module.exports = grammar({
         PRECS["if"],
         seq(
           "guard",
-          sep1(field("condition", $._if_condition_sequence_item), ","),
+          sep1(field("condition", $.if_condition), ","),
           $["else"],
           $._block
         )
@@ -1237,7 +1237,7 @@ module.exports = grammar({
         PRECS.loop,
         seq(
           "while",
-          sep1(field("condition", $._if_condition_sequence_item), ","),
+          sep1(field("condition", $.if_condition), ","),
           "{",
           optional($.statements),
           "}"
@@ -1254,7 +1254,7 @@ module.exports = grammar({
           // Make sure we make it to the `while` before assuming this is a parameter pack.
           repeat($._implicit_semi),
           "while",
-          sep1(field("condition", $._if_condition_sequence_item), ",")
+          sep1(field("condition", $.if_condition), ",")
         )
       ),
     control_transfer_statement: ($) =>
