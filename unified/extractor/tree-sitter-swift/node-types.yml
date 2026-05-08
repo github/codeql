@@ -235,7 +235,9 @@ named:
   identifier:
     $children+: simple_identifier
   if_condition:
-    $children*: [availability_condition, expression, pattern, type, type_annotation, user_type, value_binding_pattern, where_clause, wildcard_pattern]
+    $children: [availability_condition, expression, if_let_binding]
+  if_let_binding:
+    $children*: [expression, pattern, type, type_annotation, user_type, value_binding_pattern, where_clause, wildcard_pattern]
     bound_identifier?: simple_identifier
   if_statement:
     $children*: [else, if_statement, statements]

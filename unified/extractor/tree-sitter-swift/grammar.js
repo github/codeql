@@ -1041,8 +1041,8 @@ module.exports = grammar({
         )
       ),
     if_condition: ($) =>
-      choice($._if_let_binding, $.expression, $.availability_condition),
-    _if_let_binding: ($) =>
+      choice($.if_let_binding, $.expression, $.availability_condition),
+    if_let_binding: ($) =>
       seq(
         $._direct_or_indirect_binding,
         optional(seq($._equal_sign, $.expression)),
