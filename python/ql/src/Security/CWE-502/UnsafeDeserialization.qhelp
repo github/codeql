@@ -16,6 +16,14 @@ may have unforeseen effects, such as the execution of arbitrary code.
 There are many different serialization frameworks.  This query currently
 supports Pickle, Marshal and Yaml.
 </p>
+<p>
+Note that a deserialization method is only dangerous if it can instantiate
+arbitrary classes. Serialization frameworks that use a schema to instantiate
+only expected, predefined types are generally not tracked by this query. Such
+frameworks are generally safe with respect to arbitrary-class-instantiation and
+gadget-chain attacks when the schema is trusted and does not permit
+user-controlled type resolution.
+</p>
 </overview>
 
 <recommendation>
