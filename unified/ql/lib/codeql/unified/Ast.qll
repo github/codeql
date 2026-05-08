@@ -1056,6 +1056,8 @@ module Swift {
     final override AstNode getAFieldOrChild() { swift_getter_specifier_child(this, _, result) }
   }
 
+  class GlobalDeclaration extends @swift_global_declaration, AstNode { }
+
   /** A class representing `guard_statement` nodes. */
   class GuardStatement extends @swift_guard_statement, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -1421,6 +1423,8 @@ module Swift {
       swift_line_string_literal_text(this, _, result)
     }
   }
+
+  class LocalDeclaration extends @swift_local_declaration, AstNode { }
 
   /** A class representing `macro_declaration` nodes. */
   class MacroDeclaration extends @swift_macro_declaration, AstNode {
@@ -1923,16 +1927,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ProtocolBody" }
 
-    /** Gets the node corresponding to the field `body`. */
-    final ProtocolFunctionDeclaration getBody(int i) { swift_protocol_body_body(this, i, result) }
-
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_protocol_body_child(this, i, result) }
+    final ProtocolMemberDeclaration getChild(int i) { swift_protocol_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_protocol_body_body(this, _, result) or swift_protocol_body_child(this, _, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_protocol_body_child(this, _, result) }
   }
 
   /** A class representing `protocol_composition_type` nodes. */
@@ -1983,13 +1982,16 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ProtocolFunctionDeclaration" }
 
+    /** Gets the node corresponding to the field `body`. */
+    final FunctionBody getBody() { swift_protocol_function_declaration_body(this, result) }
+
     /** Gets the node corresponding to the field `default_value`. */
     final Expression getDefaultValue(int i) {
       swift_protocol_function_declaration_default_value(this, i, result)
     }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_protocol_function_declaration_name(this, result) }
+    final AstNode getName() { swift_protocol_function_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `return_type`. */
     final AstNode getReturnType() { swift_protocol_function_declaration_return_type(this, result) }
@@ -1999,12 +2001,15 @@ module Swift {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
+      swift_protocol_function_declaration_body(this, result) or
       swift_protocol_function_declaration_default_value(this, _, result) or
-      swift_protocol_function_declaration_name(this, result) or
+      swift_protocol_function_declaration_def(this, result) or
       swift_protocol_function_declaration_return_type(this, result) or
       swift_protocol_function_declaration_child(this, _, result)
     }
   }
+
+  class ProtocolMemberDeclaration extends @swift_protocol_member_declaration, AstNode { }
 
   /** A class representing `protocol_property_declaration` nodes. */
   class ProtocolPropertyDeclaration extends @swift_protocol_property_declaration, AstNode {
@@ -2541,6 +2546,8 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeIdentifier" }
   }
+
+  class TypeLevelDeclaration extends @swift_type_level_declaration, AstNode { }
 
   /** A class representing `type_modifiers` nodes. */
   class TypeModifiers extends @swift_type_modifiers, AstNode {

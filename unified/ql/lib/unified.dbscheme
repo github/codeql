@@ -356,7 +356,7 @@ swift_check_expression_def(
   int type__: @swift_type__ ref
 );
 
-@swift_class_body_child_type = @swift_associatedtype_declaration | @swift_class_declaration | @swift_deinit_declaration | @swift_function_declaration | @swift_import_declaration | @swift_init_declaration | @swift_operator_declaration | @swift_precedence_group_declaration | @swift_property_declaration | @swift_protocol_declaration | @swift_subscript_declaration | @swift_token_multiline_comment | @swift_typealias_declaration
+@swift_class_body_child_type = @swift_token_multiline_comment | @swift_type_level_declaration
 
 #keyset[swift_class_body, index]
 swift_class_body_child(
@@ -626,7 +626,7 @@ swift_do_statement_def(
   unique int id: @swift_do_statement
 );
 
-@swift_enum_class_body_child_type = @swift_associatedtype_declaration | @swift_class_declaration | @swift_deinit_declaration | @swift_enum_entry | @swift_function_declaration | @swift_import_declaration | @swift_init_declaration | @swift_operator_declaration | @swift_precedence_group_declaration | @swift_property_declaration | @swift_protocol_declaration | @swift_subscript_declaration | @swift_typealias_declaration
+@swift_enum_class_body_child_type = @swift_enum_entry | @swift_type_level_declaration
 
 #keyset[swift_enum_class_body, index]
 swift_enum_class_body_child(
@@ -804,6 +804,8 @@ swift_getter_specifier_child(
 swift_getter_specifier_def(
   unique int id: @swift_getter_specifier
 );
+
+@swift_global_declaration = @swift_associatedtype_declaration | @swift_class_declaration | @swift_function_declaration | @swift_import_declaration | @swift_init_declaration | @swift_macro_declaration | @swift_operator_declaration | @swift_precedence_group_declaration | @swift_property_declaration | @swift_protocol_declaration | @swift_typealias_declaration
 
 #keyset[swift_guard_statement, index]
 swift_guard_statement_condition(
@@ -1106,6 +1108,8 @@ swift_line_string_literal_text(
 swift_line_string_literal_def(
   unique int id: @swift_line_string_literal
 );
+
+@swift_local_declaration = @swift_class_declaration | @swift_function_declaration | @swift_property_declaration | @swift_typealias_declaration
 
 #keyset[swift_macro_declaration, index]
 swift_macro_declaration_default_value(
@@ -1439,19 +1443,10 @@ swift_property_declaration_def(
 );
 
 #keyset[swift_protocol_body, index]
-swift_protocol_body_body(
-  int swift_protocol_body: @swift_protocol_body ref,
-  int index: int ref,
-  unique int body: @swift_protocol_function_declaration ref
-);
-
-@swift_protocol_body_child_type = @swift_associatedtype_declaration | @swift_deinit_declaration | @swift_init_declaration | @swift_protocol_function_declaration | @swift_protocol_property_declaration | @swift_subscript_declaration | @swift_typealias_declaration
-
-#keyset[swift_protocol_body, index]
 swift_protocol_body_child(
   int swift_protocol_body: @swift_protocol_body ref,
   int index: int ref,
-  unique int child: @swift_protocol_body_child_type ref
+  unique int child: @swift_protocol_member_declaration ref
 );
 
 swift_protocol_body_def(
@@ -1490,6 +1485,11 @@ swift_protocol_declaration_def(
   int name: @swift_token_type_identifier ref
 );
 
+swift_protocol_function_declaration_body(
+  unique int swift_protocol_function_declaration: @swift_protocol_function_declaration ref,
+  unique int body: @swift_function_body ref
+);
+
 #keyset[swift_protocol_function_declaration, index]
 swift_protocol_function_declaration_default_value(
   int swift_protocol_function_declaration: @swift_protocol_function_declaration ref,
@@ -1499,11 +1499,6 @@ swift_protocol_function_declaration_default_value(
 
 @swift_protocol_function_declaration_name_type = @swift_referenceable_operator | @swift_token_simple_identifier
 
-swift_protocol_function_declaration_name(
-  unique int swift_protocol_function_declaration: @swift_protocol_function_declaration ref,
-  unique int name: @swift_protocol_function_declaration_name_type ref
-);
-
 @swift_protocol_function_declaration_return_type_type = @swift_implicitly_unwrapped_type | @swift_type__
 
 swift_protocol_function_declaration_return_type(
@@ -1511,7 +1506,7 @@ swift_protocol_function_declaration_return_type(
   unique int return_type: @swift_protocol_function_declaration_return_type_type ref
 );
 
-@swift_protocol_function_declaration_child_type = @swift_attribute | @swift_modifiers | @swift_parameter | @swift_statements | @swift_throws_clause | @swift_token_throws | @swift_type_constraints | @swift_type_parameters
+@swift_protocol_function_declaration_child_type = @swift_attribute | @swift_modifiers | @swift_parameter | @swift_throws_clause | @swift_token_throws | @swift_type_constraints | @swift_type_parameters
 
 #keyset[swift_protocol_function_declaration, index]
 swift_protocol_function_declaration_child(
@@ -1521,8 +1516,11 @@ swift_protocol_function_declaration_child(
 );
 
 swift_protocol_function_declaration_def(
-  unique int id: @swift_protocol_function_declaration
+  unique int id: @swift_protocol_function_declaration,
+  int name: @swift_protocol_function_declaration_name_type ref
 );
+
+@swift_protocol_member_declaration = @swift_associatedtype_declaration | @swift_deinit_declaration | @swift_init_declaration | @swift_protocol_function_declaration | @swift_protocol_property_declaration | @swift_subscript_declaration | @swift_typealias_declaration
 
 @swift_protocol_property_declaration_child_type = @swift_modifiers | @swift_protocol_property_requirements | @swift_type_annotation | @swift_type_constraints
 
@@ -1644,7 +1642,7 @@ swift_setter_specifier_def(
   unique int id: @swift_setter_specifier
 );
 
-@swift_source_file_child_type = @swift_associatedtype_declaration | @swift_class_declaration | @swift_do_statement | @swift_expression | @swift_for_statement | @swift_function_declaration | @swift_guard_statement | @swift_import_declaration | @swift_init_declaration | @swift_macro_declaration | @swift_operator_declaration | @swift_precedence_group_declaration | @swift_property_declaration | @swift_protocol_declaration | @swift_repeat_while_statement | @swift_token_shebang_line | @swift_token_statement_label | @swift_token_throw_keyword | @swift_typealias_declaration | @swift_while_statement
+@swift_source_file_child_type = @swift_do_statement | @swift_expression | @swift_for_statement | @swift_global_declaration | @swift_guard_statement | @swift_repeat_while_statement | @swift_token_shebang_line | @swift_token_statement_label | @swift_token_throw_keyword | @swift_while_statement
 
 #keyset[swift_source_file, index]
 swift_source_file_child(
@@ -1657,7 +1655,7 @@ swift_source_file_def(
   unique int id: @swift_source_file
 );
 
-@swift_statements_child_type = @swift_class_declaration | @swift_control_transfer_statement | @swift_do_statement | @swift_expression | @swift_for_statement | @swift_function_declaration | @swift_guard_statement | @swift_property_declaration | @swift_repeat_while_statement | @swift_token_statement_label | @swift_typealias_declaration | @swift_while_statement
+@swift_statements_child_type = @swift_control_transfer_statement | @swift_do_statement | @swift_expression | @swift_for_statement | @swift_guard_statement | @swift_local_declaration | @swift_repeat_while_statement | @swift_token_statement_label | @swift_while_statement
 
 #keyset[swift_statements, index]
 swift_statements_child(
@@ -1854,6 +1852,8 @@ swift_type_constraints_child(
 swift_type_constraints_def(
   unique int id: @swift_type_constraints
 );
+
+@swift_type_level_declaration = @swift_associatedtype_declaration | @swift_class_declaration | @swift_deinit_declaration | @swift_function_declaration | @swift_import_declaration | @swift_init_declaration | @swift_operator_declaration | @swift_precedence_group_declaration | @swift_property_declaration | @swift_protocol_declaration | @swift_subscript_declaration | @swift_typealias_declaration
 
 #keyset[swift_type_modifiers, index]
 swift_type_modifiers_child(
