@@ -5,7 +5,7 @@ exports_files(["Cargo.toml"])
 
 codeql_rust_binary(
     name = "extractor",
-    srcs = glob(["src/*.rs"]),
+    srcs = glob(["src/**/*.rs"]),
     aliases = aliases(),
     proc_macro_deps = all_crate_deps(
         proc_macro = True,
