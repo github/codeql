@@ -2167,6 +2167,18 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "RealLiteral" }
   }
 
+  /** A class representing `referenceable_operator` nodes. */
+  class ReferenceableOperator extends @swift_referenceable_operator, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ReferenceableOperator" }
+
+    /** Gets the child of this node. */
+    final AstNode getChild() { swift_referenceable_operator_child(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { swift_referenceable_operator_child(this, result) }
+  }
+
   /** A class representing `regex_literal` tokens. */
   class RegexLiteral extends @swift_token_regex_literal, Token {
     /** Gets the name of the primary QL class for this element. */
