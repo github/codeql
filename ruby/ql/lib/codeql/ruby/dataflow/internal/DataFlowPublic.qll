@@ -1392,13 +1392,24 @@ class StmtSequenceNode extends ExprNode {
 /**
  * A data flow node corresponding to a method, block, or lambda expression.
  */
-class CallableNode extends StmtSequenceNode {
+class CallableNode extends ExprNode {
   private Callable callable;
 
   CallableNode() { this.asExpr().getExpr() = callable }
 
   /** Gets the underlying AST node as a `Callable`. */
   Callable asCallableAstNode() { result = callable }
+
+  private StmtSequence getBodySequence() {
+    result = callable.(MethodBase).getBody()
+    or
+    result = callable.(Lambda).getBody()
+    or
+    result = callable.(StmtSequence)
+  }
+
+  /** Gets the last statement in this callable body, if any. */
+  ExprNode getLastStmt() { result.asExpr().getExpr() = this.getBodySequence().getLastStmt() }
 
   private ParameterPosition getParameterPosition(ParameterNodeImpl node) {
     result = getSourceParameterPosition(node, callable)

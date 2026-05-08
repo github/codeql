@@ -100,11 +100,27 @@ private class EndBlockScope extends CfgScopeImpl, EndBlock {
   }
 }
 
-private class BodyStmtCallableScope extends CfgScopeImpl, AstInternal::TBodyStmt, Callable {
+private class BodyStmtCallableScope extends CfgScopeImpl, TDoBlock, Callable {
   final override predicate entry(AstNode first) { this.(Trees::BodyStmtTree).firstInner(first) }
 
   final override predicate exit(AstNode last, Completion c) {
     this.(Trees::BodyStmtTree).lastInner(last, c)
+  }
+}
+
+private class MethodBodyScope extends CfgScopeImpl, TMethodBase {
+  final override predicate entry(AstNode first) { this.getBody().(Trees::BodyStmtTree).firstInner(first) }
+
+  final override predicate exit(AstNode last, Completion c) {
+    this.getBody().(Trees::BodyStmtTree).lastInner(last, c)
+  }
+}
+
+private class LambdaBodyScope extends CfgScopeImpl, TLambda {
+  final override predicate entry(AstNode first) { this.getBody().(Trees::BodyStmtTree).firstInner(first) }
+
+  final override predicate exit(AstNode last, Completion c) {
+    this.getBody().(Trees::BodyStmtTree).lastInner(last, c)
   }
 }
 
@@ -1073,14 +1089,18 @@ module Trees {
     final override AstNode getAccessNode() { result = super.getDefiningAccess() }
   }
 
-  private class LambdaTree extends BodyStmtTree instanceof Lambda {
+  private class LambdaTree extends LeafTree instanceof Lambda { }
+
+  private class LambdaBodyStmtTree extends BodyStmtTree instanceof AstInternal::TLambdaBodyStmt {
     final override predicate propagatesAbnormal(AstNode child) { none() }
+
+    private Lambda getLambda() { result = this.getParent() }
 
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
-      result = super.getParameter(i) and rescuable = false
+      result = this.getLambda().getParameter(i) and rescuable = false
       or
-      result = BodyStmtTree.super.getBodyChild(i - super.getNumberOfParameters(), rescuable)
+      result = BodyStmtTree.super.getBodyChild(i - this.getLambda().getNumberOfParameters(), rescuable)
     }
   }
 
@@ -1151,14 +1171,18 @@ module Trees {
   private class MethodNameTree extends LeafTree instanceof MethodName, AstInternal::TTokenMethodName
   { }
 
-  private class MethodTree extends BodyStmtTree instanceof Method {
+  private class MethodTree extends LeafTree instanceof Method { }
+
+  private class MethodBodyStmtTree extends BodyStmtTree instanceof AstInternal::TMethodBodyStmt {
     final override predicate propagatesAbnormal(AstNode child) { none() }
+
+    private Method getMethod() { result = this.getParent() }
 
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
-      result = super.getParameter(i) and rescuable = false
+      result = this.getMethod().getParameter(i) and rescuable = false
       or
-      result = BodyStmtTree.super.getBodyChild(i - super.getNumberOfParameters(), rescuable)
+      result = BodyStmtTree.super.getBodyChild(i - this.getMethod().getNumberOfParameters(), rescuable)
     }
   }
 
@@ -1351,24 +1375,23 @@ module Trees {
     }
   }
 
-  private class SingletonMethodTree extends BodyStmtTree instanceof SingletonMethod {
+  private class SingletonMethodTree extends StandardPostOrderTree instanceof SingletonMethod {
+    final override ControlFlowTree getChildNode(int i) { result = super.getObject() and i = 0 }
+  }
+
+  private class SingletonMethodBodyStmtTree extends BodyStmtTree instanceof
+    AstInternal::TSingletonMethodBodyStmt
+  {
     final override predicate propagatesAbnormal(AstNode child) { none() }
+
+    private SingletonMethod getMethod() { result = this.getParent() }
 
     /** Gets the `i`th child in the body of this block. */
     final override AstNode getBodyChild(int i, boolean rescuable) {
-      result = super.getParameter(i) and rescuable = false
+      result = this.getMethod().getParameter(i) and rescuable = false
       or
-      result = BodyStmtTree.super.getBodyChild(i - super.getNumberOfParameters(), rescuable)
-    }
-
-    override predicate first(AstNode first) { first(super.getObject(), first) }
-
-    override predicate succ(AstNode pred, AstNode succ, Completion c) {
-      BodyStmtTree.super.succ(pred, succ, c)
-      or
-      last(super.getObject(), pred, c) and
-      succ = this and
-      c instanceof NormalCompletion
+      result =
+        BodyStmtTree.super.getBodyChild(i - this.getMethod().getNumberOfParameters(), rescuable)
     }
   }
 

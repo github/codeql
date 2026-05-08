@@ -8,7 +8,7 @@ private import internal.TreeSitter
 private import internal.Method
 
 /** A callable. */
-class Callable extends StmtSequence, Expr, Scope, TCallable {
+class Callable extends Expr, Scope, TCallable {
   /** Gets the number of parameters of this callable. */
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
 
@@ -26,7 +26,10 @@ class Callable extends StmtSequence, Expr, Scope, TCallable {
 }
 
 /** A method. */
-class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
+class MethodBase extends Callable, Scope, TMethodBase {
+  /** Gets the body of this method. */
+  BodyStmt getBody() { none() }
+
   /** Gets the name of this method. */
   string getName() { none() }
 
@@ -36,7 +39,7 @@ class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
   override AstNode getAChild(string pred) {
     result = Callable.super.getAChild(pred)
     or
-    result = BodyStmt.super.getAChild(pred)
+    pred = "getBody" and result = this.getBody()
   }
 
   /**
@@ -218,6 +221,8 @@ class Method extends MethodBase, TMethod {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
+  final override BodyStmt getBody() { synthChild(this, this.getNumberOfParameters(), result) }
+
   final override string toString() { result = this.getName() }
 
   overlay[global]
@@ -280,6 +285,8 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
+  final override BodyStmt getBody() { synthChild(this, this.getNumberOfParameters() + 1, result) }
+
   final override string toString() { result = this.getName() }
 
   final override AstNode getAChild(string pred) {
@@ -321,7 +328,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
  * -> (x) { x + 1 }
  * ```
  */
-class Lambda extends Callable, BodyStmt, TLambda {
+class Lambda extends Callable, TLambda {
   private Ruby::Lambda g;
 
   Lambda() { this = TLambda(g) }
@@ -332,12 +339,14 @@ class Lambda extends Callable, BodyStmt, TLambda {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
+  final BodyStmt getBody() { synthChild(this, this.getNumberOfParameters(), result) }
+
   final override string toString() { result = "-> { ... }" }
 
   final override AstNode getAChild(string pred) {
     result = Callable.super.getAChild(pred)
     or
-    result = BodyStmt.super.getAChild(pred)
+    pred = "getBody" and result = this.getBody()
   }
 }
 

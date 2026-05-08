@@ -198,6 +198,7 @@ private module Cached {
     TLShiftExprSynth(Ast::AstNode parent, int i) { mkSynthChild(LShiftExprKind(), parent, i) } or
     TLTExpr(Ruby::Binary g) { g instanceof @ruby_binary_langle } or
     TLambda(Ruby::Lambda g) or
+    TLambdaBodyStmt(Ast::Lambda parent, int i) { i = parent.getNumberOfParameters() } or
     TLine(Ruby::Line g) or
     TLeftAssignmentList(Ruby::LeftAssignmentList g) or
     TLocalVariableAccessReal(Ruby::Identifier g, TLocalVariableReal v) {
@@ -220,6 +221,7 @@ private module Cached {
     TLogicalOrExprSynth(Ast::AstNode parent, int i) { mkSynthChild(LogicalOrExprKind(), parent, i) } or
     TMatchPattern(Ruby::MatchPattern g) or
     TMethod(Ruby::Method g) or
+    TMethodBodyStmt(Ast::Method parent, int i) { i = parent.getNumberOfParameters() } or
     TMethodCallSynth(Ast::AstNode parent, int i, string name, boolean setter, int arity) {
       mkSynthChild(MethodCallKind(name, setter, arity), parent, i)
     } or
@@ -285,6 +287,9 @@ private module Cached {
     } or
     TSingletonClass(Ruby::SingletonClass g) or
     TSingletonMethod(Ruby::SingletonMethod g) or
+    TSingletonMethodBodyStmt(Ast::SingletonMethod parent, int i) {
+      i = parent.getNumberOfParameters() + 1
+    } or
     TSpaceshipExpr(Ruby::Binary g) { g instanceof @ruby_binary_langleequalrangle } or
     TSplatExprReal(Ruby::SplatArgument g) or
     TSplatExprSynth(Ast::AstNode parent, int i) { mkSynthChild(SplatExprKind(), parent, i) } or
@@ -651,6 +656,12 @@ private module Cached {
     result = TPairSynth(parent, i)
     or
     result = TSimpleSymbolLiteralSynth(parent, i, _)
+    or
+    result = TMethodBodyStmt(parent, i)
+    or
+    result = TLambdaBodyStmt(parent, i)
+    or
+    result = TSingletonMethodBodyStmt(parent, i)
   }
 
   /**
@@ -759,7 +770,9 @@ class TStmtSequence =
   TBeginBlock or TEndBlock or TThen or TElse or TDo or TEnsure or TStringInterpolationComponent or
       TBlock or TBodyStmt or TParenthesizedExpr or TStmtSequenceSynth;
 
-class TBodyStmt = TBeginExpr or TModuleBase or TMethod or TLambda or TDoBlock or TSingletonMethod;
+class TBodyStmt =
+  TBeginExpr or TModuleBase or TDoBlock or TMethodBodyStmt or TLambdaBodyStmt or
+      TSingletonMethodBodyStmt;
 
 class TNilLiteral = TNilLiteralReal or TNilLiteralSynth;
 

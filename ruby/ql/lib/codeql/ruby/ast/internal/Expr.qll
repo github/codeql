@@ -64,21 +64,30 @@ class Ensure extends StmtSequence, TEnsure {
 
 // Not defined by dispatch, as it should not be exposed
 Ruby::AstNode getBodyStmtChild(TBodyStmt b, int i) {
-  exists(Ruby::Method g, Ruby::AstNode body | b = TMethod(g) and body = g.getBody() |
-    result = body.(Ruby::BodyStatement).getChild(i)
-    or
-    i = 0 and result = body and not body instanceof Ruby::BodyStatement
-  )
-  or
-  exists(Ruby::SingletonMethod g, Ruby::AstNode body |
-    b = TSingletonMethod(g) and body = g.getBody()
+  exists(Method m, Ruby::Method g, Ruby::AstNode body |
+    b = TMethodBodyStmt(m, _) and
+    m = TMethod(g) and
+    body = g.getBody()
   |
     result = body.(Ruby::BodyStatement).getChild(i)
     or
     i = 0 and result = body and not body instanceof Ruby::BodyStatement
   )
   or
-  exists(Ruby::Lambda g | b = TLambda(g) |
+  exists(SingletonMethod m, Ruby::SingletonMethod g, Ruby::AstNode body |
+    b = TSingletonMethodBodyStmt(m, _) and
+    m = TSingletonMethod(g) and
+    body = g.getBody()
+  |
+    result = body.(Ruby::BodyStatement).getChild(i)
+    or
+    i = 0 and result = body and not body instanceof Ruby::BodyStatement
+  )
+  or
+  exists(Lambda l, Ruby::Lambda g |
+    b = TLambdaBodyStmt(l, _) and
+    l = TLambda(g)
+  |
     result = g.getBody().(Ruby::DoBlock).getBody().getChild(i) or
     result = g.getBody().(Ruby::Block).getBody().getChild(i)
   )

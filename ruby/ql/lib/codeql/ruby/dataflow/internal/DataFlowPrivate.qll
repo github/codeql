@@ -1656,13 +1656,21 @@ private module ReturnNodes {
     result = implicitReturn(c, n).getParent()
   }
 
+  private Stmt getACallableBodyStmt(Callable c) {
+    result = c.(MethodBase).getBody().getAStmt()
+    or
+    result = c.(Lambda).getBody().getAStmt()
+    or
+    result = c.(StmtSequence).getAStmt()
+  }
+
   /**
    * A data-flow node that represents an expression implicitly returned by
    * a callable. An implicit return happens when an expression can be the
    * last thing that is evaluated in the body of the callable.
    */
   class ExprReturnNode extends SourceReturnNode, ExprNode {
-    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getAStmt()) }
+    ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = getACallableBodyStmt(c)) }
 
     override ReturnKind getKindSource() {
       exists(CfgScope scope | scope = this.(NodeImpl).getCfgScope() |
