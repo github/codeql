@@ -99,11 +99,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "AdditiveExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_additive_expression_lhs(this, i, result) }
+    final AstNode getLhs() { swift_additive_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_additive_expression_def(this, value) |
+      exists(int value | swift_additive_expression_def(this, _, value, _) |
         result = "+" and value = 0
         or
         result = "-" and value = 1
@@ -111,12 +111,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_additive_expression_rhs(this, i, result) }
+    final AstNode getRhs() { swift_additive_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_additive_expression_lhs(this, _, result) or
-      swift_additive_expression_rhs(this, _, result)
+      swift_additive_expression_def(this, result, _, _) or
+      swift_additive_expression_def(this, _, _, result)
     }
   }
 
@@ -155,23 +155,23 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "AsExpression" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr(int i) { swift_as_expression_expr(this, i, result) }
+    final AstNode getExpr() { swift_as_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_as_expression_def(this, result, _) }
+    final AstNode getName() { swift_as_expression_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `type`. */
     final AstNode getType(int i) { swift_as_expression_type(this, i, result) }
 
     /** Gets the child of this node. */
-    final AsOperator getChild() { swift_as_expression_def(this, _, result) }
+    final AsOperator getChild() { swift_as_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_as_expression_expr(this, _, result) or
-      swift_as_expression_def(this, result, _) or
+      swift_as_expression_def(this, result, _, _) or
+      swift_as_expression_def(this, _, result, _) or
       swift_as_expression_type(this, _, result) or
-      swift_as_expression_def(this, _, result)
+      swift_as_expression_def(this, _, _, result)
     }
   }
 
@@ -188,7 +188,7 @@ module Swift {
 
     /** Gets the node corresponding to the field `operator`. */
     final string getOperator() {
-      exists(int value | swift_assignment_def(this, value, _) |
+      exists(int value | swift_assignment_def(this, value, _, _) |
         result = "%=" and value = 0
         or
         result = "*=" and value = 1
@@ -204,14 +204,14 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `result`. */
-    final AstNode getResult(int i) { swift_assignment_result(this, i, result) }
+    final AstNode getResult() { swift_assignment_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `target`. */
-    final DirectlyAssignableExpression getTarget() { swift_assignment_def(this, _, result) }
+    final DirectlyAssignableExpression getTarget() { swift_assignment_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_assignment_result(this, _, result) or swift_assignment_def(this, _, result)
+      swift_assignment_def(this, _, result, _) or swift_assignment_def(this, _, _, result)
     }
   }
 
@@ -277,14 +277,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "AwaitExpression" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr(int i) { swift_await_expression_expr(this, i, result) }
+    final AstNode getExpr() { swift_await_expression_expr(this, result) }
 
     /** Gets the child of this node. */
     final AstNode getChild() { swift_await_expression_child(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_await_expression_expr(this, _, result) or swift_await_expression_child(this, result)
+      swift_await_expression_expr(this, result) or swift_await_expression_child(this, result)
     }
   }
 
@@ -306,11 +306,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "BitwiseOperation" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_bitwise_operation_lhs(this, i, result) }
+    final AstNode getLhs() { swift_bitwise_operation_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_bitwise_operation_def(this, value) |
+      exists(int value | swift_bitwise_operation_def(this, _, value, _) |
         result = "&" and value = 0
         or
         result = "<<" and value = 1
@@ -324,11 +324,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_bitwise_operation_rhs(this, i, result) }
+    final AstNode getRhs() { swift_bitwise_operation_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_bitwise_operation_lhs(this, _, result) or swift_bitwise_operation_rhs(this, _, result)
+      swift_bitwise_operation_def(this, result, _, _) or
+      swift_bitwise_operation_def(this, _, _, result)
     }
   }
 
@@ -388,7 +389,7 @@ module Swift {
     final AstNode getName() { swift_capture_list_item_def(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_capture_list_item_value(this, i, result) }
+    final AstNode getValue() { swift_capture_list_item_value(this, result) }
 
     /** Gets the child of this node. */
     final OwnershipModifier getChild() { swift_capture_list_item_child(this, result) }
@@ -396,7 +397,7 @@ module Swift {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       swift_capture_list_item_def(this, result) or
-      swift_capture_list_item_value(this, _, result) or
+      swift_capture_list_item_value(this, result) or
       swift_capture_list_item_child(this, result)
     }
   }
@@ -430,23 +431,25 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "CheckExpression" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_check_expression_def(this, result, _) }
+    final AstNode getName() { swift_check_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_check_expression_def(this, _, value) | (result = "is" and value = 0))
+      exists(int value | swift_check_expression_def(this, _, value, _) |
+        (result = "is" and value = 0)
+      )
     }
 
     /** Gets the node corresponding to the field `target`. */
-    final AstNode getTarget(int i) { swift_check_expression_target(this, i, result) }
+    final AstNode getTarget() { swift_check_expression_def(this, _, _, result) }
 
     /** Gets the node corresponding to the field `type`. */
     final AstNode getType(int i) { swift_check_expression_type(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_check_expression_def(this, result, _) or
-      swift_check_expression_target(this, _, result) or
+      swift_check_expression_def(this, result, _, _) or
+      swift_check_expression_def(this, _, _, result) or
       swift_check_expression_type(this, _, result)
     }
   }
@@ -512,11 +515,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ComparisonExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_comparison_expression_lhs(this, i, result) }
+    final AstNode getLhs() { swift_comparison_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_comparison_expression_def(this, value) |
+      exists(int value | swift_comparison_expression_def(this, _, value, _) |
         result = "<" and value = 0
         or
         result = "<=" and value = 1
@@ -528,12 +531,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_comparison_expression_rhs(this, i, result) }
+    final AstNode getRhs() { swift_comparison_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_comparison_expression_lhs(this, _, result) or
-      swift_comparison_expression_rhs(this, _, result)
+      swift_comparison_expression_def(this, result, _, _) or
+      swift_comparison_expression_def(this, _, _, result)
     }
   }
 
@@ -591,22 +594,22 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ConjunctionExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_conjunction_expression_lhs(this, i, result) }
+    final AstNode getLhs() { swift_conjunction_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_conjunction_expression_def(this, value) |
+      exists(int value | swift_conjunction_expression_def(this, _, value, _) |
         (result = "&&" and value = 0)
       )
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_conjunction_expression_rhs(this, i, result) }
+    final AstNode getRhs() { swift_conjunction_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_conjunction_expression_lhs(this, _, result) or
-      swift_conjunction_expression_rhs(this, _, result)
+      swift_conjunction_expression_def(this, result, _, _) or
+      swift_conjunction_expression_def(this, _, _, result)
     }
   }
 
@@ -652,14 +655,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ControlTransferStatement" }
 
     /** Gets the node corresponding to the field `result`. */
-    final AstNode getResult(int i) { swift_control_transfer_statement_result(this, i, result) }
+    final AstNode getResult() { swift_control_transfer_statement_result(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_control_transfer_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_control_transfer_statement_result(this, _, result) or
+      swift_control_transfer_statement_result(this, result) or
       swift_control_transfer_statement_child(this, _, result)
     }
   }
@@ -801,22 +804,22 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "DisjunctionExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_disjunction_expression_lhs(this, i, result) }
+    final AstNode getLhs() { swift_disjunction_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_disjunction_expression_def(this, value) |
+      exists(int value | swift_disjunction_expression_def(this, _, value, _) |
         (result = "||" and value = 0)
       )
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_disjunction_expression_rhs(this, i, result) }
+    final AstNode getRhs() { swift_disjunction_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_disjunction_expression_lhs(this, _, result) or
-      swift_disjunction_expression_rhs(this, _, result)
+      swift_disjunction_expression_def(this, result, _, _) or
+      swift_disjunction_expression_def(this, _, _, result)
     }
   }
 
@@ -930,11 +933,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "EqualityExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_equality_expression_lhs(this, i, result) }
+    final AstNode getLhs() { swift_equality_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_equality_expression_def(this, value) |
+      exists(int value | swift_equality_expression_def(this, _, value, _) |
         result = "!=" and value = 0
         or
         result = "!==" and value = 1
@@ -946,12 +949,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_equality_expression_rhs(this, i, result) }
+    final AstNode getRhs() { swift_equality_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_equality_expression_lhs(this, _, result) or
-      swift_equality_expression_rhs(this, _, result)
+      swift_equality_expression_def(this, result, _, _) or
+      swift_equality_expression_def(this, _, _, result)
     }
   }
 
@@ -985,18 +988,18 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ForStatement" }
 
     /** Gets the node corresponding to the field `collection`. */
-    final AstNode getCollection(int i) { swift_for_statement_collection(this, i, result) }
+    final AstNode getCollection() { swift_for_statement_def(this, result, _) }
 
     /** Gets the node corresponding to the field `item`. */
-    final Pattern getItem() { swift_for_statement_def(this, result) }
+    final Pattern getItem() { swift_for_statement_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_for_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_for_statement_collection(this, _, result) or
-      swift_for_statement_def(this, result) or
+      swift_for_statement_def(this, result, _) or
+      swift_for_statement_def(this, _, result) or
       swift_for_statement_child(this, _, result)
     }
   }
@@ -1187,19 +1190,19 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "InfixExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_infix_expression_lhs(this, i, result) }
+    final AstNode getLhs() { swift_infix_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
-    final CustomOperator getOp() { swift_infix_expression_def(this, result) }
+    final CustomOperator getOp() { swift_infix_expression_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_infix_expression_rhs(this, i, result) }
+    final AstNode getRhs() { swift_infix_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_infix_expression_lhs(this, _, result) or
-      swift_infix_expression_def(this, result) or
-      swift_infix_expression_rhs(this, _, result)
+      swift_infix_expression_def(this, result, _, _) or
+      swift_infix_expression_def(this, _, result, _) or
+      swift_infix_expression_def(this, _, _, result)
     }
   }
 
@@ -1298,7 +1301,7 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_interpolated_expression_value(this, i, result) }
+    final AstNode getValue() { swift_interpolated_expression_value(this, result) }
 
     /** Gets the child of this node. */
     final TypeModifiers getChild() { swift_interpolated_expression_child(this, result) }
@@ -1307,7 +1310,7 @@ module Swift {
     final override AstNode getAFieldOrChild() {
       swift_interpolated_expression_name(this, result) or
       swift_interpolated_expression_reference_specifier(this, _, result) or
-      swift_interpolated_expression_value(this, _, result) or
+      swift_interpolated_expression_value(this, result) or
       swift_interpolated_expression_child(this, result)
     }
   }
@@ -1478,10 +1481,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "MacroDefinition" }
 
     /** Gets the node corresponding to the field `body`. */
-    final AstNode getBody(int i) { swift_macro_definition_body(this, i, result) }
+    final AstNode getBody() { swift_macro_definition_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_macro_definition_body(this, _, result) }
+    final override AstNode getAFieldOrChild() { swift_macro_definition_def(this, result) }
   }
 
   /** A class representing `macro_invocation` nodes. */
@@ -1576,11 +1579,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "MultiplicativeExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_multiplicative_expression_lhs(this, i, result) }
+    final AstNode getLhs() { swift_multiplicative_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_multiplicative_expression_def(this, value) |
+      exists(int value | swift_multiplicative_expression_def(this, _, value, _) |
         result = "%" and value = 0
         or
         result = "*" and value = 1
@@ -1590,12 +1593,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_multiplicative_expression_rhs(this, i, result) }
+    final AstNode getRhs() { swift_multiplicative_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_multiplicative_expression_lhs(this, _, result) or
-      swift_multiplicative_expression_rhs(this, _, result)
+      swift_multiplicative_expression_def(this, result, _, _) or
+      swift_multiplicative_expression_def(this, _, _, result)
     }
   }
 
@@ -1645,15 +1648,15 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "NilCoalescingExpression" }
 
     /** Gets the node corresponding to the field `if_nil`. */
-    final AstNode getIfNil(int i) { swift_nil_coalescing_expression_if_nil(this, i, result) }
+    final AstNode getIfNil() { swift_nil_coalescing_expression_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_nil_coalescing_expression_value(this, i, result) }
+    final AstNode getValue() { swift_nil_coalescing_expression_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_nil_coalescing_expression_if_nil(this, _, result) or
-      swift_nil_coalescing_expression_value(this, _, result)
+      swift_nil_coalescing_expression_def(this, result, _) or
+      swift_nil_coalescing_expression_def(this, _, result)
     }
   }
 
@@ -1681,12 +1684,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "OpenEndRangeExpression" }
 
     /** Gets the node corresponding to the field `start`. */
-    final AstNode getStart(int i) { swift_open_end_range_expression_start(this, i, result) }
+    final AstNode getStart() { swift_open_end_range_expression_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_open_end_range_expression_start(this, _, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_open_end_range_expression_def(this, result) }
   }
 
   /** A class representing `open_start_range_expression` nodes. */
@@ -1695,11 +1696,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "OpenStartRangeExpression" }
 
     /** Gets the node corresponding to the field `end`. */
-    final AstNode getEnd(int i) { swift_open_start_range_expression_end(this, i, result) }
+    final AstNode getEnd() { swift_open_start_range_expression_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_open_start_range_expression_end(this, _, result)
+      swift_open_start_range_expression_def(this, result)
     }
   }
 
@@ -1713,6 +1714,18 @@ module Swift {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_operator_declaration_child(this, _, result) }
+  }
+
+  /** A class representing `optional_chain_marker` nodes. */
+  class OptionalChainMarker extends @swift_optional_chain_marker, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "OptionalChainMarker" }
+
+    /** Gets the child of this node. */
+    final AstNode getChild() { swift_optional_chain_marker_child(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { swift_optional_chain_marker_child(this, result) }
   }
 
   /** A class representing `optional_type` nodes. */
@@ -1817,14 +1830,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "PostfixExpression" }
 
     /** Gets the node corresponding to the field `operation`. */
-    final AstNode getOperation() { swift_postfix_expression_def(this, result) }
+    final AstNode getOperation() { swift_postfix_expression_def(this, result, _) }
 
     /** Gets the node corresponding to the field `target`. */
-    final AstNode getTarget(int i) { swift_postfix_expression_target(this, i, result) }
+    final AstNode getTarget() { swift_postfix_expression_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_postfix_expression_def(this, result) or swift_postfix_expression_target(this, _, result)
+      swift_postfix_expression_def(this, result, _) or swift_postfix_expression_def(this, _, result)
     }
   }
 
@@ -1878,14 +1891,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "PrefixExpression" }
 
     /** Gets the node corresponding to the field `operation`. */
-    final AstNode getOperation() { swift_prefix_expression_def(this, result) }
+    final AstNode getOperation() { swift_prefix_expression_def(this, result, _) }
 
     /** Gets the node corresponding to the field `target`. */
-    final AstNode getTarget(int i) { swift_prefix_expression_target(this, i, result) }
+    final AstNode getTarget() { swift_prefix_expression_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_prefix_expression_def(this, result) or swift_prefix_expression_target(this, _, result)
+      swift_prefix_expression_def(this, result, _) or swift_prefix_expression_def(this, _, result)
     }
   }
 
@@ -2057,11 +2070,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "RangeExpression" }
 
     /** Gets the node corresponding to the field `end`. */
-    final AstNode getEnd(int i) { swift_range_expression_end(this, i, result) }
+    final AstNode getEnd() { swift_range_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_range_expression_def(this, value) |
+      exists(int value | swift_range_expression_def(this, _, value, _) |
         result = "..." and value = 0
         or
         result = "..<" and value = 1
@@ -2069,11 +2082,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `start`. */
-    final AstNode getStart(int i) { swift_range_expression_start(this, i, result) }
+    final AstNode getStart() { swift_range_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_range_expression_end(this, _, result) or swift_range_expression_start(this, _, result)
+      swift_range_expression_def(this, result, _, _) or
+      swift_range_expression_def(this, _, _, result)
     }
   }
 
@@ -2347,14 +2361,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "SwitchStatement" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr(int i) { swift_switch_statement_expr(this, i, result) }
+    final AstNode getExpr() { swift_switch_statement_def(this, result) }
 
     /** Gets the `i`th child of this node. */
     final SwitchEntry getChild(int i) { swift_switch_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_switch_statement_expr(this, _, result) or swift_switch_statement_child(this, _, result)
+      swift_switch_statement_def(this, result) or swift_switch_statement_child(this, _, result)
     }
   }
 
@@ -2364,19 +2378,19 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TernaryExpression" }
 
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_ternary_expression_condition(this, i, result) }
+    final AstNode getCondition() { swift_ternary_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `if_false`. */
-    final AstNode getIfFalse(int i) { swift_ternary_expression_if_false(this, i, result) }
+    final AstNode getIfFalse() { swift_ternary_expression_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `if_true`. */
-    final AstNode getIfTrue(int i) { swift_ternary_expression_if_true(this, i, result) }
+    final AstNode getIfTrue() { swift_ternary_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_ternary_expression_condition(this, _, result) or
-      swift_ternary_expression_if_false(this, _, result) or
-      swift_ternary_expression_if_true(this, _, result)
+      swift_ternary_expression_def(this, result, _, _) or
+      swift_ternary_expression_def(this, _, result, _) or
+      swift_ternary_expression_def(this, _, _, result)
     }
   }
 
@@ -2410,14 +2424,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TryExpression" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr(int i) { swift_try_expression_expr(this, i, result) }
+    final AstNode getExpr() { swift_try_expression_def(this, result, _) }
 
     /** Gets the child of this node. */
-    final TryOperator getChild() { swift_try_expression_def(this, result) }
+    final TryOperator getChild() { swift_try_expression_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_try_expression_expr(this, _, result) or swift_try_expression_def(this, result)
+      swift_try_expression_def(this, result, _) or swift_try_expression_def(this, _, result)
     }
   }
 
@@ -2678,7 +2692,7 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_value_argument_value(this, i, result) }
+    final AstNode getValue() { swift_value_argument_value(this, result) }
 
     /** Gets the child of this node. */
     final TypeModifiers getChild() { swift_value_argument_child(this, result) }
@@ -2687,7 +2701,7 @@ module Swift {
     final override AstNode getAFieldOrChild() {
       swift_value_argument_name(this, result) or
       swift_value_argument_reference_specifier(this, _, result) or
-      swift_value_argument_value(this, _, result) or
+      swift_value_argument_value(this, result) or
       swift_value_argument_child(this, result)
     }
   }
