@@ -339,7 +339,18 @@ impl Ast {
         let content = match &node.content {
             NodeContent::Range(range) => source[range.start_byte..range.end_byte].to_string(),
             NodeContent::String(s) => s.to_string(),
-            NodeContent::DynamicString(s) => s.clone(),
+            NodeContent::DynamicString(s) if !s.is_empty() => s.clone(),
+            // Synthesized nodes (from rule transforms) carry an empty
+            // `DynamicString`; resolve them against the inherited source
+            // range so `#{capture}` after a translation still yields the
+            // original source text.
+            NodeContent::DynamicString(_) => match node.source_range {
+                Some(range) => source
+                    .get(range.start_byte..range.end_byte)
+                    .map(|s| s.to_string())
+                    .unwrap_or_default(),
+                None => String::new(),
+            },
         };
         if fields.is_empty() {
             value.insert(kind, json!(content));
