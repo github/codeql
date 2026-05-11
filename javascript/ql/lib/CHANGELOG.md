@@ -1,3 +1,10 @@
+## 2.7.0
+
+### New Features
+
+* Added support for [`@vercel/node`](https://www.npmjs.com/package/@vercel/node) Vercel serverless functions. Handlers are recognized via the `VercelRequest`/`VercelResponse` TypeScript parameter types, and standard security queries (`js/reflected-xss`, `js/request-forgery`, `js/sql-injection`, `js/command-line-injection`, etc.) now detect vulnerabilities in Vercel API route files.
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for JavaScript](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/).
+
 ## 2.6.28
 
 No user-facing changes.
