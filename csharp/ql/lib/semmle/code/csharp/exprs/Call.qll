@@ -571,6 +571,29 @@ class MutatorOperatorCall extends OperatorCall {
 }
 
 /**
+ * A call to an instance mutator operator, for example `a++` on
+ * line 5 in
+ *
+ * ```csharp
+ * class A {
+ *   public void operator++() { ... }
+ *
+ *   public static void Increment(A a) {
+ *     a++;
+ *   }
+ * }
+ * ```
+ */
+class InstanceMutatorOperatorCall extends MutatorOperatorCall {
+  InstanceMutatorOperatorCall() { this.getTarget().getNumberOfParameters() = 0 }
+
+  /** Gets the qualifier of this instance mutator operator call. */
+  Expr getQualifier() { result = this.getChildExpr(0) }
+
+  override Expr getArgument(int i) { none() }
+}
+
+/**
  * A call to a compound assignment operator, for example `this += other`
  * on line 7 in
  *
