@@ -1,7 +1,7 @@
 #select
-| src/main_test.go:0:0:0:0 | src/main_test.go |
-| src/nested/nested_test.go:0:0:0:0 | src/nested/nested_test.go |
+| main_test.go |
+| nested/nested_test.go |
 testFunctions
-| TestNestedFunc | src/nested/nested_test.go |
-| TestPrivateFunc | src/main_test.go |
-| TestPublicFunc | src/main_test.go |
+| TestNestedFunc | nested/nested_test.go |
+| TestPrivateFunc | main_test.go |
+| TestPublicFunc | main_test.go |
