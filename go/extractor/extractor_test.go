@@ -190,6 +190,103 @@ func TestIsBetterPackage(t *testing.T) {
 	}
 }
 
+// TestSelectBestPackages tests the selectBestPackages function
+func TestSelectBestPackages(t *testing.T) {
+	// Helper to create a package with specified properties
+	makePkg := func(id, path string, syntaxCount int) *packages.Package {
+		syntax := make([]*ast.File, syntaxCount)
+		return &packages.Package{
+			ID:      id,
+			PkgPath: path,
+			Syntax:  syntax,
+		}
+	}
+
+	tests := []struct {
+		name           string
+		pkgs           []*packages.Package
+		expectedPkgIDs map[string]string // pkgPath -> expected selected ID
+	}{
+		{
+			name: "single package",
+			pkgs: []*packages.Package{
+				makePkg("example.com/pkg", "example.com/pkg", 10),
+			},
+			expectedPkgIDs: map[string]string{
+				"example.com/pkg": "example.com/pkg",
+			},
+		},
+		{
+			name: "test package preferred over production",
+			pkgs: []*packages.Package{
+				makePkg("example.com/pkg", "example.com/pkg", 10),
+				makePkg("example.com/pkg [example.com/pkg.test]", "example.com/pkg", 15),
+			},
+			expectedPkgIDs: map[string]string{
+				"example.com/pkg": "example.com/pkg [example.com/pkg.test]",
+			},
+		},
+		{
+			name: "exact test preferred over nested test",
+			pkgs: []*packages.Package{
+				makePkg("example.com/pkg [example.com/pkg.test]", "example.com/pkg", 20),
+				makePkg("example.com/pkg [example.com/pkg/nested.test]", "example.com/pkg", 15),
+			},
+			expectedPkgIDs: map[string]string{
+				"example.com/pkg": "example.com/pkg [example.com/pkg.test]",
+			},
+		},
+		{
+			name: "multiple packages with different paths",
+			pkgs: []*packages.Package{
+				makePkg("example.com/pkg1", "example.com/pkg1", 10),
+				makePkg("example.com/pkg1 [example.com/pkg1.test]", "example.com/pkg1", 15),
+				makePkg("example.com/pkg2", "example.com/pkg2", 8),
+				makePkg("example.com/pkg2 [example.com/pkg2.test]", "example.com/pkg2", 12),
+			},
+			expectedPkgIDs: map[string]string{
+				"example.com/pkg1": "example.com/pkg1 [example.com/pkg1.test]",
+				"example.com/pkg2": "example.com/pkg2 [example.com/pkg2.test]",
+			},
+		},
+		{
+			name: "more syntax nodes wins among nested tests",
+			pkgs: []*packages.Package{
+				makePkg("example.com/pkg [example.com/pkg/a.test]", "example.com/pkg", 10),
+				makePkg("example.com/pkg [example.com/pkg/b.test]", "example.com/pkg", 20),
+			},
+			expectedPkgIDs: map[string]string{
+				"example.com/pkg": "example.com/pkg [example.com/pkg/b.test]",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := selectBestPackages(tt.pkgs)
+
+			// Check that all expected packages are present
+			for pkgPath, expectedID := range tt.expectedPkgIDs {
+				selected, found := result[pkgPath]
+				if !found {
+					t.Errorf("Expected package path %q not found in result", pkgPath)
+					continue
+				}
+				if selected.ID != expectedID {
+					t.Errorf("For package path %q: got ID %q, want %q",
+						pkgPath, selected.ID, expectedID)
+				}
+			}
+
+			// Check that no unexpected packages are present
+			if len(result) != len(tt.expectedPkgIDs) {
+				t.Errorf("Expected %d packages in result, got %d",
+					len(tt.expectedPkgIDs), len(result))
+			}
+		})
+	}
+}
+
 // TestPackageSelectionRealWorld simulates the real-world go-git scenario
 func TestPackageSelectionRealWorld(t *testing.T) {
 	// Simulate the actual packages.Load result for go-git repository
@@ -221,17 +318,8 @@ func TestPackageSelectionRealWorld(t *testing.T) {
 		},
 	}
 
-	// Simulate the bestPackageIds selection logic
-	bestPackageIds := make(map[string]*packages.Package)
-	for _, pkg := range pkgs {
-		if bestSoFar, present := bestPackageIds[pkg.PkgPath]; present {
-			if isBetterPackage(pkg, bestSoFar) {
-				bestPackageIds[pkg.PkgPath] = pkg
-			}
-		} else {
-			bestPackageIds[pkg.PkgPath] = pkg
-		}
-	}
+	// Use the actual selection logic from the extractor
+	bestPackageIds := selectBestPackages(pkgs)
 
 	// Verify the correct package was selected
 	selected := bestPackageIds["github.com/go-git/go-git/v6"]

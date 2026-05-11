@@ -65,9 +65,6 @@ func init() {
 func isExactTestPackage(pkg *packages.Package) bool {
 	// Test packages have IDs in the format: "pkgpath [pkgpath.test]"
 	// or for nested test dependencies: "pkgpath [pkgpath/nested.test]"
-	if !strings.Contains(pkg.ID, " [") {
-		return false
-	}
 	expectedTestID := pkg.PkgPath + " [" + pkg.PkgPath + ".test]"
 	return pkg.ID == expectedTestID
 }
@@ -95,6 +92,28 @@ func isBetterPackage(pkg, current *packages.Package) bool {
 
 	// Fall back to string length
 	return len(pkg.ID) > len(current.ID)
+}
+
+// selectBestPackages builds a map from package paths to their best package variants.
+// In the context of a `go test -c` compilation, we see the same package more than
+// once, with IDs like "abc.com/pkgname [abc.com/pkgname.test]" to distinguish the version
+// that contains and is used by test code.
+// We prefer the version with the most complete test coverage, which is typically:
+// 1. The exact test package (e.g., "pkg [pkg.test]") over nested test dependencies
+// 2. The package with the most Syntax nodes (most files to extract)
+// 3. The longest ID string as a tiebreaker
+func selectBestPackages(pkgs []*packages.Package) map[string]*packages.Package {
+	bestPackageIds := make(map[string]*packages.Package)
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+		if bestSoFar, present := bestPackageIds[pkg.PkgPath]; present {
+			if isBetterPackage(pkg, bestSoFar) {
+				bestPackageIds[pkg.PkgPath] = pkg
+			}
+		} else {
+			bestPackageIds[pkg.PkgPath] = pkg
+		}
+	})
+	return bestPackageIds
 }
 
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
@@ -191,24 +210,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 
 	pkgsNotFound := make([]string, 0, len(pkgs))
 
-	// Build a map from package paths to their best IDs--
-	// in the context of a `go test -c` compilation, we will see the same package more than
-	// once, with IDs like "abc.com/pkgname [abc.com/pkgname.test]" to distinguish the version
-	// that contains and is used by test code.
-	// We prefer the version with the most complete test coverage, which is typically:
-	// 1. The exact test package (e.g., "pkg [pkg.test]") over nested test dependencies
-	// 2. The package with the most Syntax nodes (most files to extract)
-	// 3. The longest ID string as a tiebreaker
-	bestPackageIds := make(map[string]*packages.Package)
-	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
-		if bestSoFar, present := bestPackageIds[pkg.PkgPath]; present {
-			if isBetterPackage(pkg, bestSoFar) {
-				bestPackageIds[pkg.PkgPath] = pkg
-			}
-		} else {
-			bestPackageIds[pkg.PkgPath] = pkg
-		}
-	})
+	// Build a map from package paths to their best IDs
+	bestPackageIds := selectBestPackages(pkgs)
 
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
