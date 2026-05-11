@@ -59,6 +59,44 @@ func init() {
 	}
 }
 
+// isExactTestPackage checks if a package ID represents an exact test match.
+// Returns true for IDs like "github.com/foo/bar [github.com/foo/bar.test]"
+// Returns false for IDs like "github.com/foo/bar [github.com/foo/bar/nested.test]"
+func isExactTestPackage(pkg *packages.Package) bool {
+	// Test packages have IDs in the format: "pkgpath [pkgpath.test]"
+	// or for nested test dependencies: "pkgpath [pkgpath/nested.test]"
+	if !strings.Contains(pkg.ID, " [") {
+		return false
+	}
+	expectedTestID := pkg.PkgPath + " [" + pkg.PkgPath + ".test]"
+	return pkg.ID == expectedTestID
+}
+
+// isBetterPackage determines if pkg is a better choice than current for extraction.
+// Preferences:
+// 1. Exact test package (e.g., "pkg [pkg.test]") over nested test dependencies
+// 2. More Syntax nodes (more files to extract)
+// 3. Longer ID string as tiebreaker
+func isBetterPackage(pkg, current *packages.Package) bool {
+	pkgIsExact := isExactTestPackage(pkg)
+	currentIsExact := isExactTestPackage(current)
+
+	// Prefer exact test packages
+	if pkgIsExact != currentIsExact {
+		return pkgIsExact
+	}
+
+	// Prefer packages with more syntax nodes (more files)
+	pkgSyntaxCount := len(pkg.Syntax)
+	currentSyntaxCount := len(current.Syntax)
+	if pkgSyntaxCount != currentSyntaxCount {
+		return pkgSyntaxCount > currentSyntaxCount
+	}
+
+	// Fall back to string length
+	return len(pkg.ID) > len(current.ID)
+}
+
 // ExtractWithFlags extracts the packages specified by the given patterns and build flags
 func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool, sourceRoot string) error {
 	startTime := time.Now()
@@ -153,20 +191,22 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 
 	pkgsNotFound := make([]string, 0, len(pkgs))
 
-	// Build a map from package paths to their longest IDs--
+	// Build a map from package paths to their best IDs--
 	// in the context of a `go test -c` compilation, we will see the same package more than
 	// once, with IDs like "abc.com/pkgname [abc.com/pkgname.test]" to distinguish the version
 	// that contains and is used by test code.
-	// For our purposes it is simplest to just ignore the non-test version, since the test
-	// version seems to be a superset of it.
-	longestPackageIds := make(map[string]string)
+	// We prefer the version with the most complete test coverage, which is typically:
+	// 1. The exact test package (e.g., "pkg [pkg.test]") over nested test dependencies
+	// 2. The package with the most Syntax nodes (most files to extract)
+	// 3. The longest ID string as a tiebreaker
+	bestPackageIds := make(map[string]*packages.Package)
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
-		if longestIDSoFar, present := longestPackageIds[pkg.PkgPath]; present {
-			if len(pkg.ID) > len(longestIDSoFar) {
-				longestPackageIds[pkg.PkgPath] = pkg.ID
+		if bestSoFar, present := bestPackageIds[pkg.PkgPath]; present {
+			if isBetterPackage(pkg, bestSoFar) {
+				bestPackageIds[pkg.PkgPath] = pkg
 			}
 		} else {
-			longestPackageIds[pkg.PkgPath] = pkg.ID
+			bestPackageIds[pkg.PkgPath] = pkg
 		}
 	})
 
@@ -257,15 +297,15 @@ func ExtractWithFlags(buildFlags []string, patterns []string, extractTests bool,
 	// extract AST information for all packages
 	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
 
-		// If this is a variant of a package that also occurs with a longer ID, skip it;
+		// If this is a variant of a package that also occurs with a better ID, skip it;
 		// otherwise we would extract the same file more than once including extracting the
 		// body of methods twice, causing database inconsistencies.
 		//
-		// We prefer the version with the longest ID because that is (so far as I know) always
-		// the version that defines more entities -- the only case I'm aware of being a test
-		// variant of a package, which includes test-only functions in addition to the complete
-		// contents of the main variant.
-		if pkg.ID != longestPackageIds[pkg.PkgPath] {
+		// We prefer the version with the most complete test coverage, prioritizing:
+		// 1. Exact test packages (e.g., "pkg [pkg.test]") over nested test dependencies
+		// 2. Packages with more Syntax nodes (more files to extract)
+		// 3. Longer ID strings as a tiebreaker
+		if pkg.ID != bestPackageIds[pkg.PkgPath].ID {
 			return
 		}
 
