@@ -8,5 +8,5 @@ require (
 	github.com/golang/snappy v0.0.4
 	github.com/klauspost/compress v1.16.6
 	github.com/klauspost/pgzip v1.2.6
-	github.com/ulikunitz/xz v0.5.11
+	github.com/ulikunitz/xz v0.5.14
 )
