@@ -157,29 +157,33 @@ fn translation_rules() -> Vec<yeast::Rule> {
         ),
         // ---- Guard statement ----
         // `guard let x = e else { ... }` — currently only handles the
-        // let-binding form, since plain `guard cond else { ... }` is not
-        // exercised by any existing corpus test.
+        // let-binding form. The Swift parser models the `let` keyword as a
+        // `value_binding_pattern` child of `condition`, followed by an
+        // unnamed `=` and the source expression.
         rule!(
             (guard_statement
                 bound_identifier: (simple_identifier) @id
-                condition: (_)* @cond_children
+                condition: (value_binding_pattern)
+                condition: (_) @value
                 (else)
                 (statements) @else_branch)
             =>
             (guard_if_stmt
                 condition: (let_pattern_condition
                     pattern: (var_pattern identifier: (identifier #{id}))
-                    value: {*cond_children.last().unwrap()})
+                    value: {value})
                 else: {else_branch})
         ),
         // ---- If statement ----
         // if-let binding (with optional else branch). The Swift parser puts
-        // the bound name in `bound_identifier` and the source expression as
-        // the last child of the multi-child `condition` field.
+        // the bound name in `bound_identifier`, the `let` keyword as a
+        // `value_binding_pattern` child of `condition`, and the source
+        // expression as a separate child of `condition`.
         rule!(
             (if_statement
                 bound_identifier: (simple_identifier) @id
-                condition: (_)* @cond_children
+                condition: (value_binding_pattern)
+                condition: (_) @value
                 (statements) @then
                 (else)
                 (_) @else_branch)
@@ -187,20 +191,21 @@ fn translation_rules() -> Vec<yeast::Rule> {
             (if_stmt
                 condition: (let_pattern_condition
                     pattern: (var_pattern identifier: (identifier #{id}))
-                    value: {*cond_children.last().unwrap()})
+                    value: {value})
                 then: {then}
                 else: {else_branch})
         ),
         rule!(
             (if_statement
                 bound_identifier: (simple_identifier) @id
-                condition: (_)* @cond_children
+                condition: (value_binding_pattern)
+                condition: (_) @value
                 (statements) @then)
             =>
             (if_stmt
                 condition: (let_pattern_condition
                     pattern: (var_pattern identifier: (identifier #{id}))
-                    value: {*cond_children.last().unwrap()})
+                    value: {value})
                 then: {then})
         ),
         // With explicit else branch (block or chained if).

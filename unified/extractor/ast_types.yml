@@ -18,6 +18,7 @@ supertypes:
   condition:
     - expr_condition
     - let_pattern_condition
+    - sequence_condition
     - unsupported_node
   pattern:
     - var_pattern
@@ -91,6 +92,13 @@ named:
   # Evaluates the given condition and interprets it as a boolean (by language conventions)
   expr_condition:
     expr: expr
+
+  # A series of statements that are executed before evaluating the trailing condition.
+  # Useful for languages where a conditional clause may be preceded by side-effecting
+  # syntactic elements (e.g. binding clauses) that don't themselves form a condition.
+  sequence_condition:
+    stmt*: stmt
+    condition: condition
 
   # Evaluate 'expr' and match its result against 'pattern', and return true if it matches.
   # Variables bound by the pattern will be in scope within the 'true' branch controlled by this condition.
