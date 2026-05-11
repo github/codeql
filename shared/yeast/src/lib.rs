@@ -268,18 +268,27 @@ impl Ast {
     /// against the stored source bytes when available.
     pub fn source_text(&self, id: Id) -> String {
         let Some(node) = self.get_node(id) else { return String::new(); };
-        match &node.content {
-            NodeContent::Range(range) => {
-                let start = range.start_byte;
-                let end = range.end_byte;
-                if end <= self.source.len() && start <= end {
-                    String::from_utf8_lossy(&self.source[start..end]).into_owned()
-                } else {
-                    String::new()
-                }
+        let read_range = |range: &tree_sitter::Range| {
+            let start = range.start_byte;
+            let end = range.end_byte;
+            if end <= self.source.len() && start <= end {
+                String::from_utf8_lossy(&self.source[start..end]).into_owned()
+            } else {
+                String::new()
             }
+        };
+        match &node.content {
+            NodeContent::Range(range) => read_range(range),
             NodeContent::String(s) => s.to_string(),
-            NodeContent::DynamicString(s) => s.clone(),
+            NodeContent::DynamicString(s) if !s.is_empty() => s.clone(),
+            // Synthesized nodes (from rule transforms) carry an empty
+            // `DynamicString`; resolve them against the inherited source
+            // range so `#{capture}` after a translation still yields the
+            // original source text.
+            NodeContent::DynamicString(_) => match node.source_range {
+                Some(range) => read_range(&range),
+                None => String::new(),
+            },
         }
     }
 

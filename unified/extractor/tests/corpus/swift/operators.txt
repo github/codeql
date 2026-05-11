@@ -300,7 +300,7 @@ source_file
 top_level
   body:
     unary_expr
-      operator: operator "!a"
+      operator: operator "!"
       operand:
         name_expr
           identifier: identifier "a"
