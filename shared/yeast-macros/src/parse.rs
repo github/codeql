@@ -122,10 +122,41 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
 
             expect_punct(tokens, ':', "expected `:` after field name")?;
 
-            let child = parse_query_node(tokens)?;
-            fields.push(quote! {
-                (#field_str, vec![yeast::query::QueryListElem::SingleNode(#child)])
-            });
+            // Parse the field's pattern. To support repetition like
+            // `field: (kind)* @cap`, parse the atom first, then check for
+            // a quantifier, and lastly handle a trailing `@capture`.
+            let atom = parse_query_atom(tokens)?;
+            if peek_is_repetition(tokens) {
+                let rep = expect_repetition(tokens)?;
+                let elem = quote! {
+                    yeast::query::QueryListElem::Repeated {
+                        children: vec![yeast::query::QueryListElem::SingleNode(#atom)],
+                        rep: #rep,
+                    }
+                };
+                let elem = maybe_wrap_list_capture(tokens, elem)?;
+                fields.push(quote! {
+                    (#field_str, vec![#elem])
+                });
+            } else {
+                let child = if peek_is_at(tokens) {
+                    tokens.next();
+                    let capture_name =
+                        expect_ident(tokens, "expected capture name after @")?;
+                    let name_str = capture_name.to_string();
+                    quote! {
+                        yeast::query::QueryNode::Capture {
+                            capture: #name_str,
+                            node: Box::new(#atom),
+                        }
+                    }
+                } else {
+                    atom
+                };
+                fields.push(quote! {
+                    (#field_str, vec![yeast::query::QueryListElem::SingleNode(#child)])
+                });
+            }
         } else {
             // Bare patterns — accumulate into the implicit `child` field.
             // We don't break here, so we can interleave with named fields.
