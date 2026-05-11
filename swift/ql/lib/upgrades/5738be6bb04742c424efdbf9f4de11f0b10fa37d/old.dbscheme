@@ -530,8 +530,7 @@ prefix_operator_decls(  //dir=decl
 #keyset[id]
 type_decls(  //dir=decl
   int id: @type_decl ref,
-  string name: string ref,
-  int declared_interface_type: @type_or_none ref
+  string name: string ref
 );
 
 #keyset[id, index]
