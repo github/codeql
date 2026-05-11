@@ -117,6 +117,62 @@ class AssignableRead extends AssignableAccess {
   AssignableRead getANextRead() { result.getControlFlowNode() = this.getAnAdjacentReadSameVar() }
 }
 
+private newtype TMutationOperationAssignment =
+  TBuiltInMutationOperation(MutatorOperation mo) or
+  TUserMutatorOperatorCall(MutatorOperatorCall moc) {
+    not moc instanceof InstanceMutatorOperatorCall
+  }
+
+/**
+ * A mutation operation that implicitly assigns the result to its operand. For example, `a++` in
+ * line 7 in
+ *
+ * ```csharp
+ * class A {
+ *   public static A operator ++(A a) {
+ *     return a;
+ *   }
+ *
+ *   public static void Increment(A a) {
+ *     a++;
+ *   }
+ * }
+ * ```
+ */
+private class MutationOperationAssignment extends TMutationOperationAssignment {
+  string toString() { none() }
+
+  Expr getOperand() { none() }
+
+  Expr getMutationOperation() { none() }
+}
+
+private class BuiltInMutationOperation extends MutationOperationAssignment,
+  TBuiltInMutationOperation
+{
+  private MutatorOperation mo;
+
+  BuiltInMutationOperation() { this = TBuiltInMutationOperation(mo) }
+
+  override string toString() { result = mo.toString() }
+
+  override Expr getOperand() { result = mo.getOperand() }
+
+  override Expr getMutationOperation() { result = mo }
+}
+
+private class UserMutatorOperatorCall extends MutationOperationAssignment, TUserMutatorOperatorCall {
+  private MutatorOperatorCall moc;
+
+  UserMutatorOperatorCall() { this = TUserMutatorOperatorCall(moc) }
+
+  override string toString() { result = moc.toString() }
+
+  override Expr getOperand() { result = moc.getArgument(0) }
+
+  override Expr getMutationOperation() { result = moc }
+}
+
 /**
  * An access to an assignable that updates the underlying value. Either a
  * variable write (`VariableWrite`), a property write (`PropertyWrite`),
@@ -262,7 +318,8 @@ module AssignableInternal {
     or
     def = TOutRefDefinition(any(AssignableAccess aa | result = aa.getParent()))
     or
-    def = TMutationDefinition(result)
+    def =
+      TMutationDefinition(any(MutationOperationAssignment moa | result = moa.getMutationOperation()))
     or
     def = TLocalVariableDefinition(result)
     or
@@ -299,7 +356,7 @@ module AssignableInternal {
         or
         aa.(RefArg).isPotentialAssignment()
       } or
-      TMutationDefinition(MutatorOperation mo) or
+      TMutationDefinition(MutationOperationAssignment mo) or
       TLocalVariableDefinition(LocalVariableDeclExpr lvde) {
         not lvde.hasInitializer() and
         not exists(getTupleSource(TTupleAssignmentDefinition(_, lvde))) and
@@ -372,7 +429,7 @@ module AssignableInternal {
       or
       def = TOutRefDefinition(result)
       or
-      def = TMutationDefinition(any(MutatorOperation mo | mo.getOperand() = result))
+      def = TMutationDefinition(any(MutationOperationAssignment mo | mo.getOperand() = result))
       or
       def = TAddressOfDefinition(any(AddressOfExpr aoe | aoe.getOperand() = result))
       or
@@ -645,14 +702,25 @@ module AssignableDefinitions {
    * A definition by mutation, for example `x++`.
    */
   class MutationDefinition extends AssignableDefinition, TMutationDefinition {
-    MutatorOperation mo;
+    MutationOperationAssignment moa;
 
-    MutationDefinition() { this = TMutationDefinition(mo) }
+    MutationDefinition() { this = TMutationDefinition(moa) }
 
-    /** Gets the underlying mutator operation. */
-    MutatorOperation getMutatorOperation() { result = mo }
+    /**
+     * DEPRECATED: Use `getMutationOperation()` instead.
+     *
+     * Gets the underlying mutator operation.
+     */
+    deprecated MutatorOperation getMutatorOperation() { moa = TBuiltInMutationOperation(result) }
 
-    override string toString() { result = mo.toString() }
+    /**
+     * Gets the underlying mutation operation.
+     */
+    Expr getMutationOperation() { result = moa.getMutationOperation() }
+
+    override Expr getSource() { result = this.getMutationOperation() }
+
+    override string toString() { result = moa.toString() }
   }
 
   /**
