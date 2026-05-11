@@ -69,7 +69,15 @@ top_level
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
-          value: unsupported_node "obj?.foo?.bar"
+          value:
+            member_access_expr
+              target:
+                member_access_expr
+                  target:
+                    name_expr
+                      identifier: identifier "obj"
+                  member: identifier "foo"
+              member: identifier "bar"
           pattern:
             var_pattern
               identifier: identifier "n"

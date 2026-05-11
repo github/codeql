@@ -123,7 +123,23 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "xs.map { $0 * 2 }"
+  body:
+    call_expr
+      argument:
+        lambda_expr
+          body:
+            binary_expr
+              operator: operator "*"
+              left:
+                name_expr
+                  identifier: identifier "$0"
+              right: int_literal "2"
+      function:
+        member_access_expr
+          target:
+            name_expr
+              identifier: identifier "xs"
+          member: identifier "map"
 
 ===
 Closure with capture list
@@ -168,7 +184,13 @@ top_level
         variable_declarator
           value:
             lambda_expr
-              body: unsupported_node "self?.doThing()"
+              body:
+                call_expr
+                  argument:
+                  function:
+                    member_access_expr
+                      target: unsupported_node "self"
+                      member: identifier "doThing"
           pattern:
             var_pattern
               identifier: identifier "f"

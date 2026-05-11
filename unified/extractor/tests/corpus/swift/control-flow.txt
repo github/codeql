@@ -39,7 +39,16 @@ top_level
               right: int_literal "0"
       then:
         block_stmt
-          body: unsupported_node "print(x)"
+          body:
+            expr_stmt
+              expr:
+                call_expr
+                  argument:
+                    name_expr
+                      identifier: identifier "x"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-else
@@ -95,10 +104,31 @@ top_level
               right: int_literal "0"
       else:
         block_stmt
-          body: unsupported_node "print(-x)"
+          body:
+            expr_stmt
+              expr:
+                call_expr
+                  argument:
+                    unary_expr
+                      operator: operator "-"
+                      operand:
+                        name_expr
+                          identifier: identifier "x"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
       then:
         block_stmt
-          body: unsupported_node "print(x)"
+          body:
+            expr_stmt
+              expr:
+                call_expr
+                  argument:
+                    name_expr
+                      identifier: identifier "x"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-else-if chain
@@ -178,13 +208,34 @@ top_level
                   right: int_literal "0"
           else:
             block_stmt
-              body: unsupported_node "print(3)"
+              body:
+                expr_stmt
+                  expr:
+                    call_expr
+                      argument: int_literal "3"
+                      function:
+                        name_expr
+                          identifier: identifier "print"
           then:
             block_stmt
-              body: unsupported_node "print(2)"
+              body:
+                expr_stmt
+                  expr:
+                    call_expr
+                      argument: int_literal "2"
+                      function:
+                        name_expr
+                          identifier: identifier "print"
       then:
         block_stmt
-          body: unsupported_node "print(1)"
+          body:
+            expr_stmt
+              expr:
+                call_expr
+                  argument: int_literal "1"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-let optional binding
@@ -227,7 +278,16 @@ top_level
               identifier: identifier "value"
       then:
         block_stmt
-          body: unsupported_node "print(value)"
+          body:
+            expr_stmt
+              expr:
+                call_expr
+                  argument:
+                    name_expr
+                      identifier: identifier "value"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 Guard let

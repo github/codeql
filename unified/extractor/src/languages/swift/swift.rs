@@ -1,5 +1,30 @@
 use codeql_extractor::extractor::simple;
-use yeast::{rule, DesugaringConfig, PhaseKind};
+use yeast::{build::BuildCtx, rule, DesugaringConfig, PhaseKind};
+
+/// Names of output AST kinds that belong to the `expr` supertype. Kept in
+/// sync with `ast_types.yml`. `unsupported_node` is intentionally omitted
+/// because it is also a member of the `stmt` supertype.
+const EXPR_KINDS: &[&str] = &[
+    "name_expr",
+    "int_literal",
+    "string_literal",
+    "binary_expr",
+    "unary_expr",
+    "call_expr",
+    "member_access_expr",
+    "lambda_expr",
+];
+
+/// If `id` is an `expr`, wrap it in `expr_stmt` so it can sit in a `stmt`
+/// position; otherwise return it unchanged.
+fn wrap_expr_in_stmt(ctx: &mut BuildCtx, id: usize) -> usize {
+    let kind = ctx.ast.get_node(id).map(|n| n.kind()).unwrap_or("");
+    if EXPR_KINDS.contains(&kind) {
+        yeast::tree!(ctx, (expr_stmt expr: {id}))
+    } else {
+        id
+    }
+}
 
 fn translation_rules() -> Vec<yeast::Rule> {
     vec![
@@ -149,11 +174,44 @@ fn translation_rules() -> Vec<yeast::Rule> {
         // ---- Block / statement wrapping ----
         // A `(statements ...)` node corresponds to a brace-delimited block.
         // Each child is mapped through translation; bare expression results
-        // get wrapped in `expr_stmt`.
+        // get wrapped in `expr_stmt` so they fit the `body*: stmt` field.
         rule!(
             (statements (_)* @stmts)
             =>
-            (block_stmt body: {..stmts})
+            (block_stmt body: {..stmts.iter().copied().map(|n|
+                wrap_expr_in_stmt(&mut __yeast_ctx, n.into())
+            ).collect::<Vec<usize>>()})
+        ),
+        // ---- Calls and member access ----
+        // Member access, e.g. `obj.member`. The Swift parser wraps the
+        // member name as `(navigation_suffix suffix: (simple_identifier))`.
+        rule!(
+            (navigation_expression
+                target: (_) @target
+                suffix: (navigation_suffix
+                    suffix: (simple_identifier) @member))
+            =>
+            (member_access_expr
+                target: {target}
+                member: (identifier #{member}))
+        ),
+        // Function / method call. The callee is the first child of
+        // `call_expression`; the second is a `call_suffix` whose
+        // `value_arguments` (if present) hold the parenthesized args. A
+        // trailing closure (`call_suffix` with a `lambda_literal` child)
+        // is appended as a final argument.
+        rule!(
+            (call_expression
+                (_) @callee
+                (call_suffix
+                    (value_arguments
+                        (value_argument value: (_) @args)*)?
+                    (lambda_literal)? @trailing))
+            =>
+            (call_expr
+                function: {callee}
+                argument: {..args.iter().copied().map(Into::into)
+                    .chain(trailing.map(Into::into)).collect::<Vec<usize>>()})
         ),
         // ---- Guard statement ----
         // `guard let x = e else { ... }` — currently only handles the

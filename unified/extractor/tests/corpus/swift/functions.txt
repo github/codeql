@@ -207,7 +207,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "foo(1, 2)"
+  body:
+    call_expr
+      argument:
+        int_literal "1"
+        int_literal "2"
+      function:
+        name_expr
+          identifier: identifier "foo"
 
 ===
 Function call with labelled arguments
@@ -233,7 +240,12 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "greet(person: \"Bob\")"
+  body:
+    call_expr
+      argument: string_literal "\"Bob\""
+      function:
+        name_expr
+          identifier: identifier "greet"
 
 ===
 Method call
@@ -258,7 +270,15 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "list.append(1)"
+  body:
+    call_expr
+      argument: int_literal "1"
+      function:
+        member_access_expr
+          target:
+            name_expr
+              identifier: identifier "list"
+          member: identifier "append"
 
 ===
 Generic function

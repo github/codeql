@@ -187,11 +187,17 @@ top_level
 Subscript access
 ===
 
+// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape
+// as `xs(0)`), so the mapping currently produces a call_expr. Update the
+// parser / add a separate subscript_expr node and remap when fixed.
 let first = xs[0]
 
 ---
 
 source_file
+  comment "// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape"
+  comment "// as `xs(0)`), so the mapping currently produces a call_expr. Update the"
+  comment "// parser / add a separate subscript_expr node and remap when fixed."
   property_declaration
     name:
       pattern
@@ -210,10 +216,18 @@ source_file
 
 top_level
   body:
+    unsupported_node "// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape"
+    unsupported_node "// as `xs(0)`), so the mapping currently produces a call_expr. Update the"
+    unsupported_node "// parser / add a separate subscript_expr node and remap when fixed."
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
-          value: unsupported_node "xs[0]"
+          value:
+            call_expr
+              argument: int_literal "0"
+              function:
+                name_expr
+                  identifier: identifier "xs"
           pattern:
             var_pattern
               identifier: identifier "first"
@@ -222,11 +236,15 @@ top_level
 Dictionary subscript
 ===
 
+// TODO: same parser issue as the array subscript case above —
+// `d["key"]` is parsed as `call_expression(d, ("key"))`.
 let v = d["key"]
 
 ---
 
 source_file
+  comment "// TODO: same parser issue as the array subscript case above —"
+  comment "// `d[\"key\"]` is parsed as `call_expression(d, (\"key\"))`."
   property_declaration
     name:
       pattern
@@ -247,10 +265,17 @@ source_file
 
 top_level
   body:
+    unsupported_node "// TODO: same parser issue as the array subscript case above —"
+    unsupported_node "// `d[\"key\"]` is parsed as `call_expression(d, (\"key\"))`."
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
-          value: unsupported_node "d[\"key\"]"
+          value:
+            call_expr
+              argument: string_literal "\"key\""
+              function:
+                name_expr
+                  identifier: identifier "d"
           pattern:
             var_pattern
               identifier: identifier "v"

@@ -5,6 +5,8 @@ supertypes:
     - string_literal
     - binary_expr
     - unary_expr
+    - call_expr
+    - member_access_expr
     - lambda_expr
     - unsupported_node
   stmt:
@@ -51,6 +53,17 @@ named:
   unary_expr:
     operand: expr
     operator: operator
+
+  # A function or method call, such as `f(x)` or `obj.m(x)`. Method calls
+  # are represented as a call whose `function` is a `member_access_expr`.
+  call_expr:
+    function: expr
+    argument*: expr
+
+  # Member access, such as `obj.member`.
+  member_access_expr:
+    target: expr
+    member: identifier
 
   lambda_expr:
     parameter*: parameter
