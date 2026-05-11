@@ -18,8 +18,12 @@ top_level
   body:
     binary_expr
       operator: operator "+"
-      left: name_expr "a"
-      right: name_expr "b"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
 
 ===
 Subtraction
@@ -41,8 +45,12 @@ top_level
   body:
     binary_expr
       operator: operator "-"
-      left: name_expr "a"
-      right: name_expr "b"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
 
 ===
 Multiplication
@@ -64,8 +72,12 @@ top_level
   body:
     binary_expr
       operator: operator "*"
-      left: name_expr "a"
-      right: name_expr "b"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
 
 ===
 Division
@@ -87,8 +99,12 @@ top_level
   body:
     binary_expr
       operator: operator "/"
-      left: name_expr "a"
-      right: name_expr "b"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
 
 ===
 Operator precedence: addition and multiplication
@@ -114,12 +130,18 @@ top_level
   body:
     binary_expr
       operator: operator "+"
-      left: name_expr "a"
+      left:
+        name_expr
+          identifier: identifier "a"
       right:
         binary_expr
           operator: operator "*"
-          left: name_expr "b"
-          right: name_expr "c"
+          left:
+            name_expr
+              identifier: identifier "b"
+          right:
+            name_expr
+              identifier: identifier "c"
 
 ===
 Parenthesised expression
@@ -148,7 +170,9 @@ top_level
     binary_expr
       operator: operator "*"
       left: unsupported_node "(a + b)"
-      right: name_expr "c"
+      right:
+        name_expr
+          identifier: identifier "c"
 
 ===
 Comparison
@@ -167,7 +191,15 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "a < b"
+  body:
+    binary_expr
+      operator: operator "<"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
 
 ===
 Equality
@@ -186,7 +218,15 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "a == b"
+  body:
+    binary_expr
+      operator: operator "=="
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
 
 ===
 Logical and
@@ -205,7 +245,15 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "a && b"
+  body:
+    binary_expr
+      operator: operator "&&"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
 
 ===
 Logical or
@@ -224,7 +272,15 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "a || b"
+  body:
+    binary_expr
+      operator: operator "||"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
 
 ===
 Logical not
@@ -242,7 +298,12 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "!a"
+  body:
+    unary_expr
+      operator: operator "!"
+      operand:
+        name_expr
+          identifier: identifier "a"
 
 ===
 Range operator
@@ -261,4 +322,8 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "1...10"
+  body:
+    binary_expr
+      operator: operator "..."
+      left: int_literal "1"
+      right: int_literal "10"

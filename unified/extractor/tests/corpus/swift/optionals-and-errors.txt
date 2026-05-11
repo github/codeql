@@ -24,7 +24,13 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let x: Int? = nil"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          pattern:
+            var_pattern
+              identifier: identifier "x"
 
 ===
 Optional chaining
@@ -59,7 +65,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let n = obj?.foo?.bar"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "obj?.foo?.bar"
+          pattern:
+            var_pattern
+              identifier: identifier "n"
 
 ===
 Force unwrap
@@ -84,7 +97,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let n = opt!"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "opt!"
+          pattern:
+            var_pattern
+              identifier: identifier "n"
 
 ===
 Nil-coalescing
@@ -109,7 +129,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let n = opt ?? 0"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "opt ?? 0"
+          pattern:
+            var_pattern
+              identifier: identifier "n"
 
 ===
 Throwing function
@@ -204,7 +231,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let result = try? foo()"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "try? foo()"
+          pattern:
+            var_pattern
+              identifier: identifier "result"
 
 ===
 Try! expression
@@ -233,4 +267,11 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let result = try! foo()"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "try! foo()"
+          pattern:
+            var_pattern
+              identifier: identifier "result"

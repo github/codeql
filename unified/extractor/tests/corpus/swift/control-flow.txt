@@ -2,6 +2,7 @@
 If statement
 ===
 
+// TODO: map if_statement -> if_stmt (needs a block-body stmt in ast_types.yml)
 if x > 0 {
   print(x)
 }
@@ -9,6 +10,7 @@ if x > 0 {
 ---
 
 source_file
+  comment "// TODO: map if_statement -> if_stmt (needs a block-body stmt in ast_types.yml)"
   if_statement
     condition:
       comparison_expression
@@ -26,7 +28,9 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "if x > 0 {\n  print(x)\n}"
+  body:
+    unsupported_node "// TODO: map if_statement -> if_stmt (needs a block-body stmt in ast_types.yml)"
+    unsupported_node "if x > 0 {\n  print(x)\n}"
 
 ===
 If-else
@@ -131,6 +135,7 @@ top_level
 If-let optional binding
 ===
 
+// TODO: map if-let -> if_stmt with let_pattern_condition
 if let value = optional {
   print(value)
 }
@@ -138,6 +143,7 @@ if let value = optional {
 ---
 
 source_file
+  comment "// TODO: map if-let -> if_stmt with let_pattern_condition"
   if_statement
     bound_identifier: simple_identifier "value"
     condition:
@@ -156,17 +162,21 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "if let value = optional {\n  print(value)\n}"
+  body:
+    unsupported_node "// TODO: map if-let -> if_stmt with let_pattern_condition"
+    unsupported_node "if let value = optional {\n  print(value)\n}"
 
 ===
 Guard let
 ===
 
+// TODO: map guard_statement -> guard_if_stmt (with let_pattern_condition)
 guard let value = optional else { return }
 
 ---
 
 source_file
+  comment "// TODO: map guard_statement -> guard_if_stmt (with let_pattern_condition)"
   guard_statement
     bound_identifier: simple_identifier "value"
     condition:
@@ -181,7 +191,9 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "guard let value = optional else { return }"
+  body:
+    unsupported_node "// TODO: map guard_statement -> guard_if_stmt (with let_pattern_condition)"
+    unsupported_node "guard let value = optional else { return }"
 
 ===
 Ternary expression
@@ -214,7 +226,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let y = x > 0 ? 1 : -1"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "x > 0 ? 1 : -1"
+          pattern:
+            var_pattern
+              identifier: identifier "y"
 
 ===
 Switch statement

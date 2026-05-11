@@ -1,8 +1,10 @@
 supertypes:
   expr:
+    - name_expr
+    - int_literal
+    - string_literal
     - binary_expr
     - unary_expr
-    - name_expr
     - lambda_expr
     - unsupported_node
   stmt:
@@ -23,7 +25,17 @@ supertypes:
 named:
   # Top-level is the root node, currently containing a list of expressions
   top_level:
-    body*: expr
+    body*: [expr, stmt]
+
+  # An identifier used in the context of an expression
+  name_expr:
+    identifier: identifier
+
+  # An integer literal
+  int_literal:
+
+  # A string literal
+  string_literal:
 
   # Application of a binary operator, such as `a + b`
   binary_expr:
@@ -36,10 +48,6 @@ named:
     operand: expr
     operator: operator
 
-  # An identifier used in the context of an expression
-  name_expr:
-    identifier: identifier
-
   lambda_expr:
     parameter*: parameter
     body: [expr, stmt]
@@ -49,6 +57,12 @@ named:
     pattern: pattern
 
   empty_stmt:
+
+  block_stmt:
+    body*: stmt
+
+  expr_stmt:
+    expr: expr
 
   if_stmt:
     condition: condition

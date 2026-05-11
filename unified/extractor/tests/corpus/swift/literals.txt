@@ -12,7 +12,7 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "42"
+  body: int_literal "42"
 
 ===
 Negative integer literal
@@ -30,7 +30,10 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "-7"
+  body:
+    unary_expr
+      operator: operator "-"
+      operand: int_literal "7"
 
 ===
 Floating-point literal
@@ -98,7 +101,7 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "\"hello\""
+  body: string_literal "\"hello\""
 
 ===
 String with interpolation
@@ -118,4 +121,4 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "\"hello \\(name)\""
+  body: string_literal "\"hello \\(name)\""

@@ -2,11 +2,13 @@
 Closure with explicit parameters
 ===
 
+// TODO: map lambda_literal -> lambda_expr
 let f = { (x: Int) -> Int in x * 2 }
 
 ---
 
 source_file
+  comment "// TODO: map lambda_literal -> lambda_expr"
   property_declaration
     name:
       pattern
@@ -35,7 +37,15 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let f = { (x: Int) -> Int in x * 2 }"
+  body:
+    unsupported_node "// TODO: map lambda_literal -> lambda_expr"
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "{ (x: Int) -> Int in x * 2 }"
+          pattern:
+            var_pattern
+              identifier: identifier "f"
 
 ===
 Closure with shorthand parameters
@@ -63,7 +73,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let f = { $0 + $1 }"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "{ $0 + $1 }"
+          pattern:
+            var_pattern
+              identifier: identifier "f"
 
 ===
 Trailing closure
@@ -130,7 +147,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let f = { [weak self] in self?.doThing() }"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "{ [weak self] in self?.doThing() }"
+          pattern:
+            var_pattern
+              identifier: identifier "f"
 
 ===
 Multi-statement closure
@@ -185,4 +209,11 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let f = { (x: Int) -> Int in\n  let y = x + 1\n  return y * 2\n}"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: unsupported_node "{ (x: Int) -> Int in\n  let y = x + 1\n  return y * 2\n}"
+          pattern:
+            var_pattern
+              identifier: identifier "f"

@@ -18,8 +18,8 @@ top_level
   body:
     binary_expr
       operator: operator "+"
-      left: unsupported_node "1"
-      right: unsupported_node "2"
+      left: int_literal "1"
+      right: int_literal "2"
 
 ===
 Another additive expression is desugared
@@ -41,5 +41,9 @@ top_level
   body:
     binary_expr
       operator: operator "+"
-      left: name_expr "foo"
-      right: name_expr "bar"
+      left:
+        name_expr
+          identifier: identifier "foo"
+      right:
+        name_expr
+          identifier: identifier "bar"

@@ -18,7 +18,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let x = 1"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: int_literal "1"
+          pattern:
+            var_pattern
+              identifier: identifier "x"
 
 ===
 Var binding
@@ -40,7 +47,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "var x = 1"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: int_literal "1"
+          pattern:
+            var_pattern
+              identifier: identifier "x"
 
 ===
 Let with type annotation
@@ -66,7 +80,14 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let x: Int = 1"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: int_literal "1"
+          pattern:
+            var_pattern
+              identifier: identifier "x"
 
 ===
 Var without initialiser
@@ -91,17 +112,25 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "var x: Int"
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          pattern:
+            var_pattern
+              identifier: identifier "x"
 
 ===
 Tuple destructuring binding
 ===
 
+// TODO: map tuple destructuring pattern -> apply_pattern
 let (a, b) = pair
 
 ---
 
 source_file
+  comment "// TODO: map tuple destructuring pattern -> apply_pattern"
   property_declaration
     name:
       pattern
@@ -116,17 +145,27 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let (a, b) = pair"
+  body:
+    unsupported_node "// TODO: map tuple destructuring pattern -> apply_pattern"
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value:
+            name_expr
+              identifier: identifier "pair"
+          pattern: unsupported_node "(a, b)"
 
 ===
 Multiple bindings on one line
 ===
 
+// TODO: emit multiple variable_declarators in one variable_declaration_stmt
 let x = 1, y = 2
 
 ---
 
 source_file
+  comment "// TODO: emit multiple variable_declarators in one variable_declaration_stmt"
   property_declaration
     name:
       pattern
@@ -142,7 +181,15 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "let x = 1, y = 2"
+  body:
+    unsupported_node "// TODO: emit multiple variable_declarators in one variable_declaration_stmt"
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value: int_literal "1"
+          pattern:
+            var_pattern
+              identifier: identifier "x"
 
 ===
 Assignment
