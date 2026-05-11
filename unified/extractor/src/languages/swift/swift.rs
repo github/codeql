@@ -244,14 +244,11 @@ fn translation_rules() -> Vec<yeast::Rule> {
         ),
         // Tuple destructuring pattern, e.g. `let (a, b) = pair`. The parser
         // emits a `pattern` node whose unnamed children are themselves
-        // `pattern` nodes. We synthesize a `tuple` constructor since the
-        // syntax has no name.
+        // `pattern` nodes.
         rule!(
             (pattern (pattern)+ @parts)
             =>
-            (apply_pattern
-                constructor: (name_expr identifier: (identifier "tuple"))
-                argument: {..parts})
+            (tuple_pattern element: {..parts})
         ),
         // ---- Variable declarations ----
         // Handles single (`let x = e`), multiple (`let x = 1, y = 2`),

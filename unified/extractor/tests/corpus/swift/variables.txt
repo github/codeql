@@ -151,15 +151,12 @@ top_level
             name_expr
               identifier: identifier "pair"
           pattern:
-            apply_pattern
-              argument:
+            tuple_pattern
+              element:
                 var_pattern
                   identifier: identifier "a"
                 var_pattern
                   identifier: identifier "b"
-              constructor:
-                name_expr
-                  identifier: identifier "tuple"
 
 ===
 Multiple bindings on one line

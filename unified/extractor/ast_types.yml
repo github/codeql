@@ -22,6 +22,7 @@ supertypes:
   pattern:
     - var_pattern
     - apply_pattern
+    - tuple_pattern
     - ignore_pattern
     - unsupported_node
 named:
@@ -108,6 +109,10 @@ named:
   apply_pattern:
     constructor: expr
     argument*: pattern
+
+  # A tuple pattern such as `(a, b)` in `let (a, b) = pair`.
+  tuple_pattern:
+    element*: pattern
 
   # An simple unqualified identifier token
   identifier:
