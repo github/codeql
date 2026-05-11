@@ -6,6 +6,14 @@ Additive expression is desugared
 
 ---
 
+source_file
+  additive_expression
+    lhs: integer_literal "1"
+    op: +
+    rhs: integer_literal "2"
+
+---
+
 simple_identifier "not supported"
 
 
@@ -17,5 +25,12 @@ foo + bar
 
 ---
 
-simple_identifier "not supported"
+source_file
+  additive_expression
+    lhs: simple_identifier "foo"
+    op: +
+    rhs: simple_identifier "bar"
 
+---
+
+simple_identifier "not supported"

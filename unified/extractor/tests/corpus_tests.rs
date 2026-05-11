@@ -11,6 +11,7 @@ mod languages;
 struct CorpusCase {
     name: String,
     input: String,
+    raw: String,
     expected: String,
 }
 
@@ -63,6 +64,30 @@ fn parse_corpus(content: &str) -> Vec<CorpusCase> {
         let input = lines[input_start..i].join("\n").trim_end().to_string();
         i += 1;
 
+        // Raw tree-sitter parse section. New-format files have a second
+        // `---` separator between the raw tree and the mapped AST. Legacy
+        // files (with only one separator) have no raw section — in that
+        // case `raw` stays empty and update mode will populate it.
+        let raw_start = i;
+        let mut next_sep = i;
+        while next_sep < lines.len() && lines[next_sep].trim() != "---" {
+            if is_header_rule(lines[next_sep])
+                && next_sep + 2 < lines.len()
+                && !lines[next_sep + 1].trim().is_empty()
+                && is_header_rule(lines[next_sep + 2])
+            {
+                break;
+            }
+            next_sep += 1;
+        }
+        let raw = if next_sep < lines.len() && lines[next_sep].trim() == "---" {
+            let raw_text = lines[raw_start..next_sep].join("\n").trim().to_string();
+            i = next_sep + 1;
+            raw_text
+        } else {
+            String::new()
+        };
+
         let expected_start = i;
         while i < lines.len() {
             if is_header_rule(lines[i])
@@ -79,6 +104,7 @@ fn parse_corpus(content: &str) -> Vec<CorpusCase> {
         cases.push(CorpusCase {
             name,
             input,
+            raw,
             expected,
         });
     }
@@ -100,6 +126,9 @@ fn render_corpus(cases: &[CorpusCase]) -> String {
         out.push_str(case.input.trim());
         out.push_str("\n\n---\n");
         out.push('\n');
+        out.push_str(case.raw.trim());
+        out.push_str("\n\n---\n");
+        out.push('\n');
         out.push_str(case.expected.trim());
         out.push_str("\n\n");
     }
@@ -117,6 +146,20 @@ fn run_desugaring(lang: &simple::LanguageSpec, input: &str) -> String {
         .run(input)
         .unwrap_or_else(|e| panic!("Failed to parse corpus input: {e}"));
     dump_ast(&ast, ast.get_root(), input)
+}
+
+/// Produce the raw tree-sitter parse tree dump for `input`, with no
+/// desugaring rules applied. Uses a `Runner` with an empty phase list and
+/// the input grammar's own schema.
+fn dump_raw_parse(
+    lang: &simple::LanguageSpec,
+    input: &str,
+) -> Result<String, String> {
+    let runner = Runner::new(lang.ts_language.clone(), &[]);
+    let ast = runner
+        .run(input)
+        .map_err(|e| format!("Failed to parse input: {e}"))?;
+    Ok(dump_ast(&ast, ast.get_root(), input))
 }
 
 #[test]
@@ -154,6 +197,25 @@ fn test_corpus() {
             );
 
             for case in &mut cases {
+                let actual_raw = dump_raw_parse(&lang, &case.input)
+                    .unwrap_or_else(|e| panic!(
+                        "Raw parse failed for {} in {}: {}",
+                        case.name,
+                        corpus_path.display(),
+                        e
+                    ));
+                if update_mode {
+                    case.raw = actual_raw.trim().to_string();
+                } else {
+                    assert_eq!(
+                        case.raw.trim(),
+                        actual_raw.trim(),
+                        "Raw parse mismatch in {}: {}",
+                        corpus_path.display(),
+                        case.name
+                    );
+                }
+
                 let actual = run_desugaring(&lang, &case.input);
                 if update_mode {
                     case.expected = actual.trim().to_string();
