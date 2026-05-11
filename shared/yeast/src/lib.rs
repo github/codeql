@@ -34,44 +34,48 @@ pub const CHILD_FIELD: u16 = u16::MAX;
 #[derive(Debug)]
 pub struct AstCursor<'a> {
     ast: &'a Ast,
-    /// A stack of parents, along with iterators for their children
-    parents: Vec<(&'a Node, ChildrenIter<'a>)>,
-    node: &'a Node,
+    /// A stack of parents, along with iterators for their children.
+    parents: Vec<(Id, ChildrenIter<'a>)>,
+    node_id: Id,
 }
 
 impl<'a> AstCursor<'a> {
     pub fn new(ast: &'a Ast) -> Self {
-        // TODO: handle non-zero root
-        let node = ast.get_node(ast.root).unwrap();
         Self {
             ast,
             parents: vec![],
-            node,
+            node_id: ast.root,
         }
     }
 
+    /// The Id of the node currently under the cursor.
+    pub fn node_id(&self) -> Id {
+        self.node_id
+    }
+
     fn goto_next_sibling_opt(&mut self) -> Option<()> {
-        self.node = self.parents.last_mut()?.1.next()?;
+        self.node_id = self.parents.last_mut()?.1.next()?;
         Some(())
     }
 
     fn goto_first_child_opt(&mut self) -> Option<()> {
-        let parent = self.node;
-        let mut children = ChildrenIter::new(self.ast, parent);
+        let parent_id = self.node_id;
+        let parent = self.ast.get_node(parent_id)?;
+        let mut children = ChildrenIter::new(parent);
         let first_child = children.next()?;
-        self.node = first_child;
-        self.parents.push((parent, children));
+        self.node_id = first_child;
+        self.parents.push((parent_id, children));
         Some(())
     }
 
     fn goto_parent_opt(&mut self) -> Option<()> {
-        self.node = self.parents.pop()?.0;
+        self.node_id = self.parents.pop()?.0;
         Some(())
     }
 }
 impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     fn node(&self) -> &'a Node {
-        self.node
+        &self.ast.nodes[self.node_id]
     }
 
     fn field_id(&self) -> Option<FieldId> {
@@ -101,27 +105,21 @@ impl<'a> Cursor<'a, Ast, Node, FieldId> for AstCursor<'a> {
     }
 }
 
-/// An iterator over all the child nodes of a node.
+/// An iterator over the child Ids of a node.
 #[derive(Debug)]
 struct ChildrenIter<'a> {
-    ast: &'a Ast,
     current_field: Option<FieldId>,
     fields: std::collections::btree_map::Iter<'a, FieldId, Vec<Id>>,
     field_children: Option<std::slice::Iter<'a, Id>>,
 }
 
 impl<'a> ChildrenIter<'a> {
-    fn new(ast: &'a Ast, node: &'a Node) -> Self {
+    fn new(node: &'a Node) -> Self {
         Self {
-            ast,
             current_field: None,
             fields: node.fields.iter(),
             field_children: None,
         }
-    }
-
-    fn get_node(&self, id: Id) -> &'a Node {
-        self.ast.get_node(id).unwrap()
     }
 
     fn current_field(&self) -> Option<FieldId> {
@@ -129,8 +127,8 @@ impl<'a> ChildrenIter<'a> {
     }
 }
 
-impl<'a> Iterator for ChildrenIter<'a> {
-    type Item = &'a Node;
+impl Iterator for ChildrenIter<'_> {
+    type Item = Id;
 
     fn next(&mut self) -> Option<Self::Item> {
         match self.field_children.as_mut() {
@@ -151,7 +149,7 @@ impl<'a> Iterator for ChildrenIter<'a> {
                         self.next()
                     }
                 },
-                Some(child_id) => Some(self.get_node(*child_id)),
+                Some(child_id) => Some(*child_id),
             },
         }
     }
@@ -236,7 +234,6 @@ impl Ast {
     ) -> Id {
         let id = self.nodes.len();
         self.nodes.push(Node {
-            id,
             kind,
             kind_name: self.schema.node_kind_for_id(kind).unwrap(),
             fields,
@@ -265,7 +262,6 @@ impl Ast {
         });
         let id = self.nodes.len();
         self.nodes.push(Node {
-            id,
             kind: kind_id,
             kind_name: kind,
             is_named: true,
@@ -345,7 +341,6 @@ impl Ast {
 /// A node in our AST
 #[derive(PartialEq, Eq, Debug, Clone, Serialize)]
 pub struct Node {
-    id: Id,
     kind: KindId,
     kind_name: &'static str,
     pub(crate) fields: BTreeMap<FieldId, Vec<Id>>,
@@ -361,10 +356,6 @@ pub struct Node {
 }
 
 impl Node {
-    pub fn id(&self) -> Id {
-        self.id
-    }
-
     pub fn kind(&self) -> &'static str {
         self.kind_name
     }
@@ -600,39 +591,41 @@ fn apply_rules_inner(
         }
     }
 
-    // Collect fields before recursing (avoids borrowing ast immutably during mutation)
-    let field_entries: Vec<(FieldId, Vec<Id>)> = ast.nodes[id]
-        .fields
-        .iter()
-        .map(|(&fid, children)| (fid, children.clone()))
-        .collect();
-
-    // recursively descend into all the fields
+    // Take the parent's fields by ownership: the recursion will rewrite
+    // each child Id, and we'll write the (possibly mutated) field map back
+    // when we're done. Avoids cloning the whole BTreeMap and its child
+    // Vecs on entry. Each child Vec is only re-allocated if a rewrite
+    // actually changes its contents.
+    //
     // Child traversal does not increment rewrite depth and starts fresh
     // (no rule is skipped on child subtrees).
-    let mut changed = false;
-    let mut new_fields = BTreeMap::new();
-    for (field_id, children) in field_entries {
-        let mut new_children = Vec::new();
-        for child_id in children {
+    let mut fields = std::mem::take(&mut ast.nodes[id].fields);
+    for children in fields.values_mut() {
+        let mut new_children: Option<Vec<Id>> = None;
+        for (i, &child_id) in children.iter().enumerate() {
             let result = apply_rules_inner(index, ast, child_id, fresh, rewrite_depth, None)?;
-            if result.len() != 1 || result[0] != child_id {
-                changed = true;
+            let unchanged = result.len() == 1 && result[0] == child_id;
+            match (&mut new_children, unchanged) {
+                (None, true) => {} // unchanged so far, no allocation needed
+                (None, false) => {
+                    // First divergence — copy already-processed Ids and
+                    // start collecting the rewritten sequence.
+                    let mut new = Vec::with_capacity(children.len());
+                    new.extend_from_slice(&children[..i]);
+                    new.extend(result);
+                    new_children = Some(new);
+                }
+                (Some(new), _) => {
+                    new.extend(result);
+                }
             }
-            new_children.extend(result);
         }
-        new_fields.insert(field_id, new_children);
+        if let Some(new) = new_children {
+            *children = new;
+        }
     }
-
-    if !changed {
-        return Ok(vec![id]);
-    }
-
-    let mut node = ast.nodes[id].clone();
-    node.fields = new_fields;
-    node.id = ast.nodes.len();
-    ast.nodes.push(node);
-    Ok(vec![ast.nodes.len() - 1])
+    ast.nodes[id].fields = fields;
+    Ok(vec![id])
 }
 
 /// One phase of a desugaring pass: a named bundle of rules that runs to
