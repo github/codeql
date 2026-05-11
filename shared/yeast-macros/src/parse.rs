@@ -113,8 +113,24 @@ fn parse_query_node_inner(tokens: &mut Tokens) -> Result<TokenStream> {
 /// appear in any order; bare patterns are accumulated and emitted as a
 /// single `("child", ...)` entry.
 fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
-    let mut fields = Vec::new();
+    // Accumulate per-field elems in declaration order; multiple uses of the
+    // same field name extend the same list (so e.g. `cond: (foo) cond: (bar)`
+    // matches a `cond` field whose first child is `foo` and second is `bar`).
+    let mut field_order: Vec<String> = Vec::new();
+    let mut field_elems: std::collections::HashMap<String, Vec<TokenStream>> =
+        std::collections::HashMap::new();
     let mut bare_children: Vec<TokenStream> = Vec::new();
+    let mut push_field_elem = |order: &mut Vec<String>,
+                               map: &mut std::collections::HashMap<String, Vec<TokenStream>>,
+                               name: String,
+                               elem: TokenStream| {
+        if !map.contains_key(&name) {
+            order.push(name.clone());
+            map.insert(name, vec![elem]);
+        } else {
+            map.get_mut(&name).unwrap().push(elem);
+        }
+    };
     while tokens.peek().is_some() {
         if peek_is_field(tokens) {
             let field_name = expect_ident(tokens, "expected field name")?;
@@ -135,9 +151,7 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                     }
                 };
                 let elem = maybe_wrap_list_capture(tokens, elem)?;
-                fields.push(quote! {
-                    (#field_str, vec![#elem])
-                });
+                push_field_elem(&mut field_order, &mut field_elems, field_str, elem);
             } else {
                 let child = if peek_is_at(tokens) {
                     tokens.next();
@@ -153,9 +167,10 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                 } else {
                     atom
                 };
-                fields.push(quote! {
-                    (#field_str, vec![yeast::query::QueryListElem::SingleNode(#child)])
-                });
+                let elem = quote! {
+                    yeast::query::QueryListElem::SingleNode(#child)
+                };
+                push_field_elem(&mut field_order, &mut field_elems, field_str, elem);
             }
         } else {
             // Bare patterns — accumulate into the implicit `child` field.
@@ -167,6 +182,13 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
             }
             bare_children.extend(elems);
         }
+    }
+    let mut fields: Vec<TokenStream> = Vec::new();
+    for name in field_order {
+        let elems = field_elems.remove(&name).unwrap();
+        fields.push(quote! {
+            (#name, vec![#(#elems),*])
+        });
     }
     if !bare_children.is_empty() {
         fields.push(quote! {
