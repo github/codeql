@@ -145,11 +145,32 @@ public class MutatorOperators
             Field = Source<object>(1);
         }
 
+        public static C1 operator --(C1 x)
+        {
+            var f = Source<object>(2);
+            return new C1(f);
+        }
+
         public void M1()
         {
             var x = new C1();
             x++;
             Sink(x.Field); // $ hasValueFlow=1
+        }
+
+        public void M2()
+        {
+            var x = new C1();
+            x--;
+            Sink(x.Field); // $ hasValueFlow=2
+        }
+
+        public void M3()
+        {
+            var x = new C1();
+            var y = x--;
+            Sink(x.Field); // $ hasValueFlow=2
+            Sink(y.Field); // $ hasValueFlow=2
         }
     }
 }
