@@ -124,13 +124,11 @@ top_level
 Tuple destructuring binding
 ===
 
-// TODO: map tuple destructuring pattern -> apply_pattern
 let (a, b) = pair
 
 ---
 
 source_file
-  comment "// TODO: map tuple destructuring pattern -> apply_pattern"
   property_declaration
     name:
       pattern
@@ -146,26 +144,32 @@ source_file
 
 top_level
   body:
-    unsupported_node "// TODO: map tuple destructuring pattern -> apply_pattern"
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
           value:
             name_expr
               identifier: identifier "pair"
-          pattern: unsupported_node "(a, b)"
+          pattern:
+            apply_pattern
+              argument:
+                var_pattern
+                  identifier: identifier "a"
+                var_pattern
+                  identifier: identifier "b"
+              constructor:
+                name_expr
+                  identifier: identifier "tuple"
 
 ===
 Multiple bindings on one line
 ===
 
-// TODO: emit multiple variable_declarators in one variable_declaration_stmt
 let x = 1, y = 2
 
 ---
 
 source_file
-  comment "// TODO: emit multiple variable_declarators in one variable_declaration_stmt"
   property_declaration
     name:
       pattern
@@ -182,7 +186,6 @@ source_file
 
 top_level
   body:
-    unsupported_node "// TODO: emit multiple variable_declarators in one variable_declaration_stmt"
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
@@ -190,6 +193,11 @@ top_level
           pattern:
             var_pattern
               identifier: identifier "x"
+        variable_declarator
+          value: int_literal "2"
+          pattern:
+            var_pattern
+              identifier: identifier "y"
 
 ===
 Assignment

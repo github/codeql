@@ -2,13 +2,11 @@
 Closure with explicit parameters
 ===
 
-// TODO: map lambda_literal -> lambda_expr
 let f = { (x: Int) -> Int in x * 2 }
 
 ---
 
 source_file
-  comment "// TODO: map lambda_literal -> lambda_expr"
   property_declaration
     name:
       pattern
@@ -38,11 +36,18 @@ source_file
 
 top_level
   body:
-    unsupported_node "// TODO: map lambda_literal -> lambda_expr"
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
-          value: unsupported_node "{ (x: Int) -> Int in x * 2 }"
+          value:
+            lambda_expr
+              body:
+                binary_expr
+                  operator: operator "*"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "2"
           pattern:
             var_pattern
               identifier: identifier "f"
@@ -77,7 +82,17 @@ top_level
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
-          value: unsupported_node "{ $0 + $1 }"
+          value:
+            lambda_expr
+              body:
+                binary_expr
+                  operator: operator "+"
+                  left:
+                    name_expr
+                      identifier: identifier "$0"
+                  right:
+                    name_expr
+                      identifier: identifier "$1"
           pattern:
             var_pattern
               identifier: identifier "f"
@@ -151,7 +166,9 @@ top_level
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
-          value: unsupported_node "{ [weak self] in self?.doThing() }"
+          value:
+            lambda_expr
+              body: unsupported_node "self?.doThing()"
           pattern:
             var_pattern
               identifier: identifier "f"
@@ -213,7 +230,22 @@ top_level
     variable_declaration_stmt
       variable_declarator:
         variable_declarator
-          value: unsupported_node "{ (x: Int) -> Int in\n  let y = x + 1\n  return y * 2\n}"
+          value:
+            lambda_expr
+              body:
+                variable_declaration_stmt
+                  variable_declarator:
+                    variable_declarator
+                      value:
+                        binary_expr
+                          operator: operator "+"
+                          left:
+                            name_expr
+                              identifier: identifier "x"
+                          right: int_literal "1"
+                      pattern:
+                        var_pattern
+                          identifier: identifier "y"
           pattern:
             var_pattern
               identifier: identifier "f"

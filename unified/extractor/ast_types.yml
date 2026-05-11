@@ -9,6 +9,8 @@ supertypes:
     - unsupported_node
   stmt:
     - empty_stmt
+    - block_stmt
+    - expr_stmt
     - if_stmt
     - variable_declaration_stmt
     - guard_if_stmt
@@ -105,7 +107,7 @@ named:
   # A pattern such as `Some(x)` where `Some` is the constructor and `x` is an argument
   apply_pattern:
     constructor: expr
-    argument*: expr
+    argument*: pattern
 
   # An simple unqualified identifier token
   identifier:

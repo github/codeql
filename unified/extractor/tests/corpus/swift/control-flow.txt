@@ -2,7 +2,6 @@
 If statement
 ===
 
-// TODO: map if_statement -> if_stmt (needs a block-body stmt in ast_types.yml)
 if x > 0 {
   print(x)
 }
@@ -10,7 +9,6 @@ if x > 0 {
 ---
 
 source_file
-  comment "// TODO: map if_statement -> if_stmt (needs a block-body stmt in ast_types.yml)"
   if_statement
     condition:
       comparison_expression
@@ -29,8 +27,19 @@ source_file
 
 top_level
   body:
-    unsupported_node "// TODO: map if_statement -> if_stmt (needs a block-body stmt in ast_types.yml)"
-    unsupported_node "if x > 0 {\n  print(x)\n}"
+    if_stmt
+      condition:
+        expr_condition
+          expr:
+            binary_expr
+              operator: operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+      then:
+        block_stmt
+          body: unsupported_node "print(x)"
 
 ===
 If-else
@@ -73,7 +82,23 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "if x > 0 {\n  print(x)\n} else {\n  print(-x)\n}"
+  body:
+    if_stmt
+      condition:
+        expr_condition
+          expr:
+            binary_expr
+              operator: operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+      else:
+        block_stmt
+          body: unsupported_node "print(-x)"
+      then:
+        block_stmt
+          body: unsupported_node "print(x)"
 
 ===
 If-else-if chain
@@ -129,13 +154,42 @@ source_file
 ---
 
 top_level
-  body: unsupported_node "if x > 0 {\n  print(1)\n} else if x < 0 {\n  print(2)\n} else {\n  print(3)\n}"
+  body:
+    if_stmt
+      condition:
+        expr_condition
+          expr:
+            binary_expr
+              operator: operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+      else:
+        if_stmt
+          condition:
+            expr_condition
+              expr:
+                binary_expr
+                  operator: operator "<"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "0"
+          else:
+            block_stmt
+              body: unsupported_node "print(3)"
+          then:
+            block_stmt
+              body: unsupported_node "print(2)"
+      then:
+        block_stmt
+          body: unsupported_node "print(1)"
 
 ===
 If-let optional binding
 ===
 
-// TODO: map if-let -> if_stmt with let_pattern_condition
 if let value = optional {
   print(value)
 }
@@ -143,7 +197,6 @@ if let value = optional {
 ---
 
 source_file
-  comment "// TODO: map if-let -> if_stmt with let_pattern_condition"
   if_statement
     bound_identifier: simple_identifier "value"
     condition:
@@ -163,20 +216,28 @@ source_file
 
 top_level
   body:
-    unsupported_node "// TODO: map if-let -> if_stmt with let_pattern_condition"
-    unsupported_node "if let value = optional {\n  print(value)\n}"
+    if_stmt
+      condition:
+        let_pattern_condition
+          value:
+            name_expr
+              identifier: identifier "optional"
+          pattern:
+            var_pattern
+              identifier: identifier "value"
+      then:
+        block_stmt
+          body: unsupported_node "print(value)"
 
 ===
 Guard let
 ===
 
-// TODO: map guard_statement -> guard_if_stmt (with let_pattern_condition)
 guard let value = optional else { return }
 
 ---
 
 source_file
-  comment "// TODO: map guard_statement -> guard_if_stmt (with let_pattern_condition)"
   guard_statement
     bound_identifier: simple_identifier "value"
     condition:
@@ -192,8 +253,18 @@ source_file
 
 top_level
   body:
-    unsupported_node "// TODO: map guard_statement -> guard_if_stmt (with let_pattern_condition)"
-    unsupported_node "guard let value = optional else { return }"
+    guard_if_stmt
+      condition:
+        let_pattern_condition
+          value:
+            name_expr
+              identifier: identifier "optional"
+          pattern:
+            var_pattern
+              identifier: identifier "value"
+      else:
+        block_stmt
+          body: unsupported_node "return"
 
 ===
 Ternary expression
