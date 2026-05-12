@@ -147,7 +147,7 @@ abstract class Indirection extends Type {
    *
    * `certain` is `true` if this write is guaranteed to write to the address.
    */
-  predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
+  predicate isAdditionalWrite(Node0Impl value, Operand address, Certainty certain) { none() }
 
   /**
    * Gets the base type of this indirection, after specifiers have been deeply
@@ -198,11 +198,11 @@ private module IteratorIndirections {
       baseType = super.getValueType()
     }
 
-    override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) {
+    override predicate isAdditionalWrite(Node0Impl value, Operand address, Certainty certain) {
       exists(CallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
         this = call.getStaticCallTarget().(Function).getClassAndName("operator=") and
         address = call.getThisArgumentOperand() and
-        certain = false
+        certain instanceof AlwaysUncertain
       )
     }
 
@@ -271,10 +271,41 @@ predicate isDereference(Instruction deref, Operand address, boolean additional) 
   additional = false
 }
 
-predicate isWrite(Node0Impl value, Operand address, boolean certain) {
+private newtype TCertainty =
+  TCertainWhenAddressIsCertain() or
+  TAlwaysCertain() or
+  TAlwaysUncertain()
+
+abstract private class Certainty extends TCertainty {
+  abstract predicate isCertain(boolean addressIsCertain);
+
+  abstract string toString();
+}
+
+private class CertainWhenAddressIsCertain extends Certainty, TCertainWhenAddressIsCertain {
+  override predicate isCertain(boolean addressIsCertain) { addressIsCertain = true }
+
+  override string toString() { result = "CertainWhenAddressIsCertain" }
+}
+
+private class AlwaysCertain extends Certainty, TAlwaysCertain {
+  override predicate isCertain(boolean addressIsCertain) {
+    addressIsCertain = true or addressIsCertain = false
+  }
+
+  override string toString() { result = "AlwaysCertain" }
+}
+
+private class AlwaysUncertain extends Certainty, TAlwaysUncertain {
+  override predicate isCertain(boolean addressIsCertain) { none() }
+
+  override string toString() { result = "AlwaysUncertain" }
+}
+
+predicate isWrite(Node0Impl value, Operand address, Certainty certain) {
   any(Indirection ind).isAdditionalWrite(value, address, certain)
   or
-  certain = true and
+  certain instanceof CertainWhenAddressIsCertain and
   (
     exists(StoreInstruction store |
       value.asInstruction() = store and
@@ -718,16 +749,18 @@ private module Cached {
     int indirectionIndex
   ) {
     exists(
-      boolean writeIsCertain, boolean addressIsCertain, int ind0, CppType type, int lower, int upper
+      Certainty writeIsCertain, boolean addressIsCertain, int ind0, CppType type, int lower,
+      int upper
     |
       isWrite(value, address, writeIsCertain) and
       isDefImpl(address, base, ind0, addressIsCertain) and
-      certain = writeIsCertain.booleanAnd(addressIsCertain) and
       type = getLanguageType(address) and
       upper = countIndirectionsForCppType(type) and
       ind = ind0 + [lower .. upper] and
       indirectionIndex = ind - (ind0 + lower) and
       lower = getMinIndirectionsForType(any(Type t | type.hasUnspecifiedType(t, _)))
+    |
+      if writeIsCertain.isCertain(addressIsCertain) then certain = true else certain = false
     )
   }
 
