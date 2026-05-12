@@ -49,7 +49,7 @@ impl Visitor {
 
     pub fn build_with_schema(self, schema: crate::schema::Schema) -> Ast {
         Ast {
-            root: self.nodes[0].inner.id,
+            root: 0,
             schema,
             nodes: self.nodes.into_iter().map(|n| n.inner).collect(),
         }
@@ -59,7 +59,6 @@ impl Visitor {
         let id = self.nodes.len();
         self.nodes.push(VisitorNode {
             inner: Node {
-                id,
                 kind: self.language.id_for_node_kind(n.kind(), is_named),
                 kind_name: n.kind(),
                 content,
@@ -82,11 +81,10 @@ impl Visitor {
     }
 
     fn leave_node(&mut self, field_name: Option<&'static str>, _node: tree_sitter::Node<'_>) {
-        let node = self.current.map(|i| &self.nodes[i]).unwrap();
-        let node_id = node.inner.id;
-        let node_parent = node.parent;
+        let node_id = self.current.unwrap();
+        let node_parent = self.nodes[node_id].parent;
 
-        if let Some(parent_id) = node.parent {
+        if let Some(parent_id) = node_parent {
             let parent = self.nodes.get_mut(parent_id).unwrap();
             if let Some(field) = field_name {
                 let field_id = self.language.field_id_for_name(field).unwrap().get();

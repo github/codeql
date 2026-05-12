@@ -182,7 +182,7 @@ fn test_query_repeated_capture() {
     // Match against the assignment node (first named child of program)
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
-    let assignment_id = cursor.node().id();
+    let assignment_id = cursor.node_id();
 
     let mut captures = yeast::captures::Captures::new();
     let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
@@ -206,7 +206,7 @@ fn test_capture_unnamed_node_parenthesized() {
 
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
-    let assignment_id = cursor.node().id();
+    let assignment_id = cursor.node_id();
 
     let mut captures = yeast::captures::Captures::new();
     let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
@@ -233,7 +233,7 @@ fn test_capture_unnamed_node_bare_literal() {
 
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
-    let assignment_id = cursor.node().id();
+    let assignment_id = cursor.node_id();
 
     let mut captures = yeast::captures::Captures::new();
     let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
@@ -254,7 +254,7 @@ fn test_bare_underscore_matches_unnamed() {
 
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
-    let assignment_id = cursor.node().id();
+    let assignment_id = cursor.node_id();
 
     // `(_)` skips unnamed children, so a query containing a single `(_)`
     // bare pattern fails to match the assignment (whose only unfielded
@@ -293,7 +293,7 @@ fn test_bare_forms_in_field_position() {
 
     let mut cursor = AstCursor::new(&ast);
     cursor.goto_first_child();
-    let assignment_id = cursor.node().id();
+    let assignment_id = cursor.node_id();
 
     // Bare `_` in field position. Captures the named `identifier "x"`
     // child of the `left` field — bare `_` admits unnamed too, but the
@@ -337,7 +337,7 @@ fn test_forward_scan_finds_unnamed_token_late() {
     while cursor.node().kind() != "do" || !cursor.node().is_named() {
         assert!(cursor.goto_next_sibling(), "expected to find named `do`");
     }
-    let do_id = cursor.node().id();
+    let do_id = cursor.node_id();
 
     let query = yeast::query!((do ("end") @kw));
     let mut captures = yeast::captures::Captures::new();
@@ -363,7 +363,7 @@ fn test_forward_scan_preserves_order() {
     while cursor.node().kind() != "do" || !cursor.node().is_named() {
         assert!(cursor.goto_next_sibling(), "expected to find named `do`");
     }
-    let do_id = cursor.node().id();
+    let do_id = cursor.node_id();
 
     let query = yeast::query!((do ("end") @first ("do") @second));
     let mut captures = yeast::captures::Captures::new();
