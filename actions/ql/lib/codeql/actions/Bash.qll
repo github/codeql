@@ -793,7 +793,7 @@ module Bash {
       r1 = "\\[([09azAZ_-]+)\\]" and
       // The same as above, followed by a quantifier like `+` or `{20}`
       r2 = r1 + "(\\+|\\{\\d+\\})" and
-      // The same as above, possibly with brackets around it
+      // The same as above, possibly with parentheses around it
       r3 = "\\(?" + r2 + "\\)?" and
       // The same as above, possibly with a `?` after it
       r4 = r3 + "\\??"
