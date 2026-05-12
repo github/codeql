@@ -17,7 +17,7 @@ source_file
 top_level
   body:
     binary_expr
-      operator: operator "3"
+      operator: operator "+"
       left: unsupported_node "1"
       right: unsupported_node "2"
 
@@ -40,6 +40,6 @@ source_file
 top_level
   body:
     binary_expr
-      operator: operator "3"
+      operator: operator "+"
       left: name_expr "foo"
       right: name_expr "bar"

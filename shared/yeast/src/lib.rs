@@ -23,11 +23,72 @@ pub use cursor::Cursor;
 use query::QueryNode;
 
 /// Node ids are indexes into the arena
-type Id = usize;
+pub type Id = usize;
 
 /// Field and Kind ids are provided by tree-sitter
 type FieldId = u16;
 type KindId = u16;
+
+/// A typed reference to a node in an [`Ast`] arena. Wraps an [`Id`] but
+/// deliberately does not implement [`std::fmt::Display`]: rendering a node
+/// requires the [`Ast`] it lives in (to resolve [`NodeContent::Range`] back
+/// to source text). Use [`YeastDisplay::yeast_to_string`] to format it.
+#[derive(Copy, Clone, Eq, PartialEq, Debug, Hash)]
+pub struct NodeRef(pub Id);
+
+impl NodeRef {
+    pub fn id(self) -> Id {
+        self.0
+    }
+}
+
+impl From<NodeRef> for Id {
+    fn from(value: NodeRef) -> Self {
+        value.0
+    }
+}
+
+/// Like [`std::fmt::Display`], but the formatting routine is given access to
+/// the [`Ast`] so that node references can resolve to their source text.
+///
+/// All standard primitive and string types implement [`YeastDisplay`] via
+/// the [`impl_yeast_display_via_display`] macro below. Coherence prevents a
+/// blanket `impl<T: Display>`, so additional types must be added explicitly.
+pub trait YeastDisplay {
+    fn yeast_to_string(&self, ast: &Ast) -> String;
+}
+
+impl YeastDisplay for NodeRef {
+    fn yeast_to_string(&self, ast: &Ast) -> String {
+        ast.source_text(self.0)
+    }
+}
+
+macro_rules! impl_yeast_display_via_display {
+    ($($t:ty),* $(,)?) => {
+        $(
+            impl YeastDisplay for $t {
+                fn yeast_to_string(&self, _ast: &Ast) -> String {
+                    ::std::string::ToString::to_string(self)
+                }
+            }
+        )*
+    };
+}
+
+impl_yeast_display_via_display! {
+    i8, i16, i32, i64, i128, isize,
+    u8, u16, u32, u64, u128, usize,
+    f32, f64,
+    bool, char,
+    str, String,
+}
+
+impl<T: YeastDisplay + ?Sized> YeastDisplay for &T {
+    fn yeast_to_string(&self, ast: &Ast) -> String {
+        (**self).yeast_to_string(ast)
+    }
+}
 
 pub const CHILD_FIELD: u16 = u16::MAX;
 
@@ -160,6 +221,9 @@ pub struct Ast {
     root: Id,
     nodes: Vec<Node>,
     schema: schema::Schema,
+    /// Original source bytes the tree was parsed from. Used to resolve
+    /// `NodeContent::Range` to text for synthesized literal nodes.
+    source: Vec<u8>,
 }
 
 impl std::fmt::Debug for Ast {
@@ -183,10 +247,40 @@ impl Ast {
         tree: &tree_sitter::Tree,
         language: &tree_sitter::Language,
     ) -> Self {
+        Self::from_tree_with_schema_and_source(schema, tree, language, Vec::new())
+    }
+
+    pub fn from_tree_with_schema_and_source(
+        schema: schema::Schema,
+        tree: &tree_sitter::Tree,
+        language: &tree_sitter::Language,
+        source: Vec<u8>,
+    ) -> Self {
         let mut visitor = visitor::Visitor::new(language.clone());
         visitor.visit(tree);
 
-        visitor.build_with_schema(schema)
+        let mut ast = visitor.build_with_schema(schema);
+        ast.source = source;
+        ast
+    }
+
+    /// Returns the source text for `id`, resolving `NodeContent::Range`
+    /// against the stored source bytes when available.
+    pub fn source_text(&self, id: Id) -> String {
+        let Some(node) = self.get_node(id) else { return String::new(); };
+        match &node.content {
+            NodeContent::Range(range) => {
+                let start = range.start_byte;
+                let end = range.end_byte;
+                if end <= self.source.len() && start <= end {
+                    String::from_utf8_lossy(&self.source[start..end]).into_owned()
+                } else {
+                    String::new()
+                }
+            }
+            NodeContent::String(s) => s.to_string(),
+            NodeContent::DynamicString(s) => s.clone(),
+        }
     }
 
     pub fn walk(&self) -> AstCursor {
@@ -894,8 +988,17 @@ impl<'a> Runner<'a> {
         })
     }
 
-    pub fn run_from_tree(&self, tree: &tree_sitter::Tree) -> Result<Ast, String> {
-        let mut ast = Ast::from_tree_with_schema(self.schema.clone(), tree, &self.language);
+    pub fn run_from_tree(
+        &self,
+        tree: &tree_sitter::Tree,
+        source: &[u8],
+    ) -> Result<Ast, String> {
+        let mut ast = Ast::from_tree_with_schema_and_source(
+            self.schema.clone(),
+            tree,
+            &self.language,
+            source.to_vec(),
+        );
         self.run_phases(&mut ast)?;
         Ok(ast)
     }
@@ -908,7 +1011,12 @@ impl<'a> Runner<'a> {
         let tree = parser
             .parse(input, None)
             .ok_or_else(|| "Failed to parse input".to_string())?;
-        let mut ast = Ast::from_tree_with_schema(self.schema.clone(), &tree, &self.language);
+        let mut ast = Ast::from_tree_with_schema_and_source(
+            self.schema.clone(),
+            &tree,
+            &self.language,
+            input.as_bytes().to_vec(),
+        );
         self.run_phases(&mut ast)?;
         Ok(ast)
     }

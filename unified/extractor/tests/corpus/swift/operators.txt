@@ -17,7 +17,7 @@ source_file
 top_level
   body:
     binary_expr
-      operator: operator "3"
+      operator: operator "+"
       left: name_expr "a"
       right: name_expr "b"
 
@@ -40,7 +40,7 @@ source_file
 top_level
   body:
     binary_expr
-      operator: operator "3"
+      operator: operator "-"
       left: name_expr "a"
       right: name_expr "b"
 
@@ -63,7 +63,7 @@ source_file
 top_level
   body:
     binary_expr
-      operator: operator "3"
+      operator: operator "*"
       left: name_expr "a"
       right: name_expr "b"
 
@@ -86,7 +86,7 @@ source_file
 top_level
   body:
     binary_expr
-      operator: operator "3"
+      operator: operator "/"
       left: name_expr "a"
       right: name_expr "b"
 
@@ -113,11 +113,11 @@ source_file
 top_level
   body:
     binary_expr
-      operator: operator "3"
+      operator: operator "+"
       left: name_expr "a"
       right:
         binary_expr
-          operator: operator "6"
+          operator: operator "*"
           left: name_expr "b"
           right: name_expr "c"
 
@@ -146,7 +146,7 @@ source_file
 top_level
   body:
     binary_expr
-      operator: operator "9"
+      operator: operator "*"
       left: unsupported_node "(a + b)"
       right: name_expr "c"
 

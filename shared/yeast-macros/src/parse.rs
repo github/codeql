@@ -299,7 +299,7 @@ fn parse_direct_node(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => {
             let group = expect_group(tokens, Delimiter::Brace)?;
             let expr = group.stream();
-            Ok(quote! { #expr })
+            Ok(quote! { ::std::convert::Into::<usize>::into(#expr) })
         }
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
@@ -329,12 +329,17 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         return Ok(quote! { #ctx.literal(#kind_str, #lit) });
     }
 
-    // Check for (kind #{expr}) — computed literal, expr converted via .to_string()
+    // Check for (kind #{expr}) — computed literal, expr converted via YeastDisplay
     if peek_is_hash(tokens) {
         tokens.next(); // consume #
         let group = expect_group(tokens, Delimiter::Brace)?;
         let expr = group.stream();
-        return Ok(quote! { #ctx.literal(#kind_str, &(#expr).to_string()) });
+        return Ok(quote! {
+            {
+                let __value = yeast::YeastDisplay::yeast_to_string(&(#expr), &*#ctx.ast);
+                #ctx.literal(#kind_str, &__value)
+            }
+        });
     }
 
     // Check for (kind $fresh)
@@ -374,7 +379,11 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
                     inner.next(); // consume first .
                     inner.next(); // consume second .
                     let expr: proc_macro2::TokenStream = inner.collect();
-                    stmts.push(quote! { let #temp: Vec<usize> = #expr; });
+                    stmts.push(quote! {
+                        let #temp: Vec<usize> = (#expr).into_iter()
+                            .map(::std::convert::Into::<usize>::into)
+                            .collect();
+                    });
                     field_args.push(quote! { (#field_str, #temp) });
                     continue;
                 }
@@ -382,7 +391,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         }
 
         let value = parse_direct_node(tokens, ctx)?;
-        stmts.push(quote! { let #temp = #value; });
+        stmts.push(quote! { let #temp: usize = #value; });
         field_args.push(quote! { (#field_str, vec![#temp]) });
     }
 
@@ -427,10 +436,16 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
                 inner.next(); // consume first .
                 inner.next(); // consume second .
                 let expr: TokenStream = inner.collect();
-                items.push(quote! { __nodes.extend(#expr); });
+                items.push(quote! {
+                    __nodes.extend(
+                        (#expr).into_iter().map(::std::convert::Into::<usize>::into)
+                    );
+                });
             } else {
                 let expr = group.stream();
-                items.push(quote! { __nodes.push(#expr); });
+                items.push(quote! {
+                    __nodes.push(::std::convert::Into::<usize>::into(#expr));
+                });
             }
             continue;
         }
@@ -580,13 +595,24 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             let name_str = &cap.name;
             match cap.multiplicity {
                 CaptureMultiplicity::Repeated => {
-                    quote! { let #name: Vec<usize> = __captures.get_all(#name_str); }
+                    quote! {
+                        let #name: Vec<yeast::NodeRef> = __captures.get_all(#name_str)
+                            .into_iter()
+                            .map(yeast::NodeRef)
+                            .collect();
+                    }
                 }
                 CaptureMultiplicity::Optional => {
-                    quote! { let #name: Option<usize> = __captures.get_opt(#name_str); }
+                    quote! {
+                        let #name: Option<yeast::NodeRef> =
+                            __captures.get_opt(#name_str).map(yeast::NodeRef);
+                    }
                 }
                 CaptureMultiplicity::Single => {
-                    quote! { let #name: usize = __captures.get_var(#name_str).unwrap(); }
+                    quote! {
+                        let #name: yeast::NodeRef =
+                            yeast::NodeRef(__captures.get_var(#name_str).unwrap());
+                    }
                 }
             }
         })
@@ -613,19 +639,26 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                     CaptureMultiplicity::Repeated => quote! {
                         let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        __fields.insert(__field_id, #name);
+                        __fields.insert(
+                            __field_id,
+                            #name.into_iter()
+                                .map(::std::convert::Into::<usize>::into)
+                                .collect(),
+                        );
                     },
                     CaptureMultiplicity::Optional => quote! {
                         let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
                         if let Some(__id) = #name {
-                            __fields.entry(__field_id).or_insert_with(Vec::new).push(__id);
+                            __fields.entry(__field_id).or_insert_with(Vec::new)
+                                .push(::std::convert::Into::<usize>::into(__id));
                         }
                     },
                     CaptureMultiplicity::Single => quote! {
                         let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        __fields.entry(__field_id).or_insert_with(Vec::new).push(#name);
+                        __fields.entry(__field_id).or_insert_with(Vec::new)
+                            .push(::std::convert::Into::<usize>::into(#name));
                     },
                 }
             })

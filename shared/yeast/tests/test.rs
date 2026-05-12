@@ -1060,3 +1060,54 @@ fn test_desugar_for_with_multiple_assignment() {
     "#,
     );
 }
+
+/// Regression test: `#{capture}` in a template must render the *source text*
+/// of the captured node, not its arena `Id`. Previously, captures were bound
+/// as `usize`, so `#{cap}` printed the integer id (e.g. `"3"`) via `Display`.
+/// Captures are now bound as `NodeRef`, which has no `Display` impl and
+/// resolves to the captured node's source text via `YeastDisplay`.
+#[test]
+fn test_hash_brace_renders_capture_source_text() {
+    let rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: (identifier #{name})
+            receiver: (identifier #{recv})
+            arguments: (argument_list)
+        )
+    );
+    let dump = run_and_dump("foo.bar()", vec![rule]);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          call
+            arguments: argument_list "foo.bar()"
+            method: identifier "bar"
+            receiver: identifier "foo"
+    "#,
+    );
+}
+
+/// Regression test: non-`NodeRef` values in `#{expr}` still render via their
+/// `Display` impl (covered by `YeastDisplay`'s blanket impls for primitives).
+#[test]
+fn test_hash_brace_renders_integer_expression() {
+    let rule = rule!(
+        (identifier) @_
+        =>
+        (identifier #{1 + 2})
+    );
+    let dump = run_and_dump("foo", vec![rule]);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          identifier "3"
+    "#,
+    );
+}
