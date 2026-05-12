@@ -1907,10 +1907,10 @@ module.exports = grammar({
     _direct_or_indirect_binding: ($) =>
       seq(
         choice(
-          $._binding_kind_and_pattern,
-          seq("case", $._binding_pattern_no_expr)
+          field("pattern", alias($._binding_kind_and_pattern, $.pattern)),
+          seq("case", field("pattern", alias($._binding_pattern_no_expr, $.pattern)))
         ),
-        optional($.type_annotation)
+        field("type", optional($.type_annotation))
       ),
     value_binding_pattern: ($) => field("mutability", choice("var", "let")),
     _possibly_async_binding_pattern_kind: ($) =>

@@ -314,8 +314,8 @@ named:
   if_condition:
     kind: [availability_condition, expression, if_let_binding]
   if_let_binding:
-    $children*: [pattern, simple_identifier, type, type_annotation, user_type, value_binding_pattern, wildcard_pattern]
-    bound_identifier?: simple_identifier
+    pattern: pattern
+    type?: type_annotation
     value?: expression
     where?: where_clause
   if_statement:
