@@ -10,8 +10,10 @@ cargo_build_script(
     name = "tree-sitter-swift-build",
     srcs = ["bindings/rust/build.rs"],
     data = glob([
-        "src/**",
-    ]),
+        "src/scanner.c",
+    ]) + [
+        "grammar.js",
+    ],
     deps = all_crate_deps(
         build = True,
     ),
