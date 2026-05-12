@@ -235,6 +235,194 @@ module Ast implements AstSig<Py::Location> {
   }
 
   /**
+   * A `case x` pattern that binds `x` to the matched value.
+   */
+  additional class MatchCapturePattern extends Pattern {
+    private Py::MatchCapturePattern cap;
+
+    MatchCapturePattern() { this = TPattern(cap) }
+
+    /** Gets the bound Name expression. */
+    Expr getVariable() { result.asExpr() = cap.getVariable() }
+
+    override AstNode getChild(int index) { index = 0 and result = this.getVariable() }
+  }
+
+  /**
+   * A `case pattern as name` pattern.
+   */
+  additional class MatchAsPattern extends Pattern {
+    private Py::MatchAsPattern asp;
+
+    MatchAsPattern() { this = TPattern(asp) }
+
+    /** Gets the inner pattern. */
+    AstNode getPattern() { result.asPattern() = asp.getPattern() }
+
+    /** Gets the bound Name expression. */
+    Expr getAlias() { result.asExpr() = asp.getAlias() }
+
+    override AstNode getChild(int index) {
+      index = 0 and result = this.getPattern()
+      or
+      index = 1 and result = this.getAlias()
+    }
+  }
+
+  /**
+   * A `case [a, b, *rest]` star pattern. Binds `rest` to the remaining
+   * elements of the sequence.
+   */
+  additional class MatchStarPattern extends Pattern {
+    private Py::MatchStarPattern starp;
+
+    MatchStarPattern() { this = TPattern(starp) }
+
+    /** Gets the target Pattern (a `MatchCapturePattern` if `*rest`). */
+    AstNode getTarget() { result.asPattern() = starp.getTarget() }
+
+    override AstNode getChild(int index) { index = 0 and result = this.getTarget() }
+  }
+
+  /**
+   * A `case [a, b, ...]` sequence pattern. Recurses into the sub-patterns.
+   */
+  additional class MatchSequencePattern extends Pattern {
+    private Py::MatchSequencePattern seqp;
+
+    MatchSequencePattern() { this = TPattern(seqp) }
+
+    /** Gets the `n`th sub-pattern. */
+    AstNode getPattern(int n) { result.asPattern() = seqp.getPattern(n) }
+
+    override AstNode getChild(int index) { result = this.getPattern(index) }
+  }
+
+  /**
+   * A `case Cls(a, b, x=y)` class pattern.
+   */
+  additional class MatchClassPattern extends Pattern {
+    private Py::MatchClassPattern clsp;
+
+    MatchClassPattern() { this = TPattern(clsp) }
+
+    /** Gets the class expression of this class pattern. */
+    Expr getClass() { result.asExpr() = clsp.getClass() }
+
+    /** Gets the `n`th positional sub-pattern. */
+    AstNode getPositional(int n) { result.asPattern() = clsp.getPositional(n) }
+
+    /** Gets the `n`th keyword sub-pattern. */
+    AstNode getKeyword(int n) { result.asPattern() = clsp.getKeyword(n) }
+
+    private int numPositional() { result = count(int i | exists(clsp.getPositional(i))) }
+
+    override AstNode getChild(int index) {
+      index = 0 and result = this.getClass()
+      or
+      result = this.getPositional(index - 1) and index >= 1
+      or
+      result = this.getKeyword(index - 1 - this.numPositional()) and
+      index >= 1 + this.numPositional()
+    }
+  }
+
+  /**
+   * A `case {k: v}` mapping pattern.
+   */
+  additional class MatchMappingPattern extends Pattern {
+    private Py::MatchMappingPattern mapp;
+
+    MatchMappingPattern() { this = TPattern(mapp) }
+
+    AstNode getMapping(int n) { result.asPattern() = mapp.getMapping(n) }
+
+    override AstNode getChild(int index) { result = this.getMapping(index) }
+  }
+
+  /**
+   * A key-value pair inside a `case {k: v}` mapping pattern.
+   */
+  additional class MatchKeyValuePattern extends Pattern {
+    private Py::MatchKeyValuePattern kvp;
+
+    MatchKeyValuePattern() { this = TPattern(kvp) }
+
+    AstNode getKey() { result.asPattern() = kvp.getKey() }
+
+    AstNode getValue() { result.asPattern() = kvp.getValue() }
+
+    override AstNode getChild(int index) {
+      index = 0 and result = this.getKey()
+      or
+      index = 1 and result = this.getValue()
+    }
+  }
+
+  /**
+   * A `case Cls(name=value)` keyword sub-pattern.
+   */
+  additional class MatchKeywordPattern extends Pattern {
+    private Py::MatchKeywordPattern kwp;
+
+    MatchKeywordPattern() { this = TPattern(kwp) }
+
+    Expr getAttribute() { result.asExpr() = kwp.getAttribute() }
+
+    AstNode getValue() { result.asPattern() = kwp.getValue() }
+
+    override AstNode getChild(int index) {
+      index = 0 and result = this.getAttribute()
+      or
+      index = 1 and result = this.getValue()
+    }
+  }
+
+  /** A `case **rest` double-star mapping sub-pattern. */
+  additional class MatchDoubleStarPattern extends Pattern {
+    private Py::MatchDoubleStarPattern dsp;
+
+    MatchDoubleStarPattern() { this = TPattern(dsp) }
+
+    AstNode getTarget() { result.asPattern() = dsp.getTarget() }
+
+    override AstNode getChild(int index) { index = 0 and result = this.getTarget() }
+  }
+
+  /** A `case p1 | p2 | …` or-pattern. */
+  additional class MatchOrPattern extends Pattern {
+    private Py::MatchOrPattern orp;
+
+    MatchOrPattern() { this = TPattern(orp) }
+
+    AstNode getPattern(int n) { result.asPattern() = orp.getPattern(n) }
+
+    override AstNode getChild(int index) { result = this.getPattern(index) }
+  }
+
+  /** A `case 1` literal pattern. */
+  additional class MatchLiteralPattern extends Pattern {
+    private Py::MatchLiteralPattern litp;
+
+    MatchLiteralPattern() { this = TPattern(litp) }
+
+    Expr getLiteral() { result.asExpr() = litp.getLiteral() }
+
+    override AstNode getChild(int index) { index = 0 and result = this.getLiteral() }
+  }
+
+  /** A `case Cls.NAME` value pattern. */
+  additional class MatchValuePattern extends Pattern {
+    private Py::MatchValuePattern vp;
+
+    MatchValuePattern() { this = TPattern(vp) }
+
+    Expr getValue() { result.asExpr() = vp.getValue() }
+
+    override AstNode getChild(int index) { index = 0 and result = this.getValue() }
+  }
+
+  /**
    * A block statement, modeling the body of a parent AST node as a
    * sequence of statements.
    */
