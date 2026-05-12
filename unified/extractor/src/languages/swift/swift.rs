@@ -1,23 +1,34 @@
 use codeql_extractor::extractor::simple;
 use yeast::{rule, DesugaringConfig, PhaseKind};
 
-fn desugaring_rules() -> Vec<yeast::Rule> {
+/// Output AST schema. The corpus tests load this via the language spec to
+/// type-check the desugared AST.
+pub const OUTPUT_NODE_TYPES_YAML: &str = include_str!("../../../ast_types.yml");
+
+fn translation_rules() -> Vec<yeast::Rule> {
     vec![
+        rule!(
+            (source_file (_)* @body)
+            =>
+            (top_level body: {..body})
+        ),
         rule!(
             (additive_expression)
             =>
-            (simple_identifier "blah")
+            (name_expr "test")
         ),
         rule!(
             _
             =>
-            (simple_identifier "not supported")
+            (unsupported_node)
         )
     ]
 }
 
-pub fn language_spec() -> simple::LanguageSpec {
-    let desugar = DesugaringConfig::new().add_phase("desugar", PhaseKind::OneShot, desugaring_rules());
+pub fn language_spec(desugared_ast_schema: &'static str) -> simple::LanguageSpec {
+    let desugar = DesugaringConfig::new()
+        .add_phase("translate", PhaseKind::OneShot, translation_rules())
+        .with_output_node_types_yaml(desugared_ast_schema);
     simple::LanguageSpec {
         prefix: "swift",
         ts_language: tree_sitter_swift::LANGUAGE.into(),

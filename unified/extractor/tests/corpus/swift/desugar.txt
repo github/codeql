@@ -14,8 +14,8 @@ source_file
 
 ---
 
-simple_identifier "not supported"
-
+top_level
+  body: name_expr "test"
 
 ===
 Another additive expression is desugared
@@ -33,4 +33,5 @@ source_file
 
 ---
 
-simple_identifier "not supported"
+top_level
+  body: name_expr "test"

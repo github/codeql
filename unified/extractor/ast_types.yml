@@ -1,0 +1,21 @@
+supertypes:
+  expr:
+    - identifier
+    - unsupported_node
+
+  stmt:
+    - unsupported_node
+
+named:
+  # Top of a translated source file. The body is a list of expressions or
+  # statements.
+  top_level:
+    body*: [expr, stmt]
+
+  # An identifier in expression position.
+  identifier:
+
+  # A node that we don't (yet) translate.
+  unsupported_node:
+
+  wrong_type:
