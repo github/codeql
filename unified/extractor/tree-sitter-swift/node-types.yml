@@ -371,8 +371,15 @@ named:
     reference_specifier*: value_argument_label
     type_modifiers?: type_modifiers
     value?: expression
+  key_path_component:
+    name?: simple_identifier
+    postfix*: key_path_postfix
   key_path_expression:
-    $children*: [array_type, bang, dictionary_type, simple_identifier, type_arguments, type_identifier, value_argument]
+    component*: key_path_component
+    type?: [array_type, dictionary_type, simple_user_type]
+  key_path_postfix:
+    argument*: value_argument
+    force_unwrap?: bang
   key_path_string_expression:
     expr: expression
   lambda_function_type:
@@ -551,6 +558,9 @@ named:
     mutation?: mutation_modifier
   shebang_line:
   simple_identifier:
+  simple_user_type:
+    arguments?: type_arguments
+    name: type_identifier
   source_file:
     shebang?: shebang_line
     statement*: [do_statement, expression, for_statement, global_declaration, guard_statement, repeat_while_statement, statement_label, throw_keyword, while_statement]
@@ -634,7 +644,7 @@ named:
     type_parameters?: type_parameters
     value: type
   user_type:
-    part+: [type_arguments, type_identifier]
+    part+: simple_user_type
   value_argument:
     name?: value_argument_label
     reference_specifier*: value_argument_label

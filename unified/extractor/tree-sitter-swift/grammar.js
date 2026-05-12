@@ -97,7 +97,7 @@ module.exports = grammar({
     [$.attribute],
     [$._attribute_argument],
     // Is `foo { ... }` a constructor invocation or function invocation?
-    [$._simple_user_type, $.expression],
+    [$.simple_user_type, $.expression],
     // To support nested types A.B not being interpreted as `(navigation_expression ... (type_identifier)) (navigation_suffix)`
     [$.user_type],
     // How to tell the difference between Foo.bar(with:and:), and Foo.bar(with: smth, and: other)? You need GLR
@@ -116,7 +116,7 @@ module.exports = grammar({
     [$.referenceable_operator, $._prefix_unary_operator],
     // `{ [self, b, c] ...` could be a capture list or an array literal depending on what else happens.
     [$.capture_list_item, $.expression],
-    [$.capture_list_item, $.expression, $._simple_user_type],
+    [$.capture_list_item, $.expression, $.simple_user_type],
     [$._primary_expression, $.capture_list_item],
     // a ? b : c () could be calling c(), or it could be calling a function that's produced by the result of
     // `(a ? b : c)`. We have a small hack to force it to be the former of these by intentionally introducing a
@@ -436,13 +436,13 @@ module.exports = grammar({
         )
       ),
     // The grammar just calls this whole thing a `type-identifier` but that's a bit confusing.
-    user_type: ($) => sep1(field("part", $._simple_user_type), $._dot),
-    _simple_user_type: ($) =>
+    user_type: ($) => sep1(field("part", $.simple_user_type), $._dot),
+    simple_user_type: ($) =>
       prec.right(
         PRECS.ty,
         seq(
-          alias($.simple_identifier, $.type_identifier),
-          optional($.type_arguments)
+          field("name", alias($.simple_identifier, $.type_identifier)),
+          field("arguments", optional($.type_arguments))
         )
       ),
     tuple_type: ($) =>
@@ -1110,27 +1110,27 @@ module.exports = grammar({
         PRECS.keypath,
         seq(
           "\\",
-          optional(
-            choice($._simple_user_type, $.array_type, $.dictionary_type)
-          ),
-          repeat(seq(".", $._key_path_component))
+          field("type", optional(
+            choice($.simple_user_type, $.array_type, $.dictionary_type)
+          )),
+          repeat(seq(".", field("component", $.key_path_component)))
         )
       ),
     key_path_string_expression: ($) =>
       prec.left(seq($._hash_symbol, "keyPath", "(", field("expr", $.expression), ")")),
-    _key_path_component: ($) =>
+    key_path_component: ($) =>
       prec.left(
         choice(
-          seq($.simple_identifier, repeat($._key_path_postfixes)),
-          repeat1($._key_path_postfixes)
+          seq(field("name", $.simple_identifier), repeat(field("postfix", $.key_path_postfix))),
+          repeat1(field("postfix", $.key_path_postfix))
         )
       ),
-    _key_path_postfixes: ($) =>
+    key_path_postfix: ($) =>
       choice(
         "?",
-        $.bang,
+        field("force_unwrap", $.bang),
         "self",
-        seq("[", optional(sep1($.value_argument, ",")), "]")
+        seq("[", optional(sep1(field("argument", $.value_argument), ",")), "]")
       ),
     try_operator: ($) =>
       prec.right(
