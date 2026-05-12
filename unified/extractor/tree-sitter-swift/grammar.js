@@ -1078,20 +1078,18 @@ module.exports = grammar({
       ),
     switch_entry: ($) =>
       seq(
-        optional($.modifiers),
+        field("modifiers", optional($.modifiers)),
         choice(
           seq(
             "case",
-            seq(
-              $.switch_pattern,
-              optional(seq($.where_keyword, $.expression))
-            ),
-            repeat(seq(",", $.switch_pattern))
+            field("pattern", $.switch_pattern),
+            field("where", optional($.where_clause)),
+            repeat(seq(",", field("pattern", $.switch_pattern)))
           ),
-          $.default_keyword
+          field("default", $.default_keyword)
         ),
         ":",
-        $.statements,
+        field("body", $.statements),
         optional("fallthrough")
       ),
     switch_pattern: ($) => field("pattern", alias($._binding_pattern_with_expr, $.pattern)),

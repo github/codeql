@@ -586,7 +586,11 @@ named:
   suppressed_constraint:
     suppressed: type_identifier
   switch_entry:
-    $children+: [default_keyword, expression, modifiers, statements, switch_pattern, where_keyword]
+    body: statements
+    default?: default_keyword
+    modifiers?: modifiers
+    pattern*: switch_pattern
+    where?: where_clause
   switch_pattern:
     pattern: pattern
   switch_statement:
