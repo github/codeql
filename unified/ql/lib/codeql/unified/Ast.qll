@@ -1,5 +1,5 @@
 /**
- * CodeQL library for Swift
+ * CodeQL library for Unified
  * Automatically generated from the tree-sitter grammar; do not edit
  */
 
@@ -24,20 +24,20 @@ private predicate discardLocation(@location_default loc) {
 }
 
 overlay[local]
-module Swift {
+module Unified {
   /** The base class for all AST nodes */
-  class AstNode extends @swift_ast_node {
+  class AstNode extends @unified_ast_node {
     /** Gets a string representation of this element. */
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { swift_ast_node_location(this, result) }
+    final L::Location getLocation() { unified_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { swift_ast_node_parent(this, result, _) }
+    final AstNode getParent() { unified_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { swift_ast_node_parent(this, _, result) }
+    final int getParentIndex() { unified_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -50,9 +50,9 @@ module Swift {
   }
 
   /** A token. */
-  class Token extends @swift_token, AstNode {
+  class Token extends @unified_token, AstNode {
     /** Gets the value of this token. */
-    final string getValue() { swift_tokeninfo(this, _, result) }
+    final string getValue() { unified_tokeninfo(this, _, result) }
 
     /** Gets a string representation of this element. */
     final override string toString() { result = this.getValue() }
@@ -61,32 +61,27 @@ module Swift {
     override string getAPrimaryQlClass() { result = "Token" }
   }
 
-  /** A reserved word. */
-  class ReservedWord extends @swift_reserved_word, Token {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "ReservedWord" }
-  }
-
   /** Gets the file containing the given `node`. */
-  private @file getNodeFile(@swift_ast_node node) {
-    exists(@location_default loc | swift_ast_node_location(node, loc) |
+  private @file getNodeFile(@unified_ast_node node) {
+    exists(@location_default loc | unified_ast_node_location(node, loc) |
       locations_default(loc, result, _, _, _, _)
     )
   }
 
   /** Holds if `node` is in the `file` and is part of the overlay base database. */
-  private predicate discardableAstNode(@file file, @swift_ast_node node) {
+  private predicate discardableAstNode(@file file, @unified_ast_node node) {
     not isOverlay() and file = getNodeFile(node)
   }
 
   /** Holds if `node` should be discarded, because it is part of the overlay base and is in a file that was also extracted as part of the overlay database. */
   overlay[discard_entity]
-  private predicate discardAstNode(@swift_ast_node node) {
+  private predicate discardAstNode(@unified_ast_node node) {
     exists(@file file, string path | files(file, path) |
       discardableAstNode(file, node) and overlayChangedFiles(path)
     )
   }
 
+<<<<<<< HEAD
   /** A class representing `additive_expression` nodes. */
   class AdditiveExpression extends @swift_additive_expression, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -197,12 +192,34 @@ module Swift {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       swift_assignment_def(this, _, result, _) or swift_assignment_def(this, _, _, result)
+=======
+  /** A class representing `binary_expr` nodes. */
+  class BinaryExpr extends @unified_binary_expr, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "BinaryExpr" }
+
+    /** Gets the node corresponding to the field `left`. */
+    final Expr getLeft() { unified_binary_expr_def(this, result, _, _) }
+
+    /** Gets the node corresponding to the field `operator`. */
+    final BinaryOperator getOperator() { unified_binary_expr_def(this, _, result, _) }
+
+    /** Gets the node corresponding to the field `right`. */
+    final Expr getRight() { unified_binary_expr_def(this, _, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      unified_binary_expr_def(this, result, _, _) or
+      unified_binary_expr_def(this, _, result, _) or
+      unified_binary_expr_def(this, _, _, result)
+>>>>>>> e92db5117d5 (Unified extractor: add AST schema, swift translation rules, and corpus framework)
     }
   }
 
-  /** A class representing `associatedtype_declaration` nodes. */
-  class AssociatedtypeDeclaration extends @swift_associatedtype_declaration, AstNode {
+  /** A class representing `binary_operator` tokens. */
+  class BinaryOperator extends @unified_token_binary_operator, Token {
     /** Gets the name of the primary QL class for this element. */
+<<<<<<< HEAD
     final override string getAPrimaryQlClass() { result = "AssociatedtypeDeclaration" }
 
     /** Gets the node corresponding to the field `default_value`. */
@@ -224,23 +241,23 @@ module Swift {
       swift_associatedtype_declaration_def(this, result) or
       swift_associatedtype_declaration_child(this, _, result)
     }
+=======
+    final override string getAPrimaryQlClass() { result = "BinaryOperator" }
+>>>>>>> e92db5117d5 (Unified extractor: add AST schema, swift translation rules, and corpus framework)
   }
 
-  /** A class representing `attribute` nodes. */
-  class Attribute extends @swift_attribute, AstNode {
+  class Expr extends @unified_expr, AstNode { }
+
+  /** A class representing `name_expr` tokens. */
+  class NameExpr extends @unified_token_name_expr, Token {
     /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "Attribute" }
-
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_attribute_child(this, i, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_attribute_child(this, _, result) }
+    final override string getAPrimaryQlClass() { result = "NameExpr" }
   }
 
-  /** A class representing `availability_condition` nodes. */
-  class AvailabilityCondition extends @swift_availability_condition, AstNode {
+  /** A class representing `top_level` nodes. */
+  class TopLevel extends @unified_top_level, AstNode {
     /** Gets the name of the primary QL class for this element. */
+<<<<<<< HEAD
     final override string getAPrimaryQlClass() { result = "AvailabilityCondition" }
 
     /** Gets the `i`th child of this node. */
@@ -2766,22 +2783,23 @@ module Swift {
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_where_clause_child(this, i, result) }
+=======
+    final override string getAPrimaryQlClass() { result = "TopLevel" }
+
+    /** Gets the node corresponding to the field `body`. */
+    final Expr getBody(int i) { unified_top_level_body(this, i, result) }
+>>>>>>> e92db5117d5 (Unified extractor: add AST schema, swift translation rules, and corpus framework)
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_where_clause_child(this, _, result) }
+    final override AstNode getAFieldOrChild() { unified_top_level_body(this, _, result) }
   }
 
-  /** A class representing `where_keyword` tokens. */
-  class WhereKeyword extends @swift_token_where_keyword, Token {
+  /** A class representing `unary_expr` nodes. */
+  class UnaryExpr extends @unified_unary_expr, AstNode {
     /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "WhereKeyword" }
-  }
+    final override string getAPrimaryQlClass() { result = "UnaryExpr" }
 
-  /** A class representing `while_statement` nodes. */
-  class WhileStatement extends @swift_while_statement, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "WhileStatement" }
-
+<<<<<<< HEAD
     /** Gets the node corresponding to the field `condition`. */
     final IfCondition getCondition(int i) { swift_while_statement_condition(this, i, result) }
 
@@ -2791,36 +2809,29 @@ module Swift {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       swift_while_statement_condition(this, _, result) or swift_while_statement_child(this, result)
+=======
+    /** Gets the node corresponding to the field `operand`. */
+    final Expr getOperand() { unified_unary_expr_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `operator`. */
+    final UnaryOperator getOperator() { unified_unary_expr_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      unified_unary_expr_def(this, result, _) or unified_unary_expr_def(this, _, result)
+>>>>>>> e92db5117d5 (Unified extractor: add AST schema, swift translation rules, and corpus framework)
     }
   }
 
-  /** A class representing `wildcard_pattern` tokens. */
-  class WildcardPattern extends @swift_token_wildcard_pattern, Token {
+  /** A class representing `unary_operator` tokens. */
+  class UnaryOperator extends @unified_token_unary_operator, Token {
     /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "WildcardPattern" }
+    final override string getAPrimaryQlClass() { result = "UnaryOperator" }
   }
 
-  /** A class representing `willset_clause` nodes. */
-  class WillsetClause extends @swift_willset_clause, AstNode {
+  /** A class representing `unsupported_node` tokens. */
+  class UnsupportedNode extends @unified_token_unsupported_node, Token {
     /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "WillsetClause" }
-
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_willset_clause_child(this, i, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_willset_clause_child(this, _, result) }
-  }
-
-  /** A class representing `willset_didset_block` nodes. */
-  class WillsetDidsetBlock extends @swift_willset_didset_block, AstNode {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "WillsetDidsetBlock" }
-
-    /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_willset_didset_block_child(this, i, result) }
-
-    /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_willset_didset_block_child(this, _, result) }
+    final override string getAPrimaryQlClass() { result = "UnsupportedNode" }
   }
 }

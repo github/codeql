@@ -1,18 +1,59 @@
 use codeql_extractor::extractor::simple;
 use yeast::{rule, DesugaringConfig, PhaseKind};
 
-fn desugaring_rules() -> Vec<yeast::Rule> {
+fn translation_rules() -> Vec<yeast::Rule> {
     vec![
         rule!(
-            (additive_expression)
+            (source_file (_)* @children)
             =>
-            (simple_identifier "blah")
+            (top_level
+                body: {..children}
+            )
+        ),
+        rule!(
+            (additive_expression
+                lhs: (_) @left
+                op: _ @operator
+                rhs: (_) @right)
+            =>
+            (binary_expr
+                left: {left}
+                operator: (operator #{operator})
+                right: {right})
+        ),
+        rule!(
+            (multiplicative_expression
+                lhs: (_) @left
+                op: _ @operator
+                rhs: (_) @right)
+            =>
+            (binary_expr
+                left: {left}
+                operator: (operator #{operator})
+                right: {right})
+        ),
+        rule!(
+            (simple_identifier)
+            =>
+            name_expr
+        ),
+        rule!(
+            (_)
+            =>
+            (unsupported_node)
+        ),
+        rule!(
+            _ @node
+            =>
+            {node}
         ),
     ]
 }
 
-pub fn language_spec() -> simple::LanguageSpec {
-    let desugar = DesugaringConfig::new().add_phase("desugar", PhaseKind::Repeating, desugaring_rules());
+pub fn language_spec(desugared_ast_schema: &'static str) -> simple::LanguageSpec {
+    let desugar = DesugaringConfig::new()
+        .add_phase("translate", PhaseKind::OneShot, translation_rules())
+        .with_output_node_types_yaml(desugared_ast_schema);
     simple::LanguageSpec {
         prefix: "swift",
         ts_language: tree_sitter_swift::LANGUAGE.into(),

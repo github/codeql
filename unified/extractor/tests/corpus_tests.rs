@@ -2,7 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use codeql_extractor::extractor::simple;
-use yeast::{dump::dump_ast, Runner};
+use yeast::{dump::dump_ast, dump::dump_ast_with_type_errors, Runner};
 
 #[path = "../src/languages/mod.rs"]
 mod languages;
@@ -11,6 +11,7 @@ mod languages;
 struct CorpusCase {
     name: String,
     input: String,
+    raw: String,
     expected: String,
 }
 
@@ -63,6 +64,30 @@ fn parse_corpus(content: &str) -> Vec<CorpusCase> {
         let input = lines[input_start..i].join("\n").trim_end().to_string();
         i += 1;
 
+        // Raw tree-sitter parse section. New-format files have a second
+        // `---` separator between the raw tree and the mapped AST. Legacy
+        // files (with only one separator) have no raw section — in that
+        // case `raw` stays empty and update mode will populate it.
+        let raw_start = i;
+        let mut next_sep = i;
+        while next_sep < lines.len() && lines[next_sep].trim() != "---" {
+            if is_header_rule(lines[next_sep])
+                && next_sep + 2 < lines.len()
+                && !lines[next_sep + 1].trim().is_empty()
+                && is_header_rule(lines[next_sep + 2])
+            {
+                break;
+            }
+            next_sep += 1;
+        }
+        let raw = if next_sep < lines.len() && lines[next_sep].trim() == "---" {
+            let raw_text = lines[raw_start..next_sep].join("\n").trim().to_string();
+            i = next_sep + 1;
+            raw_text
+        } else {
+            String::new()
+        };
+
         let expected_start = i;
         while i < lines.len() {
             if is_header_rule(lines[i])
@@ -79,6 +104,7 @@ fn parse_corpus(content: &str) -> Vec<CorpusCase> {
         cases.push(CorpusCase {
             name,
             input,
+            raw,
             expected,
         });
     }
@@ -91,32 +117,52 @@ fn render_corpus(cases: &[CorpusCase]) -> String {
 
     for (idx, case) in cases.iter().enumerate() {
         if idx > 0 {
+            // Blank line between cases.
             out.push('\n');
         }
         out.push_str("===\n");
         out.push_str(case.name.trim());
-        out.push_str("\n===\n");
-        out.push('\n');
+        out.push_str("\n===\n\n");
         out.push_str(case.input.trim());
-        out.push_str("\n\n---\n");
-        out.push('\n');
+        out.push_str("\n\n---\n\n");
+        out.push_str(case.raw.trim());
+        out.push_str("\n\n---\n\n");
         out.push_str(case.expected.trim());
-        out.push_str("\n\n");
+        // Single trailing newline per case; the inter-case blank line is
+        // added by the prefix above, and the file ends with exactly one `\n`.
+        out.push('\n');
     }
 
     out
 }
 
-fn run_desugaring(lang: &simple::LanguageSpec, input: &str) -> String {
+fn run_desugaring(
+    lang: &simple::LanguageSpec,
+    input: &str,
+) -> Result<yeast::Ast, String> {
     let runner = match lang.desugar.as_ref() {
         Some(config) => Runner::from_config(lang.ts_language.clone(), config)
-            .expect("Failed to create yeast runner from desugaring config"),
+            .map_err(|e| format!("Failed to create yeast runner: {e}"))?,
         None => Runner::new(lang.ts_language.clone(), &[]),
     };
+
+    runner
+        .run(input)
+        .map_err(|e| format!("Failed to parse input: {e}"))
+}
+
+/// Produce the raw tree-sitter parse tree dump for `input`, with no
+/// desugaring rules applied. Uses a `Runner` with an empty phase list and
+/// the input grammar's own schema.
+fn dump_raw_parse(
+    lang: &simple::LanguageSpec,
+    input: &str,
+) -> Result<String, String> {
+    let runner = Runner::new(lang.ts_language.clone(), &[]);
     let ast = runner
         .run(input)
-        .unwrap_or_else(|e| panic!("Failed to parse corpus input: {e}"));
-    dump_ast(&ast, ast.get_root(), input)
+        .map_err(|e| format!("Failed to parse input: {e}"))?;
+    Ok(dump_ast(&ast, ast.get_root(), input))
 }
 
 #[test]
@@ -126,6 +172,12 @@ fn test_corpus() {
     let corpus_dir = Path::new("tests/corpus");
 
     for lang in all_languages {
+        let output_schema = yeast::node_types_yaml::schema_from_yaml_with_language(
+            languages::OUTPUT_AST_SCHEMA,
+            &lang.ts_language,
+        )
+        .expect("Failed to parse OUTPUT_AST_SCHEMA YAML");
+
         let lang_corpus_dir = corpus_dir.join(&lang.prefix);
         if !lang_corpus_dir.exists() {
             continue;
@@ -147,6 +199,7 @@ fn test_corpus() {
             let content = fs::read_to_string(&corpus_path)
                 .unwrap_or_else(|e| panic!("Failed to read {}: {e}", corpus_path.display()));
             let mut cases = parse_corpus(&content);
+            let mut failures = Vec::new();
             assert!(
                 !cases.is_empty(),
                 "No corpus cases found in {}",
@@ -154,28 +207,76 @@ fn test_corpus() {
             );
 
             for case in &mut cases {
-                let actual = run_desugaring(&lang, &case.input);
-                if update_mode {
-                    case.expected = actual.trim().to_string();
-                } else {
-                    assert_eq!(
-                        case.expected.trim(),
-                        actual.trim(),
-                        "Corpus case failed in {}: {}",
-                        corpus_path.display(),
-                        case.name
-                    );
+                match dump_raw_parse(&lang, &case.input) {
+                    Err(e) => {
+                        failures.push(format!(
+                            "Raw parse failed for {} in {}: {}",
+                            case.name,
+                            corpus_path.display(),
+                            e
+                        ));
+                    }
+                    Ok(actual_raw) => {
+                        if update_mode {
+                            case.raw = actual_raw.trim().to_string();
+                        } else if case.raw.trim() != actual_raw.trim() {
+                            failures.push(format!(
+                                "Raw parse mismatch in {}: \"{}\"\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
+                                corpus_path.display(),
+                                case.name,
+                                case.raw.trim(),
+                                actual_raw.trim()
+                            ));
+                        }
+                    }
+                }
+
+                match run_desugaring(&lang, &case.input) {
+                    Err(e) => {
+                        failures.push(format!(
+                            "Desugaring failed for {} in {}: {}",
+                            case.name,
+                            corpus_path.display(),
+                            e
+                        ));
+                    }
+                    Ok(actual) => {
+                        let actual_dump = dump_ast_with_type_errors(
+                            &actual,
+                            actual.get_root(),
+                            &case.input,
+                            &output_schema,
+                        );
+                        if update_mode {
+                            case.expected = actual_dump.trim().to_string();
+                        } else if case.expected.trim() != actual_dump.trim() {
+                            failures.push(format!(
+                                "Test failed in {}: \"{}\"\nEXPECTED:\n\n{}\n\nACTUAL:\n\n{}",
+                                corpus_path.display(),
+                                case.name,
+                                case.expected.trim(),
+                                actual_dump.trim()
+                            ));
+                        }
+                    }
                 }
             }
 
+            assert!(
+                failures.is_empty(),
+                "{}",
+                failures.join("\n\n") + "\n\n"
+            );
+
             if update_mode {
                 let updated = render_corpus(&cases);
-                fs::write(&corpus_path, updated).unwrap_or_else(|e| {
-                    panic!(
-                        "Failed to update corpus file {}: {e}",
-                        corpus_path.display()
-                    )
-                });
+                let write_result = fs::write(&corpus_path, updated);
+                assert!(
+                    write_result.is_ok(),
+                    "Failed to update corpus file {}: {}",
+                    corpus_path.display(),
+                    write_result.err().map_or_else(String::new, |e| e.to_string())
+                );
             }
         }
     }

@@ -1,4 +1,4 @@
-// CodeQL database schema for Swift
+// CodeQL database schema for Unified
 // Automatically generated from the tree-sitter grammar; do not edit
 // To regenerate, run unified/scripts/create-extractor-pack.sh
 
@@ -131,6 +131,7 @@ overlayChangedFiles(
   string path: string ref
 );
 
+<<<<<<< HEAD
 /*- Swift dbscheme -*/
 case @swift_additive_expression.op of
   0 = @swift_additive_expression_plus
@@ -2055,18 +2056,42 @@ swift_willset_didset_block_child(
   int swift_willset_didset_block: @swift_willset_didset_block ref,
   int index: int ref,
   unique int child: @swift_willset_didset_block_child_type ref
+=======
+/*- Unified dbscheme -*/
+unified_binary_expr_def(
+  unique int id: @unified_binary_expr,
+  int left: @unified_expr ref,
+  int operator: @unified_token_binary_operator ref,
+  int right: @unified_expr ref
 );
 
-swift_willset_didset_block_def(
-  unique int id: @swift_willset_didset_block
+@unified_expr = @unified_binary_expr | @unified_token_name_expr | @unified_token_unsupported_node
+
+#keyset[unified_top_level, index]
+unified_top_level_body(
+  int unified_top_level: @unified_top_level ref,
+  int index: int ref,
+  unique int body: @unified_expr ref
 );
 
-swift_tokeninfo(
-  unique int id: @swift_token,
+unified_top_level_def(
+  unique int id: @unified_top_level
+>>>>>>> e92db5117d5 (Unified extractor: add AST schema, swift translation rules, and corpus framework)
+);
+
+unified_unary_expr_def(
+  unique int id: @unified_unary_expr,
+  int operand: @unified_expr ref,
+  int operator: @unified_token_unary_operator ref
+);
+
+unified_tokeninfo(
+  unique int id: @unified_token,
   int kind: int ref,
   string value: string ref
 );
 
+<<<<<<< HEAD
 case @swift_token.kind of
   0 = @swift_reserved_word
 | 1 = @swift_token_as_operator
@@ -2118,16 +2143,27 @@ case @swift_token.kind of
 
 
 @swift_ast_node = @swift_additive_expression | @swift_array_literal | @swift_array_type | @swift_as_expression | @swift_assignment | @swift_associatedtype_declaration | @swift_attribute | @swift_availability_condition | @swift_await_expression | @swift_bitwise_operation | @swift_call_expression | @swift_call_suffix | @swift_capture_list | @swift_capture_list_item | @swift_catch_block | @swift_check_expression | @swift_class_body | @swift_class_declaration | @swift_comparison_expression | @swift_computed_getter | @swift_computed_modify | @swift_computed_property | @swift_computed_setter | @swift_conjunction_expression | @swift_constructor_expression | @swift_constructor_suffix | @swift_control_transfer_statement | @swift_deinit_declaration | @swift_deprecated_operator_declaration_body | @swift_dictionary_literal | @swift_dictionary_type | @swift_didset_clause | @swift_directive | @swift_directly_assignable_expression | @swift_disjunction_expression | @swift_do_statement | @swift_enum_class_body | @swift_enum_entry | @swift_enum_type_parameters | @swift_equality_constraint | @swift_equality_expression | @swift_existential_type | @swift_external_macro_definition | @swift_for_statement | @swift_function_body | @swift_function_declaration | @swift_function_type | @swift_getter_specifier | @swift_guard_statement | @swift_identifier | @swift_if_condition | @swift_if_let_binding | @swift_if_statement | @swift_implicitly_unwrapped_type | @swift_import_declaration | @swift_infix_expression | @swift_inheritance_constraint | @swift_inheritance_specifier | @swift_init_declaration | @swift_interpolated_expression | @swift_key_path_expression | @swift_key_path_string_expression | @swift_lambda_function_type | @swift_lambda_function_type_parameters | @swift_lambda_literal | @swift_lambda_parameter | @swift_line_string_literal | @swift_macro_declaration | @swift_macro_definition | @swift_macro_invocation | @swift_metatype | @swift_modifiers | @swift_modify_specifier | @swift_multi_line_string_literal | @swift_multiplicative_expression | @swift_navigation_expression | @swift_navigation_suffix | @swift_nested_type_identifier | @swift_nil_coalescing_expression | @swift_opaque_type | @swift_open_end_range_expression | @swift_open_start_range_expression | @swift_operator_declaration | @swift_optional_chain_marker | @swift_optional_type | @swift_parameter | @swift_parameter_modifiers | @swift_pattern | @swift_playground_literal | @swift_postfix_expression | @swift_precedence_group_attribute | @swift_precedence_group_attributes | @swift_precedence_group_declaration | @swift_prefix_expression | @swift_property_declaration | @swift_protocol_body | @swift_protocol_composition_type | @swift_protocol_declaration | @swift_protocol_function_declaration | @swift_protocol_property_declaration | @swift_protocol_property_requirements | @swift_range_expression | @swift_raw_str_interpolation | @swift_raw_string_literal | @swift_referenceable_operator | @swift_repeat_while_statement | @swift_selector_expression | @swift_setter_specifier | @swift_source_file | @swift_statements | @swift_subscript_declaration | @swift_suppressed_constraint | @swift_switch_entry | @swift_switch_pattern | @swift_switch_statement | @swift_ternary_expression | @swift_throws_clause | @swift_token | @swift_try_expression | @swift_tuple_expression | @swift_tuple_type | @swift_tuple_type_item | @swift_type__ | @swift_type_annotation | @swift_type_arguments | @swift_type_constraint | @swift_type_constraints | @swift_type_modifiers | @swift_type_pack_expansion | @swift_type_parameter | @swift_type_parameter_modifiers | @swift_type_parameter_pack | @swift_type_parameters | @swift_typealias_declaration | @swift_user_type | @swift_value_argument | @swift_value_argument_label | @swift_value_arguments | @swift_value_binding_pattern | @swift_value_pack_expansion | @swift_value_parameter_pack | @swift_where_clause | @swift_while_statement | @swift_willset_clause | @swift_willset_didset_block
+=======
+case @unified_token.kind of
+  1 = @unified_token_binary_operator
+| 2 = @unified_token_name_expr
+| 3 = @unified_token_unary_operator
+| 4 = @unified_token_unsupported_node
+;
 
-swift_ast_node_location(
-  unique int node: @swift_ast_node ref,
+
+@unified_ast_node = @unified_binary_expr | @unified_token | @unified_top_level | @unified_unary_expr
+>>>>>>> e92db5117d5 (Unified extractor: add AST schema, swift translation rules, and corpus framework)
+
+unified_ast_node_location(
+  unique int node: @unified_ast_node ref,
   int loc: @location_default ref
 );
 
 #keyset[parent, parent_index]
-swift_ast_node_parent(
-  unique int node: @swift_ast_node ref,
-  int parent: @swift_ast_node ref,
+unified_ast_node_parent(
+  unique int node: @unified_ast_node ref,
+  int parent: @unified_ast_node ref,
   int parent_index: int ref
 );
 

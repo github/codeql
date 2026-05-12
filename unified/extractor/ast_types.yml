@@ -1,0 +1,102 @@
+supertypes:
+  expr:
+    - binary_expr
+    - unary_expr
+    - name_expr
+    - lambda_expr
+    - unsupported_node
+  stmt:
+    - empty_stmt
+    - if_stmt
+    - variable_declaration_stmt
+    - guard_if_stmt
+    - unsupported_node
+  condition:
+    - expr_condition
+    - let_pattern_condition
+    - unsupported_node
+  pattern:
+    - var_pattern
+    - apply_pattern
+    - ignore_pattern
+    - unsupported_node
+named:
+  # Top-level is the root node, currently containing a list of expressions
+  top_level:
+    body*: expr
+
+  # Application of a binary operator, such as `a + b`
+  binary_expr:
+    left: expr
+    operator: operator
+    right: expr
+
+  # Application of a unary operator, such as `!x`
+  unary_expr:
+    operand: expr
+    operator: operator
+
+  # An identifier used in the context of an expression
+  name_expr:
+    identifier: identifier
+
+  lambda_expr:
+    parameter*: parameter
+    body: [expr, stmt]
+
+  # A parameter
+  parameter:
+    pattern: pattern
+
+  empty_stmt:
+
+  if_stmt:
+    condition: condition
+    then?: stmt
+    else?: stmt
+
+  variable_declaration_stmt:
+    variable_declarator+: variable_declarator
+
+  # A variable declaration, or assignment to a pattern.
+  # The initializer is optional (but typically only possible in combination with a simple variable pattern).
+  variable_declarator:
+    pattern: pattern
+    value?: expr
+
+  # Evaluate 'condition', and if false, execute 'else' which must break from the enclosing block scope (return, break, etc).
+  # Any variables bound by 'condition' will be in scope for the remainder of the enclosing block scope
+  # (which differs from how if_stmt works).
+  guard_if_stmt:
+    condition: condition
+    else: stmt
+
+  # Evaluates the given condition and interprets it as a boolean (by language conventions)
+  expr_condition:
+    expr: expr
+
+  # Evaluate 'expr' and match its result against 'pattern', and return true if it matches.
+  # Variables bound by the pattern will be in scope within the 'true' branch controlled by this condition.
+  let_pattern_condition:
+    pattern: pattern
+    value: expr
+
+  # A pattern matching anything, binding its value to the given variable
+  var_pattern:
+    identifier: identifier
+
+  # A pattern matching anything, binding no variables, usually using the syntax "_"
+  ignore_pattern:
+
+  # A pattern such as `Some(x)` where `Some` is the constructor and `x` is an argument
+  apply_pattern:
+    constructor: expr
+    argument*: expr
+
+  # An simple unqualified identifier token
+  identifier:
+
+  # A node that we don't yet translate
+  unsupported_node:
+
+  operator:
