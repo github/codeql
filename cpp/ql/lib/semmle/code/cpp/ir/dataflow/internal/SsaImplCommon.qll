@@ -305,27 +305,28 @@ private class AlwaysUncertain extends Certainty, TAlwaysUncertain {
 predicate isWrite(Node0Impl value, Operand address, Certainty certain) {
   any(Indirection ind).isAdditionalWrite(value, address, certain)
   or
-  certain instanceof CertainWhenAddressIsCertain and
-  (
-    exists(StoreInstruction store |
-      value.asInstruction() = store and
-      address = store.getDestinationAddressOperand()
-    )
-    or
-    exists(InitializeParameterInstruction init |
-      value.asInstruction() = init and
-      address = init.getAnOperand()
-    )
-    or
-    exists(InitializeDynamicAllocationInstruction init |
-      value.asInstruction() = init and
-      address = init.getAllocationAddressOperand()
-    )
-    or
-    exists(UninitializedInstruction uninitialized |
-      value.asInstruction() = uninitialized and
-      address = uninitialized.getAnOperand()
-    )
+  exists(StoreInstruction store |
+    value.asInstruction() = store and
+    address = store.getDestinationAddressOperand() and
+    certain instanceof CertainWhenAddressIsCertain
+  )
+  or
+  exists(InitializeParameterInstruction init |
+    value.asInstruction() = init and
+    address = init.getAnOperand() and
+    certain instanceof AlwaysCertain
+  )
+  or
+  exists(InitializeDynamicAllocationInstruction init |
+    value.asInstruction() = init and
+    address = init.getAllocationAddressOperand() and
+    certain instanceof AlwaysCertain
+  )
+  or
+  exists(UninitializedInstruction uninitialized |
+    value.asInstruction() = uninitialized and
+    address = uninitialized.getAnOperand() and
+    certain instanceof AlwaysCertain
   )
 }
 

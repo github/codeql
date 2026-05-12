@@ -1333,7 +1333,7 @@ void nsdmi_test() {
 void certain_def_uninitialized_instruction_test() {
   for(int i = 0; i < 10; i++) {
     char buffer[10];
-    sink(buffer[0]); // $ SPURIOUS: ir ast
+    sink(buffer[0]); // $ SPURIOUS: ast
     buffer[0] = source();
   }
 }
