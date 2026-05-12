@@ -125,7 +125,9 @@ private module Impl {
   SsaExplicitWrite getExplicitSsaAssignment(SsaExplicitWrite v) { result = v }
 
   /** Returns the assignment of the variable update `def`. */
-  ExprNode getExprFromSsaAssignment(SsaExplicitWrite def) { result.getExpr() = def.getValue() }
+  ExprNode getExprFromSsaAssignment(SsaExplicitWrite def) {
+    result.getExpr() = def.getValue() and not def.getDefiningExpr() instanceof MutatorOperation
+  }
 
   /** Holds if `def` can have any sign. */
   predicate explicitSsaDefWithAnySign(SsaExplicitWrite def) {
