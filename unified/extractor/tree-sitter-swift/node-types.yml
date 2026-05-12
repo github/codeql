@@ -132,6 +132,7 @@ named:
     default_value?: type
     must_inherit?: type
     name: type_identifier
+  async_keyword:
   attribute:
     $children+: [expression, user_type]
   availability_condition:
@@ -266,7 +267,8 @@ named:
     params: unannotated_type
     return_type: type
   getter_specifier:
-    $children*: [mutation_modifier, throws, throws_clause]
+    $children?: mutation_modifier
+    effect*: [async_keyword, throws, throws_clause]
   guard_statement:
     $children+: [else, statements]
     condition+: if_condition

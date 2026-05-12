@@ -1804,7 +1804,7 @@ module.exports = grammar({
     setter_specifier: ($) => seq(optional($.mutation_modifier), "set"),
     modify_specifier: ($) => seq(optional($.mutation_modifier), "_modify"),
     _getter_effects: ($) =>
-      repeat1(choice($._async_keyword, $.throws_clause, $.throws)),
+      repeat1(field("effect", choice(alias($._async_keyword, $.async_keyword), $.throws_clause, $.throws))),
     operator_declaration: ($) =>
       seq(
         choice("prefix", "infix", "postfix"),
