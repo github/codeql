@@ -404,11 +404,15 @@ named:
     interpolation*: interpolated_expression
     text*: [line_str_text, str_escaped_char]
   macro_declaration:
-    $children+: [modifiers, simple_identifier, type_constraints, type_parameters, unannotated_type]
     attribute*: attribute
     default_value*: expression
     definition?: macro_definition
+    modifiers?: modifiers
+    name: simple_identifier
     parameter*: parameter
+    return_type?: unannotated_type
+    type_constraints?: type_constraints
+    type_parameters?: type_parameters
   macro_definition:
     body: [expression, external_macro_definition]
   macro_invocation:

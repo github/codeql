@@ -1497,17 +1497,17 @@ module.exports = grammar({
     macro_declaration: ($) =>
       seq(
         $._macro_head,
-        $.simple_identifier,
-        optional($.type_parameters),
+        field("name", $.simple_identifier),
+        field("type_parameters", optional($.type_parameters)),
         $._macro_signature,
         optional(field("definition", $.macro_definition)),
-        optional($.type_constraints)
+        field("type_constraints", optional($.type_constraints))
       ),
-    _macro_head: ($) => seq(optional($.modifiers), "macro"),
+    _macro_head: ($) => seq(field("modifiers", optional($.modifiers)), "macro"),
     _macro_signature: ($) =>
       seq(
         $._function_value_parameters,
-        optional(seq($._arrow_operator, $.unannotated_type))
+        optional(seq($._arrow_operator, field("return_type", $.unannotated_type)))
       ),
     macro_definition: ($) =>
       seq(
