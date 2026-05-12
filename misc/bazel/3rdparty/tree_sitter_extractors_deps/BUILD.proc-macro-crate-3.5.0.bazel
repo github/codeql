@@ -7,7 +7,7 @@
 ###############################################################################
 
 load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
-load("@rules_rust//rust:defs.bzl", "rust_proc_macro")
+load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -16,8 +16,8 @@ cargo_toml_env_vars(
     src = "Cargo.toml",
 )
 
-rust_proc_macro(
-    name = "thiserror_impl",
+rust_library(
+    name = "proc_macro_crate",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
@@ -44,7 +44,7 @@ rust_proc_macro(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=thiserror-impl",
+        "crate-name=proc-macro-crate",
         "manual",
         "noclippy",
         "norustfmt",
@@ -93,10 +93,8 @@ rust_proc_macro(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "2.0.16",
+    version = "3.5.0",
     deps = [
-        "@vendor_ts__proc-macro2-1.0.101//:proc_macro2",
-        "@vendor_ts__quote-1.0.41//:quote",
-        "@vendor_ts__syn-2.0.106//:syn",
+        "@vendor_ts__toml_edit-0.25.11-spec-1.1.0//:toml_edit",
     ],
 )

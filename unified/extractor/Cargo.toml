@@ -9,7 +9,7 @@ edition = "2024"
 [dependencies]
 tree-sitter = ">= 0.23.0"
 tree-sitter-embedded-template = "0.25.0"
-tree-sitter-swift = "0.7.2"
+tree-sitter-swift = { path = "tree-sitter-swift" }
 clap = { version = "4.5", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.20", features = ["env-filter"] }
