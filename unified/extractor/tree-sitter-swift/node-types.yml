@@ -474,6 +474,7 @@ named:
     modifier+: parameter_modifier
   pattern:
     $children*: [expression, pattern, type, user_type, value_binding_pattern, wildcard_pattern]
+    binding?: value_binding_pattern
     bound_identifier?: simple_identifier
   playground_literal:
     name+: simple_identifier
@@ -494,10 +495,13 @@ named:
     target: expression
   property_behavior_modifier:
   property_declaration:
-    $children*: [type_annotation, type_constraints, value_binding_pattern, willset_didset_block]
+    binding: value_binding_pattern
     computed_value*: computed_property
     modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
     name+: pattern
+    observers*: willset_didset_block
+    type*: type_annotation
+    type_constraints*: type_constraints
     value*: expression
   property_modifier:
   protocol_body:

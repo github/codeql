@@ -1405,13 +1405,13 @@ module.exports = grammar({
       prec.left(
         seq(
           field("name", alias($._no_expr_pattern_already_bound, $.pattern)),
-          optional($.type_annotation),
-          optional($.type_constraints),
+          field("type", optional($.type_annotation)),
+          field("type_constraints", optional($.type_constraints)),
           optional(
             choice(
               $._expression_with_willset_didset,
               $._expression_without_willset_didset,
-              $.willset_didset_block,
+              field("observers", $.willset_didset_block),
               field("computed_value", $.computed_property)
             )
           )
@@ -1423,7 +1423,7 @@ module.exports = grammar({
         seq(
           $._equal_sign,
           field("value", $.expression),
-          $.willset_didset_block
+          field("observers", $.willset_didset_block)
         )
       ),
     _expression_without_willset_didset: ($) =>
@@ -1909,7 +1909,7 @@ module.exports = grammar({
       ),
     value_binding_pattern: ($) => field("mutability", choice("var", "let")),
     _possibly_async_binding_pattern_kind: ($) =>
-      seq(optional($._async_modifier), $.value_binding_pattern),
+      seq(optional($._async_modifier), field("binding", $.value_binding_pattern)),
     _binding_kind_and_pattern: ($) =>
       seq(
         $._possibly_async_binding_pattern_kind,
