@@ -142,7 +142,8 @@ named:
     platform*: simple_identifier
     version*: integer_literal
   availability_condition:
-    $children*: [identifier, integer_literal]
+    platform*: identifier
+    version*: integer_literal
   await_expression:
     expr: expression
   bang:

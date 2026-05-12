@@ -1304,7 +1304,7 @@ module.exports = grammar({
         ")"
       ),
     _availability_argument: ($) =>
-      choice(seq($.identifier, sep1($.integer_literal, ".")), "*"),
+      choice(seq(field("platform", $.identifier), sep1(field("version", $.integer_literal), ".")), "*"),
     ////////////////////////////////
     // Declarations - https://docs.swift.org/swift-book/ReferenceManual/Declarations.html
     ////////////////////////////////
