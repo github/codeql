@@ -28,7 +28,7 @@ void test2(bool b) { // $ certain="SSA def(&b)" certain="SSA def(b)"
   } else {
     x = 1; // $ certain="SSA def(x)"
   }
-  use(x); // $ uncertain="SSA phi(x)"
+  use(x); // $ certain="SSA phi(x)"
   }
 
   {
@@ -38,7 +38,7 @@ void test2(bool b) { // $ certain="SSA def(&b)" certain="SSA def(b)"
   } else {
   
   }
-  use(x); // $ uncertain="SSA phi(x)"
+  use(x); // $ certain="SSA phi(x)"
   }
 
   {
