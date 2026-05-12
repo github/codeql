@@ -877,8 +877,8 @@ module.exports = grammar({
       ),
     expr_hack_at_ternary_binary_call: ($) =>
       seq(
-        $.expression,
-        alias($.expr_hack_at_ternary_binary_call_suffix, $.call_suffix)
+        field("function", $.expression),
+        field("suffix", alias($.expr_hack_at_ternary_binary_call_suffix, $.call_suffix))
       ),
     expr_hack_at_ternary_binary_call_suffix: ($) =>
       prec(PRECS.call_suffix, $.value_arguments),
@@ -1551,7 +1551,7 @@ module.exports = grammar({
     _inheritance_specifiers: ($) =>
       prec.left(sep1($._annotated_inheritance_specifier, choice(",", "&"))),
     _annotated_inheritance_specifier: ($) =>
-      seq(repeat(field("attribute", $.attribute)), $.inheritance_specifier),
+      seq(repeat(field("attribute", $.attribute)), field("inherits", $.inheritance_specifier)),
     inheritance_specifier: ($) =>
       prec.left(
         field(

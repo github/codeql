@@ -154,9 +154,8 @@ named:
     rhs: expression
   boolean_literal:
   call_expression:
-    $children*: [call_suffix, expression]
-    function?: expression
-    suffix?: call_suffix
+    function: expression
+    suffix: call_suffix
   call_suffix:
     $children+: [lambda_literal, value_arguments]
     name*: simple_identifier
@@ -180,10 +179,10 @@ named:
     $children*: multiline_comment
     member*: type_level_declaration
   class_declaration:
-    $children*: inheritance_specifier
     attribute*: attribute
     body: [class_body, enum_class_body]
     declaration_kind: ["actor", "class", "enum", "extension", "struct"]
+    inherits*: inheritance_specifier
     modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
     name: [type_identifier, unannotated_type]
     type_constraints?: type_constraints
@@ -481,10 +480,10 @@ named:
   protocol_composition_type:
     type+: unannotated_type
   protocol_declaration:
-    $children*: inheritance_specifier
     attribute*: attribute
     body: protocol_body
     declaration_kind: "protocol"
+    inherits*: inheritance_specifier
     modifiers?: modifiers
     name: type_identifier
     type_constraints?: type_constraints
