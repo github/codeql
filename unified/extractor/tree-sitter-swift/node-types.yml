@@ -156,7 +156,8 @@ named:
     function: expression
     suffix: call_suffix
   call_suffix:
-    $children+: [lambda_literal, value_arguments]
+    arguments?: value_arguments
+    lambda*: lambda_literal
     name*: simple_identifier
   capture_list:
     item+: capture_list_item
@@ -215,7 +216,8 @@ named:
     constructed_type: [array_type, dictionary_type, user_type]
     suffix: constructor_suffix
   constructor_suffix:
-    $children+: [lambda_literal, value_arguments]
+    arguments?: value_arguments
+    lambda*: lambda_literal
     name*: simple_identifier
   control_transfer_statement:
     $children*: [expression, throw_keyword]

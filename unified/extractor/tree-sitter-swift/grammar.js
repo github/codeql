@@ -760,19 +760,19 @@ module.exports = grammar({
       prec(
         PRECS.call_suffix,
         choice(
-          $.value_arguments,
+          field("arguments", $.value_arguments),
           prec.dynamic(-1, $._fn_call_lambda_arguments), // Prefer to treat `foo() { }` as one call not two
-          seq($.value_arguments, $._fn_call_lambda_arguments)
+          seq(field("arguments", $.value_arguments), $._fn_call_lambda_arguments)
         )
       ),
     constructor_suffix: ($) =>
       prec(
         PRECS.call_suffix,
         choice(
-          alias($._constructor_value_arguments, $.value_arguments),
+          field("arguments", alias($._constructor_value_arguments, $.value_arguments)),
           prec.dynamic(-1, $._fn_call_lambda_arguments), // As above
           seq(
-            alias($._constructor_value_arguments, $.value_arguments),
+            field("arguments", alias($._constructor_value_arguments, $.value_arguments)),
             $._fn_call_lambda_arguments
           )
         )
@@ -780,7 +780,7 @@ module.exports = grammar({
     _constructor_value_arguments: ($) =>
       seq("(", optional(sep1Opt(field("argument", $.value_argument), ",")), ")"),
     _fn_call_lambda_arguments: ($) =>
-      sep1($.lambda_literal, seq(field("name", $.simple_identifier), ":")),
+      sep1(field("lambda", $.lambda_literal), seq(field("name", $.simple_identifier), ":")),
     type_arguments: ($) => prec.left(seq("<", sep1Opt(field("argument", $.type), ","), ">")),
     value_arguments: ($) =>
       seq(
@@ -881,7 +881,7 @@ module.exports = grammar({
         field("suffix", alias($.expr_hack_at_ternary_binary_call_suffix, $.call_suffix))
       ),
     expr_hack_at_ternary_binary_call_suffix: ($) =>
-      prec(PRECS.call_suffix, $.value_arguments),
+      prec(PRECS.call_suffix, field("arguments", $.value_arguments)),
     call_expression: ($) =>
       prec(
         PRECS.call,
