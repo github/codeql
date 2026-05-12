@@ -61,5 +61,28 @@ module Generated {
     final int getNumberOfInheritedTypes() {
       result = count(int i | exists(this.getInheritedType(i)))
     }
+
+    /**
+     * Gets the declared interface type of this type declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateDeclaredInterfaceType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertTypeDeclToRaw(this)
+              .(Raw::TypeDecl)
+              .getDeclaredInterfaceType())
+    }
+
+    /**
+     * Gets the declared interface type of this type declaration.
+     */
+    final Type getDeclaredInterfaceType() {
+      exists(Type immediate |
+        immediate = this.getImmediateDeclaredInterfaceType() and
+        result = immediate.resolve()
+      )
+    }
   }
 }
