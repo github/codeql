@@ -452,7 +452,7 @@ module.exports = grammar({
           optional(sep1Opt(field("element", $.tuple_type_item), ",")),
           ")"
         ),
-        field("element", alias($._parenthesized_type, $.tuple_type_item))
+        field("element", alias($.parenthesized_type, $.tuple_type_item))
       ),
     tuple_type_item: ($) =>
       prec(
@@ -467,7 +467,7 @@ module.exports = grammar({
       prec(
         PRECS.expr,
         seq(
-          optional($.wildcard_pattern),
+          optional(field("external_name", $.wildcard_pattern)),
           field("name", $.simple_identifier),
           ":"
         )
@@ -571,10 +571,10 @@ module.exports = grammar({
           field("suffix", $.constructor_suffix)
         )
       ),
-    _parenthesized_type: ($) =>
+    parenthesized_type: ($) =>
       seq(
         "(",
-        choice($.opaque_type, $.existential_type, $.dictionary_type),
+        field("type", choice($.opaque_type, $.existential_type, $.dictionary_type)),
         ")"
       ),
     navigation_expression: ($) =>
@@ -586,7 +586,7 @@ module.exports = grammar({
             choice(
               $._navigable_type_expression,
               $.expression,
-              $._parenthesized_type
+              $.parenthesized_type
             )
           ),
           field("suffix", $.navigation_suffix)

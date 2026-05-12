@@ -445,7 +445,7 @@ named:
   mutation_modifier:
   navigation_expression:
     suffix: navigation_suffix
-    target+: ["(", ")", array_type, dictionary_type, existential_type, expression, opaque_type, user_type]
+    target: [array_type, dictionary_type, expression, parenthesized_type, user_type]
   navigation_suffix:
     suffix: [integer_literal, simple_identifier]
   nested_type_identifier:
@@ -479,6 +479,8 @@ named:
   parameter_modifier:
   parameter_modifiers:
     modifier+: parameter_modifier
+  parenthesized_type:
+    type: [dictionary_type, existential_type, opaque_type]
   pattern:
     binding?: value_binding_pattern
     bound_identifier?: simple_identifier
@@ -630,10 +632,10 @@ named:
   tuple_type:
     element*: tuple_type_item
   tuple_type_item:
-    $children?: [dictionary_type, existential_type, opaque_type, wildcard_pattern]
+    external_name?: wildcard_pattern
     modifiers?: parameter_modifiers
     name?: simple_identifier
-    type?: type
+    type: [dictionary_type, existential_type, opaque_type, type]
   type:
     modifiers?: type_modifiers
     name: unannotated_type
