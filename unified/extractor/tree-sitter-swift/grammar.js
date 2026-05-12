@@ -1699,19 +1699,16 @@ module.exports = grammar({
     enum_type_parameters: ($) =>
       seq(
         "(",
-        optional(
-          sep1(
-            seq(
-              optional(
-                seq(optional($.wildcard_pattern), $.simple_identifier, ":")
-              ),
-              $.type,
-              optional(seq($._equal_sign, $.expression))
-            ),
-            ","
-          )
-        ),
+        optional(sep1(field("parameter", $.enum_type_parameter), ",")),
         ")"
+      ),
+    enum_type_parameter: ($) =>
+      seq(
+        optional(
+          seq(optional(field("external_name", $.wildcard_pattern)), field("name", $.simple_identifier), ":")
+        ),
+        field("type", $.type),
+        optional(seq($._equal_sign, field("default_value", $.expression)))
       ),
     protocol_declaration: ($) =>
       prec.right(

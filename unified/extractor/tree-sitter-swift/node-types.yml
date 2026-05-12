@@ -268,8 +268,13 @@ named:
     modifiers?: modifiers
     name+: simple_identifier
     raw_value*: expression
+  enum_type_parameter:
+    default_value?: expression
+    external_name?: wildcard_pattern
+    name?: simple_identifier
+    type: type
   enum_type_parameters:
-    $children*: [expression, type, wildcard_pattern]
+    parameter*: enum_type_parameter
   equality_constraint:
     attribute*: attribute
     constrained_type: [identifier, nested_type_identifier]
