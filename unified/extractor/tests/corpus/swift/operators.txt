@@ -1,0 +1,264 @@
+===
+Addition
+===
+
+a + b
+
+---
+
+source_file
+  additive_expression
+    lhs: simple_identifier "a"
+    op: +
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "3"
+      left: name_expr "a"
+      right: name_expr "b"
+
+===
+Subtraction
+===
+
+a - b
+
+---
+
+source_file
+  additive_expression
+    lhs: simple_identifier "a"
+    op: -
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "3"
+      left: name_expr "a"
+      right: name_expr "b"
+
+===
+Multiplication
+===
+
+a * b
+
+---
+
+source_file
+  multiplicative_expression
+    lhs: simple_identifier "a"
+    op: *
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "3"
+      left: name_expr "a"
+      right: name_expr "b"
+
+===
+Division
+===
+
+a / b
+
+---
+
+source_file
+  multiplicative_expression
+    lhs: simple_identifier "a"
+    op: /
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "3"
+      left: name_expr "a"
+      right: name_expr "b"
+
+===
+Operator precedence: addition and multiplication
+===
+
+a + b * c
+
+---
+
+source_file
+  additive_expression
+    lhs: simple_identifier "a"
+    op: +
+    rhs:
+      multiplicative_expression
+        lhs: simple_identifier "b"
+        op: *
+        rhs: simple_identifier "c"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "3"
+      left: name_expr "a"
+      right:
+        binary_expr
+          operator: operator "6"
+          left: name_expr "b"
+          right: name_expr "c"
+
+===
+Parenthesised expression
+===
+
+(a + b) * c
+
+---
+
+source_file
+  multiplicative_expression
+    lhs:
+      tuple_expression
+        value:
+          additive_expression
+            lhs: simple_identifier "a"
+            op: +
+            rhs: simple_identifier "b"
+    op: *
+    rhs: simple_identifier "c"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "9"
+      left: unsupported_node "(a + b)"
+      right: name_expr "c"
+
+===
+Comparison
+===
+
+a < b
+
+---
+
+source_file
+  comparison_expression
+    lhs: simple_identifier "a"
+    op: <
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body: unsupported_node "a < b"
+
+===
+Equality
+===
+
+a == b
+
+---
+
+source_file
+  equality_expression
+    lhs: simple_identifier "a"
+    op: ==
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body: unsupported_node "a == b"
+
+===
+Logical and
+===
+
+a && b
+
+---
+
+source_file
+  conjunction_expression
+    lhs: simple_identifier "a"
+    op: &&
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body: unsupported_node "a && b"
+
+===
+Logical or
+===
+
+a || b
+
+---
+
+source_file
+  disjunction_expression
+    lhs: simple_identifier "a"
+    op: ||
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body: unsupported_node "a || b"
+
+===
+Logical not
+===
+
+!a
+
+---
+
+source_file
+  prefix_expression
+    operation: bang "!"
+    target: simple_identifier "a"
+
+---
+
+top_level
+  body: unsupported_node "!a"
+
+===
+Range operator
+===
+
+1...10
+
+---
+
+source_file
+  range_expression
+    end: integer_literal "10"
+    op: ...
+    start: integer_literal "1"
+
+---
+
+top_level
+  body: unsupported_node "1...10"

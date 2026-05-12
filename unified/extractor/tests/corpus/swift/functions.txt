@@ -1,0 +1,297 @@
+===
+Function with no parameters
+===
+
+func greet() {
+  print("hello")
+}
+
+---
+
+source_file
+  function_declaration
+    body:
+      function_body
+        statements
+          call_expression
+            simple_identifier "print"
+            call_suffix
+              value_arguments
+                value_argument
+                  value:
+                    line_string_literal
+                      text: line_str_text "hello"
+    name: simple_identifier "greet"
+
+---
+
+top_level
+  body: unsupported_node "func greet() {\n  print(\"hello\")\n}"
+
+===
+Function with parameters and return type
+===
+
+func add(_ a: Int, _ b: Int) -> Int {
+  return a + b
+}
+
+---
+
+source_file
+  function_declaration
+    body:
+      function_body
+        statements
+          control_transfer_statement
+            result:
+              additive_expression
+                lhs: simple_identifier "a"
+                op: +
+                rhs: simple_identifier "b"
+    name:
+      simple_identifier "add"
+      user_type
+        type_identifier "Int"
+    parameter
+      external_name: simple_identifier "_"
+      name:
+        simple_identifier "a"
+        user_type
+          type_identifier "Int"
+    parameter
+      external_name: simple_identifier "_"
+      name:
+        simple_identifier "b"
+        user_type
+          type_identifier "Int"
+
+---
+
+top_level
+  body: unsupported_node "func add(_ a: Int, _ b: Int) -> Int {\n  return a + b\n}"
+
+===
+Function with named parameters
+===
+
+func greet(person name: String) {
+  print(name)
+}
+
+---
+
+source_file
+  function_declaration
+    body:
+      function_body
+        statements
+          call_expression
+            simple_identifier "print"
+            call_suffix
+              value_arguments
+                value_argument
+                  value: simple_identifier "name"
+    name: simple_identifier "greet"
+    parameter
+      external_name: simple_identifier "person"
+      name:
+        simple_identifier "name"
+        user_type
+          type_identifier "String"
+
+---
+
+top_level
+  body: unsupported_node "func greet(person name: String) {\n  print(name)\n}"
+
+===
+Function with default parameter value
+===
+
+func greet(name: String = "world") {
+  print(name)
+}
+
+---
+
+source_file
+  function_declaration
+    body:
+      function_body
+        statements
+          call_expression
+            simple_identifier "print"
+            call_suffix
+              value_arguments
+                value_argument
+                  value: simple_identifier "name"
+    default_value:
+      line_string_literal
+        text: line_str_text "world"
+    name: simple_identifier "greet"
+    parameter
+      name:
+        simple_identifier "name"
+        user_type
+          type_identifier "String"
+
+---
+
+top_level
+  body: unsupported_node "func greet(name: String = \"world\") {\n  print(name)\n}"
+
+===
+Variadic function
+===
+
+func sum(_ values: Int...) -> Int {
+  return values.reduce(0, +)
+}
+
+---
+
+source_file
+  function_declaration
+    body:
+      function_body
+        statements
+          control_transfer_statement
+            result:
+              call_expression
+                navigation_expression
+                  suffix:
+                    navigation_suffix
+                      suffix: simple_identifier "reduce"
+                  target: simple_identifier "values"
+                call_suffix
+                  value_arguments
+                    value_argument
+                      value: integer_literal "0"
+                    value_argument
+                      value: +
+    name:
+      simple_identifier "sum"
+      user_type
+        type_identifier "Int"
+    parameter
+      external_name: simple_identifier "_"
+      name:
+        simple_identifier "values"
+        user_type
+          type_identifier "Int"
+
+---
+
+top_level
+  body: unsupported_node "func sum(_ values: Int...) -> Int {\n  return values.reduce(0, +)\n}"
+
+===
+Function call
+===
+
+foo(1, 2)
+
+---
+
+source_file
+  call_expression
+    simple_identifier "foo"
+    call_suffix
+      value_arguments
+        value_argument
+          value: integer_literal "1"
+        value_argument
+          value: integer_literal "2"
+
+---
+
+top_level
+  body: unsupported_node "foo(1, 2)"
+
+===
+Function call with labelled arguments
+===
+
+greet(person: "Bob")
+
+---
+
+source_file
+  call_expression
+    simple_identifier "greet"
+    call_suffix
+      value_arguments
+        value_argument
+          name:
+            value_argument_label
+              simple_identifier "person"
+          value:
+            line_string_literal
+              text: line_str_text "Bob"
+
+---
+
+top_level
+  body: unsupported_node "greet(person: \"Bob\")"
+
+===
+Method call
+===
+
+list.append(1)
+
+---
+
+source_file
+  call_expression
+    navigation_expression
+      suffix:
+        navigation_suffix
+          suffix: simple_identifier "append"
+      target: simple_identifier "list"
+    call_suffix
+      value_arguments
+        value_argument
+          value: integer_literal "1"
+
+---
+
+top_level
+  body: unsupported_node "list.append(1)"
+
+===
+Generic function
+===
+
+func identity<T>(_ x: T) -> T {
+  return x
+}
+
+---
+
+source_file
+  function_declaration
+    body:
+      function_body
+        statements
+          control_transfer_statement
+            result: simple_identifier "x"
+    name:
+      simple_identifier "identity"
+      user_type
+        type_identifier "T"
+    type_parameters
+      type_parameter
+        type_identifier "T"
+    parameter
+      external_name: simple_identifier "_"
+      name:
+        simple_identifier "x"
+        user_type
+          type_identifier "T"
+
+---
+
+top_level
+  body: unsupported_node "func identity<T>(_ x: T) -> T {\n  return x\n}"

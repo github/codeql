@@ -1,0 +1,187 @@
+===
+Let binding
+===
+
+let x = 1
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "x"
+    value: integer_literal "1"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let x = 1"
+
+===
+Var binding
+===
+
+var x = 1
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "x"
+    value: integer_literal "1"
+    value_binding_pattern
+      mutability: var
+
+---
+
+top_level
+  body: unsupported_node "var x = 1"
+
+===
+Let with type annotation
+===
+
+let x: Int = 1
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "x"
+    value: integer_literal "1"
+    value_binding_pattern
+      mutability: let
+    type_annotation
+      name:
+        user_type
+          type_identifier "Int"
+
+---
+
+top_level
+  body: unsupported_node "let x: Int = 1"
+
+===
+Var without initialiser
+===
+
+var x: Int
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "x"
+    value_binding_pattern
+      mutability: var
+    type_annotation
+      name:
+        user_type
+          type_identifier "Int"
+
+---
+
+top_level
+  body: unsupported_node "var x: Int"
+
+===
+Tuple destructuring binding
+===
+
+let (a, b) = pair
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        pattern
+          simple_identifier "a"
+        pattern
+          simple_identifier "b"
+    value: simple_identifier "pair"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let (a, b) = pair"
+
+===
+Multiple bindings on one line
+===
+
+let x = 1, y = 2
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "x"
+      pattern
+        bound_identifier: simple_identifier "y"
+    value:
+      integer_literal "1"
+      integer_literal "2"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let x = 1, y = 2"
+
+===
+Assignment
+===
+
+x = 1
+
+---
+
+source_file
+  assignment
+    operator: =
+    result: integer_literal "1"
+    target:
+      directly_assignable_expression
+        simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "x = 1"
+
+===
+Compound assignment
+===
+
+x += 1
+
+---
+
+source_file
+  assignment
+    operator: +=
+    result: integer_literal "1"
+    target:
+      directly_assignable_expression
+        simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "x += 1"

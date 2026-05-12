@@ -7,8 +7,19 @@ Additive expression is desugared
 ---
 
 source_file
-  simple_identifier "blah"
+  additive_expression
+    lhs: integer_literal "1"
+    op: +
+    rhs: integer_literal "2"
 
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "3"
+      left: unsupported_node "1"
+      right: unsupported_node "2"
 
 ===
 Another additive expression is desugared
@@ -19,5 +30,16 @@ foo + bar
 ---
 
 source_file
-  simple_identifier "blah"
+  additive_expression
+    lhs: simple_identifier "foo"
+    op: +
+    rhs: simple_identifier "bar"
 
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "3"
+      left: name_expr "foo"
+      right: name_expr "bar"

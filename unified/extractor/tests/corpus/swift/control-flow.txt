@@ -1,0 +1,333 @@
+===
+If statement
+===
+
+if x > 0 {
+  print(x)
+}
+
+---
+
+source_file
+  if_statement
+    condition:
+      comparison_expression
+        lhs: simple_identifier "x"
+        op: >
+        rhs: integer_literal "0"
+    statements
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value: simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "if x > 0 {\n  print(x)\n}"
+
+===
+If-else
+===
+
+if x > 0 {
+  print(x)
+} else {
+  print(-x)
+}
+
+---
+
+source_file
+  if_statement
+    condition:
+      comparison_expression
+        lhs: simple_identifier "x"
+        op: >
+        rhs: integer_literal "0"
+    statements
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value: simple_identifier "x"
+    else "else"
+    statements
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value:
+                prefix_expression
+                  operation: -
+                  target: simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "if x > 0 {\n  print(x)\n} else {\n  print(-x)\n}"
+
+===
+If-else-if chain
+===
+
+if x > 0 {
+  print(1)
+} else if x < 0 {
+  print(2)
+} else {
+  print(3)
+}
+
+---
+
+source_file
+  if_statement
+    condition:
+      comparison_expression
+        lhs: simple_identifier "x"
+        op: >
+        rhs: integer_literal "0"
+    statements
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value: integer_literal "1"
+    else "else"
+    if_statement
+      condition:
+        comparison_expression
+          lhs: simple_identifier "x"
+          op: <
+          rhs: integer_literal "0"
+      statements
+        call_expression
+          simple_identifier "print"
+          call_suffix
+            value_arguments
+              value_argument
+                value: integer_literal "2"
+      else "else"
+      statements
+        call_expression
+          simple_identifier "print"
+          call_suffix
+            value_arguments
+              value_argument
+                value: integer_literal "3"
+
+---
+
+top_level
+  body: unsupported_node "if x > 0 {\n  print(1)\n} else if x < 0 {\n  print(2)\n} else {\n  print(3)\n}"
+
+===
+If-let optional binding
+===
+
+if let value = optional {
+  print(value)
+}
+
+---
+
+source_file
+  if_statement
+    bound_identifier: simple_identifier "value"
+    condition:
+      value_binding_pattern
+        mutability: let
+      =
+      simple_identifier "optional"
+    statements
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value: simple_identifier "value"
+
+---
+
+top_level
+  body: unsupported_node "if let value = optional {\n  print(value)\n}"
+
+===
+Guard let
+===
+
+guard let value = optional else { return }
+
+---
+
+source_file
+  guard_statement
+    bound_identifier: simple_identifier "value"
+    condition:
+      value_binding_pattern
+        mutability: let
+      =
+      simple_identifier "optional"
+    else "else"
+    statements
+      control_transfer_statement
+
+---
+
+top_level
+  body: unsupported_node "guard let value = optional else { return }"
+
+===
+Ternary expression
+===
+
+let y = x > 0 ? 1 : -1
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "y"
+    value:
+      ternary_expression
+        condition:
+          comparison_expression
+            lhs: simple_identifier "x"
+            op: >
+            rhs: integer_literal "0"
+        if_false:
+          prefix_expression
+            operation: -
+            target: integer_literal "1"
+        if_true: integer_literal "1"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let y = x > 0 ? 1 : -1"
+
+===
+Switch statement
+===
+
+switch x {
+case 1:
+  print("one")
+case 2, 3:
+  print("two or three")
+default:
+  print("other")
+}
+
+---
+
+source_file
+  switch_statement
+    expr: simple_identifier "x"
+    switch_entry
+      switch_pattern
+        pattern
+          integer_literal "1"
+      statements
+        call_expression
+          simple_identifier "print"
+          call_suffix
+            value_arguments
+              value_argument
+                value:
+                  line_string_literal
+                    text: line_str_text "one"
+    switch_entry
+      switch_pattern
+        pattern
+          integer_literal "2"
+      switch_pattern
+        pattern
+          integer_literal "3"
+      statements
+        call_expression
+          simple_identifier "print"
+          call_suffix
+            value_arguments
+              value_argument
+                value:
+                  line_string_literal
+                    text: line_str_text "two or three"
+    switch_entry
+      default_keyword "default"
+      statements
+        call_expression
+          simple_identifier "print"
+          call_suffix
+            value_arguments
+              value_argument
+                value:
+                  line_string_literal
+                    text: line_str_text "other"
+
+---
+
+top_level
+  body: unsupported_node "switch x {\ncase 1:\n  print(\"one\")\ncase 2, 3:\n  print(\"two or three\")\ndefault:\n  print(\"other\")\n}"
+
+===
+Switch with binding pattern
+===
+
+switch shape {
+case .circle(let r):
+  print(r)
+case .square(let s):
+  print(s)
+}
+
+---
+
+source_file
+  switch_statement
+    expr: simple_identifier "shape"
+    switch_entry
+      switch_pattern
+        pattern
+          simple_identifier "circle"
+          pattern
+            bound_identifier: simple_identifier "r"
+            value_binding_pattern
+              mutability: let
+      statements
+        call_expression
+          simple_identifier "print"
+          call_suffix
+            value_arguments
+              value_argument
+                value: simple_identifier "r"
+    switch_entry
+      switch_pattern
+        pattern
+          simple_identifier "square"
+          pattern
+            bound_identifier: simple_identifier "s"
+            value_binding_pattern
+              mutability: let
+      statements
+        call_expression
+          simple_identifier "print"
+          call_suffix
+            value_arguments
+              value_argument
+                value: simple_identifier "s"
+
+---
+
+top_level
+  body: unsupported_node "switch shape {\ncase .circle(let r):\n  print(r)\ncase .square(let s):\n  print(s)\n}"

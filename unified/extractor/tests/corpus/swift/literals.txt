@@ -1,0 +1,121 @@
+===
+Integer literal
+===
+
+42
+
+---
+
+source_file
+  integer_literal "42"
+
+---
+
+top_level
+  body: unsupported_node "42"
+
+===
+Negative integer literal
+===
+
+-7
+
+---
+
+source_file
+  prefix_expression
+    operation: -
+    target: integer_literal "7"
+
+---
+
+top_level
+  body: unsupported_node "-7"
+
+===
+Floating-point literal
+===
+
+3.14
+
+---
+
+source_file
+  real_literal "3.14"
+
+---
+
+top_level
+  body: unsupported_node "3.14"
+
+===
+Boolean literals
+===
+
+true
+false
+
+---
+
+source_file
+  boolean_literal
+  boolean_literal
+
+---
+
+top_level
+  body:
+    unsupported_node "true"
+    unsupported_node "false"
+
+===
+Nil literal
+===
+
+nil
+
+---
+
+source_file
+
+---
+
+top_level
+  body:
+
+===
+String literal
+===
+
+"hello"
+
+---
+
+source_file
+  line_string_literal
+    text: line_str_text "hello"
+
+---
+
+top_level
+  body: unsupported_node "\"hello\""
+
+===
+String with interpolation
+===
+
+"hello \(name)"
+
+---
+
+source_file
+  line_string_literal
+    interpolation:
+      interpolated_expression
+        value: simple_identifier "name"
+    text: line_str_text "hello "
+
+---
+
+top_level
+  body: unsupported_node "\"hello \\(name)\""

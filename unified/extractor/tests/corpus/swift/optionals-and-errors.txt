@@ -1,0 +1,236 @@
+===
+Optional type annotation
+===
+
+let x: Int? = nil
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "x"
+    value: nil
+    value_binding_pattern
+      mutability: let
+    type_annotation
+      name:
+        optional_type
+          wrapped:
+            user_type
+              type_identifier "Int"
+
+---
+
+top_level
+  body: unsupported_node "let x: Int? = nil"
+
+===
+Optional chaining
+===
+
+let n = obj?.foo?.bar
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "n"
+    value:
+      navigation_expression
+        suffix:
+          navigation_suffix
+            suffix: simple_identifier "bar"
+        target:
+          navigation_expression
+            suffix:
+              navigation_suffix
+                suffix: simple_identifier "foo"
+            target:
+              simple_identifier "obj"
+              ?
+          ?
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let n = obj?.foo?.bar"
+
+===
+Force unwrap
+===
+
+let n = opt!
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "n"
+    value:
+      postfix_expression
+        operation: bang "!"
+        target: simple_identifier "opt"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let n = opt!"
+
+===
+Nil-coalescing
+===
+
+let n = opt ?? 0
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "n"
+    value:
+      nil_coalescing_expression
+        if_nil: integer_literal "0"
+        value: simple_identifier "opt"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let n = opt ?? 0"
+
+===
+Throwing function
+===
+
+func read() throws -> String {
+  return ""
+}
+
+---
+
+source_file
+  function_declaration
+    body:
+      function_body
+        statements
+          control_transfer_statement
+            result:
+              line_string_literal
+    name:
+      simple_identifier "read"
+      user_type
+        type_identifier "String"
+    throws "throws"
+
+---
+
+top_level
+  body: unsupported_node "func read() throws -> String {\n  return \"\"\n}"
+
+===
+Do-catch
+===
+
+do {
+  try foo()
+} catch {
+  print(error)
+}
+
+---
+
+source_file
+  do_statement
+    statements
+      try_expression
+        expr:
+          call_expression
+            simple_identifier "foo"
+            call_suffix
+              value_arguments
+        try_operator
+    catch_block
+      catch_keyword "catch"
+      statements
+        call_expression
+          simple_identifier "print"
+          call_suffix
+            value_arguments
+              value_argument
+                value: simple_identifier "error"
+
+---
+
+top_level
+  body: unsupported_node "do {\n  try foo()\n} catch {\n  print(error)\n}"
+
+===
+Try? expression
+===
+
+let result = try? foo()
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "result"
+    value:
+      try_expression
+        expr:
+          call_expression
+            simple_identifier "foo"
+            call_suffix
+              value_arguments
+        try_operator
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let result = try? foo()"
+
+===
+Try! expression
+===
+
+let result = try! foo()
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "result"
+    value:
+      try_expression
+        expr:
+          call_expression
+            simple_identifier "foo"
+            call_suffix
+              value_arguments
+        try_operator
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body: unsupported_node "let result = try! foo()"
