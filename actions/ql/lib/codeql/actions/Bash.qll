@@ -785,7 +785,7 @@ module Bash {
 
   /**
    * Holds if the given regex is used to match an alphanumeric string
-   * eg: `^[0-9a-zA-Z]{40}$`, `^[0-9]+$` or `^[a-zA-Z0-9_]+$`
+   * eg: `^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$`, `^[0-9]+$` or `^[a-zA-Z0-9_]+$`
    */
   string alphaNumericRegex() { result = "^\\^\\[([09azAZ_-]+)\\](\\+|\\{\\d+\\})\\$$" }
 }

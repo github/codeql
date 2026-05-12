@@ -15,7 +15,9 @@ import actions
 import codeql.actions.security.UseOfUnversionedImmutableAction
 
 bindingset[version]
-private predicate isPinnedCommit(string version) { version.regexpMatch("^[A-Fa-f0-9]{40}$") }
+private predicate isPinnedCommit(string version) {
+  version.regexpMatch("^[A-Fa-f0-9]{40}([A-Fa-f0-9]{24})?$")
+}
 
 bindingset[nwo]
 private predicate isTrustedOwner(string nwo) {
