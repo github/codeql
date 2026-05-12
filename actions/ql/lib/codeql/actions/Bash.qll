@@ -791,7 +791,7 @@ module Bash {
     exists(string r1, string r2, string r3, string r4 |
       // An alphanumeric character class
       r1 = "\\[([09azAZ_-]+)\\]" and
-      // The same as above, followed by a quantifier like `+` or  `{20}`
+      // The same as above, followed by a quantifier like `+` or `{20}`
       r2 = r1 + "(\\+|\\{\\d+\\})" and
       // The same as above, possibly with brackets around it
       r3 = "\\(?" + r2 + "\\)?" and
