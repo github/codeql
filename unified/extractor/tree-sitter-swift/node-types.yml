@@ -559,7 +559,7 @@ named:
   switch_entry:
     $children+: [default_keyword, expression, modifiers, statements, switch_pattern, where_keyword]
   switch_pattern:
-    $children: pattern
+    pattern: pattern
   switch_statement:
     entry*: switch_entry
     expr: expression
@@ -579,7 +579,6 @@ named:
     name*: simple_identifier
     value+: expression
   tuple_type:
-    $children?: tuple_type_item
     element*: tuple_type_item
   tuple_type_item:
     $children?: [dictionary_type, existential_type, opaque_type, wildcard_pattern]
@@ -627,7 +626,7 @@ named:
     type_modifiers?: type_modifiers
     value?: expression
   value_argument_label:
-    $children: simple_identifier
+    name: simple_identifier
   value_arguments:
     argument*: value_argument
   value_binding_pattern:

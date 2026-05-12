@@ -452,7 +452,7 @@ module.exports = grammar({
           optional(sep1Opt(field("element", $.tuple_type_item), ",")),
           ")"
         ),
-        alias($._parenthesized_type, $.tuple_type_item)
+        field("element", alias($._parenthesized_type, $.tuple_type_item))
       ),
     tuple_type_item: ($) =>
       prec(
@@ -791,13 +791,13 @@ module.exports = grammar({
       ),
     value_argument_label: ($) =>
       prec.left(
-        choice(
+        field("name", choice(
           $.simple_identifier,
           // We don't rely on $._contextual_simple_identifier here because
           // these don't usually fall into that category.
           alias("if", $.simple_identifier),
           alias("switch", $.simple_identifier)
-        )
+        ))
       ),
     value_argument: ($) =>
       prec.left(
@@ -1094,7 +1094,7 @@ module.exports = grammar({
         $.statements,
         optional("fallthrough")
       ),
-    switch_pattern: ($) => alias($._binding_pattern_with_expr, $.pattern),
+    switch_pattern: ($) => field("pattern", alias($._binding_pattern_with_expr, $.pattern)),
     do_statement: ($) =>
       prec.right(PRECS["do"], seq("do", $._block, repeat(field("catch", $.catch_block)))),
     catch_block: ($) =>
