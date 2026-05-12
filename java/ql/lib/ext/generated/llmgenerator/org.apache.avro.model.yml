@@ -1,5 +1,5 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Generated from https://github.com/apache/avro.git#64ac2975ec26c59a322d5d110c300741792424f4 by codeql-mads-via-llm
+# Generated from https://github.com/apache/avro.git#892d6997dcb65627560b04bd76c5a3dd97666cdf by codeql-mads-via-llm
 extensions:
   - addsTo:
       pack: codeql/java-all
@@ -18,4 +18,9 @@ extensions:
       extensible: sourceModel
     data:
       - ["org.apache.avro", "Protocol", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro", "Schema$Parser", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "Schema", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(File,Charset)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path,Charset)", "", "ReturnValue", "file", "ai-generated"]
+      - ["org.apache.avro", "SchemaParser", True, "parse", "(URI,Charset)", "", "ReturnValue", "remote", "ai-generated"]

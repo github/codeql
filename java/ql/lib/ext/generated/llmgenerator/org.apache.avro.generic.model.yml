@@ -1,0 +1,9 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/avro.git#892d6997dcb65627560b04bd76c5a3dd97666cdf by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.avro.generic", "GenericDatumReader", True, "read", "(Object,Decoder)", "", "Argument[1]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.avro.generic", "GenericDatumReader", True, "read", "(Object,Schema,ResolvingDecoder)", "", "Argument[2]", "unsafe-deserialization", "ai-generated"]

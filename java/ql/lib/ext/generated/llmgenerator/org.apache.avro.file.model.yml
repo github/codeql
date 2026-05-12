@@ -1,5 +1,5 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Generated from https://github.com/apache/avro.git#64ac2975ec26c59a322d5d110c300741792424f4 by codeql-mads-via-llm
+# Generated from https://github.com/apache/avro.git#892d6997dcb65627560b04bd76c5a3dd97666cdf by codeql-mads-via-llm
 extensions:
   - addsTo:
       pack: codeql/java-all
@@ -20,14 +20,8 @@ extensions:
     data:
       - ["org.apache.avro.file", "DataFileReader12", True, "getMeta", "(String)", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro.file", "DataFileReader12", True, "getMetaString", "(String)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro.file", "DataFileReader12", True, "getSchema", "()", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro.file", "DataFileReader12", True, "iterator", "()", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro.file", "DataFileReader12", True, "next", "()", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro.file", "DataFileReader12", True, "next", "(Object)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro.file", "DataFileStream", True, "getMeta", "(String)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro.file", "DataFileStream", True, "getMetaKeys", "()", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro.file", "DataFileStream", True, "getMetaString", "(String)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro.file", "DataFileStream", True, "iterator", "()", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro.file", "DataFileStream", True, "next", "()", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro.file", "DataFileStream", True, "next", "(Object)", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro.file", "DataFileStream", True, "nextBlock", "()", "", "ReturnValue", "file", "ai-generated"]

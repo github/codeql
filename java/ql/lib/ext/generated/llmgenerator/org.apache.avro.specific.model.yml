@@ -1,5 +1,5 @@
 # THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
-# Generated from https://github.com/apache/avro.git#64ac2975ec26c59a322d5d110c300741792424f4 by codeql-mads-via-llm
+# Generated from https://github.com/apache/avro.git#892d6997dcb65627560b04bd76c5a3dd97666cdf by codeql-mads-via-llm
 extensions:
   - addsTo:
       pack: codeql/java-all
@@ -8,4 +8,5 @@ extensions:
       - ["org.apache.avro.specific", "SpecificDatumReader", True, "readField", "(Object,Schema$Field,Object,ResolvingDecoder,Object)", "", "Argument[3]", "unsafe-deserialization", "ai-generated"]
       - ["org.apache.avro.specific", "SpecificDatumReader", True, "readRecord", "(Object,Schema,ResolvingDecoder)", "", "Argument[2]", "unsafe-deserialization", "ai-generated"]
       - ["org.apache.avro.specific", "SpecificExceptionBase", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
+      - ["org.apache.avro.specific", "SpecificFixed", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
       - ["org.apache.avro.specific", "SpecificRecordBase", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
