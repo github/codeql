@@ -141,22 +141,63 @@ module Ast implements AstSig<Py::Location> {
   /**
    * A parameter of a callable.
    *
-   * TODO: Implement in order to include parameters in the CFG.
+   * Modelled per the C# template (`csharp/.../ControlFlowGraph.qll:147-156`):
+   * each Python parameter (the `Py::Parameter` AST node, which is a `Name`
+   * or — Python 2 only — a `Tuple` in store context) becomes a CFG node
+   * at a stable position in the enclosing callable's entry sequence.
+   *
+   * Default-value expressions for positional and keyword-only parameters
+   * are wired separately on the `FunctionDefExpr` / `LambdaExpr` wrappers
+   * (they evaluate at function-definition time, not at call time).
+   * `Parameter::getDefaultValue()` returns `none()` here, signalling to
+   * the shared library that the parameter never falls back to a default
+   * during call binding. This mirrors C# for non-optional parameters.
    */
-  class Parameter extends AstNodeImpl {
-    Parameter() { none() }
+  class Parameter extends Expr {
+    private Py::Parameter param;
 
-    override string toString() { none() }
+    Parameter() { this = TPyExpr(param) }
 
-    override Py::Location getLocation() { none() }
+    /** Gets the underlying Python parameter. */
+    Py::Parameter asParameter() { result = param }
 
-    override Callable getEnclosingCallable() { none() }
-
+    /**
+     * Gets the default-value expression of this parameter, if any.
+     *
+     * Returns `none()`: defaults evaluate at function-definition time and
+     * are wired into the CFG via `FunctionDefExpr.getDefault` /
+     * `LambdaExpr.getDefault`. The shared library calls this predicate
+     * to model the "missing argument → evaluate default" fallback during
+     * call binding, which Python does not model at the CFG level.
+     */
     Expr getDefaultValue() { none() }
   }
 
-  /** Gets the `index`th parameter of callable `c`. */
-  Parameter callableGetParameter(Callable c, int index) { none() }
+  /**
+   * Gets the `index`th parameter of callable `c`, ordered as Python binds
+   * them at call time: positional, then vararg (`*args`), then
+   * keyword-only, then kwarg (`**kwargs`).
+   */
+  Parameter callableGetParameter(Callable c, int index) {
+    exists(Py::Function f | f = c.asScope() |
+      result.asParameter() =
+        rank[index + 1](Py::Parameter p, int subOrder, int subIndex |
+          // positional parameters first
+          p = f.getArg(subIndex) and subOrder = 0
+          or
+          // then *args
+          p = f.getVararg() and subOrder = 1 and subIndex = 0
+          or
+          // then keyword-only parameters
+          p = f.getKeywordOnlyArg(subIndex) and subOrder = 2
+          or
+          // finally **kwargs
+          p = f.getKwarg() and subOrder = 3 and subIndex = 0
+        |
+          p order by subOrder, subIndex
+        )
+    )
+  }
 
   /** A statement. */
   class Stmt extends AstNodeImpl, TStmt {

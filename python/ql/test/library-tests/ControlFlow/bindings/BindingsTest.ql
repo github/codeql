@@ -8,10 +8,6 @@
  * covered by the new CFG, or `# $ MISSING: cfgdefines=x` for a binding
  * that is known to be uncovered (a "red" test case that should be
  * green-flipped once the corresponding `cfg-ext-*` extension lands).
- *
- * Parameters (`def f(x):` etc.) are deliberately excluded — Java's
- * pattern handles parameter writes at the SSA layer (`hasEntryDef`),
- * not as CFG nodes.
  */
 
 import python
@@ -24,7 +20,6 @@ module CfgBindingsTest implements TestSig {
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Name n, Variable v, CfgImpl::ControlFlowNode cfg |
       n.defines(v) and
-      not py_expr_contexts(_, 4, n) and // exclude parameters
       cfg.getAstNode().asExpr() = n and
       location = n.getLocation() and
       element = n.toString() and

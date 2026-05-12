@@ -1,6 +1,6 @@
 # Match-statement pattern bindings.
 
-def f(subject):  # $ cfgdefines=f
+def f(subject):  # $ cfgdefines=f cfgdefines=subject
     match subject:
         case x:  # $ MISSING: cfgdefines=x
             pass

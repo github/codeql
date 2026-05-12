@@ -1,8 +1,8 @@
 # `with cm() as x:` bindings — wired in the new CFG.
 
 class CM:  # $ cfgdefines=CM
-    def __enter__(self): return self  # $ cfgdefines=__enter__
-    def __exit__(self, *a): pass  # $ cfgdefines=__exit__
+    def __enter__(self): return self  # $ cfgdefines=__enter__ cfgdefines=self
+    def __exit__(self, *a): pass  # $ cfgdefines=__exit__ cfgdefines=self cfgdefines=a
 
 with CM() as x:  # $ cfgdefines=x
     pass

@@ -1,7 +1,7 @@
 # Decorated `def`/`class` — wired in the new CFG.
 
 
-def deco(f):  # $ cfgdefines=deco
+def deco(f):  # $ cfgdefines=deco cfgdefines=f
     return f
 
 
