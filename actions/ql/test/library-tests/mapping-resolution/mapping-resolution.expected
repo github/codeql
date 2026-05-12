@@ -1,0 +1,23 @@
+actionMappings
+| TestOrg/TestAction | v1 | abc123def456 |
+| TestOrg/TestAction | v2 | def789abc012 |
+| TestOrg/TestAction-Sub | main | fedcba987654 |
+compositeActions
+| .github/actions/external/LegacyOrg/LegacyAction/action.yml:1:1:8:61 | name: L ... no SHA) |
+| .github/actions/external/TestOrg/TestAction-Sub/fedcba987654/sub-action/action.yml:1:1:13:42 | name: T ...  Action |
+| .github/actions/external/TestOrg/TestAction/abc123def456/action.yml:1:1:13:35 | name: T ...  Action |
+| .github/actions/external/TestOrg/TestAction/def789abc012/action.yml:1:1:13:39 | name: T ... tion v2 |
+calls
+| .github/workflows/test.yml:10:9:15:6 | Uses Step |
+| .github/workflows/test.yml:15:9:20:2 | Uses Step |
+| .github/workflows/test.yml:23:9:28:2 | Uses Step |
+| .github/workflows/test.yml:31:9:32:40 | Uses Step |
+resolvedCalls
+| .github/workflows/test.yml:10:9:15:6 | Uses Step | ./TestOrg/TestAction/abc123def456 |
+| .github/workflows/test.yml:10:9:15:6 | Uses Step | TestOrg/TestAction/abc123def456 |
+| .github/workflows/test.yml:15:9:20:2 | Uses Step | ./TestOrg/TestAction/def789abc012 |
+| .github/workflows/test.yml:15:9:20:2 | Uses Step | TestOrg/TestAction/def789abc012 |
+| .github/workflows/test.yml:23:9:28:2 | Uses Step | ./TestOrg/TestAction-Sub/fedcba987654/sub-action |
+| .github/workflows/test.yml:23:9:28:2 | Uses Step | TestOrg/TestAction-Sub/fedcba987654/sub-action |
+| .github/workflows/test.yml:31:9:32:40 | Uses Step | ./LegacyOrg/LegacyAction |
+| .github/workflows/test.yml:31:9:32:40 | Uses Step | LegacyOrg/LegacyAction |

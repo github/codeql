@@ -1,0 +1,13 @@
+name: Test Sub-Path Action
+description: A composite action at a sub-path for testing mapping resolution
+inputs:
+  path:
+    description: Path to restore
+    required: true
+
+runs:
+  using: composite
+  steps:
+  - shell: bash
+    run: |
+      echo "Restoring ${{ inputs.path }}"

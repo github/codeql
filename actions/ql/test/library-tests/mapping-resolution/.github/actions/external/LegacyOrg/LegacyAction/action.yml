@@ -1,0 +1,8 @@
+name: Legacy Action (no SHA)
+description: An external action stored without SHA directory, for backward compat testing
+
+runs:
+  using: composite
+  steps:
+  - shell: bash
+    run: echo "Legacy action without SHA-based resolution"

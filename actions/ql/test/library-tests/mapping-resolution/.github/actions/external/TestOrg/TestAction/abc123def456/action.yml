@@ -1,0 +1,13 @@
+name: Test Composite Action
+description: A simple composite action for testing mapping resolution
+inputs:
+  message:
+    description: A test message
+    required: true
+
+runs:
+  using: composite
+  steps:
+  - shell: bash
+    run: |
+      echo "${{ inputs.message }}"

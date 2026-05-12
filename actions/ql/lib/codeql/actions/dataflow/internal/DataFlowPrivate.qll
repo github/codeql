@@ -8,6 +8,7 @@ private import DataFlowPublic
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.dataflow.FlowSteps
 private import codeql.actions.dataflow.FlowSources
+private import codeql.actions.MappingHelper
 
 class DataFlowSecondLevelScope = Unit;
 
@@ -50,7 +51,7 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall call, ArgumentPosition p
 }
 
 DataFlowCallable nodeGetEnclosingCallable(Node node) {
-  node = TExprNode(any(DataFlowExpr e | result = e.getScope()))
+  result = node.(ExprNode).getCfgNode().(DataFlowExpr).getScope()
 }
 
 DataFlowType getNodeType(Node node) { any() }
@@ -79,6 +80,9 @@ class DataFlowCall instanceof Cfg::Node {
   string toString() { result = super.toString() }
 
   string getName() { result = super.getAstNode().(Uses).getCallee() }
+
+  /** Gets the version/ref of the action or workflow being called. */
+  string getVersion() { result = super.getAstNode().(Uses).getVersion() }
 
   DataFlowCallable getEnclosingCallable() { result = super.getScope() }
 
@@ -119,7 +123,40 @@ class NormalReturn extends ReturnKind, TNormalReturn {
 }
 
 /** Gets a viable implementation of the target of the given `Call`. */
-DataFlowCallable viableCallable(DataFlowCall c) { c.getName() = result.getName() }
+DataFlowCallable viableCallable(DataFlowCall c) {
+  // Direct name match (existing behavior for local actions and backward compatibility)
+  c.getName() = result.getName()
+  or
+  // SHA-based resolution via mapping.yaml for external composite actions.
+  // Resolves uses: owner/repo[/path]@ref to owner/repo/sha[/path] using the mapping file.
+  exists(string callee, string version, string ownerRepo, string sha |
+    callee = c.getName() and
+    version = c.getVersion() and
+    ownerRepo = callee.regexpCapture("([^/]+/[^/]+)(?:/.*)?", 1) and
+    externalActionRefMapping(ownerRepo, version, sha)
+  |
+    // With sub-path: e.g. actions/cache/restore@v4 -> actions/cache/{sha}/restore
+    exists(string subpath |
+      subpath = callee.regexpCapture("[^/]+/[^/]+/(.*)", 1) and
+      result.getName() = [ownerRepo + "/" + sha + "/" + subpath, "./" + ownerRepo + "/" + sha + "/" + subpath]
+    )
+    or
+    // No sub-path: e.g. actions/cache@v4 -> actions/cache/{sha}
+    not callee.regexpMatch("[^/]+/[^/]+/.*") and
+    result.getName() = [ownerRepo + "/" + sha, "./" + ownerRepo + "/" + sha]
+  )
+  or
+  // SHA-based resolution via mapping.yaml for external callable workflows.
+  // Resolves uses: owner/repo/path/to/workflow.yml@ref to owner/repo/sha/path/to/workflow.yml.
+  exists(string callee, string version, string ownerRepo, string sha, string workflowPath |
+    callee = c.getName() and
+    version = c.getVersion() and
+    ownerRepo = callee.regexpCapture("([^/]+/[^/]+)(?:/.*)?", 1) and
+    workflowPath = callee.regexpCapture("[^/]+/[^/]+/(.*)", 1) and
+    externalWorkflowRefMapping(ownerRepo, version, sha) and
+    result.getName() = [ownerRepo + "/" + sha + "/" + workflowPath, "./" + ownerRepo + "/" + sha + "/" + workflowPath]
+  )
+}
 
 /**
  * Gets a node that can read the value returned from `call` with return kind

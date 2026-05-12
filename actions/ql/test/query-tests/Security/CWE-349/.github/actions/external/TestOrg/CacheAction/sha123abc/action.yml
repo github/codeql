@@ -1,0 +1,10 @@
+name: Cache Setup Action
+description: A composite action that wraps actions/cache for testing
+
+runs:
+  using: composite
+  steps:
+  - uses: actions/cache@v4
+    with:
+      path: ./poison
+      key: poison-cache-key

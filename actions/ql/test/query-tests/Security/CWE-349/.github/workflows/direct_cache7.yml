@@ -1,0 +1,19 @@
+name: Cache Poisoning Via External Composite Action
+
+on:
+  pull_request_target:
+    branches:
+      - main
+
+permissions: read-all
+
+jobs:
+  poison-via-external:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: TestOrg/CacheAction@v1
+      - run: |
+          cat poison

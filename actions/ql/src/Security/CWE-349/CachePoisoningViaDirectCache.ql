@@ -53,7 +53,8 @@ where
   ) and
   // the job writes to the cache
   // (No need to follow the checkout/download step since the cache is normally write after the job completes)
-  job.getAStep() = step and
+  // Check both direct job steps and steps inside composite actions called from the job.
+  step.getEnclosingJob() = job and
   step instanceof CacheWritingStep and
   (
     // we dont know what code can be controlled by the attacker
