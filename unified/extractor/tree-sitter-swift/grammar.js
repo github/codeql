@@ -194,7 +194,7 @@ module.exports = grammar({
     // `/*`, and decrement it whenever we see `*/`. A standard grammar would only be able to exit the comment at the
     // first `*/` (like C does). Similarly, when you start a string with `##"`, you're required to include the same
     // number of `#` symbols to end it.
-    $.multiline_comment,
+    $._multiline_comment,
     $.raw_str_part,
     $.raw_str_continuing_indicator,
     $.raw_str_end_part,
@@ -270,6 +270,11 @@ module.exports = grammar({
     // Lexical Structure - https://docs.swift.org/swift-book/ReferenceManual/LexicalStructure.html
     ////////////////////////////////
     comment: ($) => token(prec(PRECS.comment, seq("//", /.*/))),
+    // Named wrapper for the unnamed `_multiline_comment` external token, so
+    // that multi-line comments still appear in the AST (e.g. as extras between
+    // top-level statements) without bleeding into class_body's $children when
+    // used as a class member separator.
+    multiline_comment: ($) => $._multiline_comment,
     // Identifiers
     simple_identifier: ($) =>
       choice(
@@ -1603,7 +1608,7 @@ module.exports = grammar({
         field("base", $.unannotated_type),
         optional(seq(".", sep1(field("member", $.simple_identifier), ".")))
       ),
-    _class_member_separator: ($) => choice($._semi, $.multiline_comment),
+    _class_member_separator: ($) => choice($._semi, $._multiline_comment),
     _class_member_declarations: ($) =>
       seq(
         sep1(field("member", $.type_level_declaration), $._class_member_separator),

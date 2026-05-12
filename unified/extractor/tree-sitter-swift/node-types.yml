@@ -184,7 +184,6 @@ named:
     target: expression
     type: type
   class_body:
-    $children*: multiline_comment
     member*: type_level_declaration
   class_declaration:
     attribute*: attribute
