@@ -512,6 +512,54 @@ module Ast implements AstSig<Py::Location> {
     }
   }
 
+  /**
+   * An `import` statement (`import a, b` or `from m import a, b`).
+   *
+   * Each alias contributes two children in evaluation order: first the
+   * value expression (which performs the import side-effect), then the
+   * bound `asname` Name (the in-scope binding). This makes both reachable
+   * from the CFG and allows `Name.defines(v)` for `asname` Names to have
+   * corresponding CFG nodes — which is essential for SSA to see import
+   * bindings.
+   */
+  additional class ImportStmt extends Stmt {
+    private Py::Import imp;
+
+    ImportStmt() { this = TPyStmt(imp) }
+
+    /** Gets the value (module/member expression) of the `n`th alias. */
+    Expr getValue(int n) { result.asExpr() = imp.getName(n).getValue() }
+
+    /** Gets the bound `asname` of the `n`th alias. */
+    Expr getAsname(int n) { result.asExpr() = imp.getName(n).getAsname() }
+
+    /** Gets the number of aliases in this import statement. */
+    int getNumberOfAliases() { result = count(int i | exists(imp.getName(i))) }
+
+    override AstNode getChild(int index) {
+      exists(int i |
+        index = 2 * i and result = this.getValue(i)
+        or
+        index = 2 * i + 1 and result = this.getAsname(i)
+      )
+    }
+  }
+
+  /**
+   * A `from m import *` statement. Evaluates the module expression but
+   * binds no name (the bindings happen by side-effect at runtime, which
+   * is not modelled at the CFG level).
+   */
+  additional class ImportStarStmt extends Stmt {
+    private Py::ImportStar imp;
+
+    ImportStarStmt() { this = TPyStmt(imp) }
+
+    Expr getModule() { result.asExpr() = imp.getModule() }
+
+    override AstNode getChild(int index) { index = 0 and result = this.getModule() }
+  }
+
   /** A `with` statement. */
   additional class WithStmt extends Stmt {
     private Py::With withStmt;
