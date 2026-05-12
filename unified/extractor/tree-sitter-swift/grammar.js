@@ -84,18 +84,26 @@ if (tree_sitter_version_supports_emoji()) {
 
 module.exports = grammar({
   name: "swift",
+  supertypes: ($) => [
+    $.expression,
+    $.unannotated_type,
+    $.global_declaration,
+    $.type_level_declaration,
+    $.local_declaration,
+    $.protocol_member_declaration,
+  ],
   conflicts: ($) => [
     // @Type(... could either be an annotation constructor invocation or an annotated expression
     [$.attribute],
     [$._attribute_argument],
     // Is `foo { ... }` a constructor invocation or function invocation?
-    [$._simple_user_type, $._expression],
+    [$._simple_user_type, $.expression],
     // To support nested types A.B not being interpreted as `(navigation_expression ... (type_identifier)) (navigation_suffix)`
     [$.user_type],
     // How to tell the difference between Foo.bar(with:and:), and Foo.bar(with: smth, and: other)? You need GLR
     [$.value_argument],
     // { (foo, bar) ...
-    [$._expression, $.lambda_parameter],
+    [$.expression, $.lambda_parameter],
     [$._primary_expression, $.lambda_parameter],
     // (start: start, end: end)
     [$._tuple_type_item_identifier, $.tuple_expression],
@@ -105,10 +113,10 @@ module.exports = grammar({
     // `+(...)` is ambigously either "call the function produced by a reference to the operator `+`" or "use the unary
     // operator `+` on the result of the parenthetical expression."
     [$._additive_operator, $._prefix_unary_operator],
-    [$._referenceable_operator, $._prefix_unary_operator],
+    [$.referenceable_operator, $._prefix_unary_operator],
     // `{ [self, b, c] ...` could be a capture list or an array literal depending on what else happens.
-    [$.capture_list_item, $._expression],
-    [$.capture_list_item, $._expression, $._simple_user_type],
+    [$.capture_list_item, $.expression],
+    [$.capture_list_item, $.expression, $._simple_user_type],
     [$._primary_expression, $.capture_list_item],
     // a ? b : c () could be calling c(), or it could be calling a function that's produced by the result of
     // `(a ? b : c)`. We have a small hack to force it to be the former of these by intentionally introducing a
@@ -119,10 +127,10 @@ module.exports = grammar({
     // `if try foo { } ...` should award its braces to the `if`. In order to make this actually happen, we need to parse
     // all the options and pick the best one that doesn't error out.
     [$.try_expression, $._unary_expression],
-    [$.try_expression, $._expression],
+    [$.try_expression, $.expression],
     // await {expression} has the same special cases as `try`.
     [$.await_expression, $._unary_expression],
-    [$.await_expression, $._expression],
+    [$.await_expression, $.expression],
     // In a computed property, when you see an @attribute, it's not yet clear if that's going to be for a
     // locally-declared class or a getter / setter specifier.
     [
@@ -400,13 +408,15 @@ module.exports = grammar({
     type_annotation: ($) =>
       seq(":", field("type", $._possibly_implicitly_unwrapped_type)),
     _possibly_implicitly_unwrapped_type: ($) =>
-      seq($._type, optional(token.immediate("!"))),
-    _type: ($) =>
+      choice($.type, $.implicitly_unwrapped_type),
+    implicitly_unwrapped_type: ($) =>
+      seq($.type, token.immediate("!")),
+    type: ($) =>
       prec.right(
         PRECS.ty,
-        seq(optional($.type_modifiers), field("name", $._unannotated_type))
+        seq(field("modifiers", optional($.type_modifiers)), field("name", $.unannotated_type))
       ),
-    _unannotated_type: ($) =>
+    unannotated_type: ($) =>
       prec.right(
         PRECS.ty,
         choice(
@@ -450,7 +460,7 @@ module.exports = grammar({
         seq(
           optional($._tuple_type_item_identifier),
           optional($.parameter_modifiers),
-          field("type", $._type)
+          field("type", $.type)
         )
       ),
     _tuple_type_item_identifier: ($) =>
@@ -464,15 +474,15 @@ module.exports = grammar({
       ),
     function_type: ($) =>
       seq(
-        field("params", choice($.tuple_type, $._unannotated_type)),
+        field("params", choice($.tuple_type, $.unannotated_type)),
         optional($._async_keyword),
         optional(choice($.throws_clause, $.throws)),
         $._arrow_operator,
-        field("return_type", $._type)
+        field("return_type", $.type)
       ),
-    array_type: ($) => seq("[", field("element", $._type), "]"),
+    array_type: ($) => seq("[", field("element", $.type), "]"),
     dictionary_type: ($) =>
-      seq("[", field("key", $._type), ":", field("value", $._type), "]"),
+      seq("[", field("key", $.type), ":", field("value", $.type), "]"),
     optional_type: ($) =>
       prec.left(
         seq(
@@ -483,18 +493,18 @@ module.exports = grammar({
           repeat1(alias($._immediate_quest, "?"))
         )
       ),
-    metatype: ($) => seq($._unannotated_type, ".", choice("Type", "Protocol")),
+    metatype: ($) => seq($.unannotated_type, ".", choice("Type", "Protocol")),
     _quest: ($) => "?",
     _immediate_quest: ($) => token.immediate("?"),
-    opaque_type: ($) => prec.right(seq("some", $._unannotated_type)),
-    existential_type: ($) => prec.right(seq("any", $._unannotated_type)),
-    type_parameter_pack: ($) => prec.left(seq("each", $._unannotated_type)),
-    type_pack_expansion: ($) => prec.left(seq("repeat", $._unannotated_type)),
+    opaque_type: ($) => prec.right(seq("some", $.unannotated_type)),
+    existential_type: ($) => prec.right(seq("any", $.unannotated_type)),
+    type_parameter_pack: ($) => prec.left(seq("each", $.unannotated_type)),
+    type_pack_expansion: ($) => prec.left(seq("repeat", $.unannotated_type)),
     protocol_composition_type: ($) =>
       prec.left(
         seq(
-          $._unannotated_type,
-          repeat1(seq("&", prec.right($._unannotated_type)))
+          $.unannotated_type,
+          repeat1(seq("&", prec.right($.unannotated_type)))
         )
       ),
     suppressed_constraint: ($) =>
@@ -507,7 +517,7 @@ module.exports = grammar({
     ////////////////////////////////
     // Expressions - https://docs.swift.org/swift-book/ReferenceManual/Expressions.html
     ////////////////////////////////
-    _expression: ($) =>
+    expression: ($) =>
       prec(
         PRECS.expr,
         choice(
@@ -521,9 +531,11 @@ module.exports = grammar({
           $.assignment,
           $.value_parameter_pack,
           $.value_pack_expansion,
-          seq($._expression, alias($._immediate_quest, "?"))
+          $.optional_chain_marker
         )
       ),
+    optional_chain_marker: ($) =>
+      seq($.expression, alias($._immediate_quest, "?")),
     // Unary expressions
     _unary_expression: ($) =>
       choice(
@@ -544,7 +556,7 @@ module.exports = grammar({
       prec.left(
         PRECS.postfix_operations,
         seq(
-          field("target", $._expression),
+          field("target", $.expression),
           field("operation", $._postfix_unary_operator)
         )
       ),
@@ -562,10 +574,7 @@ module.exports = grammar({
     _parenthesized_type: ($) =>
       seq(
         "(",
-        field(
-          "element",
-          choice($.opaque_type, $.existential_type, $.dictionary_type)
-        ),
+        choice($.opaque_type, $.existential_type, $.dictionary_type),
         ")"
       ),
     navigation_expression: ($) =>
@@ -576,7 +585,7 @@ module.exports = grammar({
             "target",
             choice(
               $._navigable_type_expression,
-              $._expression,
+              $.expression,
               $._parenthesized_type
             )
           ),
@@ -590,7 +599,7 @@ module.exports = grammar({
         PRECS.range,
         seq(
           $._range_operator,
-          prec.right(PRECS.range_suffix, field("end", $._expression))
+          prec.right(PRECS.range_suffix, field("end", $.expression))
         )
       ),
     _range_operator: ($) =>
@@ -598,7 +607,7 @@ module.exports = grammar({
     open_end_range_expression: ($) =>
       prec.right(
         PRECS.range,
-        seq(field("start", $._expression), $._three_dot_operator)
+        seq(field("start", $.expression), $._three_dot_operator)
       ),
     prefix_expression: ($) =>
       prec.left(
@@ -608,8 +617,8 @@ module.exports = grammar({
           field(
             "target",
             choice(
-              $._expression,
-              alias(choice("async", "if", "switch"), $._expression)
+              $.expression,
+              alias(choice("async", "if", "switch"), $.expression)
             )
           )
         )
@@ -617,7 +626,7 @@ module.exports = grammar({
     as_expression: ($) =>
       prec.left(
         PRECS.as,
-        seq(field("expr", $._expression), $.as_operator, field("type", $._type))
+        seq(field("expr", $.expression), $.as_operator, field("type", $.type))
       ),
     selector_expression: ($) =>
       seq(
@@ -625,7 +634,7 @@ module.exports = grammar({
         "selector",
         "(",
         optional(choice("getter:", "setter:")),
-        $._expression,
+        $.expression,
         ")"
       ),
     // Binary expressions
@@ -647,25 +656,25 @@ module.exports = grammar({
       prec.left(
         PRECS.multiplication,
         seq(
-          field("lhs", $._expression),
+          field("lhs", $.expression),
           field("op", $._multiplicative_operator),
-          field("rhs", $._expression)
+          field("rhs", $.expression)
         )
       ),
     additive_expression: ($) =>
       prec.left(
         PRECS.addition,
         seq(
-          field("lhs", $._expression),
+          field("lhs", $.expression),
           field("op", $._additive_operator),
-          field("rhs", $._expression)
+          field("rhs", $.expression)
         )
       ),
     range_expression: ($) =>
       prec.right(
         PRECS.range,
         seq(
-          field("start", $._expression),
+          field("start", $.expression),
           field("op", $._range_operator),
           field("end", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -674,7 +683,7 @@ module.exports = grammar({
       prec.left(
         PRECS.infix_operations,
         seq(
-          field("lhs", $._expression),
+          field("lhs", $.expression),
           field("op", $.custom_operator),
           field("rhs", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -683,7 +692,7 @@ module.exports = grammar({
       prec.right(
         PRECS.nil_coalescing,
         seq(
-          field("value", $._expression),
+          field("value", $.expression),
           $._nil_coalescing_operator,
           field("if_nil", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -692,15 +701,15 @@ module.exports = grammar({
       prec.left(
         PRECS.check,
         seq(
-          field("target", $._expression),
+          field("target", $.expression),
           field("op", $._is_operator),
-          field("type", $._type)
+          field("type", $.type)
         )
       ),
     comparison_expression: ($) =>
       prec.left(
         seq(
-          field("lhs", $._expression),
+          field("lhs", $.expression),
           field("op", $._comparison_operator),
           field("rhs", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -709,7 +718,7 @@ module.exports = grammar({
       prec.left(
         PRECS.equality,
         seq(
-          field("lhs", $._expression),
+          field("lhs", $.expression),
           field("op", $._equality_operator),
           field("rhs", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -718,7 +727,7 @@ module.exports = grammar({
       prec.left(
         PRECS.conjunction,
         seq(
-          field("lhs", $._expression),
+          field("lhs", $.expression),
           field("op", $._conjunction_operator),
           field("rhs", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -727,7 +736,7 @@ module.exports = grammar({
       prec.left(
         PRECS.disjunction,
         seq(
-          field("lhs", $._expression),
+          field("lhs", $.expression),
           field("op", $._disjunction_operator),
           field("rhs", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -735,7 +744,7 @@ module.exports = grammar({
     bitwise_operation: ($) =>
       prec.left(
         seq(
-          field("lhs", $._expression),
+          field("lhs", $.expression),
           field("op", $._bitwise_binary_operator),
           field("rhs", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -772,7 +781,7 @@ module.exports = grammar({
       seq("(", optional(sep1Opt($.value_argument, ",")), ")"),
     _fn_call_lambda_arguments: ($) =>
       sep1($.lambda_literal, seq(field("name", $.simple_identifier), ":")),
-    type_arguments: ($) => prec.left(seq("<", sep1Opt($._type, ","), ">")),
+    type_arguments: ($) => prec.left(seq("<", sep1Opt($.type, ","), ">")),
     value_arguments: ($) =>
       seq(
         choice(
@@ -800,7 +809,7 @@ module.exports = grammar({
             ),
             seq(
               optional(seq(field("name", $.value_argument_label), ":")),
-              field("value", $._expression)
+              field("value", $.expression)
             )
           )
         )
@@ -816,7 +825,7 @@ module.exports = grammar({
               // Prefer direct calls, e.g. `try foo()`, over indirect like `try a ? b() : c`. This allows us to have
               // left associativity for the direct calls, which is technically wrong but is the only way to resolve the
               // ambiguity of `if foo { ... }` in the correct direction.
-              prec.right(-2, $._expression),
+              prec.right(-2, $.expression),
               prec.left(0, $._binary_expression),
               prec.left(0, $.call_expression),
               // Similarly special case the ternary expression, where `try` may come earlier than it is actually needed.
@@ -838,7 +847,7 @@ module.exports = grammar({
             "expr",
             choice(
               // Prefer direct calls over indirect (same as with `try`).
-              prec.right(-2, $._expression),
+              prec.right(-2, $.expression),
               prec.left(0, $.call_expression),
               // Special case ternary to `await` the whole thing (same as with `try`).
               prec.dynamic(1, prec.left(-1, $.ternary_expression))
@@ -851,9 +860,9 @@ module.exports = grammar({
       prec.right(
         PRECS.ternary,
         seq(
-          field("condition", $._expression),
+          field("condition", $.expression),
           $._quest,
-          field("if_true", $._expression),
+          field("if_true", $.expression),
           ":",
           field("if_false", $._expr_hack_at_ternary_binary_suffix)
         )
@@ -862,13 +871,13 @@ module.exports = grammar({
       prec.left(
         PRECS.ternary_binary_suffix,
         choice(
-          $._expression,
+          $.expression,
           alias($.expr_hack_at_ternary_binary_call, $.call_expression)
         )
       ),
     expr_hack_at_ternary_binary_call: ($) =>
       seq(
-        $._expression,
+        $.expression,
         alias($.expr_hack_at_ternary_binary_call_suffix, $.call_suffix)
       ),
     expr_hack_at_ternary_binary_call_suffix: ($) =>
@@ -876,7 +885,7 @@ module.exports = grammar({
     call_expression: ($) =>
       prec(
         PRECS.call,
-        prec.dynamic(DYNAMIC_PRECS.call, seq($._expression, $.call_suffix))
+        prec.dynamic(DYNAMIC_PRECS.call, seq($.expression, $.call_suffix))
       ),
     macro_invocation: ($) =>
       prec(
@@ -904,7 +913,7 @@ module.exports = grammar({
         $.super_expression,
         $.try_expression,
         $.await_expression,
-        $._referenceable_operator,
+        $.referenceable_operator,
         $.key_path_expression,
         $.key_path_string_expression,
         prec.right(
@@ -920,7 +929,7 @@ module.exports = grammar({
           sep1Opt(
             seq(
               optional(seq(field("name", $.simple_identifier), ":")),
-              field("value", $._expression)
+              field("value", $.expression)
             ),
             ","
           ),
@@ -928,7 +937,7 @@ module.exports = grammar({
         )
       ),
     array_literal: ($) =>
-      seq("[", optional(sep1Opt(field("element", $._expression), ",")), "]"),
+      seq("[", optional(sep1Opt(field("element", $.expression), ",")), "]"),
     dictionary_literal: ($) =>
       seq(
         "[",
@@ -937,7 +946,7 @@ module.exports = grammar({
         "]"
       ),
     _dictionary_literal_item: ($) =>
-      seq(field("key", $._expression), ":", field("value", $._expression)),
+      seq(field("key", $.expression), ":", field("value", $.expression)),
     special_literal: ($) =>
       seq(
         $._hash_symbol,
@@ -956,7 +965,7 @@ module.exports = grammar({
         $._hash_symbol,
         choice("colorLiteral", "fileLiteral", "imageLiteral"),
         "(",
-        sep1Opt(seq($.simple_identifier, ":", $._expression), ","),
+        sep1Opt(seq($.simple_identifier, ":", $.expression), ","),
         ")"
       ),
     lambda_literal: ($) =>
@@ -985,7 +994,7 @@ module.exports = grammar({
           seq(
             optional($.ownership_modifier),
             field("name", $.simple_identifier),
-            optional(seq($._equal_sign, field("value", $._expression)))
+            optional(seq($._equal_sign, field("value", $.expression)))
           )
         )
       ),
@@ -1033,17 +1042,17 @@ module.exports = grammar({
         PRECS["if"],
         seq(
           "if",
-          sep1(field("condition", $._if_condition_sequence_item), ","),
+          sep1(field("condition", $.if_condition), ","),
           $._block,
           optional(seq($["else"], $._else_options))
         )
       ),
-    _if_condition_sequence_item: ($) =>
-      choice($._if_let_binding, $._expression, $.availability_condition),
-    _if_let_binding: ($) =>
+    if_condition: ($) =>
+      choice($.if_let_binding, $.expression, $.availability_condition),
+    if_let_binding: ($) =>
       seq(
         $._direct_or_indirect_binding,
-        optional(seq($._equal_sign, $._expression)),
+        optional(seq($._equal_sign, $.expression)),
         optional($.where_clause)
       ),
     guard_statement: ($) =>
@@ -1051,7 +1060,7 @@ module.exports = grammar({
         PRECS["if"],
         seq(
           "guard",
-          sep1(field("condition", $._if_condition_sequence_item), ","),
+          sep1(field("condition", $.if_condition), ","),
           $["else"],
           $._block
         )
@@ -1061,7 +1070,7 @@ module.exports = grammar({
         PRECS["switch"],
         seq(
           "switch",
-          field("expr", $._expression),
+          field("expr", $.expression),
           "{",
           repeat($.switch_entry),
           "}"
@@ -1075,7 +1084,7 @@ module.exports = grammar({
             "case",
             seq(
               $.switch_pattern,
-              optional(seq($.where_keyword, $._expression))
+              optional(seq($.where_keyword, $.expression))
             ),
             repeat(seq(",", $.switch_pattern))
           ),
@@ -1095,7 +1104,7 @@ module.exports = grammar({
         optional($.where_clause),
         $._block
       ),
-    where_clause: ($) => prec.left(seq($.where_keyword, $._expression)),
+    where_clause: ($) => prec.left(seq($.where_keyword, $.expression)),
     key_path_expression: ($) =>
       prec.right(
         PRECS.keypath,
@@ -1108,7 +1117,7 @@ module.exports = grammar({
         )
       ),
     key_path_string_expression: ($) =>
-      prec.left(seq($._hash_symbol, "keyPath", "(", $._expression, ")")),
+      prec.left(seq($._hash_symbol, "keyPath", "(", $.expression, ")")),
     _key_path_component: ($) =>
       prec.left(
         choice(
@@ -1164,7 +1173,7 @@ module.exports = grammar({
       ),
     _bitwise_binary_operator: ($) => choice("&", "|", "^", "<<", ">>"),
     _postfix_unary_operator: ($) => choice("++", "--", $.bang),
-    directly_assignable_expression: ($) => $._expression,
+    directly_assignable_expression: ($) => $.expression,
 
     ////////////////////////////////
     // Statements - https://docs.swift.org/swift-book/ReferenceManual/Statements.html
@@ -1180,15 +1189,15 @@ module.exports = grammar({
       ),
     _local_statement: ($) =>
       choice(
-        $._expression,
-        $._local_declaration,
+        $.expression,
+        $.local_declaration,
         $._labeled_statement,
         $.control_transfer_statement
       ),
     _top_level_statement: ($) =>
       choice(
-        $._expression,
-        $._global_declaration,
+        $.expression,
+        $.global_declaration,
         $._labeled_statement,
         $._throw_statement
       ),
@@ -1227,15 +1236,15 @@ module.exports = grammar({
       // the opposite, though, since function calls may contain trailing code blocks, which are undesirable here.
       //
       // To fix that, we simply undo the special casing by defining our own `await_expression`.
-      choice($._expression, alias($.for_statement_await, $.await_expression)),
-    for_statement_await: ($) => seq($._await_operator, $._expression),
+      choice($.expression, alias($.for_statement_await, $.await_expression)),
+    for_statement_await: ($) => seq($._await_operator, $.expression),
 
     while_statement: ($) =>
       prec(
         PRECS.loop,
         seq(
           "while",
-          sep1(field("condition", $._if_condition_sequence_item), ","),
+          sep1(field("condition", $.if_condition), ","),
           "{",
           optional($.statements),
           "}"
@@ -1252,7 +1261,7 @@ module.exports = grammar({
           // Make sure we make it to the `while` before assuming this is a parameter pack.
           repeat($._implicit_semi),
           "while",
-          sep1(field("condition", $._if_condition_sequence_item), ",")
+          sep1(field("condition", $.if_condition), ",")
         )
       ),
     control_transfer_statement: ($) =>
@@ -1262,11 +1271,11 @@ module.exports = grammar({
           PRECS.control_transfer,
           seq(
             $._optionally_valueful_control_keyword,
-            field("result", optional($._expression))
+            field("result", optional($.expression))
           )
         )
       ),
-    _throw_statement: ($) => seq($.throw_keyword, $._expression),
+    _throw_statement: ($) => seq($.throw_keyword, $.expression),
     throw_keyword: ($) => "throw",
     _optionally_valueful_control_keyword: ($) =>
       choice("return", "continue", "break", "yield"),
@@ -1276,13 +1285,13 @@ module.exports = grammar({
         seq(
           field("target", $.directly_assignable_expression),
           field("operator", $._assignment_and_operator),
-          field("result", $._expression)
+          field("result", $.expression)
         )
       ),
     value_parameter_pack: ($) =>
-      prec.left(PRECS.parameter_pack, seq("each", $._expression)),
+      prec.left(PRECS.parameter_pack, seq("each", $.expression)),
     value_pack_expansion: ($) =>
-      prec.left(PRECS.parameter_pack, seq("repeat", $._expression)),
+      prec.left(PRECS.parameter_pack, seq("repeat", $.expression)),
     availability_condition: ($) =>
       seq(
         $._hash_symbol,
@@ -1296,7 +1305,7 @@ module.exports = grammar({
     ////////////////////////////////
     // Declarations - https://docs.swift.org/swift-book/ReferenceManual/Declarations.html
     ////////////////////////////////
-    _global_declaration: ($) =>
+    global_declaration: ($) =>
       choice(
         $.import_declaration,
         $.property_declaration,
@@ -1310,7 +1319,7 @@ module.exports = grammar({
         $.associatedtype_declaration,
         $.macro_declaration
       ),
-    _type_level_declaration: ($) =>
+    type_level_declaration: ($) =>
       choice(
         $.import_declaration,
         $.property_declaration,
@@ -1325,7 +1334,7 @@ module.exports = grammar({
         $.precedence_group_declaration,
         $.associatedtype_declaration
       ),
-    _local_declaration: ($) =>
+    local_declaration: ($) =>
       choice(
         alias($._local_property_declaration, $.property_declaration),
         alias($._local_typealias_declaration, $.typealias_declaration),
@@ -1412,12 +1421,12 @@ module.exports = grammar({
         1,
         seq(
           $._equal_sign,
-          field("value", $._expression),
+          field("value", $.expression),
           $.willset_didset_block
         )
       ),
     _expression_without_willset_didset: ($) =>
-      seq($._equal_sign, field("value", $._expression)),
+      seq($._equal_sign, field("value", $.expression)),
     willset_didset_block: ($) =>
       choice(
         seq("{", $.willset_clause, optional($.didset_clause), "}"),
@@ -1445,7 +1454,7 @@ module.exports = grammar({
         field("name", alias($.simple_identifier, $.type_identifier)),
         optional($.type_parameters),
         $._equal_sign,
-        field("value", $._type)
+        field("value", $.type)
       ),
     function_declaration: ($) =>
       prec.right(
@@ -1495,12 +1504,12 @@ module.exports = grammar({
     _macro_signature: ($) =>
       seq(
         $._function_value_parameters,
-        optional(seq($._arrow_operator, $._unannotated_type))
+        optional(seq($._arrow_operator, $.unannotated_type))
       ),
     macro_definition: ($) =>
       seq(
         $._equal_sign,
-        field("body", choice($._expression, $.external_macro_definition))
+        field("body", choice($.expression, $.external_macro_definition))
       ),
 
     external_macro_definition: ($) =>
@@ -1521,7 +1530,7 @@ module.exports = grammar({
           ),
           seq(
             field("declaration_kind", "extension"),
-            field("name", $._unannotated_type),
+            field("name", $.unannotated_type),
             optional($.type_parameters),
             optional(seq(":", $._inheritance_specifiers)),
             optional($.type_constraints),
@@ -1561,7 +1570,7 @@ module.exports = grammar({
       seq(
         optional($.type_parameter_modifiers),
         $._type_parameter_possibly_packed,
-        optional(seq(":", $._type))
+        optional(seq(":", $.type))
       ),
     _type_parameter_possibly_packed: ($) =>
       choice(
@@ -1585,20 +1594,18 @@ module.exports = grammar({
         repeat($.attribute),
         field("constrained_type", $._constrained_type),
         choice($._equal_sign, $._eq_eq),
-        field("must_equal", $._type)
+        field("must_equal", $.type)
       ),
-    _constrained_type: ($) =>
-      choice(
-        $.identifier,
-        seq(
-          $._unannotated_type,
-          optional(seq(".", sep1($.simple_identifier, ".")))
-        )
+    _constrained_type: ($) => choice($.identifier, $.nested_type_identifier),
+    nested_type_identifier: ($) =>
+      seq(
+        $.unannotated_type,
+        optional(seq(".", sep1($.simple_identifier, ".")))
       ),
     _class_member_separator: ($) => choice($._semi, $.multiline_comment),
     _class_member_declarations: ($) =>
       seq(
-        sep1($._type_level_declaration, $._class_member_separator),
+        sep1($.type_level_declaration, $._class_member_separator),
         optional($._class_member_separator)
       ),
     _function_value_parameters: ($) =>
@@ -1609,7 +1616,7 @@ module.exports = grammar({
       seq(
         optional($.attribute),
         $.parameter,
-        optional(seq($._equal_sign, field("default_value", $._expression)))
+        optional(seq($._equal_sign, field("default_value", $.expression)))
       ),
     parameter: ($) =>
       seq(
@@ -1623,16 +1630,15 @@ module.exports = grammar({
     _non_constructor_function_decl: ($) =>
       seq(
         "func",
-        field("name", choice($.simple_identifier, $._referenceable_operator))
+        field("name", choice($.simple_identifier, $.referenceable_operator))
       ),
-    _referenceable_operator: ($) =>
+    referenceable_operator: ($) =>
       choice(
         $.custom_operator,
         $._comparison_operator,
         $._additive_operator,
         $._multiplicative_operator,
         $._equality_operator,
-        $._comparison_operator,
         $._assignment_and_operator,
         "++",
         "--",
@@ -1665,9 +1671,9 @@ module.exports = grammar({
     _async_modifier: ($) => token("async"),
     throws: ($) => choice($._throws_keyword, $._rethrows_keyword),
     throws_clause: ($) =>
-      seq($._throws_keyword, "(", field("type", $._unannotated_type), ")"),
+      seq($._throws_keyword, "(", field("type", $.unannotated_type), ")"),
     enum_class_body: ($) =>
-      seq("{", repeat(choice($.enum_entry, $._type_level_declaration)), "}"),
+      seq("{", repeat(choice($.enum_entry, $.type_level_declaration)), "}"),
     enum_entry: ($) =>
       seq(
         optional($.modifiers),
@@ -1685,7 +1691,7 @@ module.exports = grammar({
     _enum_entry_suffix: ($) =>
       choice(
         field("data_contents", $.enum_type_parameters),
-        seq($._equal_sign, field("raw_value", $._expression))
+        seq($._equal_sign, field("raw_value", $.expression))
       ),
     enum_type_parameters: ($) =>
       seq(
@@ -1696,8 +1702,8 @@ module.exports = grammar({
               optional(
                 seq(optional($.wildcard_pattern), $.simple_identifier, ":")
               ),
-              $._type,
-              optional(seq($._equal_sign, $._expression))
+              $.type,
+              optional(seq($._equal_sign, $.expression))
             ),
             ","
           )
@@ -1719,22 +1725,21 @@ module.exports = grammar({
     protocol_body: ($) =>
       seq("{", optional($._protocol_member_declarations), "}"),
     _protocol_member_declarations: ($) =>
-      seq(sep1($._protocol_member_declaration, $._semi), optional($._semi)),
-    _protocol_member_declaration: ($) =>
+      seq(sep1($.protocol_member_declaration, $._semi), optional($._semi)),
+    protocol_member_declaration: ($) =>
       choice(
-        alias(
-          seq(
-            $._bodyless_function_declaration,
-            optional(field("body", $.function_body))
-          ),
-          $.protocol_function_declaration
-        ),
+        $.protocol_function_declaration,
         $.init_declaration,
         $.deinit_declaration,
         $.protocol_property_declaration,
         $.typealias_declaration,
         $.associatedtype_declaration,
         $.subscript_declaration
+      ),
+    protocol_function_declaration: ($) =>
+      seq(
+        $._bodyless_function_declaration,
+        optional(field("body", $.function_body))
       ),
     init_declaration: ($) =>
       prec.right(
@@ -1804,7 +1809,7 @@ module.exports = grammar({
       seq(
         choice("prefix", "infix", "postfix"),
         "operator",
-        $._referenceable_operator,
+        $.referenceable_operator,
         optional(seq(":", $.simple_identifier)),
         optional($.deprecated_operator_declaration_body)
       ),
@@ -1831,9 +1836,9 @@ module.exports = grammar({
         optional($.modifiers),
         "associatedtype",
         field("name", alias($.simple_identifier, $.type_identifier)),
-        optional(seq(":", field("must_inherit", $._type))),
+        optional(seq(":", field("must_inherit", $.type))),
         optional($.type_constraints),
-        optional(seq($._equal_sign, field("default_value", $._type)))
+        optional(seq($._equal_sign, field("default_value", $.type)))
       ),
     ////////////////////////////////
     // Attributes - https://docs.swift.org/swift-book/ReferenceManual/Attributes.html
@@ -1848,9 +1853,9 @@ module.exports = grammar({
     _attribute_argument: ($) =>
       choice(
         // labeled function parameters, used in custom property wrappers
-        seq($.simple_identifier, ":", $._expression),
+        seq($.simple_identifier, ":", $.expression),
         // Unlabeled function parameters, simple identifiers, or `*`
-        $._expression,
+        $.expression,
         // References to param names (used in `@objc(foo:bar:)`)
         repeat1(seq($.simple_identifier, ":")),
         // Version restrictions (iOS 3.4.5, Swift 5.0.0)
@@ -1887,13 +1892,13 @@ module.exports = grammar({
         choice(
           $._universally_allowed_pattern,
           $._binding_pattern,
-          $._expression
+          $.expression
         ),
         optional($._quest)
       ),
     _non_binding_pattern_with_expr: ($) =>
       seq(
-        choice($._universally_allowed_pattern, $._expression),
+        choice($._universally_allowed_pattern, $.expression),
         optional($._quest)
       ),
     _direct_or_indirect_binding: ($) =>
@@ -1932,8 +1937,8 @@ module.exports = grammar({
       ),
     _type_casting_pattern: ($) =>
       choice(
-        seq("is", $._type),
-        seq(alias($._binding_pattern_no_expr, $.pattern), $._as, $._type)
+        seq("is", $.type),
+        seq(alias($._binding_pattern_no_expr, $.pattern), $._as, $.type)
       ),
     _binding_pattern: ($) =>
       seq(

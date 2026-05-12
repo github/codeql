@@ -87,23 +87,17 @@ module Swift {
     )
   }
 
-  /** A class representing `_expression` tokens. */
-  class UnderscoreExpression extends @swift_token__expression, Token {
-    /** Gets the name of the primary QL class for this element. */
-    final override string getAPrimaryQlClass() { result = "UnderscoreExpression" }
-  }
-
   /** A class representing `additive_expression` nodes. */
   class AdditiveExpression extends @swift_additive_expression, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "AdditiveExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_additive_expression_lhs(this, i, result) }
+    final Expression getLhs() { swift_additive_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_additive_expression_def(this, value) |
+      exists(int value | swift_additive_expression_def(this, _, value, _) |
         result = "+" and value = 0
         or
         result = "-" and value = 1
@@ -111,12 +105,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_additive_expression_rhs(this, i, result) }
+    final Expression getRhs() { swift_additive_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_additive_expression_lhs(this, _, result) or
-      swift_additive_expression_rhs(this, _, result)
+      swift_additive_expression_def(this, result, _, _) or
+      swift_additive_expression_def(this, _, _, result)
     }
   }
 
@@ -126,7 +120,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ArrayLiteral" }
 
     /** Gets the node corresponding to the field `element`. */
-    final AstNode getElement(int i) { swift_array_literal_element(this, i, result) }
+    final Expression getElement(int i) { swift_array_literal_element(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_array_literal_element(this, _, result) }
@@ -138,15 +132,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ArrayType" }
 
     /** Gets the node corresponding to the field `element`. */
-    final AstNode getElement(int i) { swift_array_type_element(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_array_type_def(this, result) }
+    final Type getElement() { swift_array_type_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_array_type_element(this, _, result) or swift_array_type_def(this, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_array_type_def(this, result) }
   }
 
   /** A class representing `as_expression` nodes. */
@@ -155,23 +144,19 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "AsExpression" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr(int i) { swift_as_expression_expr(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_as_expression_def(this, result, _) }
+    final Expression getExpr() { swift_as_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `type`. */
-    final AstNode getType(int i) { swift_as_expression_type(this, i, result) }
+    final Type getType() { swift_as_expression_def(this, _, result, _) }
 
     /** Gets the child of this node. */
-    final AsOperator getChild() { swift_as_expression_def(this, _, result) }
+    final AsOperator getChild() { swift_as_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_as_expression_expr(this, _, result) or
-      swift_as_expression_def(this, result, _) or
-      swift_as_expression_type(this, _, result) or
-      swift_as_expression_def(this, _, result)
+      swift_as_expression_def(this, result, _, _) or
+      swift_as_expression_def(this, _, result, _) or
+      swift_as_expression_def(this, _, _, result)
     }
   }
 
@@ -188,7 +173,7 @@ module Swift {
 
     /** Gets the node corresponding to the field `operator`. */
     final string getOperator() {
-      exists(int value | swift_assignment_def(this, value, _) |
+      exists(int value | swift_assignment_def(this, value, _, _) |
         result = "%=" and value = 0
         or
         result = "*=" and value = 1
@@ -204,14 +189,14 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `result`. */
-    final AstNode getResult(int i) { swift_assignment_result(this, i, result) }
+    final Expression getResult() { swift_assignment_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `target`. */
-    final DirectlyAssignableExpression getTarget() { swift_assignment_def(this, _, result) }
+    final DirectlyAssignableExpression getTarget() { swift_assignment_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_assignment_result(this, _, result) or swift_assignment_def(this, _, result)
+      swift_assignment_def(this, _, result, _) or swift_assignment_def(this, _, _, result)
     }
   }
 
@@ -221,26 +206,22 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "AssociatedtypeDeclaration" }
 
     /** Gets the node corresponding to the field `default_value`. */
-    final AstNode getDefaultValue(int i) {
-      swift_associatedtype_declaration_default_value(this, i, result)
-    }
+    final Type getDefaultValue() { swift_associatedtype_declaration_default_value(this, result) }
 
     /** Gets the node corresponding to the field `must_inherit`. */
-    final AstNode getMustInherit(int i) {
-      swift_associatedtype_declaration_must_inherit(this, i, result)
-    }
+    final Type getMustInherit() { swift_associatedtype_declaration_must_inherit(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_associatedtype_declaration_name(this, i, result) }
+    final TypeIdentifier getName() { swift_associatedtype_declaration_def(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_associatedtype_declaration_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_associatedtype_declaration_default_value(this, _, result) or
-      swift_associatedtype_declaration_must_inherit(this, _, result) or
-      swift_associatedtype_declaration_name(this, _, result) or
+      swift_associatedtype_declaration_default_value(this, result) or
+      swift_associatedtype_declaration_must_inherit(this, result) or
+      swift_associatedtype_declaration_def(this, result) or
       swift_associatedtype_declaration_child(this, _, result)
     }
   }
@@ -277,14 +258,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "AwaitExpression" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr(int i) { swift_await_expression_expr(this, i, result) }
+    final Expression getExpr() { swift_await_expression_expr(this, result) }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_await_expression_child(this, result) }
+    final Expression getChild() { swift_await_expression_child(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_await_expression_expr(this, _, result) or swift_await_expression_child(this, result)
+      swift_await_expression_expr(this, result) or swift_await_expression_child(this, result)
     }
   }
 
@@ -306,11 +287,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "BitwiseOperation" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_bitwise_operation_lhs(this, i, result) }
+    final Expression getLhs() { swift_bitwise_operation_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_bitwise_operation_def(this, value) |
+      exists(int value | swift_bitwise_operation_def(this, _, value, _) |
         result = "&" and value = 0
         or
         result = "<<" and value = 1
@@ -324,11 +305,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_bitwise_operation_rhs(this, i, result) }
+    final Expression getRhs() { swift_bitwise_operation_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_bitwise_operation_lhs(this, _, result) or swift_bitwise_operation_rhs(this, _, result)
+      swift_bitwise_operation_def(this, result, _, _) or
+      swift_bitwise_operation_def(this, _, _, result)
     }
   }
 
@@ -388,7 +370,7 @@ module Swift {
     final AstNode getName() { swift_capture_list_item_def(this, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_capture_list_item_value(this, i, result) }
+    final Expression getValue() { swift_capture_list_item_value(this, result) }
 
     /** Gets the child of this node. */
     final OwnershipModifier getChild() { swift_capture_list_item_child(this, result) }
@@ -396,7 +378,7 @@ module Swift {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       swift_capture_list_item_def(this, result) or
-      swift_capture_list_item_value(this, _, result) or
+      swift_capture_list_item_value(this, result) or
       swift_capture_list_item_child(this, result)
     }
   }
@@ -429,25 +411,23 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "CheckExpression" }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_check_expression_def(this, result, _) }
-
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_check_expression_def(this, _, value) | (result = "is" and value = 0))
+      exists(int value | swift_check_expression_def(this, value, _, _) |
+        (result = "is" and value = 0)
+      )
     }
 
     /** Gets the node corresponding to the field `target`. */
-    final AstNode getTarget(int i) { swift_check_expression_target(this, i, result) }
+    final Expression getTarget() { swift_check_expression_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `type`. */
-    final AstNode getType(int i) { swift_check_expression_type(this, i, result) }
+    final Type getType() { swift_check_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_check_expression_def(this, result, _) or
-      swift_check_expression_target(this, _, result) or
-      swift_check_expression_type(this, _, result)
+      swift_check_expression_def(this, _, result, _) or
+      swift_check_expression_def(this, _, _, result)
     }
   }
 
@@ -512,11 +492,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ComparisonExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_comparison_expression_lhs(this, i, result) }
+    final Expression getLhs() { swift_comparison_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_comparison_expression_def(this, value) |
+      exists(int value | swift_comparison_expression_def(this, _, value, _) |
         result = "<" and value = 0
         or
         result = "<=" and value = 1
@@ -528,12 +508,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_comparison_expression_rhs(this, i, result) }
+    final Expression getRhs() { swift_comparison_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_comparison_expression_lhs(this, _, result) or
-      swift_comparison_expression_rhs(this, _, result)
+      swift_comparison_expression_def(this, result, _, _) or
+      swift_comparison_expression_def(this, _, _, result)
     }
   }
 
@@ -591,22 +571,22 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ConjunctionExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_conjunction_expression_lhs(this, i, result) }
+    final Expression getLhs() { swift_conjunction_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_conjunction_expression_def(this, value) |
+      exists(int value | swift_conjunction_expression_def(this, _, value, _) |
         (result = "&&" and value = 0)
       )
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_conjunction_expression_rhs(this, i, result) }
+    final Expression getRhs() { swift_conjunction_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_conjunction_expression_lhs(this, _, result) or
-      swift_conjunction_expression_rhs(this, _, result)
+      swift_conjunction_expression_def(this, result, _, _) or
+      swift_conjunction_expression_def(this, _, _, result)
     }
   }
 
@@ -652,14 +632,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ControlTransferStatement" }
 
     /** Gets the node corresponding to the field `result`. */
-    final AstNode getResult(int i) { swift_control_transfer_statement_result(this, i, result) }
+    final Expression getResult() { swift_control_transfer_statement_result(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_control_transfer_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_control_transfer_statement_result(this, _, result) or
+      swift_control_transfer_statement_result(this, result) or
       swift_control_transfer_statement_child(this, _, result)
     }
   }
@@ -723,10 +703,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "DictionaryLiteral" }
 
     /** Gets the node corresponding to the field `key`. */
-    final AstNode getKey(int i) { swift_dictionary_literal_key(this, i, result) }
+    final Expression getKey(int i) { swift_dictionary_literal_key(this, i, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_dictionary_literal_value(this, i, result) }
+    final Expression getValue(int i) { swift_dictionary_literal_value(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
@@ -741,19 +721,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "DictionaryType" }
 
     /** Gets the node corresponding to the field `key`. */
-    final AstNode getKey(int i) { swift_dictionary_type_key(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_dictionary_type_name(this, i, result) }
+    final Type getKey() { swift_dictionary_type_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_dictionary_type_value(this, i, result) }
+    final Type getValue() { swift_dictionary_type_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_dictionary_type_key(this, _, result) or
-      swift_dictionary_type_name(this, _, result) or
-      swift_dictionary_type_value(this, _, result)
+      swift_dictionary_type_def(this, result, _) or swift_dictionary_type_def(this, _, result)
     }
   }
 
@@ -787,11 +762,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "DirectlyAssignableExpression" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_directly_assignable_expression_child(this, result) }
+    final Expression getChild() { swift_directly_assignable_expression_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_directly_assignable_expression_child(this, result)
+      swift_directly_assignable_expression_def(this, result)
     }
   }
 
@@ -801,22 +776,22 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "DisjunctionExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_disjunction_expression_lhs(this, i, result) }
+    final Expression getLhs() { swift_disjunction_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_disjunction_expression_def(this, value) |
+      exists(int value | swift_disjunction_expression_def(this, _, value, _) |
         (result = "||" and value = 0)
       )
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_disjunction_expression_rhs(this, i, result) }
+    final Expression getRhs() { swift_disjunction_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_disjunction_expression_lhs(this, _, result) or
-      swift_disjunction_expression_rhs(this, _, result)
+      swift_disjunction_expression_def(this, result, _, _) or
+      swift_disjunction_expression_def(this, _, _, result)
     }
   }
 
@@ -864,7 +839,7 @@ module Swift {
     final SimpleIdentifier getName(int i) { swift_enum_entry_name(this, i, result) }
 
     /** Gets the node corresponding to the field `raw_value`. */
-    final AstNode getRawValue(int i) { swift_enum_entry_raw_value(this, i, result) }
+    final Expression getRawValue(int i) { swift_enum_entry_raw_value(this, i, result) }
 
     /** Gets the child of this node. */
     final Modifiers getChild() { swift_enum_entry_child(this, result) }
@@ -883,17 +858,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "EnumTypeParameters" }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_enum_type_parameters_name(this, i, result) }
-
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_enum_type_parameters_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_enum_type_parameters_name(this, _, result) or
-      swift_enum_type_parameters_child(this, _, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_enum_type_parameters_child(this, _, result) }
   }
 
   /** A class representing `equality_constraint` nodes. */
@@ -902,24 +871,18 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "EqualityConstraint" }
 
     /** Gets the node corresponding to the field `constrained_type`. */
-    final AstNode getConstrainedType(int i) {
-      swift_equality_constraint_constrained_type(this, i, result)
-    }
+    final AstNode getConstrainedType() { swift_equality_constraint_def(this, result, _) }
 
     /** Gets the node corresponding to the field `must_equal`. */
-    final AstNode getMustEqual(int i) { swift_equality_constraint_must_equal(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_equality_constraint_def(this, result) }
+    final Type getMustEqual() { swift_equality_constraint_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
     final Attribute getChild(int i) { swift_equality_constraint_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_equality_constraint_constrained_type(this, _, result) or
-      swift_equality_constraint_must_equal(this, _, result) or
-      swift_equality_constraint_def(this, result) or
+      swift_equality_constraint_def(this, result, _) or
+      swift_equality_constraint_def(this, _, result) or
       swift_equality_constraint_child(this, _, result)
     }
   }
@@ -930,11 +893,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "EqualityExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_equality_expression_lhs(this, i, result) }
+    final Expression getLhs() { swift_equality_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_equality_expression_def(this, value) |
+      exists(int value | swift_equality_expression_def(this, _, value, _) |
         result = "!=" and value = 0
         or
         result = "!==" and value = 1
@@ -946,12 +909,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_equality_expression_rhs(this, i, result) }
+    final Expression getRhs() { swift_equality_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_equality_expression_lhs(this, _, result) or
-      swift_equality_expression_rhs(this, _, result)
+      swift_equality_expression_def(this, result, _, _) or
+      swift_equality_expression_def(this, _, _, result)
     }
   }
 
@@ -961,11 +924,13 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ExistentialType" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_existential_type_def(this, result) }
+    final UnannotatedType getChild() { swift_existential_type_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_existential_type_def(this, result) }
   }
+
+  class Expression extends @swift_expression, AstNode { }
 
   /** A class representing `external_macro_definition` nodes. */
   class ExternalMacroDefinition extends @swift_external_macro_definition, AstNode {
@@ -985,18 +950,18 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ForStatement" }
 
     /** Gets the node corresponding to the field `collection`. */
-    final AstNode getCollection(int i) { swift_for_statement_collection(this, i, result) }
+    final Expression getCollection() { swift_for_statement_def(this, result, _) }
 
     /** Gets the node corresponding to the field `item`. */
-    final Pattern getItem() { swift_for_statement_def(this, result) }
+    final Pattern getItem() { swift_for_statement_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_for_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_for_statement_collection(this, _, result) or
-      swift_for_statement_def(this, result) or
+      swift_for_statement_def(this, result, _) or
+      swift_for_statement_def(this, _, result) or
       swift_for_statement_child(this, _, result)
     }
   }
@@ -1025,28 +990,28 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "FunctionDeclaration" }
 
     /** Gets the node corresponding to the field `body`. */
-    final FunctionBody getBody() { swift_function_declaration_def(this, result) }
+    final FunctionBody getBody() { swift_function_declaration_def(this, result, _) }
 
     /** Gets the node corresponding to the field `default_value`. */
-    final AstNode getDefaultValue(int i) {
+    final Expression getDefaultValue(int i) {
       swift_function_declaration_default_value(this, i, result)
     }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_function_declaration_name(this, i, result) }
+    final AstNode getName() { swift_function_declaration_def(this, _, result) }
 
     /** Gets the node corresponding to the field `return_type`. */
-    final AstNode getReturnType(int i) { swift_function_declaration_return_type(this, i, result) }
+    final AstNode getReturnType() { swift_function_declaration_return_type(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_function_declaration_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_function_declaration_def(this, result) or
+      swift_function_declaration_def(this, result, _) or
       swift_function_declaration_default_value(this, _, result) or
-      swift_function_declaration_name(this, _, result) or
-      swift_function_declaration_return_type(this, _, result) or
+      swift_function_declaration_def(this, _, result) or
+      swift_function_declaration_return_type(this, result) or
       swift_function_declaration_child(this, _, result)
     }
   }
@@ -1062,14 +1027,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "FunctionType" }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_function_type_def(this, result, _) }
-
     /** Gets the node corresponding to the field `params`. */
-    final AstNode getParams() { swift_function_type_def(this, _, result) }
+    final UnannotatedType getParams() { swift_function_type_def(this, result, _) }
 
     /** Gets the node corresponding to the field `return_type`. */
-    final AstNode getReturnType(int i) { swift_function_type_return_type(this, i, result) }
+    final Type getReturnType() { swift_function_type_def(this, _, result) }
 
     /** Gets the child of this node. */
     final AstNode getChild() { swift_function_type_child(this, result) }
@@ -1078,7 +1040,6 @@ module Swift {
     final override AstNode getAFieldOrChild() {
       swift_function_type_def(this, result, _) or
       swift_function_type_def(this, _, result) or
-      swift_function_type_return_type(this, _, result) or
       swift_function_type_child(this, result)
     }
   }
@@ -1095,30 +1056,22 @@ module Swift {
     final override AstNode getAFieldOrChild() { swift_getter_specifier_child(this, _, result) }
   }
 
+  class GlobalDeclaration extends @swift_global_declaration, AstNode { }
+
   /** A class representing `guard_statement` nodes. */
   class GuardStatement extends @swift_guard_statement, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "GuardStatement" }
 
-    /** Gets the node corresponding to the field `bound_identifier`. */
-    final SimpleIdentifier getBoundIdentifier(int i) {
-      swift_guard_statement_bound_identifier(this, i, result)
-    }
-
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_guard_statement_condition(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_guard_statement_name(this, i, result) }
+    final IfCondition getCondition(int i) { swift_guard_statement_condition(this, i, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_guard_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_guard_statement_bound_identifier(this, _, result) or
       swift_guard_statement_condition(this, _, result) or
-      swift_guard_statement_name(this, _, result) or
       swift_guard_statement_child(this, _, result)
     }
   }
@@ -1141,32 +1094,65 @@ module Swift {
     final override AstNode getAFieldOrChild() { swift_identifier_child(this, _, result) }
   }
 
+  /** A class representing `if_condition` nodes. */
+  class IfCondition extends @swift_if_condition, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "IfCondition" }
+
+    /** Gets the child of this node. */
+    final AstNode getChild() { swift_if_condition_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { swift_if_condition_def(this, result) }
+  }
+
+  /** A class representing `if_let_binding` nodes. */
+  class IfLetBinding extends @swift_if_let_binding, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "IfLetBinding" }
+
+    /** Gets the node corresponding to the field `bound_identifier`. */
+    final SimpleIdentifier getBoundIdentifier() {
+      swift_if_let_binding_bound_identifier(this, result)
+    }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { swift_if_let_binding_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      swift_if_let_binding_bound_identifier(this, result) or
+      swift_if_let_binding_child(this, _, result)
+    }
+  }
+
   /** A class representing `if_statement` nodes. */
   class IfStatement extends @swift_if_statement, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "IfStatement" }
 
-    /** Gets the node corresponding to the field `bound_identifier`. */
-    final SimpleIdentifier getBoundIdentifier(int i) {
-      swift_if_statement_bound_identifier(this, i, result)
-    }
-
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_if_statement_condition(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_if_statement_name(this, i, result) }
+    final IfCondition getCondition(int i) { swift_if_statement_condition(this, i, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_if_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_if_statement_bound_identifier(this, _, result) or
-      swift_if_statement_condition(this, _, result) or
-      swift_if_statement_name(this, _, result) or
-      swift_if_statement_child(this, _, result)
+      swift_if_statement_condition(this, _, result) or swift_if_statement_child(this, _, result)
     }
+  }
+
+  /** A class representing `implicitly_unwrapped_type` nodes. */
+  class ImplicitlyUnwrappedType extends @swift_implicitly_unwrapped_type, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ImplicitlyUnwrappedType" }
+
+    /** Gets the child of this node. */
+    final Type getChild() { swift_implicitly_unwrapped_type_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { swift_implicitly_unwrapped_type_def(this, result) }
   }
 
   /** A class representing `import_declaration` nodes. */
@@ -1187,19 +1173,19 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "InfixExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_infix_expression_lhs(this, i, result) }
+    final Expression getLhs() { swift_infix_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
-    final CustomOperator getOp() { swift_infix_expression_def(this, result) }
+    final CustomOperator getOp() { swift_infix_expression_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_infix_expression_rhs(this, i, result) }
+    final Expression getRhs() { swift_infix_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_infix_expression_lhs(this, _, result) or
-      swift_infix_expression_def(this, result) or
-      swift_infix_expression_rhs(this, _, result)
+      swift_infix_expression_def(this, result, _, _) or
+      swift_infix_expression_def(this, _, result, _) or
+      swift_infix_expression_def(this, _, _, result)
     }
   }
 
@@ -1209,26 +1195,18 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "InheritanceConstraint" }
 
     /** Gets the node corresponding to the field `constrained_type`. */
-    final AstNode getConstrainedType(int i) {
-      swift_inheritance_constraint_constrained_type(this, i, result)
-    }
+    final AstNode getConstrainedType() { swift_inheritance_constraint_def(this, result, _) }
 
     /** Gets the node corresponding to the field `inherits_from`. */
-    final AstNode getInheritsFrom(int i) {
-      swift_inheritance_constraint_inherits_from(this, i, result)
-    }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_inheritance_constraint_def(this, result) }
+    final AstNode getInheritsFrom() { swift_inheritance_constraint_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
     final Attribute getChild(int i) { swift_inheritance_constraint_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_inheritance_constraint_constrained_type(this, _, result) or
-      swift_inheritance_constraint_inherits_from(this, _, result) or
-      swift_inheritance_constraint_def(this, result) or
+      swift_inheritance_constraint_def(this, result, _) or
+      swift_inheritance_constraint_def(this, _, result) or
       swift_inheritance_constraint_child(this, _, result)
     }
   }
@@ -1260,7 +1238,9 @@ module Swift {
     final FunctionBody getBody() { swift_init_declaration_body(this, result) }
 
     /** Gets the node corresponding to the field `default_value`. */
-    final AstNode getDefaultValue(int i) { swift_init_declaration_default_value(this, i, result) }
+    final Expression getDefaultValue(int i) {
+      swift_init_declaration_default_value(this, i, result)
+    }
 
     /** Gets the node corresponding to the field `name`. */
     final string getName() {
@@ -1298,7 +1278,7 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_interpolated_expression_value(this, i, result) }
+    final Expression getValue() { swift_interpolated_expression_value(this, result) }
 
     /** Gets the child of this node. */
     final TypeModifiers getChild() { swift_interpolated_expression_child(this, result) }
@@ -1307,7 +1287,7 @@ module Swift {
     final override AstNode getAFieldOrChild() {
       swift_interpolated_expression_name(this, result) or
       swift_interpolated_expression_reference_specifier(this, _, result) or
-      swift_interpolated_expression_value(this, _, result) or
+      swift_interpolated_expression_value(this, result) or
       swift_interpolated_expression_child(this, result)
     }
   }
@@ -1330,12 +1310,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "KeyPathStringExpression" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_key_path_string_expression_child(this, result) }
+    final Expression getChild() { swift_key_path_string_expression_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_key_path_string_expression_child(this, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_key_path_string_expression_def(this, result) }
   }
 
   /** A class representing `lambda_function_type` nodes. */
@@ -1343,19 +1321,15 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "LambdaFunctionType" }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_lambda_function_type_name(this, result) }
-
     /** Gets the node corresponding to the field `return_type`. */
-    final AstNode getReturnType(int i) { swift_lambda_function_type_return_type(this, i, result) }
+    final AstNode getReturnType() { swift_lambda_function_type_return_type(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_lambda_function_type_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_lambda_function_type_name(this, result) or
-      swift_lambda_function_type_return_type(this, _, result) or
+      swift_lambda_function_type_return_type(this, result) or
       swift_lambda_function_type_child(this, _, result)
     }
   }
@@ -1407,10 +1381,10 @@ module Swift {
     final SimpleIdentifier getExternalName() { swift_lambda_parameter_external_name(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_lambda_parameter_name(this, i, result) }
+    final SimpleIdentifier getName() { swift_lambda_parameter_name(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
-    final AstNode getType(int i) { swift_lambda_parameter_type(this, i, result) }
+    final AstNode getType() { swift_lambda_parameter_type(this, result) }
 
     /** Gets the child of this node. */
     final AstNode getChild() { swift_lambda_parameter_child(this, result) }
@@ -1418,8 +1392,8 @@ module Swift {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       swift_lambda_parameter_external_name(this, result) or
-      swift_lambda_parameter_name(this, _, result) or
-      swift_lambda_parameter_type(this, _, result) or
+      swift_lambda_parameter_name(this, result) or
+      swift_lambda_parameter_type(this, result) or
       swift_lambda_parameter_child(this, result)
     }
   }
@@ -1450,13 +1424,17 @@ module Swift {
     }
   }
 
+  class LocalDeclaration extends @swift_local_declaration, AstNode { }
+
   /** A class representing `macro_declaration` nodes. */
   class MacroDeclaration extends @swift_macro_declaration, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "MacroDeclaration" }
 
     /** Gets the node corresponding to the field `default_value`. */
-    final AstNode getDefaultValue(int i) { swift_macro_declaration_default_value(this, i, result) }
+    final Expression getDefaultValue(int i) {
+      swift_macro_declaration_default_value(this, i, result)
+    }
 
     /** Gets the node corresponding to the field `definition`. */
     final MacroDefinition getDefinition() { swift_macro_declaration_definition(this, result) }
@@ -1478,10 +1456,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "MacroDefinition" }
 
     /** Gets the node corresponding to the field `body`. */
-    final AstNode getBody(int i) { swift_macro_definition_body(this, i, result) }
+    final AstNode getBody() { swift_macro_definition_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_macro_definition_body(this, _, result) }
+    final override AstNode getAFieldOrChild() { swift_macro_definition_def(this, result) }
   }
 
   /** A class representing `macro_invocation` nodes. */
@@ -1508,7 +1486,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "Metatype" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_metatype_def(this, result) }
+    final UnannotatedType getChild() { swift_metatype_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_metatype_def(this, result) }
@@ -1576,11 +1554,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "MultiplicativeExpression" }
 
     /** Gets the node corresponding to the field `lhs`. */
-    final AstNode getLhs(int i) { swift_multiplicative_expression_lhs(this, i, result) }
+    final Expression getLhs() { swift_multiplicative_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_multiplicative_expression_def(this, value) |
+      exists(int value | swift_multiplicative_expression_def(this, _, value, _) |
         result = "%" and value = 0
         or
         result = "*" and value = 1
@@ -1590,12 +1568,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `rhs`. */
-    final AstNode getRhs(int i) { swift_multiplicative_expression_rhs(this, i, result) }
+    final Expression getRhs() { swift_multiplicative_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_multiplicative_expression_lhs(this, _, result) or
-      swift_multiplicative_expression_rhs(this, _, result)
+      swift_multiplicative_expression_def(this, result, _, _) or
+      swift_multiplicative_expression_def(this, _, _, result)
     }
   }
 
@@ -1610,9 +1588,6 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "NavigationExpression" }
 
-    /** Gets the node corresponding to the field `element`. */
-    final AstNode getElement() { swift_navigation_expression_element(this, result) }
-
     /** Gets the node corresponding to the field `suffix`. */
     final NavigationSuffix getSuffix() { swift_navigation_expression_def(this, result) }
 
@@ -1621,7 +1596,6 @@ module Swift {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_navigation_expression_element(this, result) or
       swift_navigation_expression_def(this, result) or
       swift_navigation_expression_target(this, _, result)
     }
@@ -1639,21 +1613,35 @@ module Swift {
     final override AstNode getAFieldOrChild() { swift_navigation_suffix_def(this, result) }
   }
 
+  /** A class representing `nested_type_identifier` nodes. */
+  class NestedTypeIdentifier extends @swift_nested_type_identifier, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "NestedTypeIdentifier" }
+
+    /** Gets the `i`th child of this node. */
+    final AstNode getChild(int i) { swift_nested_type_identifier_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      swift_nested_type_identifier_child(this, _, result)
+    }
+  }
+
   /** A class representing `nil_coalescing_expression` nodes. */
   class NilCoalescingExpression extends @swift_nil_coalescing_expression, AstNode {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "NilCoalescingExpression" }
 
     /** Gets the node corresponding to the field `if_nil`. */
-    final AstNode getIfNil(int i) { swift_nil_coalescing_expression_if_nil(this, i, result) }
+    final Expression getIfNil() { swift_nil_coalescing_expression_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_nil_coalescing_expression_value(this, i, result) }
+    final Expression getValue() { swift_nil_coalescing_expression_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_nil_coalescing_expression_if_nil(this, _, result) or
-      swift_nil_coalescing_expression_value(this, _, result)
+      swift_nil_coalescing_expression_def(this, result, _) or
+      swift_nil_coalescing_expression_def(this, _, result)
     }
   }
 
@@ -1669,7 +1657,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "OpaqueType" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_opaque_type_def(this, result) }
+    final UnannotatedType getChild() { swift_opaque_type_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_opaque_type_def(this, result) }
@@ -1681,12 +1669,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "OpenEndRangeExpression" }
 
     /** Gets the node corresponding to the field `start`. */
-    final AstNode getStart(int i) { swift_open_end_range_expression_start(this, i, result) }
+    final Expression getStart() { swift_open_end_range_expression_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_open_end_range_expression_start(this, _, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_open_end_range_expression_def(this, result) }
   }
 
   /** A class representing `open_start_range_expression` nodes. */
@@ -1695,11 +1681,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "OpenStartRangeExpression" }
 
     /** Gets the node corresponding to the field `end`. */
-    final AstNode getEnd(int i) { swift_open_start_range_expression_end(this, i, result) }
+    final Expression getEnd() { swift_open_start_range_expression_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_open_start_range_expression_end(this, _, result)
+      swift_open_start_range_expression_def(this, result)
     }
   }
 
@@ -1713,6 +1699,18 @@ module Swift {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_operator_declaration_child(this, _, result) }
+  }
+
+  /** A class representing `optional_chain_marker` nodes. */
+  class OptionalChainMarker extends @swift_optional_chain_marker, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "OptionalChainMarker" }
+
+    /** Gets the child of this node. */
+    final Expression getChild() { swift_optional_chain_marker_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { swift_optional_chain_marker_def(this, result) }
   }
 
   /** A class representing `optional_type` nodes. */
@@ -1742,10 +1740,10 @@ module Swift {
     final SimpleIdentifier getExternalName() { swift_parameter_external_name(this, result) }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_parameter_name(this, i, result) }
+    final SimpleIdentifier getName() { swift_parameter_def(this, result, _) }
 
     /** Gets the node corresponding to the field `type`. */
-    final AstNode getType(int i) { swift_parameter_type(this, i, result) }
+    final AstNode getType() { swift_parameter_def(this, _, result) }
 
     /** Gets the child of this node. */
     final ParameterModifiers getChild() { swift_parameter_child(this, result) }
@@ -1753,8 +1751,8 @@ module Swift {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       swift_parameter_external_name(this, result) or
-      swift_parameter_name(this, _, result) or
-      swift_parameter_type(this, _, result) or
+      swift_parameter_def(this, result, _) or
+      swift_parameter_def(this, _, result) or
       swift_parameter_child(this, result)
     }
   }
@@ -1785,17 +1783,12 @@ module Swift {
     /** Gets the node corresponding to the field `bound_identifier`. */
     final SimpleIdentifier getBoundIdentifier() { swift_pattern_bound_identifier(this, result) }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_pattern_name(this, result) }
-
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_pattern_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_pattern_bound_identifier(this, result) or
-      swift_pattern_name(this, result) or
-      swift_pattern_child(this, _, result)
+      swift_pattern_bound_identifier(this, result) or swift_pattern_child(this, _, result)
     }
   }
 
@@ -1805,7 +1798,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "PlaygroundLiteral" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_playground_literal_child(this, i, result) }
+    final Expression getChild(int i) { swift_playground_literal_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_playground_literal_child(this, _, result) }
@@ -1817,14 +1810,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "PostfixExpression" }
 
     /** Gets the node corresponding to the field `operation`. */
-    final AstNode getOperation() { swift_postfix_expression_def(this, result) }
+    final AstNode getOperation() { swift_postfix_expression_def(this, result, _) }
 
     /** Gets the node corresponding to the field `target`. */
-    final AstNode getTarget(int i) { swift_postfix_expression_target(this, i, result) }
+    final Expression getTarget() { swift_postfix_expression_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_postfix_expression_def(this, result) or swift_postfix_expression_target(this, _, result)
+      swift_postfix_expression_def(this, result, _) or swift_postfix_expression_def(this, _, result)
     }
   }
 
@@ -1878,14 +1871,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "PrefixExpression" }
 
     /** Gets the node corresponding to the field `operation`. */
-    final AstNode getOperation() { swift_prefix_expression_def(this, result) }
+    final AstNode getOperation() { swift_prefix_expression_def(this, result, _) }
 
     /** Gets the node corresponding to the field `target`. */
-    final AstNode getTarget(int i) { swift_prefix_expression_target(this, i, result) }
+    final Expression getTarget() { swift_prefix_expression_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_prefix_expression_def(this, result) or swift_prefix_expression_target(this, _, result)
+      swift_prefix_expression_def(this, result, _) or swift_prefix_expression_def(this, _, result)
     }
   }
 
@@ -1909,7 +1902,7 @@ module Swift {
     final Pattern getName(int i) { swift_property_declaration_name(this, i, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_property_declaration_value(this, i, result) }
+    final Expression getValue(int i) { swift_property_declaration_value(this, i, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_property_declaration_child(this, i, result) }
@@ -1934,16 +1927,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ProtocolBody" }
 
-    /** Gets the node corresponding to the field `body`. */
-    final ProtocolFunctionDeclaration getBody(int i) { swift_protocol_body_body(this, i, result) }
-
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_protocol_body_child(this, i, result) }
+    final ProtocolMemberDeclaration getChild(int i) { swift_protocol_body_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_protocol_body_body(this, _, result) or swift_protocol_body_child(this, _, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_protocol_body_child(this, _, result) }
   }
 
   /** A class representing `protocol_composition_type` nodes. */
@@ -1952,7 +1940,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ProtocolCompositionType" }
 
     /** Gets the `i`th child of this node. */
-    final AstNode getChild(int i) { swift_protocol_composition_type_child(this, i, result) }
+    final UnannotatedType getChild(int i) { swift_protocol_composition_type_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
@@ -1994,30 +1982,34 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "ProtocolFunctionDeclaration" }
 
+    /** Gets the node corresponding to the field `body`. */
+    final FunctionBody getBody() { swift_protocol_function_declaration_body(this, result) }
+
     /** Gets the node corresponding to the field `default_value`. */
-    final AstNode getDefaultValue(int i) {
+    final Expression getDefaultValue(int i) {
       swift_protocol_function_declaration_default_value(this, i, result)
     }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_protocol_function_declaration_name(this, i, result) }
+    final AstNode getName() { swift_protocol_function_declaration_def(this, result) }
 
     /** Gets the node corresponding to the field `return_type`. */
-    final AstNode getReturnType(int i) {
-      swift_protocol_function_declaration_return_type(this, i, result)
-    }
+    final AstNode getReturnType() { swift_protocol_function_declaration_return_type(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_protocol_function_declaration_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
+      swift_protocol_function_declaration_body(this, result) or
       swift_protocol_function_declaration_default_value(this, _, result) or
-      swift_protocol_function_declaration_name(this, _, result) or
-      swift_protocol_function_declaration_return_type(this, _, result) or
+      swift_protocol_function_declaration_def(this, result) or
+      swift_protocol_function_declaration_return_type(this, result) or
       swift_protocol_function_declaration_child(this, _, result)
     }
   }
+
+  class ProtocolMemberDeclaration extends @swift_protocol_member_declaration, AstNode { }
 
   /** A class representing `protocol_property_declaration` nodes. */
   class ProtocolPropertyDeclaration extends @swift_protocol_property_declaration, AstNode {
@@ -2057,11 +2049,11 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "RangeExpression" }
 
     /** Gets the node corresponding to the field `end`. */
-    final AstNode getEnd(int i) { swift_range_expression_end(this, i, result) }
+    final Expression getEnd() { swift_range_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `op`. */
     final string getOp() {
-      exists(int value | swift_range_expression_def(this, value) |
+      exists(int value | swift_range_expression_def(this, _, value, _) |
         result = "..." and value = 0
         or
         result = "..<" and value = 1
@@ -2069,11 +2061,12 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `start`. */
-    final AstNode getStart(int i) { swift_range_expression_start(this, i, result) }
+    final Expression getStart() { swift_range_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_range_expression_end(this, _, result) or swift_range_expression_start(this, _, result)
+      swift_range_expression_def(this, result, _, _) or
+      swift_range_expression_def(this, _, _, result)
     }
   }
 
@@ -2153,6 +2146,18 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "RealLiteral" }
   }
 
+  /** A class representing `referenceable_operator` nodes. */
+  class ReferenceableOperator extends @swift_referenceable_operator, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ReferenceableOperator" }
+
+    /** Gets the child of this node. */
+    final AstNode getChild() { swift_referenceable_operator_child(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { swift_referenceable_operator_child(this, result) }
+  }
+
   /** A class representing `regex_literal` tokens. */
   class RegexLiteral extends @swift_token_regex_literal, Token {
     /** Gets the name of the primary QL class for this element. */
@@ -2164,25 +2169,17 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "RepeatWhileStatement" }
 
-    /** Gets the node corresponding to the field `bound_identifier`. */
-    final SimpleIdentifier getBoundIdentifier(int i) {
-      swift_repeat_while_statement_bound_identifier(this, i, result)
-    }
-
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_repeat_while_statement_condition(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_repeat_while_statement_name(this, i, result) }
+    final IfCondition getCondition(int i) {
+      swift_repeat_while_statement_condition(this, i, result)
+    }
 
     /** Gets the child of this node. */
     final Statements getChild() { swift_repeat_while_statement_child(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_repeat_while_statement_bound_identifier(this, _, result) or
       swift_repeat_while_statement_condition(this, _, result) or
-      swift_repeat_while_statement_name(this, _, result) or
       swift_repeat_while_statement_child(this, result)
     }
   }
@@ -2193,10 +2190,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "SelectorExpression" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_selector_expression_child(this, result) }
+    final Expression getChild() { swift_selector_expression_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_selector_expression_child(this, result) }
+    final override AstNode getAFieldOrChild() { swift_selector_expression_def(this, result) }
   }
 
   /** A class representing `self_expression` tokens. */
@@ -2277,15 +2274,12 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "SubscriptDeclaration" }
 
     /** Gets the node corresponding to the field `default_value`. */
-    final AstNode getDefaultValue(int i) {
+    final Expression getDefaultValue(int i) {
       swift_subscript_declaration_default_value(this, i, result)
     }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_subscript_declaration_name(this, result) }
-
     /** Gets the node corresponding to the field `return_type`. */
-    final AstNode getReturnType(int i) { swift_subscript_declaration_return_type(this, i, result) }
+    final AstNode getReturnType() { swift_subscript_declaration_return_type(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_subscript_declaration_child(this, i, result) }
@@ -2293,8 +2287,7 @@ module Swift {
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
       swift_subscript_declaration_default_value(this, _, result) or
-      swift_subscript_declaration_name(this, result) or
-      swift_subscript_declaration_return_type(this, _, result) or
+      swift_subscript_declaration_return_type(this, result) or
       swift_subscript_declaration_child(this, _, result)
     }
   }
@@ -2347,14 +2340,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "SwitchStatement" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr(int i) { swift_switch_statement_expr(this, i, result) }
+    final Expression getExpr() { swift_switch_statement_def(this, result) }
 
     /** Gets the `i`th child of this node. */
     final SwitchEntry getChild(int i) { swift_switch_statement_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_switch_statement_expr(this, _, result) or swift_switch_statement_child(this, _, result)
+      swift_switch_statement_def(this, result) or swift_switch_statement_child(this, _, result)
     }
   }
 
@@ -2364,19 +2357,19 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TernaryExpression" }
 
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_ternary_expression_condition(this, i, result) }
+    final Expression getCondition() { swift_ternary_expression_def(this, result, _, _) }
 
     /** Gets the node corresponding to the field `if_false`. */
-    final AstNode getIfFalse(int i) { swift_ternary_expression_if_false(this, i, result) }
+    final Expression getIfFalse() { swift_ternary_expression_def(this, _, result, _) }
 
     /** Gets the node corresponding to the field `if_true`. */
-    final AstNode getIfTrue(int i) { swift_ternary_expression_if_true(this, i, result) }
+    final Expression getIfTrue() { swift_ternary_expression_def(this, _, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_ternary_expression_condition(this, _, result) or
-      swift_ternary_expression_if_false(this, _, result) or
-      swift_ternary_expression_if_true(this, _, result)
+      swift_ternary_expression_def(this, result, _, _) or
+      swift_ternary_expression_def(this, _, result, _) or
+      swift_ternary_expression_def(this, _, _, result)
     }
   }
 
@@ -2398,7 +2391,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ThrowsClause" }
 
     /** Gets the node corresponding to the field `type`. */
-    final AstNode getType() { swift_throws_clause_def(this, result) }
+    final UnannotatedType getType() { swift_throws_clause_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_throws_clause_def(this, result) }
@@ -2410,14 +2403,14 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TryExpression" }
 
     /** Gets the node corresponding to the field `expr`. */
-    final AstNode getExpr(int i) { swift_try_expression_expr(this, i, result) }
+    final Expression getExpr() { swift_try_expression_def(this, result, _) }
 
     /** Gets the child of this node. */
-    final TryOperator getChild() { swift_try_expression_def(this, result) }
+    final TryOperator getChild() { swift_try_expression_def(this, _, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_try_expression_expr(this, _, result) or swift_try_expression_def(this, result)
+      swift_try_expression_def(this, result, _) or swift_try_expression_def(this, _, result)
     }
   }
 
@@ -2436,7 +2429,7 @@ module Swift {
     final SimpleIdentifier getName(int i) { swift_tuple_expression_name(this, i, result) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_tuple_expression_value(this, i, result) }
+    final Expression getValue(int i) { swift_tuple_expression_value(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
@@ -2466,24 +2459,37 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TupleTypeItem" }
 
-    /** Gets the node corresponding to the field `element`. */
-    final AstNode getElement() { swift_tuple_type_item_element(this, result) }
-
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_tuple_type_item_name(this, i, result) }
+    final SimpleIdentifier getName() { swift_tuple_type_item_name(this, result) }
 
     /** Gets the node corresponding to the field `type`. */
-    final AstNode getType(int i) { swift_tuple_type_item_type(this, i, result) }
+    final Type getType() { swift_tuple_type_item_type(this, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_tuple_type_item_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_tuple_type_item_element(this, result) or
-      swift_tuple_type_item_name(this, _, result) or
-      swift_tuple_type_item_type(this, _, result) or
+      swift_tuple_type_item_name(this, result) or
+      swift_tuple_type_item_type(this, result) or
       swift_tuple_type_item_child(this, _, result)
+    }
+  }
+
+  /** A class representing `type` nodes. */
+  class Type extends @swift_type__, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Type" }
+
+    /** Gets the node corresponding to the field `modifiers`. */
+    final TypeModifiers getModifiers() { swift_type_modifiers(this, result) }
+
+    /** Gets the node corresponding to the field `name`. */
+    final UnannotatedType getName() { swift_type_def(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      swift_type_modifiers(this, result) or swift_type_def(this, result)
     }
   }
 
@@ -2492,16 +2498,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeAnnotation" }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_type_annotation_def(this, result) }
-
     /** Gets the node corresponding to the field `type`. */
-    final AstNode getType(int i) { swift_type_annotation_type(this, i, result) }
+    final AstNode getType() { swift_type_annotation_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_type_annotation_def(this, result) or swift_type_annotation_type(this, _, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_type_annotation_def(this, result) }
   }
 
   /** A class representing `type_arguments` nodes. */
@@ -2509,16 +2510,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeArguments" }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_type_arguments_name(this, i, result) }
-
     /** Gets the `i`th child of this node. */
-    final TypeModifiers getChild(int i) { swift_type_arguments_child(this, i, result) }
+    final Type getChild(int i) { swift_type_arguments_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_type_arguments_name(this, _, result) or swift_type_arguments_child(this, _, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_type_arguments_child(this, _, result) }
   }
 
   /** A class representing `type_constraint` nodes. */
@@ -2551,6 +2547,8 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypeIdentifier" }
   }
 
+  class TypeLevelDeclaration extends @swift_type_level_declaration, AstNode { }
+
   /** A class representing `type_modifiers` nodes. */
   class TypeModifiers extends @swift_type_modifiers, AstNode {
     /** Gets the name of the primary QL class for this element. */
@@ -2569,7 +2567,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypePackExpansion" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_type_pack_expansion_def(this, result) }
+    final UnannotatedType getChild() { swift_type_pack_expansion_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_type_pack_expansion_def(this, result) }
@@ -2580,16 +2578,11 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "TypeParameter" }
 
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName() { swift_type_parameter_name(this, result) }
-
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_type_parameter_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() {
-      swift_type_parameter_name(this, result) or swift_type_parameter_child(this, _, result)
-    }
+    final override AstNode getAFieldOrChild() { swift_type_parameter_child(this, _, result) }
   }
 
   /** A class representing `type_parameter_modifiers` nodes. */
@@ -2612,7 +2605,7 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypeParameterPack" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_type_parameter_pack_def(this, result) }
+    final UnannotatedType getChild() { swift_type_parameter_pack_def(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { swift_type_parameter_pack_def(this, result) }
@@ -2636,21 +2629,23 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "TypealiasDeclaration" }
 
     /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_typealias_declaration_name(this, i, result) }
+    final TypeIdentifier getName() { swift_typealias_declaration_def(this, result, _) }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_typealias_declaration_value(this, i, result) }
+    final Type getValue() { swift_typealias_declaration_def(this, _, result) }
 
     /** Gets the `i`th child of this node. */
     final AstNode getChild(int i) { swift_typealias_declaration_child(this, i, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_typealias_declaration_name(this, _, result) or
-      swift_typealias_declaration_value(this, _, result) or
+      swift_typealias_declaration_def(this, result, _) or
+      swift_typealias_declaration_def(this, _, result) or
       swift_typealias_declaration_child(this, _, result)
     }
   }
+
+  class UnannotatedType extends @swift_unannotated_type, AstNode { }
 
   /** A class representing `user_type` nodes. */
   class UserType extends @swift_user_type, AstNode {
@@ -2678,7 +2673,7 @@ module Swift {
     }
 
     /** Gets the node corresponding to the field `value`. */
-    final AstNode getValue(int i) { swift_value_argument_value(this, i, result) }
+    final Expression getValue() { swift_value_argument_value(this, result) }
 
     /** Gets the child of this node. */
     final TypeModifiers getChild() { swift_value_argument_child(this, result) }
@@ -2687,7 +2682,7 @@ module Swift {
     final override AstNode getAFieldOrChild() {
       swift_value_argument_name(this, result) or
       swift_value_argument_reference_specifier(this, _, result) or
-      swift_value_argument_value(this, _, result) or
+      swift_value_argument_value(this, result) or
       swift_value_argument_child(this, result)
     }
   }
@@ -2740,10 +2735,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ValuePackExpansion" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_value_pack_expansion_child(this, result) }
+    final Expression getChild() { swift_value_pack_expansion_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_value_pack_expansion_child(this, result) }
+    final override AstNode getAFieldOrChild() { swift_value_pack_expansion_def(this, result) }
   }
 
   /** A class representing `value_parameter_pack` nodes. */
@@ -2752,10 +2747,10 @@ module Swift {
     final override string getAPrimaryQlClass() { result = "ValueParameterPack" }
 
     /** Gets the child of this node. */
-    final AstNode getChild() { swift_value_parameter_pack_child(this, result) }
+    final Expression getChild() { swift_value_parameter_pack_def(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { swift_value_parameter_pack_child(this, result) }
+    final override AstNode getAFieldOrChild() { swift_value_parameter_pack_def(this, result) }
   }
 
   /** A class representing `visibility_modifier` tokens. */
@@ -2787,26 +2782,15 @@ module Swift {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "WhileStatement" }
 
-    /** Gets the node corresponding to the field `bound_identifier`. */
-    final SimpleIdentifier getBoundIdentifier(int i) {
-      swift_while_statement_bound_identifier(this, i, result)
-    }
-
     /** Gets the node corresponding to the field `condition`. */
-    final AstNode getCondition(int i) { swift_while_statement_condition(this, i, result) }
-
-    /** Gets the node corresponding to the field `name`. */
-    final AstNode getName(int i) { swift_while_statement_name(this, i, result) }
+    final IfCondition getCondition(int i) { swift_while_statement_condition(this, i, result) }
 
     /** Gets the child of this node. */
     final Statements getChild() { swift_while_statement_child(this, result) }
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() {
-      swift_while_statement_bound_identifier(this, _, result) or
-      swift_while_statement_condition(this, _, result) or
-      swift_while_statement_name(this, _, result) or
-      swift_while_statement_child(this, result)
+      swift_while_statement_condition(this, _, result) or swift_while_statement_child(this, result)
     }
   }
 
