@@ -146,7 +146,7 @@ module.exports = grammar({
     [$._bodyless_function_declaration, $.property_modifier],
     [$.init_declaration, $.property_modifier],
     // Patterns, man
-    [$._navigable_type_expression, $._case_pattern],
+    [$._navigable_type_expression, $.case_pattern],
     [$._no_expr_pattern_already_bound, $._binding_pattern_no_expr],
 
     // On encountering a closure starting with `{ @Foo ...`, we don't yet know if that attribute applies to the closure
@@ -1865,38 +1865,38 @@ module.exports = grammar({
     _universally_allowed_pattern: ($) =>
       choice(
         $.wildcard_pattern,
-        $._tuple_pattern,
-        $._type_casting_pattern,
-        $._case_pattern
+        $.tuple_pattern,
+        $.type_casting_pattern,
+        $.case_pattern
       ),
     _bound_identifier: ($) => field("bound_identifier", $.simple_identifier),
 
     _binding_pattern_no_expr: ($) =>
       seq(
-        choice(
+        field("kind", choice(
           $._universally_allowed_pattern,
-          $._binding_pattern,
+          $.binding_pattern,
           $._bound_identifier
-        ),
+        )),
         optional($._quest)
       ),
     _no_expr_pattern_already_bound: ($) =>
       seq(
-        choice($._universally_allowed_pattern, $._bound_identifier),
+        field("kind", choice($._universally_allowed_pattern, $._bound_identifier)),
         optional($._quest)
       ),
     _binding_pattern_with_expr: ($) =>
       seq(
-        choice(
+        field("kind", choice(
           $._universally_allowed_pattern,
-          $._binding_pattern,
+          $.binding_pattern,
           $.expression
-        ),
+        )),
         optional($._quest)
       ),
     _non_binding_pattern_with_expr: ($) =>
       seq(
-        choice($._universally_allowed_pattern, $.expression),
+        field("kind", choice($._universally_allowed_pattern, $.expression)),
         optional($._quest)
       ),
     _direct_or_indirect_binding: ($) =>
@@ -1916,32 +1916,33 @@ module.exports = grammar({
         $._no_expr_pattern_already_bound
       ),
     wildcard_pattern: ($) => "_",
-    _tuple_pattern_item: ($) =>
+    tuple_pattern_item: ($) =>
       choice(
         seq(
-          $.simple_identifier,
-          seq(":", alias($._binding_pattern_with_expr, $.pattern))
+          field("name", $.simple_identifier),
+          ":",
+          field("pattern", alias($._binding_pattern_with_expr, $.pattern))
         ),
-        alias($._binding_pattern_with_expr, $.pattern)
+        field("pattern", alias($._binding_pattern_with_expr, $.pattern))
       ),
-    _tuple_pattern: ($) => seq("(", sep1Opt($._tuple_pattern_item, ","), ")"),
-    _case_pattern: ($) =>
+    tuple_pattern: ($) => seq("(", sep1Opt(field("item", $.tuple_pattern_item), ","), ")"),
+    case_pattern: ($) =>
       seq(
         optional("case"),
-        optional($.user_type), // XXX this should just be _type but that creates ambiguity
+        optional(field("type", $.user_type)), // XXX this should just be _type but that creates ambiguity
         $._dot,
-        $.simple_identifier,
-        optional($._tuple_pattern)
+        field("name", $.simple_identifier),
+        optional(field("arguments", $.tuple_pattern))
       ),
-    _type_casting_pattern: ($) =>
+    type_casting_pattern: ($) =>
       choice(
-        seq("is", $.type),
-        seq(alias($._binding_pattern_no_expr, $.pattern), $._as, $.type)
+        seq("is", field("type", $.type)),
+        seq(field("pattern", alias($._binding_pattern_no_expr, $.pattern)), $._as, field("type", $.type))
       ),
-    _binding_pattern: ($) =>
+    binding_pattern: ($) =>
       seq(
-        seq(optional("case"), $.value_binding_pattern),
-        $._no_expr_pattern_already_bound
+        seq(optional("case"), field("binding", $.value_binding_pattern)),
+        field("pattern", alias($._no_expr_pattern_already_bound, $.pattern))
       ),
 
     // ==========

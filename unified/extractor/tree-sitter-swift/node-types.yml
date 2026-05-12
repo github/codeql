@@ -148,6 +148,9 @@ named:
     expr: expression
   bang:
   bin_literal:
+  binding_pattern:
+    binding: value_binding_pattern
+    pattern: pattern
   bitwise_operation:
     lhs: expression
     op: ["&", "<<", ">>", "^", "|"]
@@ -166,6 +169,10 @@ named:
     name: [self_expression, simple_identifier]
     ownership?: ownership_modifier
     value?: expression
+  case_pattern:
+    arguments?: tuple_pattern
+    name: simple_identifier
+    type?: user_type
   catch_block:
     body?: statements
     error?: pattern
@@ -473,9 +480,9 @@ named:
   parameter_modifiers:
     modifier+: parameter_modifier
   pattern:
-    $children*: [expression, pattern, type, user_type, value_binding_pattern, wildcard_pattern]
     binding?: value_binding_pattern
     bound_identifier?: simple_identifier
+    kind: [binding_pattern, case_pattern, expression, tuple_pattern, type_casting_pattern, wildcard_pattern]
   playground_literal:
     name+: simple_identifier
     value+: expression
@@ -615,6 +622,11 @@ named:
   tuple_expression:
     name*: simple_identifier
     value+: expression
+  tuple_pattern:
+    item+: tuple_pattern_item
+  tuple_pattern_item:
+    name?: simple_identifier
+    pattern: pattern
   tuple_type:
     element*: tuple_type_item
   tuple_type_item:
@@ -629,6 +641,9 @@ named:
     type: [implicitly_unwrapped_type, type]
   type_arguments:
     argument+: type
+  type_casting_pattern:
+    pattern?: pattern
+    type: type
   type_constraint:
     constraint: [equality_constraint, inheritance_constraint]
   type_constraints:
