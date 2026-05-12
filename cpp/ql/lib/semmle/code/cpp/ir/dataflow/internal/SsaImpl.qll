@@ -1361,11 +1361,48 @@ class PhiNode extends Definition instanceof SsaImpl::PhiNode {
   override int getIndirection() { result = this.getSourceVariable().getIndirection() }
 
   override predicate isCertain() {
+    // If this phi node is part of a phi cycle of phi nodes the least
+    // fixed-point semantics of datalog means we don't get the right answer.
+    // So we perform an SCC reduction to simulate greated fixed-point semantics.
+    getCycle(this).isCertain()
+    or
+    // If there is no cycle we get the right semantics through traditional
+    // recursion.
+    not exists(getCycle(this)) and
     forex(Definition inp | inp = this.getAnInput() | inp.isCertain())
   }
 
   final override Declaration getFunction() {
     result = SsaImpl::PhiNode.super.getBasicBlock().getEnclosingFunction()
+  }
+}
+
+private PhiNode getAnInput(PhiNode phi) { result = phi.getAnInput() }
+
+private predicate definitionCycle(PhiNode phi) { getAnInput+(phi) = phi }
+
+private predicate hasAnInput(PhiNode phi1, PhiNode phi2) {
+  definitionCycle(phi1) and
+  definitionCycle(phi2) and
+  getAnInput(phi1) = phi2
+}
+
+private module PhiCycleEquivalence = QlBuiltins::EquivalenceRelation<PhiNode, hasAnInput/2>;
+
+private PhiCycle getCycle(PhiNode phi) { result.getAPhiNode() = phi }
+
+private class PhiCycle extends PhiCycleEquivalence::EquivalenceClass {
+  PhiNode getAPhiNode() { PhiCycleEquivalence::getEquivalenceClass(result) = this }
+
+  predicate hasPhiNode(PhiNode phi) { this.getAPhiNode() = phi }
+
+  string toString() { result = strictconcat(this.getAPhiNode().toString(), ", ") }
+
+  predicate isCertain() {
+    // A phi cycle is certain if all of the inputs into the phi cycle is certain.
+    forex(PhiNode phi | phi = this.getAPhiNode() |
+      forall(PhiNode inp | phi.getAnInput() = inp and not this.hasPhiNode(inp) | inp.isCertain())
+    )
   }
 }
 

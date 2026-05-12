@@ -55,10 +55,10 @@ void test2(bool b) { // $ certain="SSA def(&b)" certain="SSA def(b)"
 }
 
 void test3(bool b) { // $ certain="SSA def(&b)" certain="SSA def(b)"
-  for(int i = 0; i < 10;) { // $ certain="SSA def(&i)" certain="SSA def(i)" uncertain="SSA phi(i)"
+  for(int i = 0; i < 10;) { // $ certain="SSA def(&i)" certain="SSA def(i)" certain="SSA phi(i)"
     if(b) {
       ++i; // $ certain="SSA def(i)"
     }
-    use(i); // $ uncertain="SSA phi(i)"
+    use(i); // $ certain="SSA phi(i)"
   }
 }
