@@ -210,8 +210,9 @@ fn translation_rules() -> Vec<yeast::Rule> {
             =>
             (call_expr
                 function: {callee}
-                argument: {..args.iter().copied().map(Into::into)
-                    .chain(trailing.map(Into::into)).collect::<Vec<usize>>()})
+                argument: {..args}
+                argument: {..trailing}
+            )
         ),
         // ---- Guard statement ----
         // `guard let x = e else { ... }` — currently only handles the
