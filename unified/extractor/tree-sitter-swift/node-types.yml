@@ -193,6 +193,14 @@ named:
     lhs: expression
     op: ["<", "<=", ">", ">="]
     rhs: expression
+  compilation_condition:
+    inner?: compilation_condition
+    lhs?: compilation_condition
+    name*: simple_identifier
+    operand?: compilation_condition
+    rhs?: compilation_condition
+    value?: boolean_literal
+    version*: integer_literal
   computed_getter:
     attribute*: attribute
     body?: statements
@@ -242,7 +250,7 @@ named:
     modifiers?: modifiers
     parameter?: simple_identifier
   directive:
-    $children*: [boolean_literal, integer_literal, simple_identifier]
+    condition?: compilation_condition
   directly_assignable_expression:
     expr: expression
   disjunction_expression:

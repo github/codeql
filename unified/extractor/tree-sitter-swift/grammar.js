@@ -2027,46 +2027,46 @@ module.exports = grammar({
       prec.right(
         PRECS.comment,
         choice(
-          seq(alias($._directive_if, "#if"), $._compilation_condition),
-          seq(alias($._directive_elseif, "#elseif"), $._compilation_condition),
+          seq(alias($._directive_if, "#if"), field("condition", $.compilation_condition)),
+          seq(alias($._directive_elseif, "#elseif"), field("condition", $.compilation_condition)),
           seq(alias($._directive_else, "#else")),
           seq(alias($._directive_endif, "#endif"))
         )
       ),
-    _compilation_condition: ($) =>
+    compilation_condition: ($) =>
       prec.right(
         choice(
-          seq("os", "(", $.simple_identifier, ")"),
-          seq("arch", "(", $.simple_identifier, ")"),
+          seq("os", "(", field("name", $.simple_identifier), ")"),
+          seq("arch", "(", field("name", $.simple_identifier), ")"),
           seq(
             "swift",
             "(",
             $._comparison_operator,
-            sep1($.integer_literal, "."),
+            sep1(field("version", $.integer_literal), "."),
             ")"
           ),
           seq(
             "compiler",
             "(",
             $._comparison_operator,
-            sep1($.integer_literal, "."),
+            sep1(field("version", $.integer_literal), "."),
             ")"
           ),
-          seq("canImport", "(", sep1($.simple_identifier, "."), ")"),
-          seq("targetEnvironment", "(", $.simple_identifier, ")"),
-          $.boolean_literal,
-          $.simple_identifier,
-          seq("(", $._compilation_condition, ")"),
-          seq("!", $._compilation_condition),
+          seq("canImport", "(", sep1(field("name", $.simple_identifier), "."), ")"),
+          seq("targetEnvironment", "(", field("name", $.simple_identifier), ")"),
+          field("value", $.boolean_literal),
+          field("name", $.simple_identifier),
+          seq("(", field("inner", $.compilation_condition), ")"),
+          seq("!", field("operand", $.compilation_condition)),
           seq(
-            $._compilation_condition,
+            field("lhs", $.compilation_condition),
             $._conjunction_operator,
-            $._compilation_condition
+            field("rhs", $.compilation_condition)
           ),
           seq(
-            $._compilation_condition,
+            field("lhs", $.compilation_condition),
             $._disjunction_operator,
-            $._compilation_condition
+            field("rhs", $.compilation_condition)
           )
         )
       ),
