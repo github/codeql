@@ -787,5 +787,20 @@ module Bash {
    * Holds if the given regex is used to match an alphanumeric string
    * eg: `^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$`, `^[0-9]+$` or `^[a-zA-Z0-9_]+$`
    */
-  string alphaNumericRegex() { result = "^\\^\\[([09azAZ_-]+)\\](\\+|\\{\\d+\\})\\$$" }
+  string alphaNumericRegex() {
+    exists(string r1, string r2, string r3, string r4 |
+      // An alphanumeric character class
+      r1 = "\\[([09azAZ_-]+)\\]" and
+      // The same as above, followed by a quantifier like `+` or  `{20}`
+      r2 = r1 + "(\\+|\\{\\d+\\})" and
+      // The same as above, possibly with brackets around it
+      r3 = "\\(?" + r2 + "\\)?" and
+      // The same as above, possibly with a `?` after it
+      r4 = r3 + "\\??"
+    |
+      // The same as above, repeated one or more times, and with `^` at the
+      // beginning and `$` at the end
+      result = "^\\^(" + r4 + ")+\\$$"
+    )
+  }
 }
