@@ -703,6 +703,7 @@ fn apply_one_shot_rules_inner(
     fresh: &tree_builder::FreshScope,
     rewrite_depth: usize,
 ) -> Result<Vec<Id>, String> {
+
     if rewrite_depth > MAX_REWRITE_DEPTH {
         return Err(format!(
             "Desugaring exceeded maximum rewrite depth ({MAX_REWRITE_DEPTH}). \
@@ -711,6 +712,15 @@ fn apply_one_shot_rules_inner(
     }
 
     let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
+
+    // Don't rewrite unnamed nodes (punctuation, keywords, etc.); leave them
+    // as-is. Rules target named nodes only.
+    if let Some(node) = ast.get_node(id) {
+        if !node.is_named() {
+            return Ok(vec![id]);
+        }
+    }
+
     for rule in index.rules_for_kind(node_kind) {
         if let Some(mut captures) = rule.try_match(ast, id)? {
             // Recursively translate every captured node before invoking the
@@ -718,6 +728,13 @@ fn apply_one_shot_rules_inner(
             // we must translate captured input-schema nodes to their
             // output-schema equivalents first.
             captures.try_map_all_captures(|captured_id| {
+                // Avoid infinite recursion when a capture refers to the root
+                // node of the matched tree (e.g. an `@_` capture on the
+                // pattern root): re-analyzing it would match the same rule
+                // again indefinitely.
+                if captured_id == id {
+                    return Ok(captured_id);
+                }
                 let result =
                     apply_one_shot_rules_inner(index, ast, captured_id, fresh, rewrite_depth + 1)?;
                 if result.len() != 1 {
