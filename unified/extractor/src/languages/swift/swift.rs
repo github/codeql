@@ -1,5 +1,5 @@
 use codeql_extractor::extractor::simple;
-use yeast::{rule, DesugaringConfig};
+use yeast::{rule, DesugaringConfig, PhaseKind};
 
 fn desugaring_rules() -> Vec<yeast::Rule> {
     vec![
@@ -8,11 +8,16 @@ fn desugaring_rules() -> Vec<yeast::Rule> {
             =>
             (simple_identifier "blah")
         ),
+        rule!(
+            _
+            =>
+            (simple_identifier "not supported")
+        )
     ]
 }
 
 pub fn language_spec() -> simple::LanguageSpec {
-    let desugar = DesugaringConfig::new().add_phase("desugar", desugaring_rules());
+    let desugar = DesugaringConfig::new().add_phase("desugar", PhaseKind::OneShot, desugaring_rules());
     simple::LanguageSpec {
         prefix: "swift",
         ts_language: tree_sitter_swift::LANGUAGE.into(),
