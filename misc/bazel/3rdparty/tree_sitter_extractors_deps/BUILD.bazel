@@ -638,6 +638,18 @@ alias(
 )
 
 alias(
+    name = "tree-sitter-generate-0.26.8",
+    actual = "@vendor_ts__tree-sitter-generate-0.26.8//:tree_sitter_generate",
+    tags = ["manual"],
+)
+
+alias(
+    name = "tree-sitter-generate",
+    actual = "@vendor_ts__tree-sitter-generate-0.26.8//:tree_sitter_generate",
+    tags = ["manual"],
+)
+
+alias(
     name = "tree-sitter-json-0.24.8",
     actual = "@vendor_ts__tree-sitter-json-0.24.8//:tree_sitter_json",
     tags = ["manual"],

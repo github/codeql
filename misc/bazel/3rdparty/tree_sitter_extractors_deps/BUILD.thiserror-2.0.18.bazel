@@ -6,7 +6,11 @@
 #     bazel run @@//misc/bazel/3rdparty:vendor_tree_sitter_extractors
 ###############################################################################
 
-load("@rules_rust//cargo:defs.bzl", "cargo_toml_env_vars")
+load(
+    "@rules_rust//cargo:defs.bzl",
+    "cargo_build_script",
+    "cargo_toml_env_vars",
+)
 load("@rules_rust//rust:defs.bzl", "rust_library")
 
 package(default_visibility = ["//visibility:public"])
@@ -17,19 +21,11 @@ cargo_toml_env_vars(
 )
 
 rust_library(
-    name = "ra_ap_base_db",
+    name = "thiserror",
     srcs = glob(
         include = ["**/*.rs"],
         allow_empty = True,
     ),
-    aliases = {
-        "@vendor_ts__ra_ap_cfg-0.0.301//:ra_ap_cfg": "cfg",
-        "@vendor_ts__ra_ap_intern-0.0.301//:ra_ap_intern": "intern",
-        "@vendor_ts__ra_ap_query-group-macro-0.0.301//:ra_ap_query_group_macro": "query_group",
-        "@vendor_ts__ra_ap_span-0.0.301//:ra_ap_span": "span",
-        "@vendor_ts__ra_ap_syntax-0.0.301//:ra_ap_syntax": "syntax",
-        "@vendor_ts__ra_ap_vfs-0.0.301//:ra_ap_vfs": "vfs",
-    },
     compile_data = glob(
         include = ["**"],
         allow_empty = True,
@@ -42,11 +38,14 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "default",
+        "std",
+    ],
     crate_root = "src/lib.rs",
-    edition = "2024",
+    edition = "2021",
     proc_macro_deps = [
-        "@vendor_ts__ra_ap_query-group-macro-0.0.301//:ra_ap_query_group_macro",
-        "@vendor_ts__salsa-macros-0.23.0//:salsa_macros",
+        "@vendor_ts__thiserror-impl-2.0.18//:thiserror_impl",
     ],
     rustc_env_files = [
         ":cargo_toml_env_vars",
@@ -56,7 +55,7 @@ rust_library(
     ],
     tags = [
         "cargo-bazel",
-        "crate-name=ra_ap_base_db",
+        "crate-name=thiserror",
         "manual",
         "noclippy",
         "norustfmt",
@@ -105,20 +104,70 @@ rust_library(
         "@rules_rust//rust/platform:x86_64-unknown-uefi": [],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    version = "0.0.301",
+    version = "2.0.18",
     deps = [
-        "@vendor_ts__dashmap-6.1.0//:dashmap",
-        "@vendor_ts__indexmap-2.14.0//:indexmap",
-        "@vendor_ts__la-arena-0.3.1//:la_arena",
-        "@vendor_ts__ra_ap_cfg-0.0.301//:ra_ap_cfg",
-        "@vendor_ts__ra_ap_intern-0.0.301//:ra_ap_intern",
-        "@vendor_ts__ra_ap_span-0.0.301//:ra_ap_span",
-        "@vendor_ts__ra_ap_syntax-0.0.301//:ra_ap_syntax",
-        "@vendor_ts__ra_ap_vfs-0.0.301//:ra_ap_vfs",
-        "@vendor_ts__rustc-hash-2.1.1//:rustc_hash",
-        "@vendor_ts__salsa-0.23.0//:salsa",
-        "@vendor_ts__semver-1.0.28//:semver",
-        "@vendor_ts__tracing-0.1.41//:tracing",
-        "@vendor_ts__triomphe-0.1.14//:triomphe",
+        "@vendor_ts__thiserror-2.0.18//:build_script_build",
     ],
+)
+
+cargo_build_script(
+    name = "_bs",
+    srcs = glob(
+        include = ["**/*.rs"],
+        allow_empty = True,
+    ),
+    compile_data = glob(
+        include = ["**"],
+        allow_empty = True,
+        exclude = [
+            "**/* *",
+            "**/*.rs",
+            ".tmp_git_root/**/*",
+            "BUILD",
+            "BUILD.bazel",
+            "WORKSPACE",
+            "WORKSPACE.bazel",
+        ],
+    ),
+    crate_features = [
+        "default",
+        "std",
+    ],
+    crate_name = "build_script_build",
+    crate_root = "build.rs",
+    data = glob(
+        include = ["**"],
+        allow_empty = True,
+        exclude = [
+            "**/* *",
+            ".tmp_git_root/**/*",
+            "BUILD",
+            "BUILD.bazel",
+            "WORKSPACE",
+            "WORKSPACE.bazel",
+        ],
+    ),
+    edition = "2021",
+    pkg_name = "thiserror",
+    rustc_env_files = [
+        ":cargo_toml_env_vars",
+    ],
+    rustc_flags = [
+        "--cap-lints=allow",
+    ],
+    tags = [
+        "cargo-bazel",
+        "crate-name=thiserror",
+        "manual",
+        "noclippy",
+        "norustfmt",
+    ],
+    version = "2.0.18",
+    visibility = ["//visibility:private"],
+)
+
+alias(
+    name = "build_script_build",
+    actual = ":_bs",
+    tags = ["manual"],
 )
