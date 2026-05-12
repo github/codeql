@@ -278,6 +278,7 @@ class TypeDecl(ValueDecl):
         This only returns the types effectively appearing in the declaration. In particular it
         will not resolve `TypeAliasDecl`s or consider base types added by extensions.
     """)
+    declared_interface_type: Type
 
 class AbstractTypeParamDecl(TypeDecl):
     pass
