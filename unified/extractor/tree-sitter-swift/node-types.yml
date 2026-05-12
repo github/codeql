@@ -144,8 +144,7 @@ named:
   availability_condition:
     $children*: [identifier, integer_literal]
   await_expression:
-    $children?: expression
-    expr?: expression
+    expr: expression
   bang:
   bin_literal:
   bitwise_operation:

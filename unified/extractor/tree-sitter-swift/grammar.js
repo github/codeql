@@ -1237,7 +1237,7 @@ module.exports = grammar({
       //
       // To fix that, we simply undo the special casing by defining our own `await_expression`.
       choice($.expression, alias($.for_statement_await, $.await_expression)),
-    for_statement_await: ($) => seq($._await_operator, $.expression),
+    for_statement_await: ($) => seq($._await_operator, field("expr", $.expression)),
 
     while_statement: ($) =>
       prec(
