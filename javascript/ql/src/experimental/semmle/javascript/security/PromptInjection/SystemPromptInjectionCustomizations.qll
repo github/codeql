@@ -39,13 +39,7 @@ module SystemPromptInjection {
   /**
    * An active threat-model source, considered as a flow source.
    */
-  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { 
-    ActiveThreatModelSourceAsSource()
-    {
-          this instanceof RemoteFlowSource
-          or
-          this.isClientSideSource()
-    }
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource {
   }
 
   /**
