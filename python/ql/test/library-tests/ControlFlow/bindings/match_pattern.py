@@ -18,6 +18,6 @@ def f(subject):  # $ cfgdefines=f
 
 class Point:  # $ cfgdefines=Point
     __match_args__ = ("x", "y")  # $ cfgdefines=__match_args__
-    x: int  # $ MISSING: cfgdefines=x
-    y: int  # $ MISSING: cfgdefines=y
+    x: int  # $ cfgdefines=x
+    y: int  # $ cfgdefines=y
 

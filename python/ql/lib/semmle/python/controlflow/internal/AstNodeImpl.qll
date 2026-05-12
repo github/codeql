@@ -265,6 +265,31 @@ module Ast implements AstSig<Py::Location> {
     override AstNode getChild(int index) { index = 0 and result = this.getOperation() }
   }
 
+  /**
+   * An annotated assignment statement (`x: T = expr`, or `x: T` without
+   * value). The evaluation order follows CPython: annotation first, then
+   * the optional value, then the target binding.
+   */
+  additional class AnnAssignStmt extends Stmt {
+    private Py::AnnAssign annAssign;
+
+    AnnAssignStmt() { this = TPyStmt(annAssign) }
+
+    Expr getAnnotation() { result.asExpr() = annAssign.getAnnotation() }
+
+    Expr getValue() { result.asExpr() = annAssign.getValue() }
+
+    Expr getTarget() { result.asExpr() = annAssign.getTarget() }
+
+    override AstNode getChild(int index) {
+      index = 0 and result = this.getAnnotation()
+      or
+      index = 1 and result = this.getValue()
+      or
+      index = 2 and result = this.getTarget()
+    }
+  }
+
   /** An assignment expression / walrus operator (`x := expr`). */
   additional class NamedExpr extends Expr {
     private Py::AssignExpr assignExpr;

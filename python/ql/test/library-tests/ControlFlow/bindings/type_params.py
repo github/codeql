@@ -5,7 +5,7 @@ def func[T](x: T) -> T:  # $ cfgdefines=func MISSING: cfgdefines=T
 
 
 class Box[T]:  # $ cfgdefines=Box MISSING: cfgdefines=T
-    item: T  # $ MISSING: cfgdefines=item
+    item: T  # $ cfgdefines=item
 
 
 # Multi-parameter, with bound and variadics.
