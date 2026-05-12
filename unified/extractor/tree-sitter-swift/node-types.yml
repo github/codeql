@@ -220,8 +220,7 @@ named:
     lambda*: lambda_literal
     name*: simple_identifier
   control_transfer_statement:
-    $children*: [expression, throw_keyword]
-    kind?: ["break", "continue", "return", "yield"]
+    kind: ["break", "continue", "return", throw_keyword, "yield"]
     result?: expression
   custom_operator:
   default_keyword:

@@ -1266,7 +1266,10 @@ module.exports = grammar({
       ),
     control_transfer_statement: ($) =>
       choice(
-        prec.right(PRECS.control_transfer, $._throw_statement),
+        prec.right(
+          PRECS.control_transfer,
+          seq(field("kind", $.throw_keyword), field("result", $.expression))
+        ),
         prec.right(
           PRECS.control_transfer,
           seq(
