@@ -1,9 +1,10 @@
 /**
  * Utility library for identifying timer annotations in evaluation-order tests.
  *
- * Identifies `expr @ t[n]` (matmul), `t(expr, n)` (call), and
- * `expr @ t.dead[n]` (dead-code) patterns, extracts timestamp values,
- * and provides predicates for traversing consecutive annotated CFG nodes.
+ * Identifies `expr @ t[n]` (matmul) and `t(expr, n)` (call) patterns,
+ * including `dead(n)` and `never` markers within subscripts, extracts
+ * timestamp values, and provides predicates for traversing consecutive
+ * annotated CFG nodes.
  */
 
 import python

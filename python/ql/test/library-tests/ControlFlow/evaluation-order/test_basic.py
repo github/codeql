@@ -5,7 +5,7 @@ are evaluated in the expected order (typically left to right for
 operands of binary operators, elements of collection literals, etc.)
 
 Every evaluated expression has a timestamp annotation, except the
-timer mechanism itself (t[n], t.dead[n]).
+timer mechanism itself (t[n], t[dead(n)], t[never]).
 """
 
 from timer import test, never

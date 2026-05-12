@@ -26,6 +26,7 @@ Run a test file directly to self-validate: python test_file.py
 """
 
 import atexit
+import os
 import sys
 
 _results = []
@@ -53,6 +54,10 @@ class _Check:
                 self._dead.add(e.timestamp)
             elif isinstance(e, _NeverSentinel):
                 self._never = True
+            else:
+                raise TypeError(
+                    f"Unknown element in timer subscript: {e!r} (type {type(e).__name__})"
+                )
 
     def __rmatmul__(self, value):
         ts = self._timer._tick()
@@ -183,7 +188,7 @@ def _report():
     print("---")
     print(f"{passed}/{total} tests passed")
     if passed < total:
-        sys.exit(1)
+        os._exit(1)
 
 
 atexit.register(_report)
