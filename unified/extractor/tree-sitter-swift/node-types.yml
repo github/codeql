@@ -229,7 +229,7 @@ named:
     body: function_body
     modifiers?: modifiers
   deprecated_operator_declaration_body:
-    $children*: [bin_literal, boolean_literal, hex_literal, integer_literal, line_string_literal, multi_line_string_literal, oct_literal, raw_string_literal, real_literal, regex_literal, simple_identifier]
+    entry*: [bin_literal, boolean_literal, hex_literal, integer_literal, line_string_literal, multi_line_string_literal, "nil", oct_literal, raw_string_literal, real_literal, regex_literal, simple_identifier]
   diagnostic:
   dictionary_literal:
     key*: expression

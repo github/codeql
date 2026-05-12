@@ -1818,7 +1818,7 @@ module.exports = grammar({
       ),
     // The Swift compiler no longer accepts these, but some very old code still uses it.
     deprecated_operator_declaration_body: ($) =>
-      seq("{", repeat(choice($.simple_identifier, $._basic_literal)), "}"),
+      seq("{", repeat(field("entry", choice($.simple_identifier, $._basic_literal))), "}"),
     precedence_group_declaration: ($) =>
       seq(
         "precedencegroup",
