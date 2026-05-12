@@ -5,8 +5,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.avro.specific", "SpecificDatumReader", True, "readField", "(Object,Schema$Field,Object,ResolvingDecoder,Object)", "", "Argument[3]", "unsafe-deserialization", "ai-generated"]
-      - ["org.apache.avro.specific", "SpecificDatumReader", True, "readRecord", "(Object,Schema,ResolvingDecoder)", "", "Argument[2]", "unsafe-deserialization", "ai-generated"]
-      - ["org.apache.avro.specific", "SpecificExceptionBase", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
-      - ["org.apache.avro.specific", "SpecificFixed", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
       - ["org.apache.avro.specific", "SpecificRecordBase", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]

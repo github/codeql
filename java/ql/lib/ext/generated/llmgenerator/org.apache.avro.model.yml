@@ -6,11 +6,6 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.avro", "Protocol", True, "parse", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
-      - ["org.apache.avro", "Schema", True, "parse", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
-      - ["org.apache.avro", "Schema$Parser", True, "parse", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(File)", "", "Argument[0]", "path-injection", "ai-generated"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(File,Charset)", "", "Argument[0]", "path-injection", "ai-generated"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path)", "", "Argument[0]", "path-injection", "ai-generated"]
       - ["org.apache.avro", "SchemaParser", True, "parse", "(Path,Charset)", "", "Argument[0]", "path-injection", "ai-generated"]
       - ["org.apache.avro", "SchemaParser", True, "parse", "(URI,Charset)", "", "Argument[0]", "request-forgery", "ai-generated"]
   - addsTo:
@@ -18,9 +13,4 @@ extensions:
       extensible: sourceModel
     data:
       - ["org.apache.avro", "Protocol", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro", "Schema", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(File)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(File,Charset)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(Path)", "", "ReturnValue", "file", "ai-generated"]
       - ["org.apache.avro", "SchemaParser", True, "parse", "(Path,Charset)", "", "ReturnValue", "file", "ai-generated"]
-      - ["org.apache.avro", "SchemaParser", True, "parse", "(URI,Charset)", "", "ReturnValue", "remote", "ai-generated"]
