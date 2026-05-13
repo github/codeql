@@ -40,9 +40,11 @@ source_file
           value_binding_pattern
             mutability: var
           type_annotation
-            name:
-              user_type
-                type_identifier "Int"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
         property_declaration
           name:
             pattern
@@ -50,9 +52,11 @@ source_file
           value_binding_pattern
             mutability: var
           type_annotation
-            name:
-              user_type
-                type_identifier "Int"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
     declaration_kind: class
     name: type_identifier "Point"
 
@@ -85,9 +89,11 @@ source_file
           value_binding_pattern
             mutability: var
           type_annotation
-            name:
-              user_type
-                type_identifier "Int"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
         init_declaration
           body:
             function_body
@@ -105,10 +111,12 @@ source_file
                           self_expression
           name: init
           parameter
-            name:
-              simple_identifier "x"
-              user_type
-                type_identifier "Int"
+            name: simple_identifier "x"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
     declaration_kind: class
     name: type_identifier "Point"
 
@@ -206,9 +214,11 @@ source_file
           value_binding_pattern
             mutability: let
           type_annotation
-            name:
-              user_type
-                type_identifier "Int"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
         property_declaration
           name:
             pattern
@@ -216,9 +226,11 @@ source_file
           value_binding_pattern
             mutability: let
           type_annotation
-            name:
-              user_type
-                type_identifier "Int"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
     declaration_kind: struct
     name: type_identifier "Point"
 
@@ -278,18 +290,20 @@ source_file
         enum_entry
           data_contents:
             enum_type_parameters
-              name:
-                user_type
-                  type_identifier "Double"
               simple_identifier "radius"
+              type
+                name:
+                  user_type
+                    type_identifier "Double"
           name: simple_identifier "circle"
         enum_entry
           data_contents:
             enum_type_parameters
-              name:
-                user_type
-                  type_identifier "Double"
               simple_identifier "side"
+              type
+                name:
+                  user_type
+                    type_identifier "Double"
           name: simple_identifier "square"
     declaration_kind: enum
     name: type_identifier "Shape"
@@ -349,10 +363,12 @@ source_file
                       op: *
                       rhs:
                         self_expression
-          name:
-            simple_identifier "squared"
-            user_type
-              type_identifier "Int"
+          name: simple_identifier "squared"
+          return_type:
+            type
+              name:
+                user_type
+                  type_identifier "Int"
     declaration_kind: extension
     name:
       user_type
@@ -388,9 +404,11 @@ source_file
           value_binding_pattern
             mutability: var
           type_annotation
-            name:
-              user_type
-                type_identifier "Double"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Double"
         property_declaration
           name:
             pattern
@@ -398,9 +416,11 @@ source_file
           value_binding_pattern
             mutability: var
           type_annotation
-            name:
-              user_type
-                type_identifier "Double"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Double"
         property_declaration
           computed_value:
             computed_property
@@ -417,9 +437,11 @@ source_file
           value_binding_pattern
             mutability: var
           type_annotation
-            name:
-              user_type
-                type_identifier "Double"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Double"
     declaration_kind: class
     name: type_identifier "Rect"
 
@@ -478,9 +500,11 @@ source_file
           value_binding_pattern
             mutability: var
           type_annotation
-            name:
-              user_type
-                type_identifier "Int"
+            type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
     declaration_kind: class
     name: type_identifier "Box"
 

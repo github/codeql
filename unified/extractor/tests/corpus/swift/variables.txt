@@ -73,9 +73,11 @@ source_file
     value_binding_pattern
       mutability: let
     type_annotation
-      name:
-        user_type
-          type_identifier "Int"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "Int"
 
 ---
 
@@ -105,9 +107,11 @@ source_file
     value_binding_pattern
       mutability: var
     type_annotation
-      name:
-        user_type
-          type_identifier "Int"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "Int"
 
 ---
 

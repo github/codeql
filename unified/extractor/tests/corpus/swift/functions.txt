@@ -49,22 +49,28 @@ source_file
                 lhs: simple_identifier "a"
                 op: +
                 rhs: simple_identifier "b"
-    name:
-      simple_identifier "add"
-      user_type
-        type_identifier "Int"
+    name: simple_identifier "add"
+    return_type:
+      type
+        name:
+          user_type
+            type_identifier "Int"
     parameter
       external_name: simple_identifier "_"
-      name:
-        simple_identifier "a"
-        user_type
-          type_identifier "Int"
+      name: simple_identifier "a"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "Int"
     parameter
       external_name: simple_identifier "_"
-      name:
-        simple_identifier "b"
-        user_type
-          type_identifier "Int"
+      name: simple_identifier "b"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "Int"
 
 ---
 
@@ -95,10 +101,12 @@ source_file
     name: simple_identifier "greet"
     parameter
       external_name: simple_identifier "person"
-      name:
-        simple_identifier "name"
-        user_type
-          type_identifier "String"
+      name: simple_identifier "name"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "String"
 
 ---
 
@@ -131,10 +139,12 @@ source_file
         text: line_str_text "world"
     name: simple_identifier "greet"
     parameter
-      name:
-        simple_identifier "name"
-        user_type
-          type_identifier "String"
+      name: simple_identifier "name"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "String"
 
 ---
 
@@ -169,17 +179,22 @@ source_file
                     value_argument
                       value: integer_literal "0"
                     value_argument
-                      value: +
-    name:
-      simple_identifier "sum"
-      user_type
-        type_identifier "Int"
+                      value:
+                        referenceable_operator
+    name: simple_identifier "sum"
+    return_type:
+      type
+        name:
+          user_type
+            type_identifier "Int"
     parameter
       external_name: simple_identifier "_"
-      name:
-        simple_identifier "values"
-        user_type
-          type_identifier "Int"
+      name: simple_identifier "values"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "Int"
 
 ---
 
@@ -297,19 +312,23 @@ source_file
         statements
           control_transfer_statement
             result: simple_identifier "x"
-    name:
-      simple_identifier "identity"
-      user_type
-        type_identifier "T"
+    name: simple_identifier "identity"
+    return_type:
+      type
+        name:
+          user_type
+            type_identifier "T"
     type_parameters
       type_parameter
         type_identifier "T"
     parameter
       external_name: simple_identifier "_"
-      name:
-        simple_identifier "x"
-        user_type
-          type_identifier "T"
+      name: simple_identifier "x"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "T"
 
 ---
 

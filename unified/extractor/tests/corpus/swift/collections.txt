@@ -50,11 +50,15 @@ source_file
     value_binding_pattern
       mutability: let
     type_annotation
-      name:
-        array_type
+      type:
+        type
           name:
-            user_type
-              type_identifier "Int"
+            array_type
+              element:
+                type
+                  name:
+                    user_type
+                      type_identifier "Int"
 
 ---
 
@@ -128,13 +132,16 @@ source_file
     value_binding_pattern
       mutability: let
     type_annotation
-      name:
-        user_type
-          type_identifier "Set"
-          type_arguments
-            name:
-              user_type
-                type_identifier "Int"
+      type:
+        type
+          name:
+            user_type
+              type_identifier "Set"
+              type_arguments
+                type
+                  name:
+                    user_type
+                      type_identifier "Int"
 
 ---
 

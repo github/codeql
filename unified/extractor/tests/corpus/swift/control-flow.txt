@@ -11,10 +11,11 @@ if x > 0 {
 source_file
   if_statement
     condition:
-      comparison_expression
-        lhs: simple_identifier "x"
-        op: >
-        rhs: integer_literal "0"
+      if_condition
+        comparison_expression
+          lhs: simple_identifier "x"
+          op: >
+          rhs: integer_literal "0"
     statements
       call_expression
         simple_identifier "print"
@@ -30,13 +31,7 @@ top_level
     if_stmt
       condition:
         expr_condition
-          expr:
-            binary_expr
-              operator: operator ">"
-              left:
-                name_expr
-                  identifier: identifier "x"
-              right: int_literal "0"
+          expr: unsupported_node "x > 0"
       then:
         block_stmt
           body:
@@ -65,10 +60,11 @@ if x > 0 {
 source_file
   if_statement
     condition:
-      comparison_expression
-        lhs: simple_identifier "x"
-        op: >
-        rhs: integer_literal "0"
+      if_condition
+        comparison_expression
+          lhs: simple_identifier "x"
+          op: >
+          rhs: integer_literal "0"
     statements
       call_expression
         simple_identifier "print"
@@ -95,13 +91,7 @@ top_level
     if_stmt
       condition:
         expr_condition
-          expr:
-            binary_expr
-              operator: operator ">"
-              left:
-                name_expr
-                  identifier: identifier "x"
-              right: int_literal "0"
+          expr: unsupported_node "x > 0"
       else:
         block_stmt
           body:
@@ -147,10 +137,11 @@ if x > 0 {
 source_file
   if_statement
     condition:
-      comparison_expression
-        lhs: simple_identifier "x"
-        op: >
-        rhs: integer_literal "0"
+      if_condition
+        comparison_expression
+          lhs: simple_identifier "x"
+          op: >
+          rhs: integer_literal "0"
     statements
       call_expression
         simple_identifier "print"
@@ -161,10 +152,11 @@ source_file
     else "else"
     if_statement
       condition:
-        comparison_expression
-          lhs: simple_identifier "x"
-          op: <
-          rhs: integer_literal "0"
+        if_condition
+          comparison_expression
+            lhs: simple_identifier "x"
+            op: <
+            rhs: integer_literal "0"
       statements
         call_expression
           simple_identifier "print"
@@ -188,24 +180,12 @@ top_level
     if_stmt
       condition:
         expr_condition
-          expr:
-            binary_expr
-              operator: operator ">"
-              left:
-                name_expr
-                  identifier: identifier "x"
-              right: int_literal "0"
+          expr: unsupported_node "x > 0"
       else:
         if_stmt
           condition:
             expr_condition
-              expr:
-                binary_expr
-                  operator: operator "<"
-                  left:
-                    name_expr
-                      identifier: identifier "x"
-                  right: int_literal "0"
+              expr: unsupported_node "x < 0"
           else:
             block_stmt
               body:
@@ -249,12 +229,13 @@ if let value = optional {
 
 source_file
   if_statement
-    bound_identifier: simple_identifier "value"
     condition:
-      value_binding_pattern
-        mutability: let
-      =
-      simple_identifier "optional"
+      if_condition
+        if_let_binding
+          bound_identifier: simple_identifier "value"
+          value_binding_pattern
+            mutability: let
+          simple_identifier "optional"
     statements
       call_expression
         simple_identifier "print"
@@ -269,13 +250,8 @@ top_level
   body:
     if_stmt
       condition:
-        let_pattern_condition
-          value:
-            name_expr
-              identifier: identifier "optional"
-          pattern:
-            var_pattern
-              identifier: identifier "value"
+        expr_condition
+          expr: unsupported_node "let value = optional"
       then:
         block_stmt
           body:
@@ -299,12 +275,13 @@ guard let value = optional else { return }
 
 source_file
   guard_statement
-    bound_identifier: simple_identifier "value"
     condition:
-      value_binding_pattern
-        mutability: let
-      =
-      simple_identifier "optional"
+      if_condition
+        if_let_binding
+          bound_identifier: simple_identifier "value"
+          value_binding_pattern
+            mutability: let
+          simple_identifier "optional"
     else "else"
     statements
       control_transfer_statement
@@ -312,19 +289,7 @@ source_file
 ---
 
 top_level
-  body:
-    guard_if_stmt
-      condition:
-        let_pattern_condition
-          value:
-            name_expr
-              identifier: identifier "optional"
-          pattern:
-            var_pattern
-              identifier: identifier "value"
-      else:
-        block_stmt
-          body: unsupported_node "return"
+  body: unsupported_node "guard let value = optional else { return }"
 
 ===
 Ternary expression

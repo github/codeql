@@ -15,15 +15,19 @@ source_file
       lambda_literal
         type:
           lambda_function_type
-            name:
-              user_type
-                type_identifier "Int"
-            lambda_function_type_parameters
-              lambda_parameter
+            return_type:
+              type
                 name:
-                  simple_identifier "x"
                   user_type
                     type_identifier "Int"
+            lambda_function_type_parameters
+              lambda_parameter
+                name: simple_identifier "x"
+                type:
+                  type
+                    name:
+                      user_type
+                        type_identifier "Int"
         statements
           multiplicative_expression
             lhs: simple_identifier "x"
@@ -168,8 +172,8 @@ source_file
                 navigation_suffix
                   suffix: simple_identifier "doThing"
               target:
-                self_expression
-                ?
+                optional_chain_marker
+                  self_expression
             call_suffix
               value_arguments
     value_binding_pattern
@@ -189,7 +193,7 @@ top_level
                   argument:
                   function:
                     member_access_expr
-                      target: unsupported_node "self"
+                      target: unsupported_node "self?"
                       member: identifier "doThing"
           pattern:
             var_pattern
@@ -215,15 +219,19 @@ source_file
       lambda_literal
         type:
           lambda_function_type
-            name:
-              user_type
-                type_identifier "Int"
-            lambda_function_type_parameters
-              lambda_parameter
+            return_type:
+              type
                 name:
-                  simple_identifier "x"
                   user_type
                     type_identifier "Int"
+            lambda_function_type_parameters
+              lambda_parameter
+                name: simple_identifier "x"
+                type:
+                  type
+                    name:
+                      user_type
+                        type_identifier "Int"
         statements
           property_declaration
             name:

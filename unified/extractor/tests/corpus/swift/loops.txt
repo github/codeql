@@ -113,10 +113,11 @@ while x > 0 {
 source_file
   while_statement
     condition:
-      comparison_expression
-        lhs: simple_identifier "x"
-        op: >
-        rhs: integer_literal "0"
+      if_condition
+        comparison_expression
+          lhs: simple_identifier "x"
+          op: >
+          rhs: integer_literal "0"
     statements
       assignment
         operator: -=
@@ -143,10 +144,11 @@ repeat {
 source_file
   repeat_while_statement
     condition:
-      comparison_expression
-        lhs: simple_identifier "x"
-        op: >
-        rhs: integer_literal "0"
+      if_condition
+        comparison_expression
+          lhs: simple_identifier "x"
+          op: >
+          rhs: integer_literal "0"
     statements
       assignment
         operator: -=
@@ -181,18 +183,20 @@ source_file
     statements
       if_statement
         condition:
-          comparison_expression
-            lhs: simple_identifier "x"
-            op: <
-            rhs: integer_literal "0"
+          if_condition
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: <
+              rhs: integer_literal "0"
         statements
           control_transfer_statement
       if_statement
         condition:
-          comparison_expression
-            lhs: simple_identifier "x"
-            op: >
-            rhs: integer_literal "100"
+          if_condition
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "100"
         statements
           control_transfer_statement
       call_expression
