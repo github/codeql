@@ -1,0 +1,101 @@
+identifier
+| test.swift:1:8:1:17 | Foundation | Foundation |
+| test.swift:5:9:5:13 | items | items |
+| test.swift:7:19:7:21 | add | add |
+| test.swift:7:23:7:23 | _ | _ |
+| test.swift:7:25:7:28 | item | item |
+| test.swift:8:9:8:13 | items | items |
+| test.swift:8:15:8:20 | append | append |
+| test.swift:8:22:8:25 | item | item |
+| test.swift:11:10:11:17 | contains | contains |
+| test.swift:11:19:11:19 | _ | _ |
+| test.swift:11:21:11:24 | item | item |
+| test.swift:12:16:12:20 | items | items |
+| test.swift:12:22:12:29 | contains | contains |
+| test.swift:12:31:12:34 | item | item |
+| test.swift:19:9:19:13 | count | count |
+| test.swift:20:10:20:13 | item | item |
+| test.swift:20:15:20:16 | at | at |
+| test.swift:20:18:20:22 | index | index |
+| test.swift:24:6:24:10 | merge | merge |
+| test.swift:24:27:24:27 | _ | _ |
+| test.swift:24:29:24:33 | first | first |
+| test.swift:24:39:24:39 | _ | _ |
+| test.swift:24:41:24:46 | second | second |
+| test.swift:24:73:24:73 | T | T |
+| test.swift:24:75:24:81 | Element | Element |
+| test.swift:25:9:25:14 | result | result |
+| test.swift:25:18:25:22 | Array | Array |
+| test.swift:25:24:25:28 | first | first |
+| test.swift:26:9:26:12 | item | item |
+| test.swift:26:17:26:22 | second | second |
+| test.swift:27:13:27:18 | result | result |
+| test.swift:27:20:27:27 | contains | contains |
+| test.swift:27:29:27:32 | item | item |
+| test.swift:28:13:28:18 | result | result |
+| test.swift:28:20:28:25 | append | append |
+| test.swift:28:27:28:30 | item | item |
+| test.swift:31:12:31:17 | result | result |
+| test.swift:37:17:37:20 | data | data |
+| test.swift:39:9:39:13 | count | count |
+| test.swift:40:16:40:19 | data | data |
+| test.swift:40:21:40:25 | count | count |
+| test.swift:43:9:43:15 | isEmpty | isEmpty |
+| test.swift:44:9:44:12 | data | data |
+| test.swift:44:14:44:20 | isEmpty | isEmpty |
+| test.swift:47:10:47:13 | item | item |
+| test.swift:47:15:47:16 | at | at |
+| test.swift:47:18:47:22 | index | index |
+| test.swift:48:15:48:19 | index | index |
+| test.swift:48:29:48:33 | index | index |
+| test.swift:48:37:48:40 | data | data |
+| test.swift:48:42:48:46 | count | count |
+| test.swift:49:16:49:19 | data | data |
+| test.swift:49:21:49:25 | index | index |
+| test.swift:52:10:52:12 | add | add |
+| test.swift:52:14:52:14 | _ | _ |
+| test.swift:52:16:52:19 | item | item |
+| test.swift:53:9:53:12 | data | data |
+| test.swift:53:14:53:19 | append | append |
+| test.swift:53:21:53:24 | item | item |
+| test.swift:59:10:59:16 | success | success |
+| test.swift:60:10:60:16 | failure | failure |
+| test.swift:62:10:62:12 | map | map |
+| test.swift:62:17:62:17 | _ | _ |
+| test.swift:62:19:62:27 | transform | transform |
+| test.swift:64:15:64:21 | success | success |
+| test.swift:64:27:64:31 | value | value |
+| test.swift:65:21:65:27 | success | success |
+| test.swift:65:29:65:37 | transform | transform |
+| test.swift:65:39:65:43 | value | value |
+| test.swift:66:15:66:21 | failure | failure |
+| test.swift:66:27:66:31 | error | error |
+| test.swift:67:21:67:27 | failure | failure |
+| test.swift:67:29:67:33 | error | error |
+| test.swift:73:23:73:29 | Element | Element |
+| test.swift:74:10:74:17 | isSorted | isSorted |
+| test.swift:75:13:75:13 | i | i |
+| test.swift:75:23:75:31 | blah | blah |
+| test.swift:76:21:76:21 | i | i |
+| test.swift:76:31:76:35 | blah | blah |
+| test.swift:85:6:85:12 | combine | combine |
+| test.swift:85:17:85:17 | _ | _ |
+| test.swift:85:19:85:24 | values | values |
+| test.swift:85:32:85:40 | transform | transform |
+| test.swift:86:12:86:17 | values | values |
+| test.swift:86:19:86:25 | isEmpty | isEmpty |
+| test.swift:87:12:87:17 | values | values |
+| test.swift:87:19:87:27 | dropFirst | dropFirst |
+| test.swift:87:31:87:36 | reduce | reduce |
+| test.swift:87:38:87:43 | values | values |
+| test.swift:87:49:87:57 | transform | transform |
+func
+| test.swift:7:5:9:5 | FunctionDeclaration |
+| test.swift:11:5:13:5 | FunctionDeclaration |
+| test.swift:24:1:32:1 | FunctionDeclaration |
+| test.swift:47:5:50:5 | FunctionDeclaration |
+| test.swift:52:5:54:5 | FunctionDeclaration |
+| test.swift:62:5:69:5 | FunctionDeclaration |
+| test.swift:74:5:81:5 | FunctionDeclaration |
+| test.swift:85:1:88:1 | FunctionDeclaration |
+add

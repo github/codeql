@@ -1031,28 +1031,28 @@ module.exports = grammar({
 
     list_comprehension: $ => seq(
       '[',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       ']'
     ),
 
     dictionary_comprehension: $ => seq(
       '{',
-      field('body', $.pair),
+      field('body', choice($.pair, $.dictionary_splat)),
       $._comprehension_clauses,
       '}'
     ),
 
     set_comprehension: $ => seq(
       '{',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       '}'
     ),
 
     generator_expression: $ => seq(
       '(',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       ')'
     ),

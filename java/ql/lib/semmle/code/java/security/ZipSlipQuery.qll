@@ -52,6 +52,11 @@ module ZipSlipFlow = TaintTracking::Global<ZipSlipConfig>;
 
 /**
  * A sink that represents a file creation, such as a file write, copy or move operation.
+ *
+ * This deliberately selects only the `path-injection` sink kind and excludes
+ * `path-injection[read]`: Zip Slip is an archive-extraction vulnerability, so
+ * read-only path sinks (for example `ClassLoader.getResource`,
+ * `FileInputStream`, and `FileReader`) are outside the threat model.
  */
 private class FileCreationSink extends DataFlow::Node {
   FileCreationSink() { sinkNode(this, "path-injection") }

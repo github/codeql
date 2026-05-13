@@ -156,6 +156,8 @@
 | tst3.js:9:14:9:19 | query1 | tst3.js:8:16:8:34 | req.params.category | tst3.js:9:14:9:19 | query1 | This query string depends on a $@. | tst3.js:8:16:8:34 | req.params.category | user-provided value |
 | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | This query string depends on a $@. | tst4.js:8:46:8:60 | $routeParams.id | user-provided value |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | This query string depends on a $@. | tst.js:10:46:10:58 | req.params.id | user-provided value |
+| vercel.ts:7:14:7:51 | "SELECT ...  " + id | vercel.ts:6:14:6:22 | req.query | vercel.ts:7:14:7:51 | "SELECT ...  " + id | This query string depends on a $@. | vercel.ts:6:14:6:22 | req.query | user-provided value |
+| vercel.ts:7:14:7:51 | "SELECT ...  " + id | vercel.ts:6:14:6:25 | req.query.id | vercel.ts:7:14:7:51 | "SELECT ...  " + id | This query string depends on a $@. | vercel.ts:6:14:6:25 | req.query.id | user-provided value |
 edges
 | athena.js:9:11:9:19 | userQuery | athena.js:14:30:14:38 | userQuery | provenance |  |
 | athena.js:9:11:9:19 | userQuery | athena.js:24:22:24:30 | userQuery | provenance |  |
@@ -620,6 +622,10 @@ edges
 | tst3.js:8:16:8:34 | req.params.category | tst3.js:7:7:7:12 | query1 | provenance |  |
 | tst4.js:8:46:8:60 | $routeParams.id | tst4.js:8:10:8:66 | 'SELECT ... d + '"' | provenance |  |
 | tst.js:10:46:10:58 | req.params.id | tst.js:10:10:10:64 | 'SELECT ... d + '"' | provenance |  |
+| vercel.ts:6:9:6:10 | id | vercel.ts:7:50:7:51 | id | provenance |  |
+| vercel.ts:6:14:6:22 | req.query | vercel.ts:6:9:6:10 | id | provenance |  |
+| vercel.ts:6:14:6:25 | req.query.id | vercel.ts:6:9:6:10 | id | provenance |  |
+| vercel.ts:7:50:7:51 | id | vercel.ts:7:14:7:51 | "SELECT ...  " + id | provenance |  |
 nodes
 | athena.js:9:11:9:19 | userQuery | semmle.label | userQuery |
 | athena.js:9:23:9:30 | req.body | semmle.label | req.body |
@@ -1029,4 +1035,9 @@ nodes
 | tst4.js:8:46:8:60 | $routeParams.id | semmle.label | $routeParams.id |
 | tst.js:10:10:10:64 | 'SELECT ... d + '"' | semmle.label | 'SELECT ... d + '"' |
 | tst.js:10:46:10:58 | req.params.id | semmle.label | req.params.id |
+| vercel.ts:6:9:6:10 | id | semmle.label | id |
+| vercel.ts:6:14:6:22 | req.query | semmle.label | req.query |
+| vercel.ts:6:14:6:25 | req.query.id | semmle.label | req.query.id |
+| vercel.ts:7:14:7:51 | "SELECT ...  " + id | semmle.label | "SELECT ...  " + id |
+| vercel.ts:7:50:7:51 | id | semmle.label | id |
 subpaths

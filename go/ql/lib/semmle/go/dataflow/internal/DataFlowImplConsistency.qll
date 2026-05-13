@@ -19,10 +19,6 @@ private module Input implements InputSig<Location, Impl::GoDataFlow> {
 
   predicate uniqueNodeLocationExclude(DataFlow::Node n) { missingLocationExclude(n) }
 
-  predicate localFlowIsLocalExclude(DataFlow::Node n1, DataFlow::Node n2) {
-    n1 instanceof DataFlow::FunctionNode and simpleLocalFlowStep(n1, n2, _)
-  }
-
   predicate argHasPostUpdateExclude(DataFlow::ArgumentNode n) {
     not DataFlow::insnHasPostUpdateNode(n.asInstruction())
   }

@@ -13,9 +13,9 @@ module Private {
 
   class ConstantIntegerExpr = CU::ConstantIntegerExpr;
 
-  class SsaVariable = CS::Ssa::Definition;
+  class SsaVariable = CS::SsaDefinition;
 
-  class SsaPhiNode = CS::Ssa::PhiNode;
+  class SsaPhiNode = CS::SsaPhiDefinition;
 
   class VarAccess = RU::ExprNode::AssignableAccess;
 
@@ -33,9 +33,9 @@ module Private {
 
   class Type = CS::Type;
 
-  class Expr = CS::ControlFlow::Nodes::ExprNode;
+  class Expr = CS::ControlFlowNodes::ExprNode;
 
-  class VariableUpdate = CS::Ssa::ExplicitDefinition;
+  class VariableUpdate = CS::SsaExplicitWrite;
 
   class Field = CS::Field;
 
@@ -63,7 +63,7 @@ private module Impl {
   private import SsaReadPositionCommon
   private import semmle.code.csharp.commons.ComparisonTest
 
-  private class ExprNode = ControlFlow::Nodes::ExprNode;
+  private class ExprNode = ControlFlowNodes::ExprNode;
 
   /** Gets the character value of expression `e`. */
   string getCharValue(ExprNode e) { result = e.getValue() and e.getType() instanceof CharType }
@@ -122,46 +122,34 @@ private module Impl {
   }
 
   /** Returns the underlying variable update of the explicit SSA variable `v`. */
-  Ssa::ExplicitDefinition getExplicitSsaAssignment(Ssa::ExplicitDefinition v) { result = v }
+  SsaExplicitWrite getExplicitSsaAssignment(SsaExplicitWrite v) { result = v }
 
   /** Returns the assignment of the variable update `def`. */
-  ExprNode getExprFromSsaAssignment(Ssa::ExplicitDefinition def) {
-    exists(AssignableDefinition adef |
-      adef = def.getADefinition() and
-      hasChild(adef.getExpr(), adef.getSource(), def.getControlFlowNode(), result)
-    )
-    or
-    exists(AssignableDefinitions::AssignOperationDefinition adef |
-      adef = def.getADefinition() and
-      result.getExpr() = adef.getSource()
-    )
-  }
+  ExprNode getExprFromSsaAssignment(SsaExplicitWrite def) { result.getExpr() = def.getValue() }
 
   /** Holds if `def` can have any sign. */
-  predicate explicitSsaDefWithAnySign(Ssa::ExplicitDefinition def) {
-    not exists(def.getADefinition().getSource()) and
-    not def.getElement() instanceof MutatorOperation
+  predicate explicitSsaDefWithAnySign(SsaExplicitWrite def) {
+    not exists(def.getValue()) and
+    not def.getDefiningExpr() instanceof MutatorOperation
   }
 
   /** Returns the operand of the operation if `def` is a decrement. */
-  ExprNode getDecrementOperand(Ssa::ExplicitDefinition def) {
-    hasChild(def.getElement(), def.getElement().(DecrementOperation).getOperand(),
-      def.getControlFlowNode(), result)
+  ExprNode getDecrementOperand(SsaExplicitWrite def) {
+    result.getExpr() = def.getDefiningExpr().(DecrementOperation).getOperand()
   }
 
   /** Returns the operand of the operation if `def` is an increment. */
-  ExprNode getIncrementOperand(Ssa::ExplicitDefinition def) {
-    hasChild(def.getElement(), def.getElement().(IncrementOperation).getOperand(),
-      def.getControlFlowNode(), result)
+  ExprNode getIncrementOperand(SsaExplicitWrite def) {
+    result.getExpr() = def.getDefiningExpr().(IncrementOperation).getOperand()
   }
 
   /** Gets the variable underlying the implicit SSA variable `def`. */
-  Declaration getImplicitSsaDeclaration(Ssa::ImplicitDefinition def) {
+  Declaration getImplicitSsaDeclaration(SsaImplicitWrite def) {
     result = def.getSourceVariable().getAssignable()
   }
 
   /** Holds if the variable underlying the implicit SSA variable `def` is not a field. */
-  predicate nonFieldImplicitSsaDefinition(Ssa::ImplicitDefinition def) {
+  predicate nonFieldImplicitSsaDefinition(SsaImplicitWrite def) {
     not getImplicitSsaDeclaration(def) instanceof Field
   }
 
@@ -245,7 +233,7 @@ private module Impl {
     )
   }
 
-  ExprNode getARead(Ssa::Definition v) { exists(v.getAReadAtNode(result)) }
+  ExprNode getARead(SsaDefinition v) { v.getARead().getControlFlowNode() = result }
 
   Field getField(ExprNode fa) { result = fa.getExpr().(FieldAccess).getTarget() }
 
@@ -254,7 +242,7 @@ private module Impl {
   Guard getComparisonGuard(ComparisonExpr ce) { result = ce.getExpr() }
 
   private newtype TComparisonExpr =
-    MkComparisonExpr(ComparisonTest ct, ExprNode e) { e = ct.getExpr().getAControlFlowNode() }
+    MkComparisonExpr(ComparisonTest ct, ExprNode e) { e = ct.getExpr().getControlFlowNode() }
 
   /** A relational comparison */
   class ComparisonExpr extends MkComparisonExpr {

@@ -1008,7 +1008,7 @@ module Raw {
     /**
      * Gets the name of this type declaration.
      */
-    string getName() { type_decls(this, result) }
+    string getName() { type_decls(this, result, _) }
 
     /**
      * Gets the `index`th inherited type of this type declaration (0-based).
@@ -1024,6 +1024,11 @@ module Raw {
     int getNumberOfInheritedTypes() {
       result = count(int i | type_decl_inherited_types(this, i, _))
     }
+
+    /**
+     * Gets the declared interface type of this type declaration.
+     */
+    Type getDeclaredInterfaceType() { type_decls(this, _, result) }
   }
 
   /**
@@ -6537,6 +6542,16 @@ module Raw {
    */
   class BuiltinFixedArrayType extends @builtin_fixed_array_type, BuiltinGenericType {
     override string toString() { result = "BuiltinFixedArrayType" }
+
+    /**
+     * Gets the size of this builtin fixed array type.
+     */
+    Type getSize() { builtin_fixed_array_types(this, result, _) }
+
+    /**
+     * Gets the element type of this builtin fixed array type.
+     */
+    Type getElementType() { builtin_fixed_array_types(this, _, result) }
   }
 
   private Element getImmediateChildOfBuiltinFixedArrayType(BuiltinFixedArrayType e, int index) {

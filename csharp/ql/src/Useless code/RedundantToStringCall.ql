@@ -18,5 +18,6 @@ import semmle.code.csharp.frameworks.System
 from MethodCall mc
 where
   mc instanceof ImplicitToStringExpr and
-  mc.getTarget() instanceof ToStringMethod
-select mc, "Redundant call to 'ToString' on a String object."
+  mc.getTarget() instanceof ToStringMethod and
+  not mc.getQualifier() instanceof BaseAccess
+select mc, "Redundant call to 'ToString'."

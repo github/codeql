@@ -1,5 +1,6 @@
 remoteFlowSourceMembers
 | AspRemoteFlowSource.cs:10:23:10:31 | RequestId |
+| AspRemoteFlowSource.cs:11:23:11:36 | RequestIdField |
 | AspRemoteFlowSource.cs:28:23:28:29 | Tainted |
 remoteFlowSources
 | AspRemoteFlowSource.cs:20:42:20:50 | viewModel |

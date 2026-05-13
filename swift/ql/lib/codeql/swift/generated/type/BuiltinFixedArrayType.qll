@@ -7,6 +7,7 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.type.internal.BuiltinGenericTypeImpl::Impl as BuiltinGenericTypeImpl
+import codeql.swift.elements.type.Type
 
 /**
  * INTERNAL: This module contains the fully generated definition of `BuiltinFixedArrayType` and should not
@@ -22,5 +23,51 @@ module Generated {
     BuiltinGenericTypeImpl::BuiltinGenericType
   {
     override string getAPrimaryQlClass() { result = "BuiltinFixedArrayType" }
+
+    /**
+     * Gets the size of this builtin fixed array type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateSize() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertBuiltinFixedArrayTypeToRaw(this)
+              .(Raw::BuiltinFixedArrayType)
+              .getSize())
+    }
+
+    /**
+     * Gets the size of this builtin fixed array type.
+     */
+    final Type getSize() {
+      exists(Type immediate |
+        immediate = this.getImmediateSize() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
+
+    /**
+     * Gets the element type of this builtin fixed array type.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateElementType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertBuiltinFixedArrayTypeToRaw(this)
+              .(Raw::BuiltinFixedArrayType)
+              .getElementType())
+    }
+
+    /**
+     * Gets the element type of this builtin fixed array type.
+     */
+    final Type getElementType() {
+      exists(Type immediate |
+        immediate = this.getImmediateElementType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

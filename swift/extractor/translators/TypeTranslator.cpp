@@ -235,10 +235,10 @@ codeql::BuiltinIntegerType TypeTranslator::translateBuiltinIntegerType(
 
 codeql::BuiltinFixedArrayType TypeTranslator::translateBuiltinFixedArrayType(
     const swift::BuiltinFixedArrayType& type) {
-  // currently the translate dispatching mechanism does not go up more than one step in the
-  // hierarchy so we need to put this explicitly here, as BuiltinFixedArrayType derives from
-  // BuiltinGenericType which then derives from BuiltinType
-  return translateBuiltinType(type);
+  auto entry = createTypeEntry(type);
+  entry.size = dispatcher.fetchLabel(type.getSize());
+  entry.element_type = dispatcher.fetchLabel(type.getElementType());
+  return entry;
 }
 
 codeql::ExistentialArchetypeType TypeTranslator::translateExistentialArchetypeType(

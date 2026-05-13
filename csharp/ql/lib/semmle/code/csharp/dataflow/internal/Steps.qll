@@ -15,8 +15,8 @@ module Steps {
    * Gets a read that may read the value assigned at definition `def`.
    */
   private AssignableRead getARead(AssignableDefinition def) {
-    exists(BaseSsa::Definition ssaDef |
-      ssaDef.getAnUltimateDefinition().getDefinition() = def and
+    exists(BaseSsa::SsaDefinition ssaDef |
+      ssaDef.getAnUltimateDefinition().(BaseSsa::SsaExplicitWrite).getDefinition() = def and
       result = ssaDef.getARead()
     )
     or

@@ -87,7 +87,9 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
  * }
  * ```
  */
-class Parameter extends LocalScopeVariable, Attributable, TopLevelExprParent, @parameter {
+class Parameter extends LocalScopeVariable, Attributable, TopLevelExprParent, ControlFlowElement,
+  @parameter
+{
   /** Gets the raw position of this parameter, including the `this` parameter at index 0. */
   final int getRawPosition() { this = this.getDeclaringElement().getRawParameter(result) }
 

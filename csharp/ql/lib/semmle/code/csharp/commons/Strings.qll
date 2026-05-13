@@ -29,7 +29,7 @@ class ImplicitToStringExpr extends Expr {
       m = p.getCallable()
     |
       m = any(SystemTextStringBuilderClass c).getAMethod() and
-      m.getName().regexpMatch("Append(Line)?") and
+      m.getName() = "Append" and
       not p.getType() instanceof ArrayType
       or
       p instanceof StringFormatItemParameter and

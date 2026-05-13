@@ -229,6 +229,41 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
+        /// Given an expression syntax node, attempt to resolve the target method symbol for it.
+        /// The operation takes extension methods into account.
+        /// </summary>
+        /// <param name="node">The expression syntax node.</param>
+        /// <returns>Returns the target method symbol, or null if it cannot be resolved.</returns>
+        protected IMethodSymbol? GetTargetSymbol(ExpressionSyntax node)
+        {
+            var si = Context.GetSymbolInfo(node);
+            if (si.Symbol is ISymbol symbol)
+            {
+                var method = symbol as IMethodSymbol;
+                // Case for compiler-generated extension methods.
+                return method?.TryGetExtensionMethod() ?? method;
+            }
+
+            if (si.CandidateReason == CandidateReason.OverloadResolutionFailure && node is InvocationExpressionSyntax syntax)
+            {
+                // This seems to be a bug in Roslyn
+                // For some reason, typeof(X).InvokeMember(...) fails to resolve the correct
+                // InvokeMember() method, even though the number of parameters clearly identifies the correct method
+
+                var candidates = si.CandidateSymbols
+                    .OfType<IMethodSymbol>()
+                    .Where(method => method.Parameters.Length >= syntax.ArgumentList.Arguments.Count)
+                    .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= syntax.ArgumentList.Arguments.Count);
+
+                return Context.ExtractionContext.IsStandalone ?
+                    candidates.FirstOrDefault() :
+                    candidates.SingleOrDefault();
+            }
+
+            return si.Symbol as IMethodSymbol;
+        }
+
+        /// <summary>
         /// Adapt the operator kind depending on whether it's a dynamic call or a user-operator call.
         /// </summary>
         /// <param name="cx"></param>
@@ -244,10 +279,10 @@ namespace Semmle.Extraction.CSharp.Entities
         /// name if available.
         /// </summary>
         /// <param name="node">The expression.</param>
-        public void OperatorCall(TextWriter trapFile, ExpressionSyntax node)
+        public void AddOperatorCall(TextWriter trapFile, ExpressionSyntax node)
         {
-            var @operator = Context.GetSymbolInfo(node);
-            if (@operator.Symbol is IMethodSymbol method)
+            var @operator = GetTargetSymbol(node);
+            if (@operator is IMethodSymbol method)
             {
                 var callType = GetCallType(Context, node);
                 if (callType == CallType.Dynamic)

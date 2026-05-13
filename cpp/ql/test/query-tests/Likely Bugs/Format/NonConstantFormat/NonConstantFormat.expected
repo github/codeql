@@ -11,8 +11,13 @@ edges
 | nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:87:18:87:20 | *fmt | provenance |  |
 | test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array | provenance |  |
 | test.cpp:167:31:167:34 | *data | test.cpp:170:12:170:14 | *res | provenance | DataFlowFunction |
+| test.cpp:179:6:179:21 | [summary param] *2 in StringCchPrintfW | test.cpp:179:6:179:21 | [summary param] *0 in StringCchPrintfW [Return] | provenance | MaD:403 |
+| test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | provenance |  |
 | test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | provenance |  |
 | test.cpp:193:32:193:34 | *str | test.cpp:197:11:197:14 | *wstr | provenance | TaintFunction |
+| test.cpp:195:20:195:23 | StringCchPrintfW output argument | test.cpp:197:11:197:14 | *wstr | provenance |  |
+| test.cpp:195:31:195:33 | *str | test.cpp:179:6:179:21 | [summary param] *2 in StringCchPrintfW | provenance |  |
+| test.cpp:195:31:195:33 | *str | test.cpp:195:20:195:23 | StringCchPrintfW output argument | provenance | MaD:403 |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:204:25:204:36 | *call to get_string | provenance |  |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:205:12:205:20 | *... + ... | provenance |  |
 | test.cpp:204:25:204:36 | *call to get_string | test.cpp:206:12:206:16 | *hello | provenance |  |
@@ -55,7 +60,11 @@ nodes
 | test.cpp:130:20:130:26 | *access to array | semmle.label | *access to array |
 | test.cpp:167:31:167:34 | *data | semmle.label | *data |
 | test.cpp:170:12:170:14 | *res | semmle.label | *res |
+| test.cpp:179:6:179:21 | [summary param] *0 in StringCchPrintfW [Return] | semmle.label | [summary param] *0 in StringCchPrintfW [Return] |
+| test.cpp:179:6:179:21 | [summary param] *2 in StringCchPrintfW | semmle.label | [summary param] *2 in StringCchPrintfW |
 | test.cpp:193:32:193:34 | *str | semmle.label | *str |
+| test.cpp:195:20:195:23 | StringCchPrintfW output argument | semmle.label | StringCchPrintfW output argument |
+| test.cpp:195:31:195:33 | *str | semmle.label | *str |
 | test.cpp:195:31:195:33 | *str | semmle.label | *str |
 | test.cpp:197:11:197:14 | *wstr | semmle.label | *wstr |
 | test.cpp:204:25:204:36 | *call to get_string | semmle.label | *call to get_string |
@@ -88,6 +97,7 @@ nodes
 | test.cpp:245:25:245:36 | *call to get_string | semmle.label | *call to get_string |
 | test.cpp:247:12:247:16 | *hello | semmle.label | *hello |
 subpaths
+| test.cpp:195:31:195:33 | *str | test.cpp:179:6:179:21 | [summary param] *2 in StringCchPrintfW | test.cpp:179:6:179:21 | [summary param] *0 in StringCchPrintfW [Return] | test.cpp:195:20:195:23 | StringCchPrintfW output argument |
 #select
 | NonConstantFormat.c:30:10:30:16 | *access to array | NonConstantFormat.c:28:27:28:30 | **argv | NonConstantFormat.c:30:10:30:16 | *access to array | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | NonConstantFormat.c:30:3:30:8 | call to printf | printf |
 | NonConstantFormat.c:41:9:41:45 | *call to any_random_function | NonConstantFormat.c:41:9:41:45 | *call to any_random_function | NonConstantFormat.c:41:9:41:45 | *call to any_random_function | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | NonConstantFormat.c:41:2:41:7 | call to printf | printf |

@@ -95,10 +95,6 @@ predicate basicLocalFlowStep(Node nodeFrom, Node nodeTo) {
     nodeTo = instructionNode(succ) and
     nodeTo != nodeFrom
   )
-  or
-  // GlobalFunctionNode -> use
-  nodeFrom =
-    any(GlobalFunctionNode fn | fn.getFunction() = nodeTo.asExpr().(FunctionName).getTarget())
 }
 
 pragma[noinline]

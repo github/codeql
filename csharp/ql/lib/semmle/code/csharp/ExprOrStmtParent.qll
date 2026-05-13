@@ -13,7 +13,7 @@ private import internal.Location
  * An element that can have a child statement or expression.
  */
 class ExprOrStmtParent extends Element, @exprorstmt_parent {
-  final override ControlFlowElement getChild(int i) {
+  override ControlFlowElement getChild(int i) {
     result = this.getChildExpr(i) or
     result = this.getChildStmt(i)
   }
@@ -42,14 +42,8 @@ class ExprOrStmtParent extends Element, @exprorstmt_parent {
  *
  * An element that can have a child top-level expression.
  */
-class TopLevelExprParent extends Element, @top_level_expr_parent {
+class TopLevelExprParent extends ExprOrStmtParent, @top_level_expr_parent {
   final override Expr getChild(int i) { result = this.getChildExpr(i) }
-
-  /** Gets the `i`th child expression of this element (zero-based). */
-  final Expr getChildExpr(int i) { expr_parent_top_level_adjusted(result, i, this) }
-
-  /** Gets a child expression of this element, if any. */
-  final Expr getAChildExpr() { result = this.getChildExpr(_) }
 }
 
 /** INTERNAL: Do not use. */
@@ -129,13 +123,6 @@ private module Cached {
     result = parent.getAChildStmt()
   }
 
-  pragma[inline]
-  private ControlFlowElement enclosingStart(ControlFlowElement cfe) {
-    result = cfe
-    or
-    getAChild(result).(AnonymousFunctionExpr) = cfe
-  }
-
   private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {
     child = getAChild(parent) and
     not child = getBody(_)
@@ -145,7 +132,7 @@ private module Cached {
   cached
   predicate enclosingBody(ControlFlowElement cfe, ControlFlowElement body) {
     body = getBody(_) and
-    parent*(enclosingStart(cfe), body)
+    parent*(cfe, body)
   }
 
   /** Holds if the enclosing callable of `cfe` is `c`. */
@@ -153,7 +140,7 @@ private module Cached {
   predicate enclosingCallable(ControlFlowElement cfe, Callable c) {
     enclosingBody(cfe, getBody(c))
     or
-    parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
+    parent*(cfe, c.(Constructor).getInitializer())
     or
     parent*(cfe, c.(Constructor).getObjectInitializerCall())
     or

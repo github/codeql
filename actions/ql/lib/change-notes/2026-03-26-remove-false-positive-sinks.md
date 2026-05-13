@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Removed false positive injection sink models for the `context` input of `docker/build-push-action` and the `allowed-endpoints` input of `step-security/harden-runner`.

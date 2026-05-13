@@ -1192,6 +1192,7 @@
 /test/extractor-tests/generated/type/BoundGenericClassType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/BoundGenericEnumType/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/type/BoundGenericStructType/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/type/BuiltinFixedArrayType/BuiltinFixedArrayType.ql linguist-generated
 /test/extractor-tests/generated/type/BuiltinIntegerType/BuiltinIntegerType.ql linguist-generated
 /test/extractor-tests/generated/type/BuiltinType/BuiltinType.ql linguist-generated
 /test/extractor-tests/generated/type/ClassType/MISSING_SOURCE.txt linguist-generated

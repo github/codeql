@@ -40,6 +40,8 @@
 | serverSide.js:145:5:145:25 | axios.g ... dedUrl) | serverSide.js:139:19:139:31 | req.query.url | serverSide.js:145:15:145:24 | encodedUrl | The $@ of this request depends on a $@. | serverSide.js:145:15:145:24 | encodedUrl | URL | serverSide.js:139:19:139:31 | req.query.url | user-provided value |
 | serverSide.js:147:5:147:25 | axios.g ... pedUrl) | serverSide.js:139:19:139:31 | req.query.url | serverSide.js:147:15:147:24 | escapedUrl | The $@ of this request depends on a $@. | serverSide.js:147:15:147:24 | escapedUrl | URL | serverSide.js:139:19:139:31 | req.query.url | user-provided value |
 | serverSide.js:151:1:151:15 | request(custom) | serverSide.js:150:16:150:51 | require ... ource() | serverSide.js:151:9:151:14 | custom | The $@ of this request depends on a $@. | serverSide.js:151:9:151:14 | custom | URL | serverSide.js:150:16:150:51 | require ... ource() | user-provided value |
+| vercel.ts:5:26:5:35 | fetch(url) | vercel.ts:4:15:4:23 | req.query | vercel.ts:5:32:5:34 | url | The $@ of this request depends on a $@. | vercel.ts:5:32:5:34 | url | URL | vercel.ts:4:15:4:23 | req.query | user-provided value |
+| vercel.ts:5:26:5:35 | fetch(url) | vercel.ts:4:15:4:27 | req.query.url | vercel.ts:5:32:5:34 | url | The $@ of this request depends on a $@. | vercel.ts:5:32:5:34 | url | URL | vercel.ts:4:15:4:27 | req.query.url | user-provided value |
 edges
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:15 | { url } | Request/app/api/proxy/route2.serverSide.ts:4:11:4:13 | url | provenance |  |
 | Request/app/api/proxy/route2.serverSide.ts:4:11:4:13 | url | Request/app/api/proxy/route2.serverSide.ts:5:27:5:29 | url | provenance |  |
@@ -147,6 +149,9 @@ edges
 | serverSide.js:146:31:146:35 | input | serverSide.js:146:24:146:36 | escape(input) | provenance |  |
 | serverSide.js:150:7:150:12 | custom | serverSide.js:151:9:151:14 | custom | provenance |  |
 | serverSide.js:150:16:150:51 | require ... ource() | serverSide.js:150:7:150:12 | custom | provenance |  |
+| vercel.ts:4:9:4:11 | url | vercel.ts:5:32:5:34 | url | provenance |  |
+| vercel.ts:4:15:4:23 | req.query | vercel.ts:4:9:4:11 | url | provenance |  |
+| vercel.ts:4:15:4:27 | req.query.url | vercel.ts:4:9:4:11 | url | provenance |  |
 nodes
 | Request/app/api/proxy/route2.serverSide.ts:4:9:4:15 | { url } | semmle.label | { url } |
 | Request/app/api/proxy/route2.serverSide.ts:4:11:4:13 | url | semmle.label | url |
@@ -277,4 +282,8 @@ nodes
 | serverSide.js:150:7:150:12 | custom | semmle.label | custom |
 | serverSide.js:150:16:150:51 | require ... ource() | semmle.label | require ... ource() |
 | serverSide.js:151:9:151:14 | custom | semmle.label | custom |
+| vercel.ts:4:9:4:11 | url | semmle.label | url |
+| vercel.ts:4:15:4:23 | req.query | semmle.label | req.query |
+| vercel.ts:4:15:4:27 | req.query.url | semmle.label | req.query.url |
+| vercel.ts:5:32:5:34 | url | semmle.label | url |
 subpaths

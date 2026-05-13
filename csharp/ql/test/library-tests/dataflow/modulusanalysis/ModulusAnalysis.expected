@@ -1,7 +1,3 @@
-| ModulusAnalysis.cs:6:15:6:21 | ... = ... | 0 | 42 | 0 |
-| ModulusAnalysis.cs:6:20:6:21 | 42 | 0 | 42 | 0 |
-| ModulusAnalysis.cs:7:15:7:21 | ... = ... | 0 | 43 | 0 |
-| ModulusAnalysis.cs:7:20:7:21 | 43 | 0 | 43 | 0 |
 | ModulusAnalysis.cs:11:18:11:18 | access to parameter i | SSA param(i) | 0 | 0 |
 | ModulusAnalysis.cs:11:18:11:22 | ... + ... | SSA param(i) | 3 | 0 |
 | ModulusAnalysis.cs:11:22:11:22 | 3 | 0 | 3 | 0 |
