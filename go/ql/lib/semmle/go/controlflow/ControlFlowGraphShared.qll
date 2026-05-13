@@ -62,7 +62,11 @@ module GoCfg {
     }
 
     AstNode getChild(AstNode n, int index) {
-      not skipCfg(result) and not skipCfg(n) and result = n.getChild(index)
+      not skipCfg(n) and
+      not skipCfg(result) and
+      exists(Go::AstNode c | c = n.getChild(index) |
+        if c instanceof Go::ParenExpr then result = c.(Go::ParenExpr).stripParens() else result = c
+      )
     }
 
     class Callable extends AstNode {
