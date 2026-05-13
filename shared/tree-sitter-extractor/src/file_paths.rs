@@ -3,6 +3,25 @@ use std::{
     path::{Path, PathBuf},
 };
 
+/// Given an absolute path, returns a relative path if it's under `source_root`,
+/// otherwise a properly-encoded `file:` URI. This is used for diagnostic locations, which
+/// should use relative paths per the CodeQL diagnostic message format spec.
+pub fn relativize_for_diagnostic(path: &Path, source_root: Option<&Path>) -> String {
+    source_root
+        .and_then(|root| path.strip_prefix(root).ok())
+        .and_then(|rel| rel.to_str())
+        .map(|s| s.to_owned())
+        .unwrap_or_else(|| path_to_file_uri(path))
+}
+
+/// Convert a path to a `file:` URI, using the `url` crate for proper percent-encoding.
+/// Falls back to a simple `file://` prefix if the `url` crate can't handle the path.
+fn path_to_file_uri(path: &Path) -> String {
+    url::Url::from_file_path(path)
+        .map(|u| u.to_string())
+        .unwrap_or_else(|()| format!("file://{}", path.display()))
+}
+
 /// This represents the minimum supported path transformation that is needed to support extracting
 /// overlay databases. Specifically, it represents a transformer where one path prefix is replaced
 /// with a different prefix.
@@ -223,4 +242,45 @@ pub fn path_for(
         }
     }
     result
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn relativize_under_source_root() {
+        let path = Path::new("/home/runner/work/repo/src/foo.rb");
+        let result =
+            relativize_for_diagnostic(path, Some(Path::new("/home/runner/work/repo")));
+        assert_eq!(result, "src/foo.rb");
+    }
+
+    #[test]
+    fn relativize_outside_source_root_produces_file_uri() {
+        let path = Path::new("/other/location/foo.rb");
+        let result =
+            relativize_for_diagnostic(path, Some(Path::new("/home/runner/work/repo")));
+        assert_eq!(result, "file:///other/location/foo.rb");
+    }
+
+    #[test]
+    fn relativize_no_source_root_produces_file_uri() {
+        let path = Path::new("/home/runner/work/repo/src/foo.rb");
+        let result = relativize_for_diagnostic(path, None);
+        assert_eq!(result, "file:///home/runner/work/repo/src/foo.rb");
+    }
+
+    #[test]
+    fn path_to_file_uri_encodes_spaces() {
+        let result = path_to_file_uri(Path::new("/home/user/my project/foo.rb"));
+        assert_eq!(result, "file:///home/user/my%20project/foo.rb");
+    }
+
+    #[test]
+    fn relativize_exact_root_path() {
+        let path = Path::new("/repo/foo.rb");
+        let result = relativize_for_diagnostic(path, Some(Path::new("/repo")));
+        assert_eq!(result, "foo.rb");
+    }
 }
