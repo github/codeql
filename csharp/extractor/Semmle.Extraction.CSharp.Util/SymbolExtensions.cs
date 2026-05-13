@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Util
         /// "op_DecrementAssignment" respectively.
         /// Thus we need to handle this explicitly to avoid postfixing them with an "=".
         /// </summary>
-        private static bool isIncrementOrDecrement(string operatorName) => operatorName == "++" || operatorName == "--";
+        private static bool IsIncrementOrDecrement(string operatorName) => operatorName == "++" || operatorName == "--";
 
         /// <summary>
         /// Convert an operator method name in to a symbolic name.
@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Util
             if (match.Success && methodToOperator.TryGetValue($"op_{match.Groups[2]}", out var rawOperatorName))
             {
                 var prefix = match.Groups[1].Success ? "checked " : "";
-                var postfix = match.Groups[3].Success && !isIncrementOrDecrement(rawOperatorName) ? "=" : "";
+                var postfix = match.Groups[3].Success && !IsIncrementOrDecrement(rawOperatorName) ? "=" : "";
                 operatorName = $"{prefix}{rawOperatorName}{postfix}";
                 return true;
             }
