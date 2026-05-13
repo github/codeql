@@ -120,7 +120,7 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
     let mut field_elems: std::collections::HashMap<String, Vec<TokenStream>> =
         std::collections::HashMap::new();
     let mut bare_children: Vec<TokenStream> = Vec::new();
-    let mut push_field_elem = |order: &mut Vec<String>,
+    let push_field_elem = |order: &mut Vec<String>,
                                map: &mut std::collections::HashMap<String, Vec<TokenStream>>,
                                name: String,
                                elem: TokenStream| {
