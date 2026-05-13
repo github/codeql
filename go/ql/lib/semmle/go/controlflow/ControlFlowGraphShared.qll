@@ -26,6 +26,8 @@ module GoCfg {
   private import Cfg2
   import Public
 
+  class CfgScope = Ast::Callable;
+
   /** Holds if `e` has an implicit field selection at `index` for `implicitField`. */
   predicate implicitFieldSelection(Go::AstNode e, int index, Go::Field implicitField) {
     Input::implicitFieldSelection(e, index, implicitField)
