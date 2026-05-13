@@ -1363,7 +1363,7 @@ class PhiNode extends Definition instanceof SsaImpl::PhiNode {
   override predicate isCertain() {
     // If this phi node is part of a phi cycle of phi nodes the least
     // fixed-point semantics of datalog means we don't get the right answer.
-    // So we perform an SCC reduction to simulate greated fixed-point semantics.
+    // So we perform an SCC reduction to simulate greatest fixed-point semantics.
     getCycle(this).isCertain()
     or
     // If there is no cycle we get the right semantics through traditional
