@@ -109,10 +109,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return MemberAccess.Create(info, (MemberAccessExpressionSyntax)info.Node);
 
                     case SyntaxKind.UnaryMinusExpression:
-                        return Unary.Create(info.SetKind(ExprKind.MINUS));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.MINUS));
 
                     case SyntaxKind.UnaryPlusExpression:
-                        return Unary.Create(info.SetKind(ExprKind.PLUS));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.PLUS));
 
                     case SyntaxKind.SimpleLambdaExpression:
                         return Lambda.Create(info, (SimpleLambdaExpressionSyntax)info.Node);
@@ -146,16 +146,16 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return Name.Create(info);
 
                     case SyntaxKind.LogicalNotExpression:
-                        return Unary.Create(info.SetKind(ExprKind.LOG_NOT));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.LOG_NOT));
 
                     case SyntaxKind.BitwiseNotExpression:
-                        return Unary.Create(info.SetKind(ExprKind.BIT_NOT));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.BIT_NOT));
 
                     case SyntaxKind.PreIncrementExpression:
-                        return Unary.Create(info.SetKind(ExprKind.PRE_INCR));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.PRE_INCR));
 
                     case SyntaxKind.PreDecrementExpression:
-                        return Unary.Create(info.SetKind(ExprKind.PRE_DECR));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.PRE_DECR));
 
                     case SyntaxKind.ThisExpression:
                         return This.CreateExplicit(info);
@@ -164,10 +164,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return PropertyFieldAccess.Create(info);
 
                     case SyntaxKind.AddressOfExpression:
-                        return Unary.Create(info.SetKind(ExprKind.ADDRESS_OF));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.ADDRESS_OF));
 
                     case SyntaxKind.PointerIndirectionExpression:
-                        return Unary.Create(info.SetKind(ExprKind.POINTER_INDIRECTION));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.POINTER_INDIRECTION));
 
                     case SyntaxKind.DefaultExpression:
                         return Default.Create(info);
@@ -248,7 +248,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         return RangeExpression.Create(info);
 
                     case SyntaxKind.IndexExpression:
-                        return Unary.Create(info.SetKind(ExprKind.INDEX));
+                        return PrefixUnary.Create(info.SetKind(ExprKind.INDEX));
 
                     case SyntaxKind.SwitchExpression:
                         return Switch.Create(info);

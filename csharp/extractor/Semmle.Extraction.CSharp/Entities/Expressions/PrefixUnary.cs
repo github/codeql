@@ -4,9 +4,9 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal class Unary : Expression<PrefixUnaryExpressionSyntax>
+    internal class PrefixUnary : Expression<PrefixUnaryExpressionSyntax>
     {
-        private Unary(ExpressionNodeInfo info, ExprKind kind)
+        private PrefixUnary(ExpressionNodeInfo info, ExprKind kind)
             : base(info.SetKind(UnaryOperatorKind(info.Context, info.Kind, info.Node)))
         {
             operatorKind = kind;
@@ -14,9 +14,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private readonly ExprKind operatorKind;
 
-        public static Unary Create(ExpressionNodeInfo info)
+        public static PrefixUnary Create(ExpressionNodeInfo info)
         {
-            var ret = new Unary(info, info.Kind);
+            var ret = new PrefixUnary(info, info.Kind);
             ret.TryPopulate();
             return ret;
         }
