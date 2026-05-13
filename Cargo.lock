@@ -456,7 +456,6 @@ dependencies = [
  "tree-sitter",
  "tree-sitter-json",
  "tree-sitter-ql",
- "url",
  "yeast",
  "zstd",
 ]
