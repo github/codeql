@@ -271,13 +271,15 @@ named:
     body: block
     catch*: catch_block
   else:
+  enum_case_entry:
+    data_contents?: enum_type_parameters
+    name: simple_identifier
+    raw_value?: expression
   enum_class_body:
     member*: [enum_entry, type_level_declaration]
   enum_entry:
-    data_contents*: enum_type_parameters
+    case+: enum_case_entry
     modifiers?: modifiers
-    name+: simple_identifier
-    raw_value*: expression
   enum_type_parameter:
     default_value?: expression
     external_name?: wildcard_pattern

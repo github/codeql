@@ -1681,14 +1681,13 @@ module.exports = grammar({
         field("modifiers", optional($.modifiers)),
         optional("indirect"),
         "case",
-        sep1(
-          seq(
-            field("name", $.simple_identifier),
-            optional($._enum_entry_suffix)
-          ),
-          ","
-        ),
+        sep1(field("case", $.enum_case_entry), ","),
         optional(";")
+      ),
+    enum_case_entry: ($) =>
+      seq(
+        field("name", $.simple_identifier),
+        optional($._enum_entry_suffix)
       ),
     _enum_entry_suffix: ($) =>
       choice(
