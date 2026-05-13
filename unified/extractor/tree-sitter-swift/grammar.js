@@ -1400,10 +1400,10 @@ module.exports = grammar({
       prec.right(
         seq(
           $._possibly_async_binding_pattern_kind,
-          sep1($._single_modifierless_property_declaration, ",")
+          sep1(field("declarator", $.property_binding), ",")
         )
       ),
-    _single_modifierless_property_declaration: ($) =>
+    property_binding: ($) =>
       prec.left(
         seq(
           field("name", alias($._no_expr_pattern_already_bound, $.pattern)),

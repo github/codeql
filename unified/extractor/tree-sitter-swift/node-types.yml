@@ -507,15 +507,17 @@ named:
     operation: ["&", "+", "++", "-", "--", ".", bang, custom_operator, "~"]
     target: expression
   property_behavior_modifier:
+  property_binding:
+    computed_value?: computed_property
+    name: pattern
+    observers?: willset_didset_block
+    type?: type_annotation
+    type_constraints?: type_constraints
+    value?: expression
   property_declaration:
     binding: value_binding_pattern
-    computed_value*: computed_property
+    declarator+: property_binding
     modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
-    name+: pattern
-    observers*: willset_didset_block
-    type*: type_annotation
-    type_constraints*: type_constraints
-    value*: expression
   property_modifier:
   protocol_body:
     member*: protocol_member_declaration
