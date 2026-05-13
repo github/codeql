@@ -105,8 +105,8 @@ module.exports = grammar({
     // { (foo, bar) ...
     [$.expression, $.lambda_parameter],
     [$._primary_expression, $.lambda_parameter],
-    // (start: start, end: end)
-    [$._tuple_type_item_identifier, $.tuple_expression],
+    // (foo) where foo could be a binding pattern or a tuple expression item.
+    [$._binding_pattern_with_expr, $.tuple_expression_item],
     // After a `{` in a function or switch context, it's ambigous whether we're starting a set of local statements or
     // applying some modifiers to a capture or pattern.
     [$.modifiers],
@@ -931,26 +931,25 @@ module.exports = grammar({
         PRECS.tuple,
         seq(
           "(",
-          sep1Opt(
-            seq(
-              optional(seq(field("name", $.simple_identifier), ":")),
-              field("value", $.expression)
-            ),
-            ","
-          ),
+          sep1Opt(field("element", $.tuple_expression_item), ","),
           ")"
         )
+      ),
+    tuple_expression_item: ($) =>
+      seq(
+        optional(seq(field("name", $.simple_identifier), ":")),
+        field("value", $.expression)
       ),
     array_literal: ($) =>
       seq("[", optional(sep1Opt(field("element", $.expression), ",")), "]"),
     dictionary_literal: ($) =>
       seq(
         "[",
-        choice(":", sep1Opt($._dictionary_literal_item, ",")),
+        choice(":", sep1Opt(field("element", $.dictionary_literal_item), ",")),
         optional(","),
         "]"
       ),
-    _dictionary_literal_item: ($) =>
+    dictionary_literal_item: ($) =>
       seq(field("key", $.expression), ":", field("value", $.expression)),
     special_literal: ($) =>
       seq(
@@ -968,11 +967,13 @@ module.exports = grammar({
     playground_literal: ($) =>
       seq(
         $._hash_symbol,
-        choice("colorLiteral", "fileLiteral", "imageLiteral"),
+        field("kind", choice("colorLiteral", "fileLiteral", "imageLiteral")),
         "(",
-        sep1Opt(seq(field("name", $.simple_identifier), ":", field("value", $.expression)), ","),
+        sep1Opt(field("argument", $.playground_literal_argument), ","),
         ")"
       ),
+    playground_literal_argument: ($) =>
+      seq(field("name", $.simple_identifier), ":", field("value", $.expression)),
     lambda_literal: ($) =>
       prec.left(
         PRECS.lambda,

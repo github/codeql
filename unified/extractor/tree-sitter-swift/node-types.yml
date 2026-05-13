@@ -248,8 +248,10 @@ named:
     entry*: [bin_literal, boolean_literal, hex_literal, integer_literal, line_string_literal, multi_line_string_literal, "nil", oct_literal, raw_string_literal, real_literal, regex_literal, simple_identifier]
   diagnostic:
   dictionary_literal:
-    key*: expression
-    value*: expression
+    element*: dictionary_literal_item
+  dictionary_literal_item:
+    key: expression
+    value: expression
   dictionary_type:
     key: type
     value: type
@@ -483,8 +485,11 @@ named:
     bound_identifier?: simple_identifier
     kind: [binding_pattern, case_pattern, expression, tuple_pattern, type_casting_pattern, wildcard_pattern]
   playground_literal:
-    name+: simple_identifier
-    value+: expression
+    argument+: playground_literal_argument
+    kind: ["colorLiteral", "fileLiteral", "imageLiteral"]
+  playground_literal_argument:
+    name: simple_identifier
+    value: expression
   postfix_expression:
     operation: ["++", "--", bang]
     target: expression
@@ -613,8 +618,10 @@ named:
     operator: try_operator
   try_operator:
   tuple_expression:
-    name*: simple_identifier
-    value+: expression
+    element+: tuple_expression_item
+  tuple_expression_item:
+    name?: simple_identifier
+    value: expression
   tuple_pattern:
     item+: tuple_pattern_item
   tuple_pattern_item:
