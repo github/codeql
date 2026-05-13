@@ -366,11 +366,16 @@ def _get_source_root():
 def _relative_path(path):
     """Make a path relative to the source root for use in diagnostic locations.
     If the path is not under the source root, return it unchanged."""
-    source_root = _get_source_root()
-    relpath = os.path.relpath(path, source_root)
+    source_root = os.path.abspath(_get_source_root())
+    abs_path = os.path.abspath(path)
+    try:
+        relpath = os.path.relpath(abs_path, source_root)
+    except ValueError:
+        # On Windows, relpath raises ValueError for paths on different drives
+        return path
     if relpath.startswith(os.pardir):
         return path
-    return relpath
+    return relpath.replace(os.sep, "/")
 
 def syntax_error_message(exception, unit):
     diag_path = _relative_path(unit.path)
