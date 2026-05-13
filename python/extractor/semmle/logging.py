@@ -359,11 +359,25 @@ def get_stack_trace_lines():
             return lines[:i]
     return lines
 
+def _get_source_root():
+    """Get the source root directory for relativizing diagnostic paths."""
+    return os.environ.get("LGTM_SRC", os.getcwd())
+
+def _relative_path(path):
+    """Make a path relative to the source root for use in diagnostic locations.
+    If the path is not under the source root, return it unchanged."""
+    source_root = _get_source_root()
+    relpath = os.path.relpath(path, source_root)
+    if relpath.startswith(os.pardir):
+        return path
+    return relpath
+
 def syntax_error_message(exception, unit):
-    l = Location(file=unit.path, startLine=exception.lineno, startColumn=exception.offset)
+    diag_path = _relative_path(unit.path)
+    l = Location(file=diag_path, startLine=exception.lineno, startColumn=exception.offset)
     error = (DiagnosticMessage(Source("py/diagnostics/syntax-error", "Could not process some files due to syntax errors"), Severity.WARNING)
              .with_location(l)
-             .markdown("A parse error occurred while processing `{}`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.".format(unit.path))
+             .markdown("A parse error occurred while processing `{}`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.".format(diag_path))
              .attribute("traceback", get_stack_trace_lines())
              .attribute("args", exception.args)
              .status_page()
@@ -374,7 +388,7 @@ def syntax_error_message(exception, unit):
 
 def recursion_error_message(exception, unit):
     # if unit is a BuiltinModuleExtractable, there will be no path attribute
-    l = Location(file=unit.path) if hasattr(unit, "path") else None
+    l = Location(file=_relative_path(unit.path)) if hasattr(unit, "path") else None
     return (DiagnosticMessage(Source("py/diagnostics/recursion-error", "Recursion error in Python extractor"), Severity.ERROR)
             .with_location(l)
             .text(exception.args[0])
@@ -385,7 +399,7 @@ def recursion_error_message(exception, unit):
 
 def internal_error_message(exception, unit):
     # if unit is a BuiltinModuleExtractable, there will be no path attribute
-    l = Location(file=unit.path) if hasattr(unit, "path") else None
+    l = Location(file=_relative_path(unit.path)) if hasattr(unit, "path") else None
     return (DiagnosticMessage(Source("py/diagnostics/internal-error", "Internal error in Python extractor"), Severity.ERROR)
             .with_location(l)
             .text("Internal error")
