@@ -1329,3 +1329,11 @@ void nsdmi_test() {
   nsdmi y(source());
   sink(y.i); // $ ir ast
 }
+
+void certain_def_uninitialized_instruction_test() {
+  for(int i = 0; i < 10; i++) {
+    char buffer[10];
+    sink(buffer[0]); // $ SPURIOUS: ir ast
+    buffer[0] = source();
+  }
+}
