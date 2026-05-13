@@ -4,8 +4,6 @@ const { AzureOpenAI } = require("openai");
 const {
   GuardrailsOpenAI,
   GuardrailsAzureOpenAI,
-  checkPlainText,
-  runGuardrails,
 } = require("@openai/guardrails");
 
 const app = express();
@@ -153,26 +151,6 @@ app.get("/test", async (req, res) => {
   await unprotected.responses.create({
     model: "gpt-4.1",
     input: userInput, // $ Alert[js/user-prompt-injection]
-  });
-
-  // === checkPlainText sanitizer (SHOULD NOT ALERT) ===
-
-  await checkPlainText(userInput, configBundle);
-
-  // After checkPlainText, the input is safe because it would have thrown
-  await client.responses.create({
-    model: "gpt-4.1",
-    input: userInput, // OK - sanitized by checkPlainText
-  });
-
-  // === runGuardrails sanitizer (SHOULD NOT ALERT) ===
-
-  const userInput2 = req.query.userInput2;
-  await runGuardrails(userInput2, configBundle);
-
-  await client.responses.create({
-    model: "gpt-4.1",
-    input: userInput2, // OK - sanitized by runGuardrails
   });
 
   // === Constant comparison sanitizer (SHOULD NOT ALERT) ===

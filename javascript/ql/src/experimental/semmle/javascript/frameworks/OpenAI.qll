@@ -16,18 +16,6 @@ private predicate isSystemOrDevMessage(API::Node msg) {
   msg.getMember("role").asSink().mayHaveStringValue(["system", "developer", "assistant"])
 }
 
-module OpenAIGuardrails {
-  /** Gets a reference to the `GuardrailsOpenAI` class. */
-  API::Node classRef() {
-    result = API::moduleImport("@openai/guardrails")
-  }
-
-  API::Node getSanitizerNode() {
-    // checkPlainText(userInput, bundle) or runGuardrails(userInput, bundle)
-    result = classRef().getMember(["checkPlainText", "runGuardrails"])
-  }
-}
-
 module OpenAI {
   /** Gets a reference to all OpenAI client instances. */
   private API::Node allClients() {
@@ -41,6 +29,33 @@ module OpenAI {
           .getMember("create")
           .getReturn()
           .getPromised()
+  }
+
+  /** Gets a guarded client that is clearly configured without input guardrails. */
+  private API::Node unprotectedGuardedClient() {
+    exists(API::Node createCall |
+      createCall =
+        API::moduleImport("@openai/guardrails")
+            .getMember(["GuardrailsOpenAI", "GuardrailsAzureOpenAI"])
+            .getMember("create") and
+      result = createCall.getReturn().getPromised() and
+      exists(createCall.getParameter(0).getMember("version")) and
+      not exists(
+        createCall.getParameter(0).getMember("input").getMember("guardrails").getArrayElement()
+      ) and
+      not exists(
+        createCall.getParameter(0).getMember("pre_flight").getMember("guardrails").getArrayElement()
+      )
+    )
+  }
+
+  /** Gets a reference to all clients without input guardrails. */
+  private API::Node clientsNoGuardrails() {
+    result = API::moduleImport("openai").getInstance()
+    or
+    result = API::moduleImport("openai").getMember(["OpenAI", "AzureOpenAI"]).getInstance()
+    or
+    result = unprotectedGuardedClient()
   }
 
   /**
@@ -100,10 +115,18 @@ module OpenAI {
    * These require checking a sibling `role` property and cannot be expressed in MaD.
    */
   API::Node getUserPromptNode() {
+    // responses.create({ input: "string" })
+    result =
+      clientsNoGuardrails()
+          .getMember("responses")
+          .getMember("create")
+          .getParameter(0)
+          .getMember("input")
+    or
     // responses.create({ input: [{ role: "user", content: ... }] })
     exists(API::Node msg |
       msg =
-        allClients()
+        clientsNoGuardrails()
             .getMember("responses")
             .getMember("create")
             .getParameter(0)
@@ -117,7 +140,7 @@ module OpenAI {
     // chat.completions.create({ messages: [{ role: "user", content: ... }] })
     exists(API::Node msg, API::Node content |
       msg =
-        allClients()
+        clientsNoGuardrails()
             .getMember("chat")
             .getMember("completions")
             .getMember("create")
@@ -132,10 +155,34 @@ module OpenAI {
       result = content.getArrayElement().getMember("text")
     )
     or
+    // Legacy completions API: completions.create({ prompt: ... })
+    result =
+      clientsNoGuardrails()
+          .getMember("completions")
+          .getMember("create")
+          .getParameter(0)
+          .getMember("prompt")
+    or
+    // images.generate({ prompt: ... }) and images.edit({ prompt: ... })
+    result =
+      clientsNoGuardrails()
+          .getMember("images")
+          .getMember(["generate", "edit"])
+          .getParameter(0)
+          .getMember("prompt")
+    or
+    // embeddings.create({ input: ... })
+    result =
+      clientsNoGuardrails()
+          .getMember("embeddings")
+          .getMember("create")
+          .getParameter(0)
+          .getMember("input")
+    or
     // beta.threads.messages.create(threadId, { role: "user", content: ... })
     exists(API::Node msg |
       msg =
-        allClients()
+        clientsNoGuardrails()
             .getMember("beta")
             .getMember("threads")
             .getMember("messages")
@@ -145,6 +192,15 @@ module OpenAI {
     |
       result = msg.getMember("content")
     )
+    or
+    // audio.transcriptions/translations.create({ prompt: ... })
+    result =
+      clientsNoGuardrails()
+          .getMember("audio")
+          .getMember(["transcriptions", "translations"])
+          .getMember("create")
+          .getParameter(0)
+          .getMember("prompt")
   }
 }
 

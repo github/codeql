@@ -21,8 +21,3 @@ extensions:
       - ["@openai/agents", "Member[tool].Argument[0].Member[description]", "system-prompt-injection"]
       - ["@openai/guardrails", "Member[tool].Argument[0].Member[description]", "system-prompt-injection"]
       - ["@openai/guardrails", "Member[GuardrailAgent].Member[create].Argument[2]", "system-prompt-injection"]
-      - ["openai.Client", "Member[responses].Member[create].Argument[0].Member[input]", "user-prompt-injection"]
-      - ["openai.Client", "Member[completions].Member[create].Argument[0].Member[prompt]", "user-prompt-injection"]
-      - ["openai.Client", "Member[images].Member[generate,edit].Argument[0].Member[prompt]", "user-prompt-injection"]
-      - ["openai.Client", "Member[embeddings].Member[create].Argument[0].Member[input]", "user-prompt-injection"]
-      - ["openai.Client", "Member[audio].Member[transcriptions,translations].Member[create].Argument[0].Member[prompt]", "user-prompt-injection"]
