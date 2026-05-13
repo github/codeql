@@ -14,12 +14,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private readonly ExprKind operatorKind;
 
-        public static PrefixUnary Create(ExpressionNodeInfo info)
-        {
-            var ret = new PrefixUnary(info, info.Kind);
-            ret.TryPopulate();
-            return ret;
-        }
+        public static Expression Create(ExpressionNodeInfo info) => new PrefixUnary(info, info.Kind).TryPopulate();
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
