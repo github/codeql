@@ -8,6 +8,7 @@ members = [
     "shared/yeast-macros",
     "ruby/extractor",
     "unified/extractor",
+    "unified/extractor/tree-sitter-swift",
     "rust/extractor",
     "rust/extractor/macros",
     "rust/ast-generator",

@@ -479,13 +479,14 @@ impl<'a> Visitor<'a> {
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
         let loc = location_for(self, self.file_label, node);
         let loc_label = location_label(self.trap_writer, loc);
+        let type_name = TypeName {
+            kind: node.kind().to_owned(),
+            named: node.is_named(),
+        };
         let table = self
             .schema
-            .get(&TypeName {
-                kind: node.kind().to_owned(),
-                named: node.is_named(),
-            })
-            .unwrap();
+            .get(&type_name)
+            .unwrap_or_else(|| panic!("missing extractor schema entry for {type_name:?}"));
         let mut valid = true;
         let parent_info = match self.stack.last_mut() {
             Some(p) if !node.is_extra() => {
