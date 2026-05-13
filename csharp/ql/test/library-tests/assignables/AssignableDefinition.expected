@@ -1,6 +1,6 @@
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:5:9:5:17 | ... = ... | Assignables.cs:5:9:5:13 | access to field Field | Assignables.cs:5:17:5:17 | 0 | certain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:18:9:18:24 | ... = ... | Assignables.cs:18:9:18:13 | access to field Field | Assignables.cs:18:17:18:24 | access to property Property | certain |
-| Assignables.cs:5:9:5:13 | Field | Assignables.cs:19:9:19:15 | ...-- | Assignables.cs:19:9:19:13 | access to field Field | Assignables.cs:19:9:19:15 | <none> | certain |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:19:9:19:15 | ...-- | Assignables.cs:19:9:19:13 | access to field Field | Assignables.cs:19:9:19:15 | ...-- | certain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:29:17:29:21 | access to field Field | Assignables.cs:29:17:29:21 | access to field Field | Assignables.cs:29:17:29:21 | <none> | certain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:30:34:30:38 | access to field Field | Assignables.cs:30:34:30:38 | access to field Field | Assignables.cs:30:34:30:38 | <none> | certain |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:31:36:31:40 | access to field Field | Assignables.cs:31:36:31:40 | access to field Field | Assignables.cs:31:36:31:40 | <none> | uncertain |
@@ -9,22 +9,22 @@
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:34:40:34:44 | access to field Field | Assignables.cs:34:40:34:44 | access to field Field | Assignables.cs:34:40:34:44 | <none> | uncertain |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:6:32:6:34 | ... = ... | Assignables.cs:6:9:6:16 | access to property Property | Assignables.cs:6:34:6:34 | 1 | certain |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:20:9:20:33 | ... = ... | Assignables.cs:20:9:20:16 | access to property Property | Assignables.cs:20:20:20:33 | access to indexer | certain |
-| Assignables.cs:6:9:6:16 | Property | Assignables.cs:21:9:21:18 | ...++ | Assignables.cs:21:9:21:16 | access to property Property | Assignables.cs:21:9:21:18 | <none> | certain |
+| Assignables.cs:6:9:6:16 | Property | Assignables.cs:21:9:21:18 | ...++ | Assignables.cs:21:9:21:16 | access to property Property | Assignables.cs:21:9:21:18 | ...++ | certain |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:96:9:96:36 | ... = ... | Assignables.cs:96:10:96:17 | access to property Property | Assignables.cs:96:32:96:32 | 2 | certain |
 | Assignables.cs:8:24:8:28 | Event | Assignables.cs:23:9:23:25 | ... += ... | Assignables.cs:23:9:23:13 | access to event Event | Assignables.cs:23:9:23:25 | <none> | certain |
 | Assignables.cs:8:24:8:28 | Event | Assignables.cs:25:9:25:25 | ... -= ... | Assignables.cs:25:9:25:13 | access to event Event | Assignables.cs:25:9:25:25 | <none> | certain |
 | Assignables.cs:9:9:9:12 | Item | Assignables.cs:26:9:26:33 | ... = ... | Assignables.cs:26:9:26:22 | access to indexer | Assignables.cs:26:26:26:33 | access to local variable variable | certain |
-| Assignables.cs:9:9:9:12 | Item | Assignables.cs:27:9:27:21 | ...++ | Assignables.cs:27:9:27:19 | access to indexer | Assignables.cs:27:9:27:21 | <none> | certain |
+| Assignables.cs:9:9:9:12 | Item | Assignables.cs:27:9:27:21 | ...++ | Assignables.cs:27:9:27:19 | access to indexer | Assignables.cs:27:9:27:21 | ...++ | certain |
 | Assignables.cs:9:9:9:12 | Item | Assignables.cs:96:9:96:36 | ... = ... | Assignables.cs:96:20:96:26 | access to indexer | Assignables.cs:96:35:96:35 | 3 | certain |
 | Assignables.cs:9:18:9:18 | i | Assignables.cs:9:18:9:18 | i | Assignables.cs:9:18:9:18 | <none> | Assignables.cs:9:18:9:18 | <none> | certain |
 | Assignables.cs:9:18:9:18 | i | Assignables.cs:9:18:9:18 | i | Assignables.cs:9:18:9:18 | <none> | Assignables.cs:9:18:9:18 | <none> | certain |
 | Assignables.cs:9:41:9:43 | value | Assignables.cs:9:41:9:43 | value | Assignables.cs:9:41:9:43 | <none> | Assignables.cs:9:41:9:43 | <none> | certain |
 | Assignables.cs:11:16:11:24 | parameter | Assignables.cs:11:16:11:24 | parameter | Assignables.cs:11:16:11:24 | <none> | Assignables.cs:11:16:11:24 | <none> | certain |
 | Assignables.cs:11:16:11:24 | parameter | Assignables.cs:16:9:16:25 | ... = ... | Assignables.cs:16:9:16:17 | access to parameter parameter | Assignables.cs:16:21:16:25 | access to field Field | certain |
-| Assignables.cs:11:16:11:24 | parameter | Assignables.cs:17:9:17:19 | ...++ | Assignables.cs:17:9:17:17 | access to parameter parameter | Assignables.cs:17:9:17:19 | <none> | certain |
+| Assignables.cs:11:16:11:24 | parameter | Assignables.cs:17:9:17:19 | ...++ | Assignables.cs:17:9:17:17 | access to parameter parameter | Assignables.cs:17:9:17:19 | ...++ | certain |
 | Assignables.cs:13:13:13:20 | variable | Assignables.cs:13:13:13:24 | Int32 variable = ... | Assignables.cs:13:13:13:20 | access to local variable variable | Assignables.cs:13:24:13:24 | 0 | certain |
 | Assignables.cs:13:13:13:20 | variable | Assignables.cs:14:9:14:28 | ... = ... | Assignables.cs:14:9:14:16 | access to local variable variable | Assignables.cs:14:20:14:28 | access to parameter parameter | certain |
-| Assignables.cs:13:13:13:20 | variable | Assignables.cs:15:9:15:18 | ...-- | Assignables.cs:15:9:15:16 | access to local variable variable | Assignables.cs:15:9:15:18 | <none> | certain |
+| Assignables.cs:13:13:13:20 | variable | Assignables.cs:15:9:15:18 | ...-- | Assignables.cs:15:9:15:16 | access to local variable variable | Assignables.cs:15:9:15:18 | ...-- | certain |
 | Assignables.cs:13:13:13:20 | variable | Assignables.cs:28:17:28:24 | access to local variable variable | Assignables.cs:28:17:28:24 | access to local variable variable | Assignables.cs:28:17:28:24 | <none> | certain |
 | Assignables.cs:22:22:22:29 | callback | Assignables.cs:22:22:22:50 | EventHandler callback = ... | Assignables.cs:22:22:22:29 | access to local variable callback | Assignables.cs:22:33:22:50 | (...) => ... | certain |
 | Assignables.cs:22:34:22:39 | sender | Assignables.cs:22:34:22:39 | sender | Assignables.cs:22:34:22:39 | <none> | Assignables.cs:22:34:22:39 | <none> | certain |

@@ -3,6 +3,7 @@
 | fields.cs:15:27:15:27 | X | fields.cs:15:31:15:31 | 1 |
 | fields.cs:17:27:17:27 | Z | fields.cs:17:31:17:33 | 100 |
 | fields.cs:23:20:23:24 | count | fields.cs:23:28:23:28 | 0 |
+| fields.cs:23:20:23:24 | count | fields.cs:25:22:25:28 | ...++ |
 | fields.cs:35:23:35:23 | x | fields.cs:35:27:35:40 | call to method Sqrt |
 | fields.cs:36:13:36:13 | i | fields.cs:36:17:36:19 | 100 |
 | fields.cs:37:16:37:16 | s | fields.cs:37:20:37:26 | "Hello" |

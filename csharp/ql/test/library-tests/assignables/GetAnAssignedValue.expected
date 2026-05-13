@@ -1,13 +1,18 @@
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:5:17:5:17 | 0 |
 | Assignables.cs:5:9:5:13 | Field | Assignables.cs:18:17:18:24 | access to property Property |
+| Assignables.cs:5:9:5:13 | Field | Assignables.cs:19:9:19:15 | ...-- |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:6:34:6:34 | 1 |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:20:20:20:33 | access to indexer |
+| Assignables.cs:6:9:6:16 | Property | Assignables.cs:21:9:21:18 | ...++ |
 | Assignables.cs:6:9:6:16 | Property | Assignables.cs:96:32:96:32 | 2 |
 | Assignables.cs:9:9:9:12 | Item | Assignables.cs:26:26:26:33 | access to local variable variable |
+| Assignables.cs:9:9:9:12 | Item | Assignables.cs:27:9:27:21 | ...++ |
 | Assignables.cs:9:9:9:12 | Item | Assignables.cs:96:35:96:35 | 3 |
 | Assignables.cs:11:16:11:24 | parameter | Assignables.cs:16:21:16:25 | access to field Field |
+| Assignables.cs:11:16:11:24 | parameter | Assignables.cs:17:9:17:19 | ...++ |
 | Assignables.cs:13:13:13:20 | variable | Assignables.cs:13:24:13:24 | 0 |
 | Assignables.cs:13:13:13:20 | variable | Assignables.cs:14:20:14:28 | access to parameter parameter |
+| Assignables.cs:13:13:13:20 | variable | Assignables.cs:15:9:15:18 | ...-- |
 | Assignables.cs:22:22:22:29 | callback | Assignables.cs:22:33:22:50 | (...) => ... |
 | Assignables.cs:37:22:37:22 | o | Assignables.cs:39:13:39:13 | 0 |
 | Assignables.cs:42:35:42:35 | y | Assignables.cs:45:17:45:17 | access to parameter x |
