@@ -155,6 +155,8 @@ named:
     lhs: expression
     op: ["&", "<<", ">>", "^", "|"]
     rhs: expression
+  block:
+    statement*: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
   boolean_literal:
   call_expression:
     function: expression
@@ -174,7 +176,7 @@ named:
     name: simple_identifier
     type?: user_type
   catch_block:
-    body?: statements
+    body: block
     error?: pattern
     keyword: catch_keyword
     where?: where_clause
@@ -209,18 +211,18 @@ named:
     version*: integer_literal
   computed_getter:
     attribute*: attribute
-    body?: statements
+    body?: block
     specifier: getter_specifier
   computed_modify:
     attribute*: attribute
-    body?: statements
+    body?: block
     specifier: modify_specifier
   computed_property:
     accessor*: [computed_getter, computed_modify, computed_setter]
-    body?: statements
+    statement*: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
   computed_setter:
     attribute*: attribute
-    body?: statements
+    body?: block
     parameter?: simple_identifier
     specifier: setter_specifier
   conjunction_expression:
@@ -240,7 +242,7 @@ named:
   custom_operator:
   default_keyword:
   deinit_declaration:
-    body: function_body
+    body: block
     modifiers?: modifiers
   deprecated_operator_declaration_body:
     entry*: [bin_literal, boolean_literal, hex_literal, integer_literal, line_string_literal, multi_line_string_literal, "nil", oct_literal, raw_string_literal, real_literal, regex_literal, simple_identifier]
@@ -252,7 +254,7 @@ named:
     key: type
     value: type
   didset_clause:
-    body?: statements
+    body: block
     modifiers?: modifiers
     parameter?: simple_identifier
   directive:
@@ -264,7 +266,7 @@ named:
     op: "||"
     rhs: expression
   do_statement:
-    body?: statements
+    body: block
     catch*: catch_block
   else:
   enum_class_body:
@@ -294,19 +296,17 @@ named:
   external_macro_definition:
     arguments: value_arguments
   for_statement:
-    body?: statements
+    body: block
     collection: expression
     item: pattern
     try?: try_operator
     type?: type_annotation
     where?: where_clause
   fully_open_range:
-  function_body:
-    body?: statements
   function_declaration:
     async?: "async"
     attribute*: attribute
-    body: function_body
+    body: block
     default_value*: expression
     modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
     name: [referenceable_operator, simple_identifier]
@@ -325,7 +325,7 @@ named:
     effect*: [async_keyword, throws, throws_clause]
     mutation?: mutation_modifier
   guard_statement:
-    body?: statements
+    body: block
     condition+: if_condition
     else_keyword: else
   hex_literal:
@@ -339,9 +339,9 @@ named:
     value?: expression
     where?: where_clause
   if_statement:
-    body*: statements
+    body: block
     condition+: if_condition
-    else_branch?: if_statement
+    else_branch?: [block, if_statement]
     else_keyword?: else
   implicitly_unwrapped_type:
     name: type
@@ -363,7 +363,7 @@ named:
     async?: "async"
     attribute*: attribute
     bang?: bang
-    body?: function_body
+    body?: block
     default_value*: expression
     modifiers?: modifiers
     name: "init"
@@ -397,8 +397,8 @@ named:
     parameter+: lambda_parameter
   lambda_literal:
     attribute*: attribute
-    body?: statements
     captures?: capture_list
+    statement*: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
     type?: lambda_function_type
   lambda_parameter:
     external_name?: simple_identifier
@@ -528,7 +528,7 @@ named:
   protocol_function_declaration:
     async?: "async"
     attribute*: attribute
-    body?: function_body
+    body?: block
     default_value*: expression
     modifiers?: modifiers
     name: [referenceable_operator, simple_identifier]
@@ -565,7 +565,7 @@ named:
     operator: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "^", bang, custom_operator, "|", "~"]
   regex_literal:
   repeat_while_statement:
-    body?: statements
+    body: block
     condition+: if_condition
   selector_expression:
     expr: expression
@@ -582,8 +582,6 @@ named:
     statement*: [do_statement, expression, for_statement, global_declaration, guard_statement, repeat_while_statement, statement_label, throw_keyword, while_statement]
   special_literal:
   statement_label:
-  statements:
-    statement+: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
   str_escaped_char:
   subscript_declaration:
     attribute*: attribute
@@ -598,10 +596,10 @@ named:
   suppressed_constraint:
     suppressed: type_identifier
   switch_entry:
-    body: statements
     default?: default_keyword
     modifiers?: modifiers
     pattern*: switch_pattern
+    statement+: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
     where?: where_clause
   switch_pattern:
     pattern: pattern
@@ -694,11 +692,11 @@ named:
     keyword: where_keyword
   where_keyword:
   while_statement:
-    body?: statements
+    body: block
     condition+: if_condition
   wildcard_pattern:
   willset_clause:
-    body?: statements
+    body: block
     modifiers?: modifiers
     parameter?: simple_identifier
   willset_didset_block:

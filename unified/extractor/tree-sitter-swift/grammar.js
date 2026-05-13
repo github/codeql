@@ -979,7 +979,7 @@ module.exports = grammar({
         seq(
           choice("{", "^{"),
           optional($._lambda_type_declaration),
-          field("body", optional($.statements)),
+          optional($._statements),
           "}"
         )
       ),
@@ -1041,14 +1041,14 @@ module.exports = grammar({
       ),
     self_expression: ($) => "self",
     super_expression: ($) => seq("super"),
-    _else_options: ($) => choice($._block, field("else_branch", $.if_statement)),
+    _else_options: ($) => choice(field("else_branch", $.block), field("else_branch", $.if_statement)),
     if_statement: ($) =>
       prec.right(
         PRECS["if"],
         seq(
           "if",
           sep1(field("condition", $.if_condition), ","),
-          $._block,
+          field("body", $.block),
           optional(seq(field("else_keyword", $["else"]), $._else_options))
         )
       ),
@@ -1067,7 +1067,7 @@ module.exports = grammar({
           "guard",
           sep1(field("condition", $.if_condition), ","),
           field("else_keyword", $["else"]),
-          $._block
+          field("body", $.block)
         )
       ),
     switch_statement: ($) =>
@@ -1094,18 +1094,18 @@ module.exports = grammar({
           field("default", $.default_keyword)
         ),
         ":",
-        field("body", $.statements),
+        $._statements,
         optional("fallthrough")
       ),
     switch_pattern: ($) => field("pattern", alias($._binding_pattern_with_expr, $.pattern)),
     do_statement: ($) =>
-      prec.right(PRECS["do"], seq("do", $._block, repeat(field("catch", $.catch_block)))),
+      prec.right(PRECS["do"], seq("do", field("body", $.block), repeat(field("catch", $.catch_block)))),
     catch_block: ($) =>
       seq(
         field("keyword", $.catch_keyword),
         field("error", optional(alias($._binding_pattern_no_expr, $.pattern))),
         field("where", optional($.where_clause)),
-        $._block
+        field("body", $.block)
       ),
     where_clause: ($) => prec.left(seq(field("keyword", $.where_keyword), field("expr", $.expression))),
     key_path_expression: ($) =>
@@ -1181,7 +1181,7 @@ module.exports = grammar({
     ////////////////////////////////
     // Statements - https://docs.swift.org/swift-book/ReferenceManual/Statements.html
     ////////////////////////////////
-    statements: ($) =>
+    _statements: ($) =>
       prec.left(
         // Left precedence is required in switch statements
         seq(
@@ -1204,7 +1204,7 @@ module.exports = grammar({
         $._labeled_statement,
         $._throw_statement
       ),
-    _block: ($) => prec(PRECS.block, seq("{", field("body", optional($.statements)), "}")),
+    block: ($) => prec(PRECS.block, seq("{", optional($._statements), "}")),
     _labeled_statement: ($) =>
       seq(
         optional($.statement_label),
@@ -1231,7 +1231,7 @@ module.exports = grammar({
           "in",
           field("collection", $._for_statement_collection),
           field("where", optional($.where_clause)),
-          $._block
+          field("body", $.block)
         )
       ),
     _for_statement_collection: ($) =>
@@ -1248,9 +1248,7 @@ module.exports = grammar({
         seq(
           "while",
           sep1(field("condition", $.if_condition), ","),
-          "{",
-          field("body", optional($.statements)),
-          "}"
+          field("body", $.block)
         )
       ),
     repeat_while_statement: ($) =>
@@ -1258,9 +1256,7 @@ module.exports = grammar({
         PRECS.loop,
         seq(
           "repeat",
-          "{",
-          field("body", optional($.statements)),
-          "}",
+          field("body", $.block),
           // Make sure we make it to the `while` before assuming this is a parameter pack.
           repeat($._implicit_semi),
           "while",
@@ -1443,14 +1439,14 @@ module.exports = grammar({
         field("modifiers", optional($.modifiers)),
         "willSet",
         optional(seq("(", field("parameter", $.simple_identifier), ")")),
-        $._block
+        field("body", $.block)
       ),
     didset_clause: ($) =>
       seq(
         field("modifiers", optional($.modifiers)),
         "didSet",
         optional(seq("(", field("parameter", $.simple_identifier), ")")),
-        $._block
+        field("body", $.block)
       ),
     typealias_declaration: ($) =>
       seq(field("modifiers", optional($.modifiers)), $._modifierless_typealias_declaration),
@@ -1464,13 +1460,13 @@ module.exports = grammar({
       ),
     function_declaration: ($) =>
       prec.right(
-        seq($._bodyless_function_declaration, field("body", $.function_body))
+        seq($._bodyless_function_declaration, field("body", $.block))
       ),
     _modifierless_function_declaration: ($) =>
       prec.right(
         seq(
           $._modifierless_function_declaration_no_body,
-          field("body", $.function_body)
+          field("body", $.block)
         )
       ),
     _bodyless_function_declaration: ($) =>
@@ -1496,7 +1492,6 @@ module.exports = grammar({
           field("type_constraints", optional($.type_constraints))
         )
       ),
-    function_body: ($) => $._block,
     macro_declaration: ($) =>
       seq(
         $._macro_head,
@@ -1742,7 +1737,7 @@ module.exports = grammar({
     protocol_function_declaration: ($) =>
       seq(
         $._bodyless_function_declaration,
-        optional(field("body", $.function_body))
+        optional(field("body", $.block))
       ),
     init_declaration: ($) =>
       prec.right(
@@ -1756,12 +1751,12 @@ module.exports = grammar({
           field("async", optional($._async_keyword)),
           field("throws", optional(choice($.throws_clause, $.throws))),
           field("type_constraints", optional($.type_constraints)),
-          optional(field("body", $.function_body))
+          optional(field("body", $.block))
         )
       ),
     deinit_declaration: ($) =>
       prec.right(
-        seq(field("modifiers", optional($.modifiers)), "deinit", field("body", $.function_body))
+        seq(field("modifiers", optional($.modifiers)), "deinit", field("body", $.block))
       ),
     subscript_declaration: ($) =>
       prec.right(
@@ -1784,7 +1779,7 @@ module.exports = grammar({
       seq(
         "{",
         choice(
-          field("body", optional($.statements)),
+          optional($._statements),
           repeat(
             field("accessor", choice($.computed_getter, $.computed_setter, $.computed_modify))
           )
@@ -1792,15 +1787,15 @@ module.exports = grammar({
         "}"
       ),
     computed_getter: ($) =>
-      seq(repeat(field("attribute", $.attribute)), field("specifier", $.getter_specifier), optional($._block)),
+      seq(repeat(field("attribute", $.attribute)), field("specifier", $.getter_specifier), optional(field("body", $.block))),
     computed_modify: ($) =>
-      seq(repeat(field("attribute", $.attribute)), field("specifier", $.modify_specifier), optional($._block)),
+      seq(repeat(field("attribute", $.attribute)), field("specifier", $.modify_specifier), optional(field("body", $.block))),
     computed_setter: ($) =>
       seq(
         repeat(field("attribute", $.attribute)),
         field("specifier", $.setter_specifier),
         optional(seq("(", field("parameter", $.simple_identifier), ")")),
-        optional($._block)
+        optional(field("body", $.block))
       ),
     getter_specifier: ($) =>
       seq(field("mutation", optional($.mutation_modifier)), "get", optional($._getter_effects)),
