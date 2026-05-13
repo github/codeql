@@ -298,7 +298,9 @@ pub fn extract(
     yeast_runner: Option<&yeast::Runner<'_>>,
 ) {
     let path_str = file_paths::normalize_and_transform_path(path, transformer);
-    let source_root = std::env::current_dir().ok();
+    let source_root = std::env::current_dir()
+        .ok()
+        .and_then(|d| d.canonicalize().ok());
     let diagnostics_path = file_paths::relativize_for_diagnostic(path, source_root.as_deref());
     let span = tracing::span!(
         tracing::Level::TRACE,

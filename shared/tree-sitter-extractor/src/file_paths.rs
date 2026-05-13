@@ -11,7 +11,7 @@ pub fn relativize_for_diagnostic(path: &Path, source_root: Option<&Path>) -> Str
     source_root
         .and_then(|root| path.strip_prefix(root).ok())
         .and_then(|rel| rel.to_str())
-        .map(|s| s.to_owned())
+        .map(|s| s.replace('\\', "/"))
         .unwrap_or_else(|| path.display().to_string())
 }
 

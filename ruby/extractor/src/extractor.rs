@@ -94,7 +94,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
         node_types::read_node_types_str("erb", tree_sitter_embedded_template::NODE_TYPES)?;
     let lines: std::io::Result<Vec<String>> = std::io::BufReader::new(file_list).lines().collect();
     let lines = lines?;
-    let source_root = std::env::current_dir().ok();
+    let source_root = std::env::current_dir().ok().and_then(|d| d.canonicalize().ok());
     lines
         .par_iter()
         .try_for_each(|line| {
