@@ -387,4 +387,6 @@ module ControlFlow {
 
 class ControlFlowNode = ControlFlow::Node;
 
+class CfgScope = GoCfg::CfgScope;
+
 class Write = ControlFlow::WriteNode;
