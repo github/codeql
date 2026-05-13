@@ -22,11 +22,14 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             Create(Context, operand, this, 0);
 
-            if ((operatorKind == ExprKind.POST_INCR || operatorKind == ExprKind.POST_DECR) &&
-                Kind == ExprKind.OPERATOR_INVOCATION)
+            if (Kind == ExprKind.OPERATOR_INVOCATION)
             {
                 AddOperatorCall(trapFile, Syntax);
-                trapFile.mutator_invocation_mode(this, 2);
+
+                if (operatorKind == ExprKind.POST_INCR || operatorKind == ExprKind.POST_DECR)
+                {
+                    trapFile.mutator_invocation_mode(this, 2);
+                }
             }
         }
     }

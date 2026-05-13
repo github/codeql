@@ -24,12 +24,15 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(Context, Syntax.Operand, this, 0);
-            AddOperatorCall(trapFile, Syntax);
 
-            if ((operatorKind == ExprKind.PRE_INCR || operatorKind == ExprKind.PRE_DECR) &&
-                Kind == ExprKind.OPERATOR_INVOCATION)
+            if (Kind == ExprKind.OPERATOR_INVOCATION)
             {
-                trapFile.mutator_invocation_mode(this, 1);
+                AddOperatorCall(trapFile, Syntax);
+
+                if (operatorKind == ExprKind.PRE_INCR || operatorKind == ExprKind.PRE_DECR)
+                {
+                    trapFile.mutator_invocation_mode(this, 1);
+                }
             }
         }
     }
