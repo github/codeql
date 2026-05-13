@@ -251,16 +251,14 @@ mod tests {
     #[test]
     fn relativize_under_source_root() {
         let path = Path::new("/home/runner/work/repo/src/foo.rb");
-        let result =
-            relativize_for_diagnostic(path, Some(Path::new("/home/runner/work/repo")));
+        let result = relativize_for_diagnostic(path, Some(Path::new("/home/runner/work/repo")));
         assert_eq!(result, "src/foo.rb");
     }
 
     #[test]
     fn relativize_outside_source_root_produces_file_uri() {
         let path = Path::new("/other/location/foo.rb");
-        let result =
-            relativize_for_diagnostic(path, Some(Path::new("/home/runner/work/repo")));
+        let result = relativize_for_diagnostic(path, Some(Path::new("/home/runner/work/repo")));
         assert_eq!(result, "file:///other/location/foo.rb");
     }
 
