@@ -235,6 +235,33 @@ class UnaryOperation extends Operation, @un_op {
 }
 
 /**
+ * A unary operator call. Either a unary arithmetic operator call (`UnaryArithmeticOperatorCall`),
+ * a unary bitwise operator call (`UnaryBitwiseOperatorCall`), or a
+ * unary logical operator call (`UnaryLogicalOperatorCall`).
+ */
+class UnaryCallOperation extends OperatorCall, UnaryOperation, @un_op_call_expr {
+  override string toString() { result = UnaryOperation.super.toString() }
+}
+
+/**
+ * A logical 'not', for example `!String.IsNullOrEmpty(s)` or a call to a user-defined
+ * not operator such as `!x` in:
+ * ```csharp
+ * class Negatable {
+ *   public static Negatable operator !(Negatable n) => { ...};
+ * }
+ *
+ * var x = new Negatable();
+ * var y = !x;
+ * ```
+ */
+class UnaryNotOperation extends UnaryCallOperation, @un_not_op_expr {
+  override string getOperator() { result = "!" }
+
+  override string getAPrimaryQlClass() { result = "UnaryNotOperation" }
+}
+
+/**
  * A binary operation. Either a binary arithmetic operation
  * (`BinaryArithmeticOperation`), a binary bitwise operation
  * (`BinaryBitwiseOperation`), a comparison operation (`ComparisonOperation`),

@@ -207,7 +207,11 @@ private module Input implements InputSig1, InputSig2 {
     exists(QualifiableExpr qe | qe.isConditional() | n = getQualifier(qe))
   }
 
-  predicate postOrInOrder(Ast::AstNode n) { n instanceof YieldStmt or n instanceof Call }
+  predicate postOrInOrder(Ast::AstNode n) {
+    n instanceof YieldStmt
+    or
+    n instanceof Call and not n instanceof LogicalNotExpr
+  }
 
   predicate beginAbruptCompletion(
     Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c, boolean always

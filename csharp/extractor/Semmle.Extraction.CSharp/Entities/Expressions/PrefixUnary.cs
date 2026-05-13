@@ -4,23 +4,23 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal class PostfixUnary : Expression<PostfixUnaryExpressionSyntax>
+    internal class PrefixUnary : Expression<PrefixUnaryExpressionSyntax>
     {
-        private PostfixUnary(ExpressionNodeInfo info)
+        private PrefixUnary(ExpressionNodeInfo info)
             : base(info)
         {
         }
 
-        public static Expression Create(ExpressionNodeInfo info) => new PostfixUnary(info).TryPopulate();
+        public static Expression Create(ExpressionNodeInfo info) => new PrefixUnary(info).TryPopulate();
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
             Create(Context, Syntax.Operand, this, 0);
             AddOperatorCall(trapFile, Syntax);
 
-            if (Kind == ExprKind.POST_INCR || Kind == ExprKind.POST_DECR)
+            if (Kind == ExprKind.PRE_INCR || Kind == ExprKind.PRE_DECR)
             {
-                trapFile.mutator_invocation_mode(this, 2);
+                trapFile.mutator_invocation_mode(this, 1);
             }
         }
     }

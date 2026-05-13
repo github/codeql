@@ -16,7 +16,7 @@ class BitwiseOperation extends Operation, @bit_expr { }
  * A unary bitwise operation, that is, a bitwise complement operation
  * (`ComplementExpr`).
  */
-class UnaryBitwiseOperation extends BitwiseOperation, UnaryOperation, @un_bit_op_expr { }
+class UnaryBitwiseOperation extends BitwiseOperation, UnaryCallOperation, @un_bit_op_expr { }
 
 /**
  * A bitwise complement operation, for example `~x`.

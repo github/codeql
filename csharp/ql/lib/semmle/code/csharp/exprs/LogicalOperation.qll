@@ -18,13 +18,13 @@ class LogicalOperation extends Operation, @log_expr {
 /**
  * A unary logical operation, that is, a logical 'not' (`LogicalNotExpr`).
  */
-class UnaryLogicalOperation extends LogicalOperation, UnaryOperation, @un_log_op_expr { }
+class UnaryLogicalOperation extends LogicalOperation, UnaryCallOperation, @un_log_op_expr { }
 
 /**
  * A logical 'not', for example `!String.IsNullOrEmpty(s)`.
  */
-class LogicalNotExpr extends UnaryLogicalOperation, @log_not_expr {
-  override string getOperator() { result = "!" }
+class LogicalNotExpr extends UnaryLogicalOperation, UnaryNotOperation, @log_not_expr {
+  override string getOperator() { result = UnaryNotOperation.super.getOperator() }
 
   override string getAPrimaryQlClass() { result = "LogicalNotExpr" }
 }
