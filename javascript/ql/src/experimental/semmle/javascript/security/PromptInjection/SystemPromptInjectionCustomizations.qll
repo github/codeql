@@ -50,7 +50,9 @@ module SystemPromptInjection {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() { this = ModelOutput::getASinkNode("prompt-injection").asSink() }
+    SinkFromModel() {
+      this = ModelOutput::getASinkNode("system-prompt-injection").asSink()
+    }
   }
 
   private class PromptContentSink extends Sink {

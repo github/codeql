@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: typeModel
+    data:
+      - ["anthropic.Client", "@anthropic-ai/sdk", "Instance"]
+
+  - addsTo:
+      pack: codeql/javascript-all
+      extensible: sinkModel
+    data:
+      - ["anthropic.Client", "Member[messages].Member[create].Argument[0].Member[system]", "system-prompt-injection"]
+      - ["anthropic.Client", "Member[messages].Member[create].Argument[0].Member[system].ArrayElement.Member[text]", "system-prompt-injection"]
+      - ["anthropic.Client", "Member[beta].Member[messages].Member[create].Argument[0].Member[system]", "system-prompt-injection"]
+      - ["anthropic.Client", "Member[beta].Member[messages].Member[create].Argument[0].Member[system].ArrayElement.Member[text]", "system-prompt-injection"]
+      - ["anthropic.Client", "Member[beta].Member[agents].Member[create].Argument[0].Member[system]", "system-prompt-injection"]
+      - ["anthropic.Client", "Member[beta].Member[agents].Member[update].Argument[1].Member[system]", "system-prompt-injection"]
