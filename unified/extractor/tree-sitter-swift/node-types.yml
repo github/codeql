@@ -270,7 +270,6 @@ named:
   do_statement:
     body: block
     catch*: catch_block
-  else:
   enum_case_entry:
     data_contents?: enum_type_parameters
     name: simple_identifier
@@ -333,7 +332,6 @@ named:
   guard_statement:
     body: block
     condition+: if_condition
-    else_keyword: else
   hex_literal:
   identifier:
     part+: simple_identifier
@@ -348,7 +346,6 @@ named:
     body: block
     condition+: if_condition
     else_branch?: [block, if_statement]
-    else_keyword?: else
   implicitly_unwrapped_type:
     name: type
   import_declaration:
@@ -370,7 +367,6 @@ named:
     bang?: bang
     body?: block
     modifiers?: modifiers
-    name: "init"
     parameter*: function_parameter
     throws?: [throws, throws_clause]
     type_constraints?: type_constraints
@@ -526,7 +522,6 @@ named:
   protocol_declaration:
     attribute*: attribute
     body: protocol_body
-    declaration_kind: "protocol"
     inherits*: inheritance_specifier
     modifiers?: modifiers
     name: type_identifier
@@ -794,6 +789,7 @@ unnamed:
   - "dsohandle"
   - "dynamic"
   - "each"
+  - "else"
   - "enum"
   - "extension"
   - "externalMacro"

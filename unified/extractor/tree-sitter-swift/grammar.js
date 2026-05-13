@@ -1050,7 +1050,7 @@ module.exports = grammar({
           "if",
           sep1(field("condition", $.if_condition), ","),
           field("body", $.block),
-          optional(seq(field("else_keyword", $["else"]), $._else_options))
+          optional(seq(alias($["else"], "else"), $._else_options))
         )
       ),
     if_condition: ($) =>
@@ -1067,7 +1067,7 @@ module.exports = grammar({
         seq(
           "guard",
           sep1(field("condition", $.if_condition), ","),
-          field("else_keyword", $["else"]),
+          alias($["else"], "else"),
           field("body", $.block)
         )
       ),
@@ -1712,7 +1712,7 @@ module.exports = grammar({
       prec.right(
         seq(
           field("modifiers", optional($.modifiers)),
-          field("declaration_kind", "protocol"),
+          "protocol",
           field("name", alias($.simple_identifier, $.type_identifier)),
           field("type_parameters", optional($.type_parameters)),
           optional(seq(":", $._inheritance_specifiers)),
@@ -1744,7 +1744,7 @@ module.exports = grammar({
         seq(
           field("modifiers", optional($.modifiers)),
           optional("class"),
-          field("name", "init"),
+          "init",
           optional(choice($._quest, field("bang", $.bang))),
           field("type_parameters", optional($.type_parameters)),
           $._function_value_parameters,
