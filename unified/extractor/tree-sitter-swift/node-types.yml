@@ -305,17 +305,19 @@ named:
   fully_open_range:
   function_declaration:
     async?: "async"
-    attribute*: attribute
     body: block
-    default_value*: expression
     modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
     name: [referenceable_operator, simple_identifier]
-    parameter*: parameter
+    parameter*: function_parameter
     return_type?: [implicitly_unwrapped_type, type]
     throws?: [throws, throws_clause]
     type_constraints?: type_constraints
     type_parameters?: type_parameters
   function_modifier:
+  function_parameter:
+    attribute?: attribute
+    default_value?: expression
+    parameter: parameter
   function_type:
     async?: "async"
     params: unannotated_type
@@ -361,13 +363,11 @@ named:
     inherits_from: [function_type, suppressed_constraint, user_type]
   init_declaration:
     async?: "async"
-    attribute*: attribute
     bang?: bang
     body?: block
-    default_value*: expression
     modifiers?: modifiers
     name: "init"
-    parameter*: parameter
+    parameter*: function_parameter
     throws?: [throws, throws_clause]
     type_constraints?: type_constraints
     type_parameters?: type_parameters
@@ -410,12 +410,10 @@ named:
     interpolation*: interpolated_expression
     text*: [line_str_text, str_escaped_char]
   macro_declaration:
-    attribute*: attribute
-    default_value*: expression
     definition?: macro_definition
     modifiers?: modifiers
     name: simple_identifier
-    parameter*: parameter
+    parameter*: function_parameter
     return_type?: unannotated_type
     type_constraints?: type_constraints
     type_parameters?: type_parameters
@@ -527,12 +525,10 @@ named:
     type_parameters?: type_parameters
   protocol_function_declaration:
     async?: "async"
-    attribute*: attribute
     body?: block
-    default_value*: expression
     modifiers?: modifiers
     name: [referenceable_operator, simple_identifier]
-    parameter*: parameter
+    parameter*: function_parameter
     return_type?: [implicitly_unwrapped_type, type]
     throws?: [throws, throws_clause]
     type_constraints?: type_constraints
@@ -584,11 +580,9 @@ named:
   statement_label:
   str_escaped_char:
   subscript_declaration:
-    attribute*: attribute
     body: computed_property
-    default_value*: expression
     modifiers?: modifiers
-    parameter*: parameter
+    parameter*: function_parameter
     return_type?: [implicitly_unwrapped_type, type]
     type_constraints?: type_constraints
     type_parameters?: type_parameters

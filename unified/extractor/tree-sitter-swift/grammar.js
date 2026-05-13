@@ -1611,9 +1611,9 @@ module.exports = grammar({
       ),
     _function_value_parameters: ($) =>
       repeat1(
-        seq("(", optional(sep1Opt($._function_value_parameter, ",")), ")")
+        seq("(", optional(sep1Opt(field("parameter", $.function_parameter), ",")), ")")
       ),
-    _function_value_parameter: ($) =>
+    function_parameter: ($) =>
       seq(
         field("attribute", optional($.attribute)),
         field("parameter", $.parameter),
