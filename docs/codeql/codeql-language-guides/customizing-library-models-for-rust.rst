@@ -74,7 +74,7 @@ Canonical paths take the following forms:
 - **Free functions**: ``crate::module::function``, for example ``std::env::var`` or ``std::fs::read_to_string``.
 - **Inherent methods**: ``<Type>::method``, for example ``<std::fs::File>::open``.
 - **Trait methods with a concrete type**: ``<Type as Trait>::method``, for example ``<std::fs::File as std::io::Read>::read_to_end``.
-- **Trait methods with a wildcard type**: ``<_ as Trait>::method``, for example ``<_ as core::clone::Clone>::clone``. This form matches any type that implements the trait and is useful for modeling broadly applicable trait methods.
+- **Trait methods with a wildcard type**: ``<_ as Trait>::method``, for example ``<_ as core::clone::Clone>::clone``. This form matches any type that implements the trait and is useful for modeling broadly applicable trait methods. For a type that has a specific model (<Type as Trait>::method), that model will take precedence over the trait model.
 
 Examples of custom model definitions
 -------------------------------------
