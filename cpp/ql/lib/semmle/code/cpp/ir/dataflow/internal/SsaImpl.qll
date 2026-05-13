@@ -136,7 +136,9 @@ private module SourceVariables {
     NormalSourceVariable() { this = TNormalSourceVariable(base, ind) }
 
     final override string toString() {
-      result = repeatStars(this.getIndirection()) + base.toString()
+      if ind = 0
+      then result = "&" + base.toString()
+      else result = repeatStars(this.getIndirection() - 1) + base.toString()
     }
   }
 
@@ -157,7 +159,9 @@ private module SourceVariables {
     }
 
     final override string toString() {
-      result = repeatStars(this.getIndirection()) + base.toString() + " [before crement]"
+      if ind = 0
+      then result = "&" + base.toString() + " [before crement]"
+      else result = repeatStars(this.getIndirection() - 1) + base.toString() + " [before crement]"
     }
 
     /**
