@@ -576,7 +576,7 @@ class MutatorOperatorCall extends OperatorCall {
  *
  * ```csharp
  * class A {
- *   public void operator++() { ... }
+ *   public void operator ++() { ... }
  *
  *   public static void Increment(A a) {
  *     a++;
