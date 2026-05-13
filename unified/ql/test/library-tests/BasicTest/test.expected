@@ -1,17 +1,18 @@
 nameExpr
+| name_expr.swift:1:9:1:9 | NameExpr | y |
 unsupported
-| test.swift:1:1:1:17 | import Foundation | import Foundation |
-| test.swift:3:1:3:38 | // Generic struct with type constraint | // Generic struct with type constraint |
-| test.swift:4:1:14:1 | struct Container<T: Equatable> {\n    var items: [T] = []\n\n    mutating func add(_ item: T) {\n        items.append(item)\n    }\n\n    func contains(_ item: T) -> Bool {\n        return items.contains(item)\n    }\n} | struct Container<T: Equatable> {\n    var items: [T] = []\n\n    mutating func add(_ item: T) {\n        items.append(item)\n    }\n\n    func contains(_ item: T) -> Bool {\n        return items.contains(item)\n    }\n} |
-| test.swift:16:1:16:32 | // Protocol with associated type | // Protocol with associated type |
-| test.swift:17:1:21:1 | protocol DataSource {\n    associatedtype Element\n    var count: Int { get }\n    func item(at index: Int) -> Element?\n} | protocol DataSource {\n    associatedtype Element\n    var count: Int { get }\n    func item(at index: Int) -> Element?\n} |
-| test.swift:23:1:23:37 | // Generic function with where clause | // Generic function with where clause |
-| test.swift:24:1:32:1 | func merge<T: Collection>(_ first: T, _ second: T) -> [T.Element] where T.Element: Equatable {\n    var result = Array(first)\n    for item in second {\n        if !result.contains(item) {\n            result.append(item)\n        }\n    }\n    return result\n} | func merge<T: Collection>(_ first: T, _ second: T) -> [T.Element] where T.Element: Equatable {\n    var result = Array(first)\n    for item in second {\n        if !result.contains(item) {\n            result.append(item)\n        }\n    }\n    return result\n} |
-| test.swift:34:1:34:49 | // Class with inheritance and computed properties | // Class with inheritance and computed properties |
-| test.swift:35:1:55:1 | class DataManager<T>: DataSource {\n    typealias Element = T\n    private var data: [T] = []\n\n    var count: Int {\n        return data.count\n    }\n\n    var isEmpty: Bool {\n        data.isEmpty\n    }\n\n    func item(at index: Int) -> T? {\n        guard index >= 0 && index < data.count else { return nil }\n        return data[index]\n    }\n\n    func add(_ item: T) {\n        data.append(item)\n    }\n} | class DataManager<T>: DataSource {\n    typealias Element = T\n    private var data: [T] = []\n\n    var count: Int {\n        return data.count\n    }\n\n    var isEmpty: Bool {\n        data.isEmpty\n    }\n\n    func item(at index: Int) -> T? {\n        guard index >= 0 && index < data.count else { return nil }\n        return data[index]\n    }\n\n    func add(_ item: T) {\n        data.append(item)\n    }\n} |
-| test.swift:57:1:57:30 | // Enum with associated values | // Enum with associated values |
-| test.swift:58:1:70:1 | enum Result<Success, Failure: Error> {\n    case success(Success)\n    case failure(Failure)\n\n    func map<U>(_ transform: (Success) -> U) -> Result<U, Failure> {\n        switch self {\n        case .success(let value):\n            return .success(transform(value))\n        case .failure(let error):\n            return .failure(error)\n        }\n    }\n} | enum Result<Success, Failure: Error> {\n    case success(Success)\n    case failure(Failure)\n\n    func map<U>(_ transform: (Success) -> U) -> Result<U, Failure> {\n        switch self {\n        case .success(let value):\n            return .success(transform(value))\n        case .failure(let error):\n            return .failure(error)\n        }\n    }\n} |
-| test.swift:72:1:72:37 | // Extension with generic constraints | // Extension with generic constraints |
-| test.swift:73:1:82:1 | extension Array where Element: Comparable {\n    func isSorted() -> Bool {\n        for i in 0..<(count - 1) {\n            if self[i] > self[i + 1] {\n                return false\n            }\n        }\n        return true\n    }\n} | extension Array where Element: Comparable {\n    func isSorted() -> Bool {\n        for i in 0..<(count - 1) {\n            if self[i] > self[i + 1] {\n                return false\n            }\n        }\n        return true\n    }\n} |
-| test.swift:84:1:84:24 | // Higher-order function | // Higher-order function |
-| test.swift:85:1:88:1 | func combine<T>(_ values: [T], transform: (T, T) -> T) -> T? {\n    guard !values.isEmpty else { return nil }\n    return values.dropFirst().reduce(values[0], transform)\n} | func combine<T>(_ values: [T], transform: (T, T) -> T) -> T? {\n    guard !values.isEmpty else { return nil }\n    return values.dropFirst().reduce(values[0], transform)\n} |
+| test.swift:1:1:1:17 |  |  |
+| test.swift:3:1:3:38 |  |  |
+| test.swift:4:1:14:1 |  |  |
+| test.swift:16:1:16:32 |  |  |
+| test.swift:17:1:21:1 |  |  |
+| test.swift:23:1:23:37 |  |  |
+| test.swift:24:1:32:1 |  |  |
+| test.swift:34:1:34:49 |  |  |
+| test.swift:35:1:55:1 |  |  |
+| test.swift:57:1:57:30 |  |  |
+| test.swift:58:1:70:1 |  |  |
+| test.swift:72:1:72:37 |  |  |
+| test.swift:73:1:82:1 |  |  |
+| test.swift:84:1:84:24 |  |  |
+| test.swift:85:1:88:1 |  |  |
