@@ -27,7 +27,7 @@ Certain triggers automatically grant a workflow elevated privileges:
   * An attacker forks the repository and adds malicious code (e.g., in the build script)
   * The attacker opens a PR from the fork, and, if needed, comments on the PR
   * The workflow in the base repository checks out the forked code
-  * The workflow runs, (e.g. the build script etc.), which contains the malicious code
+  * The workflow runs the malicious code
 
 Please note that not only build scripts can be malicious code vectors. There is a large number of other possibilities. Some of them are listed in the [LOTP](https://boostsecurityio.github.io/lotp/) catalog.
 
