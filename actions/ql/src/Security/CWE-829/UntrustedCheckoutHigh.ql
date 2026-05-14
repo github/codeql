@@ -43,5 +43,5 @@ where
     not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout"))
   )
 select checkout,
-  "Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@)",
+  "Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@).",
   event, event.getName()
