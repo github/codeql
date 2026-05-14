@@ -65,12 +65,14 @@ private class MoveConstructorModel extends MoveConstructor, DataFlowFunction {
 private class CopyAssignmentOperatorModel extends CopyAssignmentOperator, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from argument to self
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-    or
-    // taint flow from argument to return value
-    input.isParameterDeref(0) and
-    output.isReturnValueDeref()
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+      or
+      // taint flow from argument to return value
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
     // TODO: it would be more accurate to model copy assignment as data flow
   }
 }
@@ -81,12 +83,14 @@ private class CopyAssignmentOperatorModel extends CopyAssignmentOperator, TaintF
 private class MoveAssignmentOperatorModel extends MoveAssignmentOperator, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from argument to self
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
-    or
-    // taint flow from argument to return value
-    input.isParameterDeref(0) and
-    output.isReturnValueDeref()
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+      or
+      // taint flow from argument to return value
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
     // TODO: it would be more accurate to model move assignment as data flow
   }
 }

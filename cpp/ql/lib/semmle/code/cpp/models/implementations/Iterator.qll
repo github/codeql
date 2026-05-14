@@ -164,7 +164,9 @@ private class IteratorCrementNonMemberOperatorModel extends IteratorCrementNonMe
     input = getIteratorArgumentInput(this, 0) and
     output.isReturnValue()
     or
-    input.isParameterDeref(0) and output.isReturnValueDeref()
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and output.isReturnValueDeref(indirectionIndex)
+    )
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -205,16 +207,21 @@ private class IteratorCrementMemberOperatorModel extends IteratorCrementMemberOp
     input.isQualifierAddress() and
     output.isReturnValue()
     or
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-    or
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
+    exists(int indirectionIndex |
+      // reverse flow
+      input.isReturnValueDeref(indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+      or
+      input.isQualifierObject(indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -286,8 +293,11 @@ private class IteratorBinaryArithmeticMemberOperatorModel extends IteratorBinary
   TaintFunction
 {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex | input.isQualifierObject(indirectionIndex) |
+      output.isReturnValueDeref(indirectionIndex)
+      or
+      output.isReturnValue()
+    )
   }
 }
 
@@ -346,15 +356,23 @@ private class IteratorAssignArithmeticNonMemberOperatorModel extends IteratorAss
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(0) and output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the object referenced by the first parameter
-    input.isReturnValueDeref() and
-    output.isParameterDeref(0)
-    or
-    (input.isParameter(1) or input.isParameterDeref(1)) and
-    output.isParameterDeref(0)
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and output.isReturnValueDeref(indirectionIndex)
+      or
+      // reverse flow from returned reference to the object referenced by the first parameter
+      input.isReturnValueDeref(indirectionIndex) and
+      output.isParameterDeref(0, indirectionIndex)
+      or
+      (
+        input.isParameter(1) and indirectionIndex = 0
+        or
+        input.isParameterDeref(1, indirectionIndex)
+      ) and
+      output.isParameterDeref(0, indirectionIndex + 1)
+    )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isParameterDeref(0, _) }
 }
 
 /**
@@ -378,16 +396,25 @@ private class IteratorAssignArithmeticMemberOperatorModel extends IteratorAssign
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the qualifier
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
-    or
-    (input.isParameter(0) or input.isParameterDeref(0)) and
-    output.isQualifierObject()
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and output.isReturnValueDeref(indirectionIndex)
+      or
+      input.isQualifierObject(indirectionIndex) and output.isReturnValueDeref(indirectionIndex)
+      or
+      // reverse flow from returned reference to the object referenced by the first parameter
+      input.isReturnValueDeref(indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+      or
+      (
+        input.isParameter(0) and indirectionIndex = 0
+        or
+        input.isParameterDeref(0, indirectionIndex)
+      ) and
+      output.isQualifierObject(indirectionIndex + 1)
+    )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -414,11 +441,14 @@ class IteratorPointerDereferenceMemberOperator extends MemberFunction, TaintFunc
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
-    or
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex) and
+      (output.isReturnValueDeref(indirectionIndex) or output.isReturnValue())
+      or
+      // reverse flow
+      input.isReturnValueDeref(indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+    )
   }
 
   override predicate parameterNeverEscapes(int index) { index = -1 }
@@ -454,8 +484,10 @@ private class IteratorPointerDereferenceNonMemberOperatorModel extends IteratorP
     input = getIteratorArgumentInput(this, 0) and
     output.isReturnValue()
     or
-    input.isReturnValueDeref() and
-    output.isParameterDeref(0)
+    exists(int indirectionIndex |
+      input.isReturnValueDeref(indirectionIndex) and
+      output.isParameterDeref(0, indirectionIndex)
+    )
   }
 
   override predicate parameterNeverEscapes(int index) { index = 0 }
@@ -488,8 +520,10 @@ private class IteratorFieldMemberOperator extends Operator, TaintFunction {
   IteratorFieldMemberOperator() { this.getClassAndName("operator->") instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex) // TODO
+    )
   }
 }
 
@@ -502,8 +536,10 @@ private class IteratorArrayMemberOperator extends MemberFunction, TaintFunction,
   IteratorArrayMemberOperator() { this.getClassAndName("operator[]") instanceof Iterator }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex) // TODO
+    )
   }
 }
 
@@ -595,8 +631,11 @@ private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMe
   TaintFunction, SideEffectFunction, AliasFunction
 {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    (input.isParameterDeref(0) or input.isParameter(0)) and
-    output.isQualifierObject()
+    exists(int indirectionIndex | output.isQualifierObject(indirectionIndex + 1) |
+      input.isParameterDeref(0, indirectionIndex)
+      or
+      input.isParameter(0) and indirectionIndex = 0
+    )
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -669,8 +708,11 @@ private class BeginOrEndFunctionModels extends BeginOrEndFunction, TaintFunction
   GetIteratorFunction, AliasFunction, SideEffectFunction
 {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex | input.isQualifierObject(indirectionIndex) |
+      // output.isReturnValue()
+      // or
+      output.isReturnValueDeref(indirectionIndex) // TODO
+    )
   }
 
   override predicate getsIterator(FunctionInput input, FunctionOutput output) {

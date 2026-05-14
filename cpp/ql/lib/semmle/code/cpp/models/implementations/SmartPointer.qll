@@ -38,12 +38,17 @@ private class PointerUnwrapperFunction extends MemberFunction, TaintFunction, Da
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
+    exists(int indirectionIndex |
+      input.isReturnValueDeref(indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+    )
   }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and output.isReturnValue()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex + 1) and
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -75,11 +80,16 @@ private class MakeUniqueOrShared extends TaintFunction {
     // since these just take a size argument, which we don't want to propagate taint through.
     not this.isArray() and
     (
-      input.isParameter([0 .. this.getNumberOfParameters() - 1])
+      input.isParameter([0 .. this.getNumberOfParameters() - 1]) and
+      output.isReturnValue()
       or
-      input.isParameterDeref([0 .. this.getNumberOfParameters() - 1])
-    ) and
-    output.isReturnValue()
+      exists(int indirectionIndex | output.isReturnValueDeref(indirectionIndex) |
+        input.isParameterDeref([0 .. this.getNumberOfParameters() - 1], indirectionIndex - 1)
+        or
+        input.isParameter([0 .. this.getNumberOfParameters() - 1]) and
+        indirectionIndex = 1
+      )
+    )
   }
 
   /**

@@ -64,9 +64,7 @@ class StrcatFunction extends TaintFunction, DataFlowFunction, ArrayFunction, Sid
       this.getName() = ["_mbsncat_l", "_mbsnbcat_l"] and
       input.isParameter(3)
       or
-      input.isParameterDeref(0)
-      or
-      input.isParameterDeref(1)
+      input.isParameterDeref([0, 1], 1)
     ) and
     (output.isParameterDeref(0) or output.isReturnValueDeref())
   }

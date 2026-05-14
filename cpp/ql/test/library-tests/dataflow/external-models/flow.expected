@@ -98,7 +98,7 @@ edges
 | azure.cpp:277:45:277:47 | call to GetBody | azure.cpp:278:10:278:13 | body | provenance |  |
 | azure.cpp:278:10:278:13 | body | azure.cpp:278:10:278:13 | body | provenance |  |
 | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:281:68:281:84 | *call to ExtractBodyStream | provenance | Src:MaD:26  |
-| azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:282:21:282:23 | *call to get | provenance |  |
+| azure.cpp:281:68:281:84 | *call to ExtractBodyStream | azure.cpp:282:21:282:23 | *call to get | provenance | DataFlowFunction |
 | azure.cpp:282:21:282:23 | *call to get | azure.cpp:115:30:115:38 | [summary param] this in ReadToEnd | provenance |  |
 | azure.cpp:282:21:282:23 | *call to get | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | provenance | MaD:55 |
 | azure.cpp:282:28:282:36 | call to ReadToEnd [element] | azure.cpp:282:10:282:38 | call to ReadToEnd | provenance |  |

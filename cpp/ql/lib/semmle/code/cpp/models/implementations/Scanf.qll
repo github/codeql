@@ -40,8 +40,10 @@ abstract private class ScanfFunctionModel extends ArrayFunction, TaintFunction, 
   int getArgsStartPosition() { result = this.getNumberOfParameters() }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameterDeref(this.(ScanfFunction).getInputParameterIndex()) and
-    output.isParameterDeref(any(int i | i >= this.getArgsStartPosition()))
+    exists(int indirectionIndex |
+      input.isParameterDeref(this.(ScanfFunction).getInputParameterIndex(), indirectionIndex) and
+      output.isParameterDeref(any(int i | i >= this.getArgsStartPosition()), indirectionIndex)
+    )
   }
 
   override predicate parameterNeverEscapes(int index) {

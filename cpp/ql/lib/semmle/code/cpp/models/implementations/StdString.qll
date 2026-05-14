@@ -87,15 +87,18 @@ private class StdStringConstructor extends Constructor, StdStringTaintFunction, 
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of the value type to the returned object
-    (
-      input.isParameterDeref(this.getAStringParameterIndex()) or
-      input.isParameter(this.getACharParameterIndex()) or
+    exists(int indirectionIndex |
+      input.isParameterDeref(this.getAStringParameterIndex(), indirectionIndex)
+      or
+      indirectionIndex = 1 and
+      input.isParameter(this.getACharParameterIndex())
+      or
+      indirectionIndex = 1 and
       input.isParameter(this.getAnIteratorParameterIndex())
-    ) and
-    (
+    |
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or
-      output.isQualifierObject()
+      output.isQualifierObject(indirectionIndex)
     )
   }
 

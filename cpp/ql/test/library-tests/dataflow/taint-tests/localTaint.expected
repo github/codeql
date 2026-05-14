@@ -4642,19 +4642,19 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | smart_pointer.cpp:47:11:47:11 | p | smart_pointer.cpp:47:10:47:10 | call to operator* |  |
 | smart_pointer.cpp:51:30:51:50 | call to make_shared | smart_pointer.cpp:52:10:52:10 | p |  |
 | smart_pointer.cpp:51:52:51:57 | call to source | smart_pointer.cpp:51:30:51:50 | call to make_shared | TAINT |
-| smart_pointer.cpp:52:10:52:10 | p | smart_pointer.cpp:52:12:52:14 | call to get |  |
+| smart_pointer.cpp:52:10:52:10 | p | smart_pointer.cpp:52:12:52:14 | call to get | TAINT |
 | smart_pointer.cpp:52:12:52:14 | ref arg call to get | smart_pointer.cpp:52:10:52:10 | ref arg p | TAINT |
 | smart_pointer.cpp:56:30:56:50 | call to make_unique | smart_pointer.cpp:57:10:57:10 | p |  |
 | smart_pointer.cpp:56:52:56:57 | call to source | smart_pointer.cpp:56:30:56:50 | call to make_unique | TAINT |
-| smart_pointer.cpp:57:10:57:10 | p | smart_pointer.cpp:57:12:57:14 | call to get |  |
+| smart_pointer.cpp:57:10:57:10 | p | smart_pointer.cpp:57:12:57:14 | call to get | TAINT |
 | smart_pointer.cpp:57:12:57:14 | ref arg call to get | smart_pointer.cpp:57:10:57:10 | ref arg p | TAINT |
 | smart_pointer.cpp:65:28:65:46 | call to make_unique | smart_pointer.cpp:66:10:66:10 | p |  |
 | smart_pointer.cpp:65:28:65:46 | call to make_unique | smart_pointer.cpp:67:10:67:10 | p |  |
 | smart_pointer.cpp:65:48:65:53 | call to source | smart_pointer.cpp:65:28:65:46 | call to make_unique | TAINT |
 | smart_pointer.cpp:65:58:65:58 | 0 | smart_pointer.cpp:65:28:65:46 | call to make_unique | TAINT |
-| smart_pointer.cpp:66:10:66:10 | p | smart_pointer.cpp:66:11:66:11 | call to operator-> |  |
+| smart_pointer.cpp:66:10:66:10 | p | smart_pointer.cpp:66:11:66:11 | call to operator-> | TAINT |
 | smart_pointer.cpp:66:10:66:10 | ref arg p | smart_pointer.cpp:67:10:67:10 | p |  |
-| smart_pointer.cpp:67:10:67:10 | p | smart_pointer.cpp:67:11:67:11 | call to operator-> |  |
+| smart_pointer.cpp:67:10:67:10 | p | smart_pointer.cpp:67:11:67:11 | call to operator-> | TAINT |
 | smart_pointer.cpp:70:37:70:39 | ptr | smart_pointer.cpp:70:37:70:39 | ptr |  |
 | smart_pointer.cpp:70:37:70:39 | ptr | smart_pointer.cpp:71:4:71:6 | ptr |  |
 | smart_pointer.cpp:71:3:71:3 | call to operator* [post update] | smart_pointer.cpp:70:37:70:39 | ptr |  |
@@ -4682,36 +4682,34 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | smart_pointer.cpp:86:67:86:67 | q | smart_pointer.cpp:92:8:92:8 | q |  |
 | smart_pointer.cpp:86:67:86:67 | q | smart_pointer.cpp:93:8:93:8 | q |  |
 | smart_pointer.cpp:86:67:86:67 | q | smart_pointer.cpp:94:8:94:8 | q |  |
-| smart_pointer.cpp:87:3:87:3 | p | smart_pointer.cpp:87:4:87:4 | call to operator-> |  |
+| smart_pointer.cpp:87:3:87:3 | p | smart_pointer.cpp:87:4:87:4 | call to operator-> | TAINT |
 | smart_pointer.cpp:87:3:87:3 | ref arg p | smart_pointer.cpp:86:45:86:45 | p |  |
 | smart_pointer.cpp:87:3:87:3 | ref arg p | smart_pointer.cpp:88:8:88:8 | p |  |
 | smart_pointer.cpp:87:3:87:3 | ref arg p | smart_pointer.cpp:89:8:89:8 | p |  |
 | smart_pointer.cpp:87:3:87:17 | ... = ... | smart_pointer.cpp:87:6:87:6 | x [post update] |  |
-| smart_pointer.cpp:87:3:87:17 | ... = ... | smart_pointer.cpp:88:11:88:11 | x |  |
 | smart_pointer.cpp:87:4:87:4 | call to operator-> [post update] | smart_pointer.cpp:87:3:87:3 | ref arg p | TAINT |
 | smart_pointer.cpp:87:10:87:15 | call to source | smart_pointer.cpp:87:3:87:17 | ... = ... |  |
-| smart_pointer.cpp:88:8:88:8 | p | smart_pointer.cpp:88:9:88:9 | call to operator-> |  |
+| smart_pointer.cpp:88:8:88:8 | p | smart_pointer.cpp:88:9:88:9 | call to operator-> | TAINT |
 | smart_pointer.cpp:88:8:88:8 | ref arg p | smart_pointer.cpp:86:45:86:45 | p |  |
 | smart_pointer.cpp:88:8:88:8 | ref arg p | smart_pointer.cpp:89:8:89:8 | p |  |
-| smart_pointer.cpp:89:8:89:8 | p | smart_pointer.cpp:89:9:89:9 | call to operator-> |  |
+| smart_pointer.cpp:89:8:89:8 | p | smart_pointer.cpp:89:9:89:9 | call to operator-> | TAINT |
 | smart_pointer.cpp:89:8:89:8 | ref arg p | smart_pointer.cpp:86:45:86:45 | p |  |
-| smart_pointer.cpp:91:3:91:3 | q | smart_pointer.cpp:91:4:91:4 | call to operator-> |  |
+| smart_pointer.cpp:91:3:91:3 | q | smart_pointer.cpp:91:4:91:4 | call to operator-> | TAINT |
 | smart_pointer.cpp:91:3:91:3 | ref arg q | smart_pointer.cpp:86:67:86:67 | q |  |
 | smart_pointer.cpp:91:3:91:3 | ref arg q | smart_pointer.cpp:92:8:92:8 | q |  |
 | smart_pointer.cpp:91:3:91:3 | ref arg q | smart_pointer.cpp:93:8:93:8 | q |  |
 | smart_pointer.cpp:91:3:91:3 | ref arg q | smart_pointer.cpp:94:8:94:8 | q |  |
 | smart_pointer.cpp:91:3:91:20 | ... = ... | smart_pointer.cpp:91:9:91:9 | x [post update] |  |
-| smart_pointer.cpp:91:3:91:20 | ... = ... | smart_pointer.cpp:92:14:92:14 | x |  |
 | smart_pointer.cpp:91:4:91:4 | call to operator-> [post update] | smart_pointer.cpp:91:3:91:3 | ref arg q | TAINT |
 | smart_pointer.cpp:91:13:91:18 | call to source | smart_pointer.cpp:91:3:91:20 | ... = ... |  |
-| smart_pointer.cpp:92:8:92:8 | q | smart_pointer.cpp:92:9:92:9 | call to operator-> |  |
+| smart_pointer.cpp:92:8:92:8 | q | smart_pointer.cpp:92:9:92:9 | call to operator-> | TAINT |
 | smart_pointer.cpp:92:8:92:8 | ref arg q | smart_pointer.cpp:86:67:86:67 | q |  |
 | smart_pointer.cpp:92:8:92:8 | ref arg q | smart_pointer.cpp:93:8:93:8 | q |  |
 | smart_pointer.cpp:92:8:92:8 | ref arg q | smart_pointer.cpp:94:8:94:8 | q |  |
-| smart_pointer.cpp:93:8:93:8 | q | smart_pointer.cpp:93:9:93:9 | call to operator-> |  |
+| smart_pointer.cpp:93:8:93:8 | q | smart_pointer.cpp:93:9:93:9 | call to operator-> | TAINT |
 | smart_pointer.cpp:93:8:93:8 | ref arg q | smart_pointer.cpp:86:67:86:67 | q |  |
 | smart_pointer.cpp:93:8:93:8 | ref arg q | smart_pointer.cpp:94:8:94:8 | q |  |
-| smart_pointer.cpp:94:8:94:8 | q | smart_pointer.cpp:94:9:94:9 | call to operator-> |  |
+| smart_pointer.cpp:94:8:94:8 | q | smart_pointer.cpp:94:9:94:9 | call to operator-> | TAINT |
 | smart_pointer.cpp:94:8:94:8 | ref arg q | smart_pointer.cpp:86:67:86:67 | q |  |
 | smart_pointer.cpp:97:17:97:18 | pa | smart_pointer.cpp:97:17:97:18 | pa |  |
 | smart_pointer.cpp:97:17:97:18 | pa | smart_pointer.cpp:98:5:98:6 | pa |  |
@@ -4720,20 +4718,20 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | smart_pointer.cpp:98:13:98:18 | call to source | smart_pointer.cpp:98:5:98:20 | ... = ... |  |
 | smart_pointer.cpp:102:25:102:50 | call to unique_ptr | smart_pointer.cpp:103:11:103:11 | p |  |
 | smart_pointer.cpp:102:25:102:50 | call to unique_ptr | smart_pointer.cpp:104:8:104:8 | p |  |
-| smart_pointer.cpp:103:11:103:11 | p | smart_pointer.cpp:103:13:103:15 | call to get |  |
+| smart_pointer.cpp:103:11:103:11 | p | smart_pointer.cpp:103:13:103:15 | call to get | TAINT |
 | smart_pointer.cpp:103:11:103:11 | ref arg p | smart_pointer.cpp:104:8:104:8 | p |  |
 | smart_pointer.cpp:103:13:103:15 | ref arg call to get | smart_pointer.cpp:103:11:103:11 | ref arg p | TAINT |
-| smart_pointer.cpp:104:8:104:8 | p | smart_pointer.cpp:104:9:104:9 | call to operator-> |  |
+| smart_pointer.cpp:104:8:104:8 | p | smart_pointer.cpp:104:9:104:9 | call to operator-> | TAINT |
 | smart_pointer.cpp:112:40:112:42 | ptr | smart_pointer.cpp:112:40:112:42 | ptr |  |
 | smart_pointer.cpp:112:40:112:42 | ptr | smart_pointer.cpp:113:2:113:4 | ptr |  |
-| smart_pointer.cpp:113:2:113:4 | ptr | smart_pointer.cpp:113:5:113:5 | call to operator-> |  |
+| smart_pointer.cpp:113:2:113:4 | ptr | smart_pointer.cpp:113:5:113:5 | call to operator-> | TAINT |
 | smart_pointer.cpp:113:2:113:4 | ref arg ptr | smart_pointer.cpp:112:40:112:42 | ptr |  |
 | smart_pointer.cpp:113:2:113:18 | ... = ... | smart_pointer.cpp:113:7:113:7 | x [post update] |  |
 | smart_pointer.cpp:113:5:113:5 | call to operator-> [post update] | smart_pointer.cpp:113:2:113:4 | ref arg ptr | TAINT |
 | smart_pointer.cpp:113:11:113:16 | call to source | smart_pointer.cpp:113:2:113:18 | ... = ... |  |
 | smart_pointer.cpp:116:52:116:54 | ptr | smart_pointer.cpp:116:52:116:54 | ptr |  |
 | smart_pointer.cpp:116:52:116:54 | ptr | smart_pointer.cpp:117:2:117:4 | ptr |  |
-| smart_pointer.cpp:117:2:117:4 | ptr | smart_pointer.cpp:117:5:117:5 | call to operator-> |  |
+| smart_pointer.cpp:117:2:117:4 | ptr | smart_pointer.cpp:117:5:117:5 | call to operator-> | TAINT |
 | smart_pointer.cpp:117:2:117:4 | ref arg ptr | smart_pointer.cpp:116:52:116:54 | ptr |  |
 | smart_pointer.cpp:117:2:117:18 | ... = ... | smart_pointer.cpp:117:7:117:7 | x [post update] |  |
 | smart_pointer.cpp:117:5:117:5 | call to operator-> [post update] | smart_pointer.cpp:117:2:117:4 | ref arg ptr | TAINT |
@@ -4754,18 +4752,17 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | smart_pointer.cpp:124:90:124:91 | p2 | smart_pointer.cpp:124:90:124:91 | p2 |  |
 | smart_pointer.cpp:124:90:124:91 | p2 | smart_pointer.cpp:128:14:128:15 | p2 |  |
 | smart_pointer.cpp:124:90:124:91 | p2 | smart_pointer.cpp:129:10:129:11 | p2 |  |
-| smart_pointer.cpp:125:18:125:19 | p1 | smart_pointer.cpp:125:20:125:20 | call to operator-> |  |
+| smart_pointer.cpp:125:18:125:19 | p1 | smart_pointer.cpp:125:20:125:20 | call to operator-> | TAINT |
 | smart_pointer.cpp:125:18:125:19 | ref arg p1 | smart_pointer.cpp:124:48:124:49 | p1 |  |
 | smart_pointer.cpp:125:18:125:19 | ref arg p1 | smart_pointer.cpp:126:8:126:9 | p1 |  |
 | smart_pointer.cpp:125:18:125:22 | ref arg call to shared_ptr | smart_pointer.cpp:125:22:125:22 | q [inner post update] |  |
 | smart_pointer.cpp:125:20:125:20 | call to operator-> [post update] | smart_pointer.cpp:125:18:125:19 | ref arg p1 | TAINT |
 | smart_pointer.cpp:125:22:125:22 | q | smart_pointer.cpp:125:18:125:22 | call to shared_ptr |  |
 | smart_pointer.cpp:125:22:125:22 | ref arg q | smart_pointer.cpp:125:22:125:22 | q [inner post update] |  |
-| smart_pointer.cpp:125:22:125:22 | ref arg q | smart_pointer.cpp:126:12:126:12 | q |  |
-| smart_pointer.cpp:126:8:126:9 | p1 | smart_pointer.cpp:126:10:126:10 | call to operator-> |  |
+| smart_pointer.cpp:126:8:126:9 | p1 | smart_pointer.cpp:126:10:126:10 | call to operator-> | TAINT |
 | smart_pointer.cpp:126:8:126:9 | ref arg p1 | smart_pointer.cpp:124:48:124:49 | p1 |  |
 | smart_pointer.cpp:126:10:126:10 | call to operator-> [post update] | smart_pointer.cpp:126:8:126:9 | ref arg p1 | TAINT |
-| smart_pointer.cpp:126:12:126:12 | q | smart_pointer.cpp:126:13:126:13 | call to operator-> |  |
+| smart_pointer.cpp:126:12:126:12 | q | smart_pointer.cpp:126:13:126:13 | call to operator-> | TAINT |
 | smart_pointer.cpp:128:13:128:13 | call to operator* | smart_pointer.cpp:128:13:128:15 | call to shared_ptr | TAINT |
 | smart_pointer.cpp:128:13:128:13 | call to operator* [inner post update] | smart_pointer.cpp:128:14:128:15 | ref arg p2 | TAINT |
 | smart_pointer.cpp:128:13:128:13 | ref arg call to operator* | smart_pointer.cpp:124:90:124:91 | p2 |  |
@@ -4795,15 +4792,14 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | smart_pointer.cpp:132:95:132:96 | p2 | smart_pointer.cpp:132:95:132:96 | p2 |  |
 | smart_pointer.cpp:132:95:132:96 | p2 | smart_pointer.cpp:136:18:136:19 | p2 |  |
 | smart_pointer.cpp:132:95:132:96 | p2 | smart_pointer.cpp:137:10:137:11 | p2 |  |
-| smart_pointer.cpp:133:23:133:24 | p1 | smart_pointer.cpp:133:25:133:25 | call to operator-> |  |
+| smart_pointer.cpp:133:23:133:24 | p1 | smart_pointer.cpp:133:25:133:25 | call to operator-> | TAINT |
 | smart_pointer.cpp:133:23:133:24 | ref arg p1 | smart_pointer.cpp:132:53:132:54 | p1 |  |
 | smart_pointer.cpp:133:23:133:24 | ref arg p1 | smart_pointer.cpp:134:8:134:9 | p1 |  |
 | smart_pointer.cpp:133:25:133:25 | call to operator-> [post update] | smart_pointer.cpp:133:23:133:24 | ref arg p1 | TAINT |
-| smart_pointer.cpp:133:27:133:27 | ref arg q | smart_pointer.cpp:134:12:134:12 | q |  |
-| smart_pointer.cpp:134:8:134:9 | p1 | smart_pointer.cpp:134:10:134:10 | call to operator-> |  |
+| smart_pointer.cpp:134:8:134:9 | p1 | smart_pointer.cpp:134:10:134:10 | call to operator-> | TAINT |
 | smart_pointer.cpp:134:8:134:9 | ref arg p1 | smart_pointer.cpp:132:53:132:54 | p1 |  |
 | smart_pointer.cpp:134:10:134:10 | call to operator-> [post update] | smart_pointer.cpp:134:8:134:9 | ref arg p1 | TAINT |
-| smart_pointer.cpp:134:12:134:12 | q | smart_pointer.cpp:134:13:134:13 | call to operator-> |  |
+| smart_pointer.cpp:134:12:134:12 | q | smart_pointer.cpp:134:13:134:13 | call to operator-> | TAINT |
 | smart_pointer.cpp:136:17:136:17 | ref arg call to operator* | smart_pointer.cpp:132:95:132:96 | p2 |  |
 | smart_pointer.cpp:136:17:136:17 | ref arg call to operator* | smart_pointer.cpp:136:18:136:19 | p2 [inner post update] |  |
 | smart_pointer.cpp:136:17:136:17 | ref arg call to operator* | smart_pointer.cpp:136:18:136:19 | ref arg p2 | TAINT |
@@ -5583,12 +5579,14 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | string.cpp:409:12:409:12 | call to operator+= | string.cpp:409:8:409:8 | call to operator* | TAINT |
 | string.cpp:409:12:409:12 | ref arg call to operator+= | string.cpp:409:10:409:11 | ref arg i7 | TAINT |
 | string.cpp:409:14:409:14 | 1 | string.cpp:409:10:409:11 | ref arg i7 | TAINT |
+| string.cpp:409:14:409:14 | 1 | string.cpp:409:12:409:12 | call to operator+= | TAINT |
 | string.cpp:410:8:410:9 | i2 | string.cpp:410:3:410:9 | ... = ... |  |
 | string.cpp:410:8:410:9 | i2 | string.cpp:411:10:411:11 | i8 |  |
 | string.cpp:411:10:411:11 | i8 | string.cpp:411:12:411:12 | call to operator-= | TAINT |
 | string.cpp:411:12:411:12 | call to operator-= | string.cpp:411:8:411:8 | call to operator* | TAINT |
 | string.cpp:411:12:411:12 | ref arg call to operator-= | string.cpp:411:10:411:11 | ref arg i8 | TAINT |
 | string.cpp:411:14:411:14 | 1 | string.cpp:411:10:411:11 | ref arg i8 | TAINT |
+| string.cpp:411:14:411:14 | 1 | string.cpp:411:12:411:12 | call to operator-= | TAINT |
 | string.cpp:413:8:413:9 | s2 | string.cpp:413:11:413:13 | call to end | TAINT |
 | string.cpp:413:11:413:13 | call to end | string.cpp:413:3:413:15 | ... = ... |  |
 | string.cpp:413:11:413:13 | call to end | string.cpp:414:5:414:6 | i9 |  |
@@ -7592,7 +7590,6 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:505:18:505:19 | ref arg & ... | taint.cpp:505:19:505:19 | n [inner post update] |  |
 | taint.cpp:505:19:505:19 | n | taint.cpp:505:18:505:19 | & ... |  |
 | taint.cpp:505:28:505:34 | ref arg source1 | taint.cpp:502:26:502:32 | source1 |  |
-| taint.cpp:505:28:505:34 | source1 | taint.cpp:505:11:505:15 | ref arg & ... | TAINT |
 | taint.cpp:514:24:514:29 | source | taint.cpp:514:24:514:29 | source |  |
 | taint.cpp:514:24:514:29 | source | taint.cpp:516:27:516:32 | source |  |
 | taint.cpp:515:22:515:29 | ,.-;:_ | taint.cpp:516:35:516:39 | delim |  |
@@ -7728,11 +7725,9 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | taint.cpp:594:21:594:26 | call to strsep | taint.cpp:594:9:594:42 | ... = ... |  |
 | taint.cpp:594:21:594:26 | call to strsep | taint.cpp:595:10:595:18 | tokenized |  |
 | taint.cpp:594:21:594:26 | call to strsep | taint.cpp:596:11:596:19 | tokenized |  |
-| taint.cpp:594:28:594:34 | & ... | taint.cpp:594:21:594:26 | call to strsep | TAINT |
 | taint.cpp:594:28:594:34 | ref arg & ... | taint.cpp:591:24:591:29 | source |  |
 | taint.cpp:594:28:594:34 | ref arg & ... | taint.cpp:594:29:594:34 | source |  |
 | taint.cpp:594:28:594:34 | ref arg & ... | taint.cpp:594:29:594:34 | source [inner post update] |  |
-| taint.cpp:594:29:594:34 | source | taint.cpp:594:21:594:26 | call to strsep | TAINT |
 | taint.cpp:594:29:594:34 | source | taint.cpp:594:28:594:34 | & ... |  |
 | taint.cpp:594:37:594:41 | delim | taint.cpp:594:21:594:26 | call to strsep | TAINT |
 | taint.cpp:595:10:595:18 | ref arg tokenized | taint.cpp:596:11:596:19 | tokenized |  |
@@ -9594,12 +9589,14 @@ WARNING: module 'TaintTracking' has been deprecated and may be removed in future
 | vector.cpp:528:3:528:4 | ref arg it | vector.cpp:530:3:530:4 | it |  |
 | vector.cpp:528:3:528:4 | ref arg it | vector.cpp:531:9:531:10 | it |  |
 | vector.cpp:528:9:528:9 | 1 | vector.cpp:528:3:528:4 | ref arg it | TAINT |
+| vector.cpp:528:9:528:9 | 1 | vector.cpp:528:6:528:6 | call to operator+= | TAINT |
 | vector.cpp:529:9:529:10 | it | vector.cpp:529:8:529:8 | call to operator* | TAINT |
 | vector.cpp:529:9:529:10 | ref arg it | vector.cpp:530:3:530:4 | it |  |
 | vector.cpp:529:9:529:10 | ref arg it | vector.cpp:531:9:531:10 | it |  |
 | vector.cpp:530:3:530:4 | it | vector.cpp:530:6:530:6 | call to operator+= | TAINT |
 | vector.cpp:530:3:530:4 | ref arg it | vector.cpp:531:9:531:10 | it |  |
 | vector.cpp:530:9:530:14 | call to source | vector.cpp:530:3:530:4 | ref arg it | TAINT |
+| vector.cpp:530:9:530:14 | call to source | vector.cpp:530:6:530:6 | call to operator+= | TAINT |
 | vector.cpp:531:9:531:10 | it | vector.cpp:531:8:531:8 | call to operator* | TAINT |
 | vector.cpp:532:8:532:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
 | zmq.cpp:17:21:17:26 | socket | zmq.cpp:17:21:17:26 | socket |  |

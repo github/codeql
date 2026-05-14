@@ -32,11 +32,12 @@ private class StdMapConstructor extends Constructor, TaintFunction, AliasFunctio
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from any parameter of an iterator type to the qualifier
-    input.isParameterDeref(this.getAnIteratorParameterIndex()) and
-    (
+    exists(int indirectionIndex |
+      input.isParameterDeref(this.getAnIteratorParameterIndex(), indirectionIndex)
+    |
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or
-      output.isQualifierObject()
+      output.isQualifierObject(indirectionIndex)
     )
   }
 
@@ -69,14 +70,15 @@ private class StdMapInsert extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from last parameter to qualifier and return value
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref(this.getNumberOfParameters() - 1) and
-    (
-      output.isQualifierObject() or
+    exists(int indirectionIndex |
+      input.isParameterDeref(this.getNumberOfParameters() - 1, indirectionIndex)
+    |
+      output.isQualifierObject(indirectionIndex) or
       output.isReturnValue()
     )
   }
 
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -90,17 +92,19 @@ private class StdMapEmplace extends TaintFunction {
     // construct a pair, or a pair to be copied / moved) to the qualifier and
     // return value.
     // (where the return value is a pair, this should really flow just to the first part of it)
-    input.isParameterDeref(this.getNumberOfParameters() - 1) and
-    (
-      output.isQualifierObject() or
+    exists(int indirectionIndex |
+      input.isParameterDeref(this.getNumberOfParameters() - 1, indirectionIndex) and
+      (
+        output.isQualifierObject(indirectionIndex) or
+        output.isReturnValue()
+      )
+      or
+      input.isQualifierObject(indirectionIndex) and
       output.isReturnValue()
     )
-    or
-    input.isQualifierObject() and
-    output.isReturnValue()
   }
 
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -113,23 +117,25 @@ private class StdMapTryEmplace extends TaintFunction {
     // flow from any parameter apart from the key to qualifier and return value
     // (here we assume taint flow from any constructor parameter to the constructed object)
     // (where the return value is a pair, this should really flow just to the first part of it)
-    exists(int arg | arg = [1 .. this.getNumberOfParameters() - 1] |
-      (
-        not this.getUnspecifiedType() instanceof Iterator or
-        arg != 1
+    exists(int indirectionIndex |
+      exists(int arg | arg = [1 .. this.getNumberOfParameters() - 1] |
+        (
+          not this.getUnspecifiedType() instanceof Iterator or
+          arg != 1
+        ) and
+        input.isParameterDeref(arg, indirectionIndex)
       ) and
-      input.isParameterDeref(arg)
-    ) and
-    (
-      output.isQualifierObject() or
+      (
+        output.isQualifierObject(indirectionIndex) or
+        output.isReturnValue()
+      )
+      or
+      input.isQualifierObject(indirectionIndex) and
       output.isReturnValue()
     )
-    or
-    input.isQualifierObject() and
-    output.isReturnValue()
   }
 
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -140,11 +146,13 @@ private class StdMapMerge extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // container1.merge(container2)
-    input.isParameterDeref(0) and
-    output.isQualifierObject()
+    exists(int indirectionIndex |
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+    )
   }
 
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -157,12 +165,14 @@ class StdMapAt extends MemberFunction {
 private class StdMapAtModels extends StdMapAt, TaintFunction, AliasFunction, SideEffectFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
-    input.isQualifierObject() and
-    output.isReturnValueDeref()
-    or
-    // reverse flow from returned reference to the qualifier
-    input.isReturnValueDeref() and
-    output.isQualifierObject()
+    exists(int indirectionIndex |
+      input.isQualifierObject(indirectionIndex) and
+      output.isReturnValueDeref(indirectionIndex)
+      or
+      // reverse flow from returned reference to the qualifier
+      input.isReturnValueDeref(indirectionIndex) and
+      output.isQualifierObject(indirectionIndex)
+    )
   }
 
   override predicate hasOnlySpecificReadSideEffects() { any() }
@@ -177,7 +187,7 @@ private class StdMapAtModels extends StdMapAt, TaintFunction, AliasFunction, Sid
     i = -1 and buffer = false
   }
 
-  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject(_) }
 }
 
 /**
@@ -187,8 +197,11 @@ private class StdMapFind extends TaintFunction {
   StdMapFind() { this.getClassAndName("find") instanceof MapOrUnorderedMap }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex | input.isQualifierObject(indirectionIndex) |
+      output.isReturnValue()
+      or
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 }
 
@@ -201,8 +214,11 @@ private class StdMapErase extends TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to iterator return value
     this.getType().getUnderlyingType() instanceof Iterator and
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex | input.isQualifierObject(indirectionIndex) |
+      output.isReturnValue()
+      or
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 }
 
@@ -216,8 +232,11 @@ private class StdMapEqualRange extends TaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to return value
-    input.isQualifierObject() and
-    output.isReturnValue()
+    exists(int indirectionIndex | input.isQualifierObject(indirectionIndex) |
+      output.isReturnValue()
+      or
+      output.isReturnValueDeref(indirectionIndex)
+    )
   }
 }
 

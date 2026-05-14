@@ -9,9 +9,9 @@ import semmle.code.cpp.Parameter
 private newtype TFunctionInput =
   TInParameter(ParameterIndex i) or
   TInParameterDeref(ParameterIndex i, int indirectionIndex) { indirectionIndex = [1, 2] } or
-  TInQualifierObject() or
+  TInQualifierObject(int indirectionIndex) { indirectionIndex = [1, 2] } or
   TInQualifierAddress() or
-  TInReturnValueDeref()
+  TInReturnValueDeref(int indirectionIndex) { indirectionIndex = [1, 2] }
 
 /**
  * An input to a function. This can be:
@@ -84,7 +84,7 @@ class FunctionInput extends TFunctionInput {
    * - There is no `FunctionInput` for which `isParameterDeref(0)` holds, because `n` is neither a
    *   pointer nor a reference.
    */
-  predicate isParameterDeref(ParameterIndex index) { this.isParameterDeref(index, 1) }
+  final predicate isParameterDeref(ParameterIndex index) { this.isParameterDeref(index, 1) }
 
   /**
    * Holds if this is the input value pointed to by the `this` pointer of an instance member
@@ -114,7 +114,7 @@ class FunctionInput extends TFunctionInput {
    * - `isQualifierObject()` holds for the `FunctionInput` that represents the value of `*this`
    *   (with type `C const`) on entry to the function.
    */
-  predicate isQualifierObject() { this.isQualifierObject(1) }
+  final predicate isQualifierObject() { this.isQualifierObject(1) }
 
   /**
    * Holds if this is the input value of the `this` pointer of an instance member function.
@@ -163,7 +163,7 @@ class FunctionInput extends TFunctionInput {
    * rare, but they do occur when a function returns a reference to itself,
    * part of itself, or one of its other inputs.
    */
-  predicate isReturnValueDeref() { this.isReturnValueDeref(1) }
+  final predicate isReturnValueDeref() { this.isReturnValueDeref(1) }
 
   /**
    * Holds if this is the input value pointed to by the return value of a
@@ -176,9 +176,9 @@ class FunctionInput extends TFunctionInput {
    * float& getReference();
    * int getInt();
    * ```
-   * - `isReturnValueDeref(1)` holds for the `FunctionInput` that represents the
+   * - `isReturnValueDeref()` holds for the `FunctionInput` that represents the
    *   value of `*getPointer()` (with type `char`).
-   * - `isReturnValueDeref(1)` holds for the `FunctionInput` that represents the
+   * - `isReturnValueDeref()` holds for the `FunctionInput` that represents the
    *   value of `getReference()` (with type `float`).
    * - There is no `FunctionInput` of `getInt()` for which
    *   `isReturnValueDeref(_)` holds because the return type of `getInt()` is
@@ -286,11 +286,17 @@ class InParameterDeref extends FunctionInput, TInParameterDeref {
  *   function.
  */
 class InQualifierObject extends FunctionInput, TInQualifierObject {
+  int indirectionIndex;
+
+  InQualifierObject() { this = TInQualifierObject(indirectionIndex) }
+
   override string toString() { result = "InQualifierObject" }
 
-  override predicate isQualifierObject() { any() }
+  override predicate isQualifierObject(int indirectionIndex_) {
+    indirectionIndex_ = indirectionIndex
+  }
 
-  override FunctionInput getIndirectionInput() { none() }
+  override FunctionInput getIndirectionInput() { result = TInQualifierObject(indirectionIndex + 1) }
 }
 
 /**
@@ -310,7 +316,7 @@ class InQualifierAddress extends FunctionInput, TInQualifierAddress {
 
   override predicate isQualifierAddress() { any() }
 
-  override FunctionInput getIndirectionInput() { result = TInQualifierObject() }
+  override FunctionInput getIndirectionInput() { result = TInQualifierObject(1) }
 }
 
 /**
@@ -336,16 +342,25 @@ class InQualifierAddress extends FunctionInput, TInQualifierAddress {
  * part of itself, or one of its other inputs.
  */
 class InReturnValueDeref extends FunctionInput, TInReturnValueDeref {
+  int indirectionIndex;
+
+  InReturnValueDeref() { this = TInReturnValueDeref(indirectionIndex) }
+
   override string toString() { result = "InReturnValueDeref" }
 
-  override predicate isReturnValueDeref() { any() }
+  // override predicate isReturnValueDeref() { any() }
+  override predicate isReturnValueDeref(int indirectionIndex_) {
+    indirectionIndex_ = indirectionIndex
+  }
 
-  override FunctionInput getIndirectionInput() { none() }
+  override FunctionInput getIndirectionInput() {
+    result = TInReturnValueDeref(indirectionIndex + 1)
+  }
 }
 
 private newtype TFunctionOutput =
   TOutParameterDeref(ParameterIndex i, int indirectionIndex) { indirectionIndex = [1, 2] } or
-  TOutQualifierObject() or
+  TOutQualifierObject(int indirectionIndex) { indirectionIndex = [1, 2] } or
   TOutReturnValue() or
   TOutReturnValueDeref(int indirections) { indirections = [1, 2] }
 
@@ -384,7 +399,7 @@ class FunctionOutput extends TFunctionOutput {
    * - There is no `FunctionOutput` for which `isParameterDeref(0)` holds, because `n` is neither a
    *   pointer nor a reference.
    */
-  predicate isParameterDeref(ParameterIndex i) { this.isParameterDeref(i, 1) }
+  final predicate isParameterDeref(ParameterIndex i) { this.isParameterDeref(i, 1) }
 
   /**
    * Holds if this is the output value pointed to by a pointer parameter (through `ind` number
@@ -417,7 +432,7 @@ class FunctionOutput extends TFunctionOutput {
    * - `isQualifierObject()` holds for the `FunctionOutput` that represents the value of `*this`
    *   (with type `C`) on return from the function.
    */
-  predicate isQualifierObject() { this.isQualifierObject(1) }
+  final predicate isQualifierObject() { this.isQualifierObject(1) }
 
   /**
    * Holds if this is the output value pointed to by the `this` pointer of an instance member
@@ -471,7 +486,7 @@ class FunctionOutput extends TFunctionOutput {
    * - There is no `FunctionOutput` of `getInt()` for which `isReturnValueDeref()` holds because the
    *   return type of `getInt()` is neither a pointer nor a reference.
    */
-  predicate isReturnValueDeref() { this.isReturnValueDeref(_) }
+  final predicate isReturnValueDeref() { this.isReturnValueDeref(1) }
 
   /**
    * Holds if this is the output value pointed to by the return value of a function, if the function
@@ -484,9 +499,9 @@ class FunctionOutput extends TFunctionOutput {
    * float& getReference();
    * int getInt();
    * ```
-   * - `isReturnValueDeref(1)` holds for the `FunctionOutput` that represents the value of
+   * - `isReturnValueDeref()` holds for the `FunctionOutput` that represents the value of
    *   `*getPointer()` (with type `char`).
-   * - `isReturnValueDeref(1)` holds for the `FunctionOutput` that represents the value of
+   * - `isReturnValueDeref()` holds for the `FunctionOutput` that represents the value of
    *   `getReference()` (with type `float`).
    * - There is no `FunctionOutput` of `getInt()` for which `isReturnValueDeref(_)` holds because the
    *   return type of `getInt()` is neither a pointer nor a reference.
@@ -559,11 +574,19 @@ class OutParameterDeref extends FunctionOutput, TOutParameterDeref {
  *   function.
  */
 class OutQualifierObject extends FunctionOutput, TOutQualifierObject {
+  int indirectionIndex;
+
+  OutQualifierObject() { this = TOutQualifierObject(indirectionIndex) }
+
   override string toString() { result = "OutQualifierObject" }
 
-  override predicate isQualifierObject() { any() }
+  override predicate isQualifierObject(int indirectionIndex_) {
+    indirectionIndex_ = indirectionIndex
+  }
 
-  override FunctionOutput getIndirectionOutput() { none() }
+  override FunctionOutput getIndirectionOutput() {
+    result = TOutQualifierObject(indirectionIndex + 1)
+  }
 }
 
 /**
@@ -612,8 +635,6 @@ class OutReturnValueDeref extends FunctionOutput, TOutReturnValueDeref {
   OutReturnValueDeref() { this = TOutReturnValueDeref(indirectionIndex) }
 
   override string toString() { result = "OutReturnValueDeref" }
-
-  override predicate isReturnValueDeref() { any() }
 
   override predicate isReturnValueDeref(int indirectionIndex_) {
     indirectionIndex = indirectionIndex_

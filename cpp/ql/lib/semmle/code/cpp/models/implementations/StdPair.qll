@@ -26,12 +26,13 @@ class StdPairCopyishConstructor extends Constructor, TaintFunction {
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-    // taint flow from the source object to the constructed object
-    input.isParameterDeref(0) and
-    (
+    exists(int indirectionIndex |
+      // taint flow from the source object to the constructed object
+      input.isParameterDeref(0, indirectionIndex)
+    |
       output.isReturnValue()
       or
-      output.isQualifierObject()
+      output.isQualifierObject(indirectionIndex)
     )
   }
 }
@@ -56,11 +57,10 @@ private class StdPairConstructor extends Constructor, TaintFunction, AliasFuncti
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // taint flow from second parameter of a value type to the qualifier
     this.getAValueTypeParameterIndex() = 1 and
-    input.isParameterDeref(1) and
-    (
+    exists(int indirectionIndex | input.isParameterDeref(1, indirectionIndex) |
       output.isReturnValue() // TODO: this is only needed for AST data flow, which treats constructors as returning the new object
       or
-      output.isQualifierObject()
+      output.isQualifierObject(indirectionIndex)
     )
   }
 
