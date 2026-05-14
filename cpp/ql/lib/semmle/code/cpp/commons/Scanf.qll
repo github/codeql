@@ -34,6 +34,7 @@ class Scanf extends ScanfFunction instanceof TopLevelFunction {
   Scanf() {
     this.hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
     this.hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
+    this.hasGlobalOrStdOrBslName("scanf_s") or // scanf_s(format, args...)
     this.hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
     this.hasGlobalName("_wscanf_l")
   }
@@ -50,6 +51,7 @@ class Fscanf extends ScanfFunction instanceof TopLevelFunction {
   Fscanf() {
     this.hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
     this.hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
+    this.hasGlobalOrStdOrBslName("fscanf_s") or // fscanf_s(src_stream, format, args...)
     this.hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
     this.hasGlobalName("_fwscanf_l")
   }
@@ -66,8 +68,12 @@ class Sscanf extends ScanfFunction instanceof TopLevelFunction {
   Sscanf() {
     this.hasGlobalOrStdOrBslName("sscanf") or // sscanf(src_stream, format, args...)
     this.hasGlobalOrStdOrBslName("swscanf") or // swscanf(src, format, args...)
+    this.hasGlobalOrStdOrBslName("sscanf_s") or // sscanf_s(src, format, args...)
+    this.hasGlobalOrStdOrBslName("swscanf_s") or // swscanf_s(src, format, args...)
     this.hasGlobalName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
-    this.hasGlobalName("_swscanf_l")
+    this.hasGlobalName("_swscanf_l") or // _swscanf_l(src, format, locale, args...)
+    this.hasGlobalName("_sscanf_s_l") or // _sscanf_s_l(src, format, locale, args...)
+    this.hasGlobalName("_swscanf_s_l") // _swscanf_s_l(src, format, locale, args...)
   }
 
   override int getInputParameterIndex() { result = 0 }

@@ -3,3 +3,4 @@
 | test.c:20:2:20:7 | call to fscanf | 0 | 1 | test.c:20:15:20:23 | %10s %i | non-wide |
 | test.c:21:2:21:7 | call to sscanf | 0 | 1 | test.c:21:19:21:28 | %*i%s%*s | non-wide |
 | test.c:22:2:22:8 | call to swscanf | 0 | 1 | test.c:22:21:22:26 | %10s | wide |
+| test.c:23:2:23:8 | call to scanf_s | 0 | 0 | test.c:23:10:23:19 | %d %s %d | non-wide |

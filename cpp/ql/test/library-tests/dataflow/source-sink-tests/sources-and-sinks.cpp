@@ -140,32 +140,32 @@ void test_scanf_s(FILE *stream) {
   int n1, n2;
   scanf_s(
     "%d",
-    &n1, // $ MISSING: local_source
-    &n2); // $ MISSING: local_source
+    &n1, // $ local_source
+    &n2); // $ local_source
   }
 
   {
   int n;
-  fscanf_s(stream, "%d", &n); // $ MISSING: remote_source
+  fscanf_s(stream, "%d", &n); // $ remote_source
   }
 
   {
   int n1, n2;
   char buf[256];
   scanf_s("%d %s",
-    &n1, // $ MISSING: local_source
-    buf, // $ MISSING: local_source
+    &n1, // $ local_source
+    buf, // $ local_source
     256,
-    &n2); // $ MISSING: local_source
+    &n2); // $ local_source
   }
 
   {
   int n1, n2;
   char buf[256];
   fscanf_s(stream, "%d %s",
-    &n1, // $ MISSING: remote_source
-    buf, // $ MISSING: remote_source
+    &n1, // $ remote_source
+    buf, // $ remote_source
     256,
-    &n2); // $ MISSING: remote_source
+    &n2); // $ remote_source
   }
 }
