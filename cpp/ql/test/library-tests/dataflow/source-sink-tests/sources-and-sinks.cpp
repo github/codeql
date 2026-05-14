@@ -131,3 +131,41 @@ void test_strsafe_gets() {
 		StringCchGetsExA(dest, sizeof(dest), &end, &remaining, 0); // $ local_source
 	}
 }
+
+int scanf_s(const char *format, ...);
+int fscanf_s(FILE *stream, const char *format, ...);
+
+void test_scanf_s(FILE *stream) {
+  {
+  int n1, n2;
+  scanf_s(
+    "%d",
+    &n1, // $ MISSING: local_source
+    &n2); // $ MISSING: local_source
+  }
+
+  {
+  int n;
+  fscanf_s(stream, "%d", &n); // $ MISSING: remote_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  scanf_s("%d %s",
+    &n1, // $ MISSING: local_source
+    buf, // $ MISSING: local_source
+    256,
+    &n2); // $ MISSING: local_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  fscanf_s(stream, "%d %s",
+    &n1, // $ MISSING: remote_source
+    buf, // $ MISSING: remote_source
+    256,
+    &n2); // $ MISSING: remote_source
+  }
+}
