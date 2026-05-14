@@ -25,6 +25,15 @@ abstract class ScanfFunction extends Function {
    * (rather than a `char*`).
    */
   predicate isWideCharDefault() { exists(this.getName().indexOf("wscanf")) }
+
+  /** Holds if this is one of the `scanf_s` variants. */
+  predicate isSVariant() {
+    exists(string name | name = this.getName() |
+      name.matches("%\\_s")
+      or
+      name.matches("%\\_s\\_l")
+    )
+  }
 }
 
 /**
@@ -103,6 +112,14 @@ class Snscanf extends ScanfFunction instanceof TopLevelFunction {
   int getInputLengthParameterIndex() { result = 1 }
 }
 
+private predicate isCharLike(Type t) { t instanceof CharType or t instanceof Wchar_t }
+
+private predicate isStringLike(Type t) {
+  isCharLike(t.(PointerType).getBaseType())
+  or
+  isCharLike(t.(ArrayType).getBaseType())
+}
+
 /**
  * A call to one of the `scanf` functions.
  */
@@ -136,14 +153,40 @@ class ScanfFunctionCall extends FunctionCall {
    */
   predicate isWideCharDefault() { this.getScanfFunction().isWideCharDefault() }
 
+  bindingset[this, k]
+  pragma[inline_late]
+  private predicate isSizeArgument(int k) {
+    // The first vararg is never the size argument since a size argument must
+    // always follow a string buffer argument.
+    k > 0 and
+    isStringLike(this.getArgument(this.getScanfFunction().getNumberOfParameters() + k - 1)
+          .getUnspecifiedType())
+  }
+
   /**
    * Gets the output argument at position `n` in the vararg list of this call.
    *
    * The range of `n` is from `0` to `this.getNumberOfOutputArguments() - 1`.
    */
   Expr getOutputArgument(int n) {
-    result = this.getArgument(this.getTarget().getNumberOfParameters() + n) and
-    n >= 0
+    exists(ScanfFunction target | target = this.getScanfFunction() |
+      // If this is an S variant then every string buffer argument has a
+      // corresponding size argument immediately following it, so we need to
+      // skip over those size arguments when counting the output arguments.
+      if target.isSVariant()
+      then
+        result =
+          rank[n + 1](Expr arg, int k |
+            k >= 0 and
+            arg = this.getArgument(target.getNumberOfParameters() + k) and
+            not this.isSizeArgument(k)
+          |
+            arg order by k
+          )
+      else (
+        n >= 0 and result = this.getArgument(target.getNumberOfParameters() + n)
+      )
+    )
   }
 
   /**

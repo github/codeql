@@ -6,5 +6,4 @@
 | test.c:22:2:22:8 | call to swscanf | test.c:22:29:22:35 | wbuffer | 0 |
 | test.c:23:2:23:8 | call to scanf_s | test.c:23:22:23:23 | & ... | 0 |
 | test.c:23:2:23:8 | call to scanf_s | test.c:23:26:23:31 | buffer | 1 |
-| test.c:23:2:23:8 | call to scanf_s | test.c:23:34:23:35 | 10 | 2 |
-| test.c:23:2:23:8 | call to scanf_s | test.c:23:38:23:40 | & ... | 3 |
+| test.c:23:2:23:8 | call to scanf_s | test.c:23:38:23:40 | & ... | 2 |
