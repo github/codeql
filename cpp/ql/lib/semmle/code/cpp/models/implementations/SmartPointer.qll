@@ -106,7 +106,9 @@ private class MakeUniqueOrShared extends TaintFunction {
  *
  * This could be a constructor, an assignment operator, or a named member function like `reset()`.
  */
-private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, SideEffectFunction {
+private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, SideEffectFunction,
+  TaintFunction
+{
   SmartPtrSetterFunction() {
     this.getDeclaringType() instanceof SmartPtr and
     not this.isStatic() and
@@ -156,6 +158,16 @@ private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, Side
     this.hasName("operator=") and
     input.isQualifierAddress() and
     output.isReturnValue()
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    exists(Parameter param0, Type t, int indirectionIndex |
+      param0 = this.getParameter(0) and
+      param0.getUnspecifiedType().(PointerType).getBaseType() = t and
+      this.getTemplateArgument(0) = t and
+      input.isParameterDeref(0, indirectionIndex) and
+      output.isQualifierObject(indirectionIndex + 1)
+    )
   }
 
   private FunctionInput getPointerInput() {

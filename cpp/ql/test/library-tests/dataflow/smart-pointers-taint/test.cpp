@@ -31,7 +31,7 @@ void test_shared_ptr_int() {
 	std::shared_ptr<int> p1(new int(source()));
 	std::shared_ptr<int> p2 = std::make_shared<int>(source());
 	
-	sink(*p1); // $ ast MISSING: ir
+	sink(*p1); // $ ast ir
 	sink(*p2); // $ ast ir
 }
 
