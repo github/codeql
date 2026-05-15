@@ -3,4 +3,4 @@ extensions:
       pack: binary/vulnerable-calls
       extensible: vulnerableCallModel
     data:
-      - ["java.io", "PrintStream", "println", "TEST-JAVA-001"]
+      - ["java.io", "PrintStream", "println", "*", "TEST-JAVA-001"]

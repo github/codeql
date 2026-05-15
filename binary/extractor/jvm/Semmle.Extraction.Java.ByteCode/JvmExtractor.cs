@@ -142,6 +142,10 @@ public class JvmExtractor
         // Extract access flags as raw bitmask
         trap.WriteTuple("jvm_method_access_flags", methodId, (int)method.AccessFlags);
 
+        // Write parameter type signature for overload-precise identification
+        var descriptorUtf8ForSig = classFile.Constants.Get(method.Descriptor);
+        trap.WriteTuple("il_method_param_signature", methodId, ParseParamSignature(descriptorUtf8ForSig.Value));
+
         // Check if this is a static method (for parameter indexing)
         bool isStatic = (method.AccessFlags & AccessFlag.Static) != 0;
 
@@ -647,6 +651,12 @@ public class JvmExtractor
             int paramCount = CountParameters(descriptor);
             trap.WriteTuple("jvm_number_of_arguments", instrId, paramCount);
 
+            // Write parameter type signature for overload-precise matching
+            if (!string.IsNullOrEmpty(descriptor))
+            {
+                trap.WriteTuple("jvm_call_target_param_signature", instrId, ParseParamSignature(descriptor));
+            }
+
             if (!IsVoidReturn(descriptor))
             {
                 trap.WriteTuple("jvm_call_has_return_value", instrId);
@@ -780,6 +790,66 @@ public class JvmExtractor
         }
 
         return count;
+    }
+
+    /// <summary>
+    /// Converts a JVM method descriptor to a parenthesized, comma-separated
+    /// parameter type signature, e.g. "(Ljava/lang/Object;JJ)V" becomes
+    /// "(Object,long,long)".
+    /// </summary>
+    private static string ParseParamSignature(string descriptor)
+    {
+        if (!descriptor.StartsWith("("))
+            return "(*)";
+
+        int closeParenIdx = descriptor.IndexOf(')');
+        if (closeParenIdx < 0)
+            return "(*)";
+
+        var paramPart = descriptor.Substring(1, closeParenIdx - 1);
+        var types = new System.Collections.Generic.List<string>();
+        int i = 0;
+        while (i < paramPart.Length)
+        {
+            int arrayDims = 0;
+            while (i < paramPart.Length && paramPart[i] == '[')
+            {
+                arrayDims++;
+                i++;
+            }
+
+            if (i >= paramPart.Length)
+                break;
+
+            string baseType;
+            char c = paramPart[i];
+            switch (c)
+            {
+                case 'B': baseType = "byte"; i++; break;
+                case 'C': baseType = "char"; i++; break;
+                case 'D': baseType = "double"; i++; break;
+                case 'F': baseType = "float"; i++; break;
+                case 'I': baseType = "int"; i++; break;
+                case 'J': baseType = "long"; i++; break;
+                case 'S': baseType = "short"; i++; break;
+                case 'Z': baseType = "boolean"; i++; break;
+                case 'L':
+                    int semiIdx = paramPart.IndexOf(';', i);
+                    if (semiIdx < 0) semiIdx = paramPart.Length;
+                    // Extract class name, convert / to ., strip leading L
+                    baseType = paramPart.Substring(i + 1, semiIdx - i - 1).Replace('/', '.');
+                    i = semiIdx + 1;
+                    break;
+                default:
+                    baseType = "?";
+                    i++;
+                    break;
+            }
+
+            types.Add(baseType + new string('[', arrayDims) + new string(']', arrayDims));
+        }
+
+        return "(" + string.Join(",", types) + ")";
     }
 
     private static bool IsVoidReturn(string descriptor)

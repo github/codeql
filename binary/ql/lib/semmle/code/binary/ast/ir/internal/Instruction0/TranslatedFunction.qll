@@ -47,6 +47,9 @@ abstract class TranslatedFunction extends TranslatedElement {
 
   abstract string getName();
 
+  /** Gets the parenthesized parameter type signature, e.g. `(System.String,System.Int32)`. */
+  abstract string getParamSignature();
+
   final override string toString() { result = "Translation of " + this.getName() }
 
   abstract predicate isProgramEntryPoint();
@@ -115,6 +118,9 @@ class TranslatedX86Function extends TranslatedFunction, TTranslatedX86Function {
   }
 
   final override predicate isPublic() { entry instanceof Raw::X86ExportedEntryInstruction }
+
+  // x86 does not have parameter type signatures
+  final override string getParamSignature() { result = "*" }
 
   final override predicate hasOrdering(LocalVariableTag tag, int ordering) {
     exists(Raw::X86Register r | tag = X86RegisterTag(r) |
@@ -216,6 +222,8 @@ class TranslatedCilMethod extends TranslatedFunction, TTranslatedCilMethod {
   }
 
   override string getName() { result = method.getName() }
+
+  override string getParamSignature() { result = method.getParamSignature() }
 
   override predicate isProgramEntryPoint() { none() }
 
@@ -320,6 +328,8 @@ class TranslatedJvmMethod extends TranslatedFunction, TTranslatedJvmMethod {
   }
 
   override string getName() { result = method.getName() }
+
+  override string getParamSignature() { result = method.getParamSignature() }
 
   override predicate isProgramEntryPoint() { none() }
 

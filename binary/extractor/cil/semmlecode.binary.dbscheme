@@ -2467,6 +2467,28 @@ il_call_target_unresolved(
   string target_method_name: string ref
 );
 
+/**
+ * Parameter type signature for method definitions.
+ * The param_signature is a parenthesized, comma-separated list of fully-qualified
+ * parameter type names, e.g. "(System.String,System.Int32)" or "()" for no parameters.
+ * This enables overload-precise identification of methods during export.
+ */
+il_method_param_signature(
+  int method: @method ref,
+  string param_signature: string ref
+);
+
+/**
+ * Parameter type signature for unresolved method call targets.
+ * The param_signature is a parenthesized, comma-separated list of fully-qualified
+ * parameter type names, e.g. "(System.String,System.Int32)" or "()" for no parameters.
+ * This enables overload-precise matching of call targets.
+ */
+il_call_target_param_signature(
+  int instruction: @il_instruction ref,
+  string param_signature: string ref
+);
+
 il_field_operand(
   int instruction: @il_instruction ref,
   string declaring_type_name: string ref,
@@ -2989,4 +3011,14 @@ jvm_stack_slot(
   int instr: @jvm_instruction ref,
   int slot: int ref,
   int producer_id: @jvm_instruction ref
+);
+
+/**
+ * Parameter type signature for JVM method call targets.
+ * The param_signature is a parenthesized, comma-separated list of human-readable
+ * parameter type names, e.g. "(Object,long,long)" or "()" for no parameters.
+ */
+jvm_call_target_param_signature(
+  int instruction: @jvm_instruction ref,
+  string param_signature: string ref
 );

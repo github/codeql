@@ -13,17 +13,21 @@ import semmle.code.binary.ast.ir.IR
  * Exports all methods that can reach vulnerable calls.
  * Output format matches the vulnerableCallModel extensible predicate for iterative analysis.
  */
-query predicate vulnerableCallModel(string namespace, string className, string methodName, string id) {
-  ExportedVulnerableCalls::pathToVulnerableMethod(namespace, className, methodName, id)
+query predicate vulnerableCallModel(
+  string namespace, string className, string methodName, string paramSignature, string id
+) {
+  ExportedVulnerableCalls::pathToVulnerableMethod(namespace, className, methodName, paramSignature,
+    id)
 }
 
 /**
  * Exports only public methods that reach vulnerable calls (for API surface analysis).
  */
 query predicate publicVulnerableCallModel(
-  string namespace, string className, string methodName, string id
+  string namespace, string className, string methodName, string paramSignature, string id
 ) {
-  ExportedVulnerableCalls::publicPathToVulnerableMethod(namespace, className, methodName, id)
+  ExportedVulnerableCalls::publicPathToVulnerableMethod(namespace, className, methodName,
+    paramSignature, id)
 }
 
 /**

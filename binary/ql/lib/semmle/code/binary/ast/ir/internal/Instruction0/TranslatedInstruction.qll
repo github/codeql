@@ -2169,6 +2169,12 @@ class TranslatedCilCall extends TranslatedCilInstruction, TTranslatedCilCall {
     result = instr.getExternalName()
   }
 
+  override string getExternalParamSignature(InstructionTag tag) {
+    not exists(instr.getTarget()) and
+    tag = CilCallTargetTag() and
+    result = instr.getParamSignature()
+  }
+
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }
 
   override Instruction getSuccessor(InstructionTag tag, SuccessorType succType) {
@@ -2430,6 +2436,12 @@ class TranslatedNewObject extends TranslatedCilInstruction, TTranslatedNewObject
     not exists(instr.getConstructor()) and
     tag = CilCallTargetTag() and
     result = instr.getExternalName()
+  }
+
+  override string getExternalParamSignature(InstructionTag tag) {
+    not exists(instr.getConstructor()) and
+    tag = CilCallTargetTag() and
+    result = instr.getParamSignature()
   }
 
   override predicate hasTempVariable(TempVariableTag tag) {
@@ -2755,6 +2767,11 @@ class TranslatedJvmInvoke extends TranslatedJvmInstruction, TTranslatedJvmInvoke
   final override string getExternalName(InstructionTag tag) {
     tag = JvmCallTargetTag() and
     result = instr.getCallTarget()
+  }
+
+  final override string getExternalParamSignature(InstructionTag tag) {
+    tag = JvmCallTargetTag() and
+    result = instr.getParamSignature()
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, SuccessorType succType) { none() }

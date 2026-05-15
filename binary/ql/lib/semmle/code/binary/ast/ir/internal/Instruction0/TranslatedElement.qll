@@ -264,6 +264,12 @@ abstract class TranslatedElement extends TTranslatedElement {
   string getExternalName(InstructionTag tag) { none() }
 
   /**
+   * Gets the parameter type signature for an external call with the given tag, e.g.
+   * `(System.String,System.Int32)`. This `tag` must refer to an `ExternalRef` instruction.
+   */
+  string getExternalParamSignature(InstructionTag tag) { none() }
+
+  /**
    * Gets the name of the field referenced by an instruction with the given tag. This `tag` must refer to
    * a `FieldAddress` instruction (that is, an instruction for which
    * `hasInstruction(Opcode::FieldAddress, tag, _)` holds.)

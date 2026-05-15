@@ -176,6 +176,9 @@ class ExternalRefInstruction extends Instruction {
 
   string getExternalName() { result = te.getExternalName(tag) }
 
+  /** Gets the parenthesized parameter type signature, e.g. `(System.String,System.Int32)`. */
+  string getExternalParamSignature() { result = te.getExternalParamSignature(tag) }
+
   final override string getImmediateValue() { result = this.getExternalName() }
 }
 

@@ -64,6 +64,9 @@ class JvmMethod extends @method {
 
   private string getSignature() { methods(this, _, result, _) }
 
+  /** Gets the parenthesized parameter type signature, e.g. `(Object,long,long)`. */
+  string getParamSignature() { il_method_param_signature(this, result) }
+
   predicate isVoid() { this.getSignature().matches("%)V") }
 
   JvmInstruction getAnInstruction() { jvm_instruction_method(result, this) }
@@ -1208,6 +1211,8 @@ class JvmPutfield extends @jvm_putfield, JvmFieldStore { }
 // Method invocations
 abstract class JvmInvoke extends JvmInstruction {
   string getCallTarget() { jvm_call_target_unresolved(this, result) }
+
+  string getParamSignature() { jvm_call_target_param_signature(this, result) }
 
   int getNumberOfArguments() { jvm_number_of_arguments(this, result) }
 

@@ -141,6 +141,9 @@ class CilMethod extends @method {
     result.getIndex() = i
   }
 
+  /** Gets the parenthesized parameter type signature, e.g. `(System.String,System.Int32)`. */
+  string getParamSignature() { il_method_param_signature(this, result) }
+
   CilType getDeclaringType() { methods(this, _, _, result) }
 
   Location getLocation() { none() } // TODO: Extract
@@ -430,6 +433,9 @@ abstract class CilCallOrNewObject extends CilInstruction {
   final int getNumberOfArguments() { il_number_of_arguments(this, result) }
 
   final string getExternalName() { il_call_target_unresolved(this, result) }
+
+  /** Gets the parenthesized parameter type signature, e.g. `(System.String,System.Int32)`. */
+  final string getParamSignature() { il_call_target_param_signature(this, result) }
 }
 
 abstract class CilCall extends CilCallOrNewObject {

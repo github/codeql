@@ -7,13 +7,17 @@ private import binary
 private import semmle.code.binary.ast.ir.IR
 
 /**
- * Holds if any call identified by `(namespace, className, methodName)` should be flagged
- * as potentially vulnerable, for reasons explained by the advisory with the given `id`.
+ * Holds if any call identified by `(namespace, className, methodName, paramSignature)` should be
+ * flagged as potentially vulnerable, for reasons explained by the advisory with the given `id`.
+ *
+ * `paramSignature` is a comma-separated list of fully-qualified parameter types enclosed in
+ * parentheses, e.g. `(System.String,System.Int32)`. An empty signature `()` matches methods
+ * with no parameters. A wildcard `*` matches any overload.
  *
  * This is an extensible predicate - values are provided via YAML data extensions.
  */
 extensible predicate vulnerableCallModel(
-  string namespace, string className, string methodName, string id
+  string namespace, string className, string methodName, string paramSignature, string id
 );
 
 /**
@@ -23,12 +27,19 @@ class VulnerableMethodCall extends CallInstruction {
   string vulnerabilityId;
 
   VulnerableMethodCall() {
-    exists(string namespace, string className, string methodName |
-      vulnerableCallModel(namespace, className, methodName, vulnerabilityId) and
-      this.getTargetOperand()
-          .getAnyDef()
-          .(ExternalRefInstruction)
-          .hasFullyQualifiedName(namespace, className, methodName)
+    exists(string namespace, string className, string methodName, string paramSignature |
+      vulnerableCallModel(namespace, className, methodName, paramSignature, vulnerabilityId) and
+      exists(ExternalRefInstruction extRef |
+        extRef = this.getTargetOperand().getAnyDef() and
+        extRef.hasFullyQualifiedName(namespace, className, methodName) and
+        (
+          paramSignature = "*"
+          or
+          extRef.getExternalParamSignature() = paramSignature
+          or
+          not exists(extRef.getExternalParamSignature()) // JVM calls lack param signatures
+        )
+      )
     )
   }
 
@@ -86,8 +97,23 @@ Function getStateMachineImplementation(Function stub) { isStateMachineImplementa
  * state machine implementations.
  */
 Function getAVulnerableMethod(string id) {
-  // Direct call to vulnerable method
+  // Direct call to vulnerable method (cross-assembly via ExternalRef)
   result = getADirectlyVulnerableMethod(id)
+  or
+  // Method defined in this binary that matches the model.
+  // This handles root cause mode where the vulnerable method is in the same
+  // package being analyzed, not referenced cross-assembly via ExternalRef.
+  // The result set includes the root cause methods themselves plus all their
+  // transitive callers, filtered downstream to public methods for export.
+  exists(string namespace, string className, string methodName, string paramSignature |
+    vulnerableCallModel(namespace, className, methodName, paramSignature, id) and
+    result.hasFullyQualifiedName(namespace, className, methodName) and
+    (
+      paramSignature = "*" or
+      result.getParamSignature() = paramSignature or
+      result.getParamSignature() = "*"  // JVM functions don't have param signatures yet
+    )
+  )
   or
   // Transitive: method calls another method that is vulnerable (via ExternalRef for external calls)
   exists(CallInstruction call, Function callee |
@@ -125,26 +151,30 @@ Function getAPublicVulnerableMethod(string id) {
  */
 module ExportedVulnerableCalls {
   /**
-   * Holds if `(namespace, className, methodName)` identifies a method that
+   * Holds if `(namespace, className, methodName, paramSignature)` identifies a method that
    * leads to a vulnerable call identified by `id`.
    */
-  predicate pathToVulnerableMethod(string namespace, string className, string methodName, string id) {
+  predicate pathToVulnerableMethod(
+    string namespace, string className, string methodName, string paramSignature, string id
+  ) {
     exists(Function m |
       m = getAVulnerableMethod(id) and
-      m.hasFullyQualifiedName(namespace, className, methodName)
+      m.hasFullyQualifiedName(namespace, className, methodName) and
+      paramSignature = m.getParamSignature()
     )
   }
 
   /**
-   * Holds if `(namespace, className, methodName)` identifies a public method
+   * Holds if `(namespace, className, methodName, paramSignature)` identifies a public method
    * that leads to a vulnerable call identified by `id`.
    */
   predicate publicPathToVulnerableMethod(
-    string namespace, string className, string methodName, string id
+    string namespace, string className, string methodName, string paramSignature, string id
   ) {
     exists(Function m |
       m = getAPublicVulnerableMethod(id) and
-      m.hasFullyQualifiedName(namespace, className, methodName)
+      m.hasFullyQualifiedName(namespace, className, methodName) and
+      paramSignature = m.getParamSignature()
     )
   }
 }

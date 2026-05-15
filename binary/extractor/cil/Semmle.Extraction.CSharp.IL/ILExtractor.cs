@@ -111,6 +111,11 @@ public class ILExtractor {
     // Write access flags
     trap.WriteTuple("cil_method_access_flags", methodId, (int)method.Attributes);
 
+    // Write parameter type signature for overload-precise identification
+    var methodParamTypes = string.Join(",",
+        method.Parameters.Select(p => p.ParameterType.FullName.Replace('/', '.')));
+    trap.WriteTuple("il_method_param_signature", methodId, $"({methodParamTypes})");
+
     if (method.HasBody) {
       ExtractMethodBody(method, methodId);
     }
@@ -182,6 +187,10 @@ public class ILExtractor {
         var targetMethodName = $"{declaringTypeName}.{methodRef.Name}";
         trap.WriteTuple("il_call_target_unresolved", instrId, targetMethodName);
         trap.WriteTuple("il_number_of_arguments", instrId, methodRef.Parameters.Count);
+        // Emit parameter type signature for overload-precise matching
+        var paramTypes = string.Join(",",
+            methodRef.Parameters.Select(p => p.ParameterType.FullName.Replace('/', '.')));
+        trap.WriteTuple("il_call_target_param_signature", instrId, $"({paramTypes})");
         if(methodRef.MethodReturnType.ReturnType.MetadataType is not Mono.Cecil.MetadataType.Void) {
           trap.WriteTuple("il_call_has_return_value", instrId);
         }

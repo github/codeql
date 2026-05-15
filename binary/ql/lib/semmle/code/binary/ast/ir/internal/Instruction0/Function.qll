@@ -25,5 +25,8 @@ class Function extends TFunction {
 
   predicate isPublic() { f.isPublic() }
 
+  /** Gets the parenthesized parameter type signature, e.g. `(System.String,System.Int32)`. */
+  string getParamSignature() { result = f.getParamSignature() }
+
   Type getDeclaringType() { result.getAFunction() = this }
 }

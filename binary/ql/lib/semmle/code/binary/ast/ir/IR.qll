@@ -25,6 +25,9 @@ private module FinalInstruction {
 
     predicate isPublic() { super.isPublic() }
 
+    /** Gets the parenthesized parameter type signature, e.g. `(System.String,System.Int32)`. */
+    string getParamSignature() { result = super.getParamSignature() }
+
     /**
      * Gets the fully qualified name of this method in the format:
      * "Namespace.ClassName.MethodName".
@@ -301,6 +304,9 @@ private module FinalInstruction {
 
   class ExternalRefInstruction extends Instruction instanceof Instruction::ExternalRefInstruction {
     string getExternalName() { result = super.getExternalName() }
+
+    /** Gets the parenthesized parameter type signature, e.g. `(System.String,System.Int32)`. */
+    string getExternalParamSignature() { result = super.getExternalParamSignature() }
 
     cached
     predicate hasFullyQualifiedName(string namespace, string className, string methodName) {
