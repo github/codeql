@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `py/clear-text-logging-sensitive-data`) may find more correct results and less false positive results after these changes.
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `py/clear-text-logging-sensitive-data`) may find more correct results and less fewer positive results after these changes.
