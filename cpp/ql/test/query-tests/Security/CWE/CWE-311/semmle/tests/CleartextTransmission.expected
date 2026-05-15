@@ -138,6 +138,7 @@ nodes
 | test3.cpp:577:2:577:25 | ... = ... | semmle.label | ... = ... |
 | test3.cpp:577:8:577:23 | call to get_home_address | semmle.label | call to get_home_address |
 | test3.cpp:578:14:578:16 | str | semmle.label | str |
+| test3.cpp:585:25:585:32 | password | semmle.label | password |
 subpaths
 | test3.cpp:138:24:138:32 | password1 | test3.cpp:117:28:117:33 | buffer | test3.cpp:117:13:117:14 | *id | test3.cpp:138:21:138:22 | call to id |
 #select
@@ -181,3 +182,4 @@ subpaths
 | test3.cpp:559:3:559:6 | call to send | test3.cpp:556:19:556:30 | salaryString | test3.cpp:559:15:559:20 | *buffer | This operation transmits '*buffer', which may contain unencrypted sensitive data from $@. | test3.cpp:556:19:556:30 | salaryString | salaryString |
 | test3.cpp:572:2:572:5 | call to send | test3.cpp:571:8:571:21 | call to get_home_phone | test3.cpp:572:14:572:16 | str | This operation transmits 'str', which may contain unencrypted sensitive data from $@. | test3.cpp:571:8:571:21 | call to get_home_phone | call to get_home_phone |
 | test3.cpp:578:2:578:5 | call to send | test3.cpp:577:8:577:23 | call to get_home_address | test3.cpp:578:14:578:16 | str | This operation transmits 'str', which may contain unencrypted sensitive data from $@. | test3.cpp:577:8:577:23 | call to get_home_address | call to get_home_address |
+| test3.cpp:585:2:585:7 | call to fscanf | test3.cpp:585:25:585:32 | password | test3.cpp:585:25:585:32 | password | This operation receives into 'password', which may put unencrypted sensitive data into $@. | test3.cpp:585:25:585:32 | password | password |
