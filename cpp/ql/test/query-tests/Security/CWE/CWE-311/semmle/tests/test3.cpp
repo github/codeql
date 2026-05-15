@@ -582,5 +582,5 @@ int fscanf(FILE* stream, const char* format, ... );
 
 void test_scanf() {
 	char password[256];
-	fscanf(stdin, "%255s", password); // GOOD [FALSE POSITIVE]: this is not a remote source
+	fscanf(stdin, "%255s", password); // GOOD: this is not a remote source
 }
