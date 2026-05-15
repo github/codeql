@@ -208,7 +208,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
   private newtype TInstructionTag =
     ZeroTag() or
-    CmpDefTag(ConditionKind k) or
+    CmpDefTag(BinaryConditionKind k) or
     InitializeParameterTag(Instruction1::Variable v) { isReadBeforeInitialization(v, _) }
 
   class LocalVariableTag extends Void {
@@ -228,9 +228,9 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
       this = ZeroTag() and
       result = "ZeroTag"
       or
-      exists(ConditionKind k |
+      exists(BinaryConditionKind k |
         this = CmpDefTag(k) and
-        result = "CmpDefTag(" + stringOfConditionKind(k) + ")"
+        result = "CmpDefTag(" + stringOfBinaryConditionKind(k) + ")"
       )
       or
       exists(Instruction1::Variable v |
@@ -367,7 +367,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
    * There is only a result if the condition part of `cmp` may be undefined.
    */
   private predicate controlFlowsToCmp(
-    Instruction1::Instruction i, Instruction1::CJumpInstruction cjump, ConditionKind kind
+    Instruction1::Instruction i, Instruction1::CJumpInstruction cjump, BinaryConditionKind kind
   ) {
     // There is control-flow from i to cjump without a write to the
     // variable that is used as a condition to cjump
@@ -512,7 +512,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
   private newtype TTranslatedElement =
     TTranslatedComparisonInstruction(
-      Instruction1::Instruction i, Instruction1::CJumpInstruction cjump, ConditionKind kind
+      Instruction1::Instruction i, Instruction1::CJumpInstruction cjump, BinaryConditionKind kind
     ) {
       controlFlowsToCmp(i, cjump, kind)
     } or
@@ -539,7 +539,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
 
     int getConstantValue(InstructionTag tag) { none() }
 
-    predicate hasJumpCondition(InstructionTag tag, ConditionKind kind) { none() }
+    predicate hasJumpCondition(InstructionTag tag, BinaryConditionKind kind) { none() }
 
     predicate hasTempVariable(TempVariableTag tag) { none() }
 
@@ -571,7 +571,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
   }
 
   private class TranslatedComparisonInstruction extends TranslatedInstruction {
-    ConditionKind kind;
+    BinaryConditionKind kind;
     Instruction1::CJumpInstruction cjump;
 
     TranslatedComparisonInstruction() {
@@ -639,7 +639,7 @@ private module InstructionInput implements Transform<Instruction1>::TransformInp
       result = 0
     }
 
-    override predicate hasJumpCondition(InstructionTag tag, ConditionKind k) {
+    override predicate hasJumpCondition(InstructionTag tag, BinaryConditionKind k) {
       kind = k and
       tag = CmpDefTag(kind)
     }
