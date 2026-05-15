@@ -243,13 +243,10 @@ module AgentSDK {
   }
 
   /**
-   * Gets user prompt sinks for run(agent, input).
-   * Covers string input and user-role array messages.
+   * Gets role-filtered user prompt sinks for run(agent, input).
+   * The string-input case is handled via MaD (openai.model.yml).
    */
   API::Node getUserPromptNode() {
-    // run(agent, "string") — string input is the user prompt
-    result = run().getParameter(1)
-    or
     // run(agent, [{ role: "user", content: ... }])
     exists(API::Node msg |
       msg = run().getParameter(1).getArrayElement() and

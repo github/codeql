@@ -21,3 +21,5 @@ extensions:
       - ["@openai/agents", "Member[tool].Argument[0].Member[description]", "system-prompt-injection"]
       - ["@openai/guardrails", "Member[tool].Argument[0].Member[description]", "system-prompt-injection"]
       - ["@openai/guardrails", "Member[GuardrailAgent].Member[create].Argument[2]", "system-prompt-injection"]
+      - ["@openai/agents", "Member[run].Argument[1]", "user-prompt-injection"]
+      - ["@openai/agents", "Member[Runner].Instance.Member[run].Argument[1]", "user-prompt-injection"]
