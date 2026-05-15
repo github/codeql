@@ -75,6 +75,24 @@ module SystemPromptInjection {
   }
 
   /**
+   * Content placed in a message with `role: "user"` is not a system prompt
+   * injection vector; it is intended user-role content.
+   *
+   * This prevents false positives when user input and system prompts are
+   * combined in the same message array (e.g. `[{role:"system", content: ...},
+   * {role:"user", content: tainted}]`) and taint would otherwise propagate
+   * through array operations to the system message.
+   */
+  private class UserRoleMessageContentBarrier extends Sanitizer {
+    UserRoleMessageContentBarrier() {
+      exists(DataFlow::SourceNode obj |
+        obj.getAPropertySource("role").mayHaveStringValue("user") and
+        this = obj.getAPropertyWrite("content").getRhs()
+      )
+    }
+  }
+
+  /**
    * A comparison with a constant, considered as a sanitizer-guard.
    */
   private class ConstCompareBarrierGuard extends DataFlow::ValueNode

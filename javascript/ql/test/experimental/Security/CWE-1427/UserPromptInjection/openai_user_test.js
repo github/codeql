@@ -75,12 +75,6 @@ app.get("/test", async (req, res) => {
     prompt: userInput, // $ Alert[js/user-prompt-injection]
   });
 
-  // Embeddings API
-  await client.embeddings.create({
-    model: "text-embedding-3-small",
-    input: userInput, // $ Alert[js/user-prompt-injection]
-  });
-
   // Audio API
   await client.audio.transcriptions.create({
     file: "audio.mp3",

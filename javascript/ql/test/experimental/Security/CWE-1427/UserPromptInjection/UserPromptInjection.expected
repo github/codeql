@@ -16,12 +16,11 @@ edges
 | openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:66:13:66:21 | userInput | provenance |  |
 | openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:71:13:71:21 | userInput | provenance |  |
 | openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:75:13:75:21 | userInput | provenance |  |
-| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:81:12:81:20 | userInput | provenance |  |
+| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:82:13:82:21 | userInput | provenance |  |
 | openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:88:13:88:21 | userInput | provenance |  |
-| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:94:13:94:21 | userInput | provenance |  |
-| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:100:14:100:22 | userInput | provenance |  |
-| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:106:12:106:20 | userInput | provenance |  |
-| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:153:12:153:20 | userInput | provenance |  |
+| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:94:14:94:22 | userInput | provenance |  |
+| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:100:12:100:20 | userInput | provenance |  |
+| openai_user_test.js:14:9:14:17 | userInput | openai_user_test.js:147:12:147:20 | userInput | provenance |  |
 | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:14:9:14:17 | userInput | provenance |  |
 nodes
 | anthropic_user_test.js:8:9:8:17 | userInput | semmle.label | userInput |
@@ -45,12 +44,11 @@ nodes
 | openai_user_test.js:66:13:66:21 | userInput | semmle.label | userInput |
 | openai_user_test.js:71:13:71:21 | userInput | semmle.label | userInput |
 | openai_user_test.js:75:13:75:21 | userInput | semmle.label | userInput |
-| openai_user_test.js:81:12:81:20 | userInput | semmle.label | userInput |
+| openai_user_test.js:82:13:82:21 | userInput | semmle.label | userInput |
 | openai_user_test.js:88:13:88:21 | userInput | semmle.label | userInput |
-| openai_user_test.js:94:13:94:21 | userInput | semmle.label | userInput |
-| openai_user_test.js:100:14:100:22 | userInput | semmle.label | userInput |
-| openai_user_test.js:106:12:106:20 | userInput | semmle.label | userInput |
-| openai_user_test.js:153:12:153:20 | userInput | semmle.label | userInput |
+| openai_user_test.js:94:14:94:22 | userInput | semmle.label | userInput |
+| openai_user_test.js:100:12:100:20 | userInput | semmle.label | userInput |
+| openai_user_test.js:147:12:147:20 | userInput | semmle.label | userInput |
 subpaths
 #select
 | anthropic_user_test.js:18:18:18:26 | userInput | anthropic_user_test.js:8:21:8:39 | req.query.userInput | anthropic_user_test.js:18:18:18:26 | userInput | This prompt construction depends on a $@. | anthropic_user_test.js:8:21:8:39 | req.query.userInput | user-provided value |
@@ -68,9 +66,8 @@ subpaths
 | openai_user_test.js:66:13:66:21 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:66:13:66:21 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
 | openai_user_test.js:71:13:71:21 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:71:13:71:21 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
 | openai_user_test.js:75:13:75:21 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:75:13:75:21 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
-| openai_user_test.js:81:12:81:20 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:81:12:81:20 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
+| openai_user_test.js:82:13:82:21 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:82:13:82:21 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
 | openai_user_test.js:88:13:88:21 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:88:13:88:21 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
-| openai_user_test.js:94:13:94:21 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:94:13:94:21 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
-| openai_user_test.js:100:14:100:22 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:100:14:100:22 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
-| openai_user_test.js:106:12:106:20 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:106:12:106:20 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
-| openai_user_test.js:153:12:153:20 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:153:12:153:20 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
+| openai_user_test.js:94:14:94:22 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:94:14:94:22 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
+| openai_user_test.js:100:12:100:20 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:100:12:100:20 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |
+| openai_user_test.js:147:12:147:20 | userInput | openai_user_test.js:14:21:14:39 | req.query.userInput | openai_user_test.js:147:12:147:20 | userInput | This prompt construction depends on a $@. | openai_user_test.js:14:21:14:39 | req.query.userInput | user-provided value |

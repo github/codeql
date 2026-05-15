@@ -171,14 +171,6 @@ module OpenAI {
           .getParameter(0)
           .getMember("prompt")
     or
-    // embeddings.create({ input: ... })
-    result =
-      clientsNoGuardrails()
-          .getMember("embeddings")
-          .getMember("create")
-          .getParameter(0)
-          .getMember("input")
-    or
     // beta.threads.messages.create(threadId, { role: "user", content: ... })
     exists(API::Node msg |
       msg =

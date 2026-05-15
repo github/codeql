@@ -117,6 +117,38 @@ app.get("/test", async (req, res) => {
     system: "Talk like a " + persona, // $ Alert[js/prompt-injection]
   });
 
+  // === Barrier: user-role content in shared message array ===
+
+  // SHOULD NOT ALERT — user input placed in { role: "user" } should not
+  // taint system messages extracted from the same array.
+  const messages = [
+    { role: "system", content: "You are a helpful assistant" },
+    { role: "user", content: query }, // OK - user role barrier
+  ];
+  const systemMsg = messages.find((m) => m.role === "system");
+  const m6 = await client.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1024,
+    system: systemMsg.content,
+    messages: [{ role: "user", content: query }],
+  });
+
+  // === Barrier does NOT suppress: tainted value in system role ===
+
+  // SHOULD ALERT — tainted data goes into system role; barrier on user role
+  // must not suppress the system-role taint path.
+  const messages2 = [
+    { role: "system", content: "Talk like a " + persona }, // $ Alert[js/prompt-injection]
+    { role: "user", content: query },
+  ];
+  const systemMsg2 = messages2.find((m) => m.role === "system");
+  const m7 = await client.messages.create({
+    model: "claude-sonnet-4-20250514",
+    max_tokens: 1024,
+    system: systemMsg2.content,
+    messages: [{ role: "user", content: query }],
+  });
+
   // === Sanitizer: constant comparison ===
 
   // SHOULD NOT ALERT

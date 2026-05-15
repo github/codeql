@@ -33,7 +33,7 @@ module GoogleGenAI {
             .getParameter(0)
             .getMember("contents")
             .getArrayElement() and
-      msg.getMember("role").asSink().mayHaveStringValue("model")
+      msg.getMember("role").asSink().mayHaveStringValue(["system", "model"])
     |
       result = msg.getMember("parts").getArrayElement().getMember("text")
     )
@@ -53,7 +53,7 @@ module GoogleGenAI {
             .getParameter(0)
             .getMember("contents")
             .getArrayElement() and
-      not msg.getMember("role").asSink().mayHaveStringValue("model")
+      not msg.getMember("role").asSink().mayHaveStringValue(["system", "model"])
     |
       result = msg.getMember("parts").getArrayElement().getMember("text")
     )

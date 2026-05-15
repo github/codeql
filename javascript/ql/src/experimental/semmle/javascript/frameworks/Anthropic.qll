@@ -33,7 +33,7 @@ module Anthropic {
     // messages: [{ role: "assistant", content: "..." }]
     exists(API::Node msg |
       msg = messagesCreateParams().getMember("messages").getArrayElement() and
-      msg.getMember("role").asSink().mayHaveStringValue("assistant")
+      msg.getMember("role").asSink().mayHaveStringValue(["system", "assistant"])
     |
       result = msg.getMember("content")
     )
@@ -47,7 +47,7 @@ module Anthropic {
     // messages: [{ role: "user", content: "..." }]
     exists(API::Node msg |
       msg = messagesCreateParams().getMember("messages").getArrayElement() and
-      not msg.getMember("role").asSink().mayHaveStringValue("assistant")
+      not msg.getMember("role").asSink().mayHaveStringValue(["system", "assistant"])
     |
       result = msg.getMember("content")
     )

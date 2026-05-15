@@ -132,14 +132,6 @@ app.get("/test", async (req, res) => {
     prompt: "Edit to look like " + persona, // $ Alert[js/prompt-injection]
   });
 
-  // === Embeddings API ===
-
-  // embeddings.create (SHOULD ALERT)
-  const e1 = await client.embeddings.create({
-    model: "text-embedding-3-small",
-    input: "Embed this: " + persona, // $ Alert[js/prompt-injection]
-  });
-
   // === Assistants API (beta) ===
 
   // assistants.create (SHOULD ALERT)

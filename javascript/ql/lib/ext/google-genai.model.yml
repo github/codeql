@@ -19,5 +19,4 @@ extensions:
       - ["google-genai.Client", "Member[models].Member[generateVideos].Argument[0].Member[prompt]", "user-prompt-injection"]
       - ["google-genai.Client", "Member[chats].Member[create].ReturnValue.Member[sendMessage,sendMessageStream].Argument[0].Member[message]", "user-prompt-injection"]
       - ["google-genai.Client", "Member[chats].Member[create].ReturnValue.Member[sendMessage,sendMessageStream].Argument[0].Member[content]", "user-prompt-injection"]
-      - ["google-genai.Client", "Member[models].Member[embedContent].Argument[0].Member[content]", "user-prompt-injection"]
       - ["google-genai.Client", "Member[interactions].Member[create].Argument[0].Member[input]", "user-prompt-injection"]
