@@ -63,8 +63,8 @@ app.get("/agents", async (req, res) => {
 
   // === run() with string input ===
 
-  // SHOULD ALERT - string input to run() is used as a prompt
-  const r1 = await run(agent1, query); // $ Alert[js/prompt-injection]
+  // SHOULD NOT ALERT - string input to run() is a user prompt, not system prompt
+  const r1 = await run(agent1, query); // OK - user prompt sink
 
   // === run() with array input: system role ===
 

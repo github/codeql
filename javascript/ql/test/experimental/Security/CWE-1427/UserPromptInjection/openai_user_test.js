@@ -5,6 +5,7 @@ const {
   GuardrailsOpenAI,
   GuardrailsAzureOpenAI,
 } = require("@openai/guardrails");
+const { Agent, run, Runner } = require("@openai/agents");
 
 const app = express();
 const client = new OpenAI();
@@ -179,6 +180,40 @@ app.get("/test", async (req, res) => {
       },
     ],
   });
+
+  // === Agent SDK: run() user prompt sinks (SHOULD ALERT) ===
+
+  const agent = new Agent({
+    name: "Assistant",
+    instructions: "You are a helpful assistant",
+  });
+
+  // run() with string input (user prompt)
+  await run(agent, userInput); // $ Alert[js/user-prompt-injection]
+
+  // run() with user-role array message
+  await run(agent, [
+    { role: "user", content: userInput }, // $ Alert[js/user-prompt-injection]
+  ]);
+
+  // Runner instance with string input
+  const runner = new Runner();
+  await runner.run(agent, userInput); // $ Alert[js/user-prompt-injection]
+
+  // Runner instance with user-role array message
+  await runner.run(agent, [
+    { role: "user", content: userInput }, // $ Alert[js/user-prompt-injection]
+  ]);
+
+  // === Agent SDK: system/developer role in run() (SHOULD NOT ALERT for user-prompt) ===
+
+  await run(agent, [
+    { role: "system", content: userInput }, // OK for user-prompt-injection (system prompt sink)
+  ]);
+
+  await run(agent, [
+    { role: "developer", content: userInput }, // OK for user-prompt-injection (system prompt sink)
+  ]);
 
   res.send("done");
 });

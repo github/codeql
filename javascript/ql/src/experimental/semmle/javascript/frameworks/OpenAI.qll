@@ -243,6 +243,23 @@ module AgentSDK {
   }
 
   /**
+   * Gets user prompt sinks for run(agent, input).
+   * Covers string input and user-role array messages.
+   */
+  API::Node getUserPromptNode() {
+    // run(agent, "string") — string input is the user prompt
+    result = run().getParameter(1)
+    or
+    // run(agent, [{ role: "user", content: ... }])
+    exists(API::Node msg |
+      msg = run().getParameter(1).getArrayElement() and
+      not isSystemOrDevMessage(msg)
+    |
+      result = msg.getMember("content")
+    )
+  }
+
+  /**
    * Gets an agent constructor config that visibly lacks input guardrails.
    * Covers both native Agent({ inputGuardrails: [...] }) and
    * GuardrailAgent.create({ input: { guardrails: [...] } }, ...).

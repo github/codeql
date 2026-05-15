@@ -63,6 +63,8 @@ module UserPromptInjection {
       this = Anthropic::getUserPromptNode().asSink()
       or
       this = GoogleGenAI::getUserPromptNode().asSink()
+      or
+      this = AgentSDK::getUserPromptNode().asSink()
     }
   }
 
