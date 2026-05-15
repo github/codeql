@@ -218,7 +218,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Holds if this translated element generates a `CJump` instruction when given the tag `tag`, and
    * the condition kind of the jump is `kind`.
    */
-  predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) { none() }
+  predicate hasJumpCondition(InstructionTag tag, Opcode::BinaryConditionKind kind) { none() }
 
   /**
    * Holds if this translated element generates a local variable with the given tag.

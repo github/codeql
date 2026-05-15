@@ -112,9 +112,9 @@ class ConstInstruction extends Instruction {
 class CJumpInstruction extends Instruction {
   override Opcode::CJump opcode;
 
-  Opcode::ConditionKind getKind() { te.hasJumpCondition(tag, result) }
+  Opcode::BinaryConditionKind getKind() { te.hasJumpCondition(tag, result) }
 
-  override string getImmediateValue() { result = Opcode::stringOfConditionKind(this.getKind()) }
+  override string getImmediateValue() { result = Opcode::stringOfBinaryConditionKind(this.getKind()) }
 
   ConditionOperand getConditionOperand() { result = this.getAnOperand() }
 
