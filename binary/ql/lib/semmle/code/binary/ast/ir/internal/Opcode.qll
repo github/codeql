@@ -149,7 +149,7 @@ class FieldAddress extends Opcode, TFieldAddress {
   override string toString() { result = "FieldAddress" }
 }
 
-newtype ConditionKind =
+newtype BinaryConditionKind =
   EQ() or
   NE() or
   LT() or
@@ -157,7 +157,7 @@ newtype ConditionKind =
   GT() or
   GE()
 
-string stringOfConditionKind(ConditionKind cond) {
+string stringOfBinaryConditionKind(BinaryConditionKind cond) {
   cond = EQ() and
   result = "EQ"
   or

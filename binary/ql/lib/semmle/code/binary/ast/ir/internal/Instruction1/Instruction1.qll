@@ -369,7 +369,7 @@ module InstructionInput implements Transform<Instruction0>::TransformInputSig {
 
     abstract Instruction0::Function getEnclosingFunction();
 
-    predicate hasJumpCondition(InstructionTag tag, ConditionKind kind) { none() }
+    predicate hasJumpCondition(InstructionTag tag, BinaryConditionKind kind) { none() }
 
     predicate hasTempVariable(TempVariableTag tag) { none() }
 

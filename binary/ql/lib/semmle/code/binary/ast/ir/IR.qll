@@ -348,7 +348,7 @@ private module FinalInstruction {
   class FunEntryInstruction extends Instruction instanceof Instruction::FunEntryInstruction { }
 
   class CJumpInstruction extends Instruction instanceof Instruction::CJumpInstruction {
-    ConditionKind getKind() { result = super.getKind() }
+    BinaryConditionKind getKind() { result = super.getKind() }
 
     ConditionOperand getConditionOperand() { result = super.getConditionOperand() }
 

@@ -783,7 +783,7 @@ class TranslatedX86ConditionalJump extends TranslatedX86Instruction, TTranslated
     v.isNone() // A jump has no result
   }
 
-  override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
+  override predicate hasJumpCondition(InstructionTag tag, Opcode::BinaryConditionKind kind) {
     tag = SingleTag() and
     (
       instr instanceof Raw::X86Jb and kind = Opcode::LT()
@@ -1844,7 +1844,7 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
 {
   override Raw::CilRelationalInstruction instr;
 
-  abstract Opcode::ConditionKind getConditionKind();
+  abstract Opcode::BinaryConditionKind getConditionKind();
 
   TranslatedRelationalInstruction() { this = TTranslatedCilRelationalInstruction(instr) }
 
@@ -1872,7 +1872,7 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
     tag = CilRelVarTag()
   }
 
-  final override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
+  final override predicate hasJumpCondition(InstructionTag tag, Opcode::BinaryConditionKind kind) {
     tag = CilRelCJumpTag() and
     kind = this.getConditionKind()
   }
@@ -1940,19 +1940,19 @@ abstract class TranslatedRelationalInstruction extends TranslatedCilInstruction,
 class TranslatedCilClt extends TranslatedRelationalInstruction {
   override Raw::CilClt instr;
 
-  override Opcode::ConditionKind getConditionKind() { result = Opcode::LT() }
+  override Opcode::BinaryConditionKind getConditionKind() { result = Opcode::LT() }
 }
 
 class TranslatedCilCgt extends TranslatedRelationalInstruction {
   override Raw::CilCgt instr;
 
-  override Opcode::ConditionKind getConditionKind() { result = Opcode::GT() }
+  override Opcode::BinaryConditionKind getConditionKind() { result = Opcode::GT() }
 }
 
 class TranslatedCilCeq extends TranslatedRelationalInstruction {
   override Raw::CilCeq instr;
 
-  override Opcode::ConditionKind getConditionKind() { result = Opcode::EQ() }
+  override Opcode::BinaryConditionKind getConditionKind() { result = Opcode::EQ() }
 }
 
 /**
@@ -2004,7 +2004,7 @@ abstract class TranslatedCilBooleanBranchInstruction extends TranslatedCilInstru
     tag = CilBoolBranchSubVarTag()
   }
 
-  override predicate hasJumpCondition(InstructionTag tag, Opcode::ConditionKind kind) {
+  override predicate hasJumpCondition(InstructionTag tag, Opcode::BinaryConditionKind kind) {
     tag = CilBoolBranchCJumpTag() and
     kind = Opcode::EQ()
   }
