@@ -614,6 +614,27 @@ class TemplateVariable extends Variable {
     result.isConstructedFrom(this) and
     not result.isSpecialization()
   }
+
+  /**
+   * Gets the class member template this template was generated from.
+   *
+   * This predicate only has results for templates that are members of class
+   * template instantiations. For example, for `MyTemplateClass<int>::x<S>`
+   * in the following code, this predicate holds for `MyTemplateClass<T>::x<S>`.
+   * ```cpp
+   * template<class T>
+   * class MyTemplateClass {
+   *   template<class S>
+   *   static S x;
+   * };
+   *
+   * template
+   * class MyTemplateClass<int>;
+   * ```
+   */
+  TemplateVariable getOriginalTemplate() {
+    variable_template_generated_from(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**

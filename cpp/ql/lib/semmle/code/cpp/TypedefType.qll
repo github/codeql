@@ -130,6 +130,27 @@ class AliasTemplateType extends TypeAliasType {
    * ```
    */
   TypeAliasType getAnInstantiation() { result.isConstructedFrom(this) }
+
+  /**
+   * Gets the class member template this template was generated from.
+   *
+   * This predicate only has results for templates that are members of class
+   * template instantiations. For example, for `MyTemplateClass<int>::t<S>`
+   * in the following code, this predicate holds for `MyTemplateClass<T>::t<S>`.
+   * ```cpp
+   * template<class T>
+   * class MyTemplateClass {
+   *   template<class S>
+   *   using t = S;
+   * };
+   *
+   * template
+   * class MyTemplateClass<int>;
+   * ```
+   */
+  AliasTemplateType getOriginalTemplate() {
+    alias_template_generated_from(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**
