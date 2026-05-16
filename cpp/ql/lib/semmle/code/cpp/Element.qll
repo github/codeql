@@ -278,6 +278,15 @@ private predicate isFromTemplateInstantiationRec(Element e, Element instantiatio
   instantiation.(Variable).isConstructedFrom(_) and
   e = instantiation
   or
+  instantiation.(UsingAliasTypedefType).isConstructedFrom(_) and
+  e = instantiation
+  or
+  instantiation.(TemplateTemplateParameterInstantiation).isConstructedFrom(_) and
+  e = instantiation
+  or
+  exists(instantiation.(ConceptIdExpr).getConcept()) and
+  e = instantiation
+  or
   isFromTemplateInstantiationRec(e.getEnclosingElement(), instantiation)
 }
 
@@ -289,6 +298,15 @@ private predicate isFromUninstantiatedTemplateRec(Element e, Element template) {
   e = template
   or
   is_variable_template(unresolveElement(template)) and
+  e = template
+  or
+  is_alias_template(unresolveElement(template)) and
+  e = template
+  or
+  usertypes(unresolveElement(template), _, 8) and // template template parameter
+  e = template
+  or
+  template instanceof @concept_template and
   e = template
   or
   isFromUninstantiatedTemplateRec(e.getEnclosingElement(), template)

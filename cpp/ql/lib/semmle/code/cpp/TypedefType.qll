@@ -64,7 +64,8 @@ class CTypedefType extends TypedefType {
 }
 
 /**
- * A using alias C++ typedef type.  For example the type declared in the following code:
+ * A C++ type alias or alias template. For example the type declared in the following
+ * code:
  * ```
  * using my_int2 = int;
  * ```
@@ -77,6 +78,66 @@ class UsingAliasTypedefType extends TypedefType {
   override string explain() {
     result = "using {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\""
   }
+
+  /**
+   * Holds if this alias is constructed from another alias as a result of
+   * template instantiation.
+   */
+  predicate isConstructedFrom(UsingAliasTypedefType t) {
+    alias_instantiation(underlyingElement(this), unresolveElement(t))
+  }
+}
+
+/**
+ * A C++ alias template. For example the type declared in the following code:
+ * ```
+ * template <typename T>
+ * using my_type = T;
+ * ```
+ */
+class AliasTemplateTypedefType extends TypedefType {
+  AliasTemplateTypedefType() { is_alias_template(underlyingElement(this)) }
+
+  override string getAPrimaryQlClass() { result = "AliasTemplateTypedefType" }
+
+  /**
+   * Gets a alias instantiated from this template.
+   *
+   * For example for `MyAliasTemplate<T>` in the following code, the results are
+   * `MyAliasTemplate<int>` and `MyAliasTemplate<long>`:
+   * ```
+   * template<typename T>
+   * using MyAliasTemplate = ;
+   *
+   * MyAliasTemplate<int> instance1;
+   *
+   * MyAliasTemplate<long> instance2;
+   * ```
+   */
+  UsingAliasTypedefType getAnInstantiation() { result.isConstructedFrom(this) }
+}
+
+/**
+ * A C++ alias template instantiation. For example the `my_int_type` type declared in
+ * the following code:
+ * ```
+ * template <typename T>
+ * using my_type = T;
+ *
+ * using my_int_type = my_type<int>;
+ * ```
+ */
+class AliasTemplateInstantiationTypedefType extends UsingAliasTypedefType {
+  AliasTemplateTypedefType ta;
+
+  AliasTemplateInstantiationTypedefType() { ta.getAnInstantiation() = this }
+
+  override string getAPrimaryQlClass() { result = "AliasTemplateInstantiationTypedefType" }
+
+  /**
+   * Gets the alias template from which this instantiation was instantiated.
+   */
+  AliasTemplateTypedefType getTemplate() { result = ta }
 }
 
 /**
