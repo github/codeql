@@ -1714,7 +1714,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         // We can infer the type of `tp` from one of the access positions
         directTypeMatch(a, e, target, path, t, tp)
         or
-        // We can infer the type of `tp` by going up the type hiearchy
+        // We can infer the type of `tp` by going up the type hierarchy
         AccessBaseType::baseTypeMatch(a, e, target, path, t, tp)
         or
         // We can infer the type of `tp` by a type constraint
