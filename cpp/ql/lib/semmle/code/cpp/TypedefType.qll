@@ -122,7 +122,7 @@ class AliasTemplateType extends TypeAliasType {
    * `MyAliasTemplate<int>` and `MyAliasTemplate<long>`:
    * ```
    * template<typename T>
-   * using MyAliasTemplate = ;
+   * using MyAliasTemplate = ...;
    *
    * MyAliasTemplate<int> instance1;
    *
