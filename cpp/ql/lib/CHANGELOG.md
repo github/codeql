@@ -1,3 +1,9 @@
+## 10.1.1
+
+### Minor Analysis Improvements
+
+* The `RemoteFlowSourceFunction` model for `fscanf` (and variants) now implements `hasSocketInput` to reflect that these functions may read from a socket.
+
 ## 10.1.0
 
 ### New Features

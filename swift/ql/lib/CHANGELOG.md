@@ -1,3 +1,9 @@
+## 6.6.0
+
+### New Features
+
+* The `TypeDecl` class now defines a `getDeclaredInterfaceType` predicate, which yields the declared interface type of the type declaration.
+
 ## 6.5.0
 
 ### New Features
