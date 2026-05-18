@@ -342,7 +342,7 @@ class Lambda extends Callable, BodyStmt, TLambda {
 }
 
 /** A block. */
-class Block extends Callable, StmtSequence, Scope, TBlock {
+class Block extends Callable, Scope, TBlock {
   /**
    * Gets a local variable declared by this block.
    * For example `local` in `{ | param; local| puts param }`.
@@ -357,8 +357,6 @@ class Block extends Callable, StmtSequence, Scope, TBlock {
 
   override AstNode getAChild(string pred) {
     result = Callable.super.getAChild(pred)
-    or
-    result = StmtSequence.super.getAChild(pred)
     or
     pred = "getLocalVariable" and result = this.getLocalVariable(_)
   }
