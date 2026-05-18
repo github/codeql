@@ -15,6 +15,19 @@ private import codeql.controlflow.ControlFlowGraph
 private import codeql.controlflow.SuccessorType
 private import codeql.util.Void
 
+/**
+ * Gets the bound `Name` of a PEP 695 type parameter (`TypeVar`,
+ * `ParamSpec`, or `TypeVarTuple`). The base `TypeParameter` class does
+ * not expose `getName()`; this helper dispatches over the subtypes.
+ */
+private Py::Name typeParameterName(Py::TypeParameter tp) {
+  result = tp.(Py::TypeVar).getName()
+  or
+  result = tp.(Py::ParamSpec).getName()
+  or
+  result = tp.(Py::TypeVarTuple).getName()
+}
+
 /** Provides the Python implementation of the shared CFG `AstSig`. */
 module Ast implements AstSig<Py::Location> {
   private newtype TAstNode =
@@ -797,6 +810,37 @@ module Ast implements AstSig<Py::Location> {
     override AstNode getChild(int index) { result = this.getTarget(index) }
   }
 
+  /**
+   * A PEP 695 `type` statement (`type Alias[T1, T2] = value`).
+   *
+   * The type parameters bind at statement-evaluation time. The value
+   * expression is captured for lazy evaluation but the alias `Name`
+   * itself binds the resulting `TypeAliasType` object — so the CFG must
+   * visit at minimum the type-parameter names and the alias name.
+   */
+  additional class TypeAliasStmt extends Stmt {
+    private Py::TypeAlias ta;
+
+    TypeAliasStmt() { this = TPyStmt(ta) }
+
+    /** Gets the alias `Name` bound by this statement. */
+    Expr getName() { result.asExpr() = ta.getName() }
+
+    /**
+     * Gets the `n`th PEP 695 type-parameter name (a `Name` in store
+     * context), in declaration order.
+     */
+    Expr getTypeParamName(int n) { result.asExpr() = typeParameterName(ta.getTypeParameter(n)) }
+
+    int getNumberOfTypeParams() { result = count(ta.getATypeParameter()) }
+
+    override AstNode getChild(int index) {
+      result = this.getTypeParamName(index)
+      or
+      index = this.getNumberOfTypeParams() and result = this.getName()
+    }
+  }
+
   /** A `try` statement. */
   class TryStmt extends Stmt {
     private Py::Try tryStmt;
@@ -1359,9 +1403,24 @@ module Ast implements AstSig<Py::Location> {
 
     ClassDefExpr() { this = TPyExpr(classExpr) }
 
+    /**
+     * Gets the `n`th PEP 695 type-parameter name (a `Name` in store
+     * context), in declaration order. These bind in the enclosing scope
+     * at class-definition time, so the CFG must visit them.
+     */
+    Expr getTypeParamName(int n) {
+      result.asExpr() = typeParameterName(classExpr.getTypeParameter(n))
+    }
+
+    int getNumberOfTypeParams() { result = count(classExpr.getATypeParameter()) }
+
     Expr getBase(int n) { result.asExpr() = classExpr.getBase(n) }
 
-    override AstNode getChild(int index) { result = this.getBase(index) }
+    override AstNode getChild(int index) {
+      result = this.getTypeParamName(index)
+      or
+      result = this.getBase(index - this.getNumberOfTypeParams())
+    }
   }
 
   /** A function definition expression (has default args evaluated at definition time). */
@@ -1369,6 +1428,17 @@ module Ast implements AstSig<Py::Location> {
     private Py::FunctionExpr funcExpr;
 
     FunctionDefExpr() { this = TPyExpr(funcExpr) }
+
+    /**
+     * Gets the `n`th PEP 695 type-parameter name (a `Name` in store
+     * context), in declaration order. These bind in the enclosing scope
+     * at function-definition time, so the CFG must visit them.
+     */
+    Expr getTypeParamName(int n) {
+      result.asExpr() = typeParameterName(funcExpr.getInnerScope().getTypeParameter(n))
+    }
+
+    int getNumberOfTypeParams() { result = count(funcExpr.getInnerScope().getATypeParameter()) }
 
     /**
      * Gets the `n`th default for a positional argument, in evaluation
@@ -1390,9 +1460,11 @@ module Ast implements AstSig<Py::Location> {
     int getNumberOfDefaults() { result = count(funcExpr.getArgs().getADefault()) }
 
     override AstNode getChild(int index) {
-      result = this.getDefault(index)
+      result = this.getTypeParamName(index)
       or
-      result = this.getKwDefault(index - this.getNumberOfDefaults())
+      result = this.getDefault(index - this.getNumberOfTypeParams())
+      or
+      result = this.getKwDefault(index - this.getNumberOfTypeParams() - this.getNumberOfDefaults())
     }
   }
 
