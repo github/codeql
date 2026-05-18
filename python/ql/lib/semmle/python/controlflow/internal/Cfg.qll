@@ -218,15 +218,22 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
 }
 
 /**
- * Holds if `n` is an augmented assignment load and `store` is the
- * corresponding store node.
+ * Holds if `load` is the load half of an augmented-assignment target,
+ * and `store` is the corresponding store half.
+ *
+ * In the legacy CFG (`Flow.qll`) the same Python `Name` had two
+ * distinct CFG nodes — a load node (context 3) earlier in the BB, and
+ * a store node (context 5) later. The legacy `augstore` related the
+ * pair via dominance.
+ *
+ * In the new (shared) CFG, the canonical node for an AST expression is
+ * unique, so `load` and `store` collapse onto the same CFG node. The
+ * predicate is therefore reflexive on the augmented-assignment
+ * target's canonical node.
  */
 private predicate augstore(ControlFlowNode load, ControlFlowNode store) {
-  exists(Py::Expr load_store | exists(Py::AugAssign aa | aa.getTarget() = load_store) |
-    toAst(load) = load_store and
-    toAst(store) = load_store and
-    load.strictlyDominates(store)
-  )
+  exists(Py::AugAssign aa | aa.getTarget() = toAst(load)) and
+  load = store
 }
 
 /**
