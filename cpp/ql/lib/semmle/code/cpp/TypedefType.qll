@@ -116,7 +116,7 @@ class AliasTemplateType extends TypeAliasType {
   override string getAPrimaryQlClass() { result = "AliasTemplateType" }
 
   /**
-   * Gets a alias instantiated from this template.
+   * Gets an alias instantiated from this template.
    *
    * For example for `MyAliasTemplate<T>` in the following code, the results are
    * `MyAliasTemplate<int>` and `MyAliasTemplate<long>`:
