@@ -278,7 +278,7 @@ private predicate isFromTemplateInstantiationRec(Element e, Element instantiatio
   instantiation.(Variable).isConstructedFrom(_) and
   e = instantiation
   or
-  instantiation.(UsingAliasTypedefType).isConstructedFrom(_) and
+  instantiation.(TypeAliasType).isConstructedFrom(_) and
   e = instantiation
   or
   instantiation.(TemplateTemplateParameterInstantiation).isConstructedFrom(_) and
