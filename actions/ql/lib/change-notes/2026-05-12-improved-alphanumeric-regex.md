@@ -1,0 +1,4 @@
+---
+category: minorAnalysis
+---
+* The GitHub Actions analysis now recognizes more Bash regex checks that restrict a value to alphanumeric characters, include regexes like `^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$` which check for a sha1 or sha256 hash. This may reduce false positive results where command output is validated with grouped or optional alphanumeric patterns before being used.

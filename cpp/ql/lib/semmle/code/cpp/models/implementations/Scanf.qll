@@ -87,6 +87,10 @@ private class FscanfModel extends ScanfFunctionModel, RemoteFlowSourceFunction i
     output.isParameterDeref(any(int i | i >= this.getArgsStartPosition())) and
     description = "value read by " + this.getName()
   }
+
+  override predicate hasSocketInput(FunctionInput input) {
+    input.isParameterDeref(super.getInputParameterIndex())
+  }
 }
 
 /**

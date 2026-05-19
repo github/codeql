@@ -130,7 +130,13 @@ func parseGoVersion(data string) string {
 	for sc.Scan() {
 		lastLine = sc.Text()
 	}
-	return strings.Fields(lastLine)[2]
+
+	var goVersion = strings.Fields(lastLine)[2]
+
+	// Drop custom build suffixes.
+	goVersion, _, _ = strings.Cut(goVersion, "-")
+
+	return goVersion
 }
 
 // Returns a value indicating whether the system Go toolchain supports workspaces.
