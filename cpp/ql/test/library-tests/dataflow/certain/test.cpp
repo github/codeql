@@ -62,3 +62,21 @@ void test3(bool b) { // $ certain="SSA def(&b)" certain="SSA def(b)"
     use(i); // $ certain="SSA phi(i)"
   }
 }
+
+void test(int x, bool b1, bool b2) { // $ certain="SSA def(&x)" certain="SSA def(x)" certain="SSA def(&b1)" certain="SSA def(b1)" certain="SSA def(&b2)" certain="SSA def(b2)"
+  int* p = &x; // $ certain="SSA def(&p)" certain="SSA def(p)" certain="SSA def(*p)" 
+  int i = 0; // $ certain="SSA def(&i)" certain="SSA def(i)"
+  int j = 0; // $ certain="SSA def(&j)" certain="SSA def(j)"
+  while (i < 10) { // $ certain="SSA phi(i)" uncertain="SSA phi(*p)"
+  if (b1) {
+    *p = 0; // $ certain="SSA def(*p)" 
+  }
+  ++i; // $ certain="SSA def(i)" uncertain="SSA phi(*p)"
+  }
+  while (j < 10) { // $ uncertain="SSA phi(*p)" certain="SSA phi(j)"
+    if (b2) {
+      *(p + j) = 0; // $ uncertain="SSA def(*p)"
+    }
+    ++j; // $ certain="SSA def(j)" uncertain="SSA phi(*p)"
+  }
+}
