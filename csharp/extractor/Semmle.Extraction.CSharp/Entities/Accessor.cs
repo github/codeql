@@ -69,6 +69,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             Overrides(trapFile);
+            ExtractRefReturn(trapFile, Symbol, this);
 
             if (Symbol.FromSource() && !HasBody)
             {
