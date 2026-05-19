@@ -227,7 +227,7 @@ returnTypes
 | NullableRefTypes.cs:107:26:107:36 | ReturnsRef5 | readonly MyClass! |
 | NullableRefTypes.cs:108:26:108:36 | ReturnsRef6 | readonly MyClass! |
 | NullableRefTypes.cs:110:10:110:20 | Parameters1 | Void! |
-| NullableRefTypes.cs:113:32:113:44 | get_RefProperty | MyClass! |
+| NullableRefTypes.cs:113:32:113:44 | get_RefProperty | ref MyClass! |
 | NullableRefTypes.cs:116:7:116:23 | <object initializer> | Void |
 | NullableRefTypes.cs:116:7:116:23 | ToStringWithTypes | Void! |
 | NullableRefTypes.cs:136:7:136:24 | <object initializer> | Void |
