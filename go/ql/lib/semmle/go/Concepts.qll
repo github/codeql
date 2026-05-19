@@ -431,7 +431,7 @@ private class HeuristicLoggerFunction extends Method {
     )
   }
 
-  override predicate mayReturnNormally() { logFunctionPrefix != "Fatal" }
+  override predicate mustNotReturnNormally() { logFunctionPrefix = "Fatal" }
 
   override predicate mustPanic() { logFunctionPrefix = "Panic" }
 }

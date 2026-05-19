@@ -437,11 +437,12 @@ class Function extends ValueEntity, @functionobject {
    * This predicate is an over-approximation: it may hold for functions that can never
    * return normally, but it never fails to hold for functions that can.
    *
-   * Note this is declared here and not in `DeclaredFunction` so that library models can override this
-   * by extending `Function` rather than having to remember to extend `DeclaredFunction`.
+   * Library models should not override this predicate; override `mustNotReturnNormally`
+   * instead, so that the control-flow graph construction can take the model into account.
    */
   predicate mayReturnNormally() {
     not this.mustPanic() and
+    not this.mustNotReturnNormally() and
     (ControlFlow::mayReturnNormally(this.getFuncDecl()) or not exists(this.getBody()))
   }
 
@@ -460,6 +461,16 @@ class Function extends ValueEntity, @functionobject {
    * cause a runtime panic, but it never holds for functions that do not.
    */
   predicate mustPanic() { none() }
+
+  /**
+   * Holds if calling this function never returns normally (for example because it
+   * always panics, exits the process, or loops forever).
+   *
+   * Unlike `mayReturnNormally`, this predicate must be defined without reference to
+   * the control-flow graph, so that it can be used during CFG construction to
+   * suppress normal-flow successors of calls to this function.
+   */
+  predicate mustNotReturnNormally() { none() }
 
   /** Gets the number of parameters of this function. */
   int getNumParameter() { result = this.getType().(SignatureType).getNumParameter() }
