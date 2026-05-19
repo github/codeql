@@ -278,6 +278,8 @@ class Declaration extends Locatable, @declaration {
     or
     variable_template_argument(underlyingElement(this), index, unresolveElement(result))
     or
+    alias_template_argument(underlyingElement(this), index, unresolveElement(result))
+    or
     template_template_argument(underlyingElement(this), index, unresolveElement(result))
     or
     concept_template_argument(underlyingElement(this), index, unresolveElement(result))
@@ -289,6 +291,8 @@ class Declaration extends Locatable, @declaration {
     function_template_argument_value(underlyingElement(this), index, unresolveElement(result))
     or
     variable_template_argument_value(underlyingElement(this), index, unresolveElement(result))
+    or
+    alias_template_argument_value(underlyingElement(this), index, unresolveElement(result))
     or
     template_template_argument_value(underlyingElement(this), index, unresolveElement(result))
     or
