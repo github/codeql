@@ -238,6 +238,15 @@ class EssaNodeDefinition extends Ssa::WriteDefinition {
   Py::Scope getScope() {
     exists(Cfg::ControlFlowNode n | n = this.getDefiningNode() | result = n.getScope())
   }
+
+  /**
+   * Holds if this definition defines source variable `v` at CFG node
+   * `defNode`. Flatter form of `getSourceVariable()` +
+   * `getDefiningNode()`, matching legacy ESSA's `definedBy`.
+   */
+  predicate definedBy(SsaSourceVariable v, Cfg::ControlFlowNode defNode) {
+    v = this.getSourceVariable() and defNode = this.getDefiningNode()
+  }
 }
 
 /**
@@ -297,6 +306,23 @@ class WithDefinition extends EssaNodeDefinition {
     exists(Cfg::NameNode n, Py::With w |
       n = this.getDefiningNode() and
       w.getOptionalVars() = n.getNode()
+    )
+  }
+}
+
+/**
+ * An assignment where the LHS is a tuple/list and the RHS is unpacked:
+ * `a, b = (1, 2)` or `a, *rest = xs`. The defining node for each
+ * captured Name is the Name itself.
+ */
+class MultiAssignmentDefinition extends EssaNodeDefinition {
+  MultiAssignmentDefinition() {
+    exists(Cfg::NameNode n | n = this.getDefiningNode() |
+      exists(Py::Assign a, Py::Expr lhs |
+        a.getATarget() = lhs and
+        (lhs instanceof Py::Tuple or lhs instanceof Py::List) and
+        lhs.getASubExpression+() = n.getNode()
+      )
     )
   }
 }
@@ -383,5 +409,15 @@ module AdjacentUses {
       Ssa::firstUse(def, bb, i, _) and
       use = bb.getNode(i)
     )
+  }
+
+  /**
+   * Holds if `use` is any reachable use of definition `def`. Combines
+   * `firstUse` with transitive use-use adjacency.
+   */
+  predicate useOfDef(Ssa::Definition def, Cfg::NameNode use) {
+    firstUse(def, use)
+    or
+    exists(Cfg::NameNode mid | useOfDef(def, mid) and adjacentUseUse(mid, use))
   }
 }
