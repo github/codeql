@@ -52,8 +52,8 @@ def log_private():
         print(passportNo) # NOT OK
 
     def log2(post_code, zipCode, home_address):
-        print(post_code) # NOT OK, but NOT FOUND - "code" is treated as encrypted and thus not sensitive
-        print(zipCode) # NOT OK, but NOT FOUND - "code" is treated as encrypted and thus not sensitive
+        print(post_code) # NOT OK
+        print(zipCode) # NOT OK
         print(home_address) # NOT OK
 
     def log3(user_latitude, user_longitude):
