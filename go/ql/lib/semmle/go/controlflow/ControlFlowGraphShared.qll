@@ -642,6 +642,18 @@ module GoCfg {
       c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
       always = false
       or
+      // Calls to functions that never return normally (e.g. `os.Exit`, `log.Fatal`,
+      // `panic`) must suppress normal flow past the call site. We emit an `always`
+      // exception completion so that the shared library's default In->After step
+      // is suppressed.
+      ast instanceof Go::CallExpr and
+      exists(Go::Function target | target = ast.(Go::CallExpr).getTarget() |
+        target.mustPanic() or target.mustNotReturnNormally()
+      ) and
+      n.isIn(ast) and
+      c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+      always = true
+      or
       ast instanceof Go::DivExpr and
       not ast.(Go::Expr).isConst() and
       n.isIn(ast) and
