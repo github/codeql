@@ -960,22 +960,6 @@ variable_template_argument_value(
     int arg_value: @expr ref
 );
 
-is_alias_template(unique int id: @usertype ref);
-alias_instantiation(
-    unique int to: @usertype ref,
-    int from: @usertype ref
-);
-alias_template_argument(
-    int variable_id: @usertype ref,
-    int index: int ref,
-    int arg_type: @type ref
-);
-alias_template_argument_value(
-    int variable_id: @usertype ref,
-    int index: int ref,
-    int arg_value: @expr ref
-);
-
 template_template_instantiation(
     int to: @usertype ref,
     int from: @usertype ref

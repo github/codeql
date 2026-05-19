@@ -1,5 +1,5 @@
 /**
- * @name Unpinned tag for a non-immutable Action in workflow
+ * @name Unpinned tag for a non-immutable Action in workflow or composite action
  * @description Using a tag for a non-immutable Action that is not pinned to a commit can lead to executing an untrusted Action through a supply chain attack.
  * @kind problem
  * @security-severity 5.0
@@ -15,7 +15,9 @@ import actions
 import codeql.actions.security.UseOfUnversionedImmutableAction
 
 bindingset[version]
-private predicate isPinnedCommit(string version) { version.regexpMatch("^[A-Fa-f0-9]{40}$") }
+private predicate isPinnedCommit(string version) {
+  version.regexpMatch("^[A-Fa-f0-9]{40}([A-Fa-f0-9]{24})?$")
+}
 
 bindingset[nwo]
 private predicate isTrustedOwner(string nwo) {
@@ -31,15 +33,26 @@ private predicate isPinnedContainer(string version) {
 bindingset[nwo]
 private predicate isContainerImage(string nwo) { nwo.regexpMatch("^docker://.+") }
 
-from UsesStep uses, string nwo, string version, Workflow workflow, string name
+private predicate getStepContainerName(UsesStep uses, string name) {
+  exists(Workflow workflow |
+    uses.getEnclosingWorkflow() = workflow and
+    (
+      workflow.getName() = name
+      or
+      not exists(workflow.getName()) and workflow.getLocation().getFile().getBaseName() = name
+    )
+  )
+  or
+  exists(CompositeAction action |
+    uses.getEnclosingCompositeAction() = action and
+    name = action.getLocation().getFile().getBaseName()
+  )
+}
+
+from UsesStep uses, string nwo, string version, string name
 where
   uses.getCallee() = nwo and
-  uses.getEnclosingWorkflow() = workflow and
-  (
-    workflow.getName() = name
-    or
-    not exists(workflow.getName()) and workflow.getLocation().getFile().getBaseName() = name
-  ) and
+  getStepContainerName(uses, name) and
   uses.getVersion() = version and
   not isTrustedOwner(nwo) and
   not (if isContainerImage(nwo) then isPinnedContainer(version) else isPinnedCommit(version)) and
