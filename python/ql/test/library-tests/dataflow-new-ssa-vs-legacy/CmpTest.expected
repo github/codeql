@@ -1,6 +1,8 @@
+| def-only-new | compute:37:1 |
+| def-only-new | open:44:1 |
+| def-only-new | sum:27:1 |
 | def-only-old | $:0:0 |
 | def-only-old | GLOBAL:49:1 |
-| def-only-old | GLOBAL:52:1 |
 | def-only-old | __name__:0:0 |
 | def-only-old | __package__:0:0 |
 | def-only-old | closure:31:5 |
@@ -17,4 +19,3 @@
 | def-only-old | with_binding:44:5 |
 | def-only-old | x:20:1 |
 | def-only-old | x:31:13 |
-| def-only-old | x:32:5 |

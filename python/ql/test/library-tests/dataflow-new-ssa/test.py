@@ -35,6 +35,6 @@ def if_else_phi(cond):  # $ def=cond
 
 
 def use_global():
-    return some_undefined  # known limitation: undefined globals not resolved here
+    return some_undefined  # $ use=some_undefined
 
 

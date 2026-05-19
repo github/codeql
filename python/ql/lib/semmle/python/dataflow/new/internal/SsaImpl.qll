@@ -83,6 +83,10 @@ class SsaSourceVariable extends TSsaSourceVariable {
  * Holds if `v` is a non-local read in scope `s`, in the sense that `s`
  * uses `v` but does not write it within `s`. This includes globals,
  * builtins, and variables captured from an enclosing function scope.
+ *
+ * The `Py::Variable` `v` lives in some defining scope (the module for
+ * globals, an outer function for closures, etc.); the reading scope
+ * `s` is the scope where the use of `v` occurs.
  */
 private predicate nonLocalReadIn(Py::Variable v, Py::Scope s) {
   exists(Cfg::NameNode n |
@@ -93,17 +97,23 @@ private predicate nonLocalReadIn(Py::Variable v, Py::Scope s) {
 }
 
 /**
- * Holds if `v` should have an implicit entry definition at the start of
- * scope `s`. This covers:
- *   - non-local / global / builtin variables (defined outside `s`), and
- *   - captured variables (defined in an enclosing scope but read here).
+ * Holds if `bb` is the entry basic block of a scope where `v` should
+ * have an implicit entry definition. This covers:
+ *   - non-local / global / builtin variables read in `s`, and
+ *   - captured variables (defined in an enclosing scope but read in `s`).
+ *
+ * Each reading scope gets its own entry def, so a closure variable can
+ * have multiple entry defs across all functions/methods that read it.
  *
  * Parameters are *not* included: their bound `Name` is itself a CFG
  * node (per the C#-style parameter wiring), so `variableWrite` fires at
  * the parameter's natural CFG index.
  */
-private predicate hasEntryDef(SsaSourceVariable v, Py::Scope s) {
-  nonLocalReadIn(v.getVariable(), s)
+private predicate hasEntryDefIn(SsaSourceVariable v, CfgImpl::BasicBlock bb) {
+  exists(Py::Scope s |
+    nonLocalReadIn(v.getVariable(), s) and
+    bb = entryBlock(s)
+  )
 }
 
 /**
@@ -144,9 +154,11 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
     )
     or
     // Implicit entry definition for non-local / captured / global /
-    // builtin variables read in the scope.
-    bb = entryBlock(v.getVariable().getScope()) and
-    hasEntryDef(v, v.getVariable().getScope()) and
+    // builtin variables read in some scope. Each reading scope's entry
+    // block gets one such write, allowing closures: e.g. when `x` is a
+    // parameter of an outer function and read inside a nested
+    // function, both scopes get entry defs for `x`.
+    hasEntryDefIn(v, bb) and
     i = -1 and
     certain = true
   }
@@ -197,14 +209,16 @@ final class PhiNode = Ssa::PhiNode;
 /**
  * Gets the CFG node at which a write definition's binding takes place.
  *
- * This is the `Cfg::ControlFlowNode` whose index in `def`'s basic block
- * is the same as `def`'s defining index. Phi definitions have no
- * defining CFG node and are excluded.
+ * For ordinary writes (assignment, deletion, parameter) this is the
+ * canonical CFG node of the bound Name. For implicit entry definitions
+ * (synthesised at position `-1` of a scope's entry BB) this is the
+ * scope's entry node.
  */
 private Cfg::ControlFlowNode writeDefNode(Ssa::WriteDefinition def) {
-  exists(CfgImpl::BasicBlock bb, int i |
-    def.definesAt(_, bb, i) and
-    result = bb.getNode(i)
+  exists(CfgImpl::BasicBlock bb, int i | def.definesAt(_, bb, i) |
+    i >= 0 and result = bb.getNode(i)
+    or
+    i = -1 and result = bb.getNode(0)
   )
 }
 
@@ -290,8 +304,11 @@ class WithDefinition extends EssaNodeDefinition {
 /**
  * An implicit entry definition for a non-local / captured / global /
  * builtin variable read in a scope but not defined there.
+ *
+ * Inherits from `EssaNodeDefinition` and exposes the scope's entry node
+ * as its defining node (matching legacy ESSA semantics).
  */
-class ScopeEntryDefinition extends Ssa::Definition {
+class ScopeEntryDefinition extends EssaNodeDefinition {
   ScopeEntryDefinition() {
     exists(CfgImpl::BasicBlock bb |
       this.definesAt(_, bb, -1) and
@@ -299,14 +316,11 @@ class ScopeEntryDefinition extends Ssa::Definition {
     )
   }
 
-  /** Gets the variable being entered. */
-  SsaSourceVariable getVariable() { result = this.getSourceVariable() }
-
-  /** Gets the enclosing scope. */
-  Py::Scope getScope() {
+  /** Gets the enclosing scope (the scope whose entry block this def is in). */
+  override Py::Scope getScope() {
     exists(CfgImpl::BasicBlock bb |
       this.definesAt(_, bb, -1) and
-      result = this.getSourceVariable().getVariable().getScope()
+      result = bb.getNode(0).(Cfg::ControlFlowNode).getScope()
     )
   }
 }
