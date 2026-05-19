@@ -19,6 +19,7 @@ newtype TSynthKind =
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
+  BodyStmtKind() or
   BooleanLiteralKind(boolean value) { value = true or value = false } or
   BraceBlockKind() or
   CaseMatchKind() or
@@ -72,6 +73,8 @@ class SynthKind extends TSynthKind {
     this = BitwiseOrExprKind() and result = "BitwiseOrExprKind"
     or
     this = BitwiseXorExprKind() and result = "BitwiseXorExprKind"
+    or
+    this = BodyStmtKind() and result = "BodyStmtKind"
     or
     this = BooleanLiteralKind(_) and result = "BooleanLiteralKind"
     or
@@ -1475,17 +1478,24 @@ private module ForLoopDesugar {
               i = 0 and
               child = SynthChild(SimpleParameterKind())
               or
-              exists(SimpleParameter param | param = TSimpleParameterSynth(block, 0) |
+              // block body
+              parent = block and
+              i = 1 and
+              child = SynthChild(BodyStmtKind())
+              or
+              exists(SimpleParameter param, BodyStmt body |
+                param = TSimpleParameterSynth(block, 0) and body = TBodyStmtSynth(block, 1)
+              |
                 parent = param and
                 i = 0 and
                 child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
                 or
                 // assignment to pattern from for loop to synth parameter
-                parent = block and
-                i = 1 and
+                parent = body and
+                i = 0 and
                 child = SynthChild(AssignExprKind())
                 or
-                parent = TAssignExprSynth(block, 1) and
+                parent = TAssignExprSynth(body, 0) and
                 (
                   i = 0 and
                   child = childRef(for.getPattern())
@@ -1493,11 +1503,11 @@ private module ForLoopDesugar {
                   i = 1 and
                   child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
                 )
+                or
+                // rest of block body
+                parent = body and
+                child = childRef(for.getBody().(Do).getStmt(i - 1))
               )
-              or
-              // rest of block body
-              parent = block and
-              child = childRef(for.getBody().(Do).getStmt(i - 2))
             )
           )
         )
@@ -1948,6 +1958,31 @@ private module ImplicitSuperArgsSynthesis {
   private class SuperCallSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       superCallSynthesis(parent, i, child)
+    }
+  }
+}
+
+private module CallableBodySynthesis {
+  private predicate bodySynthesis(AstNode parent, int i, Child child) {
+    exists(TMethodBase m, Ruby::AstNode body |
+      body = any(Ruby::Method g | m = TMethod(g)).getBody()
+      or
+      body = any(Ruby::SingletonMethod g | m = TSingletonMethod(g)).getBody()
+    |
+      parent = m and
+      not body instanceof Ruby::BodyStatement and
+      i = 0 and
+      child = SynthChild(BodyStmtKind())
+      or
+      parent = TBodyStmtSynth(m, 0) and
+      i = 0 and
+      child = childRef(fromGenerated(body))
+    )
+  }
+
+  private class CallableBodySynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      bodySynthesis(parent, i, child)
     }
   }
 }

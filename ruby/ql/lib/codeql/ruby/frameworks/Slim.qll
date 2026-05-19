@@ -18,7 +18,7 @@ module Slim {
 
     override DataFlow::Node getTemplate() {
       result.asExpr().getExpr() =
-        this.getBlock().(DataFlow::BlockNode).asCallableAstNode().getAStmt()
+        this.getBlock().(DataFlow::BlockNode).asCallableAstNode().getBody().getAStmt()
     }
   }
 

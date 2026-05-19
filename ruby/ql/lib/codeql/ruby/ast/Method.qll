@@ -8,7 +8,7 @@ private import internal.TreeSitter
 private import internal.Method
 
 /** A callable. */
-class Callable extends StmtSequence, Expr, Scope, TCallable {
+class Callable extends Expr, Scope, TCallable {
   /** Gets the number of parameters of this callable. */
   final int getNumberOfParameters() { result = count(this.getAParameter()) }
 
@@ -18,26 +18,25 @@ class Callable extends StmtSequence, Expr, Scope, TCallable {
   /** Gets the `n`th parameter of this callable. */
   Parameter getParameter(int n) { none() }
 
+  /** Gets the body of this callable. */
+  BodyStmt getBody() { none() }
+
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
+    or
+    pred = "getBody" and result = this.getBody()
     or
     pred = "getParameter" and result = this.getParameter(_)
   }
 }
 
 /** A method. */
-class MethodBase extends Callable, BodyStmt, Scope, TMethodBase {
+class MethodBase extends Callable, Scope, TMethodBase {
   /** Gets the name of this method. */
   string getName() { none() }
 
   /** Holds if the name of this method is `name`. */
   final predicate hasName(string name) { this.getName() = name }
-
-  override AstNode getAChild(string pred) {
-    result = Callable.super.getAChild(pred)
-    or
-    result = BodyStmt.super.getAChild(pred)
-  }
 
   /**
    * Holds if this method is public.
@@ -218,6 +217,10 @@ class Method extends MethodBase, TMethod {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
+  final override BodyStmt getBody() {
+    toGenerated(result) = g.getBody() or synthChild(this, _, result)
+  }
+
   final override string toString() { result = this.getName() }
 
   overlay[global]
@@ -280,6 +283,10 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
+  final override BodyStmt getBody() {
+    toGenerated(result) = g.getBody() or synthChild(this, _, result)
+  }
+
   final override string toString() { result = this.getName() }
 
   final override AstNode getAChild(string pred) {
@@ -321,7 +328,7 @@ class SingletonMethod extends MethodBase, TSingletonMethod {
  * -> (x) { x + 1 }
  * ```
  */
-class Lambda extends Callable, BodyStmt, TLambda {
+class Lambda extends Callable, TLambda {
   private Ruby::Lambda g;
 
   Lambda() { this = TLambda(g) }
@@ -332,13 +339,12 @@ class Lambda extends Callable, BodyStmt, TLambda {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
-  final override string toString() { result = "-> { ... }" }
-
-  final override AstNode getAChild(string pred) {
-    result = Callable.super.getAChild(pred)
-    or
-    result = BodyStmt.super.getAChild(pred)
+  final override BodyStmt getBody() {
+    toGenerated(result) = g.getBody().(Ruby::DoBlock).getBody() or
+    toGenerated(result) = g.getBody().(Ruby::Block).getBody()
   }
+
+  final override string toString() { result = "-> { ... }" }
 }
 
 /** A block. */
@@ -355,7 +361,7 @@ class Block extends Callable, Scope, TBlock {
    */
   LocalVariableWriteAccess getLocalVariable(int n) { none() }
 
-  override AstNode getAChild(string pred) {
+  final override AstNode getAChild(string pred) {
     result = Callable.super.getAChild(pred)
     or
     pred = "getLocalVariable" and result = this.getLocalVariable(_)
@@ -363,7 +369,7 @@ class Block extends Callable, Scope, TBlock {
 }
 
 /** A block enclosed within `do` and `end`. */
-class DoBlock extends Block, BodyStmt, TDoBlock {
+class DoBlock extends Block, TDoBlock {
   private Ruby::DoBlock g;
 
   DoBlock() { this = TDoBlock(g) }
@@ -376,13 +382,9 @@ class DoBlock extends Block, BodyStmt, TDoBlock {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
-  final override string toString() { result = "do ... end" }
+  final override BodyStmt getBody() { toGenerated(result) = g.getBody() }
 
-  final override AstNode getAChild(string pred) {
-    result = Block.super.getAChild(pred)
-    or
-    result = BodyStmt.super.getAChild(pred)
-  }
+  final override string toString() { result = "do ... end" }
 
   final override string getAPrimaryQlClass() { result = "DoBlock" }
 }

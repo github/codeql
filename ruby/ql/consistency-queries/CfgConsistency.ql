@@ -27,7 +27,7 @@ query predicate scopeNoFirst(CfgScope scope) {
   not scope =
     any(Callable c |
       not exists(c.getAParameter()) and
-      not c.(BodyStmt).hasEnsure() and
-      not exists(c.(BodyStmt).getARescue())
+      not c.getBody().hasEnsure() and
+      not exists(c.getBody().getARescue())
     )
 }
