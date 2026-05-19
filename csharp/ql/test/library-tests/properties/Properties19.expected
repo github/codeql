@@ -4,4 +4,5 @@
 | properties.cs:58:20:58:20 | Y | properties.cs:62:13:62:13 | access to property Y | properties.cs:58:37:58:39 | set_Y |
 | properties.cs:70:28:70:28 | X | properties.cs:82:46:82:51 | access to property X | properties.cs:70:32:70:34 | get_X |
 | properties.cs:71:28:71:28 | Y | properties.cs:83:39:83:44 | access to property Y | properties.cs:74:13:74:15 | set_Y |
+| properties.cs:146:24:146:27 | Prop | properties.cs:159:13:159:18 | access to property Prop | properties.cs:148:13:148:15 | get_Prop |
 | properties.cs:146:24:146:27 | Prop | properties.cs:160:21:160:26 | access to property Prop | properties.cs:148:13:148:15 | get_Prop |
