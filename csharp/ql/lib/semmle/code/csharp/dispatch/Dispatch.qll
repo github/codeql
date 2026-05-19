@@ -116,7 +116,7 @@ private module Internal {
         not oc.isLateBound() and
         not oc instanceof InstanceOperatorCall
       } or
-      TDispatchInstanceOperatorCall(InstanceOperatorCall caoc) or
+      TDispatchInstanceOperatorCall(InstanceOperatorCall ioc) or
       TDispatchReflectionCall(MethodCall mc, string name, Expr object, Expr qualifier, int args) {
         isReflectionCall(mc, name, object, qualifier, args)
       } or
