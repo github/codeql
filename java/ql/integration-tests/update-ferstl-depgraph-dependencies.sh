@@ -228,3 +228,4 @@ echo "  1. Copy ${ZIP_OUT} -> semmle-code resources/lib/ferstl-depgraph-dependen
 echo "  2. In semmle-code, update autobuild/src/com/semmle/util/build/Maven.java:"
 echo "     bump the plugin version constant to '${PLUGIN_CODEQL_VERSION}'"
 echo "  3. Commit and raise PRs in both repositories."
+trap - EXIT
