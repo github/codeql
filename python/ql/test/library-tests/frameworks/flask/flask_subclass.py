@@ -6,9 +6,9 @@ class Sub(Flask):
         Flask.__init__(self, *args, **kwargs)
 
 
-app = Sub(__name__) # $ MISSING: instance
+app = Sub(__name__) # $ instance
 
 
-@app.route("/")
-def hello():
-    return "world"
+@app.route("/") # $ routeSetup="/"
+def hello(): # $ requestHandler
+    return "world" # $ HttpResponse
