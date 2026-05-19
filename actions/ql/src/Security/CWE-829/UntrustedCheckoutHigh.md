@@ -41,7 +41,7 @@ The best practice is to handle the potentially untrusted pull request via the **
 
 The artifacts downloaded from the first workflow should be considered untrusted and must be verified.
 
-Additionally, ensure that least privileges are used for permissions given both at the workflow (through event triggers) and job (through job level permissions) level.
+Additionally, ensure that least privileges are used both at the workflow level (through event triggers and workflow permissions) and job level (through job permissions).
 
 ## Example
 
