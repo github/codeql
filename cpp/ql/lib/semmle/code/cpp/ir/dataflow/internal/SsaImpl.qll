@@ -1379,15 +1379,11 @@ class PhiNode extends Definition instanceof SsaImpl::PhiNode {
 
 private PhiNode getAnInput(PhiNode phi) { result = phi.getAnInput() }
 
-private predicate definitionCycle(PhiNode phi) { getAnInput+(phi) = phi }
-
-private predicate hasAnInput(PhiNode phi1, PhiNode phi2) {
-  definitionCycle(phi1) and
-  definitionCycle(phi2) and
-  getAnInput(phi1) = phi2
+private predicate sccEdge(PhiNode phi1, PhiNode phi2) {
+  getAnInput(phi1) = phi2 and getAnInput+(phi2) = phi1
 }
 
-private module PhiCycleEquivalence = QlBuiltins::EquivalenceRelation<PhiNode, hasAnInput/2>;
+private module PhiCycleEquivalence = QlBuiltins::EquivalenceRelation<PhiNode, sccEdge/2>;
 
 private PhiCycle getCycle(PhiNode phi) { result.getAPhiNode() = phi }
 
