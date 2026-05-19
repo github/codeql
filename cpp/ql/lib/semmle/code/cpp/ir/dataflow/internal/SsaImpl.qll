@@ -1396,13 +1396,16 @@ private class PhiCycle extends PhiCycleEquivalence::EquivalenceClass {
 
   predicate hasPhiNode(PhiNode phi) { this.getAPhiNode() = phi }
 
+  pragma[nomagic]
+  Definition getAnInput() {
+    result = this.getAPhiNode().getAnInput() and not this.hasPhiNode(result)
+  }
+
   string toString() { result = strictconcat(this.getAPhiNode().toString(), ", ") }
 
   predicate isCertain() {
     // A phi cycle is certain if all of the inputs into the phi cycle is certain.
-    forex(PhiNode phi | phi = this.getAPhiNode() |
-      forall(PhiNode inp | phi.getAnInput() = inp and not this.hasPhiNode(inp) | inp.isCertain())
-    )
+    forex(Definition inp | inp = this.getAnInput() | inp.isCertain())
   }
 }
 
