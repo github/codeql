@@ -139,7 +139,7 @@ void test_scanf_s(FILE *stream) {
   {
   int n1, n2;
   scanf_s(
-    "%d",
+    "%d %d",
     &n1, // $ local_source
     &n2); // $ local_source
   }
@@ -152,7 +152,7 @@ void test_scanf_s(FILE *stream) {
   {
   int n1, n2;
   char buf[256];
-  scanf_s("%d %s",
+  scanf_s("%d %s %d",
     &n1, // $ local_source
     buf, // $ local_source
     256,
@@ -162,7 +162,7 @@ void test_scanf_s(FILE *stream) {
   {
   int n1, n2;
   char buf[256];
-  fscanf_s(stream, "%d %s",
+  fscanf_s(stream, "%d %s %d",
     &n1, // $ remote_source
     buf, // $ remote_source
     256,
