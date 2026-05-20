@@ -44,7 +44,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var child = -1;
             string? memberName = null;
-            var target = GetTargetSymbol(Syntax);
+            var target = GetTargetSymbol(Context, Syntax);
             switch (Syntax.Expression)
             {
                 case MemberAccessExpressionSyntax memberAccess when IsValidMemberAccessKind():

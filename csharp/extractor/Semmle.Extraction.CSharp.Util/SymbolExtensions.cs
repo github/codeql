@@ -53,6 +53,13 @@ namespace Semmle.Extraction.CSharp.Util
         });
 
         /// <summary>
+        /// The operatorname for user-defined instance increment- and decrement operators are "op_IncrementAssignment" and
+        /// "op_DecrementAssignment" respectively.
+        /// Thus we need to handle this explicitly to avoid postfixing them with an "=".
+        /// </summary>
+        private static bool IsIncrementOrDecrement(string operatorName) => operatorName == "++" || operatorName == "--";
+
+        /// <summary>
         /// Convert an operator method name in to a symbolic name.
         /// A return value indicates whether the conversion succeeded.
         /// </summary>
@@ -72,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Util
             if (match.Success && methodToOperator.TryGetValue($"op_{match.Groups[2]}", out var rawOperatorName))
             {
                 var prefix = match.Groups[1].Success ? "checked " : "";
-                var postfix = match.Groups[3].Success ? "=" : "";
+                var postfix = match.Groups[3].Success && !IsIncrementOrDecrement(rawOperatorName) ? "=" : "";
                 operatorName = $"{prefix}{rawOperatorName}{postfix}";
                 return true;
             }
