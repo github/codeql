@@ -3,9 +3,9 @@
  * @description Untrusted input flowing into a user-role prompt of an AI model
  *              may allow an attacker to manipulate the model's behavior.
  * @kind path-problem
- * @problem.severity error
+ * @problem.severity warning
  * @security-severity 5.0
- * @precision high
+ * @precision medium
  * @id js/user-prompt-injection
  * @tags security
  *       experimental

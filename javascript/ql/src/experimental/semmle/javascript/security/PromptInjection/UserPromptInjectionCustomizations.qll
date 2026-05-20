@@ -11,9 +11,9 @@ private import semmle.javascript.Concepts
 private import semmle.javascript.security.dataflow.RemoteFlowSources
 private import semmle.javascript.dataflow.internal.BarrierGuards
 private import semmle.javascript.frameworks.data.ModelsAsData
-private import experimental.semmle.javascript.frameworks.OpenAI
-private import experimental.semmle.javascript.frameworks.Anthropic
-private import experimental.semmle.javascript.frameworks.GoogleGenAI
+private import semmle.javascript.frameworks.OpenAI
+private import semmle.javascript.frameworks.Anthropic
+private import semmle.javascript.frameworks.GoogleGenAI
 
 /**
  * Provides default sources, sinks and sanitizers for detecting

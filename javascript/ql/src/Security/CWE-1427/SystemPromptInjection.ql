@@ -4,14 +4,13 @@
  * @problem.severity error
  * @security-severity 5.0
  * @precision high
- * @id js/prompt-injection
+ * @id js/system-prompt-injection
  * @tags security
- *       experimental
  *       external/cwe/cwe-1427
  */
 
 import javascript
-import experimental.semmle.javascript.security.PromptInjection.SystemPromptInjectionQuery
+import semmle.javascript.security.dataflow.SystemPromptInjectionQuery
 import SystemPromptInjectionFlow::PathGraph
 
 from SystemPromptInjectionFlow::PathNode source, SystemPromptInjectionFlow::PathNode sink

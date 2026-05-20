@@ -1,0 +1,41 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>If untrusted input is included in a user-role prompt sent to an AI model, an attacker can inject
+instructions that manipulate the model's behavior. This is known as <i>indirect prompt injection</i>
+when the malicious content arrives through data the model processes, or <i>direct prompt injection</i>
+when the attacker controls the prompt directly.</p>
+
+<p>Unlike system prompt injection, user prompt injection targets the user-role messages. Although
+user messages are expected to carry user input, passing unsanitized data directly into structured
+prompt templates can still allow an attacker to override intended instructions, extract sensitive
+context, or trigger unintended tool calls.</p>
+</overview>
+
+<recommendation>
+<p>To mitigate user prompt injection:</p>
+<ul>
+<li>Validate user input against a fixed allowlist of permitted values before including it in a prompt.</li>
+<li>Use parameterized prompt templates that clearly separate instructions from user data.</li>
+<li>Apply output filtering to detect and block responses that indicate prompt injection attempts.</li>
+</ul>
+</recommendation>
+
+<example>
+<p>In the following example, user-controlled data is inserted directly into a user-role prompt
+without any validation, allowing an attacker to inject arbitrary instructions.</p>
+<sample src="examples/user-prompt-injection.js" />
+<p>The fix validates the user input against a fixed allowlist of permitted values before
+including it in the prompt.</p>
+<sample src="examples/user-prompt-injection_fixed.js" />
+</example>
+
+<references>
+<li>OWASP: <a href="https://genai.owasp.org/llmrisk/llm01-prompt-injection/">LLM01: Prompt Injection</a>.</li>
+<li>MITRE CWE: <a href="https://cwe.mitre.org/data/definitions/1427.html">CWE-1427: Improper Neutralization of Input Used for LLM Prompting</a>.</li>
+</references>
+
+</qhelp>

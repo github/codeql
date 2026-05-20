@@ -5,19 +5,19 @@ const app = express();
 const client = new OpenAI();
 
 app.get("/chat", async (req, res) => {
-    let persona = req.query.persona;
+    let topic = req.query.topic;
 
-    // BAD: user input is used directly in a system-level prompt
+    // BAD: user input is used directly in a user-role prompt
     const response = await client.chat.completions.create({
         model: "gpt-4.1",
         messages: [
             {
                 role: "system",
-                content: "You are a helpful assistant. Act as a " + persona,
+                content: "You are a helpful assistant that summarizes topics.",
             },
             {
                 role: "user",
-                content: req.query.message,
+                content: "Summarize the following topic: " + topic,
             },
         ],
     });
