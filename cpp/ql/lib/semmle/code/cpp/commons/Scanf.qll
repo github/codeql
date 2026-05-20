@@ -44,8 +44,11 @@ class Scanf extends ScanfFunction instanceof TopLevelFunction {
     this.hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
     this.hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
     this.hasGlobalOrStdOrBslName("scanf_s") or // scanf_s(format, args...)
+    this.hasGlobalOrStdOrBslName("wscanf_s") or // wscanf_s(format, args...)
     this.hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
-    this.hasGlobalName("_wscanf_l")
+    this.hasGlobalName("_wscanf_l") or // _wscanf_l(format, locale, args...)
+    this.hasGlobalName("_scanf_s_l") or // _scanf_s_l(format, locale, args...)
+    this.hasGlobalName("_wscanf_s_l") // _wscanf_s_l(format, locale, args...)
   }
 
   override int getInputParameterIndex() { none() }

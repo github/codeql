@@ -30,7 +30,10 @@ abstract private class ScanfFunctionModel extends ArrayFunction, TaintFunction, 
     (
       if exists(this.getLengthParameterIndex())
       then result = this.getLengthParameterIndex() + 2
-      else result = 2
+      else
+        if exists(this.(ScanfFunction).getInputParameterIndex())
+        then result = 2
+        else result = 1
     )
   }
 

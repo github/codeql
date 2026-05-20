@@ -169,3 +169,41 @@ void test_scanf_s(FILE *stream) {
     &n2); // $ remote_source
   }
 }
+
+typedef void *locale_t;
+
+int wscanf_s(const wchar_t *format, ...);
+int _scanf_s_l(const char *format, locale_t locale, ...);
+int _wscanf_s_l(const wchar_t *format, locale_t locale, ...);
+
+void test_additional_scanf_s_variants(locale_t locale) {
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  wscanf_s(L"%d %s %d",
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  _scanf_s_l("%d %s %d", locale,
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  _wscanf_s_l(L"%d %s %d", locale,
+    &n1, // $ local_source
+    buf, // $ local_source
+    256,
+    &n2); // $ local_source
+  }
+}
