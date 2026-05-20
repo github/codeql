@@ -175,8 +175,11 @@ typedef void *locale_t;
 int wscanf_s(const wchar_t *format, ...);
 int _scanf_s_l(const char *format, locale_t locale, ...);
 int _wscanf_s_l(const wchar_t *format, locale_t locale, ...);
+int fwscanf_s(FILE *stream, const wchar_t *format, ...);
+int _fscanf_s_l(FILE *stream, const char *format, locale_t locale, ...);
+int _fwscanf_s_l(FILE *stream, const wchar_t *format, locale_t locale, ...);
 
-void test_additional_scanf_s_variants(locale_t locale) {
+void test_additional_scanf_s_variants(FILE *stream, locale_t locale) {
   {
   int n1, n2;
   wchar_t buf[256];
@@ -205,5 +208,35 @@ void test_additional_scanf_s_variants(locale_t locale) {
     buf, // $ local_source
     256,
     &n2); // $ local_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  fwscanf_s(stream, L"%d %s %d",
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+
+  {
+  int n1, n2;
+  char buf[256];
+  _fscanf_s_l(stream, "%d %s %d", locale,
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
+  }
+
+  {
+  int n1, n2;
+  wchar_t buf[256];
+  _fwscanf_s_l(stream, L"%d %s %d", locale,
+    &n1, // $ remote_source
+    buf, // $ remote_source
+    256,
+    &n2); // $ remote_source
   }
 }

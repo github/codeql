@@ -64,8 +64,11 @@ class Fscanf extends ScanfFunction instanceof TopLevelFunction {
     this.hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
     this.hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
     this.hasGlobalOrStdOrBslName("fscanf_s") or // fscanf_s(src_stream, format, args...)
+    this.hasGlobalOrStdOrBslName("fwscanf_s") or // fwscanf_s(src_stream, format, args...)
     this.hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
-    this.hasGlobalName("_fwscanf_l")
+    this.hasGlobalName("_fwscanf_l") or // _fwscanf_l(src_stream, format, locale, args...)
+    this.hasGlobalName("_fscanf_s_l") or // _fscanf_s_l(src_stream, format, locale, args...)
+    this.hasGlobalName("_fwscanf_s_l") // _fwscanf_s_l(src_stream, format, locale, args...)
   }
 
   override int getInputParameterIndex() { result = 0 }
