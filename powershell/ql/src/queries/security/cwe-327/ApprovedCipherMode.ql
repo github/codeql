@@ -18,27 +18,59 @@ import semmle.code.powershell.ApiGraphs
 import semmle.code.powershell.security.cryptography.Concepts
 import WeakEncryptionFlow::PathGraph
 
-class AesModeProperty extends MemberExpr {
-  AesModeProperty() {
-    exists(DataFlow::ObjectCreationNode aesObjectCreation, DataFlow::Node aesObjectAccess |
-      (
-        aesObjectCreation
-            .asExpr()
-            .getExpr()
-            .(ObjectCreation)
-            .getAnArgument()
-            .getValue()
-            .stringMatches("System.Security.Cryptography.AesManaged") or
-        aesObjectCreation =
-          API::getTopLevelMember("system")
-              .getMember("security")
-              .getMember("cryptography")
-              .getMember("aes")
-              .getMember("create")
-              .asCall()
-      ) and
-      aesObjectAccess.getALocalSource() = aesObjectCreation and
-      aesObjectAccess.asExpr().getExpr() = this.getQualifier() and
+/**
+ * Holds if `name` (lowercase) is the short name of a .NET symmetric algorithm type
+ * that has a `Mode` property.
+ */
+private predicate isSymmetricAlgorithmTypeName(string name) {
+  name =
+    [
+      "aes", "aesmanaged", "aescryptoserviceprovider", "aescng",
+      "rijndael", "rijndaelmanaged",
+      "des", "descryptoserviceprovider",
+      "tripledes", "tripledescryptoserviceprovider",
+      "rc2", "rc2cryptoserviceprovider",
+      "symmetricalgorithm"
+    ]
+}
+
+/**
+ * Holds if `creation` is a data flow node that creates a symmetric algorithm object.
+ */
+private predicate isSymmetricAlgorithmCreation(DataFlow::Node creation) {
+  // New-Object "System.Security.Cryptography.Xxx" or [Xxx]::new()
+  exists(DataFlow::ObjectCreationNode objCreation, string typeName, string shortName |
+    creation = objCreation and
+    typeName = objCreation.getLowerCaseConstructedTypeName() and
+    isSymmetricAlgorithmTypeName(shortName) and
+    (
+      typeName = shortName or
+      typeName.matches("%." + shortName)
+    )
+  )
+  or
+  // [System.Security.Cryptography.Xxx]::Create()
+  exists(string typeName |
+    isSymmetricAlgorithmTypeName(typeName) and
+    creation =
+      API::getTopLevelMember("system")
+          .getMember("security")
+          .getMember("cryptography")
+          .getMember(typeName)
+          .getMember("create")
+          .asCall()
+  )
+}
+
+/**
+ * A member expression that writes to the `Mode` property of a symmetric algorithm object.
+ */
+class SymmetricAlgorithmModeProperty extends MemberExpr {
+  SymmetricAlgorithmModeProperty() {
+    exists(DataFlow::Node symAlgCreation, DataFlow::Node qualAccess |
+      isSymmetricAlgorithmCreation(symAlgCreation) and
+      qualAccess.getALocalSource() = symAlgCreation and
+      qualAccess.asExpr().getExpr() = this.getQualifier() and
       this.getLowerCaseMemberName() = "mode"
     )
   }
@@ -54,7 +86,7 @@ module Config implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr() =
-      any(AesModeProperty mode).getQualifier()
+      any(SymmetricAlgorithmModeProperty mode).getQualifier()
   }
 
   predicate allowImplicitRead(DataFlow::Node n, DataFlow::ContentSet cs) {

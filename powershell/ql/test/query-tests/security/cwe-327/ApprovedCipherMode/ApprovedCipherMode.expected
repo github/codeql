@@ -1,20 +1,53 @@
 edges
+| Test.ps1:7:1:7:8 | badMode | Test.ps1:8:13:8:20 | badMode | provenance |  |
 | Test.ps1:7:1:7:8 | badMode | Test.ps1:9:20:9:27 | badMode | provenance |  |
 | Test.ps1:7:12:7:57 | ecb | Test.ps1:7:1:7:8 | badMode | provenance |  |
+| Test.ps1:8:13:8:20 | badMode | Test.ps1:8:1:8:4 | [post] aes | provenance |  |
 | Test.ps1:9:20:9:27 | badMode | Test.ps1:9:1:9:11 | [post] aesManaged | provenance |  |
+| Test.ps1:11:13:11:58 | ecb | Test.ps1:11:1:11:4 | [post] aes | provenance |  |
 | Test.ps1:12:20:12:65 | ecb | Test.ps1:12:1:12:11 | [post] aesManaged | provenance |  |
+| Test.ps1:15:13:15:17 | ecb | Test.ps1:15:1:15:4 | [post] aes | provenance |  |
 | Test.ps1:16:20:16:24 | ecb | Test.ps1:16:1:16:11 | [post] aesManaged | provenance |  |
+| Test.ps1:20:18:20:63 | ecb | Test.ps1:20:1:20:9 | [post] rijndael | provenance |  |
+| Test.ps1:23:19:23:64 | ecb | Test.ps1:23:1:23:10 | [post] tripleDes | provenance |  |
+| Test.ps1:27:16:27:61 | ecb | Test.ps1:27:1:27:7 | [post] aesCsp | provenance |  |
+| Test.ps1:31:18:31:22 | ecb | Test.ps1:31:1:31:9 | [post] aesShort | provenance |  |
+| Test.ps1:35:14:35:14 | 2 | Test.ps1:35:1:35:5 | [post] aes2 | provenance |  |
 nodes
 | Test.ps1:7:1:7:8 | badMode | semmle.label | badMode |
 | Test.ps1:7:12:7:57 | ecb | semmle.label | ecb |
+| Test.ps1:8:1:8:4 | [post] aes | semmle.label | [post] aes |
+| Test.ps1:8:13:8:20 | badMode | semmle.label | badMode |
 | Test.ps1:9:1:9:11 | [post] aesManaged | semmle.label | [post] aesManaged |
 | Test.ps1:9:20:9:27 | badMode | semmle.label | badMode |
+| Test.ps1:11:1:11:4 | [post] aes | semmle.label | [post] aes |
+| Test.ps1:11:13:11:58 | ecb | semmle.label | ecb |
 | Test.ps1:12:1:12:11 | [post] aesManaged | semmle.label | [post] aesManaged |
 | Test.ps1:12:20:12:65 | ecb | semmle.label | ecb |
+| Test.ps1:15:1:15:4 | [post] aes | semmle.label | [post] aes |
+| Test.ps1:15:13:15:17 | ecb | semmle.label | ecb |
 | Test.ps1:16:1:16:11 | [post] aesManaged | semmle.label | [post] aesManaged |
 | Test.ps1:16:20:16:24 | ecb | semmle.label | ecb |
+| Test.ps1:20:1:20:9 | [post] rijndael | semmle.label | [post] rijndael |
+| Test.ps1:20:18:20:63 | ecb | semmle.label | ecb |
+| Test.ps1:23:1:23:10 | [post] tripleDes | semmle.label | [post] tripleDes |
+| Test.ps1:23:19:23:64 | ecb | semmle.label | ecb |
+| Test.ps1:27:1:27:7 | [post] aesCsp | semmle.label | [post] aesCsp |
+| Test.ps1:27:16:27:61 | ecb | semmle.label | ecb |
+| Test.ps1:31:1:31:9 | [post] aesShort | semmle.label | [post] aesShort |
+| Test.ps1:31:18:31:22 | ecb | semmle.label | ecb |
+| Test.ps1:35:1:35:5 | [post] aes2 | semmle.label | [post] aes2 |
+| Test.ps1:35:14:35:14 | 2 | semmle.label | 2 |
 subpaths
 #select
+| Test.ps1:8:1:8:4 | [post] aes | Test.ps1:7:12:7:57 | ecb | Test.ps1:8:1:8:4 | [post] aes |  |
 | Test.ps1:9:1:9:11 | [post] aesManaged | Test.ps1:7:12:7:57 | ecb | Test.ps1:9:1:9:11 | [post] aesManaged |  |
+| Test.ps1:11:1:11:4 | [post] aes | Test.ps1:11:13:11:58 | ecb | Test.ps1:11:1:11:4 | [post] aes |  |
 | Test.ps1:12:1:12:11 | [post] aesManaged | Test.ps1:12:20:12:65 | ecb | Test.ps1:12:1:12:11 | [post] aesManaged |  |
+| Test.ps1:15:1:15:4 | [post] aes | Test.ps1:15:13:15:17 | ecb | Test.ps1:15:1:15:4 | [post] aes |  |
 | Test.ps1:16:1:16:11 | [post] aesManaged | Test.ps1:16:20:16:24 | ecb | Test.ps1:16:1:16:11 | [post] aesManaged |  |
+| Test.ps1:20:1:20:9 | [post] rijndael | Test.ps1:20:18:20:63 | ecb | Test.ps1:20:1:20:9 | [post] rijndael |  |
+| Test.ps1:23:1:23:10 | [post] tripleDes | Test.ps1:23:19:23:64 | ecb | Test.ps1:23:1:23:10 | [post] tripleDes |  |
+| Test.ps1:27:1:27:7 | [post] aesCsp | Test.ps1:27:16:27:61 | ecb | Test.ps1:27:1:27:7 | [post] aesCsp |  |
+| Test.ps1:31:1:31:9 | [post] aesShort | Test.ps1:31:18:31:22 | ecb | Test.ps1:31:1:31:9 | [post] aesShort |  |
+| Test.ps1:35:1:35:5 | [post] aes2 | Test.ps1:35:14:35:14 | 2 | Test.ps1:35:1:35:5 | [post] aes2 |  |

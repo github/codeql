@@ -235,6 +235,32 @@ class CipherBlockModeEnum extends BlockMode {
   override string getName() { result = modeName }
 }
 
+private predicate cipherModeIntValue(int val, string name) {
+  val = 1 and name = "cbc"
+  or
+  val = 2 and name = "ecb"
+  or
+  val = 3 and name = "ofb"
+  or
+  val = 4 and name = "cfb"
+  or
+  val = 5 and name = "cts"
+}
+
+class CipherBlockModeIntConst extends BlockMode {
+  string modeName;
+
+  CipherBlockModeIntConst() {
+    exists(ConstExpr c, int val |
+      c = this.asExpr().getExpr() and
+      val = c.getValueString().toInt() and
+      cipherModeIntValue(val, modeName)
+    )
+  }
+
+  override string getName() { result = modeName }
+}
+
 class RsaCreateKeyCreation extends AsymmetricKeyCreation, DataFlow::CallNode {
   int keySize;
 
