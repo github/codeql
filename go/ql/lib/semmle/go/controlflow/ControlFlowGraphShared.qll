@@ -90,11 +90,12 @@ module GoCfg {
     Parameter callableGetParameter(Callable c, int index) { none() }
 
     Callable getEnclosingCallable(AstNode node) {
-      result = node and node instanceof Callable
+      node instanceof Go::FuncDef and result = node
       or
-      not node instanceof Callable and result = node.getEnclosingFunction()
+      not node instanceof Go::FuncDef and
+      result = node.getEnclosingFunction()
       or
-      not node instanceof Callable and
+      not node instanceof Go::FuncDef and
       not exists(node.getEnclosingFunction()) and
       result = node.getFile()
     }
