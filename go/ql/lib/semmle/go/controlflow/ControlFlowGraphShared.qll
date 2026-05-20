@@ -711,7 +711,13 @@ module GoCfg {
       exists(Go::FuncDef fd |
         ast = fd.getBody() and
         c.getSuccessorType() instanceof ReturnSuccessor and
-        n.isAfter(fd.getBody())
+        (
+          // If the function has result variables, route the return completion
+          // through the result-read epilogue before reaching the function exit.
+          exists(fd.getResultVar(0)) and n.isAdditional(fd, "result-read:0")
+          or
+          not exists(fd.getResultVar(_)) and n.isAfter(fd.getBody())
+        )
       )
       or
       exists(Go::LabeledStmt lbl, Go::FuncDef fd |
@@ -1504,13 +1510,13 @@ module GoCfg {
           )
         )
         or
-        // After(body) → first epilogue or After(fd) if no result vars
+        // After(body) → After(fd). Only reachable when there are no result
+        // variables; with result variables, Go requires the body to end in a
+        // terminating statement, and the result-read epilogue is entered from
+        // the return completion (see endAbruptCompletion).
         n1.isAfter(fd.getBody()) and
-        (
-          exists(fd.getResultVar(0)) and n2.isAdditional(fd, "result-read:0")
-          or
-          not exists(fd.getResultVar(_)) and n2.isAfter(fd)
-        )
+        not exists(fd.getResultVar(_)) and
+        n2.isAfter(fd)
         or
         // result-read:j → result-read:(j+1) or After(fd)
         exists(int j | exists(fd.getResultVar(j)) |
