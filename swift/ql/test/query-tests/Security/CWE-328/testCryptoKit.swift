@@ -81,23 +81,23 @@ enum Insecure {
 // --- tests ---
 
 func testHashMethods(passwd : UnsafeRawBufferPointer, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
-    var hash = Crypto.Insecure.MD5.hash(data: passwd)  // BAD [NOT DETECTED]
-    hash = Crypto.Insecure.MD5.hash(data: cert)   // BAD [NOT DETECTED]
+    var hash = Crypto.Insecure.MD5.hash(data: passwd)  // BAD
+    hash = Crypto.Insecure.MD5.hash(data: cert)   // BAD
     hash = Crypto.Insecure.MD5.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash = Crypto.Insecure.MD5.hash(data: account_no)   // BAD [NOT DETECTED]
-    hash = Crypto.Insecure.MD5.hash(data: credit_card_no)   // BAD [NOT DETECTED]
+    hash = Crypto.Insecure.MD5.hash(data: account_no)   // BAD
+    hash = Crypto.Insecure.MD5.hash(data: credit_card_no)   // BAD
 
-    hash = Insecure.MD5.hash(data: passwd)  // BAD [NOT DETECTED]
-    hash = Insecure.MD5.hash(data: cert)   // BAD [NOT DETECTED]
+    hash = Insecure.MD5.hash(data: passwd)  // BAD
+    hash = Insecure.MD5.hash(data: cert)   // BAD
     hash = Insecure.MD5.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash = Insecure.MD5.hash(data: account_no)   // BAD [NOT DETECTED]
-    hash = Insecure.MD5.hash(data: credit_card_no)   // BAD [NOT DETECTED]
+    hash = Insecure.MD5.hash(data: account_no)   // BAD
+    hash = Insecure.MD5.hash(data: credit_card_no)   // BAD
 
-    hash = Crypto.Insecure.SHA1.hash(data: passwd)  // BAD [NOT DETECTED]
-    hash = Crypto.Insecure.SHA1.hash(data: cert)   // BAD [NOT DETECTED]
+    hash = Crypto.Insecure.SHA1.hash(data: passwd)  // BAD
+    hash = Crypto.Insecure.SHA1.hash(data: cert)   // BAD
     hash = Crypto.Insecure.SHA1.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash = Crypto.Insecure.SHA1.hash(data: account_no)   // BAD [NOT DETECTED]
-    hash = Crypto.Insecure.SHA1.hash(data: credit_card_no)   // BAD [NOT DETECTED]
+    hash = Crypto.Insecure.SHA1.hash(data: account_no)   // BAD
+    hash = Crypto.Insecure.SHA1.hash(data: credit_card_no)   // BAD
 
     hash = Crypto.SHA256.hash(data: passwd)   // BAD, not a computationally expensive hash [NOT DETECTED]
     hash = Crypto.SHA256.hash(data: cert)   // GOOD, computationally expensive hash not required
@@ -222,14 +222,14 @@ func testBadExample(passwordString: String) {
 
 func testWithFlowAndMetatypes(cardNumber: String) {
     let value1 = Data(cardNumber.utf8);
-    let _digest1 = Insecure.MD5.hash(data: value1); // BAD [NOT DETECTED]
+    let _digest1 = Insecure.MD5.hash(data: value1); // BAD
 
     let value2 = Data(cardNumber.utf8);
     let hasher2 = Insecure.MD5.self; // metatype
-    let _digest2 = hasher2.hash(data: value2); // BAD [NOT DETECTED]
+    let _digest2 = hasher2.hash(data: value2); // BAD
 
     let value3 = Data(cardNumber.utf8);
-    let _digest3 = (Insecure.MD5.self).hash(data: value3); // BAD [NOT DETECTED]
+    let _digest3 = (Insecure.MD5.self).hash(data: value3); // BAD
 
     let value4 = Data(cardNumber.utf8);
     testReceiver1(value: value4);
@@ -242,11 +242,11 @@ func testWithFlowAndMetatypes(cardNumber: String) {
 }
 
 func testReceiver1(value: Data) {
-    let _digest = Insecure.MD5.hash(data: value); // BAD [NOT DETECTED]
+    let _digest = Insecure.MD5.hash(data: value); // BAD
 }
 
 func testReceiver2(hasher: Insecure.MD5.Type, value: Data) {
-    let _digest = hasher.hash(data: value); // BAD [NOT DETECTED]
+    let _digest = hasher.hash(data: value); // BAD
 }
 
 func testReceiver3<H: HashFunction>(hasher: H.Type, value: Data) {

@@ -76,3 +76,21 @@ private class DefaultWeakSenitiveDataHashingSink extends WeakSensitiveDataHashin
 
   override string getAlgorithm() { result = algorithm }
 }
+
+/**
+ * A sink for weak sensitive data hashing through a call with a metatype qualifier.
+ */
+private class WeakSenitiveDataHashingMetatypeSink extends WeakSensitiveDataHashingSink {
+  string algorithm;
+
+  WeakSenitiveDataHashingMetatypeSink() {
+    exists(CallExpr c |
+      c.getAnArgument().getExpr() = this.asExpr() and
+      algorithm = ["MD5", "SHA1"] and
+      c.getQualifier().getType().getFullName() = "Insecure." + algorithm + ".Type" and
+      c.getStaticTarget().getName() = ["hash(data:)", "update(data:)", "update(bufferPointer:)"]
+    )
+  }
+
+  override string getAlgorithm() { result = algorithm }
+}
