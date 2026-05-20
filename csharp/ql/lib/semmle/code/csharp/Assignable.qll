@@ -124,7 +124,7 @@ private newtype TMutationOperationAssignment =
   }
 
 /**
- * A mutation operation that implicitly assigns the result to its operand. For example, `a++` in
+ * A mutation operation that implicitly assigns the result to its operand. For example, `a++` on
  * line 7 in
  *
  * ```csharp
