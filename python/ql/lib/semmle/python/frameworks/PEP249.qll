@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
 
 /**
  * Provides classes modeling database interfaces following PEP 249.
@@ -210,6 +211,74 @@ module PEP249 {
     /** A call to the `connect` function of a module that implements PEP 249. */
     private class ConnectCall extends InstanceSource, DataFlow::CallCfgNode {
       ConnectCall() { this.getFunction() = connect() }
+    }
+
+    /**
+     * Holds if class `cls` stores a PEP 249 database connection to `self.<attrName>`
+     * in its `__init__` method, via a direct call to a `connect` function.
+     */
+    private predicate classStoresConnectionInInit(Class cls, string attrName) {
+      exists(Function init, DataFlow::AttrWrite store |
+        cls.getAMethod() = init and
+        init.getName() = "__init__" and
+        store.getAttributeName() = attrName and
+        store.getObject().asCfgNode().getNode().(Name).getVariable() =
+          init.getArg(0).asName().getVariable() and
+        store.getValue() instanceof ConnectCall
+      )
+    }
+
+    /**
+     * A read of a connection-holding attribute within a method of a class whose
+     * `__init__` stores a PEP 249 connection in that attribute.
+     *
+     * This recognises patterns such as:
+     * ```python
+     * class Wrapper:
+     *     def __init__(self):
+     *         self._conn = dbapi.connect(...)
+     *     def get_connection(self):
+     *         return self._conn  # <-- recognised as a connection source
+     * ```
+     * Because the `AttrRead` node for `self._conn` inside `get_connection` is
+     * also the `ExtractedReturnNode` for that statement, the existing TypeTracker
+     * `returnStep` automatically propagates the connection type to all call sites
+     * of `get_connection`.
+     */
+    private class ConnectionGetterAttributeRead extends InstanceSource, DataFlow::AttrRead {
+      ConnectionGetterAttributeRead() {
+        exists(Class cls, Function method, string attrName |
+          classStoresConnectionInInit(cls, attrName) and
+          cls.getAMethod() = method and
+          method.getName() != "__init__" and
+          this.getAttributeName() = attrName and
+          this.getObject().asCfgNode().getNode().(Name).getVariable() =
+            method.getArg(0).asName().getVariable()
+        )
+      }
+    }
+
+    /**
+     * An attribute access on a constructor-call result that directly reads the
+     * connection-holding attribute.
+     *
+     * This recognises patterns such as:
+     * ```python
+     * class Wrapper:
+     *     def __init__(self):
+     *         self._conn = dbapi.connect(...)
+     *
+     * conn = Wrapper()._conn  # <-- recognised as a connection source
+     * ```
+     */
+    private class ConnectionConstructorAttributeRead extends InstanceSource, DataFlow::AttrRead {
+      ConnectionConstructorAttributeRead() {
+        exists(Class cls, string attrName |
+          classStoresConnectionInInit(cls, attrName) and
+          this.getAttributeName() = attrName and
+          DataFlowDispatch::resolveClassCall(this.getObject().asCfgNode().(CallNode), cls)
+        )
+      }
     }
 
     /** Gets a reference to a database connection (following PEP 249). */
