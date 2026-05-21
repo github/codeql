@@ -56,6 +56,10 @@ module GoCfg {
       or
       e instanceof Go::ParenExpr
       or
+      e instanceof Go::CommentGroup
+      or
+      e instanceof Go::Comment
+      or
       e = any(Go::ImportSpec is).getPathExpr()
       or
       e.getParent*() = any(Go::ArrayTypeExpr ate).getLength()
