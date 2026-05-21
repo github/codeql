@@ -5,7 +5,7 @@
   "location": {
     "endColumn": 5,
     "endLine": 1,
-    "file": "<test-root-directory>/bad.rb",
+    "file": "bad.rb",
     "startColumn": 4,
     "startLine": 1
   },
@@ -28,7 +28,7 @@
   "location": {
     "endColumn": 7,
     "endLine": 3,
-    "file": "<test-root-directory>/bad.rb",
+    "file": "bad.rb",
     "startColumn": 8,
     "startLine": 3
   },

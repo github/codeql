@@ -3,6 +3,18 @@ use std::{
     path::{Path, PathBuf},
 };
 
+/// Given an absolute path, returns a relative path if it's under `source_root`,
+/// otherwise the absolute path as-is. This is used for diagnostic locations, which
+/// should use relative paths per the CodeQL diagnostic message format spec.
+/// Absolute path fallback is handled downstream by the CLI's SARIF generator.
+pub fn relativize_for_diagnostic(path: &Path, source_root: Option<&Path>) -> String {
+    source_root
+        .and_then(|root| path.strip_prefix(root).ok())
+        .and_then(|rel| rel.to_str())
+        .map(|s| s.replace('\\', "/"))
+        .unwrap_or_else(|| path.display().to_string())
+}
+
 /// This represents the minimum supported path transformation that is needed to support extracting
 /// overlay databases. Specifically, it represents a transformer where one path prefix is replaced
 /// with a different prefix.
@@ -223,4 +235,37 @@ pub fn path_for(
         }
     }
     result
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn relativize_under_source_root() {
+        let path = Path::new("/home/runner/work/repo/src/foo.rb");
+        let result = relativize_for_diagnostic(path, Some(Path::new("/home/runner/work/repo")));
+        assert_eq!(result, "src/foo.rb");
+    }
+
+    #[test]
+    fn relativize_outside_source_root_returns_absolute() {
+        let path = Path::new("/other/location/foo.rb");
+        let result = relativize_for_diagnostic(path, Some(Path::new("/home/runner/work/repo")));
+        assert_eq!(result, "/other/location/foo.rb");
+    }
+
+    #[test]
+    fn relativize_no_source_root_returns_absolute() {
+        let path = Path::new("/home/runner/work/repo/src/foo.rb");
+        let result = relativize_for_diagnostic(path, None);
+        assert_eq!(result, "/home/runner/work/repo/src/foo.rb");
+    }
+
+    #[test]
+    fn relativize_exact_root_path() {
+        let path = Path::new("/repo/foo.rb");
+        let result = relativize_for_diagnostic(path, Some(Path::new("/repo")));
+        assert_eq!(result, "foo.rb");
+    }
 }
