@@ -12,6 +12,7 @@ private import codeql.rust.elements.Callable
  * be referenced directly.
  */
 module Impl {
+  // the following QLdoc is generated: if you need to edit it, do it in the schema file
   /**
    * A normal parameter, `Param`, or a self parameter `SelfParam`.
    */
