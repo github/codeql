@@ -383,6 +383,8 @@ module GoCfg {
       or
       n instanceof Go::GoStmt
       or
+      n instanceof Go::SelectStmt
+      or
       n instanceof Go::SendStmt
       or
       n instanceof Go::IncDecStmt
@@ -1338,31 +1340,127 @@ module GoCfg {
       )
     }
 
+    private predicate commClauseBodyStart(
+      Go::SelectStmt sel, Go::CommClause cc, PreControlFlowNode n
+    ) {
+      n.isBefore(cc.getStmt(0))
+      or
+      not exists(cc.getStmt(0)) and n.isAfter(sel)
+    }
+
+    private predicate selectCommPrepStart(Go::CommClause cc, PreControlFlowNode n) {
+      exists(Go::RecvStmt recv | recv = cc.getComm() | n.isBefore(recv.getExpr().getOperand()))
+      or
+      exists(Go::SendStmt send | send = cc.getComm() | n.isBefore(send.getChannel()))
+    }
+
+    private predicate selectCommPrepEnd(Go::CommClause cc, PreControlFlowNode n) {
+      exists(Go::RecvStmt recv | recv = cc.getComm() | n.isAfter(recv.getExpr().getOperand()))
+      or
+      exists(Go::SendStmt send | send = cc.getComm() | n.isAfter(send.getValue()))
+    }
+
+    private predicate selectCommPrepStep(
+      Go::CommClause cc, PreControlFlowNode n1, PreControlFlowNode n2
+    ) {
+      exists(Go::SendStmt send | send = cc.getComm() |
+        n1.isAfter(send.getChannel()) and n2.isBefore(send.getValue())
+      )
+    }
+
+    private predicate selectedCommStep(
+      Go::SelectStmt sel, PreControlFlowNode n1, PreControlFlowNode n2
+    ) {
+      exists(Go::RecvStmt recv | recv = sel.getACommClause().getComm() |
+        n1.isBefore(recv) and n2.isIn(recv.getExpr())
+        or
+        n1.isBefore(recv.getExpr()) and n2.isBefore(recv.getExpr().getOperand())
+      )
+      or
+      exists(Go::SendStmt send | send = sel.getACommClause().getComm() |
+        n1.isBefore(send) and n2.isBefore(send.getChannel())
+        or
+        n1.isAfter(send.getChannel()) and n2.isBefore(send.getValue())
+        or
+        n1.isIn(send) and n2.isAfter(send)
+      )
+    }
+
+    private predicate selectRecvStmtStep(
+      Go::SelectStmt sel, Go::CommClause cc, Go::RecvStmt recv, PreControlFlowNode n1,
+      PreControlFlowNode n2
+    ) {
+      cc = sel.getACommClause() and
+      recv = cc.getComm() and
+      (
+        n1.isIn(recv.getExpr()) and
+        (
+          n2.isBefore(recv.getLhs(0))
+          or
+          not exists(recv.getLhs(0)) and commClauseBodyStart(sel, cc, n2)
+        )
+        or
+        exists(int j | n1.isAfter(recv.getLhs(j)) and n2.isBefore(recv.getLhs(j + 1)))
+        or
+        exists(int last | exists(recv.getLhs(last)) and not exists(recv.getLhs(last + 1)) |
+          n1.isAfter(recv.getLhs(last)) and n2.isAdditional(recv, getFirstEpilogueTag(recv))
+        )
+        or
+        exists(int last | exists(recv.getLhs(last)) and not exists(recv.getLhs(last + 1)) |
+          not exists(getFirstEpilogueTag(recv)) and
+          n1.isAfter(recv.getLhs(last)) and
+          commClauseBodyStart(sel, cc, n2)
+        )
+        or
+        exists(string tag1, string tag2 |
+          epilogueSucc(recv, tag1, tag2) and
+          n1.isAdditional(recv, tag1) and
+          n2.isAdditional(recv, tag2)
+        )
+        or
+        n1.isAdditional(recv, getLastEpilogueTag(recv)) and commClauseBodyStart(sel, cc, n2)
+      )
+    }
+
     private predicate selectStmt(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::SelectStmt sel |
+        selectedCommStep(sel, n1, n2)
+        or
         n1.isBefore(sel) and
         (
-          n2.isBefore(sel.getNonDefaultCommClause(0).getComm())
+          selectCommPrepStart(sel.getNonDefaultCommClause(0), n2)
           or
-          not exists(sel.getACommClause()) and n2.isAfter(sel)
+          not exists(sel.getNonDefaultCommClause(0)) and n2.isIn(sel)
         )
         or
         exists(Go::CommClause cc, int i | cc = sel.getNonDefaultCommClause(i) |
-          n1.isAfter(cc.getComm()) and
+          selectCommPrepStep(cc, n1, n2)
+          or
+          selectCommPrepEnd(cc, n1) and
           (
-            n2.isBefore(sel.getNonDefaultCommClause(i + 1).getComm())
+            selectCommPrepStart(sel.getNonDefaultCommClause(i + 1), n2)
             or
-            not exists(sel.getNonDefaultCommClause(i + 1)) and
-            (
-              n2.isBefore(sel.getACommClause().getStmt(0))
-              or
-              exists(sel.getDefaultCommClause()) and
-              n2.isBefore(sel.getDefaultCommClause().getStmt(0))
-            )
+            not exists(sel.getNonDefaultCommClause(i + 1)) and n2.isIn(sel)
           )
         )
         or
+        n1.isIn(sel) and
+        exists(Go::CommClause cc | sel.getACommClause() = cc | n2.isBefore(cc))
+        or
         exists(Go::CommClause cc | sel.getACommClause() = cc |
+          n1.isBefore(cc) and
+          (
+            n2.isIn(cc.getComm().(Go::RecvStmt).getExpr())
+            or
+            n2.isIn(cc.getComm().(Go::SendStmt))
+            or
+            not exists(cc.getComm()) and commClauseBodyStart(sel, cc, n2)
+          )
+          or
+          exists(Go::RecvStmt recv | selectRecvStmtStep(sel, cc, recv, n1, n2))
+          or
+          n1.isAfter(cc.getComm().(Go::SendStmt)) and commClauseBodyStart(sel, cc, n2)
+          or
           exists(int j | n1.isAfter(cc.getStmt(j)) and n2.isBefore(cc.getStmt(j + 1)))
           or
           exists(int last |
@@ -1370,8 +1468,6 @@ module GoCfg {
             n1.isAfter(cc.getStmt(last)) and
             n2.isAfter(sel)
           )
-          or
-          not exists(cc.getStmt(_)) and n1.isBefore(cc) and n2.isAfter(sel)
         )
       )
     }
