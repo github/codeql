@@ -4,8 +4,8 @@
 # This script:
 #   1. Clones ferstl/depgraph-maven-plugin at the upstream 4.0.3 tag.
 #   2. Applies the CodeQL patches: version suffix, Guava bump, Jackson bump.
-#   3. Builds the plugin (skipping tests).
-#   4. Collects all runtime artifacts into a Maven local-repo layout and zips them.
+#   3. Builds the plugin (skipping tests) into a throwaway build repo.
+#   4. Resolves only the plugin's runtime deps into a clean dist repo and zips it.
 #   5. Updates the *.expected integration-test files in this directory.
 #
 # The generated zip file must be placed (in the companion semmle-code PR) at:
@@ -13,6 +13,9 @@
 #
 # Usage:
 #   ./update-ferstl-depgraph-dependencies.sh [JACKSON_VERSION [GUAVA_VERSION]]
+#
+# Output:
+#   ferstl-depgraph-dependencies.zip  (written to the current working directory)
 #
 # Defaults:
 #   JACKSON_VERSION = 2.18.6
@@ -38,6 +41,9 @@ UPSTREAM_REPO="https://github.com/ferstl/depgraph-maven-plugin.git"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORK_DIR="$(mktemp -d)"
+# The zip is written to the caller's working directory so the cleanup trap can
+# safely remove the entire temporary work tree.
+ZIP_OUT="$(pwd)/ferstl-depgraph-dependencies.zip"
 trap 'rm -rf "${WORK_DIR}"' EXIT
 
 echo "=== ferstl-depgraph-dependencies update ==="
@@ -86,12 +92,56 @@ print(f'  pom.xml patched: version={new_version}, guava={new_guava}, jackson={ne
 PYEOF
 
 # ---------------------------------------------------------------------------
-# Step 3 — Build
+# Step 3 — Build the plugin, then resolve its runtime deps into a clean repo
 # ---------------------------------------------------------------------------
-LOCAL_REPO="${WORK_DIR}/local-repo"
+#
+# Two separate local repos:
+#
+#   BUILD_REPO  Throwaway cache for the plugin's own `mvn package install` —
+#               accumulates build-lifecycle plugins (compiler, surefire, jar,
+#               plugin-plugin, etc.) that the extractor never invokes at
+#               runtime.  Discarded after this step.
+#
+#   DIST_REPO   Clean repo seeded with the freshly built plugin, then
+#               populated only with the plugin's runtime transitive deps by
+#               invoking the :graph goal against a minimal stub project.
+#               This is what gets zipped.
+#
+BUILD_REPO="${WORK_DIR}/build-repo"
+DIST_REPO="${WORK_DIR}/dist-repo"
+
 echo "[3/5] Building plugin (mvn package + install, skipping tests) ..."
 cd "${WORK_DIR}/plugin-src"
-mvn package install -DskipTests -q -Dmaven.repo.local="${LOCAL_REPO}"
+mvn package install -DskipTests -q -Dmaven.repo.local="${BUILD_REPO}"
+
+echo "      Resolving runtime dependencies into clean dist repo ..."
+
+# Seed DIST_REPO with the freshly built plugin jar+pom so the :graph
+# invocation below can resolve its transitive runtime deps without hitting
+# Central for the plugin artifact itself.
+PLUGIN_REL="com/github/ferstl/depgraph-maven-plugin/${PLUGIN_CODEQL_VERSION}"
+mkdir -p "${DIST_REPO}/${PLUGIN_REL}"
+cp "${BUILD_REPO}/${PLUGIN_REL}/depgraph-maven-plugin-${PLUGIN_CODEQL_VERSION}.jar" \
+   "${BUILD_REPO}/${PLUGIN_REL}/depgraph-maven-plugin-${PLUGIN_CODEQL_VERSION}.pom" \
+   "${DIST_REPO}/${PLUGIN_REL}/"
+
+# Create a minimal stub project with no dependencies.  Using an empty project
+# avoids polluting DIST_REPO with the stub's own deps (e.g. junit from the
+# quickstart archetype).  The sole purpose of this project is to give Maven a
+# valid reactor context in which to load and execute the plugin.
+mkdir -p "${WORK_DIR}/stub-project"
+cat > "${WORK_DIR}/stub-project/pom.xml" << 'STUBPOM'
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>stub</artifactId>
+  <version>1.0-SNAPSHOT</version>
+</project>
+STUBPOM
+
+cd "${WORK_DIR}/stub-project"
+mvn -q "com.github.ferstl:depgraph-maven-plugin:${PLUGIN_CODEQL_VERSION}:graph" \
+    -Dmaven.repo.local="${DIST_REPO}"
 
 # ---------------------------------------------------------------------------
 # Step 4 — Package local-repo zip
@@ -100,7 +150,7 @@ echo "[4/5] Packaging local Maven repo into zip ..."
 
 # Remove build-time-only noise (but keep _remote.repositories for Maven
 # cache-validation compatibility).
-find "${LOCAL_REPO}" \( \
+find "${DIST_REPO}" \( \
     -name "resolver-status.properties" \
     -o -name "*.lastUpdated" \
     -o -name "m2e-lastUpdated.properties" \
@@ -122,11 +172,10 @@ if [[ -n "${SHA1_CMD}" ]]; then
         if [[ ! -f "${f}.sha1" ]]; then
             ${SHA1_CMD} "${f}" | awk '{print $1}' > "${f}.sha1"
         fi
-    done < <(find "${LOCAL_REPO}" \( -name "*.jar" -o -name "*.pom" \) -print0)
+    done < <(find "${DIST_REPO}" \( -name "*.jar" -o -name "*.pom" \) -print0)
 fi
 
-ZIP_OUT="${WORK_DIR}/ferstl-depgraph-dependencies.zip"
-(cd "${LOCAL_REPO}" && zip -r -q "${ZIP_OUT}" .)
+(cd "${DIST_REPO}" && zip -r -q "${ZIP_OUT}" .)
 
 echo ""
 echo "  Zip created: ${ZIP_OUT}"
@@ -142,18 +191,65 @@ echo "[5/5] Updating integration-test expected files ..."
 
 # Discover versions currently recorded in the expected files so the script
 # is idempotent and can be re-run after a partial update.
+# Python is used for portability: grep -oP requires PCRE which is absent on
+# macOS's BSD grep.
 EXPECTED_FILE="${SCRIPT_DIR}/java/buildless-maven/maven-fetches.expected"
 
-OLD_JACKSON="$(grep -oP 'jackson-core/\K[^/]+(?=/)' "${EXPECTED_FILE}" | head -1)"
-OLD_PLUGIN="$(grep -oP 'depgraph-maven-plugin/\K[^/]+(?=/)' "${EXPECTED_FILE}" | head -1)"
-OLD_OSS_PARENT="$(grep -oP 'fasterxml/oss-parent/\K[^/]+(?=/)' "${EXPECTED_FILE}" | head -1)"
-OLD_JACKSON_PARENT="$(grep -oP 'jackson-parent/\K[^/]+(?=/)' "${EXPECTED_FILE}" | head -1)"
+read -r OLD_JACKSON OLD_PLUGIN OLD_OSS_PARENT OLD_JACKSON_PARENT <<< "$(python3 - "${EXPECTED_FILE}" << 'PYEOF'
+import sys, re
 
-# Resolve new parent versions from the artifacts Maven just resolved.
-NEW_JACKSON_PARENT="$(find "${LOCAL_REPO}/com/fasterxml/jackson/jackson-parent" \
-    -name "jackson-parent-*.pom" | sort | tail -1 | grep -oP '[\d.]+(?=\.pom)')"
-NEW_OSS_PARENT="$(find "${LOCAL_REPO}/com/fasterxml/oss-parent" \
-    -name "oss-parent-*.pom" | sort | tail -1 | grep -oP '[0-9]+(?=\.pom)')"
+with open(sys.argv[1]) as f:
+    content = f.read()
+
+def extract(pattern):
+    m = re.search(pattern, content)
+    return m.group(1) if m else ''
+
+print(
+    extract(r'jackson-core/([^/]+)/'),
+    extract(r'depgraph-maven-plugin/([^/]+)/'),
+    extract(r'fasterxml/oss-parent/([^/]+)/'),
+    extract(r'jackson-parent/([^/]+)/'),
+)
+PYEOF
+)"
+
+# Resolve new parent-pom versions from the artifacts Maven just resolved.
+# Python is used for version-aware max() so that e.g. 2.18.10 sorts after
+# 2.18.6 (lexicographic sort would get this wrong).
+read -r NEW_JACKSON_PARENT NEW_OSS_PARENT <<< "$(python3 - \
+    "${DIST_REPO}/com/fasterxml/jackson/jackson-parent" \
+    "${DIST_REPO}/com/fasterxml/oss-parent" << 'PYEOF'
+import sys, os, re
+
+def max_version(directory, name_prefix, name_suffix):
+    try:
+        entries = os.listdir(directory)
+    except FileNotFoundError:
+        return ''
+    versions = []
+    for e in entries:
+        pom = os.path.join(directory, e, f'{name_prefix}{e}{name_suffix}')
+        if os.path.isfile(pom):
+            versions.append(e)
+    if not versions:
+        return ''
+    def version_key(v):
+        parts = re.split(r'[.\-]', v)
+        numeric = tuple(int(p) for p in parts if p.isdigit())
+        # A release version (all-numeric parts) beats a snapshot/qualifier with
+        # the same numeric prefix; append 1 for pure-release, 0 otherwise.
+        is_release = int(all(p.isdigit() for p in parts if p))
+        return (numeric, is_release)
+    return max(versions, key=version_key)
+
+jackson_parent_dir, oss_parent_dir = sys.argv[1], sys.argv[2]
+print(
+    max_version(jackson_parent_dir, 'jackson-parent-', '.pom'),
+    max_version(oss_parent_dir,     'oss-parent-',     '.pom'),
+)
+PYEOF
+)"
 
 echo "  Jackson:        ${OLD_JACKSON} -> ${JACKSON_VERSION}"
 echo "  jackson-parent: ${OLD_JACKSON_PARENT} -> ${NEW_JACKSON_PARENT}"
@@ -228,4 +324,3 @@ echo "  1. Copy ${ZIP_OUT} -> semmle-code resources/lib/ferstl-depgraph-dependen
 echo "  2. In semmle-code, update autobuild/src/com/semmle/util/build/Maven.java:"
 echo "     bump the plugin version constant to '${PLUGIN_CODEQL_VERSION}'"
 echo "  3. Commit and raise PRs in both repositories."
-trap - EXIT
