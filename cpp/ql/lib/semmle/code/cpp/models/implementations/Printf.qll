@@ -13,9 +13,9 @@ import semmle.code.cpp.models.interfaces.NonThrowing
 /**
  * The standard functions `printf`, `wprintf` and their glib variants.
  */
-private class Printf extends FormattingFunction, AliasFunction, NonCppThrowingFunction {
+private class Printf extends FormattingFunction, AliasFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
   Printf() {
-    this instanceof TopLevelFunction and
     (
       this.hasGlobalOrStdOrBslName(["printf", "wprintf"]) or
       this.hasGlobalName(["printf_s", "wprintf_s", "g_printf"])
@@ -37,9 +37,9 @@ private class Printf extends FormattingFunction, AliasFunction, NonCppThrowingFu
 /**
  * The standard functions `fprintf`, `fwprintf` and their glib variants.
  */
-private class Fprintf extends FormattingFunction, NonCppThrowingFunction {
+private class Fprintf extends FormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
   Fprintf() {
-    this instanceof TopLevelFunction and
     (
       this.hasGlobalOrStdOrBslName(["fprintf", "fwprintf"]) or
       this.hasGlobalName("g_fprintf")
@@ -55,9 +55,9 @@ private class Fprintf extends FormattingFunction, NonCppThrowingFunction {
 /**
  * The standard function `sprintf` and its Microsoft and glib variants.
  */
-private class Sprintf extends FormattingFunction, NonCppThrowingFunction {
+private class Sprintf extends FormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction
+{
   Sprintf() {
-    this instanceof TopLevelFunction and
     (
       this.hasGlobalOrStdOrBslName([
           "sprintf", // sprintf(dst, format, args...)
@@ -99,10 +99,9 @@ private class Sprintf extends FormattingFunction, NonCppThrowingFunction {
  * Implements `Snprintf`.
  */
 private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction,
-  NonCppThrowingFunction
+  NonCppThrowingFunction instanceof TopLevelFunction
 {
   SnprintfImpl() {
-    this instanceof TopLevelFunction and
     (
       this.hasGlobalOrStdOrBslName([
           "snprintf", // C99 defines snprintf
@@ -175,9 +174,8 @@ private class SnprintfImpl extends Snprintf, AliasFunction, SideEffectFunction,
  *      and
  *      https://learn.microsoft.com/en-us/previous-versions/windows/embedded/ms860435(v=msdn.10)
  */
-private class StringCchPrintf extends FormattingFunction {
+private class StringCchPrintf extends FormattingFunction instanceof TopLevelFunction {
   StringCchPrintf() {
-    this instanceof TopLevelFunction and
     exists(string baseName |
       baseName in [
           "StringCchPrintf", //StringCchPrintf(pszDest, cchDest, pszFormat, ...)
@@ -207,9 +205,8 @@ private class StringCchPrintf extends FormattingFunction {
 /**
  * The standard function `syslog`.
  */
-private class Syslog extends FormattingFunction, NonCppThrowingFunction {
+private class Syslog extends FormattingFunction, NonCppThrowingFunction instanceof TopLevelFunction {
   Syslog() {
-    this instanceof TopLevelFunction and
     this.hasGlobalName("syslog") and
     not exists(this.getDefinition().getFile().getRelativePath())
   }
