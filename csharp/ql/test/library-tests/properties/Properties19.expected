@@ -6,3 +6,6 @@
 | properties.cs:71:28:71:28 | Y | properties.cs:83:39:83:44 | access to property Y | properties.cs:74:13:74:15 | set_Y |
 | properties.cs:146:24:146:27 | Prop | properties.cs:159:13:159:18 | access to property Prop | properties.cs:148:13:148:15 | get_Prop |
 | properties.cs:146:24:146:27 | Prop | properties.cs:160:21:160:26 | access to property Prop | properties.cs:148:13:148:15 | get_Prop |
+| properties.cs:166:28:166:32 | Value | properties.cs:192:13:192:20 | access to property Value | properties.cs:169:13:169:15 | set_Value |
+| properties.cs:166:28:166:32 | Value | properties.cs:193:25:193:32 | access to property Value | properties.cs:168:13:168:15 | get_Value |
+| properties.cs:175:29:175:33 | Value | properties.cs:189:25:189:32 | access to property Value | properties.cs:177:13:177:15 | get_Value |
