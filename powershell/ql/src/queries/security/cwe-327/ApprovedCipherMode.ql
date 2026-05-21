@@ -22,7 +22,7 @@ import WeakEncryptionFlow::PathGraph
  * Holds if `name` (lowercase) is the short name of a .NET symmetric algorithm type
  * that has a `Mode` property.
  */
-private predicate isSymmetricAlgorithmTypeName(string name) {
+predicate isSymmetricAlgorithmTypeName(string name) {
   name =
     [
       "aes", "aesmanaged", "aescryptoserviceprovider", "aescng",
@@ -35,31 +35,43 @@ private predicate isSymmetricAlgorithmTypeName(string name) {
 }
 
 /**
- * Holds if `creation` is a data flow node that creates a symmetric algorithm object.
+ * A data flow node that creates a symmetric algorithm object.
  */
-private predicate isSymmetricAlgorithmCreation(DataFlow::Node creation) {
-  // New-Object "System.Security.Cryptography.Xxx" or [Xxx]::new()
-  exists(DataFlow::ObjectCreationNode objCreation, string typeName, string shortName |
-    creation = objCreation and
-    typeName = objCreation.getLowerCaseConstructedTypeName() and
-    isSymmetricAlgorithmTypeName(shortName) and
-    (
-      typeName = shortName or
-      typeName.matches("%." + shortName)
+abstract class SymmetricAlgorithmCreation extends DataFlow::Node { }
+
+/**
+ * A symmetric algorithm creation via `New-Object "System.Security.Cryptography.Xxx"` or `[Xxx]::new()`.
+ */
+class SymmetricAlgorithmNewObject extends SymmetricAlgorithmCreation {
+  SymmetricAlgorithmNewObject() {
+    exists(DataFlow::ObjectCreationNode objCreation, string typeName, string shortName |
+      this = objCreation and
+      typeName = objCreation.getLowerCaseConstructedTypeName() and
+      isSymmetricAlgorithmTypeName(shortName) and
+      (
+        typeName = shortName or
+        typeName.matches("%." + shortName)
+      )
     )
-  )
-  or
-  // [System.Security.Cryptography.Xxx]::Create()
-  exists(string typeName |
-    isSymmetricAlgorithmTypeName(typeName) and
-    creation =
-      API::getTopLevelMember("system")
-          .getMember("security")
-          .getMember("cryptography")
-          .getMember(typeName)
-          .getMember("create")
-          .asCall()
-  )
+  }
+}
+
+/**
+ * A symmetric algorithm creation via `[System.Security.Cryptography.Xxx]::Create()`.
+ */
+class SymmetricAlgorithmFactoryCreate extends SymmetricAlgorithmCreation {
+  SymmetricAlgorithmFactoryCreate() {
+    exists(string typeName |
+      isSymmetricAlgorithmTypeName(typeName) and
+      this =
+        API::getTopLevelMember("system")
+            .getMember("security")
+            .getMember("cryptography")
+            .getMember(typeName)
+            .getMember("create")
+            .asCall()
+    )
+  }
 }
 
 /**
@@ -67,8 +79,7 @@ private predicate isSymmetricAlgorithmCreation(DataFlow::Node creation) {
  */
 class SymmetricAlgorithmModeProperty extends MemberExpr {
   SymmetricAlgorithmModeProperty() {
-    exists(DataFlow::Node symAlgCreation, DataFlow::Node qualAccess |
-      isSymmetricAlgorithmCreation(symAlgCreation) and
+    exists(SymmetricAlgorithmCreation symAlgCreation, DataFlow::Node qualAccess |
       qualAccess.getALocalSource() = symAlgCreation and
       qualAccess.asExpr().getExpr() = this.getQualifier() and
       this.getLowerCaseMemberName() = "mode"
