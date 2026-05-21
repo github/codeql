@@ -52,4 +52,5 @@ where
   not exists(ControlCheck check | check.protects(checkout, event, "untrusted-checkout")) and
   not exists(ControlCheck check | check.protects(poisonable, event, "untrusted-checkout"))
 select checkout, checkout, poisonable,
-  "Potential execution of untrusted code on a privileged workflow ($@)", event, event.getName()
+  "Checkout of untrusted code in a privileged workflow with later potential execution (event trigger: $@).",
+  event, event.getName()
