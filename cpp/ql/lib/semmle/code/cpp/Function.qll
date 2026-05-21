@@ -834,7 +834,7 @@ class TemplateFunction extends Function {
    *
    * This predicate only has results for templates that are members of class
    * template instantiations. For example, for `MyTemplateClass<int>::f<S>`
-   * in the following code, this predicate holds for `MyTemplateClass<T>::f<S>`.
+   * in the following code, the result is `MyTemplateClass<T>::f<S>`.
    * ```cpp
    * template<class T>
    * class MyTemplateClass {

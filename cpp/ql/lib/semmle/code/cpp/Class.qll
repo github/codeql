@@ -901,7 +901,7 @@ class TemplateClass extends Class {
    *
    * This predicate only has results for templates that are members of class
    * template instantiations. For example, for `MyTemplateClass<int>::C<S>`
-   * in the following code, this predicate holds for `MyTemplateClass<T>::C<S>`.
+   * in the following code, the result is `MyTemplateClass<T>::C<S>`.
    * ```cpp
    * template<class T>
    * class MyTemplateClass {

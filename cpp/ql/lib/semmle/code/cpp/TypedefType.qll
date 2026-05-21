@@ -136,7 +136,7 @@ class AliasTemplateType extends TypeAliasType {
    *
    * This predicate only has results for templates that are members of class
    * template instantiations. For example, for `MyTemplateClass<int>::t<S>`
-   * in the following code, this predicate holds for `MyTemplateClass<T>::t<S>`.
+   * in the following code, the result is `MyTemplateClass<T>::t<S>`.
    * ```cpp
    * template<class T>
    * class MyTemplateClass {

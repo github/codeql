@@ -620,7 +620,7 @@ class TemplateVariable extends Variable {
    *
    * This predicate only has results for templates that are members of class
    * template instantiations. For example, for `MyTemplateClass<int>::x<S>`
-   * in the following code, this predicate holds for `MyTemplateClass<T>::x<S>`.
+   * in the following code, the result is `MyTemplateClass<T>::x<S>`.
    * ```cpp
    * template<class T>
    * class MyTemplateClass {
