@@ -555,27 +555,27 @@ class DefinitionNode extends ControlFlowNode {
   cached
   DefinitionNode() {
     Stages::AST::ref() and
-    exists(Py::Assign a | a.getATarget().getAFlowNode() = this)
+    exists(Py::Assign a | this.getNode() = a.getATarget())
     or
-    exists(Py::AssignExpr a | a.getTarget().getAFlowNode() = this)
+    exists(Py::AssignExpr a | this.getNode() = a.getTarget())
     or
-    exists(Py::AnnAssign a | a.getTarget().getAFlowNode() = this and exists(a.getValue()))
+    exists(Py::AnnAssign a | this.getNode() = a.getTarget() and exists(a.getValue()))
     or
-    exists(Py::Alias a | a.getAsname().getAFlowNode() = this)
+    exists(Py::Alias a | this.getNode() = a.getAsname())
     or
     augstore(_, this)
     or
     // `x, y = 1, 2` where LHS is a combination of list or tuples
-    exists(Py::Assign a | list_or_tuple_nested_element(a.getATarget()).getAFlowNode() = this)
+    exists(Py::Assign a | this.getNode() = list_or_tuple_nested_element(a.getATarget()))
     or
-    exists(Py::For for | for.getTarget().getAFlowNode() = this)
+    exists(Py::For for | this.getNode() = for.getTarget())
     or
-    exists(Py::Parameter param | this = param.asName().getAFlowNode() and exists(param.getDefault()))
+    exists(Py::Parameter param | this.getNode() = param.asName() and exists(param.getDefault()))
   }
 
   /** flow node corresponding to the value assigned for the definition corresponding to this flow node */
   ControlFlowNode getValue() {
-    result = assigned_value(this.getNode()).getAFlowNode() and
+    result.getNode() = assigned_value(this.getNode()) and
     (
       result.getBasicBlock().dominates(this.getBasicBlock())
       or
@@ -584,7 +584,7 @@ class DefinitionNode extends ControlFlowNode {
       // since the default value for a parameter is evaluated in the same basic block as
       // the function definition, but the parameter belongs to the basic block of the function,
       // there is no dominance relationship between the two.
-      exists(Py::Parameter param | this = param.asName().getAFlowNode())
+      exists(Py::Parameter param | this.getNode() = param.asName())
     )
   }
 }
@@ -901,7 +901,7 @@ class ExceptFlowNode extends ControlFlowNode {
     exists(Py::ExceptStmt ex |
       this.getBasicBlock().dominates(result.getBasicBlock()) and
       ex = this.getNode() and
-      result = ex.getType().getAFlowNode()
+      result.getNode() = ex.getType()
     )
   }
 
@@ -913,7 +913,7 @@ class ExceptFlowNode extends ControlFlowNode {
     exists(Py::ExceptStmt ex |
       this.getBasicBlock().dominates(result.getBasicBlock()) and
       ex = this.getNode() and
-      result = ex.getName().getAFlowNode()
+      result.getNode() = ex.getName()
     )
   }
 }
@@ -928,7 +928,7 @@ class ExceptGroupFlowNode extends ControlFlowNode {
    */
   ControlFlowNode getType() {
     this.getBasicBlock().dominates(result.getBasicBlock()) and
-    result = this.getNode().(Py::ExceptGroupStmt).getType().getAFlowNode()
+    result.getNode() = this.getNode().(Py::ExceptGroupStmt).getType()
   }
 
   /**
@@ -937,7 +937,7 @@ class ExceptGroupFlowNode extends ControlFlowNode {
    */
   ControlFlowNode getName() {
     this.getBasicBlock().dominates(result.getBasicBlock()) and
-    result = this.getNode().(Py::ExceptGroupStmt).getName().getAFlowNode()
+    result.getNode() = this.getNode().(Py::ExceptGroupStmt).getName()
   }
 }
 

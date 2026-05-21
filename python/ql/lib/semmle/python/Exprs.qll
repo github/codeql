@@ -28,7 +28,7 @@ class Expr extends Expr_, AstNode {
   /** Whether this expression may have a side effect (as determined purely from its syntax) */
   predicate hasSideEffects() {
     /* If an exception raised by this expression handled, count that as a side effect */
-    this.getAFlowNode().getASuccessor().getNode() instanceof ExceptStmt
+    exists(ControlFlowNode n | n.getNode() = this | n.getASuccessor().getNode() instanceof ExceptStmt)
     or
     this.getASubExpression().hasSideEffects()
   }
@@ -68,8 +68,6 @@ class Attribute extends Attribute_ {
   /* syntax: Expr.name */
   override Expr getASubExpression() { result = this.getObject() }
 
-  override AttrNode getAFlowNode() { result = super.getAFlowNode() }
-
   /** Gets the name of this attribute. That is the `name` in `obj.name` */
   string getName() { result = Attribute_.super.getAttr() }
 
@@ -97,7 +95,6 @@ class Subscript extends Subscript_ {
 
   Expr getObject() { result = Subscript_.super.getValue() }
 
-  override SubscriptNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** A call expression, such as `func(...)` */
@@ -113,7 +110,6 @@ class Call extends Call_ {
 
   override string toString() { result = this.getFunc().toString() + "()" }
 
-  override CallNode getAFlowNode() { result = super.getAFlowNode() }
 
   /** Gets a tuple (*) argument of this call. */
   Expr getStarargs() { result = this.getAPositionalArg().(Starred).getValue() }
@@ -201,7 +197,6 @@ class IfExp extends IfExp_ {
     result = this.getTest() or result = this.getBody() or result = this.getOrelse()
   }
 
-  override IfExprNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** A starred expression, such as the `*rest` in the assignment `first, *rest = seq` */
@@ -411,7 +406,6 @@ class PlaceHolder extends PlaceHolder_ {
 
   override string toString() { result = "$" + this.getId() }
 
-  override NameNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** A tuple expression such as `( 1, 3, 5, 7, 9 )` */
@@ -478,7 +472,6 @@ class Name extends Name_ {
 
   override string toString() { result = this.getId() }
 
-  override NameNode getAFlowNode() { result = super.getAFlowNode() }
 
   override predicate isArtificial() {
     /* Artificial variable names in comprehensions all start with "." */
@@ -585,7 +578,6 @@ abstract class NameConstant extends Name, ImmutableLiteral {
 
   override predicate isConstant() { any() }
 
-  override NameConstantNode getAFlowNode() { result = Name.super.getAFlowNode() }
 
   override predicate isArtificial() { none() }
 }

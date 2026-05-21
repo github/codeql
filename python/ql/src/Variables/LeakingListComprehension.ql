@@ -13,18 +13,20 @@
 import python
 import Definition
 
-from ListComprehensionDeclaration l, Name use, Name defn
+from ListComprehensionDeclaration l, Name use, Name defn, ControlFlowNode lCfg, ControlFlowNode useCfg
 where
   use = l.getALeakedVariableUse() and
   defn = l.getDefinition() and
-  l.getAFlowNode().strictlyReaches(use.getAFlowNode()) and
+  lCfg.getNode() = l and
+  useCfg.getNode() = use and
+  lCfg.strictlyReaches(useCfg) and
   /* Make sure we aren't in a loop, as the variable may be redefined */
-  not use.getAFlowNode().strictlyReaches(l.getAFlowNode()) and
+  not useCfg.strictlyReaches(lCfg) and
   not l.contains(use) and
   not use.deletes(_) and
   not exists(SsaVariable v |
-    v.getAUse() = use.getAFlowNode() and
-    not v.getDefinition().strictlyDominates(l.getAFlowNode())
+    v.getAUse() = useCfg and
+    not v.getDefinition().strictlyDominates(lCfg)
   )
 select use,
   use.getId() + " may have a different value in Python 3, as the $@ will not be in scope.", defn,

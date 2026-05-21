@@ -448,8 +448,8 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
       context = TNoParam() and
       src = TTaintTrackingNode_(retval, TNoParam(), path, kind, this) and
       node.asCfgNode() = call and
-      retval.asCfgNode() =
-        any(Return ret | ret.getScope() = pyfunc.getScope()).getValue().getAFlowNode()
+      retval.asCfgNode().getNode() =
+        any(Return ret | ret.getScope() = pyfunc.getScope()).getValue()
     ) and
     edgeLabel = "return"
   }
@@ -471,8 +471,8 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
       this.callContexts(call, src, pyfunc, context, callee) and
       retnode = TTaintTrackingNode_(retval, callee, path, kind, this) and
       node.asCfgNode() = call and
-      retval.asCfgNode() =
-        any(Return ret | ret.getScope() = pyfunc.getScope()).getValue().getAFlowNode()
+      retval.asCfgNode().getNode() =
+        any(Return ret | ret.getScope() = pyfunc.getScope()).getValue()
     ) and
     edgeLabel = "call"
   }
@@ -716,8 +716,10 @@ private class EssaTaintTracking extends string instanceof TaintTracking::Configu
       src = TTaintTrackingNode_(srcnode, context, path, srckind, this) and
       path.noAttribute()
     |
-      assign.getValue().getAFlowNode() = srcnode.asCfgNode() and
-      depth = iterable_unpacking_descent(assign.getATarget().getAFlowNode(), defn.getDefiningNode()) and
+      srcnode.asCfgNode().getNode() = assign.getValue() and
+      exists(SequenceNode left_parent | left_parent.getNode() = assign.getATarget() |
+        depth = iterable_unpacking_descent(left_parent, defn.getDefiningNode())
+      ) and
       kind = taint_at_depth(srckind, depth)
     )
   }
@@ -964,7 +966,7 @@ private TaintKind taint_at_depth(SequenceKind parent_kind, int depth) {
  * - with `left_defn` = `*y`, `left_parent` = `((x, *y), ...)`, result = 1
  */
 int iterable_unpacking_descent(SequenceNode left_parent, ControlFlowNode left_defn) {
-  exists(Assign a | a.getATarget().getASubExpression*().getAFlowNode() = left_parent) and
+  exists(Assign a | left_parent.getNode() = a.getATarget().getASubExpression*()) and
   left_parent.getAnElement() = left_defn and
   // Handle `a, *b = some_iterable`
   if left_defn instanceof StarredNode then result = 0 else result = 1

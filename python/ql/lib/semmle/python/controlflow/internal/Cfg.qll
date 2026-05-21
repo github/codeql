@@ -392,12 +392,9 @@ predicate dominatingEdge = CfgImpl::Cfg::dominatingEdge/2;
 // AST-shape subclasses of ControlFlowNode
 //
 // Each class is a thin wrapper around the canonical CFG node for a given
-// kind of Python AST node. Methods that take/return CFG nodes delegate to
-// the AST and re-resolve back via `Expr.getAFlowNode()` from `Flow.qll`
-// while we are in the migration period; once that is gone we will use a
-// new-CFG-local resolution. For now, expressions navigated through these
-// subclasses are looked up by AST identity, and the dominance constraint
-// from the old CFG (`result.getBasicBlock().dominates(this.getBasicBlock())`)
+// kind of Python AST node. Methods that take/return CFG nodes look up
+// related CFG nodes by AST identity (via `getNode()`), and the dominance
+// constraint from the old CFG (`result.getBasicBlock().dominates(this.getBasicBlock())`)
 // is preserved.
 // ===========================================================================
 /** Gets the canonical `ControlFlowNode` for AST expression `e`. */

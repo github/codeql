@@ -48,15 +48,17 @@ class Symbol extends TSymbol {
   AstNode find() {
     this = TModule(result)
     or
-    exists(Symbol s, string name | this = TMember(s, name) |
+    exists(Symbol s, string name, ControlFlowNode resultCfg |
+      this = TMember(s, name) and resultCfg.getNode() = result
+    |
       exists(ClassObject cls |
         s.resolvesTo() = cls and
-        cls.attributeRefersTo(name, _, result.getAFlowNode())
+        cls.attributeRefersTo(name, _, resultCfg)
       )
       or
       exists(ModuleObject m |
         s.resolvesTo() = m and
-        m.attributeRefersTo(name, _, result.getAFlowNode())
+        m.attributeRefersTo(name, _, resultCfg)
       )
     )
   }

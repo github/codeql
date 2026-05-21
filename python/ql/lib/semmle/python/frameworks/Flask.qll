@@ -371,7 +371,7 @@ module Flask {
       result in [this.getArg(0), this.getArgByName("rule")]
     }
 
-    override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
+    override Function getARequestHandler() { node.getNode() = result.getADecorator() }
   }
 
   /**

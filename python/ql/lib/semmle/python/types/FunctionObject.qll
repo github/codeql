@@ -170,7 +170,7 @@ class PyFunctionObject extends FunctionObject {
   predicate unconditionallyReturnsParameter(int n) {
     exists(SsaVariable pvar |
       exists(Parameter p | p = this.getFunction().getArg(n) |
-        p.asName().getAFlowNode() = pvar.getDefinition()
+        pvar.getDefinition().getNode() = p.asName()
       ) and
       exists(NameNode rval |
         rval = pvar.getAUse() and

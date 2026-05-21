@@ -163,7 +163,6 @@ class ImportMember extends ImportMember_ {
     result = this.getModule().(ImportExpr).getImportedModuleName() + "." + this.getName()
   }
 
-  override ImportMemberNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** An import statement */

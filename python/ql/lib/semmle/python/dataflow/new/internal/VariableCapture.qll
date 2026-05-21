@@ -61,7 +61,9 @@ private module CaptureInput implements Shared::InputSig<Location, Cfg::BasicBloc
   class VariableWrite extends ControlFlowNode {
     CapturedVariable v;
 
-    VariableWrite() { this = v.getAStore().getAFlowNode().(DefinitionNode).getValue() }
+    VariableWrite() {
+      exists(DefinitionNode d | d.getNode() = v.getAStore() | this = d.getValue())
+    }
 
     CapturedVariable getVariable() { result = v }
 
@@ -71,7 +73,7 @@ private module CaptureInput implements Shared::InputSig<Location, Cfg::BasicBloc
   class VariableRead extends Expr {
     CapturedVariable v;
 
-    VariableRead() { this = v.getALoad().getAFlowNode() }
+    VariableRead() { this.getNode() = v.getALoad() }
 
     CapturedVariable getVariable() { result = v }
   }

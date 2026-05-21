@@ -94,7 +94,7 @@ class CredentialSink extends DataFlow::Node {
         this.(DataFlow::ArgumentNode).argumentOf(_, pos)
       )
       or
-      exists(Keyword k | k.getArg() = name and k.getValue().getAFlowNode() = this.asCfgNode())
+      exists(Keyword k | k.getArg() = name and this.getNode() = k.getValue().asCfgNode())
       or
       exists(CompareNode cmp, NameNode n | n.getId() = name |
         cmp.operands(this.asCfgNode(), any(Eq eq), n)

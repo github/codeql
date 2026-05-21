@@ -80,10 +80,11 @@ class VersionGuard extends ConditionBlock {
   VersionGuard() { this.getLastNode() instanceof VersionTest }
 }
 
-from ImportExpr ie
+from ImportExpr ie, ControlFlowNode ieCfg
 where
+  ieCfg.getNode() = ie and
   not ie.(ExprWithPointsTo).refersTo(_) and
-  exists(Context c | c.appliesTo(ie.getAFlowNode())) and
+  exists(Context c | c.appliesTo(ieCfg)) and
   not ok_to_fail(ie) and
-  not exists(VersionGuard guard | guard.controls(ie.getAFlowNode().getBasicBlock(), _))
+  not exists(VersionGuard guard | guard.controls(ieCfg.getBasicBlock(), _))
 select ie, "Unable to resolve import of '" + ie.getImportedModuleName() + "'."
