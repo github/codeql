@@ -41,7 +41,7 @@ The best practice is to handle the potentially untrusted pull request via the **
 
 The artifacts downloaded from the first workflow should be considered untrusted and must be verified.
 
-Additionally, ensure that least privileges are used both at the workflow level (through event triggers and workflow permissions) and job level (through job permissions).
+Additionally, ensure that least privilege are used both at the workflow level (through event triggers and workflow permissions) and job level (through job permissions).
 
 ## Example
 
@@ -165,5 +165,5 @@ jobs:
 
 - GitHub Security Lab Research: [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/).
 - Mitigating risks of untrusted checkout: [GitHub Docs](https://docs.github.com/en/enterprise-cloud@latest/actions/reference/security/secure-use#mitigating-the-risks-of-untrusted-code-checkout).
-- Securing with least privileges: [Workflow secure use](https://docs.github.com/en/actions/reference/security/secure-use).
+- Securing with least privilege: [Workflow secure use](https://docs.github.com/en/actions/reference/security/secure-use).
 - Living Off the Pipeline: [LOTP](https://boostsecurityio.github.io/lotp/).
