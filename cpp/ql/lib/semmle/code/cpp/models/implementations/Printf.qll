@@ -11,6 +11,23 @@ import semmle.code.cpp.models.interfaces.SideEffect
 import semmle.code.cpp.models.interfaces.NonThrowing
 
 /**
+ * A formatting function that takes its format arguments through a `va_list` parameter.
+ */
+abstract private class VaListFormattingFunction extends FormattingFunction {
+  final override int getFirstFormatArgumentIndex() { none() }
+
+  final int getVaListParameterIndex() { result = this.getNumberOfParameters() - 1 }
+
+  private predicate hasLocaleParameter() { this.getName().matches("%\\_l") }
+
+  final override int getFormatParameterIndex() {
+    if this.hasLocaleParameter()
+    then result = this.getVaListParameterIndex() - 2
+    else result = this.getVaListParameterIndex() - 1
+  }
+}
+
+/**
  * The standard functions `printf`, `wprintf` and their glib variants.
  */
 private class Printf extends FormattingFunction, AliasFunction, NonCppThrowingFunction instanceof TopLevelFunction
