@@ -1,0 +1,54 @@
+| basics.swift:3:14:3:14 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| basics.swift:64:18:64:18 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| classes.swift:6:14:6:14 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| classes.swift:11:14:11:14 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| classes.swift:11:18:11:18 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| classes.swift:25:14:25:14 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| classes.swift:100:11:100:11 | .+=(_:_:) | Unexpected result: target=+=(_:_:) |
+| classes.swift:151:20:151:20 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| classes.swift:151:26:151:26 | ./(_:_:) | Unexpected result: target=/(_:_:) |
+| classes.swift:151:32:151:32 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| classes.swift:218:11:218:11 | .+=(_:_:) | Unexpected result: target=+=(_:_:) |
+| context.swift:2:27:3:1 | // $ type=numbers@Array<Element>:Int\n | Missing result: type=numbers@Array<Element>:Int |
+| context.swift:4:17:4:25 | .map(_:) | Unexpected result: target=map(_:) |
+| context.swift:5:7:5:7 | String.init(_:) | Unexpected result: target=init(_:) |
+| context.swift:5:7:5:15 | call to String.init(_:) | Unexpected result: target=init(_:) |
+| generics.swift:83:43:83:43 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| generics.swift:84:43:84:43 | String.init(_:) | Unexpected result: target=init(_:) |
+| generics.swift:84:43:84:51 | call to String.init(_:) | Unexpected result: target=init(_:) |
+| generics.swift:130:17:130:17 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| generics.swift:240:23:241:1 | // $ type=v2:Int target=callBaz\n | Missing result: type=v2:Int |
+| key_paths.swift:15:12:15:28 | .squareRoot() | Unexpected result: target=squareRoot() |
+| key_paths.swift:15:12:15:39 | call to squareRoot() | Unexpected result: target=squareRoot() |
+| key_paths.swift:15:15:15:15 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| key_paths.swift:15:19:15:19 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| key_paths.swift:15:23:15:23 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| key_paths.swift:106:10:106:16 | .map(_:) | Unexpected result: target=map(_:) |
+| key_paths.swift:106:10:106:43 | call to map(_:) | Unexpected result: target=map(_:) |
+| key_paths.swift:150:18:150:26 | .appending(path:) | Unexpected result: target=appending(path:) |
+| key_paths.swift:150:18:150:45 | call to appending(path:) | Unexpected result: target=appending(path:) |
+| key_paths.swift:164:15:164:25 | .map(_:) | Unexpected result: target=map(_:) |
+| key_paths.swift:164:15:164:35 | call to map(_:) | Unexpected result: target=map(_:) |
+| key_paths.swift:166:18:166:28 | .map(_:) | Unexpected result: target=map(_:) |
+| key_paths.swift:166:18:166:40 | call to map(_:) | Unexpected result: target=map(_:) |
+| lub.swift:10:13:10:13 | .>(_:_:) | Unexpected result: target=>(_:_:) |
+| overload_resolution.swift:80:14:80:14 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| overload_resolution.swift:85:14:85:14 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| overload_resolution.swift:85:18:85:18 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| overload_resolution.swift:340:19:340:19 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| overload_resolution.swift:466:29:466:29 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| overload_resolution.swift:467:29:467:29 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| overload_resolution.swift:468:32:468:32 | .+(_:_:) | Unexpected result: target=+(_:_:) |
+| protocols.swift:18:20:18:20 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| protocols.swift:18:29:18:29 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| protocols.swift:34:18:34:18 | .*(_:_:) | Unexpected result: target=*(_:_:) |
+| type_constraints.swift:5:8:5:8 | .<(_:_:) | Unexpected result: target=<(_:_:) |
+| type_constraints.swift:10:8:10:8 | .>(_:_:) | Unexpected result: target=>(_:_:) |
+| type_constraints.swift:60:12:60:12 | .==(_:_:) | Unexpected result: target===(_:_:) |
+| type_constraints.swift:83:18:83:18 | .<(_:_:) | Unexpected result: target=<(_:_:) |
+| type_constraints.swift:88:19:88:19 | .<(_:_:) | Unexpected result: target=<(_:_:) |
+| type_constraints.swift:252:12:252:19 | .contains(where:) | Unexpected result: target=contains(where:) |
+| type_constraints.swift:252:12:252:49 | call to contains(where:) | Unexpected result: target=contains(where:) |
+| type_constraints.swift:252:40:252:40 | .==(_:_:) | Unexpected result: target===(_:_:) |
+| type_constraints.swift:291:12:291:12 | .<(_:_:) | Unexpected result: target=<(_:_:) |
+| type_constraints.swift:292:12:292:12 | .>(_:_:) | Unexpected result: target=>(_:_:) |

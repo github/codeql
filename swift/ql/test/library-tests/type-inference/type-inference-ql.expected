@@ -1,0 +1,2089 @@
+testFailures
+| basics.swift:14:18:15:1 | // $ type=.myInt:Int\n | Missing result: type=.myInt:Int |
+| basics.swift:21:22:22:1 | // $ type=super:C target=C.init\n | Missing result: type=super:C |
+| basics.swift:40:18:41:1 | // $ type=.value:T\n | Missing result: type=.value:T |
+| basics.swift:47:22:48:1 | // $ type=super@Generic<T>:Int target=Generic.init\n | Missing result: type=super@Generic<T>:Int |
+| basics.swift:64:22:65:1 | // $ type=.myInt:Int\n | Missing result: type=.myInt:Int |
+| classes.swift:16:34:17:1 | // $ type=s:Int target=MathUtils.square\n | Missing result: target=MathUtils.square |
+| classes.swift:16:34:17:1 | // $ type=s:Int target=MathUtils.square\n | Missing result: type=s:Int |
+| classes.swift:17:33:18:1 | // $ type=cu:Int target=MathUtils.cube\n | Missing result: target=MathUtils.cube |
+| classes.swift:17:33:18:1 | // $ type=cu:Int target=MathUtils.cube\n | Missing result: type=cu:Int |
+| classes.swift:36:12:36:24 | call to process(_:) | Unexpected result: target=Overloaded.process(_:String) |
+| classes.swift:37:12:37:29 | call to process(_:) | Unexpected result: target=Overloaded.process(_:Int) |
+| classes.swift:74:25:75:1 | // $ type=.value:Int\n | Missing result: type=.value:Int |
+| classes.swift:106:18:107:1 | // $ type=.value:Int\n | Missing result: type=.value:Int |
+| classes.swift:146:20:147:1 | // $ type=.celsius:Double\n | Missing result: type=.celsius:Double |
+| classes.swift:151:39:152:1 | // $ type=.celsius:Double\n | Missing result: type=.celsius:Double |
+| classes.swift:204:12:204:20 | call to speak() | Unexpected result: target=Animal.speak |
+| classes.swift:208:12:208:21 | call to speak() | Unexpected result: target=Animal.speak |
+| classes.swift:223:18:224:1 | // $ type=.count:Int\n | Missing result: type=.count:Int |
+| context.swift:4:36:5:1 | // $ type=x:Int\n | Missing result: type=x:Int |
+| context.swift:5:7:5:15 | call to String.init(_:) | Unexpected result: target=init(_:) |
+| generics.swift:14:24:15:1 | // $ type=i:Int target=identity\n | Missing result: type=i:Int |
+| generics.swift:15:29:16:1 | // $ type=s:String target=identity\n | Missing result: type=s:String |
+| generics.swift:33:18:34:1 | // $ type=.first:A\n | Missing result: type=.first:A |
+| generics.swift:38:19:39:1 | // $ type=.second:B\n | Missing result: type=.second:B |
+| generics.swift:60:16:61:1 | // $ type=v:T\n | Missing result: type=v:T |
+| generics.swift:68:30:69:1 | // $ type=r@Result<T>:Int target=Result.success\n | Missing result: target=Result.success |
+| generics.swift:68:30:69:1 | // $ type=r@Result<T>:Int target=Result.success\n | Missing result: type=r@Result<T>:Int |
+| generics.swift:69:24:70:1 | // $ target=Result.getValue\n | Missing result: target=Result.getValue |
+| generics.swift:71:39:72:1 | // $ type=r2@Result<T>:Int target=Result.success\n | Missing result: target=Result.success |
+| generics.swift:83:50:84:1 | // $ target=applyTransform type=result:Int\n | Missing result: type=result:Int |
+| generics.swift:84:43:84:51 | call to String.init(_:) | Unexpected result: target=init(_:) |
+| generics.swift:84:56:85:1 | // $ target=applyTransform type=strings:String\n | Missing result: type=strings:String |
+| generics.swift:109:18:110:1 | // $ type=.inner:T\n | Missing result: type=.inner:T |
+| generics.swift:114:26:115:1 | // $ type=x:T target=MyProtocol.foo\n | Missing result: target=MyProtocol.foo |
+| generics.swift:114:26:115:1 | // $ type=x:T target=MyProtocol.foo\n | Missing result: type=x:T |
+| generics.swift:120:26:121:1 | // $ type=x:MyType target=MyProtocol.bar\n | Missing result: target=MyProtocol.bar |
+| generics.swift:120:26:121:1 | // $ type=x:MyType target=MyProtocol.bar\n | Missing result: type=x:MyType |
+| generics.swift:159:19:160:1 | // $ type=.value1:T1\n | Missing result: type=.value1:T1 |
+| generics.swift:164:19:165:1 | // $ type=.value2:T2\n | Missing result: type=.value2:T2 |
+| generics.swift:204:17:205:1 | // $ type=self:Self\n | Missing result: type=self:Self |
+| generics.swift:222:18:223:1 | // $ type=.value:T\n | Missing result: type=.value:T |
+| generics.swift:228:18:229:1 | // $ target=MyProtocol2.foo\n | Missing result: target=MyProtocol2.foo |
+| generics.swift:233:18:234:1 | // $ target=MyProtocol2.baz\n | Missing result: target=MyProtocol2.baz |
+| generics.swift:238:19:239:1 | // $ type=s@MyClass<T>:Int target=MyProtocol2.foo\n | Missing result: type=s@MyClass<T>:Int |
+| generics.swift:239:19:240:1 | // $ type=v:Int target=MyClass.baz\n | Missing result: type=v:Int |
+| generics.swift:240:23:241:1 | // $ type=v2:Int target=callBaz\n | Missing result: type=v2:Int |
+| key_paths.swift:35:30:36:1 | // $ type=xVal:Double\n | Missing result: type=xVal:Double |
+| key_paths.swift:36:30:37:1 | // $ type=yVal:Double\n | Missing result: type=yVal:Double |
+| key_paths.swift:48:40:49:1 | // $ type=startX:Double\n | Missing result: type=startX:Double |
+| key_paths.swift:49:36:50:1 | // $ type=endY:Double\n | Missing result: type=endY:Double |
+| key_paths.swift:56:33:57:1 | // $ type=val:Int\n | Missing result: type=val:Int |
+| key_paths.swift:88:38:89:1 | // $ type=city:String?\n | Missing result: type=city:String? |
+| key_paths.swift:114:23:115:1 | // $ type=name:String\n | Missing result: type=name:String |
+| key_paths.swift:116:28:117:1 | // $ type=salary:Int\n | Missing result: type=salary:Int |
+| key_paths.swift:133:26:134:1 | // $ type=v:Int\n | Missing result: type=v:Int |
+| key_paths.swift:142:30:143:1 | // $ type=newX:Double\n | Missing result: type=newX:Double |
+| key_paths.swift:155:37:156:1 | // $ type=val:Double\n | Missing result: type=val:Double |
+| key_paths.swift:164:15:164:35 | call to map(_:) | Unexpected result: target=map(_:) |
+| key_paths.swift:165:23:166:1 | // $ type=name:String\n | Missing result: type=name:String |
+| key_paths.swift:166:18:166:40 | call to map(_:) | Unexpected result: target=map(_:) |
+| key_paths.swift:167:28:168:1 | // $ type=salary:Int\n | Missing result: type=salary:Int |
+| key_paths.swift:196:33:197:1 | // $ type=col:String\n | Missing result: type=col:String |
+| key_paths.swift:197:34:198:1 | // $ type=rad:Double\n | Missing result: type=rad:Double |
+| key_paths.swift:206:35:207:1 | // $ type=first:Int\n | Missing result: type=first:Int |
+| key_paths.swift:207:36:208:1 | // $ type=second:String\n | Missing result: type=second:String |
+| key_paths.swift:215:37:216:1 | // $ type=first:Int\n | Missing result: type=first:Int |
+| key_paths.swift:219:34:220:1 | // $ type=val:Int?\n | Missing result: type=val:Int? |
+| lub.swift:10:25:11:1 | // $ type=x:A\n | Missing result: type=x:A |
+| overload_resolution.swift:27:12:27:23 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Bool) |
+| overload_resolution.swift:27:12:27:23 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Double) |
+| overload_resolution.swift:27:12:27:23 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:String) |
+| overload_resolution.swift:28:12:28:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Bool) |
+| overload_resolution.swift:28:12:28:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Int) |
+| overload_resolution.swift:28:12:28:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:String) |
+| overload_resolution.swift:29:12:29:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Bool) |
+| overload_resolution.swift:29:12:29:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Double) |
+| overload_resolution.swift:29:12:29:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Int) |
+| overload_resolution.swift:30:12:30:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Double) |
+| overload_resolution.swift:30:12:30:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:Int) |
+| overload_resolution.swift:30:12:30:25 | call to handle(_:) | Unexpected result: target=OverloadByType.handle(_:String) |
+| overload_resolution.swift:118:18:118:27 | call to create() | Unexpected result: target=OverloadByReturn.create()->Double |
+| overload_resolution.swift:118:18:118:27 | call to create() | Unexpected result: target=OverloadByReturn.create()->String |
+| overload_resolution.swift:119:21:119:30 | call to create() | Unexpected result: target=OverloadByReturn.create()->Double |
+| overload_resolution.swift:119:21:119:30 | call to create() | Unexpected result: target=OverloadByReturn.create()->Int |
+| overload_resolution.swift:120:21:120:30 | call to create() | Unexpected result: target=OverloadByReturn.create()->Int |
+| overload_resolution.swift:120:21:120:30 | call to create() | Unexpected result: target=OverloadByReturn.create()->String |
+| overload_resolution.swift:139:12:139:24 | call to process(_:) | Unexpected result: target=OverloadGenericVsConcrete.process<T>(_:) |
+| overload_resolution.swift:140:12:140:29 | call to process(_:) | Unexpected result: target=OverloadGenericVsConcrete.process(_:Int) |
+| overload_resolution.swift:141:12:141:26 | call to process(_:) | Unexpected result: target=OverloadGenericVsConcrete.process(_:Int) |
+| overload_resolution.swift:162:29:163:1 | // $ type=r1:String target=freeOverload(_:Int)\n | Missing result: type=r1:String |
+| overload_resolution.swift:163:31:164:1 | // $ type=r2:String target=freeOverload(_:String)\n | Missing result: type=r2:String |
+| overload_resolution.swift:164:30:165:1 | // $ type=r3:String target=freeOverload(_:Double)\n | Missing result: type=r3:String |
+| overload_resolution.swift:194:18:195:1 | // $ type=.value:String\n | Missing result: type=.value:String |
+| overload_resolution.swift:226:38:227:1 | // $ type=r2:String target=StaticVsInstance.action()->static\n | Missing result: target=StaticVsInstance.action()->static |
+| overload_resolution.swift:226:38:227:1 | // $ type=r2:String target=StaticVsInstance.action()->static\n | Missing result: type=r2:String |
+| overload_resolution.swift:260:12:260:23 | call to describe() | Unexpected result: target=Describable.describe(default) |
+| overload_resolution.swift:315:12:315:21 | call to action() | Unexpected result: target=Base.action |
+| overload_resolution.swift:320:13:320:23 | call to action() | Unexpected result: target=Base.action |
+| overload_resolution.swift:320:13:320:23 | call to action() | Unexpected result: target=Sub.action |
+| overload_resolution.swift:379:30:380:1 | // $ type=r1:Int target=constrainedId(_:Numeric2)\n | Missing result: type=r1:Int |
+| overload_resolution.swift:380:35:381:1 | // $ type=r2:String target=constrainedId(_:Equatable)\n | Missing result: type=r2:String |
+| overload_resolution.swift:395:17:396:1 | // $ type=.item:T\n | Missing result: type=.item:T |
+| overload_resolution.swift:466:12:466:34 | call to apply(_:) | Unexpected result: target=Processor.apply(_:(Int,Int)->Int) |
+| overload_resolution.swift:466:12:466:34 | call to apply(_:) | Unexpected result: target=Processor.apply(_:(String)->String) |
+| overload_resolution.swift:467:12:467:36 | call to apply(_:) | Unexpected result: target=Processor.apply(_:(Int)->Int) |
+| overload_resolution.swift:467:12:467:36 | call to apply(_:) | Unexpected result: target=Processor.apply(_:(Int,Int)->Int) |
+| overload_resolution.swift:468:12:468:37 | call to apply(_:) | Unexpected result: target=Processor.apply(_:(Int)->Int) |
+| overload_resolution.swift:468:12:468:37 | call to apply(_:) | Unexpected result: target=Processor.apply(_:(String)->String) |
+| overload_resolution.swift:493:12:493:20 | call to get(_:) | Unexpected result: target=MultiSubscript.get(_:String) |
+| overload_resolution.swift:494:12:494:22 | call to get(_:) | Unexpected result: target=MultiSubscript.get(_:) |
+| protocols.swift:18:38:19:1 | // $ type=.radius:Double\n | Missing result: type=.radius:Double |
+| protocols.swift:34:27:35:1 | // $ type=.width:Double\n | Missing result: type=.width:Double |
+| protocols.swift:106:17:107:1 | // $ type=.name:String\n | Missing result: type=.name:String |
+| protocols.swift:111:21:112:1 | // $ type=.entityId:Int\n | Missing result: type=.entityId:Int |
+| type_constraints.swift:14:24:15:1 | // $ type=m1:Int target=minOf(_:_:)\n | Missing result: type=m1:Int |
+| type_constraints.swift:15:28:16:1 | // $ type=m2:String target=minOf(_:_:)\n | Missing result: type=m2:String |
+| type_constraints.swift:16:24:17:1 | // $ type=m3:Int target=maxOf(_:_:)\n | Missing result: type=m3:Int |
+| type_constraints.swift:17:28:18:1 | // $ type=m4:String target=maxOf(_:_:)\n | Missing result: type=m4:String |
+| type_constraints.swift:44:16:45:1 | // $ type=.tag:String\n | Missing result: type=.tag:String |
+| type_constraints.swift:49:21:50:1 | // $ type=.priority:Int\n | Missing result: type=.priority:Int |
+| type_constraints.swift:55:25:56:1 | // $ target=Displayable2.display\n | Missing result: target=Displayable2.display |
+| type_constraints.swift:65:29:66:1 | // $ type=s:String target=showAndSort(_:)\n | Missing result: type=s:String |
+| type_constraints.swift:66:43:67:1 | // $ type=eq:Bool target=showSortAndCompare(_:_:)\n | Missing result: type=eq:Bool |
+| type_constraints.swift:138:28:139:1 | // $ target=ElementContainer.first\n | Missing result: target=ElementContainer.first |
+| type_constraints.swift:143:28:144:1 | // $ target=ElementContainer.first\n | Missing result: target=ElementContainer.first |
+| type_constraints.swift:149:35:150:1 | // $ type=r1:Int target=extractFirst(from:Int)\n | Missing result: type=r1:Int |
+| type_constraints.swift:150:35:151:1 | // $ type=r2:String target=extractFirst(from:String)\n | Missing result: type=r2:String |
+| type_constraints.swift:205:23:206:1 | // $ target=Vehicle.describe\n | Missing result: target=Vehicle.describe |
+| type_constraints.swift:211:33:212:1 | // $ type=d1:String target=describeVehicle(_:)\n | Missing result: type=d1:String |
+| type_constraints.swift:212:35:213:1 | // $ type=d2:String target=describeVehicle(_:)\n | Missing result: type=d2:String |
+| type_constraints.swift:245:34:246:1 | // $ target=Summable.+\n | Missing result: target=Summable.+ |
+| type_constraints.swift:259:28:260:1 | // $ type=tot:Int target=Accumulator.total\n | Missing result: type=tot:Int |
+| type_constraints.swift:271:32:272:1 | // $ target=Summable.+\n | Missing result: target=Summable.+ |
+| type_constraints.swift:282:35:283:1 | // $ type=r1:Int target=Transformer.transform\n | Missing result: type=r1:Int |
+| type_constraints.swift:283:41:284:1 | // $ type=r2:String target=Transformer.transform\n | Missing result: type=r2:String |
+| type_constraints.swift:297:38:298:1 | // $ type=r1:Int target=clamp(_:min:max:)\n | Missing result: type=r1:Int |
+| type_constraints.swift:298:43:299:1 | // $ type=r2:Double target=clamp(_:min:max:)\n | Missing result: type=r2:Double |
+| type_constraints.swift:299:43:300:1 | // $ type=r3:String target=clamp(_:min:max:)\n | Missing result: type=r3:String |
+inferType
+| basics.swift:1:5:1:5 | topLevelDecl |  | file://:0:0:0:0 | Int |
+| basics.swift:1:5:1:20 | ... as ... |  | file://:0:0:0:0 | Int |
+| basics.swift:1:26:1:26 | 0 |  | file://:0:0:0:0 | Int |
+| basics.swift:2:1:2:1 | 0 |  | file://:0:0:0:0 | Int |
+| basics.swift:3:1:3:1 | topLevelDecl |  | file://:0:0:0:0 | Int |
+| basics.swift:3:16:3:16 | 1 |  | file://:0:0:0:0 | Int |
+| basics.swift:5:7:5:7 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:6:7:6:7 | myInt |  | file://:0:0:0:0 | Int |
+| basics.swift:6:7:6:7 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:6:7:6:7 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:6:7:6:7 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:6:7:6:7 | value |  | file://:0:0:0:0 | Int |
+| basics.swift:6:7:6:15 | ... as ... |  | file://:0:0:0:0 | Int |
+| basics.swift:8:3:8:3 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:8:8:8:11 | n |  | file://:0:0:0:0 | Int |
+| basics.swift:9:5:9:5 | .myInt |  | file://:0:0:0:0 | Int |
+| basics.swift:9:5:9:5 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:9:13:9:13 | n |  | file://:0:0:0:0 | Int |
+| basics.swift:13:8:13:8 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:14:12:14:12 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:18:7:18:7 | basics.Derived |  | file://:0:0:0:0 | String |
+| basics.swift:18:7:18:7 | self |  | basics.swift:18:1:29:1 | Derived |
+| basics.swift:18:19:18:19 | self |  | basics.swift:18:1:29:1 | Derived |
+| basics.swift:20:3:20:3 | self |  | basics.swift:18:1:29:1 | Derived |
+| basics.swift:21:5:21:20 | call to C.init(n:) |  | basics.swift:5:1:16:1 | C |
+| basics.swift:21:19:21:19 | 0 |  | file://:0:0:0:0 | Int |
+| basics.swift:25:8:25:8 | self |  | basics.swift:18:1:29:1 | Derived |
+| basics.swift:26:9:26:9 | x |  | file://:0:0:0:0 | Int |
+| basics.swift:26:9:26:9 | x |  | file://:0:0:0:0 | Int |
+| basics.swift:26:13:26:13 | self |  | basics.swift:18:1:29:1 | Derived |
+| basics.swift:26:13:26:22 | call to getMyInt() |  | file://:0:0:0:0 | Int |
+| basics.swift:27:12:27:12 | x |  | file://:0:0:0:0 | Int |
+| basics.swift:31:7:31:7 | self |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:31:7:31:7 | self | T | basics.swift:31:15:31:15 | T |
+| basics.swift:32:7:32:7 | self |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:32:7:32:7 | self |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:32:7:32:7 | self |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:32:7:32:7 | self | T | basics.swift:31:15:31:15 | T |
+| basics.swift:32:7:32:7 | self | T | basics.swift:31:15:31:15 | T |
+| basics.swift:32:7:32:7 | self | T | basics.swift:31:15:31:15 | T |
+| basics.swift:32:7:32:7 | value |  | basics.swift:31:15:31:15 | T |
+| basics.swift:32:7:32:7 | value |  | basics.swift:31:15:31:15 | T |
+| basics.swift:32:7:32:15 | ... as ... |  | basics.swift:31:15:31:15 | T |
+| basics.swift:34:3:34:3 | self |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:34:3:34:3 | self | T | basics.swift:31:15:31:15 | T |
+| basics.swift:34:8:34:11 | v |  | basics.swift:31:15:31:15 | T |
+| basics.swift:35:5:35:5 | .value |  | basics.swift:31:15:31:15 | T |
+| basics.swift:35:5:35:5 | self |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:35:5:35:5 | self | T | basics.swift:31:15:31:15 | T |
+| basics.swift:35:13:35:13 | v |  | basics.swift:31:15:31:15 | T |
+| basics.swift:39:8:39:8 | self |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:39:8:39:8 | self | T | basics.swift:31:15:31:15 | T |
+| basics.swift:40:12:40:12 | self |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:40:12:40:12 | self | T | basics.swift:31:15:31:15 | T |
+| basics.swift:44:7:44:7 | basics.GenericDerived |  | file://:0:0:0:0 | String |
+| basics.swift:44:7:44:7 | self |  | basics.swift:44:1:49:1 | GenericDerived |
+| basics.swift:44:37:44:37 | self |  | basics.swift:44:1:49:1 | GenericDerived |
+| basics.swift:46:3:46:3 | self |  | basics.swift:44:1:49:1 | GenericDerived |
+| basics.swift:47:5:47:20 | call to Generic<T>.init(v:) |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:47:5:47:20 | call to Generic<T>.init(v:) | T | file://:0:0:0:0 | Int |
+| basics.swift:47:19:47:19 | 0 |  | file://:0:0:0:0 | Int |
+| basics.swift:52:7:52:7 | g |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:52:7:52:7 | g |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:52:7:52:7 | g | T | file://:0:0:0:0 | Int |
+| basics.swift:52:7:52:7 | g | T | file://:0:0:0:0 | Int |
+| basics.swift:52:11:52:24 | call to Generic<T>.init(v:) |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:52:11:52:24 | call to Generic<T>.init(v:) | T | file://:0:0:0:0 | Int |
+| basics.swift:52:22:52:22 | 42 |  | file://:0:0:0:0 | Int |
+| basics.swift:53:7:53:7 | x |  | file://:0:0:0:0 | Int |
+| basics.swift:53:7:53:7 | x |  | file://:0:0:0:0 | Int |
+| basics.swift:53:11:53:11 | g |  | basics.swift:31:1:42:1 | Generic |
+| basics.swift:53:11:53:11 | g | T | file://:0:0:0:0 | Int |
+| basics.swift:53:11:53:22 | call to getValue() |  | file://:0:0:0:0 | Int |
+| basics.swift:55:7:55:7 | gd |  | basics.swift:44:1:49:1 | GenericDerived |
+| basics.swift:55:7:55:7 | gd |  | basics.swift:44:1:49:1 | GenericDerived |
+| basics.swift:55:12:55:27 | call to GenericDerived.init() |  | basics.swift:44:1:49:1 | GenericDerived |
+| basics.swift:56:7:56:7 | y |  | file://:0:0:0:0 | Int |
+| basics.swift:56:7:56:7 | y |  | file://:0:0:0:0 | Int |
+| basics.swift:56:11:56:11 | gd |  | basics.swift:44:1:49:1 | GenericDerived |
+| basics.swift:56:11:56:23 | call to getValue() |  | file://:0:0:0:0 | Int |
+| basics.swift:63:8:63:8 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:64:12:64:12 | self |  | basics.swift:5:1:16:1 | C |
+| basics.swift:64:20:64:20 | 2 |  | file://:0:0:0:0 | Int |
+| basics.swift:69:7:69:7 | obj |  | basics.swift:5:1:16:1 | C |
+| basics.swift:69:7:69:7 | obj |  | basics.swift:5:1:16:1 | C |
+| basics.swift:69:13:69:20 | call to C.init(n:) |  | basics.swift:5:1:16:1 | C |
+| basics.swift:69:18:69:18 | 10 |  | file://:0:0:0:0 | Int |
+| basics.swift:70:7:70:7 | d |  | file://:0:0:0:0 | Int |
+| basics.swift:70:7:70:7 | d |  | file://:0:0:0:0 | Int |
+| basics.swift:70:11:70:11 | obj |  | basics.swift:5:1:16:1 | C |
+| basics.swift:70:11:70:23 | call to doubled() |  | file://:0:0:0:0 | Int |
+| classes.swift:3:7:3:7 | self |  | classes.swift:3:1:13:1 | MathUtils |
+| classes.swift:3:7:3:7 | self |  | classes.swift:3:1:13:1 | MathUtils |
+| classes.swift:5:22:5:25 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:6:12:6:12 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:6:16:6:16 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:10:19:10:22 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:11:12:11:12 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:11:16:11:16 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:11:20:11:20 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:16:31:16:31 | 4 |  | file://:0:0:0:0 | Int |
+| classes.swift:17:30:17:30 | 3 |  | file://:0:0:0:0 | Int |
+| classes.swift:22:7:22:7 | self |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:22:7:22:7 | self |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:24:8:24:8 | self |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:24:16:24:21 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:25:12:25:12 | x |  | file://:0:0:0:0 | Int |
+| classes.swift:25:16:25:16 | 1 |  | file://:0:0:0:0 | Int |
+| classes.swift:29:8:29:8 | self |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:29:16:29:21 | s |  | file://:0:0:0:0 | String |
+| classes.swift:30:12:30:12 | s |  | file://:0:0:0:0 | String |
+| classes.swift:35:7:35:7 | o |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:35:7:35:7 | o |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:35:11:35:22 | call to Overloaded.init() |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:36:7:36:7 | r1 |  | file://:0:0:0:0 | Int |
+| classes.swift:36:7:36:7 | r1 |  | file://:0:0:0:0 | Int |
+| classes.swift:36:7:36:7 | r1 |  | file://:0:0:0:0 | String |
+| classes.swift:36:7:36:7 | r1 |  | file://:0:0:0:0 | String |
+| classes.swift:36:12:36:12 | o |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:36:12:36:24 | call to process(_:) |  | file://:0:0:0:0 | Int |
+| classes.swift:36:12:36:24 | call to process(_:) |  | file://:0:0:0:0 | String |
+| classes.swift:36:22:36:22 | 42 |  | file://:0:0:0:0 | Int |
+| classes.swift:37:7:37:7 | r2 |  | file://:0:0:0:0 | Int |
+| classes.swift:37:7:37:7 | r2 |  | file://:0:0:0:0 | Int |
+| classes.swift:37:7:37:7 | r2 |  | file://:0:0:0:0 | String |
+| classes.swift:37:7:37:7 | r2 |  | file://:0:0:0:0 | String |
+| classes.swift:37:12:37:12 | o |  | classes.swift:22:1:32:1 | Overloaded |
+| classes.swift:37:12:37:29 | call to process(_:) |  | file://:0:0:0:0 | Int |
+| classes.swift:37:12:37:29 | call to process(_:) |  | file://:0:0:0:0 | String |
+| classes.swift:37:22:37:22 | hello |  | file://:0:0:0:0 | String |
+| classes.swift:43:7:43:7 | self |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:43:7:43:7 | self |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:43:7:43:7 | self |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:46:3:46:3 | self |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:47:5:47:5 | self |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:51:8:51:8 | self |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:52:12:52:12 | self |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:57:7:57:7 | m |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:57:7:57:7 | m |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:57:11:57:40 | call to Matrix.init(data:) |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:57:24:57:39 | [...] |  | file://:0:0:0:0 | Array |
+| classes.swift:57:24:57:39 | [...] | Element | file://:0:0:0:0 | Array |
+| classes.swift:57:24:57:39 | [...] | Element.Element | file://:0:0:0:0 | Int |
+| classes.swift:57:25:57:30 | [...] |  | file://:0:0:0:0 | Array |
+| classes.swift:57:25:57:30 | [...] | Element | file://:0:0:0:0 | Int |
+| classes.swift:57:26:57:26 | 1 |  | file://:0:0:0:0 | Int |
+| classes.swift:57:29:57:29 | 2 |  | file://:0:0:0:0 | Int |
+| classes.swift:57:33:57:38 | [...] |  | file://:0:0:0:0 | Array |
+| classes.swift:57:33:57:38 | [...] | Element | file://:0:0:0:0 | Int |
+| classes.swift:57:34:57:34 | 3 |  | file://:0:0:0:0 | Int |
+| classes.swift:57:37:57:37 | 4 |  | file://:0:0:0:0 | Int |
+| classes.swift:58:7:58:7 | rc |  | file://:0:0:0:0 | Int |
+| classes.swift:58:7:58:7 | rc |  | file://:0:0:0:0 | Int |
+| classes.swift:58:12:58:12 | m |  | classes.swift:42:1:54:1 | Matrix |
+| classes.swift:58:12:58:23 | call to rowCount() |  | file://:0:0:0:0 | Int |
+| classes.swift:63:7:63:7 | self |  | classes.swift:63:1:77:1 | Outer |
+| classes.swift:63:7:63:7 | self |  | classes.swift:63:1:77:1 | Outer |
+| classes.swift:64:9:64:9 | self |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:65:9:65:9 | self |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:65:9:65:9 | self |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:65:9:65:9 | self |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:65:9:65:9 | value |  | file://:0:0:0:0 | Int |
+| classes.swift:65:9:65:9 | value |  | file://:0:0:0:0 | Int |
+| classes.swift:65:9:65:17 | ... as ... |  | file://:0:0:0:0 | Int |
+| classes.swift:68:5:68:5 | self |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:68:10:68:17 | value |  | file://:0:0:0:0 | Int |
+| classes.swift:69:7:69:7 | self |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:69:7:69:12 | .value |  | file://:0:0:0:0 | Int |
+| classes.swift:69:20:69:20 | value |  | file://:0:0:0:0 | Int |
+| classes.swift:73:10:73:10 | self |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:74:14:74:14 | self |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:80:7:80:7 | inner |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:80:7:80:7 | inner |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:80:15:80:36 | call to Outer.Inner.init(value:) |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:80:34:80:34 | 99 |  | file://:0:0:0:0 | Int |
+| classes.swift:81:7:81:7 | v |  | file://:0:0:0:0 | Int |
+| classes.swift:81:7:81:7 | v |  | file://:0:0:0:0 | Int |
+| classes.swift:81:11:81:11 | inner |  | classes.swift:64:3:76:3 | Inner |
+| classes.swift:81:11:81:26 | call to getValue() |  | file://:0:0:0:0 | Int |
+| classes.swift:86:7:86:7 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:87:7:87:7 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:87:7:87:7 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:87:7:87:7 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:87:7:87:7 | value |  | file://:0:0:0:0 | Int |
+| classes.swift:87:7:87:7 | value |  | file://:0:0:0:0 | Int |
+| classes.swift:87:7:87:15 | ... as ... |  | file://:0:0:0:0 | Int |
+| classes.swift:87:21:87:21 | 0 |  | file://:0:0:0:0 | Int |
+| classes.swift:90:3:90:3 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:93:8:93:8 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:93:12:93:17 | v |  | file://:0:0:0:0 | Int |
+| classes.swift:94:5:94:5 | .value |  | file://:0:0:0:0 | Int |
+| classes.swift:94:5:94:5 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:94:13:94:13 | v |  | file://:0:0:0:0 | Int |
+| classes.swift:95:12:95:12 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:99:8:99:8 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:99:12:99:17 | v |  | file://:0:0:0:0 | Int |
+| classes.swift:100:5:100:5 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:100:14:100:14 | v |  | file://:0:0:0:0 | Int |
+| classes.swift:101:12:101:12 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:105:8:105:8 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:106:12:106:12 | self |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:111:7:111:7 | b |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:111:7:111:7 | b |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:111:11:111:19 | call to Builder.init() |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:112:7:112:7 | result |  | file://:0:0:0:0 | Int |
+| classes.swift:112:7:112:7 | result |  | file://:0:0:0:0 | Int |
+| classes.swift:112:16:112:16 | b |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:112:16:112:24 | call to set(_:) |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:112:16:112:31 | call to add(_:) |  | classes.swift:86:1:108:1 | Builder |
+| classes.swift:112:16:112:39 | call to build() |  | file://:0:0:0:0 | Int |
+| classes.swift:112:22:112:22 | 10 |  | file://:0:0:0:0 | Int |
+| classes.swift:112:30:112:30 | 5 |  | file://:0:0:0:0 | Int |
+| classes.swift:117:7:117:7 | self |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:119:3:119:3 | self |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:122:8:122:8 | self |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:122:14:122:29 | retries |  | file://:0:0:0:0 | Int |
+| classes.swift:122:32:122:50 | timeout |  | file://:0:0:0:0 | Double |
+| classes.swift:123:12:123:12 | retries |  | file://:0:0:0:0 | Int |
+| classes.swift:128:7:128:7 | cfg |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:128:7:128:7 | cfg |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:128:13:128:20 | call to Config.init() |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:129:7:129:7 | r1 |  | file://:0:0:0:0 | Int |
+| classes.swift:129:7:129:7 | r1 |  | file://:0:0:0:0 | Int |
+| classes.swift:129:12:129:12 | cfg |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:129:12:129:22 | call to setup(retries:timeout:) |  | file://:0:0:0:0 | Int |
+| classes.swift:130:7:130:7 | r2 |  | file://:0:0:0:0 | Int |
+| classes.swift:130:7:130:7 | r2 |  | file://:0:0:0:0 | Int |
+| classes.swift:130:12:130:12 | cfg |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:130:12:130:32 | call to setup(retries:timeout:) |  | file://:0:0:0:0 | Int |
+| classes.swift:130:31:130:31 | 5 |  | file://:0:0:0:0 | Int |
+| classes.swift:131:7:131:7 | r3 |  | file://:0:0:0:0 | Int |
+| classes.swift:131:7:131:7 | r3 |  | file://:0:0:0:0 | Int |
+| classes.swift:131:12:131:12 | cfg |  | classes.swift:117:1:125:1 | Config |
+| classes.swift:131:12:131:47 | call to setup(retries:timeout:) |  | file://:0:0:0:0 | Int |
+| classes.swift:131:31:131:31 | 2 |  | file://:0:0:0:0 | Int |
+| classes.swift:136:7:136:7 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:137:7:137:7 | celsius |  | file://:0:0:0:0 | Double |
+| classes.swift:137:7:137:7 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:137:7:137:7 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:137:7:137:7 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:137:7:137:7 | value |  | file://:0:0:0:0 | Double |
+| classes.swift:137:7:137:17 | ... as ... |  | file://:0:0:0:0 | Double |
+| classes.swift:140:3:140:3 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:140:8:140:17 | celsius |  | file://:0:0:0:0 | Double |
+| classes.swift:141:5:141:5 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:141:5:141:10 | .celsius |  | file://:0:0:0:0 | Double |
+| classes.swift:141:20:141:20 | celsius |  | file://:0:0:0:0 | Double |
+| classes.swift:145:8:145:8 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:146:12:146:12 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:150:8:150:8 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:151:12:151:12 | self |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:156:7:156:7 | t |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:156:7:156:7 | t |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:156:11:156:37 | call to Temperature.init(celsius:) |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:157:7:157:7 | c |  | file://:0:0:0:0 | Double |
+| classes.swift:157:7:157:7 | c |  | file://:0:0:0:0 | Double |
+| classes.swift:157:11:157:11 | t |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:157:11:157:23 | call to toCelsius() |  | file://:0:0:0:0 | Double |
+| classes.swift:158:7:158:7 | f |  | file://:0:0:0:0 | Double |
+| classes.swift:158:7:158:7 | f |  | file://:0:0:0:0 | Double |
+| classes.swift:158:11:158:11 | t |  | classes.swift:136:1:153:1 | Temperature |
+| classes.swift:158:11:158:26 | call to toFahrenheit() |  | file://:0:0:0:0 | Double |
+| classes.swift:163:7:163:7 | self |  | classes.swift:163:1:171:1 | Animal |
+| classes.swift:165:3:165:3 | self |  | classes.swift:163:1:171:1 | Animal |
+| classes.swift:168:8:168:8 | self |  | classes.swift:163:1:171:1 | Animal |
+| classes.swift:169:12:169:12 | ... |  | file://:0:0:0:0 | String |
+| classes.swift:173:7:173:7 | self |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:175:12:175:12 | self |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:176:5:176:16 | call to Animal.init() |  | classes.swift:163:1:171:1 | Animal |
+| classes.swift:180:17:180:17 | self |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:181:12:181:12 | Woof |  | file://:0:0:0:0 | String |
+| classes.swift:185:8:185:8 | self |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:186:12:186:12 | ball |  | file://:0:0:0:0 | String |
+| classes.swift:190:7:190:7 | self |  | classes.swift:190:1:200:1 | Cat |
+| classes.swift:192:12:192:12 | self |  | classes.swift:190:1:200:1 | Cat |
+| classes.swift:193:5:193:16 | call to Animal.init() |  | classes.swift:163:1:171:1 | Animal |
+| classes.swift:197:17:197:17 | self |  | classes.swift:190:1:200:1 | Cat |
+| classes.swift:198:12:198:12 | Meow |  | file://:0:0:0:0 | String |
+| classes.swift:203:7:203:7 | d |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:203:7:203:7 | d |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:203:11:203:15 | call to Dog.init() |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:204:7:204:7 | ds |  | file://:0:0:0:0 | String |
+| classes.swift:204:7:204:7 | ds |  | file://:0:0:0:0 | String |
+| classes.swift:204:12:204:12 | d |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:204:12:204:20 | call to speak() |  | file://:0:0:0:0 | String |
+| classes.swift:205:7:205:7 | df |  | file://:0:0:0:0 | String |
+| classes.swift:205:7:205:7 | df |  | file://:0:0:0:0 | String |
+| classes.swift:205:12:205:12 | d |  | classes.swift:173:1:188:1 | Dog |
+| classes.swift:205:12:205:20 | call to fetch() |  | file://:0:0:0:0 | String |
+| classes.swift:207:7:207:7 | ct |  | classes.swift:190:1:200:1 | Cat |
+| classes.swift:207:7:207:7 | ct |  | classes.swift:190:1:200:1 | Cat |
+| classes.swift:207:12:207:16 | call to Cat.init() |  | classes.swift:190:1:200:1 | Cat |
+| classes.swift:208:7:208:7 | cs |  | file://:0:0:0:0 | String |
+| classes.swift:208:7:208:7 | cs |  | file://:0:0:0:0 | String |
+| classes.swift:208:12:208:12 | ct |  | classes.swift:190:1:200:1 | Cat |
+| classes.swift:208:12:208:21 | call to speak() |  | file://:0:0:0:0 | String |
+| classes.swift:213:8:213:8 | count |  | file://:0:0:0:0 | Int |
+| classes.swift:213:8:213:8 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:213:8:213:8 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:214:7:214:7 | count |  | file://:0:0:0:0 | Int |
+| classes.swift:214:7:214:7 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:214:7:214:7 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:214:7:214:7 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:214:7:214:7 | value |  | file://:0:0:0:0 | Int |
+| classes.swift:214:7:214:15 | ... as ... |  | file://:0:0:0:0 | Int |
+| classes.swift:214:21:214:21 | 0 |  | file://:0:0:0:0 | Int |
+| classes.swift:217:17:217:17 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:218:5:218:5 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:218:14:218:14 | 1 |  | file://:0:0:0:0 | Int |
+| classes.swift:222:8:222:8 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:223:12:223:12 | self |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:228:7:228:7 | ctr |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:228:7:228:7 | ctr |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:228:13:228:21 | call to Counter.init() |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:229:3:229:3 | ctr |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:229:3:229:17 | call to increment() |  | file://:0:0:0:0 | (T_0) |
+| classes.swift:230:7:230:7 | val |  | file://:0:0:0:0 | Int |
+| classes.swift:230:7:230:7 | val |  | file://:0:0:0:0 | Int |
+| classes.swift:230:13:230:13 | ctr |  | classes.swift:213:1:225:1 | Counter |
+| classes.swift:230:13:230:26 | call to getCount() |  | file://:0:0:0:0 | Int |
+| context.swift:2:7:2:7 | numbers |  | file://:0:0:0:0 | Array |
+| context.swift:2:7:2:7 | numbers |  | file://:0:0:0:0 | Array |
+| context.swift:2:7:2:7 | numbers | Element | file://:0:0:0:0 | Int |
+| context.swift:2:7:2:7 | numbers | Element | file://:0:0:0:0 | Int |
+| context.swift:2:17:2:25 | [...] |  | file://:0:0:0:0 | Array |
+| context.swift:2:17:2:25 | [...] | Element | file://:0:0:0:0 | Int |
+| context.swift:2:18:2:18 | 1 |  | file://:0:0:0:0 | Int |
+| context.swift:2:21:2:21 | 2 |  | file://:0:0:0:0 | Int |
+| context.swift:2:24:2:24 | 3 |  | file://:0:0:0:0 | Int |
+| context.swift:4:17:4:17 | numbers |  | file://:0:0:0:0 | Array |
+| context.swift:4:17:4:17 | numbers | Element | file://:0:0:0:0 | Int |
+| context.swift:5:7:5:15 | call to String.init(_:) |  | file://:0:0:0:0 | String |
+| generics.swift:4:18:4:23 | x |  | generics.swift:4:15:4:15 | T |
+| generics.swift:5:10:5:10 | x |  | generics.swift:4:15:4:15 | T |
+| generics.swift:9:21:9:26 | a |  | generics.swift:9:15:9:15 | A |
+| generics.swift:9:29:9:34 | b |  | generics.swift:9:18:9:18 | B |
+| generics.swift:10:11:10:11 | a |  | generics.swift:9:15:9:15 | A |
+| generics.swift:10:14:10:14 | b |  | generics.swift:9:18:9:18 | B |
+| generics.swift:14:20:14:20 | 42 |  | file://:0:0:0:0 | Int |
+| generics.swift:15:20:15:20 | hello |  | file://:0:0:0:0 | String |
+| generics.swift:16:7:16:7 | p |  | file://:0:0:0:0 | (T_2) |
+| generics.swift:16:7:16:7 | p |  | file://:0:0:0:0 | (T_2) |
+| generics.swift:16:7:16:7 | p | element 0 of tuple of arity 2 | file://:0:0:0:0 | Int |
+| generics.swift:16:7:16:7 | p | element 0 of tuple of arity 2 | file://:0:0:0:0 | Int |
+| generics.swift:16:7:16:7 | p | element 1 of tuple of arity 2 | file://:0:0:0:0 | String |
+| generics.swift:16:7:16:7 | p | element 1 of tuple of arity 2 | file://:0:0:0:0 | String |
+| generics.swift:16:11:16:28 | call to makePair(_:_:) |  | file://:0:0:0:0 | (T_2) |
+| generics.swift:16:11:16:28 | call to makePair(_:_:) | element 0 of tuple of arity 2 | file://:0:0:0:0 | Int |
+| generics.swift:16:11:16:28 | call to makePair(_:_:) | element 1 of tuple of arity 2 | file://:0:0:0:0 | String |
+| generics.swift:16:20:16:20 | 1 |  | file://:0:0:0:0 | Int |
+| generics.swift:16:23:16:23 | two |  | file://:0:0:0:0 | String |
+| generics.swift:22:7:22:7 | first |  | generics.swift:21:13:21:13 | A |
+| generics.swift:22:7:22:7 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:22:7:22:7 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:22:7:22:7 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:22:7:22:7 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:22:7:22:7 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:22:7:22:7 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:22:7:22:7 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:22:7:22:7 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:22:7:22:7 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:22:7:22:7 | value |  | generics.swift:21:13:21:13 | A |
+| generics.swift:22:7:22:15 | ... as ... |  | generics.swift:21:13:21:13 | A |
+| generics.swift:23:7:23:7 | second |  | generics.swift:21:16:21:16 | B |
+| generics.swift:23:7:23:7 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:23:7:23:7 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:23:7:23:7 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:23:7:23:7 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:23:7:23:7 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:23:7:23:7 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:23:7:23:7 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:23:7:23:7 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:23:7:23:7 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:23:7:23:7 | value |  | generics.swift:21:16:21:16 | B |
+| generics.swift:23:7:23:16 | ... as ... |  | generics.swift:21:16:21:16 | B |
+| generics.swift:26:3:26:3 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:26:3:26:3 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:26:3:26:3 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:26:8:26:15 | first |  | generics.swift:21:13:21:13 | A |
+| generics.swift:26:18:26:26 | second |  | generics.swift:21:16:21:16 | B |
+| generics.swift:27:5:27:5 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:27:5:27:5 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:27:5:27:5 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:27:5:27:10 | .first |  | generics.swift:21:13:21:13 | A |
+| generics.swift:27:18:27:18 | first |  | generics.swift:21:13:21:13 | A |
+| generics.swift:28:5:28:5 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:28:5:28:5 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:28:5:28:5 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:28:5:28:10 | .second |  | generics.swift:21:16:21:16 | B |
+| generics.swift:28:19:28:19 | second |  | generics.swift:21:16:21:16 | B |
+| generics.swift:32:8:32:8 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:32:8:32:8 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:32:8:32:8 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:33:12:33:12 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:33:12:33:12 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:33:12:33:12 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:37:8:37:8 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:37:8:37:8 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:37:8:37:8 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:38:12:38:12 | self |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:38:12:38:12 | self | A | generics.swift:21:13:21:13 | A |
+| generics.swift:38:12:38:12 | self | B | generics.swift:21:16:21:16 | B |
+| generics.swift:43:7:43:7 | p |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:43:7:43:7 | p |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:43:7:43:7 | p | A | file://:0:0:0:0 | Int |
+| generics.swift:43:7:43:7 | p | A | file://:0:0:0:0 | Int |
+| generics.swift:43:7:43:7 | p | B | file://:0:0:0:0 | String |
+| generics.swift:43:7:43:7 | p | B | file://:0:0:0:0 | String |
+| generics.swift:43:11:43:37 | call to Pair<A, B>.init(first:second:) |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:43:11:43:37 | call to Pair<A, B>.init(first:second:) | A | file://:0:0:0:0 | Int |
+| generics.swift:43:11:43:37 | call to Pair<A, B>.init(first:second:) | B | file://:0:0:0:0 | String |
+| generics.swift:43:23:43:23 | 1 |  | file://:0:0:0:0 | Int |
+| generics.swift:43:34:43:34 | x |  | file://:0:0:0:0 | String |
+| generics.swift:44:7:44:7 | f |  | file://:0:0:0:0 | Int |
+| generics.swift:44:7:44:7 | f |  | file://:0:0:0:0 | Int |
+| generics.swift:44:11:44:11 | p |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:44:11:44:11 | p | A | file://:0:0:0:0 | Int |
+| generics.swift:44:11:44:11 | p | B | file://:0:0:0:0 | String |
+| generics.swift:44:11:44:22 | call to getFirst() |  | file://:0:0:0:0 | Int |
+| generics.swift:45:7:45:7 | sc |  | file://:0:0:0:0 | String |
+| generics.swift:45:7:45:7 | sc |  | file://:0:0:0:0 | String |
+| generics.swift:45:12:45:12 | p |  | generics.swift:21:1:40:1 | Pair |
+| generics.swift:45:12:45:12 | p | A | file://:0:0:0:0 | Int |
+| generics.swift:45:12:45:12 | p | B | file://:0:0:0:0 | String |
+| generics.swift:45:12:45:24 | call to getSecond() |  | file://:0:0:0:0 | String |
+| generics.swift:52:16:52:16 | _ |  | generics.swift:50:13:50:13 | T |
+| generics.swift:54:16:54:16 | _ |  | file://:0:0:0:0 | String |
+| generics.swift:57:8:57:8 | self |  | generics.swift:50:1:65:1 | Result |
+| generics.swift:57:8:57:8 | self | T | generics.swift:50:13:50:13 | T |
+| generics.swift:58:12:58:12 | self |  | generics.swift:50:1:65:1 | Result |
+| generics.swift:58:12:58:12 | self | T | generics.swift:50:13:50:13 | T |
+| generics.swift:68:26:68:26 | 42 |  | file://:0:0:0:0 | Int |
+| generics.swift:71:7:71:7 | r2 |  | generics.swift:50:1:65:1 | Result |
+| generics.swift:71:7:71:7 | r2 | T | file://:0:0:0:0 | Int |
+| generics.swift:71:7:71:22 | ... as ... |  | generics.swift:50:1:65:1 | Result |
+| generics.swift:71:7:71:22 | ... as ... | T | file://:0:0:0:0 | Int |
+| generics.swift:71:26:71:37 | call to ... |  | generics.swift:50:1:65:1 | Result |
+| generics.swift:71:26:71:37 | call to ... | T | file://:0:0:0:0 | Int |
+| generics.swift:71:35:71:35 | 42 |  | file://:0:0:0:0 | Int |
+| generics.swift:72:12:72:12 | r2 |  | generics.swift:50:1:65:1 | Result |
+| generics.swift:72:12:72:12 | r2 | T | file://:0:0:0:0 | Int |
+| generics.swift:78:27:78:36 | value |  | generics.swift:78:21:78:21 | T |
+| generics.swift:79:20:79:20 | value |  | generics.swift:78:21:78:21 | T |
+| generics.swift:83:31:83:31 | 5 |  | file://:0:0:0:0 | Int |
+| generics.swift:83:45:83:45 | 2 |  | file://:0:0:0:0 | Int |
+| generics.swift:84:32:84:32 | 10 |  | file://:0:0:0:0 | Int |
+| generics.swift:84:43:84:51 | call to String.init(_:) |  | file://:0:0:0:0 | String |
+| generics.swift:93:8:93:8 | self |  | generics.swift:89:1:97:1 | Self [MyProtocol] |
+| generics.swift:96:8:96:8 | self |  | generics.swift:89:1:97:1 | Self [MyProtocol] |
+| generics.swift:99:7:99:7 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:99:7:99:7 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:100:7:100:7 | inner |  | generics.swift:99:15:99:18 | T |
+| generics.swift:100:7:100:7 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:100:7:100:7 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:100:7:100:7 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:100:7:100:7 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:100:7:100:7 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:100:7:100:7 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:100:7:100:7 | value |  | generics.swift:99:15:99:18 | T |
+| generics.swift:100:7:100:15 | ... as ... |  | generics.swift:99:15:99:18 | T |
+| generics.swift:103:3:103:3 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:103:3:103:3 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:103:8:103:17 | inner |  | generics.swift:99:15:99:18 | T |
+| generics.swift:104:5:104:5 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:104:5:104:5 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:104:5:104:10 | .inner |  | generics.swift:99:15:99:18 | T |
+| generics.swift:104:18:104:18 | inner |  | generics.swift:99:15:99:18 | T |
+| generics.swift:108:8:108:8 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:108:8:108:8 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:109:12:109:12 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:109:12:109:12 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:113:8:113:8 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:113:8:113:8 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:114:13:114:13 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:114:13:114:13 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:119:8:119:8 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:119:8:119:8 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:120:13:120:13 | self |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:120:13:120:13 | self | T | generics.swift:99:15:99:18 | T |
+| generics.swift:129:8:129:8 | self |  | file://:0:0:0:0 | Int |
+| generics.swift:130:12:130:12 | self |  | file://:0:0:0:0 | Int |
+| generics.swift:130:19:130:19 | 2 |  | file://:0:0:0:0 | Int |
+| generics.swift:134:8:134:8 | self |  | file://:0:0:0:0 | Int |
+| generics.swift:135:12:135:12 | number |  | file://:0:0:0:0 | String |
+| generics.swift:140:7:140:7 | w |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:140:7:140:7 | w |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:140:7:140:7 | w | T | file://:0:0:0:0 | Int |
+| generics.swift:140:7:140:7 | w | T | file://:0:0:0:0 | Int |
+| generics.swift:140:11:140:21 | call to Wrapper<T>.init(_:) |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:140:11:140:21 | call to Wrapper<T>.init(_:) | T | file://:0:0:0:0 | Int |
+| generics.swift:140:19:140:19 | 42 |  | file://:0:0:0:0 | Int |
+| generics.swift:141:7:141:7 | v |  | file://:0:0:0:0 | Int |
+| generics.swift:141:7:141:7 | v |  | file://:0:0:0:0 | Int |
+| generics.swift:141:11:141:11 | w |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:141:11:141:11 | w | T | file://:0:0:0:0 | Int |
+| generics.swift:141:11:141:17 | call to get() |  | file://:0:0:0:0 | Int |
+| generics.swift:142:7:142:7 | z |  | file://:0:0:0:0 | Int |
+| generics.swift:142:7:142:7 | z |  | file://:0:0:0:0 | Int |
+| generics.swift:142:11:142:11 | w |  | generics.swift:99:1:123:1 | Wrapper |
+| generics.swift:142:11:142:11 | w | T | file://:0:0:0:0 | Int |
+| generics.swift:142:11:142:21 | call to callFoo() |  | file://:0:0:0:0 | Int |
+| generics.swift:147:7:147:7 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:147:7:147:7 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:147:7:147:7 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:148:7:148:7 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:148:7:148:7 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:148:7:148:7 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:148:7:148:7 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:148:7:148:7 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:148:7:148:7 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:148:7:148:7 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:148:7:148:7 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:148:7:148:7 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:148:7:148:7 | value |  | generics.swift:147:12:147:12 | T1 |
+| generics.swift:148:7:148:7 | value1 |  | generics.swift:147:12:147:12 | T1 |
+| generics.swift:148:7:148:16 | ... as ... |  | generics.swift:147:12:147:12 | T1 |
+| generics.swift:149:7:149:7 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:149:7:149:7 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:149:7:149:7 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:149:7:149:7 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:149:7:149:7 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:149:7:149:7 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:149:7:149:7 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:149:7:149:7 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:149:7:149:7 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:149:7:149:7 | value |  | generics.swift:147:16:147:16 | T2 |
+| generics.swift:149:7:149:7 | value2 |  | generics.swift:147:16:147:16 | T2 |
+| generics.swift:149:7:149:16 | ... as ... |  | generics.swift:147:16:147:16 | T2 |
+| generics.swift:152:3:152:3 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:152:3:152:3 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:152:3:152:3 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:152:8:152:14 | v1 |  | generics.swift:147:12:147:12 | T1 |
+| generics.swift:152:18:152:24 | v2 |  | generics.swift:147:16:147:16 | T2 |
+| generics.swift:153:5:153:5 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:153:5:153:5 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:153:5:153:5 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:153:5:153:10 | .value1 |  | generics.swift:147:12:147:12 | T1 |
+| generics.swift:153:19:153:19 | v1 |  | generics.swift:147:12:147:12 | T1 |
+| generics.swift:154:5:154:5 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:154:5:154:5 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:154:5:154:5 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:154:5:154:10 | .value2 |  | generics.swift:147:16:147:16 | T2 |
+| generics.swift:154:19:154:19 | v2 |  | generics.swift:147:16:147:16 | T2 |
+| generics.swift:158:8:158:8 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:158:8:158:8 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:158:8:158:8 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:159:12:159:12 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:159:12:159:12 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:159:12:159:12 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:163:8:163:8 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:163:8:163:8 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:163:8:163:8 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:164:12:164:12 | self |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:164:12:164:12 | self | T1 | generics.swift:147:12:147:12 | T1 |
+| generics.swift:164:12:164:12 | self | T2 | generics.swift:147:16:147:16 | T2 |
+| generics.swift:168:7:168:7 | generics.Derived |  | file://:0:0:0:0 | String |
+| generics.swift:168:7:168:7 | self |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:168:7:168:7 | self | T1 | generics.swift:168:15:168:15 | T1 |
+| generics.swift:168:7:168:7 | self | T2 | generics.swift:168:19:168:19 | T2 |
+| generics.swift:168:38:168:38 | self |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:168:38:168:38 | self | T1 | generics.swift:168:15:168:15 | T1 |
+| generics.swift:168:38:168:38 | self | T2 | generics.swift:168:19:168:19 | T2 |
+| generics.swift:170:3:170:3 | self |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:170:3:170:3 | self | T1 | generics.swift:168:15:168:15 | T1 |
+| generics.swift:170:3:170:3 | self | T2 | generics.swift:168:19:168:19 | T2 |
+| generics.swift:170:8:170:14 | v1 |  | generics.swift:168:15:168:15 | T1 |
+| generics.swift:170:18:170:24 | v2 |  | generics.swift:168:19:168:19 | T2 |
+| generics.swift:171:5:171:22 | call to Base<T1, T2>.init(_:_:) |  | generics.swift:147:1:166:1 | Base |
+| generics.swift:171:5:171:22 | call to Base<T1, T2>.init(_:_:) | T1 | generics.swift:168:19:168:19 | T2 |
+| generics.swift:171:5:171:22 | call to Base<T1, T2>.init(_:_:) | T2 | generics.swift:168:15:168:15 | T1 |
+| generics.swift:171:16:171:16 | v2 |  | generics.swift:168:19:168:19 | T2 |
+| generics.swift:171:20:171:20 | v1 |  | generics.swift:168:15:168:15 | T1 |
+| generics.swift:175:7:175:7 | generics.DerivedDerived |  | file://:0:0:0:0 | String |
+| generics.swift:175:7:175:7 | self |  | generics.swift:175:1:180:1 | DerivedDerived |
+| generics.swift:175:7:175:7 | self | D | generics.swift:175:22:175:22 | D |
+| generics.swift:175:44:175:44 | self |  | generics.swift:175:1:180:1 | DerivedDerived |
+| generics.swift:175:44:175:44 | self | D | generics.swift:175:22:175:22 | D |
+| generics.swift:177:3:177:3 | self |  | generics.swift:175:1:180:1 | DerivedDerived |
+| generics.swift:177:3:177:3 | self | D | generics.swift:175:22:175:22 | D |
+| generics.swift:177:8:177:13 | v |  | generics.swift:175:22:175:22 | D |
+| generics.swift:178:5:178:23 | call to Derived<T1, T2>.init(_:_:) |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:178:5:178:23 | call to Derived<T1, T2>.init(_:_:) | T1 | generics.swift:175:22:175:22 | D |
+| generics.swift:178:16:178:16 | v |  | generics.swift:175:22:175:22 | D |
+| generics.swift:183:7:183:7 | d |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:183:7:183:7 | d |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:183:7:183:7 | d | T1 | file://:0:0:0:0 | Int |
+| generics.swift:183:7:183:7 | d | T1 | file://:0:0:0:0 | Int |
+| generics.swift:183:7:183:7 | d | T2 | file://:0:0:0:0 | String |
+| generics.swift:183:7:183:7 | d | T2 | file://:0:0:0:0 | String |
+| generics.swift:183:11:183:25 | call to Derived<T1, T2>.init(_:_:) |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:183:11:183:25 | call to Derived<T1, T2>.init(_:_:) | T1 | file://:0:0:0:0 | Int |
+| generics.swift:183:11:183:25 | call to Derived<T1, T2>.init(_:_:) | T2 | file://:0:0:0:0 | String |
+| generics.swift:183:19:183:19 | 1 |  | file://:0:0:0:0 | Int |
+| generics.swift:183:22:183:22 | x |  | file://:0:0:0:0 | String |
+| generics.swift:184:7:184:7 | v1 |  | file://:0:0:0:0 | String |
+| generics.swift:184:7:184:7 | v1 |  | file://:0:0:0:0 | String |
+| generics.swift:184:12:184:12 | d |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:184:12:184:12 | d | T1 | file://:0:0:0:0 | Int |
+| generics.swift:184:12:184:12 | d | T2 | file://:0:0:0:0 | String |
+| generics.swift:184:12:184:24 | call to getValue1() |  | file://:0:0:0:0 | String |
+| generics.swift:185:7:185:7 | v2 |  | file://:0:0:0:0 | Int |
+| generics.swift:185:7:185:7 | v2 |  | file://:0:0:0:0 | Int |
+| generics.swift:185:12:185:12 | d |  | generics.swift:168:1:173:1 | Derived |
+| generics.swift:185:12:185:12 | d | T1 | file://:0:0:0:0 | Int |
+| generics.swift:185:12:185:12 | d | T2 | file://:0:0:0:0 | String |
+| generics.swift:185:12:185:24 | call to getValue2() |  | file://:0:0:0:0 | Int |
+| generics.swift:187:7:187:7 | dd |  | generics.swift:175:1:180:1 | DerivedDerived |
+| generics.swift:187:7:187:7 | dd |  | generics.swift:175:1:180:1 | DerivedDerived |
+| generics.swift:187:7:187:7 | dd | D | file://:0:0:0:0 | String |
+| generics.swift:187:7:187:7 | dd | D | file://:0:0:0:0 | String |
+| generics.swift:187:12:187:34 | call to DerivedDerived<D>.init(_:) |  | generics.swift:175:1:180:1 | DerivedDerived |
+| generics.swift:187:12:187:34 | call to DerivedDerived<D>.init(_:) | D | file://:0:0:0:0 | String |
+| generics.swift:187:27:187:27 | hello |  | file://:0:0:0:0 | String |
+| generics.swift:188:7:188:7 | vv1 |  | file://:0:0:0:0 | Bool |
+| generics.swift:188:7:188:7 | vv1 |  | file://:0:0:0:0 | Bool |
+| generics.swift:188:13:188:13 | dd |  | generics.swift:175:1:180:1 | DerivedDerived |
+| generics.swift:188:13:188:13 | dd | D | file://:0:0:0:0 | String |
+| generics.swift:188:13:188:26 | call to getValue1() |  | file://:0:0:0:0 | Bool |
+| generics.swift:189:7:189:7 | vv2 |  | file://:0:0:0:0 | String |
+| generics.swift:189:7:189:7 | vv2 |  | file://:0:0:0:0 | String |
+| generics.swift:189:13:189:13 | dd |  | generics.swift:175:1:180:1 | DerivedDerived |
+| generics.swift:189:13:189:13 | dd | D | file://:0:0:0:0 | String |
+| generics.swift:189:13:189:26 | call to getValue2() |  | file://:0:0:0:0 | String |
+| generics.swift:198:8:198:8 | self |  | generics.swift:194:1:199:1 | Self [MyProtocol2] |
+| generics.swift:208:7:208:7 | self |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:208:7:208:7 | self | T | generics.swift:208:15:208:15 | T |
+| generics.swift:209:7:209:7 | self |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:209:7:209:7 | self |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:209:7:209:7 | self |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:209:7:209:7 | self | T | generics.swift:208:15:208:15 | T |
+| generics.swift:209:7:209:7 | self | T | generics.swift:208:15:208:15 | T |
+| generics.swift:209:7:209:7 | self | T | generics.swift:208:15:208:15 | T |
+| generics.swift:209:7:209:7 | value |  | generics.swift:208:15:208:15 | T |
+| generics.swift:209:7:209:7 | value |  | generics.swift:208:15:208:15 | T |
+| generics.swift:209:7:209:15 | ... as ... |  | generics.swift:208:15:208:15 | T |
+| generics.swift:212:3:212:3 | self |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:212:3:212:3 | self | T | generics.swift:208:15:208:15 | T |
+| generics.swift:212:8:212:17 | value |  | generics.swift:208:15:208:15 | T |
+| generics.swift:213:5:213:5 | self |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:213:5:213:5 | self | T | generics.swift:208:15:208:15 | T |
+| generics.swift:213:5:213:10 | .value |  | generics.swift:208:15:208:15 | T |
+| generics.swift:213:18:213:18 | value |  | generics.swift:208:15:208:15 | T |
+| generics.swift:221:8:221:8 | self |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:221:8:221:8 | self | T | generics.swift:208:15:208:15 | T |
+| generics.swift:222:12:222:12 | self |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:222:12:222:12 | self | T | generics.swift:208:15:208:15 | T |
+| generics.swift:227:31:227:36 | c |  | generics.swift:227:14:227:18 | T |
+| generics.swift:228:10:228:10 | c |  | generics.swift:227:14:227:18 | T |
+| generics.swift:232:31:232:36 | c |  | generics.swift:232:14:232:18 | T |
+| generics.swift:233:10:233:10 | c |  | generics.swift:232:14:232:18 | T |
+| generics.swift:237:7:237:7 | c |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:237:7:237:7 | c |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:237:7:237:7 | c | T | file://:0:0:0:0 | Int |
+| generics.swift:237:7:237:7 | c | T | file://:0:0:0:0 | Int |
+| generics.swift:237:11:237:21 | call to MyClass<T>.init(_:) |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:237:11:237:21 | call to MyClass<T>.init(_:) | T | file://:0:0:0:0 | Int |
+| generics.swift:237:19:237:19 | 42 |  | file://:0:0:0:0 | Int |
+| generics.swift:238:11:238:11 | c |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:238:11:238:11 | c | T | file://:0:0:0:0 | Int |
+| generics.swift:239:11:239:11 | c |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:239:11:239:11 | c | T | file://:0:0:0:0 | Int |
+| generics.swift:240:20:240:20 | c |  | generics.swift:208:1:215:1 | MyClass |
+| generics.swift:240:20:240:20 | c | T | file://:0:0:0:0 | Int |
+| key_paths.swift:4:7:4:7 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:4:7:4:7 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:4:7:4:7 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:4:7:4:7 | value |  | file://:0:0:0:0 | Double |
+| key_paths.swift:4:7:4:7 | x |  | file://:0:0:0:0 | Double |
+| key_paths.swift:4:7:4:11 | ... as ... |  | file://:0:0:0:0 | Double |
+| key_paths.swift:5:7:5:7 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:5:7:5:7 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:5:7:5:7 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:5:7:5:7 | value |  | file://:0:0:0:0 | Double |
+| key_paths.swift:5:7:5:7 | y |  | file://:0:0:0:0 | Double |
+| key_paths.swift:5:7:5:11 | ... as ... |  | file://:0:0:0:0 | Double |
+| key_paths.swift:8:3:8:3 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:8:8:8:11 | x |  | file://:0:0:0:0 | Double |
+| key_paths.swift:8:19:8:22 | y |  | file://:0:0:0:0 | Double |
+| key_paths.swift:9:5:9:5 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:9:5:9:10 | .x |  | file://:0:0:0:0 | Double |
+| key_paths.swift:9:14:9:14 | x |  | file://:0:0:0:0 | Double |
+| key_paths.swift:10:5:10:5 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:10:5:10:10 | .y |  | file://:0:0:0:0 | Double |
+| key_paths.swift:10:14:10:14 | y |  | file://:0:0:0:0 | Double |
+| key_paths.swift:14:8:14:8 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:15:13:15:13 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:15:17:15:17 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:15:21:15:21 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:15:25:15:25 | self |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:20:7:20:7 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:20:7:20:7 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:20:7:20:7 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:20:7:20:7 | start |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:20:7:20:7 | value |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:20:7:20:15 | ... as ... |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:21:7:21:7 | end |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:21:7:21:7 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:21:7:21:7 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:21:7:21:7 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:21:7:21:7 | value |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:21:7:21:13 | ... as ... |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:24:3:24:3 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:24:8:24:15 | start |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:24:22:24:27 | end |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:25:5:25:5 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:25:5:25:10 | .start |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:25:18:25:18 | start |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:26:5:26:5 | self |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:26:5:26:10 | .end |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:26:16:26:16 | end |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:34:7:34:7 | p |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:34:7:34:7 | p |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:34:11:34:31 | call to Point.init(x:y:) |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:35:14:35:14 | p |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:36:14:36:14 | p |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:45:7:45:7 | s |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:45:7:45:7 | s |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:45:11:45:31 | call to Point.init(x:y:) |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:46:7:46:7 | e |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:46:7:46:7 | e |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:46:11:46:31 | call to Point.init(x:y:) |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:47:7:47:7 | line |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:47:7:47:7 | line |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:47:14:47:35 | call to Line.init(start:end:) |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:47:26:47:26 | s |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:47:34:47:34 | e |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:48:16:48:16 | line |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:49:14:49:14 | line |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:56:13:56:13 | 42 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:62:7:62:7 | name |  | file://:0:0:0:0 | String |
+| key_paths.swift:62:7:62:7 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:62:7:62:7 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:62:7:62:7 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:62:7:62:7 | value |  | file://:0:0:0:0 | String |
+| key_paths.swift:62:7:62:14 | ... as ... |  | file://:0:0:0:0 | String |
+| key_paths.swift:63:7:63:7 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:63:7:63:7 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:63:7:63:7 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:66:3:66:3 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:66:8:66:14 | name |  | file://:0:0:0:0 | String |
+| key_paths.swift:67:5:67:5 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:67:5:67:10 | .name |  | file://:0:0:0:0 | String |
+| key_paths.swift:67:17:67:17 | name |  | file://:0:0:0:0 | String |
+| key_paths.swift:68:5:68:5 | self |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:73:7:73:7 | city |  | file://:0:0:0:0 | String |
+| key_paths.swift:73:7:73:7 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:73:7:73:7 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:73:7:73:7 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:73:7:73:7 | value |  | file://:0:0:0:0 | String |
+| key_paths.swift:73:7:73:14 | ... as ... |  | file://:0:0:0:0 | String |
+| key_paths.swift:74:7:74:7 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:74:7:74:7 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:74:7:74:7 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:74:7:74:7 | value |  | file://:0:0:0:0 | String |
+| key_paths.swift:74:7:74:7 | zip |  | file://:0:0:0:0 | String |
+| key_paths.swift:74:7:74:13 | ... as ... |  | file://:0:0:0:0 | String |
+| key_paths.swift:77:3:77:3 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:77:8:77:14 | city |  | file://:0:0:0:0 | String |
+| key_paths.swift:77:22:77:27 | zip |  | file://:0:0:0:0 | String |
+| key_paths.swift:78:5:78:5 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:78:5:78:10 | .city |  | file://:0:0:0:0 | String |
+| key_paths.swift:78:17:78:17 | city |  | file://:0:0:0:0 | String |
+| key_paths.swift:79:5:79:5 | self |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:79:5:79:10 | .zip |  | file://:0:0:0:0 | String |
+| key_paths.swift:79:16:79:16 | zip |  | file://:0:0:0:0 | String |
+| key_paths.swift:85:7:85:7 | addr |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:85:7:85:7 | addr |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:85:14:85:47 | call to Address.init(city:zip:) |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:85:28:85:28 | NYC |  | file://:0:0:0:0 | String |
+| key_paths.swift:85:40:85:40 | 10001 |  | file://:0:0:0:0 | String |
+| key_paths.swift:86:7:86:7 | person |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:86:7:86:7 | person |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:86:16:86:51 | call to Person.init(name:address:) |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:86:29:86:29 | Alice |  | file://:0:0:0:0 | String |
+| key_paths.swift:86:47:86:47 | addr |  | key_paths.swift:72:1:81:1 | Address |
+| key_paths.swift:88:14:88:14 | person |  | key_paths.swift:61:1:70:1 | Person |
+| key_paths.swift:94:7:94:7 | name |  | file://:0:0:0:0 | String |
+| key_paths.swift:94:7:94:7 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:94:7:94:7 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:94:7:94:7 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:94:7:94:7 | value |  | file://:0:0:0:0 | String |
+| key_paths.swift:94:7:94:14 | ... as ... |  | file://:0:0:0:0 | String |
+| key_paths.swift:95:7:95:7 | salary |  | file://:0:0:0:0 | Int |
+| key_paths.swift:95:7:95:7 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:95:7:95:7 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:95:7:95:7 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:95:7:95:7 | value |  | file://:0:0:0:0 | Int |
+| key_paths.swift:95:7:95:16 | ... as ... |  | file://:0:0:0:0 | Int |
+| key_paths.swift:98:3:98:3 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:98:8:98:14 | name |  | file://:0:0:0:0 | String |
+| key_paths.swift:98:22:98:30 | salary |  | file://:0:0:0:0 | Int |
+| key_paths.swift:99:5:99:5 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:99:5:99:10 | .name |  | file://:0:0:0:0 | String |
+| key_paths.swift:99:17:99:17 | name |  | file://:0:0:0:0 | String |
+| key_paths.swift:100:5:100:5 | self |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:100:5:100:10 | .salary |  | file://:0:0:0:0 | Int |
+| key_paths.swift:100:19:100:19 | salary |  | file://:0:0:0:0 | Int |
+| key_paths.swift:105:39:105:60 | keyPath |  | file://:0:0:0:0 | KeyPath |
+| key_paths.swift:105:39:105:60 | keyPath | Root | key_paths.swift:105:19:105:19 | T |
+| key_paths.swift:105:39:105:60 | keyPath | Value | key_paths.swift:105:22:105:22 | V |
+| key_paths.swift:106:34:106:34 | keyPath |  | file://:0:0:0:0 | KeyPath |
+| key_paths.swift:106:34:106:34 | keyPath | Root | key_paths.swift:105:19:105:19 | T |
+| key_paths.swift:106:34:106:34 | keyPath | Value | key_paths.swift:105:22:105:22 | V |
+| key_paths.swift:110:7:110:7 | e1 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:110:7:110:7 | e1 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:110:12:110:47 | call to Employee.init(name:salary:) |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:110:27:110:27 | Alice |  | file://:0:0:0:0 | String |
+| key_paths.swift:110:44:110:44 | 100 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:111:7:111:7 | e2 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:111:7:111:7 | e2 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:111:12:111:45 | call to Employee.init(name:salary:) |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:111:27:111:27 | Bob |  | file://:0:0:0:0 | String |
+| key_paths.swift:111:42:111:42 | 200 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:112:7:112:7 | employees |  | file://:0:0:0:0 | Array |
+| key_paths.swift:112:7:112:7 | employees |  | file://:0:0:0:0 | Array |
+| key_paths.swift:112:7:112:7 | employees | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:112:7:112:7 | employees | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:112:19:112:26 | [...] |  | file://:0:0:0:0 | Array |
+| key_paths.swift:112:19:112:26 | [...] | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:112:20:112:20 | e1 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:112:24:112:24 | e2 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:113:28:113:28 | employees |  | file://:0:0:0:0 | Array |
+| key_paths.swift:113:28:113:28 | employees | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:114:20:114:20 | 0 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:115:31:115:31 | employees |  | file://:0:0:0:0 | Array |
+| key_paths.swift:115:31:115:31 | employees | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:116:25:116:25 | 0 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:121:7:121:7 | self |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:121:7:121:7 | self | T | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:122:7:122:7 | item |  | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:122:7:122:7 | self |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:122:7:122:7 | self |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:122:7:122:7 | self |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:122:7:122:7 | self | T | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:122:7:122:7 | self | T | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:122:7:122:7 | self | T | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:122:7:122:7 | value |  | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:122:7:122:14 | ... as ... |  | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:125:3:125:3 | self |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:125:3:125:3 | self | T | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:125:8:125:14 | item |  | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:126:5:126:5 | self |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:126:5:126:5 | self | T | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:126:5:126:10 | .item |  | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:126:17:126:17 | item |  | key_paths.swift:121:19:121:19 | T |
+| key_paths.swift:132:7:132:7 | c |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:132:7:132:7 | c |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:132:7:132:7 | c | T | file://:0:0:0:0 | Int |
+| key_paths.swift:132:7:132:7 | c | T | file://:0:0:0:0 | Int |
+| key_paths.swift:132:11:132:31 | call to KPContainer<T>.init(item:) |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:132:11:132:31 | call to KPContainer<T>.init(item:) | T | file://:0:0:0:0 | Int |
+| key_paths.swift:132:29:132:29 | 42 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:133:11:133:11 | c |  | key_paths.swift:121:1:128:1 | KPContainer |
+| key_paths.swift:133:11:133:11 | c | T | file://:0:0:0:0 | Int |
+| key_paths.swift:139:7:139:7 | p |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:139:7:139:7 | p |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:139:11:139:31 | call to Point.init(x:y:) |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:141:3:141:3 | p |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:142:14:142:14 | p |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:152:7:152:7 | s |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:152:7:152:7 | s |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:152:11:152:31 | call to Point.init(x:y:) |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:153:7:153:7 | e |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:153:7:153:7 | e |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:153:11:153:31 | call to Point.init(x:y:) |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:154:7:154:7 | line |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:154:7:154:7 | line |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:154:14:154:35 | call to Line.init(start:end:) |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:154:26:154:26 | s |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:154:34:154:34 | e |  | key_paths.swift:3:1:17:1 | Point |
+| key_paths.swift:155:13:155:13 | line |  | key_paths.swift:19:1:28:1 | Line |
+| key_paths.swift:161:7:161:7 | e1 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:161:7:161:7 | e1 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:161:12:161:47 | call to Employee.init(name:salary:) |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:161:27:161:27 | Alice |  | file://:0:0:0:0 | String |
+| key_paths.swift:161:44:161:44 | 100 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:162:7:162:7 | e2 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:162:7:162:7 | e2 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:162:12:162:45 | call to Employee.init(name:salary:) |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:162:27:162:27 | Bob |  | file://:0:0:0:0 | String |
+| key_paths.swift:162:42:162:42 | 200 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:163:7:163:7 | employees |  | file://:0:0:0:0 | Array |
+| key_paths.swift:163:7:163:7 | employees |  | file://:0:0:0:0 | Array |
+| key_paths.swift:163:7:163:7 | employees | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:163:7:163:7 | employees | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:163:19:163:26 | [...] |  | file://:0:0:0:0 | Array |
+| key_paths.swift:163:19:163:26 | [...] | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:163:20:163:20 | e1 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:163:24:163:24 | e2 |  | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:164:15:164:15 | employees |  | file://:0:0:0:0 | Array |
+| key_paths.swift:164:15:164:15 | employees | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:165:20:165:20 | 0 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:166:18:166:18 | employees |  | file://:0:0:0:0 | Array |
+| key_paths.swift:166:18:166:18 | employees | Element | key_paths.swift:93:1:102:1 | Employee |
+| key_paths.swift:167:25:167:25 | 0 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:172:7:172:7 | self |  | key_paths.swift:172:1:179:1 | Shape2 |
+| key_paths.swift:173:7:173:7 | color |  | file://:0:0:0:0 | String |
+| key_paths.swift:173:7:173:7 | self |  | key_paths.swift:172:1:179:1 | Shape2 |
+| key_paths.swift:173:7:173:7 | self |  | key_paths.swift:172:1:179:1 | Shape2 |
+| key_paths.swift:173:7:173:7 | self |  | key_paths.swift:172:1:179:1 | Shape2 |
+| key_paths.swift:173:7:173:7 | value |  | file://:0:0:0:0 | String |
+| key_paths.swift:173:7:173:15 | ... as ... |  | file://:0:0:0:0 | String |
+| key_paths.swift:176:3:176:3 | self |  | key_paths.swift:172:1:179:1 | Shape2 |
+| key_paths.swift:176:8:176:15 | color |  | file://:0:0:0:0 | String |
+| key_paths.swift:177:5:177:5 | self |  | key_paths.swift:172:1:179:1 | Shape2 |
+| key_paths.swift:177:5:177:10 | .color |  | file://:0:0:0:0 | String |
+| key_paths.swift:177:18:177:18 | color |  | file://:0:0:0:0 | String |
+| key_paths.swift:181:7:181:7 | key_paths.Circle2 |  | file://:0:0:0:0 | String |
+| key_paths.swift:181:7:181:7 | self |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:181:24:181:24 | self |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:182:7:182:7 | radius |  | file://:0:0:0:0 | Double |
+| key_paths.swift:182:7:182:7 | self |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:182:7:182:7 | self |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:182:7:182:7 | self |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:182:7:182:7 | value |  | file://:0:0:0:0 | Double |
+| key_paths.swift:182:7:182:16 | ... as ... |  | file://:0:0:0:0 | Double |
+| key_paths.swift:185:3:185:3 | self |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:185:8:185:15 | color |  | file://:0:0:0:0 | String |
+| key_paths.swift:185:23:185:31 | radius |  | file://:0:0:0:0 | Double |
+| key_paths.swift:186:5:186:5 | self |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:186:5:186:10 | .radius |  | file://:0:0:0:0 | Double |
+| key_paths.swift:186:19:186:19 | radius |  | file://:0:0:0:0 | Double |
+| key_paths.swift:187:5:187:28 | call to Shape2.init(color:) |  | key_paths.swift:172:1:179:1 | Shape2 |
+| key_paths.swift:187:23:187:23 | color |  | file://:0:0:0:0 | String |
+| key_paths.swift:195:7:195:7 | c |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:195:7:195:7 | c |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:195:11:195:44 | call to Circle2.init(color:radius:) |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:195:26:195:26 | red |  | file://:0:0:0:0 | String |
+| key_paths.swift:196:13:196:13 | c |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:197:13:197:13 | c |  | key_paths.swift:181:1:189:1 | Circle2 |
+| key_paths.swift:205:16:205:16 | 42 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:205:20:205:20 | hello |  | file://:0:0:0:0 | String |
+| key_paths.swift:213:24:213:24 | 0 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:214:7:214:7 | arr |  | file://:0:0:0:0 | Array |
+| key_paths.swift:214:7:214:7 | arr |  | file://:0:0:0:0 | Array |
+| key_paths.swift:214:7:214:7 | arr | Element | file://:0:0:0:0 | Int |
+| key_paths.swift:214:7:214:7 | arr | Element | file://:0:0:0:0 | Int |
+| key_paths.swift:214:13:214:24 | [...] |  | file://:0:0:0:0 | Array |
+| key_paths.swift:214:13:214:24 | [...] | Element | file://:0:0:0:0 | Int |
+| key_paths.swift:214:14:214:14 | 10 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:214:18:214:18 | 20 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:214:22:214:22 | 30 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:215:15:215:15 | arr |  | file://:0:0:0:0 | Array |
+| key_paths.swift:215:15:215:15 | arr | Element | file://:0:0:0:0 | Int |
+| key_paths.swift:217:30:217:30 | x |  | file://:0:0:0:0 | String |
+| key_paths.swift:218:15:218:15 | x |  | file://:0:0:0:0 | String |
+| key_paths.swift:218:20:218:20 | 1 |  | file://:0:0:0:0 | Int |
+| key_paths.swift:218:23:218:23 | y |  | file://:0:0:0:0 | String |
+| key_paths.swift:218:28:218:28 | 2 |  | file://:0:0:0:0 | Int |
+| lub.swift:1:7:1:7 | self |  | lub.swift:1:1:1:10 | A |
+| lub.swift:1:7:1:7 | self |  | lub.swift:1:1:1:10 | A |
+| lub.swift:3:7:3:7 | self |  | lub.swift:3:1:3:14 | B |
+| lub.swift:3:13:3:13 | self |  | lub.swift:3:1:3:14 | B |
+| lub.swift:5:7:5:7 | self |  | lub.swift:5:1:5:14 | C |
+| lub.swift:5:13:5:13 | self |  | lub.swift:5:1:5:14 | C |
+| lub.swift:8:7:8:7 | b |  | lub.swift:3:1:3:14 | B |
+| lub.swift:8:7:8:7 | b |  | lub.swift:3:1:3:14 | B |
+| lub.swift:8:11:8:13 | call to B.init() |  | lub.swift:3:1:3:14 | B |
+| lub.swift:9:7:9:7 | c |  | lub.swift:5:1:5:14 | C |
+| lub.swift:9:7:9:7 | c |  | lub.swift:5:1:5:14 | C |
+| lub.swift:9:11:9:13 | call to C.init() |  | lub.swift:5:1:5:14 | C |
+| lub.swift:10:7:10:7 | x |  | lub.swift:3:1:3:14 | B |
+| lub.swift:10:7:10:7 | x |  | lub.swift:3:1:3:14 | B |
+| lub.swift:10:7:10:7 | x |  | lub.swift:5:1:5:14 | C |
+| lub.swift:10:7:10:7 | x |  | lub.swift:5:1:5:14 | C |
+| lub.swift:10:11:10:11 | 2 |  | file://:0:0:0:0 | Int |
+| lub.swift:10:11:10:23 | ... ? ... : ... |  | lub.swift:3:1:3:14 | B |
+| lub.swift:10:11:10:23 | ... ? ... : ... |  | lub.swift:5:1:5:14 | C |
+| lub.swift:10:15:10:15 | 3 |  | file://:0:0:0:0 | Int |
+| lub.swift:10:19:10:19 | b |  | lub.swift:3:1:3:14 | B |
+| lub.swift:10:23:10:23 | c |  | lub.swift:5:1:5:14 | C |
+| overload_resolution.swift:3:7:3:7 | self |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:3:7:3:7 | self |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:5:8:5:8 | self |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:5:15:5:20 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:6:12:6:12 | int |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:10:8:10:8 | self |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:10:15:10:20 | x |  | file://:0:0:0:0 | Double |
+| overload_resolution.swift:11:12:11:12 | double |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:15:8:15:8 | self |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:15:15:15:20 | x |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:16:12:16:12 | string |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:20:8:20:8 | self |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:20:15:20:20 | x |  | file://:0:0:0:0 | Bool |
+| overload_resolution.swift:21:12:21:12 | bool |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:26:7:26:7 | o |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:26:7:26:7 | o |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:26:11:26:26 | call to OverloadByType.init() |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:27:7:27:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:27:7:27:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:27:12:27:12 | o |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:27:12:27:23 | call to handle(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:27:21:27:21 | 42 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:28:7:28:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:28:7:28:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:28:12:28:12 | o |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:28:12:28:25 | call to handle(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:29:7:29:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:29:7:29:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:29:12:29:12 | o |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:29:12:29:25 | call to handle(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:29:21:29:21 | hi |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:30:7:30:7 | r4 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:30:7:30:7 | r4 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:30:12:30:12 | o |  | overload_resolution.swift:3:1:23:1 | OverloadByType |
+| overload_resolution.swift:30:12:30:25 | call to handle(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:35:7:35:7 | self |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:35:7:35:7 | self |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:37:8:37:8 | self |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:37:18:37:25 | width |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:38:12:38:12 | width |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:42:8:42:8 | self |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:42:18:42:26 | height |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:43:12:43:12 | height |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:47:8:47:8 | self |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:47:18:47:25 | width |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:47:30:47:38 | height |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:48:12:48:12 | both |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:52:8:52:8 | self |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:52:18:52:24 | size |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:53:12:53:12 | size |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:58:7:58:7 | o |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:58:7:58:7 | o |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:58:11:58:27 | call to OverloadByLabel.init() |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:59:7:59:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:59:7:59:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:59:12:59:12 | o |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:59:12:59:33 | call to configure(width:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:59:31:59:31 | 10 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:60:7:60:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:60:7:60:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:60:12:60:12 | o |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:60:12:60:34 | call to configure(height:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:60:32:60:32 | 20 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:61:7:61:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:61:7:61:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:61:12:61:12 | o |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:61:12:61:45 | call to configure(width:height:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:61:31:61:31 | 10 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:61:43:61:43 | 20 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:62:7:62:7 | r4 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:62:7:62:7 | r4 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:62:12:62:12 | o |  | overload_resolution.swift:35:1:55:1 | OverloadByLabel |
+| overload_resolution.swift:62:12:62:32 | call to configure(size:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:62:30:62:30 | 30 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:67:7:67:7 | self |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:67:7:67:7 | self |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:69:8:69:8 | self |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:70:12:70:12 | 0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:74:8:74:8 | self |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:74:16:74:21 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:75:12:75:12 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:79:8:79:8 | self |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:79:16:79:21 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:79:26:79:31 | y |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:80:12:80:12 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:80:16:80:16 | y |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:84:8:84:8 | self |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:84:16:84:21 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:84:26:84:31 | y |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:84:36:84:41 | z |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:85:12:85:12 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:85:16:85:16 | y |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:85:20:85:20 | z |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:90:7:90:7 | o |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:90:7:90:7 | o |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:90:11:90:27 | call to OverloadByArity.init() |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:91:7:91:7 | r0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:91:7:91:7 | r0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:91:12:91:12 | o |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:91:12:91:22 | call to compute() |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:92:7:92:7 | r1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:92:7:92:7 | r1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:92:12:92:12 | o |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:92:12:92:23 | call to compute(_:) |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:92:22:92:22 | 1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:93:7:93:7 | r2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:93:7:93:7 | r2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:93:12:93:12 | o |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:93:12:93:26 | call to compute(_:_:) |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:93:22:93:22 | 1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:93:25:93:25 | 2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:94:7:94:7 | r3 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:94:7:94:7 | r3 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:94:12:94:12 | o |  | overload_resolution.swift:67:1:87:1 | OverloadByArity |
+| overload_resolution.swift:94:12:94:29 | call to compute(_:_:_:) |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:94:22:94:22 | 1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:94:25:94:25 | 2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:94:28:94:28 | 3 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:99:7:99:7 | self |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:99:7:99:7 | self |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:101:8:101:8 | self |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:102:12:102:12 | 0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:106:8:106:8 | self |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:107:12:107:12 |  |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:111:8:111:8 | self |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:117:7:117:7 | o |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:117:7:117:7 | o |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:117:11:117:28 | call to OverloadByReturn.init() |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:118:7:118:7 | r1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:118:7:118:12 | ... as ... |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:118:18:118:18 | o |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:118:18:118:27 | call to create() |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:119:7:119:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:119:7:119:12 | ... as ... |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:119:21:119:21 | o |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:119:21:119:30 | call to create() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:120:7:120:7 | r3 |  | file://:0:0:0:0 | Double |
+| overload_resolution.swift:120:7:120:12 | ... as ... |  | file://:0:0:0:0 | Double |
+| overload_resolution.swift:120:21:120:21 | o |  | overload_resolution.swift:99:1:114:1 | OverloadByReturn |
+| overload_resolution.swift:120:21:120:30 | call to create() |  | file://:0:0:0:0 | Double |
+| overload_resolution.swift:125:7:125:7 | self |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:125:7:125:7 | self |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:127:8:127:8 | self |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:127:16:127:21 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:128:12:128:12 | concrete |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:132:8:132:8 | self |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:132:19:132:24 | x |  | overload_resolution.swift:132:16:132:16 | T |
+| overload_resolution.swift:133:12:133:12 | generic |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:138:7:138:7 | o |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:138:7:138:7 | o |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:138:11:138:37 | call to OverloadGenericVsConcrete.init() |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:139:7:139:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:139:7:139:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:139:12:139:12 | o |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:139:12:139:24 | call to process(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:139:22:139:22 | 42 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:140:7:140:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:140:7:140:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:140:12:140:12 | o |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:140:12:140:29 | call to process(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:140:22:140:22 | hello |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:141:7:141:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:141:7:141:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:141:12:141:12 | o |  | overload_resolution.swift:125:1:135:1 | OverloadGenericVsConcrete |
+| overload_resolution.swift:141:12:141:26 | call to process(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:147:19:147:24 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:148:10:148:10 | int |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:152:19:152:24 | x |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:153:10:153:10 | string |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:157:19:157:24 | x |  | file://:0:0:0:0 | Double |
+| overload_resolution.swift:158:10:158:10 | double |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:162:25:162:25 | 42 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:163:25:163:25 | hi |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:169:7:169:7 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:170:7:170:7 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:170:7:170:7 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:170:7:170:7 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:170:7:170:7 | value |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:170:7:170:7 | value |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:170:7:170:15 | ... as ... |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:173:3:173:3 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:174:5:174:5 | .value |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:174:5:174:5 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:174:13:174:13 | default |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:178:3:178:3 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:178:8:178:13 | int |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:179:5:179:5 | .value |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:179:5:179:5 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:179:13:179:13 | int |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:183:3:183:3 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:183:8:183:13 | str |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:184:5:184:5 | .value |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:184:5:184:5 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:184:13:184:13 | str |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:188:3:188:3 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:188:8:188:11 | x |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:188:16:188:19 | y |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:189:5:189:5 | .value |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:189:5:189:5 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:189:13:189:13 | pair |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:193:8:193:8 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:194:12:194:12 | self |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:199:7:199:7 | m1 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:199:7:199:7 | m1 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:199:12:199:22 | call to MultiInit.init() |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:200:7:200:7 | m2 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:200:7:200:7 | m2 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:200:12:200:28 | call to MultiInit.init(int:) |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:200:27:200:27 | 5 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:201:7:201:7 | m3 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:201:7:201:7 | m3 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:201:12:201:30 | call to MultiInit.init(str:) |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:201:27:201:27 | x |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:202:7:202:7 | m4 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:202:7:202:7 | m4 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:202:12:202:32 | call to MultiInit.init(x:y:) |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:202:25:202:25 | 1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:202:31:202:31 | 2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:203:7:203:7 | v |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:203:7:203:7 | v |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:203:11:203:11 | m1 |  | overload_resolution.swift:169:1:196:1 | MultiInit |
+| overload_resolution.swift:203:11:203:23 | call to getValue() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:208:7:208:7 | self |  | overload_resolution.swift:208:1:221:1 | StaticVsInstance |
+| overload_resolution.swift:210:8:210:8 | self |  | overload_resolution.swift:208:1:221:1 | StaticVsInstance |
+| overload_resolution.swift:211:12:211:12 | instance |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:216:12:216:12 | static |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:220:3:220:3 | self |  | overload_resolution.swift:208:1:221:1 | StaticVsInstance |
+| overload_resolution.swift:224:7:224:7 | o |  | overload_resolution.swift:208:1:221:1 | StaticVsInstance |
+| overload_resolution.swift:224:7:224:7 | o |  | overload_resolution.swift:208:1:221:1 | StaticVsInstance |
+| overload_resolution.swift:224:11:224:28 | call to StaticVsInstance.init() |  | overload_resolution.swift:208:1:221:1 | StaticVsInstance |
+| overload_resolution.swift:225:7:225:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:225:7:225:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:225:12:225:12 | o |  | overload_resolution.swift:208:1:221:1 | StaticVsInstance |
+| overload_resolution.swift:225:12:225:21 | call to action() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:233:8:233:8 | self |  | overload_resolution.swift:231:1:234:1 | Self [Describable] |
+| overload_resolution.swift:239:12:239:12 | default |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:244:12:244:12 | extra |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:248:7:248:7 | self |  | overload_resolution.swift:248:1:256:1 | DescribableImpl |
+| overload_resolution.swift:250:3:250:3 | self |  | overload_resolution.swift:248:1:256:1 | DescribableImpl |
+| overload_resolution.swift:253:8:253:8 | self |  | overload_resolution.swift:248:1:256:1 | DescribableImpl |
+| overload_resolution.swift:254:12:254:12 | concrete |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:259:7:259:7 | d |  | overload_resolution.swift:248:1:256:1 | DescribableImpl |
+| overload_resolution.swift:259:7:259:7 | d |  | overload_resolution.swift:248:1:256:1 | DescribableImpl |
+| overload_resolution.swift:259:11:259:27 | call to DescribableImpl.init() |  | overload_resolution.swift:248:1:256:1 | DescribableImpl |
+| overload_resolution.swift:260:7:260:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:260:7:260:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:260:12:260:12 | d |  | overload_resolution.swift:248:1:256:1 | DescribableImpl |
+| overload_resolution.swift:260:12:260:23 | call to describe() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:261:7:261:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:261:7:261:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:261:12:261:12 | d |  | overload_resolution.swift:248:1:256:1 | DescribableImpl |
+| overload_resolution.swift:261:12:261:20 | call to extra() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:266:7:266:7 | self |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:268:3:268:3 | self |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:271:8:271:8 | self |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:272:12:272:12 | base |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:276:8:276:8 | self |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:277:12:277:12 | baseOnly |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:281:7:281:7 | self |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:283:12:283:12 | self |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:284:5:284:16 | call to Base.init() |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:288:17:288:17 | self |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:289:12:289:12 | sub |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:293:8:293:8 | self |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:294:12:294:12 | subOnly |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:298:7:298:7 | self |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:300:12:300:12 | self |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:301:5:301:16 | call to Sub.init() |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:305:17:305:17 | self |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:306:12:306:12 | subsub |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:311:7:311:7 | b |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:311:7:311:7 | b |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:311:11:311:16 | call to Base.init() |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:312:7:312:7 | rb |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:312:7:312:7 | rb |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:312:12:312:12 | b |  | overload_resolution.swift:266:1:279:1 | Base |
+| overload_resolution.swift:312:12:312:21 | call to action() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:314:7:314:7 | s |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:314:7:314:7 | s |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:314:11:314:15 | call to Sub.init() |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:315:7:315:7 | rs |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:315:7:315:7 | rs |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:315:12:315:12 | s |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:315:12:315:21 | call to action() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:316:7:316:7 | rbo |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:316:7:316:7 | rbo |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:316:13:316:13 | s |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:316:13:316:24 | call to baseOnly() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:317:7:317:7 | rso |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:317:7:317:7 | rso |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:317:13:317:13 | s |  | overload_resolution.swift:281:1:296:1 | Sub |
+| overload_resolution.swift:317:13:317:23 | call to subOnly() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:319:7:319:7 | ss |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:319:7:319:7 | ss |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:319:12:319:19 | call to SubSub.init() |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:320:7:320:7 | rss |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:320:7:320:7 | rss |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:320:13:320:13 | ss |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:320:13:320:23 | call to action() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:321:7:321:7 | rbo2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:321:7:321:7 | rbo2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:321:14:321:14 | ss |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:321:14:321:26 | call to baseOnly() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:322:7:322:7 | rso2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:322:7:322:7 | rso2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:322:14:322:14 | ss |  | overload_resolution.swift:298:1:308:1 | SubSub |
+| overload_resolution.swift:322:14:322:25 | call to subOnly() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:327:7:327:7 | self |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:327:7:327:7 | self |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:329:8:329:8 | self |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:329:13:329:24 | target |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:330:12:330:12 | target |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:334:8:334:8 | self |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:334:13:334:26 | source |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:335:12:335:12 | source |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:339:8:339:8 | self |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:339:13:339:24 | target |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:339:32:339:45 | source |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:340:12:340:12 | target |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:340:21:340:21 | source |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:345:7:345:7 | o |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:345:7:345:7 | o |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:345:11:345:25 | call to LabelVariants.init() |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:346:7:346:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:346:7:346:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:346:12:346:12 | o |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:346:12:346:26 | call to send(to:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:346:23:346:23 | x |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:347:7:347:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:347:7:347:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:347:12:347:12 | o |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:347:12:347:28 | call to send(from:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:347:25:347:25 | y |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:348:7:348:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:348:7:348:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:348:12:348:12 | o |  | overload_resolution.swift:327:1:342:1 | LabelVariants |
+| overload_resolution.swift:348:12:348:37 | call to send(to:from:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:348:23:348:23 | x |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:348:34:348:34 | y |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:355:15:355:15 | self |  | overload_resolution.swift:353:1:356:1 | Self [Numeric2] |
+| overload_resolution.swift:360:38:360:38 | 0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:369:33:369:38 | x |  | overload_resolution.swift:369:20:369:23 | T |
+| overload_resolution.swift:370:10:370:10 | x |  | overload_resolution.swift:369:20:369:23 | T |
+| overload_resolution.swift:374:34:374:39 | x |  | overload_resolution.swift:374:20:374:23 | T |
+| overload_resolution.swift:375:10:375:10 | x |  | overload_resolution.swift:374:20:374:23 | T |
+| overload_resolution.swift:379:26:379:26 | 42 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:380:26:380:26 | hello |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:385:7:385:7 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:385:7:385:7 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:386:7:386:7 | item |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:386:7:386:7 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:386:7:386:7 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:386:7:386:7 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:386:7:386:7 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:386:7:386:7 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:386:7:386:7 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:386:7:386:7 | value |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:386:7:386:14 | ... as ... |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:389:3:389:3 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:389:3:389:3 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:389:8:389:16 | item |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:390:5:390:5 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:390:5:390:5 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:390:5:390:10 | .item |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:390:17:390:17 | item |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:394:8:394:8 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:394:8:394:8 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:395:12:395:12 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:395:12:395:12 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:399:8:399:8 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:399:8:399:8 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:399:16:399:27 | newItem |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:400:5:400:5 | .item |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:400:5:400:5 | self |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:400:5:400:5 | self | T | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:400:12:400:12 | newItem |  | overload_resolution.swift:385:11:385:11 | T |
+| overload_resolution.swift:405:7:405:7 | intBox |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:405:7:405:7 | intBox |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:405:7:405:7 | intBox | T | file://:0:0:0:0 | Int |
+| overload_resolution.swift:405:7:405:7 | intBox | T | file://:0:0:0:0 | Int |
+| overload_resolution.swift:405:16:405:22 | call to Box<T>.init(_:) |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:405:16:405:22 | call to Box<T>.init(_:) | T | file://:0:0:0:0 | Int |
+| overload_resolution.swift:405:20:405:20 | 10 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:406:7:406:7 | strBox |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:406:7:406:7 | strBox |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:406:7:406:7 | strBox | T | file://:0:0:0:0 | String |
+| overload_resolution.swift:406:7:406:7 | strBox | T | file://:0:0:0:0 | String |
+| overload_resolution.swift:406:16:406:24 | call to Box<T>.init(_:) |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:406:16:406:24 | call to Box<T>.init(_:) | T | file://:0:0:0:0 | String |
+| overload_resolution.swift:406:20:406:20 | hi |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:407:7:407:7 | v1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:407:7:407:7 | v1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:407:12:407:12 | intBox |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:407:12:407:12 | intBox | T | file://:0:0:0:0 | Int |
+| overload_resolution.swift:407:12:407:23 | call to get() |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:408:7:408:7 | v2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:408:7:408:7 | v2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:408:12:408:12 | strBox |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:408:12:408:12 | strBox | T | file://:0:0:0:0 | String |
+| overload_resolution.swift:408:12:408:23 | call to get() |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:409:3:409:3 | intBox |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:409:3:409:3 | intBox | T | file://:0:0:0:0 | Int |
+| overload_resolution.swift:409:3:409:20 | call to replace(_:) |  | file://:0:0:0:0 | (T_0) |
+| overload_resolution.swift:409:18:409:18 | 20 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:410:3:410:3 | strBox |  | overload_resolution.swift:385:1:402:1 | Box |
+| overload_resolution.swift:410:3:410:3 | strBox | T | file://:0:0:0:0 | String |
+| overload_resolution.swift:410:3:410:23 | call to replace(_:) |  | file://:0:0:0:0 | (T_0) |
+| overload_resolution.swift:410:18:410:18 | bye |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:415:7:415:7 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:416:7:416:7 | name |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:416:7:416:7 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:416:7:416:7 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:416:7:416:7 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:416:7:416:7 | value |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:416:7:416:14 | ... as ... |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:417:7:417:7 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:417:7:417:7 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:417:7:417:7 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:417:7:417:7 | size |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:417:7:417:7 | value |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:417:7:417:14 | ... as ... |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:420:3:420:3 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:420:8:420:14 | name |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:420:22:420:28 | size |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:421:5:421:5 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:421:5:421:10 | .name |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:421:17:421:17 | name |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:422:5:422:5 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:422:5:422:10 | .size |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:422:17:422:17 | size |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:426:15:426:15 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:426:20:426:26 | name |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:427:5:427:5 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:427:5:427:34 | call to Widget.init(name:size:) |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:427:21:427:21 | name |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:427:33:427:33 | 1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:431:15:431:15 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:431:20:431:26 | size |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:432:5:432:5 | self |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:432:5:432:42 | call to Widget.init(name:size:) |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:432:21:432:21 | default |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:432:38:432:38 | size |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:437:7:437:7 | w1 |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:437:7:437:7 | w1 |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:437:12:437:37 | call to Widget.init(name:size:) |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:437:25:437:25 | a |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:437:36:437:36 | 5 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:438:7:438:7 | w2 |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:438:7:438:7 | w2 |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:438:12:438:28 | call to Widget.init(name:) |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:438:25:438:25 | b |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:439:7:439:7 | w3 |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:439:7:439:7 | w3 |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:439:12:439:27 | call to Widget.init(size:) |  | overload_resolution.swift:415:1:434:1 | Widget |
+| overload_resolution.swift:439:25:439:25 | 10 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:444:7:444:7 | self |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:446:3:446:3 | self |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:449:8:449:8 | self |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:450:14:450:14 | 0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:454:8:454:8 | self |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:455:14:455:14 |  |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:459:8:459:8 | self |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:460:14:460:14 | 0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:460:17:460:17 | 0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:465:7:465:7 | p |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:465:7:465:7 | p |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:465:11:465:21 | call to Processor.init() |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:466:7:466:7 | r1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:466:7:466:7 | r1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:466:7:466:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:466:7:466:7 | r1 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:466:12:466:12 | p |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:466:12:466:34 | call to apply(_:) |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:466:12:466:34 | call to apply(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:466:31:466:31 | 1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:467:7:467:7 | r2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:467:7:467:7 | r2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:467:7:467:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:467:7:467:7 | r2 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:467:12:467:12 | p |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:467:12:467:36 | call to apply(_:) |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:467:12:467:36 | call to apply(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:467:31:467:31 | ! |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:468:7:468:7 | r3 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:468:7:468:7 | r3 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:468:7:468:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:468:7:468:7 | r3 |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:468:12:468:12 | p |  | overload_resolution.swift:444:1:462:1 | Processor |
+| overload_resolution.swift:468:12:468:37 | call to apply(_:) |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:468:12:468:37 | call to apply(_:) |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:473:7:473:7 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:474:7:474:7 | data |  | file://:0:0:0:0 | Array |
+| overload_resolution.swift:474:7:474:7 | data | Element | file://:0:0:0:0 | Int |
+| overload_resolution.swift:474:7:474:7 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:474:7:474:7 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:474:7:474:7 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:474:7:474:18 | ... as ... |  | file://:0:0:0:0 | Array |
+| overload_resolution.swift:474:7:474:18 | ... as ... | Element | file://:0:0:0:0 | Int |
+| overload_resolution.swift:474:22:474:30 | [...] |  | file://:0:0:0:0 | Array |
+| overload_resolution.swift:474:22:474:30 | [...] | Element | file://:0:0:0:0 | Int |
+| overload_resolution.swift:474:23:474:23 | 1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:474:26:474:26 | 2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:474:29:474:29 | 3 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:475:7:475:7 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:475:7:475:7 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:475:7:475:7 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:475:31:475:31 | a |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:475:36:475:36 | 1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:478:3:478:3 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:481:8:481:8 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:481:12:481:21 | index |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:482:12:482:12 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:482:17:482:17 | index |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:486:8:486:8 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:486:12:486:19 | key |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:487:12:487:12 | self |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:487:17:487:17 | key |  | file://:0:0:0:0 | String |
+| overload_resolution.swift:487:25:487:25 | 0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:492:7:492:7 | ms |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:492:7:492:7 | ms |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:492:12:492:27 | call to MultiSubscript.init() |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:493:7:493:7 | r1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:493:7:493:7 | r1 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:493:12:493:12 | ms |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:493:12:493:20 | call to get(_:) |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:493:19:493:19 | 0 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:494:7:494:7 | r2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:494:7:494:7 | r2 |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:494:12:494:12 | ms |  | overload_resolution.swift:473:1:489:1 | MultiSubscript |
+| overload_resolution.swift:494:12:494:22 | call to get(_:) |  | file://:0:0:0:0 | Int |
+| overload_resolution.swift:494:19:494:19 | a |  | file://:0:0:0:0 | String |
+| protocols.swift:5:8:5:8 | self |  | protocols.swift:3:1:6:1 | Self [Shape] |
+| protocols.swift:9:7:9:7 | radius |  | file://:0:0:0:0 | Double |
+| protocols.swift:9:7:9:7 | self |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:9:7:9:7 | self |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:9:7:9:7 | self |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:9:7:9:7 | value |  | file://:0:0:0:0 | Double |
+| protocols.swift:9:7:9:16 | ... as ... |  | file://:0:0:0:0 | Double |
+| protocols.swift:12:3:12:3 | self |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:12:8:12:16 | radius |  | file://:0:0:0:0 | Double |
+| protocols.swift:13:5:13:5 | self |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:13:5:13:10 | .radius |  | file://:0:0:0:0 | Double |
+| protocols.swift:13:19:13:19 | radius |  | file://:0:0:0:0 | Double |
+| protocols.swift:17:8:17:8 | self |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:18:22:18:22 | self |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:18:31:18:31 | self |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:23:7:23:7 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:23:7:23:7 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:23:7:23:7 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:23:7:23:7 | value |  | file://:0:0:0:0 | Double |
+| protocols.swift:23:7:23:7 | width |  | file://:0:0:0:0 | Double |
+| protocols.swift:23:7:23:15 | ... as ... |  | file://:0:0:0:0 | Double |
+| protocols.swift:24:7:24:7 | height |  | file://:0:0:0:0 | Double |
+| protocols.swift:24:7:24:7 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:24:7:24:7 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:24:7:24:7 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:24:7:24:7 | value |  | file://:0:0:0:0 | Double |
+| protocols.swift:24:7:24:16 | ... as ... |  | file://:0:0:0:0 | Double |
+| protocols.swift:27:3:27:3 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:27:8:27:15 | width |  | file://:0:0:0:0 | Double |
+| protocols.swift:27:23:27:31 | height |  | file://:0:0:0:0 | Double |
+| protocols.swift:28:5:28:5 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:28:5:28:10 | .width |  | file://:0:0:0:0 | Double |
+| protocols.swift:28:18:28:18 | width |  | file://:0:0:0:0 | Double |
+| protocols.swift:29:5:29:5 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:29:5:29:10 | .height |  | file://:0:0:0:0 | Double |
+| protocols.swift:29:19:29:19 | height |  | file://:0:0:0:0 | Double |
+| protocols.swift:33:8:33:8 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:34:12:34:12 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:34:20:34:20 | self |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:39:7:39:7 | c |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:39:7:39:7 | c |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:39:11:39:29 | call to Circle.init(radius:) |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:40:7:40:7 | a1 |  | file://:0:0:0:0 | Double |
+| protocols.swift:40:7:40:7 | a1 |  | file://:0:0:0:0 | Double |
+| protocols.swift:40:12:40:12 | c |  | protocols.swift:8:1:20:1 | Circle |
+| protocols.swift:40:12:40:19 | call to area() |  | file://:0:0:0:0 | Double |
+| protocols.swift:42:7:42:7 | r |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:42:7:42:7 | r |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:42:11:42:44 | call to Rectangle.init(width:height:) |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:43:7:43:7 | a2 |  | file://:0:0:0:0 | Double |
+| protocols.swift:43:7:43:7 | a2 |  | file://:0:0:0:0 | Double |
+| protocols.swift:43:12:43:12 | r |  | protocols.swift:22:1:36:1 | Rectangle |
+| protocols.swift:43:12:43:19 | call to area() |  | file://:0:0:0:0 | Double |
+| protocols.swift:51:8:51:8 | self |  | protocols.swift:48:1:54:1 | Self [Container] |
+| protocols.swift:53:8:53:8 | self |  | protocols.swift:48:1:54:1 | Self [Container] |
+| protocols.swift:58:7:58:7 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:58:7:58:7 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:58:7:58:7 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:61:3:61:3 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:62:5:62:5 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:66:8:66:8 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:67:12:67:12 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:67:18:67:18 | 0 |  | file://:0:0:0:0 | Int |
+| protocols.swift:71:8:71:8 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:72:12:72:12 | self |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:77:7:77:7 | ic |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:77:7:77:7 | ic |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:77:12:77:41 | call to IntContainer.init(items:) |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:77:32:77:40 | [...] |  | file://:0:0:0:0 | Array |
+| protocols.swift:77:32:77:40 | [...] | Element | file://:0:0:0:0 | Int |
+| protocols.swift:77:33:77:33 | 1 |  | file://:0:0:0:0 | Int |
+| protocols.swift:77:36:77:36 | 2 |  | file://:0:0:0:0 | Int |
+| protocols.swift:77:39:77:39 | 3 |  | file://:0:0:0:0 | Int |
+| protocols.swift:78:7:78:7 | item |  | file://:0:0:0:0 | Int |
+| protocols.swift:78:7:78:7 | item |  | file://:0:0:0:0 | Int |
+| protocols.swift:78:14:78:14 | ic |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:78:14:78:25 | call to getItem() |  | file://:0:0:0:0 | Int |
+| protocols.swift:79:7:79:7 | cnt |  | file://:0:0:0:0 | Int |
+| protocols.swift:79:7:79:7 | cnt |  | file://:0:0:0:0 | Int |
+| protocols.swift:79:13:79:13 | ic |  | protocols.swift:56:1:74:1 | IntContainer |
+| protocols.swift:79:13:79:22 | call to count() |  | file://:0:0:0:0 | Int |
+| protocols.swift:86:8:86:8 | self |  | protocols.swift:84:1:87:1 | Self [Printable] |
+| protocols.swift:91:8:91:8 | self |  | protocols.swift:89:1:92:1 | Self [Identifiable] |
+| protocols.swift:94:7:94:7 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:95:7:95:7 | name |  | file://:0:0:0:0 | String |
+| protocols.swift:95:7:95:7 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:95:7:95:7 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:95:7:95:7 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:95:7:95:7 | value |  | file://:0:0:0:0 | String |
+| protocols.swift:95:7:95:14 | ... as ... |  | file://:0:0:0:0 | String |
+| protocols.swift:96:7:96:7 | entityId |  | file://:0:0:0:0 | Int |
+| protocols.swift:96:7:96:7 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:96:7:96:7 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:96:7:96:7 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:96:7:96:7 | value |  | file://:0:0:0:0 | Int |
+| protocols.swift:96:7:96:18 | ... as ... |  | file://:0:0:0:0 | Int |
+| protocols.swift:99:3:99:3 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:99:8:99:14 | name |  | file://:0:0:0:0 | String |
+| protocols.swift:99:22:99:32 | entityId |  | file://:0:0:0:0 | Int |
+| protocols.swift:100:5:100:5 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:100:5:100:10 | .name |  | file://:0:0:0:0 | String |
+| protocols.swift:100:17:100:17 | name |  | file://:0:0:0:0 | String |
+| protocols.swift:101:5:101:5 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:101:5:101:10 | .entityId |  | file://:0:0:0:0 | Int |
+| protocols.swift:101:21:101:21 | entityId |  | file://:0:0:0:0 | Int |
+| protocols.swift:105:8:105:8 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:106:12:106:12 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:110:8:110:8 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:111:12:111:12 | self |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:116:7:116:7 | e |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:116:7:116:7 | e |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:116:11:116:44 | call to Entity.init(name:entityId:) |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:116:24:116:24 | test |  | file://:0:0:0:0 | String |
+| protocols.swift:116:42:116:42 | 42 |  | file://:0:0:0:0 | Int |
+| protocols.swift:117:7:117:7 | d |  | file://:0:0:0:0 | String |
+| protocols.swift:117:7:117:7 | d |  | file://:0:0:0:0 | String |
+| protocols.swift:117:11:117:11 | e |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:117:11:117:21 | call to display() |  | file://:0:0:0:0 | String |
+| protocols.swift:118:7:118:7 | eid |  | file://:0:0:0:0 | Int |
+| protocols.swift:118:7:118:7 | eid |  | file://:0:0:0:0 | Int |
+| protocols.swift:118:13:118:13 | e |  | protocols.swift:94:1:113:1 | Entity |
+| protocols.swift:118:13:118:18 | call to id() |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:4:27:4:32 | a |  | type_constraints.swift:4:12:4:15 | T |
+| type_constraints.swift:4:35:4:40 | b |  | type_constraints.swift:4:12:4:15 | T |
+| type_constraints.swift:5:6:5:6 | a |  | type_constraints.swift:4:12:4:15 | T |
+| type_constraints.swift:5:10:5:10 | b |  | type_constraints.swift:4:12:4:15 | T |
+| type_constraints.swift:5:21:5:21 | a |  | type_constraints.swift:4:12:4:15 | T |
+| type_constraints.swift:5:39:5:39 | b |  | type_constraints.swift:4:12:4:15 | T |
+| type_constraints.swift:9:15:9:20 | a |  | type_constraints.swift:9:12:9:12 | T |
+| type_constraints.swift:9:23:9:28 | b |  | type_constraints.swift:9:12:9:12 | T |
+| type_constraints.swift:10:6:10:6 | a |  | type_constraints.swift:9:12:9:12 | T |
+| type_constraints.swift:10:10:10:10 | b |  | type_constraints.swift:9:12:9:12 | T |
+| type_constraints.swift:10:21:10:21 | a |  | type_constraints.swift:9:12:9:12 | T |
+| type_constraints.swift:10:39:10:39 | b |  | type_constraints.swift:9:12:9:12 | T |
+| type_constraints.swift:14:18:14:18 | 3 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:14:21:14:21 | 7 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:15:18:15:18 | a |  | file://:0:0:0:0 | String |
+| type_constraints.swift:15:23:15:23 | z |  | file://:0:0:0:0 | String |
+| type_constraints.swift:16:18:16:18 | 3 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:16:21:16:21 | 7 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:17:18:17:18 | a |  | file://:0:0:0:0 | String |
+| type_constraints.swift:17:23:17:23 | z |  | file://:0:0:0:0 | String |
+| type_constraints.swift:24:8:24:8 | self |  | type_constraints.swift:22:1:25:1 | Self [Displayable2] |
+| type_constraints.swift:29:8:29:8 | self |  | type_constraints.swift:27:1:30:1 | Self [Sortable] |
+| type_constraints.swift:33:7:33:7 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:33:7:33:7 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:33:7:33:7 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:33:7:33:7 | tag |  | file://:0:0:0:0 | String |
+| type_constraints.swift:33:7:33:7 | value |  | file://:0:0:0:0 | String |
+| type_constraints.swift:33:7:33:13 | ... as ... |  | file://:0:0:0:0 | String |
+| type_constraints.swift:34:7:34:7 | priority |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:34:7:34:7 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:34:7:34:7 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:34:7:34:7 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:34:7:34:7 | value |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:34:7:34:18 | ... as ... |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:37:3:37:3 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:37:8:37:13 | tag |  | file://:0:0:0:0 | String |
+| type_constraints.swift:37:21:37:31 | priority |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:38:5:38:5 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:38:5:38:10 | .tag |  | file://:0:0:0:0 | String |
+| type_constraints.swift:38:16:38:16 | tag |  | file://:0:0:0:0 | String |
+| type_constraints.swift:39:5:39:5 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:39:5:39:10 | .priority |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:39:21:39:21 | priority |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:43:8:43:8 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:44:12:44:12 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:48:8:48:8 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:49:12:49:12 | self |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:54:46:54:54 | item |  | type_constraints.swift:54:18:54:36 | T |
+| type_constraints.swift:55:10:55:10 | item |  | type_constraints.swift:54:18:54:36 | T |
+| type_constraints.swift:59:28:59:33 | a |  | type_constraints.swift:59:25:59:25 | T |
+| type_constraints.swift:59:36:59:41 | b |  | type_constraints.swift:59:25:59:25 | T |
+| type_constraints.swift:60:10:60:10 | a |  | type_constraints.swift:59:25:59:25 | T |
+| type_constraints.swift:60:15:60:15 | b |  | type_constraints.swift:59:25:59:25 | T |
+| type_constraints.swift:64:7:64:7 | item |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:64:7:64:7 | item |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:64:14:64:46 | call to TaggedItem.init(tag:priority:) |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:64:30:64:30 | x |  | file://:0:0:0:0 | String |
+| type_constraints.swift:64:45:64:45 | 1 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:65:23:65:23 | item |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:66:31:66:31 | item |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:66:37:66:37 | item |  | type_constraints.swift:32:1:51:1 | TaggedItem |
+| type_constraints.swift:71:7:71:7 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:71:7:71:7 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:71:7:71:7 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:72:7:72:7 | first |  | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:72:7:72:7 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:72:7:72:7 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:72:7:72:7 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:72:7:72:7 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:72:7:72:7 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:72:7:72:7 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:72:7:72:7 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:72:7:72:7 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:72:7:72:7 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:72:7:72:7 | value |  | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:72:7:72:15 | ... as ... |  | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:73:7:73:7 | second |  | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:73:7:73:7 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:73:7:73:7 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:73:7:73:7 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:73:7:73:7 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:73:7:73:7 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:73:7:73:7 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:73:7:73:7 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:73:7:73:7 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:73:7:73:7 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:73:7:73:7 | value |  | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:73:7:73:16 | ... as ... |  | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:76:3:76:3 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:76:3:76:3 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:76:3:76:3 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:76:8:76:15 | first |  | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:76:18:76:26 | second |  | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:77:5:77:5 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:77:5:77:5 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:77:5:77:5 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:77:5:77:10 | .first |  | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:77:18:77:18 | first |  | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:78:5:78:5 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:78:5:78:5 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:78:5:78:5 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:78:5:78:10 | .second |  | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:78:19:78:19 | second |  | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:82:8:82:8 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:82:8:82:8 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:82:8:82:8 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:82:23:82:35 | other |  | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:83:12:83:12 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:83:12:83:12 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:83:12:83:12 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:83:20:83:20 | other |  | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:87:8:87:8 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:87:8:87:8 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:87:8:87:8 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:87:24:87:36 | other |  | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:88:12:88:12 | self |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:88:12:88:12 | self | T | type_constraints.swift:71:18:71:21 | T |
+| type_constraints.swift:88:12:88:12 | self | U | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:88:21:88:21 | other |  | type_constraints.swift:71:33:71:36 | U |
+| type_constraints.swift:93:7:93:7 | sp |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:93:7:93:7 | sp |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:93:7:93:7 | sp | T | file://:0:0:0:0 | Int |
+| type_constraints.swift:93:7:93:7 | sp | T | file://:0:0:0:0 | Int |
+| type_constraints.swift:93:7:93:7 | sp | U | file://:0:0:0:0 | String |
+| type_constraints.swift:93:7:93:7 | sp | U | file://:0:0:0:0 | String |
+| type_constraints.swift:93:12:93:44 | call to SortedPair<T, U>.init(first:second:) |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:93:12:93:44 | call to SortedPair<T, U>.init(first:second:) | T | file://:0:0:0:0 | Int |
+| type_constraints.swift:93:12:93:44 | call to SortedPair<T, U>.init(first:second:) | U | file://:0:0:0:0 | String |
+| type_constraints.swift:93:30:93:30 | 3 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:93:41:93:41 | b |  | file://:0:0:0:0 | String |
+| type_constraints.swift:94:7:94:7 | r1 |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:94:7:94:7 | r1 |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:94:12:94:12 | sp |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:94:12:94:12 | sp | T | file://:0:0:0:0 | Int |
+| type_constraints.swift:94:12:94:12 | sp | U | file://:0:0:0:0 | String |
+| type_constraints.swift:94:12:94:37 | call to isFirstSmaller(than:) |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:94:36:94:36 | 5 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:95:7:95:7 | r2 |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:95:7:95:7 | r2 |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:95:12:95:12 | sp |  | type_constraints.swift:71:1:90:1 | SortedPair |
+| type_constraints.swift:95:12:95:12 | sp | T | file://:0:0:0:0 | Int |
+| type_constraints.swift:95:12:95:12 | sp | U | file://:0:0:0:0 | String |
+| type_constraints.swift:95:12:95:40 | call to isSecondSmaller(than:) |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:95:37:95:37 | z |  | file://:0:0:0:0 | String |
+| type_constraints.swift:103:8:103:8 | self |  | type_constraints.swift:100:1:104:1 | Self [ElementContainer] |
+| type_constraints.swift:108:7:108:7 | self |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:108:7:108:7 | self |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:108:7:108:7 | self |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:111:3:111:3 | self |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:112:5:112:5 | self |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:116:8:116:8 | self |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:117:12:117:12 | self |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:117:18:117:18 | 0 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:123:7:123:7 | self |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:123:7:123:7 | self |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:123:7:123:7 | self |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:126:3:126:3 | self |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:127:5:127:5 | self |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:131:8:131:8 | self |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:132:12:132:12 | self |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:132:18:132:18 | 0 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:137:40:137:56 | container |  | type_constraints.swift:137:19:137:22 | C |
+| type_constraints.swift:138:10:138:10 | container |  | type_constraints.swift:137:19:137:22 | C |
+| type_constraints.swift:142:40:142:56 | container |  | type_constraints.swift:142:19:142:22 | C |
+| type_constraints.swift:143:10:143:10 | container |  | type_constraints.swift:142:19:142:22 | C |
+| type_constraints.swift:147:7:147:7 | ia |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:147:7:147:7 | ia |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:147:12:147:36 | call to IntArray.init(items:) |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:147:28:147:35 | [...] |  | file://:0:0:0:0 | Array |
+| type_constraints.swift:147:28:147:35 | [...] | Element | file://:0:0:0:0 | Int |
+| type_constraints.swift:147:29:147:29 | 10 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:147:33:147:33 | 20 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:148:7:148:7 | sa |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:148:7:148:7 | sa |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:148:12:148:46 | call to StringArray.init(items:) |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:148:31:148:45 | [...] |  | file://:0:0:0:0 | Array |
+| type_constraints.swift:148:31:148:45 | [...] | Element | file://:0:0:0:0 | String |
+| type_constraints.swift:148:32:148:32 | hi |  | file://:0:0:0:0 | String |
+| type_constraints.swift:148:38:148:38 | there |  | file://:0:0:0:0 | String |
+| type_constraints.swift:149:31:149:31 | ia |  | type_constraints.swift:106:1:119:1 | IntArray |
+| type_constraints.swift:150:31:150:31 | sa |  | type_constraints.swift:121:1:134:1 | StringArray |
+| type_constraints.swift:155:7:155:7 | self |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:156:7:156:7 | self |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:156:7:156:7 | self |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:156:7:156:7 | self |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:156:7:156:7 | speed |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:156:7:156:7 | value |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:156:7:156:15 | ... as ... |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:159:3:159:3 | self |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:159:8:159:15 | speed |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:160:5:160:5 | self |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:160:5:160:10 | .speed |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:160:18:160:18 | speed |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:164:8:164:8 | self |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:165:12:165:12 | vehicle |  | file://:0:0:0:0 | String |
+| type_constraints.swift:169:7:169:7 | self |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:171:12:171:12 | self |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:171:17:171:24 | speed |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:172:5:172:28 | call to Vehicle.init(speed:) |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:172:23:172:23 | speed |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:176:17:176:17 | self |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:177:12:177:12 | car |  | file://:0:0:0:0 | String |
+| type_constraints.swift:181:8:181:8 | self |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:182:12:182:12 | beep |  | file://:0:0:0:0 | String |
+| type_constraints.swift:186:7:186:7 | self |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:188:12:188:12 | self |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:188:17:188:24 | speed |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:189:5:189:28 | call to Vehicle.init(speed:) |  | type_constraints.swift:155:1:167:1 | Vehicle |
+| type_constraints.swift:189:23:189:23 | speed |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:193:17:193:17 | self |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:194:12:194:12 | truck |  | file://:0:0:0:0 | String |
+| type_constraints.swift:198:8:198:8 | self |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:199:12:199:12 | hauling |  | file://:0:0:0:0 | String |
+| type_constraints.swift:204:34:204:39 | v |  | type_constraints.swift:204:22:204:25 | T |
+| type_constraints.swift:205:10:205:10 | v |  | type_constraints.swift:204:22:204:25 | T |
+| type_constraints.swift:209:7:209:7 | car |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:209:7:209:7 | car |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:209:13:209:27 | call to Car.init(speed:) |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:209:24:209:24 | 100 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:210:7:210:7 | truck |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:210:7:210:7 | truck |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:210:15:210:30 | call to Truck.init(speed:) |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:210:28:210:28 | 60 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:211:28:211:28 | car |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:212:28:212:28 | truck |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:213:7:213:7 | h |  | file://:0:0:0:0 | String |
+| type_constraints.swift:213:7:213:7 | h |  | file://:0:0:0:0 | String |
+| type_constraints.swift:213:11:213:11 | car |  | type_constraints.swift:169:1:184:1 | Car |
+| type_constraints.swift:213:11:213:20 | call to honk() |  | file://:0:0:0:0 | String |
+| type_constraints.swift:214:7:214:7 | hl |  | file://:0:0:0:0 | String |
+| type_constraints.swift:214:7:214:7 | hl |  | file://:0:0:0:0 | String |
+| type_constraints.swift:214:12:214:12 | truck |  | type_constraints.swift:186:1:201:1 | Truck |
+| type_constraints.swift:214:12:214:23 | call to haul() |  | file://:0:0:0:0 | String |
+| type_constraints.swift:221:15:221:15 | self |  | type_constraints.swift:219:1:222:1 | Self [Summable] |
+| type_constraints.swift:229:7:229:7 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:229:7:229:7 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:229:7:229:7 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:229:7:229:7 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:229:7:229:7 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:229:7:229:7 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:232:3:232:3 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:232:3:232:3 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:233:5:233:5 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:233:5:233:5 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:237:8:237:8 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:237:8:237:8 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:238:12:238:12 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:238:12:238:12 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:244:8:244:8 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:244:8:244:8 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:245:12:245:12 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:245:12:245:12 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:245:19:245:19 | 0 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:245:24:245:24 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:245:24:245:24 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:245:31:245:31 | 1 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:251:8:251:8 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:251:8:251:8 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:251:17:251:25 | item |  | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:252:12:252:12 | self |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:252:12:252:12 | self | T | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:252:43:252:43 | item |  | type_constraints.swift:228:20:228:20 | T |
+| type_constraints.swift:257:7:257:7 | intAcc |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:257:7:257:7 | intAcc |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:257:16:257:45 | call to Accumulator<T>.init(values:) |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:257:36:257:44 | [...] |  | file://:0:0:0:0 | Array |
+| type_constraints.swift:257:36:257:44 | [...] | Element | file://:0:0:0:0 | Int |
+| type_constraints.swift:257:37:257:37 | 1 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:257:40:257:40 | 2 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:257:43:257:43 | 3 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:258:7:258:7 | cnt |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:258:7:258:7 | cnt |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:258:13:258:13 | intAcc |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:258:13:258:26 | call to count() |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:259:13:259:13 | intAcc |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:260:7:260:7 | has |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:260:7:260:7 | has |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:260:13:260:13 | intAcc |  | type_constraints.swift:228:1:240:1 | Accumulator |
+| type_constraints.swift:260:13:260:30 | call to contains(_:) |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:260:29:260:29 | 2 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:265:7:265:7 | self |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:267:3:267:3 | self |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:270:8:270:8 | self |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:271:18:271:18 | 0 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:271:29:271:29 | 1 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:275:8:275:8 | self |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:275:42:275:47 | a |  | type_constraints.swift:275:14:275:17 | A |
+| type_constraints.swift:275:50:275:55 | b |  | type_constraints.swift:275:28:275:31 | B |
+| type_constraints.swift:281:7:281:7 | t |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:281:7:281:7 | t |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:281:11:281:23 | call to Transformer.init() |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:282:12:282:12 | t |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:282:24:282:32 | [...] |  | file://:0:0:0:0 | Array |
+| type_constraints.swift:282:24:282:32 | [...] | Element | file://:0:0:0:0 | Int |
+| type_constraints.swift:282:25:282:25 | 3 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:282:28:282:28 | 1 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:282:31:282:31 | 2 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:283:12:283:12 | t |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:283:24:283:38 | [...] |  | file://:0:0:0:0 | Array |
+| type_constraints.swift:283:24:283:38 | [...] | Element | file://:0:0:0:0 | String |
+| type_constraints.swift:283:25:283:25 | c |  | file://:0:0:0:0 | String |
+| type_constraints.swift:283:30:283:30 | a |  | file://:0:0:0:0 | String |
+| type_constraints.swift:283:35:283:35 | b |  | file://:0:0:0:0 | String |
+| type_constraints.swift:284:7:284:7 | r3 |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:284:7:284:7 | r3 |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:284:12:284:12 | t |  | type_constraints.swift:265:1:278:1 | Transformer |
+| type_constraints.swift:284:12:284:26 | call to merge(_:_:) |  | file://:0:0:0:0 | Bool |
+| type_constraints.swift:284:20:284:20 | 1 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:284:23:284:23 | x |  | file://:0:0:0:0 | String |
+| type_constraints.swift:290:27:290:36 | value |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:290:39:290:50 | lower |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:290:53:290:64 | upper |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:291:6:291:6 | value |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:291:14:291:14 | lower |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:291:29:291:29 | lower |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:292:6:292:6 | value |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:292:14:292:14 | upper |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:292:29:292:29 | upper |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:293:10:293:10 | value |  | type_constraints.swift:290:12:290:15 | T |
+| type_constraints.swift:297:18:297:18 | 5 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:297:26:297:26 | 0 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:297:34:297:34 | 10 |  | file://:0:0:0:0 | Int |
+| type_constraints.swift:299:18:299:18 | m |  | file://:0:0:0:0 | String |
+| type_constraints.swift:299:28:299:28 | a |  | file://:0:0:0:0 | String |
+| type_constraints.swift:299:38:299:38 | z |  | file://:0:0:0:0 | String |

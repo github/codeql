@@ -1,32 +1,8 @@
 import swift
-import TestUtils
-import utils.test.InlineExpectationsTest
-
-pragma[nomagic]
-private predicate declHasPotentialCommentAt(Decl d, string path, int line) {
-  d.getLocation().hasLocationInfo(path, line + 1, _, _, _)
-}
-
-pragma[nomagic]
-private SingleLineComment getPrecedingComment(Decl d) {
-  exists(string path, int line |
-    declHasPotentialCommentAt(d, path, line) and
-    result.getLocation().hasLocationInfo(path, line, _, _, _)
-  )
-}
+import Common
 
 module ResolveTest implements TestSig {
   string getARelevantTag() { result = "target" }
-
-  private predicate declHasName(Decl c, string value) {
-    exists(string s |
-      s = getPrecedingComment(c).getText() and
-      value = s.substring(3, s.length() - 1)
-    )
-    or
-    not exists(getPrecedingComment(c)) and
-    value = [c.(EnumElementDecl).getName(), c.(Function).getName()]
-  }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(AstNode source, Decl target |
@@ -34,13 +10,13 @@ module ResolveTest implements TestSig {
       element = source.toString() and
       target =
         [
-          source.(CallExpr).getStaticTarget().(Decl), source.(MethodLookupExpr).getMember(),
+          source.(CallExpr).getStaticTarget().(Decl),
+          source.(MethodLookupExpr).getMember(),
           source.(EnumElementPattern).getElement()
         ] and
       declHasName(target, value) and
       tag = "target" and
-      toBeTested(source) and
-      toBeTested(target)
+      toBeTested(source)
     )
   }
 }
