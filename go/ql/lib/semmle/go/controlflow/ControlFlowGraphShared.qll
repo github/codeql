@@ -159,13 +159,13 @@ module GoCfg {
     }
 
     class ForStmt extends LoopStmt {
-      ForStmt() { none() }
+      ForStmt() { this instanceof Go::ForStmt }
 
-      AstNode getInit(int index) { none() }
+      AstNode getInit(int index) { index = 0 and result = this.(Go::ForStmt).getInit() }
 
-      Expr getCondition() { none() }
+      Expr getCondition() { result = this.(Go::ForStmt).getCond() }
 
-      AstNode getUpdate(int index) { none() }
+      AstNode getUpdate(int index) { index = 0 and result = this.(Go::ForStmt).getPost() }
     }
 
     class ForeachStmt extends LoopStmt {
@@ -735,7 +735,6 @@ module GoCfg {
 
     predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
       ifWithInit(n1, n2) or
-      forLoop(n1, n2) or
       rangeLoop(n1, n2) or
       switchStmt(n1, n2) or
       selectStmt(n1, n2) or
@@ -1197,49 +1196,6 @@ module GoCfg {
         n1.isAfter(s.getThen()) and n2.isAfter(s)
         or
         n1.isAfter(s.getElse()) and n2.isAfter(s)
-      )
-    }
-
-    private predicate forLoop(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::ForStmt s |
-        exists(PreControlFlowNode cond |
-          (
-            cond.isBefore(s.getCond())
-            or
-            not exists(s.getCond()) and cond.isBefore(s.getBody())
-          )
-        |
-          n1.isBefore(s) and
-          (
-            n2.isBefore(s.getInit())
-            or
-            not exists(s.getInit()) and n2 = cond
-          )
-          or
-          n1.isAfter(s.getInit()) and n2 = cond
-          or
-          n1.isAfterTrue(s.getCond()) and n2.isBefore(s.getBody())
-          or
-          n1.isAfterFalse(s.getCond()) and n2.isAfter(s)
-          or
-          not exists(s.getCond()) and
-          n1.isAfter(s.getBody()) and
-          (
-            n2.isBefore(s.getPost())
-            or
-            not exists(s.getPost()) and n2.isBefore(s.getBody())
-          )
-          or
-          exists(s.getCond()) and
-          n1.isAfter(s.getBody()) and
-          (
-            n2.isBefore(s.getPost())
-            or
-            not exists(s.getPost()) and n2 = cond
-          )
-          or
-          n1.isAfter(s.getPost()) and n2 = cond
-        )
       )
     }
 
