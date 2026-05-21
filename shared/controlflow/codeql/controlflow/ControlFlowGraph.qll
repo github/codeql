@@ -118,14 +118,14 @@ signature module AstSig<LocationSig Location> {
 
   /** A traditional C-style `for` loop. */
   class ForStmt extends LoopStmt {
-    /** Gets the initializer expression of the loop at the specified (zero-based) position, if any. */
-    Expr getInit(int index);
+    /** Gets the initializer of the loop at the specified (zero-based) position, if any. */
+    AstNode getInit(int index);
 
     /** Gets the boolean condition of this `for` loop. */
     Expr getCondition();
 
-    /** Gets the update expression of this loop at the specified (zero-based) position, if any. */
-    Expr getUpdate(int index);
+    /** Gets the update of this loop at the specified (zero-based) position, if any. */
+    AstNode getUpdate(int index);
   }
 
   /** A for-loop that iterates over the elements of a collection. */
