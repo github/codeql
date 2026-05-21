@@ -247,22 +247,18 @@ print(
 )
 PYEOF
 
-read -r NEW_JACKSON_PARENT NEW_OSS_PARENT \
-    <<< "$(python3 "${WORK_DIR}/max_versions.py" \
-        "${DIST_REPO}/com/fasterxml/jackson/jackson-parent" \
-        "${DIST_REPO}/com/fasterxml/oss-parent")"
+# Capture python output into a variable first to avoid backslash continuation
+# inside $(...), which is not reliably handled by macOS bash 3.2.
+_max_versions_out="$(python3 "${WORK_DIR}/max_versions.py" "${DIST_REPO}/com/fasterxml/jackson/jackson-parent" "${DIST_REPO}/com/fasterxml/oss-parent")"
+read -r NEW_JACKSON_PARENT NEW_OSS_PARENT <<< "${_max_versions_out}"
 
 echo "  Jackson:        ${OLD_JACKSON} -> ${JACKSON_VERSION}"
 echo "  jackson-parent: ${OLD_JACKSON_PARENT} -> ${NEW_JACKSON_PARENT}"
 echo "  oss-parent:     ${OLD_OSS_PARENT} -> ${NEW_OSS_PARENT}"
 echo "  Plugin:         ${OLD_PLUGIN} -> ${PLUGIN_CODEQL_VERSION}"
 
-python3 - \
-    "${SCRIPT_DIR}" \
-    "${OLD_JACKSON}" "${JACKSON_VERSION}" \
-    "${OLD_JACKSON_PARENT}" "${NEW_JACKSON_PARENT}" \
-    "${OLD_OSS_PARENT}" "${NEW_OSS_PARENT}" \
-    "${OLD_PLUGIN}" "${PLUGIN_CODEQL_VERSION}" << 'PYEOF'
+# Script: update all *.expected files in-place
+cat > "${WORK_DIR}/update_expected.py" << 'PYEOF'
 import os, sys, glob
 
 (script_dir,
@@ -316,6 +312,13 @@ for fp in glob.glob(os.path.join(script_dir, "java", "**", "diagnostics.expected
 
 print("  Expected files updated.")
 PYEOF
+
+python3 "${WORK_DIR}/update_expected.py" \
+    "${SCRIPT_DIR}" \
+    "${OLD_JACKSON}" "${JACKSON_VERSION}" \
+    "${OLD_JACKSON_PARENT}" "${NEW_JACKSON_PARENT}" \
+    "${OLD_OSS_PARENT}" "${NEW_OSS_PARENT}" \
+    "${OLD_PLUGIN}" "${PLUGIN_CODEQL_VERSION}"
 
 echo ""
 echo "=== Update complete ==="
