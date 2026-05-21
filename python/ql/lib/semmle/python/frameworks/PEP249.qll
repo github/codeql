@@ -232,13 +232,13 @@ module PEP249 {
      * A read of a connection-holding attribute within a method of a class whose
      * `__init__` stores a PEP 249 connection in that attribute.
      *
-     * This recognises patterns such as:
+     * This recognizes patterns such as:
      * ```python
      * class Wrapper:
      *     def __init__(self):
      *         self._conn = dbapi.connect(...)
      *     def get_connection(self):
-     *         return self._conn  # <-- recognised as a connection source
+     *         return self._conn  # <-- recognized as a connection source
      * ```
      * Because the `AttrRead` node for `self._conn` inside `get_connection` is
      * also the `ExtractedReturnNode` for that statement, the existing TypeTracker
@@ -262,13 +262,13 @@ module PEP249 {
      * An attribute access on a constructor-call result that directly reads the
      * connection-holding attribute.
      *
-     * This recognises patterns such as:
+     * This recognizes patterns such as:
      * ```python
      * class Wrapper:
      *     def __init__(self):
      *         self._conn = dbapi.connect(...)
      *
-     * conn = Wrapper()._conn  # <-- recognised as a connection source
+     * conn = Wrapper()._conn  # <-- recognized as a connection source
      * ```
      */
     private class ConnectionConstructorAttributeRead extends InstanceSource, DataFlow::AttrRead {
