@@ -10,6 +10,8 @@ edges
 | test.py:48:14:48:35 | ControlFlowNode for social_security_number | test.py:49:15:49:36 | ControlFlowNode for social_security_number | provenance |  |
 | test.py:48:38:48:40 | ControlFlowNode for ssn | test.py:50:15:50:17 | ControlFlowNode for ssn | provenance |  |
 | test.py:48:54:48:63 | ControlFlowNode for passportNo | test.py:52:15:52:24 | ControlFlowNode for passportNo | provenance |  |
+| test.py:54:14:54:22 | ControlFlowNode for post_code | test.py:55:15:55:23 | ControlFlowNode for post_code | provenance |  |
+| test.py:54:25:54:31 | ControlFlowNode for zipCode | test.py:56:15:56:21 | ControlFlowNode for zipCode | provenance |  |
 | test.py:54:34:54:45 | ControlFlowNode for home_address | test.py:57:15:57:26 | ControlFlowNode for home_address | provenance |  |
 | test.py:59:14:59:26 | ControlFlowNode for user_latitude | test.py:60:15:60:27 | ControlFlowNode for user_latitude | provenance |  |
 | test.py:59:29:59:42 | ControlFlowNode for user_longitude | test.py:61:15:61:28 | ControlFlowNode for user_longitude | provenance |  |
@@ -42,7 +44,11 @@ nodes
 | test.py:49:15:49:36 | ControlFlowNode for social_security_number | semmle.label | ControlFlowNode for social_security_number |
 | test.py:50:15:50:17 | ControlFlowNode for ssn | semmle.label | ControlFlowNode for ssn |
 | test.py:52:15:52:24 | ControlFlowNode for passportNo | semmle.label | ControlFlowNode for passportNo |
+| test.py:54:14:54:22 | ControlFlowNode for post_code | semmle.label | ControlFlowNode for post_code |
+| test.py:54:25:54:31 | ControlFlowNode for zipCode | semmle.label | ControlFlowNode for zipCode |
 | test.py:54:34:54:45 | ControlFlowNode for home_address | semmle.label | ControlFlowNode for home_address |
+| test.py:55:15:55:23 | ControlFlowNode for post_code | semmle.label | ControlFlowNode for post_code |
+| test.py:56:15:56:21 | ControlFlowNode for zipCode | semmle.label | ControlFlowNode for zipCode |
 | test.py:57:15:57:26 | ControlFlowNode for home_address | semmle.label | ControlFlowNode for home_address |
 | test.py:59:14:59:26 | ControlFlowNode for user_latitude | semmle.label | ControlFlowNode for user_latitude |
 | test.py:59:29:59:42 | ControlFlowNode for user_longitude | semmle.label | ControlFlowNode for user_longitude |
@@ -79,6 +85,8 @@ subpaths
 | test.py:49:15:49:36 | ControlFlowNode for social_security_number | test.py:48:14:48:35 | ControlFlowNode for social_security_number | test.py:49:15:49:36 | ControlFlowNode for social_security_number | This expression logs $@ as clear text. | test.py:48:14:48:35 | ControlFlowNode for social_security_number | sensitive data (private) |
 | test.py:50:15:50:17 | ControlFlowNode for ssn | test.py:48:38:48:40 | ControlFlowNode for ssn | test.py:50:15:50:17 | ControlFlowNode for ssn | This expression logs $@ as clear text. | test.py:48:38:48:40 | ControlFlowNode for ssn | sensitive data (private) |
 | test.py:52:15:52:24 | ControlFlowNode for passportNo | test.py:48:54:48:63 | ControlFlowNode for passportNo | test.py:52:15:52:24 | ControlFlowNode for passportNo | This expression logs $@ as clear text. | test.py:48:54:48:63 | ControlFlowNode for passportNo | sensitive data (private) |
+| test.py:55:15:55:23 | ControlFlowNode for post_code | test.py:54:14:54:22 | ControlFlowNode for post_code | test.py:55:15:55:23 | ControlFlowNode for post_code | This expression logs $@ as clear text. | test.py:54:14:54:22 | ControlFlowNode for post_code | sensitive data (private) |
+| test.py:56:15:56:21 | ControlFlowNode for zipCode | test.py:54:25:54:31 | ControlFlowNode for zipCode | test.py:56:15:56:21 | ControlFlowNode for zipCode | This expression logs $@ as clear text. | test.py:54:25:54:31 | ControlFlowNode for zipCode | sensitive data (private) |
 | test.py:57:15:57:26 | ControlFlowNode for home_address | test.py:54:34:54:45 | ControlFlowNode for home_address | test.py:57:15:57:26 | ControlFlowNode for home_address | This expression logs $@ as clear text. | test.py:54:34:54:45 | ControlFlowNode for home_address | sensitive data (private) |
 | test.py:60:15:60:27 | ControlFlowNode for user_latitude | test.py:59:14:59:26 | ControlFlowNode for user_latitude | test.py:60:15:60:27 | ControlFlowNode for user_latitude | This expression logs $@ as clear text. | test.py:59:14:59:26 | ControlFlowNode for user_latitude | sensitive data (private) |
 | test.py:61:15:61:28 | ControlFlowNode for user_longitude | test.py:59:29:59:42 | ControlFlowNode for user_longitude | test.py:61:15:61:28 | ControlFlowNode for user_longitude | This expression logs $@ as clear text. | test.py:59:29:59:42 | ControlFlowNode for user_longitude | sensitive data (private) |

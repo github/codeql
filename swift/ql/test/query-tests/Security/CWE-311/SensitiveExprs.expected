@@ -170,6 +170,7 @@
 | testSend.swift:78:27:78:30 | .CarePlanID | label:CarePlanID, type:private information |
 | testSend.swift:79:27:79:30 | .BankCardNo | label:BankCardNo, type:private information |
 | testSend.swift:80:27:80:30 | .MyCreditRating | label:MyCreditRating, type:private information |
+| testSend.swift:81:27:81:30 | .OneTimeCode | label:OneTimeCode, type:credential |
 | testSend.swift:94:27:94:30 | .password | label:password, type:password |
 | testURL.swift:39:50:39:50 | passwd | label:passwd, type:password |
 | testURL.swift:41:51:41:51 | account_no | label:account_no, type:private information |
