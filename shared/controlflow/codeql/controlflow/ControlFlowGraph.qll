@@ -640,6 +640,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       Input1::cfgCachedStageRef() and
       not exists(getChild(n, _)) and
       not postOrInOrder(n) and
+      not additionalNode(n, _, _) and
       not inConditionalContext(n, _)
     }
 
