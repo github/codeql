@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Semmle.Extraction.Kinds;
@@ -17,6 +18,35 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private readonly ExpressionSyntax qualifier;
         private readonly BracketedArgumentListSyntax argumentList;
 
+
+        private IPropertySymbol? GetIndexerSymbol()
+        {
+            var symbol = Context.GetSymbolInfo(base.Syntax).Symbol;
+
+            if (symbol is IPropertySymbol { IsIndexer: true } indexer)
+                return indexer;
+
+            // In some cases, Roslyn translates the use of range expressions directly into method calls.
+            // E.g. `a[0..3]` is translated into `a.Slice(0, 3)`, if `a` is a `Span<T>`.
+            // In this case, we want to populate the indexer access as normal (as this reflects the source code more accurately).
+            if (symbol is IMethodSymbol method)
+            {
+                var indexers = method
+                    .ContainingType
+                    .GetMembers()
+                    .OfType<IPropertySymbol>()
+                    .Where(p => p.IsIndexer);
+
+                var intIndexer = indexers
+                    .Where(i => i.Parameters.Length == 1 && i.Parameters[0].Type.SpecialType == SpecialType.System_Int32)
+                    .FirstOrDefault();
+
+                return intIndexer;
+            }
+
+            return null;
+        }
+
         protected override void PopulateExpression(TextWriter trapFile)
         {
             if (Kind == ExprKind.POINTER_INDIRECTION)
@@ -32,9 +62,8 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Create(Context, qualifier, this, -1);
                 PopulateArguments(trapFile, argumentList, 0);
 
-                var symbolInfo = Context.GetSymbolInfo(base.Syntax);
-
-                if (symbolInfo.Symbol is IPropertySymbol indexer)
+                var indexer = GetIndexerSymbol();
+                if (indexer is not null)
                 {
                     trapFile.expr_access(this, Indexer.Create(Context, indexer));
                 }
