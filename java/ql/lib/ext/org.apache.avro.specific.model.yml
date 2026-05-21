@@ -1,0 +1,8 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from /Users/bazookamusic/git/test-repos/avro#unknown by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.avro.specific", "SpecificRecordBase", True, "readExternal", "(ObjectInput)", "", "Argument[0]", "unsafe-deserialization", "ai-generated"]
