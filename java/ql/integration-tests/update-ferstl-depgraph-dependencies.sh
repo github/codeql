@@ -189,13 +189,12 @@ echo ""
 # ---------------------------------------------------------------------------
 echo "[5/5] Updating integration-test expected files ..."
 
-# Discover versions currently recorded in the expected files so the script
-# is idempotent and can be re-run after a partial update.
-# Python is used for portability: grep -oP requires PCRE which is absent on
-# macOS's BSD grep.
+# Python helpers are written to files to avoid heredocs inside $(...), which
+# are not reliably parsed by macOS bash 3.2.
 EXPECTED_FILE="${SCRIPT_DIR}/java/buildless-maven/maven-fetches.expected"
 
-read -r OLD_JACKSON OLD_PLUGIN OLD_OSS_PARENT OLD_JACKSON_PARENT <<< "$(python3 - "${EXPECTED_FILE}" << 'PYEOF'
+# Script: extract current versions from the expected file
+cat > "${WORK_DIR}/extract_versions.py" << 'PYEOF'
 import sys, re
 
 with open(sys.argv[1]) as f:
@@ -212,14 +211,12 @@ print(
     extract(r'jackson-parent/([^/]+)/'),
 )
 PYEOF
-)"
 
-# Resolve new parent-pom versions from the artifacts Maven just resolved.
-# Python is used for version-aware max() so that e.g. 2.18.10 sorts after
-# 2.18.6 (lexicographic sort would get this wrong).
-read -r NEW_JACKSON_PARENT NEW_OSS_PARENT <<< "$(python3 - \
-    "${DIST_REPO}/com/fasterxml/jackson/jackson-parent" \
-    "${DIST_REPO}/com/fasterxml/oss-parent" << 'PYEOF'
+read -r OLD_JACKSON OLD_PLUGIN OLD_OSS_PARENT OLD_JACKSON_PARENT \
+    <<< "$(python3 "${WORK_DIR}/extract_versions.py" "${EXPECTED_FILE}")"
+
+# Script: find the highest-version POM in each parent directory
+cat > "${WORK_DIR}/max_versions.py" << 'PYEOF'
 import sys, os, re
 
 def max_version(directory, name_prefix, name_suffix):
@@ -249,7 +246,11 @@ print(
     max_version(oss_parent_dir,     'oss-parent-',     '.pom'),
 )
 PYEOF
-)"
+
+read -r NEW_JACKSON_PARENT NEW_OSS_PARENT \
+    <<< "$(python3 "${WORK_DIR}/max_versions.py" \
+        "${DIST_REPO}/com/fasterxml/jackson/jackson-parent" \
+        "${DIST_REPO}/com/fasterxml/oss-parent")"
 
 echo "  Jackson:        ${OLD_JACKSON} -> ${JACKSON_VERSION}"
 echo "  jackson-parent: ${OLD_JACKSON_PARENT} -> ${NEW_JACKSON_PARENT}"
