@@ -268,4 +268,39 @@ mod tests {
         let result = relativize_for_diagnostic(path, Some(Path::new("/repo")));
         assert_eq!(result, "foo.rb");
     }
+
+    #[cfg(windows)]
+    mod windows {
+        use super::*;
+
+        #[test]
+        fn relativize_windows_path_under_source_root() {
+            let path = Path::new(r"C:\Users\runner\work\repo\src\foo.rb");
+            let result =
+                relativize_for_diagnostic(path, Some(Path::new(r"C:\Users\runner\work\repo")));
+            assert_eq!(result, "src/foo.rb");
+        }
+
+        #[test]
+        fn relativize_windows_path_outside_source_root() {
+            let path = Path::new(r"D:\other\location\foo.rb");
+            let result =
+                relativize_for_diagnostic(path, Some(Path::new(r"C:\Users\runner\work\repo")));
+            assert_eq!(result, r"D:\other\location\foo.rb");
+        }
+
+        #[test]
+        fn relativize_windows_path_no_source_root() {
+            let path = Path::new(r"C:\Users\runner\work\repo\src\foo.rb");
+            let result = relativize_for_diagnostic(path, None);
+            assert_eq!(result, r"C:\Users\runner\work\repo\src\foo.rb");
+        }
+
+        #[test]
+        fn relativize_windows_nested_path() {
+            let path = Path::new(r"C:\repo\src\lib\utils\foo.rb");
+            let result = relativize_for_diagnostic(path, Some(Path::new(r"C:\repo")));
+            assert_eq!(result, "src/lib/utils/foo.rb");
+        }
+    }
 }
