@@ -27,9 +27,7 @@ import go
 import IdnaIpLiteralSmuggle
 import Flow::PathGraph
 
-from
-  Flow::PathNode source,
-  Flow::PathNode sink
+from Flow::PathNode source, Flow::PathNode sink
 where Flow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "Untrusted hostname from $@ flows through a `golang.org/x/net/idna` mapping call (which performs UTS-46 NFKC digit folding) and reaches this hostname sink without a post-IDNA `net.ParseIP` (or `netip.ParseAddr`) recheck on the trailing-dot-stripped value.",
