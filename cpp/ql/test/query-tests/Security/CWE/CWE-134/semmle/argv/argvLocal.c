@@ -7,7 +7,7 @@ int printf(const char *format, ...);
 void *memcpy(void *s1, const void *s2, size_t n);
 void *malloc(size_t size);
 void printWrapper(char *correct) {
-	printf(correct);
+	printf(correct); // BAD
 }
 
 int main(int argc, char **argv) {

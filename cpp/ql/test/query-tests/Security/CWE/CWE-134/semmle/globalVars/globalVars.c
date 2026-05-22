@@ -17,7 +17,7 @@ void setCopy2(char *val) {
 }
 
 void printWrapper(char *str) {
-	printf(str);
+	printf(str); // BAD
 }
 
 int main(int argc, char **argv) {
