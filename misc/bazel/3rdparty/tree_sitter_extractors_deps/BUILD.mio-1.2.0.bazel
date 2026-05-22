@@ -104,106 +104,106 @@ rust_library(
         "@vendor_ts__log-0.4.29//:log",
     ] + select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:aarch64-pc-windows-msvc": [
-            "@vendor_ts__windows-sys-0.61.0//:windows_sys",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.61.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-fuchsia": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-musleabi": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:i686-linux-android": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
-            "@vendor_ts__windows-sys-0.61.0//:windows_sys",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.61.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:wasm32-unknown-emscripten": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:wasm32-wasip1": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
             "@vendor_ts__wasi-0.11.1-wasi-snapshot-preview1//:wasi",  # cfg(target_os = "wasi")
         ],
         "@rules_rust//rust/platform:wasm32-wasip1-threads": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
             "@vendor_ts__wasi-0.11.1-wasi-snapshot-preview1//:wasi",  # cfg(target_os = "wasi")
         ],
         "@rules_rust//rust/platform:wasm32-wasip2": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
             "@vendor_ts__wasi-0.11.1-wasi-snapshot-preview1//:wasi",  # cfg(target_os = "wasi")
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:x86_64-linux-android": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
-            "@vendor_ts__windows-sys-0.61.0//:windows_sys",  # cfg(windows)
+            "@vendor_ts__windows-sys-0.61.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-fuchsia": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(unix, target_os = "hermit", target_os = "wasi"))
         ],
         "//conditions:default": [],
     }),

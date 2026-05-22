@@ -299,7 +299,9 @@ class ControlFlowElementNode extends ElementNode {
     not isNotNeeded(element.getParent+()) and
     // LambdaExpr is both a Callable and a ControlFlowElement,
     // print it with the more specific CallableNode
-    not element instanceof Callable
+    not element instanceof Callable and
+    // Handled in `ParameterNode`
+    not element instanceof Parameter
   }
 
   override PrintAstNode getChild(int childIndex) {

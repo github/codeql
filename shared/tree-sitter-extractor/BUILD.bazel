@@ -12,7 +12,9 @@ rust_library(
     compile_data = [
         "src/generator/prefix.dbscheme",
     ],
-    deps = all_crate_deps(),
+    deps = all_crate_deps() + [
+        "//shared/yeast",
+    ],
 )
 
 alias(

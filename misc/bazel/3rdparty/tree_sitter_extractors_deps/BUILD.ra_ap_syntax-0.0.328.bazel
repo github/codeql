@@ -102,7 +102,7 @@ rust_library(
     }),
     version = "0.0.328",
     deps = [
-        "@vendor_ts__either-1.15.0//:either",
+        "@vendor_ts__either-1.16.0//:either",
         "@vendor_ts__itertools-0.14.0//:itertools",
         "@vendor_ts__ra_ap_parser-0.0.328//:ra_ap_parser",
         "@vendor_ts__ra_ap_stdx-0.0.328//:ra_ap_stdx",

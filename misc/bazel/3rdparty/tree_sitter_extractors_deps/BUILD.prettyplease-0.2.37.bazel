@@ -38,6 +38,9 @@ rust_library(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "verbatim",
+    ],
     crate_root = "src/lib.rs",
     edition = "2021",
     rustc_env_files = [
@@ -124,6 +127,9 @@ cargo_build_script(
             "WORKSPACE.bazel",
         ],
     ),
+    crate_features = [
+        "verbatim",
+    ],
     crate_name = "build_script_build",
     crate_root = "build.rs",
     data = glob(

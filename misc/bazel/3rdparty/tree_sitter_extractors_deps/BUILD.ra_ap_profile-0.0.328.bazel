@@ -101,44 +101,44 @@ rust_library(
             "@vendor_ts__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
             "@vendor_ts__perf-event-0.4.8//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos"), any(target_arch = "x86", target_arch = "x86_64", target_arch = "aarch64")))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
             "@vendor_ts__perf-event-0.4.8//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos"), any(target_arch = "x86", target_arch = "x86_64", target_arch = "aarch64")))
         ],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
         ],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
         ],
         "@rules_rust//rust/platform:i686-pc-windows-msvc": [
             "@vendor_ts__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:i686-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
             "@vendor_ts__perf-event-0.4.8//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos"), any(target_arch = "x86", target_arch = "x86_64", target_arch = "aarch64")))
         ],
         "@rules_rust//rust/platform:powerpc-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
         ],
         "@rules_rust//rust/platform:riscv64gc-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
         ],
         "@rules_rust//rust/platform:s390x-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
         ],
         "@rules_rust//rust/platform:x86_64-pc-windows-msvc": [
             "@vendor_ts__windows-sys-0.60.2//:windows_sys",  # cfg(windows)
         ],
         "@rules_rust//rust/platform:x86_64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
             "@vendor_ts__perf-event-0.4.8//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos"), any(target_arch = "x86", target_arch = "x86_64", target_arch = "aarch64")))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_os = "linux", target_env = "gnu"))
             "@vendor_ts__perf-event-0.4.8//:perf_event",  # cfg(all(target_os = "linux", not(target_env = "ohos"), any(target_arch = "x86", target_arch = "x86_64", target_arch = "aarch64")))
         ],
         "//conditions:default": [],

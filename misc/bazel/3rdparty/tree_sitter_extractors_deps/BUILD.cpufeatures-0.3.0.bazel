@@ -96,22 +96,22 @@ rust_library(
     version = "0.3.0",
     deps = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_vendor = "apple"))
         ],
         "@rules_rust//rust/platform:aarch64-linux-android": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_arch = "aarch64", target_os = "android"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_os = "android"))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-linux-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_arch = "aarch64", target_os = "linux"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_os = "linux"))
         ],
         "@rules_rust//rust/platform:aarch64-unknown-nixos-gnu": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(all(target_arch = "aarch64", target_os = "linux"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(all(target_arch = "aarch64", target_os = "linux"))
         ],
         "//conditions:default": [],
     }),

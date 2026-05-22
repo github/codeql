@@ -63,3 +63,14 @@ class RegexpCheckBarrier extends DataFlow::Node {
     exists(RegexMatch rm | rm instanceof Annotation | this.asExpr() = rm.getString())
   }
 }
+
+/**
+ * A method call for encrypting, hashing, or digesting sensitive information. As there are various
+ * implementations of encryption (reversible and non-reversible) from both JDK and third parties,
+ * this class simply checks the method name to take a best guess to reduce false positives.
+ */
+class EncryptedSensitiveMethodCall extends MethodCall {
+  EncryptedSensitiveMethodCall() {
+    this.getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%", "%digest%"])
+  }
+}

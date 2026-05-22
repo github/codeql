@@ -12954,21 +12954,21 @@ ir.cpp:
 
 # 1592| double StructuredBindingTupleRefGet::d
 # 1592|   Block 0
-# 1592|     v1592_1(void)                                = EnterFunction                  : 
-# 1592|     m1592_2(unknown)                             = AliasedDefinition              : 
-# 1592|     m1592_3(unknown)                             = InitializeNonLocal             : 
-# 1592|     m1592_4(unknown)                             = Chi                            : total:m1592_2, partial:m1592_3
-# 1592|     r1592_5(glval<unknown>)                      = VariableAddress[#this]         : 
-# 1592|     m1592_6(glval<StructuredBindingTupleRefGet>) = InitializeParameter[#this]     : &:r1592_5
-# 1592|     r1592_7(glval<StructuredBindingTupleRefGet>) = Load[#this]                    : &:r1592_5, m1592_6
-# 1592|     m1592_8(StructuredBindingTupleRefGet)        = InitializeIndirection[#this]   : &:r1592_7
-# 1592|     r1592_9(glval<double>)                       = FieldAddress[d]                : r1592_7
-# 1592|     r1592_10(double)                             = Constant[2.200000000000000178] : 
-# 1592|     m1592_11(double)                             = Store[?]                       : &:r1592_9, r1592_10
-# 1592|     m1592_12(unknown)                            = Chi                            : total:m1592_8, partial:m1592_11
-# 1592|     v1592_13(void)                               = ReturnVoid                     : 
-# 1592|     v1592_14(void)                               = AliasedUse                     : m1592_3
-# 1592|     v1592_15(void)                               = ExitFunction                   : 
+# 1592|     v1592_1(void)                                = EnterFunction                : 
+# 1592|     m1592_2(unknown)                             = AliasedDefinition            : 
+# 1592|     m1592_3(unknown)                             = InitializeNonLocal           : 
+# 1592|     m1592_4(unknown)                             = Chi                          : total:m1592_2, partial:m1592_3
+# 1592|     r1592_5(glval<unknown>)                      = VariableAddress[#this]       : 
+# 1592|     m1592_6(glval<StructuredBindingTupleRefGet>) = InitializeParameter[#this]   : &:r1592_5
+# 1592|     r1592_7(glval<StructuredBindingTupleRefGet>) = Load[#this]                  : &:r1592_5, m1592_6
+# 1592|     m1592_8(StructuredBindingTupleRefGet)        = InitializeIndirection[#this] : &:r1592_7
+# 1592|     r1592_9(glval<double>)                       = FieldAddress[d]              : r1592_7
+# 1592|     r1592_10(double)                             = Constant[2.2]                : 
+# 1592|     m1592_11(double)                             = Store[?]                     : &:r1592_9, r1592_10
+# 1592|     m1592_12(unknown)                            = Chi                          : total:m1592_8, partial:m1592_11
+# 1592|     v1592_13(void)                               = ReturnVoid                   : 
+# 1592|     v1592_14(void)                               = AliasedUse                   : m1592_3
+# 1592|     v1592_15(void)                               = ExitFunction                 : 
 
 # 1593| int& StructuredBindingTupleRefGet::r
 # 1593|   Block 0
@@ -21761,7 +21761,7 @@ ir.cpp:
 # 2919|     m2919_2(unknown)        = AliasedDefinition                        : 
 # 2919|     r2919_3(glval<int>)     = VariableAddress[VariableTemplateFuncUse] : 
 # 2919|     r2919_4(glval<unknown>) = FunctionAddress[VariableTemplateFunc]    : 
-# 2919|     r2919_5(double)         = Constant[2.299999999999999822]           : 
+# 2919|     r2919_5(double)         = Constant[2.3]                            : 
 # 2919|     r2919_6(double)         = Call[VariableTemplateFunc]               : func:r2919_4, 0:r2919_5
 # 2919|     m2919_7(unknown)        = ^CallSideEffect                          : ~m2919_2
 # 2919|     m2919_8(unknown)        = Chi                                      : total:m2919_2, partial:m2919_7

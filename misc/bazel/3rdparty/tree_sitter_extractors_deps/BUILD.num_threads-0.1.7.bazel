@@ -96,28 +96,28 @@ rust_library(
     version = "0.1.7",
     deps = select({
         "@rules_rust//rust/platform:aarch64-apple-darwin": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
         ],
         "@rules_rust//rust/platform:aarch64-apple-ios-sim": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
         ],
         "@rules_rust//rust/platform:i686-apple-darwin": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
         ],
         "@rules_rust//rust/platform:i686-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-darwin": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
         ],
         "@rules_rust//rust/platform:x86_64-apple-ios": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
         ],
         "@rules_rust//rust/platform:x86_64-unknown-freebsd": [
-            "@vendor_ts__libc-0.2.185//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
+            "@vendor_ts__libc-0.2.186//:libc",  # cfg(any(target_os = "macos", target_os = "ios", target_os = "freebsd"))
         ],
         "//conditions:default": [],
     }),

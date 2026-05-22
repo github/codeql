@@ -559,11 +559,6 @@ class PatternCase extends SwitchCase {
   PatternCase() { exists(PatternExpr pe | pe.isNthChildOf(this, _)) }
 
   /**
-   * DEPRECATED: alias for getPattern(0)
-   */
-  deprecated PatternExpr getPattern() { result = this.getPattern(0) }
-
-  /**
    * Gets this case's `n`th pattern.
    */
   PatternExpr getPattern(int n) { result.isNthChildOf(this, n) }

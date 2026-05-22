@@ -401,7 +401,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
                 EnumVariantInfo {
                     name,
                     snake_case_name,
-                    variant_ast_name: v.clone(),
+                    variant_ast_name: v.to_string(),
                 }
             })
             .collect(),

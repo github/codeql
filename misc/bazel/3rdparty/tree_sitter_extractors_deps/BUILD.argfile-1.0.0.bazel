@@ -99,6 +99,6 @@ rust_library(
     version = "1.0.0",
     deps = [
         "@vendor_ts__fs-err-3.3.0//:fs_err",
-        "@vendor_ts__os_str_bytes-7.1.1//:os_str_bytes",
+        "@vendor_ts__os_str_bytes-7.2.0//:os_str_bytes",
     ],
 )

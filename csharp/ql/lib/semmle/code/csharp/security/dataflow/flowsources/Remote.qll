@@ -3,6 +3,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.Collections
 private import semmle.code.csharp.frameworks.system.Net
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.Http
@@ -104,7 +105,7 @@ class WcfRemoteFlowSource extends RemoteFlowSource, DataFlow::ParameterNode {
 }
 
 /** A data flow source of remote user input (ASP.NET web service). */
-class AspNetServiceRemoteFlowSource extends RemoteFlowSource, DataFlow::ParameterNode {
+class AspNetServiceRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::ParameterNode {
   AspNetServiceRemoteFlowSource() {
     exists(Method m |
       m.getAParameter() = this.getParameter() and
@@ -115,8 +116,50 @@ class AspNetServiceRemoteFlowSource extends RemoteFlowSource, DataFlow::Paramete
   override string getSourceType() { result = "ASP.NET web service input" }
 }
 
+private class CandidateMemberToTaint extends Member {
+  CandidateMemberToTaint() {
+    this.isPublic() and
+    not this.isStatic() and
+    (
+      this =
+        any(Property p |
+          p.isAutoImplemented() and
+          p.getGetter().isPublic() and
+          p.getSetter().isPublic()
+        )
+      or
+      this = any(Field f | f.isPublic())
+    )
+  }
+}
+
+/**
+ * Taint members (transitively) on types used in
+ * 1. Action method parameters.
+ * 2. WebMethod parameters.
+ *
+ * Note that this also impacts uses of such types in other contexts.
+ */
+private class AspNetRemoteFlowSourceMember extends TaintTracking::TaintedMember,
+  CandidateMemberToTaint
+{
+  AspNetRemoteFlowSourceMember() {
+    exists(Type t, Type t0 | t = this.getDeclaringType() |
+      (t = t0 or t = t0.(CollectionType).getElementType()) and
+      (
+        t0 = any(AspNetRemoteFlowSourceMember m).getType()
+        or
+        t0 = any(ActionMethodParameter p).getType()
+        or
+        t0 = any(AspNetServiceRemoteFlowSource source).getType()
+      )
+    )
+  }
+}
+
 /** A data flow source of remote user input (ASP.NET request message). */
-class SystemNetHttpRequestMessageRemoteFlowSource extends RemoteFlowSource, DataFlow::ExprNode {
+class SystemNetHttpRequestMessageRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow::ExprNode
+{
   SystemNetHttpRequestMessageRemoteFlowSource() {
     this.getType() instanceof SystemWebHttpRequestMessageClass
   }
@@ -166,7 +209,7 @@ class MicrosoftOwinRequestRemoteFlowSource extends RemoteFlowSource, DataFlow::E
 }
 
 /** A parameter to an Mvc controller action method, viewed as a source of remote user input. */
-class ActionMethodParameter extends RemoteFlowSource, DataFlow::ParameterNode {
+class ActionMethodParameter extends AspNetRemoteFlowSource, DataFlow::ParameterNode {
   ActionMethodParameter() {
     exists(Parameter p |
       p = this.getParameter() and
@@ -218,14 +261,18 @@ class AspNetCoreRoutingMethodParameter extends AspNetCoreRemoteFlowSource, DataF
  * Flow is defined from any ASP.NET Core remote source object to any of its member
  * properties.
  */
-private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember, Property {
+private class AspNetCoreRemoteFlowSourceMember extends TaintTracking::TaintedMember,
+  CandidateMemberToTaint
+{
   AspNetCoreRemoteFlowSourceMember() {
-    this.getDeclaringType() = any(AspNetCoreRemoteFlowSource source).getType() and
-    this.isPublic() and
-    not this.isStatic() and
-    this.isAutoImplemented() and
-    this.getGetter().isPublic() and
-    this.getSetter().isPublic()
+    exists(Type t, Type t0 | t = this.getDeclaringType() |
+      (t = t0 or t = t0.(CollectionType).getElementType()) and
+      (
+        t0 = any(AspNetCoreRemoteFlowSourceMember m).getType()
+        or
+        t0 = any(AspNetCoreRemoteFlowSource m).getType()
+      )
+    )
   }
 }
 

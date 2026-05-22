@@ -100,7 +100,7 @@ rust_library(
     version = "0.25.0",
     deps = [
         "@vendor_ts__tree-sitter-embedded-template-0.25.0//:build_script_build",
-        "@vendor_ts__tree-sitter-language-0.1.5//:tree_sitter_language",
+        "@vendor_ts__tree-sitter-language-0.1.7//:tree_sitter_language",
     ],
 )
 
@@ -138,6 +138,9 @@ cargo_build_script(
         ],
     ),
     edition = "2021",
+    link_deps = [
+        "@vendor_ts__tree-sitter-language-0.1.7//:tree_sitter_language",
+    ],
     pkg_name = "tree-sitter-embedded-template",
     rustc_env_files = [
         ":cargo_toml_env_vars",
@@ -155,7 +158,7 @@ cargo_build_script(
     version = "0.25.0",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor_ts__cc-1.2.60//:cc",
+        "@vendor_ts__cc-1.2.62//:cc",
     ],
 )
 

@@ -115,7 +115,7 @@ rust_library(
     version = "0.3.23",
     deps = [
         "@vendor_ts__matchers-0.2.0//:matchers",
-        "@vendor_ts__nu-ansi-term-0.50.1//:nu_ansi_term",
+        "@vendor_ts__nu-ansi-term-0.50.3//:nu_ansi_term",
         "@vendor_ts__once_cell-1.21.4//:once_cell",
         "@vendor_ts__regex-automata-0.4.14//:regex_automata",
         "@vendor_ts__sharded-slab-0.1.7//:sharded_slab",

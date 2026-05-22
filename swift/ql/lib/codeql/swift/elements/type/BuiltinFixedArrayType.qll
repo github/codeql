@@ -5,6 +5,7 @@
 
 private import internal.BuiltinFixedArrayTypeImpl
 import codeql.swift.elements.type.BuiltinGenericType
+import codeql.swift.elements.type.Type
 
 /**
  * A builtin type representing N values stored contiguously.

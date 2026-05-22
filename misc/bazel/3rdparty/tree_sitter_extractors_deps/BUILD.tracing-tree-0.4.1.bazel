@@ -99,7 +99,7 @@ rust_library(
     }),
     version = "0.4.1",
     deps = [
-        "@vendor_ts__nu-ansi-term-0.50.1//:nu_ansi_term",
+        "@vendor_ts__nu-ansi-term-0.50.3//:nu_ansi_term",
         "@vendor_ts__tracing-core-0.1.36//:tracing_core",
         "@vendor_ts__tracing-log-0.2.0//:tracing_log",
         "@vendor_ts__tracing-subscriber-0.3.23//:tracing_subscriber",

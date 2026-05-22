@@ -38,17 +38,26 @@ signature module AstSig<LocationSig Location> {
     Location getLocation();
   }
 
-  /** Gets the child of this AST node at the specified index. */
+  /** Gets the child of AST node `n` at the specified index. */
   AstNode getChild(AstNode n, int index);
 
-  /** Gets the immediately enclosing callable that contains this node. */
+  /** Gets the immediately enclosing callable that contains `node`. */
   Callable getEnclosingCallable(AstNode node);
 
   /** A callable, for example a function, method, constructor, or top-level script. */
   class Callable extends AstNode;
 
-  /** Gets the body of this callable, if any. */
+  /** Gets the body of callable `c`, if any. */
   AstNode callableGetBody(Callable c);
+
+  /** A parameter of a callable. */
+  class Parameter extends AstNode {
+    /** Gets the default value of this parameter, if any. */
+    Expr getDefaultValue();
+  }
+
+  /** Gets the `index`th parameter of callable `c`. */
+  Parameter callableGetParameter(Callable c, int index);
 
   /** A statement. */
   class Stmt extends AstNode;
@@ -109,14 +118,14 @@ signature module AstSig<LocationSig Location> {
 
   /** A traditional C-style `for` loop. */
   class ForStmt extends LoopStmt {
-    /** Gets the initializer expression of the loop at the specified (zero-based) position, if any. */
-    Expr getInit(int index);
+    /** Gets the initializer of the loop at the specified (zero-based) position, if any. */
+    AstNode getInit(int index);
 
     /** Gets the boolean condition of this `for` loop. */
     Expr getCondition();
 
-    /** Gets the update expression of this loop at the specified (zero-based) position, if any. */
-    Expr getUpdate(int index);
+    /** Gets the update of this loop at the specified (zero-based) position, if any. */
+    AstNode getUpdate(int index);
   }
 
   /** A for-loop that iterates over the elements of a collection. */
@@ -144,6 +153,13 @@ signature module AstSig<LocationSig Location> {
   class ContinueStmt extends Stmt;
 
   /**
+   * A `goto` statement.
+   *
+   * Goto statements complete abruptly and jump to a labeled statement.
+   */
+  class GotoStmt extends Stmt;
+
+  /**
    * A `return` statement.
    *
    * Return statements complete abruptly and return control to the caller of
@@ -155,11 +171,11 @@ signature module AstSig<LocationSig Location> {
   }
 
   /**
-   * A `throw` statement.
+   * A `throw` statement or expression.
    *
-   * Throw statements complete abruptly and throw an exception.
+   * Throw statements/expressions complete abruptly and throw an exception.
    */
-  class ThrowStmt extends Stmt {
+  class Throw extends AstNode {
     /** Gets the expression being thrown. */
     Expr getExpr();
   }
@@ -239,8 +255,8 @@ signature module AstSig<LocationSig Location> {
 
   /** A case in a switch. */
   class Case extends AstNode {
-    /** Gets a pattern being matched by this case. */
-    AstNode getAPattern();
+    /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
+    AstNode getPattern(int index);
 
     /** Gets the guard expression of this case, if any. */
     Expr getGuard();
@@ -302,10 +318,50 @@ signature module AstSig<LocationSig Location> {
   /** A logical NOT expression. */
   class LogicalNotExpr extends UnaryExpr;
 
+  /**
+   * An assignment expression, either compound or simple.
+   *
+   * Examples:
+   *
+   * ```
+   * x = y
+   * sum += element
+   * ```
+   */
+  class Assignment extends BinaryExpr;
+
+  /** A simple assignment expression, for example `x = y`. */
+  class AssignExpr extends Assignment;
+
+  /** A compound assignment expression, for example `x += y` or `x ??= y`. */
+  class CompoundAssignment extends Assignment;
+
+  /** A short-circuiting logical AND compound assignment expression. */
+  class AssignLogicalAndExpr extends CompoundAssignment;
+
+  /** A short-circuiting logical OR compound assignment expression. */
+  class AssignLogicalOrExpr extends CompoundAssignment;
+
+  /** A short-circuiting null-coalescing compound assignment expression. */
+  class AssignNullCoalescingExpr extends CompoundAssignment;
+
   /** A boolean literal expression. */
   class BooleanLiteral extends Expr {
     /** Gets the boolean value of this literal. */
     boolean getValue();
+  }
+
+  /**
+   * A pattern matching expression.
+   *
+   * In Java this is `x instanceof Pattern`, and in C# this is `x is Pattern`.
+   */
+  class PatternMatchExpr extends Expr {
+    /** Gets the expression being matched. */
+    Expr getExpr();
+
+    /** Gets the pattern being matched against. */
+    AstNode getPattern();
   }
 }
 
@@ -407,6 +463,44 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     default predicate successorValueImplies(ConditionalSuccessor t1, ConditionalSuccessor t2) {
       none()
     }
+
+    /**
+     * An additional context needed to identify the parameters or body parts of a callable.
+     *
+     * When not used, instantiate with the `Void` type.
+     */
+    class CallableContext {
+      /** Gets a textual representation of this context. */
+      string toString();
+    }
+
+    /**
+     * Gets the `index`th part of the body of `c` in context `ctx`. The indices do not
+     * need to be consecutive nor start from a specific index.
+     *
+     * This overrides the default CFG for a `Callable` with sequential evaluation
+     * of the body parts, in case a singleton `callableGetBody(c)` is inadequate
+     * to describe the child nodes of `c`.
+     */
+    default AstNode callableGetBodyPart(Callable c, CallableContext ctx, int index) { none() }
+
+    /**
+     * Gets the `index`th parameter of `c` in context `ctx`. The indices do not
+     * need to be consecutive nor start from a specific index.
+     */
+    default Parameter callableGetParameter(Callable c, CallableContext ctx, int index) { none() }
+
+    /** Holds if catch clause `catch` catches all exceptions. */
+    default predicate catchAll(CatchClause catch) { none() }
+
+    /**
+     * Holds if case `c` matches all possible values, for example, if it is a
+     * `default` case or a match-all pattern like `Object o` or if it is the
+     * final case in a switch that is known to be exhaustive.
+     *
+     * A match-all case can still ultimately fail to match if it has a guard.
+     */
+    default predicate matchAll(Case c) { c instanceof DefaultCase }
   }
 
   /**
@@ -414,6 +508,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
    * by subsequent instatiation of `Make2`.
    */
   module Make1<InputSig1 Input1> {
+    private import codeql.util.DenseRank
+    private import codeql.util.Option
+
     /**
      * Holds if `n` is executed in post-order or in-order. This means that an
      * additional node is created to represent `n` in the control flow graph.
@@ -426,11 +523,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof ReturnStmt
       or
-      n instanceof ThrowStmt
+      n instanceof Throw
       or
       n instanceof BreakStmt
       or
       n instanceof ContinueStmt
+      or
+      n instanceof GotoStmt
       or
       n instanceof Expr and
       exists(getChild(n, _)) and
@@ -449,11 +548,14 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * is the value that causes the short-circuit.
      */
     private predicate shortCircuiting(BinaryExpr expr, ConditionalSuccessor shortcircuitValue) {
-      expr instanceof LogicalAndExpr and shortcircuitValue.(BooleanSuccessor).getValue() = false
+      (expr instanceof LogicalAndExpr or expr instanceof AssignLogicalAndExpr) and
+      shortcircuitValue.(BooleanSuccessor).getValue() = false
       or
-      expr instanceof LogicalOrExpr and shortcircuitValue.(BooleanSuccessor).getValue() = true
+      (expr instanceof LogicalOrExpr or expr instanceof AssignLogicalOrExpr) and
+      shortcircuitValue.(BooleanSuccessor).getValue() = true
       or
-      expr instanceof NullCoalescingExpr and shortcircuitValue.(NullnessSuccessor).getValue() = true
+      (expr instanceof NullCoalescingExpr or expr instanceof AssignNullCoalescingExpr) and
+      shortcircuitValue.(NullnessSuccessor).getValue() = false
     }
 
     /**
@@ -463,9 +565,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     private predicate propagatesValue(AstNode child, AstNode parent) {
       Input1::propagatesValue(child, parent)
       or
-      // For now, the `not postOrInOrder(parent)` is superfluous, as we don't
-      // have any short-circuiting post-order expressions yet, but this will
-      // change once we add support for e.g. C#'s `??=`.
+      // Short-circuiting post-order expressions, i.e. short-circuiting
+      // compound assignments, e.g. C#'s `??=`, cannot propagate the value of
+      // the right-hand side to the parent, as the assignment must take place
+      // in-between, so propagating the value would imply splitting.
       shortCircuiting(parent, _) and
       not postOrInOrder(parent) and
       parent.(BinaryExpr).getRightOperand() = child
@@ -515,9 +618,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       any(ForeachStmt foreachstmt).getCollection() = n and kind.isEmptiness()
       or
-      n instanceof CatchClause and kind.isMatching()
-      or
-      n instanceof Case and kind.isMatching()
+      kind.isMatching() and
+      (
+        n instanceof CatchClause
+        or
+        n instanceof Case
+        or
+        n = any(Case case).getPattern(_)
+        or
+        exists(n.(Parameter).getDefaultValue())
+      )
     }
 
     /**
@@ -530,10 +640,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       Input1::cfgCachedStageRef() and
       not exists(getChild(n, _)) and
       not postOrInOrder(n) and
+      not additionalNode(n, _, _) and
       not inConditionalContext(n, _)
     }
 
     private string loopHeaderTag() { result = "[LoopHeader]" }
+
+    private string patternMatchTrueTag() { result = "[MatchTrue]" }
 
     /**
      * Holds if an additional node tagged with `tag` should be created for
@@ -546,6 +659,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       n instanceof LoopStmt and
       tag = loopHeaderTag() and
       t instanceof DirectSuccessor
+      or
+      n instanceof PatternMatchExpr and
+      tag = patternMatchTrueTag() and
+      t.(BooleanSuccessor).getValue() = true
     }
 
     /**
@@ -561,9 +678,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       n instanceof ContinueStmt
       or
+      n instanceof GotoStmt
+      or
       n instanceof ReturnStmt
       or
-      n instanceof ThrowStmt
+      n instanceof Throw
       or
       cannotTerminateNormally(n.(BlockStmt).getLastStmt())
       or
@@ -600,12 +719,93 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      *   not step to it, since "after" represents normal termination).
      */
 
+    private predicate callableHasBodyPart(Callable c, AstNode n) {
+      n = callableGetBody(c) or n = Input1::callableGetBodyPart(c, _, _)
+    }
+
+    private module BodyPartDenseRankInput implements DenseRankInputSig2 {
+      class C1 = Callable;
+
+      class C2 = Input1::CallableContext;
+
+      class Ranked = AstNode;
+
+      int getRank(C1 c, C2 ctx, Ranked child) {
+        child = Input1::callableGetBodyPart(c, ctx, result)
+      }
+    }
+
+    private predicate getRankedBodyPart = DenseRank2<BodyPartDenseRankInput>::denseRank/3;
+
+    private class CallableContextOption = Option<Input1::CallableContext>::Option;
+
+    private AstNode getBodyEntry(Callable c, CallableContextOption ctx) {
+      result = callableGetBody(c) and
+      not exists(getRankedBodyPart(c, _, _)) and
+      ctx.isNone()
+      or
+      result = getRankedBodyPart(c, ctx.asSome(), 1)
+    }
+
+    private AstNode getBodyExit(Callable c) {
+      result = callableGetBody(c) and
+      not exists(getRankedBodyPart(c, _, _))
+      or
+      exists(Input1::CallableContext ctx, int last |
+        result = getRankedBodyPart(c, ctx, last) and
+        not exists(getRankedBodyPart(c, ctx, last + 1))
+      )
+    }
+
+    private module ParameterDenseRankInput implements DenseRankInputSig1 {
+      class C = Callable;
+
+      class Ranked = Parameter;
+
+      int getRank(C c, Ranked child) {
+        child = callableGetParameter(c, result) and
+        not exists(Input1::callableGetParameter(c, _, _))
+      }
+    }
+
+    private module ParameterCtxDenseRankInput implements DenseRankInputSig2 {
+      class C1 = Callable;
+
+      class C2 = Input1::CallableContext;
+
+      class Ranked = AstNode;
+
+      int getRank(C1 c, C2 ctx, Ranked child) {
+        child = Input1::callableGetParameter(c, ctx, result)
+      }
+    }
+
+    private Parameter getRankedParameter(Callable c, CallableContextOption ctx, int rnk) {
+      result = DenseRank1<ParameterDenseRankInput>::denseRank(c, rnk) and
+      ctx.isNone()
+      or
+      result = DenseRank2<ParameterCtxDenseRankInput>::denseRank(c, ctx.asSome(), rnk)
+    }
+
+    private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
+      n.(BooleanLiteral).getValue() = t.(BooleanSuccessor).getValue()
+      or
+      exists(Case c, int i |
+        Input1::matchAll(c) and
+        c.getPattern(i) = n and
+        not exists(c.getPattern(i + 1)) and
+        t.(MatchingSuccessor).getValue() = true
+      )
+    }
+
     cached
     private newtype TNode =
       TBeforeNode(AstNode n) { Input1::cfgCachedStageRef() and exists(getEnclosingCallable(n)) } or
       TAstNode(AstNode n) { postOrInOrder(n) and exists(getEnclosingCallable(n)) } or
       TAfterValueNode(AstNode n, ConditionalSuccessor t) {
-        inConditionalContext(n, t.getKind()) and exists(getEnclosingCallable(n))
+        inConditionalContext(n, t.getKind()) and
+        exists(getEnclosingCallable(n)) and
+        not constantCondition(n, t.getDual())
       } or
       TAfterNode(AstNode n) {
         exists(getEnclosingCallable(n)) and
@@ -616,9 +816,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       TAdditionalNode(AstNode n, string tag) {
         additionalNode(n, tag, _) and exists(getEnclosingCallable(n))
       } or
-      TEntryNode(Callable c) { exists(callableGetBody(c)) } or
-      TAnnotatedExitNode(Callable c, Boolean normal) { exists(callableGetBody(c)) } or
-      TExitNode(Callable c) { exists(callableGetBody(c)) }
+      TEntryNode(Callable c) { callableHasBodyPart(c, _) } or
+      TAnnotatedExitNode(Callable c, Boolean normal) { callableHasBodyPart(c, _) } or
+      TExitNode(Callable c) { callableHasBodyPart(c, _) }
 
     private class NodeImpl extends TNode {
       /**
@@ -833,6 +1033,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       override string toString() { result = tag + " " + n }
     }
 
+    /** The `PreControlFlowNode` at the entry point of a callable. */
     final private class EntryNodeImpl extends NodeImpl, TEntryNode {
       private Callable c;
 
@@ -872,7 +1073,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     /** A control flow node indicating normal termination of a callable. */
-    final private class NormalExitNodeImpl extends AnnotatedExitNodeImpl {
+    final class NormalExitNodeImpl extends AnnotatedExitNodeImpl {
       NormalExitNodeImpl() { this = TAnnotatedExitNode(_, true) }
     }
 
@@ -932,18 +1133,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     signature module InputSig2 {
-      /** Holds if this catch clause catches all exceptions. */
-      default predicate catchAll(CatchClause catch) { none() }
-
-      /**
-       * Holds if this case matches all possible values, for example, if it is a
-       * `default` case or a match-all pattern like `Object o` or if it is the
-       * final case in a switch that is known to be exhaustive.
-       *
-       * A match-all case can still ultimately fail to match if it has a guard.
-       */
-      default predicate matchAll(Case c) { c instanceof DefaultCase }
-
       /**
        * Holds if `ast` may result in an abrupt completion `c` originating at
        * `n`. The boolean `always`  indicates whether the abrupt completion
@@ -992,7 +1181,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           ast instanceof ReturnStmt and
           c.getSuccessorType() instanceof ReturnSuccessor
           or
-          ast instanceof ThrowStmt and
+          ast instanceof Throw and
           c.getSuccessorType() instanceof ExceptionSuccessor
           or
           ast instanceof BreakStmt and
@@ -1000,6 +1189,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           ast instanceof ContinueStmt and
           c.getSuccessorType() instanceof ContinueSuccessor
+          or
+          ast instanceof GotoStmt and
+          c.getSuccessorType() instanceof GotoSuccessor
         ) and
         (
           not Input1::hasLabel(ast, _) and not c.hasLabel(_)
@@ -1020,6 +1212,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
+      private Stmt getAStmtInBlock(AstNode block) {
+        result = block.(BlockStmt).getStmt(_) or
+        result = block.(Switch).getStmt(_)
+      }
+
       /**
        * Holds if an abrupt completion `c` from within `ast` is caught with
        * flow continuing at `n`.
@@ -1027,7 +1224,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       private predicate endAbruptCompletion(AstNode ast, PreControlFlowNode n, AbruptCompletion c) {
         Input2::endAbruptCompletion(ast, n, c)
         or
-        exists(Callable callable | ast = callableGetBody(callable) |
+        exists(Callable callable | callableHasBodyPart(callable, ast) |
           c.getSuccessorType() instanceof ReturnSuccessor and
           n.(NormalExitNodeImpl).getEnclosingCallable() = callable
           or
@@ -1098,6 +1295,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             Input1::hasLabel(switch, l)
           )
         )
+        or
+        exists(AstNode block, Input1::Label l, Stmt lblstmt |
+          ast = getAStmtInBlock(block) and
+          lblstmt = getAStmtInBlock(block) and
+          not lblstmt instanceof GotoStmt and
+          Input1::hasLabel(pragma[only_bind_into](lblstmt), l) and
+          n.isBefore(lblstmt) and
+          c.getSuccessorType() instanceof GotoSuccessor and
+          c.hasLabel(l)
+        )
       }
 
       /**
@@ -1115,9 +1322,15 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
-      private Case getRankedCaseCfgOrder(Switch s, int rnk) {
-        result = rank[rnk](Case c, int i | getCaseControlFlowOrder(s, c) = i | c order by i)
+      private module CaseDenseRankInput implements DenseRankInputSig1 {
+        class C = Switch;
+
+        class Ranked = Case;
+
+        predicate getRank = getCaseControlFlowOrder/2;
       }
+
+      private predicate getRankedCaseCfgOrder = DenseRank1<CaseDenseRankInput>::denseRank/2;
 
       private int numberOfStmts(Switch s) { result = strictcount(s.getStmt(_)) }
 
@@ -1175,15 +1388,46 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
       }
 
+      pragma[nomagic]
+      private AstNode getParameterOrBodyEntry(Callable c, CallableContextOption ctx, int i) {
+        result = getRankedParameter(c, ctx, i)
+        or
+        (
+          not exists(getRankedParameter(c, _, _)) and
+          i = 1
+          or
+          exists(getRankedParameter(c, ctx, i - 1)) and
+          not exists(getRankedParameter(c, ctx, i))
+        ) and
+        result = getBodyEntry(c, ctx)
+      }
+
       /** Holds if there is a local non-abrupt step from `n1` to `n2`. */
       private predicate explicitStep(PreControlFlowNode n1, PreControlFlowNode n2) {
         Input2::step(n1, n2)
         or
         exists(Callable c |
           n1.(EntryNodeImpl).getEnclosingCallable() = c and
-          n2.isBefore(callableGetBody(c))
+          n2.isBefore(getParameterOrBodyEntry(c, _, 1))
           or
-          n1.isAfter(callableGetBody(c)) and
+          exists(CallableContextOption ctx, Parameter p, int i | p = getRankedParameter(c, ctx, i) |
+            exists(MatchingSuccessor t |
+              n1.isAfterValue(p, t) and
+              if t.isMatch()
+              then n2.isBefore(getParameterOrBodyEntry(c, ctx, i + 1))
+              else n2.isBefore(p.getDefaultValue())
+            )
+            or
+            n1.isAfter(p.getDefaultValue()) and
+            n2.isBefore(getParameterOrBodyEntry(c, ctx, i + 1))
+          )
+          or
+          exists(Input1::CallableContext ctx, int i |
+            n1.isAfter(getRankedBodyPart(c, ctx, i)) and
+            n2.isBefore(getRankedBodyPart(c, ctx, i + 1))
+          )
+          or
+          n1.isAfter(getBodyExit(c)) and
           n2.(NormalExitNodeImpl).getEnclosingCallable() = c
           or
           n1.(AnnotatedExitNodeImpl).getEnclosingCallable() = c and
@@ -1214,7 +1458,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n1.isAfterValue(binexpr.getLeftOperand(), shortcircuitValue) and
           n2.isAfterValue(binexpr, shortcircuitValue)
           or
-          // short-circuiting operations with side-effects (e.g. `x &&= y`, `x?.Prop = y`) are in post-order:
+          // short-circuiting operations with side-effects (e.g. `x &&= y`) are in post-order:
           n1.isAfter(binexpr.getRightOperand()) and
           n2.isIn(binexpr)
           or
@@ -1243,10 +1487,24 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(condexpr.getElse())
         )
         or
-        exists(BooleanLiteral boollit |
-          inConditionalContext(boollit, _) and
-          n1.isBefore(boollit) and
-          n2.isAfterValue(boollit, any(BooleanSuccessor t | t.getValue() = boollit.getValue()))
+        exists(PatternMatchExpr pme |
+          n1.isBefore(pme) and
+          n2.isBefore(pme.getExpr())
+          or
+          n1.isAfter(pme.getExpr()) and
+          n2.isIn(pme)
+          or
+          n1.isIn(pme) and
+          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = false))
+          or
+          n1.isIn(pme) and
+          n2.isAdditional(pme, patternMatchTrueTag())
+          or
+          n1.isAdditional(pme, patternMatchTrueTag()) and
+          n2.isBefore(pme.getPattern())
+          or
+          n1.isAfter(pme.getPattern()) and
+          n2.isAfterValue(pme, any(BooleanSuccessor s | s.getValue() = true))
         )
         or
         exists(IfStmt ifstmt |
@@ -1414,7 +1672,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           exists(MatchingSuccessor t |
             n1.isBefore(catchclause) and
             n2.isAfterValue(catchclause, t) and
-            if Input2::catchAll(catchclause) then t.getValue() = true else any()
+            if Input1::catchAll(catchclause) then t.getValue() = true else any()
           )
           or
           exists(PreControlFlowNode beforeVar, PreControlFlowNode beforeCond |
@@ -1472,21 +1730,22 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
         or
         exists(Case case |
-          exists(MatchingSuccessor t |
-            n1.isBefore(case) and
-            n2.isAfterValue(case, t) and
-            if Input2::matchAll(case) then t.getValue() = true else any()
+          n1.isBefore(case) and
+          (
+            if exists(case.getPattern(_))
+            then n2.isBefore(case.getPattern(0))
+            else n2.isAfterValue(case, any(MatchingSuccessor t | t.getValue() = true))
           )
           or
-          exists(
-            PreControlFlowNode beforePattern, PreControlFlowNode beforeGuard,
-            PreControlFlowNode beforeBody
-          |
-            (
-              beforePattern.isBefore(case.getAPattern())
-              or
-              not exists(case.getAPattern()) and beforePattern = beforeGuard
-            ) and
+          exists(int i, MatchingSuccessor ms | n1.isAfterValue(case.getPattern(i), ms) |
+            ms.getValue() = false and
+            n2.isBefore(case.getPattern(i + 1))
+            or
+            (ms.getValue() = true or not exists(case.getPattern(i + 1))) and
+            n2.isAfterValue(case, ms)
+          )
+          or
+          exists(PreControlFlowNode beforeGuard, PreControlFlowNode beforeBody |
             (
               beforeGuard.isBefore(case.getGuard())
               or
@@ -1500,9 +1759,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             )
           |
             n1.isAfterValue(case, any(MatchingSuccessor t | t.getValue() = true)) and
-            n2 = beforePattern
-            or
-            n1.isAfter(case.getAPattern()) and
             n2 = beforeGuard
             or
             n1.isAfterTrue(case.getGuard()) and
@@ -1528,10 +1784,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         not explicitStep(any(PreControlFlowNode n | n.isBefore(ast)), _)
       }
 
-      private AstNode getRankedChild(AstNode parent, int rnk) {
-        defaultCfg(parent) and
-        result = rank[rnk](AstNode c, int ix | c = getChild(parent, ix) | c order by ix)
+      private module ChildDenseRankInput implements DenseRankInputSig1 {
+        class C = AstNode;
+
+        class Ranked = AstNode;
+
+        int getRank(C parent, Ranked child) {
+          defaultCfg(parent) and
+          child = getChild(parent, result)
+        }
       }
+
+      private predicate getRankedChild = DenseRank1<ChildDenseRankInput>::denseRank/2;
 
       /**
        * Holds if `n1` to `n2` is a default left-to-right evaluation step for
@@ -1685,6 +1949,72 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           ControlFlowNode getAnExceptionSuccessor() {
             result = this.getASuccessor(any(ExceptionSuccessor t))
           }
+
+          /**
+           * Holds if this node dominates `that` node.
+           *
+           * That is, all paths reaching `that` node from the callable entry
+           * node (`EntryNode`) must go through this node.
+           */
+          bindingset[this, that]
+          pragma[inline_late]
+          predicate dominates(ControlFlowNode that) {
+            this.strictlyDominates(that)
+            or
+            this = that
+          }
+
+          /**
+           * Holds if this node strictly dominates `that` node.
+           *
+           * That is, all paths reaching `that` node from the callable entry
+           * node (`EntryNode`) must go through this node (which must be
+           * different from `that` node).
+           */
+          bindingset[this, that]
+          pragma[inline_late]
+          predicate strictlyDominates(ControlFlowNode that) {
+            this.getBasicBlock().strictlyDominates(that.getBasicBlock())
+            or
+            exists(BasicBlock bb, int i, int j |
+              bb.getNode(i) = this and
+              bb.getNode(j) = that and
+              i < j
+            )
+          }
+
+          /**
+           * Holds if this node post-dominates `that` node.
+           *
+           * That is, all paths reaching the normal callable exit node
+           * (`NormalExitNode`) from `that` node must go through this node.
+           */
+          bindingset[this, that]
+          pragma[inline_late]
+          predicate postDominates(ControlFlowNode that) {
+            this.strictlyPostDominates(that)
+            or
+            this = that
+          }
+
+          /**
+           * Holds if this node strictly post-dominates `that` node.
+           *
+           * That is, all paths reaching the normal callable exit node
+           * (`NormalExitNode`) from `that` node must go through this node
+           * (which must be different from `that` node).
+           */
+          bindingset[this, that]
+          pragma[inline_late]
+          predicate strictlyPostDominates(ControlFlowNode that) {
+            this.getBasicBlock().strictlyPostDominates(that.getBasicBlock())
+            or
+            exists(BasicBlock bb, int i, int j |
+              bb.getNode(i) = this and
+              bb.getNode(j) = that and
+              i > j
+            )
+          }
         }
 
         /** Provides additional classes for interacting with the control flow graph. */
@@ -1704,6 +2034,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           /** A control flow node indicating the termination of a callable. */
           final class ExitNode extends ControlFlowNode, ExitNodeImpl { }
 
+          import SuccessorType
           import Additional
         }
 
@@ -1757,6 +2088,53 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
 
         /** Provides a set of consistency queries. */
         module Consistency {
+          /** Holds if the consistency query `query` has `results` results. */
+          query predicate consistencyOverview(string query, int results) {
+            query = "deadEnd" and results = strictcount(ControlFlowNode node | deadEnd(node))
+            or
+            query = "nonUniqueEnclosingCallable" and
+            results =
+              strictcount(AstNode n, int callables | nonUniqueEnclosingCallable(n, callables))
+            or
+            query = "nonUniqueInConditionalContext" and
+            results = strictcount(AstNode n | nonUniqueInConditionalContext(n))
+            or
+            query = "nonLocalStep" and
+            results =
+              strictcount(ControlFlowNode n1, SuccessorType t, ControlFlowNode n2 |
+                nonLocalStep(n1, t, n2)
+              )
+            or
+            query = "ambiguousAdditionalNode" and
+            results = strictcount(AstNode n, string tag | ambiguousAdditionalNode(n, tag))
+            or
+            query = "missingInNodeForPostOrInOrder" and
+            results = strictcount(AstNode ast | missingInNodeForPostOrInOrder(ast))
+            or
+            query = "multipleSuccessors" and
+            results =
+              strictcount(ControlFlowNode node, SuccessorType t, ControlFlowNode successor |
+                multipleSuccessors(node, t, successor)
+              )
+            or
+            query = "multipleConditionalSuccessorKinds" and
+            results =
+              strictcount(ControlFlowNode node, ConditionalSuccessor t1, ConditionalSuccessor t2,
+                ControlFlowNode succ1, ControlFlowNode succ2 |
+                multipleConditionalSuccessorKinds(node, t1, t2, succ1, succ2)
+              )
+            or
+            query = "directAndConditionalSuccessor" and
+            results =
+              strictcount(ControlFlowNode node, ConditionalSuccessor t1, DirectSuccessor t2,
+                ControlFlowNode succ1, ControlFlowNode succ2 |
+                directAndConditionalSuccessors(node, t1, t2, succ1, succ2)
+              )
+            or
+            query = "selfLoop" and
+            results = strictcount(ControlFlowNode node, SuccessorType t | selfLoop(node, t))
+          }
+
           /**
            * Holds if `node` is lacking a successor.
            *
@@ -1765,6 +2143,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           query predicate deadEnd(ControlFlowNode node) {
             not node instanceof ControlFlow::ExitNode and
             not exists(node.getASuccessor(_))
+          }
+
+          /** Holds if `n` does not have a unique enclosing callable. */
+          query predicate nonUniqueEnclosingCallable(AstNode n, int callables) {
+            callables = strictcount(getEnclosingCallable(n)) and callables > 1
           }
 
           /**
@@ -1850,14 +2233,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
               t instanceof DirectSuccessor and
               node.isAdditional(any(ForeachStmt foreach), loopHeaderTag())
             ) and
-            // allow for disjunctive patterns (e.g. `case "foo", "bar":`)
-            not (
-              t instanceof DirectSuccessor and
-              node.isAfterValue(any(Case c | 2 <= strictcount(c.getAPattern())),
-                any(MatchingSuccessor m | m.getValue() = true))
-            ) and
             // allow for functions with multiple bodies
-            not (t instanceof DirectSuccessor and node instanceof ControlFlow::EntryNode)
+            not exists(Callable c |
+              successor.getAstNode() = getBodyEntry(c, _) and
+              strictcount(getBodyEntry(c, _)) > 1
+            )
           }
 
           /**
@@ -1888,7 +2268,10 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             ControlFlowNode succ1, ControlFlowNode succ2
           ) {
             succ1 = node.getASuccessor(t1) and
-            succ2 = node.getASuccessor(t2)
+            succ2 = node.getASuccessor(t2) and
+            // allow for the pattern match true edge when a pattern match
+            // expression is not in a conditional context
+            not succ1.isAdditional(_, patternMatchTrueTag())
           }
 
           /**
@@ -1898,6 +2281,33 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
            */
           query predicate selfLoop(ControlFlowNode node, SuccessorType t) {
             node.getASuccessor(t) = node
+          }
+
+          /**
+           * Holds if `c` does not include `callableGetBody` in a non-empty `callableGetBodyPart`.
+           */
+          query predicate bodyPartNonOverlap(Callable c) {
+            exists(callableGetBody(c)) and
+            exists(Input1::callableGetBodyPart(c, _, _)) and
+            not Input1::callableGetBodyPart(c, _, _) = callableGetBody(c)
+          }
+
+          /**
+           * Holds if `c` does not include `p` in `callableGetParameter` but does in
+           * `Input1::callableGetParameter`.
+           */
+          query predicate parameterNonOverlap(Callable c, Parameter p) {
+            p = Input1::callableGetParameter(c, _, _) and
+            not p = callableGetParameter(c, _)
+          }
+
+          /**
+           * Holds if a parameter `p` of a callable `c` does not have `c` as its
+           * enclosing callable.
+           */
+          query predicate parameterEnclosingCallable(Parameter p, Callable c) {
+            p = callableGetParameter(c, _) and
+            not c = getEnclosingCallable(p)
           }
         }
       }

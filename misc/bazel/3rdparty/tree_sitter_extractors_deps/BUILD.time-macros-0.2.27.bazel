@@ -95,7 +95,7 @@ rust_proc_macro(
     }),
     version = "0.2.27",
     deps = [
-        "@vendor_ts__num-conv-0.2.1//:num_conv",
+        "@vendor_ts__num-conv-0.2.2//:num_conv",
         "@vendor_ts__time-core-0.1.8//:time_core",
     ],
 )

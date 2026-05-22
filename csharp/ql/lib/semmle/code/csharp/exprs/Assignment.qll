@@ -94,13 +94,17 @@ class AssignOperation extends Assignment, @assign_op_expr {
 }
 
 /**
- * A compound assignment operation that implicitly invokes an operator.
- * For example, `x += y` assigns the result of `x + y` to `x`.
+ * A compound assignment operation that invokes an operator.
+ *
+ * (1) `x += y` invokes the compound assignment operator `+=` (if it exists).
+ * (2) `x += y` invokes the operator `+` and assigns `x + y` to `x`.
  *
  * Either an arithmetic assignment operation (`AssignArithmeticOperation`) or a bitwise
  * assignment operation (`AssignBitwiseOperation`).
  */
-class AssignCallOperation extends AssignOperation, OperatorCall, @assign_op_call_expr {
+class AssignCallOperation extends AssignOperation, OperatorCall, QualifiableExpr,
+  @assign_op_call_expr
+{
   override string toString() { result = AssignOperation.super.toString() }
 }
 

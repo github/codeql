@@ -85,8 +85,8 @@ class AssignableRead extends AssignableAccess {
   }
 
   pragma[noinline]
-  private ControlFlow::Node getAnAdjacentReadSameVar() {
-    SsaImpl::adjacentReadPairSameVar(_, this.getAControlFlowNode(), result)
+  private ControlFlowNode getAnAdjacentReadSameVar() {
+    SsaImpl::adjacentReadPairSameVar(_, this.getControlFlowNode(), result)
   }
 
   /**
@@ -114,11 +114,7 @@ class AssignableRead extends AssignableAccess {
    * - The read of `this.Field` on line 11 is next to the read on line 10.
    */
   pragma[nomagic]
-  AssignableRead getANextRead() {
-    forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
-      cfn = this.getAnAdjacentReadSameVar()
-    )
-  }
+  AssignableRead getANextRead() { result.getControlFlowNode() = this.getAnAdjacentReadSameVar() }
 }
 
 /**
@@ -275,6 +271,8 @@ module AssignableInternal {
     def = TPatternDefinition(result)
     or
     def = TAssignOperationDefinition(result)
+    or
+    def = TParameterDefaultDefinition(_, result)
   }
 
   /** A local variable declaration at the top-level of a pattern. */
@@ -312,14 +310,22 @@ module AssignableInternal {
         exists(Callable c | p = c.getAParameter() |
           c.hasBody()
           or
-          // Same as `c.(Constructor).hasInitializer()`, but avoids negative recursion warning
-          c.getAChildExpr() instanceof @constructor_init_expr
+          c.(Constructor).hasInitializer()
         )
+      } or
+      TParameterDefaultDefinition(Parameter p, Expr default) {
+        exists(Callable c | p = c.getAParameter() |
+          c.hasBody()
+          or
+          c.(Constructor).hasInitializer()
+        ) and
+        default = p.getDefaultValue()
       } or
       TAddressOfDefinition(AddressOfExpr aoe) or
       TPatternDefinition(TopLevelPatternDecl tlpd) or
       TAssignOperationDefinition(AssignOperation ao) {
-        ao instanceof AssignCallOperation or
+        ao instanceof AssignCallOperation and not ao instanceof CompoundAssignmentOperatorCall
+        or
         ao instanceof AssignCoalesceExpr
       }
 
@@ -353,6 +359,8 @@ module AssignableInternal {
         any(AssignableDefinitions::PatternDefinition pd | result = pd.getDeclaration().getVariable())
       or
       def = any(AssignableDefinitions::InitializerDefinition init | result = init.getAssignable())
+      or
+      def = TParameterDefaultDefinition(result, _)
     }
 
     // Not defined by dispatch in order to avoid too conservative negative recursion error
@@ -410,7 +418,7 @@ private import AssignableInternal
  */
 class AssignableDefinition extends TAssignableDefinition {
   /**
-   * DEPRECATED: Use `this.getExpr().getAControlFlowNode()` instead.
+   * DEPRECATED: Use `this.getExpr().getControlFlowNode()` instead.
    *
    * Gets a control flow node that updates the targeted assignable when
    * reached.
@@ -419,9 +427,7 @@ class AssignableDefinition extends TAssignableDefinition {
    * the definitions of `x` and `y` in `M(out x, out y)` and `(x, y) = (0, 1)`
    * relate to the same call to `M` and assignment node, respectively.
    */
-  deprecated ControlFlow::Node getAControlFlowNode() {
-    result = this.getExpr().getAControlFlowNode()
-  }
+  deprecated ControlFlowNode getAControlFlowNode() { result = this.getExpr().getControlFlowNode() }
 
   /**
    * Gets the underlying expression that updates the targeted assignable when
@@ -494,16 +500,7 @@ class AssignableDefinition extends TAssignableDefinition {
    */
   pragma[nomagic]
   AssignableRead getAFirstRead() {
-    forex(ControlFlow::Node cfn | cfn = result.getAControlFlowNode() |
-      exists(Ssa::ExplicitDefinition def | result = def.getAFirstReadAtNode(cfn) |
-        this = def.getADefinition()
-      )
-      or
-      exists(Ssa::ImplicitParameterDefinition def | result = def.getAFirstReadAtNode(cfn) |
-        this.(AssignableDefinitions::ImplicitParameterDefinition).getParameter() =
-          def.getParameter()
-      )
-    )
+    exists(SsaExplicitWrite def | result = Ssa::ssaGetAFirstUse(def) | this = def.getDefinition())
   }
 
   /** Gets a textual representation of this assignable definition. */
@@ -572,11 +569,9 @@ module AssignableDefinitions {
   }
 
   /** Holds if a node in basic block `bb` assigns to `ref` parameter `p` via definition `def`. */
-  private predicate basicBlockRefParamDef(
-    ControlFlow::BasicBlock bb, Parameter p, AssignableDefinition def
-  ) {
+  private predicate basicBlockRefParamDef(BasicBlock bb, Parameter p, AssignableDefinition def) {
     def = any(RefArg arg).getAnAnalyzableRefDef(p) and
-    bb.getANode() = def.getExpr().getAControlFlowNode()
+    bb.getANode() = def.getExpr().getControlFlowNode()
   }
 
   /**
@@ -585,7 +580,7 @@ module AssignableDefinitions {
    * any assignments to `p`.
    */
   pragma[nomagic]
-  private predicate parameterReachesWithoutDef(Parameter p, ControlFlow::BasicBlock bb) {
+  private predicate parameterReachesWithoutDef(Parameter p, BasicBlock bb) {
     forall(AssignableDefinition def | basicBlockRefParamDef(bb, p, def) |
       isUncertainRefCall(def.getTargetAccess())
     ) and
@@ -593,9 +588,7 @@ module AssignableDefinitions {
       any(RefArg arg).isAnalyzable(p) and
       p.getCallable().getEntryPoint() = bb.getFirstNode()
       or
-      exists(ControlFlow::BasicBlock mid | parameterReachesWithoutDef(p, mid) |
-        bb = mid.getASuccessor()
-      )
+      exists(BasicBlock mid | parameterReachesWithoutDef(p, mid) | bb = mid.getASuccessor())
     )
   }
 
@@ -607,7 +600,7 @@ module AssignableDefinitions {
   cached
   predicate isUncertainRefCall(RefArg arg) {
     arg.isPotentialAssignment() and
-    exists(ControlFlow::BasicBlock bb, Parameter p | arg.isAnalyzable(p) |
+    exists(BasicBlock bb, Parameter p | arg.isAnalyzable(p) |
       parameterReachesWithoutDef(p, bb) and
       bb.getLastNode() = p.getCallable().getExitPoint()
     )
@@ -688,7 +681,7 @@ module AssignableDefinitions {
     /** Gets the underlying parameter. */
     Parameter getParameter() { result = p }
 
-    deprecated override ControlFlow::Node getAControlFlowNode() {
+    deprecated override ControlFlowNode getAControlFlowNode() {
       result = p.getCallable().getEntryPoint()
     }
 
@@ -698,7 +691,33 @@ module AssignableDefinitions {
 
     override string toString() { result = p.toString() }
 
-    override Location getLocation() { result = this.getTarget().getLocation() }
+    override Location getLocation() { result = p.getLocation() }
+  }
+
+  /**
+   * A default value assigned to a parameter.
+   */
+  class ParameterDefaultDefinition extends AssignableDefinition, TParameterDefaultDefinition {
+    Parameter p;
+    Expr default;
+
+    ParameterDefaultDefinition() { this = TParameterDefaultDefinition(p, default) }
+
+    /** Gets the underlying parameter. */
+    Parameter getParameter() { result = p }
+
+    /** Gets the default value expression for the parameter. */
+    Expr getDefaultValue() { result = default }
+
+    override Expr getSource() { result = default }
+
+    override Expr getElement() { result = default }
+
+    override Callable getEnclosingCallable() { result = p.getCallable() }
+
+    override string toString() { result = p.toString() + " = ..." }
+
+    override Location getLocation() { result = default.getLocation() }
   }
 
   /**

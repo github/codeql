@@ -1,3 +1,11 @@
+## 1.6.2
+
+No user-facing changes.
+
+## 1.6.1
+
+No user-facing changes.
+
 ## 1.6.0
 
 ### Query Metadata Changes

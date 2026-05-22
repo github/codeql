@@ -33,7 +33,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
-        public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger)
+        public NugetExeWrapper(FileProvider fileProvider, DependencyDirectory packageDirectory, Semmle.Util.Logging.ILogger logger, Func<bool> useDefaultFeed)
         {
             this.fileProvider = fileProvider;
             this.packageDirectory = packageDirectory;
@@ -43,7 +43,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Found packages.config files, trying to use nuget.exe for package restore");
                 nugetExe = ResolveNugetExe();
-                if (HasNoPackageSource())
+                if (HasNoPackageSource() && useDefaultFeed())
                 {
                     // We only modify or add a top level nuget.config file
                     nugetConfigPath = Path.Combine(fileProvider.SourceDir.FullName, "nuget.config");

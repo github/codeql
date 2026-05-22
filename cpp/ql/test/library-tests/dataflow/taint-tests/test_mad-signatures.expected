@@ -28044,6 +28044,118 @@ getParameterTypeName
 | taint.cpp:859:8:859:12 | iconv | 4 | unsigned long * |
 | taint.cpp:861:6:861:15 | test_iconv | 0 | size_t |
 | taint.cpp:861:6:861:15 | test_iconv | 0 | unsigned long |
+| taint.cpp:872:6:872:19 | StringCchCopyA | 0 | char * |
+| taint.cpp:872:6:872:19 | StringCchCopyA | 1 | size_t |
+| taint.cpp:872:6:872:19 | StringCchCopyA | 1 | unsigned long |
+| taint.cpp:872:6:872:19 | StringCchCopyA | 2 | const char * |
+| taint.cpp:873:6:873:19 | StringCchCopyW | 0 | wchar_t * |
+| taint.cpp:873:6:873:19 | StringCchCopyW | 1 | size_t |
+| taint.cpp:873:6:873:19 | StringCchCopyW | 1 | unsigned long |
+| taint.cpp:873:6:873:19 | StringCchCopyW | 2 | const wchar_t * |
+| taint.cpp:874:6:874:18 | StringCbCopyA | 0 | char * |
+| taint.cpp:874:6:874:18 | StringCbCopyA | 1 | size_t |
+| taint.cpp:874:6:874:18 | StringCbCopyA | 1 | unsigned long |
+| taint.cpp:874:6:874:18 | StringCbCopyA | 2 | const char * |
+| taint.cpp:875:6:875:21 | StringCchCopyExA | 0 | char * |
+| taint.cpp:875:6:875:21 | StringCchCopyExA | 1 | size_t |
+| taint.cpp:875:6:875:21 | StringCchCopyExA | 1 | unsigned long |
+| taint.cpp:875:6:875:21 | StringCchCopyExA | 2 | const char * |
+| taint.cpp:875:6:875:21 | StringCchCopyExA | 3 | char ** |
+| taint.cpp:875:6:875:21 | StringCchCopyExA | 4 | size_t * |
+| taint.cpp:875:6:875:21 | StringCchCopyExA | 4 | unsigned long * |
+| taint.cpp:875:6:875:21 | StringCchCopyExA | 5 | unsigned long |
+| taint.cpp:876:6:876:20 | StringCchCopyNA | 0 | char * |
+| taint.cpp:876:6:876:20 | StringCchCopyNA | 1 | size_t |
+| taint.cpp:876:6:876:20 | StringCchCopyNA | 1 | unsigned long |
+| taint.cpp:876:6:876:20 | StringCchCopyNA | 2 | const char * |
+| taint.cpp:876:6:876:20 | StringCchCopyNA | 3 | size_t |
+| taint.cpp:876:6:876:20 | StringCchCopyNA | 3 | unsigned long |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 0 | char * |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 1 | size_t |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 1 | unsigned long |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 2 | const char * |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 3 | size_t |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 3 | unsigned long |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 4 | char ** |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 5 | size_t * |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 5 | unsigned long * |
+| taint.cpp:877:6:877:22 | StringCchCopyNExA | 6 | unsigned long |
+| taint.cpp:878:6:878:18 | StringCchCatA | 0 | char * |
+| taint.cpp:878:6:878:18 | StringCchCatA | 1 | size_t |
+| taint.cpp:878:6:878:18 | StringCchCatA | 1 | unsigned long |
+| taint.cpp:878:6:878:18 | StringCchCatA | 2 | const char * |
+| taint.cpp:879:6:879:18 | StringCchCatW | 0 | wchar_t * |
+| taint.cpp:879:6:879:18 | StringCchCatW | 1 | size_t |
+| taint.cpp:879:6:879:18 | StringCchCatW | 1 | unsigned long |
+| taint.cpp:879:6:879:18 | StringCchCatW | 2 | const wchar_t * |
+| taint.cpp:880:6:880:17 | StringCbCatA | 0 | char * |
+| taint.cpp:880:6:880:17 | StringCbCatA | 1 | size_t |
+| taint.cpp:880:6:880:17 | StringCbCatA | 1 | unsigned long |
+| taint.cpp:880:6:880:17 | StringCbCatA | 2 | const char * |
+| taint.cpp:881:6:881:20 | StringCchCatExA | 0 | char * |
+| taint.cpp:881:6:881:20 | StringCchCatExA | 1 | size_t |
+| taint.cpp:881:6:881:20 | StringCchCatExA | 1 | unsigned long |
+| taint.cpp:881:6:881:20 | StringCchCatExA | 2 | const char * |
+| taint.cpp:881:6:881:20 | StringCchCatExA | 3 | char ** |
+| taint.cpp:881:6:881:20 | StringCchCatExA | 4 | size_t * |
+| taint.cpp:881:6:881:20 | StringCchCatExA | 4 | unsigned long * |
+| taint.cpp:881:6:881:20 | StringCchCatExA | 5 | unsigned long |
+| taint.cpp:882:6:882:19 | StringCchCatNA | 0 | char * |
+| taint.cpp:882:6:882:19 | StringCchCatNA | 1 | size_t |
+| taint.cpp:882:6:882:19 | StringCchCatNA | 1 | unsigned long |
+| taint.cpp:882:6:882:19 | StringCchCatNA | 2 | const char * |
+| taint.cpp:882:6:882:19 | StringCchCatNA | 3 | size_t |
+| taint.cpp:882:6:882:19 | StringCchCatNA | 3 | unsigned long |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 0 | char * |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 1 | size_t |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 1 | unsigned long |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 2 | const char * |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 3 | size_t |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 3 | unsigned long |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 4 | char ** |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 5 | size_t * |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 5 | unsigned long * |
+| taint.cpp:883:6:883:21 | StringCchCatNExA | 6 | unsigned long |
+| taint.cpp:884:6:884:21 | StringCchPrintfA | 0 | char * |
+| taint.cpp:884:6:884:21 | StringCchPrintfA | 1 | size_t |
+| taint.cpp:884:6:884:21 | StringCchPrintfA | 1 | unsigned long |
+| taint.cpp:884:6:884:21 | StringCchPrintfA | 2 | const char * |
+| taint.cpp:884:6:884:21 | StringCchPrintfA | 3 | ... |
+| taint.cpp:885:6:885:21 | StringCchPrintfW | 0 | wchar_t * |
+| taint.cpp:885:6:885:21 | StringCchPrintfW | 1 | size_t |
+| taint.cpp:885:6:885:21 | StringCchPrintfW | 1 | unsigned long |
+| taint.cpp:885:6:885:21 | StringCchPrintfW | 2 | const wchar_t * |
+| taint.cpp:885:6:885:21 | StringCchPrintfW | 3 | ... |
+| taint.cpp:886:6:886:20 | StringCbPrintfA | 0 | char * |
+| taint.cpp:886:6:886:20 | StringCbPrintfA | 1 | size_t |
+| taint.cpp:886:6:886:20 | StringCbPrintfA | 1 | unsigned long |
+| taint.cpp:886:6:886:20 | StringCbPrintfA | 2 | const char * |
+| taint.cpp:886:6:886:20 | StringCbPrintfA | 3 | ... |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 0 | char * |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 1 | size_t |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 1 | unsigned long |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 2 | char ** |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 3 | size_t * |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 3 | unsigned long * |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 4 | unsigned long |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 5 | const char * |
+| taint.cpp:887:6:887:23 | StringCchPrintfExA | 6 | ... |
+| taint.cpp:888:6:888:22 | StringCchVPrintfA | 0 | char * |
+| taint.cpp:888:6:888:22 | StringCchVPrintfA | 1 | size_t |
+| taint.cpp:888:6:888:22 | StringCchVPrintfA | 1 | unsigned long |
+| taint.cpp:888:6:888:22 | StringCchVPrintfA | 2 | const char * |
+| taint.cpp:888:6:888:22 | StringCchVPrintfA | 3 | va_list |
+| taint.cpp:888:6:888:22 | StringCchVPrintfA | 3 | void * |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 0 | char * |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 1 | size_t |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 1 | unsigned long |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 2 | char ** |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 3 | size_t * |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 3 | unsigned long * |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 4 | unsigned long |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 5 | const char * |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 6 | va_list |
+| taint.cpp:889:6:889:24 | StringCchVPrintfExA | 6 | void * |
 | thread.cpp:4:6:4:9 | sink | 0 | int |
 | thread.cpp:6:8:6:8 | operator= | 0 | S && |
 | thread.cpp:6:8:6:8 | operator= | 0 | const S & |

@@ -36,13 +36,13 @@
 | 11 | ControlFlowNode for For | 11 | Exit node for Function dictcomp |
 | 11 | ControlFlowNode for For | 13 | ControlFlowNode for Tuple |
 | 11 | Entry node for Function dictcomp | 11 | ControlFlowNode for .0 |
-| 12 | ControlFlowNode for Attribute | 12 | ControlFlowNode for Tuple |
+| 12 | ControlFlowNode for Attribute | 12 | ControlFlowNode for z |
 | 12 | ControlFlowNode for Tuple | 12 | ControlFlowNode for Yield |
 | 12 | ControlFlowNode for Yield | 11 | ControlFlowNode for For |
 | 12 | ControlFlowNode for y | 12 | ControlFlowNode for Attribute |
 | 12 | ControlFlowNode for z | 12 | ControlFlowNode for z() |
-| 12 | ControlFlowNode for z() | 12 | ControlFlowNode for y |
+| 12 | ControlFlowNode for z() | 12 | ControlFlowNode for Tuple |
 | 13 | ControlFlowNode for Tuple | 13 | ControlFlowNode for y |
 | 13 | ControlFlowNode for y | 13 | ControlFlowNode for z |
-| 13 | ControlFlowNode for z | 12 | ControlFlowNode for z |
+| 13 | ControlFlowNode for z | 12 | ControlFlowNode for y |
 | 14 | ControlFlowNode for mapping | 11 | ControlFlowNode for DictComp |

@@ -37,6 +37,11 @@ private module Input1 implements InputSig1<Location> {
 
   class Type = T::Type;
 
+  predicate isPseudoType(Type t) {
+    t instanceof UnknownType or
+    t instanceof NeverType
+  }
+
   class TypeParameter = T::TypeParameter;
 
   class TypeAbstraction = TA::TypeAbstraction;
@@ -3609,43 +3614,6 @@ private Type inferArrayExprType(ArrayExpr ae) { exists(ae) and result instanceof
 pragma[nomagic]
 private Type inferRangeExprType(RangeExpr re) { result = TDataType(getRangeType(re)) }
 
-/**
- * According to [the Rust reference][1]: _"array and slice-typed expressions
- * can be indexed with a `usize` index ... For other types an index expression
- * `a[b]` is equivalent to *std::ops::Index::index(&a, b)"_.
- *
- * The logic below handles array and slice indexing, but for other types it is
- * currently limited to `Vec`.
- *
- * [1]: https://doc.rust-lang.org/reference/expressions/array-expr.html#r-expr.array.index
- */
-pragma[nomagic]
-private Type inferIndexExprType(IndexExpr ie, TypePath path) {
-  // TODO: Method resolution to the `std::ops::Index` trait can handle the
-  // `Index` instances for slices and arrays.
-  exists(TypePath exprPath, Builtins::BuiltinType t |
-    TDataType(t) = inferType(ie.getIndex()) and
-    (
-      // also allow `i32`, since that is currently the type that we infer for
-      // integer literals like `0`
-      t instanceof Builtins::I32
-      or
-      t instanceof Builtins::Usize
-    ) and
-    result = inferType(ie.getBase(), exprPath)
-  |
-    // todo: remove?
-    exprPath.isCons(TTypeParamTypeParameter(any(Vec v).getElementTypeParam()), path)
-    or
-    exprPath.isCons(getArrayTypeParameter(), path)
-    or
-    exists(TypePath path0 |
-      exprPath.isCons(getRefTypeParameter(_), path0) and
-      path0.isCons(getSliceTypeParameter(), path)
-    )
-  )
-}
-
 pragma[nomagic]
 private Type getInferredDerefType(DerefExpr de, TypePath path) { result = inferType(de, path) }
 
@@ -3848,7 +3816,8 @@ private module Cached {
       i instanceof ImplItemNode and dispatch = false
     |
       result = call.(AssocFunctionResolution::AssocFunctionCall).resolveCallTarget(i, _, _, _) and
-      not call instanceof CallExprImpl::DynamicCallExpr
+      not call instanceof CallExprImpl::DynamicCallExpr and
+      not i instanceof Builtins::BuiltinImpl
     )
   }
 
@@ -3949,8 +3918,6 @@ private module Cached {
       result = inferLiteralType(n, path, false)
       or
       result = inferAwaitExprType(n, path)
-      or
-      result = inferIndexExprType(n, path)
       or
       result = inferDereferencedExprPtrType(n, path)
       or

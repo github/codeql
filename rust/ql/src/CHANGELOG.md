@@ -1,3 +1,11 @@
+## 0.1.34
+
+No user-facing changes.
+
+## 0.1.33
+
+No user-facing changes.
+
 ## 0.1.32
 
 ### Query Metadata Changes

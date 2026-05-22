@@ -107,6 +107,6 @@ rust_library(
         "@vendor_ts__toml_datetime-1.1.1-spec-1.1.0//:toml_datetime",
         "@vendor_ts__toml_parser-1.1.2-spec-1.1.0//:toml_parser",
         "@vendor_ts__toml_writer-1.1.1-spec-1.1.0//:toml_writer",
-        "@vendor_ts__winnow-1.0.1//:winnow",
+        "@vendor_ts__winnow-1.0.3//:winnow",
     ],
 )

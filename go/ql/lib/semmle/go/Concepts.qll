@@ -574,18 +574,16 @@ module Cryptography {
    * is one) have been initialized separately.
    */
   abstract class EncryptionOperation extends CryptographicOperation::Range {
-    DataFlow::Node encryptionFlowTarget;
-    DataFlow::Node inputNode;
+    /** Gets the target node for the encryption flow. */
+    abstract DataFlow::Node getEncryptionFlowTarget();
 
     override DataFlow::Node getInitialization() {
-      EncryptionFlow::flow(result, encryptionFlowTarget)
+      EncryptionFlow::flow(result, this.getEncryptionFlowTarget())
     }
 
     override EncryptionAlgorithm getAlgorithm() {
       result = this.getInitialization().(EncryptionAlgorithmInit).getAlgorithm()
     }
-
-    override DataFlow::Node getAnInput() { result = inputNode }
 
     override BlockMode getBlockMode() {
       result = this.getInitialization().(BlockModeInit).getMode()
@@ -601,8 +599,12 @@ module Cryptography {
     int inputArg;
 
     EncryptionMethodCall() {
-      encryptionFlowTarget = super.getReceiver() and
-      inputNode = super.getArgument(inputArg)
+      exists(super.getReceiver()) and
+      exists(super.getArgument(inputArg))
     }
+
+    override DataFlow::Node getEncryptionFlowTarget() { result = super.getReceiver() }
+
+    override DataFlow::Node getAnInput() { result = super.getArgument(inputArg) }
   }
 }

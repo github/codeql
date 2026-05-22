@@ -105,7 +105,7 @@ rust_library(
     deps = [
         "@vendor_ts__arrayvec-0.7.6//:arrayvec",
         "@vendor_ts__bitflags-2.11.1//:bitflags",
-        "@vendor_ts__cov-mark-2.1.0//:cov_mark",
+        "@vendor_ts__cov-mark-2.2.0//:cov_mark",
         "@vendor_ts__ra-ap-rustc_lexer-0.143.0//:ra_ap_rustc_lexer",
         "@vendor_ts__ra_ap_intern-0.0.328//:ra_ap_intern",
         "@vendor_ts__ra_ap_parser-0.0.328//:ra_ap_parser",

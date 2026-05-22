@@ -106,13 +106,13 @@ rust_library(
     deps = [
         "@vendor_ts__arrayvec-0.7.6//:arrayvec",
         "@vendor_ts__bitflags-2.11.1//:bitflags",
-        "@vendor_ts__ena-0.14.3//:ena",
+        "@vendor_ts__ena-0.14.4//:ena",
         "@vendor_ts__indexmap-2.14.0//:indexmap",
         "@vendor_ts__ra-ap-rustc_ast_ir-0.143.0//:ra_ap_rustc_ast_ir",
         "@vendor_ts__ra-ap-rustc_index-0.143.0//:ra_ap_rustc_index",
         "@vendor_ts__rustc-hash-2.1.2//:rustc_hash",
         "@vendor_ts__smallvec-1.15.1//:smallvec",
-        "@vendor_ts__thin-vec-0.2.14//:thin_vec",
+        "@vendor_ts__thin-vec-0.2.18//:thin_vec",
         "@vendor_ts__tracing-0.1.44//:tracing",
     ],
 )
