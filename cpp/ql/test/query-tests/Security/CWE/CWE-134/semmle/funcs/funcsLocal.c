@@ -107,22 +107,22 @@ void test() {
 	va_list args = 0;
 	_locale_t locale = 0;
 	fread(fmt, sizeof(char), 1024, f);
-	vprintf(fmt, args); // MISSING: BAD
-	_vprintf_l(fmt, locale, args); // MISSING: BAD
-	vfprintf(f, fmt, args); // MISSING: BAD
-	_vfprintf_l(f, fmt, locale, args); // MISSING: BAD
-	vsnprintf(out, 1024, fmt, args); // MISSING: BAD
-	_vsnprintf(out, 1024, fmt, args); // MISSING: BAD
-	_vsnprintf_l(out, 1024, fmt, locale, args); // MISSING: BAD
-	vsnprintf_s(out, 1024, 1024, fmt, args); // MISSING: BAD
-	_vsnprintf_s(out, 1024, 1024, fmt, args); // MISSING: BAD
-	_vsnprintf_s_l(out, 1024, 1024, fmt, locale, args); // MISSING: BAD
-	vsprintf(out, fmt, args); // MISSING: BAD
-	_vsprintf_l(out, fmt, locale, args); // MISSING: BAD
-	_vsprintf_p(out, 1024, fmt, args); // MISSING: BAD
-	_vsprintf_p_l(out, 1024, fmt, locale, args); // MISSING: BAD
-	vsprintf_s(out, 1024, fmt, args); // MISSING: BAD
-	_vsprintf_s_l(out, 1024, fmt, locale, args); // MISSING: BAD
-	_vscprintf_p(fmt, args); // MISSING: BAD
-	_vscprintf_p_l(fmt, locale, args); // MISSING: BAD
+	vprintf(fmt, args); // BAD
+	_vprintf_l(fmt, locale, args); // BAD
+	vfprintf(f, fmt, args); // BAD
+	_vfprintf_l(f, fmt, locale, args); // BAD
+	vsnprintf(out, 1024, fmt, args); // BAD
+	_vsnprintf(out, 1024, fmt, args); // BAD
+	_vsnprintf_l(out, 1024, fmt, locale, args); // BAD
+	vsnprintf_s(out, 1024, 1024, fmt, args); // BAD
+	_vsnprintf_s(out, 1024, 1024, fmt, args); // BAD
+	_vsnprintf_s_l(out, 1024, 1024, fmt, locale, args); // BAD
+	vsprintf(out, fmt, args); // BAD
+	_vsprintf_l(out, fmt, locale, args); // BAD
+	_vsprintf_p(out, 1024, fmt, args); // BAD
+	_vsprintf_p_l(out, 1024, fmt, locale, args); // BAD
+	vsprintf_s(out, 1024, fmt, args); // BAD
+	_vsprintf_s_l(out, 1024, fmt, locale, args); // BAD
+	_vscprintf_p(fmt, args); // BAD
+	_vscprintf_p_l(fmt, locale, args); // BAD
 }
