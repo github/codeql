@@ -205,12 +205,7 @@ module Trees {
       first(this.getBodyChild(0, _), first)
       or
       not exists(this.getBodyChild(_, _)) and
-      (
-        first(super.getRescue(_), first)
-        or
-        not exists(super.getRescue(_)) and
-        first(super.getEnsure(), first)
-      )
+      first(super.getEnsure(), first)
     }
 
     override predicate last(AstNode last, Completion c) {
