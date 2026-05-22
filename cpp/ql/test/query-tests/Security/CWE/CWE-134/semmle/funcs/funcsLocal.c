@@ -59,3 +59,70 @@ int main(int argc, char **argv) {
 
 	return 0;
 }
+
+typedef void *va_list;
+typedef void *_locale_t;
+
+int vprintf(const char *format, va_list argptr);
+int _vprintf_l(const char *format, _locale_t locale, va_list argptr);
+
+int vfprintf(FILE *stream, const char *format, va_list argptr);
+int _vfprintf_l(FILE *stream, const char *format, _locale_t locale, va_list argptr);
+
+int vsnprintf(char *buffer, size_t count, const char *format, va_list argptr);
+int _vsnprintf(char *buffer, size_t count, const char *format, va_list argptr);
+int _vsnprintf_l(char *buffer, size_t count, const char *format, _locale_t locale, va_list argptr);
+
+int vsnprintf_s(
+	char *buffer, size_t sizeOfBuffer, size_t count, const char *format, va_list argptr
+);
+int _vsnprintf_s(
+	char *buffer, size_t sizeOfBuffer, size_t count, const char *format, va_list argptr
+);
+int _vsnprintf_s_l(
+	char *buffer, size_t sizeOfBuffer, size_t count, const char *format, _locale_t locale,
+	va_list argptr
+);
+
+int vsprintf(char *buffer, const char *format, va_list argptr);
+int _vsprintf_l(char *buffer, const char *format, _locale_t locale, va_list argptr);
+
+int _vsprintf_p(char *buffer, size_t sizeInBytes, const char *format, va_list argptr);
+int _vsprintf_p_l(
+	char *buffer, size_t sizeInBytes, const char *format, _locale_t locale, va_list argptr
+);
+
+int vsprintf_s(char *buffer, size_t numberOfElements, const char *format, va_list argptr);
+int _vsprintf_s_l(
+	char *buffer, size_t numberOfElements, const char *format, _locale_t locale, va_list argptr
+);
+
+int _vscprintf_p(const char *format, va_list argptr);
+int _vscprintf_p_l(const char *format, _locale_t locale, va_list argptr);
+
+void test() {
+	// BAD: User input flowing to various printf-like functions.
+	char fmt[1024];
+	char out[1024];
+	va_list args = 0;
+	_locale_t locale = 0;
+	fread(fmt, sizeof(char), 1024, f);
+	vprintf(fmt, args); // MISSING: BAD
+	_vprintf_l(fmt, locale, args); // MISSING: BAD
+	vfprintf(f, fmt, args); // MISSING: BAD
+	_vfprintf_l(f, fmt, locale, args); // MISSING: BAD
+	vsnprintf(out, 1024, fmt, args); // MISSING: BAD
+	_vsnprintf(out, 1024, fmt, args); // MISSING: BAD
+	_vsnprintf_l(out, 1024, fmt, locale, args); // MISSING: BAD
+	vsnprintf_s(out, 1024, 1024, fmt, args); // MISSING: BAD
+	_vsnprintf_s(out, 1024, 1024, fmt, args); // MISSING: BAD
+	_vsnprintf_s_l(out, 1024, 1024, fmt, locale, args); // MISSING: BAD
+	vsprintf(out, fmt, args); // MISSING: BAD
+	_vsprintf_l(out, fmt, locale, args); // MISSING: BAD
+	_vsprintf_p(out, 1024, fmt, args); // MISSING: BAD
+	_vsprintf_p_l(out, 1024, fmt, locale, args); // MISSING: BAD
+	vsprintf_s(out, 1024, fmt, args); // MISSING: BAD
+	_vsprintf_s_l(out, 1024, fmt, locale, args); // MISSING: BAD
+	_vscprintf_p(fmt, args); // MISSING: BAD
+	_vscprintf_p_l(fmt, locale, args); // MISSING: BAD
+}
