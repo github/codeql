@@ -68,6 +68,12 @@ func testHashMethods(passwd : UnsafeRawBufferPointer, cert: String, encrypted_pa
     hash = Crypto.Insecure.MD5.hash(data: account_no)   // BAD
     hash = Crypto.Insecure.MD5.hash(data: credit_card_no)   // BAD
 
+    hash = Insecure.MD5.hash(data: passwd)  // BAD
+    hash = Insecure.MD5.hash(data: cert)   // BAD
+    hash = Insecure.MD5.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
+    hash = Insecure.MD5.hash(data: account_no)   // BAD
+    hash = Insecure.MD5.hash(data: credit_card_no)   // BAD
+
     hash = Crypto.Insecure.SHA1.hash(data: passwd)  // BAD
     hash = Crypto.Insecure.SHA1.hash(data: cert)   // BAD
     hash = Crypto.Insecure.SHA1.hash(data: encrypted_passwd)  // GOOD  (not sensitive)

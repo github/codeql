@@ -120,3 +120,36 @@ public class CompoundAssignmentOperators
         Sink(x.Field); // $ hasValueFlow=1
     }
 }
+
+public class MutatorOperators
+{
+    static void Sink(object o) { }
+    static T Source<T>(object source) => throw null;
+
+    public class C1
+    {
+        public object Field { get; private set; }
+
+        public C1()
+        {
+            Field = new object();
+        }
+
+        public C1(object o)
+        {
+            Field = o;
+        }
+
+        public void operator ++()
+        {
+            Field = Source<object>(1);
+        }
+
+        public void M1()
+        {
+            var x = new C1();
+            x++;
+            Sink(x.Field); // $ hasValueFlow=1
+        }
+    }
+}

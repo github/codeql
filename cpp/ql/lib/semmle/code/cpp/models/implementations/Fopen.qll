@@ -11,7 +11,9 @@ private class Fopen extends Function, AliasFunction, SideEffectFunction, TaintFu
   Fopen() {
     this.hasGlobalOrStdName(["fopen", "fopen_s", "freopen"])
     or
-    this.hasGlobalName(["_open", "_wfopen", "_fsopen", "_wfsopen", "_wopen"])
+    this.hasGlobalName([
+        "_open", "_wfopen", "_fsopen", "_wfsopen", "_wopen", "_sopen_s", "_wsopen_s"
+      ])
   }
 
   override predicate hasOnlySpecificWriteSideEffects() { any() }
@@ -46,6 +48,10 @@ private class Fopen extends Function, AliasFunction, SideEffectFunction, TaintFu
     this.hasGlobalName(["_open", "_wopen"]) and
     i = 0 and
     buffer = true
+    or
+    this.hasGlobalName(["_sopen_s", "_wsopen_s"]) and
+    i = 1 and
+    buffer = true
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -64,5 +70,9 @@ private class Fopen extends Function, AliasFunction, SideEffectFunction, TaintFu
     this.hasGlobalName(["_open", "_wopen"]) and
     input.isParameterDeref(0) and
     output.isReturnValue()
+    or
+    this.hasGlobalName(["_sopen_s", "_wsopen_s"]) and
+    input.isParameterDeref(1) and
+    output.isParameterDeref(0)
   }
 }
