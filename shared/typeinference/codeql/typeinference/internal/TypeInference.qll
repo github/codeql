@@ -391,7 +391,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * ```
      *
      * the meaning is "`T` implements `Trait`" where the constraint is only
-     * valid for the specific `T`. Note that `condition` and `condition` are
+     * valid for the specific `T`. Note that `condition` and `constraint` are
      * identical in the two examples. To encode the difference, `abs` in the
      * first example should contain `T` whereas in the seconds example `abs`
      * should be empty.
