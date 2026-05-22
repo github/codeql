@@ -912,10 +912,6 @@ class_template_argument_value(
     int index: int ref,
     int arg_value: @expr ref
 );
-class_template_generated_from(
-    unique int template: @usertype ref,
-    int from: @usertype ref
-)
 
 @user_or_decltype = @usertype | @decltype;
 
@@ -947,10 +943,6 @@ function_template_argument_value(
     int index: int ref,
     int arg_value: @expr ref
 );
-function_template_generated_from(
-    unique int template: @function ref,
-    int from: @function ref
-);
 
 is_variable_template(unique int id: @variable ref);
 variable_instantiation(
@@ -967,10 +959,6 @@ variable_template_argument_value(
     int index: int ref,
     int arg_value: @expr ref
 );
-variable_template_generated_from(
-    unique int template: @variable ref,
-    int from: @variable ref
-);
 
 is_alias_template(unique int id: @usertype ref);
 alias_instantiation(
@@ -978,18 +966,14 @@ alias_instantiation(
     int from: @usertype ref
 );
 alias_template_argument(
-    int type_id: @usertype ref,
+    int variable_id: @usertype ref,
     int index: int ref,
     int arg_type: @type ref
 );
 alias_template_argument_value(
-    int type_id: @usertype ref,
+    int variable_id: @usertype ref,
     int index: int ref,
     int arg_value: @expr ref
-);
-alias_template_generated_from(
-    unique int template: @usertype ref,
-    int from: @usertype ref
 );
 
 template_template_instantiation(

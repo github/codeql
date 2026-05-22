@@ -828,6 +828,27 @@ class TemplateFunction extends Function {
    * such things -- see FunctionTemplateSpecialization for further details.
    */
   FunctionTemplateSpecialization getASpecialization() { result.getPrimaryTemplate() = this }
+
+  /**
+   * Gets the class member template this template was generated from.
+   *
+   * This predicate only has results for templates that are members of class
+   * template instantiations. For example, for `MyTemplateClass<int>::f<S>`
+   * in the following code, the result is `MyTemplateClass<T>::f<S>`.
+   * ```cpp
+   * template<class T>
+   * class MyTemplateClass {
+   *   template<class S>
+   *   S f();
+   * };
+   *
+   * template
+   * class MyTemplateClass<int>;
+   * ```
+   */
+  TemplateFunction getOriginalTemplate() {
+    function_template_generated_from(underlyingElement(this), unresolveElement(result))
+  }
 }
 
 /**
