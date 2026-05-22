@@ -15848,11 +15848,11 @@ inferType
 | regressions.rs:179:26:179:26 | 1 |  | {EXTERNAL LOCATION} | i32 |
 testFailures
 | main.rs:1308:44:1308:62 | //... | Missing result: target=default |
-| main.rs:2406:48:2406:80 | //... | Missing result: target=default |
-| main.rs:2409:37:2409:69 | //... | Missing result: target=default |
-| main.rs:2409:37:2409:69 | //... | Missing result: type=x9:T4.S2 |
+| main.rs:2406:48:2406:84 | //... | Missing result: target=default |
+| main.rs:2409:37:2409:73 | //... | Missing result: target=default |
+| main.rs:2409:37:2409:73 | //... | Missing result: type=x9@S4<T4>:S2 |
 | main.rs:2412:40:2412:58 | //... | Missing result: target=default |
-| main.rs:2416:22:2416:40 | //... | Missing result: type=x13:T5.S2 |
+| main.rs:2416:22:2416:44 | //... | Missing result: type=x13@S5<T5>:S2 |
 | main.rs:2418:35:2418:53 | //... | Missing result: target=default |
 | main.rs:2574:41:2574:59 | //... | Missing result: target=default |
 | main.rs:2698:37:2698:64 | //... | Missing result: target=default |
