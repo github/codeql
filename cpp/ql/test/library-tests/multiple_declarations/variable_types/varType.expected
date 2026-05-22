@@ -1,6 +1,7 @@
-| extracted_once.h:11:14:11:22 | intMember | file1.c:6:18:6:25 | intAlias | 1 |
-| extracted_once.h:12:23:12:40 | qualifiedIntMember | file1.c:7:13:7:29 | qualifiedIntAlias | 1 |
-| extracted_once.h:16:28:16:32 | param | file1.c:6:18:6:25 | intAlias | 1 |
+| extracted_once.h:11:14:11:22 | intMember | file://:0:0:0:0 | int | 1 |
+| extracted_once.h:12:23:12:40 | qualifiedIntMember | file://:0:0:0:0 | int | 1 |
+| extracted_once.h:16:28:16:32 | param | file1.c:6:18:6:25 | intAlias | 2 |
+| extracted_once.h:16:28:16:32 | param | file2.c:1:13:1:20 | intAlias | 2 |
 | extracted_twice.h:14:14:14:22 | intMember | file://:0:0:0:0 | int | 1 |
 | extracted_twice.h:15:23:15:40 | qualifiedIntMember | file://:0:0:0:0 | int | 1 |
 | extracted_twice.h:24:17:24:28 | structMember | file1.c:8:33:8:43 | structAlias | 1 |

@@ -1,5 +1,6 @@
 | a.c:4:5:4:6 | definition of is | array of {int} | 1 |
 | a.h:2:12:2:13 | declaration of is | array of 4 {int} | 1 |
+| a.h:2:12:2:13 | declaration of is | array of 4 {int} | 1 |
 | c.c:2:5:2:6 | definition of js | array of {int} | 1 |
 | c.c:4:5:4:6 | definition of ks | array of 4 {int} | 1 |
 | c.c:6:5:6:6 | definition of ls | array of 4 {int} | 1 |
