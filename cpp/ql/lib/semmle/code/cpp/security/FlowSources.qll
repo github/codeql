@@ -28,8 +28,7 @@ private class RemoteModelSource extends RemoteFlowSource {
 
   RemoteModelSource() {
     exists(CallInstruction call, RemoteFlowSourceFunction func, FunctionOutput output |
-      call.getStaticCallTarget() = func and
-      func.hasRemoteFlowSource(output, sourceType) and
+      func.hasRemoteFlowSource(call.getConvertedResultExpression(), output, sourceType) and
       this = callOutput(call, output)
     )
   }
@@ -46,7 +45,7 @@ private class LocalModelSource extends LocalFlowSource {
   LocalModelSource() {
     exists(CallInstruction call, LocalFlowSourceFunction func, FunctionOutput output |
       call.getStaticCallTarget() = func and
-      func.hasLocalFlowSource(output, sourceType) and
+      func.hasLocalFlowSource(call.getConvertedResultExpression(), output, sourceType) and
       this = callOutput(call, output)
     )
   }
