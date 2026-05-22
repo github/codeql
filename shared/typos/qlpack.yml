@@ -1,5 +1,5 @@
 name: codeql/typos
-version: 1.0.50-dev
+version: 1.0.51-dev
 groups: shared
 library: true
 warnOnImplicitThis: true
