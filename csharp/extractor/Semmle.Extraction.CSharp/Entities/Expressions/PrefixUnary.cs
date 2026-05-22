@@ -4,17 +4,17 @@ using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
-    internal class PostfixUnary : Expression<PostfixUnaryExpressionSyntax>
+    internal class PrefixUnary : Expression<PrefixUnaryExpressionSyntax>
     {
-        private PostfixUnary(ExpressionNodeInfo info, ExprKind kind)
-            : base(info.SetKind(UnaryOperatorKind(info.Context, kind, info.Node)))
+        private PrefixUnary(ExpressionNodeInfo info, ExprKind kind)
+            : base(info.SetKind(UnaryOperatorKind(info.Context, info.Kind, info.Node)))
         {
             operatorKind = kind;
         }
 
         private readonly ExprKind operatorKind;
 
-        public static Expression Create(ExpressionNodeInfo info) => new PostfixUnary(info, info.Kind).TryPopulate();
+        public static Expression Create(ExpressionNodeInfo info) => new PrefixUnary(info, info.Kind).TryPopulate();
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
@@ -24,9 +24,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             {
                 AddOperatorCall(trapFile, Syntax);
 
-                if (operatorKind == ExprKind.POST_INCR || operatorKind == ExprKind.POST_DECR)
+                if (operatorKind == ExprKind.PRE_INCR || operatorKind == ExprKind.PRE_DECR)
                 {
-                    trapFile.mutator_invocation_mode(this, 2);
+                    trapFile.mutator_invocation_mode(this, 1);
                 }
             }
         }
