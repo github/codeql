@@ -56,6 +56,16 @@ private module CfgForSsa implements BB::CfgSig<Py::Location> {
  * We only track variables that are read at least once in their scope —
  * tracking write-only variables is unnecessary work.
  */
+/**
+ * A source variable for SSA, wrapping a Python AST `Variable`.
+ *
+ * We only track variables that are read at least once in their scope —
+ * tracking write-only variables would be unnecessary work — *except*
+ * for module-scope globals, where the "read" can be external (e.g.
+ * `import mymodule; mymodule.x`). Such globals are tracked
+ * unconditionally so that import-resolution can find their defining
+ * write.
+ */
 private newtype TSsaSourceVariable =
   TPyVar(Py::Variable v) {
     // Has a use somewhere — read-relevant for SSA.
@@ -63,6 +73,19 @@ private newtype TSsaSourceVariable =
     or
     // Or has a deletion (treated as a write that destroys the value).
     exists(Cfg::NameNode n | n.deletes(v))
+    or
+    // Or is a module-scope global written in this module — must be
+    // tracked even if never read locally, because importers may read
+    // it as an attribute on the module object.
+    v.getScope() instanceof Py::Module and
+    exists(Cfg::NameNode n | n.defines(v))
+    or
+    // Or is a parameter — parameters must always have a
+    // `ParameterDefinition` for dataflow argument-routing to work,
+    // even if the parameter is never read in its scope. Mirrors
+    // legacy ESSA's `ParameterDefinition` (which fired for every
+    // parameter binding regardless of liveness).
+    exists(Py::Parameter p | p.asName() = v.getAStore())
   }
 
 /**
@@ -72,11 +95,44 @@ class SsaSourceVariable extends TSsaSourceVariable {
   /** Gets the underlying Python AST variable. */
   Py::Variable getVariable() { this = TPyVar(result) }
 
+  /** Gets the (textual) name of this variable. */
+  string getName() { result = this.getVariable().getId() }
+
   /** Gets a textual representation of this source variable. */
   string toString() { result = this.getVariable().toString() }
 
   /** Gets the location of this source variable. */
   Py::Location getLocation() { result = this.getVariable().getScope().getLocation() }
+
+  /** Gets the scope in which this variable lives. */
+  Py::Scope getScope() { result = this.getVariable().getScope() }
+
+  /**
+   * Gets a use of this variable as it appears in the source — a `NameNode`
+   * that loads or deletes the variable. Mirrors legacy
+   * `SsaSourceVariable.getASourceUse()`.
+   */
+  Cfg::ControlFlowNode getASourceUse() {
+    exists(Cfg::NameNode n | result = n | n.uses(this.getVariable()) or n.deletes(this.getVariable()))
+  }
+
+  /**
+   * Gets an implicit use of this variable. The new SSA does not have
+   * implicit-use refinements, but we keep this for API parity — every
+   * normal-exit of the variable's scope counts as a sink, ensuring
+   * variables stay live to scope exit for taint-tracking.
+   */
+  Cfg::ControlFlowNode getAnImplicitUse() {
+    result.isNormalExit() and result.getScope() = this.getScope()
+  }
+
+  /**
+   * Gets a use of this variable — either an explicit source use or an
+   * implicit use at scope exit. Mirrors legacy `SsaSourceVariable.getAUse()`.
+   */
+  Cfg::ControlFlowNode getAUse() {
+    result = this.getASourceUse() or result = this.getAnImplicitUse()
+  }
 }
 
 /**
@@ -93,7 +149,13 @@ private predicate nonLocalReadIn(Py::Variable v, Py::Scope s) {
     n.uses(v) and
     n.getScope() = s and
     not exists(Cfg::NameNode def | def.defines(v) and def.getScope() = s)
-  )
+  ) and
+  // Match legacy ESSA: only create entry defs for variables that have
+  // at least one defining store somewhere — otherwise the entry def
+  // represents "nothing reaches here", which is the default anyway and
+  // introduces no useful flow. (Legacy's `ModuleVariable` required a
+  // store; this is the closure-aware generalisation.)
+  exists(Cfg::NameNode store | store.defines(v))
 }
 
 /**
@@ -164,9 +226,23 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
   }
 
   predicate variableRead(CfgImpl::BasicBlock bb, int i, SourceVariable v, boolean certain) {
+    // Explicit source use — a `Name` load or a `del x` of the variable.
     exists(Cfg::NameNode n |
       bb.getNode(i) = n and
       n.uses(v.getVariable()) and
+      certain = true
+    )
+    or
+    // Synthetic use at the normal exit of the variable's defining scope.
+    // This keeps every variable live to scope exit so that callers (e.g.
+    // `module_export` in ImportResolution.qll, or taint-tracking pass-through
+    // through unread locals) can ask "which definition reaches end of
+    // scope?". Mirrors legacy ESSA's `SsaSourceVariable.getAUse()` which
+    // included `getScope().getANormalExit()`.
+    exists(Cfg::ControlFlowNode exit |
+      exit.isNormalExit() and
+      exit.getScope() = v.getVariable().getScope() and
+      bb.getNode(i) = exit and
       certain = true
     )
   }
@@ -250,40 +326,25 @@ class EssaNodeDefinition extends Ssa::WriteDefinition {
 }
 
 /**
- * An assignment definition `x = e`. The defining node is `x`'s CFG
- * node; the value is `e`'s CFG node.
+ * An assignment definition: any binding where the value being assigned
+ * is statically known via `Cfg::DefinitionNode.getValue()`. Includes
+ * plain assignments, walrus, annotated assignments, augmented
+ * assignments, import aliases (`import x` / `from m import x [as y]`),
+ * `with ... as x`, and for-target bindings (where `getValue()` returns
+ * the iter expression's CFG node). Excludes parameter bindings —
+ * those are modelled by `ParameterDefinition`.
  */
 class AssignmentDefinition extends EssaNodeDefinition {
   AssignmentDefinition() {
     exists(Cfg::NameNode n | n = this.getDefiningNode() |
-      exists(Py::Assign a | a.getATarget() = n.getNode())
-      or
-      exists(Py::AnnAssign a | a.getTarget() = n.getNode() and exists(a.getValue()))
-      or
-      exists(Py::AssignExpr a | a.getTarget() = n.getNode())
-      or
-      exists(Py::AugAssign a | a.getTarget() = n.getNode())
+      exists(n.(Cfg::DefinitionNode).getValue()) and
+      not n.(Cfg::ControlFlowNode).isParameter()
     )
   }
 
   /** Gets the CFG node for the value being assigned, if statically known. */
   Cfg::ControlFlowNode getValue() {
-    exists(Cfg::NameNode target | target = this.getDefiningNode() |
-      exists(Py::Assign a |
-        a.getATarget() = target.getNode() and
-        result.getNode() = a.getValue()
-      )
-      or
-      exists(Py::AnnAssign a |
-        a.getTarget() = target.getNode() and
-        result.getNode() = a.getValue()
-      )
-      or
-      exists(Py::AssignExpr a |
-        a.getTarget() = target.getNode() and
-        result.getNode() = a.getValue()
-      )
-    )
+    result = this.getDefiningNode().(Cfg::DefinitionNode).getValue()
   }
 }
 
@@ -312,17 +373,41 @@ class WithDefinition extends EssaNodeDefinition {
 
 /**
  * An assignment where the LHS is a tuple/list and the RHS is unpacked:
- * `a, b = (1, 2)` or `a, *rest = xs`. The defining node for each
- * captured Name is the Name itself.
+ * `a, b = (1, 2)` or `a, *rest = xs`. The SSA def lives at the inner
+ * `Name` CFG node, but for IterableUnpacking integration we expose
+ * the enclosing `StarredNode` as the `getDefiningNode()` for `*rest`
+ * patterns — mirroring legacy ESSA's `multi_assignment_definition`,
+ * which placed the def at the StarredNode CFG node.
  */
 class MultiAssignmentDefinition extends EssaNodeDefinition {
   MultiAssignmentDefinition() {
-    exists(Cfg::NameNode n | n = this.getDefiningNode() |
+    exists(Cfg::NameNode n | n = super.getDefiningNode() |
       exists(Py::Assign a, Py::Expr lhs |
         a.getATarget() = lhs and
         (lhs instanceof Py::Tuple or lhs instanceof Py::List) and
         lhs.getASubExpression+() = n.getNode()
       )
+      or
+      // For-loop with tuple/list target: `for a, b in xs:` —
+      // tuple-unpacking semantics applies to the for-target.
+      exists(Py::For f, Py::Expr lhs |
+        f.getTarget() = lhs and
+        (lhs instanceof Py::Tuple or lhs instanceof Py::List) and
+        lhs.getASubExpression+() = n.getNode()
+      )
+    )
+  }
+
+  override Cfg::ControlFlowNode getDefiningNode() {
+    // Default: the underlying `Name` CFG node (where the SSA def lives).
+    not exists(Cfg::StarredNode s | s.getNode().(Py::Starred).getValue() = super.getDefiningNode().getNode()) and
+    result = super.getDefiningNode()
+    or
+    // Exception: for `*rest`, expose the enclosing `Starred` CFG node
+    // so that `IterableUnpacking::iterableUnpackingStarredElementStoreStep`
+    // can attach the rest-list to it.
+    exists(Cfg::StarredNode s | s.getNode().(Py::Starred).getValue() = super.getDefiningNode().getNode() |
+      result = s
     )
   }
 }
@@ -352,7 +437,14 @@ class ScopeEntryDefinition extends EssaNodeDefinition {
 }
 
 /** A phi node (alias matching legacy naming). */
-class PhiFunction = PhiNode;
+class PhiFunction extends PhiNode {
+  /**
+   * Gets an input to this phi function (a definition that flows into
+   * the phi from one of its predecessor blocks). Mirrors legacy
+   * ESSA's `PhiFunction.getAnInput()`.
+   */
+  Ssa::Definition getAnInput() { Ssa::phiHasInputFromBlock(this, result, _) }
+}
 
 /** Base class for all ESSA definitions (legacy-shaped). */
 class EssaDefinition = Ssa::Definition;
@@ -365,8 +457,14 @@ class EssaVariable extends Ssa::Definition {
   /** Gets the underlying SSA definition (legacy name). */
   Ssa::Definition getDefinition() { result = this }
 
-  /** Gets a CFG node where this definition is used. */
-  Cfg::NameNode getAUse() {
+  /**
+   * Gets a CFG node where this definition is used. Includes regular
+   * `Name` reads as well as the synthetic scope-exit "use" registered
+   * via `SsaImplInput::variableRead` — mirrors legacy ESSA's
+   * `EssaVariable.getAUse()` which inherited the synthetic exit-use
+   * from `SsaSourceVariable`.
+   */
+  Cfg::ControlFlowNode getAUse() {
     exists(CfgImpl::BasicBlock bb, int i |
       Ssa::ssaDefReachesRead(this.getSourceVariable(), this, bb, i) and
       bb.getNode(i) = result
@@ -375,6 +473,9 @@ class EssaVariable extends Ssa::Definition {
 
   /** Gets the (textual) name of the underlying variable. */
   string getName() { result = this.getSourceVariable().getVariable().getId() }
+
+  /** Gets the scope in which this variable lives. */
+  Py::Scope getScope() { result = this.getSourceVariable().getVariable().getScope() }
 
   /** Gets an ultimate non-phi ancestor of this definition. */
   EssaVariable getAnUltimateDefinition() {

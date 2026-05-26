@@ -6,6 +6,7 @@ overlay[local?]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.RemoteFlowSources
@@ -1246,7 +1247,7 @@ module StdlibPrivate {
   /** An additional taint step for calls to `os.path.join` */
   private class OsPathJoinCallAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
     override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-      exists(CallNode call |
+      exists(Cfg::CallNode call |
         nodeTo.asCfgNode() = call and
         call = OS::OsPath::join().getACall().asCfgNode() and
         call.getAnArg() = nodeFrom.asCfgNode()
@@ -1317,13 +1318,13 @@ module StdlibPrivate {
           // run, so if we're able to, we only mark the first element as the command
           // (and not the arguments to the command).
           //
-          result.asCfgNode() = arg_args.asCfgNode().(SequenceNode).getElement(0)
+          result.asCfgNode() = arg_args.asCfgNode().(Cfg::SequenceNode).getElement(0)
           or
           // Either the "args" argument is not a sequence (which is valid) or we where
           // just not able to figure it out. Simply mark the "args" argument as the
           // command.
           //
-          not arg_args.asCfgNode() instanceof SequenceNode and
+          not arg_args.asCfgNode() instanceof Cfg::SequenceNode and
           result = arg_args
         )
       )
@@ -1542,7 +1543,7 @@ module StdlibPrivate {
    * See https://docs.python.org/3/library/functions.html#eval
    */
   private class BuiltinsEvalCall extends CodeExecution::Range, DataFlow::CallCfgNode {
-    override CallNode node;
+    override Cfg::CallNode node;
 
     BuiltinsEvalCall() { this = API::builtin("eval").getACall() }
 
@@ -1923,7 +1924,7 @@ module StdlibPrivate {
           nodeFrom = instance().getAValueReachableFromSource() and
           nodeTo = [getvalueRef(), getfirstRef(), getlistRef()].getAValueReachableFromSource()
           or
-          nodeFrom.asCfgNode() = nodeTo.asCfgNode().(CallNode).getFunction() and
+          nodeFrom.asCfgNode() = nodeTo.asCfgNode().(Cfg::CallNode).getFunction() and
           (
             nodeFrom = getvalueRef().getAValueReachableFromSource() and
             nodeTo = getvalueResult().asSource()
@@ -1939,7 +1940,7 @@ module StdlibPrivate {
           nodeFrom in [
               instance().getAValueReachableFromSource(), fieldList().getAValueReachableFromSource()
             ] and
-          nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
+          nodeTo.asCfgNode().(Cfg::SubscriptNode).getObject() = nodeFrom.asCfgNode()
           or
           // Attributes on Field
           nodeFrom = field().getAValueReachableFromSource() and
@@ -2254,8 +2255,8 @@ module StdlibPrivate {
       DataFlow::CfgNode
     {
       WsgirefSimpleServerApplicationReturn() {
-        exists(WsgirefSimpleServerApplication requestHandler |
-          node = requestHandler.getAReturnValueFlowNode()
+        exists(WsgirefSimpleServerApplication requestHandler, Return ret |
+          ret.getScope() = requestHandler and node.getNode() = ret.getValue()
         )
       }
 
@@ -2337,9 +2338,9 @@ module StdlibPrivate {
         DataFlow::Node value;
 
         HeaderWriteSubscript() {
-          exists(SubscriptNode subscript |
+          exists(Cfg::SubscriptNode subscript |
             this.asCfgNode() = subscript and
-            value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+            value.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
             name.asCfgNode() = subscript.getIndex() and
             subscript.getObject() = instance().asCfgNode()
           )
@@ -2681,7 +2682,7 @@ module StdlibPrivate {
     or
     // Data injection
     //   Special handling of the `/` operator
-    exists(BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::TypeTracker t2 |
+    exists(Cfg::BinaryExprNode slash, DataFlow::Node pathOperand, DataFlow::TypeTracker t2 |
       slash.getOp() instanceof Div and
       pathOperand.asCfgNode() = slash.getAnOperand() and
       pathlibPath(t2).flowsTo(pathOperand) and
@@ -2806,7 +2807,7 @@ module StdlibPrivate {
       pathlibPath().flowsTo(nodeTo) and
       (
         // Special handling of the `/` operator
-        exists(BinaryExprNode slash, DataFlow::Node pathOperand |
+        exists(Cfg::BinaryExprNode slash, DataFlow::Node pathOperand |
           slash.getOp() instanceof Div and
           pathOperand.asCfgNode() = slash.getAnOperand() and
           pathlibPath().flowsTo(pathOperand)
@@ -4605,9 +4606,9 @@ module StdlibPrivate {
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      exists(CallNode c, string name, ControlFlowNode n, DataFlow::AttributeContent ac |
-        c.getFunction().(NameNode).getId() = "replace" or
-        c.getFunction().(AttrNode).getName() = "replace"
+      exists(Cfg::CallNode c, string name, Cfg::ControlFlowNode n, DataFlow::AttributeContent ac |
+        c.getFunction().(Cfg::NameNode).getId() = "replace" or
+        c.getFunction().(Cfg::AttrNode).getName() = "replace"
       |
         n = c.getArgByName(name) and
         ac.getAttribute() = name and
@@ -5151,10 +5152,10 @@ module StdlibPrivate {
  * See https://docs.python.org/3.9/library/stdtypes.html#str.startswith
  */
 private class StartswithCall extends Path::SafeAccessCheck::Range {
-  StartswithCall() { this.(CallNode).getFunction().(AttrNode).getName() = "startswith" }
+  StartswithCall() { this.(Cfg::CallNode).getFunction().(Cfg::AttrNode).getName() = "startswith" }
 
-  override predicate checks(ControlFlowNode node, boolean branch) {
-    node = this.(CallNode).getFunction().(AttrNode).getObject() and
+  override predicate checks(Cfg::ControlFlowNode node, boolean branch) {
+    node = this.(Cfg::CallNode).getFunction().(Cfg::AttrNode).getObject() and
     branch = true
   }
 }

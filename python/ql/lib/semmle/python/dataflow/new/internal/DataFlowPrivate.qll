@@ -2,8 +2,9 @@ overlay[local?]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import DataFlowPublic
-private import semmle.python.essa.SsaCompute
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 private import semmle.python.dataflow.new.internal.ImportResolution
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.frameworks.data.ModelsAsData
@@ -43,13 +44,23 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 // Nodes
 //--------
 overlay[local]
-predicate isExpressionNode(ControlFlowNode node) { node.getNode() instanceof Expr }
+predicate isExpressionNode(Cfg::ControlFlowNode node) {
+  node.getNode() instanceof Expr
+  or
+  // `Cfg::ForNode` wraps a `For` statement's iter position, but
+  // overrides `.getNode()` to return the `Py::For` statement (for
+  // legacy parity). The underlying AST is still an `Expr` (the iter
+  // expression); we want a dataflow node here so that for-loop
+  // content reads (`for y in l`) have a source expression node to
+  // read content from.
+  node instanceof Cfg::ForNode
+}
 
 // =============================================================================
 // SyntheticPreUpdateNode
 // =============================================================================
 class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
-  CallNode node;
+  Cfg::CallNode node;
 
   SyntheticPreUpdateNode() { this = TSyntheticPreUpdateNode(node) }
 
@@ -151,7 +162,7 @@ predicate synthStarArgsElementParameterNodeStoreStep(
  * been passed in a `**kwargs` argument.
  */
 class SynthDictSplatArgumentNode extends Node, TSynthDictSplatArgumentNode {
-  CallNode node;
+  Cfg::CallNode node;
 
   SynthDictSplatArgumentNode() { this = TSynthDictSplatArgumentNode(node) }
 
@@ -165,7 +176,7 @@ class SynthDictSplatArgumentNode extends Node, TSynthDictSplatArgumentNode {
 private predicate synthDictSplatArgumentNodeStoreStep(
   ArgumentNode nodeFrom, DictionaryElementContent c, SynthDictSplatArgumentNode nodeTo
 ) {
-  exists(string name, CallNode call, ArgumentPosition keywordPos |
+  exists(string name, Cfg::CallNode call, ArgumentPosition keywordPos |
     nodeTo = TSynthDictSplatArgumentNode(call) and
     getCallArg(call, _, _, nodeFrom, keywordPos) and
     keywordPos.isKeyword(name) and
@@ -289,7 +300,7 @@ abstract class PostUpdateNodeImpl extends Node {
  * Synthetic post-update nodes for synthetic nodes need to be listed one by one.
  */
 class SyntheticPostUpdateNode extends PostUpdateNodeImpl, TSyntheticPostUpdateNode {
-  ControlFlowNode node;
+  Cfg::ControlFlowNode node;
 
   SyntheticPostUpdateNode() { this = TSyntheticPostUpdateNode(node) }
 
@@ -333,16 +344,22 @@ module LocalFlow {
     //   `x = f(42)`
     //   nodeFrom is `f(42)`
     //   nodeTo is `x`
-    exists(AssignmentDefinition def |
+    //
+    // We use the CFG-level `DefinitionNode.getValue()` directly rather
+    // than going through SSA, because the new SSA library prunes write
+    // definitions that have no subsequent read in the same scope (e.g.
+    // a module-level `def f():` whose `f` is only read inside other
+    // functions). The CFG-level link is unconditional.
+    exists(Cfg::DefinitionNode def |
       nodeFrom.(CfgNode).getNode() = def.getValue() and
-      nodeTo.(CfgNode).getNode() = def.getDefiningNode()
+      nodeTo.(CfgNode).getNode() = def
     )
     or
     // With definition
     //   `with f(42) as x:`
     //   nodeFrom is `f(42)`
     //   nodeTo is `x`
-    exists(With with, ControlFlowNode contextManager, WithDefinition withDef, ControlFlowNode var |
+    exists(With with, Cfg::ControlFlowNode contextManager, SsaImpl::WithDefinition withDef, Cfg::ControlFlowNode var |
       var = withDef.getDefiningNode()
     |
       nodeFrom.(CfgNode).getNode() = contextManager and
@@ -361,13 +378,13 @@ module LocalFlow {
 
   predicate expressionFlowStep(Node nodeFrom, Node nodeTo) {
     // If expressions
-    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(IfExprNode).getAnOperand()
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(Cfg::IfExprNode).getAnOperand()
     or
     // Assignment expressions
-    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(AssignmentExprNode).getValue()
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(Cfg::AssignmentExprNode).getValue()
     or
     // boolean inline expressions such as `x or y` or `x and y`
-    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(BoolExprNode).getAnOperand()
+    nodeFrom.asCfgNode() = nodeTo.asCfgNode().(Cfg::BoolExprNode).getAnOperand()
     or
     // Flow inside an unpacking assignment
     iterableUnpackingFlowStep(nodeFrom, nodeTo)
@@ -376,12 +393,12 @@ module LocalFlow {
     matchFlowStep(nodeFrom, nodeTo)
   }
 
-  predicate useToNextUse(NameNode nodeFrom, NameNode nodeTo) {
-    AdjacentUses::adjacentUseUse(nodeFrom, nodeTo)
+  predicate useToNextUse(Cfg::NameNode nodeFrom, Cfg::NameNode nodeTo) {
+    SsaImpl::AdjacentUses::adjacentUseUse(nodeFrom, nodeTo)
   }
 
-  predicate defToFirstUse(EssaVariable var, NameNode nodeTo) {
-    AdjacentUses::firstUse(var.getDefinition(), nodeTo)
+  predicate defToFirstUse(SsaImpl::EssaVariable var, Cfg::NameNode nodeTo) {
+    SsaImpl::AdjacentUses::firstUse(var.getDefinition(), nodeTo)
   }
 
   predicate useUseFlowStep(Node nodeFrom, Node nodeTo) {
@@ -390,12 +407,12 @@ module LocalFlow {
     //   `x = f(y)`
     //   nodeFrom is `y` on first line
     //   nodeTo is `y` on second line
-    exists(EssaDefinition def |
-      nodeFrom.(CfgNode).getNode() = def.(EssaNodeDefinition).getDefiningNode()
+    exists(SsaImpl::EssaDefinition def |
+      nodeFrom.(CfgNode).getNode() = def.(SsaImpl::EssaNodeDefinition).getDefiningNode()
       or
       nodeFrom.(ScopeEntryDefinitionNode).getDefinition() = def
     |
-      AdjacentUses::firstUse(def, nodeTo.(CfgNode).getNode())
+      SsaImpl::AdjacentUses::firstUse(def, nodeTo.(CfgNode).getNode())
     )
     or
     // Next use after use
@@ -557,9 +574,9 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   // a parameter with a default value, since the parameter will be in the scope of the
   // function, while the default value itself will be in the scope that _defines_ the
   // function.
-  exists(ParameterDefinition param |
+  exists(SsaImpl::ParameterDefinition param |
     // note: we go to the _control-flow node_ of the parameter, and not the ESSA node of the parameter, since for type-tracking, the ESSA node is not a LocalSourceNode, so we would get in trouble.
-    nodeFrom.asCfgNode() = param.getDefault() and
+    nodeFrom.asCfgNode().getNode() = param.getParameter().(Parameter).getDefault() and
     nodeTo.asCfgNode() = param.getDefiningNode()
   )
   or
@@ -663,7 +680,7 @@ predicate neverSkipInPathGraph(Node n) {
   // ```
   // we would end up saying that the path MUST not skip the x in `y = x`, which is just
   // annoying and doesn't help the path explanation become clearer.
-  n.asCfgNode() = any(EssaNodeDefinition def).getDefiningNode()
+  n.asCfgNode() = any(SsaImpl::EssaNodeDefinition def).getDefiningNode()
 }
 
 /**
@@ -872,7 +889,7 @@ predicate listStoreStep(CfgNode nodeFrom, ListElementContent c, CfgNode nodeTo) 
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the list, `[..., 42, ...]`, cfg node
   //   c denotes element of list
-  nodeTo.getNode().(ListNode).getAnElement() = nodeFrom.getNode() and
+  nodeTo.getNode().(Cfg::ListNode).getAnElement() = nodeFrom.getNode() and
   not nodeTo.getNode() instanceof UnpackingAssignmentSequenceTarget and
   // Suppress unused variable warning
   c = c
@@ -885,7 +902,7 @@ predicate setStoreStep(CfgNode nodeFrom, SetElementContent c, CfgNode nodeTo) {
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the set, `{..., 42, ...}`, cfg node
   //   c denotes element of list
-  nodeTo.getNode().(SetNode).getAnElement() = nodeFrom.getNode() and
+  nodeTo.getNode().(Cfg::SetNode).getAnElement() = nodeFrom.getNode() and
   // Suppress unused variable warning
   c = c
 }
@@ -898,7 +915,7 @@ predicate tupleStoreStep(CfgNode nodeFrom, TupleElementContent c, CfgNode nodeTo
   //   nodeTo is the tuple, `(..., 42, ...)`, cfg node
   //   c denotes element of tuple and index of nodeFrom
   exists(int n |
-    nodeTo.getNode().(TupleNode).getElement(n) = nodeFrom.getNode() and
+    nodeTo.getNode().(Cfg::TupleNode).getElement(n) = nodeFrom.getNode() and
     not nodeTo.getNode() instanceof UnpackingAssignmentSequenceTarget and
     c.getIndex() = n
   )
@@ -912,7 +929,7 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeT
   //   nodeTo is the dict, `{..., "key" = 42, ...}`, cfg node
   //   c denotes element of dictionary and the key `"key"`
   exists(KeyValuePair item |
-    item = nodeTo.asCfgNode().(DictNode).getNode().(Dict).getAnItem() and
+    item = nodeTo.asCfgNode().(Cfg::DictNode).getNode().(Dict).getAnItem() and
     nodeFrom.getNode().getNode() = item.getValue() and
     c.getKey() = item.getKey().(StringLiteral).getS()
   )
@@ -927,9 +944,9 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeT
 private predicate moreDictStoreSteps(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
   // NOTE: It's important to add logic to the newtype definition of
   // DictionaryElementContent if you add new cases here.
-  exists(SubscriptNode subscript |
+  exists(Cfg::SubscriptNode subscript |
     nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() = subscript.getObject() and
-    nodeFrom.asCfgNode() = subscript.(DefinitionNode).getValue() and
+    nodeFrom.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
     c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
   or
@@ -942,8 +959,8 @@ private predicate moreDictStoreSteps(CfgNode nodeFrom, DictionaryElementContent 
 }
 
 predicate dictClearStep(Node node, DictionaryElementContent c) {
-  exists(SubscriptNode subscript |
-    subscript instanceof DefinitionNode and
+  exists(Cfg::SubscriptNode subscript |
+    subscript instanceof Cfg::DefinitionNode and
     node.asCfgNode() = subscript.getObject() and
     c.getKey() = subscript.getIndex().getNode().(StringLiteral).getText()
   )
@@ -1018,7 +1035,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
   //   nodeFrom is `l`, cfg node
   //   nodeTo is `l[3]`, cfg node
   //   c is compatible with 3
-  nodeFrom.getNode() = nodeTo.getNode().(SubscriptNode).getObject() and
+  nodeFrom.getNode() = nodeTo.getNode().(Cfg::SubscriptNode).getObject() and
   (
     c instanceof ListElementContent
     or
@@ -1027,10 +1044,10 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
     c instanceof DictionaryElementAnyContent
     or
     c.(TupleElementContent).getIndex() =
-      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
+      nodeTo.getNode().(Cfg::SubscriptNode).getIndex().getNode().(IntegerLiteral).getValue()
     or
     c.(DictionaryElementContent).getKey() =
-      nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StringLiteral).getS()
+      nodeTo.getNode().(Cfg::SubscriptNode).getIndex().getNode().(StringLiteral).getS()
   )
 }
 

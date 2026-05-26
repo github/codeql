@@ -3,6 +3,9 @@ overlay[local]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
+private import semmle.python.controlflow.internal.AstNodeImpl as CfgImpl
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 private import DataFlowPublic
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
 private import codeql.dataflow.VariableCapture as Shared
@@ -14,10 +17,10 @@ private import codeql.dataflow.VariableCapture as Shared
 // The first is the main implementation, the second is a performance motivated restriction.
 // The restriction is to clear any `CapturedVariableContent` before writing a new one
 // to avoid long access paths (see the link for a nice explanation).
-private module CaptureInput implements Shared::InputSig<Location, Cfg::BasicBlock> {
+private module CaptureInput implements Shared::InputSig<Location, CfgImpl::BasicBlock> {
   private import python as PY
 
-  additional class ExprCfgNode extends ControlFlowNode {
+  additional class ExprCfgNode extends Cfg::ControlFlowNode {
     ExprCfgNode() { isExpressionNode(this) }
   }
 
@@ -25,7 +28,9 @@ private module CaptureInput implements Shared::InputSig<Location, Cfg::BasicBloc
     predicate isConstructor() { none() }
   }
 
-  Callable basicBlockGetEnclosingCallable(Cfg::BasicBlock bb) { result = bb.getScope() }
+  Callable basicBlockGetEnclosingCallable(CfgImpl::BasicBlock bb) {
+    result = bb.getEnclosingCallable().asScope()
+  }
 
   class CapturedVariable extends LocalVariable {
     Function f;
@@ -51,23 +56,23 @@ private module CaptureInput implements Shared::InputSig<Location, Cfg::BasicBloc
   class CapturedParameter extends CapturedVariable {
     CapturedParameter() { this.isParameter() }
 
-    ControlFlowNode getCfgNode() { result.getNode().(Parameter) = this.getAnAccess() }
+    Cfg::ControlFlowNode getCfgNode() { result.getNode().(Parameter) = this.getAnAccess() }
   }
 
   class Expr extends ExprCfgNode {
-    predicate hasCfgNode(Cfg::BasicBlock bb, int i) { this = bb.getNode(i) }
+    predicate hasCfgNode(CfgImpl::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
-  class VariableWrite extends ControlFlowNode {
+  class VariableWrite extends Cfg::ControlFlowNode {
     CapturedVariable v;
 
     VariableWrite() {
-      exists(DefinitionNode d | d.getNode() = v.getAStore() | this = d.getValue())
+      exists(Cfg::DefinitionNode d | d.getNode() = v.getAStore() | this = d.getValue())
     }
 
     CapturedVariable getVariable() { result = v }
 
-    predicate hasCfgNode(Cfg::BasicBlock bb, int i) { this = bb.getNode(i) }
+    predicate hasCfgNode(CfgImpl::BasicBlock bb, int i) { this = bb.getNode(i) }
   }
 
   class VariableRead extends Expr {
@@ -82,9 +87,14 @@ private module CaptureInput implements Shared::InputSig<Location, Cfg::BasicBloc
     // TODO: Other languages have an extra case here looking like
     //   simpleAstFlowStep(nodeFrom, nodeTo)
     // we should investigate the potential benefit of adding that.
-    exists(SsaVariable def |
+    exists(SsaImpl::EssaVariable def |
       def.getAUse() = nodeTo and
-      def.getAnUltimateDefinition().getDefinition().(DefinitionNode).getValue() = nodeFrom
+      def.getAnUltimateDefinition()
+          .getDefinition()
+          .(SsaImpl::EssaNodeDefinition)
+          .getDefiningNode()
+          .(Cfg::DefinitionNode)
+          .getValue() = nodeFrom
     )
   }
 
@@ -109,7 +119,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class ClosureExpr = CaptureInput::ClosureExpr;
 
-module Flow = Shared::Flow<Location, Cfg, CaptureInput>;
+module Flow = Shared::Flow<Location, Cfg::CfgSigImpl, CaptureInput>;
 
 private Flow::ClosureNode asClosureNode(Node n) {
   result = n.(SynthCaptureNode).getSynthesizedCaptureNode()

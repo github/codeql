@@ -5,6 +5,8 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
 private import semmle.python.dataflow.new.TypeTracking
@@ -69,13 +71,11 @@ module ImportResolution {
    * Holds if there is an ESSA step from `defFrom` to `defTo`, which should be allowed
    * for import resolution.
    */
-  private predicate allowedEssaImportStep(EssaDefinition defFrom, EssaDefinition defTo) {
+  private predicate allowedEssaImportStep(SsaImpl::EssaDefinition defFrom, SsaImpl::EssaDefinition defTo) {
     // to handle definitions guarded by if-then-else
-    defFrom = defTo.(PhiFunction).getAnInput()
-    or
-    // refined variable
-    // example: https://github.com/nvbn/thefuck/blob/ceeaeab94b5df5a4fe9d94d61e4f6b0bbea96378/thefuck/utils.py#L25-L45
-    defFrom = defTo.(EssaNodeRefinement).getInput().getDefinition()
+    defFrom = defTo.(SsaImpl::PhiFunction).getAnInput()
+    // Note: legacy ESSA refinement-step (e.g. for `foo.bar = X`) is
+    // not modelled in the new SSA. We rely on phi steps only.
   }
 
   /**
@@ -92,30 +92,32 @@ module ImportResolution {
     // Definitions made inside `m` itself
     //
     // for code such as `foo = ...; foo.bar = ...` there will be TWO
-    // EssaDefinition/EssaVariable. One for `foo = ...` (AssignmentDefinition) and one
+    // SsaImpl::EssaDefinition/SsaImpl::EssaVariable. One for `foo = ...` (SsaImpl::AssignmentDefinition) and one
     // for `foo.bar = ...`. The one for `foo.bar = ...` (EssaNodeRefinement). The
     // EssaNodeRefinement is the one that will reach the end of the module (normal
     // exit).
     //
     // However, we cannot just use the EssaNodeRefinement as the `val`, because the
     // normal data-flow depends on use-use flow, and use-use flow targets CFG nodes not
-    // EssaNodes. So we need to go back from the EssaDefinition/EssaVariable that
+    // EssaNodes. So we need to go back from the SsaImpl::EssaDefinition/SsaImpl::EssaVariable that
     // reaches the end of the module, to the first definition of the variable, and then
     // track forwards using use-use flow to find a suitable CFG node that has flow into
     // it from use-use flow.
-    exists(EssaVariable lastUseVar, EssaVariable firstDef |
+    exists(SsaImpl::EssaVariable lastUseVar, SsaImpl::EssaVariable firstDef |
       lastUseVar.getName() = name and
       // we ignore special variable $ introduced by our analysis (not used for anything)
       // we ignore special variable * introduced by `from <pkg> import *` -- TODO: understand why we even have this?
       not name in ["$", "*"] and
-      lastUseVar.getAUse() = m.getANormalExit() and
+      exists(Cfg::ControlFlowNode exit |
+        exit.isNormalExit() and exit.getScope() = m and lastUseVar.getAUse() = exit
+      ) and
       allowedEssaImportStep*(firstDef, lastUseVar) and
       not allowedEssaImportStep(_, firstDef)
     |
       not LocalFlow::defToFirstUse(firstDef, _) and
-      val.asCfgNode() = firstDef.getDefinition().(EssaNodeDefinition).getDefiningNode()
+      val.asCfgNode() = firstDef.getDefinition().(SsaImpl::EssaNodeDefinition).getDefiningNode()
       or
-      exists(ControlFlowNode mid, ControlFlowNode end |
+      exists(Cfg::ControlFlowNode mid, Cfg::ControlFlowNode end |
         LocalFlow::defToFirstUse(firstDef, mid) and
         LocalFlow::useToNextUse*(mid, end) and
         not LocalFlow::useToNextUse(end, _) and
@@ -143,9 +145,9 @@ module ImportResolution {
    * handles simple cases where we can statically tell that this is the case.
    */
   private predicate all_mentions_name(Module m, string name) {
-    exists(DefinitionNode def, SequenceNode n |
+    exists(Cfg::DefinitionNode def, Cfg::SequenceNode n |
       def.getValue() = n and
-      def.(NameNode).getId() = "__all__" and
+      def.(Cfg::NameNode).getId() = "__all__" and
       def.getScope() = m and
       any(StringLiteral s | s.getText() = name) = n.getAnElement().getNode()
     )
@@ -158,18 +160,18 @@ module ImportResolution {
    */
   private predicate no_or_complicated_all(Module m) {
     // No mention of `__all__` in the module
-    not exists(DefinitionNode def | def.getScope() = m and def.(NameNode).getId() = "__all__")
+    not exists(Cfg::DefinitionNode def | def.getScope() = m and def.(Cfg::NameNode).getId() = "__all__")
     or
     // `__all__` is set to a non-sequence value
-    exists(DefinitionNode def |
-      def.(NameNode).getId() = "__all__" and
+    exists(Cfg::DefinitionNode def |
+      def.(Cfg::NameNode).getId() = "__all__" and
       def.getScope() = m and
-      not def.getValue() instanceof SequenceNode
+      not def.getValue() instanceof Cfg::SequenceNode
     )
     or
     // `__all__` is used in some way that doesn't involve storing a value in it. This usually means
     // it is being mutated through `append` or `extend`, which we don't handle.
-    exists(NameNode n | n.getId() = "__all__" and n.getScope() = m and n.isLoad())
+    exists(Cfg::NameNode n | n.getId() = "__all__" and n.getScope() = m and n.isLoad())
   }
 
   private predicate potential_module_export(Module m, string name) {
@@ -177,7 +179,7 @@ module ImportResolution {
     or
     no_or_complicated_all(m) and
     (
-      exists(NameNode n | n.getId() = name and n.getScope() = m and name.charAt(0) != "_")
+      exists(Cfg::NameNode n | n.getId() = name and n.getScope() = m and name.charAt(0) != "_")
       or
       exists(Alias a | a.getAsname().(Name).getId() = name and a.getValue().getScope() = m)
     )
@@ -207,12 +209,12 @@ module ImportResolution {
 
   /** Gets a module that may have been added to `sys.modules`. */
   private Module sys_modules_module_with_name(string name) {
-    exists(ControlFlowNode n, DataFlow::Node mod |
-      exists(SubscriptNode sub |
+    exists(Cfg::ControlFlowNode n, DataFlow::Node mod |
+      exists(Cfg::SubscriptNode sub |
         sub.getObject() = sys_modules_reference().asCfgNode() and
         sub.getIndex() = n and
         n.getNode().(StringLiteral).getText() = name and
-        sub.(DefinitionNode).getValue() = mod.asCfgNode() and
+        sub.(Cfg::DefinitionNode).getValue() = mod.asCfgNode() and
         mod = getModuleReference(result)
       )
     )
@@ -324,11 +326,11 @@ module ImportResolution {
     // name as a submodule, we always consider that this attribute _could_ be a
     // reference to the submodule, even if we don't know that the submodule has been
     // imported yet.
-    exists(string submodule, Module package, EssaVariable var |
+    exists(string submodule, Module package, SsaImpl::EssaVariable var |
       submodule = var.getName() and
-      SsaSource::init_module_submodule_defn(var.getSourceVariable(), package.getEntryNode()) and
+      SsaSource::init_module_submodule_defn(var.getSourceVariable().getVariable(), package.getEntryNode()) and
       m = getModuleFromName(package.getPackageName() + "." + submodule) and
-      result.asCfgNode() = var.getDefinition().(EssaNodeDefinition).getDefiningNode()
+      result.asCfgNode() = var.getDefinition().(SsaImpl::EssaNodeDefinition).getDefiningNode()
     )
   }
 

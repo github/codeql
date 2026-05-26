@@ -536,7 +536,7 @@ module Flask {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
-        node = routeHandler.getAReturnValueFlowNode() and
+        exists(Return ret | ret.getScope() = routeHandler and node.getNode() = ret.getValue()) and
         not this instanceof Flask::Response::InstanceSource
       )
     }

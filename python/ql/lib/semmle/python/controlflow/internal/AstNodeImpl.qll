@@ -10,6 +10,9 @@
  *   - Intermediate nodes for multi-operand boolean expressions.
  */
 
+overlay[local?]
+module;
+
 private import python as Py
 private import codeql.controlflow.ControlFlowGraph
 private import codeql.controlflow.SuccessorType
@@ -1193,6 +1196,30 @@ module Ast implements AstSig<Py::Location> {
     override AstNode getChild(int index) { index = 0 and result = this.getObject() }
   }
 
+  /**
+   * An `import x.y` module expression. Modelled as a leaf — the dotted
+   * name is just a string.
+   */
+  additional class ImportExpression extends Expr {
+    ImportExpression() { this.asExpr() instanceof Py::ImportExpr }
+  }
+
+  /**
+   * A `from m import x` member access. The module sub-expression is a
+   * child so that the CFG visits both the module load and this
+   * attribute selection.
+   */
+  additional class ImportMemberExpr extends Expr {
+    private Py::ImportMember im;
+
+    ImportMemberExpr() { this = TPyExpr(im) }
+
+    /** Gets the module expression `m` in `from m import x`. */
+    Expr getModule() { result.asExpr() = im.getModule() }
+
+    override AstNode getChild(int index) { index = 0 and result = this.getModule() }
+  }
+
   /** A tuple literal. */
   additional class TupleExpr extends Expr {
     private Py::Tuple tuple;
@@ -1581,4 +1608,6 @@ Py::AstNode astNodeToPyNode(Ast::AstNode n) {
   result = n.asStmt()
   or
   result = n.asScope()
+  or
+  result = n.asPattern()
 }

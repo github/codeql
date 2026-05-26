@@ -4,6 +4,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
@@ -73,7 +74,9 @@ module Bottle {
       /** A response returned by a view callable. */
       class BottleReturnResponse extends Http::Server::HttpResponse::Range {
         BottleReturnResponse() {
-          this.asCfgNode() = any(View::ViewCallable vc).getAReturnValueFlowNode()
+          exists(View::ViewCallable vc, Return ret |
+            ret.getScope() = vc and this.asCfgNode().getNode() = ret.getValue()
+          )
         }
 
         override DataFlow::Node getBody() { result = this }
@@ -154,9 +157,9 @@ module Bottle {
         DataFlow::Node value;
 
         HeaderWriteSubscript() {
-          exists(SubscriptNode subscript |
+          exists(Cfg::SubscriptNode subscript |
             this.asCfgNode() = subscript and
-            value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+            value.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
             name.asCfgNode() = subscript.getIndex() and
             subscript.getObject() = headers().asSource().asCfgNode()
           )

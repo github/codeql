@@ -7,6 +7,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
@@ -93,7 +94,7 @@ module Pydantic {
       // be a Pydantic model. So `model[0]` will be an overapproximation, but should not
       // really cause problems (since we don't expect real code to contain such accesses)
       nodeFrom = instance() and
-      nodeTo.asCfgNode().(SubscriptNode).getObject() = nodeFrom.asCfgNode()
+      nodeTo.asCfgNode().(Cfg::SubscriptNode).getObject() = nodeFrom.asCfgNode()
     }
 
     /**

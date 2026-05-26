@@ -20,6 +20,24 @@ module;
 private import python as Py
 private import semmle.python.controlflow.internal.AstNodeImpl as CfgImpl
 private import codeql.controlflow.SuccessorType
+private import codeql.controlflow.BasicBlock as BB
+
+/**
+ * A nested sub-module that explicitly implements `BB::CfgSig`, so this
+ * `Cfg` facade can be passed to parameterised shared modules such as
+ * `codeql.dataflow.VariableCapture::Flow<L, Cfg, ...>`. The sub-module
+ * exposes the *raw* shared-CFG types from `AstNodeImpl.qll` (where the
+ * signature is satisfied natively), not the facade's wrapped types.
+ */
+module CfgSigImpl implements BB::CfgSig<Py::Location> {
+  class ControlFlowNode = CfgImpl::ControlFlowNode;
+
+  class BasicBlock = CfgImpl::BasicBlock;
+
+  class EntryBasicBlock = CfgImpl::Cfg::EntryBasicBlock;
+
+  predicate dominatingEdge = CfgImpl::Cfg::dominatingEdge/2;
+}
 
 /**
  * Gets the Python AST node corresponding to CFG node `n`, if any.
@@ -51,6 +69,11 @@ private predicate isCanonical(CfgImpl::ControlFlowNode n) {
   n instanceof CfgImpl::ControlFlow::EntryNode
   or
   n instanceof CfgImpl::ControlFlow::ExitNode
+  or
+  // Annotated exit nodes (normal + abnormal) — needed so that dataflow
+  // consumers can ask "is this the normal-exit of a scope?" and also
+  // so that scope-exit synthetic uses in SsaImpl can attach here.
+  n instanceof CfgImpl::ControlFlow::AnnotatedExitNode
 }
 
 /**
@@ -368,6 +391,35 @@ class BasicBlock extends CfgImpl::BasicBlock {
     succ = super.getASuccessor()
     or
     forex(BasicBlock immsucc | immsucc = super.getASuccessor() | immsucc.alwaysReaches(succ))
+  }
+
+  /**
+   * Holds if this basic block ends in a node that branches on a boolean
+   * outcome, and `other` is dominated by the corresponding successor
+   * for `branch` while not being reachable from the other branch
+   * without going through this BB.
+   *
+   * In other words: any execution that reaches `other` must have just
+   * evaluated the last node of this BB and taken the `branch` outcome.
+   * This mirrors the legacy `ConditionBlock.controls(BB, branch)`.
+   */
+  predicate controls(BasicBlock other, boolean branch) {
+    exists(BasicBlock succ |
+      branch = true and succ = this.getATrueSuccessor()
+      or
+      branch = false and succ = this.getAFalseSuccessor()
+    |
+      succ.dominates(other) and
+      // The other branch must not also reach `other` — otherwise
+      // `other` is not actually controlled by `branch`.
+      not exists(BasicBlock otherSucc |
+        branch = true and otherSucc = this.getAFalseSuccessor()
+        or
+        branch = false and otherSucc = this.getATrueSuccessor()
+      |
+        otherSucc.reaches(other)
+      )
+    )
   }
 }
 
@@ -734,8 +786,7 @@ class BoolExprNode extends ControlFlowNode {
   ControlFlowNode getAnOperand() {
     exists(Py::BoolExpr be |
       be = toAst(this) and
-      be.getAValue() = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
+      be.getAValue() = toAst(result)
     )
   }
 }
@@ -766,18 +817,77 @@ class DefinitionNode extends ControlFlowNode {
 
   /** Gets the value assigned, if any. */
   ControlFlowNode getValue() {
-    exists(Py::Expr target, Py::Expr value |
-      target = toAst(this) and
-      value = toAst(result) and
-      result.getBasicBlock().dominates(this.getBasicBlock())
-    |
-      // x = value
-      exists(Py::Assign a | a.getATarget() = target and a.getValue() = value)
-      or
-      // x = y = value  (nested chained-assign target)
-      exists(Py::Assign a | a.getATarget().(Py::Tuple).getElt(_) = target and a.getValue() = value)
+    // For-target: the value is the for-loop's iter expression (which
+    // is also where `Cfg::ForNode` lives — its `getNode()` returns the
+    // enclosing `Py::For` statement). Treated specially because there
+    // is no AST node holding the result of `iter(next(seq))`; we use
+    // the iter expression's CFG node as the stand-in.
+    exists(Py::For f |
+      f.getTarget() = toAst(this) and
+      toAst(result) = f.getIter()
+    )
+    or
+    exists(Py::AstNode value | value = assignedValue(toAst(this)) |
+      toAst(result) = value and
+      (
+        result.getBasicBlock().dominates(this.getBasicBlock())
+        or
+        result.isImport()
+        or
+        // The default value for a parameter is evaluated in the same basic block as
+        // the function definition, but the parameter belongs to the basic block of the
+        // function, so there is no dominance relationship between the two.
+        exists(Py::Parameter param | toAst(this) = param.asName())
+      )
     )
   }
+}
+
+/**
+ * Gets the AST node that holds the value assigned to `lhs` in a binding
+ * context. Mirrors `Flow.qll::assigned_value`.
+ */
+private Py::AstNode assignedValue(Py::Expr lhs) {
+  // lhs = result
+  exists(Py::Assign a | a.getATarget() = lhs and result = a.getValue())
+  or
+  // lhs := result
+  exists(Py::AssignExpr a | a.getTarget() = lhs and result = a.getValue())
+  or
+  // lhs: annotation = result
+  exists(Py::AnnAssign a | a.getTarget() = lhs and result = a.getValue())
+  or
+  // import result as lhs  (also covers plain `import lhs`, where alias.getAsname() = lhs)
+  exists(Py::Alias a | a.getAsname() = lhs and result = a.getValue())
+  or
+  // lhs += x  -> result is the (lhs + x) binary expression
+  exists(Py::AugAssign a, Py::BinaryExpr b |
+    b = a.getOperation() and result = b and lhs = b.getLeft()
+  )
+  or
+  // Nested sequence assign: ..., lhs, ... = ..., result, ...
+  exists(Py::Assign a | nestedSequenceAssign(a.getATarget(), a.getValue(), lhs, result))
+  or
+  // Parameter default
+  exists(Py::Parameter param | lhs = param.asName() and result = param.getDefault())
+}
+
+/**
+ * Helper for nested sequence assignments such as `(a, b), c = (1, 2), 3`.
+ */
+private predicate nestedSequenceAssign(
+  Py::Expr leftParent, Py::Expr rightParent, Py::Expr left, Py::Expr right
+) {
+  exists(int i |
+    leftParent.(Py::Tuple).getElt(i) = left and rightParent.(Py::Tuple).getElt(i) = right
+    or
+    leftParent.(Py::List).getElt(i) = left and rightParent.(Py::List).getElt(i) = right
+  )
+  or
+  exists(Py::Expr leftMid, Py::Expr rightMid |
+    nestedSequenceAssign(leftParent, rightParent, leftMid, rightMid) and
+    nestedSequenceAssign(leftMid, rightMid, left, right)
+  )
 }
 
 /** A control flow node corresponding to a deletion (`del x`). */
@@ -788,8 +898,6 @@ class DeletionNode extends ControlFlowNode {
 /** A control flow node corresponding to a `for` loop target. */
 class ForNode extends ControlFlowNode {
   ForNode() { exists(Py::For f | toAst(this) = f.getIter()) }
-
-  override Py::For getNode() { exists(Py::For f | toAst(this) = f.getIter() | result = f) }
 
   /** Gets the iterable expression. */
   ControlFlowNode getIter() {
@@ -943,8 +1051,15 @@ class DictNode extends ControlFlowNode {
 /** A control flow node corresponding to an iterable in a `for` loop. */
 class IterableNode extends ControlFlowNode {
   IterableNode() {
-    exists(Py::For f | toAst(this) = f.getIter())
+    this instanceof SequenceNode
     or
-    exists(Py::Comp c | toAst(this) = c.getIterable())
+    this instanceof SetNode
+  }
+
+  /** Gets the control flow node for an element of this iterable. */
+  ControlFlowNode getAnElement() {
+    result = this.(SequenceNode).getAnElement()
+    or
+    result = this.(SetNode).getAnElement()
   }
 }

@@ -3,6 +3,7 @@ overlay[local]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
 
@@ -67,7 +68,7 @@ module Builtins {
   DataFlow::CfgNode likelyBuiltin(string name) {
     exists(Module m |
       result.getNode() =
-        any(NameNode n |
+        any(Cfg::NameNode n |
           possible_builtin_accessed_in_module(n, name, m) and
           not possible_builtin_defined_in_module(name, m)
         )
@@ -87,7 +88,7 @@ module Builtins {
    * Holds if `n` is an access of a global variable called `name` (which is also the name of a
    * built-in) inside the module `m`.
    */
-  private predicate possible_builtin_accessed_in_module(NameNode n, string name, Module m) {
+  private predicate possible_builtin_accessed_in_module(Cfg::NameNode n, string name, Module m) {
     n.isGlobal() and
     n.isLoad() and
     name = n.getId() and
