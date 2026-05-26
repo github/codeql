@@ -112,6 +112,24 @@ private class DefaultWeakPasswordHashingSink extends WeakPasswordHashingSink {
 }
 
 /**
+ * A sink for weak password hashing through a call with a metatype qualifier.
+ */
+private class WeakPasswordHashingMetatypeSink extends WeakPasswordHashingSink {
+  string algorithm;
+
+  WeakPasswordHashingMetatypeSink() {
+    exists(CallExpr c |
+      c.getAnArgument().getExpr() = this.asExpr() and
+      algorithm = ["SHA256", "SHA384", "SHA512"] and
+      c.getQualifier().getType().getFullName() = algorithm + ".Type" and
+      c.getStaticTarget().getName() = ["hash(data:)", "update(data:)", "update(bufferPointer:)"]
+    )
+  }
+
+  override string getAlgorithm() { result = algorithm }
+}
+
+/**
  * A barrier for weak password hashing, when it occurs inside of
  * certain cryptographic algorithms as part of their design.
  */

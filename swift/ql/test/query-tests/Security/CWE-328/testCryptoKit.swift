@@ -99,19 +99,19 @@ func testHashMethods(passwd : UnsafeRawBufferPointer, cert: String, encrypted_pa
     hash = Crypto.Insecure.SHA1.hash(data: account_no)   // BAD
     hash = Crypto.Insecure.SHA1.hash(data: credit_card_no)   // BAD
 
-    hash = Crypto.SHA256.hash(data: passwd)   // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash = Crypto.SHA256.hash(data: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA256.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA256.hash(data: encrypted_passwd)   // GOOD, not sensitive
     hash = Crypto.SHA256.hash(data: account_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA256.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
 
-    hash = Crypto.SHA384.hash(data: passwd)   // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash = Crypto.SHA384.hash(data: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA384.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA384.hash(data: encrypted_passwd)   // GOOD, not sensitive
     hash = Crypto.SHA384.hash(data: account_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA384.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
 
-    hash = Crypto.SHA512.hash(data: passwd)   // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash = Crypto.SHA512.hash(data: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA512.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA512.hash(data: encrypted_passwd)   // GOOD, not sensitive
     hash = Crypto.SHA512.hash(data: account_no)   // GOOD, computationally expensive hash not required
@@ -211,11 +211,11 @@ func testSHA512UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer,
 func testBadExample(passwordString: String) {
     // this is the "bad" example from the .qhelp
     let passwordData = Data(passwordString.utf8)
-    let passwordHash = Crypto.SHA512.hash(data: passwordData) // BAD, not a computationally expensive hash [NOT DETECTED]
+    let passwordHash = Crypto.SHA512.hash(data: passwordData) // BAD, not a computationally expensive hash
 
     // ...
 
-    if Crypto.SHA512.hash(data: Data(passwordString.utf8)) == passwordHash { // BAD, not a computationally expensive hash [NOT DETECTED]
+    if Crypto.SHA512.hash(data: Data(passwordString.utf8)) == passwordHash { // BAD, not a computationally expensive hash
 	    // ...
     }
 }
