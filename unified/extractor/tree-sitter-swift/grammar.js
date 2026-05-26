@@ -272,8 +272,8 @@ module.exports = grammar({
     comment: ($) => token(prec(PRECS.comment, seq("//", /.*/))),
     // Named wrapper for the unnamed `_multiline_comment` external token, so
     // that multi-line comments still appear in the AST (e.g. as extras between
-    // top-level statements) without bleeding into class_body's $children when
-    // used as a class member separator.
+    // top-level statements) without being extracted as class body members when
+    // used only to separate those members.
     multiline_comment: ($) => $._multiline_comment,
     // Identifiers
     simple_identifier: ($) =>
