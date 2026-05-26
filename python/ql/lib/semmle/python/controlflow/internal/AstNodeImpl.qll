@@ -9,7 +9,6 @@
  *     wrapped.
  *   - Intermediate nodes for multi-operand boolean expressions.
  */
-
 overlay[local?]
 module;
 
@@ -635,11 +634,11 @@ module Ast implements AstSig<Py::Location> {
   class ForStmt extends LoopStmt {
     ForStmt() { none() }
 
-    Expr getInit(int index) { none() }
+    AstNode getInit(int index) { none() }
 
     Expr getCondition() { none() }
 
-    Expr getUpdate(int index) { none() }
+    AstNode getUpdate(int index) { none() }
   }
 
   /** A for-each loop (`for x in iterable:`). */
@@ -941,7 +940,7 @@ module Ast implements AstSig<Py::Location> {
 
     Case() { this = TPyStmt(caseStmt) }
 
-    AstNode getAPattern() { result.asPattern() = caseStmt.getPattern() }
+    AstNode getPattern(int index) { index = 0 and result.asPattern() = caseStmt.getPattern() }
 
     Expr getGuard() { result.asExpr() = caseStmt.getGuard().(Py::Guard).getTest() }
 
@@ -951,7 +950,7 @@ module Ast implements AstSig<Py::Location> {
     predicate isWildcard() { caseStmt.getPattern() instanceof Py::MatchWildcardPattern }
 
     override AstNode getChild(int index) {
-      index = 0 and result = this.getAPattern()
+      index = 0 and result = this.getPattern(0)
       or
       index = 1 and result = this.getGuard()
       or
