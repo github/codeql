@@ -70,6 +70,7 @@ rust_library(
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [],
         "@rules_rust//rust/platform:aarch64-unknown-uefi": [],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [],
+        "@rules_rust//rust/platform:arm-unknown-linux-musleabi": [],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [],
         "@rules_rust//rust/platform:i686-apple-darwin": [],
@@ -164,7 +165,7 @@ cargo_build_script(
     version = "2.0.16+zstd.1.5.7",
     visibility = ["//visibility:private"],
     deps = [
-        "@vendor_ts__cc-1.2.37//:cc",
+        "@vendor_ts__cc-1.2.61//:cc",
         "@vendor_ts__pkg-config-0.3.32//:pkg_config",
     ],
 )

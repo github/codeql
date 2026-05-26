@@ -19,7 +19,7 @@ private import internal.InlineExpectationsTestImpl as InlineExpectationsTestImpl
  */
 bindingset[name]
 private predicate callTargetName(CallExpr call, string name) {
-  call.getFunction().(PathExpr).toString().matches(name + "%")
+  call.getFunction().(PathExpr).getPath().getText().matches(name + "%")
 }
 
 private module FlowTestImpl implements InputSig<Location, RustDataFlow> {

@@ -10,14 +10,14 @@ class SourceControlFlowElement extends ControlFlowElement {
   }
 }
 
-class SourceControlFlowNode extends ControlFlow::Node {
+class SourceControlFlowNode extends ControlFlowNode {
   SourceControlFlowNode() {
     not this.getLocation().getFile() instanceof StubFile and
     not this.getLocation().getFile().fromLibrary()
   }
 }
 
-class SourceBasicBlock extends ControlFlow::BasicBlock {
+class SourceBasicBlock extends BasicBlock {
   SourceBasicBlock() {
     not this.getLocation().getFile() instanceof StubFile and
     not this.getLocation().getFile().fromLibrary()

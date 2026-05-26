@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
 
   class SinkBase = Void;
 
+  predicate callableFromSource(SummarizedCallableBase c) { exists(c.getBlock()) }
+
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
 
   ReturnKind getStandardReturnValueKind() { result = getReturnValueKind("") }
@@ -149,16 +151,27 @@ module SourceSinkInterpretationInput implements
   }
 
   predicate barrierElement(
-    Element n, string output, string kind, Public::Provenance provenance, string model
+    Element e, string output, string kind, Public::Provenance provenance, string model
   ) {
-    none()
+    exists(
+      string namespace, string type, boolean subtypes, string name, string signature, string ext
+    |
+      barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance, model) and
+      e = interpretElement(namespace, type, subtypes, name, signature, ext)
+    )
   }
 
   predicate barrierGuardElement(
-    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Element e, string input, Public::AcceptingValue acceptingValue, string kind,
     Public::Provenance provenance, string model
   ) {
-    none()
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext
+    |
+      barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingValue, kind,
+        provenance, model) and
+      e = interpretElement(package, type, subtypes, name, signature, ext)
+    )
   }
 
   private newtype TInterpretNode =
@@ -188,7 +201,7 @@ module SourceSinkInterpretationInput implements
     string toString() {
       result = this.asElement().toString()
       or
-      result = this.asNode().toString()
+      result = this.asNode().toStringImpl()
       or
       result = this.asCall().toString()
     }

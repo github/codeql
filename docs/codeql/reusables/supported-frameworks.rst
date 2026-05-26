@@ -197,6 +197,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    superagent, Network communicator
    swig, templating language
    underscore, Utility library
+   Vercel (@vercel/node), Serverless framework
    vue, HTML framework
 
 

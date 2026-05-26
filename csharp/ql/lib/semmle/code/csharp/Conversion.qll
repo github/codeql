@@ -28,6 +28,7 @@ private module Cached {
    *
    * - Identity conversions
    * - Implicit numeric conversions
+   * - Implicit span conversions
    * - Implicit nullable conversions
    * - Implicit reference conversions
    * - Boxing conversions
@@ -37,6 +38,8 @@ private module Cached {
     convIdentity(fromType, toType)
     or
     convNumeric(fromType, toType)
+    or
+    convSpan(fromType, toType)
     or
     convNullableType(fromType, toType)
     or
@@ -81,6 +84,7 @@ private predicate implicitConversionNonNull(Type fromType, Type toType) {
  *
  * - Identity conversions
  * - Implicit numeric conversions
+ * - Implicit span conversions
  * - Implicit nullable conversions
  * - Implicit reference conversions
  * - Boxing conversions
@@ -228,14 +232,9 @@ private module Identity {
    */
   pragma[nomagic]
   private predicate convTypeArguments(Type fromTypeArgument, Type toTypeArgument, int i) {
-    exists(int j |
-      fromTypeArgument = getTypeArgumentRanked(_, _, i) and
-      toTypeArgument = getTypeArgumentRanked(_, _, j) and
-      i <= j and
-      j <= i
-    |
-      convIdentity(fromTypeArgument, toTypeArgument)
-    )
+    fromTypeArgument = getTypeArgumentRanked(_, _, pragma[only_bind_into](i)) and
+    toTypeArgument = getTypeArgumentRanked(_, _, pragma[only_bind_into](i)) and
+    convIdentity(fromTypeArgument, toTypeArgument)
   }
 
   pragma[nomagic]
@@ -491,6 +490,51 @@ private predicate convNumericChar(SimpleType toType) {
 
 private predicate convNumericFloat(SimpleType toType) { toType instanceof DoubleType }
 
+private class SpanType extends GenericType {
+  SpanType() { this.getUnboundGeneric() instanceof SystemSpanStruct }
+
+  Type getElementType() { result = this.getTypeArgument(0) }
+}
+
+private class ReadOnlySpanType extends GenericType {
+  ReadOnlySpanType() { this.getUnboundGeneric() instanceof SystemReadOnlySpanStruct }
+
+  Type getElementType() { result = this.getTypeArgument(0) }
+}
+
+private class SimpleArrayType extends ArrayType {
+  SimpleArrayType() {
+    this.getRank() = 1 and
+    this.getDimension() = 1
+  }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Holds if there is an implicit span conversion from `fromType` to `toType`.
+ *
+ * 10.2.1: Implicit span conversions (added in C# 14).
+ * [Documentation](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-14.0/first-class-span-types#span-conversions)
+ */
+predicate convSpan(Type fromType, Type toType) {
+  fromType.(SimpleArrayType).getElementType() = toType.(SpanType).getElementType()
+  or
+  exists(Type fromElementType, Type toElementType |
+    (
+      fromElementType = fromType.(SimpleArrayType).getElementType() or
+      fromElementType = fromType.(SpanType).getElementType() or
+      fromElementType = fromType.(ReadOnlySpanType).getElementType()
+    ) and
+    toElementType = toType.(ReadOnlySpanType).getElementType()
+  |
+    convRefTypeNonNull(fromElementType, toElementType)
+  )
+  or
+  fromType instanceof SystemStringClass and
+  toType.(ReadOnlySpanType).getElementType() instanceof CharType
+}
+
 /**
  * INTERNAL: Do not use.
  *
@@ -669,7 +713,7 @@ private class SignedIntegralConstantExpr extends Expr {
 }
 
 private predicate convConstantIntExpr(SignedIntegralConstantExpr e, SimpleType toType) {
-  exists(int n | n = e.getValue().toInt() |
+  exists(int n | n = e.getIntValue() |
     toType = any(SByteType t | n in [t.minValue() .. t.maxValue()])
     or
     toType = any(ByteType t | n in [t.minValue() .. t.maxValue()])
@@ -686,7 +730,7 @@ private predicate convConstantIntExpr(SignedIntegralConstantExpr e, SimpleType t
 
 private predicate convConstantLongExpr(SignedIntegralConstantExpr e) {
   e.getType() instanceof LongType and
-  e.getValue().toInt() >= 0
+  e.getIntValue() >= 0
 }
 
 /** 6.1.10: Implicit reference conversions involving type parameters. */
@@ -880,19 +924,16 @@ private module Variance {
   private predicate convTypeArguments(
     TypeArgument fromTypeArgument, TypeArgument toTypeArgument, int i, TVariance v
   ) {
-    exists(int j |
-      fromTypeArgument = getTypeArgumentRanked(_, _, i, _) and
-      toTypeArgument = getTypeArgumentRanked(_, _, j, _) and
-      i <= j and
-      j <= i
-    |
+    fromTypeArgument = getTypeArgumentRanked(_, _, pragma[only_bind_into](i), _) and
+    toTypeArgument = getTypeArgumentRanked(_, _, pragma[only_bind_into](i), _) and
+    (
       convIdentity(fromTypeArgument, toTypeArgument) and
       v = TNone()
       or
-      convRefTypeTypeArgumentOut(fromTypeArgument, toTypeArgument, j) and
+      convRefTypeTypeArgumentOut(fromTypeArgument, toTypeArgument, i) and
       v = TOut()
       or
-      convRefTypeTypeArgumentIn(toTypeArgument, fromTypeArgument, j) and
+      convRefTypeTypeArgumentIn(toTypeArgument, fromTypeArgument, i) and
       v = TIn()
     )
   }

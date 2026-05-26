@@ -176,11 +176,11 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
                 if (d.Initializer is not null)
                 {
-                    Create(cx, d.Initializer.Value, ret, 0);
-
                     // Create an access
-                    var access = new Expression(new ExpressionInfo(cx, type, localVar.Location, ExprKind.LOCAL_VARIABLE_ACCESS, ret, 1, isCompilerGenerated: false, null));
+                    var access = new Expression(new ExpressionInfo(cx, type, localVar.Location, ExprKind.LOCAL_VARIABLE_ACCESS, ret, 0, isCompilerGenerated: false, null));
                     cx.TrapWriter.Writer.expr_access(access, localVar);
+
+                    Create(cx, d.Initializer.Value, ret, 1);
                 }
 
                 if (d.Parent is VariableDeclarationSyntax decl)

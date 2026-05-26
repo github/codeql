@@ -1,7 +1,7 @@
 instances
-| class.swift:1:1:7:1 | Foo | getModule: | file://:0:0:0:0 | class | getInterfaceType: | Foo.Type | getName: | Foo | getType: | Foo |
-| class.swift:11:1:14:1 | Generic | getModule: | file://:0:0:0:0 | class | getInterfaceType: | Generic<X, Y>.Type | getName: | Generic | getType: | Generic |
-| class.swift:16:1:17:1 | Baz | getModule: | file://:0:0:0:0 | class | getInterfaceType: | Baz.Type | getName: | Baz | getType: | Baz |
+| class.swift:1:1:7:1 | Foo | getModule: | file://:0:0:0:0 | class | getInterfaceType: | Foo.Type | getName: | Foo | getDeclaredInterfaceType: | Foo | getType: | Foo |
+| class.swift:11:1:14:1 | Generic | getModule: | file://:0:0:0:0 | class | getInterfaceType: | Generic<X, Y>.Type | getName: | Generic | getDeclaredInterfaceType: | Generic<X, Y> | getType: | Generic |
+| class.swift:16:1:17:1 | Baz | getModule: | file://:0:0:0:0 | class | getInterfaceType: | Baz.Type | getName: | Baz | getDeclaredInterfaceType: | Baz | getType: | Baz |
 getGenericTypeParam
 | class.swift:11:1:14:1 | Generic | 0 | class.swift:11:15:11:15 | X |
 | class.swift:11:1:14:1 | Generic | 1 | class.swift:11:18:11:18 | Y |

@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.security.Sanitizers
 private import semmle.code.java.security.SensitiveActions
 
 /** A sink representing persistent storage that saves data in clear text. */
@@ -73,17 +74,6 @@ private class DefaultCleartextStorageSanitizer extends CleartextStorageSanitizer
     this.getType() instanceof NumericType or
     this.getType() instanceof BooleanType or
     EncryptedValueFlow::flowTo(this)
-  }
-}
-
-/**
- * Method call for encrypting sensitive information. As there are various implementations of
- * encryption (reversible and non-reversible) from both JDK and third parties, this class simply
- * checks method name to take a best guess to reduce false positives.
- */
-private class EncryptedSensitiveMethodCall extends MethodCall {
-  EncryptedSensitiveMethodCall() {
-    this.getMethod().getName().toLowerCase().matches(["%encrypt%", "%hash%", "%digest%"])
   }
 }
 

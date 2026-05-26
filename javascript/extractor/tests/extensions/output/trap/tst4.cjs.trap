@@ -85,64 +85,66 @@ variables(#20030,"__dirname",#20025)
 #20031=@"var;{arguments};{#20025}"
 variables(#20031,"arguments",#20025)
 is_module(#20001)
-#20032=*
-stmts(#20032,2,#20001,0,"console ... onJS"");")
-hasLocation(#20032,#20003)
-stmt_containers(#20032,#20001)
+#20032=@"var;{this};{#20025}"
+variables(#20032,"this",#20025)
 #20033=*
-exprs(#20033,13,#20032,0,"console ... monJS"")")
-#20034=@"loc,{#10000},1,1,1,29"
-locations_default(#20034,#10000,1,1,1,29)
-hasLocation(#20033,#20034)
-enclosing_stmt(#20033,#20032)
-expr_containers(#20033,#20001)
-#20035=*
-exprs(#20035,14,#20033,-1,"console.log")
-#20036=@"loc,{#10000},1,1,1,11"
-locations_default(#20036,#10000,1,1,1,11)
-hasLocation(#20035,#20036)
-enclosing_stmt(#20035,#20032)
-expr_containers(#20035,#20001)
-#20037=*
-exprs(#20037,79,#20035,0,"console")
-hasLocation(#20037,#20005)
-enclosing_stmt(#20037,#20032)
-expr_containers(#20037,#20001)
-literals("console","console",#20037)
-bind(#20037,#20023)
+stmts(#20033,2,#20001,0,"console ... onJS"");")
+hasLocation(#20033,#20003)
+stmt_containers(#20033,#20001)
+#20034=*
+exprs(#20034,13,#20033,0,"console ... monJS"")")
+#20035=@"loc,{#10000},1,1,1,29"
+locations_default(#20035,#10000,1,1,1,29)
+hasLocation(#20034,#20035)
+enclosing_stmt(#20034,#20033)
+expr_containers(#20034,#20001)
+#20036=*
+exprs(#20036,14,#20034,-1,"console.log")
+#20037=@"loc,{#10000},1,1,1,11"
+locations_default(#20037,#10000,1,1,1,11)
+hasLocation(#20036,#20037)
+enclosing_stmt(#20036,#20033)
+expr_containers(#20036,#20001)
 #20038=*
-exprs(#20038,0,#20035,1,"log")
-hasLocation(#20038,#20009)
-enclosing_stmt(#20038,#20032)
+exprs(#20038,79,#20036,0,"console")
+hasLocation(#20038,#20005)
+enclosing_stmt(#20038,#20033)
 expr_containers(#20038,#20001)
-literals("log","log",#20038)
+literals("console","console",#20038)
+bind(#20038,#20023)
 #20039=*
-exprs(#20039,4,#20033,0,"""Hello CommonJS""")
-hasLocation(#20039,#20013)
-enclosing_stmt(#20039,#20032)
+exprs(#20039,0,#20036,1,"log")
+hasLocation(#20039,#20009)
+enclosing_stmt(#20039,#20033)
 expr_containers(#20039,#20001)
-literals("Hello CommonJS","""Hello CommonJS""",#20039)
+literals("log","log",#20039)
 #20040=*
-regexpterm(#20040,14,#20039,0,"Hello CommonJS")
-#20041=@"loc,{#10000},1,14,1,27"
-locations_default(#20041,#10000,1,14,1,27)
-hasLocation(#20040,#20041)
-regexp_const_value(#20040,"Hello CommonJS")
-#20042=*
-entry_cfg_node(#20042,#20001)
-#20043=@"loc,{#10000},1,1,1,0"
-locations_default(#20043,#10000,1,1,1,0)
-hasLocation(#20042,#20043)
-#20044=*
-exit_cfg_node(#20044,#20001)
-hasLocation(#20044,#20019)
-successor(#20032,#20037)
-successor(#20039,#20033)
-successor(#20038,#20035)
-successor(#20037,#20038)
-successor(#20035,#20039)
-successor(#20033,#20044)
-successor(#20042,#20032)
+exprs(#20040,4,#20034,0,"""Hello CommonJS""")
+hasLocation(#20040,#20013)
+enclosing_stmt(#20040,#20033)
+expr_containers(#20040,#20001)
+literals("Hello CommonJS","""Hello CommonJS""",#20040)
+#20041=*
+regexpterm(#20041,14,#20040,0,"Hello CommonJS")
+#20042=@"loc,{#10000},1,14,1,27"
+locations_default(#20042,#10000,1,14,1,27)
+hasLocation(#20041,#20042)
+regexp_const_value(#20041,"Hello CommonJS")
+#20043=*
+entry_cfg_node(#20043,#20001)
+#20044=@"loc,{#10000},1,1,1,0"
+locations_default(#20044,#10000,1,1,1,0)
+hasLocation(#20043,#20044)
+#20045=*
+exit_cfg_node(#20045,#20001)
+hasLocation(#20045,#20019)
+successor(#20033,#20038)
+successor(#20040,#20034)
+successor(#20039,#20036)
+successor(#20038,#20039)
+successor(#20036,#20040)
+successor(#20034,#20045)
+successor(#20043,#20033)
 is_nodejs(#20001)
 numlines(#10000,1,1,0)
 filetype(#10000,"javascript")

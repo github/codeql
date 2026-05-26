@@ -200,6 +200,9 @@ func simpleflow() {
 
 	temp := test.SourceVariable
 	test.SinkVariable = temp // $ hasTaintFlow="temp"
+
+	b.Sink1(new(src))  // $ hasTaintFlow="call to new"
+	b.Sink1(*new(src)) // $ hasTaintFlow="star expression"
 }
 
 func srcParam(src string, b test.B) {

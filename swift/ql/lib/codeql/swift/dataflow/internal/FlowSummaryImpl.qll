@@ -20,6 +20,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::SwiftDataFlow> 
 
   class SinkBase = Void;
 
+  predicate callableFromSource(SummarizedCallableBase c) { c.hasBody() }
+
   ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
 
   ReturnKind getStandardReturnValueKind() { result instanceof NormalReturnKind }
@@ -166,7 +168,7 @@ module SourceSinkInterpretationInput implements
   }
 
   predicate barrierGuardElement(
-    Element n, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Element n, string input, Public::AcceptingValue acceptingValue, string kind,
     Public::Provenance provenance, string model
   ) {
     none()

@@ -1,4 +1,0 @@
----
-category: majorAnalysis
----
-* The query `actions/code-injection/medium` has been updated to include results which were incorrectly excluded while filtering out results that are reported by `actions/code-injection/critical`.

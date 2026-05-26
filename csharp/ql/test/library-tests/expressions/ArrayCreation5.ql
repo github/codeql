@@ -6,8 +6,8 @@ import csharp
 
 from Assignment a, ArrayCreation e, int i
 where
-  a.getLValue().(VariableAccess).getTarget().hasName("is5") and
-  e = a.getRValue() and
+  a.getLeftOperand().(VariableAccess).getTarget().hasName("is5") and
+  e = a.getRightOperand() and
   e.isImplicitlyTyped() and
   e.isImplicitlySized() and
   e.getArrayType().getDimension() = 1 and

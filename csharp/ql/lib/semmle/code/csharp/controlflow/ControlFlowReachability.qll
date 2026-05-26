@@ -4,16 +4,13 @@
 
 import csharp
 private import codeql.controlflow.ControlFlowReachability
-private import semmle.code.csharp.controlflow.BasicBlocks
 private import semmle.code.csharp.controlflow.Guards as Guards
 private import semmle.code.csharp.ExprOrStmtParent
 
-private module ControlFlowInput implements
-  InputSig<Location, ControlFlow::Node, ControlFlow::BasicBlock>
-{
+private module ControlFlowInput implements InputSig<Location, ControlFlowNode, BasicBlock> {
   private import csharp as CS
 
-  AstNode getEnclosingAstNode(ControlFlow::Node node) {
+  AstNode getEnclosingAstNode(ControlFlowNode node) {
     node.getAstNode() = result
     or
     not exists(node.getAstNode()) and result = node.getEnclosingCallable()
@@ -29,17 +26,7 @@ private module ControlFlowInput implements
 
   class Expr = CS::Expr;
 
-  class SourceVariable = Ssa::SourceVariable;
-
-  class SsaDefinition = Ssa::Definition;
-
-  class SsaExplicitWrite extends SsaDefinition instanceof Ssa::ExplicitDefinition {
-    Expr getValue() { result = super.getADefinition().getSource() }
-  }
-
-  class SsaPhiDefinition = Ssa::PhiNode;
-
-  class SsaUncertainWrite = Ssa::UncertainDefinition;
+  import Ssa
 
   class GuardValue = Guards::GuardValue;
 

@@ -14,6 +14,18 @@ code {
     font-size: 0.9em !important; /* makes code snippets in headings the correct size */
 }
 
+/* -- HEADER ------------------------------------------------------------------------------- */
+
+/* Override alabaster.css purple link color for header links to match the rest of the site */
+.Header .Header-link {
+    color: #fff;
+}
+
+.Header .Header-link:hover,
+.Header .Header-link:focus {
+    color: rgba(255, 255, 255, 0.7);
+}
+
 /* -- MAIN BODY ---------------------------------------------------------------------------- */
 
 main {

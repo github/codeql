@@ -1,6 +1,8 @@
 /**
  * Provides classes and predicates for defining flow summaries.
  */
+overlay[local?]
+module;
 
 import go
 private import internal.FlowSummaryImpl as Impl
@@ -18,6 +20,11 @@ deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
 deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
-class SummarizedCallable = Impl::Public::SummarizedCallable;
+/** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
+module SummarizedCallable {
+  class Range = Impl::Public::SummarizedCallable;
+}
+
+class SummarizedCallable = Impl::Public::RelevantSummarizedCallable;
 
 deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

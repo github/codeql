@@ -41,6 +41,6 @@ class ReturnedByMockObject extends ObjectCreation {
    * Gets a value used to initialize a member of this object creation.
    */
   Expr getAMemberInitializationValue() {
-    result = this.getInitializer().(ObjectInitializer).getAMemberInitializer().getRValue()
+    result = this.getInitializer().(ObjectInitializer).getAMemberInitializer().getRightOperand()
   }
 }

@@ -115,6 +115,9 @@ signature module ModelGeneratorCommonInputSig<LocationSig Location, InputSig<Loc
    */
   predicate containerContent(Lang::ContentSet c);
 
+  /** Holds if read steps should heuristically be applied as taint steps. */
+  default predicate applyReadStepsAsTaintSteps() { any() }
+
   /**
    * Gets the parameter position of the return kind, if any.
    */
@@ -1061,6 +1064,7 @@ module MakeModelGeneratorFactory<
   private predicate isRelevantTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::ContentSet f |
       DataFlow::readStep(node1, f, node2) and
+      applyReadStepsAsTaintSteps() and
       // Partially restrict the content types used for intermediate steps.
       (not exists(getUnderlyingContentType(f)) or isRelevantTypeInContent(f))
     )

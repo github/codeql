@@ -146,7 +146,6 @@ MAP(swift::Expr, ExprTag)
   MAP(swift::ImplicitConversionExpr, ImplicitConversionExprTag)
     MAP(swift::LoadExpr, LoadExprTag)
     MAP(swift::DestructureTupleExpr, DestructureTupleExprTag)
-    MAP(swift::UnresolvedTypeConversionExpr, UnresolvedTypeConversionExprTag)
     MAP(swift::FunctionConversionExpr, FunctionConversionExprTag)
     MAP(swift::CovariantFunctionConversionExpr, CovariantFunctionConversionExprTag)
     MAP(swift::CovariantReturnConversionExpr, CovariantReturnConversionExprTag)
@@ -267,8 +266,7 @@ MAP(swift::TypeRepr, TypeReprTag)
 MAP(swift::Type, TypeTag)
 MAP(swift::TypeBase, TypeTag)
   MAP(swift::ErrorType, ErrorTypeTag)
-  MAP(swift::UnresolvedType, UnresolvedTypeTag)
-  MAP(swift::PlaceholderType, void)  // appears in ambiguous types but are then transformed to UnresolvedType
+  MAP(swift::PlaceholderType, void)  // appears in ambiguous types but are then transformed to ErrorType
   MAP(swift::BuiltinType, BuiltinTypeTag)
     MAP(swift::AnyBuiltinIntegerType, AnyBuiltinIntegerTypeTag)
       MAP(swift::BuiltinIntegerType, BuiltinIntegerTypeTag)
@@ -285,7 +283,8 @@ MAP(swift::TypeBase, TypeTag)
     MAP(swift::BuiltinVectorType, BuiltinVectorTypeTag)
     MAP(swift::BuiltinPackIndexType, void)  // SIL type, cannot really appear in the frontend run
     MAP(swift::BuiltinNonDefaultDistributedActorStorageType, void)  // Does not appear in AST/SIL, only used during IRGen
-    MAP(swift::BuiltinFixedArrayType, BuiltinFixedArrayTypeTag)
+    MAP(swift::BuiltinGenericType, BuiltinGenericTypeTag)
+      MAP(swift::BuiltinFixedArrayType, BuiltinFixedArrayTypeTag)
     MAP(swift::BuiltinUnboundGenericType, void)  // Only used during type resolution
     MAP(swift::BuiltinImplicitActorType, void)  // SIL type
   MAP(swift::TupleType, TupleTypeTag)

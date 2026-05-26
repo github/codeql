@@ -1,3 +1,65 @@
+## 2.7.1
+
+No user-facing changes.
+
+## 2.7.0
+
+### New Features
+
+* Added support for [`@vercel/node`](https://www.npmjs.com/package/@vercel/node) Vercel serverless functions. Handlers are recognized via the `VercelRequest`/`VercelResponse` TypeScript parameter types, and standard security queries (`js/reflected-xss`, `js/request-forgery`, `js/sql-injection`, `js/command-line-injection`, etc.) now detect vulnerabilities in Vercel API route files.
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for JavaScript](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/).
+
+## 2.6.28
+
+No user-facing changes.
+
+## 2.6.27
+
+No user-facing changes.
+
+## 2.6.26
+
+No user-facing changes.
+
+## 2.6.25
+
+No user-facing changes.
+
+## 2.6.24
+
+### Minor Analysis Improvements
+
+* Added support for browser-specific source kinds (`browser`, `browser-url-query`, `browser-url-fragment`, `browser-url-path`, `browser-url`, `browser-window-name`, `browser-message-event`) that can be used in data extensions to model sources in browser environments.
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 2.6.23
+
+### Minor Analysis Improvements
+
+* Added support for React components wrapped by `observer` from `mobx-react` and `mobx-react-lite`.
+
+## 2.6.22
+
+No user-facing changes.
+
+## 2.6.21
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
+## 2.6.20
+
+### Minor Analysis Improvements
+
+* Support `use cache` directives for Next.js 16.
+* Added `PreCallGraphStep` flow model for React's `useRef` hook.
+* Added a `DomValueSource` that uses the `current` property off the object returned by React's `useRef` hook.
+
+## 2.6.19
+
+No user-facing changes.
+
 ## 2.6.18
 
 No user-facing changes.

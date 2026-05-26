@@ -11,57 +11,6 @@ import java
  */
 
 /**
- * DEPRECATED: Use `BasicBlock::immediatelyDominates` instead.
- *
- * The immediate dominance relation for basic blocks.
- */
-deprecated predicate bbIDominates(BasicBlock dom, BasicBlock node) {
-  dom.immediatelyDominates(node)
-}
-
-/** Exit points for basic-block control-flow. */
-private predicate bbSink(BasicBlock exit) { exit.getLastNode() instanceof ControlFlow::ExitNode }
-
-/** Reversed `bbSucc`. */
-private predicate bbPred(BasicBlock post, BasicBlock pre) { post = pre.getASuccessor() }
-
-/** The immediate post-dominance relation on basic blocks. */
-deprecated predicate bbIPostDominates(BasicBlock dominator, BasicBlock node) =
-  idominance(bbSink/1, bbPred/2)(_, dominator, node)
-
-/**
- * DEPRECATED: Use `BasicBlock::strictlyDominates` instead.
- *
- * Holds if `dom` strictly dominates `node`.
- */
-deprecated predicate bbStrictlyDominates(BasicBlock dom, BasicBlock node) {
-  dom.strictlyDominates(node)
-}
-
-/**
- * DEPRECATED: Use `BasicBlock::dominates` instead.
- *
- * Holds if `dom` dominates `node`. (This is reflexive.)
- */
-deprecated predicate bbDominates(BasicBlock dom, BasicBlock node) { dom.dominates(node) }
-
-/**
- * DEPRECATED: Use `BasicBlock::strictlyPostDominates` instead.
- *
- * Holds if `dom` strictly post-dominates `node`.
- */
-deprecated predicate bbStrictlyPostDominates(BasicBlock dom, BasicBlock node) {
-  dom.strictlyPostDominates(node)
-}
-
-/**
- * DEPRECATED: Use `BasicBlock::postDominates` instead.
- *
- * Holds if `dom` post-dominates `node`. (This is reflexive.)
- */
-deprecated predicate bbPostDominates(BasicBlock dom, BasicBlock node) { dom.postDominates(node) }
-
-/**
  * The dominance frontier relation for basic blocks.
  *
  * This is equivalent to:

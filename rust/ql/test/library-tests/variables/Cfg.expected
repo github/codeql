@@ -14,9 +14,9 @@ edges
 | main.rs:7:14:7:20 | ...::format_args_nl!... | main.rs:7:14:7:20 | MacroExpr |  |
 | main.rs:7:14:7:20 | ExprStmt | main.rs:7:5:7:12 | ...::_print |  |
 | main.rs:7:14:7:20 | FormatArgsExpr | main.rs:7:14:7:20 | ...::format_args_nl!... |  |
-| main.rs:7:14:7:20 | MacroBlockExpr | main.rs:7:5:7:21 | println!... |  |
 | main.rs:7:14:7:20 | MacroExpr | main.rs:7:14:7:20 | ...::_print(...) |  |
-| main.rs:7:14:7:20 | { ... } | main.rs:7:14:7:20 | MacroBlockExpr |  |
+| main.rs:7:14:7:20 | { ... } | main.rs:7:5:7:21 | println!... |  |
+| main.rs:7:14:7:20 | { ... } | main.rs:7:14:7:20 | { ... } |  |
 | main.rs:7:20:7:20 | s | main.rs:7:14:7:20 | FormatArgsExpr |  |
 | main.rs:10:1:13:1 | enter fn print_i64 | main.rs:10:14:10:14 | i |  |
 | main.rs:10:1:13:1 | exit fn print_i64 (normal) | main.rs:10:1:13:1 | exit fn print_i64 |  |
@@ -33,9 +33,9 @@ edges
 | main.rs:12:14:12:20 | ...::format_args_nl!... | main.rs:12:14:12:20 | MacroExpr |  |
 | main.rs:12:14:12:20 | ExprStmt | main.rs:12:5:12:12 | ...::_print |  |
 | main.rs:12:14:12:20 | FormatArgsExpr | main.rs:12:14:12:20 | ...::format_args_nl!... |  |
-| main.rs:12:14:12:20 | MacroBlockExpr | main.rs:12:5:12:21 | println!... |  |
 | main.rs:12:14:12:20 | MacroExpr | main.rs:12:14:12:20 | ...::_print(...) |  |
-| main.rs:12:14:12:20 | { ... } | main.rs:12:14:12:20 | MacroBlockExpr |  |
+| main.rs:12:14:12:20 | { ... } | main.rs:12:5:12:21 | println!... |  |
+| main.rs:12:14:12:20 | { ... } | main.rs:12:14:12:20 | { ... } |  |
 | main.rs:12:20:12:20 | i | main.rs:12:14:12:20 | FormatArgsExpr |  |
 | main.rs:15:1:17:1 | enter fn print_i64_ref | main.rs:15:18:15:18 | i |  |
 | main.rs:15:1:17:1 | exit fn print_i64_ref (normal) | main.rs:15:1:17:1 | exit fn print_i64_ref |  |
@@ -264,8 +264,8 @@ edges
 | main.rs:106:19:106:28 | x.unwrap() | main.rs:106:9:106:29 | print_str(...) |  |
 | main.rs:107:9:107:13 | "not yet implemented" | main.rs:107:9:107:13 | ...::panic(...) |  |
 | main.rs:107:9:107:13 | ...::panic | main.rs:107:9:107:13 | "not yet implemented" |  |
-| main.rs:107:9:107:13 | ...::panic(...) | main.rs:107:9:107:13 | MacroBlockExpr |  |
-| main.rs:107:9:107:13 | MacroBlockExpr | main.rs:107:9:107:15 | todo!... |  |
+| main.rs:107:9:107:13 | ...::panic(...) | main.rs:107:9:107:13 | { ... } |  |
+| main.rs:107:9:107:13 | { ... } | main.rs:107:9:107:15 | todo!... |  |
 | main.rs:107:9:107:15 | MacroExpr | main.rs:103:10:108:5 | { ... } |  |
 | main.rs:107:9:107:15 | todo!... | main.rs:107:9:107:15 | MacroExpr |  |
 | main.rs:109:5:109:13 | print_str | main.rs:109:15:109:15 | x |  |
@@ -451,9 +451,9 @@ edges
 | main.rs:192:22:192:51 | ...::format_args_nl!... | main.rs:192:22:192:51 | MacroExpr |  |
 | main.rs:192:22:192:51 | ExprStmt | main.rs:192:13:192:20 | ...::_print |  |
 | main.rs:192:22:192:51 | FormatArgsExpr | main.rs:192:22:192:51 | ...::format_args_nl!... |  |
-| main.rs:192:22:192:51 | MacroBlockExpr | main.rs:192:13:192:52 | println!... |  |
 | main.rs:192:22:192:51 | MacroExpr | main.rs:192:22:192:51 | ...::_print(...) |  |
-| main.rs:192:22:192:51 | { ... } | main.rs:192:22:192:51 | MacroBlockExpr |  |
+| main.rs:192:22:192:51 | { ... } | main.rs:192:13:192:52 | println!... |  |
+| main.rs:192:22:192:51 | { ... } | main.rs:192:22:192:51 | { ... } |  |
 | main.rs:194:9:194:29 | ...::Hello {...} | main.rs:194:26:194:27 | id | match |
 | main.rs:194:26:194:27 | id | main.rs:194:26:194:27 | id |  |
 | main.rs:194:26:194:27 | id | main.rs:197:13:197:21 | print_i64 | match |

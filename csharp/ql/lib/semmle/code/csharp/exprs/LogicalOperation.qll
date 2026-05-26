@@ -65,7 +65,9 @@ class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
  * }
  * ```
  */
-class NullCoalescingExpr extends BinaryLogicalOperation, @null_coalescing_expr {
+class NullCoalescingExpr extends BinaryLogicalOperation, NullCoalescingOperation,
+  @null_coalescing_expr
+{
   override string getOperator() { result = "??" }
 
   override string getAPrimaryQlClass() { result = "NullCoalescingExpr" }

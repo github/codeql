@@ -832,6 +832,8 @@ private DataFlow::SourceNode higherOrderComponentBuilder() {
   or
   result = DataFlow::moduleMember("recompose", _).getACall()
   or
+  result = DataFlow::moduleMember(["mobx-react", "mobx-react-lite"], "observer")
+  or
   result = reactRouterDom().getAPropertyRead("withRouter")
   or
   exists(FunctionCompositionCall compose |

@@ -205,6 +205,9 @@ public class ExtractorConfig {
   /** Should parse errors be reported as violations instead of aborting extraction? */
   private boolean tolerateParseErrors;
 
+  /** Should minified files be allowed? */
+  private boolean allowMinified;
+
   /** How should HTML files be extracted? */
   private HtmlPopulator.Config htmlHandling;
 
@@ -236,6 +239,7 @@ public class ExtractorConfig {
     this.sourceType = SourceType.AUTO;
     this.htmlHandling = HtmlPopulator.Config.ELEMENTS;
     this.tolerateParseErrors = true;
+    this.allowMinified = false;
     if (experimental) {
       this.mozExtensions = true;
       this.jscript = true;
@@ -258,6 +262,7 @@ public class ExtractorConfig {
     this.v8Extensions = that.v8Extensions;
     this.e4x = that.e4x;
     this.tolerateParseErrors = that.tolerateParseErrors;
+    this.allowMinified = that.allowMinified;
     this.fileType = that.fileType;
     this.sourceType = that.sourceType;
     this.htmlHandling = that.htmlHandling;
@@ -354,6 +359,16 @@ public class ExtractorConfig {
   public ExtractorConfig withTolerateParseErrors(boolean tolerateParseErrors) {
     ExtractorConfig res = new ExtractorConfig(this);
     res.tolerateParseErrors = tolerateParseErrors;
+    return res;
+  }
+
+  public boolean isAllowMinified() {
+    return allowMinified;
+  }
+
+  public ExtractorConfig withAllowMinified(boolean allowMinified) {
+    ExtractorConfig res = new ExtractorConfig(this);
+    res.allowMinified = allowMinified;
     return res;
   }
 
@@ -467,6 +482,8 @@ public class ExtractorConfig {
         + e4x
         + ", tolerateParseErrors="
         + tolerateParseErrors
+        + ", allowMinified="
+        + allowMinified
         + ", htmlHandling="
         + htmlHandling
         + ", fileType="

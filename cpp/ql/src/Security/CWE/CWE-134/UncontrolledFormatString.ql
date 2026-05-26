@@ -23,13 +23,31 @@ import Flow::PathGraph
 
 predicate isSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
 
+/**
+ * Holds if `f` is a printf-like function or a (possibly nested) wrapper
+ * that forwards a format-string parameter to one.
+ *
+ * Functions that *implement* printf-like behavior (e.g. a custom
+ * `vsnprintf` variant) internally parse the caller-supplied format string
+ * and build small, bounded, local format strings such as `"%d"` or `"%ld"`
+ * for inner `sprintf` calls.  Taint that reaches those inner calls via the
+ * parsed format specifier is not exploitable, so sinks inside such
+ * functions should be excluded.
+ */
+private predicate isPrintfImplementation(Function f) {
+  f instanceof PrintfLikeFunction
+  or
+  exists(PrintfLikeFunction printf | printf.wrapperFunction(f, _, _))
+}
+
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { isSource(node, _) }
 
   predicate isSink(DataFlow::Node node) {
     exists(PrintfLikeFunction printf |
       printf.outermostWrapperFunctionCall([node.asExpr(), node.asIndirectExpr()], _)
-    )
+    ) and
+    not isPrintfImplementation([node.asExpr(), node.asIndirectExpr()].getEnclosingFunction())
   }
 
   private predicate isArithmeticNonCharType(ArithmeticType type) {

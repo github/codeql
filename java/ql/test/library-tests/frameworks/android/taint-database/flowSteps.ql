@@ -9,7 +9,7 @@ module Config implements DataFlow::ConfigSig {
     source.asExpr().(MethodCall).getMethod().hasName("taint")
   }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ReturnStmt r).getResult() }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ReturnStmt r).getExpr() }
 }
 
 module Flow = TaintTracking::Global<Config>;

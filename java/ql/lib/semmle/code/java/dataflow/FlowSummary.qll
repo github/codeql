@@ -8,14 +8,6 @@ import java
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
 
-deprecated class SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated module SummaryComponent = Impl::Private::SummaryComponent;
-
-deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
-deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
-
 /** A synthetic callable with a set of concrete call sites and a flow summary. */
 abstract class SyntheticCallable extends string {
   bindingset[this]
@@ -121,24 +113,29 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
 
 class Provenance = Impl::Public::Provenance;
 
-class SummarizedCallable = Impl::Public::SummarizedCallable;
+/** Provides the `Range` class used to define the extent of `SummarizedCallable`. */
+module SummarizedCallable {
+  class Range = Impl::Public::SummarizedCallable;
+}
+
+class SummarizedCallable = Impl::Public::RelevantSummarizedCallable;
 
 /**
  * An adapter class to add the flow summaries specified on `SyntheticCallable`
  * to `SummarizedCallable`.
  */
-private class SummarizedSyntheticCallableAdapter extends SummarizedCallable, TSyntheticCallable {
+private class SummarizedSyntheticCallableAdapter extends SummarizedCallable::Range,
+  TSyntheticCallable
+{
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
     exists(SyntheticCallable sc |
       sc = this.asSyntheticCallable() and
       sc.propagatesFlow(input, output, preservesValue) and
+      p = "manual" and
+      isExact = true and
       model = sc
     )
   }
-
-  override predicate hasExactModel() { any() }
 }
-
-deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

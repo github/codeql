@@ -1,4 +1,4 @@
-Module: [1, 0] - [18, 0]
+Module: [1, 0] - [20, 0]
   body: [
     Assign: [1, 0] - [1, 14]
       targets: [
@@ -188,6 +188,26 @@ Module: [1, 0] - [18, 0]
                       text: '" How are you?"'
                       s: ' How are you?'
                   ]
+              ]
+      ]
+      orelse: None
+    If: [18, 0] - [18, 5]
+      test:
+        Num: [18, 3] - [18, 4]
+          n: 7
+          text: '7'
+      body: [
+        Expr: [19, 4] - [19, 43]
+          value:
+            TemplateString: [19, 4] - [19, 43]
+              prefix: 't"'
+              values: [
+                TemplateStringPart: [19, 6] - [19, 31]
+                  text: '"With a format specifier: "'
+                  s: 'With a format specifier: '
+                Name: [19, 32] - [19, 36]
+                  variable: Variable('name', None)
+                  ctx: Load
               ]
       ]
       orelse: None

@@ -1,3 +1,128 @@
+## 6.0.1
+
+No user-facing changes.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The C# control flow graph (CFG) implementation has been completely
+  rewritten. The CFG now includes additional nodes to more accurately represent
+  certain constructs. This also means that any existing code that implicitly
+  relies on very specific details about the CFG may need to be updated.
+  The CFG no longer uses splitting, which means that AST nodes now have a unique
+  CFG node representation.
+  Additionally, the following breaking changes have been made:
+  - `ControlFlow::Node` has been renamed to `ControlFlowNode`.
+  - `ControlFlow::Nodes` has been renamed to `ControlFlowNodes`.
+  - `BasicBlock.getCallable` has been renamed to `BasicBlock.getEnclosingCallable`.
+  - `BasicBlocks.qll` has been deleted.
+  - `ControlFlowNode.getAstNode` has changed its meaning. The AST-to-CFG
+    mapping remains one-to-many, but now for a different reason. It used to be
+    because of splitting, but now it's because of additional "helper" CFG
+    nodes. To get the (now canonical) CFG node for a given AST node, use
+    `ControlFlowNode.asExpr()` or `ControlFlowNode.asStmt()` or
+    `ControlFlowElement.getControlFlowNode()` instead.
+
+### Deprecated APIs
+
+* The QL classes in the C# SSA library have been renamed to improve consistency between languages. Any custom QL code that makes use of SSA needs to be updated. The old classes have been deprecated and include more detailed migration instructions in their qldoc.
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for C#](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-csharp/).
+
+### Major Analysis Improvements
+
+* When resolving dependencies in `build-mode: none`, `dotnet restore` now explicitly receives reachable NuGet feeds configured in `nuget.config` when feed responsiveness checking is enabled (the default), and any private registries directly, improving reliability when default feeds are unavailable or restricted.
+
+### Minor Analysis Improvements
+
+* Expanded ASP and ASP.NET remote source modeling to cover additional sources, including fields of tainted parameters as well as properties and fields that become tainted transitively.
+* C# 14: Added support for user-defined compound assignment operators.
+
+## 5.5.0
+
+### Deprecated APIs
+
+* The predicates `get[L|R]Value` in the class `Assignment` have been deprecated. Use `get[Left|Right]Operand` instead.
+
+## 5.4.12
+
+### Minor Analysis Improvements
+
+* The extractor no longer synthesizes expanded forms of compound assignments. This may have a small impact on the results of queries that explicitly or implicitly rely on the expanded form of compound assignments.
+* The `cs/log-forging` query no longer treats arguments to extension methods with
+  source code on `ILogger` types as sinks. Instead, taint is tracked interprocedurally
+  through extension method bodies, reducing false positives when extension methods
+  sanitize input internally.
+
+## 5.4.11
+
+No user-facing changes.
+
+## 5.4.10
+
+No user-facing changes.
+
+## 5.4.9
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+* Added `System.Net.WebSockets::ReceiveAsync` as a remote flow source.
+* Added reverse taint flow from implicit conversion operator calls to their arguments.
+* Added post-update nodes for struct-type arguments, allowing data flow out of method calls via those arguments.
+* C# 14: Added support for partial constructors.
+
+## 5.4.8
+
+### Minor Analysis Improvements
+
+* C# 14: Added support for partial events.
+* C# 14: Added support for the `field` keyword in properties.
+
+### Bug Fixes
+
+* Fixed an issue where the body of a partial member could be extracted twice. When both a *defining* and an *implementing* declaration exist, only the *implementing* declaration is now extracted.
+
+## 5.4.7
+
+### Minor Analysis Improvements
+
+* The model for `System.Web.HttpUtility` has been modified to better model the flow of tainted URIs.
+* C# 14: Added support for `extension` members in the extractor, QL library, data flow, and Models as Data, covering extension methods, properties, and operators.
+
+## 5.4.6
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+* C# 14: Support for null-conditional assignments (such as `c?.Prop = p`). Furthermore, the `MaybeNullExpr` class now takes null-conditional access (such as `?.`) into account when modeling potential null values.
+
+## 5.4.5
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the C# extractor's search for `.config`, `.props`, XML and project files.
+* Updated the generated .NET “models as data” runtime models to cover .NET 10.
+* C# 14: Support for *implicit* span conversions in the QL library.
+* Basic extractor support for .NET 10 is now available. Extraction is supported for .NET 10 projects in both traced mode and `build-mode: none`. However, code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
+* Added autobuilder and `build-mode: none` support for `.slnx` solution files.
+* In `build-mode: none`, .NET 10 is now used by default unless a specific .NET version is specified elsewhere.
+* Added implicit reads of `System.Collections.Generic.KeyValuePair.Value` at taint-tracking sinks and at inputs to additional taint steps. As a result, taint-tracking queries will now produce more results when a container is tainted.
+
+### Bug Fixes
+
+* Fixed two issues affecting build mode `none`:
+  * Corrected version sorting logic when detecting the newest .NET framework to use.
+  * Improved stability for .NET 10 compatibility.
+* Fixed an issue where compiler-generated files were not being extracted. The extractor now runs after compilation completes to ensure all generated files are properly analyzed.
+
+## 5.4.4
+
+No user-facing changes.
+
 ## 5.4.3
 
 No user-facing changes.

@@ -64,9 +64,14 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ActiveThreatModelSource { }
 
-/** LDAP sinks defined through Models as Data. */
+/** An LDAP sink defined through Models as Data. */
 private class ExternalLdapExprSink extends Sink {
   ExternalLdapExprSink() { sinkNode(this, "ldap-injection") }
+}
+
+/** A sanitizer for LDAP injection defined through Models as Data. */
+private class ExternalLdapInjectionSanitizer extends Sanitizer {
+  ExternalLdapInjectionSanitizer() { barrierNode(this, "ldap-injection") }
 }
 
 /**

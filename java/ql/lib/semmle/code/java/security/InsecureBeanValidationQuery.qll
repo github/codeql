@@ -25,7 +25,7 @@ class SetMessageInterpolatorCall extends MethodCall {
       this.getMethod() = m and
       m.getDeclaringType().getASourceSupertype*() = t and
       (
-        t.hasQualifiedName("javax.validation", ["Configuration", "ValidatorContext"]) and
+        t.hasQualifiedName(javaxOrJakarta() + ".validation", ["Configuration", "ValidatorContext"]) and
         m.getName() = "messageInterpolator"
         or
         t.hasQualifiedName("org.springframework.validation.beanvalidation",

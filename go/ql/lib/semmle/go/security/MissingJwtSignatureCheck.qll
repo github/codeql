@@ -20,6 +20,8 @@ module MissingJwtSignatureCheck {
 
     predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
     predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       any(AdditionalFlowStep s).step(nodeFrom, nodeTo)
     }

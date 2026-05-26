@@ -31,6 +31,6 @@ public class UnsafeActivity2 extends Activity {
 		});
 
 		String thisUrl = getIntent().getExtras().getString("url");
-		wv.loadUrl(thisUrl); // $hasUnsafeAndroidAccess
+		wv.loadUrl(thisUrl); // $ hasUnsafeAndroidAccess
 	}
 }

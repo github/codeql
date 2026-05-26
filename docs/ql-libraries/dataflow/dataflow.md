@@ -279,7 +279,7 @@ Content ContentSet::getAReadContent();
 which means that a `storeStep(n1, cs, n2)` will be interpreted as storing into _any_
 of `cs.getAStoreContent()`, and dually that a `readStep(n1, cs, n2)` will be
 interpreted as reading from _any_ of `cs.getAReadContent()`. In most cases, there
-will be a simple bijection between `ContentSet` and `Content`, but when modelling
+will be a simple bijection between `ContentSet` and `Content`, but when modeling
 for example flow through arrays it can be more involved (see [Example 4](#example-4)).
 
 It generally makes sense for stores to target `PostUpdateNode`s, but this is not a strict

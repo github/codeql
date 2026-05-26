@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with HTTP-related concepts such as requests and responses.
  */
+overlay[local?]
+module;
 
 import go
 
@@ -320,11 +322,11 @@ module Http {
       )
     }
 
-    private class DefaultHttpRedirect extends Range, DataFlow::CallNode {
+    private class ExternalHttpRedirect extends Range, DataFlow::CallNode {
       DataFlow::ArgumentNode url;
       int rw;
 
-      DefaultHttpRedirect() {
+      ExternalHttpRedirect() {
         this = url.getCall() and
         exists(string kind |
           sinkKindInfo(kind, rw) and

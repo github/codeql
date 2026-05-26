@@ -5,6 +5,7 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.internal.Node as Node
@@ -20,6 +21,11 @@ module DisabledCertificateCheckExtensions {
   abstract class Sink extends QuerySink::Range {
     override string getSinkType() { result = "DisabledCertificateCheck" }
   }
+
+  /**
+   * A data flow barrier for disabled certificate check vulnerabilities.
+   */
+  abstract class Barrier extends DataFlow::Node { }
 
   /**
    * A sink for disabled certificate check vulnerabilities from model data.
@@ -41,5 +47,12 @@ module DisabledCertificateCheckExtensions {
         not exists(ModelsAsDataSink s | s.(Node::FlowSummaryNode).getSinkElement().getCall() = call)
       )
     }
+  }
+
+  /**
+   * A barrier for disabled certificate check vulnerabilities from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "disable-certificate") }
   }
 }

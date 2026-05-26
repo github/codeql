@@ -163,12 +163,23 @@ predicate primitiveVariadicFormatter(
   )
 }
 
+/**
+ * Gets a function call whose target is a variadic formatter with the given
+ * `type`, `format` parameter index and `output` parameter index.
+ *
+ * Join-order helper for `callsVariadicFormatter`.
+ */
+pragma[nomagic]
+private predicate callsVariadicFormatterCall(FunctionCall fc, string type, int format, int output) {
+  variadicFormatter(fc.getTarget(), type, format, output)
+}
+
 private predicate callsVariadicFormatter(
   Function f, string type, int formatParamIndex, int outputParamIndex
 ) {
   // calls a variadic formatter with `formatParamIndex`, `outputParamIndex` linked
   exists(FunctionCall fc, int format, int output |
-    variadicFormatter(pragma[only_bind_into](fc.getTarget()), type, format, output) and
+    callsVariadicFormatterCall(fc, type, format, output) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     fc.getArgument(output) = f.getParameter(outputParamIndex).getAnAccess()
@@ -176,7 +187,7 @@ private predicate callsVariadicFormatter(
   or
   // calls a variadic formatter with only `formatParamIndex` linked
   exists(FunctionCall fc, string calledType, int format, int output |
-    variadicFormatter(pragma[only_bind_into](fc.getTarget()), calledType, format, output) and
+    callsVariadicFormatterCall(fc, calledType, format, output) and
     fc.getEnclosingFunction() = f and
     fc.getArgument(format) = f.getParameter(formatParamIndex).getAnAccess() and
     not fc.getArgument(output) = f.getParameter(_).getAnAccess() and
@@ -448,6 +459,13 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    */
   int getConvSpecOffset(int n) { result = this.getFormat().indexOf("%", n, 0) }
 
+  /**
+   * Gets the nth conversion specifier string.
+   */
+  private string getConvSpecString(int n) {
+    n >= 0 and result = "%" + this.getFormat().splitAt("%", n + 1)
+  }
+
   /*
    * Each of these predicates gets a regular expressions to match each individual
    * parts of a conversion specifier.
@@ -513,22 +531,20 @@ class FormatLiteral extends Literal instanceof StringLiteral {
     int n, string spec, string params, string flags, string width, string prec, string len,
     string conv
   ) {
-    exists(int offset, string fmt, string rst, string regexp |
-      offset = this.getConvSpecOffset(n) and
-      fmt = this.getFormat() and
-      rst = fmt.substring(offset, fmt.length()) and
+    exists(string convSpec, string regexp |
+      convSpec = this.getConvSpecString(n) and
       regexp = this.getConvSpecRegexp() and
       (
-        spec = rst.regexpCapture(regexp, 1) and
-        params = rst.regexpCapture(regexp, 2) and
-        flags = rst.regexpCapture(regexp, 3) and
-        width = rst.regexpCapture(regexp, 4) and
-        prec = rst.regexpCapture(regexp, 5) and
-        len = rst.regexpCapture(regexp, 6) and
-        conv = rst.regexpCapture(regexp, 7)
+        spec = convSpec.regexpCapture(regexp, 1) and
+        params = convSpec.regexpCapture(regexp, 2) and
+        flags = convSpec.regexpCapture(regexp, 3) and
+        width = convSpec.regexpCapture(regexp, 4) and
+        prec = convSpec.regexpCapture(regexp, 5) and
+        len = convSpec.regexpCapture(regexp, 6) and
+        conv = convSpec.regexpCapture(regexp, 7)
         or
-        spec = rst.regexpCapture(regexp, 1) and
-        not exists(rst.regexpCapture(regexp, 2)) and
+        spec = convSpec.regexpCapture(regexp, 1) and
+        not exists(convSpec.regexpCapture(regexp, 2)) and
         params = "" and
         flags = "" and
         width = "" and
@@ -543,12 +559,10 @@ class FormatLiteral extends Literal instanceof StringLiteral {
    * Gets the nth conversion specifier (including the initial `%`).
    */
   string getConvSpec(int n) {
-    exists(int offset, string fmt, string rst, string regexp |
-      offset = this.getConvSpecOffset(n) and
-      fmt = this.getFormat() and
-      rst = fmt.substring(offset, fmt.length()) and
+    exists(string convSpec, string regexp |
+      convSpec = this.getConvSpecString(n) and
       regexp = this.getConvSpecRegexp() and
-      result = rst.regexpCapture(regexp, 1)
+      result = convSpec.regexpCapture(regexp, 1)
     )
   }
 

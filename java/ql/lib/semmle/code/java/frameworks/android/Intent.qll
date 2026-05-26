@@ -279,7 +279,7 @@ private predicate reaches(Expr src, Argument arg) {
   or
   exists(StmtExpr e | e.getResultExpr() = src | reaches(e, arg))
   or
-  exists(NotNullExpr e | e.getExpr() = src | reaches(e, arg))
+  exists(NotNullExpr e | e.getOperand() = src | reaches(e, arg))
   or
   exists(WhenExpr e | e.getBranch(_).getAResult() = src | reaches(e, arg))
 }

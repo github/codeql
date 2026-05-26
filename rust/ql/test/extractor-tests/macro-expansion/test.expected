@@ -26,12 +26,12 @@ macro_calls
 | macro_expansion.rs:31:5:31:16 | ...::format_args_nl!... | macro_expansion.rs:31:5:31:16 | FormatArgsExpr |
 | macro_expansion.rs:31:5:31:16 | ...::format_args_nl!... | macro_expansion.rs:31:5:31:16 | FormatArgsExpr |
 | macro_expansion.rs:31:5:31:16 | ...::format_args_nl!... | macro_expansion.rs:31:5:31:16 | FormatArgsExpr |
-| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
-| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
-| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
-| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
-| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
-| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | MacroBlockExpr |
+| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | { ... } |
+| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | { ... } |
+| macro_expansion.rs:31:5:31:16 | println!... | macro_expansion.rs:31:5:31:16 | { ... } |
+| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | { ... } |
+| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | { ... } |
+| macro_expansion.rs:33:9:33:16 | hello!... | macro_expansion.rs:31:5:31:16 | { ... } |
 | macro_expansion.rs:44:5:44:13 | def_x!... | macro_expansion.rs:44:5:44:10 | MacroItems |
 | macro_expansion.rs:53:9:53:25 | concat!... | macro_expansion.rs:53:17:53:24 | "xy" |
 | macro_expansion.rs:55:9:58:5 | my_macro!... | macro_expansion.rs:56:9:57:13 | MacroExpr |

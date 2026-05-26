@@ -53,9 +53,9 @@ mod basic_blanket_impl {
         println!("{x4:?}");
         let x5 = S1::duplicate(&S1); // $ target=Clone1duplicate
         println!("{x5:?}");
-        let x6 = S2.duplicate(); // $ MISSING: target=Clone1duplicate
+        let x6 = S2.duplicate(); // $ target=Clone1duplicate
         println!("{x6:?}");
-        let x7 = (&S2).duplicate(); // $ MISSING: target=Clone1duplicate
+        let x7 = (&S2).duplicate(); // $ target=Clone1duplicate
         println!("{x7:?}");
     }
 }

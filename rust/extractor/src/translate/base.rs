@@ -518,7 +518,7 @@ impl<'a> Translator<'a> {
     pub(crate) fn emit_macro_stmts(
         &mut self,
         node: &ast::MacroStmts,
-    ) -> Option<Label<generated::MacroBlockExpr>> {
+    ) -> Option<Label<generated::BlockExpr>> {
         // not generated to work around a bug in rust-analyzer AST generation machinery.
         // Because an Expr can also be a Stmt (AsmExpr: Expr and AsmExpr: Item: Stmt)
         // then such an element will be returned by both `expr()` and `statements()`
@@ -537,10 +537,23 @@ impl<'a> Translator<'a> {
             .iter()
             .filter_map(|x| self.emit_stmt(x))
             .collect();
-        let label = self.trap.emit(generated::MacroBlockExpr {
+        let stmt_list = self.trap.emit(generated::StmtList {
             id: TrapId::Star,
-            tail_expr,
+            attrs: vec![],
             statements,
+            tail_expr,
+        });
+        let label = self.trap.emit(generated::BlockExpr {
+            id: TrapId::Star,
+            label: None,
+            attrs: vec![],
+            is_async: false,
+            is_const: false,
+            is_gen: false,
+            is_move: false,
+            is_try: false,
+            is_unsafe: false,
+            stmt_list: Some(stmt_list),
         });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());

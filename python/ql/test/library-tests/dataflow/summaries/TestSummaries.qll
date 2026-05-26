@@ -1,3 +1,6 @@
+overlay[local?]
+module;
+
 private import python
 private import semmle.python.dataflow.new.FlowSummary
 private import semmle.python.ApiGraphs
@@ -10,7 +13,7 @@ private import semmle.python.ApiGraphs
 module RecursionGuard {
   private import semmle.python.dataflow.new.internal.TypeTrackingImpl::TypeTrackingInput as TT
 
-  private class RecursionGuard extends SummarizedCallable {
+  private class RecursionGuard extends SummarizedCallable::Range {
     RecursionGuard() { this = "RecursionGuard" }
 
     override DataFlow::CallCfgNode getACall() {
@@ -26,7 +29,7 @@ module RecursionGuard {
   }
 }
 
-private class SummarizedCallableIdentity extends SummarizedCallable {
+private class SummarizedCallableIdentity extends SummarizedCallable::Range {
   SummarizedCallableIdentity() { this = "identity" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -43,7 +46,7 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
 }
 
 // For lambda flow to work, implement lambdaCall and lambdaCreation
-private class SummarizedCallableApplyLambda extends SummarizedCallable {
+private class SummarizedCallableApplyLambda extends SummarizedCallable::Range {
   SummarizedCallableApplyLambda() { this = "apply_lambda" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -63,7 +66,7 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableReversed extends SummarizedCallable {
+private class SummarizedCallableReversed extends SummarizedCallable::Range {
   SummarizedCallableReversed() { this = "list_reversed" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -79,7 +82,7 @@ private class SummarizedCallableReversed extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableMap extends SummarizedCallable {
+private class SummarizedCallableMap extends SummarizedCallable::Range {
   SummarizedCallableMap() { this = "list_map" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -99,7 +102,7 @@ private class SummarizedCallableMap extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableAppend extends SummarizedCallable {
+private class SummarizedCallableAppend extends SummarizedCallable::Range {
   SummarizedCallableAppend() { this = "append_to_list" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -119,7 +122,7 @@ private class SummarizedCallableAppend extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableJsonLoads extends SummarizedCallable {
+private class SummarizedCallableJsonLoads extends SummarizedCallable::Range {
   SummarizedCallableJsonLoads() { this = "json.loads" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -138,7 +141,7 @@ private class SummarizedCallableJsonLoads extends SummarizedCallable {
 }
 
 // Repeated summaries
-private class SummarizedCallableWithSubpath extends SummarizedCallable {
+private class SummarizedCallableWithSubpath extends SummarizedCallable::Range {
   SummarizedCallableWithSubpath() { this = "extracted_package.functions.with_subpath" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -164,7 +167,7 @@ private class SummarizedCallableWithSubpath extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableWithSubpathAgain extends SummarizedCallable {
+private class SummarizedCallableWithSubpathAgain extends SummarizedCallable::Range {
   SummarizedCallableWithSubpathAgain() { this = "extracted_package.functions.with_subpathII" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -190,7 +193,7 @@ private class SummarizedCallableWithSubpathAgain extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableWithoutSubpath extends SummarizedCallable {
+private class SummarizedCallableWithoutSubpath extends SummarizedCallable::Range {
   SummarizedCallableWithoutSubpath() { this = "extracted_package.functions.without_subpath" }
 
   override DataFlow::CallCfgNode getACall() {
@@ -216,7 +219,7 @@ private class SummarizedCallableWithoutSubpath extends SummarizedCallable {
   }
 }
 
-private class SummarizedCallableWithoutSubpathAgain extends SummarizedCallable {
+private class SummarizedCallableWithoutSubpathAgain extends SummarizedCallable::Range {
   SummarizedCallableWithoutSubpathAgain() { this = "extracted_package.functions.without_subpathII" }
 
   override DataFlow::CallCfgNode getACall() {

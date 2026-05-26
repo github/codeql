@@ -1,3 +1,60 @@
+## 1.8.3
+
+No user-facing changes.
+
+## 1.8.2
+
+No user-facing changes.
+
+## 1.8.1
+
+### Minor Analysis Improvements
+
+- The `py/bind-socket-all-network-interfaces` query now uses the global data-flow library, leading to better precision and more results. Also, wrappers of `socket.socket` in the `eventlet` and `gevent` libraries are now also recognized as socket binding operations.
+
+## 1.8.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `py/log-injection` has been reduced from 7.8 (high) to 6.1 (medium).
+* The `@security-severity` metadata of `py/jinja2/autoescape-false` and `py/reflective-xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+### Major Analysis Improvements
+
+- Several quality queries have been ported away from using the legacy points-to library. This may lead to changes in alerts.
+
+## 1.7.11
+
+No user-facing changes.
+
+## 1.7.10
+
+No user-facing changes.
+
+## 1.7.9
+
+No user-facing changes.
+
+## 1.7.8
+
+No user-facing changes.
+
+## 1.7.7
+
+No user-facing changes.
+
+## 1.7.6
+
+No user-facing changes.
+
+## 1.7.5
+
+No user-facing changes.
+
+## 1.7.4
+
+No user-facing changes.
+
 ## 1.7.3
 
 No user-facing changes.

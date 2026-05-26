@@ -86,5 +86,9 @@ class JsonStringifySanitizer extends Sanitizer {
 }
 
 private class SinkFromModel extends Sink {
-  SinkFromModel() { this = ModelOutput::getASinkNode("log-injection").asSink() }
+  SinkFromModel() { ModelOutput::sinkNode(this, "log-injection") }
+}
+
+private class SanitizerFromModel extends Sanitizer {
+  SanitizerFromModel() { ModelOutput::barrierNode(this, "log-injection") }
 }

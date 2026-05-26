@@ -18,5 +18,6 @@
 | A.java:112:23:112:24 | cs | String | false |
 | A.java:116:13:116:14 | o2 | String | false |
 | A.java:117:49:117:50 | cs | String | false |
+| A.java:123:12:123:12 | m | Map<String,String> | false |
 | UnionTypes.java:45:7:45:7 | x | Inter | false |
 | UnionTypes.java:48:23:48:23 | x | Inter | false |

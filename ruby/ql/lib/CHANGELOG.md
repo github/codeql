@@ -1,3 +1,59 @@
+## 5.2.1
+
+No user-facing changes.
+
+## 5.2.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Ruby](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-ruby/).
+
+## 5.1.16
+
+No user-facing changes.
+
+## 5.1.15
+
+No user-facing changes.
+
+## 5.1.14
+
+No user-facing changes.
+
+## 5.1.13
+
+No user-facing changes.
+
+## 5.1.12
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `# $ tag` or `# $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 5.1.11
+
+### Minor Analysis Improvements
+
+* We now track taint flow through `Shellwords.escape` and `Shellwords.shellescape` for all queries except command injection, for which they are sanitizers.
+
+## 5.1.10
+
+No user-facing changes.
+
+## 5.1.9
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
+## 5.1.8
+
+No user-facing changes.
+
+## 5.1.7
+
+No user-facing changes.
+
 ## 5.1.6
 
 No user-facing changes.

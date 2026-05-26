@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with declarations.
  */
+overlay[local?]
+module;
 
 import go
 
@@ -135,6 +137,7 @@ class FuncDef extends @funcdef, StmtParent, ExprParent {
   /**
    * Gets a call to this function.
    */
+  overlay[global]
   DataFlow::CallNode getACall() { result.getACallee() = this }
 
   /** Holds if this function is variadic. */

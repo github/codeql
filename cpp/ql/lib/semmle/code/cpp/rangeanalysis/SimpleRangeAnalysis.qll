@@ -158,22 +158,6 @@ private class UnsignedBitwiseAndExpr extends BitwiseAndExpr {
   }
 }
 
-/**
- * Gets the floor of `v`, with additional logic to work around issues with
- * large numbers.
- */
-bindingset[v]
-float safeFloor(float v) {
-  // return the floor of v
-  v.abs() < 2.pow(31) and
-  result = v.floor()
-  or
-  // `floor()` doesn't work correctly on large numbers (since it returns an integer),
-  // so fall back to unrounded numbers at this scale.
-  not v.abs() < 2.pow(31) and
-  result = v
-}
-
 /** A `MulExpr` where exactly one operand is constant. */
 private class MulByConstantExpr extends MulExpr {
   float constant;
@@ -528,8 +512,8 @@ private module BoundsEstimate {
    */
   float getBoundsLimit() {
     // This limit is arbitrary, but low enough that it prevents timeouts on
-    // specific observed customer databases (and the in the tests).
-    result = 2.0.pow(40)
+    // specific observed customer databases (and in the tests).
+    result = 2.0.pow(29)
   }
 
   /** Gets the maximum number of bounds possible for `t` when widening is used. */
@@ -568,34 +552,47 @@ private module BoundsEstimate {
   private float nrOfBoundsPhiGuard(RangeSsaDefinition def, StackVariable v) {
     // If we have
     //
+    //   if (x < c) { e1 } else { e2 }
+    //   e3
+    //
+    // then `{ e1 }` and `{ e2 }` are both guard phi nodes guarded by `x < c`.
+    // The range analysis propagates bounds on `x` into both branches, filtered
+    // by the condition. In this case all lower bounds flow to `{ e1 }` and only
+    // lower bounds that are smaller than `c` flow to `{ e2 }`.
+    //
+    // The largest number of bounds possible for `e3` is the number of bounds on `x` plus
+    // one. This happens when all bounds flow from `x` to `e1` to `e3` and the
+    // bound `c` can flow to `e2` to `e3`.
+    //
+    // We want to optimize our bounds estimate for `e3`, as that is the estimate
+    // that can continue propagating forward. We don't know how the existing
+    // bounds will be split between the different branches. That depends on
+    // whether the range analysis is tracking lower bounds or upper bounds, and
+    // on the meaning of the condition.
+    //
+    // As a heuristic we divide the number of bounds on `x` by 2 to "average"
+    // the effect of the condition and add 1 to account for the bound from the
+    // condition itself. This will approximate estimates inside the branches,
+    // but will give a good estimate after the branches are merged.
+    //
+    // This also handles cases such as this one
+    //
     //   if (x < c) { e1 }
-    //   e2
+    //   e3
     //
-    // then `e2` is both a guard phi node (guarded by `x < c`) and a normal
-    // phi node (control is merged after the `if` statement).
-    //
-    // Assume `x` has `n` bounds. Then `n` bounds are propagated to the guard
-    // phi node `{ e1 }` and, since `{ e1 }` is input to `e2` as a normal phi
-    // node, `n` bounds are propagated to `e2`. If we also propagate the `n`
-    // bounds to `e2` as a guard phi node, then we square the number of
-    // bounds.
-    //
-    // However in practice `x < c` is going to cut down the number of bounds:
-    // The tracked bounds can't flow to both branches as that would require
-    // them to simultaneously be greater and smaller than `c`. To approximate
-    // this better, the contribution from a guard phi node that is also a
-    // normal phi node is 1.
-    exists(def.getAPhiInput(v)) and
-    isGuardPhiWithBound(def, v, _) and
-    result = 1
-    or
-    not exists(def.getAPhiInput(v)) and
-    // If there's different `access`es, then they refer to the same variable
-    // with the same lower bounds. Hence adding these guards make no sense (the
-    // implementation will take the union, but they'll be removed by
-    // deduplication). Hence we use `max` as an approximation.
-    result =
-      max(VariableAccess access | isGuardPhiWithBound(def, v, access) | nrOfBoundsExpr(access))
+    // where `e3` is both a guard phi node (guarded by `x < c`) and a normal
+    // phi node (control is merged after the `if` statement). Here half of the
+    // bounds flow into the branch and then to `e3` as a normal phi node and the
+    // "other" half flow from the condition to `e3` as a guard phi node.
+    exists(float varBounds |
+      // If there's different `access`es, then they refer to the same
+      // variable with the same lower bounds. Hence adding these guards makes no
+      // sense (the implementation will take the union, but they'll be removed by
+      // deduplication). Hence we use `max` as an approximation.
+      varBounds =
+        max(VariableAccess access | isGuardPhiWithBound(def, v, access) | nrOfBoundsExpr(access)) and
+      result = (varBounds + 1) / 2
+    )
     or
     def.isPhiNode(v) and
     not isGuardPhiWithBound(def, v, _) and
@@ -1266,7 +1263,7 @@ private float getLowerBoundsImpl(Expr expr) {
       rsExpr = expr and
       left = getFullyConvertedLowerBounds(rsExpr.getLeftOperand()) and
       right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
-      result = safeFloor(left / 2.pow(right))
+      result = (left / 2.pow(right)).floorFloat()
     )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
   ) and
@@ -1475,7 +1472,7 @@ private float getUpperBoundsImpl(Expr expr) {
       rsExpr = expr and
       left = getFullyConvertedUpperBounds(rsExpr.getLeftOperand()) and
       right = getValue(rsExpr.getRightOperand().getFullyConverted()).toInt() and
-      result = safeFloor(left / 2.pow(right))
+      result = (left / 2.pow(right)).floorFloat()
     )
     // Not explicitly modeled by a SimpleRangeAnalysisExpr
   ) and
@@ -1726,6 +1723,22 @@ predicate nonNanGuardedVariable(Expr guard, VariableAccess v, boolean branch) {
 }
 
 /**
+ * Adjusts a lower bound to its meaning for integral types.
+ *
+ * Examples:
+ * `>= 3.0` becomes `3.0`
+ * ` > 3.0` becomes `4.0`
+ * `>= 3.5` becomes `4.0`
+ * ` > 3.5` becomes `4.0`
+ */
+bindingset[strictness, lb]
+private float adjustLowerBoundIntegral(RelationStrictness strictness, float lb) {
+  if strictness = Nonstrict() and lb.floorFloat() = lb
+  then result = lb
+  else result = lb.floorFloat() + 1
+}
+
+/**
  * If the guard is a comparison of the form `p*v + q <CMP> r`, then this
  * predicate uses the bounds information for `r` to compute a lower bound
  * for `v`.
@@ -1736,13 +1749,27 @@ private predicate lowerBoundFromGuard(Expr guard, VariableAccess v, float lb, bo
   |
     if nonNanGuardedVariable(guard, v, branch)
     then
-      if
-        strictness = Nonstrict() or
-        not getVariableRangeType(v.getTarget()) instanceof IntegralType
-      then lb = childLB
-      else lb = childLB + 1
+      if getVariableRangeType(v.getTarget()) instanceof IntegralType
+      then lb = adjustLowerBoundIntegral(strictness, childLB)
+      else lb = childLB
     else lb = varMinVal(v.getTarget())
   )
+}
+
+/**
+ * Adjusts an upper bound to its meaning for integral types.
+ *
+ * Examples:
+ * `<= 3.0` becomes `3.0`
+ * ` < 3.0` becomes `2.0`
+ * `<= 3.5` becomes `3.0`
+ * ` < 3.5` becomes `3.0`
+ */
+bindingset[strictness, ub]
+private float adjustUpperBoundIntegral(RelationStrictness strictness, float ub) {
+  if strictness = Nonstrict() and ub.ceilFloat() = ub
+  then result = ub
+  else result = ub.ceilFloat() - 1
 }
 
 /**
@@ -1756,11 +1783,9 @@ private predicate upperBoundFromGuard(Expr guard, VariableAccess v, float ub, bo
   |
     if nonNanGuardedVariable(guard, v, branch)
     then
-      if
-        strictness = Nonstrict() or
-        not getVariableRangeType(v.getTarget()) instanceof IntegralType
-      then ub = childUB
-      else ub = childUB - 1
+      if getVariableRangeType(v.getTarget()) instanceof IntegralType
+      then ub = adjustUpperBoundIntegral(strictness, childUB)
+      else ub = childUB
     else ub = varMaxVal(v.getTarget())
   )
 }
@@ -2168,6 +2193,16 @@ module SimpleRangeAnalysisInternal {
 
   /** Gets the estimate of the number of bounds for `e`. */
   float estimateNrOfBounds(Expr e) { result = BoundsEstimate::nrOfBoundsExpr(e) }
+
+  /** Counts the numbers of lower bounds that are computed internally for `e`. */
+  float countNrOfLowerBounds(Expr e) {
+    result = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
+  }
+
+  /** Counts the numbers of upper bounds that are computed internally for `e`. */
+  float countNrOfUpperBounds(Expr e) {
+    result = strictcount(float ub | ub = getUpperBoundsImpl(e) | ub)
+  }
 }
 
 /** Provides predicates for debugging the simple range analysis library. */
@@ -2196,7 +2231,7 @@ private module Debug {
    */
   predicate countGetLowerBoundsImpl(Expr e, int n) {
     e = getRelevantLocatable() and
-    n = strictcount(float lb | lb = getLowerBoundsImpl(e) | lb)
+    n = SimpleRangeAnalysisInternal::countNrOfLowerBounds(e)
   }
 
   float debugNrOfBounds(Expr e) {

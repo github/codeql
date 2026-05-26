@@ -5,15 +5,15 @@ See http://docs.fabfile.org/en/1.14/tutorial.html
 
 from fabric.api import run, local, sudo
 
-local("cmd1; cmd2")  # $getCommand="cmd1; cmd2"
-run("cmd1; cmd2")  # $getCommand="cmd1; cmd2"
-sudo("cmd1; cmd2")  # $getCommand="cmd1; cmd2"
+local("cmd1; cmd2")  # $ getCommand="cmd1; cmd2"
+run("cmd1; cmd2")  # $ getCommand="cmd1; cmd2"
+sudo("cmd1; cmd2")  # $ getCommand="cmd1; cmd2"
 
-local(command="cmd1; cmd2")  # $getCommand="cmd1; cmd2"
-run(command="cmd1; cmd2")  # $getCommand="cmd1; cmd2"
-sudo(command="cmd1; cmd2")  # $getCommand="cmd1; cmd2"
+local(command="cmd1; cmd2")  # $ getCommand="cmd1; cmd2"
+run(command="cmd1; cmd2")  # $ getCommand="cmd1; cmd2"
+sudo(command="cmd1; cmd2")  # $ getCommand="cmd1; cmd2"
 
 from fabric import operations
 
-operations.local("cmd1; cmd2")  # $getCommand="cmd1; cmd2"
-operations.local(command="cmd1; cmd2")  # $getCommand="cmd1; cmd2"
+operations.local("cmd1; cmd2")  # $ getCommand="cmd1; cmd2"
+operations.local(command="cmd1; cmd2")  # $ getCommand="cmd1; cmd2"

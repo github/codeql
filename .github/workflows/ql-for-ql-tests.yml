@@ -30,6 +30,7 @@ jobs:
         uses: github/codeql-action/init@main
         with:
           languages: javascript # does not matter
+          tools: nightly
       - uses: ./.github/actions/os-version
         id: os_version
       - uses: actions/cache@v3
@@ -75,6 +76,7 @@ jobs:
         uses: github/codeql-action/init@main
         with:
           languages: javascript # does not matter
+          tools: nightly
       - uses: ./.github/actions/os-version
         id: os_version
       - uses: actions/cache@v3

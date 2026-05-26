@@ -33,7 +33,7 @@ Minor Analysis Improvements
 C#
 ""
 
-*   the :code:`cs/web/missing-x-frame-options` query now correctly handles configuration nested in root :code:`<location>` elements.
+*   The :code:`cs/web/missing-x-frame-options` query now correctly handles configuration nested in root :code:`<location>` elements.
 
 Java/Kotlin
 """""""""""
@@ -80,7 +80,7 @@ Major Analysis Improvements
 C#
 ""
 
-*   The representation of the C# control-flow graph has been significantly changed. This has minor effects on a wide range of queries including both minor improvements and minor regressions, for example, improved precision has been observed for :code:`cs/inefficient-containskey` and :code:`cs/stringbuilder-creation-in-loop`. Two queries stand out as being significantly affected with great improvements: :code:`cs/dereferenced-value-may-be-null` has been completely rewritten which removes a very significant number of false positives. Furthermore, :code:`cs/constant-condition` has been updated to report many new results - these new results are primarily expected to be true positives, but a few new false positives are expected as well. As part of these changes, :code:`cs/dereferenced-value-may-be-null` has been changed from a :code:`path-problem` query to a :code:`problem` query, so paths are no longer reported for this query.
+*   The representation of the C# control-flow graph has been significantly changed. This has minor effects on a wide range of queries including both minor improvements and minor regressions. For example, improved precision has been observed for :code:`cs/inefficient-containskey` and :code:`cs/stringbuilder-creation-in-loop`. Two queries stand out as being significantly affected with great improvements: :code:`cs/dereferenced-value-may-be-null` has been completely rewritten which removes a very significant number of false positives. Furthermore, :code:`cs/constant-condition` has been updated to report many new results - these new results are primarily expected to be true positives, but a few new false positives are expected as well. As part of these changes, :code:`cs/dereferenced-value-may-be-null` has been changed from a :code:`path-problem` query to a :code:`problem` query, so paths are no longer reported for this query.
 
 Swift
 """""

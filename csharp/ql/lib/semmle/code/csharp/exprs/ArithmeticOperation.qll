@@ -107,7 +107,7 @@ class BinaryArithmeticOperation extends ArithmeticOperation, BinaryOperation, @b
 /**
  * An addition operation, for example `x + y`.
  */
-class AddExpr extends BinaryArithmeticOperation, @add_expr {
+class AddExpr extends BinaryArithmeticOperation, AddOperation, @add_expr {
   override string getOperator() { result = "+" }
 
   override string getAPrimaryQlClass() { result = "AddExpr" }
@@ -116,7 +116,7 @@ class AddExpr extends BinaryArithmeticOperation, @add_expr {
 /**
  * A subtraction operation, for example `x - y`.
  */
-class SubExpr extends BinaryArithmeticOperation, @sub_expr {
+class SubExpr extends BinaryArithmeticOperation, SubOperation, @sub_expr {
   override string getOperator() { result = "-" }
 
   override string getAPrimaryQlClass() { result = "SubExpr" }
@@ -125,7 +125,7 @@ class SubExpr extends BinaryArithmeticOperation, @sub_expr {
 /**
  * A multiplication operation, for example `x * y`.
  */
-class MulExpr extends BinaryArithmeticOperation, @mul_expr {
+class MulExpr extends BinaryArithmeticOperation, MulOperation, @mul_expr {
   override string getOperator() { result = "*" }
 
   override string getAPrimaryQlClass() { result = "MulExpr" }
@@ -134,14 +134,8 @@ class MulExpr extends BinaryArithmeticOperation, @mul_expr {
 /**
  * A division operation, for example `x / y`.
  */
-class DivExpr extends BinaryArithmeticOperation, @div_expr {
+class DivExpr extends BinaryArithmeticOperation, DivOperation, @div_expr {
   override string getOperator() { result = "/" }
-
-  /** Gets the numerator of this division operation. */
-  Expr getNumerator() { result = this.getLeftOperand() }
-
-  /** Gets the denominator of this division operation. */
-  Expr getDenominator() { result = this.getRightOperand() }
 
   override string getAPrimaryQlClass() { result = "DivExpr" }
 }
@@ -149,7 +143,7 @@ class DivExpr extends BinaryArithmeticOperation, @div_expr {
 /**
  * A remainder operation, for example `x % y`.
  */
-class RemExpr extends BinaryArithmeticOperation, @rem_expr {
+class RemExpr extends BinaryArithmeticOperation, RemOperation, @rem_expr {
   override string getOperator() { result = "%" }
 
   override string getAPrimaryQlClass() { result = "RemExpr" }

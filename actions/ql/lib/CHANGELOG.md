@@ -1,3 +1,59 @@
+## 0.4.36
+
+### Minor Analysis Improvements
+
+* Altered 2 patterns in the `poisonable_steps` modelling. Extra sinks are detected in the following cases: scripts executed via python modules and `go run` in directories are detected as potential mechanisms of injection. For the go execution pattern, the pattern is updated to now ignore flags that occur between go and the specific command. This change may lead to more results being detected by the following queries: `actions/untrusted-checkout/high`, `actions/untrusted-checkout/critical`, `actions/untrusted-checkout-toctou/high`, `actions/untrusted-checkout-toctou/critical`, `actions/cache-poisoning/poisonable-step`, `actions/cache-poisoning/direct-cache` and `actions/artifact-poisoning/path-traversal`.
+
+## 0.4.35
+
+No user-facing changes.
+
+## 0.4.34
+
+### Minor Analysis Improvements
+
+* Removed false positive injection sink models for the `context` input of `docker/build-push-action` and the `allowed-endpoints` input of `step-security/harden-runner`.
+
+## 0.4.33
+
+No user-facing changes.
+
+## 0.4.32
+
+No user-facing changes.
+
+## 0.4.31
+
+No user-facing changes.
+
+## 0.4.30
+
+No user-facing changes.
+
+## 0.4.29
+
+No user-facing changes.
+
+## 0.4.28
+
+No user-facing changes.
+
+## 0.4.27
+
+### Bug Fixes
+
+* Fixed a crash when analysing a `${{ ... }}` expression over around 300 characters in length.
+
+## 0.4.26
+
+### Major Analysis Improvements
+
+* The query `actions/code-injection/medium` has been updated to include results which were incorrectly excluded while filtering out results that are reported by `actions/code-injection/critical`.
+
+## 0.4.25
+
+No user-facing changes.
+
 ## 0.4.24
 
 No user-facing changes.

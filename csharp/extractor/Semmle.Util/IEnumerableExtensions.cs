@@ -119,5 +119,28 @@ namespace Semmle.Util
         /// </summary>
         public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> items) where T : class =>
             items.Where(i => i is not null)!;
+
+        /// <summary>
+        /// Splits the sequence at the given index.
+        /// </summary>
+        public static (IEnumerable<T>, IEnumerable<T>) SplitAt<T>(this IEnumerable<T> items, int index)
+        {
+            var left = new List<T>();
+            var right = new List<T>();
+            var i = 0;
+            foreach (var item in items)
+            {
+                if (i < index)
+                {
+                    left.Add(item);
+                }
+                else
+                {
+                    right.Add(item);
+                }
+                i++;
+            }
+            return (left, right);
+        }
     }
 }

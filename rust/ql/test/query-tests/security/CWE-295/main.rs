@@ -126,12 +126,12 @@ fn test_threat_model_source() {
 	// (these are a little closer to something real)
 
 	let mut input_line = String::new();
-	let input = std::io::stdin();
+	let input = std::io::stdin(); // $ Source=stdin
 	input.read_line(&mut input_line).unwrap();
 
 	let b4: bool = input_line.parse::<bool>().unwrap_or(false);
 	let _client = native_tls::TlsConnector::builder()
-		.danger_accept_invalid_hostnames(b4) // $ MISSING: Alert[rust/disabled-certificate-check]=stdin
+		.danger_accept_invalid_hostnames(b4) // $ Alert[rust/disabled-certificate-check]=stdin
 		.build()
 		.unwrap();
 

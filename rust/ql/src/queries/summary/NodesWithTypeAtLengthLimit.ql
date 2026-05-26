@@ -3,11 +3,11 @@
  * @description Counts the number of AST nodes with a type at the type path length limit.
  * @kind metric
  * @id rust/summary/nodes-at-type-path-length-limit
- * @tags summary
+ * @tags summary telemetry
  */
 
 import rust
-import codeql.rust.internal.TypeInference
+import codeql.rust.internal.typeinference.TypeInference
 
 from int atLimit
 where

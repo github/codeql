@@ -109,6 +109,7 @@ module.exports = grammar({
     ),
 
     import_statement: $ => seq(
+      optional(field('is_lazy', 'lazy')),
       'import',
       $._import_list
     ),
@@ -131,6 +132,7 @@ module.exports = grammar({
     ),
 
     import_from_statement: $ => seq(
+      optional(field('is_lazy', 'lazy')),
       'from',
       field('module_name', choice(
         $.relative_import,
@@ -297,12 +299,21 @@ module.exports = grammar({
       )
     ),
 
+    exception_list: $ => seq(
+      field('element', $.expression),
+      repeat1(
+        seq(
+          ',',
+          field('element', $.expression))
+        )
+      ),
+
     except_clause: $ => seq(
       'except',
       optional(seq(
-        field('type', $.expression),
+        field('type', choice($.expression, $.exception_list)),
         optional(seq(
-          choice('as', ','),
+          'as',
           field('alias', $.expression)
         ))
       )),
@@ -314,7 +325,7 @@ module.exports = grammar({
       'except',
       '*',
       seq(
-        field('type', $.expression),
+        field('type', choice($.expression, $.exception_list)),
         optional(seq(
           'as',
           field('alias', $.expression)
@@ -1020,28 +1031,28 @@ module.exports = grammar({
 
     list_comprehension: $ => seq(
       '[',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       ']'
     ),
 
     dictionary_comprehension: $ => seq(
       '{',
-      field('body', $.pair),
+      field('body', choice($.pair, $.dictionary_splat)),
       $._comprehension_clauses,
       '}'
     ),
 
     set_comprehension: $ => seq(
       '{',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       '}'
     ),
 
     generator_expression: $ => seq(
       '(',
-      field('body', $.expression),
+      field('body', choice($.expression, $.list_splat)),
       $._comprehension_clauses,
       ')'
     ),
@@ -1159,7 +1170,7 @@ module.exports = grammar({
     _not_escape_sequence: $ => token.immediate('\\'),
 
     format_specifier: $ => seq(
-      ':',
+      token(prec(1,':')),
       repeat(choice(
         token(prec(1, /[^{}\n]+/)),
         alias($.interpolation, $.format_expression)
@@ -1219,6 +1230,7 @@ module.exports = grammar({
         'await',
         'match',
         'type',
+        'lazy',
       ),
       $.identifier
     )),

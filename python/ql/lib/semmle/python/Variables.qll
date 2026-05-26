@@ -1,3 +1,6 @@
+overlay[local]
+module;
+
 import python
 
 /** A variable, either a global or local variable (including parameters) */

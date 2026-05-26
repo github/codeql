@@ -14,7 +14,7 @@ import semmle.python.Patterns
 import semmle.python.Keywords
 import semmle.python.Comprehensions
 import semmle.python.Flow
-private import semmle.python.Metrics
+import semmle.python.Metrics
 import semmle.python.Constants
 import semmle.python.Scope
 import semmle.python.Comment

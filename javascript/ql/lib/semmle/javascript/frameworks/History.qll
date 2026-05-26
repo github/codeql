@@ -5,6 +5,7 @@ import javascript
 /** Provides classes modeling the [`history`](https://npmjs.org/package/history) library. */
 module History {
   /** The global variable `HistoryLibrary` as an entry point for API graphs. */
+  overlay[local?]
   private class HistoryGlobalEntry extends API::EntryPoint {
     HistoryGlobalEntry() { this = "HistoryLibrary" }
 

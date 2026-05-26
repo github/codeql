@@ -1,5 +1,5 @@
 // For ComponentRegistrar
-@file:Suppress("DEPRECATION")
+@file:Suppress("DEPRECATION", "DEPRECATION_ERROR")
 
 package com.github.codeql
 

@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/github/codeql-go/extractor/registries"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -129,7 +130,13 @@ func parseGoVersion(data string) string {
 	for sc.Scan() {
 		lastLine = sc.Text()
 	}
-	return strings.Fields(lastLine)[2]
+
+	var goVersion = strings.Fields(lastLine)[2]
+
+	// Drop custom build suffixes.
+	goVersion, _, _ = strings.Cut(goVersion, "-")
+
+	return goVersion
 }
 
 // Returns a value indicating whether the system Go toolchain supports workspaces.
@@ -140,7 +147,7 @@ func SupportsWorkspaces() bool {
 // Constructs a `*exec.Cmd` for `go` with the specified arguments.
 func GoCommand(arg ...string) *exec.Cmd {
 	cmd := exec.Command("go", arg...)
-	util.ApplyProxyEnvVars(cmd)
+	registries.ApplyProxyEnvVars(cmd)
 	return cmd
 }
 

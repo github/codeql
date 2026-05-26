@@ -8,7 +8,7 @@ private import codeql.rust.dataflow.internal.DataFlowImpl
 private import codeql.rust.dataflow.internal.TaintTrackingImpl
 private import codeql.rust.internal.AstConsistency as AstConsistency
 private import codeql.rust.internal.PathResolutionConsistency as PathResolutionConsistency
-private import codeql.rust.internal.TypeInferenceConsistency as TypeInferenceConsistency
+private import codeql.rust.internal.typeinference.TypeInferenceConsistency as TypeInferenceConsistency
 private import codeql.rust.controlflow.internal.CfgConsistency as CfgConsistency
 private import codeql.rust.dataflow.internal.DataFlowConsistency as DataFlowConsistency
 private import codeql.rust.dataflow.internal.SsaImpl::Consistency as SsaConsistency

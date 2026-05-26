@@ -173,7 +173,7 @@ module AsyncPackage {
   }
 
   overlay[local?]
-  private class IterationCallFlowSummary extends DataFlow::SummarizedCallable {
+  private class IterationCallFlowSummary extends DataFlow::SummarizedCallable::Range {
     private int callbackArgIndex;
 
     IterationCallFlowSummary() {
@@ -221,7 +221,7 @@ module AsyncPackage {
    * For example: `data -> result` in `async.sortBy(data, orderingFn, (err, result) => {})`.
    */
   overlay[local?]
-  private class IterationPreserveTaintStepFlowSummary extends DataFlow::SummarizedCallable {
+  private class IterationPreserveTaintStepFlowSummary extends DataFlow::SummarizedCallable::Range {
     IterationPreserveTaintStepFlowSummary() { this = "async.sortBy" }
 
     override DataFlow::InvokeNode getACallSimple() {

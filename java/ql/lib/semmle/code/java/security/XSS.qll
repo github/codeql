@@ -54,8 +54,8 @@ private class DefaultXssSink extends XssSink {
   }
 }
 
-private class DefaultXssSanitizer extends XssSanitizer {
-  DefaultXssSanitizer() { barrierNode(this, ["html-injection", "js-injection"]) }
+private class ExternalXssSanitizer extends XssSanitizer {
+  ExternalXssSanitizer() { barrierNode(this, ["html-injection", "js-injection"]) }
 }
 
 /** A sanitizer that considers numeric and boolean typed data safe for writing to output. */
@@ -127,7 +127,7 @@ class XssVulnerableWriterSource extends MethodCall {
     )
     or
     exists(Method m | m = this.getMethod() |
-      m.hasQualifiedName("javax.servlet.jsp", "JspContext", "getOut")
+      m.hasQualifiedName(javaxOrJakarta() + ".servlet.jsp", "JspContext", "getOut")
     )
     or
     this.getMethod() instanceof FacesGetResponseWriterMethod

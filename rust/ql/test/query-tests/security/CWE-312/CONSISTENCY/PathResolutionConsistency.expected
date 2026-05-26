@@ -1,2 +1,2 @@
 multipleResolvedTargets
-| test_storage.rs:36:45:36:57 | text.as_ref() |
+| test_storage.rs:40:5:40:31 | combined.extend(...) |

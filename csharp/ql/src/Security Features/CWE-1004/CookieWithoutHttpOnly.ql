@@ -27,8 +27,8 @@ predicate cookieAppendHttpOnlyByDefault() {
 
 predicate httpOnlyFalse(ObjectCreation oc) {
   exists(Assignment a |
-    getAValueForProp(oc, a, "HttpOnly") = a.getRValue() and
-    a.getRValue().getValue() = "false"
+    getAValueForProp(oc, a, "HttpOnly") = a.getRightOperand() and
+    a.getRightOperand().getValue() = "false"
   )
 }
 
@@ -100,8 +100,8 @@ predicate nonHttpOnlyCookieBuilderAssignment(Assignment a, Expr val) {
         MicrosoftAspNetCoreAuthenticationCookiesCookieAuthenticationOptions
     ) and
     pw.getProperty().getName() = "HttpOnly" and
-    a.getLValue() = pw and
-    DataFlow::localExprFlow(val, a.getRValue())
+    a.getLeftOperand() = pw and
+    DataFlow::localExprFlow(val, a.getRightOperand())
   )
 }
 
@@ -111,7 +111,7 @@ where
     nonHttpOnlyCookieCall(httpOnlySink)
     or
     exists(Assignment a |
-      httpOnlySink = a.getRValue() and
+      httpOnlySink = a.getRightOperand() and
       nonHttpOnlyCookieBuilderAssignment(a, _)
     )
   )

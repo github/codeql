@@ -201,7 +201,7 @@ predicate simpleAstFlowStep(Expr e1, Expr e2) {
   or
   e2 = any(StmtExpr stmtExpr | e1 = stmtExpr.getResultExpr())
   or
-  e2 = any(NotNullExpr nne | e1 = nne.getExpr())
+  e2 = any(NotNullExpr nne | e1 = nne.getOperand())
   or
   e2.(WhenExpr).getBranch(_).getAResult() = e1
   or

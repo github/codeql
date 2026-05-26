@@ -1,15 +1,15 @@
 const WebSocket = require('ws');
 
 (function () {
-	const ws = new WebSocket('ws://example.org'); // $clientSocket
+	const ws = new WebSocket('ws://example.org'); // $ clientSocket
 
 	ws.on('open', function open() {
-		ws.send('Hi from client!'); // $clientSend
+		ws.send('Hi from client!'); // $ clientSend
 	});
 
 	ws.on('message', function incoming(data) { // $ remoteFlow
 		console.log(data);
-	}); // $clientReceive
+	}); // $ clientReceive
 })();
 
 module.exports.MyWebSocketWS = require('ws');

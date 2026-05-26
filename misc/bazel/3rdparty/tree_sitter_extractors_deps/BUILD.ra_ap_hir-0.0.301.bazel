@@ -73,6 +73,7 @@ rust_library(
         "@rules_rust//rust/platform:aarch64-unknown-nto-qnx710": [],
         "@rules_rust//rust/platform:aarch64-unknown-uefi": [],
         "@rules_rust//rust/platform:arm-unknown-linux-gnueabi": [],
+        "@rules_rust//rust/platform:arm-unknown-linux-musleabi": [],
         "@rules_rust//rust/platform:armv7-linux-androideabi": [],
         "@rules_rust//rust/platform:armv7-unknown-linux-gnueabi": [],
         "@rules_rust//rust/platform:i686-apple-darwin": [],
@@ -108,7 +109,7 @@ rust_library(
     deps = [
         "@vendor_ts__arrayvec-0.7.6//:arrayvec",
         "@vendor_ts__either-1.15.0//:either",
-        "@vendor_ts__indexmap-2.11.4//:indexmap",
+        "@vendor_ts__indexmap-2.14.0//:indexmap",
         "@vendor_ts__itertools-0.14.0//:itertools",
         "@vendor_ts__ra_ap_base_db-0.0.301//:ra_ap_base_db",
         "@vendor_ts__ra_ap_cfg-0.0.301//:ra_ap_cfg",

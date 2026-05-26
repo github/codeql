@@ -38,7 +38,7 @@ class LoggingSink extends Sink {
 }
 
 private class ExternalLogInjectionSink extends Sink {
-  ExternalLogInjectionSink() { this = ModelOutput::getASinkNode("log-injection").asSink() }
+  ExternalLogInjectionSink() { ModelOutput::sinkNode(this, "log-injection") }
 }
 
 /**
@@ -65,6 +65,10 @@ class InspectSanitizer extends Sanitizer {
  */
 class HtmlEscapingAsSanitizer extends Sanitizer {
   HtmlEscapingAsSanitizer() { this = any(HtmlEscaping esc).getOutput() }
+}
+
+private class ExternalLogInjectionSanitizer extends Sanitizer {
+  ExternalLogInjectionSanitizer() { ModelOutput::barrierNode(this, "log-injection") }
 }
 
 private module LogInjectionConfig implements DataFlow::ConfigSig {

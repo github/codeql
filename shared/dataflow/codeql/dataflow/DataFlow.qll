@@ -63,6 +63,35 @@ signature module InputSig<LocationSig Location> {
 
   DataFlowType getNodeType(Node node);
 
+  /**
+   * Gets a special type to use for parameter node `p` belonging to callables with a
+   * source node where a source call context `FlowFeature` is used, if any.
+   *
+   * This can be used to prevent lambdas from being resolved, when a concrete call
+   * context is needed. Example:
+   *
+   * ```csharp
+   * void Foo(Action<string> a)
+   * {
+   *     var x = Source();
+   *     a(x);              // (1)
+   *     a = s => Sink(s);  // (2)
+   *     a(x);              // (3)
+   * }
+   *
+   * void Bar()
+   * {
+   *     Foo(s => Sink(s)); // (4)
+   * }
+   * ```
+   *
+   * If a source call context flow feature is used, `a` can be assigned a special
+   * type that is incompatible with the type of _any_ lambda expression, which will
+   * prevent the call edge from (1) to (4). Note that the call edge from (3) to (2)
+   * will still be valid.
+   */
+  default DataFlowType getSourceContextParameterNodeType(Node p) { none() }
+
   predicate nodeIsHidden(Node node);
 
   class DataFlowExpr;
@@ -755,19 +784,6 @@ private module DataFlowMakeCore<LocationSig Location, InputSig<Location> Lang> {
 
       /** Gets the location of this node. */
       Location getLocation() { result = this.getNode().getLocation() }
-
-      /**
-       * Holds if this element is at the specified location.
-       * The location spans column `startcolumn` of line `startline` to
-       * column `endcolumn` of line `endline` in file `filepath`.
-       * For more information, see
-       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-       */
-      deprecated predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
     }
 
     /**
@@ -823,19 +839,6 @@ private module DataFlowMakeCore<LocationSig Location, InputSig<Location> Lang> {
 
       /** Gets a textual representation of this element. */
       string toString() { result = super.toString() }
-
-      /**
-       * Holds if this element is at the specified location.
-       * The location spans column `startcolumn` of line `startline` to
-       * column `endcolumn` of line `endline` in file `filepath`.
-       * For more information, see
-       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-       */
-      deprecated predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
 
       /** Gets the underlying `Node`. */
       Node getNode() { result = super.getNode() }

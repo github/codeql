@@ -15,6 +15,8 @@ private import codeql.rust.internal.PathResolution
 private import codeql.rust.controlflow.ControlFlowGraph
 private import codeql.rust.dataflow.Ssa
 private import codeql.rust.dataflow.FlowSummary
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.DerefChain
 private import Node
 private import Content
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -60,6 +62,10 @@ final class DataFlowCall extends TDataFlowCall {
   /** Gets the underlying call, if any. */
   Call asCall() { this = TCall(result) }
 
+  predicate isImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
+    this = TImplicitDerefCall(e, derefChain, i, target)
+  }
+
   predicate isSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
   ) {
@@ -69,11 +75,18 @@ final class DataFlowCall extends TDataFlowCall {
   DataFlowCallable getEnclosingCallable() {
     result.asCfgScope() = this.asCall().getEnclosingCfgScope()
     or
+    result.asCfgScope() = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getEnclosingCfgScope()
+    or
     this.isSummaryCall(result.asSummarizedCallable(), _)
   }
 
   string toString() {
     result = this.asCall().toString()
+    or
+    exists(Expr e, DerefChain derefChain, int i |
+      this.isImplicitDerefCall(e, derefChain, i, _) and
+      result = "[implicit deref call " + i + " in " + derefChain.toString() + "] " + e
+    )
     or
     exists(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
@@ -83,7 +96,11 @@ final class DataFlowCall extends TDataFlowCall {
     )
   }
 
-  Location getLocation() { result = this.asCall().getLocation() }
+  Location getLocation() {
+    result = this.asCall().getLocation()
+    or
+    result = any(Expr e | this.isImplicitDerefCall(e, _, _, _)).getLocation()
+  }
 }
 
 /**
@@ -131,7 +148,6 @@ private Expr getALastEvalNode(Expr e) {
       not be.isAsync() and
       result = be.getTailExpr()
     ) or
-  result = e.(MacroBlockExpr).getTailExpr() or
   result = e.(MatchExpr).getAnArm().getExpr() or
   result = e.(MacroExpr).getMacroCall().getMacroCallExpansion() or
   result.(BreakExpr).getTarget() = e or
@@ -177,9 +193,7 @@ module LocalFlow {
   }
 
   pragma[nomagic]
-  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    nodeFrom.asExpr() = getALastEvalNode(nodeTo.asExpr())
-    or
+  predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
     // An edge from the right-hand side of a let statement to the left-hand side.
     exists(LetStmt s |
       nodeFrom.asExpr() = s.getInitializer() and
@@ -222,6 +236,15 @@ module LocalFlow {
       nodeTo.asPat() = match.getAnArm().getPat()
     )
     or
+    nodeFrom.asExpr() = nodeTo.asExpr().(ParenExpr).getExpr()
+  }
+
+  pragma[nomagic]
+  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    localMustFlowStep(nodeFrom, nodeTo)
+    or
+    nodeFrom.asExpr() = getALastEvalNode(nodeTo.asExpr())
+    or
     nodeFrom.asPat().(OrPat).getAPat() = nodeTo.asPat()
     or
     nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
@@ -247,15 +270,91 @@ predicate lambdaCallExpr(CallExprImpl::DynamicCallExpr call, LambdaCallKind kind
   exists(kind)
 }
 
+// NOTE: We do not yet track type information, except for closures where
+// we use the closure itself to represent the unique type.
+final class DataFlowType extends TDataFlowType {
+  Expr asClosureExpr() { this = TClosureExprType(result) }
+
+  predicate isUnknownType() { this = TUnknownType() }
+
+  predicate isSourceContextParameterType() { this = TSourceContextParameterType() }
+
+  string toString() {
+    exists(this.asClosureExpr()) and
+    result = "... => .."
+    or
+    this.isUnknownType() and
+    result = ""
+    or
+    this.isSourceContextParameterType() and
+    result = "<source context parameter type>"
+  }
+}
+
+pragma[nomagic]
+private predicate compatibleTypesSourceContextParameterTypeLeft(DataFlowType t1, DataFlowType t2) {
+  t1.isSourceContextParameterType() and not exists(t2.asClosureExpr())
+}
+
+pragma[nomagic]
+private predicate compatibleTypesLeft(DataFlowType t1, DataFlowType t2) {
+  t1.isUnknownType() and exists(t2)
+  or
+  t1.asClosureExpr() = t2.asClosureExpr()
+  or
+  compatibleTypesSourceContextParameterTypeLeft(t1, t2)
+}
+
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
+  compatibleTypesLeft(t1, t2)
+  or
+  compatibleTypesLeft(t2, t1)
+}
+
+pragma[nomagic]
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  not t1.isUnknownType() and t2.isUnknownType()
+  or
+  compatibleTypesSourceContextParameterTypeLeft(t1, t2)
+}
+
+DataFlowType getNodeType(NodePublic node) {
+  result.asClosureExpr() = node.asExpr()
+  or
+  result.asClosureExpr() = node.(ClosureParameterNode).getCfgScope()
+  or
+  exists(VariableCapture::Flow::SynthesizedCaptureNode scn |
+    scn = node.(CaptureNode).getSynthesizedCaptureNode() and
+    if scn.isInstanceAccess()
+    then result.asClosureExpr() = scn.getEnclosingCallable()
+    else result.isUnknownType()
+  )
+  or
+  not lambdaCreationExpr(node.asExpr()) and
+  not node instanceof ClosureParameterNode and
+  not node instanceof CaptureNode and
+  result.isUnknownType()
+}
+
 // Defines a set of aliases needed for the `RustDataFlow` module
 private module Aliases {
   class DataFlowCallableAlias = DataFlowCallable;
+
+  class DataFlowTypeAlias = DataFlowType;
+
+  predicate compatibleTypesAlias = compatibleTypes/2;
+
+  predicate typeStrongerThanAlias = typeStrongerThan/2;
+
+  predicate getNodeTypeAlias = getNodeType/1;
 
   class ReturnKindAlias = ReturnKind;
 
   class DataFlowCallAlias = DataFlowCall;
 
   class ContentAlias = Content;
+
+  class ContentApproxAlias = ContentApprox;
 
   class ContentSetAlias = ContentSet;
 
@@ -286,7 +385,11 @@ predicate indexAssignment(
   not index.getResolvedTarget().fromSource()
 }
 
-module RustDataFlow implements InputSig<Location> {
+signature module RustDataFlowInputSig {
+  predicate includeDynamicTargets();
+}
+
+module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location> {
   private import Aliases
   private import codeql.rust.dataflow.DataFlow
   private import Node as Node
@@ -376,14 +479,13 @@ module RustDataFlow implements InputSig<Location> {
     result = node.(Node::Node).getEnclosingCallable()
   }
 
-  DataFlowType getNodeType(Node node) { any() }
-
   predicate nodeIsHidden(Node node) {
     node instanceof SsaNode or
     node.(FlowSummaryNode).getSummaryNode().isHidden() or
     node instanceof CaptureNode or
     node instanceof ClosureParameterNode or
-    node instanceof DerefBorrowNode or
+    node instanceof ImplicitDerefNode or
+    node instanceof ImplicitBorrowNode or
     node instanceof DerefOutNode or
     node instanceof IndexOutNode or
     node.asExpr() instanceof ParenExpr or
@@ -441,9 +543,19 @@ module RustDataFlow implements InputSig<Location> {
   /** Gets a viable implementation of the target of the given `Call`. */
   DataFlowCallable viableCallable(DataFlowCall call) {
     exists(Call c | c = call.asCall() |
-      result.asCfgScope() = c.getARuntimeTarget()
+      (
+        if Input::includeDynamicTargets()
+        then result.asCfgScope() = c.getARuntimeTarget()
+        else result.asCfgScope() = c.getStaticTarget()
+      )
       or
       result.asSummarizedCallable() = getStaticTargetExt(c)
+    )
+    or
+    exists(Function f | call = TImplicitDerefCall(_, _, _, f) |
+      result.asCfgScope() = f
+      or
+      result.asSummarizedCallable() = f
     )
   }
 
@@ -453,15 +565,17 @@ module RustDataFlow implements InputSig<Location> {
    */
   OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
 
-  // NOTE: For now we use the type `Unit` and do not benefit from type
-  // information in the data flow analysis.
-  final class DataFlowType extends Unit {
-    string toString() { result = "" }
+  class DataFlowType = DataFlowTypeAlias;
+
+  predicate compatibleTypes = compatibleTypesAlias/2;
+
+  predicate typeStrongerThan = typeStrongerThanAlias/2;
+
+  DataFlowType getSourceContextParameterNodeType(Node p) {
+    exists(p) and result.isSourceContextParameterType()
   }
 
-  predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
-
-  predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+  predicate getNodeType = getNodeTypeAlias/1;
 
   class Content = ContentAlias;
 
@@ -471,9 +585,27 @@ module RustDataFlow implements InputSig<Location> {
 
   predicate forceHighPrecision(Content c) { none() }
 
-  final class ContentApprox = Content; // TODO: Implement if needed
+  class ContentApprox = ContentApproxAlias;
 
-  ContentApprox getContentApprox(Content c) { result = c }
+  ContentApprox getContentApprox(Content c) {
+    result = TTupleFieldContentApprox(tupleFieldApprox(c.(TupleFieldContent).getField()))
+    or
+    result = TStructFieldContentApprox(structFieldApprox(c.(StructFieldContent).getField()))
+    or
+    result = TElementContentApprox() and c instanceof ElementContent
+    or
+    result = TFutureContentApprox() and c instanceof FutureContent
+    or
+    result = TTuplePositionContentApprox() and c instanceof TuplePositionContent
+    or
+    result = TFunctionCallArgumentContentApprox() and c instanceof FunctionCallArgumentContent
+    or
+    result = TFunctionCallReturnContentApprox() and c instanceof FunctionCallReturnContent
+    or
+    result = TCapturedVariableContentApprox() and c instanceof CapturedVariableContent
+    or
+    result = TReferenceContentApprox() and c instanceof ReferenceContent
+  }
 
   /**
    * Holds if the parameter position `ppos` matches the argument position
@@ -498,6 +630,8 @@ module RustDataFlow implements InputSig<Location> {
         isUseStep = true and
         not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
       )
+      or
+      nodeFrom = nodeTo.(ImplicitDerefNode).getLocalInputNode()
       or
       VariableCapture::localFlowStep(nodeFrom, nodeTo)
     ) and
@@ -524,16 +658,14 @@ module RustDataFlow implements InputSig<Location> {
   }
 
   pragma[nomagic]
-  private predicate implicitDeref(Node node1, DerefBorrowNode node2, ReferenceContent c) {
-    not node2.isBorrow() and
-    node1.asExpr() = node2.getNode() and
+  private predicate implicitDeref(ImplicitDerefNode node1, Node node2, ReferenceContent c) {
+    node2 = node1.getDerefOutputNode() and
     exists(c)
   }
 
   pragma[nomagic]
-  private predicate implicitBorrow(Node node1, DerefBorrowNode node2, ReferenceContent c) {
-    node2.isBorrow() and
-    node1.asExpr() = node2.getNode() and
+  private predicate implicitBorrow(Node node1, ImplicitDerefBorrowNode node2, ReferenceContent c) {
+    node1 = node2.getBorrowInputNode() and
     exists(c)
   }
 
@@ -545,10 +677,10 @@ module RustDataFlow implements InputSig<Location> {
 
   private Node getFieldExprContainerNode(FieldExpr fe) {
     exists(Expr container | container = fe.getContainer() |
-      not any(DerefBorrowNode n).getNode() = container and
+      not TypeInference::implicitDerefChainBorrow(container, _, _) and
       result.asExpr() = container
       or
-      result.(DerefBorrowNode).getNode() = container
+      result.(ImplicitDerefNode).isLast(container)
     )
   }
 
@@ -846,6 +978,8 @@ module RustDataFlow implements InputSig<Location> {
   predicate localMustFlowStep(Node node1, Node node2) {
     SsaFlow::localMustFlowStep(node1, node2)
     or
+    LocalFlow::localMustFlowStep(node1, node2)
+    or
     FlowSummaryImpl::Private::Steps::summaryLocalMustFlowStep(node1
           .(FlowSummaryNode)
           .getSummaryNode(), node2.(FlowSummaryNode).getSummaryNode())
@@ -889,6 +1023,12 @@ module RustDataFlow implements InputSig<Location> {
 
   class DataFlowSecondLevelScope = Void;
 }
+
+module RustDataFlowInput implements RustDataFlowInputSig {
+  predicate includeDynamicTargets() { any() }
+}
+
+module RustDataFlow = RustDataFlowGen<RustDataFlowInput>;
 
 /** Provides logic related to captured variables. */
 module VariableCapture {
@@ -1037,6 +1177,11 @@ private module Cached {
       Stages::DataFlowStage::ref() and
       call.hasEnclosingCfgScope()
     } or
+    TImplicitDerefCall(Expr e, DerefChain derefChain, int i, Function target) {
+      TypeInference::implicitDerefChainBorrow(e, derefChain, _) and
+      target = derefChain.getElement(i).getDerefFunction() and
+      e.hasEnclosingCfgScope()
+    } or
     TSummaryCall(
       FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
     ) {
@@ -1047,6 +1192,12 @@ private module Cached {
   newtype TDataFlowCallable =
     TCfgScope(CfgScope scope) or
     TSummarizedCallable(SummarizedCallable c)
+
+  cached
+  newtype TDataFlowType =
+    TClosureExprType(Expr e) { lambdaCreationExpr(e) } or
+    TUnknownType() or
+    TSourceContextParameterType()
 
   /** This is the local flow predicate that is exposed. */
   cached
@@ -1061,7 +1212,7 @@ private module Cached {
   }
 
   cached
-  newtype TParameterPosition =
+  newtype TParameterPositionImpl =
     TPositionalParameterPosition(int i) {
       i in [0 .. max([any(ParamList l).getNumberOfParams(), any(ArgList l).getNumberOfArgs()]) - 1]
       or
@@ -1071,6 +1222,8 @@ private module Cached {
     } or
     TClosureSelfParameterPosition() or
     TSelfParameterPosition()
+
+  final class TParameterPosition = TParameterPositionImpl;
 
   cached
   newtype TReturnKind = TNormalReturnKind()
@@ -1092,6 +1245,64 @@ private module Cached {
   /** Holds if `n` is a flow sink of kind `kind`. */
   cached
   predicate sinkNode(Node n, string kind) { n.(FlowSummaryNode).isSink(kind, _) }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) {
+      FlowSummaryImpl::Private::barrierGuardSpec(_, _, _, kind, model)
+    }
+
+  private boolean convertAcceptingValue(FlowSummaryImpl::Public::AcceptingValue av) {
+    av.isTrue() and result = true
+    or
+    av.isFalse() and result = false
+    // Remaining cases are not supported yet, they depend on the shared Guards library.
+    // or
+    // av.isNoException() and result.getDualValue().isThrowsException()
+    // or
+    // av.isZero() and result.asIntValue() = 0
+    // or
+    // av.isNotZero() and result.getDualValue().asIntValue() = 0
+    // or
+    // av.isNull() and result.isNullValue()
+    // or
+    // av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(AstNode g, Expr e, boolean gv, TKindModelPair kmp) {
+    exists(
+      FlowSummaryImpl::Public::BarrierGuardElement b,
+      FlowSummaryImpl::Private::SummaryComponentStack stack,
+      FlowSummaryImpl::Public::AcceptingValue acceptingValue, string kind, string model
+    |
+      FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingValue, kind, model) and
+      e = FlowSummaryImpl::StepsInput::getSinkNode(b, stack.headOfSingleton()).asExpr() and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingValue) and
+      g = b.getCall()
+    )
+  }
+
+  /** Holds if `n` is a flow barrier of kind `kind` and model `model`. */
+  cached
+  predicate barrierNode(Node n, string kind, string model) {
+    exists(
+      FlowSummaryImpl::Public::BarrierElement b,
+      FlowSummaryImpl::Private::SummaryComponentStack stack
+    |
+      FlowSummaryImpl::Private::barrierSpec(b, stack, kind, model)
+    |
+      n = FlowSummaryImpl::StepsInput::getSourceNode(b, stack, false)
+      or
+      // For barriers like `Argument[0]` we want to target the pre-update node
+      n =
+        FlowSummaryImpl::StepsInput::getSourceNode(b, stack, true)
+            .(PostUpdateNode)
+            .getPreUpdateNode()
+    )
+    or
+    ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = n
+  }
 
   /**
    * A step in a flow summary defined using `OptionalStep[name]`. An `OptionalStep` is "opt-in", which means
@@ -1116,3 +1327,34 @@ private module Cached {
 }
 
 import Cached
+
+/** Holds if `n` is a flow barrier of kind `kind`. */
+predicate barrierNode(Node n, string kind) { barrierNode(n, kind, _) }
+
+bindingset[this]
+private signature class ParamSig;
+
+private module WithParam<ParamSig P> {
+  /**
+   * Holds if the guard `g` validates the expression `e` upon evaluating to `gv`.
+   *
+   * The expression `e` is expected to be a syntactic part of the guard `g`.
+   * For example, the guard `g` might be a call `isSafe(x)` and the expression `e`
+   * the argument `x`.
+   */
+  signature predicate guardChecksSig(AstNode g, Expr e, boolean branch, P param);
+}
+
+/**
+ * Provides a set of barrier nodes for a guard that validates an expression.
+ *
+ * This is expected to be used in `isBarrier`/`isSanitizer` definitions
+ * in data flow and taint tracking.
+ */
+module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guardChecks> {
+  /** Gets a node that is safely guarded by the given guard check. */
+  Node getABarrierNode(P param) {
+    SsaFlow::asNode(result) =
+      SsaImpl::DataFlowIntegration::ParameterizedBarrierGuard<P, guardChecks/4>::getABarrierNode(param)
+  }
+}

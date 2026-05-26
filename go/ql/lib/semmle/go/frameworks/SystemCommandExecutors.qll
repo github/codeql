@@ -2,15 +2,17 @@
  * Provides concrete classes for data-flow nodes that execute an
  * operating system command, for instance by spawning a new process.
  */
+overlay[local?]
+module;
 
 import go
 
-private class DefaultSystemCommandExecution extends SystemCommandExecution::Range,
+private class ExternalSystemCommandExecution extends SystemCommandExecution::Range,
   DataFlow::CallNode
 {
   DataFlow::ArgumentNode commandName;
 
-  DefaultSystemCommandExecution() {
+  ExternalSystemCommandExecution() {
     sinkNode(commandName, "command-injection") and
     this = commandName.getCall()
   }

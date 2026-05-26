@@ -6,7 +6,7 @@ private import ruby
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.ApiGraphs
 
-private class Base64Decode extends SummarizedCallable {
+private class Base64Decode extends SummarizedCallable::Range {
   Base64Decode() { this = "Base64.decode64()" }
 
   override MethodCall getACall() {

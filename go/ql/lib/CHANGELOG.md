@@ -1,3 +1,69 @@
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Go](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-go/).
+
+## 7.0.6
+
+No user-facing changes.
+
+## 7.0.5
+
+No user-facing changes.
+
+## 7.0.4
+
+No user-facing changes.
+
+## 7.0.3
+
+No user-facing changes.
+
+## 7.0.2
+
+### Minor Analysis Improvements
+
+* Inline expectations test comments, which are of the form `// $ tag` or `// $ tag=value`, are now parsed more strictly and will not be recognized if there isn't a space after the `$` symbol.
+
+## 7.0.1
+
+No user-facing changes.
+
+## 7.0.0
+
+### Breaking Changes
+
+* The `BasicBlock` class is now defined using the shared basic blocks library. `BasicBlock.getRoot` has been replaced by `BasicBlock.getScope`. `BasicBlock.getAPredecessor` and `BasicBlock.getASuccessor` now take a `SuccessorType` argument. `ReachableJoinBlock.inDominanceFrontierOf` has been removed, so use `BasicBlock.inDominanceFrontier` instead, swapping the receiver and the argument.
+
+### Major Analysis Improvements
+
+* Go 1.26 is now supported.
+
+## 6.0.1
+
+### Minor Analysis Improvements
+
+* The predicate `SummarizedCallable.propagatesFlow` has been extended with the columns `Provenance p` and `boolean isExact`, and as a consequence the predicates `SummarizedCallable.hasProvenance` and `SummarizedCallable.hasExactModel` have been removed.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The query `go/unexpected-frontend-error` has been moved from the `codeql/go-queries` query to the `codeql-go-consistency-queries` query pack.
+
+### Minor Analysis Improvements
+
+* When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the Go extractor's search for `.vue` and HTML files.
+
+## 5.0.6
+
+No user-facing changes.
+
 ## 5.0.5
 
 No user-facing changes.

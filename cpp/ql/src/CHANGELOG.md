@@ -1,3 +1,72 @@
+## 1.6.3
+
+### Minor Analysis Improvements
+
+* The 'Cleartext transmission of sensitive information' query (`cpp/cleartext-transmission`) no longer raises an alert on calls to `fscanf` (and variants) when the call reads from an "obviously local" `FILE` stream such as `stdin`.
+
+## 1.6.2
+
+No user-facing changes.
+
+## 1.6.1
+
+### Minor Analysis Improvements
+
+* Added `AllocationFunction` models for `aligned_alloc`, `std::aligned_alloc`, and `bsl::aligned_alloc`.
+* The "Comparison of narrow type with wide type in loop condition" (`cpp/comparison-with-wider-type`) query has been upgraded to `high` precision. This query will now run in the default code scanning suite.
+* The "Multiplication result converted to larger type" (`cpp/integer-multiplication-cast-to-long`) query has been upgraded to `high` precision. This query will now run in the default code scanning suite.
+* The "Suspicious add with sizeof" (`cpp/suspicious-add-sizeof`) query has been upgraded to `high` precision. This query will now run in the default code scanning suite.
+* The "Wrong type of arguments to formatting function" (`cpp/wrong-type-format-argument`) query has been upgraded to `high` precision. This query will now run in the default code scanning suite.
+* The "Implicit function declaration" (`cpp/implicit-function-declaration`) query has been upgraded to `high` precision. However, for `build-mode: none` databases, it no longer produces any results. The results in this mode were found to be very noisy and fundamentally imprecise.
+
+## 1.6.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `cpp/cgi-xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+### Minor Analysis Improvements
+
+* The "Extraction warnings" (`cpp/diagnostics/extraction-warnings`) diagnostics query no longer yields `ExtractionRecoverableWarning`s for `build-mode: none` databases. The results were found to significantly increase the sizes of the produced SARIF files, making them unprocessable in some cases.
+* Fixed an issue with the "Suspicious add with sizeof" (`cpp/suspicious-add-sizeof`) query causing false positive results in `build-mode: none` databases.
+* Fixed an issue with the "Uncontrolled format string" (`cpp/tainted-format-string`) query involving certain kinds of formatting function implementations.
+* Fixed an issue with the "Wrong type of arguments to formatting function" (`cpp/wrong-type-format-argument`) query causing false positive results in `build-mode: none` databases.
+* Fixed an issue with the "Multiplication result converted to larger type" (`cpp/integer-multiplication-cast-to-long`) query causing false positive results in `build-mode: none` databases.
+
+## 1.5.15
+
+No user-facing changes.
+
+## 1.5.14
+
+No user-facing changes.
+
+## 1.5.13
+
+No user-facing changes.
+
+## 1.5.12
+
+No user-facing changes.
+
+## 1.5.11
+
+No user-facing changes.
+
+## 1.5.10
+
+No user-facing changes.
+
+## 1.5.9
+
+### Minor Analysis Improvements
+
+* The `cpp/constant-comparison` query has been updated to not produce false positives for constants that are now represented by their unfolded expression trees.
+
+## 1.5.8
+
+No user-facing changes.
+
 ## 1.5.7
 
 No user-facing changes.

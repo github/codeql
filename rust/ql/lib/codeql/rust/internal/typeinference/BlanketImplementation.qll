@@ -7,18 +7,19 @@
 
 private import rust
 private import codeql.rust.internal.PathResolution
-private import codeql.rust.internal.Type
-private import codeql.rust.internal.TypeMention
-private import codeql.rust.internal.TypeInference
+private import Type
+private import TypeMention
+private import TypeInference
 
 /**
  * Holds if `traitBound` is the first non-trivial trait bound of `tp`.
  */
 pragma[nomagic]
-private predicate hasFirstNonTrivialTraitBound(TypeParamItemNode tp, Trait traitBound) {
+private predicate hasFirstNonTrivialTraitBound(TypeParamItemNode tp, Path traitBound) {
   traitBound =
-    min(Trait trait, int i |
-      trait = tp.resolveBound(i) and
+    min(Trait trait, Path path, int i |
+      path = tp.getBoundPath(i) and
+      trait = resolvePath(path) and
       // Exclude traits that are known to not narrow things down very much.
       not trait.getName().getText() =
         [
@@ -27,7 +28,7 @@ private predicate hasFirstNonTrivialTraitBound(TypeParamItemNode tp, Trait trait
           "Send", "Sync", "Unpin", "UnwindSafe", "RefUnwindSafe"
         ]
     |
-      trait order by i
+      path order by i
     )
 }
 
@@ -41,16 +42,19 @@ private predicate hasFirstNonTrivialTraitBound(TypeParamItemNode tp, Trait trait
  */
 pragma[nomagic]
 predicate isBlanketLike(ImplItemNode i, TypePath blanketSelfPath, TypeParam blanketTypeParam) {
-  blanketTypeParam = i.getBlanketImplementationTypeParam() and
-  blanketSelfPath.isEmpty()
-  or
-  exists(TypeMention tm, Type root, TypeParameter tp |
-    tm = i.(Impl).getSelfTy() and
-    complexSelfRoot(root, tp) and
-    tm.resolveType() = root and
-    tm.resolveTypeAt(blanketSelfPath) = TTypeParamTypeParameter(blanketTypeParam) and
-    blanketSelfPath = TypePath::singleton(tp) and
-    hasFirstNonTrivialTraitBound(blanketTypeParam, _)
+  i.(Impl).hasTrait() and
+  (
+    blanketTypeParam = i.getBlanketImplementationTypeParam() and
+    blanketSelfPath.isEmpty()
+    or
+    exists(TypeMention tm, Type root, TypeParameter tp |
+      tm = i.(Impl).getSelfTy() and
+      complexSelfRoot(root, tp) and
+      tm.getType() = root and
+      tm.getTypeAt(blanketSelfPath) = TTypeParamTypeParameter(blanketTypeParam) and
+      blanketSelfPath = TypePath::singleton(tp) and
+      hasFirstNonTrivialTraitBound(blanketTypeParam, _)
+    )
   )
 }
 
@@ -100,11 +104,11 @@ module SatisfiesBlanketConstraint<
   }
 
   private module SatisfiesBlanketConstraintInput implements
-    SatisfiesConstraintInputSig<ArgumentTypeAndBlanketOffset>
+    SatisfiesConstraintInputSig<ArgumentTypeAndBlanketOffset, TypeMention>
   {
     pragma[nomagic]
     additional predicate relevantConstraint(
-      ArgumentTypeAndBlanketOffset ato, ImplItemNode impl, Trait traitBound
+      ArgumentTypeAndBlanketOffset ato, ImplItemNode impl, Path traitBound
     ) {
       exists(ArgumentType at, TypePath blanketPath, TypeParam blanketTypeParam |
         ato = MkArgumentTypeAndBlanketOffset(at, blanketPath) and
@@ -114,26 +118,29 @@ module SatisfiesBlanketConstraint<
     }
 
     pragma[nomagic]
-    predicate relevantConstraint(ArgumentTypeAndBlanketOffset ato, Type constraint) {
-      relevantConstraint(ato, _, constraint.(TraitType).getTrait())
+    predicate relevantConstraint(ArgumentTypeAndBlanketOffset ato, TypeMention constraint) {
+      relevantConstraint(ato, _, constraint)
     }
-
-    predicate useUniversalConditions() { none() }
   }
 
   private module SatisfiesBlanketConstraint =
-    SatisfiesConstraint<ArgumentTypeAndBlanketOffset, SatisfiesBlanketConstraintInput>;
+    SatisfiesConstraint<ArgumentTypeAndBlanketOffset, TypeMention, SatisfiesBlanketConstraintInput>;
 
   /**
    * Holds if the argument type `at` satisfies the first non-trivial blanket
-   * constraint of `impl`.
+   * constraint of `impl`, or if there are no non-trivial constraints of `impl`.
    */
   pragma[nomagic]
   predicate satisfiesBlanketConstraint(ArgumentType at, ImplItemNode impl) {
-    exists(ArgumentTypeAndBlanketOffset ato, Trait traitBound |
+    exists(ArgumentTypeAndBlanketOffset ato, Path traitBound |
       ato = MkArgumentTypeAndBlanketOffset(at, _) and
       SatisfiesBlanketConstraintInput::relevantConstraint(ato, impl, traitBound) and
-      SatisfiesBlanketConstraint::satisfiesConstraintType(ato, TTrait(traitBound), _, _)
+      SatisfiesBlanketConstraint::satisfiesConstraint(ato, traitBound, _, _)
+    )
+    or
+    exists(TypeParam blanketTypeParam |
+      hasBlanketCandidate(at, impl, _, blanketTypeParam) and
+      not hasFirstNonTrivialTraitBound(blanketTypeParam, _)
     )
   }
 
@@ -143,10 +150,10 @@ module SatisfiesBlanketConstraint<
    */
   pragma[nomagic]
   predicate dissatisfiesBlanketConstraint(ArgumentType at, ImplItemNode impl) {
-    exists(ArgumentTypeAndBlanketOffset ato, Trait traitBound |
+    exists(ArgumentTypeAndBlanketOffset ato, Path traitBound |
       ato = MkArgumentTypeAndBlanketOffset(at, _) and
       SatisfiesBlanketConstraintInput::relevantConstraint(ato, impl, traitBound) and
-      SatisfiesBlanketConstraint::dissatisfiesConstraint(ato, TTrait(traitBound))
+      SatisfiesBlanketConstraint::dissatisfiesConstraint(ato, traitBound)
     )
   }
 }

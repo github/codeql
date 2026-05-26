@@ -1,8 +1,10 @@
+#select
+| test.py:6:14:6:24 | ControlFlowNode for Subscript | test.py:6:14:6:21 | ControlFlowNode for Attribute | test.py:6:14:6:24 | ControlFlowNode for Subscript | This SQL query depends on a $@. | test.py:6:14:6:21 | ControlFlowNode for Attribute | user-provided value |
 edges
-| test.py:6:14:6:21 | ControlFlowNode for Attribute | test.py:6:14:6:24 | ControlFlowNode for Subscript | provenance | Src:MaD:17  |
+| test.py:6:14:6:21 | ControlFlowNode for Attribute | test.py:6:14:6:24 | ControlFlowNode for Subscript | provenance | Src:MaD:1  |
+models
+| 1 | Source: sys; Member[argv]; commandargs |
 nodes
 | test.py:6:14:6:21 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:6:14:6:24 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
-#select
-| test.py:6:14:6:24 | ControlFlowNode for Subscript | test.py:6:14:6:21 | ControlFlowNode for Attribute | test.py:6:14:6:24 | ControlFlowNode for Subscript | This SQL query depends on a $@. | test.py:6:14:6:21 | ControlFlowNode for Attribute | user-provided value |

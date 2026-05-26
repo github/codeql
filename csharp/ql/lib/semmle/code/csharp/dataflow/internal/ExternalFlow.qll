@@ -4,13 +4,17 @@
  * Provides classes and predicates for dealing with MaD flow models specified
  * in data extensions and CSV format.
  *
- * The CSV specification has the following columns:
+ * The extensible relations have the following columns:
  * - Sources:
  *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
  * - Sinks:
  *   `namespace; type; subtypes; name; signature; ext; input; kind; provenance`
  * - Summaries:
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
+ * - Barriers:
+ *   `namespace; type; subtypes; name; signature; ext; output; kind; provenance`
+ * - BarrierGuards:
+ *   `namespace; type; subtypes; name; signature; ext; input; acceptingValue; kind; provenance`
  * - Neutrals:
  *   `namespace; type; name; signature; kind; provenance`
  *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
@@ -69,14 +73,17 @@
  *    - "Field[f]": Selects the contents of field `f`.
  *    - "Property[p]": Selects the contents of property `p`.
  *
- * 8. The `kind` column is a tag that can be referenced from QL to determine to
+ * 8. The `acceptingValue` column of barrier guard models specifies the condition
+ *    under which the guard blocks flow. It can be one of "true" or "false". In
+ *    the future "no-exception", "not-zero", "null", "not-null" may be supported.
+ * 9. The `kind` column is a tag that can be referenced from QL to determine to
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
  *    globally applicable value-preserving step. For neutrals the kind can be `summary`,
  *    `source` or `sink` to indicate that the neutral is neutral with respect to
  *    flow (no summary), source (is not a source) or sink (is not a sink).
- * 9. The `provenance` column is a tag to indicate the origin and verification of a model.
+ * 10. The `provenance` column is a tag to indicate the origin and verification of a model.
  *    The format is {origin}-{verification} or just "manual" where the origin describes
  *    the origin of the model and verification describes how the model has been verified.
  *    Some examples are:
@@ -97,6 +104,7 @@ private import FlowSummaryImpl::Public
 private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Private::External
 private import semmle.code.csharp.commons.QualifiedName
+private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.dispatch.OverridableCallable
 private import semmle.code.csharp.frameworks.System
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
@@ -115,7 +123,9 @@ module ModelValidation {
     summaryModel(_, _, _, _, _, _, path, _, _, _, _) or
     summaryModel(_, _, _, _, _, _, _, path, _, _, _) or
     sinkModel(_, _, _, _, _, _, path, _, _, _) or
-    sourceModel(_, _, _, _, _, _, path, _, _, _)
+    sourceModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierModel(_, _, _, _, _, _, path, _, _, _) or
+    barrierGuardModel(_, _, _, _, _, _, path, _, _, _, _)
   }
 
   private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
@@ -127,6 +137,8 @@ module ModelValidation {
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _, _) and pred = "sink"
+      or
+      barrierGuardModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "barrier guard"
       or
       summaryModel(_, _, _, _, _, _, input, _, _, _, _) and pred = "summary"
     |
@@ -150,6 +162,8 @@ module ModelValidation {
     exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _, _) and pred = "source"
       or
+      barrierModel(_, _, _, _, _, _, output, _, _, _) and pred = "barrier"
+      or
       summaryModel(_, _, _, _, _, _, _, output, _, _, _) and pred = "summary"
     |
       (
@@ -167,7 +181,13 @@ module ModelValidation {
   private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
     predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _, _) }
 
-    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _, _) }
+    predicate sinkKind(string kind) {
+      sinkModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierModel(_, _, _, _, _, _, _, kind, _, _)
+      or
+      barrierGuardModel(_, _, _, _, _, _, _, _, kind, _, _)
+    }
 
     predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _, _) }
 
@@ -185,6 +205,12 @@ module ModelValidation {
       or
       sinkModel(namespace, type, _, name, signature, ext, _, _, provenance, _) and pred = "sink"
       or
+      barrierModel(namespace, type, _, name, signature, ext, _, _, provenance, _) and
+      pred = "barrier"
+      or
+      barrierGuardModel(namespace, type, _, name, signature, ext, _, _, _, provenance, _) and
+      pred = "barrier guard"
+      or
       summaryModel(namespace, type, _, name, signature, ext, _, _, _, provenance, _) and
       pred = "summary"
       or
@@ -195,7 +221,7 @@ module ModelValidation {
       not namespace.regexpMatch("[a-zA-Z0-9_\\.]+") and
       result = "Dubious namespace \"" + namespace + "\" in " + pred + " model."
       or
-      not type.regexpMatch("[a-zA-Z0-9_<>,\\+]+") and
+      not type.regexpMatch("[a-zA-Z0-9_<>,\\(\\)\\+\\.]+") and
       result = "Dubious type \"" + type + "\" in " + pred + " model."
       or
       not name.regexpMatch("[a-zA-Z0-9_<>,\\.]*") and
@@ -210,6 +236,27 @@ module ModelValidation {
       invalidProvenance(provenance) and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
+    or
+    exists(string acceptingValue |
+      barrierGuardModel(_, _, _, _, _, _, _, acceptingValue, _, _, _) and
+      invalidAcceptingValue(acceptingValue) and
+      result =
+        "Unrecognized accepting value description \"" + acceptingValue +
+          "\" in barrier guard model."
+    )
+  }
+
+  private string getIncorrectConstructorSummaryOutput() {
+    exists(string namespace, string type, string name, string output |
+      type = name or
+      type = name + "<" + any(string s)
+    |
+      summaryModel(namespace, type, _, name, _, _, _, output, _, _, _) and
+      output.matches("ReturnValue%") and
+      result =
+        "Constructor model for " + namespace + "." + type +
+          " should use `Argument[this]` in the output, not `ReturnValue`."
+    )
   }
 
   /** Holds if some row in a MaD flow model appears to contain typos. */
@@ -217,7 +264,7 @@ module ModelValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        KindVal::getInvalidModelKind()
+        getIncorrectConstructorSummaryOutput(), KindVal::getInvalidModelKind()
       ]
   }
 }
@@ -228,6 +275,10 @@ private predicate elementSpec(
   sourceModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
   or
   sinkModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
+  or
+  barrierGuardModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _, _)
   or
@@ -349,20 +400,23 @@ private Declaration interpretExt(Declaration d, ExtPath ext) {
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
 pragma[nomagic]
 Declaration interpretElement(
-  string namespace, string type, boolean subtypes, string name, string signature, string ext
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  boolean isExact
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
   exists(Declaration base, Declaration d |
     base = interpretBaseDeclaration(namespace, type, name, signature) and
     (
-      d = base
+      d = base and
+      isExact = true
       or
       subtypes = true and
       (
         d.(UnboundCallable).overridesOrImplementsUnbound(base)
         or
         d = base.(UnboundValueOrRefType).getASubTypeUnbound+()
-      )
+      ) and
+      isExact = false
     )
   |
     result = interpretExt(d, ext)
@@ -372,7 +426,9 @@ Declaration interpretElement(
 private predicate relevantExt(string ext) {
   summaryModel(_, _, _, _, _, ext, _, _, _, _, _) or
   sourceModel(_, _, _, _, _, ext, _, _, _, _) or
-  sinkModel(_, _, _, _, _, ext, _, _, _, _)
+  sinkModel(_, _, _, _, _, ext, _, _, _, _) or
+  barrierModel(_, _, _, _, _, ext, _, _, _, _) or
+  barrierGuardModel(_, _, _, _, _, ext, _, _, _, _, _)
 }
 
 private class ExtPath = AccessPathSyntax::AccessPath<relevantExt/1>::AccessPath;
@@ -411,6 +467,53 @@ private module Cached {
       isSinkNode(n, kind, model) and n.asNode() = node
     )
   }
+
+  private newtype TKindModelPair =
+    TMkPair(string kind, string model) { isBarrierGuardNode(_, _, kind, model) }
+
+  private GuardValue convertAcceptingValue(AcceptingValue av) {
+    av.isTrue() and result.asBooleanValue() = true
+    or
+    av.isFalse() and result.asBooleanValue() = false
+    or
+    av.isNoException() and result.getDualValue().isThrowsException()
+    or
+    av.isZero() and result.asIntValue() = 0
+    or
+    av.isNotZero() and result.getDualValue().asIntValue() = 0
+    or
+    av.isNull() and result.isNullValue()
+    or
+    av.isNotNull() and result.isNonNullValue()
+  }
+
+  private predicate barrierGuardChecks(Guard g, Expr e, GuardValue gv, TKindModelPair kmp) {
+    exists(
+      SourceSinkInterpretationInput::InterpretNode n, AcceptingValue acceptingValue, string kind,
+      string model
+    |
+      isBarrierGuardNode(n, acceptingValue, kind, model) and
+      n.asNode().asExpr() = e and
+      kmp = TMkPair(kind, model) and
+      gv = convertAcceptingValue(acceptingValue)
+    |
+      g.(Call).getAnArgument() = e or g.(QualifiableExpr).getQualifier() = e
+    )
+  }
+
+  /**
+   * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+   * model.
+   */
+  cached
+  predicate barrierNode(Node node, string kind, string model) {
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isBarrierNode(n, kind, model) and n.asNode() = node
+    )
+    or
+    ParameterizedBarrierGuard<TKindModelPair, barrierGuardChecks/4>::getABarrierNode(TMkPair(kind,
+        model)) = node
+  }
 }
 
 import Cached
@@ -426,6 +529,12 @@ predicate sourceNode(Node node, string kind) { sourceNode(node, kind, _) }
  * model.
  */
 predicate sinkNode(Node node, string kind) { sinkNode(node, kind, _) }
+
+/**
+ * Holds if `node` is specified as a barrier with the given kind in a MaD flow
+ * model.
+ */
+predicate barrierNode(Node node, string kind) { barrierNode(node, kind, _) }
 
 private predicate isOverridableCallable(OverridableCallable c) {
   not exists(Type t, Callable base | c.getOverridee+() = base and t = base.getDeclaringType() |
@@ -500,71 +609,47 @@ string getSignature(UnboundCallable c) {
 }
 
 private predicate interpretSummary(
-  UnboundCallable c, string input, string output, string kind, string provenance, string model
+  UnboundCallable c, string input, string output, string kind, string provenance, boolean isExact,
+  string model
 ) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
     summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance,
       model) and
-    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+    c = interpretElement(namespace, type, subtypes, name, signature, ext, isExact)
   )
 }
 
-predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
+predicate interpretNeutral(UnboundCallable c, string kind, string provenance, boolean isExact) {
   exists(string namespace, string type, string name, string signature |
     Extensions::neutralModel(namespace, type, name, signature, kind, provenance) and
-    c = interpretElement(namespace, type, true, name, signature, "")
+    c = interpretElement(namespace, type, true, name, signature, "", isExact)
   )
 }
 
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
+  string input_;
+  string output_;
+  string kind;
+  Provenance p_;
+  boolean isExact_;
+  string model_;
+
   SummarizedCallableAdapter() {
-    exists(Provenance provenance | interpretSummary(this, _, _, _, provenance, _) |
-      not this.fromSource()
-      or
-      this.fromSource() and provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementManual(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isManual()
-    )
-  }
-
-  private predicate relevantSummaryElementGenerated(
-    string input, string output, string kind, string model
-  ) {
-    exists(Provenance provenance |
-      interpretSummary(this, input, output, kind, provenance, model) and
-      provenance.isGenerated()
-    ) and
-    not exists(Provenance provenance |
-      interpretNeutral(this, "summary", provenance) and
-      provenance.isManual()
-    )
+    interpretSummary(this, input_, output_, kind, p_, isExact_, model_)
   }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
-    exists(string kind |
-      this.relevantSummaryElementManual(input, output, kind, model)
-      or
-      not this.relevantSummaryElementManual(_, _, _, _) and
-      this.relevantSummaryElementGenerated(input, output, kind, model)
-    |
-      if kind = "value" then preservesValue = true else preservesValue = false
-    )
-  }
-
-  override predicate hasProvenance(Provenance provenance) {
-    interpretSummary(this, _, _, _, provenance, _)
+    input = input_ and
+    output = output_ and
+    (if kind = "value" then preservesValue = true else preservesValue = false) and
+    p = p_ and
+    isExact = isExact_ and
+    model = model_
   }
 }
 

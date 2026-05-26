@@ -1,3 +1,62 @@
+## 1.11.3
+
+### Minor Analysis Improvements
+
+* The `java/zipslip` query no longer reports archive entry names that flow only to read-only path sinks such as `ClassLoader.getResource`, `FileInputStream`, and `FileReader`. The query now restricts its sinks to the `path-injection` kind and deliberately excludes the new `path-injection[read]` sub-kind, matching the Zip Slip threat model of unsafe archive extraction.
+
+## 1.11.2
+
+No user-facing changes.
+
+## 1.11.1
+
+No user-facing changes.
+
+## 1.11.0
+
+### Query Metadata Changes
+
+* The `@security-severity` metadata of `java/log-injection` has been reduced from 7.8 (high) to 6.1 (medium).
+* The `@security-severity` metadata of `java/android/webview-addjavascriptinterface`, `java/android/websettings-javascript-enabled` and `java/xss` has been increased from 6.1 (medium) to 7.8 (high).
+
+## 1.10.11
+
+No user-facing changes.
+
+## 1.10.10
+
+No user-facing changes.
+
+## 1.10.9
+
+No user-facing changes.
+
+## 1.10.8
+
+### Minor Analysis Improvements
+
+* The Java extractor and QL libraries now support Java 26.
+* Java analysis now selects the Java version to use informed by Maven POM files across all project modules. It also tries to use Java 17 or higher for all Maven projects if possible, for improved build compatibility.
+
+## 1.10.7
+
+No user-facing changes.
+
+## 1.10.6
+
+No user-facing changes.
+
+## 1.10.5
+
+### Minor Analysis Improvements
+
+* Added sink models for `com.couchbase` supporting SQL Injection and Hardcoded Credentials queries.
+* Java thread safety analysis now understands initialization to thread safe classes inside constructors.
+
+## 1.10.4
+
+No user-facing changes.
+
 ## 1.10.3
 
 ### Minor Analysis Improvements

@@ -5,13 +5,14 @@
 
 import rust
 private import codeql.rust.dataflow.DataFlow
+private import codeql.rust.dataflow.FlowBarrier
 private import codeql.rust.dataflow.FlowSource
 private import codeql.rust.dataflow.FlowSink
 private import codeql.rust.Concepts
 private import codeql.rust.dataflow.internal.Node
 private import codeql.rust.security.Barriers as Barriers
-private import codeql.rust.internal.TypeInference as TypeInference
-private import codeql.rust.internal.Type
+private import codeql.rust.internal.typeinference.TypeInference as TypeInference
+private import codeql.rust.internal.typeinference.Type
 
 /**
  * Provides default sources, sinks and barriers for detecting accesses to
@@ -67,6 +68,13 @@ module AccessInvalidPointer {
   /** A pointer access from model data. */
   private class ModelsAsDataSink extends Sink {
     ModelsAsDataSink() { sinkNode(this, "pointer-access") }
+  }
+
+  /**
+   * A barrier for invalid pointer access from model data.
+   */
+  private class ModelsAsDataBarrier extends Barrier {
+    ModelsAsDataBarrier() { barrierNode(this, "pointer-access") }
   }
 
   /**

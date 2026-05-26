@@ -21,6 +21,10 @@ signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
     string toString();
   }
 
+  /** Holds if `c` is defined in source code. */
+  bindingset[c]
+  predicate callableFromSource(SummarizedCallableBase c);
+
   /**
    * A base class of elements that are candidates for flow source modeling.
    */
@@ -268,6 +272,9 @@ module Make<
         this = verification and verification = "manual"
       }
 
+      /** Gets the verification part of this provenance. */
+      string getVerification() { result = verification }
+
       /**
        * Holds if this is a valid generated provenance value.
        */
@@ -289,55 +296,50 @@ module Make<
        *
        * `preservesValue` indicates whether this is a value-preserving step or a taint-step.
        *
-       * If `model` is non-empty then it indicates the provenance of the model
-       * defining this flow.
+       * `p` indicates the provenance of the flow.
+       *
+       * `isExact` indicates whether there exists a model for which this callable is an exact
+       * match, that is, no overriding was used to identify this callable from the model.
+       *
+       * If `model` is non-empty then it indicates the origin of the model defining this flow.
        */
       pragma[nomagic]
       abstract predicate propagatesFlow(
-        string input, string output, boolean preservesValue, string model
+        string input, string output, boolean preservesValue, Provenance p, boolean isExact,
+        string model
       );
-
-      /**
-       * Holds if there exists a generated summary that applies to this callable.
-       */
-      final predicate hasGeneratedModel() {
-        exists(Provenance p | p.isGenerated() and this.hasProvenance(p))
-      }
-
-      /**
-       * Holds if all the summaries that apply to this callable are auto generated and not manually created.
-       * That is, only apply generated models, when there are no manual models.
-       */
-      final predicate applyGeneratedModel() {
-        this.hasGeneratedModel() and
-        not this.hasManualModel()
-      }
 
       /**
        * Holds if there exists a manual summary that applies to this callable.
        */
       final predicate hasManualModel() {
-        exists(Provenance p | p.isManual() and this.hasProvenance(p))
+        any(Provenance p | this.propagatesFlow(_, _, _, p, _, _)).isManual()
       }
+    }
+
+    final private class SummarizedCallableFinal = SummarizedCallable;
+
+    /**
+     * A callable with a relevant flow summary.
+     *
+     * A flow summary is relevant if:
+     *
+     * - It is manual exact model, or
+     * - It is a manual inexact model and there is no exact manual (neutral) model, or
+     * - It is a generated model and (a) there is no source code available for the modeled
+     *   callable, (b) there is no manual (neutral) model, and (c) the model is inexact
+     *   and there is no generated exact (neutral) model.
+     */
+    final class RelevantSummarizedCallable extends SummarizedCallableFinal {
+      RelevantSummarizedCallable() { this instanceof SummarizedCallableImpl }
 
       /**
        * Holds if there exists a manual summary that applies to this callable.
-       * Always apply manual models if they exist.
        */
-      final predicate applyManualModel() { this.hasManualModel() }
-
-      /**
-       * Holds if there exists a summary that applies to this callable
-       * that has provenance `provenance`.
-       */
-      predicate hasProvenance(Provenance provenance) { provenance = "manual" }
-
-      /**
-       * Holds if there exists a model for which this callable is an exact
-       * match, that is, no overriding was used to identify this callable from
-       * the model.
-       */
-      predicate hasExactModel() { none() }
+      final predicate hasManualModel() {
+        any(Provenance p | this.(SummarizedCallableImpl).propagatesFlow(_, _, _, p, _, _))
+            .isManual()
+      }
     }
 
     /** A source element. */
@@ -364,6 +366,34 @@ module Make<
        */
       pragma[nomagic]
       abstract predicate isSink(string input, string kind, Provenance provenance, string model);
+    }
+
+    /** A barrier element. */
+    abstract class BarrierElement extends SourceBaseFinal {
+      bindingset[this]
+      BarrierElement() { any() }
+
+      /**
+       * Holds if this element is a flow barrier of kind `kind`, where data
+       * flows out as described by `output`.
+       */
+      pragma[nomagic]
+      abstract predicate isBarrier(string output, string kind, Provenance provenance, string model);
+    }
+
+    /** A barrier guard element. */
+    abstract class BarrierGuardElement extends SinkBaseFinal {
+      bindingset[this]
+      BarrierGuardElement() { any() }
+
+      /**
+       * Holds if this element is a flow barrier guard of kind `kind`, for data
+       * flowing in as described by `input`, when `this` evaluates to `acceptingValue`.
+       */
+      pragma[nomagic]
+      abstract predicate isBarrierGuard(
+        string input, string acceptingValue, string kind, Provenance provenance, string model
+      );
     }
 
     private signature predicate hasKindSig(string kind);
@@ -475,6 +505,41 @@ module Make<
    */
   module Private {
     private import Public
+
+    /**
+     * Holds if `c` has a relevant flow summary.
+     *
+     * A flow summary is relevant if:
+     *
+     * - It is manual exact model, or
+     * - It is a manual inexact model and there is no exact manual (neutral) model, or
+     * - It is a generated model and (a) there is no source code available for the modeled
+     *   callable, (b) there is no manual (neutral) model, and (c) the model is inexact
+     *   and there is no generated exact (neutral) model.
+     */
+    predicate relevantSummary(
+      SummarizedCallable c, string input, string output, boolean preservesValue, Provenance p,
+      boolean isExact, string model
+    ) {
+      c.propagatesFlow(input, output, preservesValue, p, isExact, model) and
+      if p.isGenerated() or isExact = false
+      then
+        // Only apply generated models to functions in library code
+        not (p.isGenerated() and callableFromSource(c)) and
+        // Only apply generated or inexact models when no strictly better model exists
+        not exists(Provenance other, boolean isExactOther |
+          c.propagatesFlow(_, _, _, other, isExactOther, _)
+          or
+          neutralElement(c, "summary", other, isExactOther)
+        |
+          p.isGenerated() and other.isManual()
+          or
+          p.getVerification() = other.getVerification() and
+          isExact = false and
+          isExactOther = true
+        )
+      else any()
+    }
 
     /**
      * A synthetic global. This represents some form of global state, which
@@ -647,7 +712,7 @@ module Make<
       SummarizedCallableImpl callable, SummaryComponentStack input, SummaryComponentStack output,
       string whichOne
     ) {
-      callable.propagatesFlow(input, output, _, _) and
+      callable.propagatesFlow(input, output, _, _, _, _) and
       (
         not isSupportedInputStack(input) and whichOne = "input"
         or
@@ -686,19 +751,48 @@ module Make<
       )
     }
 
-    private predicate summarySpec(string spec) {
-      exists(SummarizedCallable c |
-        c.propagatesFlow(spec, _, _, _)
+    private predicate isRelevantBarrier(
+      BarrierElement e, string output, string kind, Provenance provenance, string model
+    ) {
+      e.isBarrier(output, kind, provenance, model) and
+      (
+        provenance.isManual()
         or
-        c.propagatesFlow(_, spec, _, _)
+        provenance.isGenerated() and
+        not exists(Provenance p | p.isManual() and e.isBarrier(_, kind, p, _))
+      )
+    }
+
+    private predicate isRelevantBarrierGuard(
+      BarrierGuardElement e, string input, string acceptingValue, string kind,
+      Provenance provenance, string model
+    ) {
+      e.isBarrierGuard(input, acceptingValue, kind, provenance, model) and
+      (
+        provenance.isManual()
+        or
+        provenance.isGenerated() and
+        not exists(Provenance p | p.isManual() and e.isBarrierGuard(_, _, kind, p, _))
+      )
+    }
+
+    private predicate flowSpec(string spec) {
+      exists(SummarizedCallable c |
+        c.propagatesFlow(spec, _, _, _, _, _)
+        or
+        c.propagatesFlow(_, spec, _, _, _, _)
       )
       or
       isRelevantSource(_, spec, _, _, _)
       or
+      isRelevantBarrier(_, spec, _, _, _)
+      or
+      isRelevantBarrierGuard(_, spec, _, _, _, _)
+      or
       isRelevantSink(_, spec, _, _, _)
     }
 
-    import AccessPathSyntax::AccessPath<summarySpec/1>
+    import AccessPathSyntax::AccessPath<flowSpec/1>
 
     /** Holds if specification component `token` parses as parameter `pos`. */
     predicate parseParam(AccessPathToken token, ArgumentPosition pos) {
@@ -848,7 +942,7 @@ module Make<
     }
 
     /**
-     * A callable with a flow summary.
+     * A callable with a relevant flow summary.
      *
      * This interface is not meant to be used directly, instead use the public
      * `SummarizedCallable` interface. However, _if_ you need to use this, make
@@ -857,12 +951,8 @@ module Make<
      *
      * ```ql
      * private class CAdapter extends SummarizedCallable instanceof C {
-     *   override predicate propagatesFlow(string input, string output, boolean preservesValue, string model) {
+     *   override predicate propagatesFlow(string input, string output, boolean preservesValue, Provenance p, string model) {
      *     none()
-     *   }
-     *
-     *   override predicate hasProvenance(Provenance provenance) {
-     *     C.super.hasProvenance(provenance)
      *   }
      * }
      * ```
@@ -897,14 +987,8 @@ module Make<
       pragma[nomagic]
       abstract predicate propagatesFlow(
         SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
-        string model
+        Provenance p, boolean isExact, string model
       );
-
-      /**
-       * Holds if there exists a summary that applies to this callable
-       * that has provenance `provenance`.
-       */
-      abstract predicate hasProvenance(Provenance provenance);
     }
 
     pragma[nomagic]
@@ -912,17 +996,17 @@ module Make<
       SummarizedCallableImpl c, SummaryComponentStack input, SummaryComponentStack output,
       boolean preservesValue, string model
     ) {
-      c.propagatesFlow(input, output, preservesValue, model)
+      c.propagatesFlow(input, output, preservesValue, _, _, model)
       or
       // observe side effects of callbacks on input arguments
-      c.propagatesFlow(output, input, preservesValue, model) and
+      c.propagatesFlow(output, input, preservesValue, _, _, model) and
       preservesValue = true and
       isCallbackParameter(input) and
       isContentOfArgument(output, _)
       or
       // flow from the receiver of a callback into the instance-parameter
       exists(SummaryComponentStack s, SummaryComponentStack callbackRef |
-        c.propagatesFlow(s, _, _, model) or c.propagatesFlow(_, s, _, model)
+        c.propagatesFlow(s, _, _, _, _, model) or c.propagatesFlow(_, s, _, _, _, model)
       |
         callbackRef = s.drop(_) and
         (isCallbackParameter(callbackRef) or callbackRef.head() = TReturnSummaryComponent(_)) and
@@ -948,8 +1032,8 @@ module Make<
         SummaryComponentStack mid, boolean preservesValue1, boolean preservesValue2, string model1,
         string model2
       |
-        c.propagatesFlow(input, mid, preservesValue1, model1) and
-        c.propagatesFlow(mid, output, preservesValue2, model2) and
+        c.propagatesFlow(input, mid, preservesValue1, _, _, model1) and
+        c.propagatesFlow(mid, output, preservesValue2, _, _, model2) and
         mid.drop(mid.length() - 2) =
           SummaryComponentStack::push(TParameterSummaryComponent(_),
             SummaryComponentStack::singleton(TArgumentSummaryComponent(_))) and
@@ -1485,6 +1569,31 @@ module Make<
         summary(c, inputContents, outputContents, _, _) and
         inputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos)) and
         outputContents.bottom() = pragma[only_bind_into](TArgumentSummaryComponent(ppos))
+      )
+    }
+
+    /**
+     * Holds if `barrier` is a relevant barrier element with output specification `outSpec`.
+     */
+    predicate barrierSpec(
+      BarrierElement barrier, SummaryComponentStack outSpec, string kind, string model
+    ) {
+      exists(string output |
+        isRelevantBarrier(barrier, output, kind, _, model) and
+        External::interpretSpec(output, outSpec)
+      )
+    }
+
+    /**
+     * Holds if `barrierGuard` is a relevant barrier guard element with input specification `inSpec`.
+     */
+    predicate barrierGuardSpec(
+      BarrierGuardElement barrierGuard, SummaryComponentStack inSpec, string acceptingValue,
+      string kind, string model
+    ) {
+      exists(string input |
+        isRelevantBarrierGuard(barrierGuard, input, acceptingValue, kind, _, model) and
+        External::interpretSpec(input, inSpec)
       )
     }
 
@@ -2046,19 +2155,31 @@ module Make<
       // adapter class for converting `SummarizedCallable`s to `SummarizedCallableImpl`s
       private class SummarizedCallableImplAdapter extends SummarizedCallableImpl instanceof SummarizedCallable
       {
-        override predicate propagatesFlow(
-          SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
-          string model
-        ) {
+        private SummaryComponentStack input_;
+        private SummaryComponentStack output_;
+        private boolean preservesValue_;
+        private Provenance p_;
+        private boolean isExact_;
+        private string model_;
+
+        SummarizedCallableImplAdapter() {
           exists(AccessPath inSpec, AccessPath outSpec |
-            SummarizedCallable.super.propagatesFlow(inSpec, outSpec, preservesValue, model) and
-            interpretSpec(inSpec, input) and
-            interpretSpec(outSpec, output)
+            relevantSummary(this, inSpec, outSpec, preservesValue_, p_, isExact_, model_) and
+            interpretSpec(inSpec, input_) and
+            interpretSpec(outSpec, output_)
           )
         }
 
-        override predicate hasProvenance(Provenance provenance) {
-          SummarizedCallable.super.hasProvenance(provenance)
+        override predicate propagatesFlow(
+          SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+          Provenance p, boolean isExact, string model
+        ) {
+          input = input_ and
+          output = output_ and
+          preservesValue = preservesValue_ and
+          p = p_ and
+          isExact = isExact_ and
+          model = model_
         }
       }
 
@@ -2068,10 +2189,10 @@ module Make<
         not exists(interpretComponent(c))
       }
 
-      /** Holds if `acceptingvalue` is not a valid barrier guard accepting-value. */
-      bindingset[acceptingvalue]
-      predicate invalidAcceptingValue(string acceptingvalue) {
-        not acceptingvalue instanceof AcceptingValue
+      /** Holds if `acceptingValue` is not a valid barrier guard accepting-value. */
+      bindingset[acceptingValue]
+      predicate invalidAcceptingValue(string acceptingValue) {
+        not acceptingValue instanceof AcceptingValue
       }
 
       /** Holds if `provenance` is not a valid provenance value. */
@@ -2121,10 +2242,10 @@ module Make<
 
         /**
          * Holds if an external barrier guard specification exists for `n` with input
-         * specification `input`, accepting value `acceptingvalue`, and kind `kind`.
+         * specification `input`, accepting value `acceptingValue`, and kind `kind`.
          */
         predicate barrierGuardElement(
-          Element n, string input, AcceptingValue acceptingvalue, string kind,
+          Element n, string input, AcceptingValue acceptingValue, string kind,
           Provenance provenance, string model
         );
 
@@ -2250,11 +2371,11 @@ module Make<
         }
 
         private predicate barrierGuardElementRef(
-          InterpretNode ref, SourceSinkAccessPath input, AcceptingValue acceptingvalue, string kind,
+          InterpretNode ref, SourceSinkAccessPath input, AcceptingValue acceptingValue, string kind,
           string model
         ) {
           exists(SourceOrSinkElement e |
-            barrierGuardElement(e, input, acceptingvalue, kind, _, model) and
+            barrierGuardElement(e, input, acceptingValue, kind, _, model) and
             if inputNeedsReferenceExt(input.getToken(0))
             then e = ref.getCallTarget()
             else e = ref.asElement()
@@ -2397,10 +2518,10 @@ module Make<
          * given kind in a MaD flow model.
          */
         predicate isBarrierGuardNode(
-          InterpretNode node, AcceptingValue acceptingvalue, string kind, string model
+          InterpretNode node, AcceptingValue acceptingValue, string kind, string model
         ) {
           exists(InterpretNode ref, SourceSinkAccessPath input |
-            barrierGuardElementRef(ref, input, acceptingvalue, kind, model) and
+            barrierGuardElementRef(ref, input, acceptingValue, kind, model) and
             interpretInput(input, input.getNumToken(), ref, node)
           )
         }
@@ -2492,24 +2613,18 @@ module Make<
       string getCallableCsv();
 
       predicate relevantSummary(
-        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue,
+        Provenance p
       );
     }
 
     /** Provides a query predicate for outputting a set of relevant flow summaries. */
-    module TestSummaryOutput<RelevantSummarizedCallableSig RelevantSummarizedCallable> {
+    module TestSummaryOutput<RelevantSummarizedCallableSig RelSummarizedCallable> {
       /** Render the kind in the format used in flow summaries. */
       private string renderKind(boolean preservesValue) {
         preservesValue = true and result = "value"
         or
         preservesValue = false and result = "taint"
-      }
-
-      private string renderProvenance(SummarizedCallable c) {
-        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
-        or
-        not c.applyManualModel() and
-        c.hasProvenance(result)
       }
 
       /**
@@ -2520,16 +2635,16 @@ module Make<
        */
       query predicate summary(string csv) {
         exists(
-          RelevantSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output,
-          boolean preservesValue
+          RelSummarizedCallable c, SummaryComponentStack input, SummaryComponentStack output,
+          boolean preservesValue, Provenance p
         |
-          c.relevantSummary(input, output, preservesValue) and
+          c.relevantSummary(input, output, preservesValue, p) and
           csv =
             c.getCallableCsv() // Callable information
               + input.getMadRepresentation() + ";" // input
               + output.getMadRepresentation() + ";" // output
               + renderKind(preservesValue) + ";" // kind
-              + renderProvenance(c) // provenance
+              + p // provenance
         )
       }
     }

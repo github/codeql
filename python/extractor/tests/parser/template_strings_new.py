@@ -15,3 +15,5 @@ if 5:
     t"Multiple {first} and {second} placeholders."
 if 6:
     t"Implicit concatenation: " t"Hello, {name}!" t" How are you?"
+if 7:
+    t"With a format specifier: {name:=^20}"

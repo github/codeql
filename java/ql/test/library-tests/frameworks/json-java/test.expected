@@ -444,7 +444,6 @@ edges
 | Test.java:343:10:343:24 | getString(...) : String | Test.java:344:9:344:11 | out | provenance |  |
 | Test.java:349:19:349:37 | (...)... : JSONArray | Test.java:350:10:350:11 | in : JSONArray | provenance |  |
 | Test.java:349:30:349:37 | source(...) : Object | Test.java:349:19:349:37 | (...)... : JSONArray | provenance |  |
-| Test.java:350:10:350:11 | in : JSONArray | Test.java:350:10:350:22 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:1 |
 | Test.java:350:10:350:11 | in : JSONArray | Test.java:350:10:350:22 | iterator(...) : Iterator [<element>] : Object | provenance | MaD:42 |
 | Test.java:350:10:350:22 | iterator(...) : Iterator [<element>] : Object | Test.java:351:20:351:22 | out : Iterator [<element>] : Object | provenance |  |
 | Test.java:351:20:351:22 | out : Iterator [<element>] : Object | Test.java:40:20:40:30 | it : Iterator [<element>] : Object | provenance |  |

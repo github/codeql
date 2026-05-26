@@ -113,7 +113,7 @@ class Expr extends ExprParent, @expr {
     if this instanceof CastingExpr or this instanceof NotNullExpr
     then
       result = this.(CastingExpr).getExpr().getUnderlyingExpr() or
-      result = this.(NotNullExpr).getExpr().getUnderlyingExpr()
+      result = this.(NotNullExpr).getOperand().getUnderlyingExpr()
     else result = this
   }
 }
@@ -144,13 +144,13 @@ class CompileTimeConstantExpr extends Expr {
       this.(CastingExpr).getExpr().isCompileTimeConstant()
       or
       // The unary operators `+`, `-`, `~`, and `!` (but not `++` or `--`).
-      this.(PlusExpr).getExpr().isCompileTimeConstant()
+      this.(PlusExpr).getOperand().isCompileTimeConstant()
       or
-      this.(MinusExpr).getExpr().isCompileTimeConstant()
+      this.(MinusExpr).getOperand().isCompileTimeConstant()
       or
-      this.(BitNotExpr).getExpr().isCompileTimeConstant()
+      this.(BitNotExpr).getOperand().isCompileTimeConstant()
       or
-      this.(LogNotExpr).getExpr().isCompileTimeConstant()
+      this.(LogNotExpr).getOperand().isCompileTimeConstant()
       or
       // The multiplicative operators `*`, `/`, and `%`,
       // the additive operators `+` and `-`,
@@ -166,8 +166,8 @@ class CompileTimeConstantExpr extends Expr {
       // The ternary conditional operator ` ? : `.
       exists(ConditionalExpr e | this = e |
         e.getCondition().isCompileTimeConstant() and
-        e.getTrueExpr().isCompileTimeConstant() and
-        e.getFalseExpr().isCompileTimeConstant()
+        e.getThen().isCompileTimeConstant() and
+        e.getElse().isCompileTimeConstant()
       )
       or
       // Access to a final variable initialized by a compile-time constant.
@@ -392,7 +392,7 @@ class ArrayInit extends Expr, @arrayinit {
  * element assignments since there the assignment destination is not directly
  * the array variable but instead an `ArrayAccess`.
  */
-class Assignment extends Expr, @assignment {
+class Assignment extends BinaryExpr, @assignment {
   /** Gets the destination (left-hand side) of the assignment. */
   Expr getDest() { result.isNthChildOf(this, 0) }
 
@@ -417,6 +417,8 @@ class Assignment extends Expr, @assignment {
  * For example, `x = 23`.
  */
 class AssignExpr extends Assignment, @assignexpr {
+  override string getOp() { result = "=" }
+
   override string getAPrimaryQlClass() { result = "AssignExpr" }
 }
 
@@ -445,7 +447,7 @@ class AssignOp extends Assignment, @assignop {
   override Expr getSource() { result.getParent() = this }
 
   /** Gets a string representation of the assignment operator of this compound assignment. */
-  /*abstract*/ string getOp() { result = "??=" }
+  /*abstract*/ override string getOp() { result = "??=" }
 
   /** Gets a printable representation of this expression. */
   override string toString() { result = "..." + this.getOp() + "..." }
@@ -739,155 +741,155 @@ class BinaryExpr extends Expr, @binaryexpr {
   }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = "..." + this.getOp() + "..." }
+  override string toString() { result = "... " + this.getOp() + " ..." }
 
   /** Gets a string representation of the operator of this binary expression. */
-  /*abstract*/ string getOp() { result = " ?? " }
+  /*abstract*/ string getOp() { result = "??" }
 }
 
 /** A binary expression using the `*` operator. */
 class MulExpr extends BinaryExpr, @mulexpr {
-  override string getOp() { result = " * " }
+  override string getOp() { result = "*" }
 
   override string getAPrimaryQlClass() { result = "MulExpr" }
 }
 
 /** A binary expression using the `/` operator. */
 class DivExpr extends BinaryExpr, @divexpr {
-  override string getOp() { result = " / " }
+  override string getOp() { result = "/" }
 
   override string getAPrimaryQlClass() { result = "DivExpr" }
 }
 
 /** A binary expression using the `%` operator. */
 class RemExpr extends BinaryExpr, @remexpr {
-  override string getOp() { result = " % " }
+  override string getOp() { result = "%" }
 
   override string getAPrimaryQlClass() { result = "RemExpr" }
 }
 
 /** A binary expression using the `+` operator. */
 class AddExpr extends BinaryExpr, @addexpr {
-  override string getOp() { result = " + " }
+  override string getOp() { result = "+" }
 
   override string getAPrimaryQlClass() { result = "AddExpr" }
 }
 
 /** A binary expression using the `-` operator. */
 class SubExpr extends BinaryExpr, @subexpr {
-  override string getOp() { result = " - " }
+  override string getOp() { result = "-" }
 
   override string getAPrimaryQlClass() { result = "SubExpr" }
 }
 
 /** A binary expression using the `<<` operator. */
 class LeftShiftExpr extends BinaryExpr, @lshiftexpr {
-  override string getOp() { result = " << " }
+  override string getOp() { result = "<<" }
 
   override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
 }
 
 /** A binary expression using the `>>` operator. */
 class RightShiftExpr extends BinaryExpr, @rshiftexpr {
-  override string getOp() { result = " >> " }
+  override string getOp() { result = ">>" }
 
   override string getAPrimaryQlClass() { result = "RightShiftExpr" }
 }
 
 /** A binary expression using the `>>>` operator. */
 class UnsignedRightShiftExpr extends BinaryExpr, @urshiftexpr {
-  override string getOp() { result = " >>> " }
+  override string getOp() { result = ">>>" }
 
   override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
 }
 
 /** A binary expression using the `&` operator. */
 class AndBitwiseExpr extends BinaryExpr, @andbitexpr {
-  override string getOp() { result = " & " }
+  override string getOp() { result = "&" }
 
   override string getAPrimaryQlClass() { result = "AndBitwiseExpr" }
 }
 
 /** A binary expression using the `|` operator. */
 class OrBitwiseExpr extends BinaryExpr, @orbitexpr {
-  override string getOp() { result = " | " }
+  override string getOp() { result = "|" }
 
   override string getAPrimaryQlClass() { result = "OrBitwiseExpr" }
 }
 
 /** A binary expression using the `^` operator. */
 class XorBitwiseExpr extends BinaryExpr, @xorbitexpr {
-  override string getOp() { result = " ^ " }
+  override string getOp() { result = "^" }
 
   override string getAPrimaryQlClass() { result = "XorBitwiseExpr" }
 }
 
 /** A binary expression using the `&&` operator. */
 class AndLogicalExpr extends BinaryExpr, @andlogicalexpr {
-  override string getOp() { result = " && " }
+  override string getOp() { result = "&&" }
 
   override string getAPrimaryQlClass() { result = "AndLogicalExpr" }
 }
 
 /** A binary expression using the `||` operator. */
 class OrLogicalExpr extends BinaryExpr, @orlogicalexpr {
-  override string getOp() { result = " || " }
+  override string getOp() { result = "||" }
 
   override string getAPrimaryQlClass() { result = "OrLogicalExpr" }
 }
 
 /** A binary expression using the `<` operator. */
 class LTExpr extends BinaryExpr, @ltexpr {
-  override string getOp() { result = " < " }
+  override string getOp() { result = "<" }
 
   override string getAPrimaryQlClass() { result = "LTExpr" }
 }
 
 /** A binary expression using the `>` operator. */
 class GTExpr extends BinaryExpr, @gtexpr {
-  override string getOp() { result = " > " }
+  override string getOp() { result = ">" }
 
   override string getAPrimaryQlClass() { result = "GTExpr" }
 }
 
 /** A binary expression using the `<=` operator. */
 class LEExpr extends BinaryExpr, @leexpr {
-  override string getOp() { result = " <= " }
+  override string getOp() { result = "<=" }
 
   override string getAPrimaryQlClass() { result = "LEExpr" }
 }
 
 /** A binary expression using the `>=` operator. */
 class GEExpr extends BinaryExpr, @geexpr {
-  override string getOp() { result = " >= " }
+  override string getOp() { result = ">=" }
 
   override string getAPrimaryQlClass() { result = "GEExpr" }
 }
 
 /** A binary expression using Java's `==` or Kotlin's `===` operator. */
 class EQExpr extends BinaryExpr, @eqexpr {
-  override string getOp() { result = " == " }
+  override string getOp() { result = "==" }
 
   override string getAPrimaryQlClass() { result = "EQExpr" }
 }
 
 /** A binary expression using the Kotlin `==` operator, semantically equivalent to `Objects.equals`. */
 class ValueEQExpr extends BinaryExpr, @valueeqexpr {
-  override string getOp() { result = " (value equals) " }
+  override string getOp() { result = "(value equals)" }
 
   override string getAPrimaryQlClass() { result = "ValueEQExpr" }
 }
 
 /** A binary expression using Java's `!=` or Kotlin's `!==` operator. */
 class NEExpr extends BinaryExpr, @neexpr {
-  override string getOp() { result = " != " }
+  override string getOp() { result = "!=" }
 
   override string getAPrimaryQlClass() { result = "NEExpr" }
 }
 
 /** A binary expression using the Kotlin `!=` operator, semantically equivalent to `Objects.equals`. */
 class ValueNEExpr extends BinaryExpr, @valueneexpr {
-  override string getOp() { result = " (value not-equals) " }
+  override string getOp() { result = "(value not-equals)" }
 
   override string getAPrimaryQlClass() { result = "ValueNEExpr" }
 }
@@ -943,7 +945,7 @@ class LogicExpr extends Expr {
   /** Gets an operand of this logical expression. */
   Expr getAnOperand() {
     this.(BinaryExpr).getAnOperand() = result or
-    this.(UnaryExpr).getExpr() = result
+    this.(UnaryExpr).getOperand() = result
   }
 }
 
@@ -1039,8 +1041,15 @@ class ReferenceEqualityTest extends EqualityTest {
 
 /** A common super-class that represents unary operator expressions. */
 class UnaryExpr extends Expr, @unaryexpr {
+  /**
+   * DEPRECATED: Use `getOperand()` instead.
+   *
+   * Gets the operand expression.
+   */
+  deprecated Expr getExpr() { result.getParent() = this }
+
   /** Gets the operand expression. */
-  Expr getExpr() { result.getParent() = this }
+  Expr getOperand() { result.getParent() = this }
 }
 
 /**
@@ -1238,6 +1247,9 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
   /** Gets the immediately enclosing statement of this class instance creation expression. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
+  /** Gets the `ControlFlowNode` corresponding to this call. */
+  override ControlFlowNode getControlFlowNode() { result = Expr.super.getControlFlowNode() }
+
   /** Gets a printable representation of this expression. */
   override string toString() {
     result = "new " + this.getConstructor().getName() + "(...)"
@@ -1305,7 +1317,7 @@ class LambdaExpr extends FunctionalExpr, @lambdaexpr {
 
   /** Gets the body of this lambda expression, if it is an expression. */
   Expr getExprBody() {
-    this.hasExprBody() and result = this.asMethod().getBody().getAChild().(ReturnStmt).getResult()
+    this.hasExprBody() and result = this.asMethod().getBody().getAChild().(ReturnStmt).getExpr()
   }
 
   /** Gets the body of this lambda expression, if it is a statement. */
@@ -1340,7 +1352,7 @@ class MemberRefExpr extends FunctionalExpr, @memberref {
     exists(Stmt stmt |
       stmt = this.asMethod().getBody().(SingletonBlock).getStmt() and
       (
-        result = stmt.(ReturnStmt).getResult()
+        result = stmt.(ReturnStmt).getExpr()
         or
         // Note: Currently never an ExprStmt, but might change once https://github.com/github/codeql/issues/3605 is fixed
         result = stmt.(ExprStmt).getExpr()
@@ -1457,26 +1469,42 @@ class ConditionalExpr extends Expr, @conditionalexpr {
   Expr getCondition() { result.isNthChildOf(this, 0) }
 
   /**
+   * DEPRECATED: Use `getThen()` instead.
+   *
    * Gets the expression that is evaluated if the condition of this
    * conditional expression evaluates to `true`.
    */
-  Expr getTrueExpr() { result.isNthChildOf(this, 1) }
+  deprecated Expr getTrueExpr() { result.isNthChildOf(this, 1) }
+
+  /**
+   * DEPRECATED: Use `getElse()` instead.
+   *
+   * Gets the expression that is evaluated if the condition of this
+   * conditional expression evaluates to `false`.
+   */
+  deprecated Expr getFalseExpr() { result.isNthChildOf(this, 2) }
+
+  /**
+   * Gets the expression that is evaluated if the condition of this
+   * conditional expression evaluates to `true`.
+   */
+  Expr getThen() { result.isNthChildOf(this, 1) }
 
   /**
    * Gets the expression that is evaluated if the condition of this
    * conditional expression evaluates to `false`.
    */
-  Expr getFalseExpr() { result.isNthChildOf(this, 2) }
+  Expr getElse() { result.isNthChildOf(this, 2) }
 
   /**
    * Gets the expression that is evaluated by the specific branch of this
-   * conditional expression. If `true` that is `getTrueExpr()`, if `false`
-   * it is `getFalseExpr()`.
+   * conditional expression. If `true` that is `getThen()`, if `false`
+   * it is `getElse()`.
    */
   Expr getBranchExpr(boolean branch) {
-    branch = true and result = this.getTrueExpr()
+    branch = true and result = this.getThen()
     or
-    branch = false and result = this.getFalseExpr()
+    branch = false and result = this.getElse()
   }
 
   /**
@@ -1773,14 +1801,14 @@ class VariableUpdate extends Expr {
   VariableUpdate() {
     this.(Assignment).getDest() instanceof VarAccess or
     this instanceof LocalVariableDeclExpr or
-    this.(UnaryAssignExpr).getExpr() instanceof VarAccess
+    this.(UnaryAssignExpr).getOperand() instanceof VarAccess
   }
 
   /** Gets the destination of this variable update. */
   Variable getDestVar() {
     result.getAnAccess() = this.(Assignment).getDest() or
     result = this.(LocalVariableDeclExpr).getVariable() or
-    result.getAnAccess() = this.(UnaryAssignExpr).getExpr()
+    result.getAnAccess() = this.(UnaryAssignExpr).getOperand()
   }
 }
 
@@ -1970,7 +1998,7 @@ class VarAccess extends Expr, @varaccess {
    */
   predicate isVarWrite() {
     exists(Assignment a | a.getDest() = this) or
-    exists(UnaryAssignExpr e | e.getExpr() = this)
+    exists(UnaryAssignExpr e | e.getOperand() = this)
   }
 
   /**
@@ -2089,6 +2117,9 @@ class MethodCall extends Expr, Call, @methodaccess {
 
   /** Gets the immediately enclosing statement that contains this method access. */
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
+
+  /** Gets the `ControlFlowNode` corresponding to this call. */
+  override ControlFlowNode getControlFlowNode() { result = Expr.super.getControlFlowNode() }
 
   /** Gets a printable representation of this expression. */
   override string toString() {
@@ -2281,6 +2312,9 @@ class Call extends ExprParent, @caller {
 
   /** Gets the enclosing statement of this call. */
   /*abstract*/ Stmt getEnclosingStmt() { none() }
+
+  /** Gets the `ControlFlowNode` corresponding to this call. */
+  /*abstract*/ ControlFlowNode getControlFlowNode() { none() }
 
   /** Gets the number of arguments provided in this call. */
   int getNumArgument() { count(this.getAnArgument()) = result }
@@ -2697,11 +2731,6 @@ class PatternExpr extends Expr {
    * Gets this pattern cast to a binding or unnamed pattern.
    */
   LocalVariableDeclExpr asBindingOrUnnamedPattern() { result = this }
-
-  /**
-   * DEPRECATED: alias for `asBindingOrUnnamedPattern`.
-   */
-  deprecated LocalVariableDeclExpr asBindingPattern() { result = this.asBindingOrUnnamedPattern() }
 
   /**
    * Gets this pattern cast to a record pattern.

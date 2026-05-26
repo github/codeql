@@ -99,7 +99,7 @@ class FormatTemplateVariableAccessTree extends LeafTree, FormatTemplateVariableA
 class ItemTree extends LeafTree, Item {
   ItemTree() {
     not this instanceof MacroCall and
-    this = [any(StmtList s).getAStatement(), any(MacroBlockExpr s).getAStatement()]
+    this = any(StmtList s).getAStatement()
   }
 }
 
@@ -138,15 +138,6 @@ class MacroCallTree extends StandardPostOrderTree, MacroCall {
   MacroCallTree() { not this.getParentNode() instanceof MacroPat }
 
   override AstNode getChildNode(int i) { i = 0 and result = this.getMacroCallExpansion() }
-}
-
-class MacroBlockExprTree extends StandardPostOrderTree, MacroBlockExpr {
-  override AstNode getChildNode(int i) {
-    result = this.getStatement(i)
-    or
-    i = this.getNumberOfStatements() and
-    result = this.getTailExpr()
-  }
 }
 
 class MatchArmTree extends ControlFlowTree, MatchArm {

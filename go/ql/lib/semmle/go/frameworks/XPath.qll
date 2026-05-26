@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with XPath-related concepts such as XPath expressions.
  */
+overlay[local?]
+module;
 
 import go
 import semmle.go.dataflow.ExternalFlow
@@ -25,9 +27,16 @@ module XPath {
      */
     abstract class Range extends DataFlow::Node { }
 
-    private class DefaultXPathExpressionString extends Range {
-      DefaultXPathExpressionString() { sinkNode(this, "xpath-injection") }
+    private class ExternalXPathExpressionString extends Range {
+      ExternalXPathExpressionString() { sinkNode(this, "xpath-injection") }
     }
+  }
+
+  /** A sanitizer for XPath injection. */
+  abstract class Sanitizer extends DataFlow::Node { }
+
+  private class ExternalSanitizer extends Sanitizer {
+    ExternalSanitizer() { barrierNode(this, "xpath-injection") }
   }
 }
 

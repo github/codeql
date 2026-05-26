@@ -545,7 +545,7 @@ private module ParamsSummaries {
    * A flow summary for methods on `ActionController::Parameters` which
    * propagate taint from receiver to return value.
    */
-  private class MethodsReturningParamsInstanceSummary extends SummarizedCallable {
+  private class MethodsReturningParamsInstanceSummary extends SummarizedCallable::Range {
     MethodsReturningParamsInstanceSummary() { this = "ActionController::Parameters#<various>" }
 
     override MethodCall getACall() {
@@ -566,7 +566,7 @@ private module ParamsSummaries {
    * `#with_defaults`
    * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
    */
-  private class MergeSummary extends SummarizedCallable {
+  private class MergeSummary extends SummarizedCallable::Range {
     MergeSummary() { this = "ActionController::Parameters#merge" }
 
     override MethodCall getACall() {
@@ -590,7 +590,7 @@ private module ParamsSummaries {
    * `#reverse_update`
    * Returns a new ActionController::Parameters with all keys from current hash merged into other_hash.
    */
-  private class MergeBangSummary extends SummarizedCallable {
+  private class MergeBangSummary extends SummarizedCallable::Range {
     MergeBangSummary() { this = "ActionController::Parameters#merge!" }
 
     override MethodCall getACall() {
@@ -609,7 +609,7 @@ private module ParamsSummaries {
   /** Flow summaries for `ActiveDispatch::Http::UploadedFile`, which can be an field of `ActionController::Parameters`. */
   module UploadedFileSummaries {
     /** Flow summary for various string attributes of `UploadedFile`, including `original_filename`, `content_type`, and `headers`. */
-    private class UploadedFileStringAttributeSummary extends SummarizedCallable {
+    private class UploadedFileStringAttributeSummary extends SummarizedCallable::Range {
       UploadedFileStringAttributeSummary() {
         this = "ActionDispatch::Http::UploadedFile#[original_filename,content_type,headers]"
       }
@@ -632,7 +632,7 @@ private module ParamsSummaries {
      * Flow summary for `ActiveDispatch::Http::UploadedFile#read`,
      * which propagates taint from the receiver to the return value or to the second (out string) argument
      */
-    private class UploadedFileReadSummary extends SummarizedCallable {
+    private class UploadedFileReadSummary extends SummarizedCallable::Range {
       UploadedFileReadSummary() { this = "ActionDispatch::Http::UploadedFile#read" }
 
       override MethodCall getACall() {

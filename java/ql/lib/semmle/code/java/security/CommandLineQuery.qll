@@ -37,6 +37,10 @@ private class DefaultCommandInjectionSink extends CommandInjectionSink {
   DefaultCommandInjectionSink() { sinkNode(this, "command-injection") }
 }
 
+private class ExternalCommandInjectionSanitizer extends CommandInjectionSanitizer {
+  ExternalCommandInjectionSanitizer() { barrierNode(this, "command-injection") }
+}
+
 private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer {
   DefaultCommandInjectionSanitizer() {
     this instanceof SimpleTypeSanitizer
@@ -75,42 +79,9 @@ module InputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * DEPRECATED: Use `InputToArgumentToExecFlowConfig` instead.
- */
-deprecated module RemoteUserInputToArgumentToExecFlowConfig = InputToArgumentToExecFlowConfig;
-
-/**
  * Taint-tracking flow for unvalidated input that is used to run an external process.
  */
 module InputToArgumentToExecFlow = TaintTracking::Global<InputToArgumentToExecFlowConfig>;
-
-/**
- * DEPRECATED: Use `InputToArgumentToExecFlow` instead.
- */
-deprecated module RemoteUserInputToArgumentToExecFlow = InputToArgumentToExecFlow;
-
-/**
- * A taint-tracking configuration for unvalidated local user input that is used to run an external process.
- */
-deprecated module LocalUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
-
-  predicate isBarrier(DataFlow::Node node) { node instanceof CommandInjectionSanitizer }
-
-  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    any(CommandInjectionAdditionalTaintStep s).step(n1, n2)
-  }
-}
-
-/**
- * DEPRECATED: Use `InputToArgumentToExecFlow` instead and configure threat model sources to include `local`.
- *
- * Taint-tracking flow for unvalidated local user input that is used to run an external process.
- */
-deprecated module LocalUserInputToArgumentToExecFlow =
-  TaintTracking::Global<LocalUserInputToArgumentToExecFlowConfig>;
 
 /**
  * Implementation of `ExecTainted.ql`. It is extracted to a QLL

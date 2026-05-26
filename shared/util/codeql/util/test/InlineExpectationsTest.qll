@@ -146,9 +146,9 @@ module Make<InlineExpectationsTestSig Impl> {
     bindingset[expectedTag, actualTag]
     default predicate tagMatches(string expectedTag, string actualTag) { expectedTag = actualTag }
 
-    /** Holds if expectations marked with `expectedTag` are optional. */
+    /** Holds if expectations marked with `expectedTag` are ignored. */
     bindingset[expectedTag]
-    default predicate tagIsOptional(string expectedTag) { none() }
+    default predicate tagIsIgnored(string expectedTag) { none() }
 
     /**
      * Holds if expected value `expectedValue` matches actual value `actualValue`.
@@ -223,8 +223,7 @@ module Make<InlineExpectationsTestSig Impl> {
       exists(ValidTestExpectation expectation |
         not exists(ActualTestResult actualResult | expectation.matchesActualResult(actualResult)) and
         expectation.getTag() = TestImpl::getARelevantTag() and
-        element = expectation and
-        not expectation.isOptional()
+        element = expectation
       |
         expectation instanceof GoodTestExpectation and
         message = "Missing result: " + expectation.getExpectationText()
@@ -253,7 +252,8 @@ module Make<InlineExpectationsTestSig Impl> {
         exists(TColumn column, string tags |
           getAnExpectation(comment, column, _, tags, value) and
           tag = tags.splitAt(",") and
-          knownFailure = getColumnString(column)
+          knownFailure = getColumnString(column) and
+          not TestImpl::tagIsIgnored(tag)
         )
       } or
       TInvalidExpectation(Impl::ExpectationComment comment, string expectation) {
@@ -338,8 +338,6 @@ module Make<InlineExpectationsTestSig Impl> {
         TestImpl::tagMatches(this.getTag(), actualResult.getTag()) and
         TestImpl::valueMatches(this.getValue(), actualResult.getValue())
       }
-
-      predicate isOptional() { TestImpl::tagIsOptional(tag) }
     }
 
     // Note: These next three classes correspond to all the possible values of type `TColumn`.
@@ -428,6 +426,12 @@ module Make<InlineExpectationsTestSig Impl> {
       result = TestImpl1::getARelevantTag() or result = TestImpl2::getARelevantTag()
     }
 
+    bindingset[expectedTag]
+    predicate tagIsIgnored(string expectedTag) {
+      TestImpl1::tagIsIgnored(expectedTag) or
+      TestImpl2::tagIsIgnored(expectedTag)
+    }
+
     predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
       TestImpl1::hasActualResult(location, element, tag, value)
       or
@@ -447,16 +451,13 @@ module Make<InlineExpectationsTestSig Impl> {
   module MergeTests3<TestSig TestImpl1, TestSig TestImpl2, TestSig TestImpl3> implements TestSig {
     private module M = MergeTests<MergeTests<TestImpl1, TestImpl2>, TestImpl3>;
 
-    bindingset[result]
-    string getARelevantTag() { result = M::getARelevantTag() }
+    predicate getARelevantTag = M::getARelevantTag/0;
 
-    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
-      M::hasActualResult(location, element, tag, value)
-    }
+    predicate tagIsIgnored = M::tagIsIgnored/1;
 
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      M::hasOptionalResult(location, element, tag, value)
-    }
+    predicate hasActualResult = M::hasActualResult/4;
+
+    predicate hasOptionalResult = M::hasOptionalResult/4;
   }
 
   /**
@@ -467,16 +468,13 @@ module Make<InlineExpectationsTestSig Impl> {
   {
     private module M = MergeTests<MergeTests3<TestImpl1, TestImpl2, TestImpl3>, TestImpl4>;
 
-    bindingset[result]
-    string getARelevantTag() { result = M::getARelevantTag() }
+    predicate getARelevantTag = M::getARelevantTag/0;
 
-    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
-      M::hasActualResult(location, element, tag, value)
-    }
+    predicate tagIsIgnored = M::tagIsIgnored/1;
 
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      M::hasOptionalResult(location, element, tag, value)
-    }
+    predicate hasActualResult = M::hasActualResult/4;
+
+    predicate hasOptionalResult = M::hasOptionalResult/4;
   }
 
   /**
@@ -489,16 +487,13 @@ module Make<InlineExpectationsTestSig Impl> {
     private module M =
       MergeTests<MergeTests4<TestImpl1, TestImpl2, TestImpl3, TestImpl4>, TestImpl5>;
 
-    bindingset[result]
-    string getARelevantTag() { result = M::getARelevantTag() }
+    predicate getARelevantTag = M::getARelevantTag/0;
 
-    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
-      M::hasActualResult(location, element, tag, value)
-    }
+    predicate tagIsIgnored = M::tagIsIgnored/1;
 
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
-      M::hasOptionalResult(location, element, tag, value)
-    }
+    predicate hasActualResult = M::hasActualResult/4;
+
+    predicate hasOptionalResult = M::hasOptionalResult/4;
   }
 
   /**
@@ -521,7 +516,7 @@ module Make<InlineExpectationsTestSig Impl> {
  * is treated as part of the expected results, except that the comment may contain a `//` sequence
  * to treat the remainder of the line as a regular (non-interpreted) comment.
  */
-private string expectationCommentPattern() { result = "\\s*\\$((?:[^/]|/[^/])*)(?://.*)?" }
+private string expectationCommentPattern() { result = "\\s*\\$ ((?:[^/]|/[^/])*)(?://.*)?" }
 
 /**
  * The possible columns in an expectation comment. The `TDefaultColumn` branch represents the first
@@ -870,7 +865,7 @@ module TestPostProcessing {
       }
 
       bindingset[expectedTag]
-      predicate tagIsOptional(string expectedTag) {
+      predicate tagIsIgnored(string expectedTag) {
         exists(getQueryKind()) and
         (
           // ignore irrelevant tags

@@ -40,7 +40,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         protected override void PopulateExpression(TextWriter trapFile)
         {
-            OperatorCall(trapFile, Syntax);
+            AddOperatorCall(trapFile, Syntax);
             CreateDeferred(Context, Syntax.Left, 0);
             CreateDeferred(Context, Syntax.Right, 1);
         }

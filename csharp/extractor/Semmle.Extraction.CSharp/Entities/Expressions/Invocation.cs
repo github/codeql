@@ -24,6 +24,16 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private bool IsExplicitDelegateInvokeCall() => Kind == ExprKind.DELEGATE_INVOCATION && Context.GetModel(Syntax.Expression).GetSymbolInfo(Syntax.Expression).Symbol is IMethodSymbol m && m.MethodKind == MethodKind.DelegateInvoke;
 
+        private bool IsOperatorCall() => Kind == ExprKind.OPERATOR_INVOCATION;
+
+        private bool IsValidMemberAccessKind()
+        {
+            return Kind == ExprKind.METHOD_INVOCATION ||
+                IsEventDelegateCall() ||
+                IsExplicitDelegateInvokeCall() ||
+                IsOperatorCall();
+        }
+
         protected override void PopulateExpression(TextWriter trapFile)
         {
             if (IsNameof(Syntax))
@@ -34,10 +44,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var child = -1;
             string? memberName = null;
-            var target = TargetSymbol;
+            var target = GetTargetSymbol(Context, Syntax);
             switch (Syntax.Expression)
             {
-                case MemberAccessExpressionSyntax memberAccess when Kind == ExprKind.METHOD_INVOCATION || IsEventDelegateCall() || IsExplicitDelegateInvokeCall():
+                case MemberAccessExpressionSyntax memberAccess when IsValidMemberAccessKind():
                     memberName = memberAccess.Name.Identifier.Text;
                     if (Syntax.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
                         // Qualified method call; `x.M()`
@@ -113,33 +123,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public SymbolInfo SymbolInfo => info.SymbolInfo;
 
-        public IMethodSymbol? TargetSymbol
+        private static bool IsOperatorLikeCall(ExpressionNodeInfo info)
         {
-            get
-            {
-                var si = SymbolInfo;
-
-                if (si.Symbol is not null)
-                    return si.Symbol as IMethodSymbol;
-
-                if (si.CandidateReason == CandidateReason.OverloadResolutionFailure)
-                {
-                    // This seems to be a bug in Roslyn
-                    // For some reason, typeof(X).InvokeMember(...) fails to resolve the correct
-                    // InvokeMember() method, even though the number of parameters clearly identifies the correct method
-
-                    var candidates = si.CandidateSymbols
-                        .OfType<IMethodSymbol>()
-                        .Where(method => method.Parameters.Length >= Syntax.ArgumentList.Arguments.Count)
-                        .Where(method => method.Parameters.Count(p => !p.HasExplicitDefaultValue) <= Syntax.ArgumentList.Arguments.Count);
-
-                    return Context.ExtractionContext.IsStandalone ?
-                        candidates.FirstOrDefault() :
-                        candidates.SingleOrDefault();
-                }
-
-                return si.Symbol as IMethodSymbol;
-            }
+            return info.SymbolInfo.Symbol is IMethodSymbol method &&
+                method.TryGetExtensionMethod()?.MethodKind == MethodKind.UserDefinedOperator;
         }
 
         private static bool IsDelegateLikeCall(ExpressionNodeInfo info)
@@ -196,15 +183,25 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         private static ExprKind GetKind(ExpressionNodeInfo info)
         {
-            return IsNameof((InvocationExpressionSyntax)info.Node)
-                ? ExprKind.NAMEOF
-                : IsDelegateLikeCall(info)
-                    ? IsDelegateInvokeCall(info)
-                        ? ExprKind.DELEGATE_INVOCATION
-                        : ExprKind.FUNCTION_POINTER_INVOCATION
-                    : IsLocalFunctionInvocation(info)
-                        ? ExprKind.LOCAL_FUNCTION_INVOCATION
-                        : ExprKind.METHOD_INVOCATION;
+            if (IsNameof((InvocationExpressionSyntax)info.Node))
+            {
+                return ExprKind.NAMEOF;
+            }
+            if (IsDelegateLikeCall(info))
+            {
+                return IsDelegateInvokeCall(info)
+                    ? ExprKind.DELEGATE_INVOCATION
+                    : ExprKind.FUNCTION_POINTER_INVOCATION;
+            }
+            if (IsLocalFunctionInvocation(info))
+            {
+                return ExprKind.LOCAL_FUNCTION_INVOCATION;
+            }
+            if (IsOperatorLikeCall(info))
+            {
+                return ExprKind.OPERATOR_INVOCATION;
+            }
+            return ExprKind.METHOD_INVOCATION;
         }
 
         private static bool IsNameof(InvocationExpressionSyntax syntax)

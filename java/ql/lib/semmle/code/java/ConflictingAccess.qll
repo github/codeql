@@ -23,7 +23,7 @@ module Modification {
   /** Holds if the call `c` modifies a shared resource. */
   predicate isModifyingCall(Call c) {
     exists(SummarizedCallable sc, string output | sc.getACall() = c |
-      sc.propagatesFlow(_, output, _, _) and
+      sc.propagatesFlow(_, output, _, _, _, _) and
       output.matches("Argument[this]%")
     )
   }
@@ -63,10 +63,21 @@ class ExposedField extends Field {
     not this.getType() instanceof LockType and
     // field is not thread-safe
     not isThreadSafeType(this.getType()) and
-    not isThreadSafeType(this.getInitializer().getType()) and
+    not isThreadSafeType(initialValue(this).getType()) and
     // the initializer guarantees thread safety
-    not isThreadSafeInitializer(this.getInitializer())
+    not isThreadSafeInitializer(initialValue(this))
   }
+}
+
+/**
+ * Gets the initial value for the field `f`.
+ * This is either a field initializer or an assignment in a constructor.
+ */
+Expr initialValue(Field f) {
+  result = f.getInitializer()
+  or
+  result = f.getAnAssignedValue() and
+  result.getEnclosingCallable() = f.getDeclaringType().getAConstructor()
 }
 
 /**

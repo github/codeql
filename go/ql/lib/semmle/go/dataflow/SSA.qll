@@ -1,6 +1,8 @@
 /**
  * Provides classes for working with static single assignment form (SSA).
  */
+overlay[local]
+module;
 
 import go
 private import SsaImpl
@@ -144,7 +146,7 @@ class SsaDefinition extends TSsaDefinition {
   abstract string prettyPrintRef();
 
   /** Gets the innermost function or file to which this SSA definition belongs. */
-  ControlFlow::Root getRoot() { result = this.getBasicBlock().getRoot() }
+  ControlFlow::Root getRoot() { result = this.getBasicBlock().getScope() }
 
   /** Gets a textual representation of this element. */
   string toString() { result = this.prettyPrintDef() }
@@ -285,7 +287,7 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
  */
 class SsaPhiNode extends SsaPseudoDefinition, TPhi {
   override SsaVariable getAnInput() {
-    result = getDefReachingEndOf(this.getBasicBlock().getAPredecessor(), this.getSourceVariable())
+    result = getDefReachingEndOf(this.getBasicBlock().getAPredecessor(_), this.getSourceVariable())
   }
 
   override predicate definesAt(ReachableBasicBlock bb, int i, SsaSourceVariable v) {

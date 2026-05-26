@@ -243,7 +243,7 @@ private class PathNormalizeSanitizer extends MethodCall {
   PathNormalizeSanitizer() {
     exists(RefType t | this.getMethod().getDeclaringType() = t |
       (t instanceof TypePath or t instanceof FilesKt) and
-      this.getMethod().hasName("normalize")
+      this.getMethod().hasName(["normalize", "toRealPath"])
       or
       t instanceof TypeFile and
       this.getMethod().hasName(["getCanonicalPath", "getCanonicalFile"])
@@ -289,8 +289,8 @@ private Method getSourceMethod(Method m) {
   result = m
 }
 
-private class DefaultPathInjectionSanitizer extends PathInjectionSanitizer {
-  DefaultPathInjectionSanitizer() { barrierNode(this, "path-injection") }
+private class ExternalPathInjectionSanitizer extends PathInjectionSanitizer {
+  ExternalPathInjectionSanitizer() { barrierNode(this, ["path-injection", "path-injection[read]"]) }
 }
 
 /** Holds if `g` is a guard that checks for `..` components. */
@@ -427,20 +427,15 @@ private class ReplaceDirectoryCharactersSanitizer extends StringReplaceOrReplace
   }
 }
 
-/** Holds if `target` is the first argument of `matchesCall`. */
-private predicate isMatchesTarget(StringMatchesCall matchesCall, CompileTimeConstantExpr target) {
-  target = matchesCall.getArgument(0)
-}
-
 /**
  * Holds if `matchesCall` confirms that `checkedExpr` does not contain any directory characters
  * on the given `branch`.
  */
-private predicate isMatchesCall(StringMatchesCall matchesCall, Expr checkedExpr, boolean branch) {
+private predicate isMatchesCall(RegexMatch regexMatch, Expr checkedExpr, boolean branch) {
   exists(CompileTimeConstantExpr target, string targetValue |
-    isMatchesTarget(matchesCall, target) and
+    target = regexMatch.getRegex() and
     target.getStringValue() = targetValue and
-    checkedExpr = matchesCall.getQualifier()
+    checkedExpr = regexMatch.getString()
   |
     (
       // Allow anything except `.`, '/', '\'

@@ -321,10 +321,6 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
-    TMacroBlockExpr(Raw::MacroBlockExpr id) { constructMacroBlockExpr(id) } or
-    /**
-     * INTERNAL: Do not use.
-     */
     TMacroCall(Raw::MacroCall id) { constructMacroCall(id) } or
     /**
      * INTERNAL: Do not use.
@@ -736,9 +732,9 @@ module Synth {
     TArrayExpr or TArrayExprInternal or TAsmExpr or TAwaitExpr or TBecomeExpr or TBinaryExpr or
         TBreakExpr or TCallExpr or TCastExpr or TClosureExpr or TContinueExpr or TFieldExpr or
         TFormatArgsExpr or TIfExpr or TIndexExpr or TLabelableExpr or TLetExpr or TLiteralExpr or
-        TMacroBlockExpr or TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or
-        TParenExpr or TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or
-        TStructExpr or TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
+        TMacroExpr or TMatchExpr or TMethodCallExpr or TOffsetOfExpr or TParenExpr or
+        TPathExprBase or TPrefixExpr or TRangeExpr or TRefExpr or TReturnExpr or TStructExpr or
+        TTryExpr or TTupleExpr or TUnderscoreExpr or TYeetExpr or TYieldExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1376,13 +1372,6 @@ module Synth {
    * Converts a raw element to a synthesized `TLoopExpr`, if possible.
    */
   TLoopExpr convertLoopExprFromRaw(Raw::Element e) { result = TLoopExpr(e) }
-
-  /**
-   * INTERNAL: Do not use.
-   *
-   * Converts a raw element to a synthesized `TMacroBlockExpr`, if possible.
-   */
-  TMacroBlockExpr convertMacroBlockExprFromRaw(Raw::Element e) { result = TMacroBlockExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2277,8 +2266,6 @@ module Synth {
     or
     result = convertLiteralExprFromRaw(e)
     or
-    result = convertMacroBlockExprFromRaw(e)
-    or
     result = convertMacroExprFromRaw(e)
     or
     result = convertMatchExprFromRaw(e)
@@ -3035,12 +3022,6 @@ module Synth {
    * Converts a synthesized `TLoopExpr` to a raw DB element, if possible.
    */
   Raw::Element convertLoopExprToRaw(TLoopExpr e) { e = TLoopExpr(result) }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `TMacroBlockExpr` to a raw DB element, if possible.
-   */
-  Raw::Element convertMacroBlockExprToRaw(TMacroBlockExpr e) { e = TMacroBlockExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -3844,8 +3825,6 @@ module Synth {
     result = convertLetExprToRaw(e)
     or
     result = convertLiteralExprToRaw(e)
-    or
-    result = convertMacroBlockExprToRaw(e)
     or
     result = convertMacroExprToRaw(e)
     or

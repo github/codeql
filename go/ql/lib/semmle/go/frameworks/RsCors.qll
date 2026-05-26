@@ -1,4 +1,6 @@
 /** Provides classes for modeling the `github.com/rs/cors` package. */
+overlay[local?]
+module;
 
 import go
 

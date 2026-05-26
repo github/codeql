@@ -172,10 +172,6 @@
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/reachability/PrintDominance.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/reachability/PrintDominance.qll"
   ],
-  "C# ControlFlowReachability": [
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/ControlFlowReachability.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/ControlFlowReachability.qll"
-  ],
   "C++ ExternalAPIs": [
     "cpp/ql/src/Security/CWE/CWE-020/ExternalAPIs.qll",
     "cpp/ql/src/Security/CWE/CWE-020/ir/ExternalAPIs.qll"

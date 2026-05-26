@@ -1,6 +1,8 @@
 /**
  * Provides models of the [Go Micro library](https://github.com/go-micro/go-micro).
  */
+overlay[local?]
+module;
 
 import go
 private import semmle.go.security.RequestForgeryCustomizations

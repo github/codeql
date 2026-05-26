@@ -333,6 +333,27 @@ int test_mult05(int a, int b) {
   return total;
 }
 
+// Tests for shift operators.
+unsigned long long test_shift(unsigned long long a) {
+  // `odd` is the largest odd integer that can be precisely represented by a double.
+  unsigned long long odd = 9007199254740992 - 1; // 2^53 - 1
+  // Shifting right by by 1 give an upper bound that is half of `odd` rounded down.
+  unsigned long long shifted = odd >> 1;
+
+  return shifted;
+}
+
+// Tests for bounds on integers derived from inequalities.
+unsigned int test_inequality_integer(unsigned int e) {
+  unsigned int bi1 = (2 * e + 1) > 0 ? e : 2;
+  signed int bi2 = (2 * e + 1) >= 0 ? e : 2;
+  unsigned int bi3 = (3 * e + 2) > 0 ? e : 2;
+  unsigned int bi4 = (2 * e + 1) > 0 ? e : 2;
+  unsigned int bi5 = (2 * e + 1) > 16 ? e : 2;
+
+  return bi1 + bi2 + bi3 + bi4 + bi5;
+}
+
 int test16(int x) {
   int d, i = 0;
   if (x < 0) {
@@ -423,6 +444,23 @@ int repeated_if_statements(unsigned int rhs) {
   if (rhs < 15) { rhs << 1; }
   if (rhs < 16) { rhs << 1; }
   return rhs; // rhs has 6 bounds
+}
+
+int repeated_if_else_statements(unsigned int rhs) {
+  // Test how many bounds we estimate for repeated `if`-`else` statements that
+  // guard the same variable.
+  if (rhs < 10) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 11) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 12) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 13) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 14) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 15) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 16) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 17) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 18) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 19) { rhs << 1; } else { rhs << 2; }
+  if (rhs < 20) { rhs << 1; } else { rhs << 2; }
+  return rhs; // rhs has 12 bounds
 }
 
 int ne_phi_nodes(int a, int b) {
@@ -950,4 +988,16 @@ void test_overflow() {
     out(x);
     out(y);
   }
+}
+
+enum MY_ENUM_2 {
+    A = 0x1,
+    B = 0x2,
+    C = 0x4,
+    D = 0x8,
+    E = 0x10
+};
+
+void test_enum(enum MY_ENUM_2 e) {
+  out(e);
 }

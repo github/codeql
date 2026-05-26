@@ -1395,9 +1395,14 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
+  class TBuiltinGenericType = TBuiltinFixedArrayType;
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class TBuiltinType =
     TAnyBuiltinIntegerType or TBuiltinBridgeObjectType or TBuiltinDefaultActorStorageType or
-        TBuiltinExecutorType or TBuiltinFixedArrayType or TBuiltinFloatType or TBuiltinJobType or
+        TBuiltinExecutorType or TBuiltinFloatType or TBuiltinGenericType or TBuiltinJobType or
         TBuiltinNativeObjectType or TBuiltinRawPointerType or TBuiltinRawUnsafeContinuationType or
         TBuiltinUnsafeValueBufferType or TBuiltinVectorType;
 
@@ -4293,6 +4298,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TBuiltinGenericType`, if possible.
+   */
+  TBuiltinGenericType convertBuiltinGenericTypeFromRaw(Raw::Element e) {
+    result = convertBuiltinFixedArrayTypeFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw DB element to a synthesized `TBuiltinType`, if possible.
    */
   TBuiltinType convertBuiltinTypeFromRaw(Raw::Element e) {
@@ -4304,9 +4317,9 @@ module Synth {
     or
     result = convertBuiltinExecutorTypeFromRaw(e)
     or
-    result = convertBuiltinFixedArrayTypeFromRaw(e)
-    or
     result = convertBuiltinFloatTypeFromRaw(e)
+    or
+    result = convertBuiltinGenericTypeFromRaw(e)
     or
     result = convertBuiltinJobTypeFromRaw(e)
     or
@@ -7039,6 +7052,14 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TBuiltinGenericType` to a raw DB element, if possible.
+   */
+  Raw::Element convertBuiltinGenericTypeToRaw(TBuiltinGenericType e) {
+    result = convertBuiltinFixedArrayTypeToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TBuiltinType` to a raw DB element, if possible.
    */
   Raw::Element convertBuiltinTypeToRaw(TBuiltinType e) {
@@ -7050,9 +7071,9 @@ module Synth {
     or
     result = convertBuiltinExecutorTypeToRaw(e)
     or
-    result = convertBuiltinFixedArrayTypeToRaw(e)
-    or
     result = convertBuiltinFloatTypeToRaw(e)
+    or
+    result = convertBuiltinGenericTypeToRaw(e)
     or
     result = convertBuiltinJobTypeToRaw(e)
     or

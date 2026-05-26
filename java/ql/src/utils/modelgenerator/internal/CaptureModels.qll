@@ -26,7 +26,7 @@ predicate isPrimitiveTypeUsedForBulkData(J::Type t) {
 }
 
 private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
-  cu.getPackage().getName().matches("javax.swing%") or
+  cu.getPackage().getName().matches(javaxOrJakarta() + ".swing%") or
   cu.getPackage().getName().matches("java.awt%")
 }
 
@@ -187,7 +187,7 @@ module SummaryModelGeneratorInput implements SummaryModelGeneratorInputSig {
   }
 
   private predicate hasManualSummaryModel(Callable api) {
-    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() or
+    api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.hasManualModel()).asCallable() or
     api = any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
   }
 

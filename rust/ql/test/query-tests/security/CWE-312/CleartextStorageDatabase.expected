@@ -15,7 +15,6 @@ edges
 | test_storage.rs:71:9:71:21 | insert_query2 | test_storage.rs:139:25:139:37 | insert_query2 | provenance |  |
 | test_storage.rs:71:25:71:114 | ... + ... | test_storage.rs:71:25:71:121 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:71:25:71:121 | ... + ... | test_storage.rs:71:9:71:21 | insert_query2 | provenance |  |
-| test_storage.rs:71:96:71:114 | &... | test_storage.rs:71:25:71:114 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:71:96:71:114 | &... | test_storage.rs:71:25:71:114 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:71:96:71:114 | &... [&ref] | test_storage.rs:71:25:71:114 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:71:97:71:114 | get_phone_number(...) | test_storage.rs:71:96:71:114 | &... | provenance | Config |
@@ -33,7 +32,6 @@ edges
 | test_storage.rs:189:9:189:24 | insert_query_bad | test_storage.rs:194:25:194:40 | insert_query_bad | provenance |  |
 | test_storage.rs:189:28:189:117 | ... + ... | test_storage.rs:189:28:189:124 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:189:28:189:124 | ... + ... | test_storage.rs:189:9:189:24 | insert_query_bad | provenance |  |
-| test_storage.rs:189:99:189:117 | &... | test_storage.rs:189:28:189:117 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:189:99:189:117 | &... | test_storage.rs:189:28:189:117 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:189:99:189:117 | &... [&ref] | test_storage.rs:189:28:189:117 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:189:100:189:117 | get_phone_number(...) | test_storage.rs:189:99:189:117 | &... | provenance | Config |
@@ -41,7 +39,6 @@ edges
 | test_storage.rs:190:9:190:24 | select_query_bad | test_storage.rs:196:35:196:50 | select_query_bad | provenance |  |
 | test_storage.rs:190:28:190:103 | ... + ... | test_storage.rs:190:28:190:109 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:190:28:190:109 | ... + ... | test_storage.rs:190:9:190:24 | select_query_bad | provenance |  |
-| test_storage.rs:190:85:190:103 | &... | test_storage.rs:190:28:190:103 | ... + ... | provenance | MaD:7 |
 | test_storage.rs:190:85:190:103 | &... | test_storage.rs:190:28:190:103 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:190:85:190:103 | &... [&ref] | test_storage.rs:190:28:190:103 | ... + ... | provenance | MaD:6 |
 | test_storage.rs:190:86:190:103 | get_phone_number(...) | test_storage.rs:190:85:190:103 | &... | provenance | Config |
@@ -66,8 +63,8 @@ models
 | 4 | Sink: sqlx_core::query::query; Argument[0]; sql-injection |
 | 5 | Sink: sqlx_core::raw_sql::raw_sql; Argument[0]; sql-injection |
 | 6 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[0].Reference; ReturnValue; taint |
-| 7 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self,0]; ReturnValue; taint |
-| 8 | Summary: <alloc::string::String>::as_str; Argument[self]; ReturnValue; value |
+| 7 | Summary: <alloc::string::String as core::ops::arith::Add>::add; Argument[self]; ReturnValue; taint |
+| 8 | Summary: <alloc::string::String>::as_str; Argument[self].Reference; ReturnValue.Reference; taint |
 nodes
 | test_storage.rs:71:9:71:21 | insert_query2 | semmle.label | insert_query2 |
 | test_storage.rs:71:25:71:114 | ... + ... | semmle.label | ... + ... |

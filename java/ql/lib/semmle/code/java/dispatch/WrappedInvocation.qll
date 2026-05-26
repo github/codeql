@@ -68,19 +68,19 @@ private predicate mayInvokeCallback(SrcMethod m, int n) {
   (not m.fromSource() or m.isNative() or m.getFile().getAbsolutePath().matches("%/test/stubs/%"))
 }
 
-private class SummarizedCallableWithCallback extends SummarizedCallable {
+private class SummarizedCallableWithCallback extends SummarizedCallable::Range {
   private int pos;
 
   SummarizedCallableWithCallback() { mayInvokeCallback(this.asCallable(), pos) }
 
   override predicate propagatesFlow(
-    string input, string output, boolean preservesValue, string model
+    string input, string output, boolean preservesValue, Provenance p, boolean isExact, string model
   ) {
     input = "Argument[" + pos + "]" and
     output = "Argument[" + pos + "].Parameter[-1]" and
     preservesValue = true and
+    p = "hq-generated" and
+    isExact = true and
     model = "heuristic-callback"
   }
-
-  override predicate hasProvenance(Provenance provenance) { provenance = "hq-generated" }
 }

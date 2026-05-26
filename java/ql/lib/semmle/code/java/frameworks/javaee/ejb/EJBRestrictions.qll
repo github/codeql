@@ -138,7 +138,7 @@ ThisAccess forbiddenThisUse(Callable c) {
   result.getEnclosingCallable() = c and
   (
     exists(MethodCall ma | ma.getAnArgument() = result) or
-    exists(ReturnStmt rs | rs.getResult() = result)
+    exists(ReturnStmt rs | rs.getExpr() = result)
   )
 }
 
@@ -159,8 +159,8 @@ class GraphicsPackage extends Package {
   GraphicsPackage() {
     this.getName() = "java.awt" or
     this.getName().matches("java.awt.%") or
-    this.getName() = "javax.swing" or
-    this.getName().matches("javax.swing.%")
+    this.getName() = javaxOrJakarta() + ".swing" or
+    this.getName().matches(javaxOrJakarta() + ".swing.%")
   }
 }
 

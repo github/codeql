@@ -1,4 +1,5 @@
-load("@rules_go//go:def.bzl", "go_library")
+load("@rules_go//go:def.bzl", "go_library", "go_test")
+load("@rules_java//java:defs.bzl", "java_library")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 
 # gazelle:prefix github.com/github/codeql-go/extractor
@@ -58,4 +59,11 @@ pkg_files(
         ":tokenizer-jar": "tokenizer.jar",  # name is `libtokenizer.jar` by default
     },
     visibility = ["//go:__pkg__"],
+)
+
+go_test(
+    name = "extractor_test",
+    srcs = ["extractor_test.go"],
+    embed = [":extractor"],
+    deps = ["@org_golang_x_tools//go/packages"],
 )

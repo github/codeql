@@ -79,34 +79,6 @@ module Ssa {
     final VariableReadAccessCfgNode getAFirstRead() { SsaImpl::firstRead(this, result) }
 
     /**
-     * Gets a last control-flow node that reads the value of this SSA definition.
-     * That is, a read that can reach the end of the enclosing CFG scope, or another
-     * SSA definition for the source variable, without passing through any other read.
-     *
-     * Example:
-     *
-     * ```rb
-     * def m b        # defines b_0
-     *   i = 0        # defines i_0
-     *   puts i
-     *   puts i + 1   # last read of i_0
-     *   if b         # last read of b_0
-     *     i = 1      # defines i_1
-     *     puts i
-     *     puts i + 1 # last read of i_1
-     *   else
-     *     i = 2      # defines i_2
-     *     puts i
-     *     puts i + 1 # last read of i_2
-     *   end
-     *                # defines i_3 = phi(i_1, i_2)
-     *   puts i       # last read of i3
-     * end
-     * ```
-     */
-    deprecated final VariableReadAccessCfgNode getALastRead() { SsaImpl::lastRead(this, result) }
-
-    /**
      * Holds if `read1` and `read2` are adjacent reads of this SSA definition.
      * That is, `read2` can be reached from `read1` without passing through
      * another read.

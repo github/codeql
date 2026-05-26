@@ -3,4 +3,4 @@
 use std::future::Future;
 fn mention_dyn_future<T>(f: &dyn Future<Output = T>) {}
 
-fn mention_dyn_fn_once<F>(f: &dyn FnOnce() -> F) {}
+fn mention_dyn_fn<F>(f: &dyn Fn() -> F) {}

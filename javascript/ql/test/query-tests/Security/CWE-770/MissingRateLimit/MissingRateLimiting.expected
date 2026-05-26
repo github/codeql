@@ -9,3 +9,4 @@
 | tst.js:64:25:64:63 | functio ... req); } | This route handler performs $@, but is not rate-limited. | tst.js:64:46:64:60 | verifyUser(req) | authorization |
 | tst.js:76:25:76:53 | catchAs ... ndler1) | This route handler performs $@, but is not rate-limited. | tst.js:14:40:14:46 | login() | authorization |
 | tst.js:88:24:88:40 | expensiveHandler1 | This route handler performs $@, but is not rate-limited. | tst.js:14:40:14:46 | login() | authorization |
+| tst.js:112:28:112:44 | expensiveHandler1 | This route handler performs $@, but is not rate-limited. | tst.js:14:40:14:46 | login() | authorization |
