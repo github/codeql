@@ -116,9 +116,7 @@ FunctionValue get_function_or_initializer(Value func_or_cls) {
 predicate illegally_named_parameter_objectapi(Call call, Object func, string name) {
   not func.isC() and
   name = call.getANamedArgumentName() and
-  exists(ControlFlowNode callCfg | callCfg.getNode() = call |
-    callCfg = get_a_call_objectapi(func)
-  ) and
+  exists(ControlFlowNode callCfg | callCfg.getNode() = call | callCfg = get_a_call_objectapi(func)) and
   not get_function_or_initializer_objectapi(func).isLegalArgumentName(name)
 }
 

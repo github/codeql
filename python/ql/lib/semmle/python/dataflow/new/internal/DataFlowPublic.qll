@@ -37,7 +37,9 @@ newtype TNode =
    * A node corresponding to a scope entry definition. That is, the value of a variable
    * as it enters a scope.
    */
-  TScopeEntryDefinitionNode(SsaImpl::ScopeEntryDefinition def) { not def.getScope() instanceof Module } or
+  TScopeEntryDefinitionNode(SsaImpl::ScopeEntryDefinition def) {
+    not def.getScope() instanceof Module
+  } or
   /**
    * A synthetic node representing the value of an object before a state change.
    *
@@ -656,11 +658,15 @@ private predicate outcomeOfGuard(
   )
   or
   // Recursive: comparisons against a boolean literal.
-  exists(Cfg::CompareNode cmpNode, Cmpop op, Cfg::ControlFlowNode otherOperand,
-         Cfg::ControlFlowNode guardOperand, boolean polarity, boolean cmpBranch
+  exists(
+    Cfg::CompareNode cmpNode, Cmpop op, Cfg::ControlFlowNode otherOperand,
+    Cfg::ControlFlowNode guardOperand, boolean polarity, boolean cmpBranch
   |
     guardOperand.getNode() = guard.getNode() and
-    (cmpNode.operands(guardOperand, op, otherOperand) or cmpNode.operands(otherOperand, op, guardOperand)) and
+    (
+      cmpNode.operands(guardOperand, op, otherOperand) or
+      cmpNode.operands(otherOperand, op, guardOperand)
+    ) and
     not guard.getNode() instanceof BooleanLiteral and
     (
       (op instanceof Eq or op instanceof Is) and
@@ -692,7 +698,9 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     result = ParameterizedBarrierGuard<Unit, extendedGuardChecks/4>::getABarrierNode(_)
   }
 
-  private predicate extendedGuardChecks(GuardNode g, Cfg::ControlFlowNode node, boolean branch, Unit u) {
+  private predicate extendedGuardChecks(
+    GuardNode g, Cfg::ControlFlowNode node, boolean branch, Unit u
+  ) {
     guardChecks(g, node, branch) and
     u = u
   }
@@ -790,7 +798,11 @@ newtype TContent =
     or
     // d["key"] = ...
     key =
-      any(Cfg::SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
+      any(Cfg::SubscriptNode sub |
+        sub.isStore()
+      |
+        sub.getIndex().getNode().(StringLiteral).getText()
+      )
     or
     // d.setdefault("key", ...)
     exists(Cfg::CallNode call | call.getFunction().(Cfg::AttrNode).getName() = "setdefault" |

@@ -233,7 +233,8 @@ class UnpackingAssignmentTarget extends Cfg::ControlFlowNode {
 }
 
 /** A (possibly recursive) target of an unpacking assignment which is also a sequence. */
-class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget instanceof Cfg::SequenceNode {
+class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget instanceof Cfg::SequenceNode
+{
   Cfg::ControlFlowNode getElement(int i) { result = super.getElement(i) }
 
   Cfg::ControlFlowNode getAnElement() { result = this.getElement(_) }

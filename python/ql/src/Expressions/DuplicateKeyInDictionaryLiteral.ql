@@ -41,7 +41,9 @@ where
       i1 < i2
     )
     or
-    exists(ControlFlowNode k1Cfg, ControlFlowNode k2Cfg | k1Cfg.getNode() = k1 and k2Cfg.getNode() = k2 |
+    exists(ControlFlowNode k1Cfg, ControlFlowNode k2Cfg |
+      k1Cfg.getNode() = k1 and k2Cfg.getNode() = k2
+    |
       k1Cfg.getBasicBlock().strictlyDominates(k2Cfg.getBasicBlock())
     )
   )

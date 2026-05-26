@@ -726,7 +726,9 @@ private Py::AstNode assigned_value(Py::Expr lhs) {
   exists(Py::Alias a | a.getAsname() = lhs and result = a.getValue())
   or
   /* lhs += x  =>  result = (lhs + x) */
-  exists(Py::AugAssign a, Py::BinaryExpr b | b = a.getOperation() and result = b and lhs = b.getLeft())
+  exists(Py::AugAssign a, Py::BinaryExpr b |
+    b = a.getOperation() and result = b and lhs = b.getLeft()
+  )
   or
   /*
    * ..., lhs, ... = ..., result, ...
@@ -868,7 +870,9 @@ class NameNode extends ControlFlowNode {
   /** Whether this is a use of a global (including builtin) variable. */
   predicate isGlobal() { Scopes::use_of_global_variable(this, _, _) }
 
-  predicate isSelf() { exists(Py::SsaVariable selfvar | selfvar.isSelf() and selfvar.getAUse() = this) }
+  predicate isSelf() {
+    exists(Py::SsaVariable selfvar | selfvar.isSelf() and selfvar.getAUse() = this)
+  }
 }
 
 /** A control flow node corresponding to a named constant, one of `None`, `True` or `False`. */

@@ -12,7 +12,9 @@ private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.DataFlow
 
 module CustomTestConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node.asCfgNode().(Cfg::NameNode).getId() = "CUSTOM_SOURCE" }
+  predicate isSource(DataFlow::Node node) {
+    node.asCfgNode().(Cfg::NameNode).getId() = "CUSTOM_SOURCE"
+  }
 
   predicate isSink(DataFlow::Node node) {
     exists(Cfg::CallNode call |

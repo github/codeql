@@ -13,7 +13,8 @@
 import python
 import Definition
 
-from ListComprehensionDeclaration l, Name use, Name defn, ControlFlowNode lCfg, ControlFlowNode useCfg
+from
+  ListComprehensionDeclaration l, Name use, Name defn, ControlFlowNode lCfg, ControlFlowNode useCfg
 where
   use = l.getALeakedVariableUse() and
   defn = l.getDefinition() and

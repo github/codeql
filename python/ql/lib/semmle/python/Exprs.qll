@@ -28,7 +28,9 @@ class Expr extends Expr_, AstNode {
   /** Whether this expression may have a side effect (as determined purely from its syntax) */
   predicate hasSideEffects() {
     /* If an exception raised by this expression handled, count that as a side effect */
-    exists(ControlFlowNode n | n.getNode() = this | n.getASuccessor().getNode() instanceof ExceptStmt)
+    exists(ControlFlowNode n | n.getNode() = this |
+      n.getASuccessor().getNode() instanceof ExceptStmt
+    )
     or
     this.getASubExpression().hasSideEffects()
   }
@@ -94,7 +96,6 @@ class Subscript extends Subscript_ {
   }
 
   Expr getObject() { result = Subscript_.super.getValue() }
-
 }
 
 /** A call expression, such as `func(...)` */
@@ -109,7 +110,6 @@ class Call extends Call_ {
   override predicate hasSideEffects() { any() }
 
   override string toString() { result = this.getFunc().toString() + "()" }
-
 
   /** Gets a tuple (*) argument of this call. */
   Expr getStarargs() { result = this.getAPositionalArg().(Starred).getValue() }
@@ -196,7 +196,6 @@ class IfExp extends IfExp_ {
   override Expr getASubExpression() {
     result = this.getTest() or result = this.getBody() or result = this.getOrelse()
   }
-
 }
 
 /** A starred expression, such as the `*rest` in the assignment `first, *rest = seq` */
@@ -405,7 +404,6 @@ class PlaceHolder extends PlaceHolder_ {
   override Expr getASubExpression() { none() }
 
   override string toString() { result = "$" + this.getId() }
-
 }
 
 /** A tuple expression such as `( 1, 3, 5, 7, 9 )` */
@@ -471,7 +469,6 @@ class Name extends Name_ {
   override Expr getASubExpression() { none() }
 
   override string toString() { result = this.getId() }
-
 
   override predicate isArtificial() {
     /* Artificial variable names in comprehensions all start with "." */
@@ -577,7 +574,6 @@ abstract class NameConstant extends Name, ImmutableLiteral {
   override string toString() { name_consts(this, result) }
 
   override predicate isConstant() { any() }
-
 
   override predicate isArtificial() { none() }
 }

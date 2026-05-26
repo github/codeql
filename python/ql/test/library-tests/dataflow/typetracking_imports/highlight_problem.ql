@@ -11,7 +11,10 @@ where
   m = v.getScope().getEnclosingModule() and
   not m.getName() in ["pkg.use", "pkg.foo_def"] and
   v.getName() = "foo" and
-  if exists(Cfg::ControlFlowNode exit | exit.isNormalExit() and exit.getScope() = m and v.getAUse() = exit)
+  if
+    exists(Cfg::ControlFlowNode exit |
+      exit.isNormalExit() and exit.getScope() = m and v.getAUse() = exit
+    )
   then useToNormalExit = "use to normal exit"
   else useToNormalExit = "no use to normal exit"
 select m, v, useToNormalExit

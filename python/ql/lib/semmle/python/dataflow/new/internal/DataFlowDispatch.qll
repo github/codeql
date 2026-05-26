@@ -287,9 +287,7 @@ predicate isClassmethod(Function func) {
 
 /** Holds if the function `func` has a `property` decorator. */
 overlay[local]
-predicate hasPropertyDecorator(Function func) {
-  func.getADecorator().(Name).getId() = "property"
-}
+predicate hasPropertyDecorator(Function func) { func.getADecorator().(Name).getId() = "property" }
 
 /**
  * Holds if the function `func` has a `contextlib.contextmanager`.
@@ -297,9 +295,11 @@ predicate hasPropertyDecorator(Function func) {
 overlay[local]
 predicate hasContextmanagerDecorator(Function func) {
   exists(Cfg::ControlFlowNode contextmanager |
-    contextmanager.(Cfg::NameNode).getId() = "contextmanager" and contextmanager.(Cfg::NameNode).isGlobal()
+    contextmanager.(Cfg::NameNode).getId() = "contextmanager" and
+    contextmanager.(Cfg::NameNode).isGlobal()
     or
-    contextmanager.(Cfg::AttrNode).getObject("contextmanager").(Cfg::NameNode).getId() = "contextlib"
+    contextmanager.(Cfg::AttrNode).getObject("contextmanager").(Cfg::NameNode).getId() =
+      "contextlib"
   |
     func.getADecorator() = contextmanager.getNode()
   )
@@ -1348,7 +1348,9 @@ predicate normalCallArg(Cfg::CallNode call, Node arg, ArgumentPosition apos) {
  * translated into `l.clear()`, and we can still have use-use flow.
  */
 cached
-predicate getCallArg(Cfg::CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
+predicate getCallArg(
+  Cfg::CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos
+) {
   Stages::DataFlow::ref() and
   resolveCall(call, target, type) and
   (
@@ -1441,7 +1443,9 @@ private predicate sameEnclosingCallable(Node node1, Node node2) {
 // DataFlowCall
 // =============================================================================
 newtype TDataFlowCall =
-  TNormalCall(Cfg::CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
+  TNormalCall(Cfg::CallNode call, Function target, CallType type) {
+    resolveCall(call, target, type)
+  } or
   /** A call to the generated function inside a comprehension */
   TComprehensionCall(Comp c) or
   TPotentialLibraryCall(Cfg::CallNode call) or

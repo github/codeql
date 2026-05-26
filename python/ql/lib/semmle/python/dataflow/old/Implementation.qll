@@ -448,8 +448,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
       context = TNoParam() and
       src = TTaintTrackingNode_(retval, TNoParam(), path, kind, this) and
       node.asCfgNode() = call and
-      retval.asCfgNode().getNode() =
-        any(Return ret | ret.getScope() = pyfunc.getScope()).getValue()
+      retval.asCfgNode().getNode() = any(Return ret | ret.getScope() = pyfunc.getScope()).getValue()
     ) and
     edgeLabel = "return"
   }
@@ -471,8 +470,7 @@ class TaintTrackingImplementation extends string instanceof TaintTracking::Confi
       this.callContexts(call, src, pyfunc, context, callee) and
       retnode = TTaintTrackingNode_(retval, callee, path, kind, this) and
       node.asCfgNode() = call and
-      retval.asCfgNode().getNode() =
-        any(Return ret | ret.getScope() = pyfunc.getScope()).getValue()
+      retval.asCfgNode().getNode() = any(Return ret | ret.getScope() = pyfunc.getScope()).getValue()
     ) and
     edgeLabel = "call"
   }

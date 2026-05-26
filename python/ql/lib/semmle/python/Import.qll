@@ -162,7 +162,6 @@ class ImportMember extends ImportMember_ {
   string getImportedModuleName() {
     result = this.getModule().(ImportExpr).getImportedModuleName() + "." + this.getName()
   }
-
 }
 
 /** An import statement */

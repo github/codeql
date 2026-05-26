@@ -97,8 +97,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
     return = FlowSummaryImpl::Private::SummaryComponent::return() and
     // `result` should be the return value of a callable expression (lambda or function) referenced by `callable`
     exists(Return ret |
-      ret.getScope() =
-        callable.getALocalSource().asExpr().(CallableExpr).getInnerScope() and
+      ret.getScope() = callable.getALocalSource().asExpr().(CallableExpr).getInnerScope() and
       result.asCfgNode().getNode() = ret.getValue()
     )
   }
@@ -311,7 +310,9 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
     //
     // nodeFrom is `expr`
     // nodeTo is entry node for `f`
-    exists(SsaImpl::ScopeEntryDefinition e, SsaImpl::SsaSourceVariable var, Cfg::DefinitionNode def |
+    exists(
+      SsaImpl::ScopeEntryDefinition e, SsaImpl::SsaSourceVariable var, Cfg::DefinitionNode def
+    |
       e.getSourceVariable() = var and
       def.getNode() = var.getVariable().getAStore()
     |
