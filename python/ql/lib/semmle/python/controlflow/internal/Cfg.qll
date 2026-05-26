@@ -172,10 +172,17 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
   predicate isNormalExit() { this instanceof CfgImpl::ControlFlow::NormalExitNode }
 
   // ===== AST-shape predicates (bridges to the wrapped Python AST) =====
-  /** Holds if this flow node is a load (including those in augmented assignments). */
-  predicate isLoad() {
-    exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 3, e) and not augstore(_, this))
-  }
+  /**
+   * Holds if this flow node is a load (including those in augmented
+   * assignments).
+   *
+   * Note: an augmented-assignment target (`x[i]` in `x[i] += 1`) is
+   * both a load and a store — `isLoad` and `isStore` both hold on the
+   * canonical CFG node. This mirrors Java's `VarAccess.isVarRead`,
+   * which holds on the destination of compound and unary assignments
+   * even though the destination is also a write.
+   */
+  predicate isLoad() { exists(Py::Expr e | e = toAst(this) | py_expr_contexts(_, 3, e)) }
 
   /** Holds if this flow node is a store (including those in augmented assignments). */
   predicate isStore() {
@@ -460,11 +467,16 @@ class NameNode extends ControlFlowNode {
     toAst(this) instanceof Py::PlaceHolder
   }
 
-  /** Holds if this flow node defines the variable `v`. */
-  predicate defines(Py::Variable v) {
-    exists(Py::Name n | n = toAst(this) and n.defines(v)) and
-    not this.isLoad()
-  }
+  /**
+   * Holds if this flow node defines the variable `v`.
+   *
+   * This includes augmented-assignment targets — `n += 1` is both a
+   * read and a write of `n`, so `defines(n)` and `uses(n)` both hold
+   * on the same canonical CFG node. Mirrors Java's `VariableUpdate`
+   * semantics where compound assignments register both a write
+   * (`VarWrite`) and a read (`VarRead`) on the destination.
+   */
+  predicate defines(Py::Variable v) { exists(Py::Name n | n = toAst(this) and n.defines(v)) }
 
   /** Holds if this flow node deletes the variable `v`. */
   predicate deletes(Py::Variable v) { exists(Py::Name n | n = toAst(this) and n.deletes(v)) }

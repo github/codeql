@@ -26,7 +26,7 @@ module StoreLoadTest implements TestSig {
       element = n.toString() and
       value = n.getId() and
       (
-        n.isLoad() and tag = "load"
+        n.isLoad() and not n.isAugLoad() and tag = "load"
         or
         n.isStore() and not n.isAugStore() and tag = "store"
         or

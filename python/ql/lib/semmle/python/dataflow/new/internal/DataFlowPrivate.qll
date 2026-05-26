@@ -350,16 +350,32 @@ module LocalFlow {
     // definitions that have no subsequent read in the same scope (e.g.
     // a module-level `def f():` whose `f` is only read inside other
     // functions). The CFG-level link is unconditional.
+    //
+    // The Name-target restriction mirrors legacy ESSA's
+    // `SsaDefinitions::assignment_definition`, which required
+    // `defn.(NameNode).defines(v)`. Subscript and attribute writes
+    // (`x[i] = 42`, `obj.attr = 42`) are intentionally excluded — their
+    // value flow is handled by the content-flow / `AttrWrite` machinery,
+    // not by a local-flow step *into* the Subscript/Attribute expression.
+    // Excluding them is essential for keeping augmented-assignment
+    // targets (`x[i] += 42`) classifiable as `LocalSourceNode` on the
+    // read side: the single canonical CFG node is both a load and a
+    // store, and any incoming local-flow step would disqualify it from
+    // being a local source.
     exists(Cfg::DefinitionNode def |
       nodeFrom.(CfgNode).getNode() = def.getValue() and
-      nodeTo.(CfgNode).getNode() = def
+      nodeTo.(CfgNode).getNode() = def and
+      def instanceof Cfg::NameNode
     )
     or
     // With definition
     //   `with f(42) as x:`
     //   nodeFrom is `f(42)`
     //   nodeTo is `x`
-    exists(With with, Cfg::ControlFlowNode contextManager, SsaImpl::WithDefinition withDef, Cfg::ControlFlowNode var |
+    exists(
+      With with, Cfg::ControlFlowNode contextManager, SsaImpl::WithDefinition withDef,
+      Cfg::ControlFlowNode var
+    |
       var = withDef.getDefiningNode()
     |
       nodeFrom.(CfgNode).getNode() = contextManager and
