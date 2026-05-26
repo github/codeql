@@ -115,8 +115,19 @@ pub fn generate(
                 &node_parent_table_name,
             )),
             ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
-            ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
         ];
+        // Only emit the ReservedWord class when there are actually unnamed token
+        // types in the schema (i.e., @{prefix}_reserved_word exists in the dbscheme).
+        // When converting from a YEAST YAML schema that has no unnamed tokens, this
+        // type is absent and referencing it would cause a QL compilation error.
+        let has_reserved_words = nodes
+            .values()
+            .any(|n| n.dbscheme_name == reserved_word_name);
+        if has_reserved_words {
+            body.push(ql::TopLevel::Class(ql_gen::create_reserved_word_class(
+                &reserved_word_name,
+            )));
+        }
 
         // Overlay discard predicates
         body.push(ql::TopLevel::Predicate(

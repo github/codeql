@@ -1,6 +1,12 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use crate::{FieldId, KindId, CHILD_FIELD};
+
+#[derive(Clone, Debug)]
+pub struct NodeType {
+    pub kind: String,
+    pub named: bool,
+}
 
 /// A schema defining node kinds and field names for the output AST.
 /// Built from a node-types.yml file, independent of any tree-sitter grammar.
@@ -25,6 +31,8 @@ pub struct Schema {
     unnamed_kind_ids: BTreeMap<String, KindId>,
     kind_names: BTreeMap<KindId, &'static str>,
     next_kind_id: KindId,
+    field_types: BTreeMap<(String, FieldId), Vec<NodeType>>,
+    supertypes: BTreeMap<String, Vec<NodeType>>,
 }
 
 impl Default for Schema {
@@ -43,6 +51,8 @@ impl Schema {
             unnamed_kind_ids: BTreeMap::new(),
             kind_names: BTreeMap::new(),
             next_kind_id: 1, // 0 is reserved
+            field_types: BTreeMap::new(),
+            supertypes: BTreeMap::new(),
         }
     }
 
@@ -165,5 +175,69 @@ impl Schema {
 
     pub fn node_kind_for_id(&self, id: KindId) -> Option<&'static str> {
         self.kind_names.get(&id).copied()
+    }
+
+    pub fn set_field_types(
+        &mut self,
+        parent_kind: &str,
+        field_id: FieldId,
+        node_types: Vec<NodeType>,
+    ) {
+        self.field_types
+            .insert((parent_kind.to_string(), field_id), node_types);
+    }
+
+    pub fn field_types(
+        &self,
+        parent_kind: &str,
+        field_id: FieldId,
+    ) -> Option<&Vec<NodeType>> {
+        self.field_types
+            .get(&(parent_kind.to_string(), field_id))
+    }
+
+    pub fn set_supertype_members(&mut self, supertype: &str, node_types: Vec<NodeType>) {
+        self.supertypes.insert(supertype.to_string(), node_types);
+    }
+
+    fn allows_node(
+        &self,
+        node_type: &NodeType,
+        node_kind: &str,
+        node_named: bool,
+        active: &mut BTreeSet<String>,
+    ) -> bool {
+        if node_type.kind == node_kind && node_type.named == node_named {
+            return true;
+        }
+
+        if !node_type.named {
+            return false;
+        }
+
+        let Some(members) = self.supertypes.get(&node_type.kind) else {
+            return false;
+        };
+
+        if !active.insert(node_type.kind.clone()) {
+            return false;
+        }
+
+        let matched = members
+            .iter()
+            .any(|member| self.allows_node(member, node_kind, node_named, active));
+        active.remove(&node_type.kind);
+        matched
+    }
+
+    pub fn node_matches_types(
+        &self,
+        node_kind: &str,
+        node_named: bool,
+        node_types: &[NodeType],
+    ) -> bool {
+        node_types.iter().any(|node_type| {
+            self.allows_node(node_type, node_kind, node_named, &mut BTreeSet::new())
+        })
     }
 }

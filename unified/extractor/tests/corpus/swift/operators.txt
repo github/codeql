@@ -1,0 +1,329 @@
+===
+Addition
+===
+
+a + b
+
+---
+
+source_file
+  additive_expression
+    lhs: simple_identifier "a"
+    op: +
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "+"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
+
+===
+Subtraction
+===
+
+a - b
+
+---
+
+source_file
+  additive_expression
+    lhs: simple_identifier "a"
+    op: -
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "-"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
+
+===
+Multiplication
+===
+
+a * b
+
+---
+
+source_file
+  multiplicative_expression
+    lhs: simple_identifier "a"
+    op: *
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "*"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
+
+===
+Division
+===
+
+a / b
+
+---
+
+source_file
+  multiplicative_expression
+    lhs: simple_identifier "a"
+    op: /
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "/"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
+
+===
+Operator precedence: addition and multiplication
+===
+
+a + b * c
+
+---
+
+source_file
+  additive_expression
+    lhs: simple_identifier "a"
+    op: +
+    rhs:
+      multiplicative_expression
+        lhs: simple_identifier "b"
+        op: *
+        rhs: simple_identifier "c"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "+"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        binary_expr
+          operator: operator "*"
+          left:
+            name_expr
+              identifier: identifier "b"
+          right:
+            name_expr
+              identifier: identifier "c"
+
+===
+Parenthesised expression
+===
+
+(a + b) * c
+
+---
+
+source_file
+  multiplicative_expression
+    lhs:
+      tuple_expression
+        value:
+          additive_expression
+            lhs: simple_identifier "a"
+            op: +
+            rhs: simple_identifier "b"
+    op: *
+    rhs: simple_identifier "c"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "*"
+      left: unsupported_node "(a + b)"
+      right:
+        name_expr
+          identifier: identifier "c"
+
+===
+Comparison
+===
+
+a < b
+
+---
+
+source_file
+  comparison_expression
+    lhs: simple_identifier "a"
+    op: <
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "<"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
+
+===
+Equality
+===
+
+a == b
+
+---
+
+source_file
+  equality_expression
+    lhs: simple_identifier "a"
+    op: ==
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "=="
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
+
+===
+Logical and
+===
+
+a && b
+
+---
+
+source_file
+  conjunction_expression
+    lhs: simple_identifier "a"
+    op: &&
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "&&"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
+
+===
+Logical or
+===
+
+a || b
+
+---
+
+source_file
+  disjunction_expression
+    lhs: simple_identifier "a"
+    op: ||
+    rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "||"
+      left:
+        name_expr
+          identifier: identifier "a"
+      right:
+        name_expr
+          identifier: identifier "b"
+
+===
+Logical not
+===
+
+!a
+
+---
+
+source_file
+  prefix_expression
+    operation: bang "!"
+    target: simple_identifier "a"
+
+---
+
+top_level
+  body:
+    unary_expr
+      operator: operator "!"
+      operand:
+        name_expr
+          identifier: identifier "a"
+
+===
+Range operator
+===
+
+1...10
+
+---
+
+source_file
+  range_expression
+    end: integer_literal "10"
+    op: ...
+    start: integer_literal "1"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "..."
+      left: int_literal "1"
+      right: int_literal "10"

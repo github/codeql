@@ -1,0 +1,281 @@
+===
+Closure with explicit parameters
+===
+
+let f = { (x: Int) -> Int in x * 2 }
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "f"
+    value:
+      lambda_literal
+        type:
+          lambda_function_type
+            return_type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
+            lambda_function_type_parameters
+              lambda_parameter
+                name: simple_identifier "x"
+                type:
+                  type
+                    name:
+                      user_type
+                        type_identifier "Int"
+        statements
+          multiplicative_expression
+            lhs: simple_identifier "x"
+            op: *
+            rhs: integer_literal "2"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value:
+            lambda_expr
+              body:
+                binary_expr
+                  operator: operator "*"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "2"
+          pattern:
+            var_pattern
+              identifier: identifier "f"
+
+===
+Closure with shorthand parameters
+===
+
+let f = { $0 + $1 }
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "f"
+    value:
+      lambda_literal
+        statements
+          additive_expression
+            lhs: simple_identifier "$0"
+            op: +
+            rhs: simple_identifier "$1"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value:
+            lambda_expr
+              body:
+                binary_expr
+                  operator: operator "+"
+                  left:
+                    name_expr
+                      identifier: identifier "$0"
+                  right:
+                    name_expr
+                      identifier: identifier "$1"
+          pattern:
+            var_pattern
+              identifier: identifier "f"
+
+===
+Trailing closure
+===
+
+xs.map { $0 * 2 }
+
+---
+
+source_file
+  call_expression
+    navigation_expression
+      suffix:
+        navigation_suffix
+          suffix: simple_identifier "map"
+      target: simple_identifier "xs"
+    call_suffix
+      lambda_literal
+        statements
+          multiplicative_expression
+            lhs: simple_identifier "$0"
+            op: *
+            rhs: integer_literal "2"
+
+---
+
+top_level
+  body:
+    call_expr
+      argument:
+        lambda_expr
+          body:
+            binary_expr
+              operator: operator "*"
+              left:
+                name_expr
+                  identifier: identifier "$0"
+              right: int_literal "2"
+      function:
+        member_access_expr
+          target:
+            name_expr
+              identifier: identifier "xs"
+          member: identifier "map"
+
+===
+Closure with capture list
+===
+
+let f = { [weak self] in self?.doThing() }
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "f"
+    value:
+      lambda_literal
+        captures:
+          capture_list
+            capture_list_item
+              name: simple_identifier "self"
+              ownership_modifier
+        statements
+          call_expression
+            navigation_expression
+              suffix:
+                navigation_suffix
+                  suffix: simple_identifier "doThing"
+              target:
+                optional_chain_marker
+                  self_expression
+            call_suffix
+              value_arguments
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value:
+            lambda_expr
+              body:
+                call_expr
+                  argument:
+                  function:
+                    member_access_expr
+                      target: unsupported_node "self?"
+                      member: identifier "doThing"
+          pattern:
+            var_pattern
+              identifier: identifier "f"
+
+===
+Multi-statement closure
+===
+
+let f = { (x: Int) -> Int in
+  let y = x + 1
+  return y * 2
+}
+
+---
+
+source_file
+  property_declaration
+    name:
+      pattern
+        bound_identifier: simple_identifier "f"
+    value:
+      lambda_literal
+        type:
+          lambda_function_type
+            return_type:
+              type
+                name:
+                  user_type
+                    type_identifier "Int"
+            lambda_function_type_parameters
+              lambda_parameter
+                name: simple_identifier "x"
+                type:
+                  type
+                    name:
+                      user_type
+                        type_identifier "Int"
+        statements
+          property_declaration
+            name:
+              pattern
+                bound_identifier: simple_identifier "y"
+            value:
+              additive_expression
+                lhs: simple_identifier "x"
+                op: +
+                rhs: integer_literal "1"
+            value_binding_pattern
+              mutability: let
+          control_transfer_statement
+            result:
+              multiplicative_expression
+                lhs: simple_identifier "y"
+                op: *
+                rhs: integer_literal "2"
+    value_binding_pattern
+      mutability: let
+
+---
+
+top_level
+  body:
+    variable_declaration_stmt
+      variable_declarator:
+        variable_declarator
+          value:
+            lambda_expr
+              body:
+                variable_declaration_stmt
+                  variable_declarator:
+                    variable_declarator
+                      value:
+                        binary_expr
+                          operator: operator "+"
+                          left:
+                            name_expr
+                              identifier: identifier "x"
+                          right: int_literal "1"
+                      pattern:
+                        var_pattern
+                          identifier: identifier "y"
+          pattern:
+            var_pattern
+              identifier: identifier "f"

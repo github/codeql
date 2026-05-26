@@ -349,8 +349,8 @@ to enable rewriting:
 
 ```rust
 let desugar = yeast::DesugaringConfig::new()
-    .add_phase("cleanup", cleanup_rules())
-    .add_phase("desugar", desugar_rules())
+    .add_phase("cleanup", yeast::PhaseKind::Repeating, cleanup_rules())
+    .add_phase("translate", yeast::PhaseKind::OneShot, translate_rules())
     .with_output_node_types_yaml(include_str!("output-node-types.yml"));
 
 let lang = simple::LanguageSpec {
@@ -364,6 +364,15 @@ let lang = simple::LanguageSpec {
 
 A single-phase config is just `.add_phase(...)` called once. Phase names
 appear in error messages so you can tell which phase failed.
+
+There are two kinds of phases:
+- **Repeating**:
+    Each node is re-processed until none of the rules in the phase matches.
+    When a node no longer matches any rules, its children are recursively processed. In practice this is used to desugar or simplify an AST, while staying mostly within the same schema.
+- **One-shot**:
+    Each node is processed by the first matching rule, and the engine panics if no rule matches.
+    Rules are then recursively applied to every captured node.
+    In practice this is used when translating from one AST schema to another, where an exhaustive match is required.
 
 The same YAML node-types is used for both the runtime yeast `Schema` (so
 rules can refer to output-only kinds and fields) and TRAP validation (it

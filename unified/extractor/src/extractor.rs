@@ -3,9 +3,7 @@ use std::path::PathBuf;
 
 use codeql_extractor::extractor::simple;
 use codeql_extractor::trap;
-
-#[path = "languages/swift/swift.rs"]
-mod swift;
+use crate::languages;
 
 #[derive(Args)]
 pub struct Options {
@@ -25,11 +23,17 @@ pub struct Options {
 pub fn run(options: Options) -> std::io::Result<()> {
     codeql_extractor::extractor::set_tracing_level("unified");
 
+    // The generated dbscheme/QL library uses the unified_* relation namespace.
+    // Keep per-language specs for parser/rules/file globs, but normalize the
+    // extraction table prefix so emitted TRAP relations match the dbscheme.
+    let mut languages = languages::all_language_specs();
+    for lang in &mut languages {
+        lang.prefix = "unified";
+    }
+
     let extractor = simple::Extractor {
         prefix: "unified".to_string(),
-        languages: vec![
-            swift::language_spec(),
-        ],
+        languages,
         trap_dir: options.output_dir,
         trap_compression: trap::Compression::from_env("CODEQL_EXTRACTOR_UNIFIED_OPTION_TRAP_COMPRESSION"),
         source_archive_dir: options.source_archive_dir,
