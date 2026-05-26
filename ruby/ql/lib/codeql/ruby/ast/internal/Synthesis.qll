@@ -1974,9 +1974,12 @@ private module CallableBodySynthesis {
       i = 0 and
       child = SynthChild(BodyStmtKind())
       or
-      parent = TBodyStmtSynth(m, 0) and
-      i = 0 and
-      child = childRef(fromGenerated(body))
+      exists(Stmt bodyStmt |
+        parent = TBodyStmtSynth(m, 0) and
+        i = 0 and
+        bodyStmt = fromGenerated(body) and
+        child = childRef(bodyStmt)
+      )
     )
   }
 
