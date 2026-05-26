@@ -219,3 +219,36 @@ func testBadExample(passwordString: String) {
 	    // ...
     }
 }
+
+func testWithFlowAndMetatypes(cardNumber: String) {
+    let value1 = Data(cardNumber.utf8);
+    let _digest1 = Insecure.MD5.hash(data: value1); // BAD [NOT DETECTED]
+
+    let value2 = Data(cardNumber.utf8);
+    let hasher2 = Insecure.MD5.self; // metatype
+    let _digest2 = hasher2.hash(data: value2); // BAD [NOT DETECTED]
+
+    let value3 = Data(cardNumber.utf8);
+    let _digest3 = (Insecure.MD5.self).hash(data: value3); // BAD [NOT DETECTED]
+
+    let value4 = Data(cardNumber.utf8);
+    testReceiver1(value: value4);
+
+    let value5 = Data(cardNumber.utf8);
+    testReceiver2(hasher: Insecure.MD5.self, value: value5);
+
+    let value6 = Data(cardNumber.utf8);
+    testReceiver3(hasher: Insecure.MD5.self, value: value6);
+}
+
+func testReceiver1(value: Data) {
+    let _digest = Insecure.MD5.hash(data: value); // BAD [NOT DETECTED]
+}
+
+func testReceiver2(hasher: Insecure.MD5.Type, value: Data) {
+    let _digest = hasher.hash(data: value); // BAD [NOT DETECTED]
+}
+
+func testReceiver3<H: HashFunction>(hasher: H.Type, value: Data) {
+    let _digest = hasher.hash(data: value); // BAD [NOT DETECTED]
+}
