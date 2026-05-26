@@ -11,7 +11,18 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
 private import semmle.python.dataflow.new.TypeTracking
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
-private import semmle.python.essa.SsaDefinitions
+
+/**
+ * Holds if the name of `var` refers to a submodule of a package and `init` is
+ * the `__init__` module of that package. Locally inlined replacement for the
+ * legacy `SsaSource::init_module_submodule_defn` so that this module has no
+ * direct dependency on `semmle.python.essa.SsaDefinitions`.
+ */
+private predicate initModuleSubmoduleDefn(GlobalVariable var, Module init) {
+  init.isPackageInit() and
+  exists(init.getPackage().getSubModule(var.getId())) and
+  var.getScope() = init
+}
 
 /**
  * Python modules and the way imports are resolved are... complicated. Here's a crash course in how
@@ -71,7 +82,9 @@ module ImportResolution {
    * Holds if there is an ESSA step from `defFrom` to `defTo`, which should be allowed
    * for import resolution.
    */
-  private predicate allowedEssaImportStep(SsaImpl::EssaDefinition defFrom, SsaImpl::EssaDefinition defTo) {
+  private predicate allowedEssaImportStep(
+    SsaImpl::EssaDefinition defFrom, SsaImpl::EssaDefinition defTo
+  ) {
     // to handle definitions guarded by if-then-else
     defFrom = defTo.(SsaImpl::PhiFunction).getAnInput()
     // Note: legacy ESSA refinement-step (e.g. for `foo.bar = X`) is
@@ -160,7 +173,9 @@ module ImportResolution {
    */
   private predicate no_or_complicated_all(Module m) {
     // No mention of `__all__` in the module
-    not exists(Cfg::DefinitionNode def | def.getScope() = m and def.(Cfg::NameNode).getId() = "__all__")
+    not exists(Cfg::DefinitionNode def |
+      def.getScope() = m and def.(Cfg::NameNode).getId() = "__all__"
+    )
     or
     // `__all__` is set to a non-sequence value
     exists(Cfg::DefinitionNode def |
@@ -328,7 +343,7 @@ module ImportResolution {
     // imported yet.
     exists(string submodule, Module package, SsaImpl::EssaVariable var |
       submodule = var.getName() and
-      SsaSource::init_module_submodule_defn(var.getSourceVariable().getVariable(), package.getEntryNode()) and
+      initModuleSubmoduleDefn(var.getSourceVariable().getVariable(), package) and
       m = getModuleFromName(package.getPackageName() + "." + submodule) and
       result.asCfgNode() = var.getDefinition().(SsaImpl::EssaNodeDefinition).getDefiningNode()
     )
