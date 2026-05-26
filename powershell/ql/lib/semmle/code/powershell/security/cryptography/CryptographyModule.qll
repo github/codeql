@@ -251,9 +251,8 @@ class CipherBlockModeIntConst extends BlockMode {
   string modeName;
 
   CipherBlockModeIntConst() {
-    exists(ConstExpr c, int val |
-      c = this.asExpr().getExpr() and
-      val = c.getValueString().toInt() and
+    exists(int val |
+      val = this.asExpr().getExpr().getValue().asInt() and
       cipherModeIntValue(val, modeName)
     )
   }
