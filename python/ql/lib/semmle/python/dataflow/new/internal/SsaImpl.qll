@@ -49,14 +49,6 @@ private module CfgForSsa implements BB::CfgSig<Py::Location> {
 }
 
 /**
- * A source variable for SSA. Wraps a Python `Variable` (the AST-level
- * notion of a named binding within a scope) so that the shared SSA
- * implementation can use it as a `SourceVariable`.
- *
- * We only track variables that are read at least once in their scope —
- * tracking write-only variables is unnecessary work.
- */
-/**
  * A source variable for SSA, wrapping a Python AST `Variable`.
  *
  * We only track variables that are read at least once in their scope —
@@ -113,7 +105,9 @@ class SsaSourceVariable extends TSsaSourceVariable {
    * `SsaSourceVariable.getASourceUse()`.
    */
   Cfg::ControlFlowNode getASourceUse() {
-    exists(Cfg::NameNode n | result = n | n.uses(this.getVariable()) or n.deletes(this.getVariable()))
+    exists(Cfg::NameNode n | result = n |
+      n.uses(this.getVariable()) or n.deletes(this.getVariable())
+    )
   }
 
   /**
@@ -223,6 +217,31 @@ private module SsaImplInput implements SsaImplCommon::InputSig<Py::Location, Cfg
     hasEntryDefIn(v, bb) and
     i = -1 and
     certain = true
+    or
+    // `from X import *` — possibly rebinds every name in the importing
+    // scope. Modelled as an uncertain write at the import-star's CFG
+    // position for every variable that lives in (or is referenced
+    // from) the same scope as the import-star. Mirrors legacy ESSA's
+    // `ImportStarRefinement` (see `essa/SsaDefinitions.qll`'s
+    // `import_star_refinement` predicate). The write is uncertain so
+    // that prior definitions of the variable remain available — the
+    // shared-SSA `SsaUncertainWrite` merges the new value with the
+    // immediately preceding definition.
+    exists(Cfg::ImportStarNode imp |
+      bb.getNode(i) = imp and
+      certain = false and
+      (
+        v.getVariable().getScope() = imp.getScope()
+        or
+        // Variable is defined in some other scope but referenced in
+        // the same scope as the import-star (matches legacy clause 2:
+        // `other.uses(v) and def.getScope() = other.getScope()`).
+        exists(Cfg::NameNode other |
+          other.uses(v.getVariable()) and
+          imp.getScope() = other.getScope()
+        )
+      )
+    )
   }
 
   predicate variableRead(CfgImpl::BasicBlock bb, int i, SourceVariable v, boolean certain) {
@@ -400,13 +419,17 @@ class MultiAssignmentDefinition extends EssaNodeDefinition {
 
   override Cfg::ControlFlowNode getDefiningNode() {
     // Default: the underlying `Name` CFG node (where the SSA def lives).
-    not exists(Cfg::StarredNode s | s.getNode().(Py::Starred).getValue() = super.getDefiningNode().getNode()) and
+    not exists(Cfg::StarredNode s |
+      s.getNode().(Py::Starred).getValue() = super.getDefiningNode().getNode()
+    ) and
     result = super.getDefiningNode()
     or
     // Exception: for `*rest`, expose the enclosing `Starred` CFG node
     // so that `IterableUnpacking::iterableUnpackingStarredElementStoreStep`
     // can attach the rest-list to it.
-    exists(Cfg::StarredNode s | s.getNode().(Py::Starred).getValue() = super.getDefiningNode().getNode() |
+    exists(Cfg::StarredNode s |
+      s.getNode().(Py::Starred).getValue() = super.getDefiningNode().getNode()
+    |
       result = s
     )
   }
