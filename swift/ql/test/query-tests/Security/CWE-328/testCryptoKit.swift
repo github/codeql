@@ -82,42 +82,42 @@ enum Insecure {
 
 func testHashMethods(passwd : UnsafeRawBufferPointer, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.Insecure.MD5.hash(data: passwd)  // BAD
-    hash = Crypto.Insecure.MD5.hash(bufferPointer: passwd)  // BAD [NOT DETECTED]
+    hash = Crypto.Insecure.MD5.hash(bufferPointer: passwd)  // BAD
     hash = Crypto.Insecure.MD5.hash(data: cert)   // BAD
     hash = Crypto.Insecure.MD5.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
     hash = Crypto.Insecure.MD5.hash(data: account_no)   // BAD
     hash = Crypto.Insecure.MD5.hash(data: credit_card_no)   // BAD
 
     hash = Insecure.MD5.hash(data: passwd)  // BAD
-    hash = Insecure.MD5.hash(bufferPointer: passwd)  // BAD [NOT DETECTED]
+    hash = Insecure.MD5.hash(bufferPointer: passwd)  // BAD
     hash = Insecure.MD5.hash(data: cert)   // BAD
     hash = Insecure.MD5.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
     hash = Insecure.MD5.hash(data: account_no)   // BAD
     hash = Insecure.MD5.hash(data: credit_card_no)   // BAD
 
     hash = Crypto.Insecure.SHA1.hash(data: passwd)  // BAD
-    hash = Crypto.Insecure.SHA1.hash(bufferPointer: passwd)  // BAD [NOT DETECTED]
+    hash = Crypto.Insecure.SHA1.hash(bufferPointer: passwd)  // BAD
     hash = Crypto.Insecure.SHA1.hash(data: cert)   // BAD
     hash = Crypto.Insecure.SHA1.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
     hash = Crypto.Insecure.SHA1.hash(data: account_no)   // BAD
     hash = Crypto.Insecure.SHA1.hash(data: credit_card_no)   // BAD
 
     hash = Crypto.SHA256.hash(data: passwd)   // BAD, not a computationally expensive hash
-    hash = Crypto.SHA256.hash(bufferPointer: passwd)   // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash = Crypto.SHA256.hash(bufferPointer: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA256.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA256.hash(data: encrypted_passwd)   // GOOD, not sensitive
     hash = Crypto.SHA256.hash(data: account_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA256.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
 
     hash = Crypto.SHA384.hash(data: passwd)   // BAD, not a computationally expensive hash
-    hash = Crypto.SHA384.hash(bufferPointer: passwd)   // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash = Crypto.SHA384.hash(bufferPointer: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA384.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA384.hash(data: encrypted_passwd)   // GOOD, not sensitive
     hash = Crypto.SHA384.hash(data: account_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA384.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
 
     hash = Crypto.SHA512.hash(data: passwd)   // BAD, not a computationally expensive hash
-    hash = Crypto.SHA512.hash(bufferPointer: passwd)   // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash = Crypto.SHA512.hash(bufferPointer: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA512.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA512.hash(data: encrypted_passwd)   // GOOD, not sensitive
     hash = Crypto.SHA512.hash(data: account_no)   // GOOD, computationally expensive hash not required

@@ -40,9 +40,11 @@ private class WeakSensitiveDataHashingSinks extends SinkModelCsv {
       [
         // CryptoKit
         ";Insecure.MD5;true;hash(data:);;;Argument[0];weak-hash-input-MD5",
+        ";Insecure.MD5;true;hash(bufferPointer:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.MD5;true;update(data:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.MD5;true;update(bufferPointer:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.SHA1;true;hash(data:);;;Argument[0];weak-hash-input-SHA1",
+        ";Insecure.SHA1;true;hash(bufferPointer:);;;Argument[0];weak-hash-input-SHA1",
         ";Insecure.SHA1;true;update(data:);;;Argument[0];weak-hash-input-SHA1",
         ";Insecure.SHA1;true;update(bufferPointer:);;;Argument[0];weak-hash-input-SHA1",
         // CryptoSwift
@@ -88,7 +90,7 @@ private class WeakSenitiveDataHashingMetatypeSink extends WeakSensitiveDataHashi
       c.getAnArgument().getExpr() = this.asExpr() and
       algorithm = ["MD5", "SHA1"] and
       c.getQualifier().getType().getFullName() = "Insecure." + algorithm + ["", ".Type"] and
-      c.getStaticTarget().getName() = ["hash(data:)", "update(data:)", "update(bufferPointer:)"]
+      c.getStaticTarget().getName() = ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"]
     )
   }
 
