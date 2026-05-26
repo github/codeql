@@ -73,6 +73,19 @@ class DispatchCall extends Internal::TDispatchCall {
   }
 }
 
+abstract private class InstanceOperatorCall extends OperatorCall {
+  abstract Expr getQualifier();
+}
+
+private class InstanceCompoundAssignment extends InstanceOperatorCall instanceof CompoundAssignmentOperatorCall
+{
+  override Expr getQualifier() { result = CompoundAssignmentOperatorCall.super.getQualifier() }
+}
+
+private class InstanceMutator extends InstanceOperatorCall instanceof InstanceMutatorOperatorCall {
+  override Expr getQualifier() { result = InstanceMutatorOperatorCall.super.getQualifier() }
+}
+
 /** Internal implementation details. */
 private module Internal {
   private import OverridableCallable
@@ -101,9 +114,9 @@ private module Internal {
       } or
       TDispatchOperatorCall(OperatorCall oc) {
         not oc.isLateBound() and
-        not oc instanceof CompoundAssignmentOperatorCall
+        not oc instanceof InstanceOperatorCall
       } or
-      TDispatchCompoundAssignmentOperatorCall(CompoundAssignmentOperatorCall caoc) or
+      TDispatchInstanceOperatorCall(InstanceOperatorCall ioc) or
       TDispatchReflectionCall(MethodCall mc, string name, Expr object, Expr qualifier, int args) {
         isReflectionCall(mc, name, object, qualifier, args)
       } or
@@ -890,12 +903,10 @@ private module Internal {
     override Operator getAStaticTarget() { result = this.getCall().getTarget() }
   }
 
-  private class DispatchCompoundAssignmentOperatorCall extends DispatchOverridableCall,
-    TDispatchCompoundAssignmentOperatorCall
+  private class DispatchInstanceOperatorCall extends DispatchOverridableCall,
+    TDispatchInstanceOperatorCall
   {
-    override CompoundAssignmentOperatorCall getCall() {
-      this = TDispatchCompoundAssignmentOperatorCall(result)
-    }
+    override InstanceOperatorCall getCall() { this = TDispatchInstanceOperatorCall(result) }
 
     override Expr getArgument(int i) { result = this.getCall().getArgument(i) }
 

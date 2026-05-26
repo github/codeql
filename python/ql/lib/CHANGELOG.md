@@ -1,3 +1,17 @@
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Python](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-python/).
+
+### Minor Analysis Improvements
+
+- The Python extractor now supports unpacking in comprehensions, e.g. `[*x for x in nested]` (as defined in [PEP-798](https://peps.python.org/pep-0798/)) that will be part of Python 3.15.
+
 ## 7.0.5
 
 ### Minor Analysis Improvements

@@ -1,3 +1,13 @@
+## 7.1.1
+
+No user-facing changes.
+
+## 7.1.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Go](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-go/).
+
 ## 7.0.6
 
 No user-facing changes.

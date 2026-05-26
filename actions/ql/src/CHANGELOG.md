@@ -1,3 +1,21 @@
+## 0.6.28
+
+### Query Metadata Changes
+
+* Adjusted the name of `actions/untrusted-checkout/high` to more clearly describe which parts of the scenario are in a privileged context.
+
+### Minor Analysis Improvements
+
+* The `actions/unpinned-tag` query now analyzes composite action metadata (`action.yml`/`action.yaml` files) in addition to workflow files, providing more comprehensive detection of unpinned action references across the entire Actions ecosystem.
+
+### Bug Fixes
+
+* Fixed help file descriptions for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`, `actions/untrusted-checkout/medium`. Previously the messages were unclear as to why and how the vulnerabilities could occur. 
+
+## 0.6.27
+
+No user-facing changes.
+
 ## 0.6.26
 
 ### Major Analysis Improvements
@@ -173,7 +191,7 @@ No user-facing changes.
   * `actions/if-expression-always-true/critical`
   * `actions/if-expression-always-true/high`
   * `actions/unnecessary-use-of-advanced-config`
-
+  
 * The following query has been moved from the `code-scanning` suite to the `security-extended`
   suite. Any existing alerts for this query will be closed automatically unless the analysis is
   configured to use the `security-extended` suite.

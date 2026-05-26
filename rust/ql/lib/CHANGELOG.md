@@ -1,3 +1,13 @@
+## 0.2.14
+
+No user-facing changes.
+
+## 0.2.13
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions.
+
 ## 0.2.12
 
 No user-facing changes.

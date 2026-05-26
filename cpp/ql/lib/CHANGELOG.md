@@ -1,3 +1,20 @@
+## 10.1.1
+
+### Minor Analysis Improvements
+
+* The `RemoteFlowSourceFunction` model for `fscanf` (and variants) now implements `hasSocketInput` to reflect that these functions may read from a socket.
+
+## 10.1.0
+
+### New Features
+
+* A new predicate `getSwitchCase` was added to the `SwitchStmt` class, which yields the `n`th `case` statement from a `switch` statement.
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for C and C++](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-cpp/).
+
+### Minor Analysis Improvements
+
+* Added taint flow models for the `Strsafe.h` header from the Windows SDK.
+
 ## 10.0.0
 
 ### Breaking Changes

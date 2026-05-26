@@ -84,7 +84,13 @@ private module Ast implements AstSig<Location> {
 
   class DoStmt = J::DoStmt;
 
-  class ForStmt = J::ForStmt;
+  final private class FinalForStmt = J::ForStmt;
+
+  class ForStmt extends FinalForStmt {
+    AstNode getInit(int index) { result = super.getInit(index) }
+
+    AstNode getUpdate(int index) { result = super.getUpdate(index) }
+  }
 
   final private class FinalEnhancedForStmt = J::EnhancedForStmt;
 
@@ -153,10 +159,10 @@ private module Ast implements AstSig<Location> {
   }
 
   class Case extends AstNode instanceof J::SwitchCase {
-    /** Gets a pattern being matched by this case. */
-    AstNode getAPattern() {
-      result = this.(PatternCase).getAPattern() or
-      result = this.(ConstCase).getValue(_)
+    /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
+    AstNode getPattern(int index) {
+      result = this.(PatternCase).getPattern(index) or
+      result = this.(ConstCase).getValue(index)
     }
 
     /** Gets the guard expression of this case, if any. */

@@ -1,3 +1,19 @@
+## 6.6.0
+
+### New Features
+
+* The `TypeDecl` class now defines a `getDeclaredInterfaceType` predicate, which yields the declared interface type of the type declaration.
+
+## 6.5.0
+
+### New Features
+
+* The `BuiltinFixedArrayType` class now defines the predicates `getSize` and `getElementType`, which yield the size of the array and the type of elements stored in the array, respectively.
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.1.
+
 ## 6.4.0
 
 ### Major Analysis Improvements

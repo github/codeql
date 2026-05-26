@@ -85,12 +85,12 @@ private module GuardsInput implements SharedGuards::InputSig<Location, ControlFl
 
     predicate matchEdge(BasicBlock bb1, BasicBlock bb2) {
       bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = true)) = bb2 and
-      bb1.getLastNode() = AstNode.super.getControlFlowNode()
+      bb1.getLastNode() = super.getPattern().getControlFlowNode()
     }
 
     predicate nonMatchEdge(BasicBlock bb1, BasicBlock bb2) {
       bb1.getASuccessor(any(MatchingSuccessor s | s.getValue() = false)) = bb2 and
-      bb1.getLastNode() = AstNode.super.getControlFlowNode()
+      bb1.getLastNode() = super.getPattern().getControlFlowNode()
     }
   }
 

@@ -613,6 +613,9 @@ class UnaryOperator extends Operator {
     this.getNumberOfParameters() = 1 and
     not this instanceof ConversionOperator and
     not this instanceof CompoundAssignmentOperator
+    or
+    // Instance increment and decrement operators don't have a parameter (only a qualifier).
+    this.getNumberOfParameters() = 0 and not this.isStatic()
   }
 }
 
