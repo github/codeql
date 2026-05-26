@@ -1423,48 +1423,33 @@ module Ast implements AstSig<Py::Location> {
     override AstNode getChild(int index) { index = 0 and result = this.getValue() }
   }
 
-  /** A class definition expression (has base classes evaluated at definition time). */
+  /**
+   * A class definition expression (visits bases, but NOT PEP 695 type
+   * parameters — those bind in an annotation scope that nests the class
+   * body, so they belong to the inner scope's CFG, not the enclosing
+   * scope's; the legacy CFG also omitted them).
+   */
   additional class ClassDefExpr extends Expr {
     private Py::ClassExpr classExpr;
 
     ClassDefExpr() { this = TPyExpr(classExpr) }
 
-    /**
-     * Gets the `n`th PEP 695 type-parameter name (a `Name` in store
-     * context), in declaration order. These bind in the enclosing scope
-     * at class-definition time, so the CFG must visit them.
-     */
-    Expr getTypeParamName(int n) {
-      result.asExpr() = typeParameterName(classExpr.getTypeParameter(n))
-    }
-
-    int getNumberOfTypeParams() { result = count(classExpr.getATypeParameter()) }
-
     Expr getBase(int n) { result.asExpr() = classExpr.getBase(n) }
 
-    override AstNode getChild(int index) {
-      result = this.getTypeParamName(index)
-      or
-      result = this.getBase(index - this.getNumberOfTypeParams())
-    }
+    override AstNode getChild(int index) { result = this.getBase(index) }
   }
 
-  /** A function definition expression (has default args evaluated at definition time). */
+  /**
+   * A function definition expression (visits positional and keyword
+   * defaults, but NOT PEP 695 type parameters — those bind in an
+   * annotation scope that nests the function body, so they belong to
+   * the inner scope's CFG, not the enclosing scope's; the legacy CFG
+   * also omitted them).
+   */
   additional class FunctionDefExpr extends Expr {
     private Py::FunctionExpr funcExpr;
 
     FunctionDefExpr() { this = TPyExpr(funcExpr) }
-
-    /**
-     * Gets the `n`th PEP 695 type-parameter name (a `Name` in store
-     * context), in declaration order. These bind in the enclosing scope
-     * at function-definition time, so the CFG must visit them.
-     */
-    Expr getTypeParamName(int n) {
-      result.asExpr() = typeParameterName(funcExpr.getInnerScope().getTypeParameter(n))
-    }
-
-    int getNumberOfTypeParams() { result = count(funcExpr.getInnerScope().getATypeParameter()) }
 
     /**
      * Gets the `n`th default for a positional argument, in evaluation
@@ -1486,11 +1471,9 @@ module Ast implements AstSig<Py::Location> {
     int getNumberOfDefaults() { result = count(funcExpr.getArgs().getADefault()) }
 
     override AstNode getChild(int index) {
-      result = this.getTypeParamName(index)
+      result = this.getDefault(index)
       or
-      result = this.getDefault(index - this.getNumberOfTypeParams())
-      or
-      result = this.getKwDefault(index - this.getNumberOfTypeParams() - this.getNumberOfDefaults())
+      result = this.getKwDefault(index - this.getNumberOfDefaults())
     }
   }
 
