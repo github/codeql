@@ -5,7 +5,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "$SCRIPT_DIR/../../../../.." && pwd)"
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 OLD_COMMIT="${OLD_COMMIT:-491c373e076}"  # origin/main at time of this upgrade
 
 cd "$REPO_ROOT"
