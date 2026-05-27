@@ -63,16 +63,20 @@ impl Captures {
     }
 
     /// Apply a fallible function to every captured id (across all keys),
-    /// replacing each id with the result. Stops and returns the error on
-    /// the first failure.
+    /// replacing each id with the results. A function returning an empty
+    /// vector removes the capture; returning multiple ids splices them
+    /// into the capture's value list (suitable for `*`/`+` captures).
+    /// Stops and returns the error on the first failure.
     pub fn try_map_all_captures<E>(
         &mut self,
-        mut f: impl FnMut(Id) -> Result<Id, E>,
+        mut f: impl FnMut(Id) -> Result<Vec<Id>, E>,
     ) -> Result<(), E> {
         for ids in self.captures.values_mut() {
-            for id in ids {
-                *id = f(*id)?;
+            let mut new_ids = Vec::with_capacity(ids.len());
+            for &id in ids.iter() {
+                new_ids.extend(f(id)?);
             }
+            *ids = new_ids;
         }
         Ok(())
     }

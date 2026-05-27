@@ -563,6 +563,15 @@ impl Node {
             NodeContent::DynamicString(s) => Some(s.to_string()),
         }
     }
+
+    /// Read the child ids stored under a given field, or an empty slice if
+    /// no such field is present on this node.
+    pub fn field_children(&self, field_id: FieldId) -> &[Id] {
+        self.fields
+            .get(&field_id)
+            .map(|v| v.as_slice())
+            .unwrap_or(&[])
+    }
 }
 
 /// The contents of a node is either a range in the original source file,
@@ -836,17 +845,9 @@ fn apply_one_shot_rules_inner(
                 // pattern root): re-analyzing it would match the same rule
                 // again indefinitely.
                 if captured_id == id {
-                    return Ok(captured_id);
+                    return Ok(vec![captured_id]);
                 }
-                let result =
-                    apply_one_shot_rules_inner(index, ast, captured_id, fresh, rewrite_depth + 1)?;
-                if result.len() != 1 {
-                    return Err(format!(
-                        "OneShot: recursion on captured node produced {} results, expected exactly 1",
-                        result.len()
-                    ));
-                }
-                Ok(result[0])
+                apply_one_shot_rules_inner(index, ast, captured_id, fresh, rewrite_depth + 1)
             })?;
             return Ok(rule.run_transform(ast, captures, id, fresh));
         }
