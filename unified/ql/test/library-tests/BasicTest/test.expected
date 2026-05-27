@@ -1,18 +1,9 @@
 nameExpr
-| name_expr.swift:1:9:1:9 | NameExpr | y |
 unsupported
-| test.swift:1:1:1:17 |  |  |
 | test.swift:3:1:3:38 |  |  |
-| test.swift:4:1:14:1 |  |  |
 | test.swift:16:1:16:32 |  |  |
-| test.swift:17:1:21:1 |  |  |
 | test.swift:23:1:23:37 |  |  |
-| test.swift:24:1:32:1 |  |  |
 | test.swift:34:1:34:49 |  |  |
-| test.swift:35:1:55:1 |  |  |
 | test.swift:57:1:57:30 |  |  |
-| test.swift:58:1:70:1 |  |  |
 | test.swift:72:1:72:37 |  |  |
-| test.swift:73:1:82:1 |  |  |
 | test.swift:84:1:84:24 |  |  |
-| test.swift:85:1:88:1 |  |  |
