@@ -7,30 +7,27 @@ let xs = [1, 2, 3]
 ---
 
 source_file
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "xs"
-    value:
-      array_literal
-        element:
-          integer_literal "1"
-          integer_literal "2"
-          integer_literal "3"
-    value_binding_pattern
-      mutability: let
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "xs"
+          value:
+            array_literal
+              element:
+                integer_literal "1"
+                integer_literal "2"
+                integer_literal "3"
 
 ---
 
 top_level
   body:
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value: unsupported_node "[1, 2, 3]"
-          pattern:
-            var_pattern
-              identifier: identifier "xs"
 
 ===
 Empty array literal with type
@@ -41,36 +38,36 @@ let xs: [Int] = []
 ---
 
 source_file
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "xs"
-    value:
-      array_literal
-    value_binding_pattern
-      mutability: let
-    type_annotation
-      type:
-        type
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
           name:
-            array_type
-              element:
+            pattern
+              bound_identifier: simple_identifier "xs"
+          type:
+            type_annotation
+              type:
                 type
                   name:
-                    user_type
-                      type_identifier "Int"
+                    array_type
+                      element:
+                        type
+                          name:
+                            user_type
+                              part:
+                                simple_user_type
+                                  name: type_identifier "Int"
+          value:
+            array_literal
 
 ---
 
 top_level
   body:
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value: unsupported_node "[]"
-          pattern:
-            var_pattern
-              identifier: identifier "xs"
 
 ===
 Dictionary literal
@@ -81,34 +78,34 @@ let d = ["a": 1, "b": 2]
 ---
 
 source_file
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "d"
-    value:
-      dictionary_literal
-        key:
-          line_string_literal
-            text: line_str_text "a"
-          line_string_literal
-            text: line_str_text "b"
-        value:
-          integer_literal "1"
-          integer_literal "2"
-    value_binding_pattern
-      mutability: let
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "d"
+          value:
+            dictionary_literal
+              element:
+                dictionary_literal_item
+                  key:
+                    line_string_literal
+                      text: line_str_text "a"
+                  value: integer_literal "1"
+                dictionary_literal_item
+                  key:
+                    line_string_literal
+                      text: line_str_text "b"
+                  value: integer_literal "2"
 
 ---
 
 top_level
   body:
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value: unsupported_node "[\"a\": 1, \"b\": 2]"
-          pattern:
-            var_pattern
-              identifier: identifier "d"
 
 ===
 Set literal
@@ -119,41 +116,45 @@ let s: Set<Int> = [1, 2, 3]
 ---
 
 source_file
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "s"
-    value:
-      array_literal
-        element:
-          integer_literal "1"
-          integer_literal "2"
-          integer_literal "3"
-    value_binding_pattern
-      mutability: let
-    type_annotation
-      type:
-        type
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
           name:
-            user_type
-              type_identifier "Set"
-              type_arguments
+            pattern
+              bound_identifier: simple_identifier "s"
+          type:
+            type_annotation
+              type:
                 type
                   name:
                     user_type
-                      type_identifier "Int"
+                      part:
+                        simple_user_type
+                          arguments:
+                            type_arguments
+                              argument:
+                                type
+                                  name:
+                                    user_type
+                                      part:
+                                        simple_user_type
+                                          name: type_identifier "Int"
+                          name: type_identifier "Set"
+          value:
+            array_literal
+              element:
+                integer_literal "1"
+                integer_literal "2"
+                integer_literal "3"
 
 ---
 
 top_level
   body:
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value: unsupported_node "[1, 2, 3]"
-          pattern:
-            var_pattern
-              identifier: identifier "s"
 
 ===
 Tuple literal
@@ -164,31 +165,32 @@ let t = (1, "two", 3.0)
 ---
 
 source_file
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "t"
-    value:
-      tuple_expression
-        value:
-          integer_literal "1"
-          line_string_literal
-            text: line_str_text "two"
-          real_literal "3.0"
-    value_binding_pattern
-      mutability: let
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "t"
+          value:
+            tuple_expression
+              element:
+                tuple_expression_item
+                  value: integer_literal "1"
+                tuple_expression_item
+                  value:
+                    line_string_literal
+                      text: line_str_text "two"
+                tuple_expression_item
+                  value: real_literal "3.0"
 
 ---
 
 top_level
   body:
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value: unsupported_node "(1, \"two\", 3.0)"
-          pattern:
-            var_pattern
-              identifier: identifier "t"
 
 ===
 Subscript access
@@ -202,22 +204,29 @@ let first = xs[0]
 ---
 
 source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "first"
+          value:
+            call_expression
+              function: simple_identifier "xs"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: integer_literal "0"
   comment "// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape"
   comment "// as `xs(0)`), so the mapping currently produces a call_expr. Update the"
   comment "// parser / add a separate subscript_expr node and remap when fixed."
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "first"
-    value:
-      call_expression
-        simple_identifier "xs"
-        call_suffix
-          value_arguments
-            value_argument
-              value: integer_literal "0"
-    value_binding_pattern
-      mutability: let
 
 ---
 
@@ -226,18 +235,6 @@ top_level
     unsupported_node "// TODO: tree-sitter-swift parses `xs[0]` as a call_expression (same shape"
     unsupported_node "// as `xs(0)`), so the mapping currently produces a call_expr. Update the"
     unsupported_node "// parser / add a separate subscript_expr node and remap when fixed."
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value:
-            call_expr
-              argument: int_literal "0"
-              function:
-                name_expr
-                  identifier: identifier "xs"
-          pattern:
-            var_pattern
-              identifier: identifier "first"
 
 ===
 Dictionary subscript
@@ -250,23 +247,30 @@ let v = d["key"]
 ---
 
 source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "v"
+          value:
+            call_expression
+              function: simple_identifier "d"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "key"
   comment "// TODO: same parser issue as the array subscript case above —"
   comment "// `d[\"key\"]` is parsed as `call_expression(d, (\"key\"))`."
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "v"
-    value:
-      call_expression
-        simple_identifier "d"
-        call_suffix
-          value_arguments
-            value_argument
-              value:
-                line_string_literal
-                  text: line_str_text "key"
-    value_binding_pattern
-      mutability: let
 
 ---
 
@@ -274,18 +278,6 @@ top_level
   body:
     unsupported_node "// TODO: same parser issue as the array subscript case above —"
     unsupported_node "// `d[\"key\"]` is parsed as `call_expression(d, (\"key\"))`."
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value:
-            call_expr
-              argument: string_literal "\"key\""
-              function:
-                name_expr
-                  identifier: identifier "d"
-          pattern:
-            var_pattern
-              identifier: identifier "v"
 
 ===
 Tuple member access
@@ -296,27 +288,24 @@ let n = t.0
 ---
 
 source_file
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "n"
-    value:
-      navigation_expression
-        suffix:
-          navigation_suffix
-            suffix: integer_literal "0"
-        target: simple_identifier "t"
-    value_binding_pattern
-      mutability: let
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "n"
+          value:
+            navigation_expression
+              suffix:
+                navigation_suffix
+                  suffix: integer_literal "0"
+              target: simple_identifier "t"
 
 ---
 
 top_level
   body:
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value: unsupported_node "t.0"
-          pattern:
-            var_pattern
-              identifier: identifier "n"
