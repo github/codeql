@@ -275,6 +275,44 @@ fn test_query_no_match() {
 }
 
 #[test]
+fn test_query_skips_extras_in_positional_match() {
+    // Regression test: positional wildcards `(_)` must not bind to
+    // tree-sitter `extras` (e.g. comments) during forward-scan; extras
+    // are conceptually invisible between siblings, matching tree-sitter
+    // query semantics. Without this, a later rule that translates a
+    // captured comment to nothing (a common idiom, e.g.
+    // `(comment) => ()` in Swift) leaves the capture's match-list empty
+    // and causes the transform to fail with "Variable X has 0 matches".
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("[1, # comment\n2]").unwrap();
+
+    // Navigate to the `array` node: program -> array.
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let array_id = cursor.node_id();
+    assert_eq!(ast.get_node(array_id).unwrap().kind(), "array");
+
+    // Two positional wildcards should bind to the two integers, skipping
+    // the comment that sits between them.
+    let query = yeast::query!((array (_) @a (_) @b));
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, array_id, &mut captures).unwrap();
+    assert!(matched);
+    assert_eq!(
+        ast.get_node(captures.get_var("a").unwrap())
+            .unwrap()
+            .kind(),
+        "integer"
+    );
+    assert_eq!(
+        ast.get_node(captures.get_var("b").unwrap())
+            .unwrap()
+            .kind(),
+        "integer"
+    );
+}
+
+#[test]
 fn test_reachable_nodes_excludes_orphaned_rewrite_nodes() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema = yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang)
