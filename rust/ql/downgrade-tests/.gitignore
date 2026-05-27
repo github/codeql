@@ -1,5 +1,3 @@
 *.testproj/
 *.actual
 *.log
-Cargo.toml
-lib.rs
