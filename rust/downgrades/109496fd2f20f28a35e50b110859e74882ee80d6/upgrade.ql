@@ -39,13 +39,19 @@ private predicate metaTokenTree(Element id, Element tokenTree) {
   token_tree_meta_token_trees(id, tokenTree)
 }
 
-private predicate deletedElement(Element id) {
+private predicate deletedAstNode(Element id) {
   wrapperConstArg(id) or
   unsafeInnerMeta(id) or
   cfg_atoms(id) or
   cfg_composites(id) or
   format_args_arg_names(id) or
   try_block_modifiers(id)
+}
+
+private predicate deletedElement(Element id) {
+  deletedAstNode(id)
+  or
+  exists(Element parent, string text | comments(id, parent, text) and deletedAstNode(parent))
 }
 
 query predicate new_block_expr_is_try(Element id) {
@@ -69,7 +75,7 @@ query predicate new_const_arg_exprs(Element id, Element expr) {
 }
 
 query predicate new_comments(Element id, Element parent, string text) {
-  comments(id, parent, text) and not deletedElement(parent)
+  comments(id, parent, text) and not deletedAstNode(parent)
 }
 
 query predicate new_struct_field_defaults(Element id, Element expr) {
