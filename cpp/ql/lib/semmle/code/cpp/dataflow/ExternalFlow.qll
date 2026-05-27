@@ -276,6 +276,12 @@ private predicate isClassConstructedFrom(Class c, Class templateClass) {
   not c.isConstructedFrom(_) and c = templateClass
 }
 
+/** Gets the fully templated version of `f`. */
+private Class getFullyTemplatedClass(Class c) {
+  not c.isFromUninstantiatedTemplate(_) and
+  isClassConstructedFrom(c, result)
+}
+
 /**
  * Holds if `f` is an instantiation of a function template `templateFunc`, or
  * holds with `f = templateFunc` if `f` is not an instantiation of any function
@@ -312,7 +318,7 @@ private string withConst(string s, Type t) {
   if t.isConst() then result = "const " + s else result = s
 }
 
-/** Prefixes `volatile` to `s` if `t` is const, or returns `s` otherwise. */
+/** Prefixes `volatile` to `s` if `t` is volatile, or returns `s` otherwise. */
 bindingset[s, t]
 private string withVolatile(string s, Type t) {
   if t.isVolatile() then result = "volatile " + s else result = s
@@ -490,7 +496,7 @@ pragma[nomagic]
 private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining) {
   // If there is a declaring type then we start by expanding the function templates
   exists(Class template |
-    isClassConstructedFrom(f.getDeclaringType(), template) and
+    template = getFullyTemplatedClass(f.getDeclaringType()) and
     remaining = getNumberOfSupportedClassTemplateArguments(template) and
     result = getTypeNameWithoutFunctionTemplates(f, n, 0)
   )
@@ -502,7 +508,7 @@ private string getTypeNameWithoutClassTemplates(Function f, int n, int remaining
   or
   exists(string mid, TypeTemplateParameter tp, Class template |
     mid = getTypeNameWithoutClassTemplates(f, n, remaining + 1) and
-    isClassConstructedFrom(f.getDeclaringType(), template) and
+    template = getFullyTemplatedClass(f.getDeclaringType()) and
     tp = getSupportedClassTemplateArgument(template, remaining)
   |
     result = mid.replaceAll(tp.getName(), "class:" + remaining.toString())
