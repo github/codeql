@@ -8,12 +8,26 @@ private import java as J
 private import internal.rangeanalysis.BoundSpecific as BoundSpecific
 private import codeql.rangeanalysis.Bound as SharedBound
 
-module BoundInstantiation = SharedBound::Bound<J::Location, BoundSpecific::BoundDefs>;
+private module BoundImpl = SharedBound::Bound<J::Location, BoundSpecific::BoundDefs>;
 
-class Bound = BoundInstantiation::Bound;
+/**
+ * A bound that may be inferred for an expression plus/minus an integer delta.
+ */
+class Bound = BoundImpl::Bound;
 
-class ZeroBound = BoundInstantiation::ZeroBound;
+/**
+ * The bound that corresponds to the integer 0. This is used to represent all
+ * integer bounds as bounds are always accompanied by an added integer delta.
+ */
+class ZeroBound = BoundImpl::ZeroBound;
 
-class SsaBound = BoundInstantiation::SsaBound;
+/**
+ * A bound corresponding to the value of an SSA variable.
+ */
+class SsaBound = BoundImpl::SsaBound;
 
-class ExprBound = BoundInstantiation::ExprBound;
+/**
+ * A bound that corresponds to the value of a specific expression that might be
+ * interesting, but isn't otherwise represented by the value of an SSA variable.
+ */
+class ExprBound = BoundImpl::ExprBound;
