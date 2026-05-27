@@ -475,6 +475,11 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
             let mut inner = group.stream().into_iter().peekable();
 
+            // Empty `()` represents an empty sequence — emit nothing.
+            if inner.peek().is_none() {
+                continue;
+            }
+
             // Regular node
             let node = parse_direct_node_inner(&mut inner, ctx)?;
             items.push(quote! { __nodes.push(#node); });
