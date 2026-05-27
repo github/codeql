@@ -120,25 +120,25 @@ func testHashMethods(passwd : UnsafeRawBufferPointer, cert: String, encrypted_pa
 
 func testMD5UpdateWithData(passwd : String, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.Insecure.MD5()
-    hash.update(data: passwd)  // BAD [NOT DETECTED]
-    hash.update(data: cert)  // BAD [NOT DETECTED]
+    hash.update(data: passwd)  // BAD
+    hash.update(data: cert)  // BAD
     hash.update(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash.update(data: account_no)   // BAD [NOT DETECTED]
-    hash.update(data: credit_card_no)   // BAD [NOT DETECTED]
+    hash.update(data: account_no)   // BAD
+    hash.update(data: credit_card_no)   // BAD
 }
 
 func testSHA1UpdateWithData(passwd : String, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.Insecure.SHA1()
-    hash.update(data: passwd)  // BAD [NOT DETECTED]
-    hash.update(data: cert)  // BAD [NOT DETECTED]
+    hash.update(data: passwd)  // BAD
+    hash.update(data: cert)  // BAD
     hash.update(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash.update(data: account_no)   // BAD [NOT DETECTED]
-    hash.update(data: credit_card_no)   // BAD [NOT DETECTED]
+    hash.update(data: account_no)   // BAD
+    hash.update(data: credit_card_no)   // BAD
 }
 
 func testSHA256UpdateWithData(passwd : String, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.SHA256()
-    hash.update(data: passwd)  // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash.update(data: passwd)  // BAD, not a computationally expensive hash
     hash.update(data: cert)  // GOOD
     hash.update(data: encrypted_passwd)   // GOOD  (not sensitive)
     hash.update(data: account_no)   // GOOD
@@ -147,7 +147,7 @@ func testSHA256UpdateWithData(passwd : String, cert: String, encrypted_passwd : 
 
 func testSHA384UpdateWithData(passwd : String, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.SHA384()
-    hash.update(data: passwd)  // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash.update(data: passwd)  // BAD, not a computationally expensive hash
     hash.update(data: cert)  // GOOD
     hash.update(data: encrypted_passwd)   // GOOD  (not sensitive)
     hash.update(data: account_no)   // GOOD
@@ -156,7 +156,7 @@ func testSHA384UpdateWithData(passwd : String, cert: String, encrypted_passwd : 
 
 func testSHA512UpdateWithData(passwd : String, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.SHA512()
-    hash.update(data: passwd)  // BAD, not a computationally expensive hash [NOT DETECTED]
+    hash.update(data: passwd)  // BAD, not a computationally expensive hash
     hash.update(data: cert)  // GOOD
     hash.update(data: encrypted_passwd)   // GOOD  (not sensitive)
     hash.update(data: account_no)   // GOOD
