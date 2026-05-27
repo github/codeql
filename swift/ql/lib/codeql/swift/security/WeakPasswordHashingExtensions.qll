@@ -125,7 +125,8 @@ private class WeakPasswordHashingMetatypeSink extends WeakPasswordHashingSink {
       c.getAnArgument().getExpr() = this.asExpr() and
       algorithm = ["SHA256", "SHA384", "SHA512"] and
       c.getQualifier().getType().getFullName() = algorithm + ["", ".Type"] and
-      c.getStaticTarget().getName() = ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"]
+      c.getStaticTarget().getName() =
+        ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"]
     )
   }
 

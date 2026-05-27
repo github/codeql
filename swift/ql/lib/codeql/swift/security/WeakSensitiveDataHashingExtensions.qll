@@ -90,7 +90,8 @@ private class WeakSenitiveDataHashingMetatypeSink extends WeakSensitiveDataHashi
       c.getAnArgument().getExpr() = this.asExpr() and
       algorithm = ["MD5", "SHA1"] and
       c.getQualifier().getType().getFullName() = "Insecure." + algorithm + ["", ".Type"] and
-      c.getStaticTarget().getName() = ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"]
+      c.getStaticTarget().getName() =
+        ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"]
     )
   }
 
