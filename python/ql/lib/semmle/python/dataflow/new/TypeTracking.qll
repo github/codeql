@@ -48,7 +48,7 @@ class TypeTracker extends Impl::TypeTracker {
    */
   predicate startInAttr(string attrName) {
     exists(DataFlowPublic::AttributeContent content | content.getAttribute() = attrName |
-      this.startInContent(content)
+      this.startInContent(DataFlowPublic::TSingletonContent(content))
     )
   }
 
@@ -58,8 +58,10 @@ class TypeTracker extends Impl::TypeTracker {
    * Gets the attribute associated with this type tracker.
    */
   string getAttr() {
-    if this.getContent().asSome() instanceof DataFlowPublic::AttributeContent
-    then result = this.getContent().asSome().(DataFlowPublic::AttributeContent).getAttribute()
+    if this.getContent().asSome().asSingleton() instanceof DataFlowPublic::AttributeContent
+    then
+      result =
+        this.getContent().asSome().asSingleton().(DataFlowPublic::AttributeContent).getAttribute()
     else result = ""
   }
 }
