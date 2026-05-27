@@ -17,14 +17,15 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  */
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
-  // We allow implicit reads of precise content
-  // imprecise content has already bubled up.
+  // We allow implicit reads of precise content; imprecise content has already
+  // bubbled up. We use the wildcard content sets here rather than the
+  // per-key/per-index ones to avoid blowing up the size of `Stage1::readSetEx`
+  // (otherwise this predicate would expand to one row per (node, distinct key
+  // or index) and the framework's read-set relation grows quadratically).
+  // `ContentSet.getAReadContent` expands these wildcards back to the specific
+  // contents when matching against stores.
   exists(node) and
-  (
-    c instanceof DataFlow::TupleElementContent
-    or
-    c instanceof DataFlow::DictionaryElementContent
-  )
+  (c.isAnyTupleElement() or c.isAnyDictionaryElement())
 }
 
 private module Cached {
