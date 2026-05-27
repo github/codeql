@@ -277,9 +277,42 @@ private predicate isClassConstructedFrom(Class c, Class templateClass) {
 }
 
 /** Gets the fully templated version of `f`. */
-private Class getFullyTemplatedClass(Class c) {
+private Class getFullyTemplatedClassOld(Class c) {
   not c.isFromUninstantiatedTemplate(_) and
   isClassConstructedFrom(c, result)
+}
+
+private TemplateClass getOriginalClassTemplate(TemplateClass tc) {
+  result = tc.getOriginalTemplate()
+  or
+  not exists(tc.getOriginalTemplate()) and
+  result = tc
+}
+
+/** Gets the fully templated version of `f`. */
+private Class getFullyTemplatedClassNew(Class c) {
+  not c.isFromUninstantiatedTemplate(_) and
+  exists(Class mid |
+    c.isConstructedFrom(mid)
+    or
+    not c.isConstructedFrom(_) and c = mid
+  |
+    result = getOriginalClassTemplate(mid)
+    or
+    not mid instanceof TemplateClass and mid = result
+  )
+}
+
+/** Gets the fully templated version of `c`. */
+private Class getFullyTemplatedClass(Class c) {
+  // The `Class::getOriginalTemplate` predicate was introduced in CodeQL
+  // version 2.25.6 and the upgrade script leaves the
+  // `class_template_generated_from` extensionals empty if the database
+  // was generated with an older extractor. So we use the old implementation
+  // if the `class_template_generated_from` extensional is empty.
+  if class_template_generated_from(_, _)
+  then result = getFullyTemplatedClassNew(c)
+  else result = getFullyTemplatedClassOld(c)
 }
 
 /**
@@ -298,7 +331,7 @@ private predicate isFunctionConstructedFrom(Function f, Function templateFunc) {
 }
 
 /** Gets the fully templated version of `f`. */
-Function getFullyTemplatedFunction(Function f) {
+private Function getFullyTemplatedFunctionOld(Function f) {
   not f.isFromUninstantiatedTemplate(_) and
   (
     exists(Class c, Class templateClass, int i |
@@ -310,6 +343,39 @@ Function getFullyTemplatedFunction(Function f) {
     not exists(f.getDeclaringType()) and
     isFunctionConstructedFrom(f, result)
   )
+}
+
+private TemplateFunction getOriginalFunctionTemplate(TemplateFunction tf) {
+  result = tf.getOriginalTemplate()
+  or
+  not exists(tf.getOriginalTemplate()) and
+  result = tf
+}
+
+/** Gets the fully templated version of `f`. */
+private Function getFullyTemplatedFunctionNew(Function f) {
+  not f.isFromUninstantiatedTemplate(_) and
+  exists(Function mid |
+    f.isConstructedFrom(mid)
+    or
+    not f.isConstructedFrom(_) and f = mid
+  |
+    result = getOriginalFunctionTemplate(mid)
+    or
+    not mid instanceof TemplateFunction and mid = result
+  )
+}
+
+/** Gets the fully templated version of `f`. */
+Function getFullyTemplatedFunction(Function f) {
+  // The `Function::getOriginalTemplate` predicate was introduced in CodeQL
+  // version 2.25.6 and the upgrade script leaves the
+  // `function_template_generated_from` extensionals empty if the database
+  // was generated with an older extractor. So we use the old implementation
+  // if the `function_template_generated_from` extensional is empty.
+  if function_template_generated_from(_, _)
+  then result = getFullyTemplatedFunctionNew(f)
+  else result = getFullyTemplatedFunctionOld(f)
 }
 
 /** Prefixes `const` to `s` if `t` is const, or returns `s` otherwise. */
