@@ -7,6 +7,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 OLD_COMMIT="${OLD_COMMIT:-491c373e076}"  # origin/main at time of this upgrade
+OLD_DBSCHEME="rust/downgrades/109496fd2f20f28a35e50b110859e74882ee80d6/rust.dbscheme"
 
 cd "$REPO_ROOT"
 
@@ -63,5 +64,27 @@ codeql test run \
     --dataset "${DATASET_DIR[0]}" \
     --check-databases \
     "$SCRIPT_DIR/new.ql" "$@"
+
+echo "==> Downgrading dataset back to old schema..."
+codeql dataset upgrade "${DATASET_DIR[0]}" \
+    --allow-downgrades \
+    --search-path rust \
+    --target-dbscheme "$OLD_DBSCHEME"
+
+trap 'restore_ref' EXIT
+
+echo "==> Checking out old commit ($OLD_COMMIT) for downgrade verification..."
+git checkout --quiet "$OLD_COMMIT"
+git checkout --quiet "$ORIGINAL_REF" -- rust/ql/upgrade-tests codeql-workspace.yml
+
+echo "==> Running preservation test on downgraded dataset..."
+codeql test run \
+    --search-path . \
+    --dataset "${DATASET_DIR[0]}" \
+    --check-databases \
+    "$SCRIPT_DIR/downgraded.ql" "$@"
+
+restore_ref
+trap '' EXIT
 
 echo "==> All tests passed!"
