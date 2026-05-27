@@ -71,10 +71,10 @@ private class WeakSensitiveDataHashingSinks extends SinkModelCsv {
 /**
  * A sink defined in a CSV model.
  */
-private class DefaultWeakSenitiveDataHashingSink extends WeakSensitiveDataHashingSink {
+private class DefaultWeakSensitiveDataHashingSink extends WeakSensitiveDataHashingSink {
   string algorithm;
 
-  DefaultWeakSenitiveDataHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
+  DefaultWeakSensitiveDataHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
 
   override string getAlgorithm() { result = algorithm }
 }
@@ -82,10 +82,10 @@ private class DefaultWeakSenitiveDataHashingSink extends WeakSensitiveDataHashin
 /**
  * A sink for weak sensitive data hashing through a call with a metatype qualifier.
  */
-private class WeakSenitiveDataHashingMetatypeSink extends WeakSensitiveDataHashingSink {
+private class WeakSensitiveDataHashingMetatypeSink extends WeakSensitiveDataHashingSink {
   string algorithm;
 
-  WeakSenitiveDataHashingMetatypeSink() {
+  WeakSensitiveDataHashingMetatypeSink() {
     exists(CallExpr c |
       c.getAnArgument().getExpr() = this.asExpr() and
       algorithm = ["MD5", "SHA1"] and
