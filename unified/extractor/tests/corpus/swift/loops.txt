@@ -9,28 +9,34 @@ for x in [1, 2, 3] {
 ---
 
 source_file
-  for_statement
-    collection:
-      array_literal
-        element:
-          integer_literal "1"
-          integer_literal "2"
-          integer_literal "3"
-    item:
-      pattern
-        bound_identifier: simple_identifier "x"
-    statements
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value: simple_identifier "x"
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      collection:
+        array_literal
+          element:
+            integer_literal "1"
+            integer_literal "2"
+            integer_literal "3"
+      item:
+        pattern
+          bound_identifier: simple_identifier "x"
 
 ---
 
 top_level
-  body: unsupported_node "for x in [1, 2, 3] {\n  print(x)\n}"
+  body:
 
 ===
 For-in over range
@@ -43,27 +49,33 @@ for i in 0..<10 {
 ---
 
 source_file
-  for_statement
-    collection:
-      range_expression
-        end: integer_literal "10"
-        op: ..<
-        start: integer_literal "0"
-    item:
-      pattern
-        bound_identifier: simple_identifier "i"
-    statements
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value: simple_identifier "i"
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "i"
+      collection:
+        range_expression
+          end: integer_literal "10"
+          op: ..<
+          start: integer_literal "0"
+      item:
+        pattern
+          bound_identifier: simple_identifier "i"
 
 ---
 
 top_level
-  body: unsupported_node "for i in 0..<10 {\n  print(i)\n}"
+  body:
 
 ===
 For-in with where clause
@@ -76,29 +88,37 @@ for x in xs where x > 0 {
 ---
 
 source_file
-  for_statement
-    collection: simple_identifier "xs"
-    item:
-      pattern
-        bound_identifier: simple_identifier "x"
-    where_clause
-      where_keyword "where"
-      comparison_expression
-        lhs: simple_identifier "x"
-        op: >
-        rhs: integer_literal "0"
-    statements
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value: simple_identifier "x"
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      collection: simple_identifier "xs"
+      item:
+        pattern
+          bound_identifier: simple_identifier "x"
+      where:
+        where_clause
+          expr:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+          keyword: where_keyword "where"
 
 ---
 
 top_level
-  body: unsupported_node "for x in xs where x > 0 {\n  print(x)\n}"
+  body:
 
 ===
 While loop
@@ -111,25 +131,29 @@ while x > 0 {
 ---
 
 source_file
-  while_statement
-    condition:
-      if_condition
-        comparison_expression
-          lhs: simple_identifier "x"
-          op: >
-          rhs: integer_literal "0"
-    statements
-      assignment
-        operator: -=
-        result: integer_literal "1"
-        target:
-          directly_assignable_expression
-            simple_identifier "x"
+  statement:
+    while_statement
+      body:
+        block
+          statement:
+            assignment
+              operator: -=
+              result: integer_literal "1"
+              target:
+                directly_assignable_expression
+                  expr: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
 
 ---
 
 top_level
-  body: unsupported_node "while x > 0 {\n  x -= 1\n}"
+  body:
 
 ===
 Repeat-while loop
@@ -142,25 +166,29 @@ repeat {
 ---
 
 source_file
-  repeat_while_statement
-    condition:
-      if_condition
-        comparison_expression
-          lhs: simple_identifier "x"
-          op: >
-          rhs: integer_literal "0"
-    statements
-      assignment
-        operator: -=
-        result: integer_literal "1"
-        target:
-          directly_assignable_expression
-            simple_identifier "x"
+  statement:
+    repeat_while_statement
+      body:
+        block
+          statement:
+            assignment
+              operator: -=
+              result: integer_literal "1"
+              target:
+                directly_assignable_expression
+                  expr: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
 
 ---
 
 top_level
-  body: unsupported_node "repeat {\n  x -= 1\n} while x > 0"
+  body:
 
 ===
 Break and continue
@@ -175,38 +203,52 @@ for x in xs {
 ---
 
 source_file
-  for_statement
-    collection: simple_identifier "xs"
-    item:
-      pattern
-        bound_identifier: simple_identifier "x"
-    statements
-      if_statement
-        condition:
-          if_condition
-            comparison_expression
-              lhs: simple_identifier "x"
-              op: <
-              rhs: integer_literal "0"
-        statements
-          control_transfer_statement
-      if_statement
-        condition:
-          if_condition
-            comparison_expression
-              lhs: simple_identifier "x"
-              op: >
-              rhs: integer_literal "100"
-        statements
-          control_transfer_statement
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value: simple_identifier "x"
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            if_statement
+              body:
+                block
+                  statement:
+                    control_transfer_statement
+                      kind: continue
+              condition:
+                if_condition
+                  kind:
+                    comparison_expression
+                      lhs: simple_identifier "x"
+                      op: <
+                      rhs: integer_literal "0"
+            if_statement
+              body:
+                block
+                  statement:
+                    control_transfer_statement
+                      kind: break
+              condition:
+                if_condition
+                  kind:
+                    comparison_expression
+                      lhs: simple_identifier "x"
+                      op: >
+                      rhs: integer_literal "100"
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      collection: simple_identifier "xs"
+      item:
+        pattern
+          bound_identifier: simple_identifier "x"
 
 ---
 
 top_level
-  body: unsupported_node "for x in xs {\n  if x < 0 { continue }\n  if x > 100 { break }\n  print(x)\n}"
+  body:
