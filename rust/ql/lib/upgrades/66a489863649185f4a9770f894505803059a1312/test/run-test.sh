@@ -18,13 +18,22 @@ trap 'rm -rf "$OLD_TEST_TMP"' EXIT
 cp "$SCRIPT_DIR/old/OldShapes.ql" "$SCRIPT_DIR/old/OldShapes.expected" "$OLD_TEST_TMP/"
 cp "$SCRIPT_DIR/new/qlpack.yml" "$SCRIPT_DIR/new/upgrade_shapes.rs" "$OLD_TEST_TMP/"
 
-echo "==> Stashing any uncommitted changes..."
-git stash --quiet || true
+# Stash changes only if there are any (including untracked files)
+STASH_REF=""
+if ! git diff --quiet HEAD || [ -n "$(git ls-files --others --exclude-standard)" ]; then
+    echo "==> Stashing uncommitted changes..."
+    STASH_REF=$(git stash create --include-untracked)
+    if [ -n "$STASH_REF" ]; then
+        git stash store -m "run-test.sh auto-stash" "$STASH_REF"
+    fi
+fi
 
 restore_branch() {
     echo "==> Restoring original branch..."
     git checkout --quiet -
-    git stash pop --quiet 2>/dev/null || true
+    if [ -n "$STASH_REF" ]; then
+        git stash pop --quiet
+    fi
 }
 trap 'restore_branch; rm -rf "$OLD_TEST_TMP"' EXIT
 
