@@ -44,6 +44,7 @@ private predicate deletedElement(Element id) {
   unsafeInnerMeta(id) or
   cfg_atoms(id) or
   cfg_composites(id) or
+  format_args_arg_names(id) or
   try_block_modifiers(id)
 }
 
@@ -65,6 +66,10 @@ query predicate new_const_args(Element id) {
 
 query predicate new_const_arg_exprs(Element id, Element expr) {
   const_arg_exprs(id, expr) and not wrapperConstArg(id)
+}
+
+query predicate new_comments(Element id, Element parent, string text) {
+  comments(id, parent, text) and not deletedElement(parent)
 }
 
 query predicate new_struct_field_defaults(Element id, Element expr) {
