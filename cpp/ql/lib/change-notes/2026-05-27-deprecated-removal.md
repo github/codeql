@@ -3,7 +3,7 @@ category: breaking
 ---
 * Removed the deprecated `overrideReturnsNull` predicate from `Options.qll`. Use `CustomOptions.overrideReturnsNull` instead.
 * Removed the deprecated `returnsNull` predicate from `Options.qll`. Use `CustomOptions.returnsNull` instead.
-* Removed the deprecated `exits` predicate from `Options.qll`. Use `CustomOptions.exist` instead.
+* Removed the deprecated `exits` predicate from `Options.qll`. Use `CustomOptions.exits` instead.
 * Removed the deprecated `exprExits` predicate from `Options.qll`. Use `CustomOptions.exprExits` instead.
 * Removed the deprecated `alwaysCheckReturnValue` predicate from `Options.qll`. Use `CustomOptions.alwaysCheckReturnValue` instead.
 * Removed the deprecated `okToIgnoreReturnValue` predicate from `Options.qll`. Use `CustomOptions.okToIgnoreReturnValue` instead.
