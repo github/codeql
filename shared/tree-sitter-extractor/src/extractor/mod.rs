@@ -298,6 +298,10 @@ pub fn extract(
     yeast_runner: Option<&yeast::Runner<'_>>,
 ) {
     let path_str = file_paths::normalize_and_transform_path(path, transformer);
+    let source_root = std::env::current_dir()
+        .ok()
+        .and_then(|d| d.canonicalize().ok());
+    let diagnostics_path = file_paths::relativize_for_diagnostic(path, source_root.as_deref());
     let span = tracing::span!(
         tracing::Level::TRACE,
         "extract",
@@ -318,7 +322,7 @@ pub fn extract(
         source,
         diagnostics_writer,
         trap_writer,
-        &path_str,
+        &diagnostics_path,
         file_label,
         language_prefix,
         schema,
@@ -326,7 +330,7 @@ pub fn extract(
 
     if let Some(yeast_runner) = yeast_runner {
         let ast = yeast_runner
-            .run_from_tree(&tree)
+            .run_from_tree(&tree, source)
             .unwrap_or_else(|e| panic!("Desugaring failed for {path_str}: {e}"));
         traverse_yeast(&ast, &mut visitor);
     } else {
@@ -343,8 +347,9 @@ struct ChildNode {
 }
 
 struct Visitor<'a> {
-    /// The file path of the source code (as string)
-    path: &'a str,
+    /// A path suitable for diagnostic locations: relative to the source root if possible,
+    /// otherwise a file: URI
+    diagnostics_path: &'a str,
     /// The label to use whenever we need to refer to the `@file` entity of this
     /// source file.
     file_label: trap::Label,
@@ -376,13 +381,13 @@ impl<'a> Visitor<'a> {
         source: &'a [u8],
         diagnostics_writer: &'a mut diagnostics::LogWriter,
         trap_writer: &'a mut trap::Writer,
-        path: &'a str,
+        diagnostics_path: &'a str,
         file_label: trap::Label,
         language_prefix: &str,
         schema: &'a NodeTypeMap,
     ) -> Visitor<'a> {
         Visitor {
-            path,
+            diagnostics_path,
             file_label,
             source,
             diagnostics_writer,
@@ -433,7 +438,7 @@ impl<'a> Visitor<'a> {
         );
         mesg.severity(diagnostics::Severity::Warning)
             .location(
-                self.path,
+                self.diagnostics_path,
                 loc.start_line,
                 loc.start_column,
                 loc.end_line,
@@ -479,13 +484,14 @@ impl<'a> Visitor<'a> {
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
         let loc = location_for(self, self.file_label, node);
         let loc_label = location_label(self.trap_writer, loc);
+        let type_name = TypeName {
+            kind: node.kind().to_owned(),
+            named: node.is_named(),
+        };
         let table = self
             .schema
-            .get(&TypeName {
-                kind: node.kind().to_owned(),
-                named: node.is_named(),
-            })
-            .unwrap();
+            .get(&type_name)
+            .unwrap_or_else(|| panic!("missing extractor schema entry for {type_name:?}"));
         let mut valid = true;
         let parent_info = match self.stack.last_mut() {
             Some(p) if !node.is_extra() => {
@@ -553,7 +559,7 @@ impl<'a> Visitor<'a> {
                         )
                         .severity(diagnostics::Severity::Warning)
                         .location(
-                            self.path,
+                            self.diagnostics_path,
                             loc.start_line,
                             loc.start_column,
                             loc.end_line,

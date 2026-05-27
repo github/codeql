@@ -27,7 +27,7 @@ Certain triggers automatically grant a workflow elevated privileges:
   * An attacker forks the repository and adds malicious code (e.g., in the build script)
   * The attacker opens a PR from the fork, and, if needed, comments on the PR
   * The workflow in the base repository checks out the forked code
-  * The workflow runs, (e.g. the build script etc.), which contains the malicious code
+  * The workflow runs the malicious code
 
 Please note that not only build scripts can be malicious code vectors. There is a large number of other possibilities. Some of them are listed in the [LOTP](https://boostsecurityio.github.io/lotp/) catalog.
 
@@ -40,6 +40,8 @@ Please note that not only build scripts can be malicious code vectors. There is 
 The best practice is to handle the potentially untrusted pull request via the **pull_request** trigger so that it is isolated in an unprivileged environment. The workflow processing the pull request should then store any results like code coverage or failed/passed tests in artifacts and exit. A second privileged workflow with the access to repository secrets, triggered by the completion of the first workflow using `workflow_run` trigger event, downloads the artifacts and make any necessary modifications to the repository or interact with third party services that require repository secrets (e.g. API tokens).
 
 The artifacts downloaded from the first workflow should be considered untrusted and must be verified.
+
+Additionally, ensure that least privilege are used both at the workflow level (through event triggers and workflow permissions) and job level (through job permissions).
 
 ## Example
 
@@ -163,4 +165,5 @@ jobs:
 
 - GitHub Security Lab Research: [Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests](https://securitylab.github.com/research/github-actions-preventing-pwn-requests/).
 - Mitigating risks of untrusted checkout: [GitHub Docs](https://docs.github.com/en/enterprise-cloud@latest/actions/reference/security/secure-use#mitigating-the-risks-of-untrusted-code-checkout).
+- Securing with least privilege: [Workflow secure use](https://docs.github.com/en/actions/reference/security/secure-use).
 - Living Off the Pipeline: [LOTP](https://boostsecurityio.github.io/lotp/).

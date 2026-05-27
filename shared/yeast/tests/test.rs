@@ -1,6 +1,6 @@
 #![cfg(test)]
 
-use yeast::dump::dump_ast;
+use yeast::dump::{dump_ast, dump_ast_with_type_errors};
 use yeast::*;
 
 const OUTPUT_SCHEMA_YAML: &str = include_str!("node-types.yml");
@@ -15,7 +15,7 @@ fn parse_and_dump(input: &str) -> String {
 /// Helper: parse Ruby source with a custom output schema and a single
 /// phase of rules, return dump.
 fn run_and_dump(input: &str, rules: Vec<Rule>) -> String {
-    run_phased_and_dump(input, vec![Phase::new("test", rules)])
+    run_phased_and_dump(input, vec![Phase::new("test", PhaseKind::Repeating, rules)])
 }
 
 /// Helper: parse Ruby source with a custom output schema and multiple
@@ -35,11 +35,40 @@ fn run_and_get_error(input: &str, rules: Vec<Rule>) -> String {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let phases = vec![Phase::new("test", rules)];
+    let phases = vec![Phase::new("test", PhaseKind::Repeating, rules)];
     let runner = Runner::with_schema(lang, &schema, &phases);
     runner
         .run(input)
         .expect_err("expected runner to return an error")
+}
+
+/// Helper: parse Ruby source with no rules and dump with schema type errors.
+fn parse_and_dump_typed(input: &str, schema_yaml: &str) -> String {
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run(input).unwrap();
+    let schema = yeast::node_types_yaml::schema_from_yaml(schema_yaml).unwrap();
+    dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
+}
+
+/// Helper: parse Ruby source with no rules and dump with schema type errors,
+/// building schema with language IDs so field checks align with parser fields.
+fn parse_and_dump_typed_with_language(input: &str, schema_yaml: &str) -> String {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let runner = Runner::new(lang.clone(), &[]);
+    let ast = runner.run(input).unwrap();
+    let schema = yeast::node_types_yaml::schema_from_yaml_with_language(schema_yaml, &lang)
+        .unwrap();
+    dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
+}
+
+/// Helper: parse Ruby source with custom rules and dump with schema type errors.
+fn run_and_dump_typed(input: &str, rules: Vec<Rule>, schema_yaml: &str) -> String {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema = yeast::node_types_yaml::schema_from_yaml(schema_yaml).unwrap();
+    let phases = vec![Phase::new("test", PhaseKind::Repeating, rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+    let ast = runner.run(input).unwrap();
+    dump_ast_with_type_errors(&ast, ast.get_root(), input, &schema)
 }
 
 /// Assert that a dump equals the expected string, treating the expected
@@ -125,6 +154,85 @@ fn test_parse_for_loop() {
     );
 }
 
+#[test]
+fn test_dump_highlights_type_errors_inline() {
+        let schema_yaml = r#"
+named:
+    program:
+        $children*: assignment
+    assignment:
+        left: identifier
+        right: identifier
+    identifier:
+"#;
+
+        let dump = parse_and_dump_typed("x = 1", schema_yaml);
+        assert!(dump.contains("integer \"1\" <-- ERROR:"));
+}
+
+#[test]
+fn test_dump_reports_preserved_unknown_kind_after_transformation() {
+        let schema_yaml = r#"
+named:
+    program:
+        $children*: assignment
+    assignment:
+        left: identifier
+        right: identifier
+    identifier:
+"#;
+
+        // This rewrite runs and preserves the RHS node kind via capture.
+        // With schema above, preserving `integer` should be reported inline.
+        let rules = vec![yeast::rule!(
+                (assignment left: (_) @left right: (_) @right)
+                =>
+                (assignment
+                        left: {left}
+                        right: {right}
+                )
+        )];
+
+        let dump = run_and_dump_typed("x = 1", rules, schema_yaml);
+        assert!(dump.contains("integer \"1\" <-- ERROR:"));
+        assert!(dump.contains("node kind 'integer' not in schema"));
+}
+
+#[test]
+fn test_dump_reports_undeclared_field_on_node() {
+        let schema_yaml = r#"
+named:
+    program:
+        $children*: assignment
+    assignment:
+        left: identifier
+    identifier:
+"#;
+
+        let dump = parse_and_dump_typed_with_language("x = y", schema_yaml);
+        assert!(dump.contains("right: identifier \"y\" <-- ERROR:"));
+        assert!(dump.contains("the node 'assignment' has no field 'right'"));
+}
+
+#[test]
+fn test_dump_reports_disallowed_kind_in_field_type() {
+        let schema_yaml = r#"
+named:
+    program:
+        $children*: assignment
+    assignment:
+        left: identifier
+        right: identifier
+    identifier:
+    integer:
+"#;
+
+        let dump = parse_and_dump_typed_with_language("x = 1", schema_yaml);
+        assert!(dump.contains("right: integer \"1\" <-- ERROR:"));
+        assert!(dump.contains("should contain"));
+        assert!(dump.contains("but got integer"));
+}
+
 // ---- Query tests ----
 
 #[test]
@@ -164,6 +272,32 @@ fn test_query_no_match() {
     let mut captures = yeast::captures::Captures::new();
     let matched = query.do_match(&ast, ast.get_root(), &mut captures).unwrap();
     assert!(!matched);
+}
+
+#[test]
+fn test_reachable_nodes_excludes_orphaned_rewrite_nodes() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema = yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang)
+        .unwrap();
+    let phases = vec![Phase::new(
+        "test",
+        PhaseKind::Repeating,
+        vec![yeast::rule!((integer) => (identifier "replaced"))],
+    )];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let reachable_ids = ast.reachable_node_ids();
+
+    assert!(
+        ast.nodes().len() > reachable_ids.len(),
+        "expected rewrite to leave orphaned arena nodes"
+    );
+
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert!(dump.contains("identifier \"replaced\""));
+    assert!(!dump.contains("integer \"1\""));
 }
 
 #[test]
@@ -653,8 +787,8 @@ fn test_phased_desugaring() {
     let dump = run_phased_and_dump(
         "x = 1",
         vec![
-            Phase::new("cleanup", cleanup),
-            Phase::new("desugar", desugar),
+            Phase::new("cleanup", PhaseKind::Repeating, cleanup),
+            Phase::new("desugar", PhaseKind::Repeating, desugar),
         ],
     );
     assert_dump_eq(
@@ -675,7 +809,11 @@ fn test_phase_error_includes_phase_name() {
     let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
     let schema =
         yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
-    let phases = vec![Phase::new("buggy", vec![swap_assignment_rule().repeated()])];
+    let phases = vec![Phase::new(
+        "buggy",
+        PhaseKind::Repeating,
+        vec![swap_assignment_rule().repeated()],
+    )];
     let runner = Runner::with_schema(lang, &schema, &phases);
     let err = runner
         .run("x = 1")
@@ -687,6 +825,168 @@ fn test_phase_error_includes_phase_name() {
     assert!(
         err.contains("exceeded maximum rewrite depth"),
         "error should mention the depth limit, got: {err}"
+    );
+}
+
+/// Helper: an exhaustive set of OneShot rules covering every node reachable
+/// (via captures) when translating `"x = 1"`.
+fn one_shot_xeq1_rules() -> Vec<Rule> {
+    vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {..stmts})
+        ),
+        yeast::rule!(
+            (assignment left: (_) @left right: (_) @right)
+            =>
+            (first_node left: {left} right: {right})
+        ),
+        yeast::rule!((identifier) => (identifier "ID")),
+        yeast::rule!((integer) => (integer "INT")),
+    ]
+}
+
+#[test]
+fn test_one_shot_phase() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let phases = vec![Phase::new(
+        "translate",
+        PhaseKind::OneShot,
+        one_shot_xeq1_rules(),
+    )];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt:
+            first_node
+              left: identifier "ID"
+              right: integer "INT"
+    "#,
+    );
+}
+
+#[test]
+fn test_one_shot_phase_errors_when_no_rule_matches() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    // Drop the `integer` rule so the recursion has no rule for `integer`.
+    let mut rules = one_shot_xeq1_rules();
+    rules.pop();
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+
+    let err = runner
+        .run("x = 1")
+        .expect_err("expected OneShot to error on unmatched node");
+    assert!(
+        err.contains("Phase `translate`"),
+        "error should name the phase, got: {err}"
+    );
+    assert!(
+        err.contains("no rule matched") && err.contains("integer"),
+        "error should describe the unmatched node kind, got: {err}"
+    );
+}
+
+/// OneShot recursion must apply rules to *captured* nodes, even if the rule
+/// returns a captured child verbatim. A buggy implementation that only
+/// recurses into the children of the rule's output (rather than into the
+/// captures) would leave the returned capture untransformed.
+#[test]
+fn test_one_shot_recurses_into_returned_capture() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {..stmts})
+        ),
+        // Returns the captured `left` verbatim, discarding `right`.
+        yeast::rule!(
+            (assignment left: (_) @left right: (_) @right)
+            =>
+            {left}
+        ),
+        yeast::rule!((identifier) => (identifier "ID")),
+        yeast::rule!((integer) => (integer "INT")),
+    ];
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    // `left` is an `identifier`; OneShot must apply the identifier rule to
+    // it before the assignment transform returns it verbatim.
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt: identifier "ID"
+    "#,
+    );
+}
+
+/// OneShot recursion must NOT descend into the children of the rule's output.
+/// A rule may legitimately wrap a captured node in fresh output-schema nodes
+/// that have no matching rule of their own (since rule patterns target the
+/// input schema). Recursing into the output would erroneously try to find
+/// rules for those wrapper kinds and fail.
+#[test]
+fn test_one_shot_does_not_recurse_into_wrapper_output() {
+    let lang: tree_sitter::Language = tree_sitter_ruby::LANGUAGE.into();
+    let schema =
+        yeast::node_types_yaml::schema_from_yaml_with_language(OUTPUT_SCHEMA_YAML, &lang).unwrap();
+    let rules = vec![
+        yeast::rule!(
+            (program (_)* @stmts)
+            =>
+            (program stmt: {..stmts})
+        ),
+        // Wraps `left` in nested `first_node`/`second_node` output kinds.
+        // Neither wrapper kind has a matching rule, so a buggy implementation
+        // that recurses into the wrapper's children would error.
+        yeast::rule!(
+            (assignment left: (_) @left right: (_) @right)
+            =>
+            (first_node
+                left: (second_node left: {left} right: {right})
+                right: {left}
+            )
+        ),
+        yeast::rule!((identifier) => (identifier "ID")),
+        yeast::rule!((integer) => (integer "INT")),
+    ];
+    let phases = vec![Phase::new("translate", PhaseKind::OneShot, rules)];
+    let runner = Runner::with_schema(lang, &schema, &phases);
+
+    let input = "x = 1";
+    let ast = runner.run(input).unwrap();
+    let dump = dump_ast(&ast, ast.get_root(), input);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          stmt:
+            first_node
+              left:
+                second_node
+                  left: identifier "ID"
+                  right: integer "INT"
+              right: identifier "ID"
+    "#,
     );
 }
 
@@ -757,6 +1057,57 @@ fn test_desugar_for_with_multiple_assignment() {
                     parameter: identifier "$tmp-0"
             method: identifier "each"
             receiver: identifier "list"
+    "#,
+    );
+}
+
+/// Regression test: `#{capture}` in a template must render the *source text*
+/// of the captured node, not its arena `Id`. Previously, captures were bound
+/// as `usize`, so `#{cap}` printed the integer id (e.g. `"3"`) via `Display`.
+/// Captures are now bound as `NodeRef`, which has no `Display` impl and
+/// resolves to the captured node's source text via `YeastDisplay`.
+#[test]
+fn test_hash_brace_renders_capture_source_text() {
+    let rule = rule!(
+        (call
+            method: (identifier) @name
+            receiver: (identifier) @recv
+        )
+        =>
+        (call
+            method: (identifier #{name})
+            receiver: (identifier #{recv})
+            arguments: (argument_list)
+        )
+    );
+    let dump = run_and_dump("foo.bar()", vec![rule]);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          call
+            arguments: argument_list "foo.bar()"
+            method: identifier "bar"
+            receiver: identifier "foo"
+    "#,
+    );
+}
+
+/// Regression test: non-`NodeRef` values in `#{expr}` still render via their
+/// `Display` impl (covered by `YeastDisplay`'s blanket impls for primitives).
+#[test]
+fn test_hash_brace_renders_integer_expression() {
+    let rule = rule!(
+        (identifier) @_
+        =>
+        (identifier #{1 + 2})
+    );
+    let dump = run_and_dump("foo", vec![rule]);
+    assert_dump_eq(
+        &dump,
+        r#"
+        program
+          identifier "3"
     "#,
     );
 }

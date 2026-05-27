@@ -23,11 +23,14 @@ impl MyStruct {
 fn get_password() -> String { get_string() }
 
 fn test_passwords(
-	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str, password_confirmation: &str,
+	password: &str, pass_word: &str, passwd: &str, my_password: &str, password_str: &str, password_confirmation: &str, profile_password: &str,
 	pass_phrase: &str, passphrase: &str, passPhrase: &str, backup_code: &str,
 	auth_key: &str, authkey: &str, authKey: &str, authentication_key: &str, authenticationkey: &str, authenticationKey: &str, oauth: &str,
-	one_time_code: &str,
-	harmless: &str, encrypted_password: &str, password_hash: &str, passwordFile: &str,
+	one_time_code: &str, api_token: &str, api_tok: &str,
+	harmless: &str,
+	encrypted_password: &str, unencrypted_password: &str, encoded_password: &str, unencoded_password: &str,
+	password_hash: &str, passwordFile: &str, coauthor: &str,
+
 	ms: &MyStruct
 ) {
 	// passwords
@@ -38,6 +41,9 @@ fn test_passwords(
 	sink(my_password); // $ sensitive=password
 	sink(password_str); // $ sensitive=password
 	sink(password_confirmation); // $ sensitive=password
+	sink(profile_password); // $ sensitive=password
+	sink(unencrypted_password); // $ sensitive=password
+	sink(unencoded_password); // $ sensitive=password
 	sink(pass_phrase); // $ sensitive=password
 	sink(passphrase); // $ sensitive=password
 	sink(passPhrase); // $ sensitive=password
@@ -51,6 +57,8 @@ fn test_passwords(
 	sink(authenticationKey); // $ sensitive=password
 	sink(oauth); // $ sensitive=password
 	sink(one_time_code); // $ MISSING: sensitive=password
+	sink(api_token); // $ sensitive=password
+	sink(api_tok); // $ sensitive=password
 
 	sink(ms); // $ MISSING: sensitive=password
 	sink(ms.password.as_str()); // $ sensitive=password
@@ -67,8 +75,10 @@ fn test_passwords(
 
 	sink(harmless);
 	sink(encrypted_password);
+	sink(encoded_password);
 	sink(password_hash);
 	sink(passwordFile);
+	sink(coauthor);
 
 	sink(ms.harmless.as_str());
 	sink(ms.password_file_path.as_str());
@@ -187,6 +197,10 @@ struct Financials {
 	harmless: String,
 	my_bank_account_number: String,
 	credit_card_no: String,
+	card_no: String,
+	cardNumber: String,
+	card_security_code: String,
+
 	credit_rating: i32,
 	user_ccn: String,
 	cvv: String,
@@ -201,6 +215,7 @@ struct Financials {
 	accounting: i32,
 	unaccounted: bool,
 	multiband: bool,
+	wildcard_not_matched: bool,
 }
 
 enum Gender {
@@ -298,6 +313,9 @@ fn test_private_info(
 
 	sink(info.financials.my_bank_account_number.as_str()); // $ sensitive=private SPURIOUS: sensitive=id
 	sink(info.financials.credit_card_no.as_str()); // $ sensitive=private
+	sink(info.financials.card_no.as_str()); // $ sensitive=private
+	sink(info.financials.cardNumber.as_str()); // $ sensitive=private
+	sink(info.financials.card_security_code.as_str()); // $ sensitive=private
 	sink(info.financials.credit_rating); // $ sensitive=private
 	sink(info.financials.user_ccn.as_str()); // $ sensitive=private
 	sink(info.financials.cvv.as_str()); // $ sensitive=private
@@ -350,6 +368,7 @@ fn test_private_info(
 	sink(info.financials.accounting);
 	sink(info.financials.unaccounted);
 	sink(info.financials.multiband);
+	sink(info.financials.wildcard_not_matched);
 
 	sink(ContactDetails::FavouriteColor("blue".to_string()));
 }

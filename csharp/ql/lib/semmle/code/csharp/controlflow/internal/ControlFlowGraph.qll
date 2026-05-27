@@ -175,7 +175,9 @@ module Ast implements AstSig<Location> {
   final private class FinalForStmt = CS::ForStmt;
 
   class ForStmt extends FinalForStmt {
-    Expr getInit(int index) { result = this.getInitializer(index) }
+    AstNode getInit(int index) { result = super.getInitializer(index) }
+
+    AstNode getUpdate(int index) { result = super.getUpdate(index) }
   }
 
   final private class FinalForeachStmt = CS::ForeachStmt;

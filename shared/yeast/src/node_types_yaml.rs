@@ -23,6 +23,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt::Write;
 
+use crate::CHILD_FIELD;
 use serde::Deserialize;
 use serde_json::json;
 
@@ -100,30 +101,36 @@ fn parse_field_name(raw: &str) -> FieldSpec {
 
 /// Resolve a TypeRef to a (type, named) pair, given the sets of known named
 /// and unnamed types.
+fn resolve_type_ref_pair(
+    type_ref: &TypeRef,
+    named_types: &BTreeSet<String>,
+    unnamed_types: &BTreeSet<String>,
+) -> (String, bool) {
+    match type_ref {
+        TypeRef::Explicit { unnamed } => (unnamed.clone(), false),
+        TypeRef::Name(name) => {
+            let is_named = named_types.contains(name);
+            let is_unnamed = unnamed_types.contains(name);
+            if is_named && is_unnamed {
+                (name.clone(), true)
+            } else if is_unnamed {
+                (name.clone(), false)
+            } else {
+                (name.clone(), true)
+            }
+        }
+    }
+}
+
+/// Resolve a TypeRef to a {type, named} JSON record, given the sets of known named
+/// and unnamed types.
 fn resolve_type_ref(
     type_ref: &TypeRef,
     named_types: &BTreeSet<String>,
     unnamed_types: &BTreeSet<String>,
 ) -> serde_json::Value {
-    match type_ref {
-        TypeRef::Explicit { unnamed } => {
-            json!({"type": unnamed, "named": false})
-        }
-        TypeRef::Name(name) => {
-            let is_named = named_types.contains(name);
-            let is_unnamed = unnamed_types.contains(name);
-
-            if is_named && is_unnamed {
-                // Ambiguous: default to named
-                json!({"type": name, "named": true})
-            } else if is_unnamed {
-                json!({"type": name, "named": false})
-            } else {
-                // Named, or unknown (assume named)
-                json!({"type": name, "named": true})
-            }
-        }
-    }
+    let (kind, named) = resolve_type_ref_pair(type_ref, named_types, unnamed_types);
+    json!({"type": kind, "named": named})
 }
 
 /// Convert YAML string to node-types JSON string.
@@ -233,14 +240,12 @@ pub fn convert(yaml_input: &str) -> Result<String, String> {
     serde_json::to_string_pretty(&output).map_err(|e| format!("Failed to serialize JSON: {e}"))
 }
 
-/// Build a Schema from a YAML node-types string.
-/// Registers all node kinds and field names found in the YAML.
-pub fn schema_from_yaml(yaml_input: &str) -> Result<crate::schema::Schema, String> {
-    let yaml: YamlNodeTypes =
-        serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
-
-    let mut schema = crate::schema::Schema::new();
-
+/// Apply YAML node-type definitions to a mutable Schema.
+/// Registers all types, fields, and allowed types from the YAML into the schema.
+fn apply_yaml_to_schema(
+    yaml: &YamlNodeTypes,
+    schema: &mut crate::schema::Schema,
+) {
     // Register all supertypes as node kinds
     for name in yaml.supertypes.keys() {
         schema.register_kind(name);
@@ -264,6 +269,62 @@ pub fn schema_from_yaml(yaml_input: &str) -> Result<crate::schema::Schema, Strin
         schema.register_unnamed_kind(name);
     }
 
+    let mut named_types = BTreeSet::new();
+    for name in yaml.supertypes.keys() {
+        named_types.insert(name.clone());
+    }
+    for name in yaml.named.keys() {
+        named_types.insert(name.clone());
+    }
+    let unnamed_types: BTreeSet<String> = yaml.unnamed.iter().cloned().collect();
+
+    for (supertype, members) in &yaml.supertypes {
+        let node_types = members
+            .iter()
+            .map(|m| {
+                let (kind, named) = resolve_type_ref_pair(m, &named_types, &unnamed_types);
+                crate::schema::NodeType { kind, named }
+            })
+            .collect();
+        schema.set_supertype_members(supertype, node_types);
+    }
+
+    // Register allowed field child types for type checking.
+    for (parent_kind, fields_opt) in &yaml.named {
+        let Some(fields) = fields_opt else {
+            continue;
+        };
+
+        for (raw_field_name, type_refs) in fields {
+            let spec = parse_field_name(raw_field_name);
+            let field_id = match &spec.name {
+                Some(name) => schema.register_field(name),
+                None => CHILD_FIELD,
+            };
+
+            let mut node_types = type_refs
+                .clone()
+                .into_vec()
+                .into_iter()
+                .map(|type_ref| {
+                    let (kind, named) = resolve_type_ref_pair(&type_ref, &named_types, &unnamed_types);
+                    crate::schema::NodeType { kind, named }
+                })
+                .collect::<Vec<_>>();
+            node_types.sort_by(|a, b| a.kind.cmp(&b.kind).then(a.named.cmp(&b.named)));
+            node_types.dedup_by(|a, b| a.kind == b.kind && a.named == b.named);
+            schema.set_field_types(parent_kind, field_id, node_types);
+        }
+    }
+}
+
+pub fn schema_from_yaml(yaml_input: &str) -> Result<crate::schema::Schema, String> {
+    let yaml: YamlNodeTypes =
+        serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
+
+    let mut schema = crate::schema::Schema::new();
+    apply_yaml_to_schema(&yaml, &mut schema);
+
     Ok(schema)
 }
 
@@ -278,29 +339,7 @@ pub fn schema_from_yaml_with_language(
         serde_yaml::from_str(yaml_input).map_err(|e| format!("Failed to parse YAML: {e}"))?;
 
     let mut schema = crate::schema::Schema::from_language(language);
-
-    // Register supertypes
-    for name in yaml.supertypes.keys() {
-        schema.register_kind(name);
-    }
-
-    // Register named node kinds and their fields
-    for (name, fields_opt) in &yaml.named {
-        schema.register_kind(name);
-        if let Some(fields) = fields_opt {
-            for raw_field_name in fields.keys() {
-                let spec = parse_field_name(raw_field_name);
-                if let Some(field_name) = &spec.name {
-                    schema.register_field(field_name);
-                }
-            }
-        }
-    }
-
-    // Register unnamed tokens
-    for name in &yaml.unnamed {
-        schema.register_unnamed_kind(name);
-    }
+    apply_yaml_to_schema(&yaml, &mut schema);
 
     Ok(schema)
 }

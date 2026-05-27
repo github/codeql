@@ -1,3 +1,9 @@
+## 1.6.3
+
+### Minor Analysis Improvements
+
+* The 'Cleartext transmission of sensitive information' query (`cpp/cleartext-transmission`) no longer raises an alert on calls to `fscanf` (and variants) when the call reads from an "obviously local" `FILE` stream such as `stdin`.
+
 ## 1.6.2
 
 No user-facing changes.

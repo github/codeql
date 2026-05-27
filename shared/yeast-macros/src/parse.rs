@@ -113,8 +113,24 @@ fn parse_query_node_inner(tokens: &mut Tokens) -> Result<TokenStream> {
 /// appear in any order; bare patterns are accumulated and emitted as a
 /// single `("child", ...)` entry.
 fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
-    let mut fields = Vec::new();
+    // Accumulate per-field elems in declaration order; multiple uses of the
+    // same field name extend the same list (so e.g. `cond: (foo) cond: (bar)`
+    // matches a `cond` field whose first child is `foo` and second is `bar`).
+    let mut field_order: Vec<String> = Vec::new();
+    let mut field_elems: std::collections::HashMap<String, Vec<TokenStream>> =
+        std::collections::HashMap::new();
     let mut bare_children: Vec<TokenStream> = Vec::new();
+    let push_field_elem = |order: &mut Vec<String>,
+                               map: &mut std::collections::HashMap<String, Vec<TokenStream>>,
+                               name: String,
+                               elem: TokenStream| {
+        if !map.contains_key(&name) {
+            order.push(name.clone());
+            map.insert(name, vec![elem]);
+        } else {
+            map.get_mut(&name).unwrap().push(elem);
+        }
+    };
     while tokens.peek().is_some() {
         if peek_is_field(tokens) {
             let field_name = expect_ident(tokens, "expected field name")?;
@@ -122,10 +138,40 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
 
             expect_punct(tokens, ':', "expected `:` after field name")?;
 
-            let child = parse_query_node(tokens)?;
-            fields.push(quote! {
-                (#field_str, vec![yeast::query::QueryListElem::SingleNode(#child)])
-            });
+            // Parse the field's pattern. To support repetition like
+            // `field: (kind)* @cap`, parse the atom first, then check for
+            // a quantifier, and lastly handle a trailing `@capture`.
+            let atom = parse_query_atom(tokens)?;
+            if peek_is_repetition(tokens) {
+                let rep = expect_repetition(tokens)?;
+                let elem = quote! {
+                    yeast::query::QueryListElem::Repeated {
+                        children: vec![yeast::query::QueryListElem::SingleNode(#atom)],
+                        rep: #rep,
+                    }
+                };
+                let elem = maybe_wrap_list_capture(tokens, elem)?;
+                push_field_elem(&mut field_order, &mut field_elems, field_str, elem);
+            } else {
+                let child = if peek_is_at(tokens) {
+                    tokens.next();
+                    let capture_name =
+                        expect_ident(tokens, "expected capture name after @")?;
+                    let name_str = capture_name.to_string();
+                    quote! {
+                        yeast::query::QueryNode::Capture {
+                            capture: #name_str,
+                            node: Box::new(#atom),
+                        }
+                    }
+                } else {
+                    atom
+                };
+                let elem = quote! {
+                    yeast::query::QueryListElem::SingleNode(#child)
+                };
+                push_field_elem(&mut field_order, &mut field_elems, field_str, elem);
+            }
         } else {
             // Bare patterns — accumulate into the implicit `child` field.
             // We don't break here, so we can interleave with named fields.
@@ -136,6 +182,13 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
             }
             bare_children.extend(elems);
         }
+    }
+    let mut fields: Vec<TokenStream> = Vec::new();
+    for name in field_order {
+        let elems = field_elems.remove(&name).unwrap();
+        fields.push(quote! {
+            (#name, vec![#(#elems),*])
+        });
     }
     if !bare_children.is_empty() {
         fields.push(quote! {
@@ -299,7 +352,7 @@ fn parse_direct_node(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStream> {
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Brace => {
             let group = expect_group(tokens, Delimiter::Brace)?;
             let expr = group.stream();
-            Ok(quote! { #expr })
+            Ok(quote! { ::std::convert::Into::<usize>::into(#expr) })
         }
         Some(TokenTree::Group(g)) if g.delimiter() == Delimiter::Parenthesis => {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
@@ -329,12 +382,17 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         return Ok(quote! { #ctx.literal(#kind_str, #lit) });
     }
 
-    // Check for (kind #{expr}) — computed literal, expr converted via .to_string()
+    // Check for (kind #{expr}) — computed literal, expr converted via YeastDisplay
     if peek_is_hash(tokens) {
         tokens.next(); // consume #
         let group = expect_group(tokens, Delimiter::Brace)?;
         let expr = group.stream();
-        return Ok(quote! { #ctx.literal(#kind_str, &(#expr).to_string()) });
+        return Ok(quote! {
+            {
+                let __value = yeast::YeastDisplay::yeast_to_string(&(#expr), &*#ctx.ast);
+                #ctx.literal(#kind_str, &__value)
+            }
+        });
     }
 
     // Check for (kind $fresh)
@@ -374,7 +432,11 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
                     inner.next(); // consume first .
                     inner.next(); // consume second .
                     let expr: proc_macro2::TokenStream = inner.collect();
-                    stmts.push(quote! { let #temp: Vec<usize> = #expr; });
+                    stmts.push(quote! {
+                        let #temp: Vec<usize> = (#expr).into_iter()
+                            .map(::std::convert::Into::<usize>::into)
+                            .collect();
+                    });
                     field_args.push(quote! { (#field_str, #temp) });
                     continue;
                 }
@@ -382,7 +444,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         }
 
         let value = parse_direct_node(tokens, ctx)?;
-        stmts.push(quote! { let #temp = #value; });
+        stmts.push(quote! { let #temp: usize = #value; });
         field_args.push(quote! { (#field_str, vec![#temp]) });
     }
 
@@ -427,10 +489,16 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
                 inner.next(); // consume first .
                 inner.next(); // consume second .
                 let expr: TokenStream = inner.collect();
-                items.push(quote! { __nodes.extend(#expr); });
+                items.push(quote! {
+                    __nodes.extend(
+                        (#expr).into_iter().map(::std::convert::Into::<usize>::into)
+                    );
+                });
             } else {
                 let expr = group.stream();
-                items.push(quote! { __nodes.push(#expr); });
+                items.push(quote! {
+                    __nodes.push(::std::convert::Into::<usize>::into(#expr));
+                });
             }
             continue;
         }
@@ -580,13 +648,24 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
             let name_str = &cap.name;
             match cap.multiplicity {
                 CaptureMultiplicity::Repeated => {
-                    quote! { let #name: Vec<usize> = __captures.get_all(#name_str); }
+                    quote! {
+                        let #name: Vec<yeast::NodeRef> = __captures.get_all(#name_str)
+                            .into_iter()
+                            .map(yeast::NodeRef)
+                            .collect();
+                    }
                 }
                 CaptureMultiplicity::Optional => {
-                    quote! { let #name: Option<usize> = __captures.get_opt(#name_str); }
+                    quote! {
+                        let #name: Option<yeast::NodeRef> =
+                            __captures.get_opt(#name_str).map(yeast::NodeRef);
+                    }
                 }
                 CaptureMultiplicity::Single => {
-                    quote! { let #name: usize = __captures.get_var(#name_str).unwrap(); }
+                    quote! {
+                        let #name: yeast::NodeRef =
+                            yeast::NodeRef(__captures.get_var(#name_str).unwrap());
+                    }
                 }
             }
         })
@@ -613,19 +692,26 @@ pub fn parse_rule_top(input: TokenStream) -> Result<TokenStream> {
                     CaptureMultiplicity::Repeated => quote! {
                         let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        __fields.insert(__field_id, #name);
+                        __fields.insert(
+                            __field_id,
+                            #name.into_iter()
+                                .map(::std::convert::Into::<usize>::into)
+                                .collect(),
+                        );
                     },
                     CaptureMultiplicity::Optional => quote! {
                         let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
                         if let Some(__id) = #name {
-                            __fields.entry(__field_id).or_insert_with(Vec::new).push(__id);
+                            __fields.entry(__field_id).or_insert_with(Vec::new)
+                                .push(::std::convert::Into::<usize>::into(__id));
                         }
                     },
                     CaptureMultiplicity::Single => quote! {
                         let __field_id = #ctx_ident.ast.field_id_for_name(#name_str)
                             .unwrap_or_else(|| panic!("field '{}' not found", #name_str));
-                        __fields.entry(__field_id).or_insert_with(Vec::new).push(#name);
+                        __fields.entry(__field_id).or_insert_with(Vec::new)
+                            .push(::std::convert::Into::<usize>::into(#name));
                     },
                 }
             })

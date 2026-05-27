@@ -1,3 +1,7 @@
+## 2.7.1
+
+No user-facing changes.
+
 ## 2.7.0
 
 ### New Features

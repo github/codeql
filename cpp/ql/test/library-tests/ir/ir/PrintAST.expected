@@ -1859,7 +1859,7 @@ coroutines.cpp:
 #   13| [Constructor] void std::coroutine_handle<Promise>::coroutine_handle(std::nullptr_t)
 #   13|   <params>: 
 #   13|     getParameter(0): [Parameter] (unnamed parameter 0)
-#   13|         Type = [UsingAliasTypedefType] nullptr_t
+#   13|         Type = [TypeAliasType] nullptr_t
 #   14| [CopyConstructor] void std::coroutine_handle<Promise>::coroutine_handle(std::coroutine_handle<Promise> const&)
 #   14|   <params>: 
 #   14|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -1883,7 +1883,7 @@ coroutines.cpp:
 #   18| [MemberFunction] std::coroutine_handle<Promise>& std::coroutine_handle<Promise>::operator=(std::nullptr_t)
 #   18|   <params>: 
 #   18|     getParameter(0): [Parameter] (unnamed parameter 0)
-#   18|         Type = [UsingAliasTypedefType] nullptr_t
+#   18|         Type = [TypeAliasType] nullptr_t
 #   19| [CopyAssignmentOperator] std::coroutine_handle<Promise>& std::coroutine_handle<Promise>::operator=(std::coroutine_handle<Promise> const&)
 #   19|   <params>: 
 #   19|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -2025,7 +2025,7 @@ coroutines.cpp:
 #   87|   getEntryPoint(): [BlockStmt] { ... }
 #-----|     getStmt(0): [DeclStmt] declaration
 #   87|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
-#   87|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|           Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|     getStmt(1): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2036,7 +2036,7 @@ coroutines.cpp:
 #   87|                 Type = [Struct] suspend_always
 #   87|                 ValueCategory = prvalue
 #   87|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   87|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   87|                   ValueCategory = lvalue
 #   87|             getChild(1): [FunctionCall] call to await_ready
 #   87|                 Type = [BoolType] bool
@@ -2051,7 +2051,7 @@ coroutines.cpp:
 #   87|                       Type = [Struct] suspend_always
 #   87|                       ValueCategory = prvalue
 #   87|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#   87|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #   87|                         ValueCategory = lvalue
 #   87|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   87|                       Type = [Struct] suspend_always
@@ -2123,7 +2123,7 @@ coroutines.cpp:
 #-----|               Type = [VoidType] void
 #-----|               ValueCategory = prvalue
 #-----|             getQualifier(): [VariableAccess] (unnamed local variable)
-#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|                 ValueCategory = lvalue
 #-----|         getStmt(2): [GotoStmt] goto ...
 #-----|       getChild(1): [Handler] <handler>
@@ -2144,7 +2144,7 @@ coroutines.cpp:
 #   87|                 Type = [VoidType] void
 #   87|                 ValueCategory = prvalue
 #   87|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   87|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   87|                   ValueCategory = lvalue
 #-----|     getStmt(2): [LabelStmt] label ...:
 #-----|     getStmt(3): [ExprStmt] ExprStmt
@@ -2155,7 +2155,7 @@ coroutines.cpp:
 #   87|             Type = [Struct] suspend_always
 #   87|             ValueCategory = prvalue
 #   87|           getQualifier(): [VariableAccess] (unnamed local variable)
-#   87|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|               Type = [NestedTypedefType,TypeAliasType] promise_type
 #   87|               ValueCategory = lvalue
 #   87|         getChild(1): [FunctionCall] call to await_ready
 #   87|             Type = [BoolType] bool
@@ -2170,7 +2170,7 @@ coroutines.cpp:
 #   87|                   Type = [Struct] suspend_always
 #   87|                   ValueCategory = prvalue
 #   87|                 getQualifier(): [VariableAccess] (unnamed local variable)
-#   87|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   87|                     Type = [NestedTypedefType,TypeAliasType] promise_type
 #   87|                     ValueCategory = lvalue
 #   87|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   87|                   Type = [Struct] suspend_always
@@ -2238,7 +2238,7 @@ coroutines.cpp:
 #-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
 #   91|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
-#   91|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|           Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2249,7 +2249,7 @@ coroutines.cpp:
 #   91|                 Type = [Struct] suspend_always
 #   91|                 ValueCategory = prvalue
 #   91|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   91|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   91|                   ValueCategory = lvalue
 #   91|             getChild(1): [FunctionCall] call to await_ready
 #   91|                 Type = [BoolType] bool
@@ -2264,7 +2264,7 @@ coroutines.cpp:
 #   91|                       Type = [Struct] suspend_always
 #   91|                       ValueCategory = prvalue
 #   91|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#   91|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #   91|                         ValueCategory = lvalue
 #   91|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   91|                       Type = [Struct] suspend_always
@@ -2336,7 +2336,7 @@ coroutines.cpp:
 #-----|               Type = [VoidType] void
 #-----|               ValueCategory = prvalue
 #-----|             getQualifier(): [VariableAccess] (unnamed local variable)
-#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|                 ValueCategory = lvalue
 #   92|             getArgument(0): [VariableAccess] i
 #   92|                 Type = [IntType] int
@@ -2360,7 +2360,7 @@ coroutines.cpp:
 #   91|                 Type = [VoidType] void
 #   91|                 ValueCategory = prvalue
 #   91|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   91|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   91|                   ValueCategory = lvalue
 #-----|     getStmt(3): [LabelStmt] label ...:
 #-----|     getStmt(4): [ExprStmt] ExprStmt
@@ -2371,7 +2371,7 @@ coroutines.cpp:
 #   91|             Type = [Struct] suspend_always
 #   91|             ValueCategory = prvalue
 #   91|           getQualifier(): [VariableAccess] (unnamed local variable)
-#   91|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|               Type = [NestedTypedefType,TypeAliasType] promise_type
 #   91|               ValueCategory = lvalue
 #   91|         getChild(1): [FunctionCall] call to await_ready
 #   91|             Type = [BoolType] bool
@@ -2386,7 +2386,7 @@ coroutines.cpp:
 #   91|                   Type = [Struct] suspend_always
 #   91|                   ValueCategory = prvalue
 #   91|                 getQualifier(): [VariableAccess] (unnamed local variable)
-#   91|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   91|                     Type = [NestedTypedefType,TypeAliasType] promise_type
 #   91|                     ValueCategory = lvalue
 #   91|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   91|                   Type = [Struct] suspend_always
@@ -2454,7 +2454,7 @@ coroutines.cpp:
 #-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
 #   95|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
-#   95|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|           Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2465,7 +2465,7 @@ coroutines.cpp:
 #   95|                 Type = [Struct] suspend_always
 #   95|                 ValueCategory = prvalue
 #   95|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   95|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   95|                   ValueCategory = lvalue
 #   95|             getChild(1): [FunctionCall] call to await_ready
 #   95|                 Type = [BoolType] bool
@@ -2480,7 +2480,7 @@ coroutines.cpp:
 #   95|                       Type = [Struct] suspend_always
 #   95|                       ValueCategory = prvalue
 #   95|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#   95|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #   95|                         ValueCategory = lvalue
 #   95|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   95|                       Type = [Struct] suspend_always
@@ -2555,7 +2555,7 @@ coroutines.cpp:
 #   96|                 Type = [Struct] suspend_always
 #   96|                 ValueCategory = prvalue
 #   96|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   96|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   96|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   96|                   ValueCategory = lvalue
 #   96|               getArgument(0): [VariableAccess] i
 #   96|                   Type = [IntType] int
@@ -2573,7 +2573,7 @@ coroutines.cpp:
 #   96|                       Type = [Struct] suspend_always
 #   96|                       ValueCategory = prvalue
 #   96|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#   96|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   96|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #   96|                         ValueCategory = lvalue
 #   96|                     getArgument(0): [VariableAccess] i
 #   96|                         Type = [IntType] int
@@ -2635,7 +2635,7 @@ coroutines.cpp:
 #-----|               Type = [VoidType] void
 #-----|               ValueCategory = prvalue
 #-----|             getQualifier(): [VariableAccess] (unnamed local variable)
-#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|                 ValueCategory = lvalue
 #-----|         getStmt(3): [GotoStmt] goto ...
 #-----|       getChild(1): [Handler] <handler>
@@ -2656,7 +2656,7 @@ coroutines.cpp:
 #   95|                 Type = [VoidType] void
 #   95|                 ValueCategory = prvalue
 #   95|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   95|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   95|                   ValueCategory = lvalue
 #-----|     getStmt(3): [LabelStmt] label ...:
 #-----|     getStmt(4): [ExprStmt] ExprStmt
@@ -2667,7 +2667,7 @@ coroutines.cpp:
 #   95|             Type = [Struct] suspend_always
 #   95|             ValueCategory = prvalue
 #   95|           getQualifier(): [VariableAccess] (unnamed local variable)
-#   95|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|               Type = [NestedTypedefType,TypeAliasType] promise_type
 #   95|               ValueCategory = lvalue
 #   95|         getChild(1): [FunctionCall] call to await_ready
 #   95|             Type = [BoolType] bool
@@ -2682,7 +2682,7 @@ coroutines.cpp:
 #   95|                   Type = [Struct] suspend_always
 #   95|                   ValueCategory = prvalue
 #   95|                 getQualifier(): [VariableAccess] (unnamed local variable)
-#   95|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   95|                     Type = [NestedTypedefType,TypeAliasType] promise_type
 #   95|                     ValueCategory = lvalue
 #   95|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   95|                   Type = [Struct] suspend_always
@@ -2750,7 +2750,7 @@ coroutines.cpp:
 #-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
 #   99|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
-#   99|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|           Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -2761,7 +2761,7 @@ coroutines.cpp:
 #   99|                 Type = [Struct] suspend_always
 #   99|                 ValueCategory = prvalue
 #   99|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   99|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   99|                   ValueCategory = lvalue
 #   99|             getChild(1): [FunctionCall] call to await_ready
 #   99|                 Type = [BoolType] bool
@@ -2776,7 +2776,7 @@ coroutines.cpp:
 #   99|                       Type = [Struct] suspend_always
 #   99|                       ValueCategory = prvalue
 #   99|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#   99|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #   99|                         ValueCategory = lvalue
 #   99|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   99|                       Type = [Struct] suspend_always
@@ -2851,7 +2851,7 @@ coroutines.cpp:
 #  100|                 Type = [Struct] suspend_always
 #  100|                 ValueCategory = prvalue
 #  100|               getQualifier(): [VariableAccess] (unnamed local variable)
-#  100|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  100|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #  100|                   ValueCategory = lvalue
 #  100|               getArgument(0): [VariableAccess] i
 #  100|                   Type = [IntType] int
@@ -2869,7 +2869,7 @@ coroutines.cpp:
 #  100|                       Type = [Struct] suspend_always
 #  100|                       ValueCategory = prvalue
 #  100|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#  100|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  100|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #  100|                         ValueCategory = lvalue
 #  100|                     getArgument(0): [VariableAccess] i
 #  100|                         Type = [IntType] int
@@ -2944,7 +2944,7 @@ coroutines.cpp:
 #   99|                 Type = [VoidType] void
 #   99|                 ValueCategory = prvalue
 #   99|               getQualifier(): [VariableAccess] (unnamed local variable)
-#   99|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #   99|                   ValueCategory = lvalue
 #-----|     getStmt(3): [LabelStmt] label ...:
 #-----|     getStmt(4): [ExprStmt] ExprStmt
@@ -2955,7 +2955,7 @@ coroutines.cpp:
 #   99|             Type = [Struct] suspend_always
 #   99|             ValueCategory = prvalue
 #   99|           getQualifier(): [VariableAccess] (unnamed local variable)
-#   99|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|               Type = [NestedTypedefType,TypeAliasType] promise_type
 #   99|               ValueCategory = lvalue
 #   99|         getChild(1): [FunctionCall] call to await_ready
 #   99|             Type = [BoolType] bool
@@ -2970,7 +2970,7 @@ coroutines.cpp:
 #   99|                   Type = [Struct] suspend_always
 #   99|                   ValueCategory = prvalue
 #   99|                 getQualifier(): [VariableAccess] (unnamed local variable)
-#   99|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#   99|                     Type = [NestedTypedefType,TypeAliasType] promise_type
 #   99|                     ValueCategory = lvalue
 #   99|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   99|                   Type = [Struct] suspend_always
@@ -3038,7 +3038,7 @@ coroutines.cpp:
 #-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
 #  103|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
-#  103|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|           Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -3049,7 +3049,7 @@ coroutines.cpp:
 #  103|                 Type = [Struct] suspend_always
 #  103|                 ValueCategory = prvalue
 #  103|               getQualifier(): [VariableAccess] (unnamed local variable)
-#  103|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #  103|                   ValueCategory = lvalue
 #  103|             getChild(1): [FunctionCall] call to await_ready
 #  103|                 Type = [BoolType] bool
@@ -3064,7 +3064,7 @@ coroutines.cpp:
 #  103|                       Type = [Struct] suspend_always
 #  103|                       ValueCategory = prvalue
 #  103|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#  103|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #  103|                         ValueCategory = lvalue
 #  103|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #  103|                       Type = [Struct] suspend_always
@@ -3139,7 +3139,7 @@ coroutines.cpp:
 #  104|                 Type = [Struct] suspend_always
 #  104|                 ValueCategory = prvalue
 #  104|               getQualifier(): [VariableAccess] (unnamed local variable)
-#  104|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  104|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #  104|                   ValueCategory = lvalue
 #  104|               getArgument(0): [VariableAccess] i
 #  104|                   Type = [IntType] int
@@ -3157,7 +3157,7 @@ coroutines.cpp:
 #  104|                       Type = [Struct] suspend_always
 #  104|                       ValueCategory = prvalue
 #  104|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#  104|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  104|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #  104|                         ValueCategory = lvalue
 #  104|                     getArgument(0): [VariableAccess] i
 #  104|                         Type = [IntType] int
@@ -3219,7 +3219,7 @@ coroutines.cpp:
 #-----|               Type = [VoidType] void
 #-----|               ValueCategory = prvalue
 #-----|             getQualifier(): [VariableAccess] (unnamed local variable)
-#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|                 ValueCategory = lvalue
 #-----|         getStmt(3): [GotoStmt] goto ...
 #-----|       getChild(1): [Handler] <handler>
@@ -3240,7 +3240,7 @@ coroutines.cpp:
 #  103|                 Type = [VoidType] void
 #  103|                 ValueCategory = prvalue
 #  103|               getQualifier(): [VariableAccess] (unnamed local variable)
-#  103|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #  103|                   ValueCategory = lvalue
 #-----|     getStmt(3): [LabelStmt] label ...:
 #-----|     getStmt(4): [ExprStmt] ExprStmt
@@ -3251,7 +3251,7 @@ coroutines.cpp:
 #  103|             Type = [Struct] suspend_always
 #  103|             ValueCategory = prvalue
 #  103|           getQualifier(): [VariableAccess] (unnamed local variable)
-#  103|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|               Type = [NestedTypedefType,TypeAliasType] promise_type
 #  103|               ValueCategory = lvalue
 #  103|         getChild(1): [FunctionCall] call to await_ready
 #  103|             Type = [BoolType] bool
@@ -3266,7 +3266,7 @@ coroutines.cpp:
 #  103|                   Type = [Struct] suspend_always
 #  103|                   ValueCategory = prvalue
 #  103|                 getQualifier(): [VariableAccess] (unnamed local variable)
-#  103|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  103|                     Type = [NestedTypedefType,TypeAliasType] promise_type
 #  103|                     ValueCategory = lvalue
 #  103|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #  103|                   Type = [Struct] suspend_always
@@ -3334,7 +3334,7 @@ coroutines.cpp:
 #-----|               ValueCategory = prvalue(load)
 #-----|     getStmt(1): [DeclStmt] declaration
 #  108|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (unnamed local variable)
-#  108|           Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|           Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|     getStmt(2): [TryStmt] try { ... }
 #-----|       getStmt(): [BlockStmt] { ... }
 #-----|         getStmt(0): [ExprStmt] ExprStmt
@@ -3345,7 +3345,7 @@ coroutines.cpp:
 #  108|                 Type = [Struct] suspend_always
 #  108|                 ValueCategory = prvalue
 #  108|               getQualifier(): [VariableAccess] (unnamed local variable)
-#  108|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #  108|                   ValueCategory = lvalue
 #  108|             getChild(1): [FunctionCall] call to await_ready
 #  108|                 Type = [BoolType] bool
@@ -3360,7 +3360,7 @@ coroutines.cpp:
 #  108|                       Type = [Struct] suspend_always
 #  108|                       ValueCategory = prvalue
 #  108|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#  108|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #  108|                         ValueCategory = lvalue
 #  108|                   getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #  108|                       Type = [Struct] suspend_always
@@ -3435,7 +3435,7 @@ coroutines.cpp:
 #  109|                 Type = [Struct] suspend_always
 #  109|                 ValueCategory = prvalue
 #  109|               getQualifier(): [VariableAccess] (unnamed local variable)
-#  109|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  109|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #  109|                   ValueCategory = lvalue
 #  109|               getArgument(0): [VariableAccess] i
 #  109|                   Type = [IntType] int
@@ -3453,7 +3453,7 @@ coroutines.cpp:
 #  109|                       Type = [Struct] suspend_always
 #  109|                       ValueCategory = prvalue
 #  109|                     getQualifier(): [VariableAccess] (unnamed local variable)
-#  109|                         Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  109|                         Type = [NestedTypedefType,TypeAliasType] promise_type
 #  109|                         ValueCategory = lvalue
 #  109|                     getArgument(0): [VariableAccess] i
 #  109|                         Type = [IntType] int
@@ -3515,7 +3515,7 @@ coroutines.cpp:
 #-----|               Type = [VoidType] void
 #-----|               ValueCategory = prvalue
 #-----|             getQualifier(): [VariableAccess] (unnamed local variable)
-#-----|                 Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#-----|                 Type = [NestedTypedefType,TypeAliasType] promise_type
 #-----|                 ValueCategory = lvalue
 #  110|             getArgument(0): [AddExpr] ... + ...
 #  110|                 Type = [IntType] int
@@ -3549,7 +3549,7 @@ coroutines.cpp:
 #  108|                 Type = [VoidType] void
 #  108|                 ValueCategory = prvalue
 #  108|               getQualifier(): [VariableAccess] (unnamed local variable)
-#  108|                   Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|                   Type = [NestedTypedefType,TypeAliasType] promise_type
 #  108|                   ValueCategory = lvalue
 #-----|     getStmt(3): [LabelStmt] label ...:
 #-----|     getStmt(4): [ExprStmt] ExprStmt
@@ -3560,7 +3560,7 @@ coroutines.cpp:
 #  108|             Type = [Struct] suspend_always
 #  108|             ValueCategory = prvalue
 #  108|           getQualifier(): [VariableAccess] (unnamed local variable)
-#  108|               Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|               Type = [NestedTypedefType,TypeAliasType] promise_type
 #  108|               ValueCategory = lvalue
 #  108|         getChild(1): [FunctionCall] call to await_ready
 #  108|             Type = [BoolType] bool
@@ -3575,7 +3575,7 @@ coroutines.cpp:
 #  108|                   Type = [Struct] suspend_always
 #  108|                   ValueCategory = prvalue
 #  108|                 getQualifier(): [VariableAccess] (unnamed local variable)
-#  108|                     Type = [NestedTypedefType,UsingAliasTypedefType] promise_type
+#  108|                     Type = [NestedTypedefType,TypeAliasType] promise_type
 #  108|                     ValueCategory = lvalue
 #  108|               getOperand().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #  108|                   Type = [Struct] suspend_always
@@ -12796,10 +12796,10 @@ ir.cpp:
 # 1127|                   ValueCategory = lvalue
 # 1127|       getBeginEndDeclaration(): [DeclStmt] declaration
 # 1127|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 1127|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1127|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 1127|             getExpr(): [FunctionCall] call to begin
-# 1127|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1127|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 1127|                 ValueCategory = prvalue
 # 1127|               getQualifier(): [VariableAccess] (__range)
 # 1127|                   Type = [LValueReferenceType] const vector<int> &
@@ -12808,10 +12808,10 @@ ir.cpp:
 #-----|                   Type = [SpecifiedType] const vector<int>
 #-----|                   ValueCategory = lvalue
 # 1127|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 1127|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1127|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 1127|             getExpr(): [FunctionCall] call to end
-# 1127|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1127|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 1127|                 ValueCategory = prvalue
 # 1127|               getQualifier(): [VariableAccess] (__range)
 # 1127|                   Type = [LValueReferenceType] const vector<int> &
@@ -12823,13 +12823,13 @@ ir.cpp:
 # 1127|           Type = [BoolType] bool
 # 1127|           ValueCategory = prvalue
 # 1127|         getQualifier(): [VariableAccess] (__begin)
-# 1127|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1127|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 1127|             ValueCategory = lvalue
 # 1127|         getArgument(0): [ConstructorCall] call to iterator
 # 1127|             Type = [VoidType] void
 # 1127|             ValueCategory = prvalue
 # 1127|           getArgument(0): [VariableAccess] (__end)
-# 1127|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1127|               Type = [NestedTypedefType,TypeAliasType] iterator
 # 1127|               ValueCategory = lvalue
 #-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &> &
@@ -12849,7 +12849,7 @@ ir.cpp:
 # 1127|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &> &
 # 1127|           ValueCategory = prvalue
 # 1127|         getQualifier(): [VariableAccess] (__begin)
-# 1127|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1127|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 1127|             ValueCategory = lvalue
 # 1127|       getChild(5): [DeclStmt] declaration
 # 1127|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
@@ -12859,7 +12859,7 @@ ir.cpp:
 # 1127|                 Type = [LValueReferenceType] int &
 # 1127|                 ValueCategory = prvalue
 # 1127|               getQualifier(): [VariableAccess] (__begin)
-# 1127|                   Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1127|                   Type = [NestedTypedefType,TypeAliasType] iterator
 # 1127|                   ValueCategory = lvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
@@ -12902,10 +12902,10 @@ ir.cpp:
 # 1133|                   ValueCategory = lvalue
 # 1133|       getBeginEndDeclaration(): [DeclStmt] declaration
 # 1133|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 1133|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1133|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 1133|             getExpr(): [FunctionCall] call to begin
-# 1133|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1133|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 1133|                 ValueCategory = prvalue
 # 1133|               getQualifier(): [VariableAccess] (__range)
 # 1133|                   Type = [LValueReferenceType] const vector<int> &
@@ -12914,10 +12914,10 @@ ir.cpp:
 #-----|                   Type = [SpecifiedType] const vector<int>
 #-----|                   ValueCategory = lvalue
 # 1133|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 1133|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1133|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 1133|             getExpr(): [FunctionCall] call to end
-# 1133|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1133|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 1133|                 ValueCategory = prvalue
 # 1133|               getQualifier(): [VariableAccess] (__range)
 # 1133|                   Type = [LValueReferenceType] const vector<int> &
@@ -12929,13 +12929,13 @@ ir.cpp:
 # 1133|           Type = [BoolType] bool
 # 1133|           ValueCategory = prvalue
 # 1133|         getQualifier(): [VariableAccess] (__begin)
-# 1133|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1133|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 1133|             ValueCategory = lvalue
 # 1133|         getArgument(0): [ConstructorCall] call to iterator
 # 1133|             Type = [VoidType] void
 # 1133|             ValueCategory = prvalue
 # 1133|           getArgument(0): [VariableAccess] (__end)
-# 1133|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1133|               Type = [NestedTypedefType,TypeAliasType] iterator
 # 1133|               ValueCategory = lvalue
 #-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &> &
@@ -12955,7 +12955,7 @@ ir.cpp:
 # 1133|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &> &
 # 1133|           ValueCategory = prvalue
 # 1133|         getQualifier(): [VariableAccess] (__begin)
-# 1133|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1133|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 1133|             ValueCategory = lvalue
 # 1133|       getChild(5): [DeclStmt] declaration
 # 1133|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
@@ -12965,7 +12965,7 @@ ir.cpp:
 # 1133|                 Type = [LValueReferenceType] int &
 # 1133|                 ValueCategory = prvalue
 # 1133|               getQualifier(): [VariableAccess] (__begin)
-# 1133|                   Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 1133|                   Type = [NestedTypedefType,TypeAliasType] iterator
 # 1133|                   ValueCategory = lvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
@@ -16083,7 +16083,7 @@ ir.cpp:
 # 1634|                 Type = [LValueReferenceType] type &
 # 1634|                 ValueCategory = prvalue
 # 1634|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-# 1634|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1634|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1634|                   ValueCategory = lvalue
 # 1634|         getDeclarationEntry(2): [VariableDeclarationEntry] definition of d
 # 1634|             Type = [LValueReferenceType] type &
@@ -16098,13 +16098,13 @@ ir.cpp:
 # 1634|                 Type = [LValueReferenceType] type &
 # 1634|                 ValueCategory = prvalue
 # 1634|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-# 1634|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1634|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1634|                   ValueCategory = lvalue
 # 1634|         getDeclarationEntry(3): [VariableDeclarationEntry] definition of r
-# 1634|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1634|             Type = [NestedTypedefType,TypeAliasType] type
 #-----|           getVariable().getInitializer(): [Initializer] initializer for r
 # 1634|             getExpr(): [FunctionCall] call to get
-# 1634|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1634|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1634|                 ValueCategory = prvalue
 # 1634|               getQualifier(): [VariableAccess] (unnamed local variable)
 # 1634|                   Type = [Struct] StructuredBindingTupleRefGet
@@ -16117,17 +16117,17 @@ ir.cpp:
 # 1634|                   ValueCategory = lvalue
 # 1635|       getStmt(1): [ExprStmt] ExprStmt
 # 1635|         getExpr(): [AssignExpr] ... = ...
-# 1635|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1635|             Type = [NestedTypedefType,TypeAliasType] type
 # 1635|             ValueCategory = lvalue
 # 1635|           getLValue(): [VariableAccess] d
 # 1635|               Type = [LValueReferenceType] type &
 # 1635|               ValueCategory = prvalue(load)
 # 1635|           getRValue(): [Literal] 4.0
-# 1635|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1635|               Type = [NestedTypedefType,TypeAliasType] type
 # 1635|               Value = [Literal] 4.0
 # 1635|               ValueCategory = prvalue
 # 1635|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 1635|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1635|               Type = [NestedTypedefType,TypeAliasType] type
 # 1635|               ValueCategory = lvalue
 # 1636|       getStmt(2): [DeclStmt] declaration
 # 1636|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rd
@@ -16140,7 +16140,7 @@ ir.cpp:
 # 1636|                 Type = [LValueReferenceType] type &
 # 1636|                 ValueCategory = prvalue
 # 1636|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-# 1636|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1636|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1636|                   ValueCategory = lvalue
 # 1637|       getStmt(3): [DeclStmt] declaration
 # 1637|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
@@ -16150,14 +16150,14 @@ ir.cpp:
 # 1637|                 Type = [LValueReferenceType] type &
 # 1637|                 ValueCategory = prvalue(load)
 # 1637|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 1637|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1637|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1637|                 ValueCategory = prvalue(load)
 # 1638|       getStmt(4): [ExprStmt] ExprStmt
 # 1638|         getExpr(): [AssignExpr] ... = ...
 # 1638|             Type = [IntType] int
 # 1638|             ValueCategory = lvalue
 # 1638|           getLValue(): [VariableAccess] r
-# 1638|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1638|               Type = [NestedTypedefType,TypeAliasType] type
 # 1638|               ValueCategory = prvalue(load)
 # 1638|           getRValue(): [Literal] 5
 # 1638|               Type = [IntType] int
@@ -16171,7 +16171,7 @@ ir.cpp:
 # 1639|             Type = [LValueReferenceType] int &
 # 1639|           getVariable().getInitializer(): [Initializer] initializer for rr
 # 1639|             getExpr(): [VariableAccess] r
-# 1639|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1639|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1639|                 ValueCategory = prvalue(load)
 # 1639|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1639|                 Type = [LValueReferenceType] int &
@@ -16184,7 +16184,7 @@ ir.cpp:
 # 1640|             Type = [IntType] int
 # 1640|           getVariable().getInitializer(): [Initializer] initializer for w
 # 1640|             getExpr(): [VariableAccess] r
-# 1640|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1640|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1640|                 ValueCategory = prvalue(load)
 # 1640|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1640|                 Type = [IntType] int
@@ -16211,7 +16211,7 @@ ir.cpp:
 # 1645|                 Type = [LValueReferenceType] type &
 # 1645|                 ValueCategory = prvalue
 # 1645|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-# 1645|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1645|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1645|                   ValueCategory = lvalue
 # 1646|       getStmt(2): [DeclStmt] declaration
 # 1646|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
@@ -16227,14 +16227,14 @@ ir.cpp:
 # 1646|                 Type = [LValueReferenceType] type &
 # 1646|                 ValueCategory = prvalue
 # 1646|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-# 1646|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1646|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1646|                   ValueCategory = lvalue
 # 1647|       getStmt(3): [DeclStmt] declaration
 # 1647|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
 # 1647|             Type = [LValueReferenceType] int &
 # 1647|           getVariable().getInitializer(): [Initializer] initializer for r
 # 1647|             getExpr(): [FunctionCall] call to get
-# 1647|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1647|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1647|                 ValueCategory = prvalue
 # 1647|               getQualifier(): [VariableAccess] unnamed_local_variable
 # 1647|                   Type = [Struct] StructuredBindingTupleRefGet
@@ -16247,17 +16247,17 @@ ir.cpp:
 # 1647|                   ValueCategory = lvalue
 # 1648|       getStmt(4): [ExprStmt] ExprStmt
 # 1648|         getExpr(): [AssignExpr] ... = ...
-# 1648|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1648|             Type = [NestedTypedefType,TypeAliasType] type
 # 1648|             ValueCategory = lvalue
 # 1648|           getLValue(): [VariableAccess] d
 # 1648|               Type = [LValueReferenceType] type &
 # 1648|               ValueCategory = prvalue(load)
 # 1648|           getRValue(): [Literal] 4.0
-# 1648|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1648|               Type = [NestedTypedefType,TypeAliasType] type
 # 1648|               Value = [Literal] 4.0
 # 1648|               ValueCategory = prvalue
 # 1648|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 1648|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1648|               Type = [NestedTypedefType,TypeAliasType] type
 # 1648|               ValueCategory = lvalue
 # 1649|       getStmt(5): [DeclStmt] declaration
 # 1649|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of rd
@@ -16270,7 +16270,7 @@ ir.cpp:
 # 1649|                 Type = [LValueReferenceType] type &
 # 1649|                 ValueCategory = prvalue
 # 1649|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-# 1649|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1649|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1649|                   ValueCategory = lvalue
 # 1650|       getStmt(6): [DeclStmt] declaration
 # 1650|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
@@ -16280,7 +16280,7 @@ ir.cpp:
 # 1650|                 Type = [LValueReferenceType] type &
 # 1650|                 ValueCategory = prvalue(load)
 # 1650|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 1650|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1650|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1650|                 ValueCategory = prvalue(load)
 # 1651|       getStmt(7): [ExprStmt] ExprStmt
 # 1651|         getExpr(): [AssignExpr] ... = ...
@@ -16442,7 +16442,7 @@ ir.cpp:
 # 1700|             Type = [RValueReferenceType] type &&
 #-----|           getVariable().getInitializer(): [Initializer] initializer for i
 # 1700|             getExpr(): [FunctionCall] call to get
-# 1700|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1700|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1700|                 ValueCategory = prvalue
 # 1700|               getQualifier(): [VariableAccess] (unnamed local variable)
 # 1700|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
@@ -16454,13 +16454,13 @@ ir.cpp:
 # 1700|                 Type = [LValueReferenceType] type &
 # 1700|                 ValueCategory = prvalue
 # 1700|               getExpr(): [TemporaryObjectExpr] temporary object
-# 1700|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1700|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1700|                   ValueCategory = lvalue
 # 1700|         getDeclarationEntry(2): [VariableDeclarationEntry] definition of r
-# 1700|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1700|             Type = [NestedTypedefType,TypeAliasType] type
 #-----|           getVariable().getInitializer(): [Initializer] initializer for r
 # 1700|             getExpr(): [FunctionCall] call to get
-# 1700|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1700|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1700|                 ValueCategory = prvalue
 # 1700|               getQualifier(): [VariableAccess] (unnamed local variable)
 # 1700|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
@@ -16475,10 +16475,10 @@ ir.cpp:
 # 1700|                   Type = [IntType] int
 # 1700|                   ValueCategory = lvalue
 # 1700|         getDeclarationEntry(3): [VariableDeclarationEntry] definition of rv
-# 1700|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1700|             Type = [NestedTypedefType,TypeAliasType] type
 #-----|           getVariable().getInitializer(): [Initializer] initializer for rv
 # 1700|             getExpr(): [FunctionCall] call to get
-# 1700|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1700|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1700|                 ValueCategory = prvalue
 # 1700|               getQualifier(): [VariableAccess] (unnamed local variable)
 # 1700|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
@@ -16494,17 +16494,17 @@ ir.cpp:
 # 1700|                   ValueCategory = xvalue
 # 1701|       getStmt(1): [ExprStmt] ExprStmt
 # 1701|         getExpr(): [AssignExpr] ... = ...
-# 1701|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1701|             Type = [NestedTypedefType,TypeAliasType] type
 # 1701|             ValueCategory = lvalue
 # 1701|           getLValue(): [VariableAccess] i
 # 1701|               Type = [RValueReferenceType] type &&
 # 1701|               ValueCategory = prvalue(load)
 # 1701|           getRValue(): [Literal] 4
-# 1701|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1701|               Type = [NestedTypedefType,TypeAliasType] type
 # 1701|               Value = [Literal] 4
 # 1701|               ValueCategory = prvalue
 # 1701|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 1701|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1701|               Type = [NestedTypedefType,TypeAliasType] type
 # 1701|               ValueCategory = lvalue
 # 1702|       getStmt(2): [DeclStmt] declaration
 # 1702|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ri
@@ -16517,7 +16517,7 @@ ir.cpp:
 # 1702|                 Type = [LValueReferenceType] type &
 # 1702|                 ValueCategory = prvalue
 # 1702|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-# 1702|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1702|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1702|                   ValueCategory = lvalue
 # 1703|       getStmt(3): [DeclStmt] declaration
 # 1703|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
@@ -16527,14 +16527,14 @@ ir.cpp:
 # 1703|                 Type = [RValueReferenceType] type &&
 # 1703|                 ValueCategory = prvalue(load)
 # 1703|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 1703|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1703|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1703|                 ValueCategory = prvalue(load)
 # 1704|       getStmt(4): [ExprStmt] ExprStmt
 # 1704|         getExpr(): [AssignExpr] ... = ...
 # 1704|             Type = [IntType] int
 # 1704|             ValueCategory = lvalue
 # 1704|           getLValue(): [VariableAccess] r
-# 1704|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1704|               Type = [NestedTypedefType,TypeAliasType] type
 # 1704|               ValueCategory = prvalue(load)
 # 1704|           getRValue(): [Literal] 5
 # 1704|               Type = [IntType] int
@@ -16548,7 +16548,7 @@ ir.cpp:
 # 1705|             Type = [LValueReferenceType] int &
 # 1705|           getVariable().getInitializer(): [Initializer] initializer for rr
 # 1705|             getExpr(): [VariableAccess] r
-# 1705|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1705|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1705|                 ValueCategory = prvalue(load)
 # 1705|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1705|                 Type = [LValueReferenceType] int &
@@ -16561,7 +16561,7 @@ ir.cpp:
 # 1706|             Type = [IntType] int
 # 1706|           getVariable().getInitializer(): [Initializer] initializer for w
 # 1706|             getExpr(): [VariableAccess] r
-# 1706|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1706|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1706|                 ValueCategory = prvalue(load)
 # 1706|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 1706|                 Type = [IntType] int
@@ -16582,7 +16582,7 @@ ir.cpp:
 # 1711|             Type = [RValueReferenceType] type &&
 # 1711|           getVariable().getInitializer(): [Initializer] initializer for i
 # 1711|             getExpr(): [FunctionCall] call to get
-# 1711|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1711|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1711|                 ValueCategory = prvalue
 # 1711|               getQualifier(): [VariableAccess] unnamed_local_variable
 # 1711|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
@@ -16594,14 +16594,14 @@ ir.cpp:
 # 1711|                 Type = [LValueReferenceType] type &
 # 1711|                 ValueCategory = prvalue
 # 1711|               getExpr(): [TemporaryObjectExpr] temporary object
-# 1711|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1711|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1711|                   ValueCategory = lvalue
 # 1712|       getStmt(2): [DeclStmt] declaration
 # 1712|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of r
 # 1712|             Type = [LValueReferenceType] int &
 # 1712|           getVariable().getInitializer(): [Initializer] initializer for r
 # 1712|             getExpr(): [FunctionCall] call to get
-# 1712|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1712|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1712|                 ValueCategory = prvalue
 # 1712|               getQualifier(): [VariableAccess] unnamed_local_variable
 # 1712|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
@@ -16620,7 +16620,7 @@ ir.cpp:
 # 1713|             Type = [RValueReferenceType] int &&
 # 1713|           getVariable().getInitializer(): [Initializer] initializer for rv
 # 1713|             getExpr(): [FunctionCall] call to get
-# 1713|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1713|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1713|                 ValueCategory = prvalue
 # 1713|               getQualifier(): [VariableAccess] unnamed_local_variable
 # 1713|                   Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
@@ -16636,17 +16636,17 @@ ir.cpp:
 # 1713|                   ValueCategory = xvalue
 # 1714|       getStmt(4): [ExprStmt] ExprStmt
 # 1714|         getExpr(): [AssignExpr] ... = ...
-# 1714|             Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1714|             Type = [NestedTypedefType,TypeAliasType] type
 # 1714|             ValueCategory = lvalue
 # 1714|           getLValue(): [VariableAccess] i
 # 1714|               Type = [RValueReferenceType] type &&
 # 1714|               ValueCategory = prvalue(load)
 # 1714|           getRValue(): [Literal] 4
-# 1714|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1714|               Type = [NestedTypedefType,TypeAliasType] type
 # 1714|               Value = [Literal] 4
 # 1714|               ValueCategory = prvalue
 # 1714|           getLValue().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 1714|               Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1714|               Type = [NestedTypedefType,TypeAliasType] type
 # 1714|               ValueCategory = lvalue
 # 1715|       getStmt(5): [DeclStmt] declaration
 # 1715|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ri
@@ -16659,7 +16659,7 @@ ir.cpp:
 # 1715|                 Type = [LValueReferenceType] type &
 # 1715|                 ValueCategory = prvalue
 # 1715|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
-# 1715|                   Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1715|                   Type = [NestedTypedefType,TypeAliasType] type
 # 1715|                   ValueCategory = lvalue
 # 1716|       getStmt(6): [DeclStmt] declaration
 # 1716|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of v
@@ -16669,7 +16669,7 @@ ir.cpp:
 # 1716|                 Type = [RValueReferenceType] type &&
 # 1716|                 ValueCategory = prvalue(load)
 # 1716|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 1716|                 Type = [NestedTypedefType,UsingAliasTypedefType] type
+# 1716|                 Type = [NestedTypedefType,TypeAliasType] type
 # 1716|                 ValueCategory = prvalue(load)
 # 1717|       getStmt(7): [ExprStmt] ExprStmt
 # 1717|         getExpr(): [AssignExpr] ... = ...
@@ -20080,10 +20080,10 @@ ir.cpp:
 # 2218|                 ValueCategory = prvalue
 # 2218|       getBeginEndDeclaration(): [DeclStmt] declaration
 # 2218|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 2218|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2218|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 2218|             getExpr(): [FunctionCall] call to begin
-# 2218|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2218|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2218|                 ValueCategory = prvalue
 # 2218|               getQualifier(): [VariableAccess] (__range)
 # 2218|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
@@ -20096,10 +20096,10 @@ ir.cpp:
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
 #-----|                     ValueCategory = lvalue
 # 2218|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 2218|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2218|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 2218|             getExpr(): [FunctionCall] call to end
-# 2218|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2218|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2218|                 ValueCategory = prvalue
 # 2218|               getQualifier(): [VariableAccess] (__range)
 # 2218|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
@@ -20115,13 +20115,13 @@ ir.cpp:
 # 2218|           Type = [BoolType] bool
 # 2218|           ValueCategory = prvalue
 # 2218|         getQualifier(): [VariableAccess] (__begin)
-# 2218|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2218|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2218|             ValueCategory = lvalue
 # 2218|         getArgument(0): [ConstructorCall] call to iterator
 # 2218|             Type = [VoidType] void
 # 2218|             ValueCategory = prvalue
 # 2218|           getArgument(0): [VariableAccess] (__end)
-# 2218|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2218|               Type = [NestedTypedefType,TypeAliasType] iterator
 # 2218|               ValueCategory = lvalue
 #-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &> &
@@ -20141,7 +20141,7 @@ ir.cpp:
 # 2218|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &> &
 # 2218|           ValueCategory = prvalue
 # 2218|         getQualifier(): [VariableAccess] (__begin)
-# 2218|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2218|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2218|             ValueCategory = lvalue
 # 2218|       getChild(5): [DeclStmt] declaration
 # 2218|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
@@ -20151,7 +20151,7 @@ ir.cpp:
 # 2218|                 Type = [LValueReferenceType] ClassWithDestructor &
 # 2218|                 ValueCategory = prvalue
 # 2218|               getQualifier(): [VariableAccess] (__begin)
-# 2218|                   Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2218|                   Type = [NestedTypedefType,TypeAliasType] iterator
 # 2218|                   ValueCategory = lvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
@@ -20218,10 +20218,10 @@ ir.cpp:
 # 2221|                 ValueCategory = prvalue
 # 2221|       getBeginEndDeclaration(): [DeclStmt] declaration
 # 2221|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 2221|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2221|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 2221|             getExpr(): [FunctionCall] call to begin
-# 2221|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2221|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2221|                 ValueCategory = prvalue
 # 2221|               getQualifier(): [VariableAccess] (__range)
 # 2221|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
@@ -20234,10 +20234,10 @@ ir.cpp:
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
 #-----|                     ValueCategory = lvalue
 # 2221|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 2221|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2221|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 2221|             getExpr(): [FunctionCall] call to end
-# 2221|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2221|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2221|                 ValueCategory = prvalue
 # 2221|               getQualifier(): [VariableAccess] (__range)
 # 2221|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
@@ -20253,13 +20253,13 @@ ir.cpp:
 # 2221|           Type = [BoolType] bool
 # 2221|           ValueCategory = prvalue
 # 2221|         getQualifier(): [VariableAccess] (__begin)
-# 2221|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2221|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2221|             ValueCategory = lvalue
 # 2221|         getArgument(0): [ConstructorCall] call to iterator
 # 2221|             Type = [VoidType] void
 # 2221|             ValueCategory = prvalue
 # 2221|           getArgument(0): [VariableAccess] (__end)
-# 2221|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2221|               Type = [NestedTypedefType,TypeAliasType] iterator
 # 2221|               ValueCategory = lvalue
 #-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &> &
@@ -20279,7 +20279,7 @@ ir.cpp:
 # 2221|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &> &
 # 2221|           ValueCategory = prvalue
 # 2221|         getQualifier(): [VariableAccess] (__begin)
-# 2221|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2221|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2221|             ValueCategory = lvalue
 # 2221|       getChild(5): [DeclStmt] declaration
 # 2221|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
@@ -20289,7 +20289,7 @@ ir.cpp:
 # 2221|                 Type = [LValueReferenceType] ClassWithDestructor &
 # 2221|                 ValueCategory = prvalue
 # 2221|               getQualifier(): [VariableAccess] (__begin)
-# 2221|                   Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2221|                   Type = [NestedTypedefType,TypeAliasType] iterator
 # 2221|                   ValueCategory = lvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
@@ -20391,10 +20391,10 @@ ir.cpp:
 # 2227|                 ValueCategory = prvalue
 # 2227|       getBeginEndDeclaration(): [DeclStmt] declaration
 # 2227|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 2227|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2227|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 2227|             getExpr(): [FunctionCall] call to begin
-# 2227|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2227|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2227|                 ValueCategory = prvalue
 # 2227|               getQualifier(): [VariableAccess] (__range)
 # 2227|                   Type = [LValueReferenceType] vector<int> &
@@ -20407,10 +20407,10 @@ ir.cpp:
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<int>
 #-----|                     ValueCategory = lvalue
 # 2227|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 2227|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2227|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 2227|             getExpr(): [FunctionCall] call to end
-# 2227|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2227|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2227|                 ValueCategory = prvalue
 # 2227|               getQualifier(): [VariableAccess] (__range)
 # 2227|                   Type = [LValueReferenceType] vector<int> &
@@ -20426,13 +20426,13 @@ ir.cpp:
 # 2227|           Type = [BoolType] bool
 # 2227|           ValueCategory = prvalue
 # 2227|         getQualifier(): [VariableAccess] (__begin)
-# 2227|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2227|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2227|             ValueCategory = lvalue
 # 2227|         getArgument(0): [ConstructorCall] call to iterator
 # 2227|             Type = [VoidType] void
 # 2227|             ValueCategory = prvalue
 # 2227|           getArgument(0): [VariableAccess] (__end)
-# 2227|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2227|               Type = [NestedTypedefType,TypeAliasType] iterator
 # 2227|               ValueCategory = lvalue
 #-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &> &
@@ -20452,7 +20452,7 @@ ir.cpp:
 # 2227|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &> &
 # 2227|           ValueCategory = prvalue
 # 2227|         getQualifier(): [VariableAccess] (__begin)
-# 2227|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2227|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2227|             ValueCategory = lvalue
 # 2227|       getChild(5): [DeclStmt] declaration
 # 2227|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
@@ -20462,7 +20462,7 @@ ir.cpp:
 # 2227|                 Type = [LValueReferenceType] int &
 # 2227|                 ValueCategory = prvalue
 # 2227|               getQualifier(): [VariableAccess] (__begin)
-# 2227|                   Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2227|                   Type = [NestedTypedefType,TypeAliasType] iterator
 # 2227|                   ValueCategory = lvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, int, ptrdiff_t, int *, int &>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
@@ -20537,10 +20537,10 @@ ir.cpp:
 # 2232|                 ValueCategory = prvalue
 # 2232|       getBeginEndDeclaration(): [DeclStmt] declaration
 # 2232|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 2232|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2232|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 2232|             getExpr(): [FunctionCall] call to begin
-# 2232|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2232|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2232|                 ValueCategory = prvalue
 # 2232|               getQualifier(): [VariableAccess] (__range)
 # 2232|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
@@ -20553,10 +20553,10 @@ ir.cpp:
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
 #-----|                     ValueCategory = lvalue
 # 2232|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 2232|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2232|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 2232|             getExpr(): [FunctionCall] call to end
-# 2232|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2232|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2232|                 ValueCategory = prvalue
 # 2232|               getQualifier(): [VariableAccess] (__range)
 # 2232|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
@@ -20572,13 +20572,13 @@ ir.cpp:
 # 2232|           Type = [BoolType] bool
 # 2232|           ValueCategory = prvalue
 # 2232|         getQualifier(): [VariableAccess] (__begin)
-# 2232|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2232|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2232|             ValueCategory = lvalue
 # 2232|         getArgument(0): [ConstructorCall] call to iterator
 # 2232|             Type = [VoidType] void
 # 2232|             ValueCategory = prvalue
 # 2232|           getArgument(0): [VariableAccess] (__end)
-# 2232|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2232|               Type = [NestedTypedefType,TypeAliasType] iterator
 # 2232|               ValueCategory = lvalue
 #-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &> &
@@ -20598,7 +20598,7 @@ ir.cpp:
 # 2232|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &> &
 # 2232|           ValueCategory = prvalue
 # 2232|         getQualifier(): [VariableAccess] (__begin)
-# 2232|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2232|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2232|             ValueCategory = lvalue
 # 2232|       getChild(5): [DeclStmt] declaration
 # 2232|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
@@ -20608,7 +20608,7 @@ ir.cpp:
 # 2232|                 Type = [LValueReferenceType] ClassWithDestructor &
 # 2232|                 ValueCategory = prvalue
 # 2232|               getQualifier(): [VariableAccess] (__begin)
-# 2232|                   Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2232|                   Type = [NestedTypedefType,TypeAliasType] iterator
 # 2232|                   ValueCategory = lvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, ClassWithDestructor, ptrdiff_t, ClassWithDestructor *, ClassWithDestructor &>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
@@ -21168,10 +21168,10 @@ ir.cpp:
 # 2310|                       ValueCategory = xvalue
 # 2310|       getBeginEndDeclaration(): [DeclStmt] declaration
 # 2310|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 2310|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2310|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 2310|             getExpr(): [FunctionCall] call to begin
-# 2310|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2310|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2310|                 ValueCategory = prvalue
 # 2310|               getQualifier(): [VariableAccess] (__range)
 # 2310|                   Type = [RValueReferenceType] vector<String> &&
@@ -21184,10 +21184,10 @@ ir.cpp:
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<String>
 #-----|                     ValueCategory = lvalue
 # 2310|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 2310|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2310|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 2310|             getExpr(): [FunctionCall] call to end
-# 2310|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2310|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2310|                 ValueCategory = prvalue
 # 2310|               getQualifier(): [VariableAccess] (__range)
 # 2310|                   Type = [RValueReferenceType] vector<String> &&
@@ -21203,13 +21203,13 @@ ir.cpp:
 # 2310|           Type = [BoolType] bool
 # 2310|           ValueCategory = prvalue
 # 2310|         getQualifier(): [VariableAccess] (__begin)
-# 2310|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2310|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2310|             ValueCategory = lvalue
 # 2310|         getArgument(0): [ConstructorCall] call to iterator
 # 2310|             Type = [VoidType] void
 # 2310|             ValueCategory = prvalue
 # 2310|           getArgument(0): [VariableAccess] (__end)
-# 2310|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2310|               Type = [NestedTypedefType,TypeAliasType] iterator
 # 2310|               ValueCategory = lvalue
 #-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &> &
@@ -21229,7 +21229,7 @@ ir.cpp:
 # 2310|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &> &
 # 2310|           ValueCategory = prvalue
 # 2310|         getQualifier(): [VariableAccess] (__begin)
-# 2310|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2310|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2310|             ValueCategory = lvalue
 # 2310|       getChild(5): [DeclStmt] declaration
 # 2310|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
@@ -21242,7 +21242,7 @@ ir.cpp:
 # 2310|                   Type = [LValueReferenceType] String &
 # 2310|                   ValueCategory = prvalue
 # 2310|                 getQualifier(): [VariableAccess] (__begin)
-# 2310|                     Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2310|                     Type = [NestedTypedefType,TypeAliasType] iterator
 # 2310|                     ValueCategory = lvalue
 #-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &>)...
 #-----|                     Conversion = [GlvalueConversion] glvalue conversion
@@ -22708,10 +22708,10 @@ ir.cpp:
 # 2433|                   ValueCategory = xvalue
 # 2433|       getBeginEndDeclaration(): [DeclStmt] declaration
 # 2433|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 2433|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2433|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 2433|             getExpr(): [FunctionCall] call to begin
-# 2433|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2433|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2433|                 ValueCategory = prvalue
 # 2433|               getQualifier(): [VariableAccess] (__range)
 # 2433|                   Type = [RValueReferenceType] vector<char> &&
@@ -22724,10 +22724,10 @@ ir.cpp:
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<char>
 #-----|                     ValueCategory = lvalue
 # 2433|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 2433|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2433|             Type = [NestedTypedefType,TypeAliasType] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 2433|             getExpr(): [FunctionCall] call to end
-# 2433|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2433|                 Type = [NestedTypedefType,TypeAliasType] iterator
 # 2433|                 ValueCategory = prvalue
 # 2433|               getQualifier(): [VariableAccess] (__range)
 # 2433|                   Type = [RValueReferenceType] vector<char> &&
@@ -22743,13 +22743,13 @@ ir.cpp:
 # 2433|           Type = [BoolType] bool
 # 2433|           ValueCategory = prvalue
 # 2433|         getQualifier(): [VariableAccess] (__begin)
-# 2433|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2433|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2433|             ValueCategory = lvalue
 # 2433|         getArgument(0): [ConstructorCall] call to iterator
 # 2433|             Type = [VoidType] void
 # 2433|             ValueCategory = prvalue
 # 2433|           getArgument(0): [VariableAccess] (__end)
-# 2433|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2433|               Type = [NestedTypedefType,TypeAliasType] iterator
 # 2433|               ValueCategory = lvalue
 #-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &
@@ -22769,7 +22769,7 @@ ir.cpp:
 # 2433|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &
 # 2433|           ValueCategory = prvalue
 # 2433|         getQualifier(): [VariableAccess] (__begin)
-# 2433|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2433|             Type = [NestedTypedefType,TypeAliasType] iterator
 # 2433|             ValueCategory = lvalue
 # 2433|       getChild(5): [DeclStmt] declaration
 # 2433|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
@@ -22779,7 +22779,7 @@ ir.cpp:
 # 2433|                 Type = [LValueReferenceType] char &
 # 2433|                 ValueCategory = prvalue
 # 2433|               getQualifier(): [VariableAccess] (__begin)
-# 2433|                   Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2433|                   Type = [NestedTypedefType,TypeAliasType] iterator
 # 2433|                   ValueCategory = lvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion

@@ -222,8 +222,6 @@ private module Input2Common {
 }
 
 private module PreInput2 implements InputSig2<PreTypeMention> {
-  PreTypeMention getABaseTypeMention(Type t) { none() }
-
   PreTypeMention getATypeParameterConstraint(TypeParameter tp) {
     result = Input2Common::getATypeParameterConstraint(tp)
   }
@@ -248,8 +246,6 @@ private module PreInput2 implements InputSig2<PreTypeMention> {
 module PreM2 = Make2<PreTypeMention, PreInput2>;
 
 private module Input2 implements InputSig2<TypeMention> {
-  TypeMention getABaseTypeMention(Type t) { none() }
-
   TypeMention getATypeParameterConstraint(TypeParameter tp) {
     result = Input2Common::getATypeParameterConstraint(tp)
   }

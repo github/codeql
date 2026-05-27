@@ -1,0 +1,212 @@
+===
+For-in over array literal
+===
+
+for x in [1, 2, 3] {
+  print(x)
+}
+
+---
+
+source_file
+  for_statement
+    collection:
+      array_literal
+        element:
+          integer_literal "1"
+          integer_literal "2"
+          integer_literal "3"
+    item:
+      pattern
+        bound_identifier: simple_identifier "x"
+    statements
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value: simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "for x in [1, 2, 3] {\n  print(x)\n}"
+
+===
+For-in over range
+===
+
+for i in 0..<10 {
+  print(i)
+}
+
+---
+
+source_file
+  for_statement
+    collection:
+      range_expression
+        end: integer_literal "10"
+        op: ..<
+        start: integer_literal "0"
+    item:
+      pattern
+        bound_identifier: simple_identifier "i"
+    statements
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value: simple_identifier "i"
+
+---
+
+top_level
+  body: unsupported_node "for i in 0..<10 {\n  print(i)\n}"
+
+===
+For-in with where clause
+===
+
+for x in xs where x > 0 {
+  print(x)
+}
+
+---
+
+source_file
+  for_statement
+    collection: simple_identifier "xs"
+    item:
+      pattern
+        bound_identifier: simple_identifier "x"
+    where_clause
+      where_keyword "where"
+      comparison_expression
+        lhs: simple_identifier "x"
+        op: >
+        rhs: integer_literal "0"
+    statements
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value: simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "for x in xs where x > 0 {\n  print(x)\n}"
+
+===
+While loop
+===
+
+while x > 0 {
+  x -= 1
+}
+
+---
+
+source_file
+  while_statement
+    condition:
+      if_condition
+        comparison_expression
+          lhs: simple_identifier "x"
+          op: >
+          rhs: integer_literal "0"
+    statements
+      assignment
+        operator: -=
+        result: integer_literal "1"
+        target:
+          directly_assignable_expression
+            simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "while x > 0 {\n  x -= 1\n}"
+
+===
+Repeat-while loop
+===
+
+repeat {
+  x -= 1
+} while x > 0
+
+---
+
+source_file
+  repeat_while_statement
+    condition:
+      if_condition
+        comparison_expression
+          lhs: simple_identifier "x"
+          op: >
+          rhs: integer_literal "0"
+    statements
+      assignment
+        operator: -=
+        result: integer_literal "1"
+        target:
+          directly_assignable_expression
+            simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "repeat {\n  x -= 1\n} while x > 0"
+
+===
+Break and continue
+===
+
+for x in xs {
+  if x < 0 { continue }
+  if x > 100 { break }
+  print(x)
+}
+
+---
+
+source_file
+  for_statement
+    collection: simple_identifier "xs"
+    item:
+      pattern
+        bound_identifier: simple_identifier "x"
+    statements
+      if_statement
+        condition:
+          if_condition
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: <
+              rhs: integer_literal "0"
+        statements
+          control_transfer_statement
+      if_statement
+        condition:
+          if_condition
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "100"
+        statements
+          control_transfer_statement
+      call_expression
+        simple_identifier "print"
+        call_suffix
+          value_arguments
+            value_argument
+              value: simple_identifier "x"
+
+---
+
+top_level
+  body: unsupported_node "for x in xs {\n  if x < 0 { continue }\n  if x > 100 { break }\n  print(x)\n}"

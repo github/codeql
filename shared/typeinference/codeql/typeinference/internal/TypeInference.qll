@@ -155,8 +155,8 @@ signature module InputSig1<LocationSig Location> {
   class TypeParameter extends Type;
 
   /**
-   * A type abstraction. I.e., a place in the program where type variables are
-   * introduced.
+   * A type abstraction. I.e., a place in the program where type variables may
+   * be introduced.
    *
    * Example in C#:
    * ```csharp
@@ -171,7 +171,7 @@ signature module InputSig1<LocationSig Location> {
    * ```
    */
   class TypeAbstraction {
-    /** Gets a type parameter introduced by this abstraction. */
+    /** Gets a type parameter introduced by this abstraction, if any. */
     TypeParameter getATypeParameter();
 
     /** Gets a textual representation of this type abstraction. */
@@ -324,56 +324,31 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   /**
    * Provides the input to `Make2`.
    *
-   * The `TypeMention` parameter is used to build the base type hierarchy based on
-   * `getABaseTypeMention` and to construct the constraint satisfaction
-   * hierarchy based on `conditionSatisfiesConstraint`.
-   *
-   * It will usually be based on syntactic occurrences of types in the source
-   * code. For example, in
-   *
-   * ```csharp
-   * class C<T> : Base<T>, Interface { }
-   * ```
-   *
-   * a type mention would exist for `Base<T>` and resolve to the following
-   * types:
-   *
-   * `TypePath` | `Type`
-   * ---------- | -------
-   * `""`       | ``Base`1``
-   * `"0"`      | `T`
+   * The `TypeMention` parameter is used to construct the constraint satisfaction
+   * hierarchy based on `conditionSatisfiesConstraint`, which is general enough
+   * to model both class hierarchies and trait implementation hierarchies in Rust.
    */
   signature module InputSig2<HasTypeTreeSig TypeMention> {
-    /**
-     * Gets a base type mention of `t`, if any. Example:
-     *
-     * ```csharp
-     * class C<T> : Base<T>, Interface { }
-     * //    ^ `t`
-     * //           ^^^^^^^ `result`
-     * //                    ^^^^^^^^^ `result`
-     * ```
-     */
-    TypeMention getABaseTypeMention(Type t);
-
     /**
      * Gets a type constraint on the type parameter `tp`, if any. All
      * instantiations of the type parameter must satisfy the constraint.
      *
      * For example, in
+     *
      * ```csharp
      * class GenericClass<T> : IComparable<GenericClass<T>>
      * //                 ^ `tp`
      *     where T : IComparable<T> { }
      * //            ^^^^^^^^^^^^^^ `result`
      * ```
+     *
      * the type parameter `T` has the constraint `IComparable<T>`.
      */
     TypeMention getATypeParameterConstraint(TypeParameter tp);
 
     /**
      * Holds if
-     * - `abs` is a type abstraction that introduces type variables that are
+     * - `abs` is a type abstraction that may introduce type variables that are
      *   free in `condition` and `constraint`,
      * - and for every instantiation of the type parameters from `abs` the
      *   resulting `condition` satisfies the constraint given by `constraint`.
@@ -381,6 +356,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      *   through `constraint` should also apply to `condition`.
      *
      * Example in C#:
+     *
      * ```csharp
      * class C<T> : IComparable<C<T>> { }
      * //     ^^^ `abs`
@@ -389,6 +365,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      * ```
      *
      * Example in Rust:
+     *
      * ```rust
      * impl<A> Trait<i64, A> for Type<String, A> { }
      * //  ^^^ `abs`             ^^^^^^^^^^^^^^^ `condition`
@@ -397,20 +374,24 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
      *
      * To see how `abs` changes the meaning of the type parameters that occur in
      * `condition`, consider the following examples in Rust:
+     *
      * ```rust
      * impl<T> Trait for T { }
      * //  ^^^ `abs`     ^ `condition`
      * //      ^^^^^ `constraint`
      * ```
+     *
      * Here the meaning is "for all type parameters `T` it is the case that `T`
      * implements `Trait`". On the other hand, in
+     *
      * ```rust
      * fn foo<T: Trait>() { }
      * //     ^ `condition`
      * //        ^^^^^ `constraint`
      * ```
+     *
      * the meaning is "`T` implements `Trait`" where the constraint is only
-     * valid for the specific `T`. Note that `condition` and `condition` are
+     * valid for the specific `T`. Note that `condition` and `constraint` are
      * identical in the two examples. To encode the difference, `abs` in the
      * first example should contain `T` whereas in the seconds example `abs`
      * should be empty.
@@ -824,99 +805,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
        */
       predicate multipleConstraintImplementations(Type conditionRoot, Type constraintRoot) {
         countConstraintImplementations(conditionRoot, constraintRoot) > 1
-      }
-
-      /**
-       * Holds if `baseMention` is a (transitive) base type mention of `sub`,
-       * and `t` is mentioned (implicitly) at `path` inside `baseMention`. For
-       * example, in
-       *
-       * ```csharp
-       * class C<T1> { }
-       *
-       * class Base<T2> { }
-       *
-       * class Mid<T3> : Base<C<T3>> { }
-       *
-       * class Sub<T4> : Mid<C<T4>> { } // Sub<T4> extends Base<C<C<T4>>
-       * ```
-       *
-       * - ``C`1`` is mentioned at `T2` for immediate base type mention `Base<C<T3>>`
-       *   of `Mid`,
-       * - `T3` is mentioned at `T2.T1` for immediate base type mention `Base<C<T3>>`
-       *   of `Mid`,
-       * - ``C`1`` is mentioned at `T3` for immediate base type mention `Mid<C<T4>>`
-       *   of `Sub`,
-       * - `T4` is mentioned at `T3.T1` for immediate base type mention `Mid<C<T4>>`
-       *   of `Sub`,
-       * - ``C`1`` is mentioned at `T2` and implicitly at `T2.T1` for transitive base type
-       *   mention `Base<C<T3>>` of `Sub`, and
-       * - `T4` is mentioned implicitly at `T2.T1.T1` for transitive base type mention
-       *   `Base<C<T3>>` of `Sub`.
-       */
-      pragma[nomagic]
-      predicate baseTypeMentionHasTypeAt(Type sub, TypeMention baseMention, TypePath path, Type t) {
-        exists(TypeMention immediateBaseMention |
-          pragma[only_bind_into](immediateBaseMention) =
-            getABaseTypeMention(pragma[only_bind_into](sub))
-        |
-          // immediate base class
-          baseMention = immediateBaseMention and
-          t = immediateBaseMention.getTypeAt(path)
-          or
-          // transitive base class
-          exists(Type immediateBase | immediateBase = getTypeMentionRoot(immediateBaseMention) |
-            baseTypeMentionHasNonTypeParameterAt(immediateBase, baseMention, path, t)
-            or
-            exists(TypePath path0, TypePath prefix, TypePath suffix, TypeParameter tp |
-              /*
-               * Example:
-               *
-               * - `prefix = "T2.T1"`,
-               * - `path0 = "T3"`,
-               * - `suffix = ""`,
-               * - `path = "T2.T1"`
-               *
-               * ```csharp
-               * class C<T1> { }
-               *       ^ `t`
-               *
-               * class Base<T2> { }
-               *
-               * class Mid<T3> : Base<C<T3>> { }
-               * //    ^^^ `immediateBase`
-               * //        ^^ `tp`
-               * //              ^^^^^^^^^^^ `baseMention`
-               *
-               * class Sub<T4> : Mid<C<T4>> { }
-               * //    ^^^ `sub`
-               * //              ^^^^^^^^^^ `immediateBaseMention`
-               * ```
-               */
-
-              baseTypeMentionHasTypeParameterAt(immediateBase, baseMention, prefix, tp) and
-              t = immediateBaseMention.getTypeAt(path0) and
-              path0.isCons(tp, suffix) and
-              path = prefix.append(suffix)
-            )
-          )
-        )
-      }
-
-      overlay[caller?]
-      pragma[inline]
-      predicate baseTypeMentionHasNonTypeParameterAt(
-        Type sub, TypeMention baseMention, TypePath path, Type t
-      ) {
-        not t = sub.getATypeParameter() and baseTypeMentionHasTypeAt(sub, baseMention, path, t)
-      }
-
-      overlay[caller?]
-      pragma[inline]
-      predicate baseTypeMentionHasTypeParameterAt(
-        Type sub, TypeMention baseMention, TypePath path, TypeParameter tp
-      ) {
-        tp = sub.getATypeParameter() and baseTypeMentionHasTypeAt(sub, baseMention, path, tp)
       }
     }
 
@@ -1503,76 +1391,135 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
 
       private module AccessBaseType {
         /**
-         * Holds if inferring types at `a` in environment `e` might depend on the type at
-         * `path` of `apos` having `base` as a transitive base type.
+         * Holds if the type of `target` at `apos` and `pathToTp` is type parameter `tp`,
+         * and an argument with root type `argRootType` may be able to be matched against
+         * `tp` via the `conditionSatisfiesConstraint` hierarchy.
          */
-        private predicate relevantAccess(
-          Access a, AccessEnvironment e, AccessPosition apos, Type base
+        pragma[nomagic]
+        private predicate argRootTypeSatisfiesTargetTypeCand(
+          Type argRootType, Declaration target, AccessPosition apos, TypeParameter tp,
+          TypePath pathToTp
         ) {
-          exists(Declaration target, DeclarationPosition dpos |
-            target = a.getTarget(e) and
+          exists(
+            DeclarationPosition dpos, TypeMention condition, TypeMention constraint,
+            Type constraintRootType
+          |
             accessDeclarationPositionMatch(apos, dpos) and
-            declarationBaseType(target, dpos, base, _, _)
+            tp = target.getDeclaredType(dpos, pathToTp) and
+            conditionSatisfiesConstraintTypeAt(_, condition, constraint, TypePath::nil(),
+              constraintRootType) and
+            constraintRootType = target.getDeclaredType(dpos, TypePath::nil()) and
+            argRootType = condition.getTypeAt(TypePath::nil())
           )
+        }
+
+        private newtype TRelevantTarget =
+          MkRelevantTarget(Declaration target, AccessPosition apos) {
+            argRootTypeSatisfiesTargetTypeCand(_, target, apos, _, _)
+          }
+
+        private class RelevantTarget extends MkRelevantTarget {
+          Declaration target;
+          AccessPosition apos;
+
+          RelevantTarget() { this = MkRelevantTarget(target, apos) }
+
+          Type getTypeAt(TypePath path) {
+            exists(DeclarationPosition dpos |
+              accessDeclarationPositionMatch(apos, dpos) and
+              result = target.getDeclaredType(dpos, path)
+            )
+          }
+
+          string toString() { result = target.toString() + ", " + apos.toString() }
+
+          Location getLocation() { result = target.getLocation() }
         }
 
         pragma[nomagic]
-        private Type inferTypeAt(
-          Access a, AccessEnvironment e, AccessPosition apos, TypeParameter tp, TypePath suffix
+        private predicate argRootTypeSatisfiesTargetTypeCand(
+          Type argRootType, Access a, AccessEnvironment e, Declaration target, AccessPosition apos,
+          TypeParameter tp, TypePath pathToTp
         ) {
-          relevantAccess(a, e, apos, _) and
-          exists(TypePath path0 |
-            result = a.getInferredType(e, apos, path0) and
-            path0.isCons(tp, suffix)
-          )
+          target = a.getTarget(e) and
+          argRootTypeSatisfiesTargetTypeCand(argRootType, target, apos, tp, pathToTp) and
+          not exists(getTypeArgument(a, target, tp, _))
         }
 
+        private newtype TRelevantAccess =
+          MkRelevantAccess(Access a, AccessPosition apos, AccessEnvironment e) {
+            argRootTypeSatisfiesTargetTypeCand(a.getInferredType(e, apos, TypePath::nil()), a, e, _,
+              apos, _, _)
+          }
+
+        private class RelevantAccess extends MkRelevantAccess {
+          Access a;
+          AccessPosition apos;
+          AccessEnvironment e;
+
+          RelevantAccess() { this = MkRelevantAccess(a, apos, e) }
+
+          RelevantTarget getTarget() { result = MkRelevantTarget(a.getTarget(e), apos) }
+
+          pragma[nomagic]
+          Type getTypeAt(TypePath path) { result = a.getInferredType(e, apos, path) }
+
+          string toString() { result = a.toString() + ", " + apos.toString() }
+
+          Location getLocation() { result = a.getLocation() }
+        }
+
+        private module SatisfiesParameterConstraintInput implements
+          SatisfiesConstraintInputSig<RelevantAccess, RelevantTarget>
+        {
+          predicate relevantConstraint(RelevantAccess at, RelevantTarget constraint) {
+            constraint = at.getTarget()
+          }
+        }
+
+        private module SatisfiesParameterConstraint =
+          SatisfiesConstraint<RelevantAccess, RelevantTarget, SatisfiesParameterConstraintInput>;
+
         /**
-         * Holds if `baseMention` is a (transitive) base type mention of the
-         * type of `a` at position `apos` at path `pathToSub` in environment
-         * `e`, and `t` is mentioned (implicitly) at `path` inside `base`.
+         * Holds if the (transitive) base type `t` at `path` of `a` in environment `e`
+         * for some `AccessPosition` matches the type parameter `tp`, which is used in
+         * the declared types of `target`.
          *
          * For example, in
          *
          * ```csharp
          * class C<T1> { }
          *
-         * class Base<T2> { }
+         * class Base<T2> {
+         * //         ^^ `tp`
+         *     public C<T2> Method() { ... }
+         * //               ^^^^^^ `target`
+         * }
          *
          * class Mid<T3> : Base<C<T3>> { }
          *
          * class Sub<T4> : Mid<C<T4>> { }
          *
-         *     new Sub<int>().ToString();
-         * //  ^^^^^^^^^^^^^^ node at `apos`
-         * //  ^^^^^^^^^^^^^^^^^^^^^^^^^ `a`
+         *    new Sub<int>().Method(); // Note: `Sub<int>` is a subtype of `Base<C<C<int>>>`
+         * // ^^^^^^^^^^^^^^^^^^^^^^^ `a`
          * ```
          *
-         * where the method call is an access, `new Sub<int>()` is at the access
-         * position which is the receiver of a method call, and `pathToSub` is
-         * `""` we have:
+         * we have that type parameter `T2` of `Base` is matched as follows:
          *
-         * `baseMention` | `path`       | `t`
-         * ------------- | ------------ | ---
-         * `Mid<C<T4>>`  | `"T3"`       | ``C`1``
-         * `Mid<C<T4>>`  | `"T3.T1"`    | `int`
-         * `Base<C<T3>>` | `"T2"`       | ``C`1``
-         * `Base<C<T3>>` | `"T2.T1"`    | ``C`1``
-         * `Base<C<T3>>` | `"T2.T1.T1"` | `int`
+         * `path`    | `t`
+         * --------- | -------
+         * `""`      | ``C`1``
+         * `"T1"`    | ``C`1``
+         * `"T1.T1"` | `int`
          */
-        predicate hasBaseTypeMention(
-          Access a, AccessEnvironment e, AccessPosition apos, TypeMention baseMention,
-          TypePath path, Type t
+        pragma[nomagic]
+        predicate baseTypeMatch(
+          Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
         ) {
-          relevantAccess(a, e, apos, getTypeMentionRoot(baseMention)) and
-          exists(Type sub | sub = a.getInferredType(e, apos, TypePath::nil()) |
-            baseTypeMentionHasNonTypeParameterAt(sub, baseMention, path, t)
-            or
-            exists(TypePath prefix, TypePath suffix, TypeParameter tp |
-              baseTypeMentionHasTypeParameterAt(sub, baseMention, prefix, tp) and
-              t = inferTypeAt(a, e, apos, tp, suffix) and
-              path = prefix.append(suffix)
-            )
+          exists(AccessPosition apos, TypePath pathToTp |
+            argRootTypeSatisfiesTargetTypeCand(_, a, e, target, apos, tp, pathToTp) and
+            SatisfiesParameterConstraint::satisfiesConstraint(MkRelevantAccess(a, apos, e),
+              MkRelevantTarget(target, apos), pathToTp.appendInverse(path), t)
           )
         }
       }
@@ -1684,77 +1631,6 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if the type of `a` at `apos` in environment `e` has the base type `base`,
-       * and when viewed as an element of that type has the type `t` at `path`.
-       */
-      pragma[nomagic]
-      private predicate accessBaseType(
-        Access a, AccessEnvironment e, AccessPosition apos, Type base, TypePath path, Type t
-      ) {
-        exists(TypeMention tm |
-          AccessBaseType::hasBaseTypeMention(a, e, apos, tm, path, t) and
-          base = getTypeMentionRoot(tm)
-        )
-      }
-
-      /**
-       * Holds if the declared type at `decl` for `dpos` at the `path` is `tp`
-       * and `path` starts with a type parameter of `base`.
-       */
-      pragma[nomagic]
-      private predicate declarationBaseType(
-        Declaration decl, DeclarationPosition dpos, Type base, TypePath path, TypeParameter tp
-      ) {
-        tp = decl.getDeclaredType(dpos, path) and
-        base.getATypeParameter() = path.getHead()
-      }
-
-      /**
-       * Holds if the (transitive) base type `t` at `path` of `a` in environment `e`
-       * for some `AccessPosition` matches the type parameter `tp`, which is used in
-       * the declared types of `target`.
-       *
-       * For example, in
-       *
-       * ```csharp
-       * class C<T1> { }
-       *
-       * class Base<T2> {
-       * //         ^^ `tp`
-       *     public C<T2> Method() { ... }
-       * //               ^^^^^^ `target`
-       * }
-       *
-       * class Mid<T3> : Base<C<T3>> { }
-       *
-       * class Sub<T4> : Mid<C<T4>> { }
-       *
-       *    new Sub<int>().Method(); // Note: `Sub<int>` is a subtype of `Base<C<C<int>>>`
-       * // ^^^^^^^^^^^^^^^^^^^^^^^ `a`
-       * ```
-       *
-       * we have that type parameter `T2` of `Base` is matched as follows:
-       *
-       * `path`    | `t`
-       * --------- | -------
-       * `""`      | ``C`1``
-       * `"T1"`    | ``C`1``
-       * `"T1.T1"` | `int`
-       */
-      pragma[nomagic]
-      private predicate baseTypeMatch(
-        Access a, AccessEnvironment e, Declaration target, TypePath path, Type t, TypeParameter tp
-      ) {
-        not exists(getTypeArgument(a, target, tp, _)) and
-        target = a.getTarget(e) and
-        exists(AccessPosition apos, DeclarationPosition dpos, Type base, TypePath pathToTypeParam |
-          accessBaseType(a, e, apos, base, pathToTypeParam.appendInverse(path), t) and
-          declarationBaseType(target, dpos, base, pathToTypeParam, tp) and
-          accessDeclarationPositionMatch(apos, dpos)
-        )
-      }
-
-      /**
        * Holds if for `a` and corresponding `target` in environment `e`, the type parameter
        * `tp` is matched by a type argument at the access with type `t` and type path
        * `path`.
@@ -1838,8 +1714,8 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         // We can infer the type of `tp` from one of the access positions
         directTypeMatch(a, e, target, path, t, tp)
         or
-        // We can infer the type of `tp` by going up the type hiearchy
-        baseTypeMatch(a, e, target, path, t, tp)
+        // We can infer the type of `tp` by going up the type hierarchy
+        AccessBaseType::baseTypeMatch(a, e, target, path, t, tp)
         or
         // We can infer the type of `tp` by a type constraint
         typeConstraintBaseTypeMatch(a, e, target, path, t, tp)

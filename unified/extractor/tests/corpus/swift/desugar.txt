@@ -1,0 +1,49 @@
+===
+Additive expression is desugared
+===
+
+1 + 2
+
+---
+
+source_file
+  additive_expression
+    lhs: integer_literal "1"
+    op: +
+    rhs: integer_literal "2"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "+"
+      left: int_literal "1"
+      right: int_literal "2"
+
+===
+Another additive expression is desugared
+===
+
+foo + bar
+
+---
+
+source_file
+  additive_expression
+    lhs: simple_identifier "foo"
+    op: +
+    rhs: simple_identifier "bar"
+
+---
+
+top_level
+  body:
+    binary_expr
+      operator: operator "+"
+      left:
+        name_expr
+          identifier: identifier "foo"
+      right:
+        name_expr
+          identifier: identifier "bar"
