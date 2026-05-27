@@ -24,7 +24,7 @@ def test_or_short_circuit(t):
 @test
 def test_or_both_sides(t):
     # False or X — both operands evaluated, result is X
-    x = (False @ t[0] or 42 @ t[1, dead(2)]) @ t[dead(1), 2]
+    x = (False @ t[0] or 42 @ t[1]) @ t[dead(1), 2]
 
 
 @test
