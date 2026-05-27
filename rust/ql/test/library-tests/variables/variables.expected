@@ -405,7 +405,7 @@ variableAccess
 | main.rs:826:20:826:20 | x | main.rs:825:18:825:18 | x |
 | main.rs:829:15:829:15 | x | main.rs:823:13:823:13 | x |
 | main.rs:841:9:841:9 | x | main.rs:840:13:840:13 | x |
-| main.rs:843:19:843:19 | x | main.rs:840:13:840:13 | x |
+| main.rs:843:19:843:19 | x | main.rs:838:9:838:9 | x |
 | main.rs:845:19:845:19 | x | main.rs:838:9:838:9 | x |
 variableWriteAccess
 | main.rs:27:5:27:6 | x2 | main.rs:25:13:25:14 | x2 |
@@ -640,7 +640,7 @@ variableReadAccess
 | main.rs:826:20:826:20 | x | main.rs:825:18:825:18 | x |
 | main.rs:829:15:829:15 | x | main.rs:823:13:823:13 | x |
 | main.rs:841:9:841:9 | x | main.rs:840:13:840:13 | x |
-| main.rs:843:19:843:19 | x | main.rs:840:13:840:13 | x |
+| main.rs:843:19:843:19 | x | main.rs:838:9:838:9 | x |
 | main.rs:845:19:845:19 | x | main.rs:838:9:838:9 | x |
 variableInitializer
 | main.rs:20:9:20:10 | x1 | main.rs:20:14:20:16 | "a" |

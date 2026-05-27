@@ -442,9 +442,9 @@ read
 | main.rs:823:13:823:13 | x | main.rs:823:13:823:13 | x | main.rs:824:15:824:15 | x |
 | main.rs:823:13:823:13 | x | main.rs:823:13:823:13 | x | main.rs:829:15:829:15 | x |
 | main.rs:825:18:825:18 | x | main.rs:825:18:825:18 | x | main.rs:826:20:826:20 | x |
+| main.rs:838:9:838:9 | x | main.rs:838:9:838:9 | x | main.rs:843:19:843:19 | x |
 | main.rs:838:9:838:9 | x | main.rs:838:9:838:9 | x | main.rs:845:19:845:19 | x |
 | main.rs:840:13:840:13 | x | main.rs:840:13:840:13 | x | main.rs:841:9:841:9 | x |
-| main.rs:840:13:840:13 | x | main.rs:840:13:840:13 | x | main.rs:843:19:843:19 | x |
 firstRead
 | main.rs:5:14:5:14 | s | main.rs:5:14:5:14 | s | main.rs:7:20:7:20 | s |
 | main.rs:10:14:10:14 | i | main.rs:10:14:10:14 | i | main.rs:12:20:12:20 | i |
@@ -628,6 +628,7 @@ firstRead
 | main.rs:814:13:814:16 | test | main.rs:814:13:814:16 | test | main.rs:816:9:816:12 | test |
 | main.rs:823:13:823:13 | x | main.rs:823:13:823:13 | x | main.rs:824:15:824:15 | x |
 | main.rs:825:18:825:18 | x | main.rs:825:18:825:18 | x | main.rs:826:20:826:20 | x |
+| main.rs:838:9:838:9 | x | main.rs:838:9:838:9 | x | main.rs:843:19:843:19 | x |
 | main.rs:838:9:838:9 | x | main.rs:838:9:838:9 | x | main.rs:845:19:845:19 | x |
 | main.rs:840:13:840:13 | x | main.rs:840:13:840:13 | x | main.rs:841:9:841:9 | x |
 adjacentReads
@@ -678,7 +679,6 @@ adjacentReads
 | main.rs:712:13:712:13 | a | main.rs:712:13:712:13 | a | main.rs:714:5:714:5 | a | main.rs:715:15:715:15 | a |
 | main.rs:721:9:721:9 | x | main.rs:721:9:721:9 | x | main.rs:722:20:722:20 | x | main.rs:723:15:723:15 | x |
 | main.rs:823:13:823:13 | x | main.rs:823:13:823:13 | x | main.rs:824:15:824:15 | x | main.rs:829:15:829:15 | x |
-| main.rs:840:13:840:13 | x | main.rs:840:13:840:13 | x | main.rs:841:9:841:9 | x | main.rs:843:19:843:19 | x |
 phi
 | main.rs:245:9:245:44 | SSA phi(a3) | main.rs:245:9:245:44 | a3 | main.rs:245:22:245:23 | a3 |
 | main.rs:245:9:245:44 | SSA phi(a3) | main.rs:245:9:245:44 | a3 | main.rs:245:42:245:43 | a3 |

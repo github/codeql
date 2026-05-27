@@ -840,7 +840,7 @@ fn let_in_block_in_cond() {
         let x = 1; // x2
         x > 0 // $ read_access=x2
     } {
-        print_i64(x); // $ SPURIOUS: read_access=x2 $ MISSING: read_access=x1
+        print_i64(x); // $ read_access=x1
     } else {
         print_i64(x); // $ read_access=x1
     }
