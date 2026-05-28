@@ -1496,8 +1496,9 @@ module GoCfg {
 
     /**
      * Function definition prologue and epilogue:
-     * - Prologue: Before(fd) → arg:0 → param-init:0 → arg:1 → param-init:1 → ...
-     *             → result-zero-init:0 → result-init:0 → ... → Before(body)
+     * - Prologue: Before(fd) → arg:-1 → param-init:-1 → arg:0 → param-init:0 → ...
+     *             when a receiver exists; otherwise it starts at arg:0. Then
+     *             result-zero-init:0 → result-init:0 → ... → Before(body)
      * - Epilogue: After(body) → result-read:0 → result-read:1 → ... → After(fd)
      *
      * `After(fd)` goes to `NormalExit(fd)` via the shared library's built-in step
@@ -1508,8 +1509,13 @@ module GoCfg {
         // Before(fd) → first prologue node, or Before(body) if no prologue
         n1.isBefore(fd) and
         (
-          // Has parameters: start with arg:0
-          exists(fd.getParameter(0)) and n2.isAdditional(fd, "arg:0")
+          // Has receiver: start with arg:-1
+          exists(fd.getParameter(-1)) and n2.isAdditional(fd, "arg:-1")
+          or
+          // Has ordinary parameters: start with arg:0
+          not exists(fd.getParameter(-1)) and
+          exists(fd.getParameter(0)) and
+          n2.isAdditional(fd, "arg:0")
           or
           // No parameters, has result vars: start with result-zero-init:0
           not exists(fd.getParameter(_)) and
