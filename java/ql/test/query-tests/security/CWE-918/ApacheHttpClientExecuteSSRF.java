@@ -5,6 +5,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHttpRequest;
 import org.apache.http.protocol.HttpContext;
@@ -23,7 +24,7 @@ public class ApacheHttpClientExecuteSSRF extends HttpServlet {
 
             HttpHost host = new HttpHost(source);
             HttpRequest req = new BasicHttpRequest("GET", "/");
-            HttpUriRequest uriReq = (HttpUriRequest) (Object) source;
+            HttpUriRequest uriReq = RequestBuilder.get(source).build(); // $ Alert
             HttpContext context = null;
             HttpClient client = HttpClients.createDefault();
             ResponseHandler<Object> handler = null;
