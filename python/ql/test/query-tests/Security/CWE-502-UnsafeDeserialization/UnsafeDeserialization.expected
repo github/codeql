@@ -1,30 +1,30 @@
 edges
-| unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for request | provenance |  |
-| unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for request | unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | provenance |  |
-| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | provenance |  |
-| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | provenance |  |
-| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | provenance |  |
-| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | provenance |  |
-| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | unsafe_deserialization.py:24:24:24:30 | ControlFlowNode for payload | provenance |  |
-| unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
-| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | unsafe_deserialization.py:14:15:14:41 | ControlFlowNode for Attribute() | provenance | dict.get |
-| unsafe_deserialization.py:14:15:14:41 | ControlFlowNode for Attribute() | unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | provenance |  |
+| unsafe_deserialization.py:8:26:8:32 | After ImportMember | unsafe_deserialization.py:8:26:8:32 | request | provenance |  |
+| unsafe_deserialization.py:8:26:8:32 | request | unsafe_deserialization.py:14:15:14:21 | request | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | payload | unsafe_deserialization.py:15:18:15:24 | payload | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | payload | unsafe_deserialization.py:16:15:16:21 | payload | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | payload | unsafe_deserialization.py:18:19:18:25 | payload | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | payload | unsafe_deserialization.py:21:16:21:22 | payload | provenance |  |
+| unsafe_deserialization.py:14:5:14:11 | payload | unsafe_deserialization.py:24:24:24:30 | payload | provenance |  |
+| unsafe_deserialization.py:14:15:14:21 | request | unsafe_deserialization.py:14:15:14:26 | After Attribute | provenance | AdditionalTaintStep |
+| unsafe_deserialization.py:14:15:14:26 | After Attribute | unsafe_deserialization.py:14:15:14:41 | After Attribute() | provenance | dict.get |
+| unsafe_deserialization.py:14:15:14:41 | After Attribute() | unsafe_deserialization.py:14:5:14:11 | payload | provenance |  |
 nodes
-| unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| unsafe_deserialization.py:14:5:14:11 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
-| unsafe_deserialization.py:14:15:14:21 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| unsafe_deserialization.py:14:15:14:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| unsafe_deserialization.py:14:15:14:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
-| unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
-| unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
-| unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
-| unsafe_deserialization.py:24:24:24:30 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+| unsafe_deserialization.py:8:26:8:32 | After ImportMember | semmle.label | After ImportMember |
+| unsafe_deserialization.py:8:26:8:32 | request | semmle.label | request |
+| unsafe_deserialization.py:14:5:14:11 | payload | semmle.label | payload |
+| unsafe_deserialization.py:14:15:14:21 | request | semmle.label | request |
+| unsafe_deserialization.py:14:15:14:26 | After Attribute | semmle.label | After Attribute |
+| unsafe_deserialization.py:14:15:14:41 | After Attribute() | semmle.label | After Attribute() |
+| unsafe_deserialization.py:15:18:15:24 | payload | semmle.label | payload |
+| unsafe_deserialization.py:16:15:16:21 | payload | semmle.label | payload |
+| unsafe_deserialization.py:18:19:18:25 | payload | semmle.label | payload |
+| unsafe_deserialization.py:21:16:21:22 | payload | semmle.label | payload |
+| unsafe_deserialization.py:24:24:24:30 | payload | semmle.label | payload |
 subpaths
 #select
-| unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
-| unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
-| unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
-| unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
-| unsafe_deserialization.py:24:24:24:30 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:24:24:24:30 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |
+| unsafe_deserialization.py:15:18:15:24 | payload | unsafe_deserialization.py:8:26:8:32 | After ImportMember | unsafe_deserialization.py:15:18:15:24 | payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | After ImportMember | user-provided value |
+| unsafe_deserialization.py:16:15:16:21 | payload | unsafe_deserialization.py:8:26:8:32 | After ImportMember | unsafe_deserialization.py:16:15:16:21 | payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | After ImportMember | user-provided value |
+| unsafe_deserialization.py:18:19:18:25 | payload | unsafe_deserialization.py:8:26:8:32 | After ImportMember | unsafe_deserialization.py:18:19:18:25 | payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | After ImportMember | user-provided value |
+| unsafe_deserialization.py:21:16:21:22 | payload | unsafe_deserialization.py:8:26:8:32 | After ImportMember | unsafe_deserialization.py:21:16:21:22 | payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | After ImportMember | user-provided value |
+| unsafe_deserialization.py:24:24:24:30 | payload | unsafe_deserialization.py:8:26:8:32 | After ImportMember | unsafe_deserialization.py:24:24:24:30 | payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | After ImportMember | user-provided value |
