@@ -664,7 +664,7 @@ namespace Semmle.Extraction.CSharp
                 // Find the (possibly unbound) original extension method that maps to this implementation (if any).
                 var unboundDeclaration = extensions.SelectMany(e => e.GetMembers())
                     .OfType<IMethodSymbol>()
-                    .FirstOrDefault(m => SymbolEqualityComparer.Default.Equals(m.AssociatedExtensionImplementation, method.ConstructedFrom));
+                    .FirstOrDefault(m => SymbolEqualityComparer.Default.Equals(m.AssociatedExtensionImplementation?.ConstructedFrom, method.ConstructedFrom));
 
                 var isFullyConstructed = method.IsBoundGenericMethod();
                 if (isFullyConstructed && unboundDeclaration?.ContainingType is INamedTypeSymbol extensionType)
