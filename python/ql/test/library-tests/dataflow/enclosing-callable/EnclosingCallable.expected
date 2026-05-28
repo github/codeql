@@ -19,7 +19,6 @@
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:24:2:25 | xs |
 | generator.py:2:12:2:26 | Function listcomp | generator.py:2:12:2:26 | .0 |
 | generator.py:2:12:2:26 | Function listcomp | generator.py:2:12:2:26 | After .0 [empty] |
-| generator.py:2:12:2:26 | Function listcomp | generator.py:2:12:2:26 | After .0 [non-empty] |
 | generator.py:2:12:2:26 | Function listcomp | generator.py:2:13:2:13 | After Yield |
 | generator.py:2:12:2:26 | Function listcomp | generator.py:2:13:2:13 | x |
 | generator.py:2:12:2:26 | Function listcomp | generator.py:2:19:2:19 | x |

@@ -1,8 +1,9 @@
 import experimental.meta.InlineTaintTest
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
-predicate isSafe(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
-  g.(CallNode).getFunction().(NameNode).getId() = "is_safe" and
-  node = g.(CallNode).getArg(_) and
+predicate isSafe(DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch) {
+  g.(Cfg::CallNode).getFunction().(Cfg::NameNode).getId() = "is_safe" and
+  node = g.(Cfg::CallNode).getArg(_) and
   branch = true
 }
 
