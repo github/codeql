@@ -3,6 +3,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import utils.test.InlineExpectationsTest
 import semmle.python.dataflow.new.internal.ImportResolution
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /** A string that appears on the right hand side of an assignment. */
 private class SourceString extends DataFlow::Node {
@@ -45,13 +46,15 @@ private class VersionGuardedNode extends DataFlow::Node {
 
   VersionGuardedNode() {
     version in [2, 3] and
-    exists(If parent, CompareNode c | parent.getBody().contains(this.asExpr()) |
+    exists(If parent, Cfg::CompareNode c, Cfg::ControlFlowNode litCfg |
+      parent.getBody().contains(this.asExpr()) and
+      litCfg.getNode() = any(IntegerLiteral lit | lit.getValue() = version)
+    |
       c.operands(API::moduleImport("sys")
             .getMember("version_info")
             .getASubscript()
             .asSource()
-            .asCfgNode(), any(Eq eq),
-        any(IntegerLiteral lit | lit.getValue() = version).getAFlowNode())
+            .asCfgNode(), any(Eq eq), litCfg)
     )
   }
 

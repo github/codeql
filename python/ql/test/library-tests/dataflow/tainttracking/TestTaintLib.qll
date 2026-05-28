@@ -44,7 +44,7 @@ query predicate test_taint(string arg_location, string test_res, string scope_na
       // TODO: Replace with `hasFlowToExpr` once that is working
       if
         TestTaintTrackingFlow::flowTo(any(DataFlow::Node n |
-            n.(DataFlow::CfgNode).getNode() = arg.getAFlowNode()
+            n.(DataFlow::CfgNode).getNode().getNode() = arg
           ))
       then has_taint = true
       else has_taint = false

@@ -87,8 +87,14 @@ module ImportResolution {
   ) {
     // to handle definitions guarded by if-then-else
     defFrom = defTo.(SsaImpl::PhiFunction).getAnInput()
+    or
+    // to handle uncertain writes such as `from X import *`, which create an
+    // uncertain SSA definition for every name in the importing scope. The
+    // immediately preceding definition is still potentially the value of the
+    // module export.
+    SsaImpl::Ssa::uncertainWriteDefinitionInput(defTo, defFrom)
     // Note: legacy ESSA refinement-step (e.g. for `foo.bar = X`) is
-    // not modelled in the new SSA. We rely on phi steps only.
+    // not modelled in the new SSA beyond the cases handled above.
   }
 
   /**
