@@ -365,7 +365,11 @@ module LocalFlow {
     exists(Cfg::DefinitionNode def |
       nodeFrom.(CfgNode).getNode() = def.getValue() and
       nodeTo.(CfgNode).getNode() = def and
-      def instanceof Cfg::NameNode
+      def instanceof Cfg::NameNode and
+      // Parameter defaults are evaluated in the enclosing scope, while the
+      // parameter itself lives in the function's scope. The cross-scope
+      // edge is provided by `runtimeJumpStep` instead.
+      not exists(Py::Parameter param | def.getNode() = param.asName())
     )
     or
     // With definition
@@ -410,11 +414,27 @@ module LocalFlow {
   }
 
   predicate useToNextUse(Cfg::NameNode nodeFrom, Cfg::NameNode nodeTo) {
-    SsaImpl::AdjacentUses::adjacentUseUse(nodeFrom, nodeTo)
+    // The SSA-level adjacent-use predicate works on specific CFG variants
+    // (e.g. boolean-outcome `[true]`/`[false]` or emptiness `[empty]`/`[non-empty]`
+    // splits of the same AST node), but dataflow values are insensitive to
+    // those splits — there is at most one `CfgNode` per AST. Project both
+    // ends through `Cfg::isCanonicalAstNodeRepresentative` so all variants
+    // contribute their use-use edges to the canonical pair.
+    exists(Cfg::NameNode fromVariant, Cfg::NameNode toVariant |
+      SsaImpl::AdjacentUses::adjacentUseUse(fromVariant, toVariant) and
+      fromVariant.getNode() = nodeFrom.getNode() and
+      toVariant.getNode() = nodeTo.getNode() and
+      Cfg::isCanonicalAstNodeRepresentative(nodeFrom) and
+      Cfg::isCanonicalAstNodeRepresentative(nodeTo)
+    )
   }
 
   predicate defToFirstUse(SsaImpl::EssaVariable var, Cfg::NameNode nodeTo) {
-    SsaImpl::AdjacentUses::firstUse(var.getDefinition(), nodeTo)
+    exists(Cfg::NameNode toVariant |
+      SsaImpl::AdjacentUses::firstUse(var.getDefinition(), toVariant) and
+      toVariant.getNode() = nodeTo.getNode() and
+      Cfg::isCanonicalAstNodeRepresentative(nodeTo)
+    )
   }
 
   predicate useUseFlowStep(Node nodeFrom, Node nodeTo) {
@@ -423,12 +443,14 @@ module LocalFlow {
     //   `x = f(y)`
     //   nodeFrom is `y` on first line
     //   nodeTo is `y` on second line
-    exists(SsaImpl::EssaDefinition def |
+    exists(SsaImpl::EssaDefinition def, Cfg::NameNode toVariant |
       nodeFrom.(CfgNode).getNode() = def.(SsaImpl::EssaNodeDefinition).getDefiningNode()
       or
       nodeFrom.(ScopeEntryDefinitionNode).getDefinition() = def
     |
-      SsaImpl::AdjacentUses::firstUse(def, nodeTo.(CfgNode).getNode())
+      SsaImpl::AdjacentUses::firstUse(def, toVariant) and
+      toVariant.getNode() = nodeTo.(CfgNode).getNode().getNode() and
+      Cfg::isCanonicalAstNodeRepresentative(nodeTo.(CfgNode).getNode())
     )
     or
     // Next use after use

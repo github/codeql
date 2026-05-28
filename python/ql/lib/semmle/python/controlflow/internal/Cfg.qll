@@ -77,6 +77,92 @@ private predicate isCanonical(CfgImpl::ControlFlowNode n) {
 }
 
 /**
+ * Holds if `n` is genuinely the `TAfterValueNode` variant for a boolean-true
+ * outcome of its AST node.
+ *
+ * The shared CFG's `isAfterValue` predicate has a kind-mismatch fallback
+ * (see `ControlFlowGraph.qll`'s `isAfterValue` lines 870-892): when asking
+ * `isAfterValue(_, BooleanSuccessor true)` on, say, an emptiness-empty
+ * variant, it falsely returns `true` because the kinds differ and Python
+ * does not provide `successorValueImplies`. The same fallback also makes
+ * `TAfterNode` (the unsplit case) satisfy `isAfterValue(_, t)` for *every*
+ * `t`.
+ *
+ * The combination `isAfterTrue ∧ ¬isAfterFalse` excludes both: a genuine
+ * boolean-true variant satisfies `isAfterTrue` directly (newtype branch 3)
+ * but not `isAfterFalse` (the dual variant, same kind, no fallback). A
+ * non-boolean variant satisfies both via the cross-kind fallback. A
+ * `TAfterNode` satisfies both via branch 1. So `isAfterTrue ∧ ¬isAfterFalse`
+ * picks exactly the genuine boolean-true variant.
+ */
+private predicate isGenuineAfterTrue(ControlFlowNode n) {
+  n.isAfterTrue(_) and not n.isAfterFalse(_)
+}
+
+/**
+ * Holds if `n` is genuinely the `TAfterValueNode` variant for the "empty"
+ * outcome of its AST node (e.g. `for x in xs: ...` when `xs` is empty).
+ *
+ * See `isGenuineAfterTrue` for why we cannot just use a single
+ * `isAfterValue` check.
+ */
+private predicate isGenuineAfterEmpty(ControlFlowNode n) {
+  exists(EmptinessSuccessor empty |
+    empty.getValue() = true and n.isAfterValue(n.getAstNode(), empty)
+  ) and
+  not exists(EmptinessSuccessor nonEmpty |
+    nonEmpty.getValue() = false and n.isAfterValue(n.getAstNode(), nonEmpty)
+  )
+}
+
+/**
+ * Holds if `n` is genuinely the `TAfterValueNode` variant for the "matched"
+ * outcome of its AST node (e.g. a `match` case-pattern that matched).
+ *
+ * See `isGenuineAfterTrue` for why we cannot just use a single
+ * `isAfterValue` check.
+ */
+private predicate isGenuineAfterMatched(ControlFlowNode n) {
+  exists(MatchingSuccessor matched |
+    matched.getValue() = true and n.isAfterValue(n.getAstNode(), matched)
+  ) and
+  not exists(MatchingSuccessor unmatched |
+    unmatched.getValue() = false and n.isAfterValue(n.getAstNode(), unmatched)
+  )
+}
+
+/**
+ * Holds if `n` is the canonical representative of its corresponding AST node
+ * for dataflow purposes.
+ *
+ * The shared CFG associates a single AST node with multiple `ControlFlowNode`s
+ * when the AST appears in a conditional context (boolean conditions split into
+ * `afterTrue`/`afterFalse`; for-loop iters split into `[empty]`/`[non-empty]`;
+ * `match`-case patterns split into `[matched]`/`[unmatched]`). These splits
+ * matter for control-flow analysis, but for dataflow purposes — where we
+ * ask "what is the value of this expression?" — a single representative
+ * suffices and is required to avoid double-counting calls, arguments, store
+ * steps, etc.
+ *
+ * The pick is structural: when an AST has a single `ControlFlowNode` (the
+ * normal `TAfterNode` or `TBeforeNode`-leaf case), that node is canonical.
+ * When an AST has a conditional split, the "positive" outcome variant
+ * (true / empty / matched) is canonical. The three split kinds are mutually
+ * exclusive per AST, so exactly one variant is selected.
+ */
+predicate isCanonicalAstNodeRepresentative(ControlFlowNode n) {
+  // Non-split AST: the unique variant is canonical.
+  not exists(ControlFlowNode other | other.getNode() = n.getNode() and other != n)
+  or
+  // Split AST: pick the "positive" outcome of the split.
+  isGenuineAfterTrue(n)
+  or
+  isGenuineAfterEmpty(n)
+  or
+  isGenuineAfterMatched(n)
+}
+
+/**
  * A control flow node. Control flow nodes have a many-to-one relation
  * with syntactic nodes, although most syntactic nodes have only one
  * corresponding control flow node.

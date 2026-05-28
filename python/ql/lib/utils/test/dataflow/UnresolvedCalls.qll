@@ -11,6 +11,7 @@ signature module UnresolvedCallExpectationsSig {
 
 module DefaultUnresolvedCallExpectations implements UnresolvedCallExpectationsSig {
   predicate unresolvedCall(Cfg::CallNode call) {
+    Cfg::isCanonicalAstNodeRepresentative(call) and
     not exists(DataFlowPrivate::DataFlowCall dfc |
       exists(dfc.getCallable()) and dfc.getNode() = call
     ) and

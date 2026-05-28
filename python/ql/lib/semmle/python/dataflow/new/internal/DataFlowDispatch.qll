@@ -1444,11 +1444,12 @@ private predicate sameEnclosingCallable(Node node1, Node node2) {
 // =============================================================================
 newtype TDataFlowCall =
   TNormalCall(Cfg::CallNode call, Function target, CallType type) {
-    resolveCall(call, target, type)
+    resolveCall(call, target, type) and
+    Cfg::isCanonicalAstNodeRepresentative(call)
   } or
   /** A call to the generated function inside a comprehension */
   TComprehensionCall(Comp c) or
-  TPotentialLibraryCall(Cfg::CallNode call) or
+  TPotentialLibraryCall(Cfg::CallNode call) { Cfg::isCanonicalAstNodeRepresentative(call) } or
   /** A synthesized call inside a summarized callable */
   TSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver

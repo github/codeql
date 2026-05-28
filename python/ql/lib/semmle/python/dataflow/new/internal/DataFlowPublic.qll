@@ -29,9 +29,12 @@ overlay[local]
 newtype TNode =
   /** A node corresponding to a control flow node. */
   TCfgNode(Cfg::ControlFlowNode node) {
-    isExpressionNode(node)
-    or
-    node.getNode() instanceof Pattern
+    (
+      isExpressionNode(node)
+      or
+      node.getNode() instanceof Pattern
+    ) and
+    Cfg::isCanonicalAstNodeRepresentative(node)
   } or
   /**
    * A node corresponding to a scope entry definition. That is, the value of a variable
@@ -50,36 +53,39 @@ newtype TNode =
   // NOTE: since we can't rely on the call graph, but we want to have synthetic
   // pre-update nodes for class calls, we end up getting synthetic pre-update nodes for
   // ALL calls :|
-  TSyntheticPreUpdateNode(Cfg::CallNode call) or
+  TSyntheticPreUpdateNode(Cfg::CallNode call) { Cfg::isCanonicalAstNodeRepresentative(call) } or
   /**
    * A synthetic node representing the value of an object after a state change.
    * See QLDoc for `PostUpdateNode`.
    */
   TSyntheticPostUpdateNode(Cfg::ControlFlowNode node) {
-    exists(Cfg::CallNode call |
-      node = call.getArg(_)
+    Cfg::isCanonicalAstNodeRepresentative(node) and
+    (
+      exists(Cfg::CallNode call |
+        node = call.getArg(_)
+        or
+        node = call.getArgByName(_)
+        or
+        // `self` argument when handling class instance calls (`__call__` special method))
+        node = call.getFunction()
+      )
       or
-      node = call.getArgByName(_)
+      node = any(Cfg::AttrNode a).getObject()
       or
-      // `self` argument when handling class instance calls (`__call__` special method))
-      node = call.getFunction()
+      node = any(Cfg::SubscriptNode s).getObject()
+      or
+      // self parameter when used implicitly in `super()`
+      exists(Class cls, Function func, SsaImpl::ParameterDefinition def |
+        func = cls.getAMethod() and
+        not isStaticmethod(func) and
+        // this matches what we do in ExtractedParameterNode
+        def.getDefiningNode() = node and
+        def.getParameter() = func.getArg(0)
+      )
+      or
+      // the iterable argument to the implicit comprehension function
+      node.getNode() = any(Comp c).getIterable()
     )
-    or
-    node = any(Cfg::AttrNode a).getObject()
-    or
-    node = any(Cfg::SubscriptNode s).getObject()
-    or
-    // self parameter when used implicitly in `super()`
-    exists(Class cls, Function func, SsaImpl::ParameterDefinition def |
-      func = cls.getAMethod() and
-      not isStaticmethod(func) and
-      // this matches what we do in ExtractedParameterNode
-      def.getDefiningNode() = node and
-      def.getParameter() = func.getArg(0)
-    )
-    or
-    // the iterable argument to the implicit comprehension function
-    node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
   TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m } or
@@ -115,7 +121,9 @@ newtype TNode =
     exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
   } or
   /** A synthetic node to capture keyword arguments that are passed to a `**kwargs` parameter. */
-  TSynthDictSplatArgumentNode(Cfg::CallNode call) { exists(call.getArgByName(_)) } or
+  TSynthDictSplatArgumentNode(Cfg::CallNode call) {
+    exists(call.getArgByName(_)) and Cfg::isCanonicalAstNodeRepresentative(call)
+  } or
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
@@ -132,14 +140,16 @@ newtype TNode =
    * by the callable being called.
    */
   TSynthCapturedVariablesArgumentNode(Cfg::ControlFlowNode callable) {
-    callable = any(Cfg::CallNode c).getFunction()
+    callable = any(Cfg::CallNode c).getFunction() and
+    Cfg::isCanonicalAstNodeRepresentative(callable)
   } or
   /**
    * A synthetic node representing the values of the variables captured
    * by the callable being called, after the output has been computed.
    */
   TSynthCapturedVariablesArgumentPostUpdateNode(Cfg::ControlFlowNode callable) {
-    callable = any(Cfg::CallNode c).getFunction()
+    callable = any(Cfg::CallNode c).getFunction() and
+    Cfg::isCanonicalAstNodeRepresentative(callable)
   } or
   /** A synthetic node representing the values of variables captured by a comprehension. */
   TSynthCompCapturedVariablesArgumentNode(Comp comp) {
