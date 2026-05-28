@@ -54,12 +54,15 @@ private class WeakSensitiveDataHashingSinks extends SinkModelCsv {
         // CryptoKit
         // (SHA-256, SHA-384 and SHA-512 are all variants of the SHA-2 algorithm)
         ";SHA256;true;hash(data:);;;Argument[0];weak-password-hash-input-SHA256",
+        ";SHA256;true;hash(bufferPointer:);;;Argument[0];weak-password-hash-input-SHA256",
         ";SHA256;true;update(data:);;;Argument[0];weak-password-hash-input-SHA256",
         ";SHA256;true;update(bufferPointer:);;;Argument[0];weak-password-hash-input-SHA256",
         ";SHA384;true;hash(data:);;;Argument[0];weak-password-hash-input-SHA384",
+        ";SHA384;true;hash(bufferPointer:);;;Argument[0];weak-password-hash-input-SHA384",
         ";SHA384;true;update(data:);;;Argument[0];weak-password-hash-input-SHA384",
         ";SHA384;true;update(bufferPointer:);;;Argument[0];weak-password-hash-input-SHA384",
         ";SHA512;true;hash(data:);;;Argument[0];weak-password-hash-input-SHA512",
+        ";SHA512;true;hash(bufferPointer:);;;Argument[0];weak-password-hash-input-SHA512",
         ";SHA512;true;update(data:);;;Argument[0];weak-password-hash-input-SHA512",
         ";SHA512;true;update(bufferPointer:);;;Argument[0];weak-password-hash-input-SHA512",
         // CryptoSwift
@@ -107,6 +110,25 @@ private class DefaultWeakPasswordHashingSink extends WeakPasswordHashingSink {
   string algorithm;
 
   DefaultWeakPasswordHashingSink() { sinkNode(this, "weak-password-hash-input-" + algorithm) }
+
+  override string getAlgorithm() { result = algorithm }
+}
+
+/**
+ * A sink for weak password hashing through a call with a metatype qualifier.
+ */
+private class WeakPasswordHashingMetatypeSink extends WeakPasswordHashingSink {
+  string algorithm;
+
+  WeakPasswordHashingMetatypeSink() {
+    exists(CallExpr c |
+      c.getAnArgument().getExpr() = this.asExpr() and
+      algorithm = ["SHA256", "SHA384", "SHA512"] and
+      c.getQualifier().getType().getFullName() = algorithm + ["", ".Type"] and
+      c.getStaticTarget().getName() =
+        ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"]
+    )
+  }
 
   override string getAlgorithm() { result = algorithm }
 }

@@ -40,9 +40,11 @@ private class WeakSensitiveDataHashingSinks extends SinkModelCsv {
       [
         // CryptoKit
         ";Insecure.MD5;true;hash(data:);;;Argument[0];weak-hash-input-MD5",
+        ";Insecure.MD5;true;hash(bufferPointer:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.MD5;true;update(data:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.MD5;true;update(bufferPointer:);;;Argument[0];weak-hash-input-MD5",
         ";Insecure.SHA1;true;hash(data:);;;Argument[0];weak-hash-input-SHA1",
+        ";Insecure.SHA1;true;hash(bufferPointer:);;;Argument[0];weak-hash-input-SHA1",
         ";Insecure.SHA1;true;update(data:);;;Argument[0];weak-hash-input-SHA1",
         ";Insecure.SHA1;true;update(bufferPointer:);;;Argument[0];weak-hash-input-SHA1",
         // CryptoSwift
@@ -69,10 +71,29 @@ private class WeakSensitiveDataHashingSinks extends SinkModelCsv {
 /**
  * A sink defined in a CSV model.
  */
-private class DefaultWeakSenitiveDataHashingSink extends WeakSensitiveDataHashingSink {
+private class DefaultWeakSensitiveDataHashingSink extends WeakSensitiveDataHashingSink {
   string algorithm;
 
-  DefaultWeakSenitiveDataHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
+  DefaultWeakSensitiveDataHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
+
+  override string getAlgorithm() { result = algorithm }
+}
+
+/**
+ * A sink for weak sensitive data hashing through a call with a metatype qualifier.
+ */
+private class WeakSensitiveDataHashingMetatypeSink extends WeakSensitiveDataHashingSink {
+  string algorithm;
+
+  WeakSensitiveDataHashingMetatypeSink() {
+    exists(CallExpr c |
+      c.getAnArgument().getExpr() = this.asExpr() and
+      algorithm = ["MD5", "SHA1"] and
+      c.getQualifier().getType().getFullName() = "Insecure." + algorithm + ["", ".Type"] and
+      c.getStaticTarget().getName() =
+        ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"]
+    )
+  }
 
   override string getAlgorithm() { result = algorithm }
 }
