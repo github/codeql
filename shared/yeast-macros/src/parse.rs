@@ -411,7 +411,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     // Named fields — compute each value into a temp, then reference it
     while peek_is_field(tokens) {
         let field_name = expect_ident(tokens, "expected field name")?;
-        let field_str = field_name.to_string();
+        let field_str = field_name.to_string().strip_prefix("r#").unwrap_or(&field_name.to_string()).to_string();
         expect_punct(tokens, ':', "expected `:` after field name")?;
         let temp = Ident::new(
             &format!("__field_{field_str}_{field_counter}"),
