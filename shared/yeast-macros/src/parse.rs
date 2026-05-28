@@ -437,7 +437,11 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
                             .map(::std::convert::Into::<usize>::into)
                             .collect();
                     });
-                    field_args.push(quote! { (#field_str, #temp) });
+                    // An empty splice means the field is absent — skip it
+                    // entirely rather than emitting an empty named field.
+                    field_args.push(quote! {
+                        if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
+                    });
                     continue;
                 }
             }
@@ -445,7 +449,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
 
         let value = parse_direct_node(tokens, ctx)?;
         stmts.push(quote! { let #temp: usize = #value; });
-        field_args.push(quote! { (#field_str, vec![#temp]) });
+        field_args.push(quote! { __fields.push((#field_str, vec![#temp])); });
     }
 
     // After all named fields, no other tokens are allowed.
@@ -461,7 +465,9 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     Ok(quote! {
         {
             #(#stmts)*
-            #ctx.node(#kind_str, vec![#(#field_args),*])
+            let mut __fields: Vec<(&str, Vec<usize>)> = Vec::new();
+            #(#field_args)*
+            #ctx.node(#kind_str, __fields)
         }
     })
 }
