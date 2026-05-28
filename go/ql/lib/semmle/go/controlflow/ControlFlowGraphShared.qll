@@ -1203,11 +1203,13 @@ module GoCfg {
 
     private predicate rangeLoop(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::RangeStmt s |
+        // Use the shared library's auto-created `[LoopHeader]` additional node
+        // (created for every `LoopStmt`) as the join/branch point of the range loop.
         n1.isBefore(s) and n2.isBefore(s.getDomain())
         or
-        n1.isAfter(s.getDomain()) and n2.isIn(s)
+        n1.isAfter(s.getDomain()) and n2.isAdditional(s, "[LoopHeader]")
         or
-        n1.isIn(s) and
+        n1.isAdditional(s, "[LoopHeader]") and
         (
           n2.isBefore(s.getKey())
           or
@@ -1223,9 +1225,9 @@ module GoCfg {
         or
         n1.isAfter(s.getValue()) and n2.isBefore(s.getBody())
         or
-        n1.isAfter(s.getBody()) and n2.isIn(s)
+        n1.isAfter(s.getBody()) and n2.isAdditional(s, "[LoopHeader]")
         or
-        n1.isIn(s) and n2.isAfter(s)
+        n1.isAdditional(s, "[LoopHeader]") and n2.isAfter(s)
       )
     }
 
