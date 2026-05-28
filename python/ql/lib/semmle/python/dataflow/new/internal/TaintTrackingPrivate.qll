@@ -21,9 +21,7 @@ private predicate defaultTaintReadContent(DataFlow::ContentSet contentSet) {
   // expand to one row per (node, distinct key or index) and the framework's
   // read-set relation grows quadratically). `ContentSet.getAReadContent` expands
   // these wildcards back to the specific contents when matching against stores.
-  contentSet.isAnyTupleElement()
-  or
-  contentSet.isAnyDictionaryElement()
+  contentSet.isAnyTupleOrDictionaryElement()
   or
   // List and set element content is already imprecise, so no wildcard expansion is
   // needed.

@@ -87,6 +87,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow>
     cs.isAnyTupleElement() and result = "AnyTupleElement" and arg = ""
     or
     cs.isAnyDictionaryElement() and result = "AnyDictionaryElement" and arg = ""
+    or
+    cs.isAnyTupleOrDictionaryElement() and result = "AnyTupleOrDictionaryElement" and arg = ""
   }
 
   bindingset[token]

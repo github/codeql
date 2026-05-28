@@ -914,7 +914,8 @@ class CapturedVariableContent extends Content, TCapturedVariableContent {
 private newtype TContentSet =
   TSingletonContent(Content c) or
   TAnyTupleElement() or
-  TAnyDictionaryElement()
+  TAnyDictionaryElement() or
+  TAnyTupleOrDictionaryElement()
 
 /**
  * An entity that represents a set of `Content`s.
@@ -931,6 +932,9 @@ class ContentSet extends TContentSet {
 
   /** Holds if this content set is the wildcard for all dictionary elements. */
   predicate isAnyDictionaryElement() { this = TAnyDictionaryElement() }
+
+  /** Holds if this content set is the wildcard for all tuple elements or dictionary elements. */
+  predicate isAnyTupleOrDictionaryElement() { this = TAnyTupleOrDictionaryElement() }
 
   /** Gets a content that may be stored into when storing into this set. */
   Content getAStoreContent() { this = TSingletonContent(result) }

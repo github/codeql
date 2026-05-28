@@ -1078,7 +1078,7 @@ module Conversions {
       nodeFrom = decoding.getAnInput() and
       nodeTo = decoding.getOutput()
     ) and
-    (c.isAnyTupleElement() or c.isAnyDictionaryElement())
+    c.isAnyTupleOrDictionaryElement()
   }
 
   predicate encoderReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
@@ -1086,7 +1086,7 @@ module Conversions {
       nodeFrom = encoding.getAnInput() and
       nodeTo = encoding.getOutput()
     ) and
-    (c.isAnyTupleElement() or c.isAnyDictionaryElement())
+    c.isAnyTupleOrDictionaryElement()
   }
 
   predicate formatReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
