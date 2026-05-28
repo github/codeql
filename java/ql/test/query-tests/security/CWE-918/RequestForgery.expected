@@ -1,12 +1,12 @@
 #select
-| ApacheHttpClientExecuteSSRF.java:30:28:30:31 | host | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:30:28:30:31 | host | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) | user-provided value |
-| ApacheHttpClientExecuteSSRF.java:31:28:31:31 | host | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:31:28:31:31 | host | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) | user-provided value |
-| ApacheHttpClientExecuteSSRF.java:32:28:32:31 | host | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:32:28:32:31 | host | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) | user-provided value |
-| ApacheHttpClientExecuteSSRF.java:33:28:33:31 | host | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:33:28:33:31 | host | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) | user-provided value |
-| ApacheHttpClientExecuteSSRF.java:34:28:34:33 | uriReq | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:34:28:34:33 | uriReq | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) | user-provided value |
-| ApacheHttpClientExecuteSSRF.java:35:28:35:33 | uriReq | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:35:28:35:33 | uriReq | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) | user-provided value |
-| ApacheHttpClientExecuteSSRF.java:36:28:36:33 | uriReq | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:36:28:36:33 | uriReq | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) | user-provided value |
-| ApacheHttpClientExecuteSSRF.java:37:28:37:33 | uriReq | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:37:28:37:33 | uriReq | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) | user-provided value |
+| ApacheHttpClientExecuteSSRF.java:30:28:30:31 | host | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:30:28:30:31 | host | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) | user-provided value |
+| ApacheHttpClientExecuteSSRF.java:31:28:31:31 | host | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:31:28:31:31 | host | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) | user-provided value |
+| ApacheHttpClientExecuteSSRF.java:32:28:32:31 | host | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:32:28:32:31 | host | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) | user-provided value |
+| ApacheHttpClientExecuteSSRF.java:33:28:33:31 | host | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:33:28:33:31 | host | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) | user-provided value |
+| ApacheHttpClientExecuteSSRF.java:34:28:34:33 | uriReq | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:34:28:34:33 | uriReq | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) | user-provided value |
+| ApacheHttpClientExecuteSSRF.java:35:28:35:33 | uriReq | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:35:28:35:33 | uriReq | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) | user-provided value |
+| ApacheHttpClientExecuteSSRF.java:36:28:36:33 | uriReq | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:36:28:36:33 | uriReq | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) | user-provided value |
+| ApacheHttpClientExecuteSSRF.java:37:28:37:33 | uriReq | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:37:28:37:33 | uriReq | Potential server-side request forgery due to a $@. | ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) | user-provided value |
 | ApacheHttpSSRF.java:30:43:30:45 | uri | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) : String | ApacheHttpSSRF.java:30:43:30:45 | uri | Potential server-side request forgery due to a $@. | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) | user-provided value |
 | ApacheHttpSSRF.java:32:29:32:31 | uri | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) : String | ApacheHttpSSRF.java:32:29:32:31 | uri | Potential server-side request forgery due to a $@. | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) | user-provided value |
 | ApacheHttpSSRF.java:34:26:34:28 | uri | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) : String | ApacheHttpSSRF.java:34:26:34:28 | uri | Potential server-side request forgery due to a $@. | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) | user-provided value |
@@ -385,18 +385,18 @@
 | mad/Test.java:107:15:107:31 | (...)... | mad/Test.java:26:16:26:41 | getParameter(...) : String | mad/Test.java:107:15:107:31 | (...)... | Potential server-side request forgery due to a $@. | mad/Test.java:26:16:26:41 | getParameter(...) | user-provided value |
 | mad/Test.java:112:15:112:31 | (...)... | mad/Test.java:26:16:26:41 | getParameter(...) : String | mad/Test.java:112:15:112:31 | (...)... | Potential server-side request forgery due to a $@. | mad/Test.java:26:16:26:41 | getParameter(...) | user-provided value |
 edges
-| ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:23:42:23:45 | sink : String | provenance | Src:MaD:285  |
-| ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:25:54:25:66 | (...)... : String | provenance | Src:MaD:285  |
-| ApacheHttpClientExecuteSSRF.java:23:29:23:46 | new HttpHost(...) : HttpHost | ApacheHttpClientExecuteSSRF.java:30:28:30:31 | host | provenance | Sink:MaD:228 |
-| ApacheHttpClientExecuteSSRF.java:23:29:23:46 | new HttpHost(...) : HttpHost | ApacheHttpClientExecuteSSRF.java:31:28:31:31 | host | provenance | Sink:MaD:229 |
-| ApacheHttpClientExecuteSSRF.java:23:29:23:46 | new HttpHost(...) : HttpHost | ApacheHttpClientExecuteSSRF.java:32:28:32:31 | host | provenance | Sink:MaD:230 |
-| ApacheHttpClientExecuteSSRF.java:23:29:23:46 | new HttpHost(...) : HttpHost | ApacheHttpClientExecuteSSRF.java:33:28:33:31 | host | provenance | Sink:MaD:231 |
-| ApacheHttpClientExecuteSSRF.java:23:42:23:45 | sink : String | ApacheHttpClientExecuteSSRF.java:23:29:23:46 | new HttpHost(...) : HttpHost | provenance | MaD:305 |
-| ApacheHttpClientExecuteSSRF.java:25:37:25:66 | (...)... : String | ApacheHttpClientExecuteSSRF.java:34:28:34:33 | uriReq | provenance | Sink:MaD:232 |
-| ApacheHttpClientExecuteSSRF.java:25:37:25:66 | (...)... : String | ApacheHttpClientExecuteSSRF.java:35:28:35:33 | uriReq | provenance | Sink:MaD:233 |
-| ApacheHttpClientExecuteSSRF.java:25:37:25:66 | (...)... : String | ApacheHttpClientExecuteSSRF.java:36:28:36:33 | uriReq | provenance | Sink:MaD:234 |
-| ApacheHttpClientExecuteSSRF.java:25:37:25:66 | (...)... : String | ApacheHttpClientExecuteSSRF.java:37:28:37:33 | uriReq | provenance | Sink:MaD:235 |
-| ApacheHttpClientExecuteSSRF.java:25:54:25:66 | (...)... : String | ApacheHttpClientExecuteSSRF.java:25:37:25:66 | (...)... : String | provenance |  |
+| ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:23:42:23:47 | source : String | provenance | Src:MaD:285  |
+| ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | ApacheHttpClientExecuteSSRF.java:25:54:25:68 | (...)... : String | provenance | Src:MaD:285  |
+| ApacheHttpClientExecuteSSRF.java:23:29:23:48 | new HttpHost(...) : HttpHost | ApacheHttpClientExecuteSSRF.java:30:28:30:31 | host | provenance | Sink:MaD:228 |
+| ApacheHttpClientExecuteSSRF.java:23:29:23:48 | new HttpHost(...) : HttpHost | ApacheHttpClientExecuteSSRF.java:31:28:31:31 | host | provenance | Sink:MaD:229 |
+| ApacheHttpClientExecuteSSRF.java:23:29:23:48 | new HttpHost(...) : HttpHost | ApacheHttpClientExecuteSSRF.java:32:28:32:31 | host | provenance | Sink:MaD:230 |
+| ApacheHttpClientExecuteSSRF.java:23:29:23:48 | new HttpHost(...) : HttpHost | ApacheHttpClientExecuteSSRF.java:33:28:33:31 | host | provenance | Sink:MaD:231 |
+| ApacheHttpClientExecuteSSRF.java:23:42:23:47 | source : String | ApacheHttpClientExecuteSSRF.java:23:29:23:48 | new HttpHost(...) : HttpHost | provenance | MaD:305 |
+| ApacheHttpClientExecuteSSRF.java:25:37:25:68 | (...)... : String | ApacheHttpClientExecuteSSRF.java:34:28:34:33 | uriReq | provenance | Sink:MaD:232 |
+| ApacheHttpClientExecuteSSRF.java:25:37:25:68 | (...)... : String | ApacheHttpClientExecuteSSRF.java:35:28:35:33 | uriReq | provenance | Sink:MaD:233 |
+| ApacheHttpClientExecuteSSRF.java:25:37:25:68 | (...)... : String | ApacheHttpClientExecuteSSRF.java:36:28:36:33 | uriReq | provenance | Sink:MaD:234 |
+| ApacheHttpClientExecuteSSRF.java:25:37:25:68 | (...)... : String | ApacheHttpClientExecuteSSRF.java:37:28:37:33 | uriReq | provenance | Sink:MaD:235 |
+| ApacheHttpClientExecuteSSRF.java:25:54:25:68 | (...)... : String | ApacheHttpClientExecuteSSRF.java:25:37:25:68 | (...)... : String | provenance |  |
 | ApacheHttpSSRF.java:27:27:27:53 | getParameter(...) : String | ApacheHttpSSRF.java:28:31:28:34 | sink : String | provenance | Src:MaD:285  |
 | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | ApacheHttpSSRF.java:30:43:30:45 | uri | provenance | Sink:MaD:211 |
 | ApacheHttpSSRF.java:28:23:28:35 | new URI(...) : URI | ApacheHttpSSRF.java:32:29:32:31 | uri | provenance | Sink:MaD:217 |
@@ -1405,11 +1405,11 @@ models
 | 304 | Summary: org.apache.http.message; BasicRequestLine; false; BasicRequestLine; ; ; Argument[1]; Argument[this]; taint; manual |
 | 305 | Summary: org.apache.http; HttpHost; true; HttpHost; (String); ; Argument[0]; Argument[this]; taint; hq-manual |
 nodes
-| ApacheHttpClientExecuteSSRF.java:21:27:21:54 | getParameter(...) : String | semmle.label | getParameter(...) : String |
-| ApacheHttpClientExecuteSSRF.java:23:29:23:46 | new HttpHost(...) : HttpHost | semmle.label | new HttpHost(...) : HttpHost |
-| ApacheHttpClientExecuteSSRF.java:23:42:23:45 | sink : String | semmle.label | sink : String |
-| ApacheHttpClientExecuteSSRF.java:25:37:25:66 | (...)... : String | semmle.label | (...)... : String |
-| ApacheHttpClientExecuteSSRF.java:25:54:25:66 | (...)... : String | semmle.label | (...)... : String |
+| ApacheHttpClientExecuteSSRF.java:21:29:21:56 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| ApacheHttpClientExecuteSSRF.java:23:29:23:48 | new HttpHost(...) : HttpHost | semmle.label | new HttpHost(...) : HttpHost |
+| ApacheHttpClientExecuteSSRF.java:23:42:23:47 | source : String | semmle.label | source : String |
+| ApacheHttpClientExecuteSSRF.java:25:37:25:68 | (...)... : String | semmle.label | (...)... : String |
+| ApacheHttpClientExecuteSSRF.java:25:54:25:68 | (...)... : String | semmle.label | (...)... : String |
 | ApacheHttpClientExecuteSSRF.java:30:28:30:31 | host | semmle.label | host |
 | ApacheHttpClientExecuteSSRF.java:31:28:31:31 | host | semmle.label | host |
 | ApacheHttpClientExecuteSSRF.java:32:28:32:31 | host | semmle.label | host |

@@ -18,11 +18,11 @@ public class ApacheHttpClientExecuteSSRF extends HttpServlet {
             throws ServletException, IOException {
         try {
 
-            String sink = request.getParameter("host"); // $ Source
+            String source = request.getParameter("host"); // $ Source
 
-            HttpHost host = new HttpHost(sink);
+            HttpHost host = new HttpHost(source);
             HttpRequest req = new BasicHttpRequest("GET", "/");
-            HttpUriRequest uriReq = (HttpUriRequest) (Object) sink;
+            HttpUriRequest uriReq = (HttpUriRequest) (Object) source;
             HttpContext context = null;
             HttpClient client = null;
             ResponseHandler<Object> handler = null;
