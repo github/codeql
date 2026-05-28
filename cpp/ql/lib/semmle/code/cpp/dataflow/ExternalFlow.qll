@@ -276,7 +276,7 @@ private predicate isClassConstructedFrom(Class c, Class templateClass) {
   not c.isConstructedFrom(_) and c = templateClass
 }
 
-/** Gets the fully templated version of `f`. */
+/** Gets the fully templated version of `c`. */
 private Class getFullyTemplatedClassOld(Class c) {
   not c.isFromUninstantiatedTemplate(_) and
   isClassConstructedFrom(c, result)
@@ -289,7 +289,7 @@ private TemplateClass getOriginalClassTemplate(TemplateClass tc) {
   result = tc
 }
 
-/** Gets the fully templated version of `f`. */
+/** Gets the fully templated version of `c`. */
 private Class getFullyTemplatedClassNew(Class c) {
   not c.isFromUninstantiatedTemplate(_) and
   exists(Class mid |
