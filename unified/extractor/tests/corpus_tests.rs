@@ -26,6 +26,13 @@ fn is_header_rule(line: &str) -> bool {
     trimmed.len() >= 3 && trimmed.chars().all(|c| c == '=')
 }
 
+fn is_next_case_header(lines: &[&str], i: usize) -> bool {
+    is_header_rule(lines[i])
+        && i + 2 < lines.len()
+        && !lines[i + 1].trim().is_empty()
+        && is_header_rule(lines[i + 2])
+}
+
 fn parse_corpus(content: &str) -> Vec<CorpusCase> {
     let lines: Vec<&str> = content.lines().collect();
     let mut i = 0;
@@ -58,48 +65,51 @@ fn parse_corpus(content: &str) -> Vec<CorpusCase> {
 
         let input_start = i;
         while i < lines.len() && lines[i].trim() != "---" {
+            if is_next_case_header(&lines, i) {
+                break;
+            }
             i += 1;
         }
-        assert!(i < lines.len(), "Missing --- separator for case {name}");
         let input = lines[input_start..i].join("\n").trim_end().to_string();
-        i += 1;
-
-        // Raw tree-sitter parse section. New-format files have a second
-        // `---` separator between the raw tree and the mapped AST. Legacy
-        // files (with only one separator) have no raw section — in that
-        // case `raw` stays empty and update mode will populate it.
-        let raw_start = i;
-        let mut next_sep = i;
-        while next_sep < lines.len() && lines[next_sep].trim() != "---" {
-            if is_header_rule(lines[next_sep])
-                && next_sep + 2 < lines.len()
-                && !lines[next_sep + 1].trim().is_empty()
-                && is_header_rule(lines[next_sep + 2])
-            {
-                break;
-            }
-            next_sep += 1;
-        }
-        let raw = if next_sep < lines.len() && lines[next_sep].trim() == "---" {
-            let raw_text = lines[raw_start..next_sep].join("\n").trim().to_string();
-            i = next_sep + 1;
-            raw_text
+        let raw;
+        let expected;
+        if i >= lines.len() || lines[i].trim() != "---" {
+            // No `---` separator before next case (or EOF). Treat the
+            // remaining sections as empty.
+            raw = String::new();
+            expected = String::new();
         } else {
-            String::new()
-        };
-
-        let expected_start = i;
-        while i < lines.len() {
-            if is_header_rule(lines[i])
-                && i + 2 < lines.len()
-                && !lines[i + 1].trim().is_empty()
-                && is_header_rule(lines[i + 2])
-            {
-                break;
-            }
             i += 1;
+
+            // Raw tree-sitter parse section. New-format files have a second
+            // `---` separator between the raw tree and the mapped AST. Legacy
+            // files (with only one separator) have no raw section — in that
+            // case `raw` stays empty and update mode will populate it.
+            let raw_start = i;
+            let mut next_sep = i;
+            while next_sep < lines.len() && lines[next_sep].trim() != "---" {
+                if is_next_case_header(&lines, next_sep) {
+                    break;
+                }
+                next_sep += 1;
+            }
+            raw = if next_sep < lines.len() && lines[next_sep].trim() == "---" {
+                let raw_text = lines[raw_start..next_sep].join("\n").trim().to_string();
+                i = next_sep + 1;
+                raw_text
+            } else {
+                String::new()
+            };
+
+            let expected_start = i;
+            while i < lines.len() {
+                if is_next_case_header(&lines, i) {
+                    break;
+                }
+                i += 1;
+            }
+            expected = lines[expected_start..i].join("\n").trim().to_string();
         }
-        let expected = lines[expected_start..i].join("\n").trim().to_string();
 
         cases.push(CorpusCase {
             name,
