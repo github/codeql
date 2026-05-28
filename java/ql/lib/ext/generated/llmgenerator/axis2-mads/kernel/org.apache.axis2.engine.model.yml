@@ -1,0 +1,20 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+# Generated from https://github.com/apache/axis-axis2-java-core.git#b7e6711279d38b7f0db3e648888de5154729e9a8 by codeql-mads-via-llm
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.axis2.engine", "AxisConfiguration", True, "deployModule", "(String)", "", "Argument[0]", "path-injection", "ai-generated"]
+      #- ["org.apache.axis2.engine", "AxisEngine", True, "resume", "(MessageContext)", "", "Argument[0]", "request-forgery", "ai-generated"] # INVALID: Just resumes flow; no direct network op
+      #- ["org.apache.axis2.engine", "AxisEngine", True, "resumeSend", "(MessageContext)", "", "Argument[0]", "request-forgery", "ai-generated"] # INVALID: Only invokes handlers; not a direct RF sink
+      #- ["org.apache.axis2.engine", "AxisEngine", True, "resumeSendFault", "(MessageContext)", "", "Argument[0]", "request-forgery", "ai-generated"] # INVALID: Only resumes fault flow; not a direct RF sink
+      #- ["org.apache.axis2.engine", "AxisEngine", True, "send", "(MessageContext)", "", "Argument[0]", "request-forgery", "ai-generated"] # INVALID: Engine dispatch; not a direct request sink
+      #- ["org.apache.axis2.engine", "AxisEngine", True, "sendFault", "(MessageContext)", "", "Argument[0]", "request-forgery", "ai-generated"] # INVALID: Fault dispatch; not a direct RF sink
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.axis2.engine", "Handler", True, "flowComplete", "(MessageContext)", "", "Argument[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.engine", "Handler", True, "invoke", "(MessageContext)", "", "Argument[0]", "remote", "ai-generated"]
+      - ["org.apache.axis2.engine", "MessageReceiver", True, "receive", "(MessageContext)", "", "Argument[0]", "remote", "ai-generated"]
