@@ -5,7 +5,7 @@ are evaluated in the expected order (typically left to right for
 operands of binary operators, elements of collection literals, etc.)
 
 Every evaluated expression has a timestamp annotation, except the
-timer mechanism itself (t[n], t.dead[n]).
+timer mechanism itself (t[n], t[dead(n)], t[never]).
 """
 
 from timer import test, never
@@ -46,7 +46,7 @@ def test_nested_binary(t):
 @test
 def test_chained_add(t):
     """a + b + c is (a + b) + c: left to right."""
-    x = ((1 @ t[0] + 2 @ t[1]) @ t[2] + 3 @ t[3]) @ t[4]
+    x = (1 @ t[0] + 2 @ t[1] + 3 @ t[2]) @ t[3]
 
 
 @test
@@ -58,7 +58,7 @@ def test_mixed_precedence(t):
 @test
 def test_string_concat(t):
     """String concatenation operands: left to right."""
-    x = (("hello" @ t[0] + " " @ t[1]) @ t[2] + "world" @ t[3]) @ t[4]
+    x = ("hello" @ t[0] + " " @ t[1] + "world" @ t[2]) @ t[3]
 
 
 @test
@@ -142,8 +142,8 @@ def test_multiple_assignment(t):
 @test
 def test_callable_syntax(t):
     """t(value, n) is equivalent to value @ t[n]."""
-    x = (1 @ t[0] + 2 @ t[1]) @ t[2]
-    y = (x @ t[3] * 3 @ t[4]) @ t[5]
+    x = t(t(1, 0) + t(2, 1), 2)
+    y = t(t(x, 3) * t(3, 4), 5)
 
 
 @test
