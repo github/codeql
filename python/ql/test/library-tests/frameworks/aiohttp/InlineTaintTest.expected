@@ -1,3 +1,10 @@
 argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
+| taint_test.py:151:9:151:15 | taint_test.py:151 | ERROR, you should add `# $ MISSING: tainted` annotation | request |
+| taint_test.py:152:9:152:19 | taint_test.py:152 | ERROR, you should add `# $ MISSING: tainted` annotation | request.url |
+| taint_test.py:153:9:153:36 | taint_test.py:153 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
 testFailures
+| taint_test.py:151:18:151:28 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:152:22:152:32 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:153:39:153:49 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:168:76:168:96 | Comment # $ SPURIOUS: tainted | Fixed spurious result: tainted |

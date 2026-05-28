@@ -1,3 +1,107 @@
 argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
+| taint_test.py:33:9:33:24 | taint_test.py:33 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.field |
+| taint_test.py:35:9:35:27 | taint_test.py:35 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.main_foo |
+| taint_test.py:36:9:36:31 | taint_test.py:36 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.main_foo.foo |
+| taint_test.py:38:9:38:29 | taint_test.py:38 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.other_foos |
+| taint_test.py:39:9:39:32 | taint_test.py:39 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.other_foos[0] |
+| taint_test.py:40:9:40:36 | taint_test.py:40 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.other_foos[0].foo |
+| taint_test.py:43:9:43:30 | taint_test.py:43 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.nested_foos |
+| taint_test.py:44:9:44:33 | taint_test.py:44 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.nested_foos[0] |
+| taint_test.py:45:9:45:36 | taint_test.py:45 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.nested_foos[0][0] |
+| taint_test.py:46:9:46:40 | taint_test.py:46 | ERROR, you should add `# $ MISSING: tainted` annotation | also_input.nested_foos[0][0].foo |
+| taint_test.py:52:9:52:18 | taint_test.py:52 | ERROR, you should add `# $ MISSING: tainted` annotation | other_foos |
+| taint_test.py:53:9:53:21 | taint_test.py:53 | ERROR, you should add `# $ MISSING: tainted` annotation | other_foos[0] |
+| taint_test.py:54:9:54:25 | taint_test.py:54 | ERROR, you should add `# $ MISSING: tainted` annotation | other_foos[0].foo |
+| taint_test.py:140:9:140:21 | taint_test.py:140 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url |
+| taint_test.py:142:9:142:28 | taint_test.py:142 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.netloc |
+| taint_test.py:143:9:143:26 | taint_test.py:143 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.path |
+| taint_test.py:144:9:144:27 | taint_test.py:144 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.query |
+| taint_test.py:145:9:145:30 | taint_test.py:145 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.fragment |
+| taint_test.py:146:9:146:30 | taint_test.py:146 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.username |
+| taint_test.py:147:9:147:30 | taint_test.py:147 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.password |
+| taint_test.py:148:9:148:30 | taint_test.py:148 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.hostname |
+| taint_test.py:149:9:149:26 | taint_test.py:149 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.port |
+| taint_test.py:151:9:151:32 | taint_test.py:151 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components |
+| taint_test.py:152:9:152:39 | taint_test.py:152 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components.netloc |
+| taint_test.py:153:9:153:37 | taint_test.py:153 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components.path |
+| taint_test.py:154:9:154:38 | taint_test.py:154 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components.query |
+| taint_test.py:155:9:155:41 | taint_test.py:155 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components.fragment |
+| taint_test.py:156:9:156:41 | taint_test.py:156 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components.username |
+| taint_test.py:157:9:157:41 | taint_test.py:157 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components.password |
+| taint_test.py:158:9:158:41 | taint_test.py:158 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components.hostname |
+| taint_test.py:159:9:159:37 | taint_test.py:159 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.url.components.port |
+| taint_test.py:161:9:161:25 | taint_test.py:161 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.headers |
+| taint_test.py:162:9:162:32 | taint_test.py:162 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.headers["key"] |
+| taint_test.py:164:9:164:30 | taint_test.py:164 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.query_params |
+| taint_test.py:165:9:165:37 | taint_test.py:165 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.query_params["key"] |
+| taint_test.py:167:9:167:25 | taint_test.py:167 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.cookies |
+| taint_test.py:168:9:168:32 | taint_test.py:168 | ERROR, you should add `# $ MISSING: tainted` annotation | websocket.cookies["key"] |
+| taint_test.py:170:9:170:33 | taint_test.py:170 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:171:9:171:39 | taint_test.py:171 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:172:9:172:38 | taint_test.py:172 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:173:9:173:38 | taint_test.py:173 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:183:24:183:27 | taint_test.py:183 | ERROR, you should add `# $ MISSING: tainted` annotation | data |
+| taint_test.py:186:24:186:27 | taint_test.py:186 | ERROR, you should add `# $ MISSING: tainted` annotation | data |
+| taint_test.py:189:24:189:27 | taint_test.py:189 | ERROR, you should add `# $ MISSING: tainted` annotation | data |
+| taint_test.py:205:9:205:28 | taint_test.py:205 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:207:9:207:28 | taint_test.py:207 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:208:9:208:35 | taint_test.py:208 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:211:9:211:28 | taint_test.py:211 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:212:9:212:35 | taint_test.py:212 | ERROR, you should add `# $ MISSING: tainted` annotation | Await |
+| taint_test.py:219:9:219:23 | taint_test.py:219 | ERROR, you should add `# $ MISSING: tainted` annotation | request.cookies |
+| taint_test.py:220:9:220:30 | taint_test.py:220 | ERROR, you should add `# $ MISSING: tainted` annotation | request.cookies["key"] |
+| taint_test.py:224:24:224:28 | taint_test.py:224 | ERROR, you should add `# $ MISSING: tainted` annotation | chunk |
 testFailures
+| taint_test.py:33:27:33:37 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:35:30:35:40 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:36:34:36:44 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:38:32:38:42 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:39:35:39:45 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:40:39:40:49 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:43:33:43:43 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:44:36:44:46 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:45:39:45:49 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:46:43:46:53 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:52:21:52:31 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:53:24:53:34 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:54:28:54:38 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:140:24:140:34 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:142:31:142:41 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:143:29:143:39 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:144:30:144:40 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:145:33:145:43 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:146:33:146:43 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:147:33:147:43 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:148:33:148:43 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:149:29:149:39 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:151:35:151:45 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:152:42:152:52 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:153:40:153:50 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:154:41:154:51 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:155:44:155:54 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:156:44:156:54 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:157:44:157:54 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:158:44:158:54 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:159:40:159:50 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:161:28:161:38 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:162:35:162:45 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:164:33:164:43 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:165:40:165:50 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:167:28:167:38 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:168:35:168:45 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:170:36:170:46 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:171:42:171:52 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:172:41:172:51 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:173:41:173:51 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:183:30:183:40 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:186:30:186:40 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:189:30:189:40 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:205:31:205:41 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:207:31:207:41 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:208:38:208:48 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:211:31:211:41 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:212:38:212:48 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:219:26:219:36 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:220:33:220:43 | Comment # $ tainted | Missing result: tainted |
+| taint_test.py:224:31:224:41 | Comment # $ tainted | Missing result: tainted |

@@ -1,0 +1,45 @@
+| response_test.py:11:30:11:37 | Parameter | Unexpected result: routedParameter=response |
+| response_test.py:12:41:12:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieHttpOnly=false |
+| response_test.py:12:41:12:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieName="key" |
+| response_test.py:12:41:12:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSameSite=Lax |
+| response_test.py:12:41:12:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSecure=false |
+| response_test.py:12:41:12:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieValue="value" |
+| response_test.py:12:41:12:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieWrite |
+| response_test.py:13:51:13:161 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieHttpOnly=false |
+| response_test.py:13:51:13:161 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieName="key" |
+| response_test.py:13:51:13:161 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSameSite=Lax |
+| response_test.py:13:51:13:161 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSecure=false |
+| response_test.py:13:51:13:161 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieValue="value" |
+| response_test.py:13:51:13:161 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieWrite |
+| response_test.py:14:96:14:205 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=true CookieSameSite=Lax | Missing result: CookieHttpOnly=true |
+| response_test.py:14:96:14:205 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=true CookieSameSite=Lax | Missing result: CookieName="key" |
+| response_test.py:14:96:14:205 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=true CookieSameSite=Lax | Missing result: CookieSameSite=Lax |
+| response_test.py:14:96:14:205 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=true CookieSameSite=Lax | Missing result: CookieSecure=false |
+| response_test.py:14:96:14:205 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=true CookieSameSite=Lax | Missing result: CookieValue="value" |
+| response_test.py:14:96:14:205 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=true CookieSameSite=Lax | Missing result: CookieWrite |
+| response_test.py:15:58:15:221 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieHttpOnly=false |
+| response_test.py:15:58:15:221 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieRawHeader="key2=value2" |
+| response_test.py:15:58:15:221 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSameSite=Lax |
+| response_test.py:15:58:15:221 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSecure=false |
+| response_test.py:15:58:15:221 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieWrite |
+| response_test.py:15:58:15:221 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: headerWriteName="Set-Cookie" |
+| response_test.py:15:58:15:221 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: headerWriteValue="key2=value2" |
+| response_test.py:16:68:16:231 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieHttpOnly=false |
+| response_test.py:16:68:16:231 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieRawHeader="key2=value2" |
+| response_test.py:16:68:16:231 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSameSite=Lax |
+| response_test.py:16:68:16:231 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSecure=false |
+| response_test.py:16:68:16:231 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieWrite |
+| response_test.py:16:68:16:231 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: headerWriteName="Set-Cookie" |
+| response_test.py:16:68:16:231 | Comment # $ headerWriteName="Set-Cookie" headerWriteValue="key2=value2" CookieWrite CookieRawHeader="key2=value2" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: headerWriteValue="key2=value2" |
+| response_test.py:17:53:17:116 | Comment # $ headerWriteName="X-MyHeader" headerWriteValue="header-value" | Missing result: headerWriteName="X-MyHeader" |
+| response_test.py:17:53:17:116 | Comment # $ headerWriteName="X-MyHeader" headerWriteValue="header-value" | Missing result: headerWriteValue="header-value" |
+| response_test.py:23:26:23:29 | Parameter | Unexpected result: routedParameter=resp |
+| response_test.py:41:42:41:49 | Parameter | Unexpected result: routedParameter=response |
+| response_test.py:48:41:48:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieHttpOnly=false |
+| response_test.py:48:41:48:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieName="key" |
+| response_test.py:48:41:48:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSameSite=Lax |
+| response_test.py:48:41:48:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieSecure=false |
+| response_test.py:48:41:48:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieValue="value" |
+| response_test.py:48:41:48:151 | Comment # $ CookieWrite CookieName="key" CookieValue="value" CookieSecure=false CookieHttpOnly=false CookieSameSite=Lax | Missing result: CookieWrite |
+| response_test.py:49:87:49:184 | Comment # $ headerWriteName="Custom-Response-Type" headerWriteValue="yes, but only after function has run" | Missing result: headerWriteName="Custom-Response-Type" |
+| response_test.py:49:87:49:184 | Comment # $ headerWriteName="Custom-Response-Type" headerWriteValue="yes, but only after function has run" | Missing result: headerWriteValue="yes, but only after function has run" |
