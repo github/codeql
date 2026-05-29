@@ -1254,12 +1254,14 @@ case @expr.kind of
 
 @delegate_creation_expr = @explicit_delegate_creation_expr | @implicit_delegate_creation_expr;
 
-@bin_arith_op_expr = @mul_expr | @div_expr | @rem_expr | @add_expr | @sub_expr;
-@incr_op_expr =  @pre_incr_expr | @post_incr_expr;
-@decr_op_expr =  @pre_decr_expr | @post_decr_expr;
-@mut_op_expr = @incr_op_expr | @decr_op_expr;
-@un_arith_op_expr = @plus_expr | @minus_expr | @mut_op_expr;
-@arith_op_expr = @bin_arith_op_expr | @un_arith_op_expr;
+@bin_arith_expr = @mul_expr | @div_expr | @rem_expr | @add_expr | @sub_expr;
+@bin_arith_operation = @mul_operation | @div_operation | @rem_operation | @add_operation | @sub_operation;
+
+@incr_operation =  @pre_incr_expr | @post_incr_expr;
+@decr_operation =  @pre_decr_expr | @post_decr_expr;
+@mut_operation = @incr_operation | @decr_operation;
+@un_arith_operation = @plus_expr | @minus_expr | @mut_operation;
+@arith_operation = @bin_arith_operation | @un_arith_operation;
 
 @ternary_log_op_expr = @conditional_expr;
 @bin_log_op_expr = @log_and_expr | @log_or_expr | @null_coalescing_expr;
@@ -1278,8 +1280,8 @@ case @expr.kind of
 @op_expr = @un_op | @bin_op | @ternary_op;
 
 @ternary_op = @ternary_log_op_expr;
-@bin_op = @assign_expr | @bin_arith_op_expr | @bin_log_op_expr | @bin_bit_op_expr | @comp_expr;
-@un_op = @un_arith_op_expr | @un_log_op_expr | @un_bit_op_expr | @sizeof_expr
+@bin_op = @assign_expr | @bin_arith_operation | @bin_log_op_expr | @bin_bit_op_expr | @comp_expr;
+@un_op = @un_arith_operation | @un_log_op_expr | @un_bit_op_expr | @sizeof_expr
        | @pointer_indirection_expr | @address_of_expr;
 
 @anonymous_function_expr = @lambda_expr | @anonymous_method_expr;
