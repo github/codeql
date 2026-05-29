@@ -14,7 +14,6 @@ import Creation
 import Dynamic
 import Literal
 import LogicalOperation
-import Operation
 import semmle.code.csharp.controlflow.ControlFlowElement
 import semmle.code.csharp.Location
 import semmle.code.csharp.Stmt
