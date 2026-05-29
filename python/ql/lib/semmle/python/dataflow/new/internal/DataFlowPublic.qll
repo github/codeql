@@ -950,6 +950,13 @@ class ContentSet extends TContentSet {
     or
     this = TAnyDictionaryElement() and
     (result instanceof DictionaryElementContent or result instanceof DictionaryElementAnyContent)
+    or
+    this = TAnyTupleOrDictionaryElement() and
+    (
+      result instanceof TupleElementContent or
+      result instanceof DictionaryElementContent or
+      result instanceof DictionaryElementAnyContent
+    )
   }
 
   /** Gets a textual representation of this content set. */
@@ -959,6 +966,8 @@ class ContentSet extends TContentSet {
     this = TAnyTupleElement() and result = "Any tuple element"
     or
     this = TAnyDictionaryElement() and result = "Any dictionary element"
+    or
+    this = TAnyTupleOrDictionaryElement() and result = "Any tuple or dictionary element"
   }
 }
 
