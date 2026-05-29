@@ -264,7 +264,7 @@ class BinaryOperation extends Operation, @bin_operation {
  * A ternary operation, that is, a ternary conditional operation
  * (`ConditionalExpr`).
  */
-class TernaryOperation extends Operation, @ternary_op { }
+class TernaryOperation extends Operation, @ternary_operation { }
 
 /**
  * A parenthesized expression, for example `(2 + 3)` in

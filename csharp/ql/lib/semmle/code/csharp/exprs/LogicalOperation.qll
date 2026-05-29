@@ -11,14 +11,14 @@ import Expr
  * a binary logical operation (`BinaryLogicalOperation`), or a ternary logical
  * operation (`TernaryLogicalOperation`).
  */
-class LogicalOperation extends Operation, @log_expr {
+class LogicalOperation extends Operation, @log_operation {
   override string getOperator() { none() }
 }
 
 /**
  * A unary logical operation, that is, a logical 'not' (`LogicalNotExpr`).
  */
-class UnaryLogicalOperation extends LogicalOperation, UnaryOperation, @un_log_op_expr { }
+class UnaryLogicalOperation extends LogicalOperation, UnaryOperation, @un_log_operation { }
 
 /**
  * A logical 'not', for example `!String.IsNullOrEmpty(s)`.
@@ -32,9 +32,9 @@ class LogicalNotExpr extends UnaryLogicalOperation, @log_not_expr {
 /**
  * A binary logical operation. Either a logical 'and' (`LogicalAndExpr`),
  * a logical 'or' (`LogicalAndExpr`), or a null-coalescing operation
- * (`NullCoalescingExpr`).
+ * (`NullCoalescingOperation`).
  */
-class BinaryLogicalOperation extends LogicalOperation, BinaryOperation, @bin_log_op_expr {
+class BinaryLogicalOperation extends LogicalOperation, BinaryOperation, @bin_log_operation {
   override string getOperator() { none() }
 }
 
@@ -57,7 +57,7 @@ class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
 }
 
 /**
- * A null-coalescing operation, for example `s ?? ""` on line 2 in
+ * A null-coalescing expression, for example `s ?? ""` on line 2 in
  *
  * ```csharp
  * string NonNullOrEmpty(string s) {
@@ -65,9 +65,7 @@ class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
  * }
  * ```
  */
-class NullCoalescingExpr extends BinaryLogicalOperation, NullCoalescingOperation,
-  @null_coalescing_expr
-{
+class NullCoalescingExpr extends NullCoalescingOperation, @null_coalescing_expr {
   override string getOperator() { result = "??" }
 
   override string getAPrimaryQlClass() { result = "NullCoalescingExpr" }
@@ -77,7 +75,7 @@ class NullCoalescingExpr extends BinaryLogicalOperation, NullCoalescingOperation
  * A ternary logical operation, that is, a ternary conditional expression
  * (`ConditionalExpr`).
  */
-class TernaryLogicalOperation extends LogicalOperation, TernaryOperation, @ternary_log_op_expr { }
+class TernaryLogicalOperation extends LogicalOperation, TernaryOperation, @ternary_log_operation { }
 
 /**
  * A conditional expression, for example `s != null ? s.Length : -1`

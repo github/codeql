@@ -313,7 +313,7 @@ class RemoveEventExpr extends AddOrRemoveEventExpr, @remove_event_expr {
  * A null-coalescing assignment expression, for example `x ??= y`.
  */
 class AssignCoalesceExpr extends AssignOperation, NullCoalescingOperation, @assign_coalesce_expr {
-  override string toString() { result = "... ??= ..." }
+  override string getOperator() { result = "??=" }
 
   override string getAPrimaryQlClass() { result = "AssignCoalesceExpr" }
 }
