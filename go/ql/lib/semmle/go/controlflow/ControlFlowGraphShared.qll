@@ -72,6 +72,7 @@ module GoCfg {
     }
 
     AstNode getChild(AstNode n, int index) {
+      not n instanceof Go::FuncDef and
       not skipCfg(n) and
       not skipCfg(result) and
       exists(Go::AstNode c | c = n.getChild(index) |
@@ -87,7 +88,11 @@ module GoCfg {
       }
     }
 
-    AstNode callableGetBody(Callable c) { result = c }
+    AstNode callableGetBody(Callable c) {
+      result = c.(Go::FuncDef).getBody()
+      or
+      result = c.(Go::File)
+    }
 
     class Parameter extends AstNode {
       Parameter() { none() }
@@ -100,12 +105,8 @@ module GoCfg {
     Parameter callableGetParameter(Callable c, int index) { none() }
 
     Callable getEnclosingCallable(AstNode node) {
-      node instanceof Go::FuncDef and result = node
-      or
-      not node instanceof Go::FuncDef and
       result = node.getEnclosingFunction()
       or
-      not node instanceof Go::FuncDef and
       not exists(node.getEnclosingFunction()) and
       result = node.getFile()
     }
@@ -448,33 +449,33 @@ module GoCfg {
           tag = "result-write:" + i.toString()
         )
         or
-        // Result read nodes (on the FuncDef)
+        // Result read nodes (on the function body)
         exists(int i, Go::FuncDef fd |
-          n = fd and
+          n = fd.getBody() and
           exists(fd.getBody()) and
           exists(fd.getResultVar(i)) and
           tag = "result-read:" + i.toString()
         )
         or
-        // Parameter init + argument nodes (on the FuncDef)
+        // Parameter init + argument nodes (on the function body)
         exists(int i, Go::FuncDef fd |
-          n = fd and
+          n = fd.getBody() and
           exists(fd.getBody()) and
           exists(fd.getParameter(i)) and
           (tag = "param-init:" + i.toString() or tag = "arg:" + i.toString())
         )
         or
-        // Result variable init (on the FuncDef)
+        // Result variable init (on the function body)
         exists(int i, Go::FuncDef fd |
-          n = fd and
+          n = fd.getBody() and
           exists(fd.getBody()) and
           exists(fd.getResultVar(i)) and
           tag = "result-init:" + i.toString()
         )
         or
-        // Result variable zero init (on the FuncDef)
+        // Result variable zero init (on the function body)
         exists(int i, Go::FuncDef fd |
-          n = fd and
+          n = fd.getBody() and
           exists(fd.getBody()) and
           exists(fd.getResultVar(i)) and
           exists(fd.getResultVar(i).(Go::ResultVariable).getFunction().getBody()) and
@@ -723,7 +724,7 @@ module GoCfg {
         (
           // If the function has result variables, route the return completion
           // through the result-read epilogue before reaching the function exit.
-          exists(fd.getResultVar(0)) and n.isAdditional(fd, "result-read:0")
+          exists(fd.getResultVar(0)) and n.isAdditional(fd.getBody(), "result-read:0")
           or
           not exists(fd.getResultVar(_)) and n.isAfter(fd.getBody())
         )
@@ -1499,100 +1500,118 @@ module GoCfg {
 
     /**
      * Function definition prologue and epilogue:
-     * - Prologue: Before(fd) → arg:-1 → param-init:-1 → arg:0 → param-init:0 → ...
+     * - Prologue: Before(body) → arg:-1 → param-init:-1 → arg:0 → param-init:0 → ...
      *             when a receiver exists; otherwise it starts at arg:0. Then
-     *             result-zero-init:0 → result-init:0 → ... → Before(body)
-     * - Epilogue: After(body) → result-read:0 → result-read:1 → ... → After(fd)
+     *             result-zero-init:0 → result-init:0 → ... → first statement
+     * - Epilogue: return → result-read:0 → result-read:1 → ... → After(body)
      *
-     * `After(fd)` goes to `NormalExit(fd)` via the shared library's built-in step
-     * (since `callableGetBody(fd) = fd`).
+     * `After(body)` goes to `NormalExit(fd)` via the shared library's built-in step.
      */
+    private predicate hasFuncDefPrologue(Go::FuncDef fd) {
+      exists(fd.getParameter(_)) or exists(fd.getResultVar(_))
+    }
+
+    private predicate funcDefBodyStart(Go::FuncDef fd, PreControlFlowNode n) {
+      n.isBefore(getRankedChild(fd.getBody(), 1))
+      or
+      not exists(getRankedChild(fd.getBody(), _)) and n.isAfter(fd.getBody())
+    }
+
+    private predicate funcDefBodyStep(Go::FuncDef fd, PreControlFlowNode n1, PreControlFlowNode n2) {
+      not hasFuncDefPrologue(fd) and
+      n1.isBefore(fd.getBody()) and
+      funcDefBodyStart(fd, n2)
+      or
+      exists(int i |
+        n1.isAfter(getRankedChild(fd.getBody(), i)) and
+        n2.isBefore(getRankedChild(fd.getBody(), i + 1))
+      )
+      or
+      exists(Ast::AstNode lastChild | lastChild = getLastRankedChild(fd.getBody()) |
+        n1.isAfter(lastChild) and n2.isAfter(fd.getBody())
+      )
+    }
+
     private predicate funcDefStep(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::FuncDef fd | exists(fd.getBody()) |
-        // Before(fd) → first prologue node, or Before(body) if no prologue
-        n1.isBefore(fd) and
+        // Before(body) → first prologue node, or first body statement if no prologue
+        n1.isBefore(fd.getBody()) and
         (
           // Has receiver: start with arg:-1
-          exists(fd.getParameter(-1)) and n2.isAdditional(fd, "arg:-1")
+          exists(fd.getParameter(-1)) and n2.isAdditional(fd.getBody(), "arg:-1")
           or
           // Has ordinary parameters: start with arg:0
           not exists(fd.getParameter(-1)) and
           exists(fd.getParameter(0)) and
-          n2.isAdditional(fd, "arg:0")
+          n2.isAdditional(fd.getBody(), "arg:0")
           or
           // No parameters, has result vars: start with result-zero-init:0
           not exists(fd.getParameter(_)) and
           exists(fd.getResultVar(0)) and
-          n2.isAdditional(fd, "result-zero-init:0")
+          n2.isAdditional(fd.getBody(), "result-zero-init:0")
           or
           // No parameters and no result vars: go directly to Before(body)
           not exists(fd.getParameter(_)) and
           not exists(fd.getResultVar(_)) and
-          n2.isBefore(fd.getBody())
+          funcDefBodyStart(fd, n2)
         )
         or
         // arg:i → param-init:i (for each parameter)
         exists(int i | exists(fd.getParameter(i)) |
-          n1.isAdditional(fd, "arg:" + i.toString()) and
-          n2.isAdditional(fd, "param-init:" + i.toString())
+          n1.isAdditional(fd.getBody(), "arg:" + i.toString()) and
+          n2.isAdditional(fd.getBody(), "param-init:" + i.toString())
         )
         or
         // param-init:i → next: arg:(i+1), or result-zero-init:0, or Before(body)
         exists(int i | exists(fd.getParameter(i)) |
-          n1.isAdditional(fd, "param-init:" + i.toString()) and
+          n1.isAdditional(fd.getBody(), "param-init:" + i.toString()) and
           (
             // Next parameter exists
             exists(fd.getParameter(i + 1)) and
-            n2.isAdditional(fd, "arg:" + (i + 1).toString())
+            n2.isAdditional(fd.getBody(), "arg:" + (i + 1).toString())
             or
             // No next parameter, has result vars: go to result-zero-init:0
             not exists(fd.getParameter(i + 1)) and
             exists(fd.getResultVar(0)) and
-            n2.isAdditional(fd, "result-zero-init:0")
+            n2.isAdditional(fd.getBody(), "result-zero-init:0")
             or
             // No next parameter and no result vars: go to Before(body)
             not exists(fd.getParameter(i + 1)) and
             not exists(fd.getResultVar(_)) and
-            n2.isBefore(fd.getBody())
+            funcDefBodyStart(fd, n2)
           )
         )
         or
         // result-zero-init:j → result-init:j (for each result variable)
         exists(int j | exists(fd.getResultVar(j)) |
-          n1.isAdditional(fd, "result-zero-init:" + j.toString()) and
-          n2.isAdditional(fd, "result-init:" + j.toString())
+          n1.isAdditional(fd.getBody(), "result-zero-init:" + j.toString()) and
+          n2.isAdditional(fd.getBody(), "result-init:" + j.toString())
         )
         or
         // result-init:j → next: result-zero-init:(j+1), or Before(body)
         exists(int j | exists(fd.getResultVar(j)) |
-          n1.isAdditional(fd, "result-init:" + j.toString()) and
+          n1.isAdditional(fd.getBody(), "result-init:" + j.toString()) and
           (
             // Next result var exists
             exists(fd.getResultVar(j + 1)) and
-            n2.isAdditional(fd, "result-zero-init:" + (j + 1).toString())
+            n2.isAdditional(fd.getBody(), "result-zero-init:" + (j + 1).toString())
             or
             // No next result var: go to Before(body)
             not exists(fd.getResultVar(j + 1)) and
-            n2.isBefore(fd.getBody())
+            funcDefBodyStart(fd, n2)
           )
         )
         or
-        // After(body) → After(fd). Only reachable when there are no result
-        // variables; with result variables, Go requires the body to end in a
-        // terminating statement, and the result-read epilogue is entered from
-        // the return completion (see endAbruptCompletion).
-        n1.isAfter(fd.getBody()) and
-        not exists(fd.getResultVar(_)) and
-        n2.isAfter(fd)
+        funcDefBodyStep(fd, n1, n2)
         or
-        // result-read:j → result-read:(j+1) or After(fd)
+        // result-read:j → result-read:(j+1) or After(body)
         exists(int j | exists(fd.getResultVar(j)) |
-          n1.isAdditional(fd, "result-read:" + j.toString()) and
+          n1.isAdditional(fd.getBody(), "result-read:" + j.toString()) and
           (
             exists(fd.getResultVar(j + 1)) and
-            n2.isAdditional(fd, "result-read:" + (j + 1).toString())
+            n2.isAdditional(fd.getBody(), "result-read:" + (j + 1).toString())
             or
-            not exists(fd.getResultVar(j + 1)) and n2.isAfter(fd)
+            not exists(fd.getResultVar(j + 1)) and n2.isAfter(fd.getBody())
           )
         )
       )
