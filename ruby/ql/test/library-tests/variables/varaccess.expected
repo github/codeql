@@ -226,7 +226,6 @@ variableAccess
 | scopes.rb:85:5:85:13 | self | scopes.rb:84:3:88:5 | self | scopes.rb:84:3:88:5 | foo |
 | scopes.rb:85:11:85:13 | msg | scopes.rb:84:11:84:13 | msg | scopes.rb:84:3:88:5 | foo |
 | scopes.rb:86:13:86:16 | self | scopes.rb:84:3:88:5 | self | scopes.rb:84:3:88:5 | foo |
-| scopes.rb:86:18:86:21 | name | scopes.rb:86:18:86:21 | name | scopes.rb:84:3:88:5 | foo |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b | ssa.rb:1:1:16:3 | m |
 | ssa.rb:2:3:2:3 | i | ssa.rb:2:3:2:3 | i | ssa.rb:1:1:16:3 | m |
 | ssa.rb:3:3:3:8 | self | ssa.rb:1:1:16:3 | self | ssa.rb:1:1:16:3 | m |
@@ -436,8 +435,6 @@ implicitWrite
 | scopes.rb:69:15:69:15 | x |
 | scopes.rb:80:13:80:17 | value |
 | scopes.rb:84:11:84:13 | msg |
-| scopes.rb:86:13:86:16 | self |
-| scopes.rb:86:18:86:21 | name |
 | ssa.rb:1:7:1:7 | b |
 | ssa.rb:18:8:18:8 | x |
 | ssa.rb:25:8:25:15 | elements |
@@ -606,6 +603,7 @@ readAccess
 | scopes.rb:81:13:81:17 | value |
 | scopes.rb:85:5:85:13 | self |
 | scopes.rb:85:11:85:13 | msg |
+| scopes.rb:86:13:86:16 | self |
 | ssa.rb:3:3:3:8 | self |
 | ssa.rb:3:8:3:8 | i |
 | ssa.rb:4:3:4:12 | self |

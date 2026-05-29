@@ -138,7 +138,6 @@
 | scopes.rb:80:13:80:17 | value |
 | scopes.rb:84:3:88:5 | self |
 | scopes.rb:84:11:84:13 | msg |
-| scopes.rb:86:18:86:21 | name |
 | ssa.rb:1:1:16:3 | self |
 | ssa.rb:1:1:103:3 | self |
 | ssa.rb:1:7:1:7 | b |
