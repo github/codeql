@@ -314,6 +314,14 @@ fn apply_yaml_to_schema(
             node_types.sort_by(|a, b| a.kind.cmp(&b.kind).then(a.named.cmp(&b.named)));
             node_types.dedup_by(|a, b| a.kind == b.kind && a.named == b.named);
             schema.set_field_types(parent_kind, field_id, node_types);
+            schema.set_field_cardinality(
+                parent_kind,
+                field_id,
+                crate::schema::FieldCardinality {
+                    multiple: spec.multiple,
+                    required: spec.required,
+                },
+            );
         }
     }
 }

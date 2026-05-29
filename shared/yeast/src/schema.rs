@@ -8,6 +8,15 @@ pub struct NodeType {
     pub named: bool,
 }
 
+/// Multiplicity/optionality of a field declaration.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct FieldCardinality {
+    /// Whether the field may hold more than one child.
+    pub multiple: bool,
+    /// Whether at least one child must be present.
+    pub required: bool,
+}
+
 /// A schema defining node kinds and field names for the output AST.
 /// Built from a node-types.yml file, independent of any tree-sitter grammar.
 ///
@@ -32,6 +41,7 @@ pub struct Schema {
     kind_names: BTreeMap<KindId, &'static str>,
     next_kind_id: KindId,
     field_types: BTreeMap<(String, FieldId), Vec<NodeType>>,
+    field_cardinalities: BTreeMap<(String, FieldId), FieldCardinality>,
     supertypes: BTreeMap<String, Vec<NodeType>>,
 }
 
@@ -52,6 +62,7 @@ impl Schema {
             kind_names: BTreeMap::new(),
             next_kind_id: 1, // 0 is reserved
             field_types: BTreeMap::new(),
+            field_cardinalities: BTreeMap::new(),
             supertypes: BTreeMap::new(),
         }
     }
@@ -194,6 +205,42 @@ impl Schema {
     ) -> Option<&Vec<NodeType>> {
         self.field_types
             .get(&(parent_kind.to_string(), field_id))
+    }
+
+    pub fn set_field_cardinality(
+        &mut self,
+        parent_kind: &str,
+        field_id: FieldId,
+        cardinality: FieldCardinality,
+    ) {
+        self.field_cardinalities
+            .insert((parent_kind.to_string(), field_id), cardinality);
+    }
+
+    /// Returns the declared cardinality for a field, if known.
+    pub fn field_cardinality(
+        &self,
+        parent_kind: &str,
+        field_id: FieldId,
+    ) -> Option<FieldCardinality> {
+        self.field_cardinalities
+            .get(&(parent_kind.to_string(), field_id))
+            .copied()
+    }
+
+    /// Returns an iterator over all `(field_id, field_name)` pairs that are
+    /// declared as required (`required: true`) for the given `parent_kind`.
+    pub fn required_fields_for_kind<'a>(
+        &'a self,
+        parent_kind: &'a str,
+    ) -> impl Iterator<Item = (FieldId, Option<&'static str>)> + 'a {
+        self.field_cardinalities
+            .iter()
+            .filter(move |((kind, _), card)| kind == parent_kind && card.required)
+            .map(move |((_, field_id), _)| {
+                let name = self.field_name_for_id(*field_id);
+                (*field_id, name)
+            })
     }
 
     pub fn set_supertype_members(&mut self, supertype: &str, node_types: Vec<NodeType>) {
