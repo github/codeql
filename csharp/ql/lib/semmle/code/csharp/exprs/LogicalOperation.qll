@@ -57,6 +57,11 @@ class LogicalOrExpr extends BinaryLogicalOperation, @log_or_expr {
 }
 
 /**
+ * A null-coalescing operation, either `x ?? y` or `x ??= y`.
+ */
+class NullCoalescingOperation extends BinaryLogicalOperation, @null_coalescing_operation { }
+
+/**
  * A null-coalescing expression, for example `s ?? ""` on line 2 in
  *
  * ```csharp
