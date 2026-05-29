@@ -16,6 +16,14 @@ class ArithmeticOperation extends Operation, @arith_operation {
 }
 
 /**
+ * A binary arithmetic operation. Either a binary arithmetic expression (`BinaryArithmeticExpr`) or
+ * an arithmetic assignment expression (`AssignArithmeticExpr`).
+ */
+class BinaryArithmeticOperation extends ArithmeticOperation, BinaryOperation, @bin_arith_operation {
+  override string getOperator() { none() }
+}
+
+/**
  * A unary arithmetic operation. Either a unary minus operation
  * (`UnaryMinusExpr`), a unary plus operation (`UnaryPlusExpr`),
  * or a mutator operation (`MutatorOperation`).
@@ -93,6 +101,37 @@ class PostDecrExpr extends DecrementOperation, @post_decr_expr {
 
   override string getAPrimaryQlClass() { result = "PostDecrExpr" }
 }
+
+/**
+ * An addition operation, either `x + y` or `x += y`.
+ */
+class AddOperation extends BinaryArithmeticOperation, @add_operation { }
+
+/**
+ * A subtraction operation, either `x - y` or `x -= y`.
+ */
+class SubOperation extends BinaryArithmeticOperation, @sub_operation { }
+
+/**
+ * A multiplication operation, either `x * y` or `x *= y`.
+ */
+class MulOperation extends BinaryArithmeticOperation, @mul_operation { }
+
+/**
+ * A division operation, either `x / y` or `x /= y`.
+ */
+class DivOperation extends BinaryArithmeticOperation, @div_operation {
+  /** Gets the numerator of this division operation. */
+  Expr getNumerator() { result = this.getLeftOperand() }
+
+  /** Gets the denominator of this division operation. */
+  Expr getDenominator() { result = this.getRightOperand() }
+}
+
+/**
+ * A remainder operation, either `x % y` or `x %= y`.
+ */
+class RemOperation extends BinaryArithmeticOperation, @rem_operation { }
 
 /**
  * A binary arithmetic expression. Either an addition expression
