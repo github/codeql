@@ -366,6 +366,8 @@ module GoCfg {
       or
       n instanceof Go::BasicLit
       or
+      n instanceof Go::FuncLit
+      or
       n instanceof Go::CallExpr and
       not n = any(Go::DeferStmt defer).getCall() and
       not n = any(Go::GoStmt go_).getCall()
