@@ -212,7 +212,7 @@ class LocalConstantDeclExpr extends LocalVariableDeclExpr {
  * (`UnaryOperation`), a binary operation (`BinaryOperation`), or a
  * ternary operation (`TernaryOperation`).
  */
-class Operation extends Expr, @op_expr {
+class Operation extends Expr, @operation_expr {
   /** Gets the name of the operator in this operation. */
   string getOperator() { none() }
 
@@ -227,7 +227,7 @@ class Operation extends Expr, @op_expr {
  * indirection operation (`PointerIndirectionExpr`), an address-of operation
  * (`AddressOfExpr`), or a unary logical operation (`UnaryLogicalOperation`).
  */
-class UnaryOperation extends Operation, @un_op {
+class UnaryOperation extends Operation, @un_operation {
   /** Gets the operand of this unary operation. */
   Expr getOperand() { result = this.getChild(0) }
 
@@ -241,7 +241,7 @@ class UnaryOperation extends Operation, @un_op {
  * a binary logical operation (`BinaryLogicalOperation`), or an
  * assignment (`Assignment`).
  */
-class BinaryOperation extends Operation, @bin_op {
+class BinaryOperation extends Operation, @bin_operation {
   /** Gets the left operand of this binary operation. */
   Expr getLeftOperand() { result = this.getChild(0) }
 

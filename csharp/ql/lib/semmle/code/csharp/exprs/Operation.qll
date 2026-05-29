@@ -7,32 +7,32 @@ import Expr
 /**
  * A bitwise-and operation, either `x & y` or `x &= y`.
  */
-class BitwiseAndOperation extends BinaryOperation, @and_operation { }
+class BitwiseAndOperation extends BinaryBitwiseOperation, @and_operation { }
 
 /**
  * A bitwise-or operation, either `x | y` or `x |= y`.
  */
-class BitwiseOrOperation extends BinaryOperation, @or_operation { }
+class BitwiseOrOperation extends BinaryBitwiseOperation, @or_operation { }
 
 /**
  * A bitwise exclusive-or operation, either `x ^ y` or `x ^= y`.
  */
-class BitwiseXorOperation extends BinaryOperation, @xor_operation { }
+class BitwiseXorOperation extends BinaryBitwiseOperation, @xor_operation { }
 
 /**
  * A left-shift operation, either `x << y` or `x <<= y`.
  */
-class LeftShiftOperation extends BinaryOperation, @lshift_operation { }
+class LeftShiftOperation extends BinaryBitwiseOperation, @lshift_operation { }
 
 /**
  * A right-shift operation, either `x >> y` or `x >>= y`.
  */
-class RightShiftOperation extends BinaryOperation, @rshift_operation { }
+class RightShiftOperation extends BinaryBitwiseOperation, @rshift_operation { }
 
 /**
  * An unsigned right-shift operation, either `x >>> y` or `x >>>= y`.
  */
-class UnsignedRightShiftOperation extends BinaryOperation, @urshift_operation { }
+class UnsignedRightShiftOperation extends BinaryBitwiseOperation, @urshift_operation { }
 
 /**
  * A null-coalescing operation, either `x ?? y` or `x ??= y`.
