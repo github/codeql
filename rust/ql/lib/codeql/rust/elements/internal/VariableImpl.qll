@@ -381,7 +381,9 @@ module Impl {
   class NestedFunctionAccess extends LocalAccess {
     private Function f;
 
+    NestedFunctionAccess() { f = super.getLocal().getDefiningNode() }
+
     /** Gets the function being accessed. */
-    Function getFunction() { result = super.getLocal().getDefiningNode() }
+    Function getFunction() { result = f }
   }
 }

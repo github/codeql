@@ -46,6 +46,10 @@ signature module LocalNameBindingInputSig<LocationSig Location> {
    *   // x is not in scope here
    * }
    * ```
+   *
+   * If a local declaration inside the condition is a shadowing sibling declaration
+   * (see below), then it should use the declaration itself as scope, otherwise it
+   * should use the condition as scope.
    */
   class Conditional extends AstNode {
     /** Gets the condition of this conditional. */
@@ -153,8 +157,6 @@ module LocalNameBinding<LocationSig Location, LocalNameBindingInputSig<Location>
       implicitDeclInScope(_, this)
       or
       isTopScope(this)
-      or
-      lookupStartsAt(_, this)
     }
   }
 
