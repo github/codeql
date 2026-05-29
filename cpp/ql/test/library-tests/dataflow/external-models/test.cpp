@@ -118,3 +118,30 @@ void test_callWithNonTypeTemplate() {
 	int y2 = callWithNonTypeTemplate<int, 10>(x);
 	ymlSink(y2); // $ ir
 }
+
+template<class T>
+struct TemplateClass1 {
+  template<class U>
+  U templateFunction(T, U);
+};
+
+void test_template_function_in_template_class() {
+	TemplateClass1<int> b;
+	int x = ymlSource();
+	auto y = b.templateFunction<unsigned long>(x, 0UL);
+	ymlSink(y); // $ ir
+}
+
+template<class S, class T>
+struct TemplateClass2 {
+	T function(T, S);
+};
+
+template<class V> using PartialInstantiationOfTemplateClass2 = TemplateClass2<int, V>;
+
+void test_partial_instantiation() {
+	int x = ymlSource();
+	PartialInstantiationOfTemplateClass2<unsigned long> y;
+	int z = y.function(0UL, x);
+	ymlSink(z); // $ ir
+}
