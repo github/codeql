@@ -1,10 +1,3 @@
-## 6.0.2
-
-### Minor Analysis Improvements
-
-* Full support for C# 14 / .NET 10. All new language features are now supported by the extractor. The QL library and data flow analysis now support the new C# 14 language constructs and include generated Models as Data (MaD) models for the .NET 10 runtime.
-* C# 14: Added support for user-defined instance increment/decrement operators.
-
 ## 6.0.1
 
 No user-facing changes.

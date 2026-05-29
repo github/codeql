@@ -1,9 +1,3 @@
-## 9.1.2
-
-### Minor Analysis Improvements
-
-* Added LLM-generated source and sink models for `org.apache.avro`.
-
 ## 9.1.1
 
 ### Minor Analysis Improvements
