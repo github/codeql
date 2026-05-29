@@ -1263,10 +1263,10 @@ case @expr.kind of
 @un_arith_operation = @plus_expr | @minus_expr | @mut_operation;
 @arith_operation = @bin_arith_operation | @un_arith_operation;
 
-@ternary_log_op_expr = @conditional_expr;
-@bin_log_op_expr = @log_and_expr | @log_or_expr | @null_coalescing_expr;
-@un_log_op_expr = @log_not_expr;
-@log_expr = @un_log_op_expr | @bin_log_op_expr | @ternary_log_op_expr;
+@ternary_log_operation = @conditional_expr;
+@bin_log_operation = @log_and_expr | @log_or_expr | @null_coalescing_operation;
+@un_log_operation = @log_not_expr;
+@log_operation = @un_log_operation | @bin_log_operation | @ternary_log_operation;
 
 @bin_bit_expr =  @bit_and_expr | @bit_or_expr | @bit_xor_expr | @lshift_expr
               | @rshift_expr | @urshift_expr;
@@ -1281,11 +1281,11 @@ case @expr.kind of
 @rel_op_expr = @gt_expr | @lt_expr| @ge_expr | @le_expr;
 @comp_expr = @equality_op_expr | @rel_op_expr;
 
-@operation_expr = @un_operation | @bin_operation | @ternary_op;
+@operation_expr = @un_operation | @bin_operation | @ternary_operation;
 
-@ternary_op = @ternary_log_op_expr;
-@bin_operation = @assign_expr | @bin_arith_operation | @bin_log_op_expr | @bin_bit_operation | @comp_expr;
-@un_operation = @un_arith_operation | @un_log_op_expr | @un_bit_operation | @sizeof_expr
+@ternary_operation = @ternary_log_operation;
+@bin_operation = @assign_expr | @bin_arith_operation | @bin_log_operation | @bin_bit_operation | @comp_expr;
+@un_operation = @un_arith_operation | @un_log_operation | @un_bit_operation | @sizeof_expr
               | @pointer_indirection_expr | @address_of_expr;
 
 @anonymous_function_expr = @lambda_expr | @anonymous_method_expr;
