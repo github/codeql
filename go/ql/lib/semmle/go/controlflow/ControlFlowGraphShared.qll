@@ -1239,6 +1239,14 @@ module GoCfg {
       exprSwitch(n1, n2) or typeSwitch(n1, n2) or caseClause(n1, n2)
     }
 
+    private predicate switchCasesStartOrAfter(Go::SwitchStmt sw, PreControlFlowNode n) {
+      n.isBefore(sw.getNonDefaultCase(0))
+      or
+      not exists(sw.getANonDefaultCase()) and n.isBefore(sw.getDefault())
+      or
+      not exists(sw.getACase()) and n.isAfter(sw)
+    }
+
     private predicate exprSwitch(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::ExpressionSwitchStmt sw |
         n1.isBefore(sw) and
@@ -1249,14 +1257,7 @@ module GoCfg {
           (
             n2.isBefore(sw.getExpr())
             or
-            not exists(sw.getExpr()) and
-            (
-              n2.isBefore(sw.getNonDefaultCase(0))
-              or
-              not exists(sw.getANonDefaultCase()) and n2.isBefore(sw.getDefault())
-              or
-              not exists(sw.getACase()) and n2.isAfter(sw)
-            )
+            not exists(sw.getExpr()) and switchCasesStartOrAfter(sw, n2)
           )
         )
         or
@@ -1264,20 +1265,10 @@ module GoCfg {
         (
           n2.isBefore(sw.getExpr())
           or
-          not exists(sw.getExpr()) and
-          (
-            n2.isBefore(sw.getNonDefaultCase(0))
-            or
-            not exists(sw.getANonDefaultCase()) and n2.isBefore(sw.getDefault())
-          )
+          not exists(sw.getExpr()) and switchCasesStartOrAfter(sw, n2)
         )
         or
-        n1.isAfter(sw.getExpr()) and
-        (
-          n2.isBefore(sw.getNonDefaultCase(0))
-          or
-          not exists(sw.getANonDefaultCase()) and n2.isBefore(sw.getDefault())
-        )
+        n1.isAfter(sw.getExpr()) and switchCasesStartOrAfter(sw, n2)
       )
     }
 
@@ -1292,12 +1283,7 @@ module GoCfg {
         or
         n1.isAfter(sw.getInit()) and n2.isBefore(sw.getTest())
         or
-        n1.isAfter(sw.getTest()) and
-        (
-          n2.isBefore(sw.getNonDefaultCase(0))
-          or
-          not exists(sw.getANonDefaultCase()) and n2.isBefore(sw.getDefault())
-        )
+        n1.isAfter(sw.getTest()) and switchCasesStartOrAfter(sw, n2)
       )
     }
 
