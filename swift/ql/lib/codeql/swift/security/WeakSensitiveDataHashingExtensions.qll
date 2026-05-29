@@ -86,12 +86,23 @@ private class WeakSensitiveDataHashingMetatypeSink extends WeakSensitiveDataHash
   string algorithm;
 
   WeakSensitiveDataHashingMetatypeSink() {
-    exists(CallExpr c |
-      c.getAnArgument().getExpr() = this.asExpr() and
+    exists(CallExpr ce, Type t |
+      // call target
+      ce.getStaticTarget().getName() =
+        ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"] and
+      // argument
+      ce.getAnArgument().getExpr() = this.asExpr() and
+      // qualifier
+      t = ce.getQualifier().getType() and
       algorithm = ["MD5", "SHA1"] and
-      c.getQualifier().getType().getFullName() = "Insecure." + algorithm + ["", ".Type"] and
-      c.getStaticTarget().getName() =
-        ["hash(data:)", "hash(bufferPointer:)", "update(data:)", "update(bufferPointer:)"]
+      (
+        t.getFullName() = "Insecure." + algorithm
+        or
+        exists(TypeDecl td |
+          td.getInterfaceType() = t and
+          td.getFullName() = "Insecure." + algorithm
+        )
+      )
     )
   }
 
