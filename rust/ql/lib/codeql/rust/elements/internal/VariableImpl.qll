@@ -79,7 +79,7 @@ module Impl {
    * are parsed left-associatively, so the AST for the condition looks like
    *
    * ```rust
-   * ((let x1 = ... && let x2 = ...) && ...) & let xn = ...
+   * ((let x1 = ... && let x2 = ...) && ...) && let xn = ...
    * ```
    *
    * This, however, does not work with scoping and shadowing, so we instead treat
@@ -319,10 +319,10 @@ module Impl {
       result.(Param).getPat() = getAPatAncestor*(this.getPat())
     }
 
-    /** Hold is this variable is mutable. */
+    /** Holds if this variable is mutable. */
     predicate isMutable() { this.getPat().isMut() or this.getSelfParam().isMut() }
 
-    /** Hold is this variable is immutable. */
+    /** Holds if this variable is immutable. */
     predicate isImmutable() { not this.isMutable() }
   }
 

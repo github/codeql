@@ -132,7 +132,7 @@ signature module LocalNameBindingInputSig<LocationSig Location> {
    *
    * If `scope` declares a local with the name of `n`, then `scope` is guaranteed
    * to be the scope that `n` ultimately resolves to. This can thus be used to take
-   * full control of scope resolution for for specific types of references.
+   * full control of scope resolution for specific types of references.
    */
   default predicate lookupStartsAt(AstNode n, AstNode scope) { none() }
 }
