@@ -609,7 +609,7 @@ class InstanceMutatorOperatorCall extends MutatorOperatorCall {
  * }
  * ```
  */
-class CompoundAssignmentOperatorCall extends AssignCallOperation {
+class CompoundAssignmentOperatorCall extends AssignCallExpr {
   CompoundAssignmentOperatorCall() { this.getTarget() instanceof CompoundAssignmentOperator }
 
   override Expr getArgument(int i) { result = this.getChildExpr(i + 1) and i >= 0 }

@@ -5,24 +5,32 @@
 import Expr
 
 /**
+ * A binary arithmetic operation. Either a binary arithmetic expression (`BinaryArithmeticExpr`) or
+ * an arithmetic assignment operation (`AssignArithmeticExpr`).
+ */
+class BinaryArithmeticOperation extends ArithmeticOperation, BinaryOperation, @bin_arith_operation {
+  override string getOperator() { none() }
+}
+
+/**
  * An addition operation, either `x + y` or `x += y`.
  */
-class AddOperation extends BinaryOperation, @add_operation { }
+class AddOperation extends BinaryArithmeticOperation, @add_operation { }
 
 /**
  * A subtraction operation, either `x - y` or `x -= y`.
  */
-class SubOperation extends BinaryOperation, @sub_operation { }
+class SubOperation extends BinaryArithmeticOperation, @sub_operation { }
 
 /**
  * A multiplication operation, either `x * y` or `x *= y`.
  */
-class MulOperation extends BinaryOperation, @mul_operation { }
+class MulOperation extends BinaryArithmeticOperation, @mul_operation { }
 
 /**
  * A division operation, either `x / y` or `x /= y`.
  */
-class DivOperation extends BinaryOperation, @div_operation {
+class DivOperation extends BinaryArithmeticOperation, @div_operation {
   /** Gets the numerator of this division operation. */
   Expr getNumerator() { result = this.getLeftOperand() }
 
@@ -33,7 +41,7 @@ class DivOperation extends BinaryOperation, @div_operation {
 /**
  * A remainder operation, either `x % y` or `x %= y`.
  */
-class RemOperation extends BinaryOperation, @rem_operation { }
+class RemOperation extends BinaryArithmeticOperation, @rem_operation { }
 
 /**
  * A bitwise-and operation, either `x & y` or `x &= y`.

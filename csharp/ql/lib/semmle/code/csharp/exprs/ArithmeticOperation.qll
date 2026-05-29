@@ -11,7 +11,7 @@ import Expr
  * (`UnaryArithmeticOperation`) or a binary arithmetic operation
  * (`BinaryArithmeticOperation`).
  */
-class ArithmeticOperation extends Operation, @arith_op_expr {
+class ArithmeticOperation extends Operation, @arith_operation {
   override string getOperator() { none() }
 }
 
@@ -20,7 +20,7 @@ class ArithmeticOperation extends Operation, @arith_op_expr {
  * (`UnaryMinusExpr`), a unary plus operation (`UnaryPlusExpr`),
  * or a mutator operation (`MutatorOperation`).
  */
-class UnaryArithmeticOperation extends ArithmeticOperation, UnaryOperation, @un_arith_op_expr { }
+class UnaryArithmeticOperation extends ArithmeticOperation, UnaryOperation, @un_arith_operation { }
 
 /**
  * A unary minus operation, for example `-x`.
@@ -44,13 +44,13 @@ class UnaryPlusExpr extends UnaryArithmeticOperation, @plus_expr {
  * A mutator operation. Either an increment operation (`IncrementOperation`)
  * or a decrement operation (`DecrementOperation`).
  */
-class MutatorOperation extends UnaryArithmeticOperation, @mut_op_expr { }
+class MutatorOperation extends UnaryArithmeticOperation, @mut_operation { }
 
 /**
  * An increment operation. Either a postfix increment operation
  * (`PostIncrExpr`) or a prefix increment operation (`PreIncrExpr`).
  */
-class IncrementOperation extends MutatorOperation, @incr_op_expr {
+class IncrementOperation extends MutatorOperation, @incr_operation {
   override string getOperator() { result = "++" }
 }
 
@@ -58,7 +58,7 @@ class IncrementOperation extends MutatorOperation, @incr_op_expr {
  * A decrement operation. Either a postfix decrement operation
  * (`PostDecrExpr`) or a prefix decrement operation (`PreDecrExpr`).
  */
-class DecrementOperation extends MutatorOperation, @decr_op_expr {
+class DecrementOperation extends MutatorOperation, @decr_operation {
   override string getOperator() { result = "--" }
 }
 
@@ -95,19 +95,17 @@ class PostDecrExpr extends DecrementOperation, @post_decr_expr {
 }
 
 /**
- * A binary arithmetic operation. Either an addition operation
- * (`AddExpr`), a subtraction operation (`SubExpr`), a multiplication
- * operation (`MulExpr`), a division operation (`DivExpr`), or a
- * remainder operation (`RemExpr`).
+ * A binary arithmetic expression. Either an addition expression
+ * (`AddExpr`), a subtraction expression (`SubExpr`), a multiplication
+ * expression (`MulExpr`), a division expression (`DivExpr`), or a
+ * remainder expression (`RemExpr`).
  */
-class BinaryArithmeticOperation extends ArithmeticOperation, BinaryOperation, @bin_arith_op_expr {
-  override string getOperator() { none() }
-}
+class BinaryArithmeticExpr extends BinaryArithmeticOperation, @bin_arith_expr { }
 
 /**
  * An addition operation, for example `x + y`.
  */
-class AddExpr extends BinaryArithmeticOperation, AddOperation, @add_expr {
+class AddExpr extends BinaryArithmeticExpr, AddOperation, @add_expr {
   override string getOperator() { result = "+" }
 
   override string getAPrimaryQlClass() { result = "AddExpr" }
@@ -116,7 +114,7 @@ class AddExpr extends BinaryArithmeticOperation, AddOperation, @add_expr {
 /**
  * A subtraction operation, for example `x - y`.
  */
-class SubExpr extends BinaryArithmeticOperation, SubOperation, @sub_expr {
+class SubExpr extends BinaryArithmeticExpr, SubOperation, @sub_expr {
   override string getOperator() { result = "-" }
 
   override string getAPrimaryQlClass() { result = "SubExpr" }
@@ -125,7 +123,7 @@ class SubExpr extends BinaryArithmeticOperation, SubOperation, @sub_expr {
 /**
  * A multiplication operation, for example `x * y`.
  */
-class MulExpr extends BinaryArithmeticOperation, MulOperation, @mul_expr {
+class MulExpr extends BinaryArithmeticExpr, MulOperation, @mul_expr {
   override string getOperator() { result = "*" }
 
   override string getAPrimaryQlClass() { result = "MulExpr" }
@@ -134,7 +132,7 @@ class MulExpr extends BinaryArithmeticOperation, MulOperation, @mul_expr {
 /**
  * A division operation, for example `x / y`.
  */
-class DivExpr extends BinaryArithmeticOperation, DivOperation, @div_expr {
+class DivExpr extends BinaryArithmeticExpr, DivOperation, @div_expr {
   override string getOperator() { result = "/" }
 
   override string getAPrimaryQlClass() { result = "DivExpr" }
@@ -143,7 +141,7 @@ class DivExpr extends BinaryArithmeticOperation, DivOperation, @div_expr {
 /**
  * A remainder operation, for example `x % y`.
  */
-class RemExpr extends BinaryArithmeticOperation, RemOperation, @rem_expr {
+class RemExpr extends BinaryArithmeticExpr, RemOperation, @rem_expr {
   override string getOperator() { result = "%" }
 
   override string getAPrimaryQlClass() { result = "RemExpr" }
