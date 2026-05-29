@@ -442,9 +442,6 @@ module GoCfg {
         or
         n instanceof Go::IncDecStmt and tag = "incdec-rhs"
         or
-        // Return node
-        n instanceof Go::ReturnStmt and tag = "return"
-        or
         // Result write nodes in return statements
         exists(int i, Go::ReturnStmt ret |
           n = ret and
@@ -960,7 +957,7 @@ module GoCfg {
           n2.isAdditional(ret, tag2)
         )
         or
-        // Last return epilogue → In(ret) (the return itself)
+        // Last return epilogue → return node
         n1.isAdditional(ret, getLastReturnEpilogueTag(ret)) and
         n2.isIn(ret)
       )

@@ -893,7 +893,7 @@ module IR {
   class ReturnInstruction extends Instruction {
     ReturnStmt ret;
 
-    ReturnInstruction() { this.isAdditional(ret, "return") }
+    ReturnInstruction() { this.isIn(ret) }
 
     /** Gets the corresponding `ReturnStmt`. */
     ReturnStmt getReturnStmt() { result = ret }
@@ -938,9 +938,7 @@ module IR {
       exists(retStmt.getAnExpr())
     }
 
-    private ReturnInstruction getReturnInstruction() {
-      result.(ReturnInstruction).isAdditional(retStmt, "return")
-    }
+    private ReturnInstruction getReturnInstruction() { result.getReturnStmt() = retStmt }
 
     override Instruction getRhs() { result = this.getReturnInstruction().getResult(idx) }
 
