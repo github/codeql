@@ -52,7 +52,13 @@ module GoCfg {
       or
       e instanceof Go::SelectorExpr and not e instanceof Go::ReferenceExpr
       or
-      e instanceof Go::ReferenceExpr and not e.(Go::ReferenceExpr).isRvalue()
+      e instanceof Go::ReferenceExpr and
+      not e.(Go::ReferenceExpr).isRvalue() and
+      not e instanceof Go::SelectorExpr and
+      not e = any(Go::SelectorExpr sel).getBase() and
+      not e instanceof Go::IndexExpr and
+      not e = any(Go::IndexExpr idx).getBase() and
+      not e = any(Go::IndexExpr idx).getIndex()
       or
       e instanceof Go::ParenExpr
       or
