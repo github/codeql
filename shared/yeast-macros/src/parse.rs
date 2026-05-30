@@ -525,6 +525,46 @@ fn parse_chain_suffix(
                     #current.map(|#param| #body)
                 };
             }
+            "reduce_left" => {
+                // Syntax: reduce_left(first -> init_tpl, acc, elem -> fold_tpl)
+                // - first -> init_tpl : converts the first element to the initial accumulator
+                // - acc, elem -> fold_tpl : fold step (acc = current accumulator, elem = next element)
+                // Empty iterator produces an empty iterator; non-empty produces a single-element iterator.
+                let mut inner = args_group.stream().into_iter().peekable();
+                let init_param = expect_ident(&mut inner, "expected initial lambda parameter")?;
+                expect_punct(&mut inner, '-', "expected `->` after init parameter")?;
+                expect_punct(&mut inner, '>', "expected `->` after init parameter")?;
+                let init_body = parse_direct_node(&mut inner, ctx)?;
+                expect_punct(&mut inner, ',', "expected `,` after init template")?;
+                let acc_param = expect_ident(&mut inner, "expected accumulator parameter")?;
+                expect_punct(&mut inner, ',', "expected `,` after accumulator parameter")?;
+                let elem_param = expect_ident(&mut inner, "expected element parameter")?;
+                expect_punct(&mut inner, '-', "expected `->` after element parameter")?;
+                expect_punct(&mut inner, '>', "expected `->` after element parameter")?;
+                let fold_body = parse_direct_node(&mut inner, ctx)?;
+                if let Some(tok) = inner.next() {
+                    return Err(syn::Error::new_spanned(
+                        tok,
+                        "unexpected token after fold template",
+                    ));
+                }
+                current = quote! {
+                    {
+                        let mut __iter = #current;
+                        let __result: Option<usize> = if let Some(#init_param) = __iter.next() {
+                            let mut __acc: usize = #init_body;
+                            for #elem_param in __iter {
+                                let #acc_param: usize = __acc;
+                                __acc = #fold_body;
+                            }
+                            Some(__acc)
+                        } else {
+                            None
+                        };
+                        __result.into_iter()
+                    }
+                };
+            }
             _ => {
                 return Err(syn::Error::new_spanned(
                     method,
