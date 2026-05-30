@@ -1161,9 +1161,18 @@ module GoCfg {
           not exists(lit.getElement(_)) and n2.isAfter(lit)
         )
         or
-        // After element → lit-init → next element or After
+        // After element → optional lit-index → lit-init → next element or After
         exists(int i |
-          n1.isAfter(lit.getElement(i)) and n2.isAdditional(lit.getElement(i), "lit-init")
+          n1.isAfter(lit.getElement(i)) and
+          (
+            n2.isAdditional(lit.getElement(i), "lit-index")
+            or
+            not exists(PreControlFlowNode idx | idx.isAdditional(lit.getElement(i), "lit-index")) and
+            n2.isAdditional(lit.getElement(i), "lit-init")
+          )
+          or
+          n1.isAdditional(lit.getElement(i), "lit-index") and
+          n2.isAdditional(lit.getElement(i), "lit-init")
           or
           n1.isAdditional(lit.getElement(i), "lit-init") and
           (
