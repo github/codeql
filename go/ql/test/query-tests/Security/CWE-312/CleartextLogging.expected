@@ -1,80 +1,85 @@
 #select
 | klog.go:23:15:23:20 | header | klog.go:21:30:21:37 | selection of Header | klog.go:23:15:23:20 | header | $@ flows to a logging call. | klog.go:21:30:21:37 | selection of Header | Sensitive data returned by HTTP request headers |
 | klog.go:29:13:29:41 | call to Get | klog.go:29:13:29:20 | selection of Header | klog.go:29:13:29:41 | call to Get | $@ flows to a logging call. | klog.go:29:13:29:20 | selection of Header | Sensitive data returned by HTTP request headers |
-| main.go:19:12:19:19 | password | main.go:17:2:17:9 | SSA def(password) | main.go:19:12:19:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:20:19:20:26 | password | main.go:17:2:17:9 | SSA def(password) | main.go:20:19:20:26 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:21:13:21:20 | password | main.go:17:2:17:9 | SSA def(password) | main.go:21:13:21:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:22:14:22:21 | password | main.go:17:2:17:9 | SSA def(password) | main.go:22:14:22:21 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:24:13:24:20 | password | main.go:17:2:17:9 | SSA def(password) | main.go:24:13:24:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:27:20:27:27 | password | main.go:17:2:17:9 | SSA def(password) | main.go:27:20:27:27 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:30:14:30:21 | password | main.go:17:2:17:9 | SSA def(password) | main.go:30:14:30:21 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:33:15:33:22 | password | main.go:17:2:17:9 | SSA def(password) | main.go:33:15:33:22 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:36:13:36:20 | password | main.go:17:2:17:9 | SSA def(password) | main.go:36:13:36:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:39:20:39:27 | password | main.go:17:2:17:9 | SSA def(password) | main.go:39:20:39:27 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:42:14:42:21 | password | main.go:17:2:17:9 | SSA def(password) | main.go:42:14:42:21 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:45:15:45:22 | password | main.go:17:2:17:9 | SSA def(password) | main.go:45:15:45:22 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:47:16:47:23 | password | main.go:17:2:17:9 | SSA def(password) | main.go:47:16:47:23 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:51:10:51:17 | password | main.go:17:2:17:9 | SSA def(password) | main.go:51:10:51:17 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:52:17:52:24 | password | main.go:17:2:17:9 | SSA def(password) | main.go:52:17:52:24 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:53:11:53:18 | password | main.go:17:2:17:9 | SSA def(password) | main.go:53:11:53:18 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:54:12:54:19 | password | main.go:17:2:17:9 | SSA def(password) | main.go:54:12:54:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:56:11:56:18 | password | main.go:17:2:17:9 | SSA def(password) | main.go:56:11:56:18 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:59:18:59:25 | password | main.go:17:2:17:9 | SSA def(password) | main.go:59:18:59:25 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:62:12:62:19 | password | main.go:17:2:17:9 | SSA def(password) | main.go:62:12:62:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:65:13:65:20 | password | main.go:17:2:17:9 | SSA def(password) | main.go:65:13:65:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:68:11:68:18 | password | main.go:17:2:17:9 | SSA def(password) | main.go:68:11:68:18 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:71:18:71:25 | password | main.go:17:2:17:9 | SSA def(password) | main.go:71:18:71:25 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:74:12:74:19 | password | main.go:17:2:17:9 | SSA def(password) | main.go:74:12:74:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:77:13:77:20 | password | main.go:17:2:17:9 | SSA def(password) | main.go:77:13:77:20 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:79:14:79:21 | password | main.go:17:2:17:9 | SSA def(password) | main.go:79:14:79:21 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:82:12:82:19 | password | main.go:17:2:17:9 | SSA def(password) | main.go:82:12:82:19 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:83:17:83:24 | password | main.go:17:2:17:9 | SSA def(password) | main.go:83:17:83:24 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:87:29:87:34 | fields | main.go:17:2:17:9 | SSA def(password) | main.go:87:29:87:34 | fields | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| main.go:90:35:90:42 | password | main.go:17:2:17:9 | SSA def(password) | main.go:90:35:90:42 | password | $@ flows to a logging call. | main.go:17:2:17:9 | SSA def(password) | Sensitive data returned by an access to password |
-| overrides.go:13:14:13:23 | call to String | overrides.go:8:2:8:9 | SSA def(password) | overrides.go:13:14:13:23 | call to String | $@ flows to a logging call. | overrides.go:8:2:8:9 | SSA def(password) | Sensitive data returned by an access to password |
-| passwords.go:9:14:9:14 | x | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:9:14:9:14 | x | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
-| passwords.go:25:14:25:21 | password | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:25:14:25:21 | password | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:19:12:19:19 | password | main.go:17:2:17:23 | SSA def(password) | main.go:19:12:19:19 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:20:19:20:26 | password | main.go:17:2:17:23 | SSA def(password) | main.go:20:19:20:26 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:21:13:21:20 | password | main.go:17:2:17:23 | SSA def(password) | main.go:21:13:21:20 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:22:14:22:21 | password | main.go:17:2:17:23 | SSA def(password) | main.go:22:14:22:21 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:24:13:24:20 | password | main.go:17:2:17:23 | SSA def(password) | main.go:24:13:24:20 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:27:20:27:27 | password | main.go:17:2:17:23 | SSA def(password) | main.go:27:20:27:27 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:30:14:30:21 | password | main.go:17:2:17:23 | SSA def(password) | main.go:30:14:30:21 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:33:15:33:22 | password | main.go:17:2:17:23 | SSA def(password) | main.go:33:15:33:22 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:36:13:36:20 | password | main.go:17:2:17:23 | SSA def(password) | main.go:36:13:36:20 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:39:20:39:27 | password | main.go:17:2:17:23 | SSA def(password) | main.go:39:20:39:27 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:42:14:42:21 | password | main.go:17:2:17:23 | SSA def(password) | main.go:42:14:42:21 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:45:15:45:22 | password | main.go:17:2:17:23 | SSA def(password) | main.go:45:15:45:22 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:47:16:47:23 | password | main.go:17:2:17:23 | SSA def(password) | main.go:47:16:47:23 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:51:10:51:17 | password | main.go:17:2:17:23 | SSA def(password) | main.go:51:10:51:17 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:52:17:52:24 | password | main.go:17:2:17:23 | SSA def(password) | main.go:52:17:52:24 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:53:11:53:18 | password | main.go:17:2:17:23 | SSA def(password) | main.go:53:11:53:18 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:54:12:54:19 | password | main.go:17:2:17:23 | SSA def(password) | main.go:54:12:54:19 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:56:11:56:18 | password | main.go:17:2:17:23 | SSA def(password) | main.go:56:11:56:18 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:59:18:59:25 | password | main.go:17:2:17:23 | SSA def(password) | main.go:59:18:59:25 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:62:12:62:19 | password | main.go:17:2:17:23 | SSA def(password) | main.go:62:12:62:19 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:65:13:65:20 | password | main.go:17:2:17:23 | SSA def(password) | main.go:65:13:65:20 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:68:11:68:18 | password | main.go:17:2:17:23 | SSA def(password) | main.go:68:11:68:18 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:71:18:71:25 | password | main.go:17:2:17:23 | SSA def(password) | main.go:71:18:71:25 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:74:12:74:19 | password | main.go:17:2:17:23 | SSA def(password) | main.go:74:12:74:19 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:77:13:77:20 | password | main.go:17:2:17:23 | SSA def(password) | main.go:77:13:77:20 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:79:14:79:21 | password | main.go:17:2:17:23 | SSA def(password) | main.go:79:14:79:21 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:82:12:82:19 | password | main.go:17:2:17:23 | SSA def(password) | main.go:82:12:82:19 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:83:17:83:24 | password | main.go:17:2:17:23 | SSA def(password) | main.go:83:17:83:24 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:87:29:87:34 | fields | main.go:17:2:17:23 | SSA def(password) | main.go:87:29:87:34 | fields | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| main.go:90:35:90:42 | password | main.go:17:2:17:23 | SSA def(password) | main.go:90:35:90:42 | password | $@ flows to a logging call. | main.go:17:2:17:23 | SSA def(password) | Sensitive data returned by an access to password |
+| overrides.go:13:14:13:23 | call to String | overrides.go:8:2:8:40 | SSA def(password) | overrides.go:13:14:13:23 | call to String | $@ flows to a logging call. | overrides.go:8:2:8:40 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:9:14:9:14 | x | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:9:14:9:14 | x | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:25:14:25:21 | password | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:25:14:25:21 | password | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
 | passwords.go:26:14:26:23 | selection of password | passwords.go:26:14:26:23 | selection of password | passwords.go:26:14:26:23 | selection of password | $@ flows to a logging call. | passwords.go:26:14:26:23 | selection of password | Sensitive data returned by an access to password |
 | passwords.go:27:14:27:26 | call to getPassword | passwords.go:27:14:27:26 | call to getPassword | passwords.go:27:14:27:26 | call to getPassword | $@ flows to a logging call. | passwords.go:27:14:27:26 | call to getPassword | Sensitive data returned by a call to getPassword |
 | passwords.go:28:14:28:28 | call to getPassword | passwords.go:28:14:28:28 | call to getPassword | passwords.go:28:14:28:28 | call to getPassword | $@ flows to a logging call. | passwords.go:28:14:28:28 | call to getPassword | Sensitive data returned by a call to getPassword |
-| passwords.go:33:13:33:20 | password | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:33:13:33:20 | password | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
-| passwords.go:36:14:36:35 | ...+... | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:36:14:36:35 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:33:13:33:20 | password | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:33:13:33:20 | password | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:36:14:36:35 | ...+... | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:36:14:36:35 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:41:14:41:17 | obj1 | passwords.go:39:3:39:13 | key-value pair | passwords.go:41:14:41:17 | obj1 | $@ flows to a logging call. | passwords.go:39:3:39:13 | key-value pair | Sensitive data returned by an access to password |
 | passwords.go:41:14:41:17 | obj1 | passwords.go:39:13:39:13 | x | passwords.go:41:14:41:17 | obj1 | $@ flows to a logging call. | passwords.go:39:13:39:13 | x | Sensitive data returned by an access to password |
-| passwords.go:46:14:46:17 | obj2 | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:46:14:46:17 | obj2 | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
-| passwords.go:53:14:53:27 | fixed_password | passwords.go:52:2:52:15 | SSA def(fixed_password) | passwords.go:53:14:53:27 | fixed_password | $@ flows to a logging call. | passwords.go:52:2:52:15 | SSA def(fixed_password) | Sensitive data returned by an access to fixed_password |
+| passwords.go:46:14:46:17 | obj2 | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:46:14:46:17 | obj2 | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:53:14:53:27 | fixed_password | passwords.go:52:2:52:44 | SSA def(fixed_password) | passwords.go:53:14:53:27 | fixed_password | $@ flows to a logging call. | passwords.go:52:2:52:44 | SSA def(fixed_password) | Sensitive data returned by an access to fixed_password |
+| passwords.go:65:14:65:44 | struct literal | passwords.go:65:25:65:43 | key-value pair | passwords.go:65:14:65:44 | struct literal | $@ flows to a logging call. | passwords.go:65:25:65:43 | key-value pair | Sensitive data returned by an access to password |
+| passwords.go:91:14:91:26 | utilityObject | passwords.go:89:3:89:36 | key-value pair | passwords.go:91:14:91:26 | utilityObject | $@ flows to a logging call. | passwords.go:89:3:89:36 | key-value pair | Sensitive data returned by an access to passwordSet |
 | passwords.go:91:14:91:26 | utilityObject | passwords.go:89:16:89:36 | call to make | passwords.go:91:14:91:26 | utilityObject | $@ flows to a logging call. | passwords.go:89:16:89:36 | call to make | Sensitive data returned by an access to passwordSet |
-| passwords.go:94:23:94:28 | secret | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:94:23:94:28 | secret | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
-| passwords.go:104:15:104:40 | ...+... | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:104:15:104:40 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
-| passwords.go:110:16:110:41 | ...+... | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:110:16:110:41 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
-| passwords.go:115:15:115:40 | ...+... | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:115:15:115:40 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
-| passwords.go:119:14:119:45 | ...+... | passwords.go:118:6:118:14 | SSA def(password1) | passwords.go:119:14:119:45 | ...+... | $@ flows to a logging call. | passwords.go:118:6:118:14 | SSA def(password1) | Sensitive data returned by an access to password1 |
-| passwords.go:129:14:129:19 | config | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:129:14:129:19 | config | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:94:23:94:28 | secret | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:94:23:94:28 | secret | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:104:15:104:40 | ...+... | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:104:15:104:40 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:110:16:110:41 | ...+... | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:110:16:110:41 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:115:15:115:40 | ...+... | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:115:15:115:40 | ...+... | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:119:14:119:45 | ...+... | passwords.go:118:6:118:50 | SSA def(password1) | passwords.go:119:14:119:45 | ...+... | $@ flows to a logging call. | passwords.go:118:6:118:50 | SSA def(password1) | Sensitive data returned by an access to password1 |
+| passwords.go:129:14:129:19 | config | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:129:14:129:19 | config | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:129:14:129:19 | config | passwords.go:123:3:123:14 | key-value pair | passwords.go:129:14:129:19 | config | $@ flows to a logging call. | passwords.go:123:3:123:14 | key-value pair | Sensitive data returned by an access to password |
 | passwords.go:129:14:129:19 | config | passwords.go:123:13:123:14 | x3 | passwords.go:129:14:129:19 | config | $@ flows to a logging call. | passwords.go:123:13:123:14 | x3 | Sensitive data returned by an access to password |
 | passwords.go:129:14:129:19 | config | passwords.go:126:13:126:25 | call to getPassword | passwords.go:129:14:129:19 | config | $@ flows to a logging call. | passwords.go:126:13:126:25 | call to getPassword | Sensitive data returned by a call to getPassword |
-| passwords.go:130:14:130:21 | selection of x | passwords.go:21:2:21:9 | SSA def(password) | passwords.go:130:14:130:21 | selection of x | $@ flows to a logging call. | passwords.go:21:2:21:9 | SSA def(password) | Sensitive data returned by an access to password |
+| passwords.go:130:14:130:21 | selection of x | passwords.go:21:2:21:23 | SSA def(password) | passwords.go:130:14:130:21 | selection of x | $@ flows to a logging call. | passwords.go:21:2:21:23 | SSA def(password) | Sensitive data returned by an access to password |
 | passwords.go:131:14:131:21 | selection of y | passwords.go:126:13:126:25 | call to getPassword | passwords.go:131:14:131:21 | selection of y | $@ flows to a logging call. | passwords.go:126:13:126:25 | call to getPassword | Sensitive data returned by a call to getPassword |
-| protobuf.go:14:14:14:35 | call to GetDescription | protobuf.go:9:2:9:9 | SSA def(password) | protobuf.go:14:14:14:35 | call to GetDescription | $@ flows to a logging call. | protobuf.go:9:2:9:9 | SSA def(password) | Sensitive data returned by an access to password |
+| protobuf.go:14:14:14:35 | call to GetDescription | protobuf.go:9:2:9:23 | SSA def(password) | protobuf.go:14:14:14:35 | call to GetDescription | $@ flows to a logging call. | protobuf.go:9:2:9:23 | SSA def(password) | Sensitive data returned by an access to password |
+| server1.go:19:15:19:19 | user3 | server1.go:17:4:17:63 | key-value pair | server1.go:19:15:19:19 | user3 | $@ flows to a logging call. | server1.go:17:4:17:63 | key-value pair | Sensitive data returned by an access to password |
 edges
-| klog.go:21:3:26:3 | range statement[1] | klog.go:22:27:22:33 | headers | provenance |  |
-| klog.go:21:30:21:37 | selection of Header | klog.go:21:3:26:3 | range statement[1] | provenance | Src:MaD:11 Config |
-| klog.go:22:4:25:4 | range statement[1] | klog.go:23:15:23:20 | header | provenance |  |
-| klog.go:22:27:22:33 | headers | klog.go:22:4:25:4 | range statement[1] | provenance | Config |
+| klog.go:21:3:26:3 | extract:1 range statement | klog.go:22:27:22:33 | headers | provenance |  |
+| klog.go:21:30:21:37 | selection of Header | klog.go:21:3:26:3 | extract:1 range statement | provenance | Src:MaD:11 Config |
+| klog.go:22:4:25:4 | extract:1 range statement | klog.go:23:15:23:20 | header | provenance |  |
+| klog.go:22:27:22:33 | headers | klog.go:22:4:25:4 | extract:1 range statement | provenance | Config |
 | klog.go:29:13:29:20 | selection of Header | klog.go:29:13:29:41 | call to Get | provenance | Src:MaD:11 Config |
-| main.go:17:2:17:9 | SSA def(password) | main.go:19:12:19:19 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:20:19:20:26 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:21:13:21:20 | password | provenance | Sink:MaD:6 |
-| main.go:17:2:17:9 | SSA def(password) | main.go:22:14:22:21 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:24:13:24:20 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:27:20:27:27 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:30:14:30:21 | password | provenance | Sink:MaD:3 |
-| main.go:17:2:17:9 | SSA def(password) | main.go:33:15:33:22 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:36:13:36:20 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:39:20:39:27 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:42:14:42:21 | password | provenance | Sink:MaD:5 |
-| main.go:17:2:17:9 | SSA def(password) | main.go:45:15:45:22 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:47:16:47:23 | password | provenance | Sink:MaD:4 |
-| main.go:17:2:17:9 | SSA def(password) | main.go:51:10:51:17 | password | provenance |  |
-| main.go:17:2:17:9 | SSA def(password) | main.go:51:10:51:17 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:19:12:19:19 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:20:19:20:26 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:21:13:21:20 | password | provenance | Sink:MaD:6 |
+| main.go:17:2:17:23 | SSA def(password) | main.go:22:14:22:21 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:24:13:24:20 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:27:20:27:27 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:30:14:30:21 | password | provenance | Sink:MaD:3 |
+| main.go:17:2:17:23 | SSA def(password) | main.go:33:15:33:22 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:36:13:36:20 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:39:20:39:27 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:42:14:42:21 | password | provenance | Sink:MaD:5 |
+| main.go:17:2:17:23 | SSA def(password) | main.go:45:15:45:22 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:47:16:47:23 | password | provenance | Sink:MaD:4 |
+| main.go:17:2:17:23 | SSA def(password) | main.go:51:10:51:17 | password | provenance |  |
+| main.go:17:2:17:23 | SSA def(password) | main.go:51:10:51:17 | password | provenance |  |
 | main.go:51:10:51:17 | password | main.go:52:17:52:24 | password | provenance |  |
 | main.go:51:10:51:17 | password | main.go:52:17:52:24 | password | provenance |  |
 | main.go:52:17:52:24 | password | main.go:53:11:53:18 | password | provenance |  |
@@ -97,17 +102,18 @@ edges
 | main.go:86:2:86:7 | fields [postupdate] | main.go:87:29:87:34 | fields | provenance | Sink:MaD:2 |
 | main.go:86:19:86:26 | password | main.go:86:2:86:7 | fields [postupdate] | provenance | Config |
 | main.go:86:19:86:26 | password | main.go:90:35:90:42 | password | provenance | Sink:MaD:1 |
-| overrides.go:8:2:8:9 | SSA def(password) | overrides.go:9:9:9:16 | password | provenance |  |
+| overrides.go:8:2:8:40 | SSA def(password) | overrides.go:9:9:9:16 | password | provenance |  |
 | overrides.go:9:9:9:16 | password | overrides.go:13:14:13:23 | call to String | provenance |  |
-| passwords.go:8:12:8:12 | SSA def(x) | passwords.go:9:14:9:14 | x | provenance |  |
-| passwords.go:21:2:21:9 | SSA def(password) | passwords.go:25:14:25:21 | password | provenance |  |
-| passwords.go:21:2:21:9 | SSA def(password) | passwords.go:30:8:30:15 | password | provenance |  |
-| passwords.go:21:2:21:9 | SSA def(password) | passwords.go:33:13:33:20 | password | provenance |  |
-| passwords.go:21:2:21:9 | SSA def(password) | passwords.go:36:28:36:35 | password | provenance |  |
-| passwords.go:30:8:30:15 | password | passwords.go:8:12:8:12 | SSA def(x) | provenance |  |
+| passwords.go:8:22:10:1 | SSA def(x) | passwords.go:9:14:9:14 | x | provenance |  |
+| passwords.go:21:2:21:23 | SSA def(password) | passwords.go:25:14:25:21 | password | provenance |  |
+| passwords.go:21:2:21:23 | SSA def(password) | passwords.go:30:8:30:15 | password | provenance |  |
+| passwords.go:21:2:21:23 | SSA def(password) | passwords.go:33:13:33:20 | password | provenance |  |
+| passwords.go:21:2:21:23 | SSA def(password) | passwords.go:36:28:36:35 | password | provenance |  |
+| passwords.go:30:8:30:15 | password | passwords.go:8:22:10:1 | SSA def(x) | provenance |  |
 | passwords.go:36:28:36:35 | password | passwords.go:36:14:36:35 | ...+... | provenance | Config |
 | passwords.go:36:28:36:35 | password | passwords.go:44:6:44:13 | password | provenance |  |
 | passwords.go:38:10:40:2 | struct literal | passwords.go:41:14:41:17 | obj1 | provenance |  |
+| passwords.go:39:3:39:13 | key-value pair | passwords.go:38:10:40:2 | struct literal | provenance | Config |
 | passwords.go:39:13:39:13 | x | passwords.go:38:10:40:2 | struct literal | provenance | Config |
 | passwords.go:43:10:45:2 | struct literal | passwords.go:46:14:46:17 | obj2 | provenance |  |
 | passwords.go:44:6:44:13 | password | passwords.go:43:10:45:2 | struct literal | provenance | Config |
@@ -117,8 +123,10 @@ edges
 | passwords.go:50:11:50:18 | password | passwords.go:110:34:110:41 | password | provenance |  |
 | passwords.go:50:11:50:18 | password | passwords.go:115:33:115:40 | password | provenance |  |
 | passwords.go:50:11:50:18 | password | passwords.go:125:13:125:20 | password | provenance |  |
-| passwords.go:52:2:52:15 | SSA def(fixed_password) | passwords.go:53:14:53:27 | fixed_password | provenance |  |
+| passwords.go:52:2:52:44 | SSA def(fixed_password) | passwords.go:53:14:53:27 | fixed_password | provenance |  |
+| passwords.go:65:25:65:43 | key-value pair | passwords.go:65:14:65:44 | struct literal | provenance | Config |
 | passwords.go:88:19:90:2 | struct literal | passwords.go:91:14:91:26 | utilityObject | provenance |  |
+| passwords.go:89:3:89:36 | key-value pair | passwords.go:88:19:90:2 | struct literal | provenance | Config |
 | passwords.go:89:16:89:36 | call to make | passwords.go:88:19:90:2 | struct literal | provenance | Config |
 | passwords.go:104:33:104:40 | password | passwords.go:104:15:104:40 | ...+... | provenance | Config |
 | passwords.go:104:33:104:40 | password | passwords.go:110:34:110:41 | password | provenance |  |
@@ -129,12 +137,13 @@ edges
 | passwords.go:110:34:110:41 | password | passwords.go:125:13:125:20 | password | provenance |  |
 | passwords.go:115:33:115:40 | password | passwords.go:115:15:115:40 | ...+... | provenance | Config |
 | passwords.go:115:33:115:40 | password | passwords.go:125:13:125:20 | password | provenance |  |
-| passwords.go:118:6:118:14 | SSA def(password1) | passwords.go:119:28:119:36 | password1 | provenance |  |
+| passwords.go:118:6:118:50 | SSA def(password1) | passwords.go:119:28:119:36 | password1 | provenance |  |
 | passwords.go:119:28:119:36 | password1 | passwords.go:119:28:119:45 | call to String | provenance | Config |
 | passwords.go:119:28:119:45 | call to String | passwords.go:119:14:119:45 | ...+... | provenance | Config |
 | passwords.go:122:12:127:2 | struct literal | passwords.go:129:14:129:19 | config | provenance |  |
 | passwords.go:122:12:127:2 | struct literal [x] | passwords.go:130:14:130:19 | config [x] | provenance |  |
 | passwords.go:122:12:127:2 | struct literal [y] | passwords.go:131:14:131:19 | config [y] | provenance |  |
+| passwords.go:123:3:123:14 | key-value pair | passwords.go:122:12:127:2 | struct literal | provenance | Config |
 | passwords.go:123:13:123:14 | x3 | passwords.go:122:12:127:2 | struct literal | provenance | Config |
 | passwords.go:125:13:125:20 | password | passwords.go:122:12:127:2 | struct literal | provenance | Config |
 | passwords.go:125:13:125:20 | password | passwords.go:122:12:127:2 | struct literal [x] | provenance |  |
@@ -142,15 +151,17 @@ edges
 | passwords.go:126:13:126:25 | call to getPassword | passwords.go:122:12:127:2 | struct literal [y] | provenance |  |
 | passwords.go:130:14:130:19 | config [x] | passwords.go:130:14:130:21 | selection of x | provenance |  |
 | passwords.go:131:14:131:19 | config [y] | passwords.go:131:14:131:21 | selection of y | provenance |  |
-| protobuf.go:9:2:9:9 | SSA def(password) | protobuf.go:12:22:12:29 | password | provenance |  |
-| protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | provenance |  |
+| protobuf.go:9:2:9:23 | SSA def(password) | protobuf.go:12:22:12:29 | password | provenance |  |
+| protobuf.go:12:2:12:6 | implicit-deref query [postupdate] [Description] | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | provenance |  |
 | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | protobuf.go:14:14:14:18 | query [pointer, Description] | provenance |  |
-| protobuf.go:12:22:12:29 | password | protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | provenance |  |
+| protobuf.go:12:22:12:29 | password | protobuf.go:12:2:12:6 | implicit-deref query [postupdate] [Description] | provenance |  |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protobuf.go:14:14:14:35 | call to GetDescription | provenance |  |
-| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | SSA def(x) [pointer, Description] | provenance |  |
-| protos/query/query.pb.go:117:7:117:7 | SSA def(x) [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | provenance |  |
-| protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | provenance |  |
-| protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | provenance |  |
+| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:41:122:1 | SSA def(x) [pointer, Description] | provenance |  |
+| protos/query/query.pb.go:117:41:122:1 | SSA def(x) [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | provenance |  |
+| protos/query/query.pb.go:119:10:119:10 | implicit-deref x [Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | provenance |  |
+| protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | implicit-deref x [Description] | provenance |  |
+| server1.go:16:15:18:3 | struct literal | server1.go:19:15:19:19 | user3 | provenance |  |
+| server1.go:17:4:17:63 | key-value pair | server1.go:16:15:18:3 | struct literal | provenance | Config |
 models
 | 1 | Sink: group:logrus; ; false; WithField; ; ; Argument[0..1]; log-injection; manual |
 | 2 | Sink: group:logrus; ; false; WithFields; ; ; Argument[0]; log-injection; manual |
@@ -164,14 +175,14 @@ models
 | 10 | Sink: log; Logger; true; Printf; ; ; Argument[0..1]; log-injection; manual |
 | 11 | Source: net/http; Request; true; Header; ; ; ; remote; manual |
 nodes
-| klog.go:21:3:26:3 | range statement[1] | semmle.label | range statement[1] |
+| klog.go:21:3:26:3 | extract:1 range statement | semmle.label | extract:1 range statement |
 | klog.go:21:30:21:37 | selection of Header | semmle.label | selection of Header |
-| klog.go:22:4:25:4 | range statement[1] | semmle.label | range statement[1] |
+| klog.go:22:4:25:4 | extract:1 range statement | semmle.label | extract:1 range statement |
 | klog.go:22:27:22:33 | headers | semmle.label | headers |
 | klog.go:23:15:23:20 | header | semmle.label | header |
 | klog.go:29:13:29:20 | selection of Header | semmle.label | selection of Header |
 | klog.go:29:13:29:41 | call to Get | semmle.label | call to Get |
-| main.go:17:2:17:9 | SSA def(password) | semmle.label | SSA def(password) |
+| main.go:17:2:17:23 | SSA def(password) | semmle.label | SSA def(password) |
 | main.go:19:12:19:19 | password | semmle.label | password |
 | main.go:20:19:20:26 | password | semmle.label | password |
 | main.go:21:13:21:20 | password | semmle.label | password |
@@ -209,12 +220,12 @@ nodes
 | main.go:86:19:86:26 | password | semmle.label | password |
 | main.go:87:29:87:34 | fields | semmle.label | fields |
 | main.go:90:35:90:42 | password | semmle.label | password |
-| overrides.go:8:2:8:9 | SSA def(password) | semmle.label | SSA def(password) |
+| overrides.go:8:2:8:40 | SSA def(password) | semmle.label | SSA def(password) |
 | overrides.go:9:9:9:16 | password | semmle.label | password |
 | overrides.go:13:14:13:23 | call to String | semmle.label | call to String |
-| passwords.go:8:12:8:12 | SSA def(x) | semmle.label | SSA def(x) |
+| passwords.go:8:22:10:1 | SSA def(x) | semmle.label | SSA def(x) |
 | passwords.go:9:14:9:14 | x | semmle.label | x |
-| passwords.go:21:2:21:9 | SSA def(password) | semmle.label | SSA def(password) |
+| passwords.go:21:2:21:23 | SSA def(password) | semmle.label | SSA def(password) |
 | passwords.go:25:14:25:21 | password | semmle.label | password |
 | passwords.go:26:14:26:23 | selection of password | semmle.label | selection of password |
 | passwords.go:27:14:27:26 | call to getPassword | semmle.label | call to getPassword |
@@ -224,15 +235,19 @@ nodes
 | passwords.go:36:14:36:35 | ...+... | semmle.label | ...+... |
 | passwords.go:36:28:36:35 | password | semmle.label | password |
 | passwords.go:38:10:40:2 | struct literal | semmle.label | struct literal |
+| passwords.go:39:3:39:13 | key-value pair | semmle.label | key-value pair |
 | passwords.go:39:13:39:13 | x | semmle.label | x |
 | passwords.go:41:14:41:17 | obj1 | semmle.label | obj1 |
 | passwords.go:43:10:45:2 | struct literal | semmle.label | struct literal |
 | passwords.go:44:6:44:13 | password | semmle.label | password |
 | passwords.go:46:14:46:17 | obj2 | semmle.label | obj2 |
 | passwords.go:50:11:50:18 | password | semmle.label | password |
-| passwords.go:52:2:52:15 | SSA def(fixed_password) | semmle.label | SSA def(fixed_password) |
+| passwords.go:52:2:52:44 | SSA def(fixed_password) | semmle.label | SSA def(fixed_password) |
 | passwords.go:53:14:53:27 | fixed_password | semmle.label | fixed_password |
+| passwords.go:65:14:65:44 | struct literal | semmle.label | struct literal |
+| passwords.go:65:25:65:43 | key-value pair | semmle.label | key-value pair |
 | passwords.go:88:19:90:2 | struct literal | semmle.label | struct literal |
+| passwords.go:89:3:89:36 | key-value pair | semmle.label | key-value pair |
 | passwords.go:89:16:89:36 | call to make | semmle.label | call to make |
 | passwords.go:91:14:91:26 | utilityObject | semmle.label | utilityObject |
 | passwords.go:94:23:94:28 | secret | semmle.label | secret |
@@ -242,13 +257,14 @@ nodes
 | passwords.go:110:34:110:41 | password | semmle.label | password |
 | passwords.go:115:15:115:40 | ...+... | semmle.label | ...+... |
 | passwords.go:115:33:115:40 | password | semmle.label | password |
-| passwords.go:118:6:118:14 | SSA def(password1) | semmle.label | SSA def(password1) |
+| passwords.go:118:6:118:50 | SSA def(password1) | semmle.label | SSA def(password1) |
 | passwords.go:119:14:119:45 | ...+... | semmle.label | ...+... |
 | passwords.go:119:28:119:36 | password1 | semmle.label | password1 |
 | passwords.go:119:28:119:45 | call to String | semmle.label | call to String |
 | passwords.go:122:12:127:2 | struct literal | semmle.label | struct literal |
 | passwords.go:122:12:127:2 | struct literal [x] | semmle.label | struct literal [x] |
 | passwords.go:122:12:127:2 | struct literal [y] | semmle.label | struct literal [y] |
+| passwords.go:123:3:123:14 | key-value pair | semmle.label | key-value pair |
 | passwords.go:123:13:123:14 | x3 | semmle.label | x3 |
 | passwords.go:125:13:125:20 | password | semmle.label | password |
 | passwords.go:126:13:126:25 | call to getPassword | semmle.label | call to getPassword |
@@ -257,15 +273,23 @@ nodes
 | passwords.go:130:14:130:21 | selection of x | semmle.label | selection of x |
 | passwords.go:131:14:131:19 | config [y] | semmle.label | config [y] |
 | passwords.go:131:14:131:21 | selection of y | semmle.label | selection of y |
-| protobuf.go:9:2:9:9 | SSA def(password) | semmle.label | SSA def(password) |
-| protobuf.go:12:2:12:6 | implicit dereference [postupdate] [Description] | semmle.label | implicit dereference [postupdate] [Description] |
+| protobuf.go:9:2:9:23 | SSA def(password) | semmle.label | SSA def(password) |
+| protobuf.go:12:2:12:6 | implicit-deref query [postupdate] [Description] | semmle.label | implicit-deref query [postupdate] [Description] |
 | protobuf.go:12:2:12:6 | query [postupdate] [pointer, Description] | semmle.label | query [postupdate] [pointer, Description] |
 | protobuf.go:12:22:12:29 | password | semmle.label | password |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | semmle.label | query [pointer, Description] |
 | protobuf.go:14:14:14:35 | call to GetDescription | semmle.label | call to GetDescription |
-| protos/query/query.pb.go:117:7:117:7 | SSA def(x) [pointer, Description] | semmle.label | SSA def(x) [pointer, Description] |
-| protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | semmle.label | implicit dereference [Description] |
+| protos/query/query.pb.go:117:41:122:1 | SSA def(x) [pointer, Description] | semmle.label | SSA def(x) [pointer, Description] |
+| protos/query/query.pb.go:119:10:119:10 | implicit-deref x [Description] | semmle.label | implicit-deref x [Description] |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | semmle.label | x [pointer, Description] |
 | protos/query/query.pb.go:119:10:119:22 | selection of Description | semmle.label | selection of Description |
+| server1.go:16:15:18:3 | struct literal | semmle.label | struct literal |
+| server1.go:17:4:17:63 | key-value pair | semmle.label | key-value pair |
+| server1.go:19:15:19:19 | user3 | semmle.label | user3 |
 subpaths
-| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | SSA def(x) [pointer, Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | protobuf.go:14:14:14:35 | call to GetDescription |
+| protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:41:122:1 | SSA def(x) [pointer, Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | protobuf.go:14:14:14:35 | call to GetDescription |
+testFailures
+| passwords.go:65:14:65:44 | struct literal | Unexpected result: Alert |
+| passwords.go:65:25:65:43 | key-value pair | Unexpected result: Alert |
+| server1.go:17:4:17:63 | key-value pair | Unexpected result: Source |
+| server1.go:19:15:19:19 | user3 | Unexpected result: Alert |
