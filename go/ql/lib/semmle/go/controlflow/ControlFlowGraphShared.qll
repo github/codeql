@@ -867,6 +867,10 @@ module GoCfg {
             notBlankIdent(assgn.(Go::Assignment).getLhs(j))
             or
             notBlankIdent(assgn.(Go::ValueSpec).getNameExpr(j))
+            or
+            notBlankIdent(assgn.(Go::RangeStmt).getKey()) and j = 0
+            or
+            notBlankIdent(assgn.(Go::RangeStmt).getValue()) and j = 1
           ) and
           result = "assign:" + j.toString() and
           ord = 2 * j + 1
@@ -1215,21 +1219,22 @@ module GoCfg {
         or
         n1.isAfter(s.getDomain()) and n2.isAdditional(s, "[LoopHeader]")
         or
-        n1.isAdditional(s, "[LoopHeader]") and
+        n1.isAdditional(s, "[LoopHeader]") and n2.isAdditional(s, "next")
+        or
+        n1.isAdditional(s, "next") and
         (
-          n2.isBefore(s.getKey())
+          exists(getFirstEpilogueTag(s)) and n2.isAdditional(s, getFirstEpilogueTag(s))
           or
-          not exists(s.getKey()) and n2.isBefore(s.getBody())
+          not exists(getFirstEpilogueTag(s)) and n2.isBefore(s.getBody())
         )
         or
-        n1.isAfter(s.getKey()) and
-        (
-          n2.isBefore(s.getValue())
-          or
-          not exists(s.getValue()) and n2.isBefore(s.getBody())
+        exists(string tag1, string tag2 |
+          epilogueSucc(s, tag1, tag2) and
+          n1.isAdditional(s, tag1) and
+          n2.isAdditional(s, tag2)
         )
         or
-        n1.isAfter(s.getValue()) and n2.isBefore(s.getBody())
+        n1.isAdditional(s, getLastEpilogueTag(s)) and n2.isBefore(s.getBody())
         or
         n1.isAfter(s.getBody()) and n2.isAdditional(s, "[LoopHeader]")
         or
