@@ -130,9 +130,8 @@ module GoCfg {
 
     class ExprStmt = Go::ExprStmt;
 
-    /** If statements without init (those with init use custom steps). */
     class IfStmt extends Stmt {
-      IfStmt() { this instanceof Go::IfStmt and not exists(this.(Go::IfStmt).getInit()) }
+      IfStmt() { this instanceof Go::IfStmt }
 
       Expr getCondition() { result = this.(Go::IfStmt).getCond() }
 
@@ -140,6 +139,8 @@ module GoCfg {
 
       Stmt getElse() { result = this.(Go::IfStmt).getElse() }
     }
+
+    AstNode getIfInit(IfStmt ifstmt) { result = ifstmt.(Go::IfStmt).getInit() }
 
     class LoopStmt extends Stmt {
       LoopStmt() { this instanceof Go::LoopStmt }
@@ -349,8 +350,6 @@ module GoCfg {
     predicate inConditionalContext(Ast::AstNode n, ConditionKind kind) {
       kind.isBoolean() and
       (
-        exists(Go::IfStmt ifstmt | ifstmt.getCond() = n and exists(ifstmt.getInit()))
-        or
         n = any(Go::ForStmt fs).getCond()
         or
         exists(Go::ExpressionSwitchStmt ess |
@@ -742,7 +741,6 @@ module GoCfg {
     }
 
     predicate step(PreControlFlowNode n1, PreControlFlowNode n2) {
-      ifWithInit(n1, n2) or
       rangeLoop(n1, n2) or
       switchStmt(n1, n2) or
       selectStmt(n1, n2) or
@@ -1196,27 +1194,6 @@ module GoCfg {
         n1.isAfter(s.getValue()) and n2.isIn(s)
         or
         n1.isIn(s) and n2.isAfter(s)
-      )
-    }
-
-    private predicate ifWithInit(PreControlFlowNode n1, PreControlFlowNode n2) {
-      exists(Go::IfStmt s | exists(s.getInit()) |
-        n1.isBefore(s) and n2.isBefore(s.getInit())
-        or
-        n1.isAfter(s.getInit()) and n2.isBefore(s.getCond())
-        or
-        n1.isAfterTrue(s.getCond()) and n2.isBefore(s.getThen())
-        or
-        n1.isAfterFalse(s.getCond()) and
-        (
-          n2.isBefore(s.getElse())
-          or
-          not exists(s.getElse()) and n2.isAfter(s)
-        )
-        or
-        n1.isAfter(s.getThen()) and n2.isAfter(s)
-        or
-        n1.isAfter(s.getElse()) and n2.isAfter(s)
       )
     }
 
