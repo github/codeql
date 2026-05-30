@@ -1226,7 +1226,9 @@ module IR {
       )
     } or
     /** A composite literal element target. */
-    MkLiteralElementTarget(InitLiteralComponentInstruction elt) or
+    MkLiteralElementTarget(ControlFlow::Node write) {
+      write.isAdditional(any(CompositeLit lit).getAnElement(), "lit-init")
+    } or
     /** A result variable write target. */
     MkResultWriteTarget(WriteResultInstruction w)
 
