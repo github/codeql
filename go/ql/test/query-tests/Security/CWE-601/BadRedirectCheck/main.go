@@ -7,9 +7,9 @@ import (
 	"strings"
 )
 
-func badRedirect(redirect string, rw http.ResponseWriter, req *http.Request) { // $ Source
+func badRedirect(redirect string, rw http.ResponseWriter, req *http.Request) {
 	http.Redirect(rw, req, sanitizeUrl(redirect), 302) // $ Sink
-}
+} // $ Source
 
 func goodRedirect(redirect string, rw http.ResponseWriter, req *http.Request) {
 	http.Redirect(rw, req, sanitizeUrlGood(redirect), 302)
@@ -29,11 +29,11 @@ func isValidRedir(redirect string) bool {
 	}
 }
 
-func alsoABadRedirect1(url string, rw http.ResponseWriter, req *http.Request) { // $ Source
+func alsoABadRedirect1(url string, rw http.ResponseWriter, req *http.Request) {
 	if isValidRedir(url) {
 		http.Redirect(rw, req, url, 302) // $ Sink
 	}
-}
+} // $ Source
 
 func isValidRedir1(redirect string) bool {
 	switch {
@@ -65,17 +65,17 @@ func goodRedirect4(url string, rw http.ResponseWriter, req *http.Request) {
 	http.Redirect(rw, req, getTarget(url), 302)
 }
 
-func getTarget1(redirect string) string { // $ Source
+func getTarget1(redirect string) string {
 	if redirect[0] != '/' { // $ Alert
 		return "/"
 	}
 
 	return path.Clean(redirect)
-}
+} // $ Source
 
-func badRedirect1(url string, rw http.ResponseWriter, req *http.Request) { // $ Source
+func badRedirect1(url string, rw http.ResponseWriter, req *http.Request) {
 	http.Redirect(rw, req, getTarget1(url), 302) // $ Sink
-}
+} // $ Source
 
 func getTarget2(redirect string) string {
 	u, _ := url.Parse(redirect)

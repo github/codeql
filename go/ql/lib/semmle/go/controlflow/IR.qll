@@ -960,7 +960,7 @@ module IR {
     FuncDef fd;
 
     ReadResultInstruction() {
-      this.isAdditional(fd, "result-read:" + idx.toString()) and
+      this.isAdditional(fd.getBody(), "result-read:" + idx.toString()) and
       var = fd.getResultVar(idx)
     }
 
@@ -987,12 +987,12 @@ module IR {
     FuncDef fd;
 
     InitParameterInstruction() {
-      this.isAdditional(fd, "param-init:" + idx.toString()) and
+      this.isAdditional(fd.getBody(), "param-init:" + idx.toString()) and
       parm = fd.getParameter(idx)
     }
 
     override Instruction getRhs() {
-      result.(ReadArgumentInstruction).isAdditional(fd, "arg:" + idx.toString())
+      result.(ReadArgumentInstruction).isAdditional(fd.getBody(), "arg:" + idx.toString())
     }
 
     override ControlFlow::Root getRoot() { result = parm.getFunction() }
@@ -1005,7 +1005,7 @@ module IR {
     FuncDef fd;
 
     ReadArgumentInstruction() {
-      this.isAdditional(fd, "arg:" + idx.toString()) and
+      this.isAdditional(fd.getBody(), "arg:" + idx.toString()) and
       parm = fd.getParameter(idx)
     }
 
@@ -1021,12 +1021,14 @@ module IR {
     FuncDef fd;
 
     InitResultInstruction() {
-      this.isAdditional(fd, "result-init:" + idx.toString()) and
+      this.isAdditional(fd.getBody(), "result-init:" + idx.toString()) and
       res = fd.getResultVar(idx)
     }
 
     override Instruction getRhs() {
-      result.(ResultZeroInitInstruction).isAdditional(fd, "result-zero-init:" + idx.toString())
+      result
+          .(ResultZeroInitInstruction)
+          .isAdditional(fd.getBody(), "result-zero-init:" + idx.toString())
     }
 
     override ControlFlow::Root getRoot() { result = res.getFunction() }
@@ -1038,7 +1040,7 @@ module IR {
     FuncDef fd;
 
     ResultZeroInitInstruction() {
-      this.isAdditional(fd, "result-zero-init:" + idx.toString()) and
+      this.isAdditional(fd.getBody(), "result-zero-init:" + idx.toString()) and
       res = fd.getResultVar(idx)
     }
 
@@ -1214,12 +1216,12 @@ module IR {
       exists(IncDecStmt ids | write.isIn(ids) | lhs = ids.getOperand().stripParens())
       or
       exists(FuncDef fd, int idx |
-        write.isAdditional(fd, "param-init:" + idx.toString()) and
+        write.isAdditional(fd.getBody(), "param-init:" + idx.toString()) and
         lhs = fd.getParameter(idx).getDeclaration()
       )
       or
       exists(FuncDef fd, int idx |
-        write.isAdditional(fd, "result-init:" + idx.toString()) and
+        write.isAdditional(fd.getBody(), "result-init:" + idx.toString()) and
         lhs = fd.getResultVar(idx).getDeclaration()
       )
     } or
@@ -1411,7 +1413,7 @@ module IR {
    */
   InitParameterInstruction initRecvInstruction(ReceiverVariable r) {
     exists(FuncDef fd, int i |
-      fd.getParameter(i) = r and result.isAdditional(fd, "param-init:" + i.toString())
+      fd.getParameter(i) = r and result.isAdditional(fd.getBody(), "param-init:" + i.toString())
     )
   }
 
@@ -1420,7 +1422,7 @@ module IR {
    */
   InitParameterInstruction initParamInstruction(Parameter p) {
     exists(FuncDef fd, int i |
-      fd.getParameter(i) = p and result.isAdditional(fd, "param-init:" + i.toString())
+      fd.getParameter(i) = p and result.isAdditional(fd.getBody(), "param-init:" + i.toString())
     )
   }
 
