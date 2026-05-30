@@ -44,7 +44,13 @@ pub fn query(input: TokenStream) -> TokenStream {
 /// {expr}                       - embed a Rust expression returning Id
 /// {..expr}                     - splice an iterable of Id (in child/field position)
 /// field: {..expr}              - splice into a named field
+/// {expr}.map(p -> tpl)         - apply tpl to each element; splice result
 /// ```
+///
+/// Chain syntax after `{expr}` or `{..expr}`:
+/// - `.map(param -> template)` — produces one node per element of the iterable.
+///   The lambda parameter is bound in `template` (e.g. `{parts}.map(p -> (identifier #{p}))`).
+/// - Chains always splice (the result is iterable).
 ///
 /// Can be called with an explicit context or using the implicit context
 /// from an enclosing `rule!`:
