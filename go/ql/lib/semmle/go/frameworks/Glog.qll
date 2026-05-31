@@ -12,17 +12,36 @@ import go
  * forks.
  */
 module Glog {
+  string packagePath() {
+    result =
+      package([
+          "github.com/golang/glog", "gopkg.in/glog", "k8s.io/klog", "github.com/barakmich/glog"
+        ], "")
+  }
+
   private class GlogFunction extends Function {
     int firstPrintedArg;
+    string format;
+    string level;
 
     GlogFunction() {
-      exists(string pkg, string fn, string level |
-        pkg = package(["github.com/golang/glog", "gopkg.in/glog", "k8s.io/klog"], "") and
+      exists(string pkg, string context, int nContextArgs, string depth, int nDepthArgs, string fn |
+        pkg = packagePath() and
         level = ["Error", "Exit", "Fatal", "Info", "Warning"] and
         (
-          fn = level + ["", "f", "ln"] and firstPrintedArg = 0
+          context = "" and nContextArgs = 0
           or
-          fn = level + "Depth" and firstPrintedArg = 1
+          context = "Context" and nContextArgs = 1
+        ) and
+        (
+          depth = "" and nDepthArgs = 0
+          or
+          depth = "Depth" and nDepthArgs = 1
+        ) and
+        format = ["", "f", "ln"] and
+        (
+          fn = level + context + depth + format and
+          firstPrintedArg = nContextArgs + nDepthArgs
         )
       |
         this.hasQualifiedName(pkg, fn)
@@ -35,10 +54,14 @@ module Glog {
      * Gets the index of the first argument that may be output, including a format string if one is present.
      */
     int getFirstPrintedArg() { result = firstPrintedArg }
+
+    predicate formatter() { format = "f" }
+
+    override predicate mayReturnNormally() { level != "Fatal" and level != "Exit" }
   }
 
   private class StringFormatter extends StringOps::Formatting::Range instanceof GlogFunction {
-    StringFormatter() { this.getName().matches("%f") }
+    StringFormatter() { this.formatter() }
 
     override int getFormatStringIndex() { result = super.getFirstPrintedArg() }
   }
