@@ -123,6 +123,9 @@ template<class T>
 struct TemplateClass1 {
   template<class U>
   U templateFunction(T, U);
+
+	template<class U, class V>
+  V templateFunction2(U, V);
 };
 
 void test_template_function_in_template_class() {
@@ -139,9 +142,33 @@ struct TemplateClass2 {
 
 template<class V> using PartialInstantiationOfTemplateClass2 = TemplateClass2<int, V>;
 
-void test_partial_instantiation() {
+void test_partial_class_instantiation() {
 	int x = ymlSource();
 	PartialInstantiationOfTemplateClass2<unsigned long> y;
 	int z = y.function(0UL, x);
 	ymlSink(z); // $ ir
+}
+
+template<class V> struct DeriveFromFromPartialTemplateInstantiation : TemplateClass2<int, V> { };
+
+void test_inheritance() {
+	int x = ymlSource();
+	DeriveFromFromPartialTemplateInstantiation<long> y;
+	auto z = y.function(0L, x);
+	ymlSink(z); // $ ir
+}
+
+template<class T>
+struct Class1 : TemplateClass1<T> {
+  template<class U>
+  int templateFunction3(U u, int x) {
+    return TemplateClass1<T>::template templateFunction2<U, int>(u, x);
+  }
+};
+
+void test_class1() {
+	int x = ymlSource();
+	Class1<int> c;
+	auto y = c.templateFunction3<unsigned long>(0UL, x);
+	ymlSink(y); // $ ir
 }
