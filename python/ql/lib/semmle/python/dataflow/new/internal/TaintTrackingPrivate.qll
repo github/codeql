@@ -190,7 +190,11 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
 predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(DataFlow::ContentSet contentSet |
     DataFlowPrivate::readStep(nodeFrom, contentSet, nodeTo) and
-    defaultTaintReadContent(contentSet)
+    exists(DataFlow::Content c | c = contentSet.getAReadContent() |
+      c instanceof DataFlow::TupleElementContent or
+      c instanceof DataFlow::DictionaryElementContent or
+      c instanceof DataFlow::DictionaryElementAnyContent
+    )
   )
 }
 
