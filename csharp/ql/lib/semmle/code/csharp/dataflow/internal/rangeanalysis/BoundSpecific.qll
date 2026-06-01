@@ -10,23 +10,19 @@ private import semmle.code.csharp.dataflow.internal.rangeanalysis.SsaUtils as SU
 private import codeql.rangeanalysis.Bound as SharedBound
 
 /** Holds if `e` is a bound expression and it is not an SSA variable read. */
-
-
 module BoundDefs implements SharedBound::BoundDefinitions<CS::Location> {
-    class Type = CS::Type;
+  class Type = CS::Type;
 
-    class SsaVariable = SU::SsaVariable;
-    
-    class SsaSourceVariable = Ssa::SourceVariable;
+  class SsaVariable = SU::SsaVariable;
 
-    class Expr = CS::ControlFlowNodes::ExprNode;
+  class SsaSourceVariable = Ssa::SourceVariable;
 
-    class IntegralType = CS::IntegralType;
+  class Expr = CS::ControlFlowNodes::ExprNode;
 
-    class ConstantIntegerExpr = CU::ConstantIntegerExpr;
+  class IntegralType = CS::IntegralType;
+
+  class ConstantIntegerExpr = CU::ConstantIntegerExpr;
 
   /** Holds if `e` is a bound expression and it is not an SSA variable read. */
-    predicate interestingExprBound(Expr e) { 
-        CU::systemArrayLengthAccess(e.getExpr()) 
-    }
+  predicate interestingExprBound(Expr e) { CU::systemArrayLengthAccess(e.getExpr()) }
 }
