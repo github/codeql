@@ -1,0 +1,6 @@
+| test.py:14:5:14:15 | basic_param | Unexpected result: def=basic_param |
+| test.py:18:5:18:16 | basic_assign | Unexpected result: def=basic_assign |
+| test.py:23:5:23:16 | reassignment | Unexpected result: def=reassignment |
+| test.py:29:5:29:15 | if_else_phi | Unexpected result: def=if_else_phi |
+| test.py:37:5:37:14 | use_global | Unexpected result: def=use_global |
+| test.py:38:28:38:49 | Comment # $ use=some_undefined | Missing result: use=some_undefined |
