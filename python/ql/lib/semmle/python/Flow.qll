@@ -198,7 +198,7 @@ class ControlFlowNode extends @py_flow_node {
   pragma[inline]
   predicate strictlyDominates(ControlFlowNode other) {
     // This predicate is gigantic, so it must be inlined.
-    // About 1.4 billion tuples for OpenStack Py::Cinder.
+    // About 1.4 billion tuples for OpenStack Cinder.
     this.getBasicBlock().strictlyDominates(other.getBasicBlock())
     or
     exists(BasicBlock b, int i, int j | this = b.getNode(i) and other = b.getNode(j) and i < j)
@@ -1094,7 +1094,7 @@ class BasicBlock extends @py_flow_node {
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to
    * column `endcolumn` of line `endline` in file `filepath`.
-   * Py::For more information, see
+   * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
   predicate hasLocationInfo(
