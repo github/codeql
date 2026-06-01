@@ -4,7 +4,11 @@
  * INTERNAL: Do not use.
  */
 
+private import rust
 private import codeql.rust.elements.internal.generated.Impl
+private import codeql.rust.internal.PathResolution as PathResolution
+private import codeql.rust.internal.typeinference.Type
+private import codeql.rust.internal.typeinference.TypeMention
 
 /**
  * INTERNAL: This module contains the customizable definition of `Impl` and should not
@@ -39,5 +43,39 @@ module Impl {
      */
     pragma[nomagic]
     predicate isInherent() { not this.hasTraitTy() }
+
+    /**
+     * Gets the type being implemented.
+     *
+     * For example, in
+     *
+     * ```rust
+     * impl MyType { ... }
+     *
+     * impl MyTrait for MyType { ... }
+     * ```
+     *
+     * the type being implemented is in both cases`MyType`.
+     */
+    TypeItem getSelf() {
+      result = this.getSelfTy().(TypeMention).getType().(DataType).getTypeItem()
+    }
+
+    /**
+     * Gets the trait being implemented, if any.
+     *
+     * For example, in
+     *
+     * ```rust
+     * impl MyType { ... }
+     *
+     * impl MyTrait for MyType { ... }
+     * ```
+     *
+     * the trait being implemented is in the second case `MyTrait`.
+     */
+    Trait getTrait() {
+      result = PathResolution::resolvePath(this.getTraitTy().(PathTypeRepr).getPath())
+    }
   }
 }
