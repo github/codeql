@@ -55,7 +55,7 @@ module Impl {
      * impl MyTrait for MyType { ... }
      * ```
      *
-     * the type being implemented is in both cases`MyType`.
+     * the type being implemented is in both cases `MyType`.
      */
     TypeItem getSelf() {
       result = this.getSelfTy().(TypeMention).getType().(DataType).getTypeItem()
