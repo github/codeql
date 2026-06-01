@@ -957,7 +957,7 @@ macro_expansion.rs:
 #   94|     getName(): [Name] MyTrait
 #   98|   getItem(20): [Union] union MyDeriveUnion
 #   99|     getDeriveMacroExpansion(0): [MacroItems] MacroItems
-#   99|       getItem(0): [Const] Const
+#   99|       getItem(0): [Const] const CONST_MyDeriveUnion
 #   98|         getBody(): [IntegerLiteralExpr] 42
 #   99|         getName(): [Name] CONST_MyDeriveUnion
 #   98|         getTypeRepr(): [PathTypeRepr] u32

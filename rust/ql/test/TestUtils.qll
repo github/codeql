@@ -20,3 +20,12 @@ class CrateElement extends Element {
 class Builtin extends AstNode {
   Builtin() { this.getFile().getAbsolutePath().matches("%/builtins/%.rs") }
 }
+
+predicate commmentAt(string text, string filepath, int line) {
+  exists(Comment c |
+    c.getLocation().hasLocationInfo(filepath, line, _, _, _) and
+    c.getCommentText().trim() = text and
+    c.fromSource() and
+    not text.matches("$%")
+  )
+}
