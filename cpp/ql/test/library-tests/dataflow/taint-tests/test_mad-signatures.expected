@@ -27383,54 +27383,55 @@ getParameterTypeName
 | stl.h:91:24:91:33 | operator++ | 0 | int |
 | stl.h:95:44:95:44 | back_inserter | 0 | func:0 & |
 | stl.h:95:44:95:44 | back_inserter | 0 | func:0 & |
-| stl.h:148:3:148:14 | basic_string | 0 | const class:2 & |
-| stl.h:149:33:149:44 | basic_string | 0 | const class:0 * |
-| stl.h:149:33:149:44 | basic_string | 1 | const class:2 & |
-| stl.h:151:16:151:20 | c_str | 0 | func:0 |
-| stl.h:151:16:151:20 | c_str | 1 | func:0 |
-| stl.h:151:16:151:20 | c_str | 2 | const class:2 & |
+| stl.h:147:12:147:23 | basic_string | 0 | const class:2 & |
+| stl.h:148:3:148:14 | basic_string | 0 | const class:0 * |
+| stl.h:148:3:148:14 | basic_string | 1 | const class:2 & |
+| stl.h:149:33:149:44 | basic_string | 0 | func:0 |
+| stl.h:149:33:149:44 | basic_string | 1 | func:0 |
+| stl.h:149:33:149:44 | basic_string | 2 | const class:2 & |
+| stl.h:165:8:165:16 | push_back | 0 | class:0 |
 | stl.h:173:13:173:22 | operator[] | 0 | size_type |
 | stl.h:175:13:175:14 | at | 0 | size_type |
-| stl.h:176:35:176:44 | operator+= | 0 | size_type |
-| stl.h:176:35:176:44 | operator+= | 0 | size_type |
-| stl.h:177:17:177:26 | operator+= | 0 | const func:0 & |
-| stl.h:178:17:178:22 | append | 0 | const class:0 * |
-| stl.h:179:17:179:22 | append | 0 | const basic_string & |
-| stl.h:180:17:180:22 | append | 0 | const class:0 * |
-| stl.h:181:47:181:52 | append | 0 | size_type |
-| stl.h:181:47:181:52 | append | 1 | class:0 |
-| stl.h:182:17:182:22 | assign | 0 | func:0 |
-| stl.h:182:17:182:22 | assign | 1 | func:0 |
-| stl.h:183:17:183:22 | assign | 0 | const basic_string & |
-| stl.h:184:47:184:52 | assign | 0 | size_type |
-| stl.h:184:47:184:52 | assign | 1 | class:0 |
-| stl.h:185:17:185:22 | insert | 0 | func:0 |
-| stl.h:185:17:185:22 | insert | 1 | func:0 |
+| stl.h:176:35:176:44 | operator+= | 0 | const func:0 & |
+| stl.h:176:35:176:44 | operator+= | 0 | const func:0 & |
+| stl.h:177:17:177:26 | operator+= | 0 | const class:0 * |
+| stl.h:178:17:178:22 | append | 0 | const basic_string & |
+| stl.h:179:17:179:22 | append | 0 | const class:0 * |
+| stl.h:180:17:180:22 | append | 0 | size_type |
+| stl.h:180:17:180:22 | append | 1 | class:0 |
+| stl.h:181:47:181:52 | append | 0 | func:0 |
+| stl.h:181:47:181:52 | append | 1 | func:0 |
+| stl.h:182:17:182:22 | assign | 0 | const basic_string & |
+| stl.h:183:17:183:22 | assign | 0 | size_type |
+| stl.h:183:17:183:22 | assign | 1 | class:0 |
+| stl.h:184:47:184:52 | assign | 0 | func:0 |
+| stl.h:184:47:184:52 | assign | 1 | func:0 |
+| stl.h:185:17:185:22 | insert | 0 | size_type |
+| stl.h:185:17:185:22 | insert | 1 | const basic_string & |
 | stl.h:186:17:186:22 | insert | 0 | size_type |
-| stl.h:186:17:186:22 | insert | 1 | const basic_string & |
+| stl.h:186:17:186:22 | insert | 1 | size_type |
+| stl.h:186:17:186:22 | insert | 2 | class:0 |
 | stl.h:187:17:187:22 | insert | 0 | size_type |
-| stl.h:187:17:187:22 | insert | 1 | size_type |
-| stl.h:187:17:187:22 | insert | 2 | class:0 |
-| stl.h:188:12:188:17 | insert | 0 | size_type |
-| stl.h:188:12:188:17 | insert | 1 | const class:0 * |
+| stl.h:187:17:187:22 | insert | 1 | const class:0 * |
+| stl.h:188:12:188:17 | insert | 0 | const_iterator |
+| stl.h:188:12:188:17 | insert | 1 | size_type |
+| stl.h:188:12:188:17 | insert | 2 | class:0 |
 | stl.h:189:42:189:47 | insert | 0 | const_iterator |
-| stl.h:189:42:189:47 | insert | 1 | size_type |
-| stl.h:189:42:189:47 | insert | 2 | class:0 |
-| stl.h:190:17:190:23 | replace | 0 | const_iterator |
-| stl.h:190:17:190:23 | replace | 1 | func:0 |
-| stl.h:190:17:190:23 | replace | 2 | func:0 |
+| stl.h:189:42:189:47 | insert | 1 | func:0 |
+| stl.h:189:42:189:47 | insert | 2 | func:0 |
+| stl.h:190:17:190:23 | replace | 0 | size_type |
+| stl.h:190:17:190:23 | replace | 1 | size_type |
+| stl.h:190:17:190:23 | replace | 2 | const basic_string & |
 | stl.h:191:17:191:23 | replace | 0 | size_type |
 | stl.h:191:17:191:23 | replace | 1 | size_type |
-| stl.h:191:17:191:23 | replace | 2 | const basic_string & |
-| stl.h:192:13:192:16 | copy | 0 | size_type |
+| stl.h:191:17:191:23 | replace | 2 | size_type |
+| stl.h:191:17:191:23 | replace | 3 | class:0 |
+| stl.h:192:13:192:16 | copy | 0 | class:0 * |
 | stl.h:192:13:192:16 | copy | 1 | size_type |
 | stl.h:192:13:192:16 | copy | 2 | size_type |
-| stl.h:192:13:192:16 | copy | 3 | class:0 |
-| stl.h:193:8:193:12 | clear | 0 | class:0 * |
-| stl.h:193:8:193:12 | clear | 1 | size_type |
-| stl.h:193:8:193:12 | clear | 2 | size_type |
-| stl.h:195:8:195:11 | swap | 0 | size_type |
-| stl.h:195:8:195:11 | swap | 1 | size_type |
+| stl.h:194:16:194:21 | substr | 0 | size_type |
+| stl.h:194:16:194:21 | substr | 1 | size_type |
+| stl.h:195:8:195:11 | swap | 0 | basic_string & |
 | stl.h:198:94:198:102 | operator+ | 0 | const basic_string & |
 | stl.h:198:94:198:102 | operator+ | 1 | const basic_string & |
 | stl.h:199:94:199:102 | operator+ | 0 | const basic_string & |
