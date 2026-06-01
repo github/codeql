@@ -1,3 +1,9 @@
+/**
+ * Provides classes for representing abstract bounds for use in, for example, range analysis.
+ */
+overlay[local?]
+module;
+
 private import codeql.util.Location
 
 signature module BoundDefinitions<LocationSig Location> {
