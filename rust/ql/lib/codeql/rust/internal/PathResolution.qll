@@ -806,7 +806,7 @@ private TypeItemNode resolveBuiltin(TypeRepr tr) {
 final class ImplItemNode extends ImplOrTraitItemNode instanceof Impl {
   Path getSelfPath() { result = super.getSelfTy().(PathTypeRepr).getPath() }
 
-  Path getTraitPath() { result = super.getTrait().(PathTypeRepr).getPath() }
+  Path getTraitPath() { result = super.getTraitTy().(PathTypeRepr).getPath() }
 
   TypeItemNode resolveSelfTyBuiltin() { result = resolveBuiltin(this.(Impl).getSelfTy()) }
 

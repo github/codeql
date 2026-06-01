@@ -11,7 +11,7 @@ query predicate canonicalPath(Addressable a, string path) {
     a =
       any(ImplItemNode i |
         i.resolveSelfTy() instanceof Str and
-        not i.(Impl).hasTrait()
+        not i.(Impl).hasTraitTy()
       ).getAnAssocItem() and
     a.(Function).getName().getText() = "trim"
   ) and

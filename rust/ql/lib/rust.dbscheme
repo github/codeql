@@ -2907,9 +2907,9 @@ impl_self_ties(
 );
 
 #keyset[id]
-impl_traits(
+impl_trait_ties(
   int id: @impl ref,
-  int trait: @type_repr ref
+  int trait_ty: @type_repr ref
 );
 
 #keyset[id]
