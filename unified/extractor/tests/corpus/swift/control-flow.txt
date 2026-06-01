@@ -9,41 +9,32 @@ if x > 0 {
 ---
 
 source_file
-  if_statement
-    condition:
-      if_condition
-        comparison_expression
-          lhs: simple_identifier "x"
-          op: >
-          rhs: integer_literal "0"
-    statements
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value: simple_identifier "x"
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
 
 ---
 
 top_level
   body:
-    if_stmt
-      condition:
-        expr_condition
-          expr: unsupported_node "x > 0"
-      then:
-        block_stmt
-          body:
-            expr_stmt
-              expr:
-                call_expr
-                  argument:
-                    name_expr
-                      identifier: identifier "x"
-                  function:
-                    name_expr
-                      identifier: identifier "print"
 
 ===
 If-else
@@ -58,67 +49,47 @@ if x > 0 {
 ---
 
 source_file
-  if_statement
-    condition:
-      if_condition
-        comparison_expression
-          lhs: simple_identifier "x"
-          op: >
-          rhs: integer_literal "0"
-    statements
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value: simple_identifier "x"
-    else "else"
-    statements
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value:
-                prefix_expression
-                  operation: -
-                  target: simple_identifier "x"
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+      else_branch:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            prefix_expression
+                              operation: -
+                              target: simple_identifier "x"
 
 ---
 
 top_level
   body:
-    if_stmt
-      condition:
-        expr_condition
-          expr: unsupported_node "x > 0"
-      else:
-        block_stmt
-          body:
-            expr_stmt
-              expr:
-                call_expr
-                  argument:
-                    unary_expr
-                      operator: operator "-"
-                      operand:
-                        name_expr
-                          identifier: identifier "x"
-                  function:
-                    name_expr
-                      identifier: identifier "print"
-      then:
-        block_stmt
-          body:
-            expr_stmt
-              expr:
-                call_expr
-                  argument:
-                    name_expr
-                      identifier: identifier "x"
-                  function:
-                    name_expr
-                      identifier: identifier "print"
 
 ===
 If-else-if chain
@@ -135,87 +106,65 @@ if x > 0 {
 ---
 
 source_file
-  if_statement
-    condition:
-      if_condition
-        comparison_expression
-          lhs: simple_identifier "x"
-          op: >
-          rhs: integer_literal "0"
-    statements
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value: integer_literal "1"
-    else "else"
+  statement:
     if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: integer_literal "1"
       condition:
         if_condition
-          comparison_expression
-            lhs: simple_identifier "x"
-            op: <
-            rhs: integer_literal "0"
-      statements
-        call_expression
-          simple_identifier "print"
-          call_suffix
-            value_arguments
-              value_argument
-                value: integer_literal "2"
-      else "else"
-      statements
-        call_expression
-          simple_identifier "print"
-          call_suffix
-            value_arguments
-              value_argument
-                value: integer_literal "3"
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+      else_branch:
+        if_statement
+          body:
+            block
+              statement:
+                call_expression
+                  function: simple_identifier "print"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: integer_literal "2"
+          condition:
+            if_condition
+              kind:
+                comparison_expression
+                  lhs: simple_identifier "x"
+                  op: <
+                  rhs: integer_literal "0"
+          else_branch:
+            block
+              statement:
+                call_expression
+                  function: simple_identifier "print"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: integer_literal "3"
 
 ---
 
 top_level
   body:
-    if_stmt
-      condition:
-        expr_condition
-          expr: unsupported_node "x > 0"
-      else:
-        if_stmt
-          condition:
-            expr_condition
-              expr: unsupported_node "x < 0"
-          else:
-            block_stmt
-              body:
-                expr_stmt
-                  expr:
-                    call_expr
-                      argument: int_literal "3"
-                      function:
-                        name_expr
-                          identifier: identifier "print"
-          then:
-            block_stmt
-              body:
-                expr_stmt
-                  expr:
-                    call_expr
-                      argument: int_literal "2"
-                      function:
-                        name_expr
-                          identifier: identifier "print"
-      then:
-        block_stmt
-          body:
-            expr_stmt
-              expr:
-                call_expr
-                  argument: int_literal "1"
-                  function:
-                    name_expr
-                      identifier: identifier "print"
 
 ===
 If-let optional binding
@@ -228,42 +177,36 @@ if let value = optional {
 ---
 
 source_file
-  if_statement
-    condition:
-      if_condition
-        if_let_binding
-          bound_identifier: simple_identifier "value"
-          value_binding_pattern
-            mutability: let
-          simple_identifier "optional"
-    statements
-      call_expression
-        simple_identifier "print"
-        call_suffix
-          value_arguments
-            value_argument
-              value: simple_identifier "value"
+  statement:
+    if_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "value"
+      condition:
+        if_condition
+          kind:
+            if_let_binding
+              pattern:
+                pattern
+                  binding:
+                    value_binding_pattern
+                      mutability: let
+                  bound_identifier: simple_identifier "value"
+              value: simple_identifier "optional"
 
 ---
 
 top_level
   body:
-    if_stmt
-      condition:
-        expr_condition
-          expr: unsupported_node "let value = optional"
-      then:
-        block_stmt
-          body:
-            expr_stmt
-              expr:
-                call_expr
-                  argument:
-                    name_expr
-                      identifier: identifier "value"
-                  function:
-                    name_expr
-                      identifier: identifier "print"
 
 ===
 Guard let
@@ -274,22 +217,29 @@ guard let value = optional else { return }
 ---
 
 source_file
-  guard_statement
-    condition:
-      if_condition
-        if_let_binding
-          bound_identifier: simple_identifier "value"
-          value_binding_pattern
-            mutability: let
-          simple_identifier "optional"
-    else "else"
-    statements
-      control_transfer_statement
+  statement:
+    guard_statement
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+      condition:
+        if_condition
+          kind:
+            if_let_binding
+              pattern:
+                pattern
+                  binding:
+                    value_binding_pattern
+                      mutability: let
+                  bound_identifier: simple_identifier "value"
+              value: simple_identifier "optional"
 
 ---
 
 top_level
-  body: unsupported_node "guard let value = optional else { return }"
+  body:
 
 ===
 Ternary expression
@@ -300,36 +250,33 @@ let y = x > 0 ? 1 : -1
 ---
 
 source_file
-  property_declaration
-    name:
-      pattern
-        bound_identifier: simple_identifier "y"
-    value:
-      ternary_expression
-        condition:
-          comparison_expression
-            lhs: simple_identifier "x"
-            op: >
-            rhs: integer_literal "0"
-        if_false:
-          prefix_expression
-            operation: -
-            target: integer_literal "1"
-        if_true: integer_literal "1"
-    value_binding_pattern
-      mutability: let
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "y"
+          value:
+            ternary_expression
+              condition:
+                comparison_expression
+                  lhs: simple_identifier "x"
+                  op: >
+                  rhs: integer_literal "0"
+              if_false:
+                prefix_expression
+                  operation: -
+                  target: integer_literal "1"
+              if_true: integer_literal "1"
 
 ---
 
 top_level
   body:
-    variable_declaration_stmt
-      variable_declarator:
-        variable_declarator
-          value: unsupported_node "x > 0 ? 1 : -1"
-          pattern:
-            var_pattern
-              identifier: identifier "y"
 
 ===
 Switch statement
@@ -347,53 +294,69 @@ default:
 ---
 
 source_file
-  switch_statement
-    expr: simple_identifier "x"
-    switch_entry
-      switch_pattern
-        pattern
-          integer_literal "1"
-      statements
-        call_expression
-          simple_identifier "print"
-          call_suffix
-            value_arguments
-              value_argument
-                value:
-                  line_string_literal
-                    text: line_str_text "one"
-    switch_entry
-      switch_pattern
-        pattern
-          integer_literal "2"
-      switch_pattern
-        pattern
-          integer_literal "3"
-      statements
-        call_expression
-          simple_identifier "print"
-          call_suffix
-            value_arguments
-              value_argument
-                value:
-                  line_string_literal
-                    text: line_str_text "two or three"
-    switch_entry
-      default_keyword "default"
-      statements
-        call_expression
-          simple_identifier "print"
-          call_suffix
-            value_arguments
-              value_argument
-                value:
-                  line_string_literal
-                    text: line_str_text "other"
+  statement:
+    switch_statement
+      entry:
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "1"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "one"
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "2"
+            switch_pattern
+              pattern:
+                pattern
+                  kind: integer_literal "3"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "two or three"
+        switch_entry
+          default: default_keyword "default"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value:
+                            line_string_literal
+                              text: line_str_text "other"
+      expr: simple_identifier "x"
 
 ---
 
 top_level
-  body: unsupported_node "switch x {\ncase 1:\n  print(\"one\")\ncase 2, 3:\n  print(\"two or three\")\ndefault:\n  print(\"other\")\n}"
+  body:
 
 ===
 Switch with binding pattern
@@ -409,40 +372,76 @@ case .square(let s):
 ---
 
 source_file
-  switch_statement
-    expr: simple_identifier "shape"
-    switch_entry
-      switch_pattern
-        pattern
-          simple_identifier "circle"
-          pattern
-            bound_identifier: simple_identifier "r"
-            value_binding_pattern
-              mutability: let
-      statements
-        call_expression
-          simple_identifier "print"
-          call_suffix
-            value_arguments
-              value_argument
-                value: simple_identifier "r"
-    switch_entry
-      switch_pattern
-        pattern
-          simple_identifier "square"
-          pattern
-            bound_identifier: simple_identifier "s"
-            value_binding_pattern
-              mutability: let
-      statements
-        call_expression
-          simple_identifier "print"
-          call_suffix
-            value_arguments
-              value_argument
-                value: simple_identifier "s"
+  statement:
+    switch_statement
+      entry:
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              pattern:
+                                pattern
+                                  kind:
+                                    binding_pattern
+                                      binding:
+                                        value_binding_pattern
+                                          mutability: let
+                                      pattern:
+                                        pattern
+                                          bound_identifier: simple_identifier "r"
+                      name: simple_identifier "circle"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "r"
+        switch_entry
+          pattern:
+            switch_pattern
+              pattern:
+                pattern
+                  kind:
+                    case_pattern
+                      arguments:
+                        tuple_pattern
+                          item:
+                            tuple_pattern_item
+                              pattern:
+                                pattern
+                                  kind:
+                                    binding_pattern
+                                      binding:
+                                        value_binding_pattern
+                                          mutability: let
+                                      pattern:
+                                        pattern
+                                          bound_identifier: simple_identifier "s"
+                      name: simple_identifier "square"
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "s"
+      expr: simple_identifier "shape"
 
 ---
 
 top_level
-  body: unsupported_node "switch shape {\ncase .circle(let r):\n  print(r)\ncase .square(let s):\n  print(s)\n}"
+  body:

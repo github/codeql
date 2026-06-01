@@ -14,6 +14,18 @@ class StmtSequenceSynth extends StmtSequence, TStmtSequenceSynth {
   final override string toString() { result = "..." }
 }
 
+class BodyStatement extends BodyStmt, TBodyStatement {
+  final override string toString() { result = "..." }
+}
+
+class BraceBlockBody extends BodyStmt, TBraceBlockBody {
+  final override string toString() { result = "..." }
+}
+
+class BodyStmtSynth extends BodyStmt, TBodyStmtSynth {
+  final override string toString() { result = "..." }
+}
+
 class Then extends StmtSequence, TThen {
   private Ruby::Then g;
 
@@ -64,26 +76,9 @@ class Ensure extends StmtSequence, TEnsure {
 
 // Not defined by dispatch, as it should not be exposed
 Ruby::AstNode getBodyStmtChild(TBodyStmt b, int i) {
-  exists(Ruby::Method g, Ruby::AstNode body | b = TMethod(g) and body = g.getBody() |
-    result = body.(Ruby::BodyStatement).getChild(i)
-    or
-    i = 0 and result = body and not body instanceof Ruby::BodyStatement
-  )
+  result = any(Ruby::BlockBody g | b = TBraceBlockBody(g)).getChild(i)
   or
-  exists(Ruby::SingletonMethod g, Ruby::AstNode body |
-    b = TSingletonMethod(g) and body = g.getBody()
-  |
-    result = body.(Ruby::BodyStatement).getChild(i)
-    or
-    i = 0 and result = body and not body instanceof Ruby::BodyStatement
-  )
-  or
-  exists(Ruby::Lambda g | b = TLambda(g) |
-    result = g.getBody().(Ruby::DoBlock).getBody().getChild(i) or
-    result = g.getBody().(Ruby::Block).getBody().getChild(i)
-  )
-  or
-  result = any(Ruby::DoBlock g | b = TDoBlock(g)).getBody().getChild(i)
+  result = any(Ruby::BodyStatement g | b = TBodyStatement(g)).getChild(i)
   or
   result = any(Ruby::Program g | b = TToplevel(g)).getChild(i) and
   not result instanceof Ruby::BeginBlock

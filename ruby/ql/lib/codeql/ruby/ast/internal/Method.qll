@@ -18,7 +18,7 @@ class BraceBlockReal extends BraceBlock, TBraceBlockReal {
     toGenerated(result) = g.getParameters().getChild(n)
   }
 
-  final override Stmt getStmt(int i) { toGenerated(result) = g.getBody().getChild(i) }
+  final override BodyStmt getBody() { toGenerated(result) = g.getBody() }
 }
 
 /**
@@ -28,8 +28,5 @@ class BraceBlockReal extends BraceBlock, TBraceBlockReal {
 class BraceBlockSynth extends BraceBlock, TBraceBlockSynth {
   final override Parameter getParameter(int n) { synthChild(this, n, result) }
 
-  final override Stmt getStmt(int i) {
-    i >= 0 and
-    synthChild(this, i + this.getNumberOfParameters(), result)
-  }
+  final override BodyStmt getBody() { synthChild(this, _, result) }
 }

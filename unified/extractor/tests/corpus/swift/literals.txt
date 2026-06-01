@@ -7,12 +7,12 @@ Integer literal
 ---
 
 source_file
-  integer_literal "42"
+  statement: integer_literal "42"
 
 ---
 
 top_level
-  body: int_literal "42"
+  body:
 
 ===
 Negative integer literal
@@ -23,17 +23,15 @@ Negative integer literal
 ---
 
 source_file
-  prefix_expression
-    operation: -
-    target: integer_literal "7"
+  statement:
+    prefix_expression
+      operation: -
+      target: integer_literal "7"
 
 ---
 
 top_level
   body:
-    unary_expr
-      operator: operator "-"
-      operand: int_literal "7"
 
 ===
 Floating-point literal
@@ -44,12 +42,12 @@ Floating-point literal
 ---
 
 source_file
-  real_literal "3.14"
+  statement: real_literal "3.14"
 
 ---
 
 top_level
-  body: unsupported_node "3.14"
+  body:
 
 ===
 Boolean literals
@@ -61,15 +59,14 @@ false
 ---
 
 source_file
-  boolean_literal
-  boolean_literal
+  statement:
+    boolean_literal
+    boolean_literal
 
 ---
 
 top_level
   body:
-    unsupported_node "true"
-    unsupported_node "false"
 
 ===
 Nil literal
@@ -80,6 +77,7 @@ nil
 ---
 
 source_file
+  statement: nil
 
 ---
 
@@ -95,13 +93,14 @@ String literal
 ---
 
 source_file
-  line_string_literal
-    text: line_str_text "hello"
+  statement:
+    line_string_literal
+      text: line_str_text "hello"
 
 ---
 
 top_level
-  body: string_literal "\"hello\""
+  body:
 
 ===
 String with interpolation
@@ -112,13 +111,14 @@ String with interpolation
 ---
 
 source_file
-  line_string_literal
-    interpolation:
-      interpolated_expression
-        value: simple_identifier "name"
-    text: line_str_text "hello "
+  statement:
+    line_string_literal
+      interpolation:
+        interpolated_expression
+          value: simple_identifier "name"
+      text: line_str_text "hello "
 
 ---
 
 top_level
-  body: string_literal "\"hello \\(name)\""
+  body:
