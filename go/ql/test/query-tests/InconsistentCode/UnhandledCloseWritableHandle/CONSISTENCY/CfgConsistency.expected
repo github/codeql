@@ -1,0 +1,9 @@
+consistencyOverview
+| multipleSuccessors | 6 |
+multipleSuccessors
+| tests.go:94:30:105:1 | After block statement | successor | tests.go:94:1:105:1 | Normal Exit |
+| tests.go:94:30:105:1 | After block statement | successor | tests.go:99:9:99:17 | defer-invoke call to Close |
+| tests.go:107:31:120:1 | After block statement | successor | tests.go:107:1:120:1 | Normal Exit |
+| tests.go:107:31:120:1 | After block statement | successor | tests.go:112:9:112:17 | defer-invoke call to Close |
+| tests.go:122:46:137:1 | After block statement | successor | tests.go:122:1:137:1 | Normal Exit |
+| tests.go:122:46:137:1 | After block statement | successor | tests.go:126:9:126:17 | defer-invoke call to Close |
