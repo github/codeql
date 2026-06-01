@@ -54,7 +54,7 @@ predicate unused_global(Name unused, GlobalVariable v) {
       u.uses(v)
     |
       // That is reachable from this definition, directly
-      defn.strictlyReaches(u.getAFlowNode())
+      exists(ControlFlowNode uCfg | uCfg.getNode() = u | defn.strictlyReaches(uCfg))
       or
       // indirectly
       defn.getBasicBlock().reachesExit() and u.getScope() != unused.getScope()

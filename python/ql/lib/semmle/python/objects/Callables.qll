@@ -56,8 +56,9 @@ abstract class CallableObjectInternal extends ObjectInternal {
 /** A Python function. */
 class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFunctionObject {
   override Function getScope() {
-    exists(CallableExpr expr |
-      this = TPythonFunctionObject(expr.getAFlowNode()) and
+    exists(CallableExpr expr, ControlFlowNode exprCfg |
+      exprCfg.getNode() = expr and
+      this = TPythonFunctionObject(exprCfg) and
       result = expr.getInnerScope()
     )
   }
@@ -160,10 +161,11 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 }
 
 private BasicBlock blockReturningNone(Function func) {
-  exists(Return ret |
+  exists(Return ret, ControlFlowNode ret_ |
     not exists(ret.getValue()) and
     ret.getScope() = func and
-    result = ret.getAFlowNode().getBasicBlock()
+    ret_.getNode() = ret and
+    result = ret_.getBasicBlock()
   )
 }
 

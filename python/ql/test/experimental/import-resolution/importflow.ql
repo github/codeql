@@ -45,13 +45,15 @@ private class VersionGuardedNode extends DataFlow::Node {
 
   VersionGuardedNode() {
     version in [2, 3] and
-    exists(If parent, CompareNode c | parent.getBody().contains(this.asExpr()) |
+    exists(If parent, CompareNode c, ControlFlowNode litCfg |
+      parent.getBody().contains(this.asExpr()) and
+      litCfg.getNode() = any(IntegerLiteral lit | lit.getValue() = version)
+    |
       c.operands(API::moduleImport("sys")
             .getMember("version_info")
             .getASubscript()
             .asSource()
-            .asCfgNode(), any(Eq eq),
-        any(IntegerLiteral lit | lit.getValue() = version).getAFlowNode())
+            .asCfgNode(), any(Eq eq), litCfg)
     )
   }
 

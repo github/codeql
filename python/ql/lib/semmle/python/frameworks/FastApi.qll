@@ -129,7 +129,7 @@ module FastApi {
       result in [this.getArg(0), this.getArgByName("path")]
     }
 
-    override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
+    override Function getARequestHandler() { node.getNode() = result.getADecorator() }
 
     override string getFramework() { result = "FastAPI" }
 

@@ -59,7 +59,7 @@ module Bottle {
 
         override Parameter getARoutedParameter() { none() }
 
-        override Function getARequestHandler() { result.getADecorator().getAFlowNode() = node }
+        override Function getARequestHandler() { node.getNode() = result.getADecorator() }
       }
     }
 
