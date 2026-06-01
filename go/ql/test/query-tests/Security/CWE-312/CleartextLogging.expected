@@ -82,12 +82,8 @@ edges
 | main.go:53:11:53:18 | password | main.go:54:12:54:19 | password | provenance |  |
 | main.go:53:11:53:18 | password | main.go:54:12:54:19 | password | provenance |  |
 | main.go:54:12:54:19 | password | main.go:56:11:56:18 | password | provenance |  |
-| main.go:54:12:54:19 | password | main.go:56:11:56:18 | password | provenance |  |
 | main.go:54:12:54:19 | password | main.go:59:18:59:25 | password | provenance |  |
-| main.go:54:12:54:19 | password | main.go:59:18:59:25 | password | provenance |  |
-| main.go:54:12:54:19 | password | main.go:62:12:62:19 | password | provenance |  |
 | main.go:54:12:54:19 | password | main.go:62:12:62:19 | password | provenance | Sink:MaD:7 |
-| main.go:54:12:54:19 | password | main.go:65:13:65:20 | password | provenance |  |
 | main.go:54:12:54:19 | password | main.go:65:13:65:20 | password | provenance |  |
 | main.go:54:12:54:19 | password | main.go:68:11:68:18 | password | provenance |  |
 | main.go:54:12:54:19 | password | main.go:68:11:68:18 | password | provenance |  |
@@ -99,58 +95,6 @@ edges
 | main.go:54:12:54:19 | password | main.go:77:13:77:20 | password | provenance |  |
 | main.go:54:12:54:19 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
 | main.go:54:12:54:19 | password | main.go:80:17:80:24 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:59:18:59:25 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:59:18:59:25 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:62:12:62:19 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:62:12:62:19 | password | provenance | Sink:MaD:7 |
-| main.go:56:11:56:18 | password | main.go:65:13:65:20 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:65:13:65:20 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:68:11:68:18 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:68:11:68:18 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:71:18:71:25 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:71:18:71:25 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:74:12:74:19 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
-| main.go:56:11:56:18 | password | main.go:77:13:77:20 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:77:13:77:20 | password | provenance |  |
-| main.go:56:11:56:18 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
-| main.go:56:11:56:18 | password | main.go:80:17:80:24 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:62:12:62:19 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:62:12:62:19 | password | provenance | Sink:MaD:7 |
-| main.go:59:18:59:25 | password | main.go:65:13:65:20 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:65:13:65:20 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:68:11:68:18 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:68:11:68:18 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:71:18:71:25 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:71:18:71:25 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:74:12:74:19 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
-| main.go:59:18:59:25 | password | main.go:77:13:77:20 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:77:13:77:20 | password | provenance |  |
-| main.go:59:18:59:25 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
-| main.go:59:18:59:25 | password | main.go:80:17:80:24 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:65:13:65:20 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:65:13:65:20 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:68:11:68:18 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:68:11:68:18 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:71:18:71:25 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:71:18:71:25 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:74:12:74:19 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
-| main.go:62:12:62:19 | password | main.go:77:13:77:20 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:77:13:77:20 | password | provenance |  |
-| main.go:62:12:62:19 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
-| main.go:62:12:62:19 | password | main.go:80:17:80:24 | password | provenance |  |
-| main.go:65:13:65:20 | password | main.go:68:11:68:18 | password | provenance |  |
-| main.go:65:13:65:20 | password | main.go:68:11:68:18 | password | provenance |  |
-| main.go:65:13:65:20 | password | main.go:71:18:71:25 | password | provenance |  |
-| main.go:65:13:65:20 | password | main.go:71:18:71:25 | password | provenance |  |
-| main.go:65:13:65:20 | password | main.go:74:12:74:19 | password | provenance |  |
-| main.go:65:13:65:20 | password | main.go:74:12:74:19 | password | provenance | Sink:MaD:9 |
-| main.go:65:13:65:20 | password | main.go:77:13:77:20 | password | provenance |  |
-| main.go:65:13:65:20 | password | main.go:77:13:77:20 | password | provenance |  |
-| main.go:65:13:65:20 | password | main.go:79:14:79:21 | password | provenance | Sink:MaD:8 |
-| main.go:65:13:65:20 | password | main.go:80:17:80:24 | password | provenance |  |
 | main.go:68:11:68:18 | password | main.go:71:18:71:25 | password | provenance |  |
 | main.go:68:11:68:18 | password | main.go:71:18:71:25 | password | provenance |  |
 | main.go:68:11:68:18 | password | main.go:74:12:74:19 | password | provenance |  |
@@ -274,12 +218,8 @@ nodes
 | main.go:54:12:54:19 | password | semmle.label | password |
 | main.go:54:12:54:19 | password | semmle.label | password |
 | main.go:56:11:56:18 | password | semmle.label | password |
-| main.go:56:11:56:18 | password | semmle.label | password |
-| main.go:59:18:59:25 | password | semmle.label | password |
 | main.go:59:18:59:25 | password | semmle.label | password |
 | main.go:62:12:62:19 | password | semmle.label | password |
-| main.go:62:12:62:19 | password | semmle.label | password |
-| main.go:65:13:65:20 | password | semmle.label | password |
 | main.go:65:13:65:20 | password | semmle.label | password |
 | main.go:68:11:68:18 | password | semmle.label | password |
 | main.go:68:11:68:18 | password | semmle.label | password |
