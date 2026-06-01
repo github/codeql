@@ -227,6 +227,30 @@ class IgnorableUnaryBitwiseOperation extends IgnorableOperation instanceof Unary
 class IgnorableAssignmentBitwiseOperation extends IgnorableOperation instanceof AssignBitwiseOperation
 { }
 
+class YearFieldAssignmentNode extends DataFlow::Node {
+  YearFieldAccess access;
+
+  YearFieldAssignmentNode() {
+    exists(Function f |
+      f = this.getEnclosingCallable().getUnderlyingCallable() and not f instanceof IgnorableFunction
+    |
+      this.asDefinition().(Assignment).getLValue() = access
+      or
+      this.asDefinition().(CrementOperation).getOperand() = access
+      or
+      exists(Call c | c.getAnArgument() = access and this.asDefiningArgument() = access)
+      or
+      exists(Call c, AddressOfExpr aoe |
+        c.getAnArgument() = aoe and
+        aoe.getOperand() = access and
+        this.asDefiningArgument() = aoe
+      )
+    )
+  }
+
+  YearFieldAccess getYearFieldAccess() { result = access }
+}
+
 /**
  * An arithmetic operation where one of the operands is a pointer or char type, ignore it
  */
@@ -287,24 +311,7 @@ predicate isOperationSourceCandidate(Expr e) {
 }
 
 /**
- * A data flow that tracks an ignorable operation (such as a bitwise operation) to an operation source, so we may disqualify it.
- */
-module IgnorableOperationToOperationSourceCandidateConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n.asExpr() instanceof IgnorableOperation }
-
-  predicate isSink(DataFlow::Node n) { isOperationSourceCandidate(n.asExpr()) }
-
-  // looking for sources and sinks in the same function
-  DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
-  }
-}
-
-module IgnorableOperationToOperationSourceCandidateFlow =
-  TaintTracking::Global<IgnorableOperationToOperationSourceCandidateConfig>;
-
-/**
- * The set of all expressions which is a candidate expression and also does not flow from to to some ignorable expression (eg. bitwise op)
+ * The set of all expressions that are candidate expression.
  * ```
  * a = something <<< 2;
  * myDate.year = a + 1;        // invalid
@@ -314,49 +321,16 @@ module IgnorableOperationToOperationSourceCandidateFlow =
  * ```
  */
 class OperationSource extends Expr {
-  OperationSource() {
-    isOperationSourceCandidate(this) and
-    // If the candidate came from an ignorable operation, ignore the candidate
-    // NOTE: we cannot easily flow the candidate to an ignorable operation as that can
-    // be tricky in practice, e.g., a mod operation on a year would be part of a leap year check
-    // but a mod operation ending in a year is more indicative of something to ignore (a conversion)
-    not exists(IgnorableOperationToOperationSourceCandidateFlow::PathNode sink |
-      sink.getNode().asExpr() = this and
-      sink.isSink()
-    )
-  }
-}
-
-class YearFieldAssignmentNode extends DataFlow::Node {
-  YearFieldAccess access;
-
-  YearFieldAssignmentNode() {
-    exists(Function f |
-      f = this.getEnclosingCallable().getUnderlyingCallable() and not f instanceof IgnorableFunction
-    ) and
-    (
-      this.asDefinition().(Assignment).getLValue() = access
-      or
-      this.asDefinition().(CrementOperation).getOperand() = access
-      or
-      exists(Call c | c.getAnArgument() = access and this.asDefiningArgument() = access)
-      or
-      exists(Call c, AddressOfExpr aoe |
-        c.getAnArgument() = aoe and
-        aoe.getOperand() = access and
-        this.asDefiningArgument() = aoe
-      )
-    )
-  }
-
-  YearFieldAccess getYearFieldAccess() { result = access }
+  OperationSource() { isOperationSourceCandidate(this) }
 }
 
 /**
- * A DataFlow configuration for identifying flows from an identified source
- * to the Year field of a date object.
+ * An initial DataFlow configuration for identifying flows from an identified source
+ * to the Year field of a date object. This is used to restrict the sinks of
+ * `IgnorableOperationToOperationSourceCandidateConfig` and the sinks of the
+ * final `OperationToYearAssignmentConfig`.
  */
-module OperationToYearAssignmentConfig implements DataFlow::ConfigSig {
+module OperationToYearAssignmentConfig0 implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr() instanceof OperationSource }
 
   predicate isSink(DataFlow::Node n) {
@@ -406,6 +380,62 @@ module OperationToYearAssignmentConfig implements DataFlow::ConfigSig {
   }
 
   /** Block flow out of an operation source to get the "closest" operation to the sink */
+  predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
+
+  predicate isBarrierOut(DataFlow::Node n) { isSink(n) }
+}
+
+module OperationToYearAssignmentFlow0 = TaintTracking::Global<OperationToYearAssignmentConfig0>;
+
+predicate yearAssignmentFlowsFromSource(DataFlow::Node source, DataFlow::Node sink) {
+  OperationToYearAssignmentFlow0::flow(source, sink)
+}
+
+/**
+ * A data flow that tracks an ignorable operation (such as a bitwise operation) to an operation source, so we may disqualify it.
+ * Sinks are restricted to operation source candidates that have a flow to a year assignment in `OperationToYearAssignmentFlow0`.
+ */
+module IgnorableOperationToOperationSourceCandidateConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr() instanceof IgnorableOperation }
+
+  predicate isSink(DataFlow::Node n) {
+    isOperationSourceCandidate(n.asExpr()) and
+    yearAssignmentFlowsFromSource(n, _)
+  }
+
+  // looking for sources and sinks in the same function
+  DataFlow::FlowFeature getAFeature() {
+    result instanceof DataFlow::FeatureEqualSourceSinkCallContext
+  }
+}
+
+module IgnorableOperationToOperationSourceCandidateFlow =
+  TaintTracking::Global<IgnorableOperationToOperationSourceCandidateConfig>;
+
+/**
+ * The final DataFlow configuration that refines `OperationToYearAssignmentConfig0` by
+ * additionally filtering out operation sources that flow from an ignorable operation
+ * (via `IgnorableOperationToOperationSourceCandidateFlow`).
+ */
+module OperationToYearAssignmentConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { yearAssignmentFlowsFromSource(n, _) }
+
+  predicate isSink(DataFlow::Node n) {
+    exists(DataFlow::Node operation |
+      yearAssignmentFlowsFromSource(operation, n) and
+      // If the candidate came from an ignorable operation, ignore the candidate
+      // NOTE: we cannot easily flow the candidate to an ignorable operation as that can
+      // be tricky in practice, e.g., a mod operation on a year would be part of a leap year check
+      // but a mod operation ending in a year is more indicative of something to ignore (a conversion)
+      not exists(IgnorableOperationToOperationSourceCandidateFlow::PathNode sink |
+        sink.getNode() = operation and
+        sink.isSink()
+      )
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node n) { OperationToYearAssignmentConfig0::isBarrier(n) }
+
   predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
   predicate isBarrierOut(DataFlow::Node n) { isSink(n) }

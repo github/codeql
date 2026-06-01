@@ -193,9 +193,7 @@ module LocalFlow {
   }
 
   pragma[nomagic]
-  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    nodeFrom.asExpr() = getALastEvalNode(nodeTo.asExpr())
-    or
+  predicate localMustFlowStep(Node nodeFrom, Node nodeTo) {
     // An edge from the right-hand side of a let statement to the left-hand side.
     exists(LetStmt s |
       nodeFrom.asExpr() = s.getInitializer() and
@@ -238,6 +236,15 @@ module LocalFlow {
       nodeTo.asPat() = match.getAnArm().getPat()
     )
     or
+    nodeFrom.asExpr() = nodeTo.asExpr().(ParenExpr).getExpr()
+  }
+
+  pragma[nomagic]
+  predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
+    localMustFlowStep(nodeFrom, nodeTo)
+    or
+    nodeFrom.asExpr() = getALastEvalNode(nodeTo.asExpr())
+    or
     nodeFrom.asPat().(OrPat).getAPat() = nodeTo.asPat()
     or
     nodeTo.(PostUpdateNode).getPreUpdateNode().asExpr() =
@@ -263,9 +270,83 @@ predicate lambdaCallExpr(CallExprImpl::DynamicCallExpr call, LambdaCallKind kind
   exists(kind)
 }
 
+// NOTE: We do not yet track type information, except for closures where
+// we use the closure itself to represent the unique type.
+final class DataFlowType extends TDataFlowType {
+  Expr asClosureExpr() { this = TClosureExprType(result) }
+
+  predicate isUnknownType() { this = TUnknownType() }
+
+  predicate isSourceContextParameterType() { this = TSourceContextParameterType() }
+
+  string toString() {
+    exists(this.asClosureExpr()) and
+    result = "... => .."
+    or
+    this.isUnknownType() and
+    result = ""
+    or
+    this.isSourceContextParameterType() and
+    result = "<source context parameter type>"
+  }
+}
+
+pragma[nomagic]
+private predicate compatibleTypesSourceContextParameterTypeLeft(DataFlowType t1, DataFlowType t2) {
+  t1.isSourceContextParameterType() and not exists(t2.asClosureExpr())
+}
+
+pragma[nomagic]
+private predicate compatibleTypesLeft(DataFlowType t1, DataFlowType t2) {
+  t1.isUnknownType() and exists(t2)
+  or
+  t1.asClosureExpr() = t2.asClosureExpr()
+  or
+  compatibleTypesSourceContextParameterTypeLeft(t1, t2)
+}
+
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
+  compatibleTypesLeft(t1, t2)
+  or
+  compatibleTypesLeft(t2, t1)
+}
+
+pragma[nomagic]
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  not t1.isUnknownType() and t2.isUnknownType()
+  or
+  compatibleTypesSourceContextParameterTypeLeft(t1, t2)
+}
+
+DataFlowType getNodeType(NodePublic node) {
+  result.asClosureExpr() = node.asExpr()
+  or
+  result.asClosureExpr() = node.(ClosureParameterNode).getCfgScope()
+  or
+  exists(VariableCapture::Flow::SynthesizedCaptureNode scn |
+    scn = node.(CaptureNode).getSynthesizedCaptureNode() and
+    if scn.isInstanceAccess()
+    then result.asClosureExpr() = scn.getEnclosingCallable()
+    else result.isUnknownType()
+  )
+  or
+  not lambdaCreationExpr(node.asExpr()) and
+  not node instanceof ClosureParameterNode and
+  not node instanceof CaptureNode and
+  result.isUnknownType()
+}
+
 // Defines a set of aliases needed for the `RustDataFlow` module
 private module Aliases {
   class DataFlowCallableAlias = DataFlowCallable;
+
+  class DataFlowTypeAlias = DataFlowType;
+
+  predicate compatibleTypesAlias = compatibleTypes/2;
+
+  predicate typeStrongerThanAlias = typeStrongerThan/2;
+
+  predicate getNodeTypeAlias = getNodeType/1;
 
   class ReturnKindAlias = ReturnKind;
 
@@ -398,8 +479,6 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
     result = node.(Node::Node).getEnclosingCallable()
   }
 
-  DataFlowType getNodeType(Node node) { any() }
-
   predicate nodeIsHidden(Node node) {
     node instanceof SsaNode or
     node.(FlowSummaryNode).getSummaryNode().isHidden() or
@@ -486,15 +565,17 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
    */
   OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
 
-  // NOTE: For now we use the type `Unit` and do not benefit from type
-  // information in the data flow analysis.
-  final class DataFlowType extends Unit {
-    string toString() { result = "" }
+  class DataFlowType = DataFlowTypeAlias;
+
+  predicate compatibleTypes = compatibleTypesAlias/2;
+
+  predicate typeStrongerThan = typeStrongerThanAlias/2;
+
+  DataFlowType getSourceContextParameterNodeType(Node p) {
+    exists(p) and result.isSourceContextParameterType()
   }
 
-  predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
-
-  predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+  predicate getNodeType = getNodeTypeAlias/1;
 
   class Content = ContentAlias;
 
@@ -897,6 +978,8 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
   predicate localMustFlowStep(Node node1, Node node2) {
     SsaFlow::localMustFlowStep(node1, node2)
     or
+    LocalFlow::localMustFlowStep(node1, node2)
+    or
     FlowSummaryImpl::Private::Steps::summaryLocalMustFlowStep(node1
           .(FlowSummaryNode)
           .getSummaryNode(), node2.(FlowSummaryNode).getSummaryNode())
@@ -1110,6 +1193,12 @@ private module Cached {
     TCfgScope(CfgScope scope) or
     TSummarizedCallable(SummarizedCallable c)
 
+  cached
+  newtype TDataFlowType =
+    TClosureExprType(Expr e) { lambdaCreationExpr(e) } or
+    TUnknownType() or
+    TSourceContextParameterType()
+
   /** This is the local flow predicate that is exposed. */
   cached
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
@@ -1183,12 +1272,12 @@ private module Cached {
     exists(
       FlowSummaryImpl::Public::BarrierGuardElement b,
       FlowSummaryImpl::Private::SummaryComponentStack stack,
-      FlowSummaryImpl::Public::AcceptingValue acceptingvalue, string kind, string model
+      FlowSummaryImpl::Public::AcceptingValue acceptingValue, string kind, string model
     |
-      FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingvalue, kind, model) and
+      FlowSummaryImpl::Private::barrierGuardSpec(b, stack, acceptingValue, kind, model) and
       e = FlowSummaryImpl::StepsInput::getSinkNode(b, stack.headOfSingleton()).asExpr() and
       kmp = TMkPair(kind, model) and
-      gv = convertAcceptingValue(acceptingvalue) and
+      gv = convertAcceptingValue(acceptingValue) and
       g = b.getCall()
     )
   }

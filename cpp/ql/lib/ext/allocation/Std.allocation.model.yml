@@ -13,3 +13,6 @@ extensions:
       - ["", "", False, "calloc", "1", "0", "", True]
       - ["std", "", False, "calloc", "1", "0", "", True]
       - ["bsl", "", False, "calloc", "1", "0", "", True]
+      - ["", "", False, "aligned_alloc", "1", "", "", True]
+      - ["std", "", False, "aligned_alloc", "1", "", "", True]
+      - ["bsl", "", False, "aligned_alloc", "1", "", "", True]

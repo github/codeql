@@ -6,9 +6,9 @@ import csharp
 
 from Assignment a, ArrayCreation e, CastExpr cast
 where
-  a.getLValue().(VariableAccess).getTarget().hasName("os") and
+  a.getLeftOperand().(VariableAccess).getTarget().hasName("os") and
   e.getEnclosingCallable().hasName("MainElementAccess") and
-  e = a.getRValue() and
+  e = a.getRightOperand() and
   not e.isImplicitlyTyped() and
   e.isImplicitlySized() and
   e.getArrayType().getDimension() = 1 and

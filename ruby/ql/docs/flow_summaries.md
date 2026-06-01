@@ -39,7 +39,7 @@ If `preservesValue = true` then value flow is propagated. If it is `false` then
 only taint flow is propagated.
 
 Any call to `chomp` in the database will be translated, in the dataflow graph,
-to a call to this fake definition. 
+to a call to this fake definition.
 
 `input` and `output` define the "from" and "to" locations in the flow summary.
 They use a custom string-based syntax which is similar to that used in `path`
@@ -232,7 +232,7 @@ preceding access path. It takes the same specifiers as `WithElement` and
 `Element`. It is only valid in an input path.
 
 This component has the effect of excluding the relevant elements when copying
-from input to output. It is useful for modelling methods that remove elements
+from input to output. It is useful for modeling methods that remove elements
 from a collection. For example to model a method that removes the first element
 from the receiver, we can do so like this:
 

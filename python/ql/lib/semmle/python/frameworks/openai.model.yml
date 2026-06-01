@@ -4,6 +4,9 @@ extensions:
       extensible: sinkModel
     data:
       - ['OpenAI', 'Member[beta].Member[assistants].Member[create].Argument[instructions:]', 'prompt-injection']
+      - ['OpenAI', 'Member[chat].Member[completions].Member[create].Argument[messages:].ListElement.DictionaryElement[content]', 'prompt-injection']
+      - ['OpenAI', 'Member[responses].Member[create].Argument[instructions:]', 'prompt-injection']
+      - ['OpenAI', 'Member[responses].Member[create].Argument[input:]', 'prompt-injection']
 
   - addsTo:
       pack: codeql/python-all

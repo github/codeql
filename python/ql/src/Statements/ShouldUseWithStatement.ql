@@ -13,7 +13,7 @@
  */
 
 import python
-private import LegacyPointsTo
+private import semmle.python.dataflow.new.internal.DataFlowDispatch
 
 predicate calls_close(Call c) { exists(Attribute a | c.getFunc() = a and a.getName() = "close") }
 
@@ -23,18 +23,12 @@ predicate only_stmt_in_finally(Try t, Call c) {
   )
 }
 
-predicate points_to_context_manager(ControlFlowNodeWithPointsTo f, ClassValue cls) {
-  forex(Value v | f.pointsTo(v) | v.getClass() = cls) and
-  cls.isContextManager()
-}
-
-from Call close, Try t, ClassValue cls
+from Call close, Try t, Class cls
 where
   only_stmt_in_finally(t, close) and
   calls_close(close) and
-  exists(ControlFlowNode f | f = close.getFunc().getAFlowNode().(AttrNode).getObject() |
-    points_to_context_manager(f, cls)
-  )
+  classInstanceTracker(cls).asExpr() = close.getFunc().(Attribute).getObject() and
+  DuckTyping::isContextManager(cls)
 select close,
   "Instance of context-manager class $@ is closed in a finally block. Consider using 'with' statement.",
   cls, cls.getName()

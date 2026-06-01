@@ -9,5 +9,5 @@ where
   c.hasName("LoginDialog") and
   e.getEnclosingCallable() = c and
   e.getTarget().hasName("Click") and
-  e.getLValue().getQualifier().(FieldAccess).getTarget().hasName("OkButton")
+  e.getLeftOperand().getQualifier().(FieldAccess).getTarget().hasName("OkButton")
 select c, e

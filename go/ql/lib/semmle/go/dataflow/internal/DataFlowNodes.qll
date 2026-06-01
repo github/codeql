@@ -1,4 +1,4 @@
-overlay[local]
+overlay[local?]
 module;
 
 private import go
@@ -488,6 +488,7 @@ module Public {
      * For virtual calls, we look up possible targets in all types that implement the receiver
      * interface type.
      */
+    overlay[global]
     Callable getACalleeIncludingExternals() {
       result = this.getACalleeWithoutVirtualDispatch()
       or
@@ -504,6 +505,7 @@ module Public {
      * As `getACalleeIncludingExternals`, except excluding external functions (those for which
      * we lack a definition, such as standard library functions).
      */
+    overlay[global]
     pragma[nomagic]
     FuncDef getACallee() { result = this.getACalleeIncludingExternals().getFuncDef() }
 

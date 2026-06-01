@@ -1,5 +1,7 @@
 import semmle.code.csharp.security.dataflow.flowsources.Remote
 
-from RemoteFlowSource source
-where source.getLocation().getFile().fromSource()
-select source, source.getSourceType()
+query predicate remoteFlowSourceMembers(TaintTracking::TaintedMember m) { m.fromSource() }
+
+query predicate remoteFlowSources(RemoteFlowSource source, string type) {
+  source.getLocation().getFile().fromSource() and type = source.getSourceType()
+}

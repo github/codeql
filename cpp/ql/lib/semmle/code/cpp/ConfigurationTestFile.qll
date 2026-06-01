@@ -42,3 +42,10 @@ class MesonPrivateTestFile extends ConfigurationTestFile {
     )
   }
 }
+
+/**
+ * A file created by a GNU autoconf configure script to test the system configuration.
+ */
+class AutoconfConfigureTestFile extends ConfigurationTestFile {
+  AutoconfConfigureTestFile() { this.getBaseName().regexpMatch("conftest[0-9]*\\.c(pp)?") }
+}

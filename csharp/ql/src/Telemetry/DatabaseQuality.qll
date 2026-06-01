@@ -27,7 +27,7 @@ module CallTargetStats implements StatsSig {
       p = c.getProperty() and
       not p.getAnAccessor() instanceof Setter and
       assign = c.getParent() and
-      assign.getLValue() = c and
+      assign.getLeftOperand() = c and
       assign.getParent() instanceof Property
     )
   }
@@ -36,7 +36,7 @@ module CallTargetStats implements StatsSig {
     exists(Property p, AssignExpr assign |
       p = c.getProperty() and
       assign = c.getParent() and
-      assign.getLValue() = c and
+      assign.getLeftOperand() = c and
       assign.getParent() instanceof ObjectInitializer and
       assign.getParent().getParent() instanceof AnonymousObjectCreation
     )
@@ -46,8 +46,8 @@ module CallTargetStats implements StatsSig {
     exists(Property p, AssignExpr assign |
       p = c.getProperty() and
       assign = c.getParent() and
-      assign.getLValue() = c and
-      assign.getRValue() instanceof ObjectOrCollectionInitializer
+      assign.getLeftOperand() = c and
+      assign.getRightOperand() instanceof ObjectOrCollectionInitializer
     )
   }
 

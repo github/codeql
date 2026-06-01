@@ -334,9 +334,11 @@ IfExp.field('body', expr, 'if-true expression')
 IfExp.field('orelse', expr, 'if-false expression')
 
 Import.field('names', alias_list, 'alias list')
+Import.field('is_lazy', bool_, 'lazy')
 
 ImportFrom.set_name('ImportStar')
 ImportFrom.field('module', expr)
+ImportFrom.field('is_lazy', bool_, 'lazy')
 
 ImportMember.field('module', expr)
 ImportMember.field('name', string)

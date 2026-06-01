@@ -22,22 +22,32 @@ predicate correctlySynchronized(CollectionMember c, Expr access) {
   (
     c.getType().(ValueOrRefType).getABaseType*().getName().matches("Concurrent%") or
     access.getEnclosingStmt().getParent*() instanceof LockStmt or
-    any(LockingCall call).getAControlFlowNode().getASuccessor+() = access.getAControlFlowNode()
+    any(LockingCall call).getControlFlowNode().getASuccessor+() = access.getControlFlowNode()
   )
 }
 
-ControlFlow::Node unlockedReachable(Callable a) {
-  result = a.getEntryPoint()
+predicate firstLockingCallInBlock(BasicBlock b, int i) {
+  i = min(int j | b.getNode(j).asExpr() instanceof LockingCall)
+}
+
+BasicBlock unlockedReachable(Callable a) {
+  result = a.getEntryPoint().getBasicBlock()
   or
-  exists(ControlFlow::Node mid | mid = unlockedReachable(a) |
-    not mid.getAstNode() instanceof LockingCall and
+  exists(BasicBlock mid | mid = unlockedReachable(a) |
+    not firstLockingCallInBlock(mid, _) and
     result = mid.getASuccessor()
   )
 }
 
 predicate unlockedCalls(Callable a, Callable b) {
-  exists(Call call |
-    call.getAControlFlowNode() = unlockedReachable(a) and
+  exists(Call call, BasicBlock callBlock, int j |
+    call.getControlFlowNode() = callBlock.getNode(j) and
+    callBlock = unlockedReachable(a) and
+    (
+      exists(int i | j <= i and firstLockingCallInBlock(callBlock, i))
+      or
+      not firstLockingCallInBlock(callBlock, _)
+    ) and
     call.getARuntimeTarget() = b and
     not call.getParent*() instanceof LockStmt
   )

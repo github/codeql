@@ -1,3 +1,18 @@
+## 2.3.10
+
+No user-facing changes.
+
+## 2.3.9
+
+No user-facing changes.
+
+## 2.3.8
+
+### Minor Analysis Improvements
+
+* The query `js/missing-rate-limiting` now takes Fastify per-route
+  rate limiting into account.
+
 ## 2.3.7
 
 No user-facing changes.

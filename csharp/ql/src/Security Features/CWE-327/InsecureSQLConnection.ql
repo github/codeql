@@ -39,7 +39,12 @@ class Sink extends DataFlow::Node {
         or
         oc.getType().getName() = "SqlConnection"
       ) and
-      version = oc.getType().getALocation().(Assembly).getVersion()
+      version = oc.getType().getALocation().(Assembly).getVersion() and
+      not exists(MemberInitializer mi |
+        mi = oc.getInitializer().(ObjectInitializer).getAMemberInitializer() and
+        mi.getLeftOperand().(PropertyAccess).getTarget().getName() = "Encrypt" and
+        mi.getRightOperand().(BoolLiteral).getValue() = "true"
+      )
     )
   }
 

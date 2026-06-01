@@ -161,7 +161,7 @@ private newtype TComparisonTest =
       compare.getComparisonKind().isCompare() and
       outerKind = outer.getComparisonKind() and
       outer.getAnArgument() = compare.getExpr() and
-      i = outer.getAnArgument().getValue().toInt()
+      i = outer.getAnArgument().getIntValue()
     |
       outerKind.isEquality() and
       (

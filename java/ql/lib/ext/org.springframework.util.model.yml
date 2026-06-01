@@ -4,7 +4,7 @@ extensions:
       extensible: sinkModel
     data:
     - ["org.springframework.util", "FileCopyUtils", False, "copy", "(byte[],File)", "", "Argument[1]", "path-injection", "manual"]
-    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[0]", "path-injection", "manual"]
+    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[0]", "path-injection[read]", "manual"]
     - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[1]", "path-injection", "manual"]
 
   - addsTo:

@@ -1334,6 +1334,7 @@ class TypeMention extends @type_mention {
  * ```csharp
  * static class MyExtensions {
  *   extension(string s) { ... }
+ * }
  * ```
  */
 class ExtensionType extends Parameterizable, @extension_type {

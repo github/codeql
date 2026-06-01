@@ -2972,12 +2972,6 @@ private module Impl {
     none()
   }
 
-  private Element getImmediateChildOfBuiltinFixedArrayType(
-    BuiltinFixedArrayType e, int index, string partialPredicateCall
-  ) {
-    none()
-  }
-
   private Element getImmediateChildOfBuiltinFloatType(
     BuiltinFloatType e, int index, string partialPredicateCall
   ) {
@@ -3080,6 +3074,12 @@ private module Impl {
 
   private Element getImmediateChildOfWeakStorageType(
     WeakStorageType e, int index, string partialPredicateCall
+  ) {
+    none()
+  }
+
+  private Element getImmediateChildOfBuiltinFixedArrayType(
+    BuiltinFixedArrayType e, int index, string partialPredicateCall
   ) {
     none()
   }
@@ -3636,8 +3636,6 @@ private module Impl {
     or
     result = getImmediateChildOfBuiltinExecutorType(e, index, partialAccessor)
     or
-    result = getImmediateChildOfBuiltinFixedArrayType(e, index, partialAccessor)
-    or
     result = getImmediateChildOfBuiltinFloatType(e, index, partialAccessor)
     or
     result = getImmediateChildOfBuiltinJobType(e, index, partialAccessor)
@@ -3673,6 +3671,8 @@ private module Impl {
     result = getImmediateChildOfUnownedStorageType(e, index, partialAccessor)
     or
     result = getImmediateChildOfWeakStorageType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBuiltinFixedArrayType(e, index, partialAccessor)
     or
     result = getImmediateChildOfBuiltinIntegerLiteralType(e, index, partialAccessor)
     or

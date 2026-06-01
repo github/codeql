@@ -6,6 +6,7 @@ use std::io::Write;
 use std::path::PathBuf;
 
 use crate::node_types;
+use yeast;
 
 pub mod dbscheme;
 pub mod language;
@@ -68,7 +69,20 @@ pub fn generate(
         let token_name = format!("{}_token", &prefix);
         let tokeninfo_name = format!("{}_tokeninfo", &prefix);
         let reserved_word_name = format!("{}_reserved_word", &prefix);
-        let nodes = node_types::read_node_types_str(&prefix, language.node_types)?;
+        let effective_node_types: String = match language
+            .desugar
+            .as_ref()
+            .and_then(|c| c.output_node_types_yaml)
+        {
+            Some(yaml) => yeast::node_types_yaml::convert(yaml).map_err(|e| {
+                std::io::Error::other(format!(
+                    "Failed to convert YAML node-types to JSON for {}: {e}",
+                    language.name
+                ))
+            })?,
+            None => language.node_types.to_string(),
+        };
+        let nodes = node_types::read_node_types_str(&prefix, &effective_node_types)?;
         let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
         ast_node_members.insert(&token_name);
         writeln!(&mut dbscheme_writer, "/*- {} dbscheme -*/", language.name)?;

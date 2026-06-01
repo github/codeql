@@ -1,3 +1,30 @@
+## 9.1.1
+
+### Minor Analysis Improvements
+
+* Introduced a new sink kind `path-injection[read]` for Models-as-Data rows that only read from a path (such as `ClassLoader.getResource`, `FileInputStream`, `FileReader`, `Files.readAllBytes`, and related APIs). The general `java/path-injection` query continues to consider both `path-injection` and `path-injection[read]` sinks.
+
+## 9.1.0
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for Java and Kotlin](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-java-and-kotlin/).
+
+### Minor Analysis Improvements
+
+* Added `sql-injection` sink models for the Hibernate `org.hibernate.query.QueryProducer` methods `createNativeMutationQuery`, `createMutationQuery`, and `createSelectionQuery`.
+* The `java/partial-path-traversal` and `java/partial-path-traversal-from-remote` queries now correctly recognize file separator appends using `+=`.
+* The `java/path-injection` and `java/zipslip` queries now recognize `Path.toRealPath()` as a path normalization sanitizer, consistent with the existing treatment of `Path.normalize()` and `File.getCanonicalPath()`. This reduces false positives for code that uses the NIO.2 API for path canonicalization.
+* The `java/sensitive-log` query now excludes additional common variable naming patterns that do not hold sensitive data, reducing false positives. This includes pagination/iteration tokens (`nextToken`, `pageToken`, `continuationToken`), token metadata (`tokenType`, `tokenEndpoint`, `tokenCount`), and secret metadata (`secretName`, `secretId`, `secretVersion`).
+* The `java/sensitive-log` query now treats method calls whose names contain "encrypt", "hash", or "digest" as sanitizers, consistent with the existing treatment in `java/cleartext-storage-in-log`. This reduces false positives when sensitive data is hashed or encrypted before logging.
+* The `java/trust-boundary-violation` query now recognizes regular expression checks (including `String.matches()` guards and `@javax.validation.constraints.Pattern` annotations) as sanitizers, consistent with the existing treatment of ESAPI validators. This reduces false positives when input is validated against a pattern before being stored in a session.
+
+## 9.0.4
+
+### Minor Analysis Improvements
+
+* The queries "Resolving XML external entity in user-controlled data" (`java/xxe`) and "Resolving XML external entity in user-controlled data from local source" (`java/xxe-local`) now recognize sinks in the Woodstox StAX library when `com.ctc.wstx.stax.WstxInputFactory` or `org.codehaus.stax2.XMLInputFactory2` are used directly.
+
 ## 9.0.3
 
 ### Minor Analysis Improvements

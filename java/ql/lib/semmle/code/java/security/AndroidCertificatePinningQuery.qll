@@ -20,13 +20,6 @@ class AndroidNetworkSecurityConfigFile extends XmlFile {
   }
 }
 
-/**
- * DEPRECATED. Use `semmle.code.java.frameworks.android.Android::inAndroidApplication` instead.
- *
- * Holds if this database contains an Android manifest file.
- */
-deprecated predicate isAndroid() { exists(AndroidManifestXmlFile m) }
-
 /** Holds if the given domain name is trusted by the Network Security Configuration XML file. */
 private predicate trustedDomainViaXml(string domainName) {
   exists(

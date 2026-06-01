@@ -162,13 +162,13 @@ module SourceSinkInterpretationInput implements
   }
 
   predicate barrierGuardElement(
-    Element e, string input, Public::AcceptingValue acceptingvalue, string kind,
+    Element e, string input, Public::AcceptingValue acceptingValue, string kind,
     Public::Provenance provenance, string model
   ) {
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext
     |
-      barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingvalue, kind,
+      barrierGuardModel(package, type, subtypes, name, signature, ext, input, acceptingValue, kind,
         provenance, model) and
       e = interpretElement(package, type, subtypes, name, signature, ext)
     )

@@ -810,14 +810,6 @@ class Field extends Member, ExprParent, @field, Variable {
     )
   }
 
-  /**
-   * DEPRECATED: The result is always `this`.
-   */
-  deprecated Field getSourceDeclaration() { result = this }
-
-  /** DEPRECATED: This always holds. */
-  deprecated predicate isSourceDeclaration() { any() }
-
   override predicate isPublic() {
     Member.super.isPublic()
     or

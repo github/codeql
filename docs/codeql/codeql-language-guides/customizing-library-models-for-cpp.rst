@@ -58,6 +58,8 @@ The CodeQL library for CPP analysis exposes the following extensible predicates:
 - ``sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data. The ``kind`` of the sources defined using this predicate determine which threat model they are associated with. Different threat models can be used to customize the sources used in an analysis. For more information, see ":ref:`Threat models <threat-models-cpp>`."
 - ``sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data may be used in a way that makes the code vulnerable.
 - ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
+- ``barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model barriers, which are elements that stop the flow of taint.
+- ``barrierGuardModel(namespace, type, subtypes, name, signature, ext, input, acceptingValue, kind, provenance)``. This is used to model barrier guards, which are elements that can stop the flow of taint depending on a conditional check.
 
 The extensible predicates are populated using the models defined in data extension files.
 
@@ -75,7 +77,7 @@ This example shows how the CPP query pack models the return value from the ``rea
 
    boost::asio::read_until(socket, recv_buffer, '\0', error);
 
-We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
@@ -86,12 +88,11 @@ We need to add a tuple to the ``sourceModel``\(namespace, type, subtypes, name, 
        data:
          - ["boost::asio", "", False, "read_until", "", "", "Argument[*1]", "remote", "manual"]
 
-Since we are adding a new source, we need to add a tuple to the ``sourceModel`` extensible predicate.
 The first five values identify the callable (in this case a free function) to be modeled as a source.
 
 - The first value ``"boost::asio"`` is the namespace name.
-- The second value ``""`` is the name of the type (class) that contains the method. Because we're modelling a free function, the type is left blank.
-- The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method. For a free function, this should be ``False``.
+- The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
+- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``False``.
 - The fourth value ``"read_until"`` is the function name.
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``read_until``.
 
@@ -111,7 +112,7 @@ This example shows how the CPP query pack models the second argument of the ``bo
 
    boost::asio::write(socket, send_buffer, error);
 
-We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.
+We need to add a tuple to the ``sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)`` extensible predicate by updating a data extension file.
 
 .. code-block:: yaml
 
@@ -122,12 +123,11 @@ We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, si
        data:
          - ["boost::asio", "", False, "write", "", "", "Argument[*1]", "remote-sink", "manual"]
 
-Since we want to add a new sink, we need to add a tuple to the ``sinkModel`` extensible predicate.
 The first five values identify the callable (in this case a free function) to be modeled as a sink.
 
 - The first value ``"boost::asio"`` is the namespace name.
-- The second value ``""`` is the name of the type (class) that contains the method. Because we're modelling a free function, the type is left blank.
-- The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method. For a free function, this should be ``False``.
+- The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
+- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``False``.
 - The fourth value ``"write"`` is the function name.
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``write``.
 
@@ -147,7 +147,7 @@ This example shows how the CPP query pack models flow through a function for a s
 
    boost::asio::write(socket, boost::asio::buffer(send_str), error);
 
-We need to add tuples to the ``summaryModel``\(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:
+We need to add tuples to the ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)`` extensible predicate by updating a data extension file:
 
 .. code-block:: yaml
 
@@ -158,13 +158,11 @@ We need to add tuples to the ``summaryModel``\(namespace, type, subtypes, name, 
        data:
          - ["boost::asio", "", False, "buffer", "", "", "Argument[*0]", "ReturnValue", "taint", "manual"]
 
-Since we are adding flow through a function, we need to add tuples to the ``summaryModel`` extensible predicate.
-
 The first five values identify the callable (in this case free function) to be modeled as a summary.
 
 - The first value ``"boost::asio"`` is the namespace name.
-- The second value ``""`` is the name of the type (class) that contains the method. Because we're modelling a free function, the type is left blank.
-- The third value ``False`` is a flag that indicates whether or not the sink also applies to all overrides of the method. For a free function, this should be ``False``.
+- The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
+- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``False``.
 - The fourth value ``"buffer"`` is the function name.
 - The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name. In this case, we want the model to include all functions in ``boost::asio`` called ``buffer``.
 
@@ -175,6 +173,86 @@ The remaining values are used to define the input and output specifications, the
 - The eighth value ``"ReturnValue"`` is the output specification (where data flows to), in this case the return value.
 - The ninth value ``"taint"`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
 - The tenth value ``"manual"`` is the provenance of the summary, which is used to identify the origin of the summary model.
+
+Example: Taint barrier using the ``mysql_real_escape_string`` function
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This example shows how the CPP query pack models the ``mysql_real_escape_string`` function as a barrier for SQL injection.
+This function escapes special characters in a string for use in an SQL statement, which prevents SQL injection attacks.
+
+.. code-block:: cpp
+
+   char *query = "SELECT * FROM users WHERE name = '%s'";
+   char *name = get_untrusted_input();
+   char *escaped_name = new char[2 * strlen(name) + 1];
+   mysql_real_escape_string(mysql, escaped_name, name, strlen(name)); // The escaped_name is safe for SQL injection.
+   sprintf(query_buffer, query, escaped_name);
+
+We need to add a tuple to the ``barrierModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)`` extensible predicate by updating a data extension file.
+
+.. code-block:: yaml
+
+   extensions:
+     - addsTo:
+         pack: codeql/cpp-all
+         extensible: barrierModel
+       data:
+         - ["", "", False, "mysql_real_escape_string", "", "", "Argument[*1]", "sql-injection", "manual"]
+
+The first five values identify the callable (in this case a free function) to be modeled as a barrier.
+
+- The first value ``""`` is the namespace name.
+- The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
+- The third value ``False`` is a flag that indicates whether or not the model also applies to all overrides of the method. For a free function, this should be ``False``.
+- The fourth value ``"mysql_real_escape_string"`` is the function name.
+- The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name.
+
+The sixth value should be left empty and is out of scope for this documentation.
+The remaining values are used to define the output specification, the ``kind``, and the ``provenance`` (origin) of the barrier.
+
+- The seventh value ``"Argument[*1]"`` is the output specification, which means in this case that the barrier is the first indirection (or pointed-to value, ``*``) of the second argument (``Argument[1]``) passed to the function.
+- The eighth value ``"sql-injection"`` is the kind of the barrier. The barrier kind is used to define the queries where the barrier is in scope.
+- The ninth value ``"manual"`` is the provenance of the barrier, which is used to identify the origin of the barrier model.
+
+Example: Add a barrier guard
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This example shows how to model a barrier guard that stops the flow of taint when a conditional check is performed on data.
+A barrier guard model is used when a function returns a boolean that indicates whether the data is safe to use.
+Consider a function called ``is_safe`` which returns ``true`` when the data is considered safe.
+
+.. code-block:: cpp
+
+   if (is_safe(user_input)) { // The check guards the use, so the input is safe.
+       mysql_query(user_input); // This is safe.
+   }
+
+We need to add a tuple to the ``barrierGuardModel(namespace, type, subtypes, name, signature, ext, input, acceptingValue, kind, provenance)`` extensible predicate by updating a data extension file.
+
+.. code-block:: yaml
+
+   extensions:
+     - addsTo:
+         pack: codeql/cpp-all
+         extensible: barrierGuardModel
+       data:
+         - ["", "", False, "is_safe", "", "", "Argument[*0]", "true", "sql-injection", "manual"]
+
+The first five values identify the callable (in this case a free function) to be modeled as a barrier guard.
+
+- The first value ``""`` is the namespace name.
+- The second value ``""`` is the name of the type (class) that contains the method. Because we're modeling a free function, the type is left blank.
+- The third value ``False`` is a flag that indicates whether or not the model guard also applies to all overrides of the method. For a free function, this should be ``False``.
+- The fourth value ``"is_safe"`` is the function name.
+- The fifth value is the function input type signature, which can be used to narrow down between functions that have the same name.
+
+The sixth value should be left empty and is out of scope for this documentation.
+The remaining values are used to define the input specification, the ``accepting-value``, the ``kind``, and the ``provenance`` (origin) of the barrier guard.
+
+- The seventh value ``Argument[*0]`` is the input specification (the value being validated). In this case, the first indirection (or pointed-to value, ``*``) of the first argument (``Argument[0]``) passed to the function.
+- The eighth value ``true`` is the accepting value of the barrier guard. This is the value that the conditional check must return for the barrier to apply.
+- The ninth value ``sql-injection`` is the kind of the barrier guard. The barrier guard kind is used to define the queries where the barrier guard is in scope.
+- The tenth value ``manual`` is the provenance of the barrier guard, which is used to identify the origin of the barrier guard.
 
 .. _threat-models-cpp:
 

@@ -1,3 +1,20 @@
+## 1.7.3
+
+No user-facing changes.
+
+## 1.7.2
+
+No user-facing changes.
+
+## 1.7.1
+
+### Minor Analysis Improvements
+
+* The query `cs/useless-tostring-call` has been updated to avoid false
+  positive results in calls to `StringBuilder.AppendLine` and calls of
+  the form `base.ToString()`. Moreover, the alert message has been
+  made more precise.
+
 ## 1.7.0
 
 ### Query Metadata Changes

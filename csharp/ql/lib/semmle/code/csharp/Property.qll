@@ -535,8 +535,8 @@ class Setter extends Accessor, @setter {
     exists(AssignExpr assign |
       this.getStatementBody().getNumberOfStmts() = 1 and
       assign.getParent() = this.getStatementBody().getAChild() and
-      assign.getLValue() = result.getAnAccess() and
-      assign.getRValue() = accessToValue()
+      assign.getLeftOperand() = result.getAnAccess() and
+      assign.getRightOperand() = accessToValue()
     )
   }
 

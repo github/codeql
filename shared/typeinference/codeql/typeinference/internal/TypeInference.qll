@@ -145,6 +145,12 @@ signature module InputSig1<LocationSig Location> {
     Location getLocation();
   }
 
+  /**
+   * Holds if `t` is a pseudo type. Pseudo types are skipped when checking for
+   * non-instantiations in `isNotInstantiationOf`.
+   */
+  predicate isPseudoType(Type t);
+
   /** A type parameter. */
   class TypeParameter extends Type;
 
@@ -269,7 +275,34 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
   class TypePath = UnboundList;
 
   /** Provides predicates for constructing `TypePath`s. */
-  module TypePath = UnboundList;
+  module TypePath {
+    import UnboundList
+
+    private string printTypeParameterVerbose(TypeParameter tp) {
+      exists(Type t |
+        t.getATypeParameter() = tp and
+        result = t.toString() + "<" + tp.toString() + ">"
+      )
+    }
+
+    /**
+     * Gets a verbose textual representation of `path`, which includes the names
+     * of the types that the type parameters belong to.
+     *
+     * For example, the verbose textual representation of the path `"T1.T2"` is
+     * `"S1<T1>.S2<T2>"`, provided that `T1` is a type parameter of `S1` and `T2`
+     * is a type parameter of `S2`.
+     */
+    bindingset[path]
+    string printTypePathVerbose(TypePath path) {
+      result =
+        concat(int i, TypeParameter e |
+          e = path.getElement(i)
+        |
+          printTypeParameterVerbose(e), "." order by i
+        )
+    }
+  }
 
   /**
    * A class that has a type tree associated with it.
@@ -566,15 +599,17 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      pragma[nomagic]
       private predicate typeParametersEqual(
-        App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp
+        App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
-        satisfiesConcreteTypes(app, abs, constraint) and
-        tp = getNthTypeParameter(abs, _) and
-        (
+        exists(TypeParameter tp |
+          satisfiesConcreteTypes(app, abs, constraint) and
+          tp = getNthTypeParameter(abs, i)
+        |
           not exists(getNthTypeParameterPath(constraint, tp, _))
           or
-          exists(int n | n = max(int i | exists(getNthTypeParameterPath(constraint, tp, i))) |
+          exists(int n | n = max(int j | exists(getNthTypeParameterPath(constraint, tp, j))) |
             // If the largest index is 0, then there are no equalities to check as
             // the type parameter only occurs once.
             if n = 0 then any() else typeParametersEqualToIndex(app, abs, constraint, tp, _, n)
@@ -585,12 +620,10 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       private predicate typeParametersHaveEqualInstantiationToIndex(
         App app, TypeAbstraction abs, Constraint constraint, int i
       ) {
-        exists(TypeParameter tp | tp = getNthTypeParameter(abs, i) |
-          typeParametersEqual(app, abs, constraint, tp) and
-          if i = 0
-          then any()
-          else typeParametersHaveEqualInstantiationToIndex(app, abs, constraint, i - 1)
-        )
+        typeParametersEqual(app, abs, constraint, i) and
+        if i = 0
+        then any()
+        else typeParametersHaveEqualInstantiationToIndex(app, abs, constraint, i - 1)
       }
 
       /**
@@ -624,6 +657,26 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         )
       }
 
+      pragma[nomagic]
+      private predicate hasTypeParameterAt(
+        App app, TypeAbstraction abs, Constraint constraint, TypePath path, TypeParameter tp
+      ) {
+        tp = getTypeAt(app, abs, constraint, path) and
+        tp = abs.getATypeParameter()
+      }
+
+      private Type getNonPseudoTypeAt(App app, TypePath path) {
+        result = app.getTypeAt(path) and not isPseudoType(result)
+      }
+
+      pragma[nomagic]
+      private Type getNonPseudoTypeAtTypeParameter(
+        App app, TypeAbstraction abs, Constraint constraint, TypeParameter tp, TypePath path
+      ) {
+        hasTypeParameterAt(app, abs, constraint, path, tp) and
+        result = getNonPseudoTypeAt(app, path)
+      }
+
       /**
        * Holds if `app` is _not_ a possible instantiation of `constraint`, because `app`
        * and `constraint` differ on concrete types at `path`.
@@ -643,12 +696,21 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       predicate isNotInstantiationOf(
         App app, TypeAbstraction abs, Constraint constraint, TypePath path
       ) {
-        // `app` and `constraint` differ on a concrete type
+        // `app` and `constraint` differ on a non-pseudo concrete type
         exists(Type t, Type t2 |
           t = getTypeAt(app, abs, constraint, path) and
           not t = abs.getATypeParameter() and
-          app.getTypeAt(path) = t2 and
+          t2 = getNonPseudoTypeAt(app, path) and
           t2 != t
+        )
+        or
+        // `app` has different instantiations of a type parameter mentioned at two
+        // different paths
+        exists(TypeParameter tp, TypePath path2, Type t, Type t2 |
+          t = getNonPseudoTypeAtTypeParameter(app, abs, constraint, tp, path) and
+          t2 = getNonPseudoTypeAtTypeParameter(app, abs, constraint, tp, path2) and
+          t != t2 and
+          path != path2
         )
       }
     }
@@ -964,7 +1026,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       /**
        * Holds if `term` does not satisfy `constraint`.
        *
-       * This predicate is an approximation of `not hasConstraintMention(term, constraint)`.
+       * This predicate is an approximation of `not hasConstraintMention(term, _, _, constraint, _, _)`.
        */
       pragma[nomagic]
       private predicate hasNotConstraintMention(
@@ -1072,7 +1134,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[nomagic]
-      private predicate satisfiesConstraintTypeMention1(
+      private predicate satisfiesConstraint0(
         Term term, Constraint constraint, TypeAbstraction abs, TypeMention sub, TypePath path,
         Type t
       ) {
@@ -1100,37 +1162,55 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       pragma[inline]
-      private predicate satisfiesConstraintTypeMentionInline(
-        Term term, Constraint constraint, TypeAbstraction abs, TypePath path,
-        TypePath pathToTypeParamInSub
+      private predicate satisfiesConstraintInline(
+        Term term, Constraint constraint, TypeAbstraction abs, TypePath pathToTypeParamInConstraint,
+        TypePath pathToTypeParamInSub, TypeParameter tp
       ) {
-        exists(TypeMention sub, TypeParameter tp |
-          satisfiesConstraintTypeMention1(term, constraint, abs, sub, path, tp) and
+        exists(TypeMention sub |
+          satisfiesConstraint0(term, constraint, abs, sub, pathToTypeParamInConstraint, tp) and
           tp = abs.getATypeParameter() and
           sub.getTypeAt(pathToTypeParamInSub) = tp
         )
       }
 
+      /**
+       * Holds if `term` satisfies the constraint `constraint` with _some_ type
+       * parameter at `pathToTypeParamInConstraint`, and the type parameter occurs
+       * at `pathToTypeParamInSub` in a satisfying condition.
+       *
+       * Example:
+       *
+       * ```rust
+       * struct MyThing<A> { ... }
+       *
+       * trait MyTrait<B> { ... }
+       *
+       * impl<T> MyTrait<T> for MyThing<T> { ... }
+       *
+       * fn foo<T: MyTrait<i32>>(x: T) { ... }
+       *
+       * let x = MyThing(Default::default());
+       * foo(x);
+       * ```
+       *
+       * At `term` = `foo(x)`, we have `constraint = MyTrait<i32>`, and because of the
+       * `impl` block, `pathToTypeParamInConstraint` = `"B"`, and
+       * `pathToTypeParamInSub` = `"A"`.
+       */
       pragma[nomagic]
-      private predicate satisfiesConstraintTypeMention(
-        Term term, Constraint constraint, TypePath path, TypePath pathToTypeParamInSub
-      ) {
-        satisfiesConstraintTypeMentionInline(term, constraint, _, path, pathToTypeParamInSub)
-      }
-
-      pragma[nomagic]
-      private predicate satisfiesConstraintTypeMentionThrough(
-        Term term, Constraint constraint, TypeAbstraction abs, TypePath path,
+      predicate satisfiesConstraintAtTypeParameter(
+        Term term, Constraint constraint, TypePath pathToTypeParamInConstraint,
         TypePath pathToTypeParamInSub
       ) {
-        satisfiesConstraintTypeMentionInline(term, constraint, abs, path, pathToTypeParamInSub)
+        satisfiesConstraintInline(term, constraint, _, pathToTypeParamInConstraint,
+          pathToTypeParamInSub, _)
       }
 
       pragma[inline]
-      private predicate satisfiesConstraintTypeNonTypeParamInline(
+      private predicate satisfiesConstraintNonTypeParamInline(
         Term term, TypeAbstraction abs, Constraint constraint, TypePath path, Type t
       ) {
-        satisfiesConstraintTypeMention1(term, constraint, abs, _, path, t) and
+        satisfiesConstraint0(term, constraint, abs, _, path, t) and
         not t = abs.getATypeParameter()
       }
 
@@ -1142,15 +1222,14 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
       }
 
       /**
-       * Holds if the type tree at `term` satisfies the constraint `constraint`
-       * with the type `t` at `path`.
+       * Holds if `term` satisfies the constraint `constraint` with the type `t` at `path`.
        */
       pragma[nomagic]
-      predicate satisfiesConstraintType(Term term, Constraint constraint, TypePath path, Type t) {
-        satisfiesConstraintTypeNonTypeParamInline(term, _, constraint, path, t)
+      predicate satisfiesConstraint(Term term, Constraint constraint, TypePath path, Type t) {
+        satisfiesConstraintNonTypeParamInline(term, _, constraint, path, t)
         or
         exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
-          satisfiesConstraintTypeMention(term, constraint, prefix0, pathToTypeParamInSub) and
+          satisfiesConstraintAtTypeParameter(term, constraint, prefix0, pathToTypeParamInSub) and
           getTypeAt(term, pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
@@ -1159,25 +1238,34 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         t = getTypeAt(term, path)
       }
 
+      pragma[nomagic]
+      private predicate satisfiesConstraintThrough0(
+        Term term, Constraint constraint, TypeAbstraction abs, TypePath pathToTypeParamInConstraint,
+        TypePath pathToTypeParamInSub
+      ) {
+        satisfiesConstraintInline(term, constraint, abs, pathToTypeParamInConstraint,
+          pathToTypeParamInSub, _)
+      }
+
       /**
-       * Holds if the type tree at `term` satisfies the constraint `constraint`
-       * through `abs` with the type `t` at `path`.
+       * Holds if `term` satisfies the constraint `constraint` through `abs` with
+       * the type `t` at `path`.
        */
       pragma[nomagic]
-      predicate satisfiesConstraintTypeThrough(
+      predicate satisfiesConstraintThrough(
         Term term, TypeAbstraction abs, Constraint constraint, TypePath path, Type t
       ) {
-        satisfiesConstraintTypeNonTypeParamInline(term, abs, constraint, path, t)
+        satisfiesConstraintNonTypeParamInline(term, abs, constraint, path, t)
         or
         exists(TypePath prefix0, TypePath pathToTypeParamInSub, TypePath suffix |
-          satisfiesConstraintTypeMentionThrough(term, constraint, abs, prefix0, pathToTypeParamInSub) and
+          satisfiesConstraintThrough0(term, constraint, abs, prefix0, pathToTypeParamInSub) and
           getTypeAt(term, pathToTypeParamInSub.appendInverse(suffix)) = t and
           path = prefix0.append(suffix)
         )
       }
 
       /**
-       * Holds if the type tree at `term` does _not_ satisfy the constraint `constraint`.
+       * Holds if `term` does _not_ satisfy the constraint `constraint`.
        *
        * This is an approximation of `not satisfiesConstraintType(term, constraint, _, _)`,
        * but defined without a negative occurrence of `satisfiesConstraintType`.
@@ -1495,7 +1583,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
           TypeMention constraint
         ) {
           target = a.getTarget(e) and
-          typeParameterConstraintHasTypeParameter(target, apos, path, constraint, _, _)
+          typeParameterHasConstraint(target, apos, _, path, constraint)
         }
 
         private newtype TRelevantAccess =
@@ -1556,13 +1644,40 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             SatisfiesTypeParameterConstraintInput>;
 
         pragma[nomagic]
-        predicate satisfiesConstraintType(
+        predicate satisfiesConstraintAtTypeParameter(
+          Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath prefix,
+          TypeMention constraint, TypePath pathToTypeParamInConstraint,
+          TypePath pathToTypeParamInSub
+        ) {
+          exists(RelevantAccess ra |
+            ra = MkRelevantAccess(a, apos, e, prefix) and
+            SatisfiesTypeParameterConstraint::satisfiesConstraintAtTypeParameter(ra, constraint,
+              pathToTypeParamInConstraint, pathToTypeParamInSub) and
+            constraint = ra.getConstraint(target)
+          )
+        }
+
+        pragma[nomagic]
+        predicate satisfiesConstraint(
           Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath prefix,
           TypeMention constraint, TypePath path, Type t
         ) {
           exists(RelevantAccess ra |
             ra = MkRelevantAccess(a, apos, e, prefix) and
-            SatisfiesTypeParameterConstraint::satisfiesConstraintType(ra, constraint, path, t) and
+            SatisfiesTypeParameterConstraint::satisfiesConstraint(ra, constraint, path, t) and
+            constraint = ra.getConstraint(target)
+          )
+        }
+
+        pragma[nomagic]
+        predicate satisfiesConstraintThrough(
+          Access a, AccessEnvironment e, Declaration target, AccessPosition apos, TypePath prefix,
+          TypeAbstraction abs, TypeMention constraint, TypePath path, Type t
+        ) {
+          exists(RelevantAccess ra |
+            ra = MkRelevantAccess(a, apos, e, prefix) and
+            SatisfiesTypeParameterConstraint::satisfiesConstraintThrough(ra, abs, constraint, path,
+              t) and
             constraint = ra.getConstraint(target)
           )
         }
@@ -1707,7 +1822,7 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
         not exists(getTypeArgument(a, target, tp, _)) and
         exists(TypeMention constraint, AccessPosition apos, TypePath pathToTp, TypePath pathToTp2 |
           typeParameterConstraintHasTypeParameter(target, apos, pathToTp2, constraint, pathToTp, tp) and
-          AccessConstraint::satisfiesConstraintType(a, e, target, apos, pathToTp2, constraint,
+          AccessConstraint::satisfiesConstraint(a, e, target, apos, pathToTp2, constraint,
             pathToTp.appendInverse(path), t)
         )
       }
@@ -1783,6 +1898,82 @@ module Make1<LocationSig Location, InputSig1<Location> Input1> {
             result = target.getDeclaredType(dpos, path) and
             target = a.getTarget(e) and
             not result instanceof TypeParameter
+          )
+        )
+        or
+        exists(
+          Declaration target, TypePath prefix, TypeMention constraint,
+          TypePath pathToTypeParamInConstraint, TypePath pathToTypeParamInSub
+        |
+          AccessConstraint::satisfiesConstraintAtTypeParameter(a, e, target, apos, prefix,
+            constraint, pathToTypeParamInConstraint, pathToTypeParamInSub)
+        |
+          exists(TypePath suffix |
+            /*
+             * Example:
+             *
+             * ```rust
+             * struct MyThing<A> { ... }
+             *
+             * trait MyTrait<B> { ... }
+             *
+             * impl<T> MyTrait<T> for MyThing<T> { ... }
+             *
+             * fn foo<T: MyTrait<i32>>(x: T) { ... }
+             *
+             * let x = MyThing(Default::default());
+             * foo(x);
+             * ```
+             *
+             * At `term` = `foo(x)`, we have
+             * - `constraint = MyTrait<i32>`,
+             * - `pathToTypeParamInConstraint` = `"B"`,
+             * - `pathToTypeParamInSub` = `"A"`,
+             * - `prefix` = `suffix` = `""`, and
+             * - `result` = `i32`.
+             *
+             * That is, it allows us to infer that the type of `x` is `MyThing<i32>`.
+             */
+
+            result = constraint.getTypeAt(pathToTypeParamInConstraint.appendInverse(suffix)) and
+            not result instanceof TypeParameter and
+            path = prefix.append(pathToTypeParamInSub.append(suffix))
+          )
+          or
+          exists(TypeParameter tp, TypePath suffix, TypePath mid, TypePath pathToTp |
+            /*
+             * Example:
+             *
+             * ```rust
+             * struct MyThing<A> { ... }
+             *
+             * trait MyTrait<B> { ... }
+             *
+             * impl<T> MyTrait<T> for MyThing<T> { ... }
+             *
+             * fn bar<T1, T2: MyTrait<T1>>(x: T1, y: T2) {}
+             *
+             * let x : i32 = ...;
+             * let y = MyThing(Default::default());
+             * bar(x, y);
+             * ```
+             *
+             * At `term` = `bar(x, y)`, we have
+             * - `constraint = MyTrait<T1>`,
+             * - `pathToTypeParamInConstraint` = `"B"`,
+             * - `pathToTypeParamInSub` = `"A"`,
+             * - `prefix` = `suffix` = `mid` = `""`,
+             * - `tp = T1`,
+             * - `pathToTp` = `"B"`, and
+             * - `result` = `i32`.
+             *
+             * That is, it allows us to infer that the type of `y` is `MyThing<i32>`.
+             */
+
+            typeMatch(a, e, target, suffix, result, tp) and
+            typeParameterConstraintHasTypeParameter(target, apos, _, constraint, pathToTp, tp) and
+            pathToTp = pathToTypeParamInConstraint.appendInverse(mid) and
+            path = prefix.append(pathToTypeParamInSub.append(mid).append(suffix))
           )
         )
       }

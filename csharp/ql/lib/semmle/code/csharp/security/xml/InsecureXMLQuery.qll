@@ -84,15 +84,15 @@ private Expr getAValueForProp(ObjectCreation create, string prop) {
   // values set in object init
   exists(MemberInitializer init |
     init = create.getInitializer().(ObjectInitializer).getAMemberInitializer() and
-    init.getLValue().(PropertyAccess).getTarget().hasName(prop) and
-    result = init.getRValue()
+    init.getLeftOperand().(PropertyAccess).getTarget().hasName(prop) and
+    result = init.getRightOperand()
   )
   or
   // values set on var that create is assigned to
   exists(Assignment propAssign |
-    DataFlow::localExprFlow(create, propAssign.getLValue().(PropertyAccess).getQualifier()) and
-    propAssign.getLValue().(PropertyAccess).getTarget().hasName(prop) and
-    result = propAssign.getRValue()
+    DataFlow::localExprFlow(create, propAssign.getLeftOperand().(PropertyAccess).getQualifier()) and
+    propAssign.getLeftOperand().(PropertyAccess).getTarget().hasName(prop) and
+    result = propAssign.getRightOperand()
   )
 }
 

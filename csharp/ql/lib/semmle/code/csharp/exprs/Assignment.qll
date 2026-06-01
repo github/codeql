@@ -20,14 +20,22 @@ class Assignment extends BinaryOperation, @assign_expr {
     expr_parent(_, 1, this)
   }
 
-  /** Gets the left operand of this assignment. */
-  Expr getLValue() { result = this.getLeftOperand() }
+  /**
+   * DEPRECATED: Use `getLeftOperand` instead.
+   *
+   * Gets the left operand of this assignment.
+   */
+  deprecated Expr getLValue() { result = this.getLeftOperand() }
 
-  /** Gets the right operand of this assignment. */
-  Expr getRValue() { result = this.getRightOperand() }
+  /**
+   * DEPRECATED: Use `getRightOperand` instead.
+   *
+   * Gets the right operand of this assignment.
+   */
+  deprecated Expr getRValue() { result = this.getRightOperand() }
 
   /** Gets the variable being assigned to, if any. */
-  Variable getTargetVariable() { result.getAnAccess() = this.getLValue() }
+  Variable getTargetVariable() { result.getAnAccess() = this.getLeftOperand() }
 
   override string getOperator() { none() }
 }
@@ -40,7 +48,12 @@ class LocalVariableDeclAndInitExpr extends LocalVariableDeclExpr, Assignment {
 
   override LocalVariable getTargetVariable() { result = this.getVariable() }
 
-  override LocalVariableAccess getLValue() { result = Assignment.super.getLValue() }
+  /**
+   * DEPRECATED: Use `getLeftOperand` instead.
+   */
+  deprecated override LocalVariableAccess getLValue() { result = this.getLeftOperand() }
+
+  override LocalVariableAccess getLeftOperand() { result = Assignment.super.getLeftOperand() }
 
   override string toString() { result = LocalVariableDeclExpr.super.toString() + " = ..." }
 
@@ -81,13 +94,17 @@ class AssignOperation extends Assignment, @assign_op_expr {
 }
 
 /**
- * A compound assignment operation that implicitly invokes an operator.
- * For example, `x += y` assigns the result of `x + y` to `x`.
+ * A compound assignment operation that invokes an operator.
+ *
+ * (1) `x += y` invokes the compound assignment operator `+=` (if it exists).
+ * (2) `x += y` invokes the operator `+` and assigns `x + y` to `x`.
  *
  * Either an arithmetic assignment operation (`AssignArithmeticOperation`) or a bitwise
  * assignment operation (`AssignBitwiseOperation`).
  */
-class AssignCallOperation extends AssignOperation, OperatorCall, @assign_op_call_expr {
+class AssignCallOperation extends AssignOperation, OperatorCall, QualifiableExpr,
+  @assign_op_call_expr
+{
   override string toString() { result = AssignOperation.super.toString() }
 }
 
@@ -223,9 +240,12 @@ deprecated class AssignUnsighedRightShiftExpr = AssignUnsignedRightShiftExpr;
  */
 class AddOrRemoveEventExpr extends AssignOperation, @assign_event_expr {
   /** Gets the event targeted by this event assignment. */
-  Event getTarget() { result = this.getLValue().getTarget() }
+  Event getTarget() { result = this.getLeftOperand().getTarget() }
 
-  override EventAccess getLValue() { result = this.getChild(0) }
+  /**
+   * DEPRECATED: Use `getLeftOperand` instead.
+   */
+  deprecated override EventAccess getLValue() { result = this.getLeftOperand() }
 
   override EventAccess getLeftOperand() { result = this.getChild(0) }
 }

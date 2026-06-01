@@ -11,23 +11,23 @@
    Microsoft extensions (up to VS 2022),
 
    Arm Compiler 5 [5]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
-   C#,C# up to 13,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
+   C#,C# up to 14 [6]_,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
 
    .NET Core up to 3.1
 
-   .NET 5, .NET 6, .NET 7, .NET 8, .NET 9","``.sln``, ``.slnx``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   .NET 5, .NET 6, .NET 7, .NET 8, .NET 9, .NET 10 [6]_","``.sln``, ``.slnx``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    GitHub Actions,"Not applicable",Not applicable,"``.github/workflows/*.yml``, ``.github/workflows/*.yaml``, ``**/action.yml``, ``**/action.yaml``"
    Go (aka Golang), "Go up to 1.26", "Go 1.11 or more recent", ``.go``
-   Java,"Java 7 to 26 [6]_","javac (OpenJDK and Oracle JDK),
+   Java,"Java 7 to 26 [7]_","javac (OpenJDK and Oracle JDK),
 
-   Eclipse compiler for Java (ECJ) [7]_",``.java``
+   Eclipse compiler for Java (ECJ) [8]_",``.java``
    Kotlin,"Kotlin 1.8.0 to 2.3.2\ *x*","kotlinc",``.kt``
-   JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
-   Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
-   Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   Rust [11]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
-   Swift [12]_ [13]_,"Swift 5.4-6.2","Swift compiler","``.swift``"
-   TypeScript [14]_,"2.6-5.9",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [9]_"
+   Python [10]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13",Not applicable,``.py``
+   Ruby [11]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
+   Rust [12]_,"Rust editions 2021 and 2024","Rust compiler","``.rs``, ``Cargo.toml``"
+   Swift [13]_ [14]_,"Swift 5.4-6.3","Swift compiler","``.swift``"
+   TypeScript [15]_,"2.6-5.9",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 
@@ -36,12 +36,13 @@
     .. [3] Objective-C, Objective-C++, C++/CLI, and C++/CX are not supported.
     .. [4] Support for the clang-cl compiler is preliminary.
     .. [5] Support for the Arm Compiler (armcc) is preliminary.
-    .. [6] Builds that execute on Java 7 to 26 can be analyzed. The analysis understands standard language features in Java 8 to 26; "preview" and "incubator" features are not supported. Source code using Java language versions older than Java 8 are analyzed as Java 8 code.
-    .. [7] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
-    .. [8] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
-    .. [9] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
-    .. [10] Requires glibc 2.17.
-    .. [11] Requires ``rustup`` and ``cargo`` to be installed. Features from nightly toolchains are not supported.
-    .. [12] Support for the analysis of Swift requires macOS.
-    .. [13] Embedded Swift is not supported.
-    .. [14] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
+    .. [6] Support for .NET 10 is preliminary and code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
+    .. [7] Builds that execute on Java 7 to 26 can be analyzed. The analysis understands standard language features in Java 8 to 26; "preview" and "incubator" features are not supported. Source code using Java language versions older than Java 8 are analyzed as Java 8 code.
+    .. [8] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
+    .. [9] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
+    .. [10] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
+    .. [11] Requires glibc 2.17.
+    .. [12] Requires ``rustup`` and ``cargo`` to be installed. Features from nightly toolchains are not supported.
+    .. [13] Support for the analysis of Swift requires macOS.
+    .. [14] Embedded Swift is not supported.
+    .. [15] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.

@@ -95,9 +95,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += " /p:EnableWindowsTargeting=true";
             }
 
-            if (restoreSettings.ExtraArgs is not null)
+            if (restoreSettings.NugetSources is not null)
             {
-                args += $" {restoreSettings.ExtraArgs}";
+                args += $" {restoreSettings.NugetSources}";
             }
 
             return args;
