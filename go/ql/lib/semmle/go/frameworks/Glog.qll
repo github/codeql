@@ -12,6 +12,7 @@ import go
  * forks.
  */
 module Glog {
+  /** Gets a package name for `glog` or `klog` (which is a fork). */
   string packagePath() {
     result =
       package([
@@ -55,6 +56,7 @@ module Glog {
      */
     int getFirstPrintedArg() { result = firstPrintedArg }
 
+    /** Holds if this function takes a format string. */
     predicate formatter() { format = "f" }
 
     override predicate mayReturnNormally() { level != "Fatal" and level != "Exit" }
