@@ -166,7 +166,10 @@ module Pyramid {
     /** A response returned by a view callable. */
     private class PyramidReturnResponse extends Http::Server::HttpResponse::Range {
       PyramidReturnResponse() {
-        this.asCfgNode() = any(View::ViewCallable vc).getAReturnValueFlowNode() and
+        exists(Return ret |
+          ret.getScope() = any(View::ViewCallable vc) and
+          this.asCfgNode().getNode() = ret.getValue()
+        ) and
         not this = instance()
       }
 

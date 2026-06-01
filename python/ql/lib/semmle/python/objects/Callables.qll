@@ -81,11 +81,12 @@ class PythonFunctionObjectInternal extends CallableObjectInternal, TPythonFuncti
 
   pragma[nomagic]
   override predicate callResult(PointsToContext callee, ObjectInternal obj, CfgOrigin origin) {
-    exists(Function func, ControlFlowNode rval, ControlFlowNode forigin |
+    exists(Function func, Return ret, ControlFlowNode rval, ControlFlowNode forigin |
       func = this.getScope() and
       callee.appliesToScope(func)
     |
-      rval = func.getAReturnValueFlowNode() and
+      ret.getScope() = func and
+      rval.getNode() = ret.getValue() and
       PointsToInternal::pointsTo(rval, callee, obj, forigin) and
       origin = CfgOrigin::fromCfgNode(forigin)
     )

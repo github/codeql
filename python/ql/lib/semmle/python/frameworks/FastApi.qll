@@ -309,7 +309,10 @@ module FastApi {
       FastApiRouteSetup routeSetup;
 
       FastApiRequestHandlerReturn() {
-        node = routeSetup.getARequestHandler().getAReturnValueFlowNode()
+        exists(Return ret |
+          ret.getScope() = routeSetup.getARequestHandler() and
+          node.getNode() = ret.getValue()
+        )
       }
 
       override DataFlow::Node getBody() { result = this }

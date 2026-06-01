@@ -73,7 +73,10 @@ module Bottle {
       /** A response returned by a view callable. */
       class BottleReturnResponse extends Http::Server::HttpResponse::Range {
         BottleReturnResponse() {
-          this.asCfgNode() = any(View::ViewCallable vc).getAReturnValueFlowNode()
+          exists(Return ret |
+            ret.getScope() = any(View::ViewCallable vc) and
+            this.asCfgNode().getNode() = ret.getValue()
+          )
         }
 
         override DataFlow::Node getBody() { result = this }
