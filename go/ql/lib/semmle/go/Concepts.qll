@@ -438,7 +438,7 @@ private class HeuristicLoggerFunction extends Method {
 
 /**
  * A call to an interface that looks like a logger. It is common to use a
- * locally-defined interface for logging to make it easy to changing logging
+ * locally-defined interface for logging to make it easy to change logging
  * library.
  */
 private class HeuristicLoggerCall extends LoggerCall::Range, DataFlow::CallNode {
