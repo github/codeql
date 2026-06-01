@@ -1,0 +1,10 @@
+consistencyOverview
+| multipleSuccessors | 4 |
+| selfLoop | 1 |
+multipleSuccessors
+| DeferInLoop.go:5:36:14:1 | After block statement | successor | DeferInLoop.go:5:1:14:1 | Normal Exit |
+| DeferInLoop.go:5:36:14:1 | After block statement | successor | DeferInLoop.go:8:9:8:20 | defer-invoke call to Close |
+| DeferInLoop.go:8:9:8:20 | defer-invoke call to Close | successor | DeferInLoop.go:5:1:14:1 | Normal Exit |
+| DeferInLoop.go:8:9:8:20 | defer-invoke call to Close | successor | DeferInLoop.go:8:9:8:20 | defer-invoke call to Close |
+selfLoop
+| DeferInLoop.go:8:9:8:20 | defer-invoke call to Close | successor |
