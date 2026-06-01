@@ -1,7 +1,3 @@
-/**
- * Provides classes for representing abstract bounds for use in, for example, range analysis.
- */
-
 private import codeql.util.Location
 
 signature module BoundDefinitions<LocationSig Location> {
@@ -36,6 +32,7 @@ signature module BoundDefinitions<LocationSig Location> {
   predicate interestingExprBound(Expr e);
 }
 
+/** Provides classes for representing abstract bounds for use in, for example, range analysis. */
 overlay[local?]
 module Bound<LocationSig Location, BoundDefinitions<Location> Defs> {
   private import Defs
