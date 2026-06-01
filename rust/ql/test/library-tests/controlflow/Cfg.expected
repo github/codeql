@@ -1317,10 +1317,9 @@ edges
 | test.rs:533:21:533:48 | { ... } | test.rs:533:21:533:48 | { ... } |  |
 | test.rs:533:48:533:48 | 0 | test.rs:533:21:533:48 | ... > ... |  |
 | test.rs:536:9:536:10 | 42 | test.rs:529:41:537:5 | { ... } |  |
-| test.rs:539:5:548:5 | enter fn const_block_panic | test.rs:540:9:540:30 | const N |  |
+| test.rs:539:5:548:5 | enter fn const_block_panic | test.rs:541:9:546:9 | ExprStmt |  |
 | test.rs:539:5:548:5 | exit fn const_block_panic (normal) | test.rs:539:5:548:5 | exit fn const_block_panic |  |
 | test.rs:539:35:548:5 | { ... } | test.rs:539:5:548:5 | exit fn const_block_panic (normal) |  |
-| test.rs:540:9:540:30 | const N | test.rs:541:9:546:9 | ExprStmt |  |
 | test.rs:541:9:546:9 | ExprStmt | test.rs:541:12:541:16 | false |  |
 | test.rs:541:9:546:9 | if false {...} | test.rs:547:9:547:9 | N |  |
 | test.rs:541:12:541:16 | false | test.rs:541:9:546:9 | if false {...} | false |

@@ -7,6 +7,7 @@
 private import codeql.rust.elements.internal.generated.Static
 private import codeql.rust.elements.internal.AstNodeImpl::Impl as AstNodeImpl
 private import codeql.rust.elements.internal.PathExprImpl::Impl as PathExprImpl
+private import codeql.rust.elements.internal.VariableImpl::Impl as VariableImpl
 private import codeql.rust.internal.PathResolution
 
 /**
@@ -24,6 +25,9 @@ module Impl {
    * ```
    */
   class Static extends Generated::Static {
+    /** Gets an access to this static item. */
+    StaticAccess getAnAccess() { this = result.getStatic() }
+
     override string toStringImpl() { result = "static " + this.getName().getText() }
   }
 
@@ -48,5 +52,15 @@ module Impl {
     Static getStatic() { result = s }
 
     override string getAPrimaryQlClass() { result = "StaticAccess" }
+  }
+
+  /** A static write access. */
+  class StaticWriteAccess extends StaticAccess {
+    StaticWriteAccess() { VariableImpl::assignmentOperationDescendant(_, this) }
+  }
+
+  /** A static read access. */
+  class StaticReadAccess extends StaticAccess {
+    StaticReadAccess() { not this instanceof StaticWriteAccess }
   }
 }

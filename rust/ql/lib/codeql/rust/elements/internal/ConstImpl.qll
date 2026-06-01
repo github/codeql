@@ -25,6 +25,9 @@ module Impl {
    * ```
    */
   class Const extends Generated::Const {
+    /** Gets an access to this constant item. */
+    ConstAccess getAnAccess() { this = result.getConst() }
+
     override string toStringImpl() { result = "const " + this.getName().getText() }
   }
 
