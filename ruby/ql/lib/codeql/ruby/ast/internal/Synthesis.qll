@@ -299,9 +299,12 @@ private predicate hasLocation(AstNode n, Location l) {
 private module ImplicitSelfSynthesis {
   pragma[nomagic]
   private predicate identifierMethodCallSelfSynthesis(AstNode mc, int i, Child child) {
-    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
-    mc = TIdentifierMethodCall(_) and
-    i = 0
+    exists(SelfVariableImpl self |
+      self.getDeclaringScopeImpl() = scopeOf(toGenerated(mc)).getEnclosingSelfScope() and
+      child = SynthChild(SelfKind(self)) and
+      mc = TIdentifierMethodCall(_) and
+      i = 0
+    )
   }
 
   private class IdentifierMethodCallSelfSynthesis extends Synthesis {
@@ -312,13 +315,14 @@ private module ImplicitSelfSynthesis {
 
   pragma[nomagic]
   private predicate regularMethodCallSelfSynthesis(TRegularMethodCall mc, int i, Child child) {
-    exists(Ruby::AstNode g |
+    exists(Ruby::AstNode g, SelfVariableImpl self |
       mc = TRegularMethodCall(g) and
       // If there's no explicit receiver, then the receiver is implicitly `self`.
-      not exists(g.(Ruby::Call).getReceiver())
-    ) and
-    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
-    i = 0
+      not exists(g.(Ruby::Call).getReceiver()) and
+      self.getDeclaringScopeImpl() = scopeOf(toGenerated(mc)).getEnclosingSelfScope() and
+      child = SynthChild(SelfKind(self)) and
+      i = 0
+    )
   }
 
   private class RegularMethodCallSelfSynthesis extends Synthesis {
@@ -341,9 +345,10 @@ private module ImplicitSelfSynthesis {
    */
   pragma[nomagic]
   private SelfKind getSelfKind(InstanceVariableAccess var) {
-    exists(Ruby::AstNode owner |
+    exists(Ruby::AstNode owner, SelfVariableImpl self |
+      self.getDeclaringScopeImpl() = scopeOf(owner).getEnclosingSelfScope() and
       owner = toGenerated(instanceVarAccessSynthParentStar(var)) and
-      result = SelfKind(TSelfVariable(scopeOf(owner).getEnclosingSelfScope()))
+      result = SelfKind(self)
     )
   }
 
@@ -1566,20 +1571,20 @@ private module ForLoopDesugar {
  * { a: a }
  * ```
  */
-private module ImplicitHashValueSynthesis {
-  private Ruby::AstNode keyWithoutValue(AstNode parent, int i) {
+module ImplicitHashValueSynthesis {
+  Ruby::AstNode keyWithoutValue(Ruby::AstNode parent, int i) {
     exists(Ruby::KeywordPattern pair |
       result = pair.getKey() and
-      result = toGenerated(parent.(HashPattern).getKey(i)) and
+      result = parent.(Ruby::HashPattern).getChild(i).(Ruby::KeywordPattern).getKey() and
       not exists(pair.getValue())
     )
     or
-    exists(Ruby::Pair pair |
-      i = 0 and
-      result = pair.getKey() and
-      pair = toGenerated(parent) and
-      not exists(pair.getValue())
-    )
+    parent =
+      any(Ruby::Pair pair |
+        i = 0 and
+        result = pair.getKey() and
+        not exists(pair.getValue())
+      )
   }
 
   private string keyName(Ruby::AstNode key) {
@@ -1589,7 +1594,7 @@ private module ImplicitHashValueSynthesis {
 
   private class ImplicitHashValueSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
-      exists(Ruby::AstNode key | key = keyWithoutValue(parent, i) |
+      exists(Ruby::AstNode key | key = keyWithoutValue(toGenerated(parent), i) |
         exists(TVariableReal variable |
           access(key, variable) and
           child = SynthChild(LocalVariableAccessRealKind(variable))
@@ -1616,7 +1621,7 @@ private module ImplicitHashValueSynthesis {
     }
 
     final override predicate location(AstNode n, Location l) {
-      exists(AstNode p, int i | l = keyWithoutValue(p, i).getLocation() |
+      exists(AstNode p, int i | l = keyWithoutValue(toGenerated(p), i).getLocation() |
         n = p.(HashPattern).getValue(i)
         or
         i = 0 and n = p.(Pair).getValue()

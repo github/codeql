@@ -2,6 +2,7 @@ overlay[local]
 module;
 
 private import TreeSitter
+private import codeql.namebinding.LocalNameBinding
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import codeql.ruby.ast.internal.AST
@@ -94,10 +95,11 @@ predicate scopeDefinesParameterVariable(
   // In case of overlapping parameter names (e.g. `_`), only the first
   // parameter will give rise to a variable
   i =
-    min(Ruby::Identifier other |
-      parameterAssignment(scope, name, other, _)
+    min(Ruby::Identifier other, int startline, int startcolumn |
+      parameterAssignment(scope, name, other, _) and
+      other.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
     |
-      other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
+      other order by startline, startcolumn
     ) and
   parameterAssignment(scope, name, _, pos)
   or
@@ -113,7 +115,8 @@ predicate scopeDefinesParameterVariable(
   )
 }
 
-pragma[nomagic]
+bindingset[i]
+pragma[inline_late]
 private string variableNameInScope(Ruby::AstNode i, Scope::Range scope) {
   scope = scopeOf(i) and
   (
@@ -137,40 +140,142 @@ private predicate scopeAssigns(Scope::Range scope, string name, Ruby::AstNode i)
   name = variableNameInScope(i, scope)
 }
 
+private module Input implements LocalNameBindingInputSig<Location> {
+  predicate cacheRevRef() { exists(TVariable v) implies any() }
+
+  class AstNode = Ruby::AstNode;
+
+  AstNode getChild(AstNode parent, int index) {
+    parent = parentOf(result) and
+    (
+      index = result.getParentIndex()
+      or
+      not exists(result.getParentIndex()) and
+      index = -1
+    )
+  }
+
+  class Conditional extends AstNode {
+    Conditional() { none() }
+
+    AstNode getCondition() { none() }
+
+    AstNode getThen() { none() }
+
+    AstNode getElse() { none() }
+  }
+
+  class SiblingShadowingDecl extends AstNode {
+    SiblingShadowingDecl() { none() }
+
+    AstNode getLhs() { none() }
+
+    AstNode getRhs() { none() }
+
+    AstNode getElse() { none() }
+  }
+
+  predicate isTopScope(AstNode scope) {
+    scope instanceof Scope::Range and
+    not (
+      scope instanceof Ruby::Block or
+      scope instanceof Ruby::DoBlock or
+      scope instanceof Ruby::Lambda
+    )
+  }
+
+  private Scope::Range getParentScope(Scope::Range scope) {
+    result = scopeOf(scope) and
+    not isTopScope(scope)
+  }
+
+  bindingset[name, scope]
+  pragma[inline_late]
+  private predicate declInScope0(AstNode definingNode, string name, AstNode scope) {
+    scopeDefinesParameterVariable(scope, name, definingNode, _) or
+    scopeAssigns(scope, name, definingNode)
+  }
+
+  predicate declInScope(AstNode definingNode, string name, AstNode scope) {
+    scopeDefinesParameterVariable(scope, name, definingNode, _)
+    or
+    /*
+     * Variables are not declared explicitly in Ruby, so we consider the _first_ assignment to
+     * be the declaration:
+     *
+     * ```rb
+     * a = 1 # declares `a`
+     * a = 2 # does not declare `a`
+     * 1.times do | x | # declares `x`
+     *   a = 2 # does not declare `a`
+     * end
+     * ```
+     */
+
+    scopeAssigns(scope, name, definingNode) and
+    not scopeDefinesParameterVariable(scope, name, _, _) and
+    not exists(AstNode prev, AstNode prevScope |
+      prevScope = getParentScope*(scope) and
+      declInScope0(prev, name, prevScope) and
+      prev.getLocation().strictlyBefore(definingNode.getLocation())
+    )
+  }
+
+  predicate implicitDeclInScope(string name, AstNode scope) {
+    name = "self" and
+    scope instanceof SelfBase::Range
+  }
+
+  predicate accessCand(AstNode n, string name) {
+    name = variableNameInScope(n, _) and
+    (
+      explicitAssignmentNode(n, _)
+      or
+      implicitAssignmentNode(n)
+      or
+      scopeDefinesParameterVariable(_, _, n, _)
+      or
+      vcall(n)
+      or
+      n = any(Ruby::VariableReferencePattern vr).getName()
+      or
+      n = ImplicitHashValueSynthesis::keyWithoutValue(_, _)
+    )
+    or
+    n instanceof Ruby::Self and
+    name = "self"
+  }
+}
+
+private import LocalNameBinding<Location, Input>
+
 cached
 private module Cached {
   cached
   newtype TVariable =
-    TGlobalVariable(string name) { name = any(Ruby::GlobalVariable var).getValue() } or
+    TGlobalVariable(string name) {
+      CachedStage::ref() and
+      name = any(Ruby::GlobalVariable var).getValue()
+    } or
     TClassVariable(Scope::Range scope, string name, Ruby::AstNode decl) {
       decl =
-        min(Ruby::ClassVariable other |
-          classVariableAccess(other, name, scope)
+        min(Ruby::ClassVariable other, int startline, int startcolumn |
+          classVariableAccess(other, name, scope) and
+          other.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
         |
-          other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
+          other order by startline, startcolumn
         )
     } or
     TInstanceVariable(Scope::Range scope, string name, boolean instance, Ruby::AstNode decl) {
       decl =
-        min(Ruby::InstanceVariable other |
-          instanceVariableAccess(other, name, scope, instance)
+        min(Ruby::InstanceVariable other, int startline, int startcolumn |
+          instanceVariableAccess(other, name, scope, instance) and
+          other.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
         |
-          other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
+          other order by startline, startcolumn
         )
     } or
-    TLocalVariableReal(Scope::Range scope, string name, Ruby::AstNode i) {
-      scopeDefinesParameterVariable(scope, name, i, _)
-      or
-      i =
-        min(Ruby::AstNode other |
-          scopeAssigns(scope, name, other)
-        |
-          other order by other.getLocation().getStartLine(), other.getLocation().getStartColumn()
-        ) and
-      not scopeDefinesParameterVariable(scope, name, _, _) and
-      not inherits(scope, name, _)
-    } or
-    TSelfVariable(SelfBase::Range scope) or
+    TLocalVariableReal(Local l) or
     TLocalVariableSynth(AstNode n, int i) { any(Synthesis s).localVariable(n, i) }
 
   // Db types that can be vcalls
@@ -321,39 +426,37 @@ private module Cached {
     i = any(Ruby::ExpressionReferencePattern x).getValue()
   }
 
-  pragma[nomagic]
-  private predicate hasScopeAndName(VariableReal variable, Scope::Range scope, string name) {
-    variable.getNameImpl() = name and
-    scope = variable.getDeclaringScopeImpl()
-  }
-
   cached
   predicate access(Ruby::AstNode access, VariableReal variable) {
-    exists(string name, Scope::Range scope |
-      pragma[only_bind_into](name) = variableNameInScope(access, scope)
+    exists(Local l |
+      variable = TLocalVariableReal(l) and
+      access = l.getAnAccess()
     |
-      hasScopeAndName(variable, scope, name) and
-      not access.getLocation().strictlyBefore(variable.getLocationImpl()) and
-      // In case of overlapping parameter names, later parameters should not
-      // be considered accesses to the first parameter
-      if parameterAssignment(_, _, access, _)
-      then scopeDefinesParameterVariable(_, _, access, _)
-      else any()
+      l instanceof ImplicitLocal
       or
-      exists(Scope::Range declScope |
-        hasScopeAndName(variable, declScope, pragma[only_bind_into](name)) and
-        inherits(scope, name, declScope)
-      )
+      /*
+       * In the example below, `a` is declared in the scope of `M`, but only the
+       * second mention of `a` is an actual access:
+       *
+       * ```rb
+       * module M
+       *   puts a # calls method `a`
+       *   a = 1  # declares `a`
+       *   puts a # accesses variable `a`
+       * end
+       * ```
+       */
+
+      not access.getLocation().strictlyBefore(l.getDefiningNode().getLocation())
     )
   }
 
   private class Access extends Ruby::Token {
     Access() {
-      access(this.(Ruby::Identifier), _) or
+      access(this, _) or
       this instanceof Ruby::GlobalVariable or
       this instanceof Ruby::InstanceVariable or
-      this instanceof Ruby::ClassVariable or
-      this instanceof Ruby::Self
+      this instanceof Ruby::ClassVariable
     }
   }
 
@@ -398,29 +501,6 @@ private module Cached {
 
 import Cached
 
-/** Holds if this scope inherits `name` from an outer scope `outer`. */
-private predicate inherits(Scope::Range scope, string name, Scope::Range outer) {
-  (
-    scope instanceof Ruby::Block or
-    scope instanceof Ruby::DoBlock or
-    scope instanceof Ruby::Lambda
-  ) and
-  not scopeDefinesParameterVariable(scope, name, _, _) and
-  (
-    outer = scope.getOuterScope() and
-    (
-      scopeDefinesParameterVariable(outer, name, _, _)
-      or
-      exists(Ruby::AstNode i |
-        scopeAssigns(outer, name, i) and
-        i.getLocation().strictlyBefore(scope.getLocation())
-      )
-    )
-    or
-    inherits(scope.getOuterScope(), name, outer)
-  )
-}
-
 abstract class VariableImpl extends TVariable {
   abstract string getNameImpl();
 
@@ -429,10 +509,9 @@ abstract class VariableImpl extends TVariable {
   abstract Location getLocationImpl();
 }
 
-class TVariableReal =
-  TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal or TSelfVariable;
+class TVariableReal = TGlobalVariable or TClassVariable or TInstanceVariable or TLocalVariableReal;
 
-class TLocalVariable = TLocalVariableReal or TLocalVariableSynth or TSelfVariable;
+class TLocalVariable = TLocalVariableReal or TLocalVariableSynth;
 
 /**
  * A "real" (i.e. non-synthesized) variable. This class only exists to
@@ -458,19 +537,19 @@ private class VariableRealAdapter extends VariableImpl, TVariableReal instanceof
 }
 
 class LocalVariableReal extends VariableReal, TLocalVariableReal {
-  private Scope::Range scope;
-  private string name;
-  private Ruby::AstNode i;
+  private Local l;
 
-  LocalVariableReal() { this = TLocalVariableReal(scope, name, i) }
+  LocalVariableReal() { this = TLocalVariableReal(l) }
 
-  final override string getNameImpl() { result = name }
+  Ruby::AstNode getDefiningNode() { result = l.getDefiningNode() }
 
-  final override Location getLocationImpl() { result = i.getLocation() }
+  final override string getNameImpl() { result = l.getName() }
 
-  final override Scope::Range getDeclaringScopeImpl() { result = scope }
+  final override Location getLocationImpl() { result = l.getLocation() }
 
-  final VariableAccess getDefiningAccessImpl() { toGenerated(result) = i }
+  final override Scope::Range getDeclaringScopeImpl() { result = l.getScope() }
+
+  final VariableAccess getDefiningAccessImpl() { toGenerated(result) = l.getDefiningNode() }
 }
 
 class LocalVariableSynth extends VariableImpl, TLocalVariableSynth {
@@ -531,32 +610,14 @@ class ClassVariableImpl extends VariableReal, TClassVariable {
   final override Scope::Range getDeclaringScopeImpl() { result = scope }
 }
 
-class SelfVariableImpl extends VariableReal, TSelfVariable {
-  private SelfBase::Range scope;
+class SelfVariableImpl extends LocalVariableReal {
+  private ImplicitLocal l;
 
-  SelfVariableImpl() { this = TSelfVariable(scope) }
-
-  final override string getNameImpl() { result = "self" }
-
-  final override Location getLocationImpl() { result = scope.getLocation() }
-
-  final override Scope::Range getDeclaringScopeImpl() { result = scope }
+  SelfVariableImpl() { this = TLocalVariableReal(l) }
 }
 
 abstract class VariableAccessImpl extends Expr, TVariableAccess {
   abstract VariableImpl getVariableImpl();
-}
-
-module LocalVariableAccess {
-  predicate range(Ruby::Identifier id, TLocalVariableReal v) {
-    access(id, v) and
-    (
-      explicitWriteAccess(id, _) or
-      implicitWriteAccess(id) or
-      vcall(id) or
-      id = any(Ruby::VariableReferencePattern vr).getName()
-    )
-  }
 }
 
 class TVariableAccessReal =
@@ -681,7 +742,8 @@ private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfReal {
 
   SelfVariableAccessReal() {
     exists(Ruby::Self self |
-      this = TSelfReal(self) and var = TSelfVariable(scopeOf(self).getEnclosingSelfScope())
+      this = TSelfReal(self) and
+      access(self, var)
     )
   }
 

@@ -207,9 +207,7 @@ private module Cached {
     TLambda(Ruby::Lambda g) or
     TLine(Ruby::Line g) or
     TLeftAssignmentList(Ruby::LeftAssignmentList g) or
-    TLocalVariableAccessReal(Ruby::Identifier g, TLocalVariableReal v) {
-      LocalVariableAccess::range(g, v)
-    } or
+    TLocalVariableAccessReal(Ruby::Identifier g, TLocalVariableReal v) { access(g, v) } or
     TLocalVariableAccessSynth(Ast::AstNode parent, int i, Ast::LocalVariable v) {
       mkSynthChild(LocalVariableAccessRealKind(v), parent, i)
       or

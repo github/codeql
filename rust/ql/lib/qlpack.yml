@@ -16,6 +16,7 @@ dependencies:
   codeql/tutorial: ${workspace}
   codeql/typeinference: ${workspace}
   codeql/util: ${workspace}
+  codeql/namebinding: ${workspace}
 dataExtensions:
   - /**/*.model.yml
 warnOnImplicitThis: true
