@@ -85,7 +85,7 @@ def test_nested_if_else(t):
         else:
             z = 2 @ t[dead(4)]
     else:
-        z = 3 @ t[dead(4)]
+        z = 3 @ t[dead(3), dead(4)]
     w = 0 @ t[5]
 
 
