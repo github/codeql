@@ -88,4 +88,13 @@ impl<'a> BuildCtx<'a> {
         self.ast
             .create_named_token_with_range(kind, generated, self.source_range)
     }
+
+    /// Prepend a value to a field of an existing node.
+    pub fn prepend_field(&mut self, node_id: Id, field_name: &str, value_id: Id) {
+        let field_id = self
+            .ast
+            .field_id_for_name(field_name)
+            .unwrap_or_else(|| panic!("build: field '{field_name}' not found"));
+        self.ast.prepend_field_child(node_id, field_id, value_id);
+    }
 }
