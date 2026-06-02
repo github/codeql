@@ -72,11 +72,11 @@ class TaintTest(tornado.web.RequestHandler):
             request.cookies["cookie-name"].key, # $ tainted
             request.cookies["cookie-name"].value, # $ tainted
             request.cookies["cookie-name"].coded_value, # $ tainted
-        )
 
-        ensure_not_tainted(
-            [(k, v) for (k, v) in request.headers.get_all()], # The comprehension is not tainted, only the elements
-            list([(k, v) for (k, v) in request.headers.get_all()]), # Here, all the elements of the list are tainted, but the list is not.
+             # The comprehension is not tainted, only the elements, but this passes due to implicit reads at sinks
+            [(k, v) for (k, v) in request.headers.get_all()], # $ tainted
+            # The list is not tainted, only the elements, but this passes due to implicit reads at sinks
+            list([(k, v) for (k, v) in request.headers.get_all()]), # $ tainted
         )
 
 
