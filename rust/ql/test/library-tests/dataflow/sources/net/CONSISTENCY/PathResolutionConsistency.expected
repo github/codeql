@@ -1,3 +1,6 @@
 multipleResolvedTargets
 | test.rs:23:26:23:66 | ... .text() |
 | test.rs:26:26:26:67 | ... .bytes() |
+multiplePathResolutions
+| test.rs:517:3:517:13 | ...::main |
+| test.rs:563:5:563:6 | ...::runtime |

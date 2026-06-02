@@ -1,2 +1,4 @@
 multiplePathResolutions
+| request_forgery_tests.rs:60:7:60:17 | ...::main |
+| request_forgery_tests.rs:64:9:64:11 | ...::runtime |
 | request_forgery_tests.rs:79:5:79:18 | ...::runtime |
