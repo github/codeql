@@ -5,6 +5,12 @@
 | file://:0:0:0:0 | Fatalf | log.Logger.Fatalf |
 | file://:0:0:0:0 | Fatalln | log.Fatalln |
 | file://:0:0:0:0 | Fatalln | log.Logger.Fatalln |
+| file://:0:0:0:0 | Panic | log.Logger.Panic |
+| file://:0:0:0:0 | Panic | log.Panic |
+| file://:0:0:0:0 | Panicf | log.Logger.Panicf |
+| file://:0:0:0:0 | Panicf | log.Panicf |
+| file://:0:0:0:0 | Panicln | log.Logger.Panicln |
+| file://:0:0:0:0 | Panicln | log.Panicln |
 | file://:0:0:0:0 | panic | panic |
 | noretfunctions.go:8:6:8:12 | isNoRet | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.isNoRet |
 | noretfunctions.go:20:6:20:22 | noRetUsesLogFatal | github.com/github/codeql-go/ql/test/library-tests/semmle/go/controlflow/ControlFlowGraph.noRetUsesLogFatal |
