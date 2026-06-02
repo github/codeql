@@ -4277,9 +4277,7 @@ module StdlibPrivate {
         preservesValue = true
       )
       or
-      // TODO: We need to also translate iterable content such as list element
-      //       but we currently lack TupleElementAny
-      input = "Argument[0]" and
+      input = ["Argument[0]", "Argument[0].ListElement"] and
       output = "ReturnValue" and
       preservesValue = false
     }
