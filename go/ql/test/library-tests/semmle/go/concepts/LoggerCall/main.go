@@ -6,5 +6,6 @@ const text = "test"
 var v []byte
 
 func main() {
+	glogTest(len(v))
 	stdlib()
 }
