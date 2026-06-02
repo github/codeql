@@ -95,7 +95,7 @@ signature module AstSig<LocationSig Location> {
     Stmt getElse();
   }
 
-  /** Gets the initializer of this `if` statement, if any. */
+  /** Gets the initializer of `if` statement `ifstmt`, if any. */
   default AstNode getIfInit(IfStmt ifstmt) { none() }
 
   /**
