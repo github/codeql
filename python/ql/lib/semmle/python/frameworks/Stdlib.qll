@@ -4277,9 +4277,14 @@ module StdlibPrivate {
         preservesValue = true
       )
       or
-      input = ["Argument[0]", "Argument[0].ListElement"] and
-      output = "ReturnValue" and
-      preservesValue = false
+      (
+        input = "Argument[0]" and
+        preservesValue = false
+        or
+        input = "Argument[0].ListElement" and
+        preservesValue = true
+      ) and
+      output = "ReturnValue"
     }
   }
 
@@ -4985,9 +4990,16 @@ module StdlibPrivate {
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
-      input = ["Argument[0,iterable:]", "Argument[0,iterable:].ListElement"] and
-      output = "ReturnValue" and
-      preservesValue = false
+      (
+        // For code like `" ".join([name])`
+        input = "Argument[0,iterable:].ListElement" and
+        preservesValue = true
+        or
+        // For code like `" ".join(name)`
+        input = "Argument[0,iterable:]" and
+        preservesValue = false
+      ) and
+      output = "ReturnValue"
     }
   }
 
