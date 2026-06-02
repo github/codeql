@@ -1,4 +1,7 @@
 /**
+ * New-CFG version of BasicBlockAnnotationGap.
+ *
+ * Original:
  * Checks that within a basic block, if a node is annotated then its
  * successor is also annotated (or excluded). A gap in annotations
  * within a basic block indicates a missing annotation, since there
@@ -10,9 +13,9 @@
 
 import python
 import TimerUtils
-import OldCfgImpl
+import NewCfgImpl
 
-private module Utils = EvalOrderCfgUtils<OldCfg>;
+private module Utils = EvalOrderCfgUtils<NewCfg>;
 
 private import Utils
 private import Utils::CfgTests

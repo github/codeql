@@ -5,6 +5,8 @@
  * have separate CFGs and are excluded from this check.
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;

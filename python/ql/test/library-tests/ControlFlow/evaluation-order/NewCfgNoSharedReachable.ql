@@ -1,13 +1,16 @@
 /**
+ * New-CFG version of NoSharedReachable.
+ *
+ * Original:
  * Checks that two annotations sharing a timestamp value are on
  * mutually exclusive CFG paths (neither can reach the other).
  */
 
 import python
 import TimerUtils
-import OldCfgImpl
+import NewCfgImpl
 
-private module Utils = EvalOrderCfgUtils<OldCfg>;
+private module Utils = EvalOrderCfgUtils<NewCfg>;
 
 private import Utils
 private import Utils::CfgTests

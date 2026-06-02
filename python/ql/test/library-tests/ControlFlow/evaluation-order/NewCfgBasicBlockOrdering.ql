@@ -1,13 +1,16 @@
 /**
+ * New-CFG version of BasicBlockOrdering.
+ *
+ * Original:
  * Checks that within a single basic block, annotations appear in
  * increasing minimum-timestamp order.
  */
 
 import python
 import TimerUtils
-import OldCfgImpl
+import NewCfgImpl
 
-private module Utils = EvalOrderCfgUtils<OldCfg>;
+private module Utils = EvalOrderCfgUtils<NewCfg>;
 
 private import Utils
 private import Utils::CfgTests

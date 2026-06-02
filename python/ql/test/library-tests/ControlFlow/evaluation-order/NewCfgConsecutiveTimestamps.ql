@@ -1,4 +1,7 @@
 /**
+ * New-CFG version of ConsecutiveTimestamps.
+ *
+ * Original:
  * Checks that consecutive annotated nodes have consecutive timestamps:
  * for each annotation with timestamp `a`, some CFG node for that annotation
  * must have a next annotation containing `a + 1`.
@@ -13,9 +16,9 @@
 
 import python
 import TimerUtils
-import OldCfgImpl
+import NewCfgImpl
 
-private module Utils = EvalOrderCfgUtils<OldCfg>;
+private module Utils = EvalOrderCfgUtils<NewCfg>;
 
 private import Utils
 private import Utils::CfgTests

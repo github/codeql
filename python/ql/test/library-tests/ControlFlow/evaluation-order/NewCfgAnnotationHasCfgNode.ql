@@ -1,12 +1,14 @@
 /**
+ * New-CFG version of AnnotationHasCfgNode.
+ *
  * Checks that every timer annotation has a corresponding CFG node.
  */
 
 import python
 import TimerUtils
-import OldCfgImpl
+import NewCfgImpl
 
-private module Utils = EvalOrderCfgUtils<OldCfg>;
+private module Utils = EvalOrderCfgUtils<NewCfg>;
 
 private import Utils::CfgTests
 
