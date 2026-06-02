@@ -4271,14 +4271,9 @@ module StdlibPrivate {
         preservesValue = true
       )
       or
-      (
-        input = "Argument[0]" and
-        preservesValue = false
-        or
-        input = "Argument[0].ListElement" and
-        preservesValue = true
-      ) and
-      output = "ReturnValue"
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue" and
+      preservesValue = true
     }
   }
 
