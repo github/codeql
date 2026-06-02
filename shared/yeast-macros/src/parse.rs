@@ -259,6 +259,7 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                     yeast::query::QueryListElem::SingleNode(#node)
                 },
             )?;
+            let elem = maybe_wrap_list_capture(tokens, elem)?;
             elems.push(elem);
             continue;
         }
@@ -276,6 +277,7 @@ fn parse_query_list(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
                     yeast::query::QueryListElem::SingleNode(#node)
                 },
             )?;
+            let elem = maybe_wrap_list_capture(tokens, elem)?;
             elems.push(elem);
             continue;
         }
@@ -717,8 +719,11 @@ fn extract_captures_inner(
                 }
                 last_mult = CaptureMultiplicity::Single;
             }
-            TokenTree::Punct(p) if matches!(p.as_char(), '*' | '+' | '?') => {
-                // Keep last_mult — the @capture follows
+            TokenTree::Punct(p) if p.as_char() == '*' || p.as_char() == '+' => {
+                last_mult = CaptureMultiplicity::Repeated;
+            }
+            TokenTree::Punct(p) if p.as_char() == '?' => {
+                last_mult = CaptureMultiplicity::Optional;
             }
             _ => {
                 last_mult = CaptureMultiplicity::Single;

@@ -825,14 +825,6 @@ fn apply_one_shot_rules_inner(
 
     let node_kind = ast.get_node(id).map(|n| n.kind()).unwrap_or("");
 
-    // Don't rewrite unnamed nodes (punctuation, keywords, etc.); leave them
-    // as-is. Rules target named nodes only.
-    if let Some(node) = ast.get_node(id) {
-        if !node.is_named() {
-            return Ok(vec![id]);
-        }
-    }
-
     for rule in index.rules_for_kind(node_kind) {
         if let Some(mut captures) = rule.try_match(ast, id)? {
             // Recursively translate every captured node before invoking the
