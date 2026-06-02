@@ -224,6 +224,31 @@ signature module AstSig<LocationSig Location> {
    */
   default AstNode getTryElse(TryStmt try) { none() }
 
+  /**
+   * Gets the `else` block of this `while` loop statement, if any.
+   *
+   * Only some languages (e.g. Python) support `while-else` constructs.
+   */
+  default AstNode getWhileElse(WhileStmt loop) { none() }
+
+  /**
+   * Gets the `else` block of this `foreach` loop statement, if any.
+   *
+   * Only some languages (e.g. Python) support `for-else` constructs.
+   */
+  default AstNode getForeachElse(ForeachStmt loop) { none() }
+
+  /**
+   * Gets the type expression of this catch clause, if any.
+   *
+   * In Python, the catch type is a runtime-evaluated expression
+   * (e.g. `except SomeException:` where `SomeException` is an
+   * arbitrary expression). For languages where the catch type is
+   * statically resolved, this defaults to `none()` and no CFG node
+   * is created.
+   */
+  default Expr getCatchType(CatchClause catch) { none() }
+
   /** A catch clause in a try statement. */
   class CatchClause extends AstNode {
     /** Gets the variable declared by this catch clause. */
@@ -1577,11 +1602,20 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n1.isAfterValue(cond, any(BooleanSuccessor b | b.getValue() = while)) and
           n2.isBefore(loopstmt.getBody())
           or
-          n1.isAfterValue(cond, any(BooleanSuccessor b | b.getValue() = while.booleanNot())) and
-          n2.isAfter(loopstmt)
+          n1.isAfterFalse(cond) and
+          (
+            n2.isBefore(getWhileElse(loopstmt))
+            or
+            not exists(getWhileElse(loopstmt)) and n2.isAfter(loopstmt)
+          )
           or
           n1.isAfter(loopstmt.getBody()) and
           n2.isAdditional(loopstmt, loopHeaderTag())
+        )
+        or
+        exists(WhileStmt whilestmt |
+          n1.isAfter(getWhileElse(whilestmt)) and
+          n2.isAfter(whilestmt)
         )
         or
         exists(ForeachStmt foreachstmt |
@@ -1590,7 +1624,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           or
           n1.isAfterValue(foreachstmt.getCollection(),
             any(EmptinessSuccessor t | t.getValue() = true)) and
-          n2.isAfter(foreachstmt)
+          (
+            n2.isBefore(getForeachElse(foreachstmt))
+            or
+            not exists(getForeachElse(foreachstmt)) and n2.isAfter(foreachstmt)
+          )
           or
           n1.isAfterValue(foreachstmt.getCollection(),
             any(EmptinessSuccessor t | t.getValue() = false)) and
@@ -1603,10 +1641,17 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAdditional(foreachstmt, loopHeaderTag())
           or
           n1.isAdditional(foreachstmt, loopHeaderTag()) and
-          n2.isAfter(foreachstmt)
+          (
+            n2.isBefore(getForeachElse(foreachstmt))
+            or
+            not exists(getForeachElse(foreachstmt)) and n2.isAfter(foreachstmt)
+          )
           or
           n1.isAdditional(foreachstmt, loopHeaderTag()) and
           n2.isBefore(foreachstmt.getVariable())
+          or
+          n1.isAfter(getForeachElse(foreachstmt)) and
+          n2.isAfter(foreachstmt)
         )
         or
         exists(ForStmt forstmt, PreControlFlowNode condentry |
@@ -1698,6 +1743,16 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         exists(CatchClause catchclause |
           exists(MatchingSuccessor t |
             n1.isBefore(catchclause) and
+            (
+              n2.isBefore(getCatchType(catchclause))
+              or
+              not exists(getCatchType(catchclause)) and n2.isAfterValue(catchclause, t)
+            ) and
+            if Input1::catchAll(catchclause) then t.getValue() = true else any()
+          )
+          or
+          exists(MatchingSuccessor t |
+            n1.isAfter(getCatchType(catchclause)) and
             n2.isAfterValue(catchclause, t) and
             if Input1::catchAll(catchclause) then t.getValue() = true else any()
           )
