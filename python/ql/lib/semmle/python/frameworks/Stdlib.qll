@@ -4976,6 +4976,23 @@ module StdlibPrivate {
     }
   }
 
+  /** A flow summary for `str.join`. */
+  class StrJoinSummary extends SummarizedCallable::Range {
+    StrJoinSummary() { this = "str.join" }
+
+    override DataFlow::CallCfgNode getACall() { result.(DataFlow::MethodCallNode).calls(_, "join") }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "join"
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = ["Argument[0,iterable:]", "Argument[0,iterable:].ListElement"] and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // asyncio
   // ---------------------------------------------------------------------------
