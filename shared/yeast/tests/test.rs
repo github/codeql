@@ -390,6 +390,29 @@ fn test_capture_unnamed_node_parenthesized() {
 }
 
 #[test]
+fn test_capture_bare_underscore_repeated() {
+    // `_` matches named and unnamed nodes in bare-child position. On this
+    // assignment shape, bare children correspond to unnamed tokens (the `=`).
+    let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
+    let ast = runner.run("x = 1").unwrap();
+
+    let query = yeast::query!((assignment _* @all));
+
+    let mut cursor = AstCursor::new(&ast);
+    cursor.goto_first_child();
+    let assignment_id = cursor.node_id();
+
+    let mut captures = yeast::captures::Captures::new();
+    let matched = query.do_match(&ast, assignment_id, &mut captures).unwrap();
+    assert!(matched);
+
+    let all = captures.get_all("all");
+    assert_eq!(all.len(), 1);
+    assert_eq!(ast.get_node(all[0]).unwrap().kind(), "=");
+    assert!(!ast.get_node(all[0]).unwrap().is_named());
+}
+
+#[test]
 fn test_capture_unnamed_node_bare_literal() {
     // `"=" @op` (without surrounding parens) is the same as `("=") @op`.
     let runner = Runner::new(tree_sitter_ruby::LANGUAGE.into(), &[]);
