@@ -47,6 +47,19 @@ module Log {
     override predicate mayReturnNormally() { none() }
   }
 
+  /** A log function which must panic. */
+  private class PanicLogFunction extends Function {
+    PanicLogFunction() {
+      exists(string fn | fn = ["Panic", "Panicf", "Panicln"] |
+        this.hasQualifiedName("log", fn)
+        or
+        this.(Method).hasQualifiedName("log", "Logger", fn)
+      )
+    }
+
+    override predicate mustPanic() { any() }
+  }
+
   // These models are not implemented using Models-as-Data because they represent reverse flow.
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
