@@ -1,5 +1,5 @@
 /**
- * Defines a InlineExpectationsTest for class instances, that is,
+ * Defines an InlineExpectationsTest for class instances, that is,
  * for any API::Node that is an instance of a class (e.g. `Flask`).
  */
 
