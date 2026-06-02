@@ -69,30 +69,6 @@ module Log {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Logger) Fatal(v ...interface{})
-      this.hasQualifiedName("log", "Logger", "Fatal") and
-      (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (*Logger) Fatalf(format string, v ...interface{})
-      this.hasQualifiedName("log", "Logger", "Fatalf") and
-      (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (*Logger) Fatalln(v ...interface{})
-      this.hasQualifiedName("log", "Logger", "Fatalln") and
-      (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (*Logger) Panic(v ...interface{})
-      this.hasQualifiedName("log", "Logger", "Panic") and
-      (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (*Logger) Panicf(format string, v ...interface{})
-      this.hasQualifiedName("log", "Logger", "Panicf") and
-      (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (*Logger) Panicln(v ...interface{})
-      this.hasQualifiedName("log", "Logger", "Panicln") and
-      (inp.isParameter(_) and outp.isReceiver())
-      or
       // signature: func (*Logger) Print(v ...interface{})
       this.hasQualifiedName("log", "Logger", "Print") and
       (inp.isParameter(_) and outp.isReceiver())
