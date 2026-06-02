@@ -40,9 +40,9 @@ module VariableAccessTest implements TestSig {
 
   private predicate decl(Variable v, string value) {
     exists(string filepath, int line, boolean inMacro | declAt(v, filepath, line, inMacro) |
-      commmentAt(value, filepath, line) and inMacro = false
+      commentAt(value, filepath, line) and inMacro = false
       or
-      not (commmentAt(_, filepath, line) and inMacro = false) and
+      not (commentAt(_, filepath, line) and inMacro = false) and
       value = v.getText()
     )
   }

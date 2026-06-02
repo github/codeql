@@ -20,9 +20,9 @@ module ConstAccessTest implements TestSig {
       c = ca.getConst() and
       constAt(c, filepath, line)
     |
-      commmentAt(value, filepath, line)
+      commentAt(value, filepath, line)
       or
-      not commmentAt(_, filepath, line) and
+      not commentAt(_, filepath, line) and
       value = c.getName().getText()
     )
   }
