@@ -3,7 +3,7 @@ import csharp
 private string printExpr(Expr e) {
   e =
     any(SubExpr sub |
-      result = sub.getLeftOperand().toString() + " - " + sub.getRightOperand().toString()
+      result = printExpr(sub.getLeftOperand()) + " - " + printExpr(sub.getRightOperand())
     )
   or
   not e instanceof SubExpr and
