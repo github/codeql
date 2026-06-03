@@ -110,6 +110,16 @@ module ControlFlow {
   /** A synthetic exit node for a function. */
   class ExitNode extends Node instanceof GoCfg::ControlFlow::ExitNode { }
 
+  private predicate isBranchConditionRoot(Expr expr) {
+    expr = any(LogicalBinaryExpr lbe).getLeftOperand()
+    or
+    expr = any(ForStmt fs).getCond()
+    or
+    expr = any(IfStmt is).getCond()
+    or
+    expr = any(ExpressionSwitchStmt ess | not exists(ess.getExpr())).getACase().getAnExpr()
+  }
+
   /**
    * A control-flow node that initializes or updates the value of a constant, a variable,
    * a field, or an (array, slice, or map) element.
@@ -247,14 +257,18 @@ module ControlFlow {
    * A control-flow node recording the fact that a certain expression has a known
    * Boolean value at this point in the program.
    */
-  class ConditionGuardNode extends Node {
+  class ConditionGuardNode extends IR::Instruction {
     Expr cond;
     boolean outcome;
 
     ConditionGuardNode() {
-      this.isAfterTrue(cond) and outcome = true
+      isBranchConditionRoot(cond) and
+      this.isAfterTrue(cond) and
+      outcome = true
       or
-      this.isAfterFalse(cond) and outcome = false
+      isBranchConditionRoot(cond) and
+      this.isAfterFalse(cond) and
+      outcome = false
     }
 
     private predicate ensuresAux(Expr expr, boolean b) {
