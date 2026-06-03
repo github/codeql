@@ -1,0 +1,290 @@
+===
+Optional type annotation
+===
+
+let x: Int? = nil
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "x"
+          type:
+            type_annotation
+              type:
+                type
+                  name:
+                    optional_type
+                      wrapped:
+                        user_type
+                          part:
+                            simple_user_type
+                              name: type_identifier "Int"
+          value: nil
+
+---
+
+top_level
+  body:
+
+===
+Optional chaining
+===
+
+let n = obj?.foo?.bar
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "n"
+          value:
+            navigation_expression
+              suffix:
+                navigation_suffix
+                  suffix: simple_identifier "bar"
+              target:
+                optional_chain_marker
+                  expr:
+                    navigation_expression
+                      suffix:
+                        navigation_suffix
+                          suffix: simple_identifier "foo"
+                      target:
+                        optional_chain_marker
+                          expr: simple_identifier "obj"
+
+---
+
+top_level
+  body:
+
+===
+Force unwrap
+===
+
+let n = opt!
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "n"
+          value:
+            postfix_expression
+              operation: bang "!"
+              target: simple_identifier "opt"
+
+---
+
+top_level
+  body:
+
+===
+Nil-coalescing
+===
+
+let n = opt ?? 0
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "n"
+          value:
+            nil_coalescing_expression
+              if_nil: integer_literal "0"
+              value: simple_identifier "opt"
+
+---
+
+top_level
+  body:
+
+===
+Throwing function
+===
+
+func read() throws -> String {
+  return ""
+}
+
+---
+
+source_file
+  statement:
+    function_declaration
+      body:
+        block
+          statement:
+            control_transfer_statement
+              kind: return
+              result:
+                line_string_literal
+      name: simple_identifier "read"
+      return_type:
+        type
+          name:
+            user_type
+              part:
+                simple_user_type
+                  name: type_identifier "String"
+      throws: throws "throws"
+
+---
+
+top_level
+  body:
+
+===
+Do-catch
+===
+
+do {
+  try foo()
+} catch {
+  print(error)
+}
+
+---
+
+source_file
+  statement:
+    do_statement
+      body:
+        block
+          statement:
+            try_expression
+              expr:
+                call_expression
+                  function: simple_identifier "foo"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+              operator:
+                try_operator
+      catch:
+        catch_block
+          body:
+            block
+              statement:
+                call_expression
+                  function: simple_identifier "print"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+                          argument:
+                            value_argument
+                              value: simple_identifier "error"
+          keyword: catch_keyword "catch"
+
+---
+
+top_level
+  body:
+
+===
+Try? expression
+===
+
+let result = try? foo()
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "result"
+          value:
+            try_expression
+              expr:
+                call_expression
+                  function: simple_identifier "foo"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+              operator:
+                try_operator
+
+---
+
+top_level
+  body:
+
+===
+Try! expression
+===
+
+let result = try! foo()
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "result"
+          value:
+            try_expression
+              expr:
+                call_expression
+                  function: simple_identifier "foo"
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+              operator:
+                try_operator
+
+---
+
+top_level
+  body:

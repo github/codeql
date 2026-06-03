@@ -20,10 +20,15 @@ grammar source), run `scripts/regenerate-grammar.sh` to:
 it shows the impact of a grammar tweak on the named node kinds, fields,
 and child types in a form much easier to read than the raw JSON.
 
-## Testing
-- If you changed the extractor code, always rebuild it before running tests.
+## Extractor Testing
+- To run extractor tests, run `cargo test` in the `extractor` directory.
 
-- To run all tests, run `codeql test run --search-path extractor-pack ql/test`
+- Do not edit the printed ASTs in `extractor/test/corpus` directly. To regenerate the ASTs, run `scripts/update-corpus.sh`.
+
+## CodeQL Testing
+- If you changed the extractor code, always rebuild it before running CodeQL tests.
+
+- To run all CodeQL tests, run `codeql test run --search-path extractor-pack ql/test`
 
 - Do not edit `.expected` files manually. To update the expected output, pass `--learn` to the `codeql test run` command.
 

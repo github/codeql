@@ -119,8 +119,8 @@ named:
   array_type:
     element: type
   as_expression:
-    $children: as_operator
     expr: expression
+    operator: as_operator
     type: type
   as_operator:
   assignment:
@@ -128,114 +128,166 @@ named:
     result: expression
     target: directly_assignable_expression
   associatedtype_declaration:
-    $children*: [modifiers, type_constraints]
     default_value?: type
+    modifiers?: modifiers
     must_inherit?: type
     name: type_identifier
+    type_constraints?: type_constraints
+  async_keyword:
   attribute:
-    $children+: [expression, user_type]
+    argument*: expression
+    argument_name*: simple_identifier
+    name: user_type
+    param_ref*: simple_identifier
+    platform*: simple_identifier
+    version*: integer_literal
   availability_condition:
-    $children*: [identifier, integer_literal]
+    platform*: identifier
+    version*: integer_literal
   await_expression:
-    $children?: expression
-    expr?: expression
+    expr: expression
   bang:
   bin_literal:
+  binding_pattern:
+    binding: value_binding_pattern
+    pattern: pattern
   bitwise_operation:
     lhs: expression
     op: ["&", "<<", ">>", "^", "|"]
     rhs: expression
+  block:
+    statement*: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
   boolean_literal:
   call_expression:
-    $children+: [call_suffix, expression]
+    function: expression
+    suffix: call_suffix
   call_suffix:
-    $children+: [lambda_literal, value_arguments]
+    arguments?: value_arguments
+    lambda*: lambda_literal
     name*: simple_identifier
   capture_list:
-    $children+: capture_list_item
+    item+: capture_list_item
   capture_list_item:
-    $children?: ownership_modifier
     name: [self_expression, simple_identifier]
+    ownership?: ownership_modifier
     value?: expression
+  case_pattern:
+    arguments?: tuple_pattern
+    name: simple_identifier
+    type?: user_type
   catch_block:
-    $children+: [catch_keyword, statements, where_clause]
+    body: block
     error?: pattern
+    keyword: catch_keyword
+    where?: where_clause
   catch_keyword:
   check_expression:
     op: "is"
     target: expression
     type: type
   class_body:
-    $children*: [multiline_comment, type_level_declaration]
+    member*: type_level_declaration
   class_declaration:
-    $children*: [attribute, inheritance_modifier, inheritance_specifier, modifiers, ownership_modifier, property_behavior_modifier, type_constraints, type_parameters]
+    attribute*: attribute
     body: [class_body, enum_class_body]
     declaration_kind: ["actor", "class", "enum", "extension", "struct"]
+    inherits*: inheritance_specifier
+    modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
     name: [type_identifier, unannotated_type]
+    type_constraints?: type_constraints
+    type_parameters?: type_parameters
   comment:
   comparison_expression:
     lhs: expression
     op: ["<", "<=", ">", ">="]
     rhs: expression
+  compilation_condition:
+    inner?: compilation_condition
+    lhs?: compilation_condition
+    name*: simple_identifier
+    operand?: compilation_condition
+    rhs?: compilation_condition
+    value?: boolean_literal
+    version*: integer_literal
   computed_getter:
-    $children+: [attribute, getter_specifier, statements]
+    attribute*: attribute
+    body?: block
+    specifier: getter_specifier
   computed_modify:
-    $children+: [attribute, modify_specifier, statements]
+    attribute*: attribute
+    body?: block
+    specifier: modify_specifier
   computed_property:
-    $children*: [computed_getter, computed_modify, computed_setter, statements]
+    accessor*: [computed_getter, computed_modify, computed_setter]
+    statement*: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
   computed_setter:
-    $children+: [attribute, setter_specifier, simple_identifier, statements]
+    attribute*: attribute
+    body?: block
+    parameter?: simple_identifier
+    specifier: setter_specifier
   conjunction_expression:
     lhs: expression
     op: "&&"
     rhs: expression
   constructor_expression:
-    $children: constructor_suffix
     constructed_type: [array_type, dictionary_type, user_type]
+    suffix: constructor_suffix
   constructor_suffix:
-    $children+: [lambda_literal, value_arguments]
+    arguments?: value_arguments
+    lambda*: lambda_literal
     name*: simple_identifier
   control_transfer_statement:
-    $children*: [expression, throw_keyword]
+    kind: ["break", "continue", "return", throw_keyword, "yield"]
     result?: expression
   custom_operator:
   default_keyword:
   deinit_declaration:
-    $children?: modifiers
-    body: function_body
+    body: block
+    modifiers?: modifiers
   deprecated_operator_declaration_body:
-    $children*: [bin_literal, boolean_literal, hex_literal, integer_literal, line_string_literal, multi_line_string_literal, oct_literal, raw_string_literal, real_literal, regex_literal, simple_identifier]
+    entry*: [bin_literal, boolean_literal, hex_literal, integer_literal, line_string_literal, multi_line_string_literal, "nil", oct_literal, raw_string_literal, real_literal, regex_literal, simple_identifier]
   diagnostic:
   dictionary_literal:
-    key*: expression
-    value*: expression
+    element*: dictionary_literal_item
+  dictionary_literal_item:
+    key: expression
+    value: expression
   dictionary_type:
     key: type
     value: type
   didset_clause:
-    $children*: [modifiers, simple_identifier, statements]
+    body: block
+    modifiers?: modifiers
+    parameter?: simple_identifier
   directive:
-    $children*: [boolean_literal, integer_literal, simple_identifier]
+    condition?: compilation_condition
   directly_assignable_expression:
-    $children: expression
+    expr: expression
   disjunction_expression:
     lhs: expression
     op: "||"
     rhs: expression
   do_statement:
-    $children*: [catch_block, statements]
-  else:
+    body: block
+    catch*: catch_block
+  enum_case_entry:
+    data_contents?: enum_type_parameters
+    name: simple_identifier
+    raw_value?: expression
   enum_class_body:
-    $children*: [enum_entry, type_level_declaration]
+    member*: [enum_entry, type_level_declaration]
   enum_entry:
-    $children?: modifiers
-    data_contents*: enum_type_parameters
-    name+: simple_identifier
-    raw_value*: expression
+    case+: enum_case_entry
+    modifiers?: modifiers
+  enum_type_parameter:
+    default_value?: expression
+    external_name?: wildcard_pattern
+    name?: simple_identifier
+    type: type
   enum_type_parameters:
-    $children*: [expression, type, wildcard_pattern]
+    parameter*: enum_type_parameter
   equality_constraint:
-    $children*: attribute
+    attribute*: attribute
     constrained_type: [identifier, nested_type_identifier]
     must_equal: type
   equality_expression:
@@ -243,106 +295,141 @@ named:
     op: ["!=", "!==", "==", "==="]
     rhs: expression
   existential_type:
-    $children: unannotated_type
+    name: unannotated_type
   external_macro_definition:
-    $children: value_arguments
+    arguments: value_arguments
   for_statement:
-    $children*: [statements, try_operator, type_annotation, where_clause]
+    body: block
     collection: expression
     item: pattern
+    try?: try_operator
+    type?: type_annotation
+    where?: where_clause
   fully_open_range:
-  function_body:
-    $children?: statements
   function_declaration:
-    $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, parameter, property_behavior_modifier, throws, throws_clause, type_constraints, type_parameters]
-    body: function_body
-    default_value*: expression
+    async?: "async"
+    body: block
+    modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
     name: [referenceable_operator, simple_identifier]
+    parameter*: function_parameter
     return_type?: [implicitly_unwrapped_type, type]
+    throws?: [throws, throws_clause]
+    type_constraints?: type_constraints
+    type_parameters?: type_parameters
   function_modifier:
+  function_parameter:
+    attribute?: attribute
+    default_value?: expression
+    parameter: parameter
   function_type:
-    $children?: [throws, throws_clause]
+    async?: "async"
     params: unannotated_type
     return_type: type
+    throws?: [throws, throws_clause]
   getter_specifier:
-    $children*: [mutation_modifier, throws, throws_clause]
+    effect*: [async_keyword, throws, throws_clause]
+    mutation?: mutation_modifier
   guard_statement:
-    $children+: [else, statements]
+    body: block
     condition+: if_condition
   hex_literal:
   identifier:
-    $children+: simple_identifier
+    part+: simple_identifier
   if_condition:
-    $children: [availability_condition, expression, if_let_binding]
+    kind: [availability_condition, expression, if_let_binding]
   if_let_binding:
-    $children*: [expression, pattern, type, type_annotation, user_type, value_binding_pattern, where_clause, wildcard_pattern]
-    bound_identifier?: simple_identifier
+    pattern: pattern
+    type?: type_annotation
+    value?: expression
+    where?: where_clause
   if_statement:
-    $children*: [else, if_statement, statements]
+    body: block
     condition+: if_condition
+    else_branch?: [block, if_statement]
   implicitly_unwrapped_type:
-    $children: type
+    name: type
   import_declaration:
-    $children+: [identifier, modifiers]
+    modifiers?: modifiers
+    name: identifier
   infix_expression:
     lhs: expression
     op: custom_operator
     rhs: expression
   inheritance_constraint:
-    $children*: attribute
+    attribute*: attribute
     constrained_type: [identifier, nested_type_identifier]
     inherits_from: [implicitly_unwrapped_type, type]
   inheritance_modifier:
   inheritance_specifier:
     inherits_from: [function_type, suppressed_constraint, user_type]
   init_declaration:
-    $children*: [attribute, bang, modifiers, parameter, throws, throws_clause, type_constraints, type_parameters]
-    body?: function_body
-    default_value*: expression
-    name: "init"
+    async?: "async"
+    bang?: bang
+    body?: block
+    modifiers?: modifiers
+    parameter*: function_parameter
+    throws?: [throws, throws_clause]
+    type_constraints?: type_constraints
+    type_parameters?: type_parameters
   integer_literal:
   interpolated_expression:
-    $children?: type_modifiers
     name?: value_argument_label
     reference_specifier*: value_argument_label
+    type_modifiers?: type_modifiers
     value?: expression
+  key_path_component:
+    name?: simple_identifier
+    postfix*: key_path_postfix
   key_path_expression:
-    $children*: [array_type, bang, dictionary_type, simple_identifier, type_arguments, type_identifier, value_argument]
+    component*: key_path_component
+    type?: [array_type, dictionary_type, simple_user_type]
+  key_path_postfix:
+    argument*: value_argument
+    force_unwrap?: bang
   key_path_string_expression:
-    $children: expression
+    expr: expression
   lambda_function_type:
-    $children*: [lambda_function_type_parameters, throws, throws_clause]
+    async?: "async"
+    params?: lambda_function_type_parameters
     return_type?: [implicitly_unwrapped_type, type]
+    throws?: [throws, throws_clause]
   lambda_function_type_parameters:
-    $children+: lambda_parameter
+    parameter+: lambda_parameter
   lambda_literal:
-    $children*: [attribute, statements]
+    attribute*: attribute
     captures?: capture_list
+    statement*: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
     type?: lambda_function_type
   lambda_parameter:
-    $children?: [parameter_modifiers, self_expression]
     external_name?: simple_identifier
-    name?: simple_identifier
+    modifiers?: parameter_modifiers
+    name: [self_expression, simple_identifier]
     type?: [implicitly_unwrapped_type, type]
   line_str_text:
   line_string_literal:
     interpolation*: interpolated_expression
     text*: [line_str_text, str_escaped_char]
   macro_declaration:
-    $children+: [attribute, modifiers, parameter, simple_identifier, type_constraints, type_parameters, unannotated_type]
-    default_value*: expression
     definition?: macro_definition
+    modifiers?: modifiers
+    name: simple_identifier
+    parameter*: function_parameter
+    return_type?: unannotated_type
+    type_constraints?: type_constraints
+    type_parameters?: type_parameters
   macro_definition:
     body: [expression, external_macro_definition]
   macro_invocation:
-    $children+: [call_suffix, simple_identifier, type_parameters]
+    name: simple_identifier
+    suffix: call_suffix
+    type_parameters?: type_parameters
   member_modifier:
   metatype:
-    $children: unannotated_type
+    name: unannotated_type
   modifiers:
-    $children+: [attribute, function_modifier, inheritance_modifier, member_modifier, mutation_modifier, ownership_modifier, parameter_modifier, property_behavior_modifier, property_modifier, visibility_modifier]
+    modifier+: [attribute, function_modifier, inheritance_modifier, member_modifier, mutation_modifier, ownership_modifier, parameter_modifier, property_behavior_modifier, property_modifier, visibility_modifier]
   modify_specifier:
-    $children?: mutation_modifier
+    mutation?: mutation_modifier
   multi_line_str_text:
   multi_line_string_literal:
     interpolation*: interpolated_expression
@@ -355,80 +442,109 @@ named:
   mutation_modifier:
   navigation_expression:
     suffix: navigation_suffix
-    target+: ["(", ")", array_type, dictionary_type, existential_type, expression, opaque_type, user_type]
+    target: [array_type, dictionary_type, expression, parenthesized_type, user_type]
   navigation_suffix:
     suffix: [integer_literal, simple_identifier]
   nested_type_identifier:
-    $children+: [simple_identifier, unannotated_type]
+    base: unannotated_type
+    member*: simple_identifier
   nil_coalescing_expression:
     if_nil: expression
     value: expression
   oct_literal:
   opaque_type:
-    $children: unannotated_type
+    name: unannotated_type
   open_end_range_expression:
     start: expression
   open_start_range_expression:
     end: expression
   operator_declaration:
-    $children+: [deprecated_operator_declaration_body, referenceable_operator, simple_identifier]
+    body?: deprecated_operator_declaration_body
+    kind: ["infix", "postfix", "prefix"]
+    name: referenceable_operator
+    precedence_group?: simple_identifier
   optional_chain_marker:
-    $children: expression
+    expr: expression
   optional_type:
     wrapped: [array_type, dictionary_type, tuple_type, user_type]
   ownership_modifier:
   parameter:
-    $children?: parameter_modifiers
     external_name?: simple_identifier
+    modifiers?: parameter_modifiers
     name: simple_identifier
     type: [implicitly_unwrapped_type, type]
   parameter_modifier:
   parameter_modifiers:
-    $children+: parameter_modifier
+    modifier+: parameter_modifier
+  parenthesized_type:
+    type: [dictionary_type, existential_type, opaque_type]
   pattern:
-    $children*: [expression, pattern, type, user_type, value_binding_pattern, wildcard_pattern]
+    binding?: value_binding_pattern
     bound_identifier?: simple_identifier
+    kind: [binding_pattern, case_pattern, expression, tuple_pattern, type_casting_pattern, wildcard_pattern]
   playground_literal:
-    $children+: expression
+    argument+: playground_literal_argument
+    kind: ["colorLiteral", "fileLiteral", "imageLiteral"]
+  playground_literal_argument:
+    name: simple_identifier
+    value: expression
   postfix_expression:
     operation: ["++", "--", bang]
     target: expression
   precedence_group_attribute:
-    $children+: [boolean_literal, simple_identifier]
+    name: simple_identifier
+    value: [boolean_literal, simple_identifier]
   precedence_group_attributes:
-    $children+: precedence_group_attribute
+    attribute+: precedence_group_attribute
   precedence_group_declaration:
-    $children+: [precedence_group_attributes, simple_identifier]
+    attributes?: precedence_group_attributes
+    name: simple_identifier
   prefix_expression:
     operation: ["&", "+", "++", "-", "--", ".", bang, custom_operator, "~"]
     target: expression
   property_behavior_modifier:
+  property_binding:
+    computed_value?: computed_property
+    name: pattern
+    observers?: willset_didset_block
+    type?: type_annotation
+    type_constraints?: type_constraints
+    value?: expression
   property_declaration:
-    $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier, type_annotation, type_constraints, value_binding_pattern, willset_didset_block]
-    computed_value*: computed_property
-    name+: pattern
-    value*: expression
+    binding: value_binding_pattern
+    declarator+: property_binding
+    modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
   property_modifier:
   protocol_body:
-    $children*: protocol_member_declaration
+    member*: protocol_member_declaration
   protocol_composition_type:
-    $children+: unannotated_type
+    type+: unannotated_type
   protocol_declaration:
-    $children*: [attribute, inheritance_specifier, modifiers, type_constraints, type_parameters]
+    attribute*: attribute
     body: protocol_body
-    declaration_kind: "protocol"
+    inherits*: inheritance_specifier
+    modifiers?: modifiers
     name: type_identifier
+    type_constraints?: type_constraints
+    type_parameters?: type_parameters
   protocol_function_declaration:
-    $children*: [attribute, modifiers, parameter, throws, throws_clause, type_constraints, type_parameters]
-    body?: function_body
-    default_value*: expression
+    async?: "async"
+    body?: block
+    modifiers?: modifiers
     name: [referenceable_operator, simple_identifier]
+    parameter*: function_parameter
     return_type?: [implicitly_unwrapped_type, type]
+    throws?: [throws, throws_clause]
+    type_constraints?: type_constraints
+    type_parameters?: type_parameters
   protocol_property_declaration:
-    $children+: [modifiers, protocol_property_requirements, type_annotation, type_constraints]
+    modifiers?: modifiers
     name: pattern
+    requirements: protocol_property_requirements
+    type?: type_annotation
+    type_constraints?: type_constraints
   protocol_property_requirements:
-    $children*: [getter_specifier, setter_specifier]
+    accessor*: [getter_specifier, setter_specifier]
   range_expression:
     end: expression
     op: ["...", "..<"]
@@ -436,48 +552,57 @@ named:
   raw_str_continuing_indicator:
   raw_str_end_part:
   raw_str_interpolation:
-    $children: raw_str_interpolation_start
     interpolation+: interpolated_expression
+    start: raw_str_interpolation_start
   raw_str_interpolation_start:
   raw_str_part:
   raw_string_literal:
-    $children*: raw_str_continuing_indicator
+    continuing*: raw_str_continuing_indicator
     interpolation*: raw_str_interpolation
     text+: [raw_str_end_part, raw_str_part]
   real_literal:
   referenceable_operator:
-    $children?: [bang, custom_operator]
+    operator: ["!=", "!==", "%", "%=", "&", "*", "*=", "+", "++", "+=", "-", "--", "-=", "/", "/=", "<", "<<", "<=", "=", "==", "===", ">", ">=", ">>", "^", bang, custom_operator, "|", "~"]
   regex_literal:
   repeat_while_statement:
-    $children?: statements
+    body: block
     condition+: if_condition
   selector_expression:
-    $children: expression
+    expr: expression
   self_expression:
   setter_specifier:
-    $children?: mutation_modifier
+    mutation?: mutation_modifier
   shebang_line:
   simple_identifier:
+  simple_user_type:
+    arguments?: type_arguments
+    name: type_identifier
   source_file:
-    $children*: [do_statement, expression, for_statement, global_declaration, guard_statement, repeat_while_statement, shebang_line, statement_label, throw_keyword, while_statement]
+    shebang?: shebang_line
+    statement*: [do_statement, expression, for_statement, global_declaration, guard_statement, repeat_while_statement, statement_label, throw_keyword, while_statement]
   special_literal:
   statement_label:
-  statements:
-    $children+: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
   str_escaped_char:
   subscript_declaration:
-    $children+: [attribute, computed_property, modifiers, parameter, type_constraints, type_parameters]
-    default_value*: expression
+    body: computed_property
+    modifiers?: modifiers
+    parameter*: function_parameter
     return_type?: [implicitly_unwrapped_type, type]
+    type_constraints?: type_constraints
+    type_parameters?: type_parameters
   super_expression:
   suppressed_constraint:
     suppressed: type_identifier
   switch_entry:
-    $children+: [default_keyword, expression, modifiers, statements, switch_pattern, where_keyword]
+    default?: default_keyword
+    modifiers?: modifiers
+    pattern*: switch_pattern
+    statement+: [control_transfer_statement, do_statement, expression, for_statement, guard_statement, local_declaration, repeat_while_statement, statement_label, while_statement]
+    where?: where_clause
   switch_pattern:
-    $children: pattern
+    pattern: pattern
   switch_statement:
-    $children*: switch_entry
+    entry*: switch_entry
     expr: expression
   ternary_expression:
     condition: expression
@@ -488,76 +613,95 @@ named:
   throws_clause:
     type: unannotated_type
   try_expression:
-    $children: try_operator
     expr: expression
+    operator: try_operator
   try_operator:
   tuple_expression:
-    name*: simple_identifier
-    value+: expression
+    element+: tuple_expression_item
+  tuple_expression_item:
+    name?: simple_identifier
+    value: expression
+  tuple_pattern:
+    item+: tuple_pattern_item
+  tuple_pattern_item:
+    name?: simple_identifier
+    pattern: pattern
   tuple_type:
-    $children?: tuple_type_item
     element*: tuple_type_item
   tuple_type_item:
-    $children*: [dictionary_type, existential_type, opaque_type, parameter_modifiers, wildcard_pattern]
+    external_name?: wildcard_pattern
+    modifiers?: parameter_modifiers
     name?: simple_identifier
-    type?: type
+    type: [dictionary_type, existential_type, opaque_type, type]
   type:
     modifiers?: type_modifiers
     name: unannotated_type
   type_annotation:
     type: [implicitly_unwrapped_type, type]
   type_arguments:
-    $children+: type
+    argument+: type
+  type_casting_pattern:
+    pattern?: pattern
+    type: type
   type_constraint:
-    $children: [equality_constraint, inheritance_constraint]
+    constraint: [equality_constraint, inheritance_constraint]
   type_constraints:
-    $children+: [type_constraint, where_keyword]
+    constraint+: type_constraint
+    keyword: where_keyword
   type_identifier:
   type_modifiers:
-    $children+: attribute
+    attribute+: attribute
   type_pack_expansion:
-    $children: unannotated_type
+    name: unannotated_type
   type_parameter:
-    $children+: [type, type_identifier, type_parameter_modifiers, type_parameter_pack]
+    modifiers?: type_parameter_modifiers
+    name: [type_identifier, type_parameter_pack]
+    type?: type
   type_parameter_modifiers:
-    $children+: attribute
+    attribute+: attribute
   type_parameter_pack:
-    $children: unannotated_type
+    name: unannotated_type
   type_parameters:
-    $children+: [type_constraints, type_parameter]
+    constraints?: type_constraints
+    parameter+: type_parameter
   typealias_declaration:
-    $children*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier, type_parameters]
+    modifiers*: [attribute, inheritance_modifier, modifiers, ownership_modifier, property_behavior_modifier]
     name: type_identifier
+    type_parameters?: type_parameters
     value: type
   user_type:
-    $children+: [type_arguments, type_identifier]
+    part+: simple_user_type
   value_argument:
-    $children?: type_modifiers
     name?: value_argument_label
     reference_specifier*: value_argument_label
+    type_modifiers?: type_modifiers
     value?: expression
   value_argument_label:
-    $children: simple_identifier
+    name: simple_identifier
   value_arguments:
-    $children*: value_argument
+    argument*: value_argument
   value_binding_pattern:
     mutability: ["let", "var"]
   value_pack_expansion:
-    $children: expression
+    expr: expression
   value_parameter_pack:
-    $children: expression
+    expr: expression
   visibility_modifier:
   where_clause:
-    $children+: [expression, where_keyword]
+    expr: expression
+    keyword: where_keyword
   where_keyword:
   while_statement:
-    $children?: statements
+    body: block
     condition+: if_condition
   wildcard_pattern:
   willset_clause:
-    $children*: [modifiers, simple_identifier, statements]
+    body: block
+    modifiers?: modifiers
+    parameter?: simple_identifier
   willset_didset_block:
-    $children+: [didset_clause, willset_clause]
+    didset?: didset_clause
+    willset?: willset_clause
 
 unnamed:
   - "?"
@@ -645,6 +789,7 @@ unnamed:
   - "dsohandle"
   - "dynamic"
   - "each"
+  - "else"
   - "enum"
   - "extension"
   - "externalMacro"

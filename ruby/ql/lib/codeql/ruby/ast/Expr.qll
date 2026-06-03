@@ -167,6 +167,8 @@ class StmtSequence extends Expr, TStmtSequence {
  */
 class BodyStmt extends StmtSequence, TBodyStmt {
   final override Stmt getStmt(int n) {
+    synthChild(this, n, result)
+    or
     toGenerated(result) =
       rank[n + 1](Ruby::AstNode node, int i |
         node = getBodyStmtChild(this, i) and

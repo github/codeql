@@ -1,0 +1,250 @@
+===
+Addition
+===
+
+a + b
+
+---
+
+source_file
+  statement:
+    additive_expression
+      lhs: simple_identifier "a"
+      op: +
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+
+===
+Subtraction
+===
+
+a - b
+
+---
+
+source_file
+  statement:
+    additive_expression
+      lhs: simple_identifier "a"
+      op: -
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+
+===
+Multiplication
+===
+
+a * b
+
+---
+
+source_file
+  statement:
+    multiplicative_expression
+      lhs: simple_identifier "a"
+      op: *
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+
+===
+Division
+===
+
+a / b
+
+---
+
+source_file
+  statement:
+    multiplicative_expression
+      lhs: simple_identifier "a"
+      op: /
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+
+===
+Operator precedence: addition and multiplication
+===
+
+a + b * c
+
+---
+
+source_file
+  statement:
+    additive_expression
+      lhs: simple_identifier "a"
+      op: +
+      rhs:
+        multiplicative_expression
+          lhs: simple_identifier "b"
+          op: *
+          rhs: simple_identifier "c"
+
+---
+
+top_level
+  body:
+
+===
+Parenthesised expression
+===
+
+(a + b) * c
+
+---
+
+source_file
+  statement:
+    multiplicative_expression
+      lhs:
+        tuple_expression
+          element:
+            tuple_expression_item
+              value:
+                additive_expression
+                  lhs: simple_identifier "a"
+                  op: +
+                  rhs: simple_identifier "b"
+      op: *
+      rhs: simple_identifier "c"
+
+---
+
+top_level
+  body:
+
+===
+Comparison
+===
+
+a < b
+
+---
+
+source_file
+  statement:
+    comparison_expression
+      lhs: simple_identifier "a"
+      op: <
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+
+===
+Equality
+===
+
+a == b
+
+---
+
+source_file
+  statement:
+    equality_expression
+      lhs: simple_identifier "a"
+      op: ==
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+
+===
+Logical and
+===
+
+a && b
+
+---
+
+source_file
+  statement:
+    conjunction_expression
+      lhs: simple_identifier "a"
+      op: &&
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+
+===
+Logical or
+===
+
+a || b
+
+---
+
+source_file
+  statement:
+    disjunction_expression
+      lhs: simple_identifier "a"
+      op: ||
+      rhs: simple_identifier "b"
+
+---
+
+top_level
+  body:
+
+===
+Logical not
+===
+
+!a
+
+---
+
+source_file
+  statement:
+    prefix_expression
+      operation: bang "!"
+      target: simple_identifier "a"
+
+---
+
+top_level
+  body:
+
+===
+Range operator
+===
+
+1...10
+
+---
+
+source_file
+  statement:
+    range_expression
+      end: integer_literal "10"
+      op: ...
+      start: integer_literal "1"
+
+---
+
+top_level
+  body:

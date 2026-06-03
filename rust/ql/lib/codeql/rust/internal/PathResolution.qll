@@ -673,6 +673,38 @@ private class ConstItemNode extends AssocItemNode instanceof Const {
   override TypeParam getTypeParam(int i) { none() }
 }
 
+private class StaticItemNode extends ItemNode instanceof Static {
+  override string getName() { result = Static.super.getName().getText() }
+
+  override Namespace getNamespace() { result.isValue() }
+
+  override Visibility getVisibility() { result = Static.super.getVisibility() }
+
+  override Attr getAnAttr() { result = Static.super.getAnAttr() }
+
+  override TypeParam getTypeParam(int i) { none() }
+
+  override predicate hasCanonicalPath(Crate c) { this.hasCanonicalPathPrefix(c) }
+
+  bindingset[c]
+  private string getCanonicalPathPart(Crate c, int i) {
+    i = 0 and
+    result = this.getCanonicalPathPrefix(c)
+    or
+    i = 1 and
+    result = "::"
+    or
+    i = 2 and
+    result = this.getName()
+  }
+
+  language[monotonicAggregates]
+  override string getCanonicalPath(Crate c) {
+    this.hasCanonicalPath(c) and
+    result = strictconcat(int i | i in [0 .. 2] | this.getCanonicalPathPart(c, i) order by i)
+  }
+}
+
 private class TypeItemTypeItemNode extends NamedItemNode, TypeItemNode instanceof TypeItem {
   override string getName() { result = TypeItem.super.getName().getText() }
 

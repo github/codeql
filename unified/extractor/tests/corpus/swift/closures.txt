@@ -1,0 +1,238 @@
+===
+Closure with explicit parameters
+===
+
+let f = { (x: Int) -> Int in x * 2 }
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "f"
+          value:
+            lambda_literal
+              statement:
+                multiplicative_expression
+                  lhs: simple_identifier "x"
+                  op: *
+                  rhs: integer_literal "2"
+              type:
+                lambda_function_type
+                  params:
+                    lambda_function_type_parameters
+                      parameter:
+                        lambda_parameter
+                          name: simple_identifier "x"
+                          type:
+                            type
+                              name:
+                                user_type
+                                  part:
+                                    simple_user_type
+                                      name: type_identifier "Int"
+                  return_type:
+                    type
+                      name:
+                        user_type
+                          part:
+                            simple_user_type
+                              name: type_identifier "Int"
+
+---
+
+top_level
+  body:
+
+===
+Closure with shorthand parameters
+===
+
+let f = { $0 + $1 }
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "f"
+          value:
+            lambda_literal
+              statement:
+                additive_expression
+                  lhs: simple_identifier "$0"
+                  op: +
+                  rhs: simple_identifier "$1"
+
+---
+
+top_level
+  body:
+
+===
+Trailing closure
+===
+
+xs.map { $0 * 2 }
+
+---
+
+source_file
+  statement:
+    call_expression
+      function:
+        navigation_expression
+          suffix:
+            navigation_suffix
+              suffix: simple_identifier "map"
+          target: simple_identifier "xs"
+      suffix:
+        call_suffix
+          lambda:
+            lambda_literal
+              statement:
+                multiplicative_expression
+                  lhs: simple_identifier "$0"
+                  op: *
+                  rhs: integer_literal "2"
+
+---
+
+top_level
+  body:
+
+===
+Closure with capture list
+===
+
+let f = { [weak self] in self?.doThing() }
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "f"
+          value:
+            lambda_literal
+              captures:
+                capture_list
+                  item:
+                    capture_list_item
+                      name: simple_identifier "self"
+                      ownership:
+                        ownership_modifier
+              statement:
+                call_expression
+                  function:
+                    navigation_expression
+                      suffix:
+                        navigation_suffix
+                          suffix: simple_identifier "doThing"
+                      target:
+                        optional_chain_marker
+                          expr:
+                            self_expression
+                  suffix:
+                    call_suffix
+                      arguments:
+                        value_arguments
+
+---
+
+top_level
+  body:
+
+===
+Multi-statement closure
+===
+
+let f = { (x: Int) -> Int in
+  let y = x + 1
+  return y * 2
+}
+
+---
+
+source_file
+  statement:
+    property_declaration
+      binding:
+        value_binding_pattern
+          mutability: let
+      declarator:
+        property_binding
+          name:
+            pattern
+              bound_identifier: simple_identifier "f"
+          value:
+            lambda_literal
+              statement:
+                property_declaration
+                  binding:
+                    value_binding_pattern
+                      mutability: let
+                  declarator:
+                    property_binding
+                      name:
+                        pattern
+                          bound_identifier: simple_identifier "y"
+                      value:
+                        additive_expression
+                          lhs: simple_identifier "x"
+                          op: +
+                          rhs: integer_literal "1"
+                control_transfer_statement
+                  kind: return
+                  result:
+                    multiplicative_expression
+                      lhs: simple_identifier "y"
+                      op: *
+                      rhs: integer_literal "2"
+              type:
+                lambda_function_type
+                  params:
+                    lambda_function_type_parameters
+                      parameter:
+                        lambda_parameter
+                          name: simple_identifier "x"
+                          type:
+                            type
+                              name:
+                                user_type
+                                  part:
+                                    simple_user_type
+                                      name: type_identifier "Int"
+                  return_type:
+                    type
+                      name:
+                        user_type
+                          part:
+                            simple_user_type
+                              name: type_identifier "Int"
+
+---
+
+top_level
+  body:

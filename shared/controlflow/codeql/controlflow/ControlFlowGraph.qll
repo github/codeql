@@ -95,6 +95,9 @@ signature module AstSig<LocationSig Location> {
     Stmt getElse();
   }
 
+  /** Gets the initializer of `if` statement `ifstmt`, if any. */
+  default AstNode getIfInit(IfStmt ifstmt) { none() }
+
   /**
    * A loop statement. Loop statements are further subclassed into specific
    * types of loops.
@@ -1509,6 +1512,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         exists(IfStmt ifstmt |
           n1.isBefore(ifstmt) and
+          (
+            n2.isBefore(getIfInit(ifstmt))
+            or
+            not exists(getIfInit(ifstmt)) and n2.isBefore(ifstmt.getCondition())
+          )
+          or
+          n1.isAfter(getIfInit(ifstmt)) and
           n2.isBefore(ifstmt.getCondition())
           or
           n1.isAfterTrue(ifstmt.getCondition()) and

@@ -15,7 +15,7 @@ attribute_macros
 | macro_expansion.rs:31:5:34:5 | (item with attribute macro expansion) | 1 | macro_expansion.rs:32:5:34:5 | fn bzz_1 |
 | macro_expansion.rs:31:5:34:5 | (item with attribute macro expansion) | 2 | macro_expansion.rs:32:5:34:5 | fn bzz_2 |
 derive_macros
-| macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 0 | macro_expansion.rs:99:7:99:19 | Const |
+| macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 0 | macro_expansion.rs:99:7:99:19 | const CONST_MyDeriveUnion |
 | macro_expansion.rs:98:1:102:1 | union MyDeriveUnion | 0 | 1 | macro_expansion.rs:99:7:99:19 | impl MyTrait for MyDeriveUnion { ... } |
 macro_calls
 | macro_expansion.rs:5:9:5:35 | concat!... | macro_expansion.rs:5:17:5:34 | "Hello world!" |

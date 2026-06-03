@@ -11,9 +11,7 @@ import codeql.ruby.controlflow.internal.ControlFlowGraphImpl as CfgImpl
 query predicate nonPostOrderExpr(Expr e, string cls) {
   cls = e.getPrimaryQlClasses() and
   not exists(e.getDesugared()) and
-  not e instanceof BeginExpr and
-  not e instanceof Namespace and
-  not e instanceof Toplevel and
+  not e instanceof BodyStmt and
   exists(AstNode last, Completion c |
     CfgImpl::last(e, last, c) and
     last != e and
@@ -27,7 +25,7 @@ query predicate scopeNoFirst(CfgScope scope) {
   not scope =
     any(Callable c |
       not exists(c.getAParameter()) and
-      not c.(BodyStmt).hasEnsure() and
-      not exists(c.(BodyStmt).getARescue())
+      not c.getBody().hasEnsure() and
+      not exists(c.getBody().getARescue())
     )
 }

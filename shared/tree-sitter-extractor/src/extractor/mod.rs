@@ -330,7 +330,7 @@ pub fn extract(
 
     if let Some(yeast_runner) = yeast_runner {
         let ast = yeast_runner
-            .run_from_tree(&tree)
+            .run_from_tree(&tree, source)
             .unwrap_or_else(|e| panic!("Desugaring failed for {path_str}: {e}"));
         traverse_yeast(&ast, &mut visitor);
     } else {
