@@ -30,16 +30,16 @@ edges
 | stdlib.go:71:23:71:37 | ...+... | stdlib.go:71:23:71:40 | ...+... | provenance | Config Sink:MaD:1 |
 | stdlib.go:93:13:93:18 | selection of Form | stdlib.go:93:13:93:32 | call to Get | provenance | Src:MaD:2 Config |
 | stdlib.go:93:13:93:32 | call to Get | stdlib.go:94:3:94:8 | target | provenance |  |
-| stdlib.go:94:3:94:8 | target | stdlib.go:94:3:94:25 | ... += ... | provenance | Config |
-| stdlib.go:94:3:94:25 | ... += ... | stdlib.go:96:23:96:28 | target | provenance | Sink:MaD:1 |
-| stdlib.go:116:4:116:4 | implicit dereference [postupdate] [URL] | stdlib.go:116:4:116:4 | r [postupdate] [pointer, URL] | provenance |  |
+| stdlib.go:94:3:94:8 | target | stdlib.go:94:3:94:25 | compound-rhs ... += ... | provenance | Config |
+| stdlib.go:94:3:94:25 | compound-rhs ... += ... | stdlib.go:96:23:96:28 | target | provenance | Sink:MaD:1 |
+| stdlib.go:116:4:116:4 | implicit-deref r [postupdate] [URL] | stdlib.go:116:4:116:4 | r [postupdate] [pointer, URL] | provenance |  |
 | stdlib.go:116:4:116:4 | r [postupdate] [pointer, URL] | stdlib.go:117:24:117:24 | r [pointer, URL] | provenance |  |
-| stdlib.go:116:4:116:8 | implicit dereference | stdlib.go:116:4:116:8 | selection of URL [postupdate] | provenance | Config |
-| stdlib.go:116:4:116:8 | selection of URL | stdlib.go:116:4:116:8 | implicit dereference | provenance | Src:MaD:4 Config |
-| stdlib.go:116:4:116:8 | selection of URL [postupdate] | stdlib.go:116:4:116:4 | implicit dereference [postupdate] [URL] | provenance |  |
-| stdlib.go:116:4:116:8 | selection of URL [postupdate] | stdlib.go:116:4:116:8 | implicit dereference | provenance | Config |
-| stdlib.go:117:24:117:24 | implicit dereference [URL] | stdlib.go:117:24:117:28 | selection of URL | provenance |  |
-| stdlib.go:117:24:117:24 | r [pointer, URL] | stdlib.go:117:24:117:24 | implicit dereference [URL] | provenance |  |
+| stdlib.go:116:4:116:8 | implicit-deref selection of URL | stdlib.go:116:4:116:8 | selection of URL [postupdate] | provenance | Config |
+| stdlib.go:116:4:116:8 | selection of URL | stdlib.go:116:4:116:8 | implicit-deref selection of URL | provenance | Src:MaD:4 Config |
+| stdlib.go:116:4:116:8 | selection of URL [postupdate] | stdlib.go:116:4:116:4 | implicit-deref r [postupdate] [URL] | provenance |  |
+| stdlib.go:116:4:116:8 | selection of URL [postupdate] | stdlib.go:116:4:116:8 | implicit-deref selection of URL | provenance | Config |
+| stdlib.go:117:24:117:24 | implicit-deref r [URL] | stdlib.go:117:24:117:28 | selection of URL | provenance |  |
+| stdlib.go:117:24:117:24 | r [pointer, URL] | stdlib.go:117:24:117:24 | implicit-deref r [URL] | provenance |  |
 | stdlib.go:117:24:117:28 | selection of URL | stdlib.go:117:24:117:37 | call to String | provenance | Src:MaD:4 Config Sink:MaD:1 |
 | stdlib.go:150:13:150:18 | selection of Form | stdlib.go:150:13:150:32 | call to Get | provenance | Src:MaD:2 Config |
 | stdlib.go:150:13:150:32 | call to Get | stdlib.go:156:23:156:28 | target | provenance | Sink:MaD:1 |
@@ -51,42 +51,42 @@ edges
 | stdlib.go:177:35:177:39 | selection of URL | stdlib.go:177:35:177:52 | call to RequestURI | provenance | Src:MaD:4 Config |
 | stdlib.go:177:35:177:52 | call to RequestURI | stdlib.go:177:24:177:52 | ...+... | provenance | Config Sink:MaD:1 |
 | stdlib.go:186:13:186:33 | call to FormValue | stdlib.go:188:23:188:28 | target | provenance | Src:MaD:3 Sink:MaD:1 |
-| stdlib.go:194:3:194:57 | ... := ...[0] | stdlib.go:196:23:196:28 | target | provenance |  |
-| stdlib.go:194:36:194:56 | call to FormValue | stdlib.go:194:3:194:57 | ... := ...[0] | provenance | Src:MaD:3 Config |
-| stdlib.go:196:23:196:28 | implicit dereference | stdlib.go:196:23:196:28 | target [postupdate] | provenance | Config |
-| stdlib.go:196:23:196:28 | implicit dereference | stdlib.go:196:23:196:33 | selection of Path | provenance | Config Sink:MaD:1 |
-| stdlib.go:196:23:196:28 | target | stdlib.go:196:23:196:28 | implicit dereference | provenance | Config |
+| stdlib.go:194:3:194:57 | extract:0 ... := ... | stdlib.go:196:23:196:28 | target | provenance |  |
+| stdlib.go:194:36:194:56 | call to FormValue | stdlib.go:194:3:194:57 | extract:0 ... := ... | provenance | Src:MaD:3 Config |
+| stdlib.go:196:23:196:28 | implicit-deref target | stdlib.go:196:23:196:28 | target [postupdate] | provenance | Config |
+| stdlib.go:196:23:196:28 | implicit-deref target | stdlib.go:196:23:196:33 | selection of Path | provenance | Config Sink:MaD:1 |
+| stdlib.go:196:23:196:28 | target | stdlib.go:196:23:196:28 | implicit-deref target | provenance | Config |
 | stdlib.go:196:23:196:28 | target | stdlib.go:196:23:196:33 | selection of Path | provenance | Config Sink:MaD:1 |
 | stdlib.go:196:23:196:28 | target | stdlib.go:198:23:198:28 | target | provenance |  |
-| stdlib.go:196:23:196:28 | target [postupdate] | stdlib.go:196:23:196:28 | implicit dereference | provenance | Config |
+| stdlib.go:196:23:196:28 | target [postupdate] | stdlib.go:196:23:196:28 | implicit-deref target | provenance | Config |
 | stdlib.go:196:23:196:28 | target [postupdate] | stdlib.go:198:23:198:28 | target | provenance |  |
 | stdlib.go:198:23:198:28 | target | stdlib.go:198:23:198:42 | call to EscapedPath | provenance | Config Sink:MaD:1 |
-| stdlib.go:210:3:210:3 | implicit dereference [postupdate] | stdlib.go:210:3:210:3 | u [postupdate] | provenance | Config |
-| stdlib.go:210:3:210:3 | implicit dereference [postupdate] | stdlib.go:210:3:210:3 | u [postupdate] [pointer] | provenance |  |
+| stdlib.go:210:3:210:3 | implicit-deref u [postupdate] | stdlib.go:210:3:210:3 | u [postupdate] | provenance | Config |
+| stdlib.go:210:3:210:3 | implicit-deref u [postupdate] | stdlib.go:210:3:210:3 | u [postupdate] [pointer] | provenance |  |
 | stdlib.go:210:3:210:3 | u [postupdate] | stdlib.go:212:23:212:23 | u | provenance |  |
 | stdlib.go:210:3:210:3 | u [postupdate] [pointer] | stdlib.go:212:23:212:23 | u [pointer] | provenance |  |
-| stdlib.go:210:12:210:30 | call to FormValue | stdlib.go:210:3:210:3 | implicit dereference [postupdate] | provenance | Src:MaD:3 Config |
+| stdlib.go:210:12:210:30 | call to FormValue | stdlib.go:210:3:210:3 | implicit-deref u [postupdate] | provenance | Src:MaD:3 Config |
 | stdlib.go:210:12:210:30 | call to FormValue | stdlib.go:210:3:210:3 | u [postupdate] | provenance | Src:MaD:3 Config |
-| stdlib.go:212:23:212:23 | implicit dereference | stdlib.go:212:23:212:23 | u [postupdate] | provenance | Config |
-| stdlib.go:212:23:212:23 | implicit dereference | stdlib.go:212:23:212:28 | selection of Path | provenance | Config Sink:MaD:1 |
-| stdlib.go:212:23:212:23 | u | stdlib.go:212:23:212:23 | implicit dereference | provenance | Config |
+| stdlib.go:212:23:212:23 | implicit-deref u | stdlib.go:212:23:212:23 | u [postupdate] | provenance | Config |
+| stdlib.go:212:23:212:23 | implicit-deref u | stdlib.go:212:23:212:28 | selection of Path | provenance | Config Sink:MaD:1 |
+| stdlib.go:212:23:212:23 | u | stdlib.go:212:23:212:23 | implicit-deref u | provenance | Config |
 | stdlib.go:212:23:212:23 | u | stdlib.go:212:23:212:28 | selection of Path | provenance | Config Sink:MaD:1 |
 | stdlib.go:212:23:212:23 | u | stdlib.go:214:23:214:23 | u | provenance |  |
-| stdlib.go:212:23:212:23 | u [pointer] | stdlib.go:212:23:212:23 | implicit dereference | provenance |  |
-| stdlib.go:212:23:212:23 | u [postupdate] | stdlib.go:212:23:212:23 | implicit dereference | provenance | Config |
+| stdlib.go:212:23:212:23 | u [pointer] | stdlib.go:212:23:212:23 | implicit-deref u | provenance |  |
+| stdlib.go:212:23:212:23 | u [postupdate] | stdlib.go:212:23:212:23 | implicit-deref u | provenance | Config |
 | stdlib.go:212:23:212:23 | u [postupdate] | stdlib.go:214:23:214:23 | u | provenance |  |
 | stdlib.go:214:23:214:23 | u | stdlib.go:214:23:214:32 | call to String | provenance | Config Sink:MaD:1 |
-| stdlib.go:257:3:257:3 | implicit dereference [postupdate] | stdlib.go:257:3:257:3 | u [postupdate] | provenance | Config |
-| stdlib.go:257:3:257:3 | implicit dereference [postupdate] | stdlib.go:257:3:257:3 | u [postupdate] [pointer] | provenance |  |
+| stdlib.go:257:3:257:3 | implicit-deref u [postupdate] | stdlib.go:257:3:257:3 | u [postupdate] | provenance | Config |
+| stdlib.go:257:3:257:3 | implicit-deref u [postupdate] | stdlib.go:257:3:257:3 | u [postupdate] [pointer] | provenance |  |
 | stdlib.go:257:3:257:3 | u [postupdate] | stdlib.go:260:3:260:3 | u | provenance |  |
 | stdlib.go:257:3:257:3 | u [postupdate] [pointer] | stdlib.go:260:3:260:3 | u [pointer] | provenance |  |
-| stdlib.go:257:12:257:30 | call to FormValue | stdlib.go:257:3:257:3 | implicit dereference [postupdate] | provenance | Src:MaD:3 Config |
+| stdlib.go:257:12:257:30 | call to FormValue | stdlib.go:257:3:257:3 | implicit-deref u [postupdate] | provenance | Src:MaD:3 Config |
 | stdlib.go:257:12:257:30 | call to FormValue | stdlib.go:257:3:257:3 | u [postupdate] | provenance | Src:MaD:3 Config |
-| stdlib.go:260:3:260:3 | implicit dereference | stdlib.go:260:3:260:3 | u [postupdate] | provenance | Config |
-| stdlib.go:260:3:260:3 | u | stdlib.go:260:3:260:3 | implicit dereference | provenance | Config |
+| stdlib.go:260:3:260:3 | implicit-deref u | stdlib.go:260:3:260:3 | u [postupdate] | provenance | Config |
+| stdlib.go:260:3:260:3 | u | stdlib.go:260:3:260:3 | implicit-deref u | provenance | Config |
 | stdlib.go:260:3:260:3 | u | stdlib.go:261:23:261:23 | u | provenance |  |
-| stdlib.go:260:3:260:3 | u [pointer] | stdlib.go:260:3:260:3 | implicit dereference | provenance |  |
-| stdlib.go:260:3:260:3 | u [postupdate] | stdlib.go:260:3:260:3 | implicit dereference | provenance | Config |
+| stdlib.go:260:3:260:3 | u [pointer] | stdlib.go:260:3:260:3 | implicit-deref u | provenance |  |
+| stdlib.go:260:3:260:3 | u [postupdate] | stdlib.go:260:3:260:3 | implicit-deref u | provenance | Config |
 | stdlib.go:260:3:260:3 | u [postupdate] | stdlib.go:261:23:261:23 | u | provenance |  |
 | stdlib.go:261:23:261:23 | u | stdlib.go:261:23:261:32 | call to String | provenance | Config Sink:MaD:1 |
 models
@@ -118,14 +118,14 @@ nodes
 | stdlib.go:93:13:93:18 | selection of Form | semmle.label | selection of Form |
 | stdlib.go:93:13:93:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:94:3:94:8 | target | semmle.label | target |
-| stdlib.go:94:3:94:25 | ... += ... | semmle.label | ... += ... |
+| stdlib.go:94:3:94:25 | compound-rhs ... += ... | semmle.label | compound-rhs ... += ... |
 | stdlib.go:96:23:96:28 | target | semmle.label | target |
-| stdlib.go:116:4:116:4 | implicit dereference [postupdate] [URL] | semmle.label | implicit dereference [postupdate] [URL] |
+| stdlib.go:116:4:116:4 | implicit-deref r [postupdate] [URL] | semmle.label | implicit-deref r [postupdate] [URL] |
 | stdlib.go:116:4:116:4 | r [postupdate] [pointer, URL] | semmle.label | r [postupdate] [pointer, URL] |
-| stdlib.go:116:4:116:8 | implicit dereference | semmle.label | implicit dereference |
+| stdlib.go:116:4:116:8 | implicit-deref selection of URL | semmle.label | implicit-deref selection of URL |
 | stdlib.go:116:4:116:8 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:116:4:116:8 | selection of URL [postupdate] | semmle.label | selection of URL [postupdate] |
-| stdlib.go:117:24:117:24 | implicit dereference [URL] | semmle.label | implicit dereference [URL] |
+| stdlib.go:117:24:117:24 | implicit-deref r [URL] | semmle.label | implicit-deref r [URL] |
 | stdlib.go:117:24:117:24 | r [pointer, URL] | semmle.label | r [pointer, URL] |
 | stdlib.go:117:24:117:28 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:117:24:117:37 | call to String | semmle.label | call to String |
@@ -142,30 +142,30 @@ nodes
 | stdlib.go:177:35:177:52 | call to RequestURI | semmle.label | call to RequestURI |
 | stdlib.go:186:13:186:33 | call to FormValue | semmle.label | call to FormValue |
 | stdlib.go:188:23:188:28 | target | semmle.label | target |
-| stdlib.go:194:3:194:57 | ... := ...[0] | semmle.label | ... := ...[0] |
+| stdlib.go:194:3:194:57 | extract:0 ... := ... | semmle.label | extract:0 ... := ... |
 | stdlib.go:194:36:194:56 | call to FormValue | semmle.label | call to FormValue |
-| stdlib.go:196:23:196:28 | implicit dereference | semmle.label | implicit dereference |
+| stdlib.go:196:23:196:28 | implicit-deref target | semmle.label | implicit-deref target |
 | stdlib.go:196:23:196:28 | target | semmle.label | target |
 | stdlib.go:196:23:196:28 | target [postupdate] | semmle.label | target [postupdate] |
 | stdlib.go:196:23:196:33 | selection of Path | semmle.label | selection of Path |
 | stdlib.go:198:23:198:28 | target | semmle.label | target |
 | stdlib.go:198:23:198:42 | call to EscapedPath | semmle.label | call to EscapedPath |
-| stdlib.go:210:3:210:3 | implicit dereference [postupdate] | semmle.label | implicit dereference [postupdate] |
+| stdlib.go:210:3:210:3 | implicit-deref u [postupdate] | semmle.label | implicit-deref u [postupdate] |
 | stdlib.go:210:3:210:3 | u [postupdate] | semmle.label | u [postupdate] |
 | stdlib.go:210:3:210:3 | u [postupdate] [pointer] | semmle.label | u [postupdate] [pointer] |
 | stdlib.go:210:12:210:30 | call to FormValue | semmle.label | call to FormValue |
-| stdlib.go:212:23:212:23 | implicit dereference | semmle.label | implicit dereference |
+| stdlib.go:212:23:212:23 | implicit-deref u | semmle.label | implicit-deref u |
 | stdlib.go:212:23:212:23 | u | semmle.label | u |
 | stdlib.go:212:23:212:23 | u [pointer] | semmle.label | u [pointer] |
 | stdlib.go:212:23:212:23 | u [postupdate] | semmle.label | u [postupdate] |
 | stdlib.go:212:23:212:28 | selection of Path | semmle.label | selection of Path |
 | stdlib.go:214:23:214:23 | u | semmle.label | u |
 | stdlib.go:214:23:214:32 | call to String | semmle.label | call to String |
-| stdlib.go:257:3:257:3 | implicit dereference [postupdate] | semmle.label | implicit dereference [postupdate] |
+| stdlib.go:257:3:257:3 | implicit-deref u [postupdate] | semmle.label | implicit-deref u [postupdate] |
 | stdlib.go:257:3:257:3 | u [postupdate] | semmle.label | u [postupdate] |
 | stdlib.go:257:3:257:3 | u [postupdate] [pointer] | semmle.label | u [postupdate] [pointer] |
 | stdlib.go:257:12:257:30 | call to FormValue | semmle.label | call to FormValue |
-| stdlib.go:260:3:260:3 | implicit dereference | semmle.label | implicit dereference |
+| stdlib.go:260:3:260:3 | implicit-deref u | semmle.label | implicit-deref u |
 | stdlib.go:260:3:260:3 | u | semmle.label | u |
 | stdlib.go:260:3:260:3 | u [pointer] | semmle.label | u [pointer] |
 | stdlib.go:260:3:260:3 | u [postupdate] | semmle.label | u [postupdate] |
