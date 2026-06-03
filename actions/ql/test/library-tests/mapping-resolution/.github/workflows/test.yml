@@ -1,0 +1,32 @@
+name: Test Mapping Resolution
+
+on:
+  push:
+
+jobs:
+  test-simple:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call external action v1
+        uses: TestOrg/TestAction@v1
+        with:
+          message: "hello from v1"
+
+      - name: Call external action v2
+        uses: TestOrg/TestAction@v2
+        with:
+          message: "hello from v2"
+
+  test-subpath:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call sub-path action
+        uses: TestOrg/TestAction-Sub/sub-action@main
+        with:
+          path: "./my-cache"
+
+  test-legacy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call legacy action (no mapping.yaml entry)
+        uses: LegacyOrg/LegacyAction@v1

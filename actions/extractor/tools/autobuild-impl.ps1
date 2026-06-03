@@ -8,6 +8,8 @@ $DefaultPathFilters = @(
     'include:.github/workflows/*.yaml',
     'include:.github/reusable_workflows/**/*.yml',
     'include:.github/reusable_workflows/**/*.yaml',
+    'include:.github/actions/external/mapping.yaml',
+    'include:.github/workflows/external/mapping.yaml',
     'include:**/action.yml',
     'include:**/action.yaml'
 )
