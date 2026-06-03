@@ -188,7 +188,9 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(DataFlow::Content c | c = contentSet.getAReadContent() |
       c instanceof DataFlow::TupleElementContent or
       c instanceof DataFlow::DictionaryElementContent or
-      c instanceof DataFlow::DictionaryElementAnyContent
+      c instanceof DataFlow::DictionaryElementAnyContent or
+      c instanceof DataFlow::ListElementContent or
+      c instanceof DataFlow::SetElementContent
     )
   )
 }

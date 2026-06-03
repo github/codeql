@@ -4983,10 +4983,6 @@ module StdlibPrivate {
         // For code like `" ".join([name])`
         input = "Argument[0,iterable:].ListElement" and
         preservesValue = true
-        or
-        // For code like `" ".join(name)`
-        input = "Argument[0,iterable:]" and
-        preservesValue = false
       ) and
       output = "ReturnValue"
     }
