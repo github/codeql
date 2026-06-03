@@ -13,24 +13,25 @@
 
 import python
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
-predicate originIsLocals(ControlFlowNode n) {
+predicate originIsLocals(Cfg::ControlFlowNode n) {
   API::builtin("locals").getReturn().getAValueReachableFromSource().asCfgNode() = n
 }
 
-predicate modification_of_locals(ControlFlowNode f) {
-  originIsLocals(f.(SubscriptNode).getObject()) and
+predicate modification_of_locals(Cfg::ControlFlowNode f) {
+  originIsLocals(f.(Cfg::SubscriptNode).getObject()) and
   (f.isStore() or f.isDelete())
   or
-  exists(string mname, AttrNode attr |
-    attr = f.(CallNode).getFunction() and
+  exists(string mname, Cfg::AttrNode attr |
+    attr = f.(Cfg::CallNode).getFunction() and
     originIsLocals(attr.getObject(mname))
   |
     mname in ["pop", "popitem", "update", "clear"]
   )
 }
 
-from AstNode a, ControlFlowNode f
+from AstNode a, Cfg::ControlFlowNode f
 where
   modification_of_locals(f) and
   a = f.getNode() and

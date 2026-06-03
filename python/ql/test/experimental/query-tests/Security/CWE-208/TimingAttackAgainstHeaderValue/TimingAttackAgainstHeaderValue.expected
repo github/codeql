@@ -1,6 +1,6 @@
 edges
 nodes
-| TimingAttackAgainstHeader.py:14:12:14:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+| TimingAttackAgainstHeader.py:14:12:14:46 | After Attribute() | semmle.label | After Attribute() |
 subpaths
 #select
-| TimingAttackAgainstHeader.py:14:12:14:46 | ControlFlowNode for Attribute() | TimingAttackAgainstHeader.py:14:12:14:46 | ControlFlowNode for Attribute() | TimingAttackAgainstHeader.py:14:12:14:46 | ControlFlowNode for Attribute() | Timing attack against $@ validation. | TimingAttackAgainstHeader.py:14:12:14:46 | ControlFlowNode for Attribute() | client-supplied token |
+| TimingAttackAgainstHeader.py:14:12:14:46 | After Attribute() | TimingAttackAgainstHeader.py:14:12:14:46 | After Attribute() | TimingAttackAgainstHeader.py:14:12:14:46 | After Attribute() | Timing attack against $@ validation. | TimingAttackAgainstHeader.py:14:12:14:46 | After Attribute() | client-supplied token |

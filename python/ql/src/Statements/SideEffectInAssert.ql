@@ -14,6 +14,7 @@
 
 import python
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 predicate func_with_side_effects(Expr e) {
   exists(string name | name = e.(Attribute).getName() or name = e.(Name).getId() |
@@ -24,11 +25,13 @@ predicate func_with_side_effects(Expr e) {
 }
 
 predicate call_with_side_effect(Call e) {
-  e.getAFlowNode() =
-    API::moduleImport("subprocess")
-        .getMember(["call", "check_call", "check_output"])
-        .getACall()
-        .asCfgNode()
+  exists(Cfg::ControlFlowNode eCfg | eCfg.getNode() = e |
+    eCfg =
+      API::moduleImport("subprocess")
+          .getMember(["call", "check_call", "check_output"])
+          .getACall()
+          .asCfgNode()
+  )
 }
 
 predicate probable_side_effect(Expr e) {

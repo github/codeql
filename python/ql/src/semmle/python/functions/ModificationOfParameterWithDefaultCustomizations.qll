@@ -6,6 +6,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.BarrierGuards
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -76,7 +77,7 @@ module ModificationOfParameterWithDefault {
     boolean nonEmpty;
 
     MutableDefaultValue() {
-      nonEmpty = mutableDefaultValue(this.asCfgNode().(NameNode).getNode()) and
+      nonEmpty = mutableDefaultValue(this.asCfgNode().(Cfg::NameNode).getNode()) and
       // Ignore sources inside the standard library. These are unlikely to be true positives.
       exists(this.getLocation().getFile().getRelativePath())
     }
@@ -125,13 +126,13 @@ module ModificationOfParameterWithDefault {
   class Mutation extends Sink {
     Mutation() {
       // assignment to a subscript (includes slices)
-      exists(DefinitionNode d | d.(SubscriptNode).getObject() = this.asCfgNode())
+      exists(Cfg::DefinitionNode d | d.(Cfg::SubscriptNode).getObject() = this.asCfgNode())
       or
       // deletion of a subscript
-      exists(DeletionNode d | d.getTarget().(SubscriptNode).getObject() = this.asCfgNode())
+      exists(Cfg::DeletionNode d | d.(Cfg::SubscriptNode).getObject() = this.asCfgNode())
       or
       // augmented assignment to the value
-      exists(AugAssign a | a.getTarget().getAFlowNode() = this.asCfgNode())
+      exists(AugAssign a | this.asCfgNode().getNode() = a.getTarget())
       or
       // modifying function call
       exists(DataFlow::CallCfgNode c, DataFlow::AttrRead a | c.getFunction() = a |
@@ -141,54 +142,33 @@ module ModificationOfParameterWithDefault {
     }
   }
 
-  // This to reimplement some of the functionality of the DataFlow::BarrierGuard
-  private import semmle.python.essa.SsaCompute
-
   /**
-   * A data-flow node that is known to be either truthy or falsey.
+   * Holds if `g` validates `node` as truthy when evaluating to `branch`.
    *
-   * It handles the cases `if x` and `if not x`.
-   *
-   * For example, in the following code, `this` will be the `x` that is printed,
-   * which we will know is truthy:
-   *
-   * ```py
-   * if x:
-   *     print(x)
-   * ```
+   * The new shared CFG's `GuardNode`/`outcomeOfGuard` already unwraps
+   * `not x` wrappers, so we only need the direct case: a guard `g`
+   * controls a block where the guarded value (also `g`) is known to
+   * have the matching truthiness for the taken branch.
    */
-  private class MustBe extends DataFlow::Node {
-    boolean truthy;
-
-    MustBe() {
-      exists(DataFlow::GuardNode guard, NameNode guarded, boolean branch |
-        // case: if x
-        guard = guarded and
-        branch = truthy
-        or
-        // case: if not x
-        guard.(UnaryExprNode).getNode().getOp() instanceof Not and
-        guarded = guard.(UnaryExprNode).getOperand() and
-        branch = truthy.booleanNot()
-      |
-        // guard controls this
-        guard.controlsBlock(this.asCfgNode().getBasicBlock(), branch) and
-        // there is a definition tying the guarded value to this
-        exists(EssaDefinition def |
-          AdjacentUses::useOfDef(def, this.asCfgNode()) and
-          AdjacentUses::useOfDef(def, guarded)
-        )
-      )
-    }
+  private predicate truthinessGuard(DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch) {
+    node = g and branch in [true, false]
   }
 
   /** Simple guard detecting truthy values. */
-  private class MustBeTruthy extends MustBe, MustBeNonEmpty {
-    MustBeTruthy() { truthy = true }
+  private class MustBeTruthy extends MustBeNonEmpty {
+    MustBeTruthy() {
+      this = DataFlow::BarrierGuard<truthinessGuard/3>::getABarrierNode() and
+      // truthy = true branch
+      exists(DataFlow::GuardNode g | g.controlsBlock(this.asCfgNode().getBasicBlock(), true))
+    }
   }
 
   /** Simple guard detecting falsey values. */
-  private class MustBeFalsey extends MustBe, MustBeEmpty {
-    MustBeFalsey() { truthy = false }
+  private class MustBeFalsey extends MustBeEmpty {
+    MustBeFalsey() {
+      this = DataFlow::BarrierGuard<truthinessGuard/3>::getABarrierNode() and
+      // truthy = false branch
+      exists(DataFlow::GuardNode g | g.controlsBlock(this.asCfgNode().getBasicBlock(), false))
+    }
   }
 }

@@ -55,6 +55,7 @@ module;
 
 private import python
 private import DataFlowPublic
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * Holds when there is flow from the subject `nodeFrom` to the (top-level) pattern `nodeTo` of a `match` statement.
@@ -91,8 +92,8 @@ predicate matchAsFlowStep(Node nodeFrom, Node nodeTo) {
     or
     // the interior pattern flows to the alias
     nodeFrom.(CfgNode).getNode().getNode() = subject.getPattern() and
-    exists(PatternAliasDefinition pad | pad.getDefiningNode().getNode() = alias |
-      nodeTo.(CfgNode).getNode() = pad.getDefiningNode()
+    exists(Cfg::ControlFlowNode aliasCfg | aliasCfg.getNode() = alias |
+      nodeTo.(CfgNode).getNode() = aliasCfg
     )
   )
 }
@@ -126,8 +127,8 @@ predicate matchLiteralFlowStep(Node nodeFrom, Node nodeTo) {
 predicate matchCaptureFlowStep(Node nodeFrom, Node nodeTo) {
   exists(MatchCapturePattern capture, Name var | capture.getVariable() = var |
     nodeFrom.(CfgNode).getNode().getNode() = capture and
-    exists(PatternCaptureDefinition pcd | pcd.getDefiningNode().getNode() = var |
-      nodeTo.(CfgNode).getNode() = pcd.getDefiningNode()
+    exists(Cfg::ControlFlowNode varCfg | varCfg.getNode() = var |
+      nodeTo.(CfgNode).getNode() = varCfg
     )
   )
 }

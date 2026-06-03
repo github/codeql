@@ -16,17 +16,6 @@ abstract class AstNode extends AstNode_ {
   /** Gets the scope that this node occurs in */
   abstract Scope getScope();
 
-  /**
-   * Gets a flow node corresponding directly to this node.
-   * NOTE: For some statements and other purely syntactic elements,
-   * there may not be a `ControlFlowNode`
-   */
-  cached
-  ControlFlowNode getAFlowNode() {
-    Stages::AST::ref() and
-    py_flow_bb_node(result, this, _, _)
-  }
-
   /** Gets the location for this AST node */
   cached
   Location getLocation() { none() }

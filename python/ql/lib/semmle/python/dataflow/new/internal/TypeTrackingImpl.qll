@@ -2,6 +2,8 @@ import codeql.util.Unit
 import codeql.typetracking.TypeTracking as Shared
 import codeql.typetracking.internal.TypeTrackingImpl as SharedImpl
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 private import semmle.python.internal.CachedStages
 private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
@@ -94,8 +96,10 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   Node returnOf(Node callable, SummaryComponent return) {
     return = FlowSummaryImpl::Private::SummaryComponent::return() and
     // `result` should be the return value of a callable expression (lambda or function) referenced by `callable`
-    result.asCfgNode() =
-      callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getAReturnValueFlowNode()
+    exists(Return ret |
+      ret.getScope() = callable.getALocalSource().asExpr().(CallableExpr).getInnerScope() and
+      result.asCfgNode().getNode() = ret.getValue()
+    )
   }
 
   // Relating callables to nodes
@@ -160,7 +164,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
     // ignore the flow steps from the synthetic sequence node to the real sequence node,
     // since we only support one level of content in type-trackers, and the nested
     // structure requires two levels at least to be useful.
-    not exists(SequenceNode outer |
+    not exists(Cfg::SequenceNode outer |
       outer.getAnElement() = nodeTo.asCfgNode() and
       IterableUnpacking::iterableUnpackingTupleFlowStep(nodeFrom, nodeTo)
     )
@@ -259,7 +263,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
     // Since we only support one level of content in type-trackers we don't actually
     // support `(aa, ab), (ba, bb) = ...`. Therefore we exclude the read-step from `(aa,
     // ab)` to `aa` (since it is not needed).
-    not exists(SequenceNode outer |
+    not exists(Cfg::SequenceNode outer |
       outer.getAnElement() = nodeFrom.asCfgNode() and
       IterableUnpacking::iterableUnpackingTupleFlowStep(_, nodeFrom)
     ) and
@@ -269,7 +273,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
       IterableUnpacking::iterableUnpackingForReadStep(_, _, seq) and
       IterableUnpacking::iterableUnpackingConvertingReadStep(seq, _, elem) and
       IterableUnpacking::iterableUnpackingConvertingStoreStep(elem, _, nodeFrom) and
-      nodeFrom.asCfgNode() instanceof SequenceNode
+      nodeFrom.asCfgNode() instanceof Cfg::SequenceNode
     )
     or
     TypeTrackerSummaryFlow::basicLoadStep(nodeFrom, nodeTo, content)
@@ -306,13 +310,15 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
     //
     // nodeFrom is `expr`
     // nodeTo is entry node for `f`
-    exists(ScopeEntryDefinition e, SsaSourceVariable var, DefinitionNode def |
+    exists(
+      SsaImpl::ScopeEntryDefinition e, SsaImpl::SsaSourceVariable var, Cfg::DefinitionNode def
+    |
       e.getSourceVariable() = var and
-      var.hasDefiningNode(def)
+      def.getNode() = var.getVariable().getAStore()
     |
       nodeTo.(DataFlowPublic::ScopeEntryDefinitionNode).getDefinition() = e and
       nodeFrom.asCfgNode() = def and
-      var.getScope().getScope*() = nodeFrom.getScope()
+      var.getVariable().getScope().getScope*() = nodeFrom.getScope()
     )
   }
 

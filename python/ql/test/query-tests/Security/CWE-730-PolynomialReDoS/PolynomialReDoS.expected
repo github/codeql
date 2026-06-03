@@ -1,34 +1,34 @@
 edges
-| test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
-| test.py:2:26:2:32 | ControlFlowNode for request | test.py:7:12:7:18 | ControlFlowNode for request | provenance |  |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:8:30:8:33 | ControlFlowNode for text | provenance |  |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:9:32:9:35 | ControlFlowNode for text | provenance |  |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:12:17:12:20 | ControlFlowNode for text | provenance |  |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:18:28:18:31 | ControlFlowNode for text | provenance |  |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:21:18:21:21 | ControlFlowNode for text | provenance |  |
-| test.py:7:12:7:18 | ControlFlowNode for request | test.py:7:12:7:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
-| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:7:12:7:35 | ControlFlowNode for Attribute() | provenance | dict.get |
-| test.py:7:12:7:35 | ControlFlowNode for Attribute() | test.py:7:5:7:8 | ControlFlowNode for text | provenance |  |
-| test.py:14:33:14:39 | ControlFlowNode for my_text | test.py:16:24:16:30 | ControlFlowNode for my_text | provenance |  |
-| test.py:18:28:18:31 | ControlFlowNode for text | test.py:14:33:14:39 | ControlFlowNode for my_text | provenance |  |
+| test.py:2:26:2:32 | After ImportMember | test.py:2:26:2:32 | request | provenance |  |
+| test.py:2:26:2:32 | request | test.py:7:12:7:18 | request | provenance |  |
+| test.py:7:5:7:8 | text | test.py:8:30:8:33 | text | provenance |  |
+| test.py:7:5:7:8 | text | test.py:9:32:9:35 | text | provenance |  |
+| test.py:7:5:7:8 | text | test.py:12:17:12:20 | text | provenance |  |
+| test.py:7:5:7:8 | text | test.py:18:28:18:31 | text | provenance |  |
+| test.py:7:5:7:8 | text | test.py:21:18:21:21 | text | provenance |  |
+| test.py:7:12:7:18 | request | test.py:7:12:7:23 | After Attribute | provenance | AdditionalTaintStep |
+| test.py:7:12:7:23 | After Attribute | test.py:7:12:7:35 | After Attribute() | provenance | dict.get |
+| test.py:7:12:7:35 | After Attribute() | test.py:7:5:7:8 | text | provenance |  |
+| test.py:14:33:14:39 | my_text | test.py:16:24:16:30 | my_text | provenance |  |
+| test.py:18:28:18:31 | text | test.py:14:33:14:39 | my_text | provenance |  |
 nodes
-| test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| test.py:7:5:7:8 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
-| test.py:7:12:7:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| test.py:7:12:7:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| test.py:7:12:7:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:8:30:8:33 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
-| test.py:9:32:9:35 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
-| test.py:12:17:12:20 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
-| test.py:14:33:14:39 | ControlFlowNode for my_text | semmle.label | ControlFlowNode for my_text |
-| test.py:16:24:16:30 | ControlFlowNode for my_text | semmle.label | ControlFlowNode for my_text |
-| test.py:18:28:18:31 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
-| test.py:21:18:21:21 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
+| test.py:2:26:2:32 | After ImportMember | semmle.label | After ImportMember |
+| test.py:2:26:2:32 | request | semmle.label | request |
+| test.py:7:5:7:8 | text | semmle.label | text |
+| test.py:7:12:7:18 | request | semmle.label | request |
+| test.py:7:12:7:23 | After Attribute | semmle.label | After Attribute |
+| test.py:7:12:7:35 | After Attribute() | semmle.label | After Attribute() |
+| test.py:8:30:8:33 | text | semmle.label | text |
+| test.py:9:32:9:35 | text | semmle.label | text |
+| test.py:12:17:12:20 | text | semmle.label | text |
+| test.py:14:33:14:39 | my_text | semmle.label | my_text |
+| test.py:16:24:16:30 | my_text | semmle.label | my_text |
+| test.py:18:28:18:31 | text | semmle.label | text |
+| test.py:21:18:21:21 | text | semmle.label | text |
 subpaths
 #select
-| test.py:8:30:8:33 | ControlFlowNode for text | test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:8:30:8:33 | ControlFlowNode for text | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.py:8:19:8:21 | \\s+ | regular expression | test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
-| test.py:9:32:9:35 | ControlFlowNode for text | test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:9:32:9:35 | ControlFlowNode for text | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | test.py:9:25:9:27 | \\d+ | regular expression | test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
-| test.py:12:17:12:20 | ControlFlowNode for text | test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:12:17:12:20 | ControlFlowNode for text | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.py:11:29:11:31 | \\s+ | regular expression | test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
-| test.py:16:24:16:30 | ControlFlowNode for my_text | test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:16:24:16:30 | ControlFlowNode for my_text | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.py:18:21:18:23 | \\s+ | regular expression | test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
-| test.py:21:18:21:21 | ControlFlowNode for text | test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:21:18:21:21 | ControlFlowNode for text | This $@ that depends on a $@ may run slow on strings starting with 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC' and with many repetitions of 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC'. | test.py:20:271:20:272 | .* | regular expression | test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |
+| test.py:8:30:8:33 | text | test.py:2:26:2:32 | After ImportMember | test.py:8:30:8:33 | text | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.py:8:19:8:21 | \\s+ | regular expression | test.py:2:26:2:32 | After ImportMember | user-provided value |
+| test.py:9:32:9:35 | text | test.py:2:26:2:32 | After ImportMember | test.py:9:32:9:35 | text | This $@ that depends on a $@ may run slow on strings starting with '0.9' and with many repetitions of '99'. | test.py:9:25:9:27 | \\d+ | regular expression | test.py:2:26:2:32 | After ImportMember | user-provided value |
+| test.py:12:17:12:20 | text | test.py:2:26:2:32 | After ImportMember | test.py:12:17:12:20 | text | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.py:11:29:11:31 | \\s+ | regular expression | test.py:2:26:2:32 | After ImportMember | user-provided value |
+| test.py:16:24:16:30 | my_text | test.py:2:26:2:32 | After ImportMember | test.py:16:24:16:30 | my_text | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.py:18:21:18:23 | \\s+ | regular expression | test.py:2:26:2:32 | After ImportMember | user-provided value |
+| test.py:21:18:21:21 | text | test.py:2:26:2:32 | After ImportMember | test.py:21:18:21:21 | text | This $@ that depends on a $@ may run slow on strings starting with 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC' and with many repetitions of 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC'. | test.py:20:271:20:272 | .* | regular expression | test.py:2:26:2:32 | After ImportMember | user-provided value |

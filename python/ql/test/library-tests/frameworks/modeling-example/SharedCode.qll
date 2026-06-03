@@ -1,4 +1,5 @@
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 
@@ -19,15 +20,15 @@ DataFlow::Node myClassGetValue(MyClass qualifier) {
 
 // Config
 class SourceCall extends DataFlow::Node, MyClass {
-  SourceCall() { this.asCfgNode().(CallNode).getFunction().(NameNode).getId() = "source" }
+  SourceCall() { this.asCfgNode().(Cfg::CallNode).getFunction().(Cfg::NameNode).getId() = "source" }
 }
 
 private module SharedConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SourceCall }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "sink" and
+    exists(Cfg::CallNode call |
+      call.getFunction().(Cfg::NameNode).getId() = "sink" and
       call.getArg(0) = sink.asCfgNode()
     )
   }

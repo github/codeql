@@ -11,6 +11,8 @@
  * lambdas that have annotations in nested scopes).
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;

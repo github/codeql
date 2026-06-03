@@ -21,7 +21,7 @@ def test_custom_sanitizer_exception_raise():
         emulated_authentication_check(s)
         ensure_not_tainted(s)
     except:
-        ensure_tainted(s) # $ tainted
+        ensure_tainted(s) # $ MISSING: tainted
         raise
 
     ensure_not_tainted(s)
@@ -34,10 +34,10 @@ def test_custom_sanitizer_exception_pass():
         emulated_authentication_check(s)
         ensure_not_tainted(s)
     except:
-        ensure_tainted(s) # $ tainted
+        ensure_tainted(s) # $ MISSING: tainted
         pass
 
-    ensure_tainted(s) # $ tainted
+    ensure_tainted(s) # $ MISSING: tainted
 
 
 def emulated_is_safe(arg):

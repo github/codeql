@@ -3,6 +3,7 @@ overlay[local]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import DataFlowUtil
 import DataFlowPublic
 private import DataFlowPrivate
@@ -83,9 +84,9 @@ abstract class AttrWrite extends AttrRef {
  * ```python
  * object.attr = value
  * ```
- * Also gives access to the `value` being written, by extending `DefinitionNode`.
+ * Also gives access to the `value` being written, by extending `Cfg::DefinitionNode`.
  */
-private class AttributeAssignmentNode extends DefinitionNode, AttrNode { }
+private class AttributeAssignmentNode extends Cfg::DefinitionNode, Cfg::AttrNode { }
 
 /** A simple attribute assignment: `object.attr = value`. */
 private class AttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
@@ -131,13 +132,13 @@ private class GlobalAttributeAssignmentAsAttrWrite extends AttrWrite, CfgNode {
   override string getAttributeName() { result = node.getName() }
 }
 
-/** Represents `CallNode`s that may refer to calls to built-in functions or classes. */
-private class BuiltInCallNode extends CallNode {
+/** Represents `Cfg::CallNode`s that may refer to calls to built-in functions or classes. */
+private class BuiltInCallNode extends Cfg::CallNode {
   string name;
 
   BuiltInCallNode() {
     // TODO disallow instances where the name of the built-in may refer to an in-scope variable of that name.
-    exists(NameNode id |
+    exists(Cfg::NameNode id |
       name = Builtins::getBuiltinName() and
       this.getFunction() = id and
       id.getId() = name and
@@ -145,7 +146,7 @@ private class BuiltInCallNode extends CallNode {
     )
   }
 
-  /** Gets the name of the built-in function that is called at this `CallNode` */
+  /** Gets the name of the built-in function that is called at this `Cfg::CallNode` */
   string getBuiltinName() { result = name }
 }
 
@@ -157,20 +158,20 @@ private class BuiltinAttrCallNode extends BuiltInCallNode {
   BuiltinAttrCallNode() { name in ["setattr", "getattr", "hasattr", "delattr"] }
 
   /** Gets the control flow node for object on which the attribute is accessed. */
-  ControlFlowNode getObject() { result in [this.getArg(0), this.getArgByName("object")] }
+  Cfg::ControlFlowNode getObject() { result in [this.getArg(0), this.getArgByName("object")] }
 
   /**
    * Gets the control flow node for the value that is being written to the attribute.
    * Only relevant for `setattr` calls.
    */
-  ControlFlowNode getValue() {
+  Cfg::ControlFlowNode getValue() {
     // only valid for `setattr`
     name = "setattr" and
     result in [this.getArg(2), this.getArgByName("value")]
   }
 
   /** Gets the control flow node that defines the name of the attribute being accessed. */
-  ControlFlowNode getName() { result in [this.getArg(1), this.getArgByName("name")] }
+  Cfg::ControlFlowNode getName() { result in [this.getArg(1), this.getArgByName("name")] }
 }
 
 /** Represents calls to the built-in `setattr`. */
@@ -205,10 +206,10 @@ private class SetAttrCallAsAttrWrite extends AttrWrite, CfgNode {
  *     attr = value
  *     ...
  * ```
- * Instances of this class correspond to the `NameNode` for `attr`, and also gives access to `value` by
- * virtue of being a `DefinitionNode`.
+ * Instances of this class correspond to the `Cfg::NameNode` for `attr`, and also gives access to `value` by
+ * virtue of being a `Cfg::DefinitionNode`.
  */
-private class ClassAttributeAssignmentNode extends DefinitionNode, NameNode {
+private class ClassAttributeAssignmentNode extends Cfg::DefinitionNode, Cfg::NameNode {
   ClassAttributeAssignmentNode() { this.getScope() = any(ClassExpr c).getInnerScope() }
 }
 
@@ -228,7 +229,7 @@ private class ClassDefinitionAsAttrWrite extends AttrWrite, CfgNode {
 
   override Node getValue() { result.asCfgNode() = node.getValue() }
 
-  override Node getObject() { result.asCfgNode() = cls.getAFlowNode() }
+  override Node getObject() { result.asCfgNode().getNode() = cls }
 
   override ExprNode getAttributeNameExpr() { none() }
 
@@ -248,7 +249,7 @@ abstract class AttrRead extends AttrRef, Node, LocalSourceNode {
 
 /** A simple attribute read, e.g. `object.attr` */
 private class AttributeReadAsAttrRead extends AttrRead, CfgNode {
-  override AttrNode node;
+  override Cfg::AttrNode node;
 
   AttributeReadAsAttrRead() { node.isLoad() }
 
@@ -285,7 +286,7 @@ private class GetAttrCallAsAttrRead extends AttrRead, CfgNode {
  * is treated as if it is a read of the attribute `module.attr`, even if `module` is not imported directly.
  */
 private class ModuleAttributeImportAsAttrRead extends AttrRead, CfgNode {
-  override ImportMemberNode node;
+  override Cfg::ImportMemberNode node;
 
   override Node getObject() { result.asCfgNode() = node.getModule(_) }
 

@@ -1,15 +1,17 @@
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.internal.PrintNode
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.python.ApiGraphs
 import utils.test.InlineExpectationsTest
 
 signature module UnresolvedCallExpectationsSig {
-  predicate unresolvedCall(CallNode call);
+  predicate unresolvedCall(Cfg::CallNode call);
 }
 
 module DefaultUnresolvedCallExpectations implements UnresolvedCallExpectationsSig {
-  predicate unresolvedCall(CallNode call) {
+  predicate unresolvedCall(Cfg::CallNode call) {
+    Cfg::isCanonicalAstNodeRepresentative(call) and
     not exists(DataFlowPrivate::DataFlowCall dfc |
       exists(dfc.getCallable()) and dfc.getNode() = call
     ) and
@@ -24,7 +26,7 @@ module MakeUnresolvedCallExpectations<UnresolvedCallExpectationsSig Impl> {
 
     predicate hasActualResult(Location location, string element, string tag, string value) {
       exists(location.getFile().getRelativePath()) and
-      exists(CallNode call | Impl::unresolvedCall(call) |
+      exists(Cfg::CallNode call | Impl::unresolvedCall(call) |
         location = call.getLocation() and
         tag = "unresolved_call" and
         value = prettyExpr(call.getNode()) and

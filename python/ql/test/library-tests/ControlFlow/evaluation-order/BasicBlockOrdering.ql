@@ -3,6 +3,8 @@
  * increasing minimum-timestamp order.
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;

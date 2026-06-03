@@ -3,6 +3,8 @@
  * mutually exclusive CFG paths (neither can reach the other).
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;

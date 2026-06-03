@@ -106,3 +106,9 @@ def test_if_pass(t):
     if x @ t[1]:
         pass
     z = 0 @ t[2]
+
+
+@test
+
+
+@test

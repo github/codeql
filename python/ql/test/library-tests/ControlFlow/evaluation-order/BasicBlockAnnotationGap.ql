@@ -8,6 +8,8 @@
  * edge leaves the basic block and the normal successor may be dead.
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;

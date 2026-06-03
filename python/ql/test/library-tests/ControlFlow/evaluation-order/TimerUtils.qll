@@ -23,6 +23,13 @@ class TestFunction extends Function {
   string getTimerParamName() { result = this.getArgName(0) }
 }
 
+/** Gets an IntegerLiteral from a timestamp expression (single int or tuple of ints). */
+private IntegerLiteral timestampLiteral(Expr timestamps) {
+  result = timestamps
+  or
+  result = timestamps.(Tuple).getAnElt()
+}
+
 /**
  * Gets an element from a timestamp subscript index. Each element is either
  * an `IntegerLiteral` (live), a `Call` to `dead` (dead), a `Name("never")`

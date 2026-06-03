@@ -5,11 +5,12 @@ overlay[local]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import DataFlowPrivate
 import semmle.python.dataflow.new.TypeTracking
 import Attributes
 import LocalSources
-private import semmle.python.essa.SsaCompute
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 private import semmle.python.dataflow.new.internal.ImportStar
 private import semmle.python.frameworks.data.ModelsAsData
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -27,16 +28,21 @@ private import semmle.python.frameworks.data.ModelsAsData
 overlay[local]
 newtype TNode =
   /** A node corresponding to a control flow node. */
-  TCfgNode(ControlFlowNode node) {
-    isExpressionNode(node)
-    or
-    node.getNode() instanceof Pattern
+  TCfgNode(Cfg::ControlFlowNode node) {
+    (
+      isExpressionNode(node)
+      or
+      node.getNode() instanceof Pattern
+    ) and
+    Cfg::isCanonicalAstNodeRepresentative(node)
   } or
   /**
    * A node corresponding to a scope entry definition. That is, the value of a variable
    * as it enters a scope.
    */
-  TScopeEntryDefinitionNode(ScopeEntryDefinition def) { not def.getScope() instanceof Module } or
+  TScopeEntryDefinitionNode(SsaImpl::ScopeEntryDefinition def) {
+    not def.getScope() instanceof Module
+  } or
   /**
    * A synthetic node representing the value of an object before a state change.
    *
@@ -47,36 +53,39 @@ newtype TNode =
   // NOTE: since we can't rely on the call graph, but we want to have synthetic
   // pre-update nodes for class calls, we end up getting synthetic pre-update nodes for
   // ALL calls :|
-  TSyntheticPreUpdateNode(CallNode call) or
+  TSyntheticPreUpdateNode(Cfg::CallNode call) { Cfg::isCanonicalAstNodeRepresentative(call) } or
   /**
    * A synthetic node representing the value of an object after a state change.
    * See QLDoc for `PostUpdateNode`.
    */
-  TSyntheticPostUpdateNode(ControlFlowNode node) {
-    exists(CallNode call |
-      node = call.getArg(_)
+  TSyntheticPostUpdateNode(Cfg::ControlFlowNode node) {
+    Cfg::isCanonicalAstNodeRepresentative(node) and
+    (
+      exists(Cfg::CallNode call |
+        node = call.getArg(_)
+        or
+        node = call.getArgByName(_)
+        or
+        // `self` argument when handling class instance calls (`__call__` special method))
+        node = call.getFunction()
+      )
       or
-      node = call.getArgByName(_)
+      node = any(Cfg::AttrNode a).getObject()
       or
-      // `self` argument when handling class instance calls (`__call__` special method))
-      node = call.getFunction()
+      node = any(Cfg::SubscriptNode s).getObject()
+      or
+      // self parameter when used implicitly in `super()`
+      exists(Class cls, Function func, SsaImpl::ParameterDefinition def |
+        func = cls.getAMethod() and
+        not isStaticmethod(func) and
+        // this matches what we do in ExtractedParameterNode
+        def.getDefiningNode() = node and
+        def.getParameter() = func.getArg(0)
+      )
+      or
+      // the iterable argument to the implicit comprehension function
+      node.getNode() = any(Comp c).getIterable()
     )
-    or
-    node = any(AttrNode a).getObject()
-    or
-    node = any(SubscriptNode s).getObject()
-    or
-    // self parameter when used implicitly in `super()`
-    exists(Class cls, Function func, ParameterDefinition def |
-      func = cls.getAMethod() and
-      not isStaticmethod(func) and
-      // this matches what we do in ExtractedParameterNode
-      def.getDefiningNode() = node and
-      def.getParameter() = func.getArg(0)
-    )
-    or
-    // the iterable argument to the implicit comprehension function
-    node.getNode() = any(Comp c).getIterable()
   } or
   /** A node representing a global (module-level) variable in a specific module. */
   TModuleVariableNode(Module m, GlobalVariable v) { v.getScope() = m } or
@@ -112,7 +121,9 @@ newtype TNode =
     exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
   } or
   /** A synthetic node to capture keyword arguments that are passed to a `**kwargs` parameter. */
-  TSynthDictSplatArgumentNode(CallNode call) { exists(call.getArgByName(_)) } or
+  TSynthDictSplatArgumentNode(Cfg::CallNode call) {
+    exists(call.getArgByName(_)) and Cfg::isCanonicalAstNodeRepresentative(call)
+  } or
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
@@ -128,15 +139,17 @@ newtype TNode =
    * A synthetic node representing the values of the variables captured
    * by the callable being called.
    */
-  TSynthCapturedVariablesArgumentNode(ControlFlowNode callable) {
-    callable = any(CallNode c).getFunction()
+  TSynthCapturedVariablesArgumentNode(Cfg::ControlFlowNode callable) {
+    callable = any(Cfg::CallNode c).getFunction() and
+    Cfg::isCanonicalAstNodeRepresentative(callable)
   } or
   /**
    * A synthetic node representing the values of the variables captured
    * by the callable being called, after the output has been computed.
    */
-  TSynthCapturedVariablesArgumentPostUpdateNode(ControlFlowNode callable) {
-    callable = any(CallNode c).getFunction()
+  TSynthCapturedVariablesArgumentPostUpdateNode(Cfg::ControlFlowNode callable) {
+    callable = any(Cfg::CallNode c).getFunction() and
+    Cfg::isCanonicalAstNodeRepresentative(callable)
   } or
   /** A synthetic node representing the values of variables captured by a comprehension. */
   TSynthCompCapturedVariablesArgumentNode(Comp comp) {
@@ -194,7 +207,7 @@ class Node extends TNode {
   }
 
   /** Gets the control-flow node corresponding to this node, if any. */
-  ControlFlowNode asCfgNode() { none() }
+  Cfg::ControlFlowNode asCfgNode() { none() }
 
   /** Gets the expression corresponding to this node, if any. */
   Expr asExpr() { none() }
@@ -207,14 +220,14 @@ class Node extends TNode {
 
 /** A data-flow node corresponding to a control-flow node. */
 class CfgNode extends Node, TCfgNode {
-  ControlFlowNode node;
+  Cfg::ControlFlowNode node;
 
   CfgNode() { this = TCfgNode(node) }
 
-  /** Gets the `ControlFlowNode` represented by this data-flow node. */
-  ControlFlowNode getNode() { result = node }
+  /** Gets the `Cfg::ControlFlowNode` represented by this data-flow node. */
+  Cfg::ControlFlowNode getNode() { result = node }
 
-  override ControlFlowNode asCfgNode() { result = node }
+  override Cfg::ControlFlowNode asCfgNode() { result = node }
 
   /** Gets a textual representation of this element. */
   override string toString() { result = node.toString() }
@@ -224,9 +237,9 @@ class CfgNode extends Node, TCfgNode {
   override Location getLocation() { result = node.getLocation() }
 }
 
-/** A data-flow node corresponding to a `CallNode` in the control-flow graph. */
+/** A data-flow node corresponding to a `Cfg::CallNode` in the control-flow graph. */
 class CallCfgNode extends CfgNode, LocalSourceNode {
-  override CallNode node;
+  override Cfg::CallNode node;
 
   /**
    * Gets the data-flow node for the function component of the call corresponding to this data-flow
@@ -307,15 +320,15 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * as it enters a scope.
  */
 class ScopeEntryDefinitionNode extends Node, TScopeEntryDefinitionNode {
-  ScopeEntryDefinition def;
+  SsaImpl::ScopeEntryDefinition def;
 
   ScopeEntryDefinitionNode() { this = TScopeEntryDefinitionNode(def) }
 
-  /** Gets the `ScopeEntryDefinition` associated with this node. */
-  ScopeEntryDefinition getDefinition() { result = def }
+  /** Gets the `SsaImpl::ScopeEntryDefinition` associated with this node. */
+  SsaImpl::ScopeEntryDefinition getDefinition() { result = def }
 
   /** Gets the source variable represented by this node. */
-  SsaSourceVariable getVariable() { result = def.getSourceVariable() }
+  SsaImpl::SsaSourceVariable getVariable() { result = def.getSourceVariable() }
 
   override Location getLocation() { result = def.getLocation() }
 
@@ -337,7 +350,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 /** A parameter node found in the source code (not in a summary). */
 class ExtractedParameterNode extends ParameterNodeImpl, CfgNode {
   //, LocalSourceNode {
-  ParameterDefinition def;
+  SsaImpl::ParameterDefinition def;
 
   ExtractedParameterNode() { node = def.getDefiningNode() }
 
@@ -368,10 +381,10 @@ Node getCallArgApproximation() {
   exists(Class c | result.asExpr() = c.getAMethod().getArg(0))
   or
   // the object part of an attribute expression (which might be a bound method)
-  result.asCfgNode() = any(AttrNode a).getObject()
+  result.asCfgNode() = any(Cfg::AttrNode a).getObject()
   or
   // the function part of any call
-  result.asCfgNode() = any(CallNode c).getFunction()
+  result.asCfgNode() = any(Cfg::CallNode c).getFunction()
 }
 
 /** Gets the extracted argument nodes that do not rely on `getCallArg`. */
@@ -380,7 +393,7 @@ private Node implicitArgumentNode() {
   normalCallArg(_, result, _)
   or
   // and self arguments
-  result.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+  result.asCfgNode() = any(Cfg::CallNode c).getFunction().(Cfg::AttrNode).getObject()
   or
   // for comprehensions, we allow the synthetic `iterable` argument
   result.asExpr() = any(Comp c).getIterable()
@@ -485,21 +498,24 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   /** Gets a node that reads this variable, excluding reads that happen through `from ... import *`. */
   Node getALocalRead() {
-    result.asCfgNode() = var.getALoad().getAFlowNode() and
+    result.asCfgNode().getNode() = var.getALoad() and
     not result.getScope() = mod
   }
 
-  /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
+  /** Gets a CFG node that corresponds to an assignment of this global variable. */
   Node getAWrite() {
-    any(EssaNodeDefinition def).definedBy(var, result.asCfgNode().(DefinitionNode))
+    exists(Cfg::NameNode n |
+      n.defines(var) and
+      result.asCfgNode() = n
+    )
   }
 
   /** Gets the possible values of the variable at the end of import time */
   CfgNode getADefiningWrite() {
-    exists(SsaVariable def |
-      def = any(SsaVariable ssa_var).getAnUltimateDefinition() and
-      def.getDefinition() = result.asCfgNode() and
-      def.getVariable() = var
+    exists(SsaImpl::EssaVariable def |
+      def = any(SsaImpl::EssaVariable ssa_var).getAnUltimateDefinition() and
+      def.getDefinition().(SsaImpl::EssaNodeDefinition).getDefiningNode() = result.asCfgNode() and
+      def.getSourceVariable().getVariable() = var
     )
   }
 
@@ -516,7 +532,7 @@ private ModuleVariableNode import_star_read(Node n) {
 overlay[global]
 pragma[nomagic]
 private predicate resolved_import_star_module(Module m, string name, Node n) {
-  exists(NameNode nn | nn = n.asCfgNode() |
+  exists(Cfg::NameNode nn | nn = n.asCfgNode() |
     ImportStar::importStarResolvesTo(pragma[only_bind_into](nn), m) and
     nn.getId() = name
   )
@@ -574,88 +590,110 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 }
 
 /**
- * Gets a node that controls whether other nodes are evaluated.
+ * A node that participates in a conditional split: a CFG node whose
+ * evaluation outcome (true/false) is used to choose between two
+ * successor basic blocks. In the new shared CFG, such nodes appear in
+ * pairs of `isAfterTrue`/`isAfterFalse` annotated CFG nodes.
  *
- * In the base case, this is the last node of `conditionBlock`, and `flipped` is `false`.
- * This definition accounts for (short circuting) `and`- and `or`-expressions, as the structure
- * of basic blocks will reflect their semantics.
+ * Users typically obtain a `GuardNode` by casting from a more specific
+ * Cfg type: `g.(Cfg::CallNode)` for a call-based check, etc.
  *
- * However, in the program
- * ```python
- * if not is_safe(path):
- *   return
- * ```
- * the last node in the `ConditionBlock` is `not is_safe(path)`.
- *
- * We would like to consider also `is_safe(path)` a guard node, albeit with `flipped` being `true`.
- * Thus we recurse through `not`-expressions.
+ * This replaces the legacy (pre-shared-CFG) `GuardNode`/`flipped`
+ * machinery: the shared CFG carries outcome information structurally
+ * (via `isAfterTrue`/`isAfterFalse`), so no separate polarity field
+ * is required.
  */
-ControlFlowNode guardNode(ConditionBlock conditionBlock, boolean flipped) {
-  // Base case: the last node truly does determine which successor is chosen
-  result = conditionBlock.getLastNode() and
-  flipped = false
-  or
-  // Recursive cases:
-  // if a guard node is a `not`-expression,
-  // the operand is also a guard node, but with inverted polarity.
-  exists(UnaryExprNode notNode |
-    result = notNode.getOperand() and
-    notNode.getNode().getOp() instanceof Not
-  |
-    notNode = guardNode(conditionBlock, flipped.booleanNot())
-  )
-  or
-  // if a guard node is compared to a boolean literal,
-  // the other operand is also a guard node,
-  // but with polarity depending on the literal (and on the comparison).
-  exists(CompareNode cmpNode, Cmpop op, ControlFlowNode b, boolean should_flip |
-    (
-      cmpNode.operands(result, op, b) or
-      cmpNode.operands(b, op, result)
-    ) and
-    not result.getNode() instanceof BooleanLiteral and
-    (
-      // comparing to the boolean
-      (op instanceof Eq or op instanceof Is) and
-      // we should flip if the value compared against, here the value of `b`, is false
-      should_flip = b.getNode().(BooleanLiteral).booleanValue().booleanNot()
-      or
-      // comparing to the negation of the boolean
-      (op instanceof NotEq or op instanceof IsNot) and
-      // again, we should flip if the value compared against, here the value of `not b`, is false.
-      // That is, if the value of `b` is true.
-      should_flip = b.getNode().(BooleanLiteral).booleanValue()
+class GuardNode extends Cfg::ControlFlowNode {
+  GuardNode() {
+    // This is the canonical (post-order) version of an AST node, and
+    // some `[true]`/`[false]` variant of the same AST exists. We
+    // include the canonical node because users identify guards by
+    // their AST (`g.(Cfg::CallNode)` etc.), and the outcome-tagged
+    // variants are accessed by `outcomeOfGuard` below.
+    exists(Cfg::ControlFlowNode outcome |
+      outcome.getNode() = this.getNode() and
+      (outcome.isAfterTrue(_) or outcome.isAfterFalse(_))
     )
-  |
-    // we flip `flipped` according to `should_flip` via the formula `flipped xor should_flip`.
-    flipped in [true, false] and
-    cmpNode = guardNode(conditionBlock, flipped.booleanXor(should_flip))
-  )
+    or
+    // Or: this IS one of the outcome-tagged variants, supporting
+    // users who want to query the split point directly.
+    this.isAfterTrue(_)
+    or
+    this.isAfterFalse(_)
+  }
+
+  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
+  predicate controlsBlock(Cfg::BasicBlock b, boolean branch) {
+    branch in [true, false] and
+    exists(Cfg::ControlFlowNode outcomeNode |
+      outcomeOfGuard(this, outcomeNode, branch) and
+      outcomeNode.getBasicBlock().dominates(b)
+    )
+  }
 }
 
 /**
- * A node that controls whether other nodes are evaluated.
+ * Holds if some execution that arrives at `outcomeNode` corresponds
+ * to `guard` having evaluated to `branch`.
  *
- * The field `flipped` allows us to match `GuardNode`s underneath
- * `not`-expressions and still choose the appropriate branch.
+ * For a direct guard `if g:`, the outcome node is `g` itself with
+ * `isAfterTrue`/`isAfterFalse`. For wrapped guards like `not g` or
+ * `g == True`, the outcome is on the wrapping expression with an
+ * appropriate polarity transform — we follow those wrappers up the
+ * AST to find the outermost expression that carries an actual
+ * `isAfterTrue`/`isAfterFalse` outcome.
  */
-class GuardNode extends ControlFlowNode {
-  ConditionBlock conditionBlock;
-  boolean flipped;
-
-  GuardNode() { this = guardNode(conditionBlock, flipped) }
-
-  /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  predicate controlsBlock(BasicBlock b, boolean branch) {
-    branch in [true, false] and
-    conditionBlock.controls(b, branch.booleanXor(flipped))
-  }
+private predicate outcomeOfGuard(
+  Cfg::ControlFlowNode guard, Cfg::ControlFlowNode outcomeNode, boolean branch
+) {
+  // Base case: the guard itself splits — the outcome node is the
+  // first node of an outcome BB, with matching outcome label.
+  // (The shared CFG also marks inner expressions with outcome flags
+  // for analysis purposes, but only "splitting" nodes — those that
+  // actually start an outcome BB — are valid guards on their own.)
+  outcomeNode.getNode() = guard.getNode() and
+  outcomeNode = outcomeNode.getBasicBlock().firstNode() and
+  (
+    outcomeNode.isAfterTrue(_) and branch = true
+    or
+    outcomeNode.isAfterFalse(_) and branch = false
+  )
+  or
+  // Recursive: `not guard` — same outcome split as `guard`, flipped.
+  exists(Cfg::UnaryExprNode notNode, boolean notBranch |
+    notNode.getOperand().getNode() = guard.getNode() and
+    notNode.getNode().getOp() instanceof Not and
+    outcomeOfGuard(notNode, outcomeNode, notBranch) and
+    branch = notBranch.booleanNot()
+  )
+  or
+  // Recursive: comparisons against a boolean literal.
+  exists(
+    Cfg::CompareNode cmpNode, Cmpop op, Cfg::ControlFlowNode otherOperand,
+    Cfg::ControlFlowNode guardOperand, boolean polarity, boolean cmpBranch
+  |
+    guardOperand.getNode() = guard.getNode() and
+    (
+      cmpNode.operands(guardOperand, op, otherOperand) or
+      cmpNode.operands(otherOperand, op, guardOperand)
+    ) and
+    not guard.getNode() instanceof BooleanLiteral and
+    (
+      (op instanceof Eq or op instanceof Is) and
+      polarity = otherOperand.getNode().(BooleanLiteral).booleanValue()
+      or
+      (op instanceof NotEq or op instanceof IsNot) and
+      polarity = otherOperand.getNode().(BooleanLiteral).booleanValue().booleanNot()
+    ) and
+    outcomeOfGuard(cmpNode, outcomeNode, cmpBranch) and
+    branch = cmpBranch.booleanXor(polarity.booleanNot())
+  )
 }
 
 /**
  * Holds if the guard `g` validates `node` upon evaluating to `branch`.
  */
-signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch);
+signature predicate guardChecksSig(GuardNode g, Cfg::ControlFlowNode node, boolean branch);
 
 /**
  * Provides a set of barrier nodes for a guard that validates a node.
@@ -670,7 +708,9 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     result = ParameterizedBarrierGuard<Unit, extendedGuardChecks/4>::getABarrierNode(_)
   }
 
-  private predicate extendedGuardChecks(GuardNode g, ControlFlowNode node, boolean branch, Unit u) {
+  private predicate extendedGuardChecks(
+    GuardNode g, Cfg::ControlFlowNode node, boolean branch, Unit u
+  ) {
     guardChecks(g, node, branch) and
     u = u
   }
@@ -680,7 +720,7 @@ bindingset[this]
 private signature class ParamSig;
 
 private module WithParam<ParamSig P> {
-  signature predicate guardChecksSig(GuardNode g, ControlFlowNode node, boolean branch, P param);
+  signature predicate guardChecksSig(GuardNode g, Cfg::ControlFlowNode node, boolean branch, P param);
 }
 
 /**
@@ -693,10 +733,10 @@ module ParameterizedBarrierGuard<ParamSig P, WithParam<P>::guardChecksSig/4 guar
   /** Gets a node that is safely guarded by the given guard check with parameter `param`. */
   overlay[global]
   ExprNode getABarrierNode(P param) {
-    exists(GuardNode g, EssaDefinition def, ControlFlowNode node, boolean branch |
-      AdjacentUses::useOfDef(def, node) and
+    exists(GuardNode g, SsaImpl::EssaDefinition def, Cfg::ControlFlowNode node, boolean branch |
+      SsaImpl::AdjacentUses::useOfDef(def, node) and
       guardChecks(g, node, branch, param) and
-      AdjacentUses::useOfDef(def, result.asCfgNode()) and
+      SsaImpl::AdjacentUses::useOfDef(def, result.asCfgNode()) and
       g.controlsBlock(result.asCfgNode().getBasicBlock(), branch)
     )
   }
@@ -712,7 +752,7 @@ module ExternalBarrierGuard {
   private import semmle.python.ApiGraphs
 
   overlay[global]
-  private predicate guardCheck(GuardNode g, ControlFlowNode node, boolean branch, string kind) {
+  private predicate guardCheck(GuardNode g, Cfg::ControlFlowNode node, boolean branch, string kind) {
     exists(API::CallNode call, API::Node parameter |
       parameter = call.getAParameter() and
       parameter = ModelOutput::getABarrierGuardNode(kind, branch)
@@ -748,10 +788,10 @@ newtype TContent =
   TSetElementContent() or
   /** An element of a tuple at a specific index. */
   TTupleElementContent(int index) {
-    exists(any(TupleNode tn).getElement(index))
+    exists(any(Cfg::TupleNode tn).getElement(index))
     or
     // Arguments can overflow and end up in the starred parameter tuple.
-    exists(any(CallNode cn).getArg(index))
+    exists(any(Cfg::CallNode cn).getArg(index))
     or
     // since flow summaries might use tuples, we ensure that we at least have valid
     // TTupleElementContent for the 0..7 (7 was picked to match `small_tuple` in
@@ -768,10 +808,14 @@ newtype TContent =
     or
     // d["key"] = ...
     key =
-      any(SubscriptNode sub | sub.isStore() | sub.getIndex().getNode().(StringLiteral).getText())
+      any(Cfg::SubscriptNode sub |
+        sub.isStore()
+      |
+        sub.getIndex().getNode().(StringLiteral).getText()
+      )
     or
     // d.setdefault("key", ...)
-    exists(CallNode call | call.getFunction().(AttrNode).getName() = "setdefault" |
+    exists(Cfg::CallNode call | call.getFunction().(Cfg::AttrNode).getName() = "setdefault" |
       key = call.getArg(0).getNode().(StringLiteral).getText()
     )
   } or

@@ -7,6 +7,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.data.ModelsAsData
@@ -56,7 +57,7 @@ module Pycurl {
     {
       OutgoingRequestCall() {
         this = setopt().getACall() and
-        this.getArg(0).asCfgNode().(AttrNode).getName() = "URL"
+        this.getArg(0).asCfgNode().(Cfg::AttrNode).getName() = "URL"
       }
 
       override DataFlow::Node getAUrlPart() {
@@ -81,7 +82,7 @@ module Pycurl {
     private class CurlSslCall extends Http::Client::Request::Range instanceof DataFlow::CallCfgNode {
       CurlSslCall() {
         this = setopt().getACall() and
-        this.getArg(0).asCfgNode().(AttrNode).getName() = ["SSL_VERIFYPEER", "SSL_VERIFYHOST"]
+        this.getArg(0).asCfgNode().(Cfg::AttrNode).getName() = ["SSL_VERIFYPEER", "SSL_VERIFYHOST"]
       }
 
       override DataFlow::Node getAUrlPart() { none() }

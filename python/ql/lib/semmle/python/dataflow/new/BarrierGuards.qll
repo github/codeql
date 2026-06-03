@@ -1,36 +1,43 @@
 /** Provides commonly used BarrierGuards. */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 
-private predicate constCompare(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
-  exists(CompareNode cn | cn = g |
-    exists(ImmutableLiteral const, Cmpop op |
-      op = any(Eq eq) and branch = true
-      or
-      op = any(NotEq ne) and branch = false
+private predicate constCompare(DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch) {
+  exists(Cfg::CompareNode cn | cn = g |
+    exists(ImmutableLiteral const, Cmpop op, Cfg::ControlFlowNode c |
+      c.getNode() = const and
+      (
+        op = any(Eq eq) and branch = true
+        or
+        op = any(NotEq ne) and branch = false
+      )
     |
-      cn.operands(const.getAFlowNode(), op, node)
+      cn.operands(c, op, node)
       or
-      cn.operands(node, op, const.getAFlowNode())
+      cn.operands(node, op, c)
     )
     or
-    exists(NameConstant const, Cmpop op |
-      op = any(Is is_) and branch = true
-      or
-      op = any(IsNot isn) and branch = false
+    exists(NameConstant const, Cmpop op, Cfg::ControlFlowNode c |
+      c.getNode() = const and
+      (
+        op = any(Is is_) and branch = true
+        or
+        op = any(IsNot isn) and branch = false
+      )
     |
-      cn.operands(const.getAFlowNode(), op, node)
+      cn.operands(c, op, node)
       or
-      cn.operands(node, op, const.getAFlowNode())
+      cn.operands(node, op, c)
     )
     or
-    exists(IterableNode const_iterable, Cmpop op |
+    exists(Cfg::IterableNode const_iterable, Cmpop op |
       op = any(In in_) and branch = true
       or
       op = any(NotIn ni) and branch = false
     |
-      forall(ControlFlowNode elem | elem = const_iterable.getAnElement() |
+      forall(Cfg::ControlFlowNode elem | elem = const_iterable.getAnElement() |
         elem.getNode() instanceof ImmutableLiteral
       ) and
       cn.operands(node, op, const_iterable)

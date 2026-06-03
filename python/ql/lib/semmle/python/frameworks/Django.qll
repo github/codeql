@@ -4,6 +4,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
@@ -1305,7 +1306,7 @@ module PrivateDjango {
                   dict.(DataFlow::MethodCallNode).calls(files, "dict")
                 )
               |
-                this.asCfgNode().(SubscriptNode).getObject() = dict.asCfgNode()
+                this.asCfgNode().(Cfg::SubscriptNode).getObject() = dict.asCfgNode()
                 or
                 this.(DataFlow::MethodCallNode).calls(dict, "get")
               )
@@ -1314,7 +1315,7 @@ module PrivateDjango {
               exists(DataFlow::AttrRead files, DataFlow::MethodCallNode getlistCall |
                 files.accesses(instance(), "FILES") and
                 getlistCall.calls(files, "getlist") and
-                this.asCfgNode().(SubscriptNode).getObject() = getlistCall.asCfgNode()
+                this.asCfgNode().(Cfg::SubscriptNode).getObject() = getlistCall.asCfgNode()
               )
             }
           }
@@ -2216,7 +2217,7 @@ module PrivateDjango {
           DataFlow::Node value;
 
           DjangoResponseCookieSubscriptWrite() {
-            exists(SubscriptNode subscript, DataFlow::AttrRead cookieLookup |
+            exists(Cfg::SubscriptNode subscript, DataFlow::AttrRead cookieLookup |
               // To give `this` a value, we need to choose between either LHS or RHS,
               // and just go with the LHS
               this.asCfgNode() = subscript
@@ -2228,7 +2229,7 @@ module PrivateDjango {
               |
                 cookieLookup.flowsTo(subscriptObj)
               ) and
-              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              value.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
               index.asCfgNode() = subscript.getIndex()
             )
           }
@@ -2249,7 +2250,7 @@ module PrivateDjango {
           DataFlow::Node value;
 
           DjangoResponseHeaderSubscriptWrite() {
-            exists(SubscriptNode subscript, DataFlow::AttrRead headerLookup |
+            exists(Cfg::SubscriptNode subscript, DataFlow::AttrRead headerLookup |
               // To give `this` a value, we need to choose between either LHS or RHS,
               // and just go with the LHS
               this.asCfgNode() = subscript
@@ -2261,7 +2262,7 @@ module PrivateDjango {
               |
                 headerLookup.flowsTo(subscriptObj)
               ) and
-              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              value.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
               index.asCfgNode() = subscript.getIndex()
             )
           }
@@ -2284,14 +2285,14 @@ module PrivateDjango {
           DataFlow::Node value;
 
           DjangoResponseSubscriptWrite() {
-            exists(SubscriptNode subscript |
+            exists(Cfg::SubscriptNode subscript |
               // To give `this` a value, we need to choose between either LHS or RHS,
               // and just go with the LHS
               this.asCfgNode() = subscript
             |
               subscript.getObject() =
                 DjangoImpl::DjangoHttp::Response::HttpResponse::instance().asCfgNode() and
-              value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+              value.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
               index.asCfgNode() = subscript.getIndex()
             )
           }
@@ -2426,7 +2427,7 @@ module PrivateDjango {
     /** Gets a reference to the result of calling the `as_view` classmethod of this class. */
     private DataFlow::TypeTrackingNode asViewResult(DataFlow::TypeTracker t) {
       t.start() and
-      result.asCfgNode().(CallNode).getFunction() = this.asViewRef().asCfgNode()
+      result.asCfgNode().(Cfg::CallNode).getFunction() = this.asViewRef().asCfgNode()
       or
       exists(DataFlow::TypeTracker t2 | result = this.asViewResult(t2).track(t2, t))
     }
@@ -2872,7 +2873,9 @@ module PrivateDjango {
     DataFlow::CfgNode
   {
     DjangoRedirectViewGetRedirectUrlReturn() {
-      node = any(GetRedirectUrlFunction f).getAReturnValueFlowNode()
+      exists(GetRedirectUrlFunction f, Return ret |
+        ret.getScope() = f and node.getNode() = ret.getValue()
+      )
     }
 
     override DataFlow::Node getRedirectLocation() { result = this }

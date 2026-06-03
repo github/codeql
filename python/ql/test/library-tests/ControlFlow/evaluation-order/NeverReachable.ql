@@ -4,6 +4,8 @@
  * entry (including within the same basic block).
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;

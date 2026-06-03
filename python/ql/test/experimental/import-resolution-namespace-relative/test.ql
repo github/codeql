@@ -2,15 +2,16 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import utils.test.InlineExpectationsTest
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 private module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CallCfgNode).getFunction().asCfgNode().(NameNode).getId() = "source"
+    node.(DataFlow::CallCfgNode).getFunction().asCfgNode().(Cfg::NameNode).getId() = "source"
   }
 
   predicate isSink(DataFlow::Node node) {
     exists(DataFlow::CallCfgNode call |
-      call.getFunction().asCfgNode().(NameNode).getId() = "sink" and
+      call.getFunction().asCfgNode().(Cfg::NameNode).getId() = "sink" and
       node = call.getArg(0)
     )
   }

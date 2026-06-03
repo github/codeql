@@ -3,3 +3,9 @@
 | exceptions_test.py:72:1:72:18 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
 | exceptions_test.py:85:1:85:17 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
 | exceptions_test.py:89:1:89:17 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:144:5:144:25 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:167:5:167:26 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:173:5:173:22 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:179:5:179:22 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:185:5:185:26 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |
+| exceptions_test.py:191:5:191:30 | ExceptStmt | 'except' clause does nothing but pass and there is no explanatory comment. |

@@ -10,6 +10,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 private import semmle.python.dataflow.new.internal.TaintTrackingPrivate as TaintTrackingPrivate
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * An external API that is considered "safe" from a security perspective.
@@ -71,7 +72,7 @@ string apiNodeToStringRepr(API::Node node) {
   )
 }
 
-predicate resolvedCall(CallNode call) {
+predicate resolvedCall(Cfg::CallNode call) {
   DataFlowPrivate::resolveCall(call, _, _) or
   DataFlowPrivate::resolveClassCall(call, _)
 }

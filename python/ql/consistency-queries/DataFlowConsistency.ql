@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.internal.DataFlowImplSpecific
 private import semmle.python.dataflow.new.internal.DataFlowDispatch
 private import semmle.python.dataflow.new.internal.TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 private module Input implements InputSig<Location, PythonDataFlow> {
   private import Private
@@ -72,7 +73,7 @@ private module Input implements InputSig<Location, PythonDataFlow> {
     // resolve to multiple functions), but we only make _one_ ArgumentNode for each
     // argument in the CallNode, we end up violating this consistency check in those
     // cases. (see `getCallArg` in DataFlowDispatch.qll)
-    exists(DataFlowCall other, CallNode cfgCall | other != call |
+    exists(DataFlowCall other, Cfg::CallNode cfgCall | other != call |
       call.getNode() = cfgCall and
       other.getNode() = cfgCall and
       isArgumentNode(arg, call, _) and
@@ -88,16 +89,16 @@ private module Input implements InputSig<Location, PythonDataFlow> {
       // allow it instead.
       (
         call.getScope() = attr.getScope() and
-        any(CfgNode n | n.asCfgNode() = call.getNode().(CallNode).getFunction()).getALocalSource() =
-          attr
+        any(CfgNode n | n.asCfgNode() = call.getNode().(Cfg::CallNode).getFunction())
+            .getALocalSource() = attr
         or
         not exists(call.getScope().(Function).getDefinition()) and
         call.getScope().getScope+() = attr.getScope()
       ) and
       (
         other.getScope() = attr.getScope() and
-        any(CfgNode n | n.asCfgNode() = other.getNode().(CallNode).getFunction()).getALocalSource() =
-          attr
+        any(CfgNode n | n.asCfgNode() = other.getNode().(Cfg::CallNode).getFunction())
+            .getALocalSource() = attr
         or
         not exists(other.getScope().(Function).getDefinition()) and
         other.getScope().getScope+() = attr.getScope()

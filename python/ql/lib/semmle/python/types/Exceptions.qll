@@ -427,7 +427,7 @@ class ExceptFlowNodeWithPointsTo extends ExceptFlowNode {
 }
 
 private ControlFlowNodeWithPointsTo element_from_tuple_objectapi(Object tuple) {
-  exists(Tuple t | t = tuple.getOrigin() and result = t.getAnElt().getAFlowNode())
+  exists(Tuple t | t = tuple.getOrigin() and result.getNode() = t.getAnElt())
 }
 
 /**

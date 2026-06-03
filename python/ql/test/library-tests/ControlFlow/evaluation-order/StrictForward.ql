@@ -4,6 +4,8 @@
  * NOT dominate A (forward edge), requires max(A) < min(B).
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;

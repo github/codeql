@@ -1,4 +1,5 @@
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.PrintNode
@@ -6,20 +7,20 @@ private import semmle.python.dataflow.new.internal.PrintNode
 module TestTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     // Standard sources
-    source.(DataFlow::CfgNode).getNode().(NameNode).getId() in [
+    source.(DataFlow::CfgNode).getNode().(Cfg::NameNode).getId() in [
         "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
       ]
     or
     // User defined sources
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() = "taint" and
+    exists(Cfg::CallNode call |
+      call.getFunction().(Cfg::NameNode).getId() = "taint" and
       source.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(CallNode call |
-      call.getFunction().(NameNode).getId() in ["ensure_tainted", "ensure_not_tainted"] and
+    exists(Cfg::CallNode call |
+      call.getFunction().(Cfg::NameNode).getId() in ["ensure_tainted", "ensure_not_tainted"] and
       sink.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
@@ -43,7 +44,7 @@ query predicate test_taint(string arg_location, string test_res, string scope_na
       // TODO: Replace with `hasFlowToExpr` once that is working
       if
         TestTaintTrackingFlow::flowTo(any(DataFlow::Node n |
-            n.(DataFlow::CfgNode).getNode() = arg.getAFlowNode()
+            n.(DataFlow::CfgNode).getNode().getNode() = arg
           ))
       then has_taint = true
       else has_taint = false

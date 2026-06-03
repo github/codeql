@@ -11,6 +11,7 @@ private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.BarrierGuards
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.data.internal.ApiGraphModels
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -95,7 +96,7 @@ module ServerSideRequestForgery {
   class StringConstructionAsFullUrlControlSanitizer extends FullUrlControlSanitizer {
     StringConstructionAsFullUrlControlSanitizer() {
       // string concat
-      exists(BinaryExprNode add |
+      exists(Cfg::BinaryExprNode add |
         add.getOp() instanceof Add and
         add.getRight() = this.asCfgNode() and
         not add.getLeft().getNode().(StringLiteral).getText().toLowerCase() in [
@@ -104,7 +105,7 @@ module ServerSideRequestForgery {
       )
       or
       // % formatting
-      exists(BinaryExprNode fmt |
+      exists(Cfg::BinaryExprNode fmt |
         fmt.getOp() instanceof Mod and
         fmt.getRight() = this.asCfgNode() and
         // detecting %-formatting is not super easy, so we simplify it to only handle
@@ -155,7 +156,9 @@ module ServerSideRequestForgery {
     }
   }
 
-  private predicate stringRestriction(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+  private predicate stringRestriction(
+    DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch
+  ) {
     exists(DataFlow::MethodCallNode call, DataFlow::Node strNode |
       call.asCfgNode() = g and strNode.asCfgNode() = node
     |

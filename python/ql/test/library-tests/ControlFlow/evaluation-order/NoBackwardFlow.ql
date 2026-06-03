@@ -4,6 +4,8 @@
  * exist timestamps a in A and b in B with a < b.
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;

@@ -2,6 +2,8 @@
  * Checks that every annotated CFG node belongs to a basic block.
  */
 
+import python
+import TimerUtils
 import OldCfgImpl
 
 private module Utils = EvalOrderCfgUtils<OldCfg>;
