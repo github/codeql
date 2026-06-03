@@ -108,9 +108,9 @@ rust_proc_macro(
         "@vendor_ts__phf_generator-0.13.1//:phf_generator",
         "@vendor_ts__phf_shared-0.13.1//:phf_shared",
         "@vendor_ts__proc-macro-crate-3.5.0//:proc_macro_crate",
-        "@vendor_ts__proc-macro2-1.0.101//:proc_macro2",
-        "@vendor_ts__quote-1.0.41//:quote",
+        "@vendor_ts__proc-macro2-1.0.106//:proc_macro2",
+        "@vendor_ts__quote-1.0.45//:quote",
         "@vendor_ts__rquickjs-core-0.10.0//:rquickjs_core",
-        "@vendor_ts__syn-2.0.106//:syn",
+        "@vendor_ts__syn-2.0.117//:syn",
     ],
 )

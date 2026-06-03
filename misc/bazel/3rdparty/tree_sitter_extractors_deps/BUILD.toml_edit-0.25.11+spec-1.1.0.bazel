@@ -101,6 +101,6 @@ rust_library(
         "@vendor_ts__indexmap-2.14.0//:indexmap",
         "@vendor_ts__toml_datetime-1.1.1-spec-1.1.0//:toml_datetime",
         "@vendor_ts__toml_parser-1.1.2-spec-1.1.0//:toml_parser",
-        "@vendor_ts__winnow-1.0.2//:winnow",
+        "@vendor_ts__winnow-1.0.3//:winnow",
     ],
 )

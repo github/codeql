@@ -12,6 +12,17 @@
  */
 
 import rust
+private import codeql.rust.elements.PathMeta
+private import codeql.rust.elements.KeyValueMeta
+private import codeql.rust.elements.TokenTreeMeta
+
+private Path getMetaPath(Meta m) {
+  result = m.(PathMeta).getPath()
+  or
+  result = m.(KeyValueMeta).getPath()
+  or
+  result = m.(TokenTreeMeta).getPath()
+}
 
 /**
  * A `#[ctor]` or `#[dtor]` attribute, that is, a source for this query.
@@ -20,7 +31,7 @@ class CtorAttr extends Attr {
   string whichAttr;
 
   CtorAttr() {
-    whichAttr = this.getMeta().getPath().getText() and
+    whichAttr = getMetaPath(this.getMeta()).getText() and
     whichAttr = ["ctor", "dtor"]
   }
 

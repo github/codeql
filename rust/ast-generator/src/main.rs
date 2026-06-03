@@ -308,13 +308,13 @@ fn write_schema(
 fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
     let mut result = Vec::new();
     for field in &node.fields {
-        if let Field::Token(name) = field {
-            if should_predicate_be_extracted(name) {
-                result.push(FieldInfo {
-                    name: format!("is_{name}"),
-                    ty: FieldType::Predicate,
-                });
-            }
+        if let Field::Token { token, .. } = field
+            && should_predicate_be_extracted(token)
+        {
+            result.push(FieldInfo {
+                name: format!("is_{token}"),
+                ty: FieldType::Predicate,
+            });
         }
     }
 
@@ -326,7 +326,7 @@ fn get_fields(node: &AstNodeSrc) -> Vec<FieldInfo> {
             continue;
         }
         let ty = match field {
-            Field::Token(_) => continue,
+            Field::Token { .. } => continue,
             Field::Node {
                 ty, cardinality, ..
             } => match cardinality {
@@ -401,7 +401,7 @@ fn enum_to_extractor_info(node: &AstEnumSrc) -> ExtractorEnumInfo {
                 EnumVariantInfo {
                     name,
                     snake_case_name,
-                    variant_ast_name: v.clone(),
+                    variant_ast_name: v.to_string(),
                 }
             })
             .collect(),

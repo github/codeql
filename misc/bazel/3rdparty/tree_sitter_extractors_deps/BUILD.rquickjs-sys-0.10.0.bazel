@@ -166,7 +166,7 @@ cargo_build_script(
     visibility = ["//visibility:private"],
     deps = [
         "@vendor_ts__bindgen-0.72.1//:bindgen",
-        "@vendor_ts__cc-1.2.61//:cc",
+        "@vendor_ts__cc-1.2.62//:cc",
     ],
 )
 

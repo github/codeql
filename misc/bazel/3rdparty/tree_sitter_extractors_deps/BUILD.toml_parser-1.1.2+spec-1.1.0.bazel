@@ -146,6 +146,6 @@ rust_library(
     }),
     version = "1.1.2+spec-1.1.0",
     deps = [
-        "@vendor_ts__winnow-1.0.2//:winnow",
+        "@vendor_ts__winnow-1.0.3//:winnow",
     ],
 )

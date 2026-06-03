@@ -1,7 +1,7 @@
 #select
-| main.rs:25:5:25:13 | ...::new | main.rs:8:1:8:18 | to | main.rs:25:5:25:13 | ...::new | Cross-site scripting vulnerability due to a $@. | main.rs:8:1:8:18 | to | user-provided value |
+| main.rs:25:5:25:13 | ...::new | main.rs:8:3:8:17 | to | main.rs:25:5:25:13 | ...::new | Cross-site scripting vulnerability due to a $@. | main.rs:8:3:8:17 | to | user-provided value |
 edges
-| main.rs:8:1:8:18 | to | main.rs:9:29:9:51 | ...: ...::Path::<...> | provenance | Src:MaD:2  |
+| main.rs:8:3:8:17 | to | main.rs:9:29:9:51 | ...: ...::Path::<...> | provenance | Src:MaD:2  |
 | main.rs:9:29:9:51 | ...: ...::Path::<...> | main.rs:10:22:10:25 | path | provenance |  |
 | main.rs:10:9:10:18 | user_input | main.rs:13:9:22:18 | MacroExpr | provenance |  |
 | main.rs:10:22:10:25 | path | main.rs:10:22:10:38 | path.into_inner() | provenance | MaD:3 |
@@ -19,7 +19,7 @@ models
 | 4 | Summary: alloc::fmt::format; Argument[0]; ReturnValue; taint |
 | 5 | Summary: core::hint::must_use; Argument[0]; ReturnValue; value |
 nodes
-| main.rs:8:1:8:18 | to | semmle.label | to |
+| main.rs:8:3:8:17 | to | semmle.label | to |
 | main.rs:9:29:9:51 | ...: ...::Path::<...> | semmle.label | ...: ...::Path::<...> |
 | main.rs:10:9:10:18 | user_input | semmle.label | user_input |
 | main.rs:10:22:10:25 | path | semmle.label | path |

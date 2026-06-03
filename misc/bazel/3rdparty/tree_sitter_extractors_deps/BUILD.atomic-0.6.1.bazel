@@ -99,6 +99,6 @@ rust_library(
     }),
     version = "0.6.1",
     deps = [
-        "@vendor_ts__bytemuck-1.23.2//:bytemuck",
+        "@vendor_ts__bytemuck-1.25.0//:bytemuck",
     ],
 )

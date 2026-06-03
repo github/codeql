@@ -118,7 +118,7 @@ rust_library(
     deps = [
         "@vendor_ts__clang-sys-1.8.1//:build_script_build",
         "@vendor_ts__glob-0.3.3//:glob",
-        "@vendor_ts__libc-0.2.175//:libc",
+        "@vendor_ts__libc-0.2.186//:libc",
         "@vendor_ts__libloading-0.8.9//:libloading",
     ],
 )

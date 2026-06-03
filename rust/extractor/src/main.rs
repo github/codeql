@@ -80,18 +80,18 @@ impl<'a> Extractor<'a> {
             translator.emit_parse_error(&ast, &err);
         }
         let no_location = (LineCol { line: 0, col: 0 }, LineCol { line: 0, col: 0 });
-        if let Err(RustAnalyzerNoSemantics { severity, reason }) = semantics_info {
-            if !reason.is_empty() {
-                let message = format!("semantic analyzer unavailable ({reason})");
-                let full_message = format!("{message}: macro expansion will be skipped.");
-                translator.emit_diagnostic(
-                    severity,
-                    "semantics".to_owned(),
-                    message,
-                    full_message,
-                    no_location,
-                );
-            }
+        if let Err(RustAnalyzerNoSemantics { severity, reason }) = semantics_info
+            && !reason.is_empty()
+        {
+            let message = format!("semantic analyzer unavailable ({reason})");
+            let full_message = format!("{message}: macro expansion will be skipped.");
+            translator.emit_diagnostic(
+                severity,
+                "semantics".to_owned(),
+                message,
+                full_message,
+                no_location,
+            );
         }
         translator.emit_source_file(&ast);
         translator.emit_truncated_diagnostics_message();
@@ -300,17 +300,16 @@ fn main() -> anyhow::Result<()> {
                 };
             }
             for (file_id, file) in vfs.iter() {
-                if let Some(file) = file.as_path().map(<_ as AsRef<Path>>::as_ref) {
-                    if file.extension().is_some_and(|ext| ext == "rs")
-                        && processed_files.insert(file.to_owned())
-                        && db
-                            .source_root(db.file_source_root(file_id).source_root_id(db))
-                            .source_root(db)
-                            .is_library
-                    {
-                        extractor.extract_with_semantics(file, &semantics, vfs, library_mode);
-                        extractor.archiver.archive(file);
-                    }
+                if let Some(file) = file.as_path().map(<_ as AsRef<Path>>::as_ref)
+                    && file.extension().is_some_and(|ext| ext == "rs")
+                    && processed_files.insert(file.to_owned())
+                    && db
+                        .source_root(db.file_source_root(file_id).source_root_id(db))
+                        .source_root(db)
+                        .is_library
+                {
+                    extractor.extract_with_semantics(file, &semantics, vfs, library_mode);
+                    extractor.archiver.archive(file);
                 }
             }
         } else {

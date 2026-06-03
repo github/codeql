@@ -215,12 +215,12 @@ impl<'a> Translator<'a> {
     ) {
         let parent_range = parent.syntax().text_range();
         let token_range = token.text_range();
-        if let Some(clipped_range) = token_range.intersect(parent_range) {
-            if let Some(parent_range2) = self.text_range_for_node(parent) {
-                let token_range = clipped_range + parent_range2.start() - parent_range.start();
-                if let Some((start, end)) = self.location(token_range) {
-                    self.trap.emit_location(self.label, label, start, end)
-                }
+        if let Some(clipped_range) = token_range.intersect(parent_range)
+            && let Some(parent_range2) = self.text_range_for_node(parent)
+        {
+            let token_range = clipped_range + parent_range2.start() - parent_range.start();
+            if let Some((start, end)) = self.location(token_range) {
+                self.trap.emit_location(self.label, label, start, end)
             }
         }
     }
@@ -332,15 +332,15 @@ impl<'a> Translator<'a> {
         children: SyntaxElementChildren,
     ) {
         for child in children {
-            if let NodeOrToken::Token(token) = child {
-                if token.kind() == SyntaxKind::COMMENT {
-                    let label = self.trap.emit(generated::Comment {
-                        id: TrapId::Star,
-                        parent: parent_label,
-                        text: token.text().to_owned(),
-                    });
-                    self.emit_location_token(label.into(), parent_node, &token);
-                }
+            if let NodeOrToken::Token(token) = child
+                && token.kind() == SyntaxKind::COMMENT
+            {
+                let label = self.trap.emit(generated::Comment {
+                    id: TrapId::Star,
+                    parent: parent_label,
+                    text: token.text().to_owned(),
+                });
+                self.emit_location_token(label.into(), parent_node, &token);
             }
         }
     }
@@ -465,9 +465,28 @@ impl<'a> Translator<'a> {
     pub(crate) fn should_be_excluded(&self, item: &impl ast::HasAttrs) -> bool {
         self.semantics.is_some_and(|sema| {
             item.attrs().any(|attr| {
-                attr.as_simple_call().is_some_and(|(name, tokens)| {
-                    name == "cfg" && sema.check_cfg_attr(&tokens) == Some(false)
-                })
+                let meta = match attr.meta() {
+                    Some(meta) => meta,
+                    None => return false,
+                };
+                let cfg_meta = match ast::CfgMeta::cast(meta.syntax().clone()) {
+                    Some(cfg_meta) => cfg_meta,
+                    None => return false,
+                };
+                let cfg_predicate = match cfg_meta.cfg_predicate() {
+                    Some(pred) => pred,
+                    None => return false,
+                };
+                let cfg_expr = ra_ap_cfg::CfgExpr::parse_from_ast(cfg_predicate);
+                let file_id = sema.hir_file_for(item.syntax());
+                let krate = match file_id
+                    .file_id()
+                    .and_then(|fid| sema.file_to_module_defs(fid.file_id(sema.db)).next())
+                {
+                    Some(module) => module.krate(sema.db),
+                    None => return false,
+                };
+                krate.cfg(sema.db).check(&cfg_expr) == Some(false)
             })
         })
     }
@@ -551,9 +570,9 @@ impl<'a> Translator<'a> {
             is_const: false,
             is_gen: false,
             is_move: false,
-            is_try: false,
             is_unsafe: false,
             stmt_list: Some(stmt_list),
+            try_block_modifier: None,
         });
         self.emit_location(label, node);
         self.emit_tokens(node, label.into(), node.syntax().children_with_tokens());
@@ -695,7 +714,9 @@ impl<'a> Translator<'a> {
         let node: ast::Adt = node.clone().into();
         let expansions = node
             .attrs()
-            .filter_map(|attr| semantics.expand_derive_macro(&attr))
+            .filter_map(|attr| attr.meta())
+            .filter_map(|meta| semantics.expand_derive_macro(&meta))
+            .flatten()
             .flatten()
             .filter_map(|expanded| self.process_item_macro_expansion(&node, expanded))
             .collect::<Vec<_>>();

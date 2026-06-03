@@ -99,7 +99,7 @@ rust_library(
     }),
     version = "7.1.3",
     deps = [
-        "@vendor_ts__memchr-2.7.5//:memchr",
+        "@vendor_ts__memchr-2.8.0//:memchr",
         "@vendor_ts__minimal-lexical-0.2.1//:minimal_lexical",
     ],
 )
