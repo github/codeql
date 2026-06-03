@@ -40,7 +40,7 @@ signature module BoundDefinitions<LocationSig Location> {
 
 /**
  * Provides classes for representing abstract bounds for use in, for example, range analysis.
- *  This is a generic implementation of bounds that relies on language specific modules to provide language-specific definitions of expressions, SSA variables, etc.
+ * This is a generic implementation of bounds that relies on language specific modules to provide language-specific definitions of expressions, SSA variables, etc.
  */
 overlay[local?]
 module Bound<LocationSig Location, BoundDefinitions<Location> Defs> {
