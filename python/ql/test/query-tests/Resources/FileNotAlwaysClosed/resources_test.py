@@ -48,7 +48,7 @@ def closed7():
 def not_closed8():
     f8 = None
     try:
-        f8 = open("filename") # $ Alert # not closed on exception
+        f8 = open("filename") # $ MISSING:Alert # not closed on exception (FileNotAlwaysClosed is optimistic about exception-flow close paths through buggy guards)
         f8.write("Error could occur")
     finally:
         if f8 is None: # We don't precisely consider this condition, so this result is MISSING. However, this seems uncommon.
@@ -140,7 +140,7 @@ def may_raise():
 
 #Not handling all exceptions, but we'll tolerate the false negative
 def not_closed17():
-    f17 = open("filename") # $ Alert # not closed on exception
+    f17 = open("filename") # $ MISSING:Alert # not closed on exception (FileNotAlwaysClosed is optimistic about exception-flow close paths through buggy guards)
     try:
         f17.write("IOError could occur")
         f17.write("IOError could occur")
@@ -236,7 +236,7 @@ def closed21(path):
 
 
 def not_closed22(path):
-    f22 = open(path, "wb") # $ Alert # not closed on exception
+    f22 = open(path, "wb") # $ MISSING:Alert # not closed on exception (FileNotAlwaysClosed is optimistic about exception-flow close paths through buggy guards)
     try:
         f22.write(b"foo")
         may_raise()

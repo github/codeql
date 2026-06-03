@@ -1556,6 +1556,89 @@ private module Input implements InputSig1, InputSig2 {
 
   private string assertThrowTag() { result = "[assert-throw]" }
 
+  /**
+   * Holds if the AST node `n` may raise an exception at runtime as part of
+   * its normal evaluation (not via an explicit `raise`/`assert`, which are
+   * modelled separately).
+   *
+   * The set mirrors what the legacy CFG used to flag implicitly: function
+   * calls (anything can raise), attribute access (`AttributeError`),
+   * subscript access (`IndexError`/`KeyError`/`TypeError`), arithmetic and
+   * comparison operators (`TypeError`/`ZeroDivisionError`), imports
+   * (`ImportError`/`ModuleNotFoundError`), and generator/coroutine
+   * suspension points (`await`/`yield`/`yield from`).
+   *
+   * Bare `Name` reads are intentionally excluded — modelling every name
+   * read as `mayThrow` would explode CFG edge count for negligible
+   * analysis value. `BoolExpr`/`IfExp` containers are also excluded; the
+   * operands they evaluate contribute their own exception edges.
+   */
+  private predicate exprMayThrow(Py::Expr e) {
+    e instanceof Py::Call
+    or
+    e instanceof Py::Attribute
+    or
+    e instanceof Py::Subscript
+    or
+    e instanceof Py::BinaryExpr
+    or
+    e instanceof Py::UnaryExpr
+    or
+    e instanceof Py::Compare
+    or
+    e instanceof Py::ImportExpr
+    or
+    e instanceof Py::ImportMember
+    or
+    e instanceof Py::Await
+    or
+    e instanceof Py::Yield
+    or
+    e instanceof Py::YieldFrom
+  }
+
+  /**
+   * Holds if the statement `s` may raise an exception at runtime as part
+   * of its normal evaluation. Currently restricted to `from m import *`
+   * (which performs the import as a statement-level side effect).
+   */
+  private predicate stmtMayThrow(Py::Stmt s) { s instanceof Py::ImportStar }
+
+  /**
+   * Holds if `n` is syntactically inside the body, handlers, `else`, or
+   * `finally` of a `try` statement (or the body of a `with` statement,
+   * which compiles to an implicit try/finally for `__exit__`) in the
+   * same scope.
+   *
+   * This mirrors Java's `ControlFlowGraph::mayThrow`, which only emits
+   * exception edges when there is local exception handling that would
+   * observe them. Outside such contexts, exception edges would add CFG
+   * complexity (weakening BarrierGuard precision and breaking SSA
+   * continuity around augmented assignments and subscript stores)
+   * without any analysis benefit, since exceptions just propagate to
+   * the function exit anyway.
+   */
+  private predicate inExceptionContext(Py::AstNode py) {
+    exists(Py::Try t | t.containsInScope(py))
+    or
+    exists(Py::With w | w.containsInScope(py))
+  }
+
+  /**
+   * Holds if `n` may raise an exception during normal evaluation. See
+   * `exprMayThrow` and `stmtMayThrow` for the included AST classes.
+   *
+   * Restricted to nodes inside a `try`/`with` statement: matches Java's
+   * approach of only modelling exception flow where it can be observed
+   * by local handling.
+   */
+  private predicate mayThrow(Ast::AstNode n) {
+    exists(Py::AstNode py | py = n.asExpr() or py = n.asStmt() |
+      (exprMayThrow(py) or stmtMayThrow(py)) and
+      inExceptionContext(py)
+    )
+  }
+
   predicate additionalNode(Ast::AstNode n, string tag, NormalSuccessor t) {
     n instanceof Ast::AssertStmt and tag = assertThrowTag() and t instanceof DirectSuccessor
   }
@@ -1567,6 +1650,11 @@ private module Input implements InputSig1, InputSig2 {
     n.isAdditional(ast, assertThrowTag()) and
     c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
     always = true
+    or
+    mayThrow(ast) and
+    n.isIn(ast) and
+    c.asSimpleAbruptCompletion() instanceof ExceptionSuccessor and
+    always = false
   }
 
   predicate endAbruptCompletion(Ast::AstNode ast, PreControlFlowNode n, AbruptCompletion c) {

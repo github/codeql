@@ -1,4 +1,33 @@
 edges
+| test.py:23:25:23:25 | e | test.py:24:16:24:16 | e | provenance |  |
+| test.py:31:25:31:25 | e | test.py:32:16:32:16 | e | provenance |  |
+| test.py:32:16:32:16 | e | test.py:32:16:32:30 | After Attribute | provenance | Config |
+| test.py:49:9:49:11 | err | test.py:50:29:50:31 | err | provenance |  |
+| test.py:49:15:49:36 | After Attribute() | test.py:49:9:49:11 | err | provenance |  |
+| test.py:50:29:50:31 | err | test.py:50:16:50:32 | After format_error() | provenance |  |
+| test.py:50:29:50:31 | err | test.py:52:18:52:20 | msg | provenance |  |
+| test.py:52:18:52:20 | msg | test.py:53:12:53:27 | After BinaryExpr | provenance |  |
+| test.py:65:25:65:25 | e | test.py:66:24:66:40 | After Dict | provenance |  |
 nodes
+| test.py:16:16:16:37 | After Attribute() | semmle.label | After Attribute() |
+| test.py:23:25:23:25 | e | semmle.label | e |
+| test.py:24:16:24:16 | e | semmle.label | e |
+| test.py:31:25:31:25 | e | semmle.label | e |
+| test.py:32:16:32:16 | e | semmle.label | e |
+| test.py:32:16:32:30 | After Attribute | semmle.label | After Attribute |
+| test.py:49:9:49:11 | err | semmle.label | err |
+| test.py:49:15:49:36 | After Attribute() | semmle.label | After Attribute() |
+| test.py:50:16:50:32 | After format_error() | semmle.label | After format_error() |
+| test.py:50:29:50:31 | err | semmle.label | err |
+| test.py:52:18:52:20 | msg | semmle.label | msg |
+| test.py:53:12:53:27 | After BinaryExpr | semmle.label | After BinaryExpr |
+| test.py:65:25:65:25 | e | semmle.label | e |
+| test.py:66:24:66:40 | After Dict | semmle.label | After Dict |
 subpaths
+| test.py:50:29:50:31 | err | test.py:52:18:52:20 | msg | test.py:53:12:53:27 | After BinaryExpr | test.py:50:16:50:32 | After format_error() |
 #select
+| test.py:16:16:16:37 | After Attribute() | test.py:16:16:16:37 | After Attribute() | test.py:16:16:16:37 | After Attribute() | $@ flows to this location and may be exposed to an external user. | test.py:16:16:16:37 | After Attribute() | Stack trace information |
+| test.py:24:16:24:16 | e | test.py:23:25:23:25 | e | test.py:24:16:24:16 | e | $@ flows to this location and may be exposed to an external user. | test.py:23:25:23:25 | e | Stack trace information |
+| test.py:32:16:32:30 | After Attribute | test.py:31:25:31:25 | e | test.py:32:16:32:30 | After Attribute | $@ flows to this location and may be exposed to an external user. | test.py:31:25:31:25 | e | Stack trace information |
+| test.py:50:16:50:32 | After format_error() | test.py:49:15:49:36 | After Attribute() | test.py:50:16:50:32 | After format_error() | $@ flows to this location and may be exposed to an external user. | test.py:49:15:49:36 | After Attribute() | Stack trace information |
+| test.py:66:24:66:40 | After Dict | test.py:65:25:65:25 | e | test.py:66:24:66:40 | After Dict | $@ flows to this location and may be exposed to an external user. | test.py:65:25:65:25 | e | Stack trace information |

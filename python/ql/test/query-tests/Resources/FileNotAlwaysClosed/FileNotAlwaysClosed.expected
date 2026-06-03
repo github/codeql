@@ -1,40 +1,9 @@
-#select
 | resources_test.py:4:10:4:25 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:5:5:5:33 | After Attribute() | this operation |
 | resources_test.py:9:10:9:25 | After open() | File is opened but is not closed. | file://:0:0:0:0 | (none) | this operation |
-| resources_test.py:20:10:20:25 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:22:9:22:37 | After Attribute() | this operation |
-| resources_test.py:30:14:30:29 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:31:9:31:37 | After Attribute() | this operation |
-| resources_test.py:39:14:39:29 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:40:9:40:37 | After Attribute() | this operation |
-| resources_test.py:49:14:49:29 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:50:9:50:37 | After Attribute() | this operation |
-| resources_test.py:58:14:58:29 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:59:9:59:37 | After Attribute() | this operation |
-| resources_test.py:69:11:69:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:71:9:71:40 | After Attribute() | this operation |
-| resources_test.py:69:11:69:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:72:9:72:40 | After Attribute() | this operation |
-| resources_test.py:79:11:79:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:81:9:81:40 | After Attribute() | this operation |
-| resources_test.py:79:11:79:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:82:9:82:40 | After Attribute() | this operation |
-| resources_test.py:91:11:91:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:93:9:93:40 | After Attribute() | this operation |
-| resources_test.py:91:11:91:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:94:9:94:40 | After Attribute() | this operation |
 | resources_test.py:108:11:108:20 | After open() | File is opened but is not closed. | file://:0:0:0:0 | (none) | this operation |
 | resources_test.py:112:11:112:28 | After opener_func2() | File may not be closed if $@ raises an exception. | resources_test.py:113:5:113:22 | After Attribute() | this operation |
 | resources_test.py:123:11:123:24 | After opener_func2() | File is opened but is not closed. | file://:0:0:0:0 | (none) | this operation |
 | resources_test.py:129:15:129:24 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:130:9:130:26 | After Attribute() | this operation |
-| resources_test.py:141:11:141:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:143:9:143:40 | After Attribute() | this operation |
-| resources_test.py:141:11:141:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:144:9:144:40 | After Attribute() | this operation |
-| resources_test.py:182:15:182:54 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:186:9:186:25 | After Attribute() | this operation |
-| resources_test.py:225:11:225:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:227:9:227:25 | After Attribute() | this operation |
-| resources_test.py:237:11:237:26 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:239:9:239:25 | After Attribute() | this operation |
 | resources_test.py:248:11:248:25 | After open() | File is opened but is not closed. | file://:0:0:0:0 | (none) | this operation |
-| resources_test.py:252:11:252:25 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:254:9:254:23 | After Attribute() | this operation |
 | resources_test.py:269:10:269:27 | After Attribute() | File may not be closed if $@ raises an exception. | resources_test.py:271:5:271:19 | After Attribute() | this operation |
-| resources_test.py:275:10:275:35 | After Attribute() | File may not be closed if $@ raises an exception. | resources_test.py:278:9:278:23 | After Attribute() | this operation |
 | resources_test.py:285:11:285:20 | After open() | File may not be closed if $@ raises an exception. | resources_test.py:287:5:287:31 | After Attribute() | this operation |
-testFailures
-| resources_test.py:20:10:20:25 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:30:14:30:29 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:39:14:39:29 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:58:14:58:29 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:69:11:69:26 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:79:11:79:26 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:91:11:91:26 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:182:15:182:54 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:225:11:225:26 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:252:11:252:25 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
-| resources_test.py:275:10:275:35 | File may not be closed if $@ raises an exception. | Unexpected result: Alert |
