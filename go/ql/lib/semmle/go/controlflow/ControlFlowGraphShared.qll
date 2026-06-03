@@ -1322,6 +1322,21 @@ module GoCfg {
       )
     }
 
+    /**
+     * Holds if `cc` is a case clause of a type switch with an assignment that
+     * implicitly declares a variable whose type narrows to the case type. In
+     * this situation the CFG inserts a `type-switch-var` additional node
+     * between the case test and the case body, on which the IR layer
+     * materialises the implicit assignment to that variable.
+     */
+    private predicate hasTypeSwitchVar(Go::CaseClause cc) {
+      exists(Go::TypeSwitchStmt ts |
+        ts.getACase() = cc and
+        exists(ts.getAssign()) and
+        exists(cc.getImplicitlyDeclaredVariable())
+      )
+    }
+
     private predicate caseClause(PreControlFlowNode n1, PreControlFlowNode n2) {
       exists(Go::SwitchStmt sw, Go::CaseClause cc, int i | cc = sw.getNonDefaultCase(i) |
         n1.isBefore(cc) and n2.isBefore(cc.getExpr(0))
@@ -1336,9 +1351,14 @@ module GoCfg {
         exists(int last | last = max(int j | exists(cc.getExpr(j))) |
           afterCaseExprMatch(sw, cc.getExpr(last), n1) and
           (
-            n2.isBefore(cc.getStmt(0))
+            hasTypeSwitchVar(cc) and n2.isAdditional(cc, "type-switch-var")
             or
-            not exists(cc.getStmt(0)) and n2.isAfter(sw)
+            not hasTypeSwitchVar(cc) and
+            (
+              n2.isBefore(cc.getStmt(0))
+              or
+              not exists(cc.getStmt(0)) and n2.isAfter(sw)
+            )
           )
           or
           afterCaseExprNoMatch(sw, cc.getExpr(last), n1) and
@@ -1357,9 +1377,25 @@ module GoCfg {
       exists(Go::SwitchStmt sw, Go::CaseClause def | def = sw.getDefault() |
         n1.isBefore(def) and
         (
-          n2.isBefore(def.getStmt(0))
+          hasTypeSwitchVar(def) and n2.isAdditional(def, "type-switch-var")
           or
-          not exists(def.getStmt(0)) and n2.isAfter(sw)
+          not hasTypeSwitchVar(def) and
+          (
+            n2.isBefore(def.getStmt(0))
+            or
+            not exists(def.getStmt(0)) and n2.isAfter(sw)
+          )
+        )
+      )
+      or
+      exists(Go::SwitchStmt sw, Go::CaseClause cc |
+        sw.getACase() = cc and
+        hasTypeSwitchVar(cc) and
+        n1.isAdditional(cc, "type-switch-var") and
+        (
+          n2.isBefore(cc.getStmt(0))
+          or
+          not exists(cc.getStmt(0)) and n2.isAfter(sw)
         )
       )
       or
