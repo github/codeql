@@ -9,20 +9,26 @@ methodCalls
 | Slice.cs:11:20:11:26 | call to method Substring | Substring(int, int) | 1 | access to property Length - 4 |
 | Slice.cs:12:20:12:27 | call to method Substring | Substring(int, int) | 0 | access to parameter a |
 | Slice.cs:12:20:12:27 | call to method Substring | Substring(int, int) | 1 | access to property Length - access to parameter b - access to parameter a |
-| Slice.cs:15:22:15:29 | call to method Slice | Slice(int, int) | 0 | 5 |
-| Slice.cs:15:22:15:29 | call to method Slice | Slice(int, int) | 1 | access to parameter a - 5 |
-| Slice.cs:16:22:16:28 | call to method Slice | Slice(int, int) | 0 | 0 |
-| Slice.cs:16:22:16:28 | call to method Slice | Slice(int, int) | 1 | 6 |
-| Slice.cs:17:22:17:28 | call to method Slice | Slice(int, int) | 0 | 7 |
-| Slice.cs:17:22:17:28 | call to method Slice | Slice(int, int) | 1 | access to property Length - 7 |
-| Slice.cs:18:22:18:29 | call to method Slice | Slice(int, int) | 0 | 0 |
-| Slice.cs:18:22:18:29 | call to method Slice | Slice(int, int) | 1 | access to property Length - 8 |
-| Slice.cs:19:22:19:30 | call to method Slice | Slice(int, int) | 0 | access to parameter a |
-| Slice.cs:19:22:19:30 | call to method Slice | Slice(int, int) | 1 | access to property Length - access to parameter b - access to parameter a |
+| Slice.cs:13:20:13:24 | call to method Substring | Substring(int, int) | 0 | 0 |
+| Slice.cs:13:20:13:24 | call to method Substring | Substring(int, int) | 1 | access to property Length |
+| Slice.cs:16:22:16:29 | call to method Slice | Slice(int, int) | 0 | 5 |
+| Slice.cs:16:22:16:29 | call to method Slice | Slice(int, int) | 1 | access to parameter a - 5 |
+| Slice.cs:17:22:17:28 | call to method Slice | Slice(int, int) | 0 | 0 |
+| Slice.cs:17:22:17:28 | call to method Slice | Slice(int, int) | 1 | 6 |
+| Slice.cs:18:22:18:28 | call to method Slice | Slice(int, int) | 0 | 7 |
+| Slice.cs:18:22:18:28 | call to method Slice | Slice(int, int) | 1 | access to property Length - 7 |
+| Slice.cs:19:22:19:29 | call to method Slice | Slice(int, int) | 0 | 0 |
+| Slice.cs:19:22:19:29 | call to method Slice | Slice(int, int) | 1 | access to property Length - 8 |
+| Slice.cs:20:22:20:30 | call to method Slice | Slice(int, int) | 0 | access to parameter a |
+| Slice.cs:20:22:20:30 | call to method Slice | Slice(int, int) | 1 | access to property Length - access to parameter b - access to parameter a |
+| Slice.cs:21:22:21:27 | call to method Slice | Slice(int, int) | 0 | 0 |
+| Slice.cs:21:22:21:27 | call to method Slice | Slice(int, int) | 1 | access to property Length |
 propertyCalls
 | Slice.cs:10:20:10:25 | access to property Length | Slice.cs:10:20:10:20 | access to local variable s |
 | Slice.cs:11:20:11:26 | access to property Length | Slice.cs:11:20:11:20 | access to local variable s |
 | Slice.cs:12:20:12:27 | access to property Length | Slice.cs:12:20:12:20 | access to local variable s |
-| Slice.cs:17:22:17:28 | access to property Length | Slice.cs:17:22:17:23 | access to local variable sp |
-| Slice.cs:18:22:18:29 | access to property Length | Slice.cs:18:22:18:23 | access to local variable sp |
-| Slice.cs:19:22:19:30 | access to property Length | Slice.cs:19:22:19:23 | access to local variable sp |
+| Slice.cs:13:20:13:24 | access to property Length | Slice.cs:13:20:13:20 | access to local variable s |
+| Slice.cs:18:22:18:28 | access to property Length | Slice.cs:18:22:18:23 | access to local variable sp |
+| Slice.cs:19:22:19:29 | access to property Length | Slice.cs:19:22:19:23 | access to local variable sp |
+| Slice.cs:20:22:20:30 | access to property Length | Slice.cs:20:22:20:23 | access to local variable sp |
+| Slice.cs:21:22:21:27 | access to property Length | Slice.cs:21:22:21:23 | access to local variable sp |

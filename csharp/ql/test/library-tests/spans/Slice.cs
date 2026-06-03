@@ -10,6 +10,7 @@ public class C
         var sub3 = s[3..];
         var sub4 = s[..^4];
         var sub5 = s[a..^b];
+        var sub6 = s[..];
 
         Span<int> sp = null;
         var slice1 = sp[5..a];
@@ -17,5 +18,6 @@ public class C
         var slice3 = sp[7..];
         var slice4 = sp[..^8];
         var slice5 = sp[a..^b];
+        var slice6 = sp[..];
     }
 }
