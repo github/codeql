@@ -5,7 +5,7 @@ overlay[local?]
 module;
 
 private import java as J
-private import semmle.code.java.dataflow.SSA as Ssa
+private import semmle.code.java.dataflow.SSA
 private import semmle.code.java.dataflow.RangeUtils as RU
 private import codeql.rangeanalysis.Bound as SharedBound
 

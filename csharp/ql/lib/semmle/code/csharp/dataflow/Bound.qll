@@ -5,7 +5,7 @@ overlay[local?]
 module;
 
 private import csharp as CS
-private import semmle.code.csharp.dataflow.SSA::Ssa as Ssa
+private import semmle.code.csharp.dataflow.SSA::Ssa
 private import semmle.code.csharp.dataflow.internal.rangeanalysis.ConstantUtils as CU
 private import semmle.code.csharp.dataflow.internal.rangeanalysis.RangeUtils as RU
 private import semmle.code.csharp.dataflow.internal.rangeanalysis.SsaUtils as SU
@@ -17,7 +17,7 @@ private module BoundDefs implements SharedBound::BoundDefinitions<CS::Location> 
 
   class SsaVariable = SU::SsaVariable;
 
-  class SsaSourceVariable = Ssa::SourceVariable;
+  class SsaSourceVariable = SourceVariable;
 
   class Expr = CS::ControlFlowNodes::ExprNode;
 
