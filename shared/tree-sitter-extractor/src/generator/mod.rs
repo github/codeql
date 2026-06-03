@@ -305,7 +305,18 @@ fn convert_nodes(
                 // type.
                 let members: Set<&str> = n_members
                     .iter()
-                    .map(|n| nodes.get(n).unwrap().dbscheme_name.as_str())
+                    .map(|n| {
+                        nodes
+                            .get(n)
+                            .unwrap_or_else(|| {
+                                panic!(
+                                    "union type '{}' references unknown member node type {:?}",
+                                    node.dbscheme_name, n
+                                )
+                            })
+                            .dbscheme_name
+                            .as_str()
+                    })
                     .collect();
                 entries.push(dbscheme::Entry::Union(dbscheme::Union {
                     name: &node.dbscheme_name,

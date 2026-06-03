@@ -273,6 +273,16 @@ fn dump_node(
         }
     }
 
+    // Check for required fields that are absent
+    if let Some((schema, _, _)) = type_check {
+        for (field_id, field_name) in schema.required_fields_for_kind(node.kind_name()) {
+            if !node.fields.contains_key(&field_id) {
+                let name = field_name.unwrap_or("child");
+                writeln!(out, "{prefix}  <-- ERROR: missing required field '{name}'").unwrap();
+            }
+        }
+    }
+
     // Unnamed children — skip unnamed tokens (keywords, punctuation)
     if let Some(children) = node.fields.get(&CHILD_FIELD) {
         let child_type_check = type_check.map(|(schema, _, _)| {

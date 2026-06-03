@@ -411,7 +411,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     // Named fields — compute each value into a temp, then reference it
     while peek_is_field(tokens) {
         let field_name = expect_ident(tokens, "expected field name")?;
-        let field_str = field_name.to_string();
+        let field_str = field_name.to_string().strip_prefix("r#").unwrap_or(&field_name.to_string()).to_string();
         expect_punct(tokens, ':', "expected `:` after field name")?;
         let temp = Ident::new(
             &format!("__field_{field_str}_{field_counter}"),
@@ -437,7 +437,11 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
                             .map(::std::convert::Into::<usize>::into)
                             .collect();
                     });
-                    field_args.push(quote! { (#field_str, #temp) });
+                    // An empty splice means the field is absent — skip it
+                    // entirely rather than emitting an empty named field.
+                    field_args.push(quote! {
+                        if !#temp.is_empty() { __fields.push((#field_str, #temp)); }
+                    });
                     continue;
                 }
             }
@@ -445,7 +449,7 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
 
         let value = parse_direct_node(tokens, ctx)?;
         stmts.push(quote! { let #temp: usize = #value; });
-        field_args.push(quote! { (#field_str, vec![#temp]) });
+        field_args.push(quote! { __fields.push((#field_str, vec![#temp])); });
     }
 
     // After all named fields, no other tokens are allowed.
@@ -461,7 +465,9 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
     Ok(quote! {
         {
             #(#stmts)*
-            #ctx.node(#kind_str, vec![#(#field_args),*])
+            let mut __fields: Vec<(&str, Vec<usize>)> = Vec::new();
+            #(#field_args)*
+            #ctx.node(#kind_str, __fields)
         }
     })
 }
@@ -474,6 +480,11 @@ fn parse_direct_list(tokens: &mut Tokens, ctx: &Ident) -> Result<Vec<TokenStream
         if peek_is_group(tokens, Delimiter::Parenthesis) {
             let group = expect_group(tokens, Delimiter::Parenthesis)?;
             let mut inner = group.stream().into_iter().peekable();
+
+            // Empty `()` represents an empty sequence — emit nothing.
+            if inner.peek().is_none() {
+                continue;
+            }
 
             // Regular node
             let node = parse_direct_node_inner(&mut inner, ctx)?;

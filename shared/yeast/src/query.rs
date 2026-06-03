@@ -178,11 +178,15 @@ impl QueryListElem {
                     let Some(child) = remaining_children.next() else {
                         return Ok(false);
                     };
-                    if skip_unnamed {
-                        let node = ast.get_node(child).unwrap();
-                        if !node.is_named() {
-                            continue;
-                        }
+                    let node = ast.get_node(child).unwrap();
+                    // Skip tree-sitter `extras` (e.g. comments) during
+                    // positional matching: they are conceptually invisible
+                    // between siblings, mirroring tree-sitter query semantics.
+                    if node.is_extra() {
+                        continue;
+                    }
+                    if skip_unnamed && !node.is_named() {
+                        continue;
                     }
                     let snapshot = matches.clone();
                     if sub_query.do_match(ast, child, matches)? {
