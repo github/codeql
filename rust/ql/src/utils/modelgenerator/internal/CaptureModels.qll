@@ -26,7 +26,7 @@ private newtype TCallable =
       or
       // If a method implements a public trait it is exposed through the trait.
       // We overapproximate this by including all trait method implementations.
-      exists(R::Impl impl | impl.hasTrait() and impl.getAssocItemList().getAssocItem(_) = api)
+      exists(R::Impl impl | impl.hasTraitTy() and impl.getAssocItemList().getAssocItem(_) = api)
     )
   }
 

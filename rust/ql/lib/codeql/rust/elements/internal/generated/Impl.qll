@@ -20,7 +20,7 @@ import codeql.rust.elements.WhereClause
  */
 module Generated {
   /**
-   * An `impl`` block.
+   * An `impl` block.
    *
    * For example:
    * ```rust
@@ -109,16 +109,16 @@ module Generated {
     final predicate hasSelfTy() { exists(this.getSelfTy()) }
 
     /**
-     * Gets the trait of this impl, if it exists.
+     * Gets the trait ty of this impl, if it exists.
      */
-    TypeRepr getTrait() {
-      result = Synth::convertTypeReprFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getTrait())
+    TypeRepr getTraitTy() {
+      result = Synth::convertTypeReprFromRaw(Synth::convertImplToRaw(this).(Raw::Impl).getTraitTy())
     }
 
     /**
-     * Holds if `getTrait()` exists.
+     * Holds if `getTraitTy()` exists.
      */
-    final predicate hasTrait() { exists(this.getTrait()) }
+    final predicate hasTraitTy() { exists(this.getTraitTy()) }
 
     /**
      * Gets the visibility of this impl, if it exists.

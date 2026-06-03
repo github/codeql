@@ -6209,7 +6209,7 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
-   * An `impl`` block.
+   * An `impl` block.
    *
    * For example:
    * ```rust
@@ -6262,9 +6262,9 @@ module Raw {
     TypeRepr getSelfTy() { impl_self_ties(this, result) }
 
     /**
-     * Gets the trait of this impl, if it exists.
+     * Gets the trait ty of this impl, if it exists.
      */
-    TypeRepr getTrait() { impl_traits(this, result) }
+    TypeRepr getTraitTy() { impl_trait_ties(this, result) }
 
     /**
      * Gets the visibility of this impl, if it exists.
@@ -6280,7 +6280,7 @@ module Raw {
   private Element getImmediateChildOfImpl(Impl e, int index) {
     exists(
       int n, int nAttributeMacroExpansion, int nAssocItemList, int nAttr, int nGenericParamList,
-      int nSelfTy, int nTrait, int nVisibility, int nWhereClause
+      int nSelfTy, int nTraitTy, int nVisibility, int nWhereClause
     |
       n = 0 and
       nAttributeMacroExpansion = n + 1 and
@@ -6288,8 +6288,8 @@ module Raw {
       nAttr = nAssocItemList + e.getNumberOfAttrs() and
       nGenericParamList = nAttr + 1 and
       nSelfTy = nGenericParamList + 1 and
-      nTrait = nSelfTy + 1 and
-      nVisibility = nTrait + 1 and
+      nTraitTy = nSelfTy + 1 and
+      nVisibility = nTraitTy + 1 and
       nWhereClause = nVisibility + 1 and
       (
         none()
@@ -6304,9 +6304,9 @@ module Raw {
         or
         index = nGenericParamList and result = e.getSelfTy()
         or
-        index = nSelfTy and result = e.getTrait()
+        index = nSelfTy and result = e.getTraitTy()
         or
-        index = nTrait and result = e.getVisibility()
+        index = nTraitTy and result = e.getVisibility()
         or
         index = nVisibility and result = e.getWhereClause()
       )

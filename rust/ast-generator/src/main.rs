@@ -45,6 +45,7 @@ fn property_name(type_name: &str, field_name: &str) -> String {
         (_, "ty") => "type_repr",
         ("Function", "body") => "function_body",
         ("ClosureExpr", "body") => "closure_body",
+        ("Impl", "trait_") => "trait_ty",
         _ if field_name.contains("record") => &field_name.replacen("record", "struct", 1),
         _ => field_name,
     };
