@@ -5,7 +5,9 @@ import utils.test.TranslateModels
 
 query predicate localStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // Local flow steps that don't originate from a flow summary.
-  RustDataFlow::simpleLocalFlowStep(nodeFrom, nodeTo, "")
+  RustDataFlow::simpleLocalFlowStep(nodeFrom, nodeTo, "") and
+  nodeFrom.getLocation().fromSource() and
+  nodeTo.getLocation().fromSource()
 }
 
 class Node extends DataFlow::Node {

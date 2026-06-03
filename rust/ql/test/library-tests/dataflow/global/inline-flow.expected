@@ -222,6 +222,15 @@ edges
 | main.rs:415:18:415:38 | i.get_double_number() | main.rs:415:13:415:14 | n4 | provenance |  |
 | main.rs:418:13:418:14 | n5 | main.rs:419:14:419:15 | n5 | provenance |  |
 | main.rs:418:18:418:41 | ...::get_default(...) | main.rs:418:13:418:14 | n5 | provenance |  |
+| main.rs:426:30:426:39 | source(...) | main.rs:430:35:430:45 | CONST_VALUE | provenance |  |
+| main.rs:427:5:427:46 | static STATIC_VALUE | main.rs:433:32:433:43 | STATIC_VALUE | provenance |  |
+| main.rs:427:5:427:46 | static STATIC_VALUE | main.rs:437:18:437:29 | STATIC_VALUE | provenance |  |
+| main.rs:427:36:427:45 | source(...) | main.rs:427:5:427:46 | static STATIC_VALUE | provenance |  |
+| main.rs:430:35:430:45 | CONST_VALUE | main.rs:431:14:431:25 | CONST_VALUE2 | provenance |  |
+| main.rs:433:17:433:28 | static_value | main.rs:434:18:434:29 | static_value | provenance |  |
+| main.rs:433:32:433:43 | STATIC_VALUE | main.rs:433:17:433:28 | static_value | provenance |  |
+| main.rs:436:13:436:24 | STATIC_VALUE | main.rs:427:5:427:46 | static STATIC_VALUE | provenance |  |
+| main.rs:436:28:436:37 | source(...) | main.rs:436:13:436:24 | STATIC_VALUE | provenance |  |
 nodes
 | main.rs:12:28:14:1 | { ... } | semmle.label | { ... } |
 | main.rs:13:5:13:13 | source(...) | semmle.label | source(...) |
@@ -464,6 +473,17 @@ nodes
 | main.rs:418:13:418:14 | n5 | semmle.label | n5 |
 | main.rs:418:18:418:41 | ...::get_default(...) | semmle.label | ...::get_default(...) |
 | main.rs:419:14:419:15 | n5 | semmle.label | n5 |
+| main.rs:426:30:426:39 | source(...) | semmle.label | source(...) |
+| main.rs:427:5:427:46 | static STATIC_VALUE | semmle.label | static STATIC_VALUE |
+| main.rs:427:36:427:45 | source(...) | semmle.label | source(...) |
+| main.rs:430:35:430:45 | CONST_VALUE | semmle.label | CONST_VALUE |
+| main.rs:431:14:431:25 | CONST_VALUE2 | semmle.label | CONST_VALUE2 |
+| main.rs:433:17:433:28 | static_value | semmle.label | static_value |
+| main.rs:433:32:433:43 | STATIC_VALUE | semmle.label | STATIC_VALUE |
+| main.rs:434:18:434:29 | static_value | semmle.label | static_value |
+| main.rs:436:13:436:24 | STATIC_VALUE | semmle.label | STATIC_VALUE |
+| main.rs:436:28:436:37 | source(...) | semmle.label | source(...) |
+| main.rs:437:18:437:29 | STATIC_VALUE | semmle.label | STATIC_VALUE |
 subpaths
 | main.rs:38:16:38:24 | source(...) | main.rs:26:28:26:33 | ...: i64 | main.rs:26:17:26:25 | SelfParam [Return] [&ref, MyStruct] | main.rs:38:5:38:5 | [post] a [MyStruct] |
 | main.rs:39:10:39:10 | a [MyStruct] | main.rs:30:17:30:21 | SelfParam [&ref, MyStruct] | main.rs:30:31:32:5 | { ... } | main.rs:39:10:39:21 | a.get_data() |
@@ -525,3 +545,8 @@ testFailures
 | main.rs:412:14:412:15 | n3 | main.rs:371:13:371:21 | source(...) | main.rs:412:14:412:15 | n3 | $@ | main.rs:371:13:371:21 | source(...) | source(...) |
 | main.rs:416:14:416:15 | n4 | main.rs:391:13:391:22 | source(...) | main.rs:416:14:416:15 | n4 | $@ | main.rs:391:13:391:22 | source(...) | source(...) |
 | main.rs:419:14:419:15 | n5 | main.rs:395:13:395:21 | source(...) | main.rs:419:14:419:15 | n5 | $@ | main.rs:395:13:395:21 | source(...) | source(...) |
+| main.rs:431:14:431:25 | CONST_VALUE2 | main.rs:426:30:426:39 | source(...) | main.rs:431:14:431:25 | CONST_VALUE2 | $@ | main.rs:426:30:426:39 | source(...) | source(...) |
+| main.rs:434:18:434:29 | static_value | main.rs:427:36:427:45 | source(...) | main.rs:434:18:434:29 | static_value | $@ | main.rs:427:36:427:45 | source(...) | source(...) |
+| main.rs:434:18:434:29 | static_value | main.rs:436:28:436:37 | source(...) | main.rs:434:18:434:29 | static_value | $@ | main.rs:436:28:436:37 | source(...) | source(...) |
+| main.rs:437:18:437:29 | STATIC_VALUE | main.rs:427:36:427:45 | source(...) | main.rs:437:18:437:29 | STATIC_VALUE | $@ | main.rs:427:36:427:45 | source(...) | source(...) |
+| main.rs:437:18:437:29 | STATIC_VALUE | main.rs:436:28:436:37 | source(...) | main.rs:437:18:437:29 | STATIC_VALUE | $@ | main.rs:436:28:436:37 | source(...) | source(...) |
