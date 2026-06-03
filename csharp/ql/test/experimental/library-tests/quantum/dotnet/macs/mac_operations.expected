@@ -1,0 +1,10 @@
+| HMACExample.cs:33:31:33:66 | MACOperation | HMACExample.cs:31:59:31:61 | Key | HMACExample.cs:33:54:33:65 | Message |
+| HMACExample.cs:40:31:40:64 | MACOperation | HMACExample.cs:38:53:38:55 | Key | HMACExample.cs:40:52:40:63 | Message |
+| HMACExample.cs:47:31:47:66 | MACOperation | HMACExample.cs:45:59:45:61 | Key | HMACExample.cs:47:54:47:65 | Message |
+| HMACExample.cs:54:31:54:66 | MACOperation | HMACExample.cs:52:59:52:61 | Key | HMACExample.cs:54:54:54:65 | Message |
+| HMACExample.cs:68:31:68:65 | MACOperation | HMACExample.cs:66:66:66:68 | Key | HMACExample.cs:68:53:68:64 | Message |
+| HMACExample.cs:81:40:81:77 | MACOperation | HMACExample.cs:81:60:81:62 | Key | HMACExample.cs:81:65:81:76 | Message |
+| HMACExample.cs:84:38:84:73 | MACOperation | HMACExample.cs:84:56:84:58 | Key | HMACExample.cs:84:61:84:72 | Message |
+| HMACExample.cs:87:40:87:77 | MACOperation | HMACExample.cs:87:60:87:62 | Key | HMACExample.cs:87:65:87:76 | Message |
+| HMACExample.cs:90:40:90:77 | MACOperation | HMACExample.cs:90:60:90:62 | Key | HMACExample.cs:90:65:90:76 | Message |
+| HMACExample.cs:106:31:106:54 | MACOperation | HMACExample.cs:99:53:99:55 | Key | HMACExample.cs:103:30:103:41 | Message |

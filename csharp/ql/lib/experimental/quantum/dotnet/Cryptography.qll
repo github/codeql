@@ -1,0 +1,724 @@
+private import csharp
+private import experimental.quantum.Language
+private import FlowAnalysis
+
+class CryptographyType extends Type {
+  CryptographyType() { this.hasFullyQualifiedName("System.Security.Cryptography", _) }
+}
+
+class EcParameters extends CryptographyType {
+  EcParameters() { this.hasName("ECParameters") }
+}
+
+class RsaParameters extends CryptographyType {
+  RsaParameters() { this.hasName("RSAParameters") }
+}
+
+class EcCurve extends CryptographyType {
+  EcCurve() { this.hasName("ECCurve") }
+}
+
+class HashAlgorithmType extends CryptographyType {
+  HashAlgorithmType() {
+    this.hasName([
+        "MD5",
+        "RIPEMD160",
+        "SHA1",
+        "SHA256",
+        "SHA384",
+        "SHA512",
+        "SHA3_256",
+        "SHA3_384",
+        "SHA3_512"
+      ])
+  }
+}
+
+// This class models Create calls for the ECDsa and RSA classes in .NET.
+class CryptographyCreateCall extends MethodCall {
+  CryptographyCreateCall() {
+    this.getTarget().hasName("Create") and
+    this.getQualifier().getType() instanceof CryptographyType
+  }
+
+  Expr getAlgorithmArg() {
+    if this.getArgument(0).getType().getName().matches("%Parameters")
+    then result = this.getArgument(0)
+    else result = this
+  }
+
+  Expr getKeyConsumer() {
+    if this.getArgument(0).getType().getName().matches("%Parameters")
+    then result = this.getArgument(0)
+    else result = this
+  }
+}
+
+class EcdsaType extends CryptographyType {
+  EcdsaType() { this.hasName("ECDsa") }
+}
+
+class RsaType extends CryptographyType {
+  RsaType() { this.hasName("RSA") }
+}
+
+class RsaPkcs1Type extends CryptographyType {
+  RsaPkcs1Type() { this.getName().matches("RSAPKCS1Signature%") }
+}
+
+class EcdsaCreateCall extends CryptographyCreateCall {
+  EcdsaCreateCall() { this.getQualifier().getType() instanceof EcdsaType }
+}
+
+// This class is used to model the `ECDsa.Create(ECParameters)` call
+class EcdsaCreateCallWithParameters extends EcdsaCreateCall {
+  EcdsaCreateCallWithParameters() { this.getArgument(0).getType() instanceof EcParameters }
+}
+
+class EcdsaCreateCallWithECCurve extends EcdsaCreateCall {
+  EcdsaCreateCallWithECCurve() { this.getArgument(0).getType() instanceof EcCurve }
+}
+
+class RsaCreateCall extends CryptographyCreateCall {
+  RsaCreateCall() { this.getQualifier().getType().hasName("RSA") }
+}
+
+class SigningCreateCall extends CryptographyCreateCall {
+  SigningCreateCall() {
+    this instanceof EcdsaCreateCall or
+    this instanceof RsaCreateCall
+  }
+}
+
+/**
+ * A call to create on an hash algorithm instance.
+ * The hash algorithm is defined by the qualifier.
+ */
+class HashAlgorithmCreateCall extends Crypto::AlgorithmValueConsumer instanceof CryptographyCreateCall
+{
+  HashAlgorithmCreateCall() { super.getQualifier().getType() instanceof HashAlgorithmType }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = super.getQualifier() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+}
+
+class HashAlgorithmQualifier extends Crypto::AlgorithmValueConsumer, Crypto::HashAlgorithmInstance instanceof Expr
+{
+  HashAlgorithmQualifier() { this = any(HashUse c).getQualifier() }
+
+  override Crypto::THashType getHashFamily() {
+    result = getHashFamily(this.getRawHashAlgorithmName())
+  }
+
+  override string getRawHashAlgorithmName() { result = super.getType().getName() }
+
+  override int getFixedDigestLength() {
+    hashAlgorithmToFamily(this.getRawHashAlgorithmName(), _, result)
+  }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+}
+
+class NamedCurvePropertyAccess extends PropertyAccess {
+  string curveName;
+
+  NamedCurvePropertyAccess() {
+    super.getType().getName() = "ECCurve" and
+    ecCurveNameMapping(super.getProperty().toString().toUpperCase(), curveName)
+  }
+
+  string getCurveName() { result = curveName }
+}
+
+class HashAlgorithmNameType extends CryptographyType {
+  HashAlgorithmNameType() { this.hasName("HashAlgorithmName") }
+}
+
+class HashAlgorithmName extends PropertyAccess {
+  string algorithmName;
+
+  HashAlgorithmName() {
+    this.getType() instanceof HashAlgorithmNameType and
+    this.getProperty().getName() = algorithmName
+  }
+
+  string getAlgorithmName() { result = algorithmName }
+
+  Crypto::THashType getHashFamily() { result = getHashFamily(this.getAlgorithmName()) }
+
+  int getFixedDigestLength() { hashAlgorithmToFamily(this.getAlgorithmName(), _, result) }
+}
+
+bindingset[name]
+Crypto::THashType getHashFamily(string name) {
+  if hashAlgorithmToFamily(name, _, _)
+  then hashAlgorithmToFamily(name, result, _)
+  else result = Crypto::OtherHashType()
+}
+
+private predicate hashAlgorithmToFamily(
+  string hashName, Crypto::THashType hashFamily, int digestLength
+) {
+  hashName = "MD5" and hashFamily = Crypto::MD5() and digestLength = 128
+  or
+  hashName = "SHA1" and hashFamily = Crypto::SHA1() and digestLength = 160
+  or
+  hashName = "SHA256" and hashFamily = Crypto::SHA2() and digestLength = 256
+  or
+  hashName = "SHA384" and hashFamily = Crypto::SHA2() and digestLength = 384
+  or
+  hashName = "SHA512" and hashFamily = Crypto::SHA2() and digestLength = 512
+  or
+  hashName = "SHA3_256" and hashFamily = Crypto::SHA3() and digestLength = 256
+  or
+  hashName = "SHA3_384" and hashFamily = Crypto::SHA3() and digestLength = 384
+  or
+  hashName = "SHA3_512" and hashFamily = Crypto::SHA3() and digestLength = 512
+  or
+  hashName = "RIPEMD160" and hashFamily = Crypto::RIPEMD160() and digestLength = 160
+}
+
+class HashAlgorithmNameUser extends MethodCall {
+  Expr arg;
+
+  HashAlgorithmNameUser() {
+    arg = this.getAnArgument() and
+    arg.getType() instanceof HashAlgorithmNameType
+  }
+
+  Expr getHashAlgorithmNameUser() { result = arg }
+}
+
+/**
+ * Private predicate mapping NIST names to SEC names and leaving all others the same.
+ */
+bindingset[nist]
+private predicate ecCurveNameMapping(string nist, string secp) {
+  if nist.matches("NIST%")
+  then
+    nist = "NISTP256" and secp = "secp256r1"
+    or
+    nist = "NISTP384" and secp = "secp384r1"
+    or
+    nist = "NISTP521" and secp = "secp521r1"
+  else secp = nist
+}
+
+// OPERATION INSTANCES
+private class EcdsaClass extends CryptographyType {
+  EcdsaClass() { this.hasName("ECDsa") }
+}
+
+private class RsaClass extends CryptographyType {
+  RsaClass() { this.hasName("RSA") }
+}
+
+private class RsaPkcs1SignatureFormatter extends CryptographyType {
+  RsaPkcs1SignatureFormatter() { this.hasName("RSAPKCS1SignatureFormatter") }
+}
+
+private class RsaPkcs1SignatureDeformatter extends CryptographyType {
+  RsaPkcs1SignatureDeformatter() { this.hasName("RSAPKCS1SignatureDeformatter") }
+}
+
+private class SignerType extends Type {
+  SignerType() {
+    this instanceof EcdsaClass or
+    this instanceof RsaClass or
+    this instanceof RsaPkcs1SignatureFormatter or
+    this instanceof RsaPkcs1SignatureDeformatter
+  }
+}
+
+class ByteArrayType extends Type {
+  ByteArrayType() { this.getName() = "Byte[]" }
+}
+
+class ReadOnlyByteSpanType extends Type {
+  ReadOnlyByteSpanType() { this.getName() = "ReadOnlySpan<Byte>" }
+}
+
+class ByteArrayOrReadOnlyByteSpanType extends Type {
+  ByteArrayOrReadOnlyByteSpanType() {
+    this instanceof ByteArrayType or
+    this instanceof ReadOnlyByteSpanType
+  }
+}
+
+class HashUse extends Crypto::AlgorithmValueConsumer instanceof MethodCall {
+  HashUse() {
+    this.getQualifier().getType() instanceof HashAlgorithmType and
+    this.getTarget()
+        .hasName([
+            "ComputeHash", "ComputeHashAsync", "HashCore", "HashData", "HashDataAsync",
+            "TransformBlock", "TransformFinalBlock", "TryComputeHash", "TryHashData",
+            "TryHashFinal", "HashFinal"
+          ])
+  }
+
+  predicate isIntermediate() { super.getTarget().hasName("HashCore") }
+
+  Expr getOutput() {
+    not this.isIntermediate() and
+    // some functions receive the destination as a parameter
+    if
+      super.getTarget().getName() = ["TryComputeHash", "TryHashFinal", "TryHashData"]
+      or
+      super.getTarget().getName() = ["HashData"] and super.getNumberOfArguments() = 2
+      or
+      super.getTarget().getName() = ["HashDataAsync"] and super.getNumberOfArguments() = 3
+    then result = super.getArgument(1)
+    else result = this
+  }
+
+  Expr getInputArg() {
+    result = super.getArgument(0) and result.getType() instanceof ByteArrayOrReadOnlyByteSpanType
+  }
+
+  Expr getStreamArg() {
+    result = super.getAnArgument() and
+    result.getType() instanceof Stream
+  }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = super.getQualifier() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+
+  Expr getQualifier() { result = super.getQualifier() }
+}
+
+abstract class SignerQualifier extends Crypto::AlgorithmValueConsumer, SigningAlgorithmInstance instanceof Expr
+{
+  SignerQualifier() { this = any(SignerUse s).getQualifier() }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+}
+
+class EcdsaSignerQualifier extends SignerQualifier instanceof Expr {
+  EcdsaSignerQualifier() { super.getType() instanceof EcdsaType }
+
+  override string getRawAlgorithmName() { result = "ECDsa" }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::ECDSA())
+  }
+}
+
+class RsaSignerQualifier extends SignerQualifier instanceof Expr {
+  RsaSignerQualifier() {
+    super.getType() instanceof RsaType or super.getType() instanceof RsaPkcs1Type
+  }
+
+  override string getRawAlgorithmName() { result = super.getType().getName() }
+
+  override Crypto::KeyOpAlg::Algorithm getAlgorithmType() {
+    result = Crypto::KeyOpAlg::TSignature(Crypto::KeyOpAlg::OtherSignatureAlgorithmType())
+  }
+}
+
+class SignerUse extends MethodCall {
+  SignerUse() {
+    this.getTarget().getName().matches(["Verify%", "Sign%", "CreateSignature"]) and
+    this.getQualifier().getType() instanceof SignerType
+  }
+
+  Expr getMessageArg() {
+    // Both Sign and Verify methods take the message as the first argument.
+    // Some cases the message is a hash.
+    result = this.getArgument(0)
+  }
+
+  Expr getSignatureArg() {
+    this.isVerifier() and
+    (
+      result = this.getArgument([1, 3]) and
+      result.getType() instanceof ByteArrayOrReadOnlyByteSpanType
+    )
+  }
+
+  predicate isIntermediate() { none() }
+
+  Expr getSignatureOutput() {
+    this.isSigner() and
+    result = this
+  }
+
+  Expr getHashAlgorithmArg() {
+    // Get the hash algorithm argument if it has the correct type.
+    result = this.getAnArgument() and result.getType() instanceof HashAlgorithmNameType
+  }
+
+  predicate isSigner() { this.getTarget().getName().matches(["Sign%", "CreateSignature"]) }
+
+  predicate isVerifier() { this.getTarget().getName().matches("Verify%") }
+}
+
+/**
+ * An AEAD class, such as `AesGcm`, `AesCcm`, or `ChaCha20Poly1305`.
+ */
+class Aead extends Class {
+  Aead() {
+    this.hasFullyQualifiedName("System.Security.Cryptography",
+      ["AesGcm", "AesCcm", "ChaCha20Poly1305"])
+  }
+}
+
+class AeadCreation extends ObjectCreation {
+  AeadCreation() { this.getObjectType() instanceof Aead }
+
+  Expr getKeyArg() { result = this.getArgument(0) }
+}
+
+class AeadUse extends MethodCall {
+  AeadUse() {
+    this.getQualifier().getType() instanceof Aead and
+    this.getTarget().hasName(["Encrypt", "Decrypt"])
+  }
+
+  // One-shot API only.
+  predicate isIntermediate() { none() }
+
+  Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+    if this.isEncrypt()
+    then result = Crypto::TEncryptMode()
+    else
+      if this.isDecrypt()
+      then result = Crypto::TDecryptMode()
+      else result = Crypto::TUnknownKeyOperationMode()
+  }
+
+  predicate isEncrypt() { this.getTarget().getName() = "Encrypt" }
+
+  predicate isDecrypt() { this.getTarget().getName() = "Decrypt" }
+
+  Expr getNonceArg() { result = this.getArgument(0) }
+
+  Expr getMessageArg() { result = this.getArgument(1) }
+
+  Expr getOutputArg() {
+    this.isEncrypt() and
+    result = this.getArgument(2)
+    or
+    this.isDecrypt() and
+    result = this.getArgument(3)
+  }
+}
+
+/**
+ * A symmetric algorithm class, such as AES or DES.
+ */
+class SymmetricAlgorithm extends Class {
+  SymmetricAlgorithm() {
+    this.getABaseType().hasFullyQualifiedName("System.Security.Cryptography", "SymmetricAlgorithm")
+  }
+
+  CryptoTransformCreation getCreateTransformCall() { result = this.getAMethod().getACall() }
+}
+
+/**
+ * A symmetric algorithm creation, such as `Aes.Create()`.
+ */
+class SymmetricAlgorithmCreation extends MethodCall {
+  SymmetricAlgorithmCreation() {
+    this.getTarget().hasName("Create") and
+    this.getQualifier().getType() instanceof SymmetricAlgorithm
+  }
+}
+
+class SymmetricAlgorithmUse extends QualifiableExpr {
+  SymmetricAlgorithmUse() {
+    this.getQualifier().getType() instanceof SymmetricAlgorithm and
+    this.getQualifiedDeclaration()
+        .hasName([
+            "EncryptCbc", "DecryptCbc", "EncryptCfb", "DecryptCfb", "EncryptEcb", "DecryptEcb",
+            "TryEncryptCbc", "TryDecryptCbc", "TryEncryptCfb", "TryDecryptCfb", "TryEncryptEcb",
+            "TryDecryptEcb", "CreateEncryptor", "CreateDecryptor", "Key", "IV", "Padding", "Mode"
+          ])
+  }
+
+  Expr getSymmetricAlgorithm() { result = this.getQualifier() }
+
+  predicate isIntermediate() {
+    this.getQualifiedDeclaration().hasName(["Key", "IV", "Padding", "Mode"])
+  }
+
+  // The key may be set by assigning it to the `Key` property of the symmetric algorithm.
+  predicate isKeyConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Key"
+  }
+
+  // The IV may be set by assigning it to the `IV` property of the symmetric algorithm.
+  predicate isIvConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "IV"
+  }
+
+  // The padding mode may be set by assigning it to the `Padding` property of the symmetric algorithm.
+  predicate isPaddingConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Padding"
+  }
+
+  // The cipher mode may be set by assigning it to the `Mode` property of the symmetric algorithm.
+  predicate isModeConsumer() {
+    this instanceof PropertyWrite and this.getQualifiedDeclaration().getName() = "Mode"
+  }
+
+  predicate isCreationCall() { this.getQualifiedDeclaration().getName().matches("Create%") }
+
+  predicate isEncryptionCall() {
+    this.getQualifiedDeclaration().getName().matches(["Encrypt%", "TryEncrypt%"])
+  }
+
+  predicate isDecryptionCall() {
+    this.getQualifiedDeclaration().getName().matches(["Decrypt%", "TryDecrypt%"])
+  }
+
+  string getRawModeAlgorithmName() {
+    this.isEncryptionCall() and
+    result = this.getQualifiedDeclaration().getName().splitAt("Encrypt", 1)
+    or
+    this.isDecryptionCall() and
+    result = this.getQualifiedDeclaration().getName().splitAt("Decrypt", 1)
+  }
+
+  Expr getInputArg() {
+    (this.isEncryptionCall() or this.isDecryptionCall()) and
+    result = this.(MethodCall).getArgument(0)
+  }
+
+  Expr getIvArg() {
+    (this.isEncryptionCall() or this.isDecryptionCall()) and
+    this.getRawModeAlgorithmName().matches(["Cbc", "Cfb"]) and
+    result = this.(MethodCall).getArgument(1)
+  }
+
+  Expr getPaddingArg() {
+    (this.isEncryptionCall() or this.isDecryptionCall()) and
+    result = this.(MethodCall).getArgument(this.(MethodCall).getNumberOfArguments() - 1)
+  }
+
+  Expr getOutput() {
+    (this.isEncryptionCall() or this.isDecryptionCall()) and
+    result = this
+  }
+}
+
+/**
+ * A call to `CreateEncryptor` or `CreateDecryptor` on a `SymmetricAlgorithm`.
+ */
+class CryptoTransformCreation extends MethodCall {
+  CryptoTransformCreation() {
+    this.getTarget().hasName(["CreateEncryptor", "CreateDecryptor"]) and
+    this.getQualifier().getType() instanceof SymmetricAlgorithm
+  }
+
+  predicate isEncryptor() { this.getTarget().getName() = "CreateEncryptor" }
+
+  predicate isDecryptor() { this.getTarget().getName() = "CreateDecryptor" }
+
+  Expr getKeyArg() { result = this.getArgument(0) }
+
+  Expr getIvArg() { result = this.getArgument(1) }
+
+  SymmetricAlgorithm getSymmetricAlgorithm() { result = this.getQualifier().getType() }
+}
+
+class CryptoStream extends Class {
+  CryptoStream() { this.hasFullyQualifiedName("System.Security.Cryptography", "CryptoStream") }
+}
+
+class CryptoStreamMode extends MemberConstant {
+  CryptoStreamMode() {
+    this.getDeclaringType()
+        .hasFullyQualifiedName("System.Security.Cryptography", "CryptoStreamMode")
+  }
+
+  predicate isRead() { this.getName() = "Read" }
+
+  predicate isWrite() { this.getName() = "Write" }
+}
+
+class PaddingMode extends MemberConstant {
+  PaddingMode() {
+    this.getDeclaringType().hasFullyQualifiedName("System.Security.Cryptography", "PaddingMode")
+  }
+}
+
+class CipherMode extends MemberConstant {
+  CipherMode() {
+    this.getDeclaringType().hasFullyQualifiedName("System.Security.Cryptography", "CipherMode")
+  }
+}
+
+class Stream extends Class {
+  Stream() { this.getABaseType().hasFullyQualifiedName("System.IO", "Stream") }
+}
+
+/**
+ * A `Stream` object creation.
+ */
+class StreamCreation extends ObjectCreation {
+  StreamCreation() { this.getObjectType() instanceof Stream }
+
+  Expr getInputArg() {
+    result = this.getAnArgument() and
+    result.getType().hasFullyQualifiedName("System", "Byte[]")
+  }
+
+  Expr getStreamArg() {
+    result = this.getAnArgument() and
+    result.getType() instanceof Stream
+  }
+}
+
+class StreamUse extends MethodCall {
+  StreamUse() {
+    this.getQualifier().getType() instanceof Stream and
+    this.getTarget().hasName(["ToArray", "Write"])
+  }
+
+  predicate isIntermediate() { this.getTarget().hasName("Write") }
+
+  Expr getInputArg() {
+    this.isIntermediate() and
+    result = this.getArgument(0)
+  }
+
+  Expr getOutput() {
+    not this.isIntermediate() and
+    result = this
+  }
+}
+
+class CryptoStreamCreation extends ObjectCreation {
+  CryptoStreamCreation() { this.getObjectType() instanceof CryptoStream }
+
+  Expr getStreamArg() { result = this.getArgument(0) }
+
+  Expr getTransformArg() { result = this.getArgument(1) }
+
+  Expr getModeArg() { result = this.getArgument(2) }
+
+  Crypto::KeyOperationSubtype getKeyOperationSubtype() {
+    if CryptoTransformFlow::getCreationFromUse(this.getTransformArg()).isEncryptor()
+    then result = Crypto::TEncryptMode()
+    else
+      if CryptoTransformFlow::getCreationFromUse(this.getTransformArg()).isDecryptor()
+      then result = Crypto::TDecryptMode()
+      else result = Crypto::TUnknownKeyOperationMode()
+  }
+}
+
+class CryptoStreamUse extends MethodCall {
+  CryptoStreamUse() {
+    this.getQualifier().getType() instanceof CryptoStream and
+    this.getTarget().hasName(["Write", "FlushFinalBlock", "FlushFinalBlockAsync", "Close"])
+  }
+
+  predicate isIntermediate() { this.getTarget().getName() = "Write" }
+
+  Expr getInputArg() {
+    this.isIntermediate() and
+    result = this.getArgument(0)
+  }
+}
+
+class MacAlgorithmType extends CryptographyType {
+  MacAlgorithmType() { this.getName().matches(["HMAC%", "KeyedHashAlgorithm"]) }
+}
+
+class HmacCreation extends ObjectCreation {
+  HmacCreation() { this.getObjectType() instanceof MacAlgorithmType }
+
+  Expr getKeyArg() { if this.hasNoArguments() then result = this else result = this.getArgument(0) }
+
+  string getRawAlgorithmName() { result = this.getObjectType().getName() }
+}
+
+class MacUse extends Crypto::AlgorithmValueConsumer instanceof MethodCall {
+  MacUse() {
+    this.getQualifier().getType() instanceof MacAlgorithmType and
+    this.getTarget().hasName(["ComputeHash", "ComputeHashAsync", "HashData", "HashDataAsync"])
+  }
+
+  predicate isIntermediate() { none() }
+
+  Expr getOutput() {
+    not this.isIntermediate() and
+    // some functions receive the destination as a parameter
+    if
+      super.getTarget().getName() = ["HashData"] and super.getNumberOfArguments() = 3
+      or
+      super.getTarget().getName() = ["HashDataAsync"] and super.getNumberOfArguments() = 4
+    then result = super.getArgument(2)
+    else result = this
+  }
+
+  private Expr getDataArg() {
+    // ComputeHash and ComputeHashAsync take the data as the first argument.
+    if super.getTarget().getName().matches("ComputeHash%")
+    then result = super.getArgument(0)
+    else result = super.getArgument(1)
+  }
+
+  Expr getInputArg() {
+    result = this.getDataArg() and result.getType() instanceof ByteArrayOrReadOnlyByteSpanType
+  }
+
+  Expr getStreamArg() { result = this.getDataArg() and result.getType() instanceof Stream }
+
+  Expr getKeyArg() {
+    if not super.getTarget().getName().matches("ComputeHash%")
+    then result = super.getArgument(0)
+    else result = HmacFlow::getCreationFromUse(this, _, _).getKeyArg()
+  }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = super.getQualifier() }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+
+  Expr getQualifier() { result = super.getQualifier() }
+}
+
+class HmacAlgorithmInstance extends Crypto::MACAlgorithmInstance instanceof Expr {
+  HmacAlgorithmInstance() { this = any(MacUse c).getQualifier() }
+
+  override Crypto::TMACType getMACType() { result instanceof Crypto::THMAC }
+
+  override string getRawMACAlgorithmName() { result = super.getType().getName() }
+}
+
+class HmacAlgorithmQualifier extends Crypto::HMACAlgorithmInstance, Crypto::AlgorithmValueConsumer,
+  HmacAlgorithmInstance, Crypto::HashAlgorithmInstance instanceof Expr
+{
+  override Crypto::AlgorithmValueConsumer getHashAlgorithmValueConsumer() { result = this }
+
+  override Crypto::AlgorithmInstance getAKnownAlgorithmSource() { result = this }
+
+  override Crypto::ConsumerInputDataFlowNode getInputNode() { none() }
+
+  override Crypto::THashType getHashFamily() {
+    result = getHashFamily(this.getRawHashAlgorithmName())
+  }
+
+  override string getRawHashAlgorithmName() {
+    if super.getType().hasName("KeyedHashAlgorithm")
+    then result = this.getOriginalRawHashAlgorithmName()
+    else result = super.getType().getName().replaceAll("HMAC", "")
+  }
+
+  override int getFixedDigestLength() {
+    hashAlgorithmToFamily(this.getRawHashAlgorithmName(), _, result)
+  }
+
+  private string getOriginalRawHashAlgorithmName() {
+    exists(MacUse use |
+      use.getQualifier() = this and
+      result = HmacFlow::getCreationFromUse(use, _, _).getRawAlgorithmName().replaceAll("HMAC", "")
+    )
+  }
+}
