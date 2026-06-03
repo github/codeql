@@ -103,9 +103,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         /// <summary>
         /// Determines whether the given method is a slice method, which is defined as a method with
-        /// the name "Slice" or "SubString" and two parameters.
-        /// </summary> <param name="method">The method symbol to check.</param>
-        /// <returns>True if the method is a slice method, false otherwise.</returns>
+        /// the name "Slice" or "Substring" and two parameters.
+        /// </summary>
+        /// <param name="method">The method symbol to check.</param>
+        /// <returns>True if the method is a slice method; false otherwise.</returns>
         private bool IsSliceWithRange(IMethodSymbol method, [NotNullWhen(true)] out IPropertySymbol? lengthPropertySymbol, [NotNullWhen(true)] out RangeExpressionSyntax? range)
         {
             range = null;
