@@ -18,6 +18,32 @@ private import ControlFlowGraphShared
 /** Provides predicates and classes for working with IR constructs. */
 module IR {
   /**
+   * Holds if `e` is in a boolean conditional context, meaning its evaluation
+   * is split across branch successors rather than producing a single value.
+   *
+   * This mirrors the conditions under which the shared CFG library creates
+   * `TAfterValueNode`s instead of a single `TAfterNode` (see
+   * `inConditionalContext` in `shared/controlflow/.../ControlFlowGraph.qll`),
+   * restricted to the Go-relevant cases that affect `NotExpr` and
+   * `LogicalBinaryExpr`.
+   */
+  private predicate isInBooleanCondContext(Expr e) {
+    e = any(IfStmt s).getCond()
+    or
+    e = any(ForStmt s).getCond()
+    or
+    exists(ExpressionSwitchStmt ess |
+      not exists(ess.getExpr()) and e = ess.getACase().(CaseClause).getExpr(_)
+    )
+    or
+    e = any(LogicalBinaryExpr be | isInBooleanCondContext(be)).getAnOperand()
+    or
+    e = any(NotExpr ne | isInBooleanCondContext(ne)).getOperand()
+    or
+    e = any(ParenExpr pe | isInBooleanCondContext(pe)).getExpr()
+  }
+
+  /**
    * An IR instruction.
    */
   class Instruction extends ControlFlow::Node {
@@ -29,6 +55,19 @@ module IR {
       this.isAfterTrue(_)
       or
       this.isAfterFalse(_)
+      or
+      // `NotExpr` and `LogicalBinaryExpr` are not in `postOrInOrder`, so they
+      // have no `isIn` node. When such an expression is not in a conditional
+      // context (so it has a single combined after-node rather than per-branch
+      // value-after-nodes), use that after-node as the value-producing
+      // instruction. In conditional contexts the value is already split
+      // across branches and the `ConditionGuardInstruction` for each branch
+      // captures the outcome, so no separate value instruction is needed.
+      exists(Expr e |
+        (e instanceof NotExpr or e instanceof LogicalBinaryExpr) and
+        not isInBooleanCondContext(e) and
+        this.isAfter(e)
+      )
     }
 
     /** Holds if this instruction reads the value of variable or constant `v`. */
@@ -176,7 +215,18 @@ module IR {
   class EvalInstruction extends Instruction {
     Expr e;
 
-    EvalInstruction() { this.isIn(e) }
+    EvalInstruction() {
+      this.isIn(e)
+      or
+      // `NotExpr` and `LogicalBinaryExpr` are not in `postOrInOrder`, so they
+      // don't have an `isIn` node. Only use the after-node when the
+      // expression is not in a conditional context; otherwise the value is
+      // split across `TAfterValueNode`s per branch and should not be exposed
+      // as a single value-producing instruction.
+      (e instanceof NotExpr or e instanceof LogicalBinaryExpr) and
+      not isInBooleanCondContext(e) and
+      this.isAfter(e)
+    }
 
     /** Gets the expression underlying this instruction. */
     Expr getExpr() { result = e }
