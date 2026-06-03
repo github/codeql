@@ -60,8 +60,6 @@ module GoCfg {
       not e = any(Go::IndexExpr idx).getBase() and
       not e = any(Go::IndexExpr idx).getIndex()
       or
-      e instanceof Go::ParenExpr
-      or
       e instanceof Go::CommentGroup
       or
       e instanceof Go::Comment
@@ -75,9 +73,7 @@ module GoCfg {
       not n instanceof Go::FuncDef and
       not skipCfg(n) and
       not skipCfg(result) and
-      exists(Go::AstNode c | c = n.getChild(index) |
-        if c instanceof Go::ParenExpr then result = c.(Go::ParenExpr).stripParens() else result = c
-      )
+      result = n.getChild(index)
     }
 
     class Callable extends AstNode {
@@ -359,6 +355,10 @@ module GoCfg {
     }
 
     predicate preOrderExpr(Ast::Expr e) { none() }
+
+    predicate propagatesValue(Ast::AstNode child, Ast::AstNode parent) {
+      child = parent.(Go::ParenExpr).getExpr()
+    }
 
     predicate postOrInOrder(Ast::AstNode n) {
       n instanceof Go::ReferenceExpr
