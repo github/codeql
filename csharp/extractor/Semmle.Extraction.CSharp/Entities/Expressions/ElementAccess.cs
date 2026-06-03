@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             return new Expression(info);
         }
 
-        private void MakeLengthPropertyCall(TextWriter trapFile, IPropertySymbol lengthPropertySymbol, IExpressionParentEntity parent, int child)
+        private Expression MakeLengthPropertyCall(TextWriter trapFile, IPropertySymbol lengthPropertySymbol, IExpressionParentEntity parent, int child)
         {
             var lengthInfo = new ExpressionInfo(
                     Context,
@@ -63,6 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             var lengthProp = Property.Create(Context, lengthPropertySymbol);
             trapFile.expr_access(length, lengthProp);
+            return length;
         }
 
         private Expression CreateFromIndexExpression(TextWriter trapFile, IPropertySymbol lengthPropertySymbol, IExpressionParentEntity parent, int child, PrefixUnaryExpressionSyntax index)
@@ -137,6 +138,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             // 1. s[a..b] -> s.Slice(a, b - a)
             // 2. s[..b] -> s.Slice(0, b)
             // 3. s[a..] -> s.Slice(a, s.Length - a)
+            // 4. s[..] -> s.Slice(0, s.Length)
             // Furthermore, note that uses of index expressions (e.g. s[2..^1]) within the range 
             // get translated to length - index, so we need to handle this as well.
             switch (range.LeftOperand, range.RightOperand)
@@ -165,6 +167,13 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                         var right = MakeSubtractionExpression(this, 1);
                         MakeLengthPropertyCall(trapFile, lengthPropertySymbol, right, 0);
                         CreateFromRangeEndpoint(trapFile, lengthPropertySymbol, lsyntax, right, 1);
+                        SetExprArgument(trapFile, left, right);
+                        break;
+                    }
+                case (null, null):
+                    {
+                        var left = Literal.CreateGenerated(Context, this, 0, Context.Compilation.GetSpecialType(SpecialType.System_Int32), 0, Location);
+                        var right = MakeLengthPropertyCall(trapFile, lengthPropertySymbol, this, 1);
                         SetExprArgument(trapFile, left, right);
                         break;
                     }
