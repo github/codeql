@@ -18,7 +18,7 @@ import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.symbols.impl.DescriptorlessExternalPackageFragmentSymbol
-import org.jetbrains.kotlin.ir.types.addAnnotations
+import com.github.codeql.utils.versions.codeQlAddAnnotations
 import org.jetbrains.kotlin.ir.types.classifierOrNull
 import org.jetbrains.kotlin.ir.types.makeNotNull
 import org.jetbrains.kotlin.ir.types.makeNullable
@@ -202,7 +202,7 @@ fun IrType.toRawType(): IrType =
             when (val owner = this.classifier.owner) {
                 is IrClass -> {
                     if (this.arguments.isNotEmpty())
-                        this.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
+                        this.codeQlAddAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
                     else this
                 }
                 is IrTypeParameter -> owner.superTypes[0].toRawType()
@@ -215,7 +215,7 @@ fun IrType.toRawType(): IrType =
 fun IrClass.toRawType(): IrType {
     val result = this.typeWith(listOf())
     return if (this.typeParameters.isNotEmpty())
-        result.addAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
+        result.codeQlAddAnnotations(listOf(RawTypeAnnotation.annotationConstructor))
     else result
 }
 

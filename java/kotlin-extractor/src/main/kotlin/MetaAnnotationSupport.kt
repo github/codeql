@@ -1,5 +1,9 @@
 package com.github.codeql
 
+import com.github.codeql.utils.versions.codeQlGetValueArgument
+import com.github.codeql.utils.versions.codeQlPutValueArgument
+import com.github.codeql.utils.versions.codeQlSetAnnotations
+import com.github.codeql.utils.versions.codeQlSetDispatchReceiverParameter
 import com.github.codeql.utils.versions.createImplicitParameterDeclarationWithWrappedDescriptor
 import java.lang.annotation.ElementType
 import java.util.HashSet
@@ -95,7 +99,7 @@ class MetaAnnotationSupport(
                     JvmAnnotationNames.REPEATABLE_ANNOTATION
             }
         return if (jvmRepeatable != null) {
-            ((jvmRepeatable.getValueArgument(0) as? IrClassReference)?.symbol as? IrClassSymbol)
+            ((jvmRepeatable.codeQlGetValueArgument(0) as? IrClassReference)?.symbol as? IrClassSymbol)
                 ?.owner
         } else {
             getOrCreateSyntheticRepeatableAnnotationContainer(annotationClass)
@@ -122,7 +126,7 @@ class MetaAnnotationSupport(
                     containerConstructor.symbol
                 )
                 .apply {
-                    putValueArgument(
+                    codeQlPutValueArgument(
                         0,
                         IrVarargImpl(
                             UNDEFINED_OFFSET,
@@ -144,7 +148,7 @@ class MetaAnnotationSupport(
 
     // Taken from AdditionalClassAnnotationLowering.kt
     private fun loadAnnotationTargets(targetEntry: IrConstructorCall): Set<KotlinTarget>? {
-        val valueArgument = targetEntry.getValueArgument(0) as? IrVararg ?: return null
+        val valueArgument = targetEntry.codeQlGetValueArgument(0) as? IrVararg ?: return null
         return valueArgument.elements
             .filterIsInstance<IrGetEnumValue>()
             .mapNotNull { KotlinTarget.valueOrNull(it.symbol.owner.name.asString()) }
@@ -237,7 +241,7 @@ class MetaAnnotationSupport(
                 targetConstructor.symbol,
                 0
             )
-            .apply { putValueArgument(0, vararg) }
+            .apply { codeQlPutValueArgument(0, vararg) }
     }
 
     private val javaAnnotationRetention by lazy {
@@ -263,7 +267,7 @@ class MetaAnnotationSupport(
     // Taken from AnnotationCodegen.kt (not available in Kotlin < 1.6.20)
     private fun IrClass.getAnnotationRetention(): KotlinRetention? {
         val retentionArgument =
-            getAnnotation(StandardNames.FqNames.retention)?.getValueArgument(0) as? IrGetEnumValue
+            getAnnotation(StandardNames.FqNames.retention)?.codeQlGetValueArgument(0) as? IrGetEnumValue
                 ?: return null
         val retentionArgumentValue = retentionArgument.symbol.owner
         return KotlinRetention.valueOf(retentionArgumentValue.name.asString())
@@ -291,7 +295,7 @@ class MetaAnnotationSupport(
                 0
             )
             .apply {
-                putValueArgument(
+                codeQlPutValueArgument(
                     0,
                     IrGetEnumValueImpl(
                         UNDEFINED_OFFSET,
@@ -333,7 +337,7 @@ class MetaAnnotationSupport(
                             return
                         }
                 val newParam = thisReceiever.copyTo(this)
-                dispatchReceiverParameter = newParam
+                codeQlSetDispatchReceiverParameter(newParam)
                 body =
                     factory
                         .createBlockBody(UNDEFINED_OFFSET, UNDEFINED_OFFSET)
@@ -406,7 +410,7 @@ class MetaAnnotationSupport(
             val repeatableContainerAnnotation =
                 kotlinAnnotationRepeatableContainer?.constructors?.single()
 
-            containerClass.annotations =
+            codeQlSetAnnotations(containerClass,
                 annotationClass.annotations
                     .filter {
                         it.isAnnotationWithEqualFqName(StandardNames.FqNames.retention) ||
@@ -424,6 +428,7 @@ class MetaAnnotationSupport(
                             )
                         }
                     )
+            )
 
             containerClass
         }
@@ -469,7 +474,7 @@ class MetaAnnotationSupport(
                 repeatableConstructor.symbol,
                 0
             )
-            .apply { putValueArgument(0, containerReference) }
+            .apply { codeQlPutValueArgument(0, containerReference) }
     }
 
     private val javaAnnotationDocumented by lazy {
