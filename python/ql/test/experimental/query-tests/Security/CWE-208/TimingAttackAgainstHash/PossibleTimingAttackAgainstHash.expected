@@ -1,14 +1,14 @@
-#select
-| TimingAttackAgainstHash.py:27:24:27:32 | ControlFlowNode for signature | TimingAttackAgainstHash.py:26:17:26:41 | ControlFlowNode for Attribute() | TimingAttackAgainstHash.py:27:24:27:32 | ControlFlowNode for signature | Possible Timing attack against $@ validation. | TimingAttackAgainstHash.py:26:17:26:41 | ControlFlowNode for Attribute() | signature message |
-| TimingAttackAgainstHash.py:37:19:37:48 | ControlFlowNode for sign() | TimingAttackAgainstHash.py:30:12:30:47 | ControlFlowNode for Attribute() | TimingAttackAgainstHash.py:37:19:37:48 | ControlFlowNode for sign() | Possible Timing attack against $@ validation. | TimingAttackAgainstHash.py:30:12:30:47 | ControlFlowNode for Attribute() | MAC message |
 edges
-| TimingAttackAgainstHash.py:26:5:26:13 | ControlFlowNode for signature | TimingAttackAgainstHash.py:27:24:27:32 | ControlFlowNode for signature | provenance |  |
-| TimingAttackAgainstHash.py:26:17:26:41 | ControlFlowNode for Attribute() | TimingAttackAgainstHash.py:26:5:26:13 | ControlFlowNode for signature | provenance |  |
-| TimingAttackAgainstHash.py:30:12:30:47 | ControlFlowNode for Attribute() | TimingAttackAgainstHash.py:37:19:37:48 | ControlFlowNode for sign() | provenance |  |
+| TimingAttackAgainstHash.py:26:5:26:13 | signature | TimingAttackAgainstHash.py:27:24:27:32 | signature | provenance |  |
+| TimingAttackAgainstHash.py:26:17:26:41 | After Attribute() | TimingAttackAgainstHash.py:26:5:26:13 | signature | provenance |  |
+| TimingAttackAgainstHash.py:30:12:30:47 | After Attribute() | TimingAttackAgainstHash.py:37:19:37:48 | After sign() | provenance |  |
 nodes
-| TimingAttackAgainstHash.py:26:5:26:13 | ControlFlowNode for signature | semmle.label | ControlFlowNode for signature |
-| TimingAttackAgainstHash.py:26:17:26:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| TimingAttackAgainstHash.py:27:24:27:32 | ControlFlowNode for signature | semmle.label | ControlFlowNode for signature |
-| TimingAttackAgainstHash.py:30:12:30:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| TimingAttackAgainstHash.py:37:19:37:48 | ControlFlowNode for sign() | semmle.label | ControlFlowNode for sign() |
+| TimingAttackAgainstHash.py:26:5:26:13 | signature | semmle.label | signature |
+| TimingAttackAgainstHash.py:26:17:26:41 | After Attribute() | semmle.label | After Attribute() |
+| TimingAttackAgainstHash.py:27:24:27:32 | signature | semmle.label | signature |
+| TimingAttackAgainstHash.py:30:12:30:47 | After Attribute() | semmle.label | After Attribute() |
+| TimingAttackAgainstHash.py:37:19:37:48 | After sign() | semmle.label | After sign() |
 subpaths
+#select
+| TimingAttackAgainstHash.py:27:24:27:32 | signature | TimingAttackAgainstHash.py:26:17:26:41 | After Attribute() | TimingAttackAgainstHash.py:27:24:27:32 | signature | Possible Timing attack against $@ validation. | TimingAttackAgainstHash.py:26:17:26:41 | After Attribute() | signature message |
+| TimingAttackAgainstHash.py:37:19:37:48 | After sign() | TimingAttackAgainstHash.py:30:12:30:47 | After Attribute() | TimingAttackAgainstHash.py:37:19:37:48 | After sign() | Possible Timing attack against $@ validation. | TimingAttackAgainstHash.py:30:12:30:47 | After Attribute() | MAC message |

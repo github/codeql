@@ -4,6 +4,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
@@ -46,7 +47,7 @@ module MarkupSafeModel {
 
     /** A direct instantiation of `markupsafe.Markup`. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
-      override CallNode node;
+      override Cfg::CallNode node;
 
       ClassInstantiation() { this = classRef().getACall() }
     }
@@ -64,7 +65,7 @@ module MarkupSafeModel {
 
     /** A string concatenation with a `markupsafe.Markup` involved. */
     class StringConcat extends Markup::InstanceSource, DataFlow::CfgNode {
-      override BinaryExprNode node;
+      override Cfg::BinaryExprNode node;
 
       StringConcat() {
         node.getOp() instanceof Add and
@@ -79,7 +80,7 @@ module MarkupSafeModel {
 
     /** A %-style string format with `markupsafe.Markup` as the format string. */
     class PercentStringFormat extends Markup::InstanceSource, DataFlow::CfgNode {
-      override BinaryExprNode node;
+      override Cfg::BinaryExprNode node;
 
       PercentStringFormat() {
         node.getOp() instanceof Mod and

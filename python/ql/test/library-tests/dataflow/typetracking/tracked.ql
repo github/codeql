@@ -10,7 +10,7 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate as DP
 // -----------------------------------------------------------------------------
 private DataFlow::TypeTrackingNode tracked(TypeTracker t) {
   t.start() and
-  result.asCfgNode() = any(NameNode n | n.getId() = "tracked")
+  result.asCfgNode().getNode() = any(Name n | n.getId() = "tracked")
   or
   exists(TypeTracker t2 | result = tracked(t2).track(t2, t))
 }
@@ -51,14 +51,14 @@ module TrackedTest implements TestSig {
 // -----------------------------------------------------------------------------
 private DataFlow::TypeTrackingNode int_type(TypeTracker t) {
   t.start() and
-  result.asCfgNode() = any(CallNode c | c.getFunction().(NameNode).getId() = "int")
+  result.asCfgNode().getNode() = any(Call c | c.getFunc().(Name).getId() = "int")
   or
   exists(TypeTracker t2 | result = int_type(t2).track(t2, t))
 }
 
 private DataFlow::TypeTrackingNode string_type(TypeTracker t) {
   t.start() and
-  result.asCfgNode() = any(CallNode c | c.getFunction().(NameNode).getId() = "str")
+  result.asCfgNode().getNode() = any(Call c | c.getFunc().(Name).getId() = "str")
   or
   exists(TypeTracker t2 | result = string_type(t2).track(t2, t))
 }

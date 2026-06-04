@@ -13,8 +13,9 @@
 
 import python
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
-from CallNode call, string name
+from Cfg::CallNode call, string name
 where
   name = ["exit", "quit"] and
   call = API::builtin(name).getACall().asCfgNode()

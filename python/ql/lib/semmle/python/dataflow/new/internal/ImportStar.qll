@@ -3,6 +3,7 @@ overlay[local]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.internal.Builtins
 private import semmle.python.dataflow.new.internal.ImportResolution
 private import semmle.python.dataflow.new.DataFlow
@@ -15,7 +16,7 @@ module ImportStar {
    */
   overlay[local]
   cached
-  predicate namePossiblyDefinedInImportStar(NameNode n, string name, Scope s) {
+  predicate namePossiblyDefinedInImportStar(Cfg::NameNode n, string name, Scope s) {
     n.isLoad() and
     name = n.getId() and
     s = n.getScope().getEnclosingScope*() and
@@ -52,7 +53,7 @@ module ImportStar {
   /** Holds if a global variable called `name` is assigned a value in the module `m`. */
   cached
   predicate globalNameDefinedInModule(string name, Module m) {
-    exists(NameNode n |
+    exists(Cfg::NameNode n |
       not exists(LocalVariable v | n.defines(v)) and
       n.isStore() and
       name = n.getId() and
@@ -66,7 +67,7 @@ module ImportStar {
    */
   overlay[global]
   cached
-  predicate importStarResolvesTo(NameNode n, Module m) {
+  predicate importStarResolvesTo(Cfg::NameNode n, Module m) {
     m = getStarImported+(n.getEnclosingModule()) and
     globalNameDefinedInModule(n.getId(), m) and
     not isDefinedLocally(n.getNode())
@@ -99,7 +100,7 @@ module ImportStar {
    */
   overlay[local]
   cached
-  ControlFlowNode potentialImportStarBase(Scope s) {
-    result = any(ImportStarNode n | n.getScope() = s).getModule()
+  Cfg::ControlFlowNode potentialImportStarBase(Scope s) {
+    result = any(Cfg::ImportStarNode n | n.getScope() = s).getModule()
   }
 }

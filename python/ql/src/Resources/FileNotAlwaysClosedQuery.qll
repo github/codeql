@@ -4,6 +4,7 @@ import python
 import semmle.python.dataflow.new.internal.DataFlowDispatch
 import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.internal.ReExposedInstance
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /** A CFG node where a file is opened. */
 abstract class FileOpenSource extends DataFlow::CfgNode { }
@@ -81,12 +82,14 @@ abstract class FileClose extends DataFlow::CfgNode {
   }
 }
 
-private predicate bbSuccessor(BasicBlock src, BasicBlock sink) { sink = src.getASuccessor() }
+private predicate bbSuccessor(Cfg::BasicBlock src, Cfg::BasicBlock sink) {
+  sink = src.getASuccessor()
+}
 
-private predicate bbReachableStrict(BasicBlock src, BasicBlock sink) =
+private predicate bbReachableStrict(Cfg::BasicBlock src, Cfg::BasicBlock sink) =
   fastTC(bbSuccessor/2)(src, sink)
 
-private predicate bbReachableRefl(BasicBlock src, BasicBlock sink) {
+private predicate bbReachableRefl(Cfg::BasicBlock src, Cfg::BasicBlock sink) {
   bbReachableStrict(src, sink) or src = sink
 }
 

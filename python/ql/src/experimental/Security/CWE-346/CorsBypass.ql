@@ -11,25 +11,25 @@
 import python
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
-import semmle.python.Flow
 import semmle.python.dataflow.new.RemoteFlowSources
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * Returns true if the control flow node may be useful in the current context.
  *
  * Ideally for more completeness, we should alert on every `startswith` call and every remote flow source which gets partailly checked. But, as this can lead to lots of FPs, we apply heuristics to filter some calls. This predicate provides logic for this filteration.
  */
-private predicate maybeInteresting(ControlFlowNode c) {
+private predicate maybeInteresting(Cfg::ControlFlowNode c) {
   // Check if the name of the variable which calls the function matches the heuristic.
   // This would typically occur at the sink.
   // This should deal with cases like
   // `origin.startswith("bla")`
-  heuristics(c.(CallNode).getFunction().(AttrNode).getObject().(NameNode).getId())
+  heuristics(c.(Cfg::CallNode).getFunction().(Cfg::AttrNode).getObject().(Cfg::NameNode).getId())
   or
   // Check if the name of the variable passed as an argument to the functions matches the heuristic. This would typically occur at the sink.
   // This should deal with cases like
   // `bla.startswith(origin)`
-  heuristics(c.(CallNode).getArg(0).(NameNode).getId())
+  heuristics(c.(Cfg::CallNode).getArg(0).(Cfg::NameNode).getId())
   or
   // Check if the value gets written to any interesting variable. This would typically occur at the source.
   // This should deal with cases like
@@ -37,8 +37,10 @@ private predicate maybeInteresting(ControlFlowNode c) {
   exists(Variable v | heuristics(v.getId()) | c.getASuccessor*().getNode() = v.getAStore())
 }
 
-private class StringStartswithCall extends ControlFlowNode {
-  StringStartswithCall() { this.(CallNode).getFunction().(AttrNode).getName() = "startswith" }
+private class StringStartswithCall extends Cfg::ControlFlowNode {
+  StringStartswithCall() {
+    this.(Cfg::CallNode).getFunction().(Cfg::AttrNode).getName() = "startswith"
+  }
 }
 
 bindingset[s]
@@ -66,8 +68,8 @@ module CorsBypassConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     exists(StringStartswithCall s |
-      node.asCfgNode() = s.(CallNode).getArg(0) or
-      node.asCfgNode() = s.(CallNode).getFunction().(AttrNode).getObject()
+      node.asCfgNode() = s.(Cfg::CallNode).getArg(0) or
+      node.asCfgNode() = s.(Cfg::CallNode).getFunction().(Cfg::AttrNode).getObject()
     )
   }
 
