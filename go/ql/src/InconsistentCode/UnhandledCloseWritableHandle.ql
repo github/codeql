@@ -118,17 +118,13 @@ module UnhandledFileCloseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isWritableFileHandle(source, _) }
 
   predicate isSink(DataFlow::Node sink) {
-    // `closeCall` is an unhandled call to `os.File.Close` on `sink` that is not
-    // guaranteed to be preceded during execution by a handled call to `os.File.Sync` on the
-    // same file handle.
     exists(DataFlow::CallNode closeCall |
-      // find calls to the os.File.Close function
+      // `closeCall` is an unhandled call to `os.File.Close` on `sink`
       closeCall = any(CloseFileFun f).getACall() and
-      // that are unhandled
       unhandledCall(closeCall) and
-      // where the function is called on the sink
-      closeCall.getReceiver() = sink and
-      // and check that the call to `os.File.Close` is not guaranteed to be preceded during
+      closeCall.getReceiver() = sink
+    |
+      // `closeCall` is not guaranteed to be preceded during
       // execution by a handled call to `os.File.Sync` on the same file handle.
       not exists(DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
         // check that the call to `os.File.Sync` is handled
