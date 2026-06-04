@@ -141,7 +141,12 @@ fn parse_query_fields(tokens: &mut Tokens) -> Result<Vec<TokenStream>> {
             // Parse the field's pattern. To support repetition like
             // `field: (kind)* @cap`, parse the atom first, then check for
             // a quantifier, and lastly handle a trailing `@capture`.
-            let atom = parse_query_atom(tokens)?;
+            // `field: @cap` is sugar for `field: _ @cap`.
+            let atom = if peek_is_at(tokens) {
+                quote! { yeast::query::QueryNode::Any { match_unnamed: true } }
+            } else {
+                parse_query_atom(tokens)?
+            };
             if peek_is_repetition(tokens) {
                 let rep = expect_repetition(tokens)?;
                 let elem = quote! {
