@@ -38,7 +38,7 @@ Bug Fixes
 GitHub Actions
 """"""""""""""
 
-*   Adjusted (minor) help file descriptions for queries: :code:`actions/untrusted-checkout/critical`, :code:`actions/untrusted-checkout/high`, :code:`actions/untrusted-checkout/medium`. Clarified wording on in minor point, added one more listed resource and added one more recommendation for things to check.
+*   Adjusted (minor) help file descriptions for queries: :code:`actions/untrusted-checkout/critical`, :code:`actions/untrusted-checkout/high`, :code:`actions/untrusted-checkout/medium`. Clarified wording on a minor point, added one more listed resource and added one more recommendation for things to check.
 
 Major Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,7 +104,7 @@ JavaScript/TypeScript
 Python
 """"""
 
-*   The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example :code:`py/clear-text-logging-sensitive-data`) may find more correct results and less fewer positive results after these changes.
+*   The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example :code:`py/clear-text-logging-sensitive-data`) may find more correct results and fewer false positive results after these changes.
 
 Swift
 """""
@@ -114,7 +114,7 @@ Swift
 GitHub Actions
 """"""""""""""
 
-*   The GitHub Actions analysis now recognizes more Bash regex checks that restrict a value to alphanumeric characters, include regexes like :code:`^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$` which check for a sha1 or sha256 hash. This may reduce false positive results where command output is validated with grouped or optional alphanumeric patterns before being used.
+*   The GitHub Actions analysis now recognizes more Bash regex checks that restrict a value to alphanumeric characters, including regexes like :code:`^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$` which check for a SHA-1 or SHA-256 hash. This may reduce false positive results where command output is validated with grouped or optional alphanumeric patterns before being used.
 
 Rust
 """"
