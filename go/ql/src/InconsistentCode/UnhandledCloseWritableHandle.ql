@@ -55,7 +55,7 @@ class SyncFileFun extends Method {
 
 /**
  * Holds if a `call` to a function is "unhandled". That is, it is either
- * deferred or its result is not assigned to anything.
+ * deferred or used as an expression statement, so that its result is discarded.
  *
  * TODO: maybe we should check that something is actually done with the result
  */
@@ -77,7 +77,6 @@ predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
     // get the flags expression used for opening the file
     call.getArgument(1) = flags and
     // extract individual flags from the argument
-    // flag = flag.getAChild*() and
     flag = getConstants(flags.asExpr()) and
     // check for one which signals that the handle will be writable
     // note that we are underestimating here, since the flags may be
