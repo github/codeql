@@ -38,7 +38,7 @@ async def test_taint(name : str, number : int, also_input: MyComplexModel): # $ 
         also_input.other_foos, # $ tainted
         also_input.other_foos[0], # $ tainted
         also_input.other_foos[0].foo, # $ tainted
-        [f.foo for f in also_input.other_foos], # $ MISSING: tainted
+        [f.foo for f in also_input.other_foos], # $ tainted
 
         also_input.nested_foos, # $ tainted
         also_input.nested_foos[0], # $ tainted
@@ -52,7 +52,7 @@ async def test_taint(name : str, number : int, also_input: MyComplexModel): # $ 
         other_foos, # $ tainted
         other_foos[0], # $ tainted
         other_foos[0].foo, # $ tainted
-        [f.foo for f in other_foos], # $ MISSING: tainted
+        [f.foo for f in other_foos], # $ tainted
     )
 
     return "ok" # $ HttpResponse

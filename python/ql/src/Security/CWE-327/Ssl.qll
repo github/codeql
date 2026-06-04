@@ -5,6 +5,7 @@
 
 private import python
 private import semmle.python.ApiGraphs
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import TlsLibraryModel
 
 class SslContextCreation extends ContextCreation, DataFlow::CallCfgNode {
@@ -53,7 +54,7 @@ class OptionsAugOr extends ProtocolRestriction, DataFlow::CfgNode {
   ProtocolVersion restriction;
 
   OptionsAugOr() {
-    exists(AugAssign aa, AttrNode attr, Expr flag |
+    exists(AugAssign aa, Cfg::AttrNode attr, Expr flag |
       aa.getOperation().getOp() instanceof BitOr and
       aa.getTarget() = attr.getNode() and
       attr.getName() = "options" and
@@ -80,7 +81,7 @@ class OptionsAugAndNot extends ProtocolUnrestriction, DataFlow::CfgNode {
   ProtocolVersion restriction;
 
   OptionsAugAndNot() {
-    exists(AugAssign aa, AttrNode attr, Expr flag, UnaryExpr notFlag |
+    exists(AugAssign aa, Cfg::AttrNode attr, Expr flag, UnaryExpr notFlag |
       aa.getOperation().getOp() instanceof BitAnd and
       aa.getTarget() = attr.getNode() and
       attr.getName() = "options" and
