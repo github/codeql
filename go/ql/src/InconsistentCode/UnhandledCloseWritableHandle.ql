@@ -176,14 +176,12 @@ import UnhandledFileCloseFlow::PathGraph
 
 from
   UnhandledFileCloseFlow::PathNode source, DataFlow::CallNode openCall,
-  UnhandledFileCloseFlow::PathNode sink, DataFlow::CallNode closeCall
+  UnhandledFileCloseFlow::PathNode sink
 where
   // find data flow from an `os.OpenFile` call to an `os.File.Close` call
   // where the handle is writable
   UnhandledFileCloseFlow::flowPath(source, sink) and
-  isWritableFileHandle(source.getNode(), openCall) and
-  // get the `CallNode` corresponding to the sink
-  isCloseSink(sink.getNode(), closeCall)
+  isWritableFileHandle(source.getNode(), openCall)
 select sink, source, sink,
   "File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly.",
   openCall, openCall.toString()
