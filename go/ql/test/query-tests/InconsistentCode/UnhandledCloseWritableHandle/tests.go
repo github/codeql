@@ -106,10 +106,10 @@ func deferredCloseWithSync() {
 
 func deferredCloseWithSync2() {
 	// open file for writing
-	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil { // $ SPURIOUS: Source
+	if f, err := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC|os.O_CREATE, 0666); err != nil {
 		// a call to `Close` is deferred, but we have a call to `Sync` later which
 		// precedes the call to `Close` during execution
-		defer f.Close() // $ SPURIOUS: Alert
+		defer f.Close()
 
 		if err := f.Sync(); err != nil {
 			log.Fatal(err)

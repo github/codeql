@@ -50,6 +50,3 @@ nodes
 | tests.go:162:2:162:74 | ... := ...[0] | semmle.label | ... := ...[0] |
 | tests.go:166:8:166:8 | f | semmle.label | f |
 subpaths
-testFailures
-| tests.go:109:94:109:114 | comment | Fixed spurious result: Source |
-| tests.go:112:19:112:38 | comment | Fixed spurious result: Alert |
