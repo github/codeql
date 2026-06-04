@@ -61,12 +61,13 @@ private predicate discardElement(@element e) {
   // particular, been deleted), or the overlay has redefined the TRAP
   // file or tag it is in, or the overlay runner has re-extracted the same
   // source file (e.g. because a header it includes has changed).
-  forall(@trap_or_tag t, string sourceFile |
+  not exists(@trap_or_tag t |
     locallyInTrapOrTag(false, e, t) and
-    locallyReachableTrapOrTag(false, sourceFile, t)
-  |
-    overlayChangedFiles(sourceFile) or
-    locallyReachableTrapOrTag(true, _, t) or
-    locallyReachableTrapOrTag(true, sourceFile, _)
+    not locallyReachableTrapOrTag(true, _, t) and
+    exists(string sourceFile |
+      locallyReachableTrapOrTag(false, sourceFile, t) and
+      not overlayChangedFiles(sourceFile) and
+      not locallyReachableTrapOrTag(true, sourceFile, _)
+    )
   )
 }
