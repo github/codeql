@@ -32,51 +32,29 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             trapFile.expr_argument(right, 0);
         }
 
-        private Expression MakeSubtractionExpression(IExpressionParentEntity parent, int child)
+        private Expression MakeZeroFromEndExpression(IExpressionParentEntity parent, int child)
         {
             var info = new ExpressionInfo(
                                 Context,
                                 AnnotatedTypeSymbol.CreateNotAnnotated(Context.Compilation.GetSpecialType(SpecialType.System_Int32)),
                                 Location,
-                                ExprKind.SUB,
+                                ExprKind.INDEX,
                                 parent,
                                 child,
                                 isCompilerGenerated: true,
                                 null);
 
-            return new Expression(info);
+            var index = new Expression(info);
+
+            MakeZeroLiteral(index, 0);
+            return index;
         }
 
-        private Expression MakeLengthPropertyCall(TextWriter trapFile, IPropertySymbol lengthPropertySymbol, IExpressionParentEntity parent, int child)
+        private Expression MakeZeroLiteral(IExpressionParentEntity parent, int child)
         {
-            var lengthInfo = new ExpressionInfo(
-                    Context,
-                    AnnotatedTypeSymbol.CreateNotAnnotated(Context.Compilation.GetSpecialType(SpecialType.System_Int32)),
-                    Location,
-                    ExprKind.PROPERTY_ACCESS,
-                    parent,
-                    child,
-                    isCompilerGenerated: true,
-                    null);
-            var length = new Expression(lengthInfo);
-            Create(Context, qualifier, length, -1);
-
-            var lengthProp = Property.Create(Context, lengthPropertySymbol);
-            trapFile.expr_access(length, lengthProp);
-            return length;
+            return Literal.CreateGenerated(Context, parent, child, Context.Compilation.GetSpecialType(SpecialType.System_Int32), 0, Location);
         }
 
-        private Expression CreateFromIndexExpression(TextWriter trapFile, IPropertySymbol lengthPropertySymbol, IExpressionParentEntity parent, int child, PrefixUnaryExpressionSyntax index)
-        {
-            var sub = MakeSubtractionExpression(parent, child);
-            MakeLengthPropertyCall(trapFile, lengthPropertySymbol, sub, 0);
-            var info = new ExpressionNodeInfo(Context, index.Operand, sub, 1)
-            {
-                IsCompilerGenerated = true
-            };
-            Factory.Create(info);
-            return sub;
-        }
 
         /// <summary>
         /// It is assumed that either the input is
@@ -87,18 +65,16 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// <param name="parent">The parent expression entity.</param>
         /// <param name="child">The child index within the parent.</param>
         /// <returns>An expression representing the endpoint of a range to be used in conjunction with a slice operation.</returns>
-        private Expression CreateFromRangeEndpoint(TextWriter trapFile, IPropertySymbol lengthPropertySymbol, ExpressionSyntax syntax, IExpressionParentEntity parent, int child)
+        private Expression MakeFromRangeEndpoint(ExpressionSyntax syntax, IExpressionParentEntity parent, int child)
         {
-            if (syntax.Kind() == SyntaxKind.IndexExpression && syntax is PrefixUnaryExpressionSyntax index)
-            {
-                return CreateFromIndexExpression(trapFile, lengthPropertySymbol, parent, child, index);
-            }
-
             var info = new ExpressionNodeInfo(Context, syntax, parent, child)
             {
                 IsCompilerGenerated = true
             };
-            return Factory.Create(info);
+
+            return syntax.Kind() == SyntaxKind.IndexExpression
+                ? PrefixUnary.Create(info.SetKind(ExprKind.INDEX))
+                : Factory.Create(info);
         }
 
         /// <summary>
@@ -107,14 +83,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// </summary>
         /// <param name="method">The method symbol to check.</param>
         /// <returns>True if the method is a slice method; false otherwise.</returns>
-        private bool IsSliceWithRange(IMethodSymbol method, [NotNullWhen(true)] out IPropertySymbol? lengthPropertySymbol, [NotNullWhen(true)] out RangeExpressionSyntax? range)
+        private bool IsSliceWithRange(IMethodSymbol method, [NotNullWhen(true)] out RangeExpressionSyntax? range)
         {
             range = null;
-            lengthPropertySymbol = method
-                .ContainingType
-                .GetMembers("Length")
-                .OfType<IPropertySymbol>()
-                .FirstOrDefault();
 
             if (argumentList.Arguments.Count == 1)
             {
@@ -123,63 +94,42 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             return (method.Name == "Slice" || method.Name == "Substring")
                 && method.Parameters.Length == 2
-                && lengthPropertySymbol is not null
                 && range is not null;
         }
 
         /// <summary>
-        /// Populates a slice method call based on the given range and length property symbol.
+        /// Populates a slice method call based on the given range.
+        /// Roslyn translates indexer accesses with range expressions in the following way.
+        ///   1. s[a..b] -> s.Slice(a, b - a)
+        ///   2. s[..b] -> s.Slice(0, b)
+        ///   3. s[a..] -> s.Slice(a, s.Length - a)
+        ///   4. s[..] -> s.Slice(0, s.Length)
+        /// However, it is possible that both the qualifier or the index endpoints may contain method calls.
+        /// If we want to translate this accurately, we would need to introduce synthetic statements for qualifier and 
+        /// the endpoints, which should then be used in the slice method call.
+        /// To avoid this, we translate as follows.
+        /// 1. s[a..b] -> s.Slice(a, b)
+        /// 2. s[..b] -> s.Slice(0, b)
+        /// 3. s[a..] -> s.Slice(a, ^0)
+        /// 4. s[..] -> s.Slice(0, ^0)
+        /// 
+        /// Even though index expressions can't technically be used in this way, they signal that we
+        /// could perceive ^b as "length - b".
         /// </summary>
         /// <param name="trapFile">The trap file to write to.</param>
-        /// <param name="lengthPropertySymbol">The length property symbol.</param>
         /// <param name="slice">The slice method symbol.</param>
         /// <param name="range">The range expression syntax.</param>
-        private void PopulateSlice(TextWriter trapFile, IPropertySymbol lengthPropertySymbol, IMethodSymbol slice, RangeExpressionSyntax range)
+        private void PopulateSlice(TextWriter trapFile, IMethodSymbol slice, RangeExpressionSyntax range)
         {
-            // 1. s[a..b] -> s.Slice(a, b - a)
-            // 2. s[..b] -> s.Slice(0, b)
-            // 3. s[a..] -> s.Slice(a, s.Length - a)
-            // 4. s[..] -> s.Slice(0, s.Length)
-            // Furthermore, note that uses of index expressions (e.g. s[2..^1]) within the range 
-            // get translated to length - index, so we need to handle this as well.
-            switch (range.LeftOperand, range.RightOperand)
-            {
-                case (ExpressionSyntax lsyntax, ExpressionSyntax rsyntax):
-                    {
-                        var left = CreateFromRangeEndpoint(trapFile, lengthPropertySymbol, lsyntax, this, 0);
-                        var right = MakeSubtractionExpression(this, 1);
+            var left = range.LeftOperand is ExpressionSyntax lsyntax
+                ? MakeFromRangeEndpoint(lsyntax, this, 0)
+                : MakeZeroLiteral(this, 0);
 
-                        CreateFromRangeEndpoint(trapFile, lengthPropertySymbol, rsyntax, right, 0);
-                        CreateFromRangeEndpoint(trapFile, lengthPropertySymbol, lsyntax, right, 1);
-                        SetExprArgument(trapFile, left, right);
-                        break;
-                    }
-                case (null, ExpressionSyntax rsyntax):
-                    {
-                        var left = Literal.CreateGenerated(Context, this, 0, Context.Compilation.GetSpecialType(SpecialType.System_Int32), 0, Location);
-                        var right = CreateFromRangeEndpoint(trapFile, lengthPropertySymbol, rsyntax, this, 1);
-                        SetExprArgument(trapFile, left, right);
-                        break;
-                    }
-                case (ExpressionSyntax lsyntax, null):
-                    {
+            var right = range.RightOperand is ExpressionSyntax rsyntax
+                ? MakeFromRangeEndpoint(rsyntax, this, 1)
+                : MakeZeroFromEndExpression(this, 1);
 
-                        var left = CreateFromRangeEndpoint(trapFile, lengthPropertySymbol, lsyntax, this, 0);
-                        var right = MakeSubtractionExpression(this, 1);
-                        MakeLengthPropertyCall(trapFile, lengthPropertySymbol, right, 0);
-                        CreateFromRangeEndpoint(trapFile, lengthPropertySymbol, lsyntax, right, 1);
-                        SetExprArgument(trapFile, left, right);
-                        break;
-                    }
-                case (null, null):
-                    {
-                        var left = Literal.CreateGenerated(Context, this, 0, Context.Compilation.GetSpecialType(SpecialType.System_Int32), 0, Location);
-                        var right = MakeLengthPropertyCall(trapFile, lengthPropertySymbol, this, 1);
-                        SetExprArgument(trapFile, left, right);
-                        break;
-                    }
-            }
-
+            SetExprArgument(trapFile, left, right);
             trapFile.expr_call(this, Method.Create(Context, slice));
         }
 
@@ -198,13 +148,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Create(Context, qualifier, this, -1);
 
                 var target = GetTargetSymbol();
-                if (target is IMethodSymbol method && IsSliceWithRange(method, out var lengthPropertySymbol, out var range))
+                if (target is IMethodSymbol method && IsSliceWithRange(method, out var range))
                 {
                     // When an indexer on a span or string is used in conjunction with a range expression, the compiler translates
                     // this into a call to the "Slice" or "Substring" method.
                     // In this case, we want to populate a slice/substring method call instead of an indexer access.
-                    // E.g s[1..4] gets translated to s.Slice(1, 4 - 1) if s is a span.
-                    PopulateSlice(trapFile, lengthPropertySymbol, method, range);
+                    PopulateSlice(trapFile, method, range);
                     return;
                 }
 
