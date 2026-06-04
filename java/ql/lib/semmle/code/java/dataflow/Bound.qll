@@ -31,4 +31,6 @@ private module BoundDefs implements SharedBound::BoundDefinitions<J::Location> {
   }
 }
 
-import SharedBound::Bound<J::Location, BoundDefs>
+module BoundImpl = SharedBound::Bound<J::Location, BoundDefs>;
+
+import BoundImpl

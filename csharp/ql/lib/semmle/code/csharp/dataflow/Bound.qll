@@ -29,4 +29,6 @@ private module BoundDefs implements SharedBound::BoundDefinitions<CS::Location> 
   predicate interestingExprBound(Expr e) { CU::systemArrayLengthAccess(e.getExpr()) }
 }
 
-import SharedBound::Bound<CS::Location, BoundDefs>
+module BoundImpl = SharedBound::Bound<CS::Location, BoundDefs>;
+
+import BoundImpl
