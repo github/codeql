@@ -753,7 +753,7 @@ predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
  * As of 2024-04-02 the type-tracking library only supports precise content, so there is
  * no reason to include steps for list content right now.
  */
-predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
+predicate storeStepCommon(Node nodeFrom, Content c, Node nodeTo) {
   tupleStoreStep(nodeFrom, c, nodeTo)
   or
   dictStoreStep(nodeFrom, c, nodeTo)
@@ -767,29 +767,31 @@ predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
  * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
  * content `c`.
  */
-predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
-  storeStepCommon(nodeFrom, c, nodeTo)
+predicate storeStep(Node nodeFrom, ContentSet cs, Node nodeTo) {
+  exists(Content c | cs = singleton(c) |
+    storeStepCommon(nodeFrom, c, nodeTo)
+    or
+    listStoreStep(nodeFrom, c, nodeTo)
+    or
+    setStoreStep(nodeFrom, c, nodeTo)
+    or
+    attributeStoreStep(nodeFrom, c, nodeTo)
+    or
+    matchStoreStep(nodeFrom, c, nodeTo)
+    or
+    any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
+    or
+    synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
+    or
+    synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
+    or
+    yieldStoreStep(nodeFrom, c, nodeTo)
+    or
+    VariableCapture::storeStep(nodeFrom, c, nodeTo)
+  )
   or
-  listStoreStep(nodeFrom, c, nodeTo)
-  or
-  setStoreStep(nodeFrom, c, nodeTo)
-  or
-  attributeStoreStep(nodeFrom, c, nodeTo)
-  or
-  matchStoreStep(nodeFrom, c, nodeTo)
-  or
-  any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
-  or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), cs,
     nodeTo.(FlowSummaryNode).getSummaryNode())
-  or
-  synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
-  or
-  synthDictSplatArgumentNodeStoreStep(nodeFrom, c, nodeTo)
-  or
-  yieldStoreStep(nodeFrom, c, nodeTo)
-  or
-  VariableCapture::storeStep(nodeFrom, c, nodeTo)
 }
 
 /**
@@ -985,7 +987,7 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, Node nodeTo) {
 /**
  * Subset of `readStep` that should be shared with type-tracking.
  */
-predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
+predicate readStepCommon(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
@@ -994,21 +996,25 @@ predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
 /**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
-predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
-  readStepCommon(nodeFrom, c, nodeTo)
+predicate readStep(Node nodeFrom, ContentSet cs, Node nodeTo) {
+  exists(Content c | cs = singleton(c) |
+    readStepCommon(nodeFrom, c, nodeTo)
+    or
+    matchReadStep(nodeFrom, c, nodeTo)
+    or
+    forReadStep(nodeFrom, c, nodeTo)
+    or
+    attributeReadStep(nodeFrom, c, nodeTo)
+    or
+    synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
+    or
+    VariableCapture::readStep(nodeFrom, c, nodeTo)
+  )
   or
-  matchReadStep(nodeFrom, c, nodeTo)
-  or
-  forReadStep(nodeFrom, c, nodeTo)
-  or
-  attributeReadStep(nodeFrom, c, nodeTo)
-  or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
+  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), cs,
     nodeTo.(FlowSummaryNode).getSummaryNode())
   or
-  synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
-  or
-  VariableCapture::readStep(nodeFrom, c, nodeTo)
+  Conversions::readStep(nodeFrom, cs, nodeTo)
 }
 
 /** Data flows from a sequence to a subscript of the sequence. */
@@ -1064,23 +1070,68 @@ predicate attributeReadStep(Node nodeFrom, AttributeContent c, AttrRead nodeTo) 
   nodeTo.accesses(nodeFrom, c.getAttribute())
 }
 
+module Conversions {
+  private import semmle.python.Concepts
+
+  predicate decoderReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    exists(Decoding decoding |
+      nodeFrom = decoding.getAnInput() and
+      nodeTo = decoding.getOutput()
+    ) and
+    c.isAnyTupleOrDictionaryElement()
+  }
+
+  predicate encoderReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    exists(Encoding encoding |
+      nodeFrom = encoding.getAnInput() and
+      nodeTo = encoding.getOutput()
+    ) and
+    c.isAnyTupleOrDictionaryElement()
+  }
+
+  predicate formatReadStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    // % formatting
+    exists(BinaryExprNode fmt | fmt = nodeTo.asCfgNode() |
+      fmt.getOp() instanceof Mod and
+      fmt.getRight() = nodeFrom.asCfgNode()
+    ) and
+    c.isAnyTupleElement()
+    or
+    // format_map
+    // see https://docs.python.org/3/library/stdtypes.html#str.format_map
+    nodeTo.(MethodCallNode).calls(_, "format_map") and
+    nodeTo.(MethodCallNode).getArg(0) = nodeFrom and
+    c.isAnyDictionaryElement()
+  }
+
+  predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+    decoderReadStep(nodeFrom, c, nodeTo)
+    or
+    encoderReadStep(nodeFrom, c, nodeTo)
+    or
+    formatReadStep(nodeFrom, c, nodeTo)
+  }
+}
+
 /**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,
  * any value stored inside `f` is cleared at the pre-update node associated with `x`
  * in `x.f = newValue`.
  */
-predicate clearsContent(Node n, ContentSet c) {
-  matchClearStep(n, c)
+predicate clearsContent(Node n, ContentSet cs) {
+  exists(Content c | cs = singleton(c) |
+    matchClearStep(n, c)
+    or
+    attributeClearStep(n, c)
+    or
+    dictClearStep(n, c)
+    or
+    dictSplatParameterNodeClearStep(n, c)
+    or
+    VariableCapture::clearsContent(n, c)
+  )
   or
-  attributeClearStep(n, c)
-  or
-  dictClearStep(n, c)
-  or
-  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
-  or
-  dictSplatParameterNodeClearStep(n, c)
-  or
-  VariableCapture::clearsContent(n, c)
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), cs)
 }
 
 /**

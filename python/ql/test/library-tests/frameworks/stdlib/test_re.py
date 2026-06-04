@@ -6,16 +6,16 @@ pat = ... # some pattern
 compiled_pat = re.compile(pat)
 
 # see https://docs.python.org/3/library/re.html#functions
-ensure_not_tainted(
-    # returns Match object, which is tested properly below. (note: with the flow summary
-    # modeling, objects containing tainted values are not themselves tainted).
-    re.search(pat, ts),
-    re.match(pat, ts),
-    re.fullmatch(pat, ts),
+ensure_tainted(
+    # returns Match object, which is tested properly below. (note: the match objects contain
+    # tainted values but are not themselves tainted - this test relies on implicit reads at sinks).
+    re.search(pat, ts), # $ tainted
+    re.match(pat, ts), # $ tainted
+    re.fullmatch(pat, ts), # $ tainted
 
-    compiled_pat.search(ts),
-    compiled_pat.match(ts),
-    compiled_pat.fullmatch(ts),
+    compiled_pat.search(ts), # $ tainted
+    compiled_pat.match(ts), # $ tainted
+    compiled_pat.fullmatch(ts), # $ tainted
 )
 
 # Match object
@@ -80,9 +80,9 @@ ensure_tainted(
 )
 
 ensure_not_tainted(
-    re.subn(pat, repl="safe", string=ts),
     re.subn(pat, repl="safe", string=ts)[1], # // the number of substitutions made
 )
 ensure_tainted(
+    re.subn(pat, repl="safe", string=ts), # $ tainted // implicit read at sink
     re.subn(pat, repl="safe", string=ts)[0], # $ tainted // the string
 )
