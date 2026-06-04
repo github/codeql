@@ -2,6 +2,7 @@ overlay[local]
 module;
 
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /**
  * A function, independent of defaults and binding.
@@ -157,12 +158,12 @@ class Function extends Function_, Scope, AstNode {
    * DEPRECATED: bind a `Return` node explicitly instead, e.g.
    * `exists(Return ret | ret.getScope() = this and n.getNode() = ret.getValue())`.
    * This API is being phased out together with `AstNode.getAFlowNode()` to
-   * untangle the AST and CFG hierarchies in preparation for migrating the
-   * dataflow library off the legacy CFG.
+   * untangle the AST and CFG hierarchies.
    *
-   * Gets a control flow node for a return value of this function.
+   * Gets a control flow node for a return value of this function, from the
+   * new (shared) CFG.
    */
-  deprecated ControlFlowNode getAReturnValueFlowNode() {
+  deprecated Cfg::ControlFlowNode getAReturnValueFlowNode() {
     exists(Return ret |
       ret.getScope() = this and
       ret.getValue() = result.getNode()

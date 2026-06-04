@@ -90,9 +90,9 @@ def my_decorator(func):
 
     def wrapper():
         print("before function call")
-        val = func() # $ MISSING: tracked
+        val = func() # $ tracked
         print("after function call")
-        return val # $ MISSING: tracked
+        return val # $ tracked
     return wrapper
 
 @my_decorator
@@ -105,7 +105,7 @@ def unrelated_func():
 
 def use_funcs_with_decorators():
     x = get_tracked2() # $ tracked
-    y = unrelated_func()
+    y = unrelated_func() # $ SPURIOUS: tracked
 
 # ------------------------------------------------------------------------------
 

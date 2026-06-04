@@ -5,6 +5,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowImplSpecific
 private import semmle.python.dataflow.new.RemoteFlowSources
@@ -214,7 +215,7 @@ module Path {
     SafeAccessCheck() { this = DataFlow::BarrierGuard<safeAccessCheck/3>::getABarrierNode() }
   }
 
-  private predicate safeAccessCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+  private predicate safeAccessCheck(DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch) {
     g.(SafeAccessCheck::Range).checks(node, branch)
   }
 
@@ -223,7 +224,7 @@ module Path {
     /** A data-flow node that checks that a path is safe to access in some way, for example by having a controlled prefix. */
     abstract class Range extends DataFlow::GuardNode {
       /** Holds if this guard validates `node` upon evaluating to `branch`. */
-      abstract predicate checks(ControlFlowNode node, boolean branch);
+      abstract predicate checks(Cfg::ControlFlowNode node, boolean branch);
     }
   }
 }

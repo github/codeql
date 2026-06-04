@@ -10,6 +10,7 @@
  */
 
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
@@ -19,14 +20,14 @@ private import semmle.python.Concepts
 
 DataFlow::Node shouldBeTainted() {
   exists(DataFlow::CallCfgNode call |
-    call.getFunction().asCfgNode().(NameNode).getId() = "ensure_tainted" and
+    call.getFunction().asCfgNode().(Cfg::NameNode).getId() = "ensure_tainted" and
     result in [call.getArg(_), call.getArgByName(_)]
   )
 }
 
 DataFlow::Node shouldNotBeTainted() {
   exists(DataFlow::CallCfgNode call |
-    call.getFunction().asCfgNode().(NameNode).getId() = "ensure_not_tainted" and
+    call.getFunction().asCfgNode().(Cfg::NameNode).getId() = "ensure_not_tainted" and
     result in [call.getArg(_), call.getArgByName(_)]
   )
 }
@@ -36,13 +37,13 @@ DataFlow::Node shouldNotBeTainted() {
 module Conf {
   module TestTaintTrackingConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
-      source.asCfgNode().(NameNode).getId() in [
+      source.asCfgNode().(Cfg::NameNode).getId() in [
           "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
         ]
       or
       // User defined sources
-      exists(CallNode call |
-        call.getFunction().(NameNode).getId() = "taint" and
+      exists(Cfg::CallNode call |
+        call.getFunction().(Cfg::NameNode).getId() = "taint" and
         source.(DataFlow::CfgNode).getNode() = call.getAnArg()
       )
       or

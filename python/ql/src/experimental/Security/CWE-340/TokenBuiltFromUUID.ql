@@ -16,6 +16,7 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 class PredictableResultSource extends DataFlow::Node {
   PredictableResultSource() {
@@ -32,7 +33,9 @@ class PredictableResultSource extends DataFlow::Node {
 class TokenAssignmentValueSink extends DataFlow::Node {
   TokenAssignmentValueSink() {
     exists(string name | name.toLowerCase().matches(["%token", "%code"]) |
-      exists(DefinitionNode n | n.getValue() = this.asCfgNode() | name = n.(NameNode).getId())
+      exists(Cfg::DefinitionNode n | n.getValue() = this.asCfgNode() |
+        name = n.(Cfg::NameNode).getId()
+      )
       or
       exists(DataFlow::AttrWrite aw | aw.getValue() = this | name = aw.getAttributeName())
     )

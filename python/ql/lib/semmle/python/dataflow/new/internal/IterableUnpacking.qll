@@ -170,6 +170,8 @@ overlay[local]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
+private import semmle.python.dataflow.new.internal.SsaImpl as SsaImpl
 private import DataFlowPublic
 
 /**
@@ -178,7 +180,7 @@ private import DataFlowPublic
  * This class abstracts away the differing representations of comprehensions and
  * for statements.
  */
-class ForTarget extends ControlFlowNode {
+class ForTarget extends Cfg::ControlFlowNode {
   Expr source;
 
   ForTarget() {
@@ -198,7 +200,7 @@ class ForTarget extends ControlFlowNode {
 }
 
 /** The LHS of an assignment, it also records the assigned value. */
-class AssignmentTarget extends ControlFlowNode {
+class AssignmentTarget extends Cfg::ControlFlowNode {
   Expr value;
 
   AssignmentTarget() {
@@ -209,7 +211,7 @@ class AssignmentTarget extends ControlFlowNode {
 }
 
 /** A direct (or top-level) target of an unpacking assignment. */
-class UnpackingAssignmentDirectTarget extends ControlFlowNode instanceof SequenceNode {
+class UnpackingAssignmentDirectTarget extends Cfg::ControlFlowNode instanceof Cfg::SequenceNode {
   Expr value;
 
   UnpackingAssignmentDirectTarget() {
@@ -222,7 +224,7 @@ class UnpackingAssignmentDirectTarget extends ControlFlowNode instanceof Sequenc
 }
 
 /** A (possibly recursive) target of an unpacking assignment. */
-class UnpackingAssignmentTarget extends ControlFlowNode {
+class UnpackingAssignmentTarget extends Cfg::ControlFlowNode {
   UnpackingAssignmentTarget() {
     this instanceof UnpackingAssignmentDirectTarget
     or
@@ -231,10 +233,11 @@ class UnpackingAssignmentTarget extends ControlFlowNode {
 }
 
 /** A (possibly recursive) target of an unpacking assignment which is also a sequence. */
-class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget instanceof SequenceNode {
-  ControlFlowNode getElement(int i) { result = super.getElement(i) }
+class UnpackingAssignmentSequenceTarget extends UnpackingAssignmentTarget instanceof Cfg::SequenceNode
+{
+  Cfg::ControlFlowNode getElement(int i) { result = super.getElement(i) }
 
-  ControlFlowNode getAnElement() { result = this.getElement(_) }
+  Cfg::ControlFlowNode getAnElement() { result = this.getElement(_) }
 }
 
 /**
@@ -255,7 +258,7 @@ predicate iterableUnpackingAssignmentFlowStep(Node nodeFrom, Node nodeTo) {
 predicate iterableUnpackingForReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
   exists(ForTarget target |
     nodeFrom.getNode().getNode() = target.getSource() and
-    target instanceof SequenceNode and
+    target instanceof Cfg::SequenceNode and
     nodeTo = TIterableSequenceNode(target)
   ) and
   (
@@ -323,11 +326,11 @@ predicate iterableUnpackingConvertingStoreStep(Node nodeFrom, Content c, Node no
  */
 predicate iterableUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo) {
   exists(
-    UnpackingAssignmentSequenceTarget target, int index, ControlFlowNode element, int starIndex
+    UnpackingAssignmentSequenceTarget target, int index, Cfg::ControlFlowNode element, int starIndex
   |
-    target.getElement(starIndex) instanceof StarredNode
+    target.getElement(starIndex) instanceof Cfg::StarredNode
     or
-    not exists(target.getAnElement().(StarredNode)) and
+    not exists(target.getAnElement().(Cfg::StarredNode)) and
     starIndex = -1
   |
     nodeFrom.(CfgNode).getNode() = target and
@@ -342,18 +345,18 @@ predicate iterableUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo
         else c.(TupleElementContent).getIndex() >= index - 1
     ) and
     (
-      if element instanceof SequenceNode
+      if element instanceof Cfg::SequenceNode
       then
         // Step 5b
         nodeTo = TIterableSequenceNode(element)
       else
-        if element instanceof StarredNode
+        if element instanceof Cfg::StarredNode
         then
           // Step 5c
           nodeTo = TIterableElementNode(element)
         else
           // Step 5a
-          exists(MultiAssignmentDefinition mad | element = mad.getDefiningNode() |
+          exists(SsaImpl::MultiAssignmentDefinition mad | element = mad.getDefiningNode() |
             nodeTo.(CfgNode).getNode() = element
           )
     )
@@ -366,7 +369,7 @@ predicate iterableUnpackingElementReadStep(Node nodeFrom, Content c, Node nodeTo
  * content type `ListElementContent`.
  */
 predicate iterableUnpackingStarredElementStoreStep(Node nodeFrom, Content c, Node nodeTo) {
-  exists(ControlFlowNode starred, MultiAssignmentDefinition mad |
+  exists(Cfg::ControlFlowNode starred, SsaImpl::MultiAssignmentDefinition mad |
     starred.getNode() instanceof Starred and
     starred = mad.getDefiningNode()
   |
