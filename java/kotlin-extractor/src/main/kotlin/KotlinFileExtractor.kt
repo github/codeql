@@ -721,7 +721,7 @@ open class KotlinFileExtractor(
             (it.type as? IrSimpleType)?.classFqName?.asString() != "kotlin.Deprecated"
         } +
             // Note we lose any arguments to @java.lang.Deprecated that were written in source.
-            IrConstructorCallImpl.fromSymbolOwner(
+            codeQlAnnotationFromSymbolOwner(
                 UNDEFINED_OFFSET,
                 UNDEFINED_OFFSET,
                 jldConstructor.returnType,
@@ -2327,7 +2327,7 @@ open class KotlinFileExtractor(
             getClassByFqName(pluginContext, it)?.let { annotationClass ->
                 annotationClass.owner.declarations.firstIsInstanceOrNull<IrConstructor>()?.let {
                     annotationConstructor ->
-                    IrConstructorCallImpl.fromSymbolOwner(
+                    codeQlAnnotationFromSymbolOwner(
                         UNDEFINED_OFFSET,
                         UNDEFINED_OFFSET,
                         annotationConstructor.returnType,

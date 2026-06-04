@@ -8,6 +8,9 @@ import org.jetbrains.kotlin.ir.expressions.IrAnnotation
 import org.jetbrains.kotlin.ir.expressions.IrConstructorCall
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.expressions.IrMemberAccessExpression
+import org.jetbrains.kotlin.ir.expressions.impl.IrAnnotationImpl
+import org.jetbrains.kotlin.ir.expressions.impl.fromSymbolOwner
+import org.jetbrains.kotlin.ir.symbols.IrConstructorSymbol
 import org.jetbrains.kotlin.ir.types.IrType
 import org.jetbrains.kotlin.ir.types.addAnnotations
 
@@ -92,4 +95,14 @@ fun IrFunction.codeQlSetDispatchReceiverParameter(param: IrValueParameter?) {
     }
     parameters = mutableParams
 }
+
+// In 2.4.0, annotation lists require IrAnnotation instances.
+// Use IrAnnotationImpl.fromSymbolOwner instead of IrConstructorCallImpl.fromSymbolOwner.
+fun codeQlAnnotationFromSymbolOwner(
+    startOffset: Int, endOffset: Int, type: IrType, symbol: IrConstructorSymbol, typeArgumentsCount: Int
+): IrConstructorCall =
+    IrAnnotationImpl.fromSymbolOwner(startOffset, endOffset, type, symbol, typeArgumentsCount)
+
+fun codeQlAnnotationFromSymbolOwner(type: IrType, symbol: IrConstructorSymbol): IrConstructorCall =
+    IrAnnotationImpl.fromSymbolOwner(type, symbol)
 

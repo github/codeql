@@ -192,7 +192,7 @@ object RawTypeAnnotation {
                     addConstructor { isPrimary = true }
                 }
         val constructor = annoClass.constructors.single()
-        IrConstructorCallImpl.fromSymbolOwner(constructor.constructedClassType, constructor.symbol)
+        codeQlAnnotationFromSymbolOwner(constructor.constructedClassType, constructor.symbol)
     }
 }
 

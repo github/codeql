@@ -1,5 +1,6 @@
 package com.github.codeql
 
+import com.github.codeql.utils.versions.codeQlAnnotationFromSymbolOwner
 import com.github.codeql.utils.versions.codeQlGetValueArgument
 import com.github.codeql.utils.versions.codeQlPutValueArgument
 import com.github.codeql.utils.versions.codeQlSetAnnotations
@@ -121,7 +122,7 @@ class MetaAnnotationSupport(
             )
             return null
         } else {
-            return IrConstructorCallImpl.fromSymbolOwner(
+            return codeQlAnnotationFromSymbolOwner(
                     containerClass.defaultType,
                     containerConstructor.symbol
                 )
@@ -234,7 +235,7 @@ class MetaAnnotationSupport(
             )
         }
 
-        return IrConstructorCallImpl.fromSymbolOwner(
+        return codeQlAnnotationFromSymbolOwner(
                 UNDEFINED_OFFSET,
                 UNDEFINED_OFFSET,
                 targetConstructor.returnType,
@@ -287,7 +288,7 @@ class MetaAnnotationSupport(
         val targetConstructor =
             retentionType.declarations.firstIsInstanceOrNull<IrConstructor>() ?: return null
 
-        return IrConstructorCallImpl.fromSymbolOwner(
+        return codeQlAnnotationFromSymbolOwner(
                 UNDEFINED_OFFSET,
                 UNDEFINED_OFFSET,
                 targetConstructor.returnType,
@@ -419,7 +420,7 @@ class MetaAnnotationSupport(
                     .map { it.deepCopyWithSymbols(containerClass) } +
                     listOfNotNull(
                         repeatableContainerAnnotation?.let {
-                            IrConstructorCallImpl.fromSymbolOwner(
+                            codeQlAnnotationFromSymbolOwner(
                                 UNDEFINED_OFFSET,
                                 UNDEFINED_OFFSET,
                                 it.returnType,
@@ -467,7 +468,7 @@ class MetaAnnotationSupport(
                 containerClass.symbol,
                 containerClass.defaultType
             )
-        return IrConstructorCallImpl.fromSymbolOwner(
+        return codeQlAnnotationFromSymbolOwner(
                 UNDEFINED_OFFSET,
                 UNDEFINED_OFFSET,
                 repeatableConstructor.returnType,
@@ -493,7 +494,7 @@ class MetaAnnotationSupport(
             javaAnnotationDocumented?.declarations?.firstIsInstanceOrNull<IrConstructor>()
                 ?: return null
 
-        return IrConstructorCallImpl.fromSymbolOwner(
+        return codeQlAnnotationFromSymbolOwner(
             UNDEFINED_OFFSET,
             UNDEFINED_OFFSET,
             documentedConstructor.returnType,
