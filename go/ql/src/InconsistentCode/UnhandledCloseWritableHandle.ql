@@ -86,7 +86,25 @@ predicate isWritableFileHandle(DataFlow::Node source, DataFlow::CallNode call) {
 }
 
 /**
- * Holds if `os.File.Close` is called on `sink`.
+ * Holds if `postDominator` post-dominates `node` in the control-flow graph. That is,
+ * every path from `node` to the exit of the enclosing function passes through
+ * `postDominator`.
+ */
+pragma[inline]
+predicate postDominatesNode(ControlFlow::Node postDominator, ControlFlow::Node node) {
+  exists(ReachableBasicBlock pdbb, ReachableBasicBlock nbb, int i, int j |
+    postDominator = pdbb.getNode(i) and node = nbb.getNode(j)
+  |
+    pdbb.strictlyPostDominates(nbb)
+    or
+    pdbb = nbb and i >= j
+  )
+}
+
+/**
+ * Holds if `closeCall` is an unhandled call to `os.File.Close` on `sink` that is not
+ * guaranteed to be preceded during execution by a handled call to `os.File.Sync` on the
+ * same file handle.
  */
 predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode closeCall) {
   // find calls to the os.File.Close function
@@ -95,18 +113,29 @@ predicate isCloseSink(DataFlow::Node sink, DataFlow::CallNode closeCall) {
   unhandledCall(closeCall) and
   // where the function is called on the sink
   closeCall.getReceiver() = sink and
-  // and check that it is not dominated by a call to `os.File.Sync`.
-  // TODO: fix this logic when `closeCall` is in a defer statement.
-  not exists(IR::Instruction syncInstr, DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
-    // match the instruction corresponding to an `os.File.Sync` call with the predecessor
-    syncCall.asInstruction() = syncInstr and
+  // and check that the call to `os.File.Close` is not guaranteed to be preceded during
+  // execution by a handled call to `os.File.Sync` on the same file handle.
+  not exists(DataFlow::Node syncReceiver, DataFlow::CallNode syncCall |
     // check that the call to `os.File.Sync` is handled
     isHandledSync(syncReceiver, syncCall) and
-    // find a predecessor to `closeCall` in the control flow graph which dominates the call to
-    // `os.File.Close`
-    syncInstr.dominatesNode(closeCall.asInstruction()) and
     // check that `os.File.Sync` is called on the same object as `os.File.Close`
     exists(DataFlow::SsaNode ssa | ssa.getAUse() = sink and ssa.getAUse() = syncReceiver)
+  |
+    if exists(DeferStmt defer | defer.getCall() = closeCall.asExpr())
+    then
+      // When the call to `os.File.Close` is deferred it runs when the enclosing function
+      // returns, but the receiver of the deferred call is evaluated where the `defer`
+      // statement appears. It is therefore enough for the handled call to `os.File.Sync`
+      // to post-dominate that point, since that guarantees `os.File.Sync` runs before the
+      // deferred `os.File.Close` on every path on which the `os.File.Close` is registered.
+      // We cannot reuse the domination check below because the control-flow graph splices
+      // the deferred call in at the function exit, where it may be reachable along paths
+      // that do not pass through the call to `os.File.Sync`.
+      postDominatesNode(syncCall.asInstruction(), sink.asInstruction())
+    else
+      // Otherwise the call to `os.File.Close` is executed where it appears, so we require
+      // the handled call to `os.File.Sync` to dominate it.
+      syncCall.asInstruction().dominatesNode(closeCall.asInstruction())
   )
 }
 
