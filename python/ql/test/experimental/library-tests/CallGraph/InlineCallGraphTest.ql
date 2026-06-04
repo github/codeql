@@ -1,38 +1,43 @@
 import python
 import utils.test.InlineExpectationsTest
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as TT
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import LegacyPointsTo
 
 /** Holds when `call` is resolved to `callable` using points-to based call-graph. */
-predicate pointsToCallEdge(CallNode call, Function callable) {
+predicate pointsToCallEdge(Call call, Function callable) {
   exists(call.getLocation().getFile().getRelativePath()) and
   exists(callable.getLocation().getFile().getRelativePath()) and
   // I did try using viableCallable from `DataFlowDispatchPointsTo` (from temporary copy
   //  of `dataflow.new.internal` that still uses points-to) instead of direct
   //  `getACall()` on a Value, but it only added results for `__init__` methods, not for
   //  anything else.
-  exists(PythonFunctionValue funcValue |
+  exists(PythonFunctionValue funcValue, CallNode legacyCall |
     funcValue.getScope() = callable and
-    call = funcValue.getACall()
+    legacyCall = funcValue.getACall() and
+    legacyCall.getNode() = call
   )
 }
 
 /** Holds when `call` is resolved to `callable` using type-tracking based call-graph. */
-predicate typeTrackerCallEdge(CallNode call, Function callable) {
+predicate typeTrackerCallEdge(Call call, Function callable) {
   exists(call.getLocation().getFile().getRelativePath()) and
   exists(callable.getLocation().getFile().getRelativePath()) and
   exists(TT::DataFlowCallable dfCallable, TT::DataFlowCall dfCall |
     dfCallable.getScope() = callable and
-    dfCall.getNode() = call and
+    dfCall.getNode().getNode() = call and
     dfCallable = TT::viableCallable(dfCall)
   )
 }
 
 /** Holds if the call edge is from a class call. */
-predicate typeTrackerClassCall(CallNode call, Function callable) {
+predicate typeTrackerClassCall(Call call, Function callable) {
   exists(call.getLocation().getFile().getRelativePath()) and
   exists(callable.getLocation().getFile().getRelativePath()) and
-  TT::resolveCall(call, callable, any(TT::TCallType t | t instanceof TT::CallTypeClass))
+  exists(Cfg::CallNode cfgCall |
+    cfgCall.getNode() = call and
+    TT::resolveCall(cfgCall, callable, any(TT::TCallType t | t instanceof TT::CallTypeClass))
+  )
 }
 
 module CallGraphTest implements TestSig {
@@ -40,7 +45,7 @@ module CallGraphTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
-    exists(CallNode call, Function target |
+    exists(Call call, Function target |
       tag = "tt" and
       typeTrackerCallEdge(call, target)
       or
@@ -57,7 +62,7 @@ module CallGraphTest implements TestSig {
 import MakeTest<CallGraphTest>
 
 bindingset[call, target]
-string getCallEdgeValue(CallNode call, Function target) {
+string getCallEdgeValue(Call call, Function target) {
   if call.getLocation().getFile() = target.getLocation().getFile()
   then result = betterQualName(target)
   else
@@ -100,7 +105,7 @@ query predicate debug_callableNotUnique(Function callable, string message) {
       "' is not unique within its file. Please fix."
 }
 
-query predicate pointsTo_found_typeTracker_notFound(CallNode call, string qualname) {
+query predicate pointsTo_found_typeTracker_notFound(Call call, string qualname) {
   exists(Function target |
     pointsToCallEdge(call, target) and
     not typeTrackerCallEdge(call, target) and
@@ -115,7 +120,7 @@ query predicate pointsTo_found_typeTracker_notFound(CallNode call, string qualna
   )
 }
 
-query predicate typeTracker_found_pointsTo_notFound(CallNode call, string qualname) {
+query predicate typeTracker_found_pointsTo_notFound(Call call, string qualname) {
   exists(Function target |
     not pointsToCallEdge(call, target) and
     typeTrackerCallEdge(call, target) and

@@ -80,7 +80,7 @@ def test():
     for ch in elem:
         ensure_tainted(
             ch,  # $ tainted
-            ch.text  # $ MISSING: tainted # API node getASubscript() appears to not consider things like for loops 
+            ch.text  # $ tainted
         )
 
     buf = io.StringIO(src)
