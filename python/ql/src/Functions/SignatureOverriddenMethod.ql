@@ -15,6 +15,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.DataFlowDispatch
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import codeql.util.Option
 
 /** Holds if `base` is overridden by `sub` */
@@ -143,7 +144,7 @@ predicate ignore(Function f) {
 
 /** Gets a function that `call` may resolve to. */
 Function resolveCall(Call call) {
-  exists(DataFlowCall dfc | call = dfc.getNode().(CallNode).getNode() |
+  exists(DataFlowCall dfc | call = dfc.getNode().(Cfg::CallNode).getNode() |
     result = viableCallable(dfc).(DataFlowFunction).getScope()
   )
 }

@@ -1,24 +1,25 @@
 implicit_use_count
-| 0 |
+| 1 |
 implicit_use
+| read_explosion.py:9:1:9:12 | Normal Exit |
 source_use_count
 | 6 |
 source_use
-| read_explosion.py:17:15:17:15 | ControlFlowNode for x |
-| read_explosion.py:19:13:19:13 | ControlFlowNode for x |
-| read_explosion.py:21:11:21:11 | ControlFlowNode for x |
-| read_explosion.py:28:15:28:15 | ControlFlowNode for x |
-| read_explosion.py:30:13:30:13 | ControlFlowNode for x |
-| read_explosion.py:32:11:32:11 | ControlFlowNode for x |
+| read_explosion.py:17:15:17:15 | x |
+| read_explosion.py:19:13:19:13 | x |
+| read_explosion.py:21:11:21:11 | x |
+| read_explosion.py:28:15:28:15 | x |
+| read_explosion.py:30:13:30:13 | x |
+| read_explosion.py:32:11:32:11 | x |
 use_use_edge_count
 | 9 |
 use_use_edge
-| read_explosion.py:17:15:17:15 | ControlFlowNode for x | read_explosion.py:28:15:28:15 | ControlFlowNode for x |
-| read_explosion.py:17:15:17:15 | ControlFlowNode for x | read_explosion.py:30:13:30:13 | ControlFlowNode for x |
-| read_explosion.py:17:15:17:15 | ControlFlowNode for x | read_explosion.py:32:11:32:11 | ControlFlowNode for x |
-| read_explosion.py:19:13:19:13 | ControlFlowNode for x | read_explosion.py:28:15:28:15 | ControlFlowNode for x |
-| read_explosion.py:19:13:19:13 | ControlFlowNode for x | read_explosion.py:30:13:30:13 | ControlFlowNode for x |
-| read_explosion.py:19:13:19:13 | ControlFlowNode for x | read_explosion.py:32:11:32:11 | ControlFlowNode for x |
-| read_explosion.py:21:11:21:11 | ControlFlowNode for x | read_explosion.py:28:15:28:15 | ControlFlowNode for x |
-| read_explosion.py:21:11:21:11 | ControlFlowNode for x | read_explosion.py:30:13:30:13 | ControlFlowNode for x |
-| read_explosion.py:21:11:21:11 | ControlFlowNode for x | read_explosion.py:32:11:32:11 | ControlFlowNode for x |
+| read_explosion.py:17:15:17:15 | x | read_explosion.py:28:15:28:15 | x |
+| read_explosion.py:17:15:17:15 | x | read_explosion.py:30:13:30:13 | x |
+| read_explosion.py:17:15:17:15 | x | read_explosion.py:32:11:32:11 | x |
+| read_explosion.py:19:13:19:13 | x | read_explosion.py:28:15:28:15 | x |
+| read_explosion.py:19:13:19:13 | x | read_explosion.py:30:13:30:13 | x |
+| read_explosion.py:19:13:19:13 | x | read_explosion.py:32:11:32:11 | x |
+| read_explosion.py:21:11:21:11 | x | read_explosion.py:28:15:28:15 | x |
+| read_explosion.py:21:11:21:11 | x | read_explosion.py:30:13:30:13 | x |
+| read_explosion.py:21:11:21:11 | x | read_explosion.py:32:11:32:11 | x |
