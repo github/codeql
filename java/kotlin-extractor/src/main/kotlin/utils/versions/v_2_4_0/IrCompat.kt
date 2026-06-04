@@ -26,16 +26,23 @@ val IrFunction.codeQlValueParameters: List<IrValueParameter>
 val IrFunction.codeQlExtensionReceiverParameter: IrValueParameter?
     get() = parameters.firstOrNull { it.kind == org.jetbrains.kotlin.ir.declarations.IrParameterKind.ExtensionReceiver }
 
+// Helper: get the offset of value arguments in the arguments list
+// In 2.4.0, arguments[] includes dispatch/extension receivers before regular params
+private fun IrMemberAccessExpression<*>.valueArgumentOffset(): Int {
+    val owner = symbol.owner as? IrFunction ?: return 0
+    return owner.parameters.count { it.kind != org.jetbrains.kotlin.ir.declarations.IrParameterKind.Regular }
+}
+
 // IrMemberAccessExpression: valueArgumentsCount
 val IrMemberAccessExpression<*>.codeQlValueArgumentsCount: Int
-    get() = arguments.size
+    get() = arguments.size - valueArgumentOffset()
 
 // IrMemberAccessExpression: getValueArgument
-fun IrMemberAccessExpression<*>.codeQlGetValueArgument(index: Int): IrExpression? = arguments[index]
+fun IrMemberAccessExpression<*>.codeQlGetValueArgument(index: Int): IrExpression? = arguments[index + valueArgumentOffset()]
 
 // IrMemberAccessExpression: putValueArgument
 fun IrMemberAccessExpression<*>.codeQlPutValueArgument(index: Int, value: IrExpression?) {
-    arguments[index] = value
+    arguments[index + valueArgumentOffset()] = value
 }
 
 // IrMemberAccessExpression: extensionReceiver
