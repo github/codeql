@@ -186,6 +186,12 @@ module Ast implements AstSig<Py::Location> {
      * call binding, which Python does not model at the CFG level.
      */
     Expr getDefaultValue() { none() }
+
+    /**
+     * Gets the pattern for this parameter. In Python, there is no destructuring
+     * pattern syntax for parameters, so the pattern is the parameter itself.
+     */
+    AstNode getPattern() { result = this }
   }
 
   /**
@@ -630,6 +636,13 @@ module Ast implements AstSig<Py::Location> {
     Expr getCondition() { none() }
   }
 
+  /** An `until` loop. Python has no `until` loop. */
+  class UntilStmt extends LoopStmt {
+    UntilStmt() { none() }
+
+    Expr getCondition() { none() }
+  }
+
   /** A C-style `for` loop. Python has no C-style for loop. */
   class ForStmt extends LoopStmt {
     ForStmt() { none() }
@@ -849,7 +862,7 @@ module Ast implements AstSig<Py::Location> {
 
     TryStmt() { this = TPyStmt(tryStmt) }
 
-    Stmt getBody() { result.asStmtList() = tryStmt.getBody() }
+    AstNode getBody(int index) { index = 0 and result.asStmtList() = tryStmt.getBody() }
 
     /** Gets the `else` branch of this `try` statement, if any. */
     Stmt getElse() { result.asStmtList() = tryStmt.getOrelse() }
@@ -859,7 +872,7 @@ module Ast implements AstSig<Py::Location> {
     CatchClause getCatch(int index) { result.asStmt() = tryStmt.getHandler(index) }
 
     override AstNode getChild(int index) {
-      index = 0 and result = this.getBody()
+      index = 0 and result = this.getBody(0)
       or
       result = this.getCatch(index - 1) and index >= 1
       or

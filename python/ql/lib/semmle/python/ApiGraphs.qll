@@ -6,8 +6,9 @@
  * directed and labeled; they specify how the components represented by nodes relate to each other.
  */
 
-// Importing python under the `py` namespace to avoid importing `CallNode` from `Flow.qll` and thereby having a naming conflict with `API::CallNode`.
+// Importing python under the `PY` namespace to avoid pulling in `CallNode` from `Flow.qll` (via `import python`) and thereby having a naming conflict with `API::CallNode`.
 private import python as PY
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.internal.CachedStages
 
@@ -282,7 +283,7 @@ module API {
       index = this.getIndex() and
       (
         // subscripting
-        exists(PY::SubscriptNode subscript |
+        exists(Cfg::SubscriptNode subscript |
           subscript.getObject() = this.getAValueReachableFromSource().asCfgNode() and
           subscript.getIndex() = index.asSink().asCfgNode()
         |
@@ -290,7 +291,7 @@ module API {
           subscript = result.asSource().asCfgNode()
           or
           // writing
-          subscript.(PY::DefinitionNode).getValue() = result.asSink().asCfgNode()
+          subscript.(Cfg::DefinitionNode).getValue() = result.asSink().asCfgNode()
         )
         or
         // dictionary literals
@@ -684,7 +685,7 @@ module API {
      * Ignores relative imports, such as `from ..foo.bar import baz`.
      */
     private predicate imports(DataFlow::CfgNode imp, string name) {
-      exists(PY::ImportExprNode iexpr |
+      exists(Cfg::ImportExprNode iexpr |
         imp.getNode() = iexpr and
         not iexpr.getNode().isRelative() and
         name = iexpr.getNode().getImportedModuleName()
@@ -775,7 +776,7 @@ module API {
         // list literals, from `x` to `[x]`
         // TODO: once convenient, this should be done at a higher level than the AST,
         // at least at the CFG layer, to take splitting into account.
-        // Also consider `SequenceNode for generality.
+        // Also consider `Cfg::SequenceNode` for generality.
         exists(PY::List list | list = pred.(DataFlow::ExprNode).getNode().getNode() |
           rhs.(DataFlow::ExprNode).getNode().getNode() = list.getAnElt() and
           lbl = Label::subscript()
@@ -805,7 +806,7 @@ module API {
         subscript = trackUseNode(src).getSubscript(index)
       |
         // from `x` to a definition of `x[...]`
-        rhs.asCfgNode() = subscript.asCfgNode().(PY::DefinitionNode).getValue() and
+        rhs.asCfgNode() = subscript.asCfgNode().(Cfg::DefinitionNode).getValue() and
         lbl = Label::subscript()
         or
         // from `x` to `"key"` in `x["key"]`

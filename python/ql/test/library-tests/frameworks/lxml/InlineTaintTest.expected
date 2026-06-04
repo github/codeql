@@ -1,3 +1,5 @@
 argumentToEnsureNotTaintedNotMarkedAsSpurious
 untaintedArgumentToEnsureTaintedNotMarkedAsMissing
+| taint_test.py:133:13:133:35 | taint_test.py:133 | ERROR, you should add `# $ MISSING: tainted` annotation | tree_arg.getroot().text |
 testFailures
+| taint_test.py:133:37:133:82 | Comment # $ tainted # Type tracking from the type hint | Missing result: tainted |

@@ -1,24 +1,24 @@
 edges
-| pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:4:26:4:32 | ControlFlowNode for request | provenance |  |
-| pam_test.py:4:26:4:32 | ControlFlowNode for request | pam_test.py:71:16:71:22 | ControlFlowNode for request | provenance |  |
-| pam_test.py:71:5:71:12 | ControlFlowNode for username | pam_test.py:74:33:74:40 | ControlFlowNode for username | provenance |  |
-| pam_test.py:71:16:71:22 | ControlFlowNode for request | pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
-| pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | pam_test.py:71:16:71:47 | ControlFlowNode for Attribute() | provenance | dict.get |
-| pam_test.py:71:16:71:47 | ControlFlowNode for Attribute() | pam_test.py:71:5:71:12 | ControlFlowNode for username | provenance |  |
-| pam_test.py:74:33:74:40 | ControlFlowNode for username | pam_test.py:74:62:74:67 | ControlFlowNode for handle | provenance | Config |
-| pam_test.py:74:62:74:67 | ControlFlowNode for handle | pam_test.py:76:31:76:36 | ControlFlowNode for handle | provenance |  |
-| pam_test.py:76:31:76:36 | ControlFlowNode for handle | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | provenance | Config |
+| pam_test.py:4:26:4:32 | After ImportMember | pam_test.py:4:26:4:32 | request | provenance |  |
+| pam_test.py:4:26:4:32 | request | pam_test.py:71:16:71:22 | request | provenance |  |
+| pam_test.py:71:5:71:12 | username | pam_test.py:74:33:74:40 | username | provenance |  |
+| pam_test.py:71:16:71:22 | request | pam_test.py:71:16:71:27 | After Attribute | provenance | AdditionalTaintStep |
+| pam_test.py:71:16:71:27 | After Attribute | pam_test.py:71:16:71:47 | After Attribute() | provenance | dict.get |
+| pam_test.py:71:16:71:47 | After Attribute() | pam_test.py:71:5:71:12 | username | provenance |  |
+| pam_test.py:74:33:74:40 | username | pam_test.py:74:62:74:67 | handle | provenance | Config |
+| pam_test.py:74:62:74:67 | handle | pam_test.py:76:31:76:36 | handle | provenance |  |
+| pam_test.py:76:31:76:36 | handle | pam_test.py:76:14:76:40 | After pam_authenticate() | provenance | Config |
 nodes
-| pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| pam_test.py:4:26:4:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| pam_test.py:71:5:71:12 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
-| pam_test.py:71:16:71:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| pam_test.py:71:16:71:47 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| pam_test.py:74:33:74:40 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
-| pam_test.py:74:62:74:67 | ControlFlowNode for handle | semmle.label | ControlFlowNode for handle |
-| pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | semmle.label | ControlFlowNode for pam_authenticate() |
-| pam_test.py:76:31:76:36 | ControlFlowNode for handle | semmle.label | ControlFlowNode for handle |
+| pam_test.py:4:26:4:32 | After ImportMember | semmle.label | After ImportMember |
+| pam_test.py:4:26:4:32 | request | semmle.label | request |
+| pam_test.py:71:5:71:12 | username | semmle.label | username |
+| pam_test.py:71:16:71:22 | request | semmle.label | request |
+| pam_test.py:71:16:71:27 | After Attribute | semmle.label | After Attribute |
+| pam_test.py:71:16:71:47 | After Attribute() | semmle.label | After Attribute() |
+| pam_test.py:74:33:74:40 | username | semmle.label | username |
+| pam_test.py:74:62:74:67 | handle | semmle.label | handle |
+| pam_test.py:76:14:76:40 | After pam_authenticate() | semmle.label | After pam_authenticate() |
+| pam_test.py:76:31:76:36 | handle | semmle.label | handle |
 subpaths
 #select
-| pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | This PAM authentication depends on a $@, and 'pam_acct_mgmt' is not called afterwards. | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |
+| pam_test.py:76:14:76:40 | After pam_authenticate() | pam_test.py:4:26:4:32 | After ImportMember | pam_test.py:76:14:76:40 | After pam_authenticate() | This PAM authentication depends on a $@, and 'pam_acct_mgmt' is not called afterwards. | pam_test.py:4:26:4:32 | After ImportMember | user-provided value |

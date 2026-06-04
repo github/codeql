@@ -19,6 +19,7 @@ import semmle.python.filters.Tests
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
 private import semmle.python.dataflow.new.internal.Builtins::Builtins as Builtins
 private import semmle.python.frameworks.data.ModelsAsData
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 bindingset[char, fraction]
 predicate fewer_characters_than(StringLiteral str, string char, float fraction) {
@@ -48,7 +49,7 @@ predicate capitalized_word(StringLiteral str) { str.getText().regexpMatch("[A-Z]
 
 predicate format_string(StringLiteral str) { str.getText().matches("%{%}%") }
 
-predicate maybeCredential(ControlFlowNode f) {
+predicate maybeCredential(Cfg::ControlFlowNode f) {
   /* A string that is not too short and unlikely to be text or an identifier. */
   exists(StringLiteral str | str = f.getNode() |
     /* At least 10 characters */
@@ -96,7 +97,7 @@ class CredentialSink extends DataFlow::Node {
       or
       exists(Keyword k | k.getArg() = name and this.asCfgNode().getNode() = k.getValue())
       or
-      exists(CompareNode cmp, NameNode n | n.getId() = name |
+      exists(Cfg::CompareNode cmp, Cfg::NameNode n | n.getId() = name |
         cmp.operands(this.asCfgNode(), any(Eq eq), n)
         or
         cmp.operands(n, any(Eq eq), this.asCfgNode())

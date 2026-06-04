@@ -1,51 +1,51 @@
-#select
-| LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
-| LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
-| LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
-| LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | user-provided value |
 edges
-| LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | provenance |  |
-| LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | provenance |  |
-| LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request | provenance |  |
-| LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request | provenance |  |
-| LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | provenance |  |
-| LogInjectionBad.py:17:5:17:8 | ControlFlowNode for name | LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | provenance |  |
-| LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | LogInjectionBad.py:17:12:17:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
-| LogInjectionBad.py:17:12:17:23 | ControlFlowNode for Attribute | LogInjectionBad.py:17:12:17:35 | ControlFlowNode for Attribute() | provenance | dict.get |
-| LogInjectionBad.py:17:12:17:35 | ControlFlowNode for Attribute() | LogInjectionBad.py:17:5:17:8 | ControlFlowNode for name | provenance |  |
-| LogInjectionBad.py:23:5:23:8 | ControlFlowNode for name | LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | provenance |  |
-| LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request | LogInjectionBad.py:23:12:23:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
-| LogInjectionBad.py:23:12:23:23 | ControlFlowNode for Attribute | LogInjectionBad.py:23:12:23:35 | ControlFlowNode for Attribute() | provenance | dict.get |
-| LogInjectionBad.py:23:12:23:35 | ControlFlowNode for Attribute() | LogInjectionBad.py:23:5:23:8 | ControlFlowNode for name | provenance |  |
-| LogInjectionBad.py:29:5:29:8 | ControlFlowNode for name | LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | provenance |  |
-| LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request | LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
-| LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute | LogInjectionBad.py:29:12:29:35 | ControlFlowNode for Attribute() | provenance | dict.get |
-| LogInjectionBad.py:29:12:29:35 | ControlFlowNode for Attribute() | LogInjectionBad.py:29:5:29:8 | ControlFlowNode for name | provenance |  |
-| LogInjectionBad.py:35:5:35:8 | ControlFlowNode for name | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | provenance |  |
-| LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | provenance | AdditionalTaintStep |
-| LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() | provenance | dict.get |
-| LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() | LogInjectionBad.py:35:5:35:8 | ControlFlowNode for name | provenance |  |
+| LogInjectionBad.py:7:19:7:25 | After ImportMember | LogInjectionBad.py:7:19:7:25 | request | provenance |  |
+| LogInjectionBad.py:7:19:7:25 | request | LogInjectionBad.py:17:12:17:18 | request | provenance |  |
+| LogInjectionBad.py:7:19:7:25 | request | LogInjectionBad.py:23:12:23:18 | request | provenance |  |
+| LogInjectionBad.py:7:19:7:25 | request | LogInjectionBad.py:29:12:29:18 | request | provenance |  |
+| LogInjectionBad.py:7:19:7:25 | request | LogInjectionBad.py:35:12:35:18 | request | provenance |  |
+| LogInjectionBad.py:17:5:17:8 | name | LogInjectionBad.py:18:21:18:40 | After BinaryExpr | provenance |  |
+| LogInjectionBad.py:17:12:17:18 | request | LogInjectionBad.py:17:12:17:23 | After Attribute | provenance | AdditionalTaintStep |
+| LogInjectionBad.py:17:12:17:23 | After Attribute | LogInjectionBad.py:17:12:17:35 | After Attribute() | provenance | dict.get |
+| LogInjectionBad.py:17:12:17:35 | After Attribute() | LogInjectionBad.py:17:5:17:8 | name | provenance |  |
+| LogInjectionBad.py:23:5:23:8 | name | LogInjectionBad.py:24:18:24:37 | After BinaryExpr | provenance |  |
+| LogInjectionBad.py:23:12:23:18 | request | LogInjectionBad.py:23:12:23:23 | After Attribute | provenance | AdditionalTaintStep |
+| LogInjectionBad.py:23:12:23:23 | After Attribute | LogInjectionBad.py:23:12:23:35 | After Attribute() | provenance | dict.get |
+| LogInjectionBad.py:23:12:23:35 | After Attribute() | LogInjectionBad.py:23:5:23:8 | name | provenance |  |
+| LogInjectionBad.py:29:5:29:8 | name | LogInjectionBad.py:30:25:30:44 | After BinaryExpr | provenance |  |
+| LogInjectionBad.py:29:12:29:18 | request | LogInjectionBad.py:29:12:29:23 | After Attribute | provenance | AdditionalTaintStep |
+| LogInjectionBad.py:29:12:29:23 | After Attribute | LogInjectionBad.py:29:12:29:35 | After Attribute() | provenance | dict.get |
+| LogInjectionBad.py:29:12:29:35 | After Attribute() | LogInjectionBad.py:29:5:29:8 | name | provenance |  |
+| LogInjectionBad.py:35:5:35:8 | name | LogInjectionBad.py:37:19:37:38 | After BinaryExpr | provenance |  |
+| LogInjectionBad.py:35:12:35:18 | request | LogInjectionBad.py:35:12:35:23 | After Attribute | provenance | AdditionalTaintStep |
+| LogInjectionBad.py:35:12:35:23 | After Attribute | LogInjectionBad.py:35:12:35:35 | After Attribute() | provenance | dict.get |
+| LogInjectionBad.py:35:12:35:35 | After Attribute() | LogInjectionBad.py:35:5:35:8 | name | provenance |  |
 nodes
-| LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
-| LogInjectionBad.py:7:19:7:25 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| LogInjectionBad.py:17:5:17:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
-| LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| LogInjectionBad.py:17:12:17:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| LogInjectionBad.py:17:12:17:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| LogInjectionBad.py:23:5:23:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
-| LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| LogInjectionBad.py:23:12:23:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| LogInjectionBad.py:23:12:23:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| LogInjectionBad.py:24:18:24:37 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| LogInjectionBad.py:29:5:29:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
-| LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| LogInjectionBad.py:29:12:29:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| LogInjectionBad.py:29:12:29:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| LogInjectionBad.py:30:25:30:44 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
-| LogInjectionBad.py:35:5:35:8 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
-| LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| LogInjectionBad.py:35:12:35:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+| LogInjectionBad.py:7:19:7:25 | After ImportMember | semmle.label | After ImportMember |
+| LogInjectionBad.py:7:19:7:25 | request | semmle.label | request |
+| LogInjectionBad.py:17:5:17:8 | name | semmle.label | name |
+| LogInjectionBad.py:17:12:17:18 | request | semmle.label | request |
+| LogInjectionBad.py:17:12:17:23 | After Attribute | semmle.label | After Attribute |
+| LogInjectionBad.py:17:12:17:35 | After Attribute() | semmle.label | After Attribute() |
+| LogInjectionBad.py:18:21:18:40 | After BinaryExpr | semmle.label | After BinaryExpr |
+| LogInjectionBad.py:23:5:23:8 | name | semmle.label | name |
+| LogInjectionBad.py:23:12:23:18 | request | semmle.label | request |
+| LogInjectionBad.py:23:12:23:23 | After Attribute | semmle.label | After Attribute |
+| LogInjectionBad.py:23:12:23:35 | After Attribute() | semmle.label | After Attribute() |
+| LogInjectionBad.py:24:18:24:37 | After BinaryExpr | semmle.label | After BinaryExpr |
+| LogInjectionBad.py:29:5:29:8 | name | semmle.label | name |
+| LogInjectionBad.py:29:12:29:18 | request | semmle.label | request |
+| LogInjectionBad.py:29:12:29:23 | After Attribute | semmle.label | After Attribute |
+| LogInjectionBad.py:29:12:29:35 | After Attribute() | semmle.label | After Attribute() |
+| LogInjectionBad.py:30:25:30:44 | After BinaryExpr | semmle.label | After BinaryExpr |
+| LogInjectionBad.py:35:5:35:8 | name | semmle.label | name |
+| LogInjectionBad.py:35:12:35:18 | request | semmle.label | request |
+| LogInjectionBad.py:35:12:35:23 | After Attribute | semmle.label | After Attribute |
+| LogInjectionBad.py:35:12:35:35 | After Attribute() | semmle.label | After Attribute() |
+| LogInjectionBad.py:37:19:37:38 | After BinaryExpr | semmle.label | After BinaryExpr |
 subpaths
+#select
+| LogInjectionBad.py:18:21:18:40 | After BinaryExpr | LogInjectionBad.py:7:19:7:25 | After ImportMember | LogInjectionBad.py:18:21:18:40 | After BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | After ImportMember | user-provided value |
+| LogInjectionBad.py:24:18:24:37 | After BinaryExpr | LogInjectionBad.py:7:19:7:25 | After ImportMember | LogInjectionBad.py:24:18:24:37 | After BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | After ImportMember | user-provided value |
+| LogInjectionBad.py:30:25:30:44 | After BinaryExpr | LogInjectionBad.py:7:19:7:25 | After ImportMember | LogInjectionBad.py:30:25:30:44 | After BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | After ImportMember | user-provided value |
+| LogInjectionBad.py:37:19:37:38 | After BinaryExpr | LogInjectionBad.py:7:19:7:25 | After ImportMember | LogInjectionBad.py:37:19:37:38 | After BinaryExpr | This log entry depends on a $@. | LogInjectionBad.py:7:19:7:25 | After ImportMember | user-provided value |

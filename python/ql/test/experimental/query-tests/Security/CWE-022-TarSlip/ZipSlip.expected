@@ -1,44 +1,44 @@
 edges
-| zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | zipslip_bad.py:8:36:8:39 | ControlFlowNode for zipf | provenance |  |
-| zipslip_bad.py:8:36:8:39 | ControlFlowNode for zipf | zipslip_bad.py:10:13:10:17 | ControlFlowNode for entry | provenance |  |
-| zipslip_bad.py:10:13:10:17 | ControlFlowNode for entry | zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | provenance |  |
-| zipslip_bad.py:14:10:14:28 | ControlFlowNode for Attribute() | zipslip_bad.py:14:33:14:36 | ControlFlowNode for zipf | provenance |  |
-| zipslip_bad.py:14:33:14:36 | ControlFlowNode for zipf | zipslip_bad.py:16:13:16:17 | ControlFlowNode for entry | provenance |  |
-| zipslip_bad.py:16:13:16:17 | ControlFlowNode for entry | zipslip_bad.py:17:26:17:30 | ControlFlowNode for entry | provenance |  |
-| zipslip_bad.py:20:10:20:27 | ControlFlowNode for Attribute() | zipslip_bad.py:20:32:20:35 | ControlFlowNode for zipf | provenance |  |
-| zipslip_bad.py:20:32:20:35 | ControlFlowNode for zipf | zipslip_bad.py:22:13:22:17 | ControlFlowNode for entry | provenance |  |
-| zipslip_bad.py:22:13:22:17 | ControlFlowNode for entry | zipslip_bad.py:23:29:23:33 | ControlFlowNode for entry | provenance |  |
-| zipslip_bad.py:27:10:27:22 | ControlFlowNode for Attribute() | zipslip_bad.py:27:27:27:34 | ControlFlowNode for filelist | provenance |  |
-| zipslip_bad.py:27:27:27:34 | ControlFlowNode for filelist | zipslip_bad.py:29:13:29:13 | ControlFlowNode for x | provenance |  |
-| zipslip_bad.py:29:13:29:13 | ControlFlowNode for x | zipslip_bad.py:30:25:30:25 | ControlFlowNode for x | provenance |  |
-| zipslip_bad.py:34:5:34:12 | ControlFlowNode for filelist | zipslip_bad.py:35:9:35:9 | ControlFlowNode for x | provenance |  |
-| zipslip_bad.py:34:16:34:28 | ControlFlowNode for Attribute() | zipslip_bad.py:34:5:34:12 | ControlFlowNode for filelist | provenance |  |
-| zipslip_bad.py:35:9:35:9 | ControlFlowNode for x | zipslip_bad.py:37:32:37:32 | ControlFlowNode for x | provenance |  |
+| zipslip_bad.py:8:10:8:31 | After Attribute() | zipslip_bad.py:8:36:8:39 | zipf | provenance |  |
+| zipslip_bad.py:8:36:8:39 | zipf | zipslip_bad.py:10:13:10:17 | entry | provenance |  |
+| zipslip_bad.py:10:13:10:17 | entry | zipslip_bad.py:11:25:11:29 | entry | provenance |  |
+| zipslip_bad.py:14:10:14:28 | After Attribute() | zipslip_bad.py:14:33:14:36 | zipf | provenance |  |
+| zipslip_bad.py:14:33:14:36 | zipf | zipslip_bad.py:16:13:16:17 | entry | provenance |  |
+| zipslip_bad.py:16:13:16:17 | entry | zipslip_bad.py:17:26:17:30 | entry | provenance |  |
+| zipslip_bad.py:20:10:20:27 | After Attribute() | zipslip_bad.py:20:32:20:35 | zipf | provenance |  |
+| zipslip_bad.py:20:32:20:35 | zipf | zipslip_bad.py:22:13:22:17 | entry | provenance |  |
+| zipslip_bad.py:22:13:22:17 | entry | zipslip_bad.py:23:29:23:33 | entry | provenance |  |
+| zipslip_bad.py:27:10:27:22 | After Attribute() | zipslip_bad.py:27:27:27:34 | filelist | provenance |  |
+| zipslip_bad.py:27:27:27:34 | filelist | zipslip_bad.py:29:13:29:13 | x | provenance |  |
+| zipslip_bad.py:29:13:29:13 | x | zipslip_bad.py:30:25:30:25 | x | provenance |  |
+| zipslip_bad.py:34:5:34:12 | filelist | zipslip_bad.py:35:9:35:9 | x | provenance |  |
+| zipslip_bad.py:34:16:34:28 | After Attribute() | zipslip_bad.py:34:5:34:12 | filelist | provenance |  |
+| zipslip_bad.py:35:9:35:9 | x | zipslip_bad.py:37:32:37:32 | x | provenance |  |
 nodes
-| zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:8:36:8:39 | ControlFlowNode for zipf | semmle.label | ControlFlowNode for zipf |
-| zipslip_bad.py:10:13:10:17 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:14:10:14:28 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:14:33:14:36 | ControlFlowNode for zipf | semmle.label | ControlFlowNode for zipf |
-| zipslip_bad.py:16:13:16:17 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:17:26:17:30 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:20:10:20:27 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:20:32:20:35 | ControlFlowNode for zipf | semmle.label | ControlFlowNode for zipf |
-| zipslip_bad.py:22:13:22:17 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:23:29:23:33 | ControlFlowNode for entry | semmle.label | ControlFlowNode for entry |
-| zipslip_bad.py:27:10:27:22 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:27:27:27:34 | ControlFlowNode for filelist | semmle.label | ControlFlowNode for filelist |
-| zipslip_bad.py:29:13:29:13 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| zipslip_bad.py:30:25:30:25 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| zipslip_bad.py:34:5:34:12 | ControlFlowNode for filelist | semmle.label | ControlFlowNode for filelist |
-| zipslip_bad.py:34:16:34:28 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| zipslip_bad.py:35:9:35:9 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| zipslip_bad.py:37:32:37:32 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+| zipslip_bad.py:8:10:8:31 | After Attribute() | semmle.label | After Attribute() |
+| zipslip_bad.py:8:36:8:39 | zipf | semmle.label | zipf |
+| zipslip_bad.py:10:13:10:17 | entry | semmle.label | entry |
+| zipslip_bad.py:11:25:11:29 | entry | semmle.label | entry |
+| zipslip_bad.py:14:10:14:28 | After Attribute() | semmle.label | After Attribute() |
+| zipslip_bad.py:14:33:14:36 | zipf | semmle.label | zipf |
+| zipslip_bad.py:16:13:16:17 | entry | semmle.label | entry |
+| zipslip_bad.py:17:26:17:30 | entry | semmle.label | entry |
+| zipslip_bad.py:20:10:20:27 | After Attribute() | semmle.label | After Attribute() |
+| zipslip_bad.py:20:32:20:35 | zipf | semmle.label | zipf |
+| zipslip_bad.py:22:13:22:17 | entry | semmle.label | entry |
+| zipslip_bad.py:23:29:23:33 | entry | semmle.label | entry |
+| zipslip_bad.py:27:10:27:22 | After Attribute() | semmle.label | After Attribute() |
+| zipslip_bad.py:27:27:27:34 | filelist | semmle.label | filelist |
+| zipslip_bad.py:29:13:29:13 | x | semmle.label | x |
+| zipslip_bad.py:30:25:30:25 | x | semmle.label | x |
+| zipslip_bad.py:34:5:34:12 | filelist | semmle.label | filelist |
+| zipslip_bad.py:34:16:34:28 | After Attribute() | semmle.label | After Attribute() |
+| zipslip_bad.py:35:9:35:9 | x | semmle.label | x |
+| zipslip_bad.py:37:32:37:32 | x | semmle.label | x |
 subpaths
 #select
-| zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | file system operation |
-| zipslip_bad.py:14:10:14:28 | ControlFlowNode for Attribute() | zipslip_bad.py:14:10:14:28 | ControlFlowNode for Attribute() | zipslip_bad.py:17:26:17:30 | ControlFlowNode for entry | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:17:26:17:30 | ControlFlowNode for entry | file system operation |
-| zipslip_bad.py:20:10:20:27 | ControlFlowNode for Attribute() | zipslip_bad.py:20:10:20:27 | ControlFlowNode for Attribute() | zipslip_bad.py:23:29:23:33 | ControlFlowNode for entry | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:23:29:23:33 | ControlFlowNode for entry | file system operation |
-| zipslip_bad.py:27:10:27:22 | ControlFlowNode for Attribute() | zipslip_bad.py:27:10:27:22 | ControlFlowNode for Attribute() | zipslip_bad.py:30:25:30:25 | ControlFlowNode for x | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:30:25:30:25 | ControlFlowNode for x | file system operation |
-| zipslip_bad.py:34:16:34:28 | ControlFlowNode for Attribute() | zipslip_bad.py:34:16:34:28 | ControlFlowNode for Attribute() | zipslip_bad.py:37:32:37:32 | ControlFlowNode for x | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:37:32:37:32 | ControlFlowNode for x | file system operation |
+| zipslip_bad.py:8:10:8:31 | After Attribute() | zipslip_bad.py:8:10:8:31 | After Attribute() | zipslip_bad.py:11:25:11:29 | entry | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:11:25:11:29 | entry | file system operation |
+| zipslip_bad.py:14:10:14:28 | After Attribute() | zipslip_bad.py:14:10:14:28 | After Attribute() | zipslip_bad.py:17:26:17:30 | entry | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:17:26:17:30 | entry | file system operation |
+| zipslip_bad.py:20:10:20:27 | After Attribute() | zipslip_bad.py:20:10:20:27 | After Attribute() | zipslip_bad.py:23:29:23:33 | entry | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:23:29:23:33 | entry | file system operation |
+| zipslip_bad.py:27:10:27:22 | After Attribute() | zipslip_bad.py:27:10:27:22 | After Attribute() | zipslip_bad.py:30:25:30:25 | x | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:30:25:30:25 | x | file system operation |
+| zipslip_bad.py:34:16:34:28 | After Attribute() | zipslip_bad.py:34:16:34:28 | After Attribute() | zipslip_bad.py:37:32:37:32 | x | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:37:32:37:32 | x | file system operation |

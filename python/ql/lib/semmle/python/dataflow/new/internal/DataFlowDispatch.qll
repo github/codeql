@@ -25,7 +25,7 @@
  * what callable this call might end up targeting.
  *
  * Specifically this means that we cannot use type-backtrackers from the function of a
- * `CallNode`, since there is no `CallNode` to backtrack from for `func` in the example
+ * `Cfg::CallNode`, since there is no `Cfg::CallNode` to backtrack from for `func` in the example
  * above.
  *
  * Note: This hasn't been 100% realized yet, so we don't currently expose a predicate to
@@ -35,6 +35,7 @@ overlay[local?]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
@@ -162,7 +163,7 @@ newtype TArgumentPosition =
    */
   TLambdaSelfArgumentPosition() or
   TPositionalArgumentPosition(int index) {
-    exists(any(CallNode c).getArg(index))
+    exists(any(Cfg::CallNode c).getArg(index))
     or
     // since synthetic calls within a summarized callable could use a unique argument
     // position, we need to ensure we make these available (these are specified as
@@ -174,7 +175,7 @@ newtype TArgumentPosition =
     index = 0
   } or
   TKeywordArgumentPosition(string name) {
-    exists(any(CallNode c).getArgByName(name))
+    exists(any(Cfg::CallNode c).getArgByName(name))
     or
     // see comment for TPositionalArgumentPosition
     FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
@@ -297,10 +298,12 @@ predicate hasPropertyDecorator(Function func) {
  */
 overlay[local]
 predicate hasContextmanagerDecorator(Function func) {
-  exists(ControlFlowNode contextmanager |
-    contextmanager.(NameNode).getId() = "contextmanager" and contextmanager.(NameNode).isGlobal()
+  exists(Cfg::ControlFlowNode contextmanager |
+    contextmanager.(Cfg::NameNode).getId() = "contextmanager" and
+    contextmanager.(Cfg::NameNode).isGlobal()
     or
-    contextmanager.(AttrNode).getObject("contextmanager").(NameNode).getId() = "contextlib"
+    contextmanager.(Cfg::AttrNode).getObject("contextmanager").(Cfg::NameNode).getId() =
+      "contextlib"
   |
     func.getADecorator() = contextmanager.getNode()
   )
@@ -316,10 +319,10 @@ predicate hasContextmanagerDecorator(Function func) {
  */
 overlay[local]
 private predicate hasOverloadDecorator(Function func) {
-  exists(ControlFlowNode overload |
-    overload.(NameNode).getId() = "overload" and overload.(NameNode).isGlobal()
+  exists(Cfg::ControlFlowNode overload |
+    overload.(Cfg::NameNode).getId() = "overload" and overload.(Cfg::NameNode).isGlobal()
     or
-    overload.(AttrNode).getObject("overload").(NameNode).isGlobal()
+    overload.(Cfg::AttrNode).getObject("overload").(Cfg::NameNode).isGlobal()
   |
     func.getADecorator() = overload.getNode()
   )
@@ -538,7 +541,7 @@ class LibraryCallableValue extends DataFlowCallable, TLibraryCallable {
 // =============================================================================
 /** Gets a call to `type`. */
 private CallCfgNode getTypeCall() {
-  exists(NameNode id | id.getId() = "type" and id.isGlobal() |
+  exists(Cfg::NameNode id | id.getId() = "type" and id.isGlobal() |
     result.getFunction().asCfgNode() = id
   )
 }
@@ -550,7 +553,7 @@ private CallCfgNode getSuperCall() {
   // link below), but otherwise only 2 edgecases. Overall it seems ok to ignore this complexity.
   //
   // https://github.com/python/cpython/blob/18b1782192f85bd26db89f5bc850f8bee4247c1a/Lib/unittest/mock.py#L48-L50
-  exists(NameNode id | id.getId() = "super" and id.isGlobal() |
+  exists(Cfg::NameNode id | id.getId() = "super" and id.isGlobal() |
     result.getFunction().asCfgNode() = id
   )
 }
@@ -1036,7 +1039,7 @@ private module MethodCalls {
    */
   pragma[nomagic]
   private predicate directCall(
-    CallNode call, Function target, string functionName, Class cls, AttrRead attr, Node self
+    Cfg::CallNode call, Function target, string functionName, Class cls, AttrRead attr, Node self
   ) {
     target = findFunctionAccordingToMroKnownStartingClass(cls, functionName) and
     directCall_join(call, functionName, cls, attr, self)
@@ -1045,7 +1048,7 @@ private module MethodCalls {
   /** Extracted to give good join order */
   pragma[nomagic]
   private predicate directCall_join(
-    CallNode call, string functionName, Class cls, AttrRead attr, Node self
+    Cfg::CallNode call, string functionName, Class cls, AttrRead attr, Node self
   ) {
     call.getFunction() = attrReadTracker(attr).asCfgNode() and
     attr.accesses(self, functionName) and
@@ -1062,7 +1065,7 @@ private module MethodCalls {
    */
   pragma[nomagic]
   private predicate callWithinMethodImplicitSelfOrCls(
-    CallNode call, Function target, string functionName, Class classWithMethod, AttrRead attr,
+    Cfg::CallNode call, Function target, string functionName, Class classWithMethod, AttrRead attr,
     Node self
   ) {
     target = findFunctionAccordingToMro(getADirectSubclass*(classWithMethod), functionName) and
@@ -1072,7 +1075,7 @@ private module MethodCalls {
   /** Extracted to give good join order */
   pragma[nomagic]
   private predicate callWithinMethodImplicitSelfOrCls_join(
-    CallNode call, string functionName, Class classWithMethod, AttrRead attr, Node self
+    Cfg::CallNode call, string functionName, Class classWithMethod, AttrRead attr, Node self
   ) {
     call.getFunction() = attrReadTracker(attr).asCfgNode() and
     attr.accesses(self, functionName) and
@@ -1084,7 +1087,7 @@ private module MethodCalls {
    * resolve the call to a known target (since the only super class might be the
    * builtin `object`, so we never have the implementation of `__new__` in the DB).
    */
-  predicate fromSuperNewCall(CallNode call, Class classUsedInSuper, AttrRead attr, Node self) {
+  predicate fromSuperNewCall(Cfg::CallNode call, Class classUsedInSuper, AttrRead attr, Node self) {
     fromSuper_join(call, "__new__", classUsedInSuper, attr, self) and
     self in [classTracker(_), clsArgumentTracker(_)]
   }
@@ -1106,7 +1109,7 @@ private module MethodCalls {
    */
   pragma[nomagic]
   predicate fromSuper(
-    CallNode call, Function target, string functionName, Class classUsedInSuper, AttrRead attr,
+    Cfg::CallNode call, Function target, string functionName, Class classUsedInSuper, AttrRead attr,
     Node self
   ) {
     target = findFunctionAccordingToMro(getNextClassInMro(classUsedInSuper), functionName) and
@@ -1116,7 +1119,7 @@ private module MethodCalls {
   /** Extracted to give good join order */
   pragma[nomagic]
   private predicate fromSuper_join(
-    CallNode call, string functionName, Class classUsedInSuper, AttrRead attr, Node self
+    Cfg::CallNode call, string functionName, Class classUsedInSuper, AttrRead attr, Node self
   ) {
     call.getFunction() = attrReadTracker(attr).asCfgNode() and
     (
@@ -1135,7 +1138,7 @@ private module MethodCalls {
     )
   }
 
-  predicate resolveMethodCall(CallNode call, Function target, CallType type, Node self) {
+  predicate resolveMethodCall(Cfg::CallNode call, Function target, CallType type, Node self) {
     (
       directCall(call, target, _, _, _, self)
       or
@@ -1182,7 +1185,7 @@ import MethodCalls
  * NOTE: We have this predicate mostly to be able to compare with old point-to
  * call-graph resolution. So it could be removed in the future.
  */
-predicate resolveClassCall(CallNode call, Class cls) {
+predicate resolveClassCall(Cfg::CallNode call, Class cls) {
   call.getFunction() = classTracker(cls).asCfgNode()
   or
   // `cls()` inside a classmethod (which also contains `type(self)()` inside a method)
@@ -1212,7 +1215,7 @@ Function invokedFunctionFromClassConstruction(Class cls, string funcName) {
  *
  * See https://docs.python.org/3/reference/datamodel.html#object.__call__
  */
-predicate resolveClassInstanceCall(CallNode call, Function target, Node self) {
+predicate resolveClassInstanceCall(Cfg::CallNode call, Function target, Node self) {
   exists(Class cls |
     call.getFunction() = classInstanceTracker(cls).asCfgNode() and
     target = findFunctionAccordingToMroKnownStartingClass(cls, "__call__")
@@ -1231,7 +1234,7 @@ predicate resolveClassInstanceCall(CallNode call, Function target, Node self) {
  * Holds if `call` is a call to the `target`, with call-type `type`.
  */
 cached
-predicate resolveCall(CallNode call, Function target, CallType type) {
+predicate resolveCall(Cfg::CallNode call, Function target, CallType type) {
   Stages::DataFlow::ref() and
   (
     type instanceof CallTypePlainFunction and
@@ -1256,11 +1259,11 @@ predicate resolveCall(CallNode call, Function target, CallType type) {
 // =============================================================================
 /**
  * Holds if the argument of `call` at position `apos` is `arg`. This is just a helper
- * predicate that maps ArgumentPositions to the arguments of the underlying `CallNode`.
+ * predicate that maps ArgumentPositions to the arguments of the underlying `Cfg::CallNode`.
  */
 overlay[local]
 cached
-predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
+predicate normalCallArg(Cfg::CallNode call, Node arg, ArgumentPosition apos) {
   exists(int index |
     apos.isPositional(index) and
     arg.asCfgNode() = call.getArg(index)
@@ -1275,7 +1278,7 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
   exists(int index |
     apos.isStarArgs(index) and
     arg.asCfgNode() = call.getStarArg() and
-    // since `CallNode.getArg` doesn't include `*args`, we need to drop to the AST level
+    // since `Cfg::CallNode.getArg` doesn't include `*args`, we need to drop to the AST level
     // to get the index. Notice that we only use the AST for getting the index, so we
     // don't need to check for dominance in regards to splitting.
     call.getStarArg().getNode() = call.getNode().getPositionalArg(index).(Starred).getValue()
@@ -1349,7 +1352,9 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
  * translated into `l.clear()`, and we can still have use-use flow.
  */
 cached
-predicate getCallArg(CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
+predicate getCallArg(
+  Cfg::CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos
+) {
   Stages::DataFlow::ref() and
   resolveCall(call, target, type) and
   (
@@ -1442,10 +1447,12 @@ private predicate sameEnclosingCallable(Node node1, Node node2) {
 // DataFlowCall
 // =============================================================================
 newtype TDataFlowCall =
-  TNormalCall(CallNode call, Function target, CallType type) { resolveCall(call, target, type) } or
+  TNormalCall(Cfg::CallNode call, Function target, CallType type) {
+    call.injects(_) and resolveCall(call, target, type)
+  } or
   /** A call to the generated function inside a comprehension */
   TComprehensionCall(Comp c) or
-  TPotentialLibraryCall(CallNode call) or
+  TPotentialLibraryCall(Cfg::CallNode call) { call.injects(_) } or
   /** A synthesized call inside a summarized callable */
   TSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
@@ -1465,7 +1472,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract ArgumentNode getArgument(ArgumentPosition apos);
 
   /** Get the control flow node representing this call, if any. */
-  abstract ControlFlowNode getNode();
+  abstract Cfg::ControlFlowNode getNode();
 
   /** Gets the enclosing callable of this call. */
   DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
@@ -1496,28 +1503,28 @@ abstract class ExtractedDataFlowCall extends DataFlowCall {
 }
 
 /**
- * A resolved call in source code with an underlying `CallNode`.
+ * A resolved call in source code with an underlying `Cfg::CallNode`.
  *
  * This is considered normal, compared with special calls such as `obj[0]` calling the
  * `__getitem__` method on the object. However, this also includes calls that go to the
  * `__call__` special method.
  */
 class NormalCall extends ExtractedDataFlowCall, TNormalCall {
-  CallNode call;
+  Cfg::CallNode call;
   Function target;
   CallType type;
 
   NormalCall() { this = TNormalCall(call, target, type) }
 
   override string toString() {
-    // note: if we used toString directly on the CallNode we would get
-    //     `ControlFlowNode for func()`
-    // but the `ControlFlowNode` part is just clutter, so we go directly to the AST node
+    // note: if we used toString directly on the Cfg::CallNode we would get
+    //     `Cfg::ControlFlowNode for func()`
+    // but the `Cfg::ControlFlowNode` part is just clutter, so we go directly to the AST node
     // instead.
     result = call.getNode().toString()
   }
 
-  override ControlFlowNode getNode() { result = call }
+  override Cfg::ControlFlowNode getNode() { result = call }
 
   override Scope getScope() { result = call.getScope() }
 
@@ -1545,7 +1552,7 @@ class ComprehensionCall extends ExtractedDataFlowCall, TComprehensionCall {
 
   override string toString() { result = "comprehension call" }
 
-  override ControlFlowNode getNode() { result.getNode() = c }
+  override Cfg::ControlFlowNode getNode() { result.getNode() = c }
 
   override Scope getScope() { result = c.getScope() }
 
@@ -1568,14 +1575,14 @@ class ComprehensionCall extends ExtractedDataFlowCall, TComprehensionCall {
  * in this class.
  */
 class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall {
-  CallNode call;
+  Cfg::CallNode call;
 
   PotentialLibraryCall() { this = TPotentialLibraryCall(call) }
 
   override string toString() {
-    // note: if we used toString directly on the CallNode we would get
-    //     `ControlFlowNode for func()`
-    // but the `ControlFlowNode` part is just clutter, so we go directly to the AST node
+    // note: if we used toString directly on the Cfg::CallNode we would get
+    //     `Cfg::ControlFlowNode for func()`
+    // but the `Cfg::ControlFlowNode` part is just clutter, so we go directly to the AST node
     // instead.
     result = call.getNode().toString()
   }
@@ -1592,10 +1599,10 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
     // potential self argument, from `foo.bar()` -- note that this could also just be a
     // module reference, but we really don't have a good way of knowing :|
     apos.isSelf() and
-    result.asCfgNode() = call.getFunction().(AttrNode).getObject()
+    result.asCfgNode() = call.getFunction().(Cfg::AttrNode).getObject()
   }
 
-  override ControlFlowNode getNode() { result = call }
+  override Cfg::ControlFlowNode getNode() { result = call }
 
   override Scope getScope() { result = call.getScope() }
 }
@@ -1627,7 +1634,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 
   override ArgumentNode getArgument(ArgumentPosition apos) { none() }
 
-  override ControlFlowNode getNode() { none() }
+  override Cfg::ControlFlowNode getNode() { none() }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
@@ -1769,12 +1776,12 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
  * This is used for tracking flow through captured variables.
  */
 class SynthCapturedVariablesArgumentNode extends Node, TSynthCapturedVariablesArgumentNode {
-  ControlFlowNode callable;
+  Cfg::ControlFlowNode callable;
 
   SynthCapturedVariablesArgumentNode() { this = TSynthCapturedVariablesArgumentNode(callable) }
 
-  /** Gets the `CallNode` corresponding to this captured variables argument node. */
-  CallNode getCallNode() { result.getFunction() = callable }
+  /** Gets the `Cfg::CallNode` corresponding to this captured variables argument node. */
+  Cfg::CallNode getCallNode() { result.getFunction() = callable }
 
   /** Gets the `CfgNode` that corresponds to this synthetic node. */
   CfgNode getUnderlyingNode() { result.asCfgNode() = callable }
@@ -1792,7 +1799,7 @@ class CapturedVariablesArgumentNodeAsArgumentNode extends ArgumentNode,
 {
   overlay[global]
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    exists(CallNode callNode | callNode = this.getCallNode() |
+    exists(Cfg::CallNode callNode | callNode = this.getCallNode() |
       callNode = call.getNode() and
       exists(Function target | resolveCall(callNode, target, _) |
         target = any(VariableCapture::CapturedVariable v).getACapturingScope()
@@ -1806,7 +1813,7 @@ class CapturedVariablesArgumentNodeAsArgumentNode extends ArgumentNode,
 class SynthCapturedVariablesArgumentPostUpdateNode extends PostUpdateNodeImpl,
   TSynthCapturedVariablesArgumentPostUpdateNode
 {
-  ControlFlowNode callable;
+  Cfg::ControlFlowNode callable;
 
   SynthCapturedVariablesArgumentPostUpdateNode() {
     this = TSynthCapturedVariablesArgumentPostUpdateNode(callable)

@@ -4,6 +4,7 @@
  */
 
 import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
@@ -51,9 +52,9 @@ module Gradio {
         // limit only to lists of parameters given to `inputs`.
         (
           (
-            call.getKeywordParameter("inputs").asSink().asCfgNode() instanceof ListNode
+            call.getKeywordParameter("inputs").asSink().asCfgNode() instanceof Cfg::ListNode
             or
-            call.getParameter(1).asSink().asCfgNode() instanceof ListNode
+            call.getParameter(1).asSink().asCfgNode() instanceof Cfg::ListNode
           ) and
           (
             this = call.getKeywordParameter("inputs").getASubscript().getAValueReachingSink()
@@ -75,8 +76,8 @@ module Gradio {
       exists(GradioInput call |
         this = call.getParameter(0, "fn").getParameter(_).asSource() and
         // exclude lists of parameters given to `inputs`
-        not call.getKeywordParameter("inputs").asSink().asCfgNode() instanceof ListNode and
-        not call.getParameter(1).asSink().asCfgNode() instanceof ListNode
+        not call.getKeywordParameter("inputs").asSink().asCfgNode() instanceof Cfg::ListNode and
+        not call.getParameter(1).asSink().asCfgNode() instanceof Cfg::ListNode
       )
     }
 
@@ -105,16 +106,16 @@ module Gradio {
         // handle cases where there are multiple arguments passed as a list to `inputs`
         (
           (
-            node.getKeywordParameter("inputs").asSink().asCfgNode() instanceof ListNode
+            node.getKeywordParameter("inputs").asSink().asCfgNode() instanceof Cfg::ListNode
             or
-            node.getParameter(1).asSink().asCfgNode() instanceof ListNode
+            node.getParameter(1).asSink().asCfgNode() instanceof Cfg::ListNode
           ) and
           exists(int i | nodeTo = node.getParameter(0, "fn").getParameter(i).asSource() |
             nodeFrom.asCfgNode() =
-              node.getKeywordParameter("inputs").asSink().asCfgNode().(ListNode).getElement(i)
+              node.getKeywordParameter("inputs").asSink().asCfgNode().(Cfg::ListNode).getElement(i)
             or
             nodeFrom.asCfgNode() =
-              node.getParameter(1).asSink().asCfgNode().(ListNode).getElement(i)
+              node.getParameter(1).asSink().asCfgNode().(Cfg::ListNode).getElement(i)
           )
         )
       )

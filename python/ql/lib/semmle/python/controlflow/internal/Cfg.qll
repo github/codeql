@@ -42,136 +42,27 @@ module CfgSigImpl implements BB::CfgSig<Py::Location> {
 /**
  * Gets the Python AST node corresponding to CFG node `n`, if any.
  *
- * Entry/exit/synthetic CFG nodes have no Python AST node, so this is
- * partial.
+ * Multiple CFG nodes may map to the same AST node (e.g. `TBeforeNode(Call)`
+ * and `TAstNode(Call)` both map to `Py::Call`). This is a pure translation;
+ * uniqueness constraints are enforced at the dataflow layer where needed.
  */
 private Py::AstNode toAst(CfgImpl::ControlFlowNode n) {
   result = CfgImpl::astNodeToPyNode(n.getAstNode())
 }
 
 /**
- * Holds if `n` is a CFG node representing the canonical position for an
- * AST node from the dataflow library's perspective.
+ * A control flow node.
  *
- * For most expressions this is the "after"-evaluation point (post-order
- * representative). For statements it is the post-order node when one
- * exists. We additionally include the synthetic entry/exit nodes for the
- * benefit of API consumers that ask "is this the entry node of a scope?".
+ * This is the full set of CFG nodes from the shared library — it includes
+ * before-nodes, in-order/post-order nodes, after-value-split nodes, and
+ * entry/exit nodes. This enables full control-flow-level reasoning and
+ * compatibility with the shared control-flow reachability library.
  *
- * In conditional contexts the after-position of a boolean expression
- * splits into separate `isAfterTrue` and `isAfterFalse` nodes; both are
- * canonical, so a single AST expression may correspond to more than one
- * `ControlFlowNode`.
- */
-private predicate isCanonical(CfgImpl::ControlFlowNode n) {
-  n.isAfter(_)
-  or
-  n instanceof CfgImpl::ControlFlow::EntryNode
-  or
-  n instanceof CfgImpl::ControlFlow::ExitNode
-  or
-  // Annotated exit nodes (normal + abnormal) — needed so that dataflow
-  // consumers can ask "is this the normal-exit of a scope?" and also
-  // so that scope-exit synthetic uses in SsaImpl can attach here.
-  n instanceof CfgImpl::ControlFlow::AnnotatedExitNode
-}
-
-/**
- * Holds if `n` is genuinely the `TAfterValueNode` variant for a boolean-true
- * outcome of its AST node.
- *
- * The shared CFG's `isAfterValue` predicate has a kind-mismatch fallback
- * (see `ControlFlowGraph.qll`'s `isAfterValue` lines 870-892): when asking
- * `isAfterValue(_, BooleanSuccessor true)` on, say, an emptiness-empty
- * variant, it falsely returns `true` because the kinds differ and Python
- * does not provide `successorValueImplies`. The same fallback also makes
- * `TAfterNode` (the unsplit case) satisfy `isAfterValue(_, t)` for *every*
- * `t`.
- *
- * The combination `isAfterTrue ∧ ¬isAfterFalse` excludes both: a genuine
- * boolean-true variant satisfies `isAfterTrue` directly (newtype branch 3)
- * but not `isAfterFalse` (the dual variant, same kind, no fallback). A
- * non-boolean variant satisfies both via the cross-kind fallback. A
- * `TAfterNode` satisfies both via branch 1. So `isAfterTrue ∧ ¬isAfterFalse`
- * picks exactly the genuine boolean-true variant.
- */
-private predicate isGenuineAfterTrue(ControlFlowNode n) {
-  n.isAfterTrue(_) and not n.isAfterFalse(_)
-}
-
-/**
- * Holds if `n` is genuinely the `TAfterValueNode` variant for the "empty"
- * outcome of its AST node (e.g. `for x in xs: ...` when `xs` is empty).
- *
- * See `isGenuineAfterTrue` for why we cannot just use a single
- * `isAfterValue` check.
- */
-private predicate isGenuineAfterEmpty(ControlFlowNode n) {
-  exists(EmptinessSuccessor empty |
-    empty.getValue() = true and n.isAfterValue(n.getAstNode(), empty)
-  ) and
-  not exists(EmptinessSuccessor nonEmpty |
-    nonEmpty.getValue() = false and n.isAfterValue(n.getAstNode(), nonEmpty)
-  )
-}
-
-/**
- * Holds if `n` is genuinely the `TAfterValueNode` variant for the "matched"
- * outcome of its AST node (e.g. a `match` case-pattern that matched).
- *
- * See `isGenuineAfterTrue` for why we cannot just use a single
- * `isAfterValue` check.
- */
-private predicate isGenuineAfterMatched(ControlFlowNode n) {
-  exists(MatchingSuccessor matched |
-    matched.getValue() = true and n.isAfterValue(n.getAstNode(), matched)
-  ) and
-  not exists(MatchingSuccessor unmatched |
-    unmatched.getValue() = false and n.isAfterValue(n.getAstNode(), unmatched)
-  )
-}
-
-/**
- * Holds if `n` is the canonical representative of its corresponding AST node
- * for dataflow purposes.
- *
- * The shared CFG associates a single AST node with multiple `ControlFlowNode`s
- * when the AST appears in a conditional context (boolean conditions split into
- * `afterTrue`/`afterFalse`; for-loop iters split into `[empty]`/`[non-empty]`;
- * `match`-case patterns split into `[matched]`/`[unmatched]`). These splits
- * matter for control-flow analysis, but for dataflow purposes — where we
- * ask "what is the value of this expression?" — a single representative
- * suffices and is required to avoid double-counting calls, arguments, store
- * steps, etc.
- *
- * The pick is structural: when an AST has a single `ControlFlowNode` (the
- * normal `TAfterNode` or `TBeforeNode`-leaf case), that node is canonical.
- * When an AST has a conditional split, the "positive" outcome variant
- * (true / empty / matched) is canonical. The three split kinds are mutually
- * exclusive per AST, so exactly one variant is selected.
- */
-predicate isCanonicalAstNodeRepresentative(ControlFlowNode n) {
-  // Non-split AST: the unique variant is canonical.
-  not exists(ControlFlowNode other | other.getNode() = n.getNode() and other != n)
-  or
-  // Split AST: pick the "positive" outcome of the split.
-  isGenuineAfterTrue(n)
-  or
-  isGenuineAfterEmpty(n)
-  or
-  isGenuineAfterMatched(n)
-}
-
-/**
- * A control flow node. Control flow nodes have a many-to-one relation
- * with syntactic nodes, although most syntactic nodes have only one
- * corresponding control flow node.
- *
- * Edges between control flow nodes include exceptional as well as normal
- * control flow.
+ * AST-level semantics (`getNode()`, `isLoad()`, typed wrappers, etc.)
+ * are available only on the `injects` (canonical) node for each AST node.
+ * Non-injects nodes are purely positional CFG nodes with no AST mapping.
  */
 class ControlFlowNode extends CfgImpl::ControlFlowNode {
-  ControlFlowNode() { isCanonical(this) }
 
   /** Gets the syntactic element corresponding to this flow node, if any. */
   Py::AstNode getNode() { result = toAst(this) }
@@ -180,36 +71,23 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
   ControlFlowNode getAPredecessor() { this = result.getASuccessor() }
 
   /** Gets a successor of this flow node. */
-  pragma[inline]
-  ControlFlowNode getASuccessor() { result = nextCanonical(this) }
+  ControlFlowNode getASuccessor() { result = super.getASuccessor() }
 
   /** Gets a successor for this node if the relevant condition is True. */
   ControlFlowNode getATrueSuccessor() {
-    super.isAfterTrue(_) and
-    exists(CfgImpl::ControlFlowNode other | other.isAfterFalse(super.getAstNode())) and
-    result = nextCanonical(this)
+    result = super.getASuccessor(any(BooleanSuccessor t | t.getValue() = true))
   }
 
   /** Gets a successor for this node if the relevant condition is False. */
   ControlFlowNode getAFalseSuccessor() {
-    super.isAfterFalse(_) and
-    exists(CfgImpl::ControlFlowNode other | other.isAfterTrue(super.getAstNode())) and
-    result = nextCanonical(this)
+    result = super.getASuccessor(any(BooleanSuccessor t | t.getValue() = false))
   }
 
   /** Gets a successor for this node if an exception is raised. */
-  ControlFlowNode getAnExceptionalSuccessor() {
-    exists(CfgImpl::ControlFlowNode mid |
-      mid = super.getAnExceptionSuccessor() and
-      result = nextCanonicalFrom(mid)
-    )
-  }
+  ControlFlowNode getAnExceptionalSuccessor() { result = super.getAnExceptionSuccessor() }
 
   /** Gets a successor for this node if no exception is raised. */
-  ControlFlowNode getANormalSuccessor() {
-    result = this.getASuccessor() and
-    not result = this.getAnExceptionalSuccessor()
-  }
+  ControlFlowNode getANormalSuccessor() { result = super.getANormalSuccessor() }
 
   /** Gets the basic block containing this flow node. */
   BasicBlock getBasicBlock() { result = super.getBasicBlock() }
@@ -353,9 +231,6 @@ class ControlFlowNode extends CfgImpl::ControlFlowNode {
 
   /** Holds if this flow node strictly reaches `other`. */
   predicate strictlyReaches(ControlFlowNode other) { this.getASuccessor+() = other }
-
-  /** Internal: raw successor predicate that does NOT skip non-canonical nodes. */
-  CfgImpl::ControlFlowNode getASuccessorRaw() { result = super.getASuccessor() }
 }
 
 /**
@@ -378,52 +253,32 @@ private predicate augstore(ControlFlowNode load, ControlFlowNode store) {
 }
 
 /**
- * Gets the nearest canonical CFG node reachable from `n` via one or more
- * raw CFG edges (skipping non-canonical intermediaries).
- */
-private CfgImpl::ControlFlowNode nextCanonicalFrom(CfgImpl::ControlFlowNode n) {
-  result = n.getASuccessor() and isCanonical(result)
-  or
-  exists(CfgImpl::ControlFlowNode mid |
-    mid = n.getASuccessor() and
-    not isCanonical(mid) and
-    result = nextCanonicalFrom(mid)
-  )
-}
-
-/** Gets the nearest canonical CFG successor of canonical node `n`. */
-private ControlFlowNode nextCanonical(ControlFlowNode n) { result = nextCanonicalFrom(n) }
-
-/**
  * A basic block — a maximal-length sequence of control flow nodes such
  * that no node except the first has a predecessor outside the sequence,
  * and no node except the last has a successor outside the sequence.
  */
 class BasicBlock extends CfgImpl::BasicBlock {
-  /** Gets the `n`th node in this basic block, restricted to canonical nodes. */
-  ControlFlowNode getNode(int n) {
-    result = rank[n + 1](ControlFlowNode node, int i | super.getNode(i) = node | node order by i)
-  }
+  /** Gets the `n`th node in this basic block. */
+  ControlFlowNode getNode(int n) { result = super.getNode(n) }
 
   /** Gets a node in this basic block. */
-  ControlFlowNode getANode() { result = this.getNode(_) }
+  ControlFlowNode getANode() { result = super.getNode(_) }
 
-  /** Gets the first canonical node in this basic block. */
+  /** Gets the first node in this basic block. */
   ControlFlowNode firstNode() { result = this.getNode(0) }
 
-  /** Gets the last canonical node in this basic block. */
-  ControlFlowNode getLastNode() { result = this.getNode(max(int n | exists(this.getNode(n)))) }
+  /** Gets the last node in this basic block. */
+  ControlFlowNode getLastNode() { result = super.getLastNode() }
 
   /** Holds if this basic block contains `node`. */
   predicate contains(ControlFlowNode node) { node = this.getANode() }
 
   // Inherited from the shared library's `BasicBlock`:
   //   getASuccessor(), getASuccessor(SuccessorType), getAPredecessor(),
-  //   getNode(int) (raw, includes non-canonical), getANode() (raw),
   //   strictlyDominates(), dominates(), getImmediateDominator(),
   //   length(), inLoop().
-  // We expose canonical-only positional access via `getNode(int)` below
-  // (shadows the shared-lib version) and additional Python-style helpers.
+  // We shadow `getNode(int)` etc. to return `ControlFlowNode` (this
+  // facade's type) and add Python-style helpers below.
   /** Gets a true successor to this basic block. */
   BasicBlock getATrueSuccessor() {
     result = super.getASuccessor(any(BooleanSuccessor t | t.getValue() = true))
@@ -810,8 +665,13 @@ class IfExprNode extends ControlFlowNode {
 
   override Py::IfExp getNode() { result = super.getNode() }
 
-  /** Gets the flow node for one of the operands of an if-expression. */
-  ControlFlowNode getAnOperand() { result = this.getAPredecessor() }
+  /** Gets the flow node for one of the value operands (true-branch or false-branch). */
+  ControlFlowNode getAnOperand() {
+    exists(Py::IfExp ie |
+      ie = toAst(this) and
+      (toAst(result) = ie.getBody() or toAst(result) = ie.getOrelse())
+    )
+  }
 }
 
 /** A control flow node corresponding to an assignment expression (walrus `:=`). */

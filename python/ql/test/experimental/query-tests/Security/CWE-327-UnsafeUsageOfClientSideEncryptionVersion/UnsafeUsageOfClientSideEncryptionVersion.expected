@@ -1,94 +1,94 @@
-#select
-| test.py:11:9:11:19 | ControlFlowNode for blob_client | test.py:3:7:3:51 | ControlFlowNode for Attribute() | test.py:11:9:11:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
-| test.py:21:9:21:19 | ControlFlowNode for blob_client | test.py:15:27:15:71 | ControlFlowNode for Attribute() | test.py:21:9:21:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
-| test.py:31:9:31:19 | ControlFlowNode for blob_client | test.py:25:24:25:66 | ControlFlowNode for Attribute() | test.py:31:9:31:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
-| test.py:43:9:43:19 | ControlFlowNode for blob_client | test.py:3:7:3:51 | ControlFlowNode for Attribute() | test.py:43:9:43:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
-| test.py:75:9:75:10 | ControlFlowNode for bc | test.py:3:7:3:51 | ControlFlowNode for Attribute() | test.py:75:9:75:10 | ControlFlowNode for bc | Unsafe usage of v1 version of Azure Storage client-side encryption |
 edges
-| test.py:3:1:3:3 | ControlFlowNode for BSC | test.py:7:19:7:21 | ControlFlowNode for BSC | provenance |  |
-| test.py:3:1:3:3 | ControlFlowNode for BSC | test.py:35:19:35:21 | ControlFlowNode for BSC | provenance |  |
-| test.py:3:1:3:3 | ControlFlowNode for BSC | test.py:66:19:66:21 | ControlFlowNode for BSC | provenance |  |
-| test.py:3:7:3:51 | ControlFlowNode for Attribute() | test.py:3:1:3:3 | ControlFlowNode for BSC | provenance |  |
-| test.py:7:5:7:15 | ControlFlowNode for blob_client | test.py:8:5:8:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:7:19:7:21 | ControlFlowNode for BSC | test.py:7:19:7:42 | ControlFlowNode for Attribute() | provenance | Config |
-| test.py:7:19:7:42 | ControlFlowNode for Attribute() | test.py:7:5:7:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:8:5:8:15 | ControlFlowNode for blob_client | test.py:9:5:9:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:9:5:9:15 | ControlFlowNode for blob_client | test.py:9:5:9:15 | [post] ControlFlowNode for blob_client | provenance | Config |
-| test.py:9:5:9:15 | [post] ControlFlowNode for blob_client | test.py:11:9:11:19 | ControlFlowNode for blob_client | provenance |  |
-| test.py:15:5:15:23 | ControlFlowNode for blob_service_client | test.py:16:5:16:23 | ControlFlowNode for blob_service_client | provenance |  |
-| test.py:15:27:15:71 | ControlFlowNode for Attribute() | test.py:15:5:15:23 | ControlFlowNode for blob_service_client | provenance |  |
-| test.py:16:5:16:23 | ControlFlowNode for blob_service_client | test.py:17:5:17:23 | ControlFlowNode for blob_service_client | provenance |  |
-| test.py:17:5:17:23 | ControlFlowNode for blob_service_client | test.py:17:5:17:23 | [post] ControlFlowNode for blob_service_client | provenance | Config |
-| test.py:17:5:17:23 | [post] ControlFlowNode for blob_service_client | test.py:19:19:19:37 | ControlFlowNode for blob_service_client | provenance |  |
-| test.py:19:5:19:15 | ControlFlowNode for blob_client | test.py:21:9:21:19 | ControlFlowNode for blob_client | provenance |  |
-| test.py:19:19:19:37 | ControlFlowNode for blob_service_client | test.py:19:19:19:58 | ControlFlowNode for Attribute() | provenance | Config |
-| test.py:19:19:19:58 | ControlFlowNode for Attribute() | test.py:19:5:19:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:25:5:25:20 | ControlFlowNode for container_client | test.py:26:5:26:20 | ControlFlowNode for container_client | provenance |  |
-| test.py:25:24:25:66 | ControlFlowNode for Attribute() | test.py:25:5:25:20 | ControlFlowNode for container_client | provenance |  |
-| test.py:26:5:26:20 | ControlFlowNode for container_client | test.py:27:5:27:20 | ControlFlowNode for container_client | provenance |  |
-| test.py:27:5:27:20 | ControlFlowNode for container_client | test.py:27:5:27:20 | [post] ControlFlowNode for container_client | provenance | Config |
-| test.py:27:5:27:20 | [post] ControlFlowNode for container_client | test.py:29:19:29:34 | ControlFlowNode for container_client | provenance |  |
-| test.py:29:5:29:15 | ControlFlowNode for blob_client | test.py:31:9:31:19 | ControlFlowNode for blob_client | provenance |  |
-| test.py:29:19:29:34 | ControlFlowNode for container_client | test.py:29:19:29:55 | ControlFlowNode for Attribute() | provenance | Config |
-| test.py:29:19:29:55 | ControlFlowNode for Attribute() | test.py:29:5:29:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:35:5:35:15 | ControlFlowNode for blob_client | test.py:36:5:36:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:35:19:35:21 | ControlFlowNode for BSC | test.py:35:19:35:42 | ControlFlowNode for Attribute() | provenance | Config |
-| test.py:35:19:35:42 | ControlFlowNode for Attribute() | test.py:35:5:35:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:36:5:36:15 | ControlFlowNode for blob_client | test.py:37:5:37:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:37:5:37:15 | ControlFlowNode for blob_client | test.py:37:5:37:15 | [post] ControlFlowNode for blob_client | provenance | Config |
-| test.py:37:5:37:15 | [post] ControlFlowNode for blob_client | test.py:43:9:43:19 | ControlFlowNode for blob_client | provenance |  |
-| test.py:66:5:66:15 | ControlFlowNode for blob_client | test.py:67:5:67:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:66:19:66:21 | ControlFlowNode for BSC | test.py:66:19:66:42 | ControlFlowNode for Attribute() | provenance | Config |
-| test.py:66:19:66:42 | ControlFlowNode for Attribute() | test.py:66:5:66:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:67:5:67:15 | ControlFlowNode for blob_client | test.py:68:5:68:15 | ControlFlowNode for blob_client | provenance |  |
-| test.py:68:5:68:15 | ControlFlowNode for blob_client | test.py:68:5:68:15 | [post] ControlFlowNode for blob_client | provenance | Config |
-| test.py:68:5:68:15 | [post] ControlFlowNode for blob_client | test.py:69:12:69:22 | ControlFlowNode for blob_client | provenance |  |
-| test.py:69:12:69:22 | ControlFlowNode for blob_client | test.py:73:10:73:33 | ControlFlowNode for get_unsafe_blob_client() | provenance |  |
-| test.py:73:5:73:6 | ControlFlowNode for bc | test.py:75:9:75:10 | ControlFlowNode for bc | provenance |  |
-| test.py:73:10:73:33 | ControlFlowNode for get_unsafe_blob_client() | test.py:73:5:73:6 | ControlFlowNode for bc | provenance |  |
+| test.py:3:1:3:3 | BSC | test.py:7:19:7:21 | BSC | provenance |  |
+| test.py:3:1:3:3 | BSC | test.py:35:19:35:21 | BSC | provenance |  |
+| test.py:3:1:3:3 | BSC | test.py:66:19:66:21 | BSC | provenance |  |
+| test.py:3:7:3:51 | After Attribute() | test.py:3:1:3:3 | BSC | provenance |  |
+| test.py:7:5:7:15 | blob_client | test.py:8:5:8:15 | blob_client | provenance |  |
+| test.py:7:19:7:21 | BSC | test.py:7:19:7:42 | After Attribute() | provenance | Config |
+| test.py:7:19:7:42 | After Attribute() | test.py:7:5:7:15 | blob_client | provenance |  |
+| test.py:8:5:8:15 | blob_client | test.py:9:5:9:15 | blob_client | provenance |  |
+| test.py:9:5:9:15 | [post] blob_client | test.py:11:9:11:19 | blob_client | provenance |  |
+| test.py:9:5:9:15 | blob_client | test.py:9:5:9:15 | [post] blob_client | provenance | Config |
+| test.py:15:5:15:23 | blob_service_client | test.py:16:5:16:23 | blob_service_client | provenance |  |
+| test.py:15:27:15:71 | After Attribute() | test.py:15:5:15:23 | blob_service_client | provenance |  |
+| test.py:16:5:16:23 | blob_service_client | test.py:17:5:17:23 | blob_service_client | provenance |  |
+| test.py:17:5:17:23 | [post] blob_service_client | test.py:19:19:19:37 | blob_service_client | provenance |  |
+| test.py:17:5:17:23 | blob_service_client | test.py:17:5:17:23 | [post] blob_service_client | provenance | Config |
+| test.py:19:5:19:15 | blob_client | test.py:21:9:21:19 | blob_client | provenance |  |
+| test.py:19:19:19:37 | blob_service_client | test.py:19:19:19:58 | After Attribute() | provenance | Config |
+| test.py:19:19:19:58 | After Attribute() | test.py:19:5:19:15 | blob_client | provenance |  |
+| test.py:25:5:25:20 | container_client | test.py:26:5:26:20 | container_client | provenance |  |
+| test.py:25:24:25:66 | After Attribute() | test.py:25:5:25:20 | container_client | provenance |  |
+| test.py:26:5:26:20 | container_client | test.py:27:5:27:20 | container_client | provenance |  |
+| test.py:27:5:27:20 | [post] container_client | test.py:29:19:29:34 | container_client | provenance |  |
+| test.py:27:5:27:20 | container_client | test.py:27:5:27:20 | [post] container_client | provenance | Config |
+| test.py:29:5:29:15 | blob_client | test.py:31:9:31:19 | blob_client | provenance |  |
+| test.py:29:19:29:34 | container_client | test.py:29:19:29:55 | After Attribute() | provenance | Config |
+| test.py:29:19:29:55 | After Attribute() | test.py:29:5:29:15 | blob_client | provenance |  |
+| test.py:35:5:35:15 | blob_client | test.py:36:5:36:15 | blob_client | provenance |  |
+| test.py:35:19:35:21 | BSC | test.py:35:19:35:42 | After Attribute() | provenance | Config |
+| test.py:35:19:35:42 | After Attribute() | test.py:35:5:35:15 | blob_client | provenance |  |
+| test.py:36:5:36:15 | blob_client | test.py:37:5:37:15 | blob_client | provenance |  |
+| test.py:37:5:37:15 | [post] blob_client | test.py:43:9:43:19 | blob_client | provenance |  |
+| test.py:37:5:37:15 | blob_client | test.py:37:5:37:15 | [post] blob_client | provenance | Config |
+| test.py:66:5:66:15 | blob_client | test.py:67:5:67:15 | blob_client | provenance |  |
+| test.py:66:19:66:21 | BSC | test.py:66:19:66:42 | After Attribute() | provenance | Config |
+| test.py:66:19:66:42 | After Attribute() | test.py:66:5:66:15 | blob_client | provenance |  |
+| test.py:67:5:67:15 | blob_client | test.py:68:5:68:15 | blob_client | provenance |  |
+| test.py:68:5:68:15 | [post] blob_client | test.py:69:12:69:22 | blob_client | provenance |  |
+| test.py:68:5:68:15 | blob_client | test.py:68:5:68:15 | [post] blob_client | provenance | Config |
+| test.py:69:12:69:22 | blob_client | test.py:73:10:73:33 | After get_unsafe_blob_client() | provenance |  |
+| test.py:73:5:73:6 | bc | test.py:75:9:75:10 | bc | provenance |  |
+| test.py:73:10:73:33 | After get_unsafe_blob_client() | test.py:73:5:73:6 | bc | provenance |  |
 nodes
-| test.py:3:1:3:3 | ControlFlowNode for BSC | semmle.label | ControlFlowNode for BSC |
-| test.py:3:7:3:51 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:7:5:7:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:7:19:7:21 | ControlFlowNode for BSC | semmle.label | ControlFlowNode for BSC |
-| test.py:7:19:7:42 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:8:5:8:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:9:5:9:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:9:5:9:15 | [post] ControlFlowNode for blob_client | semmle.label | [post] ControlFlowNode for blob_client |
-| test.py:11:9:11:19 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:15:5:15:23 | ControlFlowNode for blob_service_client | semmle.label | ControlFlowNode for blob_service_client |
-| test.py:15:27:15:71 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:16:5:16:23 | ControlFlowNode for blob_service_client | semmle.label | ControlFlowNode for blob_service_client |
-| test.py:17:5:17:23 | ControlFlowNode for blob_service_client | semmle.label | ControlFlowNode for blob_service_client |
-| test.py:17:5:17:23 | [post] ControlFlowNode for blob_service_client | semmle.label | [post] ControlFlowNode for blob_service_client |
-| test.py:19:5:19:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:19:19:19:37 | ControlFlowNode for blob_service_client | semmle.label | ControlFlowNode for blob_service_client |
-| test.py:19:19:19:58 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:21:9:21:19 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:25:5:25:20 | ControlFlowNode for container_client | semmle.label | ControlFlowNode for container_client |
-| test.py:25:24:25:66 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:26:5:26:20 | ControlFlowNode for container_client | semmle.label | ControlFlowNode for container_client |
-| test.py:27:5:27:20 | ControlFlowNode for container_client | semmle.label | ControlFlowNode for container_client |
-| test.py:27:5:27:20 | [post] ControlFlowNode for container_client | semmle.label | [post] ControlFlowNode for container_client |
-| test.py:29:5:29:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:29:19:29:34 | ControlFlowNode for container_client | semmle.label | ControlFlowNode for container_client |
-| test.py:29:19:29:55 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:31:9:31:19 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:35:5:35:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:35:19:35:21 | ControlFlowNode for BSC | semmle.label | ControlFlowNode for BSC |
-| test.py:35:19:35:42 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:36:5:36:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:37:5:37:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:37:5:37:15 | [post] ControlFlowNode for blob_client | semmle.label | [post] ControlFlowNode for blob_client |
-| test.py:43:9:43:19 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:66:5:66:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:66:19:66:21 | ControlFlowNode for BSC | semmle.label | ControlFlowNode for BSC |
-| test.py:66:19:66:42 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:67:5:67:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:68:5:68:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:68:5:68:15 | [post] ControlFlowNode for blob_client | semmle.label | [post] ControlFlowNode for blob_client |
-| test.py:69:12:69:22 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:73:5:73:6 | ControlFlowNode for bc | semmle.label | ControlFlowNode for bc |
-| test.py:73:10:73:33 | ControlFlowNode for get_unsafe_blob_client() | semmle.label | ControlFlowNode for get_unsafe_blob_client() |
-| test.py:75:9:75:10 | ControlFlowNode for bc | semmle.label | ControlFlowNode for bc |
+| test.py:3:1:3:3 | BSC | semmle.label | BSC |
+| test.py:3:7:3:51 | After Attribute() | semmle.label | After Attribute() |
+| test.py:7:5:7:15 | blob_client | semmle.label | blob_client |
+| test.py:7:19:7:21 | BSC | semmle.label | BSC |
+| test.py:7:19:7:42 | After Attribute() | semmle.label | After Attribute() |
+| test.py:8:5:8:15 | blob_client | semmle.label | blob_client |
+| test.py:9:5:9:15 | [post] blob_client | semmle.label | [post] blob_client |
+| test.py:9:5:9:15 | blob_client | semmle.label | blob_client |
+| test.py:11:9:11:19 | blob_client | semmle.label | blob_client |
+| test.py:15:5:15:23 | blob_service_client | semmle.label | blob_service_client |
+| test.py:15:27:15:71 | After Attribute() | semmle.label | After Attribute() |
+| test.py:16:5:16:23 | blob_service_client | semmle.label | blob_service_client |
+| test.py:17:5:17:23 | [post] blob_service_client | semmle.label | [post] blob_service_client |
+| test.py:17:5:17:23 | blob_service_client | semmle.label | blob_service_client |
+| test.py:19:5:19:15 | blob_client | semmle.label | blob_client |
+| test.py:19:19:19:37 | blob_service_client | semmle.label | blob_service_client |
+| test.py:19:19:19:58 | After Attribute() | semmle.label | After Attribute() |
+| test.py:21:9:21:19 | blob_client | semmle.label | blob_client |
+| test.py:25:5:25:20 | container_client | semmle.label | container_client |
+| test.py:25:24:25:66 | After Attribute() | semmle.label | After Attribute() |
+| test.py:26:5:26:20 | container_client | semmle.label | container_client |
+| test.py:27:5:27:20 | [post] container_client | semmle.label | [post] container_client |
+| test.py:27:5:27:20 | container_client | semmle.label | container_client |
+| test.py:29:5:29:15 | blob_client | semmle.label | blob_client |
+| test.py:29:19:29:34 | container_client | semmle.label | container_client |
+| test.py:29:19:29:55 | After Attribute() | semmle.label | After Attribute() |
+| test.py:31:9:31:19 | blob_client | semmle.label | blob_client |
+| test.py:35:5:35:15 | blob_client | semmle.label | blob_client |
+| test.py:35:19:35:21 | BSC | semmle.label | BSC |
+| test.py:35:19:35:42 | After Attribute() | semmle.label | After Attribute() |
+| test.py:36:5:36:15 | blob_client | semmle.label | blob_client |
+| test.py:37:5:37:15 | [post] blob_client | semmle.label | [post] blob_client |
+| test.py:37:5:37:15 | blob_client | semmle.label | blob_client |
+| test.py:43:9:43:19 | blob_client | semmle.label | blob_client |
+| test.py:66:5:66:15 | blob_client | semmle.label | blob_client |
+| test.py:66:19:66:21 | BSC | semmle.label | BSC |
+| test.py:66:19:66:42 | After Attribute() | semmle.label | After Attribute() |
+| test.py:67:5:67:15 | blob_client | semmle.label | blob_client |
+| test.py:68:5:68:15 | [post] blob_client | semmle.label | [post] blob_client |
+| test.py:68:5:68:15 | blob_client | semmle.label | blob_client |
+| test.py:69:12:69:22 | blob_client | semmle.label | blob_client |
+| test.py:73:5:73:6 | bc | semmle.label | bc |
+| test.py:73:10:73:33 | After get_unsafe_blob_client() | semmle.label | After get_unsafe_blob_client() |
+| test.py:75:9:75:10 | bc | semmle.label | bc |
 subpaths
+#select
+| test.py:11:9:11:19 | blob_client | test.py:3:7:3:51 | After Attribute() | test.py:11:9:11:19 | blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
+| test.py:21:9:21:19 | blob_client | test.py:15:27:15:71 | After Attribute() | test.py:21:9:21:19 | blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
+| test.py:31:9:31:19 | blob_client | test.py:25:24:25:66 | After Attribute() | test.py:31:9:31:19 | blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
+| test.py:43:9:43:19 | blob_client | test.py:3:7:3:51 | After Attribute() | test.py:43:9:43:19 | blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
+| test.py:75:9:75:10 | bc | test.py:3:7:3:51 | After Attribute() | test.py:75:9:75:10 | bc | Unsafe usage of v1 version of Azure Storage client-side encryption |

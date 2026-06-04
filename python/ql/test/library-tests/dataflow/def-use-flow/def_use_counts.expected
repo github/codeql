@@ -1,31 +1,41 @@
 def_count
 | 4 |
 def
-| def_use_flow.py:10:5:10:5 | Essa node definition |
-| def_use_flow.py:17:11:17:11 | Essa node definition |
-| def_use_flow.py:19:9:19:9 | Essa node definition |
-| def_use_flow.py:21:7:21:7 | Essa node definition |
+| def_use_flow.py:10:5:10:5 | SSA def(Local Variable x) |
+| def_use_flow.py:17:11:17:11 | SSA def(Local Variable x) |
+| def_use_flow.py:19:9:19:9 | SSA def(Local Variable x) |
+| def_use_flow.py:21:7:21:7 | SSA def(Local Variable x) |
 implicit_use_count
-| 0 |
+| 1 |
 implicit_use
+| def_use_flow.py:9:1:9:12 | Normal Exit |
 source_use_count
 | 3 |
 source_use
-| def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
-| def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
-| def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
+| def_use_flow.py:28:15:28:15 | x |
+| def_use_flow.py:30:13:30:13 | x |
+| def_use_flow.py:32:11:32:11 | x |
 def_use_edge_count
-| 12 |
+| 21 |
 def_use_edge
-| def_use_flow.py:10:5:10:5 | SSA variable x | def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
-| def_use_flow.py:10:5:10:5 | SSA variable x | def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
-| def_use_flow.py:10:5:10:5 | SSA variable x | def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
-| def_use_flow.py:17:11:17:11 | SSA variable x | def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
-| def_use_flow.py:17:11:17:11 | SSA variable x | def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
-| def_use_flow.py:17:11:17:11 | SSA variable x | def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
-| def_use_flow.py:19:9:19:9 | SSA variable x | def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
-| def_use_flow.py:19:9:19:9 | SSA variable x | def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
-| def_use_flow.py:19:9:19:9 | SSA variable x | def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
-| def_use_flow.py:21:7:21:7 | SSA variable x | def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
-| def_use_flow.py:21:7:21:7 | SSA variable x | def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
-| def_use_flow.py:21:7:21:7 | SSA variable x | def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
+| def_use_flow.py:10:5:10:5 | SSA def(Local Variable x) | def_use_flow.py:28:15:28:15 | x |
+| def_use_flow.py:10:5:10:5 | SSA def(Local Variable x) | def_use_flow.py:30:13:30:13 | x |
+| def_use_flow.py:10:5:10:5 | SSA def(Local Variable x) | def_use_flow.py:32:11:32:11 | x |
+| def_use_flow.py:12:5:12:17 | SSA phi(Local Variable x) | def_use_flow.py:28:15:28:15 | x |
+| def_use_flow.py:12:5:12:17 | SSA phi(Local Variable x) | def_use_flow.py:30:13:30:13 | x |
+| def_use_flow.py:12:5:12:17 | SSA phi(Local Variable x) | def_use_flow.py:32:11:32:11 | x |
+| def_use_flow.py:13:7:13:19 | SSA phi(Local Variable x) | def_use_flow.py:28:15:28:15 | x |
+| def_use_flow.py:13:7:13:19 | SSA phi(Local Variable x) | def_use_flow.py:30:13:30:13 | x |
+| def_use_flow.py:13:7:13:19 | SSA phi(Local Variable x) | def_use_flow.py:32:11:32:11 | x |
+| def_use_flow.py:14:9:14:21 | SSA phi(Local Variable x) | def_use_flow.py:28:15:28:15 | x |
+| def_use_flow.py:14:9:14:21 | SSA phi(Local Variable x) | def_use_flow.py:30:13:30:13 | x |
+| def_use_flow.py:14:9:14:21 | SSA phi(Local Variable x) | def_use_flow.py:32:11:32:11 | x |
+| def_use_flow.py:17:11:17:11 | SSA def(Local Variable x) | def_use_flow.py:28:15:28:15 | x |
+| def_use_flow.py:17:11:17:11 | SSA def(Local Variable x) | def_use_flow.py:30:13:30:13 | x |
+| def_use_flow.py:17:11:17:11 | SSA def(Local Variable x) | def_use_flow.py:32:11:32:11 | x |
+| def_use_flow.py:19:9:19:9 | SSA def(Local Variable x) | def_use_flow.py:28:15:28:15 | x |
+| def_use_flow.py:19:9:19:9 | SSA def(Local Variable x) | def_use_flow.py:30:13:30:13 | x |
+| def_use_flow.py:19:9:19:9 | SSA def(Local Variable x) | def_use_flow.py:32:11:32:11 | x |
+| def_use_flow.py:21:7:21:7 | SSA def(Local Variable x) | def_use_flow.py:28:15:28:15 | x |
+| def_use_flow.py:21:7:21:7 | SSA def(Local Variable x) | def_use_flow.py:30:13:30:13 | x |
+| def_use_flow.py:21:7:21:7 | SSA def(Local Variable x) | def_use_flow.py:32:11:32:11 | x |

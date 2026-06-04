@@ -9,6 +9,7 @@ overlay[local]
 module;
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import DataFlowPublic
 private import DataFlowPrivate
 private import semmle.python.internal.CachedStages
@@ -314,7 +315,7 @@ private module Cached {
    */
   cached
   predicate subscript(LocalSourceNode node, CfgNode subscript, CfgNode index) {
-    exists(CfgNode seq, SubscriptNode subscriptNode | subscriptNode = subscript.getNode() |
+    exists(CfgNode seq, Cfg::SubscriptNode subscriptNode | subscriptNode = subscript.getNode() |
       node.flowsTo(seq) and
       seq.getNode() = subscriptNode.getObject() and
       index.getNode() = subscriptNode.getIndex()

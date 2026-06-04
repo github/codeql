@@ -21,11 +21,12 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 import semmle.python.dataflow.new.DataFlow
 
 module TestConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
-    node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "SOURCE"
+    node.(DataFlow::CfgNode).getNode().(Cfg::NameNode).getId() = "SOURCE"
     or
     node.(DataFlow::CfgNode).getNode().getNode().(StringLiteral).getS() = "source"
     or
@@ -37,7 +38,7 @@ module TestConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     exists(DataFlow::CallCfgNode call |
-      call.getFunction().asCfgNode().(NameNode).getId() in ["SINK", "SINK_F"] and
+      call.getFunction().asCfgNode().(Cfg::NameNode).getId() in ["SINK", "SINK_F"] and
       (node = call.getArg(_) or node = call.getArgByName(_)) and
       not node = call.getArgByName("not_present_at_runtime")
     )

@@ -1,6 +1,7 @@
 testFailures
+| type_annotations.py:6:16:6:32 | Comment # $ tt=Foo.method | Missing result: tt=Foo.method |
+| type_annotations.py:16:16:16:32 | Comment # $ tt=Foo.method | Missing result: tt=Foo.method |
 debug_callableNotUnique
 pointsTo_found_typeTracker_notFound
 typeTracker_found_pointsTo_notFound
-| type_annotations.py:6:5:6:14 | ControlFlowNode for Attribute() | Foo.method |
-| type_annotations.py:16:5:16:14 | ControlFlowNode for Attribute() | Foo.method |
+| type_annotations.py:29:5:29:14 | Attribute() | Foo.method |

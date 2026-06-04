@@ -3,6 +3,7 @@ module;
 
 private import python
 private import semmle.python.internal.CachedStages
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /** An expression */
 class Expr extends Expr_, AstNode {
@@ -70,7 +71,7 @@ class Attribute extends Attribute_ {
   /* syntax: Expr.name */
   override Expr getASubExpression() { result = this.getObject() }
 
-  deprecated override AttrNode getAFlowNode() { result = super.getAFlowNode() }
+  deprecated override Cfg::AttrNode getAFlowNode() { result = super.getAFlowNode() }
 
   /** Gets the name of this attribute. That is the `name` in `obj.name` */
   string getName() { result = Attribute_.super.getAttr() }
@@ -99,7 +100,7 @@ class Subscript extends Subscript_ {
 
   Expr getObject() { result = Subscript_.super.getValue() }
 
-  deprecated override SubscriptNode getAFlowNode() { result = super.getAFlowNode() }
+  deprecated override Cfg::SubscriptNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** A call expression, such as `func(...)` */
@@ -115,7 +116,7 @@ class Call extends Call_ {
 
   override string toString() { result = this.getFunc().toString() + "()" }
 
-  deprecated override CallNode getAFlowNode() { result = super.getAFlowNode() }
+  deprecated override Cfg::CallNode getAFlowNode() { result = super.getAFlowNode() }
 
   /** Gets a tuple (*) argument of this call. */
   Expr getStarargs() { result = this.getAPositionalArg().(Starred).getValue() }
@@ -203,7 +204,7 @@ class IfExp extends IfExp_ {
     result = this.getTest() or result = this.getBody() or result = this.getOrelse()
   }
 
-  deprecated override IfExprNode getAFlowNode() { result = super.getAFlowNode() }
+  deprecated override Cfg::IfExprNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** A starred expression, such as the `*rest` in the assignment `first, *rest = seq` */
@@ -413,7 +414,7 @@ class PlaceHolder extends PlaceHolder_ {
 
   override string toString() { result = "$" + this.getId() }
 
-  deprecated override NameNode getAFlowNode() { result = super.getAFlowNode() }
+  deprecated override Cfg::NameNode getAFlowNode() { result = super.getAFlowNode() }
 }
 
 /** A tuple expression such as `( 1, 3, 5, 7, 9 )` */
@@ -480,7 +481,7 @@ class Name extends Name_ {
 
   override string toString() { result = this.getId() }
 
-  deprecated override NameNode getAFlowNode() { result = super.getAFlowNode() }
+  deprecated override Cfg::NameNode getAFlowNode() { result = super.getAFlowNode() }
 
   override predicate isArtificial() {
     /* Artificial variable names in comprehensions all start with "." */
@@ -587,7 +588,7 @@ abstract class NameConstant extends Name, ImmutableLiteral {
 
   override predicate isConstant() { any() }
 
-  deprecated override NameConstantNode getAFlowNode() { result = Name.super.getAFlowNode() }
+  deprecated override Cfg::NameConstantNode getAFlowNode() { result = Name.super.getAFlowNode() }
 
   override predicate isArtificial() { none() }
 }

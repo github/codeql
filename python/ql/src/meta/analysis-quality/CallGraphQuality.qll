@@ -6,6 +6,7 @@
 import python
 import meta.MetaMetrics
 private import LegacyPointsTo
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 newtype TTarget =
   TFunction(Function func) or
@@ -50,7 +51,7 @@ class TargetClass extends Target, TClass {
  * A call that is (possibly) relevant for analysis quality.
  * See `IgnoredFile` for details on what is excluded.
  */
-class RelevantCall extends CallNode {
+class RelevantCall extends Cfg::CallNode {
   RelevantCall() { not this.getLocation().getFile() instanceof IgnoredFile }
 }
 
@@ -60,7 +61,7 @@ module PointsToBasedCallGraph {
   class ResolvableCall extends RelevantCall {
     Value targetValue;
 
-    ResolvableCall() { targetValue.getACall() = this }
+    ResolvableCall() { targetValue.getACall().getNode() = this.getNode() }
 
     /** Gets a resolved target of this call. */
     Target getTarget() {
