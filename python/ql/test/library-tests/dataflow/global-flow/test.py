@@ -17,7 +17,7 @@ print(unreferenced_g)
 
 # Modification by reassignment
 
-g_mod = []
+g_mod = [] # $ SPURIOUS: writes=g_mod
 # This assignment does not produce any flow, since `g_mod` is immediately reassigned.
 
 # The following assignment should not be a `ModuleVariableNode`,

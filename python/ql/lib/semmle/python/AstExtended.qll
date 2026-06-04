@@ -3,6 +3,7 @@ module;
 
 import python
 private import semmle.python.internal.CachedStages
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
 /** A syntactic node (Class, Function, Module, Expr, Stmt or Comprehension) corresponding to a flow node */
 abstract class AstNode extends AstNode_ {
@@ -19,17 +20,16 @@ abstract class AstNode extends AstNode_ {
   /**
    * DEPRECATED: use `ControlFlowNode.getNode()` from the other direction instead;
    * that is, replace `e.getAFlowNode() = n` with `n.getNode() = e`. This API is
-   * being removed to untangle the AST and CFG hierarchies in preparation for
-   * migrating the dataflow library off the legacy CFG.
+   * being removed to untangle the AST and CFG hierarchies.
    *
-   * Gets a flow node corresponding directly to this node.
-   * NOTE: For some statements and other purely syntactic elements,
-   * there may not be a `ControlFlowNode`.
+   * Gets a flow node corresponding directly to this node, from the new
+   * (shared) CFG. NOTE: For some statements and other purely syntactic
+   * elements, there may not be a `ControlFlowNode`.
    */
   cached
-  deprecated ControlFlowNode getAFlowNode() {
+  deprecated Cfg::ControlFlowNode getAFlowNode() {
     Stages::AST::ref() and
-    py_flow_bb_node(result, this, _, _)
+    result.getNode() = this
   }
 
   /** Gets the location for this AST node */
