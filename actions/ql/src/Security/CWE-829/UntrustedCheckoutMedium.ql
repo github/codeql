@@ -1,8 +1,8 @@
 /**
- * @name Checkout of untrusted code in a trusted context
- * @description Privileged workflows have read/write access to the base repository and access to secrets.
- *              By explicitly checking out and running the build script from a fork the untrusted code is running in an environment
- *              that is able to push to the base repository and to access secrets.
+ * @name Checkout of untrusted code in a non-privileged context
+ * @description Checking out and running the build script from a fork executes untrusted code. Even in a
+ *              non-privileged workflow, this can be abused, for example to compromise self-hosted runners
+ *              or to poison caches and artifacts that are later consumed by privileged workflows.
  * @kind problem
  * @problem.severity warning
  * @precision medium
@@ -20,4 +20,4 @@ from PRHeadCheckoutStep checkout
 where
   // the checkout occurs in a non-privileged context
   inNonPrivilegedContext(checkout)
-select checkout, "Potential unsafe checkout of untrusted pull request on privileged workflow."
+select checkout, "Potential unsafe checkout of untrusted pull request on non-privileged workflow."
