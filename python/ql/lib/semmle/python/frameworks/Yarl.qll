@@ -4,6 +4,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
@@ -111,7 +112,7 @@ module Yarl {
     }
 
     private predicate yarlUrlIsAbsoluteCall(
-      DataFlow::GuardNode g, ControlFlowNode node, boolean branch
+      DataFlow::GuardNode g, Cfg::ControlFlowNode node, boolean branch
     ) {
       exists(ClassInstantiation instance, DataFlow::MethodCallNode call |
         call.calls(instance, "is_absolute") and

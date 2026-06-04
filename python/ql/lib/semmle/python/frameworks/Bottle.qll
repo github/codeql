@@ -4,6 +4,7 @@
  */
 
 private import python
+private import semmle.python.controlflow.internal.Cfg as Cfg
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.RemoteFlowSources
@@ -157,9 +158,9 @@ module Bottle {
         DataFlow::Node value;
 
         HeaderWriteSubscript() {
-          exists(SubscriptNode subscript |
+          exists(Cfg::SubscriptNode subscript |
             this.asCfgNode() = subscript and
-            value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+            value.asCfgNode() = subscript.(Cfg::DefinitionNode).getValue() and
             name.asCfgNode() = subscript.getIndex() and
             subscript.getObject() = headers().asSource().asCfgNode()
           )

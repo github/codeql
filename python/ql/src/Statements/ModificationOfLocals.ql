@@ -14,8 +14,9 @@
 import python
 private import semmle.python.ApiGraphs
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.controlflow.internal.Cfg as Cfg
 
-predicate originIsLocals(ControlFlowNode n) {
+predicate originIsLocals(Cfg::ControlFlowNode n) {
   // Only consider the `locals()` dictionary within the scope that called `locals()`.
   // Once the dictionary is passed to another scope (e.g. as an argument or via an
   // instance attribute) it is just an ordinary mapping, and modifying it is both
@@ -28,19 +29,19 @@ predicate originIsLocals(ControlFlowNode n) {
   )
 }
 
-predicate modification_of_locals(ControlFlowNode f) {
-  originIsLocals(f.(SubscriptNode).getObject()) and
+predicate modification_of_locals(Cfg::ControlFlowNode f) {
+  originIsLocals(f.(Cfg::SubscriptNode).getObject()) and
   (f.isStore() or f.isDelete())
   or
-  exists(string mname, AttrNode attr |
-    attr = f.(CallNode).getFunction() and
+  exists(string mname, Cfg::AttrNode attr |
+    attr = f.(Cfg::CallNode).getFunction() and
     originIsLocals(attr.getObject(mname))
   |
     mname in ["pop", "popitem", "update", "clear"]
   )
 }
 
-from AstNode a, ControlFlowNode f
+from AstNode a, Cfg::ControlFlowNode f
 where
   modification_of_locals(f) and
   a = f.getNode() and
