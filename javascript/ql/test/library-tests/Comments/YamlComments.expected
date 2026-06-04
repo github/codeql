@@ -1,0 +1,20 @@
+| comments.yml:1:1:1:22 | # leadi ... comment |  leading file comment |
+| comments.yml:2:5:2:29 | # docum ... comment |  document marker comment |
+| comments.yml:3:7:3:29 | #commen ... oot key | comment after root key |
+| comments.yml:4:3:4:42 | # inden ... roperty |  indented comment before first property |
+| comments.yml:5:15:5:43 | # comme ...  scalar |  comment after quoted scalar |
+| comments.yml:6:10:6:46 | #commen ... l value | comment after an explicit null value |
+| comments.yml:7:9:7:32 | # comme ... ist key |  comment after list key |
+| comments.yml:8:5:8:34 | # comme ... ce item |  comment before sequence item |
+| comments.yml:9:13:9:50 | #commen ... mapping | comment after inline sequence mapping |
+| comments.yml:10:20:10:47 | # comme ...  scalar |  comment after plain scalar |
+| comments.yml:11:7:11:31 | # comme ... re dash |  comment after bare dash |
+| comments.yml:12:13:12:51 | # comme ... equence |  comment after mapping key in sequence |
+| comments.yml:13:21:13:42 | #commen ... boolean | comment after boolean |
+| comments.yml:14:27:14:55 | # comme ... equence |  comment after flow sequence |
+| comments.yml:15:33:15:60 | # comme ... mapping |  comment after flow mapping |
+| comments.yml:16:55:16:79 | # comme ... ow list |  comment after flow list |
+| comments.yml:17:12:17:47 | #commen ...  header | comment after literal scalar header |
+| comments.yml:20:13:20:47 | #commen ...  header | comment after folded scalar header |
+| comments.yml:23:52:23:85 | # comme ... g value |  comment after hash-looking value |
+| comments.yml:24:1:24:39 | # comme ... ent end |  comment between body and document end |
