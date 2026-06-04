@@ -15,7 +15,7 @@ app.get("/test", async (req, res) => {
     model: "gemini-2.0-flash",
     contents: "Hello",
     config: {
-      systemInstruction: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+      systemInstruction: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     },
   });
 
@@ -27,7 +27,7 @@ app.get("/test", async (req, res) => {
     contents: [
       {
         role: "model",
-        parts: [{ text: "Talk like a " + persona }], // $ Alert[js/prompt-injection]
+        parts: [{ text: "Talk like a " + persona }], // $ Alert[js/system-prompt-injection]
       },
       {
         role: "user",
@@ -56,7 +56,7 @@ app.get("/test", async (req, res) => {
     model: "gemini-2.0-flash",
     contents: "Hello",
     config: {
-      systemInstruction: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+      systemInstruction: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     },
   });
 
@@ -65,7 +65,7 @@ app.get("/test", async (req, res) => {
   // SHOULD ALERT
   const g5 = await ai.models.generateImages({
     model: "imagen-3.0-generate-002",
-    prompt: "Draw a picture of " + persona, // $ Alert[js/prompt-injection]
+    prompt: "Draw a picture of " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === editImage: prompt ===
@@ -73,7 +73,7 @@ app.get("/test", async (req, res) => {
   // SHOULD ALERT
   const g6 = await ai.models.editImage({
     model: "imagen-3.0-capability-001",
-    prompt: "Edit to look like " + persona, // $ Alert[js/prompt-injection]
+    prompt: "Edit to look like " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === chats.create: systemInstruction ===
@@ -82,7 +82,7 @@ app.get("/test", async (req, res) => {
   const chat = ai.chats.create({
     model: "gemini-2.0-flash",
     config: {
-      systemInstruction: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+      systemInstruction: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     },
   });
 
@@ -92,7 +92,7 @@ app.get("/test", async (req, res) => {
   await chat.sendMessage({
     message: query,
     config: {
-      systemInstruction: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+      systemInstruction: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     },
   });
 
@@ -102,7 +102,7 @@ app.get("/test", async (req, res) => {
   const session = await ai.live.connect({
     model: "gemini-2.0-flash-live-001",
     config: {
-      systemInstruction: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+      systemInstruction: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     },
     callbacks: {
       onmessage: (msg) => {},

@@ -14,6 +14,7 @@ private import semmle.javascript.frameworks.data.ModelsAsData
 private import semmle.javascript.frameworks.OpenAI
 private import semmle.javascript.frameworks.Anthropic
 private import semmle.javascript.frameworks.GoogleGenAI
+private import semmle.javascript.frameworks.OpenRouter
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -64,6 +65,10 @@ module SystemPromptInjection {
       this = Anthropic::getSystemOrAssistantPromptNode().asSink()
       or
       this = GoogleGenAI::getSystemOrAssistantPromptNode().asSink()
+      or
+      this = OpenRouter::getSystemOrAssistantPromptNode().asSink()
+      or
+      this = OpenRouterAgent::getSystemOrAssistantPromptNode().asSink()
     }
   }
 

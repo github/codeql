@@ -44,6 +44,15 @@ edges
 | openai_user_test.js:15:9:15:17 | userInput | openai_user_test.js:201:27:201:35 | userInput | provenance |  |
 | openai_user_test.js:15:9:15:17 | userInput | openai_user_test.js:205:30:205:38 | userInput | provenance |  |
 | openai_user_test.js:15:21:15:39 | req.query.userInput | openai_user_test.js:15:9:15:17 | userInput | provenance |  |
+| openrouter_user_test.js:12:9:12:17 | userInput | openrouter_user_test.js:22:18:22:26 | userInput | provenance |  |
+| openrouter_user_test.js:12:9:12:17 | userInput | openrouter_user_test.js:36:19:36:27 | userInput | provenance |  |
+| openrouter_user_test.js:12:9:12:17 | userInput | openrouter_user_test.js:50:18:50:26 | userInput | provenance |  |
+| openrouter_user_test.js:12:9:12:17 | userInput | openrouter_user_test.js:59:12:59:20 | userInput | provenance |  |
+| openrouter_user_test.js:12:9:12:17 | userInput | openrouter_user_test.js:68:12:68:20 | userInput | provenance |  |
+| openrouter_user_test.js:12:9:12:17 | userInput | openrouter_user_test.js:77:18:77:26 | userInput | provenance |  |
+| openrouter_user_test.js:12:9:12:17 | userInput | openrouter_user_test.js:88:18:88:26 | userInput | provenance |  |
+| openrouter_user_test.js:12:9:12:17 | userInput | openrouter_user_test.js:97:12:97:20 | userInput | provenance |  |
+| openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:12:9:12:17 | userInput | provenance |  |
 nodes
 | anthropic_user_test.js:8:9:8:17 | userInput | semmle.label | userInput |
 | anthropic_user_test.js:8:21:8:39 | req.query.userInput | semmle.label | req.query.userInput |
@@ -94,6 +103,16 @@ nodes
 | openai_user_test.js:196:30:196:38 | userInput | semmle.label | userInput |
 | openai_user_test.js:201:27:201:35 | userInput | semmle.label | userInput |
 | openai_user_test.js:205:30:205:38 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:12:9:12:17 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:12:21:12:39 | req.query.userInput | semmle.label | req.query.userInput |
+| openrouter_user_test.js:22:18:22:26 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:36:19:36:27 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:50:18:50:26 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:59:12:59:20 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:68:12:68:20 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:77:18:77:26 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:88:18:88:26 | userInput | semmle.label | userInput |
+| openrouter_user_test.js:97:12:97:20 | userInput | semmle.label | userInput |
 subpaths
 #select
 | anthropic_user_test.js:18:18:18:26 | userInput | anthropic_user_test.js:8:21:8:39 | req.query.userInput | anthropic_user_test.js:18:18:18:26 | userInput | This prompt construction depends on a $@. | anthropic_user_test.js:8:21:8:39 | req.query.userInput | user-provided value |
@@ -137,3 +156,11 @@ subpaths
 | openai_user_test.js:196:30:196:38 | userInput | openai_user_test.js:15:21:15:39 | req.query.userInput | openai_user_test.js:196:30:196:38 | userInput | This prompt construction depends on a $@. | openai_user_test.js:15:21:15:39 | req.query.userInput | user-provided value |
 | openai_user_test.js:201:27:201:35 | userInput | openai_user_test.js:15:21:15:39 | req.query.userInput | openai_user_test.js:201:27:201:35 | userInput | This prompt construction depends on a $@. | openai_user_test.js:15:21:15:39 | req.query.userInput | user-provided value |
 | openai_user_test.js:205:30:205:38 | userInput | openai_user_test.js:15:21:15:39 | req.query.userInput | openai_user_test.js:205:30:205:38 | userInput | This prompt construction depends on a $@. | openai_user_test.js:15:21:15:39 | req.query.userInput | user-provided value |
+| openrouter_user_test.js:22:18:22:26 | userInput | openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:22:18:22:26 | userInput | This prompt construction depends on a $@. | openrouter_user_test.js:12:21:12:39 | req.query.userInput | user-provided value |
+| openrouter_user_test.js:36:19:36:27 | userInput | openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:36:19:36:27 | userInput | This prompt construction depends on a $@. | openrouter_user_test.js:12:21:12:39 | req.query.userInput | user-provided value |
+| openrouter_user_test.js:50:18:50:26 | userInput | openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:50:18:50:26 | userInput | This prompt construction depends on a $@. | openrouter_user_test.js:12:21:12:39 | req.query.userInput | user-provided value |
+| openrouter_user_test.js:59:12:59:20 | userInput | openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:59:12:59:20 | userInput | This prompt construction depends on a $@. | openrouter_user_test.js:12:21:12:39 | req.query.userInput | user-provided value |
+| openrouter_user_test.js:68:12:68:20 | userInput | openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:68:12:68:20 | userInput | This prompt construction depends on a $@. | openrouter_user_test.js:12:21:12:39 | req.query.userInput | user-provided value |
+| openrouter_user_test.js:77:18:77:26 | userInput | openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:77:18:77:26 | userInput | This prompt construction depends on a $@. | openrouter_user_test.js:12:21:12:39 | req.query.userInput | user-provided value |
+| openrouter_user_test.js:88:18:88:26 | userInput | openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:88:18:88:26 | userInput | This prompt construction depends on a $@. | openrouter_user_test.js:12:21:12:39 | req.query.userInput | user-provided value |
+| openrouter_user_test.js:97:12:97:20 | userInput | openrouter_user_test.js:12:21:12:39 | req.query.userInput | openrouter_user_test.js:97:12:97:20 | userInput | This prompt construction depends on a $@. | openrouter_user_test.js:12:21:12:39 | req.query.userInput | user-provided value |

@@ -14,7 +14,7 @@ app.get("/test", async (req, res) => {
   const m1 = await client.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 1024,
-    system: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+    system: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     messages: [{ role: "user", content: query }],
   });
 
@@ -27,7 +27,7 @@ app.get("/test", async (req, res) => {
     system: [
       {
         type: "text",
-        text: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+        text: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
       },
     ],
     messages: [{ role: "user", content: query }],
@@ -42,7 +42,7 @@ app.get("/test", async (req, res) => {
     messages: [
       {
         role: "assistant",
-        content: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+        content: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
       },
       { role: "user", content: query },
     ],
@@ -68,7 +68,7 @@ app.get("/test", async (req, res) => {
   const bm1 = await client.beta.messages.create({
     model: "claude-sonnet-4-20250514",
     max_tokens: 1024,
-    system: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+    system: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
     messages: [{ role: "user", content: query }],
   });
 
@@ -81,7 +81,7 @@ app.get("/test", async (req, res) => {
     system: [
       {
         type: "text",
-        text: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+        text: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
       },
     ],
     messages: [{ role: "user", content: query }],
@@ -96,7 +96,7 @@ app.get("/test", async (req, res) => {
     messages: [
       {
         role: "assistant",
-        content: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+        content: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
       },
       { role: "user", content: query },
     ],
@@ -107,14 +107,14 @@ app.get("/test", async (req, res) => {
   // SHOULD ALERT
   const ba1 = await client.beta.agents.create({
     model: "claude-sonnet-4-20250514",
-    system: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+    system: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === beta.agents.update: system ===
 
   // SHOULD ALERT
   await client.beta.agents.update("agent_123", {
-    system: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+    system: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === Barrier: user-role content in shared message array ===
@@ -138,7 +138,7 @@ app.get("/test", async (req, res) => {
   // SHOULD ALERT — tainted data goes into system role; barrier on user role
   // must not suppress the system-role taint path.
   const messages2 = [
-    { role: "system", content: "Talk like a " + persona }, // $ Alert[js/prompt-injection]
+    { role: "system", content: "Talk like a " + persona }, // $ Alert[js/system-prompt-injection]
     { role: "user", content: query },
   ];
   const systemMsg2 = messages2.find((m) => m.role === "system");

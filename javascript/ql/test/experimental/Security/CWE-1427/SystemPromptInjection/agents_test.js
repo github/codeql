@@ -13,7 +13,7 @@ app.get("/agents", async (req, res) => {
   // SHOULD ALERT
   const agent1 = new Agent({
     name: "Assistant",
-    instructions: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+    instructions: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === Agent constructor: instructions as lambda ===
@@ -22,7 +22,7 @@ app.get("/agents", async (req, res) => {
   const agent2 = new Agent({
     name: "Dynamic",
     instructions: (runContext) => {
-      return "Talk like a " + persona; // $ Alert[js/prompt-injection]
+      return "Talk like a " + persona; // $ Alert[js/system-prompt-injection]
     },
   });
 
@@ -30,7 +30,7 @@ app.get("/agents", async (req, res) => {
   const agent3 = new Agent({
     name: "AsyncDynamic",
     instructions: async (runContext) => {
-      return "Talk like a " + persona; // $ Alert[js/prompt-injection]
+      return "Talk like a " + persona; // $ Alert[js/system-prompt-injection]
     },
   });
 
@@ -40,7 +40,7 @@ app.get("/agents", async (req, res) => {
   const agent4 = new Agent({
     name: "Specialist",
     instructions: "Help with refunds",
-    handoffDescription: "Handles " + persona, // $ Alert[js/prompt-injection]
+    handoffDescription: "Handles " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === agent.asTool(): toolDescription ===
@@ -48,7 +48,7 @@ app.get("/agents", async (req, res) => {
   // SHOULD ALERT
   agent1.asTool({
     toolName: "helper",
-    toolDescription: "Ask about " + persona, // $ Alert[js/prompt-injection]
+    toolDescription: "Ask about " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === tool(): description ===
@@ -56,7 +56,7 @@ app.get("/agents", async (req, res) => {
   // SHOULD ALERT
   const myTool = tool({
     name: "lookup",
-    description: "Look up info about " + persona, // $ Alert[js/prompt-injection]
+    description: "Look up info about " + persona, // $ Alert[js/system-prompt-injection]
     parameters: z.object({ query: z.string() }),
     execute: async ({ query }) => "result",
   });
@@ -70,7 +70,7 @@ app.get("/agents", async (req, res) => {
 
   // SHOULD ALERT
   const r2 = await run(agent1, [
-    { role: "system", content: "Talk like a " + persona }, // $ Alert[js/prompt-injection]
+    { role: "system", content: "Talk like a " + persona }, // $ Alert[js/system-prompt-injection]
     { role: "user", content: query },
   ]);
 
@@ -78,7 +78,7 @@ app.get("/agents", async (req, res) => {
 
   // SHOULD ALERT
   const r3 = await run(agent1, [
-    { role: "developer", content: "Talk like a " + persona }, // $ Alert[js/prompt-injection]
+    { role: "developer", content: "Talk like a " + persona }, // $ Alert[js/system-prompt-injection]
   ]);
 
   // === run() with array input: user role ===
@@ -93,7 +93,7 @@ app.get("/agents", async (req, res) => {
   // SHOULD ALERT
   const runner = new Runner();
   const r5 = await runner.run(agent1, [
-    { role: "system", content: "Talk like a " + persona }, // $ Alert[js/prompt-injection]
+    { role: "system", content: "Talk like a " + persona }, // $ Alert[js/system-prompt-injection]
   ]);
 
   // === Sanitizer: constant comparison ===

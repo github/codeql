@@ -13,16 +13,16 @@ app.get("/test", async (req, res) => {
 
   // === SystemMessage (SHOULD ALERT) ===
 
-  const sysMsg1 = new SystemMessage("Talk like a " + persona); // $ Alert[js/prompt-injection]
+  const sysMsg1 = new SystemMessage("Talk like a " + persona); // $ Alert[js/system-prompt-injection]
 
   const sysMsg2 = new SystemMessage({
-    content: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+    content: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === createAgent with systemPrompt (SHOULD ALERT) ===
 
   const agent = createAgent({
-    systemPrompt: "Talk like a " + persona, // $ Alert[js/prompt-injection]
+    systemPrompt: "Talk like a " + persona, // $ Alert[js/system-prompt-injection]
   });
 
   // === Barrier test: user role content in shared array (SHOULD NOT ALERT) ===
