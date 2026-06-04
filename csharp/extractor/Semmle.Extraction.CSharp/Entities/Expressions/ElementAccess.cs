@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -67,10 +66,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// <returns>An expression representing the endpoint of a range to be used in conjunction with a slice operation.</returns>
         private Expression MakeFromRangeEndpoint(ExpressionSyntax syntax, IExpressionParentEntity parent, int child)
         {
-            var info = new ExpressionNodeInfo(Context, syntax, parent, child)
-            {
-                IsCompilerGenerated = true
-            };
+            var info = new ExpressionNodeInfo(Context, syntax, parent, child);
 
             return syntax.Kind() == SyntaxKind.IndexExpression
                 ? PrefixUnary.Create(info.SetKind(ExprKind.INDEX))
