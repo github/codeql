@@ -166,7 +166,7 @@ jobs:
           git commit -m "Go: Update to $LATEST_VERSION_NUM"
           
           # Push changes
-          git push -f origin "$BRANCH_NAME"
+          git push --force-with-lease origin "$BRANCH_NAME"
 
       - name: Create or update PR
         if: steps.check-changes.outputs.has_changes == 'true'
