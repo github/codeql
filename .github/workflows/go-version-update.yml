@@ -96,8 +96,10 @@ jobs:
           CURRENT_MAJOR_MINOR_ESCAPED=$(echo "$CURRENT_MAJOR_MINOR" | sed 's/\./\\./g')
           
           # Update MODULE.bazel
-          if ! sed -i "s/go_sdk\.download(version = \"$CURRENT_VERSION_ESCAPED\")/go_sdk.download(version = \"$LATEST_VERSION_NUM\")/" MODULE.bazel; then
-            echo "Warning: Failed to update MODULE.bazel"
+          sed -i "s/go_sdk\.download(version = \"$CURRENT_VERSION_ESCAPED\")/go_sdk.download(version = \"$LATEST_VERSION_NUM\")/" MODULE.bazel
+          if ! grep -q "go_sdk.download(version = \"$LATEST_VERSION_NUM\")" MODULE.bazel; then
+            echo "Error: Failed to update MODULE.bazel"
+            exit 1
           fi
           
           # Update go/extractor/go.mod
