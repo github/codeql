@@ -185,7 +185,7 @@ jobs:
           Updated files:
           - \`MODULE.bazel\` - go_sdk.download version
           - \`go/extractor/go.mod\` - go directive and toolchain
-          - \`go/extractor/autobuilder/build-environment.go\` - maxGoVersion
+          - \`go/extractor/autobuilder/build-environment.go\` - maxGoVersion (only if MAJOR.MINOR changes)
           - \`go/actions/test/action.yml\` - default go-test-version
 
           This PR was automatically created by the [Go version update workflow](https://github.com/${{ github.repository }}/blob/main/.github/workflows/go-version-update.yml).
