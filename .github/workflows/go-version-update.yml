@@ -163,7 +163,7 @@ jobs:
           
           # Stage and commit changes
           git add MODULE.bazel go/extractor/go.mod go/extractor/autobuilder/build-environment.go go/actions/test/action.yml
-          git commit -m "Go: Update to $LATEST_MAJOR_MINOR"
+          git commit -m "Go: Update to $LATEST_VERSION_NUM"
           
           # Push changes
           git push -f origin "$BRANCH_NAME"
@@ -174,13 +174,13 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH_NAME="workflow/go-version-update"
-          LATEST_MAJOR_MINOR="${{ steps.fetch-version.outputs.major_minor }}"
-          CURRENT_MAJOR_MINOR="${{ steps.current-version.outputs.major_minor }}"
+          LATEST_VERSION_NUM="${{ steps.fetch-version.outputs.version_num }}"
+          CURRENT_VERSION="${{ steps.current-version.outputs.version }}"
           
-          PR_TITLE="Go: Update to $LATEST_MAJOR_MINOR"
+          PR_TITLE="Go: Update to $LATEST_VERSION_NUM"
           
           PR_BODY=$(cat <<EOF
-          This PR updates Go from $CURRENT_MAJOR_MINOR to $LATEST_MAJOR_MINOR.
+          This PR updates Go from $CURRENT_VERSION to $LATEST_VERSION_NUM.
 
           Updated files:
           - \`MODULE.bazel\` - go_sdk.download version
