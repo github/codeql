@@ -227,7 +227,9 @@ top_level
                 return_expr
                   value: string_literal "\"\""
           name: identifier "read"
-          return_type: unsupported_node "String"
+          return_type:
+            named_type_expr
+              name: identifier "String"
 
 ===
 Do-catch

@@ -135,7 +135,9 @@ top_level
               pattern:
                 name_pattern
                   identifier: identifier "b"
-          return_type: unsupported_node "Int"
+          return_type:
+            named_type_expr
+              name: identifier "Int"
 
 ===
 Function with named parameters
@@ -364,7 +366,9 @@ top_level
               pattern:
                 name_pattern
                   identifier: identifier "values"
-          return_type: unsupported_node "Int"
+          return_type:
+            named_type_expr
+              name: identifier "Int"
 
 ===
 Function call
@@ -553,4 +557,6 @@ top_level
               pattern:
                 name_pattern
                   identifier: identifier "x"
-          return_type: unsupported_node "T"
+          return_type:
+            named_type_expr
+              name: identifier "T"

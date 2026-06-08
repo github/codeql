@@ -629,6 +629,274 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 path: {parts}.map(p -> (identifier #{p}))
                 modifier: {..mods})
         ),
+        // ---- Types and classes ----
+        // Self expression → name_expr
+        rule!((self_expression) => (name_expr identifier: (identifier "self"))),
+        // Super expression → super_expr
+        rule!((super_expression) => (super_expr)),
+        // Modifiers — unwrap to individual modifier children
+        rule!((modifiers _* @mods) => {..mods}),
+        rule!((attribute) @m => (modifier #{m})),
+        rule!((visibility_modifier) @m => (modifier #{m})),
+        rule!((function_modifier) @m => (modifier #{m})),
+        rule!((member_modifier) @m => (modifier #{m})),
+        rule!((mutation_modifier) @m => (modifier #{m})),
+        rule!((ownership_modifier) @m => (modifier #{m})),
+        rule!((property_modifier) @m => (modifier #{m})),
+        rule!((parameter_modifier) @m => (modifier #{m})),
+        rule!((inheritance_modifier) @m => (modifier #{m})),
+        rule!((property_behavior_modifier) @m => (modifier #{m})),
+        // Type annotations — unwrap
+        rule!((type_annotation type: @inner) => {inner}),
+        // New grammar: user_type is split into simple_user_type parts.
+        // Keep a conservative textual fallback to avoid dropping type information.
+        rule!((user_type) @ty => (named_type_expr name: (identifier #{ty}))),
+        // Tuple type → tuple_type_expr
+        rule!((tuple_type element: _* @elems) => (tuple_type_expr element: {..elems})),
+        rule!((tuple_type_item name: @name type: @ty) => (tuple_type_element name: (identifier #{name}) type: {ty})),
+        rule!((tuple_type_item type: @ty) => (tuple_type_element type: {ty})),
+        // Array type `[T]` → generic_type_expr with Array base
+        rule!((array_type element: @e) => (generic_type_expr
+            base: (named_type_expr name: (identifier "Array"))
+            type_argument: {e})),
+        // Dictionary type `[K: V]` → generic_type_expr with Dictionary base
+        rule!((dictionary_type key: @k value: @v) => (generic_type_expr
+            base: (named_type_expr name: (identifier "Dictionary"))
+            type_argument: {k}
+            type_argument: {v})),
+        // Optional type `T?` → generic_type_expr with Optional base
+        rule!((optional_type wrapped: @w) => (generic_type_expr
+            base: (named_type_expr name: (identifier "Optional"))
+            type_argument: {w})),
+        // Function type `(Params) -> Ret` → function_type_expr.
+        rule!((function_type parameter: _* @ps return_type: @ret) => (function_type_expr parameter: {..ps} return_type: {ret})),
+        rule!((function_type_parameter name: @name type: @ty) => (parameter external_name: (identifier #{name}) type: {ty})),
+        rule!((function_type_parameter type: @ty) => (parameter type: {ty})),
+        // Selector expression: `#selector(inner)` -- not yet supported
+        rule!(
+            (selector_expression _ @inner)
+            =>
+            (unsupported_node)
+        ),
+        // Key path expressions are currently unsupported.
+        rule!((key_path_expression) => (unsupported_node)),
+        // Inheritance specifier → base_type
+        rule!((inheritance_specifier inherits_from: @ty) => (base_type type: {ty})),
+        // Class declaration with body containing members
+        rule!(
+            (class_declaration
+                declaration_kind: @kind
+                name: @name
+                body: (class_body member: _* @members)
+                (inheritance_specifier)* @bases
+                (modifiers)* @mods)
+            =>
+            (class_like_declaration
+                modifier: (modifier #{kind})
+                modifier: {..mods}
+                name: (identifier #{name})
+                base_type: {..bases}
+                member: {..members})
+        ),
+        // Enum class declaration: same as a regular class but with an enum body.
+        rule!(
+            (class_declaration
+                declaration_kind: @kind
+                name: @name
+                body: (enum_class_body member: _* @members)
+                (inheritance_specifier)* @bases
+                (modifiers)* @mods)
+            =>
+            (class_like_declaration
+                modifier: (modifier #{kind})
+                modifier: {..mods}
+                name: (identifier #{name})
+                base_type: {..bases}
+                member: {..members})
+        ),
+        // Class declaration with empty body
+        rule!(
+            (class_declaration
+                declaration_kind: @kind
+                name: @name
+                body: _
+                (inheritance_specifier)* @bases
+                (modifiers)* @mods)
+            =>
+            (class_like_declaration
+                modifier: (modifier #{kind})
+                modifier: {..mods}
+                name: (identifier #{name})
+                base_type: {..bases})
+        ),
+        // Protocol declaration
+        rule!(
+            (protocol_declaration
+                name: @name
+                body: (protocol_body member: _* @members)
+                (inheritance_specifier)* @bases
+                (modifiers)* @mods)
+            =>
+            (class_like_declaration
+                modifier: (modifier "protocol")
+                modifier: {..mods}
+                name: (identifier #{name})
+                base_type: {..bases}
+                member: {..members})
+        ),
+        // Protocol function — return type and body statements both optional.
+        rule!(
+            (protocol_function_declaration
+                name: @name
+                (parameter)* @params
+                return_type: _? @ret
+                body: (block statement: _* @body_stmts)?
+                (modifiers)* @mods)
+            =>
+            (function_declaration
+                modifier: {..mods}
+                name: (identifier #{name})
+                parameter: {..params}
+                return_type: {..ret}
+                body: (block stmt: {..body_stmts}))
+        ),
+        // Init declaration → constructor_declaration. Body statements optional;
+        // body itself is also optional (protocol requirement).
+        rule!(
+            (init_declaration
+                (parameter)* @params
+                body: (block statement: _* @body_stmts)?
+                (modifiers)* @mods)
+            =>
+            (constructor_declaration
+                modifier: {..mods}
+                parameter: {..params}
+                body: (block stmt: {..body_stmts}))
+        ),
+        // Deinit declaration → destructor_declaration. Body statements optional.
+        rule!(
+            (deinit_declaration
+                body: (block statement: _* @body_stmts)
+                (modifiers)* @mods)
+            =>
+            (destructor_declaration
+                modifier: {..mods}
+                body: (block stmt: {..body_stmts}))
+        ),
+        // Typealias declaration
+        rule!(
+            (typealias_declaration name: @name value: @val (modifiers)* @mods)
+            =>
+            (type_alias_declaration
+                modifier: {..mods}
+                name: (identifier #{name})
+                r#type: {val})
+        ),
+        // Subscript declaration (not yet supported -- grammar needs to distinguish plain calls from subscript calls)
+        rule!(
+            (subscript_declaration (parameter)* @params (modifiers)* @mods)
+            =>
+            (unsupported_node)
+        ),
+        // Associated type declaration (with optional bound)
+        rule!(
+            (associatedtype_declaration name: @name inherits_from: _? @bound (modifiers)* @mods)
+            =>
+            (associated_type_declaration
+                modifier: {..mods}
+                name: (identifier #{name})
+                bound: {..bound})
+        ),
+        // Protocol property declaration: translate each accessor requirement to an
+        // accessor_declaration without a body, carrying the property name and type.
+        // Subsequent accessors get chained_declaration (same flattening as computed properties).
+        rule!(
+            (protocol_property_declaration
+                name: (pattern bound_identifier: @name)
+                requirements: (protocol_property_requirements accessor: _+ @accessors)
+                type: _? @ty
+                (modifiers)* @mods)
+            =>
+            {..{
+                let name_text = __yeast_ctx.ast.source_text(name.into());
+                let mod_ids: Vec<usize> = mods.iter().map(|&m| m.into()).collect();
+                let ty_ids: Vec<usize> = ty.iter().map(|&t| t.into()).collect();
+                let acc_ids: Vec<usize> = accessors.iter().map(|&a| a.into()).collect();
+                for (i, &acc_id) in acc_ids.iter().enumerate() {
+                    if i > 0 {
+                        let chained = __yeast_ctx.literal("modifier", "chained_declaration");
+                        __yeast_ctx.prepend_field(acc_id, "modifier", chained);
+                    }
+                    for &mod_id in mod_ids.iter().rev() {
+                        __yeast_ctx.prepend_field(acc_id, "modifier", mod_id);
+                    }
+                    for &ty_id in ty_ids.iter().rev() {
+                        __yeast_ctx.prepend_field(acc_id, "type", ty_id);
+                    }
+                    let ident = __yeast_ctx.literal("identifier", &name_text);
+                    __yeast_ctx.prepend_field(acc_id, "name", ident);
+                }
+                acc_ids
+            }}
+        ),
+        // getter_specifier / setter_specifier → bodyless accessor_declaration
+        rule!((getter_specifier) => (accessor_declaration accessor_kind: (accessor_kind "get"))),
+        rule!((setter_specifier) => (accessor_declaration accessor_kind: (accessor_kind "set"))),
+        // protocol_property_requirements wrapper — should be consumed by above; fallback
+        rule!((protocol_property_requirements accessor: _* @accs) => {..accs}),
+        // Computed getter → accessor_declaration (body optional).
+        rule!(
+            (computed_getter body: (block statement: _* @body)?)
+            =>
+            (accessor_declaration
+                accessor_kind: (accessor_kind "get")
+                body: (block stmt: {..body}))
+        ),
+        // Computed setter with explicit parameter name.
+        rule!(
+            (computed_setter parameter: @param body: (block statement: _* @body))
+            =>
+            (accessor_declaration
+                accessor_kind: (accessor_kind "set")
+                parameter: (parameter pattern: (name_pattern identifier: (identifier #{param})))
+                body: (block stmt: {..body}))
+        ),
+        // Computed setter without explicit parameter name; body optional.
+        rule!(
+            (computed_setter body: (block statement: _* @body)?)
+            =>
+            (accessor_declaration
+                accessor_kind: (accessor_kind "set")
+                body: (block stmt: {..body}))
+        ),
+        // Computed modify → accessor_declaration
+        rule!(
+            (computed_modify body: (block statement: _* @body))
+            =>
+            (accessor_declaration
+                accessor_kind: (accessor_kind "modify")
+                body: (block stmt: {..body}))
+        ),
+        // willset/didset block — spread to children
+        rule!((willset_didset_block _* @clauses) => {..clauses}),
+        // willset clause → accessor_declaration (body optional).
+        rule!(
+            (willset_clause body: (block statement: _* @body)?)
+            =>
+            (accessor_declaration
+                accessor_kind: (accessor_kind "willSet")
+                body: (block stmt: {..body}))
+        ),
+        // didset clause → accessor_declaration (body optional).
+        rule!(
+            (didset_clause body: (block statement: _* @body)?)
+            =>
+            (accessor_declaration
+                accessor_kind: (accessor_kind "didSet")
+                body: (block stmt: {..body}))
+        ),
+        // Preprocessor conditionals — unsupported
+        rule!((diagnostic) => (unsupported_node)),
         // ---- Fallbacks ----
         rule!(
             (_)
