@@ -6,6 +6,6 @@ def test(codeql, java_full):
     codeql.database.create(
         command=[
             f"javac {java_srcs} -d build",
-            "kotlinc -language-version 1.9 user.kt -cp build",
+            "kotlinc -language-version 2.0 user.kt -cp build",
         ]
     )

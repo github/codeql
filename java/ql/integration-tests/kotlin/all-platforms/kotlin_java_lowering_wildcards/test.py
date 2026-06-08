@@ -8,6 +8,6 @@ def test(codeql, java_full):
         command=[
             "kotlinc kotlindefns.kt",
             "javac JavaUser.java JavaDefns.java -cp .",
-            "kotlinc -language-version 1.9 -cp . kotlinuser.kt",
+            "kotlinc -language-version 2.0 -cp . kotlinuser.kt",
         ]
     )

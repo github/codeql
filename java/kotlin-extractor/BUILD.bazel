@@ -106,7 +106,10 @@ kt_javac_options(
                 "%s/%s" % (v, target)
                 for _, target in _resources
             ] + (
-                ["%s/%s" % (v, _compiler_plugin_registrar_service[1])] if not version_less(v, "2.4.0") else []
+                ["%s/%s" % (
+                    v,
+                    _compiler_plugin_registrar_service[1],
+                )] if not version_less(v, "2.4.0") else []
             ),
             cmd = "\n".join([
                 "echo %s-%s > $(RULEDIR)/%s/com/github/codeql/extractor.name" % (_extractor_name_prefix, v, v),
