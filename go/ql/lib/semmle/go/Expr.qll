@@ -1067,11 +1067,11 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
   int getNumResult() { result = count(this.getAResultDecl().getANameExpr()) }
 
   /**
-   * Gets the result of this function type, if there is only one.
-   *
-   * Note: `x, y int` is a single `ResultVariableDecl`.
+   * DEPRECATED: Use `getResultDecl(int i)` instead.
    */
-  ResultVariableDecl getResultDecl() { this.getNumResult() = 1 and result = this.getAResultDecl() }
+  deprecated ResultVariableDecl getResultDecl() {
+    this.getNumResult() = 1 and result = this.getAResultDecl()
+  }
 
   override string toString() { result = "function type" }
 
