@@ -34,6 +34,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let x: Int? = nil"
 
 ===
 Optional chaining
@@ -74,6 +76,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let n = obj?.foo?.bar"
 
 ===
 Force unwrap
@@ -103,6 +107,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let n = opt!"
 
 ===
 Nil-coalescing
@@ -132,6 +138,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let n = opt ?? 0"
 
 ===
 Throwing function
@@ -167,6 +175,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "func read() throws -> String {\n  return \"\"\n}"
 
 ===
 Do-catch
@@ -216,6 +226,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "do {\n  try foo()\n} catch {\n  print(error)\n}"
 
 ===
 Try? expression
@@ -252,6 +264,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let result = try? foo()"
 
 ===
 Try! expression
@@ -288,3 +302,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "let result = try! foo()"

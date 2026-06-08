@@ -18,6 +18,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "class Foo {}"
 
 ===
 Class with stored properties
@@ -79,6 +81,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "class Point {\n  var x: Int\n  var y: Int\n}"
 
 ===
 Class with initializer
@@ -152,6 +156,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "class Point {\n  var x: Int\n  init(x: Int) {\n    self.x = x\n  }\n}"
 
 ===
 Class with method
@@ -200,6 +206,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "class Counter {\n  var n = 0\n  func bump() {\n    n += 1\n  }\n}"
 
 ===
 Class inheritance
@@ -228,6 +236,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "class Dog: Animal {}"
 
 ===
 Struct
@@ -289,6 +299,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "struct Point {\n  let x: Int\n  let y: Int\n}"
 
 ===
 Enum with cases
@@ -332,6 +344,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "enum Direction {\n  case north\n  case south\n  case east\n  case west\n}"
 
 ===
 Enum with associated values
@@ -389,6 +403,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "enum Shape {\n  case circle(radius: Double)\n  case square(side: Double)\n}"
 
 ===
 Protocol declaration
@@ -414,6 +430,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "protocol Drawable {\n  func draw()\n}"
 
 ===
 Extension
@@ -463,6 +481,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "extension Int {\n  func squared() -> Int { return self * self }\n}"
 
 ===
 Computed property
@@ -555,6 +575,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "class Rect {\n  var w: Double\n  var h: Double\n  var area: Double {\n    return w * h\n  }\n}"
 
 ===
 Property with getter and setter
@@ -639,3 +661,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "class Box {\n  private var _v = 0\n  var v: Int {\n    get { return _v }\n    set { _v = newValue }\n  }\n}"

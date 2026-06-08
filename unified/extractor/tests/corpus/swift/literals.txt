@@ -13,6 +13,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: int_literal "42"
 
 ===
 Negative integer literal
@@ -32,6 +34,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "-7"
 
 ===
 Floating-point literal
@@ -48,6 +52,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: float_literal "3.14"
 
 ===
 Boolean literals
@@ -67,6 +73,10 @@ source_file
 
 top_level
   body:
+    block
+      stmt:
+        boolean_literal "true"
+        boolean_literal "false"
 
 ===
 Nil literal
@@ -83,6 +93,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: keyword_literal "nil"
 
 ===
 String literal
@@ -101,6 +113,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: string_literal "\"hello\""
 
 ===
 String with interpolation
@@ -122,3 +136,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: string_literal "\"hello \\(name)\""

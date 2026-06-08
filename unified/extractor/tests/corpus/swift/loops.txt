@@ -37,6 +37,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "for x in [1, 2, 3] {\n  print(x)\n}"
 
 ===
 For-in over range
@@ -76,6 +78,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "for i in 0..<10 {\n  print(i)\n}"
 
 ===
 For-in with where clause
@@ -119,6 +123,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "for x in xs where x > 0 {\n  print(x)\n}"
 
 ===
 While loop
@@ -154,6 +160,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "while x > 0 {\n  x -= 1\n}"
 
 ===
 Repeat-while loop
@@ -189,6 +197,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "repeat {\n  x -= 1\n} while x > 0"
 
 ===
 Break and continue
@@ -252,3 +262,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "for x in xs {\n  if x < 0 { continue }\n  if x > 100 { break }\n  print(x)\n}"

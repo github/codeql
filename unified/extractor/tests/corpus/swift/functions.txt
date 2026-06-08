@@ -31,6 +31,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "func greet() {\n  print(\"hello\")\n}"
 
 ===
 Function with parameters and return type
@@ -93,6 +95,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "func add(_ a: Int, _ b: Int) -> Int {\n  return a + b\n}"
 
 ===
 Function with named parameters
@@ -138,6 +142,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "func greet(person name: String) {\n  print(name)\n}"
 
 ===
 Function with default parameter value
@@ -185,6 +191,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "func greet(name: String = \"world\") {\n  print(name)\n}"
 
 ===
 Variadic function
@@ -249,6 +257,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "func sum(_ values: Int...) -> Int {\n  return values.reduce(0, +)\n}"
 
 ===
 Function call
@@ -276,6 +286,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "foo(1, 2)"
 
 ===
 Function call with labelled arguments
@@ -306,6 +318,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "greet(person: \"Bob\")"
 
 ===
 Method call
@@ -336,6 +350,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "list.append(1)"
 
 ===
 Generic function
@@ -387,3 +403,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "func identity<T>(_ x: T) -> T {\n  return x\n}"

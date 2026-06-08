@@ -17,6 +17,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a + b"
 
 ===
 Subtraction
@@ -37,6 +39,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a - b"
 
 ===
 Multiplication
@@ -57,6 +61,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a * b"
 
 ===
 Division
@@ -77,6 +83,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a / b"
 
 ===
 Operator precedence: addition and multiplication
@@ -101,6 +109,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a + b * c"
 
 ===
 Parenthesised expression
@@ -129,6 +139,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "(a + b) * c"
 
 ===
 Comparison
@@ -149,6 +161,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a < b"
 
 ===
 Equality
@@ -169,6 +183,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a == b"
 
 ===
 Logical and
@@ -189,6 +205,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a && b"
 
 ===
 Logical or
@@ -209,6 +227,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "a || b"
 
 ===
 Logical not
@@ -228,6 +248,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "!a"
 
 ===
 Range operator
@@ -248,3 +270,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "1...10"

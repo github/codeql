@@ -17,6 +17,8 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "1 + 2"
 
 ===
 Another additive expression is desugared
@@ -37,3 +39,5 @@ source_file
 
 top_level
   body:
+    block
+      stmt: unsupported_node "foo + bar"
