@@ -396,8 +396,10 @@ fn parse_direct_node_inner(tokens: &mut Tokens, ctx: &Ident) -> Result<TokenStre
         let expr = group.stream();
         return Ok(quote! {
             {
-                let __value = yeast::YeastDisplay::yeast_to_string(&(#expr), &*#ctx.ast);
-                #ctx.literal(#kind_str, &__value)
+                let __expr = (#expr);
+                let __value = yeast::YeastDisplay::yeast_to_string(&__expr, &*#ctx.ast);
+                let __source_range = yeast::YeastSourceRange::yeast_source_range(&__expr, &*#ctx.ast);
+                #ctx.literal_with_source_range(#kind_str, &__value, __source_range)
             }
         });
     }
