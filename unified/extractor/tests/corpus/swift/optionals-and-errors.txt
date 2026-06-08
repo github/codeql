@@ -35,7 +35,13 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let x: Int? = nil"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "x"
+          value: keyword_literal "nil"
 
 ===
 Optional chaining
@@ -77,7 +83,13 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let n = obj?.foo?.bar"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value: unsupported_node "obj?.foo?.bar"
 
 ===
 Force unwrap
@@ -108,7 +120,18 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let n = opt!"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            unary_expr
+              operand:
+                name_expr
+                  identifier: identifier "opt"
+              operator: postfix_operator "!"
 
 ===
 Nil-coalescing
@@ -139,7 +162,19 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let n = opt ?? 0"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "n"
+          value:
+            binary_expr
+              operator: infix_operator "??"
+              left:
+                name_expr
+                  identifier: identifier "opt"
+              right: int_literal "0"
 
 ===
 Throwing function
@@ -265,7 +300,13 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let result = try? foo()"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "result"
+          value: unsupported_node "try? foo()"
 
 ===
 Try! expression
@@ -303,4 +344,10 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "let result = try! foo()"
+      stmt:
+        variable_declaration
+          modifier: modifier "let"
+          pattern:
+            name_pattern
+              identifier: identifier "result"
+          value: unsupported_node "try! foo()"
