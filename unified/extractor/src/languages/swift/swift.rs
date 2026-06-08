@@ -196,6 +196,89 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 decl_ids
             }}
         ),
+        // ---- Enums ----
+        // enum_type_parameter → parameter (with optional name as pattern).
+        rule!(
+            (enum_type_parameter name: @name type: @ty)
+            =>
+            (parameter
+                pattern: (name_pattern identifier: (identifier #{name}))
+                type: {ty})
+        ),
+        rule!(
+            (enum_type_parameter type: @ty)
+            =>
+            (parameter type: {ty})
+        ),
+        // enum_case_entry with associated values → class_like_declaration containing
+        // a constructor whose parameters are the data parameters.
+        rule!(
+            (enum_case_entry
+                name: @name
+                data_contents: (enum_type_parameters parameter: _* @params))
+            =>
+            (class_like_declaration
+                modifier: (modifier "enum_case")
+                name: (identifier #{name})
+                member: (constructor_declaration parameter: {..params} body: (block)))
+        ),
+        // enum_case_entry with explicit raw value → variable_declaration with that value.
+        rule!(
+            (enum_case_entry name: @name raw_value: @val)
+            =>
+            (variable_declaration
+                modifier: (modifier "enum_case")
+                pattern: (name_pattern identifier: (identifier #{name}))
+                value: {val})
+        ),
+        // enum_case_entry without associated values → variable_declaration tagged enum_case.
+        rule!(
+            (enum_case_entry name: @name)
+            =>
+            (variable_declaration
+                modifier: (modifier "enum_case")
+                pattern: (name_pattern identifier: (identifier #{name})))
+        ),
+        // enum_entry: flatten case entries; attach outer modifiers to each, and
+        // chained_declaration on every entry after the first.
+        rule!(
+            (enum_entry case: _+ @cases (modifiers)* @mods)
+            =>
+            {..{
+                let mod_ids: Vec<usize> = mods.iter().map(|&m| m.into()).collect();
+                let case_ids: Vec<usize> = cases.iter().map(|&c| c.into()).collect();
+                for (i, &case_id) in case_ids.iter().enumerate() {
+                    if i > 0 {
+                        let chained = __yeast_ctx.literal("modifier", "chained_declaration");
+                        __yeast_ctx.prepend_field(case_id, "modifier", chained);
+                    }
+                    for &mod_id in mod_ids.iter().rev() {
+                        __yeast_ctx.prepend_field(case_id, "modifier", mod_id);
+                    }
+                }
+                case_ids
+            }}
+        ),
+        // Plain assignment: `x = expr`
+        rule!(
+            (assignment operator: "=" target: (directly_assignable_expression expr: @target) result: @value)
+            =>
+            (assign_expr target: {target} value: {value})
+        ),
+        // Compound assignment: `x += expr` etc.
+        rule!(
+            (assignment operator: @op target: (directly_assignable_expression expr: @target) result: @value)
+            =>
+            (compound_assign_expr target: {target} operator: (infix_operator #{op}) value: {value})
+        ),
+        // Unwrap `type` wrapper node
+        rule!((type name: @inner) => {inner}),
+        // `directly_assignable_expression` is just a wrapper; unwrap it
+        rule!((directly_assignable_expression expr: @inner) => {inner}),
+        // Pattern with bound_identifier → name_pattern
+        rule!((pattern bound_identifier: @name) => (name_pattern identifier: (identifier #{name}))),
+        // Tuple pattern (destructuring)
+        rule!((pattern (pattern)* @elems) => (tuple_pattern element: {..elems})),
         // ---- Fallbacks ----
         rule!(
             (_)

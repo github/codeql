@@ -189,7 +189,7 @@ top_level
       stmt:
         variable_declaration
           modifier: modifier "let"
-          pattern: unsupported_node "(a, b)"
+          pattern: tuple_pattern "(a, b)"
           value:
             name_expr
               identifier: identifier "pair"
@@ -263,7 +263,12 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "x = 1"
+      stmt:
+        assign_expr
+          target:
+            name_expr
+              identifier: identifier "x"
+          value: int_literal "1"
 
 ===
 Compound assignment
@@ -287,4 +292,10 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "x += 1"
+      stmt:
+        compound_assign_expr
+          operator: infix_operator "+="
+          target:
+            name_expr
+              identifier: identifier "x"
+          value: int_literal "1"
