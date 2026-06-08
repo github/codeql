@@ -86,15 +86,13 @@ val IrMemberAccessExpression<*>.codeQlTypeArgumentsCount: Int
 fun IrMemberAccessExpression<*>.codeQlGetTypeArgument(index: Int): IrType? = typeArguments[index]
 
 // addAnnotations compat: in 2.4.0, addAnnotations expects List<IrAnnotation>
-// IrAnnotation extends IrConstructorCall, so we cast
-@Suppress("UNCHECKED_CAST")
+// IrConstructorCall implements IrAnnotation in 2.4.0, so filterIsInstance is identity
 fun IrType.codeQlAddAnnotations(annotations: List<IrConstructorCall>): IrType =
-    addAnnotations(annotations as List<IrAnnotation>)
+    addAnnotations(annotations.filterIsInstance<IrAnnotation>())
 
 // IrMutableAnnotationContainer.annotations setter: in 2.4.0, expects List<IrAnnotation>
-@Suppress("UNCHECKED_CAST")
 fun codeQlSetAnnotations(container: org.jetbrains.kotlin.ir.declarations.IrMutableAnnotationContainer, annotations: List<IrConstructorCall>) {
-    container.annotations = annotations as List<IrAnnotation>
+    container.annotations = annotations.filterIsInstance<IrAnnotation>()
 }
 
 // IrFunction: set dispatch receiver parameter

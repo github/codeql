@@ -114,8 +114,11 @@ kt_javac_options(
                 "cp $(execpath %s) $(RULEDIR)/%s/%s" % (source, v, target)
                 for source, target in _resources
             ] + (
-                ["cp $(execpath %s) $(RULEDIR)/%s/%s" % (_compiler_plugin_registrar_service[0], v, _compiler_plugin_registrar_service[1])]
-                if not version_less(v, "2.4.0") else []
+                ["cp $(execpath %s) $(RULEDIR)/%s/%s" % (
+                    _compiler_plugin_registrar_service[0],
+                    v,
+                    _compiler_plugin_registrar_service[1],
+                )] if not version_less(v, "2.4.0") else []
             )),
         ),
         kt_jvm_library(
