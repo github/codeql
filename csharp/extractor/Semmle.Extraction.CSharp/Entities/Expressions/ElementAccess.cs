@@ -79,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// </summary>
         /// <param name="method">The method symbol to check.</param>
         /// <returns>True if the method is a slice method; false otherwise.</returns>
-        private bool IsSliceWithRange(IMethodSymbol method, [NotNullWhen(true)] out RangeExpressionSyntax? range)
+        private bool IsSlice(IMethodSymbol method, out RangeExpressionSyntax? range)
         {
             range = null;
 
@@ -89,8 +89,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
 
             return (method.Name == "Slice" || method.Name == "Substring")
-                && method.Parameters.Length == 2
-                && range is not null;
+                && method.Parameters.Length == 2;
         }
 
         /// <summary>
@@ -111,21 +110,31 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         /// 
         /// Even though index expressions can't technically be used in this way, they signal that we
         /// could perceive ^b as "length - b".
+        ///
+        /// Call arguments are only populated when a range expression is directly available in
+        /// the list of arguments.
+        /// This means that cases like below are not handled.
+        /// System.Range x = 1..3;
+        /// s[x]
         /// </summary>
         /// <param name="trapFile">The trap file to write to.</param>
         /// <param name="slice">The slice method symbol.</param>
         /// <param name="range">The range expression syntax.</param>
-        private void PopulateSlice(TextWriter trapFile, IMethodSymbol slice, RangeExpressionSyntax range)
+        private void PopulateSlice(TextWriter trapFile, IMethodSymbol slice, RangeExpressionSyntax? range)
         {
-            var left = range.LeftOperand is ExpressionSyntax lsyntax
-                ? MakeFromRangeEndpoint(lsyntax, this, 0)
-                : MakeZeroLiteral(this, 0);
+            if (range is not null)
+            {
+                // Populate the call arguments in case
+                var left = range.LeftOperand is ExpressionSyntax lsyntax
+                    ? MakeFromRangeEndpoint(lsyntax, this, 0)
+                    : MakeZeroLiteral(this, 0);
 
-            var right = range.RightOperand is ExpressionSyntax rsyntax
-                ? MakeFromRangeEndpoint(rsyntax, this, 1)
-                : MakeZeroFromEndExpression(this, 1);
+                var right = range.RightOperand is ExpressionSyntax rsyntax
+                    ? MakeFromRangeEndpoint(rsyntax, this, 1)
+                    : MakeZeroFromEndExpression(this, 1);
 
-            SetExprArgument(trapFile, left, right);
+                SetExprArgument(trapFile, left, right);
+            }
             trapFile.expr_call(this, Method.Create(Context, slice));
         }
 
@@ -144,7 +153,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 Create(Context, qualifier, this, -1);
 
                 var target = GetTargetSymbol();
-                if (target is IMethodSymbol method && IsSliceWithRange(method, out var range))
+                if (target is IMethodSymbol method && IsSlice(method, out var range))
                 {
                     // When an indexer on a span or string is used in conjunction with a range expression, the compiler translates
                     // this into a call to the "Slice" or "Substring" method.
