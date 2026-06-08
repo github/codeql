@@ -437,6 +437,114 @@ fn translation_rules() -> Vec<yeast::Rule> {
                 function: {func}
                 argument: (argument value: {closure}))
         ),
+        // ---- Control flow ----
+        rule!(
+            (if_statement condition: _* @cond body: @then_body else_branch: _? @else_stmts)
+            =>
+            (if_expr
+                condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
+                then: {then_body}
+                else: {..else_stmts})
+        ),
+        // Guard statement
+        rule!(
+            (guard_statement condition: _* @cond body: (block statement: _* @else_stmts))
+            =>
+            (guard_if_stmt
+                condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem}))
+                else: (block stmt: {..else_stmts}))
+        ),
+        // Ternary expression → if_expr
+        rule!(
+            (ternary_expression condition: @cond if_true: @then_val if_false: @else_val)
+            =>
+            (if_expr condition: {cond} then: {then_val} else: {else_val})
+        ),
+        // Switch statement
+        rule!(
+            (switch_statement expr: @val entry: (switch_entry)* @cases)
+            =>
+            (switch_expr value: {val} case: {..cases})
+        ),
+        // Switch entry with patterns and body
+        rule!(
+            (switch_entry pattern: (switch_pattern)* @pats statement: _* @body)
+            =>
+            (switch_case pattern: {..pats} body: (block stmt: {..body}))
+        ),
+        // Switch entry: default case (no patterns)
+        rule!(
+            (switch_entry default: (default_keyword) statement: _* @body)
+            =>
+            (switch_case body: (block stmt: {..body}))
+        ),
+        // Switch pattern — unwrap to inner pattern
+        rule!((switch_pattern (pattern)* @inner) => {..inner}),
+        // if case let x = expr — the pattern is taken as-is (no Optional wrapping)
+        rule!(
+            (if_let_binding "case" (value_binding_pattern) bound_identifier: @name _ @val)
+            =>
+            (pattern_guard_expr
+                value: {val}
+                pattern: (name_pattern identifier: (identifier #{name})))
+        ),
+        rule!(
+            (if_let_binding
+                pattern: (pattern binding: (value_binding_pattern) bound_identifier: @name)
+                value: @val)
+            =>
+            (pattern_guard_expr
+                value: {val}
+                pattern: (constructor_pattern
+                    constructor: (shorthand_member_access_expr member: (identifier "some"))
+                    argument: (name_pattern identifier: (identifier #{name}))))
+        ),
+        // Shorthand if let x (Swift 5.7+) — also semantically .some(x)
+        rule!(
+            (if_let_binding
+                pattern: (pattern binding: (value_binding_pattern) bound_identifier: @name))
+            =>
+            (pattern_guard_expr
+                value: (name_expr identifier: (identifier #{name}))
+                pattern: (constructor_pattern
+                    constructor: (shorthand_member_access_expr member: (identifier "some"))
+                    argument: (name_pattern identifier: (identifier #{name}))))
+        ),
+        // If-condition — unwrap (pass through the inner expression/pattern)
+        rule!((if_condition kind: @inner) => {inner}),
+        // ---- Loops ----
+        // For-in loop with optional where-clause guard.
+        rule!(
+            (for_statement
+                item: @pat
+                collection: @iter
+                where: (where_clause expr: @guard)?
+                body: (block statement: _* @body))
+            =>
+            (for_each_stmt
+                pattern: {pat}
+                iterable: {iter}
+                guard: {..guard}
+                body: (block stmt: {..body}))
+        ),
+        // While loop
+        rule!(
+            (while_statement condition: _* @cond body: (block statement: _* @body))
+            =>
+            (while_stmt condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem})) body: (block stmt: {..body}))
+        ),
+        // Repeat-while loop
+        rule!(
+            (repeat_while_statement condition: _* @cond body: (block statement: _* @body))
+            =>
+            (do_while_stmt condition: {..cond}.reduce_left(first -> {first}, acc, elem -> (binary_expr operator: (infix_operator "&&") left: {acc} right: {elem})) body: (block stmt: {..body}))
+        ),
+        // Labeled statement (e.g. `outer: for ...`). Strip the trailing ':' from the label token.
+        rule!((labeled_statement label: (statement_label) @lbl statement: @stmt) => {..{
+            let text = __yeast_ctx.ast.source_text(lbl.into());
+            let name = __yeast_ctx.literal("identifier", &text[..text.len() - 1]);
+            vec![__yeast_ctx.node("labeled_stmt", vec![("label", vec![name]), ("stmt", vec![stmt.into()])])]
+        }}),
         // ---- Fallbacks ----
         rule!(
             (_)

@@ -36,7 +36,27 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "if x > 0 {\n  print(x)\n}"
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-else
@@ -93,7 +113,42 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "if x > 0 {\n  print(x)\n} else {\n  print(-x)\n}"
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          else:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        unary_expr
+                          operand:
+                            name_expr
+                              identifier: identifier "x"
+                          operator: prefix_operator "-"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "x"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-else-if chain
@@ -170,7 +225,54 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "if x > 0 {\n  print(1)\n} else if x < 0 {\n  print(2)\n} else {\n  print(3)\n}"
+      stmt:
+        if_expr
+          condition:
+            binary_expr
+              operator: infix_operator ">"
+              left:
+                name_expr
+                  identifier: identifier "x"
+              right: int_literal "0"
+          else:
+            if_expr
+              condition:
+                binary_expr
+                  operator: infix_operator "<"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "0"
+              else:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "3"
+                      function:
+                        name_expr
+                          identifier: identifier "print"
+              then:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "2"
+                      function:
+                        name_expr
+                          identifier: identifier "print"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value: int_literal "1"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 If-let optional binding
@@ -214,7 +316,33 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "if let value = optional {\n  print(value)\n}"
+      stmt:
+        if_expr
+          condition:
+            pattern_guard_expr
+              pattern:
+                constructor_pattern
+                  argument:
+                    name_pattern
+                      identifier: identifier "value"
+                  constructor:
+                    shorthand_member_access_expr
+                      member: identifier "some"
+              value:
+                name_expr
+                  identifier: identifier "optional"
+          then:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "value"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
 
 ===
 Guard let
@@ -249,7 +377,24 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "guard let value = optional else { return }"
+      stmt:
+        guard_if_stmt
+          condition:
+            pattern_guard_expr
+              pattern:
+                constructor_pattern
+                  argument:
+                    name_pattern
+                      identifier: identifier "value"
+                  constructor:
+                    shorthand_member_access_expr
+                      member: identifier "some"
+              value:
+                name_expr
+                  identifier: identifier "optional"
+          else:
+            block
+              stmt: return_expr "return"
 
 ===
 Ternary expression
@@ -294,7 +439,20 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "y"
-          value: unsupported_node "x > 0 ? 1 : -1"
+          value:
+            if_expr
+              condition:
+                binary_expr
+                  operator: infix_operator ">"
+                  left:
+                    name_expr
+                      identifier: identifier "x"
+                  right: int_literal "0"
+              else:
+                unary_expr
+                  operand: int_literal "1"
+                  operator: prefix_operator "-"
+              then: int_literal "1"
 
 ===
 Switch statement
@@ -376,7 +534,45 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "switch x {\ncase 1:\n  print(\"one\")\ncase 2, 3:\n  print(\"two or three\")\ndefault:\n  print(\"other\")\n}"
+      stmt:
+        switch_expr
+          case:
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"one\""
+                      function:
+                        name_expr
+                          identifier: identifier "print"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"two or three\""
+                      function:
+                        name_expr
+                          identifier: identifier "print"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value: string_literal "\"other\""
+                      function:
+                        name_expr
+                          identifier: identifier "print"
+          value:
+            name_expr
+              identifier: identifier "x"
 
 ===
 Switch with binding pattern
@@ -466,4 +662,35 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "switch shape {\ncase .circle(let r):\n  print(r)\ncase .square(let s):\n  print(s)\n}"
+      stmt:
+        switch_expr
+          case:
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "r"
+                      function:
+                        name_expr
+                          identifier: identifier "print"
+            switch_case
+              body:
+                block
+                  stmt:
+                    call_expr
+                      argument:
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "s"
+                      function:
+                        name_expr
+                          identifier: identifier "print"
+          value:
+            name_expr
+              identifier: identifier "shape"
