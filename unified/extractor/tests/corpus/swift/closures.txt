@@ -57,7 +57,24 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "f"
-          value: unsupported_node "{ (x: Int) -> Int in x * 2 }"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    binary_expr
+                      operator: infix_operator "*"
+                      left:
+                        name_expr
+                          identifier: identifier "x"
+                      right: int_literal "2"
+              parameter:
+                parameter
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+                  type: unsupported_node "Int"
+              return_type: unsupported_node "Int"
 
 ===
 Closure with shorthand parameters
@@ -97,7 +114,19 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "f"
-          value: unsupported_node "{ $0 + $1 }"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    binary_expr
+                      operator: infix_operator "+"
+                      left:
+                        name_expr
+                          identifier: identifier "$0"
+                      right:
+                        name_expr
+                          identifier: identifier "$1"
 
 ===
 Trailing closure
@@ -131,7 +160,27 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "xs.map { $0 * 2 }"
+      stmt:
+        call_expr
+          argument:
+            argument
+              value:
+                function_expr
+                  body:
+                    block
+                      stmt:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "$0"
+                          right: int_literal "2"
+          function:
+            member_access_expr
+              member: identifier "map"
+              target:
+                name_expr
+                  identifier: identifier "xs"
 
 ===
 Closure with capture list
@@ -188,7 +237,22 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "f"
-          value: unsupported_node "{ [weak self] in self?.doThing() }"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    call_expr
+                      function:
+                        member_access_expr
+                          member: identifier "doThing"
+                          target: unsupported_node "self?"
+              capture_declaration:
+                variable_declaration
+                  modifier: unsupported_node "weak" <-- ERROR: The field variable_declaration.modifier should contain modifier, but got unsupported_node
+                  pattern:
+                    name_pattern
+                      identifier: identifier "self"
 
 ===
 Multi-statement closure
@@ -269,4 +333,35 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "f"
-          value: unsupported_node "{ (x: Int) -> Int in\n  let y = x + 1\n  return y * 2\n}"
+          value:
+            function_expr
+              body:
+                block
+                  stmt:
+                    variable_declaration
+                      modifier: modifier "let"
+                      pattern:
+                        name_pattern
+                          identifier: identifier "y"
+                      value:
+                        binary_expr
+                          operator: infix_operator "+"
+                          left:
+                            name_expr
+                              identifier: identifier "x"
+                          right: int_literal "1"
+                    return_expr
+                      value:
+                        binary_expr
+                          operator: infix_operator "*"
+                          left:
+                            name_expr
+                              identifier: identifier "y"
+                          right: int_literal "2"
+              parameter:
+                parameter
+                  pattern:
+                    name_pattern
+                      identifier: identifier "x"
+                  type: unsupported_node "Int"
+              return_type: unsupported_node "Int"
