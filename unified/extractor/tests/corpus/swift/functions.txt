@@ -32,7 +32,19 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "func greet() {\n  print(\"hello\")\n}"
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value: string_literal "\"hello\""
+                  function:
+                    name_expr
+                      identifier: identifier "print"
+          name: identifier "greet"
 
 ===
 Function with parameters and return type
@@ -96,7 +108,34 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "func add(_ a: Int, _ b: Int) -> Int {\n  return a + b\n}"
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    binary_expr
+                      operator: infix_operator "+"
+                      left:
+                        name_expr
+                          identifier: identifier "a"
+                      right:
+                        name_expr
+                          identifier: identifier "b"
+          name: identifier "add"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "a"
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "b"
+          return_type: unsupported_node "Int"
 
 ===
 Function with named parameters
@@ -143,7 +182,27 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "func greet(person name: String) {\n  print(name)\n}"
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "name"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
+          name: identifier "greet"
+          parameter:
+            parameter
+              external_name: identifier "person"
+              pattern:
+                name_pattern
+                  identifier: identifier "name"
 
 ===
 Function with default parameter value
@@ -192,7 +251,26 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "func greet(name: String = \"world\") {\n  print(name)\n}"
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                call_expr
+                  argument:
+                    argument
+                      value:
+                        name_expr
+                          identifier: identifier "name"
+                  function:
+                    name_expr
+                      identifier: identifier "print"
+          name: identifier "greet"
+          parameter:
+            parameter
+              pattern:
+                name_pattern
+                  identifier: identifier "name"
 
 ===
 Variadic function
@@ -258,7 +336,35 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "func sum(_ values: Int...) -> Int {\n  return values.reduce(0, +)\n}"
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    call_expr
+                      argument:
+                        argument
+                          value: int_literal "0"
+                        argument
+                          value:
+                            name_expr
+                              identifier: identifier "+"
+                      function:
+                        member_access_expr
+                          member: identifier "reduce"
+                          target:
+                            name_expr
+                              identifier: identifier "values"
+          name: identifier "sum"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "values"
+          return_type: unsupported_node "Int"
 
 ===
 Function call
@@ -287,7 +393,16 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "foo(1, 2)"
+      stmt:
+        call_expr
+          argument:
+            argument
+              value: int_literal "1"
+            argument
+              value: int_literal "2"
+          function:
+            name_expr
+              identifier: identifier "foo"
 
 ===
 Function call with labelled arguments
@@ -319,7 +434,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "greet(person: \"Bob\")"
+      stmt:
+        call_expr
+          argument:
+            argument
+              name: identifier "person"
+              value: string_literal "\"Bob\""
+          function:
+            name_expr
+              identifier: identifier "greet"
 
 ===
 Method call
@@ -351,7 +474,17 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "list.append(1)"
+      stmt:
+        call_expr
+          argument:
+            argument
+              value: int_literal "1"
+          function:
+            member_access_expr
+              member: identifier "append"
+              target:
+                name_expr
+                  identifier: identifier "list"
 
 ===
 Generic function
@@ -404,4 +537,20 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "func identity<T>(_ x: T) -> T {\n  return x\n}"
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value:
+                    name_expr
+                      identifier: identifier "x"
+          name: identifier "identity"
+          parameter:
+            parameter
+              external_name: identifier "_"
+              pattern:
+                name_pattern
+                  identifier: identifier "x"
+          return_type: unsupported_node "T"

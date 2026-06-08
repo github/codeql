@@ -89,7 +89,10 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "n"
-          value: unsupported_node "obj?.foo?.bar"
+          value:
+            member_access_expr
+              member: identifier "bar"
+              target: unsupported_node "obj?.foo?"
 
 ===
 Force unwrap
@@ -211,7 +214,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "func read() throws -> String {\n  return \"\"\n}"
+      stmt:
+        function_declaration
+          body:
+            block
+              stmt:
+                return_expr
+                  value: string_literal "\"\""
+          name: identifier "read"
+          return_type: unsupported_node "String"
 
 ===
 Do-catch
