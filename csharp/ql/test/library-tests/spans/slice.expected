@@ -31,9 +31,11 @@ methodCalls
 | Slice.cs:11:20:11:26 | call to method Substring | Substring(int, int) |
 | Slice.cs:12:20:12:27 | call to method Substring | Substring(int, int) |
 | Slice.cs:13:20:13:24 | call to method Substring | Substring(int, int) |
+| Slice.cs:16:20:16:27 | call to method Substring | Substring(int, int) |
 | Slice.cs:19:22:19:29 | call to method Slice | Slice(int, int) |
 | Slice.cs:20:22:20:28 | call to method Slice | Slice(int, int) |
 | Slice.cs:21:22:21:28 | call to method Slice | Slice(int, int) |
 | Slice.cs:22:22:22:29 | call to method Slice | Slice(int, int) |
 | Slice.cs:23:22:23:30 | call to method Slice | Slice(int, int) |
 | Slice.cs:24:22:24:27 | call to method Slice | Slice(int, int) |
+| Slice.cs:27:22:27:31 | call to method Slice | Slice(int, int) |
