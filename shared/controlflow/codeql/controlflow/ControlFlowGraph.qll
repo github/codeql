@@ -2100,6 +2100,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         module Consistency {
           /** Holds if the consistency query `query` has `results` results. */
           query predicate consistencyOverview(string query, int results) {
+            query = "siblingsWithSameIndexInDefaultCfg" and
+            results =
+              strictcount(AstNode parent, AstNode child1, AstNode child2, int i |
+                siblingsWithSameIndexInDefaultCfg(parent, child1, child2, i)
+              )
+            or
             query = "deadEnd" and results = strictcount(ControlFlowNode node | deadEnd(node))
             or
             query = "nonUniqueEnclosingCallable" and
@@ -2143,6 +2149,20 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             query = "selfLoop" and
             results = strictcount(ControlFlowNode node, SuccessorType t | selfLoop(node, t))
+          }
+
+          /**
+           * Holds if `parent` uses default left-to-right control flow and has
+           * two different children `child1` and `child2` at the same index
+           * `i`.
+           */
+          query predicate siblingsWithSameIndexInDefaultCfg(
+            AstNode parent, AstNode child1, AstNode child2, int i
+          ) {
+            defaultCfg(parent) and
+            getChild(parent, i) = child1 and
+            getChild(parent, i) = child2 and
+            child1 != child2
           }
 
           /**
