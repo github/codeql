@@ -203,7 +203,7 @@ module Ast implements AstSig<Location> {
   final private class FinalTryStmt = CS::TryStmt;
 
   class TryStmt extends FinalTryStmt {
-    Stmt getBody() { result = this.getBlock() }
+    Stmt getBody(int index) { index = 0 and result = this.getBlock() }
 
     CatchClause getCatch(int index) { result = this.getCatchClause(index) }
 
