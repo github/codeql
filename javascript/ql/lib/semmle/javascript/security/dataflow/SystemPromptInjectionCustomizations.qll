@@ -56,7 +56,7 @@ module SystemPromptInjection {
     PromptContentSink() {
       this = OpenAI::getSystemOrAssistantPromptNode().asSink()
       or
-      this = AgentSDK::getSystemOrAssistantPromptNode().asSink()
+      this = AgentSdk::getSystemOrAssistantPromptNode().asSink()
       or
       this = Anthropic::getSystemOrAssistantPromptNode().asSink()
       or
@@ -65,12 +65,6 @@ module SystemPromptInjection {
       this = OpenRouter::getSystemOrAssistantPromptNode().asSink()
       or
       this = OpenRouterAgent::getSystemOrAssistantPromptNode().asSink()
-    }
-  }
-
-  private class ConstCompareAsSanitizerGuard extends Sanitizer {
-    ConstCompareAsSanitizerGuard() {
-      this = DataFlow::MakeBarrierGuard<ConstCompareBarrierGuard>::getABarrierNode()
     }
   }
 
@@ -89,22 +83,6 @@ module SystemPromptInjection {
         obj.getAPropertySource("role").mayHaveStringValue("user") and
         this = obj.getAPropertyWrite("content").getRhs()
       )
-    }
-  }
-
-  /**
-   * A comparison with a constant, considered as a sanitizer-guard.
-   */
-  private class ConstCompareBarrierGuard extends DataFlow::ValueNode {
-    override EqualityTest astNode;
-
-    ConstCompareBarrierGuard() { astNode.hasOperands(_, any(ConstantString cs)) }
-
-    predicate blocksExpr(boolean outcome, Expr e) {
-      outcome = astNode.getPolarity() and
-      e = astNode.getLeftOperand() and
-      e = astNode.getAnOperand() and
-      not e instanceof ConstantString
     }
   }
 }

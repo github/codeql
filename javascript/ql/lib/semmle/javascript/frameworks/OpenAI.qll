@@ -207,7 +207,7 @@ module OpenAI {
  * This module retains only role-filtered sinks, callback-based sinks, and
  * unsafe agent detection that MaD cannot express.
  */
-module AgentSDK {
+module AgentSdk {
   /** Gets a reference to the OpenAI Agents SDK module. */
   API::Node moduleRef() {
     result = API::moduleImport("@openai/agents")

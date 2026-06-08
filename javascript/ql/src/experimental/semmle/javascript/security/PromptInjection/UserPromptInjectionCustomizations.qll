@@ -60,27 +60,11 @@ module UserPromptInjection {
       or
       this = GoogleGenAI::getUserPromptNode().asSink()
       or
-      this = AgentSDK::getUserPromptNode().asSink()
+      this = AgentSdk::getUserPromptNode().asSink()
       or
       this = OpenRouter::getUserPromptNode().asSink()
       or
       this = OpenRouterAgent::getUserPromptNode().asSink()
-    }
-  }
-
-  /**
-   * A comparison with a constant, considered as a sanitizer-guard.
-   */
-  private class ConstCompareBarrierGuard extends DataFlow::ValueNode {
-    override EqualityTest astNode;
-
-    ConstCompareBarrierGuard() { astNode.hasOperands(_, any(ConstantString cs)) }
-
-    predicate blocksExpr(boolean outcome, Expr e) {
-      outcome = astNode.getPolarity() and
-      e = astNode.getLeftOperand() and
-      e = astNode.getAnOperand() and
-      not e instanceof ConstantString
     }
   }
 }
