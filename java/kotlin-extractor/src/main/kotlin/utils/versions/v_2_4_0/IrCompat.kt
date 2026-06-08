@@ -49,15 +49,34 @@ fun IrMemberAccessExpression<*>.codeQlPutValueArgument(index: Int, value: IrExpr
 }
 
 // IrMemberAccessExpression: extensionReceiver
+// For IrCall/IrFunctionReference, look at symbol.owner (IrFunction) directly.
+// For IrPropertyReference, symbol.owner is IrProperty; use the getter's parameters instead.
 var IrMemberAccessExpression<*>.codeQlExtensionReceiver: IrExpression?
     get() {
-        val erp = symbol.owner.let { it as? IrFunction }?.codeQlExtensionReceiverParameter ?: return null
-        return arguments[erp.indexInParameters]
+        val erp = extensionReceiverParameterIndex() ?: return null
+        return arguments[erp]
     }
     set(value) {
-        val erp = symbol.owner.let { it as? IrFunction }?.codeQlExtensionReceiverParameter ?: return
-        arguments[erp.indexInParameters] = value
+        val erp = extensionReceiverParameterIndex() ?: return
+        arguments[erp] = value
     }
+
+private fun IrMemberAccessExpression<*>.extensionReceiverParameterIndex(): Int? {
+    // Direct function owner (IrCall, IrFunctionReference, etc.)
+    (symbol.owner as? IrFunction)?.codeQlExtensionReceiverParameter?.let {
+        return it.indexInParameters
+    }
+    // Property reference: look at getter or setter function
+    (this as? org.jetbrains.kotlin.ir.expressions.IrPropertyReference)?.let { propRef ->
+        propRef.getter?.owner?.codeQlExtensionReceiverParameter?.let {
+            return it.indexInParameters
+        }
+        propRef.setter?.owner?.codeQlExtensionReceiverParameter?.let {
+            return it.indexInParameters
+        }
+    }
+    return null
+}
 
 // IrMemberAccessExpression: typeArgumentsCount
 val IrMemberAccessExpression<*>.codeQlTypeArgumentsCount: Int
