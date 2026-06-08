@@ -11,6 +11,7 @@
 
 private import javascript
 
+/** Provides classes modeling prompt-injection sources of the `@google/genai` package. */
 module GoogleGenAI {
   /** Gets a reference to the `GoogleGenAI` client instance. */
   private API::Node clientRef() {

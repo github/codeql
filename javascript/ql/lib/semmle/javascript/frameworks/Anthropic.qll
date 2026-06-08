@@ -11,6 +11,7 @@
 
 private import javascript
 
+/** Provides classes modeling prompt-injection sources of the `@anthropic-ai/sdk` package. */
 module Anthropic {
   /** Gets a reference to the `Anthropic` client instance. */
   private API::Node classRef() { result = API::moduleImport("@anthropic-ai/sdk").getInstance() }

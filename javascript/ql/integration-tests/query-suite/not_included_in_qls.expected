@@ -57,6 +57,7 @@ ql/javascript/ql/src/definitions.ql
 ql/javascript/ql/src/experimental/Security/CWE-094-dataURL/CodeInjection.ql
 ql/javascript/ql/src/experimental/Security/CWE-099/EnvValueAndKeyInjection.ql
 ql/javascript/ql/src/experimental/Security/CWE-099/EnvValueInjection.ql
+ql/javascript/ql/src/experimental/Security/CWE-1427/UserPromptInjection.ql
 ql/javascript/ql/src/experimental/Security/CWE-340/TokenBuiltFromUUID.ql
 ql/javascript/ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerification.ql
 ql/javascript/ql/src/experimental/Security/CWE-347/decodeJwtWithoutVerificationLocalSource.ql

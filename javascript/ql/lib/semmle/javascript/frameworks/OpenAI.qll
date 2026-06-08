@@ -16,6 +16,7 @@ private predicate isSystemOrDevMessage(API::Node msg) {
   msg.getMember("role").asSink().mayHaveStringValue(["system", "developer", "assistant"])
 }
 
+/** Provides classes modeling prompt-injection sources of the `openai` and `openai-guardrails` packages. */
 module OpenAI {
   /** Gets a reference to all OpenAI client instances. */
   private API::Node allClients() {
@@ -207,6 +208,7 @@ module OpenAI {
  * unsafe agent detection that MaD cannot express.
  */
 module AgentSDK {
+  /** Gets a reference to the OpenAI Agents SDK module. */
   API::Node moduleRef() {
     result = API::moduleImport("@openai/agents")
     or
