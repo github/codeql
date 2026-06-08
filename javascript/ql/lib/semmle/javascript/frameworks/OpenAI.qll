@@ -226,7 +226,7 @@ module AgentSdk {
    * Gets role-filtered and callback-based system prompt sinks that MaD cannot express.
    */
   API::Node getSystemOrAssistantPromptNode() {
-    // Agent({ instructions: (runContext) => returnValue }) — callback form
+    // Agent({ instructions: (runContext) => returnValue }) - callback form
     result = moduleRef().getMember("Agent").getParameter(0).getMember("instructions").getReturn()
     or
     // run(agent, [{ role: "system"/"developer", content: ... }])
