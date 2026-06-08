@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
