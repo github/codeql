@@ -1063,8 +1063,8 @@ class FuncTypeExpr extends @functypeexpr, TypeExpr, ScopeNode, FieldParent {
    */
   ResultVariableDecl getAResultDecl() { result = this.getResultDecl(_) }
 
-  /** Gets the number of results of this function type. */
-  int getNumResult() { result = count(this.getAResultDecl()) }
+  /** Gets the number of result parameters of this function type. */
+  int getNumResult() { result = count(this.getAResultDecl().getANameExpr()) }
 
   /**
    * Gets the result of this function type, if there is only one.
