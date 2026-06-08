@@ -1,3 +1,4 @@
+methodArguments
 | Slice.cs:8:20:8:26 | call to method Substring | Substring(int, int) | 0 | 1 |
 | Slice.cs:8:20:8:26 | call to method Substring | Substring(int, int) | 1 | access to parameter a |
 | Slice.cs:9:20:9:25 | call to method Substring | Substring(int, int) | 0 | 0 |
@@ -10,15 +11,29 @@
 | Slice.cs:12:20:12:27 | call to method Substring | Substring(int, int) | 1 | ^access to parameter b |
 | Slice.cs:13:20:13:24 | call to method Substring | Substring(int, int) | 0 | 0 |
 | Slice.cs:13:20:13:24 | call to method Substring | Substring(int, int) | 1 | ^0 |
-| Slice.cs:16:22:16:29 | call to method Slice | Slice(int, int) | 0 | 5 |
-| Slice.cs:16:22:16:29 | call to method Slice | Slice(int, int) | 1 | access to parameter a |
-| Slice.cs:17:22:17:28 | call to method Slice | Slice(int, int) | 0 | 0 |
-| Slice.cs:17:22:17:28 | call to method Slice | Slice(int, int) | 1 | 6 |
-| Slice.cs:18:22:18:28 | call to method Slice | Slice(int, int) | 0 | 7 |
-| Slice.cs:18:22:18:28 | call to method Slice | Slice(int, int) | 1 | ^0 |
-| Slice.cs:19:22:19:29 | call to method Slice | Slice(int, int) | 0 | 0 |
-| Slice.cs:19:22:19:29 | call to method Slice | Slice(int, int) | 1 | ^8 |
-| Slice.cs:20:22:20:30 | call to method Slice | Slice(int, int) | 0 | access to parameter a |
-| Slice.cs:20:22:20:30 | call to method Slice | Slice(int, int) | 1 | ^access to parameter b |
-| Slice.cs:21:22:21:27 | call to method Slice | Slice(int, int) | 0 | 0 |
-| Slice.cs:21:22:21:27 | call to method Slice | Slice(int, int) | 1 | ^0 |
+| Slice.cs:19:22:19:29 | call to method Slice | Slice(int, int) | 0 | 5 |
+| Slice.cs:19:22:19:29 | call to method Slice | Slice(int, int) | 1 | access to parameter a |
+| Slice.cs:20:22:20:28 | call to method Slice | Slice(int, int) | 0 | 0 |
+| Slice.cs:20:22:20:28 | call to method Slice | Slice(int, int) | 1 | 6 |
+| Slice.cs:21:22:21:28 | call to method Slice | Slice(int, int) | 0 | 7 |
+| Slice.cs:21:22:21:28 | call to method Slice | Slice(int, int) | 1 | ^0 |
+| Slice.cs:22:22:22:29 | call to method Slice | Slice(int, int) | 0 | 0 |
+| Slice.cs:22:22:22:29 | call to method Slice | Slice(int, int) | 1 | ^8 |
+| Slice.cs:23:22:23:30 | call to method Slice | Slice(int, int) | 0 | access to parameter a |
+| Slice.cs:23:22:23:30 | call to method Slice | Slice(int, int) | 1 | ^access to parameter b |
+| Slice.cs:24:22:24:27 | call to method Slice | Slice(int, int) | 0 | 0 |
+| Slice.cs:24:22:24:27 | call to method Slice | Slice(int, int) | 1 | ^0 |
+methodCalls
+| Slice.cs:3:14:3:14 | call to method <object initializer> | <object initializer>() |
+| Slice.cs:8:20:8:26 | call to method Substring | Substring(int, int) |
+| Slice.cs:9:20:9:25 | call to method Substring | Substring(int, int) |
+| Slice.cs:10:20:10:25 | call to method Substring | Substring(int, int) |
+| Slice.cs:11:20:11:26 | call to method Substring | Substring(int, int) |
+| Slice.cs:12:20:12:27 | call to method Substring | Substring(int, int) |
+| Slice.cs:13:20:13:24 | call to method Substring | Substring(int, int) |
+| Slice.cs:19:22:19:29 | call to method Slice | Slice(int, int) |
+| Slice.cs:20:22:20:28 | call to method Slice | Slice(int, int) |
+| Slice.cs:21:22:21:28 | call to method Slice | Slice(int, int) |
+| Slice.cs:22:22:22:29 | call to method Slice | Slice(int, int) |
+| Slice.cs:23:22:23:30 | call to method Slice | Slice(int, int) |
+| Slice.cs:24:22:24:27 | call to method Slice | Slice(int, int) |

@@ -12,6 +12,9 @@ public class C
         var sub5 = s[a..^b];
         var sub6 = s[..];
 
+        Range range = 1..a;
+        var sub7 = s[range];
+
         Span<int> sp = null;
         var slice1 = sp[5..a];
         var slice2 = sp[..6];
@@ -19,5 +22,8 @@ public class C
         var slice4 = sp[..^8];
         var slice5 = sp[a..^b];
         var slice6 = sp[..];
+
+        Range range2 = 1..a;
+        var slice7 = sp[range2];
     }
 }

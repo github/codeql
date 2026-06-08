@@ -7,7 +7,11 @@ private string printExpr(Expr e) {
   result = e.toString()
 }
 
-query predicate methodCalls(MethodCall mc, string m, int i, string arg) {
-  m = mc.getTarget().toStringWithTypes() and
+query predicate methodArguments(MethodCall mc, string target, int i, string arg) {
+  target = mc.getTarget().toStringWithTypes() and
   arg = printExpr(mc.getArgument(i))
+}
+
+query predicate methodCalls(MethodCall mc, string target) {
+  target = mc.getTarget().toStringWithTypes()
 }
