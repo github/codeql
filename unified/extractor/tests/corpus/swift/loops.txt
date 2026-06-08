@@ -55,7 +55,12 @@ top_level
           pattern:
             name_pattern
               identifier: identifier "x"
-          iterable: unsupported_node "[1, 2, 3]"
+          iterable:
+            array_literal
+              element:
+                int_literal "1"
+                int_literal "2"
+                int_literal "3"
 
 ===
 For-in over range

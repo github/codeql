@@ -246,7 +246,7 @@ top_level
                       function:
                         member_access_expr
                           member: identifier "doThing"
-                          target: unsupported_node "self?"
+                          target: unsupported_node "self"
               capture_declaration:
                 variable_declaration
                   modifier: unsupported_node "weak" <-- ERROR: The field variable_declaration.modifier should contain modifier, but got unsupported_node
