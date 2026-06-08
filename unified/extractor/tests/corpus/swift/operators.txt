@@ -18,7 +18,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a + b"
+      stmt:
+        binary_expr
+          operator: infix_operator "+"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"
 
 ===
 Subtraction
@@ -40,7 +48,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a - b"
+      stmt:
+        binary_expr
+          operator: infix_operator "-"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"
 
 ===
 Multiplication
@@ -62,7 +78,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a * b"
+      stmt:
+        binary_expr
+          operator: infix_operator "*"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"
 
 ===
 Division
@@ -84,7 +108,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a / b"
+      stmt:
+        binary_expr
+          operator: infix_operator "/"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"
 
 ===
 Operator precedence: addition and multiplication
@@ -110,7 +142,21 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a + b * c"
+      stmt:
+        binary_expr
+          operator: infix_operator "+"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            binary_expr
+              operator: infix_operator "*"
+              left:
+                name_expr
+                  identifier: identifier "b"
+              right:
+                name_expr
+                  identifier: identifier "c"
 
 ===
 Parenthesised expression
@@ -140,7 +186,13 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "(a + b) * c"
+      stmt:
+        binary_expr
+          operator: infix_operator "*"
+          left: tuple_expr "(a + b)"
+          right:
+            name_expr
+              identifier: identifier "c"
 
 ===
 Comparison
@@ -162,7 +214,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a < b"
+      stmt:
+        binary_expr
+          operator: infix_operator "<"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"
 
 ===
 Equality
@@ -184,7 +244,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a == b"
+      stmt:
+        binary_expr
+          operator: infix_operator "=="
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"
 
 ===
 Logical and
@@ -206,7 +274,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a && b"
+      stmt:
+        binary_expr
+          operator: infix_operator "&&"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"
 
 ===
 Logical or
@@ -228,7 +304,15 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "a || b"
+      stmt:
+        binary_expr
+          operator: infix_operator "||"
+          left:
+            name_expr
+              identifier: identifier "a"
+          right:
+            name_expr
+              identifier: identifier "b"
 
 ===
 Logical not
@@ -249,7 +333,12 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "!a"
+      stmt:
+        unary_expr
+          operand:
+            name_expr
+              identifier: identifier "a"
+          operator: prefix_operator "!"
 
 ===
 Range operator
@@ -271,4 +360,8 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "1...10"
+      stmt:
+        binary_expr
+          operator: infix_operator "..."
+          left: int_literal "1"
+          right: int_literal "10"

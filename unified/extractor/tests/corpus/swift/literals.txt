@@ -35,7 +35,10 @@ source_file
 top_level
   body:
     block
-      stmt: unsupported_node "-7"
+      stmt:
+        unary_expr
+          operand: int_literal "7"
+          operator: prefix_operator "-"
 
 ===
 Floating-point literal
