@@ -932,6 +932,10 @@ module Public {
 
     ResultNode() {
       exists(FuncDef fd |
+        // When a function has any (named) result variables, then the
+        // `ReadResultInstruction`s at the end of the function are the correct
+        // result nodes.
+        not exists(fd.getAResultVar()) and
         exists(IR::ReturnInstruction ret | ret.getRoot() = fd | insn = ret.getResult(i))
         or
         insn.(IR::ReadResultInstruction).reads(fd.getResultVar(i))

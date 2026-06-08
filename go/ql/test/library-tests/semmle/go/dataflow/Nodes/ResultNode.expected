@@ -6,4 +6,3 @@
 | resultParameters.go:13:9:13:9 | 3 | Result node with index 0 |
 | resultParameters.go:16:26:16:26 | implicit read of r | Result node with index 0 |
 | resultParameters.go:21:38:21:38 | implicit read of r | Result node with index 0 |
-| resultParameters.go:24:10:24:10 | 1 | Result node with index 0 |

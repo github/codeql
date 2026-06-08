@@ -21,7 +21,7 @@ func resultParameter1() (r int) { // $ Alert[result-node] // implicit reads of r
 func resultParameter2(selector int) (r int) { // $ Alert[result-node] // implicit reads of result parameters are located at the result parameter declaration
 	r = 0
 	if selector == 1 {
-		return 1 // $ SPURIOUS: Alert[result-node]
+		return 1
 	}
 	return
 }
