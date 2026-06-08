@@ -13,16 +13,13 @@ private import javascript
 
 module Anthropic {
   /** Gets a reference to the `Anthropic` client instance. */
-  private API::Node classRef() {
-    result = API::moduleImport("@anthropic-ai/sdk").getInstance()
-  }
+  private API::Node classRef() { result = API::moduleImport("@anthropic-ai/sdk").getInstance() }
 
   /** Gets a reference to the messages.create params (both stable and beta). */
   private API::Node messagesCreateParams() {
     result = classRef().getMember("messages").getMember("create").getParameter(0)
     or
-    result =
-      classRef().getMember("beta").getMember("messages").getMember("create").getParameter(0)
+    result = classRef().getMember("beta").getMember("messages").getMember("create").getParameter(0)
   }
 
   /**

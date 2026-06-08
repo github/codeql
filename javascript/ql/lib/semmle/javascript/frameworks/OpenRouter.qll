@@ -91,7 +91,8 @@ module OpenRouterAgent {
     result = moduleRef().getMember("callModel").getParameter(0)
     or
     // import { OpenRouter } from '@openrouter/agent'; new OpenRouter(...).callModel({ ... })
-    result = moduleRef().getMember("OpenRouter").getInstance().getMember("callModel").getParameter(0)
+    result =
+      moduleRef().getMember("OpenRouter").getInstance().getMember("callModel").getParameter(0)
   }
 
   /**

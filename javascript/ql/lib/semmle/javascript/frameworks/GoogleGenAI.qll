@@ -14,8 +14,7 @@ private import javascript
 module GoogleGenAI {
   /** Gets a reference to the `GoogleGenAI` client instance. */
   private API::Node clientRef() {
-    result =
-      API::moduleImport("@google/genai").getMember("GoogleGenAI").getInstance()
+    result = API::moduleImport("@google/genai").getMember("GoogleGenAI").getInstance()
   }
 
   /**

@@ -225,17 +225,11 @@ module AgentSDK {
    */
   API::Node getSystemOrAssistantPromptNode() {
     // Agent({ instructions: (runContext) => returnValue }) — callback form
-    result = moduleRef()
-        .getMember("Agent")
-        .getParameter(0)
-        .getMember("instructions")
-        .getReturn()
+    result = moduleRef().getMember("Agent").getParameter(0).getMember("instructions").getReturn()
     or
     // run(agent, [{ role: "system"/"developer", content: ... }])
     exists(API::Node msg |
-      msg = run()
-          .getParameter(1)
-          .getArrayElement() and
+      msg = run().getParameter(1).getArrayElement() and
       isSystemOrDevMessage(msg)
     |
       result = msg.getMember("content")
@@ -270,18 +264,11 @@ module AgentSDK {
     or
     // GuardrailAgent.create(config, ...) without input/pre_flight guardrails
     exists(API::Node createCall |
-      createCall =
-        moduleRef()
-            .getMember("GuardrailAgent")
-            .getMember("create") and
+      createCall = moduleRef().getMember("GuardrailAgent").getMember("create") and
       result = createCall.getParameter(0) and
       exists(result.getMember("version")) and
-      not exists(
-        result.getMember("input").getMember("guardrails").getArrayElement()
-      ) and
-      not exists(
-        result.getMember("pre_flight").getMember("guardrails").getArrayElement()
-      )
+      not exists(result.getMember("input").getMember("guardrails").getArrayElement()) and
+      not exists(result.getMember("pre_flight").getMember("guardrails").getArrayElement())
     )
   }
 }

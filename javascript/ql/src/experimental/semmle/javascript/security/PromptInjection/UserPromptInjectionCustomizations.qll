@@ -5,7 +5,6 @@
  */
 
 import javascript
-
 private import semmle.javascript.dataflow.DataFlow
 private import semmle.javascript.Concepts
 private import semmle.javascript.security.dataflow.RemoteFlowSources
@@ -30,8 +29,7 @@ module UserPromptInjection {
   /**
    * A data flow sink for "user prompt injection" vulnerabilities.
    */
-  abstract class Sink extends DataFlow::Node { 
-  }
+  abstract class Sink extends DataFlow::Node { }
 
   /**
    * A sanitizer for "user prompt injection" vulnerabilities.
@@ -41,8 +39,7 @@ module UserPromptInjection {
   /**
    * An active threat-model source, considered as a flow source.
    */
-  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource {
-  }
+  private class ActiveThreatModelSourceAsSource extends Source, ActiveThreatModelSource { }
 
   /**
    * A prompt to an AI model, considered as a flow sink.
@@ -52,9 +49,7 @@ module UserPromptInjection {
   }
 
   private class SinkFromModel extends Sink {
-    SinkFromModel() {
-      this = ModelOutput::getASinkNode("user-prompt-injection").asSink()
-    }
+    SinkFromModel() { this = ModelOutput::getASinkNode("user-prompt-injection").asSink() }
   }
 
   private class PromptContentSink extends Sink {
@@ -76,14 +71,10 @@ module UserPromptInjection {
   /**
    * A comparison with a constant, considered as a sanitizer-guard.
    */
-  private class ConstCompareBarrierGuard extends DataFlow::ValueNode
-  {
+  private class ConstCompareBarrierGuard extends DataFlow::ValueNode {
     override EqualityTest astNode;
 
-    ConstCompareBarrierGuard()
-    {
-      astNode.hasOperands(_, any(ConstantString cs))
-    }
+    ConstCompareBarrierGuard() { astNode.hasOperands(_, any(ConstantString cs)) }
 
     predicate blocksExpr(boolean outcome, Expr e) {
       outcome = astNode.getPolarity() and
