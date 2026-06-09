@@ -85,7 +85,7 @@ class SsaVariable extends TSsaDefinition {
   IR::Instruction getAUse() { result = this.getAUseIn(_) }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = this.getDefinition().prettyPrintRef() }
+  string toString() { result = this.getDefinition().toString() }
 
   /** Gets the location of this SSA variable. */
   Location getLocation() { result = this.getDefinition().getLocation() }
@@ -203,7 +203,7 @@ class SsaExplicitDefinition extends SsaDefinition, TExplicitDef {
     )
   }
 
-  override string prettyPrintDef() { result = "definition of " + this.getSourceVariable() }
+  override string prettyPrintDef() { result = "SSA def(" + this.getSourceVariable() + ")" }
 
   override Location getLocation() { result = this.getInstruction().getLocation() }
 }
@@ -254,7 +254,7 @@ class SsaVariableCapture extends SsaImplicitDefinition, TCapture {
 
   override string getKind() { result = "capture" }
 
-  override string prettyPrintDef() { result = "capture variable " + this.getSourceVariable() }
+  override string prettyPrintDef() { result = "SSA def(" + this.getSourceVariable() + ")" }
 
   override Location getLocation() {
     exists(ReachableBasicBlock bb, int i | this.definesAt(bb, i, _) |
@@ -300,9 +300,7 @@ class SsaPhiNode extends SsaPseudoDefinition, TPhi {
 
   override string getKind() { result = "phi" }
 
-  override string prettyPrintDef() {
-    result = this.getSourceVariable() + " = phi(" + this.ppInputs() + ")"
-  }
+  override string prettyPrintDef() { result = "SSA phi(" + this.getSourceVariable() + ")" }
 
   override Location getLocation() { result = this.getBasicBlock().getLocation() }
 }
