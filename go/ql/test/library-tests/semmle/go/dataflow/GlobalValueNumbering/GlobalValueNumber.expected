@@ -27,9 +27,7 @@
 | main.go:29:8:29:8 | 5 | main.go:29:8:29:8 | 5 |
 | main.go:30:9:30:9 | 6 | main.go:30:9:30:9 | 6 |
 | main.go:30:9:30:9 | SSA def(res) | main.go:30:9:30:9 | 6 |
-| main.go:33:15:33:17 | SSA def(res) | main.go:10:7:10:7 | 0 |
 | main.go:33:15:33:17 | zero value for res | main.go:10:7:10:7 | 0 |
-| main.go:34:2:34:4 | SSA def(res) | main.go:34:8:34:8 | 7 |
 | main.go:34:8:34:8 | 7 | main.go:34:8:34:8 | 7 |
 | main.go:35:8:37:4 | function call | main.go:35:8:37:4 | function call |
 | main.go:36:3:36:5 | SSA def(res) | main.go:36:9:36:9 | 8 |
