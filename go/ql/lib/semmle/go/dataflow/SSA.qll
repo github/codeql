@@ -194,15 +194,6 @@ abstract class SsaPseudoDefinition extends SsaImplicitDefinition {
    * Gets an input of this pseudo-definition.
    */
   abstract SsaVariable getAnInput();
-
-  /**
-   * Gets a textual representation of the inputs of this pseudo-definition
-   * in lexicographical order.
-   */
-  string ppInputs() {
-    result =
-      concat(SsaVariable inp | inp = this.getAnInput() | inp.toString() order by inp.toString())
-  }
 }
 
 /**
