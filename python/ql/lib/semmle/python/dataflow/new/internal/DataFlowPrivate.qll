@@ -1249,12 +1249,65 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   )
 }
 
+bindingset[s]
+private string getFirstChar(string s) {
+  result =
+    min(int i, string c |
+      c = s.charAt(i) and c != "_"
+      or
+      c = "" and i = s.length()
+    |
+      c order by i
+    )
+}
+
+private string getAttributeContentFirstChar(AttributeContent ac) {
+  result = getFirstChar(ac.getAttribute())
+}
+
+private string getDictionaryElementContentKeyFirstChar(DictionaryElementContent dec) {
+  result = getFirstChar(dec.getKey())
+}
+
+private newtype TContentApprox =
+  TListElementContentApprox() or
+  TSetElementContentApprox() or
+  TTupleElementContentApprox() or
+  TDictionaryElementContentApprox(string first) {
+    first = "" // for `TDictionaryElementAnyContent`
+    or
+    first = getDictionaryElementContentKeyFirstChar(_)
+  } or
+  TAttributeContentApprox(string first) { first = getAttributeContentFirstChar(_) } or
+  TCapturedVariableContentApprox()
+
 /** An approximated `Content`. */
-class ContentApprox = Unit;
+class ContentApprox extends TContentApprox {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "" }
+}
 
 /** Gets an approximated value for content `c`. */
-pragma[inline]
-ContentApprox getContentApprox(Content c) { any() }
+ContentApprox getContentApprox(Content c) {
+  c = TListElementContent() and
+  result = TListElementContentApprox()
+  or
+  c = TSetElementContent() and
+  result = TSetElementContentApprox()
+  or
+  c = TTupleElementContent(_) and
+  result = TTupleElementContentApprox()
+  or
+  result = TDictionaryElementContentApprox(getDictionaryElementContentKeyFirstChar(c))
+  or
+  c = TDictionaryElementAnyContent() and
+  result = TDictionaryElementContentApprox("")
+  or
+  result = TAttributeContentApprox(getAttributeContentFirstChar(c))
+  or
+  c = TCapturedVariableContent(_) and
+  result = TCapturedVariableContentApprox()
+}
 
 /** Helper for `.getEnclosingCallable`. */
 DataFlowCallable getCallableScope(Scope s) {
