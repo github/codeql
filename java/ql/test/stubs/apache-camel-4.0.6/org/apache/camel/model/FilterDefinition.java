@@ -16,4 +16,4 @@
  */
 package org.apache.camel.model;
 
-public class FilterDefinition { } // $ Alert[java/dead-class]
+public class FilterDefinition { }

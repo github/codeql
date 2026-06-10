@@ -20,6 +20,6 @@ package org.apache.camel.builder;
  * Represents an expression clause within the DSL which when the expression is complete the clause continues to another
  * part of the DSL
  */
-public class ExpressionClause<T> { // $ Alert[java/dead-class]
+public class ExpressionClause<T> {
   public T method(String ref) { return null; }
 }

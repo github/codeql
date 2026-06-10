@@ -19,5 +19,5 @@ package org.apache.camel.model;
 /**
  * A useful base class for output types
  */
-public class OutputDefinition<Type extends ProcessorDefinition<Type>> extends ProcessorDefinition<Type> { // $ Alert[java/dead-class]
+public class OutputDefinition<Type extends ProcessorDefinition<Type>> extends ProcessorDefinition<Type> {
 }

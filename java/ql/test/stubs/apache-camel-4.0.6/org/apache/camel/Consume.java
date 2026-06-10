@@ -38,7 +38,7 @@ public @interface Consume {
     /**
      * The uri to consume from
      */
-    String value() default ""; // $ Alert[java/dead-function]
+    String value() default "";
 
     /**
      * The uri to consume from
@@ -46,12 +46,12 @@ public @interface Consume {
      * @deprecated use value instead
      */
     @Deprecated
-    String uri() default ""; // $ Alert[java/dead-function]
+    String uri() default "";
 
     /**
      * Use the field or getter on the bean to provide the uri to consume from
      */
-    String property() default ""; // $ Alert[java/dead-function]
+    String property() default "";
 
     /**
      * Optional predicate (using simple language) to only consume if the predicate matches . This can be used to filter
@@ -60,5 +60,5 @@ public @interface Consume {
      * Notice that only the first method that matches the predicate will be used. And if no predicate matches then the
      * message is dropped.
      */
-    String predicate() default ""; // $ Alert[java/dead-function]
+    String predicate() default "";
 }

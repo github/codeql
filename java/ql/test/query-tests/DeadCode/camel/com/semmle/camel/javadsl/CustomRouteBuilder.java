@@ -5,7 +5,7 @@ import org.apache.camel.impl.DefaultCamelContext;
 
 public class CustomRouteBuilder extends RouteBuilder {
   @Override
-  public void configure() throws Exception { // $ Alert[java/dead-function]
+  public void configure() throws Exception {
     from("direct:test")
         .to("bean:dslToTarget")
         .bean(DSLBeanTarget.class)

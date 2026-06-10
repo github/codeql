@@ -1,2 +1,1 @@
-query: Advisory/Documentation/SpuriousJavadocParam.ql
-postprocess: utils/test/InlineExpectationsTestQuery.ql
+Advisory/Documentation/SpuriousJavadocParam.ql

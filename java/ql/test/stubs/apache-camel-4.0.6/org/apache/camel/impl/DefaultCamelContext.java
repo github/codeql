@@ -21,7 +21,7 @@ import org.apache.camel.RoutesBuilder;
 
 public class DefaultCamelContext implements ModelCamelContext { 
 
-  public void configure() throws Exception {} // $ Alert[java/dead-function]
+  public void configure() throws Exception {}
 
   public void addRoutes(RoutesBuilder arg0) {}
 

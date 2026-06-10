@@ -31,9 +31,9 @@ public abstract class RouteBuilder implements RoutesBuilder {
      * @param  uri the from uri
      * @return     the builder
      */
-    public RouteDefinition from(String uri) { // $ Alert[java/dead-function]
+    public RouteDefinition from(String uri) {
         return null;
     }
 
-    public abstract void configure() throws Exception; // $ Alert[java/dead-function]
+    public abstract void configure() throws Exception;
 }

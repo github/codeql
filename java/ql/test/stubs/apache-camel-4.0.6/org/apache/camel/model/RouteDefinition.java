@@ -16,7 +16,7 @@
  */
 package org.apache.camel.model;
 
-public class RouteDefinition extends OutputDefinition<RouteDefinition> { // $ Alert[java/dead-class]
+public class RouteDefinition extends OutputDefinition<RouteDefinition> {
 
 }
 

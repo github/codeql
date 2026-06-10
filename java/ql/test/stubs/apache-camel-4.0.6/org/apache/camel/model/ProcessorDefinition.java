@@ -18,7 +18,7 @@ package org.apache.camel.model;
 
 import org.apache.camel.builder.ExpressionClause;
 
-public abstract class ProcessorDefinition<Type extends ProcessorDefinition<Type>> { // $ Alert[java/dead-class]
+public abstract class ProcessorDefinition<Type extends ProcessorDefinition<Type>> {
 
   public Type to(String uri) { return null; }
   public Type bean(Object bean) { return null; }

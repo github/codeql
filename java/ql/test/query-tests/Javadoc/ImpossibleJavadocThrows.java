@@ -6,14 +6,14 @@ class ImpossibleJavadocThrows {
 	
 	/**
 	 * 
-	 * @throws InterruptedException // $ Alert
+	 * @throws InterruptedException
 	 */
 	public void bad1() {
 	}
 	
 	/**
 	 * 
-	 * @exception Exception // $ Alert
+	 * @exception Exception
 	 */
 	public void bad2() {
 	}
