@@ -16,7 +16,7 @@ type notesService struct {
 	CurrentId int32
 }
 
-func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteParams) (*notes.Note, error) { // test: routeHandler, request
+func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteParams) (*notes.Note, error) { // $ Source request handler // route handler
 	if len(params.Text) < 4 {
 		return nil, twirp.InvalidArgument.Error("Text should be min 4 characters.")
 	}
@@ -27,8 +27,8 @@ func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteP
 		CreatedAt: time.Now().UnixMilli(),
 	}
 
-	notes.NewNotesServiceProtobufClient(params.Text, &http.Client{})                               // test: ssrfSink, ssrf
-	notes.NewNotesServiceProtobufClient(strconv.FormatInt(int64(s.CurrentId), 10), &http.Client{}) // test: ssrfSink, !ssrf
+	notes.NewNotesServiceProtobufClient(params.Text, &http.Client{})                               // $ Alert ssrfSink ssrf
+	notes.NewNotesServiceProtobufClient(strconv.FormatInt(int64(s.CurrentId), 10), &http.Client{}) // $ ssrfSink // not ssrf
 
 	s.Notes = append(s.Notes, note)
 
@@ -37,7 +37,7 @@ func (s *notesService) CreateNote(ctx context.Context, params *notes.CreateNoteP
 	return &note, nil
 }
 
-func (s *notesService) GetAllNotes(ctx context.Context, params *notes.GetAllNotesParams) (*notes.GetAllNotesResult, error) { // test: routeHandler, request
+func (s *notesService) GetAllNotes(ctx context.Context, params *notes.GetAllNotesParams) (*notes.GetAllNotesResult, error) { // $ request handler // route handler
 	allNotes := make([]*notes.Note, 0)
 
 	fmt.Println(params)
@@ -57,7 +57,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle(notesServer.PathPrefix(), notesServer)
 
-	err := http.ListenAndServe(":8000", notesServer) // test: !ssrfSink
+	err := http.ListenAndServe(":8000", notesServer) // not ssrfSink
 	if err != nil {
 		panic(err)
 	}
