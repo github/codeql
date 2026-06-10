@@ -1,1 +1,2 @@
-RedundantCode/ImpossibleInterfaceNilCheck.ql
+query: RedundantCode/ImpossibleInterfaceNilCheck.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

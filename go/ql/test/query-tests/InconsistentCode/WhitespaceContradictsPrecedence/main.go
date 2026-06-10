@@ -11,7 +11,7 @@ func ok2(x int) int {
 }
 
 func bad(x int) int {
-	return x+x >> 1;
+	return x+x >> 1; // $ Alert
 }
 
 func ok3(x int) int {

@@ -16,5 +16,5 @@ func bad() (interface{}, error) {
 	}
 
 	token := jwt.NewWithClaims(nil, claims)
-	return token.SignedString(mySigningKey)
+	return token.SignedString(mySigningKey) // $ Alert
 }

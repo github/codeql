@@ -56,41 +56,41 @@ func main() {
 func DecompressHandler(w http.ResponseWriter, request *http.Request) {
 	GZipOpenReaderSafe(request.PostFormValue("test"))
 	ZipOpenReaderSafe(request.PostFormValue("test"))
-	ZipOpenReader(request.FormValue("filepath"))
-	ZipNewReader(request.Body)
-	ZipNewReaderKlauspost(request.Body)
-	Bzip2Dsnet(request.Body)
+	ZipOpenReader(request.FormValue("filepath")) // $ Source
+	ZipNewReader(request.Body)                   // $ Source
+	ZipNewReaderKlauspost(request.Body)          // $ Source
+	Bzip2Dsnet(request.Body)                     // $ Source
 	Bzip2DsnetSafe(request.Body)
-	Bzip2(request.Body)
+	Bzip2(request.Body) // $ Source
 	Bzip2Safe(request.Body)
-	Flate(request.Body)
+	Flate(request.Body) // $ Source
 	FlateSafe(request.Body)
-	FlateKlauspost(request.Body)
+	FlateKlauspost(request.Body) // $ Source
 	FlateKlauspostSafe(request.Body)
-	FlateDsnet(request.Body)
+	FlateDsnet(request.Body) // $ Source
 	FlateDsnetSafe(request.Body)
-	ZlibKlauspost(request.Body)
+	ZlibKlauspost(request.Body) // $ Source
 	ZlibKlauspostSafe(request.Body)
-	Zlib(request.Body)
+	Zlib(request.Body) // $ Source
 	ZlibSafe(request.Body)
-	Snappy(request.Body)
+	Snappy(request.Body) // $ Source
 	SnappySafe(request.Body)
-	SnappyKlauspost(request.Body)
+	SnappyKlauspost(request.Body) // $ Source
 	SnappyKlauspostSafe(request.Body)
-	S2(request.Body)
+	S2(request.Body) // $ Source
 	S2Safe(request.Body)
-	Gzip(request.Body)
+	Gzip(request.Body) // $ Source
 	GzipSafe(request.Body)
-	GZipIoReader(request.Body, "dest")
-	GzipKlauspost(request.Body)
+	GZipIoReader(request.Body, "dest") // $ Source
+	GzipKlauspost(request.Body)        // $ Source
 	GzipKlauspostSafe(request.Body)
-	PzipKlauspost(request.Body)
+	PzipKlauspost(request.Body) // $ Source
 	PzipKlauspostSafe(request.Body)
-	Zstd_Klauspost(request.Body)
+	Zstd_Klauspost(request.Body) // $ Source
 	Zstd_KlauspostSafe(request.Body)
-	Zstd_DataDog(request.Body)
+	Zstd_DataDog(request.Body) // $ Source
 	Zstd_DataDogSafe(request.Body)
-	Xz(request.Body)
+	Xz(request.Body) // $ Source
 	XzSafe(request.Body)
 }
 
@@ -131,7 +131,7 @@ func ZipOpenReader(filename string) {
 	for _, f := range zipReader.File {
 		rc, _ := f.Open()
 		for {
-			result, _ := io.CopyN(os.Stdout, rc, 68) // $ hasValueFlow="rc"
+			result, _ := io.CopyN(os.Stdout, rc, 68) // $ hasValueFlow="rc" Alert
 			if result == 0 {
 				_ = rc.Close()
 				break
@@ -144,7 +144,7 @@ func ZipOpenReader(filename string) {
 	for _, f := range zipKlauspostReader.File {
 		rc, _ := f.Open()
 		for {
-			result, _ := io.CopyN(os.Stdout, rc, 68) // $ hasValueFlow="rc"
+			result, _ := io.CopyN(os.Stdout, rc, 68) // $ hasValueFlow="rc" Alert
 			if result == 0 {
 				_ = rc.Close()
 				break
@@ -161,7 +161,7 @@ func ZipNewReader(file io.Reader) {
 	for _, file := range zipReader.File {
 		fileWriter := bytes.NewBuffer([]byte{})
 		fileReaderCloser, _ := file.Open()
-		result, _ := io.Copy(fileWriter, fileReaderCloser) // $ hasValueFlow="fileReaderCloser"
+		result, _ := io.Copy(fileWriter, fileReaderCloser) // $ hasValueFlow="fileReaderCloser" Alert
 		fmt.Print(result)
 	}
 }
@@ -173,7 +173,7 @@ func ZipNewReaderKlauspost(file io.Reader) {
 		fileWriter := bytes.NewBuffer([]byte{})
 		// file.OpenRaw()
 		fileReaderCloser, _ := file.Open()
-		result, _ := io.Copy(fileWriter, fileReaderCloser) // $ hasValueFlow="fileReaderCloser"
+		result, _ := io.Copy(fileWriter, fileReaderCloser) // $ hasValueFlow="fileReaderCloser" Alert
 		fmt.Print(result)
 	}
 }
@@ -183,7 +183,7 @@ func Bzip2Dsnet(file io.Reader) {
 
 	bzip2Reader, _ := bzip2Dsnet.NewReader(file, &bzip2Dsnet.ReaderConfig{})
 	var out []byte = make([]byte, 70)
-	bzip2Reader.Read(out) // $ hasValueFlow="bzip2Reader"
+	bzip2Reader.Read(out) // $ hasValueFlow="bzip2Reader" Alert
 	tarRead = tar.NewReader(bzip2Reader)
 
 	TarDecompressor(tarRead)
@@ -210,7 +210,7 @@ func Bzip2(file io.Reader) {
 
 	bzip2Reader := bzip2.NewReader(file)
 	var out []byte = make([]byte, 70)
-	bzip2Reader.Read(out) // $ hasValueFlow="bzip2Reader"
+	bzip2Reader.Read(out) // $ hasValueFlow="bzip2Reader" Alert
 	tarRead = tar.NewReader(bzip2Reader)
 
 	TarDecompressor(tarRead)
@@ -235,7 +235,7 @@ func Flate(file io.Reader) {
 
 	flateReader := flate.NewReader(file)
 	var out []byte = make([]byte, 70)
-	flateReader.Read(out) // $ hasValueFlow="flateReader"
+	flateReader.Read(out) // $ hasValueFlow="flateReader" Alert
 	tarRead = tar.NewReader(flateReader)
 
 	TarDecompressor(tarRead)
@@ -260,7 +260,7 @@ func FlateKlauspost(file io.Reader) {
 
 	flateReader := flateKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	flateReader.Read(out) // $ hasValueFlow="flateReader"
+	flateReader.Read(out) // $ hasValueFlow="flateReader" Alert
 	tarRead = tar.NewReader(flateReader)
 
 	TarDecompressor(tarRead)
@@ -285,7 +285,7 @@ func FlateDsnet(file io.Reader) {
 
 	flateReader, _ := flateDsnet.NewReader(file, &flateDsnet.ReaderConfig{})
 	var out []byte = make([]byte, 70)
-	flateReader.Read(out) // $ hasValueFlow="flateReader"
+	flateReader.Read(out) // $ hasValueFlow="flateReader" Alert
 	tarRead = tar.NewReader(flateReader)
 
 	TarDecompressor(tarRead)
@@ -310,7 +310,7 @@ func ZlibKlauspost(file io.Reader) {
 
 	zlibReader, _ := zlibKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	zlibReader.Read(out) // $ hasValueFlow="zlibReader"
+	zlibReader.Read(out) // $ hasValueFlow="zlibReader" Alert
 	tarRead = tar.NewReader(zlibReader)
 
 	TarDecompressor(tarRead)
@@ -335,7 +335,7 @@ func Zlib(file io.Reader) {
 
 	zlibReader, _ := zlib.NewReader(file)
 	var out []byte = make([]byte, 70)
-	zlibReader.Read(out) // $ hasValueFlow="zlibReader"
+	zlibReader.Read(out) // $ hasValueFlow="zlibReader" Alert
 	tarRead = tar.NewReader(zlibReader)
 
 	TarDecompressor(tarRead)
@@ -360,8 +360,8 @@ func Snappy(file io.Reader) {
 
 	snappyReader := snappy.NewReader(file)
 	var out []byte = make([]byte, 70)
-	snappyReader.Read(out)  // $ hasValueFlow="snappyReader"
-	snappyReader.ReadByte() // $ hasValueFlow="snappyReader"
+	snappyReader.Read(out)  // $ hasValueFlow="snappyReader" Alert
+	snappyReader.ReadByte() // $ hasValueFlow="snappyReader" Alert
 	tarRead = tar.NewReader(snappyReader)
 
 	TarDecompressor(tarRead)
@@ -386,10 +386,10 @@ func SnappyKlauspost(file io.Reader) {
 
 	snappyReader := snappyKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	snappyReader.Read(out) // $ hasValueFlow="snappyReader"
+	snappyReader.Read(out) // $ hasValueFlow="snappyReader" Alert
 	var buf bytes.Buffer
-	snappyReader.DecodeConcurrent(&buf, 2) // $ hasValueFlow="snappyReader"
-	snappyReader.ReadByte()                // $ hasValueFlow="snappyReader"
+	snappyReader.DecodeConcurrent(&buf, 2) // $ hasValueFlow="snappyReader" Alert
+	snappyReader.ReadByte()                // $ hasValueFlow="snappyReader" Alert
 	tarRead = tar.NewReader(snappyReader)
 
 	TarDecompressor(tarRead)
@@ -414,10 +414,10 @@ func S2(file io.Reader) {
 
 	s2Reader := s2.NewReader(file)
 	var out []byte = make([]byte, 70)
-	s2Reader.Read(out)  // $ hasValueFlow="s2Reader"
-	s2Reader.ReadByte() // $ hasValueFlow="s2Reader"
+	s2Reader.Read(out)  // $ hasValueFlow="s2Reader" Alert
+	s2Reader.ReadByte() // $ hasValueFlow="s2Reader" Alert
 	var buf bytes.Buffer
-	s2Reader.DecodeConcurrent(&buf, 2) // $ hasValueFlow="s2Reader"
+	s2Reader.DecodeConcurrent(&buf, 2) // $ hasValueFlow="s2Reader" Alert
 	tarRead = tar.NewReader(s2Reader)
 
 	TarDecompressor(tarRead)
@@ -442,14 +442,14 @@ func GZipIoReader(src io.Reader, dst string) {
 	dstF, _ := os.OpenFile(dst, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 	defer dstF.Close()
 	newSrc := io.Reader(gzipReader)
-	_, _ = io.Copy(dstF, newSrc) // $ hasValueFlow="newSrc"
+	_, _ = io.Copy(dstF, newSrc) // $ hasValueFlow="newSrc" Alert
 }
 func Gzip(file io.Reader) {
 	var tarRead *tar.Reader
 
 	gzipReader, _ := gzip.NewReader(file)
 	var out []byte = make([]byte, 70)
-	gzipReader.Read(out) // $ hasValueFlow="gzipReader"
+	gzipReader.Read(out) // $ hasValueFlow="gzipReader" Alert
 	tarRead = tar.NewReader(gzipReader)
 
 	TarDecompressor(tarRead)
@@ -474,9 +474,9 @@ func GzipKlauspost(file io.Reader) {
 
 	gzipReader, _ := gzipKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	gzipReader.Read(out) // $ hasValueFlow="gzipReader"
+	gzipReader.Read(out) // $ hasValueFlow="gzipReader" Alert
 	var buf bytes.Buffer
-	gzipReader.WriteTo(&buf) // $ hasValueFlow="gzipReader"
+	gzipReader.WriteTo(&buf) // $ hasValueFlow="gzipReader" Alert
 	tarRead = tar.NewReader(gzipReader)
 
 	TarDecompressor(tarRead)
@@ -501,9 +501,9 @@ func PzipKlauspost(file io.Reader) {
 
 	pgzipReader, _ := pgzipKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	pgzipReader.Read(out) // $ hasValueFlow="pgzipReader"
+	pgzipReader.Read(out) // $ hasValueFlow="pgzipReader" Alert
 	var buf bytes.Buffer
-	pgzipReader.WriteTo(&buf) // $ hasValueFlow="pgzipReader"
+	pgzipReader.WriteTo(&buf) // $ hasValueFlow="pgzipReader" Alert
 	tarRead = tar.NewReader(pgzipReader)
 
 	TarDecompressor(tarRead)
@@ -528,11 +528,11 @@ func Zstd_Klauspost(file io.Reader) {
 
 	zstdReader, _ := zstdKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	zstdReader.Read(out) // $ hasValueFlow="zstdReader"
+	zstdReader.Read(out) // $ hasValueFlow="zstdReader" Alert
 	var buf bytes.Buffer
-	zstdReader.WriteTo(&buf) // $ hasValueFlow="zstdReader"
+	zstdReader.WriteTo(&buf) // $ hasValueFlow="zstdReader" Alert
 	var src []byte
-	zstdReader.DecodeAll(src, nil) // $ hasValueFlow="zstdReader"
+	zstdReader.DecodeAll(src, nil) // $ hasValueFlow="zstdReader" Alert
 	tarRead = tar.NewReader(zstdReader)
 
 	TarDecompressor(tarRead)
@@ -557,7 +557,7 @@ func Zstd_DataDog(file io.Reader) {
 
 	zstdReader := zstdDataDog.NewReader(file)
 	var out []byte = make([]byte, 70)
-	zstdReader.Read(out) // $ hasValueFlow="zstdReader"
+	zstdReader.Read(out) // $ hasValueFlow="zstdReader" Alert
 	tarRead = tar.NewReader(zstdReader)
 
 	TarDecompressor(tarRead)
@@ -582,7 +582,7 @@ func Xz(file io.Reader) {
 
 	xzReader, _ := xz.NewReader(file)
 	var out []byte = make([]byte, 70)
-	xzReader.Read(out) // $ hasValueFlow="xzReader"
+	xzReader.Read(out) // $ hasValueFlow="xzReader" Alert
 	tarRead = tar.NewReader(xzReader)
 	fmt.Println(io.SeekStart)
 
@@ -618,7 +618,7 @@ func TarDecompressor(tarRead *tar.Reader) {
 		if cur.Typeflag != tar.TypeReg {
 			continue
 		}
-		data, _ := io.ReadAll(tarRead) // $ hasValueFlow="tarRead"
+		data, _ := io.ReadAll(tarRead) // $ hasValueFlow="tarRead" Alert
 		files[cur.Name] = &fstest.MapFile{Data: data}
 	}
 	fmt.Print(files)
@@ -626,7 +626,7 @@ func TarDecompressor(tarRead *tar.Reader) {
 
 func TarDecompressor2(tarRead *tar.Reader) {
 	var tarOut []byte = make([]byte, 70)
-	tarRead.Read(tarOut) // $ hasValueFlow="tarRead"
+	tarRead.Read(tarOut) // $ hasValueFlow="tarRead" Alert
 	fmt.Println("do sth with output:", tarOut)
 }
 

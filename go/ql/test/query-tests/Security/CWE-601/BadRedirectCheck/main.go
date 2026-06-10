@@ -7,8 +7,8 @@ import (
 	"strings"
 )
 
-func badRedirect(redirect string, rw http.ResponseWriter, req *http.Request) {
-	http.Redirect(rw, req, sanitizeUrl(redirect), 302)
+func badRedirect(redirect string, rw http.ResponseWriter, req *http.Request) { // $ Source
+	http.Redirect(rw, req, sanitizeUrl(redirect), 302) // $ Sink
 }
 
 func goodRedirect(redirect string, rw http.ResponseWriter, req *http.Request) {
@@ -22,16 +22,16 @@ func goodRedirect2(url string, rw http.ResponseWriter, req *http.Request) {
 func isValidRedir(redirect string) bool {
 	switch {
 	// Not OK: does not check for '/\'
-	case strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//"):
+	case strings.HasPrefix(redirect, "/") && !strings.HasPrefix(redirect, "//"): // $ Alert
 		return true
 	default:
 		return false
 	}
 }
 
-func alsoABadRedirect1(url string, rw http.ResponseWriter, req *http.Request) {
+func alsoABadRedirect1(url string, rw http.ResponseWriter, req *http.Request) { // $ Source
 	if isValidRedir(url) {
-		http.Redirect(rw, req, url, 302)
+		http.Redirect(rw, req, url, 302) // $ Sink
 	}
 }
 
@@ -65,28 +65,28 @@ func goodRedirect4(url string, rw http.ResponseWriter, req *http.Request) {
 	http.Redirect(rw, req, getTarget(url), 302)
 }
 
-func getTarget1(redirect string) string {
-	if redirect[0] != '/' {
+func getTarget1(redirect string) string { // $ Source
+	if redirect[0] != '/' { // $ Alert
 		return "/"
 	}
 
 	return path.Clean(redirect)
 }
 
-func badRedirect1(url string, rw http.ResponseWriter, req *http.Request) {
-	http.Redirect(rw, req, getTarget1(url), 302)
+func badRedirect1(url string, rw http.ResponseWriter, req *http.Request) { // $ Source
+	http.Redirect(rw, req, getTarget1(url), 302) // $ Sink
 }
 
 func getTarget2(redirect string) string {
 	u, _ := url.Parse(redirect)
 
-	if u.Path[0] != '/' {
+	if u.Path[0] != '/' { // $ Alert
 		return "/"
 	}
 
-	return u.Path
+	return u.Path // $ Source
 }
 
 func badRedirect2(url string, rw http.ResponseWriter, req *http.Request) {
-	http.Redirect(rw, req, getTarget2(url), 302)
+	http.Redirect(rw, req, getTarget2(url), 302) // $ Sink
 }

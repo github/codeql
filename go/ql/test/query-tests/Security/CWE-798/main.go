@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 const (
-	passwd    = "p4ssw0rd" // NOT OK
+	passwd    = "p4ssw0rd" // $ Alert // NOT OK
 	_password = ""         // OK
 )
 

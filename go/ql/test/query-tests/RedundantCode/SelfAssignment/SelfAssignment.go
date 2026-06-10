@@ -9,5 +9,5 @@ func (r *Rect) setWidth(width int) {
 }
 
 func (r *Rect) setHeight(height int) {
-	height = height
+	height = height // $ Alert
 }
