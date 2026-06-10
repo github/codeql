@@ -21,7 +21,7 @@ func ok3(x int) int {
 func ok4(x int, y int, z int) int {
 	return x + y + z;
 }
-	
+
 func ok5(x int, y int, z int) int {
 	return x + y+z;
 }

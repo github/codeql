@@ -2,8 +2,9 @@ package main
 
 import (
 	"encoding/json"
-	sq "github.com/Masterminds/squirrel"
 	"strings"
+
+	sq "github.com/Masterminds/squirrel"
 )
 
 // Bad because quote characters are removed before concatenation,
