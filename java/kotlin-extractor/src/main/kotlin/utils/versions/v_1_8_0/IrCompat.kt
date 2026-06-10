@@ -36,9 +36,8 @@ fun IrMemberAccessExpression<*>.codeQlPutValueArgument(index: Int, value: IrExpr
 }
 
 // IrMemberAccessExpression: extensionReceiver
-var IrMemberAccessExpression<*>.codeQlExtensionReceiver: IrExpression?
+val IrMemberAccessExpression<*>.codeQlExtensionReceiver: IrExpression?
     get() = extensionReceiver
-    set(value) { extensionReceiver = value }
 
 // IrMemberAccessExpression: typeArgumentsCount
 val IrMemberAccessExpression<*>.codeQlTypeArgumentsCount: Int

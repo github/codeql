@@ -37,7 +37,7 @@ abstract class Kotlin2ComponentRegistrar : CompilerPluginRegistrar(), ComponentR
 
     abstract fun doRegisterExtensions(configuration: CompilerConfiguration)
 
-    fun registerExtractorExtension(extension: IrGenerationExtension) {
+    protected fun registerExtractorExtension(extension: IrGenerationExtension) {
         val storage = extensionStorage ?: throw IllegalStateException("registerExtractorExtension called before registerExtensions")
         with(storage) {
             IrGenerationExtension.registerExtension(extension)

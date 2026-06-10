@@ -51,14 +51,10 @@ fun IrMemberAccessExpression<*>.codeQlPutValueArgument(index: Int, value: IrExpr
 // IrMemberAccessExpression: extensionReceiver
 // For IrCall/IrFunctionReference, look at symbol.owner (IrFunction) directly.
 // For IrPropertyReference, symbol.owner is IrProperty; use the getter's parameters instead.
-var IrMemberAccessExpression<*>.codeQlExtensionReceiver: IrExpression?
+val IrMemberAccessExpression<*>.codeQlExtensionReceiver: IrExpression?
     get() {
         val erp = extensionReceiverParameterIndex() ?: return null
         return arguments[erp]
-    }
-    set(value) {
-        val erp = extensionReceiverParameterIndex() ?: return
-        arguments[erp] = value
     }
 
 private fun IrMemberAccessExpression<*>.extensionReceiverParameterIndex(): Int? {

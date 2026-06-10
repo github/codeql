@@ -1,0 +1,6 @@
+[VALUE_NOT_IN_TYPE] predicate callableBinding(@caller callerid, @callable callee): Value 80453 of field callee is not in type @callable. Appears in tuple (-16773210,80453)
+	Relevant element: callee=80453
+		Full ID for 80453: @"callable;(846).toString()(21)". The ID may expand to @"callable;{@"class;java.lang.CharSequence"}.toString(){@"class;java.lang.String"}"
+[VALUE_NOT_IN_TYPE] predicate callableBinding(@caller callerid, @callable callee): Value 80453 of field callee is not in type @callable. Appears in tuple (-16773194,80453)
+	Relevant element: callee=80453
+		Full ID for 80453: @"callable;(846).toString()(21)". The ID may expand to @"callable;{@"class;java.lang.CharSequence"}.toString(){@"class;java.lang.String"}"

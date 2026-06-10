@@ -1,0 +1,9 @@
+[VALUE_NOT_IN_TYPE] predicate callableBinding(@caller callerid, @callable callee): Value 43828 of field callee is not in type @callable. Appears in tuple (-16776213,43828)
+	Relevant element: callee=43828
+		Full ID for 43828: @"callable;(0).takesComparable((35),(35))(36)". The ID may expand to @"callable;{@"class;JavaDefns"}.takesComparable({@"class;java.lang.Comparable;{@"wildcard;super{@"class;java.lang.CharSequence"}"}"},{@"class;java.lang.Comparable;{@"wildcard;super{@"class;java.lang.CharSequence"}"}"}){@"type;void"}"
+[VALUE_NOT_IN_TYPE] predicate callableBinding(@caller callerid, @callable callee): Value 43832 of field callee is not in type @callable. Appears in tuple (-16776208,43832)
+	Relevant element: callee=43832
+		Full ID for 43832: @"callable;(0).takesArrayOfComparable((54),(54))(36)". The ID may expand to @"callable;{@"class;JavaDefns"}.takesArrayOfComparable({@"array;1;{@"class;java.lang.Comparable;{@"wildcard;super(19)"}"}"},{@"array;1;{@"class;java.lang.Comparable;{@"wildcard;super(19)"}"}"}){@"type;void"}"
+[VALUE_NOT_IN_TYPE] predicate callableBinding(@caller callerid, @callable callee): Value 43837 of field callee is not in type @callable. Appears in tuple (-16776201,43837)
+	Relevant element: callee=43837
+		Full ID for 43837: @"callable;(0).<init>((35),(35))(36)". The ID may expand to @"callable;{@"class;JavaDefns"}.<init>({@"class;java.lang.Comparable;{@"wildcard;super{@"class;java.lang.CharSequence"}"}"},{@"class;java.lang.Comparable;{@"wildcard;super{@"class;java.lang.CharSequence"}"}"}){@"type;void"}"

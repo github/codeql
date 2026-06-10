@@ -1,0 +1,3 @@
+[VALUE_NOT_IN_TYPE] predicate callableBinding(@caller callerid, @callable callee): Value 44417 of field callee is not in type @callable. Appears in tuple (-16777158,44417)
+	Relevant element: callee=44417
+		Full ID for 44417: @"callable;(0).f((55))(55)". The ID may expand to @"callable;{@"class;Test"}.f({@"type;int"}){@"type;int"}"
