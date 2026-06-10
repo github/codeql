@@ -1,5 +1,0 @@
-[VALUE_NOT_IN_TYPE] predicate namequalifiers(@namequalifier id, @namequalifiableelement qualifiableelement, @namequalifyingelement qualifyingelement, @location_default location): Value 272 of field qualifyingelement is not in type @namequalifyingelement. The value is however in the following types: @type_with_specifiers. Appears in tuple (-16777185,-16777184,272,307)
-	Relevant element: qualifyingelement=272
-		Full ID for 272: @"typeref_const(216)". The ID may expand to @"typeref_const{@"type_decl_s_nonproto[struct_complete]_{@"namespace_decl_(namespace line:1, {@"/Users/jketema/development/semmle-code/ql/cpp/ql/test/library-tests/name_qualifiers/inconsistency2.cpp;sourcefile"}){@"not_inline"}"}_321bfec50edc"}"
-	Relevant element: location=307
-		Full ID for 307: @"loc,(212),3,3,3,11". The ID may expand to @"loc,{@"/Users/jketema/development/semmle-code/ql/cpp/ql/test/library-tests/name_qualifiers/inconsistency2.cpp;sourcefile"},3,3,3,11"
