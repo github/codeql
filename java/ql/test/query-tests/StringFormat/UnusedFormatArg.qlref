@@ -1,1 +1,2 @@
-Likely Bugs/Likely Typos/UnusedFormatArg.ql
+query: Likely Bugs/Likely Typos/UnusedFormatArg.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

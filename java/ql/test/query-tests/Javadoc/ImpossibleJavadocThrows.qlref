@@ -1,1 +1,2 @@
-Advisory/Documentation/ImpossibleJavadocThrows.ql
+query: Advisory/Documentation/ImpossibleJavadocThrows.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

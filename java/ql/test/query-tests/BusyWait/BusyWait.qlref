@@ -1,1 +1,2 @@
-Likely Bugs/Concurrency/BusyWait.ql
+query: Likely Bugs/Concurrency/BusyWait.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

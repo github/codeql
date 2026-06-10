@@ -14,20 +14,20 @@ class Test {
 	public static void main(String[] args) throws IOException {
 		// Using the File API
 		File f = new File("file");
-		setWorldWritable(f);
+		setWorldWritable(f); // $ Alert
 		readFile(f);
 
 		// Using the Path API
 		Path p = Paths.get("file");
 		Set<PosixFilePermission> filePermissions = EnumSet.of(PosixFilePermission.OTHERS_WRITE);
-		Files.setPosixFilePermissions(p, filePermissions);
+		Files.setPosixFilePermissions(p, filePermissions); // $ Alert
 		Files.readAllLines(p);
 
 		// Convert file to path
 		File f2 = new File("file2");
 		Set<PosixFilePermission> file2Permissions = new LinkedHashSet<>();
 		file2Permissions.add(PosixFilePermission.OTHERS_WRITE);
-		Files.setPosixFilePermissions(Paths.get(f2.getCanonicalPath()), file2Permissions);
+		Files.setPosixFilePermissions(Paths.get(f2.getCanonicalPath()), file2Permissions); // $ Alert
 		new FileInputStream(f2);
 	}
 

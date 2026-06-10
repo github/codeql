@@ -35,7 +35,7 @@ public class CollectionTest {
 	}
 	
 	// should be flagged
-	private List<Integer> useless = new ArrayList<Integer>();
+	private List<Integer> useless = new ArrayList<Integer>(); // $ Alert
 	{
 		useless.add(23);
 		useless.remove(0);

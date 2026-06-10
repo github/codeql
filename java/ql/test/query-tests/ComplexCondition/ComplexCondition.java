@@ -1,11 +1,11 @@
 class ComplexCondition {
   public boolean bad(boolean a, boolean b, boolean c) {
-    if (a && (b || !c)
+    if (a && (b || !c) // $
     ||  b && (a || !c)
-    ||  c && (a || !b)) {
+    ||  c && (a || !b)) { // $ Alert
       return true;
     } else {
-      return (a && !b) || (b && !c) || (a && !c) || (a && b || c);
+      return (a && !b) || (b && !c) || (a && !c) || (a && b || c); // $ Alert
     }
   }
 

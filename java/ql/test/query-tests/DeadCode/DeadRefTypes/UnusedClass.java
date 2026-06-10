@@ -1,1 +1,1 @@
-class UnusedClass {}
+class UnusedClass {} // $ Alert

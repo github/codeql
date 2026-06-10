@@ -22,20 +22,20 @@ public class NonSerializableFieldTest {
   public static class MyColl extends HashMap<Integer, Integer>{} 
 
   public static class NotSerializable1<T> extends SerializableBase{
-    NS problematic1;
-    List<NS> problematic2;
-    Map<?, NS> problematic3;
-    Map<NS, ?> problematic4;
-    Map<Integer, Map<?, NS>> problematic5;
-    Map problematic6;
-    List<? extends NS> problematic7;
-    List<? super NS> problematic8;
-    T problematic9;
-    List<T> problematic10;
-    List<?> problematic11;
-    Map<?, ?> problematic12;
-    Map<Integer, Map<?, Double>> problematic13;
-    Map<Integer, ?> problematic14;
+    NS problematic1; // $ Alert
+    List<NS> problematic2; // $ Alert
+    Map<?, NS> problematic3; // $ Alert
+    Map<NS, ?> problematic4; // $ Alert
+    Map<Integer, Map<?, NS>> problematic5; // $ Alert
+    Map problematic6; // $ Alert
+    List<? extends NS> problematic7; // $ Alert
+    List<? super NS> problematic8; // $ Alert
+    T problematic9; // $ Alert
+    List<T> problematic10; // $ Alert
+    List<?> problematic11; // $ Alert
+    Map<?, ?> problematic12; // $ Alert
+    Map<Integer, Map<?, Double>> problematic13; // $ Alert
+    Map<Integer, ?> problematic14; // $ Alert
 
     transient NS ok1;
     List<Integer> ok2;
@@ -76,7 +76,7 @@ public class NonSerializableFieldTest {
 
   public static void main(String[] args){
     Anonymous a1 = new Anonymous(){
-      NS problematic;
+      NS problematic; // $ Alert
     };
 
     @SuppressWarnings("serial")
@@ -106,7 +106,7 @@ public class NonSerializableFieldTest {
 
   @Stateful
   class StatefulSessionEjb extends SessionBean {
-    NonSerializableClass nonSerializableField;
+    NonSerializableClass nonSerializableField; // $ Alert
   }
   
   enum Enum {

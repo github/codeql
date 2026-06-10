@@ -1,1 +1,2 @@
-Likely Bugs/Statements/ContinueInFalseLoop.ql
+query: Likely Bugs/Statements/ContinueInFalseLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -26,18 +26,18 @@ public class A {
     public void ex2() {
         for (int i = 0; i < 5; i++) {
             int x = 42;
-            x = x + 3; // DEAD
+            x = x + 3; // $ Alert[java/useless-assignment-to-local] // DEAD
         }
     }
 
     public int ex3(int param) {
-        param += 3; // DEAD
+        param += 3; // $ Alert[java/overwritten-assignment-to-local] // DEAD
         param = 4;
         int x = 7;
-        ++x; // DEAD
+        ++x; // $ Alert[java/overwritten-assignment-to-local] // DEAD
         x = 10;
         int y = 5;
-        y = (++y) + 5; // DEAD (++y)
+        y = (++y) + 5; // $ Alert[java/overwritten-assignment-to-local] // DEAD (++y)
         return x + y + param;
     }
 
@@ -52,7 +52,7 @@ public class A {
         }
         int x;
         try {
-            x = 5; // DEAD
+            x = 5; // $ Alert[java/overwritten-assignment-to-local] // DEAD
             ex3(0);
             x = 7;
             ex3(x);
@@ -61,7 +61,7 @@ public class A {
         boolean valid;
         try {
             if (ex3(4) > 4) {
-                valid = false; // DEAD
+                valid = false; // $ Alert[java/overwritten-assignment-to-local] // DEAD
             }
             ex3(0);
             valid = true;

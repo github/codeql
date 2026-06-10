@@ -16,10 +16,10 @@ public class DotRegexServlet extends HttpServlet {
 	// BAD: A string with line return e.g. `/protected/%0dxyz` can bypass the path check
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String source = request.getPathInfo();
+		String source = request.getPathInfo(); // $ Source
 
 		Pattern p = Pattern.compile(PROTECTED_PATTERN);
-		Matcher m = p.matcher(source);
+		Matcher m = p.matcher(source); // $ Alert
 
 		if (m.matches()) {
 			// Protected page - check access token and redirect to login page
@@ -54,9 +54,9 @@ public class DotRegexServlet extends HttpServlet {
 	// BAD: A string with line return e.g. `/protected/%0axyz` can bypass the path check
 	protected void doGet3(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String source = request.getRequestURI();
+		String source = request.getRequestURI(); // $ Source
 
-		boolean matches = source.matches(PROTECTED_PATTERN);
+		boolean matches = source.matches(PROTECTED_PATTERN); // $ Alert
 
 		if (matches) {
 			// Protected page - check access token and redirect to login page
@@ -72,9 +72,9 @@ public class DotRegexServlet extends HttpServlet {
 	// BAD: A string with line return e.g. `/protected/%0axyz` can bypass the path check
 	protected void doGet4(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String source = request.getPathInfo();
+		String source = request.getPathInfo(); // $ Source
 
-		boolean matches = Pattern.matches(PROTECTED_PATTERN, source);
+		boolean matches = Pattern.matches(PROTECTED_PATTERN, source); // $ Alert
 
 		if (matches) {
 			// Protected page - check access token and redirect to login page
@@ -109,10 +109,10 @@ public class DotRegexServlet extends HttpServlet {
 	// BAD: A string with line return e.g. `/protected/%0dxyz` can bypass the path check
 	protected void doGet6(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String source = request.getPathInfo();
+		String source = request.getPathInfo(); // $ Source
 
 		Pattern p = Pattern.compile(PROTECTED_PATTERN);
-		Matcher m = p.matcher(source);
+		Matcher m = p.matcher(source); // $ Alert
 
 		if (m.matches()) {
 			// Protected page - check access token and redirect to login page

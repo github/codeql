@@ -3,7 +3,7 @@ class Outer {
 
 	Outer(int x) {
 		// NOT OK
-		x = x;
+		x = x; // $ Alert
 		// OK
 		this.x = x;
 	}

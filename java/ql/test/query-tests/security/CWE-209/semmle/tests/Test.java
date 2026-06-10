@@ -22,7 +22,7 @@ class Test extends HttpServlet {
 			doSomeWork();
 		} catch (NullPointerException ex) {
 			// BAD: printing a stack trace back to the response
-			ex.printStackTrace(response.getWriter());
+			ex.printStackTrace(response.getWriter()); // $ Alert[java/stack-trace-exposure]
 			return;
 		}
 
@@ -32,7 +32,7 @@ class Test extends HttpServlet {
 			// BAD: printing a stack trace back to the response
 			response.sendError(
 				HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-				printTrace(ex));
+				printTrace(ex)); // $ Alert[java/stack-trace-exposure]
 			return;
 		}
 
@@ -42,7 +42,7 @@ class Test extends HttpServlet {
 			// BAD: printing a stack trace back to the response
 			response.sendError(
 				HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-				printTrace2(ex));
+				printTrace2(ex)); // $ Alert[java/stack-trace-exposure]
 			return;
 		}
 
@@ -52,7 +52,7 @@ class Test extends HttpServlet {
 			// BAD: printing an exception message back to the response
 			response.sendError(
 				HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-				ex.getMessage());
+				ex.getMessage()); // $ Alert[java/error-message-exposure]
 		}
 	}
 

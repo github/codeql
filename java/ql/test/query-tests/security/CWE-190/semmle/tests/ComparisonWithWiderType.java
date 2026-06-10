@@ -1,7 +1,7 @@
 public class ComparisonWithWiderType {
     public void testLt(long l) {
         // BAD: loop variable is an int, but the upper bound is a long
-        for (int i = 0; i < l; i++) {
+        for (int i = 0; i < l; i++) { // $ Alert[java/comparison-with-wider-type]
             System.out.println(i);
         }
 
@@ -13,7 +13,7 @@ public class ComparisonWithWiderType {
 
     public void testGt(short c) {
         // BAD: loop variable is a byte, but the upper bound is a short
-        for (byte b = 0; c > b; b++) {
+        for (byte b = 0; c > b; b++) { // $ Alert[java/comparison-with-wider-type]
             System.out.println(b);
         }
     }

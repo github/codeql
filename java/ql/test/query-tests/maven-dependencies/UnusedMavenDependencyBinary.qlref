@@ -1,1 +1,2 @@
-Architecture/Dependencies/UnusedMavenDependencyBinary.ql
+query: Architecture/Dependencies/UnusedMavenDependencyBinary.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

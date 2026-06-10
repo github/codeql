@@ -14,7 +14,7 @@ public class ArithmeticTainted {
 
 		try {
 
-			readerInputStream = new InputStreamReader(System.in, "UTF-8");
+			readerInputStream = new InputStreamReader(System.in, "UTF-8"); // $ Source[java/tainted-arithmetic]
 			readerBuffered = new BufferedReader(readerInputStream);
 			String stringNumber = readerBuffered.readLine();
 			if (stringNumber != null) {
@@ -29,7 +29,7 @@ public class ArithmeticTainted {
 
 		{
 			// BAD: may overflow if input data is very large
-			int scaled = data + 10;
+			int scaled = data + 10; // $ Alert[java/tainted-arithmetic]
 		}
 
 		{
@@ -37,7 +37,7 @@ public class ArithmeticTainted {
 			if (data > Integer.MIN_VALUE) {
 				System.out.println("I'm guarded");
 			}
-			int output = data - 10;
+			int output = data - 10; // $ Alert[java/tainted-arithmetic]
 		}
 
 		{
@@ -47,7 +47,7 @@ public class ArithmeticTainted {
 			} else {
 				System.out.println("I'm not guarded");
 			}
-			int output = data + 1;
+			int output = data + 1; // $ Alert[java/tainted-arithmetic]
 		}
 
 		{
@@ -68,7 +68,7 @@ public class ArithmeticTainted {
             // GOOD
 			int output_ok = ok + 1;
             // BAD
-			int output = herring + 1;
+			int output = herring + 1; // $ Alert[java/tainted-arithmetic]
 		}
 
 		{
@@ -92,7 +92,7 @@ public class ArithmeticTainted {
 		{
 			// BAD: tainted int value is widened to type long, but subsequently
 			// cast to narrower type int
-			int widenedThenNarrowed = (int) (data + 10L);
+			int widenedThenNarrowed = (int) (data + 10L); // $ Alert[java/tainted-arithmetic]
 		}
 
 		// The following test case has an arbitrary guard on hashcode
@@ -126,19 +126,19 @@ public class ArithmeticTainted {
 
 	public static void test(int data) {
 		// BAD: may overflow if input data is very large
-		data++;
+		data++; // $ Alert[java/tainted-arithmetic]
 	}
 	public static void test2(int data) {
 		// BAD: may overflow if input data is very large
-		++data;
+		++data; // $ Alert[java/tainted-arithmetic]
 	}
 	public static void test3(int data) {
 		// BAD: may underflow if input data is very small
-		data--;
+		data--; // $ Alert[java/tainted-arithmetic]
 	}
 	public static void test4(int data) {
 		// BAD: may underflow if input data is very small
-		--data;
+		--data; // $ Alert[java/tainted-arithmetic]
 	}
 
 	public static void boundsCheckGood(byte[] bs, int off, int len) {

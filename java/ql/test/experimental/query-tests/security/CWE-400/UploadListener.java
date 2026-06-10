@@ -32,7 +32,7 @@ public class UploadListener implements ProgressListener, Serializable {
 		// Just a way to slow down the upload process and see the progress bar in fast networks.
 		if (slowUploads > 0 && done < total) {
 			try {
-				Thread.sleep(slowUploads);
+				Thread.sleep(slowUploads); // $ Alert[java/thread-resource-abuse]
 			} catch (Exception e) {
 			}
 		}

@@ -54,83 +54,83 @@ public class Test<V> {
   protected void ok9(int...param){ }
 
   /**
-   * @param prameter typo
+   * @param prameter typo // $ Alert
    */
   public void problem1(int parameter){ }
 
   /**
-   * @param Parameter capitalization
+   * @param Parameter capitalization // $ Alert
    */
   public void problem2(int parameter){ }
 
   /**
-   * @param parameter unmatched
+   * @param parameter unmatched // $ Alert
    */
   public void problem3(){ }
 
   /**
    * @param someOtherParameter matched
-   * @param parameter unmatched
+   * @param parameter unmatched // $ Alert
    */
   public void problem4(int someOtherParameter){ }
 
   /**
-   * @param <V> unmatched type parameter
+   * @param <V> unmatched type parameter // $ Alert
    */
   private <T> T problem5(){ return null; }
 
   /**
    * @param <V> matched type parameter
-   * @param <P> unmatched type parameter
-   * @param n unmatched normal parameter
+   * @param <P> unmatched type parameter // $ Alert
+   * @param n unmatched normal parameter // $ Alert
    */
   private <T,V> T problem6(V p){ return null; }
 
   /**
    * param with immediate newline
-   * @param
+   * @param // $ Alert
    */
   protected void problem7(){ }
 
   /**
    * param without a value (followed by blanks)
-   * @param    
+   * @param     // $ Alert
    */
   protected void problem8(){ }
 
   class SomeClass {
     /**
      * @param i exists
-     * @param k does not
+     * @param k does not // $ Alert
      */
     SomeClass(int i, int j) {}
   }
 
   /**
    * @param <T> exists
-   * @param T wrong syntax
-   * @param <X> does not exist
+   * @param T wrong syntax // $ Alert
+   * @param <X> does not exist // $ Alert
    */
   class GenericClass<T> {}
 
   /**
    * @param <T> exists
-   * @param T wrong syntax
-   * @param <X> does not exist
+   * @param T wrong syntax // $ Alert
+   * @param <X> does not exist // $ Alert
    */
   interface GenericInterface<T> {}
 
   /**
    * @param i exists
-   * @param k does not
+   * @param k does not // $ Alert
    */
   static record SomeRecord(int i, int j) {}
 
   /**
    * @param <T> exists
-   * @param <U> does not
+   * @param <U> does not // $ Alert
    * @param i exists
-   * @param k does not
+   * @param k does not // $ Alert
    */
   static record GenericRecord<T>(int i, int j) {}
 }

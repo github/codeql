@@ -16,7 +16,7 @@ class Test {
 
 			{
 				// BAD: DES is a weak algorithm
-				keyGenerator = KeyGenerator.getInstance("DES");
+				keyGenerator = KeyGenerator.getInstance("DES"); // $ Alert[java/weak-cryptographic-algorithm]
 			}
 
 			// GOOD: RSA is a strong algorithm
@@ -31,7 +31,7 @@ class Test {
 
 			{
 				// BAD: foo is an unknown algorithm that may not be secure
-				secretKeySpec = new SecretKeySpec(byteKey, "foo");
+				secretKeySpec = new SecretKeySpec(byteKey, "foo"); // $ Alert[java/potentially-weak-cryptographic-algorithm]
 			}
 
 			// GOOD: GCM is a strong algorithm
@@ -39,7 +39,7 @@ class Test {
 
 			{
 				// BAD: RC2 is a weak algorithm
-				cipher = Cipher.getInstance("RC2");
+				cipher = Cipher.getInstance("RC2"); // $ Alert[java/weak-cryptographic-algorithm]
 			}
 			// GOOD: ECIES is a strong algorithm
 			cipher = Cipher.getInstance("ECIES");

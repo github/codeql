@@ -15,7 +15,7 @@ class Super {
 
 public class Test extends Super {
 	// NOT OK
-	int m() {
+	int m() { // $ Alert
 		return 42;
 	}
 	

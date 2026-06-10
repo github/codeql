@@ -12,8 +12,8 @@ public class LeakFileActivity2 extends Activity {
         if (requestCode == GetFileActivity.REQUEST_CODE__SELECT_CONTENT_FROM_APPS &&
                 resultCode == RESULT_OK) {
             Intent intent = new Intent(this, FileService.class);
-            intent.putExtra(FileService.KEY_LOCAL_FILE, localPath);
-            startService(intent);
+            intent.putExtra(FileService.KEY_LOCAL_FILE, localPath); // $ Source[java/sensitive-android-file-leak]
+            startService(intent); // $ Source[java/sensitive-android-file-leak]
         }
     }
 }
