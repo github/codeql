@@ -98,7 +98,7 @@ module Routing {
 
     Block getBlock() { result = block }
 
-    override Stmt getAStmt() { result = block.getAStmt() }
+    override Stmt getAStmt() { result = block.getBody().getAStmt() }
 
     override RouteBlock getParent() { none() }
 
@@ -128,7 +128,7 @@ module Routing {
 
     override string getAPrimaryQlClass() { result = "ConstraintsRouteBlock" }
 
-    override Stmt getAStmt() { result = block.getAStmt() }
+    override Stmt getAStmt() { result = block.getBody().getAStmt() }
 
     override string getPathComponent() { result = "" }
 
@@ -156,7 +156,7 @@ module Routing {
 
     override string getAPrimaryQlClass() { result = "ScopeRouteBlock" }
 
-    override Stmt getAStmt() { result = block.getAStmt() }
+    override Stmt getAStmt() { result = block.getBody().getAStmt() }
 
     override string toString() { result = methodCall.toString() }
 
@@ -216,7 +216,7 @@ module Routing {
 
     override string getAPrimaryQlClass() { result = "ResourcesRouteBlock" }
 
-    override Stmt getAStmt() { result = block.getAStmt() }
+    override Stmt getAStmt() { result = block.getBody().getAStmt() }
 
     /**
      * Gets the `resources` call that gives rise to this route block.
@@ -282,7 +282,7 @@ module Routing {
 
     NamespaceRouteBlock() { this = TNamespaceRouteBlock(parent, methodCall, block) }
 
-    override Stmt getAStmt() { result = block.getAStmt() }
+    override Stmt getAStmt() { result = block.getBody().getAStmt() }
 
     override string getPathComponent() { result = this.getNamespace() }
 

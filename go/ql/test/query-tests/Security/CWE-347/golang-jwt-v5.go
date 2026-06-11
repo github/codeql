@@ -25,13 +25,13 @@ func golangjwt(r *http.Request) {
 	verifyJWT_golangjwt(signedToken)
 
 	// NOT OK: only unverified parse
-	signedToken = r.URL.Query().Get("signedToken")
+	signedToken = r.URL.Query().Get("signedToken") // $ Source
 	notVerifyJWT_golangjwt(signedToken)
 }
 
 func notVerifyJWT_golangjwt(signedToken string) {
 	fmt.Println("only decoding JWT")
-	DecodedToken, _, err := jwt.NewParser().ParseUnverified(signedToken, &CustomerInfo1{})
+	DecodedToken, _, err := jwt.NewParser().ParseUnverified(signedToken, &CustomerInfo1{}) // $ Alert
 	if claims, ok := DecodedToken.Claims.(*CustomerInfo1); ok {
 		fmt.Printf("DecodedToken:%v\n", claims)
 	} else {

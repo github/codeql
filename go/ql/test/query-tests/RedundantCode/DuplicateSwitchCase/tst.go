@@ -6,7 +6,7 @@ func check(x int) {
 
 	case x < 42:
 
-	case x < 23: // NOT OK
+	case x < 23: // $ Alert // NOT OK
 
 	}
 }

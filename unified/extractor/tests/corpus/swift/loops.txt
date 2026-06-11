@@ -1,0 +1,254 @@
+===
+For-in over array literal
+===
+
+for x in [1, 2, 3] {
+  print(x)
+}
+
+---
+
+source_file
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      collection:
+        array_literal
+          element:
+            integer_literal "1"
+            integer_literal "2"
+            integer_literal "3"
+      item:
+        pattern
+          bound_identifier: simple_identifier "x"
+
+---
+
+top_level
+  body:
+
+===
+For-in over range
+===
+
+for i in 0..<10 {
+  print(i)
+}
+
+---
+
+source_file
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "i"
+      collection:
+        range_expression
+          end: integer_literal "10"
+          op: ..<
+          start: integer_literal "0"
+      item:
+        pattern
+          bound_identifier: simple_identifier "i"
+
+---
+
+top_level
+  body:
+
+===
+For-in with where clause
+===
+
+for x in xs where x > 0 {
+  print(x)
+}
+
+---
+
+source_file
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      collection: simple_identifier "xs"
+      item:
+        pattern
+          bound_identifier: simple_identifier "x"
+      where:
+        where_clause
+          expr:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+          keyword: where_keyword "where"
+
+---
+
+top_level
+  body:
+
+===
+While loop
+===
+
+while x > 0 {
+  x -= 1
+}
+
+---
+
+source_file
+  statement:
+    while_statement
+      body:
+        block
+          statement:
+            assignment
+              operator: -=
+              result: integer_literal "1"
+              target:
+                directly_assignable_expression
+                  expr: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+
+---
+
+top_level
+  body:
+
+===
+Repeat-while loop
+===
+
+repeat {
+  x -= 1
+} while x > 0
+
+---
+
+source_file
+  statement:
+    repeat_while_statement
+      body:
+        block
+          statement:
+            assignment
+              operator: -=
+              result: integer_literal "1"
+              target:
+                directly_assignable_expression
+                  expr: simple_identifier "x"
+      condition:
+        if_condition
+          kind:
+            comparison_expression
+              lhs: simple_identifier "x"
+              op: >
+              rhs: integer_literal "0"
+
+---
+
+top_level
+  body:
+
+===
+Break and continue
+===
+
+for x in xs {
+  if x < 0 { continue }
+  if x > 100 { break }
+  print(x)
+}
+
+---
+
+source_file
+  statement:
+    for_statement
+      body:
+        block
+          statement:
+            if_statement
+              body:
+                block
+                  statement:
+                    control_transfer_statement
+                      kind: continue
+              condition:
+                if_condition
+                  kind:
+                    comparison_expression
+                      lhs: simple_identifier "x"
+                      op: <
+                      rhs: integer_literal "0"
+            if_statement
+              body:
+                block
+                  statement:
+                    control_transfer_statement
+                      kind: break
+              condition:
+                if_condition
+                  kind:
+                    comparison_expression
+                      lhs: simple_identifier "x"
+                      op: >
+                      rhs: integer_literal "100"
+            call_expression
+              function: simple_identifier "print"
+              suffix:
+                call_suffix
+                  arguments:
+                    value_arguments
+                      argument:
+                        value_argument
+                          value: simple_identifier "x"
+      collection: simple_identifier "xs"
+      item:
+        pattern
+          bound_identifier: simple_identifier "x"
+
+---
+
+top_level
+  body:

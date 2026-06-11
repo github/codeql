@@ -52,6 +52,7 @@ impl Visitor {
             root: 0,
             schema,
             nodes: self.nodes.into_iter().map(|n| n.inner).collect(),
+            source: Vec::new(),
         }
     }
 

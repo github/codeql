@@ -93,7 +93,9 @@ edges
 | UnsafeUnpack.py:163:23:163:28 | ControlFlowNode for member | UnsafeUnpack.py:166:37:166:42 | ControlFlowNode for member | provenance |  |
 | UnsafeUnpack.py:163:33:163:35 | ControlFlowNode for tar | UnsafeUnpack.py:163:23:163:28 | ControlFlowNode for member | provenance |  |
 | UnsafeUnpack.py:166:23:166:28 | [post] ControlFlowNode for result | UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | provenance |  |
+| UnsafeUnpack.py:166:23:166:28 | [post] ControlFlowNode for result [List element] | UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | provenance |  |
 | UnsafeUnpack.py:166:37:166:42 | ControlFlowNode for member | UnsafeUnpack.py:166:23:166:28 | [post] ControlFlowNode for result | provenance | list.append |
+| UnsafeUnpack.py:166:37:166:42 | ControlFlowNode for member | UnsafeUnpack.py:166:23:166:28 | [post] ControlFlowNode for result [List element] | provenance | list.append |
 | UnsafeUnpack.py:171:1:171:8 | ControlFlowNode for response | UnsafeUnpack.py:174:15:174:22 | ControlFlowNode for response | provenance |  |
 | UnsafeUnpack.py:171:12:171:50 | ControlFlowNode for Attribute() | UnsafeUnpack.py:171:1:171:8 | ControlFlowNode for response | provenance |  |
 | UnsafeUnpack.py:173:11:173:17 | ControlFlowNode for tarpath | UnsafeUnpack.py:176:17:176:23 | ControlFlowNode for tarpath | provenance |  |
@@ -189,6 +191,7 @@ nodes
 | UnsafeUnpack.py:163:23:163:28 | ControlFlowNode for member | semmle.label | ControlFlowNode for member |
 | UnsafeUnpack.py:163:33:163:35 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
 | UnsafeUnpack.py:166:23:166:28 | [post] ControlFlowNode for result | semmle.label | [post] ControlFlowNode for result |
+| UnsafeUnpack.py:166:23:166:28 | [post] ControlFlowNode for result [List element] | semmle.label | [post] ControlFlowNode for result [List element] |
 | UnsafeUnpack.py:166:37:166:42 | ControlFlowNode for member | semmle.label | ControlFlowNode for member |
 | UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | semmle.label | ControlFlowNode for result |
 | UnsafeUnpack.py:171:1:171:8 | ControlFlowNode for response | semmle.label | ControlFlowNode for response |

@@ -4,9 +4,11 @@ edges
 | password_in_cookie.py:14:5:14:12 | ControlFlowNode for password | password_in_cookie.py:16:33:16:40 | ControlFlowNode for password | provenance |  |
 | password_in_cookie.py:14:16:14:43 | ControlFlowNode for Attribute() | password_in_cookie.py:14:5:14:12 | ControlFlowNode for password | provenance |  |
 | test.py:15:5:15:12 | ControlFlowNode for password | test.py:17:20:17:27 | ControlFlowNode for password | provenance |  |
-| test.py:15:5:15:12 | ControlFlowNode for password | test.py:18:9:18:13 | ControlFlowNode for lines | provenance |  |
+| test.py:15:5:15:12 | ControlFlowNode for password | test.py:18:18:18:32 | ControlFlowNode for BinaryExpr | provenance |  |
 | test.py:15:16:15:29 | ControlFlowNode for get_password() | test.py:15:5:15:12 | ControlFlowNode for password | provenance |  |
-| test.py:18:9:18:13 | ControlFlowNode for lines | test.py:19:25:19:29 | ControlFlowNode for lines | provenance |  |
+| test.py:18:9:18:13 | ControlFlowNode for lines [List element] | test.py:19:25:19:29 | ControlFlowNode for lines | provenance |  |
+| test.py:18:17:18:33 | ControlFlowNode for List [List element] | test.py:18:9:18:13 | ControlFlowNode for lines [List element] | provenance |  |
+| test.py:18:18:18:32 | ControlFlowNode for BinaryExpr | test.py:18:17:18:33 | ControlFlowNode for List [List element] | provenance |  |
 nodes
 | password_in_cookie.py:7:5:7:12 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | password_in_cookie.py:7:16:7:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
@@ -17,7 +19,9 @@ nodes
 | test.py:15:5:15:12 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:15:16:15:29 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |
 | test.py:17:20:17:27 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
-| test.py:18:9:18:13 | ControlFlowNode for lines | semmle.label | ControlFlowNode for lines |
+| test.py:18:9:18:13 | ControlFlowNode for lines [List element] | semmle.label | ControlFlowNode for lines [List element] |
+| test.py:18:17:18:33 | ControlFlowNode for List [List element] | semmle.label | ControlFlowNode for List [List element] |
+| test.py:18:18:18:32 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | test.py:19:25:19:29 | ControlFlowNode for lines | semmle.label | ControlFlowNode for lines |
 subpaths
 #select

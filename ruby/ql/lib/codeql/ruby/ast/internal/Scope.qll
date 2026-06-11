@@ -118,7 +118,7 @@ private Ruby::AstNode specialParentOf(Ruby::AstNode n) {
     ]
 }
 
-private Ruby::AstNode parentOf(Ruby::AstNode n) {
+Ruby::AstNode parentOf(Ruby::AstNode n) {
   n = getHereDocBody(result)
   or
   result = specialParentOf(n).getParent()
@@ -172,13 +172,15 @@ private module Cached {
   }
 }
 
-bindingset[n]
-pragma[inline_late]
-Scope::Range scopeOf(Ruby::AstNode n) { result = Cached::scopeOfImpl(n) }
+import Cached
 
 bindingset[n]
 pragma[inline_late]
-Scope scopeOfInclSynth(AstNode n) { result = Cached::scopeOfInclSynthImpl(n) }
+Scope::Range scopeOf(Ruby::AstNode n) { result = scopeOfImpl(n) }
+
+bindingset[n]
+pragma[inline_late]
+Scope scopeOfInclSynth(AstNode n) { result = scopeOfInclSynthImpl(n) }
 
 abstract class ScopeImpl extends AstNode, TScopeType {
   final Scope getOuterScopeImpl() { result = scopeOfInclSynth(this) }

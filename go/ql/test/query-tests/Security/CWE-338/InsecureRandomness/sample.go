@@ -12,7 +12,7 @@ import (
 )
 
 func Guid() []byte {
-	hash := sha256.Sum256([]byte(fmt.Sprintf("%n", rand.Uint32()))) // OK: may not be used in a cryptographic setting
+	hash := sha256.Sum256([]byte(fmt.Sprintf("%n", rand.Uint32()))) // $ Source // OK: may not be used in a cryptographic setting
 	return hash[:]
 }
 
@@ -23,7 +23,7 @@ func createHash(key string) string {
 }
 
 func ed25519FromGuid() {
-	ed25519.NewKeyFromSeed(Guid()) // BAD: Guid internally uses rand
+	ed25519.NewKeyFromSeed(Guid()) // $ Alert // BAD: Guid internally uses rand
 }
 
 func encrypt(data []byte, password string) []byte {
@@ -31,16 +31,16 @@ func encrypt(data []byte, password string) []byte {
 	gcm, _ := cipher.NewGCM(block)
 
 	nonce := make([]byte, gcm.NonceSize())
-	random := rand.New(rand.NewSource(999))
+	random := rand.New(rand.NewSource(999)) // $ Source
 	io.ReadFull(random, nonce)
 
-	ciphertext := gcm.Seal(data[:0], nonce, data, nil) // BAD: use of an insecure rng to generate a nonce
+	ciphertext := gcm.Seal(data[:0], nonce, data, nil) // $ Alert // BAD: use of an insecure rng to generate a nonce
 	return ciphertext
 }
 
 func makePasswordFiveChar() string {
 	s := make([]rune, 5)
-	s[0] = charset[rand.Intn(len(charset))] // BAD: weak RNG used to generate salt
+	s[0] = charset[rand.Intn(len(charset))] // $ Alert // BAD: weak RNG used to generate salt
 	s[1] = charset[rand.Intn(len(charset))] // Rest OK because only the first result is caught
 	s[2] = charset[rand.Intn(len(charset))]
 	s[3] = charset[rand.Intn(len(charset))]
@@ -52,8 +52,8 @@ func generateRandomKey() ed25519.PrivateKey {
 	candidates := "0123456789ABCDEF"
 	seed := ""
 	for i := 0; i < ed25519.SeedSize; i++ {
-		randNumber := rand.Intn(len(candidates))
+		randNumber := rand.Intn(len(candidates)) // $ Source
 		seed += string(candidates[randNumber])
 	}
-	return ed25519.NewKeyFromSeed([]byte(seed)) // BAD: seed candidates were selected with a weak RNG
+	return ed25519.NewKeyFromSeed([]byte(seed)) // $ Alert // BAD: seed candidates were selected with a weak RNG
 }

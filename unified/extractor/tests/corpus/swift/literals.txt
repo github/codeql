@@ -1,0 +1,124 @@
+===
+Integer literal
+===
+
+42
+
+---
+
+source_file
+  statement: integer_literal "42"
+
+---
+
+top_level
+  body:
+
+===
+Negative integer literal
+===
+
+-7
+
+---
+
+source_file
+  statement:
+    prefix_expression
+      operation: -
+      target: integer_literal "7"
+
+---
+
+top_level
+  body:
+
+===
+Floating-point literal
+===
+
+3.14
+
+---
+
+source_file
+  statement: real_literal "3.14"
+
+---
+
+top_level
+  body:
+
+===
+Boolean literals
+===
+
+true
+false
+
+---
+
+source_file
+  statement:
+    boolean_literal
+    boolean_literal
+
+---
+
+top_level
+  body:
+
+===
+Nil literal
+===
+
+nil
+
+---
+
+source_file
+  statement: nil
+
+---
+
+top_level
+  body:
+
+===
+String literal
+===
+
+"hello"
+
+---
+
+source_file
+  statement:
+    line_string_literal
+      text: line_str_text "hello"
+
+---
+
+top_level
+  body:
+
+===
+String with interpolation
+===
+
+"hello \(name)"
+
+---
+
+source_file
+  statement:
+    line_string_literal
+      interpolation:
+        interpolated_expression
+          value: simple_identifier "name"
+      text: line_str_text "hello "
+
+---
+
+top_level
+  body:

@@ -1071,7 +1071,7 @@ class NullPointerType extends BuiltInType {
  * const float fa[40];
  * ```
  */
-class DerivedType extends Type, @derivedtype {
+class DerivedType extends Type, NameQualifyingElement, @derivedtype {
   override string toString() { result = this.getName() }
 
   override string getName() { derivedtypes(underlyingElement(this), result, _, _) }

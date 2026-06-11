@@ -597,7 +597,7 @@ private string mainResultSet() { result = ["#select", "problems"] }
  * foo();      // $ Alert[rust/unreachable-code]
  * ```
  *
- * In the example above, the `$ Alert[rust/unused-value]` commment is only taken
+ * In the example above, the `$ Alert[rust/unused-value]` comment is only taken
  * into account in the test for the query with ID `rust/unused-value`, and vice
  * versa for the `$ Alert[rust/unreachable-code]` comment.
  *
