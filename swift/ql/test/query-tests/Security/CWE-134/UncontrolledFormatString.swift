@@ -76,7 +76,7 @@ func vasprintf_l(_ ret: UnsafeMutablePointer<UnsafeMutablePointer<CChar>?>?, _ l
 
 func MyLog(_ format: String, _ args: CVarArg...) {
     withVaList(args) { arglist in
-        NSLogv(format, arglist) // BAD
+        NSLogv(format, arglist) // $ Alert
     }
 }
 
@@ -88,34 +88,34 @@ class MyString {
 }
 
 func tests() throws {
-    let tainted = try! String(contentsOf: URL(string: "http://example.com")!)
+    let tainted = try! String(contentsOf: URL(string: "http://example.com")!) // $ Source
 
     _ = String("abc") // GOOD: not a format string
     _ = String(tainted) // GOOD: not a format string
 
     _ = String(format: "abc") // GOOD: not tainted
-    _ = String(format: tainted) // BAD
+    _ = String(format: tainted) // $ Alert
     _ = String(format: "%s", "abc") // GOOD: not tainted
     _ = String(format: "%s", tainted) // GOOD: format string itself is not tainted
-    _ = String(format: tainted, "abc") // BAD
-    _ = String(format: tainted, tainted) // BAD
+    _ = String(format: tainted, "abc") // $ Alert
+    _ = String(format: tainted, tainted) // $ Alert
 
-    _ = String(format: tainted, arguments: []) // BAD
-    _ = String(format: tainted, locale: nil) // BAD
-    _ = String(format: tainted, locale: nil, arguments: []) // BAD
-    _ = String.localizedStringWithFormat(tainted) // BAD
+    _ = String(format: tainted, arguments: []) // $ Alert
+    _ = String(format: tainted, locale: nil) // $ Alert
+    _ = String(format: tainted, locale: nil, arguments: []) // $ Alert
+    _ = String.localizedStringWithFormat(tainted) // $ Alert
 
-    _ = NSString(format: NSString(string: tainted), "abc") // BAD
-    NSString.localizedStringWithFormat(NSString(string: tainted)) // BAD
+    _ = NSString(format: NSString(string: tainted), "abc") // $ Alert
+    NSString.localizedStringWithFormat(NSString(string: tainted)) // $ Alert
 
-    _ = NSMutableString(format: NSString(string: tainted), "abc") // BAD
-    NSMutableString.localizedStringWithFormat(NSString(string: tainted)) // BAD
+    _ = NSMutableString(format: NSString(string: tainted), "abc") // $ Alert
+    NSMutableString.localizedStringWithFormat(NSString(string: tainted)) // $ Alert
 
     NSLog("abc") // GOOD: not tainted
-    NSLog(tainted) // BAD
-    MyLog(tainted) // BAD
+    NSLog(tainted) // $ Alert
+    MyLog(tainted) // $ Alert
 
-    NSException.raise(NSExceptionName("exception"), format: tainted, arguments: getVaList([])) // BAD
+    NSException.raise(NSExceptionName("exception"), format: tainted, arguments: getVaList([])) // $ Alert
 
     let taintedVal = Int(tainted)!
     let taintedSan = "\(taintedVal)"
@@ -127,32 +127,32 @@ func tests() throws {
 
     _ = String("abc").appendingFormat("%s", "abc") // GOOD: not tainted
     _ = String("abc").appendingFormat("%s", tainted) // GOOD: format not tainted
-    _ = String("abc").appendingFormat(tainted, "abc") // BAD
+    _ = String("abc").appendingFormat(tainted, "abc") // $ Alert
     _ = String(tainted).appendingFormat("%s", "abc") // GOOD: format not tainted
 
     let s = NSMutableString(string: "foo")
     s.appendFormat(NSString(string: "%s"), "abc") // GOOD: not tainted
-    s.appendFormat(NSString(string: tainted), "abc") // BAD
+    s.appendFormat(NSString(string: tainted), "abc") // $ Alert
 
     _ = NSPredicate(format: tainted) // GOOD: this should be flagged by `swift/predicate-injection`, not `swift/uncontrolled-format-string`
 
     tainted.withCString({
         cstr in
-        _ = dprintf(0, cstr, "abc") // BAD
+        _ = dprintf(0, cstr, "abc") // $ Alert
         _ = dprintf(0, "%s", cstr) // GOOD: format not tainted
-        _ = vprintf(cstr, getVaList(["abc"])) // BAD
+        _ = vprintf(cstr, getVaList(["abc"])) // $ Alert
         _ = vprintf("%s", getVaList([cstr])) // GOOD: format not tainted
-        _ = vfprintf(nil, cstr, getVaList(["abc"])) // BAD
+        _ = vfprintf(nil, cstr, getVaList(["abc"])) // $ Alert
         _ = vfprintf(nil, "%s", getVaList([cstr])) // GOOD: format not tainted
-        _ = vasprintf_l(nil, nil, cstr, getVaList(["abc"])) // BAD
+        _ = vasprintf_l(nil, nil, cstr, getVaList(["abc"])) // $ Alert
         _ = vasprintf_l(nil, nil, "%s", getVaList([cstr])) // GOOD: format not tainted
     })
 
     myFormatMessage(string: tainted, "abc") // BAD [NOT DETECTED]
     myFormatMessage(string: "%s", tainted) // GOOD: format not tainted
 
-    _ = MyString(format: tainted, "abc") // BAD
+    _ = MyString(format: tainted, "abc") // $ Alert
     _ = MyString(format: "%s", tainted) // GOOD: format not tainted
-    _ = MyString(formatString: tainted, "abc") // BAD
+    _ = MyString(formatString: tainted, "abc") // $ Alert
     _ = MyString(formatString: "%s", tainted) // GOOD: format not tainted
 }
