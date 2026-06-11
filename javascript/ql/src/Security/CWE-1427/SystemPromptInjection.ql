@@ -15,5 +15,5 @@ import SystemPromptInjectionFlow::PathGraph
 
 from SystemPromptInjectionFlow::PathNode source, SystemPromptInjectionFlow::PathNode sink
 where SystemPromptInjectionFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This prompt construction depends on a $@.", source.getNode(),
+select sink.getNode(), source, sink, "This system prompt depends on a $@.", source.getNode(),
   "user-provided value"
