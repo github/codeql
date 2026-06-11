@@ -64,23 +64,123 @@ class CTypedefType extends TypedefType {
 }
 
 /**
- * A using alias C++ typedef type.  For example the type declared in the following code:
+ * DEPRECATED: Use `TypeAlias` instead.
+ *
+ * A C++ type alias or alias template.
+ *
+ * For example the type declared in the following code:
  * ```
  * using my_int2 = int;
  * ```
  */
-class UsingAliasTypedefType extends TypedefType {
-  UsingAliasTypedefType() { usertype_alias_kind(underlyingElement(this), 1) }
+deprecated class UsingAliasTypedefType = TypeAliasType;
 
-  override string getAPrimaryQlClass() { result = "UsingAliasTypedefType" }
+/**
+ * A C++ type alias or alias template.
+ *
+ * For example the type declared in the following code:
+ * ```
+ * using my_int2 = int;
+ * ```
+ */
+class TypeAliasType extends TypedefType {
+  TypeAliasType() { usertype_alias_kind(underlyingElement(this), 1) }
+
+  override string getAPrimaryQlClass() { result = "TypeAliasType" }
 
   override string explain() {
     result = "using {" + this.getBaseType().explain() + "} as \"" + this.getName() + "\""
   }
+
+  /**
+   * Holds if this alias is constructed from another alias as a result of
+   * template instantiation.
+   */
+  predicate isConstructedFrom(TypeAliasType t) {
+    alias_instantiation(underlyingElement(this), unresolveElement(t))
+  }
 }
 
 /**
- * A C++ `typedef` type that is directly enclosed by a function.  For example the type declared inside the function `foo` in
+ * A C++ alias template.
+ *
+ * For example the type declared in the following code:
+ * ```
+ * template <typename T>
+ * using my_type = T;
+ * ```
+ */
+class AliasTemplateType extends TypeAliasType {
+  AliasTemplateType() { is_alias_template(underlyingElement(this)) }
+
+  override string getAPrimaryQlClass() { result = "AliasTemplateType" }
+
+  /**
+   * Gets an alias instantiated from this template.
+   *
+   * For example for `MyAliasTemplate<T>` in the following code, the results are
+   * `MyAliasTemplate<int>` and `MyAliasTemplate<long>`:
+   * ```
+   * template<typename T>
+   * using MyAliasTemplate = ...;
+   *
+   * MyAliasTemplate<int> instance1;
+   *
+   * MyAliasTemplate<long> instance2;
+   * ```
+   */
+  TypeAliasType getAnInstantiation() { result.isConstructedFrom(this) }
+
+  /**
+   * Gets the class member template this template was generated from.
+   *
+   * This predicate only has results for templates that are members of class
+   * template instantiations. For example, for `MyTemplateClass<int>::t<S>`
+   * in the following code, the result is `MyTemplateClass<T>::t<S>`.
+   * ```cpp
+   * template<class T>
+   * class MyTemplateClass {
+   *   template<class S>
+   *   using t = S;
+   * };
+   *
+   * template
+   * class MyTemplateClass<int>;
+   * ```
+   */
+  AliasTemplateType getOriginalTemplate() {
+    alias_template_generated_from(underlyingElement(this), unresolveElement(result))
+  }
+}
+
+/**
+ * A C++ alias template instantiation.
+ *
+ * For example the `my_int_type` type declared in the following code:
+ * ```
+ * template <typename T>
+ * using my_type = T;
+ *
+ * using my_int_type = my_type<int>;
+ * ```
+ */
+class AliasTemplateInstantiationType extends TypeAliasType {
+  AliasTemplateType at;
+
+  AliasTemplateInstantiationType() { at.getAnInstantiation() = this }
+
+  override string getAPrimaryQlClass() { result = "AliasTemplateInstantiationType" }
+
+  /**
+   * Gets the alias template from which this instantiation was instantiated.
+   */
+  AliasTemplateType getTemplate() { result = at }
+}
+
+/**
+ * A C++ `typedef` type that is directly enclosed by a function.
+ *
+ * For example the type declared inside the function `foo` in
  * the following code:
  * ```
  * int foo(void) { typedef int local; }

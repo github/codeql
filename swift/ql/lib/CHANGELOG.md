@@ -1,3 +1,29 @@
+## 6.7.0
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.2.
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `swift/cleartext-logging`) may find more correct results and fewer false positive results after these changes.
+
+## 6.6.0
+
+### New Features
+
+* The `TypeDecl` class now defines a `getDeclaredInterfaceType` predicate, which yields the declared interface type of the type declaration.
+
+## 6.5.0
+
+### New Features
+
+* The `BuiltinFixedArrayType` class now defines the predicates `getSize` and `getElementType`, which yield the size of the array and the type of elements stored in the array, respectively.
+
+### Major Analysis Improvements
+
+* Upgraded to allow analysis of Swift 6.3.1.
+
 ## 6.4.0
 
 ### Major Analysis Improvements

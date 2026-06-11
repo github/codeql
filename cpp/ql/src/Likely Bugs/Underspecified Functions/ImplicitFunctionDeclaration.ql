@@ -18,7 +18,7 @@ import TooManyArguments
 import semmle.code.cpp.commons.Exclusions
 
 /*
- * This query is not compatible with build mode: none databases, and produces
+ * This query is not compatible with build-mode: none databases, and produces
  * no results on those databases.
  */
 

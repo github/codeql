@@ -571,6 +571,29 @@ class MutatorOperatorCall extends OperatorCall {
 }
 
 /**
+ * A call to an instance mutator operator, for example `a++` on
+ * line 5 in
+ *
+ * ```csharp
+ * class A {
+ *   public void operator ++() { ... }
+ *
+ *   public static void Increment(A a) {
+ *     a++;
+ *   }
+ * }
+ * ```
+ */
+class InstanceMutatorOperatorCall extends MutatorOperatorCall {
+  InstanceMutatorOperatorCall() { this.getTarget().getNumberOfParameters() = 0 }
+
+  /** Gets the qualifier of this instance mutator operator call. */
+  Expr getQualifier() { result = this.getChildExpr(0) }
+
+  override Expr getArgument(int i) { none() }
+}
+
+/**
  * A call to a compound assignment operator, for example `this += other`
  * on line 7 in
  *
@@ -743,7 +766,16 @@ class PropertyCall extends AccessorCall, PropertyAccessExpr {
   }
 
   override Accessor getWriteTarget() {
-    this instanceof AssignableWrite and result = this.getProperty().getSetter()
+    this instanceof AssignableWrite and
+    exists(Property p | p = this.getProperty() |
+      result = p.getSetter()
+      or
+      result =
+        any(Getter g |
+          g = p.getGetter() and
+          g.getAnnotatedReturnType().isRef()
+        )
+    )
   }
 
   override Expr getArgument(int i) {
@@ -778,7 +810,16 @@ class IndexerCall extends AccessorCall, IndexerAccessExpr {
   }
 
   override Accessor getWriteTarget() {
-    this instanceof AssignableWrite and result = this.getIndexer().getSetter()
+    this instanceof AssignableWrite and
+    exists(Indexer i | i = this.getIndexer() |
+      result = i.getSetter()
+      or
+      result =
+        any(Getter g |
+          g = i.getGetter() and
+          g.getAnnotatedReturnType().isRef()
+        )
+    )
   }
 
   override Expr getArgument(int i) {

@@ -1,3 +1,36 @@
+## 10.2.0
+
+### Deprecated APIs
+
+* The `UsingAliasTypedefType` class has been deprecated. Use `TypeAliasType` instead.
+
+### New Features
+
+* Added a `getOriginalTemplate` predicate to `TemplateClass`, `TemplateFunction`, `TemplateVariable`, and `AliasTemplateType`, which yields the class member template the template was generated from. The predicates only have results for templates that are members of class template instantiations.
+* Added `AliasTemplateType` and `AliasTemplateInstantiationType` classes, representing C++ alias templates and their instantiations.
+
+### Minor Analysis Improvements
+
+* Added flow source models for `scanf_s` and related functions.
+* Added a `Call` column to `LocalFlowSourceFunction::hasLocalFlowSource` and `RemoteFlowSourceFunction::hasRemoteFlowSource`. The old predicates without a `Call` column continue to be supported.
+
+## 10.1.1
+
+### Minor Analysis Improvements
+
+* The `RemoteFlowSourceFunction` model for `fscanf` (and variants) now implements `hasSocketInput` to reflect that these functions may read from a socket.
+
+## 10.1.0
+
+### New Features
+
+* A new predicate `getSwitchCase` was added to the `SwitchStmt` class, which yields the `n`th `case` statement from a `switch` statement.
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for C and C++](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-cpp/).
+
+### Minor Analysis Improvements
+
+* Added taint flow models for the `Strsafe.h` header from the Windows SDK.
+
 ## 10.0.0
 
 ### Breaking Changes

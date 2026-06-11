@@ -1098,6 +1098,52 @@ mod self_types {
     }
 }
 
+#[rustfmt::skip]
+mod const_static {
+    use crate::const_static; // $ item=const_static
+
+    pub const CONST_ITEM: i32 = 42; // $ item=i32
+
+    pub static STATIC_ITEM: i32 = 42; // $ item=i32
+
+    fn use_const_static() {
+        let _ = CONST_ITEM; // $ item=CONST_ITEM
+        let _ = STATIC_ITEM; // $ item=STATIC_ITEM
+        let _ = const_static::CONST_ITEM; // $ item=CONST_ITEM
+        let _ = const_static::STATIC_ITEM; // $ item=STATIC_ITEM
+        let _ = CONST_ALIAS; // $ item=C1
+        let _ = STATIC_ALIAS; // $ item=S1
+
+        const CONST_ALIAS: i32 = CONST_ITEM // $ item=CONST_ITEM item=i32
+            ; // C1
+        static STATIC_ALIAS: i32 = STATIC_ITEM // $ item=STATIC_ITEM item=i32
+            ; // S1
+
+        let _ = CONST_ALIAS; // $ item=C1
+        let _ = STATIC_ALIAS; // $ item=S1
+
+        {
+            const CONST_ALIAS: i32 = CONST_ITEM // $ item=CONST_ITEM item=i32
+                ; // C2
+            static STATIC_ALIAS: i32 = STATIC_ITEM // $ item=STATIC_ITEM item=i32
+                ; // S2
+
+            let _ = CONST_ALIAS; // $ item=C2
+            let _ = STATIC_ALIAS; // $ item=S2
+        }
+
+        {
+            const CONST_ALIAS: i32 = CONST_ITEM // $ item=CONST_ITEM item=i32
+                ; // C3
+            static STATIC_ALIAS: i32 = STATIC_ITEM // $ item=STATIC_ITEM item=i32
+                ; // S3
+
+            let _ = CONST_ALIAS; // $ item=C3
+            let _ = STATIC_ALIAS; // $ item=S3
+        }
+    }
+}
+
 fn main() {
     my::nested::nested1::nested2::f(); // $ item=I4
     my::f(); // $ item=I38

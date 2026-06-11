@@ -130,4 +130,31 @@ namespace Indexers
             get { return 0; }
         }
     }
+
+    public ref struct S
+    {
+        private ref int x;
+
+        public S(ref int v)
+        {
+            x = ref v;
+        }
+
+        public ref int this[int i]
+        {
+            get { return ref x; }
+        }
+    }
+
+    public class TestRefReturns
+    {
+        public void M()
+        {
+            int a = 0;
+
+            S s = new S(ref a);
+            s[0] = 1;
+            var x = s[0];
+        }
+    }
 }

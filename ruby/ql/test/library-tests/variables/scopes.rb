@@ -47,3 +47,27 @@ module M
   #{var2}
  EOF
 end
+
+module ExceptionVariable
+  class MyException < Exception
+  end
+
+  x = 1
+  puts x
+
+  begin
+    raise MyException
+  rescue MyException => x # reuses `x` from above
+    puts x
+  end
+  puts x # prints `MyException`, not `1`
+end
+
+module ParameterShadowing
+  x = 1
+  xs = [1, 2, 3]
+  xs.each do |x|
+    puts x
+  end
+  puts x # prints `1`, not `3`
+end

@@ -175,7 +175,9 @@ module Ast implements AstSig<Location> {
   final private class FinalForStmt = CS::ForStmt;
 
   class ForStmt extends FinalForStmt {
-    Expr getInit(int index) { result = this.getInitializer(index) }
+    AstNode getInit(int index) { result = super.getInitializer(index) }
+
+    AstNode getUpdate(int index) { result = super.getUpdate(index) }
   }
 
   final private class FinalForeachStmt = CS::ForeachStmt;
@@ -229,7 +231,7 @@ module Ast implements AstSig<Location> {
   final private class FinalCase = CS::Case;
 
   class Case extends FinalCase {
-    AstNode getAPattern() { result = this.getPattern() }
+    AstNode getPattern(int index) { result = this.getPattern() and index = 0 }
 
     Expr getGuard() { result = this.getCondition() }
 

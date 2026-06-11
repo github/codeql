@@ -94,7 +94,7 @@
 | parameters.rb:59:23:59:23 | b |
 | parameters.rb:59:25:59:25 | c |
 | scopes.rb:1:1:1:15 | self |
-| scopes.rb:1:1:49:4 | self |
+| scopes.rb:1:1:73:3 | self |
 | scopes.rb:2:14:2:14 | x |
 | scopes.rb:4:4:4:4 | a |
 | scopes.rb:7:1:7:1 | a |
@@ -124,6 +124,13 @@
 | scopes.rb:42:2:42:4 | var |
 | scopes.rb:43:2:43:4 | foo |
 | scopes.rb:46:5:46:8 | var2 |
+| scopes.rb:51:1:64:3 | self |
+| scopes.rb:52:3:53:5 | self |
+| scopes.rb:55:3:55:3 | x |
+| scopes.rb:66:1:73:3 | self |
+| scopes.rb:67:3:67:3 | x |
+| scopes.rb:68:3:68:4 | xs |
+| scopes.rb:69:15:69:15 | x |
 | ssa.rb:1:1:16:3 | self |
 | ssa.rb:1:1:103:3 | self |
 | ssa.rb:1:7:1:7 | b |

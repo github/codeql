@@ -2733,11 +2733,6 @@ class PatternExpr extends Expr {
   LocalVariableDeclExpr asBindingOrUnnamedPattern() { result = this }
 
   /**
-   * DEPRECATED: alias for `asBindingOrUnnamedPattern`.
-   */
-  deprecated LocalVariableDeclExpr asBindingPattern() { result = this.asBindingOrUnnamedPattern() }
-
-  /**
    * Gets this pattern cast to a record pattern.
    */
   RecordPatternExpr asRecordPattern() { result = this }

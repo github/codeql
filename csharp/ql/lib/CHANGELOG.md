@@ -1,3 +1,53 @@
+## 6.0.2
+
+### Minor Analysis Improvements
+
+* Full support for C# 14 / .NET 10. All new language features are now supported by the extractor. The QL library and data flow analysis now support the new C# 14 language constructs and include generated Models as Data (MaD) models for the .NET 10 runtime.
+* C# 14: Added support for user-defined instance increment/decrement operators.
+
+## 6.0.1
+
+No user-facing changes.
+
+## 6.0.0
+
+### Breaking Changes
+
+* The C# control flow graph (CFG) implementation has been completely
+  rewritten. The CFG now includes additional nodes to more accurately represent
+  certain constructs. This also means that any existing code that implicitly
+  relies on very specific details about the CFG may need to be updated.
+  The CFG no longer uses splitting, which means that AST nodes now have a unique
+  CFG node representation.
+  Additionally, the following breaking changes have been made:
+  - `ControlFlow::Node` has been renamed to `ControlFlowNode`.
+  - `ControlFlow::Nodes` has been renamed to `ControlFlowNodes`.
+  - `BasicBlock.getCallable` has been renamed to `BasicBlock.getEnclosingCallable`.
+  - `BasicBlocks.qll` has been deleted.
+  - `ControlFlowNode.getAstNode` has changed its meaning. The AST-to-CFG
+    mapping remains one-to-many, but now for a different reason. It used to be
+    because of splitting, but now it's because of additional "helper" CFG
+    nodes. To get the (now canonical) CFG node for a given AST node, use
+    `ControlFlowNode.asExpr()` or `ControlFlowNode.asStmt()` or
+    `ControlFlowElement.getControlFlowNode()` instead.
+
+### Deprecated APIs
+
+* The QL classes in the C# SSA library have been renamed to improve consistency between languages. Any custom QL code that makes use of SSA needs to be updated. The old classes have been deprecated and include more detailed migration instructions in their qldoc.
+
+### New Features
+
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for C#](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-csharp/).
+
+### Major Analysis Improvements
+
+* When resolving dependencies in `build-mode: none`, `dotnet restore` now explicitly receives reachable NuGet feeds configured in `nuget.config` when feed responsiveness checking is enabled (the default), and any private registries directly, improving reliability when default feeds are unavailable or restricted.
+
+### Minor Analysis Improvements
+
+* Expanded ASP and ASP.NET remote source modeling to cover additional sources, including fields of tainted parameters as well as properties and fields that become tainted transitively.
+* C# 14: Added support for user-defined compound assignment operators.
+
 ## 5.5.0
 
 ### Deprecated APIs
@@ -64,9 +114,9 @@ No user-facing changes.
 * When a code-scanning configuration specifies the `paths:` and/or `paths-ignore:` settings, these are now taken into account by the C# extractor's search for `.config`, `.props`, XML and project files.
 * Updated the generated .NET “models as data” runtime models to cover .NET 10.
 * C# 14: Support for *implicit* span conversions in the QL library.
-* Basic extractor support for .NET 10 is now available. Extraction is supported for .NET 10 projects in both traced mode and `build mode: none`. However, code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
+* Basic extractor support for .NET 10 is now available. Extraction is supported for .NET 10 projects in both traced mode and `build-mode: none`. However, code that uses language features new to C# 14 is not yet fully supported for extraction and analysis.
 * Added autobuilder and `build-mode: none` support for `.slnx` solution files.
-* In `build mode: none`, .NET 10 is now used by default unless a specific .NET version is specified elsewhere.
+* In `build-mode: none`, .NET 10 is now used by default unless a specific .NET version is specified elsewhere.
 * Added implicit reads of `System.Collections.Generic.KeyValuePair.Value` at taint-tracking sinks and at inputs to additional taint steps. As a result, taint-tracking queries will now produce more results when a container is tainted.
 
 ### Bug Fixes

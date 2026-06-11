@@ -1392,7 +1392,7 @@ class StmtSequenceNode extends ExprNode {
 /**
  * A data flow node corresponding to a method, block, or lambda expression.
  */
-class CallableNode extends StmtSequenceNode {
+class CallableNode extends ExprNode {
   private Callable callable;
 
   CallableNode() { this.asExpr().getExpr() = callable }

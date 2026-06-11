@@ -1,3 +1,19 @@
+## 0.4.37
+
+### Minor Analysis Improvements
+
+* The GitHub Actions analysis now recognizes more Bash regex checks that restrict a value to alphanumeric characters, include regexes like `^[0-9a-zA-Z]{40}([0-9a-zA-Z]{24})?$` which check for a sha1 or sha256 hash. This may reduce false positive results where command output is validated with grouped or optional alphanumeric patterns before being used.
+
+## 0.4.36
+
+### Minor Analysis Improvements
+
+* Altered 2 patterns in the `poisonable_steps` modelling. Extra sinks are detected in the following cases: scripts executed via python modules and `go run` in directories are detected as potential mechanisms of injection. For the go execution pattern, the pattern is updated to now ignore flags that occur between go and the specific command. This change may lead to more results being detected by the following queries: `actions/untrusted-checkout/high`, `actions/untrusted-checkout/critical`, `actions/untrusted-checkout-toctou/high`, `actions/untrusted-checkout-toctou/critical`, `actions/cache-poisoning/poisonable-step`, `actions/cache-poisoning/direct-cache` and `actions/artifact-poisoning/path-traversal`.
+
+## 0.4.35
+
+No user-facing changes.
+
 ## 0.4.34
 
 ### Minor Analysis Improvements

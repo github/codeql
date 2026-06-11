@@ -37,18 +37,18 @@ pub fn f() -> Option<()> {
 
     let value3 = 42;
     if let ref mesg = value3 {
-        let mesg = mesg; // $ type=mesg:TRef.i32
+        let mesg = mesg; // $ type=mesg@&<TRef>:i32
         println!("{mesg}");
     }
 
     let value4 = Some(42);
     if let Some(ref mesg) = value4 {
-        let mesg = mesg; // $ type=mesg:TRef.i32
+        let mesg = mesg; // $ type=mesg@&<TRef>:i32
         println!("{mesg}");
     }
 
     let ref value5 = 42;
-    let x = value5; // $ type=x:TRef.i32
+    let x = value5; // $ type=x@&<TRef>:i32
 
     let my_record_struct = MyRecordStruct {
         value1: 42,
@@ -102,27 +102,27 @@ pub fn f() -> Option<()> {
         ) => {
             let a = value1; // $ type=a:bool
             let b = x; // $ type=b:i32
-            let c = y; // $ type=c:TRef.str
+            let c = y; // $ type=c@&<TRef>:str
             ();
         }
         _ => (),
     }
 
-    let opt1 = Some(Default::default()); // $ type=opt1:T.i32 target=default
+    let opt1 = Some(Default::default()); // $ type=opt1@Option<T>:i32 target=default
     #[rustfmt::skip]
     let _ = if let Some::<i32>(x) = opt1
     {
         x; // $ type=x:i32
     };
 
-    let opt2 = Some(Default::default()); // $ type=opt2:T.i32 target=default
+    let opt2 = Some(Default::default()); // $ type=opt2@Option<T>:i32 target=default
     #[rustfmt::skip]
     let _ = if let Option::Some::<i32>(x) = opt2
     {
         x; // $ type=x:i32
     };
 
-    let opt3 = Some(Default::default()); // $ type=opt3:T.i32 target=default
+    let opt3 = Some(Default::default()); // $ type=opt3@Option<T>:i32 target=default
     #[rustfmt::skip]
     let _ = if let Option::<i32>::Some(x) = opt3
     {
@@ -197,7 +197,7 @@ pub fn literal_patterns() {
     let string_val = "hello";
     match string_val {
         "hello" => {
-            let hello_match = string_val; // $ certainType=hello_match:TRef.str
+            let hello_match = string_val; // $ certainType=hello_match@&<TRef>:str
             println!("String literal: {}", hello_match);
         }
         _ => {}
@@ -230,7 +230,7 @@ pub fn identifier_patterns() {
     // IdentPat with ref
     match &value {
         ref x => {
-            let ref_bound = x; // $ type=ref_bound:TRef.TRef.i32
+            let ref_bound = x; // $ type=ref_bound@&<TRef>.&<TRef>:i32
             println!("Reference identifier: {:?}", ref_bound);
         }
     }
@@ -269,7 +269,7 @@ pub fn identifier_patterns() {
     let mut ref_mut_val = 5i32;
     match &mut ref_mut_val {
         ref mut x => {
-            let ref_mut_bound = x; // $ type=ref_mut_bound:TRefMut.TRefMut.i32
+            let ref_mut_bound = x; // $ type=ref_mut_bound@&mut<TRefMut>.&mut<TRefMut>:i32
             **ref_mut_bound += 1; // $ target=deref target=add_assign
             println!("Ref mut pattern");
         }
@@ -341,14 +341,14 @@ pub fn reference_patterns() {
 
     match &mut mutable_value {
         &mut ref x => {
-            let mut_ref_bound = x; // $ type=mut_ref_bound:TRef.i32
+            let mut_ref_bound = x; // $ type=mut_ref_bound@&<TRef>:i32
             println!("Mutable ref pattern: {}", mut_ref_bound);
         }
     }
 
     match &value {
         ref x => {
-            let ref_pattern = x; // $ type=ref_pattern:TRef.TRef.i32
+            let ref_pattern = x; // $ type=ref_pattern@&<TRef>.&<TRef>:i32
             println!("Reference pattern: {}", ref_pattern);
         }
     }
@@ -525,7 +525,7 @@ pub fn slice_patterns() {
     // SlicePat - Slice patterns
     match slice {
         [] => {
-            let empty_slice = slice; // $ certainType=empty_slice:TRef.TSlice.i32
+            let empty_slice = slice; // $ certainType=empty_slice@&<TRef>.[]<TSlice>:i32
             println!("Empty slice: {:?}", empty_slice);
         }
         [x] => {
@@ -540,7 +540,7 @@ pub fn slice_patterns() {
         [first, middle @ .., last] => {
             let slice_start = *first; // $ MISSING: type=slice_start:i32
             let slice_end = *last; // $ MISSING: type=slice_end:i32
-            let slice_middle = middle; // $ MISSING: type=slice_middle:TRef.TSlice.i32
+            let slice_middle = middle; // $ MISSING: type=slice_middle@&<TRef>.[]<TSlice>:i32
             println!(
                 "First: {}, last: {}, middle len: {}",
                 slice_start,
@@ -717,7 +717,7 @@ pub fn complex_nested_patterns() {
         }
         // Catch-all with identifier pattern
         other => {
-            let other_complex = other; // $ type=other_complex:T0.Point type=other_complex:T1.MyOption
+            let other_complex = other; // $ type=other_complex@(T_2)<T0>:Point type=other_complex@(T_2)<T1>:MyOption
             println!("Other complex data: {:?}", other_complex);
         }
     }
@@ -750,7 +750,7 @@ pub fn patterns_in_let_statements() {
     // Let with reference pattern
     let value = 42i32;
     let ref ref_val = value;
-    let let_ref = ref_val; // $ certainType=let_ref:TRef.i32
+    let let_ref = ref_val; // $ certainType=let_ref@&<TRef>:i32
 
     // Let with mutable pattern
     let mut mut_val = 10i32;
@@ -779,13 +779,13 @@ pub fn patterns_in_function_parameters() {
 
     // Call the functions to use them
     let point = Point { x: 5, y: 10 };
-    let extracted = extract_point(point); // $ target=extract_point certainType=extracted:T0.i32 certainType=extracted:T1.i32
+    let extracted = extract_point(point); // $ target=extract_point certainType=extracted@(T_2)<T0>:i32 certainType=extracted@(T_2)<T1>:i32
 
     let color = Color(200, 100, 50);
     let red = extract_color(color); // $ target=extract_color certainType=red:u8
 
     let tuple = (42i32, 3.14f64, true);
-    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple certainType=tuple_extracted:T0.i32 certainType=tuple_extracted:T1.bool
+    let tuple_extracted = extract_tuple(tuple); // $ target=extract_tuple certainType=tuple_extracted@(T_2)<T0>:i32 certainType=tuple_extracted@(T_2)<T1>:bool
 }
 
 #[rustfmt::skip]

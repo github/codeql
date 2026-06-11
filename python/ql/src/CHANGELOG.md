@@ -1,3 +1,15 @@
+## 1.8.4
+
+No user-facing changes.
+
+## 1.8.3
+
+No user-facing changes.
+
+## 1.8.2
+
+No user-facing changes.
+
 ## 1.8.1
 
 ### Minor Analysis Improvements

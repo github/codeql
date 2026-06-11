@@ -19,6 +19,7 @@ newtype TSynthKind =
   BitwiseAndExprKind() or
   BitwiseOrExprKind() or
   BitwiseXorExprKind() or
+  BodyStmtKind() or
   BooleanLiteralKind(boolean value) { value = true or value = false } or
   BraceBlockKind() or
   CaseMatchKind() or
@@ -72,6 +73,8 @@ class SynthKind extends TSynthKind {
     this = BitwiseOrExprKind() and result = "BitwiseOrExprKind"
     or
     this = BitwiseXorExprKind() and result = "BitwiseXorExprKind"
+    or
+    this = BodyStmtKind() and result = "BodyStmtKind"
     or
     this = BooleanLiteralKind(_) and result = "BooleanLiteralKind"
     or
@@ -296,9 +299,12 @@ private predicate hasLocation(AstNode n, Location l) {
 private module ImplicitSelfSynthesis {
   pragma[nomagic]
   private predicate identifierMethodCallSelfSynthesis(AstNode mc, int i, Child child) {
-    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
-    mc = TIdentifierMethodCall(_) and
-    i = 0
+    exists(SelfVariableImpl self |
+      self.getDeclaringScopeImpl() = scopeOf(toGenerated(mc)).getEnclosingSelfScope() and
+      child = SynthChild(SelfKind(self)) and
+      mc = TIdentifierMethodCall(_) and
+      i = 0
+    )
   }
 
   private class IdentifierMethodCallSelfSynthesis extends Synthesis {
@@ -309,13 +315,14 @@ private module ImplicitSelfSynthesis {
 
   pragma[nomagic]
   private predicate regularMethodCallSelfSynthesis(TRegularMethodCall mc, int i, Child child) {
-    exists(Ruby::AstNode g |
+    exists(Ruby::AstNode g, SelfVariableImpl self |
       mc = TRegularMethodCall(g) and
       // If there's no explicit receiver, then the receiver is implicitly `self`.
-      not exists(g.(Ruby::Call).getReceiver())
-    ) and
-    child = SynthChild(SelfKind(TSelfVariable(scopeOf(toGenerated(mc)).getEnclosingSelfScope()))) and
-    i = 0
+      not exists(g.(Ruby::Call).getReceiver()) and
+      self.getDeclaringScopeImpl() = scopeOf(toGenerated(mc)).getEnclosingSelfScope() and
+      child = SynthChild(SelfKind(self)) and
+      i = 0
+    )
   }
 
   private class RegularMethodCallSelfSynthesis extends Synthesis {
@@ -338,9 +345,10 @@ private module ImplicitSelfSynthesis {
    */
   pragma[nomagic]
   private SelfKind getSelfKind(InstanceVariableAccess var) {
-    exists(Ruby::AstNode owner |
+    exists(Ruby::AstNode owner, SelfVariableImpl self |
+      self.getDeclaringScopeImpl() = scopeOf(owner).getEnclosingSelfScope() and
       owner = toGenerated(instanceVarAccessSynthParentStar(var)) and
-      result = SelfKind(TSelfVariable(scopeOf(owner).getEnclosingSelfScope()))
+      result = SelfKind(self)
     )
   }
 
@@ -1475,17 +1483,24 @@ private module ForLoopDesugar {
               i = 0 and
               child = SynthChild(SimpleParameterKind())
               or
-              exists(SimpleParameter param | param = TSimpleParameterSynth(block, 0) |
+              // block body
+              parent = block and
+              i = 1 and
+              child = SynthChild(BodyStmtKind())
+              or
+              exists(SimpleParameter param, BodyStmt body |
+                param = TSimpleParameterSynth(block, 0) and body = TBodyStmtSynth(block, 1)
+              |
                 parent = param and
                 i = 0 and
                 child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
                 or
                 // assignment to pattern from for loop to synth parameter
-                parent = block and
-                i = 1 and
+                parent = body and
+                i = 0 and
                 child = SynthChild(AssignExprKind())
                 or
-                parent = TAssignExprSynth(block, 1) and
+                parent = TAssignExprSynth(body, 0) and
                 (
                   i = 0 and
                   child = childRef(for.getPattern())
@@ -1493,11 +1508,11 @@ private module ForLoopDesugar {
                   i = 1 and
                   child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(param, 0)))
                 )
+                or
+                // rest of block body
+                parent = body and
+                child = childRef(for.getBody().(Do).getStmt(i - 1))
               )
-              or
-              // rest of block body
-              parent = block and
-              child = childRef(for.getBody().(Do).getStmt(i - 2))
             )
           )
         )
@@ -1556,20 +1571,20 @@ private module ForLoopDesugar {
  * { a: a }
  * ```
  */
-private module ImplicitHashValueSynthesis {
-  private Ruby::AstNode keyWithoutValue(AstNode parent, int i) {
+module ImplicitHashValueSynthesis {
+  Ruby::AstNode keyWithoutValue(Ruby::AstNode parent, int i) {
     exists(Ruby::KeywordPattern pair |
       result = pair.getKey() and
-      result = toGenerated(parent.(HashPattern).getKey(i)) and
+      result = parent.(Ruby::HashPattern).getChild(i).(Ruby::KeywordPattern).getKey() and
       not exists(pair.getValue())
     )
     or
-    exists(Ruby::Pair pair |
-      i = 0 and
-      result = pair.getKey() and
-      pair = toGenerated(parent) and
-      not exists(pair.getValue())
-    )
+    parent =
+      any(Ruby::Pair pair |
+        i = 0 and
+        result = pair.getKey() and
+        not exists(pair.getValue())
+      )
   }
 
   private string keyName(Ruby::AstNode key) {
@@ -1579,7 +1594,7 @@ private module ImplicitHashValueSynthesis {
 
   private class ImplicitHashValueSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
-      exists(Ruby::AstNode key | key = keyWithoutValue(parent, i) |
+      exists(Ruby::AstNode key | key = keyWithoutValue(toGenerated(parent), i) |
         exists(TVariableReal variable |
           access(key, variable) and
           child = SynthChild(LocalVariableAccessRealKind(variable))
@@ -1606,7 +1621,7 @@ private module ImplicitHashValueSynthesis {
     }
 
     final override predicate location(AstNode n, Location l) {
-      exists(AstNode p, int i | l = keyWithoutValue(p, i).getLocation() |
+      exists(AstNode p, int i | l = keyWithoutValue(toGenerated(p), i).getLocation() |
         n = p.(HashPattern).getValue(i)
         or
         i = 0 and n = p.(Pair).getValue()
@@ -1948,6 +1963,34 @@ private module ImplicitSuperArgsSynthesis {
   private class SuperCallSynthesis extends Synthesis {
     final override predicate child(AstNode parent, int i, Child child) {
       superCallSynthesis(parent, i, child)
+    }
+  }
+}
+
+private module CallableBodySynthesis {
+  private predicate bodySynthesis(AstNode parent, int i, Child child) {
+    exists(TMethodBase m, Ruby::AstNode body |
+      body = any(Ruby::Method g | m = TMethod(g)).getBody()
+      or
+      body = any(Ruby::SingletonMethod g | m = TSingletonMethod(g)).getBody()
+    |
+      parent = m and
+      not body instanceof Ruby::BodyStatement and
+      i = 0 and
+      child = SynthChild(BodyStmtKind())
+      or
+      exists(Stmt bodyStmt |
+        parent = TBodyStmtSynth(m, 0) and
+        i = 0 and
+        bodyStmt = fromGenerated(body) and
+        child = childRef(bodyStmt)
+      )
+    )
+  }
+
+  private class CallableBodySynthesis extends Synthesis {
+    final override predicate child(AstNode parent, int i, Child child) {
+      bodySynthesis(parent, i, child)
     }
   }
 }

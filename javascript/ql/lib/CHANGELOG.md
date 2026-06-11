@@ -1,3 +1,20 @@
+## 2.7.2
+
+### Minor Analysis Improvements
+
+* The sensitive data heuristics used to identify code that handles passwords and private data have been improved. Most of the changes permit more variations of established patterns, thereby finding more sensitive data. Queries that use the sensitive data library (for example `js/clear-text-logging`) may find more correct results and fewer false positive results after these changes.
+
+## 2.7.1
+
+No user-facing changes.
+
+## 2.7.0
+
+### New Features
+
+* Added support for [`@vercel/node`](https://www.npmjs.com/package/@vercel/node) Vercel serverless functions. Handlers are recognized via the `VercelRequest`/`VercelResponse` TypeScript parameter types, and standard security queries (`js/reflected-xss`, `js/request-forgery`, `js/sql-injection`, `js/command-line-injection`, etc.) now detect vulnerabilities in Vercel API route files.
+* Data flow barriers and barrier guards can now be added using data extensions. For more information see [Customizing library models for JavaScript](https://codeql.github.com/docs/codeql-language-guides/customizing-library-models-for-javascript/).
+
 ## 2.6.28
 
 No user-facing changes.

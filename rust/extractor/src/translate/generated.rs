@@ -1229,7 +1229,7 @@ impl Translator<'_> {
         let is_default = node.default_token().is_some();
         let is_unsafe = node.unsafe_token().is_some();
         let self_ty = node.self_ty().and_then(|x| self.emit_type(&x));
-        let trait_ = node.trait_().and_then(|x| self.emit_type(&x));
+        let trait_ty = node.trait_().and_then(|x| self.emit_type(&x));
         let visibility = node.visibility().and_then(|x| self.emit_visibility(&x));
         let where_clause = node.where_clause().and_then(|x| self.emit_where_clause(&x));
         let label = self.trap.emit(generated::Impl {
@@ -1241,7 +1241,7 @@ impl Translator<'_> {
             is_default,
             is_unsafe,
             self_ty,
-            trait_,
+            trait_ty,
             visibility,
             where_clause,
         });

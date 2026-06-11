@@ -13,7 +13,7 @@ import codeql.rust.elements.Visibility
 import codeql.rust.elements.WhereClause
 
 /**
- * An `impl`` block.
+ * An `impl` block.
  *
  * For example:
  * ```rust

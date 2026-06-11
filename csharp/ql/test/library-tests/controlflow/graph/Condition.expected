@@ -541,19 +541,19 @@ conditionBlock
 | Patterns.cs:5:10:5:11 | Entry | Patterns.cs:16:14:18:9 | After if (...) ... | false |
 | Patterns.cs:5:10:5:11 | Entry | Patterns.cs:16:18:16:28 | After ... is ... [false] | false |
 | Patterns.cs:5:10:5:11 | Entry | Patterns.cs:16:18:16:28 | [MatchTrue] ... is ... | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:22:13:22:23 | After case ...: [match] | true |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:22:13:22:23 | After case ...: [no-match] | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:24:13:24:36 | After case ...: [match] | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:24:13:24:36 | After case ...: [no-match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:22:18:22:22 | After "xyz" [match] | true |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:22:18:22:22 | After "xyz" [no-match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:24:18:24:23 | After Int32 i2 [match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:24:18:24:23 | After Int32 i2 [no-match] | false |
 | Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:24:30:24:35 | After ... > ... [false] | false |
 | Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:24:30:24:35 | After ... > ... [true] | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:27:13:27:24 | After case ...: [match] | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:27:13:27:24 | After case ...: [no-match] | false |
 | Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:27:13:27:24 | case ...: | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:30:13:30:27 | After case ...: [match] | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:30:13:30:27 | After case ...: [no-match] | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:33:13:33:24 | After case ...: [match] | false |
-| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:33:13:33:24 | After case ...: [no-match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:27:18:27:23 | After Int32 i3 [match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:30:18:30:26 | After String s2 [match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:30:18:30:26 | After String s2 [no-match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:33:18:33:23 | After Object v2 [match] | false |
+| Patterns.cs:8:9:18:9 | After if (...) ... | Patterns.cs:33:18:33:23 | After Object v2 [no-match] | false |
 | Patterns.cs:8:13:8:23 | After ... is ... [false] | Patterns.cs:12:18:12:31 | After ... is ... [false] | false |
 | Patterns.cs:8:13:8:23 | After ... is ... [false] | Patterns.cs:12:18:12:31 | [MatchTrue] ... is ... | true |
 | Patterns.cs:8:13:8:23 | After ... is ... [false] | Patterns.cs:16:14:18:9 | After if (...) ... | false |
@@ -561,24 +561,24 @@ conditionBlock
 | Patterns.cs:8:13:8:23 | After ... is ... [false] | Patterns.cs:16:18:16:28 | [MatchTrue] ... is ... | false |
 | Patterns.cs:12:18:12:31 | After ... is ... [false] | Patterns.cs:16:18:16:28 | After ... is ... [false] | false |
 | Patterns.cs:12:18:12:31 | After ... is ... [false] | Patterns.cs:16:18:16:28 | [MatchTrue] ... is ... | true |
-| Patterns.cs:22:13:22:23 | After case ...: [no-match] | Patterns.cs:24:13:24:36 | After case ...: [match] | true |
-| Patterns.cs:22:13:22:23 | After case ...: [no-match] | Patterns.cs:24:13:24:36 | After case ...: [no-match] | false |
-| Patterns.cs:22:13:22:23 | After case ...: [no-match] | Patterns.cs:24:30:24:35 | After ... > ... [false] | true |
-| Patterns.cs:22:13:22:23 | After case ...: [no-match] | Patterns.cs:24:30:24:35 | After ... > ... [true] | true |
-| Patterns.cs:24:13:24:36 | After case ...: [match] | Patterns.cs:24:30:24:35 | After ... > ... [false] | false |
-| Patterns.cs:24:13:24:36 | After case ...: [match] | Patterns.cs:24:30:24:35 | After ... > ... [true] | true |
-| Patterns.cs:27:13:27:24 | After case ...: [no-match] | Patterns.cs:30:13:30:27 | After case ...: [match] | true |
-| Patterns.cs:27:13:27:24 | After case ...: [no-match] | Patterns.cs:30:13:30:27 | After case ...: [no-match] | false |
-| Patterns.cs:27:13:27:24 | After case ...: [no-match] | Patterns.cs:33:13:33:24 | After case ...: [match] | false |
-| Patterns.cs:27:13:27:24 | After case ...: [no-match] | Patterns.cs:33:13:33:24 | After case ...: [no-match] | false |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | After case ...: [match] | true |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:13:27:24 | After case ...: [no-match] | false |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:30:13:30:27 | After case ...: [match] | false |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:30:13:30:27 | After case ...: [no-match] | false |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:33:13:33:24 | After case ...: [match] | false |
-| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:33:13:33:24 | After case ...: [no-match] | false |
-| Patterns.cs:30:13:30:27 | After case ...: [no-match] | Patterns.cs:33:13:33:24 | After case ...: [match] | true |
-| Patterns.cs:30:13:30:27 | After case ...: [no-match] | Patterns.cs:33:13:33:24 | After case ...: [no-match] | false |
+| Patterns.cs:22:18:22:22 | After "xyz" [no-match] | Patterns.cs:24:18:24:23 | After Int32 i2 [match] | true |
+| Patterns.cs:22:18:22:22 | After "xyz" [no-match] | Patterns.cs:24:18:24:23 | After Int32 i2 [no-match] | false |
+| Patterns.cs:22:18:22:22 | After "xyz" [no-match] | Patterns.cs:24:30:24:35 | After ... > ... [false] | true |
+| Patterns.cs:22:18:22:22 | After "xyz" [no-match] | Patterns.cs:24:30:24:35 | After ... > ... [true] | true |
+| Patterns.cs:24:18:24:23 | After Int32 i2 [match] | Patterns.cs:24:30:24:35 | After ... > ... [false] | false |
+| Patterns.cs:24:18:24:23 | After Int32 i2 [match] | Patterns.cs:24:30:24:35 | After ... > ... [true] | true |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | After Int32 i3 [match] | true |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | false |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:30:18:30:26 | After String s2 [match] | false |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:30:18:30:26 | After String s2 [no-match] | false |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:33:18:33:23 | After Object v2 [match] | false |
+| Patterns.cs:27:13:27:24 | case ...: | Patterns.cs:33:18:33:23 | After Object v2 [no-match] | false |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | Patterns.cs:30:18:30:26 | After String s2 [match] | true |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | Patterns.cs:30:18:30:26 | After String s2 [no-match] | false |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | Patterns.cs:33:18:33:23 | After Object v2 [match] | false |
+| Patterns.cs:27:18:27:23 | After Int32 i3 [no-match] | Patterns.cs:33:18:33:23 | After Object v2 [no-match] | false |
+| Patterns.cs:30:18:30:26 | After String s2 [no-match] | Patterns.cs:33:18:33:23 | After Object v2 [match] | true |
+| Patterns.cs:30:18:30:26 | After String s2 [no-match] | Patterns.cs:33:18:33:23 | After Object v2 [no-match] | false |
 | Patterns.cs:47:24:47:25 | Entry | Patterns.cs:48:9:48:20 | [MatchTrue] ... is ... | true |
 | Patterns.cs:50:24:50:25 | Entry | Patterns.cs:51:9:51:21 | After ... is ... [false] | false |
 | Patterns.cs:50:24:50:25 | Entry | Patterns.cs:51:9:51:21 | [MatchTrue] ... is ... | true |
@@ -589,26 +589,26 @@ conditionBlock
 | Patterns.cs:51:9:51:21 | After ... is ... [false] | Patterns.cs:51:34:51:39 | [MatchTrue] ... is ... | true |
 | Patterns.cs:51:9:51:21 | [MatchTrue] ... is ... | Patterns.cs:51:25:51:30 | [MatchTrue] ... is ... | true |
 | Patterns.cs:53:24:53:25 | Entry | Patterns.cs:54:9:54:37 | [MatchTrue] ... is ... | true |
-| Patterns.cs:56:26:56:27 | Entry | Patterns.cs:60:13:60:28 | After ... => ... [match] | true |
-| Patterns.cs:56:26:56:27 | Entry | Patterns.cs:60:13:60:28 | After ... => ... [no-match] | false |
-| Patterns.cs:65:26:65:27 | Entry | Patterns.cs:69:13:69:33 | After ... => ... [match] | true |
-| Patterns.cs:65:26:65:27 | Entry | Patterns.cs:69:13:69:33 | After ... => ... [no-match] | false |
-| Patterns.cs:65:26:65:27 | Entry | Patterns.cs:70:13:70:27 | After ... => ... [match] | false |
-| Patterns.cs:65:26:65:27 | Entry | Patterns.cs:70:13:70:27 | After ... => ... [no-match] | false |
-| Patterns.cs:69:13:69:33 | After ... => ... [no-match] | Patterns.cs:70:13:70:27 | After ... => ... [match] | true |
-| Patterns.cs:69:13:69:33 | After ... => ... [no-match] | Patterns.cs:70:13:70:27 | After ... => ... [no-match] | false |
-| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:78:13:78:24 | After ... => ... [match] | true |
-| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:78:13:78:24 | After ... => ... [no-match] | false |
-| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:79:13:79:24 | After ... => ... [match] | false |
-| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:79:13:79:24 | After ... => ... [no-match] | false |
-| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:80:13:80:20 | After ... => ... [match] | false |
-| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:80:13:80:20 | After ... => ... [no-match] | false |
-| Patterns.cs:78:13:78:24 | After ... => ... [no-match] | Patterns.cs:79:13:79:24 | After ... => ... [match] | true |
-| Patterns.cs:78:13:78:24 | After ... => ... [no-match] | Patterns.cs:79:13:79:24 | After ... => ... [no-match] | false |
-| Patterns.cs:78:13:78:24 | After ... => ... [no-match] | Patterns.cs:80:13:80:20 | After ... => ... [match] | false |
-| Patterns.cs:78:13:78:24 | After ... => ... [no-match] | Patterns.cs:80:13:80:20 | After ... => ... [no-match] | false |
-| Patterns.cs:79:13:79:24 | After ... => ... [no-match] | Patterns.cs:80:13:80:20 | After ... => ... [match] | true |
-| Patterns.cs:79:13:79:24 | After ... => ... [no-match] | Patterns.cs:80:13:80:20 | After ... => ... [no-match] | false |
+| Patterns.cs:56:26:56:27 | Entry | Patterns.cs:60:13:60:17 | After not ... [match] | true |
+| Patterns.cs:56:26:56:27 | Entry | Patterns.cs:60:13:60:17 | After not ... [no-match] | false |
+| Patterns.cs:65:26:65:27 | Entry | Patterns.cs:69:13:69:17 | After not ... [match] | true |
+| Patterns.cs:65:26:65:27 | Entry | Patterns.cs:69:13:69:17 | After not ... [no-match] | false |
+| Patterns.cs:65:26:65:27 | Entry | Patterns.cs:70:13:70:13 | After 2 [match] | false |
+| Patterns.cs:65:26:65:27 | Entry | Patterns.cs:70:13:70:13 | After 2 [no-match] | false |
+| Patterns.cs:69:13:69:17 | After not ... [no-match] | Patterns.cs:70:13:70:13 | After 2 [match] | true |
+| Patterns.cs:69:13:69:17 | After not ... [no-match] | Patterns.cs:70:13:70:13 | After 2 [no-match] | false |
+| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:78:13:78:15 | After > ... [match] | true |
+| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:78:13:78:15 | After > ... [no-match] | false |
+| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:79:13:79:15 | After < ... [match] | false |
+| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:79:13:79:15 | After < ... [no-match] | false |
+| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:80:13:80:13 | After 1 [match] | false |
+| Patterns.cs:74:26:74:27 | Entry | Patterns.cs:80:13:80:13 | After 1 [no-match] | false |
+| Patterns.cs:78:13:78:15 | After > ... [no-match] | Patterns.cs:79:13:79:15 | After < ... [match] | true |
+| Patterns.cs:78:13:78:15 | After > ... [no-match] | Patterns.cs:79:13:79:15 | After < ... [no-match] | false |
+| Patterns.cs:78:13:78:15 | After > ... [no-match] | Patterns.cs:80:13:80:13 | After 1 [match] | false |
+| Patterns.cs:78:13:78:15 | After > ... [no-match] | Patterns.cs:80:13:80:13 | After 1 [no-match] | false |
+| Patterns.cs:79:13:79:15 | After < ... [no-match] | Patterns.cs:80:13:80:13 | After 1 [match] | true |
+| Patterns.cs:79:13:79:15 | After < ... [no-match] | Patterns.cs:80:13:80:13 | After 1 [no-match] | false |
 | Patterns.cs:85:26:85:27 | Entry | Patterns.cs:85:39:85:53 | After ... is ... [false] | false |
 | Patterns.cs:85:26:85:27 | Entry | Patterns.cs:85:39:85:53 | [MatchTrue] ... is ... | true |
 | Patterns.cs:87:26:87:27 | Entry | Patterns.cs:87:39:87:54 | After ... is ... [false] | false |
@@ -620,187 +620,189 @@ conditionBlock
 | PostDominance.cs:17:10:17:11 | Entry | PostDominance.cs:19:13:19:21 | After ... is ... [false] | false |
 | PostDominance.cs:17:10:17:11 | Entry | PostDominance.cs:19:13:19:21 | [MatchTrue] ... is ... | true |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:10:10:10:11 | Exceptional Exit | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:14:13:14:21 | After case ...: [match] | true |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:14:13:14:21 | After case ...: [no-match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:14:18:14:20 | After "a" [match] | true |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:14:18:14:20 | After "a" [no-match] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:16:13:16:19 | After case ...: [match] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:16:13:16:19 | After case ...: [no-match] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:18:13:18:22 | After case ...: [match] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:18:13:18:22 | After case ...: [no-match] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:20:13:20:23 | After case ...: [match] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:20:13:20:23 | After case ...: [no-match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:16:18:16:18 | After 0 [match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:16:18:16:18 | After 0 [no-match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:18:18:18:21 | After null [match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:18:18:18:21 | After null [no-match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:20:18:20:22 | After Int32 i [match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:20:18:20:22 | After Int32 i [no-match] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:21:21:21:29 | After ... == ... [false] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:21:21:21:29 | After ... == ... [true] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:24:13:24:56 | After case ...: [match] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:24:13:24:56 | After case ...: [no-match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:24:18:24:25 | After String s [match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:24:18:24:25 | After String s [no-match] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:24:32:24:43 | After ... > ... [true] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:24:32:24:55 | After ... && ... [false] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:24:48:24:55 | After ... != ... [false] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:24:48:24:55 | After ... != ... [true] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:27:13:27:39 | After case ...: [match] | false |
-| Switch.cs:10:10:10:11 | Entry | Switch.cs:27:13:27:39 | After case ...: [no-match] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:27:13:27:39 | case ...: | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:27:18:27:25 | After Double d [match] | false |
+| Switch.cs:10:10:10:11 | Entry | Switch.cs:27:18:27:25 | After Double d [no-match] | false |
 | Switch.cs:10:10:10:11 | Entry | Switch.cs:30:13:30:20 | After default: [match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:16:13:16:19 | After case ...: [no-match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:18:13:18:22 | After case ...: [match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:18:13:18:22 | After case ...: [no-match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:20:13:20:23 | After case ...: [match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:20:13:20:23 | After case ...: [no-match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:21:21:21:29 | After ... == ... [false] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:21:21:21:29 | After ... == ... [true] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:24:13:24:56 | After case ...: [match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:24:13:24:56 | After case ...: [no-match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:24:32:24:43 | After ... > ... [true] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:24:32:24:55 | After ... && ... [false] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:24:48:24:55 | After ... != ... [false] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:24:48:24:55 | After ... != ... [true] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:27:13:27:39 | After case ...: [match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:27:13:27:39 | After case ...: [no-match] | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:27:13:27:39 | case ...: | false |
-| Switch.cs:14:13:14:21 | After case ...: [no-match] | Switch.cs:30:13:30:20 | After default: [match] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:18:13:18:22 | After case ...: [match] | true |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:18:13:18:22 | After case ...: [no-match] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:20:13:20:23 | After case ...: [match] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:20:13:20:23 | After case ...: [no-match] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:21:21:21:29 | After ... == ... [false] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:21:21:21:29 | After ... == ... [true] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:24:13:24:56 | After case ...: [match] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:24:13:24:56 | After case ...: [no-match] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:24:32:24:43 | After ... > ... [true] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:24:32:24:55 | After ... && ... [false] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:24:48:24:55 | After ... != ... [false] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:24:48:24:55 | After ... != ... [true] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:27:13:27:39 | After case ...: [match] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:27:13:27:39 | After case ...: [no-match] | false |
-| Switch.cs:16:13:16:19 | After case ...: [no-match] | Switch.cs:27:13:27:39 | case ...: | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:20:13:20:23 | After case ...: [match] | true |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:20:13:20:23 | After case ...: [no-match] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:21:21:21:29 | After ... == ... [false] | true |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:21:21:21:29 | After ... == ... [true] | true |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:24:13:24:56 | After case ...: [match] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:24:13:24:56 | After case ...: [no-match] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:24:32:24:43 | After ... > ... [true] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:24:32:24:55 | After ... && ... [false] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:24:48:24:55 | After ... != ... [false] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:24:48:24:55 | After ... != ... [true] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:27:13:27:39 | After case ...: [match] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:27:13:27:39 | After case ...: [no-match] | false |
-| Switch.cs:18:13:18:22 | After case ...: [no-match] | Switch.cs:27:13:27:39 | case ...: | false |
-| Switch.cs:20:13:20:23 | After case ...: [match] | Switch.cs:21:21:21:29 | After ... == ... [false] | false |
-| Switch.cs:20:13:20:23 | After case ...: [match] | Switch.cs:21:21:21:29 | After ... == ... [true] | true |
-| Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:13:24:56 | After case ...: [match] | true |
-| Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:13:24:56 | After case ...: [no-match] | false |
-| Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:32:24:43 | After ... > ... [false] | true |
-| Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:32:24:43 | After ... > ... [true] | true |
-| Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:32:24:55 | After ... && ... [false] | true |
-| Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:48:24:55 | After ... != ... [false] | true |
-| Switch.cs:20:13:20:23 | After case ...: [no-match] | Switch.cs:24:48:24:55 | After ... != ... [true] | true |
-| Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
-| Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:24:32:24:43 | After ... > ... [true] | true |
-| Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:24:48:24:55 | After ... != ... [false] | true |
-| Switch.cs:24:13:24:56 | After case ...: [match] | Switch.cs:24:48:24:55 | After ... != ... [true] | true |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:16:18:16:18 | After 0 [match] | true |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:16:18:16:18 | After 0 [no-match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:18:18:18:21 | After null [match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:18:18:18:21 | After null [no-match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:20:18:20:22 | After Int32 i [match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:20:18:20:22 | After Int32 i [no-match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:21:21:21:29 | After ... == ... [false] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:21:21:21:29 | After ... == ... [true] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:24:18:24:25 | After String s [match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:24:18:24:25 | After String s [no-match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:24:32:24:43 | After ... > ... [true] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:24:32:24:55 | After ... && ... [false] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:24:48:24:55 | After ... != ... [false] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:24:48:24:55 | After ... != ... [true] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:27:13:27:39 | case ...: | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:27:18:27:25 | After Double d [match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:27:18:27:25 | After Double d [no-match] | false |
+| Switch.cs:14:18:14:20 | After "a" [no-match] | Switch.cs:30:13:30:20 | After default: [match] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:18:18:18:21 | After null [match] | true |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:18:18:18:21 | After null [no-match] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:20:18:20:22 | After Int32 i [match] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:20:18:20:22 | After Int32 i [no-match] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:21:21:21:29 | After ... == ... [false] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:21:21:21:29 | After ... == ... [true] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:24:18:24:25 | After String s [match] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:24:18:24:25 | After String s [no-match] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:24:32:24:43 | After ... > ... [true] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:24:32:24:55 | After ... && ... [false] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:24:48:24:55 | After ... != ... [false] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:24:48:24:55 | After ... != ... [true] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:27:13:27:39 | case ...: | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:27:18:27:25 | After Double d [match] | false |
+| Switch.cs:16:18:16:18 | After 0 [no-match] | Switch.cs:27:18:27:25 | After Double d [no-match] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:20:18:20:22 | After Int32 i [match] | true |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:20:18:20:22 | After Int32 i [no-match] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:21:21:21:29 | After ... == ... [false] | true |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:21:21:21:29 | After ... == ... [true] | true |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:24:18:24:25 | After String s [match] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:24:18:24:25 | After String s [no-match] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:24:32:24:43 | After ... > ... [true] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:24:32:24:55 | After ... && ... [false] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:24:48:24:55 | After ... != ... [false] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:24:48:24:55 | After ... != ... [true] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:27:13:27:39 | case ...: | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:27:18:27:25 | After Double d [match] | false |
+| Switch.cs:18:18:18:21 | After null [no-match] | Switch.cs:27:18:27:25 | After Double d [no-match] | false |
+| Switch.cs:20:18:20:22 | After Int32 i [match] | Switch.cs:21:21:21:29 | After ... == ... [false] | false |
+| Switch.cs:20:18:20:22 | After Int32 i [match] | Switch.cs:21:21:21:29 | After ... == ... [true] | true |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:24:18:24:25 | After String s [match] | true |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:24:18:24:25 | After String s [no-match] | false |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:24:32:24:43 | After ... > ... [false] | true |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:24:32:24:43 | After ... > ... [true] | true |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:24:32:24:55 | After ... && ... [false] | true |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:24:48:24:55 | After ... != ... [false] | true |
+| Switch.cs:20:18:20:22 | After Int32 i [no-match] | Switch.cs:24:48:24:55 | After ... != ... [true] | true |
+| Switch.cs:24:18:24:25 | After String s [match] | Switch.cs:24:32:24:43 | After ... > ... [false] | false |
+| Switch.cs:24:18:24:25 | After String s [match] | Switch.cs:24:32:24:43 | After ... > ... [true] | true |
+| Switch.cs:24:18:24:25 | After String s [match] | Switch.cs:24:48:24:55 | After ... != ... [false] | true |
+| Switch.cs:24:18:24:25 | After String s [match] | Switch.cs:24:48:24:55 | After ... != ... [true] | true |
 | Switch.cs:24:32:24:43 | After ... > ... [true] | Switch.cs:24:48:24:55 | After ... != ... [false] | false |
 | Switch.cs:24:32:24:43 | After ... > ... [true] | Switch.cs:24:48:24:55 | After ... != ... [true] | true |
-| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | After case ...: [match] | true |
-| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:13:27:39 | After case ...: [no-match] | false |
-| Switch.cs:44:10:44:11 | Entry | Switch.cs:48:13:48:23 | After case ...: [match] | true |
-| Switch.cs:44:10:44:11 | Entry | Switch.cs:48:13:48:23 | After case ...: [no-match] | false |
-| Switch.cs:44:10:44:11 | Entry | Switch.cs:50:13:50:39 | After case ...: [match] | false |
-| Switch.cs:44:10:44:11 | Entry | Switch.cs:50:13:50:39 | After case ...: [no-match] | false |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | After Double d [match] | true |
+| Switch.cs:27:13:27:39 | case ...: | Switch.cs:27:18:27:25 | After Double d [no-match] | false |
+| Switch.cs:44:10:44:11 | Entry | Switch.cs:48:18:48:20 | After access to type Int32 [match] | true |
+| Switch.cs:44:10:44:11 | Entry | Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | false |
+| Switch.cs:44:10:44:11 | Entry | Switch.cs:50:18:50:21 | After access to type Boolean [match] | false |
+| Switch.cs:44:10:44:11 | Entry | Switch.cs:50:18:50:21 | After access to type Boolean [no-match] | false |
 | Switch.cs:44:10:44:11 | Entry | Switch.cs:50:30:50:38 | After ... != ... [false] | false |
 | Switch.cs:44:10:44:11 | Entry | Switch.cs:50:30:50:38 | After ... != ... [true] | false |
-| Switch.cs:48:13:48:23 | After case ...: [no-match] | Switch.cs:50:13:50:39 | After case ...: [match] | true |
-| Switch.cs:48:13:48:23 | After case ...: [no-match] | Switch.cs:50:13:50:39 | After case ...: [no-match] | false |
-| Switch.cs:48:13:48:23 | After case ...: [no-match] | Switch.cs:50:30:50:38 | After ... != ... [false] | true |
-| Switch.cs:48:13:48:23 | After case ...: [no-match] | Switch.cs:50:30:50:38 | After ... != ... [true] | true |
-| Switch.cs:50:13:50:39 | After case ...: [match] | Switch.cs:50:30:50:38 | After ... != ... [false] | false |
-| Switch.cs:50:13:50:39 | After case ...: [match] | Switch.cs:50:30:50:38 | After ... != ... [true] | true |
-| Switch.cs:55:10:55:11 | Entry | Switch.cs:59:13:59:19 | After case ...: [match] | true |
-| Switch.cs:55:10:55:11 | Entry | Switch.cs:59:13:59:19 | After case ...: [no-match] | false |
-| Switch.cs:55:10:55:11 | Entry | Switch.cs:61:13:61:19 | After case ...: [match] | false |
-| Switch.cs:55:10:55:11 | Entry | Switch.cs:61:13:61:19 | After case ...: [no-match] | false |
-| Switch.cs:59:13:59:19 | After case ...: [no-match] | Switch.cs:61:13:61:19 | After case ...: [match] | true |
-| Switch.cs:59:13:59:19 | After case ...: [no-match] | Switch.cs:61:13:61:19 | After case ...: [no-match] | false |
-| Switch.cs:66:10:66:11 | Entry | Switch.cs:70:13:70:23 | After case ...: [match] | true |
-| Switch.cs:66:10:66:11 | Entry | Switch.cs:70:13:70:23 | After case ...: [no-match] | false |
-| Switch.cs:66:10:66:11 | Entry | Switch.cs:72:13:72:20 | After case ...: [match] | false |
-| Switch.cs:66:10:66:11 | Entry | Switch.cs:72:13:72:20 | After case ...: [no-match] | false |
-| Switch.cs:70:13:70:23 | After case ...: [no-match] | Switch.cs:72:13:72:20 | After case ...: [match] | true |
-| Switch.cs:70:13:70:23 | After case ...: [no-match] | Switch.cs:72:13:72:20 | After case ...: [no-match] | false |
+| Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | Switch.cs:50:18:50:21 | After access to type Boolean [match] | true |
+| Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | Switch.cs:50:18:50:21 | After access to type Boolean [no-match] | false |
+| Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | Switch.cs:50:30:50:38 | After ... != ... [false] | true |
+| Switch.cs:48:18:48:20 | After access to type Int32 [no-match] | Switch.cs:50:30:50:38 | After ... != ... [true] | true |
+| Switch.cs:50:18:50:21 | After access to type Boolean [match] | Switch.cs:50:30:50:38 | After ... != ... [false] | false |
+| Switch.cs:50:18:50:21 | After access to type Boolean [match] | Switch.cs:50:30:50:38 | After ... != ... [true] | true |
+| Switch.cs:55:10:55:11 | Entry | Switch.cs:59:18:59:18 | After 2 [match] | true |
+| Switch.cs:55:10:55:11 | Entry | Switch.cs:59:18:59:18 | After 2 [no-match] | false |
+| Switch.cs:55:10:55:11 | Entry | Switch.cs:61:18:61:18 | After 3 [match] | false |
+| Switch.cs:55:10:55:11 | Entry | Switch.cs:61:18:61:18 | After 3 [no-match] | false |
+| Switch.cs:59:18:59:18 | After 2 [no-match] | Switch.cs:61:18:61:18 | After 3 [match] | true |
+| Switch.cs:59:18:59:18 | After 2 [no-match] | Switch.cs:61:18:61:18 | After 3 [no-match] | false |
+| Switch.cs:66:10:66:11 | Entry | Switch.cs:70:18:70:20 | After access to type Int32 [match] | true |
+| Switch.cs:66:10:66:11 | Entry | Switch.cs:70:18:70:20 | After access to type Int32 [no-match] | false |
+| Switch.cs:66:10:66:11 | Entry | Switch.cs:72:18:72:19 | After "" [match] | false |
+| Switch.cs:66:10:66:11 | Entry | Switch.cs:72:18:72:19 | After "" [no-match] | false |
+| Switch.cs:70:18:70:20 | After access to type Int32 [no-match] | Switch.cs:72:18:72:19 | After "" [match] | true |
+| Switch.cs:70:18:70:20 | After access to type Int32 [no-match] | Switch.cs:72:18:72:19 | After "" [no-match] | false |
 | Switch.cs:77:10:77:11 | Entry | Switch.cs:79:9:87:9 | After switch (...) {...} | false |
-| Switch.cs:77:10:77:11 | Entry | Switch.cs:81:13:81:19 | After case ...: [match] | true |
-| Switch.cs:77:10:77:11 | Entry | Switch.cs:81:13:81:19 | After case ...: [no-match] | false |
-| Switch.cs:77:10:77:11 | Entry | Switch.cs:83:13:83:19 | After case ...: [match] | false |
-| Switch.cs:77:10:77:11 | Entry | Switch.cs:83:13:83:19 | After case ...: [no-match] | false |
+| Switch.cs:77:10:77:11 | Entry | Switch.cs:81:18:81:18 | After 1 [match] | true |
+| Switch.cs:77:10:77:11 | Entry | Switch.cs:81:18:81:18 | After 1 [no-match] | false |
+| Switch.cs:77:10:77:11 | Entry | Switch.cs:83:18:83:18 | After 2 [match] | false |
+| Switch.cs:77:10:77:11 | Entry | Switch.cs:83:18:83:18 | After 2 [no-match] | false |
 | Switch.cs:77:10:77:11 | Entry | Switch.cs:84:21:84:25 | After ... > ... [false] | false |
 | Switch.cs:77:10:77:11 | Entry | Switch.cs:84:21:84:25 | After ... > ... [true] | false |
-| Switch.cs:81:13:81:19 | After case ...: [no-match] | Switch.cs:83:13:83:19 | After case ...: [match] | true |
-| Switch.cs:81:13:81:19 | After case ...: [no-match] | Switch.cs:83:13:83:19 | After case ...: [no-match] | false |
-| Switch.cs:81:13:81:19 | After case ...: [no-match] | Switch.cs:84:21:84:25 | After ... > ... [false] | true |
-| Switch.cs:81:13:81:19 | After case ...: [no-match] | Switch.cs:84:21:84:25 | After ... > ... [true] | true |
-| Switch.cs:83:13:83:19 | After case ...: [match] | Switch.cs:84:21:84:25 | After ... > ... [false] | false |
-| Switch.cs:83:13:83:19 | After case ...: [match] | Switch.cs:84:21:84:25 | After ... > ... [true] | true |
-| Switch.cs:91:10:91:11 | Entry | Switch.cs:95:13:95:23 | After case ...: [match] | true |
-| Switch.cs:91:10:91:11 | Entry | Switch.cs:95:13:95:23 | After case ...: [no-match] | false |
+| Switch.cs:81:18:81:18 | After 1 [no-match] | Switch.cs:83:18:83:18 | After 2 [match] | true |
+| Switch.cs:81:18:81:18 | After 1 [no-match] | Switch.cs:83:18:83:18 | After 2 [no-match] | false |
+| Switch.cs:81:18:81:18 | After 1 [no-match] | Switch.cs:84:21:84:25 | After ... > ... [false] | true |
+| Switch.cs:81:18:81:18 | After 1 [no-match] | Switch.cs:84:21:84:25 | After ... > ... [true] | true |
+| Switch.cs:83:18:83:18 | After 2 [match] | Switch.cs:84:21:84:25 | After ... > ... [false] | false |
+| Switch.cs:83:18:83:18 | After 2 [match] | Switch.cs:84:21:84:25 | After ... > ... [true] | true |
+| Switch.cs:91:10:91:11 | Entry | Switch.cs:95:18:95:20 | After access to type Int32 [match] | true |
+| Switch.cs:91:10:91:11 | Entry | Switch.cs:95:18:95:20 | After access to type Int32 [no-match] | false |
 | Switch.cs:101:9:101:10 | Entry | Switch.cs:103:17:103:17 | After access to parameter s [non-null] | false |
 | Switch.cs:101:9:101:10 | Entry | Switch.cs:103:17:103:17 | After access to parameter s [null] | true |
-| Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:105:13:105:19 | After case ...: [match] | true |
-| Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:105:13:105:19 | After case ...: [no-match] | false |
-| Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:106:13:106:19 | After case ...: [match] | false |
-| Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:106:13:106:19 | After case ...: [no-match] | false |
-| Switch.cs:105:13:105:19 | After case ...: [no-match] | Switch.cs:106:13:106:19 | After case ...: [match] | true |
-| Switch.cs:105:13:105:19 | After case ...: [no-match] | Switch.cs:106:13:106:19 | After case ...: [no-match] | false |
-| Switch.cs:113:9:113:11 | Entry | Switch.cs:117:13:117:35 | After case ...: [match] | true |
-| Switch.cs:113:9:113:11 | Entry | Switch.cs:117:13:117:35 | After case ...: [no-match] | false |
+| Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:105:18:105:18 | After 0 [match] | true |
+| Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:105:18:105:18 | After 0 [no-match] | false |
+| Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:106:18:106:18 | After 1 [match] | false |
+| Switch.cs:103:17:103:25 | After access to property Length | Switch.cs:106:18:106:18 | After 1 [no-match] | false |
+| Switch.cs:105:18:105:18 | After 0 [no-match] | Switch.cs:106:18:106:18 | After 1 [match] | true |
+| Switch.cs:105:18:105:18 | After 0 [no-match] | Switch.cs:106:18:106:18 | After 1 [no-match] | false |
+| Switch.cs:113:9:113:11 | Entry | Switch.cs:117:18:117:18 | After 3 [match] | true |
+| Switch.cs:113:9:113:11 | Entry | Switch.cs:117:18:117:18 | After 3 [no-match] | false |
 | Switch.cs:113:9:113:11 | Entry | Switch.cs:117:25:117:34 | After ... == ... [false] | true |
 | Switch.cs:113:9:113:11 | Entry | Switch.cs:117:25:117:34 | After ... == ... [true] | true |
-| Switch.cs:117:13:117:35 | After case ...: [match] | Switch.cs:117:25:117:34 | After ... == ... [false] | false |
-| Switch.cs:117:13:117:35 | After case ...: [match] | Switch.cs:117:25:117:34 | After ... == ... [true] | true |
-| Switch.cs:118:13:118:34 | After case ...: [match] | Switch.cs:118:25:118:33 | After ... == ... [false] | false |
-| Switch.cs:118:13:118:34 | After case ...: [match] | Switch.cs:118:25:118:33 | After ... == ... [true] | true |
-| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:13:118:34 | After case ...: [match] | true |
-| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:13:118:34 | After case ...: [no-match] | false |
+| Switch.cs:117:18:117:18 | After 3 [match] | Switch.cs:117:25:117:34 | After ... == ... [false] | false |
+| Switch.cs:117:18:117:18 | After 3 [match] | Switch.cs:117:25:117:34 | After ... == ... [true] | true |
+| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:18:118:18 | After 2 [match] | true |
+| Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:18:118:18 | After 2 [no-match] | false |
 | Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:25:118:33 | After ... == ... [false] | true |
 | Switch.cs:118:13:118:34 | case ...: | Switch.cs:118:25:118:33 | After ... == ... [true] | true |
-| Switch.cs:123:10:123:12 | Entry | Switch.cs:125:24:125:34 | After ... => ... [match] | true |
-| Switch.cs:123:10:123:12 | Entry | Switch.cs:125:24:125:34 | After ... => ... [no-match] | false |
-| Switch.cs:129:12:129:14 | Entry | Switch.cs:131:28:131:40 | After ... => ... [match] | true |
-| Switch.cs:129:12:129:14 | Entry | Switch.cs:131:28:131:40 | After ... => ... [no-match] | false |
-| Switch.cs:134:9:134:11 | Entry | Switch.cs:139:13:139:19 | After case ...: [match] | true |
-| Switch.cs:134:9:134:11 | Entry | Switch.cs:139:13:139:19 | After case ...: [no-match] | false |
-| Switch.cs:134:9:134:11 | Entry | Switch.cs:140:13:140:19 | After case ...: [match] | false |
-| Switch.cs:134:9:134:11 | Entry | Switch.cs:140:13:140:19 | After case ...: [no-match] | false |
-| Switch.cs:139:13:139:19 | After case ...: [no-match] | Switch.cs:140:13:140:19 | After case ...: [match] | true |
-| Switch.cs:139:13:139:19 | After case ...: [no-match] | Switch.cs:140:13:140:19 | After case ...: [no-match] | false |
-| Switch.cs:144:9:144:11 | Entry | Switch.cs:148:13:148:19 | After case ...: [match] | true |
-| Switch.cs:144:9:144:11 | Entry | Switch.cs:148:13:148:19 | After case ...: [no-match] | false |
-| Switch.cs:144:9:144:11 | Entry | Switch.cs:150:13:150:19 | After case ...: [match] | false |
-| Switch.cs:144:9:144:11 | Entry | Switch.cs:150:13:150:19 | After case ...: [no-match] | false |
-| Switch.cs:148:13:148:19 | After case ...: [no-match] | Switch.cs:150:13:150:19 | After case ...: [match] | true |
-| Switch.cs:148:13:148:19 | After case ...: [no-match] | Switch.cs:150:13:150:19 | After case ...: [no-match] | false |
-| Switch.cs:154:10:154:12 | Entry | Switch.cs:156:28:156:38 | After ... => ... [match] | true |
-| Switch.cs:154:10:154:12 | Entry | Switch.cs:156:28:156:38 | After ... => ... [no-match] | false |
-| Switch.cs:154:10:154:12 | Entry | Switch.cs:156:41:156:52 | After ... => ... [match] | false |
-| Switch.cs:154:10:154:12 | Entry | Switch.cs:156:41:156:52 | After ... => ... [no-match] | false |
+| Switch.cs:118:18:118:18 | After 2 [match] | Switch.cs:118:25:118:33 | After ... == ... [false] | false |
+| Switch.cs:118:18:118:18 | After 2 [match] | Switch.cs:118:25:118:33 | After ... == ... [true] | true |
+| Switch.cs:123:10:123:12 | Entry | Switch.cs:125:24:125:29 | After Boolean b [match] | true |
+| Switch.cs:123:10:123:12 | Entry | Switch.cs:125:24:125:29 | After Boolean b [no-match] | false |
+| Switch.cs:129:12:129:14 | Entry | Switch.cs:131:28:131:35 | After String s [match] | true |
+| Switch.cs:129:12:129:14 | Entry | Switch.cs:131:28:131:35 | After String s [no-match] | false |
+| Switch.cs:134:9:134:11 | Entry | Switch.cs:139:18:139:18 | After 1 [match] | true |
+| Switch.cs:134:9:134:11 | Entry | Switch.cs:139:18:139:18 | After 1 [no-match] | false |
+| Switch.cs:134:9:134:11 | Entry | Switch.cs:140:18:140:18 | After 2 [match] | false |
+| Switch.cs:134:9:134:11 | Entry | Switch.cs:140:18:140:18 | After 2 [no-match] | false |
+| Switch.cs:139:18:139:18 | After 1 [no-match] | Switch.cs:140:18:140:18 | After 2 [match] | true |
+| Switch.cs:139:18:139:18 | After 1 [no-match] | Switch.cs:140:18:140:18 | After 2 [no-match] | false |
+| Switch.cs:144:9:144:11 | Entry | Switch.cs:148:18:148:18 | After 1 [match] | true |
+| Switch.cs:144:9:144:11 | Entry | Switch.cs:148:18:148:18 | After 1 [no-match] | false |
+| Switch.cs:144:9:144:11 | Entry | Switch.cs:150:18:150:18 | After 2 [match] | false |
+| Switch.cs:144:9:144:11 | Entry | Switch.cs:150:18:150:18 | After 2 [no-match] | false |
+| Switch.cs:148:18:148:18 | After 1 [no-match] | Switch.cs:150:18:150:18 | After 2 [match] | true |
+| Switch.cs:148:18:148:18 | After 1 [no-match] | Switch.cs:150:18:150:18 | After 2 [no-match] | false |
+| Switch.cs:154:10:154:12 | Entry | Switch.cs:156:28:156:31 | After true [match] | true |
+| Switch.cs:154:10:154:12 | Entry | Switch.cs:156:28:156:31 | After true [no-match] | false |
+| Switch.cs:154:10:154:12 | Entry | Switch.cs:156:41:156:45 | After false [match] | false |
+| Switch.cs:154:10:154:12 | Entry | Switch.cs:156:41:156:45 | After false [no-match] | false |
 | Switch.cs:156:17:156:54 | After ... switch { ... } | Switch.cs:157:13:157:13 | After access to parameter b [false] | false |
 | Switch.cs:156:17:156:54 | After ... switch { ... } | Switch.cs:157:13:157:13 | After access to parameter b [true] | true |
-| Switch.cs:156:28:156:38 | After ... => ... [no-match] | Switch.cs:156:41:156:52 | After ... => ... [match] | true |
-| Switch.cs:156:28:156:38 | After ... => ... [no-match] | Switch.cs:156:41:156:52 | After ... => ... [no-match] | false |
-| Switch.cs:163:10:163:12 | Entry | Switch.cs:167:13:167:19 | After case ...: [match] | true |
-| Switch.cs:163:10:163:12 | Entry | Switch.cs:167:13:167:19 | After case ...: [no-match] | false |
-| Switch.cs:163:10:163:12 | Entry | Switch.cs:168:13:168:19 | After case ...: [match] | false |
-| Switch.cs:163:10:163:12 | Entry | Switch.cs:168:13:168:19 | After case ...: [no-match] | false |
-| Switch.cs:163:10:163:12 | Entry | Switch.cs:171:13:171:19 | After case ...: [match] | false |
-| Switch.cs:163:10:163:12 | Entry | Switch.cs:171:13:171:19 | After case ...: [no-match] | false |
-| Switch.cs:167:13:167:19 | After case ...: [no-match] | Switch.cs:168:13:168:19 | After case ...: [match] | true |
-| Switch.cs:167:13:167:19 | After case ...: [no-match] | Switch.cs:168:13:168:19 | After case ...: [no-match] | false |
-| Switch.cs:167:13:167:19 | After case ...: [no-match] | Switch.cs:171:13:171:19 | After case ...: [match] | false |
-| Switch.cs:167:13:167:19 | After case ...: [no-match] | Switch.cs:171:13:171:19 | After case ...: [no-match] | false |
-| Switch.cs:168:13:168:19 | After case ...: [no-match] | Switch.cs:171:13:171:19 | After case ...: [match] | true |
-| Switch.cs:168:13:168:19 | After case ...: [no-match] | Switch.cs:171:13:171:19 | After case ...: [no-match] | false |
+| Switch.cs:156:28:156:31 | After true [no-match] | Switch.cs:156:41:156:45 | After false [match] | true |
+| Switch.cs:156:28:156:31 | After true [no-match] | Switch.cs:156:41:156:45 | After false [no-match] | false |
+| Switch.cs:163:10:163:12 | Entry | Switch.cs:167:18:167:18 | After 1 [match] | true |
+| Switch.cs:163:10:163:12 | Entry | Switch.cs:167:18:167:18 | After 1 [no-match] | false |
+| Switch.cs:163:10:163:12 | Entry | Switch.cs:168:18:168:18 | After 2 [match] | false |
+| Switch.cs:163:10:163:12 | Entry | Switch.cs:168:18:168:18 | After 2 [no-match] | false |
+| Switch.cs:163:10:163:12 | Entry | Switch.cs:171:18:171:18 | After 3 [match] | false |
+| Switch.cs:163:10:163:12 | Entry | Switch.cs:171:18:171:18 | After 3 [no-match] | false |
+| Switch.cs:167:18:167:18 | After 1 [no-match] | Switch.cs:168:18:168:18 | After 2 [match] | true |
+| Switch.cs:167:18:167:18 | After 1 [no-match] | Switch.cs:168:18:168:18 | After 2 [no-match] | false |
+| Switch.cs:167:18:167:18 | After 1 [no-match] | Switch.cs:171:18:171:18 | After 3 [match] | false |
+| Switch.cs:167:18:167:18 | After 1 [no-match] | Switch.cs:171:18:171:18 | After 3 [no-match] | false |
+| Switch.cs:168:18:168:18 | After 2 [no-match] | Switch.cs:171:18:171:18 | After 3 [match] | true |
+| Switch.cs:168:18:168:18 | After 2 [no-match] | Switch.cs:171:18:171:18 | After 3 [no-match] | false |
 | TypeAccesses.cs:3:10:3:10 | Entry | TypeAccesses.cs:7:13:7:22 | After ... is ... [false] | false |
 | TypeAccesses.cs:3:10:3:10 | Entry | TypeAccesses.cs:7:13:7:22 | [MatchTrue] ... is ... | true |
 | VarDecls.cs:19:7:19:8 | Entry | VarDecls.cs:25:20:25:20 | After access to parameter b [false] | false |
@@ -873,41 +875,44 @@ conditionBlock
 | cflow.cs:28:22:28:31 | After ... == ... [false] | cflow.cs:30:22:30:31 | After ... == ... [true] | true |
 | cflow.cs:37:17:37:22 | Entry | cflow.cs:37:17:37:22 | Exit | false |
 | cflow.cs:37:17:37:22 | Entry | cflow.cs:39:9:50:9 | After switch (...) {...} | false |
-| cflow.cs:37:17:37:22 | Entry | cflow.cs:41:13:41:19 | After case ...: [no-match] | false |
-| cflow.cs:37:17:37:22 | Entry | cflow.cs:44:13:44:19 | After case ...: [no-match] | false |
-| cflow.cs:37:17:37:22 | Entry | cflow.cs:47:13:47:19 | After case ...: [match] | false |
-| cflow.cs:37:17:37:22 | Entry | cflow.cs:47:13:47:19 | After case ...: [no-match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:41:18:41:18 | After 1 [match] | true |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:41:18:41:18 | After 1 [no-match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:44:18:44:18 | After 2 [match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:44:18:44:18 | After 2 [no-match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:47:18:47:18 | After 3 [match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:47:18:47:18 | After 3 [no-match] | false |
 | cflow.cs:37:17:37:22 | Entry | cflow.cs:51:9:59:9 | After switch (...) {...} | false |
-| cflow.cs:37:17:37:22 | Entry | cflow.cs:53:13:53:20 | After case ...: [match] | false |
-| cflow.cs:37:17:37:22 | Entry | cflow.cs:53:13:53:20 | After case ...: [no-match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:53:18:53:19 | After 42 [match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:53:18:53:19 | After 42 [no-match] | false |
 | cflow.cs:37:17:37:22 | Entry | cflow.cs:60:9:66:9 | After switch (...) {...} | false |
-| cflow.cs:37:17:37:22 | Entry | cflow.cs:62:13:62:19 | After case ...: [match] | false |
-| cflow.cs:37:17:37:22 | Entry | cflow.cs:62:13:62:19 | After case ...: [no-match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:62:18:62:18 | After 0 [match] | false |
+| cflow.cs:37:17:37:22 | Entry | cflow.cs:62:18:62:18 | After 0 [no-match] | false |
 | cflow.cs:37:17:37:22 | Entry | cflow.cs:63:23:63:33 | After ... == ... [false] | false |
 | cflow.cs:37:17:37:22 | Entry | cflow.cs:63:23:63:33 | After ... == ... [true] | false |
-| cflow.cs:39:9:50:9 | After switch (...) {...} | cflow.cs:53:13:53:20 | After case ...: [match] | true |
-| cflow.cs:39:9:50:9 | After switch (...) {...} | cflow.cs:53:13:53:20 | After case ...: [no-match] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:37:17:37:22 | Exit | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:39:9:50:9 | After switch (...) {...} | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:44:13:44:19 | After case ...: [no-match] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:47:13:47:19 | After case ...: [match] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:47:13:47:19 | After case ...: [no-match] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:51:9:59:9 | After switch (...) {...} | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:53:13:53:20 | After case ...: [match] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:53:13:53:20 | After case ...: [no-match] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:60:9:66:9 | After switch (...) {...} | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:62:13:62:19 | After case ...: [match] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:62:13:62:19 | After case ...: [no-match] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:63:23:63:33 | After ... == ... [false] | false |
-| cflow.cs:41:13:41:19 | After case ...: [no-match] | cflow.cs:63:23:63:33 | After ... == ... [true] | false |
-| cflow.cs:44:13:44:19 | After case ...: [no-match] | cflow.cs:47:13:47:19 | After case ...: [match] | true |
-| cflow.cs:44:13:44:19 | After case ...: [no-match] | cflow.cs:47:13:47:19 | After case ...: [no-match] | false |
-| cflow.cs:51:9:59:9 | After switch (...) {...} | cflow.cs:62:13:62:19 | After case ...: [match] | true |
-| cflow.cs:51:9:59:9 | After switch (...) {...} | cflow.cs:62:13:62:19 | After case ...: [no-match] | false |
+| cflow.cs:39:9:50:9 | After switch (...) {...} | cflow.cs:53:18:53:19 | After 42 [match] | true |
+| cflow.cs:39:9:50:9 | After switch (...) {...} | cflow.cs:53:18:53:19 | After 42 [no-match] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:37:17:37:22 | Exit | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:39:9:50:9 | After switch (...) {...} | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:44:18:44:18 | After 2 [match] | true |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:44:18:44:18 | After 2 [no-match] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:47:18:47:18 | After 3 [match] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:47:18:47:18 | After 3 [no-match] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:51:9:59:9 | After switch (...) {...} | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:53:18:53:19 | After 42 [match] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:53:18:53:19 | After 42 [no-match] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:60:9:66:9 | After switch (...) {...} | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:62:18:62:18 | After 0 [match] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:62:18:62:18 | After 0 [no-match] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:63:23:63:33 | After ... == ... [false] | false |
+| cflow.cs:41:18:41:18 | After 1 [no-match] | cflow.cs:63:23:63:33 | After ... == ... [true] | false |
+| cflow.cs:44:18:44:18 | After 2 [no-match] | cflow.cs:47:18:47:18 | After 3 [match] | true |
+| cflow.cs:44:18:44:18 | After 2 [no-match] | cflow.cs:47:18:47:18 | After 3 [no-match] | false |
+| cflow.cs:51:9:59:9 | After switch (...) {...} | cflow.cs:62:18:62:18 | After 0 [match] | true |
+| cflow.cs:51:9:59:9 | After switch (...) {...} | cflow.cs:62:18:62:18 | After 0 [no-match] | false |
 | cflow.cs:51:9:59:9 | After switch (...) {...} | cflow.cs:63:23:63:33 | After ... == ... [false] | true |
 | cflow.cs:51:9:59:9 | After switch (...) {...} | cflow.cs:63:23:63:33 | After ... == ... [true] | true |
-| cflow.cs:62:13:62:19 | After case ...: [match] | cflow.cs:63:23:63:33 | After ... == ... [false] | false |
-| cflow.cs:62:13:62:19 | After case ...: [match] | cflow.cs:63:23:63:33 | After ... == ... [true] | true |
+| cflow.cs:62:18:62:18 | After 0 [match] | cflow.cs:63:23:63:33 | After ... == ... [false] | false |
+| cflow.cs:62:18:62:18 | After 0 [match] | cflow.cs:63:23:63:33 | After ... == ... [true] | true |
 | cflow.cs:70:18:70:18 | Entry | cflow.cs:72:13:72:21 | After ... == ... [false] | false |
 | cflow.cs:70:18:70:18 | Entry | cflow.cs:72:13:72:21 | After ... == ... [true] | true |
 | cflow.cs:70:18:70:18 | Entry | cflow.cs:74:9:81:9 | After if (...) ... | false |
@@ -1054,25 +1059,25 @@ conditionBlock
 | cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:244:13:244:28 | After ... > ... [false] | false |
 | cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:244:13:244:28 | After ... > ... [true] | true |
 | cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:246:9:258:9 | After switch (...) {...} | false |
-| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:248:13:248:19 | After case ...: [match] | false |
-| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:248:13:248:19 | After case ...: [no-match] | false |
-| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:250:13:250:19 | After case ...: [match] | false |
-| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:250:13:250:19 | After case ...: [no-match] | false |
-| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:253:13:253:19 | After case ...: [match] | false |
-| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:253:13:253:19 | After case ...: [no-match] | false |
+| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:248:18:248:18 | After 0 [match] | false |
+| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:248:18:248:18 | After 0 [no-match] | false |
+| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:250:18:250:18 | After 1 [match] | false |
+| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:250:18:250:18 | After 1 [no-match] | false |
+| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:253:18:253:18 | After 2 [match] | false |
+| cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:253:18:253:18 | After 2 [no-match] | false |
 | cflow.cs:242:12:242:41 | After if (...) ... | cflow.cs:255:13:255:20 | After default: [match] | false |
-| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:248:13:248:19 | After case ...: [match] | true |
-| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:248:13:248:19 | After case ...: [no-match] | false |
-| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:250:13:250:19 | After case ...: [match] | false |
-| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:250:13:250:19 | After case ...: [no-match] | false |
-| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:253:13:253:19 | After case ...: [match] | false |
-| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:253:13:253:19 | After case ...: [no-match] | false |
-| cflow.cs:248:13:248:19 | After case ...: [no-match] | cflow.cs:250:13:250:19 | After case ...: [match] | true |
-| cflow.cs:248:13:248:19 | After case ...: [no-match] | cflow.cs:250:13:250:19 | After case ...: [no-match] | false |
-| cflow.cs:248:13:248:19 | After case ...: [no-match] | cflow.cs:253:13:253:19 | After case ...: [match] | false |
-| cflow.cs:248:13:248:19 | After case ...: [no-match] | cflow.cs:253:13:253:19 | After case ...: [no-match] | false |
-| cflow.cs:250:13:250:19 | After case ...: [no-match] | cflow.cs:253:13:253:19 | After case ...: [match] | true |
-| cflow.cs:250:13:250:19 | After case ...: [no-match] | cflow.cs:253:13:253:19 | After case ...: [no-match] | false |
+| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:248:18:248:18 | After 0 [match] | true |
+| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:248:18:248:18 | After 0 [no-match] | false |
+| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:250:18:250:18 | After 1 [match] | false |
+| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:250:18:250:18 | After 1 [no-match] | false |
+| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:253:18:253:18 | After 2 [match] | false |
+| cflow.cs:244:13:244:28 | After ... > ... [false] | cflow.cs:253:18:253:18 | After 2 [no-match] | false |
+| cflow.cs:248:18:248:18 | After 0 [no-match] | cflow.cs:250:18:250:18 | After 1 [match] | true |
+| cflow.cs:248:18:248:18 | After 0 [no-match] | cflow.cs:250:18:250:18 | After 1 [no-match] | false |
+| cflow.cs:248:18:248:18 | After 0 [no-match] | cflow.cs:253:18:253:18 | After 2 [match] | false |
+| cflow.cs:248:18:248:18 | After 0 [no-match] | cflow.cs:253:18:253:18 | After 2 [no-match] | false |
+| cflow.cs:250:18:250:18 | After 1 [no-match] | cflow.cs:253:18:253:18 | After 2 [match] | true |
+| cflow.cs:250:18:250:18 | After 1 [no-match] | cflow.cs:253:18:253:18 | After 2 [no-match] | false |
 | cflow.cs:264:25:264:30 | Before ... < ... | cflow.cs:261:49:261:53 | Exceptional Exit | false |
 | cflow.cs:264:25:264:30 | Before ... < ... | cflow.cs:261:49:261:53 | Exit | false |
 | cflow.cs:264:25:264:30 | Before ... < ... | cflow.cs:261:49:261:53 | Normal Exit | false |

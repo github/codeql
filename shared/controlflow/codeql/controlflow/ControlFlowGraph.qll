@@ -95,6 +95,9 @@ signature module AstSig<LocationSig Location> {
     Stmt getElse();
   }
 
+  /** Gets the initializer of `if` statement `ifstmt`, if any. */
+  default AstNode getIfInit(IfStmt ifstmt) { none() }
+
   /**
    * A loop statement. Loop statements are further subclassed into specific
    * types of loops.
@@ -118,14 +121,14 @@ signature module AstSig<LocationSig Location> {
 
   /** A traditional C-style `for` loop. */
   class ForStmt extends LoopStmt {
-    /** Gets the initializer expression of the loop at the specified (zero-based) position, if any. */
-    Expr getInit(int index);
+    /** Gets the initializer of the loop at the specified (zero-based) position, if any. */
+    AstNode getInit(int index);
 
     /** Gets the boolean condition of this `for` loop. */
     Expr getCondition();
 
-    /** Gets the update expression of this loop at the specified (zero-based) position, if any. */
-    Expr getUpdate(int index);
+    /** Gets the update of this loop at the specified (zero-based) position, if any. */
+    AstNode getUpdate(int index);
   }
 
   /** A for-loop that iterates over the elements of a collection. */
@@ -255,8 +258,8 @@ signature module AstSig<LocationSig Location> {
 
   /** A case in a switch. */
   class Case extends AstNode {
-    /** Gets a pattern being matched by this case. */
-    AstNode getAPattern();
+    /** Gets the pattern being matched by this case at the specified (zero-based) `index`. */
+    AstNode getPattern(int index);
 
     /** Gets the guard expression of this case, if any. */
     Expr getGuard();
@@ -489,6 +492,18 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
      * need to be consecutive nor start from a specific index.
      */
     default Parameter callableGetParameter(Callable c, CallableContext ctx, int index) { none() }
+
+    /** Holds if catch clause `catch` catches all exceptions. */
+    default predicate catchAll(CatchClause catch) { none() }
+
+    /**
+     * Holds if case `c` matches all possible values, for example, if it is a
+     * `default` case or a match-all pattern like `Object o` or if it is the
+     * final case in a switch that is known to be exhaustive.
+     *
+     * A match-all case can still ultimately fail to match if it has a guard.
+     */
+    default predicate matchAll(Case c) { c instanceof DefaultCase }
   }
 
   /**
@@ -612,6 +627,8 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         n instanceof Case
         or
+        n = any(Case case).getPattern(_)
+        or
         exists(n.(Parameter).getDefaultValue())
       )
     }
@@ -626,6 +643,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       Input1::cfgCachedStageRef() and
       not exists(getChild(n, _)) and
       not postOrInOrder(n) and
+      not additionalNode(n, _, _) and
       not inConditionalContext(n, _)
     }
 
@@ -772,12 +790,25 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       result = DenseRank2<ParameterCtxDenseRankInput>::denseRank(c, ctx.asSome(), rnk)
     }
 
+    private predicate constantCondition(AstNode n, ConditionalSuccessor t) {
+      n.(BooleanLiteral).getValue() = t.(BooleanSuccessor).getValue()
+      or
+      exists(Case c, int i |
+        Input1::matchAll(c) and
+        c.getPattern(i) = n and
+        not exists(c.getPattern(i + 1)) and
+        t.(MatchingSuccessor).getValue() = true
+      )
+    }
+
     cached
     private newtype TNode =
       TBeforeNode(AstNode n) { Input1::cfgCachedStageRef() and exists(getEnclosingCallable(n)) } or
       TAstNode(AstNode n) { postOrInOrder(n) and exists(getEnclosingCallable(n)) } or
       TAfterValueNode(AstNode n, ConditionalSuccessor t) {
-        inConditionalContext(n, t.getKind()) and exists(getEnclosingCallable(n))
+        inConditionalContext(n, t.getKind()) and
+        exists(getEnclosingCallable(n)) and
+        not constantCondition(n, t.getDual())
       } or
       TAfterNode(AstNode n) {
         exists(getEnclosingCallable(n)) and
@@ -1105,18 +1136,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
     }
 
     signature module InputSig2 {
-      /** Holds if this catch clause catches all exceptions. */
-      default predicate catchAll(CatchClause catch) { none() }
-
-      /**
-       * Holds if this case matches all possible values, for example, if it is a
-       * `default` case or a match-all pattern like `Object o` or if it is the
-       * final case in a switch that is known to be exhaustive.
-       *
-       * A match-all case can still ultimately fail to match if it has a guard.
-       */
-      default predicate matchAll(Case c) { c instanceof DefaultCase }
-
       /**
        * Holds if `ast` may result in an abrupt completion `c` originating at
        * `n`. The boolean `always`  indicates whether the abrupt completion
@@ -1471,12 +1490,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(condexpr.getElse())
         )
         or
-        exists(BooleanLiteral boollit |
-          inConditionalContext(boollit, _) and
-          n1.isBefore(boollit) and
-          n2.isAfterValue(boollit, any(BooleanSuccessor t | t.getValue() = boollit.getValue()))
-        )
-        or
         exists(PatternMatchExpr pme |
           n1.isBefore(pme) and
           n2.isBefore(pme.getExpr())
@@ -1499,6 +1512,13 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         exists(IfStmt ifstmt |
           n1.isBefore(ifstmt) and
+          (
+            n2.isBefore(getIfInit(ifstmt))
+            or
+            not exists(getIfInit(ifstmt)) and n2.isBefore(ifstmt.getCondition())
+          )
+          or
+          n1.isAfter(getIfInit(ifstmt)) and
           n2.isBefore(ifstmt.getCondition())
           or
           n1.isAfterTrue(ifstmt.getCondition()) and
@@ -1662,7 +1682,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           exists(MatchingSuccessor t |
             n1.isBefore(catchclause) and
             n2.isAfterValue(catchclause, t) and
-            if Input2::catchAll(catchclause) then t.getValue() = true else any()
+            if Input1::catchAll(catchclause) then t.getValue() = true else any()
           )
           or
           exists(PreControlFlowNode beforeVar, PreControlFlowNode beforeCond |
@@ -1720,21 +1740,22 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         )
         or
         exists(Case case |
-          exists(MatchingSuccessor t |
-            n1.isBefore(case) and
-            n2.isAfterValue(case, t) and
-            if Input2::matchAll(case) then t.getValue() = true else any()
+          n1.isBefore(case) and
+          (
+            if exists(case.getPattern(_))
+            then n2.isBefore(case.getPattern(0))
+            else n2.isAfterValue(case, any(MatchingSuccessor t | t.getValue() = true))
           )
           or
-          exists(
-            PreControlFlowNode beforePattern, PreControlFlowNode beforeGuard,
-            PreControlFlowNode beforeBody
-          |
-            (
-              beforePattern.isBefore(case.getAPattern())
-              or
-              not exists(case.getAPattern()) and beforePattern = beforeGuard
-            ) and
+          exists(int i, MatchingSuccessor ms | n1.isAfterValue(case.getPattern(i), ms) |
+            ms.getValue() = false and
+            n2.isBefore(case.getPattern(i + 1))
+            or
+            (ms.getValue() = true or not exists(case.getPattern(i + 1))) and
+            n2.isAfterValue(case, ms)
+          )
+          or
+          exists(PreControlFlowNode beforeGuard, PreControlFlowNode beforeBody |
             (
               beforeGuard.isBefore(case.getGuard())
               or
@@ -1748,9 +1769,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             )
           |
             n1.isAfterValue(case, any(MatchingSuccessor t | t.getValue() = true)) and
-            n2 = beforePattern
-            or
-            n1.isAfter(case.getAPattern()) and
             n2 = beforeGuard
             or
             n1.isAfterTrue(case.getGuard()) and
@@ -2082,6 +2100,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         module Consistency {
           /** Holds if the consistency query `query` has `results` results. */
           query predicate consistencyOverview(string query, int results) {
+            query = "siblingsWithSameIndexInDefaultCfg" and
+            results =
+              strictcount(AstNode parent, AstNode child1, AstNode child2, int i |
+                siblingsWithSameIndexInDefaultCfg(parent, child1, child2, i)
+              )
+            or
             query = "deadEnd" and results = strictcount(ControlFlowNode node | deadEnd(node))
             or
             query = "nonUniqueEnclosingCallable" and
@@ -2125,6 +2149,20 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             or
             query = "selfLoop" and
             results = strictcount(ControlFlowNode node, SuccessorType t | selfLoop(node, t))
+          }
+
+          /**
+           * Holds if `parent` uses default left-to-right control flow and has
+           * two different children `child1` and `child2` at the same index
+           * `i`.
+           */
+          query predicate siblingsWithSameIndexInDefaultCfg(
+            AstNode parent, AstNode child1, AstNode child2, int i
+          ) {
+            defaultCfg(parent) and
+            getChild(parent, i) = child1 and
+            getChild(parent, i) = child2 and
+            child1 != child2
           }
 
           /**
@@ -2224,12 +2262,6 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
             not (
               t instanceof DirectSuccessor and
               node.isAdditional(any(ForeachStmt foreach), loopHeaderTag())
-            ) and
-            // allow for disjunctive patterns (e.g. `case "foo", "bar":`)
-            not (
-              t instanceof DirectSuccessor and
-              node.isAfterValue(any(Case c | 2 <= strictcount(c.getAPattern())),
-                any(MatchingSuccessor m | m.getValue() = true))
             ) and
             // allow for functions with multiple bodies
             not exists(Callable c |

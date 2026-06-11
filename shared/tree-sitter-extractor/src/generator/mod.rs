@@ -6,6 +6,7 @@ use std::io::Write;
 use std::path::PathBuf;
 
 use crate::node_types;
+use yeast;
 
 pub mod dbscheme;
 pub mod language;
@@ -68,7 +69,20 @@ pub fn generate(
         let token_name = format!("{}_token", &prefix);
         let tokeninfo_name = format!("{}_tokeninfo", &prefix);
         let reserved_word_name = format!("{}_reserved_word", &prefix);
-        let nodes = node_types::read_node_types_str(&prefix, language.node_types)?;
+        let effective_node_types: String = match language
+            .desugar
+            .as_ref()
+            .and_then(|c| c.output_node_types_yaml)
+        {
+            Some(yaml) => yeast::node_types_yaml::convert(yaml).map_err(|e| {
+                std::io::Error::other(format!(
+                    "Failed to convert YAML node-types to JSON for {}: {e}",
+                    language.name
+                ))
+            })?,
+            None => language.node_types.to_string(),
+        };
+        let nodes = node_types::read_node_types_str(&prefix, &effective_node_types)?;
         let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
         ast_node_members.insert(&token_name);
         writeln!(&mut dbscheme_writer, "/*- {} dbscheme -*/", language.name)?;
@@ -101,8 +115,19 @@ pub fn generate(
                 &node_parent_table_name,
             )),
             ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
-            ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
         ];
+        // Only emit the ReservedWord class when there are actually unnamed token
+        // types in the schema (i.e., @{prefix}_reserved_word exists in the dbscheme).
+        // When converting from a YEAST YAML schema that has no unnamed tokens, this
+        // type is absent and referencing it would cause a QL compilation error.
+        let has_reserved_words = nodes
+            .values()
+            .any(|n| n.dbscheme_name == reserved_word_name);
+        if has_reserved_words {
+            body.push(ql::TopLevel::Class(ql_gen::create_reserved_word_class(
+                &reserved_word_name,
+            )));
+        }
 
         // Overlay discard predicates
         body.push(ql::TopLevel::Predicate(
@@ -280,7 +305,18 @@ fn convert_nodes(
                 // type.
                 let members: Set<&str> = n_members
                     .iter()
-                    .map(|n| nodes.get(n).unwrap().dbscheme_name.as_str())
+                    .map(|n| {
+                        nodes
+                            .get(n)
+                            .unwrap_or_else(|| {
+                                panic!(
+                                    "union type '{}' references unknown member node type {:?}",
+                                    node.dbscheme_name, n
+                                )
+                            })
+                            .dbscheme_name
+                            .as_str()
+                    })
                     .collect();
                 entries.push(dbscheme::Entry::Union(dbscheme::Union {
                     name: &node.dbscheme_name,

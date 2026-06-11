@@ -1008,7 +1008,7 @@ module Raw {
     /**
      * Gets the name of this type declaration.
      */
-    string getName() { type_decls(this, result) }
+    string getName() { type_decls(this, result, _) }
 
     /**
      * Gets the `index`th inherited type of this type declaration (0-based).
@@ -1024,6 +1024,11 @@ module Raw {
     int getNumberOfInheritedTypes() {
       result = count(int i | type_decl_inherited_types(this, i, _))
     }
+
+    /**
+     * Gets the declared interface type of this type declaration.
+     */
+    Type getDeclaredInterfaceType() { type_decls(this, _, result) }
   }
 
   /**

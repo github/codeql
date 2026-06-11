@@ -1,3 +1,40 @@
+## 0.6.29
+
+### Query Metadata Changes
+
+* Reversed adjustment of the name of `actions/untrusted-checkout/high`, but kept the portion of the previous change for the word "trusted" to "privileged". Added a missing "a" to phrasing in `actions/untrusted-checkout/high` and `actions/untrusted-checkout/medium`.
+
+### Major Analysis Improvements
+
+* Adjusted `actions/untrusted-checkout/critical` to align more with other untrusted resource queries, where the alert location is the location where the artifact is obtained from (the checkout point). This aligns with the other 2 related queries. This will cause the same alerts to re-open for closed alerts of this query.
+
+### Minor Analysis Improvements
+
+* Altered the alert message for clarity for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`.
+* The `actions/unpinned-tag` query now recognizes 64-character SHA-256 commit hashes as properly pinned references, in addition to 40-character SHA-1 hashes.
+
+### Bug Fixes
+
+* Adjusted (minor) help file descriptions for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`, `actions/untrusted-checkout/medium`. Clarified wording on in minor point, added one more listed resource and added one more recommendation for things to check.
+
+## 0.6.28
+
+### Query Metadata Changes
+
+* Adjusted the name of `actions/untrusted-checkout/high` to more clearly describe which parts of the scenario are in a privileged context.
+
+### Minor Analysis Improvements
+
+* The `actions/unpinned-tag` query now analyzes composite action metadata (`action.yml`/`action.yaml` files) in addition to workflow files, providing more comprehensive detection of unpinned action references across the entire Actions ecosystem.
+
+### Bug Fixes
+
+* Fixed help file descriptions for queries: `actions/untrusted-checkout/critical`, `actions/untrusted-checkout/high`, `actions/untrusted-checkout/medium`. Previously the messages were unclear as to why and how the vulnerabilities could occur. 
+
+## 0.6.27
+
+No user-facing changes.
+
 ## 0.6.26
 
 ### Major Analysis Improvements
@@ -173,7 +210,7 @@ No user-facing changes.
   * `actions/if-expression-always-true/critical`
   * `actions/if-expression-always-true/high`
   * `actions/unnecessary-use-of-advanced-config`
-
+  
 * The following query has been moved from the `code-scanning` suite to the `security-extended`
   suite. Any existing alerts for this query will be closed automatically unless the analysis is
   configured to use the `security-extended` suite.

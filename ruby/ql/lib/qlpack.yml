@@ -1,5 +1,5 @@
 name: codeql/ruby-all
-version: 5.1.17-dev
+version: 5.2.3-dev
 groups: ruby
 extractor: ruby
 dbscheme: ruby.dbscheme
@@ -14,6 +14,7 @@ dependencies:
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
+  codeql/namebinding: ${workspace}
 dataExtensions:
   - codeql/ruby/frameworks/**/model.yml
   - codeql/ruby/frameworks/**/*.model.yml

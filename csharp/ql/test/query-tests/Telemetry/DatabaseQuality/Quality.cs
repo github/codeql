@@ -29,7 +29,7 @@ public class Test
         var slice = sp[..3];        // TODO: this is not an indexer call, but rather a `sp.Slice(0, 3)` call.
 
         Span<byte> guidBytes = stackalloc byte[16];
-        guidBytes[08] = 1;          // TODO: this indexer call has no target, because the target is a `ref` returning getter.
+        guidBytes[08] = 1;
 
         new MyList([new(), new Test()]);
     }

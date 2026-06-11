@@ -653,8 +653,22 @@ module RustDataFlowGen<RustDataFlowInputSig Input> implements InputSig<Location>
    */
   predicate jumpStep(Node node1, Node node2) {
     FlowSummaryImpl::Private::Steps::summaryJumpStep(node1.(FlowSummaryNode).getSummaryNode(),
-      node2.(FlowSummaryNode).getSummaryNode()) or
+      node2.(FlowSummaryNode).getSummaryNode())
+    or
     FlowSummaryImpl::Private::Steps::sourceJumpStep(node1.(FlowSummaryNode).getSummaryNode(), node2)
+    or
+    exists(Const c |
+      node1.asExpr() = c.getBody() and
+      node2.asExpr() = c.getAnAccess()
+    )
+    or
+    exists(StaticNode sn, Static s | s = sn.getStatic() |
+      node1 = sn and
+      node2.asExpr() = s.getAnAccess().(StaticReadAccess)
+      or
+      node1.asExpr() = [s.getBody(), s.getAnAccess().(StaticWriteAccess)] and
+      node2 = sn
+    )
   }
 
   pragma[nomagic]

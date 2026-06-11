@@ -1,3 +1,17 @@
+## 1.6.4
+
+No user-facing changes.
+
+## 1.6.3
+
+### Minor Analysis Improvements
+
+* The 'Cleartext transmission of sensitive information' query (`cpp/cleartext-transmission`) no longer raises an alert on calls to `fscanf` (and variants) when the call reads from an "obviously local" `FILE` stream such as `stdin`.
+
+## 1.6.2
+
+No user-facing changes.
+
 ## 1.6.1
 
 ### Minor Analysis Improvements
@@ -7,7 +21,7 @@
 * The "Multiplication result converted to larger type" (`cpp/integer-multiplication-cast-to-long`) query has been upgraded to `high` precision. This query will now run in the default code scanning suite.
 * The "Suspicious add with sizeof" (`cpp/suspicious-add-sizeof`) query has been upgraded to `high` precision. This query will now run in the default code scanning suite.
 * The "Wrong type of arguments to formatting function" (`cpp/wrong-type-format-argument`) query has been upgraded to `high` precision. This query will now run in the default code scanning suite.
-* The "Implicit function declaration" (`cpp/implicit-function-declaration`) query has been upgraded to `high` precision. However, for `build mode: none` databases, it no longer produces any results. The results in this mode were found to be very noisy and fundamentally imprecise.
+* The "Implicit function declaration" (`cpp/implicit-function-declaration`) query has been upgraded to `high` precision. However, for `build-mode: none` databases, it no longer produces any results. The results in this mode were found to be very noisy and fundamentally imprecise.
 
 ## 1.6.0
 
@@ -366,7 +380,7 @@ No user-facing changes.
 ### Minor Analysis Improvements
 
 * The "non-constant format string" query (`cpp/non-constant-format`) has been updated to produce fewer false positives.
-* Added dataflow models for the `gettext` function variants.
+* Added dataflow models for the `gettext` function variants. 
 
 ## 0.9.4
 

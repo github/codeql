@@ -704,6 +704,17 @@ final class CastNode extends ExprNode {
   CastNode() { none() }
 }
 
+/**
+ * A node in the data flow graph that corresponds to a `static`.
+ */
+class StaticNode extends AstNodeNode, TStaticNode {
+  override Static n;
+
+  StaticNode() { this = TStaticNode(n) }
+
+  Static getStatic() { result = n }
+}
+
 cached
 newtype TNode =
   TExprNode(Expr e) { e.hasEnclosingCfgScope() and Stages::DataFlowStage::ref() } or
@@ -755,4 +766,5 @@ newtype TNode =
     )
   } or
   TClosureSelfReferenceNode(CfgScope c) { lambdaCreationExpr(c) } or
-  TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
+  TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+  TStaticNode(Static s)

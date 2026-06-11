@@ -25,6 +25,15 @@ abstract class ScanfFunction extends Function {
    * (rather than a `char*`).
    */
   predicate isWideCharDefault() { exists(this.getName().indexOf("wscanf")) }
+
+  /** Holds if this is one of the `scanf_s` variants. */
+  predicate isSVariant() {
+    exists(string name | name = this.getName() |
+      name.matches("%\\_s")
+      or
+      name.matches("%\\_s\\_l")
+    )
+  }
 }
 
 /**
@@ -34,8 +43,12 @@ class Scanf extends ScanfFunction instanceof TopLevelFunction {
   Scanf() {
     this.hasGlobalOrStdOrBslName("scanf") or // scanf(format, args...)
     this.hasGlobalOrStdOrBslName("wscanf") or // wscanf(format, args...)
+    this.hasGlobalOrStdOrBslName("scanf_s") or // scanf_s(format, args...)
+    this.hasGlobalOrStdOrBslName("wscanf_s") or // wscanf_s(format, args...)
     this.hasGlobalName("_scanf_l") or // _scanf_l(format, locale, args...)
-    this.hasGlobalName("_wscanf_l")
+    this.hasGlobalName("_wscanf_l") or // _wscanf_l(format, locale, args...)
+    this.hasGlobalName("_scanf_s_l") or // _scanf_s_l(format, locale, args...)
+    this.hasGlobalName("_wscanf_s_l") // _wscanf_s_l(format, locale, args...)
   }
 
   override int getInputParameterIndex() { none() }
@@ -50,8 +63,12 @@ class Fscanf extends ScanfFunction instanceof TopLevelFunction {
   Fscanf() {
     this.hasGlobalOrStdOrBslName("fscanf") or // fscanf(src_stream, format, args...)
     this.hasGlobalOrStdOrBslName("fwscanf") or // fwscanf(src_stream, format, args...)
+    this.hasGlobalOrStdOrBslName("fscanf_s") or // fscanf_s(src_stream, format, args...)
+    this.hasGlobalOrStdOrBslName("fwscanf_s") or // fwscanf_s(src_stream, format, args...)
     this.hasGlobalName("_fscanf_l") or // _fscanf_l(src_stream, format, locale, args...)
-    this.hasGlobalName("_fwscanf_l")
+    this.hasGlobalName("_fwscanf_l") or // _fwscanf_l(src_stream, format, locale, args...)
+    this.hasGlobalName("_fscanf_s_l") or // _fscanf_s_l(src_stream, format, locale, args...)
+    this.hasGlobalName("_fwscanf_s_l") // _fwscanf_s_l(src_stream, format, locale, args...)
   }
 
   override int getInputParameterIndex() { result = 0 }
@@ -66,8 +83,12 @@ class Sscanf extends ScanfFunction instanceof TopLevelFunction {
   Sscanf() {
     this.hasGlobalOrStdOrBslName("sscanf") or // sscanf(src_stream, format, args...)
     this.hasGlobalOrStdOrBslName("swscanf") or // swscanf(src, format, args...)
+    this.hasGlobalOrStdOrBslName("sscanf_s") or // sscanf_s(src, format, args...)
+    this.hasGlobalOrStdOrBslName("swscanf_s") or // swscanf_s(src, format, args...)
     this.hasGlobalName("_sscanf_l") or // _sscanf_l(src, format, locale, args...)
-    this.hasGlobalName("_swscanf_l")
+    this.hasGlobalName("_swscanf_l") or // _swscanf_l(src, format, locale, args...)
+    this.hasGlobalName("_sscanf_s_l") or // _sscanf_s_l(src, format, locale, args...)
+    this.hasGlobalName("_swscanf_s_l") // _swscanf_s_l(src, format, locale, args...)
   }
 
   override int getInputParameterIndex() { result = 0 }
@@ -95,6 +116,14 @@ class Snscanf extends ScanfFunction instanceof TopLevelFunction {
    * input string is specified.
    */
   int getInputLengthParameterIndex() { result = 1 }
+}
+
+private predicate isCharLike(Type t) { t instanceof CharType or t instanceof Wchar_t }
+
+private predicate isStringLike(Type t) {
+  isCharLike(t.(PointerType).getBaseType())
+  or
+  isCharLike(t.(ArrayType).getBaseType())
 }
 
 /**
@@ -130,14 +159,40 @@ class ScanfFunctionCall extends FunctionCall {
    */
   predicate isWideCharDefault() { this.getScanfFunction().isWideCharDefault() }
 
+  bindingset[this, k]
+  pragma[inline_late]
+  private predicate isSizeArgument(int k) {
+    // The first vararg is never the size argument since a size argument must
+    // always follow a string buffer argument.
+    k > 0 and
+    isStringLike(this.getArgument(this.getScanfFunction().getNumberOfParameters() + k - 1)
+          .getUnspecifiedType())
+  }
+
   /**
    * Gets the output argument at position `n` in the vararg list of this call.
    *
    * The range of `n` is from `0` to `this.getNumberOfOutputArguments() - 1`.
    */
   Expr getOutputArgument(int n) {
-    result = this.getArgument(this.getTarget().getNumberOfParameters() + n) and
-    n >= 0
+    exists(ScanfFunction target | target = this.getScanfFunction() |
+      // If this is an S variant then every string buffer argument has a
+      // corresponding size argument immediately following it, so we need to
+      // skip over those size arguments when counting the output arguments.
+      if target.isSVariant()
+      then
+        result =
+          rank[n + 1](Expr arg, int k |
+            k >= 0 and
+            arg = this.getArgument(target.getNumberOfParameters() + k) and
+            not this.isSizeArgument(k)
+          |
+            arg order by k
+          )
+      else (
+        n >= 0 and result = this.getArgument(target.getNumberOfParameters() + n)
+      )
+    )
   }
 
   /**

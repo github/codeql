@@ -500,11 +500,7 @@ class AssignableDefinition extends TAssignableDefinition {
    */
   pragma[nomagic]
   AssignableRead getAFirstRead() {
-    exists(ControlFlowNode cfn | cfn = result.getControlFlowNode() |
-      exists(Ssa::ExplicitDefinition def | result = def.getAFirstReadAtNode(cfn) |
-        this = def.getADefinition()
-      )
-    )
+    exists(SsaExplicitWrite def | result = Ssa::ssaGetAFirstUse(def) | this = def.getDefinition())
   }
 
   /** Gets a textual representation of this assignable definition. */
