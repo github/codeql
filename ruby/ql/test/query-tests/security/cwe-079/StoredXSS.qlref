@@ -1,1 +1,2 @@
-queries/security/cwe-079/StoredXSS.ql
+query: queries/security/cwe-079/StoredXSS.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

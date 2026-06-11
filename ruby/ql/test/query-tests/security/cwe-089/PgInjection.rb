@@ -3,7 +3,7 @@ class FooController < ActionController::Base
   def some_request_handler
     # A string tainted by user input is inserted into a query
     # (i.e a remote flow source)
-    name = params[:name]
+    name = params[:name] # $ Source
 
     # Establish a connection to a PostgreSQL database
     conn = PG::Connection.open(:dbname => 'postgresql', :user => 'user', :password => 'pass', :host => 'localhost', :port => '5432')
@@ -11,14 +11,14 @@ class FooController < ActionController::Base
     # .exec() and .async_exec()
     # BAD: SQL statement constructed from user input
     qry1 = "SELECT * FROM users WHERE username = '#{name}';"
-    conn.exec(qry1)
-    conn.async_exec(qry1)
+    conn.exec(qry1) # $ Alert
+    conn.async_exec(qry1) # $ Alert
 
     # .exec_params() and .async_exec_params()
     # BAD: SQL statement constructed from user input
     qry2 = "SELECT * FROM users WHERE username = '#{name}';"
-    conn.exec_params(qry2)
-    conn.async_exec_params(qry2)
+    conn.exec_params(qry2) # $ Alert
+    conn.async_exec_params(qry2) # $ Alert
 
     # .exec_params() and .async_exec_params()
     # GOOD: SQL statement constructed from sanitized user input
@@ -29,7 +29,7 @@ class FooController < ActionController::Base
     # .prepare() and .exec_prepared()
     # BAD: SQL statement constructed from user input
     qry3 = "SELECT * FROM users WHERE username = '#{name}';"
-    conn.prepare("query_1", qry3)
+    conn.prepare("query_1", qry3) # $ Alert
     conn.exec_prepared('query_1')
 
     # .prepare() and .exec_prepared()
@@ -41,7 +41,7 @@ class FooController < ActionController::Base
     # .prepare() and .exec_prepared()
     # NOT EXECUTED: SQL statement constructed from user input but not executed
     qry3 = "SELECT * FROM users WHERE username = '#{name}';"
-    conn.prepare("query_3", qry3)
+    conn.prepare("query_3", qry3) # $ Alert
   end
 end
 

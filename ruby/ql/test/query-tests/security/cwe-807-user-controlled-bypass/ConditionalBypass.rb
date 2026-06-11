@@ -1,9 +1,9 @@
 class FooController < ActionController::Base
   def bad_handler1
-    check = params[:check]
+    check = params[:check] # $ Source
     name = params[:name]
 
-    if check
+    if check # $ Alert
       # BAD
       authenticate_user! name
     end
@@ -11,7 +11,7 @@ class FooController < ActionController::Base
 
   def bad_handler2
     # BAD
-    login if params[:login]
+    login if params[:login] # $ Alert
     do_something_else
   end
 
@@ -22,9 +22,9 @@ class FooController < ActionController::Base
   end
 
   def bad_handler4
-    p = (params[:name] == "foo")
+    p = (params[:name] == "foo") # $ Source
     # BAD
-    if p
+    if p # $ Alert
       verify!
     end
   end

@@ -2,13 +2,13 @@ require "fileutils"
 
 def run_chmod_1(filename)
   # BAD: sets file as world writable
-  FileUtils.chmod 0222, filename
+  FileUtils.chmod 0222, filename # $ Alert[rb/overly-permissive-file]
   # BAD: sets file as world writable
-  FileUtils.chmod 0622, filename
+  FileUtils.chmod 0622, filename # $ Alert[rb/overly-permissive-file]
   # BAD: sets file as world readable
-  FileUtils.chmod 0755, filename
+  FileUtils.chmod 0755, filename # $ Alert[rb/overly-permissive-file]
   # BAD: sets file as world readable + writable
-  FileUtils.chmod 0777, filename
+  FileUtils.chmod 0777, filename # $ Alert[rb/overly-permissive-file]
 end
 
 module DummyModule
@@ -25,7 +25,7 @@ def run_chmod_2(filename)
   baz.chmod 0755, filename
   baz = bar
   # BAD: sets file as world readable
-  baz.chmod 0755, filename
+  baz.chmod 0755, filename # $ Alert[rb/overly-permissive-file]
 end
 
 def run_chmod_3(filename)
@@ -48,26 +48,26 @@ def run_chmod_4(filename)
 end
 
 def run_chmod_5(filename)
-  perm = 0777
+  perm = 0777 # $ Alert[rb/overly-permissive-file]
   # BAD: sets world rwx
-  FileUtils.chmod perm, filename
+  FileUtils.chmod perm, filename # $ Sink[rb/overly-permissive-file]
   perm2 = perm
   # BAD: sets world rwx
-  FileUtils.chmod perm2, filename
+  FileUtils.chmod perm2, filename # $ Sink[rb/overly-permissive-file]
 
-  perm = "u=wrx,g=rwx,o=x"
+  perm = "u=wrx,g=rwx,o=x" # $ Alert[rb/overly-permissive-file]
   perm2 = perm
   # BAD: sets group rwx
-  FileUtils.chmod perm2, filename
+  FileUtils.chmod perm2, filename # $ Sink[rb/overly-permissive-file]
   # BAD: sets file as world readable
-  FileUtils.chmod "u=rwx,o+r", filename
+  FileUtils.chmod "u=rwx,o+r", filename # $ Alert[rb/overly-permissive-file]
   # GOOD: sets file as group/world unreadable
   FileUtils.chmod "u=rwx,go-r", filename
   # BAD: sets group/world as +rw
-  FileUtils.chmod "a+rw", filename
+  FileUtils.chmod "a+rw", filename # $ Alert[rb/overly-permissive-file]
 end
 
 def run_chmod_R(filename)
   # BAD: sets file as world readable
-  FileUtils.chmod_R 0755, filename
+  FileUtils.chmod_R 0755, filename # $ Alert[rb/overly-permissive-file]
 end

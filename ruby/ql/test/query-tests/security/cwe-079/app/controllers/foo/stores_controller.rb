@@ -5,7 +5,7 @@ class StoresController < ApplicationController
   end
 
   def show
-    dt = File.read("foo.txt")
+    dt = File.read("foo.txt") # $ Source[rb/stored-xss]
     @instance_text = dt
     @user = User.find 1
     @safe_user_handle = ERB::Util.html_escape(@user.handle)

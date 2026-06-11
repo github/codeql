@@ -1,39 +1,39 @@
 class ExampleController < ActionController::Base
   # Should find
   def example_action
-    if request.get?
+    if request.get? # $ Alert
       Resource.find(id: params[:example_id])
     end
   end
 
   # Should find
   def other_action
-    method = request.env['REQUEST_METHOD']
-    if method == "GET"
+    method = request.env['REQUEST_METHOD'] # $ Source
+    if method == "GET" # $ Alert
       Resource.find(id: params[:id])
     end
   end
 
   # Should find
   def foo
-    method = request.request_method
-    if method == "GET"
+    method = request.request_method # $ Source
+    if method == "GET" # $ Alert
       Resource.find(id: params[:id])
     end
   end
 
   # Should find
   def bar
-    method = request.method
-    if method == "GET"
+    method = request.method # $ Source
+    if method == "GET" # $ Alert
       Resource.find(id: params[:id])
     end
   end
 
   # Should find
   def baz
-    method = request.raw_request_method
-    if method == "GET"
+    method = request.raw_request_method # $ Source
+    if method == "GET" # $ Alert
       Resource.find(id: params[:id])
     end
   end
@@ -48,15 +48,15 @@ class ExampleController < ActionController::Base
 
     # Should find
     def foobarbaz
-      method = request.request_method_symbol
-      if method == :GET
+      method = request.request_method_symbol # $ Source
+      if method == :GET # $ Alert
         Resource.find(id: params[:id])
       end
     end
 
   # Should find
   def resource_action
-    case request.env['REQUEST_METHOD']
+    case request.env['REQUEST_METHOD'] # $ Alert
     when "GET"
       Resource.find(id: params[:id])
     when "POST"

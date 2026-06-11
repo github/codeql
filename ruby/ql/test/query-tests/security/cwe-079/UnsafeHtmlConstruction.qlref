@@ -1,1 +1,2 @@
-queries/security/cwe-079/UnsafeHtmlConstruction.ql
+query: queries/security/cwe-079/UnsafeHtmlConstruction.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

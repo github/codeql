@@ -1,17 +1,17 @@
 class Foobar
-  def foo1(target)
-    eval("foo = #{target}") # NOT OK
+  def foo1(target) # $ Source
+    eval("foo = #{target}") # $ Alert // NOT OK
   end
 
   # sprintf
-  def foo2(x) 
-    eval(sprintf("foo = %s", x)) # NOT OK
+  def foo2(x)  # $ Source
+    eval(sprintf("foo = %s", x)) # $ Alert // NOT OK
   end
 
   # String#%
-  def foo3(x)
-    eval("foo = %{foo}" % {foo: x}) # NOT OK
-  end   
+  def foo3(x) # $ Source
+    eval("foo = %{foo}" % {foo: x}) # $ Alert // NOT OK
+  end
 
   def indirect_eval(x)
     eval(x) # OK - no construction.
@@ -25,42 +25,42 @@ class Foobar
     eval("def \n #{code} \n end") # OK - parameter is named code
   end
 
-  def joinStuff(my_arr)
-    eval(my_arr.join("\n")) # NOT OK
+  def joinStuff(my_arr) # $ Source
+    eval(my_arr.join("\n")) # $ Alert // NOT OK
   end
 
-  def joinWithElemt(x) 
+  def joinWithElemt(x)  # $ Source
     arr = [x, "foobar"]
-    eval(arr.join("\n")) # NOT OK
+    eval(arr.join("\n")) # $ Alert // NOT OK
   end
 
-  def pushArr(x, y)
+  def pushArr(x, y) # $ Source
     arr = []
     arr.push(x)
-    eval(arr.join("\n")) # NOT OK
+    eval(arr.join("\n")) # $ Alert // NOT OK
 
     arr2 = []
     arr2 << y
-    eval(arr.join("\n")) # NOT OK
+    eval(arr.join("\n")) # $ Alert // NOT OK
   end
 
-  def hereDoc(x)
+  def hereDoc(x) # $ Source
     foo = <<~HERE
-        #{x}
+        #{x} # $ Alert
     HERE
     eval(foo) # NOT OK
   end
 
-  def string_concat(x)
-    foo = "foo = " + x
+  def string_concat(x) # $ Source
+    foo = "foo = " + x # $ Alert
     eval(foo) # NOT OK
   end
 
-  def join_indirect(x, y) 
+  def join_indirect(x, y)  # $ Source
     arr = Array(x)
-    eval(arr.join(" ")) # NOT OK
+    eval(arr.join(" ")) # $ Alert // NOT OK
 
     arr2 = [Array(["foo = ", y]).join(" ")]
-    eval(arr2.join("\n")) # NOT OK
+    eval(arr2.join("\n")) # $ Alert // NOT OK
   end
 end

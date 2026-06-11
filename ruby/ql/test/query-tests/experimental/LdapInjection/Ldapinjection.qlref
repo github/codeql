@@ -1,1 +1,2 @@
-experimental/ldap-injection/LdapInjection.ql
+query: experimental/ldap-injection/LdapInjection.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
