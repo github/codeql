@@ -1,1 +1,2 @@
-InconsistentCode/WrappedErrorAlwaysNil.ql
+query: InconsistentCode/WrappedErrorAlwaysNil.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

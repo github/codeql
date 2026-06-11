@@ -1,1 +1,2 @@
-experimental/CWE-400/DatabaseCallInLoop.ql
+query: experimental/CWE-400/DatabaseCallInLoop.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

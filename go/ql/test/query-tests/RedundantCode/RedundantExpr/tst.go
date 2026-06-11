@@ -1,12 +1,12 @@
 package main
 
 func foo(x int) int {
-	return x - x /* NOT OK */ + (x & x) /* NOT OK */
+	return x - x /* NOT OK */ + (x & x) /* NOT OK */ // $ Alert
 }
 
 func bar(b bool, x float32) float32 {
 	if b {
-		return (x + x) / 2 // NOT OK
+		return (x + x) / 2 // $ Alert // NOT OK
 	} else {
 		return (x * x) / 2 // OK
 	}

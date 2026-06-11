@@ -10,7 +10,7 @@ import (
 )
 
 // NOT OK
-var JwtKey = []byte("AllYourBase")
+var JwtKey = []byte("AllYourBase") // $ Source
 
 func main2(r *http.Request) {
 	signedToken := r.URL.Query().Get("signedToken")
@@ -21,7 +21,7 @@ func verifyJWT(signedToken string) {
 	fmt.Println("verifying JWT")
 	DecodedToken, _ := jwt.ParseSigned(signedToken)
 	out := CustomerInfo{}
-	if err := DecodedToken.Claims(JwtKey, &out); err != nil {
+	if err := DecodedToken.Claims(JwtKey, &out); err != nil { // $ Alert
 		panic(err)
 	}
 	fmt.Printf("%v\n", out)

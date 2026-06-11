@@ -8,13 +8,13 @@ import (
 
 // BAD: using git subcommands that are vulnerable to arbitrary remote command execution
 func gitSubcommandsBad(req *http.Request) {
-	tainted := req.URL.Query()["cmd"][0]
+	tainted := req.URL.Query()["cmd"][0] // $ Source[go/command-injection]
 
-	exec.Command("git", "clone", tainted)
-	exec.Command("git", "fetch", tainted)
-	exec.Command("git", "pull", tainted)
-	exec.Command("git", "ls-remote", tainted)
-	exec.Command("git", "fetch-pack", tainted)
+	exec.Command("git", "clone", tainted)      // $ Alert[go/command-injection]
+	exec.Command("git", "fetch", tainted)      // $ Alert[go/command-injection]
+	exec.Command("git", "pull", tainted)       // $ Alert[go/command-injection]
+	exec.Command("git", "ls-remote", tainted)  // $ Alert[go/command-injection]
+	exec.Command("git", "fetch-pack", tainted) // $ Alert[go/command-injection]
 }
 
 // GOOD: using a sampling of git subcommands that are not vulnerable to arbitrary remote command execution
@@ -30,11 +30,11 @@ func gitSubcommandsGood(req *http.Request) {
 
 // BAD: using git subcommands that are vulnerable to arbitrary remote command execution
 func gitSubcommandsGood2(req *http.Request) {
-	tainted := req.URL.Query()["cmd"][0]
+	tainted := req.URL.Query()["cmd"][0] // $ Source[go/command-injection]
 
 	if !strings.HasPrefix(tainted, "--") {
 		exec.Command("git", "clone", tainted) // GOOD, `tainted` cannot start with "--"
 	} else {
-		exec.Command("git", "clone", tainted) // BAD, `tainted` can start with "--"
+		exec.Command("git", "clone", tainted) // $ Alert[go/command-injection] // BAD, `tainted` can start with "--"
 	}
 }

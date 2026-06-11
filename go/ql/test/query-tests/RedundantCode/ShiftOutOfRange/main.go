@@ -1,15 +1,15 @@
 package main
 
 func bad1(x uint8) uint8 {
-	return x << 8 // NOT OK
+	return x << 8 // $ Alert // NOT OK
 }
 
 func bad2(y int32) int32 {
-	return y >> 33 // NOT OK
+	return y >> 33 // $ Alert // NOT OK
 }
 
 func bad3(z int) int {
-	return z << 64 // NOT OK
+	return z << 64 // $ Alert // NOT OK
 }
 
 func good1(x uint8) uint8 {
