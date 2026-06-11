@@ -11,11 +11,10 @@ cursor.close()
 
 # Connection stored in a class attribute (`self._conn`) and used in another method.
 #
-# This is currently NOT detected: the `Connection::instance()`/`execute()` predicates in
-# PEP249.qll are based on type tracking, which cannot follow a value that is stored into a
-# `self` attribute in one method and read from a `self` attribute in another method (see the
-# `MISSING` markers below). Regular (global) data flow handles this case correctly, so the
-# limitation is specific to the type-tracking-based modeling.
+# This is detected because type tracking includes a level step modelling flow through
+# instance attributes: a value written to `self._conn` in one method (here `__init__`) can
+# be read back from `self._conn` (directly or via a getter) in any other method on the same
+# class. This follows the same approach used for instance fields in Ruby and JavaScript.
 class Database:
     def __init__(self):
         self._conn = dbapi.connect(address="hostname", port=300, user="username")
@@ -26,10 +25,10 @@ class Database:
     def run_via_getter(self):
         conn = self.get_connection()
         cursor = conn.cursor()
-        cursor.execute("getter sql")  # $ MISSING: getSql="getter sql"
+        cursor.execute("getter sql")  # $ getSql="getter sql"
 
     def run_direct(self):
-        self._conn.execute("direct sql")  # $ MISSING: getSql="direct sql"
+        self._conn.execute("direct sql")  # $ getSql="direct sql"
 
 
 db = Database()

@@ -151,10 +151,10 @@ class MyClass2(object):
         self.foo = tracked # $ tracked=foo tracked
 
     def print_foo(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+        print(self.foo) # $ tracked MISSING: tracked=foo
 
     def possibly_uncalled_method(self): # $ MISSING: tracked=foo
-        print(self.foo) # $ MISSING: tracked=foo tracked
+        print(self.foo) # $ tracked MISSING: tracked=foo
 
 instance = MyClass2()
 print(instance.foo) # $ MISSING: tracked=foo tracked

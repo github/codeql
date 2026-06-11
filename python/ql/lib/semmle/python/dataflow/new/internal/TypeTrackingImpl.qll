@@ -172,6 +172,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
   /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
   predicate levelStepNoCall(Node nodeFrom, LocalSourceNode nodeTo) {
     TypeTrackerSummaryFlow::levelStepNoCall(nodeFrom, nodeTo)
+    or
+    localFieldStep(nodeFrom, nodeTo)
   }
 
   /**
@@ -314,6 +316,51 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
       nodeTo.(DataFlowPublic::ScopeEntryDefinitionNode).getDefinition() = e and
       nodeFrom.asCfgNode() = def and
       var.getScope().getScope*() = nodeFrom.getScope()
+    )
+  }
+
+  /**
+   * Holds if `ref` accesses attribute `attr` of `self`, where `self` is the first
+   * parameter of an instance method of `cls` (i.e. an access of the form `self.attr`).
+   *
+   * Static methods and class methods are excluded, since their first parameter is not a
+   * `self` instance reference.
+   */
+  private predicate selfAttrRef(Class cls, string attr, DataFlowPublic::AttrRef ref) {
+    exists(Function method, Name selfUse |
+      method = cls.getAMethod() and
+      not DataFlowDispatch::isStaticmethod(method) and
+      not DataFlowDispatch::isClassmethod(method) and
+      selfUse.getVariable() = method.getArg(0).(Name).getVariable() and
+      ref.getObject().asCfgNode().getNode() = selfUse and
+      ref.mayHaveAttributeName(attr)
+    )
+  }
+
+  /**
+   * Holds if `nodeFrom` is written to attribute `self.attr` in some instance method of a
+   * class, and `nodeTo` reads attribute `self.attr` in some (possibly different) instance
+   * method of the same class.
+   *
+   * This models flow through instance attributes (`self.foo`): a value stored into
+   * `self.foo` in one method can be read from `self.foo` in another method. Type-tracking
+   * handles the store and read steps via `AttrWrite`/`AttrRead`, but on its own it cannot
+   * relate the `self` of the writing method to the `self` of the reading method. Following
+   * the approach used for Ruby and JavaScript, we model this directly as a level step from
+   * the written value to the read reference, for any pair of methods on the class (not
+   * just from `__init__`).
+   *
+   * This is an over-approximation: it is instance-insensitive (it does not distinguish
+   * between different instances of the same class) and order-insensitive (it does not
+   * require the write to happen before the read), matching the precision of
+   * instance-attribute handling for Ruby and JavaScript.
+   */
+  private predicate localFieldStep(Node nodeFrom, LocalSourceNode nodeTo) {
+    exists(Class cls, string attr, DataFlowPublic::AttrWrite write, DataFlowPublic::AttrRead read |
+      selfAttrRef(cls, attr, write) and
+      nodeFrom = write.getValue() and
+      selfAttrRef(cls, attr, read) and
+      nodeTo = read
     )
   }
 
