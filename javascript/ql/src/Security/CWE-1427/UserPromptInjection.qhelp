@@ -20,7 +20,7 @@ context, or trigger unintended tool calls.</p>
 <ul>
 <li>Ensure that all data flowing into user-input is intended and necessary for the purpose of the AI system.</li>
 <li>Ensure the system prompt clearly describes the purpose, scope and boundaries of the AI system. Instruct the system to deny input that falls outside these boundaries.</li>
-<li>If creating a prompt out of multiple user-controlled values, assume that each of them can be malicious. Ensure the range of possible values is restricted and validated. 
+<li>If creating a prompt out of multiple user-controlled values, assume that each of them can be malicious. Ensure the range of possible values is restricted and validated.
 For example, if a prompt includes a question and the intended language to respond in, validate that the language is one of the supported options.</li>
 <li>Consider using guardrails on the input like the OpenAI guardrails library to enforce constraints and prevent malicious content from being processed.</li>
 <li>Apply output filtering to detect and block responses that indicate prompt injection attempts.</li>

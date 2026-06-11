@@ -2,8 +2,8 @@
  * Provides a taint-tracking configuration for detecting "prompt injection" vulnerabilities.
  *
  * Note, for performance reasons: only import this file if
- * `PromptInjection::Configuration` is needed, otherwise
- * `PromptInjectionCustomizations` should be imported instead.
+ * `UserPromptInjectionFlow::Configuration` is needed, otherwise
+ * `UserPromptInjectionCustomizations` should be imported instead.
  */
 
 private import javascript

@@ -5,15 +5,14 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 5.0
- * @precision medium
+ * @precision low
  * @id js/user-prompt-injection
  * @tags security
- *       experimental
  *       external/cwe/cwe-1427
  */
 
 import javascript
-import experimental.semmle.javascript.security.PromptInjection.UserPromptinjectionQuery
+import semmle.javascript.security.dataflow.UserPromptInjectionQuery
 import UserPromptInjectionFlow::PathGraph
 
 from UserPromptInjectionFlow::PathNode source, UserPromptInjectionFlow::PathNode sink
