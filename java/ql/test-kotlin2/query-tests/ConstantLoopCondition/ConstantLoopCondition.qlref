@@ -1,1 +1,2 @@
-Likely Bugs/Termination/ConstantLoopCondition.ql
+query: Likely Bugs/Termination/ConstantLoopCondition.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

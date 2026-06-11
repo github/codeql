@@ -13,6 +13,6 @@ fun fn(x:Any?, y: Any?) {
 fun fn0(o: Any?) {
     if (o != null) {
         o?.toString()
-        o.toString()
+        o.toString() // $ Alert
     }
 }

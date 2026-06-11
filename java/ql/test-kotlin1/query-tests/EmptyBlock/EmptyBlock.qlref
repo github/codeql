@@ -1,1 +1,2 @@
-Likely Bugs/Statements/EmptyBlock.ql
+query: Likely Bugs/Statements/EmptyBlock.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
