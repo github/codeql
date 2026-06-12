@@ -190,7 +190,7 @@ signature module AstSig<LocationSig Location> {
      * position `index`. In some languages, there is only ever a single body
      * (with `index` 0).
      */
-    Stmt getBody(int index);
+    AstNode getBody(int index);
 
     /**
      * Gets the `catch` clause at the specified (zero-based) position `index`

@@ -117,7 +117,7 @@ private module Ast implements AstSig<Location> {
   final private class FinalTryStmt = J::TryStmt;
 
   class TryStmt extends FinalTryStmt {
-    Stmt getBody(int index) {
+    AstNode getBody(int index) {
       result = super.getResource(index)
       or
       index = count(super.getAResource()) and
