@@ -5,7 +5,7 @@ predicate isGithubHostedRunner(string runner) {
   // list of github hosted repos: https://github.com/actions/runner-images/blob/main/README.md#available-images
   runner
       .toLowerCase()
-      .regexpMatch("^(ubuntu-([0-9.]+|latest)|macos-([0-9]+|latest)(-x?large)?|windows-([0-9.]+|latest))$")
+      .regexpMatch("^(ubuntu-([0-9.]+|latest)(-arm)?|macos-([0-9]+|latest)(-x?large|-intel)?|windows-([0-9.]+|latest)(-arm|-vs[0-9.]+)?)$")
 }
 
 bindingset[runner]
