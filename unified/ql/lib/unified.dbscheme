@@ -334,7 +334,13 @@ case @unified_token.kind of
 ;
 
 
-@unified_ast_node = @unified_apply_pattern | @unified_binary_expr | @unified_block_stmt | @unified_call_expr | @unified_expr_condition | @unified_expr_stmt | @unified_guard_if_stmt | @unified_if_stmt | @unified_lambda_expr | @unified_let_pattern_condition | @unified_member_access_expr | @unified_name_expr | @unified_parameter | @unified_sequence_condition | @unified_token | @unified_top_level | @unified_tuple_pattern | @unified_unary_expr | @unified_var_pattern | @unified_variable_declaration_stmt | @unified_variable_declarator
+unified_trivia_tokeninfo(
+  unique int id: @unified_trivia_token,
+  int kind: int ref,
+  string value: string ref
+);
+
+@unified_ast_node = @unified_apply_pattern | @unified_binary_expr | @unified_block_stmt | @unified_call_expr | @unified_expr_condition | @unified_expr_stmt | @unified_guard_if_stmt | @unified_if_stmt | @unified_lambda_expr | @unified_let_pattern_condition | @unified_member_access_expr | @unified_name_expr | @unified_parameter | @unified_sequence_condition | @unified_token | @unified_top_level | @unified_trivia_token | @unified_tuple_pattern | @unified_unary_expr | @unified_var_pattern | @unified_variable_declaration_stmt | @unified_variable_declarator
 
 unified_ast_node_location(
   unique int node: @unified_ast_node ref,
