@@ -63,4 +63,32 @@ namespace Testing
     {
         public void MyActionMethod(string param) { }
     }
+
+    // Razor Page handler tests
+    public class MyPageModel : Microsoft.AspNetCore.Mvc.RazorPages.PageModel
+    {
+        // BAD: handler method parameters are user-controlled
+        public void OnGet(string id) { }
+
+        public void OnPost(string command, int count) { }
+
+        public void OnPostAsync(string data) { }
+
+        public void OnPut(string value) { }
+
+        public void OnDelete(string itemId) { }
+
+        // GOOD: not a handler method (doesn't start with On)
+        public void GetUser(string userId) { }
+
+        // GOOD: marked with NonHandler attribute
+        [Microsoft.AspNetCore.Mvc.RazorPages.NonHandlerAttribute]
+        public void OnGetNonHandler(string param) { }
+    }
+
+    // Subclass of a PageModel subclass
+    public class DerivedPageModel : MyPageModel
+    {
+        public void OnPost(string derivedParam) { }
+    }
 }
