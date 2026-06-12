@@ -172,6 +172,10 @@ module Ast implements AstSig<Location> {
 
   class DoStmt = CS::DoStmt;
 
+  class UntilStmt extends LoopStmt {
+    UntilStmt() { none() }
+  }
+
   final private class FinalForStmt = CS::ForStmt;
 
   class ForStmt extends FinalForStmt {

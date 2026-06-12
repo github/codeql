@@ -119,6 +119,12 @@ signature module AstSig<LocationSig Location> {
     Expr getCondition();
   }
 
+  /** An `until` loop statement. */
+  class UntilStmt extends LoopStmt {
+    /** Gets the boolean condition of this `until` loop. */
+    Expr getCondition();
+  }
+
   /** A traditional C-style `for` loop. */
   class ForStmt extends LoopStmt {
     /** Gets the initializer of the loop at the specified (zero-based) position, if any. */
@@ -608,6 +614,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         any(IfStmt ifstmt).getCondition() = n or
         any(WhileStmt whilestmt).getCondition() = n or
         any(DoStmt dostmt).getCondition() = n or
+        any(UntilStmt untilstmt).getCondition() = n or
         any(ForStmt forstmt).getCondition() = n or
         any(ConditionalExpr condexpr).getCondition() = n or
         any(CatchClause catch).getCondition() = n or
@@ -1535,9 +1542,9 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isAfter(ifstmt)
         )
         or
-        exists(WhileStmt whilestmt |
-          n1.isBefore(whilestmt) and
-          n2.isAdditional(whilestmt, loopHeaderTag())
+        exists(LoopStmt loopstmt | loopstmt instanceof WhileStmt or loopstmt instanceof UntilStmt |
+          n1.isBefore(loopstmt) and
+          n2.isAdditional(loopstmt, loopHeaderTag())
         )
         or
         exists(DoStmt dostmt |
@@ -1545,16 +1552,20 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(dostmt.getBody())
         )
         or
-        exists(LoopStmt loopstmt, AstNode cond |
-          loopstmt.(WhileStmt).getCondition() = cond or loopstmt.(DoStmt).getCondition() = cond
+        exists(LoopStmt loopstmt, AstNode cond, boolean while |
+          loopstmt.(WhileStmt).getCondition() = cond and while = true
+          or
+          loopstmt.(DoStmt).getCondition() = cond and while = true
+          or
+          loopstmt.(UntilStmt).getCondition() = cond and while = false
         |
           n1.isAdditional(loopstmt, loopHeaderTag()) and
           n2.isBefore(cond)
           or
-          n1.isAfterTrue(cond) and
+          n1.isAfterValue(cond, any(BooleanSuccessor b | b.getValue() = while)) and
           n2.isBefore(loopstmt.getBody())
           or
-          n1.isAfterFalse(cond) and
+          n1.isAfterValue(cond, any(BooleanSuccessor b | b.getValue() = while.booleanNot())) and
           n2.isAfter(loopstmt)
           or
           n1.isAfter(loopstmt.getBody()) and
