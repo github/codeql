@@ -20,13 +20,13 @@ class StringComparison {
 		if("".equals(variable))
 			return;
 		// NOT OK
-		if("" == variable)
+		if("" == variable) // $ Alert
 			return;
 		// NOT OK
-		if("" == param)
+		if("" == param) // $ Alert
 			return;
 		// NOT OK
-		if("" == variable2)
+		if("" == variable2) // $ Alert
 			return;
 	}
 }

@@ -13,7 +13,7 @@ public class PartiallyMaskedCatchTest {
 			// reachable: ExceptionB is thrown by invocation of CloseableThing.doThing()
 		} catch (ExceptionA e) {
 			// reachable: ExceptionA is thrown by implicit invocation of CloseableThing.close()
-		} catch (IOException e) {
+		} catch (IOException e) { // $ Alert
 			// unreachable: only more specific exceptions are thrown and caught by previous catch blocks
 		}
 
@@ -23,7 +23,7 @@ public class PartiallyMaskedCatchTest {
 			// reachable: ExceptionB is thrown by invocation of CloseableThing.doThing()
 		} catch (ExceptionA | RuntimeException e) {
 			// reachable: ExceptionA is thrown by implicit invocation of CloseableThing.close()
-		} catch (IOException e) {
+		} catch (IOException e) { // $ Alert
 			// unreachable: only more specific exceptions are thrown and caught by previous catch blocks
 		}
 
@@ -33,7 +33,7 @@ public class PartiallyMaskedCatchTest {
 			// reachable: ExceptionB is thrown by invocation of CloseableThing.doThing()
 		} catch (ExceptionA | IllegalArgumentException e) {
 			// reachable: ExceptionA is thrown by implicit invocation of CloseableThing.close()
-		} catch (IOException | RuntimeException e) {
+		} catch (IOException | RuntimeException e) { // $ Alert
 			// unreachable for type IOException: only more specific exceptions are thrown and caught by previous catch blocks
 		}
 

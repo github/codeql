@@ -7,7 +7,7 @@ class Test {
 		A a = new A();
 		map.put(a, "value");
 		HashMap<Object, String> map2 = new HashMap<>();
-		map2.put(a, "value");
+		map2.put(a, "value"); // $ Alert
 	}
 }
 

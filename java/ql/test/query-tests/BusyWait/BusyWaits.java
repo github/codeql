@@ -1,13 +1,13 @@
 class BusyWaits {
 	public void badWait() throws InterruptedException {
 		while(this.hashCode() != 0)
-			Thread.sleep(1);
+			Thread.sleep(1); // $ Alert
 	}
 	
 	public void badWait2() throws InterruptedException, CloneNotSupportedException {
 		while (this.hashCode() < 3) {
 			for (int i = 0; i < this.hashCode(); this.clone())
-				Thread.sleep(new String[1].length);
+				Thread.sleep(new String[1].length); // $ Alert
 		}
 	}
 	

@@ -1,1 +1,2 @@
-Likely Bugs/Collections/WriteOnlyContainer.ql
+query: Likely Bugs/Collections/WriteOnlyContainer.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

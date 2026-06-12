@@ -12,19 +12,19 @@ public class Classes {
 	}
 	
 	/** Could be static. */
-	private class MaybeStatic {
+	private class MaybeStatic { // $ Alert
 		
 	}
 	
 	/** Only accesses enclosing instance in constructor. */
-	private class MaybeStatic1 {
+	private class MaybeStatic1 { // $ Alert
 		public MaybeStatic1() {
 			System.out.println(foo);
 		}
 	}
 	
 	/** Only accesses enclosing instance in constructor. */
-	private class MaybeStatic2 {
+	private class MaybeStatic2 { // $ Alert
 		public MaybeStatic2() {
 			System.out.println(Classes.this);
 		}
@@ -37,7 +37,7 @@ public class Classes {
 	/**
 	 * Supertype could be static, and no enclosing instance accesses.
 	 */
-	private class MaybeStatic3 extends MaybeStatic2 {
+	private class MaybeStatic3 extends MaybeStatic2 { // $ Alert
 		public void foo(int i) { staticFoo = i; }
 	}
 	
@@ -47,7 +47,7 @@ public class Classes {
 		/** Nested and extending classes that can be static; using enclosing
 		 * state only in constructor.
 		 */
-		public class MaybeStatic4 extends Static {
+		public class MaybeStatic4 extends Static { // $ Alert
 			MaybeStatic4() {
 				System.out.println(staticFoo);
 			}
@@ -57,19 +57,19 @@ public class Classes {
 	/**
 	 * Access to bar() is through inheritance, not enclosing state.
 	 */
-	private class MaybeStatic5 extends Classes {
+	private class MaybeStatic5 extends Classes { // $ Alert
 		public void doit() {
 			System.out.println(bar());
 		}
 	}
 	
-	private class MaybeStatic6 {
+	private class MaybeStatic6 { // $ Alert
 		private final int myFoo = staticFoo;
 		MaybeStatic6() { staticBar(); }
 	}
 	
 	/** A qualified `this` access needn't refer to the enclosing instance. */
-	private class MaybeStatic7 {
+	private class MaybeStatic7 { // $ Alert
 		private void foo() { MaybeStatic7.this.foo(); }
 	}
 	
@@ -82,7 +82,7 @@ public class Classes {
 				System.out.println(interfaceFoo);
 			}
 			
-			class MaybeStatic8 {
+			class MaybeStatic8 { // $ Alert
 				private void bar() {
 					System.out.println(interfaceFoo);
 				}
@@ -91,14 +91,14 @@ public class Classes {
 	}
 	
 	/** Accesses implicitly static interface field. */
-	public class MaybeStatic9 extends MaybeStatic7 {
+	public class MaybeStatic9 extends MaybeStatic7 { // $ Alert
 		private void bar() {
 			System.out.println(Interface.interfaceFoo);
 		}
 	}
 	
 	/** A qualified `super` access that doesn't refer to the enclosing scope. */
-	class MaybeStatic10 extends Classes {
+	class MaybeStatic10 extends Classes { // $ Alert
 		private void baz() {
 			System.out.println(MaybeStatic10.super.getClass());
 		}
@@ -108,7 +108,7 @@ public class Classes {
 	    interface B {
 	        class ThisIsStatic {
 	        	final int outer = 0;
-	            class MaybeStaticToo {
+	            class MaybeStaticToo { // $ Alert
 	            	final int a = 0;
 	            }
 	            class MayNotBeStatic {
@@ -130,7 +130,7 @@ public class Classes {
 	
 	enum E {
 		A;
-		class NotStaticButCouldBe {}
+		class NotStaticButCouldBe {} // $ Alert
 	}
 
 	/**
@@ -187,9 +187,9 @@ public class Classes {
 	}
 	
 	/** Could be static. */
-	private class SadlyNotStatic {
+	private class SadlyNotStatic { // $ Alert
 		/** Could be static, provided the enclosing class is made static. */
-		private class SadlyNotStaticToo {
+		private class SadlyNotStaticToo { // $ Alert
 		}
 	}
 	
@@ -203,26 +203,26 @@ public class Classes {
 		}
 	}
 
-	private class MaybeStatic11 {
+	private class MaybeStatic11 { // $ Alert
 		{ new MaybeStatic11(); }
 	}
 
-	private class MaybeStatic12 {
+	private class MaybeStatic12 { // $ Alert
 		{ new Classes().new NotStatic(); }
 	}
 
-	private class MaybeStatic13 {
+	private class MaybeStatic13 { // $ Alert
 		{ new Static(); }
 	}
 
-	class CouldBeStatic {
+	class CouldBeStatic { // $ Alert
 		{
 			new Object() {
 				class CannotBeStatic {
 				}
 			};
 		}
-		class CouldBeStatic2 {
+		class CouldBeStatic2 { // $ Alert
 			int i;
 			class NotStatic {
 				{
@@ -252,7 +252,7 @@ public class Classes {
 	}
 
 	/** Has an inner anonymous class with a field initializer accessing a member of this class. */
-	class CouldBeStatic3 {
+	class CouldBeStatic3 { // $ Alert
 		int j;
 		{
 			new Object() {

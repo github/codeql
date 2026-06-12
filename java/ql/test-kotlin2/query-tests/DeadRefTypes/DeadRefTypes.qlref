@@ -1,1 +1,2 @@
-Violations of Best Practice/Dead Code/DeadRefTypes.ql
+query: Violations of Best Practice/Dead Code/DeadRefTypes.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -35,7 +35,7 @@ public class ImplicitReads
       System.out.println("test");
     }
     // Assignment is useless
-    c = b;
+    c = b; // $ Alert[java/useless-assignment-to-local]
     // Not flagged due to implicit read in implicit finally block
     try(B d = b) {}
   }

@@ -14,7 +14,7 @@ public class ServletContextListenerMain implements ServletContextListener {
 	}
 
 	// BAD - Implement a main method in servlet listener.
-	public static void main(String[] args) {
+	public static void main(String[] args) { // $ Alert[java/main-method-in-web-components]
 		try {
 			URL url = new URL("https://www.example.com");
 			url.openConnection();

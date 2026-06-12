@@ -13,7 +13,7 @@ class SynchSetUnsynchGet {
 		this.var = a;
 	}
 	
-	public int getB() {
+	public int getB() { // $ Alert
 		return var;  // bad
 	}
 	
@@ -39,7 +39,7 @@ class SynchSetUnsynchGet {
 		this.var = a;
 	}
 	
-	public int getE() {
+	public int getE() { // $ Alert
 		synchronized (String.class) {
 			return var; // bad synchronize on wrong thing
 		}

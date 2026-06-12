@@ -1,1 +1,2 @@
-Likely Bugs/Concurrency/DoubleCheckedLocking.ql
+query: Likely Bugs/Concurrency/DoubleCheckedLocking.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

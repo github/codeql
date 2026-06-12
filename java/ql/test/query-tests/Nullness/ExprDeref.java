@@ -4,6 +4,6 @@ public class ExprDeref {
   }
 
   int unboxBad(boolean b) {
-    return (b ? null : getBoxed()); // NPE
+    return (b ? null : getBoxed()); // $ Alert[java/dereferenced-expr-may-be-null] // NPE
   }
 }
