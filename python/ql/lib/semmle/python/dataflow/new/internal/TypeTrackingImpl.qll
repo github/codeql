@@ -167,7 +167,9 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
   }
 
   /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
-  predicate levelStepCall(Node nodeFrom, LocalSourceNode nodeTo) { none() }
+  predicate levelStepCall(Node nodeFrom, LocalSourceNode nodeTo) {
+    instanceFieldStep(nodeFrom, nodeTo)
+  }
 
   /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
   predicate levelStepNoCall(Node nodeFrom, LocalSourceNode nodeTo) {
@@ -338,6 +340,20 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
   }
 
   /**
+   * Holds if `read` reads attribute `attr` from an instance of `cls`, where the instance
+   * is referred to from outside the methods of `cls` (i.e. an access of the form
+   * `instance.attr`, where `instance` is a reference to an instance of `cls`).
+   *
+   * This complements `selfAttrRef`, which only handles `self.attr` accesses inside the
+   * methods of `cls`. Unlike `selfAttrRef`, this depends on the call graph (via
+   * `classInstanceTracker`), so steps using it must be reported as `levelStepCall`.
+   */
+  private predicate instanceAttrRead(Class cls, string attr, DataFlowPublic::AttrRead read) {
+    read.getObject() = DataFlowDispatch::classInstanceTracker(cls) and
+    read.mayHaveAttributeName(attr)
+  }
+
+  /**
    * Holds if `nodeFrom` is written to attribute `self.attr` in some instance method of a
    * class, and `nodeTo` reads attribute `self.attr` in some (possibly different) instance
    * method of the same class.
@@ -360,6 +376,28 @@ module TypeTrackingInput implements Shared::TypeTrackingInput<Location> {
       selfAttrRef(cls, attr, write) and
       nodeFrom = write.getValue() and
       selfAttrRef(cls, attr, read) and
+      nodeTo = read
+    )
+  }
+
+  /**
+   * Holds if `nodeFrom` is written to attribute `self.attr` in some instance method of a
+   * class, and `nodeTo` reads attribute `attr` from an instance of the same class outside
+   * its methods (e.g. `instance.attr`).
+   *
+   * This is the cross-instance counterpart of `localFieldStep`: it relates a write of
+   * `self.attr` inside the class to a read of `attr` on a reference to an instance of the
+   * class. Identifying instances relies on the call graph (via `classInstanceTracker`), so
+   * this step is reported as `levelStepCall` rather than `levelStepNoCall`.
+   *
+   * Like `localFieldStep`, this is an over-approximation: it is both instance-insensitive
+   * and order-insensitive.
+   */
+  private predicate instanceFieldStep(Node nodeFrom, LocalSourceNode nodeTo) {
+    exists(Class cls, string attr, DataFlowPublic::AttrWrite write, DataFlowPublic::AttrRead read |
+      selfAttrRef(cls, attr, write) and
+      nodeFrom = write.getValue() and
+      instanceAttrRead(cls, attr, read) and
       nodeTo = read
     )
   }

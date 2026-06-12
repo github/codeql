@@ -157,7 +157,7 @@ class MyClass2(object):
         print(self.foo) # $ tracked MISSING: tracked=foo
 
 instance = MyClass2()
-print(instance.foo) # $ MISSING: tracked=foo tracked
+print(instance.foo) # $ tracked MISSING: tracked=foo
 instance.print_foo() # $ MISSING: tracked=foo
 
 
