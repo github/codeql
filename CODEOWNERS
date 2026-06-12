@@ -59,9 +59,5 @@ MODULE.bazel @github/codeql-ci-reviewers
 /.github/workflows/rust.yml @github/codeql-rust
 /.github/workflows/swift.yml @github/codeql-swift
 
-# Misc
-/misc/scripts/accept-expected-changes-from-ci.py @RasmusWL
-/misc/scripts/generate-code-scanning-query-list.py @RasmusWL
-
 # .devcontainer
 /.devcontainer/ @github/codeql-ci-reviewers
