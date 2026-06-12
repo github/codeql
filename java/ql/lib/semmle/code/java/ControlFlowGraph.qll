@@ -117,14 +117,17 @@ private module Ast implements AstSig<Location> {
   final private class FinalTryStmt = J::TryStmt;
 
   class TryStmt extends FinalTryStmt {
-    Stmt getBody() { result = super.getBlock() }
+    AstNode getBody(int index) {
+      result = super.getResource(index)
+      or
+      index = count(super.getAResource()) and
+      result = super.getBlock()
+    }
 
     CatchClause getCatch(int index) { result = super.getCatchClause(index) }
 
     Stmt getFinally() { result = super.getFinally() }
   }
-
-  AstNode getTryInit(TryStmt try, int index) { result = try.getResource(index) }
 
   final private class FinalCatchClause = J::CatchClause;
 

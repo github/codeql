@@ -185,8 +185,12 @@ signature module AstSig<LocationSig Location> {
 
   /** A `try` statement with `catch` and/or `finally` clauses. */
   class TryStmt extends Stmt {
-    /** Gets the body of this `try` statement. */
-    Stmt getBody();
+    /**
+     * Gets the body of this `try` statement at the specified (zero-based)
+     * position `index`. In some languages, there is only ever a single body
+     * (with `index` 0).
+     */
+    AstNode getBody(int index);
 
     /**
      * Gets the `catch` clause at the specified (zero-based) position `index`
@@ -197,15 +201,6 @@ signature module AstSig<LocationSig Location> {
     /** Gets the `finally` block of this `try` statement, if any. */
     Stmt getFinally();
   }
-
-  /**
-   * Gets the initializer of this `try` statement at the specified (zero-based)
-   * position `index`, if any.
-   *
-   * An example of this are resource declarations in Java's try-with-resources
-   * statement.
-   */
-  default AstNode getTryInit(TryStmt try, int index) { none() }
 
   /**
    * Gets the `else` block of this `try` statement, if any.
@@ -699,7 +694,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
       or
       exists(TryStmt trystmt |
         trystmt = n and
-        cannotTerminateNormally(trystmt.getBody()) and
+        cannotTerminateNormally(trystmt.getBody(_)) and
         forall(CatchClause catch | trystmt.getCatch(_) = catch |
           cannotTerminateNormally(catch.getBody())
         )
@@ -1256,11 +1251,7 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           )
         )
         or
-        exists(TryStmt trystmt |
-          ast = getTryInit(trystmt, _)
-          or
-          ast = trystmt.getBody()
-        |
+        exists(TryStmt trystmt | ast = trystmt.getBody(_) |
           c.getSuccessorType() instanceof ExceptionSuccessor and
           (
             n.isBefore(trystmt.getCatch(0))
@@ -1635,16 +1626,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
         or
         exists(TryStmt trystmt |
           n1.isBefore(trystmt) and
-          (
-            n2.isBefore(getTryInit(trystmt, 0))
-            or
-            not exists(getTryInit(trystmt, _)) and n2.isBefore(trystmt.getBody())
-          )
+          n2.isBefore(trystmt.getBody(0))
           or
-          exists(int i | n1.isAfter(getTryInit(trystmt, i)) |
-            n2.isBefore(getTryInit(trystmt, i + 1))
-            or
-            not exists(getTryInit(trystmt, i + 1)) and n2.isBefore(trystmt.getBody())
+          exists(int i |
+            n1.isAfter(trystmt.getBody(i)) and
+            n2.isBefore(trystmt.getBody(i + 1))
           )
           or
           exists(PreControlFlowNode beforeElse, PreControlFlowNode beforeFinally |
@@ -1659,8 +1645,11 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
               not exists(trystmt.getFinally()) and beforeFinally.isAfter(trystmt)
             )
           |
-            n1.isAfter(trystmt.getBody()) and
-            n2 = beforeElse
+            exists(int i |
+              n1.isAfter(trystmt.getBody(i)) and
+              not exists(trystmt.getBody(i + 1)) and
+              n2 = beforeElse
+            )
             or
             n1.isAfter(getTryElse(trystmt)) and
             n2 = beforeFinally
