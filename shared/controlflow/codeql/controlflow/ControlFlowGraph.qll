@@ -1513,7 +1513,12 @@ module Make0<LocationSig Location, AstSig<Location> Ast> {
           n2.isBefore(ifstmt.getCondition())
           or
           n1.isAfterTrue(ifstmt.getCondition()) and
-          n2.isBefore(ifstmt.getThen())
+          (
+            n2.isBefore(ifstmt.getThen())
+            or
+            not exists(ifstmt.getThen()) and
+            n2.isAfter(ifstmt)
+          )
           or
           n1.isAfterFalse(ifstmt.getCondition()) and
           (
