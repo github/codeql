@@ -1,9 +1,15 @@
 # github.com/golang/glog v1.2.5
 ## explicit
 github.com/golang/glog
-# github.com/sirupsen/logrus v1.7.0
+github.com/golang/glog/internal/logsink
+github.com/golang/glog/internal/stackdump
+# github.com/sirupsen/logrus v1.8.3
 ## explicit
 github.com/sirupsen/logrus
+# golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/unix
+golang.org/x/sys/windows
 # k8s.io/klog v1.0.0
 ## explicit
 k8s.io/klog
