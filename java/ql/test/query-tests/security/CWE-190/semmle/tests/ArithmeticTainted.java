@@ -78,7 +78,7 @@ public class ArithmeticTainted {
 				// FALSE NEGATIVE: stillTainted could still be very large, even
 				// after
 				// it has had arithmetic done on it
-				int output = stillTainted + 100;
+				int output = stillTainted + 100; // $ MISSING: Alert[java/tainted-arithmetic]
 			}
 		}
 
@@ -107,7 +107,7 @@ public class ArithmeticTainted {
 			}
 			int output = data + 1;
 		}
-		
+
 		{
 			double x= Double.MAX_VALUE;
 			// OK: CWE-190 only pertains to integer arithmetic

@@ -17,7 +17,7 @@ interface Hello extends java.rmi.Remote {
 
 class HelloImpl implements Hello {
 	public static void main(String[] args) {
-		try {	
+		try {
 			// HttpsUrls
 			{
 				String protocol = "http://"; // $ Source[java/non-https-url]
@@ -31,7 +31,7 @@ class HelloImpl implements Hello {
 				OutputStream os = hu.getOutputStream();
 				hu.disconnect();
 			}
-			
+
 			{
 				String protocol = "http"; // $ Source[java/non-https-url]
 				URL u = new URL(protocol, "www.secret.example.org", "foo");
@@ -44,7 +44,7 @@ class HelloImpl implements Hello {
 				OutputStream os = hu.getOutputStream();
 				hu.disconnect();
 			}
-			
+
 			{
 				String protocol = "http://"; // $ Source[java/non-https-url]
 				// the second URL overwrites the first, as it has a protocol
@@ -58,7 +58,7 @@ class HelloImpl implements Hello {
 				OutputStream os = hu.getOutputStream();
 				hu.disconnect();
 			}
-			
+
 			{
 				String protocol = "https://";
 				URL u = new URL(protocol + "www.secret.example.org/");
@@ -70,7 +70,7 @@ class HelloImpl implements Hello {
 				OutputStream os = hu.getOutputStream();
 				hu.disconnect();
 			}
-			
+
 			{
 				String protocol = "https";
 				URL u = new URL(protocol, "www.secret.example.org", "foo");
@@ -82,27 +82,27 @@ class HelloImpl implements Hello {
 				OutputStream os = hu.getOutputStream();
 				hu.disconnect();
 			}
-			
+
 			{
-				String protocol = "http"; // $ Source[java/non-https-url]
+				String protocol = "http"; // $ SPURIOUS: Source[java/non-https-url]
 				URL u = new URL(protocol, "internal-url", "foo");
 				// FALSE POSITIVE: the query has no way of knowing whether the url will
 				// resolve to somewhere outside the internal network, where there
 				// are unlikely to be interception attempts
-				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection(); // $ Alert[java/non-https-url]
+				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection(); // $ SPURIOUS: Alert[java/non-https-url]
 				hu.setRequestMethod("PUT");
 				hu.connect();
 				OutputStream os = hu.getOutputStream();
 				hu.disconnect();
 			}
-			
+
 			{
 				String input = "URL is: http://www.secret-example.org";
 				String url = input.substring(8);
 				URL u = new URL(url);
 				// FALSE NEGATIVE: we cannot tell that the substring results in a url
 				// string
-				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection();
+				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection(); // $ MISSING: Alert[java/non-https-url]
 				hu.setRequestMethod("PUT");
 				hu.connect();
 				OutputStream os = hu.getOutputStream();
