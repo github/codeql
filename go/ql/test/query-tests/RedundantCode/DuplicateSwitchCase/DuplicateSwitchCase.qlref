@@ -1,1 +1,2 @@
-RedundantCode/DuplicateSwitchCase.ql
+query: RedundantCode/DuplicateSwitchCase.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

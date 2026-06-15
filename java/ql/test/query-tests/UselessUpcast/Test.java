@@ -18,11 +18,11 @@ class Test extends TestSuper {
 		// OK
 		new Test((Super)s);
 		// NOT OK
-		Super o = (Super)s;
+		Super o = (Super)s; // $ Alert
 		// OK
 		foo((Super)s);
 		// NOT OK
-		bar((Super)s);
+		bar((Super)s); // $ Alert
 		// OK
 		baz((Super)s);
 		// OK

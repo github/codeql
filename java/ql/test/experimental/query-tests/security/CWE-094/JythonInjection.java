@@ -25,7 +25,7 @@ public class JythonInjection extends HttpServlet {
     // BAD: allow execution of arbitrary Python code
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-        String code = request.getParameter("code");
+        String code = request.getParameter("code"); // $ Source[java/jython-injection]
         PythonInterpreter interpreter = null;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -33,7 +33,7 @@ public class JythonInjection extends HttpServlet {
             interpreter = new PythonInterpreter();
             interpreter.setOut(out);
             interpreter.setErr(out);
-            interpreter.exec(code);
+            interpreter.exec(code); // $ Alert[java/jython-injection]
             out.flush();
 
             response.getWriter().print(out.toString());
@@ -50,12 +50,12 @@ public class JythonInjection extends HttpServlet {
     // BAD: allow execution of arbitrary Python code
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-        String code = request.getParameter("code");
+        String code = request.getParameter("code"); // $ Source[java/jython-injection]
         PythonInterpreter interpreter = null;
 
         try {
             interpreter = new PythonInterpreter();
-            PyObject py = interpreter.eval(code);
+            PyObject py = interpreter.eval(code); // $ Alert[java/jython-injection]
 
             response.getWriter().print(py.toString());
         } catch(PyException ex) {
@@ -70,7 +70,7 @@ public class JythonInjection extends HttpServlet {
     // BAD: allow arbitrary Jython expression to run
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-        String code = request.getParameter("code");
+        String code = request.getParameter("code"); // $ Source[java/jython-injection]
         InteractiveInterpreter interpreter = null;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -78,7 +78,7 @@ public class JythonInjection extends HttpServlet {
             interpreter = new InteractiveInterpreter();
             interpreter.setOut(out);
             interpreter.setErr(out);
-            interpreter.runsource(code);
+            interpreter.runsource(code); // $ Alert[java/jython-injection]
             out.flush();
 
             response.getWriter().print(out.toString());
@@ -94,7 +94,7 @@ public class JythonInjection extends HttpServlet {
     // BAD: load arbitrary class file to execute
     protected void doTrace(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/plain");
-        String code = request.getParameter("code");
+        String code = request.getParameter("code"); // $ Source[java/jython-injection]
         PythonInterpreter interpreter = null;
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -103,7 +103,7 @@ public class JythonInjection extends HttpServlet {
             interpreter.setOut(out);
             interpreter.setErr(out);
           
-            PyCode pyCode = BytecodeLoader.makeCode("test", code.getBytes(), getServletContext().getRealPath("/com/example/test.pyc"));
+            PyCode pyCode = BytecodeLoader.makeCode("test", code.getBytes(), getServletContext().getRealPath("/com/example/test.pyc")); // $ Alert[java/jython-injection]
             interpreter.exec(pyCode);
             out.flush();
 
@@ -128,7 +128,7 @@ public class JythonInjection extends HttpServlet {
             interpreter.setOut(out);
             interpreter.setErr(out);
         
-            PyCode pyCode = Py.compile(request.getInputStream(), "Test.py", org.python.core.CompileMode.eval);
+            PyCode pyCode = Py.compile(request.getInputStream(), "Test.py", org.python.core.CompileMode.eval); // $ Alert[java/jython-injection]
             interpreter.exec(pyCode);
             out.flush();
 

@@ -11,19 +11,19 @@ public class UnsafeHostnameVerification {
      * Test the implementation of trusting all hostnames as an anonymous class
      */
     public void testTrustAllHostnameOfAnonymousClass() {
-        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() { // $
             @Override
             public boolean verify(String hostname, SSLSession session) {
                 return true; // BAD, always returns true
             }
-        });
+        }); // $ Alert[java/unsafe-hostname-verification]
     }
 
     /**
      * Test the implementation of trusting all hostnames as a lambda.
      */
     public void testTrustAllHostnameLambda() {
-        HttpsURLConnection.setDefaultHostnameVerifier((name, s) -> true); // BAD, always returns true
+        HttpsURLConnection.setDefaultHostnameVerifier((name, s) -> true); // $ Alert[java/unsafe-hostname-verification] // BAD, always returns true
     }
 
     /**
@@ -44,7 +44,7 @@ public class UnsafeHostnameVerification {
     }
 
     private void functionThatActuallyDisablesVerification() {
-        HttpsURLConnection.setDefaultHostnameVerifier((name, s) -> true); // GOOD [but detected as BAD], because we only
+        HttpsURLConnection.setDefaultHostnameVerifier((name, s) -> true); // $ Alert[java/unsafe-hostname-verification] // GOOD [but detected as BAD], because we only
                                                                           // check guards inside a function
         // and not across function calls. This is considerer GOOD because the call to
         // `functionThatActuallyDisablesVerification` is guarded by a feature flag in
@@ -63,7 +63,7 @@ public class UnsafeHostnameVerification {
     }
 
     public void testTrustAllHostnameWithExceptions() {
-        HostnameVerifier verifier = new HostnameVerifier() {
+        HostnameVerifier verifier = new HostnameVerifier() { // $
             @Override
             public boolean verify(String hostname, SSLSession session) {
                 try { verify(hostname, session.getPeerCertificates()); } catch (Exception e) { throw new RuntimeException(); }
@@ -77,21 +77,21 @@ public class UnsafeHostnameVerification {
             // `Exception` in the case of a mismatch.
             private void verify(String hostname, Certificate[] certs) {
             }
-        };
-        HttpsURLConnection.setDefaultHostnameVerifier(verifier);
+        }; // $ Source[java/unsafe-hostname-verification]
+        HttpsURLConnection.setDefaultHostnameVerifier(verifier); // $ Alert[java/unsafe-hostname-verification]
     }
 
     /**
      * Test the implementation of trusting all hostnames as a variable
      */
     public void testTrustAllHostnameOfVariable() {
-        HostnameVerifier verifier = new HostnameVerifier() {
+        HostnameVerifier verifier = new HostnameVerifier() { // $
             @Override
             public boolean verify(String hostname, SSLSession session) {
                 return true; // BAD, always returns true
             }
-        };
-        HttpsURLConnection.setDefaultHostnameVerifier(verifier);
+        }; // $ Source[java/unsafe-hostname-verification]
+        HttpsURLConnection.setDefaultHostnameVerifier(verifier); // $ Alert[java/unsafe-hostname-verification]
     }
 
     public static final HostnameVerifier ALLOW_ALL_HOSTNAME_VERIFIER = new HostnameVerifier() {
@@ -113,7 +113,7 @@ public class UnsafeHostnameVerification {
      * This is for testing the diff-informed functionality of the query.
      */
     public void testTrustAllHostnameOfNamedClass() {
-        HttpsURLConnection.setDefaultHostnameVerifier(new AlwaysTrueVerifier());
+        HttpsURLConnection.setDefaultHostnameVerifier(new AlwaysTrueVerifier()); // $ Alert[java/unsafe-hostname-verification]
     }
 
 }

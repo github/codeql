@@ -16,18 +16,18 @@ class ConditionalBypassTest {
 		String user = request.getParameter("user");
 		String password = request.getParameter("password");
 
-		String isAdmin = request.getParameter("isAdmin"); // $ Source
+		String isAdmin = request.getParameter("isAdmin"); // $ Source[java/user-controlled-bypass]
 
 		// BAD: login is only executed if isAdmin is false, but isAdmin
 		// is controlled by the user
-		if (isAdmin == "false") // $ Sink
-			login(user, password); // $ Alert
+		if (isAdmin == "false") // $ Sink[java/user-controlled-bypass]
+			login(user, password); // $ Alert[java/user-controlled-bypass]
 
 		Cookie adminCookie = getCookies()[0];
 		// BAD: login is only executed if the cookie value is false, but the cookie
 		// is controlled by the user
-		if (adminCookie.getValue().equals("false")) // $ Source Sink
-			login(user, password); // $ Alert
+		if (adminCookie.getValue().equals("false")) // $ Source[java/user-controlled-bypass] Sink[java/user-controlled-bypass]
+			login(user, password); // $ Alert[java/user-controlled-bypass]
 
 		// GOOD: both methods are conditionally executed, but they probably
 		// both perform the security-critical action
@@ -73,8 +73,8 @@ class ConditionalBypassTest {
 	public static void test2(String user, String password) {
 		Cookie adminCookie = getCookies()[0];
 		// BAD: login may happen once or twice
-		if (adminCookie.getValue() == "false") // $ Source Sink
-			login(user, password); // $ Alert
+		if (adminCookie.getValue() == "false") // $ Source[java/user-controlled-bypass] Sink[java/user-controlled-bypass]
+			login(user, password); // $ Alert[java/user-controlled-bypass]
 		else {
 			// do something else
 			doIt();
@@ -85,8 +85,8 @@ class ConditionalBypassTest {
 	public static void test3(String user, String password) {
 		Cookie adminCookie = getCookies()[0];
 		// BAD: login may not happen
-		if (adminCookie.getValue() == "false") // $ Source Sink
-			login(user, password); // $ Alert
+		if (adminCookie.getValue() == "false") // $ Source[java/user-controlled-bypass] Sink[java/user-controlled-bypass]
+			login(user, password); // $ Alert[java/user-controlled-bypass]
 		else {
 			// do something else
 			doIt();
@@ -130,8 +130,8 @@ class ConditionalBypassTest {
 	public static void test7(String user, String password) {
 		Cookie adminCookie = getCookies()[0];
 		// BAD: login is bypasseable
-		if (adminCookie.getValue() == "false") { // $ Source Sink
-			login(user, password); // $ Alert
+		if (adminCookie.getValue() == "false") { // $ Source[java/user-controlled-bypass] Sink[java/user-controlled-bypass]
+			login(user, password); // $ Alert[java/user-controlled-bypass]
 			return;
 		} else {
 			doIt();
@@ -142,8 +142,8 @@ class ConditionalBypassTest {
 		Cookie adminCookie = getCookies()[0];
 		{
 			// BAD: login may not happen
-			if (adminCookie.getValue() == "false") // $ Source Sink
-				authorize(user, password); // $ Alert
+			if (adminCookie.getValue() == "false") // $ Source[java/user-controlled-bypass] Sink[java/user-controlled-bypass]
+				authorize(user, password); // $ Alert[java/user-controlled-bypass]
 			else {
 				// do something else
 				doIt();

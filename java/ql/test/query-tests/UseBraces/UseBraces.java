@@ -25,11 +25,11 @@ class UseBraces
 		g();		// No alert
 		
 		if(1==1)
-			f();
+			f(); // $ Alert
 			g();	// Alert
 			
 		if(1==1)
-			f();	g();	// Alert
+			f();	g();	// $ Alert // Alert
 
 		// If-then-else statement
 
@@ -55,7 +55,7 @@ class UseBraces
 			f();
 		}
 		else
-			f();
+			f(); // $ Alert
 			g();	// Alert
 			
 		if(true)
@@ -63,7 +63,7 @@ class UseBraces
 			f();
 		}
 		else
-			f();  g();	// Alert
+			f();  g();	// $ Alert // Alert
 
 		// While statement
 
@@ -79,12 +79,12 @@ class UseBraces
 		g();
 
 		while(bb   )
-			f();
+			f(); // $ Alert
 			g();		// Alert
 			g();		// No alert
 
 		while(bb   )
-			f();	g();		// Alert
+			f();	g();		// $ Alert // Alert
 
 
 		while(bb)
@@ -109,11 +109,11 @@ class UseBraces
 		g();
 		
 		for(int i=0; i<10; ++i)
-			f();
+			f(); // $ Alert
 			g();				// Alert
 
 		for(int i=0; i<10; ++i)
-			f(); g();			// Alert
+			f(); g();			// $ Alert // Alert
 
 		
 		// Foreach statement
@@ -129,11 +129,11 @@ class UseBraces
 			f();
 
 		for( int b : branches)
-			f();
+			f(); // $ Alert
 			g();			// Alert
 
 		for( int b : branches)
-			f(); g();		// Alert
+			f(); g();		// $ Alert // Alert
 
 		// Nested ifs
 		if( true )
@@ -142,7 +142,7 @@ class UseBraces
 		g();	// No alert
 		
 		if( true )
-			if(false)
+			if(false) // $ Alert
 				f();
 			g();	// Alert
 		
@@ -163,7 +163,7 @@ class UseBraces
 		if( true )
 			;
 		else if (false)
-			f(); 
+			f();  // $ Alert
 			g();	// Alert
 		
 		// Nested combinations
@@ -173,7 +173,7 @@ class UseBraces
 		g();	// No alert
 
 		if (true)
-			while (x<10)
+			while (x<10) // $ Alert
 				f();
 			g();	// Alert
 
@@ -183,7 +183,7 @@ class UseBraces
 		g();	// No alert
 
 		while (x<10)
-			if (true)
+			if (true) // $ Alert
 				f();
 			g();	// Alert
 

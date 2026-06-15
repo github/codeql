@@ -12,8 +12,8 @@ import (
 
 func untarBad(reader io.Reader, prefix string) {
 	tarReader := tar.NewReader(reader)
-	header, _ := tarReader.Next()
-	os.MkdirAll(path.Dir(header.Name), 0755) // NOT OK
+	header, _ := tarReader.Next()            // $ Alert[go/zipslip]
+	os.MkdirAll(path.Dir(header.Name), 0755) // $ Sink[go/zipslip] // NOT OK
 }
 
 func untarGood(reader io.Reader, prefix string) {

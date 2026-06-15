@@ -7,7 +7,7 @@ import java.lang.String;
 public class Test {
     private boolean UnsafeComparison(HttpServletRequest request) {
         String Key = "secret";
-        return Key.equals(request.getHeader("X-Auth-Token"));        
+        return Key.equals(request.getHeader("X-Auth-Token"));         // $ Alert
     }
 
     private boolean safeComparison(HttpServletRequest request) {

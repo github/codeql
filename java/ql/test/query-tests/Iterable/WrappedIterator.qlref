@@ -1,1 +1,2 @@
-Language Abuse/WrappedIterator.ql
+query: Language Abuse/WrappedIterator.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

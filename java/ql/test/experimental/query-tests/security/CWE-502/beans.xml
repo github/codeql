@@ -10,21 +10,21 @@
     <bean name="/unsafeBooking" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
         <property name="service" ref="anotherBookingService"/>
         <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
-    </bean>
+    </bean> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
 
     <bean class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
         <property name="service" ref="anotherBookingService"/>
         <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
-    </bean>
+    </bean> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
 
     <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
         <property name="service" ref="oneMoreBookingService"/>
         <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
         <property name="registryPort" value="1199"/>
-    </bean>
+    </bean> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
 
     <bean class="org.springframework.remoting.caucho.HessianServiceExporter">
         <property name="service" ref="oneMoreBookingService"/>
         <property name="serviceInterface" value="com.gypsyengineer.api.CabBookingService"/>
-    </bean>
+    </bean> <!-- $ Alert[java/unsafe-deserialization-spring-exporter-in-xml-configuration] -->
 </beans>

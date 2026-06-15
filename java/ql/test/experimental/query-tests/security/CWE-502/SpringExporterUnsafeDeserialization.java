@@ -11,7 +11,7 @@ import org.springframework.remoting.rmi.RmiServiceExporter;
 public class SpringExporterUnsafeDeserialization {
 
     @Bean(name = "/unsafeRmiServiceExporter")
-    RmiServiceExporter unsafeRmiServiceExporter() {
+    RmiServiceExporter unsafeRmiServiceExporter() { // $ Alert[java/unsafe-deserialization-spring-exporter-in-configuration-class]
         RmiServiceExporter exporter = new RmiServiceExporter();
         exporter.setServiceInterface(AccountService.class);
         exporter.setService(new AccountServiceImpl());
@@ -21,7 +21,7 @@ public class SpringExporterUnsafeDeserialization {
     }
 
     @Bean(name = "/unsafeHessianServiceExporter")
-    HessianServiceExporter unsafeHessianServiceExporter() {
+    HessianServiceExporter unsafeHessianServiceExporter() { // $ Alert[java/unsafe-deserialization-spring-exporter-in-configuration-class]
         HessianServiceExporter exporter = new HessianServiceExporter();
         exporter.setService(new AccountServiceImpl());
         exporter.setServiceInterface(AccountService.class);
@@ -29,7 +29,7 @@ public class SpringExporterUnsafeDeserialization {
     }
 
     @Bean(name = "/unsafeHttpInvokerServiceExporter")
-    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() {
+    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() { // $ Alert[java/unsafe-deserialization-spring-exporter-in-configuration-class]
         HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
         exporter.setService(new AccountServiceImpl());
         exporter.setServiceInterface(AccountService.class);
@@ -37,7 +37,7 @@ public class SpringExporterUnsafeDeserialization {
     }
 
     @Bean(name = "/unsafeCustomeRemoteInvocationSerializingExporter")
-    RemoteInvocationSerializingExporter unsafeCustomeRemoteInvocationSerializingExporter() {
+    RemoteInvocationSerializingExporter unsafeCustomeRemoteInvocationSerializingExporter() { // $ Alert[java/unsafe-deserialization-spring-exporter-in-configuration-class]
         return new CustomeRemoteInvocationSerializingExporter();
     }
 
@@ -53,7 +53,7 @@ public class SpringExporterUnsafeDeserialization {
 class SpringBootTestApplication {
 
     @Bean(name = "/unsafeHttpInvokerServiceExporter")
-    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() {
+    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() { // $ Alert[java/unsafe-deserialization-spring-exporter-in-configuration-class]
         HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
         exporter.setService(new AccountServiceImpl());
         exporter.setServiceInterface(AccountService.class);
@@ -65,7 +65,7 @@ class SpringBootTestApplication {
 class SpringBootTestConfiguration {
 
     @Bean(name = "/unsafeHttpInvokerServiceExporter")
-    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() {
+    HttpInvokerServiceExporter unsafeHttpInvokerServiceExporter() { // $ Alert[java/unsafe-deserialization-spring-exporter-in-configuration-class]
         HttpInvokerServiceExporter exporter = new HttpInvokerServiceExporter();
         exporter.setService(new AccountServiceImpl());
         exporter.setServiceInterface(AccountService.class);

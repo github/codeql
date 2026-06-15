@@ -28,7 +28,7 @@ func unzipSymlinkBad(f io.Reader, target string) {
 			break
 		}
 		if isRel(header.Linkname, target) && isRel(header.Name, target) {
-			os.Symlink(header.Linkname, header.Name)
+			os.Symlink(header.Linkname, header.Name) // $ Alert[go/unsafe-unzip-symlink]
 		}
 	}
 }
@@ -40,7 +40,7 @@ func unzipSymlinkBadZip(f io.ReaderAt, target string) {
 		linkNameBytes, _ := ioutil.ReadAll(linkData)
 		linkName := string(linkNameBytes)
 		if isRel(linkName, target) && isRel(header.Name, target) {
-			os.Symlink(linkName, header.Name)
+			os.Symlink(linkName, header.Name) // $ Alert[go/unsafe-unzip-symlink]
 		}
 	}
 }
@@ -109,7 +109,7 @@ func getNextHeader(f *tar.Reader) (*tar.Header, error) {
 }
 
 func writeSymlink(linkName, fileName string) {
-	os.Symlink(linkName, fileName)
+	os.Symlink(linkName, fileName) // $ Sink[go/unsafe-unzip-symlink]
 }
 
 // BAD: a variant of `unzipSymlinkBad` where the tar-read and symlink
@@ -123,7 +123,7 @@ func unzipSymlinkBadFactored(f io.Reader, target string) {
 			break
 		}
 		if isRel(header.Linkname, target) && isRel(header.Name, target) {
-			writeSymlink(header.Linkname, header.Name)
+			writeSymlink(header.Linkname, header.Name) // $ Alert[go/unsafe-unzip-symlink]
 		}
 	}
 }

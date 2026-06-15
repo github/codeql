@@ -8,46 +8,46 @@ public class Test {
     }
 
     static void test1() {
-        Byte.parseByte("123");
-        Byte.decode("123");
-        Byte.valueOf("123");
-        Byte.valueOf("123", 10);
-        Byte.valueOf("7f", 16);
-        new Byte("123");
+        Byte.parseByte("123"); // $ Alert
+        Byte.decode("123"); // $ Alert
+        Byte.valueOf("123"); // $ Alert
+        Byte.valueOf("123", 10); // $ Alert
+        Byte.valueOf("7f", 16); // $ Alert
+        new Byte("123"); // $ Alert
         new Byte((byte) 123); // don't flag: wrong constructor
 
-        Short.parseShort("123");
-        Short.decode("123");
-        Short.valueOf("123");
-        Short.valueOf("123", 10);
-        Short.valueOf("7abc", 16);
-        new Short("123");
+        Short.parseShort("123"); // $ Alert
+        Short.decode("123"); // $ Alert
+        Short.valueOf("123"); // $ Alert
+        Short.valueOf("123", 10); // $ Alert
+        Short.valueOf("7abc", 16); // $ Alert
+        new Short("123"); // $ Alert
         new Short((short) 123); // don't flag: wrong constructor
 
-        Integer.parseInt("123");
-        Integer.decode("123");
-        Integer.valueOf("123");
-        Integer.valueOf("123", 10);
-        Integer.valueOf("1234beef", 16);
-        new Integer("123");
+        Integer.parseInt("123"); // $ Alert
+        Integer.decode("123"); // $ Alert
+        Integer.valueOf("123"); // $ Alert
+        Integer.valueOf("123", 10); // $ Alert
+        Integer.valueOf("1234beef", 16); // $ Alert
+        new Integer("123"); // $ Alert
         new Integer(123); // don't flag: wrong constructor
 
-        Long.parseLong("123");
-        Long.decode("123");
-        Long.valueOf("123");
-        Long.valueOf("123", 10);
-        Long.valueOf("deadbeef", 16);
-        new Long("123");
+        Long.parseLong("123"); // $ Alert
+        Long.decode("123"); // $ Alert
+        Long.valueOf("123"); // $ Alert
+        Long.valueOf("123", 10); // $ Alert
+        Long.valueOf("deadbeef", 16); // $ Alert
+        new Long("123"); // $ Alert
         new Long(123l); // don't flag: wrong constructor
 
-        Float.parseFloat("2.7818281828");
-        Float.valueOf("2.7818281828");
-        new Float("2.7818281828");
+        Float.parseFloat("2.7818281828"); // $ Alert
+        Float.valueOf("2.7818281828"); // $ Alert
+        new Float("2.7818281828"); // $ Alert
         new Float(2.7818281828f); // don't flag: wrong constructor
 
-        Double.parseDouble("2.7818281828");
-        Double.valueOf("2.7818281828");
-        new Double("2.7818281828");
+        Double.parseDouble("2.7818281828"); // $ Alert
+        Double.valueOf("2.7818281828"); // $ Alert
+        new Double("2.7818281828"); // $ Alert
         new Double(2.7818281828); // don't flag: wrong constructor
     }
 

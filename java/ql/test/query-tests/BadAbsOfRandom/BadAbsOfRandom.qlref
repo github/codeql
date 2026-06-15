@@ -1,1 +1,2 @@
-Likely Bugs/Arithmetic/BadAbsOfRandom.ql
+query: Likely Bugs/Arithmetic/BadAbsOfRandom.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -11,21 +11,21 @@ public class Jexl2Injection {
         JexlEngine jexl = new JexlEngine();
         Expression e = jexl.createExpression(jexlExpr);
         JexlContext jc = new MapContext();
-        e.evaluate(jc); // $ Alert
+        e.evaluate(jc); // $ Alert[java/jexl-expression-injection]
     }
 
     private static void runJexlExpressionWithJexlInfo(String jexlExpr) {
         JexlEngine jexl = new JexlEngine();
         Expression e = jexl.createExpression(jexlExpr, new DebugInfo("unknown", 0, 0));
         JexlContext jc = new MapContext();
-        e.evaluate(jc); // $ Alert
+        e.evaluate(jc); // $ Alert[java/jexl-expression-injection]
     }
 
     private static void runJexlScript(String jexlExpr) {
         JexlEngine jexl = new JexlEngine();
         Script script = jexl.createScript(jexlExpr);
         JexlContext jc = new MapContext();
-        script.execute(jc); // $ Alert
+        script.execute(jc); // $ Alert[java/jexl-expression-injection]
     }
 
     private static void runJexlScriptViaCallable(String jexlExpr) {
@@ -34,7 +34,7 @@ public class Jexl2Injection {
         JexlContext jc = new MapContext();
 
         try {
-            script.callable(jc).call(); // $ Alert
+            script.callable(jc).call(); // $ Alert[java/jexl-expression-injection]
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -42,37 +42,37 @@ public class Jexl2Injection {
 
     private static void runJexlExpressionViaGetProperty(String jexlExpr) {
         JexlEngine jexl = new JexlEngine();
-        jexl.getProperty(new Object(), jexlExpr); // $ Alert
+        jexl.getProperty(new Object(), jexlExpr); // $ Alert[java/jexl-expression-injection]
     }
 
     private static void runJexlExpressionViaSetProperty(String jexlExpr) {
         JexlEngine jexl = new JexlEngine();
-        jexl.setProperty(new Object(), jexlExpr, new Object()); // $ Alert
+        jexl.setProperty(new Object(), jexlExpr, new Object()); // $ Alert[java/jexl-expression-injection]
     }
 
     private static void runJexlExpressionViaUnifiedJEXLParseAndEvaluate(String jexlExpr) {
         JexlEngine jexl = new JexlEngine();
         UnifiedJEXL unifiedJEXL = new UnifiedJEXL(jexl);
-        unifiedJEXL.parse(jexlExpr).evaluate(new MapContext()); // $ Alert
+        unifiedJEXL.parse(jexlExpr).evaluate(new MapContext()); // $ Alert[java/jexl-expression-injection]
     }
 
     private static void runJexlExpressionViaUnifiedJEXLParseAndPrepare(String jexlExpr) {
         JexlEngine jexl = new JexlEngine();
         UnifiedJEXL unifiedJEXL = new UnifiedJEXL(jexl);
-        unifiedJEXL.parse(jexlExpr).prepare(new MapContext()); // $ Alert
+        unifiedJEXL.parse(jexlExpr).prepare(new MapContext()); // $ Alert[java/jexl-expression-injection]
     }
 
     private static void runJexlExpressionViaUnifiedJEXLTemplateEvaluate(String jexlExpr) {
         JexlEngine jexl = new JexlEngine();
         UnifiedJEXL unifiedJEXL = new UnifiedJEXL(jexl);
-        unifiedJEXL.createTemplate(jexlExpr).evaluate(new MapContext(), new StringWriter()); // $ Alert
+        unifiedJEXL.createTemplate(jexlExpr).evaluate(new MapContext(), new StringWriter()); // $ Alert[java/jexl-expression-injection]
     }
 
     private static void testWithSocket(Consumer<String> action) throws Exception {
         try (ServerSocket serverSocket = new ServerSocket(0)) {
             try (Socket socket = serverSocket.accept()) {
                 byte[] bytes = new byte[1024];
-                int n = socket.getInputStream().read(bytes); // $ Source
+                int n = socket.getInputStream().read(bytes); // $ Source[java/jexl-expression-injection]
                 String jexlExpr = new String(bytes, 0, n);
                 action.accept(jexlExpr);
             }

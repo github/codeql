@@ -20,12 +20,12 @@ class HelloImpl implements Hello {
 		try {	
 			// HttpsUrls
 			{
-				String protocol = "http://";
+				String protocol = "http://"; // $ Source[java/non-https-url]
 				URL u = new URL(protocol + "www.secret.example.org/");
 				// using HttpsURLConnections to enforce SSL is desirable
 				// BAD: this will give a ClassCastException at runtime, as the
 				// http URL cannot be used to make an HttpsURLConnection
-				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection();
+				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection(); // $ Alert[java/non-https-url]
 				hu.setRequestMethod("PUT");
 				hu.connect();
 				OutputStream os = hu.getOutputStream();
@@ -33,12 +33,12 @@ class HelloImpl implements Hello {
 			}
 			
 			{
-				String protocol = "http";
+				String protocol = "http"; // $ Source[java/non-https-url]
 				URL u = new URL(protocol, "www.secret.example.org", "foo");
 				// using HttpsURLConnections to enforce SSL is desirable
 				// BAD: this will give a ClassCastException at runtime, as the
 				// http URL cannot be used to make an HttpsURLConnection
-				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection();
+				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection(); // $ Alert[java/non-https-url]
 				hu.setRequestMethod("PUT");
 				hu.connect();
 				OutputStream os = hu.getOutputStream();
@@ -46,13 +46,13 @@ class HelloImpl implements Hello {
 			}
 			
 			{
-				String protocol = "http://";
+				String protocol = "http://"; // $ Source[java/non-https-url]
 				// the second URL overwrites the first, as it has a protocol
 				URL u = new URL(new URL("https://www.secret.example.org"), protocol + "www.secret.example.org");
 				// using HttpsURLConnections to enforce SSL is desirable
 				// BAD: this will give a ClassCastException at runtime, as the
 				// http URL cannot be used to make an HttpsURLConnection
-				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection();
+				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection(); // $ Alert[java/non-https-url]
 				hu.setRequestMethod("PUT");
 				hu.connect();
 				OutputStream os = hu.getOutputStream();
@@ -84,12 +84,12 @@ class HelloImpl implements Hello {
 			}
 			
 			{
-				String protocol = "http";
+				String protocol = "http"; // $ Source[java/non-https-url]
 				URL u = new URL(protocol, "internal-url", "foo");
 				// FALSE POSITIVE: the query has no way of knowing whether the url will
 				// resolve to somewhere outside the internal network, where there
 				// are unlikely to be interception attempts
-				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection();
+				HttpsURLConnection hu = (HttpsURLConnection) u.openConnection(); // $ Alert[java/non-https-url]
 				hu.setRequestMethod("PUT");
 				hu.connect();
 				OutputStream os = hu.getOutputStream();

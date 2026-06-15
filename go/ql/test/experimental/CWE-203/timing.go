@@ -12,9 +12,9 @@ func bad(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	secret := "MySuperSecretPasscode"
 	secretHeader := "X-Secret"
 
-	headerSecret := req.Header.Get(secretHeader)
+	headerSecret := req.Header.Get(secretHeader) // $ Source
 	secretStr := string(secret)
-	if len(headerSecret) != 0 && headerSecret != secretStr {
+	if len(headerSecret) != 0 && headerSecret != secretStr { // $ Alert
 		return nil, fmt.Errorf("header %s=%s did not match expected secret", secretHeader, headerSecret)
 	}
 	return nil, nil
@@ -25,9 +25,9 @@ func bad2(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	secret := "MySuperSecretPasscode"
 	secretHeader := "X-Secret"
 
-	headerSecret := req.Header.Get(secretHeader)
+	headerSecret := req.Header.Get(secretHeader) // $ Source
 	secretStr := string(secret)
-	if len(headerSecret) != 0 && strings.Compare(headerSecret, secretStr) != 0 {
+	if len(headerSecret) != 0 && strings.Compare(headerSecret, secretStr) != 0 { // $ Alert
 		return nil, fmt.Errorf("header %s=%s did not match expected secret", secretHeader, headerSecret)
 	}
 	return nil, nil
@@ -38,8 +38,8 @@ func bad4(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	secret := "MySuperSecretPasscode"
 	secretHeader := "X-Secret"
 
-	headerSecret := req.Header.Get(secretHeader)
-	if len(secret) != 0 && headerSecret != "SecretStringLiteral" {
+	headerSecret := req.Header.Get(secretHeader)                   // $ Source
+	if len(secret) != 0 && headerSecret != "SecretStringLiteral" { // $ Alert
 		return nil, fmt.Errorf("header %s=%s did not match expected secret", secretHeader, headerSecret)
 	}
 	return nil, nil

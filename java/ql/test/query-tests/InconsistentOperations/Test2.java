@@ -12,6 +12,6 @@ public class Test2 {
 		{ A a = foo(); a.bar(); }
 		{ A a = foo(); a.bar(); }
 		{ A a = foo(); a.bar(); }
-		{ A a = foo(); /* no a.bar();*/ }  // NOT OK
+		{ A a = foo(); /* no a.bar();*/ }  // $ Alert[java/inconsistent-call-on-result] // NOT OK
 	}
 }

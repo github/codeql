@@ -17,10 +17,10 @@ public class DotRegexSpring {
 	
 	@GetMapping("param")
 	// BAD: A string with line return e.g. `/protected/%0dxyz` can bypass the path check
-	public String withParam(@RequestParam String path, Model model) throws UnsupportedEncodingException {
+	public String withParam(@RequestParam String path, Model model) throws UnsupportedEncodingException { // $ Source
 		Pattern p = Pattern.compile(PROTECTED_PATTERN);
 		path = decodePath(path);
-		Matcher m = p.matcher(path);
+		Matcher m = p.matcher(path); // $ Alert
 
 		if (m.matches()) {
 			// Protected page - check access token and redirect to login page
@@ -34,10 +34,10 @@ public class DotRegexSpring {
 
 	@GetMapping("{path}")
 	// BAD: A string with line return e.g. `%252Fprotected%252F%250dxyz` can bypass the path check
-	public RedirectView withPathVariable1(@PathVariable String path, Model model) throws UnsupportedEncodingException {
+	public RedirectView withPathVariable1(@PathVariable String path, Model model) throws UnsupportedEncodingException { // $ Source
 		Pattern p = Pattern.compile(PROTECTED_PATTERN);
 		path = decodePath(path);
-		Matcher m = p.matcher(path);
+		Matcher m = p.matcher(path); // $ Alert
 
 		if (m.matches()) {
 			// Protected page - check access token and redirect to login page
