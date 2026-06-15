@@ -123,7 +123,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         {
             if (range is not null)
             {
-                // Populate the call arguments in case
+                // Populate the call arguments
                 var left = range.LeftOperand is ExpressionSyntax lsyntax
                     ? MakeFromRangeEndpoint(lsyntax, this, 0)
                     : MakeZeroLiteral(this, 0);
