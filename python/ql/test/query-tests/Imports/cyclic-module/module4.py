@@ -1,1 +1,1 @@
-import module1
+import module1 # $ Alert[py/cyclic-import]

@@ -1,1 +1,2 @@
-Exceptions/IllegalExceptionHandlerType.ql
+query: Exceptions/IllegalExceptionHandlerType.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -1,1 +1,2 @@
-Expressions/ExpectedMappingForFormatString.ql
+query: Expressions/ExpectedMappingForFormatString.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

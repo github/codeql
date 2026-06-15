@@ -1,5 +1,5 @@
 #Multiple imports on a single line
-import module1, module2
+import module1, module2 # $ Alert[py/multiple-imports-on-line]
 
 #Cyclic import
 
@@ -13,13 +13,13 @@ import top_level_cycle
 
 import module
 
-for module in range(10):
+for module in range(10): # $ Alert[py/import-shadowed-loop-variable]
     print(module)
 
 #Import * used
 
-from module import *
-from module_without_all import *
+from module import * # $ Alert[py/import-star-used]
+from module_without_all import * # $ Alert[py/import-star-used] Alert[py/polluting-import]
 
 #Unused import
 
@@ -30,8 +30,8 @@ module1.func
 func1
 
 #Duplicate import
-import module1
-import module2
+import module1 # $ Alert[py/repeated-import]
+import module2 # $ Alert[py/repeated-import]
 
 #OK -- Import used in epytext documentation.
 import used_in_docs
@@ -62,4 +62,4 @@ import module1 as different
 different
 
 # FP reported in https://github.com/github/codeql/issues/4003
-from module_that_does_not_exist import *
+from module_that_does_not_exist import * # $ Alert[py/import-star-used]

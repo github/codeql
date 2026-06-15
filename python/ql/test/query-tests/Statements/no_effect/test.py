@@ -21,9 +21,9 @@ import sys
 
 #Statement has no effect (4 statements, 3 of which are violations)
 "Not a docstring" # This is acceptable as strings can be used as comments.
-len
-sys.argv + []
-3 == 4
+len # $ Alert[py/ineffectual-statement]
+sys.argv + [] # $ Alert[py/ineffectual-statement]
+3 == 4 # $ Alert[py/ineffectual-statement]
 
 #The 'sys' statements have an effect
 try:
@@ -77,7 +77,7 @@ x.deco
 x.deco + 2
 
 #No effect
-x.func
+x.func # $ Alert[py/ineffectual-statement]
 
 #Cannot infer what attribute is, so be conservative
 x.thing
@@ -113,7 +113,7 @@ def possible_fps(x):
     h = Horrible()
     h + "innocent bystander"
     h < "upstanding citizen"
-    x - 3 #True positive
+    x - 3 # $ Alert[py/ineffectual-statement] #True positive
 
 
 # Forgotten raise.
@@ -124,7 +124,7 @@ def do_action_forgotten_raise(action):
     elif action == "stop":
         stop()
     else:
-        ValueError(action)
+        ValueError(action) # $ Alert[py/unused-exception-object]
 
 def do_action(action):
     if action == "go":

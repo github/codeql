@@ -1,1 +1,2 @@
-Expressions/Regex/DuplicateCharacterInSet.ql
+query: Expressions/Regex/DuplicateCharacterInSet.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

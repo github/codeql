@@ -1,1 +1,2 @@
-Functions/IncorrectlySpecifiedOverriddenMethod.ql
+query: Functions/IncorrectlySpecifiedOverriddenMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

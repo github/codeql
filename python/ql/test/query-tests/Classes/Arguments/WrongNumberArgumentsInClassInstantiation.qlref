@@ -1,1 +1,2 @@
-Classes/WrongNumberArgumentsInClassInstantiation.ql
+query: Classes/WrongNumberArgumentsInClassInstantiation.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -37,21 +37,21 @@ class NotException2(object):
     pass
 
 def illegal_raise_type():
-    raise NotException1
+    raise NotException1 # $ Alert[py/illegal-raise]
 
 def illegal_raise_value1():
-    raise "Exception"
+    raise "Exception" # $ Alert[py/illegal-raise]
 
 def illegal_raise_value2():
-    raise NotException2()
+    raise NotException2() # $ Alert[py/illegal-raise]
 
 def illegal_handler():
     try:
         illegal_raise()
-    except NotException1:
+    except NotException1: # $ Alert[py/useless-except]
         #Must do something
         print("NotException1")
-    except NotException2:
+    except NotException2: # $ Alert[py/useless-except]
         #Must do something
         print("NotException2")
 
@@ -135,7 +135,7 @@ def a_number():
 def illegal_handler2():
     try:
         illegal_raise()
-    except a_number():
+    except a_number(): # $ Alert[py/useless-except]
         print ("Caught exception")
 
 def stop_iter_ok(seq):
@@ -193,7 +193,7 @@ def ee8(x):
 
  #These are so common, we  give warnings not errors.
 def foo():
-    raise NotImplemented
+    raise NotImplemented # $ Alert[py/raise-not-implemented]
 
 def bar():
-    raise NotImplemented()
+    raise NotImplemented() # $ Alert[py/raise-not-implemented]

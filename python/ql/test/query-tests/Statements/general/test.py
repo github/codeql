@@ -8,7 +8,7 @@ def break_in_finally(seq, x):
         try:
             x()
         finally:
-            break
+            break # $ Alert[py/exit-from-finally]
     return 0
 
 def return_in_finally(seq, x):
@@ -16,7 +16,7 @@ def return_in_finally(seq, x):
         try:
             x()
         finally:
-            return 1
+            return 1 # $ Alert[py/exit-from-finally]
     return 0
 
 #Break in loop in finally
@@ -34,11 +34,11 @@ def return_in_loop_in_finally(f, seq):
         f()
     finally:
         for i in seq:
-            return
+            return # $ Alert[py/exit-from-finally]
 
 def unnecessary_pass(arg):
     print (arg)
-    pass
+    pass # $ Alert[py/unnecessary-pass]
 
 #Non-iterator in for loop
 
@@ -47,7 +47,7 @@ class NonIterator(object):
     def __init__(self):
         pass
 
-for x in NonIterator():
+for x in NonIterator(): # $ Alert[py/non-iterable-in-for-loop]
     do_something(x)
 
 #None in for loop
@@ -95,12 +95,12 @@ for z in D():
 
 def modification_of_locals():
     x = 0
-    locals()['x'] = 1
+    locals()['x'] = 1 # $ Alert[py/modification-of-locals]
     l = locals()
-    l.update({'x':1, 'y':2})
-    l.pop('y')
-    del l['x']
-    l.clear()
+    l.update({'x':1, 'y':2}) # $ Alert[py/modification-of-locals]
+    l.pop('y') # $ Alert[py/modification-of-locals]
+    del l['x'] # $ Alert[py/modification-of-locals]
+    l.clear() # $ Alert[py/modification-of-locals]
     return x
 
 
@@ -112,16 +112,16 @@ locals()['foo'] = 43 # technically OK
 
 #C-style things
 
-if (cond):
+if (cond): # $ Alert[py/c-style-parentheses]
     pass
 
-while (cond):
+while (cond): # $ Alert[py/c-style-parentheses]
     pass
 
-assert (test)
+assert (test) # $ Alert[py/c-style-parentheses]
 
 def parens(x):
-    return (x)
+    return (x) # $ Alert[py/c-style-parentheses]
 
 
 #ODASA-2038
@@ -165,7 +165,7 @@ def no_with():
         f.write("Hello ")
         f.write(" World\n")
     finally:
-        f.close()
+        f.close() # $ Alert[py/should-use-with]
 
 # Should not use a 'with' statement here: the resource is held in an instance
 # attribute, so its lifetime spans the enclosing instance and cannot be expressed

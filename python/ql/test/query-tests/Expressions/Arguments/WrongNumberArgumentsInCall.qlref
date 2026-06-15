@@ -1,1 +1,2 @@
-Expressions/WrongNumberArgumentsInCall.ql
+query: Expressions/WrongNumberArgumentsInCall.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

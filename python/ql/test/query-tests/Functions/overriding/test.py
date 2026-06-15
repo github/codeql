@@ -2,10 +2,10 @@
 
 class Base(object):
 
-    def meth1(self):
+    def meth1(self): # $ Alert[py/inheritance/incorrect-overridden-signature]
         pass
 
-    def meth2(self, spam):
+    def meth2(self, spam): # $ Alert[py/inheritance/incorrect-overridden-signature]
         pass
 
     def meth3(self):
@@ -13,18 +13,18 @@ class Base(object):
 
     def foo(self):
         self.meth1()
-        self.meth1(0)
-        self.meth2()
+        self.meth1(0) # $ Alert[py/call/wrong-arguments]
+        self.meth2() # $ Alert[py/call/wrong-arguments]
         self.meth2(0)
-        self.meth1(spam="eggs")
+        self.meth1(spam="eggs") # $ Alert[py/call/wrong-named-argument]
         self.meth2(spam="eggs")
 
 class Derived(Base):
 
-    def meth1(self, spam): # $ Alert[py/inheritance/signature-mismatch] # Has 1 more arg, base called in Base.foo
+    def meth1(self, spam): # $ Alert[py/inheritance/signature-mismatch] Alert[py/inheritance/incorrect-overriding-signature] # Has 1 more arg, base called in Base.foo
         pass
 
-    def meth2(self): # $ Alert[py/inheritance/signature-mismatch] # Has 1 fewer arg, base called in Base.foo
+    def meth2(self): # $ Alert[py/inheritance/signature-mismatch] Alert[py/inheritance/incorrect-overriding-signature] # Has 1 fewer arg, base called in Base.foo
         pass
 
     def meth3(self, eggs): # $ Alert[py/inheritance/signature-mismatch] # Has 1 more arg. Method is not called.
@@ -61,7 +61,7 @@ x.meth("hi")
 
 class BlameBase(object):
 
-    def meth(self):
+    def meth(self): # $ Alert[py/inheritance/incorrect-overridden-signature]
         pass
 
 class Correct1(BlameBase):
@@ -109,7 +109,7 @@ class Base2:
         self.meth1()
         self.meth1(x=2)
         self.meth3()
-        self.meth3(x=2)
+        self.meth3(x=2) # $ Alert[py/call/wrong-named-argument]
         self.meth6(2, 3, 4)
         self.meth7()
         self.meth8(1,y=3)

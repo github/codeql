@@ -1,1 +1,2 @@
-Expressions/HashedButNoHash.ql
+query: Expressions/HashedButNoHash.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

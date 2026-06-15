@@ -1,6 +1,6 @@
 
 
-__all__ = [ "x", "y", "z", "module", "w" ]
+__all__ = [ "x", "y", "z", "module", "w" ] # $ Alert[py/undefined-export]
 
 x = 1
 if 0:

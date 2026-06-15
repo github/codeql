@@ -2,7 +2,7 @@ class Bad1:
     def __next__(self):
         return 0 
 
-    def __iter__(self): # BAD: Iter does not return self
+    def __iter__(self): # $ Alert # BAD: Iter does not return self
         yield 0 
 
 class Good1:
@@ -48,6 +48,6 @@ class FalsePositive1:
             self._it = iter(self)
         return next(self._it)
 
-    def __iter__(self): # SPURIOUS, GOOD: implementation of next ensures the iterator is equivalent to the one returned by iter, but this is not detected.
+    def __iter__(self): # $ Alert # SPURIOUS, GOOD: implementation of next ensures the iterator is equivalent to the one returned by iter, but this is not detected.
         yield 0 
         yield 0

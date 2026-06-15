@@ -15,11 +15,11 @@ def ok2(x):
     else:
         return "Hi"
 
-def cr1(x):
+def cr1(x): # $ Alert[py/mixed-returns]
     if x:
         return 4
 
-def cr2(x):
+def cr2(x): # $ Alert[py/mixed-returns]
     if x:
         return 4
     else:
@@ -74,7 +74,7 @@ def ok4(x):
 
 
 def use_implicit_return_value(arg):
-    x = do_nothing()
+    x = do_nothing() # $ Alert[py/procedure-return-value-used]
     return call_non_callable(arg)
 
 #The return in the lambda is OK as it is auto-generated
@@ -156,9 +156,9 @@ def do_nothing():
 
 
 def return_value_ignored():
-    ok2()
-    ok4()
-    sorted([1,2])
+    ok2() # $ Alert[py/ignored-return-value]
+    ok4() # $ Alert[py/ignored-return-value]
+    sorted([1,2]) # $ Alert[py/ignored-return-value]
 
 d = {}
 
@@ -231,7 +231,7 @@ def mutli_return(arg):
     if arg:
         return do_something()
     else:
-        return do_nothing()
+        return do_nothing() # $ Alert[py/procedure-return-value-used]
 
 #Modification of parameter with default
 
@@ -303,7 +303,7 @@ y = foo()
 
 # Returning tuples with different sizes
 
-def returning_different_tuple_sizes(x):
+def returning_different_tuple_sizes(x): # $ Alert[py/mixed-tuple-returns]
     if x:
         return 1,2
     else:
@@ -326,14 +326,14 @@ def indirectly_returning_different_tuple_sizes(x): # OK, since we only look at l
         return function_returning_2_tuple()
     else:
         return function_returning_3_tuple()
-    
+
 
 def mismatched_multi_assign(x):
     a,b = returning_different_tuple_sizes(x)
     return a,b
 
 
-def ok_match(x):  # FP
+def ok_match(x):  # $ SPURIOUS: Alert[py/mixed-returns] # FP
     match x:
         case True | 'true':
             return 0
@@ -341,7 +341,7 @@ def ok_match(x):  # FP
             raise ValueError(x)
 
 
-def ok_match2(x):  # FP
+def ok_match2(x):  # $ SPURIOUS: Alert[py/mixed-returns] # FP
     match x:
         case None:
             return 0

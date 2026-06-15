@@ -1,7 +1,7 @@
 from ctypes import CDLL, POINTER, Structure, byref
 from ctypes import c_char_p, c_int
 from ctypes.util import find_library
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect # $ Source
 
 
 class PamHandle(Structure):
@@ -73,7 +73,7 @@ def bad():
     conv = PamConv(None, 0)
     retval = pam_start(service, username, byref(conv), byref(handle))
 
-    retval = pam_authenticate(handle, 0)
+    retval = pam_authenticate(handle, 0) # $ Alert
     # NOT OK: no call to `pam_acct_mgmt`
     auth_success = retval == 0
 

@@ -9,7 +9,7 @@ class RedefineEquals:
     def __eq__(self, other):
         return other is "Tuesday"
 
-class C(RedefineEquals):
+class C(RedefineEquals): # $ Alert
 
     def __init__(self, args):
         self.a, self.b = args

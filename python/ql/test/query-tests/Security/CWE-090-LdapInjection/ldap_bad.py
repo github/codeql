@@ -1,4 +1,4 @@
-from flask import request, Flask
+from flask import request, Flask # $ Source
 import ldap
 
 app = Flask(__name__)
@@ -18,7 +18,7 @@ def normal():
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1")
     user = ldap_connection.search_s(
-        dn, ldap.SCOPE_SUBTREE, search_filter)
+        dn, ldap.SCOPE_SUBTREE, search_filter) # $ Alert
 
 
 @app.route("/direct")
@@ -34,7 +34,7 @@ def direct():
     search_filter = "(user={})".format(unsafe_filter)
 
     user = ldap.initialize("ldap://127.0.0.1").search_s(
-        dn, ldap.SCOPE_SUBTREE, search_filter)
+        dn, ldap.SCOPE_SUBTREE, search_filter) # $ Alert
 
 
 @app.route("/normal_argbyname")
@@ -52,7 +52,7 @@ def normal_argbyname():
 
     ldap_connection = ldap.initialize("ldap://127.0.0.1")
     user = ldap_connection.search_s(
-        dn, ldap.SCOPE_SUBTREE, filterstr=search_filter)
+        dn, ldap.SCOPE_SUBTREE, filterstr=search_filter) # $ Alert
 
 
 # if __name__ == "__main__":

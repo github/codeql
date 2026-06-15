@@ -43,12 +43,12 @@ class C:
 
 #Using 'is' when should be using '=='
 s = "Hello " + "World"
-if "Hello World" is s:
+if "Hello World" is s: # $ Alert[py/comparison-using-is]
     print ("OK")
 
 #This is OK in CPython, but may not be portable
 s = str(7)
-if "7" is s:
+if "7" is s: # $ Alert[py/comparison-using-is-non-portable]
     print ("OK")
 
 #And some data flow

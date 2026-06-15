@@ -1,1 +1,2 @@
-Imports/SyntaxError.ql
+query: Imports/SyntaxError.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

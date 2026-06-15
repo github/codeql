@@ -34,22 +34,22 @@ class F7(object):
 
 # Too few arguments
 
-F0()
-F1()
-F2()
-F3()
-F4()
-F5()
-F6(1)
-F7(1,2)
+F0() # $ Alert[py/call/wrong-number-class-arguments]
+F1() # $ Alert[py/call/wrong-number-class-arguments]
+F2() # $ Alert[py/call/wrong-number-class-arguments]
+F3() # $ Alert[py/call/wrong-number-class-arguments]
+F4() # $ Alert[py/call/wrong-number-class-arguments]
+F5() # $ Alert[py/call/wrong-number-class-arguments]
+F6(1) # $ Alert[py/call/wrong-number-class-arguments]
+F7(1,2) # $ Alert[py/call/wrong-number-class-arguments]
 
 #Too many arguments
 
-F0(1,2)
-F1(1,2,3)
-F5(1,2,3)
-F6(1,2,3)
-F6(1,2,3,4)
+F0(1,2) # $ Alert[py/call/wrong-number-class-arguments]
+F1(1,2,3) # $ Alert[py/call/wrong-number-class-arguments]
+F5(1,2,3) # $ Alert[py/call/wrong-number-class-arguments]
+F6(1,2,3) # $ Alert[py/call/wrong-number-class-arguments]
+F6(1,2,3,4) # $ Alert[py/call/wrong-number-class-arguments]
 
 #OK
 
@@ -62,9 +62,9 @@ F2(1,2,3,4,5,6)
 
 
 #Illegal name
-F0(y=1)
-F1(z=1)
-F2(x=0, y=1)
+F0(y=1) # $ Alert[py/call/wrong-named-class-argument]
+F1(z=1) # $ Alert[py/call/wrong-named-class-argument]
+F2(x=0, y=1) # $ Alert[py/call/wrong-named-class-argument]
 
 
 #Ok name
@@ -82,12 +82,12 @@ t3 = (1,2,3)
 f(*t2)
 
 #Too many
-F6(*(1,2,3))
-F6(*t3)
+F6(*(1,2,3)) # $ Alert[py/call/wrong-number-class-arguments]
+F6(*t3) # $ Alert[py/call/wrong-number-class-arguments]
 
 #Ok
 F6(**{'x':1, 'y':2})
 
 #Illegal name
-F6(**{'x':1, 'y':2, 'z':3})
+F6(**{'x':1, 'y':2, 'z':3}) # $ Alert[py/call/wrong-named-class-argument]
 

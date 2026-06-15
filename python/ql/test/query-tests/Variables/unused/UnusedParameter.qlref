@@ -1,1 +1,2 @@
-Variables/UnusedParameter.ql
+query: Variables/UnusedParameter.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

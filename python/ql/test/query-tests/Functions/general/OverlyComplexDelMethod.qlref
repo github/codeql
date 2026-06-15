@@ -1,1 +1,2 @@
-Functions/OverlyComplexDelMethod.ql
+query: Functions/OverlyComplexDelMethod.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

@@ -14,4 +14,4 @@ def raise_tuple(cond):
         raise (Exception, "bananas", 17)
     else:
         #This is an error
-        raise (17, "bananas", Exception)
+        raise (17, "bananas", Exception) # $ Alert[py/illegal-raise]

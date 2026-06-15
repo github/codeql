@@ -1,1 +1,2 @@
-Expressions/UseofInput.ql
+query: Expressions/UseofInput.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

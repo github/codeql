@@ -1,1 +1,2 @@
-Statements/StatementNoEffect.ql
+query: Statements/StatementNoEffect.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

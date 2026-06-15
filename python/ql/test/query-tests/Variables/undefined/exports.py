@@ -1,4 +1,4 @@
-__all__ = ["foo", "bar", "baz", "quux", "blat", "frob", "nosuch", "i_got_it_elsewhere"]
+__all__ = ["foo", "bar", "baz", "quux", "blat", "frob", "nosuch", "i_got_it_elsewhere"] # $ Alert[py/undefined-export]
 
 with open("foo.txt") as f:
     foo = f.read()

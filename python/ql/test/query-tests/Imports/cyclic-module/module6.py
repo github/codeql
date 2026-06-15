@@ -1,2 +1,2 @@
 def foo():
-    import module7
+    import module7 # $ Alert[py/cyclic-import]

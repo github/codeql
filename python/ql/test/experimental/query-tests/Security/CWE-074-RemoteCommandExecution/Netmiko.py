@@ -15,11 +15,11 @@ cisco_881 = {
 }
 
 @app.get("/bad1")
-async def bad1(cmd: str):
+async def bad1(cmd: str):  # $ Source
     net_connect = ConnectHandler(**cisco_881)
-    net_connect.send_command(command_string=cmd) # $ result=BAD getRemoteCommand=cmd
-    net_connect.send_command_expect(command_string=cmd) # $ result=BAD getRemoteCommand=cmd
-    net_connect.send_command_timing(command_string=cmd) # $ result=BAD getRemoteCommand=cmd
-    net_connect.send_multiline(commands=[[cmd, "expect"]]) # $ result=BAD getRemoteCommand=List
-    net_connect.send_multiline_timing(commands=cmd) # $ result=BAD getRemoteCommand=cmd
+    net_connect.send_command(command_string=cmd) # $ Alert result=BAD getRemoteCommand=cmd
+    net_connect.send_command_expect(command_string=cmd) # $ Alert result=BAD getRemoteCommand=cmd
+    net_connect.send_command_timing(command_string=cmd) # $ Alert result=BAD getRemoteCommand=cmd
+    net_connect.send_multiline(commands=[[cmd, "expect"]]) # $ Alert result=BAD getRemoteCommand=List
+    net_connect.send_multiline_timing(commands=cmd) # $ Alert result=BAD getRemoteCommand=cmd
     return {"success": "Dangerous"}

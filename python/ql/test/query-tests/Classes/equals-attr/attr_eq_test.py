@@ -18,7 +18,7 @@ class Point(object):
     def __hash__(self):
         return hash((self._x, self._y))
 
-class BadColorPoint(Point):
+class BadColorPoint(Point): # $ Alert
 
     def __init__(self, x, y, color):
         Point.__init__(self, x, y)

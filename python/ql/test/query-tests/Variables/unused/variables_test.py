@@ -22,11 +22,11 @@ __hidden_marker = False
 
 #Unused parameter, local and global
 
-def u1(x):
+def u1(x): # $ Alert[py/unused-parameter]
     return 0
 
 def u2():
-    x = 1
+    x = 1 # $ Alert[py/unused-local-variable]
     return 1
 
 #These parameters are OK due to (potential overriding)
@@ -45,8 +45,8 @@ class D(C):
         pass
 
 #Unused module variable
-not_used_var1 = 17
-not_used_var2 = 18
+not_used_var1 = 17 # $ Alert[py/unused-global-variable]
+not_used_var2 = 18 # $ Alert[py/unused-global-variable]
 is_used_var1 = 19
 is_used_var2 = 20
 
@@ -83,21 +83,21 @@ def f(t):
 
 # Entirely unused tuple
 
-a,b,c = t
+a,b,c = t # $ Alert[py/unused-global-variable]
 
 def f(t):
-    a,b,c = t
+    a,b,c = t # $ Alert[py/unused-local-variable]
     use(t)
 
 def second_def_undefined():
     var = 0
     use(var)
-    var = 1 # unused.
+    var = 1 # $ Alert[py/unused-local-variable] # unused.
 
 #And gloablly
 glob_var = 0
 use(glob_var)
-glob_var = 1 # unused
+glob_var = 1 # $ Alert[py/unused-global-variable] # unused
 
 
 
@@ -130,7 +130,7 @@ def decorated_inner_function():
 #FP observed
 def test_dict_unpacking(queryset, field_name, value):
     #True positive
-    for tag in value.split(','):
+    for tag in value.split(','): # $ Alert[py/unused-loop-variable]
         queryset = queryset.filter(**{field_name + '__name': tag1})
     return queryset
     #False positive

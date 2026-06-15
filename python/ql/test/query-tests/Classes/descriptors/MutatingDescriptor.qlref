@@ -1,1 +1,2 @@
-Classes/MutatingDescriptor.ql
+query: Classes/MutatingDescriptor.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

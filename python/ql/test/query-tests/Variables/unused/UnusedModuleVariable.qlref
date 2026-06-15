@@ -1,1 +1,2 @@
-Variables/UnusedModuleVariable.ql
+query: Variables/UnusedModuleVariable.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

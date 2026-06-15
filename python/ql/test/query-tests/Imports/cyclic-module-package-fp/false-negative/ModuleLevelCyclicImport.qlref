@@ -1,1 +1,2 @@
-Imports/ModuleLevelCyclicImport.ql
+query: Imports/ModuleLevelCyclicImport.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

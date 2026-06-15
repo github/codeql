@@ -2,7 +2,7 @@
 
 
 def exec_used(val):
-    exec (val)
+    exec (val) # $ Alert[py/use-of-exec]
 
 #Top level print
 import module
@@ -18,7 +18,7 @@ def f(x):
         s = u"Hello World"
     else:
         s = [ u'Hello', u'World']
-    for thing in s:
+    for thing in s: # $ Alert[py/iteration-string-and-sequence]
         print (thing)
 
 import fake_six

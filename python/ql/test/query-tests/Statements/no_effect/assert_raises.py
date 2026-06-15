@@ -6,6 +6,6 @@ class T(unittest.TestCase):
         l = 10
         s = [0]
         with self.assertRaises(TypeError):
-            l[1000]
+            l[1000] # $ Alert[py/ineffectual-statement]
         with self.assertRaises(IndexError):
-            s[1]
+            s[1] # $ Alert[py/ineffectual-statement]

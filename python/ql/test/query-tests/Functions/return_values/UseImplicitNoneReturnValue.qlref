@@ -1,1 +1,2 @@
-Functions/UseImplicitNoneReturnValue.ql
+query: Functions/UseImplicitNoneReturnValue.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

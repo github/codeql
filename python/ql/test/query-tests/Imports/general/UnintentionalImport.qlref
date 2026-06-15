@@ -1,1 +1,2 @@
-Imports/UnintentionalImport.ql
+query: Imports/UnintentionalImport.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

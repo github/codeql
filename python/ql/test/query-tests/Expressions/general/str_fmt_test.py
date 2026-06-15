@@ -2,16 +2,16 @@
 
 def expected_mapping_for_fmt_string():
     x = [ u'list', u'not', u'mapping' ]
-    print (u"%(name)s" % x)
+    print (u"%(name)s" % x) # $ Alert[py/percent-format/not-mapping]
 
 def unsupported_format_char(arg):
-    print (u"%Z" % arg)
+    print (u"%Z" % arg) # $ Alert[py/percent-format/unsupported-character]
 
 def wrong_arg_count_format(arg):
-    print(u"%s %s" % (arg, arg, 0))
+    print(u"%s %s" % (arg, arg, 0)) # $ Alert[py/percent-format/wrong-arguments]
     format = u"%hd"
     args = (1, u'foo')
-    print(format % args)
+    print(format % args) # $ Alert[py/percent-format/wrong-arguments]
 
 
 def ok():

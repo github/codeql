@@ -1,9 +1,9 @@
 import re
 
 #Unmatchable caret
-re.compile(b' ^abc')
-re.compile(b"(?s) ^abc")
-re.compile(b"\[^123]")
+re.compile(b' ^abc') # $ Alert[py/regex/unmatchable-caret]
+re.compile(b"(?s) ^abc") # $ Alert[py/regex/unmatchable-caret]
+re.compile(b"\[^123]") # $ Alert[py/regex/unmatchable-caret]
 
 #Likely false positives for unmatchable caret
 re.compile(b"[^123]")
@@ -14,21 +14,21 @@ re.compile(b"(?:(?:\n\r?)|^)( *)\S")
 re.compile(b"^diff (?:-r [0-9a-f]+ ){1,2}(.*)$")
 
 #Backspace escape
-re.compile(br"[\b\t ]") # Should warn
+re.compile(br"[\b\t ]") # $ Alert[py/regex/backspace-escape] # Should warn
 re.compile(br"E\d+\b.*") # Fine
-re.compile(br"E\d+\b[ \b\t]") #Both
+re.compile(br"E\d+\b[ \b\t]") # $ Alert[py/regex/backspace-escape] #Both
 
 #Missing part in named group
-re.compile(br'(P<name>[\w]+)')
-re.compile(br'(_(P<name>[\w]+)|)')
+re.compile(br'(P<name>[\w]+)') # $ Alert[py/regex/incomplete-special-group]
+re.compile(br'(_(P<name>[\w]+)|)') # $ Alert[py/regex/incomplete-special-group]
 #This is OK...
 re.compile(br'(?P<name>\w+)')
 
 
 #Unmatchable dollar
-re.compile(b"abc$ ")
-re.compile(b"abc$ (?s)")
-re.compile(b"\[$]  ")
+re.compile(b"abc$ ") # $ Alert[py/regex/unmatchable-dollar]
+re.compile(b"abc$ (?s)") # $ Alert[py/regex/unmatchable-dollar]
+re.compile(b"\[$]  ") # $ Alert[py/regex/unmatchable-dollar]
 
 #Not unmatchable dollar
 re.match(b"[$]  ", b"$  ")
@@ -43,9 +43,9 @@ re.match(b"((a$\Z)|b){4}", b"bbba")
 re.match(b"(a){00}b", b"b")
 
 #Duplicate character in set
-re.compile(b"[AA]")
-re.compile(b"[000]")
-re.compile(b"[-0-9-]")
+re.compile(b"[AA]") # $ Alert[py/regex/duplicate-in-character-class]
+re.compile(b"[000]") # $ Alert[py/regex/duplicate-in-character-class]
+re.compile(b"[-0-9-]") # $ Alert[py/regex/duplicate-in-character-class]
 
 #Possible false positives
 re.compile(b"[S\S]")
@@ -76,8 +76,8 @@ re.compile(br'\w+$(?<=foo)')
 
 
 #Not OK
-re.compile(br'(?<=foo)^\w+')
-re.compile(br'\w+$(?=foo)')
+re.compile(br'(?<=foo)^\w+') # $ Alert[py/regex/unmatchable-caret]
+re.compile(br'\w+$(?=foo)') # $ Alert[py/regex/unmatchable-dollar]
 
 
 #OK -- ODASA-ODASA-3968
@@ -134,7 +134,7 @@ VERBOSE_REGEX = r"""
         \[                                 # [
         (?P<header>[^]]+)                  # very permissive!
         \]                                 # ]
-        """
+        """ # $ Alert[py/regex/duplicate-in-character-class]
 
 # Compiled regular expression marking it as verbose
 ODASA_6786 = re.compile(VERBOSE_REGEX, re.VERBOSE)

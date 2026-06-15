@@ -1,1 +1,2 @@
-Imports/EncodingError.ql
+query: Imports/EncodingError.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

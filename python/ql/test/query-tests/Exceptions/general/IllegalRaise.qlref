@@ -1,1 +1,2 @@
-Exceptions/IllegalRaise.ql
+query: Exceptions/IllegalRaise.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

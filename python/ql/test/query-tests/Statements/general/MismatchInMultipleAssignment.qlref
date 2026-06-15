@@ -1,1 +1,2 @@
-Statements/MismatchInMultipleAssignment.ql
+query: Statements/MismatchInMultipleAssignment.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

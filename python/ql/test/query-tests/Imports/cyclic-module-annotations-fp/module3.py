@@ -5,4 +5,4 @@ import module4
 
 @dataclasses.dataclass()
 class Foo:
-    bars: typing.List[module4.Bar]
+    bars: typing.List[module4.Bar] # $ Alert

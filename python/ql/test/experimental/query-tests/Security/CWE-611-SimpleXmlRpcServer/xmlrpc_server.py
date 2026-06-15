@@ -4,7 +4,7 @@ def foo(n: str):
     print("foo called with arg:", n, type(n))
     return "ok"
 
-server = SimpleXMLRPCServer(("127.0.0.1", 8000))
+server = SimpleXMLRPCServer(("127.0.0.1", 8000)) # $ Alert
 server.register_function(foo, "foo")
 server.serve_forever()
 

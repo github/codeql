@@ -8,7 +8,7 @@ def f(cond1, cond2):
     except Exception:
         if cond2:
             var = 7
-    if var == 1:
+    if var == 1: # $ Alert[py/uninitialized-local-variable]
         var = var + 1
     elif var == 2:
         var +- 3

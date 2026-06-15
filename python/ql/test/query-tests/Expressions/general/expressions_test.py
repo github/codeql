@@ -1,16 +1,16 @@
 #encoding: utf-8
 def dup_key():
-    return { 1: -1,
+    return { 1: -1, # $ Alert[py/duplicate-key-dict-literal]
              1: -2,
-             u'a' : u'A',
+             u'a' : u'A', # $ Alert[py/duplicate-key-dict-literal]
              u'a' : u'B'
             }
 
 def simple_func(*args, **kwrgs): pass
 #Unnecessary lambdas
-lambda arg0, arg1: simple_func(arg0, arg1)
-lambda arg0, *arg1: simple_func(arg0, *arg1)
-lambda arg0, **arg1: simple_func(arg0, **arg1)
+lambda arg0, arg1: simple_func(arg0, arg1) # $ Alert[py/unnecessary-lambda]
+lambda arg0, *arg1: simple_func(arg0, *arg1) # $ Alert[py/unnecessary-lambda]
+lambda arg0, **arg1: simple_func(arg0, **arg1) # $ Alert[py/unnecessary-lambda]
 # these lambdas are_ necessary
 lambda arg0, arg1=1: simple_func(arg0, arg1)
 lambda arg0, arg1: simple_func(arg0, *arg1)
@@ -34,12 +34,12 @@ def call_non_callable(arg):
     dont_know() # Not a violation
 
 #Explicit call to __del__
-x.__del__()
+x.__del__() # $ Alert[py/explicit-call-to-delete]
 
 #Unhashable object
 def func():
     mapping = dict(); unhash = list()
-    return mapping[unhash]
+    return mapping[unhash] # $ Alert[py/hash-unhashable-value]
 
 #Using 'is' when should be using '=='
 s = "Hello " + "World"
@@ -86,9 +86,9 @@ class XIter(object):
 def non_container():
 
     seq = XIter()
-    if 1 in seq:
+    if 1 in seq: # $ Alert[py/member-test-non-container]
         pass
-    if 1 not in seq:
+    if 1 not in seq: # $ Alert[py/member-test-non-container]
         pass
 
 #Container inheriting from builtin
@@ -112,7 +112,7 @@ def is_container():
 #Equals none
 
 def x(arg):
-    return arg == None
+    return arg == None # $ Alert[py/test-equals-none]
 
 class NotMyDict(object):
     
@@ -130,7 +130,7 @@ class SubTest(Test):
         # This is permitted and required.
         Test.__del__(self)
         # This is a violation.
-        self.__del__()
+        self.__del__() # $ Alert[py/explicit-call-to-delete]
         # This is an alternate syntax for the super() call, and hence OK.
         super(SubTest, self).__del__()
         # This is the Python 3 spelling of the same.
@@ -138,15 +138,15 @@ class SubTest(Test):
 
 #Some more lambdas
 #Unnecessary lambdas
-lambda arg0: len(arg0)
-lambda arg0: XIter.next(arg0)
+lambda arg0: len(arg0) # $ Alert[py/unnecessary-lambda]
+lambda arg0: XIter.next(arg0) # $ Alert[py/unnecessary-lambda]
 class UL(object):
     
     def f(self, x):
         pass
     
     def g(self):
-        return lambda x: self.f(x)
+        return lambda x: self.f(x) # $ Alert[py/unnecessary-lambda]
 
 # these lambdas are necessary
 lambda arg0: XIter.next(arg0, arg1)

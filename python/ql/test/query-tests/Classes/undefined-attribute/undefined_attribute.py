@@ -21,10 +21,10 @@ class Attributes(object):
         print (self.local_exists)
 
     def neca1(self):
-        print (self.not_exists)
+        print (self.not_exists) # $ Alert[py/undefined-attribute]
 
     def neca2(self):
-        print (self.may_exist)
+        print (self.may_exist) # $ Alert[py/maybe-undefined-attribute]
 
 #This is OK
 class SetViaDict(object):
@@ -106,7 +106,7 @@ class DecoratedInit(object):
 class NoInit(object):
 
     def use_y(self):
-        return self.y
+        return self.y # $ Alert[py/undefined-attribute]
 
 #This is also OK
 class SetLocally2(object):
@@ -181,7 +181,7 @@ class Test1(object):
             self.return_queue = frame.method.queue
 
     def use_it(self):
-        return self.return_queue
+        return self.return_queue # $ Alert[py/maybe-undefined-attribute]
 
 
 #Check for FPs when overriding builtin methods
@@ -247,15 +247,15 @@ class Customer1(object):
 class Odasa4619a(object):
 
     def call(self):
-        host = self.glance_host
-        port = self.glance_port
+        host = self.glance_host # $ Alert[py/undefined-attribute]
+        port = self.glance_port # $ Alert[py/undefined-attribute]
 
 
 class Odasa4619b(object):
 
     def call(self):
-        host = self.glance_host
-        port = self.glance_port
+        host = self.glance_host # $ Alert[py/maybe-undefined-attribute]
+        port = self.glance_port # $ Alert[py/maybe-undefined-attribute]
 
     @decorator
     def foo(self):

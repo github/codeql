@@ -18,7 +18,7 @@ def f(x):
         s = u"Hello World"
     else:
         s = [ u'Hello', u'World']
-    for thing in s:
+    for thing in s: # $ Alert[py/iteration-string-and-sequence]
         print (thing)
 
 
@@ -31,7 +31,7 @@ class Color(Enum):
 def colors():
     for color in Color:
         print(color)
-    for color in 1:
+    for color in 1: # $ Alert[py/non-iterable-in-for-loop]
         print(color)
 
 colors()

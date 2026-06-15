@@ -7,7 +7,7 @@ class MutatingDescriptor(object):
 
     def __get__(self, obj, obj_type):
         #Modified state is visible to all instances.
-        self.my_obj = obj
+        self.my_obj = obj # $ Alert
         return self
 
     def __call__(self, *args):
@@ -22,4 +22,4 @@ class MutatingDescriptor(object):
 
     def not_ok(self, value):
         #Modified state is visible to all instances.
-        self.my_obj = value
+        self.my_obj = value # $ Alert

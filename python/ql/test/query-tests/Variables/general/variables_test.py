@@ -4,14 +4,14 @@ __all__ = [ 'is_used_var1' ]
 #Shadow Builtin
 
 def sh1(x):
-    len = x + 2 #Shadows
+    len = x + 2 # $ Alert[py/local-shadows-builtin] #Shadows
     len = x + 0 # no shadowing warning for 2nd def
     return len
 
 #Shadow Global
 
 def sh2(x):
-    sh1 = x + 1 #Shadows
+    sh1 = x + 1 # $ Alert[py/local-shadows-global] #Shadows
     sh1 = x + 0 # no shadowing warning for 2nd def
     return sh1
 
@@ -54,14 +54,14 @@ def func():
     return is_used_var2
 
 #Redundant global declaration
-global g_x
+global g_x # $ Alert[py/redundant-global-declaration]
 
 g_x = 0
 
 #Use global
 
 def uses_global(arg):
-    global g_x
+    global g_x # $ Alert[py/use-of-global]
     g_x = arg
 
 use(g_x)

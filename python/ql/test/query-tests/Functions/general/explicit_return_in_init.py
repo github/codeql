@@ -1,7 +1,7 @@
 class ExplicitReturnInInit(object):
 
     def __init__(self):
-        return self
+        return self # $ Alert[py/explicit-return-in-init]
 
 # These are OK
 class ExplicitReturnNoneInInit(object):
@@ -29,7 +29,7 @@ class InitCallsInit(InitCallsError):
 
 class InitIsGenerator(object):
 
-    def __init__(self):
+    def __init__(self): # $ Alert[py/init-method-is-generator]
         yield self
 
 # OK as it returns result of a call to super().__init__()
@@ -99,4 +99,4 @@ class InitReturnsCallResult6(object):
             p = procedure_implicit_none()
         else:
             p = not_ok
-        return p()
+        return p() # $ Alert[py/explicit-return-in-init]

@@ -1,1 +1,2 @@
-Classes/MaybeUndefinedClassAttribute.ql
+query: Classes/MaybeUndefinedClassAttribute.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

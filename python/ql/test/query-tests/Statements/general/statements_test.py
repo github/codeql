@@ -2,11 +2,11 @@
 #Constant in conditional
 
 def cc1():
-    if True:
+    if True: # $ Alert[py/constant-conditional-expression]
         print("Hi")
 
 def cc2():
-    if 3:
+    if 3: # $ Alert[py/constant-conditional-expression]
         print("Hi")
 
 def not_cc():
@@ -16,7 +16,7 @@ def not_cc():
 
 #Mismatch in multiple assignment
 def mima():
-    x, y, z = 1, 2
+    x, y, z = 1, 2 # $ Alert[py/mismatched-multiple-assignment]
     return x, y, z
 
 #Statement has no effect (4 statements, 3 of which are violations)
@@ -51,10 +51,10 @@ ok = ok # Pyflakes
 class Redundant(object):
 
     x = x # OK
-    x = x # violation
+    x = x # $ Alert[py/redundant-assignment] # violation
 
     def __init__(self, args):
-        args = args # violation
+        args = args # $ Alert[py/redundant-assignment] # violation
 
 if sys.version_info < (3,):
     bytes = str
@@ -62,12 +62,12 @@ else:
     bytes = bytes # Should not be flagged
 
 #Pointless else clauses
-for x in range(10):
+for x in range(10): # $ Alert[py/redundant-else]
     func(x)
 else:
     do_something()
 
-while x < 10:
+while x < 10: # $ Alert[py/redundant-else]
     func(x)
 else:
     do_something()
@@ -116,7 +116,7 @@ def maybe_property(x):
 class WithoutProp(object):
 
     def meth(self):
-        self.x = self.x
+        self.x = self.x # $ Alert[py/redundant-assignment]
 
 #Accessing a property has an effect:
 def prop_acc():
@@ -166,7 +166,7 @@ if False:
 
 
 def error_mismatched_multi_assign_list():
-    a,b,c = [1,2,3,4,5]
+    a,b,c = [1,2,3,4,5] # $ Alert[py/mismatched-multiple-assignment]
 
 def returning_different_tuple_sizes(x):
     if x:
@@ -175,7 +175,7 @@ def returning_different_tuple_sizes(x):
         return 1,2,3,4,5,6
 
 def error_indirect_mismatched_multi_assign(x):
-    a, b, c = returning_different_tuple_sizes(x)
+    a, b, c = returning_different_tuple_sizes(x) # $ Alert[py/mismatched-multiple-assignment]
     return a, b, c
 
 
@@ -184,7 +184,7 @@ def error_indirect_mismatched_multi_assign(x):
 #ODASA-6754
 def error_unnecessary_delete():
     x = big_object()
-    del x
+    del x # $ Alert[py/unnecessary-delete]
 
 def ok_delete_in_loop():
     y = 0

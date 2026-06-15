@@ -3,6 +3,6 @@
 from typing import Optional
 
 from unknown import foo
-from unknown import bar
+from unknown import bar # $ Alert
 
 var: Optional['foo'] = None

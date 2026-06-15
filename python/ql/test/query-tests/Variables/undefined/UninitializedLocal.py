@@ -2,7 +2,7 @@
 class C:
 
     def m1(self):
-        y = ug1
+        y = ug1 # $ Alert[py/undefined-global-variable]
         x = 1
         return y
 
@@ -10,16 +10,16 @@ class C:
         return p
 
     def m3(self, x1):
-        return u2
+        return u2 # $ Alert[py/uninitialized-local-variable]
         u2 = x1
 
     def m4(self, x2):
         if x2:
             u3 = 1
-        return u3
+        return u3 # $ Alert[py/uninitialized-local-variable]
 
 def f():
-    y = ug1
+    y = ug1 # $ Alert[py/undefined-global-variable]
     x = 1
     return y
 
@@ -34,7 +34,7 @@ def q(x4):
 
 def j(u4):
     del u4
-    return u4
+    return u4 # $ Alert[py/uninitialized-local-variable]
 
 def k(x5):
     x5 + 1
@@ -43,7 +43,7 @@ def k(x5):
 def m(x6):
     if x6:
         u6 = 1
-    u6
+    u6 # $ Alert[py/uninitialized-local-variable]
     #The following are not uninitialized, but unreachable.
     u6
     u6
@@ -66,13 +66,13 @@ def check_del(cond):
         del u8
     else:
         pass
-    u8
+    u8 # $ Alert[py/uninitialized-local-variable]
     if cond:
         u9 = 1
         del u9
     else:
         u9 = 2
-    u9
+    u9 # $ Alert[py/uninitialized-local-variable]
     if cond:
         x10 = 1
         del x10
@@ -82,10 +82,10 @@ def check_del(cond):
     x10
     u11 = 1
     del u11
-    u11
+    u11 # $ Alert[py/uninitialized-local-variable]
     u12 = "hi"
     del u12
-    del u12
+    del u12 # $ Alert[py/uninitialized-local-variable]
 
 #x will always be defined.
 def const_range():
@@ -116,7 +116,7 @@ def use_def_conditional(cond4, cond5):
         u14 = 1
     x16 = 2
     if cond5:
-        return u14
+        return u14 # $ Alert[py/uninitialized-local-variable]
 
 
 def init_and_set_flag_in_try(f):
@@ -148,7 +148,7 @@ def split_not_OK():
     except:
         cond = not False
     if not not cond:
-        return u19
+        return u19 # $ Alert[py/uninitialized-local-variable]
 
 def double_is_none(x):
     if x is not None:
@@ -160,7 +160,7 @@ def double_is_none(x):
 
 #ODASA-4241
 def def_in_post_loop(seq):
-    j(x)
+    j(x) # $ Alert[py/uninitialized-local-variable]
     x = []
     for p in seq:
         x = p
@@ -173,9 +173,9 @@ def f(cond1, cond2):
     else:
         y = 1
     if cond2:
-        return x
+        return x # $ Alert[py/uninitialized-local-variable]
     else:
-        return y
+        return y # $ Alert[py/uninitialized-local-variable]
 
 def needs_splitting(var):
     if var:

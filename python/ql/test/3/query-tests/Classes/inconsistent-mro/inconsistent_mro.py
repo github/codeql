@@ -6,12 +6,12 @@ class X(object):
 class Y(X):
     pass
 
-class Z(X, Y):
+class Z(X, Y): # $ Alert
     pass
     
 class O:
     pass
     
 #This is OK in Python 2
-class N(object, O):
+class N(object, O): # $ Alert
     pass
