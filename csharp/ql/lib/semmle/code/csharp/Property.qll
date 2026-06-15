@@ -57,30 +57,24 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
   /** Gets the `set` accessor of this declaration, if any. */
   Setter getSetter() { result = this.getAnAccessor() }
 
-  /** Gets the target `get` accessor of this declaration, if any. */
-  private Getter getFirstGetter() {
-    if exists(this.getGetter())
-    then result = this.getGetter()
-    else result = this.getOverridee().getFirstGetter()
-  }
-
   /** Gets the target accessor of this declaration when used in a read context, if any. */
-  Accessor getReadTarget() { result = this.getFirstGetter() }
-
-  /** Gets the target `set` accessor of this declaration, if any. */
-  private Setter getFirstSetter() {
-    if exists(this.getSetter())
-    then result = this.getSetter()
-    else result = this.getOverridee().getFirstSetter()
+  Accessor getReadTarget() {
+    result = this.getGetter()
+    or
+    not exists(this.getGetter()) and
+    result = this.getOverridee().getReadTarget()
   }
 
   /** Gets the target accessor of this declaration when used in a write context, if any. */
   Accessor getWriteTarget() {
-    result = this.getFirstSetter()
+    result = this.getSetter()
+    or
+    not exists(this.getSetter()) and
+    result = this.getOverridee().getWriteTarget()
     or
     result =
       any(Getter g |
-        g = this.getFirstGetter() and
+        g = this.getReadTarget() and
         g.getAnnotatedReturnType().isRef()
       )
   }
