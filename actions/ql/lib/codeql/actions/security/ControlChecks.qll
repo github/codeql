@@ -83,7 +83,7 @@ abstract class ControlCheck extends AstNode {
     (
       this.(Step).getAFollowingStep() = node.getEnclosingStep()
       or
-      node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this.(Step)
+      node.getEnclosingJob().getANeededJob().(LocalJob).getAStep() = this
     )
     or
     // When the node is inside a reusable workflow, check if the control check
@@ -105,7 +105,7 @@ abstract class ControlCheck extends AstNode {
         )
         or
         (this instanceof Run or this instanceof UsesStep) and
-        caller.getANeededJob().(LocalJob).getAStep() = this.(Step)
+        caller.getANeededJob().(LocalJob).getAStep() = this
       )
     )
   }
