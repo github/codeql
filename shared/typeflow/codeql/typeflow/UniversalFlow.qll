@@ -155,9 +155,12 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
   private module RankEdge<Edge E> implements RankedEdge<E::Node> {
     private import E
 
+    private predicate needsNodeId(FlowNode n) { edge(n, _) }
+
     private int getFlowNodeIdByLoc(FlowNode n) {
       n =
         rank[result](FlowNode n0, string filePath, int startline, int startcolumn |
+          needsNodeId(n0) and
           not exists(getFlowNodeId(n0)) and
           n0.getLocation().hasLocationInfo(filePath, startline, startcolumn, _, _)
         |
@@ -168,6 +171,7 @@ module Make<LocationSig Location, UniversalFlowInput<Location> I> {
     private int getFlowNodeIdExt(FlowNode n) {
       n =
         rank[result](FlowNode n0, int a, int b |
+          needsNodeId(n0) and
           a = 0 and
           b = getFlowNodeId(n0)
           or
