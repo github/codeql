@@ -7,7 +7,7 @@
  * @id ql/some-query
  * @tags quality
  *       security
- */
+ */ // $ Alert
 
 import ql
 

@@ -1,1 +1,2 @@
-queries/style/AcronymsShouldBeCamelCase.ql
+query: queries/style/AcronymsShouldBeCamelCase.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql

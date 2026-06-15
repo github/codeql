@@ -1,1 +1,2 @@
-queries/style/MissingSecurityMetadata.ql
+query: queries/style/MissingSecurityMetadata.ql
+postprocess: utils/test/InlineExpectationsTestQuery.ql
